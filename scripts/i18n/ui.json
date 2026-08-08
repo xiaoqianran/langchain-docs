@@ -1,0 +1,28 @@
+{
+  "en": {
+    "brand": "LangChain Docs",
+    "brandSub": "mirror",
+    "official": "Official ↗",
+    "menu": "Menu",
+    "searchPlaceholder": "Search docs…",
+    "learningPath": "Docs · sections",
+    "copy": "Copy",
+    "copied": "Copied",
+    "footer": "Unofficial mirror · source: docs.langchain.com",
+    "langEn": "EN",
+    "langZh": "中文"
+  },
+  "zh": {
+    "brand": "LangChain 文档",
+    "brandSub": "镜像",
+    "official": "官方 ↗",
+    "menu": "菜单",
+    "searchPlaceholder": "搜索文档…",
+    "learningPath": "文档 · 目录",
+    "copy": "复制",
+    "copied": "已复制",
+    "footer": "非官方镜像 · 来源：docs.langchain.com",
+    "langEn": "EN",
+    "langZh": "中文"
+  }
+}
