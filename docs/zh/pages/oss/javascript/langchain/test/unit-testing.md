@@ -1,0 +1,359 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: Unit testing | https://docs.langchain.com/oss/javascript/langchain/test/unit-testing -->
+
+# 单元测试
+
+使用假聊天模型和内存持久性测试代理逻辑，无需 API 调用。
+
+单元测试单独测试代理的小型确定性部分。通过用内存中的伪造（又名固定装置）替换真正的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
+
+## 使用`fakeModel`模拟聊天模型
+
+[⟦T15⟧](https://reference.langchain.com/javascript/langchain/index/fakeModel) 是一种构建器风格的假聊天模型，可让您编写准确的响应（文本、工具调用、错误）并断言模型收到的内容。它扩展了[⟦T16⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel)，因此它可以在任何需要真实模型的地方工作。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+```
+
+### 快速开始
+
+创建一个模型，使用 `.respond()` 对响应进行排队，然后调用。每个 `invoke()` 按顺序消耗下一个排队的响应：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond(new AIMessage("I can help with that."))
+  .respond(new AIMessage("Here's what I found."))
+  .respond(new AIMessage("You're welcome!"));
+
+const r1 = await model.invoke([new HumanMessage("Can you help?")]);
+// r1.content === "I can help with that."
+
+const r2 = await model.invoke([new HumanMessage("What did you find?")]);
+// r2.content === "Here's what I found."
+
+const r3 = await model.invoke([new HumanMessage("Thanks!")]);
+// r3.content === "You're welcome!"
+```
+
+如果调用模型的次数多于排队响应的次数，则会引发描述性错误：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const model = fakeModel()
+  .respond(new AIMessage("only one"));
+
+await model.invoke([new HumanMessage("first")]);  // works
+await model.invoke([new HumanMessage("second")]); // throws: "no response queued for invocation 1"
+```
+
+### 工具调用响应
+
+`.respond()` 通过将 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 与 `tool_calls` 一起传递来支持工具调用：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond(new AIMessage({
+    content: "",
+    tool_calls: [
+      { name: "get_weather", args: { city: "San Francisco" }, id: "call_1", type: "tool_call" },
+    ],
+  }))
+  .respond(new AIMessage("It's 72°F and sunny in San Francisco."));
+
+const r1 = await model.invoke([new HumanMessage("What's the weather in SF?")]);
+console.log(r1.tool_calls[0].name); // "get_weather"
+
+const r2 = await model.invoke([new HumanMessage("Thanks")]);
+console.log(r2.content); // "It's 72°F and sunny in San Francisco."
+```
+
+`.respondWithTools()` 是同一件事的简写。无需构建完整的 `AIMessage`，只需提供工具名称和参数：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// These two queue entries produce identical responses:
+
+model.respond(new AIMessage({
+  content: "",
+  tool_calls: [
+    { name: "get_weather", args: { city: "SF" }, id: "call_1", type: "tool_call" },
+  ],
+}));
+
+// Equivalent shorthand:
+model.respondWithTools([  // [!code highlight]
+  { name: "get_weather", args: { city: "SF" }, id: "call_1" },  // [!code highlight]
+]);  // [!code highlight]
+```
+
+`id` 字段是可选的。如果省略，则会自动生成唯一 ID。<Tip>
+  `.respond()`和`.respondWithTools()`可以任意顺序自由混合。这对于测试代理循环特别有用，其中模型在工具调用和文本响应之间交替。
+</Tip>
+
+### 模拟错误
+
+#### 特定回合的错误
+
+将 `Error` 传递给 `.respond()` 会使模型在该特定调用上抛出异常。错误可能出现在序列中的任何位置：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond(new Error("rate limit exceeded"))  // Turn 1: throws  // [!code highlight]
+  .respond(new AIMessage("Recovered!"));      // Turn 2: succeeds
+
+try {
+  await model.invoke([new HumanMessage("first")]);
+} catch (e) {
+  console.log(e.message); // "rate limit exceeded"
+}
+
+const result = await model.invoke([new HumanMessage("retry")]);
+console.log(result.content); // "Recovered!"
+```
+
+#### 每次调用都会出错
+
+`.alwaysThrow()` 使每个调用都抛出异常，无论队列如何。这对于测试错误处理和重试逻辑很有用：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel().alwaysThrow(new Error("service unavailable"));
+
+await model.invoke([new HumanMessage("a")]); // throws "service unavailable"
+await model.invoke([new HumanMessage("b")]); // throws "service unavailable"
+```
+
+### 使用工厂函数进行动态响应
+
+`.respond()` 还接受一个根据输入消息计算响应的函数。该函数接收完整的消息数组并返回 [⟦T31⟧](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) 或 `Error`：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond((messages) => {  // [!code highlight]
+    const last = messages[messages.length - 1].text;  // [!code highlight]
+    return new AIMessage(`You said: ${last}`);  // [!code highlight]
+  });  // [!code highlight]
+
+const result = await model.invoke([new HumanMessage("hello")]);
+console.log(result.content); // "You said: hello"
+```
+
+工厂函数也可能返回错误：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond((messages) => {
+    const content = messages[messages.length - 1].text;
+    if (content.includes("forbidden")) {
+      return new Error("Content policy violation");
+    }
+    return new AIMessage("OK");
+  });
+
+await model.invoke([new HumanMessage("forbidden topic")]); // throws "Content policy violation"
+```
+
+<Note>
+  每个函数都是一个队列条目，消耗一次。要多次重复使用相同的动态逻辑，请将多个 `respond` 函数调用排队。
+</Note>
+
+### 结构化输出
+
+对于使用`.withStructuredOutput()`的代码，使用`.structuredResponse()`配置假返回值：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { HumanMessage } from "@langchain/core/messages";
+import { z } from "zod";
+
+const model = fakeModel()
+  .structuredResponse({ temperature: 72, unit: "fahrenheit" });  // [!code highlight]
+
+const structured = model.withStructuredOutput(
+  z.object({
+    temperature: z.number(),
+    unit: z.string(),
+  })
+);
+
+const result = await structured.invoke([new HumanMessage("Weather?")]);
+console.log(result);
+// { temperature: 72, unit: "fahrenheit" }
+```传递给`.withStructuredOutput()`的模式将被忽略。模型始终返回使用`.structuredResponse()`配置的值。这使得测试集中在应用程序逻辑而不是解析上。
+
+### 断言模型收到了什么
+
+`fakeModel` 记录每次调用，包括传递给模型的消息和选项。这就像传统测试框架中的间谍或模拟一样：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel()
+  .respond(new AIMessage("first"))
+  .respond(new AIMessage("second"));
+
+await model.invoke([new HumanMessage("question 1")]);
+await model.invoke([new HumanMessage("question 2")]);
+
+console.log(model.callCount); // 2
+
+console.log(model.calls[0].messages[0].content); // "question 1"
+console.log(model.calls[1].messages[0].content); // "question 2"
+```
+
+即使模型抛出以下错误，调用也会被记录：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { HumanMessage } from "@langchain/core/messages";
+
+const model = fakeModel().respond(new Error("boom"));
+
+try {
+  await model.invoke([new HumanMessage("will fail")]);
+} catch {
+  // error handled
+}
+
+console.log(model.callCount); // 1
+console.log(model.calls[0].messages[0].content); // "will fail"
+```
+
+### 与 `bindTools` 一起使用
+
+LangChain代理和LangGraph等代理框架内部调用`model.bindTools(tools)`。 `fakeModel` 自动处理此问题。绑定模型与原始模型共享相同的响应队列和通话录音，因此不需要特殊设置：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { fakeModel } from "langchain";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
+import { tool } from "@langchain/core/tools";
+import { z } from "zod";
+
+const searchTool = tool(async ({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search the web",
+  schema: z.object({ query: z.string() }),
+});
+
+const model = fakeModel()
+  .respondWithTools([{ name: "search", args: { query: "weather" }, id: "1" }])
+  .respond(new AIMessage("The weather is sunny."));
+
+const bound = model.bindTools([searchTool]);
+
+const r1 = await bound.invoke([new HumanMessage("weather?")]);
+console.log(r1.tool_calls[0].name); // "search"
+
+const r2 = await bound.invoke([new HumanMessage("thanks")]);
+console.log(r2.content); // "The weather is sunny."
+
+// Call recording is shared. Inspect via the original model.
+console.log(model.callCount); // 2
+```
+
+<Accordion title="Full example: test a tool-calling agent with vitest">
+  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { describe, test, expect } from "vitest";
+  import { fakeModel } from "langchain";
+  import { AIMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
+  import { tool } from "@langchain/core/tools";
+  import { z } from "zod";
+
+  const getWeather = tool(
+    async ({ city }) => `72°F and sunny in ${city}`,
+    {
+      name: "get_weather",
+      description: "Get weather for a city",
+      schema: z.object({ city: z.string() }),
+    }
+  );
+
+  async function runAgent(
+    model: ReturnType<typeof fakeModel>,
+    input: string
+  ) {
+    const messages: any[] = [new HumanMessage(input)];
+    const bound = model.bindTools([getWeather]);
+
+    while (true) {
+      const response = await bound.invoke(messages);
+      messages.push(response);
+
+      if (!response.tool_calls?.length) {
+        return { messages, finalResponse: response };
+      }
+
+      for (const tc of response.tool_calls) {
+        const result = await getWeather.invoke(tc.args);
+        messages.push(new ToolMessage({
+          content: result as string,
+          tool_call_id: tc.id!,
+        }));
+      }
+    }
+  }
+
+  describe("weather agent", () => {
+    test("calls get_weather and returns a final answer", async () => {
+      const model = fakeModel()
+        .respondWithTools([
+          { name: "get_weather", args: { city: "SF" }, id: "call_1" },
+        ])
+        .respond(new AIMessage("It's 72°F and sunny in SF!"));
+
+      const { finalResponse } = await runAgent(model, "Weather in SF?");
+
+      expect(finalResponse.content).toBe("It's 72°F and sunny in SF!");
+      expect(model.callCount).toBe(2);
+
+      const secondCall = model.calls[1].messages;
+      const toolMsg = secondCall.find((m: any) => m._getType() === "tool");
+      expect(toolMsg?.content).toContain("72°F and sunny in SF");
+    });
+
+    test("handles model errors gracefully", async () => {
+      const model = fakeModel()
+        .respond(new Error("rate limit"));
+
+      await expect(
+        runAgent(model, "Weather?")
+      ).rejects.toThrow("rate limit");
+
+      expect(model.callCount).toBe(1);
+    });
+  });
+  ```
+</Accordion>
+
+## 后续步骤
+
+了解如何使用 [Integration testing](/oss/javascript/langchain/test/integration-testing) 中的真实模型提供程序 API 测试您的代理。
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+  </Callout>
+</div>

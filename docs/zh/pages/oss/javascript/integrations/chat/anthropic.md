@@ -1,0 +1,1027 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: ChatAnthropic integration | https://docs.langchain.com/oss/javascript/integrations/chat/anthropic -->
+
+# 聊天人性整合
+
+使用 LangChain JavaScript 与 ChatAnthropic 聊天模型集成。
+
+[Anthropic](https://www.anthropic.com/)是一家人工智能安全与研究公司。他们是克劳德的创造者。
+
+这将帮助您开始使用 `ChatAnthropic` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatAnthropic` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
+
+## 概述
+
+### 集成细节
+
+|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) |                                               下载 |                                              版本 || :---------------------------------------------------------------------------------------------- | ：---------------------------------------------------------------------------------------- | :----------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
+| [⟦T31⟧](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [⟦T32⟧](https://www.npmjs.com/package/@langchain/anthropic) |       ✅ |                                       ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
+
+### 模型特点
+
+有关如何使用特定功能的指南，请参阅下面表标题中的链接。| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
+| :---------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :------------------------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------------------: |
+|                        ✅ |                                 ✅ |                               ✅ |      ❌ |      ❌ |                               ✅ |                              ✅ |                                ❌ |
+
+## 设置
+
+您需要注册并获取[Anthropic API key](https://www.anthropic.com/)，然后安装`@langchain/anthropic`集成包。
+
+### 凭证
+
+前往 [Anthropic's website](https://www.anthropic.com/) 注册 Anthropic 并生成 API 密钥。完成此操作后，设置 `ANTHROPIC_API_KEY` 环境变量：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_API_KEY="your-api-key"
+```如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# export LANGSMITH_TRACING="true"
+# export LANGSMITH_API_KEY="your-api-key"
+```
+
+### 安装
+
+LangChain `ChatAnthropic` 集成位于 `@langchain/anthropic` 包中：
+
+<CodeGroup>
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install @langchain/anthropic @langchain/core
+  ```
+
+  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add @langchain/anthropic @langchain/core
+  ```
+
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm add @langchain/anthropic @langchain/core
+  ```
+</CodeGroup>
+
+## 实例化
+
+现在我们可以实例化我们的模型对象并生成聊天完成：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic"
+
+const llm = new ChatAnthropic({
+    model: "claude-haiku-4-5-20251001",
+    temperature: 0,
+    maxTokens: undefined,
+    maxRetries: 2,
+    // other params...
+});
+```
+
+## 调用
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const aiMsg = await llm.invoke([
+    [
+        "system",
+        "You are a helpful assistant that translates English to French. Translate the user sentence.",
+    ],
+    ["human", "I love programming."],
+])
+aiMsg
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+AIMessage {
+  "id": "msg_013WBXXiggy6gMbAUY6NpsuU",
+  "content": "Voici la traduction en français :\n\nJ'adore la programmation.",
+  "additional_kwargs": {
+    "id": "msg_013WBXXiggy6gMbAUY6NpsuU",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-haiku-4-5-20251001",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 29,
+      "output_tokens": 20
+    }
+  },
+  "response_metadata": {
+    "id": "msg_013WBXXiggy6gMbAUY6NpsuU",
+    "model": "claude-haiku-4-5-20251001",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 29,
+      "output_tokens": 20
+    },
+    "type": "message",
+    "role": "assistant"
+  },
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 29,
+    "output_tokens": 20,
+    "total_tokens": 49
+  }
+}
+```
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+console.log(aiMsg.content)
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Voici la traduction en français :
+
+J'adore la programmation.
+```
+
+## 内容块
+
+Anthropic 模型与大多数其他模型之间需要注意的一个关键区别是，单个 Anthropic [⟦T37⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 的内容可以是单个字符串或**内容块列表**。例如，当 Anthropic 模型 [calls a tool](/oss/javascript/langchain/tools) 时，工具调用是消息内容的一部分（并且在标准化 `AIMessage.tool_calls` 字段中公开）：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import * as z from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
+
+const calculatorSchema = z.object({
+  operation: z
+    .enum(["add", "subtract", "multiply", "divide"])
+    .describe("The type of operation to execute."),
+  number1: z.number().describe("The first number to operate on."),
+  number2: z.number().describe("The second number to operate on."),
+});
+
+const calculatorTool = {
+  name: "calculator",
+  description: "A simple calculator tool",
+  input_schema: zodToJsonSchema(calculatorSchema),
+};
+
+const toolCallingLlm = new ChatAnthropic({
+  model: "claude-haiku-4-5-20251001",
+}).bindTools([calculatorTool]);
+
+const toolPrompt = ChatPromptTemplate.fromMessages([
+  [
+    "system",
+    "You are a helpful assistant who always needs to use a calculator.",
+  ],
+  ["human", "{input}"],
+]);
+
+// Chain your prompt and model together
+const toolCallChain = toolPrompt.pipe(toolCallingLlm);
+
+await toolCallChain.invoke({
+  input: "What is 2 + 2?",
+});
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+AIMessage {
+  "id": "msg_01DZGs9DyuashaYxJ4WWpWUP",
+  "content": [
+    {
+      "type": "text",
+      "text": "Here is the calculation for 2 + 2:"
+    },
+    {
+      "type": "tool_use",
+      "id": "toolu_01SQXBamkBr6K6NdHE7GWwF8",
+      "name": "calculator",
+      "input": {
+        "number1": 2,
+        "number2": 2,
+        "operation": "add"
+      }
+    }
+  ],
+  "additional_kwargs": {
+    "id": "msg_01DZGs9DyuashaYxJ4WWpWUP",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-haiku-4-5-20251001",
+    "stop_reason": "tool_use",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 449,
+      "output_tokens": 100
+    }
+  },
+  "response_metadata": {
+    "id": "msg_01DZGs9DyuashaYxJ4WWpWUP",
+    "model": "claude-haiku-4-5-20251001",
+    "stop_reason": "tool_use",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 449,
+      "output_tokens": 100
+    },
+    "type": "message",
+    "role": "assistant"
+  },
+  "tool_calls": [
+    {
+      "name": "calculator",
+      "args": {
+        "number1": 2,
+        "number2": 2,
+        "operation": "add"
+      },
+      "id": "toolu_01SQXBamkBr6K6NdHE7GWwF8",
+      "type": "tool_call"
+    }
+  ],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 449,
+    "output_tokens": 100,
+    "total_tokens": 549
+  }
+}
+```
+
+## 自定义标头
+
+您可以在请求中传递自定义标头，如下所示：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+
+const llmWithCustomHeaders = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  maxTokens: 1024,
+  clientOptions: {
+    defaultHeaders: {
+      "X-Api-Key": process.env.ANTHROPIC_API_KEY,
+    },
+  },
+});
+
+await llmWithCustomHeaders.invoke("Why is the sky blue?");
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+AIMessage {
+  "id": "msg_019z4nWpShzsrbSHTWXWQh6z",
+  "content": "The sky appears blue due to a phenomenon called Rayleigh scattering. Here's a brief explanation:\n\n1) Sunlight is made up of different wavelengths of visible light, including all the colors of the rainbow.\n\n2) As sunlight passes through the atmosphere, the gases (mostly nitrogen and oxygen) cause the shorter wavelengths of light, such as violet and blue, to be scattered more easily than the longer wavelengths like red and orange.\n\n3) This scattering of the shorter blue wavelengths occurs in all directions by the gas molecules in the atmosphere.\n\n4) Our eyes are more sensitive to the scattered blue light than the scattered violet light, so we perceive the sky as having a blue color.\n\n5) The scattering is more pronounced for light traveling over longer distances through the atmosphere. This is why the sky appears even darker blue when looking towards the horizon.\n\nSo in essence, the selective scattering of the shorter blue wavelengths of sunlight by the gases in the atmosphere is what causes the sky to appear blue to our eyes during the daytime.",
+  "additional_kwargs": {
+    "id": "msg_019z4nWpShzsrbSHTWXWQh6z",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-3-sonnet-20240229",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 13,
+      "output_tokens": 236
+    }
+  },
+  "response_metadata": {
+    "id": "msg_019z4nWpShzsrbSHTWXWQh6z",
+    "model": "claude-3-sonnet-20240229",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 13,
+      "output_tokens": 236
+    },
+    "type": "message",
+    "role": "assistant"
+  },
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 13,
+    "output_tokens": 236,
+    "total_tokens": 249
+  }
+}
+```
+
+## 提示缓存
+
+Anthropic 支持[caching parts of your prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)，以降低需要长上下文的用例的成本。您可以缓存工具以及整个消息和单个块。包含一个或多个带有 `"cache_control": { "type": "ephemeral" }` 字段的块或工具定义的初始请求将自动缓存提示的该部分。此初始缓存步骤将产生额外费用，但后续请求将以较低的费率计费。缓存的生命周期为 5 分钟，但每次命中缓存时都会刷新。对于更长的缓存，请在 `cache_control` 字段中指定 `"ttl": "1h"`。
+
+有一个最小可缓存提示长度，该长度因型号而异。欲了解更多信息，请参阅[prompt caching details](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#cache-limitations)。
+
+下面是缓存包含 LangChain [conceptual docs](/oss/javascript/concepts/) 的部分系统消息的示例：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+let CACHED_TEXT = "...";
+```
+
+```typescript expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// @lc-docs-hide-cell
+
+CACHED_TEXT = `## Components
+
+LangChain provides standard, extendable interfaces and external integrations for various components useful for building with LLMs.
+Some components LangChain implements, some components we rely on third-party integrations for, and others are a mix.
+
+### Chat models
+
+<span data-heading-keywords="chat model,chat models"></span>
+
+Language models that use a sequence of messages as inputs and return chat messages as outputs (as opposed to using plain text).
+These are generally newer models (older models are generally \`LLMs\`, see below).
+Chat models support the assignment of distinct roles to conversation messages, helping to distinguish messages from the AI, users, and instructions such as system messages.
+
+Although the underlying models are messages in, message out, the LangChain wrappers also allow these models to take a string as input.
+This gives them the same interface as LLMs (and simpler to use).
+When a string is passed in as input, it will be converted to a \`HumanMessage\` under the hood before being passed to the underlying model.
+
+LangChain does not host any Chat Models, rather we rely on third party integrations.
+
+We have some standardized parameters when constructing ChatModels:
+
+- \`model\`: the name of the model
+
+Chat Models also accept other parameters that are specific to that integration.
+
+<Warning>
+**Some chat models have been fine-tuned for **tool calling** and provide a dedicated API for it.**
+
+Generally, such models are better at tool calling than non-fine-tuned models, and are recommended for use cases that require tool calling.
+Please see the [tool calling section](/oss/javascript/langchain/tools) for more information.
+</Warning>
+
+For specifics on how to use chat models, see the [relevant how-to guides here](/oss/javascript/langchain/models).
+
+#### Multimodality
+
+Some chat models are multimodal, accepting images, audio and even video as inputs.
+These are still less common, meaning model providers haven't standardized on the "best" way to define the API.
+Multimodal outputs are even less common. As such, we've kept our multimodal abstractions fairly light weight
+and plan to further solidify the multimodal APIs and interaction patterns as the field matures.
+
+In LangChain, most chat models that support multimodal inputs also accept those values in OpenAI's content blocks format.
+So far this is restricted to image inputs. For models like Gemini which support video and other bytes input, the APIs also support the native, model-specific representations.
+
+For specifics on how to use multimodal models, see the [relevant how-to guides here](/oss/javascript/how-to/#multimodal).
+
+### LLMs
+
+<span data-heading-keywords="llm,llms"></span>
+
+<Warning>
+**Pure text-in/text-out LLMs tend to be older or lower-level. Many popular models are best used as [chat completion models](/oss/javascript/langchain/models),**
+
+even for non-chat use cases.
+
+You are probably looking for [the section above instead](/oss/javascript/langchain/models).
+</Warning>
+
+Language models that takes a string as input and returns a string.
+These are traditionally older models (newer models generally are [Chat Models](/oss/javascript/langchain/models), see above).
+
+Although the underlying models are string in, string out, the LangChain wrappers also allow these models to take messages as input.
+This gives them the same interface as [Chat Models](/oss/javascript/langchain/models).
+When messages are passed in as input, they will be formatted into a string under the hood before being passed to the underlying model.
+
+LangChain does not host any LLMs, rather we rely on third party integrations.
+
+For specifics on how to use LLMs, see the [relevant how-to guides here](/oss/javascript/langchain/models).
+
+### Message types
+
+Some language models take an array of messages as input and return a message.
+There are a few different types of messages.
+All messages have a \`role\`, \`content\`, and \`response_metadata\` property.
+
+The \`role\` describes WHO is saying the message.
+LangChain has different message classes for different roles.
+
+The \`content\` property describes the content of the message.
+This can be a few different things:
+
+- A string (most models deal this type of content)
+- A List of objects (this is used for multi-modal input, where the object contains information about that input type and that input location)
+
+#### HumanMessage
+
+This represents a message from the user.
+
+#### AIMessage
+
+This represents a message from the model. In addition to the \`content\` property, these messages also have:
+
+**\`response_metadata\`**
+
+The \`response_metadata\` property contains additional metadata about the response. The data here is often specific to each model provider.
+This is where information like log-probs and token usage may be stored.
+
+**\`tool_calls\`**
+
+These represent a decision from a language model to call a tool. They are included as part of an \`AIMessage\` output.
+They can be accessed from there with the \`.tool_calls\` property.
+
+This property returns a list of \`ToolCall\`s. A \`ToolCall\` is an object with the following arguments:
+
+- \`name\`: The name of the tool that should be called.
+- \`args\`: The arguments to that tool.
+- \`id\`: The id of that tool call.
+
+#### SystemMessage
+
+This represents a system message, which tells the model how to behave. Not every model provider supports this.
+
+#### ToolMessage
+
+This represents the result of a tool call. In addition to \`role\` and \`content\`, this message has:
+
+- a \`tool_call_id\` field which conveys the id of the call to the tool that was called to produce this result.
+- an \`artifact\` field which can be used to pass along arbitrary artifacts of the tool execution which are useful to track but which should not be sent to the model.
+
+#### (Legacy) FunctionMessage
+
+This is a legacy message type, corresponding to OpenAI's legacy function-calling API. \`ToolMessage\` should be used instead to correspond to the updated tool-calling API.
+
+This represents the result of a function call. In addition to \`role\` and \`content\`, this message has a \`name\` parameter which conveys the name of the function that was called to produce this result.
+
+### Prompt templates
+
+<span data-heading-keywords="prompt,prompttemplate,chatprompttemplate"></span>
+
+Prompt templates help to translate user input and parameters into instructions for a language model.
+This can be used to guide a model's response, helping it understand the context and generate relevant and coherent language-based output.
+
+Prompt Templates take as input an object, where each key represents a variable in the prompt template to fill in.
+
+Prompt Templates output a PromptValue. This PromptValue can be passed to an LLM or a ChatModel, and can also be cast to a string or an array of messages.
+The reason this PromptValue exists is to make it easy to switch between strings and messages.
+
+There are a few different types of prompt templates:
+
+#### String PromptTemplates
+
+These prompt templates are used to format a single string, and generally are used for simpler inputs.
+For example, a common way to construct and use a PromptTemplate is as follows:
+
+\`\`\`typescript
+import { PromptTemplate } from "@langchain/core/prompts";
+
+const promptTemplate = PromptTemplate.fromTemplate(
+  "Tell me a joke about {topic}"
+);
+
+await promptTemplate.invoke({ topic: "cats" });
+\`\`\`
+
+#### ChatPromptTemplates
+
+These prompt templates are used to format an array of messages. These "templates" consist of an array of templates themselves.
+For example, a common way to construct and use a ChatPromptTemplate is as follows:
+
+\`\`\`typescript
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  ["system", "You are a helpful assistant"],
+  ["user", "Tell me a joke about {topic}"],
+]);
+
+await promptTemplate.invoke({ topic: "cats" });
+\`\`\`
+
+In the above example, this ChatPromptTemplate will construct two messages when called.
+The first is a system message, that has no variables to format.
+The second is a HumanMessage, and will be formatted by the \`topic\` variable the user passes in.
+
+#### MessagesPlaceholder
+
+<span data-heading-keywords="messagesplaceholder"></span>
+
+This prompt template is responsible for adding an array of messages in a particular place.
+In the above ChatPromptTemplate, we saw how we could format two messages, each one a string.
+But what if we wanted the user to pass in an array of messages that we would slot into a particular spot?
+This is how you use MessagesPlaceholder.
+
+\`\`\`typescript
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
+import { HumanMessage } from "@langchain/core/messages";
+
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  ["system", "You are a helpful assistant"],
+  new MessagesPlaceholder("msgs"),
+]);
+
+promptTemplate.invoke({ msgs: [new HumanMessage({ content: "hi!" })] });
+\`\`\`
+
+This will produce an array of two messages, the first one being a system message, and the second one being the HumanMessage we passed in.
+If we had passed in 5 messages, then it would have produced 6 messages in total (the system message plus the 5 passed in).
+This is useful for letting an array of messages be slotted into a particular spot.
+
+An alternative way to accomplish the same thing without using the \`MessagesPlaceholder\` class explicitly is:
+
+\`\`\`typescript
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  ["system", "You are a helpful assistant"],
+  ["placeholder", "{msgs}"], // <-- This is the changed part
+]);
+\`\`\`
+
+For specifics on how to use prompt templates, see the [relevant how-to guides here](/oss/javascript/how-to/#prompt-templates).
+
+### Example Selectors
+
+One common prompting technique for achieving better performance is to include examples as part of the prompt.
+This gives the language model concrete examples of how it should behave.
+Sometimes these examples are hardcoded into the prompt, but for more advanced situations it may be nice to dynamically select them.
+Example Selectors are classes responsible for selecting and then formatting examples into prompts.
+
+For specifics on how to use example selectors, see the [relevant how-to guides here](/oss/javascript/how-to/#example-selectors).
+
+### Output parsers
+
+<span data-heading-keywords="output parser"></span>
+
+<Note>
+**The information here refers to parsers that take a text output from a model try to parse it into a more structured representation.**
+
+More and more models are supporting function (or tool) calling, which handles this automatically.
+It is recommended to use function/tool calling rather than output parsing.
+See the [LangChain tools documentation](/oss/javascript/langchain/tools).
+
+</Note>
+
+Responsible for taking the output of a model and transforming it to a more suitable format for downstream tasks.
+Useful when you are using LLMs to generate structured data, or to normalize output from chat models and LLMs.
+
+There are two main methods an output parser must implement:
+
+- "Get format instructions": A method which returns a string containing instructions for how the output of a language model should be formatted.
+- "Parse": A method which takes in a string (assumed to be the response from a language model) and parses it into some structure.
+
+And then one optional one:
+
+- "Parse with prompt": A method which takes in a string (assumed to be the response from a language model) and a prompt (assumed to be the prompt that generated such a response) and parses it into some structure. The prompt is largely provided in the event the OutputParser wants to retry or fix the output in some way, and needs information from the prompt to do so.
+
+Output parsers accept a string or \`BaseMessage\` as input and can return an arbitrary type.
+
+LangChain has many different types of output parsers. This is a list of output parsers LangChain supports. The table below has various pieces of information:
+
+**Name**: The name of the output parser
+
+**Supports Streaming**: Whether the output parser supports streaming.
+
+**Input Type**: Expected input type. Most output parsers work on both strings and messages, but some (like OpenAI Functions) need a message with specific arguments.
+
+**Output Type**: The output type of the object returned by the parser.
+
+**Description**: Our commentary on this output parser and when to use it.
+
+The current date is ${new Date().toISOString()}`;
+
+// Noop statement to hide output
+void 0;
+```
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+
+const modelWithCaching = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+});
+
+const LONG_TEXT = `You are a pirate. Always respond in pirate dialect.
+
+Use the following as context when answering questions:
+
+${CACHED_TEXT}`;
+
+const messages = [
+  {
+    role: "system",
+    content: [
+      {
+        type: "text",
+        text: LONG_TEXT,
+        // Tell Anthropic to cache this block
+        cache_control: { type: "ephemeral" },
+      },
+    ],
+  },
+  {
+    role: "user",
+    content: "What types of messages are supported in LangChain?",
+  },
+];
+
+const res = await modelWithCaching.invoke(messages);
+
+console.log("USAGE:", res.response_metadata.usage);
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+USAGE: {
+  input_tokens: 18,
+  cache_creation_input_tokens: 2960,
+  cache_read_input_tokens: 0,
+  cache_creation: { ephemeral_5m_input_tokens: 2960, ephemeral_1h_input_tokens: 0 },
+  output_tokens: 433,
+  service_tier: 'standard',
+  inference_geo: 'global'
+}
+```
+
+我们可以看到，从 Anthropic 返回的原始使用字段中有一个名为 `cache_creation_input_tokens` 的新字段。
+
+如果我们再次使用相同的消息，我们可以看到长文本的输入标记是从缓存中读取的：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const res2 = await modelWithCaching.invoke(messages);
+
+console.log("USAGE:", res2.response_metadata.usage);
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+USAGE: {
+  input_tokens: 18,
+  cache_creation_input_tokens: 0,
+  cache_read_input_tokens: 2960,
+  cache_creation: { ephemeral_5m_input_tokens: 0, ephemeral_1h_input_tokens: 0 },
+  output_tokens: 393,
+  service_tier: 'standard',
+  inference_geo: 'global'
+}
+```
+
+### 工具缓存
+
+您还可以通过在工具定义中设置相同的 `"cache_control": { "type": "ephemeral" }` 来缓存工具。目前需要您在[Anthropic's raw tool format](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)中绑定一个工具，这是一个示例：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const SOME_LONG_DESCRIPTION = "...";
+
+// Tool in Anthropic format
+const anthropicTools = [{
+  name: "get_weather",
+  description: SOME_LONG_DESCRIPTION,
+  input_schema: {
+    type: "object",
+    properties: {
+      location: {
+        type: "string",
+        description: "Location to get the weather for",
+      },
+      unit: {
+        type: "string",
+        description: "Temperature unit to return",
+      },
+    },
+    required: ["location"],
+  },
+  // Tell Anthropic to cache this tool
+  cache_control: { type: "ephemeral" },
+}]
+
+const modelWithCachedTools = modelWithCaching.bindTools(anthropicTools);
+
+await modelWithCachedTools.invoke("what is the weather in SF?");
+```
+
+有关提示缓存如何工作的更多信息，请参阅 [Anthropic's docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#how-prompt-caching-works)。
+
+## 自定义客户端Anthropic 模型[may be hosted on cloud services such as Google Vertex](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai) 依赖于与主要 Anthropic 客户端具有相同接口的不同底层客户端。您可以通过提供返回 Anthropic 客户端的初始化实例的 `createClient` 方法来访问这些服务。这是一个例子：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
+
+const customClient = new AnthropicVertex();
+
+const modelWithCustomClient = new ChatAnthropic({
+  modelName: "claude-sonnet-4-6",
+  maxRetries: 0,
+  createClient: () => customClient,
+});
+
+await modelWithCustomClient.invoke([{ role: "user", content: "Hello!" }]);
+```
+
+## 引文
+
+Anthropic 支持 [citations](https://platform.claude.com/docs/en/build-with-claude/citations) 功能，让 Claude 根据用户提供的源材料将上下文附加到其答案中。该源材料可以以 [document content blocks](https://platform.claude.com/docs/en/build-with-claude/citations#document-types) 的形式提供，它描述完整的文档，也可以以 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 的形式提供，它描述从检索系统返回的相关段落或片段。当查询中包含 `"citations": { "enabled": true }` 时，Claude 可能会在其响应中生成对所提供材料的直接引用。
+
+### 文档示例
+
+在这个例子中，我们传递一个[plain text document](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents)。在后台，Claude [automatically chunks](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents) 将输入文本转换成句子，在生成引文时使用。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+
+const citationsModel = new ChatAnthropic({
+  model: "claude-haiku-4-5-20251001",
+});
+
+const messagesWithCitations = [
+  {
+    role: "user",
+    content: [
+      {
+        type: "document",
+        source: {
+          type: "text",
+          media_type: "text/plain",
+          data: "The grass is green. The sky is blue.",
+        },
+        title: "My Document",
+        context: "This is a trustworthy document.",
+        citations: {
+          enabled: true,
+        },
+      },
+      {
+        type: "text",
+        text: "What color is the grass and sky?",
+      },
+    ],
+  }
+];
+
+const responseWithCitations = await citationsModel.invoke(messagesWithCitations);
+
+console.log(JSON.stringify(responseWithCitations.content, null, 2));
+```
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[
+  {
+    "type": "text",
+    "text": "Based on the document, I can tell you that:\n\n- "
+  },
+  {
+    "type": "text",
+    "text": "The grass is green",
+    "citations": [
+      {
+        "type": "char_location",
+        "cited_text": "The grass is green. ",
+        "document_index": 0,
+        "document_title": "My Document",
+        "start_char_index": 0,
+        "end_char_index": 20
+      }
+    ]
+  },
+  {
+    "type": "text",
+    "text": "\n- "
+  },
+  {
+    "type": "text",
+    "text": "The sky is blue",
+    "citations": [
+      {
+        "type": "char_location",
+        "cited_text": "The sky is blue.",
+        "document_index": 0,
+        "document_title": "My Document",
+        "start_char_index": 20,
+        "end_char_index": 36
+      }
+    ]
+  }
+]
+```
+
+### 搜索结果示例
+
+在此示例中，我们传入 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 作为消息内容的一部分。这使得克劳德可以在回复中引用您自己的检索系统中的特定段落或片段。当您希望 Claude 引用特定知识集中的信息，但您希望直接引入自己的预取/缓存内容而不是让模型自动搜索或检索它们时，此方法非常有用。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+
+const citationsModel = new ChatAnthropic({
+  model: "claude-haiku-4-5-20251001",
+});
+
+const messagesWithCitations = [
+  {
+    type: "user",
+    content: [
+      {
+        type: "search_result",
+        title: "History of France",
+        source: "https://some-uri.com",
+        citations: { enabled: true },
+        content: [
+          {
+            type: "text",
+            text: "The capital of France is Paris.",
+          },
+          {
+            type: "text",
+            text: "The old capital of France was Lyon.",
+          },
+        ],
+      },
+      {
+        type: "text",
+        text: "What is the capital of France?",
+      },
+    ],
+  },
+];
+
+const responseWithCitations = await citationsModel.invoke(messagesWithCitations);
+
+console.log(JSON.stringify(responseWithCitations.content, null, 2));
+```
+
+#### 来自工具的搜索结果
+
+您还可以使用工具来提供模型可以在其响应中引用的搜索结果。这非常适合 RAG（或[Retrieval-Augmented Generation](https://en.wikipedia.org/wiki/Retrieval-augmented_generation)）工作流程，Claude 可以决定何时何地检索信息。当将此信息作为 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 返回时，Claude 能够从工具返回的材料中创建引用。
+
+以下是您如何创建一个工具，以 Anthropic 的引文 API 预期的格式返回搜索结果：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { tool } from "@langchain/core/tools";
+
+// Create a tool that returns search results
+const ragTool = tool(
+  () => [
+    {
+      type: "search_result",
+      title: "History of France",
+      source: "https://some-uri.com",
+      citations: { enabled: true },
+      content: [
+        {
+          type: "text",
+          text: "The capital of France is Paris.",
+        },
+        {
+          type: "text",
+          text: "The old capital of France was Lyon.",
+        },
+      ],
+    },
+    {
+      type: "search_result",
+      title: "Geography of France",
+      source: "https://some-uri.com",
+      citations: { enabled: true },
+      content: [
+        {
+          type: "text",
+          text: "France is a country in Europe.",
+        },
+        {
+          type: "text",
+          text: "The capital of France is Paris.",
+        },
+      ],
+    },
+  ],
+  {
+    name: "my_rag_tool",
+    description: "Retrieval system that accesses my knowledge base.",
+    schema: z.object({
+      query: z.string().describe("query to search in the knowledge base"),
+    }),
+  }
+);
+
+// Create model with search results beta header
+const model = new ChatAnthropic({
+  model: "claude-haiku-4-5-20251001",
+}).bindTools([ragTool]);
+
+const result = await model.invoke([
+  {
+    role: "user",
+    content: "What is the capital of France?",
+  },
+]);
+
+console.log(JSON.stringify(result.content, null, 2));
+
+```
+
+了解更多[how RAG works in LangChain](https://js.langchain.com/docs/concepts/rag/)
+
+[Learn more about tool calling](/oss/javascript/langchain/tools)
+
+### 与文本分割器一起使用
+
+Anthropic 还允许您使用 [custom document](https://platform.claude.com/docs/en/build-with-claude/citations#custom-content-documents) 类型指定自己的分割。 LangChain 文本分割器可用于为此目的生成有意义的分割。请参阅下面的示例，其中我们拆分了 LangChain.js README（一个 Markdown 文档）并将其作为上下文传递给 Claude：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { MarkdownTextSplitter } from "@langchain/classic/text_splitter";
+
+function formatToAnthropicDocuments(documents: string[]) {
+  return {
+    type: "document",
+    source: {
+      type: "content",
+      content: documents.map((document) => ({ type: "text", text: document })),
+    },
+    citations: { enabled: true },
+  };
+}
+
+// Pull readme
+const readmeResponse = await fetch(
+  "https://raw.githubusercontent.com/langchain-ai/langchainjs/master/README.md"
+);
+
+const readme = await readmeResponse.text();
+
+// Split into chunks
+const splitter = new MarkdownTextSplitter({
+  chunkOverlap: 0,
+  chunkSize: 50,
+});
+const documents = await splitter.splitText(readme);
+
+// Construct message
+const messageWithSplitDocuments = {
+  role: "user",
+  content: [
+    formatToAnthropicDocuments(documents),
+    { type: "text", text: "Give me a link to LangChain's tutorials. Cite your sources" },
+  ],
+};
+
+// Query LLM
+const citationsModelWithSplits = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+});
+const resWithSplits = await citationsModelWithSplits.invoke([messageWithSplitDocuments]);
+
+console.log(JSON.stringify(resWithSplits.content, null, 2));
+```
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[
+  {
+    "type": "text",
+    "text": "Based on the documentation, I can provide you with a link to LangChain's tutorials:\n\n"
+  },
+  {
+    "type": "text",
+    "text": "The tutorials can be found at: https://js.langchain.com/docs/tutorials/",
+    "citations": [
+      {
+        "type": "content_block_location",
+        "cited_text": "[Tutorial](https://js.langchain.com/docs/tutorials/) walkthroughs",
+        "document_index": 0,
+        "document_title": null,
+        "start_block_index": 191,
+        "end_block_index": 194
+      }
+    ]
+  }
+]
+```
+
+## 上下文管理Anthropic 支持上下文编辑功能，该功能将自动管理模型的上下文窗口（例如，通过清除工具结果）。
+
+有关详细信息和配置选项，请参阅[Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing)。
+
+<Info>
+  **自 `@langchain/anthropic@0.3.29`** 起支持上下文管理
+</Info>
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+
+const llm = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  clientOptions: {
+    defaultHeaders: {
+      "anthropic-beta": "context-management-2025-06-27",
+    },
+  },
+  contextManagement: { edits: [{ type: "clear_tool_uses_20250919" }] },
+)
+const llmWithTools = llm.bindTools([{ type: "web_search_20250305", name: "web_search" }]);
+const response = await llmWithTools.invoke("Search for recent developments in AI");
+```
+
+***
+
+## API 参考
+
+有关所有 `ChatAnthropic` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+  </Callout>
+</div>

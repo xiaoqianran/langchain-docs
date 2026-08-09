@@ -1,0 +1,276 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: Interrupt concurrent | https://docs.langchain.com/langsmith/interrupt-concurrent -->
+
+# 中断并发
+
+本指南假设您了解什么是双重短信，您可以在 [double-texting conceptual guide](/langsmith/double-texting) 中了解。
+
+该指南介绍了双文本发送的 `interrupt` 选项，该选项会中断图形的先前运行并使用双文本开始新的运行。此选项不会删除第一次运行，而是将其保留在数据库中，但将其状态设置为`interrupted`。下面是使用 `interrupt` 选项的快速示例。
+
+## 设置
+
+首先，我们将定义一个快速帮助函数来打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
+
+<Tabs>
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    function prettyPrint(m) {
+      const padded = " " + m['type'] + " ";
+      const sepLen = Math.floor((80 - padded.length) / 2);
+      const sep = "=".repeat(sepLen);
+      const secondSep = sep + (padded.length % 2 ? "=" : "");
+
+      console.log(`${sep}${padded}${secondSep}`);
+      console.log("\n\n");
+      console.log(m.content);
+    }
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # PLACE THIS IN A FILE CALLED pretty_print.sh
+    pretty_print() {
+      local type="$1"
+      local content="$2"
+      local padded=" $type "
+      local total_width=80
+      local sep_len=$(( (total_width - ${#padded}) / 2 ))
+      local sep=$(printf '=%.0s' $(eval "echo {1.."${sep_len}"}"))
+      local second_sep=$sep
+      if (( (total_width - ${#padded}) % 2 )); then
+        second_sep="${second_sep}="
+      fi
+
+      echo "${sep}${padded}${second_sep}"
+      echo
+      echo "$content"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+现在，让我们导入所需的包并实例化我们的客户端、助手和线程。
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import asyncio
+
+    from langchain_core.messages import convert_to_messages
+    from langgraph_sdk import get_client
+
+    client = get_client(url=<DEPLOYMENT_URL>)
+    # Using the graph deployed with the name "agent"
+    assistant_id = "agent"
+    thread = await client.threads.create()
+    ```
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { Client } from "@langchain/langgraph-sdk";
+
+    const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+    // Using the graph deployed with the name "agent"
+    const assistantId = "agent";
+    const thread = await client.threads.create();
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl --request POST \
+      --url <DEPLOYMENT_URL>/threads \
+      --header 'Content-Type: application/json' \
+      --data '{}'
+    ```
+  </Tab>
+</Tabs>
+
+## 创建运行
+
+现在我们可以开始两次运行并加入第二次运行，直到它完成：
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # the first run will be interrupted
+    interrupted_run = await client.runs.create(
+        thread["thread_id"],
+        assistant_id,
+        input={"messages": [{"role": "user", "content": "what's the weather in sf?"}]},
+    )
+    # sleep a bit to get partial outputs from the first run
+    await asyncio.sleep(2)
+    run = await client.runs.create(
+        thread["thread_id"],
+        assistant_id,
+        input={"messages": [{"role": "user", "content": "what's the weather in nyc?"}]},
+        multitask_strategy="interrupt",
+    )
+    # wait until the second run completes
+    await client.runs.join(thread["thread_id"], run["run_id"])
+    ```
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    // the first run will be interrupted
+    let interruptedRun = await client.runs.create(
+      thread["thread_id"],
+      assistantId,
+      { input: { messages: [{ role: "human", content: "what's the weather in sf?" }] } }
+    );
+    // sleep a bit to get partial outputs from the first run
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    let run = await client.runs.create(
+      thread["thread_id"],
+      assistantId,
+      {
+        input: { messages: [{ role: "human", content: "what's the weather in nyc?" }] },
+        multitaskStrategy: "interrupt"
+      }
+    );
+
+    // wait until the second run completes
+    await client.runs.join(thread["thread_id"], run["run_id"]);
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl --request POST \
+    --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
+    --header 'Content-Type: application/json' \
+    --data "{
+      \"assistant_id\": \"agent\",
+      \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in sf?\"}]},
+    }" && sleep 2 && curl --request POST \
+    --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
+    --header 'Content-Type: application/json' \
+    --data "{
+      \"assistant_id\": \"agent\",
+      \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"what\'s the weather in nyc?\"}]},
+      \"multitask_strategy\": \"interrupt\"
+    }" && curl --request GET \
+    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join
+    ```
+  </Tab>
+</Tabs>
+
+## 查看运行结果
+
+我们可以看到线程有第一次运行的部分数据+第二次运行的数据
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    state = await client.threads.get_state(thread["thread_id"])
+
+    for m in convert_to_messages(state["values"]["messages"]):
+        m.pretty_print()
+    ```
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    const state = await client.threads.getState(thread["thread_id"]);
+
+    for (const m of state['values']['messages']) {
+      prettyPrint(m);
+    }
+    ```
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    source pretty_print.sh && curl --request GET \
+    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
+    jq -c '.values.messages[]' | while read -r element; do
+        type=$(echo "$element" | jq -r '.type')
+        content=$(echo "$element" | jq -r '.content | if type == "array" then tostring else . end')
+        pretty_print "$type" "$content"
+    done
+    ```
+  </Tab>
+</Tabs>输出：
+
+```
+================================ Human Message =================================
+
+what's the weather in sf?
+================================== Ai Message ==================================
+
+[{'id': 'toolu_01MjNtVJwEcpujRGrf3x6Pih', 'input': {'query': 'weather in san francisco'}, 'name': 'tavily_search_results_json', 'type': 'tool_use'}]
+Tool Calls:
+tavily_search_results_json (toolu_01MjNtVJwEcpujRGrf3x6Pih)
+Call ID: toolu_01MjNtVJwEcpujRGrf3x6Pih
+Args:
+query: weather in san francisco
+================================= Tool Message =================================
+Name: tavily_search_results_json
+
+[{"url": "https://www.wunderground.com/hourly/us/ca/san-francisco/KCASANFR2002/date/2024-6-18", "content": "High 64F. Winds W at 10 to 20 mph. A few clouds from time to time. Low 49F. Winds W at 10 to 20 mph. Temp. San Francisco Weather Forecasts. Weather Underground provides local & long-range weather ..."}]
+================================ Human Message =================================
+
+what's the weather in nyc?
+================================== Ai Message ==================================
+
+[{'id': 'toolu_01KtE1m1ifPLQAx4fQLyZL9Q', 'input': {'query': 'weather in new york city'}, 'name': 'tavily_search_results_json', 'type': 'tool_use'}]
+Tool Calls:
+tavily_search_results_json (toolu_01KtE1m1ifPLQAx4fQLyZL9Q)
+Call ID: toolu_01KtE1m1ifPLQAx4fQLyZL9Q
+Args:
+query: weather in new york city
+================================= Tool Message =================================
+Name: tavily_search_results_json
+
+[{"url": "https://www.accuweather.com/en/us/new-york/10021/june-weather/349727", "content": "Get the monthly weather forecast for New York, NY, including daily high/low, historical averages, to help you plan ahead."}]
+================================== Ai Message ==================================
+
+The search results provide weather forecasts and information for New York City. Based on the top result from AccuWeather, here are some key details about the weather in NYC:
+
+* This is a monthly weather forecast for New York City for the month of June.
+* It includes daily high and low temperatures to help plan ahead.
+* Historical averages for June in NYC are also provided as a reference point.
+* More detailed daily or hourly forecasts with precipitation chances, humidity, wind, etc. can be found by visiting the AccuWeather page.
+
+In summary, the search provides a convenient overview of the expected weather conditions in New York City over the next month to give you an idea of what to prepare for if traveling or making plans there. Let me know if you need any other details!
+```
+
+验证原来的中断运行是否被中断
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    print((await client.runs.get(thread["thread_id"], interrupted_run["run_id"]))["status"])
+    ```
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    console.log((await client.runs.get(thread['thread_id'], interruptedRun["run_id"]))["status"])
+    ```
+  </Tab>
+</Tabs>
+
+输出：
+
+```
+'interrupted'
+```
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/interrupt-concurrent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+  </Callout>
+</div>

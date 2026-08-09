@@ -1,0 +1,167 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: Component architecture | https://docs.langchain.com/oss/javascript/langchain/component-architecture -->
+
+# 组件架构
+
+LangChain 的力量来自于其组件如何协同工作来创建复杂的人工智能应用程序。此页面提供的图表显示了不同组件之间的关系。
+
+## 核心组件生态系统
+
+下图展示了LangChain的主要组件如何连接形成完整的AI应用：
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph TD
+    %% Input processing
+    subgraph "📥 Input processing"
+        A[Text input] --> B[Document loaders]
+        B --> C[Text splitters]
+        C --> D[Documents]
+    end
+
+    %% Embedding & storage
+    subgraph "🔢 Embedding & storage"
+        D --> E[Embedding models]
+        E --> F[Vectors]
+        F --> G[(Vector stores)]
+    end
+
+    %% Retrieval
+    subgraph "🔍 Retrieval"
+        H[User Query] --> I[Embedding models]
+        I --> J[Query vector]
+        J --> K[Retrievers]
+        K --> G
+        G --> L[Relevant context]
+    end
+
+    %% Generation
+    subgraph "🤖 Generation"
+        M[Chat models] --> N[Tools]
+        N --> O[Tool results]
+        O --> M
+        L --> M
+        M --> P[AI response]
+    end
+
+    %% Orchestration
+    subgraph "🎯 Orchestration"
+        Q[Agents] --> M
+        Q --> N
+        Q --> K
+        Q --> R[Memory]
+    end
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68
+
+    class A,H trigger
+    class B,C,E,I,K,M,N,Q process
+    class D,F,J,L,O,P,R neutral
+    class G output
+```
+
+### 组件如何连接
+
+每个组件层都建立在前面的组件层之上：
+
+1. **输入处理** – 将原始数据转换为结构化文档
+2. **嵌入和存储** – 将文本转换为可搜索的向量表示
+3. **检索** – 根据用户查询查找相关信息
+4. **一代** – 使用人工智能模型来创建响应，可选择使用工具
+5. **编排** – 通过代理和内存系统协调一切
+
+## 组件类别
+
+LangChain 将组件分为以下主要类别：|类别 |目的|关键部件|使用案例 |
+| ------------------------------------------------------------------------------------ | ------------------------ | | ----------------------------------- | -------------------------------------------------- |
+| **[Models](/oss/javascript/langchain/models)** | AI推理与生成|聊天模型、法学硕士、嵌入模型 |文本生成、推理、语义理解 |
+| **[Tools](/oss/javascript/langchain/tools)** |外部能力 | API、数据库等 |网络搜索、数据访问、计算 |
+| **[Agents](/oss/javascript/langchain/agents)** |编排与推理 | ReAct 代理、工具调用代理 |不确定性工作流程、决策 |
+| **[Memory](/oss/javascript/langchain/short-term-memory)** |上下文保存 |消息历史记录、自定义状态 |对话、状态交互 |
+| **[Retrievers](/oss/javascript/integrations/retrievers)** |信息获取|矢量检索器、网络检索器| RAG，知识库搜索|| **[Document processing](/oss/javascript/integrations/document_loaders)** |数据摄取|装载机、分离器、变压器| PDF 处理、网页抓取 |
+| **[Vector Stores](/oss/javascript/integrations/vectorstores)** |语义搜索| Chroma、松果、FAISS |相似性搜索、嵌入存储 |
+
+## 常见模式
+
+### RAG（检索增强生成）
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph LR
+    A[User question] --> B[Retriever]
+    B --> C[Relevant docs]
+    C --> D[Chat model]
+    A --> D
+    D --> E[Informed response]
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68
+
+    class A trigger
+    class B,D process
+    class C,E neutral
+```
+
+### 带工具的代理
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph LR
+    A[User request] --> B[Agent]
+    B --> C{Need tool?}
+    C -->|Yes| D[Call tool]
+    D --> E[Tool result]
+    E --> B
+    C -->|No| F[Final answer]
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68
+
+    class A trigger
+    class B,D process
+    class C decision
+    class E,F neutral
+```
+
+### 多代理系统
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph LR
+    A[Complex Task] --> B[Supervisor agent]
+    B --> C[Specialist agent 1]
+    B --> D[Specialist agent 2]
+    C --> E[Results]
+    D --> E
+    E --> B
+    B --> F[Coordinated response]
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68
+
+    class A trigger
+    class B,C,D process
+    class E,F neutral
+```
+
+## 了解更多
+
+* [Creating agents](/oss/javascript/langchain/agents)
+* [Working with tools](/oss/javascript/langchain/tools)
+* [Browse integrations](/oss/javascript/integrations/providers/overview)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/component-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+  </Callout>
+</div>

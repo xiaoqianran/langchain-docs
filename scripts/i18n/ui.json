@@ -8,9 +8,19 @@
     "learningPath": "Docs · sections",
     "copy": "Copy",
     "copied": "Copied",
-    "footer": "Unofficial mirror · source: docs.langchain.com",
+    "footer": "Unofficial mirror · source: docs.langchain.com · Chinese pages are machine-translated",
     "langEn": "EN",
-    "langZh": "中文"
+    "langZh": "中文",
+    "langLabel": "Language",
+    "onThisPage": "On this page",
+    "mtBanner": "This Chinese page is machine-translated from the official English docs. Prefer English for API precision.",
+    "mtViewEn": "View English",
+    "homeTitle": "Home",
+    "homeH1": "Build with LangChain, faster",
+    "homeLead": "A polished mirror of the official LangChain docs — multi-path navigation, OSS + LangSmith + API reference, bilingual EN / 中文.",
+    "prev": "Previous",
+    "next": "Next",
+    "home": "Home"
   },
   "zh": {
     "brand": "LangChain 文档",
@@ -21,8 +31,18 @@
     "learningPath": "文档 · 目录",
     "copy": "复制",
     "copied": "已复制",
-    "footer": "非官方镜像 · 来源：docs.langchain.com",
+    "footer": "非官方镜像 · 来源：docs.langchain.com · 中文页为机器翻译，API 请以英文为准",
     "langEn": "EN",
-    "langZh": "中文"
+    "langZh": "中文",
+    "langLabel": "语言",
+    "onThisPage": "本页目录",
+    "mtBanner": "本页由英文官方文档机器翻译生成，API 名称与代码请以英文原文为准。",
+    "mtViewEn": "查看英文",
+    "homeTitle": "首页",
+    "homeH1": "用 LangChain 更快构建",
+    "homeLead": "官方 LangChain 文档镜像：多路径导航、OSS + LangSmith + API 参考，中英双语。",
+    "prev": "上一篇",
+    "next": "下一篇",
+    "home": "首页"
   }
 }

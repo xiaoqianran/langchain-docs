@@ -1,0 +1,776 @@
+<!-- langchain-docs: machine-translated zh-CN from English source -->
+
+<!-- langchain-docs: Quickstart | https://docs.langchain.com/oss/python/langchain/quickstart -->
+
+# 快速入门
+
+在几分钟内建立您的第一个代理
+
+本快速入门向您展示如何在短短几分钟内创建功能齐全的 AI 代理。
+
+<Tip>
+  **使用人工智能编码助手？**
+
+  * 安装[LangChain Docs MCP server](/use-these-docs)，让您的代理能够访问最新的LangChain文档和示例。
+  * 安装[LangChain Skills](https://github.com/langchain-ai/langchain-skills)以提高代理在LangChain生态系统任务上的性能。
+</Tip>
+
+## 安装依赖项
+
+安装以下软件包以进行后续操作：
+
+<CodeGroup>
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv init
+  uv add langchain deepagents
+  uv sync
+  ```
+
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langchain deepagents
+  ```
+
+  ```bash venv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  python3 -m venv .venv
+  source .venv/bin/activate
+  # Windows: .venv\Scripts\activate
+  pip install -U langchain deepagents
+  ```
+</CodeGroup>
+
+## 设置 API 密钥
+
+从 [any supported model provider](/oss/python/integrations/providers/overview) 获取 API 密钥（例如 Google Gemini 或 OpenAI）。
+
+设置API密钥，例如：
+
+<Tabs>
+  <Tab title="OpenAI">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export OPENAI_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Google Gemini">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export GOOGLE_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Claude (Anthropic)">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export ANTHROPIC_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="OpenRouter">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export OPENROUTER_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Fireworks">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export FIREWORKS_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Baseten">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export BASETEN_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Ollama">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # Local: Ollama must be running (https://ollama.com)
+    # Cloud: Set your Ollama API key for hosted inference
+    export OLLAMA_API_KEY="your-api-key"
+    ```
+  </Tab>
+
+  <Tab title="Azure">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export AZURE_OPENAI_API_KEY="your-api-key"
+    export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+    export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
+    ```
+  </Tab>
+
+  <Tab title="AWS Bedrock">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export AWS_ACCESS_KEY_ID="your-access-key"
+    export AWS_SECRET_ACCESS_KEY="your-secret-key"
+    export AWS_REGION="us-east-1"
+    ```
+  </Tab>
+
+  <Tab title="HuggingFace">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export HUGGINGFACEHUB_API_TOKEN="hf_..."
+    ```
+  </Tab>
+
+  <Tab title="Other">
+    查看支持的 [chat model integrations](/oss/python/integrations/chat) 的完整列表。
+  </Tab>
+</Tabs>
+
+<Tip>
+  **使用 LangSmith 网关**
+
+  [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供程序密钥的情况下访问模型。
+</Tip>
+
+## 构建一个基本代理首先创建一个可以回答问题和调用工具的简单代理。本示例中的代理使用所选的语言模型、基本天气函数作为工具，以及指导其行为的简单提示：
+
+<CodeGroup>
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="openai:gpt-5.5",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="google_genai:gemini-2.5-flash-lite",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Claude (Anthropic) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="claude-sonnet-4-6",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="openrouter:anthropic/claude-sonnet-4-6",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="fireworks:accounts/fireworks/models/qwen3p5-397b-a17b",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="ollama:devstral-2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+  from langchain.agents import create_agent
+  from langchain.chat_models import init_chat_model
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  model = init_chat_model(
+      "azure_openai:gpt-5.5",
+      azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+  )
+  agent = create_agent(
+      model=model,
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python AWS Bedrock theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="bedrock_converse:us.anthropic.claude-sonnet-4-6",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+
+  ```python HuggingFace theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+  agent = create_agent(
+      model="huggingface:microsoft/Phi-3-mini-4k-instruct",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "What's the weather in San Francisco?"}]}
+  )
+  print(result["messages"][-1].content_blocks)
+  ```
+</CodeGroup>
+
+当您运行代码并提示代理告诉您旧金山的天气时，代理会使用该输入及其可用上下文。
+代理了解您正在询问旧金山市的天气，因此会使用提供的城市名称调用天气工具。
+
+<Tip>
+  您可以通过更改模型名称并设置适当的 API 密钥来使用[any supported model](/oss/python/integrations/providers/overview)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 跟踪代理内部发生的情况。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
+
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+</Tip>
+
+## 构建一个真实世界的代理
+
+在以下示例中，您将构建一个可以回答有关文本文件的问题的研究代理。
+在此过程中，您将探索以下概念：1. **详细的系统提示**，更好的座席行为
+2. **创建与外部数据集成的工具**
+3.**模型配置**以实现一致的响应
+4.**对话记忆**用于类似聊天的交互
+5. **深度代理**用于内置功能
+6. **测试**您的代理
+
+<Steps>
+  <Step title="Define the system prompt">
+    系统提示定义了座席的角色和行为。保持具体且可操作：
+
+    ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    SYSTEM_PROMPT = """You are a literary data assistant.
+
+    ## Capabilities
+
+    - `fetch_text_from_url`: loads document text from a URL into the conversation.
+    Do not guess line counts or positions—ground them in tool results from the saved file."""
+    ```
+  </Step>
+
+  <Step title="Create tools">
+    [Tools](/oss/python/langchain/tools) 让模型通过调用您定义的函数与外部系统交互。
+    工具可以依赖于[runtime context](/oss/python/langchain/runtime)，也可以与[agent memory](/oss/python/langchain/short-term-memory)交互。
+
+    此示例使用一个工具从给定 URL 加载文档：
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import urllib.error
+    import urllib.request
+
+    from langchain.tools import tool
+
+
+    @tool
+    def fetch_text_from_url(url: str) -> str:
+        """Fetch the document from a URL.
+        """
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; quickstart-research/1.0)"},
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                raw = resp.read()
+        except urllib.error.URLError as e:
+            return f"Fetch failed: {e}"
+        text = raw.decode("utf-8", errors="replace")
+        return text
+    ```
+
+    <Tip>
+      工具应该有详细的文档记录：它们的名称、描述和参数名称成为模型提示的一部分。
+      LangChain的[⟦T41⟧ decorator](https://reference.langchain.com/python/langchain-core/tools/convert/tool)添加了元数据并通过`ToolRuntime`参数启用运行时注入。
+      在[tools guide](/oss/python/langchain/tools)了解更多信息。
+    </Tip>
+  </Step>
+
+  <Step title="Configure your model">
+    使用适合您的用例的正确参数设置您的 [language model](/oss/python/langchain/models)。例如：
+
+    <CodeGroup>
+      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "openai:gpt-5.5",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "gemini-3.1-pro-preview",
+          model_provider="google-genai",
+          temperature=0.5,
+          timeout=600,
+          max_tokens=25000,
+          streaming=True,
+      )
+      ```
+
+      ```python Claude (Anthropic) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "claude-sonnet-4-6",
+          temperature=0.5,
+          timeout=600,
+          max_tokens=25000,
+          streaming=True,
+      )
+      ```
+
+      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "openrouter:anthropic/claude-sonnet-4-6",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "fireworks:accounts/fireworks/models/qwen3p5-397b-a17b",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "baseten:zai-org/GLM-5.2",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "ollama:devstral-2",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import os
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "azure_openai:gpt-5.5",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+      )
+      ```
+
+      ```python AWS Bedrock theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "us.anthropic.claude-sonnet-4-6",
+          model_provider="bedrock_converse",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+
+      ```python HuggingFace theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          "microsoft/Phi-3-mini-4k-instruct",
+          model_provider="huggingface",
+          temperature=0.5,
+          timeout=300,
+          max_tokens=25000,
+      )
+      ```
+    </CodeGroup>根据选择的模型和提供程序，初始化参数可能会有所不同；有关详细信息，请参阅其参考页。
+  </Step>
+
+  <Step title="Add memory">
+    将 [memory](/oss/python/langchain/short-term-memory) 添加到您的代理以维护交互中的状态。这允许
+    代理记住之前的对话和上下文。
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langgraph.checkpoint.memory import InMemorySaver
+
+    checkpointer = InMemorySaver()
+    ```
+
+    <Info>
+      在生产中，使用持久检查指针将消息历史记录保存到数据库中。
+      更多详情请参见[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)。
+    </Info>
+  </Step>
+
+  <Step title="Create and run the agent">
+    现在将您的代理与所有组件组装起来并运行它。
+
+    创建代理有两种不同的框架：LangChain 代理和深度代理。
+    LangChain和深度代理都为您提供了对工具、内存等的细粒度控制。
+    两者之间的主要区别在于，深度代理已经内置了一系列常用的有用功能，例如规划、文件系统工具和子代理。
+
+    当您希望以最少的设置获得最大的功能时，请使用深度代理；当您需要细粒度控制时，请选择LangChain代理。
+
+    <Warning>
+      由于代码使用《了不起的盖茨比》的整个文本调用模型，因此它使用了大量的标记。您可以在下一步中查看示例输出。
+    </Warning>
+
+    让我们尝试一下：
+
+    ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents import create_agent
+    from deepagents import create_deep_agent
+
+    agent = create_agent(
+        model=model,
+        tools=[fetch_text_from_url],
+        system_prompt=SYSTEM_PROMPT,
+        checkpointer=checkpointer,
+    )
+
+    deep_agent = create_deep_agent(
+        model=model,
+        tools=[fetch_text_from_url],
+        system_prompt=SYSTEM_PROMPT,
+        checkpointer=checkpointer,
+    )
+
+    content = f"""Project Gutenberg hosts a full plain-text copy of F. Scott Fitzgerald's The Great Gatsby.
+    URL: https://www.gutenberg.org/files/64317/64317-0.txt
+
+    Answer as much as you can:
+
+    1) How many lines in the complete Gutenberg file contain the substring `Gatsby` (count lines, not occurrences within a line, each line ends with a line break).
+    2) The 1-based line number of the first line in the file that contains `Daisy`.
+    3) A two-sentence neutral synopsis.
+
+    Do your best on (1) and (2). If at any point you realize you cannot **verify** an exact answer with
+    your available tools and reasoning, do not fabricate numbers: use `null` for that field and spell out
+    the limitation in `how_you_computed_counts`. If you encounter any errors please report what the error was and what the error message was."""
+
+    agent_result = agent.invoke(
+        {"messages": [{"role": "user", "content": content}]},
+        config={"configurable": {"thread_id": "great-gatsby-lc"}},
+    )
+    deep_agent_result = deep_agent.invoke(
+        {"messages": [{"role": "user", "content": content}]},
+        config={"configurable": {"thread_id": "great-gatsby-da"}},
+    )
+    print(agent_result["messages"][-1].content_blocks)
+    print("\n")
+    print(deep_agent_result["messages"][-1].content_blocks)
+    ```
+
+    <Expandable title="Full example code">
+      ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import urllib.error
+      import urllib.request
+
+      from langchain.agents import create_agent
+      from deepagents import create_deep_agent
+      from langchain.chat_models import init_chat_model
+      from langchain.tools import tool
+      from langgraph.checkpoint.memory import InMemorySaver
+
+      SYSTEM_PROMPT = """You are a literary data assistant.
+
+      ## Capabilities
+
+      - `fetch_text_from_url`: loads document text from a URL into the conversation.
+      Do not guess line counts or positions—ground them in tool results from the saved file."""
+
+
+      @tool
+      def fetch_text_from_url(url: str) -> str:
+          """Fetch the document from a URL.
+          """
+          req = urllib.request.Request(
+              url,
+              headers={"User-Agent": "Mozilla/5.0 (compatible; quickstart-research/1.0)"},
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=120) as resp:
+                  raw = resp.read()
+          except urllib.error.URLError as e:
+              return f"Fetch failed: {e}"
+          text = raw.decode("utf-8", errors="replace")
+          return text
+
+
+      model = init_chat_model(
+          "gemini-3.1-pro-preview",
+          model_provider="google-genai",
+          temperature=0.5,
+          timeout=600,
+          max_tokens=25000,
+          streaming=True,
+      )
+
+      checkpointer = InMemorySaver()
+
+      agent = create_agent(
+          model=model,
+          tools=[fetch_text_from_url],
+          system_prompt=SYSTEM_PROMPT,
+          checkpointer=checkpointer,
+      )
+
+      deep_agent = create_deep_agent(
+          model=model,
+          tools=[fetch_text_from_url],
+          system_prompt=SYSTEM_PROMPT,
+          checkpointer=checkpointer,
+      )
+
+      content = f"""Project Gutenberg hosts a full plain-text copy of F. Scott Fitzgerald's The Great Gatsby.
+      URL: https://www.gutenberg.org/files/64317/64317-0.txt
+
+      Answer as much as you can:
+
+      1) How many lines in the complete Gutenberg file contain the substring `Gatsby` (count lines, not occurrences within a line, each line ends with a line break).
+      2) The 1-based line number of the first line in the file that contains `Daisy`.
+      3) A two-sentence neutral synopsis.
+
+      Do your best on (1) and (2). If at any point you realize you cannot **verify** an exact answer with
+      your available tools and reasoning, do not fabricate numbers: use `null` for that field and spell out
+      the limitation in `how_you_computed_counts`. If you encounter any errors please report what the error was and what the error message was."""
+
+      agent_result = agent.invoke(
+          {"messages": [{"role": "user", "content": content}]},
+          config={"configurable": {"thread_id": "great-gatsby-lc"}},
+      )
+      deep_agent_result = deep_agent.invoke(
+          {"messages": [{"role": "user", "content": content}]},
+          config={"configurable": {"thread_id": "great-gatsby-da"}},
+      )
+      print(agent_result["messages"][-1].content_blocks)
+      print("\n")
+      print(deep_agent_result["messages"][-1].content_blocks)
+      ```
+    </Expandable>
+  </Step>
+
+  <Step title="Review the results">
+    结果将根据模型和执行而有所不同。
+
+    <Tabs>
+      <Tab title="LangChain agents">
+        ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        **1) Number of lines containing `Gatsby`:** `null`
+
+        **2) First line containing `Daisy`:** `null`
+
+        **3) Synopsis:**
+        The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with reuniting with his former lover, Daisy Buchanan, as narrated by his neighbor Nick Carraway. Set against the backdrop of the Roaring Twenties on Long Island, the novel explores themes of wealth, class, and the elusive nature of the American Dream.
+
+        **how_you_computed_counts:**
+        I successfully fetched the full text of the eBook using the `fetch_text_from_url` tool. However, because I do not have access to a code execution environment (like Python) or text-processing tools (like `grep`), I cannot deterministically split the text by line breaks, iterate through the thousands of lines, and verify the exact line numbers or match counts. LLMs cannot reliably perform exact line-counting or indexing over massive texts within their context window without external computational tools. As instructed, rather than fabricating or guessing a number, I have output `null` for the exact counts and positions.
+        ```
+      </Tab>
+
+      <Tab title="Deep agents">
+        ```txt wrap expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        Based on the text fetched directly from the Gutenberg URL and analyzed using filesystem search tools, here are the answers to your questions:
+
+        **1) Lines containing the substring `Gatsby`**
+        **258** lines contain the exact substring `Gatsby`.
+
+        **2) First line containing `Daisy`**
+        Line **181** is the first line in the file that contains the exact substring `Daisy`.
+        *(For context, the line reads: "Buchanans. Daisy was my second cousin once removed, and I’d known Tom")*
+
+        **3) Two-sentence neutral synopsis**
+        *The Great Gatsby* follows the mysterious millionaire Jay Gatsby and his obsessive pursuit to reunite with his former lover, Daisy Buchanan, in 1920s Long Island. The story is narrated by Nick Carraway, who observes the tragic consequences of Gatsby's relentless ambition and the shallow materialism of the era's wealthy elite.
+
+        ***
+
+        **How counts were computed:**
+        When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
+        ```
+      </Tab>
+    </Tabs>
+
+    如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们只是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
+
+    另一方面，深度代理可以：
+
+    1. **规划其方法**，使用内置的[⟦T43⟧](/oss/python/deepagents/harness#task-planning)工具来分解研究任务。
+    2. **通过调用`fetch_text_from_url`工具收集信息来加载文件**。
+    3. **使用文件系统工具（[⟦T45⟧](/oss/python/deepagents/harness#virtual-filesystem-access) 和 [⟦T46⟧](/oss/python/deepagents/harness#virtual-filesystem-access)）管理上下文**。
+    4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。
+
+    对于LangChain代理，您必须实现更多功能才能获得类似水平的服务，并且可以根据需要一路定制它们。
+  </Step>
+</Steps>
+
+## 跟踪代理调用使用 LangChain 构建的大多数有趣的应用程序都会多次调用 LLM。随着这些应用程序变得越来越复杂，能够检查代理内部到底发生了什么就变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。
+
+注册 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
+
+设置完成后，再次运行脚本，然后检查代理调用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 期间发生的情况。
+
+<Tip>
+  要了解有关使用 LangSmith 跟踪代理的更多信息，请参阅 [LangSmith documentation](/langsmith/trace-with-langchain)。
+
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+</Tip>
+
+## 后续步骤
+
+您现在拥有的代理可以：
+
+* **理解上下文**并记住对话
+* **明智地使用工具**
+* **以一致的格式提供结构化响应**
+* **通过上下文处理用户特定信息**
+* **在交互过程中保持对话状态**
+* **计划、研究和综合**（仅限深度代理）
+
+继续：
+
+* **LangChain代理商**：[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)、[deploy to production](/oss/python/langgraph/deploy)
+* **深层特工**：[Customization options](/oss/python/deepagents/customization)、[persistent memory](/oss/python/deepagents/memory)、[deploy to production](/oss/python/langgraph/deploy)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+  </Callout><Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+  </Callout>
+</div>
