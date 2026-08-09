@@ -6257,10 +6257,10 @@
       "translatedAt": "2026-08-09T09:09:31.696Z"
     }
   },
-  "updatedAt": "2026-08-09T09:09:31.696Z",
+  "updatedAt": "2026-08-09T09:28:02.436Z",
   "stats": {
-    "translated": 41,
-    "skipped": 1523,
+    "translated": 0,
+    "skipped": 1564,
     "failed": 0,
     "total": 1564
   }
