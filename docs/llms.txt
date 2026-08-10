@@ -323,6 +323,7 @@
 - [Add identity to Managed Deep Agents](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-identity.md)
 - [Add instructions to Managed Deep Agents](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-instructions.md)
 - [Develop locally with LangSmith Studio](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-local-development.md)
+- [Connect to MCP servers](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-connectors.md)
 - [Add memory to Managed Deep Agents](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory.md)
 - [Add custom middleware to Managed Deep Agents](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-middleware.md)
 - [Managed Deep Agents](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-overview.md)
@@ -426,6 +427,7 @@
 - [Add identity to Managed Deep Agents](https://docs.langchain.com/langsmith/python/managed-deep-agents-identity.md)
 - [Add instructions to Managed Deep Agents](https://docs.langchain.com/langsmith/python/managed-deep-agents-instructions.md)
 - [Develop locally with LangSmith Studio](https://docs.langchain.com/langsmith/python/managed-deep-agents-local-development.md)
+- [Connect to MCP servers](https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-connectors.md)
 - [Add memory to Managed Deep Agents](https://docs.langchain.com/langsmith/python/managed-deep-agents-memory.md)
 - [Add custom middleware to Managed Deep Agents](https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware.md)
 - [Managed Deep Agents](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview.md)
@@ -954,7 +956,5 @@
 - [Get sandbox status](https://docs.langchain.com/langsmith/smith-api/sandboxes/get-sandbox-status.md)
 - [Glob a sandbox filesystem](https://docs.langchain.com/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem.md)
 - [Grep a sandbox filesystem](https://docs.langchain.com/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem.md)
-- [List registries](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-registries.md)
-- [List sandboxes](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-sandboxes.md)
 
-_Note: this index was truncated to stay under 100,000 characters; 612 pages and 3 OpenAPI specs omitted._
+_Note: this index was truncated to stay under 100,000 characters; 614 pages and 3 OpenAPI specs omitted._

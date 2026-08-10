@@ -3713,8 +3713,8 @@
       "translatedAt": "2026-08-09T09:03:16.493Z"
     },
     "langsmith/self-hosted-changelog.md": {
-      "hash": "a10a2f4ea34539399eef10981fc01fffeb85e7ad",
-      "translatedAt": "2026-08-09T09:03:16.508Z"
+      "hash": "f204dda856cdaba4d2d6ffdb3f9cf56e969c46f3",
+      "translatedAt": "2026-08-10T10:09:59.108Z"
     },
     "langsmith/smith-api/sandboxes/list-registries.md": {
       "hash": "68633a2e2205f85429ec436f460c44cd8016c44d",
@@ -6257,10 +6257,10 @@
       "translatedAt": "2026-08-09T09:09:31.696Z"
     }
   },
-  "updatedAt": "2026-08-09T09:28:02.436Z",
+  "updatedAt": "2026-08-10T10:09:59.109Z",
   "stats": {
-    "translated": 0,
-    "skipped": 1564,
+    "translated": 1,
+    "skipped": 1563,
     "failed": 0,
     "total": 1564
   }
