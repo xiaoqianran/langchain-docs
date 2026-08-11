@@ -4,7 +4,7 @@
 
 # 代理评估
 
-使用确定性匹配或 LLM-as-judge 评估器以及 AgentEvals 和 LangSmith 来评估代理轨迹。
+使用确定性匹配或使用 AgentEvals 和 LangSmith 的 LLM-as-judge 评估器来评估智能体轨迹。
 
 评估（“evals”）通过评估代理的执行轨迹、消息序列和它生成的工具调用来衡量代理的执行情况。与验证基本正确性的[integration tests](/oss/python/langchain/test/integration-testing)不同，评估根据参考或评分标准对代理行为进行评分，这使得它们在您更改提示、工具或模型时可用于捕获回归。
 
@@ -18,18 +18,24 @@ def evaluator(*, outputs: dict, reference_outputs: dict):
     return {"key": "evaluator_score", "score": score}
 ```
 
-[⟦T13⟧](https://github.com/langchain-ai/agentevals) 包提供了针对代理轨迹的预构建评估器。您可以通过执行**轨迹匹配**（确定性比较）或使用**LLM法官**（定性评估）来进行评估：|方法|何时使用 |
+[⟦T14⟧](https://github.com/langchain-ai/agentevals) 包提供了针对代理轨迹的预构建评估器。您可以通过执行**轨迹匹配**（确定性比较）或使用**LLM法官**（定性评估）来进行评估：|方法|何时使用 |
 | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [Trajectory match](#trajectory-match-evaluator) |您知道预期的工具调用并希望进行快速、确定性、免费的检查 |
 | [LLM-as-judge](#llm-as-judge-evaluator) |您想要在没有严格期望的情况下评估整体质量和推理 |
 
 ## 安装 AgentEvals
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install agentevals
-```
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U agentevals
+  ```
 
-或者直接克隆[AgentEvals repository](https://github.com/langchain-ai/agentevals)。
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add agentevals
+  ```
+</CodeGroup>
+
+或者，直接克隆[AgentEvals repository](https://github.com/langchain-ai/agentevals)。
 
 ## 轨迹匹配评估器
 
@@ -212,7 +218,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 </Accordion>
 
 <Info>
-  有关 LLM 如何评估轨迹的更多可配置性，请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
+  有关 LLM 如何评估轨迹的更多可配置性，请访问 [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
 </Info>
 
 ### 异步支持
@@ -245,14 +251,14 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 
 ## 在 LangSmith 中运行评估
 
-为了跟踪一段时间内的实验，请将评估器结果记录到[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-evals)。首先，设置所需的环境变量：
+为了随着时间的推移跟踪实验，请将评估器结果记录到[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-evals)。首先，设置所需的环境变量：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="your_langsmith_api_key"
 export LANGSMITH_TRACING="true"
 ```
 
-LangSmith 提供了两种主要的运行评估方法：[pytest](/langsmith/pytest) 积分和 `evaluate` 函数。
+LangSmith 提供两种主要的运行评估方法：[pytest](/langsmith/pytest) 集成和 `evaluate` 函数。
 
 <Accordion title="Use pytest integration">
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

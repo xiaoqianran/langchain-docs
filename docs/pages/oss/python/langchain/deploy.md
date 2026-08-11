@@ -67,9 +67,15 @@ You can now test the API:
   <Tab title="Python">
     1. Install LangGraph Python:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install langgraph-sdk
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U langgraph-sdk
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add langgraph-sdk
+      ```
+    </CodeGroup>
 
     2. Send a message to the agent:
 

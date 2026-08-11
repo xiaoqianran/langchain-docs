@@ -96,7 +96,7 @@
 
     <Tabs>
       <Tab title="Provider search (recommended)">
-        OpenAI 提供了一个在服务器端运行的内置网络搜索工具，因此不需要其他包或 API 密钥。直接添加到代理中：
+        OpenAI 提供了一个在服务器端运行的内置网络搜索工具，因此不需要其他软件包或 API 密钥。直接添加到代理中：
 
         ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { defineDeepAgent } from "managed-deepagents";
@@ -210,6 +210,10 @@
 
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
     从项目源添加创作的 LangChain 工具。
+  </Card>
+
+  <Card title="MCP connectors" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-connectors">
+    从远程 MCP 服务器添加工具。
   </Card>
 
   <Card title="Custom middleware" icon="code" href="/langsmith/javascript/managed-deep-agents-middleware">

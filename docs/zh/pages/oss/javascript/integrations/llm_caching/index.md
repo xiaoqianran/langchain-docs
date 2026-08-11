@@ -13,8 +13,8 @@
 <div>
   |整合 |下载 |
   | :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-  | [⟦T0⟧](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/agent-cache"><img alt="Downloads per month" /></a></span> |
-  | [⟦T1⟧](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span> |
+  | [⟦T0⟧](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span> |
+  | [⟦T1⟧](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/agent-cache"><img alt="Downloads per month" /></a></span> |
   | [⟦T2⟧](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/semantic-cache"><img alt="Downloads per month" /></a></span> |
 </div>
 

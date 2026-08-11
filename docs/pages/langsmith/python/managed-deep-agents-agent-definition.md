@@ -154,7 +154,7 @@ mda init my-agent --gateway
 
 Pass tools in the `tools` list to let the agent call application logic or external services.
 
-Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools).
+Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors).
 
 ## Middleware
 

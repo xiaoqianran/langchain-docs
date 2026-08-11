@@ -9,7 +9,7 @@
 文档加载器提供了一个**标准接口**，用于将来自不同来源（例如 Slack、Notion 或 Google Drive）的数据读取为 LangChain 的 [Document](https://reference.langchain.com/javascript/langchain-core/documents/Document) 格式。
 这确保了无论来源如何，都可以一致地处理数据。
 
-所有文档加载器都实现 [BaseLoader](https://reference.langchain.com/javascript/classes/_langchain_core.document_loaders_base.BaseDocumentLoader.html) 接口。
+所有文档加载器都实现 [BaseLoader](https://reference.langchain.com/javascript/langchain-core/document_loaders/base/BaseDocumentLoader) 接口。
 
 <Warning>
   社区文档加载器是用户贡献的且未经验证。 LangChain 不审查或认可这些集成；使用它们的风险由您自行承担。

@@ -25,9 +25,15 @@ The [`agentevals`](https://github.com/langchain-ai/agentevals) package provides 
 
 ## Install AgentEvals
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install agentevals
-```
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U agentevals
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add agentevals
+  ```
+</CodeGroup>
 
 Or, clone the [AgentEvals repository](https://github.com/langchain-ai/agentevals) directly.
 

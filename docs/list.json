@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-10T10:08:01.591Z",
+  "fetchedAt": "2026-08-11T09:49:39.603Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
-  "tocLinks": 951,
-  "ok": 1563,
+  "tocLinks": 1017,
+  "ok": 1565,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -31,11 +31,11 @@
     },
     "langsmith-js": {
       "name": "LangSmith · JS",
-      "count": 20
+      "count": 21
     },
     "langsmith-py": {
       "name": "LangSmith · Python",
-      "count": 20
+      "count": 21
     },
     "langsmith-api": {
       "name": "LangSmith API",
@@ -2847,7 +2847,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 7583
+      "bytes": 7745
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels.md",
@@ -2856,7 +2856,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels",
-      "bytes": 5153
+      "bytes": 5039
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels-slack.md",
@@ -2922,6 +2922,15 @@
       "bytes": 2914
     },
     {
+      "rel": "langsmith/javascript/managed-deep-agents-mcp-connectors.md",
+      "title": "Connect to MCP servers",
+      "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-mcp-connectors",
+      "track": "langsmith-js",
+      "trackName": "LangSmith · JS",
+      "group": "managed-deep-agents-mcp-connectors",
+      "bytes": 5476
+    },
+    {
       "rel": "langsmith/javascript/managed-deep-agents-memory.md",
       "title": "Add memory to Managed Deep Agents",
       "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-memory",
@@ -2946,7 +2955,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 3032
+      "bytes": 3166
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-project-structure.md",
@@ -2955,7 +2964,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 3344
+      "bytes": 3455
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-quickstart.md",
@@ -2964,7 +2973,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 9799
+      "bytes": 9957
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-sandboxes.md",
@@ -3000,7 +3009,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tools",
-      "bytes": 4823
+      "bytes": 4954
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
@@ -3432,7 +3441,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "mask-inputs-outputs",
-      "bytes": 37473
+      "bytes": 37464
     },
     {
       "rel": "langsmith/messages-view-integrations.md",
@@ -3774,7 +3783,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 7458
+      "bytes": 7616
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels.md",
@@ -3783,7 +3792,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels",
-      "bytes": 5136
+      "bytes": 5018
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels-slack.md",
@@ -3849,6 +3858,15 @@
       "bytes": 2976
     },
     {
+      "rel": "langsmith/python/managed-deep-agents-mcp-connectors.md",
+      "title": "Connect to MCP servers",
+      "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-mcp-connectors",
+      "track": "langsmith-py",
+      "trackName": "LangSmith · Python",
+      "group": "managed-deep-agents-mcp-connectors",
+      "bytes": 5506
+    },
+    {
       "rel": "langsmith/python/managed-deep-agents-memory.md",
       "title": "Add memory to Managed Deep Agents",
       "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-memory",
@@ -3873,7 +3891,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 2996
+      "bytes": 3126
     },
     {
       "rel": "langsmith/python/managed-deep-agents-project-structure.md",
@@ -3882,7 +3900,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 3237
+      "bytes": 3355
     },
     {
       "rel": "langsmith/python/managed-deep-agents-quickstart.md",
@@ -3891,7 +3909,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 9390
+      "bytes": 9544
     },
     {
       "rel": "langsmith/python/managed-deep-agents-sandboxes.md",
@@ -3927,7 +3945,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tools",
-      "bytes": 4687
+      "bytes": 4814
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
@@ -10299,7 +10317,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "vitest-jest",
-      "bytes": 23065
+      "bytes": 23066
     },
     {
       "rel": "langsmith/webhooks.md",
@@ -11010,7 +11028,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 8441
+      "bytes": 8427
     },
     {
       "rel": "oss/javascript/integrations/document_transformers/index.md",
@@ -11208,7 +11226,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 11671
+      "bytes": 11908
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -12117,7 +12135,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 67579
+      "bytes": 67576
     },
     {
       "rel": "oss/javascript/langgraph/use-subgraphs.md",
@@ -12567,7 +12585,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 151494
+      "bytes": 152986
     },
     {
       "rel": "oss/python/deepagents/data-analysis.md",
@@ -12765,7 +12783,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 57306
+      "bytes": 57341
     },
     {
       "rel": "oss/python/deepagents/retrieval.md",
@@ -12828,7 +12846,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 17806
+      "bytes": 17964
     },
     {
       "rel": "oss/python/integrations/backends/index.md",
@@ -12846,7 +12864,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 46060
+      "bytes": 46481
     },
     {
       "rel": "oss/python/integrations/checkpointers/index.md",
@@ -12864,7 +12882,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 25226
+      "bytes": 26904
     },
     {
       "rel": "oss/python/integrations/embeddings/index.md",
@@ -12873,7 +12891,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 26580
+      "bytes": 26813
     },
     {
       "rel": "oss/python/integrations/long-term-memory/index.md",
@@ -12891,7 +12909,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 33108
+      "bytes": 35517
     },
     {
       "rel": "oss/python/integrations/providers/all_providers.md",
@@ -12900,7 +12918,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 57384
+      "bytes": 59389
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -12999,7 +13017,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 24804
+      "bytes": 23468
     },
     {
       "rel": "oss/python/integrations/retrievers/index.md",
@@ -13008,7 +13026,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 26155
+      "bytes": 27751
     },
     {
       "rel": "oss/python/integrations/sandboxes/index.md",
@@ -13035,7 +13053,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 72864
+      "bytes": 75561
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -13044,7 +13062,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 66016
+      "bytes": 66442
     },
     {
       "rel": "oss/python/langchain/academy.md",
@@ -13107,7 +13125,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 5201
+      "bytes": 5372
     },
     {
       "rel": "oss/python/langchain/event-streaming.md",
@@ -13206,7 +13224,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 27363
+      "bytes": 27438
     },
     {
       "rel": "oss/python/langchain/frontend/integrations/overview.md",
@@ -13404,7 +13422,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 72709
+      "bytes": 72882
     },
     {
       "rel": "oss/python/langchain/multi-agent/custom-workflow.md",
@@ -13593,7 +13611,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 6519
+      "bytes": 6703
     },
     {
       "rel": "oss/python/langchain/test/evals.md",
@@ -13602,7 +13620,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 15540
+      "bytes": 15689
     },
     {
       "rel": "oss/python/langchain/test/index.md",
@@ -13953,7 +13971,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 96532
+      "bytes": 96479
     },
     {
       "rel": "oss/python/langgraph/use-subgraphs.md",
@@ -13998,7 +14016,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "migrate",
-      "bytes": 44740
+      "bytes": 40631
     },
     {
       "rel": "oss/python/migrate/langgraph-supervisor.md",

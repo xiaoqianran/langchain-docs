@@ -119,7 +119,7 @@ LANGSMITH_HIDE_OUTPUTS=true
 * `False` 或 `None`：按原样保留元数据（默认行为）。
 * `Callable`：转换元数据字典的自定义函数。
 
-设置后，此参数会影响 [Client](https://reference.langchain.com/python/langsmith/client/Client) 创建或更新的所有运行的 `extra` 参数中的 `metadata` 字段，包括通过 `@traceable` 装饰器或 LangChain 集成创建的运行。
+设置后，此参数会影响由 [Client](https://reference.langchain.com/python/langsmith/client/Client) 创建或更新的所有运行的 `extra` 参数中的 `metadata` 字段，包括通过 `@traceable` 装饰器或 LangChain 集成创建的运行。
 
 ### 隐藏所有元数据
 
@@ -170,10 +170,10 @@ def add_marker(metadata: dict) -> dict:
     return {**metadata, "transformed": True}
 
 client = Client(hide_metadata=add_marker)
-```## 基于规则的输入和输出屏蔽
+```
 
-<Info>
-  以下 LangSmith SDK 版本提供此功能：
+## 基于规则的输入和输出屏蔽<Info>
+  此功能在以下 LangSmith SDK 版本中可用：
 
   * Python：0.1.81及以上
   * TypeScript：0.1.33 及以上
@@ -243,7 +243,7 @@ client = Client(hide_metadata=add_marker)
 
 <img alt="Hide inputs outputs" />
 
-旧版本的 LangSmith SDK 可以使用 `hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数更有效地处理输入和输出。
+旧版本的LangSmith SDK 可以使用`hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数来更有效地处理输入和输出。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -348,7 +348,7 @@ client = Client(hide_metadata=add_marker)
 
 除了[Client](https://reference.langchain.com/python/langsmith/client/Client)级别的输入输出处理之外，LangSmith还通过`@traceable`装饰器的`process_inputs`和`process_outputs`参数提供函数级别的处理。
 
-这些参数接受的函数允许您在将特定函数的输入和输出记录到 LangSmith 之前对其进行转换。这对于减少有效负载大小、删除敏感信息或自定义对象在 LangSmith 中针对特定函数的序列化和表示方式非常有用。
+这些参数接受的函数允许您在将特定函数的输入和输出记录到LangSmith之前对其进行转换。这对于减少有效负载大小、删除敏感信息或自定义对象如何在 LangSmith 中针对特定函数进行序列化和表示非常有用。
 
 以下是如何使用 `process_inputs` 和 `process_outputs` 的示例：
 
@@ -402,7 +402,7 @@ async def async_function(key: str) -> int:
   下面的实现并不详尽，可能会遗漏一些格式或边缘情况。在生产中使用任何实现之前，请对其进行彻底测试。
 </Info>
 
-在将输入和输出发送到 LangSmith 之前，您可以使用正则表达式来屏蔽它们。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
+您可以在输入和输出发送到LangSmith之前使用正则表达式来屏蔽它们。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import re
@@ -464,7 +464,7 @@ def recursive_anonymize(data, depth=10):
 
 openai_client = wrap_openai(openai.Client())
 
-# Initialize the LangSmith @[Client] with the anonymization functions
+# Initialize the LangSmith Client with the anonymization functions
 langsmith_client = Client(
     hide_inputs=recursive_anonymize, hide_outputs=recursive_anonymize
 )
@@ -489,7 +489,7 @@ response_without_anonymization = openai_client.chat.completions.create(
 )
 ```
 
-匿名运行在 LangSmith 中将如下所示：<img alt="Anonymized run" />非匿名运行在 LangSmith 中将如下所示：<img alt="Non-anonymized run" />
+匿名运行在LangSmith中将如下所示：<img alt="Anonymized run" />非匿名运行在LangSmith中将如下所示：<img alt="Non-anonymized run" />
 
 ### 微软 Presidio
 
@@ -497,7 +497,7 @@ response_without_anonymization = openai_client.chat.completions.create(
   下面的实现提供了如何对用户和 LLM 之间交换的消息中的敏感信息进行匿名化的一般示例。它并不详尽，也没有考虑到所有情况。在生产中使用任何实现之前，请对其进行彻底测试。
 </Info>
 
-Microsoft Presidio 是一个数据保护和去标识化 SDK。下面的实现使用 Presidio 在将输入和输出发送到 LangSmith 之前对其进行匿名化。有关最新信息，请参阅 Presidio 的[official documentation](https://microsoft.github.io/presidio/)。
+Microsoft Presidio 是一个数据保护和去标识化 SDK。下面的实现使用 Presidio 在将输入和输出发送到LangSmith之前对其进行匿名化。有关最新信息，请参阅 Presidio 的[official documentation](https://microsoft.github.io/presidio/)。
 
 要使用 Presidio 及其 spaCy 模型，请安装以下软件：
 
@@ -515,7 +515,7 @@ Microsoft Presidio 是一个数据保护和去标识化 SDK。下面的实现使
   ```
 </CodeGroup>
 
-另外，安装 OpenAI：
+另外，安装OpenAI：
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -572,7 +572,7 @@ def presidio_anonymize(data):
 
 openai_client = wrap_openai(openai.Client())
 
-# initialize the langsmith @[Client] with the anonymization functions
+# initialize the langsmith Client with the anonymization functions
 langsmith_client = Client(
   hide_inputs=presidio_anonymize, hide_outputs=presidio_anonymize
 )
@@ -597,9 +597,9 @@ response_without_anonymization = openai_client.chat.completions.create(
 )
 ```
 
-匿名运行在 LangSmith 中将如下所示：<img alt="Anonymized run" />
+匿名运行在LangSmith中将如下所示：<img alt="Anonymized run" />
 
-非匿名运行在 LangSmith 中将如下所示：<img alt="Non-anonymized run" />
+非匿名运行在LangSmith中将如下所示：<img alt="Non-anonymized run" />
 
 ### 亚马逊理解
 
@@ -619,7 +619,7 @@ response_without_anonymization = openai_client.chat.completions.create(
   ```
 </CodeGroup>
 
-另外，安装 OpenAI：
+另外，安装OpenAI：
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -712,7 +712,7 @@ def comprehend_anonymize(data):
 
 openai_client = wrap_openai(openai.Client())
 
-# initialize the langsmith @[Client] with the anonymization functions
+# initialize the langsmith Client with the anonymization functions
 langsmith_client = Client(
   hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
 )
@@ -737,9 +737,9 @@ response_without_anonymization = openai_client.chat.completions.create(
 )
 ```
 
-匿名运行在 LangSmith 中将如下所示：<img alt="Anonymized run" />
+匿名运行在LangSmith中将如下所示：<img alt="Anonymized run" />
 
-非匿名运行在 LangSmith 中将如下所示：<img alt="Non-anonymized run" />
+非匿名运行在LangSmith中将如下所示：<img alt="Non-anonymized run" />
 
 ### 高通量掩蔽的批处理
 
@@ -747,7 +747,7 @@ response_without_anonymization = openai_client.chat.completions.create(
   [⟦T68⟧](https://reference.langchain.com/python/langsmith/client/Client) 可在 [Python SDK only](/langsmith/smith-python-sdk) 中使用。
 </Info>本页之前的方法均单独运行。如果您的屏蔽逻辑涉及速率受限的 API 或模型推理（例如 Presidio 或 Amazon Comprehend 示例），则一次运行一个处理可能会造成瓶颈。 [⟦T69⟧](https://reference.langchain.com/python/langsmith/client/Client) 允许您在一批原始运行指令被序列化并发送到 API 之前拦截它们，因此您可以一次性分摊多个运行的成本。 LangSmith 在后台线程中处理这些运行，这不会阻塞您的应用程序。
 
-LangSmith 将运行保存在内存缓冲区中，并在出现以下情况时将其作为批处理刷新：
+LangSmith 将运行保存在内存缓冲区中，并在以下情况下将其作为批处理刷新：
 
 * `run_ops_buffer_size` 运行操作已累积，或
 * 自上次添加运行以来已过去 `run_ops_buffer_timeout_ms` 毫秒（默认值：5000 毫秒）。

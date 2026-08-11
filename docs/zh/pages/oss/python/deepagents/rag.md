@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Retrieval Augmented Generation (RAG) with Deep Agents | https://docs.langchain.com/oss/python/deepagents/rag -->
 
-# 使用深度代理进行检索增强生成 (RAG)
+# 带有 Deep Agents 的检索增强生成 (RAG)
 
-深度代理的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -12,9 +12,9 @@
 
 [Deep Agents](/oss/python/deepagents/overview) 为您提供 RAG 的原语：自定义检索工具、[filesystem backend](/oss/python/deepagents/backends)、[subagents](/oss/python/deepagents/subagents)、[skills](/oss/python/deepagents/skills) 和 [grading rubrics](/oss/python/deepagents/rubric)。您可以根据您的语料库大小、延迟要求以及答案必须以源数据为基础的严格程度，以不同的方式组合它们。
 
-本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。## RAG 图案
+本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。
 
-Deep Agents 允许您以多种方式协调检索、分析和综合：
+## RAG 图案Deep Agents 允许您以多种方式协调检索、分析和综合：
 
 * **技能引导检索**：用户提出问题。代理加载相关技能，描述如何搜索语料库（使用哪个索引、查询公式、引文格式）。代理按照该指导调用您的检索工具，然后综合答案。
 * **Rubric-checked grounding**：用户提出问题。特工检索证据并起草答复。配置有`RubricMiddleware`的评分器子代理评估响应是否基于检索到的源材料。代理会进行修改，直到标题通过或达到迭代上限。
@@ -194,7 +194,7 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
 
 如果没有检索，代理就无法查找当前的 LangChain 文档。回复往往很笼统，可能会省略[subagent streaming](/oss/python/deepagents/frontend/subagent-streaming)等指导，或包含过时的信息。
 
-本教程中的示例对 LangChain 文档进行索引，使用向量搜索工具检索证据，分析并行子代理中的每个块，并通过引用文档回答问题。
+本教程中的示例索引 LangChain 文档，使用向量搜索工具检索证据，分析并行子代理中的每个块，并通过引用文档回答问题。
 
 ### 你将构建什么1. **索引**：将LangChain文档加载到向量存储中。
 2. **搜索**：构建一个自定义工具，运行矢量相似性搜索并将每个检索到的块写入代理文件系统。
@@ -278,7 +278,7 @@ API 密钥用于：
 
 在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
 
-LangChain在`https://docs.langchain.com/{path}.md`发布markdown。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
+LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
 创建`agent.py`：
 
@@ -370,7 +370,7 @@ Total characters: 589579
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
 即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。
 
-为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
@@ -1280,7 +1280,7 @@ from langchain.messages import HumanMessage
 from langchain.tools import tool
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import OpenAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 DOCS_BASE = "https://docs.langchain.com"
@@ -1328,7 +1328,7 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20
 all_splits = text_splitter.split_documents(docs)
 print(f"Split documentation into {len(all_splits)} chunks.")
 
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 vector_store = InMemoryVectorStore(embedding=embeddings)
 vector_store.add_documents(documents=all_splits)
 print(f"Indexed {len(all_splits)} chunks.")
@@ -1454,11 +1454,11 @@ if __name__ == "__main__":
 
 ## 后续步骤
 
-您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他深度代理功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
+您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
 
 * 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * 使用 [Grading rubrics](/oss/python/deepagents/rubric) 验证答案是否基于检索到的源材料
-* [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 使用 LangSmith 数据集和评估器
+* [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/python/deepagents/context-engineering) 了解卸载和子代理隔离策略
 * 使用[LangSmith Deployment](/langsmith/deployment)部署您的应用程序
 

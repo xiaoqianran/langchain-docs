@@ -216,6 +216,10 @@ Before you start, make sure you have:
     Add authored LangChain tools from your project source.
   </Card>
 
+  <Card title="MCP connectors" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-connectors">
+    Add tools from remote MCP servers.
+  </Card>
+
   <Card title="Custom middleware" icon="code" href="/langsmith/javascript/managed-deep-agents-middleware">
     Add built-in or custom middleware around model and tool calls.
   </Card>

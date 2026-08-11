@@ -2,32 +2,39 @@
 
 <!-- langchain-docs: LangSmith Studio | https://docs.langchain.com/oss/python/langchain/studio -->
 
-# 朗史密斯工作室
+#LangSmith工作室
 
-当使用 LangChain 在本地构建代理时，可视化代理内部发生的情况、与其实时交互以及在出现问题时进行调试是很有帮助的。 **LangSmith Studio** 是一个免费的可视化界面，用于从本地计算机开发和测试 LangChain 代理。
+在本地使用 LangChain 构建代理时，可视化代理内部发生的情况、与其实时交互以及在出现问题时进行调试是很有帮助的。 **LangSmith Studio** 是一个免费的可视化界面，用于从本地计算机开发和测试您的 LangChain 代理。
 
 Studio 连接到本地运行的代理，向您显示代理执行的每个步骤：发送到模型的提示、工具调用及其结果以及最终输出。您可以测试不同的输入、检查中间状态并迭代代理的行为，而无需额外的代码或部署。
 
-本页介绍如何通过本地 LangChain 代理设置 Studio。
+本页介绍如何使用本地 LangChain 代理设置 Studio。
 
 ## 先决条件
 
 在开始之前，请确保您具备以下条件：
 
-* **LangSmith 帐户**：注册（免费）或通过 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-oss-studio-py) 登录。
-* **LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-* 如果您不需要数据 [traced](/langsmith/observability-concepts#traces) 到 LangSmith，请在应用程序的 `.env` 文件中设置 `LANGSMITH_TRACING=false`。禁用跟踪后，没有数据离开您的本地服务器。
+* **LangSmith帐户**：注册（免费）或在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-oss-studio-py)登录。
+* **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
+* 如果您不需要数据 [traced](/langsmith/observability-concepts#traces) 至 LangSmith，请在应用程序的 `.env` 文件中设置 `LANGSMITH_TRACING=false`。禁用跟踪后，没有数据离开您的本地服务器。
 
 ## 设置本地Agent服务器
 
-### 1. 安装 LangGraph CLI
+### 1.安装LangGraphCLI
 
-[LangGraph CLI](/langsmith/cli) 提供本地开发服务器（也称为 [Agent Server](/langsmith/agent-server)），将您的代理连接到 Studio。```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Python >= 3.11 is required.
-pip install --upgrade "langgraph-cli[inmem]"
-```
+[LangGraph CLI](/langsmith/cli) 提供本地开发服务器（也称为 [Agent Server](/langsmith/agent-server)），将您的代理连接到 Studio。
 
-### 2. 准备你的代理
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Python >= 3.11 is required.
+  pip install -U "langgraph-cli[inmem]"
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Python >= 3.11 is required.
+  uv add "langgraph-cli[inmem]"
+  ```
+</CodeGroup>### 2. 准备你的代理
 
 如果您已经有LangChain代理，可以直接使用。此示例使用一个简单的电子邮件代理：
 
@@ -54,7 +61,7 @@ agent = create_agent(
 
 ### 3.环境变量
 
-Studio 需要 LangSmith API 密钥才能连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
+Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
 
 <Warning>
   确保您的 `.env` 文件未提交给版本控制，例如 Git。
@@ -64,7 +71,7 @@ Studio 需要 LangSmith API 密钥才能连接您的本地代理。在项目的�
 LANGSMITH_API_KEY=lsv2...
 ```
 
-### 4. 创建 LangGraph 配置文件
+### 4.创建LangGraph配置文件
 
 LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程序目录中创建一个 `langgraph.json` 文件：
 
@@ -78,7 +85,7 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 }
 ```
 
-[⟦T13⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是配置文件中 `graphs` 键所期望的。
+[⟦T14⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是 `graphs` 键在配置文件中所期望的。
 
 <Info>
   配置文件JSON对象中各个key的详细解释，请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
@@ -128,7 +135,7 @@ langgraph dev
 
 开发服务器支持热重载——对代码中的提示或工具签名进行更改，Studio 会立即反映它们。从任何步骤重新运行对话线程以测试您的更改，而无需重新开始。该工作流程从简单的单工具代理扩展到复杂的多节点图。
 
-有关如何运行 Studio 的更多信息，请参阅 [LangSmith docs](/langsmith/observability) 中的以下指南：
+有关如何运行 Studio 的更多信息，请参阅[LangSmith docs](/langsmith/observability)中的以下指南：
 
 * [Run application](/langsmith/use-studio#run-application)
 * [Manage assistants](/langsmith/use-studio#manage-assistants)

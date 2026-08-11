@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: LangChain v1 migration guide | https://docs.langchain.com/oss/python/migrate/langchain-v1 -->
 
-# LangChain v1迁移指南
+# LangChain v1 迁移指南
 
-本指南概述了[LangChain v1](/oss/python/releases/langchain-v1)与之前版本之间的主要变化。
+本指南概述了 [LangChain v1](/oss/python/releases/langchain-v1) 与之前版本之间的主要变化。
 
 ## 简化包
 
@@ -14,21 +14,21 @@ v1 中的 `langchain` 包命名空间已显着减少，以专注于代理的基�
 
 |模块|有什么可用的 |笔记|
 | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| [⟦T46⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T47⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T48⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 || [⟦T49⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T50⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从`langchain-core`转口|
-| [⟦T52⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T53⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T54⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手 |从`langchain-core`转口|
-| [⟦T56⟧](https://reference.langchain.com/python/langchain/models) | [⟦T57⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T58⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化|
-| [⟦T59⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T60⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings)、[⟦T61⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) |嵌入模型|
+| [⟦T43⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T44⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T45⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 || [⟦T46⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T47⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从`langchain-core`转口|
+| [⟦T49⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T50⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T51⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手 |从`langchain-core`转口|
+| [⟦T53⟧](https://reference.langchain.com/python/langchain/models) | [⟦T54⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T55⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化 |
+| [⟦T56⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T57⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings)、[⟦T58⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) |嵌入模型|
 
 ### `langchain-classic`
 
-如果您使用 `langchain` 包中的以下任何一项，则需要安装 [⟦T64⟧](https://pypi.org/project/langchain-classic/) 并更新您的导入：
+如果您使用 `langchain` 包中的以下任何一项，则需要安装 [⟦T61⟧](https://pypi.org/project/langchain-classic/) 并更新您的导入：
 
 * 旧链（`LLMChain`、`ConversationChain`等）
 * 检索器（例如 `MultiQueryRetriever` 或之前的 `langchain.retrievers` 模块中的任何内容）
 * 索引API
 * hub模块（用于以编程方式管理提示）
 * 嵌入模块（例如 `CacheBackedEmbeddings` 和社区嵌入）
-* [⟦T70⟧](https://pypi.org/project/langchain-community) 转口
+* [⟦T67⟧](https://pypi.org/project/langchain-community) 转口
 * 其他已弃用的功能
 
 <CodeGroup>
@@ -77,14 +77,14 @@ v1 中的 `langchain` 包命名空间已显着减少，以专注于代理的基�
 
 ## 迁移到`create_agent`
 
-在 v1.0 之前，我们建议使用 [⟦T72⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 来构建代理。现在，我们推荐您使用[⟦T73⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)来构建代理。
+在 v1.0 之前，我们建议使用 [⟦T69⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 来构建代理。现在，我们推荐您使用[⟦T70⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)来构建代理。
 
-下表概述了从 [⟦T74⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 到 [⟦T75⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的功能更改：|部分| TL;DR - 发生了什么变化 |
+下表概述了从 [⟦T71⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 到 [⟦T72⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的功能更改：|部分| TL;DR - 发生了什么变化 |
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Import path](#import-path) |包裹从`langgraph.prebuilt`移至`langchain.agents` |
-| [Prompts](#prompts) |参数重命名为[⟦T78⟧](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\))，动态提示使用中间件 |
-| [Pre-model hook](#pre-model-hook) |被中间件替换为`before_model`方法 || [Post-model hook](#post-model-hook) |替换为`after_model`方法的中间件 |
-| [Custom state](#custom-state) |仅限`TypedDict`，可以通过[⟦T82⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema)或中间件定义 |
+| [Prompts](#prompts) |参数重命名为[⟦T75⟧](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\))，动态提示使用中间件 |
+| [Pre-model hook](#pre-model-hook) |被中间件替换为`before_model`方法 || [Post-model hook](#post-model-hook) |被中间件替换为`after_model`方法 |
+| [Custom state](#custom-state) |仅限`TypedDict`，可以通过[⟦T79⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema)或中间件定义|
 | [Model](#model) |通过中间件动态选择，不支持预绑定模型 |
 | [Tools](#tools) |工具错误处理已通过 `wrap_tool_call` 转移到中间件 |
 | [Structured output](#structured-output) |提示输出已删除，请使用`ToolStrategy`/`ProviderStrategy` |
@@ -93,21 +93,21 @@ v1 中的 `langchain` 包命名空间已显着减少，以专注于代理的基�
 
 ### 导入路径
 
-预构建代理的导入路径已从 `langgraph.prebuilt` 更改为 `langchain.agents`。
-函数名称已从 [⟦T93⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 更改为 [⟦T94⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
+预构建代理的导入路径已从`langgraph.prebuilt`更改为`langchain.agents`。
+函数名称已从[⟦T90⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent)更改为[⟦T91⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.prebuilt import create_react_agent # [!code --]
 from langchain.agents import create_agent # [!code ++]
 ```
 
-有关更多信息，请参阅[Agents](/oss/python/langchain/agents)。
+欲了解更多信息，请参阅[Agents](/oss/python/langchain/agents)。
 
 ### 提示
 
 #### 静态提示重命名
 
-`prompt`参数已重命名为[⟦T96⟧](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\)）：
+`prompt`参数已重命名为[⟦T93⟧](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\)）：
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -133,7 +133,7 @@ from langchain.agents import create_agent # [!code ++]
 
 #### `SystemMessage` 转为字符串
 
-如果在系统提示符中使用[⟦T98⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage)对象，则提取字符串内容：
+如果在系统提示符中使用[⟦T95⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage)对象，则提取字符串内容：
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -160,7 +160,7 @@ from langchain.agents import create_agent # [!code ++]
 
 ####动态提示
 
-动态提示是一种核心上下文工程模式——它们根据当前对话状态调整您告诉模型的内容。为此，请使用 [⟦T99⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/dynamic_prompt) 装饰器：
+动态提示是一种核心上下文工程模式——它们根据当前对话状态调整您告诉模型的内容。为此，请使用 [⟦T96⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/dynamic_prompt) 装饰器：
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -341,16 +341,16 @@ v1 有一个内置中间件，用于工具调用的人工循环批准：
 
 自定义状态通过附加字段扩展了默认代理状态。您可以通过两种方式定义自定义状态：
 
-1. **通过[⟦T102⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) on [⟦T103⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)** - 最适合工具中使用的状态
+1. **通过[⟦T99⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) on [⟦T100⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)** - 最适合工具中使用的状态
 2. **通过中间件** - 最适合由特定中间件挂钩和附加到所述中间件的工具管理的状态<Note>
-  通过中间件定义自定义状态优于通过 [⟦T105⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 上的 [⟦T104⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 定义自定义状态，因为它允许您在概念上将状态扩展保持在相关中间件和工具的范围内。
+  通过中间件定义自定义状态优于通过 [⟦T102⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 上的 [⟦T101⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 定义自定义状态，因为它允许您在概念上将状态扩展保持在相关中间件和工具的范围内。
 
   仍支持 `state_schema` 以向后兼容 `create_agent`。
 </Note>
 
 #### 通过 `state_schema` 定义状态
 
-当您的自定义状态需要通过工具访问时，请使用 [⟦T109⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 参数：
+当您的自定义状态需要通过工具访问时，请使用 [⟦T106⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 参数：
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -402,7 +402,7 @@ v1 有一个内置中间件，用于工具调用的人工循环批准：
 
 #### 通过中间件定义状态
 
-中间件还可以通过设置 [⟦T110⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 属性来定义自定义状态。
+中间件还可以通过设置 [⟦T107⟧](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) 属性来定义自定义状态。
 这有助于将状态扩展概念性地限定在相关中间件和工具的范围内。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -436,7 +436,7 @@ agent = create_agent(
 
 #### 状态类型限制
 
-[⟦T111⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 仅支持状态模式的 `TypedDict`。不再支持 Pydantic 模型和数据类。
+[⟦T108⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 仅支持状态模式的 `TypedDict`。不再支持 Pydantic 模型和数据类。
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -477,7 +477,7 @@ agent = create_agent(
 只需继承`langchain.agents.AgentState`而不是`BaseModel`或用`dataclass`装饰即可。
 如果您需要执行验证，请在中间件挂钩中处理它。
 
-＃＃＃ 模型动态模型选择允许您根据运行时上下文（例如任务复杂性、成本约束或用户偏好）选择不同的模型。 [⟦T117⟧](https://pypi.org/project/langgraph-prebuilt) v0.6 中发布的[⟦T116⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 支持通过传递给`model` 参数的可调用动态模型和工具选择。
+＃＃＃ 模型动态模型选择允许您根据运行时上下文（例如任务复杂性、成本约束或用户偏好）选择不同的模型。 [⟦T114⟧](https://pypi.org/project/langgraph-prebuilt) v0.6 中发布的[⟦T113⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 支持通过传递给`model` 参数的可调用动态模型和工具选择。
 
 此功能已在 v1 中移植到中间件接口。
 
@@ -537,7 +537,7 @@ agent = create_agent(
 
 #### 预绑定模型
 
-为了更好地支持结构化输出，[⟦T119⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)不再接受通过工具或配置预先绑定的模型：
+为了更好地支持结构化输出，[⟦T116⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)不再接受通过工具或配置预先绑定的模型：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # No longer supported
@@ -554,13 +554,13 @@ agent = create_agent("gpt-5.4-mini", tools=[some_tool])
 
 ### 工具
 
-[⟦T121⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的 [⟦T120⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 参数接受以下列表：
+[⟦T118⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 的 [⟦T117⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 参数接受以下列表：
 
-* LangChain [⟦T122⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)实例（用[⟦T123⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)修饰的函数）
+* LangChain [⟦T119⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)实例（用[⟦T120⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)修饰的函数）
 * 具有正确类型提示和文档字符串的可调用对象（函数）
 * `dict` 代表内置提供者工具
 
-该参数将不再接受 [⟦T125⟧](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode) 实例。
+该参数将不再接受 [⟦T122⟧](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode) 实例。
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -648,7 +648,7 @@ agent = create_agent("gpt-5.4-mini", tools=[some_tool])
 
 在 v1 中，有两种新的结构化输出策略：
 
-* `ToolStrategy` 使用人工工具调用生成结构化输出
+* `ToolStrategy`使用人工工具调用来生成结构化输出
 * `ProviderStrategy` 使用提供商原生结构化输出生成
 
 <CodeGroup>
@@ -764,13 +764,13 @@ agent = create_agent("gpt-5.4-mini", tools=[some_tool])
 
 ## 标准内容
 
-在 v1 中，消息获得与提供商无关的标准内容块。通过 [⟦T137⟧](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.messages.BaseMessage.content_blocks) 访问它们，以获得跨提供商的一致的类型化视图。对于字符串或提供者本机结构，现有的 [⟦T138⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 字段保持不变。
+在 v1 中，消息获得与提供商无关的标准内容块。通过 [⟦T134⟧](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.messages.BaseMessage.content_blocks) 访问它们，以获得跨提供商的一致的类型化视图。对于字符串或提供者本机结构，现有的 [⟦T135⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 字段保持不变。
 
 ### 发生了什么变化
 
-* 规范化内容消息的新 [⟦T139⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性
+* 规范化内容消息的新 [⟦T136⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性
 *标准化块形状，记录在[Messages](/oss/python/langchain/messages#standard-content-blocks)中
-* 通过 `LC_OUTPUT_VERSION=v1` 或 `output_version="v1"` 将标准块可选序列化为 `content`
+* 通过`LC_OUTPUT_VERSION=v1`或`output_version="v1"`可选地将标准块序列化为`content`
 
 ### 阅读标准化内容
 
@@ -868,66 +868,6 @@ image_block = {
 
 ***
 
-## 简化包
-
-v1 中的 `langchain` 包命名空间已显着减少，以专注于代理的基本构建块。精简的包使您更容易发现和使用核心功能。
-
-### 命名空间|模块|有什么可用的 |笔记|
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| [⟦T147⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T148⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T149⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 |
-| [⟦T150⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T151⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从`langchain-core`转口|
-| [⟦T153⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T154⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T155⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手 |从`langchain-core`转口|
-| [⟦T157⟧](https://reference.langchain.com/python/langchain/models) | [⟦T158⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T159⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化|
-| [⟦T160⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T161⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings)、[⟦T162⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) |嵌入模型|
-
-### `langchain-classic`如果您使用 `langchain` 包中的以下任何一项，则需要安装 [⟦T165⟧](https://pypi.org/project/langchain-classic/) 并更新您的导入：
-
-* 旧链（`LLMChain`、`ConversationChain`等）
-* 检索器（例如 `MultiQueryRetriever` 或之前的 `langchain.retrievers` 模块中的任何内容）
-* 索引API
-* hub模块（用于以编程方式管理提示）
-* 嵌入模块（例如 `CacheBackedEmbeddings` 和社区嵌入）
-* [⟦T171⟧](https://pypi.org/project/langchain-community) 转口
-* 其他已弃用的功能
-
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Chains
-  from langchain_classic.chains import LLMChain
-
-  # Retrievers
-  from langchain_classic.retrievers import ...
-
-  # Indexing
-  from langchain_classic.indexes import ...
-
-  # Hub
-  from langchain_classic import hub
-  ```
-
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Chains
-  from langchain_classic.chains import LLMChain
-
-  # Retrievers
-  from langchain.retrievers import ...
-
-  # Indexing
-  from langchain.indexes import ...
-
-  # Hub
-  from langchain import hub
-  ```
-</CodeGroup>
-
-**安装**：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv pip install langchain-classic
-```
-
-***
-
 ## 重大变更
 
 ### 放弃了 Python 3.9 支持
@@ -936,7 +876,7 @@ uv pip install langchain-classic
 
 ### 更新了聊天模型的返回类型
 
-聊天模型调用的返回类型签名已从 [⟦T172⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 修复为 [⟦T173⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)。实现 [⟦T174⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/bind_tools) 的自定义聊天模型应更新其返回签名：
+聊天模型调用的返回类型签名已从 [⟦T143⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 修复为 [⟦T144⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)。实现 [⟦T145⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/bind_tools) 的自定义聊天模型应更新其返回签名：
 
 <CodeGroup>
   ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -954,18 +894,18 @@ uv pip install langchain-classic
 
 ### OpenAI 响应 API 的默认消息格式
 
-与响应 API 交互时，`langchain-openai` 现在默认将响应项存储在消息 `content` 中。要恢复以前的行为，请将 `LC_OUTPUT_VERSION` 环境变量设置为 `v0`，或在实例化 [⟦T180⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) 时指定 `output_version="v0"`。
+与响应 API 交互时，`langchain-openai` 现在默认将响应项存储在消息 `content` 中。要恢复以前的行为，请将 `LC_OUTPUT_VERSION` 环境变量设置为 `v0`，或在实例化 [⟦T151⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) 时指定 `output_version="v0"`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Enforce previous behavior with output_version flag
 model = ChatOpenAI(model="gpt-5.4-mini", output_version="v0")
-```### `langchain-anthropic` 中的默认`max_tokens`
+```
 
-`langchain-anthropic` 中的 `max_tokens` 参数现在根据所选模型默认为更高的值，而不是之前的默认值 `1024`。如果您依赖旧的默认值，请显式设置 `max_tokens=1024`。
+### `langchain-anthropic` 中的默认`max_tokens``langchain-anthropic` 中的 `max_tokens` 参数现在根据所选模型默认为更高的值，而不是之前的默认值 `1024`。如果您依赖旧的默认值，请显式设置 `max_tokens=1024`。
 
 ### 旧代码移至`langchain-classic`
 
-标准接口和代理之外的现有功能已移至 [⟦T188⟧](https://pypi.org/project/langchain-classic) 包。请参阅 [Simplified namespace](#simplified-package) 部分，了解有关核心 `langchain` 包中可用内容以及移至 `langchain-classic` 的内容的详细信息。
+标准接口和代理之外的现有功能已移至 [⟦T159⟧](https://pypi.org/project/langchain-classic) 包。请参阅 [Simplified namespace](#simplified-package) 部分，了解有关核心 `langchain` 包中可用内容以及移至 `langchain-classic` 的内容的详细信息。
 
 ### 删除已弃用的 API
 
@@ -987,10 +927,10 @@ text = response.text()
 
 ### `example` 参数已从 `AIMessage` 中删除
 
-`example` 参数已从 [⟦T196⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象中删除。我们建议迁移到使用`additional_kwargs`来根据需要传递额外的元数据。
+`example` 参数已从 [⟦T167⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 对象中删除。我们建议迁移到使用`additional_kwargs`来根据需要传递额外的元数据。
 
 ## 小改动* `AIMessageChunk` 对象现在包含一个 `chunk_position` 属性，其位置为 `'last'` 来指示流中的最终块。这允许更清晰地处理流消息。如果该块不是最后一个块，则`chunk_position`将是`None`。
-* `LanguageModelOutputVar` 现在输入为 [⟦T204⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 而不是 [⟦T205⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage)。
+* `LanguageModelOutputVar` 现在输入为 [⟦T175⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) 而不是 [⟦T176⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage)。
 * 合并消息块 (`AIMessageChunk.add`) 的逻辑已更新，对合并块的最终 id 进行了更复杂的选择处理。它优先考虑提供商分配的 ID，而不是 LangChain 生成的 ID。
 * 现在我们默认打开使用`utf-8`编码的文件。
 * 标准测试现在使用多模式内容块。

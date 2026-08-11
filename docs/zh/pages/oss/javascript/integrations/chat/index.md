@@ -217,7 +217,7 @@
   | [⟦T35⟧](/oss/javascript/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/groq"> <img alt="Downloads per month" /></a></span> || [⟦T36⟧](/oss/javascript/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/ollama"> <img alt="Downloads per month" /></a></span> |
   | [⟦T37⟧](/oss/javascript/integrations/chat/mistral) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/mistralai"><img alt="Downloads per month" /></a></span>|
   | [⟦T38⟧](/oss/javascript/integrations/chat/cohere) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cohere"><img alt="Downloads per month" /></a></span>|
-  | [⟦T39⟧](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google"> <img alt="Downloads per month" /></a></span> || [⟦T40⟧](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai"><img alt="Downloads per month" /></a></span>|
+  | [⟦T39⟧](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai"> <img alt="Downloads per month" /></a></span> || [⟦T40⟧](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google"><img alt="Downloads per month" /></a></span>|
   | [⟦T41⟧](/oss/javascript/integrations/chat/cloudflare_workersai) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
   | [⟦T42⟧](/oss/javascript/integrations/chat/fireworks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"><img alt="Downloads per month" /></a></span>|
   | [⟦T43⟧](/oss/javascript/integrations/chat/togetherai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/together-ai"> <img alt="Downloads per month" /></a></span> || [⟦T44⟧](/oss/javascript/integrations/chat/perplexity) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"><img alt="Downloads per month" /></a></span>|
@@ -229,8 +229,8 @@
 
 路由器和代理使您可以通过单个 API 和凭证访问来自多个提供商的模型。它们可以简化计费，让您在不改变集成的情况下在模型之间切换，并提供自动回退等功能。
 
-|供应商|整合 |描述 |
-| ------------------------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
+|供应商|整合|描述 |
+| ------------------------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | [OpenRouter](https://openrouter.ai/) | [⟦T45⟧](/oss/javascript/integrations/chat/openrouter) |统一访问来自OpenAI、Anthropic、Google、Meta 等的模型 |
 | [FuturMix](https://futurmix.ai/) | [⟦T46⟧](https://futurmix.ai/) |适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API 和 99.99% SLA |## 聊天完成 API
 
@@ -248,8 +248,8 @@
   | [⟦T59⟧](/oss/javascript/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/groq"> <img alt="Downloads per month" /></a></span> |
   | [⟦T60⟧](/oss/javascript/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/ollama"><img alt="Downloads per month" /></a></span>|
   | [⟦T61⟧](/oss/javascript/integrations/chat/mistral) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/mistralai"><img alt="Downloads per month" /></a></span>|| [⟦T62⟧](/oss/javascript/integrations/chat/cohere) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cohere"><img alt="Downloads per month" /></a></span>|
-  | [⟦T63⟧](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google"><img alt="Downloads per month" /></a></span>|
-  | [⟦T64⟧](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai"><img alt="Downloads per month" /></a></span>|
+  | [⟦T63⟧](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai"><img alt="Downloads per month" /></a></span>|
+  | [⟦T64⟧](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google"><img alt="Downloads per month" /></a></span>|
   | [⟦T65⟧](/oss/javascript/integrations/chat/deepseek) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/deepseek"><img alt="Downloads per month" /></a></span>|| [⟦T66⟧](/oss/javascript/integrations/chat/openrouter) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/openrouter"><img alt="Downloads per month" /></a></span>|
   | [⟦T67⟧](/oss/javascript/integrations/chat/cerebras) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cerebras"><img alt="Downloads per month" /></a></span>|
   | [⟦T68⟧](/oss/javascript/integrations/chat/baidu_qianfan) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan"><img alt="Downloads per month" /></a></span>|
@@ -258,9 +258,9 @@
   | [⟦T72⟧](/oss/javascript/integrations/chat/yandex) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@langchain/yandex"><img alt="Downloads per month" /></a></span>|
   | [⟦T73⟧](/oss/javascript/integrations/chat/togetherai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/together-ai"><img alt="Downloads per month" /></a></span>|| [⟦T74⟧](/oss/javascript/integrations/chat/perplexity) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"><img alt="Downloads per month" /></a></span> |
   | [⟦T75⟧](https://scx.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T76⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@bitkaio/langchain-kserve"><img alt="Downloads per month" /></a></span>|| [⟦T77⟧](/oss/javascript/integrations/chat/fake) | <span /> | <span /> | <span /> | <span /> | <span>不适用</span> |
-  | [⟦T78⟧](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>不适用</span> |
-  | [⟦T79⟧](https://auxen.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>不适用</span> |
+  | [⟦T76⟧](https://gitlab.com/bitkaio/langchain/kserve-provider) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@bitkaio/langchain-kserve"><img alt="Downloads per month" /></a></span>|| [⟦T77⟧](https://auxen.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>不适用</span> |
+  | [⟦T78⟧](/oss/javascript/integrations/chat/fake) | <span /> | <span /> | <span /> | <span /> | <span>不适用</span> |
+  | [⟦T79⟧](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>不适用</span> |
 </div><Info>
   如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
 </Info>

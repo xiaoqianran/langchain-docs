@@ -119,6 +119,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Convert websites into clean, structured data at scale with AI-powered search and research.
   </Card>
 
+  <Card title="ANEForge" href="https://github.com/sbryngelson/langchain-aneforge" icon="link">
+    LangChain embeddings on the Apple Neural Engine via ANEForge.
+  </Card>
+
   <Card title="Anthropic" href="/oss/python/integrations/providers/anthropic" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/anthropic-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=9212db764598a2d3f02f471b5436ae9e">
     Claude models for advanced reasoning and conversation.
   </Card>
@@ -197,6 +201,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Baseten" href="/oss/python/integrations/providers/baseten" icon="link">
     ML model deployment and serving platform.
+  </Card>
+
+  <Card title="Bastion Prompt Protection" href="https://bastionsoft.com" icon="link">
+    Local prompt-injection and jailbreak detection for LLM apps and agents.
   </Card>
 
   <Card title="Bidda" href="https://bidda.com/developers" icon="link">
@@ -359,6 +367,14 @@ Browse the complete collection of integrations available for Python. LangChain P
     Keyless DEX market-data API from CoinPaprika: token search, market data, pool discovery, and OHLCV price history.
   </Card>
 
+  <Card title="Diffbot" href="https://github.com/diffbot/langchain-diffbot" icon="https://mintcdn.com/langchain-5e9cc07a/e3HuwuC4PqeLEogi/images/providers/diffbot-icon.svg?fit=max&auto=format&n=e3HuwuC4PqeLEogi&q=85&s=3141dbdc7cc2cc4f292c26e87127a74a">
+    Structured web knowledge for developers and LLM applications.
+  </Card>
+
+  <Card title="DomPruner" href="https://github.com/dong7812/dompruner-py" icon="link">
+    DOM AST pruning that loads web pages as compact Markdown with no API key.
+  </Card>
+
   <Card title="Docling" href="/oss/python/integrations/providers/docling" icon="link">
     Document processing and AI integration.
   </Card>
@@ -503,6 +519,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Cross-chain asset exchange toolkit with sealed-bid intents for crypto, RWAs, and stablecoins.
   </Card>
 
+  <Card title="HWP/HWPX" href="https://github.com/jaypakdevkr/HWP-Loader" icon="link">
+    Load Korean Hangul Word Processor HWP and HWPX documents into LangChain.
+  </Card>
+
   <Card title="Hlido" href="https://hlido.eu/docs/" icon="link">
     Independent, evidence-backed trust scores for AI agents.
   </Card>
@@ -537,6 +557,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="IBM" href="/oss/python/integrations/providers/ibm" icon="link">
     IBM Watson AI and enterprise solutions.
+  </Card>
+
+  <Card title="iLoveVideoEditor" href="https://ilovevideoeditor.com/docs/api-guide" icon="link">
+    Cloud video rendering platform: render MP4 videos from VideoJSON specs.
   </Card>
 
   <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
@@ -651,12 +675,20 @@ Browse the complete collection of integrations available for Python. LangChain P
     Unified interface for 100+ LLM APIs.
   </Card>
 
+  <Card title="Lithtrix" href="https://docs.lithtrix.ai/integrations/langgraph" icon="link">
+    Identity and portable memory API for AI agents: BaseStore adapter for LangGraph long-term memory.
+  </Card>
+
   <Card title="Live Tennis API" href="https://docs.livetennisapi.com" icon="link">
     Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
   </Card>
 
   <Card title="Log10" href="/oss/python/integrations/providers/log10" icon="link">
     LLM data management and observability.
+  </Card>
+
+  <Card title="LongProbe" href="https://endevsols.github.io/LongProbe" icon="link">
+    Sub-second RAG retrieval regression testing and stability monitoring.
   </Card>
 
   <Card title="LocalAI" href="/oss/python/integrations/providers/localai" icon="link">
@@ -1063,6 +1095,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Unified search API across Google, Bing, Baidu, YouTube, and more.
   </Card>
 
+  <Card title="SerpApi" href="https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html" icon="link">
+    Structured search tools for web, news, maps, images, shopping, video, and travel.
+  </Card>
+
   <Card title="SERPdive" href="https://serpdive.com/docs" icon="link">
     AI search API that returns extracted, answer-ready web content.
   </Card>
@@ -1077,6 +1113,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="ScyllaDB" href="https://docs.scylladb.com" icon="link">
     High-performance distributed NoSQL database for real-time AI.
+  </Card>
+
+  <Card title="ShannonBase" href="https://github.com/apoorva-01/langchain-shannonbase" icon="link">
+    MySQL 9 VECTOR store for ShannonBase, self-hosted MySQL, and MySQL HeatWave.
   </Card>
 
   <Card title="SibFly" href="https://sibfly.com" icon="link">

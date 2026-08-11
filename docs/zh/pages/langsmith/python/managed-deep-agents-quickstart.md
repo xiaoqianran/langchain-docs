@@ -16,7 +16,7 @@
 
 在开始之前，请确保您拥有：
 
-* 具有托管 Deep Agents 公共测试访问权限的组织。
+* 具有托管 Deep Agents 公共测试版访问权限的组织。
 
 * A [LangSmith API key](/langsmith/create-account-api-key)。
 
@@ -96,7 +96,7 @@
 
     <Tabs>
       <Tab title="Provider search (recommended)">
-        OpenAI 提供了一个在服务器端运行的内置网络搜索工具，因此不需要其他软件包或 API 密钥。直接添加到代理中：
+        OpenAI 提供了一个在服务器端运行的内置网络搜索工具，因此不需要其他包或 API 密钥。直接添加到代理中：
 
         ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         from managed_deepagents import define_deep_agent
@@ -209,6 +209,10 @@
 
   <Card title="Custom tools" icon="tool" href="/langsmith/python/managed-deep-agents-tools">
     从项目源添加创作的 LangChain 工具。
+  </Card>
+
+  <Card title="MCP connectors" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-connectors">
+    从远程 MCP 服务器添加工具。
   </Card>
 
   <Card title="Custom middleware" icon="code" href="/langsmith/python/managed-deep-agents-middleware">

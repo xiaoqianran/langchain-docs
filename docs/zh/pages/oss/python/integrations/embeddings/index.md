@@ -9,7 +9,7 @@
 ## 概述
 
 <Note>
-  本概述涵盖**基于文本的嵌入模型**。 LangChain 目前不支持多模态嵌入。
+  本概述涵盖**基于文本的嵌入模型**。 LangChain 目前不支持多模式嵌入。
 
   参见[top embedding models](#top-integrations)。
 </Note>
@@ -29,7 +29,7 @@
 * **欧几里德距离** — 测量点之间的直线距离。
 * **点积** — 测量一个向量投射到另一个向量上的程度。
 
-这是计算两个向量之间的余弦相似度的示例：
+下面是计算两个向量之间的余弦相似度的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import numpy as np
@@ -44,7 +44,7 @@ print("Cosine Similarity:", similarity)
 
 ## 接口
 
-LangChain通过[Embeddings](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)接口为文本嵌入模型（例如OpenAI、Cohere、Hugging Face）提供标准接口。
+LangChain 通过[Embeddings](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) 接口为文本嵌入模型（例如，OpenAI、Cohere、Hugging Face）提供标准接口。
 
 有两种主要方法可用：
 
@@ -56,7 +56,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/python/langchain-cor
 </Note>
 
 ## 顶级集成<div>
-  |整合 |下载 |
+  |整合|下载 |
   | :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
   | [⟦T5⟧](/oss/python/integrations/embeddings/azure_openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
   | [⟦T6⟧](/oss/python/integrations/embeddings/openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
@@ -65,7 +65,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/python/langchain-cor
   | [⟦T9⟧](/oss/python/integrations/embeddings/ollama) | <span><a href="https://pypi.org/project/langchain-ollama/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T10⟧](/oss/python/integrations/embeddings/sentence_transformers) | <span><a href="https://pypi.org/project/langchain-huggingface/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T11⟧](/oss/python/integrations/embeddings/mistralai) | <span><a href="https://pypi.org/project/langchain-mistralai/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T12⟧](/oss/python/integrations/embeddings/cohere) | <span><a href="https://pypi.org/project/langchain-cohere/"> <img alt="Downloads per month" /></a></span> || [⟦T13⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T12⟧](/oss/python/integrations/embeddings/cohere) | <span><a href="https://pypi.org/project/langchain-cohere/"><img alt="Downloads per month" /></a></span>|| [⟦T13⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T14⟧](/oss/python/integrations/embeddings/perplexity) | <span><a href="https://pypi.org/project/langchain-perplexity/"><img alt="Downloads per month" /></a></span>|
   | [⟦T15⟧](/oss/python/integrations/embeddings/together) | <span><a href="https://pypi.org/project/langchain-together/"><img alt="Downloads per month" /></a></span>|
 </div>
@@ -78,7 +78,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/python/langchain-cor
 2.本地、开源：`BAAI/bge-*`、`mixedbread-ai/mxbai-embed-*`、`Qwen/Qwen3-Embedding-*`、`nomic-ai/modernbert-embed-*`、`sentence-transformers/all-*`。下载一次，随处运行。无每次调用成本，数据永远不会离开您的环境。在 CPU 上可能比小规模的托管 API 慢；使用 GPU 具有竞争力或更快。
 3. 本地、开源、专家：针对您的特定领域、语言或任务的微调模型。从强大的开放基础（例如`BAAI/bge-m3`）开始，甚至对几千个域内查询/文档对进行微调，通常会在该域的检索准确性方面击败托管旗舰。4. 生产规模的自托管：通过 [Text Embeddings Inference (TEI)](https://github.com/huggingface/text-embeddings-inference) 或 Ollama 提供相同的开放模型（基础或微调）。通过托管提供商的水平扩展和 API 人体工程学设计，为您提供本地推理的经济性。
 
-LangChain 对所有四个都是相同的：实例化一个 `Embeddings` 子类并将其交给向量存储或检索器。模式(2)和(3)使用`HuggingFaceEmbeddings`；模式 (4) 针对 TEI 的 OpenAI 兼容端点或 `OllamaEmbeddings` 使用`OpenAIEmbeddings`。
+LangChain 对所有四个相同：您实例化一个 `Embeddings` 子类并将其交给向量存储或检索器。模式(2)和(3)使用`HuggingFaceEmbeddings`；模式 (4) 针对 TEI 的 OpenAI 兼容端点或 `OllamaEmbeddings` 使用 `OpenAIEmbeddings`。
 
 ### 权衡因素
 
@@ -86,7 +86,7 @@ LangChain 对所有四个都是相同的：实例化一个 `Embeddings` 子类�
 
 从[MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard)开始。 MTEB 对检索、聚类、分类和重新排名任务中的嵌入模型进行基准测试，是事实上的行业参考。按您的语言和任务进行过滤（对于 RAG 最常见的是检索）。
 
-排行榜数字并不总是会转移，因此在提交之前对您自己的数据进行一次小型评估。 LangSmith 有这方面的工具；参见[evaluation guides](/langsmith/evaluation-concepts)。
+排行榜数字并不总是会转移，因此在提交之前对您自己的数据进行一次小型评估。 LangSmith 有用于此目的的工具；参见[evaluation guides](/langsmith/evaluation-concepts)。
 
 #### 成本
 
@@ -106,7 +106,7 @@ LangChain 对所有四个都是相同的：实例化一个 `Embeddings` 子类�
 * 768（中型 ST 型号，`all-mpnet-base-v2`、`bge-base`）
 * 1024（`bge-large`、Cohere v3、Voyage）
 * 1536（OpenAI`text-embedding-3-small`，Qwen3-Embedding-0.6B）
-* 3072+ (OpenAI `text-embedding-3-large`, Qwen3-Embedding-4B/8B)较大的向量通常更准确，但会消耗更多的存储和查询计算。一些现代模型（OpenAI `text-embedding-3-*`、`mixedbread-ai/mxbai-embed-large-v1`、Matryoshka 训练的 ST 模型、Qwen3-Embedding）支持 **截断**：将向量切片为更小的维度，同时实现优雅的质量降级。对于将更多向量拟合到更小的索引中非常有用。
+* 3072+（OpenAI`text-embedding-3-large`，Qwen3-嵌入-4B/8B）较大的向量通常更准确，但会消耗更多的存储和查询计算。一些现代模型（OpenAI`text-embedding-3-*`、`mixedbread-ai/mxbai-embed-large-v1`、Matryoshka 训练的 ST 模型、Qwen3-Embedding）支持 **截断**：将向量切片为更小的维度，同时实现优雅的质量降级。对于将更多向量拟合到更小的索引中非常有用。
 
 #### 上下文长度
 
@@ -124,7 +124,7 @@ LangChain 对所有四个都是相同的：实例化一个 `Embeddings` 子类�
 对于多语言检索，请选择一个针对您的语言进行训练的模型。强默认值：
 
 * 开行：`BAAI/bge-m3`、`intfloat/multilingual-e5-*`、`Alibaba-NLP/gte-multilingual-*`、`Qwen/Qwen3-Embedding-*`（经停`HuggingFaceEmbeddings`）
-* 托管：Cohere `embed-multilingual-v3`、OpenAI `text-embedding-3-*`
+* 主办：Cohere `embed-multilingual-v3`、OpenAI `text-embedding-3-*`
 
 #### 查询和文档提示
 
@@ -138,7 +138,7 @@ embeddings = HuggingFaceEmbeddings(
     encode_kwargs={"prompt": "passage: "},
     query_encode_kwargs={"prompt": "query: "},
 )
-```检查 Hugging Face 上每个模特的卡片以获取推荐的提示字符串。
+```检查Hugging Face上每个型号的卡片以获取推荐的提示字符串。
 
 #### 许可
 
@@ -168,9 +168,9 @@ embeddings = HuggingFaceEmbeddings(
 
 ## 缓存
 
-嵌入可以被存储或临时缓存以避免需要重新计算它们。缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。
+嵌入可以被存储或临时缓存以避免需要重新计算它们。
 
-初始化`CacheBackedEmbeddings`的主要支持方式是`from_bytes_store`。它需要以下参数：
+缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。初始化`CacheBackedEmbeddings`的主要支持方式是`from_bytes_store`。它需要以下参数：
 
 * **`underlying_embedder`**：用于嵌入的嵌入器。
 * **`document_embedding_cache`**：任何用于缓存文档嵌入的[⟦T69⟧](/oss/python/integrations/stores/)。
@@ -216,49 +216,49 @@ print(f"Second call took: {time.time() - tic:.2f} seconds")
 在生产中，您通常会使用更强大的持久存储，例如数据库或云存储。请参阅[stores integrations](/oss/python/integrations/stores/)了解选项。
 
 ## 所有嵌入模型<div>
-  |整合|下载 |
+  |整合 |下载 |
   | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
   | [⟦T82⟧](/oss/python/integrations/embeddings/azure_openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T83⟧](/oss/python/integrations/embeddings/openai) | <span><a href="https://pypi.org/project/langchain-openai/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T84⟧](/oss/python/integrations/embeddings/google_vertex_ai) | <span><a href="https://pypi.org/project/langchain-google-vertexai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T83⟧](/oss/python/integrations/embeddings/openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T84⟧](/oss/python/integrations/embeddings/google_vertex_ai) | <span><a href="https://pypi.org/project/langchain-google-vertexai/"><img alt="Downloads per month" /></a></span>|
   | [⟦T85⟧](/oss/python/integrations/embeddings/google_generative_ai) | <span><a href="https://pypi.org/project/langchain-google-genai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T86⟧](/oss/python/integrations/embeddings/bedrock) | <span><a href="https://pypi.org/project/langchain-aws/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T86⟧](/oss/python/integrations/embeddings/bedrock) | <span><a href="https://pypi.org/project/langchain-aws/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T87⟧](/oss/python/integrations/embeddings/databricks) | <span><a href="https://pypi.org/project/databricks-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T88⟧](/oss/python/integrations/embeddings/ollama) | <span><a href="https://pypi.org/project/langchain-ollama/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T89⟧](/oss/python/integrations/embeddings/bge_huggingface) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|| [⟦T90⟧](/oss/python/integrations/embeddings/huggingfacehub) | <span><a href="https://pypi.org/project/langchain-huggingface/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T88⟧](/oss/python/integrations/embeddings/ollama) | <span><a href="https://pypi.org/project/langchain-ollama/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T89⟧](/oss/python/integrations/embeddings/bge_huggingface) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|| [⟦T90⟧](/oss/python/integrations/embeddings/huggingfacehub) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|
   | [⟦T91⟧](/oss/python/integrations/embeddings/instruct_embeddings) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|
   | [⟦T92⟧](/oss/python/integrations/embeddings/sentence_transformers) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|
   | [⟦T93⟧](/oss/python/integrations/embeddings/text_embeddings_inference) | <span><a href="https://pypi.org/project/langchain-huggingface/"><img alt="Downloads per month" /></a></span>|
   | [⟦T94⟧](/oss/python/integrations/embeddings/fireworks) | <span><a href="https://pypi.org/project/langchain-fireworks/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T95⟧](/oss/python/integrations/embeddings/mistralai) | <span><a href="https://pypi.org/project/langchain-mistralai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T95⟧](/oss/python/integrations/embeddings/mistralai) | <span><a href="https://pypi.org/project/langchain-mistralai/"><img alt="Downloads per month" /></a></span>|
   | [⟦T96⟧](/oss/python/integrations/embeddings/pinecone) | <span><a href="https://pypi.org/project/langchain-pinecone/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T97⟧](/oss/python/integrations/embeddings/cohere) | <span><a href="https://pypi.org/project/langchain-cohere/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T98⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T98⟧](/oss/python/integrations/embeddings/nvidia_ai_endpoints) | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T99⟧](/oss/python/integrations/embeddings/ibm_watsonx) | <span><a href="https://pypi.org/project/langchain-ibm/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T100⟧](/oss/python/integrations/embeddings/perplexity) | <span><a href="https://pypi.org/project/langchain-perplexity/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T100⟧](/oss/python/integrations/embeddings/perplexity) | <span><a href="https://pypi.org/project/langchain-perplexity/"><img alt="Downloads per month" /></a></span>|
   | [⟦T101⟧](/oss/python/integrations/embeddings/elasticsearch) | <span><a href="https://pypi.org/project/langchain-elasticsearch/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T102⟧](/oss/python/integrations/embeddings/sambanova) | <span><a href="https://pypi.org/project/langchain-sambanova/"> <img alt="Downloads per month" /></a></span> || [⟦T103⟧](/oss/python/integrations/embeddings/oracleai) | <span><a href="https://pypi.org/project/langchain-oracledb/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T102⟧](/oss/python/integrations/embeddings/oracleai) | <span><a href="https://pypi.org/project/langchain-oracledb/"><img alt="Downloads per month" /></a></span>|| [⟦T103⟧](/oss/python/integrations/embeddings/sambanova) | <span><a href="https://pypi.org/project/langchain-sambanova/"><img alt="Downloads per month" /></a></span>|
   | [⟦T104⟧](/oss/python/integrations/embeddings/oci_generative_ai) | <span><a href="https://pypi.org/project/langchain-oci/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T105⟧](/oss/python/integrations/embeddings/baseten) | <span><a href="https://pypi.org/project/langchain-baseten/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T106⟧](/oss/python/integrations/embeddings/together) | <span><a href="https://pypi.org/project/langchain-together/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T105⟧](/oss/python/integrations/embeddings/baseten) | <span><a href="https://pypi.org/project/langchain-baseten/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T106⟧](/oss/python/integrations/embeddings/together) | <span><a href="https://pypi.org/project/langchain-together/"><img alt="Downloads per month" /></a></span>|
   | [⟦T107⟧](/oss/python/integrations/embeddings/voyageai) | <span><a href="https://pypi.org/project/langchain-voyageai/"><img alt="Downloads per month" /></a></span>|
   | [⟦T108⟧](/oss/python/integrations/embeddings/upstage) | <span><a href="https://pypi.org/project/langchain-upstage/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T109⟧](https://atlas.nomic.ai/) | <span><a href="https://pypi.org/project/langchain-nomic/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T110⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | <span><a href="https://pypi.org/project/langchain-naver/"> <img alt="Downloads per month" /></a>​​</span> |
+  | [⟦T109⟧](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | <span><a href="https://pypi.org/project/langchain-naver/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T110⟧](https://atlas.nomic.ai/) | <span><a href="https://pypi.org/project/langchain-nomic/">​​<img alt="Downloads per month" /></a></span>|
   | [⟦T111⟧](https://docs.tokenfactory.nebius.com/quickstart) | <span><a href="https://pypi.org/project/langchain-nebius/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T112⟧](https://developers.cloudflare.com/ai/models/#text-embeddings) | <span><a href="https://pypi.org/project/langchain-cloudflare/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T113⟧](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T114⟧](https://www.modelscope.cn/docs/sdk/pipelines) | <span><a href="https://pypi.org/project/langchain-modelscope-integration/"><img alt="Downloads per month" /></a></span>|| [⟦T115⟧](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T116⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span><a href="https://pypi.org/project/langchain-doubleword/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T112⟧](https://developers.cloudflare.com/ai/models/#text-embeddings) | <span><a href="https://pypi.org/project/langchain-cloudflare/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T113⟧](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/"><img alt="Downloads per month" /></a></span>|| [⟦T114⟧](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T115⟧](https://www.modelscope.cn/docs/sdk/pipelines) | <span><a href="https://pypi.org/project/langchain-modelscope-integration/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T116⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span><a href="https://pypi.org/project/langchain-doubleword/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T117⟧](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/"><img alt="Downloads per month" /></a></span>|
   | [⟦T118⟧](https://voxell.ai/forge) | <span><a href="https://pypi.org/project/langchain-voxell/"><img alt="Downloads per month" /></a></span>|
   | [⟦T119⟧](https://docs.empiriolabs.ai) | <span><a href="https://pypi.org/project/langchain-empiriolabs/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T120⟧](https://developers.telnyx.com/docs/inference/models) | <span><a href="https://pypi.org/project/langchain-telnyx/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T121⟧](https://github.com/protagolabs/langchain-netmind) | <span><a href="https://pypi.org/project/langchain-netmind/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T122⟧](https://isaacus.com/docs) | <span><a href="https://pypi.org/project/langchain-isaacus/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T120⟧](https://github.com/sbryngelson/langchain-aneforge) | <span><a href="https://pypi.org/project/langchain-aneforge/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T121⟧](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T122⟧](https://github.com/protagolabs/langchain-netmind) | <span><a href="https://pypi.org/project/langchain-netmind/"><img alt="Downloads per month" /></a></span>|
   | [⟦T123⟧](https://greennode.ai/) | <span><a href="https://pypi.org/project/langchain-greennode/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T124⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | <span><a href="https://pypi.org/project/langchain-lindorm-integration/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T125⟧](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T124⟧](https://developers.telnyx.com/docs/inference/models) | <span><a href="https://pypi.org/project/langchain-telnyx/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T125⟧](https://isaacus.com/docs) | <span><a href="https://pypi.org/project/langchain-isaacus/"><img alt="Downloads per month" /></a></span>|| [⟦T126⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | <span><a href="https://pypi.org/project/langchain-lindorm-integration/"><img alt="Downloads per month" /></a></span>|
 </div>
 
 ***
@@ -266,7 +266,9 @@ print(f"Second call took: {time.time() - tic:.2f} seconds")
 <div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/embeddings/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

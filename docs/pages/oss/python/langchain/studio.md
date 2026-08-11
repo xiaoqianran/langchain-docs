@@ -22,10 +22,17 @@ Before you begin, ensure you have the following:
 
 The [LangGraph CLI](/langsmith/cli) provides a local development server (also called [Agent Server](/langsmith/agent-server)) that connects your agent to Studio.
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Python >= 3.11 is required.
-pip install --upgrade "langgraph-cli[inmem]"
-```
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Python >= 3.11 is required.
+  pip install -U "langgraph-cli[inmem]"
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Python >= 3.11 is required.
+  uv add "langgraph-cli[inmem]"
+  ```
+</CodeGroup>
 
 ### 2. Prepare your agent
 

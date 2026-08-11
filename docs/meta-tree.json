@@ -3377,6 +3377,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-local-development.md"
         }
       ],
+      "managed-deep-agents-mcp-connectors": [
+        {
+          "title": "Connect to MCP servers",
+          "rel": "langsmith/javascript/managed-deep-agents-mcp-connectors.md"
+        }
+      ],
       "managed-deep-agents-memory": [
         {
           "title": "Add memory to Managed Deep Agents",
@@ -3501,6 +3507,12 @@
         {
           "title": "Develop locally with LangSmith Studio",
           "rel": "langsmith/python/managed-deep-agents-local-development.md"
+        }
+      ],
+      "managed-deep-agents-mcp-connectors": [
+        {
+          "title": "Connect to MCP servers",
+          "rel": "langsmith/python/managed-deep-agents-mcp-connectors.md"
         }
       ],
       "managed-deep-agents-memory": [

@@ -9,7 +9,7 @@
 代理定义选择托管深度代理的模型和核心功能。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -57,7 +57,7 @@ my-agent/
 </CodeGroup>|参数|它有什么作用 |
 | -------------------------------------- | ---------------------------------------------------------------------------------- |
 | [⟦T12⟧](#name) |设置代理和默认部署名称 |
-| [⟦T13⟧](#model) |选择聊天模式|
+| [⟦T13⟧](#model) |选择聊天模式 |
 | [⟦T14⟧](#tools) |添加代理可以调用​​的工具 |
 | [⟦T15⟧](#middleware) |添加有关模型调用、工具调用和代理生命周期的行为 |
 | [⟦T16⟧](#subagents) |为委派任务定义专门代理 |
@@ -102,9 +102,9 @@ my-agent/
   ```
 </CodeGroup>
 
-当需要在代码中配置模型参数时，请传递 LangChain 聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。
+当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。
 
-### 使用 LangSmith 网关
+### 使用LangSmith网关
 
 您可以使用 [LangSmith Gateway](langsmith/llm-gateway) 来控制速率限制、回退等。
 
@@ -146,7 +146,7 @@ mda init my-agent --gateway
 
 ## 工具
 
-传递`tools`数组中的工具，让代理调用应用程序逻辑或外部服务。在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。
+传递`tools`数组中的工具，让代理调用应用程序逻辑或外部服务。在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
 ## 中间件
 
@@ -176,12 +176,12 @@ mda init my-agent --gateway
 
 通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

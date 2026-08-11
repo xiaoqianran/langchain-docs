@@ -2,14 +2,14 @@
 
 <!-- langchain-docs: Connect Managed Deep Agents to channels | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels -->
 
-# 将托管深度代理连接到通道
+# 将托管Deep Agents连接到通道
 
-将托管深度代理连接到可以启动运行并接收响应的外部消息传递服务。
+将托管Deep Agents连接到可以启动运行并接收响应的外部消息传递服务。
 
 通道将托管深度代理连接到外部消息传递服务。来自服务的消息可以启动代理运行，并且代理可以通过同一服务进行响应，而无需单独的应用程序服务器。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -31,7 +31,7 @@ my-agent/
 * **出站消息传送**：将代理的响应发送回原始对话。
 * **部署要求**：声明部署所需的机密和提供程序配置。
 
-在托管深度代理中，通道将已部署的代理连接到消息传递提供程序。
+在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
 
 托管运行时处理通道生命周期：
 
@@ -49,7 +49,7 @@ flowchart LR
     class Provider trigger;
     class Verify,Thread,Run process;
     class Reply output;
-```提供程序适配器确定接受哪些事件、提供程序对话如何映射到托管深度代理线程以及如何传递响应。通道声明公开了该提供程序支持的配置。
+```提供程序适配器确定接受哪些事件、提供程序对话如何映射到托管Deep Agents线程以及如何传递响应。通道声明公开了该提供程序支持的配置。
 
 ## 声明项目中的通道
 
@@ -87,7 +87,7 @@ POST /channels/support/events
 
 ## 区分通道和连接器
 
-通道接收启动代理运行并传递响应的消息。连接器为代理提供了针对外部服务启动操作的工具。项目可以使用其中之一或两者。例如，Slack 通道处理提及和回复，而 Slack 连接器工具则允许代理搜索对话或发送不相关的消息。
+通道接收启动代理运行并传递响应的消息。 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) 为远程 MCP 服务器提供代理工具。项目可以使用其中之一或两者。
 
 ## 支持的频道
 
@@ -109,7 +109,9 @@ POST /channels/support/events
 <div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

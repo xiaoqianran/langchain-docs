@@ -2,16 +2,18 @@
 
 <!-- langchain-docs: Add custom tools to Managed Deep Agents | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tools -->
 
-# 将自定义工具添加到托管深度代理
+# 将自定义工具添加到托管Deep Agents
 
-为托管深度代理项目定义创作工具。
+为托管 Deep Agents 项目定义创作工具。
 
-托管深度代理支持普通深度代理 `tools` 配置界面。
+托管 Deep Agents 支持普通 Deep Agents `tools` 配置界面。
 
-在您的项目中定义LangChain工具，将其导入`agent.ts`，并传递给`defineDeepAgent`。
+在您的项目中定义LangChain工具，将其导入`agent.ts`，然后将其传递给`defineDeepAgent`。
+
+要从远程 MCP 服务器加载工具，请使用 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
 <Note>
-  托管深度代理在 **公开 [beta](/langsmith/release-stages)** 中开放，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -27,9 +29,9 @@ my-agent/
 
 ## 添加创作工具
 
-使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。托管深度代理将源代码复制到已编译的版本中，并将工具传递给深度代理。
+使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。托管 Deep Agents 将源代码复制到已编译的版本中，并将工具传递给 Deep Agents。
 
-更多LangChain工具定义请参见[Tools](/oss/javascript/langchain/tools)。
+有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
 
 ## 添加工具模块
 
@@ -90,9 +92,9 @@ export const agent = defineDeepAgent({
 });
 ```
 
-`interruptOn`字段应用与LangChain的[human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop)相同的中断行为。
+`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。
 
-有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅深度代理 [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
+有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
 
 ### 响应中断
 
@@ -103,7 +105,7 @@ export const agent = defineDeepAgent({
 * **在已部署的代理上**，通过 LangGraph 服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 <Note>
-  在公开测试期间，托管深度代理是 CLI 优先的，并且尚未记录编程调用。要从您自己的应用程序以编程方式恢复运行，请联系您的 LangChain 团队。
+  在公开测试期间，托管 Deep Agents 是 CLI 优先，并且尚未记录编程调用。要从您自己的应用程序以编程方式恢复运行，请联系您的 LangChain 团队。
 </Note>
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。

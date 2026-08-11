@@ -308,9 +308,15 @@ MCP is an open protocol that lets agents connect to a growing ecosystem of serve
 
 Install `langchain-mcp-adapters` to connect to MCP servers:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install langchain-mcp-adapters
-```
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install langchain-mcp-adapters
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langchain-mcp-adapters
+  ```
+</CodeGroup>
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

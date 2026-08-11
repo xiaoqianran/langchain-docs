@@ -527,7 +527,7 @@ export const library = openuiChatLibrary;
 export const promptOptions = openuiChatPromptOptions;
 ```
 
-### 定义协调员和面板代理@\[`createDeepAgent`] 构建一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
+### 定义协调员和面板代理[⟦T56⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 构建了一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
 
 ```ts expandable agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -674,10 +674,10 @@ export function Dashboard() {
 ## 最佳实践* **在模块加载时生成系统提示：**不在 React 组件内；提示符为几千字节，应计算一次
 * **仅在新线程上注入系统提示符：** 检查 `stream.messages.length === 0` 并在后续回合中跳过注入，以避免在线程历史记录中重复提示符
 * **使用提升顺序：**先写`root = Stack([...])`； UI shell 立即出现，并且随着模型定义每个部分，各部分逐渐填充
-* **完整语句的门控：** 避免在每个标记上重新渲染渲染器；仅在完整报表 (`name = ComponentCall(...)`) 到达时更新
+* **完整语句的门控：** 避免在每个标记上重新渲染渲染器；仅当完整报表 (`name = ComponentCall(...)`) 到达时更新
 * **在渲染之前验证图表数据：** 图表组件需要在包含在稳定快照中之前定义其 `Series` 和标签数组
 * **保留驼峰命名法变量名：** openui-lang 解析器仅接受驼峰命名法标识符；在系统提示的`additionalRules`中强化这一点
-* **在一条消息中委派面板：** 当分发给 Deep Agents 专家时，在单个协调器消息中发出所有 `task()` 调用，以便面板同时流式传输，而不是一次一个* **将每个面板的范围限制到其子代理：** 从 `stream.subagents` 发现面板并将每个快照传递到 `useMessages(stream, snapshot)`，以便面板仅渲染其自己的子代理的输出
+* **在一条消息中委派面板：** 当分散到 Deep Agents 专家时，在单个协调器消息中发出所有 `task()` 调用，以便面板同时流式传输，而不是一次一个* **将每个面板的范围限制到其子代理：** 从 `stream.subagents` 发现面板并将每个快照传递到 `useMessages(stream, snapshot)`，以便面板仅渲染其自己的子代理的输出
 
 ***
 

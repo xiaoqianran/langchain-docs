@@ -8,6 +8,8 @@ Managed Deep Agents support the normal Deep Agents `tools` configuration surface
 
 Define LangChain tools in your project, import them into `agent.ts`, and pass them to `defineDeepAgent`.
 
+To load tools from a remote MCP server instead, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors).
+
 <Note>
   Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>

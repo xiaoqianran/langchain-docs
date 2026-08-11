@@ -2,16 +2,18 @@
 
 <!-- langchain-docs: Add custom tools to Managed Deep Agents | https://docs.langchain.com/langsmith/python/managed-deep-agents-tools -->
 
-# 将自定义工具添加到托管深度代理
+# 将自定义工具添加到托管Deep Agents
 
-为托管深度代理项目定义创作工具。
+为托管 Deep Agents 项目定义创作工具。
 
-托管深度代理支持普通深度代理 `tools` 配置界面。
+托管Deep Agents支持普通的Deep Agents`tools`配置界面。
 
-在您的项目中定义LangChain工具，将其导入`agent.py`，并传递给`define_deep_agent`。
+在您的项目中定义LangChain工具，将其导入`agent.py`，然后将其传递给`define_deep_agent`。
+
+要从远程 MCP 服务器加载工具，请使用 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -27,9 +29,9 @@ my-agent/
 
 ## 添加创作工具
 
-使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。托管深度代理将源代码复制到已编译的版本中，并将工具传递给深度代理。
+使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。托管Deep Agents将源代码复制到已编译的版本中，并将工具传递给Deep Agents。
 
-更多LangChain工具定义请参见[Tools](/oss/python/langchain/tools)。
+有关LangChain工具定义的更多信息，请参阅[Tools](/oss/python/langchain/tools)。
 
 ## 添加工具模块
 
@@ -86,26 +88,26 @@ agent = define_deep_agent(
 )
 ```
 
-`interrupt_on`字段应用与LangChain的[human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop)相同的中断行为。
+`interrupt_on` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop) 相同的中断行为。
 
-有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅深度代理 [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) 和 [Permissions](/oss/python/deepagents/permissions) 指南。
+有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) 和 [Permissions](/oss/python/deepagents/permissions) 指南。
 
 ### 响应中断
 
 当运行遇到中断时，它会暂停并等待人类响应，然后再继续。
 
 * **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。
-* **在已部署的代理上**，使用 `Command(resume=...)` 负载通过 LangGraph 服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
+* **在已部署的代理上**，通过具有 `Command(resume=...)` 负载的 LangGraph 服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 <Note>
-  在公开测试期间，托管深度代理是 CLI 优先的，并且尚未记录编程调用。要从您自己的应用程序以编程方式恢复运行，请联系您的 LangChain 团队。
+  在公开测试期间，托管 Deep Agents 是 CLI 优先，并且尚未记录编程调用。要从您自己的应用程序以编程方式恢复运行，请联系您的 LangChain 团队。
 </Note>
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
 ## 使用秘密和上下文工具可以从环境变量中读取部署机密。将`mda dev`的局部值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
 ***
 

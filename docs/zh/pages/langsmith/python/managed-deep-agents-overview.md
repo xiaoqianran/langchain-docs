@@ -6,7 +6,7 @@
 
 托管 Deep Agents 公共测试版功能、工作流程和限制概述。
 
-托管 Deep Agents 允许您将代理定义为文件夹并在托管 LangSmith 基础设施上运行它。您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
+托管 Deep Agents 允许您将代理定义为文件夹并在托管 LangSmith 基础设施上运行它。您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。
 
 ## 定义你的代理
 
@@ -14,6 +14,7 @@
 
 * **[Instructions](/langsmith/python/managed-deep-agents-instructions)**：定义代理的作用及其行为方式的提示。
 * **[Tools](/langsmith/python/managed-deep-agents-tools)**：代理可以调用​​与其他系统交互或采取操作的函数。
+* **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)**：为代理提供工具的远程MCP服务器。
 * **[Skills](/langsmith/python/managed-deep-agents-skills)**：可重复使用的、特定于任务的指令和资源。
 
 您可以根据需要添加其他功能。完整的文件夹布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
@@ -34,7 +35,7 @@
 * **沙箱**：[LangSmith Sandboxes](/langsmith/sandboxes)让代理在隔离环境中编写和执行不受信任的代码。
 * **评估**：托管 Deep Agents 使用 [Harbor tasks](/langsmith/python/managed-deep-agents-evals) 测试代理行为。
 * **通道**：[channels abstraction](/langsmith/python/managed-deep-agents-channels) 将代理连接到其用户工作的平台。
-* **记忆**：[Managed memory](/langsmith/python/managed-deep-agents-memory) 让代理在交互过程中记住信息。
+* **记忆**：[Managed memory](/langsmith/python/managed-deep-agents-memory) 让代理记住交互过程中的信息。
 * **上下文管理**：[LangSmith Context Hub](/langsmith/use-the-context-hub) 管理代理指令和技能。您可以在 LangSmith UI 中更新它们，而无需重新部署代理。
 
 要创建和部署代理，请遵循[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
