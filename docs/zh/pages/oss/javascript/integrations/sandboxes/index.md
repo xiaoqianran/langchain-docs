@@ -46,6 +46,10 @@
 
     <span>Leap0</span>
   </a>
+
+  <a href="https://gitlab.com/bitkaio/langchain/deepagents-kubernetes-sandbox">
+    <span>Kubernetes</span>
+  </a>
 </div>
 
 如果您想贡献一个沙箱，请参阅[Implement a sandbox integration](/oss/javascript/contributing/implement-langchain#sandboxes)。

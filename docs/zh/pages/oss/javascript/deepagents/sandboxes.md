@@ -2,13 +2,13 @@
 
 <!-- langchain-docs: Sandboxes | https://docs.langchain.com/oss/javascript/deepagents/sandboxes -->
 
-# 沙箱
+# 沙盒
 
 在具有沙箱后端的隔离环境中执行代码
 
-代理生成代码、与文件系统交互并运行 shell 命令。由于我们无法预测代理可能会做什么，因此隔离其环境非常重要，这样它就无法访问凭据、文件或网络。沙箱通过在代理的执行环境和主机系统之间创建边界来提供这种隔离。
+代理生成代码、与文件系统交互并运行 shell 命令。由于您无法预测代理可能会做什么，因此隔离其环境非常重要，这样它就无法访问凭据、文件或网络。沙箱通过在代理的执行环境和主机系统之间创建边界来提供这种隔离。
 
-在深度代理中，**沙箱是定义代理运行的环境的[backends](/oss/javascript/deepagents/backends)**。与仅公开文件操作的其他后端（状态、文件系统、存储）不同，沙箱后端还为代理提供了用于运行 shell 命令的`execute`工具。当您配置沙箱后端时，代理将获取：
+在Deep Agents中，**沙箱是[backends](/oss/javascript/deepagents/backends)**，定义代理运行的环境。与仅公开文件操作的其他后端（状态、文件系统、存储）不同，沙箱后端还为代理提供了用于运行 shell 命令的`execute`工具。当您配置沙箱后端时，代理将获取：
 
 * 所有标准文件系统工具（`ls`、`read_file`、`write_file`、`edit_file`、`glob`、`grep`）
 
@@ -45,14 +45,14 @@ graph LR
 当代理自主运行时，这种隔离至关重要。沙箱特别适用于：
 
 * 编码代理：自主运行的代理可以使用 shell、git、克隆存储库（许多提供商提供本机 git API，例如[Daytona's git operations](https://www.daytona.io/docs/en/git-operations/)），并运行 Docker-in-Docker 来构建和测试管道
-* 数据分析代理——在安全、隔离的环境中加载文件、安装数据分析库（pandas、numpy 等）、运行统计计算以及创建 PowerPoint 演示文稿等输出
+* 数据分析代理：在安全、隔离的环境中加载文件、安装数据分析库（pandas、numpy 等）、运行统计计算以及创建 PowerPoint 演示文稿等输出
 
 <Tip>
-  **使用 Deep Agents Code？** Deep Agents Code 通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解深度代理代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
+  **使用 Deep Agents 代码？** Deep Agents 代码通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解 Deep Agents 代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
 </Tip>
 
 <Note>
-  **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
+  **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。对于托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 </Note>
 
 ## 基本用法
@@ -232,7 +232,9 @@ graph LR
   } finally {
     await client.deleteSandbox(lsSandbox.name);
   }
-  ``````ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -260,81 +262,27 @@ graph LR
     await client.deleteSandbox(lsSandbox.name);
   }
   ```
-</CodeGroup>
-
-<Tip>
-  [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
+</CodeGroup><Tip>
+  [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙盒托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 可用的提供商
 
-<Note>
-  技能需要`deepagents>=1.7.0`。
-</Note>
-
-<div>
-  <a href="/langsmith/sandboxes">
-    <img alt="" />
-
-    <span>朗史密斯</span>
-  </a>
-
-  <a href="/oss/javascript/integrations/providers/deno">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>德诺</span>
-  </a>
-
-  <a href="/oss/javascript/integrations/providers/daytona">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>代托纳</span>
-  </a>
-
-  <a href="https://leap0.dev/docs">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>Leap0</span>
-  </a>
-
-  <a href="/oss/javascript/integrations/providers/modal">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>莫代尔</span>
-  </a>
-
-  <a href="/oss/javascript/integrations/providers/node-vfs">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>节点VFS</span>
-  </a>
-</div>
-
-没有看到您的提供商？您可以实现自己的沙箱后端。参见[Contributing a sandbox integration](/oss/javascript/contributing/integrations-langchain)。
+有关提供商特定的设置、身份验证和生命周期详细信息，请参阅[sandbox integrations](/oss/javascript/integrations/sandboxes)。
 
 ## 生命周期和范围
 
 大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
 
-沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。有关完整的生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署连接和客户端示例，请参阅走向生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
+沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
+
+有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅进入生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
 
 ### 线程范围（默认）
 
-每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析为相同的沙箱。
-
-<Tip>
+每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析到相同的沙箱。<Tip>
   当用户可以在空闲时间后返回时，在沙箱上配置 TTL，以便提供商自动删除或存档空闲环境。
 </Tip>
 
@@ -705,15 +653,15 @@ graph LR
     });
   }
   ```
-</CodeGroup>对于图工厂外部的手动创建、执行和拆卸，请参阅 [Basic usage](#basic-usage) 和 [sandbox integrations](/oss/javascript/integrations/sandboxes) 了解特定于提供者的 API。
+</CodeGroup>
+
+对于图工厂之外的手动创建、执行和拆卸，请参阅 [Basic usage](#basic-usage) 和 [sandbox integrations](/oss/javascript/integrations/sandboxes) 了解特定于提供者的 API。
 
 ## 集成模式
 
 根据代理运行的位置，有两种将代理与沙箱集成的架构模式。
 
-### 沙盒模式中的代理
-
-该代理在沙箱内运行，您通过网络与其进行通信。您可以构建预安装代理框架的 Docker 或 VM 映像，在沙箱内运行它，然后从外部连接以发送消息。
+### 沙盒模式中的代理该代理在沙箱内运行，您通过网络与其进行通信。您可以构建预安装代理框架的 Docker 或 VM 映像，在沙箱内运行它，然后从外部连接以发送消息。
 
 好处：
 
@@ -736,11 +684,11 @@ RUN pip install deepagents-code
 然后在沙箱内运行代理。
 要在沙箱内使用代理，您必须添加额外的基础设施来处理应用程序与沙箱内的代理之间的通信。
 
-### 沙箱作为工具模式代理在您的计算机或服务器上运行。当它需要执行代码时，它会调用沙箱工具（例如`execute`、`read_file`或`write_file`），这些工具调用提供者的API以在远程沙箱中运行操作。
+### 沙箱作为工具模式
 
-好处：
+代理在您的计算机或服务器上运行。当它需要执行代码时，它会调用沙箱工具（例如`execute`、`read_file`或`write_file`），这些工具会调用提供程序的API以在远程沙箱中运行操作。
 
-* ✅ 立即更新代理代码，无需重建镜像。
+好处：* ✅ 立即更新代理代码，无需重建镜像。
 * ✅ 代理状态和执行之间更清晰的分离。
   * API 密钥保留在沙箱之外。
   * 沙盒失败不会丢失代理状态。
@@ -792,18 +740,18 @@ try {
 
 ## 沙箱如何工作
 
-### 隔离边界所有沙箱提供程序都会保护您的主机系统免受代理文件系统和 shell 操作的影响。代理无法读取您的本地文件、访问计算机上的环境变量或干扰其他进程。然而，沙箱本身**不能**防止：
+### 隔离边界
 
-* **上下文注入**：控制代理部分输入的攻击者可以指示其在沙箱内运行任意命令。沙箱是隔离的，但代理在其中拥有完全控制权。
+所有沙箱提供程序都会保护您的主机系统免受代理文件系统和 shell 操作的影响。代理无法读取您的本地文件、访问计算机上的环境变量或干扰其他进程。然而，沙箱本身**不能**防止：* **上下文注入**：控制代理部分输入的攻击者可以指示其在沙箱内运行任意命令。沙箱是隔离的，但代理在其中拥有完全控制权。
 * **网络渗透**：除非网络访问被阻止，否则上下文注入代理可以通过 HTTP 或 DNS 将数据发送到沙箱之外。一些提供商支持阻止网络访问（例如 Modal 上的`blockNetwork: true`）。
 
 请参阅[security considerations](#security-considerations)了解如何处理秘密并减轻这些风险。
 
 ### `execute` 方法
 
-沙箱后端有一个简单的架构：提供者必须实现的唯一方法是`execute()`，它运行 shell 命令并返回其输出。
+沙盒后端具有简单的架构：提供者必须实现的唯一方法是`execute()`，它运行 shell 命令并返回其输出。
 
-所有其他文件系统操作（`read`、`write`、`edit`、`ls`、`glob`、`grep`）均由 [⟦T55⟧](https://reference.langchain.com/javascript/deepagents/backends/BaseSandbox) 基类构建在 `execute()` 之上，该基类构建脚本并通过以下方式在沙箱内运行它们： `execute()`。
+所有其他文件系统操作（`read`、`write`、`edit`、`ls`、`glob`、`grep`）均由 [⟦T54⟧](https://reference.langchain.com/javascript/deepagents/backends/BaseSandbox) 基类构建在 `execute()` 之上，该基类构建脚本并通过以下方式在沙箱内运行它们： `execute()`。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -825,10 +773,10 @@ graph TB
     class Provider trigger
 ```
 
-这个设计的意思是：* **添加新的提供程序非常简单。** 实现 `execute()` — 基类处理其他所有事情。
-* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T59⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果不是，该工具将被过滤掉，代理永远不会看到它。
+这个设计的意思是：
 
-当代理调用 `execute` 工具时，它会提供 `command` 字符串，并返回组合的 stdout/stderr、退出代码以及输出太大时的截断通知。
+* **添加新的提供程序非常简单。** 实现 `execute()` — 基类处理其他所有事情。
+* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T58⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果没有，该工具将被过滤掉，代理永远不会看到它。当代理调用 `execute` 工具时，它会提供 `command` 字符串，并返回组合的 stdout/stderr、退出代码以及输出太大时的截断通知。
 
 您还可以直接在应用程序代码中调用后端 `execute()` 方法。
 
@@ -850,9 +798,9 @@ bash: foobar: command not found
 
 文件移入和移出沙箱有两种不同的方式，了解何时使用每种方式非常重要：
 
-**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行期间调用的工具。这些通过沙箱内的`execute()`。代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。**文件传输 API**：应用程序代码调用的 `uploadFiles()` 和 `downloadFiles()` 方法。它们使用提供商的本机文件传输 API（不是 shell 命令），旨在在主机环境和沙箱之间移动文件。使用它们可以：
+**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。这些通过沙箱内的`execute()`。代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
 
-* **在代理运行之前使用源代码、配置或数据为沙箱播种**
+**文件传输 API**：应用程序代码调用的 `uploadFiles()` 和 `downloadFiles()` 方法。它们使用提供商的本机文件传输 API（不是 shell 命令），旨在在主机环境和沙箱之间移动文件。使用它们可以：* **在代理运行之前使用源代码、配置或数据为沙箱播种**
 * **在代理完成后检索工件**（生成的代码、构建输出、报告）
 * **预填充代理所需的依赖项**
 
@@ -925,22 +873,22 @@ for (const result of results) {
   在沙箱内，代理使用自己的文件系统工具（`read_file`、`write_file`）：而不是`uploadFiles`或`downloadFiles`。这些方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
 </Note>
 
-## 安全考虑沙箱将代码执行与主机系统隔离，但它们不能防止**上下文注入**。控制代理部分输入的攻击者可以指示其读取文件、运行命令或从沙箱内窃取数据。这使得沙箱内的凭证特别危险。
+## 安全考虑
 
-<Warning>
-  **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
+沙箱将代码执行与主机系统隔离，但它们不能防止**上下文注入**。控制代理部分输入的攻击者可以指示其读取文件、运行命令或从沙箱内窃取数据。这使得沙箱内的凭证特别危险。<Warning>
+  **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或`secrets`选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
 </Warning>
 
 ### 安全处理秘密
 
 如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
 
-1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但永远不会看到凭据。这是推荐的方法。2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。
+1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但永远不会看到凭据。这是推荐的方法。
+
+2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。
 
 <Warning>
-  如果必须将机密注入沙箱（不推荐），请采取以下预防措施：
-
-  * 为**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
+  如果必须将机密注入沙箱（不推荐），请采取以下预防措施：* 为**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
   * 阻止或限制沙箱的网络访问以限制渗透路径
   * 使用尽可能窄的凭证范围和尽可能短的生命周期
   * 监控沙盒网络流量以发现意外的出站请求
@@ -951,9 +899,11 @@ for (const result of results) {
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙盒网络访问
+* 在不需要时阻止沙箱网络访问
 * 使用[middleware](/oss/javascript/langchain/middleware)过滤或编辑工具输出中的敏感模式
-* 将沙箱内产生的所有内容视为不可信输入***
+* 将沙箱内产生的所有内容视为不可信输入
+
+***
 
 <div>
   <Callout icon="terminal-2">

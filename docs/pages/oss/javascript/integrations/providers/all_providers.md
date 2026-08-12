@@ -105,6 +105,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Ultra-fast inference with Groq's specialized hardware.
   </Card>
 
+  <Card title="Interfaze" href="https://interfaze.ai/docs" icon="link">
+    Multimodal chat model with structured output over an OpenAI-compatible API.
+  </Card>
+
   <Card title="Mistral" href="/oss/javascript/integrations/chat/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
     Mistral's efficient and powerful language models.
   </Card>
@@ -237,6 +241,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Pinecone's embedding models and vector database.
   </Card>
 
+  <Card title="SAP HANA Internal Embeddings" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
+    SAP HANA Cloud's built-in embedding models for in-database vector generation.
+  </Card>
+
   <Card title="SCX" href="https://scx.ai/">
     4096-dimension E5-Mistral embeddings over SCX's OpenAI-compatible API.
   </Card>
@@ -265,6 +273,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Vector, BM25, and hybrid retrieval over one engine on object storage.
   </Card>
 
+  <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
+    Serverless database for RAG and agents.
+  </Card>
+
   <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
     In-memory vector storage for development and testing.
   </Card>
@@ -287,6 +299,10 @@ Connect LangGraph agents to front ends and observability platforms.
 
   <Card title="Redis" href="/oss/javascript/integrations/vectorstores/redis">
     In-memory database with vector search capabilities.
+  </Card>
+
+  <Card title="SAP HANA Cloud Vector Engine" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
+    Vector store fully integrated into the SAP HANA Cloud database.
   </Card>
 
   <Card title="Weaviate" href="/oss/javascript/integrations/vectorstores/weaviate">
@@ -443,7 +459,15 @@ Connect LangGraph agents to front ends and observability platforms.
     AI-optimized search for retrieval applications.
   </Card>
 
-  <Card title="You.com" href="/oss/javascript/integrations/tools/youdotcom">
+  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+    Comprehensive research on a given topic with Tavily.
+  </Card>
+
+  <Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
+    Retrieve status and results of a research task using its request ID.
+  </Card>
+
+  <Card title="You.com" href="https://you.com/docs/integrations/langchain" icon="link">
     Real-time web search and content extraction for LLMs.
   </Card>
 
@@ -473,6 +497,10 @@ Connect LangGraph agents to front ends and observability platforms.
 
   <Card title="Perplexity Search" href="/oss/javascript/integrations/retrievers/perplexity_search">
     Retriever returning Documents from the Perplexity Search API.
+  </Card>
+
+  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
+    Self-querying retriever over SAP HANA Cloud Vector Engine.
   </Card>
 
   <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">

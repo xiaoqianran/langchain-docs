@@ -26,17 +26,17 @@
   </Card>
 
   <Card title="OpenAI" href="/oss/javascript/integrations/providers/openai" icon="brand-openai">
-    使用 GPT 模型和 OpenAI 的综合 AI 平台进行构建。
+    使用 GPT 模型和OpenAI的综合人工智能平台进行构建。
   </Card>
 </Columns>
 
 ## LangGraph 集成
 
-将 LangGraph 代理连接到前端和可观测平台。
+将LangGraph代理连接到前端和可观察平台。
 
 <Columns>
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
-    用于将 LangGraph 代理连接到任何前端的开放式基于事件的协议。
+    开放基于事件的协议，用于将LangGraph代理连接到任何前端。
   </Card>
 
   <Card title="CopilotKit" href="/oss/javascript/langchain/frontend/integrations/copilotkit" icon="react">
@@ -44,7 +44,7 @@
   </Card>
 
   <Card title="OpenUI" href="/oss/javascript/langchain/frontend/integrations/openui" icon="react">
-    使用 OpenUI 从 LangGraph 和 Deep Agent 渲染自适应、代理生成的界面。
+    使用 OpenUI 从 LangGraph 和 Deep Agents 渲染自适应、代理生成的界面。
   </Card><Card title="The Context Company" href="https://docs.thecontextcompany.com/frameworks/langchain-langgraph" icon="link">
     生产型人工智能代理的可观察性和客户分析。
   </Card>
@@ -94,7 +94,7 @@
   </Card>
 
   <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
-    适用于 22 多种型号的统一 AI 网关，具有兼容 OpenAI 的 API。
+    适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API。
   </Card>
 
   <Card title="Google Gemini" href="/oss/javascript/integrations/chat/google" icon="brand-google">
@@ -103,7 +103,11 @@
 
   <Card title="Groq" href="/oss/javascript/integrations/chat/groq" icon="https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/groq-icon.svg?fit=max&auto=format&n=ZPKed1feKJ8F6LVo&q=85&s=3bb8cb006c20e1eb8cdbd51c8cdbb3ca">
     使用 Groq 的专用硬件进行超快速推理。
-  </Card><Card title="Mistral" href="/oss/javascript/integrations/chat/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
+  </Card><Card title="Interfaze" href="https://interfaze.ai/docs" icon="link">
+    通过OpenAI兼容的 API 提供结构化输出的多模式聊天模型。
+  </Card>
+
+  <Card title="Mistral" href="/oss/javascript/integrations/chat/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
     Mistral 高效且强大的语言模型。
   </Card>
 
@@ -157,15 +161,15 @@
 
   <Card title="Mistral" href="/oss/javascript/integrations/llms/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
     Mistral 的开源和商业语言模型。
-  </Card>
-
-  <Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
+  </Card><Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
     本地模型使用 Ollama 的简单界面进行服务。
   </Card>
 
   <Card title="OpenAI" href="/oss/javascript/integrations/llms/openai" icon="brand-openai">
     GPT 模型和 OpenAI 的语言模型 API。
-  </Card><Card title="Yandex" href="/oss/javascript/integrations/llms/yandex">
+  </Card>
+
+  <Card title="Yandex" href="/oss/javascript/integrations/llms/yandex">
     Yandex 的语言模型和 AI 服务。
   </Card>
 </Columns>
@@ -174,7 +178,7 @@
 
 <Columns>
   <Card title="Azure OpenAI" href="/oss/javascript/integrations/embeddings/azure_openai" icon="brand-windows">
-    通过 Microsoft Azure 平台嵌入 OpenAI。
+    OpenAI 通过 Microsoft Azure 平台嵌入。
   </Card>
 
   <Card title="Baidu Qianfan" href="/oss/javascript/integrations/embeddings/baidu_qianfan">
@@ -223,15 +227,19 @@
 
   <Card title="OpenAI" href="/oss/javascript/integrations/embeddings/openai" icon="brand-openai">
     OpenAI 用于语义搜索的文本嵌入模型。
-  </Card>
-
-  <Card title="Oracle AI Database" href="/oss/javascript/integrations/embeddings/oracleai">
+  </Card><Card title="Oracle AI Database" href="/oss/javascript/integrations/embeddings/oracleai">
     Oracle 针对 AI 应用程序的嵌入模型。
   </Card>
 
   <Card title="Pinecone" href="/oss/javascript/integrations/embeddings/pinecone">
     Pinecone 的嵌入模型和矢量数据库。
-  </Card><Card title="SCX" href="https://scx.ai/">
+  </Card>
+
+  <Card title="SAP HANA Internal Embeddings" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
+    SAP HANA Cloud 用于数据库内向量生成的内置嵌入模型。
+  </Card>
+
+  <Card title="SCX" href="https://scx.ai/">
     通过 SCX 的 OpenAI 兼容 API 进行 4096 维 E5-Mistral 嵌入。
   </Card>
 </Columns>
@@ -259,6 +267,10 @@
     在对象存储上通过一个引擎进行矢量、BM25 和混合检索。
   </Card>
 
+  <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
+    RAG 和代理的无服务器数据库。
+  </Card>
+
   <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
     用于开发和测试的内存向量存储。
   </Card>
@@ -273,14 +285,16 @@
 
   <Card title="Pinecone" href="/oss/javascript/integrations/vectorstores/pinecone">
     用于机器学习应用程序的托管矢量数据库。
-  </Card>
-
-  <Card title="Qdrant" href="/oss/javascript/integrations/vectorstores/qdrant">
+  </Card><Card title="Qdrant" href="/oss/javascript/integrations/vectorstores/qdrant">
     开源矢量相似性搜索引擎。
   </Card>
 
   <Card title="Redis" href="/oss/javascript/integrations/vectorstores/redis">
     具有矢量搜索功能的内存数据库。
+  </Card>
+
+  <Card title="SAP HANA Cloud Vector Engine" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
+    矢量存储完全集成到 SAP HANA Cloud 数据库中。
   </Card>
 
   <Card title="Weaviate" href="/oss/javascript/integrations/vectorstores/weaviate">
@@ -295,7 +309,9 @@
 <Columns>
   <Card title="JSON" href="/oss/javascript/integrations/document_loaders/file_loaders/json">
     通过灵活的结构处理加载和解析 JSON 文件。
-  </Card><Card title="JSON Lines" href="/oss/javascript/integrations/document_loaders/file_loaders/jsonlines">
+  </Card>
+
+  <Card title="JSON Lines" href="/oss/javascript/integrations/document_loaders/file_loaders/jsonlines">
     加载以换行符分隔的 JSON 文件。
   </Card>
 
@@ -320,7 +336,7 @@
   </Card>
 
   <Card title="LangSmith" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith">
-    从 LangSmith 加载运行和数据集。
+    从LangSmith加载运行和数据集。
   </Card>
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
@@ -333,9 +349,7 @@
 
   <Card title="Sourcey" href="/oss/javascript/integrations/providers/sourcey">
     使用 Sourcey 已经发出的构建工件从已发布的 Sourcey 文档站点检索。
-  </Card>
-
-  <Card title="Supadata" href="/oss/javascript/integrations/providers/supadata">
+  </Card><Card title="Supadata" href="/oss/javascript/integrations/providers/supadata">
     从 YouTube、TikTok 等加载文字记录和元数据。
   </Card>
 </Columns>
@@ -344,7 +358,7 @@
 
 <Columns>
   <Card title="OpenAI Metadata Tagger" href="/oss/javascript/integrations/document_transformers/openai_metadata_tagger" icon="brand-openai">
-    使用 OpenAI 为文档生成元数据标签。
+    使用OpenAI为文档生成元数据标签。
   </Card>
 </Columns>
 
@@ -365,7 +379,9 @@
 <Columns>
   <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
     在 Azure 动态会话中安全执行代码。
-  </Card><Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
+  </Card>
+
+  <Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
     使用 OpenAI 的 DALL-E 模型生成图像。
   </Card>
 
@@ -403,9 +419,7 @@
 
   <Card title="SQL" href="/oss/javascript/integrations/tools/sql">
     使用自然语言查询数据库。
-  </Card>
-
-  <Card title="Perplexity Search" href="/oss/javascript/integrations/tools/perplexity_search">
+  </Card><Card title="Perplexity Search" href="/oss/javascript/integrations/tools/perplexity_search">
     来自 Perplexity Search API 的 Web 搜索结果。
   </Card>
 
@@ -431,7 +445,17 @@
 
   <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
     针对检索应用程序的人工智能优化搜索。
-  </Card><Card title="You.com" href="/oss/javascript/integrations/tools/youdotcom">
+  </Card>
+
+  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+    与 Tavily 一起对给定主题进行综合研究。
+  </Card>
+
+  <Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
+    使用其请求 ID 检索研究任务的状态和结果。
+  </Card>
+
+  <Card title="You.com" href="https://you.com/docs/integrations/langchain" icon="link">
     法学硕士的实时网络搜索和内容提取。
   </Card>
 
@@ -461,6 +485,8 @@
 
   <Card title="Perplexity Search" href="/oss/javascript/integrations/retrievers/perplexity_search">
     从 Perplexity Search API 返回文档的检索器。
+  </Card><Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
+    通过 SAP HANA Cloud Vector Engine 的自查询检索器。
   </Card>
 
   <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
@@ -504,7 +530,9 @@
   </Card>
 </Columns>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
   </Callout>

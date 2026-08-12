@@ -4,16 +4,16 @@
 
 # 长期记忆
 
-为 LangChain 代理添加长期记忆，以存储和调用跨对话和会话的数据
+为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
 
-长期记忆可让您的客服人员存储和回忆不同对话和会话中的信息。
-与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在并且可以随时调用。
+长期记忆让您的座席能够存储和回忆不同对话和会话中的信息。
+与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在，并且可以随时调用。
 
 长期记忆建立在[LangGraph stores](/oss/python/langgraph/stores)之上，它将数据保存为按命名空间和键组织的 JSON 文档。
 
 ## 用法
 
-要将长期记忆添加到代理，请创建一个存储并将其传递给[⟦T21⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
+要将长期记忆添加到代理，请创建一个存储并将其传递给[⟦T22⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
 
 <Tabs>
   <Tab title="InMemoryStore">
@@ -34,9 +34,19 @@
   </Tab>
 
   <Tab title="PostgreSQL">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install langgraph-checkpoint-postgres
-    ```
+    <CodeGroup>
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U langgraph-checkpoint-postgres "psycopg[binary]"
+      ```
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add langgraph-checkpoint-postgres "psycopg[binary]"
+      ```
+    </CodeGroup>
+
+    <Note>
+      默认情况下，`langgraph-checkpoint-postgres` 安装 `psycopg` (Psycopg 3)，无需额外安装。上面的安装添加了`psycopg[binary]`，推荐大多数用户使用。其他选项请参见[Psycopg installation docs](https://www.psycopg.org/psycopg3/docs/basic/install.html)。
+    </Note>
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain.agents import create_agent
@@ -64,9 +74,9 @@
 
 ## 内存存储
 
-LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgraph/stores) 中。
+LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgraph/stores) 中。每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
 
-每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
+这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
 
 <Tabs>
   <Tab title="InMemoryStore">
@@ -149,7 +159,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
   </Tab>
 </Tabs>
 
-有关内存存储的更多信息，请参阅 [Persistence](/oss/python/langgraph/stores) 指南。
+有关内存存储的更多信息，请参阅[Persistence](/oss/python/langgraph/stores)指南。
 
 ## 在工具中读取长期记忆
 

@@ -19,22 +19,22 @@ Install the following packages to follow along:
 
 <CodeGroup>
   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents langchain @langchain/core
+  npm install langchain @langchain/core
   # Requires Node.js 22+
   ```
 
   ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents langchain @langchain/core
+  pnpm add langchain @langchain/core
   # Requires Node.js 22+
   ```
 
   ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents langchain @langchain/core
+  yarn add langchain @langchain/core
   # Requires Node.js 22+
   ```
 
   ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add deepagents langchain @langchain/core
+  bun add langchain @langchain/core
   # Requires Bun v1.0.0+
   ```
 </CodeGroup>
@@ -622,6 +622,26 @@ Along the way you will explore the following concepts:
     The main difference between both is that deep agents come with a range of commonly useful capabilities already built in, such as planning, file system tools, and subagents.
 
     Use deep agents when you want maximum capability with minimal setup; choose LangChain agents when you need fine-grained control.
+
+    To compare both in this step, install the `deepagents` package:
+
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npm install deepagents
+      ```
+
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pnpm add deepagents
+      ```
+
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      yarn add deepagents
+      ```
+
+      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      bun add deepagents
+      ```
+    </CodeGroup>
 
     <Warning>
       Since the code invokes the model with the entire text from The Great Gatsby, it uses a large amount of tokens.

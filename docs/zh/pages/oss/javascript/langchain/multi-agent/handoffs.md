@@ -347,10 +347,7 @@ const transferToSales = tool(
   };
 
   // 5. Create router that checks if we should end or continue
-  const routeAfterAgent: ConditionalEdgeRouter<
-    typeof MultiAgentState.State,
-    "sales_agent" | "support_agent"
-  > = (state) => {
+  const routeAfterAgent: ConditionalEdgeRouter<{ InputSchema: typeof MultiAgentState.State; Nodes: "sales_agent" | "support_agent" }> = (state) => {
     const messages = state.messages ?? [];
 
     // Check the last message - if it's an AIMessage without tool calls, we're done
@@ -366,10 +363,7 @@ const transferToSales = tool(
     return active as "sales_agent" | "support_agent";
   };
 
-  const routeInitial: ConditionalEdgeRouter<
-    typeof MultiAgentState.State,
-    "sales_agent" | "support_agent"
-  > = (state) => {
+  const routeInitial: ConditionalEdgeRouter<{ InputSchema: typeof MultiAgentState.State; Nodes: "sales_agent" | "support_agent" }> = (state) => {
     // Route to the active agent based on state, default to sales agent
     return (state.activeAgent ?? "sales_agent") as
       | "sales_agent"
@@ -459,7 +453,7 @@ const transferToSales = tool(
   }
 );
 ```<Note>
-  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以将父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
+  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以使父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
 </Note>
 
 **将控制权返回给用户**

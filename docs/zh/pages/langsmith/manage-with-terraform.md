@@ -4,9 +4,13 @@
 
 # 使用 Terraform 管理 LangSmith
 
-使用官方 LangSmith Terraform 提供程序以代码形式管理工作区、角色、成员、评估者、运行规则和警报规则。
+使用官方 LangSmith Terraform 提供程序以代码形式管理工作区、访问控制、资源标签、评估器、运行规则和警报规则。
 
-官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您将LangSmith组织和工作区资源作为代码进行管理——工作区、自定义角色、组织和工作区成员、评估者、运行规则和警报规则。它是与 [managing your organization using the API](/langsmith/manage-organization-by-api) 相对应的基础设施即代码。
+官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码的形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
+
+<Note>
+  管理资源标签和访问策略需要 LangSmith Terraform 提供程序 v0.0.6 或更高版本。
+</Note>
 
 <Check>
   在深入研究之前，阅读以下内容可能会有所帮助：
@@ -24,7 +28,7 @@ terraform {
   required_providers {
     langsmith = {
       source  = "langchain-ai/langsmith"
-      version = "~> 0.0.2"
+      version = "~> 0.0.6"
     }
   }
 }
@@ -43,14 +47,14 @@ provider "langsmith" {
 
 ## 身份验证
 
-提供程序解析凭据的方式与 LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
+提供商解析凭据的方式与LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
 
 * **环境**—`LANGSMITH_API_KEY`、`LANGSMITH_ENDPOINT`（API URL）、`LANGSMITH_WORKSPACE_ID`。
 * **配置文件** — 设置 `profile`（或 `LANGSMITH_PROFILE`）以使用 LangSmith CLI 配置文件。
-* **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。
+* **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。在 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。
 
-在您的 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。<Warning>
-  组织范围的操作（创建工作区和邀请组织成员）需要具有组织管理员权限的**组织范围的服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、评估器和运行规则。
+<Warning>
+  组织范围内的操作（例如创建工作区、邀请组织成员和管理访问策略）需要 **具有组织管理员权限的组织范围服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
 </Warning>
 
 ## 示例
@@ -99,9 +103,56 @@ resource "langsmith_workspace_role" "issues_agent" {
 }
 ```
 
-### 自动化评估器、运行规则和警报
+### 管理资源标签和访问策略
 
-提供商管理的不仅仅是帐户。您可以将 [online code evaluators](/langsmith/online-evaluations-code)、应用它们的 [run rules](/langsmith/rules) 和 [alerts](/langsmith/alerts) 与您的工作区一起编码：
+使用[resource tags](/langsmith/set-up-resource-tags)组织工作区资源并应用[attribute-based access control (ABAC)](/langsmith/abac)。 `langsmith_tag`便利资源拥有一个标签键和一个值。当跨配置共享键或值时，使用独立的 `langsmith_tag_key` 和 `langsmith_tag_value` 资源。
+
+以下配置创建一个 `Environment=production` 标签，将其应用于跟踪项目，并将工作区角色限制为生产项目：
+
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "langsmith_tag" "production" {
+  key               = "Environment"
+  value             = "production"
+  key_description   = "Deployment environment"
+  value_description = "Production workloads"
+}
+
+resource "langsmith_tagging" "production_project" {
+  tag_value_id  = langsmith_tag.production.tag_value_id
+  resource_type = "project"
+  resource_id   = "00000000-0000-0000-0000-000000000000" # tracing project ID
+}
+
+resource "langsmith_workspace_role" "production_reader" {
+  display_name = "Production Reader"
+  description  = "Can read production projects"
+  permissions  = ["projects:read"]
+}
+
+resource "langsmith_access_policy" "production_readers" {
+  name        = "Production readers"
+  description = "Read access to production projects"
+  effect      = "allow"
+
+  condition_groups = [{
+    permission    = "projects:read"
+    resource_type = "project"
+    conditions = [{
+      attribute_name  = "resource_tag_key"
+      attribute_key   = "Environment"
+      operator        = "equals"
+      attribute_value = "production"
+    }]
+  }]
+}
+
+resource "langsmith_access_policy_attachment" "production_reader" {
+  role_id          = langsmith_workspace_role.production_reader.id
+  access_policy_id = langsmith_access_policy.production_readers.id
+}
+```### 自动化评估器、运行规则和警报
+
+提供商管理的不仅仅是帐户。您可以将 [online code evaluators](/langsmith/online-evaluations-code)、应用它们的 [run rules](/langsmith/rules) 以及 [alerts](/langsmith/alerts) 与您的工作区一起编码：
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "langsmith_evaluator" "tool_calls" {

@@ -2,13 +2,13 @@
 
 <!-- langchain-docs: Sandboxes | https://docs.langchain.com/oss/python/deepagents/sandboxes -->
 
-# 沙箱
+# 沙盒
 
 在具有沙箱后端的隔离环境中执行代码
 
-代理生成代码、与文件系统交互并运行 shell 命令。由于我们无法预测代理可能会做什么，因此隔离其环境非常重要，这样它就无法访问凭据、文件或网络。沙箱通过在代理的执行环境和主机系统之间创建边界来提供这种隔离。
+代理生成代码、与文件系统交互并运行 shell 命令。由于您无法预测代理可能会做什么，因此隔离其环境非常重要，这样它就无法访问凭据、文件或网络。沙箱通过在代理的执行环境和主机系统之间创建边界来提供这种隔离。
 
-在深度代理中，**沙箱是定义代理运行的环境的[backends](/oss/python/deepagents/backends)**。与仅公开文件操作的其他后端（状态、文件系统、存储）不同，沙箱后端还为代理提供了用于运行 shell 命令的`execute`工具。当您配置沙箱后端时，代理将获取：
+在Deep Agents中，**沙箱是[backends](/oss/python/deepagents/backends)**，定义代理运行的环境。与仅公开文件操作的其他后端（状态、文件系统、存储）不同，沙箱后端还为代理提供了用于运行 shell 命令的`execute`工具。当您配置沙箱后端时，代理将获取：
 
 * 所有标准文件系统工具（`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`、`grep`）
 
@@ -45,10 +45,10 @@ graph LR
 沙箱特别适用于：
 
 * 编码代理：自主运行的代理可以使用 shell、git、克隆存储库（许多提供商提供本机 git API，例如[Daytona's git operations](https://www.daytona.io/docs/en/git-operations/)），并运行 Docker-in-Docker 来构建和测试管道
-* 数据分析代理——在安全、隔离的环境中加载文件、安装数据分析库（pandas、numpy 等）、运行统计计算以及创建 PowerPoint 演示文稿等输出
+* 数据分析代理：在安全、隔离的环境中加载文件、安装数据分析库（pandas、numpy 等）、运行统计计算以及创建 PowerPoint 演示文稿等输出
 
 <Tip>
-  **使用 Deep Agents Code？** Deep Agents Code 通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解深度代理代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
+  **使用 Deep Agents 代码？** Deep Agents 代码通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解 Deep Agents 代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
 </Tip>
 
 <Note>
@@ -685,9 +685,7 @@ graph LR
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 可用的提供商有关特定于提供商的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
-
-没有看到您的提供商？您可以实现自己的沙箱后端。参见[Contributing a sandbox integration](/oss/python/contributing/integrations-langchain)。
+## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
 
 ## 生命周期和范围
 
@@ -695,11 +693,11 @@ graph LR
 
 沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
-有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署连接和客户端示例，请参阅进入生产中的 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
+有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅走向生产中的 [Sandbox lifecycle](/oss/python/deepagents/going-to-production#lifecycle)。
 
 ### 线程范围（默认）
 
-每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析为相同的沙箱。
+每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析到相同的沙箱。
 
 <Tip>
   当用户可以在空闲时间后返回时，在沙箱上配置 TTL，以便提供商自动删除或存档空闲环境。
@@ -915,9 +913,9 @@ graph LR
           backend=LangSmithSandbox(sandbox=ls_sandbox),
       )
   ```
-</CodeGroup>### 助理范围
+</CodeGroup>
 
-同一助手上的每个线程都重复使用一个沙箱。文件、已安装的包和克隆的存储库在对话中保留。
+### 助理范围同一助手上的每个线程都重复使用一个沙箱。文件、已安装的包和克隆的存储库在对话中保留。
 
 <Warning>
   随着时间的推移，助理范围的沙箱会积累沙箱内的状态。使用沙箱提供程序配置 TTL，使用快照定期重置，或实施清理逻辑，以便磁盘和内存不会无限制地增长。
@@ -1419,7 +1417,7 @@ graph TB
 这个设计的意思是：
 
 * **添加新的提供程序非常简单。** 实现 `execute()` — 基类处理其他所有事情。
-* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T141⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)。如果不是，该工具将被过滤掉，代理永远不会看到它。
+* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T141⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)。如果没有，该工具将被过滤掉，代理永远不会看到它。
 
 当代理调用 `execute` 工具时，它会提供 `command` 字符串，并返回组合的 stdout/stderr、退出代码以及输出太大时的截断通知。
 
@@ -2069,7 +2067,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发凭据之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。
 
 <Warning>
-  如果必须将机密注入沙箱（不推荐），请采取以下预防措施：* 为**所有**工具调用启用[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
+  如果必须将机密注入沙箱（不推荐），请采取以下预防措施：* 对**所有**工具调用启用[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
   * 阻止或限制沙箱的网络访问以限制渗透路径
   * 使用尽可能窄的凭证范围和尽可能短的生命周期
   * 监控沙盒网络流量以发现意外的出站请求
@@ -2080,7 +2078,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙盒网络访问
+* 在不需要时阻止沙箱网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 
@@ -2092,6 +2090,6 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/sandboxes.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

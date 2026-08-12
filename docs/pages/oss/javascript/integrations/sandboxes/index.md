@@ -44,6 +44,10 @@ Sandboxes provide isolated execution environments for running agent-generated co
 
     <span>Leap0</span>
   </a>
+
+  <a href="https://gitlab.com/bitkaio/langchain/deepagents-kubernetes-sandbox">
+    <span>Kubernetes</span>
+  </a>
 </div>
 
 If you'd like to contribute a sandbox, see [Implement a sandbox integration](/oss/javascript/contributing/implement-langchain#sandboxes).

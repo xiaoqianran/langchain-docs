@@ -11,7 +11,7 @@
 <Tip>
   **使用人工智能编码助手？**
 
-  * 安装[LangChain Docs MCP server](/use-these-docs)，让您的代理能够访问最新的LangChain文档和示例。
+  * 安装 [LangChain Docs MCP server](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
   * 安装[LangChain Skills](https://github.com/langchain-ai/langchain-skills)以提高代理在LangChain生态系统任务上的性能。
 </Tip>
 
@@ -22,19 +22,19 @@
 <CodeGroup>
   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   uv init
-  uv add langchain deepagents
+  uv add langchain
   uv sync
   ```
 
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain deepagents
+  pip install -U langchain
   ```
 
   ```bash venv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   python3 -m venv .venv
   source .venv/bin/activate
   # Windows: .venv\Scripts\activate
-  pip install -U langchain deepagents
+  pip install -U langchain
   ```
 </CodeGroup>
 
@@ -117,9 +117,9 @@
 </Tabs>
 
 <Tip>
-  **使用 LangSmith 网关**
+  **使用LangSmith网关**
 
-  [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供程序密钥的情况下访问模型。
+  [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供者密钥的情况下访问模型。
 </Tip>
 
 ## 构建一个基本代理首先创建一个可以回答问题和调用工具的简单代理。本示例中的代理使用所选的语言模型、基本天气函数作为工具，以及指导其行为的简单提示：
@@ -338,7 +338,7 @@
 2. **创建与外部数据集成的工具**
 3.**模型配置**以实现一致的响应
 4.**对话记忆**用于类似聊天的交互
-5. **深度代理**用于内置功能
+5. **Deep Agents** 用于内置功能
 6. **测试**您的代理
 
 <Steps>
@@ -387,8 +387,8 @@
 
     <Tip>
       工具应该有详细的文档记录：它们的名称、描述和参数名称成为模型提示的一部分。
-      LangChain的[⟦T41⟧ decorator](https://reference.langchain.com/python/langchain-core/tools/convert/tool)添加了元数据并通过`ToolRuntime`参数启用运行时注入。
-      在[tools guide](/oss/python/langchain/tools)了解更多信息。
+      LangChain 的 [⟦T43⟧ decorator](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 添加元数据并使用 `ToolRuntime` 参数启用运行时注入。
+      了解更多信息[tools guide](/oss/python/langchain/tools)。
     </Tip>
   </Step>
 
@@ -534,14 +534,26 @@
   <Step title="Create and run the agent">
     现在将您的代理与所有组件组装起来并运行它。
 
-    创建代理有两种不同的框架：LangChain 代理和深度代理。
-    LangChain和深度代理都为您提供了对工具、内存等的细粒度控制。
+    有两种不同的框架用于创建代理：LangChain代理和深度代理。
+    LangChain 和深度代理都可以为您提供对工具、内存等的细粒度控制。
     两者之间的主要区别在于，深度代理已经内置了一系列常用的有用功能，例如规划、文件系统工具和子代理。
 
-    当您希望以最少的设置获得最大的功能时，请使用深度代理；当您需要细粒度控制时，请选择LangChain代理。
+    当您希望以最少的设置获得最大的功能时，请使用深度代理；当需要细粒度控制时，选择LangChain代理。
 
-    <Warning>
-      由于代码使用《了不起的盖茨比》的整个文本调用模型，因此它使用了大量的标记。您可以在下一步中查看示例输出。
+    要在此步骤中比较两者，请安装 `deepagents` 软件包：
+
+    <CodeGroup>
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      uv add deepagents
+      ```
+
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pip install -U deepagents
+      ```
+    </CodeGroup><Warning>
+      由于代码使用《了不起的盖茨比》的整个文本调用模型，因此它使用了大量的标记。
+
+      您可以在下一步中查看示例输出。
     </Warning>
 
     让我们尝试一下：
@@ -719,22 +731,22 @@
       </Tab>
     </Tabs>
 
-    如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们只是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
+    如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
 
     另一方面，深度代理可以：
 
-    1. **规划其方法**，使用内置的[⟦T43⟧](/oss/python/deepagents/harness#task-planning)工具来分解研究任务。
+    1. **规划其方法**，使用内置的[⟦T46⟧](/oss/python/deepagents/harness#task-planning)工具来分解研究任务。
     2. **通过调用`fetch_text_from_url`工具收集信息来加载文件**。
-    3. **使用文件系统工具（[⟦T45⟧](/oss/python/deepagents/harness#virtual-filesystem-access) 和 [⟦T46⟧](/oss/python/deepagents/harness#virtual-filesystem-access)）管理上下文**。
-    4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。
-
-    对于LangChain代理，您必须实现更多功能才能获得类似水平的服务，并且可以根据需要一路定制它们。
+    3. **使用文件系统工具（[⟦T48⟧](/oss/python/deepagents/harness#virtual-filesystem-access) 和 [⟦T49⟧](/oss/python/deepagents/harness#virtual-filesystem-access)）管理上下文**。
+    4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。对于LangChain代理，您必须实现更多功能才能获得类似的服务级别，并且可以根据需要自定义它们。
   </Step>
 </Steps>
 
-## 跟踪代理调用使用 LangChain 构建的大多数有趣的应用程序都会多次调用 LLM。随着这些应用程序变得越来越复杂，能够检查代理内部到底发生了什么就变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。
+## 跟踪代理调用
 
-注册 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
+您使用 LangChain 构建的大多数有趣的应用程序都会多次调用 LLM。随着这些应用程序变得越来越复杂，能够检查代理内部到底发生了什么变得很重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart)。
+
+注册一个 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 帐户并设置这些以开始记录跟踪：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
@@ -755,22 +767,22 @@ export LANGSMITH_API_KEY="..."
 
 * **理解上下文**并记住对话
 * **明智地使用工具**
-* **以一致的格式提供结构化响应**
+* **以一致的格式提供结构化回复**
 * **通过上下文处理用户特定信息**
 * **在交互过程中保持对话状态**
 * **计划、研究和综合**（仅限深度代理）
 
-继续：
-
-* **LangChain代理商**：[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)、[deploy to production](/oss/python/langgraph/deploy)
-* **深层特工**：[Customization options](/oss/python/deepagents/customization)、[persistent memory](/oss/python/deepagents/memory)、[deploy to production](/oss/python/langgraph/deploy)
+继续：* **LangChain代理商**：[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)、[deploy to production](/oss/python/langgraph/deploy)
+* **Deep Agents**：[Customization options](/oss/python/deepagents/customization)、[persistent memory](/oss/python/deepagents/memory)、[deploy to production](/oss/python/langgraph/deploy)
 
 ***
 
 <div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

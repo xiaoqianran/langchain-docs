@@ -51,7 +51,7 @@ for document in loader.lazy_load():
 下面的文档加载器允许您加载网页。
 
 |文档加载器|描述 |包/API |
-| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) |使用Unstructed 加载和解析网页|套餐 |
 | [Apify Dataset](https://docs.apify.com/platform/storage/dataset) |从 Apify 数据集加载文档 |应用程序接口 || [Docling](/oss/python/integrations/document_loaders/docling) |使用Docling加载和解析网页|套餐 |
 | [DomPruner](https://github.com/dong7812/dompruner-py) | DOM AST 修剪：将网页加载为紧凑的 Markdown，令牌减少 97% 以上，无需 API 密钥 |套餐 |
@@ -66,7 +66,7 @@ for document in loader.lazy_load():
 ### PDF
 
 下面的文档加载器允许您加载 PDF 文档。|文档加载器|描述 |包/API |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------- |
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) |使用Unstructed的开源库加载PDF |套餐 |
 | [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage) |使用 UpstageDocumentParseLoader 加载 PDF 文件 |套餐 |
 | [Docling](/oss/python/integrations/document_loaders/docling) |使用 Docling 加载 PDF 文件 |套餐 |
@@ -80,14 +80,14 @@ for document in loader.lazy_load():
 ### 云提供商
 
 下面的文档加载器允许您从您最喜欢的云提供商加载文档。|文档加载器|描述 |合作伙伴套餐 | API参考|
-| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | [Google Cloud Storage Directory](/oss/python/integrations/document_loaders/google_cloud_storage_directory) |从 GCS 存储桶加载文档 | ✅ | [⟦T6⟧](https://reference.langchain.com/python/langchain-google-community/gcs_directory/GCSDirectoryLoader) |
 | [Google Cloud Storage File](/oss/python/integrations/document_loaders/google_cloud_storage_file) |从 GCS 文件对象加载文档 | ✅ | [⟦T7⟧](https://reference.langchain.com/python/langchain-google-community/gcs_file/GCSFileLoader) |
 | [Google Drive](/oss/python/integrations/document_loaders/google_drive) |从 Google 云端硬盘加载文档（仅限 Google 文档）| ✅ | [⟦T8⟧](https://reference.langchain.com/python/langchain-google-community/drive/GoogleDriveLoader) |
 
 ### 常见文件类型
 
-以下文档加载器允许您从常见数据格式加载数据。|文档加载器|数据类型|
+以下文档加载器允许您从常见数据格式加载数据。|文档加载器|数据类型 |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [⟦T9⟧](/oss/python/integrations/document_loaders/unstructured_file) |许多文件类型（请参阅[https://docs.unstructured.io/platform/supported-file-types](https://docs.unstructured.io/platform/supported-file-types)）|
 | [⟦T10⟧](https://github.com/jaypakdevkr/HWP-Loader) | HWP/HWPX 文件 |
@@ -95,7 +95,7 @@ for document in loader.lazy_load():
 | [⟦T12⟧](https://datainsight.polarisoffice.com/playground) |各种文件类型（参见[https://datainsight.polarisoffice.com/documentation?docType=doc\_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)）|
 
 ## 所有文档加载器<div>
-  |整合 |下载 |
+  |整合|下载 |
   | :------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------ |
   | [⟦T13⟧](/oss/python/integrations/document_loaders/google_bigquery) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
   | [⟦T14⟧](/oss/python/integrations/document_loaders/google_cloud_storage_directory) | <span><a href="https://pypi.org/project/langchain-google-community/"> <img alt="Downloads per month" /></a></span> |
@@ -110,20 +110,20 @@ for document in loader.lazy_load():
   | [⟦T24⟧](/oss/python/integrations/document_loaders/google_alloydb) | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T25⟧](/oss/python/integrations/document_loaders/google_spanner) | <span><a href="https://pypi.org/project/langchain-google-spanner/"><img alt="Downloads per month" /></a></span>|
   | [⟦T26⟧](/oss/python/integrations/document_loaders/google_firestore) | <span><a href="https://pypi.org/project/langchain-google-firestore/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T27⟧](https://docs.apify.com/storage/dataset) | <span><a href="https://pypi.org/project/langchain-apify/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T28⟧](https://github.com/pymupdf/langchain-pymupdf4llm) | <span><a href="https://pypi.org/project/langchain-pymupdf4llm/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T27⟧](https://github.com/pymupdf/langchain-pymupdf4llm) | <span><a href="https://pypi.org/project/langchain-pymupdf4llm/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T28⟧](https://docs.apify.com/storage/dataset) | <span><a href="https://pypi.org/project/langchain-apify/"><img alt="Downloads per month" /></a></span>|
   | [⟦T29⟧](https://docs.cloud.google.com/sql/docs/postgres) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-pg/"><img alt="Downloads per month" /></a></span>|
   | [⟦T30⟧](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | <span><a href="https://pypi.org/project/langchain-opendataloader-pdf/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T31⟧](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T32⟧](https://github.com/aqib0770/langchain-yt-dlp) | <span><a href="https://pypi.org/project/langchain-yt-dlp/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T33⟧](/oss/python/integrations/document_loaders/azure_blob_storage) | <span><a href="https://pypi.org/project/langchain-azure-storage/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T34⟧](/oss/python/integrations/document_loaders/docugami) | <span><a href="https://pypi.org/project/docugami-langchain/"> <img alt="Downloads per month" /></a></span> || [⟦T35⟧](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T31⟧](https://github.com/aqib0770/langchain-yt-dlp) | <span><a href="https://pypi.org/project/langchain-yt-dlp/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T32⟧](/oss/python/integrations/document_loaders/azure_blob_storage) | <span><a href="https://pypi.org/project/langchain-azure-storage/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T33⟧](/oss/python/integrations/document_loaders/docugami) | <span><a href="https://pypi.org/project/docugami-langchain/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T34⟧](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/"> <img alt="Downloads per month" /></a></span> || [⟦T35⟧](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/"><img alt="Downloads per month" /></a></span>|
   | [⟦T36⟧](https://github.com/arsbr/Veritensor) | <span><a href="https://pypi.org/project/veritensor/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T37⟧](https://mineru.net) | <span><a href="https://pypi.org/project/langchain-mineru/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T38⟧](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T37⟧](/oss/python/integrations/document_loaders/google_memorystore_redis) | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T38⟧](https://mineru.net) | <span><a href="https://pypi.org/project/langchain-mineru/"><img alt="Downloads per month" /></a></span>|
   | [⟦T39⟧](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/"><img alt="Downloads per month" /></a></span>|
   | [⟦T40⟧](https://github.com/singlestore-labs/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T41⟧](/oss/python/integrations/document_loaders/google_memorystore_redis) | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T41⟧](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/"><img alt="Downloads per month" /></a></span>|
   | [⟦T42⟧](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T43⟧](https://fastcrw.com) | <span><a href="https://pypi.org/project/langchain-crw/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T44⟧](https://github.com/10Pines/langchain-outline) | <span><a href="https://pypi.org/project/langchain-outline/"> <img alt="Downloads per month" /></a></span> || [⟦T45⟧](https://github.com/undacmic/langchain-pdf-inspector) | <span><a href="https://pypi.org/project/langchain-pdf-inspector/"><img alt="Downloads per month" /></a></span>|
@@ -134,23 +134,23 @@ for document in loader.lazy_load():
   | [⟦T50⟧](https://datainsight.polarisoffice.com/playground) | <span><a href="https://pypi.org/project/langchain-polaris-ai-datainsight/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T51⟧](https://www.paddleocr.com) | <span><a href="https://pypi.org/project/langchain-paddleocr/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T52⟧](https://developer.box.com/) | <span><a href="https://pypi.org/project/langchain-box/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T53⟧](https://cvfile.org) | <span><a href="https://pypi.org/project/langchain-cvfile/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T54⟧](/oss/python/integrations/document_loaders/google_classroom) | <span><a href="https://pypi.org/project/langchain-google-classroom/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T55⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/"><img alt="Downloads per month" /></a></span>|| [⟦T56⟧](https://github.com/kineticadb/langchain-kinetica) | <span><a href="https://pypi.org/project/langchain-kinetica/"><img alt="Downloads per month" />​​</a></span>|
-  | [⟦T57⟧](/oss/python/integrations/document_loaders/google_datastore) | <span><a href="https://pypi.org/project/langchain-google-datastore/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T58⟧](https://docs.agentql.com/home) | <span><a href="https://pypi.org/project/langchain-agentql/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T59⟧](https://undatas.io) | <span><a href="https://pypi.org/project/langchain-undatasio/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T60⟧](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T61⟧](https://github.com/casperkwok/pdfmuse) | <span><a href="https://pypi.org/project/langchain-pdfmuse/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T62⟧](https://docs.plasmate.app/integration-langchain) | <span><a href="https://pypi.org/project/langchain-plasmate/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T63⟧](https://soniox.com/docs/stt/concepts/supported-languages) | <span><a href="https://pypi.org/project/langchain-soniox/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T64⟧](https://docs.airbyte.com/integrations/) | <span><a href="https://pypi.org/project/langchain-airbyte/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T65⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T66⟧](https://github.com/agentmail-to/langchain-agentmail) | <span><a href="https://pypi.org/project/langchain-agentmail/"><img alt="Downloads per month" /></a></span>|| [⟦T67⟧](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain) | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T68⟧](https://github.com/googleapis/langchain-google-el-carro-python/) | <span><a href="https://pypi.org/project/langchain-google-el-carro/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T69⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T70⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T71⟧](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T53⟧](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T54⟧](https://cvfile.org) | <span><a href="https://pypi.org/project/langchain-cvfile/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T55⟧](/oss/python/integrations/document_loaders/google_classroom) | <span><a href="https://pypi.org/project/langchain-google-classroom/"><img alt="Downloads per month" /></a></span>|| [⟦T56⟧](https://github.com/kineticadb/langchain-kinetica) | <span><a href="https://pypi.org/project/langchain-kinetica/"><img alt="Downloads per month" />​​</a></span>|
+  | [⟦T57⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T58⟧](https://undatas.io) | <span><a href="https://pypi.org/project/langchain-undatasio/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T59⟧](https://github.com/casperkwok/pdfmuse) | <span><a href="https://pypi.org/project/langchain-pdfmuse/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T60⟧](/oss/python/integrations/document_loaders/google_datastore) | <span><a href="https://pypi.org/project/langchain-google-datastore/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T61⟧](https://docs.agentql.com/home) | <span><a href="https://pypi.org/project/langchain-agentql/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T62⟧](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T63⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T64⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T65⟧](https://docs.plasmate.app/integration-langchain) | <span><a href="https://pypi.org/project/langchain-plasmate/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T66⟧](https://soniox.com/docs/stt/concepts/supported-languages) | <span><a href="https://pypi.org/project/langchain-soniox/"><img alt="Downloads per month" /></a></span>|| [⟦T67⟧](https://docs.airbyte.com/integrations/) | <span><a href="https://pypi.org/project/langchain-airbyte/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T68⟧](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T69⟧](https://github.com/agentmail-to/langchain-agentmail) | <span><a href="https://pypi.org/project/langchain-agentmail/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T70⟧](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain) | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T71⟧](https://github.com/googleapis/langchain-google-el-carro-python/) | <span><a href="https://pypi.org/project/langchain-google-el-carro/"><img alt="Downloads per month" /></a></span>|
   | [⟦T72⟧](/oss/python/integrations/document_loaders/powerscale) | <span><a href="https://pypi.org/project/powerscale-rag-connector/"><img alt="Downloads per month" /></a></span>|
   | [⟦T73⟧](/oss/python/integrations/document_loaders/langsmith) | <span>不适用</span> |
 </div>

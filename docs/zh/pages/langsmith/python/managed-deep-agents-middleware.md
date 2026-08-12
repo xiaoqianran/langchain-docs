@@ -2,16 +2,16 @@
 
 <!-- langchain-docs: Add custom middleware to Managed Deep Agents | https://docs.langchain.com/langsmith/python/managed-deep-agents-middleware -->
 
-# 将自定义中间件添加到托管深度代理
+# 将自定义中间件添加到托管Deep Agents
 
-将内置或自定义中间件添加到托管深度代理项目。
+将内置或自定义中间件添加到托管 Deep Agents 项目。
 
-托管深度代理支持普通深度代理 `middleware` 配置界面。
+托管Deep Agents支持正常的Deep Agents`middleware`配置界面。
 
-在`define_deep_agent`中添加LangChain中间件，以监控工具调用、添加护栏、编辑数据、重试瞬时故障或自定义模型调用。
+将LangChain中间件添加到`define_deep_agent`以监视工具调用、添加护栏、编辑数据、重试瞬时故障或自定义模型调用。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -31,7 +31,7 @@ my-agent/
 
 ## 使用预构建的中间件
 
-您可以直接在代理定义中使用 LangChain 预构建的中间件。
+您可以直接在代理定义中使用LangChain预构建的中间件。
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
@@ -51,10 +51,12 @@ agent = define_deep_agent(
 
 ## 添加自定义中间件模块
 
-对于更高级的选项，您还可以定义[custom middleware](/oss/python/langchain/middleware/custom)。
+对于更高级的选项，您还可以定义[custom middleware](/oss/python/langchain/middleware/custom)。<Note>
+  托管Deep Agents使用`ainvoke`和`astream`，因此自定义中间件必须使用异步钩子。 Deep Agents `invoke` 和 `stream` 仍支持同步挂钩。
+</Note>
 
 ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 
 from langchain.agents.middleware import wrap_tool_call
 from langchain.messages import ToolMessage
@@ -63,15 +65,17 @@ from langgraph.types import Command
 
 
 @wrap_tool_call
-def log_tool_calls(
+async def log_tool_calls(
     request: ToolCallRequest,
-    handler: Callable[[ToolCallRequest], ToolMessage | Command],
+    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
 ) -> ToolMessage | Command:
     print(f"Calling tool: {request.tool_call['name']}")
-    result = handler(request)
+    result = await handler(request)
     print(f"Finished tool: {request.tool_call['name']}")
     return result
-```将中间件导入项目根代理条目并将其传递到`middleware`列表中。
+```
+
+将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中。
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_deep_agent

@@ -8,7 +8,7 @@
   此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
 </Info>
 
-自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能进行以下操作：
+自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能执行以下操作：
 
 * **计费遥测**：许可证验证和订阅/使用报告（必需）
 * **操作遥测**：用于支持诊断的日志、指标和跟踪（可选，可以禁用）
@@ -24,7 +24,7 @@
 
 ## 计费遥测
 
-对于不以离线模式运行的自托管 LangSmith 实例，**需要**计费遥测。这包括许可证验证和订阅/使用报告。<Info>
+对于未在离线模式下运行的自托管 LangSmith 实例，**需要**计费遥测。这包括许可证验证和订阅/使用报告。<Info>
   计费遥测**无法禁用**。如果您需要在没有任何出口的情况下运行，请联系您的客户团队以获取离线（气隙）许可证。
 </Info>
 
@@ -99,15 +99,15 @@
 
 ## 操作遥测
 
-从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。这种遥测有助于 LangChain 团队为自托管实例提供主动支持和更快的故障排除。
+从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测有助于 LangChain 团队为自托管实例提供主动支持和更快的故障排除。
 
 <Info>
   操作遥测与计费遥测**分开。您可以在计费遥测保持活动状态时禁用操作遥测。
-</Info>### 它的作用
+</Info>
 
-* 实现主动支持并更快地排除自托管实例的故障
+### 它的作用* 实现主动支持并更快地排除自托管实例的故障
 * 协助性能调整
-* 帮助根据现实世界的使用模式确定改进的优先顺序
+* 帮助根据实际使用模式确定改进的优先顺序
 
 ### 我们收集什么
 
@@ -312,7 +312,7 @@ config:
 
 #### 操作日志消息
 
-我们仅从自托管 LangSmith 实例导出错误日志消息。这使得LangChain团队能够排除应用程序错误，而无需与您的团队来回沟通。
+我们仅从自托管 LangSmith 实例导出错误日志消息。这使得 LangChain 团队能够排除应用程序错误，而无需与您的团队来回沟通。
 
 **端点：** `POST beacon.langchain.com/v1/beacon/v1/logs`
 
@@ -399,12 +399,12 @@ config:
 使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。
 
 <Info>
-  使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到 LangChain。
+  使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到LangChain。
 </Info>
 
 ### 它的作用* 定期捕获聚合使用指标
 * 提供对功能采用和平台增长的深入了解
-* 帮助LangChain根据实际使用情况确定改进和新功能的优先顺序
+* 帮助LangChain根据实际使用情况确定改进和新功能的优先级
 
 ### 我们收集什么
 
@@ -414,7 +414,7 @@ config:
 * **时间戳**：快照的时间范围（从/到 UTC 时间戳）
 
 <Info>
-  所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
+  所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户身份的信息。
 </Info>
 
 ### 负载示例
@@ -457,25 +457,25 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
   禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
 </Warning>
 
-## 朗史密斯发动机智能
+## LangSmith 发动机智能
 
-本节仅在您启用 [Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine) 时适用。 LangSmith Intelligence 是由 LangChain 管理的服务，为 Engine 提供支持。没有其他 LangSmith 功能依赖于它，并且不需要超出本页已描述的出口。
+本节仅在您启用 [Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine) 时适用。 LangSmith Intelligence 是由 LangChain 管理的服务，为引擎提供动力。没有其他LangSmith功能依赖于它，并且不需要超出本页已经描述的出口。
 
-引擎无法完全在集群内运行。它将请求发送到 LangSmith Intelligence，这是一项由 LangChain 管理的零数据保留 (ZDR) 服务，该服务将请求路由到 LangChain 环境内的模型提供商。允许出站 HTTPS 到您的云网关：AWS 上的`beacon.aws.langchain.com`，或 GCP 上的`beacon.langchain.com`。在 GCP 上，该页面已需要同一主机，因此引擎添加了路径而不是新目的地。
+引擎无法完全在集群内运行。它将请求发送到 LangSmith Intelligence，这是一个 LangChain 管理的零数据保留 (ZDR) 服务，该服务将请求路由到 LangChain 环境内的模型提供程序。允许出站 HTTPS 到您的云网关：AWS 上的`beacon.aws.langchain.com`，或 GCP 上的`beacon.langchain.com`。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。在 GCP 上，网关与此页面已需要的主机相同，因此引擎添加了一条路径而不是新的目的地。
 
 <Note>
-  引擎可用于 **AWS US** 和 **GCP US** 中的 LangSmith 自托管。 AWS EU 和 Azure 已规划。参见[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)。
+  引擎可用于 LangSmith 自托管于 **AWS US** 和 **GCP US**。 AWS EU 和 Azure 已规划。参见[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)。
 </Note><Warning>
   将网关添加为特定的允许列表条目，而不是打开常规出站访问。请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。不需要额外的模型提供商凭据。
 </Warning>
 
 ### 它的作用
 
-* **为引擎提供动力**：引擎依赖于 LangSmith Intelligence，没有它就无法运行。
+* **为引擎提供动力**：引擎依赖于LangSmith智能，没有它就无法运行。
 
 ### 我们收集什么
 
-每个请求可能携带跟踪内容、源代码和引擎完成其工作所需的中间输出。 LangSmith Intelligence 和模型提供商处理该内容以满足请求。 LangSmith Intelligence 不保留提示或完成主体。
+每个请求可能携带跟踪内容、源代码和引擎完成其工作所需的中间输出。 LangSmith 情报和模型提供者处理该内容以服务请求。 LangSmith 智能不会保留提示体或完成体。
 
 LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 
@@ -485,10 +485,10 @@ LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
 <Info>
-  脱机（气隙）自承载无法运行引擎，因为它无法到达 LangSmith Intelligence。 LangSmith 的所有其他功能都可以继续离线工作。
+  离线（气隙）自承载无法运行引擎，因为它无法达到LangSmith智能。所有其他 LangSmith 功能都可以继续离线工作。
 </Info>
 
-## 我们的承诺以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain不会在该遥测数据中存储敏感信息或与第三方共享。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对 LangSmith Intelligence 的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted) 中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或联系您的客户团队。
+## 我们的承诺以下承诺适用于本页所述的计费、操作和使用遥测。 LangChain 不会在遥测中存储敏感信息或与第三方共享。日志消息被过滤为仅包含错误严重性级别，并且我们不会捕获可能包含敏感应用程序数据的日志消息。引擎对LangSmith智能的使用是[Engine on Self-hosted](/langsmith/engine-self-hosted)中描述的单独数据流。如果您对发送的数据有任何疑问，请禁用可选遥测或联系您的客户团队。
 
 ***
 

@@ -4,6 +4,6 @@
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/threads/query
 Query threads within a project (session), with cursor-based pagination.
-Returns threads matching the given time range and optional filter.
+Returns threads matching the given time range and optional filters.
 
 Self-hosted deployments require LangSmith `v0.16` or later.

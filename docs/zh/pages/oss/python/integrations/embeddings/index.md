@@ -216,7 +216,7 @@ print(f"Second call took: {time.time() - tic:.2f} seconds")
 在生产中，您通常会使用更强大的持久存储，例如数据库或云存储。请参阅[stores integrations](/oss/python/integrations/stores/)了解选项。
 
 ## 所有嵌入模型<div>
-  |整合 |下载 |
+  |整合|下载 |
   | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
   | [⟦T82⟧](/oss/python/integrations/embeddings/azure_openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
   | [⟦T83⟧](/oss/python/integrations/embeddings/openai) | <span><a href="https://pypi.org/project/langchain-openai/"><img alt="Downloads per month" /></a></span>|
@@ -247,23 +247,22 @@ print(f"Second call took: {time.time() - tic:.2f} seconds")
   | [⟦T110⟧](https://atlas.nomic.ai/) | <span><a href="https://pypi.org/project/langchain-nomic/">​​<img alt="Downloads per month" /></a></span>|
   | [⟦T111⟧](https://docs.tokenfactory.nebius.com/quickstart) | <span><a href="https://pypi.org/project/langchain-nebius/"><img alt="Downloads per month" /></a></span>|
   | [⟦T112⟧](https://developers.cloudflare.com/ai/models/#text-embeddings) | <span><a href="https://pypi.org/project/langchain-cloudflare/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T113⟧](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/"><img alt="Downloads per month" /></a></span>|| [⟦T114⟧](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T115⟧](https://www.modelscope.cn/docs/sdk/pipelines) | <span><a href="https://pypi.org/project/langchain-modelscope-integration/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T116⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span><a href="https://pypi.org/project/langchain-doubleword/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T117⟧](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T113⟧](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T114⟧](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span><a href="https://pypi.org/project/langchain-doubleword/"> <img alt="Downloads per month" /></a></span> || [⟦T115⟧](https://www.modelscope.cn/docs/sdk/pipelines) | <span><a href="https://pypi.org/project/langchain-modelscope-integration/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T116⟧](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T117⟧](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/"><img alt="Downloads per month" /></a></span>|
   | [⟦T118⟧](https://voxell.ai/forge) | <span><a href="https://pypi.org/project/langchain-voxell/"><img alt="Downloads per month" /></a></span>|
   | [⟦T119⟧](https://docs.empiriolabs.ai) | <span><a href="https://pypi.org/project/langchain-empiriolabs/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T120⟧](https://github.com/sbryngelson/langchain-aneforge) | <span><a href="https://pypi.org/project/langchain-aneforge/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T120⟧](https://github.com/protagolabs/langchain-netmind) | <span><a href="https://pypi.org/project/langchain-netmind/"><img alt="Downloads per month" /></a></span>|
   | [⟦T121⟧](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T122⟧](https://github.com/protagolabs/langchain-netmind) | <span><a href="https://pypi.org/project/langchain-netmind/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T123⟧](https://greennode.ai/) | <span><a href="https://pypi.org/project/langchain-greennode/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T122⟧](https://greennode.ai/) | <span><a href="https://pypi.org/project/langchain-greennode/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T123⟧](https://github.com/sbryngelson/langchain-aneforge) | <span><a href="https://pypi.org/project/langchain-aneforge/"><img alt="Downloads per month" /></a></span>|
   | [⟦T124⟧](https://developers.telnyx.com/docs/inference/models) | <span><a href="https://pypi.org/project/langchain-telnyx/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T125⟧](https://isaacus.com/docs) | <span><a href="https://pypi.org/project/langchain-isaacus/"><img alt="Downloads per month" /></a></span>|| [⟦T126⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | <span><a href="https://pypi.org/project/langchain-lindorm-integration/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T125⟧](https://isaacus.com/docs) | <span><a href="https://pypi.org/project/langchain-isaacus/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T126⟧](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview) | <span><a href="https://pypi.org/project/langchain-lindorm-integration/"><img alt="Downloads per month" /></a></span>|
 </div>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
   </Callout>

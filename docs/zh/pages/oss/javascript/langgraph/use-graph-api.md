@@ -60,13 +60,13 @@ const node: GraphNode<typeof State> = (state) => {
 };
 ```
 
-该节点只是将一条消息附加到我们的消息列表（reducer 处理串联），并填充一个额外的字段。
+该节点只是将一条消息附加到我们的消息列表中（reducer 处理串联），并填充一个额外的字段。
 
 <Warning>
   节点应该直接返回状态更新，而不是改变状态。
 </Warning>
 
-接下来让我们定义一个包含该节点的简单图。我们使用[⟦T87⟧](/oss/javascript/langgraph/graph-api#stategraph)来定义一个在这个状态上运行的图。然后我们使用 [⟦T88⟧](/oss/javascript/langgraph/graph-api#nodes) 填充我们的图表。
+接下来让我们定义一个包含该节点的简单图。我们使用[⟦T87⟧](/oss/javascript/langgraph/graph-api#stategraph)来定义一个在此状态上运行的图。然后我们使用 [⟦T88⟧](/oss/javascript/langgraph/graph-api#nodes) 填充我们的图表。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph } from "@langchain/langgraph";
@@ -210,7 +210,7 @@ human: Hi
 ai: Hello!
 ```
 
-对于涉及[chat models](https://js.langchain.com/docs/concepts/chat_models/)的应用程序来说，这是一种通用的状态表示。为了方便起见，LangGraph包含了预先构建的`MessagesValue`，这样我们就可以：
+对于涉及[chat models](https://js.langchain.com/docs/concepts/chat_models/)的应用程序来说，这是一种通用的状态表示。为了方便起见，LangGraph包含了预构建的`MessagesValue`，这样我们就可以：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue } from "@langchain/langgraph";
@@ -364,7 +364,7 @@ Output of graph invocation: {"a":"set by node3"}
 | `LastValue` |存储最新值 |被覆盖的简单字段 |
 | `BinaryOperatorAggregate` |使用减速函数组合值 |累积值（计数器、列表）|
 | `Topic` |将所有值收集到一个序列中 |事件流、审核日志 |
-| `EphemeralValue` |在超级步之间重置的值 |临时计算状态 |
+| `EphemeralValue` |在超级步之间重置的值 |临时计算状态|
 
 **使用对象简写：**
 
@@ -920,7 +920,7 @@ const builder = new StateGraph(State)
   ```
 
   <Note>
-    请注意，当向状态发出更新时，每个节点只能指定它希望更新的键的值。默认情况下，这将**覆盖**相应键的值。您还可以使用 [reducers](/oss/javascript/langgraph/graph-api#reducers) 来控制更新的处理方式，例如，您可以将连续的更新附加到某个键。有关更多详细信息，请参阅[Process state updates with reducers](#process-state-updates-with-reducers)。
+    请注意，当向状态发出更新时，每个节点只能指定它希望更新的键的值。默认情况下，这将**覆盖**相应键的值。您还可以使用 [reducers](/oss/javascript/langgraph/graph-api#reducers) 来控制更新的处理方式，例如，您可以将连续的更新附加到一个键上。有关更多详细信息，请参阅[Process state updates with reducers](#process-state-updates-with-reducers)。
   </Note>
 
   最后，我们定义图表。我们使用[StateGraph](/oss/javascript/langgraph/graph-api#stategraph)来定义一个在这个状态上运行的图。
@@ -1074,7 +1074,7 @@ Adding "D" to ['A', 'B', 'C']
 </Note><Accordion title="Exception handling?">
   LangGraph执行[supersteps](/oss/javascript/langgraph/graph-api#graphs)内的节点，这意味着虽然并行分支是并行执行的，但整个超级步骤是**事务性的**。如果这些分支中的任何一个引发异常，则不会将任何更新应用于状态（整个超级步骤错误）。
 
-  重要的是，当使用[checkpointer](/oss/javascript/langgraph/persistence)时，超级步中成功节点的结果将被保存，并且在恢复时不会重复。
+  重要的是，当使用[checkpointer](/oss/javascript/langgraph/persistence)时，超级步内成功节点的结果将被保存，并且在恢复时不会重复。
 
   如果您容易出错（也许想要处理不稳定的 API 调用），LangGraph 提供了两种方法来解决这个问题：
 
@@ -1086,7 +1086,7 @@ Adding "D" to ['A', 'B', 'C']
 
 <Tip>
   **设置最大并发数**
-  您可以在调用图表时通过设置[configuration](https://reference.langchain.com/javascript/interfaces/_langchain_langgraph.index.LangGraphRunnableConfig.html)中的`max_concurrency`来控制最大并发任务数。
+  您可以在调用图时通过设置[configuration](https://reference.langchain.com/javascript/interfaces/_langchain_langgraph.index.LangGraphRunnableConfig.html)中的`max_concurrency`来控制最大并发任务数。
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const result = await graph.invoke({ value1: "c" }, {configurable: {max_concurrency: 10}});
@@ -1124,7 +1124,7 @@ const nodeC: GraphNode<typeof State> = (state) => {
   return { aggregate: ["C"] };  // [!code highlight]
 };
 
-const conditionalEdge: ConditionalEdgeRouter<typeof State, "b" | "c"> = (state) => {
+const conditionalEdge: ConditionalEdgeRouter<{ InputSchema: typeof State; Nodes: "b" | "c" }> = (state) => {
   // Fill in arbitrary logic here that uses the state
   // to determine the next node
   return state.which as "b" | "c";
@@ -1166,7 +1166,7 @@ Adding "C" to ['A']
   您的条件边可以路由到多个目标节点。例如：
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const routeBcOrCd: ConditionalEdgeRouter<typeof State, "b" | "c" | "d"> = (state) => {
+  const routeBcOrCd: ConditionalEdgeRouter<{ InputSchema: typeof State; Nodes: "b" | "c" | "d" }> = (state) => {
     if (state.which === "cd") {
       return ["c", "d"];
     }
@@ -1206,7 +1206,7 @@ const generateJoke: GraphNode<typeof OverallState> = (state) => {
   return { jokes: [jokeMap[state.subject]] };
 };
 
-const continueToJokes: ConditionalEdgeRouter<typeof OverallState, "generateJoke"> = (state) => {
+const continueToJokes: ConditionalEdgeRouter<{ InputSchema: typeof OverallState; Nodes: "generateJoke" }> = (state) => {
   return state.subjects.map((subject) => new Send("generateJoke", { subject }));
 };
 
@@ -1255,7 +1255,7 @@ for await (const message of stream.messages) {
 
 ## 创建和控制循环
 
-当创建带有循环的图时，我们需要一种终止执行的机制。最常见的方法是添加一个 [conditional edge](/oss/javascript/langgraph/graph-api#conditional-edges)，一旦达到某些终止条件，该[END](/oss/javascript/langgraph/graph-api#end-node) 节点就会路由到该节点。
+当创建带有循环的图时，我们需要一种终止执行的机制。最常见的方法是添加一个 [conditional edge](/oss/javascript/langgraph/graph-api#conditional-edges) ，一旦达到某些终止条件，该[END](/oss/javascript/langgraph/graph-api#end-node) 节点就会路由到 [END](/oss/javascript/langgraph/graph-api#end-node) 节点。
 
 您还可以在调用或流式传输图形时设置图形递归限制。递归限制设置了图表在引发错误之前允许执行的 [super-steps](/oss/javascript/langgraph/graph-api#graphs) 数量。了解有关 [recursion limit concept](/oss/javascript/langgraph/graph-api#recursion-limit) 的更多信息。
 
@@ -1266,7 +1266,7 @@ for await (const message of stream.messages) {
 创建循环时，可以包含指定终止条件的条件边：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const route: ConditionalEdgeRouter<typeof State, "b"> = (state) => {
+const route: ConditionalEdgeRouter<{ InputSchema: typeof State; Nodes: "b" }> = (state) => {
   if (terminationCondition(state)) {
     return END;
   } else {
@@ -1322,7 +1322,7 @@ const nodeB: GraphNode<typeof State> = (state) => {
 };
 
 // Define edges
-const route: ConditionalEdgeRouter<typeof State, "b"> = (state) => {
+const route: ConditionalEdgeRouter<{ InputSchema: typeof State; Nodes: "b" }> = (state) => {
   if (state.aggregate.length < 7) {
     return "b";
   } else {
@@ -1424,7 +1424,7 @@ const State = new StateSchema({
 
 // Define the nodes
 
-const nodeA: GraphNode<typeof State, "nodeB" | "nodeC"> = (state) => {
+const nodeA: GraphNode<{ InputSchema: typeof State; Nodes: "nodeB" | "nodeC" }> = (state) => {
   console.log("Called A");
   const value = Math.random() > 0.5 ? "b" : "c";
   // this is a replacement for a conditional edge function
@@ -1521,7 +1521,7 @@ const State = new StateSchema({
   ),
 });
 
-const nodeA: GraphNode<typeof State, "nodeB" | "nodeC"> = (state) => {
+const nodeA: GraphNode<{ InputSchema: typeof State; Nodes: "nodeB" | "nodeC" }> = (state) => {
   console.log("Called A");
   const value = Math.random() > 0.5 ? "nodeB" : "nodeC";
 
@@ -1638,7 +1638,7 @@ const node2: GraphNode<typeof State> = (state) => {
   return { value: state.value * 2 };
 };
 
-const router: ConditionalEdgeRouter<typeof State, "node2"> = (state) => {
+const router: ConditionalEdgeRouter<{ InputSchema: typeof State; Nodes: "node2" }> = (state) => {
   if (state.value < 10) {
     return "node2";
   }

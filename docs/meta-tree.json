@@ -4361,10 +4361,6 @@
           "rel": "langsmith/smith-api/feedback/delete-feedback-formula-endpoint.md"
         },
         {
-          "title": "Eagerly create feedback",
-          "rel": "langsmith/smith-api/feedback/eagerly-create-feedback.md"
-        },
-        {
           "title": "Get feedback formula ep",
           "rel": "langsmith/smith-api/feedback/get-feedback-formula-ep.md"
         },

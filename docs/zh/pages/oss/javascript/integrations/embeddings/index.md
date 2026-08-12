@@ -402,13 +402,13 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
   | [⟦T62⟧](/oss/javascript/integrations/embeddings/pinecone) | <span><a href="https://www.npmjs.com/package/@langchain/pinecone"> <img alt="Downloads per month" /></a></span> |
   | [⟦T63⟧](/oss/javascript/integrations/embeddings/cohere) | <span><a href="https://www.npmjs.com/package/@langchain/cohere"> <img alt="Downloads per month" /></a></span> || [⟦T64⟧](/oss/javascript/integrations/embeddings/voyageai) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb"><img alt="Downloads per month" /></a></span>|
   | [⟦T65⟧](/oss/javascript/integrations/embeddings/baidu_qianfan) | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T66⟧](/oss/javascript/integrations/embeddings/nomic) | <span><a href="https://www.npmjs.com/package/@langchain/nomic"><img alt="Downloads per month" /></a></span>|
-  | [⟦T67⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
+  | [⟦T66⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
+  | [⟦T67⟧](/oss/javascript/integrations/embeddings/nomic) | <span><a href="https://www.npmjs.com/package/@langchain/nomic"><img alt="Downloads per month" /></a></span>|
   | [⟦T68⟧](/oss/javascript/integrations/embeddings/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"><img alt="Downloads per month" /></a></span>|
   | [⟦T69⟧](/oss/javascript/integrations/embeddings/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"> <img alt="Downloads per month" /></a></span> |
   | [⟦T70⟧](/oss/javascript/integrations/embeddings/togetherai) | <span><a href="https://www.npmjs.com/package/@langchain/together-ai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T71⟧](https://scx.ai/) | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T72⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | <span><a href="https://www.npmjs.com/package/@langchain/mixedbread-ai"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T71⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | <span><a href="https://www.npmjs.com/package/@langchain/mixedbread-ai"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T72⟧](https://scx.ai/) | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain"> <img alt="Downloads per month" /></a></span> |
   | [⟦T73⟧](/oss/javascript/integrations/embeddings/minimax) | <span>不适用</span> |
   | [⟦T74⟧](/oss/javascript/integrations/embeddings/oracleai) | <span>不适用</span> |
 </div>
