@@ -25,7 +25,7 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 引擎取决于 LSI 覆盖范围。该覆盖范围正在扩大，因此可用性因云和区域而异：
 
 |云|地区 |状态 |
-| -----| ------ | ---------|
+| -----| ------ | --------- |
 |亚马逊AWS |美国 |可用 |
 | GCP |美国 |可用 |
 |亚马逊AWS |欧盟|计划|
@@ -46,9 +46,9 @@ LSI 是为引擎提供支持的LangChain 托管服务。
 
 您的集群必须允许到该网关的出站 HTTPS。连接可以使用公共出口或专用连接。在 AWS 上，请遵循 [Connect with AWS PrivateLink](#connect-with-aws-privatelink) 将引擎流量保持在专用网络上。
 
-如果与 LSI 的连接不可用，引擎将无法关闭。没有集群内模型，也没有可以依靠的辅助提供商，因此受影响的运行以错误结束，而不是降级为较低质量的输出。 LangSmith 部署的其余部分不受影响，并且引擎会再次尝试进行下一次计划扫描。## LangSmith 智能保留了什么
+如果与 LSI 的连接不可用，引擎将停止并返回错误，而不是降级为较低质量的输出。没有集群内模型，也没有可以依赖的辅助提供商。 LangSmith 部署的其余部分不受影响，并且引擎会再次尝试进行下一次计划扫描。
 
-LSI 不保留提示或完成主体。它保留以下元数据用于使用归因和计费：
+## LangSmith 智能保留了什么LSI 不保留提示或完成主体。它保留以下元数据用于使用归因和计费：
 
 * 用于归因使用情况的帐户、工作区和项目标识符。
 * 用于计费的模型和令牌使用元数据。
@@ -65,12 +65,12 @@ LSI 不保留提示或完成主体。它保留以下元数据用于使用归因�
 
 在开始之前，请收集您的 AWS 账户 ID、VPC ID、私有子网 ID 和终端节点的安全组。将安全组配置为仅允许来自附加到运行引擎的节点或工作负载（或包含它们的最小私有 CIDR）的安全组的端口 443 上的入站 TCP 流量。不允许`0.0.0.0/0`。
 
-要将您的 VPC 连接到 LSI：<Steps>
+要将您的 VPC 连接到 LSI：
+
+<Steps>
   <Step title="Request access">
     请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
-  </Step>
-
-  <Step title="Create the interface VPC endpoint">
+  </Step><Step title="Create the interface VPC endpoint">
     为包含您的 VPC 的区域配置 AWS 提供商。将 `service_region` 设置为 `us-east-2`，包括当您的 VPC 位于其他区域时。每个可用区选择一个私有子网。
 
     <Note>
@@ -117,7 +117,9 @@ LSI 不保留提示或完成主体。它保留以下元数据用于使用归因�
         evaluate_target_health = true
       }
     }
-    ```如果工作负载使用公司 DNS 解析器而不是 Amazon 提供的解析器，请配置条件转发到 Route 53 解析器，或为指向终端节点 DNS 名称的 `beacon.aws.langchain.com` 创建等效的私有 DNS 覆盖。
+    ```
+
+    如果工作负载使用公司 DNS 解析器而不是 Amazon 提供的解析器，请配置条件转发到 Route 53 解析器，或为指向终端节点 DNS 名称的 `beacon.aws.langchain.com` 创建等效的私有 DNS 覆盖。
   </Step>
 
   <Step title="Verify private connectivity">
@@ -125,9 +127,7 @@ LSI 不保留提示或完成主体。它保留以下元数据用于使用归因�
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     getent ahostsv4 beacon.aws.langchain.com
-    ```
-
-    确认结果包含分配给端点网络接口的专用 IP 地址。然后[enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)，开始分析，并确认成功完成。
+    ```确认结果包含分配给端点网络接口的专用 IP 地址。然后[enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)，开始分析，并确认成功完成。
   </Step>
 </Steps>
 
@@ -147,16 +147,18 @@ LSI 不保留提示或完成主体。它保留以下元数据用于使用归因�
   <img alt="Architecture diagram showing a self-hosted LangSmith deployment in your GCP project connecting to LangSmith Intelligence in LangChain's cloud, which sends model inference requests to Vertex" />
 </Frame>
 
-## 型号选择和质量模型选择在很大程度上决定了 Engine 的有效性。引擎在其工作的每个步骤中使用不同的模型，进行不同的调整：聚类问题、根据代码诊断根本原因、生成修复程序以及编写验证它的评估器。 LangChain 调整这些模型的质量和代币效率，并随着更好的模型发布而升级它们。
+## 型号选择和质量
 
-托管推理使这成为可能。由于引擎始终运行 LangChain 已针对每个步骤进行调整的模型，因此随着这些模型的升级，行为会保持一致并得到改进。自带密钥设置会将引擎与您配置的模型联系起来，因此调整和令牌效率会因请求而异。
+模型选择在很大程度上决定了 Engine 的有效性。引擎在其工作的每个步骤中使用不同的模型，进行不同的调整：聚类问题、根据代码诊断根本原因、生成修复程序以及编写验证它的评估器。 LangChain 调整这些模型的质量和代币效率，并随着更好的模型发布而升级它们。托管推理使这成为可能。由于引擎始终运行LangChain已针对每个步骤进行调整的模型，因此随着这些模型的升级，行为会保持一致并得到改进。自带密钥设置会将引擎与您配置的模型联系起来，因此调整和令牌效率会因请求而异。
 
 ## 这对您的数据意味着什么
 
 在自托管中，引擎将您的环境和 LangChain 之间的数据处理分开：
 
 * **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
-* **LangChain的环境：** Content Engine发送的内容由LSI和模型提供者处理。 LSI 保留上面列出的计费元数据，但不保留提示或完成主体。[Engine security](/langsmith/engine-security) 中描述了引擎独立于部署的数据处理，包括每个模型提供商的零数据保留以及不使用客户数据来训练或微调模型。
+* **LangChain的环境：** Content Engine发送的内容由LSI和模型提供者处理。 LSI 保留上面列出的计费元数据，但不保留提示或完成主体。
+
+[Engine security](/langsmith/engine-security) 中描述了引擎独立于部署的数据处理，包括每个模型提供商的零数据保留以及不使用客户数据来训练或微调模型。
 
 ## 另请参阅
 

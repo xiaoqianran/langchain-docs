@@ -2,5 +2,5 @@
 
 # Interrupt Deployment Revision
 
-https://api.host.langchain.com/openapi.json post /v2/deployments/{deployment_id}/revisions/{revision_id}/interrupt
+https://api.host.langchain.com/openapi.json post /v2/deployments/{deployment_id}/revisions/{revision_id}/interruption
 Interrupt an in-progress revision build/deploy.

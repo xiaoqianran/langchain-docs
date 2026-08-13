@@ -4552,6 +4552,7 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -4562,8 +4563,8 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 selects=["NAME"],
             ):
                 print(trace.root_run.trace_id, trace.root_run.name)
@@ -4602,8 +4603,8 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           selects: ["NAME"],
         })) {
           console.log(trace.root_run?.trace_id, trace.root_run?.name);
@@ -4663,8 +4664,8 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
         val traces = client.traces().query(
             TraceQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .addSelect(RunSelectField.NAME)
                 .build()
         ).items().take(5)
@@ -4742,8 +4743,8 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -4789,13 +4790,15 @@ Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "selects": ["NAME"]
           }')" | jq '.items | map({trace_id: .root_run.trace_id, name: .root_run.name})'
@@ -4829,6 +4832,7 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -4839,8 +4843,8 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 selects=["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
             ):
                 count += 1
@@ -4884,8 +4888,8 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           selects: ["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
         })) {
           count += 1;
@@ -4953,8 +4957,8 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
         val traces = client.traces().query(
             TraceQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .addSelect(RunSelectField.NAME)
                 .addSelect(RunSelectField.TOTAL_TOKENS)
                 .addSelect(RunSelectField.TOTAL_COST)
@@ -5042,8 +5046,8 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -5095,13 +5099,15 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "selects": ["NAME", "TOTAL_TOKENS", "TOTAL_COST"]
           }')"
@@ -5141,6 +5147,7 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -5153,8 +5160,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 trace_filter='eq(status, "error")',
             ):
                 print(trace.root_run.trace_id)
@@ -5166,8 +5173,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
             trace_id = "<trace-id>"
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 trace_ids=[trace_id],
             ):
                 print(trace.root_run.trace_id)
@@ -5212,8 +5219,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           trace_filter: 'eq(status, "error")',
         })) {
           console.log(trace.root_run?.trace_id);
@@ -5225,8 +5232,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
         let traceId = "<trace-id>";
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           trace_ids: [traceId],
         })) {
           console.log(trace.root_run?.trace_id);
@@ -5282,8 +5289,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
 
-        val minStart = OffsetDateTime.parse("2026-07-01T00:00:00Z")
-        val maxStart = OffsetDateTime.parse("2026-07-31T23:59:59Z")
+        val maxStart = OffsetDateTime.now()
+        val minStart = maxStart.minusMonths(1)
 
         // trace_filter is implicitly root-run-only — no is_root needed.
         val errorTraces = client.traces().query(
@@ -5385,8 +5392,8 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	// trace_filter is implicitly root-run-only — no is_root needed.
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
@@ -5451,14 +5458,17 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+
         # trace_filter is implicitly root-run-only — no is_root needed.
         curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "trace_filter": "eq(status, \"error\")"
           }')" | jq '.items | map(.root_run.trace_id)'
@@ -5468,10 +5478,10 @@ Filter traces by status (for example, errored) with `trace_filter`, or skip filt
         curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" --arg tid "$TRACE_ID" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "trace_ids": [$tid]
           }')" | jq '.items | map(.root_run.trace_id)'
         ```
@@ -5625,6 +5635,7 @@ Fetch all the runs that belong to one trace, given its trace ID.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -5899,6 +5910,7 @@ Narrow a trace's runs down to a specific run type, for example just the LLM call
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6357,6 +6369,7 @@ Fetch every thread with activity in a project during a time range.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6366,8 +6379,8 @@ Fetch every thread with activity in a project during a time range.
             project = await client.aread_project(project_name="default")
             async for thread in client.threads.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
             ):
                 print(thread.thread_id, thread.count)
 
@@ -6400,8 +6413,8 @@ Fetch every thread with activity in a project during a time range.
         const project = await client.readProject({ projectName: "default" });
         for await (const thread of client.threads.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
         })) {
           console.log(thread.thread_id, thread.count);
         }
@@ -6457,8 +6470,8 @@ Fetch every thread with activity in a project during a time range.
         val threads = client.threads().query(
             ThreadQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .build()
         ).items()
         for (thread in threads) {
@@ -6546,8 +6559,8 @@ Fetch every thread with activity in a project during a time range.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Threads.QueryAutoPaging(ctx, langsmith.ThreadQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -6590,13 +6603,15 @@ Fetch every thread with activity in a project during a time range.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z"
+            "min_start_time": $min,
+            "max_start_time": $max
           }')"
         ```
       </Tab>
@@ -6625,6 +6640,7 @@ Find threads that had a turn end in an error.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6634,8 +6650,8 @@ Find threads that had a turn end in an error.
             project = await client.aread_project(project_name="default")
             async for thread in client.threads.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 filter='eq(status, "error")',
             ):
                 print(thread.thread_id, thread.last_error)
@@ -6672,8 +6688,8 @@ Find threads that had a turn end in an error.
         const project = await client.readProject({ projectName: "default" });
         for await (const thread of client.threads.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           filter: 'eq(status, "error")',
         })) {
           console.log(thread.thread_id, thread.last_error);
@@ -6731,8 +6747,8 @@ Find threads that had a turn end in an error.
         val threads = client.threads().query(
             ThreadQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .filter("eq(status, \"error\")")
                 .build()
         ).items()
@@ -6821,8 +6837,8 @@ Find threads that had a turn end in an error.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Threads.QueryAutoPaging(ctx, langsmith.ThreadQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -6863,13 +6879,15 @@ Find threads that had a turn end in an error.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "filter": "eq(status, \"error\")"
           }')"
         ```
@@ -7136,7 +7154,7 @@ Fetch all the traces (conversation turns) that belong to one thread.
             project = await client.aread_project(project_name="default")
             thread_id = "<thread-id>"
             async for trace in client.threads.list_traces(
-                thread_id, project_id=str(project.id), selects=["START_TIME"]
+                thread_id, project_id=str(project.id), selects=["TRACE_ID", "START_TIME"]
             ):
                 print(trace.trace_id, trace.start_time)
 
@@ -7170,7 +7188,7 @@ Fetch all the traces (conversation turns) that belong to one thread.
         let threadId = "<thread-id>";
         for await (const trace of client.threads.listTraces(threadId, {
           project_id: project.id,
-          selects: ["START_TIME"],
+          selects: ["TRACE_ID", "START_TIME"],
         })) {
           console.log(trace.trace_id, trace.start_time);
         }
@@ -7230,6 +7248,7 @@ Fetch all the traces (conversation turns) that belong to one thread.
             threadId,
             ThreadListTracesParams.builder()
                 .projectId(project.id())
+                .addSelect(ThreadListTracesParams.Select.TRACE_ID)
                 .addSelect(ThreadListTracesParams.Select.START_TIME)
                 .build()
         ).items()
@@ -7312,7 +7331,7 @@ Fetch all the traces (conversation turns) that belong to one thread.
 
         	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
         		ProjectID: langsmith.F(projectID),
-        		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectStartTime}),
+        		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectTraceID, langsmith.ThreadListTracesParamsSelectStartTime}),
         	})
         	for iter.Next() {
         		trace := iter.Current()
@@ -7352,6 +7371,7 @@ Fetch all the traces (conversation turns) that belong to one thread.
         curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           --data-urlencode "project_id=$PROJECT_ID" \
+          --data-urlencode "selects=TRACE_ID" \
           --data-urlencode "selects=START_TIME"
         ```
       </Tab>

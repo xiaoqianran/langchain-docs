@@ -3,4 +3,4 @@
 # Delete a snapshot
 
 /langsmith/langsmith-platform-openapi.json delete /api/v2/sandboxes/snapshots/{snapshot_id}
-Delete a snapshot by ID. The underlying storage is reclaimed asynchronously.
+Delete a snapshot by ID or by a Docker-style name[:tag] reference. The underlying storage is reclaimed asynchronously.

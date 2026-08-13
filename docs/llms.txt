@@ -727,6 +727,7 @@
 - [Document API authentication in OpenAPI](https://docs.langchain.com/langsmith/openapi-security.md)
 - [Set up Agent Auth](https://docs.langchain.com/langsmith/agent-auth.md)
 - [Use server-side caching](https://docs.langchain.com/langsmith/caching.md)
+- [Configure IAM authentication for data stores](https://docs.langchain.com/langsmith/configure-iam-auth.md)
 - [Add encryption at rest](https://docs.langchain.com/langsmith/encryption.md)
 - [Rebuild graph at runtime](https://docs.langchain.com/langsmith/graph-rebuild.md)
 - [How to use a custom store](https://docs.langchain.com/langsmith/custom-store.md)
@@ -795,6 +796,7 @@
 - [Trace OpenAI-compatible providers](https://docs.langchain.com/langsmith/trace-with-openai-compatible.md)
 - [Trace AutoGen applications](https://docs.langchain.com/langsmith/trace-with-autogen.md)
 - [Trace Claude Agent SDK applications](https://docs.langchain.com/langsmith/trace-claude-agent-sdk.md)
+- [Trace Claude Managed Agents](https://docs.langchain.com/langsmith/trace-with-claude-managed-agents.md)
 - [Trace CrewAI applications](https://docs.langchain.com/langsmith/trace-with-crewai.md)
 - [Trace Deep Agents applications](https://docs.langchain.com/langsmith/trace-deep-agents.md)
 - [Trace Google ADK applications](https://docs.langchain.com/langsmith/trace-with-google-adk.md)
@@ -867,6 +869,7 @@
 - [Monitor projects with dashboards](https://docs.langchain.com/langsmith/dashboards.md)
 - [Alerts in LangSmith](https://docs.langchain.com/langsmith/alerts.md)
 - [Discover errors and usage patterns with Insights](https://docs.langchain.com/langsmith/insights.md)
+- [Custom Apps](https://docs.langchain.com/langsmith/custom-apps.md)
 - [Set up LLM-as-a-judge online evaluators](https://docs.langchain.com/langsmith/online-evaluations-llm-as-judge.md)
 - [Set up multi-turn online evaluators](https://docs.langchain.com/langsmith/online-evaluations-multi-turn.md)
 - [Set up online code evaluators](https://docs.langchain.com/langsmith/online-evaluations-code.md)
@@ -1018,8 +1021,5 @@
 - [Get company info](https://docs.langchain.com/langsmith/smith-api/orgs/get-company-info.md)
 - [Set company info](https://docs.langchain.com/langsmith/smith-api/orgs/set-company-info.md)
 - [Change payment plan](https://docs.langchain.com/langsmith/smith-api/orgs/change-payment-plan.md)
-- [List organization roles](https://docs.langchain.com/langsmith/smith-api/orgs/list-organization-roles.md)
-- [Create organization roles](https://docs.langchain.com/langsmith/smith-api/orgs/create-organization-roles.md)
-- [Delete organization roles](https://docs.langchain.com/langsmith/smith-api/orgs/delete-organization-roles.md)
 
-_Note: this index was truncated to stay under 100,000 characters; 557 pages and 3 OpenAPI specs omitted._
+_Note: this index was truncated to stay under 100,000 characters; 569 pages and 3 OpenAPI specs omitted._

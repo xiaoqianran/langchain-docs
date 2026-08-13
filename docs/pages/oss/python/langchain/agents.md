@@ -420,7 +420,7 @@ To add custom fields (for example, a `user_id` or a counter), subclass `AgentSta
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       state_schema=MyState,  # [!code highlight]
   )

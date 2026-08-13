@@ -988,6 +988,27 @@ Content blocks are represented (either when creating a message or accessing the 
   Content blocks are not a replacement for the [`content`](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) property, but rather a new property that can be used to access the content of a message in a standardized format.
 </Info>
 
+## Serialization
+
+You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
+from langchain_core.load import dumpd, load
+
+message = HumanMessage("What is the capital of France?")
+
+# Serialize to a plain dict
+serialized = dumpd(message)
+
+# Deserialize back to a message object
+restored = load(serialized)
+```
+
+<Warning>
+  **`load()` instantiates Python objects and can trigger side effects during deserialization. Never call `load()` on data from an untrusted or unauthenticated source.**
+</Warning>
+
 ## Use with chat models
 
 [Chat models](/oss/python/langchain/models) accept a sequence of message objects as input and return an [`AIMessage`](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage) as output. Interactions are often stateless, so that a simple conversational loop involves invoking a model with a growing list of messages.

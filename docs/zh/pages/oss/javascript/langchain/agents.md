@@ -120,7 +120,7 @@
 
 ### 工具
 
-要为代理提供工具，请传递任何 Python 可调用函数、LangChain 工具或工具字典。有关工具定义、上下文访问和动态工具选择，请参阅[Tools](/oss/javascript/langchain/tools)。
+要为代理提供工具，请传递任何 Python 可调用工具、LangChain 工具或工具字典。有关工具定义、上下文访问和动态工具选择，请参阅[Tools](/oss/javascript/langchain/tools)。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -410,7 +410,7 @@
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [],
     middleware: [stateMiddleware],
   });

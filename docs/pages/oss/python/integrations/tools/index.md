@@ -367,10 +367,13 @@ The following table shows tools that can be used for security-related tasks:
   | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                    | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                       | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`DynamicFeed`](https://dynamicfeed.ai/integrations)                                                             | <span><a href="https://pypi.org/project/dynamicfeed-tools/">  <img alt="Downloads per month" /></a></span>                |
+  | [`LexMexTool`](https://lex-mex.xyz)                                                                              | <span><a href="https://pypi.org/project/langchain-lexmex/">  <img alt="Downloads per month" /></a></span>                 |
   | [`AgentLair`](https://agentlair.dev/docs)                                                                        | <span>N/A</span>                                                                                                          |
   | [`Browserless`](https://browserless.io)                                                                          | <span>N/A</span>                                                                                                          |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain)                                              | <span>N/A</span>                                                                                                          |
 
+  \| [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | <span><a href="https://pypi.org/project/langgraph-agentram/">  <img alt="Downloads per month" /></a></span> |
+  \| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-1claw/">  <img alt="Downloads per month" /></a></span> |
   \| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | <span><a href="https://pypi.org/project/langchain-agentgate/">  <img alt="Downloads per month" /></a></span> |
 </div>
 

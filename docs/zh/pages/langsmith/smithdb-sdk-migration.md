@@ -8,7 +8,7 @@
 
 ## 上下文
 
-2026 年 5 月，我们发布了[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs)，这是一个为现代人工智能代理构建的新可观测性数据库。 SmithDB 在每个关键可观测性工作负载中提供业界领先的性能，使核心 LangSmith 体验显着加快。
+2026 年 5 月，我们发布了[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs)，这是一个为现代人工智能代理构建的新可观测性数据库。 SmithDB 在每个关键可观测性工作负载中提供业界领先的性能，使核心LangSmith 体验速度显着加快。
 
 使用 SmithDB 查询跟踪记录需要新的 SDK 方法。本指南可帮助您迁移代码库。
 
@@ -21,7 +21,7 @@
 |所有云区域 | 2026 年 7 月结束 | 2027 年 1 月 31 日 |
 |自托管 | `v0.16` | `v0.18` |
 
-有关 LangSmith 如何弃用和删除 API 端点和 SDK 方法的详细信息，请参阅[API and SDK deprecation policy](/langsmith/endpoint-deprecation)。
+有关LangSmith如何弃用和删除API端点和SDK方法的详细信息，请参阅[API and SDK deprecation policy](/langsmith/endpoint-deprecation)。
 
 ## 最低 SDK 版本
 
@@ -72,7 +72,7 @@ than guessing.
 
 #### 方法名称<Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     | -------------------- | -------------------- |
     | `client.list_runs()` | `client.runs.query()` |
 
@@ -84,7 +84,7 @@ than guessing.
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     | ------------------- | -------------------- |
     | `client.listRuns()` | `client.runs.query()` |
 
@@ -132,11 +132,11 @@ than guessing.
     | `project_id` | `project_ids` |现在拿出一个清单；与 `reference_dataset_id` 互斥 || `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
     | `trace_id` | `trace_id` |不变 |
     | `reference_example_id` | `reference_examples` |现在获取 UUID 列表 |
-    | `query` | *（已删除）* |没有同等的|
+    | `query` | *（已删除）* |没有同等的 |
     | `filter` | `filter` |语法不变 |
     | `trace_filter` | `trace_filter` |不变 |
     | `tree_filter` | `tree_filter` |不变 || `is_root` | `is_root` |不变 |
-    | `parent_run_id` | *（已删除）* |没有同等的|
+    | `parent_run_id` | *（已删除）* |没有同等的 |
     | `start_time` | `min_start_time` |更名；默认为 1 天前 - 请参阅上面的警告 |
     | `error` | `has_error` |更名|
     | `run_ids` | `ids` |更名|
@@ -153,7 +153,7 @@ than guessing.
     </Warning>
 
     <Warning>
-      省略时，`min_start_time` 默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；不带 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
+      省略时，`min_start_time` 默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；没有 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
     </Warning>|之前 (`listRuns`) |之后（`client.runs.query`）|笔记|
     | -------------------- | ------------------------ | | ---------------------------------------------------------------------------------------------------------------------------------------------- |
     | `projectName` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
@@ -186,18 +186,18 @@ than guessing.
     | `runType()` | `runType()` |值现在必须为大写 |
     | `trace()` | `traceId()` |更名|
     | `referenceExample()` | `referenceExamples()` |重命名为复数 |
-    | `query()` | *（已删除）* |没有同等的 |
+    | `query()` | *（已删除）* |没有同等的|
     | `filter()` | `filter()` |语法不变 |
     | `traceFilter()` | `traceFilter()` |不变 || `treeFilter()` | `treeFilter()` |不变 |
     | `isRoot()` | `isRoot()` |不变 |
-    | `parentRun()` | *（已删除）* |没有同等的 |
+    | `parentRun()` | *（已删除）* |没有同等的|
     | `startTime()` | `minStartTime()` |更名；默认为 1 天前 - 请参阅上面的警告 |
     | `error()` | `hasError()` |更名|
     | `id()` | `ids()` |更名|
     | `select()` | `selects()` |字段名称现在为大写 |
     | `limit()` | *（已删除）* |使用`pageSize()` |
-    | `order()` | *（已删除）* |没有同等的 |
-    | `executionOrder()` | *（已删除）* |没有同等的 |
+    | `order()` | *（已删除）* |没有同等的|
+    | `executionOrder()` | *（已删除）* |没有同等的|
     | `cursor()` | `cursor()` |不变 || *（不可用）* | `maxStartTime()` |开始时间的上限；默认为现在 |
     | *（不可用）* | `pageSize()` |每个请求结果计数（默认 100，最大 1000）|
     | *（不可用）* | `referenceDatasetId()` | `projectIds()` 的替代方案 |
@@ -207,7 +207,7 @@ than guessing.
     <Warning>
       省略时，`MinStartTime` 默认为 **1 天前**。没有 `StartTime` 的 `Query()` 返回所有历史运行；不带 `MinStartTime` 的 `QueryV2()` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `MinStartTime`。
     </Warning>|之前 (`RunQueryParams`) |之后（`RunQueryV2Params`）|笔记|
-    | ---------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------ |
+    | ---------------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------- |
     | `Session` | `ProjectIDs` |更名；现在采用显式项目 UUID |
     | `RunType` | `RunType` |值现在必须为大写：`RunQueryV2ParamsRunTypeLLM`、`RunQueryV2ParamsRunTypeChain` 等 |
     | `Trace` | `TraceID` |更名|
@@ -238,11 +238,11 @@ than guessing.
     | `session` | `project_ids` |更名；两者都采用一系列项目 UUID。 `project_ids` 与 `reference_dataset_id` 互斥 |
     | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` || `trace` | `trace_id` |更名|
     | `reference_example` | `reference_examples` |重命名为复数；现在采用 UUID 数组 |
-    | `query` | *（已删除）* |没有同等的|
+    | `query` | *（已删除）* |没有同等的 |
     | `filter` | `filter` |语法不变 |
     | `trace_filter` | `trace_filter` |不变 || `tree_filter` | `tree_filter` |不变 |
     | `is_root` | `is_root` |不变 |
-    | `parent_run` | *（已删除）* |没有同等的|
+    | `parent_run` | *（已删除）* |没有同等的 |
     | `start_time` | `min_start_time` |更名；默认为 1 天前 - 请参阅上面的警告 |
     | `error` | `has_error` |更名|| `id` | `ids` |重命名为复数 |
     | `select` | `selects` |字段名称现在为大写（`"NAME"`、`"STATUS"` 等）|
@@ -286,8 +286,8 @@ than guessing.
     | `run.completion_cost` | `run.completion_cost` |不变 || `run.first_token_time` | `run.first_token_time` |不变 |
     | `run.latency`（属性）| `run.latency_seconds` |更名；是一个计算的 `timedelta` 属性，现在是一个原生的 `float` 字段 |
     | `run.in_dataset` | `run.is_in_dataset` |更名|
-    | `run.child_run_ids` | *（已删除）* |没有同等的 |
-    | `run.child_runs` | *（已删除）* |没有同等的 |
+    | `run.child_run_ids` | *（已删除）* |没有同等的|
+    | `run.child_runs` | *（已删除）* |没有同等的|
     | `run.serialized` | *（已删除）* |使用`run.manifest` |
     | `run.manifest_id` | *（已删除）* |使用`run.manifest`|| *（不可用）* | `run.is_root` |新 |
     | *（不可用）* | `run.manifest` |新：完整清单对象（替换`serialized`和`manifest_id`）|
@@ -331,7 +331,7 @@ than guessing.
     | `run.totalCost` | `run.total_cost` |更名为`snake_case` || `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
     | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
     | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
     | `run.inDataset` | `run.is_in_dataset` |更名|
     | `run.childRunIds` | *（已删除）* |没有同等的 |
     | `run.childRuns` | *（已删除）* |没有同等的 |
@@ -387,10 +387,10 @@ than guessing.
     | `run.referenceDatasetId()` | `run.referenceDatasetId()` |不变 |
     | `run.threadId()` | `run.threadId()` |不变 || `run.shareToken()` | *（已删除）* |使用`run.shareUrl()`（完整URL，仅在共享运行时设置）|
     | `run.childRunIds()` | *（已删除）* |没有同等的|
-    | `run.directChildRunIds()` | *（已删除）* |没有同等的|
+    | `run.directChildRunIds()` | *（已删除）* |没有同等的 |
     | `run.serialized()` | *（已删除）* |使用`run.manifest()` |
     | `run.manifestId()` | *（已删除）* |使用`run.manifest()` |
-    | `run.messages()` | *（已删除）* |没有同等的|
+    | `run.messages()` | *（已删除）* |没有同等的 |
     | `run.executionOrder()` | *（已删除）* |没有同等的|| `run.lastQueuedAt()` | *（已删除）* |没有同等的|
     | `run.traceFirstReceivedAt()` | *（已删除）* |没有同等的|
     | `run.traceMaxStartTime()` | *（已删除）* |没有同等的|
@@ -443,22 +443,22 @@ than guessing.
     | `run.ThreadID` | `run.ThreadID` |不变 |
     | `run.SessionID` | `run.ProjectID` |更名|
     | `run.InDataset` | `run.IsInDataset` |更名|
-    | `run.ChildRunIDs` | *（已删除）* |没有同等的 || `run.DirectChildRunIDs` | *（已删除）* |没有同等的 |
-    | `run.ExecutionOrder` | *（已删除）* |没有同等的 |
+    | `run.ChildRunIDs` | *（已删除）* |没有同等的|| `run.DirectChildRunIDs` | *（已删除）* |没有同等的|
+    | `run.ExecutionOrder` | *（已删除）* |没有同等的|
     | `run.InputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.LastQueuedAt` | *（已删除）* |没有同等的 |
+    | `run.LastQueuedAt` | *（已删除）* |没有同等的|
     | `run.ManifestID` | *（已删除）* |使用`run.Manifest`|
     | `run.ManifestS3ID` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.Messages` | *（已删除）* |没有同等的 || `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
+    | `run.Messages` | *（已删除）* |没有同等的|| `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `run.ParentRunID` | *（已删除）* |使用`run.ParentRunIDs` |
     | `run.S3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `run.Serialized` | *（已删除）* |使用`run.Manifest` |
     | `run.ShareToken` | *（已删除）* |使用`run.ShareURL`|
-    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的 |
-    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的 || `run.TraceMinStartTime` | *（已删除）* |没有同等的 |
-    | `run.TraceTier` | *（已删除）* |没有同等的 |
-    | `run.TraceUpgrade` | *（已删除）* |没有同等的 |
-    | `run.TtlSeconds` | *（已删除）* |没有同等的 |
+    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的|
+    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的|| `run.TraceMinStartTime` | *（已删除）* |没有同等的|
+    | `run.TraceTier` | *（已删除）* |没有同等的|
+    | `run.TraceUpgrade` | *（已删除）* |没有同等的|
+    | `run.TtlSeconds` | *（已删除）* |没有同等的|
     | *（不可用）* | `run.Attachments` |新功能：将附件文件名映射到预签名的下载 URL |
     | *（不可用）* | `run.ErrorPreview` |新：截断的错误片段 |
     | *（不可用）* | `run.IsRoot` |新 || *（不可用）* | `run.LatencySeconds` |新：挂钟持续时间（以秒为单位）|
@@ -511,7 +511,7 @@ than guessing.
     | `manifest_id` | *（已删除）* |使用`manifest` || `manifest_s3_id` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `messages` | *（已删除）* |没有同等的 |
     | `outputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `parent_run_id` | *（已删除）* |使用`parent_run_ids` |
+    | `parent_run_id` | *（已删除）* |使用`parent_run_ids`|
     | `s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `serialized` | *（已删除）* |使用`manifest` || `share_token` | *（已删除）* |使用`share_url` |
     | `trace_first_received_at` | *（已删除）* |没有同等的 |
@@ -2722,7 +2722,7 @@ than guessing.
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     | ------------------- | -------------------- |
     | `client.Runs.Get()` | `client.Runs.GetV2()` |
 
@@ -2745,7 +2745,7 @@ than guessing.
     </Warning>
 
     |之前 (`read_run`) |之后（`runs.retrieve`）|笔记|
-    | ---------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+    | ---------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
     | `run_id` | `run_id` |不变 |
     | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
     | *（不可用）* | `project_id` | **必需** - 拥有运行的项目的 UUID || *（不可用）* | `start_time` |可选 — 运行的开始时间 (RFC3339)；提供它可以加快检索速度|
@@ -2765,7 +2765,7 @@ than guessing.
 
   <Tab title="Java">
     <Warning>
-      `retrieveV2()` 需要 `projectId()`，它替换已删除的 `sessionId()`。 `startTime()` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
+      `retrieveV2()` 需要 `projectId()`，它取代了已删除的 `sessionId()`。 `startTime()` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
     </Warning>
 
     |之前 (`RunRetrieveParams`) |之后 (`RunRetrieveV2Params`) |笔记|
@@ -2773,8 +2773,8 @@ than guessing.
     | `runId()` | `runId()` |不变 |
     | `sessionId()` | *（已删除）* |替换为 `projectId()` |
     | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度|| `excludeS3StoredAttributes()` | *（已删除）* |没有同等的|
-    | `excludeSerialized()` | *（已删除）* |没有同等的 |
-    | `includeMessages()` | *（已删除）* |没有同等的 |
+    | `excludeSerialized()` | *（已删除）* |没有同等的|
+    | `includeMessages()` | *（已删除）* |没有同等的|
     | *（不可用）* | `projectId()` | **必需** - 拥有运行的项目的 UUID |
     | *（默认返回所有字段）* | `selects()` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |
   </Tab>
@@ -2783,11 +2783,11 @@ than guessing.
     <Warning>
       `GetV2()` 需要 `ProjectID`，它取代了已删除的 `SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
     </Warning>|之前 (`RunGetParams`) |之后 (`RunGetV2Params`) |笔记|
-    | ---------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+    | ---------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
     | `runID`（位置）| `runID`（位置）|不变 |
-    | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的 |
-    | `ExcludeSerialized` | *（已删除）* |没有同等的 |
-    | `IncludeMessages` | *（已删除）* |没有同等的 || `SessionID` | *（已删除）* |替换为`ProjectID` |
+    | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的|
+    | `ExcludeSerialized` | *（已删除）* |没有同等的|
+    | `IncludeMessages` | *（已删除）* |没有同等的|| `SessionID` | *（已删除）* |替换为`ProjectID`|
     | `StartTime` | `StartTime` |仍然是可选的；提供它可以加快检索速度|
     | *（不可用）* | `ProjectID` | **必需** - 拥有运行的项目的 UUID |
     | *（默认返回所有字段）* | `Selects` |现场投影；仅默认为`["ID"]`；字段名称常量为大写（例如，`RunGetV2ParamsSelectName`）|
@@ -2850,7 +2850,7 @@ than guessing.
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
     | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
-    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
   </Tab><Tab title="TypeScript">
@@ -2883,7 +2883,7 @@ than guessing.
     | `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
     | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
     | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） || `run.inDataset` | `run.is_in_dataset` |更名|
+    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|| `run.inDataset` | `run.is_in_dataset` |更名|
     | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
     | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
     | `run.serialized` | *（已删除）* |使用`run.manifest` |
@@ -2992,22 +2992,22 @@ than guessing.
     | `run.ThreadID` | `run.ThreadID` |不变 |
     | `run.SessionID` | `run.ProjectID` |更名|
     | `run.InDataset` | `run.IsInDataset` |更名|
-    | `run.ChildRunIDs` | *（已删除）* |没有同等的 |
-    | `run.DirectChildRunIDs` | *（已删除）* |没有同等的 || `run.ExecutionOrder` | *（已删除）* |没有同等的 |
+    | `run.ChildRunIDs` | *（已删除）* |没有同等的|
+    | `run.DirectChildRunIDs` | *（已删除）* |没有同等的|| `run.ExecutionOrder` | *（已删除）* |没有同等的|
     | `run.InputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.LastQueuedAt` | *（已删除）* |没有同等的 |
+    | `run.LastQueuedAt` | *（已删除）* |没有同等的|
     | `run.ManifestID` | *（已删除）* |使用`run.Manifest` |
     | `run.ManifestS3ID` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.Messages` | *（已删除）* |没有同等的 |
-    | `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 || `run.ParentRunID` | *（已删除）* |使用`run.ParentRunIDs` |
+    | `run.Messages` | *（已删除）* |没有同等的|
+    | `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 || `run.ParentRunID` | *（已删除）* |使用`run.ParentRunIDs`|
     | `run.S3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.Serialized` | *（已删除）* |使用`run.Manifest` |
-    | `run.ShareToken` | *（已删除）* |使用`run.ShareURL` |
-    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的 |
-    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的 |
-    | `run.TraceMinStartTime` | *（已删除）* |没有同等的 || `run.TraceTier` | *（已删除）* |没有同等的 |
-    | `run.TraceUpgrade` | *（已删除）* |没有同等的 |
-    | `run.TtlSeconds` | *（已删除）* |没有同等的 |
+    | `run.Serialized` | *（已删除）* |使用`run.Manifest`|
+    | `run.ShareToken` | *（已删除）* |使用`run.ShareURL`|
+    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的|
+    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的|
+    | `run.TraceMinStartTime` | *（已删除）* |没有同等的|| `run.TraceTier` | *（已删除）* |没有同等的|
+    | `run.TraceUpgrade` | *（已删除）* |没有同等的|
+    | `run.TtlSeconds` | *（已删除）* |没有同等的|
     | *（不可用）* | `run.Attachments` |新功能：将附件文件名映射到预签名的下载 URL |
     | *（不可用）* | `run.ErrorPreview` |新：截断的错误片段 |
     | *（不可用）* | `run.IsRoot` |新 |
@@ -3039,10 +3039,10 @@ than guessing.
     | `price_model_id` | `price_model_id` |不变 |
     | `prompt_cost` | `prompt_cost` |不变 |
     | `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
-    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） || `prompt_tokens` | `prompt_tokens` |不变 |
+    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|| `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
     | `completion_cost_details` | `completion_cost_details.raw` ​​| Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 || `reference_dataset_id` | `reference_dataset_id` |不变 |
@@ -3055,12 +3055,12 @@ than guessing.
     | `execution_order` | *（已删除）* |没有同等的 |
     | `inputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `last_queued_at` | *（已删除）* |没有同等的 |
-    | `manifest_id` | *（已删除）* |使用`manifest`|| `manifest_s3_id` | *（已删除）* |内部存储URL； v2 中未公开 |
+    | `manifest_id` | *（已删除）* |使用`manifest` || `manifest_s3_id` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `messages` | *（已删除）* |没有同等的 |
     | `outputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `parent_run_id` | *（已删除）* |使用`parent_run_ids` |
+    | `parent_run_id` | *（已删除）* |使用`parent_run_ids`|
     | `s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `serialized` | *（已删除）* |使用`manifest` || `share_token` | *（已删除）* |使用`share_url`|
+    | `serialized` | *（已删除）* |使用`manifest` || `share_token` | *（已删除）* |使用`share_url` |
     | `trace_first_received_at` | *（已删除）* |没有同等的 |
     | `trace_max_start_time` | *（已删除）* |没有同等的 |
     | `trace_min_start_time` | *（已删除）* |没有同等的 |
@@ -3888,7 +3888,7 @@ than guessing.
   <Tab title="Java">
     无需迁移：Java SDK 从未在一次调用中加载子运行，因此请使用 `client.traces().listRuns()` 遍历跟踪的运行。
   </Tab><Tab title="Go">
-    无需迁移：Go SDK 从未在一次调用中加载子运行，因此使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
+    无需迁移：Go SDK 从未在一次调用中加载子运行，因此请使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
   </Tab>
 
   <Tab title="cURL">
@@ -3934,7 +3934,7 @@ than guessing.
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/RunService.html)。
   </Tab><Tab title="Go">
-    <Note>Go SDK 没有用于检索运行的 UI URL 的旧版本。</Note>
+    <Note>Go SDK 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
     |之前 |之后 |
     | -------------------- | ---------------------- |
@@ -3973,7 +3973,7 @@ than guessing.
 
     |之前 (`getRunUrl`) |之后（`getURL`）|笔记|
     | -------------------- | -------------------- | ------------------------------------------------------------------------------------------ |
-    | `run` (`Run`) | *（已删除）* |不需要完整的运行对象；单独传递其标识字段 |
+    | `run` (`Run`) | *（已删除）* |不需要完整的运行对象；单独传递其识别字段 |
     | `runId` | `runID`（位置）|目的不变；现在第一个位置参数而不是命名选项 |
     | `projectOpts` | *（已删除）* |没有同等的；自己解析项目UUID |
     | *（不可用）* | `project_id` | **必需的**; `snake_case`；项目（会话）UUID |
@@ -4030,7 +4030,7 @@ than guessing.
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     | ---------------------- | ---------------- | -------------------------------------------------- |
     | *（无旧端点）* | `{"url": "..."}` |具有单个 `url` 字段的 JSON 对象 |
   </Tab>
@@ -4353,6 +4353,7 @@ than guessing.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -4363,8 +4364,8 @@ than guessing.
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 selects=["NAME"],
             ):
                 print(trace.root_run.trace_id, trace.root_run.name)
@@ -4403,8 +4404,8 @@ than guessing.
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           selects: ["NAME"],
         })) {
           console.log(trace.root_run?.trace_id, trace.root_run?.name);
@@ -4464,8 +4465,8 @@ than guessing.
         val traces = client.traces().query(
             TraceQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .addSelect(RunSelectField.NAME)
                 .build()
         ).items().take(5)
@@ -4543,8 +4544,8 @@ than guessing.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -4590,13 +4591,15 @@ than guessing.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "selects": ["NAME"]
           }')" | jq '.items | map({trace_id: .root_run.trace_id, name: .root_run.name})'
@@ -4628,6 +4631,7 @@ than guessing.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -4638,8 +4642,8 @@ than guessing.
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 selects=["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
             ):
                 count += 1
@@ -4683,8 +4687,8 @@ than guessing.
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           selects: ["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
         })) {
           count += 1;
@@ -4752,8 +4756,8 @@ than guessing.
         val traces = client.traces().query(
             TraceQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .addSelect(RunSelectField.NAME)
                 .addSelect(RunSelectField.TOTAL_TOKENS)
                 .addSelect(RunSelectField.TOTAL_COST)
@@ -4841,8 +4845,8 @@ than guessing.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -4894,13 +4898,15 @@ than guessing.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "selects": ["NAME", "TOTAL_TOKENS", "TOTAL_COST"]
           }')"
@@ -4938,6 +4944,7 @@ than guessing.
       </Tab><Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -4950,8 +4957,8 @@ than guessing.
             count = 0
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 trace_filter='eq(status, "error")',
             ):
                 print(trace.root_run.trace_id)
@@ -4963,8 +4970,8 @@ than guessing.
             trace_id = "<trace-id>"
             async for trace in client.traces.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 trace_ids=[trace_id],
             ):
                 print(trace.root_run.trace_id)
@@ -5009,8 +5016,8 @@ than guessing.
         let count = 0;
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           trace_filter: 'eq(status, "error")',
         })) {
           console.log(trace.root_run?.trace_id);
@@ -5022,8 +5029,8 @@ than guessing.
         let traceId = "<trace-id>";
         for await (const trace of client.traces.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           trace_ids: [traceId],
         })) {
           console.log(trace.root_run?.trace_id);
@@ -5079,8 +5086,8 @@ than guessing.
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
 
-        val minStart = OffsetDateTime.parse("2026-07-01T00:00:00Z")
-        val maxStart = OffsetDateTime.parse("2026-07-31T23:59:59Z")
+        val maxStart = OffsetDateTime.now()
+        val minStart = maxStart.minusMonths(1)
 
         // trace_filter is implicitly root-run-only — no is_root needed.
         val errorTraces = client.traces().query(
@@ -5182,8 +5189,8 @@ than guessing.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	// trace_filter is implicitly root-run-only — no is_root needed.
         	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
@@ -5248,14 +5255,17 @@ than guessing.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+
         # trace_filter is implicitly root-run-only — no is_root needed.
         curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "page_size": 5,
             "trace_filter": "eq(status, \"error\")"
           }')" | jq '.items | map(.root_run.trace_id)'
@@ -5265,10 +5275,10 @@ than guessing.
         curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" --arg tid "$TRACE_ID" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "trace_ids": [$tid]
           }')" | jq '.items | map(.root_run.trace_id)'
         ```
@@ -5412,6 +5422,7 @@ than guessing.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -5684,6 +5695,7 @@ than guessing.
       </Tab><Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6018,7 +6030,7 @@ than guessing.
     | `max_start_time` | `max_start_time` |不变 |
     | *（不可用）* | `start_time` |新：该行的参考开始时间，例如用于排序 |
     | *（不可用）* | `trace_id` |新功能：具有代表性的根跟踪 UUID，例如用于深层链接 |
-    | *（不可用）* | `first_trace_id`、`last_trace_id` |新：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
+    | *（不可用）* | `first_trace_id`、`last_trace_id` |新功能：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
     | *（不可用）* | `first_inputs`、`last_outputs` |新功能：第一条/最后一条轨迹的预览被截断 |
     | *（不可用）* | `last_error` |新 || *（不可用）* | `num_errored_turns` |新 |
     | *（不可用）* | `latency_p50`、`latency_p99` |新 |
@@ -6085,7 +6097,7 @@ than guessing.
     | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
     | `thread_id` |                                                                                                                       |
     | `count` |                                                                                                                       || `min_start_time`、`max_start_time`、`start_time` |                                                                                                                       |
-    | `first_trace_id`、`last_trace_id`、`trace_id` | `trace_id` 是一个代表性的根跟踪 UUID，例如，除了第一个/最后一个跟踪 UUID 之外，还用于深层链接 |
+    | `first_trace_id`、`last_trace_id`、`trace_id` | `trace_id` 是一个代表性的根跟踪 UUID，例如对于深层链接，除了第一个/最后一个跟踪 UUID 之外 |
     | `first_inputs`、`last_outputs` |第一个/最后一个跟踪的预览被截断 |
     | `last_error` |                                                                                                                       |
     | `num_errored_turns` |                                                                                                                       |
@@ -6118,6 +6130,7 @@ than guessing.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6127,8 +6140,8 @@ than guessing.
             project = await client.aread_project(project_name="default")
             async for thread in client.threads.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
             ):
                 print(thread.thread_id, thread.count)
 
@@ -6161,8 +6174,8 @@ than guessing.
         const project = await client.readProject({ projectName: "default" });
         for await (const thread of client.threads.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
         })) {
           console.log(thread.thread_id, thread.count);
         }
@@ -6218,8 +6231,8 @@ than guessing.
         val threads = client.threads().query(
             ThreadQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .build()
         ).items()
         for (thread in threads) {
@@ -6307,8 +6320,8 @@ than guessing.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Threads.QueryAutoPaging(ctx, langsmith.ThreadQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -6351,13 +6364,15 @@ than guessing.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z"
+            "min_start_time": $min,
+            "max_start_time": $max
           }')"
         ```
       </Tab>
@@ -6384,6 +6399,7 @@ than guessing.
       <Tab title="After">
         ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import asyncio
+        from datetime import datetime, timedelta, timezone
 
         from langsmith import Client
 
@@ -6393,8 +6409,8 @@ than guessing.
             project = await client.aread_project(project_name="default")
             async for thread in client.threads.query(
                 project_id=str(project.id),
-                min_start_time="2026-07-01T00:00:00Z",
-                max_start_time="2026-07-31T23:59:59Z",
+                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+                max_start_time=datetime.now(timezone.utc),
                 filter='eq(status, "error")',
             ):
                 print(thread.thread_id, thread.last_error)
@@ -6431,8 +6447,8 @@ than guessing.
         const project = await client.readProject({ projectName: "default" });
         for await (const thread of client.threads.query({
           project_id: project.id,
-          min_start_time: "2026-07-01T00:00:00Z",
-          max_start_time: "2026-07-31T23:59:59Z",
+          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          max_start_time: new Date().toISOString(),
           filter: 'eq(status, "error")',
         })) {
           console.log(thread.thread_id, thread.last_error);
@@ -6490,8 +6506,8 @@ than guessing.
         val threads = client.threads().query(
             ThreadQueryParams.builder()
                 .projectId(project.id())
-                .minStartTime(OffsetDateTime.parse("2026-07-01T00:00:00Z"))
-                .maxStartTime(OffsetDateTime.parse("2026-07-31T23:59:59Z"))
+                .minStartTime(OffsetDateTime.now().minusMonths(1))
+                .maxStartTime(OffsetDateTime.now())
                 .filter("eq(status, \"error\")")
                 .build()
         ).items()
@@ -6580,8 +6596,8 @@ than guessing.
         	}
         	projectID := sessions.Items[0].ID
 
-        	minStart, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-        	maxStart, _ := time.Parse(time.RFC3339, "2026-07-31T23:59:59Z")
+        	maxStart := time.Now().UTC()
+        	minStart := maxStart.AddDate(0, -1, 0)
 
         	iter := client.Threads.QueryAutoPaging(ctx, langsmith.ThreadQueryParams{
         		ProjectID:    langsmith.F(projectID),
@@ -6622,13 +6638,15 @@ than guessing.
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
+        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
         curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
             "project_id": $pid,
-            "min_start_time": "2026-07-01T00:00:00Z",
-            "max_start_time": "2026-07-31T23:59:59Z",
+            "min_start_time": $min,
+            "max_start_time": $max,
             "filter": "eq(status, \"error\")"
           }')"
         ```
@@ -6677,7 +6695,7 @@ than guessing.
   <Tab title="Go">
     <Note>Go 从来没有专用的每线程方法。最接近的传统等效项是按 `thread_id` 元数据约定过滤的通用运行查询。</Note>
 
-    |之前 |之后|
+    |之前 |之后 |
     | ----------------------------------------------------------- | -------------------------------------- |
     | `client.Runs.Query()`（由`thread_id`过滤）| `client.Threads.ListTraces()` |
 
@@ -6742,7 +6760,7 @@ than guessing.
     | `start_time` | `start_time` |除非包含在 `selects` 中，否则将被省略 |
     | `end_time` | `end_time` |除非包含在 `selects` 中，否则将被省略 |
     | `run_type` | `op` |更名；编码为数字而不是字符串 |
-    | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载 || `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 |
+    | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载|| `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 |
     | `error` | `error_preview`，或 `error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
     | `latency`（属性）| `latency` |原生字段而不是计算的 `timedelta` 属性 |
     | `total_tokens`、`prompt_tokens`、`completion_tokens` | `total_tokens`、`prompt_tokens`、`completion_tokens` |不变 |
@@ -6762,7 +6780,7 @@ than guessing.
     | `end_time` | `end_time` |除非包含在 `selects` 中，否则省略 |
     | `run_type` | `op` |更名；编码为数字而不是字符串 |
     | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择 `INPUTS` 作为完整有效负载 |
-    | `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 || `error` | `error_preview`，或`error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
+    | `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 || `error` | `error_preview`，或`error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
     | `latency` | `latency` |原生字段上的新类型 |
     | `total_tokens`、`prompt_tokens`、`completion_tokens` | `total_tokens`、`prompt_tokens`、`completion_tokens` |不变 |
     | `total_cost`、`prompt_cost`、`completion_cost` | `total_cost`、`prompt_cost`、`completion_cost` |不变 |
@@ -6780,8 +6798,8 @@ than guessing.
     | `name()` | `name()` |除非包含在 `selects` 中，否则省略 || `startTime()` | `startTime()` |除非包含在 `selects` 中，否则省略 |
     | `endTime()` | `endTime()` |除非包含在 `selects` 中，否则省略 |
     | `runType()` | `op()` |更名；编码为数字而不是字符串 |
-    | `inputs()` | `inputsPreview()`，或 `inputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择 `INPUTS` 以获得完整的有效负载 |
-    | `outputs()` | `outputsPreview()`，或 `outputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 || `error()` | `errorPreview()`，或 `error()` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
+    | `inputs()` | `inputsPreview()`，或 `inputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载 |
+    | `outputs()` | `outputsPreview()`，或 `outputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 || `error()` | `errorPreview()`，或 `error()` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
     | `latency()` | `latency()` |不变 |
     | `totalTokens()`、`promptTokens()`、`completionTokens()` | `totalTokens()`、`promptTokens()`、`completionTokens()` |不变 |
     | `totalCost()`、`promptCost()`、`completionCost()` | `totalCost()`、`promptCost()`、`completionCost()` |不变 |
@@ -6797,10 +6815,10 @@ than guessing.
     | `ID` | *（不可用）* |旧版根运行`ID`和`TraceID`是相同的；新 API 仅公开 `TraceID` |
     | `TraceID` | `TraceID` |省略`Selects`时默认返回 |
     | `Name` | `Name` |除非包含在 `Selects` 中，否则省略 || `StartTime` | `StartTime` |除非包含在 `Selects` 中，否则将被省略 |
-    | `EndTime` | `EndTime` |除非包含在 `Selects` 中，否则省略 |
+    | `EndTime` | `EndTime` |除非包含在 `Selects` 中，否则将被省略 |
     | `RunType` | `Op` |更名；编码为数字而不是字符串 |
     | `Inputs` | `InputsPreview`，或 `Inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择 `INPUTS` 以获得完整有效负载 |
-    | `Outputs` | `OutputsPreview`，或 `Outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 || `Error` | `ErrorPreview`，或 `Error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
+    | `Outputs` | `OutputsPreview`，或 `Outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整的有效负载 || `Error` | `ErrorPreview`，或`Error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
     | `Latency` | `Latency` |不变 |
     | `TotalTokens`、`PromptTokens`、`CompletionTokens` | `TotalTokens`、`PromptTokens`、`CompletionTokens` |不变 |
     | `TotalCost`、`PromptCost`、`CompletionCost` | `TotalCost`、`PromptCost`、`CompletionCost` |不变 |
@@ -6819,7 +6837,7 @@ than guessing.
     | `end_time` | `end_time` |除非包含在 `selects` 中，否则将被省略 |
     | `run_type` | `op` |更名；编码为数字而不是字符串 |
     | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载 |
-    | `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 || `error` | `error_preview`，或 `error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整的错误消息 |
+    | `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载|| `error` | `error_preview`，或 `error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整的错误消息 |
     | `latency` | `latency` |不变 |
     | `total_tokens`、`prompt_tokens`、`completion_tokens` | `total_tokens`、`prompt_tokens`、`completion_tokens` |不变 |
     | `total_cost`、`prompt_cost`、`completion_cost` | `total_cost`、`prompt_cost`、`completion_cost` |不变 |
@@ -6862,7 +6880,7 @@ than guessing.
             project = await client.aread_project(project_name="default")
             thread_id = "<thread-id>"
             async for trace in client.threads.list_traces(
-                thread_id, project_id=str(project.id), selects=["START_TIME"]
+                thread_id, project_id=str(project.id), selects=["TRACE_ID", "START_TIME"]
             ):
                 print(trace.trace_id, trace.start_time)
 
@@ -6896,7 +6914,7 @@ than guessing.
         let threadId = "<thread-id>";
         for await (const trace of client.threads.listTraces(threadId, {
           project_id: project.id,
-          selects: ["START_TIME"],
+          selects: ["TRACE_ID", "START_TIME"],
         })) {
           console.log(trace.trace_id, trace.start_time);
         }
@@ -6956,6 +6974,7 @@ than guessing.
             threadId,
             ThreadListTracesParams.builder()
                 .projectId(project.id())
+                .addSelect(ThreadListTracesParams.Select.TRACE_ID)
                 .addSelect(ThreadListTracesParams.Select.START_TIME)
                 .build()
         ).items()
@@ -7036,7 +7055,7 @@ than guessing.
 
         	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
         		ProjectID: langsmith.F(projectID),
-        		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectStartTime}),
+        		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectTraceID, langsmith.ThreadListTracesParamsSelectStartTime}),
         	})
         	for iter.Next() {
         		trace := iter.Current()
@@ -7076,6 +7095,7 @@ than guessing.
         curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           --data-urlencode "project_id=$PROJECT_ID" \
+          --data-urlencode "selects=TRACE_ID" \
           --data-urlencode "selects=START_TIME"
         ```
       </Tab>
@@ -7376,7 +7396,7 @@ than guessing.
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     | --------------------------------- | ---------------------------------------------------- |
     | `client.get_experiment_results()` | `client.datasets.experiment_runs.query()` |
 
@@ -7533,7 +7553,7 @@ than guessing.
   </Tab>
 
   <Tab title="Java">
-    `runs().query` 返回一个可选列表。 `experimentRuns().query` 返回页面对象（`items()`，`nextCursor()`）；每个项目有：|领域|笔记|
+    `runs().query` 返回一个可选列表。 `experimentRuns().query` 返回页面对象（`items()`，`nextCursor()`）；每个项目有：|领域 |笔记|
     | ------------------------------------------ | -------------------------------------------------------------------- |
     | `id()` |数据集示例 UUID |
     | `datasetId()` |父数据集 UUID |
@@ -7547,7 +7567,7 @@ than guessing.
   </Tab>
 
   <Tab title="Go">
-    `Datasets.Runs.Query` 返回一个切片指针。 `Datasets.ExperimentRuns.Query` 返回`ItemsCursorPostPagination` (`Items`, `NextCursor`)；每个项目有：|领域|笔记|
+    `Datasets.Runs.Query` 返回一个切片指针。 `Datasets.ExperimentRuns.Query` 返回`ItemsCursorPostPagination` (`Items`, `NextCursor`)；每个项目有：|领域 |笔记|
     | -------------------------- | -------------------------------------------------------------------- |
     | `ID` |数据集示例 UUID |
     | `DatasetID` |父数据集 UUID |
@@ -8233,13 +8253,13 @@ than guessing.
   </Tab>
 
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     | ------------------------------------------- | ------------------------------------------------ |
     | `client.annotationQueues().runs().create()` | `client.annotationQueues().runs().createByKey()` |
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/annotationqueues/RunService.html)。
   </Tab><Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     | ------------------------------------------------ | ---------------------------------------------------- |
     | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Runs.NewByKey()` |
 
@@ -8262,7 +8282,7 @@ than guessing.
     <Warning>
       SmithDB 路径除了 `run_id` 之外，还需要每次运行的 `session_id`（项目 UUID）和 `start_time`。这些已经存在于您获取的运行对象上（例如从`client.list_runs()`）。
     </Warning>|之前 (`run_ids`) |之后（`runs`）|笔记|
-    | ---------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- |
+    | ---------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
     | `run_ids: list[UUID \| str]` | *（已弃用）* |遗留路径。仍然有效并命中`/runs`，解决每个运行服务器端的问题。将在未来版本中删除 |
     | *（不可用）* | `runs: Sequence[RunKey]` | **新首选。** 每个 `RunKey` 都是 `TypedDict`，其中包含 `run_id`、`session_id` 和 `start_time` |
 
@@ -8588,7 +8608,7 @@ than guessing.
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | ------------------------------------------- | -------------------------------------------------------- |
     | `client.share_run()` | `client.runs.share.create()` |
     | `client.unshare_run()` | `client.runs.share.delete()` |
@@ -8618,7 +8638,7 @@ than guessing.
   <Tab title="Go">
     Go SDK 没有传统的便捷迁移方法。使用 [⟦T3744⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunShareService) 和 [⟦T3745⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#PublicRunService) 进行 v2 访问。
   </Tab><Tab title="cURL">
-    |运营|之前 |之后 |
+    |运营|之前 |之后|
     | -------------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
     |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
     |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
@@ -8659,7 +8679,7 @@ than guessing.
 
 不要从 API 源构建公共 URL。检索 `share_url` 使用部署的配置应用程序源，适用于云和自托管部署。
 
-#### 回应|运营|之前 |之后 |
+#### 回应|运营|之前 |之后|
 | -------------------- | ---------------------------------------------------- | --------------------------------------- |
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
@@ -9150,7 +9170,7 @@ than guessing.
     | `LangSmithAuthError` | `AuthenticationError` | 401 | 401
     | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
     | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 || `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的|
+    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
     | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
     | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
     | *（不可用）* | `BadRequestError` |新：400 || *（不可用）* | `PermissionDeniedError` |新：403 |

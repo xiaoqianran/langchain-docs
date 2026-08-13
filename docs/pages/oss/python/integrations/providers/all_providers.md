@@ -7,8 +7,8 @@ Browse the complete collection of integrations available for Python. LangChain P
 ## Providers
 
 <Columns>
-  <Card title="1Claw" href="https://docs.1claw.xyz" icon="link">
-    HSM-backed vault and Shroud TEE proxy for keeping secrets out of agent context.
+  <Card title="1Claw" href="https://docs.1claw.xyz/docs/integrations/langchain" icon="link">
+    HSM-backed secrets, signing, memory, and automations for LangChain agents.
   </Card>
 
   <Card title="Abso" href="https://github.com/lunary-ai/langchain-abso" icon="link">
@@ -77,6 +77,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="AgentQL" href="https://docs.agentql.com/" icon="link">
     Web scraping with natural language queries.
+  </Card>
+
+  <Card title="AgentRAM" href="https://agentram.dev/langchain-agent-memory-tutorial.html" icon="link">
+    Hosted long-term memory tools and BaseStore for LangChain and LangGraph agents.
   </Card>
 
   <Card title="Agent Evidence" href="https://github.com/joy7758/agent-evidence" icon="link">
@@ -689,6 +693,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
     Cloud sandboxes for AI agents with fast cold starts.
+  </Card>
+
+  <Card title="LexMex" href="https://lex-mex.xyz" icon="link">
+    Spanish-language Mexican federal law Q\&A with cited articles for LangChain agents.
   </Card>
 
   <Card title="Lindorm" href="https://help.aliyun.com/document_detail/174640.html" icon="link">

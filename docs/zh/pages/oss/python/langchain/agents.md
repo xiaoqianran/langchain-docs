@@ -120,7 +120,7 @@
 
 ### 工具
 
-要为代理提供工具，请传递任何 Python 可调用函数、LangChain 工具或工具字典。有关工具定义、上下文访问和动态工具选择，请参阅[Tools](/oss/python/langchain/tools)。
+要为代理提供工具，请传递任何 Python 可调用工具、LangChain 工具或工具字典。有关工具定义、上下文访问和动态工具选择，请参阅[Tools](/oss/python/langchain/tools)。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -418,7 +418,7 @@
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       state_schema=MyState,  # [!code highlight]
   )
@@ -928,7 +928,7 @@ for snapshot in stream.values:
 ```
 
 <Tip>
-  有关流模式、事件类型和 UI 模式，请参阅[Streaming](/oss/python/langchain/streaming)。
+  有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/python/langchain/streaming)。
 </Tip>
 
 ## 配置线束

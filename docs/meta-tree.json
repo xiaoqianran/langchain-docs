@@ -213,6 +213,12 @@
           "rel": "api-reference/deployments-v2/interrupt-deployment-revision.md"
         }
       ],
+      "list-deployment-log-entries": [
+        {
+          "title": "List Deployment Log Entries",
+          "rel": "api-reference/deployments-v2/list-deployment-log-entries.md"
+        }
+      ],
       "list-deployment-logs": [
         {
           "title": "List Deployment Logs",
@@ -283,6 +289,54 @@
         {
           "title": "List GitHub Repositories",
           "rel": "api-reference/integrations-v1/list-github-repositories.md"
+        }
+      ],
+      "create-engine-picker-session-selection": [
+        {
+          "title": "Create Engine Picker Session Selection",
+          "rel": "api-reference/integrations-v2/create-engine-picker-session-selection.md"
+        }
+      ],
+      "get-engine-picker-session-endpoint": [
+        {
+          "title": "Get Engine Picker Session Endpoint",
+          "rel": "api-reference/integrations-v2/get-engine-picker-session-endpoint.md"
+        }
+      ],
+      "get-forge-github-install-link-endpoint": [
+        {
+          "title": "Get Forge Github Install Link Endpoint",
+          "rel": "api-reference/integrations-v2/get-forge-github-install-link-endpoint.md"
+        }
+      ],
+      "get-github-install-link-endpoint": [
+        {
+          "title": "Get Github Install Link Endpoint",
+          "rel": "api-reference/integrations-v2/get-github-install-link-endpoint.md"
+        }
+      ],
+      "list-forge-github-installation-repositories": [
+        {
+          "title": "List Forge Github Installation Repositories",
+          "rel": "api-reference/integrations-v2/list-forge-github-installation-repositories.md"
+        }
+      ],
+      "list-forge-github-installations": [
+        {
+          "title": "List Forge Github Installations",
+          "rel": "api-reference/integrations-v2/list-forge-github-installations.md"
+        }
+      ],
+      "list-github-installation-repositories": [
+        {
+          "title": "List Github Installation Repositories",
+          "rel": "api-reference/integrations-v2/list-github-installation-repositories.md"
+        }
+      ],
+      "list-github-installations": [
+        {
+          "title": "List Github Installations",
+          "rel": "api-reference/integrations-v2/list-github-installations.md"
         }
       ],
       "create-listener": [
@@ -5339,6 +5393,10 @@
         {
           "title": "Get a snapshot",
           "rel": "langsmith/smith-api/sandboxes/get-a-snapshot.md"
+        },
+        {
+          "title": "Get a snapshot name",
+          "rel": "langsmith/smith-api/sandboxes/get-a-snapshot-name.md"
         },
         {
           "title": "Get sandbox resource usage",

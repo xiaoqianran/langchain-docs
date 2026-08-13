@@ -4,5 +4,5 @@
 
 # 中断部署修订版
 
-https://api.host.langchain.com/openapi.json post /v2/deployments/{deployment_id}/revisions/{revision_id}/interrupt
+https://api.host.langchain.com/openapi.json post /v2/deployments/{deployment_id}/revisions/{revision_id}/interruption
 中断正在进行的修订版本构建/部署。

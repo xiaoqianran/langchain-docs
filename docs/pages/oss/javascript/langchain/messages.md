@@ -990,6 +990,27 @@ const imageBlock: ContentBlock.Multimodal.Image = {
   Content blocks are not a replacement for the [`content`](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) property, but rather a new property that can be used to access the content of a message in a standardized format.
 </Info>
 
+## Serialization
+
+You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage } from "@langchain/core/messages";
+import { load } from "@langchain/core/load";
+
+const message = new HumanMessage("What is the capital of France?");
+
+// Serialize to a plain object
+const serialized = message.toJSON();
+
+// Deserialize back to a message object
+const restored = await load<HumanMessage>(JSON.stringify(serialized));
+```
+
+<Warning>
+  **`load()` deserializes data by instantiating classes and invoking constructors. Never call `load()` on untrusted or user-supplied input.** Only deserialize data that originates from a source you control, such as your own database.
+</Warning>
+
 ## Use with chat models
 
 [Chat models](/oss/javascript/langchain/models) accept a sequence of message objects as input and return an [`AIMessage`](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) as output. Interactions are often stateless, so that a simple conversational loop involves invoking a model with a growing list of messages.

@@ -5,4 +5,4 @@
 # 删除快照
 
 /langsmith/langsmith-platform-openapi.json 删除 /api/v2/sandboxes/snapshots/{snapshot_id}
-根据ID删除快照。底层存储是异步回收的。
+通过 ID 或 Docker 样式的 name[:tag] 引用删除快照。底层存储是异步回收的。

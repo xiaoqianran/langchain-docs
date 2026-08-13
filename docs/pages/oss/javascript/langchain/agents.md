@@ -412,7 +412,7 @@ To add custom fields, define a state schema on your middleware using `stateSchem
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [],
     middleware: [stateMiddleware],
   });
