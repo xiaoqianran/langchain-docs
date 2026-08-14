@@ -95,6 +95,14 @@
     <span>Claude Agent SDK</span>
   </a>
 
+  <a href="/langsmith/trace-with-claude-managed-agents">
+    <img alt="" />
+
+    <img alt="" />
+
+    <span>Claude Managed Agents</span>
+  </a>
+
   <a href="/langsmith/trace-with-crewai">
     <img alt="" />
 

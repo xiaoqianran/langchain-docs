@@ -22,7 +22,7 @@
 
     <img alt="" />
 
-    <span>人类</span>
+    <span>Anthropic</span>
   </a>
 
   <a href="/langsmith/trace-deepseek">
@@ -70,12 +70,12 @@
 
     <img alt="" />
 
-    <span>兼容OpenAI的API</span>
+    <span>OpenAI兼容API</span>
   </a>
 </div>
 
 <Callout icon="arrows-transfer-down">
-  **使用LangChain？** LangChain为100多个LLM提供者提供了统一的接口，允许您通过设置环境变量来切换模型。 [Initialize a model](/oss/python/langchain/models#initialize-a-model) 和 LangSmith 将自动跟踪您的申请。
+  **使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量在模型之间切换。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
 </Callout>
 
 ## 代理框架
@@ -97,16 +97,24 @@
     <span>克劳德代理SDK</span>
   </a>
 
-  <a href="/langsmith/trace-with-crewai">
+  <a href="/langsmith/trace-with-claude-managed-agents">
+    <img alt="" />
+
+    <img alt="" />
+
+    <span>克劳德管理代理</span>
+  </a><a href="/langsmith/trace-with-crewai">
     <img alt="" />
 
     <img alt="" />
 
     <span>CrewAI</span>
-  </a><a href="/langsmith/trace-deep-agents">
+  </a>
+
+  <a href="/langsmith/trace-deep-agents">
     <img alt="" />
 
-    <span>深层特工</span>
+    <span>Deep Agents</span>
   </a>
 
   <a href="/langsmith/trace-with-google-adk">
@@ -150,7 +158,7 @@
 
     <img alt="" />
 
-    <span>OpenAI 代理</span>
+    <span>OpenAI代理商</span>
   </a>
 
   <a href="/langsmith/trace-with-opentelemetry">
@@ -202,7 +210,7 @@
 
     <img alt="" />
 
-    <span>OpenAI 实时</span>
+    <span>OpenAI实时</span>
   </a>
 
   <a href="/langsmith/trace-gemini-live">
@@ -228,15 +236,15 @@
 
     <span>管道猫</span>
   </a>
-</div>
-
-## 开发者工具
+</div>## 开发者工具
 
 <div>
   <a href="/langsmith/trace-claude-code">
     <img alt="" />
 
-    <img alt="" /><span>克劳德代码</span>
+    <img alt="" />
+
+    <span>克劳德代码</span>
   </a>
 
   <a href="/langsmith/trace-with-codex">
@@ -244,7 +252,7 @@
 
     <img alt="" />
 
-    <span>OpenAI Codex</span>
+    <span>OpenAI法典</span>
   </a>
 
   <a href="/langsmith/trace-with-opencode">
@@ -292,7 +300,7 @@
 
     <img alt="" />
 
-    <span>颞</span>
+    <span>颞叶</span>
   </a>
 
   <a href="/langsmith/trace-with-vscode-copilot">

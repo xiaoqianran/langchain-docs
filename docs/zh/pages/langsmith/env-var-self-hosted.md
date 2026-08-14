@@ -4,9 +4,9 @@
 
 # 自托管代理服务器环境变量
 
-LangSmith 代理服务器部署在自承载基础设施上时支持的环境变量。
+部署在自承载基础设施上时，LangSmith代理服务器支持的环境变量。
 
-部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
+当部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
 
@@ -17,14 +17,14 @@ LangSmith 代理服务器部署在自承载基础设施上时支持的环境变�
 </Warning>
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。<Warning>
-  启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作程序都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+  启用 `BG_JOB_ISOLATED_LOOPS` 后，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 </Warning>
 
 默认为`False`。
 
 ## `BG_JOB_MAX_RETRIES`
 
-可重试故障（例如暂时性数据库错误、服务器关闭取消）后后台运行重试的最大次数。当运行因可重试错误而失败时，它将被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
+可重试故障（例如暂时性数据库错误、服务器关闭取消）后后台运行重试的最大次数。当运行因可重试错误而失败时，它会被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
 
 默认为`3`。
 
@@ -32,7 +32,7 @@ LangSmith 代理服务器部署在自承载基础设施上时支持的环境变�
 
 ## `BG_JOB_TIMEOUT_SECS`
 
-可以增加后台运行的超时时间。但是，云部署的基础架构对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
+可以增加后台运行的超时时间。但是，云部署的基础设施对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
 
 后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过`POST /threads/{thread_id}/runs/{run_id}/stream`加入流）以检索运行的输出。
 
@@ -45,7 +45,7 @@ LangSmith 代理服务器部署在自承载基础设施上时支持的环境变�
 * 允许单一来源的示例：`CORS_ALLOW_ORIGINS=https://example.com`
 * 允许多个来源的示例：`CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
 
-如需高级 CORS 配置，请参阅[how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers)。
+有关高级 CORS 配置，请参阅[how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers)。
 
 默认为 `*`（所有来源）。
 
@@ -57,7 +57,7 @@ LangSmith 代理服务器部署在自承载基础设施上时支持的环境变�
 * **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
 * **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
 * **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
-* **`DD_SITE`**：要发送数据的Datadog站点，例如`datadoghq.com`或`datadoghq.eu`。默认为`datadoghq.com`。
+* **`DD_SITE`**：要发送数据的 Datadog 站点，例如 `datadoghq.com` 或 `datadoghq.eu`。默认为`datadoghq.com`。
 * **`DD_ENV`**：应用于跟踪和日志的环境名称，例如`production`。
 * **`DD_SERVICE`**：应用于跟踪和日志的服务名称。
 * **`DD_TRACE_DEBUG`**：设置为 `true` 以在故障排除时在 `ddtrace` 跟踪器中启用调试日志记录。
@@ -73,7 +73,7 @@ LangSmith 代理服务器部署在自承载基础设施上时支持的环境变�
 
 例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。
 
-当[⟦T64⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
+当[⟦T64⟧](#bg_job_isolated_loops)启用时，池不被共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
 
 默认为 `150` 连接。
 
@@ -201,6 +201,18 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
   当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
 </Note>
 
+## `AGENT_POSTGRES_IAM_AUTH_PROVIDER`
+
+将 `AGENT_POSTGRES_IAM_AUTH_PROVIDER` 设置为 `aws`、`azure` 或 `gcp`，以将 PostgreSQL 连接 URI 中的密码替换为短期云身份令牌。需要`langgraph-api>=0.12.0`。
+
+有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
+
+## `AGENT_REDIS_IAM_AUTH_PROVIDER`
+
+将 `AGENT_REDIS_IAM_AUTH_PROVIDER` 设置为 `aws`、`azure` 或 `gcp`，以使用短期云身份令牌对 Redis 连接进行身份验证。需要`langgraph-api>=0.12.0`。
+
+有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
+
 ## `LANGSMITH_API_KEY`
 
 要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_API_KEY` 设置为从自托管实例创建的 API 密钥。
@@ -209,9 +221,7 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管实例的主机名。
 
-## `MOUNT_PREFIX`
-
-设置 `MOUNT_PREFIX` 以在特定路径前缀下为代理服务器提供服务。这对于服务器位于需要特定路径前缀的反向代理或负载均衡器后面的部署非常有用。
+## `MOUNT_PREFIX`设置 `MOUNT_PREFIX` 以在特定路径前缀下为代理服务器提供服务。这对于服务器位于需要特定路径前缀的反向代理或负载均衡器后面的部署非常有用。
 
 例如，如果服务器要在`https://example.com/langgraph`下提供服务，请将`MOUNT_PREFIX`设置为`/langgraph`。
 
@@ -224,15 +234,15 @@ Postgres：
 * 版本 15.8 或更高版本。
 * 必须存在初始数据库，并且连接 URI 必须引用该数据库。
 
-控制平面功能：* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
+控制平面功能：
+
+* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
 * 如果删除`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库，也不会删除外部管理的Postgres实例。
 * 如果删除`POSTGRES_URI_CUSTOM`，修订版部署将不会成功。一旦指定了 `POSTGRES_URI_CUSTOM`，就必须始终为部署的生命周期进行设置。
 * 如果删除部署，控制平面不会删除外部管理的 Postgres 实例。
 * `POSTGRES_URI_CUSTOM`的值可以更新。例如，可以更新 URI 中的密码。
 
-数据库连接：
-
-* 自定义 Postgres 实例必须可由代理服务器访问。用户负责确保连接。
+数据库连接：* 自定义 Postgres 实例必须可由代理服务器访问。用户负责确保连接。
 
 ## `REDIS_CLUSTER`
 
@@ -253,7 +263,9 @@ Postgres：
 <div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

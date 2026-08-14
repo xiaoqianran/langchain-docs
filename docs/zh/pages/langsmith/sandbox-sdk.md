@@ -26,13 +26,22 @@
   ```
 </CodeGroup>
 
-Python 的 `[sandbox]` 额外安装了 `websockets`，它支持实时流和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
+Python 的 `[sandbox]` 额外安装了 `websockets`，它支持实时流媒体和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install ws
 ```
 
 ## 创建并运行沙箱
+
+客户端从环境中读取 `LANGSMITH_API_KEY` 和 `LANGSMITH_ENDPOINT`，因此在创建沙箱之前将两者导出：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
+export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
+```
+
+`LANGSMITH_ENDPOINT` 默认为 `https://api.smith.langchain.com` (GCP US)。将其设置为 [BYOC](/langsmith/byoc) 上的数据平面 URL、[self-hosted](/langsmith/self-hosted) 上的实例 URL 或其他云区域上的 [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk)。
 
 当您想要从可重用的自定义文件系统映像启动时，传递快照 ID 或名称；有关该流程，请参阅[Snapshots](/langsmith/sandbox-snapshots)。
 
@@ -136,9 +145,7 @@ npm install ws
   ```
 </CodeGroup>
 
-### 使用 CommandHandle 进行流式传输
-
-设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。
+### 使用 CommandHandle 进行流式传输设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -233,7 +240,9 @@ npm install ws
   ```
 </CodeGroup>
 
-### 重新连接到正在运行的命令如果客户端断开连接，请使用命令 ID 重新连接：
+### 重新连接到正在运行的命令
+
+如果客户端断开连接，请使用命令 ID 重新连接：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -307,11 +316,9 @@ npm install ws
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。
-
-|领域|它控制什么 |当它发生时 |
-| ------------------------ | | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- || `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。                                                                               |省略时默认为 `600`（10 分钟）。                                |
-| `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
+| ------------------------ | | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。                                                                               |省略时默认为 `600`（10 分钟）。                                || `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
 
 两个值都必须是 60（分钟分辨率）的倍数。完整的生命周期是：
 
@@ -374,7 +381,9 @@ running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_s
 
 ## 命令生命周期和 TTL
 
-沙箱守护进程使用两种超时机制来管理命令会话生命周期：* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。
+沙箱守护进程使用两种超时机制来管理命令会话生命周期：
+
+* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。
 * **空闲超时（运行命令）**：在空闲超时（默认值：5 分钟）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。设置为 `-1` 无空闲超时。
 
 ### 组合生命周期选项
@@ -423,13 +432,11 @@ running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_s
     await sandbox.delete();
   }
   ```
-</CodeGroup>
-
-设置 `kill_on_disconnect=True` (Python) 或 `killOnDisconnect: true` (TypeScript) 以在最后一个客户端断开连接时立即终止该命令，而不是等待空闲超时。
+</CodeGroup>设置 `kill_on_disconnect=True` (Python) 或 `killOnDisconnect: true` (TypeScript) 以在最后一个客户端断开连接时立即终止该命令，而不是等待空闲超时。
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
@@ -477,7 +484,9 @@ try:
 finally:
     pg_handle.kill()
     client.delete_sandbox(sb.name)
-```隧道可与任何 TCP 服务（Redis、HTTP 服务器等）配合使用，并且您可以同时打开多个隧道：
+```
+
+隧道可与任何 TCP 服务（Redis、HTTP 服务器等）配合使用，并且您可以同时打开多个隧道：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with sb.tunnel(remote_port=5432, local_port=25432) as t1, \
@@ -560,9 +569,7 @@ async def main():
     await sandbox.delete();
   }
   ```
-</CodeGroup>
-
-在沙箱内，任何 LangSmith 检测的代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
+</CodeGroup>在沙箱内，任何 LangSmith 检测代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
 
 <Warning>
   在沙箱进程退出之前始终调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
@@ -622,7 +629,7 @@ async def main():
 </CodeGroup>
 
 <Note>
-  有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙盒 SDK 参考。
+  有关更多详细信息，请参阅 GitHub 上 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 的沙箱 SDK 参考。
 </Note>
 
 ***

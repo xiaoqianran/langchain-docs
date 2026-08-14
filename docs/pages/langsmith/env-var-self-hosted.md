@@ -219,6 +219,18 @@ Defaults to `120` seconds.
   Setting a very high value for `RESUMABLE_STREAM_TTL_SECONDS` can result in substantial Redis memory usage when there are many concurrent runs with large or frequent streaming output. Set this value to the minimum value to enable recovery during network interruptions and prefer checkpointing for long term durability and execution snapshotting.
 </Note>
 
+## `AGENT_POSTGRES_IAM_AUTH_PROVIDER`
+
+Set `AGENT_POSTGRES_IAM_AUTH_PROVIDER` to `aws`, `azure`, or `gcp` to replace the password in the PostgreSQL connection URI with a short-lived cloud identity token. Requires `langgraph-api>=0.12.0`.
+
+For provider prerequisites and connection URI requirements, see [Configure IAM authentication for data stores](/langsmith/configure-iam-auth).
+
+## `AGENT_REDIS_IAM_AUTH_PROVIDER`
+
+Set `AGENT_REDIS_IAM_AUTH_PROVIDER` to `aws`, `azure`, or `gcp` to authenticate Redis connections with a short-lived cloud identity token. Requires `langgraph-api>=0.12.0`.
+
+For provider prerequisites and connection URI requirements, see [Configure IAM authentication for data stores](/langsmith/configure-iam-auth).
+
 ## `LANGSMITH_API_KEY`
 
 To send traces to a self-hosted LangSmith instance, set `LANGSMITH_API_KEY` to an API key created from the self-hosted instance.

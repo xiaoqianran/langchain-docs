@@ -37,7 +37,6 @@ export const connector = connectors.mcp({
     langchainDocs: {
       transport: "http",
       url: "https://docs.langchain.com/mcp",
-      includeTools: ["search_docs_by_lang_chain"],
     },
   },
 });
@@ -67,17 +66,17 @@ export const connector = connectors.mcp({
 
 |选项|描述 |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `transport` |必需的。对流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。                  |
+| `transport` |必需的。对可流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。                  |
 | `url` |必需的。远程 MCP 端点 URL。                                             |
-| `headers` |要发送到服务器的静态标头，例如授权标头。             |
+| `headers` |发送到服务器的静态标头，例如授权标头。             |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。                                                      || `exclude_tools` / `excludeTools` |要隐藏的原始 MCP 工具名称。                                                        |
-| `default_tool_timeout` / `defaultToolTimeout` |每个工具调用的超时时间，对于 Python 以秒为单位，对于 TypeScript 以毫秒为单位。 |
+| `default_tool_timeout` / `defaultToolTimeout` |每个工具调用的超时时间，Python 以秒为单位，TypeScript 以毫秒为单位。 |
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。                                    |
 | `reconnect` |对于 SSE，配置重新连接行为。                                          |
 
 连接器还接受以下选项：
 
-|选项 |默认|描述 |
+|选项|默认|描述 |
 | -------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------- |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。                       |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |如果服务器需要凭据，请从环境变量中读取它们并通过`headers`传递它们。将本地值保留在`.env`中；托管 Deep Agents 将符合条件的值作为部署机密转发。不要在连接器声明中对凭据进行硬编码。
@@ -85,7 +84,7 @@ export const connector = connectors.mcp({
 ## 将连接器与其他功能区分开来
 
 * **MCP 连接器** 添加由远程 MCP 服务器托管的工具。
-* **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** 在项目中实现应用逻辑，并通过代理定义传递。
+* **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** 在项目中实现应用逻辑并通过代理定义传递。
 * **[Channels](/langsmith/javascript/managed-deep-agents-channels)** 接收启动代理运行并传递响应的外部消息。
 
 ***

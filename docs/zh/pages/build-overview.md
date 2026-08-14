@@ -24,7 +24,7 @@
           </Card>
 
           <Card title="LangChain" href="/oss/python/langchain/overview" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langchain-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=663b30f85baf99ad708b97e05da2a5a4">
-            一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确构建您需要的内容。
+            一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。
           </Card>
 
           <Card title="LangGraph" href="/oss/python/langgraph/overview" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langgraph-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=b997e1a7487d507a36556eedbfd99f81">
@@ -38,7 +38,7 @@
           <Card title="Deep Agents" href="/oss/javascript/deepagents/overview" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/deep-agents-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=1cc68f66a9e7550331cc0875f1ba53af">
             为复杂、长时间运行的任务构建代理。完整的代理工具，包含规划、子代理、虚拟文件系统和内置长期内存。最快的启动方式。
           </Card><Card title="LangChain" href="/oss/javascript/langchain/overview" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langchain-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=663b30f85baf99ad708b97e05da2a5a4">
-            一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确构建您需要的内容。
+            一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。
           </Card>
 
           <Card title="LangGraph" href="/oss/javascript/langgraph/overview" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langgraph-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=b997e1a7487d507a36556eedbfd99f81">
@@ -145,7 +145,7 @@
 
     <CardGroup>
       <Card title="Platform setup" icon="server" href="/langsmith/platform-setup">
-        设置云或自托管LangSmith，并管理用户和合规性。
+        设置云、BYOC 或自托管 LangSmith，并管理用户和合规性。
       </Card>
 
       <Card title="LLM Gateway" icon="route" href="/langsmith/llm-gateway">

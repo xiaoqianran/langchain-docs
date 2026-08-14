@@ -4,7 +4,7 @@
 
 # LangSmith 沙箱
 
-使用 LangSmith 管理的沙箱在隔离环境中安全地执行代码并与文件系统交互。
+使用 LangSmith 托管沙箱在隔离环境中安全地执行代码并与文件系统交互。
 
 沙箱是隔离的环境，允许代理安全地执行潜在风险的操作，例如运行任意代码或与文件系统交互，而不会影响您的主要基础设施。
 
@@ -15,11 +15,16 @@
 ## 环境可用性
 
 |环境 |状态 |
-| -------------------------------------------------- | ------------------- |
+| -------------------------------------------------------- | ------------------- |
 | GCP 美国 (`smith.langchain.com`) |一般可用 |
 | GCP 欧盟 (`eu.smith.langchain.com`) |一般可用 |
 | GCP 亚太地区 (`apac.smith.langchain.com`) |一般可用 |
 | AWS 美国 (`aws.smith.langchain.com`) |一般可用 |
+| [BYOC](/langsmith/byoc)（您的数据平面 URL）|一般可用 |
+
+<Warning>
+  在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
+</Warning>
 
 对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
 
@@ -69,15 +74,15 @@ export LANGSMITH_API_KEY="<your-api-key>"
   console.log(result.stdout); // "4\n"
   await sandbox.delete();
   ```
-</CodeGroup>
-
-<Tip>
+</CodeGroup><Tip>
   更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令以及打开交互式 shell，而无需编写任何代码。
 </Tip>
 
-### 4. 与代理一起使用沙箱要将沙箱连接到代理代码中，请参阅开源文档：
+### 4. 与代理一起使用沙箱
 
-* **深度代理**：[Use ⟦T9⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
+要将沙箱连接到代理代码中，请参阅开源文档：
+
+* **Deep Agents**：[Use ⟦T9⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
 * **沙箱作为代理后端**：[Configure any sandbox as the execution backend](/oss/python/deepagents/sandboxes)自动为您的代理提供`execute`和文件系统工具。
 * **LangChain / LangGraph 集成**：使用 LangSmith 沙箱作为第一方选项，或 [connect third-party providers](/oss/python/integrations/sandboxes)，例如 AgentCore、Daytona、E2B、Modal、Runloop 和 Vercel。
 
@@ -102,15 +107,15 @@ export LANGSMITH_API_KEY="<your-api-key>"
 
   <Card title="Permissions" icon="user-key" href="/langsmith/sandbox-permissions">
     控制哪些工作区成员可以在创建沙箱后与其进行交互。
-  </Card>
-
-  <Card title="CLI" icon="terminal-2" href="/langsmith/sandbox-cli">
+  </Card><Card title="CLI" icon="terminal-2" href="/langsmith/sandbox-cli">
     从命令行构建快照、管理沙箱、打开控制台和隧道 TCP 端口。
   </Card>
 
   <Card title="SDK usage" icon="code" href="/langsmith/sandbox-sdk">
     使用 Python 或 TypeScript SDK 以编程方式创建和管理沙箱。
-  </Card><Card title="Self-hosted setup" icon="server" href="/langsmith/deploy-self-hosted-full-platform#enable-sandboxes">
+  </Card>
+
+  <Card title="Self-hosted setup" icon="server" href="/langsmith/deploy-self-hosted-full-platform#enable-sandboxes">
     使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。
   </Card>
 

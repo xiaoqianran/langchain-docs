@@ -4,7 +4,7 @@
 
 # 快速入门
 
-安装Deep Agents代码，运行第一个任务，并使用交互或非交互模式
+安装Deep Agents代码，运行您的第一个任务，并使用交互或非交互模式
 
 Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/quickstart)基础上构建的终端编码代理。本指南涵盖安装、您的第一个任务、日常交互使用、管道自动化以及LangSmith跟踪。有关功能概述，请参阅[Deep Agents Code overview](/oss/deepagents/code/overview)。有关`config.toml`和提供商设置，请参阅[Configuration](/oss/deepagents/code/configuration)。
 
@@ -41,7 +41,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
 </Steps>
 
 <Note>
-  Deep Agents Windows 上不正式支持代码。 Windows用户可以尝试在[Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)下运行。
+  Deep Agents Windows 上不正式支持代码。 Windows用户可以尝试在[Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)下运行它。
 </Note>
 
 ## 交互模式
@@ -62,6 +62,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
     * `/remember [context]`：回顾对话并更新记忆和技能。可以选择传递附加上下文。
     * `/skill:<name> [args]`：直接通过名称调用技能。该技能的 `SKILL.md` 指令将与您提供的任何参数一起注入到提示中。* `/skill-creator [task]`：创建有效代理技能的指南。
     * `/offload`（别名`/compact`） - 通过使用摘要占位符将消息卸载到存储来释放上下文窗口空间。如果需要，代理可以从卸载的文件中检索完整的历史记录。
+    * `/context`：打开颜色编码的上下文窗口使用报告，其中包含模型容量、使用类别和剩余空间。
     * `/tokens`：显示当前上下文窗口令牌使用情况明细。
     * `/clear`：清除对话历史记录并启动新线程。
     * `/force-clear`：停止活动工作，清除聊天，并启动新线程。
@@ -70,9 +71,10 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
     * `/mcp [login <server> | reconnect]`：显示活动的 MCP 服务器和工具。 `login <server>` 运行服务器的 OAuth 流程； `reconnect` 加载延迟登录。
     * `/plugins`：管理[plugins and marketplaces](/oss/deepagents/code/plugins)。
     * `/notifications`：配置启动警告首选项。
-    * `/reload`：重新读取`.env`文件，刷新配置，重新发现技能，无需重启。这还会重新加载插件技能和 MCP 配置。对话状态被保留。有关覆盖行为，请参阅[⟦T46⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
-    * `/theme`：打开交互式主题选择器以切换颜色主题。内置主题以及任何 [user-defined themes](/oss/deepagents/code/configuration#themes) 都可用。
-    * `/scrollbar`：显示或隐藏聊天滚动条。* `/update`：检查并安装Deep Agents 内联代码更新。检测您的安装方法（uv、Homebrew、pip）并运行适当的升级命令。
+    * `/reload`：重新读取`.env`文件，刷新配置，重新发现技能，无需重启。这还会重新加载插件技能和 MCP 配置。对话状态被保留。有关覆盖行为，请参阅[⟦T47⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。* `/theme`：打开交互式主题选择器以切换颜色主题。内置主题以及任何 [user-defined themes](/oss/deepagents/code/configuration#themes) 都可用。
+    * `/scrollbar`：显示或隐藏聊天滚动条。
+    * `/line-numbers`：在新差异中显示或隐藏文件相关行号。参见[Diff line numbers](/oss/deepagents/code/config-file#diff-line-numbers)。
+    * `/update`：检查并安装Deep Agents 内联代码更新。检测您的安装方法（uv、Homebrew、pip）并运行适当的升级命令。
     * `/auto-update`：打开或关闭自动更新。
     * `/install`：安装可选集成。
     * `/trace`：在LangSmith中打开当前线程。
@@ -98,7 +100,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
   </Accordion>
 
   <Accordion title="Keyboard shortcuts" icon="keyboard">
-    **一般**|快捷方式|行动|
+    **一般**|快捷方式 |行动|
     | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
     | `Enter` |提交提示 |
     | `Shift+Enter`、`Ctrl+J`、`Alt+Enter` 或 `Ctrl+Enter` |插入换行符 |
@@ -112,7 +114,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
 
     **提示中的文本编辑**
 
-    聊天输入使用标准的 readline 样式绑定：|快捷方式 |行动|
+    聊天输入使用标准的 readline 样式绑定：|快捷方式|行动|
     | ---------------------------- | ----------------------------------- |
     | `Ctrl+A` 或 `Home` |将光标移至行首 |
     | `Ctrl+E` 或 `End` |将光标移至行尾 |
@@ -136,6 +138,10 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
   </Accordion>
 </AccordionGroup>
 
+### 检查上下文窗口的使用情况
+
+运行 `/context` 打开当前模型上下文窗口使用情况的颜色编码报告。该报告显示模型的上下文限制、已使用的令牌、剩余容量以及对话和系统提示以及这些值可用时的工具之间的细分。提供商报告的总数仍然与当地对话的估计不同。当提供程序总数不可用时，报告会将对话计数标记为估计值，并将总使用量标记为不可用。当您想要在对话记录中使用文本摘要时，请使用`/tokens`。
+
 ### 外部编辑器
 
 按 `Ctrl+X` 或键入 `/editor` 在外部编辑器中编写提示。 Deep Agents 代码先检查 `$VISUAL`，然后检查 `$EDITOR`，然后回退到 `vi` (macOS/Linux) 或 `notepad` (Windows)。 GUI 编辑器（VS Code、Cursor、Zed 等）会自动接收 `--wait` 标志，因此 Deep Agents 代码会阻塞，直到您关闭文件。
@@ -152,7 +158,9 @@ export EDITOR="nvim"    # Terminal fallback
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "Write a Python script that prints hello world"
-```每个非交互式运行都会启动一个新线程 - 调用之间不会携带对话历史记录。基于文件的状态（内存、技能、配置）仍然存在。
+```
+
+每个非交互式运行都会启动一个新线程 - 调用之间不会携带对话历史记录。基于文件的状态（内存、技能、配置）仍然存在。
 
 您还可以通过 stdin 管道输入。当输入通过管道传输时，Deep Agents代码会自动以非交互方式运行：
 
@@ -167,9 +175,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
 
 <Note>
   最大管道输入大小为 10 MiB。
-</Note>
-
-默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如，`-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。
+</Note>默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如，`-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。
 
 <AccordionGroup>
   <Accordion title="Cap turn count" icon="gauge">
@@ -179,7 +185,9 @@ git diff | dcode --skill code-review -n 'summarize changes'
     dcode -n "fix the failing tests" --max-turns 10
     ```
 
-    `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124（匹配 GNU `timeout`）退出，因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。对于基于时间的限制而不是（或除此之外）回合计数限制，请参阅[Cap wall-clock time with ⟦T132⟧](#non-interactive-mode-and-piping)。
+    `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124 退出（与 GNU `timeout` 匹配），因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
+
+    有关基于时间的限制而不是（或除此之外）回合计数限制，请参阅[Cap wall-clock time with ⟦T136⟧](#non-interactive-mode-and-piping)。
   </Accordion>
 
   <Accordion title="Cap wall-clock time" icon="clock">
@@ -194,9 +202,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
     ```
 
     到期时，代理将被取消，流程会以代码 124 退出，与`--max-turns` 使用的代码相同，因此 CI 可以统一处理两个预算命中。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
-  </Accordion>
-
-  <Accordion title="Clean output and buffering" icon="buffer">
+  </Accordion><Accordion title="Clean output and buffering" icon="buffer">
     使用 `-q` 进行干净的输出，适合通过管道传输到其他命令，并使用 `--no-stream` 在写入标准输出之前缓冲完整响应（而不是流式传输）：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -227,7 +233,9 @@ git diff | dcode --skill code-review -n 'summarize changes'
   `-S all`（或`--shell-allow-list all`）允许代理执行任意 shell 命令，无需人工确认。
 </Warning>
 
-## 使用 LangSmith 进行跟踪启用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart)跟踪以查看LangSmith项目中的代理操作、工具调用和决策。
+## 使用 LangSmith 进行追踪
+
+启用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart) 跟踪以查看 LangSmith 项目中的代理操作、工具调用和决策。
 
 运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪在下次启动时启用，并在会话之间持续存在。有关凭证管理器的详细信息，请参阅[Provider credentials](/oss/deepagents/code/credentials#use-%2Fauth-recommended)。
 
@@ -237,11 +245,9 @@ git diff | dcode --skill code-review -n 'summarize changes'
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
 DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Code's own traces; defaults to "deepagents-code"
-```
+```使用 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 来命名接收 Deep Agents 代码自身跟踪的项目。它的作用域为 Deep Agents 代码，因此它不受项目的 `.env` 中设置的 `LANGSMITH_PROJECT` 的影响（它路由该项目的应用程序跟踪；请参阅下面的 **将代理跟踪与应用程序跟踪分开**）。
 
-使用 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 来命名接收 Deep Agents 代码自身跟踪的项目。它的作用域为 Deep Agents 代码，因此它不受项目的 `.env` 中设置的 `LANGSMITH_PROJECT` 的影响（它路由该项目的应用程序跟踪；请参阅下面的 **将代理跟踪与应用程序跟踪分开**）。
-
-要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。完整装载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
+要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。满载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
 
 对于 CI、无头运行或临时覆盖，请改为设置 shell 环境变量。 Shell 导出始终优先于 `.env` 值：
 
@@ -250,7 +256,9 @@ export LANGSMITH_TRACING=false
 ```
 
 <Accordion title="Separate agent traces from app traces">
-  Deep Agents 代码可以产生两种LangSmith 痕迹：* `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
+  Deep Agents 代码可以产生两种LangSmith 痕迹：
+
+  * `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
   * `Shell-command traces` 是Deep Agents 代码在 shell 中为您运行的代码发出的跟踪，例如测试、脚本或本地 LangGraph 应用程序。
 
   要将Deep Agents代码自己的跟踪发送到专用项目，请设置`DEEPAGENTS_CODE_LANGSMITH_PROJECT`：
@@ -270,11 +278,9 @@ export LANGSMITH_TRACING=false
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   uv run pytest tests/test_escalation_flow.py
-  ```
+  ```如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
 
-  如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
-
-  您还可以使用 [⟦T157⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
+  您还可以使用 [⟦T161⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
 </Accordion>
 
 <Accordion title="Dual-write traces to a second project">
@@ -285,7 +291,9 @@ export LANGSMITH_TRACING=false
   ```
 
   当设置和跟踪处于活动状态时，每个代理运行都会写入主项目（默认为`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和您在此处命名的项目。保持变量未设置，以像往常一样写入单个项目。
-</Accordion>配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
+</Accordion>
+
+配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
 
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ✓ LangSmith tracing: 'my-project'
@@ -309,9 +317,7 @@ export LANGSMITH_TRACING=false
 <div>
   <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -1,33 +1,32 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Build a scheduled research agent | https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial -->
+<!-- langchain-docs: Add memory and a schedule to your research assistant | https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial -->
 
-# 构建一个预定的研究代理
+# 为你的研究助理添加记忆和日程表
 
-使用工具、持久内存和每日计划构建托管深度代理，然后进行部署。
+从快速入门中向研究助理添加持久内存和每日日程安排，然后进行部署。
 
-本教程一次培养研究助理的一项能力。首先完成[quickstart](/langsmith/python/managed-deep-agents-quickstart)来搭建项目，添加API密钥，然后在本地运行`mda dev`。然后添加搜索工具，使用持久内存，按每日计划运行代理，并将其部署到 LangSmith。
+本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明、搜索工具和有效的 `mda dev` 设置。
+
+`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+
+本指南向您展示如何启用持久内存和每日计划，然后进行部署。您还可以选择添加自定义工具。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
-## 构建代理
+## 扩展代理
 
 <Steps>
-  <Step title="Write the instructions">
-    将 `instructions.md` 替换为研究助理的行为。这些说明引用了您接下来添加的工具以及您在本教程后面显式启用的共享持久内存：
+  <Step title="Update the instructions for memory">
+    扩展`instructions.md`，以便代理知道要保留哪些共享知识。保留快速入门中的研究行为并添加内存策略：
 
     ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Research assistant
 
-    You are a careful research assistant. Find sources, keep notes, and return
-    concise answers with citations.
-
-    ## Behavior
-
-    - Use the `web_search` tool to find sources instead of guessing.
-    - Cite the sources you used.
+    You are a careful research assistant. Use internet search to find sources,
+    keep notes, and return concise answers with citations.
 
     ## Memory
 
@@ -35,50 +34,6 @@
     - For release research, check the project's official changelog before secondary sources.
     - Never store personal data or secrets in memory.
     ```
-  </Step>
-
-  <Step title="Add a search tool">
-    使用搜索工具创建一个`tools/`模块，然后将其导入到代理条目中。此示例返回一个占位符结果，因此它无需外部 API 即可运行。将正文替换为对您的搜索提供商的调用。
-
-    ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool
-
-
-    @tool(parse_docstring=True)
-    def web_search(query: str) -> str:
-        """Search the web for a query and return result snippets.
-
-        Args:
-            query: The search query.
-        """
-        # Replace this stub with a call to your search provider.
-        return f"Top results for '{query}': ..."
-    ```
-
-    将工具导入到代理条目中并将其传递给定义：
-
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
-
-    from tools.search import web_search
-
-    agent = define_deep_agent(
-        name="research-assistant",
-        model="openai:gpt-5.5",
-        tools=[web_search],
-    )
-    ```
-
-    有关创作工具的更多信息，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。
-  </Step>
-
-  <Step title="Run the agent locally">
-    安装依赖项并启动本地开发服务器：
-
-    ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv sync
-    mda dev .
-    ````mda dev` 在 LangSmith Studio 中打开代理。发送问题并确认客服人员致电 `web_search` 并使用返回的片段进行回答。
   </Step>
 
   <Step title="Enable and use durable memory">
@@ -90,11 +45,107 @@
     memory = define_memory(scope="agent")
     ```
 
-    内存在整个部署中共享，并且对所有调用者可见，因此不要存储个人数据或机密。
-
-    重新启动`mda dev`，以便它发现新文件。在一个线程中，要求代理研究版本并记录可重用的项目规则，例如“对于版本研究，请在二手源之前检查官方变更日志”。然后在 Studio 中创建一个 **新线程** 并询问它将如何研究下一个版本。即使新线程没有对话历史记录，也请确认它应用了共享规则。
+    内存在整个部署中共享，并且对所有调用者可见，因此不要存储个人数据或机密。重新启动`mda dev`，以便它发现新文件。在一个线程中，要求代理研究版本并记录可重用的项目规则，例如“对于版本研究，请在二手源之前检查官方变更日志”。然后在 Studio 中创建一个 **新线程** 并询问它将如何研究下一个版本。即使新线程没有对话历史记录，也请确认它应用了共享规则。
 
     详情请参阅[Memory](/langsmith/python/managed-deep-agents-memory)。
+  </Step>
+
+  <Step title="(Optional) Add a custom tool">
+    提供商搜索涵盖开放网络。编写的工具涵盖您的应用程序逻辑：私有 API、数据库和内部数据。在`tools/`下创建一个模块，将其导入代理条目，并将其添加到现有搜索工具旁边的`tools`列表中。
+
+    此示例返回占位符项目记录，因此它无需外部 API 即可运行。将正文替换为对系统的调用。
+
+    ```python tools/projects.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.tools import tool
+
+
+    @tool(parse_docstring=True)
+    def lookup_tracked_project(project: str) -> str:
+        """Look up an internally tracked project by name.
+
+        Args:
+            project: Project or product name to look up.
+        """
+        # Replace this stub with a call to your project catalog or database.
+        return (
+            f"Project '{project}': status=active, owners=docs, "
+            f"changelog=https://example.com/{project}/changelog"
+        )
+    ```
+
+    将自定义工具附加到现有搜索工具旁边，保留快速入门`model`，然后选择与您的搜索设置匹配的选项卡：
+
+    <Tabs>
+      <Tab title="Provider search">
+        开放`agent.py`：
+
+        <CodeGroup>
+          ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          from managed_deepagents import define_deep_agent
+
+          from tools.projects import lookup_tracked_project
+
+          agent = define_deep_agent(
+              name="research-assistant",
+              model="openai:gpt-5.5",
+              tools=[
+                  {"type": "web_search"},
+                  lookup_tracked_project,
+              ],
+          )
+          ```
+
+          ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          from managed_deepagents import define_deep_agent
+
+          from tools.projects import lookup_tracked_project
+
+          agent = define_deep_agent(
+              name="research-assistant",
+              model="google_genai:gemini-3.6-flash",
+              tools=[
+                  {"google_search": {}},
+                  lookup_tracked_project,
+              ],
+          )
+          ```
+
+          ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          from managed_deepagents import define_deep_agent
+
+          from tools.projects import lookup_tracked_project
+
+          agent = define_deep_agent(
+              name="research-assistant",
+              model="anthropic:claude-sonnet-4-6",
+              tools=[
+                  {"type": "web_search_20260209", "name": "web_search"},
+                  lookup_tracked_project,
+              ],
+          )
+          ```
+        </CodeGroup>
+      </Tab>
+
+      <Tab title="Tavily">
+        打开`agent.py`。保持您的快速入门`model`值：<CodeGroup>
+          ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          from managed_deepagents import define_deep_agent
+
+          from tools.projects import lookup_tracked_project
+          from tools.search import internet_search
+
+          agent = define_deep_agent(
+              name="research-assistant",
+              model="provider:model",
+              tools=[internet_search, lookup_tracked_project],
+          )
+          ```
+        </CodeGroup>
+      </Tab>
+    </Tabs>
+
+    如果`mda dev`已经在运行，请重新启动它。在 Studio 中，询问所跟踪项目的状态并确认代理呼叫 `lookup_tracked_project`。
   </Step>
 
   <Step title="Schedule a daily digest">
@@ -106,23 +157,38 @@
     schedule = define_schedule(
         cron="0 8 * * 1-5",
         timezone="America/Los_Angeles",
-        prompt="Summarize what you learned yesterday and list open questions.",
+        prompt=(
+            "Review durable memory for reusable research rules. "
+            "Summarize anything useful, then list open questions for today."
+        ),
     )
     ```
 
-    部署上线后，`mda deploy` 将此计划协调到 LangSmith cron 作业中。有关线程行为和约束，请参阅[Schedules](/langsmith/python/managed-deep-agents-schedules)。
+    如果第一次触发时内存为空，代理仍会返回未解决的问题。
+
+    部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
+
+    * `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
+    * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
+    * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
+
+    有关线程行为和约束，请参阅[Schedules](/langsmith/python/managed-deep-agents-schedules)。
   </Step>
 
-  <Step title="Deploy the agent">
-    将项目部署到 LangSmith：
+  <Step title="Deploy and inspect">
+    将项目部署到LangSmith：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     mda deploy .
-    ```成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。有关部署标志和故障排除，请参阅 [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) 和 [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
-  </Step>
+    ```成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
-  <Step title="Inspect the run">
-    在 LangSmith 中打开打印的 URL 以检查构建状态和修订。打开跟踪来检查代理的输入、模型调用、`web_search` 调用、内存读写以及最终响应。
+    打开该 URL 并确认：
+
+    * 部署已准备就绪。
+    * `daily_digest` 或 `daily-digest` cron 存在。
+    * 测试聊天运行显示模型调用、搜索或自定义工具调用以及跟踪中的内存读取或写入。
+
+    有关部署标志和故障排除，请参阅 [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) 和 [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
   </Step>
 </Steps>
 
@@ -137,16 +203,8 @@
     对调用者进行身份验证并在工具和中间件中使用经过验证的身份。
   </Card>
 
-  <Card title="Memory" icon="brain" href="/langsmith/python/managed-deep-agents-memory">
-    跨线程保留共享的程序和项目知识。
-  </Card>
-
   <Card title="Evals" icon="flask" href="/langsmith/python/managed-deep-agents-evals">
     编写 Harbor 任务并编译 Harbor 的托管代理。
-  </Card>
-
-  <Card title="Sandboxes" icon="box" href="/langsmith/python/managed-deep-agents-sandboxes">
-    为代理工作配置隔离文件系统和 shell 访问。
   </Card>
 </CardGroup>
 

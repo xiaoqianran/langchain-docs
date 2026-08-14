@@ -4,9 +4,9 @@
 
 # 插件和市场
 
-从市场或软件包技能、MCP 服务器和 Deep Agents 代码挂钩安装插件
+从市场或软件包技能、MCP 服务器和 Deep Agents 代码的挂钩安装插件
 
-插件通过可重用的 [skills](/oss/deepagents/code/memory-and-skills)、[MCP servers](/oss/deepagents/code/mcp-tools) 和 [hooks](/oss/deepagents/code/hooks) 扩展了 Deep Agents 代码。市场提供用于跨项目或团队发现和安装插件的目录。 Deep Agents Code 支持 Claude 和 Codex 风格的插件清单和市场目录，如 [Create a plugin](#create-a-plugin) 和 [Create a marketplace](#create-a-marketplace) 中所述。
+插件使用可重用的 [skills](/oss/deepagents/code/memory-and-skills)、[MCP servers](/oss/deepagents/code/mcp-tools) 和 [hooks](/oss/deepagents/code/hooks) 扩展了 Deep Agents 代码。市场提供用于跨项目或团队发现和安装插件的目录。 Deep Agents 代码支持 Claude 和 Codex 风格的插件清单和市场目录，如 [Create a plugin](#create-a-plugin) 和 [Create a marketplace](#create-a-marketplace) 中所述。
 
 <Warning>
   仅从您信任的来源安装插件和市场。启用的插件可以添加指令并使用您的用户权限运行 MCP 服务器或挂钩命令。
@@ -14,18 +14,34 @@
 
 ## 交互式管理插件
 
-要在 `dcode` 会话中浏览市场并管理插件：1.运行`/plugins`打开插件管理器。
+要在 `dcode` 会话中浏览市场并管理插件：
+
+1.运行`/plugins`打开插件管理器。
 2. 从 **Marketplaces** 选项卡添加市场。支持的来源包括：
    * `owner/repo` 格式的 GitHub 存储库，可选后跟 `@branch-or-tag`。
    * HTTPS Git 存储库 URL，可选地后跟 `#branch-or-tag`。
    * 提供市场 JSON 文件的 HTTPS URL。
    * 本地市场目录或 JSON 文件。
 3. 从市场安装插件。
-4. 运行 `/reload` 激活新安装的插件技能、MCP 服务器和挂钩，而无需重新启动会话。
+4. 运行 `/reload` 激活新安装的插件技能、MCP 服务器和挂钩，而无需重新启动会话。插件管理器还允许您启用、禁用和卸载已安装的插件。禁用插件会保留其安装状态，但会在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。
 
-插件管理器还允许您启用、禁用和卸载已安装的插件。禁用插件会保留其安装状态，但会在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。
+删除市场会卸载其插件并删除托管缓存数据。当市场来自本地目录或文件时，Deep Agents 代码会保留原始来源。运行 `/reload` 或启动新会话以将删除应用到活动会话。
 
-删除市场会卸载其插件并删除托管缓存数据。当市场来自本地目录或文件时，Deep Agents Code 会保留原始来源。运行 `/reload` 或启动新会话以将删除应用到活动会话。
+## 自动更新插件
+
+Deep Agents 代码可以在第一次提示后在后台更新已安装的插件。更新仅适用于通过自己的清单选择加入的已启用插件。插件作者通过将此块添加到该插件的 `plugin.json` 来选择每个插件：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "extensions": {
+    "com.langchain.deepagents.code": {
+      "autoUpdate": true
+    }
+  }
+}
+```
+
+正在运行的会话将继续使用其当前的插件版本，直到您运行`/reload`。要全局禁用自动插件更新，请在环境中的`config.toml`或`DEEPAGENTS_CODE_PLUGIN_AUTO_UPDATE=false`中设置`[plugins].auto_update = false`。
 
 ## 从命令行管理插件
 
@@ -47,9 +63,9 @@ dcode plugin enable code-review@acme-tools
 # Remove a plugin or marketplace
 dcode plugin uninstall code-review@acme-tools
 dcode plugin marketplace remove acme-tools
-````plugin list` 和 `plugin marketplace list` 接受 `--json`。安装插件后，在活动的交互式会话中运行 `/reload` 或启动新会话。
+```
 
-## 使用插件技能、MCP 服务器和挂钩
+`plugin list` 和 `plugin marketplace list` 接受 `--json`。安装插件后，在活动的交互式会话中运行 `/reload` 或启动新会话。## 使用插件技能、MCP 服务器和挂钩
 
 插件技能采用命名空间，以防止与项目、用户和其他插件技能发生冲突。使用插件 ID 和技能路径调用技能：
 
@@ -59,13 +75,13 @@ dcode plugin marketplace remove acme-tools
 
 在交互模式下，自动完成还匹配较短的 `/plugin-name:skill-name` 形式，并将其扩展为规范的 `/skill:` 命令。嵌套技能目录将每个目录添加到命名空间。例如，`skills/review/security/SKILL.md`从`quality@acme-tools`变为`/skill:quality@acme-tools:review:security`。
 
-启用的插件还可以贡献 MCP 服务器。加载插件时，Deep Agents Code 会将这些服务器与常规 MCP 配置合并。使用`/mcp`检查可用的服务器和工具。
+启用的插件还可以贡献 MCP 服务器。 Deep Agents 当插件加载时，代码会将这些服务器与常规 MCP 配置合并。使用 `/mcp` 检查可用的服务器和工具。
 
 插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其挂钩的唯一同意门：工作区信任适用于项目挂钩，而不是插件挂钩。
 
 ## 创建一个插件
 
-Deep Agents Code 插件是包含任何受支持组件的目录：
+Deep Agents 代码插件是包含任何受支持组件的目录：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-plugin/
@@ -77,9 +93,9 @@ my-plugin/
 ├── hooks/
 │   └── hooks.json
 └── .mcp.json
-```Deep Agents Code 还可以识别 `.codex-plugin/plugin.json`。当组件使用其默认位置时，清单是可选的。如果插件仅包含一项技能，您可以将`SKILL.md`放置在插件根目录中，而不是创建`skills/`。
+```
 
-### 定义插件清单
+Deep Agents 代码还可以识别`.codex-plugin/plugin.json`。当组件使用其默认位置时，清单是可选的。如果插件仅包含一项技能，您可以将`SKILL.md`放置在插件根目录中，而不是创建`skills/`。### 定义插件清单
 
 如果存在，`.claude-plugin/plugin.json` 或`.codex-plugin/plugin.json` 必须包含`name`。您还可以声明版本和自定义组件路径：
 
@@ -95,7 +111,7 @@ my-plugin/
 
 `skills`、`mcpServers` 和 `hooks` 字段接受路径字符串或路径数组。 `mcpServers` 和 `hooks` 还可以包含内联配置对象。每个组件路径必须以`./`开头，保留在插件根目录内，并且不包含`..`。
 
-当未声明自定义路径时，Deep Agents Code 会发现：
+当没有声明自定义路径时，Deep Agents代码发现：
 
 * `skills/`下的技能，或者当不存在`skills/`目录时为根`SKILL.md`。
 * MCP 服务器位于根 `.mcp.json` 文件中。
@@ -112,9 +128,11 @@ skills/
     └── checklist.md
 ```
 
-使用与独立 Deep Agents 代码技能相同的技能格式。安装的插件名称成为技能命名空间。欲了解更多信息，请参阅[Memory and skills](/oss/deepagents/code/memory-and-skills#skills)。
+使用与独立Deep Agents代码技能相同的技能格式。安装的插件名称成为技能命名空间。欲了解更多信息，请参阅[Memory and skills](/oss/deepagents/code/memory-and-skills#skills)。
 
-### 添加 MCP 服务器将标准 MCP 服务器定义放在 `.mcp.json` 中，或在插件清单中将它们声明为与 `mcpServers` 内联。 MCP 服务器和挂钩命令支持这些路径变量：
+### 添加 MCP 服务器
+
+将标准 MCP 服务器定义放在 `.mcp.json` 中，或在插件清单中将它们声明为与 `mcpServers` 内联。 MCP 服务器和挂钩命令支持这些路径变量：
 
 * `${CLAUDE_PLUGIN_ROOT}`或`${PLUGIN_ROOT}`：安装的插件目录。
 * `${CLAUDE_PLUGIN_DATA}`或`${PLUGIN_DATA}`：插件的可写数据目录。
@@ -134,13 +152,11 @@ skills/
     }
   }
 }
-```
-
-有关支持的 MCP 传输和字段，请参阅[MCP tools](/oss/deepagents/code/mcp-tools)。
+```有关支持的 MCP 传输和字段，请参阅[MCP tools](/oss/deepagents/code/mcp-tools)。
 
 ### 添加钩子
 
-将钩子文档放置在 `hooks/hooks.json` 处，声明相对的 `hooks` 路径，或在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
+将钩子文档放置在 `hooks/hooks.json` 处，声明相对的 `hooks` 路径，或者在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
 
 ## 创建一个市场
 
@@ -192,9 +208,9 @@ skills/
     }
   ]
 }
-```支持的外部插件源类型为 `github`、`url` 和 `git-subdir`。远程 URL 必须使用 HTTPS。作为直接 JSON URL 添加的市场无法包含本地相关插件源，因为仅下载目录文件。当目录引用同一源树中的插件目录时，使用 Git 存储库或本地目录。
+```
 
-通过添加目录、安装插件、启动新会话或运行 `/reload` 来测试本地市场：
+支持的外部插件源类型为 `github`、`url` 和 `git-subdir`。远程 URL 必须使用 HTTPS。作为直接 JSON URL 添加的市场无法包含本地相关插件源，因为仅下载目录文件。当目录引用同一源树中的插件目录时，使用 Git 存储库或本地目录。通过添加目录、安装插件、启动新会话或运行 `/reload` 来测试本地市场：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode plugin marketplace add ./my-marketplace

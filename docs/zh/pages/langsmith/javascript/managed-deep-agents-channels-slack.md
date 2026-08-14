@@ -4,14 +4,14 @@
 
 # 将托管深度代理连接到 Slack
 
-启动托管深度代理从 Slack 消息运行并将响应发送到 Slack 对话。
+Start Managed Deep Agents 从 Slack 消息运行并向 Slack 对话发送响应。
 
-Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack 线程中的回复来调用托管深度代理。托管深度代理验证 Slack 事件，将每个对话映射到一个线程，作为已解析的调用者运行代理，并将响应发布回 Slack。
+Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack 线程中的回复来调用托管深度代理。托管 Deep Agents 验证 Slack 事件，将每个对话映射到一个线程，作为解析的调用者运行代理，并将响应发布回 Slack。
 
 Slack 是一种自带应用程序集成。您在代理项目中定义 Slack 应用程序清单。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -118,11 +118,11 @@ export const channel = channels.slack();
   </Step>
 </Steps>
 
-将`slack-app-manifest.json`视为事实来源。当您更改其范围、机器人事件、品牌或其他设置时，重新运行 `mda deploy . --configure-slack`，应用重新生成的 `.mda/slack/app-manifest.json`，并在 Slack 请求时重新安装应用程序。 `.mda/`下生成的文件是构建工件；不要犯他们。
+将`slack-app-manifest.json`视为事实来源。当您更改其范围、机器人事件、品牌或其他设置时，重新运行 `mda channel add slack .`，应用重新生成的 `.mda/slack/app-manifest.json`，并在 Slack 请求时重新安装应用程序。 `.mda/`下生成的文件是构建工件；不要犯他们。
 
 ## 配置 Slack 行为
 
-将选项传递给 `channels.slack(...)` 以控制托管深度代理运行时行为。在 Slack 应用程序中配置 OAuth 范围和传递的事件类型，而不是在通道声明中。
+将选项传递给 `channels.slack(...)` 以控制托管 Deep Agents 运行时行为。在 Slack 应用程序中配置 OAuth 范围和传递的事件类型，而不是在通道声明中。
 
 ```ts channels/slack.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { channels } from "managed-deepagents";
@@ -139,37 +139,37 @@ export const channel = channels.slack({
     directMessage: "conversation",
   },
 });
-```|选项 |默认|描述 |
+```|选项|默认 |描述 |
 | ---------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
 | `autoReply` | `true` |将客服人员的最终回复发布到原始 Slack 线程或对话。                   |
 | `mentionBehavior` | `"strip"` |在将文本传递给代理之前删除 Slack 提及标记。将其设置为`"preserve"`以保留它们。 |
 | `filters.includeConversations` |全部 |仅接受来自列出的 Slack 对话 ID 的事件。                                         |
-| `filters.excludeConversations` |没有例外|忽略列出的 Slack 对话 ID 中的事件。                                              |
+| `filters.excludeConversations` |没有例外 |忽略列出的 Slack 对话 ID 中的事件。                                              |
 | `filters.includeUsers` |全部 |仅接受来自列出的完全合格用户的事件，例如`slack:T123:U456`。               |
-| `filters.excludeUsers` |没有例外|忽略来自列出的完全合格用户的事件。                                               || `filters.allowSharedConversations` | `false` |控制 Slack Connect 共享对话。目前不支持将其设置为 `true`。    |
-| `conversation.appMention` | `"thread"` |选择应用提及及其后续回复如何映射到托管深度代理线程。            |
-| `conversation.directMessage` | `"conversation"` |选择直接消息如何映射到托管深度代理线程。                                     |
+| `filters.excludeUsers` |没有例外 |忽略来自列出的完全合格用户的事件。                                               || `filters.allowSharedConversations` | `false` |控制 Slack Connect 共享对话。目前不支持将其设置为 `true`。    |
+| `conversation.appMention` | `"thread"` |选择应用提及及其后续回复如何映射到托管 Deep Agents 线程。            |
+| `conversation.directMessage` | `"conversation"` |选择直接消息如何映射到托管 Deep Agents 线程。                                     |
 
 对话映射接受：
 
-* **`"thread"`**：将一个托管深度代理线程重复用于 Slack 线程。
-* **`"conversation"`**：为 Slack 对话重复使用一个托管深度代理线程。
-* **`"message"`**：为每条消息启动单独的托管深度代理线程。
+* **`"thread"`**：将一个托管 Deep Agents 线程重用为 Slack 线程。
+* **`"conversation"`**：为 Slack 对话重用一个托管 Deep Agents 线程。
+* **`"message"`**：为每条消息启动一个单独的托管Deep Agents线程。
 
 ## 了解事件和线程行为
 
-Slack 应用程序控制哪些事件到达部署。 Slack 通道规范支持的事件并应用配置的过滤器和对话映射。|松弛交互 |活动订阅 |默认托管深度代理行为 |
+Slack 应用程序控制哪些事件到达部署。 Slack 通道规范支持的事件并应用配置的过滤器和对话映射。|松弛交互 |活动订阅 |默认托管 Deep Agents 行为 |
 | -------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------- |
 |应用提及 | `app_mention` |启动或继续与 Slack 线程关联的线程。                                    |
 |直接留言 | `message.im` |重用与私信对话关联的线程。                                 |
-|公共频道不提及回复 | `message.channels` |仅当代理已具有相应的托管深度代理线程时才继续线程。 |
-|私人频道中未提及的回复 | `message.groups` |仅当代理已具有相应的托管深度代理线程时才继续线程。 |
+|公共频道不提及回复 | `message.channels` |仅当代理已具有相应的托管Deep Agents线程时才继续线程。 |
+|私人频道中未提及的回复 | `message.groups` |仅当代理已具有相应的托管Deep Agents线程时才继续线程。 |
 
-未提及机器人的顶级频道消息将被忽略。机器人消息、应用程序自己的消息、不受支持的消息子类型以及通道过滤器拒绝的事件不会开始运行。当 Slack 通过 `app_mention` 和 `message.*` 传递相同的提及时，托管深度代理会删除重复消息事件。订阅 `app_mention` 以获得提及，并使用 `message.channels` 或 `message.groups` 获得未提及的后续回复。
+未提及机器人的顶级频道消息将被忽略。机器人消息、应用程序自己的消息、不受支持的消息子类型以及通道过滤器拒绝的事件不会开始运行。当 Slack 通过 `app_mention` 和 `message.*` 传递相同的提及时，托管 Deep Agents 会删除重复消息事件。订阅 `app_mention` 以获得提及，并使用 `message.channels` 或 `message.groups` 获得未提及的后续回复。
 
 ## 发送回复到 Slack
 
-启用 `autoReply` 后，托管深度代理会提取最终的助理响应，并在运行完成后将其发布到原始 Slack 对话。
+启用 `autoReply` 后，托管 Deep Agents 会提取最终的助理响应，并在运行完成后将其发布到原始 Slack 对话。
 
 源自通道的运行还会在工具和中间件中公开`runtime.channel`。使用它来检查规范化事件，发布中间或最终消息，或更新以前发布的消息。对于普通 HTTP 和计划运行来说，它是不存在的。
 
@@ -204,13 +204,13 @@ export const sendChannelReply = tool(
 
 ## 部署更改
 
-更改通道声明、机密或身份配置后重新部署。当您更改 `slack-app-manifest.json`、通道名称或部署时，请包括 `--configure-slack`，以便 MDA 可以使用当前事件 URL 重新生成最终清单。部署完成后，将生成的清单应用到现有的 Slack 应用程序。
+更改通道声明、机密或身份配置后重新部署。当您更改 `slack-app-manifest.json`、通道名称或部署时，重新运行 `mda channel add slack .`，以便 MDA 可以使用当前事件 URL 重新生成最终清单。部署完成后，将生成的清单应用到现有的 Slack 应用程序。
 
 避免仅在 Slack 仪表板中进行持久配置更改。稍后的清单更新可以替换签入模板中不存在的设置。
 
 ## 查看安全性和当前限制
 
-* 托管深度代理根据其原始主体验证每个 Slack 请求，并拒绝 Slack 的五分钟重播窗口之外的签名。
+* 托管 Deep Agents 对照其原始正文验证每个 Slack 请求，并拒绝 Slack 的五分钟重播窗口之外的签名。
 * 不支持 Slack Connect 共享对话。
 * `runtime.channel` 不会公开 `SLACK_BOT_TOKEN` 或其他提供商凭据。
 * 事件重复数据删除目前是进程本地的。当 Slack 重试事件时，多副本部署可以多次调用代理。<Warning>
@@ -219,13 +219,13 @@ export const sendChannelReply = tool(
 
 ## Slack 通道故障排除
 
-* **`--configure-slack` 报告它只需要一个通道**：使用清单工作流程时，在项目中仅保留一个 `channels.slack(...)` 声明。
+* **`mda channel add slack` 报告它只需要一个通道**：使用清单工作流程时，在项目中仅保留一个 `channels.slack(...)` 声明。
 * **MDA 无法读取模板**：确认 `slack-app-manifest.json` 是项目根目录下的常规 JSON 文件。删除凭据和任何 `settings.event_subscriptions.request_url`，并保持套接字模式禁用。
 * **第一次部署写入引导清单并退出**：当 Slack 凭证尚不存在时，这是预期的。创建并安装应用程序，添加两个凭据，然后重新运行相同的命令。
-* **MDA 不会编写最终清单**：在没有 `--no-wait` 的情况下重新运行 `mda deploy . --configure-slack`。 CLI 需要部署的代理服务器 URL。
+* **MDA 不会编写最终清单**：在没有 `--no-wait` 的情况下运行 `mda deploy .`，然后重新运行 `mda channel add slack .`。 CLI 需要部署的代理服务器 URL。
 * **Slack 无法验证请求 URL**：确认部署正常，应用程序的 **事件订阅** 页面上的 URL 与 `https://<agent-server>/channels/<name>/events` 匹配，并且 `SLACK_SIGNING_SECRET` 属于该应用程序。添加 Slack 凭据后重新部署，然后应用重新生成的最终清单。* **提及不会开始运行**：订阅`app_mention`，添加`app_mentions:read`，邀请机器人加入对话，并在更改范围后重新安装应用程序。
 * **直接消息不会开始运行**：订阅`message.im`并添加`im:history`。
-* **线程回复不开始运行**：在代理先前参与的线程内回复。订阅`message.channels`或`message.groups`，添加匹配的历史范围，并确认机器人仍在对话中。
+* **线程回复不开始运行**：在代理先前参与的线程内进行回复。订阅`message.channels`或`message.groups`，添加匹配的历史范围，并确认机器人仍在对话中。
 * **代理运行但不回复**：确认`autoReply`已启用并且`SLACK_BOT_TOKEN`有`chat:write`。
 
 ## 另请参阅

@@ -235,7 +235,7 @@ Browse the complete collection of integrations available for Python. LangChain P
     Cloud content management and collaboration.
   </Card>
 
-  <Card title="Brightdata" href="https://github.com/luminati-io/langchain-brightdata" icon="link">
+  <Card title="Brightdata" href="https://docs.brightdata.com/integrations/langchain" icon="link">
     Web data platform and proxy services.
   </Card>
 
@@ -1001,6 +1001,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Plasmate" href="https://docs.plasmate.app/integration-langchain" icon="link">
     Agent-native headless browser with Set of Mark (SOM) structured UI extraction.
+  </Card>
+
+  <Card title="PolarDB PG" href="https://github.com/polardb/langchain-polardb-pg" icon="link">
+    PolarDB for PostgreSQL embeddings and vector store for LangChain.
   </Card>
 
   <Card title="Polaris" href="https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris" icon="link">

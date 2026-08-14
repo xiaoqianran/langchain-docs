@@ -6,7 +6,7 @@
 
 LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 
-虽然您可以在运行时将 [dynamically fetch prompts](/langsmith/manage-prompts-programmatically#pull-a-prompt) 从 LangSmith 导入到您的应用程序中，但您可能更喜欢将提示与您自己的数据库或版本控制系统同步。为了支持此工作流程，LangSmith 允许您通过 Webhooks 接收提示更新的通知。
+虽然您可以在运行时从 [dynamically fetch prompts](/langsmith/manage-prompts-programmatically#pull-a-prompt) 到您的应用程序，但您可能更喜欢将提示与您自己的数据库或版本控制系统同步。为了支持此工作流程，LangSmith 允许您通过 Webhooks 接收提示更新的通知。
 
 **为什么要与 GitHub 同步提示？**
 
@@ -21,18 +21,18 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 
 1. **GitHub 帐户：** 标准 GitHub 帐户。
 
-2. **GitHub 存储库：** 创建一个新的（或选择现有的）存储库，用于存储您的 LangSmith 提示清单。这可以是与您的应用程序代码相同的存储库，也可以是专门用于提示的存储库。
+2. **GitHub 存储库：** 创建一个新的（或选择现有的）存储库，其中将存储您的 LangSmith 提示清单。这可以是与您的应用程序代码相同的存储库，也可以是专门用于提示的存储库。
 
-3. **GitHub 个人访问令牌 (PAT)：*** LangSmith Webhooks 不直接与 GitHub 交互——它们调用*您*创建的中间服务器。
+3. **GitHub 个人访问令牌 (PAT)：*** LangSmith webhook 不直接与 GitHub 交互——它们调用*您*创建的中间服务器。
    * 此服务器需要 GitHub PAT 来进行身份验证并向您的存储库提交。
    * 必须包含 `repo` 范围（`public_repo` 对于公共存储库就足够了）。
    * 转到 **GitHub > 设置 > 开发人员设置 > 个人访问令牌 > 令牌（经典）**。
    * 单击**生成新令牌（经典）**。
    * 为其命名（例如“LangSmith Prompt Sync”），设置到期时间，然后选择所需的范围。
-   * 单击**生成令牌**并**立即复制它** - 它不会再次显示。
+   * 单击**生成令牌**并**立即复制它**，因为它不会再次显示。
    * 安全地存储令牌并将其作为环境变量提供给您的服务器。
 
-## 了解 LangSmith“提示提交”和 webhook
+## 了解 LangSmith “提示提交”和 webhook
 
 在 LangSmith 中，当您保存对提示的更改时，您实际上是在创建新版本或“提示提交”。这些提交可以触发 webhook。
 
@@ -146,12 +146,12 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
   }
   ```
 </Accordion><Note>
-  重要的是要了解用于提示提交的 LangSmith Webhooks 通常在 **工作区级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 Webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
+  重要的是要了解用于提示提交的 LangSmith webhooks 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
 </Note>
 
 ## 实现用于 webhook 接收的 FastAPI 服务器
 
-为了在提示更新时有效处理来自 LangSmith 的 Webhook 通知，需要中间服务器应用程序。该服务器将充当 LangSmith 发送的 HTTP POST 请求的接收者。为了在本指南中进行演示，我们将概述如何创建一个简单的 FastAPI 应用程序来履行此角色。
+为了在提示更新时有效处理来自 LangSmith 的 Webhook 通知，需要一个中间服务器应用程序。该服务器将充当LangSmith发送的HTTP POST请求的接收者。为了在本指南中进行演示，我们将概述如何创建一个简单的 FastAPI 应用程序来履行此角色。
 
 该可公开访问的服务器将负责：1. **接收Webhook请求：**监听传入的HTTP POST请求。
 2. **解析有效负载：** 从请求正文中提取并解释 JSON 格式的提示清单。
@@ -332,17 +332,17 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
   **该服务器的关键方面：*** **配置 (`.env`)：** 它需要一个包含 `GITHUB_TOKEN`、`GITHUB_REPO_OWNER` 和 `GITHUB_REPO_NAME` 的 `.env` 文件。您还可以自定义`GITHUB_FILE_PATH`（默认：`LangSmith_prompt_manifest.json`）和`GITHUB_BRANCH`（默认：`main`）。
   * **GitHub 交互：** `commit_manifest_to_github` 函数处理获取当前文件的 SHA（以更新它）然后提交新的清单内容的逻辑。
-  * **Webhook 端点 (`/webhook/commit`)：** 这是您的 LangSmith Webhook 将定位的 URL 路径。
+  * **Webhook 端点 (`/webhook/commit`)：** 这是您的 LangSmith webhook 将定位的 URL 路径。
   * **错误处理：** 包含 GitHub API 交互的基本错误处理。
 
-  **将此服务器部署到您选择的平台（例如，Render）并记下其公共 URL（例如，`https://prompt-commit-webhook.onrender.com`）。**
+  **将此服务器部署到您选择的平台（例如，Render）并记下其公共 URL（例如，`https://<your-render-service>.onrender.com`）。**
 </Accordion>
 
 ## 在 LangSmith 中配置 webhook
 
 部署 FastAPI 服务器并获得其公共 URL 后，您可以在 LangSmith 中配置 Webhook：
 
-1. 导航至您的 LangSmith 工作区。
+1. 导航到您的LangSmith工作区。
 
 2. 转至 **提示** 部分。您将在此处看到提示列表。
 
@@ -352,11 +352,11 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 4. 您将看到一个用于配置 Webhook 的表单：
 
-   <img alt="LangSmith Webhook configuration modal" />* **Webhook URL：** 输入已部署的 FastAPI 服务器端点的完整公共 URL。对于我们的示例服务器，这将是`https://prompt-commit-webhook.onrender.com/webhook/commit`。
+   <img alt="LangSmith Webhook configuration modal" />* **Webhook URL：** 输入已部署的 FastAPI 服务器端点的完整公共 URL。对于我们的示例服务器，这将是`https://<your-render-service>.onrender.com/webhook/commit`。
    * **标题（可选）：**
      * 您可以添加 LangSmith 将随每个 Webhook 请求发送的自定义标头。
 
-5. **测试Webhook：** LangSmith 提供了“发送测试通知”按钮。使用它来将示例有效负载发送到您的服务器。检查您的服务器日志（例如，在渲染上）以确保它收到请求并成功处理它（或调试任何问题）。
+5. **测试Webhook：** LangSmith 提供“发送测试通知”按钮。使用它来将示例有效负载发送到您的服务器。检查您的服务器日志（例如，在渲染上）以确保它收到请求并成功处理它（或调试任何问题）。
 
 6. **保存** webhook 配置。
 
@@ -366,16 +366,16 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 现在，一切就绪后，将发生以下情况：
 
-1. **提示修改：** 用户（开发人员或非技术团队成员）修改 LangSmith UI 中的提示并保存它，创建新的“提示提交”。
+1. **提示修改：** 用户（开发人员或非技术团队成员）在 LangSmith UI 中修改提示并保存，创建新的“提示提交”。
 
-2. **Webhook 触发器：** LangSmith 检测到此新提示提交并触发配置的 Webhook。
+2. **Webhook 触发器：** LangSmith 检测到此新的提示提交并触发配置的 webhook。
 
-3. **HTTP 请求：** LangSmith 向 FastAPI 服务器的公共 URL 发送 HTTP POST 请求（例如，`https://prompt-commit-webhook.onrender.com/webhook/commit`）。此请求的正文包含整个工作区的 JSON 提示清单。
+3. **HTTP 请求：** LangSmith 向 FastAPI 服务器的公共 URL 发送 HTTP POST 请求（例如 `https://<your-render-service>.onrender.com/webhook/commit`）。此请求的正文包含整个工作区的 JSON 提示清单。
 
 4. **服务器接收有效负载：** FastAPI 服务器的端点接收请求。5. **GitHub Commit：** 服务器从请求正文中解析 JSON 清单。然后，它使用配置的 GitHub 个人访问令牌、存储库所有者、存储库名称、文件路径和分支来：
 
    * 检查指定分支的存储库中是否已存在清单文件以获取其 SHA（这是更新现有文件所必需的）。
-   * 使用最新的提示清单创建新的提交，创建文件或更新文件（如果已存在）。提交消息将表明这是来自 LangSmith 的更新。
+   * 使用最新的提示清单创建新的提交，创建文件或更新文件（如果已存在）。提交消息将表明它是来自 LangSmith 的更新。
 
 6. **确认：** 您应该会看到新的提交出现在您的 GitHub 存储库中。
 

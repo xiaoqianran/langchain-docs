@@ -8,22 +8,25 @@
 
 [LangSmith CLI](/langsmith/langsmith-cli) 包括用于创建快照、启动沙箱、运行命令、打开交互式 shell 以及将 TCP 连接隧道传输到沙箱的沙箱命令。
 
-沙盒 CLI 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
+沙箱 CLI 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
 
 ## 安装并验证
 
-安装或升级 LangSmith CLI：
+安装或升级LangSmith CLI：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -fsSL https://cli.langsmith.com/install.sh | sh
 langsmith self-update
 ```
 
-使用您的 LangSmith API 密钥验证 CLI：
+使用您的 LangSmith API 密钥对 CLI 进行身份验证，并将其指向该密钥所属的环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
+export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
+
+`LANGSMITH_ENDPOINT` 默认为 `https://api.smith.langchain.com` (GCP US)。将其设置为 [BYOC](/langsmith/byoc) 上的数据平面 URL、[self-hosted](/langsmith/self-hosted) 上的实例 URL 或其他云区域上的 [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk)。
 
 CLI 输出默认为 JSON。添加 `--format pretty` 以列出人类可读表格的命令：
 
@@ -84,9 +87,7 @@ langsmith sandbox snapshot wait <SNAPSHOT_ID>
 langsmith sandbox snapshot delete <SNAPSHOT_ID>
 ```
 
-## 管理沙箱
-
-使用默认运行时创建沙箱。仅当您想从可重用的自定义快照启动时添加 `--snapshot-id`：
+## 管理沙箱使用默认运行时创建沙箱。仅当您想从可重用的自定义快照启动时添加 `--snapshot-id`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm \
@@ -102,7 +103,9 @@ langsmith sandbox get my-vm
 langsmith sandbox wait my-vm
 ```
 
-停止和启动沙箱，同时保留其文件系统：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+停止和启动沙箱，同时保留其文件系统：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox stop my-vm
 langsmith sandbox start my-vm --wait
 ```
@@ -175,16 +178,16 @@ langsmith sandbox console my-vm --forward-ssh-agent
 
 `--forward-ssh-agent` 需要在本地设置`SSH_AUTH_SOCK`。 Windows 不支持交互式控制台会话；请改用 SSH 访问。
 
-## 隧道 TCP 端口
-
-当您需要转发到沙箱内侦听的服务的本地 TCP 端口时，请使用`sandbox tunnel`。这对于需要 `localhost` 的数据库、语言服务器、自定义协议或本地工具非常有用。
+## 隧道 TCP 端口当您需要转发到沙箱内侦听的服务的本地 TCP 端口时，请使用`sandbox tunnel`。这对于需要 `localhost` 的数据库、语言服务器、自定义协议或本地工具非常有用。
 
 在沙箱中启动一个服务，然后通过隧道连接到它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox exec my-vm -- sh -c 'cd /tmp && nohup python -m http.server 8000 > /tmp/http.log 2>&1 &'
 langsmith sandbox tunnel my-vm --remote-port 8000 --local-port 18000
-```然后本地连接：
+```
+
+然后本地连接：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl http://127.0.0.1:18000
@@ -227,31 +230,30 @@ langsmith sandbox ssh-setup my-vm --identity ~/.ssh/id_ed25519.pub
 ssh sandbox-my-vm
 ```
 
-沙盒映像必须在端口 `22` 上运行 `sshd`。如果 `sshd` 未运行，`ssh-setup` 会发出警告，并且 SSH 连接将无法工作，直到您在沙箱内启动它。
-
-<Warning>
+沙盒映像必须在端口 `22` 上运行 `sshd`。如果 `sshd` 未运行，`ssh-setup` 会发出警告，并且 SSH 连接将无法工作，直到您在沙箱内启动它。<Warning>
   `ssh-setup`修改本地SSH配置并编写调用`langsmith sandbox tunnel`的`ProxyCommand`。根据 CLI 的身份验证方式，生成的块可能包含凭据或对凭据的引用。仅在受信任的计算机上运行它，并且不要提交或共享生成的 SSH 配置块。
-</Warning>## 命令参考
+</Warning>
 
-|命令 |描述 |
+## 命令参考
+
+|命令|描述 |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | `langsmith sandbox snapshot list` |列出快照。                                              |
 | `langsmith sandbox snapshot build <name> --docker-image <image>` |从 Docker 镜像构建快照。                        |
 | `langsmith sandbox snapshot capture <name> --box <sandbox>` |从正在运行的沙箱捕获快照。                   |
 | `langsmith sandbox snapshot get <snapshot-id>` |检查快照。                                          |
 | `langsmith sandbox snapshot wait <snapshot-id>` |等待快照准备就绪。                         |
-| `langsmith sandbox snapshot delete <snapshot-id>` |删除快照。                                           |
-| `langsmith sandbox create <name>` |使用默认运行时创建沙箱。                   |
+| `langsmith sandbox snapshot delete <snapshot-id>` |删除快照。                                           || `langsmith sandbox create <name>` |使用默认运行时创建沙箱。                   |
 | `langsmith sandbox list` |列出沙箱。                                              |
-| `langsmith sandbox get <name>` |检查沙箱。                                           || `langsmith sandbox update <name>` |更新沙箱资源或代理配置。                    |
+| `langsmith sandbox get <name>` |检查沙箱。                                           |
+| `langsmith sandbox update <name>` |更新沙箱资源或代理配置。                    |
 | `langsmith sandbox wait <name>` |等待沙箱准备就绪。                          |
 | `langsmith sandbox start <name>` |启动已停止的沙箱。                                     |
 | `langsmith sandbox stop <name>` |停止正在运行的沙箱，同时保留文件系统状态。    |
 | `langsmith sandbox delete <name>` |删除沙箱。                                            |
 | `langsmith sandbox exec <name> -- <command>` |在沙箱内运行一次性命令。                      |
 | `langsmith sandbox console <name>` |在沙箱内打开交互式 shell。                  |
-| `langsmith sandbox tunnel <name> --remote-port <port>` |将本地 TCP 端口转发到沙箱端口。                  |
-| `langsmith sandbox ssh-setup <name>` |通过`sandbox tunnel --stdio`配置本地SSH访问。 |
+| `langsmith sandbox tunnel <name> --remote-port <port>` |将本地 TCP 端口转发到沙箱端口。                  || `langsmith sandbox ssh-setup <name>` |通过`sandbox tunnel --stdio`配置本地SSH访问。 |
 
 ***
 

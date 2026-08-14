@@ -4,7 +4,7 @@
 
 # API 格式
 
-使用 OpenAI 聊天完成、人类消息或 OpenAI 响应请求通过 LLM 网关跨提供商调用模型。
+使用 OpenAI 聊天完成、Anthropic 消息或 OpenAI 响应请求通过 LLM 网关跨提供商调用模型。
 
 标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥或网关积分模型。
 
@@ -14,17 +14,17 @@
 
 ## 比较API格式
 
-| API格式 |基本网址 |提示端点 |兼容客户端|
+| API格式 |基本网址 |提示端点|兼容客户端|
 | ----------------------- | ---------------------------------------------------- | ------------------------ | ------------------------------------------------------ |
-| OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` |兼容 OpenAI 的聊天完成客户端 |
-|人择信息 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic Messages 客户端 |
-| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` |兼容 OpenAI 的 Responses 客户端 |
+| OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
+| Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户留言 |
+| OpenAI 回复 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
 
-所有格式均使用工作区范围内的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`或`anthropic/claude-sonnet-4-6`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
+所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`或`anthropic/claude-sonnet-4-6`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
 
 ## 使用聊天完成
 
-将 OpenAI 兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)。
+将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)。
 
 <CodeGroup>
   ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -65,7 +65,7 @@
 
 ## 使用消息
 
-将 Anthropic 客户端指向`https://gateway.smith.langchain.com`。有关完整的请求和响应架构，请参阅[Anthropic Messages API](https://docs.anthropic.com/en/api/messages)。
+将Anthropic客户端指向`https://gateway.smith.langchain.com`。有关完整的请求和响应架构，请参阅[Anthropic Messages API](https://docs.anthropic.com/en/api/messages)。
 
 <CodeGroup>
   ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -108,7 +108,7 @@
 
 ## 使用响应
 
-将 OpenAI 兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses)。
+将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses)。
 
 <CodeGroup>
   ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -151,13 +151,13 @@
 
 OpenAI 模型（聊天完成和响应）自动支持隐式提示缓存，无需额外参数。
 
-人择模型和一些较旧的 OpenAI 模型需要显式选择加入才能提示缓存。通过任何标准网关端点调用这些模型时，在请求正文中传递特定于提供商的字段。
+Anthropic 型号和一些较旧的 OpenAI 型号需要显式选择加入以提示缓存。通过任何标准网关端点调用这些模型时，在请求正文中传递特定于提供商的字段。
 
 <Note>
   显式缓存支持是一种临时措施，正在制定网关级缓存策略。以下字段将传递到上游提供商。
 </Note>
 
-### 人类模型包含 `prompt_cache_options` 和 `ttl` 值：
+### Anthropic 型号包含 `prompt_cache_options` 和 `ttl` 值：
 
 <CodeGroup>
   ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -216,9 +216,9 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
     }'
 ```
 
-### 较旧的 OpenAI 模型
+### 较旧的 OpenAI 型号
 
-一些较旧的 OpenAI 模型支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于`gpt-5.5`，请使用`"24h"`：
+一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于`gpt-5.5`，请使用`"24h"`：
 
 ```bash cURL (most older models) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/responses \
@@ -256,7 +256,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 ## 列出型号
 
-调用 `GET /v1/models` 列出为工作区配置的提供程序和 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的可用模型。网关返回单个 OpenAI 兼容列表：
+调用 `GET /v1/models` 列出为工作区配置的提供程序和 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的可用模型。网关返回单个OpenAI兼容列表：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/models \
@@ -273,7 +273,7 @@ curl https://gateway.smith.langchain.com/v1/models \
     {"id": "moonshotai/kimi-k3", "object": "model"}
   ]
 }
-```自带密钥型号 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
+```自带密钥模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
 
 ## 使用区域网关
 
@@ -287,6 +287,101 @@ curl https://gateway.smith.langchain.com/v1/models \
 | AWS 美国 | `aws.gateway.smith.langchain.com` |
 
 为所选 API 格式保留相同的路径。
+
+## 使用 BYOC 数据平面
+
+LLM 网关也可在 [BYOC](/langsmith/byoc) 上使用，它在您的数据平面内运行，因此模型请求及其跟踪保留在您的 VPC 中。将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：
+
+| API格式 |基本网址 |提示端点|
+| ----------------------- | -------------------------------------- | ------------------------ |
+| OpenAI 聊天完成 | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
+| Anthropic 留言 | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
+| OpenAI 回应 | `https://<data_plane_host>/gateway/v1` | `POST /responses` |使用作用域为该数据平面中的工作区的 API 密钥进行身份验证。将其作为 `Authorization: Bearer` 令牌传递：
+
+<CodeGroup>
+  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://<data_plane_host>/gateway/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
+  ```
+
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from openai import OpenAI
+
+  client = OpenAI(
+      base_url="https://<data_plane_host>/gateway/v1",
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  response = client.chat.completions.create(
+      model="anthropic/claude-sonnet-4-6",
+      messages=[{"role": "user", "content": "Hello!"}],
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import OpenAI from "openai";
+
+  const client = new OpenAI({
+    baseURL: "https://<data_plane_host>/gateway/v1",
+    apiKey: process.env.LANGSMITH_API_KEY,
+  });
+  const response = await client.chat.completions.create({
+    model: "anthropic/claude-sonnet-4-6",
+    messages: [{ role: "user", content: "Hello!" }],
+  });
+  ```
+</CodeGroup>
+
+或者将其作为提供商 API 密钥传递。例如，Anthropic消息请求发送`X-Api-Key`标头中的密钥：
+
+<CodeGroup>
+  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://<data_plane_host>/gateway/v1/messages \
+      -H "X-Api-Key: $LANGSMITH_API_KEY" \
+      -H "Anthropic-Version: 2023-06-01" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
+  ```
+
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  import anthropic
+
+  client = anthropic.Anthropic(
+      base_url="https://<data_plane_host>/gateway",
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  message = client.messages.create(
+      model="openai/gpt-5.4-mini",
+      max_tokens=1024,
+      messages=[{"role": "user", "content": "Hello!"}],
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import Anthropic from "@anthropic-ai/sdk";
+
+  const client = new Anthropic({
+    baseURL: "https://<data_plane_host>/gateway",
+    apiKey: process.env.LANGSMITH_API_KEY,
+  });
+  const message = await client.messages.create({
+    model: "openai/gpt-5.4-mini",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Hello!" }],
+  });
+  ```
+</CodeGroup>
+
+提供者机密、模型 ID、策略和跟踪的行为与云上相同。
+
+<Warning>
+  默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
+</Warning>
 
 ## 处理错误|状态或症状 |意义|
 | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |

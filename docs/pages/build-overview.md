@@ -149,7 +149,7 @@ Source: https://docs.langchain.com/index
 
     <CardGroup>
       <Card title="Platform setup" icon="server" href="/langsmith/platform-setup">
-        Set up Cloud or Self-hosted LangSmith, and govern users and compliance.
+        Set up Cloud, BYOC, or Self-hosted LangSmith, and govern users and compliance.
       </Card>
 
       <Card title="LLM Gateway" icon="route" href="/langsmith/llm-gateway">

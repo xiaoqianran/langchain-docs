@@ -464,7 +464,7 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 引擎无法完全在集群内运行。它将请求发送到 LangSmith Intelligence，这是一个 LangChain 管理的零数据保留 (ZDR) 服务，该服务将请求路由到 LangChain 环境内的模型提供程序。允许出站 HTTPS 到您的云网关：AWS 上的`beacon.aws.langchain.com`，或 GCP 上的`beacon.langchain.com`。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。在 GCP 上，网关与此页面已需要的主机相同，因此引擎添加了一条路径而不是新的目的地。
 
 <Note>
-  引擎可用于 LangSmith 自托管于 **AWS US** 和 **GCP US**。 AWS EU 和 Azure 已规划。参见[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)。
+  引擎可用于 LangSmith 自托管于 **AWS US** 和 **GCP US**。参见[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)。
 </Note><Warning>
   将网关添加为特定的允许列表条目，而不是打开常规出站访问。请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。不需要额外的模型提供商凭据。
 </Warning>

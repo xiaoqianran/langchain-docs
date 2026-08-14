@@ -30,11 +30,14 @@ pip install "harbor[langsmith]"
 
 ### Authenticate
 
-Harbor authenticates with your LangSmith credentials. Set an API key:
+Harbor authenticates with your LangSmith credentials. Set an API key and the endpoint that key belongs to:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
+export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
+
+`LANGSMITH_ENDPOINT` defaults to `https://api.smith.langchain.com` (GCP US). Set it to your data plane URL on [BYOC](/langsmith/byoc), your instance URL on [self-hosted](/langsmith/self-hosted), or the [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk) on other Cloud regions.
 
 Alternatively, select a [LangSmith SDK profile](/langsmith/profile-configuration) instead of exporting a key:
 

@@ -4,7 +4,7 @@
 
 # LangSmith 安装的镜像
 
-默认情况下，LangSmith 将从我们的公共 Docker 注册表中提取镜像。但是，如果您在无法访问 Internet 的环境中运行 LangSmith，或者想要使用私有 Docker 注册表，则可以将映像镜像到您自己的注册表，然后配置 LangSmith 安装以使用这些映像。
+默认情况下，LangSmith将从我们的公共 Docker 注册表中提取镜像。但是，如果您在无法访问 Internet 的环境中运行 LangSmith，或者您想使用私有 Docker 注册表，则可以将映像镜像到您自己的注册表，然后配置您的 LangSmith 安装以使用这些映像。
 
 ## 要求
 
@@ -15,7 +15,7 @@
 ## 镜像图像
 
 <Note>
-  **从 LangSmith 0.16.21（图表 `0.16.0-rc.17`）开始，镜像数量减少。** 平台后端、playground、主机后端以及 Fleet 工具和触发器服务器现在都从单个 `langsmith-backend` 镜像运行，因此您不再需要镜像 `langsmith-go-backend`、`langsmith-playground`、`hosted-langserve-backend`， `agent-builder-tool-server`、或 `agent-builder-trigger-server`（或其 `-fips` 变体）。对应的`values.yaml`键：`platformBackendImage`、`playgroundImage`、`hostBackendImage`、`fleetToolServerImage`和`fleetTriggerServerImage`已从图表中删除；您仍然为它们设置的任何值都将被忽略。如果您要安装**早期**版本，请继续镜像这些映像并像以前一样设置这些密钥。
+  **从 LangSmith 0.16.21（图表 `0.16.0-rc.17`）开始，镜像数量减少。** 平台后端、playground、主机后端以及 Fleet 工具和触发器服务器现在都从单个 `langsmith-backend` 镜像运行，因此您不再需要镜像 `langsmith-go-backend`、`langsmith-playground`、 `hosted-langserve-backend`、`agent-builder-tool-server` 或 `agent-builder-trigger-server`（或其 `-fips` 变体）。对应的`values.yaml`键：`platformBackendImage`、`playgroundImage`、`hostBackendImage`、`fleetToolServerImage`和`fleetTriggerServerImage`已从图表中删除；您仍然为它们设置的任何值都将被忽略。如果您要安装 **早期** 版本，请继续镜像这些映像并像以前一样设置这些密钥。
 </Note>
 
 为了您的方便，我们提供了一个脚本来为您镜像图像。您可以在[LangSmith Helm Chart repository](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/mirror_langsmith_images.sh)找到脚本
@@ -34,7 +34,7 @@ bash mirror_langsmith_images.sh <your-registry> [<platform>]
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.10.66
 ```
 
-请注意，此脚本假定您已安装 Docker 并且您已通过注册表的身份验证。它还会将图像推送到具有与原始图像相同的存储库/标签的指定注册表。
+请注意，此脚本将假定您已安装 Docker 并且您已通过注册表的身份验证。它还会将图像推送到具有与原始图像相同的存储库/标签的指定注册表。
 
 或者，您可以手动拉取、镜像和推送图像。您需要镜像的图像可以在 LangSmith Helm Chart 的 `values.yaml` 文件中找到。这些可以在这里找到：[LangSmith Helm Chart values.yaml](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L14)
 
@@ -87,7 +87,7 @@ images:
 
 ## 沙箱的附加图像
 
-如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。沙箱运行时镜像已发布为`linux/amd64`。
+如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。发布了`linux/amd64`的沙箱运行时镜像。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
@@ -103,7 +103,7 @@ images:
     tag: "0.16.0"
 ```
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 映像相同的映像拉取机密。
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙盒运行时使用与其他 LangSmith 图像相同的图像拉取机密。
 
 `--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
 
@@ -128,9 +128,14 @@ images:
 
 ## 引擎的附加图像
 
-[Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)在镜像脚本默认包含的`langsmith-insights-engine`上运行，并且需要沙箱，因此使用`--include-sandboxes`进行镜像并按照[Additional images for Sandboxes](#additional-images-for-sandboxes)中的描述配置沙箱运行时映像。
+如果将映像镜像到私有注册表，[Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine) 需要组合的 `langsmith-insights-engine` 映像和沙箱运行时映像。
 
-然后，将 Engine 和 Insights 图像指向您的镜子：
+要镜像所需的图像：
+
+1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私有注册表。
+2. 引擎需要沙箱，因此使用`--include-sandboxes`镜像沙箱运行时镜像，并按照[Additional images for Sandboxes](#additional-images-for-sandboxes)中的描述进行配置。
+
+覆盖 `images.engineInsightsAgentImage.repository` 以使用镜像引擎和 Insights 映像：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
@@ -141,12 +146,12 @@ images:
 ```
 
 <Note>
-  存储库名称仍必须以 `langsmith-insights-engine` 结尾；该图表验证了它是否捕获了指向已停用的 `langsmith-clio` 映像的安装，该映像仅提供见解。
+  不要使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。仓库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
 </Note>
 
-Engine 还依赖于 LangSmith Intelligence，它是网络依赖项而不是映像，因此镜像不会删除它。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。
+镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。## Fleet 和 Insights 的附加图像
 
-## Fleet 和 Insights 的附加图像如果您使用的是 Fleet 或 Insights，LangGraph 运算符会为每个部署动态创建 Redis 和 PostgreSQL (pgvector) Pod。这些 Pod 使用在需要单独配置的操作员模板中定义的映像。
+如果您使用的是 Fleet 或 Insights，LangGraph 运算符会为每个部署动态创建 Redis 和 PostgreSQL (pgvector) Pod。这些 Pod 使用在需要单独配置的操作员模板中定义的映像。
 
 您必须镜像这些附加图像：
 
@@ -238,17 +243,17 @@ operator:
                 storage: "${storage_gi}Gi"
 ```
 
-将 `(your-registry)` 替换为您的注册表 URL。模板变量（`${service_name}`、`${namespace}`、`${max_connections}`、`${storage_gi}`）在运行时由运算符替换，并且必须保持原样。
+将 `(your-registry)` 替换为您的注册表 URL。模板变量（`${service_name}`、`${namespace}`、`${max_connections}`、`${storage_gi}`）在运行时由运算符替换，必须保持原样。
 
-配置完成后，您将需要更新 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。
+配置完成后，您将需要更新您的 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。
 
 ## 验证图像签名
 
 <Note>
-  图像签名可用**从 v15 开始**（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
-</Note>`docker.io/langchain/*` 上的稳定通道 LangSmith 映像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
+  **从 v15 开始** 提供图像签名（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
+</Note>`docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
 
-安装`cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/))，然后验证任何标签：
+安装`cosign`（[installation guide](https://docs.sigstore.dev/cosign/system_config/installation/)），然后验证任何标签：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify \

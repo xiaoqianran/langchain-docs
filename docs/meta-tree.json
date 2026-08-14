@@ -609,6 +609,54 @@
           "rel": "langsmith/bind-evaluator-to-dataset-link.md"
         }
       ],
+      "byoc": [
+        {
+          "title": "Bring Your Own Cloud (BYOC)",
+          "rel": "langsmith/byoc.md"
+        }
+      ],
+      "byoc-architecture": [
+        {
+          "title": "BYOC architecture",
+          "rel": "langsmith/byoc-architecture.md"
+        }
+      ],
+      "byoc-billing": [
+        {
+          "title": "BYOC billing",
+          "rel": "langsmith/byoc-billing.md"
+        }
+      ],
+      "byoc-faq": [
+        {
+          "title": "BYOC FAQ",
+          "rel": "langsmith/byoc-faq.md"
+        }
+      ],
+      "byoc-onboarding": [
+        {
+          "title": "BYOC onboarding",
+          "rel": "langsmith/byoc-onboarding.md"
+        }
+      ],
+      "byoc-operations": [
+        {
+          "title": "BYOC operations",
+          "rel": "langsmith/byoc-operations.md"
+        }
+      ],
+      "byoc-usage": [
+        {
+          "title": "BYOC usage",
+          "rel": "langsmith/byoc-usage.md"
+        }
+      ],
+      "byoc-why": [
+        {
+          "title": "Why BYOC",
+          "rel": "langsmith/byoc-why.md"
+        }
+      ],
       "caching": [
         {
           "title": "Use server-side caching",
@@ -747,6 +795,12 @@
           "rel": "langsmith/configure-checkpointer.md"
         }
       ],
+      "configure-iam-auth": [
+        {
+          "title": "Configure IAM authentication for data stores",
+          "rel": "langsmith/configure-iam-auth.md"
+        }
+      ],
       "configure-input-output-preview": [
         {
           "title": "Configure run input and output preview",
@@ -805,6 +859,12 @@
         {
           "title": "Use cron jobs",
           "rel": "langsmith/cron-jobs.md"
+        }
+      ],
+      "custom-apps": [
+        {
+          "title": "Custom Apps",
+          "rel": "langsmith/custom-apps.md"
         }
       ],
       "custom-auth": [
@@ -2655,6 +2715,12 @@
           "rel": "langsmith/trace-with-autogen.md"
         }
       ],
+      "trace-with-claude-managed-agents": [
+        {
+          "title": "Trace Claude Managed Agents",
+          "rel": "langsmith/trace-with-claude-managed-agents.md"
+        }
+      ],
       "trace-with-codex": [
         {
           "title": "Trace OpenAI Codex sessions",
@@ -3493,7 +3559,7 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Build a scheduled research agent",
+          "title": "Add memory and a schedule to your research assistant",
           "rel": "langsmith/javascript/managed-deep-agents-tutorial.md"
         }
       ]
@@ -3625,7 +3691,7 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Build a scheduled research agent",
+          "title": "Add memory and a schedule to your research assistant",
           "rel": "langsmith/python/managed-deep-agents-tutorial.md"
         }
       ]
