@@ -77,7 +77,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 ## 运行命令
 
-每个 `run()` 调用都会返回一个 `ExecutionResult` 以及 `stdout`、`stderr`、`exit_code` 和 `success`。
+每个 `run()` 调用都会返回一个 `ExecutionResult`，其中包含 `stdout`、`stderr`、`exit_code` 和 `success`。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -313,10 +313,78 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
   ```
 </CodeGroup>
 
+## 安装 Context Hub 存储库
+
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
+
+<Warning>
+  Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，如果它属于存储库，则将其写入[push it with the SDK](/langsmith/manage-contexts-sdk)。
+</Warning>
+
+将安装座穿过`mount_config`。创建沙箱的 API 密钥必须有权访问存储库，否则创建会失败并显示 `403`。
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import AsyncSandboxClient, context_hub_mount, mount_config
+
+
+  async def main():
+      async with AsyncSandboxClient() as client:
+          async with await client.sandbox(
+              name="context-hub-mount-sandbox",
+              mount_config=mount_config(
+                  mounts=[
+                      context_hub_mount(
+                          id="memories",
+                          mount_path="/memories",
+                          repo="-/my-agent",
+                      )
+                  ],
+              ),
+          ) as sb:
+              result = await sb.run("ls /memories")
+              print(result.stdout)
+  ``````ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    SandboxClient,
+    contextHubMount,
+    mountConfig,
+  } from "langsmith/sandbox";
+
+  const client = new SandboxClient();
+
+  const sandbox = await client.createSandbox({
+    name: "context-hub-mount-sandbox",
+    mountConfig: mountConfig({
+      mounts: [
+        contextHubMount({
+          id: "memories",
+          mountPath: "/memories",
+          repo: "-/my-agent",
+        }),
+      ],
+    }),
+  });
+
+  try {
+    const result = await sandbox.run("ls /memories");
+    console.log(result.stdout);
+  } finally {
+    await sandbox.delete();
+  }
+  ```
+</CodeGroup>
+
+`repo` 是存储库句柄，可以选择限定为 `owner/repo`，其中 `-` 是当前工作区。
+
+`mount_path` 必须是绝对、干净的路径，并且不能是文件系统根目录或位于系统目录（例如 `/etc` 或 `/usr`）下。任何其他路径都可以 - 与存储桶和 Git 挂载不同，Context Hub 挂载不限于 `/mnt/mounts`。
+
+通过 `initial_pull_only` / `initialPullOnly` 在启动时同步一次，而不是轮询存储库更新。
+
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
+活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时|
 | ------------------------ | | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。                                                                               |省略时默认为 `600`（10 分钟）。                                || `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
 
@@ -436,7 +504,7 @@ running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_s
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
@@ -629,7 +697,7 @@ async def main():
 </CodeGroup>
 
 <Note>
-  有关更多详细信息，请参阅 GitHub 上 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 的沙箱 SDK 参考。
+  有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙盒 SDK 参考。
 </Note>
 
 ***

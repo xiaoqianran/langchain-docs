@@ -31,6 +31,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     AI gateway for cost control, BYOK routing, and multi-provider model access.
   </Card>
 
+  <Card title="AlphaAI" href="https://alphai.io/developers" icon="link">
+    AI-scored financial news and SEC Form 4 insider events for agents and RAG.
+  </Card>
+
   <Card title="Ads4GPTs" href="https://github.com/ADS4GPTs/ads4gpts" icon="link">
     Advertising platform for GPT applications and AI services.
   </Card>
@@ -277,6 +281,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="chDB" href="https://github.com/chdb-io/langchain-chdb" icon="link">
     In-process OLAP SQL engine powered by ClickHouse, with a LangChain vector store.
+  </Card>
+
+  <Card title="Coalent" href="https://coalent.ai/docs" icon="link">
+    Provenance-invalidated semantic cache above any vector store, serving attributed claim payloads.
   </Card>
 
   <Card title="CockroachDB" href="/oss/python/integrations/providers/cockroachdb" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/cockroachdb-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=8673dcc3f2e8a212f716c2d33f3e809b">
@@ -927,6 +935,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Unified API for models from multiple providers.
   </Card>
 
+  <Card title="Opensolr" href="https://opensolr.com/langchain" icon="link">
+    Managed Apache Solr with server-side embeddings and hybrid BM25 + kNN search.
+  </Card>
+
   <Card title="Open Agent Spec" href="/oss/python/integrations/providers/open_agent_spec" icon="link">
     Framework-agnostic language for portable agent definitions.
   </Card>
@@ -1004,7 +1016,7 @@ Browse the complete collection of integrations available for Python. LangChain P
   </Card>
 
   <Card title="PolarDB PG" href="https://github.com/polardb/langchain-polardb-pg" icon="link">
-    PolarDB for PostgreSQL embeddings and vector store for LangChain.
+    PolarDB for PostgreSQL provides in-database embeddings, a LangChain vector store, and SQL-based registration and invocation of external AI models.
   </Card>
 
   <Card title="Polaris" href="https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris" icon="link">

@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-14T09:50:44.348Z",
+  "fetchedAt": "2026-08-15T09:15:20.338Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
-  "tocLinks": 2038,
-  "ok": 1585,
+  "tocLinks": 173,
+  "ok": 1591,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 435
+      "count": 441
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -696,7 +696,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-server",
-      "bytes": 10869
+      "bytes": 10865
     },
     {
       "rel": "langsmith/agent-server-api/a2a/a2a-json-rpc.md",
@@ -3072,7 +3072,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-identity",
-      "bytes": 4978
+      "bytes": 5019
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-instructions.md",
@@ -3126,7 +3126,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 5096
+      "bytes": 6314
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-project-structure.md",
@@ -3144,7 +3144,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 9476
+      "bytes": 9742
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-sandboxes.md",
@@ -3184,12 +3184,12 @@
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
-      "title": "Add memory and a schedule to your research assistant",
+      "title": "Add a custom search tool, memory, and a schedule",
       "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-tutorial",
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 9502
+      "bytes": 8399
     },
     {
       "rel": "langsmith/jit-invite-sso.md",
@@ -4008,7 +4008,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-identity",
-      "bytes": 4942
+      "bytes": 4983
     },
     {
       "rel": "langsmith/python/managed-deep-agents-instructions.md",
@@ -4062,7 +4062,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 7927
+      "bytes": 9146
     },
     {
       "rel": "langsmith/python/managed-deep-agents-project-structure.md",
@@ -4080,7 +4080,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 9105
+      "bytes": 9371
     },
     {
       "rel": "langsmith/python/managed-deep-agents-sandboxes.md",
@@ -4120,12 +4120,12 @@
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
-      "title": "Add memory and a schedule to your research assistant",
+      "title": "Add a custom search tool, memory, and a schedule",
       "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-tutorial",
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 9352
+      "bytes": 8067
     },
     {
       "rel": "langsmith/query-threads.md",
@@ -4332,7 +4332,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "sandbox-auth-proxy",
-      "bytes": 26409
+      "bytes": 27905
     },
     {
       "rel": "langsmith/sandbox-cli.md",
@@ -4368,7 +4368,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "sandbox-sdk",
-      "bytes": 23013
+      "bytes": 25758
     },
     {
       "rel": "langsmith/sandbox-service-urls.md",
@@ -4845,7 +4845,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 170917
+      "bytes": 171180
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -9876,7 +9876,61 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "smithdb-sdk-migration",
-      "bytes": 512080
+      "bytes": 13864
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-experiments.md",
+      "title": "Migrate dataset experiment runs to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-experiments",
+      "bytes": 49724
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-feedback.md",
+      "title": "Migrate feedback and sharing methods to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-feedback",
+      "bytes": 42230
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-query-runs.md",
+      "title": "Migrate run queries to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-query-runs",
+      "bytes": 152254
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-runs.md",
+      "title": "Migrate run retrieval to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-runs",
+      "bytes": 107721
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-threads.md",
+      "title": "Migrate thread methods to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-threads",
+      "bytes": 86636
+    },
+    {
+      "rel": "langsmith/smithdb-sdk-migration-traces.md",
+      "title": "Migrate trace methods to SmithDB",
+      "url": "https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "smithdb-sdk-migration-traces",
+      "bytes": 67316
     },
     {
       "rel": "langsmith/stateless-runs.md",
@@ -10434,7 +10488,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "use-the-context-hub",
-      "bytes": 4077
+      "bytes": 4254
     },
     {
       "rel": "langsmith/use-threads.md",
@@ -11442,7 +11496,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 66452
+      "bytes": 70329
     },
     {
       "rel": "oss/javascript/langchain/changelog-js.md",
@@ -12711,7 +12765,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 58001
+      "bytes": 58088
     },
     {
       "rel": "oss/python/deepagents/changelog-py.md",
@@ -12756,7 +12810,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 51720
+      "bytes": 51734
     },
     {
       "rel": "oss/python/deepagents/customization.md",
@@ -12765,7 +12819,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 152986
+      "bytes": 153073
     },
     {
       "rel": "oss/python/deepagents/data-analysis.md",
@@ -12981,7 +13035,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 45271
+      "bytes": 45274
     },
     {
       "rel": "oss/python/deepagents/sandboxes.md",
@@ -13071,7 +13125,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 27046
+      "bytes": 27279
     },
     {
       "rel": "oss/python/integrations/long-term-memory/index.md",
@@ -13098,7 +13152,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 62903
+      "bytes": 63496
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -13206,7 +13260,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 28551
+      "bytes": 29355
     },
     {
       "rel": "oss/python/integrations/sandboxes/index.md",
@@ -13233,7 +13287,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 84362
+      "bytes": 85334
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -13242,7 +13296,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 67310
+      "bytes": 67752
     },
     {
       "rel": "oss/python/langchain/academy.md",
@@ -13260,7 +13314,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 67987
+      "bytes": 68001
     },
     {
       "rel": "oss/python/langchain/changelog-py.md",
@@ -13296,7 +13350,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 22208
+      "bytes": 38266
     },
     {
       "rel": "oss/python/langchain/deploy.md",

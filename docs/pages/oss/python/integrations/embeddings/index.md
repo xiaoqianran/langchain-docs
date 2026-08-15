@@ -280,6 +280,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`Isaacus`](https://isaacus.com/docs)                                                                  | <span><a href="https://pypi.org/project/langchain-isaacus/">  <img alt="Downloads per month" /></a></span>                |
   | [`Lindorm`](https://help.aliyun.com/en/lindorm/product-overview/product-introduction-overview)         | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
   | [`PolarDBPGEmbeddings`](https://github.com/polardb/langchain-polardb-pg)                               | <span>N/A</span>                                                                                                          |
+  | [`OpensolrEmbeddings`](https://opensolr.com/langchain)                                                 | <span><a href="https://pypi.org/project/langchain-opensolr/">  <img alt="Downloads per month" /></a></span>               |
 </div>
 
 ***

@@ -4,7 +4,7 @@
 
 # 代理服务器
 
-LangSmith Deployment 的 **代理服务器** 提供用于创建和管理基于代理的应用程序的 API。它建立在[assistants](/langsmith/assistants)的概念之上，[assistants](/langsmith/assistants)是为特定任务配置的代理，并包括内置的[persistence](/oss/python/langgraph/persistence#memory-store)和[**task queue**](#task-queue)。这种多功能 API 支持广泛的代理应用程序用例，从后台处理到实时交互。
+LangSmith 部署的 **代理服务器** 提供用于创建和管理基于代理的应用程序的 API。它建立在[assistants](/langsmith/assistants)的概念之上，[assistants](/langsmith/assistants)是为特定任务配置的代理，并包括内置的[persistence](/oss/python/langgraph/persistence#memory-store)和[task queue](#task-queue)。这种多功能 API 支持广泛的代理应用程序用例，从后台处理到实时交互。
 
 使用代理服务器创建和管理：
 
@@ -41,7 +41,7 @@ LangSmith Deployment 的 **代理服务器** 提供用于创建和管理基于�
 
 图最常实现[agent](/oss/python/langgraph/workflows-agents)，但并非必须如此。例如，图可以实现一个简单的聊天机器人，仅支持来回对话，而无法影响任何应用程序控制流。实际上，随着应用程序变得越来越复杂，图通常会实现更复杂的流程，可能会使用 [multiple agents](/oss/python/langchain/multi-agent) 协同工作。
 
-图表不必用 LangGraph 来编写。您还可以使用 LangGraph 功能 API 或 `deployments-wrap-sdk` 包部署使用其他框架（例如 [Strands, Claude Agent SDK, and more](/langsmith/deploy-other-frameworks) 或 [Google ADK](/langsmith/deploy-google-adk)）构建的代理。
+图表不一定要用LangGraph来写。您还可以使用 LangGraph 功能 API 或 `deployments-wrap-sdk` 包来部署使用其他框架（例如 [Strands, Claude Agent SDK, and more](/langsmith/deploy-other-frameworks) 或 [Google ADK](/langsmith/deploy-google-adk)）构建的代理。
 
 #### 图形加载和编译
 
@@ -57,12 +57,12 @@ LangSmith Deployment 的 **代理服务器** 提供用于创建和管理基于�
 ### 坚持
 
 Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreSQL](https://www.postgresql.org/) 支持：* **核心资源数据**：助手、线程、运行和 cron 作业。始终存储在 PostgreSQL 中。
-* **检查点（短期记忆）**：每一步写入的图执行状态的快照。它们使运行持久：如果工作线程被中断，运行可以从最后一个检查点而不是从头开始恢复。持久性模式控制检查点频率—`async`（默认）在每个步骤后写入； `exit` 仅存储最终状态。 LangSmith 默认将其存储在 PostgreSQL 中；但您可以切换到 [MongoDB](https://www.mongodb.com/) 或自定义实现。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
+* **检查点（短期记忆）**：每一步写入的图执行状态的快照。它们使运行持久：如果工作线程被中断，运行可以从最后一个检查点而不是从头开始恢复。持久性模式控制检查点频率——`async`（默认）在每个步骤后写入； `exit` 仅存储最终状态。 LangSmith 默认将其存储在 PostgreSQL 中；但您可以切换到 [MongoDB](https://www.mongodb.com/) 或自定义实现。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 * **存储（长期记忆）**：跨线程持续存在的内存，使代理能够保留单独对话之间的信息。默认存储在 PostgreSQL 中，但可以用自定义实现替换。详情请参阅[Add custom store](/langsmith/custom-store)。
 
 ### 任务队列
 
-当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据 - Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
+当客户端创建运行时，API 服务器将其放入队列，然后队列工作线程将其拾取以执行。还可以通知工作人员取消正在进行的运行，并发布打开 `/stream` 连接的输出事件，实时转发到客户端。[Redis](https://redis.io/) 处理 API 服务器和队列工作人员之间的信令、取消和流媒体发布/订阅。它仅存储临时数据——Redis 中不会保留任何用户或运行数据。运行数据本身总是从 PostgreSQL 读取和写入。
 
 有关如何设置和管理这些组件的更多信息，请查看 [hosting options](/langsmith/platform-setup) 指南。
 
@@ -73,7 +73,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 Agent Server 支持三种运行时配置：
 
 * **单主机**：API 服务器直接管理任务队列，没有单独的队列工作人员。这是自托管部署的默认设置，适用于开发和低流量用例。
-* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展 - API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
+* **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展——API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。* **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
 
 下面描述的容器架构和运行生命周期适用于单主机和拆分 API 和队列配置。
 
@@ -136,7 +136,7 @@ flowchart TB
 2. 队列工作线程获取运行，获取其租约，加载适当的图形，然后开始执行。队列强制规定给定线程一次最多可以执行 1 次运行。
 3. 当图执行时，工作线程将检查点写入持久层（频率取决于[durability mode](/oss/python/langgraph/persistence#durability-modes)）并通过配置的 pubsub 提供程序广播流事件。
 4. 如果客户端打开了 `/stream` 连接，API 服务器会订阅 pubsub 通道，并通过服务器发送的事件实时将事件转发给客户端。
-5. 执行完成后，worker 更新运行状态并释放其插槽以供下一次运行。每个工作线程最多同时执行 [⟦T8⟧](/langsmith/env-var-self-hosted) 次运行（默认值：10），因此单个工作线程容器可以并行运行多个运行。这限制了并发运行执行，而不是部署可以服务的 API 请求的数量。 API 服务器独立处理请求并单独扩展，因此请求服务能力不受`N_JOBS_PER_WORKER` 的限制。请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
+5. 执行完成后，worker 更新运行状态并释放其插槽以供下一次运行。每个工作线程最多同时执行 [⟦T8⟧](/langsmith/env-var-self-hosted) 次运行（默认值：10），因此单个工作线程容器可并行运行多个运行。这限制了并发运行执行，而不是部署可以服务的 API 请求的数量。 API 服务器独立处理请求并单独扩展，因此请求服务能力不受`N_JOBS_PER_WORKER` 的限制。请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
 
 ## 了解更多
 

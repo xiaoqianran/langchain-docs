@@ -6,7 +6,7 @@ Authenticate callers to a Managed Deep Agents deployment with a LangSmith API ke
 
 Identity controls who can call your Managed Deep Agents deployment. By default, identity is secure: `mda init` configures authentication with a LangSmith API key.
 
-That default answers whether a caller is allowed. To also keep each signed-in person's conversations private, use Supabase.
+That default answers whether a caller is allowed. To also keep each signed-in person's conversations private, use [Supabase](#authenticate-end-users-with-supabase).
 
 <Note>
   Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.

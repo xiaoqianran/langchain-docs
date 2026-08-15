@@ -6,14 +6,41 @@ Build your agent as a directory of files while LangSmith runs the harness and ru
 
 Managed Deep Agents (MDA) is the simplest way to build and deploy production agents. You focus on what your agent does. MDA runs it. There are no servers to run and no infrastructure to wire together.
 
-You write the agent's intelligence: its instructions, the tools it can call, the skills it follows and you select the model that drives it. MDA provides everything underneath:
+You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
 * **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
 * **A managed runtime**: LangSmith Agent Server hosts and operates the agent, and keeps sessions running across restarts.
 
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+%%{init: {"theme": "base", "themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
+flowchart LR
+    subgraph you["You provide"]
+        Logic["<div style='text-align:left'>Business logic<br/>- Instructions<br/>- Tools<br/>- Skills<br/>- Model</div>"]
+    end
+    subgraph mda["Managed Deep Agents"]
+        direction TB
+        Harness["<div style='text-align:left'>Deep Agents harness<br/>- Agent loop<br/>- Filesystem<br/>- Subagents</div>"]
+        Runtime["<div style='text-align:left'>Managed runtime<br/>- Agent Server<br/>- Sandboxes<br/>- Schedules</div>"]
+        Harness --> Runtime
+    end
+
+    Logic --> mda
+
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+
+    class Logic trigger
+    class Harness process
+    class Runtime output
+
+    style you fill:none,stroke:#40668D,stroke-width:1px
+    style mda fill:none,stroke:#40668D,stroke-width:1px
+```
+
 ## Example agent
 
-A managed deep agent, consists of a project folder, which contains the business logic for its behavior:
+A managed deep agent consists of a project folder that contains the business logic for its behavior:
 
 When you upload this folder with the `mda` CLI, it will automatically run on managed LangSmith infrastructure.
 You provide the business logic, and Managed Deep Agents provides the agent harness and production infrastructure.
@@ -49,7 +76,7 @@ For the full layout, see [Project structure](/langsmith/javascript/managed-deep-
   </Card>
 
   <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    Add durable memory and a daily schedule to the quickstart research assistant.
+    Add a custom search tool, durable memory, and a daily schedule.
   </Card>
 </CardGroup>
 

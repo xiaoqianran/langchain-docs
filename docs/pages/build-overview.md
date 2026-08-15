@@ -173,7 +173,7 @@ Source: https://docs.langchain.com/index
 
     <CardGroup>
       <Card title="LangChain Academy" icon="school" href="https://academy.langchain.com/">
-        Take free courses on building and improving agents with LangSmith and our open source frameworks.
+        Take free courses on building and improving agents with LangSmith and our open-source frameworks.
       </Card>
 
       <Card title="Community forum" icon="messages" href="https://forum.langchain.com/">

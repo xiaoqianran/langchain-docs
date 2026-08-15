@@ -4,7 +4,7 @@
 
 # 评分标准
 
-法学硕士作为法官对代理人进行评分，不断迭代直至完成
+法学硕士作为法官对代理人进行评分，迭代一个标题直到完成
 
 <Note>
   `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。
@@ -158,7 +158,7 @@ graph LR
   ```
 </CodeGroup>
 
-|论证|必填|默认|描述 |
+|论证|必填 |默认 |描述 |
 | ---------------- | -------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- || `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。                  |
 | `system_prompt` |没有 |内置评分器提示 |自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。                                                                 |
 | `tools` |没有 | `None` |评分者在做出结论之前可以调用工具来收集证据（运行测试、计数标记、读取文件）。如果没有，评分者只能根据成绩单进行推理。                                              |
@@ -254,7 +254,7 @@ graph LR
       model="google_genai:gemini-3.6-flash",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="google_genai:gemini-3.6-flash",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -289,7 +289,7 @@ graph LR
       model="openai:gpt-5.5",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="openai:gpt-5.5",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -324,7 +324,7 @@ graph LR
       model="anthropic:claude-sonnet-4-6",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="anthropic:claude-sonnet-4-6",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -359,7 +359,7 @@ graph LR
       model="openrouter:z-ai/glm-5.2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="openrouter:z-ai/glm-5.2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -394,7 +394,7 @@ graph LR
       model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -429,7 +429,7 @@ graph LR
       model="baseten:zai-org/GLM-5.2",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="baseten:zai-org/GLM-5.2",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -464,7 +464,7 @@ graph LR
       model="ollama:north-mini-code-1.0",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-haiku-4-5",
+              model="ollama:north-mini-code-1.0",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -485,7 +485,7 @@ graph LR
   ```
 </CodeGroup>
 
-中间件在每个 [grader pass](#grader-pass-events) 之后使用 `RubricEvaluation` 字典调用您的函数。 `RubricEvaluation`字典包含：|领域 |类型 |描述 |
+中间件在每个 [grader pass](#grader-pass-events) 之后使用 `RubricEvaluation` 字典调用您的函数。 `RubricEvaluation`字典包含：|领域|类型 |描述 |
 | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `grading_run_id` | `str` |一次评估尝试中的每个评估共享的标识符。当调用者提供不同的`rubric`，或者在最终判决后再次调用相同的`rubric`时，新的运行开始。 |
 | `iteration` | `int` |当前评分者在该运行中通过的从零开始的索引。                                                                                                                                      |
@@ -506,7 +506,7 @@ graph LR
 
 ## 示例：生成经过审查的 Python 代码
 
-以下示例构建了一个编写 `find_duplicates` 函数的深度代理。它定义 `RubricMiddleware` 一次，将其附加到代理，然后在调用时传递 `rubric` 字符串。
+以下示例构建了一个编写 `find_duplicates` 函数的深度代理。它定义一次`RubricMiddleware`，将其附加到代理，然后在调用时传递一个`rubric`字符串。
 
 该示例没有要求评分者抽象地推理正确性，而是为其提供了一个`run_test_suite` 工具来直接验证行为。评分者在做出结论之前调用此工具获取更多信息，并在没有提供工具时从成绩单中进行推理。<Steps>
   <Step title="Define RubricMiddleware">

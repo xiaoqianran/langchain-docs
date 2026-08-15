@@ -99,7 +99,7 @@
 | [⟦T188⟧](#system-prompt) |代理定制说明 |
 | [⟦T189⟧](#tools) |代理可以调用​​的域工具 || [⟦T190⟧](#memory) |启动时加载的 AGENTS.md 文件 |
 | [⟦T191⟧](#skills) |按需知识的技能目录 |
-| [⟦T192⟧](#backends) |文件系统后端（默认为 StateBackend）|| [⟦T193⟧](/oss/python/deepagents/permissions) |文件系统的路径级访问控制 |
+| [⟦T192⟧](#backends) |文件系统后端（默认为 StateBackend）|| [⟦T193⟧](/oss/python/deepagents/permissions) |文件系统的路径级访问控制|
 | [⟦T194⟧](#subagents) |用于委派任务的自定义子代理 |
 | [⟦T195⟧](#middleware) |额外的中间件合并到[Deep Agents stack](#deep-agents-stack)； `.name` 与内置条目匹配的实例会就地替换它，其他任何内容都会在最后一个核心中间件条目之后、配置文件、提示缓存和内存之前落地 || [⟦T197⟧](#human-in-the-loop) |在工具请求人工批准之前暂停 |
 | [⟦T198⟧](#structured-output) |结构化输出模式|
@@ -142,7 +142,7 @@
 
 ## 型号
 
-传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/python/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/python/deepagents/models#suggested-models)了解经过测试的建议。
+传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅 [supported models](/oss/python/deepagents/models#supported-models) 了解所有提供商，并参阅 [suggested models](/oss/python/deepagents/models#suggested-models) 了解经过测试的建议。
 
 <Tip>
   使用`provider:model`格式（例如`openai:gpt-5.5`）可以在模型之间快速切换。
@@ -1114,7 +1114,7 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 ### Deep Agents堆栈
 
-`create_deep_agent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅在您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 贡献它们时出现的槽。
+`create_deep_agent` 以固定的顺序构建中间件。 [bare stack](#bare-stack) 只需一个模型即可获得。 [full stack](#full-stack) 是完整的汇编顺序，包括仅在您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 贡献它们时出现的槽。
 
 #### 裸栈
 
@@ -1124,7 +1124,7 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 2. [⟦T228⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（因为 [general-purpose subagent](/oss/python/deepagents/subagents#default-subagent) 是自动添加的，除非线束配置文件禁用它）
 3.[⟦T229⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
 4.[⟦T230⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)
-5. **提示缓存**中间件（始终注册；每个条目在不支持的型号上无操作）
+5. **提示缓存**中间件（始终注册；每个条目在它不支持的型号上无操作）
 6. **利用配置文件额外**和**排除工具过滤**，如果解析的模型配置文件定义了它们
 
 #### 全栈
@@ -1141,7 +1141,7 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 6. [⟦T239⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
 
-7. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例将替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。8. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
+7. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例会就地替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。8. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
 
 9. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
 
@@ -1600,7 +1600,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 
 ### 口译员
 
-使用 [interpreters](/oss/python/deepagents/interpreters) 添加在限定范围的 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
+使用 [interpreters](/oss/python/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1744,7 +1744,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="google_genai:gemini-3.6-flash",
           backend=StateBackend(),
       )
       ```
@@ -1772,7 +1772,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="anthropic:claude-sonnet-4-6",
           backend=StateBackend(),
       )
       ```
@@ -1786,7 +1786,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="openrouter:z-ai/glm-5.2",
           backend=StateBackend(),
       )
       ```
@@ -1800,7 +1800,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=StateBackend(),
       )
       ```
@@ -1814,7 +1814,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="baseten:zai-org/GLM-5.2",
           backend=StateBackend(),
       )
       ```
@@ -1828,7 +1828,7 @@ agent = create_deep_agent(
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
+          model="ollama:north-mini-code-1.0",
           backend=StateBackend(),
       )
       ```
@@ -1924,7 +1924,7 @@ agent = create_deep_agent(
 
     <Warning>
       该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-      请务必谨慎使用，并且仅在适当的环境中使用。
+      请极其谨慎地使用，并且仅在适当的环境中使用。
       有关更多信息，请参阅[⟦T299⟧](/oss/python/deepagents/backends#localshellbackend-local-shell)。
     </Warning>
 

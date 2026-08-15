@@ -16,7 +16,7 @@
   线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 </Note>
 
-[⟦T109⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
+[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的线束。最简单的是，您可以使用以下命令创建一个：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -383,7 +383,7 @@
 
 ### 代理状态
 
-每个代理都通过一个 `AgentState` 对象来管理其执行上下文，该对象保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
+每个代理都通过一个 `AgentState` 对象管理其执行上下文，该对象保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
 
 内置字段是：|领域 |类型 |描述 |
 | ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -555,7 +555,7 @@
 
 <Tip>
   跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
-</Tip>您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T126⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+</Tip>您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -763,7 +763,7 @@
 </CodeGroup>
 
 <Note>
-  使用 `thread_id` 保留对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
+  保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
 </Note>
 
 如果您还需要将每次运行的配置（例如用户 ID、API 密钥或功能标志）传递给工具和中间件，请将其作为 `context` 与配置一起传递。使用 `contextSchema` 定义该数据的形状并通过 `runtime.context` 访问它：
@@ -980,7 +980,7 @@
   ```
 </CodeGroup>
 
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅 [tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
+`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
 
 ## 流媒体`invoke` 返回运行结束时的最终响应。如果代理执行多个工具调用，用户通常需要在完成之前更新进度。使用流式传输来显示发生的中间消息和工具活动。
 
@@ -1014,7 +1014,7 @@ for await (const snapshot of stream.values) {
 ```
 
 <Tip>
-  有关流模式、事件类型和 UI 模式，请参阅[Streaming](/oss/javascript/langchain/streaming)。
+  有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/javascript/langchain/streaming)。
 </Tip>
 
 ## 配置线束
@@ -1052,7 +1052,7 @@ for await (const snapshot of stream.values) {
 </CardGroup>
 
 <Tip>
-  `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅 [Deep Agents](/oss/javascript/deepagents/harness) 了解完整的预制线束。
+  `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
 </Tip>
 
 ### 执行环境
@@ -1138,7 +1138,7 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-参见[⟦T138⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
+参见[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 <Note>
   此示例从 `deepagents` 包导入。安装它：
@@ -1160,30 +1160,170 @@ for await (const snapshot of stream.values) {
 
 ### 上下文管理每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。汇总会在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "langchain";
-import {
-  StateBackend,
-  createFilesystemMiddleware,
-  createSkillsMiddleware,
-  createSummarizationMiddleware,
-} from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
 
-var backend = new StateBackend();
-const model = "anthropic:claude-sonnet-4-6";
+  var backend = new StateBackend();
+  const model = "google-genai:gemini-3.6-flash";
 
-var agent = createAgent({
-  model,
-  tools: [search],
-  middleware: [
-    createFilesystemMiddleware({ backend }),
-    createSummarizationMiddleware({ model, backend }),
-    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-  ],
-});
-```
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
 
-参见[⟦T140⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)、[⟦T141⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)、[Skills](/oss/javascript/langchain/multi-agent/skills)、[Context engineering](/oss/javascript/deepagents/context-engineering)。
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "openai:gpt-5.5";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "anthropic:claude-sonnet-4-6";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "openrouter:openrouter:z-ai/glm-5.2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "fireworks:accounts/fireworks/models/glm-5p2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "baseten:zai-org/GLM-5.2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "ollama:north-mini-code-1.0";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+</CodeGroup>
+
+参见[⟦T146⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)、[⟦T147⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)、[Skills](/oss/javascript/langchain/multi-agent/skills)、[Context engineering](/oss/javascript/deepagents/context-engineering)。
 
 <Note>
   此示例从 `deepagents` 包导入。安装它：
@@ -1241,7 +1381,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "google-genai:gemini-3.6-flash",
             middleware: [],
           },
         ],
@@ -1283,7 +1423,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "openai:gpt-5.5",
             middleware: [],
           },
         ],
@@ -1367,7 +1507,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "openrouter:openrouter:z-ai/glm-5.2",
             middleware: [],
           },
         ],
@@ -1409,7 +1549,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "fireworks:accounts/fireworks/models/glm-5p2",
             middleware: [],
           },
         ],
@@ -1451,7 +1591,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "baseten:zai-org/GLM-5.2",
             middleware: [],
           },
         ],
@@ -1493,7 +1633,7 @@ var agent = createAgent({
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "ollama:north-mini-code-1.0",
             middleware: [],
           },
         ],
@@ -1764,7 +1904,7 @@ var agent = createAgent({
   ```
 </CodeGroup>
 
-参见[⟦T144⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[⟦T145⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
+参见[⟦T150⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
 ### 护栏
 
@@ -1891,7 +2031,7 @@ var agent = createAgent({
   ```
 </CodeGroup>
 
-参见[⟦T146⟧](https://reference.langchain.com/javascript/langchain/index/piiMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
+参见[⟦T152⟧](https://reference.langchain.com/javascript/langchain/index/piiMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
 ### 转向完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
 
@@ -2016,7 +2156,7 @@ var agent = createAgent({
   ```
 </CodeGroup>
 
-参见[⟦T147⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
+参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
 
 ### 中间件资源
 

@@ -6,7 +6,7 @@
 
 了解如何在 LangSmith Context Hub 中创建、查看和提升上下文。
 
-**Context Hub** 为您的团队提供对代理在生产中使用的指令和工具的版本控制、环境感知管理。 *上下文*是代理指令和工具的版本化捆绑包，可以是您在 LangSmith 中管理的技能或完整代理。
+**Context Hub** 为您的团队提供对代理在生产中使用的指令和工具的版本控制、环境感知管理。 *上下文*是代理指令和工具的版本化捆绑包，可以是技能，也可以是完整的代理，您可以在 LangSmith 中进行管理。
 
 使用本指南创建您的第一个上下文，查看其文件和历史记录，并将其提升到环境，以便您的代理可以拉取它。
 
@@ -71,6 +71,7 @@
 * [Context engineering concepts](/langsmith/context-engineering-concepts)：了解技能、代理、版本控制和共享。
 * [Manage contexts with the SDK](/langsmith/manage-contexts-sdk)：以编程方式推送、拉取、列出和删除上下文。
 * [Configure commit webhooks](/langsmith/context-hub-webhooks)：将工作区 Context Hub 提交发送到外部 HTTPS 端点。
+* [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-sdk#mount-a-context-hub-repo)：为沙箱代码提供对存储库的只读文件系统访问权限，并在更改时保持同步。
 
 ***
 

@@ -2565,6 +2565,42 @@
           "rel": "langsmith/smithdb-sdk-migration.md"
         }
       ],
+      "smithdb-sdk-migration-experiments": [
+        {
+          "title": "Migrate dataset experiment runs to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-experiments.md"
+        }
+      ],
+      "smithdb-sdk-migration-feedback": [
+        {
+          "title": "Migrate feedback and sharing methods to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-feedback.md"
+        }
+      ],
+      "smithdb-sdk-migration-query-runs": [
+        {
+          "title": "Migrate run queries to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-query-runs.md"
+        }
+      ],
+      "smithdb-sdk-migration-runs": [
+        {
+          "title": "Migrate run retrieval to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-runs.md"
+        }
+      ],
+      "smithdb-sdk-migration-threads": [
+        {
+          "title": "Migrate thread methods to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-threads.md"
+        }
+      ],
+      "smithdb-sdk-migration-traces": [
+        {
+          "title": "Migrate trace methods to SmithDB",
+          "rel": "langsmith/smithdb-sdk-migration-traces.md"
+        }
+      ],
       "stateless-runs": [
         {
           "title": "Stateless runs",
@@ -3559,7 +3595,7 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Add memory and a schedule to your research assistant",
+          "title": "Add a custom search tool, memory, and a schedule",
           "rel": "langsmith/javascript/managed-deep-agents-tutorial.md"
         }
       ]
@@ -3691,7 +3727,7 @@
       ],
       "managed-deep-agents-tutorial": [
         {
-          "title": "Add memory and a schedule to your research assistant",
+          "title": "Add a custom search tool, memory, and a schedule",
           "rel": "langsmith/python/managed-deep-agents-tutorial.md"
         }
       ]

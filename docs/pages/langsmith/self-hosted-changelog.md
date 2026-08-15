@@ -8,6 +8,14 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-08-13">
+  ## langsmith-0.16.5
+
+  * Internal improvements and maintenance updates
+
+  **Download the Helm chart:** [`langsmith-0.16.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.5/langsmith-0.16.5.tgz)
+</Update>
+
 <Update label="2026-08-12">
   ## langsmith-0.16.4
 

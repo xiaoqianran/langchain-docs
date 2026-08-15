@@ -1170,28 +1170,168 @@ See [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagen
 
 Every model call has a fixed context window. As an agent runs, that window fills with accumulating history, tool results, and intermediate steps. Summarization compresses history before overflow hits; memory loads persistent instructions at startup so knowledge carries across sessions; skills surface domain knowledge on demand rather than loading everything upfront.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent } from "langchain";
-import {
-  StateBackend,
-  createFilesystemMiddleware,
-  createSkillsMiddleware,
-  createSummarizationMiddleware,
-} from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
 
-var backend = new StateBackend();
-const model = "anthropic:claude-sonnet-4-6";
+  var backend = new StateBackend();
+  const model = "google-genai:gemini-3.6-flash";
 
-var agent = createAgent({
-  model,
-  tools: [search],
-  middleware: [
-    createFilesystemMiddleware({ backend }),
-    createSummarizationMiddleware({ model, backend }),
-    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-  ],
-});
-```
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "openai:gpt-5.5";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "anthropic:claude-sonnet-4-6";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "openrouter:openrouter:z-ai/glm-5.2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "fireworks:accounts/fireworks/models/glm-5p2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "baseten:zai-org/GLM-5.2";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import {
+    StateBackend,
+    createFilesystemMiddleware,
+    createSkillsMiddleware,
+    createSummarizationMiddleware,
+  } from "deepagents";
+
+  var backend = new StateBackend();
+  const model = "ollama:north-mini-code-1.0";
+
+  var agent = createAgent({
+    model,
+    tools: [search],
+    middleware: [
+      createFilesystemMiddleware({ backend }),
+      createSummarizationMiddleware({ model, backend }),
+      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+    ],
+  });
+  ```
+</CodeGroup>
 
 See [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware), [`MemoryMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware), [Skills](/oss/javascript/langchain/multi-agent/skills), [Context engineering](/oss/javascript/deepagents/context-engineering).
 
@@ -1251,7 +1391,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "google-genai:gemini-3.6-flash",
             middleware: [],
           },
         ],
@@ -1293,7 +1433,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "openai:gpt-5.5",
             middleware: [],
           },
         ],
@@ -1377,7 +1517,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "openrouter:openrouter:z-ai/glm-5.2",
             middleware: [],
           },
         ],
@@ -1419,7 +1559,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "fireworks:accounts/fireworks/models/glm-5p2",
             middleware: [],
           },
         ],
@@ -1461,7 +1601,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "baseten:zai-org/GLM-5.2",
             middleware: [],
           },
         ],
@@ -1503,7 +1643,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "ollama:north-mini-code-1.0",
             middleware: [],
           },
         ],

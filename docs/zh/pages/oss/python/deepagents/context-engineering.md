@@ -22,7 +22,7 @@
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------- |
 | **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能） |静态，每次运行均应用 |
 | **[Runtime context](#runtime-context)** |调用时传递的静态配置（用户元数据、API 密钥、连接）|每次运行，传播到子代理 |
-| **[Context compression](#context-compression)** |内置卸载和汇总，将上下文保持在窗口限制内 |当接近极限时自动 |
+| **[Context compression](#context-compression)** |内置卸载和摘要，可将上下文保持在窗口限制内 |当接近极限时自动 |
 | **[Context isolation](#context-isolation-with-subagents)** |使用子代理隔离繁重的工作，仅将结果返回给主代理 |每个子代理，当被委托时 |
 | **[Long-term memory](#long-term-memory)** |使用虚拟文件系统跨线程持久存储|对话中持续存在 |
 
@@ -134,7 +134,7 @@
       ),
   )
   ```
-</CodeGroup>`system_prompt` 参数是静态的，这意味着每次调用它都不会改变。
+</CodeGroup>`system_prompt` 参数是静态的，这意味着它在每次调用时都不会改变。
 对于某些用例，您可能需要动态提示：例如，告诉模型“您具有管理员访问权限”与“您具有只读访问权限”，或者注入用户首选项，例如来自 [long-term memory](#long-term-memory) 的“用户更喜欢简洁的响应”。
 如果您的提示取决于上下文或 `runtime.store`，请使用 `@dynamic_prompt` 构建上下文感知指令。您的中间件可以读取`request.runtime.context`和`request.runtime.store`。
 有关 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 和添加 [custom middleware](/oss/python/langchain/middleware)，请参阅 [Customization](/oss/python/deepagents/customization#middleware)。有关示例，请参阅 [LangChain context engineering](/oss/python/langchain/context-engineering#system-prompt) 指南​​。
@@ -204,7 +204,7 @@
 
 ### 技能
 
-技能提供**按需**功能。代理在启动时从每个`SKILL.md`读取frontmatter，然后仅在确定技能相关时加载完整的技能内容。这减少了令牌的使用，同时仍然提供专门的工作流程：
+技能提供**按需**能力。代理在启动时从每个`SKILL.md`读取frontmatter，然后仅在确定技能相关时加载完整的技能内容。这减少了令牌的使用，同时仍然提供专门的工作流程：
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -300,7 +300,7 @@ def search_orders(
 <Tip>
   要覆盖特定提供程序或模型的内置或用户提供的工具的描述，请使用按工具名称键入的 [harness profile](/oss/python/deepagents/profiles#harness-profiles) 的 `tool_description_overrides`。
 
-  未使用的内置工具仍然每次都会发送其完整模式。使用 `excluded_tools` 删除代理不应调用的工具（例如只读代理上的 `write_file` 或 `execute`）。这会缩小整个运行的基线提示大小。这是配置，而不是[Context compression](#context-compression)中的自动卸载或汇总。
+  未使用的内置工具仍然会每次发送其完整模式。使用 `excluded_tools` 删除代理不应调用的工具（例如只读代理上的 `write_file` 或 `execute`）。这会缩小整个运行的基线提示大小。这是配置，而不是[Context compression](#context-compression)中的自动卸载或汇总。
 
   参见[Harness profiles](/oss/python/deepagents/profiles#harness-profiles)和[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
 </Tip>
@@ -808,7 +808,7 @@ def search_orders(
 
 ### 卸载
 
-深度代理使用 [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) 自动卸载内容并根据需要搜索和检索卸载的内容。
+Deep Agents 使用 [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) 自动卸载内容并根据需要搜索和检索卸载的内容。
 当工具调用输入或结果超过令牌阈值（默认 20,000）时，就会发生内容卸载：1. **工具调用输入超过 20,000 个令牌**：文件写入和编辑操作会在代理的对话历史记录中留下包含完整文件内容的工具调用。
    由于此内容已持久保存到文件系统中，因此通常是多余的。
    当会话上下文跨越模型可用窗口的 85% 时，深度代理会截断旧的工具调用，将其替换为指向磁盘上文件的指针，并减小活动上下文的大小。
@@ -872,7 +872,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="google_genai:gemini-3.6-flash"
+  model = "google_genai:gemini-3.6-flash"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -888,7 +888,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="openai:gpt-5.5"
+  model = "openai:gpt-5.5"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -904,7 +904,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="anthropic:claude-sonnet-4-6"
+  model = "anthropic:claude-sonnet-4-6"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -920,7 +920,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="openrouter:z-ai/glm-5.2"
+  model = "openrouter:z-ai/glm-5.2"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -936,7 +936,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="fireworks:accounts/fireworks/models/glm-5p2"
+  model = "fireworks:accounts/fireworks/models/glm-5p2"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -952,7 +952,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="baseten:zai-org/GLM-5.2"
+  model = "baseten:zai-org/GLM-5.2"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -968,7 +968,7 @@ def search_orders(
 
   backend = StateBackend  # if using default backend
 
-  model="ollama:north-mini-code-1.0"
+  model = "ollama:north-mini-code-1.0"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -1017,7 +1017,7 @@ def search_orders(
 长期记忆使您的深度代理能够跨不同线程和对话保存信息。
 深度代理可以使用长期记忆来存储用户偏好、积累的知识、研究进展或任何应在单个会话之后持续存在的信息。
 
-要使用长期内存，您必须使用 `CompositeBackend` 将特定路径（通常是 `/memories/`）路由到 LangGraph Store，从而提供持久的跨线程持久性。
+要使用长期内存，您必须使用 `CompositeBackend` 将特定路径（通常为 `/memories/`）路由到 LangGraph 存储，从而提供持久的跨线程持久性。
 `CompositeBackend` 是一种混合存储系统，其中一些文件无限期地保留，而其他文件则保留在单个线程范围内。
 
 <CodeGroup>
@@ -1172,7 +1172,7 @@ def search_orders(
 例如，您可以提示代理将首选项存储在`/memories/preferences.txt`中。
 该路径开始为空，当用户共享值得记住的信息时，代理会使用其文件系统工具（`write_file`、`edit_file`）按需创建文件。
 
-要预先播种记忆，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
+要预先播种内存，请在 LangSmith 上部署时使用 [Store API](/langsmith/custom-store)。
 有关设置和用例，请参阅[Long-term memory](/oss/python/deepagents/memory)。
 
 ## 最佳实践1. **从正确的输入上下文开始**：为始终相关的约定保持最小的内存；使用专注技能来实现特定任务的能力。

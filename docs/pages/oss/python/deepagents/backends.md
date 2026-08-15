@@ -90,7 +90,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="google_genai:gemini-3.6-flash",
       backend=StateBackend(),
   )
   ```
@@ -118,7 +118,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="anthropic:claude-sonnet-4-6",
       backend=StateBackend(),
   )
   ```
@@ -132,7 +132,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="openrouter:z-ai/glm-5.2",
       backend=StateBackend(),
   )
   ```
@@ -146,7 +146,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=StateBackend(),
   )
   ```
@@ -160,7 +160,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="baseten:zai-org/GLM-5.2",
       backend=StateBackend(),
   )
   ```
@@ -174,7 +174,7 @@ graph TB
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
+      model="ollama:north-mini-code-1.0",
       backend=StateBackend(),
   )
   ```

@@ -14,11 +14,7 @@ After this quickstart, the [tutorial](/langsmith/javascript/managed-deep-agents-
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
-* An organization with Managed Deep Agents public beta access.
-
-* A [LangSmith API key](/langsmith/create-account-api-key).
+To follow along, you need:
 
 * Node.js and npm.
 
@@ -40,22 +36,33 @@ Before you start, make sure you have:
   </Step>
 
   <Step title="Add your keys">
-    Add your LangSmith API key and model provider API key to `.env`:
+    Add your model provider API key to `.env`:
 
     ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
     OPENAI_API_KEY=<OPENAI_API_KEY>
     # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
     # GOOGLE_API_KEY=<GOOGLE_API_KEY>
     ```
 
-    To create a LangSmith API key, [sign up](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart), open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**. For more details, see [Create an account and API key](/langsmith/create-account-api-key).
-
-    This quickstart uses OpenAI by default. If you choose Google or Anthropic in the next step, set that provider's API key instead. `mda deploy` uses the LangSmith API key to deploy the agent and adds the provider key to the deployment. You can also use any [other chat provider](/oss/javascript/integrations/chat/).
+    This quickstart uses OpenAI by default. If you choose Google or Anthropic in the next step, set that provider's API key instead. `mda deploy` adds the provider key to the deployment. You can also use any [other chat provider](/oss/javascript/integrations/chat/).
 
     <Warning>
       Do not commit the `.env` file into version control. It contains secrets.
     </Warning>
+  </Step>
+
+  <Step title="Set up LangSmith">
+    Managed Deep Agents runs on LangSmith. Your LangSmith API key authenticates local development with `mda dev`, deploys the agent with `mda deploy`, and opens the agent in [LangSmith Studio](/langsmith/studio) so you can chat with it and inspect traces.
+
+    [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) if you do not already have an account.
+
+    To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**. For more details, see [Create an account and API key](/langsmith/create-account-api-key).
+
+    Add your LangSmith API key to `.env`:
+
+    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
+    ```
   </Step>
 
   <Step title="Edit the instructions">
@@ -211,11 +218,11 @@ Before you start, make sure you have:
 
 <CardGroup>
   <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    Add durable memory and a daily schedule to this research assistant.
+    Add a custom Tavily search tool, durable memory, and a daily schedule.
   </Card>
 
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
-    Add authored LangChain tools from your project alongside provider search.
+    Add authored LangChain tools from your project.
   </Card>
 </CardGroup>
 
