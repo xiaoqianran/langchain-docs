@@ -3,11 +3,10 @@
 # LangSmith Studio
 
 <Info>
-  **Prerequisites**
-
-  * [LangSmith](/langsmith/observability)
-  * [Agent Server](/langsmith/agent-server)
-  * [LangGraph CLI](/langsmith/cli)
+**Prerequisites**
+* [LangSmith](/langsmith/observability)
+* [Agent Server](/langsmith/agent-server)
+* [LangGraph CLI](/langsmith/cli)
 </Info>
 
 Studio is a specialized agent IDE that enables visualization, interaction, and debugging of agentic systems that implement the Agent Server API protocol. Studio also integrates with [tracing](/langsmith/observability-concepts), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts).
@@ -26,7 +25,7 @@ Key features of Studio:
 * Debug agent state via [time travel](/oss/python/langgraph/use-time-travel)
 * 1 Click deploy to LangSmith Cloud.
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 flowchart
     subgraph LangSmith Deployment
         A[LangGraph CLI] -->|creates| B(Agent Server deployment)
@@ -61,17 +60,22 @@ Go from [testing graphs locally](/langsmith/local-dev-testing) in Studio to depl
 * See this guide on how to [get started](/langsmith/quick-start-studio) with Studio.
 
 ## Video guide
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/Mi1gSlHwZLM?si=oWCeHQ640zPHoLwn"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
-<iframe title="YouTube video player" />
+---
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -11,134 +11,135 @@
 有关 `RunTree` 对象的可用属性的完整列表，请参阅 [this reference](/langsmith/run-data-format)。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
-  from langsmith.run_helpers import get_current_run_tree
-  from openai import Client
 
-      openai = Client()
+```python Python
+from langsmith import traceable
+from langsmith.run_helpers import get_current_run_tree
+from openai import Client
 
-      @traceable
-      def format_prompt(subject):
-          run = get_current_run_tree()
-          print(f"format_prompt Run Id: {run.id}")
-          print(f"format_prompt Trace Id: {run.trace_id}")
-          print(f"format_prompt Parent Run Id: {run.parent_run.id}")
-          return [
-              {
-                  "role": "system",
-                  "content": "You are a helpful assistant.",
-              },
-              {
-                  "role": "user",
-                  "content": f"What's a good name for a store that sells {subject}?"
-              }
-          ]
+    openai = Client()
 
-      @traceable(run_type="llm")
-      def invoke_llm(messages):
-          run = get_current_run_tree()
-          print(f"invoke_llm Run Id: {run.id}")
-          print(f"invoke_llm Trace Id: {run.trace_id}")
-          print(f"invoke_llm Parent Run Id: {run.parent_run.id}")
-          return openai.chat.completions.create(
-              messages=messages, model="gpt-5.4-mini", temperature=0
-          )
+    @traceable
+    def format_prompt(subject):
+        run = get_current_run_tree()
+        print(f"format_prompt Run Id: {run.id}")
+        print(f"format_prompt Trace Id: {run.trace_id}")
+        print(f"format_prompt Parent Run Id: {run.parent_run.id}")
+        return [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant.",
+            },
+            {
+                "role": "user",
+                "content": f"What's a good name for a store that sells {subject}?"
+            }
+        ]
 
-      @traceable
-      def parse_output(response):
-          run = get_current_run_tree()
-          print(f"parse_output Run Id: {run.id}")
-          print(f"parse_output Trace Id: {run.trace_id}")
-          print(f"parse_output Parent Run Id: {run.parent_run.id}")
-          return response.choices[0].message.content
+    @traceable(run_type="llm")
+    def invoke_llm(messages):
+        run = get_current_run_tree()
+        print(f"invoke_llm Run Id: {run.id}")
+        print(f"invoke_llm Trace Id: {run.trace_id}")
+        print(f"invoke_llm Parent Run Id: {run.parent_run.id}")
+        return openai.chat.completions.create(
+            messages=messages, model="gpt-5.4-mini", temperature=0
+        )
 
-      @traceable
-      def run_pipeline():
-          run = get_current_run_tree()
-          print(f"run_pipeline Run Id: {run.id}")
-          print(f"run_pipeline Trace Id: {run.trace_id}")
-          messages = format_prompt("colorful socks")
-          response = invoke_llm(messages)
-          return parse_output(response)
+    @traceable
+    def parse_output(response):
+        run = get_current_run_tree()
+        print(f"parse_output Run Id: {run.id}")
+        print(f"parse_output Trace Id: {run.trace_id}")
+        print(f"parse_output Parent Run Id: {run.parent_run.id}")
+        return response.choices[0].message.content
 
-  run_pipeline()
-  ```
+    @traceable
+    def run_pipeline():
+        run = get_current_run_tree()
+        print(f"run_pipeline Run Id: {run.id}")
+        print(f"run_pipeline Trace Id: {run.trace_id}")
+        messages = format_prompt("colorful socks")
+        response = invoke_llm(messages)
+        return parse_output(response)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable, getCurrentRunTree } from "langsmith/traceable";
-  import OpenAI from "openai";
+run_pipeline()
+```
 
-      const openai = new OpenAI();
+```typescript TypeScript
+import { traceable, getCurrentRunTree } from "langsmith/traceable";
+import OpenAI from "openai";
 
-      const formatPrompt = traceable((subject: string) => {
-          const run = getCurrentRunTree();
-          console.log("formatPrompt Run ID", run.id)
-          console.log("formatPrompt Trace ID", run.trace_id)
-          console.log("formatPrompt Parent Run ID", run.parent_run.id)
-          return [
-              {
-                  role: "system" as const,
-                  content: "You are a helpful assistant.",
-              },
-              {
-                  role: "user" as const,
-                  content: `What's a good name for a store that sells ${subject}?`,
-              },
-          ];
-      }, { name: "formatPrompt" });
+    const openai = new OpenAI();
 
-      const invokeLLM = traceable(
-          async (messages: { role: string; content: string }[]) => {
-              const run = getCurrentRunTree();
-              console.log("invokeLLM Run ID", run.id)
-              console.log("invokeLLM Trace ID", run.trace_id)
-              console.log("invokeLLM Parent Run ID", run.parent_run.id)
-              return openai.chat.completions.create({
-                  model: "gpt-5.4-mini",
-                  messages: messages,
-                  temperature: 0,
-              });
-          },
-          { run_type: "llm", name: "invokeLLM" }
-      );
+    const formatPrompt = traceable((subject: string) => {
+        const run = getCurrentRunTree();
+        console.log("formatPrompt Run ID", run.id)
+        console.log("formatPrompt Trace ID", run.trace_id)
+        console.log("formatPrompt Parent Run ID", run.parent_run.id)
+        return [
+            {
+                role: "system" as const,
+                content: "You are a helpful assistant.",
+            },
+            {
+                role: "user" as const,
+                content: `What's a good name for a store that sells ${subject}?`,
+            },
+        ];
+    }, { name: "formatPrompt" });
 
-      const parseOutput = traceable(
-          (response: any) => {
-              const run = getCurrentRunTree();
-              console.log("parseOutput Run ID", run.id)
-              console.log("parseOutput Trace ID", run.trace_id)
-              console.log("parseOutput Parent Run ID", run.parent_run.id)
-              return response.choices[0].message.content;
-          },
-          { name: "parseOutput" }
-      );
+    const invokeLLM = traceable(
+        async (messages: { role: string; content: string }[]) => {
+            const run = getCurrentRunTree();
+            console.log("invokeLLM Run ID", run.id)
+            console.log("invokeLLM Trace ID", run.trace_id)
+            console.log("invokeLLM Parent Run ID", run.parent_run.id)
+            return openai.chat.completions.create({
+                model: "gpt-5.4-mini",
+                messages: messages,
+                temperature: 0,
+            });
+        },
+        { run_type: "llm", name: "invokeLLM" }
+    );
 
-      const runPipeline = traceable(
-          async () => {
-              const run = getCurrentRunTree();
-              console.log("runPipline Run ID", run.id)
-              console.log("runPipline Trace ID", run.trace_id)
-              console.log("runPipline Parent Run ID", run.parent_run?.id)
-              const messages = await formatPrompt("colorful socks");
-              const response = await invokeLLM(messages);
-              return parseOutput(response);
-          },
-          { name: "runPipeline" }
-      );
+    const parseOutput = traceable(
+        (response: any) => {
+            const run = getCurrentRunTree();
+            console.log("parseOutput Run ID", run.id)
+            console.log("parseOutput Trace ID", run.trace_id)
+            console.log("parseOutput Parent Run ID", run.parent_run.id)
+            return response.choices[0].message.content;
+        },
+        { name: "parseOutput" }
+    );
 
-  await runPipeline();
-  ```
+    const runPipeline = traceable(
+        async () => {
+            const run = getCurrentRunTree();
+            console.log("runPipline Run ID", run.id)
+            console.log("runPipline Trace ID", run.trace_id)
+            console.log("runPipline Parent Run ID", run.parent_run?.id)
+            const messages = await formatPrompt("colorful socks");
+            const response = await invokeLLM(messages);
+            return parseOutput(response);
+        },
+        { name: "runPipeline" }
+    );
+
+await runPipeline();
+```
+
 </CodeGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/access-current-span.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

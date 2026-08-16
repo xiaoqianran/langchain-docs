@@ -2,17 +2,15 @@
 
 # Fleet webhooks
 
-Integrate agent publishing with external systems, CI/CD pipelines, or custom deployment workflows.
-
 When triggered, a webhook sends a complete package of your agent's configuration and files to the specified endpoint.
 
-<Callout icon="lock">
-  **Security notes:**
+<Callout icon="lock" color="#4F46E5" iconType="regular">
+**Security notes:**
 
-  * Webhook URLs must use HTTPS.
-  * Custom headers (e.g., API keys) are stored encrypted.
-  * Publisher identity is included for audit trails.
-  * Webhooks are only visible to agent owners.
+- Webhook URLs must use HTTPS.
+- Custom headers (e.g., API keys) are stored encrypted.
+- Publisher identity is included for audit trails.
+- Webhooks are only visible to agent owners.
 </Callout>
 
 ## Add a webhook
@@ -20,10 +18,10 @@ When triggered, a webhook sends a complete package of your agent's configuration
 1. Navigate to [Settings > Fleet webhooks](https://smith.langchain.com/settings/workspaces/agent-builder-webhooks).
 2. Click **Add webhook**.
 3. Configure:
-   * **Name**: A descriptive name (e.g., "Publish Agent", "Deploy to Production").
-   * **URL**: Your HTTPS endpoint that will receive the webhook.
-   * **Headers** (optional): Custom headers for authentication (stored encrypted).
-   * **Form Schema** (optional): Define custom input fields users must fill when triggering.
+   - **Name**: A descriptive name (e.g., "Publish Agent", "Deploy to Production").
+   - **URL**: Your HTTPS endpoint that will receive the webhook.
+   - **Headers** (optional): Custom headers for authentication (stored encrypted).
+   - **Form Schema** (optional): Define custom input fields users must fill when triggering.
 4. Click **Save**.
 
 ## Trigger a webhook
@@ -37,32 +35,32 @@ When triggered, a webhook sends a complete package of your agent's configuration
 ## Edit a webhook
 
 1. Navigate to [Settings > Fleet webhooks](https://smith.langchain.com/settings/workspaces/agent-builder-webhooks).
-2. For the webhook you want to edit, click **Edit**.
-3. Make your changes and click **Save**.
+1. For the webhook you want to edit, click **Edit**.
+1. Make your changes and click **Save**.
 
 ## Delete a webhook
 
 1. Navigate to [Settings > Fleet webhooks](https://smith.langchain.com/settings/workspaces/agent-builder-webhooks).
-2. For the webhook you want to delete, click **Delete**.
-3. To confirm the deletion, click **Delete**.
+1. For the webhook you want to delete, click **Delete**.
+1. To confirm the deletion, click **Delete**.
 
 ## Webhook payload
 
 The webhook payload is a JSON object with the following fields:
 
-| Field                                               | Description                                                        |
-| --------------------------------------------------- | ------------------------------------------------------------------ |
-| `action`                                            | The name of the webhook.                                           |
-| `input`                                             | Values from custom form fields (empty object if no custom fields). |
-| `publisher`                                         | User ID and email of the person triggering the webhook.            |
-| `agent`                                             | Agent name and description.                                        |
-| [`tool_auth_requirements`](#tool-auth-requirements) | Authentication requirements for each tool the agent uses.          |
-| [`files`](#zip-file-structure)                      | Base64-encoded ZIP containing all agent files.                     |
-| [`fields`](#custom-input-fields)                    | Custom input fields.                                               |
+| Field | Description |
+|-------|-------------|
+| `action` | The name of the webhook. |
+| `input` | Values from custom form fields (empty object if no custom fields). |
+| `publisher` | User ID and email of the person triggering the webhook. |
+| `agent` | Agent name and description. |
+| [`tool_auth_requirements`](#tool-auth-requirements) | Authentication requirements for each tool the agent uses. |
+| [`files`](#zip-file-structure) | Base64-encoded ZIP containing all agent files. |
+| [`fields`](#custom-input-fields) | Custom input fields. |
 
 For example:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "action": "Webhook Name",
   "input": {
@@ -110,11 +108,11 @@ For example:
 
 The `tool_auth_requirements` array describes authentication needed for each tool:
 
-| Auth Type | Fields                    | Description                                      |
-| --------- | ------------------------- | ------------------------------------------------ |
-| `none`    | -                         | Tool requires no authentication                  |
-| `api_key` | `required_env_vars`       | Tool needs API key(s) in environment variables   |
-| `oauth`   | `auth_provider`, `scopes` | Tool requires OAuth tokens with specified scopes |
+| Auth Type | Fields | Description |
+|-----------|--------|-------------|
+| `none` | - | Tool requires no authentication |
+| `api_key` | `required_env_vars` | Tool needs API key(s) in environment variables |
+| `oauth` | `auth_provider`, `scopes` | Tool requires OAuth tokens with specified scopes |
 
 Use this information to configure your deployment environment with the necessary credentials.
 
@@ -140,7 +138,7 @@ The `config.json` file and `tools.json` files are structured as follows:
 
 <Tabs>
   <Tab title="`config.json`">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```json
     {
       "name": "My Agent",
       "description": "Agent description",
@@ -149,9 +147,8 @@ The `config.json` file and `tools.json` files are structured as follows:
     }
     ```
   </Tab>
-
   <Tab title="`tools.json`">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```json
     {
       "tools": [
         {
@@ -173,18 +170,18 @@ The `config.json` file and `tools.json` files are structured as follows:
 
 You can define custom input fields to collect information when the webhook is triggered. Supported field types are as follows:
 
-| Type       | Description                       |
-| ---------- | --------------------------------- |
-| `string`   | Single-line text input (default). |
-| `number`   | Numeric input.                    |
-| `boolean`  | Checkbox (true/false).            |
-| `textarea` | Multi-line text input.            |
-| `json`     | JSON editor.                      |
-| `select`   | Dropdown with predefined options. |
+| Type | Description |
+|------|-------------|
+| `string` | Single-line text input (default). |
+| `number` | Numeric input. |
+| `boolean` | Checkbox (true/false). |
+| `textarea` | Multi-line text input. |
+| `json` | JSON editor. |
+| `select` | Dropdown with predefined options. |
 
 For example:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "fields": [
     {
@@ -216,7 +213,7 @@ For example:
 
 The following is an example webhook server in Python:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import base64
@@ -254,14 +251,13 @@ class WebhookHandler(BaseHTTPRequestHandler):
 HTTPServer(("", 8000), WebhookHandler).serve_forever()
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

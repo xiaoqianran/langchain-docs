@@ -2,14 +2,13 @@
 
 <!-- langchain-docs: LangSmith Studio | https://docs.langchain.com/langsmith/studio -->
 
-# 朗史密斯工作室
+#LangSmith工作室
 
 <Info>
-  **先决条件**
-
-  * [LangSmith](/langsmith/observability)
-  * [Agent Server](/langsmith/agent-server)
-  * [LangGraph CLI](/langsmith/cli)
+**先决条件**
+* [LangSmith](/langsmith/observability)
+* [Agent Server](/langsmith/agent-server)
+* [LangGraph CLI](/langsmith/cli)
 </Info>
 
 Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的代理系统的可视化、交互和调试。 Studio 还与 [tracing](/langsmith/observability-concepts)、[evaluation](/langsmith/evaluation) 和 [prompt engineering](/langsmith/prompt-context-hub#prompts) 集成。
@@ -26,9 +25,9 @@ Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的�
 * [Run experiments over a dataset](/langsmith/observability-studio#run-experiments-over-a-dataset)
 * 管理[long term memory](/oss/python/concepts/memory)
 * 通过[time travel](/oss/python/langgraph/use-time-travel)调试代理状态
-* 1 单击部署到 LangSmith Cloud。
+* 1 点击部署到LangSmith云。
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 flowchart
     subgraph LangSmith Deployment
         A[LangGraph CLI] -->|creates| B(Agent Server deployment)
@@ -48,7 +47,7 @@ Studio 支持两种模式：
 
 ### 图表模式
 
-图形模式公开了完整的功能集，并且当您需要有关代理执行的尽可能多的详细信息时非常有用，包括遍历的节点、中间状态和 LangSmith 集成（例如添加到数据集和游乐场）。
+图形模式公开了完整的功能集，并且当您需要有关代理执行的尽可能多的详细信息时非常有用，包括遍历的节点、中间状态和LangSmith集成（例如添加到数据集和游乐场）。
 
 ### 聊天模式
 
@@ -61,17 +60,22 @@ Studio 支持两种模式：
 * 请参阅本指南，了解如何使用 Studio [get started](/langsmith/quick-start-studio)。
 
 ## 视频指南
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/Mi1gSlHwZLM?si=oWCeHQ640zPHoLwn"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
-<iframe title="YouTube video player" />
+---
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

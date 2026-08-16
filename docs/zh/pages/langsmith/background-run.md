@@ -12,8 +12,8 @@
 首先让我们设置我们的客户端和线程：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
@@ -23,10 +23,9 @@
     thread = await client.threads.create()
     print(thread)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -36,16 +35,15 @@
     const thread = await client.threads.create();
     console.log(thread);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -67,26 +65,24 @@
 如果我们列出该线程上的当前运行，我们将看到它是空的：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     runs = await client.runs.list(thread["thread_id"])
     print(runs)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     let runs = await client.runs.list(thread['thread_id']);
     console.log(runs);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -100,22 +96,20 @@
 现在让我们开始运行：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]}
     run = await client.runs.create(thread["thread_id"], assistant_id, input=input)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     let input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]};
     let run = await client.runs.create(thread["thread_id"], assistantID, { input });
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
         --header 'Content-Type: application/json' \
@@ -123,30 +117,28 @@
             "assistant_id": <ASSISTANT_ID>
         }'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 第一次轮询时，我们可以看到`status=pending`：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     print(await client.runs.get(thread["thread_id"], run["run_id"]))
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -198,28 +190,26 @@
 现在我们可以加入运行，等待它完成并再次检查该状态：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     await client.runs.join(thread["thread_id"], run["run_id"])
     print(await client.runs.get(thread["thread_id"], run["run_id"]))
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     await client.runs.join(thread["thread_id"], run["run_id"]);
     console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -268,27 +258,25 @@
 }
 ```
 
-完美！正如我们预期的那样，运行成功了。我们可以通过打印出最终状态来仔细检查运行是否按预期进行：
-
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+完美！正如我们预期的那样，运行成功了。我们可以通过打印最终状态来仔细检查运行是否按预期进行：<Tabs>
+    <Tab title="Python">
+    ```python
     final_result = await client.threads.get_state(thread["thread_id"])
     print(final_result)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     let finalResult = await client.threads.getState(thread["thread_id"]);
     console.log(finalResult);
     ```
-  </Tab><Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -448,24 +436,22 @@
 我们也可以只打印最后一条 AIMessage 的内容：
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     print(final_result['values']['messages'][-1]['content'][0]['text'])
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     console.log(finalResult['values']['messages'][finalResult['values']['messages'].length-1]['content'][0]['text']);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 输出：
@@ -474,14 +460,13 @@
 The search results provide the current weather conditions in San Francisco. According to the data, as of 2:00 PM on August 30, 2024, the temperature in San Francisco is 70°F (21.1°C) with partly cloudy skies. The wind is blowing from the west-northwest at around 12 mph (19 km/h). The humidity is 59% and visibility is 9 miles (16 km). Overall, it looks like a nice late summer day in San Francisco with comfortable temperatures and partly sunny conditions.
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/background-run.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

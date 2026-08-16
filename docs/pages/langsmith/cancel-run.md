@@ -2,8 +2,6 @@
 
 # How to cancel a run
 
-Cancel a single run or multiple runs via the API, and choose between interrupt and rollback actions.
-
 This guide covers how to cancel runs for your agent via the [LangSmith Deployment API](/langsmith/server-api-ref). You can cancel a single run by ID or cancel multiple runs by thread or status. Cancellation is useful for stopping long-running or stuck runs, or when a user abandons a request.
 
 ## Setup
@@ -11,34 +9,32 @@ This guide covers how to cancel runs for your agent via the [LangSmith Deploymen
 Create a client and thread:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
     const assistantID = "agent";
     const thread = await client.threads.create();
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Cancel a single run
@@ -49,15 +45,15 @@ The following examples create a run, cancel it with different options, and print
 
 **Interrupt** stops the worker executing the run and marks the run as `interrupted`. Nothing is deleted:
 
-* The run record remains (with status `interrupted`). You can fetch it, inspect inputs/outputs, and see the execution history.
-* All checkpoints for that run remain stored. The thread state at the last completed step is preserved.
-* You can later resume from a checkpoint (for example, with [time travel](/langsmith/human-in-the-loop-time-travel)) or inspect the partial state.
+- The run record remains (with status `interrupted`). You can fetch it, inspect inputs/outputs, and see the execution history.
+- All checkpoints for that run remain stored. The thread state at the last completed step is preserved.
+- You can later resume from a checkpoint (for example, with [time travel](/langsmith/human-in-the-loop-time-travel)) or inspect the partial state.
 
 Use **interrupt** when you want to stop a run but keep it for debugging, auditing, or resuming from a checkpoint.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -68,10 +64,9 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
     run_after = await client.runs.get(thread["thread_id"], run["run_id"], wait=True)
     print(run_after["status"])   # "interrupted"
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -82,10 +77,9 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
     const runAfter = await client.runs.get(thread["thread_id"], run["run_id"]);
     console.log(runAfter["status"]);   // "interrupted"
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # Create a run (use the run_id and thread_id from the response)
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -100,22 +94,22 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Cancel with rollback
 
 **rollback** stops the run and then removes it and its checkpoints from storage:
 
-* The run record is deleted. The run no longer appears in run lists or history for that thread.
-* All checkpoints created by that run are deleted. The thread’s state is reverted to what it was before the run started (as if the run had never been executed).
-* You cannot resume or inspect the run after a rollback.
+- The run record is deleted. The run no longer appears in run lists or history for that thread.
+- All checkpoints created by that run are deleted. The thread’s state is reverted to what it was before the run started (as if the run had never been executed).
+- You cannot resume or inspect the run after a rollback.
 
 Use **rollback** when you want to fully discard a run and its effects (for example, after a user abandons a request and you do not need to keep partial work).
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -129,10 +123,9 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
     except Exception:
         print("Run was correctly deleted")
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -147,10 +140,9 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
         console.log("Run was correctly deleted");
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # Create a run, then cancel with rollback
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -164,7 +156,7 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Cancel with wait
@@ -172,8 +164,8 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
 By default, the cancel request returns after the cancellation is requested and the run is cancelled asynchronously. `wait=True` makes the cancel request block until the run has been fully cancelled. This is useful when you want to know the final state of the run after it has been cancelled (e.g., what checkpoints were created, what the final output was).
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -190,10 +182,9 @@ By default, the cancel request returns after the cancellation is requested and t
     run_after = await client.runs.get(thread["thread_id"], run["run_id"])
     print(run_after["status"])  # "interrupted"
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -210,10 +201,9 @@ By default, the cancel request returns after the cancellation is requested and t
     const runInterrupted = await client.runs.get(thread["thread_id"], run["run_id"])
     console.log(runInterrupted["status"])  // "interrupted"
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # Create a run
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -228,7 +218,7 @@ By default, the cancel request returns after the cancellation is requested and t
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Cancel multiple runs
@@ -240,8 +230,8 @@ Use the bulk cancel endpoint to cancel multiple runs in one request. Both the in
 Cancel specific runs by passing their IDs.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run1 = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -266,16 +256,14 @@ Cancel specific runs by passing their IDs.
         if run["run_id"] in (run1["run_id"], run2["run_id"]):
             print(run["run_id"], run["status"])  # "interrupted"
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     // Bulk delete by run IDs is not supported in the Javascript SDK
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # Create two runs (capture run_id from each response)
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -297,7 +285,7 @@ Cancel specific runs by passing their IDs.
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Cancel by status
@@ -305,8 +293,8 @@ Cancel specific runs by passing their IDs.
 Cancel all runs that match a status across all threads in a deployment. Valid status options are `pending`, `running`, or `all`.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     run1 = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -330,16 +318,14 @@ Cancel all runs that match a status across all threads in a deployment. Valid st
     run_after2 = await client.runs.get(thread2["thread_id"], run2["run_id"])
     print(run_after2["status"])  # runs are cancelled across all threads
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     // Bulk delete by status is not supported in the Javascript SDK
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # Create a run
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -370,7 +356,7 @@ Cancel all runs that match a status across all threads in a deployment. Valid st
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs/<RUN_ID_2>
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Cancel on disconnect
@@ -378,8 +364,8 @@ Cancel all runs that match a status across all threads in a deployment. Valid st
 When starting a run with streaming or when waiting on a run, you can set `on_disconnect="cancel"` so that the run is cancelled if the client disconnects. This avoids leaving runs in progress when a user closes the app or loses connection.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     # With runs.wait: run is cancelled if the client disconnects
     result = await client.runs.wait(
         thread["thread_id"],
@@ -417,10 +403,9 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
     ):
         print(chunk)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     // With runs.wait: run is cancelled if the client disconnects
     const result = await client.runs.wait(
         thread["thread_id"],
@@ -450,10 +435,9 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
         console.log(chunk);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # runs.wait: create run and wait for output; cancel if client disconnects
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
@@ -474,24 +458,23 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
     curl --request GET \
       --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/stream?cancel_on_disconnect=cancel"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Common scenarios
 
-* **Human-in-the-loop and interrupts**: Agents can pause at [interrupts](/langsmith/add-human-in-the-loop) for human input. Cancelling a run stops execution; it is different from an interrupt, where the run is paused and can be resumed with new input.
-* **Time travel**: After cancelling with action `interrupt`, the run and checkpoints are still available. You can [resume from a checkpoint](/langsmith/human-in-the-loop-time-travel) (time travel) to replay or branch execution.
-* **Double-texting**: When a user sends new input while a run is in progress, the [multitask strategy](/langsmith/double-texting) (enqueue, reject, interrupt, rollback) determines whether the existing run is interrupted or rolled back and how the new run is handled. To cancel runs explicitly from your application, use the cancel API described on this page.
-* **Studio**: In [Studio](/langsmith/use-studio), use the **Cancel** button in the run UI to cancel the current run.
+- **Human-in-the-loop and interrupts**: Agents can pause at [interrupts](/langsmith/add-human-in-the-loop) for human input. Cancelling a run stops execution; it is different from an interrupt, where the run is paused and can be resumed with new input.
+- **Time travel**: After cancelling with action `interrupt`, the run and checkpoints are still available. You can [resume from a checkpoint](/langsmith/human-in-the-loop-time-travel) (time travel) to replay or branch execution.
+- **Double-texting**: When a user sends new input while a run is in progress, the [multitask strategy](/langsmith/double-texting) (enqueue, reject, interrupt, rollback) determines whether the existing run is interrupted or rolled back and how the new run is handled. To cancel runs explicitly from your application, use the cancel API described on this page.
+- **Studio**: In [Studio](/langsmith/use-studio), use the **Cancel** button in the run UI to cancel the current run.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cancel-run.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

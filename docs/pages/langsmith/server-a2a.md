@@ -2,9 +2,7 @@
 
 # A2A endpoint in Agent Server
 
-Use the A2A protocol to enable agent-to-agent communication with distributed tracing in LangSmith.
-
-[Agent2Agent (A2A)](https://a2a-protocol.org/latest/) is Google's protocol for enabling communication between conversational AI agents. [LangSmith implements A2A support](https://docs.langchain.com/langsmith/server-api-ref#tag/a2a/post/a2a/\{assistant_id}), allowing your agents to communicate with other A2A-compatible agents through a standardized protocol.
+[Agent2Agent (A2A)](https://a2a-protocol.org/latest/) is Google's protocol for enabling communication between conversational AI agents. [LangSmith implements A2A support](https://docs.langchain.com/langsmith/server-api-ref#tag/a2a/post/a2a/{assistant_id}), allowing your agents to communicate with other A2A-compatible agents through a standardized protocol.
 
 The A2A endpoint is available in [Agent Server](/langsmith/agent-server) at `/a2a/{assistant_id}`.
 
@@ -12,9 +10,9 @@ The A2A endpoint is available in [Agent Server](/langsmith/agent-server) at `/a2
 
 Agent Server supports the following A2A RPC methods:
 
-* **message/send**: Send a message to an assistant and receive a complete response
-* **message/stream**: Send a message and stream responses in real-time using Server-Sent Events (SSE)
-* **tasks/get**: Retrieve the status and results of a previously created task
+- **message/send**: Send a message to an assistant and receive a complete response
+- **message/stream**: Send a message and stream responses in real-time using Server-Sent Events (SSE)
+- **tasks/get**: Retrieve the status and results of a previously created task
 
 ## Agent card discovery
 
@@ -34,7 +32,7 @@ To use A2A, ensure you have the following dependencies installed:
 
 Install with:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pip install "langgraph-api>=0.4.21"
 ```
 
@@ -53,7 +51,6 @@ This example creates an A2A-compatible agent that processes incoming messages us
 To be compatible with the [A2A "text" parts](https://a2a-protocol.org/dev/specification/#651-textpart-object), the agent must have a `messages` key in state.
 
 The A2A protocol uses two identifiers to maintain conversational continuity:
-
 * `contextId`: Groups messages into a conversation thread (like a session ID)
 * `taskId`: Identifies each individual request within that conversation
 
@@ -63,7 +60,7 @@ On the first message, omit `contextId` and `taskId` - the agent will generate an
 
 For example:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 """LangGraph A2A conversational agent.
 
 Supports the A2A protocol with messages input for conversational interactions.
@@ -155,7 +152,7 @@ Once your agents are running locally via `langgraph dev` or [deployed to product
 
 This example demonstrates how two agents can communicate by sending JSON-RPC messages to each other's A2A endpoints. The script simulates a multi-turn conversation where each agent processes the other's response and continues the dialogue.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #!/usr/bin/env python3
 """Agent-to-Agent conversation simulation using the LangGraph A2A endpoint."""
 
@@ -251,23 +248,22 @@ if __name__ == "__main__":
 ```
 
 For complete working examples, see:
-
-* [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - Example of two LangGraph agents using the A2A protocol
-* [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Example of a Google ADK agent interacting with a LangChain agent using the A2A protocol
+- [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - Example of two LangGraph agents using the A2A protocol
+- [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Example of a Google ADK agent interacting with a LangChain agent using the A2A protocol
 
 ## Distributed tracing
 
 When multiple agents communicate over A2A, LangSmith can group all their [traces](/langsmith/observability-concepts#traces) into a single [thread](/langsmith/observability-concepts#threads), which gives you a unified view of the entire multi-agent conversation.
 
-### How contextId maps to thread\_id
+### How contextId maps to thread_id
 
 The Agent Server A2A endpoint automatically converts the A2A `contextId` to `thread_id` for LangSmith tracing. This means every message in a conversation, across all participating agents, is grouped under the same thread in LangSmith without any extra configuration on your part.
 
 The flow works as follows:
 
 1. On the first message, the client omits `contextId`. The server generates one and returns it in the response.
-2. The client passes the `contextId` in all subsequent messages to maintain conversation continuity.
-3. Agent Server maps the `contextId` to `thread_id` in LangSmith [metadata](/langsmith/add-metadata-tags), so all turns appear in the same thread.
+1. The client passes the `contextId` in all subsequent messages to maintain conversation continuity.
+1. Agent Server maps the `contextId` to `thread_id` in LangSmith [metadata](/langsmith/add-metadata-tags), so all turns appear in the same thread.
 
 ### Tracing across multiple agents
 
@@ -275,7 +271,7 @@ When agents from different frameworks communicate over A2A, you can unify their 
 
 The following code snippet demonstrates the key concepts. For a complete runnable implementation with two agents, refer to the [Google ADK + LangChain example](https://github.com/langchain-samples/A2A-google-adk/blob/main/test_agent_conversation.py).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import asyncio
 import aiohttp
 import uuid
@@ -363,15 +359,15 @@ asyncio.run(run_conversation(
 
 **1. Build the message**: Include `contextId` and `taskId` inside the `message` object on follow-up turns so the server can associate them with the ongoing conversation. Omit them on the first message, because the server generates a `contextId` and returns it in the response.
 
-**2. Set thread\_id in metadata**: Pass `thread_id` in the top-level `metadata` field of the JSON-RPC payload, not inside `params`.
+**2. Set thread_id in metadata**: Pass `thread_id` in the top-level `metadata` field of the JSON-RPC payload, not inside `params`.
 
-**3. Share thread\_id across agents**: Generate a random `thread_id` before the first message. Once the server returns a `contextId`, use it as the `thread_id` for all subsequent requests, which keeps the A2A conversation context and the LangSmith thread in sync. Pass the same `thread_id` to every agent so all traces are grouped into one thread.
+**3. Share thread_id across agents**: Generate a random `thread_id` before the first message. Once the server returns a `contextId`, use it as the `thread_id` for all subsequent requests, which keeps the A2A conversation context and the LangSmith thread in sync. Pass the same `thread_id` to every agent so all traces are grouped into one thread.
 
-### Receive thread\_id in non-LangGraph agents
+### Receive thread_id in non-LangGraph agents
 
 The [previous section](#tracing-across-multiple-agents) covers the client side—propagating `thread_id` when sending messages. If one of your agents is not built on LangGraph, it also needs to extract and attach the `thread_id` on the receiving end so its traces land in the same LangSmith thread. Use `langsmith.integrations.otel.configure()` to set up automatic tracing, and extract the `thread_id` from incoming A2A request metadata to group traces in the same thread.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from fastapi import FastAPI, Request
 from langsmith.integrations.otel import configure as configure_otel
 from opentelemetry import trace
@@ -412,18 +408,18 @@ async def set_thread_id_middleware(request: Request, call_next):
 Register your agent routes on `app` after this middleware.
 
 <Note>
-  Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment to enable tracing. All agents in the conversation should use the same project so their traces are visible together.
+Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment to enable tracing. All agents in the conversation should use the same project so their traces are visible together.
 </Note>
 
 ### View traces in LangSmith
 
-After running a multi-agent conversation, open the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-server-a2a) and navigate to **Threads**. All turns from all participating agents will appear under a single thread, identified by the shared `thread_id`.
+After running a multi-agent conversation, open the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-server-a2a) and navigate to **Threads**. All turns from all participating agents will appear under a single thread, identified by the shared `thread_id`.
 
 ## Disable A2A
 
 To disable the A2A endpoint, set `disable_a2a` to `true` in your `langgraph.json` configuration file:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "$schema": "https://langgra.ph/schema.json",
   "http": {
@@ -432,14 +428,13 @@ To disable the A2A endpoint, set `disable_a2a` to `true` in your `langgraph.json
 }
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-a2a.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

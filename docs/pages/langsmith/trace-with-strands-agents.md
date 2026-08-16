@@ -2,8 +2,6 @@
 
 # Trace Strands Agents applications
 
-Trace Strands Agents applications with LangSmith.
-
 [Strands Agents](https://strandsagents.com/) is an SDK for building model-driven agents. LangSmith provides a Strands Agents integration that exports Strands OpenTelemetry spans in a LangSmith-compatible format, including agent runs, model calls, tool calls, prompts, completions, and token usage.
 
 ## Installation
@@ -11,13 +9,15 @@ Trace Strands Agents applications with LangSmith.
 Install LangSmith with Strands Agents support:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[strands-agents]"
-  ```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[strands-agents]"
-  ```
+```bash pip
+pip install "langsmith[strands-agents]"
+```
+
+```bash uv
+uv add "langsmith[strands-agents]"
+```
+
 </CodeGroup>
 
 This installs LangSmith, Strands Agents, Strands Agents tools, and the OpenTelemetry OTLP HTTP exporter.
@@ -28,7 +28,7 @@ This installs LangSmith, Strands Agents, Strands Agents tools, and the OpenTelem
 
 Set your [LangSmith API key](/langsmith/create-account-api-key) and project name. If you use Amazon Bedrock as the model provider for Strands Agents, also configure AWS credentials with your preferred AWS authentication method.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
 export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Project=<your_project_name>"
 
@@ -37,14 +37,14 @@ export AWS_REGION=<your_aws_region>
 ```
 
 <Note>
-  The Strands Agents integration uses the standard OpenTelemetry OTLP exporter. Configure the LangSmith endpoint and headers before calling `setup_langsmith_telemetry()`.
+The Strands Agents integration uses the standard OpenTelemetry OTLP exporter. Configure the LangSmith endpoint and headers before calling `setup_langsmith_telemetry()`.
 </Note>
 
 ### 2. Enable Strands Agents telemetry
 
 Call `setup_langsmith_telemetry()` once at application startup before creating or invoking agents:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.strands_agents import setup_langsmith_telemetry
 
 setup_langsmith_telemetry()
@@ -52,7 +52,7 @@ setup_langsmith_telemetry()
 
 For local debugging, pass `console=True` to also print transformed spans to stdout:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 setup_langsmith_telemetry(console=True)
 ```
 
@@ -60,7 +60,7 @@ setup_langsmith_telemetry(console=True)
 
 Once configured, Strands Agents traces are exported to LangSmith automatically:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.strands_agents import setup_langsmith_telemetry
 from strands import Agent
 
@@ -78,16 +78,16 @@ print(response)
 
 After running your application, open your LangSmith project to view traces that include:
 
-* Agent invocation spans
-* Event loop cycle spans
-* LLM call spans with prompts, completions, and token usage
-* Tool call spans with tool inputs and outputs when your agent uses tools
+- Agent invocation spans
+- Event loop cycle spans
+- LLM call spans with prompts, completions, and token usage
+- Tool call spans with tool inputs and outputs when your agent uses tools
 
 ## Customize the OTLP exporter
 
 If you need to pass custom options to the underlying OpenTelemetry exporter, create a `LangSmithSpanExporter` with `create_langsmith_exporter()` and attach it to the Strands tracer provider manually:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.strands_agents import create_langsmith_exporter
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from strands.telemetry import StrandsTelemetry
@@ -107,17 +107,16 @@ Use this approach when you want to configure exporter options in code instead of
 
 ## Resources
 
-* [Strands Agents documentation](https://strandsagents.com/)
-* [LangSmith OpenTelemetry guide](/langsmith/trace-with-opentelemetry)
+- [Strands Agents documentation](https://strandsagents.com/)
+- [LangSmith OpenTelemetry guide](/langsmith/trace-with-opentelemetry)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-strands-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

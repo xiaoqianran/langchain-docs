@@ -21,7 +21,7 @@
 
 ### *我可以使用外部存储服务吗？*
 
-* 您可以将 LangSmith 配置为使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。查看[configuration section](/langsmith/self-hosted)了解更多信息。### *我的应用程序需要出口才能正常运行吗？*
+* 您可以配置LangSmith使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。查看[configuration section](/langsmith/self-hosted)了解更多信息。### *我的应用程序需要出口才能正常运行吗？*
 
 我们的部署仅需要出口来处理一些事情（其中大部分可以驻留在您的 VPC 内）：
 
@@ -59,7 +59,7 @@
 
 #### *我可以更改身份提供商吗？*
 
-通过我们的门户网站[https://support.langchain.com](https://support.langchain.com)联系LangChain支持团队以获得迁移支持。
+通过我们的门户网站 [https://support.langchain.com](https://support.langchain.com) 联系 LangChain 支持团队，获取迁移支持。
 
 #### *如何修复“405 方法不允许”？*
 
@@ -86,19 +86,19 @@ JIT 配置和 SCIM 可能会相互冲突。我们建议在启用 SCIM 之前禁�
 
 是的。如果您的身份提供商支持将备用字段同步到 `displayName` 组属性，您可以使用备用属性（如 `description`）作为 LangSmith 中的 `displayName`，并保留身份提供商组名称的完全可自定义性。否则，组必须遵循 [Group Naming Convention](/langsmith/user-management#group-naming-convention) 部分中描述的特定命名约定，才能正确映射到 LangSmith 角色和工作区。您还可以使用 [configure a custom separator](/langsmith/user-management#configure-custom-separator)（例如，`-`、`_`、`&`）代替默认冒号 (`:`)，以适应对组名称字符有限制的身份提供者。
 
-#### *为什么我的 Okta 集成不起作用？*
+#### _为什么我的 Okta 集成不起作用？_
 
-请参阅此处 Okta 的故障排除指南：[https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm](https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm)。
+请参阅此处的 Okta 故障排除指南：https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm。
 
 ### *支持降级吗？*
 
-官方不支持降级。 LangSmith 升级可能包括数据库迁移和其他不向后兼容的更改。如果您需要回退到之前的版本，请通过[Support Portal](https://support.langchain.com)联系技术支持指导。
+官方不支持降级。 LangSmith 升级可能包括数据库迁移和其他不向后兼容的更改。如需回滚到之前版本，请通过[Support Portal](https://support.langchain.com)联系技术支持指导。
 
 ## 部署
 
-### 使用 LangGraph 需要先使用 LangChain 吗？有什么区别？
+### 我需要先使用LangChain才能使用LangGraph吗？有什么区别？
 
-不会。LangGraph是一个复杂代理系统的编排框架，比LangChain代理更底层、更可控。 LangChain 提供了与模型和其他组件交互的标准接口，对于直接的链和检索流程很有用。
+不是。LangGraph是复杂代理系统的编排框架，比LangChain代理更底层、更可控。 LangChain 提供了与模型和其他组件交互的标准接口，对于直接的链和检索流很有用。
 
 ### LangGraph 与其他代理框架有何不同？其他代理框架可以用于简单的通用任务，但无法满足公司需求定制的复杂任务。 LangGraph 提供了一个更具表现力的框架来处理公司的独特任务，而不会将用户限制在单一的黑盒认知架构中。
 
@@ -112,50 +112,49 @@ LangGraph 不会给您的代码增加任何开销，并且是专为流式工作�
 
 ### LangGraph 和 LangSmith 有什么不同？
 
-LangGraph 是一个有状态的编排框架，可为代理工作流程带来更多控制。 LangSmith 是一项用于部署和扩展代理应用程序的服务，具有用于构建代理 UX 的固定 API 以及集成的开发人员 UI。|特点| LangGraph（开源）|兰史密斯|
-| ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-|描述 |代理应用程序的状态编排框架|用于部署 LangGraph 应用程序的可扩展基础设施 |
+LangGraph 是一个有状态的编排框架，可为代理工作流程带来更多控制。 LangSmith 是一项用于部署和扩展代理应用程序的服务，具有用于构建代理 UX 的固定 API，以及集成的开发人员 UI。|特点| LangGraph（开源）| LangSmith |
+|--------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+|描述 |代理应用程序的状态编排框架|用于部署 LangGraph 应用程序的可扩展基础架构 |
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
-|流媒体 |基本 |逐个令牌消息的专用模式 ||检查点|社区贡献 |开箱即用的支持 |
+|流媒体|基本 |逐个令牌消息的专用模式 ||检查点 |社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
 |部署|自我管理| • 云<br /> • 免费自托管<br /> • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
 |容错|自我管理|自动重试 |
-|并发控制|简单的线程 |支持双短信 ||日程安排|无 | Cron 调度 |
+|并发控制|简单的线程 |支持双短信 ||日程安排 |无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
 
-### LangSmith 是开源的吗？
+### LangSmith 开源吗？
 
-不。LangSmith 是专有软件。
+不，LangSmith 是专有软件。
 
 欲了解更多信息，请参阅我们的[LangSmith pricing page](https://www.langchain.com/pricing)。
 
-### LangGraph 是否可以与不支持工具调用的法学硕士一起使用？
+### LangGraph 是否适用于不支持工具调用的法学硕士？
 
 是的！您可以将 LangGraph 与任何法学硕士一起使用。我们使用支持工具调用的 LLM 的主要原因是，这通常是让 LLM 决定要做什么的最方便的方式。如果您的 LLM 不支持工具调用，您仍然可以使用它 - 您只需要编写一些逻辑即可将原始 LLM 字符串响应转换为关于要做什么的决定。
 
-### LangGraph 可以与 OSS LLM 一起使用吗？是的！ LangGraph 与法学硕士的幕后用途完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)），因此您完全可以将 LangGraph 与 OSS LLM 一起使用。
+### LangGraph 可以与 OSS LLM 一起使用吗？是的！ LangGraph 与法学硕士在幕后使用的内容完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)），因此您完全可以将LangGraph与OSS LLM一起使用。
 
-### 我可以在不登录 LangSmith 的情况下使用 Studio 吗？
+### 不登录LangSmith可以使用Studio吗？
 
 是的！您可以使用[development version of Agent Server](/langsmith/local-dev-testing)在本地运行后端。
 这将连接到作为 LangSmith 一部分托管的 Studio 前端。
-如果您设置环境变量`LANGSMITH_TRACING=false`，则不会将任何跟踪发送到 LangSmith。
+如果您设置环境变量`LANGSMITH_TRACING=false`，则不会将任何跟踪发送到LangSmith。
 
 ### 什么是部署运行？
 
 部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将根据托管被调用代理的部署单独收费。人机交互中断在恢复时会创建单独的部署运行。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

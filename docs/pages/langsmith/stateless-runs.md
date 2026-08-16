@@ -9,28 +9,26 @@ Most of the time, you provide a `thread_id` to your client when you run your gra
 First, let's setup our client:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
     # Using the graph deployed with the name "agent"
     assistant_id = "agent"
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
     // Using the graph deployed with the name "agent"
     const assistantId = "agent";
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
         --header 'Content-Type: application/json' \
@@ -43,7 +41,7 @@ First, let's setup our client:
         --header 'Content-Type: application/json' \
         --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Stateless streaming
@@ -51,8 +49,8 @@ First, let's setup our client:
 We can stream the results of a stateless run in an almost identical fashion to how we stream from a run with the state attribute, but instead of passing a value to the `thread_id` parameter, we pass `None`:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     input = {
         "messages": [
             {"role": "user", "content": "Hello! My name is Bagatur and I am 26 years old."}
@@ -69,10 +67,9 @@ We can stream the results of a stateless run in an almost identical fashion to h
         if chunk.data and "run_id" not in chunk.data:
             print(chunk.data)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     let input = {
       messages: [
         { role: "user", content: "Hello! My name is Bagatur and I am 26 years old." }
@@ -94,10 +91,9 @@ We can stream the results of a stateless run in an almost identical fashion to h
       }
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/stream \
         --header 'Content-Type: application/json' \
@@ -109,7 +105,7 @@ We can stream the results of a stateless run in an almost identical fashion to h
             ]
         }" | jq -c 'select(.data and (.data | has("run_id") | not)) | .data'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -123,8 +119,8 @@ Output:
 In addition to streaming, you can also wait for a stateless result by using the `.wait` function like follows:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     stateless_run_result = await client.runs.wait(
         None,
         assistant_id,
@@ -132,10 +128,9 @@ In addition to streaming, you can also wait for a stateless result by using the 
     )
     print(stateless_run_result)
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     let statelessRunResult = await client.runs.wait(
       null,
       assistantId,
@@ -143,10 +138,9 @@ In addition to streaming, you can also wait for a stateless result by using the 
     );
     console.log(statelessRunResult);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/wait \
         --header 'Content-Type: application/json' \
@@ -154,7 +148,7 @@ In addition to streaming, you can also wait for a stateless result by using the 
             "assistant_id": <ASSISTANT_IDD>,
         }'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -187,14 +181,13 @@ Output:
 }
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/stateless-runs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

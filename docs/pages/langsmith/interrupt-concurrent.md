@@ -11,8 +11,8 @@ The guide covers the `interrupt` option for double texting, which interrupts the
 First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Javascript">
+    ```js
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -24,10 +24,9 @@ First, we will define a quick helper function for printing out JS and cURL model
       console.log(m.content);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -46,14 +45,14 @@ First, we will define a quick helper function for printing out JS and cURL model
       echo "$content"
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Now, let's import our required packages and instantiate our client, assistant, and thread.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     import asyncio
 
     from langchain_core.messages import convert_to_messages
@@ -64,10 +63,9 @@ Now, let's import our required packages and instantiate our client, assistant, a
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -75,16 +73,15 @@ Now, let's import our required packages and instantiate our client, assistant, a
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Create runs
@@ -92,8 +89,8 @@ Now, let's import our required packages and instantiate our client, assistant, a
 Now we can start our two runs and join the second one until it has completed:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     # the first run will be interrupted
     interrupted_run = await client.runs.create(
         thread["thread_id"],
@@ -111,10 +108,9 @@ Now we can start our two runs and join the second one until it has completed:
     # wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"])
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     // the first run will be interrupted
     let interruptedRun = await client.runs.create(
       thread["thread_id"],
@@ -136,10 +132,9 @@ Now we can start our two runs and join the second one until it has completed:
     // wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"]);
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -156,7 +151,7 @@ Now we can start our two runs and join the second one until it has completed:
     }" && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## View run results
@@ -164,27 +159,25 @@ Now we can start our two runs and join the second one until it has completed:
 We can see that the thread has partial data from the first run + data from the second run
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     state = await client.threads.get_state(thread["thread_id"])
 
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     const state = await client.threads.getState(thread["thread_id"]);
 
     for (const m of state['values']['messages']) {
       prettyPrint(m);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
     jq -c '.values.messages[]' | while read -r element; do
@@ -193,7 +186,7 @@ We can see that the thread has partial data from the first run + data from the s
         pretty_print "$type" "$content"
     done
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -244,17 +237,16 @@ In summary, the search provides a convenient overview of the expected weather co
 Verify that the original, interrupted run was interrupted
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     print((await client.runs.get(thread["thread_id"], interrupted_run["run_id"]))["status"])
     ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="Javascript">
+    ```js
     console.log((await client.runs.get(thread['thread_id'], interruptedRun["run_id"]))["status"])
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 Output:
@@ -263,14 +255,13 @@ Output:
 'interrupted'
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/interrupt-concurrent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

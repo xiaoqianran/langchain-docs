@@ -8,7 +8,7 @@ For privacy, control which headers are passed to the runtime configuration via t
 
 Here's how to customize the included and excluded headers:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "http": {
     "configurable_headers": {
@@ -25,7 +25,7 @@ The `includes` and `excludes` lists accept exact header names or patterns using 
 
 You can access the included headers in your graph using the `config` argument of any node.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 def my_node(state, config):
   organization_id = config["configurable"].get("x-organization-id")
   ...
@@ -33,7 +33,7 @@ def my_node(state, config):
 
 Or by fetching from context (useful in tools and or within other nested functions).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph.config import get_config
 
 def search_everything(query: str):
@@ -43,7 +43,7 @@ def search_everything(query: str):
 
 You can even use this to dynamically compile the graph.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # my_graph.py.
 import contextlib
 
@@ -59,7 +59,7 @@ async def generate_agent(config):
 
 ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "graphs": {"agent": "my_grph.py:generate_agent"}
 }
@@ -69,7 +69,7 @@ async def generate_agent(config):
 
 If you'd like to opt-out of configurable headers, you can simply set a wildcard pattern in the `s` list:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "http": {
     "configurable_headers": {
@@ -83,14 +83,13 @@ This will exclude all headers from being added to your run's configuration.
 
 Note that exclusions take precedence over inclusions.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configurable-headers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

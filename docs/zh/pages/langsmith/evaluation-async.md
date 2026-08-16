@@ -5,13 +5,13 @@
 # 如何异步运行评估
 
 <Info>
-  [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets) | [Experiments](/langsmith/evaluation-concepts#experiment)
+[Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets) | [Experiments](/langsmith/evaluation-concepts#experiment)
 </Info>
 
 我们可以使用 [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 通过 SDK 异步运行评估，它接受与 [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 相同的所有参数，但期望应用程序函数是异步的。要了解更多信息，请参阅[how to use the ⟦T1⟧ function](/langsmith/evaluate-llm-application)。
 
 <Info>
-  本指南仅在使用 Python SDK 时相关。在 JS/TS 中，`evaluate()` 函数已经是异步的。有关更多信息，请参阅[Evaluate LLM applications](/langsmith/evaluate-llm-application)。
+本指南仅在使用 Python SDK 时相关。在 JS/TS 中，`evaluate()` 函数已经是异步的。有关更多信息，请参阅[Evaluate LLM applications](/langsmith/evaluate-llm-application)。
 </Info>
 
 ## 使用`aevaluate()`
@@ -20,7 +20,7 @@
 
 需要`langsmith>=0.3.13`
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import wrappers, Client
 from openai import AsyncOpenAI
 
@@ -77,14 +77,13 @@ results = await ls_client.aevaluate(
 * [Run an evaluation (synchronously)](/langsmith/evaluate-llm-application)
 * [Handle model rate limits](/langsmith/handle-model-rate-limiting)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-async.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

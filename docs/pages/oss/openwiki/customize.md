@@ -2,8 +2,6 @@
 
 # Customize OpenWiki
 
-Ignore paths, wiki instructions, agent pointers, and telemetry for OpenWiki
-
 Customize OpenWiki with ignore rules, wiki briefs, agent instruction pointers, and telemetry.
 
 ## Ignore paths
@@ -14,10 +12,10 @@ Create `.openwikiignore` at the repository root to exclude private, generated, o
 
 OpenWiki reads the following files during runs. Edit them yourself, or ask OpenWiki in chat to revise the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`).
 
-| Mode     | Path                          | Purpose                                                                       |
-| -------- | ----------------------------- | ----------------------------------------------------------------------------- |
-| Code     | `openwiki/INSTRUCTIONS.md`    | Shared, user-authored brief for repository documentation scope and priorities |
-| Personal | `~/.openwiki/INSTRUCTIONS.md` | Global personal wiki instructions                                             |
+| Mode | Path | Purpose |
+| --- | --- | --- |
+| Code | `openwiki/INSTRUCTIONS.md` | Shared, user-authored brief for repository documentation scope and priorities |
+| Personal | `~/.openwiki/INSTRUCTIONS.md` | Global personal wiki instructions |
 
 Normal `--init` and `--update` runs do not rewrite these files.
 
@@ -25,9 +23,9 @@ Normal `--init` and `--update` runs do not rewrite these files.
 
 On each code run, OpenWiki maintains `AGENTS.md` and `CLAUDE.md` at the repository root:
 
-* Creates the file if it does not exist
-* Rewrites only the `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block when the file already exists
-* Leaves the rest of your content untouched
+- Creates the file if it does not exist
+- Rewrites only the `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block when the file already exists
+- Leaves the rest of your content untouched
 
 That block instructs coding agents to consult the generated wiki when they need repository context.
 
@@ -35,15 +33,15 @@ That block instructs coding agents to consult the generated wiki when they need 
 
 Both code and personal mode store machine-local state under `~/.openwiki/`:
 
-| Path                          | Mode            | Purpose                                                                                                                   |
-| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `~/.openwiki/.env`            | Both            | Provider config, API keys, and connector OAuth tokens                                                                     |
-| `~/.openwiki/openwiki.sqlite` | Both            | Conversation checkpoint database                                                                                          |
-| `~/.openwiki/install-id`      | Both            | Random install ID for anonymous telemetry                                                                                 |
-| `~/.openwiki/wiki/`           | Personal        | Personal mode wiki output                                                                                                 |
-| `~/.openwiki/INSTRUCTIONS.md` | Personal        | Personal wiki brief                                                                                                       |
-| `~/.openwiki/onboarding.json` | Personal        | Personal onboarding preferences and connector schedules                                                                   |
-| `~/.openwiki/connectors/`     | Mostly personal | Connector raw data and config. Personal sources use this path; code-mode LangSmith ingestion can also cache raw data here |
+| Path | Mode | Purpose |
+| --- | --- | --- |
+| `~/.openwiki/.env` | Both | Provider config, API keys, and connector OAuth tokens |
+| `~/.openwiki/openwiki.sqlite` | Both | Conversation checkpoint database |
+| `~/.openwiki/install-id` | Both | Random install ID for anonymous telemetry |
+| `~/.openwiki/wiki/` | Personal | Personal mode wiki output |
+| `~/.openwiki/INSTRUCTIONS.md` | Personal | Personal wiki brief |
+| `~/.openwiki/onboarding.json` | Personal | Personal onboarding preferences and connector schedules |
+| `~/.openwiki/connectors/` | Mostly personal | Connector raw data and config. Personal sources use this path; code-mode LangSmith ingestion can also cache raw data here |
 
 Code-mode repository artifacts such as the generated wiki, `openwiki/INSTRUCTIONS.md`, and `openwiki/.last-update.json` live in the project, not under `~/.openwiki/`. For more detail, see [Code mode](/oss/openwiki/code-mode) and [Personal mode](/oss/openwiki/personal-mode).
 
@@ -53,8 +51,8 @@ OpenWiki collects anonymous, aggregate usage data by default so the project can 
 
 **Collected** on a single `openwiki_run` event, keyed by a random install ID stored in `~/.openwiki/install-id`:
 
-* Every recorded run: the command (`init` / `update`) and outcome (`success` / `failure` / `no-op`), plus a coarse error category on failure (never the error message). Interactive chat, `auth`, and `ingest` are not recorded
-* At setup (on init only): brain mode (`code` / `personal`), model provider, and configured connector names (never their contents)
+- Every recorded run: the command (`init` / `update`) and outcome (`success` / `failure` / `no-op`), plus a coarse error category on failure (never the error message). Interactive chat, `auth`, and `ingest` are not recorded
+- At setup (on init only): brain mode (`code` / `personal`), model provider, and configured connector names (never their contents)
 
 **Never collected:** file contents, repository data or names, credentials, prompts, model output, connector payloads, error messages, file paths, URLs, model IDs, run duration, IP address, or personal information. GeoIP enrichment is disabled.
 
@@ -62,7 +60,7 @@ Scheduled and CI runs are tagged separately under a shared CI identifier and are
 
 ### Opt out
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export OPENWIKI_TELEMETRY_DISABLED=1
 # or
 export DO_NOT_TRACK=1
@@ -74,19 +72,18 @@ To inspect exactly what a run would send, add `--telemetry-file=<path>` to any r
 
 ## See also
 
-* [Code mode](/oss/openwiki/code-mode)
-* [Personal mode](/oss/openwiki/personal-mode)
-* [Automate updates](/oss/openwiki/automate-updates)
-* [Model providers](/oss/openwiki/providers)
+- [Code mode](/oss/openwiki/code-mode)
+- [Personal mode](/oss/openwiki/personal-mode)
+- [Automate updates](/oss/openwiki/automate-updates)
+- [Model providers](/oss/openwiki/providers)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/customize.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

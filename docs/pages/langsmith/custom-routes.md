@@ -15,14 +15,14 @@ Below are examples for Python and TypeScript.
 Starting from an **existing** LangSmith application, add the following custom route code to your app file. If you are starting from scratch, you can create a new app from a template using the CLI.
 
 <Tabs>
-  <Tab title="Python">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```bash
     langgraph new --template=new-langgraph-project-python my_new_project
     ```
 
     Once you have a LangGraph project, add the following app code:
 
-    ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python {highlight={4}}
     # ./src/agent/webapp.py
     from fastapi import FastAPI
 
@@ -33,17 +33,16 @@ Starting from an **existing** LangSmith application, add the following custom ro
     def read_root():
         return {"Hello": "World"}
     ```
-  </Tab>
-
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="TypeScript">
+    ```bash
     yarn create langgraph
     npm install hono
     ```
 
     Once you have a LangGraph project, add the following app code:
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript
     // ./src/custom-routes.ts
     import { Hono } from "hono";
 
@@ -58,7 +57,7 @@ Starting from an **existing** LangSmith application, add the following custom ro
     ```
 
     The `hono` package must be available in your project dependencies.
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Configure `langgraph.json`
@@ -66,8 +65,8 @@ Starting from an **existing** LangSmith application, add the following custom ro
 Add the following to your `langgraph.json` configuration file. Make sure the path points to the app instance you created in the [previous section](#create-app).
 
 <Tabs>
-  <Tab title="Python">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```json
     {
       "dependencies": ["."],
       "graphs": {
@@ -80,10 +79,9 @@ Add the following to your `langgraph.json` configuration file. Make sure the pat
       // Other configuration options like auth, store, etc.
     }
     ```
-  </Tab>
-
-  <Tab title="TypeScript">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="TypeScript">
+    ```json
     {
       "node_version": "20",
       "dependencies": ["."],
@@ -92,7 +90,7 @@ Add the following to your `langgraph.json` configuration file. Make sure the pat
       "env": ".env"
     }
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Start server
@@ -100,17 +98,16 @@ Add the following to your `langgraph.json` configuration file. Make sure the pat
 Test the server out locally:
 
 <Tabs>
-  <Tab title="Python">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```bash
     langgraph dev --no-browser
     ```
-  </Tab>
-
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="TypeScript">
+    ```bash
     npx @langchain/langgraph-cli@latest dev --no-browser
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 If you navigate to `localhost:2024/hello` in your browser (`2024` is the default development port), you should see the `/hello` endpoint returning a JSON response. For the TypeScript example, navigate to `localhost:2024/custom/hello`.
@@ -118,8 +115,8 @@ If you navigate to `localhost:2024/hello` in your browser (`2024` is the default
 The TypeScript `http.app` configuration works in both local development with `langgraph dev` and Docker with `langgraph up`.
 
 <Note>
-  **Shadowing default endpoints**
-  The routes you create in the app are given priority over the system defaults, meaning you can shadow and redefine the behavior of any default endpoint.
+**Shadowing default endpoints**
+The routes you create in the app are given priority over the system defaults, meaning you can shadow and redefine the behavior of any default endpoint.
 </Note>
 
 ## Deploying
@@ -130,14 +127,13 @@ You can deploy this app as-is to LangSmith or to your self-hosted platform.
 
 Now that you've added a custom route to your deployment, you can use this same technique to further customize how your server behaves, such as defining [custom middleware](/langsmith/custom-middleware) and [custom lifespan events](/langsmith/custom-lifespan).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-routes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

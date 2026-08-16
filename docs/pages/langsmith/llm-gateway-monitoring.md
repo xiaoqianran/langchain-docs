@@ -2,23 +2,21 @@
 
 # Monitor LLM Gateway spend
 
-View and analyze LLM Gateway costs by user, API key, and model.
-
 The LLM Gateway **Spend Monitoring** dashboard shows how much LLM cost a [workspace](/langsmith/administration-overview#workspaces) has accrued through the gateway. Use it to compare spend over time and identify the users, [API keys](/langsmith/create-account-api-key), and models that account for that spend. The dashboard covers one workspace at a time; switch workspaces to compare them.
 
 Viewing the dashboard requires the [Organization Admin](/langsmith/rbac#organization-admin) role and a Plus or Enterprise [plan](/langsmith/pricing-plans). Without both, the **Usage** tab does not appear.
 
 <Warning>
-  The dashboard is not currently available in the EU, APAC, or AWS environments.
+The dashboard is not currently available in the EU, APAC, or AWS environments.
 </Warning>
 
 ## Open the dashboard
 
 To view gateway spend:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-monitoring), select **LLM Gateway** in the left navigation.
-2. Select **Usage**.
-3. Select the workspace you want to analyze.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-gateway-monitoring), select **LLM Gateway** in the left navigation.
+1. Select **Usage**.
+1. Select the workspace you want to analyze.
 
 The dashboard displays data after the selected workspace sends traffic through the LLM Gateway. If the workspace has no gateway traffic, the dashboard displays an empty state.
 
@@ -26,17 +24,17 @@ The dashboard displays data after the selected workspace sends traffic through t
 
 Use the time controls to define the period covered by every summary, chart, and table on the page:
 
-* **Time range**: Select a preset range from one day to one year, or choose custom dates. Dates and time buckets use UTC.
-* **Granularity**: Group spend into hourly, daily, or weekly buckets. The available options depend on the length of the selected time range.
-* **Previous or next period**: Shift backward or forward by one period of the same length to compare adjacent time ranges.
+- **Time range**: Select a preset range from one day to one year, or choose custom dates. Dates and time buckets use UTC.
+- **Granularity**: Group spend into hourly, daily, or weekly buckets. The available options depend on the length of the selected time range.
+- **Previous or next period**: Shift backward or forward by one period of the same length to compare adjacent time ranges.
 
 ## Break down and filter spend
 
 Select **Breakdown by** to group spend across one of these dimensions:
 
-* **User**: Attributes spend to the user associated with the personal access token that invoked the gateway. Requests made with a workspace- or organization-scoped service key appear as **Unaffiliated with any user**.
-* **API key**: Attributes spend to the LangSmith API key that invoked the gateway.
-* **Model**: Attributes spend to the model used for the request.
+- **User**: Attributes spend to the user associated with the personal access token that invoked the gateway. Requests made with a workspace- or organization-scoped service key appear as **Unaffiliated with any user**.
+- **API key**: Attributes spend to the LangSmith API key that invoked the gateway.
+- **Model**: Attributes spend to the model used for the request.
 
 After you select a dimension, use the adjacent filter to focus on specific users, API keys, or models. You can select up to six entities at once. To remove the filter, select the **All** option at the bottom of the list.
 
@@ -44,9 +42,9 @@ After you select a dimension, use the adjacent filter to focus on specific users
 
 The summary cards describe spend for the selected workspace, time range, dimension, and filters:
 
-* **Total Spend**: The sum of gateway spend over the selected time range.
-* **Hourly, Daily, or Weekly Avg**: Total spend divided by the number of time buckets in the selected range.
-* **Hourly, Daily, or Weekly Avg / dimension**: Average spend per selected user, API key, or model for each time bucket. When you have not applied an entity filter, this metric uses the top 10 entities by spend.
+- **Total Spend**: The sum of gateway spend over the selected time range.
+- **Hourly, Daily, or Weekly Avg**: Total spend divided by the number of time buckets in the selected range.
+- **Hourly, Daily, or Weekly Avg / dimension**: Average spend per selected user, API key, or model for each time bucket. When you have not applied an entity filter, this metric uses the top 10 entities by spend.
 
 ## Analyze the chart and table
 
@@ -54,9 +52,9 @@ The stacked bar chart shows how each entity contributed to spend in every time b
 
 The table summarizes the same selection with one row per visible entity. Use it to compare:
 
-* **Hourly, Daily, or Weekly Avg**: The entity's total spend divided by the number of time buckets.
-* **Spend Share**: The percentage of spend attributed to the entity.
-* **Total Spend**: The entity's total spend over the selected time range.
+- **Hourly, Daily, or Weekly Avg**: The entity's total spend divided by the number of time buckets.
+- **Spend Share**: The percentage of spend attributed to the entity.
+- **Total Spend**: The entity's total spend over the selected time range.
 
 Select a column heading to sort the table.
 
@@ -64,24 +62,23 @@ Select a column heading to sort the table.
 
 Select a user or API key row to open a detailed view:
 
-* From a user, view spend grouped by API key.
-* From an API key, view spend grouped by user.
+- From a user, view spend grouped by API key.
+- From an API key, view spend grouped by user.
 
 The detailed view has its own entity filter, time range, and granularity controls. Changes in this view do not change the controls on the main dashboard.
 
 ## See also
 
-* [LLM Gateway overview](/langsmith/llm-gateway)
-* [Configure spend policies](/langsmith/llm-gateway-spend-policies)
+- [LLM Gateway overview](/langsmith/llm-gateway)
+- [Configure spend policies](/langsmith/llm-gateway-spend-policies)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-monitoring.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

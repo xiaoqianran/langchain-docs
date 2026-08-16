@@ -7,15 +7,14 @@ The [Python](https://reference.langchain.com/python/langsmith/) and [TypeScript]
 If you cannot use the SDKs—for example, if you are working in a different language or a restricted environment—you can use the REST API directly. This guide demonstrates how to run evaluations using the [REST API](/langsmith/smith-api-ref) with Python's [`requests`](https://requests.readthedocs.io/) library, but the same principles apply to any language.
 
 Before diving into this content, it might be helpful to read the following:
-
-* [Evaluate LLM applications](/langsmith/evaluate-llm-application).
-* [LangSmith API Reference](/langsmith/smith-api-ref): Complete API documentation for all endpoints used in this guide.
+- [Evaluate LLM applications](/langsmith/evaluate-llm-application).
+- [LangSmith API Reference](/langsmith/smith-api-ref): Complete API documentation for all endpoints used in this guide.
 
 ## Create a dataset
 
 For this example, we use the Python SDK to create a [dataset](/langsmith/evaluation-concepts#datasets) quickly. To create datasets via the API or UI instead, refer to [Managing datasets](/langsmith/manage-datasets-in-application).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import requests
 
@@ -65,13 +64,13 @@ client.create_examples(dataset_id=dataset.id, examples=examples)
 To run an experiment via the API, you'll need to:
 
 1. Fetch the examples from your dataset.
-2. Create an experiment (also called a "session" in the API).
-3. For each example, create runs that reference both the example and the experiment.
-4. Close the experiment by setting its `end_time`.
+1. Create an experiment (also called a "session" in the API).
+1. For each example, create runs that reference both the example and the experiment.
+1. Close the experiment by setting its `end_time`.
 
 First, pull all of the examples you'd want to use in your experiment using the `/examples` endpoint:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #  Pick a dataset id. In this case, we are using the dataset we created above.
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/examples/read-examples
 dataset_id = dataset.id
@@ -85,16 +84,15 @@ resp = requests.get(
 
 examples = resp.json()
 ```
-
 from langsmith import uuid7
 
 Next, define a function that will run your model on a single example and log the results to LangSmith. When using the API directly, you're responsible for:
 
-* Creating run objects via POST to `/runs` with `reference_example_id` and `session_id` set.
-* Tracking parent-child relationships between runs (e.g., a parent "chain" run containing a child "llm" run).
-* Updating runs with outputs via PATCH to `/runs/{run_id}`.
+- Creating run objects via POST to `/runs` with `reference_example_id` and `session_id` set.
+- Tracking parent-child relationships between runs (e.g., a parent "chain" run containing a child "llm" run).
+- Updating runs with outputs via PATCH to `/runs/{run_id}`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 os.environ["OPENAI_API_KEY"] = "sk-..."
 
 def run_completion_on_example(example, model_name, experiment_id):
@@ -175,7 +173,7 @@ def run_completion_on_example(example, model_name, experiment_id):
 
 Now create the experiments and run completions on all examples. In the API, an "experiment" is represented as a session (or "tracer session") that references a dataset via `reference_dataset_id`. The key difference from regular tracing is that runs in an experiment must have a `reference_example_id` that links each run to a specific example in the dataset.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #  Create a new experiment using the /sessions endpoint
 #  An experiment is a collection of runs with a reference to the dataset used
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-tracer-session
@@ -220,7 +218,7 @@ In this example, the evaluation checks if each model's output matches the expect
 
 The following code adds feedback to the runs from the [single experiment example](#run-a-single-experiment):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Fetch the runs from one of the experiments
 # API Reference: https://docs.langchain.com/langsmith/smith-api/run/query-runs
 experiment_id = experiment_ids[0]  # Evaluate the first experiment
@@ -269,7 +267,7 @@ for run in runs:
     resp.raise_for_status()
 ```
 
-You can add multiple feedback scores with different keys to track various metrics. For example, you might add both a "correctness" score and a "toxicity\_detected" score.
+You can add multiple feedback scores with different keys to track various metrics. For example, you might add both a "correctness" score and a "toxicity_detected" score.
 
 ## Run a pairwise experiment
 
@@ -277,7 +275,7 @@ Next, we'll demonstrate how to run a pairwise experiment. In a pairwise experime
 
 For more information, check out [How to run a pairwise evaluation](/langsmith/evaluate-pairwise).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #  A comparative experiment allows you to provide a preferential ranking on the outputs of two or more experiments
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/datasets/create-comparative-experiment
 resp = requests.post(
@@ -354,14 +352,13 @@ for example_id, runs in example_id_to_runs_map.items():
         resp.raise_for_status()
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evals-api-only.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -3,7 +3,7 @@
 # View trace counts across your organization
 
 <Note>
-  This feature is available on Helm chart versions 0.9.5 and later.
+This feature is available on Helm chart versions 0.9.5 and later.
 </Note>
 
 LangSmith automatically generates and syncs organization usage charts for self-hosted installations.
@@ -23,7 +23,7 @@ You can retrieve trace counts programmatically using two different methods:
 
 If your self-hosted installation uses an online key, you can use the [LangSmith REST API](/langsmith/smith-api/orgs/get-org-usage) to fetch organization usage data.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -X GET "https://your-langsmith-instance.com/api/v1/orgs/current/billing/usage" \
   -H "Accept: application/json" \
   -H "X-API-Key: your-api-key" \
@@ -37,7 +37,7 @@ curl -X GET "https://your-langsmith-instance.com/api/v1/orgs/current/billing/usa
 
 For installations using offline keys or when you need more detailed export capabilities, you can run support queries directly against the PostgreSQL database. All available scripts are in the [support queries repository](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/scripts/support_queries/postgres).
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres" \
   --input support_queries/postgres/pg_get_historic_trace_counts_daily.sql \
   --output trace_counts.csv
@@ -45,14 +45,13 @@ sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres
 
 For more detailed information about running support queries, see the [Run support queries against PostgreSQL](/langsmith/script-running-pg-support-queries) guide.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-organization-charts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,16 +2,14 @@
 
 # Managed Deep Agents
 
-Build your agent as a directory of files while LangSmith runs the harness and runtime.
-
 Managed Deep Agents (MDA) is the simplest way to build and deploy production agents. You focus on what your agent does. MDA runs it. There are no servers to run and no infrastructure to wire together.
 
 You write the agent's intelligence: its instructions, the tools it can call, the skills it follows, and you select the model that drives it. MDA provides everything underneath:
 
-* **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
-* **A managed runtime**: LangSmith Agent Server hosts and operates the agent, and keeps sessions running across restarts.
+- **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents. See [Deep Agents](/oss/javascript/deepagents/overview).
+- **A managed runtime**: LangSmith Agent Server hosts and operates the agent, and keeps sessions running across restarts.
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 %%{init: {"theme": "base", "themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart LR
     subgraph you["You provide"]
@@ -42,6 +40,8 @@ flowchart LR
 
 A managed deep agent consists of a project folder that contains the business logic for its behavior:
 
+
+
 When you upload this folder with the `mda` CLI, it will automatically run on managed LangSmith infrastructure.
 You provide the business logic, and Managed Deep Agents provides the agent harness and production infrastructure.
 
@@ -51,43 +51,44 @@ To get started, see the [Managed Deep Agents quickstart](/langsmith/javascript/m
 
 Each part of the agent maps to a file or directory. Add the ones your agent needs:
 
-| Capability                                                                            | Path              | Description                                                                              |
-| ------------------------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------- |
-| [Model and configuration](/langsmith/javascript/managed-deep-agents-agent-definition) | `agent.ts`        | The model and core options. Required.                                                    |
-| [Instructions](/langsmith/javascript/managed-deep-agents-instructions)                | `instructions.md` | The system prompt that defines how the agent behaves.                                    |
-| [Skills](/langsmith/javascript/managed-deep-agents-skills)                            | `skills/`         | Task-specific playbooks the agent loads when they are relevant.                          |
-| [Tools](/langsmith/javascript/managed-deep-agents-tools)                              | `tools/`          | Functions the agent calls to run your application logic or reach external services.      |
-| [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)            | `connectors/`     | Remote MCP servers that provide tools to the agent.                                      |
-| [Middleware](/langsmith/javascript/managed-deep-agents-middleware)                    | `middleware/`     | Custom logic that runs around model and tool calls.                                      |
-| [Sandbox](/langsmith/javascript/managed-deep-agents-sandboxes)                        | `sandbox/`        | An isolated filesystem and shell for running agent-written code.                         |
-| [Memory](/langsmith/javascript/managed-deep-agents-memory)                            | `memory.ts`       | Preferences and knowledge that persist across threads.                                   |
-| [Identity](/langsmith/javascript/managed-deep-agents-identity)                        | `identity.ts`     | Per-caller private threads, memory, and credentials for multi-user deployments.          |
-| [Channels](/langsmith/javascript/managed-deep-agents-channels)                        | `channels/`       | Connections to messaging services, such as Slack, that start runs and receive responses. |
-| [Schedules](/langsmith/javascript/managed-deep-agents-schedules)                      | `schedules/`      | Managed cron schedules that run the agent on a recurring basis.                          |
-| [Evals](/langsmith/javascript/managed-deep-agents-evals)                              | `evals/`          | Harbor-style tasks that test the agent.                                                  |
+
+
+| Capability | Path | Description |
+| --- | --- | --- |
+| [Model and configuration](/langsmith/javascript/managed-deep-agents-agent-definition) | `agent.ts` | The model and core options. Required. |
+| [Instructions](/langsmith/javascript/managed-deep-agents-instructions) | `instructions.md` | The system prompt that defines how the agent behaves. |
+| [Skills](/langsmith/javascript/managed-deep-agents-skills) | `skills/` | Task-specific playbooks the agent loads when they are relevant. |
+| [Tools](/langsmith/javascript/managed-deep-agents-tools) | `tools/` | Functions the agent calls to run your application logic or reach external services. |
+| [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) | `connectors/` | Remote MCP servers that provide tools to the agent. |
+| [Middleware](/langsmith/javascript/managed-deep-agents-middleware) | `middleware/` | Custom logic that runs around model and tool calls. |
+| [Sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) | `sandbox/` | An isolated filesystem and shell for running agent-written code. |
+| [Memory](/langsmith/javascript/managed-deep-agents-memory) | `memory.ts` | Preferences and knowledge that persist across threads. |
+| [Identity](/langsmith/javascript/managed-deep-agents-identity) | `identity.ts` | Per-caller private threads, memory, and credentials for multi-user deployments. |
+| [Channels](/langsmith/javascript/managed-deep-agents-channels) | `channels/` | Connections to messaging services, such as Slack, that start runs and receive responses. |
+| [Schedules](/langsmith/javascript/managed-deep-agents-schedules) | `schedules/` | Managed cron schedules that run the agent on a recurring basis. |
+| [Evals](/langsmith/javascript/managed-deep-agents-evals) | `evals/` | Harbor-style tasks that test the agent. |
+
 
 For the full layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
     Create and deploy your first Managed Deep Agent with the `mda` CLI.
   </Card>
-
   <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
     Add a custom search tool, durable memory, and a daily schedule.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: LangSmith control plane | https://docs.langchain.com/langsmith/control-plane -->
 
-# LangSmith 控制平面
+# LangSmith控制平面
 
-*控制平面*是 LangSmith 管理部署的部分。它包括控制平面 UI（用户在其中创建和更新[Agent Servers](/langsmith/agent-server)）以及控制平面 API（支持 UI 并提供编程访问）。
+_控制平面_是LangSmith管理部署的部分。它包括控制平面 UI（用户在其中创建和更新[Agent Servers](/langsmith/agent-server)）以及控制平面 API（支持 UI 并提供编程访问）。
 
 当您通过控制平面进行更新时，更新将存储在控制平面状态中。 [data plane](/langsmith/data-plane)“监听器”通过调用控制平面 API 轮询这些更新。控制平面从不直接连接到数据平面。
 
@@ -48,7 +48,7 @@
 ### 异步部署
 
 用于部署和修订的基础设施是异步配置和部署的。它们在提交后不会立即部署。目前，部署可能需要长达几分钟的时间。* 创建新部署时，会为该部署创建一个新数据库。数据库创建是一次性步骤。此步骤会导致部署的初始修订版的部署时间更长。
-* 为部署创建后续修订版时，没有数据库创建步骤。与初始修订版的部署时间相比，后续修订版的部署时间要快得多。
+* 为部署创建后续修订版时，没有数据库创建步骤。与初始修订版的部署时间相比，后续修订版的部署时间明显加快。
 * 每个修订版的部署过程都包含一个构建步骤，该步骤可能需要几分钟的时间。
 
 控制平面和[data plane](/langsmith/data-plane)“监听器”应用程序协调以实现异步部署。
@@ -70,14 +70,13 @@
 
 删除部署时，跟踪和跟踪项目不会被删除。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

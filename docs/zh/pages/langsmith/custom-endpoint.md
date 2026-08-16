@@ -4,7 +4,7 @@
 
 # 连接到自定义模型
 
-Playground 允许您使用自己的自定义模型。您可以部署一个模型服务器，通过[LangServe](https://github.com/langchain-ai/langserve)（一个用于服务 LangChain 应用程序的开源库）公开模型的 API。在幕后，Playground 将与您的模型服务器交互以生成响应。
+Playground 允许您使用自己的自定义模型。您可以部署一个模型服务器，通过 [LangServe](https://github.com/langchain-ai/langserve) 公开模型的 API，[LangServe](https://github.com/langchain-ai/langserve) 是一个用于服务 LangChain 应用程序的开源库。在幕后，Playground 将与您的模型服务器交互以生成响应。
 
 ## 部署自定义模型服务器
 
@@ -20,7 +20,7 @@ Playground 允许您使用自己的自定义模型。您可以部署一个模型
 
 您可以通过在 `config.py` 文件中实现 `with_configurable_fields` 函数来添加可配置字段。你可以
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 def with_configurable_fields(self) -> Runnable:
     """Expose fields you want to be configurable in the Playground. We will automatically expose these to the
     Playground. If you don't want to expose any fields, you can remove this method."""
@@ -35,20 +35,19 @@ def with_configurable_fields(self) -> Runnable:
 
 输入`URL`。 Playground 将自动检测可用端点和可配置字段。然后，您可以使用所需的参数调用模型。
 
-<img alt="ChatCustomModel in Playground" />
+![ChatCustomModel in Playground](/langsmith/images/playground-custom-model.png)
 
 如果一切设置正确，您应该在 Playground 中看到模型的响应以及 `with_configurable_fields` 中指定的可配置字段。
 
-欲了解更多信息，请参阅[how to store your model configuration for later use](/langsmith/managing-model-configurations)。
+有关更多信息，请参阅[how to store your model configuration for later use](/langsmith/managing-model-configurations)。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

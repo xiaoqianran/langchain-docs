@@ -2,18 +2,16 @@
 
 # Rebuild graph at runtime
 
-Rebuild your graph with different configurations for each run using ServerRuntime.
-
 You might need to rebuild your graph with a different configuration for a new run. For example, you might want to load different tools depending on the user's credentials. This guide shows how you can do this using `ServerRuntime`.
 
 <Note>
-  In most cases, customization is best handled by conditioning on the config within individual nodes rather than dynamically changing the whole graph structure. This makes it easier to test and manage.
+In most cases, customization is best handled by conditioning on the config within individual nodes rather than dynamically changing the whole graph structure. This makes it easier to test and manage.
 </Note>
 
 ## Prerequisites
 
-* Make sure to check out [this how-to guide](/langsmith/setup-app-requirements-txt) on setting up your app for deployment first.
-* `ServerRuntime` requires `langgraph-api >= 0.7.31` and `langgraph-sdk >= 0.3.5`. Prior to that, graph factories only accepted a single `config: RunnableConfig` argument.
+- Make sure to check out [this how-to guide](/langsmith/setup-app-requirements-txt) on setting up your app for deployment first.
+- `ServerRuntime` requires `langgraph-api >= 0.7.31` and `langgraph-sdk >= 0.3.5`. Prior to that, graph factories only accepted a single `config: RunnableConfig` argument.
 
 ## Define graphs
 
@@ -34,7 +32,7 @@ where the graph is defined in `agents.py`.
 
 The most common way to deploy your Agent Server is to reference a compiled graph instance that's defined at the top level of your file. An example is below:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # my_project/agents.py
 from langgraph.graph import StateGraph, MessagesState, START
 
@@ -49,7 +47,7 @@ agent = graph_workflow.compile()
 
 To make the server aware of your graph, you need to specify a path to the variable that contains the [`CompiledStateGraph`](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph) instance in your LangGraph API configuration (`langgraph.json`), e.g.:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
     "$schema": "https://langgra.ph/schema.json",
     "dependencies": ["."],
@@ -64,14 +62,14 @@ To make the server aware of your graph, you need to specify a path to the variab
 To rebuild your graph on each new run, provide a **factory function** that returns (or yields) a graph. The factory can optionally accept a `ServerRuntime` parameter or a `RunnableConfig`. The server inspects your function's type annotations to determine which arguments to inject, so make sure to include the correct type hints. The server's queue workers will call your factory function any time they need to process a run. The function will also be called for certain other endpoints to update state, read state, or to fetch assistant schemas. The `ServerRuntime` tells you which context triggered the call.
 
 <Note>
-  `ServerRuntime` is in [beta](/langsmith/release-stages) and may change in future releases.
+`ServerRuntime` is in [beta](/langsmith/release-stages) and may change in future releases.
 </Note>
 
 #### Simple factory
 
 The simplest form is a plain `async def` that returns a compiled graph:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain_openai import ChatOpenAI
 from langgraph.graph import START, StateGraph
 from langchain_core.runnables import RunnableConfig
@@ -103,7 +101,7 @@ async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
 
 If you need to set up and tear down resources (database connections, load MCP tools, etc.), use an async context manager. Use `runtime.execution_runtime` to check whether the graph is being called for actual execution or just for introspection (schemas, visualization):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import contextlib
 
 from langchain_openai import ChatOpenAI
@@ -145,7 +143,7 @@ async def make_graph(runtime: ServerRuntime):
 
 Finally, specify the path to your factory in `langgraph.json`:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
     "$schema": "https://langgra.ph/schema.json",
     "dependencies": ["."],
@@ -159,29 +157,29 @@ Finally, specify the path to your factory in `langgraph.json`:
 
 Your factory function receives a `ServerRuntime` instance with the following attributes:
 
-| Attribute        | Type               | Description                                                                                                       |
-| ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `access_context` | `str`              | Why the factory was called: `"threads.create_run"`, `"threads.update"`, `"threads.read"`, or `"assistants.read"`. |
-| `user`           | `BaseUser \| None` | The authenticated user, or `None` if no [custom auth](/langsmith/custom-auth) is configured.                      |
-| `store`          | `BaseStore`        | The store instance for persistence and memory.                                                                    |
+| Attribute | Type | Description |
+|---|---|---|
+| `access_context` | `str` | Why the factory was called: `"threads.create_run"`, `"threads.update"`, `"threads.read"`, or `"assistants.read"`. |
+| `user` | `BaseUser \| None` | The authenticated user, or `None` if no [custom auth](/langsmith/custom-auth) is configured. |
+| `store` | `BaseStore` | The store instance for persistence and memory. |
 
 **Methods:**
 
-| Method              | Description                                                                                                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ensure_user()`     | Returns the authenticated user. Raises `PermissionError` if no user is provided.                                                                                                |
+| Method | Description |
+|---|---|
+| `ensure_user()` | Returns the authenticated user. Raises `PermissionError` if no user is provided. |
 | `execution_runtime` | Returns the execution runtime when `access_context` is `"threads.create_run"`, or `None` otherwise. Use this to conditionally set up expensive resources only during execution. |
 
 ### Access contexts
 
 The server calls your factory in several contexts beyond just executing runs. In all contexts, the returned graph should have the **same topology** (nodes, edges, state schema). A mismatched topology in write contexts (`threads.create_run`, `threads.update`) can cause incorrect state updates. In read contexts (`threads.read`, `assistants.read`), a mismatch affects reported pending tasks, schemas, and visualizations but won't corrupt data. Use `execution_runtime` to conditionally set up expensive resources without changing the graph structure.
 
-| Context              | Description                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------- |
-| `threads.create_run` | Full graph execution. `execution_runtime` is available.                                                 |
-| `threads.update`     | State update via `aupdate_state`. Does not execute node functions, but it can change the pending tasks. |
-| `threads.read`       | State reads via `aget_state` / `aget_state_history`.                                                    |
-| `assistants.read`    | Schema and graph introspection for visualization, MCP, A2A, etc.                                        |
+| Context | Description |
+|---|---|
+| `threads.create_run` | Full graph execution. `execution_runtime` is available. |
+| `threads.update` | State update via `aupdate_state`. Does not execute node functions, but it can change the pending tasks. |
+| `threads.read` | State reads via `aget_state` / `aget_state_history`. |
+| `assistants.read` | Schema and graph introspection for visualization, MCP, A2A, etc. |
 
 ## Customize tracing per graph
 
@@ -189,14 +187,13 @@ You can use the factory function to customize or disable tracing for a specific 
 
 See more info on the [LangGraph API configuration file](/langsmith/cli#configuration-file).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,20 +2,18 @@
 
 # Memory and Skills
 
-Persistent memory, AGENTS.md files, and reusable skills for Deep Agents Code, including creation, discovery, and invocation.
-
 There are two primary ways to customize an agent in Deep Agents Code:
 
-* **[Memory](#memory)**: `AGENTS.md` files and auto-saved memories that persist across sessions. Use memory for general coding style, preferences, and learned conventions.
+- **[Memory](#memory)**: `AGENTS.md` files and auto-saved memories that persist across sessions. Use memory for general coding style, preferences, and learned conventions.
 
-* **[Skills](#skills)**: Reusable, on-demand capabilities that the agent discovers and reads only when relevant. Use skills for task-specific context such as workflows, best practices, and reference docs.
+- **[Skills](#skills)**: Reusable, on-demand capabilities that the agent discovers and reads only when relevant. Use skills for task-specific context such as workflows, best practices, and reference docs.
 
 In practice, skills and memory sit on a spectrum. For more on when to use each, see [Skills, memory, and tools](/oss/python/deepagents/skills#skills-memory-and-tools).
 
 Use `/remember` to explicitly prompt the agent to update its memory and skills from the current conversation.
 
 <Tip>
-  Building a custom agent with the SDK? See [Memory](/oss/python/deepagents/memory) for programmatic memory backends.
+    Building a custom agent with the SDK? See [Memory](/oss/python/deepagents/memory) for programmatic memory backends.
 </Tip>
 
 ## Memory
@@ -39,14 +37,14 @@ The agent organizes its memories by topic with descriptive filenames:
 
 When you teach the agent conventions:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 dcode --agent backend-dev
 > Our API uses snake_case and includes created_at/updated_at timestamps
 ```
 
 It remembers for future sessions:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 > Create a /users endpoint
 # Applies conventions without prompting
 ```
@@ -55,13 +53,13 @@ It remembers for future sessions:
 
 [`AGENTS.md` files](https://agents.md/) provide persistent context that is always loaded at session start:
 
-* **Global**: `~/.deepagents/<agent_name>/AGENTS.md`—loaded every session.
-* **Project**: `.deepagents/AGENTS.md` in any git project root—loaded when Deep Agents Code is run from within that project.
+- **Global**: `~/.deepagents/<agent_name>/AGENTS.md`—loaded every session.
+- **Project**: `.deepagents/AGENTS.md` in any git project root—loaded when Deep Agents Code is run from within that project.
 
 Both files are appended to the system prompt at startup.
 
 <Tip>
-  To generate a repository wiki and wire pointers into `AGENTS.md` and `CLAUDE.md` for coding agents, see [OpenWiki](/oss/openwiki/overview).
+To generate a repository wiki and wire pointers into `AGENTS.md` and `CLAUDE.md` for coding agents, see [OpenWiki](/oss/openwiki/overview).
 </Tip>
 
 ### How memory works
@@ -79,19 +77,19 @@ The additional files are not read on startup but the agent can reference and upd
 
 Use a global `AGENTS.md` (`~/.deepagents/agent/AGENTS.md`) for:
 
-* Your personality, style, and universal coding preferences
-* General tone and communication style
-* Universal coding preferences (formatting, type hints, etc.)
-* Tool usage patterns that apply everywhere
-* Workflows and methodologies that don't change per-project
+- Your personality, style, and universal coding preferences
+- General tone and communication style
+- Universal coding preferences (formatting, type hints, etc.)
+- Tool usage patterns that apply everywhere
+- Workflows and methodologies that don't change per-project
 
 Use a project `AGENTS.md` (`.deepagents/AGENTS.md` in project root) for:
 
-* Project-specific context and conventions
-* Project architecture and design patterns
-* Coding conventions specific to this codebase
-* Testing strategies and deployment processes
-* Team guidelines and project structure
+- Project-specific context and conventions
+- Project architecture and design patterns
+- Coding conventions specific to this codebase
+- Testing strategies and deployment processes
+- Team guidelines and project structure
 
 ## Skills
 
@@ -103,36 +101,36 @@ At startup, Deep Agents Code reads the name and description from each `SKILL.md`
 ### Add a skill
 
 <Steps>
-  <Step title="Create a skill">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # User skill (stored in ~/.deepagents/<agent_name>/skills/)
-    dcode skills create test-skill
+    <Step title="Create a skill">
 
-    # Project skill (stored in .deepagents/skills/)
-    dcode skills create test-skill --project
-    ```
+        ```bash
+        # User skill (stored in ~/.deepagents/<agent_name>/skills/)
+        dcode skills create test-skill
 
-    This generates:
+        # Project skill (stored in .deepagents/skills/)
+        dcode skills create test-skill --project
+        ```
 
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    skills/
-    └── test-skill
-        └── SKILL.md
-    ```
-  </Step>
+        This generates:
 
-  <Step title="Edit SKILL.md">
-    Open the generated `SKILL.md` and edit the file to include your instructions.
-  </Step>
+        ```plaintext
+        skills/
+        └── test-skill
+            └── SKILL.md
+        ```
 
-  <Step title="Add optional resources">
-    Optionally add additional scripts or other resources to the `test-skill` folder. For more information, see [Usage](/oss/python/deepagents/skills#add-supporting-resources).
-  </Step>
+    </Step>
+    <Step title="Edit SKILL.md">
+        Open the generated `SKILL.md` and edit the file to include your instructions.
+    </Step>
+    <Step title="Add optional resources">
+        Optionally add additional scripts or other resources to the `test-skill` folder. For more information, see [Usage](/oss/python/deepagents/skills#add-supporting-resources).
+    </Step>
 </Steps>
 
 You can also copy existing skills directly to the agent's folder:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mkdir -p ~/.deepagents/<agent_name>/skills
 cp -r examples/skills/web-research ~/.deepagents/<agent_name>/skills/
 ```
@@ -141,7 +139,7 @@ cp -r examples/skills/web-research ~/.deepagents/<agent_name>/skills/
 
 You can use tools like Vercel's [Skills CLI](https://github.com/vercel-labs/skills) to install community [Agent Skills](https://agentskills.io/) in your environment and make them available to your deep agents:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Install a skill globally
 npx skills add vercel-labs/agent-skills --skill web-design-guidelines -a deepagents -g -y
 
@@ -152,14 +150,14 @@ npx skills ls -a deepagents -g
 Global installs (`-g`) symlink skills into `~/.deepagents/agent/skills/`—the default agent's user-level skills directory. Project-level installs (omit `-g`) place skills in `.deepagents/skills/` relative to the current directory, making them available to any agent running in that project regardless of agent name.
 
 <Note>
-  Global installs target the default `agent` directory only. If you use a custom-named agent, either use project-level installs or manually symlink the skill into `~/.deepagents/{your-agent}/skills/`.
+    Global installs target the default `agent` directory only. If you use a custom-named agent, either use project-level installs or manually symlink the skill into `~/.deepagents/{your-agent}/skills/`.
 </Note>
 
 ### Skill discovery
 
 Skills are loaded from the following directories at startup:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 ~/.deepagents/<agent_name>/skills/
 ~/.agents/skills/
 .deepagents/skills/
@@ -176,7 +174,7 @@ For project-specific skills (under `.deepagents/skills/` or `.agents/skills/`), 
 
 Inside an interactive session, run a skill directly with the `/skill:<name>` slash command:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 /skill:code-review
 /skill:code-review review the auth module
 ```
@@ -187,7 +185,7 @@ The skill's `SKILL.md` instructions are injected into the prompt along with any 
 
 The `--skill` flag invokes a skill immediately on launch, in either interactive (TUI) or non-interactive (headless) mode:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Open the TUI and immediately run a skill
 dcode --skill code-review
 
@@ -208,12 +206,12 @@ dcode --skill code-review -n 'review this patch' -q
 ```
 
 <Note>
-  `--skill` with `--quiet` or `--no-stream` requires `-n` (non-interactive mode).
+    `--skill` with `--quiet` or `--no-stream` requires `-n` (non-interactive mode).
 </Note>
 
 ### List skills
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # List all user skills
 dcode skills list
 
@@ -225,14 +223,13 @@ dcode skills info test-skill
 dcode skills info test-skill --project
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,54 +2,54 @@
 
 # Query threads using the SDK
 
-Programmatically fetch and inspect multi-turn conversation threads from your LangSmith projects.
-
-If you're building a conversational agent or any multi-turn application, LangSmith automatically groups your [runs](/langsmith/run-data-format) into [*threads*](/langsmith/observability-concepts#threads). Querying threads lets you replay full conversations, audit agent behavior across sessions, build analytics on conversation length and latency, and feed downstream workflows like fine-tuning and evaluation.
+If you're building a conversational agent or any multi-turn application, LangSmith automatically groups your [runs](/langsmith/run-data-format) into [_threads_](/langsmith/observability-concepts#threads). Querying threads lets you replay full conversations, audit agent behavior across sessions, build analytics on conversation length and latency, and feed downstream workflows like fine-tuning and evaluation.
 
 The SDK exposes two methods for working with threads:
 
-| Method                                                                                                                                                                                          | Use when                                         |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [`list_threads`](https://reference.langchain.com/python/langsmith/client/Client/list_threads) / [`listThreads`](https://reference.langchain.com/javascript/langsmith/client/Client/listThreads) | You want to browse all threads in a project      |
-| [`read_thread`](https://reference.langchain.com/python/langsmith/client/Client/read_thread) / [`readThread`](https://reference.langchain.com/javascript/langsmith/client/Client/readThread)     | You already know the thread ID and need its runs |
+| Method | Use when |
+|--------|-------------|
+| [`list_threads`](https://reference.langchain.com/python/langsmith/client/Client/list_threads) / [`listThreads`](https://reference.langchain.com/javascript/langsmith/client/Client/listThreads) | You want to browse all threads in a project |
+| [`read_thread`](https://reference.langchain.com/python/langsmith/client/Client/read_thread) / [`readThread`](https://reference.langchain.com/javascript/langsmith/client/Client/readThread) | You already know the thread ID and need its runs |
 
 ## How threads work
 
 Each run you create can carry a `thread_id` in its metadata. LangSmith uses this to group runs into threads. The backend looks for `thread_id` in `metadata` (falling back to `session_id`).
 
 <Note>
-  We recommend using **UUID v7** thread IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of threads. The LangSmith SDK exports a uuid7 helper (Python v0.4.43+, JS v0.3.80+):
+We recommend using **UUID v7** thread IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of threads. The LangSmith SDK exports a uuid7 helper (Python v0.4.43+, JS v0.3.80+):
 
-  * **Python**: `from langsmith import uuid7`
-  * **JS/TS**: `import { uuid7 } from 'langsmith'`
+- **Python**: `from langsmith import uuid7`
+- **JS/TS**: `import { uuid7 } from 'langsmith'`
 </Note>
 
 If you're using a [tracing integration](/langsmith/integrations), pass `thread_id` in the run metadata:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable, uuid7
 
-  THREAD_ID = str(uuid7())
+```python Python
+from langsmith import traceable, uuid7
 
-  @traceable(metadata={"thread_id": THREAD_ID})
-  def my_agent(user_message: str) -> str:
-      ...
-  ```
+THREAD_ID = str(uuid7())
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
-  import { uuid7 } from "langsmith";
+@traceable(metadata={"thread_id": THREAD_ID})
+def my_agent(user_message: str) -> str:
+    ...
+```
 
-  const THREAD_ID = uuid7();
+```typescript TypeScript
+import { traceable } from "langsmith/traceable";
+import { uuid7 } from "langsmith";
 
-  const myAgent = traceable(
-    async (userMessage: string) => {
-      // ...
-    },
-    { metadata: { thread_id: THREAD_ID } }
-  );
-  ```
+const THREAD_ID = uuid7();
+
+const myAgent = traceable(
+  async (userMessage: string) => {
+    // ...
+  },
+  { metadata: { thread_id: THREAD_ID } }
+);
+```
+
 </CodeGroup>
 
 ## List all threads in a project
@@ -57,37 +57,39 @@ If you're using a [tracing integration](/langsmith/integrations), pass `thread_i
 `list_threads` / `listThreads` fetches all threads in a project and groups their runs together. Results are sorted by most recent activity first.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
+```python Python
+from langsmith import Client
 
-  threads = client.list_threads(project_name="my-project")
+client = Client()
 
-  for thread in threads:
-      print(thread["thread_id"])
-      print(f"  {thread['count']} runs")
-      print(f"  last active: {thread['max_start_time']}")
-  ```
+threads = client.list_threads(project_name="my-project")
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+for thread in threads:
+    print(thread["thread_id"])
+    print(f"  {thread['count']} runs")
+    print(f"  last active: {thread['max_start_time']}")
+```
 
-  const client = new Client();
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  const threads = await client.listThreads({ projectName: "my-project" });
+const client = new Client();
 
-  for (const thread of threads) {
-    console.log(thread.thread_id);
-    console.log(`  ${thread.count} runs`);
-    console.log(`  last active: ${thread.max_start_time}`);
-  }
-  ```
+const threads = await client.listThreads({ projectName: "my-project" });
+
+for (const thread of threads) {
+  console.log(thread.thread_id);
+  console.log(`  ${thread.count} runs`);
+  console.log(`  last active: ${thread.max_start_time}`);
+}
+```
+
 </CodeGroup>
 
 Results are sorted by most recent activity:
 
-```text Output theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text Output
 conv-abc123
   3 runs
   last active: 2026-02-25T10:05:42+00:00
@@ -98,29 +100,29 @@ conv-def456
 
 ### Parameters
 
-| Parameter                      | Type                | Default   | Description                                                                                                        |
-| ------------------------------ | ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| `project_name` / `projectName` | `string`            | —         | Project name. Required if `project_id` is not set.                                                                 |
-| `project_id` / `projectId`     | `string`            | —         | Project ID. Required if `project_name` is not set.                                                                 |
-| `limit`                        | `int`               | all       | Maximum number of threads to return.                                                                               |
-| `offset`                       | `int`               | `0`       | Number of threads to skip (for pagination).                                                                        |
-| `filter`                       | `string`            | —         | Filter expression applied when fetching runs, using [LangSmith trace query syntax](/langsmith/trace-query-syntax). |
-| `start_time` / `startTime`     | `datetime` / `Date` | 1 day ago | Only include runs started after this time. Widen this window to surface older threads.                             |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `project_name` / `projectName` | `string` | — | Project name. Required if `project_id` is not set. |
+| `project_id` / `projectId` | `string` | — | Project ID. Required if `project_name` is not set. |
+| `limit` | `int` | all | Maximum number of threads to return. |
+| `offset` | `int` | `0` | Number of threads to skip (for pagination). |
+| `filter` | `string` | — | Filter expression applied when fetching runs, using [LangSmith trace query syntax](/langsmith/trace-query-syntax). |
+| `start_time` / `startTime` | `datetime` / `Date` | 1 day ago | Only include runs started after this time. Widen this window to surface older threads. |
 
 ### Return value
 
 A list of thread objects, each containing:
 
-| Field            | Type                                                                    | Description                                                      |
-| ---------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `thread_id`      | `string`                                                                | The thread identifier.                                           |
-| `runs`           | `[Run](https://reference.langchain.com/python/langsmith/schemas/Run)[]` | Root runs in this thread, sorted chronologically (oldest first). |
-| `count`          | `int`                                                                   | Number of runs in this thread.                                   |
-| `min_start_time` | `string \| null`                                                        | ISO timestamp of the earliest run.                               |
-| `max_start_time` | `string \| null`                                                        | ISO timestamp of the most recent run.                            |
+| Field | Type | Description |
+|-------|------|-------------|
+| `thread_id` | `string` | The thread identifier. |
+| `runs` | `[Run](https://reference.langchain.com/python/langsmith/schemas/Run)[]` | Root runs in this thread, sorted chronologically (oldest first). |
+| `count` | `int` | Number of runs in this thread. |
+| `min_start_time` | `string \| null` | ISO timestamp of the earliest run. |
+| `max_start_time` | `string \| null` | ISO timestamp of the most recent run. |
 
 <Note>
-  `list_threads` always returns root runs only. If you need child runs (e.g., tool calls, sub-chains), use `read_thread` instead, which accepts an `is_root` / `isRoot` parameter you can set to `false`.
+`list_threads` always returns root runs only. If you need child runs (e.g., tool calls, sub-chains), use `read_thread` instead, which accepts an `is_root` / `isRoot` parameter you can set to `false`.
 </Note>
 
 ## Read runs for a single thread
@@ -128,35 +130,37 @@ A list of thread objects, each containing:
 When you already know the `thread_id`, use `read_thread` / `readThread`. It returns an iterator over the thread's runs directly, without fetching all threads first.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
+```python Python
+from langsmith import Client
 
-  for run in client.read_thread(
-      thread_id="conv-abc123",
-      project_name="my-project",
-  ):
-      print(run.id, run.name, run.start_time)
-  ```
+client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+for run in client.read_thread(
+    thread_id="conv-abc123",
+    project_name="my-project",
+):
+    print(run.id, run.name, run.start_time)
+```
 
-  const client = new Client();
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  for await (const run of client.readThread({
-    threadId: "conv-abc123",
-    projectName: "my-project",
-  })) {
-    console.log(run.id, run.name, run.start_time);
-  }
-  ```
+const client = new Client();
+
+for await (const run of client.readThread({
+  threadId: "conv-abc123",
+  projectName: "my-project",
+})) {
+  console.log(run.id, run.name, run.start_time);
+}
+```
+
 </CodeGroup>
 
 Unlike `list_threads`, each item here is a `Run` object directly — there is no grouping wrapper. Runs are returned in ascending chronological order by default.
 
-```python Output theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Output
 [
     Run(id=UUID("a1b2..."), name="my_agent", run_type="chain", status="success", start_time=datetime(2026, 2, 25, 10, 0, 0, tzinfo=utc), ...),
     Run(id=UUID("c3d4..."), name="my_agent", run_type="chain", status="success", start_time=datetime(2026, 2, 25, 10, 3, 11, tzinfo=utc), ...),
@@ -166,16 +170,16 @@ Unlike `list_threads`, each item here is a `Run` object directly — there is no
 
 ### Parameters
 
-| Parameter                      | Type                 | Default    | Description                                                       |
-| ------------------------------ | -------------------- | ---------- | ----------------------------------------------------------------- |
-| `thread_id` / `threadId`       | `string`             | —          | **Required.** The thread to query.                                |
-| `project_name` / `projectName` | `string`             | —          | Project name. Required if `project_id` is not set.                |
-| `project_id` / `projectId`     | `string \| string[]` | —          | Project ID or list of IDs. Required if `project_name` is not set. |
-| `is_root` / `isRoot`           | `bool`               | `true`     | Return only root runs. Set to `false` to include child runs.      |
-| `limit`                        | `int`                | all        | Maximum number of runs to return.                                 |
-| `filter`                       | `string`             | —          | Additional filter expression (combined with the thread filter).   |
-| `order`                        | `"asc" \| "desc"`    | `"asc"`    | Sort order. `"asc"` returns runs oldest-first (chronological).    |
-| `select`                       | `string[]`           | all fields | Specific run fields to return, to reduce response size.           |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `thread_id` / `threadId` | `string` | — | **Required.** The thread to query. |
+| `project_name` / `projectName` | `string` | — | Project name. Required if `project_id` is not set. |
+| `project_id` / `projectId` | `string \| string[]` | — | Project ID or list of IDs. Required if `project_name` is not set. |
+| `is_root` / `isRoot` | `bool` | `true` | Return only root runs. Set to `false` to include child runs. |
+| `limit` | `int` | all | Maximum number of runs to return. |
+| `filter` | `string` | — | Additional filter expression (combined with the thread filter). |
+| `order` | `"asc" \| "desc"` | `"asc"` | Sort order. `"asc"` returns runs oldest-first (chronological). |
+| `select` | `string[]` | all fields | Specific run fields to return, to reduce response size. |
 
 ### Return value
 
@@ -188,19 +192,21 @@ An iterator ([Python](https://reference.langchain.com/python/langsmith)) or asyn
 Pass a filter expression to narrow results using [LangSmith trace query syntax](/langsmith/trace-query-syntax). For example, to surface only threads containing at least one failed run:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  threads = client.list_threads(
-      project_name="my-project",
-      filter='eq(status, "error")',
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const threads = await client.listThreads({
-    projectName: "my-project",
-    filter: 'eq(status, "error")',
-  });
-  ```
+```python Python
+threads = client.list_threads(
+    project_name="my-project",
+    filter='eq(status, "error")',
+)
+```
+
+```typescript TypeScript
+const threads = await client.listThreads({
+  projectName: "my-project",
+  filter: 'eq(status, "error")',
+});
+```
+
 </CodeGroup>
 
 ### Look back further than 24 hours
@@ -208,21 +214,23 @@ Pass a filter expression to narrow results using [LangSmith trace query syntax](
 By default, `list_threads` only surfaces threads with runs from the last day. Pass `start_time` to widen the window:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import datetime
 
-  threads = client.list_threads(
-      project_name="my-project",
-      start_time=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=2),
-  )
-  ```
+```python Python
+import datetime
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const threads = await client.listThreads({
-    projectName: "my-project",
-    startTime: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-  });
-  ```
+threads = client.list_threads(
+    project_name="my-project",
+    start_time=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=2),
+)
+```
+
+```typescript TypeScript
+const threads = await client.listThreads({
+  projectName: "my-project",
+  startTime: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+});
+```
+
 </CodeGroup>
 
 ### Reconstruct a conversation
@@ -230,51 +238,52 @@ By default, `list_threads` only surfaces threads with runs from the last day. Pa
 Use `read_thread` with `order="asc"` to replay a conversation turn by turn:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  runs = list(
-      client.read_thread(
-          thread_id="conv-abc123",
-          project_name="my-project",
-          order="asc",
-      )
-  )
 
-  for run in runs:
-      user_msg = run.inputs.get("messages", [{}])[-1].get("content", "")
-      assistant_msg = (run.outputs or {}).get("content", "")
-      print(f"User:      {user_msg}")
-      print(f"Assistant: {assistant_msg}")
-      print()
-  ```
+```python Python
+runs = list(
+    client.read_thread(
+        thread_id="conv-abc123",
+        project_name="my-project",
+        order="asc",
+    )
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const runs: Run[] = [];
-  for await (const run of client.readThread({
-    threadId: "conv-abc123",
-    projectName: "my-project",
-    order: "asc",
-  })) {
-    runs.push(run);
-  }
+for run in runs:
+    user_msg = run.inputs.get("messages", [{}])[-1].get("content", "")
+    assistant_msg = (run.outputs or {}).get("content", "")
+    print(f"User:      {user_msg}")
+    print(f"Assistant: {assistant_msg}")
+    print()
+```
 
-  for (const run of runs) {
-    const messages = (run.inputs?.messages ?? []) as Array<Record<string, string>>;
-    const userMsg = messages.at(-1)?.content ?? "";
-    const assistantMsg = (run.outputs as Record<string, string>)?.content ?? "";
-    console.log(`User:      ${userMsg}`);
-    console.log(`Assistant: ${assistantMsg}`);
-  }
-  ```
+```typescript TypeScript
+const runs: Run[] = [];
+for await (const run of client.readThread({
+  threadId: "conv-abc123",
+  projectName: "my-project",
+  order: "asc",
+})) {
+  runs.push(run);
+}
+
+for (const run of runs) {
+  const messages = (run.inputs?.messages ?? []) as Array<Record<string, string>>;
+  const userMsg = messages.at(-1)?.content ?? "";
+  const assistantMsg = (run.outputs as Record<string, string>)?.content ?? "";
+  console.log(`User:      ${userMsg}`);
+  console.log(`Assistant: ${assistantMsg}`);
+}
+```
+
 </CodeGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/query-threads.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,8 +2,6 @@
 
 # Import exported data
 
-Import LangSmith bulk-exported Parquet data into BigQuery, Snowflake, Redshift, Clickhouse, or DuckDB.
-
 Importing data from S3 and Parquet format is commonly supported by the majority of analytical systems. See below for documentation links:
 
 ## BigQuery
@@ -23,7 +21,7 @@ You can COPY data from S3 or Parquet into Amazon Redshift by following the [AWS 
 
 You can directly query data in S3 / Parquet format in Clickhouse. As an example, if using GCS, you can query the data as follows:
 
-```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```sql
 SELECT count(distinct id) FROM s3('https://storage.googleapis.com/<bucket>/<prefix>/export_id=<export_id>/**',
  'access_key_id', 'access_secret', 'Parquet')
 ```
@@ -34,14 +32,13 @@ See [Clickhouse S3 Integration Documentation](https://clickhouse.com/docs/en/eng
 
 You can query the data from S3 in-memory with SQL using DuckDB. See [S3 import Documentation](https://duckdb.org/docs/guides/network_cloud_storage/s3_import.html).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-downstream.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

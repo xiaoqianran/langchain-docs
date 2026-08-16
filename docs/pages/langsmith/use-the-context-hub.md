@@ -2,41 +2,37 @@
 
 # Use the Context Hub
 
-Learn how to create, view, and promote context in the LangSmith Context Hub.
-
-The **Context Hub** gives your team version-controlled, environment-aware management of the instructions and tools your agents use in production. A *context* is a versioned bundle of agent instructions and tools, either a skill or a full agent, that you manage in LangSmith.
+The **Context Hub** gives your team version-controlled, environment-aware management of the instructions and tools your agents use in production. A _context_ is a versioned bundle of agent instructions and tools, either a skill or a full agent, that you manage in LangSmith.
 
 Use this guide to create your first context, view its files and history, and promote it to an environment so your agents can pull it.
 
 ## 1. Open the Context Hub
 
 <Note>
-  If you don't see **Context** in the left-hand navigation, verify that Context Hub is enabled for your workspace and that you have the required permissions.
+If you don't see **Context** in the left-hand navigation, verify that Context Hub is enabled for your workspace and that you have the required permissions.
 </Note>
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-the-context-hub), select **Context** in the
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-use-the-context-hub), select **Context** in the
 left-hand navigation. The Context Hub lists every agent and skill in your workspace.
 
-<img alt="The Context Hub home view listing existing Agent and Skill contexts with their commit metadata." />
+![The Context Hub home view listing existing Agent and Skill contexts with their commit metadata.](/langsmith/images/context-hub-home.png)
 
 ## 2. Create a context
 
 1. Click **+ Create** in the top left of the Context Hub.
+1. Choose the context type:
+    - **Agent:** a full agent bundle including an `AGENTS.md` file and tools.
+    - **Skill:** a reusable capability that agents can use, including a `SKILL.md` file.
 
-2. Choose the context type:
+    <img src="/langsmith/images/context-hub-create-context.png" alt="The Create dropdown showing the Agent and Skill context type options." width="360" />
 
-   * **Agent:** a full agent bundle including an `AGENTS.md` file and tools.
-   * **Skill:** a reusable capability that agents can use, including a `SKILL.md` file.
-
-   <img alt="The Create dropdown showing the Agent and Skill context type options." />
-
-3. Fill in a name and description. For skills, a description is required. You can also enter the initial file contents (`SKILL.md` for a skill, `AGENTS.md` for an agent) now, or add them after creation. Click **Create Agent** or **Create Skill**. LangSmith creates the repo and opens it for editing.
+1. Fill in a name and description. For skills, a description is required. You can also enter the initial file contents (`SKILL.md` for a skill, `AGENTS.md` for an agent) now, or add them after creation. Click **Create Agent** or **Create Skill**. LangSmith creates the repo and opens it for editing.
 
 ## 3. View a context
 
 Click on an agent or skill from the Context Hub to view it.
 
-<img alt="An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree." />
+![An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree.](/langsmith/images/context-hub-agent-view.png)
 
 The middle panel shows the file tree for the current commit and the right panel previews the selected file. Click a file in the middle panel to open it, then edit it in the right panel and save your changes to create a new commit.
 
@@ -50,19 +46,17 @@ Once a commit is ready to ship, promote it to an environment so downstream
 agents can pull it.
 
 <Note>
-  Context Hub currently supports two environment tags for promotion: `staging` and `production`.
+Context Hub currently supports two environment tags for promotion: `staging` and `production`.
 </Note>
 
 1. With the target commit selected, click **Promote** in the top right.
+1. Choose the destination environment:
+    - **Promote to Production:** the commit your production agents pull.
+    - **Promote to Staging:** a pre-production environment for validation.
 
-2. Choose the destination environment:
+    <img src="/langsmith/images/context-hub-promote.png" alt="The Promote dropdown with options to promote a commit to Production or Staging." width="300" />
 
-   * **Promote to Production:** the commit your production agents pull.
-   * **Promote to Staging:** a pre-production environment for validation.
-
-   <img alt="The Promote dropdown with options to promote a commit to Production or Staging." />
-
-3. The environment label (for example, `Production 7ca95573`) moves to the
+1. The environment label (for example, `Production 7ca95573`) moves to the
    promoted commit. Use the **Tag** button next to **Promote** to attach a
    human-readable label to any commit for easy reference.
 
@@ -70,19 +64,18 @@ Agent runtimes that resolve context by environment tag (for example, `:productio
 
 ## Next steps
 
-* [Context engineering concepts](/langsmith/context-engineering-concepts): learn about skills, agents, versioning, and sharing.
-* [Manage contexts with the SDK](/langsmith/manage-contexts-sdk): push, pull, list, and delete contexts programmatically.
-* [Configure commit webhooks](/langsmith/context-hub-webhooks): send workspace Context Hub commits to an external HTTPS endpoint.
-* [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-sdk#mount-a-context-hub-repo): give sandbox code read-only filesystem access to a repo, kept in sync as it changes.
+- [Context engineering concepts](/langsmith/context-engineering-concepts): learn about skills, agents, versioning, and sharing.
+- [Manage contexts with the SDK](/langsmith/manage-contexts-sdk): push, pull, list, and delete contexts programmatically.
+- [Configure commit webhooks](/langsmith/context-hub-webhooks): send workspace Context Hub commits to an external HTTPS endpoint.
+- [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-sdk#mount-a-context-hub-repo): give sandbox code read-only filesystem access to a repo, kept in sync as it changes.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

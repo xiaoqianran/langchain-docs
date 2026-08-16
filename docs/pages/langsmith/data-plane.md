@@ -2,16 +2,16 @@
 
 # LangSmith data plane
 
-The *data plane* consists of your [Agent Servers](/langsmith/agent-server) (deployments), their supporting infrastructure, and the "listener" application that continuously polls for updates from the [LangSmith control plane](/langsmith/control-plane).
+The _data plane_ consists of your [Agent Servers](/langsmith/agent-server) (deployments), their supporting infrastructure, and the "listener" application that continuously polls for updates from the [LangSmith control plane](/langsmith/control-plane).
 
 ## Server infrastructure
 
 In addition to the [Agent Server](/langsmith/agent-server) itself, the following infrastructure components for each server are also included in the broad definition of "data plane":
 
-* **PostgreSQL**: persistence layer for user, run, and memory data.
-* **Redis**: communication and ephemeral metadata for workers.
-* **Secrets store**: secure management of environment secrets.
-* **Autoscalers**: scale server containers based on load.
+- **PostgreSQL**: persistence layer for user, run, and memory data.
+- **Redis**: communication and ephemeral metadata for workers.
+- **Secrets store**: secure management of environment secrets.
+- **Autoscalers**: scale server containers based on load.
 
 ## "Listener" application
 
@@ -68,7 +68,7 @@ Scale down actions are delayed for 30 minutes before any action is taken. In oth
 ### MongoDB checkpointing
 
 <Info>
-  Available for [Cloud](/langsmith/cloud) (with an externally managed MongoDB instance) and [Standalone](/langsmith/deploy-standalone-server) deployments.
+Available for [Cloud](/langsmith/cloud) (with an externally managed MongoDB instance) and [Standalone](/langsmith/deploy-standalone-server) deployments.
 </Info>
 
 You can use MongoDB as an alternative backend for checkpoint storage. When configured, MongoDB handles only checkpoint data—PostgreSQL remains required for all other server resources.
@@ -79,34 +79,33 @@ See [Configure checkpointer backend](/langsmith/configure-checkpointer) for setu
 
 Agent Server is automatically configured to send traces to LangSmith. See the table below for details with respect to each deployment option.
 
-| Cloud                                  | Hybrid                                                    | Self-Hosted                                                                                |
-| -------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Cloud | Hybrid | Self-Hosted |
+|------------|------------------------|----------------------|
 | Required<br />Trace to LangSmith SaaS. | Optional<br />Disable tracing or trace to LangSmith SaaS. | Optional<br />Disable tracing, trace to LangSmith SaaS, or trace to Self-Hosted LangSmith. |
 
 ### Telemetry
 
 Agent Server is automatically configured to report telemetry metadata for billing purposes. See the table below for details with respect to each deployment option.
 
-| Cloud                             | Hybrid                            | Self-Hosted                                                                                                              |
-| --------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Cloud | Hybrid | Self-Hosted |
+|------------|------------------------|----------------------|
 | Telemetry sent to LangSmith SaaS. | Telemetry sent to LangSmith SaaS. | Self-reported usage (audit) for air-gapped license key.<br />Telemetry sent to LangSmith SaaS for LangSmith License Key. |
 
 ### Licensing
 
 Agent Server is automatically configured to perform license key validation. See the table below for details with respect to each deployment option.
 
-| Cloud                                               | Hybrid                                              | Self-Hosted                                                                      |
-| --------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Cloud | Hybrid | Self-Hosted |
+|------------|------------------------|----------------------|
 | LangSmith API Key validated against LangSmith SaaS. | LangSmith API Key validated against LangSmith SaaS. | Air-gapped license key or Platform License Key validated against LangSmith SaaS. |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

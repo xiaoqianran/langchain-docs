@@ -2,10 +2,8 @@
 
 # Custom Apps
 
-Build and deploy custom UIs that run inside LangSmith and talk to the LangSmith API.
-
 <Note>
-  Custom Apps are available exclusively on the **Enterprise** plan.
+Custom Apps are available exclusively on the **Enterprise** plan.
 </Note>
 
 Custom Apps are custom UIs, built by you, that run inside LangSmith and talk to the LangSmith API. You build the app locally with your own coding agent, push it to LangSmith, and it becomes available to you and your team in the workspace.
@@ -16,7 +14,7 @@ The LangSmith UI can't be the right shape for every workflow—Custom Apps are t
 
 ## Get started
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # 0. Set your credentials
 export LANGSMITH_ENDPOINT=<your-langsmith-endpoint>
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
@@ -36,23 +34,22 @@ langsmith apps push
 
 ## CLI reference
 
-| Command                                                                                                                               | What it does                                                       |
-| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `langsmith apps init --name NAME [--template annotation-queue\|annotation-queue-grid\|coding-agent-dashboard\|experiment-comparison]` | Scaffold a starter app in a new directory named after the app.     |
-| `langsmith apps dev`                                                                                                                  | Run the current directory's app locally in a real sandbox.         |
-| `langsmith apps push`                                                                                                                 | Upload the current directory as a custom app (creates or updates). |
-| `langsmith apps pull APP_ID_OR_NAME`                                                                                                  | Download an app's source into a new directory.                     |
-| `langsmith apps list`                                                                                                                 | List custom apps.                                                  |
-| `langsmith apps delete APP_ID_OR_NAME`                                                                                                | Delete an app by ID or name.                                       |
+| Command | What it does |
+|---------|-------------|
+| `langsmith apps init --name NAME [--template annotation-queue\|annotation-queue-grid\|coding-agent-dashboard\|experiment-comparison]` | Scaffold a starter app in a new directory named after the app. |
+| `langsmith apps dev` | Run the current directory's app locally in a real sandbox. |
+| `langsmith apps push` | Upload the current directory as a custom app (creates or updates). |
+| `langsmith apps pull APP_ID_OR_NAME` | Download an app's source into a new directory. |
+| `langsmith apps list` | List custom apps. |
+| `langsmith apps delete APP_ID_OR_NAME` | Delete an app by ID or name. |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-apps.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

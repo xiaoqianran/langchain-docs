@@ -92,9 +92,9 @@ Yes. If your identity provider supports syncing alternate fields to the `display
 
 You can also [configure a custom separator](/langsmith/user-management#configure-custom-separator) (e.g., `-`, `_`, `&`) instead of the default colon (`:`) to accommodate identity providers with restrictions on group name characters.
 
-#### *Why is my Okta integration not working?*
+#### _Why is my Okta integration not working?_
 
-See Okta's troubleshooting guide here: [https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm](https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm).
+See Okta's troubleshooting guide here: https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-troubleshoot.htm.
 
 ### *Are downgrades supported?*
 
@@ -122,21 +122,21 @@ Yes. LangGraph is an MIT-licensed open-source library and is free to use.
 
 LangGraph is a stateful, orchestration framework that brings added control to agent workflows. LangSmith is a service for deploying and scaling agentic applications, with an opinionated API for building agent UXs, plus an integrated developer UI.
 
-| Features            | LangGraph (open source)                                   | LangSmith                                                                                              |
-| ------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Features            | LangGraph (open source)                                   | LangSmith                                                                                     |
+|---------------------|-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
 | Description         | Stateful orchestration framework for agentic applications | Scalable infrastructure for deploying LangGraph applications                                           |
 | SDKs                | Python and JavaScript                                     | Python and JavaScript                                                                                  |
 | HTTP APIs           | None                                                      | Yes - useful for retrieving & updating state or long-term memory, or creating a configurable assistant |
 | Streaming           | Basic                                                     | Dedicated mode for token-by-token messages                                                             |
 | Checkpointer        | Community contributed                                     | Supported out-of-the-box                                                                               |
 | Persistence Layer   | Self-managed                                              | Managed Postgres with efficient storage                                                                |
-| Deployment          | Self-managed                                              | • Cloud <br /> • Free self-hosted <br /> • Enterprise (paid self-hosted)                               |
+| Deployment          | Self-managed                                              | • Cloud <br /> • Free self-hosted <br /> • Enterprise (paid self-hosted)                      |
 | Scalability         | Self-managed                                              | Auto-scaling of task queues and servers                                                                |
 | Fault-tolerance     | Self-managed                                              | Automated retries                                                                                      |
 | Concurrency Control | Simple threading                                          | Supports double-texting                                                                                |
 | Scheduling          | None                                                      | Cron scheduling                                                                                        |
 | Monitoring          | None                                                      | Integrated with LangSmith for observability                                                            |
-| IDE integration     | Studio                                                    | Studio                                                                                                 |
+| IDE integration     | Studio                                          | Studio                                                                                       |
 
 ### Is LangSmith open source?
 
@@ -162,14 +162,13 @@ If you set an environment variable of `LANGSMITH_TRACING=false`, then no traces 
 
 A Deployment Run is one end-to-end invocation of a LangGraph agent deployed via LangSmith Deployment. Nodes and subgraphs are not charged separately. Calls to other LangGraph agents (through RemoteGraph or the LangGraph SDK or the API directly) are charged separately, to the deployment that hosts the agent being called. An interrupt for human-in-the-loop creates a separate Deployment Run when resuming.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/faq.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,8 +2,6 @@
 
 # Cloud Agent Server environment variables
 
-Environment variables supported by the LangSmith Agent Server when deployed on Cloud.
-
 The Agent Server supports the following environment variables when deployed on [Cloud](/langsmith/deploy-to-cloud-overview). For variables specific to self-hosted deployments, see [Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted).
 
 ## `BG_JOB_ISOLATED_LOOPS`
@@ -11,15 +9,15 @@ The Agent Server supports the following environment variables when deployed on [
 Set `BG_JOB_ISOLATED_LOOPS` to `True` to execute background runs in an isolated event loop separate from the serving API event loop.
 
 <Warning>
-  Enabling this flag does not remove the underlying problem. It moves synchronous blocking work off the serving API's event loop so health checks stop failing, but the blocking code continues to run on the background loop and **will** continue to cause issues in production, like degraded throughput, tail-latency spikes, starved workers, or connection pool exhaustion (see the pool-size caveat below), and poor scaling under load.
+Enabling this flag does not remove the underlying problem. It moves synchronous blocking work off the serving API's event loop so health checks stop failing, but the blocking code continues to run on the background loop and **will** continue to cause issues in production, like degraded throughput, tail-latency spikes, starved workers, or connection pool exhaustion (see the pool-size caveat below), and poor scaling under load.
 
-  To properly resolve those issues, use native async drivers and async code throughout your agent. That means async HTTP clients like `httpx` or `aiohttp` (though we recommend caching the clients to avoid CPU overhead loading the SSL context), async database drivers like `asyncpg` or `psycopg[async]`, and async model SDK's. For unavoidable synchronous libraries, wrap the specific call in `asyncio.to_thread(...)` or `loop.run_in_executor(...)` instead of enabling this flag for the whole deployment.
+To properly resolve those issues, use native async drivers and async code throughout your agent. That means async HTTP clients like `httpx` or `aiohttp` (though we recommend caching the clients to avoid CPU overhead loading the SSL context), async database drivers like `asyncpg` or `psycopg[async]`, and async model SDK's. For unavoidable synchronous libraries, wrap the specific call in `asyncio.to_thread(...)` or `loop.run_in_executor(...)` instead of enabling this flag for the whole deployment.
 </Warning>
 
 This environment variable should be set to `True` if the implementation of a graph/node contains synchronous code. In this situation, the synchronous code will block the serving API event loop, which may cause the API to be unavailable. A symptom of an unavailable API is continuous application restarts due to failing health checks.
 
 <Warning>
-  When `BG_JOB_ISOLATED_LOOPS` is enabled, each background worker runs in its own thread with a **separate Postgres connection pool**. The per-worker pool size is `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`. For example, with `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` and `N_JOBS_PER_WORKER=15`, each worker gets a pool of only 1 connection. Small per-worker pools are more susceptible to connection failures because a single stale connection represents a large fraction of the pool. If you enable isolated loops, ensure `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` is large enough to provide at least a few connections per worker.
+When `BG_JOB_ISOLATED_LOOPS` is enabled, each background worker runs in its own thread with a **separate Postgres connection pool**. The per-worker pool size is `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`. For example, with `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` and `N_JOBS_PER_WORKER=15`, each worker gets a pool of only 1 connection. Small per-worker pools are more susceptible to connection failures because a single stale connection represents a large fraction of the pool. If you enable isolated loops, ensure `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` is large enough to provide at least a few connections per worker.
 </Warning>
 
 Defaults to `False`.
@@ -45,34 +43,31 @@ Defaults to `86400`.
 ## `CORS_ALLOW_ORIGINS`
 
 Set `CORS_ALLOW_ORIGINS` to specify allowed origins.
-
-* Example for allowing a single origin: `CORS_ALLOW_ORIGINS=https://example.com`
-* Example for allowing multiple origins: `CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
+- Example for allowing a single origin: `CORS_ALLOW_ORIGINS=https://example.com`
+- Example for allowing multiple origins: `CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
 
 For advanced CORS configuration, see [how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers).
 
 Defaults to `*` (all origins).
 
-<h2>
-  Supported Datadog environment variables
-</h2>
+## Supported Datadog environment variables {#dd_api_key}
 
 Set these environment variables or secrets on the deployment to send Agent Server traces and logs to Datadog. Every variable takes effect only when `DD_API_KEY` is set, which wraps the application process in Datadog's [`ddtrace-run`](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html) tracer and log-collection agent.
 
-* **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/). Required. Sending any traces or logs to Datadog requires it.
-* **`DD_LOGS_ENABLED`**: Set to `true` to forward Agent Server logs to Datadog. Omit it or set it to `false` to disable log forwarding.
-* **`DD_LOGS_INJECTION`**: Set to `true` to add trace and span identifiers to logs so that logs correlate with traces.
-* **`DD_TRACE_ENABLED`**: Controls Datadog trace collection. Set to `true` to collect traces or `false` to disable it.
-* **`DD_SITE`**: The Datadog site to send data to, such as `datadoghq.com` or `datadoghq.eu`. Defaults to `datadoghq.com`.
-* **`DD_ENV`**: The environment name applied to traces and logs, such as `production`.
-* **`DD_SERVICE`**: The service name applied to traces and logs.
-* **`DD_TRACE_DEBUG`**: Set to `true` to enable debug logging in the `ddtrace` tracer when troubleshooting.
-* **`DD_LOG_LEVEL`**: The Datadog Agent log level, such as `debug`, when troubleshooting.
+- **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/). Required. Sending any traces or logs to Datadog requires it.
+- **`DD_LOGS_ENABLED`**: Set to `true` to forward Agent Server logs to Datadog. Omit it or set it to `false` to disable log forwarding.
+- **`DD_LOGS_INJECTION`**: Set to `true` to add trace and span identifiers to logs so that logs correlate with traces.
+- **`DD_TRACE_ENABLED`**: Controls Datadog trace collection. Set to `true` to collect traces or `false` to disable it.
+- **`DD_SITE`**: The Datadog site to send data to, such as `datadoghq.com` or `datadoghq.eu`. Defaults to `datadoghq.com`.
+- **`DD_ENV`**: The environment name applied to traces and logs, such as `production`.
+- **`DD_SERVICE`**: The service name applied to traces and logs.
+- **`DD_TRACE_DEBUG`**: Set to `true` to enable debug logging in the `ddtrace` tracer when troubleshooting.
+- **`DD_LOG_LEVEL`**: The Datadog Agent log level, such as `debug`, when troubleshooting.
 
 For the full set of tracing options, see the [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) reference.
 
 <Note>
-  Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
+Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
 </Note>
 
 ## `LANGGRAPH_POSTGRES_POOL_MAX_SIZE`
@@ -90,16 +85,16 @@ Defaults to `150` connections.
 JSON-valued configuration for deferred checkpoint deletion. When enabled, thread delete and prune operations enqueue checkpoints for background deletion instead of deleting synchronously, moving the I/O off the request hot path. Available in `langgraph-api>=0.8.1`.
 
 <Note>
-  Only supported with the default PostgreSQL checkpointer backend. Deferred deletes will become the default in a future release.
+Only supported with the default PostgreSQL checkpointer backend. Deferred deletes will become the default in a future release.
 </Note>
 
 Accepted fields:
 
-* `enabled` (boolean, default `false`): When `true`, thread delete and prune operations enqueue checkpoints into `checkpoint_delete_queue` and return immediately, and the background worker drains the queue.
-* `enabledWorkerOnly` (boolean, default `false`): Runs only the background drain worker without enqueuing new entries. Use this to finish draining the queue after rolling `enabled` back to `false`.
-* `pollIntervalMs` (integer, default `5000`): How often the worker polls the queue, in milliseconds.
-* `batchSize` (integer, default `25`): Number of checkpoint entries the worker dequeues per transaction. Smaller values spread I/O over more time at the cost of longer drain latency.
-* `batchSleepMs` (integer, default `500`): How long the worker sleeps between batches when the queue is non-empty, in milliseconds.
+- `enabled` (boolean, default `false`): When `true`, thread delete and prune operations enqueue checkpoints into `checkpoint_delete_queue` and return immediately, and the background worker drains the queue.
+- `enabledWorkerOnly` (boolean, default `false`): Runs only the background drain worker without enqueuing new entries. Use this to finish draining the queue after rolling `enabled` back to `false`.
+- `pollIntervalMs` (integer, default `5000`): How often the worker polls the queue, in milliseconds.
+- `batchSize` (integer, default `25`): Number of checkpoint entries the worker dequeues per transaction. Smaller values spread I/O over more time at the cost of longer drain latency.
+- `batchSleepMs` (integer, default `500`): How long the worker sleeps between batches when the queue is non-empty, in milliseconds.
 
 Example: `LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`.
 
@@ -118,7 +113,7 @@ When set to `"mongo"`, you must also provide the MongoDB connection URI via [`LS
 Set `LANGSMITH_TRACING` to `false` to disable tracing to LangSmith.
 
 <Note>
-  For selective tracing control based on runtime conditions (such as per-client requirements or data sensitivity), see [Conditional tracing](/langsmith/conditional-tracing).
+For selective tracing control based on runtime conditions (such as per-client requirements or data sensitivity), see [Conditional tracing](/langsmith/conditional-tracing).
 </Note>
 
 Defaults to `true`.
@@ -147,7 +142,7 @@ To configure OpenTelemetry APM tracing for your deployment, set `LS_APM_OTEL_ENA
 
 Specify other [`OTEL_*` environment variables](https://opentelemetry.io/docs/collector/configuration/) to configure tracing, logging, and other instrumentation.
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 # If you set LS_APM_OTEL_ENABLED AND (OTEL_EXPORTER_OTLP_TRACES_ENDPOINT or OTEL_EXPORTER_OTLP_ENDPOINT),
 # the server starts with OpenTelemetry instrumentation enabled.
 LS_APM_OTEL_ENABLED=true
@@ -167,7 +162,7 @@ OTEL_PYTHON_EXCLUDED_URLS=/metrics,/ok,/info
 
 For example, to submit OpenTelemetry traces to [New Relic's US region](https://docs.newrelic.com/docs/opentelemetry/best-practices/opentelemetry-otlp/), set the following:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 LS_APM_OTEL_ENABLED=true
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://otlp.nr-data.net/v1/traces
 OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.nr-data.net
@@ -175,7 +170,7 @@ OTEL_EXPORTER_OTLP_HEADERS=api-key=<YOUR_INGEST_LICENSE_KEY>
 ```
 
 <Note>
-  OTel APM tracing was added in Agent Server version `0.5.32` and is currently in Alpha.
+OTel APM tracing was added in Agent Server version `0.5.32` and is currently in Alpha.
 </Note>
 
 ## `LS_MONGODB_URI`
@@ -189,8 +184,8 @@ See [Configure checkpointer backend](/langsmith/configure-checkpointer) for deta
 ## `REDIS_KEY_PREFIX`
 
 <Info>
-  **Available in API Server version 0.1.9+**
-  This environment variable is supported in API Server version 0.1.9 and above.
+**Available in API Server version 0.1.9+**
+This environment variable is supported in API Server version 0.1.9 and above.
 </Info>
 
 Specify a prefix for Redis keys. This allows multiple Agent Server instances to share the same Redis instance by using different key prefixes.
@@ -216,17 +211,18 @@ See the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk
 Defaults to `120` seconds.
 
 <Note>
-  Setting a very high value for `RESUMABLE_STREAM_TTL_SECONDS` can result in substantial Redis memory usage when there are many concurrent runs with large or frequent streaming output. Set this value to the minimum value to enable recovery during network interruptions and prefer checkpointing for long term durability and execution snapshotting.
+Setting a very high value for `RESUMABLE_STREAM_TTL_SECONDS` can result in substantial Redis memory usage when there are many concurrent runs with large or frequent streaming output. Set this value to the minimum value to enable recovery during network interruptions and prefer checkpointing for long term durability and execution snapshotting.
 </Note>
 
-***
+{/* Placeholder. No Cloud-exclusive Agent Server environment variables today. Add new sections here as they appear. */}
 
-<div>
-  <Callout icon="terminal-2">
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-cloud.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

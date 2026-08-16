@@ -2,9 +2,10 @@
 
 <!-- langchain-docs: How to upload experiments run outside of LangSmith with the REST API | https://docs.langchain.com/langsmith/upload-existing-experiments -->
 
-# 如何使用 REST API 上传在 LangSmith 外部运行的实验
+# 如何使用 REST API 上传在 LangSmith 之外运行的实验
 
 一些用户更喜欢在 LangSmith 之外管理数据集并运行实验，但希望使用 LangSmith UI 来查看结果。这是通过我们的端点支持的。
+
 
 本指南将向您展示如何使用 REST API 上传评估，以 Python 中的 `requests` 库为例。然而，同样的原则适用于任何语言。
 
@@ -14,7 +15,7 @@
 
 您可以使用以下架构将实验上传到`/datasets/upload-experiment`端点：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "experiment_name": "string (required)",
   "experiment_description": "string (optional)",
@@ -114,7 +115,7 @@
 
 下面是一个简单调用 `/datasets/upload-experiment` 的示例。这是一个基本示例，仅使用最重要的字段作为说明。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import requests
 
@@ -193,7 +194,7 @@ print(resp.json())
 
 以下是收到的回复：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dataset": {
     "name": "my-external-dataset",
@@ -246,22 +247,21 @@ print(resp.json())
 
 ## 在 UI 中查看实验
 
-现在，登录 UI 并单击新创建的数据集！您应该看到一个实验：<img alt="Uploaded experiments table" />
+现在，登录 UI 并单击新创建的数据集！您应该看到一个实验：![Uploaded experiments table](/langsmith/images/uploaded-dataset.png)
 
-您的示例将已上传：<img alt="Uploaded examples" />
+您的示例将已上传：![Uploaded examples](/langsmith/images/uploaded-dataset-examples.png)
 
-单击您的实验将带您进入比较视图：<img alt="Uploaded experiment comparison view" />
+单击您的实验将带您进入比较视图：![Uploaded experiment comparison view](/langsmith/images/uploaded-experiment.png)
 
 当您将更多实验上传到数据集时，您将能够比较结果并在比较视图中轻松识别回归。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-existing-experiments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

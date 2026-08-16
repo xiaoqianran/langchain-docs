@@ -8,56 +8,56 @@
 
 ## 先决条件
 
-* 部署（参考[how to set up an application for deployment](/langsmith/setup-app-requirements-txt)）和[hosting options](/langsmith/platform-setup)的详细信息。
-* 您的嵌入提供商（在本例中为 OpenAI）的 API 密钥。
-* `langchain >= 0.3.8`（如果您指定使用本指南中的字符串格式）。
+- 部署（参考[how to set up an application for deployment](/langsmith/setup-app-requirements-txt)）和[hosting options](/langsmith/platform-setup)的详细信息。
+- 您的嵌入提供商的 API 密钥（在本例中为 OpenAI）。
+- `langchain >= 0.3.8`（如果您指定使用本指南中的字符串格式）。
 
 ## 步骤
 
 1. 更新您的 [⟦T10⟧ configuration file](/langsmith/application-structure#configuration-file) 以包含商店配置：
 
-   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   {
-       ...
-       "store": {
-           "index": {
-               "embed": "openai:text-embedding-3-small",
-               "dims": 1536,
-               "fields": ["$"]
-           }
-       }
-   }
-   ```
+    ```json
+    {
+        ...
+        "store": {
+            "index": {
+                "embed": "openai:text-embedding-3-small",
+                "dims": 1536,
+                "fields": ["$"]
+            }
+        }
+    }
+    ```
 
-   这个配置：
+    这个配置：
 
-   * 使用 OpenAI 的 text-embedding-3-small 模型来生成嵌入。
-   * 将嵌入维度设置为 1536（与模型的输出匹配）。
-   * 索引存储数据中的所有字段（`["$"]` 表示索引所有内容，或指定特定字段，如`["text", "metadata.title"]`）。<Note>
-     每个部署都支持单个嵌入模型。 LangSmith 不支持配置多个嵌入模型，因为这会导致 `/store` 端点不明确并导致混合索引问题。
-   </Note>
+    - 使用 OpenAI 的 text-embedding-3-small 模型来生成嵌入。
+    - 将嵌入维度设置为 1536（与模型的输出匹配）。
+    - 索引存储数据中的所有字段（`["$"]` 表示索引所有内容，或指定特定字段，如`["text", "metadata.title"]`）。<Note>
+    每个部署都支持单个嵌入模型。 LangSmith不支持配置多个嵌入模型，因为这会导致`/store`端点不明确并导致混合索引问题。
+    </Note>
 
-2. 要使用字符串嵌入格式，请确保您的依赖项包含`langchain >= 0.3.8`：
+1. 要使用字符串嵌入格式，请确保您的依赖项包含`langchain >= 0.3.8`：
 
-   ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   # In pyproject.toml
-   [project]
-   dependencies = [
-       "langchain>=0.3.8"
-   ]
-   ```
+    ```toml
+    # In pyproject.toml
+    [project]
+    dependencies = [
+        "langchain>=0.3.8"
+    ]
+    ```
 
-   或者，如果使用 [requirements.txt](/langsmith/setup-app-requirements-txt)：
+    或者，如果使用 [requirements.txt](/langsmith/setup-app-requirements-txt)：
 
-   ```
-   langchain>=0.3.8
-   ```
+    ```
+    langchain>=0.3.8
+    ```
 
 ## 用法
 
 配置完成后，您可以在 [nodes](/oss/python/langgraph/graph-api#nodes) 中使用语义搜索。存储需要一个命名空间元组来组织内存：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 async def search_memory(state: State, *, store: BaseStore):
     # Search the store using semantic similarity
     # The namespace tuple helps organize different types of memories
@@ -72,7 +72,7 @@ async def search_memory(state: State, *, store: BaseStore):
 
 每个结果都是一个`SearchItem`（使用附加的`score`字段扩展`Item`）。当配置语义搜索时，`score`包含相似度分数：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 results[0].key       # "07e0caf4-1631-47b7-b15f-65515d4c1843"
 results[0].value     # {"text": "User prefers dark mode"}
 results[0].namespace # ("memory", "facts")
@@ -82,14 +82,14 @@ results[0].score     # 0.92 (similarity score, present when semantic search is c
 ### 改变你的嵌入模型
 
 <Warning>
-  更改嵌入模型或维度需要重新嵌入所有现有数据。没有用于此目的的自动迁移工具。如果您需要切换型号，请相应计划。
+更改嵌入模型或维度需要重新嵌入所有现有数据。没有用于此目的的自动迁移工具。如果您需要切换型号，请相应计划。
 </Warning>
 
 ## 自定义嵌入
 
 如果您想使用自定义嵌入，您可以将路径传递给自定义嵌入函数：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
     ...
     "store": {
@@ -104,7 +104,7 @@ results[0].score     # 0.92 (similarity score, present when semantic search is c
 
 部署将在指定路径中查找该函数。该函数必须是异步的并接受字符串列表：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # path/to/embedding_function.py
 from openai import AsyncOpenAI
 
@@ -125,7 +125,7 @@ async def aembed_texts(texts: list[str]) -> list[list[float]]:
 
 ## 通过API查询您也可以使用[LangGraph SDK](/langsmith/langgraph-python-sdk)查询商店。由于 SDK 使用异步操作：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import get_client
 
 async def search_store():
@@ -143,21 +143,20 @@ results = await search_store()
 
 配置语义搜索时，每个结果项都包含一个 `score` 字段：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 results["items"][0]["key"]       # "07e0caf4-1631-47b7-b15f-65515d4c1843"
 results["items"][0]["value"]     # {"text": "User prefers dark mode"}
 results["items"][0]["namespace"] # ["memory", "facts"]
 results["items"][0]["score"]     # 0.92 (similarity score)
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

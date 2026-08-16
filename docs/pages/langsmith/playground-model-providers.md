@@ -6,100 +6,79 @@ The [Playground](/langsmith/prompt-engineering-concepts#playground) supports a w
 
 Use this page for a list of the available providers and their configuration options:
 
-<div>
-  <a href="#amazon-bedrock">
-    <img alt="" />
+<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <a href="#amazon-bedrock" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/bedrock.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/bedrock.svg" alt="" noZoom />
+        <span className="font-semibold">Amazon Bedrock</span>
+    </a>
 
-    <img alt="" />
+    <a href="#anthropic" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/anthropic.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/anthropic.svg" alt="" noZoom />
+        <span className="font-semibold">Anthropic</span>
+    </a>
 
-    <span>Amazon Bedrock</span>
-  </a>
+    <a href="#azure-openai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/microsoft.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/microsoft.svg" alt="" noZoom />
+        <span className="font-semibold">Azure OpenAI</span>
+    </a>
 
-  <a href="#anthropic">
-    <img alt="" />
+    <a href="#deepseek" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/deepseek.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/deepseek.svg" alt="" noZoom />
+        <span className="font-semibold">DeepSeek</span>
+    </a>
 
-    <img alt="" />
+    <a href="#fireworks" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/fireworks.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/fireworks.svg" alt="" noZoom />
+        <span className="font-semibold">Fireworks</span>
+    </a>
 
-    <span>Anthropic</span>
-  </a>
+    <a href="#google-gemini" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/gemini.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/gemini.svg" alt="" noZoom />
+        <span className="font-semibold">Google Gemini</span>
+    </a>
 
-  <a href="#azure-openai">
-    <img alt="" />
+    <a href="#google-vertex-ai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/gemini.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/gemini.svg" alt="" noZoom />
+        <span className="font-semibold">Google Vertex AI</span>
+    </a>
 
-    <img alt="" />
+    <a href="#groq" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/groq.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/groq.svg" alt="" noZoom />
+        <span className="font-semibold">Groq</span>
+    </a>
 
-    <span>Azure OpenAI</span>
-  </a>
+    <a href="#mistral-ai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/mistral.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/mistral.svg" alt="" noZoom />
+        <span className="font-semibold">Mistral AI</span>
+    </a>
 
-  <a href="#deepseek">
-    <img alt="" />
 
-    <img alt="" />
+    <a href="#openai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/openai.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/openai.svg" alt="" noZoom />
+        <span className="font-semibold">OpenAI</span>
+    </a>
 
-    <span>DeepSeek</span>
-  </a>
+    <a href="#openai-compatible-endpoint" className="flex items-center justify-center gap-2 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <Icon icon="link" iconType="solid" className="w-5 h-5 flex-shrink-0 mx-1" />
+        <span className="font-semibold">OpenAI compatible endpoint</span>
+    </a>
 
-  <a href="#fireworks">
-    <img alt="" />
+    <a href="#xai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+        <img className="block dark:hidden w-5 h-5" src="/images/providers/light/xai.svg" alt="" noZoom />
+        <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/xai.svg" alt="" noZoom />
+        <span className="font-semibold">XAI</span>
+    </a>
 
-    <img alt="" />
-
-    <span>Fireworks</span>
-  </a>
-
-  <a href="#google-gemini">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>Google Gemini</span>
-  </a>
-
-  <a href="#google-vertex-ai">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>Google Vertex AI</span>
-  </a>
-
-  <a href="#groq">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>Groq</span>
-  </a>
-
-  <a href="#mistral-ai">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>Mistral AI</span>
-  </a>
-
-  <a href="#openai">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>OpenAI</span>
-  </a>
-
-  <a href="#openai-compatible-endpoint">
-    <Icon icon="link" />
-
-    <span>OpenAI compatible endpoint</span>
-  </a>
-
-  <a href="#xai">
-    <img alt="" />
-
-    <img alt="" />
-
-    <span>XAI</span>
-  </a>
 </div>
 
 For details on creating and managing model configurations, refer to the [Configure prompt settings](/langsmith/managing-model-configurations) page.
@@ -115,7 +94,7 @@ Amazon Bedrock supports two authentication methods. **IAM trusted entity is the 
 #### IAM trusted entity (recommended)
 
 <Note>
-  **Not applicable for [self-hosted LangSmith](/langsmith/self-hosted).** Use Access Keys (or the Bedrock API Key) instead.
+**Not applicable for [self-hosted LangSmith](/langsmith/self-hosted).** Use Access Keys (or the Bedrock API Key) instead.
 </Note>
 
 With IAM trusted entity authentication, you create an IAM role in your AWS account and allow LangSmith to assume it. No access keys are stored in LangSmith. Instead, LangSmith uses [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) to assume the role on each request.
@@ -125,7 +104,7 @@ To set this up:
 1. Create an IAM role in your AWS account with permissions to invoke Bedrock models (e.g., `bedrock:InvokeModel`).
 2. Add a trust policy that allows LangSmith's AWS account (`808407022534`) to assume the role, using your LangSmith workspace ID as the external ID:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -146,12 +125,12 @@ To set this up:
 ```
 
 <Tip>
-  You can find your workspace ID in your [LangSmith workspace settings](https://smith.langchain.com/settings).
+You can find your workspace ID in your [LangSmith workspace settings](https://smith.langchain.com/settings).
 </Tip>
 
 3. In the LangSmith Playground, open the Bedrock provider's secrets configuration by clicking the **Key** icon (the IAM Trusted Entity option is not available in the model configuration dropdown itself). Then expand the **IAM Trusted Entity** section and enter the ARN of the role you created.
 
-   <img alt="Bedrock secrets and API keys configuration with the IAM Trusted Entity section" />
+    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](/images/langsmith/bedrock-secrets-config.png)
 
 For more details on trust policies, see the [AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/).
 
@@ -163,11 +142,11 @@ Alternatively, you can authenticate with AWS access keys (`AWS_ACCESS_KEY_ID` an
 
 AWS Bedrock provides access to foundation models from multiple providers:
 
-* **Anthropic:** Claude models.
-* **Amazon:** Titan models.
-* **Cohere:** Command models.
-* **Meta:** Llama models.
-* **Others:** Additional providers available based on region.
+- **Anthropic:** Claude models.
+- **Amazon:** Titan models.
+- **Cohere:** Command models.
+- **Meta:** Llama models.
+- **Others:** Additional providers available based on region.
 
 For the current list of available models, refer to the [AWS Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html).
 
@@ -176,27 +155,24 @@ For the current list of available models, refer to the [AWS Bedrock documentatio
 Parameters depend on the underlying model provider:
 
 #### For Anthropic models
-
 Uses Anthropic configuration (see [Anthropic](#anthropic) section below).
 
 #### For Amazon Titan
-
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 1.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 1.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 #### AWS-specific settings
 
-* **Region:** AWS region for model deployment.
+- **Region:** AWS region for model deployment.
 
 ### Tool calling
 
 Depends on underlying model:
-
-* **Anthropic models:** `auto`, `any`.
-* **Cohere models:** `auto`.
+- **Anthropic models:** `auto`, `any`.
+- **Cohere models:** `auto`.
 
 ## Anthropic
 
@@ -206,9 +182,9 @@ Before you use this model, ensure you have an [Anthropic API key](https://consol
 
 Anthropic offers three tiers of models across their Claude generations:
 
-* **Opus:** Highest intelligence and capability.
-* **Sonnet:** Balanced performance and cost.
-* **Haiku:** Fast and cost-effective.
+- **Opus:** Highest intelligence and capability.
+- **Sonnet:** Balanced performance and cost.
+- **Haiku:** Fast and cost-effective.
 
 Recent Claude models support extended thinking capabilities for showing reasoning processes.
 
@@ -216,39 +192,39 @@ For the current list of available models, refer to the [Anthropic documentation]
 
 ### Configuration parameters
 
-| Parameter             | Range     | Default  | Description                                        |
-| --------------------- | --------- | -------- | -------------------------------------------------- |
-| **Temperature**       | 0.0 - 1.0 | Optional | Randomness control (uncheck to use model default)  |
-| **Max Output Tokens** | 1+        | 1024     | Maximum response length                            |
-| **Top P**             | 0.0 - 1.0 | Optional | Nucleus sampling (uncheck for model default)       |
-| **Top K**             | 1+        | Optional | Limits to top K tokens (uncheck for model default) |
+| Parameter | Range | Default | Description |
+|-----------|-------|---------|-------------|
+| **Temperature** | 0.0 - 1.0 | Optional | Randomness control (uncheck to use model default) |
+| **Max Output Tokens** | 1+ | 1024 | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Optional | Nucleus sampling (uncheck for model default) |
+| **Top K** | 1+ | Optional | Limits to top K tokens (uncheck for model default) |
 
 <Note>
-  Temperature, Top P, and Top K are optional. When unchecked, Claude uses its internal defaults.
+Temperature, Top P, and Top K are optional. When unchecked, Claude uses its internal defaults.
 </Note>
 
 #### Extended Thinking
 
 Available on supported Claude models. Enable the model to show reasoning before responding, similar to OpenAI's o-series.
 
-| Parameter                    | Range  | Description                             |
-| ---------------------------- | ------ | --------------------------------------- |
-| **Enable Extended Thinking** | Toggle | Show/hide thinking process              |
-| **Budget Tokens**            | 1+     | Max tokens for thinking (default: 1024) |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Enable Extended Thinking** | Toggle | Show/hide thinking process |
+| **Budget Tokens** | 1+ | Max tokens for thinking (default: 1024) |
 
 When enabled, responses include:
 
 1. A "thinking" section with the model's reasoning.
-2. The final response.
+1. The final response.
 
 #### Advanced options
 
-* **Base URL:** Override API endpoint for custom deployments.
+- **Base URL:** Override API endpoint for custom deployments.
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `any` (requires at least one tool).
-* **Parallel Execution:** No (sequential only).
+- **Supported Tool Choices:** `auto`, `any` (requires at least one tool).
+- **Parallel Execution:** No (sequential only).
 
 ## Azure OpenAI
 
@@ -258,9 +234,9 @@ Before you use this model, ensure you have [Azure OpenAI credentials](https://le
 
 Azure OpenAI provides the same model families as OpenAI:
 
-* **GPT series:** General-purpose chat models.
-* **o-series:** Reasoning-focused models.
-* **Legacy models:** GPT-3.5 and GPT-4 variants.
+- **GPT series:** General-purpose chat models.
+- **o-series:** Reasoning-focused models.
+- **Legacy models:** GPT-3.5 and GPT-4 variants.
 
 Model availability varies by Azure region and requires deployment before use.
 
@@ -272,14 +248,14 @@ Azure OpenAI supports the same parameters as OpenAI:
 
 #### Standard parameters
 
-| Parameter             | Range      | Description                                                        |
-| --------------------- | ---------- | ------------------------------------------------------------------ |
-| **Temperature**       | 0.0 - 2.0  | Controls randomness. Lower = more focused, higher = more creative. |
-| **Max Output Tokens** | 1+         | Maximum length of the response                                     |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling threshold. Alternative to temperature.            |
-| **Presence Penalty**  | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative)        |
-| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative)              |
-| **Seed**              | Integer    | For reproducible outputs                                           |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Controls randomness. Lower = more focused, higher = more creative. |
+| **Max Output Tokens** | 1+ | Maximum length of the response |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling threshold. Alternative to temperature. |
+| **Presence Penalty** | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative) |
+| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative) |
+| **Seed** | Integer | For reproducible outputs |
 
 #### Advanced parameters
 
@@ -288,22 +264,21 @@ Azure OpenAI supports the same parameters as OpenAI:
 **Service Tier:** Available on newer models.
 
 **Other parameters:**
-
-* **JSON Mode:** Force valid JSON responses.
-* **Parallel Tool Calls:** Execute multiple tools concurrently.
+- **JSON Mode:** Force valid JSON responses.
+- **Parallel Tool Calls:** Execute multiple tools concurrently.
 
 #### Azure-specific features
 
-* **Deployment Management:** Models must be deployed before use.
-* **Regional Availability:** Choose Azure regions for data residency.
-* **Content Filtering:** Built-in content moderation and safety features.
-* **Managed Identity:** Azure AD authentication support.
-* **Private Endpoints:** VNet integration for secure access.
+- **Deployment Management:** Models must be deployed before use.
+- **Regional Availability:** Choose Azure regions for data residency.
+- **Content Filtering:** Built-in content moderation and safety features.
+- **Managed Identity:** Azure AD authentication support.
+- **Private Endpoints:** VNet integration for secure access.
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name.
-* **Parallel Execution:** Yes.
+- **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name.
+- **Parallel Execution:** Yes.
 
 ## DeepSeek
 
@@ -317,13 +292,13 @@ For the current list of available models, refer to [DeepSeek's documentation](ht
 
 ### Configuration parameters
 
-| Parameter             | Range      | Description             |
-| --------------------- | ---------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0  | Response randomness     |
-| **Max Tokens**        | 1+         | Maximum response length |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling        |
-| **Presence Penalty**  | -2.0 - 2.0 |                         |
-| **Frequency Penalty** | -2.0 - 2.0 |                         |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Presence Penalty** | -2.0 - 2.0 |  |
+| **Frequency Penalty** | -2.0 - 2.0 |  |
 
 ## Fireworks
 
@@ -333,26 +308,26 @@ Before you use this model, ensure you have a [Fireworks API key](https://firewor
 
 Fireworks provides high-speed inference for popular open-source models and fine-tuned variants, including:
 
-* **Llama:** Meta's Llama models in various sizes.
-* **Mixtral:** Mistral's mixture-of-experts models.
-* **Qwen:** Alibaba's multilingual models.
-* **DeepSeek:** DeepSeek models.
-* **Other open models:** Gemma, Phi, and more.
+- **Llama:** Meta's Llama models in various sizes.
+- **Mixtral:** Mistral's mixture-of-experts models.
+- **Qwen:** Alibaba's multilingual models.
+- **DeepSeek:** DeepSeek models.
+- **Other open models:** Gemma, Phi, and more.
 
 For the current list of available models, refer to [Fireworks' model documentation](https://docs.fireworks.ai/models).
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 2.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `required`, `none`.
-* **Parallel Execution:** Yes.
+- **Supported Tool Choices:** `auto`, `required`, `none`.
+- **Parallel Execution:** Yes.
 
 ## Google Gemini
 
@@ -366,17 +341,17 @@ For the current list of available models, refer to [Google's Gemini documentatio
 
 ### Configuration parameters
 
-| Parameter             | Range     | Description             |
-| --------------------- | --------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness     |
-| **Max Output Tokens** | 1+        | Maximum response length |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling        |
-| **Top K**             | 1+        | Top-k sampling          |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Output Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Top K** | 1+ | Top-k sampling |
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `any`, `none`.
-* **Parallel Execution:** No.
+- **Supported Tool Choices:** `auto`, `any`, `none`.
+- **Parallel Execution:** No.
 
 ## Google Vertex AI
 
@@ -401,7 +376,7 @@ Google Vertex AI uses a **service account JSON key** for authentication in the L
 
 The downloaded file looks like this:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "type": "service_account",
   "project_id": "your-project-id",
@@ -419,7 +394,7 @@ The downloaded file looks like this:
 In the LangSmith Playground, open the Google Vertex AI provider configuration and paste the **entire contents** of the downloaded JSON key file into the **Service Account JSON** field.
 
 <Warning>
-  Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
+Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
 </Warning>
 
 ### Available models
@@ -430,22 +405,22 @@ For the current list of available models, refer to the [Vertex AI documentation]
 
 ### Configuration parameters
 
-| Parameter             | Range     | Description             |
-| --------------------- | --------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness     |
-| **Max Output Tokens** | 1+        | Maximum response length |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling        |
-| **Top K**             | 1+        | Top-k sampling          |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Output Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Top K** | 1+ | Top-k sampling |
 
 #### Advanced options
 
-* **Region Selection:** Deploy in specific Google Cloud regions.
-* **Safety Settings:** Configure content filtering thresholds.
+- **Region Selection:** Deploy in specific Google Cloud regions.
+- **Safety Settings:** Configure content filtering thresholds.
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `any`, `none`.
-* **Parallel Execution:** No.
+- **Supported Tool Choices:** `auto`, `any`, `none`.
+- **Parallel Execution:** No.
 
 ## Groq
 
@@ -459,15 +434,15 @@ For the current list of available models, refer to [Groq's model documentation](
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 2.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `required`, `none`.
-* **Parallel Execution:** Yes.
+- **Supported Tool Choices:** `auto`, `required`, `none`.
+- **Parallel Execution:** Yes.
 
 ## Mistral AI
 
@@ -481,16 +456,16 @@ For the current list of available models, refer to [Mistral's documentation](htt
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 1.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 1.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `any`, `none`.
-* **Parallel Execution:** No.
+- **Supported Tool Choices:** `auto`, `any`, `none`.
+- **Parallel Execution:** No.
 
 ## OpenAI
 
@@ -500,9 +475,9 @@ Before you use this model, ensure you have an [OpenAI API key](https://platform.
 
 OpenAI offers several model families with different capabilities and price points:
 
-* **GPT series:** General-purpose chat models with various size/capability tiers.
-* **o-series:** Reasoning-focused models optimized for complex problem-solving.
-* **Legacy models:** Older GPT-3.5 and GPT-4 variants.
+- **GPT series:** General-purpose chat models with various size/capability tiers.
+- **o-series:** Reasoning-focused models optimized for complex problem-solving.
+- **Legacy models:** Older GPT-3.5 and GPT-4 variants.
 
 For the current list of available models, refer to the [OpenAI documentation](https://platform.openai.com/docs/models).
 
@@ -510,14 +485,14 @@ For the current list of available models, refer to the [OpenAI documentation](ht
 
 Standard:
 
-| Parameter             | Range      | Description                                                        |
-| --------------------- | ---------- | ------------------------------------------------------------------ |
-| **Temperature**       | 0.0 - 2.0  | Controls randomness. Lower = more focused, higher = more creative. |
-| **Max Output Tokens** | 1+         | Maximum length of the response                                     |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling threshold. Alternative to temperature.            |
-| **Presence Penalty**  | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative)        |
-| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative)              |
-| **Seed**              | Integer    | For reproducible outputs                                           |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Controls randomness. Lower = more focused, higher = more creative. |
+| **Max Output Tokens** | 1+ | Maximum length of the response |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling threshold. Alternative to temperature. |
+| **Presence Penalty** | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative) |
+| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative) |
+| **Seed** | Integer | For reproducible outputs |
 
 Advanced:
 
@@ -525,103 +500,97 @@ Advanced:
 
 Controls reasoning depth before responding. Higher effort = better quality for complex tasks, longer latency.
 
-| Value     | Description                                  |
-| --------- | -------------------------------------------- |
-| `none`    | Disables reasoning (standard chat behavior)  |
-| `minimal` | Minimal reasoning                            |
-| `low`     | Light reasoning                              |
-| `medium`  | Moderate reasoning (default)                 |
-| `high`    | Deep reasoning                               |
-| `xhigh`   | Extra deep reasoning (if supported by model) |
+| Value | Description |
+|-------|-------------|
+| `none` | Disables reasoning (standard chat behavior) |
+| `minimal` | Minimal reasoning |
+| `low` | Light reasoning |
+| `medium` | Moderate reasoning (default) |
+| `high` | Deep reasoning |
+| `xhigh` | Extra deep reasoning (if supported by model) |
 
 <Note>
-  When reasoning\_effort is active (not `none`), temperature, top\_p, and penalties are automatically disabled.
+When reasoning_effort is active (not `none`), temperature, top_p, and penalties are automatically disabled.
 </Note>
 
 **Service Tier**: Available on newer models.
 
 Controls request priority and processing allocation.
 
-| Value      | Description                                          |
-| ---------- | ---------------------------------------------------- |
-| `auto`     | System decides based on load (default)               |
-| `default`  | Standard processing queue                            |
-| `flex`     | Lower cost, variable latency (if supported by model) |
-| `priority` | High-priority queue, lower latency, higher cost      |
+| Value | Description |
+|-------|-------------|
+| `auto` | System decides based on load (default) |
+| `default` | Standard processing queue |
+| `flex` | Lower cost, variable latency (if supported by model) |
+| `priority` | High-priority queue, lower latency, higher cost |
 
 **Other parameters:**
-
-* **JSON Mode:** Force valid JSON responses.
-* **Responses API:** Improved streaming (default: enabled).
-* **Parallel Tool Calls:** Execute multiple tools concurrently.
+- **JSON Mode:** Force valid JSON responses.
+- **Responses API:** Improved streaming (default: enabled).
+- **Parallel Tool Calls:** Execute multiple tools concurrently.
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name
-* **Parallel Execution:** Yes
+- **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name
+- **Parallel Execution:** Yes
 
 ## OpenAI Compatible Endpoint
 
 Authentication varies by endpoint. Common options:
 
-* **API key**: stored as a [workspace secret](/langsmith/administration-overview#workspaces) and forwarded as `Authorization: Bearer <key>`.
-* **None**: for unauthenticated local endpoints (for example, Ollama on `localhost`).
-* **OAuth2 `client_credentials`**: stored on the model configuration. LangSmith mints a short-lived bearer at request time and refreshes it before expiry. See [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials).
+- **API key**: stored as a [workspace secret](/langsmith/administration-overview#workspaces) and forwarded as `Authorization: Bearer <key>`.
+- **None**: for unauthenticated local endpoints (for example, Ollama on `localhost`).
+- **OAuth2 `client_credentials`**: stored on the model configuration. LangSmith mints a short-lived bearer at request time and refreshes it before expiry. See [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials).
 
 ### Configuration
 
 **Required:**
-
-* **Base URL:** Your endpoint URL (e.g., `https://your-endpoint.com/v1`).
-* **Model Name:** Your model identifier.
+- **Base URL:** Your endpoint URL (e.g., `https://your-endpoint.com/v1`).
+- **Model Name:** Your model identifier.
 
 Works with any framework or service that implements the OpenAI-compatible API format, including:
 
-* Self-hosted open-source inference servers
-* Model routing proxies
-* Custom model endpoints
+- Self-hosted open-source inference servers
+- Model routing proxies
+- Custom model endpoints
 
 ### Configuration parameters
 
 All OpenAI-compatible parameters:
 
-| Parameter             | Range      | Description             |
-| --------------------- | ---------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0  | Response randomness     |
-| **Max Tokens**        | 1+         | Maximum response length |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling        |
-| **Frequency Penalty** | -2.0 - 2.0 | Reduce repetition       |
-| **Presence Penalty**  | -2.0 - 2.0 | Encourage new topics    |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Frequency Penalty** | -2.0 - 2.0 | Reduce repetition |
+| **Presence Penalty** | -2.0 - 2.0 | Encourage new topics |
 
 **Advanced:**
-
-* **JSON Mode:** If endpoint supports it.
-* **Streaming:** If endpoint supports it.
-* **Function Calling:** If endpoint implements OpenAI format.
+- **JSON Mode:** If endpoint supports it.
+- **Streaming:** If endpoint supports it.
+- **Function Calling:** If endpoint implements OpenAI format.
 
 ### Tool calling
 
-* **Supported Tool Choices:** `auto`, `required`, `none` (if endpoint supports).
-* **Parallel Execution:** Yes (if endpoint supports).
+- **Supported Tool Choices:** `auto`, `required`, `none` (if endpoint supports).
+- **Parallel Execution:** Yes (if endpoint supports).
 
 ### Example endpoints
 
 **Local Ollama:**
-
 ```
 Base URL: http://localhost:11434/v1
 Model: llama3.1
 ```
 
 **vLLM Server:**
-
 ```
 Base URL: https://your-server.com/v1
 Model: mistral-7b-instruct
 ```
 
 **LiteLLM Proxy:**
-
 ```
 Base URL: https://litellm.example.com
 Model: gpt-4 (routes to configured backend)
@@ -641,18 +610,18 @@ For the current list of available models, refer to [xAI's documentation](https:/
 
 Standard OpenAI-compatible parameters:
 
-| Parameter             | Range     | Description                |
-| --------------------- | --------- | -------------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness        |
-| **Max Tokens**        | 1+        | Maximum response length    |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling           |
-| **Presence Penalty**  | 0 - 2.0   | Hidden on reasoning models |
-| **Frequency Penalty** | 0 - 2.0   | Hidden on reasoning models |
+| Parameter | Range | Description |
+|-----------|-------|-------------|
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Presence Penalty** | 0 - 2.0 | Hidden on reasoning models |
+| **Frequency Penalty** | 0 - 2.0 | Hidden on reasoning models |
 
 ### Tool calling
 
-* **Supported Tool Choices:** OpenAI-compatible.
-* **Parallel Execution:** Yes (if supported).
+- **Supported Tool Choices:** OpenAI-compatible.
+- **Parallel Execution:** Yes (if supported).
 
 ## Common Configuration Across All Providers
 
@@ -660,7 +629,7 @@ Standard OpenAI-compatible parameters:
 
 All providers support a **JSON editor for extra parameters** not exposed in the UI:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "logprobs": true,
   "top_logprobs": 5,
@@ -669,10 +638,9 @@ All providers support a **JSON editor for extra parameters** not exposed in the 
 ```
 
 **Use cases:**
-
-* Provider-specific beta features
-* Advanced parameters not yet in UI
-* Custom metadata for tracking
+- Provider-specific beta features
+- Advanced parameters not yet in UI
+- Custom metadata for tracking
 
 **Limitation:** Cannot override parameters already in the UI (e.g., can't set temperature here if it's set above)
 
@@ -680,32 +648,39 @@ All providers support a **JSON editor for extra parameters** not exposed in the 
 
 **Requests Per Second (RPS)** - Available for all providers when running over datasets:
 
-* **Range:** 0 - 500 RPS
-* **Purpose:** Respect API rate limits, control costs
-* **Default:** Varies by provider
+- **Range:** 0 - 500 RPS
+- **Purpose:** Respect API rate limits, control costs
+- **Default:** Varies by provider
 
 Set this when running experiments or evaluations to avoid hitting rate limits.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Configure prompt settings" icon="settings" href="/langsmith/managing-model-configurations">
+<CardGroup cols={2}>
+  <Card
+    title="Configure prompt settings"
+    icon="settings"
+    href="/langsmith/managing-model-configurations"
+  >
     Learn how to create and manage model configurations in the Playground.
   </Card>
 
-  <Card title="Create a prompt" icon="edit" href="/langsmith/create-a-prompt">
+  <Card
+    title="Create a prompt"
+    icon="edit"
+    href="/langsmith/create-a-prompt"
+  >
     Get started building prompts with your chosen model provider.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

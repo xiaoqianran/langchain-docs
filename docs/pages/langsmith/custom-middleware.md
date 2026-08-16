@@ -9,21 +9,21 @@ Adding middleware lets you intercept and modify requests and responses globally 
 Below is an example using FastAPI.
 
 <Note>
-  "Python only"
-  We currently only support custom middleware in Python deployments with `langgraph-api>=0.0.26`.
+"Python only"
+We currently only support custom middleware in Python deployments with `langgraph-api>=0.0.26`.
 </Note>
 
 ## Create app
 
 Starting from an **existing** LangSmith application, add the following middleware code to your `webapp.py` file. If you are starting from scratch, you can create a new app from a template using the CLI.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph new --template=new-langgraph-project-python my_new_project
 ```
 
 Once you have a LangGraph project, add the following app code:
 
-```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={5}}
 # ./src/agent/webapp.py
 from fastapi import FastAPI, Request
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -44,7 +44,7 @@ app.add_middleware(CustomHeaderMiddleware)
 
 Add the following to your `langgraph.json` configuration file. Make sure the path points to the `webapp.py` file you created above.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -60,9 +60,9 @@ Add the following to your `langgraph.json` configuration file. Make sure the pat
 
 ### Customize middleware ordering
 
-By default, custom middleware runs before authentication logic. To run custom middleware *after* authentication, set `middleware_order` to `auth_first` in your `http` configuration. (This customization is supported starting with API server v0.4.35 and later.)
+By default, custom middleware runs before authentication logic. To run custom middleware _after_ authentication, set `middleware_order` to `auth_first` in your `http` configuration. (This customization is supported starting with API server v0.4.35 and later.)
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -83,7 +83,7 @@ By default, custom middleware runs before authentication logic. To run custom mi
 
 Test the server out locally:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev --no-browser
 ```
 
@@ -97,14 +97,13 @@ You can deploy this app as-is to cloud or to your self-hosted platform.
 
 Now that you've added custom middleware to your deployment, you can use similar techniques to add [custom routes](/langsmith/custom-routes) or define [custom lifespan events](/langsmith/custom-lifespan) to further customize your server's behavior.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -4,26 +4,30 @@
 
 # 将自定义中间件添加到托管Deep Agents
 
-将内置或自定义中间件添加到托管 Deep Agents 项目。
-
 托管Deep Agents支持正常的Deep Agents`middleware`配置界面。
 
 将LangChain中间件添加到`define_deep_agent`以监视工具调用、添加护栏、编辑数据、重试瞬时故障或自定义模型调用。
 
+
+
+
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
 
 将代理入口点保留在项目根目录并将自定义中间件保留在`middleware/`下：
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   middleware/
     audit.py
 ```
+
+
+
 
 托管运行时仍然拥有 `backend`、`store`、`checkpointer`、`memory`、`skills` 和系统提示符。中间件应该关注围绕模型调用、工具调用和生命周期挂钩的代理行为。
 
@@ -31,9 +35,9 @@ my-agent/
 
 ## 使用预构建的中间件
 
-您可以直接在代理定义中使用LangChain预构建的中间件。
+您可以直接在代理定义中使用LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in)。
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py
 from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
 from managed_deepagents import define_deep_agent
 
@@ -47,15 +51,19 @@ agent = define_deep_agent(
 )
 ```
 
+
+
+
 中间件是横切行为的正确场所，例如 PII 处理、速率限制、重试策略、模型回退、动态模型选择和工具调用监控。
+
 
 ## 添加自定义中间件模块
 
 对于更高级的选项，您还可以定义[custom middleware](/oss/python/langchain/middleware/custom)。<Note>
-  托管Deep Agents使用`ainvoke`和`astream`，因此自定义中间件必须使用异步钩子。 Deep Agents `invoke` 和 `stream` 仍支持同步挂钩。
+托管Deep Agents使用`ainvoke`和`astream`，因此自定义中间件必须使用异步钩子。 Deep Agents `invoke` 和 `stream` 仍支持同步挂钩。
 </Note>
 
-```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python middleware/audit.py
 from collections.abc import Awaitable, Callable
 
 from langchain.agents.middleware import wrap_tool_call
@@ -75,9 +83,13 @@ async def log_tool_calls(
     return result
 ```
 
+
+
+
+
 将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中。
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py
 from managed_deepagents import define_deep_agent
 
 from middleware.audit import log_tool_calls
@@ -89,9 +101,15 @@ agent = define_deep_agent(
 )
 ```
 
+
+
+
 `mda dev` 和 `mda deploy` 将项目文件复制到已编译的版本中。
 
 您的中间件导入的工作方式应该与在普通本地 Python 项目中的工作方式相同。
+
+
+
 
 ## 使用运行时上下文
 
@@ -99,14 +117,13 @@ agent = define_deep_agent(
 
 例如，请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

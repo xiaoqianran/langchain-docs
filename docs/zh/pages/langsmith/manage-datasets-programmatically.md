@@ -15,173 +15,175 @@
 请注意，您可以向每个示例添加任意元数据，例如注释或来源。元数据存储为字典。
 
 <Check>
-  如果您要创建多个示例，请考虑使用 `create_examples`/`createExamples` 方法在单个请求中创建多个示例。如果创建单个示例，您可以使用 `create_example`/`createExample` 方法。
+如果您要创建多个示例，请考虑使用 `create_examples`/`createExamples` 方法在单个请求中创建多个示例。如果创建单个示例，您可以使用 `create_example`/`createExample` 方法。
 </Check>
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  examples = [
-    {
-      "inputs": {"question": "What is the largest mammal?"},
-      "outputs": {"answer": "The blue whale"},
-      "metadata": {"source": "Wikipedia"},
-    },
-    {
-      "inputs": {"question": "What do mammals and birds have in common?"},
-      "outputs": {"answer": "They are both warm-blooded"},
-      "metadata": {"source": "Wikipedia"},
-    },
-    {
-      "inputs": {"question": "What are reptiles known for?"},
-      "outputs": {"answer": "Having scales"},
-      "metadata": {"source": "Wikipedia"},
-    },
-    {
-      "inputs": {"question": "What's the main characteristic of amphibians?"},
-      "outputs": {"answer": "They live both in water and on land"},
-      "metadata": {"source": "Wikipedia"},
-    },
-  ]
+```python Python
+from langsmith import Client
 
-  client = Client()
-  dataset_name = "Elementary Animal Questions"
+examples = [
+  {
+    "inputs": {"question": "What is the largest mammal?"},
+    "outputs": {"answer": "The blue whale"},
+    "metadata": {"source": "Wikipedia"},
+  },
+  {
+    "inputs": {"question": "What do mammals and birds have in common?"},
+    "outputs": {"answer": "They are both warm-blooded"},
+    "metadata": {"source": "Wikipedia"},
+  },
+  {
+    "inputs": {"question": "What are reptiles known for?"},
+    "outputs": {"answer": "Having scales"},
+    "metadata": {"source": "Wikipedia"},
+  },
+  {
+    "inputs": {"question": "What's the main characteristic of amphibians?"},
+    "outputs": {"answer": "They live both in water and on land"},
+    "metadata": {"source": "Wikipedia"},
+  },
+]
 
-  # Storing inputs in a dataset lets us
-  # run chains and LLMs over a shared set of examples.
-  dataset = client.create_dataset(
-    dataset_name=dataset_name, description="Questions and answers about animal phylogenetics.",
-  )
+client = Client()
+dataset_name = "Elementary Animal Questions"
 
-  # Prepare inputs, outputs, and metadata for bulk creation
-  client.create_examples(
-    dataset_id=dataset.id,
-    examples=examples
-  )
-  ```
+# Storing inputs in a dataset lets us
+# run chains and LLMs over a shared set of examples.
+dataset = client.create_dataset(
+  dataset_name=dataset_name, description="Questions and answers about animal phylogenetics.",
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+# Prepare inputs, outputs, and metadata for bulk creation
+client.create_examples(
+  dataset_id=dataset.id,
+  examples=examples
+)
+```
 
-  const client = new Client();
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  const exampleInputs: [string, string][] = [
-    ["What is the largest mammal?", "The blue whale"],
-    ["What do mammals and birds have in common?", "They are both warm-blooded"],
-    ["What are reptiles known for?", "Having scales"],
-    [
-      "What's the main characteristic of amphibians?",
-      "They live both in water and on land",
-    ],
-  ];
+const client = new Client();
 
-  const datasetName = "Elementary Animal Questions";
+const exampleInputs: [string, string][] = [
+  ["What is the largest mammal?", "The blue whale"],
+  ["What do mammals and birds have in common?", "They are both warm-blooded"],
+  ["What are reptiles known for?", "Having scales"],
+  [
+    "What's the main characteristic of amphibians?",
+    "They live both in water and on land",
+  ],
+];
 
-  // Storing inputs in a dataset lets us
-  // run chains and LLMs over a shared set of examples.
-  const dataset = await client.createDataset(datasetName, {
-    description: "Questions and answers about animal phylogenetics",
-  });
+const datasetName = "Elementary Animal Questions";
 
-  // Prepare inputs, outputs, and metadata for bulk creation
-  const inputs = exampleInputs.map(([inputPrompt]) => ({ question: inputPrompt }));
-  const outputs = exampleInputs.map(([, outputAnswer]) => ({ answer: outputAnswer }));
-  const metadata = exampleInputs.map(() => ({ source: "Wikipedia" }));
+// Storing inputs in a dataset lets us
+// run chains and LLMs over a shared set of examples.
+const dataset = await client.createDataset(datasetName, {
+  description: "Questions and answers about animal phylogenetics",
+});
 
-  // Use the bulk createExamples method
-  await client.createExamples({
-    inputs,
-    outputs,
-    metadata,
-    datasetId: dataset.id,
-  });
-  ```
+// Prepare inputs, outputs, and metadata for bulk creation
+const inputs = exampleInputs.map(([inputPrompt]) => ({ question: inputPrompt }));
+const outputs = exampleInputs.map(([, outputAnswer]) => ({ answer: outputAnswer }));
+const metadata = exampleInputs.map(() => ({ source: "Wikipedia" }));
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-  import com.langchain.smith.core.JsonValue;
-  import com.langchain.smith.errors.UnexpectedStatusCodeException;
-  import com.langchain.smith.models.datasets.Dataset;
-  import com.langchain.smith.models.datasets.DatasetCreateParams;
-  import com.langchain.smith.models.datasets.DatasetListParams;
-  import com.langchain.smith.models.examples.bulk.BulkCreateParams;
-  import java.util.List;
-  import java.util.Map;
-  import java.util.stream.Collectors;
+// Use the bulk createExamples method
+await client.createExamples({
+  inputs,
+  outputs,
+  metadata,
+  datasetId: dataset.id,
+});
+```
 
-  public class CreateDatasetExample {
-      public static void main(String[] args) {
-          LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+import com.langchain.smith.core.JsonValue;
+import com.langchain.smith.errors.UnexpectedStatusCodeException;
+import com.langchain.smith.models.datasets.Dataset;
+import com.langchain.smith.models.datasets.DatasetCreateParams;
+import com.langchain.smith.models.datasets.DatasetListParams;
+import com.langchain.smith.models.examples.bulk.BulkCreateParams;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-          List<String[]> exampleInputs = List.of(
-              new String[]{"What is the largest mammal?", "The blue whale"},
-              new String[]{"What do mammals and birds have in common?", "They are both warm-blooded"},
-              new String[]{"What are reptiles known for?", "Having scales"},
-              new String[]{"What's the main characteristic of amphibians?", "They live both in water and on land"}
-          );
+public class CreateDatasetExample {
+    public static void main(String[] args) {
+        LangsmithClient client = LangsmithOkHttpClient.fromEnv();
 
-          String datasetName = "Elementary Animal Questions";
+        List<String[]> exampleInputs = List.of(
+            new String[]{"What is the largest mammal?", "The blue whale"},
+            new String[]{"What do mammals and birds have in common?", "They are both warm-blooded"},
+            new String[]{"What are reptiles known for?", "Having scales"},
+            new String[]{"What's the main characteristic of amphibians?", "They live both in water and on land"}
+        );
 
-          Dataset dataset;
-          try {
-              dataset = client.datasets().create(
-                  DatasetCreateParams.builder()
-                      .name(datasetName)
-                      .description("Questions and answers about animal phylogenetics")
-                      .build()
-              );
-          } catch (UnexpectedStatusCodeException e) {
-              // Dataset already exists, get it
-              if (e.statusCode() == 409) {
-                  DatasetListParams listParams = DatasetListParams.builder()
-                      .name(datasetName)
-                      .build();
-                  dataset = client.datasets().list(listParams).items().get(0);
-              } else {
-                  throw e;
-              }
-          }
+        String datasetName = "Elementary Animal Questions";
 
-          // Prepare inputs, outputs, and metadata for bulk creation
-          List<Map<String, String>> inputs = exampleInputs.stream()
-              .map(pair -> {
-                  return Maps.of("question", pair[0]);
-              })
-              .collect(Collectors.toList());
+        Dataset dataset;
+        try {
+            dataset = client.datasets().create(
+                DatasetCreateParams.builder()
+                    .name(datasetName)
+                    .description("Questions and answers about animal phylogenetics")
+                    .build()
+            );
+        } catch (UnexpectedStatusCodeException e) {
+            // Dataset already exists, get it
+            if (e.statusCode() == 409) {
+                DatasetListParams listParams = DatasetListParams.builder()
+                    .name(datasetName)
+                    .build();
+                dataset = client.datasets().list(listParams).items().get(0);
+            } else {
+                throw e;
+            }
+        }
 
-          List<Map<String, String>> outputs = exampleInputs.stream()
-              .map(pair -> {
-                  return Maps.of("answer", pair[1]);
-              })
-              .collect(Collectors.toList());
+        // Prepare inputs, outputs, and metadata for bulk creation
+        List<Map<String, String>> inputs = exampleInputs.stream()
+            .map(pair -> {
+                return Maps.of("question", pair[0]);
+            })
+            .collect(Collectors.toList());
 
-          List<Map<String, String>> metadata = exampleInputs.stream()
-              .map(pair -> {
-                  return Maps.of("source", "Wikipedia");
-              })
-              .collect(Collectors.toList());
+        List<Map<String, String>> outputs = exampleInputs.stream()
+            .map(pair -> {
+                return Maps.of("answer", pair[1]);
+            })
+            .collect(Collectors.toList());
 
-          // Use the bulk createExamples method
-          BulkCreateParams.Builder bulkParamsBuilder = BulkCreateParams.builder();
-          for (int i = 0; i < inputs.size(); i++) {
-              bulkParamsBuilder.addBody(
-                  BulkCreateParams.Body.builder()
-                      .datasetId(dataset.id())
-                      .inputs(JsonValue.from(inputs.get(i)))
-                      .outputs(JsonValue.from(outputs.get(i)))
-                      .metadata(JsonValue.from(metadata.get(i)))
-                      .build()
-              );
-          }
+        List<Map<String, String>> metadata = exampleInputs.stream()
+            .map(pair -> {
+                return Maps.of("source", "Wikipedia");
+            })
+            .collect(Collectors.toList());
 
-          client.examples().bulk().create(bulkParamsBuilder.build());
-      }
-  }
+        // Use the bulk createExamples method
+        BulkCreateParams.Builder bulkParamsBuilder = BulkCreateParams.builder();
+        for (int i = 0; i < inputs.size(); i++) {
+            bulkParamsBuilder.addBody(
+                BulkCreateParams.Body.builder()
+                    .datasetId(dataset.id())
+                    .inputs(JsonValue.from(inputs.get(i)))
+                    .outputs(JsonValue.from(outputs.get(i)))
+                    .metadata(JsonValue.from(metadata.get(i)))
+                    .build()
+            );
+        }
+
+        client.examples().bulk().create(bulkParamsBuilder.build());
+    }
+}
 
 
-  ```
+```
+
 </CodeGroup>
 
 ### 从轨迹创建数据集
@@ -189,244 +191,248 @@
 要根据轨迹的运行（跨度）创建数据集，您可以使用相同的方法。有关如何获取和过滤运行的**许多**更多示例，请参阅 [export traces](/langsmith/export-traces) 指南。下面是一个例子：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
-  dataset_name = "Example Dataset"
+```python Python
+from langsmith import Client
 
-  # Filter runs to add to the dataset
-  runs = client.list_runs(
-    project_name="my_project",
-    is_root=True,
-    error=False,
-  )
+client = Client()
+dataset_name = "Example Dataset"
 
-  dataset = client.create_dataset(dataset_name, description="An example dataset")
+# Filter runs to add to the dataset
+runs = client.list_runs(
+  project_name="my_project",
+  is_root=True,
+  error=False,
+)
 
-  # Prepare inputs and outputs for bulk creation
-  examples = [{"inputs": run.inputs, "outputs": run.outputs} for run in runs]
+dataset = client.create_dataset(dataset_name, description="An example dataset")
 
-  # Use the bulk create_examples method
-  client.create_examples(
-    dataset_id=dataset.id,
-    examples=examples
-  )
-  ```
+# Prepare inputs and outputs for bulk creation
+examples = [{"inputs": run.inputs, "outputs": run.outputs} for run in runs]
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client, Run } from "langsmith";
+# Use the bulk create_examples method
+client.create_examples(
+  dataset_id=dataset.id,
+  examples=examples
+)
+```
 
-  const client = new Client();
-  const datasetName = "Example Dataset";
+```typescript TypeScript
+import { Client, Run } from "langsmith";
 
-  // Filter runs to add to the dataset
-  const runs: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "my_project",
-    isRoot: 1,
-    error: false,
-  })) {
-    runs.push(run);
-  }
+const client = new Client();
+const datasetName = "Example Dataset";
 
-  const dataset = await client.createDataset(datasetName, {
-    description: "An example dataset",
-    dataType: "kv",
-  });
+// Filter runs to add to the dataset
+const runs: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "my_project",
+  isRoot: 1,
+  error: false,
+})) {
+  runs.push(run);
+}
 
-  // Prepare inputs and outputs for bulk creation
-  const inputs = runs.map(run => run.inputs);
-  const outputs = runs.map(run => run.outputs ?? {});
+const dataset = await client.createDataset(datasetName, {
+  description: "An example dataset",
+  dataType: "kv",
+});
 
-  // Use the bulk createExamples method
-  await client.createExamples({
-    inputs,
-    outputs,
-    datasetId: dataset.id,
-  });
-  ```
+// Prepare inputs and outputs for bulk creation
+const inputs = runs.map(run => run.inputs);
+const outputs = runs.map(run => run.outputs ?? {});
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-  import com.langchain.smith.core.JsonValue;
-  import com.langchain.smith.models.datasets.Dataset;
-  import com.langchain.smith.models.datasets.DatasetCreateParams;
-  import com.langchain.smith.models.examples.bulk.BulkCreateParams;
-  import com.langchain.smith.models.runs.RunQueryParams;
-  import com.langchain.smith.models.runs.RunQueryResponse;
-  import java.util.ArrayList;
-  import java.util.List;
+// Use the bulk createExamples method
+await client.createExamples({
+  inputs,
+  outputs,
+  datasetId: dataset.id,
+});
+```
 
-  public class CreateDatasetExample {
-      public static void main(String[] args) {
-          LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-          String projectId = System.getenv("LANGSMITH_PROJECT_ID");
-          String datasetName = "Example Dataset";
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+import com.langchain.smith.core.JsonValue;
+import com.langchain.smith.models.datasets.Dataset;
+import com.langchain.smith.models.datasets.DatasetCreateParams;
+import com.langchain.smith.models.examples.bulk.BulkCreateParams;
+import com.langchain.smith.models.runs.RunQueryParams;
+import com.langchain.smith.models.runs.RunQueryResponse;
+import java.util.ArrayList;
+import java.util.List;
 
-          List<RunQueryResponse.Run> allRuns = new ArrayList<>();
-          String cursor = null;
-          try {
-              do {
-                  RunQueryParams.Builder paramsBuilder = RunQueryParams.builder()
-                      .addSession(projectId)
-                      .isRoot(true)
-                      .error(false)
-                      .limit(10L);
+public class CreateDatasetExample {
+    public static void main(String[] args) {
+        LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+        String projectId = System.getenv("LANGSMITH_PROJECT_ID");
+        String datasetName = "Example Dataset";
 
-                  if (cursor != null) {
-                      paramsBuilder.cursor(cursor);
-                  }
+        List<RunQueryResponse.Run> allRuns = new ArrayList<>();
+        String cursor = null;
+        try {
+            do {
+                RunQueryParams.Builder paramsBuilder = RunQueryParams.builder()
+                    .addSession(projectId)
+                    .isRoot(true)
+                    .error(false)
+                    .limit(10L);
 
-                  RunQueryResponse response = client.runs().query(paramsBuilder.build());
-                  allRuns.addAll(response.runs());
+                if (cursor != null) {
+                    paramsBuilder.cursor(cursor);
+                }
 
-                  // Get cursor for next page
-                  try {
-                      Map<String, JsonValue> cursorProps = response.cursors()._additionalProperties();
-                      if (cursorProps != null && cursorProps.containsKey("next")) {
-                          JsonValue nextValue = cursorProps.get("next");
-                          if (nextValue != null && !nextValue.isNull() && !nextValue.isMissing()) {
-                              cursor = nextValue.asString().orElse(null);
-                          } else {
-                              cursor = null;
-                          }
-                      } else {
-                          cursor = null;
-                      }
-                  } catch (Exception e) {
-                      cursor = null;
-                  }
-                  if (response.runs().size() < 50) {
-                      cursor = null;
-                  }
-              } while (cursor != null && !cursor.isEmpty());
-          } catch (Exception e) {
-              System.err.println("Error querying runs: " + e.getMessage());
-              e.printStackTrace();
-              System.exit(1);
-          }
+                RunQueryResponse response = client.runs().query(paramsBuilder.build());
+                allRuns.addAll(response.runs());
 
-          System.out.println("Total runs found: " + allRuns.size());
+                // Get cursor for next page
+                try {
+                    Map<String, JsonValue> cursorProps = response.cursors()._additionalProperties();
+                    if (cursorProps != null && cursorProps.containsKey("next")) {
+                        JsonValue nextValue = cursorProps.get("next");
+                        if (nextValue != null && !nextValue.isNull() && !nextValue.isMissing()) {
+                            cursor = nextValue.asString().orElse(null);
+                        } else {
+                            cursor = null;
+                        }
+                    } else {
+                        cursor = null;
+                    }
+                } catch (Exception e) {
+                    cursor = null;
+                }
+                if (response.runs().size() < 50) {
+                    cursor = null;
+                }
+            } while (cursor != null && !cursor.isEmpty());
+        } catch (Exception e) {
+            System.err.println("Error querying runs: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
 
-          // Create dataset
-          Dataset dataset = client.datasets().create(
-              DatasetCreateParams.builder()
-                  .name(datasetName)
-                  .description("An example dataset")
-                  .build()
-          );
+        System.out.println("Total runs found: " + allRuns.size());
 
-          // Prepare inputs and outputs for bulk creation
-          BulkCreateParams.Builder bulkParamsBuilder = BulkCreateParams.builder();
-          int examplesWithData = 0;
-          for (RunQueryResponse.Run run : allRuns) {
-              if (run.inputs().isPresent() && run.outputs().isPresent()) {
-                  // Get the additional properties maps which contain the actual data
-                  Map<String, JsonValue> inputsMap = run.inputs().get()._additionalProperties();
-                  Map<String, JsonValue> outputsMap = run.outputs().get()._additionalProperties();
+        // Create dataset
+        Dataset dataset = client.datasets().create(
+            DatasetCreateParams.builder()
+                .name(datasetName)
+                .description("An example dataset")
+                .build()
+        );
 
-                  bulkParamsBuilder.addBody(
-                      BulkCreateParams.Body.builder()
-                          .datasetId(dataset.id())
-                          .inputs(JsonValue.from(inputsMap))
-                          .outputs(JsonValue.from(outputsMap))
-                          .build()
-                  );
-                  examplesWithData++;
-              }
-          }
+        // Prepare inputs and outputs for bulk creation
+        BulkCreateParams.Builder bulkParamsBuilder = BulkCreateParams.builder();
+        int examplesWithData = 0;
+        for (RunQueryResponse.Run run : allRuns) {
+            if (run.inputs().isPresent() && run.outputs().isPresent()) {
+                // Get the additional properties maps which contain the actual data
+                Map<String, JsonValue> inputsMap = run.inputs().get()._additionalProperties();
+                Map<String, JsonValue> outputsMap = run.outputs().get()._additionalProperties();
 
-          System.out.println("Prepared " + examplesWithData + " examples from " + allRuns.size() + " runs");
+                bulkParamsBuilder.addBody(
+                    BulkCreateParams.Body.builder()
+                        .datasetId(dataset.id())
+                        .inputs(JsonValue.from(inputsMap))
+                        .outputs(JsonValue.from(outputsMap))
+                        .build()
+                );
+                examplesWithData++;
+            }
+        }
 
-          if (examplesWithData == 0) {
-              System.err.println("No runs have both inputs and outputs. Cannot create examples.");
-              System.exit(1);
-          }
+        System.out.println("Prepared " + examplesWithData + " examples from " + allRuns.size() + " runs");
 
-          client.examples().bulk().create(bulkParamsBuilder.build());
-          System.out.println("Created " + examplesWithData + " examples in dataset");
-      }
-  }
-  ```
+        if (examplesWithData == 0) {
+            System.err.println("No runs have both inputs and outputs. Cannot create examples.");
+            System.exit(1);
+        }
+
+        client.examples().bulk().create(bulkParamsBuilder.build());
+        System.out.println("Created " + examplesWithData + " examples in dataset");
+    }
+}
+```
+
 </CodeGroup>
 
-### 从 CSV 文件创建数据集在本部分中，我们将演示如何通过上传 CSV 文件来创建数据集。
+### 从 CSV 文件创建数据集
 
-首先，确保您的 CSV 文件格式正确，其中包含代表输入和输出键的列。这些密钥将用于在上传过程中正确映射您的数据。您可以为数据集指定可选名称和描述。否则，文件名将用作数据集名称，并且不会提供任何描述。
+在本部分中，我们将演示如何通过上传 CSV 文件来创建数据集。首先，确保您的 CSV 文件格式正确，其中包含代表输入和输出键的列。这些密钥将用于在上传过程中正确映射您的数据。您可以为数据集指定可选名称和描述。否则，文件名将用作数据集名称，并且不会提供任何描述。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  import os
 
-  client = Client()
-  csv_file = 'path/to/your/csvfile.csv'
-  input_keys = ['column1', 'column2'] # replace with your input column names
-  output_keys = ['output1', 'output2'] # replace with your output column names
+```python Python
+from langsmith import Client
+import os
 
-  dataset = client.upload_csv(
-    csv_file=csv_file,
-    input_keys=input_keys,
-    output_keys=output_keys,
-    name="My CSV Dataset",
-    description="Dataset created from a CSV file",
-    data_type="kv"
-  )
-  ```
+client = Client()
+csv_file = 'path/to/your/csvfile.csv'
+input_keys = ['column1', 'column2'] # replace with your input column names
+output_keys = ['output1', 'output2'] # replace with your output column names
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+dataset = client.upload_csv(
+  csv_file=csv_file,
+  input_keys=input_keys,
+  output_keys=output_keys,
+  name="My CSV Dataset",
+  description="Dataset created from a CSV file",
+  data_type="kv"
+)
+```
 
-  const client = new Client();
-  const csvFile = 'path/to/your/csvfile.csv';
-  const inputKeys = ['column1', 'column2']; // replace with your input column names
-  const outputKeys = ['output1', 'output2']; // replace with your output column names
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  const dataset = await client.uploadCsv({
-    csvFile: csvFile,
-    fileName: "My CSV Dataset",
-    inputKeys: inputKeys,
-    outputKeys: outputKeys,
-    description: "Dataset created from a CSV file",
-    dataType: "kv"
-  });
-  ```
+const client = new Client();
+const csvFile = 'path/to/your/csvfile.csv';
+const inputKeys = ['column1', 'column2']; // replace with your input column names
+const outputKeys = ['output1', 'output2']; // replace with your output column names
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-  import com.langchain.smith.models.datasets.Dataset;
-  import com.langchain.smith.models.datasets.DatasetUploadParams;
-  import com.langchain.smith.models.datasets.DataType;
-  import java.nio.file.Path;
-  import java.nio.file.Paths;
-  import java.util.List;
+const dataset = await client.uploadCsv({
+  csvFile: csvFile,
+  fileName: "My CSV Dataset",
+  inputKeys: inputKeys,
+  outputKeys: outputKeys,
+  description: "Dataset created from a CSV file",
+  dataType: "kv"
+});
+```
 
-  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-  Path csvFile = Paths.get("path/to/your/csvfile.csv");
-  List<String> inputKeys = List.of("column1", "column2");
-  List<String> outputKeys = List.of("output1", "output2");
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+import com.langchain.smith.models.datasets.Dataset;
+import com.langchain.smith.models.datasets.DatasetUploadParams;
+import com.langchain.smith.models.datasets.DataType;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
-  Dataset dataset = client.datasets().upload(
-      DatasetUploadParams.builder()
-          .file(csvFile)
-          .inputKeys(inputKeys)
-          .outputKeys(outputKeys)
-          .name("My CSV Dataset")
-          .description("Dataset created from a CSV file")
-          .dataType(DataType.KV)
-          .build()
-  );
-  ```
+LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+Path csvFile = Paths.get("path/to/your/csvfile.csv");
+List<String> inputKeys = List.of("column1", "column2");
+List<String> outputKeys = List.of("output1", "output2");
+
+Dataset dataset = client.datasets().upload(
+    DatasetUploadParams.builder()
+        .file(csvFile)
+        .inputKeys(inputKeys)
+        .outputKeys(outputKeys)
+        .name("My CSV Dataset")
+        .description("Dataset created from a CSV file")
+        .dataType(DataType.KV)
+        .build()
+);
+```
+
 </CodeGroup>
 
 ### 从 pandas DataFrame 创建数据集（仅限 Python）
 
 python 客户端提供了一种额外的便捷方法来从 pandas 数据帧上传数据集。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 import os
 import pandas as pd
@@ -451,47 +457,51 @@ dataset = client.upload_dataframe(
 您可以使用 Python 和 TypeScript SDK 中的 `list_datasets`/`listDatasets` 方法以编程方式从 LangSmith 获取数据集。以下是一些常见的调用。
 
 <Info>
-  在运行以下代码片段之前初始化客户端。
+在运行以下代码片段之前初始化客户端。
 </Info>
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
-  ```
+```python Python
+from langsmith import Client
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+client = Client()
+```
 
-  const client = new Client();
-  ```
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+const client = new Client();
+```
 
-  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-  ```
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+
+LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+```
+
 </CodeGroup>
 
 ### 查询所有数据集
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  datasets = client.list_datasets()
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const datasets = await client.listDatasets();
-  ```
+```python Python
+datasets = client.list_datasets()
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.datasets.DatasetListParams;
+```typescript TypeScript
+const datasets = await client.listDatasets();
+```
 
-  DatasetListParams listParams = DatasetListParams.builder().build();
-  var datasets = client.datasets().list(listParams);
-  ```
+```java Java
+import com.langchain.smith.models.datasets.DatasetListParams;
+
+DatasetListParams listParams = DatasetListParams.builder().build();
+var datasets = client.datasets().list(listParams);
+```
+
 </CodeGroup>
 
 ### 按名称列出数据集
@@ -499,45 +509,51 @@ dataset = client.upload_dataframe(
 如果您想按确切名称搜索，可以执行以下操作：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  datasets = client.list_datasets(dataset_name="My Test Dataset 1")
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const datasets = await client.listDatasets({
-    datasetName: "My Test Dataset 1"
-  });
-  ```
+```python Python
+datasets = client.list_datasets(dataset_name="My Test Dataset 1")
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.datasets.DatasetListParams;
+```typescript TypeScript
+const datasets = await client.listDatasets({
+  datasetName: "My Test Dataset 1"
+});
+```
 
-  DatasetListParams listParams = DatasetListParams.builder()
-      .name("My Test Dataset 1")
-      .build();
-  var datasets = client.datasets().list(listParams);
-  ```
+```java Java
+import com.langchain.smith.models.datasets.DatasetListParams;
+
+DatasetListParams listParams = DatasetListParams.builder()
+    .name("My Test Dataset 1")
+    .build();
+var datasets = client.datasets().list(listParams);
+```
+
 </CodeGroup>
 
-如果您想进行大小写不变的子字符串搜索，请尝试以下操作：<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  datasets = client.list_datasets(dataset_name_contains="some substring")
-  ```
+如果您想进行大小写不变的子字符串搜索，请尝试以下操作：
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const datasets = await client.listDatasets({
-    datasetNameContains: "some substring"
-  });
-  ```
+<CodeGroup>
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.datasets.DatasetListParams;
+```python Python
+datasets = client.list_datasets(dataset_name_contains="some substring")
+```
 
-  DatasetListParams listParams = DatasetListParams.builder()
-      .nameContains("some substring")
-      .build();
-  var datasets = client.datasets().list(listParams);
-  ```
+```typescript TypeScript
+const datasets = await client.listDatasets({
+  datasetNameContains: "some substring"
+});
+```
+
+```java Java
+import com.langchain.smith.models.datasets.DatasetListParams;
+
+DatasetListParams listParams = DatasetListParams.builder()
+    .nameContains("some substring")
+    .build();
+var datasets = client.datasets().list(listParams);
+```
+
 </CodeGroup>
 
 ### 按类型列出数据集
@@ -545,24 +561,24 @@ dataset = client.upload_dataframe(
 您可以按类型过滤数据集：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  datasets = client.list_datasets(data_type="kv")
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const datasets = await client.listDatasets({
-    dataType: "kv"
-  });
-  ```
+```python Python
+datasets = client.list_datasets(data_type="kv")
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.datasets.DatasetListParams;
+```typescript TypeScript
+const datasets = await client.listDatasets({
+  dataType: "kv"
+});
+``````java Java
+import com.langchain.smith.models.datasets.DatasetListParams;
 
-  DatasetListParams listParams = DatasetListParams.builder()
-      .datatype(DataType.of("kv"))
-      .build();
-  var datasets = client.datasets().list(listParams);
-  ```
+DatasetListParams listParams = DatasetListParams.builder()
+    .datatype(DataType.of("kv"))
+    .build();
+var datasets = client.datasets().list(listParams);
+```
+
 </CodeGroup>
 
 ## 获取示例
@@ -570,28 +586,30 @@ dataset = client.upload_dataframe(
 您可以使用 Python 和 TypeScript SDK 中的 `list_examples`/`listExamples` 方法以编程方式从 LangSmith 获取示例。以下是一些常见的调用。
 
 <Info>
-  在运行以下代码片段之前初始化客户端。
+在运行以下代码片段之前初始化客户端。
 </Info>
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
-  ```
+```python Python
+from langsmith import Client
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+client = Client()
+```
 
-  const client = new Client();
-  ```
+```typescript TypeScript
+import { Client } from "langsmith";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+const client = new Client();
+```
 
-  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-  ```
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+
+LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+```
+
 </CodeGroup>
 
 ### 列出数据集的所有示例
@@ -599,38 +617,42 @@ dataset = client.upload_dataframe(
 您可以按数据集 ID 进行过滤：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  examples = client.list_examples(dataset_id="c9ace0d8-a82c-4b6c-13d2-83401d68e9ab")
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const examples = await client.listExamples({
-    datasetId: "c9ace0d8-a82c-4b6c-13d2-83401d68e9ab"
-  });
-  ```
+```python Python
+examples = client.list_examples(dataset_id="c9ace0d8-a82c-4b6c-13d2-83401d68e9ab")
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+```typescript TypeScript
+const examples = await client.listExamples({
+  datasetId: "c9ace0d8-a82c-4b6c-13d2-83401d68e9ab"
+});
+```
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .dataset("c9ace0d8-a82c-4b6c-13d2-83401d68e9ab")
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
+
+ExampleListParams listParams = ExampleListParams.builder()
+    .dataset("c9ace0d8-a82c-4b6c-13d2-83401d68e9ab")
+    .build();
+var examples = client.examples().list(listParams);
+```
+
 </CodeGroup>
 
 或者您可以按数据集名称进行过滤（这必须与您要查询的数据集名称完全匹配）
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  examples = client.list_examples(dataset_name="My Test Dataset")
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const examples = await client.listExamples({
-    datasetName: "My test Dataset"
-  });
-  ```
+```python Python
+examples = client.list_examples(dataset_name="My Test Dataset")
+```
+
+```typescript TypeScript
+const examples = await client.listExamples({
+  datasetName: "My test Dataset"
+});
+```
+
 </CodeGroup>
 
 ### 按 id 列出示例
@@ -638,43 +660,44 @@ dataset = client.upload_dataframe(
 您还可以按 ID 列出多个示例。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  example_ids = [
-    '734fc6a0-c187-4266-9721-90b7a025751a',
-    'd6b4c1b9-6160-4d63-9b61-b034c585074f',
-    '4d31df4e-f9c3-4a6e-8b6c-65701c2fed13',
-  ]
 
-  examples = client.list_examples(example_ids=example_ids)
-  ```
+```python Python
+example_ids = [
+  '734fc6a0-c187-4266-9721-90b7a025751a',
+  'd6b4c1b9-6160-4d63-9b61-b034c585074f',
+  '4d31df4e-f9c3-4a6e-8b6c-65701c2fed13',
+]
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const exampleIds = [
+examples = client.list_examples(example_ids=example_ids)
+```
+
+```typescript TypeScript
+const exampleIds = [
+  "734fc6a0-c187-4266-9721-90b7a025751a",
+  "d6b4c1b9-6160-4d63-9b61-b034c585074f",
+  "4d31df4e-f9c3-4a6e-8b6c-65701c2fed13",
+];
+
+const examples = await client.listExamples({
+  exampleIds: exampleIds
+});
+```
+
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
+import java.util.List;
+
+List<String> exampleIds = List.of(
     "734fc6a0-c187-4266-9721-90b7a025751a",
     "d6b4c1b9-6160-4d63-9b61-b034c585074f",
-    "4d31df4e-f9c3-4a6e-8b6c-65701c2fed13",
-  ];
+    "4d31df4e-f9c3-4a6e-8b6c-65701c2fed13"
+);
 
-  const examples = await client.listExamples({
-    exampleIds: exampleIds
-  });
-  ```
-
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
-  import java.util.List;
-
-  List<String> exampleIds = List.of(
-      "734fc6a0-c187-4266-9721-90b7a025751a",
-      "d6b4c1b9-6160-4d63-9b61-b034c585074f",
-      "4d31df4e-f9c3-4a6e-8b6c-65701c2fed13"
-  );
-
-  ExampleListParams listParams = ExampleListParams.builder()
-      .id(exampleIds)
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
+ExampleListParams listParams = ExampleListParams.builder()
+    .id(exampleIds)
+    .build();
+var examples = client.examples().list(listParams);
+```
 </CodeGroup>
 
 ### 按元数据列出示例
@@ -684,120 +707,126 @@ dataset = client.upload_dataframe(
 例如，如果您有一个包含元数据 `{"foo": "bar", "baz": "qux"}` 的示例，则 `{foo: bar}` 和 `{baz: qux}` 都会匹配，`{foo: bar, baz: qux}` 也会匹配。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  examples = client.list_examples(dataset_name=dataset_name, metadata={"foo": "bar"})
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const examples = await client.listExamples({
-    datasetName: datasetName,
-    metadata: {foo: "bar"}
-  });
-  ```
+```python Python
+examples = client.list_examples(dataset_name=dataset_name, metadata={"foo": "bar"})
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+```typescript TypeScript
+const examples = await client.listExamples({
+  datasetName: datasetName,
+  metadata: {foo: "bar"}
+});
+```
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .metadata("{\"foo\":\"bar\"}")
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
-</CodeGroup>### 按结构化过滤器列出示例
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
 
-与如何使用结构化过滤器查询语言[fetch runs](/langsmith/export-traces#use-filter-query-language)类似，您可以使用它来获取示例。
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .metadata("{\"foo\":\"bar\"}")
+    .build();
+var examples = client.examples().list(listParams);
+```
 
-<Note>
-  目前仅在 Python SDK v0.1.83 及更高版本和 TypeScript SDK v0.1.35 及更高版本中可用。
+</CodeGroup>
 
-  此外，结构化过滤器查询语言仅支持 `metadata` 字段。
+### 按结构化过滤器列出示例
+
+与如何使用结构化过滤器查询语言[fetch runs](/langsmith/export-traces#use-filter-query-language)类似，您可以使用它来获取示例。<Note>
+目前仅在 Python SDK v0.1.83 及更高版本和 TypeScript SDK v0.1.35 及更高版本中可用。
+
+此外，结构化过滤器查询语言仅支持 `metadata` 字段。
 </Note>
 
 您可以使用 `has` 运算符来获取包含特定键/值对的元数据字段的示例，并使用 `exists` 运算符来获取包含特定键的元数据字段的示例。此外，您可以使用 `and` 运算符将多个过滤器链接在一起，并使用 `not` 运算符对过滤器求反。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  examples = client.list_examples(
-    dataset_name=dataset_name,
-    filter='and(not(has(metadata, \'{"foo": "bar"}\')), exists(metadata, "tenant_id"))'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const examples = await client.listExamples({
-    datasetName: datasetName,
-    filter: 'and(not(has(metadata, \'{"foo": "bar"}\')), exists(metadata, "tenant_id"))'
-  });
-  ```
+```python Python
+examples = client.list_examples(
+  dataset_name=dataset_name,
+  filter='and(not(has(metadata, \'{"foo": "bar"}\')), exists(metadata, "tenant_id"))'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+```typescript TypeScript
+const examples = await client.listExamples({
+  datasetName: datasetName,
+  filter: 'and(not(has(metadata, \'{"foo": "bar"}\')), exists(metadata, "tenant_id"))'
+});
+```
 
-  String filter = "and(not(has(metadata, '{\"foo\": \"bar\"}')), exists(metadata, \"tenant_id\"))";
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .filter(filter)
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
+String filter = "and(not(has(metadata, '{\"foo\": \"bar\"}')), exists(metadata, \"tenant_id\"))";
+
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .filter(filter)
+    .build();
+var examples = client.examples().list(listParams);
+```
+
 </CodeGroup>
 
 ## 更新示例
 
 ### 更新单个示例
 
-您可以使用 Python 和 TypeScript SDK 中的 `update_example`/`updateExample` 方法以编程方式更新 LangSmith 的示例。下面是一个例子。
+您可以使用 Python 和 TypeScript SDK 中的 `update_example`/`updateExample` 方法以编程方式更新 LangSmith 中的示例。下面是一个例子。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.update_example(
-    example_id=example.id,
-    inputs={"input": "updated input"},
-    outputs={"output": "updated output"},
-    metadata={"foo": "bar"},
-    split="train"
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  await client.updateExample(example.id, {
-    inputs: { input: "updated input" },
-    outputs: { output: "updated output" },
-    metadata: { "foo": "bar" },
-    split: "train",
-  });
-  ```
+```python Python
+client.update_example(
+  example_id=example.id,
+  inputs={"input": "updated input"},
+  outputs={"output": "updated output"},
+  metadata={"foo": "bar"},
+  split="train"
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.core.JsonValue;
-  import com.langchain.smith.models.examples.ExampleUpdateParams;
+```typescript TypeScript
+await client.updateExample(example.id, {
+  inputs: { input: "updated input" },
+  outputs: { output: "updated output" },
+  metadata: { "foo": "bar" },
+  split: "train",
+});
+```
 
-   // Create Inputs using the builder
-  ExampleUpdateParams.Inputs inputsObj = ExampleUpdateParams.Inputs.builder()
-      .putAdditionalProperty("input", JsonValue.from("updated input"))
-      .build();
+```java Java
+import com.langchain.smith.core.JsonValue;
+import com.langchain.smith.models.examples.ExampleUpdateParams;
 
-  // Create Outputs using the builder
-  ExampleUpdateParams.Outputs outputsObj = ExampleUpdateParams.Outputs.builder()
-      .putAdditionalProperty("output", JsonValue.from("updated output"))
-      .build();
+ // Create Inputs using the builder
+ExampleUpdateParams.Inputs inputsObj = ExampleUpdateParams.Inputs.builder()
+    .putAdditionalProperty("input", JsonValue.from("updated input"))
+    .build();
 
-  // Create Metadata using the builder
-  ExampleUpdateParams.Metadata metadataObj = ExampleUpdateParams.Metadata.builder()
-      .putAdditionalProperty("foo", JsonValue.from("bar"))
-      .build();
+// Create Outputs using the builder
+ExampleUpdateParams.Outputs outputsObj = ExampleUpdateParams.Outputs.builder()
+    .putAdditionalProperty("output", JsonValue.from("updated output"))
+    .build();
 
-  ExampleUpdateParams updateParams = ExampleUpdateParams.builder()
-      .inputs(inputsObj)
-      .outputs(outputsObj)
-      .metadata(metadataObj)
-      .split("train")
-      .build();
+// Create Metadata using the builder
+ExampleUpdateParams.Metadata metadataObj = ExampleUpdateParams.Metadata.builder()
+    .putAdditionalProperty("foo", JsonValue.from("bar"))
+    .build();
 
-  ExampleUpdateResponse updateResponse = client.examples().update(example.id(), updateParams);
-  ```
+ExampleUpdateParams updateParams = ExampleUpdateParams.builder()
+    .inputs(inputsObj)
+    .outputs(outputsObj)
+    .metadata(metadataObj)
+    .split("train")
+    .build();
+
+ExampleUpdateResponse updateResponse = client.examples().update(example.id(), updateParams);
+```
+
 </CodeGroup>
 
 ### 批量更新示例
@@ -805,84 +834,87 @@ dataset = client.upload_dataframe(
 您还可以使用 Python 和 TypeScript SDK 中的 `update_examples`/`updateExamples` 方法以编程方式在单个请求中更新多个示例。下面是一个例子。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.update_examples(
-    example_ids=[example.id, example_2.id],
-    inputs=[{"input": "updated input 1"}, {"input": "updated input 2"}],
-    outputs=[
-        {"output": "updated output 1"},
-        {"output": "updated output 2"},
-    ],
-    metadata=[{"foo": "baz"}, {"foo": "qux"}],
-    splits=[["training", "foo"], "training"] # Splits can be arrays or standalone strings
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  await client.updateExamples([
-    {
-      id: example.id,
-      inputs: { input: "updated input 1" },
-      outputs: { output: "updated output 1" },
-      metadata: { foo: "baz" },
-      split: ["training", "foo"] // Splits can be arrays or standalone strings
-    },
-    {
-      id: example2.id,
-      inputs: { input: "updated input 2" },
-      outputs: { output: "updated output 2" },
-      metadata: { foo: "qux" },
-      split: "training"
-    },
-  ]);
-  ```
+```python Python
+client.update_examples(
+  example_ids=[example.id, example_2.id],
+  inputs=[{"input": "updated input 1"}, {"input": "updated input 2"}],
+  outputs=[
+      {"output": "updated output 1"},
+      {"output": "updated output 2"},
+  ],
+  metadata=[{"foo": "baz"}, {"foo": "qux"}],
+  splits=[["training", "foo"], "training"] # Splits can be arrays or standalone strings
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  Map<String, String> inputs1 = Map.of("question", "What is the capital of France?")
-  Map<String, String> outputs1 = Map.of("answer", "The capital of France is Paris.");
-  Map<String, String> metadata1 = Map.of(
-      "source", "Wikipedia",
-      "difficulty", "easy"
-  );
+```typescript TypeScript
+await client.updateExamples([
+  {
+    id: example.id,
+    inputs: { input: "updated input 1" },
+    outputs: { output: "updated output 1" },
+    metadata: { foo: "baz" },
+    split: ["training", "foo"] // Splits can be arrays or standalone strings
+  },
+  {
+    id: example2.id,
+    inputs: { input: "updated input 2" },
+    outputs: { output: "updated output 2" },
+    metadata: { foo: "qux" },
+    split: "training"
+  },
+]);
+```
 
-  Map<String, String> inputs2 = Map.of("question", "What is 2 + 2?");
-  Map<String, String> outputs2 = Map.of("answer", "The answer is 4.");
-  Map<String, String> metadata2 = Map.of(
-      "source", "Math textbook",
-      "difficulty", "easy");
+```java Java
+Map<String, String> inputs1 = Map.of("question", "What is the capital of France?")
+Map<String, String> outputs1 = Map.of("answer", "The capital of France is Paris.");
+Map<String, String> metadata1 = Map.of(
+    "source", "Wikipedia",
+    "difficulty", "easy"
+);
 
-  BulkPatchAllParams.Builder bulkParamsBuilder = BulkPatchAllParams.builder();
+Map<String, String> inputs2 = Map.of("question", "What is 2 + 2?");
+Map<String, String> outputs2 = Map.of("answer", "The answer is 4.");
+Map<String, String> metadata2 = Map.of(
+    "source", "Math textbook",
+    "difficulty", "easy");
 
-  bulkParamsBuilder.addBody(
-      BulkPatchAllParams.Body.builder()
-          .id(example1.id())
-          .inputs(buildInputs(inputs1))
-          .outputs(buildOutputs(outputs1))
-          .metadata(buildMetadata(metadata1))
-          .splitOfStrings(Arrays.asList("training", "validation"))
-          .build()
-  );
+BulkPatchAllParams.Builder bulkParamsBuilder = BulkPatchAllParams.builder();
 
-  bulkParamsBuilder.addBody(
-      BulkPatchAllParams.Body.builder()
-          .id(example2.id())
-          .inputs(buildInputs(inputs2))
-          .outputs(buildOutputs(outputs2))
-          .metadata(buildMetadata(metadata2))
-          .split("test")
-          .build()
-  );
+bulkParamsBuilder.addBody(
+    BulkPatchAllParams.Body.builder()
+        .id(example1.id())
+        .inputs(buildInputs(inputs1))
+        .outputs(buildOutputs(outputs1))
+        .metadata(buildMetadata(metadata1))
+        .splitOfStrings(Arrays.asList("training", "validation"))
+        .build()
+);
 
-  client.examples().bulk().patchAll(bulkParamsBuilder.build());
-  ```
-</CodeGroup>***
+bulkParamsBuilder.addBody(
+    BulkPatchAllParams.Body.builder()
+        .id(example2.id())
+        .inputs(buildInputs(inputs2))
+        .outputs(buildOutputs(outputs2))
+        .metadata(buildMetadata(metadata2))
+        .split("test")
+        .build()
+);
 
-<div>
-  <Callout icon="terminal-2">
+client.examples().bulk().patchAll(bulkParamsBuilder.build());
+```
+
+</CodeGroup>
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets-programmatically.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

@@ -1,11 +1,6 @@
 <!-- langchain-docs: Migrate to SmithDB-backed SDK methods | https://docs.langchain.com/langsmith/smithdb-sdk-migration -->
 
-# Migrate to SmithDB-backed SDK methods
-
-Migrate your existing LangSmith SDK methods to their SmithDB-backed equivalents for faster agent observability.
-
 ## Context
-
 In May 2026, we released [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs), a new observability database built for modern AI agents. SmithDB delivers industry-leading performance across every key observability workload, making core LangSmith experiences dramatically faster.
 
 New SDK methods are required to query your traces with SmithDB. This guide helps you migrate your codebase.
@@ -14,10 +9,10 @@ New SDK methods are required to query your traces with SmithDB. This guide helps
 
 Each SDK method and its underlying endpoint share the same deprecation date.
 
-| Deployment        | Deprecation      | Removal     |
-| ----------------- | ---------------- | ----------- |
+| Deployment | Deprecation | Removal |
+|---|---|---|
 | All Cloud regions | End of July 2026 | 31 Jan 2027 |
-| Self-Hosted       | `v0.16`          | `v0.18`     |
+| Self-Hosted | `v0.16` | `v0.18` |
 
 For details on how LangSmith deprecates and removes API endpoints and SDK methods, see [API and SDK deprecation policy](/langsmith/endpoint-deprecation).
 
@@ -25,47 +20,42 @@ For details on how LangSmith deprecates and removes API endpoints and SDK method
 
 The new SDK methods are available starting at these SDK versions:
 
-| Language   | Package          | Minimum version |
-| ---------- | ---------------- | --------------- |
-| Python     | `langsmith`      | `>=0.10.15`     |
-| TypeScript | `langsmith`      | `>=0.8.9`       |
-| Java       | `langsmith-java` | `0.1.0-beta.22` |
-| Go         | `langsmith-go`   | `v0.25.4`       |
-| CLI        | `langsmith-cli`  | `v0.2.44`       |
+| Language | Package | Minimum version |
+|---|---|---|
+| Python | `langsmith` | `>=0.10.15` |
+| TypeScript | `langsmith` | `>=0.8.9` |
+| Java | `langsmith-java` | `0.1.0-beta.22` |
+| Go | `langsmith-go` | `v0.25.4` |
+| CLI | `langsmith-cli` | `v0.2.44` |
 
 The [LangSmith CLI](/langsmith/langsmith-cli) queries the same SmithDB-backed endpoints and requires `v0.2.44` or later.
 
 ## About self-hosted
 
-* The new methods documented in this guide require `>=0.16` self-hosted version, independent of the data store used.
-* The deprecated methods stop working once ClickHouse is disabled.
-* Where possible, the SDK raises a warning or error identifying the version to upgrade to, instead of failing without explanation.
+- The new methods documented in this guide require `>=0.16` self-hosted version, independent of the data store used.
+- The deprecated methods stop working once ClickHouse is disabled.
+- Where possible, the SDK raises a warning or error identifying the version to upgrade to, instead of failing without explanation.
 
 ## Methods by area
 
 The before and after change for each method is documented on the page for its area.
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Query runs" icon="search" href="/langsmith/smithdb-sdk-migration-query-runs">
     `list_runs` and its query parameters, response fields, and examples.
   </Card>
-
   <Card title="Retrieve runs" icon="file-description" href="/langsmith/smithdb-sdk-migration-runs">
     Read a single run and build a run URL.
   </Card>
-
   <Card title="Traces" icon="timeline" href="/langsmith/smithdb-sdk-migration-traces">
     Query traces and list the runs inside a trace.
   </Card>
-
   <Card title="Threads" icon="messages" href="/langsmith/smithdb-sdk-migration-threads">
     Query threads and list the traces inside a thread.
   </Card>
-
   <Card title="Dataset experiment runs" icon="flask" href="/langsmith/smithdb-sdk-migration-experiments">
     Query the runs attached to a dataset experiment.
   </Card>
-
   <Card title="Feedback and sharing" icon="star" href="/langsmith/smithdb-sdk-migration-feedback">
     Annotation queues, public runs, and feedback creation.
   </Card>
@@ -75,7 +65,7 @@ The before and after change for each method is documented on the page for its ar
 
 This guide is written to be fetched and applied directly by an AI coding agent. Copy the following prompt into your agent to migrate your codebase to the SmithDB-backed methods.
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
 
 Fetch https://docs.langchain.com/langsmith/smithdb-sdk-migration.md first. It
@@ -115,54 +105,50 @@ than guessing.
   <Tab title="Python">
     The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
 
-    | Before (`langsmith.utils`) | After (`langsmith`)          | Notes                                                                                                                                                                   |
-    | -------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `LangSmithError`           | `LangsmithError`             | Base exception class for the SDK; casing changed                                                                                                                        |
-    | `LangSmithAPIError`        | `InternalServerError`        | 5xx                                                                                                                                                                     |
-    | `LangSmithRequestTimeout`  | `APITimeoutError`            | Raised when a request times out                                                                                                                                         |
-    | `LangSmithUserError`       | *(removed)*                  | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
-    | `LangSmithRateLimitError`  | `RateLimitError`             | 429; unchanged name                                                                                                                                                     |
-    | `LangSmithAuthError`       | `AuthenticationError`        | 401                                                                                                                                                                     |
-    | `LangSmithNotFoundError`   | `NotFoundError`              | 404; unchanged name                                                                                                                                                     |
-    | `LangSmithConflictError`   | `ConflictError`              | 409; unchanged name                                                                                                                                                     |
-    | `LangSmithConnectionError` | `APIConnectionError`         | Raised when the client cannot connect to the API                                                                                                                        |
-    | `LangSmithExceptionGroup`  | *(removed)*                  | No equivalent                                                                                                                                                           |
-    | *(not available)*          | `APIError`                   | New: base class for all API-related errors, with `message`, `request`, and `body` attributes                                                                            |
-    | *(not available)*          | `APIStatusError`             | New: base class for all 4xx/5xx status errors                                                                                                                           |
-    | *(not available)*          | `BadRequestError`            | New: 400                                                                                                                                                                |
-    | *(not available)*          | `PermissionDeniedError`      | New: 403                                                                                                                                                                |
-    | *(not available)*          | `UnprocessableEntityError`   | New: 422                                                                                                                                                                |
-    | *(not available)*          | `APIResponseValidationError` | New: raised when a response does not match the expected schema                                                                                                          |
+    | Before (`langsmith.utils`) | After (`langsmith`) | Notes |
+    |---|---|---|
+    | `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
+    | `LangSmithAPIError` | `InternalServerError` | 5xx |
+    | `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
+    | `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
+    | `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
+    | `LangSmithAuthError` | `AuthenticationError` | 401 |
+    | `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
+    | `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
+    | `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
+    | `LangSmithExceptionGroup` | *(removed)* | No equivalent |
+    | *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
+    | *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
+    | *(not available)* | `BadRequestError` | New: 400 |
+    | *(not available)* | `PermissionDeniedError` | New: 403 |
+    | *(not available)* | `UnprocessableEntityError` | New: 422 |
+    | *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
   </Tab>
-
   <Tab title="TypeScript">
     The SmithDB-backed methods raise new exception classes instead of plain `Error`.
 
-    | Before (plain `Error`) | After (`langsmith`)         | Notes                                                                                   |
-    | ---------------------- | --------------------------- | --------------------------------------------------------------------------------------- |
-    | *(not available)*      | `LangsmithError`            | base class for all SDK errors                                                           |
-    | *(not available)*      | `InternalServerError`       | 5xx                                                                                     |
-    | *(not available)*      | `APIConnectionTimeoutError` | Raised when a request times out                                                         |
-    | *(not available)*      | `RateLimitError`            | 429                                                                                     |
-    | *(not available)*      | `AuthenticationError`       | 401                                                                                     |
-    | *(not available)*      | `NotFoundError`             | 404                                                                                     |
-    | *(not available)*      | `ConflictError`             | 409                                                                                     |
-    | *(not available)*      | `APIConnectionError`        | Raised when the client cannot connect to the API                                        |
-    | *(not available)*      | `APIError`                  | base class for all API-related errors, with `status`, `headers`, and `error` properties |
-    | *(not available)*      | `BadRequestError`           | 400                                                                                     |
-    | *(not available)*      | `PermissionDeniedError`     | 403                                                                                     |
-    | *(not available)*      | `UnprocessableEntityError`  | 422                                                                                     |
-    | *(not available)*      | `APIUserAbortError`         | Raised when a request is aborted via an `AbortController`                               |
+    | Before (plain `Error`) | After (`langsmith`) | Notes |
+    |---|---|---|
+    | *(not available)* | `LangsmithError` | base class for all SDK errors |
+    | *(not available)* | `InternalServerError` | 5xx |
+    | *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
+    | *(not available)* | `RateLimitError` | 429 |
+    | *(not available)* | `AuthenticationError` | 401 |
+    | *(not available)* | `NotFoundError` | 404 |
+    | *(not available)* | `ConflictError` | 409 |
+    | *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
+    | *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
+    | *(not available)* | `BadRequestError` | 400 |
+    | *(not available)* | `PermissionDeniedError` | 403 |
+    | *(not available)* | `UnprocessableEntityError` | 422 |
+    | *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
   </Tab>
-
   <Tab title="Java">
     No change. Error handling is unaffected by this migration.
   </Tab>
-
   <Tab title="Go">
     No change. Error handling is unaffected by this migration.
   </Tab>
-
   <Tab title="cURL">
     No change. Error handling is unaffected by this migration.
   </Tab>
@@ -174,22 +160,21 @@ The following methods are discontinued. They call the retired `/feedback/formula
 
 ### Feedback formula methods
 
-| Python                                                                                                                    | TypeScript |
-| ------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| [`list_feedback_formulas`](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas)         | NA         |
-| [`get_feedback_formula_by_id`](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) | NA         |
-| [`create_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula)       | NA         |
-| [`update_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula)       | NA         |
-| [`delete_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula)       | NA         |
+| Python | TypeScript |
+|---|---|
+| [`list_feedback_formulas`](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) | NA |
+| [`get_feedback_formula_by_id`](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) | NA |
+| [`create_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) | NA |
+| [`update_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) | NA |
+| [`delete_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) | NA |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

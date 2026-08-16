@@ -2,8 +2,6 @@
 
 # Deploy with Next.js
 
-Deploy a LangChain deep agent in a Next.js App Router project with streaming chat, subagents, and thread history.
-
 The following page details an example app that deploys a LangChain **deep agent** entirely inside a [Next.js App](https://nextjs.org/) Router project: streaming chat UI, subagents, and thread history, all backed by the [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) implemented as Next.js Route Handlers (HTTP + SSE). No separate backend process.
 
 Source: [`js-next`](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-next) in the deployment cookbook.
@@ -11,21 +9,29 @@ Source: [`js-next`](https://github.com/langchain-ai/deployment-cookbook/tree/mai
 ## Deploy to Vercel
 
 <Steps>
-  <Step title="Import the repository">
-    Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
 
-    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-next&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents">
-      <img alt="Deploy with Vercel" />
-    </a>
-  </Step>
+<Step title="Import the repository">
 
-  <Step title="Configure the project">
-    Set **Root Directory** to `js-next` and add `OPENAI_API_KEY` in project settings.
-  </Step>
+Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
 
-  <Step title="Deploy">
-    Deploy the project. Route handlers already set `runtime = "nodejs"` and the SSE route sets `dynamic = "force-dynamic"`, which Vercel needs for streaming.
-  </Step>
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-next&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents" target="_blank" rel="noopener noreferrer">
+  <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+</a>
+
+</Step>
+
+<Step title="Configure the project">
+
+Set **Root Directory** to `js-next` and add `OPENAI_API_KEY` in project settings.
+
+</Step>
+
+<Step title="Deploy">
+
+Deploy the project. Route handlers already set `runtime = "nodejs"` and the SSE route sets `dynamic = "force-dynamic"`, which Vercel needs for streaming.
+
+</Step>
+
 </Steps>
 
 Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-next/.env.example).
@@ -38,11 +44,11 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. Route han
 
 These three endpoints are enough to run a single-threaded streaming chat with `@langchain/react`'s `HttpAgentServerAdapter`:
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so hydration does not 404 before the first message is sent.
 
@@ -50,15 +56,15 @@ The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so h
 
 This example also implements endpoints for the thread-history sidebar. Omit them if your UI does not need multi-thread management:
 
-| Method   | Path                             | Purpose                                       |
-| -------- | -------------------------------- | --------------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer        |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints     |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
 
 ### Request flow
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 %%{init: {"themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart TB
   subgraph browser["Browser"]
@@ -108,11 +114,11 @@ Out of the box, the agent uses an in-memory `MemorySaver` checkpointer (`lib/age
 
 For production, swap in a [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries):
 
-| Package                                                                                                              | Backend                    |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis)       | Redis (`RedisSaver`)       |
+| Package | Backend |
+| --- | --- |
+| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [`@langchain/langgraph-checkpoint-postgres`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
-| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite)     | SQLite (`SqliteSaver`)     |
+| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |
 
 Replace `MemorySaver` in `lib/agent/index.ts` and pass the new checkpointer to `createDeepAgent`. The route handlers and `lib/server/threads.ts` helpers stay the same.
 
@@ -122,7 +128,7 @@ A common choice for Vercel is Redis via the [Marketplace](https://vercel.com/doc
 
 Then wire `@langchain/langgraph-checkpoint-redis`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts
 import { RedisSaver } from "@langchain/langgraph-checkpoint-redis";
 
 const checkpointer = await RedisSaver.fromUrl(process.env.REDIS_URL!);
@@ -136,7 +142,7 @@ For more information, see [checkpointer libraries](/oss/python/langgraph/checkpo
 
 ## Local development
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cp .env.example .env.local   # set OPENAI_API_KEY
 pnpm install
 pnpm dev
@@ -144,7 +150,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pnpm build   # production build
 pnpm start   # serve the production build
 pnpm lint    # eslint
@@ -152,27 +158,26 @@ pnpm lint    # eslint
 
 ## Project layout
 
-* `lib/agent/`: deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools. Marked `server-only`.
-* `lib/server/`: protocol server logic: `session.ts` (SSE runs), `threads.ts` (checkpointer-backed state), `serialize.ts`, `registry.ts`.
-* `app/api/threads/`: Route Handlers for the protocol endpoints above.
-* `lib/chat/threads-client.ts`: browser thread bootstrap and sidebar helpers.
-* `components/`: chat UI (`ChatApp`, `Chat`, `MessageList`, `Subagents`, `ThreadHistory`, …).
+- `lib/agent/`: deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools. Marked `server-only`.
+- `lib/server/`: protocol server logic: `session.ts` (SSE runs), `threads.ts` (checkpointer-backed state), `serialize.ts`, `registry.ts`.
+- `app/api/threads/`: Route Handlers for the protocol endpoints above.
+- `lib/chat/threads-client.ts`: browser thread bootstrap and sidebar helpers.
+- `components/`: chat UI (`ChatApp`, `Chat`, `MessageList`, `Subagents`, `ThreadHistory`, …).
 
 ## See also
 
-* [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
-* [`react-custom-backend`](https://github.com/langchain-ai/streaming-cookbook) — original Vite + Hono reference for a custom protocol server
-* [Next.js Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
+- [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
+- [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
+- [`react-custom-backend`](https://github.com/langchain-ai/streaming-cookbook) — original Vite + Hono reference for a custom protocol server
+- [Next.js Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

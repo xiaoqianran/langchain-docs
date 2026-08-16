@@ -2,54 +2,59 @@
 
 <!-- langchain-docs: Control plane API reference for LangSmith Deployment | https://docs.langchain.com/langsmith/api-ref-control-plane -->
 
-# LangSmith 部署的控制平面 API 参考
+# LangSmith部署的控制平面API参考
 
 控制平面 API 是 [LangSmith Deployment](/langsmith/deployment) 的一部分。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
 
-在侧边栏的 **控制平面 API** 部分中浏览完整的 API 参考，或参阅端点组：
+浏览侧边栏 **控制平面 API** 部分中的完整 API 参考，或参阅端点组：
 
-* [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations)：GitHub 集成和存储库列表
-* [Deployments (v2)](/api-reference/deployments-v2)：创建、管理和更新代理服务器部署
-* [Listeners (v2)](/api-reference/listeners-v2)：自托管企业组织的监听器资源
-* [Auth Service (v2)](/api-reference/auth-service-v2)：OAuth 提供者配置和身份验证流程
+- [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations)：GitHub 集成和存储库列表
+- [Deployments (v2)](/api-reference/deployments-v2)：创建、管理和更新代理服务器部署
+- [Listeners (v2)](/api-reference/listeners-v2)：自托管企业组织的监听器资源
+- [Auth Service (v2)](/api-reference/auth-service-v2)：OAuth 提供者配置和身份验证流程
 
 ## 主持人
 
 云数据区域的控制平面托管：
 
-<table>
+{/* 通过 `prefix` 更改“.langchain.com”之前的主机名（默认：“api.smith”）。
+    传递 `suffix` 将路径（例如“/mcp”）附加到每个 URL。
+    传递 `protocol={false}` 来渲染不带“https://”的主机名。 */}<table>
   <thead>
     <tr>
       <th>地区</th>
+      <th>{协议===假？ “主机”：“URL”}</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>GCP 美国</td>
+      <td><code>{`${protocol === false ? "" : "https://"}${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>GCP 欧盟</td>
+      <td><code>{`${protocol === false ? "" : "https://"}eu.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>GCP 亚太地区</td>
+      <td><code>{`${protocol === false ? "" : "https://"}apac.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>AWS 美国</td>
+      <td><code>{`${protocol === false ? "" : "https://"}aws.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
   </tbody>
 </table>
 
 **注意**：LangSmith 的自托管部署将为控制平面提供一个自定义主机。控制平面API可以通过路径`/api-host`访问。例如，`http(s)://<host>/api-host/v2/deployments`。更多详情请参见[the self-host usage guide](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)。
 
-＃＃ 验证要使用控制平面 API 进行身份验证，请将 `X-Api-Key` 标头设置为有效的 LangSmith API 密钥，并将 `X-Tenant-Id` 标头设置为要定位的有效工作区 ID。
+## 身份验证
+
+要使用控制平面 API 进行身份验证，请将 `X-Api-Key` 标头设置为有效的 LangSmith API 密钥，并将 `X-Tenant-Id` 标头设置为要定位的有效工作区 ID。
 
 `curl` 命令示例：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 curl --request GET \
   --url http://localhost:8124/v2/deployments \
   --header 'X-Api-Key: LANGSMITH_API_KEY'
@@ -60,9 +65,7 @@ curl --request GET \
 
 每个端点路径都以版本为前缀（例如`v1`、`v2`）。
 
-## 快速开始
-
-1. 调用`POST /v2/deployments`创建一个新的Deployment。响应正文包含部署 ID (`id`) 和最新（也是第一个）修订版的 ID (`latest_revision_id`)。
+## 快速开始1. 调用`POST /v2/deployments`创建一个新的Deployment。响应正文包含部署 ID (`id`) 和最新（也是第一个）修订版的 ID (`latest_revision_id`)。
 2. 调用`GET /v2/deployments/{deployment_id}`检索Deployment。将 URL 中的 `deployment_id` 设置为部署 ID (`id`) 的值。
 3. 通过调用 `GET /v2/deployments/{deployment_id}/revisions/{latest_revision_id}` 轮询修订版 `status`，直到 `status` 为 `DEPLOYED`。
 4. 调用`PATCH /v2/deployments/{deployment_id}`更新部署。
@@ -71,7 +74,7 @@ curl --request GET \
 
 下面是示例 Python 代码，演示了如何编排控制平面 API 来创建部署、更新部署和删除部署。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import time
 
@@ -282,14 +285,13 @@ if __name__ == "__main__":
     delete_deployment(deployment_id)
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

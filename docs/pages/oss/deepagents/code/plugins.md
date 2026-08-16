@@ -2,12 +2,10 @@
 
 # Plugins and marketplaces
 
-Install plugins from marketplaces or package skills, MCP servers, and hooks for Deep Agents Code
-
 Plugins extend Deep Agents Code with reusable [skills](/oss/deepagents/code/memory-and-skills), [MCP servers](/oss/deepagents/code/mcp-tools), and [hooks](/oss/deepagents/code/hooks). Marketplaces provide catalogs for discovering and installing plugins across projects or teams. Deep Agents Code supports Claude- and Codex-style plugin manifests and marketplace catalogs, as described in [Create a plugin](#create-a-plugin) and [Create a marketplace](#create-a-marketplace).
 
 <Warning>
-  Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers or hook commands with your user permissions.
+    Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers or hook commands with your user permissions.
 </Warning>
 
 ## Manage plugins interactively
@@ -16,10 +14,10 @@ To browse marketplaces and manage plugins in a `dcode` session:
 
 1. Run `/plugins` to open the plugin manager.
 2. Add a marketplace from its **Marketplaces** tab. Supported sources include:
-   * A GitHub repository in `owner/repo` format, optionally followed by `@branch-or-tag`.
-   * An HTTPS Git repository URL, optionally followed by `#branch-or-tag`.
-   * An HTTPS URL that serves a marketplace JSON file.
-   * A local marketplace directory or JSON file.
+    - A GitHub repository in `owner/repo` format, optionally followed by `@branch-or-tag`.
+    - An HTTPS Git repository URL, optionally followed by `#branch-or-tag`.
+    - An HTTPS URL that serves a marketplace JSON file.
+    - A local marketplace directory or JSON file.
 3. Install a plugin from the marketplace.
 4. Run `/reload` to activate newly installed plugin skills, MCP servers, and hooks without restarting the session.
 
@@ -31,7 +29,7 @@ Removing a marketplace uninstalls its plugins and removes managed cache data. De
 
 Deep Agents Code can update installed plugins in the background after the first prompt. Updates apply only to enabled plugins that opt in through their own manifest. Plugin authors opt in per plugin by adding this block to that plugin's `plugin.json`:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "extensions": {
     "com.langchain.deepagents.code": {
@@ -47,7 +45,7 @@ The running session continues to use its current plugin version until you run `/
 
 Use `dcode plugin` for scripts and terminal-based administration. Plugin IDs use the format `plugin-name@marketplace-name`.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Add and inspect a marketplace
 dcode plugin marketplace add acme/plugins
 dcode plugin marketplace list
@@ -71,7 +69,7 @@ dcode plugin marketplace remove acme-tools
 
 Plugin skills are namespaced to prevent collisions with project, user, and other plugin skills. Invoke a skill with its plugin ID and skill path:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 /skill:plugin-name@marketplace-name:skill-name optional arguments
 ```
 
@@ -85,7 +83,7 @@ Plugin hooks use the same lifecycle events and handler format as user and projec
 
 A Deep Agents Code plugin is a directory containing any of the supported components:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-plugin/
 ├── .claude-plugin/
 │   └── plugin.json
@@ -103,7 +101,7 @@ Deep Agents Code also recognizes `.codex-plugin/plugin.json`. The manifest is op
 
 When present, `.claude-plugin/plugin.json` or `.codex-plugin/plugin.json` must contain a `name`. You can also declare a version and custom component paths:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "name": "my-plugin",
   "version": "1.0.0",
@@ -117,15 +115,15 @@ The `skills`, `mcpServers`, and `hooks` fields accept a path string or an array 
 
 When no custom path is declared, Deep Agents Code discovers:
 
-* Skills under `skills/`, or a root `SKILL.md` when no `skills/` directory exists.
-* MCP servers in a root `.mcp.json` file.
-* Hooks in `hooks/hooks.json`.
+- Skills under `skills/`, or a root `SKILL.md` when no `skills/` directory exists.
+- MCP servers in a root `.mcp.json` file.
+- Hooks in `hooks/hooks.json`.
 
 ### Add skills
 
 Organize each skill as a directory containing `SKILL.md`:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 skills/
 └── review/
     ├── SKILL.md
@@ -138,13 +136,13 @@ Use the same skill format as standalone Deep Agents Code skills. The installed p
 
 Place standard MCP server definitions in `.mcp.json` or declare them inline with `mcpServers` in the plugin manifest. MCP servers and hook commands support these path variables:
 
-* `${CLAUDE_PLUGIN_ROOT}` or `${PLUGIN_ROOT}`: The installed plugin directory.
-* `${CLAUDE_PLUGIN_DATA}` or `${PLUGIN_DATA}`: The writable data directory for the plugin.
-* `${CLAUDE_PROJECT_DIR}`: The active project directory.
+- `${CLAUDE_PLUGIN_ROOT}` or `${PLUGIN_ROOT}`: The installed plugin directory.
+- `${CLAUDE_PLUGIN_DATA}` or `${PLUGIN_DATA}`: The writable data directory for the plugin.
+- `${CLAUDE_PROJECT_DIR}`: The active project directory.
 
 For example:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "mcpServers": {
     "review-tools": {
@@ -168,13 +166,13 @@ Place a hook document at `hooks/hooks.json`, declare a relative `hooks` path, or
 
 A marketplace is a JSON catalog with a name and a `plugins` array. Store it at one of these paths in the marketplace root:
 
-* `.claude-plugin/marketplace.json`
-* `.agents/plugins/marketplace.json`
-* `.agents/plugins/api_marketplace.json`
+- `.claude-plugin/marketplace.json`
+- `.agents/plugins/marketplace.json`
+- `.agents/plugins/api_marketplace.json`
 
 The following marketplace contains one plugin stored in the same repository:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "name": "acme-tools",
   "plugins": [
@@ -191,7 +189,7 @@ Each plugin entry requires a `name` and `source`. It can also include `descripti
 
 Marketplace entries can also use external Git sources:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "name": "acme-tools",
   "plugins": [
@@ -220,27 +218,26 @@ Supported external plugin source types are `github`, `url`, and `git-subdir`. Re
 
 Test a local marketplace by adding its directory, installing a plugin, and starting a new session or running `/reload`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 dcode plugin marketplace add ./my-marketplace
 dcode plugin install code-review@acme-tools
 ```
 
 ## See also
 
-* [Memory and skills](/oss/deepagents/code/memory-and-skills)
-* [MCP tools](/oss/deepagents/code/mcp-tools)
-* [Hooks](/oss/deepagents/code/hooks)
-* [Command reference](/oss/deepagents/code/cli-reference)
-* [Configuration](/oss/deepagents/code/configuration)
+- [Memory and skills](/oss/deepagents/code/memory-and-skills)
+- [MCP tools](/oss/deepagents/code/mcp-tools)
+- [Hooks](/oss/deepagents/code/hooks)
+- [Command reference](/oss/deepagents/code/cli-reference)
+- [Configuration](/oss/deepagents/code/configuration)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

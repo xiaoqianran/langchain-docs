@@ -4,8 +4,6 @@
 
 # 云代理服务器环境变量
 
-LangSmith 代理服务器部署在云上时支持的环境变量。
-
 部署在[Cloud](/langsmith/deploy-to-cloud-overview)上时，代理服务器支持以下环境变量。有关自托管部署特定的变量，请参阅[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
@@ -13,18 +11,18 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 将 `BG_JOB_ISOLATED_LOOPS` 设置为 `True` 以在与服务 API 事件循环分开的隔离事件循环中执行后台运行。
 
 <Warning>
-  启用此标志并不能消除根本问题。它将同步阻塞工作从服务 API 的事件循环中移出，以便运行状况检查不再失败，但阻塞代码继续在后台循环上运行，并且**将**继续导致生产中出现问题，例如吞吐量下降、尾部延迟峰值、工作人员饥饿或连接池耗尽（请参阅下面的池大小警告）以及负载下扩展不佳。要正确解决这些问题，请在整个代理中使用本机异步驱动程序和异步代码。这意味着像`httpx`或`aiohttp`这样的异步HTTP客户端（尽管我们建议缓存客户端以避免加载SSL上下文的CPU开销），像`asyncpg`或`psycopg[async]`这样的异步数据库驱动程序，以及异步模型SDK。对于不可避免的同步库，请将特定调用包装在 `asyncio.to_thread(...)` 或 `loop.run_in_executor(...)` 中，而不是为整个部署启用此标志。
+启用此标志并不能消除根本问题。它将同步阻塞工作从服务 API 的事件循环中移出，以便运行状况检查不再失败，但阻塞代码继续在后台循环上运行，并且**将**继续导致生产中出现问题，例如吞吐量下降、尾部延迟峰值、工作人员饥饿或连接池耗尽（请参阅下面的池大小警告）以及负载下扩展不佳。要正确解决这些问题，请在整个代理中使用本机异步驱动程序和异步代码。这意味着像`httpx`或`aiohttp`这样的异步HTTP客户端（尽管我们建议缓存客户端以避免加载SSL上下文的CPU开销），像`asyncpg`或`psycopg[async]`这样的异步数据库驱动程序，以及异步模型SDK。对于不可避免的同步库，请将特定调用包装在 `asyncio.to_thread(...)` 或 `loop.run_in_executor(...)` 中，而不是为整个部署启用此标志。
 </Warning>
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。<Warning>
-  启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作程序都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+启用 `BG_JOB_ISOLATED_LOOPS` 后，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 </Warning>
 
 默认为`False`。
 
 ## `BG_JOB_MAX_RETRIES`
 
-可重试故障（例如暂时性数据库错误、服务器关闭取消）后后台运行重试的最大次数。当运行因可重试错误而失败时，它将被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
+可重试故障（例如暂时性数据库错误、服务器关闭取消）后后台运行重试的最大次数。当运行因可重试错误而失败时，它会被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
 
 默认为`3`。
 
@@ -32,7 +30,7 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 
 ## `BG_JOB_TIMEOUT_SECS`
 
-可以增加后台运行的超时时间。但是，云部署的基础架构对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
+可以增加后台运行的超时时间。但是，云部署的基础设施对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
 
 后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过`POST /threads/{thread_id}/runs/{run_id}/stream`加入流）以检索运行的输出。
 
@@ -41,30 +39,27 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 ## `CORS_ALLOW_ORIGINS`
 
 设置 `CORS_ALLOW_ORIGINS` 以指定允许的来源。
-
-* 允许单一来源的示例：`CORS_ALLOW_ORIGINS=https://example.com`
-* 允许多个来源的示例：`CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
+- 允许单一来源的示例：`CORS_ALLOW_ORIGINS=https://example.com`
+- 允许多个来源的示例：`CORS_ALLOW_ORIGINS=https://example.com,https://app.example.com`
 
 如需高级 CORS 配置，请参阅[how to add custom CORS configuration](/langsmith/cli#customizing-http-middleware-and-headers)。
 
 默认为 `*`（所有来源）。
 
-<h2>
-  支持的 Datadog 环境变量
-</h2>在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时才生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
+## 支持的 Datadog 环境变量 {#dd_api_key}在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时才生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
 
-* **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
-* **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
-* **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
-* **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
-* **`DD_SITE`**：要发送数据的Datadog站点，例如`datadoghq.com`或`datadoghq.eu`。默认为`datadoghq.com`。
-* **`DD_ENV`**：应用于跟踪和日志的环境名称，例如`production`。
-* **`DD_SERVICE`**：应用于跟踪和日志的服务名称。
-* **`DD_TRACE_DEBUG`**：设置为 `true` 以在故障排除时在 `ddtrace` 跟踪器中启用调试日志记录。
-* **`DD_LOG_LEVEL`**：故障排除时的Datadog Agent日志级别，例如`debug`。
+- **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
+- **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
+- **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
+- **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
+- **`DD_SITE`**：要发送数据的 Datadog 站点，例如 `datadoghq.com` 或 `datadoghq.eu`。默认为`datadoghq.com`。
+- **`DD_ENV`**：应用于跟踪和日志的环境名称，例如`production`。
+- **`DD_SERVICE`**：应用于跟踪和日志的服务名称。
+- **`DD_TRACE_DEBUG`**：设置为 `true` 以在故障排除时在 `ddtrace` 跟踪器中启用调试日志记录。
+- **`DD_LOG_LEVEL`**：故障排除时的Datadog Agent日志级别，例如`debug`。
 
 有关完整的跟踪选项集，请参阅 [⟦T55⟧ environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) 参考。<Note>
-  启用 `DD_API_KEY`（以及`ddtrace-run`）可能会覆盖或干扰您可能已在应用程序代码中检测的其他自动检测解决方案（例如 OpenTelemetry）。
+启用 `DD_API_KEY`（以及`ddtrace-run`）可能会覆盖或干扰您可能已在应用程序代码中检测的其他自动检测解决方案（例如 OpenTelemetry）。
 </Note>
 
 ## `LANGGRAPH_POSTGRES_POOL_MAX_SIZE`
@@ -80,16 +75,16 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 ## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。有`langgraph-api>=0.8.1`可供选择。
 
 <Note>
-  仅支持默认的 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
+仅支持默认的 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
 </Note>
 
 接受的字段：
 
-* `enabled`（布尔值，默认`false`）：当`true`时，线程删除和剪枝操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
-* `enabledWorkerOnly`（布尔值，默认`false`）：仅运行后台排出工作程序，而不将新条目排队。在将 `enabled` 回滚到 `false` 后，使用它来完成队列的排空。
-* `pollIntervalMs`（整数，默认`5000`）：worker 轮询队列的频率，以毫秒为单位。
-* `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的漏电延迟。
-* `batchSleepMs`（整数，默认`500`）：当队列非空时，worker 在批次之间休眠的时间，以毫秒为单位。
+- `enabled`（布尔值，默认`false`）：当`true`时，线程删除和修剪操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
+- `enabledWorkerOnly`（布尔值，默认`false`）：仅运行后台排出工作程序，而不将新条目排队。在将 `enabled` 回滚到 `false` 后，使用它来完成队列的排空。
+- `pollIntervalMs`（整数，默认`5000`）：工作线程轮询队列的频率，以毫秒为单位。
+- `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的漏电延迟。
+- `batchSleepMs`（整数，默认`500`）：当队列非空时，worker 在批次之间休眠的时间，以毫秒为单位。
 
 示例：`LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`。默认为禁用（同步检查点删除）。
 
@@ -106,7 +101,7 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 将 `LANGSMITH_TRACING` 设置为 `false` 以禁用对 LangSmith 的跟踪。
 
 <Note>
-  对于基于运行时条件（例如每个客户端要求或数据敏感性）的选择性跟踪控制，请参阅[Conditional tracing](/langsmith/conditional-tracing)。
+对于基于运行时条件（例如每个客户端要求或数据敏感性）的选择性跟踪控制，请参阅[Conditional tracing](/langsmith/conditional-tracing)。
 </Note>
 
 默认为`true`。
@@ -133,7 +128,7 @@ LangSmith 代理服务器部署在云上时支持的环境变量。
 
 指定其他[⟦T119⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 # If you set LS_APM_OTEL_ENABLED AND (OTEL_EXPORTER_OTLP_TRACES_ENDPOINT or OTEL_EXPORTER_OTLP_ENDPOINT),
 # the server starts with OpenTelemetry instrumentation enabled.
 LS_APM_OTEL_ENABLED=true
@@ -153,7 +148,7 @@ OTEL_PYTHON_EXCLUDED_URLS=/metrics,/ok,/info
 
 例如，要将 OpenTelemetry 跟踪提交到 [New Relic's US region](https://docs.newrelic.com/docs/opentelemetry/best-practices/opentelemetry-otlp/)，请设置以下内容：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 LS_APM_OTEL_ENABLED=true
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://otlp.nr-data.net/v1/traces
 OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.nr-data.net
@@ -161,7 +156,7 @@ OTEL_EXPORTER_OTLP_HEADERS=api-key=<YOUR_INGEST_LICENSE_KEY>
 ```
 
 <Note>
-  OTel APM 跟踪已在代理服务器版本`0.5.32` 中添加，目前处于 Alpha 阶段。
+OTel APM 跟踪已在代理服务器版本`0.5.32` 中添加，目前处于 Alpha 阶段。
 </Note>
 
 ## `LS_MONGODB_URI`
@@ -173,8 +168,8 @@ URI 必须指向副本集成员或`mongos` 路由器，并且必须在路径中�
 详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 
 ## `REDIS_KEY_PREFIX`<Info>
-  **适用于 API 服务器版本 0.1.9+**
-  API Server 版本 0.1.9 及更高版本支持此环境变量。
+**适用于 API 服务器版本 0.1.9+**
+API Server 版本 0.1.9 及更高版本支持此环境变量。
 </Info>
 
 指定 Redis 键的前缀。这允许多个 Agent Server 实例通过使用不同的键前缀共享同一个 Redis 实例。
@@ -195,20 +190,21 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
 
-有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://langchain-ai.github.io/langgraphjs/reference/classes/sdk_client.RunsClient.html#stream) SDK。默认为 `120` 秒。
+有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://langchain-ai.github.io/langgraphjs/reference/classes/sdk_client.RunsClient.html#stream) SDK。
 
-<Note>
-  当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
+默认为 `120` 秒。<Note>
+当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
 </Note>
 
-***
+{/* 占位符。目前没有云专有的代理服务器环境变量。当新的部分出现时，在此处添加它们。 */}
 
-<div>
-  <Callout icon="terminal-2">
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

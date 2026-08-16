@@ -20,7 +20,7 @@ OAuth2 involves three main roles:
 
 A standard OAuth2 flow works something like this:
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 sequenceDiagram
     participant User
     participant Client
@@ -48,19 +48,18 @@ Before you start this tutorial, ensure you have:
 Install the required dependencies. Start in your `custom-auth` directory and ensure you have the `langgraph-cli` installed:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  pip install -U "langgraph-cli[inmem]"
-  ```
+```bash pip
+cd custom-auth
+pip install -U "langgraph-cli[inmem]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  uv add "langgraph-cli[inmem]"
-  ```
+```bash uv
+cd custom-auth
+uv add "langgraph-cli[inmem]"
+```
 </CodeGroup>
 
-<a />
-
+<a id="setup-auth-provider"></a>
 ## 2. Set up the authentication provider
 
 Next, fetch the URL of your auth server and the private key for authentication.
@@ -68,23 +67,18 @@ Since you're using Supabase for this, you can do this in the Supabase dashboard:
 
 1. In the left sidebar, click on t️⚙ Project Settings" and then click "API"
 2. Copy your project URL and add it to your `.env` file
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-echo "SUPABASE_URL=your-project-url" >> .env
-```
-
+  ```shell
+  echo "SUPABASE_URL=your-project-url" >> .env
+  ```
 3. Copy your service role secret key and add it to your `.env` file:
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-echo "SUPABASE_SERVICE_KEY=your-service-role-key" >> .env
-```
-
+  ```shell
+  echo "SUPABASE_SERVICE_KEY=your-service-role-key" >> .env
+  ```
 4. Copy your "anon public" key and note it down. This will be used later when you set up our client code.
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-SUPABASE_URL=your-project-url
-SUPABASE_SERVICE_KEY=your-service-role-key
-```
+  ```bash
+  SUPABASE_URL=your-project-url
+  SUPABASE_SERVICE_KEY=your-service-role-key
+  ```
 
 ## 3. Implement token validation
 
@@ -98,7 +92,7 @@ Now you'll upgrade your authentication to validate real JWT tokens from Supabase
 
 Update `src/security/auth.py` to implement this:
 
-```python {highlight={8-9,20-30}} title="src/security/auth.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={8-9,20-30}} title="src/security/auth.py"
 import os
 import httpx
 from langgraph_sdk import Auth
@@ -159,7 +153,7 @@ Let's test out the new authentication flow. You can run the following code in a 
 * A Supabase project URL (from [above](#setup-auth-provider))
 * A Supabase anon **public key** (also from [above](#setup-auth-provider))
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import httpx
 from getpass import getpass
@@ -205,7 +199,7 @@ await sign_up(email2, password)
 
 Now test that users can only see their own data. Make sure the server is running (run `langgraph dev`) before proceeding. The following snippet requires the "anon public" key that you copied from the Supabase dashboard while [setting up the auth provider](#setup-auth-provider) previously.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 async def login(email: str, password: str):
     """Get an access token for an existing user."""
     async with httpx.AsyncClient() as client:
@@ -257,7 +251,7 @@ except Exception as e:
 
 The output should look like this:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 ✅ User 1 created thread: d6af3754-95df-4176-aa10-dbd8dca40f1a
 ✅ Unauthenticated access blocked: Client error '403 Forbidden' for url 'http://localhost:2024/threads'
 ✅ User 2 blocked from User 1's thread: Client error '404 Not Found' for url 'http://localhost:2024/threads/d6af3754-95df-4176-aa10-dbd8dca40f1a'
@@ -286,14 +280,13 @@ Now that you have production authentication, consider:
 2. Learn more about the other aspects of authentication and authorization in the [conceptual guide on authentication](/langsmith/auth).
 3. Customize your handlers and setup further after reading the [reference docs](https://reference.langchain.com/python/langgraph-sdk/auth/Auth).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

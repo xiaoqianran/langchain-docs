@@ -12,8 +12,7 @@ By default, calls to most CLI commands log a single analytics event upon invocat
 
 You can disable all CLI telemetry by setting `LANGGRAPH_CLI_NO_ANALYTICS=1`.
 
-<a />
-
+<a id="in-memory-docker"></a>
 ## Agent Server
 
 The [Agent Server](/langsmith/agent-server) provides a durable execution runtime that relies on persisting checkpoints of your application state, long-term memories, thread metadata, assistants, and similar resources to the local file system or a database. Unless you have deliberately customized the storage location, this information is either written to local disk (for `langgraph dev`) or a PostgreSQL database (for `langgraph up` and in all deployments).
@@ -23,17 +22,15 @@ The [Agent Server](/langsmith/agent-server) provides a durable execution runtime
 When running the Agent server (either in-memory or in Docker), LangSmith tracing may be enabled to facilitate faster debugging and offer observability of graph state and LLM prompts in production. You can always disable tracing by setting `LANGSMITH_TRACING=false` in your server's runtime environment.
 
 <Note>
-  For more granular control, you can use [conditional tracing](/langsmith/conditional-tracing) to selectively enable or disable tracing based on runtime conditions, such as client requirements or data sensitivity.
+For more granular control, you can use [conditional tracing](/langsmith/conditional-tracing) to selectively enable or disable tracing based on runtime conditions, such as client requirements or data sensitivity.
 </Note>
 
-<a />
-
+<a id="langgraph-dev"></a>
 ### In-memory development server
 
 `langgraph dev` runs an [in-memory development server](/langsmith/local-dev-testing) as a single Python process, designed for quick development and testing. It saves all checkpointing and memory data to disk within a `.langgraph_api` directory in the current working directory. Apart from the telemetry data described in the [CLI](#cli) section, no data leaves the machine unless you have enabled tracing or your graph code explicitly contacts an external service.
 
-<a />
-
+<a id="langgraph-up"></a>
 ### Standalone Server
 
 `langgraph up` builds your local package into a Docker image and runs the server as the [data plane](/langsmith/self-hosted) consisting of three containers: the API server, a PostgreSQL container, and a Redis container. All persistent data (checkpoints, assistants, etc.) are stored in the PostgreSQL database. Redis is used as a pubsub connection for real-time streaming of events. You can encrypt all checkpoints before saving to the database by setting a valid `LANGGRAPH_AES_KEY` environment variable. You can also specify [TTLs](/langsmith/configure-ttl) for checkpoints and cross-thread memories in `langgraph.json` to control how long data is stored. All persisted threads, memories, and other data can be deleted via the relevant API endpoints.
@@ -44,7 +41,7 @@ If you've disabled [tracing](#langsmith-tracing), no user data is persisted exte
 
 ## Studio
 
-[Studio](/langsmith/studio) is a graphical interface for interacting with your Agent Server. It does not persist any private data (the data you send to your server is not sent to LangSmith). Though the Studio interface is served at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-storage-and-privacy), it is run in your browser and connects directly to your local Agent Server so that no data needs to be sent to LangSmith.
+[Studio](/langsmith/studio) is a graphical interface for interacting with your Agent Server. It does not persist any private data (the data you send to your server is not sent to LangSmith). Though the Studio interface is served at [smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-data-storage-and-privacy), it is run in your browser and connects directly to your local Agent Server so that no data needs to be sent to LangSmith.
 
 If you are logged in, LangSmith does collect some usage analytics to help improve the debugging user experience. This includes:
 
@@ -59,20 +56,19 @@ Importantly, no application data or code (or other sensitive configuration detai
 
 In summary, you can opt-out of server-side telemetry by turning off CLI analytics and disabling tracing.
 
-| Variable                       | Purpose                   | Default                |
-| ------------------------------ | ------------------------- | ---------------------- |
-| `LANGGRAPH_CLI_NO_ANALYTICS=1` | Disable CLI analytics     | Analytics enabled      |
-| `LANGSMITH_API_KEY`            | Enable LangSmith tracing  | Tracing disabled       |
-| `LANGSMITH_TRACING=false`      | Disable LangSmith tracing | Depends on environment |
+| Variable                       | Purpose                   | Default                          |
+| ------------------------------ | ------------------------- | -------------------------------- |
+| `LANGGRAPH_CLI_NO_ANALYTICS=1` | Disable CLI analytics     | Analytics enabled                |
+| `LANGSMITH_API_KEY`            | Enable LangSmith tracing  | Tracing disabled                 |
+| `LANGSMITH_TRACING=false`      | Disable LangSmith tracing | Depends on environment           |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-storage-and-privacy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

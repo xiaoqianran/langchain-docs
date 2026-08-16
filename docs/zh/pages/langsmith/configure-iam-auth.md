@@ -4,22 +4,22 @@
 
 # 为数据存储配置 IAM 身份验证
 
-配置代理服务器以使用云工作负载身份进行 PostgreSQL 和 Redis 身份验证。
-
 代理服务器可以使用云工作负载身份在运行时生成短期 PostgreSQL 和 Redis 凭据。这将从部署配置中删除静态数据库和缓存密码。连接和池行为保持不变。
 
 <Note>
-  数据存储 IAM 身份验证需要 `langgraph-api>=0.12.0`。
+数据存储 IAM 身份验证需要 `langgraph-api>=0.12.0`。
 </Note>
 
-## 支持的服务|供应商价值 | PostgreSQL | Redis |凭证来源|
-| -------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
+## 支持的服务
+
+|供应商价值 | PostgreSQL | Redis |凭证来源 |
+|----------------|------------------------|--------------------|--------------------|
 | `aws` | Amazon RDS 或 Aurora PostgreSQL | Amazon ElastiCache 预配置缓存集群或复制组 | AWS SDK默认凭证链|
 | `azure` | Azure Database for PostgreSQL 灵活服务器 | Azure 托管 Redis 或 Azure Redis 缓存 |微软 Entra `DefaultAzureCredential` |
 | `gcp` | PostgreSQL 的云 SQL | Redis 集群的内存存储 | Google 应用程序默认凭据 (ADC) |
 
 <Warning>
-  GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不同的令牌范围。
+GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不同的令牌范围。
 </Warning>
 
 提供者设置仅控制身份验证。在启动代理服务器之前配置网络访问、TLS、数据库用户、缓存用户和提供程序权限。## 启用 IAM 身份验证
@@ -32,24 +32,24 @@
 4. 设置包含主体名称但不包含静态密码的连接 URI。
 5. 将相应的提供者选择器设置为`aws`、`azure`或`gcp`：
 
-   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   AGENT_POSTGRES_IAM_AUTH_PROVIDER=<provider>
-   AGENT_REDIS_IAM_AUTH_PROVIDER=<provider>
-   ```
+    ```shell
+    AGENT_POSTGRES_IAM_AUTH_PROVIDER=<provider>
+    AGENT_REDIS_IAM_AUTH_PROVIDER=<provider>
+    ```
 
 您可以为 PostgreSQL、Redis 或两者启用 IAM 身份验证。取消设置选择器后，代理服务器将继续使用该数据存储的连接 URI 中的密码。
 
 将这些连接 URI 变量用于您的部署类型：
 
 |部署| PostgreSQL URI | Redis URI |
-| ------------------------------------------- | -------------------- | ------------------ |
+|------------------------|----------------|------------|
 |独立代理服务器| `DATABASE_URI` | `REDIS_URI` |
 |带有控制平面的自托管部署 | `POSTGRES_URI_CUSTOM` | `REDIS_URI_CUSTOM` |
 
-连接 URI 必须满足以下要求：* **传输安全**：对于 PostgreSQL 使用`sslmode=require`或更严格的验证模式，对于 Redis 使用`rediss://`。
-* **字符编码**：对用户名中的 URI 保留字符进行百分比编码，例如 `@` 为 `%40`。
-* **私有证书颁发机构**：如果 Redis TLS 使用私有证书颁发机构，请将 `REDIS_TLS_CA_CERT` 设置为 base64 编码的 PEM CA 捆绑包。
-* **集群模式**：如果Redis服务使用集群模式，还要设置`REDIS_CLUSTER=true`。
+连接 URI 必须满足以下要求：- **传输安全**：对于 PostgreSQL 使用`sslmode=require`或更严格的验证模式，对于 Redis 使用`rediss://`。
+- **字符编码**：对用户名中的 URI 保留字符进行百分比编码，例如 `@` 为 `%40`。
+- **私有证书颁发机构**：如果 Redis TLS 使用私有证书颁发机构，请将 `REDIS_TLS_CA_CERT` 设置为 Base64 编码的 PEM CA 捆绑包。
+- **集群模式**：如果Redis服务使用集群模式，还要设置`REDIS_CLUSTER=true`。
 
 ## 配置AWS
 
@@ -57,13 +57,13 @@
 
 配置代理服务器之前：
 
-* [Enable IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) 适用于 RDS 或 Aurora PostgreSQL。授予数据库用户 `rds_iam` 角色，并为该用户授予工作负载身份 `rds-db:connect`。
-* [Enable IAM authentication](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth-iam.html) 适用于 ElastiCache 用户。为 ElastiCache 缓存或复制组以及 ElastiCache 用户授予工作负载身份 `elasticache:Connect`。
-* 通过 EKS Pod Identity、服务账户的 IAM 角色 (IRSA)、实例配置文件或其他 AWS 开发工具包凭证源配置 AWS 凭证。将 `AWS_REGION` 或 `AWS_DEFAULT_REGION` 设置为数据存储的区域。
+- [Enable IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) 适用于 RDS 或 Aurora PostgreSQL。授予数据库用户 `rds_iam` 角色，并为该用户授予工作负载身份 `rds-db:connect`。
+- [Enable IAM authentication](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth-iam.html) 适用于 ElastiCache 用户。为 ElastiCache 缓存或复制组以及 ElastiCache 用户授予工作负载身份 `elasticache:Connect`。
+- 通过 EKS Pod Identity、服务账户的 IAM 角色 (IRSA)、实例配置文件或其他 AWS 开发工具包凭证源配置 AWS 凭证。将 `AWS_REGION` 或 `AWS_DEFAULT_REGION` 设置为数据存储的区域。
 
 在连接 URI 中设置数据库用户名：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AWS_REGION=<region>
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=aws
 AGENT_REDIS_IAM_AUTH_PROVIDER=aws
@@ -77,13 +77,13 @@ REDIS_URI="rediss://<elasticache-iam-user>@<elasticache-endpoint>:6379"
 
 配置代理服务器之前：
 
-* [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/postgresql/security/security-connect-with-managed-identity) 适用于 Azure Database for PostgreSQL 灵活服务器。为托管标识或服务主体创建数据库角色。使用该角色名称作为 PostgreSQL URI 用户名。
-* [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/redis/entra-for-authentication) 以及 Azure 托管 Redis 的数据访问策略。使用托管标识或服务主体对象 ID 作为 Redis URI 用户名。
-* 为每个代理服务器工作负载配置 Azure 工作负载标识、托管标识或其他 `DefaultAzureCredential` 源。
+- [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/postgresql/security/security-connect-with-managed-identity) 适用于 Azure Database for PostgreSQL 灵活服务器。为托管标识或服务主体创建数据库角色。使用该角色名称作为 PostgreSQL URI 用户名。
+- [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/redis/entra-for-authentication) 以及 Azure 托管 Redis 的数据访问策略。使用托管标识或服务主体对象 ID 作为 Redis URI 用户名。
+- 为每个代理服务器工作负载配置 Azure 工作负载标识、托管标识或其他 `DefaultAzureCredential` 源。
 
 在连接 URI 中设置 Microsoft Entra 主体标识符：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=azure
 AGENT_REDIS_IAM_AUTH_PROVIDER=azure
 DATABASE_URI="postgresql://<entra-principal-name>@<postgres-host>:5432/<database>?sslmode=require"
@@ -96,13 +96,13 @@ REDIS_URI="rediss://<entra-object-id>@<redis-host>:<port>"
 
 配置代理服务器之前：
 
-* [Configure Cloud SQL IAM database authentication](https://cloud.google.com/sql/docs/postgres/iam-logins)，添加 IAM 主体作为数据库用户，并授予其`roles/cloudsql.instanceUser`。单独授予数据库权限。
-* [Configure Memorystore IAM authentication](https://cloud.google.com/memorystore/docs/cluster/manage-iam-auth) 并授予工作负载身份`roles/redis.dbConnectionUser`。
-* 为每个代理服务器工作负载配置 ADC。优先选择工作负载身份联合或附加服务帐户而不是服务帐户密钥。
+- [Configure Cloud SQL IAM database authentication](https://cloud.google.com/sql/docs/postgres/iam-logins)，将 IAM 委托人添加为数据库用户，并授予其`roles/cloudsql.instanceUser`。单独授予数据库权限。
+- [Configure Memorystore IAM authentication](https://cloud.google.com/memorystore/docs/cluster/manage-iam-auth) 并授予工作负载身份`roles/redis.dbConnectionUser`。
+- 为每个代理服务器工作负载配置 ADC。优先选择工作负载身份联合或附加服务帐户而不是服务帐户密钥。
 
 在 PostgreSQL URI 中设置 Cloud SQL IAM 数据库用户。 Memorystore 仅支持 `default` Redis 用户名：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=gcp
 AGENT_REDIS_IAM_AUTH_PROVIDER=gcp
 DATABASE_URI="postgresql://<cloud-sql-iam-user>@<cloud-sql-host>:5432/<database>?sslmode=require"
@@ -118,7 +118,7 @@ REDIS_CLUSTER=true
 
 以下示例将 AWS 用于两个数据存储。使用其他云提供商时，将每个提供商值设置为 `azure` 或 `gcp`：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 postgres:
   external:
     enabled: true
@@ -148,19 +148,18 @@ queue:
 
 ## 另请参阅
 
-* [Self-host standalone servers](/langsmith/deploy-standalone-server)
-* [Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)
-* [Self-hosted platform features](/langsmith/self-hosted-platform-features)
-* [Configure Agent Server for scale](/langsmith/agent-server-scale)
+- [Self-host standalone servers](/langsmith/deploy-standalone-server)
+- [Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)
+- [Self-hosted platform features](/langsmith/self-hosted-platform-features)
+- [Configure Agent Server for scale](/langsmith/agent-server-scale)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

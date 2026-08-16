@@ -3,9 +3,9 @@
 # Feedback data format
 
 <Check>
-  Before diving into this content, it might be helpful to read the following:
+    Before diving into this content, it might be helpful to read the following:
 
-  * [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
+    * [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
 </Check>
 
 **Feedback** is LangSmith's way of storing the criteria and scores from evaluation on a particular trace or intermediate run (span). Feedback can be produced from a variety of ways, such as:
@@ -17,27 +17,27 @@
 
 Feedback is stored in a simple format with the following fields:
 
-| Field Name                 | Type     | Description                                                                                                               |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `id`                       | UUID     | Unique identifier for the record itself                                                                                   |
-| `created_at`               | datetime | Timestamp when the record was created                                                                                     |
-| `modified_at`              | datetime | Timestamp when the record was last modified                                                                               |
+| Field Name                | Type     | Description                                                                                            |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `id`                        | UUID     | Unique identifier for the record itself                                                                |
+| `created_at`               | datetime | Timestamp when the record was created                                                                  |
+| `modified_at`              | datetime | Timestamp when the record was last modified                                                            |
 | `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of. Required when creating feedback for a run. |
-| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                                     |
-| `start_time`               | datetime | Start time of the run the feedback is for. Optional, but providing it lets LangSmith process the feedback quicker.        |
-| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                                       |
-| `score`                    | number   | Numerical score associated with the feedback key                                                                          |
-| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.                                  |
-| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given.                    |
-| `correction`               | object   | Reserved for storing correction details, if any                                                                           |
-| `feedback_source`          | object   | Object containing information about the feedback source                                                                   |
-| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                                    |
-| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                                               |
-| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                                         |
+| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                  |
+| `start_time`               | datetime | Start time of the run the feedback is for. Optional, but providing it lets LangSmith process the feedback quicker. |
+| `key`                       | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                        |
+| `score`                     | number   | Numerical score associated with the feedback key                                                       |
+| `value`                     | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.               |
+| `comment`                   | string   | Any comment or annotation associated with the record. This can be a justification for the score given. |
+| `correction`                | object   | Reserved for storing correction details, if any                                                        |
+| `feedback_source`          | object   | Object containing information about the feedback source                                                |
+| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                         |
+| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                            |
+| `feedback_source.user_id` | UUID     | Unique identifier for the user providing feedback
 
 Here is an example JSON representation of a feedback record in the above format:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "created_at": "2024-05-05T23:23:11.077838",
   "modified_at": "2024-05-05T23:23:11.232962",
@@ -57,14 +57,13 @@ Here is an example JSON representation of a feedback record in the above format:
 }
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/feedback-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

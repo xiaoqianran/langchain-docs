@@ -6,56 +6,87 @@ The following sections provide API references and SDK documentation for LangSmit
 
 ## LangSmith SDKs
 
-<CardGroup>
-  <Card title="Python SDK" icon="brand-python" href="/langsmith/smith-python-sdk">
+<CardGroup cols={2}>
+  <Card
+    title="Python SDK"
+    icon="brand-python"
+    href="/langsmith/smith-python-sdk"
+  >
     Reference documentation for the LangSmith Python SDK.
   </Card>
 
-  <Card title="JavaScript/TypeScript SDK" icon="brand-javascript" href="/langsmith/smith-js-ts-sdk">
+  <Card
+    title="JavaScript/TypeScript SDK"
+    icon="brand-javascript"
+    href="/langsmith/smith-js-ts-sdk"
+  >
     Reference documentation for the LangSmith JavaScript/TypeScript SDK.
   </Card>
 
-  <Card title="Go SDK" icon="brand-golang" href="/langsmith/smith-go-sdk">
+  <Card
+    title="Go SDK"
+    icon="brand-golang"
+    href="/langsmith/smith-go-sdk"
+  >
     Reference documentation for the LangSmith Go SDK.
   </Card>
 
-  <Card title="Java SDK" icon="coffee" href="/langsmith/smith-java-sdk">
+  <Card
+    title="Java SDK"
+    icon="coffee"
+    href="/langsmith/smith-java-sdk"
+  >
     Reference documentation for the LangSmith Java SDK.
   </Card>
 </CardGroup>
 
 ## LangGraph SDKs
 
-<CardGroup>
-  <Card title="LangGraph Python SDK" icon="sitemap" href="/langsmith/langgraph-python-sdk">
+<CardGroup cols={2}>
+  <Card
+    title="LangGraph Python SDK"
+    icon="sitemap"
+    href="/langsmith/langgraph-python-sdk"
+  >
     Reference documentation for deploying LangGraph applications with Python.
   </Card>
 
-  <Card title="LangGraph JS/TS SDK" icon="sitemap" href="/langsmith/langgraph-js-ts-sdk">
+  <Card
+    title="LangGraph JS/TS SDK"
+    icon="sitemap"
+    href="/langsmith/langgraph-js-ts-sdk"
+  >
     Reference documentation for deploying LangGraph applications with JavaScript/TypeScript.
   </Card>
 </CardGroup>
 
 ## APIs
 
-<CardGroup>
-  <Card title="LangSmith API" icon="code" href="/langsmith/smith-api-ref">
+<CardGroup cols={2}>
+  <Card
+    title="LangSmith API"
+    icon="code"
+    href="/langsmith/smith-api-ref"
+  >
     Complete REST API reference for LangSmith platform features.
   </Card>
 
-  <Card title="Deployment APIs" icon="server" href="/langsmith/server-api-ref">
+  <Card
+    title="Deployment APIs"
+    icon="server"
+    href="/langsmith/server-api-ref"
+  >
     API references for self-hosted and hybrid LangSmith deployments.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

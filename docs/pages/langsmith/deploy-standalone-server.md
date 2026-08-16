@@ -2,28 +2,34 @@
 
 # Self-host standalone servers
 
-Deploy standalone Agent Servers using Docker, Docker Compose, or Kubernetes without the LangSmith control plane.
-
 This guide shows you how to deploy standalone [Agent Servers](/langsmith/agent-server) directly, without a [control plane](/langsmith/control-plane). You can deploy the server independently and still send traces to LangSmith ([self-hosted](/langsmith/self-hosted) or [Cloud](/langsmith/cloud)) for [observability](/langsmith/observability) and [evaluation](/langsmith/evaluation). Standalone servers are production-ready and provide the most lightweight option for running agents.
 
 ## Overview
 
-You manage a simplified <Tooltip>data plane</Tooltip> made up of Agent Servers and their required backing services (PostgreSQL, Redis, etc.):
+You manage a simplified <Tooltip tip="The runtime environment where your Agent Servers and agents execute.">data plane</Tooltip> made up of Agent Servers and their required backing services (PostgreSQL, Redis, etc.):
 
-| Component         | Responsibilities                                              | Where it runs       | Who manages it |
-| ----------------- | ------------------------------------------------------------- | ------------------- | -------------- |
-| **Control plane** | n/a                                                           | n/a                 | n/a            |
-| **Data plane**    | <ul><li>Agent Servers</li><li>Postgres, Redis, etc.</li></ul> | Your infrastructure | You            |
+| Component | Responsibilities | Where it runs | Who manages it |
+|-----------|------------------|---------------|----------------|
+| **Control plane** | n/a | n/a | n/a |
+| **Data plane** | <ul><li>Agent Servers</li><li>Postgres, Redis, etc.</li></ul> | Your infrastructure | You |
 
 This option gives you full control over scaling, deployment, and CI/CD pipelines, while still allowing optional integration with LangSmith for tracing and evaluation.
 
 <Warning>
-  Do not run standalone servers in serverless environments. Scale-to-zero may cause task loss and scaling up will not work reliably.
+Do not run standalone servers in serverless environments. Scale-to-zero may cause task loss and scaling up will not work reliably.
 </Warning>
 
-<img alt="Standalone server architecture" />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/standalone-server-light.png"
+    alt="Standalone server architecture"
+/>
 
-<img alt="Standalone server architecture" />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/standalone-server-dark.png"
+    alt="Standalone server architecture"
+/>
 
 ### Workflow
 
@@ -34,19 +40,19 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
 
 ### Supported compute platforms
 
-* **Kubernetes**: Use the LangSmith Helm chart to run Agent Servers in a Kubernetes cluster. This is the recommended option for production-grade deployments.
-* **Docker**: Run in any Docker-supported compute platform (local dev machine, VM, ECS, etc.). This is best suited for development or small-scale workloads.
+- **Kubernetes**: Use the LangSmith Helm chart to run Agent Servers in a Kubernetes cluster. This is the recommended option for production-grade deployments.
+- **Docker**: Run in any Docker-supported compute platform (local dev machine, VM, ECS, etc.). This is best suited for development or small-scale workloads.
 
 <Warning>
-  For production deployments, use Kubernetes with the maintained LangSmith Helm chart. This is the production path that LangChain regularly tests. LangChain does not regularly test other orchestrators.
+For production deployments, use Kubernetes with the maintained LangSmith Helm chart. This is the production path that LangChain regularly tests. LangChain does not regularly test other orchestrators.
 
-  Non-Kubernetes deployments have known gaps that you must implement and maintain yourself. These deployments may diverge further from the tested production path as the Helm chart evolves:
+Non-Kubernetes deployments have known gaps that you must implement and maintain yourself. These deployments may diverge further from the tested production path as the Helm chart evolves:
 
-  * **Independent queue autoscaling**: Configure scaling policies and queue metrics for bursty, write-heavy workloads.
-  * **Graceful run draining**: Configure shutdown draining and sufficient termination windows so in-flight runs can finish during deployments and scale-down events.
-  * **Split-mode wiring**: Provision and connect separate API and queue services. The Helm chart handles this when `queue.enabled` is `true`.
-  * **Reference scaling configuration**: Translate the [Agent Server scaling](/langsmith/agent-server-scale) settings, including `api.replicas`, `queue.replicas`, `numberOfJobsPerWorker`, and read replicas, into your orchestrator's task definitions and scaling policies.
-  * **Version upgrades and support**: Maintain task definitions and apply version updates. LangChain tests and ships supported Helm chart version updates.
+- **Independent queue autoscaling**: Configure scaling policies and queue metrics for bursty, write-heavy workloads.
+- **Graceful run draining**: Configure shutdown draining and sufficient termination windows so in-flight runs can finish during deployments and scale-down events.
+- **Split-mode wiring**: Provision and connect separate API and queue services. The Helm chart handles this when `queue.enabled` is `true`.
+- **Reference scaling configuration**: Translate the [Agent Server scaling](/langsmith/agent-server-scale) settings, including `api.replicas`, `queue.replicas`, `numberOfJobsPerWorker`, and read replicas, into your orchestrator's task definitions and scaling policies.
+- **Version upgrades and support**: Maintain task definitions and apply version updates. LangChain tests and ships supported Helm chart version updates.
 </Warning>
 
 ## Prerequisites
@@ -54,33 +60,29 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
 1. Use the [LangGraph CLI](/langsmith/cli) to [test your application locally](/langsmith/local-dev-testing).
 2. Use the [LangGraph CLI](/langsmith/cli) to build a Docker image (i.e. `langgraph build`).
 3. The following environment variables are needed for a data plane deployment.
-4. `REDIS_URI`: Connection details to a Redis instance. Redis will be used as a pub-sub broker to enable streaming real time output from background runs. The value of `REDIS_URI` must be a valid [Redis connection URI](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url).
+  1. `REDIS_URI`: Connection details to a Redis instance. Redis will be used as a pub-sub broker to enable streaming real time output from background runs. The value of `REDIS_URI` must be a valid [Redis connection URI](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url).
+        <Note>
+        **Shared Redis Instance**
+        Multiple self-hosted deployments can share the same Redis instance. For example, for `Deployment A`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/1` and for `Deployment B`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/2`.
 
-   <Note>
-     **Shared Redis Instance**
-     Multiple self-hosted deployments can share the same Redis instance. For example, for `Deployment A`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/1` and for `Deployment B`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/2`.
+        `1` and `2` are different database numbers within the same instance, but `<hostname_1>` is shared. **The same database number cannot be used for separate deployments**.
+        </Note>
+  2. `DATABASE_URI`: Postgres connection details. Postgres will be used to store assistants, threads, runs, persist thread state and long term memory, and to manage the state of the background task queue with 'exactly once' semantics. The value of `DATABASE_URI` must be a valid [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS).
+        <Note>
+        **Shared Postgres Instance**
+        Multiple self-hosted deployments can share the same Postgres instance. For example, for `Deployment A`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>` and for `Deployment B`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`.
 
-     `1` and `2` are different database numbers within the same instance, but `<hostname_1>` is shared. **The same database number cannot be used for separate deployments**.
-   </Note>
-5. `DATABASE_URI`: Postgres connection details. Postgres will be used to store assistants, threads, runs, persist thread state and long term memory, and to manage the state of the background task queue with 'exactly once' semantics. The value of `DATABASE_URI` must be a valid [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS).
+        `<database_name_1>` and `database_name_2` are different databases within the same instance, but `<hostname_1>` is shared. **The same database cannot be used for separate deployments**.
+        </Note>
+        <Tip>
+        You can optionally store checkpoint data in MongoDB instead of PostgreSQL. PostgreSQL is still required for all other server data. See [Configure checkpointer backend](/langsmith/configure-checkpointer) for details.
+        </Tip>
+  3. `LANGSMITH_API_KEY`: LangSmith API key.
+  4. `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
+  5. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance. Do not add a trailing slash to the URL, as this can cause authentication errors.
+4. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
 
-   <Note>
-     **Shared Postgres Instance**
-     Multiple self-hosted deployments can share the same Postgres instance. For example, for `Deployment A`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>` and for `Deployment B`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`.
-
-     `<database_name_1>` and `database_name_2` are different databases within the same instance, but `<hostname_1>` is shared. **The same database cannot be used for separate deployments**.
-   </Note>
-
-   <Tip>
-     You can optionally store checkpoint data in MongoDB instead of PostgreSQL. PostgreSQL is still required for all other server data. See [Configure checkpointer backend](/langsmith/configure-checkpointer) for details.
-   </Tip>
-6. `LANGSMITH_API_KEY`: LangSmith API key.
-7. `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
-8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance. Do not add a trailing slash to the URL, as this can cause authentication errors.
-9. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
-
-<a />
-
+<a id="helm"></a>
 ## Kubernetes
 
 Use this [Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) to deploy an Agent Server to a Kubernetes cluster. This is the recommended setup for production standalone server deployments.
@@ -90,12 +92,12 @@ The Helm chart (v0.2.6+) supports MongoDB checkpointing with a bundled instance 
 ## Docker
 
 <Warning>
-  This Docker example is intended for local development and testing. For production, use the Kubernetes deployment.
+This Docker example is intended for local development and testing. For production, use the Kubernetes deployment.
 </Warning>
 
 Run the following `docker` command:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 docker run \
     --env-file .env \
     -p 8123:8000 \
@@ -106,22 +108,22 @@ docker run \
 ```
 
 <Note>
-  * You need to replace `my-image` with the name of the image you built in the prerequisite steps (from `langgraph build`)
+* You need to replace `my-image` with the name of the image you built in the prerequisite steps (from `langgraph build`)
 
-  and you should provide appropriate values for `REDIS_URI`, `DATABASE_URI`, and `LANGSMITH_API_KEY`.
+and you should provide appropriate values for `REDIS_URI`, `DATABASE_URI`, and `LANGSMITH_API_KEY`.
 
-  * If your application requires additional environment variables, you can pass them in a similar way.
+* If your application requires additional environment variables, you can pass them in a similar way.
 </Note>
 
 ## Docker Compose
 
 <Warning>
-  This Docker Compose example is intended for local development and testing. For production, use the Kubernetes deployment.
+This Docker Compose example is intended for local development and testing. For production, use the Kubernetes deployment.
 </Warning>
 
 Use the following Docker Compose file:
 
-```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yml
 volumes:
     langgraph-data:
         driver: local
@@ -169,95 +171,94 @@ services:
 Run `docker compose up` with this file in the same folder.
 
 <Accordion title="With MongoDB checkpointing">
-  To store checkpoints in MongoDB instead of PostgreSQL, add a MongoDB service and configure the checkpointer backend. Set the backend to `"mongo"` in your `langgraph.json` or use the `LS_DEFAULT_CHECKPOINTER_BACKEND` environment variable. PostgreSQL is still required for all other server data.
+To store checkpoints in MongoDB instead of PostgreSQL, add a MongoDB service and configure the checkpointer backend. Set the backend to `"mongo"` in your `langgraph.json` or use the `LS_DEFAULT_CHECKPOINTER_BACKEND` environment variable. PostgreSQL is still required for all other server data.
 
-  ```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  volumes:
-      langgraph-data:
-          driver: local
-      langgraph-mongo-data:
-          driver: local
-  services:
-      langgraph-redis:
-          image: redis:6
-          healthcheck:
-              test: redis-cli ping
-              interval: 5s
-              timeout: 1s
-              retries: 5
-      langgraph-postgres:
-          image: postgres:16
-          ports:
-              - "5432:5432"
-          environment:
-              POSTGRES_DB: postgres
-              POSTGRES_USER: postgres
-              POSTGRES_PASSWORD: postgres
-          volumes:
-              - langgraph-data:/var/lib/postgresql/data
-          healthcheck:
-              test: pg_isready -U postgres
-              start_period: 10s
-              timeout: 1s
-              retries: 5
-              interval: 5s
-      langgraph-mongo:
-          image: mongo:7
-          command: ["mongod", "--replSet", "rs0"]
-          ports:
-              - "27017:27017"
-          volumes:
-              - langgraph-mongo-data:/data/db
-          healthcheck:
-              test: mongosh --eval "try { rs.status().ok } catch(e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'langgraph-mongo:27017'}]}).ok }" --quiet
-              interval: 5s
-              timeout: 10s
-              retries: 10
-              start_period: 10s
-      langgraph-api:
-          image: ${IMAGE_NAME}
-          ports:
-              - "8123:8000"
-          depends_on:
-              langgraph-redis:
-                  condition: service_healthy
-              langgraph-postgres:
-                  condition: service_healthy
-              langgraph-mongo:
-                  condition: service_healthy
-          env_file:
-              - .env
-          environment:
-              REDIS_URI: redis://langgraph-redis:6379
-              LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
-              DATABASE_URI: postgres://postgres:postgres@langgraph-postgres:5432/postgres?sslmode=disable
-              LS_DEFAULT_CHECKPOINTER_BACKEND: mongo
-              LS_MONGODB_URI: mongodb://langgraph-mongo:27017/langgraph?replicaSet=rs0
-  ```
+```yml
+volumes:
+    langgraph-data:
+        driver: local
+    langgraph-mongo-data:
+        driver: local
+services:
+    langgraph-redis:
+        image: redis:6
+        healthcheck:
+            test: redis-cli ping
+            interval: 5s
+            timeout: 1s
+            retries: 5
+    langgraph-postgres:
+        image: postgres:16
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        volumes:
+            - langgraph-data:/var/lib/postgresql/data
+        healthcheck:
+            test: pg_isready -U postgres
+            start_period: 10s
+            timeout: 1s
+            retries: 5
+            interval: 5s
+    langgraph-mongo:
+        image: mongo:7
+        command: ["mongod", "--replSet", "rs0"]
+        ports:
+            - "27017:27017"
+        volumes:
+            - langgraph-mongo-data:/data/db
+        healthcheck:
+            test: mongosh --eval "try { rs.status().ok } catch(e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'langgraph-mongo:27017'}]}).ok }" --quiet
+            interval: 5s
+            timeout: 10s
+            retries: 10
+            start_period: 10s
+    langgraph-api:
+        image: ${IMAGE_NAME}
+        ports:
+            - "8123:8000"
+        depends_on:
+            langgraph-redis:
+                condition: service_healthy
+            langgraph-postgres:
+                condition: service_healthy
+            langgraph-mongo:
+                condition: service_healthy
+        env_file:
+            - .env
+        environment:
+            REDIS_URI: redis://langgraph-redis:6379
+            LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+            DATABASE_URI: postgres://postgres:postgres@langgraph-postgres:5432/postgres?sslmode=disable
+            LS_DEFAULT_CHECKPOINTER_BACKEND: mongo
+            LS_MONGODB_URI: mongodb://langgraph-mongo:27017/langgraph?replicaSet=rs0
+```
 
-  See [Configure checkpointer backend](/langsmith/configure-checkpointer) for more details on MongoDB configuration options.
+See [Configure checkpointer backend](/langsmith/configure-checkpointer) for more details on MongoDB configuration options.
 </Accordion>
 
 This will launch an Agent Server on port `8123` (change the port mapping in `langgraph-api` if needed). Test if the application is healthy:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 curl --request GET --url 0.0.0.0:8123/ok
 ```
 
 Assuming everything is running correctly, you should see a response like:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 {"ok":true}
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-standalone-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

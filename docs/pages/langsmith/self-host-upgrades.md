@@ -3,18 +3,18 @@
 # Upgrade an installation
 
 <Warning>
-  Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
+Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
 </Warning>
 
 If you don't have the repo added, run the following command to add it:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm repo add langchain https://langchain-ai.github.io/helm/
 ```
 
 Update your local helm repo
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm repo update
 ```
 
@@ -23,18 +23,18 @@ Update your helm chart config file with any updates that are needed in the new v
 Run the following command to upgrade the chart (replace `version` with the version you want to upgrade to):
 
 <Note>
-  If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace` flag.
+If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace` flag.
 </Note>
 
 Find the latest version of the chart. You can find this in the [LangSmith Helm Chart GitHub repository](https://github.com/langchain-ai/helm/releases) or by running the following command:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm search repo langchain/langsmith --versions
 ```
 
 You should see output similar to this:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 NAME                             	CHART VERSION	APP VERSION	DESCRIPTION
 langchain/langsmith              	0.15.13      	0.15.18    	Helm chart to deploy the langsmith application ...
 langchain/langsmith              	0.15.12      	0.15.17    	Helm chart to deploy the langsmith application ...
@@ -46,24 +46,24 @@ langchain/langsmith              	0.15.9       	0.15.13    	Helm chart to deploy
 Choose the version you want to upgrade to (generally the latest version is recommended) and note the version number:
 
 <Note>
-  If your installation is more than one major version behind the latest chart, upgrade one major version at a time. Do not skip major versions. Repeat this upgrade procedure for each intervening major version before upgrading to the latest supported version.
+If your installation is more than one major version behind the latest chart, upgrade one major version at a time. Do not skip major versions. Repeat this upgrade procedure for each intervening major version before upgrading to the latest supported version.
 
-  For example, to upgrade from `0.13.43` to `0.15.13`, first upgrade to `0.14.5`, then upgrade to `0.15.13`.
+For example, to upgrade from `0.13.43` to `0.15.13`, first upgrade to `0.14.5`, then upgrade to `0.15.13`.
 </Note>
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm upgrade <release-name> langchain/langsmith --version <version> --values <path-to-values-file> --wait --debug
 ```
 
 Verify that the upgrade was successful:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm status <release-name>
 ```
 
 All pods should be in the `Running` state. Verify that ClickHouse is running and that both `migrations` jobs have completed.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods
 NAME                                     READY   STATUS      RESTARTS   AGE
 langsmith-backend-95b6d54f5-gz48b        1/1     Running     0          15h
@@ -82,39 +82,38 @@ langsmith-queue-d58cb64f7-87d68          1/1     Running     0          15h
 
    Output will be similar to:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   NAME                         TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE
-   kubernetes                   ClusterIP      172.20.0.1       <none>          443/TCP                      27d
-   langsmith-backend            ClusterIP      172.20.22.34     <none>          1984/TCP                     21d
-   langsmith-clickhouse         ClusterIP      172.20.117.62    <none>          8123/TCP,9000/TCP            21d
-   langsmith-frontend           LoadBalancer   172.20.218.30    <external ip>   80:30093/TCP,443:31130/TCP   21d
-   langsmith-platform-backend   ClusterIP      172.20.232.183   <none>          1986/TCP                     21d
-   langsmith-playground         ClusterIP      172.20.167.132   <none>          3001/TCP                     21d
-   langsmith-postgres           ClusterIP      172.20.59.63     <none>          5432/TCP                     21d
-   langsmith-redis              ClusterIP      172.20.229.98    <none>          6379/TCP                     20d
-   ```
+    ```bash
+    NAME                         TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE
+    kubernetes                   ClusterIP      172.20.0.1       <none>          443/TCP                      27d
+    langsmith-backend            ClusterIP      172.20.22.34     <none>          1984/TCP                     21d
+    langsmith-clickhouse         ClusterIP      172.20.117.62    <none>          8123/TCP,9000/TCP            21d
+    langsmith-frontend           LoadBalancer   172.20.218.30    <external ip>   80:30093/TCP,443:31130/TCP   21d
+    langsmith-platform-backend   ClusterIP      172.20.232.183   <none>          1986/TCP                     21d
+    langsmith-playground         ClusterIP      172.20.167.132   <none>          3001/TCP                     21d
+    langsmith-postgres           ClusterIP      172.20.59.63     <none>          5432/TCP                     21d
+    langsmith-redis              ClusterIP      172.20.229.98    <none>          6379/TCP                     20d
+    ```
 
-2. Curl the external ip of the `langsmith-frontend` service:
+1. Curl the external ip of the `langsmith-frontend` service:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```bash
    curl <external ip>/api/info
    {"version":"0.5.7","license_expiration_time":"2033-05-20T20:08:06","batch_ingest_config":{"scale_up_qsize_trigger":1000,"scale_up_nthreads_limit":16,"scale_down_nempty_trigger":4,"size_limit":100,"size_limit_bytes":20971520}}
    ```
 
-   Check that the version matches the version you upgraded to.
+    Check that the version matches the version you upgraded to.
 
-3. Visit the external IP for the `langsmith-frontend` service on your browser. The LangSmith UI should be visible and operational.
+1. Visit the external IP for the `langsmith-frontend` service on your browser. The LangSmith UI should be visible and operational.
 
-   <img alt="LangSmith UI" />
+   ![LangSmith UI](/langsmith/images/langsmith-ui.png)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-upgrades.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

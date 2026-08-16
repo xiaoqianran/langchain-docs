@@ -6,7 +6,7 @@ Sometimes it is useful for a custom evaluator or summary evaluator to return mul
 
 To return multiple scores using the Python SDK, simply return a list of dictionaries/objects of the following form:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 [
     # 'key' is the metric name
     # 'score' is the value of a numerical metric
@@ -19,7 +19,7 @@ To return multiple scores using the Python SDK, simply return a list of dictiona
 
 To do so with the JS/TS SDK, return an object with a 'results' key and then a list of the above form
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript
 {results: [{ key: string, score: number }, ...]};
 ```
 
@@ -27,55 +27,56 @@ Each of these dictionaries can contain any or all of the [feedback fields](/lang
 
 Example:
 
-* Python: Requires `langsmith>=0.2.0`
-* TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
+- Python: Requires `langsmith>=0.2.0`
+- TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
-      # Replace with real evaluation logic.
-      precision = 0.8
-      recall = 0.9
-      f1 = 0.85
-      return [
-          {"key": "precision", "score": precision},
-          {"key": "recall", "score": recall},
-          {"key": "f1", "score": f1},
-      ]
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { Run, Example } from "langsmith/schemas";
+```python Python
+def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
+    # Replace with real evaluation logic.
+    precision = 0.8
+    recall = 0.9
+    f1 = 0.85
+    return [
+        {"key": "precision", "score": precision},
+        {"key": "recall", "score": recall},
+        {"key": "f1", "score": f1},
+    ]
+```
 
-  function multipleScores(rootRun: Run, example: Example) {
-    // Your evaluation logic here
-    return {
-        results: [
-            { key: "precision", score: 0.8 },
-            { key: "recall", score: 0.9 },
-            { key: "f1", score: 0.85 },
-        ],
-    };
-  }
-  ```
+```typescript TypeScript
+import type { Run, Example } from "langsmith/schemas";
+
+function multipleScores(rootRun: Run, example: Example) {
+  // Your evaluation logic here
+  return {
+      results: [
+          { key: "precision", score: 0.8 },
+          { key: "recall", score: 0.9 },
+          { key: "f1", score: 0.85 },
+      ],
+  };
+}
+```
+
 </CodeGroup>
 
 Rows from the resulting experiment will display each of the scores.
 
-<img alt="multiple_scores.png" />
+![multiple_scores.png](/langsmith/images/multiple-scores.png)
 
 ## Related
 
 * [Return categorical vs numerical metrics](/langsmith/metric-type)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-scores.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

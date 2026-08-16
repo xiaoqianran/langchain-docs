@@ -2,16 +2,14 @@
 
 # Trace an LLM application tutorial
 
-Add LangSmith observability to an LLM application across prototyping, beta testing, and production.
-
 In this tutorial, you will build a customer support chatbot using retrieval-augmented generation (RAG) and add LangSmith observability at each stage of development, from early prototyping through production.
 
 By the end, you will know how to:
 
-* Trace individual LLM calls and full application pipelines.
-* Collect and query user feedback.
-* Log metadata and use it for filtering and A/B testing.
-* Use monitoring dashboards to track production performance.
+- Trace individual LLM calls and full application pipelines.
+- Collect and query user feedback.
+- Log metadata and use it for filtering and A/B testing.
+- Use monitoring dashboards to track production performance.
 
 The application will retrieve relevant documentation snippets and use them to answer user questions. The retriever is mocked in this tutorial; in a real application you would replace it with a vector search or similar.
 
@@ -19,22 +17,24 @@ The application will retrieve relevant documentation snippets and use them to an
 
 Before you begin, make sure you have:
 
-* **A LangSmith account**: Sign up or log in at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-llm-tutorial).
-* **A LangSmith API key**: Follow the [Create an API key](/langsmith/create-account-api-key) guide.
-* **An OpenAI API key**: Generate this from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
-* **LangSmith CLI** (optional): Install to inspect traces from the terminal. For instructions, refer to [LangSmith CLI](/langsmith/langsmith-cli).
+- **A LangSmith account**: Sign up or log in at [smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-llm-tutorial).
+- **A LangSmith API key**: Follow the [Create an API key](/langsmith/create-account-api-key) guide.
+- **An OpenAI API key**: Generate this from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+- **LangSmith CLI** (optional): Install to inspect traces from the terminal. For instructions, refer to [LangSmith CLI](/langsmith/langsmith-cli).
 
 Install the required packages:
 
 <CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith openai
-  ```
 
-  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  npm install -D typescript tsx
-  ```
+```bash Python
+pip install langsmith openai
+```
+
+```bash TypeScript
+npm install langsmith openai
+npm install -D typescript tsx
+```
+
 </CodeGroup>
 
 ## Prototyping
@@ -45,7 +45,7 @@ Having observability set up from the start lets you iterate faster. You can see 
 
 Set the following environment variables in your shell:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
@@ -54,7 +54,7 @@ export OPENAI_API_KEY="<your-openai-api-key>"
 To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion.
 
 <Note>
-  You may see these variables referenced as `LANGCHAIN_*` in other places. Both work, but `LANGSMITH_TRACING` and `LANGSMITH_API_KEY` are the recommended names.
+You may see these variables referenced as `LANGCHAIN_*` in other places. Both work, but `LANGSMITH_TRACING` and `LANGSMITH_API_KEY` are the recommended names.
 </Note>
 
 ### Trace LLM calls
@@ -64,77 +64,79 @@ Start by tracing your OpenAI calls, where the model is actually invoked. This gi
 Wrap the OpenAI client with [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) (Python) or [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) (TypeScript). Create a file called `app.py` (or `app.ts`) with the following code:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from openai import OpenAI
-  from langsmith.wrappers import wrap_openai
 
-  client = wrap_openai(OpenAI())
+```python Python
+from openai import OpenAI
+from langsmith.wrappers import wrap_openai
 
-  docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ]
+client = wrap_openai(OpenAI())
 
-  def retriever(query: str) -> list[str]:
-      return docs
+docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+]
 
-  def support_bot(question: str) -> str:
-      context = retriever(question)
-      system_message = (
-          "You are a helpful customer support agent. "
-          "Answer using only the information provided below:\n\n"
-          + "\n".join(context)
-      )
-      response = client.chat.completions.create(
-          model="gpt-5.4-mini",
-          messages=[
-              {"role": "system", "content": system_message},
-              {"role": "user", "content": question},
-          ],
-      )
-      return response.choices[0].message.content
+def retriever(query: str) -> list[str]:
+    return docs
 
-  if __name__ == "__main__":
-      print(support_bot("How many users can I have on the Starter plan?"))
-  ```
+def support_bot(question: str) -> str:
+    context = retriever(question)
+    system_message = (
+        "You are a helpful customer support agent. "
+        "Answer using only the information provided below:\n\n"
+        + "\n".join(context)
+    )
+    response = client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": question},
+        ],
+    )
+    return response.choices[0].message.content
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers";
+if __name__ == "__main__":
+    print(support_bot("How many users can I have on the Starter plan?"))
+```
 
-  const client = wrapOpenAI(new OpenAI());
+```typescript TypeScript
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers";
 
-  const docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ];
+const client = wrapOpenAI(new OpenAI());
 
-  function retriever(query: string): string[] {
-      return docs;
-  }
+const docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+];
 
-  async function supportBot(question: string): Promise<string> {
-      const context = retriever(question);
-      const systemMessage =
-          "You are a helpful customer support agent. " +
-          "Answer using only the information provided below:\n\n" +
-          context.join("\n");
-      const response = await client.chat.completions.create({
-          model: "gpt-5.4-mini",
-          messages: [
-              { role: "system", content: systemMessage },
-              { role: "user", content: question },
-          ],
-      });
-      return response.choices[0].message?.content ?? "";
-  }
+function retriever(query: string): string[] {
+    return docs;
+}
 
-  (async () => {
-      console.log(await supportBot("How many users can I have on the Starter plan?"));
-  })();
-  ```
+async function supportBot(question: string): Promise<string> {
+    const context = retriever(question);
+    const systemMessage =
+        "You are a helpful customer support agent. " +
+        "Answer using only the information provided below:\n\n" +
+        context.join("\n");
+    const response = await client.chat.completions.create({
+        model: "gpt-5.4-mini",
+        messages: [
+            { role: "system", content: systemMessage },
+            { role: "user", content: question },
+        ],
+    });
+    return response.choices[0].message?.content ?? "";
+}
+
+(async () => {
+    console.log(await supportBot("How many users can I have on the Starter plan?"));
+})();
+```
+
 </CodeGroup>
 
 Calling `support_bot("How many users can I have on the Starter plan?")` produces a trace of the OpenAI call.
@@ -144,99 +146,109 @@ Calling `support_bot("How many users can I have on the Starter plan?")` produces
 Tracing the LLM call is useful, but tracing the full pipeline (including retrieval) gives you a complete overview of your application's behavior. Add [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) or [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) to the main function:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from openai import OpenAI
-  from langsmith import traceable
-  from langsmith.wrappers import wrap_openai
 
-  client = wrap_openai(OpenAI())
+```python Python
+from openai import OpenAI
+from langsmith import traceable
+from langsmith.wrappers import wrap_openai
 
-  docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ]
+client = wrap_openai(OpenAI())
 
-  def retriever(query: str) -> list[str]:
-      return docs
+docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+]
 
-  @traceable  # [!code highlight]
-  def support_bot(question: str) -> str:
-      context = retriever(question)
-      system_message = (
-          "You are a helpful customer support agent. "
-          "Answer using only the information provided below:\n\n"
-          + "\n".join(context)
-      )
-      response = client.chat.completions.create(
-          model="gpt-5.4-mini",
-          messages=[
-              {"role": "system", "content": system_message},
-              {"role": "user", "content": question},
-          ],
-      )
-      return response.choices[0].message.content
+def retriever(query: str) -> list[str]:
+    return docs
 
-  if __name__ == "__main__":
-      print(support_bot("How many users can I have on the Starter plan?"))
-  ```
+@traceable  # [!code highlight]
+def support_bot(question: str) -> str:
+    context = retriever(question)
+    system_message = (
+        "You are a helpful customer support agent. "
+        "Answer using only the information provided below:\n\n"
+        + "\n".join(context)
+    )
+    response = client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": question},
+        ],
+    )
+    return response.choices[0].message.content
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers";
-  import { traceable } from "langsmith/traceable";
+if __name__ == "__main__":
+    print(support_bot("How many users can I have on the Starter plan?"))
+```
 
-  const client = wrapOpenAI(new OpenAI());
+```typescript TypeScript
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers";
+import { traceable } from "langsmith/traceable";
 
-  const docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ];
+const client = wrapOpenAI(new OpenAI());
 
-  function retriever(query: string): string[] {
-      return docs;
-  }
+const docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+];
 
-  const supportBot = traceable(async function supportBot(question: string): Promise<string> {  // [!code highlight]
-      const context = retriever(question);
-      const systemMessage =
-          "You are a helpful customer support agent. " +
-          "Answer using only the information provided below:\n\n" +
-          context.join("\n");
-      const response = await client.chat.completions.create({
-          model: "gpt-5.4-mini",
-          messages: [
-              { role: "system", content: systemMessage },
-              { role: "user", content: question },
-          ],
-      });
-      return response.choices[0].message?.content ?? "";
-  });  // [!code highlight]
+function retriever(query: string): string[] {
+    return docs;
+}
 
-  (async () => {
-      console.log(await supportBot("How many users can I have on the Starter plan?"));
-  })();
-  ```
+const supportBot = traceable(async function supportBot(question: string): Promise<string> {  // [!code highlight]
+    const context = retriever(question);
+    const systemMessage =
+        "You are a helpful customer support agent. " +
+        "Answer using only the information provided below:\n\n" +
+        context.join("\n");
+    const response = await client.chat.completions.create({
+        model: "gpt-5.4-mini",
+        messages: [
+            { role: "system", content: systemMessage },
+            { role: "user", content: question },
+        ],
+    });
+    return response.choices[0].message?.content ?? "";
+});  // [!code highlight]
+
+(async () => {
+    console.log(await supportBot("How many users can I have on the Starter plan?"));
+})();
+```
+
 </CodeGroup>
 
 Calling `support_bot("How many users can I have on the Starter plan?")` now produces a trace of the full RAG pipeline.
 
-<img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/trace-whole-pipeline.png"
+    alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span."
+/>
 
-<img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/trace-whole-pipeline-dark.png"
+    alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span."
+/>
 
 ### Check your traces from the terminal
 
 If you installed the [LangSmith CLI](/langsmith/langsmith-cli), list recent traces for your project without opening the UI:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langsmith trace list --project <your-project> --limit 5
 ```
 
 To view the full run hierarchy and inputs/outputs for a specific trace:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langsmith trace get <trace-id> --full
 ```
 
@@ -249,117 +261,119 @@ Once your app is working well in prototyping, you release it to a small group of
 Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets you identify which responses were helpful or unhelpful. Update `app.py` (or `app.ts`) from the previous step to add a run ID to each call and attach a score afterward:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os  # [!code highlight]
 
-  from openai import OpenAI
-  from langsmith import traceable, Client, uuid7  # [!code highlight]
-  from langsmith.wrappers import wrap_openai
+```python Python
+import os  # [!code highlight]
 
-  client = wrap_openai(OpenAI())
+from openai import OpenAI
+from langsmith import traceable, Client, uuid7  # [!code highlight]
+from langsmith.wrappers import wrap_openai
 
-  docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ]
+client = wrap_openai(OpenAI())
 
-  def retriever(query: str) -> list[str]:
-      return docs
+docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+]
 
-  @traceable
-  def support_bot(question: str) -> str:
-      context = retriever(question)
-      system_message = (
-          "You are a helpful customer support agent. "
-          "Answer using only the information provided below:\n\n"
-          + "\n".join(context)
-      )
-      response = client.chat.completions.create(
-          model="gpt-5.4-mini",
-          messages=[
-              {"role": "system", "content": system_message},
-              {"role": "user", "content": question},
-          ],
-      )
-      return response.choices[0].message.content
+def retriever(query: str) -> list[str]:
+    return docs
 
-  if __name__ == "__main__":
-      run_id = str(uuid7())  # [!code highlight]
-      support_bot(  # [!code highlight]
-          "How many users can I have on the Starter plan?",  # [!code highlight]
-          langsmith_extra={"run_id": run_id},  # [!code highlight]
-      )  # [!code highlight]
-      ls_client = Client()  # [!code highlight]
-      # Feedback requires the UUID of the tracing project that owns the run  # [!code highlight]
-      project_name = os.environ.get("LANGSMITH_PROJECT", "default")  # [!code highlight]
-      session_id = ls_client.create_project(project_name=project_name, upsert=True).id  # [!code highlight]
-      ls_client.create_feedback(  # [!code highlight]
-          run_id, key="user-score", score=1.0, session_id=session_id  # [!code highlight]
-      )  # [!code highlight]
-  ```
+@traceable
+def support_bot(question: str) -> str:
+    context = retriever(question)
+    system_message = (
+        "You are a helpful customer support agent. "
+        "Answer using only the information provided below:\n\n"
+        + "\n".join(context)
+    )
+    response = client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": question},
+        ],
+    )
+    return response.choices[0].message.content
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers";
-  import { traceable, getCurrentRunTree } from "langsmith/traceable"; // [!code highlight]
-  import { Client } from "langsmith"; // [!code highlight]
+if __name__ == "__main__":
+    run_id = str(uuid7())  # [!code highlight]
+    support_bot(  # [!code highlight]
+        "How many users can I have on the Starter plan?",  # [!code highlight]
+        langsmith_extra={"run_id": run_id},  # [!code highlight]
+    )  # [!code highlight]
+    ls_client = Client()  # [!code highlight]
+    # Feedback requires the UUID of the tracing project that owns the run  # [!code highlight]
+    project_name = os.environ.get("LANGSMITH_PROJECT", "default")  # [!code highlight]
+    session_id = ls_client.create_project(project_name=project_name, upsert=True).id  # [!code highlight]
+    ls_client.create_feedback(  # [!code highlight]
+        run_id, key="user-score", score=1.0, session_id=session_id  # [!code highlight]
+    )  # [!code highlight]
+```
 
-  const client = wrapOpenAI(new OpenAI());
+```typescript TypeScript
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers";
+import { traceable, getCurrentRunTree } from "langsmith/traceable"; // [!code highlight]
+import { Client } from "langsmith"; // [!code highlight]
 
-  const docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ];
+const client = wrapOpenAI(new OpenAI());
 
-  function retriever(query: string): string[] {
-      return docs;
-  }
+const docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+];
 
-  let capturedRunId: string; // [!code highlight]
-  let capturedProjectName: string; // [!code highlight]
+function retriever(query: string): string[] {
+    return docs;
+}
 
-  const supportBot = traceable(async function supportBot(question: string): Promise<string> {
-      const runTree = getCurrentRunTree(); // [!code highlight]
-      capturedRunId = runTree.id; // [!code highlight]
-      capturedProjectName = runTree.project_name; // [!code highlight]
-      const context = retriever(question);
-      const systemMessage =
-          "You are a helpful customer support agent. " +
-          "Answer using only the information provided below:\n\n" +
-          context.join("\n");
-      const response = await client.chat.completions.create({
-          model: "gpt-5.4-mini",
-          messages: [
-              { role: "system", content: systemMessage },
-              { role: "user", content: question },
-          ],
-      });
-      return response.choices[0].message?.content ?? "";
-  });
+let capturedRunId: string; // [!code highlight]
+let capturedProjectName: string; // [!code highlight]
 
-  (async () => {
-      await supportBot("How many users can I have on the Starter plan?"); // [!code highlight]
-      const lsClient = new Client(); // [!code highlight]
-      // Feedback requires the UUID of the tracing project that owns the run // [!code highlight]
-      const { id: sessionId } = await lsClient.createProject({ // [!code highlight]
-          projectName: capturedProjectName, // [!code highlight]
-          upsert: true, // [!code highlight]
-      }); // [!code highlight]
-      await lsClient.createFeedback({ // [!code highlight]
-          runId: capturedRunId, // [!code highlight]
-          sessionId, // [!code highlight]
-          key: "user-score", // [!code highlight]
-          score: 1.0, // [!code highlight]
-      }); // [!code highlight]
-      await lsClient.flush(); // [!code highlight]
-  })();
-  ```
+const supportBot = traceable(async function supportBot(question: string): Promise<string> {
+    const runTree = getCurrentRunTree(); // [!code highlight]
+    capturedRunId = runTree.id; // [!code highlight]
+    capturedProjectName = runTree.project_name; // [!code highlight]
+    const context = retriever(question);
+    const systemMessage =
+        "You are a helpful customer support agent. " +
+        "Answer using only the information provided below:\n\n" +
+        context.join("\n");
+    const response = await client.chat.completions.create({
+        model: "gpt-5.4-mini",
+        messages: [
+            { role: "system", content: systemMessage },
+            { role: "user", content: question },
+        ],
+    });
+    return response.choices[0].message?.content ?? "";
+});
+
+(async () => {
+    await supportBot("How many users can I have on the Starter plan?"); // [!code highlight]
+    const lsClient = new Client(); // [!code highlight]
+    // Feedback requires the UUID of the tracing project that owns the run // [!code highlight]
+    const { id: sessionId } = await lsClient.createProject({ // [!code highlight]
+        projectName: capturedProjectName, // [!code highlight]
+        upsert: true, // [!code highlight]
+    }); // [!code highlight]
+    await lsClient.createFeedback({ // [!code highlight]
+        runId: capturedRunId, // [!code highlight]
+        sessionId, // [!code highlight]
+        key: "user-score", // [!code highlight]
+        score: 1.0, // [!code highlight]
+    }); // [!code highlight]
+    await lsClient.flush(); // [!code highlight]
+})();
+```
+
 </CodeGroup>
 
 <Note>
-  In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the project UUID, pass `session_id` alongside the `run_id`.
+In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the project UUID, pass `session_id` alongside the `run_id`.
 </Note>
 
 The feedback appears in the **Feedback** tab when you inspect the run in the UI. You can then filter runs by feedback score using the filtering controls in the **Runs** table.
@@ -371,87 +385,89 @@ The feedback appears in the **Feedback** tab when you inspect the run in the UI.
 The following example traces both the retriever (with `run_type="retriever"`) and the main function (with a `metadata` attribute for the model name):
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from openai import OpenAI
-  from langsmith import traceable
-  from langsmith.wrappers import wrap_openai
 
-  client = wrap_openai(OpenAI())
+```python Python
+from openai import OpenAI
+from langsmith import traceable
+from langsmith.wrappers import wrap_openai
 
-  docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ]
+client = wrap_openai(OpenAI())
 
-  @traceable(run_type="retriever")  # [!code highlight]
-  def retriever(query: str) -> list[str]:
-      return docs
+docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+]
 
-  @traceable(metadata={"llm": "gpt-5.4-mini"})  # [!code highlight]
-  def support_bot(question: str) -> str:
-      context = retriever(question)
-      system_message = (
-          "You are a helpful customer support agent. "
-          "Answer using only the information provided below:\n\n"
-          + "\n".join(context)
-      )
-      response = client.chat.completions.create(
-          model="gpt-5.4-mini",
-          messages=[
-              {"role": "system", "content": system_message},
-              {"role": "user", "content": question},
-          ],
-      )
-      return response.choices[0].message.content
+@traceable(run_type="retriever")  # [!code highlight]
+def retriever(query: str) -> list[str]:
+    return docs
 
-  if __name__ == "__main__":
-      support_bot("How many users can I have on the Starter plan?")
-  ```
+@traceable(metadata={"llm": "gpt-5.4-mini"})  # [!code highlight]
+def support_bot(question: str) -> str:
+    context = retriever(question)
+    system_message = (
+        "You are a helpful customer support agent. "
+        "Answer using only the information provided below:\n\n"
+        + "\n".join(context)
+    )
+    response = client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": question},
+        ],
+    )
+    return response.choices[0].message.content
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers";
-  import { traceable } from "langsmith/traceable";
+if __name__ == "__main__":
+    support_bot("How many users can I have on the Starter plan?")
+```
 
-  const client = wrapOpenAI(new OpenAI());
+```typescript TypeScript
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers";
+import { traceable } from "langsmith/traceable";
 
-  const docs = [
-      "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
-      "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
-      "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
-  ];
+const client = wrapOpenAI(new OpenAI());
 
-  const retriever = traceable(  // [!code highlight]
-      function retriever(query: string): string[] {  // [!code highlight]
-          return docs;  // [!code highlight]
-      },  // [!code highlight]
-      { run_type: "retriever" }  // [!code highlight]
-  );  // [!code highlight]
+const docs = [
+    "Acme Cloud supports unlimited users on Enterprise plans. Starter plans are limited to 5 users.",
+    "To reset your password, click 'Forgot password' on the login page and follow the instructions sent to your email.",
+    "API rate limits are 1,000 requests per hour on the Starter plan and 10,000 requests per hour on Enterprise.",
+];
 
-  const supportBot = traceable(
-      async function supportBot(question: string): Promise<string> {
-          const context = await retriever(question);
-          const systemMessage =
-              "You are a helpful customer support agent. " +
-              "Answer using only the information provided below:\n\n" +
-              context.join("\n");
-          const response = await client.chat.completions.create({
-              model: "gpt-5.4-mini",
-              messages: [
-                  { role: "system", content: systemMessage },
-                  { role: "user", content: question },
-              ],
-          });
-          return response.choices[0].message?.content ?? "";
-      },
-      { metadata: { llm: "gpt-5.4-mini" } }  // [!code highlight]
-  );
+const retriever = traceable(  // [!code highlight]
+    function retriever(query: string): string[] {  // [!code highlight]
+        return docs;  // [!code highlight]
+    },  // [!code highlight]
+    { run_type: "retriever" }  // [!code highlight]
+);  // [!code highlight]
 
-  (async () => {
-      await supportBot("How many users can I have on the Starter plan?");
-  })();
-  ```
+const supportBot = traceable(
+    async function supportBot(question: string): Promise<string> {
+        const context = await retriever(question);
+        const systemMessage =
+            "You are a helpful customer support agent. " +
+            "Answer using only the information provided below:\n\n" +
+            context.join("\n");
+        const response = await client.chat.completions.create({
+            model: "gpt-5.4-mini",
+            messages: [
+                { role: "system", content: systemMessage },
+                { role: "user", content: question },
+            ],
+        });
+        return response.choices[0].message?.content ?? "";
+    },
+    { metadata: { llm: "gpt-5.4-mini" } }  // [!code highlight]
+);
+
+(async () => {
+    await supportBot("How many users can I have on the Starter plan?");
+})();
+```
+
 </CodeGroup>
 
 Both metadata values appear on the trace. You can filter runs by metadata using the filtering controls in the **Runs** table.
@@ -464,14 +480,22 @@ With strong observability in place, you can confidently ship to production. In p
 
 In the UI sidebar, select **Monitoring**, then choose a tracing project from the dropdown at the top left. Charts display key metrics for the project over time, including trace count, latency, error rate, feedback scores, and costs. For more on available metrics and chart configuration, refer to [Dashboards](/langsmith/dashboards).
 
-<img alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/monitoring-page-light.png"
+    alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs."
+/>
 
-<img alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/monitoring-page-dark.png"
+    alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs."
+/>
 
 ### A/B testing
 
 <Note>
-  Group-by functionality requires at least two different values for a given metadata key.
+Group-by functionality requires at least two different values for a given metadata key.
 </Note>
 
 Because you have been logging the `llm` metadata attribute, you can group monitoring charts by that attribute to compare model performance over time. From **Monitoring** in the UI sidebar, click **Group by** in the top left corner, select **Metadata** from the dropdown, then select `llm`. The charts update to show results grouped by that attribute. For more on grouping and custom charts, refer to [Dashboards](/langsmith/dashboards).
@@ -480,9 +504,17 @@ Because you have been logging the `llm` metadata attribute, you can group monito
 
 When a monitoring chart shows something unexpected, click a data point to freeze the tooltip, then click the metric name (for example, **Input**) to jump to the filtered runs table for that time window. For more on searching and filtering runs, refer to [Filter traces](/langsmith/filter-traces-in-application).
 
-<img alt="LangSmith UI showing the monitoring page with a specific point on the Input Tokens chart highlighted." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/drilldown-monitoring-light.png"
+    alt="LangSmith UI showing the monitoring page with a specific point on the Input Tokens chart highlighted."
+/>
 
-<img alt="LangSmith UI showing the monitoring page with a specific point on the Input Tokens chart highlighted." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/drilldown-monitoring-dark.png"
+    alt="LangSmith UI showing the monitoring page with a specific point on the Input Tokens chart highlighted."
+/>
 
 ## Conclusion
 
@@ -490,18 +522,17 @@ In this tutorial, you added LangSmith observability to an application across its
 
 For more, see:
 
-* [Observability concepts](/langsmith/observability-concepts): terminology and core ideas.
-* [Tracing integrations](/langsmith/integrations): LangChain, LangGraph, Anthropic, and other providers.
-* [Automations](/langsmith/rules): rules and online evaluations that run automatically on your traces.
+- [Observability concepts](/langsmith/observability-concepts): terminology and core ideas.
+- [Tracing integrations](/langsmith/integrations): LangChain, LangGraph, Anthropic, and other providers.
+- [Automations](/langsmith/rules): rules and online evaluations that run automatically on your traces.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-llm-tutorial.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,23 +2,21 @@
 
 # Trace OpenCode sessions
 
-Capture OpenCode sessions, assistant turns, tool calls, and subagent activity in LangSmith.
-
 The `@langchain/langsmith-opencode` plugin sends [OpenCode](https://opencode.ai/) session traces to LangSmith. Use it to inspect agent turns, model metadata, token usage, tool calls, tool errors, attachments, and subagent activity from your OpenCode workflows.
 
 ## Prerequisites
 
 Before setting up tracing, ensure you have:
 
-* [OpenCode](https://opencode.ai/) installed and configured.
-* A [LangSmith API key](/langsmith/create-account-api-key).
-* Access to configure the OpenCode `plugin` key in `opencode.json` or `~/.config/opencode/opencode.json`.
+- [OpenCode](https://opencode.ai/) installed and configured.
+- A [LangSmith API key](/langsmith/create-account-api-key).
+- Access to configure the OpenCode `plugin` key in `opencode.json` or `~/.config/opencode/opencode.json`.
 
 ## Install and enable the plugin
 
 Add the plugin to your OpenCode configuration file. You can configure it locally in `opencode.json` or globally in `~/.config/opencode/opencode.json`:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": ["@langchain/langsmith-opencode"]
@@ -27,7 +25,7 @@ Add the plugin to your OpenCode configuration file. You can configure it locally
 
 Enable tracing and provide your LangSmith API key before starting OpenCode:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export TRACE_TO_LANGSMITH="true"
 export LANGSMITH_API_KEY="<your-langsmith-api-key>"
 export LANGSMITH_PROJECT="opencode"
@@ -43,18 +41,18 @@ Tracing is disabled by default. With `TRACE_TO_LANGSMITH=true` set, the plugin s
 
 The plugin reads OpenCode-specific variables first, then falls back to the generic LangSmith SDK variables when available.
 
-| Variable                            | Required    | Default               | Description                                                                                                   |
-| ----------------------------------- | ----------- | --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `TRACE_TO_LANGSMITH`                | Yes         | `false`               | Set to `"true"` to enable tracing.                                                                            |
-| `LANGSMITH_OPENCODE_API_KEY`        | Conditional | -                     | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
-| `LANGSMITH_OPENCODE_ENDPOINT`       | No          | LangSmith SDK default | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`.                                                        |
-| `LANGSMITH_OPENCODE_PROJECT`        | No          | `opencode`            | LangSmith project name. Falls back to `LANGSMITH_PROJECT`.                                                    |
-| `LANGSMITH_OPENCODE_METADATA`       | No          | -                     | JSON object merged into root trace metadata.                                                                  |
-| `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` | No          | -                     | JSON array of replica destinations.                                                                           |
+| Variable | Required | Default | Description |
+| --- | --- | --- | --- |
+| `TRACE_TO_LANGSMITH` | Yes | `false` | Set to `"true"` to enable tracing. |
+| `LANGSMITH_OPENCODE_API_KEY` | Conditional | - | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
+| `LANGSMITH_OPENCODE_ENDPOINT` | No | LangSmith SDK default | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`. |
+| `LANGSMITH_OPENCODE_PROJECT` | No | `opencode` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
+| `LANGSMITH_OPENCODE_METADATA` | No | - | JSON object merged into root trace metadata. |
+| `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` | No | - | JSON array of replica destinations. |
 
 For example:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export TRACE_TO_LANGSMITH="true"
 export LANGSMITH_API_KEY="<your-langsmith-api-key>"
 export LANGSMITH_PROJECT="opencode"
@@ -65,7 +63,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 Use `.opencode/langsmith.json` for project-level settings or `~/.config/opencode/langsmith.json` for global defaults.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
@@ -78,14 +76,14 @@ Use `.opencode/langsmith.json` for project-level settings or `~/.config/opencode
 }
 ```
 
-| Field      | Required    | Default               | Description                                                                      |
-| ---------- | ----------- | --------------------- | -------------------------------------------------------------------------------- |
-| `enabled`  | Yes         | `false`               | Set to `true` to enable tracing from the config file.                            |
-| `api_key`  | Conditional | -                     | LangSmith API key. Required unless provided by environment variable or replicas. |
-| `api_url`  | No          | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`.                    |
-| `project`  | No          | `opencode`            | LangSmith project name.                                                          |
-| `metadata` | No          | -                     | Object merged into root trace metadata.                                          |
-| `replicas` | No          | -                     | Additional LangSmith destinations to replicate traces to.                        |
+| Field | Required | Default | Description |
+| --- | --- | --- | --- |
+| `enabled` | Yes | `false` | Set to `true` to enable tracing from the config file. |
+| `api_key` | Conditional | - | LangSmith API key. Required unless provided by environment variable or replicas. |
+| `api_url` | No | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`. |
+| `project` | No | `opencode` | LangSmith project name. |
+| `metadata` | No | - | Object merged into root trace metadata. |
+| `replicas` | No | - | Additional LangSmith destinations to replicate traces to. |
 
 Keep config files that include API keys out of version control.
 
@@ -93,7 +91,7 @@ Keep config files that include API keys out of version control.
 
 Set `replicas` in `langsmith.json` or `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` to send the same trace data to additional LangSmith workspaces or projects.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
@@ -113,25 +111,25 @@ Set `replicas` in `langsmith.json` or `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` to sen
 }
 ```
 
-Replica objects support both snake\_case and LangSmith SDK-style camelCase field names. snake\_case is recommended in config files.
+Replica objects support both snake_case and LangSmith SDK-style camelCase field names. snake_case is recommended in config files.
 
-| Field                     | Description                                                                 |
-| ------------------------- | --------------------------------------------------------------------------- |
-| `api_url` / `apiUrl`      | LangSmith API URL for the replica destination.                              |
-| `api_key` / `apiKey`      | API key for the destination workspace.                                      |
-| `project` / `projectName` | Project name in the destination workspace.                                  |
-| `updates`                 | Optional run fields to override on replicated runs, such as extra metadata. |
+| Field | Description |
+| --- | --- |
+| `api_url` / `apiUrl` | LangSmith API URL for the replica destination. |
+| `api_key` / `apiKey` | API key for the destination workspace. |
+| `project` / `projectName` | Project name in the destination workspace. |
+| `updates` | Optional run fields to override on replicated runs, such as extra metadata. |
 
 ## What gets traced
 
 The plugin listens to OpenCode chat and event hooks, aggregates each completed user turn, and submits it to LangSmith as a run tree.
 
-* `opencode.session` root runs for completed user turns.
-* `opencode.assistant.turn` child runs for assistant and model responses.
-* Nested tool runs for tool calls, including inputs, outputs, errors, timing, and attachments when available.
-* Subagent sessions nested under the parent tool call.
-* Model name, provider, invocation parameters, token usage, and thread or session ID metadata.
-* User messages, assistant messages, reasoning blocks, file parts, and system prompts associated with assistant turns.
+- `opencode.session` root runs for completed user turns.
+- `opencode.assistant.turn` child runs for assistant and model responses.
+- Nested tool runs for tool calls, including inputs, outputs, errors, timing, and attachments when available.
+- Subagent sessions nested under the parent tool call.
+- Model name, provider, invocation parameters, token usage, and thread or session ID metadata.
+- User messages, assistant messages, reasoning blocks, file parts, and system prompts associated with assistant turns.
 
 Trace completion is based on OpenCode `step-finish` events. The plugin also flushes pending trace batches when the OpenCode server shuts down.
 
@@ -143,21 +141,20 @@ Open the configured LangSmith project and look for root runs named `opencode.ses
 
 If traces do not appear in LangSmith:
 
-* Confirm tracing is enabled with `TRACE_TO_LANGSMITH=true` or `"enabled": true` in config.
-* Confirm the LangSmith API key is set in the same shell, project config, or global config used by OpenCode.
-* Confirm the plugin package is installed where OpenCode can resolve it.
-* Check the selected LangSmith project. If no project is configured, traces go to `opencode`.
-* Restart OpenCode after changing `opencode.json`, `langsmith.json`, or environment variables.
-* Make sure a user turn completes. The plugin does not send incomplete turns.
+- Confirm tracing is enabled with `TRACE_TO_LANGSMITH=true` or `"enabled": true` in config.
+- Confirm the LangSmith API key is set in the same shell, project config, or global config used by OpenCode.
+- Confirm the plugin package is installed where OpenCode can resolve it.
+- Check the selected LangSmith project. If no project is configured, traces go to `opencode`.
+- Restart OpenCode after changing `opencode.json`, `langsmith.json`, or environment variables.
+- Make sure a user turn completes. The plugin does not send incomplete turns.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opencode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,10 +2,8 @@
 
 # Direct model access
 
-Access provider APIs directly through provider-specific LLM Gateway paths without using the gateway standardization layer.
-
 <Note>
-  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Direct model access exposes each provider API through a provider-specific gateway path. The gateway still handles authentication, provider secrets, policies, and tracing, but it does not translate the request and response into another provider's API format.
@@ -16,15 +14,15 @@ Prefer [standard model access](/langsmith/llm-gateway-quickstart) for model call
 
 Append a provider path to your regional gateway base URL:
 
-| Provider         | Gateway path | Secret name                   |
-| ---------------- | ------------ | ----------------------------- |
-| Anthropic        | `/anthropic` | `ANTHROPIC_API_KEY`           |
-| AWS Bedrock      | `/bedrock`   | `AWS_BEARER_TOKEN_BEDROCK`    |
-| Baseten          | `/baseten`   | `BASETEN_API_KEY`             |
-| Fireworks        | `/fireworks` | `FIREWORKS_API_KEY`           |
-| Google Gemini    | `/gemini`    | `GOOGLE_API_KEY`              |
-| Google Vertex AI | `/vertex`    | `VERTEX_SERVICE_ACCOUNT_JSON` |
-| OpenAI           | `/openai`    | `OPENAI_API_KEY`              |
+| Provider | Gateway path | Secret name |
+| --- | --- | --- |
+| Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
+| AWS Bedrock | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
+| Baseten | `/baseten` | `BASETEN_API_KEY` |
+| Fireworks | `/fireworks` | `FIREWORKS_API_KEY` |
+| Google Gemini | `/gemini` | `GOOGLE_API_KEY` |
+| Google Vertex AI | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
+| OpenAI | `/openai` | `OPENAI_API_KEY` |
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) use the standard endpoint rather than a provider-specific path. These hosted models require no provider secret of your own.
 
@@ -32,7 +30,7 @@ Append a provider path to your regional gateway base URL:
 
 Set each provider SDK's base URL to its direct gateway path and use your LangSmith API key as the provider API key:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 export BASE_URL="https://gateway.smith.langchain.com"
 
@@ -49,38 +47,40 @@ export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
 The gateway resolves the actual provider key from your workspace's Provider Secrets, so the provider key does not need to be stored locally.
 
 <CodeGroup>
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
 
-  from openai import OpenAI
+```python OpenAI SDK
+import os
 
-  client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="gpt-4o-mini",
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(response.choices[0].message.content)
-  ```
+from openai import OpenAI
 
-  ```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+client = OpenAI(
+    base_url=os.environ["OPENAI_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(response.choices[0].message.content)
+```
 
-  import anthropic
+```python Anthropic SDK
+import os
 
-  client = anthropic.Anthropic(
-      base_url=os.environ["ANTHROPIC_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  message = client.messages.create(
-      model="claude-sonnet-4-6",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(message.content[0].text)
-  ```
+import anthropic
+
+client = anthropic.Anthropic(
+    base_url=os.environ["ANTHROPIC_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+message = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(message.content[0].text)
+```
+
 </CodeGroup>
 
 Direct paths use the provider's native model name without a provider prefix.
@@ -89,27 +89,29 @@ Direct paths use the provider's native model name without a provider prefix.
 
 [LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview), including [Deep Agents Code](/oss/deepagents/code/overview), support direct gateway paths through two convenience environment variables:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_GATEWAY="true"
 export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 This routes supported chat models through their provider-specific paths at `https://gateway.smith.langchain.com`. To use a regional gateway, set its URL instead of `true`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
 export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 <Accordion title="Supported models and configuration precedence">
-  * Supported in Python only.
-  * Supported chat models:
-    * [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`)
-    * [Baseten](/oss/python/integrations/chat/baseten) (`langchain-baseten >= 0.2.3`)
-    * [Fireworks](/oss/python/integrations/chat/fireworks) (`langchain-fireworks >= 1.5.1`)
-    * [Google Gemini](/oss/python/integrations/chat/google_generative_ai) (`langchain-google-genai >= 4.3.2`)
-    * [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`)
-  * Provider-specific base URLs take precedence over the gateway setting. For example, `OPENAI_API_BASE` sends OpenAI to that URL while every other supported provider continues to use the gateway.
+
+- Supported in Python only.
+- Supported chat models:
+  - [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`)
+  - [Baseten](/oss/python/integrations/chat/baseten) (`langchain-baseten >= 0.2.3`)
+  - [Fireworks](/oss/python/integrations/chat/fireworks) (`langchain-fireworks >= 1.5.1`)
+  - [Google Gemini](/oss/python/integrations/chat/google_generative_ai) (`langchain-google-genai >= 4.3.2`)
+  - [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`)
+- Provider-specific base URLs take precedence over the gateway setting. For example, `OPENAI_API_BASE` sends OpenAI to that URL while every other supported provider continues to use the gateway.
+
 </Accordion>
 
 ## Use a regional gateway
@@ -118,18 +120,17 @@ If your LangSmith account is on a regional instance, use the corresponding [regi
 
 ## See also
 
-* [Quickstart](/langsmith/llm-gateway-quickstart): use the standard API to call models across providers.
-* [Admin setup](/langsmith/llm-gateway-admin-setup): configure provider secrets and access.
-* [Traces, Engine, and access control](/langsmith/llm-gateway-access): see where gateway traces appear and who can view them.
+- [Quickstart](/langsmith/llm-gateway-quickstart): use the standard API to call models across providers.
+- [Admin setup](/langsmith/llm-gateway-admin-setup): configure provider secrets and access.
+- [Traces, Engine, and access control](/langsmith/llm-gateway-access): see where gateway traces appear and who can view them.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

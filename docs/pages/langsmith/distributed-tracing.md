@@ -12,12 +12,12 @@ Example client-server setup:
 * Continues on server
 
 <Warning>
-  **Only accept distributed-tracing headers from trusted services.** The `langsmith-trace` and `baggage` headers are consumed as trusted tracing context. Do not add `TracingMiddleware` (or pass inbound request headers as the tracing `parent`) on a service that receives requests directly from untrusted third parties or the public internet. Keep distributed tracing to internal, service-to-service calls, and strip these headers from untrusted inbound requests at your gateway or proxy. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
+**Only accept distributed-tracing headers from trusted services.** The `langsmith-trace` and `baggage` headers are consumed as trusted tracing context. Do not add `TracingMiddleware` (or pass inbound request headers as the tracing `parent`) on a service that receives requests directly from untrusted third parties or the public internet. Keep distributed tracing to internal, service-to-service calls, and strip these headers from untrusted inbound requests at your gateway or proxy. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
 </Warning>
 
 ## Distributed tracing in Python
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # client.py
 from langsmith.run_helpers import get_current_run_tree, traceable
 import httpx
@@ -35,12 +35,12 @@ async def my_client_function():
 Then the server (or other service) can continue the trace by handling the headers appropriately. If you are using an asgi app Starlette or FastAPI, you can connect the distributed trace using LangSmith's `TracingMiddleware`.
 
 <Info>
-  The `TracingMiddleware` class was added in `langsmith==0.1.133`.
+The `TracingMiddleware` class was added in `langsmith==0.1.133`.
 </Info>
 
 Example using FastAPI:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import traceable
 from langsmith.middleware import TracingMiddleware
 from fastapi import FastAPI, Request
@@ -59,7 +59,7 @@ async def fake_route(request: Request):
 
 Or in Starlette:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from langsmith.middleware import TracingMiddleware
@@ -73,7 +73,7 @@ app = Starlette(..., middleware=middleware)
 
 If you are using other server frameworks, you can always "receive" the distributed trace by passing the headers in through `langsmith_extra`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # server.py
 import langsmith as ls
 from fastapi import FastAPI, Request
@@ -94,7 +94,7 @@ async def fake_route(request: Request):
 
 The example above uses the `tracing_context` context manager. You can also directly specify the parent run context in the `langsmith_extra` parameter of a method wrapped with `@traceable`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # ... same as above
 
 @app.post("/my-route")
@@ -106,12 +106,12 @@ async def fake_route(request: Request):
 ## Distributed tracing in TypeScript
 
 <Note>
-  Distributed tracing in TypeScript requires `langsmith` version `>=0.1.31`
+Distributed tracing in TypeScript requires `langsmith` version `>=0.1.31`
 </Note>
 
 First, we obtain the current run tree from the client and convert it to `langsmith-trace` and `baggage` header values, which we can pass to the server:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript
 // client.mts
 import { getCurrentRunTree, traceable } from "langsmith/traceable";
 
@@ -134,58 +134,59 @@ Then, the server converts the headers back to a run tree, which it uses to furth
 To pass the newly created run tree to a traceable function, we can use the `withRunTree` helper, which will ensure the run tree is propagated within traceable invocations.
 
 <CodeGroup>
-  ```typescript Express.JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import express from "express";
-  import bodyParser from "body-parser";
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+```typescript Express.JS
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import express from "express";
+import bodyParser from "body-parser";
 
-      const app = express();
-      app.use(bodyParser.text());
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-  app.post("/", async (req, res) => {
-      const runTree = RunTree.fromHeaders(req.headers);
-      const result = await withRunTree(runTree, () => server(req.body));
-      res.send(result);
-  });
-  ```
+    const app = express();
+    app.use(bodyParser.text());
 
-  ```typescript Hono theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import { Hono } from "hono";
+app.post("/", async (req, res) => {
+    const runTree = RunTree.fromHeaders(req.headers);
+    const result = await withRunTree(runTree, () => server(req.body));
+    res.send(result);
+});
+```
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+```typescript Hono
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import { Hono } from "hono";
 
-      const app = new Hono();
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-  app.post("/", async (c) => {
-      const body = await c.req.text();
-      const runTree = RunTree.fromHeaders(c.req.raw.headers);
-      const result = await withRunTree(runTree, () => server(body));
-      return c.body(result);
-  });
-  ```
+    const app = new Hono();
+
+app.post("/", async (c) => {
+    const body = await c.req.text();
+    const runTree = RunTree.fromHeaders(c.req.raw.headers);
+    const result = await withRunTree(runTree, () => server(body));
+    return c.body(result);
+});
+```
+
 </CodeGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/distributed-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

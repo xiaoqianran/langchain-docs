@@ -8,7 +8,7 @@ If you're not seeing traces in your tracing project or notice traces logged to t
 
 First, check that the environment variables are set correctly by running:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 print(os.getenv("LANGSMITH_PROJECT"))
 print(os.getenv("LANGSMITH_TRACING"))
@@ -22,7 +22,7 @@ If the output does not match what's defined in your .env file, it's likely due t
 
 Clear the cached environment variables with the following command:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 utils.get_env_var.cache_clear()
 ```
 
@@ -30,7 +30,7 @@ utils.get_env_var.cache_clear()
 
 Reload your environment variables from the .env file by executing:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from dotenv import load_dotenv
 import os
 load_dotenv(<path to .env file>, override=True)
@@ -40,14 +40,13 @@ After reloading, your environment variables should be set correctly.
 
 If you continue to experience issues, please reach out to us via a shared Slack channel or email support (available for Plus and Enterprise plans), or in the [LangChain Forum](https://forum.langchain.com/).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-variable-caching.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

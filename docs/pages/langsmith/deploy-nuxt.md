@@ -2,8 +2,6 @@
 
 # Deploy with Nuxt
 
-Deploy a LangChain deep agent in a Nuxt 4 app with Nitro server routes, Vue composables, and subagent-aware chat UI.
-
 The following page details an example app that deploys a LangChain **deep agent** inside a [Nuxt 4](https://nuxt.com) project: streaming chat UI, subagent detail views, thread history, and reasoning-token streaming, all backed by the [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) implemented as Nitro route handlers (HTTP + SSE). No separate backend process.
 
 Source: [`js-nuxt`](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-nuxt) in the deployment cookbook.
@@ -11,76 +9,108 @@ Source: [`js-nuxt`](https://github.com/langchain-ai/deployment-cookbook/tree/mai
 ## Deploy
 
 <Tabs>
-  <Tab title="Vercel">
-    <Steps>
-      <Step title="Import the repository">
-        Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
 
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-nuxt&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents">
-          <img alt="Deploy with Vercel" />
-        </a>
-      </Step>
+<Tab title="Vercel">
 
-      <Step title="Configure the project">
-        Set **Root Directory** to `js-nuxt` and add `OPENAI_API_KEY` in project settings.
-      </Step>
+<Steps>
 
-      <Step title="Deploy">
-        Deploy the project. Nuxt detects Vercel automatically and builds Nitro server routes for the Agent Streaming Protocol API.
-      </Step>
-    </Steps>
-  </Tab>
+<Step title="Import the repository">
 
-  <Tab title="Netlify">
-    <Steps>
-      <Step title="Import the repository">
-        Click **Deploy to Netlify** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
+Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
 
-        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook&base=js-nuxt">
-          <img alt="Deploy to Netlify" />
-        </a>
-      </Step>
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-nuxt&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents" target="_blank" rel="noopener noreferrer">
+  <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+</a>
 
-      <Step title="Configure the project">
-        Set **Base directory** to `js-nuxt`. Netlify runs the Nuxt build from that subdirectory.
-      </Step>
+</Step>
 
-      <Step title="Set environment variables">
-        Add `OPENAI_API_KEY` in the Netlify deploy settings before the first build completes.
-      </Step>
-    </Steps>
-  </Tab>
+<Step title="Configure the project">
 
-  <Tab title="Node">
-    <Steps>
-      <Step title="Build for production">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        cd js-nuxt
-        cp .env.example .env   # set OPENAI_API_KEY for local dev
-        pnpm install
-        pnpm build
-        ```
-      </Step>
+Set **Root Directory** to `js-nuxt` and add `OPENAI_API_KEY` in project settings.
 
-      <Step title="Set environment variables">
-        Export `OPENAI_API_KEY` on the host. Nitro reads it at runtime from the environment.
+</Step>
 
-        Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example).
-      </Step>
+<Step title="Deploy">
 
-      <Step title="Start the Nitro server">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        node .output/server/index.mjs
-        ```
+Deploy the project. Nuxt detects Vercel automatically and builds Nitro server routes for the Agent Streaming Protocol API.
 
-        Run behind any process manager or container orchestrator that keeps a Node.js process alive.
-      </Step>
-    </Steps>
-  </Tab>
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab title="Netlify">
+
+<Steps>
+
+<Step title="Import the repository">
+
+Click **Deploy to Netlify** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
+
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook&base=js-nuxt" target="_blank" rel="noopener noreferrer">
+  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
+</a>
+
+</Step>
+
+<Step title="Configure the project">
+
+Set **Base directory** to `js-nuxt`. Netlify runs the Nuxt build from that subdirectory.
+
+</Step>
+
+<Step title="Set environment variables">
+
+Add `OPENAI_API_KEY` in the Netlify deploy settings before the first build completes.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab title="Node">
+
+<Steps>
+
+<Step title="Build for production">
+
+```bash
+cd js-nuxt
+cp .env.example .env   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
+
+</Step>
+
+<Step title="Set environment variables">
+
+Export `OPENAI_API_KEY` on the host. Nitro reads it at runtime from the environment.
+
+Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example).
+
+</Step>
+
+<Step title="Start the Nitro server">
+
+```bash
+node .output/server/index.mjs
+```
+
+Run behind any process manager or container orchestrator that keeps a Node.js process alive.
+
+</Step>
+
+</Steps>
+
+</Tab>
+
 </Tabs>
 
 <Tip>
-  `@langchain/vue` discovers subagents from the stream and renders a clickable chip per subagent. Selecting one opens a scoped chat view bound to that subagent's namespaced `messages` and `tools` channels via `useMessages`. Reasoning summaries stream into a collapsible "Thinking" block that auto-expands while streaming.
+`@langchain/vue` discovers subagents from the stream and renders a clickable chip per subagent. Selecting one opens a scoped chat view bound to that subagent's namespaced `messages` and `tools` channels via `useMessages`. Reasoning summaries stream into a collapsible "Thinking" block that auto-expands while streaming.
 </Tip>
 
 ## Required API endpoints
@@ -91,11 +121,11 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. Nitro rou
 
 These three endpoints are enough to run a single-threaded streaming chat with `@langchain/vue`'s `HttpAgentServerAdapter`:
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so hydration does not 404 before the first message is sent.
 
@@ -103,15 +133,15 @@ The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so h
 
 This example also implements endpoints for the thread-history sidebar. Omit them if your UI does not need multi-thread management:
 
-| Method   | Path                             | Purpose                                       |
-| -------- | -------------------------------- | --------------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer        |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints     |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
 
 ### Request flow
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 %%{init: {"themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart TB
   subgraph browser["Browser (Vue)"]
@@ -157,15 +187,15 @@ flowchart TB
 
 ## Nitro backend design
 
-| Concern        | Implementation                                                     |
-| -------------- | ------------------------------------------------------------------ |
-| Frontend       | Vue components in `app/` (wrapped in `<ClientOnly>` for SSE)       |
-| API layer      | Nitro route handlers in `server/api/threads/`                      |
-| Runtime        | Node.js (Nitro preset depends on deploy target)                    |
-| SSE replay     | Process-local `LocalThreadSession` (`server/utils/session.ts`)     |
-| Agent runs     | Same Nitro process; events buffered in a LangGraph `StreamChannel` |
-| Thread storage | In-memory `MemorySaver` checkpointer (`server/agent/index.ts`)     |
-| Secrets        | `.env` locally; host environment variables in production           |
+| Concern | Implementation |
+| --- | --- |
+| Frontend | Vue components in `app/` (wrapped in `<ClientOnly>` for SSE) |
+| API layer | Nitro route handlers in `server/api/threads/` |
+| Runtime | Node.js (Nitro preset depends on deploy target) |
+| SSE replay | Process-local `LocalThreadSession` (`server/utils/session.ts`) |
+| Agent runs | Same Nitro process; events buffered in a LangGraph `StreamChannel` |
+| Thread storage | In-memory `MemorySaver` checkpointer (`server/agent/index.ts`) |
+| Secrets | `.env` locally; host environment variables in production |
 
 The agent's checkpointer is the single source of truth for threads. There is no client-side cache: the sidebar is always fetched from the server, and restarting the server clears every thread.
 
@@ -175,11 +205,11 @@ Out of the box, the agent uses an in-memory `MemorySaver` checkpointer (`server/
 
 For production, swap in a [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries):
 
-| Package                                                                                                              | Backend                    |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis)       | Redis (`RedisSaver`)       |
+| Package | Backend |
+| --- | --- |
+| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [`@langchain/langgraph-checkpoint-postgres`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
-| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite)     | SQLite (`SqliteSaver`)     |
+| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |
 
 Replace `MemorySaver` in `server/agent/index.ts` and pass the new checkpointer to `createDeepAgent`. The Nitro route handlers and `server/utils/threads.ts` helpers stay the same.
 
@@ -189,7 +219,7 @@ For more information, see [checkpointer libraries](/oss/python/langgraph/checkpo
 
 ## Local development
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cp .env.example .env   # set OPENAI_API_KEY
 pnpm install
 pnpm dev
@@ -197,7 +227,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000). Send a prompt that delegates to subagents and watch their work stream into dedicated cards.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pnpm build      # production build
 pnpm preview    # preview the production build
 pnpm typecheck  # vue-tsc over the project
@@ -206,46 +236,53 @@ pnpm typecheck  # vue-tsc over the project
 ## Project layout
 
 <AccordionGroup>
-  <Accordion title="Project structure">
-    * `server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents, mock tools, and `stripReasoningReplay` middleware.
-    * `server/utils/` — protocol server logic: `session.ts` (SSE runs), `threads.ts` (checkpointer-backed state), `serialize.ts`, `runtime.ts`.
-    * `server/api/threads/` — Nitro route handlers for the protocol endpoints above.
-    * `app/components/` — Vue chat UI (`ChatApp`, `Chat`, `ThreadHistory`, `SubagentList`, `MessageReasoning`, …) using `@langchain/vue`.
-    * `app/utils/threads.ts` — server-driven thread helpers and LangGraph SDK bootstrap.
-  </Accordion>
 
-  <Accordion title="Backend details">
-    * `server/agent/index.ts` — coordinator uses a reasoning model over the Responses API; tool-using subagents use chat-completions (to avoid reasoning item replay through the checkpointer).
-    * `server/agent/middleware.ts` — rebuilds prior assistant messages from `content` + `tool_calls` so stale reasoning ids are never replayed to the Responses API.
-    * `server/utils/session.ts` — `LocalThreadSession` buffers protocol events and fans matching frames out over SSE via `matchesSubscription`.
-    * `server/api/threads/index.get.ts` — `GET /api/threads`, the checkpointer-backed thread list.
-    * `server/api/threads/[threadId]/…` — handlers for `commands`, `stream`, `state` (GET/POST), `history`, and `DELETE`.
-  </Accordion>
+<Accordion title="Project structure">
 
-  <Accordion title="Frontend details">
-    * `app/components/ChatThread.vue` — builds the `HttpAgentServerAdapter` and calls `provideStream({ transport, threadId })`.
-    * `app/components/Chat.vue` — message view with composer and per-subagent detail view (with breadcrumb).
-    * `app/components/SubagentList.vue` / `SubagentDetail.vue` — inline subagent cards and scoped subagent chat (`useMessages` bound to namespace).
-    * `app/components/MessageReasoning.vue` — collapsible "Thinking" block for reasoning summaries.
-  </Accordion>
+- `server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents, mock tools, and `stripReasoningReplay` middleware.
+- `server/utils/` — protocol server logic: `session.ts` (SSE runs), `threads.ts` (checkpointer-backed state), `serialize.ts`, `runtime.ts`.
+- `server/api/threads/` — Nitro route handlers for the protocol endpoints above.
+- `app/components/` — Vue chat UI (`ChatApp`, `Chat`, `ThreadHistory`, `SubagentList`, `MessageReasoning`, …) using `@langchain/vue`.
+- `app/utils/threads.ts` — server-driven thread helpers and LangGraph SDK bootstrap.
+
+</Accordion>
+
+<Accordion title="Backend details">
+
+- `server/agent/index.ts` — coordinator uses a reasoning model over the Responses API; tool-using subagents use chat-completions (to avoid reasoning item replay through the checkpointer).
+- `server/agent/middleware.ts` — rebuilds prior assistant messages from `content` + `tool_calls` so stale reasoning ids are never replayed to the Responses API.
+- `server/utils/session.ts` — `LocalThreadSession` buffers protocol events and fans matching frames out over SSE via `matchesSubscription`.
+- `server/api/threads/index.get.ts` — `GET /api/threads`, the checkpointer-backed thread list.
+- `server/api/threads/[threadId]/…` — handlers for `commands`, `stream`, `state` (GET/POST), `history`, and `DELETE`.
+
+</Accordion>
+
+<Accordion title="Frontend details">
+
+- `app/components/ChatThread.vue` — builds the `HttpAgentServerAdapter` and calls `provideStream({ transport, threadId })`.
+- `app/components/Chat.vue` — message view with composer and per-subagent detail view (with breadcrumb).
+- `app/components/SubagentList.vue` / `SubagentDetail.vue` — inline subagent cards and scoped subagent chat (`useMessages` bound to namespace).
+- `app/components/MessageReasoning.vue` — collapsible "Thinking" block for reasoning summaries.
+
+</Accordion>
+
 </AccordionGroup>
 
 ## See also
 
-* [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
-* [`react-custom-backend`](https://github.com/langchain-ai/streaming-cookbook) — original Vite + Hono reference for a custom protocol server
-* [`@langchain/vue`](https://www.npmjs.com/package/@langchain/vue) — `useStream`, `provideStream`, and selector composables
-* [Frontend overview](/oss/python/langchain/frontend/overview)
+- [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
+- [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
+- [`react-custom-backend`](https://github.com/langchain-ai/streaming-cookbook) — original Vite + Hono reference for a custom protocol server
+- [`@langchain/vue`](https://www.npmjs.com/package/@langchain/vue) — `useStream`, `provideStream`, and selector composables
+- [Frontend overview](/oss/python/langchain/frontend/overview)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nuxt.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -4,7 +4,7 @@
 
 # 删除组织
 
-LangSmith UI 目前不支持从 LangSmith 自托管实例中删除单个组织。不过，这可以通过直接从 ClickHouse 中的所有物化视图（runs\_history 视图除外）以及运行和反馈表中删除所有跟踪，然后从 Postgres 租户表中删除 Organization 来实现。
+LangSmith UI 目前不支持从 LangSmith 自托管实例中删除单个组织。然而，这可以通过直接从 ClickHouse 中的所有物化视图（runs_history 视图除外）以及运行和反馈表中删除所有跟踪，然后从 Postgres 租户表中删除组织来完成。
 
 该命令使用组织 ID 作为参数。
 
@@ -59,26 +59,25 @@ LangSmith UI 目前不支持从 LangSmith 自托管实例中删除单个组织�
 
 运行以下命令来运行组织删除脚本：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh delete_organization.sh <postgres_url> <clickhouse_url> --organization_id <organization_id>
 ```
 
 例如，如果您使用带有端口转发的捆绑版本，则命令将如下所示：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh delete_organization.sh "postgres://postgres:postgres@localhost:5432/postgres" "clickhouse://default:password@localhost:8123/default" --organization_id 4ec70ec7-0808-416a-b836-7100aeec934b
 ```
 
-如果您访问 LangSmith UI，您现在应该会看到组织不再存在。
+如果您访问 LangSmith UI，您现在应该看到组织不再存在。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-an-organization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

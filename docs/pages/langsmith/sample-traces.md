@@ -7,18 +7,18 @@ When working with high-volume applications, you may not want to log every trace 
 This guide shows you how to set a global sampling rate with the `LANGSMITH_TRACING_SAMPLING_RATE` environment variable, and how to apply different sampling rates per `Client` instance for finer-grained control over which operations are traced.
 
 <Tip>
-  To enable or disable tracing for specific requests based on runtime conditions (such as data sensitivity, tenant, or feature flag), refer to [Conditional tracing](/langsmith/conditional-tracing).
+To enable or disable tracing for specific requests based on runtime conditions (such as data sensitivity, tenant, or feature flag), refer to [Conditional tracing](/langsmith/conditional-tracing).
 </Tip>
 
 ## Set a global sampling rate
 
 <Note>
-  This section is relevant for those using the [LangSmith SDK](/langsmith/reference) or [LangChain](/oss/python/langchain/overview), not for those logging directly with the LangSmith API.
+This section is relevant for those using the [LangSmith SDK](/langsmith/reference) or [LangChain](/oss/python/langchain/overview), not for those logging directly with the LangSmith API.
 </Note>
 
 By default, all traces are logged to LangSmith. To down-sample the number of traces logged to LangSmith, set the `LANGSMITH_TRACING_SAMPLING_RATE` environment variable to any float between `0` (no traces) and `1` (all traces). For instance, setting the following environment variable will log 75% of the traces.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_TRACING_SAMPLING_RATE=0.75
 ```
 
@@ -28,7 +28,7 @@ This works for the `traceable` decorator and `RunTree` objects.
 
 You can also set sampling rates on specific `Client` instances and use the [`tracing_context`](/langsmith/annotate-code#use-the-trace-context-manager-python-only) context manager:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client, tracing_context
 
 # Create clients with different sampling rates
@@ -60,20 +60,19 @@ Use **sampling** when you want to reduce overall trace volume while maintaining 
 
 Use [conditional tracing](/langsmith/conditional-tracing) when you need guaranteed tracing behavior for specific requests, such as:
 
-* Disabling tracing for clients with zero-retention policies.
-* Routing traces to different projects based on tenant.
-* Handling sensitive data that should never be traced.
+- Disabling tracing for clients with zero-retention policies.
+- Routing traces to different projects based on tenant.
+- Handling sensitive data that should never be traced.
 
 You can combine both approaches for fine-grained control over your observability strategy.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sample-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

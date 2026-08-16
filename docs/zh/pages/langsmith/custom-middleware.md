@@ -11,21 +11,21 @@
 下面是使用 FastAPI 的示例。
 
 <Note>
-  “仅限Python”
-  我们目前仅支持使用 `langgraph-api>=0.0.26` 进行 Python 部署中的自定义中间件。
+“仅限Python”
+我们目前仅支持使用 `langgraph-api>=0.0.26` 进行 Python 部署中的自定义中间件。
 </Note>
 
 ## 创建应用程序
 
 从 **现有** LangSmith 应用程序开始，将以下中间件代码添加到您的 `webapp.py` 文件中。如果您是从头开始，则可以使用 CLI 从模板创建新应用程序。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph new --template=new-langgraph-project-python my_new_project
 ```
 
-拥有 LangGraph 项目后，添加以下应用程序代码：
+一旦您有了 LangGraph 项目，请添加以下应用程序代码：
 
-```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={5}}
 # ./src/agent/webapp.py
 from fastapi import FastAPI, Request
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -46,7 +46,7 @@ app.add_middleware(CustomHeaderMiddleware)
 
 将以下内容添加到您的 `langgraph.json` 配置文件中。确保路径指向您上面创建的 `webapp.py` 文件。
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -60,9 +60,9 @@ app.add_middleware(CustomHeaderMiddleware)
 }
 ```
 
-### 自定义中间件排序默认情况下，自定义中间件在身份验证逻辑之前运行。要*在*身份验证后运行自定义中间件，请在 `http` 配置中将 `middleware_order` 设置为 `auth_first`。 （从 API 服务器 v0.4.35 及更高版本开始支持此自定义。）
+### 自定义中间件排序默认情况下，自定义中间件在身份验证逻辑之前运行。要在身份验证后运行自定义中间件，请在 `http` 配置中将 `middleware_order` 设置为 `auth_first`。 （从 API 服务器 v0.4.35 及更高版本开始支持此自定义。）
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -83,7 +83,7 @@ app.add_middleware(CustomHeaderMiddleware)
 
 在本地测试服务器：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev --no-browser
 ```
 
@@ -97,14 +97,13 @@ langgraph dev --no-browser
 
 现在您已将自定义中间件添加到部署中，您可以使用类似的技术添加 [custom routes](/langsmith/custom-routes) 或定义 [custom lifespan events](/langsmith/custom-lifespan) 来进一步自定义服务器的行为。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

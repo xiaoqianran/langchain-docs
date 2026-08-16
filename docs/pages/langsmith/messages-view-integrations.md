@@ -2,16 +2,14 @@
 
 # Messages view integrations
 
-Frameworks and SDKs that render in the LangSmith Messages view and the metadata each one sets.
-
 <Note>
-  The [Messages view](/langsmith/view-traces#messages-view) is in **[beta](/langsmith/release-stages)**.
+The [Messages view](/langsmith/view-traces#messages-view) is in **[beta](/langsmith/release-stages)**.
 </Note>
 
 The [Messages view](/langsmith/view-traces#messages-view) renders the [traces](/langsmith/observability-concepts#traces) of a [thread](/langsmith/observability-concepts#threads) as a [trajectory](/langsmith/observability-concepts#trajectories): user prompts, model responses, tool calls, and tool results, in order. The Messages view needs two pieces of run metadata to render a trajectory:
 
-* **Thread grouping**: `thread_id` on each run tells LangSmith that a set of runs belongs to the same conversation.
-* **Run classification**: `ls_agent_type: "root"` on the top-level run of a turn marks that run as part of the main conversation. Runs marked as subagent appear as a subagent action in the thread while runs marked as middleware or compaction are currently filtered out.
+- **Thread grouping**: `thread_id` on each run tells LangSmith that a set of runs belongs to the same conversation.
+- **Run classification**: `ls_agent_type: "root"` on the top-level run of a turn marks that run as part of the main conversation. Runs marked as subagent appear as a subagent action in the thread while runs marked as middleware or compaction are currently filtered out.
 
 For most LangSmith integrations, both are set for you. When you need to set metadata manually, the following examples cover the [OpenAI Responses API in chaining mode](#openai-responses-api-with-chaining) and tagging custom middleware or guardrails.
 
@@ -19,18 +17,18 @@ For most LangSmith integrations, both are set for you. When you need to set meta
 
 The following integrations set both `thread_id` and `ls_agent_type` automatically:
 
-* [Claude Code](/langsmith/trace-claude-code)
-* [Claude Agent SDK](/langsmith/trace-claude-agent-sdk)
-* [OpenAI Codex](/langsmith/trace-with-codex)
-* [Cursor](/langsmith/trace-with-cursor)
-* [Pi](/langsmith/trace-with-pi)
-* [OpenCode](/langsmith/trace-with-opencode)
-* [GitHub Copilot](/langsmith/trace-with-vscode-copilot)
-* [Deep Agents](/langsmith/trace-deep-agents)
-* [LangChain](/langsmith/trace-with-langchain)
-* [LangGraph](/langsmith/trace-with-langgraph)
-* OpenAI Chat Completions (`wrap_openai`)
-* OpenAI Responses API, single call (`wrap_openai`)
+- [Claude Code](/langsmith/trace-claude-code)
+- [Claude Agent SDK](/langsmith/trace-claude-agent-sdk)
+- [OpenAI Codex](/langsmith/trace-with-codex)
+- [Cursor](/langsmith/trace-with-cursor)
+- [Pi](/langsmith/trace-with-pi)
+- [OpenCode](/langsmith/trace-with-opencode)
+- [GitHub Copilot](/langsmith/trace-with-vscode-copilot)
+- [Deep Agents](/langsmith/trace-deep-agents)
+- [LangChain](/langsmith/trace-with-langchain)
+- [LangGraph](/langsmith/trace-with-langgraph)
+- OpenAI Chat Completions (`wrap_openai`)
+- OpenAI Responses API, single call (`wrap_openai`)
 
 The **OpenAI Responses API in chaining mode** (`previous_response_id`) sets `ls_agent_type` automatically, but you set `thread_id` yourself. For more details, refer to the [OpenAI Responses API with chaining](#openai-responses-api-with-chaining) example.
 
@@ -41,7 +39,7 @@ For the full `ls_agent_type` schema and the other values (`subagent`, `middlewar
 When you chain calls to the OpenAI Responses API by passing `previous_response_id`, OpenAI stores conversation state server-side and the LangSmith wrapper has no natural key to group calls into a thread. Set `thread_id` yourself, either per call or at wrapper init time.
 
 <Note>
-  Use a [UUID v7](https://uuid7.com) for `thread_id`. LangSmith's SDK exports a `uuid7` helper, and UUID v7 sorts by creation time so threads stay ordered in list views.
+Use a [UUID v7](https://uuid7.com) for `thread_id`. LangSmith's SDK exports a `uuid7` helper, and UUID v7 sorts by creation time so threads stay ordered in list views.
 </Note>
 
 ### Per-call metadata
@@ -49,53 +47,55 @@ When you chain calls to the OpenAI Responses API by passing `previous_response_i
 Set `thread_id` on each call. Use this when one wrapped client serves multiple threads (for example, one client per process, many concurrent conversations).
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import openai
-  from langsmith import uuid7
-  from langsmith.wrappers import wrap_openai
 
-  client = wrap_openai(openai.Client())
-  thread_id = str(uuid7())
+```python Python
+import openai
+from langsmith import uuid7
+from langsmith.wrappers import wrap_openai
 
-  res1 = client.responses.create(
-      model="gpt-5.6",
-      input="What is the capital of France?",
-      store=True,
-      langsmith_extra={"metadata": {"thread_id": thread_id}},
-  )
+client = wrap_openai(openai.Client())
+thread_id = str(uuid7())
 
-  res2 = client.responses.create(
-      model="gpt-5.6",
-      input="And its population?",
-      previous_response_id=resp1.id,
-      store=True,
-      langsmith_extra={"metadata": {"thread_id": thread_id}},
-  )
-  ```
+res1 = client.responses.create(
+    model="gpt-5.6",
+    input="What is the capital of France?",
+    store=True,
+    langsmith_extra={"metadata": {"thread_id": thread_id}},
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { uuid7 } from "langsmith";
-  import { wrapOpenAI } from "langsmith/wrappers";
+res2 = client.responses.create(
+    model="gpt-5.6",
+    input="And its population?",
+    previous_response_id=resp1.id,
+    store=True,
+    langsmith_extra={"metadata": {"thread_id": thread_id}},
+)
+```
 
-  const client = wrapOpenAI(new OpenAI());
-  const threadId = uuid7();
+```typescript TypeScript
+import OpenAI from "openai";
+import { uuid7 } from "langsmith";
+import { wrapOpenAI } from "langsmith/wrappers";
 
-  const res1 = await client.responses.create({
-    model: "gpt-5.6",
-    input: "What is the capital of France?",
-    metadata: { thread_id: threadId },
-    store: true,
-  });
+const client = wrapOpenAI(new OpenAI());
+const threadId = uuid7();
 
-  const res2 = await client.responses.create({
-    model: "gpt-5.6",
-    input: "And its population?",
-    previous_response_id: res1.id,
-    metadata: { thread_id: threadId },
-    store: true,
-  });
-  ```
+const res1 = await client.responses.create({
+  model: "gpt-5.6",
+  input: "What is the capital of France?",
+  metadata: { thread_id: threadId },
+  store: true,
+});
+
+const res2 = await client.responses.create({
+  model: "gpt-5.6",
+  input: "And its population?",
+  previous_response_id: res1.id,
+  metadata: { thread_id: threadId },
+  store: true,
+});
+```
+
 </CodeGroup>
 
 ### Init-time metadata
@@ -103,54 +103,56 @@ Set `thread_id` on each call. Use this when one wrapped client serves multiple t
 Set `thread_id` once when wrapping the client. Every call made through this wrapper is tagged with the same thread. Use this when a wrapped client serves exactly one thread for its lifetime (for example, a per-conversation worker).
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import openai
-  from langsmith import uuid7
-  from langsmith.wrappers import wrap_openai
 
-  thread_id = str(uuid7())
+```python Python
+import openai
+from langsmith import uuid7
+from langsmith.wrappers import wrap_openai
 
-  client = wrap_openai(
-      openai.Client(),
-      tracing_extra={"metadata": {"thread_id": thread_id}},
-  )
+thread_id = str(uuid7())
 
-  res1 = client.responses.create(
-      model="gpt-5.6",
-      input="What is the capital of France?",
-      store=True,
-  )
+client = wrap_openai(
+    openai.Client(),
+    tracing_extra={"metadata": {"thread_id": thread_id}},
+)
 
-  res2 = client.responses.create(
-      model="gpt-5.6",
-      input="And its population?",
-      previous_response_id=resp1.id,
-      store=True,
-  )
-  ```
+res1 = client.responses.create(
+    model="gpt-5.6",
+    input="What is the capital of France?",
+    store=True,
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { uuid7 } from "langsmith";
-  import { wrapOpenAI } from "langsmith/wrappers";
+res2 = client.responses.create(
+    model="gpt-5.6",
+    input="And its population?",
+    previous_response_id=resp1.id,
+    store=True,
+)
+```
 
-  const threadId = uuid7();
+```typescript TypeScript
+import OpenAI from "openai";
+import { uuid7 } from "langsmith";
+import { wrapOpenAI } from "langsmith/wrappers";
 
-  const client = wrapOpenAI(new OpenAI(), { metadata: { thread_id: threadId } });
+const threadId = uuid7();
 
-  const res1 = await client.responses.create({
-    model: "gpt-5.6",
-    input: "What is the capital of France?",
-    store: true,
-  });
+const client = wrapOpenAI(new OpenAI(), { metadata: { thread_id: threadId } });
 
-  const res2 = await client.responses.create({
-    model: "gpt-5.6",
-    input: "And its population?",
-    previous_response_id: res1.id,
-    store: true,
-  });
-  ```
+const res1 = await client.responses.create({
+  model: "gpt-5.6",
+  input: "What is the capital of France?",
+  store: true,
+});
+
+const res2 = await client.responses.create({
+  model: "gpt-5.6",
+  input: "And its population?",
+  previous_response_id: res1.id,
+  store: true,
+});
+```
+
 </CodeGroup>
 
 ## Hide custom middleware or guardrails
@@ -158,29 +160,31 @@ Set `thread_id` once when wrapping the client. Every call made through this wrap
 When you write your own guardrail, policy check, or middleware function around an LLM or tool call, wrap it in `@traceable` and set `ls_agent_type: "middleware"` on the metadata. The Messages view filters these runs out of the main conversation.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
 
-  @traceable(
-      run_type="llm",
-      metadata={"ls_agent_type": "middleware"},
-  )
-  def entry_guardrail(prompt: str) -> dict:
-      # Your guardrail logic
-      return {"decision": "allow"}
-  ```
+```python Python
+from langsmith import traceable
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+@traceable(
+    run_type="llm",
+    metadata={"ls_agent_type": "middleware"},
+)
+def entry_guardrail(prompt: str) -> dict:
+    # Your guardrail logic
+    return {"decision": "allow"}
+```
 
-  const entryGuardrail = traceable(
-    async (prompt: string) => {
-      // Your guardrail logic
-      return { decision: "allow" };
-    },
-    { run_type: "llm", metadata: { ls_agent_type: "middleware" } },
-  );
-  ```
+```typescript TypeScript
+import { traceable } from "langsmith/traceable";
+
+const entryGuardrail = traceable(
+  async (prompt: string) => {
+    // Your guardrail logic
+    return { decision: "allow" };
+  },
+  { run_type: "llm", metadata: { ls_agent_type: "middleware" } },
+);
+```
+
 </CodeGroup>
 
 ## Exclude runs from the Messages view
@@ -193,194 +197,196 @@ Use it for LLM subspans that are not conversational turns, such as classificatio
 
 <Tabs>
   <Tab title="Python">
-    **1. On a `@traceable` decorator**: exclude a whole function's run.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langsmith import LS_MESSAGE_VIEW_EXCLUDE, traceable
+**1. On a `@traceable` decorator**: exclude a whole function's run.
 
-    @traceable(run_type="llm", metadata={LS_MESSAGE_VIEW_EXCLUDE: True})
-    def classify_intent(query: str) -> str:
-        # This LLM call is internal routing, not part of the chat
-        return llm.predict(f"Classify the intent of: {query}")
-    ```
+```python
+from langsmith import LS_MESSAGE_VIEW_EXCLUDE, traceable
 
-    **2. Via the `trace` context manager**: exclude an ad-hoc span.
+@traceable(run_type="llm", metadata={LS_MESSAGE_VIEW_EXCLUDE: True})
+def classify_intent(query: str) -> str:
+    # This LLM call is internal routing, not part of the chat
+    return llm.predict(f"Classify the intent of: {query}")
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langsmith import LS_MESSAGE_VIEW_EXCLUDE, trace
+**2. Via the `trace` context manager**: exclude an ad-hoc span.
 
-    with trace(
-        "safety_check",
-        run_type="llm",
-        metadata={LS_MESSAGE_VIEW_EXCLUDE: True},
-    ) as run:
-        result = safety_model.score(text)
-        run.end(outputs={"score": result})
-    ```
+```python
+from langsmith import LS_MESSAGE_VIEW_EXCLUDE, trace
 
-    **3. From inside a running function**: set the key on the current run tree at any point before the run is patched.
+with trace(
+    "safety_check",
+    run_type="llm",
+    metadata={LS_MESSAGE_VIEW_EXCLUDE: True},
+) as run:
+    result = safety_model.score(text)
+    run.end(outputs={"score": result})
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langsmith import LS_MESSAGE_VIEW_EXCLUDE, get_current_run_tree, traceable
+**3. From inside a running function**: set the key on the current run tree at any point before the run is patched.
 
-    @traceable(run_type="llm")
-    def maybe_internal(query: str) -> str:
-        result = llm.predict(query)
-        if _looks_like_routing(query):
-            rt = get_current_run_tree()
-            if rt is not None:
-                rt.add_metadata({LS_MESSAGE_VIEW_EXCLUDE: True})
-        return result
-    ```
+```python
+from langsmith import LS_MESSAGE_VIEW_EXCLUDE, get_current_run_tree, traceable
 
-    **4. Per-call when using `wrap_openai` / `wrap_anthropic`**: pass `langsmith_extra` through to the wrapped client call.
+@traceable(run_type="llm")
+def maybe_internal(query: str) -> str:
+    result = llm.predict(query)
+    if _looks_like_routing(query):
+        rt = get_current_run_tree()
+        if rt is not None:
+            rt.add_metadata({LS_MESSAGE_VIEW_EXCLUDE: True})
+    return result
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import openai
-    from langsmith import LS_MESSAGE_VIEW_EXCLUDE
-    from langsmith.wrappers import wrap_openai
+**4. Per-call when using `wrap_openai` / `wrap_anthropic`**: pass `langsmith_extra` through to the wrapped client call.
 
-    client = wrap_openai(openai.Client())
+```python
+import openai
+from langsmith import LS_MESSAGE_VIEW_EXCLUDE
+from langsmith.wrappers import wrap_openai
 
-    resp = client.chat.completions.create(
-        model="gpt-5.6",
-        messages=[{"role": "user", "content": "Classify: ..."}],
-        langsmith_extra={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
-    )
-    ```
+client = wrap_openai(openai.Client())
 
-    **5. LangChain `RunnableConfig`**: exclude a single invocation of a chain or chat model.
+resp = client.chat.completions.create(
+    model="gpt-5.6",
+    messages=[{"role": "user", "content": "Classify: ..."}],
+    langsmith_extra={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
+)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_openai import ChatOpenAI
-    from langsmith import LS_MESSAGE_VIEW_EXCLUDE
+**5. LangChain `RunnableConfig`**: exclude a single invocation of a chain or chat model.
 
-    llm = ChatOpenAI(model="gpt-5.6")
-    result = llm.invoke(
-        "Classify this query",
-        config={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
-    )
-    ```
+```python
+from langchain_openai import ChatOpenAI
+from langsmith import LS_MESSAGE_VIEW_EXCLUDE
+
+llm = ChatOpenAI(model="gpt-5.6")
+result = llm.invoke(
+    "Classify this query",
+    config={"metadata": {LS_MESSAGE_VIEW_EXCLUDE: True}},
+)
+```
+
   </Tab>
-
   <Tab title="TypeScript">
-    **1. On a `traceable` wrapper**: exclude a whole function's run.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-    import { traceable } from "langsmith/traceable";
+**1. On a `traceable` wrapper**: exclude a whole function's run.
 
-    const classifyIntent = traceable(
-      async (query: string) => {
-        return await llm.predict(`Classify the intent of: ${query}`);
-      },
-      {
-        name: "classify_intent",
-        run_type: "llm",
-        metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
-      },
-    );
-    ```
+```typescript
+import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+import { traceable } from "langsmith/traceable";
 
-    **2. From inside a running function**: mutate the current run tree.
+const classifyIntent = traceable(
+  async (query: string) => {
+    return await llm.predict(`Classify the intent of: ${query}`);
+  },
+  {
+    name: "classify_intent",
+    run_type: "llm",
+    metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
+  },
+);
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-    import { traceable, getCurrentRunTree } from "langsmith/traceable";
+**2. From inside a running function**: mutate the current run tree.
 
-    const maybeInternal = traceable(
-      async (query: string) => {
-        const result = await llm.predict(query);
-        if (looksLikeRouting(query)) {
-          const rt = getCurrentRunTree();
-          rt.extra = rt.extra ?? {};
-          rt.extra.metadata = { ...rt.extra.metadata, [LS_MESSAGE_VIEW_EXCLUDE]: true };
-        }
-        return result;
-      },
-      { run_type: "llm" },
-    );
-    ```
+```typescript
+import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+import { traceable, getCurrentRunTree } from "langsmith/traceable";
 
-    **3. Per-call with `wrapOpenAI`**: pass `langsmithExtra` on the call.
+const maybeInternal = traceable(
+  async (query: string) => {
+    const result = await llm.predict(query);
+    if (looksLikeRouting(query)) {
+      const rt = getCurrentRunTree();
+      rt.extra = rt.extra ?? {};
+      rt.extra.metadata = { ...rt.extra.metadata, [LS_MESSAGE_VIEW_EXCLUDE]: true };
+    }
+    return result;
+  },
+  { run_type: "llm" },
+);
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-    import { wrapOpenAI } from "langsmith/wrappers";
-    import OpenAI from "openai";
+**3. Per-call with `wrapOpenAI`**: pass `langsmithExtra` on the call.
 
-    const client = wrapOpenAI(new OpenAI());
+```typescript
+import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+import { wrapOpenAI } from "langsmith/wrappers";
+import OpenAI from "openai";
 
-    const resp = await client.chat.completions.create(
-      {
-        model: "gpt-5.6",
-        messages: [{ role: "user", content: "Classify: ..." }],
-      },
-      { langsmithExtra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } },
-    );
-    ```
+const client = wrapOpenAI(new OpenAI());
 
-    **4. Vercel AI SDK middleware**: pass the key via `lsConfig.metadata` on `wrapAISDK`. The middleware merges this onto every emitted LLM run.
+const resp = await client.chat.completions.create(
+  {
+    model: "gpt-5.6",
+    messages: [{ role: "user", content: "Classify: ..." }],
+  },
+  { langsmithExtra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } },
+);
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import * as ai from "ai";
-    import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-    import { wrapAISDK } from "langsmith/experimental/vercel";
+**4. Vercel AI SDK middleware**: pass the key via `lsConfig.metadata` on `wrapAISDK`. The middleware merges this onto every emitted LLM run.
 
-    const { generateText } = wrapAISDK(ai, {
-      metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
-    });
-    ```
+```typescript
+import * as ai from "ai";
+import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+import { wrapAISDK } from "langsmith/experimental/vercel";
 
-    To exclude only some calls and not others, wrap with `wrapAISDK` normally and instead mutate `getCurrentRunTree()` from inside a parent `traceable` that calls into the AI SDK, or use a child `RunTree` with `createChild({ extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } })`.
+const { generateText } = wrapAISDK(ai, {
+  metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true },
+});
+```
 
-    **5. Manual `RunTree.createChild`**: when you are building runs by hand.
+To exclude only some calls and not others, wrap with `wrapAISDK` normally and instead mutate `getCurrentRunTree()` from inside a parent `traceable` that calls into the AI SDK, or use a child `RunTree` with `createChild({ extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } } })`.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
-    import { RunTree } from "langsmith/run_trees";
+**5. Manual `RunTree.createChild`**: when you are building runs by hand.
 
-    const parent = new RunTree({ name: "agent", run_type: "chain" });
-    const child = parent.createChild({
-      name: "safety_check",
-      run_type: "llm",
-      extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } },
-    });
-    ```
+```typescript
+import { LS_MESSAGE_VIEW_EXCLUDE } from "langsmith";
+import { RunTree } from "langsmith/run_trees";
+
+const parent = new RunTree({ name: "agent", run_type: "chain" });
+const child = parent.createChild({
+  name: "safety_check",
+  run_type: "llm",
+  extra: { metadata: { [LS_MESSAGE_VIEW_EXCLUDE]: true } },
+});
+```
+
   </Tab>
 </Tabs>
 
 ### Notes
 
-* The filter checks for the **presence of the key**, not truthiness. `{LS_MESSAGE_VIEW_EXCLUDE: false}` still excludes the run. Omit the key entirely to include the run.
-* Child runs that execute inside a `@traceable` (Python) or `traceable` (JS) parent inherit the exclusion through the shared tracing context: Python's `_METADATA` `ContextVar` and JS's `AsyncLocalStorage`. The child's own decorator-time metadata layers on top of the inherited values.
-* Excluded runs still appear in the regular trace view, runs explorer, and metrics. Only the Messages view filters them out.
+- The filter checks for the **presence of the key**, not truthiness. `{LS_MESSAGE_VIEW_EXCLUDE: false}` still excludes the run. Omit the key entirely to include the run.
+- Child runs that execute inside a `@traceable` (Python) or `traceable` (JS) parent inherit the exclusion through the shared tracing context: Python's `_METADATA` `ContextVar` and JS's `AsyncLocalStorage`. The child's own decorator-time metadata layers on top of the inherited values.
+- Excluded runs still appear in the regular trace view, runs explorer, and metrics. Only the Messages view filters them out.
 
 ## Manual instrumentation
 
 If you trace without one of the wrappers in [Supported integrations](#supported-integrations) (for example, emitting runs through `RunTree`, the REST API, or a custom wrapper around a provider SDK), set `ls_message_format` on each LLM run's metadata to route the trace to the correct extractor:
 
-| Trace shape                               | Set on metadata                    |
-| ----------------------------------------- | ---------------------------------- |
-| LangChain messages (constructor envelope) | `ls_message_format: "langchain"`   |
-| OpenAI Chat Completions                   | `ls_message_format: "completions"` |
-| OpenAI Responses API                      | `ls_message_format: "responses"`   |
-| Anthropic Messages API                    | `ls_message_format: "anthropic"`   |
+| Trace shape | Set on metadata |
+| --- | --- |
+| LangChain messages (constructor envelope) | `ls_message_format: "langchain"` |
+| OpenAI Chat Completions | `ls_message_format: "completions"` |
+| OpenAI Responses API | `ls_message_format: "responses"` |
+| Anthropic Messages API | `ls_message_format: "anthropic"` |
 
 ## Related
 
-* [Configure threads](/langsmith/threads): how `thread_id` groups runs across LangSmith.
-* [Coding agent metadata contract](/langsmith/coding-agent-metadata-contract): the full `ls_agent_type` schema.
-* [View traces](/langsmith/view-traces#messages-view): what the Messages view shows and how to customize it.
+- [Configure threads](/langsmith/threads): how `thread_id` groups runs across LangSmith.
+- [Coding agent metadata contract](/langsmith/coding-agent-metadata-contract): the full `ls_agent_type` schema.
+- [View traces](/langsmith/view-traces#messages-view): what the Messages view shows and how to customize it.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/messages-view-integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,19 +2,17 @@
 
 # Add skills to Managed Deep Agents
 
-Add reusable task-specific instructions to a Managed Deep Agent.
-
 Skills package task-specific procedures and context into reusable directories. You can define them in markdown files, and they are picked up automatically by the agent.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 Keep the agent entry point at the project root and define each skill under `skills/`:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   skills/
@@ -22,11 +20,14 @@ my-agent/
       SKILL.md
 ```
 
+
+
+
 ## Add a skill
 
 Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
 
-```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```markdown skills/research/SKILL.md
 ---
 name: research
 description: Gather and synthesize context before answering complex questions.
@@ -65,14 +66,13 @@ Use [memory](/langsmith/python/managed-deep-agents-memory) for knowledge you wan
 
 For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

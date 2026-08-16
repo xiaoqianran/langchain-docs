@@ -26,8 +26,8 @@ From the tracing project view, navigate to the **Evaluators** tab. Click **+ Eva
 
 1. Name your evaluator.
 2. Select an aggregation method, either **Average** or **Sum**.
-   * **Average**: ∑(weight\*score) / ∑(weight).
-   * **Sum**: ∑(weight\*score).
+    - **Average**: ∑(weight*score) / ∑(weight).
+    - **Sum**: ∑(weight*score).
 3. Add the feedback keys you want to include in the composite score.
 4. Add the weights for the feedback keys. By default, the weights are equal for each feedback key. Adjust the weights to increase or decrease the importance of specific feedback keys in the final score.
 5. Click **Create** to save the evaluator.
@@ -39,21 +39,19 @@ From the tracing project view, navigate to the **Evaluators** tab. Click **+ Eva
 Composite scores are attached to a run as **feedback**, similarly to feedback from a single evaluator.
 
 **On a tracing project**:
-
-* Composite scores appear as feedback on runs.
-* [Filter for runs](/langsmith/filter-traces-in-application) with a composite score, or where the composite score meets a certain threshold.
-* [Create a chart](/langsmith/dashboards#custom-dashboards) to visualize trends in the composite score over time.
+- Composite scores appear as feedback on runs.
+- [Filter for runs](/langsmith/filter-traces-in-application) with a composite score, or where the composite score meets a certain threshold.
+- [Create a chart](/langsmith/dashboards#custom-dashboards) to visualize trends in the composite score over time.
 
 <Note> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run. </Note>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

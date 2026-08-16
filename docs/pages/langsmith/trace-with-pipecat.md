@@ -3,13 +3,13 @@
 # Trace Pipecat applications
 
 <Note>
-  This integration is in beta, so its API may change.
+This integration is in beta, so its API may change.
 </Note>
 
 Trace your [Pipecat](https://pipecat.ai/) voice agents to LangSmith with the LangSmith Pipecat integration. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
 <Note>
-  The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
+The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
 </Note>
 
 The integration hooks into the spans Pipecat already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace, with a span per pipeline stage (STT, LLM, TTS). This covers both the STT/LLM/TTS cascade and speech-to-speech (realtime) models. Realtime models (for example, `OpenAIRealtimeLLMService`) need one extra call to capture the user's transcript. See [When using Pipecat with a realtime model](#when-using-pipecat-with-a-realtime-model).
@@ -19,20 +19,22 @@ The integration hooks into the spans Pipecat already emits and maps them onto La
 Install the integration along with the Pipecat service extras your pipeline uses:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
+```bash pip
+pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
+
+```bash uv
+uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
+
 </CodeGroup>
 
 ## Set environment variables
 
 The integration reads your LangSmith credentials from the environment and exports to LangSmith for you via OpenTelemetry:
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash .env
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=pipecat-voice
@@ -43,7 +45,7 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 Import `configure_pipecat` and call it once before building your pipeline. Enable tracing on the `PipelineTask`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.pipecat import configure_pipecat
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 
@@ -60,21 +62,21 @@ task = PipelineTask(
 ```
 
 <Note>
-  Set `enable_tracing=True`, `enable_turn_tracking=True`, and `enable_metrics=True`. Turn tracking is required for tracing, and metrics drive the latency and token data on each span.
+Set `enable_tracing=True`, `enable_turn_tracking=True`, and `enable_metrics=True`. Turn tracking is required for tracing, and metrics drive the latency and token data on each span.
 </Note>
 
 ### Use a LangGraph or LangChain agent as the LLM
 
 If your LLM stage is an in-process [LangGraph or LangChain](/oss/python/langgraph/overview) agent, its model and tool runs should nest inside Pipecat's `llm` span rather than forming a separate trace. To achieve this:
 
-* Pass `configure_pipecat(llm_span_kind="chain")`. This avoids nested `llm` spans that don't actually represent inference requests.
-* Set `LANGSMITH_TRACING_MODE=otel` in the environment. Without it, those runs post to LangSmith directly and form a separate trace instead of nesting.
+- Pass `configure_pipecat(llm_span_kind="chain")`. This avoids nested `llm` spans that don't actually represent inference requests.
+- Set `LANGSMITH_TRACING_MODE=otel` in the environment. Without it, those runs post to LangSmith directly and form a separate trace instead of nesting.
 
 ### Use your own tracer provider
 
 `configure_pipecat()` builds a `TracerProvider`, registers the LangSmith span processor, and wires it into Pipecat. To send spans through a `TracerProvider` you already manage (for example, one that also exports to another OpenTelemetry backend), skip `configure_pipecat` and add the processor to your provider directly:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.pipecat import PipecatLangSmithSpanProcessor
 
 provider.add_span_processor(PipecatLangSmithSpanProcessor())
@@ -84,7 +86,7 @@ provider.add_span_processor(PipecatLangSmithSpanProcessor())
 
 To group a conversation's runs into a LangSmith [thread](/langsmith/threads) for thread-level views and token and cost aggregation, call `set_thread_id` once per conversation before its spans are emitted:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
 
 configure_pipecat()
@@ -98,10 +100,10 @@ With a speech-to-speech (realtime) model there is no separate speech-to-text sta
 Call `instrument_user_aggregator` once, right after building the context aggregator, so the SDK subscribes to that callback for you and pairs each transcript with its turn. It correlates by the id you pass to `set_thread_id`, so set that first and pass the same id:
 
 <Note>
-  `instrument_user_aggregator` requires `langsmith[pipecat]>=0.10.6`.
+`instrument_user_aggregator` requires `langsmith[pipecat]>=0.10.6`.
 </Note>
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
 from pipecat.processors.aggregators.llm_context import LLMContext
 from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
@@ -148,7 +150,7 @@ Only call `instrument_user_aggregator` for realtime models. In the STT/LLM/TTS c
 
 Attach the conversation audio to the trace using Pipecat's [`AudioBufferProcessor`](https://docs.pipecat.ai/server/utilities/audio/audio-recording). Place it after `transport.output()` so it captures what was actually played (after any barge-in truncation), hand it to the integration, and start it once the session is running:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from pipecat.processors.audio.audio_buffer_processor import AudioBufferProcessor
 
 span_processor = configure_pipecat()
@@ -175,24 +177,22 @@ The integration attaches the recording to the conversation root when it ends. Fo
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
     Core conventions for tracing voice agents.
   </Card>
-
   <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
     Attach the conversation audio recording to your trace.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

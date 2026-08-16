@@ -13,130 +13,134 @@
 这种度量只能在我们实验中的所有示例上进行计算，因此我们的评估器接受输出列表和参考输出列表。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def f1_score_summary_evaluator(outputs: list[dict], reference_outputs: list[dict]) -> dict:
-      true_positives = 0
-      false_positives = 0
-      false_negatives = 0
 
-      for output_dict, reference_output_dict in zip(outputs, reference_outputs):
-          output = output_dict["class"]
-          reference_output = reference_output_dict["class"]
+```python Python
+def f1_score_summary_evaluator(outputs: list[dict], reference_outputs: list[dict]) -> dict:
+    true_positives = 0
+    false_positives = 0
+    false_negatives = 0
 
-          if output == "Toxic" and reference_output == "Toxic":
-              true_positives += 1
-          elif output == "Toxic" and reference_output == "Not toxic":
-              false_positives += 1
-          elif output == "Not toxic" and reference_output == "Toxic":
-              false_negatives += 1
+    for output_dict, reference_output_dict in zip(outputs, reference_outputs):
+        output = output_dict["class"]
+        reference_output = reference_output_dict["class"]
 
-      if true_positives == 0:
-          return {"key": "f1_score", "score": 0.0}
+        if output == "Toxic" and reference_output == "Toxic":
+            true_positives += 1
+        elif output == "Toxic" and reference_output == "Not toxic":
+            false_positives += 1
+        elif output == "Not toxic" and reference_output == "Toxic":
+            false_negatives += 1
 
-      precision = true_positives / (true_positives + false_positives)
-      recall = true_positives / (true_positives + false_negatives)
-      f1_score = 2 * (precision * recall) / (precision + recall)
+    if true_positives == 0:
+        return {"key": "f1_score", "score": 0.0}
 
-      return {"key": "f1_score", "score": f1_score}
-  ```
+    precision = true_positives / (true_positives + false_positives)
+    recall = true_positives / (true_positives + false_negatives)
+    f1_score = 2 * (precision * recall) / (precision + recall)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function f1ScoreSummaryEvaluator({ outputs, referenceOutputs }: {
-      outputs: Record<string, any>[],
-      referenceOutputs: Record<string, any>[]
-  }) {
-      let truePositives = 0;
-      let falsePositives = 0;
-      let falseNegatives = 0;
+    return {"key": "f1_score", "score": f1_score}
+```
 
-      for (let i = 0; i < outputs.length; i++) {
-          const output = outputs[i]["class"];
-          const referenceOutput = referenceOutputs[i]["class"];
+```typescript TypeScript
+function f1ScoreSummaryEvaluator({ outputs, referenceOutputs }: {
+    outputs: Record<string, any>[],
+    referenceOutputs: Record<string, any>[]
+}) {
+    let truePositives = 0;
+    let falsePositives = 0;
+    let falseNegatives = 0;
 
-          if (output === "Toxic" && referenceOutput === "Toxic") {
-              truePositives += 1;
-          } else if (output === "Toxic" && referenceOutput === "Not toxic") {
-              falsePositives += 1;
-          } else if (output === "Not toxic" && referenceOutput === "Toxic") {
-              falseNegatives += 1;
-          }
-      }
+    for (let i = 0; i < outputs.length; i++) {
+        const output = outputs[i]["class"];
+        const referenceOutput = referenceOutputs[i]["class"];
 
-      if (truePositives === 0) {
-          return { key: "f1_score", score: 0.0 };
-      }
+        if (output === "Toxic" && referenceOutput === "Toxic") {
+            truePositives += 1;
+        } else if (output === "Toxic" && referenceOutput === "Not toxic") {
+            falsePositives += 1;
+        } else if (output === "Not toxic" && referenceOutput === "Toxic") {
+            falseNegatives += 1;
+        }
+    }
 
-      const precision = truePositives / (truePositives + falsePositives);
-      const recall = truePositives / (truePositives + falseNegatives);
-      const f1Score = 2 * (precision * recall) / (precision + recall);
+    if (truePositives === 0) {
+        return { key: "f1_score", score: 0.0 };
+    }
 
-      return { key: "f1_score", score: f1Score };
-  }
-  ```
+    const precision = truePositives / (truePositives + falsePositives);
+    const recall = truePositives / (truePositives + falseNegatives);
+    const f1Score = 2 * (precision * recall) / (precision + recall);
+
+    return { key: "f1_score", score: f1Score };
+}
+```
+
 </CodeGroup>
 
 然后，您可以将此评估器传递给 `evaluate` 方法，如下所示：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  ls_client = Client()
-  dataset = ls_client.clone_public_dataset(
-      "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d"
-  )
+```python Python
+from langsmith import Client
 
-  def bad_classifier(inputs: dict) -> dict:
-      return {"class": "Not toxic"}
+ls_client = Client()
+dataset = ls_client.clone_public_dataset(
+    "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d"
+)
 
-  def correct(outputs: dict, reference_outputs: dict) -> bool:
-      """Row-level correctness evaluator."""
-      return outputs["class"] == reference_outputs["label"]
+def bad_classifier(inputs: dict) -> dict:
+    return {"class": "Not toxic"}
 
-  results = ls_client.evaluate(
-      bad_classified,
-      data=dataset,
-      evaluators=[correct],
-      summary_evaluators=[pass_50],
-  )
-  ```
+def correct(outputs: dict, reference_outputs: dict) -> bool:
+    """Row-level correctness evaluator."""
+    return outputs["class"] == reference_outputs["label"]
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-  import { evaluate } from "langsmith/evaluation";
-  import type { EvaluationResult } from "langsmith/evaluation";
+results = ls_client.evaluate(
+    bad_classified,
+    data=dataset,
+    evaluators=[correct],
+    summary_evaluators=[pass_50],
+)
+```
 
-  const client = new Client();
-  const datasetName = "Toxic queries";
-  const dataset = await client.clonePublicDataset(
-      "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d",
-      { datasetName: datasetName }
-  );
+```typescript TypeScript
+import { Client } from "langsmith";
+import { evaluate } from "langsmith/evaluation";
+import type { EvaluationResult } from "langsmith/evaluation";
 
-  function correct({ outputs, referenceOutputs }: {
-      outputs: Record<string, any>,
-      referenceOutputs?: Record<string, any>
-  }): EvaluationResult {
-      const score = outputs["class"] === referenceOutputs?.["label"];
-      return { key: "correct", score };
-  }
+const client = new Client();
+const datasetName = "Toxic queries";
+const dataset = await client.clonePublicDataset(
+    "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d",
+    { datasetName: datasetName }
+);
 
-  function badClassifier(inputs: Record<string, any>): { class: string } {
-      return { class: "Not toxic" };
-  }
+function correct({ outputs, referenceOutputs }: {
+    outputs: Record<string, any>,
+    referenceOutputs?: Record<string, any>
+}): EvaluationResult {
+    const score = outputs["class"] === referenceOutputs?.["label"];
+    return { key: "correct", score };
+}
 
-  await evaluate(badClassifier, {
-      data: datasetName,
-      evaluators: [correct],
-      summaryEvaluators: [summaryEval],
-      experimentPrefix: "Toxic Queries",
-  });
-  ```
+function badClassifier(inputs: Record<string, any>): { class: string } {
+    return { class: "Not toxic" };
+}
+
+await evaluate(badClassifier, {
+    data: datasetName,
+    evaluators: [correct],
+    summaryEvaluators: [summaryEval],
+    experimentPrefix: "Toxic Queries",
+});
+```
+
 </CodeGroup>
 
 在 LangSmith UI 中，您将使用相应的键显示摘要评估器的分数。
 
-<img alt="summary_eval.png" />
+![summary_eval.png](/langsmith/images/summary-eval.png)
 
 ## 评估器参数摘要
 
@@ -158,14 +162,13 @@ Python 和 JS/TS
 
 * `int | float | bool`：这被解释为连续指标，可以进行平均、排序等操作。函数名称用作指标的名称。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/summary.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

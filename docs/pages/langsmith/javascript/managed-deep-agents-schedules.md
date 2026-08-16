@@ -2,32 +2,38 @@
 
 # Add schedules to Managed Deep Agents
 
-Declare managed cron schedules for Managed Deep Agents deployments.
-
 Managed Deep Agents can run agents on a cron schedule. When you deploy the project, `mda deploy` provisions each schedule as a LangSmith cron after the deployment is live.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 Schedule declarations live in the project-level `schedules/` directory, with one schedule per file:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```text
 my-agent/
   agent.ts
   schedules/
     daily-digest.ts
 ```
 
+
 ## Add a schedule
 
 The file name becomes the managed schedule name.
 
+
+
 The schedule module must export a named `schedule` declaration.
 
-```ts schedules/daily-digest.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+
+```ts schedules/daily-digest.ts
 import { defineSchedule } from "managed-deepagents";
 
 export const schedule = defineSchedule({
@@ -37,14 +43,17 @@ export const schedule = defineSchedule({
 });
 ```
 
+
 ## Configure schedule input
 
 Each schedule must define exactly one of:
 
-* `prompt`: A natural-language prompt. MDA converts it to a user message when the cron fires.
-* `input`: A structured LangGraph input object. Use this when you need to pass custom graph input instead of a single prompt.
+- `prompt`: A natural-language prompt. MDA converts it to a user message when the cron fires.
+- `input`: A structured LangGraph input object. Use this when you need to pass custom graph input instead of a single prompt.
 
-```ts schedules/nightly-sweep.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```ts schedules/nightly-sweep.ts
 import { defineSchedule } from "managed-deepagents";
 
 export const schedule = defineSchedule({
@@ -57,6 +66,7 @@ export const schedule = defineSchedule({
 });
 ```
 
+
 `cron` must be a standard five-field cron expression: minute, hour, day of month, month, and day of week. If `timezone` is omitted, LangSmith crons use UTC.
 
 ## Choose thread behavior
@@ -66,10 +76,12 @@ Schedules use ephemeral threads by default. MDA creates a fresh thread for each 
 Use a persistent thread only when scheduled runs should accumulate durable thread state across invocations.
 
 <Note>
-  The following example requires [durable memory](/langsmith/javascript/managed-deep-agents-memory).
+The following example requires [durable memory](/langsmith/javascript/managed-deep-agents-memory).
 </Note>
 
-```ts schedules/nightly-memory.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```ts schedules/nightly-memory.ts
 import { defineSchedule } from "managed-deepagents";
 
 export const schedule = defineSchedule({
@@ -79,17 +91,26 @@ export const schedule = defineSchedule({
 });
 ```
 
+
 ## Deliver results to Slack
 
+
+
 Set `deliverTo` to post the final response through a configured [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack).
+
 
 Use a Slack channel ID because scheduled runs have no originating thread.
 
 <Note>
-  Schedule delivery requires `managed-deepagents` version 0.4.0 or later.
+
+
+Schedule delivery requires `managed-deepagents` version 0.4.0 or later.
+
 </Note>
 
-```ts schedules/monday-greeting.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```ts schedules/monday-greeting.ts
 import { defineSchedule } from "managed-deepagents";
 
 export const schedule = defineSchedule({
@@ -105,17 +126,20 @@ export const schedule = defineSchedule({
 });
 ```
 
+
 The Slack bot must have access to the destination.
 
 ## Use static declarations
 
 Schedule declarations are extracted at compile time. Keep schedule configuration statically serializable:
 
-* Use literals, arrays, objects, and references to top-level literal constants.
 
-* Do not read environment variables, call functions, spread objects, or compute schedule values dynamically.
 
-* Put dynamic behavior in the agent, tools, middleware, or runtime context instead.
+- Use literals, arrays, objects, and references to top-level literal constants.
+- Do not read environment variables, call functions, spread objects, or compute schedule values dynamically.
+
+
+- Put dynamic behavior in the agent, tools, middleware, or runtime context instead.
 
 ## Deploy schedules
 
@@ -124,41 +148,39 @@ Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-age
 When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing MDA-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
-  If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
+If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
 
 ## Troubleshoot schedules
 
-* `must export a named schedule declaration`: Export a top-level `schedule` from each file in `schedules/`.
 
-* `must define exactly one of prompt or input`: Add either `prompt` or `input`, but not both.
 
-* `cron must be a standard 5-field expression`: Use five cron fields, not seconds-based cron syntax.
+- `must export a named schedule declaration`: Export a top-level `schedule` from each file in `schedules/`.
 
-* `schedule is not static`: Replace computed values with literals or top-level literal constants.
 
-* `failed to create cron for schedule`: Open the deployment URL in LangSmith and confirm the deployed Agent Server is healthy.
+- `must define exactly one of prompt or input`: Add either `prompt` or `input`, but not both.
+- `cron must be a standard 5-field expression`: Use five cron fields, not seconds-based cron syntax.
+- `schedule is not static`: Replace computed values with literals or top-level literal constants.
+- `failed to create cron for schedule`: Open the deployment URL in LangSmith and confirm the deployed Agent Server is healthy.
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Deploy an agent" icon="upload" href="/langsmith/javascript/managed-deep-agents-deploy">
     Deploy and reconcile schedule changes.
   </Card>
-
   <Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
     Look up `mda deploy` flags and troubleshooting.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,8 +2,6 @@
 
 # Deploy LangSmith on GCP with Terraform
 
-End-to-end walkthrough for provisioning LangSmith self-hosted on GCP GKE using the LangChain Terraform modules.
-
 Deploy LangSmith to GCP with the public [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp). Managing the deployment as code lets you version, review, and reproduce your LangSmith environment across projects instead of clicking through the Google Cloud console.
 
 The install runs in two stages:
@@ -13,7 +11,7 @@ The install runs in two stages:
 
 After the base install, enable optional add-ons by setting flags and redeploying.
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 %%{init: {'flowchart': {'nodeSpacing': 25, 'rankSpacing': 30}}}%%
 graph TB
     subgraph stage1["Set up infrastructure"]
@@ -52,16 +50,16 @@ graph TB
 
 ### Required tools
 
-| Tool                        | Version | Purpose                                                   |
-| --------------------------- | ------- | --------------------------------------------------------- |
-| Google Cloud SDK (`gcloud`) | 450     | Authenticate, query GCP resources, manage GKE credentials |
-| Terraform                   | 1.5     | Run the infrastructure modules                            |
-| `kubectl`                   | 1.28    | Inspect the GKE cluster                                   |
-| Helm                        | 3.12    | Install and manage the LangSmith chart                    |
+| Tool | Version | Purpose |
+|---|---|---|
+| Google Cloud SDK (`gcloud`) | 450 | Authenticate, query GCP resources, manage GKE credentials |
+| Terraform | 1.5 | Run the infrastructure modules |
+| `kubectl` | 1.28 | Inspect the GKE cluster |
+| Helm | 3.12 | Install and manage the LangSmith chart |
 
 Install on macOS:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 brew install --cask google-cloud-sdk
 brew install kubectl helm
 brew tap hashicorp/tap && brew install hashicorp/tap/terraform
@@ -76,7 +74,7 @@ helm version
 
 Terraform enables these automatically on first apply, but `cloudresourcemanager.googleapis.com` must be enabled first so Terraform can enable the rest. Enable everything manually for fast first runs:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud services enable \
   container.googleapis.com \
   compute.googleapis.com \
@@ -97,20 +95,20 @@ gcloud services enable \
 
 The principal running Terraform needs the following roles on the target project. Trim to least-privilege after the initial deployment is stable.
 
-| Role                                    | Purpose                                                               |
-| --------------------------------------- | --------------------------------------------------------------------- |
-| `roles/container.admin`                 | Create and manage GKE clusters                                        |
-| `roles/compute.networkAdmin`            | Create VPC, subnets, firewall rules                                   |
-| `roles/iam.serviceAccountAdmin`         | Create service accounts for Workload Identity                         |
-| `roles/cloudsql.admin`                  | Create and manage Cloud SQL instances                                 |
-| `roles/redis.admin`                     | Create and manage Memorystore Redis                                   |
-| `roles/storage.admin`                   | Create GCS buckets and lifecycle policies                             |
-| `roles/resourcemanager.projectIamAdmin` | Grant IAM bindings during provisioning                                |
+| Role | Purpose |
+|---|---|
+| `roles/container.admin` | Create and manage GKE clusters |
+| `roles/compute.networkAdmin` | Create VPC, subnets, firewall rules |
+| `roles/iam.serviceAccountAdmin` | Create service accounts for Workload Identity |
+| `roles/cloudsql.admin` | Create and manage Cloud SQL instances |
+| `roles/redis.admin` | Create and manage Memorystore Redis |
+| `roles/storage.admin` | Create GCS buckets and lifecycle policies |
+| `roles/resourcemanager.projectIamAdmin` | Grant IAM bindings during provisioning |
 | `roles/servicenetworking.networksAdmin` | Create private service connections (required for Cloud SQL and Redis) |
 
 ### Authenticate
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud auth login
 gcloud config set project <your-project-id>
 gcloud auth application-default login
@@ -121,12 +119,12 @@ You also need a LangSmith license key ([contact sales](https://www.langchain.com
 ## Quickstart
 
 <Tip>
-  For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
+For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
 </Tip>
 
 For the fastest path from zero to a running LangSmith instance, run these commands in order:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # 1. Clone the public modules
 git clone https://github.com/langchain-ai/terraform.git
 cd terraform/modules/gcp
@@ -165,20 +163,20 @@ The following sections cover each phase in detail.
 
 Terraform provisions the following GCP resources:
 
-| Resource                            | Purpose                                                |
-| ----------------------------------- | ------------------------------------------------------ |
-| VPC + subnet + Cloud NAT            | Private network for the cluster and managed services   |
-| Private service connection          | VPC peering for Cloud SQL and Memorystore private IPs  |
-| GKE cluster (Standard or Autopilot) | Kubernetes compute, Workload Identity enabled          |
-| Cloud SQL PostgreSQL                | LangSmith operational data, HA standby, private IP     |
-| Memorystore Redis                   | Queue and cache, STANDARD\_HA tier, private IP         |
-| GCS bucket                          | Trace payload blob storage, lifecycle rules            |
-| Workload Identity service account   | Per-pod GCP access without static keys                 |
-| cert-manager, KEDA, Envoy Gateway   | Bootstrap workloads installed alongside infrastructure |
+| Resource | Purpose |
+|---|---|
+| VPC + subnet + Cloud NAT | Private network for the cluster and managed services |
+| Private service connection | VPC peering for Cloud SQL and Memorystore private IPs |
+| GKE cluster (Standard or Autopilot) | Kubernetes compute, Workload Identity enabled |
+| Cloud SQL PostgreSQL | LangSmith operational data, HA standby, private IP |
+| Memorystore Redis | Queue and cache, STANDARD_HA tier, private IP |
+| GCS bucket | Trace payload blob storage, lifecycle rules |
+| Workload Identity service account | Per-pod GCP access without static keys |
+| cert-manager, KEDA, Envoy Gateway | Bootstrap workloads installed alongside infrastructure |
 
 ### Clone and configure
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 git clone https://github.com/langchain-ai/terraform.git
 cd terraform/modules/gcp
 ```
@@ -187,7 +185,7 @@ All subsequent commands run from `modules/gcp/`. Run `make help` for the full ta
 
 Generate `terraform.tfvars` with the interactive wizard:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make quickstart
 ```
 
@@ -195,14 +193,14 @@ The wizard prompts for project ID, naming prefix, region, GKE sizing, TLS source
 
 Prefer to edit manually:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cp infra/terraform.tfvars.example infra/terraform.tfvars
 vi infra/terraform.tfvars
 ```
 
 The minimum required variables:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 project_id            = "<your-gcp-project-id>"
 name_prefix           = "ls"
 environment           = "prod"
@@ -228,12 +226,12 @@ enable_langsmith_deployment = true
 See the [GCP variables reference](/langsmith/self-host-terraform-gcp-variables) for every input variable.
 
 <Tip>
-  Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and point it at a GCS bucket you control. Local state is fragile and can be lost during directory restructuring.
+Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and point it at a GCS bucket you control. Local state is fragile and can be lost during directory restructuring.
 </Tip>
 
 ### Load secrets into Secret Manager
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 source infra/scripts/setup-env.sh
 ```
 
@@ -241,13 +239,13 @@ The script reads `terraform.tfvars`, derives the secret prefix, and for each sec
 
 Verify the secrets are present:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make secrets
 ```
 
 ### Preflight checks
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make preflight
 ```
 
@@ -256,10 +254,10 @@ make preflight
 ### Apply
 
 <Note>
-  Provisioning the GCP cloud foundation takes 25 to 35 minutes on a clean project. Do not interrupt the apply.
+Provisioning the GCP cloud foundation takes 25 to 35 minutes on a clean project. Do not interrupt the apply.
 </Note>
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make init
 make plan
 make apply
@@ -269,7 +267,7 @@ make apply
 
 Equivalent direct Terraform flow:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/gcp/infra
 
 terraform init
@@ -279,7 +277,7 @@ terraform apply -var-file=terraform.tfvars
 
 ### Configure kubectl
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make kubeconfig
 kubectl get nodes
 ```
@@ -288,7 +286,7 @@ All nodes should report `Ready`.
 
 ### Verify bootstrap components
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n cert-manager
 kubectl get pods -n keda
 kubectl get secrets -n langsmith
@@ -300,17 +298,17 @@ cert-manager, KEDA, and the LangSmith namespace secrets should all be in place.
 
 Use one of the three supported deployment paths:
 
-| Path                                                                                | Command                                                    | When to use                                                                                                 |
-| ----------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy`                          | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys. |
-| [Terraform-managed Helm release](#terraform-managed-helm-release)                   | `make init-app && make apply-app`                          | Helm release managed in Terraform state alongside infrastructure. Best for GitOps and CI/CD pipelines.      |
-| [Manual Helm install](#manual-helm-install)                                         | `helm upgrade --install langsmith langchain/langsmith ...` | Direct `helm` usage without the wrapper scripts. Best for teams with existing Helm tooling.                 |
+| Path | Command | When to use |
+|---|---|---|
+| [Script-driven Helm deploy _(recommended)_](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys. |
+| [Terraform-managed Helm release](#terraform-managed-helm-release) | `make init-app && make apply-app` | Helm release managed in Terraform state alongside infrastructure. Best for GitOps and CI/CD pipelines. |
+| [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` | Direct `helm` usage without the wrapper scripts. Best for teams with existing Helm tooling. |
 
 ### Script-driven Helm deploy (recommended)
 
 Two commands install the LangSmith chart with sensible defaults wired from Terraform outputs:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/gcp
 
 make init-values
@@ -329,7 +327,7 @@ If you completed the script-driven deploy, skip to [Verify and configure DNS](#v
 
 Keep the entire deployment under Terraform. The `app` layer wraps the same chart and layered values files as the deploy script, managed as a `helm_release` resource.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/gcp
 
 make init-values  # generate the layered values files
@@ -347,7 +345,7 @@ If you completed the Terraform-managed Helm release, skip to [Verify and configu
 
 Best for teams running `helm` directly without the scripts. Generate the required secrets first:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export API_KEY_SALT=$(openssl rand -base64 32)
 export JWT_SECRET=$(openssl rand -base64 32)
 export AGENT_BUILDER_ENCRYPTION_KEY=$(python3 -c \
@@ -360,7 +358,7 @@ export ADMIN_PASSWORD="<strong-password>"
 
 The shipped `helm/values/values.yaml` sets `config.blobStorage.engine: GCS` (native GCS mode), so blob storage authenticates through Workload Identity with no HMAC keys. The per-component Workload Identity annotations live in `values-overrides.yaml`; generate it with `make init-values`, or add each component's `serviceAccount.annotations."iam.gke.io/gcp-service-account"` by hand.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm repo add langchain https://langchain-ai.github.io/helm
 helm repo update
 
@@ -385,12 +383,12 @@ helm upgrade --install langsmith langchain/langsmith \
 ```
 
 <Note>
-  To use S3-compatible blob storage instead of Workload Identity, add `--set config.blobStorage.engine=S3` and pass HMAC keys with `--set config.blobStorage.accessKey=<key>` and `--set config.blobStorage.accessKeySecret=<secret>`. Create the HMAC key under Cloud Storage → Settings → Interoperability.
+To use S3-compatible blob storage instead of Workload Identity, add `--set config.blobStorage.engine=S3` and pass HMAC keys with `--set config.blobStorage.accessKey=<key>` and `--set config.blobStorage.accessKeySecret=<secret>`. Create the HMAC key under Cloud Storage → Settings → Interoperability.
 </Note>
 
 ### Verify and configure DNS
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith
 
 EXTERNAL_IP=$(kubectl get svc -n envoy-gateway-system \
@@ -408,21 +406,21 @@ cert-manager cannot issue the Let's Encrypt certificate until the DNS A record r
 
 Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && make deploy`.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 sizing_profile = "production"   # default | minimum | dev | production | production-large
 ```
 
-| Profile            | When to use                                                          |
-| ------------------ | -------------------------------------------------------------------- |
-| `default`          | Chart defaults, no overlay applied                                   |
-| `minimum`          | Absolute floor, fits `e2-standard-4`. Cost parking or CI smoke tests |
-| `dev`              | Single replica, minimal resources                                    |
-| `production`       | Multi-replica with HPA. Recommended for real workloads               |
-| `production-large` | High memory, high CPU. 50+ users or 1000+ traces/sec                 |
+| Profile | When to use |
+|---|---|
+| `default` | Chart defaults, no overlay applied |
+| `minimum` | Absolute floor, fits `e2-standard-4`. Cost parking or CI smoke tests |
+| `dev` | Single replica, minimal resources |
+| `production` | Multi-replica with HPA. Recommended for real workloads |
+| `production-large` | High memory, high CPU. 50+ users or 1000+ traces/sec |
 
 ### Expected pods
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 langsmith-ace-backend-xxx          1/1  Running    0
 langsmith-backend-xxx              1/1  Running    0
 langsmith-backend-auth-bootstrap   0/1  Completed  0
@@ -443,12 +441,12 @@ Each add-on is gated by a flag in `infra/terraform.tfvars`. Set the flag, re-app
 
 Adds `host-backend`, `listener`, and `operator`. Required before enabling Agent Builder or Insights. KEDA is installed automatically when `enable_langsmith_deployment = true`.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 enable_deployments = true
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/gcp
 
 make apply        # push the enable_deployments flag
@@ -458,7 +456,7 @@ make deploy       # roll out host-backend + listener + operator
 
 Verify:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
@@ -466,27 +464,27 @@ kubectl get pods -n keda
 ```
 
 <Warning>
-  `config.deployment.url` must include `https://`. Without the protocol, operator-spawned agents stay stuck in `DEPLOYING` indefinitely.
+`config.deployment.url` must include `https://`. Without the protocol, operator-spawned agents stay stuck in `DEPLOYING` indefinitely.
 </Warning>
 
 ### Fleet
 
 <Note>
-  Fleet is the current form of the feature formerly called Agent Builder, deployed as a standalone service (chart v0.15+).
+Fleet is the current form of the feature formerly called Agent Builder, deployed as a standalone service (chart v0.15+).
 </Note>
 
 You can enable Fleet with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require LangSmith Deployment. Terraform provisions a dedicated `fleet` database on Cloud SQL and wires the `langsmith-fleet-postgres` and `langsmith-fleet-redis` secrets to the existing Cloud SQL and Memorystore instances. Fleet reuses `langsmith_agent_builder_encryption_key`, so migrating from `enable_agent_builder` keeps the same key and data.
 
 <Note>
-  Fleet requires the LangSmith Helm chart `>=0.15.0` and the Agent Builder or Fleet entitlement in your license.
+Fleet requires the LangSmith Helm chart `>=0.15.0` and the Agent Builder or Fleet entitlement in your license.
 </Note>
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 enable_fleet = true
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/gcp
 
 make apply        # provision the fleet Cloud SQL database + secrets
@@ -496,72 +494,72 @@ make deploy       # roll out the standalone-fleet-* services
 
 Verify:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep standalone-fleet
 ```
 
 <Warning>
-  Do not enable `enable_fleet` and `enable_agent_builder` together. The Fleet values file sets `config.agentBuilder.enabled: false`, so the two add-ons are mutually exclusive.
+Do not enable `enable_fleet` and `enable_agent_builder` together. The Fleet values file sets `config.agentBuilder.enabled: false`, so the two add-ons are mutually exclusive.
 </Warning>
 
 ### Agent Builder (deprecated)
 
 <Note>
-  On GCP, `enable_agent_builder` is deprecated in favor of [Fleet](#fleet) (`enable_fleet`, chart v0.15+). Use Fleet for new deployments. This section documents the older path for existing installs.
+On GCP, `enable_agent_builder` is deprecated in favor of [Fleet](#fleet) (`enable_fleet`, chart v0.15+). Use Fleet for new deployments. This section documents the older path for existing installs.
 </Note>
 
 Prerequisite: LangSmith Deployment healthy. Adds `agent-builder-tool-server`, `agent-builder-trigger-server`, and an `agentBootstrap` Job that registers the Polly agent URL.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 enable_agent_builder = true
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make init-values
 make deploy
 ```
 
 Verify:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep -E "tool-server|trigger-server|bootstrap"
 ```
 
 Roll the frontend after `agentBootstrap` completes so it picks up the `langsmith-polly-config` ConfigMap:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl rollout restart deployment langsmith-frontend -n langsmith
 ```
 
 <Warning>
-  Skipping the frontend restart makes Polly show "Unable to connect to LangGraph server".
+Skipping the frontend restart makes Polly show "Unable to connect to LangGraph server".
 </Warning>
 
 ### Insights and Polly
 
 Prerequisite: Agent Builder healthy. Insights enables ClickHouse-backed trace analytics. Polly is the AI eval and monitoring agent. Enable both together.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 enable_insights = true
 enable_polly    = true
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make init-values
 make deploy
 ```
 
 Verify:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep -E "clio|polly"
 kubectl get pods -n langsmith -w
 ```
 
 <Warning>
-  `insights_encryption_key` and `polly_encryption_key` must never change after first enable. Rotating either permanently breaks existing encrypted data.
+`insights_encryption_key` and `polly_encryption_key` must never change after first enable. Rotating either permanently breaks existing encrypted data.
 </Warning>
 
 ### Expected pods by add-on
@@ -576,28 +574,27 @@ kubectl get pods -n langsmith -w
 
 ## Key watchouts
 
-* `config.deployment.url` must include `https://`. Without it, operator-spawned agents stay stuck in `DEPLOYING`.
-* `config.deployment.enabled: true` is required for LangSmith Deployment. Setting only the URL without `enabled: true` causes the chart to silently skip `listener` and `operator`.
-* Encryption keys must never change after first enable. Rotating `insights_encryption_key` or `polly_encryption_key` permanently breaks existing encrypted data.
-* Roll the frontend after first Polly enable. `agentBootstrap` creates the `langsmith-polly-config` ConfigMap after registering. Frontend pods started before bootstrap completes do not pick it up automatically.
-* Envoy Gateway IP changes on teardown. GCP releases the external IP when the Gateway is deleted. After a re-apply, a new IP is issued, so update your DNS A record.
-* `langsmith-ksa` annotation is not permanent. The operator creates `langsmith-ksa` at runtime; it does not survive namespace deletion. `deploy.sh` re-annotates it idempotently. Re-run `make deploy` if operator pods lose GCS access after a cluster rebuild.
+- `config.deployment.url` must include `https://`. Without it, operator-spawned agents stay stuck in `DEPLOYING`.
+- `config.deployment.enabled: true` is required for LangSmith Deployment. Setting only the URL without `enabled: true` causes the chart to silently skip `listener` and `operator`.
+- Encryption keys must never change after first enable. Rotating `insights_encryption_key` or `polly_encryption_key` permanently breaks existing encrypted data.
+- Roll the frontend after first Polly enable. `agentBootstrap` creates the `langsmith-polly-config` ConfigMap after registering. Frontend pods started before bootstrap completes do not pick it up automatically.
+- Envoy Gateway IP changes on teardown. GCP releases the external IP when the Gateway is deleted. After a re-apply, a new IP is issued, so update your DNS A record.
+- `langsmith-ksa` annotation is not permanent. The operator creates `langsmith-ksa` at runtime; it does not survive namespace deletion. `deploy.sh` re-annotates it idempotently. Re-run `make deploy` if operator pods lose GCS access after a cluster rebuild.
 
 ## Next steps
 
-* Reference the [GCP variables](/langsmith/self-host-terraform-gcp-variables) and the [quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
-* Review the [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) for module structure, traffic flow, and Workload Identity.
-* When something breaks, check the [GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting).
-* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
+- Reference the [GCP variables](/langsmith/self-host-terraform-gcp-variables) and the [quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
+- Review the [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) for module structure, traffic flow, and Workload Identity.
+- When something breaks, check the [GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting).
+- Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

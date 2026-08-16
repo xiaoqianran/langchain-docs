@@ -2,10 +2,8 @@
 
 # Per-customer policies
 
-Split gateway spend caps and rate limits by a custom request header so each of your end customers gets its own limit under a single API key.
-
 <Note>
-  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A [spend policy](/langsmith/llm-gateway-spend-policies) or [rate limit policy](/langsmith/llm-gateway-rate-limit-policies) can carry a condition on a custom request header, so traffic from a single subject splits into separate limits by header value. Use this to cap each of your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
@@ -22,24 +20,24 @@ The gateway stamps caller identity itself and ignores client attempts to overrid
 
 ## Header condition rules
 
-* **One condition per policy**: A policy accepts a single header key with a single value.
-* **Pairs with one subject scope**: Combine a header condition with an organization, workspace, user, or API key scope. The subject side accepts several values and matches any of them. The header side accepts exactly one value.
-* **Spend caps and rate limits only**: Default policies cannot carry a header condition, so the gateway never creates per-header policies on its own. To limit many header values, create one policy for each.
-* **A missing header matches nothing**: A request that does not carry the header does not match the policy. Pair per-header policies with a broader policy on the subject itself so untagged traffic is still limited.
-* **Every matching policy is enforced**: A request that matches both a plain subject policy and a policy with a header condition counts against both, and either one can block it.
-* **At most 10 conditions**: A policy carries no more than 10 subject conditions in total.
+- **One condition per policy**: A policy accepts a single header key with a single value.
+- **Pairs with one subject scope**: Combine a header condition with an organization, workspace, user, or API key scope. The subject side accepts several values and matches any of them. The header side accepts exactly one value.
+- **Spend caps and rate limits only**: Default policies cannot carry a header condition, so the gateway never creates per-header policies on its own. To limit many header values, create one policy for each.
+- **A missing header matches nothing**: A request that does not carry the header does not match the policy. Pair per-header policies with a broader policy on the subject itself so untagged traffic is still limited.
+- **Every matching policy is enforced**: A request that matches both a plain subject policy and a policy with a header condition counts against both, and either one can block it.
+- **At most 10 conditions**: A policy carries no more than 10 subject conditions in total.
 
 ## Add a header condition
 
 <Warning>
-  Creating and managing policies requires the `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+Creating and managing policies requires the `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 </Warning>
 
 1. Go to **Settings → Gateway → LLM Gateway**.
-2. Click **Create policy**.
-3. Select the policy type and subject scope, then set the limits.
-4. Under **Custom header condition (optional)**, enter the **Header name** without its `X-Gateway-` prefix (for example, `Customer-Id`) and the **Header value** to match (for example, `acme`).
-5. Save.
+1. Click **Create policy**.
+1. Select the policy type and subject scope, then set the limits.
+1. Under **Custom header condition (optional)**, enter the **Header name** without its `X-Gateway-` prefix (for example, `Customer-Id`) and the **Header value** to match (for example, `acme`).
+1. Save.
 
 You cannot edit the header condition in the UI after the policy is created. To change it, delete the policy and create a new one, or update `subject_matchers` through the API.
 
@@ -48,7 +46,7 @@ You cannot edit the header condition in the UI after the policy is created. To c
 A reseller or multi-tenant application usually calls the gateway from its own backend, using one workspace-scoped API key on behalf of many end customers. Header conditions give each of those end customers a separate cap under that single key.
 
 <Warning>
-  The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which cap to spend against.
+The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which cap to spend against.
 </Warning>
 
 ### Step 1. Send a customer header on every call
@@ -56,35 +54,37 @@ A reseller or multi-tenant application usually calls the gateway from its own ba
 Attach the header to each request your backend makes on behalf of an end customer:
 
 <CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Gateway-Customer-Id: acme" \
-      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
-  ```
 
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```bash curl
+curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Gateway-Customer-Id: acme" \
+    -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+```
 
-  from openai import OpenAI
+```python OpenAI SDK
+import os
 
-  client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  customer_id = "acme"
-  response = client.chat.completions.create(
-      model="gpt-4o-mini",
-      messages=[{"role": "user", "content": "ping"}],
-      extra_headers={"X-Gateway-Customer-Id": customer_id},
-  )
-  print(response.choices[0].message.content)
-  ```
+from openai import OpenAI
+
+client = OpenAI(
+    base_url=os.environ["OPENAI_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+customer_id = "acme"
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "ping"}],
+    extra_headers={"X-Gateway-Customer-Id": customer_id},
+)
+print(response.choices[0].message.content)
+```
+
 </CodeGroup>
 
 <Note>
-  If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
+If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
 </Note>
 
 ### Step 2. Create a cap for one customer
@@ -92,44 +92,46 @@ Attach the header to each request your backend makes on behalf of an end custome
 Create one spend policy per end customer through the [LangSmith REST API](/langsmith/smith-api-ref):
 
 <CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-            "name": "customer-acme-monthly-cap",
-            "policy_type": "spend_cap",
-            "action": "block",
-            "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"}
-            ],
-            "config": {"window": "monthly", "limit_usd": 250}
-          }'
-  ```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-
-  import httpx
-
-  response = httpx.post(
-      "https://api.smith.langchain.com/v1/platform/gateway-policies",
-      headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
-      json={
+```bash curl
+curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
+    -H "X-Api-Key: $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
           "name": "customer-acme-monthly-cap",
           "policy_type": "spend_cap",
           "action": "block",
           "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"},
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"}
           ],
-          "config": {"window": "monthly", "limit_usd": 250},
-      },
-      timeout=30.0,
-  )
-  response.raise_for_status()
-  ```
+          "config": {"window": "monthly", "limit_usd": 250}
+        }'
+```
+
+```python Python
+import os
+
+import httpx
+
+response = httpx.post(
+    "https://api.smith.langchain.com/v1/platform/gateway-policies",
+    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
+    json={
+        "name": "customer-acme-monthly-cap",
+        "policy_type": "spend_cap",
+        "action": "block",
+        "subject_matchers": [
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"},
+        ],
+        "config": {"window": "monthly", "limit_usd": 250},
+    },
+    timeout=30.0,
+)
+response.raise_for_status()
+```
+
 </CodeGroup>
 
 The matcher key is the normalized name `customer_id`, not the header name `X-Gateway-Customer-Id`. The policy belongs to the organization that owns the API key.
@@ -140,7 +142,7 @@ Posting a policy whose `subject_matchers` already exist updates that policy inst
 
 Because each end customer needs its own policy, keep the policy set in step with your customer list. The following script creates or updates a cap for every current customer, then deletes the caps of customers that are gone:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 
 import httpx
@@ -209,7 +211,7 @@ Each spend policy returned by the API reports `current_spend_usd`, the spend acc
 
 The list endpoint narrows by a subject matcher key only when that key is paired with a value, so list the spend caps and select the per-customer ones in your own code:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 
 import httpx
@@ -237,7 +239,7 @@ for policy in response.json():
 
 Rate limits use the same subject matchers. Swap `policy_type` and `config` to give an end customer its own request and token allowance:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
     -H "X-Api-Key: $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
@@ -263,18 +265,17 @@ The sync script in [step 3](#step-3-sync-policies-with-your-customer-list) appli
 
 ## Next steps
 
-* [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps for organizations, workspaces, users, and API keys.
-* [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies): limit requests and tokens in a rolling window.
-* [Traces and access control](/langsmith/llm-gateway-access): understand where gateway traces land and who can configure policies.
+- [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps for organizations, workspaces, users, and API keys.
+- [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies): limit requests and tokens in a rolling window.
+- [Traces and access control](/langsmith/llm-gateway-access): understand where gateway traces land and who can configure policies.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -15,37 +15,41 @@
 首先，安装制作代理所需的软件包：
 
 <CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langgraph langchain[openai] langchain-community e2b-code-interpreter
-  ```
 
-  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/openai @langchain/community @langchain/langgraph @langchain/core @e2b/code-interpreter @polygon.io/client-js openai zod
-  ```
+```bash Python
+pip install -U langgraph langchain[openai] langchain-community e2b-code-interpreter
+```
+
+```bash TypeScript
+yarn add @langchain/openai @langchain/community @langchain/langgraph @langchain/core @e2b/code-interpreter @polygon.io/client-js openai zod
+```
+
 </CodeGroup>
 
 接下来，安装测试框架：
 
 <CodeGroup>
-  ```bash Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Make sure you have langsmith>=0.3.1
-  pip install -U "langsmith[pytest]"
-  ```
 
-  ```bash Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D langsmith vitest
-  ```
+```bash Pytest
+# Make sure you have langsmith>=0.3.1
+pip install -U "langsmith[pytest]"
+```
 
-  ```bash Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D langsmith jest
-  ```
+```bash Vitest
+yarn add -D langsmith vitest
+```
+
+```bash Jest
+yarn add -D langsmith jest
+```
+
 </CodeGroup>
 
 ### 环境变量
 
 设置以下环境变量：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<YOUR_LANGSMITH_API_KEY>
 export OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
@@ -65,117 +69,119 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 * 使用Polygon的股票信息工具
 
 <CodeGroup>
-  <Warning>
-    `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
-  </Warning>
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain_community.tools import TavilySearchResults
-  from e2b_code_interpreter import Sandbox
-  from langchain_community.tools.polygon.aggregates import PolygonAggregates
-  from langchain_community.utilities.polygon import PolygonAPIWrapper
-  from typing_extensions import Annotated, TypedDict, Optional, Literal
+<Warning>
+`langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或损坏。谨慎使用。
+</Warning>
 
-  # Define search tool
-  search_tool = TavilySearchResults(
-    max_results=5,
-    include_raw_content=True,
-  )
+```python Python
+from langchain_community.tools import TavilySearchResults
+from e2b_code_interpreter import Sandbox
+from langchain_community.tools.polygon.aggregates import PolygonAggregates
+from langchain_community.utilities.polygon import PolygonAPIWrapper
+from typing_extensions import Annotated, TypedDict, Optional, Literal
 
-  # Define code tool
-  def code_tool(code: str) -> str:
-    """Execute python code and return the result."""
-    sbx = Sandbox()
-    execution = sbx.run_code(code)
+# Define search tool
+search_tool = TavilySearchResults(
+  max_results=5,
+  include_raw_content=True,
+)
 
-    if execution.error:
-        return f"Error: {execution.error}"
-    return f"Results: {execution.results}, Logs: {execution.logs}"
+# Define code tool
+def code_tool(code: str) -> str:
+  """Execute python code and return the result."""
+  sbx = Sandbox()
+  execution = sbx.run_code(code)
 
-  # Define input schema for stock ticker tool
-  class TickerToolInput(TypedDict):
-    """Input format for the ticker tool.
-      The tool will pull data in aggregate blocks (timespan_multiplier * timespan) from the from_date to the to_date
-    """
-    ticker: Annotated[str, ..., "The ticker symbol of the stock"]
-    timespan: Annotated[Literal["minute", "hour", "day", "week", "month", "quarter", "year"], ..., "The size of the time window."]
-    timespan_multiplier: Annotated[int, ..., "The multiplier for the time window"]
-    from_date: Annotated[str, ..., "The date to start pulling data from, YYYY-MM-DD format - ONLY include the year month and day"]
-    to_date: Annotated[str, ..., "The date to stop pulling data, YYYY-MM-DD format - ONLY include the year month and day"]
+  if execution.error:
+      return f"Error: {execution.error}"
+  return f"Results: {execution.results}, Logs: {execution.logs}"
 
-  api_wrapper = PolygonAPIWrapper()
-  polygon_aggregate = PolygonAggregates(api_wrapper=api_wrapper)
+# Define input schema for stock ticker tool
+class TickerToolInput(TypedDict):
+  """Input format for the ticker tool.
+    The tool will pull data in aggregate blocks (timespan_multiplier * timespan) from the from_date to the to_date
+  """
+  ticker: Annotated[str, ..., "The ticker symbol of the stock"]
+  timespan: Annotated[Literal["minute", "hour", "day", "week", "month", "quarter", "year"], ..., "The size of the time window."]
+  timespan_multiplier: Annotated[int, ..., "The multiplier for the time window"]
+  from_date: Annotated[str, ..., "The date to start pulling data from, YYYY-MM-DD format - ONLY include the year month and day"]
+  to_date: Annotated[str, ..., "The date to stop pulling data, YYYY-MM-DD format - ONLY include the year month and day"]
 
-  # Define stock ticker tool
-  def ticker_tool(query: TickerToolInput) -> str:
-    """Pull data for the ticker."""
-    return polygon_aggregate.invoke(query)
-  ```
+api_wrapper = PolygonAPIWrapper()
+polygon_aggregate = PolygonAggregates(api_wrapper=api_wrapper)
 
-  <Warning>
-    `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或损坏。谨慎使用。
-  </Warning>
+# Define stock ticker tool
+def ticker_tool(query: TickerToolInput) -> str:
+  """Pull data for the ticker."""
+  return polygon_aggregate.invoke(query)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
-  import { Sandbox } from "@e2b/code-interpreter";
-  import { tool } from "@langchain/core/tools";
-  import { z } from "zod";
-  import { restClient } from "@polygon.io/client-js";
+<Warning>
+`@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或已损坏。谨慎使用。
+</Warning>
 
-  // Define search tool
-  const searchTool = new TavilySearchResults({
-    maxResults: 5,
-  });
+```typescript TypeScript
+import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
+import { Sandbox } from "@e2b/code-interpreter";
+import { tool } from "@langchain/core/tools";
+import { z } from "zod";
+import { restClient } from "@polygon.io/client-js";
 
-  // Define code tool
-  const codeTool = tool(async (input) => {
-    const sbx = await Sandbox.create();
-    const execution = await sbx.runCode(input.code);
-    if (execution.error) {
-      return `Error: ${execution.error}`;
-    }
-    return `Results: ${execution.results}, Logs: ${execution.logs}`;
-  }, {
-    name: "code",
-    description: "Execute python code and return the result.",
-    schema: z.object({
-      code: z.string().describe("The python code to execute"),
-    }),
-  });
+// Define search tool
+const searchTool = new TavilySearchResults({
+  maxResults: 5,
+});
 
-  // Define input schema for stock ticker tool
-  const TickerToolInputSchema = z.object({
-    ticker: z.string().describe("The ticker symbol of the stock"),
-    timespan: z.enum(["minute", "hour", "day", "week", "month", "quarter", "year"]).describe("The size of the time window."),
-    timespan_multiplier: z.number().describe("The multiplier for the time window"),
-    from_date: z
-      .string()
-      .describe("The date to start pulling data from, YYYY-MM-DD format - ONLY include the year, month, and day"),
-    to_date: z
-      .string()
-      .describe("The date to stop pulling data, YYYY-MM-DD format - ONLY include the year, month, and day"),
-  });
+// Define code tool
+const codeTool = tool(async (input) => {
+  const sbx = await Sandbox.create();
+  const execution = await sbx.runCode(input.code);
+  if (execution.error) {
+    return `Error: ${execution.error}`;
+  }
+  return `Results: ${execution.results}, Logs: ${execution.logs}`;
+}, {
+  name: "code",
+  description: "Execute python code and return the result.",
+  schema: z.object({
+    code: z.string().describe("The python code to execute"),
+  }),
+});
 
-  const rest = restClient(process.env.POLYGON_API_KEY);
+// Define input schema for stock ticker tool
+const TickerToolInputSchema = z.object({
+  ticker: z.string().describe("The ticker symbol of the stock"),
+  timespan: z.enum(["minute", "hour", "day", "week", "month", "quarter", "year"]).describe("The size of the time window."),
+  timespan_multiplier: z.number().describe("The multiplier for the time window"),
+  from_date: z
+    .string()
+    .describe("The date to start pulling data from, YYYY-MM-DD format - ONLY include the year, month, and day"),
+  to_date: z
+    .string()
+    .describe("The date to stop pulling data, YYYY-MM-DD format - ONLY include the year, month, and day"),
+});
 
-  // Define stock ticker tool
-  const tickerTool = tool(async (query) => {
-    const parsed = TickerToolInputSchema.parse(query);
-    const result = await rest.stocks.aggregates(
-        parsed.ticker,
-        parsed.timespan_multiplier,
-        parsed.timespan,
-        parsed.from_date,
-        parsed.to_date
-    );
-    return JSON.stringify(result);
-  }, {
-    name: "ticker",
-    description: "Pull data for the ticker",
-    schema: TickerToolInputSchema,
-  });
-  ```
+const rest = restClient(process.env.POLYGON_API_KEY);
+
+// Define stock ticker tool
+const tickerTool = tool(async (query) => {
+  const parsed = TickerToolInputSchema.parse(query);
+  const result = await rest.stocks.aggregates(
+      parsed.ticker,
+      parsed.timespan_multiplier,
+      parsed.timespan,
+      parsed.from_date,
+      parsed.to_date
+  );
+  return JSON.stringify(result);
+}, {
+  name: "ticker",
+  description: "Pull data for the ticker",
+  schema: TickerToolInputSchema,
+});
+```
+
 </CodeGroup>
 
 ### 定义代理
@@ -183,46 +189,48 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 现在我们已经定义了所有工具，我们可以使用[⟦T39⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)来创建我们的代理。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from typing_extensions import Annotated, TypedDict
-  from langchain.agents import create_agent
+
+```python Python
+from typing_extensions import Annotated, TypedDict
+from langchain.agents import create_agent
 
 
-  class AgentOutputFormat(TypedDict):
-      numeric_answer: Annotated[float | None, ..., "The numeric answer, if the user asked for one"]
-      text_answer: Annotated[str | None, ..., "The text answer, if the user asked for one"]
-      reasoning: Annotated[str, ..., "The reasoning behind the answer"]
+class AgentOutputFormat(TypedDict):
+    numeric_answer: Annotated[float | None, ..., "The numeric answer, if the user asked for one"]
+    text_answer: Annotated[str | None, ..., "The text answer, if the user asked for one"]
+    reasoning: Annotated[str, ..., "The reasoning behind the answer"]
 
-  agent = create_agent(
-      model="gpt-5.4-mini",
-      tools=[code_tool, search_tool, polygon_aggregates],
-      response_format=AgentOutputFormat,
-      system_prompt="You are a financial expert. Respond to the users query accurately",
-  )
-  ```
+agent = create_agent(
+    model="gpt-5.4-mini",
+    tools=[code_tool, search_tool, polygon_aggregates],
+    response_format=AgentOutputFormat,
+    system_prompt="You are a financial expert. Respond to the users query accurately",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createReactAgent } from "@langchain/langgraph/prebuilt";
+```typescript TypeScript
+import { z } from "zod";
+import { ChatOpenAI } from "@langchain/openai";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
 
-  const AgentOutputFormatSchema = z.object({
-    numeric_answer: z.number().optional().describe("The numeric answer, if the user asked for one"),
-    text_answer: z.string().optional().describe("The text answer, if the user asked for one"),
-    reasoning: z.string().describe("The reasoning behind the answer"),
-  })
+const AgentOutputFormatSchema = z.object({
+  numeric_answer: z.number().optional().describe("The numeric answer, if the user asked for one"),
+  text_answer: z.string().optional().describe("The text answer, if the user asked for one"),
+  reasoning: z.string().describe("The reasoning behind the answer"),
+})
 
-  const tools = [codeTool, searchTool, tickerTool];
+const tools = [codeTool, searchTool, tickerTool];
 
-  const agent = createReactAgent({
-    llm: new ChatOpenAI({ model: "gpt-5.5" }),
-    tools: tools,
-    responseFormat: AgentOutputFormatSchema,
-    stateModifier: "You are a financial expert. Respond to the users query accurately",
-  });
+const agent = createReactAgent({
+  llm: new ChatOpenAI({ model: "gpt-5.5" }),
+  tools: tools,
+  responseFormat: AgentOutputFormatSchema,
+  stateModifier: "You are a financial expert. Respond to the users query accurately",
+});
 
-  export default agent;
-  ```
+export default agent;
+```
+
 </CodeGroup>
 
 ## 编写测试
@@ -232,179 +240,185 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 我们需要首先设置一个测试文件并在文件顶部添加所需的导入。
 
 <CodeGroup>
-  ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  Create a `tests/test_agent.py` file.
 
-  from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined
-  import pytest
-  from langsmith import testing as t
-  ```
+```python Pytest
+Create a `tests/test_agent.py` file.
 
-  ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  Name your test file `agent.vitest.eval.ts`
+from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined
+import pytest
+from langsmith import testing as t
+```
 
-  import { expect } from "vitest";
-  import * as ls from "langsmith/vitest";
-  import agent from "../agent"; // import from wherever your agent is defined
+```typescript Vitest
+Name your test file `agent.vitest.eval.ts`
 
-  // Optional, but recommended to group tests together
-  ls.describe("Agent Tests", () => {
-    // PLACE TESTS Here
-  });
-  ```
+import { expect } from "vitest";
+import * as ls from "langsmith/vitest";
+import agent from "../agent"; // import from wherever your agent is defined
 
-  ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  Name your test file `agent.jest.eval.ts`
+// Optional, but recommended to group tests together
+ls.describe("Agent Tests", () => {
+  // PLACE TESTS Here
+});
+```
 
-  import { expect } from "@jest/globals";
-  import * as ls from "langsmith/jest";
-  import agent from "../agent"; // import from wherever your agent is defined
+```typescript Jest
+Name your test file `agent.jest.eval.ts`
 
-  // Optional, but recommended to group tests together
-  ls.describe("Agent Tests", () => {
-    // PLACE TESTS Here
-  });
-  ```
+import { expect } from "@jest/globals";
+import * as ls from "langsmith/jest";
+import agent from "../agent"; // import from wherever your agent is defined
+
+// Optional, but recommended to group tests together
+ls.describe("Agent Tests", () => {
+  // PLACE TESTS Here
+});
+```
+
 </CodeGroup>
 
 ### 测试 1：处理离题问题
 
-第一个测试将是一个简单的检查，以确保代理不会在不相关的查询上使用工具。
+第一个测试将是简单检查代理是否在不相关的查询上使用工具。
 
 <CodeGroup>
-  ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @pytest.mark.langsmith
-  @pytest.mark.parametrize(
-    # <-- Can still use all normal pytest markers
-    "query",
-    ["Hello!", "How are you doing?"],
+
+```python Pytest
+@pytest.mark.langsmith
+@pytest.mark.parametrize(
+  # <-- Can still use all normal pytest markers
+  "query",
+  ["Hello!", "How are you doing?"],
+)
+def test_no_tools_on_offtopic_query(query: str) -> None:
+  """Test that the agent does not use tools on offtopic queries."""
+  # Log the test example
+  t.log_inputs({"query": query})
+  expected = []
+  t.log_reference_outputs({"tool_calls": expected})
+  # Call the agent's model node directly instead of running the ReACT loop.
+  result = agent.nodes["agent"].invoke(
+      {"messages": [{"role": "user", "content": query}]}
   )
-  def test_no_tools_on_offtopic_query(query: str) -> None:
-    """Test that the agent does not use tools on offtopic queries."""
-    # Log the test example
-    t.log_inputs({"query": query})
-    expected = []
-    t.log_reference_outputs({"tool_calls": expected})
-    # Call the agent's model node directly instead of running the ReACT loop.
-    result = agent.nodes["agent"].invoke(
-        {"messages": [{"role": "user", "content": query}]}
-    )
-    actual = result["messages"][0].tool_calls
-    t.log_outputs({"tool_calls": actual})
-    # Check that no tool calls were made.
-    assert actual == expected
-  ```
+  actual = result["messages"][0].tool_calls
+  t.log_outputs({"tool_calls": actual})
+  # Check that no tool calls were made.
+  assert actual == expected
+```
 
-  ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test.each([
-    { inputs: { query: "Hello!" }, expected: { numMessages: 2 } },
-    { inputs: { query: "How are you doing?" }, expected: { numMessages: 2 } },
-  ])(
-    "should not use tools on offtopic query: %s",
-    async ({ inputs: { query }, expected: { numMessages } }) => {
-      const result = await agent.invoke({ messages: [{ role: "user", content: query }] });
-      ls.logOutputs(result);
+```typescript Vitest
+ls.test.each([
+  { inputs: { query: "Hello!" }, expected: { numMessages: 2 } },
+  { inputs: { query: "How are you doing?" }, expected: { numMessages: 2 } },
+])(
+  "should not use tools on offtopic query: %s",
+  async ({ inputs: { query }, expected: { numMessages } }) => {
+    const result = await agent.invoke({ messages: [{ role: "user", content: query }] });
+    ls.logOutputs(result);
 
-      // Check that the flow was HUMAN -> AI FINAL RESPONSE (no tools called)
-      expect(result.messages).toHaveLength(numMessages);
-    }
-  );
-  ```
+    // Check that the flow was HUMAN -> AI FINAL RESPONSE (no tools called)
+    expect(result.messages).toHaveLength(numMessages);
+  }
+);
+```
 
-  ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test.each([
-    { inputs: { query: "Hello!" }, expected: { numMessages: 2 } },
-    { inputs: { query: "How are you doing?" }, expected: { numMessages: 2 } },
-  ])(
-    "should not use tools on offtopic query: %s",
-    async ({ inputs: { query }, expected: { numMessages } }) => {
-      const result = await agent.invoke({ messages: [{ role: "user", content: query }] });
-      ls.logOutputs(result);
+```typescript Jest
+ls.test.each([
+  { inputs: { query: "Hello!" }, expected: { numMessages: 2 } },
+  { inputs: { query: "How are you doing?" }, expected: { numMessages: 2 } },
+])(
+  "should not use tools on offtopic query: %s",
+  async ({ inputs: { query }, expected: { numMessages } }) => {
+    const result = await agent.invoke({ messages: [{ role: "user", content: query }] });
+    ls.logOutputs(result);
 
-      // Check that the flow was HUMAN -> AI FINAL RESPONSE (no tools called)
-      expect(result.messages).toHaveLength(numMessages);
-    }
-  );
-  ```
-</CodeGroup>### 测试2：简单的工具调用
+    // Check that the flow was HUMAN -> AI FINAL RESPONSE (no tools called)
+    expect(result.messages).toHaveLength(numMessages);
+  }
+);
+```
 
-对于工具调用，我们将验证代理是否使用正确的参数调用正确的工具。
+</CodeGroup>
+
+### 测试2：简单的工具调用对于工具调用，我们将验证代理是否使用正确的参数调用正确的工具。
 
 <CodeGroup>
-  ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @pytest.mark.langsmith
-  def test_searches_for_correct_ticker() -> None:
-    """Test that the model looks up the correct ticker on simple query."""
-    # Log the test example
-    query = "What is the price of Apple?"
-    t.log_inputs({"query": query})
-    expected = "AAPL"
-    t.log_reference_outputs({"ticker": expected})
-    # Call the agent's model node directly instead of running the full ReACT loop.
-    result = agent.nodes["agent"].invoke(
-        {"messages": [{"role": "user", "content": query}]}
-    )
-    tool_calls = result["messages"][0].tool_calls
-    if tool_calls[0]["name"] == polygon_aggregates.name:
-        actual = tool_calls[0]["args"]["ticker"]
-    else:
-        actual = None
-    t.log_outputs({"ticker": actual})
-    # Check that the right ticker was queried
-    assert actual == expected
-  ```
 
-  ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test(
-    "should search for correct ticker",
-    {
-      inputs: { query: "What is the price of Apple?" },
-      expected: { numMessages: 4 },
-    },
-    async ({ inputs: { query }, expected: { numMessages } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
+```python Pytest
+@pytest.mark.langsmith
+def test_searches_for_correct_ticker() -> None:
+  """Test that the model looks up the correct ticker on simple query."""
+  # Log the test example
+  query = "What is the price of Apple?"
+  t.log_inputs({"query": query})
+  expected = "AAPL"
+  t.log_reference_outputs({"ticker": expected})
+  # Call the agent's model node directly instead of running the full ReACT loop.
+  result = agent.nodes["agent"].invoke(
+      {"messages": [{"role": "user", "content": query}]}
+  )
+  tool_calls = result["messages"][0].tool_calls
+  if tool_calls[0]["name"] == polygon_aggregates.name:
+      actual = tool_calls[0]["args"]["ticker"]
+  else:
+      actual = None
+  t.log_outputs({"ticker": actual})
+  # Check that the right ticker was queried
+  assert actual == expected
+```
 
-      ls.logOutputs(result);
+```typescript Vitest
+ls.test(
+  "should search for correct ticker",
+  {
+    inputs: { query: "What is the price of Apple?" },
+    expected: { numMessages: 4 },
+  },
+  async ({ inputs: { query }, expected: { numMessages } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
 
-      // The agent should have made a single tool call to the ticker tool
-      const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
-      const tickerQuery = JSON.parse(toolCalls[0].function.arguments).query.ticker;
-      // Check that the right ticker was queried
-      expect(tickerQuery).toBe("AAPL");
+    ls.logOutputs(result);
 
-      // Check that the flow was HUMAN -> AI -> TOOL -> AI FINAL RESPONSE
-      expect(result.messages).toHaveLength(numMessages);
-    }
-  );
-  ```
+    // The agent should have made a single tool call to the ticker tool
+    const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
+    const tickerQuery = JSON.parse(toolCalls[0].function.arguments).query.ticker;
+    // Check that the right ticker was queried
+    expect(tickerQuery).toBe("AAPL");
 
-  ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test(
-    "should search for correct ticker",
-    {
-      inputs: { query: "What is the price of Apple?" },
-      expected: { numMessages: 4 },
-    },
-    async ({ inputs: { query }, expected: { numMessages } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
+    // Check that the flow was HUMAN -> AI -> TOOL -> AI FINAL RESPONSE
+    expect(result.messages).toHaveLength(numMessages);
+  }
+);
+```
 
-      ls.logOutputs(result);
+```typescript Jest
+ls.test(
+  "should search for correct ticker",
+  {
+    inputs: { query: "What is the price of Apple?" },
+    expected: { numMessages: 4 },
+  },
+  async ({ inputs: { query }, expected: { numMessages } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
 
-      // The agent should have made a single tool call to the ticker tool
-      const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
-      const tickerQuery = JSON.parse(toolCalls[0].function.arguments).query.ticker;
-      // Check that the right ticker was queried
-      expect(tickerQuery).toBe("AAPL");
+    ls.logOutputs(result);
 
-      // Check that the flow was HUMAN -> AI -> TOOL -> AI FINAL RESPONSE
-      expect(result.messages).toHaveLength(numMessages);
-    }
-  );
-  ```
+    // The agent should have made a single tool call to the ticker tool
+    const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
+    const tickerQuery = JSON.parse(toolCalls[0].function.arguments).query.ticker;
+    // Check that the right ticker was queried
+    expect(tickerQuery).toBe("AAPL");
+
+    // Check that the flow was HUMAN -> AI -> TOOL -> AI FINAL RESPONSE
+    expect(result.messages).toHaveLength(numMessages);
+  }
+);
+```
+
 </CodeGroup>
 
 ### 测试3：复杂的工具调用
@@ -412,298 +426,306 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 有些工具调用比其他工具调用更容易测试。通过股票代码查找，我们可以断言搜索到了正确的股票代码。使用编码工具，工具的输入和输出受到的限制要少得多，并且有很多方法可以得到正确的答案。在这种情况下，通过运行完整的代理并断言它调用编码工具并最终得到正确的答案来测试该工具是否正确使用会更简单。
 
 <CodeGroup>
-  ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @pytest.mark.langsmith
-  def test_executes_code_when_needed() -> None:
-    query = (
-        "In the past year Facebook stock went up by 66.76%, "
-        "Apple by 25.24%, Google by 37.11%, Amazon by 47.52%, "
-        "Netflix by 78.31%. What's the avg return in the past "
-        "year of the FAANG stocks, expressed as a percentage?"
-    )
-    t.log_inputs({"query": query})
-    expected = 50.988
-    t.log_reference_outputs({"response": expected})
-    # Test that the agent executes code when needed
-    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
-    t.log_outputs({"result": result["structured_response"].get("numeric_answer")})
-    # Grab all the tool calls made by the LLM
-    tool_calls = [
-        tc["name"]
-        for msg in result["messages"]
-        for tc in getattr(msg, "tool_calls", [])
-    ]
-    # This will log the number of steps taken by the agent, which is useful for
-    # determining how efficiently the agent gets to an answer.
-    t.log_feedback(key="num_steps", score=len(result["messages"]) - 1)
-    # Assert that the code tool was used
-    assert "code_tool" in tool_calls
-    # Assert that a numeric answer was provided:
-    assert result["structured_response"].get("numeric_answer") is not None
-    # Assert that the answer is correct
-    assert abs(result["structured_response"]["numeric_answer"] - expected) <= 0.01
-  ```
 
-  ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test(
-    "should execute code when needed",
-    {
-      inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
-      expected: { answer: 53 },
-    },
-    async ({ inputs: { query }, expected: { answer } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
+```python Pytest
+@pytest.mark.langsmith
+def test_executes_code_when_needed() -> None:
+  query = (
+      "In the past year Facebook stock went up by 66.76%, "
+      "Apple by 25.24%, Google by 37.11%, Amazon by 47.52%, "
+      "Netflix by 78.31%. What's the avg return in the past "
+      "year of the FAANG stocks, expressed as a percentage?"
+  )
+  t.log_inputs({"query": query})
+  expected = 50.988
+  t.log_reference_outputs({"response": expected})
+  # Test that the agent executes code when needed
+  result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+  t.log_outputs({"result": result["structured_response"].get("numeric_answer")})
+  # Grab all the tool calls made by the LLM
+  tool_calls = [
+      tc["name"]
+      for msg in result["messages"]
+      for tc in getattr(msg, "tool_calls", [])
+  ]
+  # This will log the number of steps taken by the agent, which is useful for
+  # determining how efficiently the agent gets to an answer.
+  t.log_feedback(key="num_steps", score=len(result["messages"]) - 1)
+  # Assert that the code tool was used
+  assert "code_tool" in tool_calls
+  # Assert that a numeric answer was provided:
+  assert result["structured_response"].get("numeric_answer") is not None
+  # Assert that the answer is correct
+  assert abs(result["structured_response"]["numeric_answer"] - expected) <= 0.01
+```
 
-      ls.logOutputs(result);
+```typescript Vitest
+ls.test(
+  "should execute code when needed",
+  {
+    inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
+    expected: { answer: 53 },
+  },
+  async ({ inputs: { query }, expected: { answer } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
 
-      // Grab all the tool calls made by the LLM
-      const toolCalls = result.messages
-        .filter(m => (m as AIMessage).tool_calls)
-        .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
-      // This will log the number of steps taken by the LLM, which we can track over time to measure performance
-      ls.logFeedback({
-        key: "num_steps",
-        score: result.messages.length - 1, // The first message is the user message
-      });
-      // Assert that the tool calls include the "code_tool" function
-      expect(toolCalls).toContain("code_tool");
-      // Assert that the answer is within 1 of the expected answer
-      expect(Math.abs(result.structured_response.numeric_answer - answer)).toBeLessThanOrEqual(1);
-    }
-  );
-  ```
+    ls.logOutputs(result);
 
-  ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ls.test(
-    "should execute code when needed",
-    {
-      inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
-      expected: { answer: 53 },
-    },
-    async ({ inputs: { query }, expected: { answer } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
+    // Grab all the tool calls made by the LLM
+    const toolCalls = result.messages
+      .filter(m => (m as AIMessage).tool_calls)
+      .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
+    // This will log the number of steps taken by the LLM, which we can track over time to measure performance
+    ls.logFeedback({
+      key: "num_steps",
+      score: result.messages.length - 1, // The first message is the user message
+    });
+    // Assert that the tool calls include the "code_tool" function
+    expect(toolCalls).toContain("code_tool");
+    // Assert that the answer is within 1 of the expected answer
+    expect(Math.abs(result.structured_response.numeric_answer - answer)).toBeLessThanOrEqual(1);
+  }
+);
+```
 
-      ls.logOutputs(result);
-      // Grab all the tool calls made by the LLM
-      const toolCalls = result.messages
-        .filter(m => (m as AIMessage).tool_calls)
-        .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
-      // This will log the number of steps taken by the LLM, which we can track over time to measure performance
-      ls.logFeedback({
-        key: "num_steps",
-        score: result.messages.length - 1, // The first message is the user message
-      });
-      // Assert that the tool calls include the "code_tool" function
-      expect(toolCalls).toContain("code_tool");
-      // Assert that the answer is within 1 of the expected answer
-      expect(Math.abs(result.structured_response.numeric_answer - answer)).toBeLessThanOrEqual(1);
-    }
-  );
-  ```
+```typescript Jest
+ls.test(
+  "should execute code when needed",
+  {
+    inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
+    expected: { answer: 53 },
+  },
+  async ({ inputs: { query }, expected: { answer } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
+
+    ls.logOutputs(result);
+    // Grab all the tool calls made by the LLM
+    const toolCalls = result.messages
+      .filter(m => (m as AIMessage).tool_calls)
+      .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
+    // This will log the number of steps taken by the LLM, which we can track over time to measure performance
+    ls.logFeedback({
+      key: "num_steps",
+      score: result.messages.length - 1, // The first message is the user message
+    });
+    // Assert that the tool calls include the "code_tool" function
+    expect(toolCalls).toContain("code_tool");
+    // Assert that the answer is within 1 of the expected answer
+    expect(Math.abs(result.structured_response.numeric_answer - answer)).toBeLessThanOrEqual(1);
+  }
+);
+```
+
 </CodeGroup>
 
 ### 测试 4：法学硕士法官
 
-我们将通过运行法学硕士法官评估来确保代理人的答案以搜索结果为基础。为了与我们的代理分开跟踪 LLM-as-a-Judge 调用，我们将使用 LangSmith 提供的 Python 中的 `trace_feedback` 上下文管理器和 JS/TS 中的 `wrapEvaluator` 函数。
+我们将通过运行法学硕士法官评估来确保代理人的答案以搜索结果为基础。为了与我们的代理分开跟踪 LLM-as-a-Judge 调用，我们将使用 Python 中提供的 LangSmith 上下文管理器和 JS/TS 中的 `wrapEvaluator` 函数。
 
 <CodeGroup>
-  ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from typing_extensions import Annotated, TypedDict
-  from langchain.chat_models import init_chat_model
 
-  class Grade(TypedDict):
-    """Evaluate the groundedness of an answer in source documents."""
-    score: Annotated[
-        bool,
-        ...,
-        "Return True if the answer is fully grounded in the source documents, otherwise False.",
-    ]
+```python Pytest
+from typing_extensions import Annotated, TypedDict
+from langchain.chat_models import init_chat_model
 
-  judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
+class Grade(TypedDict):
+  """Evaluate the groundedness of an answer in source documents."""
+  score: Annotated[
+      bool,
+      ...,
+      "Return True if the answer is fully grounded in the source documents, otherwise False.",
+  ]
 
-  @pytest.mark.langsmith
-  def test_grounded_in_source_info() -> None:
-    """Test that response is grounded in the tool outputs."""
-    query = "How did Nvidia stock do in 2024 according to analysts?"
-    t.log_inputs({"query": query})
-    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
-    # Grab all the search calls made by the LLM
-    search_results = "\n\n".join(
-        msg.content
-        for msg in result["messages"]
-        if msg.type == "tool" and msg.name == search_tool.name
-    )
-    t.log_outputs(
-        {
-            "response": result["structured_response"].get("text_answer"),
-            "search_results": search_results,
-        }
-    )
-    # Trace the feedback LLM run separately from the deployment run.
-    with t.trace_feedback():
-        # Instructions for the LLM judge
-        instructions = (
-            "Grade the following ANSWER. "
-            "The ANSWER should be fully grounded in (i.e. supported by) the source DOCUMENTS. "
-            "Return True if the ANSWER is fully grounded in the DOCUMENTS. "
-            "Return False if the ANSWER is not grounded in the DOCUMENTS."
-        )
-        answer_and_docs = (
-            f"ANSWER: {result['structured_response'].get('text_answer', '')}\n"
-            f"DOCUMENTS:\n{search_results}"
-        )
-        # Run the judge LLM
-        grade = judge_llm.invoke(
-            [
-                {"role": "system", "content": instructions},
-                {"role": "user", "content": answer_and_docs},
-            ]
-        )
-        t.log_feedback(key="groundedness", score=grade["score"])
-    assert grade['score']
-  ```
+judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
 
-  ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
-  const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
-  const groundedEvaluator = async (params: {
-    answer: string;
-    referenceDocuments: string,
-  }) => {
-    // Instructions for the LLM judge
-    const instructions = [
-      "Return 1 if the ANSWER is grounded in the DOCUMENTS",
-      "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
-    ].join("\n");
+@pytest.mark.langsmith
+def test_grounded_in_source_info() -> None:
+  """Test that response is grounded in the tool outputs."""
+  query = "How did Nvidia stock do in 2024 according to analysts?"
+  t.log_inputs({"query": query})
+  result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+  # Grab all the search calls made by the LLM
+  search_results = "\n\n".join(
+      msg.content
+      for msg in result["messages"]
+      if msg.type == "tool" and msg.name == search_tool.name
+  )
+  t.log_outputs(
+      {
+          "response": result["structured_response"].get("text_answer"),
+          "search_results": search_results,
+      }
+  )
+  # Trace the feedback LLM run separately from the deployment run.
+  with t.trace_feedback():
+      # Instructions for the LLM judge
+      instructions = (
+          "Grade the following ANSWER. "
+          "The ANSWER should be fully grounded in (i.e. supported by) the source DOCUMENTS. "
+          "Return True if the ANSWER is fully grounded in the DOCUMENTS. "
+          "Return False if the ANSWER is not grounded in the DOCUMENTS."
+      )
+      answer_and_docs = (
+          f"ANSWER: {result['structured_response'].get('text_answer', '')}\n"
+          f"DOCUMENTS:\n{search_results}"
+      )
+      # Run the judge LLM
+      grade = judge_llm.invoke(
+          [
+              {"role": "system", "content": instructions},
+              {"role": "user", "content": answer_and_docs},
+          ]
+      )
+      t.log_feedback(key="groundedness", score=grade["score"])
+  assert grade['score']
+```
 
-    // Run the judge LLM
-    const grade = await judgeLLM.invoke([
-      { role: "system", content: instructions },
-      { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
-    ]);
-    const score = parseInt(grade.content.toString());
-    return { key: "groundedness", score };
-  };
+```typescript Vitest
+// THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
+const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+const groundedEvaluator = async (params: {
+  answer: string;
+  referenceDocuments: string,
+}) => {
+  // Instructions for the LLM judge
+  const instructions = [
+    "Return 1 if the ANSWER is grounded in the DOCUMENTS",
+    "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
+  ].join("\n");
 
-  // THIS CODE GOES INSIDE THE TEST
-  ls.test(
-    "grounded in the source",
-    {
-      inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
-    },
-    async ({ inputs: { query } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
-      const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
-      await wrappedEvaluator({
-        answer: result.structuredResponse.text_answer ?? "",
-        referenceDocuments: result.structuredResponse.reasoning,
-      })
-      ls.logOutputs(result);
-    }
-  );
-  ```
+  // Run the judge LLM
+  const grade = await judgeLLM.invoke([
+    { role: "system", content: instructions },
+    { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
+  ]);
+  const score = parseInt(grade.content.toString());
+  return { key: "groundedness", score };
+};
 
-  ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
-  const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
-  const groundedEvaluator = async (params: {
-    answer: string;
-    referenceDocuments: string,
-  }) => {
-    // Instructions for the LLM judge
-    const instructions = [
-      "Return 1 if the ANSWER is grounded in the DOCUMENTS",
-      "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
-    ].join("\n");
+// THIS CODE GOES INSIDE THE TEST
+ls.test(
+  "grounded in the source",
+  {
+    inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
+  },
+  async ({ inputs: { query } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
+    const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
+    await wrappedEvaluator({
+      answer: result.structuredResponse.text_answer ?? "",
+      referenceDocuments: result.structuredResponse.reasoning,
+    })
+    ls.logOutputs(result);
+  }
+);
+```
 
-    // Run the judge LLM
-    const grade = await judgeLLM.invoke([
-      { role: "system", content: instructions },
-      { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
-    ]);
-    const score = parseInt(grade.content.toString());
-    return { key: "groundedness", score };
-  };
+```typescript Jest
+// THIS CODE GOES OUTSIDE THE TEST - IT IS JUST A HELPER FUNCTION
+const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+const groundedEvaluator = async (params: {
+  answer: string;
+  referenceDocuments: string,
+}) => {
+  // Instructions for the LLM judge
+  const instructions = [
+    "Return 1 if the ANSWER is grounded in the DOCUMENTS",
+    "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
+  ].join("\n");
 
-  // THIS CODE GOES INSIDE THE TEST
-  ls.test(
-    "grounded in the source",
-    {
-      inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
-    },
-    async ({ inputs: { query } }) => {
-      const result = await agent.invoke({
-        messages: [{ role: "user", content: query }],
-      });
-      const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
-      await wrappedEvaluator({
-        answer: result.structuredResponse.text_answer ?? "",
-        referenceDocuments: result.structuredResponse.reasoning,
-      })
-      ls.logOutputs(result);
-    }
-  );
-  ```
+  // Run the judge LLM
+  const grade = await judgeLLM.invoke([
+    { role: "system", content: instructions },
+    { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
+  ]);
+  const score = parseInt(grade.content.toString());
+  return { key: "groundedness", score };
+};
+
+// THIS CODE GOES INSIDE THE TEST
+ls.test(
+  "grounded in the source",
+  {
+    inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
+  },
+  async ({ inputs: { query } }) => {
+    const result = await agent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
+    const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
+    await wrappedEvaluator({
+      answer: result.structuredResponse.text_answer ?? "",
+      referenceDocuments: result.structuredResponse.reasoning,
+    })
+    ls.logOutputs(result);
+  }
+);
+```
+
 </CodeGroup>
 
 ## 运行测试
 
-设置配置文件后（如果您使用 Vitest 或 Jest），您可以使用以下命令运行测试：<Accordion title="Config files for Vitest/Jest">
-  <CodeGroup>
-    ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Create a `ls.vitest.config.ts` file:
+设置配置文件后（如果您使用 Vitest 或 Jest），您可以使用以下命令运行测试：
 
-    import { defineConfig } from "vitest/config";
+<Accordion title="Config files for Vitest/Jest">
+    <CodeGroup>
 
-    export default defineConfig({
-      test: {
-        include: ["**/*.eval.?(c|m)[jt]s"],
-        reporters: ["langsmith/vitest/reporter"],
-        setupFiles: ["dotenv/config"],
-        testTimeout: 30000,
-      },
-    });
-    ```
+  ```typescript Vitest
+  Create a `ls.vitest.config.ts` file:
 
-    ```javascript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Create a `ls.jest.config.ts` file:
+  import { defineConfig } from "vitest/config";
 
-    require('dotenv').config();
-
-    module.exports = {
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      testMatch: [
-        '<rootDir>/tests/jest/**/*.jest.eval.ts'
-      ],
-      testPathIgnorePatterns: [
-        '<rootDir>/tests/vitest/.*.vitest.eval.ts$'
-      ],
-      reporters: ["langsmith/jest/reporter"],
+  export default defineConfig({
+    test: {
+      include: ["**/*.eval.?(c|m)[jt]s"],
+      reporters: ["langsmith/vitest/reporter"],
+      setupFiles: ["dotenv/config"],
       testTimeout: 30000,
-    };
-    ```
-  </CodeGroup>
+    },
+  });
+  ```
+
+  ```javascript Jest
+  Create a `ls.jest.config.ts` file:
+
+  require('dotenv').config();
+
+  module.exports = {
+    preset: 'ts-jest',
+    testEnvironment: 'node',
+    testMatch: [
+      '<rootDir>/tests/jest/**/*.jest.eval.ts'
+    ],
+    testPathIgnorePatterns: [
+      '<rootDir>/tests/vitest/.*.vitest.eval.ts$'
+    ],
+    reporters: ["langsmith/jest/reporter"],
+    testTimeout: 30000,
+  };
+  ```</CodeGroup>
 </Accordion>
 
 <CodeGroup>
-  ```bash Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pytest --langsmith-output tests
-  ```
 
-  ```bash Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn vitest --config ls.vitest.config.ts
-  ```
+```bash Pytest
+pytest --langsmith-output tests
+```
 
-  ```bash Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn jest --config ls.jest.config.ts
-  ```
+```bash Vitest
+yarn vitest --config ls.vitest.config.ts
+```
+
+```bash Jest
+yarn jest --config ls.jest.config.ts
+```
+
 </CodeGroup>
 
 ## 参考代码
@@ -713,12 +735,13 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 ### 代理
 
 <Accordion title="Agent code">
-  <CodeGroup>
-    <Warning>
-      `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
-    </Warning>
+    <CodeGroup>
 
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Warning>
+`langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
+</Warning>
+
+    ```python Python
     from e2b_code_interpreter import Sandbox
     from langchain_community.tools import PolygonAggregates, TavilySearchResults
     from langchain_community.utilities.polygon import PolygonAPIWrapper
@@ -760,10 +783,10 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
     ```
 
     <Warning>
-      `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或已损坏。谨慎使用。
-    </Warning>
+`@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或已损坏。谨慎使用。
+</Warning>
 
-    ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript TypeScript
     import { ChatOpenAI } from "@langchain/openai";
     import { createReactAgent } from "@langchain/langgraph/prebuilt";
     import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
@@ -838,365 +861,367 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 
     export default agent;
     ```
-  </CodeGroup>
+
+    </CodeGroup>
 </Accordion>
 
 ### 测试
 
 <Accordion title="Test code">
-  <CodeGroup>
-    ```python Pytest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined
-    import pytest
-    from langchain.chat_models import init_chat_model
-    from langsmith import testing as t
-    from typing_extensions import Annotated, TypedDict
+    <CodeGroup>
 
-    @pytest.mark.langsmith
-    @pytest.mark.parametrize(
-      # <-- Can still use all normal pytest markers
-      "query",
-      ["Hello!", "How are you doing?"],
+  ```python Pytest
+  # from app import agent, polygon_aggregates, search_tool # import from wherever your agent is defined
+  import pytest
+  from langchain.chat_models import init_chat_model
+  from langsmith import testing as t
+  from typing_extensions import Annotated, TypedDict
+
+  @pytest.mark.langsmith
+  @pytest.mark.parametrize(
+    # <-- Can still use all normal pytest markers
+    "query",
+    ["Hello!", "How are you doing?"],
+  )
+  def test_no_tools_on_offtopic_query(query: str) -> None:
+    """Test that the agent does not use tools on offtopic queries."""
+    # Log the test example
+    t.log_inputs({"query": query})
+    expected = []
+    t.log_reference_outputs({"tool_calls": expected})
+    # Call the agent's model node directly instead of running the ReACT loop.
+    result = agent.nodes["agent"].invoke(
+        {"messages": [{"role": "user", "content": query}]}
     )
-    def test_no_tools_on_offtopic_query(query: str) -> None:
-      """Test that the agent does not use tools on offtopic queries."""
-      # Log the test example
-      t.log_inputs({"query": query})
-      expected = []
-      t.log_reference_outputs({"tool_calls": expected})
-      # Call the agent's model node directly instead of running the ReACT loop.
-      result = agent.nodes["agent"].invoke(
-          {"messages": [{"role": "user", "content": query}]}
-      )
-      actual = result["messages"][0].tool_calls
-      t.log_outputs({"tool_calls": actual})
-      # Check that no tool calls were made.
-      assert actual == expected
+    actual = result["messages"][0].tool_calls
+    t.log_outputs({"tool_calls": actual})
+    # Check that no tool calls were made.
+    assert actual == expected
 
-    @pytest.mark.langsmith
-    def test_searches_for_correct_ticker() -> None:
-      """Test that the model looks up the correct ticker on simple query."""
-      # Log the test example
-      query = "What is the price of Apple?"
-      t.log_inputs({"query": query})
-      expected = "AAPL"
-      t.log_reference_outputs({"ticker": expected})
-      # Call the agent's model node directly instead of running the full ReACT loop.
-      result = agent.nodes["agent"].invoke(
-          {"messages": [{"role": "user", "content": query}]}
-      )
-      tool_calls = result["messages"][0].tool_calls
-      if tool_calls[0]["name"] == polygon_aggregates.name:
-          actual = tool_calls[0]["args"]["ticker"]
-      else:
-          actual = None
-      t.log_outputs({"ticker": actual})
-      # Check that the right ticker was queried
-      assert actual == expected
+  @pytest.mark.langsmith
+  def test_searches_for_correct_ticker() -> None:
+    """Test that the model looks up the correct ticker on simple query."""
+    # Log the test example
+    query = "What is the price of Apple?"
+    t.log_inputs({"query": query})
+    expected = "AAPL"
+    t.log_reference_outputs({"ticker": expected})
+    # Call the agent's model node directly instead of running the full ReACT loop.
+    result = agent.nodes["agent"].invoke(
+        {"messages": [{"role": "user", "content": query}]}
+    )
+    tool_calls = result["messages"][0].tool_calls
+    if tool_calls[0]["name"] == polygon_aggregates.name:
+        actual = tool_calls[0]["args"]["ticker"]
+    else:
+        actual = None
+    t.log_outputs({"ticker": actual})
+    # Check that the right ticker was queried
+    assert actual == expected
 
-    @pytest.mark.langsmith
-    def test_executes_code_when_needed() -> None:
-      query = (
-          "In the past year Facebook stock went up by 66.76%, "
-          "Apple by 25.24%, Google by 37.11%, Amazon by 47.52%, "
-          "Netflix by 78.31%. What's the avg return in the past "
-          "year of the FAANG stocks, expressed as a percentage?"
-      )
-      t.log_inputs({"query": query})
-      expected = 50.988
-      t.log_reference_outputs({"response": expected})
-      # Test that the agent executes code when needed
-      result = agent.invoke({"messages": [{"role": "user", "content": query}]})
-      t.log_outputs({"result": result["structured_response"].get("numeric_answer")})
-      # Grab all the tool calls made by the LLM
-      tool_calls = [
-          tc["name"]
-          for msg in result["messages"]
-          for tc in getattr(msg, "tool_calls", [])
-      ]
-      # This will log the number of steps taken by the agent, which is useful for
-      # determining how efficiently the agent gets to an answer.
-      t.log_feedback(key="num_steps", score=len(result["messages"]) - 1)
-      # Assert that the code tool was used
-      assert "code_tool" in tool_calls
-      # Assert that a numeric answer was provided:
-      assert result["structured_response"].get("numeric_answer") is not None
-      # Assert that the answer is correct
-      assert abs(result["structured_response"]["numeric_answer"] - expected) <= 0.01
+  @pytest.mark.langsmith
+  def test_executes_code_when_needed() -> None:
+    query = (
+        "In the past year Facebook stock went up by 66.76%, "
+        "Apple by 25.24%, Google by 37.11%, Amazon by 47.52%, "
+        "Netflix by 78.31%. What's the avg return in the past "
+        "year of the FAANG stocks, expressed as a percentage?"
+    )
+    t.log_inputs({"query": query})
+    expected = 50.988
+    t.log_reference_outputs({"response": expected})
+    # Test that the agent executes code when needed
+    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+    t.log_outputs({"result": result["structured_response"].get("numeric_answer")})
+    # Grab all the tool calls made by the LLM
+    tool_calls = [
+        tc["name"]
+        for msg in result["messages"]
+        for tc in getattr(msg, "tool_calls", [])
+    ]
+    # This will log the number of steps taken by the agent, which is useful for
+    # determining how efficiently the agent gets to an answer.
+    t.log_feedback(key="num_steps", score=len(result["messages"]) - 1)
+    # Assert that the code tool was used
+    assert "code_tool" in tool_calls
+    # Assert that a numeric answer was provided:
+    assert result["structured_response"].get("numeric_answer") is not None
+    # Assert that the answer is correct
+    assert abs(result["structured_response"]["numeric_answer"] - expected) <= 0.01
 
-    class Grade(TypedDict):
-      """Evaluate the groundedness of an answer in source documents."""
-      score: Annotated[
-          bool,
-          ...,
-          "Return True if the answer is fully grounded in the source documents, otherwise False.",
-      ]
+  class Grade(TypedDict):
+    """Evaluate the groundedness of an answer in source documents."""
+    score: Annotated[
+        bool,
+        ...,
+        "Return True if the answer is fully grounded in the source documents, otherwise False.",
+    ]
 
-    judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
+  judge_llm = init_chat_model("gpt-5.5").with_structured_output(Grade)
 
-    @pytest.mark.langsmith
-    def test_grounded_in_source_info() -> None:
-      """Test that response is grounded in the tool outputs."""
-      query = "How did Nvidia stock do in 2024 according to analysts?"
-      t.log_inputs({"query": query})
-      result = agent.invoke({"messages": [{"role": "user", "content": query}]})
-      # Grab all the search calls made by the LLM
-      search_results = "\n\n".join(
-          msg.content
-          for msg in result["messages"]
-          if msg.type == "tool" and msg.name == search_tool.name
-      )
-      t.log_outputs(
-          {
-              "response": result["structured_response"].get("text_answer"),
-              "search_results": search_results,
-          }
-      )
-      # Trace the feedback LLM run separately from the deployment run.
-      with t.trace_feedback():
-          # Instructions for the LLM judge
-          instructions = (
-              "Grade the following ANSWER. "
-              "The ANSWER should be fully grounded in (i.e. supported by) the source DOCUMENTS. "
-              "Return True if the ANSWER is fully grounded in the DOCUMENTS. "
-              "Return False if the ANSWER is not grounded in the DOCUMENTS."
-          )
-          answer_and_docs = (
-              f"ANSWER: {result['structured_response'].get('text_answer', '')}\n"
-              f"DOCUMENTS:\n{search_results}"
-          )
-          # Run the judge LLM
-          grade = judge_llm.invoke(
-              [
-                  {"role": "system", "content": instructions},
-                  {"role": "user", "content": answer_and_docs},
-              ]
-          )
-          t.log_feedback(key="groundedness", score=grade["score"])
-      assert grade["score"]
-    ```
-
-    ```typescript Vitest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { expect } from "vitest";
-    import * as ls from "langsmith/vitest";
-    import agent from "../agent";
-    import { AIMessage, ToolMessage } from "@langchain/core/messages";
-    import { ChatOpenAI } from "@langchain/openai";
-
-    const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
-
-    const groundedEvaluator = async (params: {
-      answer: string;
-      referenceDocuments: string,
-    }) => {
-      const instructions = [
-        "Return 1 if the ANSWER is grounded in the DOCUMENTS",
-        "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
-      ].join("\n");
-
-      const grade = await judgeLLM.invoke([
-        { role: "system", content: instructions },
-        { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
-      ]);
-      const score = parseInt(grade.content.toString());
-      return { key: "groundedness", score };
-    };
-
-    ls.describe("Agent Tests", () => {
-      ls.test.each([
-        { inputs: { query: "Hello!" }, referenceOutputs: { numMessages: 2 } },
-        { inputs: { query: "How are you doing?" }, referenceOutputs: { numMessages: 2 } },
-      ])(
-        "should not use tools on offtopic query: %s",
-        async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          ls.logOutputs(result);
-          expect(result.messages).toHaveLength(numMessages);
-        }
-      );
-
-      ls.test(
-        "should search for correct ticker",
+  @pytest.mark.langsmith
+  def test_grounded_in_source_info() -> None:
+    """Test that response is grounded in the tool outputs."""
+    query = "How did Nvidia stock do in 2024 according to analysts?"
+    t.log_inputs({"query": query})
+    result = agent.invoke({"messages": [{"role": "user", "content": query}]})
+    # Grab all the search calls made by the LLM
+    search_results = "\n\n".join(
+        msg.content
+        for msg in result["messages"]
+        if msg.type == "tool" and msg.name == search_tool.name
+    )
+    t.log_outputs(
         {
-          inputs: { query: "What is the price of Apple?" },
-          referenceOutputs: { numMessages: 4 },
-        },
-        async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
-          const tickerQuery = toolCalls[0].args.ticker;
-          ls.logOutputs(result);
-          expect(tickerQuery).toBe("AAPL");
-          expect(result.messages).toHaveLength(numMessages);
+            "response": result["structured_response"].get("text_answer"),
+            "search_results": search_results,
         }
-      );
+    )
+    # Trace the feedback LLM run separately from the deployment run.
+    with t.trace_feedback():
+        # Instructions for the LLM judge
+        instructions = (
+            "Grade the following ANSWER. "
+            "The ANSWER should be fully grounded in (i.e. supported by) the source DOCUMENTS. "
+            "Return True if the ANSWER is fully grounded in the DOCUMENTS. "
+            "Return False if the ANSWER is not grounded in the DOCUMENTS."
+        )
+        answer_and_docs = (
+            f"ANSWER: {result['structured_response'].get('text_answer', '')}\n"
+            f"DOCUMENTS:\n{search_results}"
+        )
+        # Run the judge LLM
+        grade = judge_llm.invoke(
+            [
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": answer_and_docs},
+            ]
+        )
+        t.log_feedback(key="groundedness", score=grade["score"])
+    assert grade["score"]
+  ```
 
-      ls.test(
-        "should execute code when needed",
-        {
-          inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
-          referenceOutputs: { answer: 53 },
-        },
-        async ({ inputs: { query }, referenceOutputs: { answer } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
+  ```typescript Vitest
+  import { expect } from "vitest";
+  import * as ls from "langsmith/vitest";
+  import agent from "../agent";
+  import { AIMessage, ToolMessage } from "@langchain/core/messages";
+  import { ChatOpenAI } from "@langchain/openai";
 
-          const toolCalls = result.messages
-            .filter(m => (m as AIMessage).tool_calls)
-            .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
-          ls.logFeedback({
-            key: "num_steps",
-            score: result.messages.length - 1,
-          });
-          ls.logOutputs(result);
-          expect(toolCalls).toContain("code_tool");
-          expect(Math.abs((result.structuredResponse.numeric_answer ?? 0) - answer)).toBeLessThanOrEqual(1);
-        }
-      );
+  const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
 
-      ls.test(
-        "grounded in the source",
-        {
-          inputs: { query: "How did Nvidia stock do in 2024?" },
-          referenceOutputs: {},
-        },
-        async ({ inputs: { query }, referenceOutputs: {} }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          const referenceDocuments = result.messages
-            .filter((m): m is ToolMessage => m.name?.includes('tavily_search_results_json') ?? false)
-            .map(m => m.content)
-            .join('\n');
-          const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
-          await wrappedEvaluator({
-            answer: result.structuredResponse.text_answer ?? "",
-            referenceDocuments: referenceDocuments,
-          })
-          ls.logOutputs(result);
-        }
-      );
-    });
-    ```
+  const groundedEvaluator = async (params: {
+    answer: string;
+    referenceDocuments: string,
+  }) => {
+    const instructions = [
+      "Return 1 if the ANSWER is grounded in the DOCUMENTS",
+      "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
+    ].join("\n");
 
-    ```typescript Jest theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { expect } from "@jest/globals";
-    import * as ls from "langsmith/jest";
-    import agent from "../agent";
-    import { AIMessage } from "@langchain/core/messages";
-    import { ChatOpenAI } from "@langchain/openai";
+    const grade = await judgeLLM.invoke([
+      { role: "system", content: instructions },
+      { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
+    ]);
+    const score = parseInt(grade.content.toString());
+    return { key: "groundedness", score };
+  };
 
-    const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+  ls.describe("Agent Tests", () => {
+    ls.test.each([
+      { inputs: { query: "Hello!" }, referenceOutputs: { numMessages: 2 } },
+      { inputs: { query: "How are you doing?" }, referenceOutputs: { numMessages: 2 } },
+    ])(
+      "should not use tools on offtopic query: %s",
+      async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        ls.logOutputs(result);
+        expect(result.messages).toHaveLength(numMessages);
+      }
+    );
 
-    const groundedEvaluator = async (params: {
-      answer: string;
-      referenceDocuments: string,
-    }) => {
-      const instructions = [
-        "Return 1 if the ANSWER is grounded in the DOCUMENTS",
-        "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
-      ].join("\n");
+    ls.test(
+      "should search for correct ticker",
+      {
+        inputs: { query: "What is the price of Apple?" },
+        referenceOutputs: { numMessages: 4 },
+      },
+      async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
+        const tickerQuery = toolCalls[0].args.ticker;
+        ls.logOutputs(result);
+        expect(tickerQuery).toBe("AAPL");
+        expect(result.messages).toHaveLength(numMessages);
+      }
+    );
 
-      const grade = await judgeLLM.invoke([
-        { role: "system", content: instructions },
-        { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
-      ]);
-      const score = parseInt(grade.content.toString());
-      return { key: "groundedness", score };
-    };
+    ls.test(
+      "should execute code when needed",
+      {
+        inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
+        referenceOutputs: { answer: 53 },
+      },
+      async ({ inputs: { query }, referenceOutputs: { answer } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
 
-    ls.describe("Agent Tests", () => {
-      ls.test.each([
-        { inputs: { query: "Hello!" }, referenceOutputs: { numMessages: 2 } },
-        { inputs: { query: "How are you doing?" }, referenceOutputs: { numMessages: 2 } },
-      ])(
-        "should not use tools on offtopic query: %s",
-        async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          ls.logOutputs(result);
-          expect(result.messages).toHaveLength(numMessages);
-        }
-      );
+        const toolCalls = result.messages
+          .filter(m => (m as AIMessage).tool_calls)
+          .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
+        ls.logFeedback({
+          key: "num_steps",
+          score: result.messages.length - 1,
+        });
+        ls.logOutputs(result);
+        expect(toolCalls).toContain("code_tool");
+        expect(Math.abs((result.structuredResponse.numeric_answer ?? 0) - answer)).toBeLessThanOrEqual(1);
+      }
+    );
 
-      ls.test(
-        "should search for correct ticker",
-        {
-          inputs: { query: "What is the price of Apple?" },
-          referenceOutputs: { numMessages: 4 },
-        },
-        async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
-          const tickerQuery = toolCalls[0].args.ticker;
-          ls.logOutputs(result);
-          expect(tickerQuery).toBe("AAPL");
-          expect(result.messages).toHaveLength(numMessages);
-        }
-      );
+    ls.test(
+      "grounded in the source",
+      {
+        inputs: { query: "How did Nvidia stock do in 2024?" },
+        referenceOutputs: {},
+      },
+      async ({ inputs: { query }, referenceOutputs: {} }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        const referenceDocuments = result.messages
+          .filter((m): m is ToolMessage => m.name?.includes('tavily_search_results_json') ?? false)
+          .map(m => m.content)
+          .join('\n');
+        const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
+        await wrappedEvaluator({
+          answer: result.structuredResponse.text_answer ?? "",
+          referenceDocuments: referenceDocuments,
+        })
+        ls.logOutputs(result);
+      }
+    );
+  });
+  ```
 
-      ls.test(
-        "should execute code when needed",
-        {
-          inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
-          referenceOutputs: { answer: 53 },
-        },
-        async ({ inputs: { query }, referenceOutputs: { answer } }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          const toolCalls = result.messages
-            .filter(m => (m as AIMessage).tool_calls)
-            .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
-          ls.logFeedback({
-            key: "num_steps",
-            score: result.messages.length - 1,
-          });
-          ls.logOutputs(result);
-          expect(toolCalls).toContain("code_tool");
-          expect(Math.abs((result.structuredResponse.numeric_answer ?? 0) - answer)).toBeLessThanOrEqual(1);
-        }
-      );
+  ```typescript Jest
+  import { expect } from "@jest/globals";
+  import * as ls from "langsmith/jest";
+  import agent from "../agent";
+  import { AIMessage } from "@langchain/core/messages";
+  import { ChatOpenAI } from "@langchain/openai";
 
-      ls.test(
-        "grounded in the source",
-        {
-          inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
-          referenceOutputs: {},
-        },
-        async ({ inputs: { query }, referenceOutputs: {} }) => {
-          const result = await agent.invoke({
-            messages: [{ role: "user", content: query }],
-          });
-          const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
-          await wrappedEvaluator({
-            answer: result.structuredResponse.text_answer ?? "",
-            referenceDocuments: result.structuredResponse.reasoning,
-          })
-          ls.logOutputs(result);
-        }
-      );
-    });
-    ```
-  </CodeGroup>
+  const judgeLLM = new ChatOpenAI({ model: "gpt-5.5" });
+
+  const groundedEvaluator = async (params: {
+    answer: string;
+    referenceDocuments: string,
+  }) => {
+    const instructions = [
+      "Return 1 if the ANSWER is grounded in the DOCUMENTS",
+      "Return 0 if the ANSWER is not grounded in the DOCUMENTS",
+    ].join("\n");
+
+    const grade = await judgeLLM.invoke([
+      { role: "system", content: instructions },
+      { role: "user", content: `ANSWER: ${params.answer}\nDOCUMENTS: ${params.referenceDocuments}` },
+    ]);
+    const score = parseInt(grade.content.toString());
+    return { key: "groundedness", score };
+  };
+
+  ls.describe("Agent Tests", () => {
+    ls.test.each([
+      { inputs: { query: "Hello!" }, referenceOutputs: { numMessages: 2 } },
+      { inputs: { query: "How are you doing?" }, referenceOutputs: { numMessages: 2 } },
+    ])(
+      "should not use tools on offtopic query: %s",
+      async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        ls.logOutputs(result);
+        expect(result.messages).toHaveLength(numMessages);
+      }
+    );
+
+    ls.test(
+      "should search for correct ticker",
+      {
+        inputs: { query: "What is the price of Apple?" },
+        referenceOutputs: { numMessages: 4 },
+      },
+      async ({ inputs: { query }, referenceOutputs: { numMessages } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        const toolCalls = (result.messages[1] as AIMessage).tool_calls || [];
+        const tickerQuery = toolCalls[0].args.ticker;
+        ls.logOutputs(result);
+        expect(tickerQuery).toBe("AAPL");
+        expect(result.messages).toHaveLength(numMessages);
+      }
+    );
+
+    ls.test(
+      "should execute code when needed",
+      {
+        inputs: { query: "What was the average return rate for FAANG stock in 2024?" },
+        referenceOutputs: { answer: 53 },
+      },
+      async ({ inputs: { query }, referenceOutputs: { answer } }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        const toolCalls = result.messages
+          .filter(m => (m as AIMessage).tool_calls)
+          .flatMap(m => (m as AIMessage).tool_calls?.map(tc => tc.name));
+        ls.logFeedback({
+          key: "num_steps",
+          score: result.messages.length - 1,
+        });
+        ls.logOutputs(result);
+        expect(toolCalls).toContain("code_tool");
+        expect(Math.abs((result.structuredResponse.numeric_answer ?? 0) - answer)).toBeLessThanOrEqual(1);
+      }
+    );
+
+    ls.test(
+      "grounded in the source",
+      {
+        inputs: { query: "How did Nvidia stock do in 2024 according to analysts?" },
+        referenceOutputs: {},
+      },
+      async ({ inputs: { query }, referenceOutputs: {} }) => {
+        const result = await agent.invoke({
+          messages: [{ role: "user", content: query }],
+        });
+        const wrappedEvaluator = ls.wrapEvaluator(groundedEvaluator);
+        await wrappedEvaluator({
+          answer: result.structuredResponse.text_answer ?? "",
+          referenceDocuments: result.structuredResponse.reasoning,
+        })
+        ls.logOutputs(result);
+      }
+    );
+  });
+  ```
+
+    </CodeGroup>
 </Accordion>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-react-agent-pytest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

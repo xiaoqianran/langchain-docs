@@ -25,73 +25,77 @@ The `invites_enabled` setting controls manual user invitations. When enabled, [o
 You can update these settings in the LangSmith UI or with the LangSmith API:
 
 <Tabs>
-  <Tab title="UI" icon="layout">
-    In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso):
+<Tab title="UI" icon="layout">
 
-    1. Navigate to **Settings** → **Organization** → **Access and Security** → **General**.
-    2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
-    3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** → **Organization** → **SSO Configuration**.
-  </Tab>
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-jit-invite-sso):
 
-  <Tab title="API" icon="code">
-    Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
+1. Navigate to **Settings** → **Organization** → **Access and Security** → **General**.
+1. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
+1. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** → **Organization** → **SSO Configuration**.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "jit_provisioning_enabled": true,
-        "invites_enabled": true
-      }'
-    ```
+</Tab>
+<Tab title="API" icon="code">
 
-    Response includes updated current organization configuration:
+Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "id": "org-uuid",
-      "display_name": "My Organization",
-      "jit_provisioning_enabled": true,
-      "invites_enabled": true,
-      "sso_login_slug": "my-org",
-      ...
-    }
-    ```
-  </Tab>
+```bash
+curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
+  -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jit_provisioning_enabled": true,
+    "invites_enabled": true
+  }'
+```
+
+Response includes updated current organization configuration:
+
+```json
+{
+  "id": "org-uuid",
+  "display_name": "My Organization",
+  "jit_provisioning_enabled": true,
+  "invites_enabled": true,
+  "sso_login_slug": "my-org",
+  ...
+}
+```
+
+</Tab>
 </Tabs>
 
 <Note>
-  Consider the following if you are using [LangSmith self-hosted](/langsmith/self-hosted):
+Consider the following if you are using [LangSmith self-hosted](/langsmith/self-hosted):
 
-  * The JIT provisioning and the invites settings only apply to the default organization (identified by `default_sso_provision=true`). Other organizations must use invites in self-hosted.
-  * The environment variable `SELF_HOSTED_JIT_PROVISIONING_ENABLED` can globally override the JIT provisioning setting. When set to `false`, JIT provisioning is disabled for all organizations regardless of their individual settings.
-  * For additional self-hosted user management customizations, refer to [Customize user management](/langsmith/self-host-user-management).
+- The JIT provisioning and the invites settings only apply to the default organization (identified by `default_sso_provision=true`). Other organizations must use invites in self-hosted.
+- The environment variable `SELF_HOSTED_JIT_PROVISIONING_ENABLED` can globally override the JIT provisioning setting. When set to `false`, JIT provisioning is disabled for all organizations regardless of their individual settings.
+- For additional self-hosted user management customizations, refer to [Customize user management](/langsmith/self-host-user-management).
 </Note>
 
 ## How user access works
 
 When a user attempts to sign in via SSO, LangSmith follows this decision flow:
 
+
 1. User authenticates with SSO provider.
-2. LangSmith checks if user already has organization access:
-   ```
-   ├─ YES → User is signed in
-   └─ NO → Continue to step 3
-   ```
-3. Check if invites are enabled **and** a pending invite exists:
-   ```
+1. LangSmith checks if user already has organization access:
+    ```
+    ├─ YES → User is signed in
+    └─ NO → Continue to step 3
+    ```
+1. Check if invites are enabled **and** a pending invite exists:
+    ```
    ├─ YES → Provision into organization with invite's organization role; provision into workspaces if invite included workspaces
    └─ NO → Continue to step 4
-   ```
-4. Check if JIT provisioning is enabled:
-   ```
+    ```
+1. Check if JIT provisioning is enabled:
+    ```
    ├─ YES → Automatically provision user with default SSO workspaces/role
    └─ NO → Deny access (user must be added via SCIM or by administrator)
-   ```
+    ```
 
 <Note>
-  When both JIT provisioning and invites are enabled, **invites take precedence**. If a user has a pending invitation, they are added with the invite's contents, not the default SSO settings.
+When both JIT provisioning and invites are enabled, **invites take precedence**. If a user has a pending invitation, they are added with the invite's contents, not the default SSO settings.
 </Note>
 
 ## Configuration scenarios
@@ -99,18 +103,15 @@ When a user attempts to sign in via SSO, LangSmith follows this decision flow:
 ### Open access (both enabled)
 
 **Configuration:**
-
-* ✓ JIT Provisioning enabled
-* ✓ Invites enabled
+- ✓ JIT Provisioning enabled
+- ✓ Invites enabled
 
 **Behavior:**
-
-* Users can sign in immediately via SSO and are auto-provisioned.
-* Admins can send invites to assign specific roles or workspaces.
-* Invited users get the invite configuration; non-invited users get default SSO configuration.
+- Users can sign in immediately via SSO and are auto-provisioned.
+- Admins can send invites to assign specific roles or workspaces.
+- Invited users get the invite configuration; non-invited users get default SSO configuration.
 
 **Example:**
-
 ```
 User alex@company.com signs in via SSO:
   - No invite exists → Added to default workspaces with Viewer role
@@ -122,31 +123,26 @@ User billy@company.com signs in via SSO:
 ### JIT only (invites disabled)
 
 **Configuration:**
-
-* ✓ JIT Provisioning enabled
-* ✗ Invites disabled
+- ✓ JIT Provisioning enabled
+- ✗ Invites disabled
 
 **Behavior:**
-
-* All users who authenticate via SSO are automatically provisioned.
-* Admins cannot send invitations.
-* All new users receive the same default workspaces and role.
+- All users who authenticate via SSO are automatically provisioned.
+- Admins cannot send invitations.
+- All new users receive the same default workspaces and role.
 
 ### Invite only (JIT disabled)
 
 **Configuration:**
-
-* ✗ JIT Provisioning disabled
-* ✓ Invites enabled
+- ✗ JIT Provisioning disabled
+- ✓ Invites enabled
 
 **Behavior:**
-
-* Users must be invited before they can access the organization.
-* Users without invites are denied access even with valid SSO credentials.
-* Fine-grained control over who can access the organization.
+- Users must be invited before they can access the organization.
+- Users without invites are denied access even with valid SSO credentials.
+- Fine-grained control over who can access the organization.
 
 **Example:**
-
 ```
 User alex@company.com signs in via SSO:
   - Has pending invite → Successfully joins organization
@@ -158,26 +154,24 @@ User billy@company.com signs in via SSO:
 ### Closed access (both disabled)
 
 **Configuration:**
-
-* ✗ JIT Provisioning disabled
-* ✗ Invites disabled
+- ✗ JIT Provisioning disabled
+- ✗ Invites disabled
 
 **Behavior:**
-
-* SSO users cannot join the organization automatically.
-* Invitations cannot be sent.
-* Users must be provisioned through SCIM or directly by an administrator once they are already part of the organization via SCIM.
+- SSO users cannot join the organization automatically.
+- Invitations cannot be sent.
+- Users must be provisioned through SCIM or directly by an administrator once they are already part of the organization via SCIM.
 
 ## User access quick reference
 
-| JIT enabled | Invites enabled | Pending invite | Result                                                          |
-| ----------- | --------------- | -------------- | --------------------------------------------------------------- |
-| ✓           | ✓               | Yes            | Invite claimed (invite configuration used)                      |
-| ✓           | ✓               | No             | Auto-provisioned (default SSO configuration)                    |
-| ✓           | ✗               | N/A            | Auto-provisioned (default SSO configuration)                    |
-| ✗           | ✓               | Yes            | Invite claimed                                                  |
-| ✗           | ✓               | No             | **Access denied** - must be invited                             |
-| ✗           | ✗               | N/A            | **Access denied** - must use [SCIM](#scim-integration) or admin |
+| JIT enabled | Invites enabled | Pending invite | Result |
+|-------------|-----------------|----------------|---------|
+| ✓ | ✓ | Yes | Invite claimed (invite configuration used) |
+| ✓ | ✓ | No | Auto-provisioned (default SSO configuration) |
+| ✓ | ✗ | N/A | Auto-provisioned (default SSO configuration) |
+| ✗ | ✓ | Yes | Invite claimed |
+| ✗ | ✓ | No | **Access denied** - must be invited |
+| ✗ | ✗ | N/A | **Access denied** - must use [SCIM](#scim-integration) or admin |
 
 ## Configure default SSO settings
 
@@ -185,24 +179,24 @@ When [JIT provisioning](#jit-provisioning) is enabled, configure default setting
 
 1. Default workspace role. Choose the [workspace role](/langsmith/rbac#workspace-roles) that users receive when automatically provisioned. For details on what each role can do, refer to [Organization and workspace operations](/langsmith/organization-workspace-operations). Options include:
 
-   * **[Viewer](/langsmith/rbac#workspace-viewer)**: Read-only access
-   * **[User](/langsmith/rbac#organization-user)**: Standard access
-   * **[Editor](/langsmith/rbac#workspace-editor)**: Can modify resources
-   * **[Admin](/langsmith/rbac#workspace-admin)**: Full workspace control
+    - **[Viewer](/langsmith/rbac#workspace-viewer)**: Read-only access
+    - **[User](/langsmith/rbac#organization-user)**: Standard access
+    - **[Editor](/langsmith/rbac#workspace-editor)**: Can modify resources
+    - **[Admin](/langsmith/rbac#workspace-admin)**: Full workspace control
 
-2. Default workspaces. Select one or more workspaces that users are automatically added to. Users receive the same role in all selected workspaces. To configure:
+1. Default workspaces. Select one or more workspaces that users are automatically added to. Users receive the same role in all selected workspaces. To configure:
 
-   1. Go to **Settings** → **Organization** → **SSO Configuration**.
-   2. Set **Default workspace role**.
-   3. Select **Default workspaces**.
-   4. Save your configuration.
+    1. Go to **Settings** → **Organization** → **SSO Configuration**.
+    1. Set **Default workspace role**.
+    1. Select **Default workspaces**.
+    1. Save your configuration.
 
 ## SCIM integration
 
 If your organization uses [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) (System for Cross-domain Identity Management), users can be automatically provisioned and managed through your identity provider. SCIM provides an additional mechanism for user management that works alongside JIT and invite settings.
 
 <Note>
-  SCIM group membership overrides manually assigned roles or roles assigned via JIT provisioning. If you're using SCIM, consider disabling JIT provisioning to avoid conflicts.
+SCIM group membership overrides manually assigned roles or roles assigned via JIT provisioning. If you're using SCIM, consider disabling JIT provisioning to avoid conflicts.
 </Note>
 
 ## SSO Groups Sync
@@ -211,28 +205,27 @@ If your organization uses [SCIM](/langsmith/user-management#set-up-scim-for-your
 
 **Precedence with JIT, invites, and SCIM:**
 
-* **SCIM-sourced** memberships are never modified by SSO Groups Sync.
-* **SSO Groups Sync–sourced** memberships are fully replaced on each login based on the token's group membership.
-* **Manual and JIT-provisioned** memberships are not modified by SSO Groups Sync.
+- **SCIM-sourced** memberships are never modified by SSO Groups Sync.
+- **SSO Groups Sync–sourced** memberships are fully replaced on each login based on the token's group membership.
+- **Manual and JIT-provisioned** memberships are not modified by SSO Groups Sync.
 
 We recommend choosing one of SCIM or SSO Groups Sync per organization, not both, to avoid confusing precedence behavior. For configuration and tradeoffs, refer to [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative).
 
 ## Related documentation
 
-* [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso) (Self-hosted)
-* [Set up SAML SSO](/langsmith/user-management#set-up-saml-sso-for-your-organization) (Cloud)
-* [Set up SCIM](/langsmith/user-management#set-up-scim-for-your-organization)
-* [User management](/langsmith/user-management)
-* [Role-based access control](/langsmith/rbac)
+- [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso) (Self-hosted)
+- [Set up SAML SSO](/langsmith/user-management#set-up-saml-sso-for-your-organization) (Cloud)
+- [Set up SCIM](/langsmith/user-management#set-up-scim-for-your-organization)
+- [User management](/langsmith/user-management)
+- [Role-based access control](/langsmith/rbac)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

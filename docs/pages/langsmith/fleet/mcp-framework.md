@@ -4,13 +4,13 @@
 
 The LangSmith Tool Server is a standalone MCP framework for building and deploying tools with built-in authentication and authorization. Use the Tool Server when you want to:
 
-* [Create custom tools](#create-a-custom-toolkit) that integrate with LangSmith's [Agent Auth](/langsmith/agent-auth) for OAuth authentication
-* [Build an MCP gateway](#use-as-an-mcp-gateway) for agents you're building yourself (outside of Fleet)
+- [Create custom tools](#create-a-custom-toolkit) that integrate with LangSmith's [Agent Auth](/langsmith/agent-auth) for OAuth authentication
+- [Build an MCP gateway](#use-as-an-mcp-gateway) for agents you're building yourself (outside of Fleet)
 
 <Note>
-  If you're using [Fleet](/langsmith/fleet/index), you don't need to interact with the Tool Server directly. Fleet provides [built-in tools](/langsmith/fleet/tools) and supports [remote MCP servers](/langsmith/fleet/remote-mcp-servers) without requiring Tool Server setup.
+If you're using [Fleet](/langsmith/fleet/index), you don't need to interact with the Tool Server directly. Fleet provides [built-in tools](/langsmith/fleet/tools) and supports [remote MCP servers](/langsmith/fleet/remote-mcp-servers) without requiring Tool Server setup.
 
-  However, you can configure the associated tool server instance as an MCP server, which will allow you to use your custom MCP servers in your agent.
+However, you can configure the associated tool server instance as an MCP server, which will allow you to use your custom MCP servers in your agent.
 </Note>
 
 Download the [PyPI package](https://pypi.org/project/langsmith-tool-server/) to get started.
@@ -19,14 +19,14 @@ Download the [PyPI package](https://pypi.org/project/langsmith-tool-server/) to 
 
 Install the LangSmith Tool Server and LangChain CLI:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pip install langsmith-tool-server
 pip install langchain-cli-v2
 ```
 
 Create a new toolkit:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langchain tools new my-toolkit
 cd my-toolkit
 ```
@@ -47,7 +47,7 @@ my-toolkit/
 
 Define your tools using the `@tool` decorator. For more on tool schemas, return values, error handling, and `ToolRuntime`, see the [Tools guide](/oss/python/langchain/tools).
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith_tool_server import tool
 
 @tool
@@ -65,7 +65,7 @@ TOOLS = [hello, add]
 
 Run the server:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langchain tools serve
 ```
 
@@ -75,7 +75,7 @@ Your tool server will start on `http://localhost:8000`.
 
 Below is an example that lists available tools and calls the `add` tool:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import asyncio
 import aiohttp
 
@@ -101,7 +101,7 @@ asyncio.run(main())
 
 The LangSmith Tool Server can act as an MCP gateway, aggregating tools from multiple MCP servers into a single endpoint. Configure MCP servers in your `toolkit.toml`:
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```toml
 [toolkit]
 name = "my-toolkit"
 tools = "./my_toolkit/__init__.py:TOOLS"
@@ -130,7 +130,7 @@ Before using OAuth in your tools, you'll need to configure an OAuth provider in 
 
 Once configured, specify the `auth_provider` in your tool decorator:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith_tool_server import tool, Context
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -149,16 +149,15 @@ async def read_emails(context: Context, max_results: int = 10) -> str:
 ```
 
 Tools with `auth_provider` must:
-
-* Have `context: Context` as the first parameter
-* Specify at least one scope
-* Use `context.token` to make authenticated API calls
+- Have `context: Context` as the first parameter
+- Specify at least one scope
+- Use `context.token` to make authenticated API calls
 
 ### Custom request authentication
 
 Custom authentication allows you to validate requests and integrate with your identity provider. Define an authentication handler in your `auth.py` file:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith_tool_server import Auth
 
 auth = Auth()
@@ -181,14 +180,13 @@ async def authenticate(authorization: str = None) -> dict:
 
 The handler runs on every request and must return a dict with `identity` (and optionally `permissions`).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/mcp-framework.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

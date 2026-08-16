@@ -20,14 +20,14 @@
 
 要开始配置复合评估器，请导航到 **跟踪** 页面并选择一个跟踪项目。
 
-从跟踪项目视图中，导航到 **Evaluators** 选项卡。单击**+ 评估器** 打开**添加评估器** 面板。单击“从头开始创建”下的“综合得分”。
+从跟踪项目视图中，导航到 **Evaluators** 选项卡。单击 **+ 评估器** 打开 **添加评估器** 面板。单击“从头开始创建”下的“综合得分”。
 
 ### 2. 配置复合求值器
 
 1. 指定您的评估员。
 2. 选择聚合方法：**平均** 或 **求和**。
-   * **平均**： Σ(体重\*分数) / Σ(体重)。
-   * **总和**：Σ(体重\*分数)。
+    - **平均**：Σ（体重*分数）/Σ（体重）。
+    - **总和**：Σ（体重*分数）。
 3. 添加您想要包含在综合乐谱中的反馈键。
 4. 添加反馈键的权重。默认情况下，每个反馈键的权重是相等的。调整权重以增加或减少最终分数中特定反馈键的重要性。
 5. 单击**创建**以保存评估器。
@@ -37,21 +37,19 @@
 ### 3. 查看综合评估器结果综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。
 
 **关于追踪项目**：
-
-* 综合分数显示为跑步反馈。
-* [Filter for runs](/langsmith/filter-traces-in-application) 具有综合分数，或综合分数满足特定阈值。
-* [Create a chart](/langsmith/dashboards#custom-dashboards) 可视化综合分数随时间变化的趋势。
+- 综合分数显示为跑步反馈。
+- [Filter for runs](/langsmith/filter-traces-in-application) 具有综合分数，或综合分数满足特定阈值。
+- [Create a chart](/langsmith/dashboards#custom-dashboards) 可视化综合分数随时间变化的趋势。
 
 <Note> 如果运行时未配置任何组成评估器，则不会计算该运行的综合分数。 </Note>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

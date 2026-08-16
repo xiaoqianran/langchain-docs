@@ -11,7 +11,7 @@ While you can [dynamically fetch prompts](/langsmith/manage-prompts-programmatic
 * **Version Control:** Keep your prompts versioned alongside your application code in a familiar system.
 * **CI/CD Integration:** Trigger automated staging or production deployments when critical prompts change.
 
-<img alt="Prompt Webhook Diagram" />
+![Prompt Webhook Diagram](/langsmith/images/prompt-excalidraw.png)
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ In LangSmith, when you save changes to a prompt, you're essentially creating a n
 The webhook will send a JSON payload containing the new **prompt manifest**.
 
 <Accordion title="Sample Webhook Payload">
-  ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```json
   {
     "prompt_id": "f33dcb51-eb17-47a5-83ca-64ac8a027a29",
     "prompt_name": "My Prompt",
@@ -148,7 +148,7 @@ The webhook will send a JSON payload containing the new **prompt manifest**.
 </Accordion>
 
 <Note>
-  It's important to understand that LangSmith webhooks for prompt commits are generally triggered at the **workspace level**. This means if *any* prompt within your LangSmith workspace is modified and a "prompt commit" is saved, the webhook will fire and send the updated manifest of the prompt. The payloads are identifiable by prompt id. Your receiving server should be designed with this in mind.
+It's important to understand that LangSmith webhooks for prompt commits are generally triggered at the **workspace level**. This means if *any* prompt within your LangSmith workspace is modified and a "prompt commit" is saved, the webhook will fire and send the updated manifest of the prompt. The payloads are identifiable by prompt id. Your receiving server should be designed with this in mind.
 </Note>
 
 ## Implementing a FastAPI server for webhook reception
@@ -170,7 +170,7 @@ The server's core functionality will include an endpoint for webhook reception, 
 
   This server will listen for incoming webhooks from LangSmith and commit the received prompt manifest to your GitHub repository.
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   import base64
   import json
   import uuid
@@ -352,13 +352,13 @@ Once your FastAPI server is deployed and you have its public URL, you can config
 
 2. Go to the **Prompts** section. Here you'll see a list of your prompts.
 
-   <img alt="LangSmith Prompts section" />
+   ![LangSmith Prompts section](/langsmith/images/prompt-commit-main.png)
 
 3. On the top right of the Prompts page, click the **+ Webhook** button.
 
 4. You'll be presented with a form to configure your webhook:
 
-   <img alt="LangSmith Webhook configuration modal" />
+   ![LangSmith Webhook configuration modal](/langsmith/images/prompt-commit-webhook.png)
 
    * **Webhook URL:** Enter the full public URL of your deployed FastAPI server's endpoint. For our example server, this would be `https://<your-render-service>.onrender.com/webhook/commit`.
    * **Headers (Optional):**
@@ -370,7 +370,7 @@ Once your FastAPI server is deployed and you have its public URL, you can config
 
 ## The workflow in action
 
-<img alt="Workflow Diagram showing: User saves prompt in LangSmith, LangSmith sends webhook to FastAPI Server, which interacts with GitHub to update files" />
+![Workflow Diagram showing: User saves prompt in LangSmith, LangSmith sends webhook to FastAPI Server, which interacts with GitHub to update files](/langsmith/images/prompt-sequence-diagram.png)
 
 Now, with everything set up, here's what happens:
 
@@ -389,7 +389,7 @@ Now, with everything set up, here's what happens:
 
 6. **Confirmation:** You should see the new commit appear in your GitHub repository.
 
-   <img alt="Manifest committed to GitHub" />
+   ![Manifest committed to GitHub](/langsmith/images/prompt-commit-github.png)
 
 You've now successfully synced your LangSmith prompts with GitHub!
 
@@ -403,14 +403,13 @@ Our example FastAPI server performs a direct commit of the entire prompt manifes
 * **Notifications:** Send notifications to Slack, email, or other communication channels about prompt changes.
 * **Selective Processing:** Based on metadata within the LangSmith payload (if available, e.g., which specific prompt changed or by whom), you could apply different logic.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-commit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

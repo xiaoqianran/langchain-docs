@@ -3,7 +3,7 @@
 # Regions FAQ
 
 <Note>
-  See the [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability) for additional details.
+See the [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability) for additional details.
 </Note>
 
 ## Legal and compliance
@@ -50,7 +50,7 @@ See the [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-s
 
 #### *How can I see my organization's region?*
 
-Check your URL - organizations on [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-regions-faq) are in GCP US, organizations on [https://eu.smith.langchain.com](https://eu.smith.langchain.com) are in GCP EU, organizations on [https://apac.smith.langchain.com](https://apac.smith.langchain.com) are in GCP APAC, and organizations on [https://aws.smith.langchain.com](https://aws.smith.langchain.com) are in AWS US.
+Check your URL - organizations on [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-regions-faq) are in GCP US, organizations on [https://eu.smith.langchain.com](https://eu.smith.langchain.com) are in GCP EU, organizations on [https://apac.smith.langchain.com](https://apac.smith.langchain.com) are in GCP APAC, and organizations on [https://aws.smith.langchain.com](https://aws.smith.langchain.com) are in AWS US.
 
 #### *Can I switch my organization between regions?*
 
@@ -70,14 +70,13 @@ No, pricing is the same across supported cloud regions.
 
 All LangSmith plans are paid in USD.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/regions-faq.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

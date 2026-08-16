@@ -2,19 +2,17 @@
 
 # Access & oversight
 
-Control who can access agents, how they authenticate, and audit everything they do.
-
 Fleet gives you the control layer for scaling agents across your organization: tiered permissions, credential management, human-in-the-loop oversight, and an audit trail for agent actions.
 
 ## Permissions and sharing
 
 Fleet provides granular control over every agent in two dimensions: **who gets access** and **what they can do**.
 
-* **Who**: Share with individual users or your entire workspace.
-* **What**: Three permission levels:
-  * **Clone** — copy and customize the agent
-  * **Run** — use without modifying
-  * **Edit** — full access to change instructions, tools, and settings
+- **Who**: Share with individual users or your entire workspace.
+- **What**: Three permission levels:
+  - **Clone** — copy and customize the agent
+  - **Run** — use without modifying
+  - **Edit** — full access to change instructions, tools, and settings
 
 You can layer these permissions. Give a core team edit access, share run-only with the broader organization, and revoke at any time.
 
@@ -24,8 +22,8 @@ For setup instructions, see [Change access to the agent](/langsmith/fleet/manage
 
 Fleet offers two credential models that control how agents authenticate with external tools:
 
-* **Fixed credentials ("Claws")**: The agent uses a single set of credentials regardless of who runs it. Use for shared-resource agents like a team Slack bot where everyone interacts through the same account.
-* **User credentials ("Assistants")**: The agent acts on behalf of the individual user who invokes it. Each user authenticates with their own account via OAuth. Use for tools where users have different access levels, like a personal email assistant.
+- **Fixed credentials ("Claws")**: The agent uses a single set of credentials regardless of who runs it. Use for shared-resource agents like a team Slack bot where everyone interacts through the same account.
+- **User credentials ("Assistants")**: The agent acts on behalf of the individual user who invokes it. Each user authenticates with their own account via OAuth. Use for tools where users have different access levels, like a personal email assistant.
 
 This is configurable per agent, so you can choose the right model for each use case.
 
@@ -35,12 +33,12 @@ For setup instructions, see [Agent identity](/langsmith/fleet/agent-identity).
 
 Fleet provides layered access control for tools, covering both **custom MCP servers** (user-added, workspace-scoped) and **built-in integrations** (platform-provided, such as Gmail, Slack, and GitHub):
 
-* **[Role-based access control (RBAC)](#role-based-permissions)**: Controls access at the role level.
-* **[Attribute-based access control (ABAC)](#attribute-based-access-control)**: Adds per-resource granularity on top of RBAC.
-* **[Workspace integration policy](#workspace-integration-policy)**: Provides an admin-controlled enable/disable gate for built-in integrations.
+- **[Role-based access control (RBAC)](#role-based-permissions)**: Controls access at the role level.
+- **[Attribute-based access control (ABAC)](#attribute-based-access-control)**: Adds per-resource granularity on top of RBAC.
+- **[Workspace integration policy](#workspace-integration-policy)**: Provides an admin-controlled enable/disable gate for built-in integrations.
 
 <Note>
-  Tool access control is an Enterprise feature. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales).
+Tool access control is an Enterprise feature. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 ### Role-based permissions
@@ -49,16 +47,16 @@ Role-based access control (RBAC) grants or denies access to all MCP servers and 
 
 The following permissions are available for MCP servers and integrations:
 
-| Permission           | Description                                                                         |
-| -------------------- | ----------------------------------------------------------------------------------- |
-| `mcp-servers:read`   | Discover and list MCP servers and integrations                                      |
+| Permission | Description |
+|------------|-------------|
+| `mcp-servers:read` | Discover and list MCP servers and integrations |
 | `mcp-servers:invoke` | Execute tools from MCP servers and integrations, including OAuth connect/disconnect |
-| `mcp-servers:create` | Create new MCP server configurations                                                |
-| `mcp-servers:update` | Modify MCP server configurations                                                    |
-| `mcp-servers:delete` | Remove MCP server configurations                                                    |
+| `mcp-servers:create` | Create new MCP server configurations |
+| `mcp-servers:update` | Modify MCP server configurations |
+| `mcp-servers:delete` | Remove MCP server configurations |
 
 <Note>
-  A role with `mcp-servers:read` and `mcp-servers:invoke` can see and use all MCP servers and integrations in the workspace.
+A role with `mcp-servers:read` and `mcp-servers:invoke` can see and use all MCP servers and integrations in the workspace.
 </Note>
 
 For more on RBAC, see [Role-based access control](/langsmith/rbac).
@@ -69,11 +67,9 @@ For more on RBAC, see [Role-based access control](/langsmith/rbac).
   <Step title="Open role settings">
     Navigate to **Settings > Roles** and click **Create role**.
   </Step>
-
   <Step title="Configure MCP Servers permissions">
     Expand the **MCP Servers** section and select the permissions to include. For example, grant `Read` and `Invoke` for users who need to use tools but not manage server configurations.
   </Step>
-
   <Step title="Assign the role">
     Assign the role to users in the workspace in **Settings > Members**.
   </Step>
@@ -85,13 +81,13 @@ Attribute-based access control (ABAC) adds resource-level granularity on top of 
 
 ABAC operates on two resource types for tools:
 
-| Resource type       | Applies to                                         |
-| ------------------- | -------------------------------------------------- |
-| `mcp_server`        | Custom MCP servers added to the workspace          |
+| Resource type | Applies to |
+|---------------|-----------|
+| `mcp_server` | Custom MCP servers added to the workspace |
 | `fleet_integration` | Built-in integrations (Gmail, Slack, GitHub, etc.) |
 
 <Note>
-  A role with no `mcp-servers:*` RBAC permissions can still be granted access to specific tagged resources (e.g. only Notion and Gmail) via an ABAC allow policy. Conversely, a role with broad RBAC access can be restricted from specific resources via an ABAC deny policy.
+A role with no `mcp-servers:*` RBAC permissions can still be granted access to specific tagged resources (e.g. only Notion and Gmail) via an ABAC allow policy. Conversely, a role with broad RBAC access can be restricted from specific resources via an ABAC deny policy.
 </Note>
 
 For details on policy structure, operators, and managing policies via the API, see [Attribute-based access control](/langsmith/abac).
@@ -103,7 +99,7 @@ Built-in integrations have an additional control layer: a workspace-level enable
 If an integration is disabled at the workspace level, no user can access it regardless of their role or ABAC policies.
 
 <Note>
-  The Access control page is only visible to admin users (requires `workspaces:manage` permission).
+The Access control page is only visible to admin users (requires `workspaces:manage` permission).
 </Note>
 
 ### Policy evaluation order
@@ -123,7 +119,6 @@ Workspace policy gate → ABAC deny → RBAC → ABAC allow
 ```
 
 At each step:
-
 1. **Workspace policy gate** (integrations only): If the integration is disabled, access is denied. No further evaluation.
 2. **ABAC deny**: If a deny policy matches, access is denied. Deny always wins.
 3. **RBAC**: If the user's role grants the required permission, access is allowed (unless step 4 is needed).
@@ -141,14 +136,13 @@ Fleet provides a [central inbox](https://smith.langchain.com/agents/inbox) for r
 
 For setup instructions, see [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

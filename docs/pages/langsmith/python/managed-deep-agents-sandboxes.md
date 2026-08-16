@@ -2,25 +2,26 @@
 
 # Add a sandbox to Managed Deep Agents
 
-Configure an isolated filesystem and shell for Managed Deep Agents.
-
 Agents often want to write or execute code when doing their job.
 A sandbox gives a Managed Deep Agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 Keep the agent entry point at the project root and the sandbox declaration under `sandbox/`:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   sandbox/
     __init__.py
 ```
+
+
+
 
 ## Configure a sandbox
 
@@ -28,7 +29,7 @@ my-agent/
 
 Declare the sandbox with `define_sandbox` (Python) or `defineSandbox` (TypeScript). Managed Deep Agents uses [LangSmith Sandboxes](/langsmith/sandboxes) for this backend:
 
-```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python sandbox/__init__.py
 from managed_deepagents import define_sandbox
 
 sandbox = define_sandbox(
@@ -38,22 +39,31 @@ sandbox = define_sandbox(
 )
 ```
 
+
+
+
 LangSmith uses its default sandbox template unless you set a custom template or snapshot. Set only one creation source.
 
 Use `template_name` or `snapshot_id` to set the creation source.
 
+
+
+
 ## Choose a scope
 
-| Scope              | Behavior                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------- |
+| Scope | Behavior |
+| --- | --- |
 | `thread` (default) | Creates one sandbox for each durable thread and reuses it across runs on that thread. |
-| `agent`            | Shares one sandbox across threads handled by the agent process.                       |
+| `agent` | Shares one sandbox across threads handled by the agent process. |
 
 <Warning>
-  An agent-scoped sandbox lets threads read and modify the same files. Use it only for intentionally shared state.
+An agent-scoped sandbox lets threads read and modify the same files. Use it only for intentionally shared state.
 </Warning>
 
 Use `idle_ttl_seconds` to control when an idle sandbox can be reclaimed. Use `default_timeout` to bound each command.
+
+
+
 
 ## How the agent uses the sandbox
 
@@ -63,14 +73,13 @@ The agent uses filesystem tools such as `ls`, `read_file`, `write_file`, `edit_f
 
 Managed Deep Agents owns sandbox naming, reuse, recovery, and cleanup. Deleting the deployment with `mda delete` also deletes the managed sandboxes associated with it. For platform-level lifecycle details, see [Sandboxes](/langsmith/sandboxes).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

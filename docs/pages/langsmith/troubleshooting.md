@@ -12,9 +12,9 @@ To diagnose and resolve an issue, you will first need to retrieve some relevant 
 
 Generally, the main services you will want to analyze are the:
 
-* `langsmith-backend`: Handles CRUD API requests, business logic, requests from the frontend and SDK, trace preparation for ingestion, and the hub API.
-* `langsmith-platform-backend`: Handles authentication, run ingestion, and other high-volume tasks.
-* `langsmith-queue`: Handles incoming traces and feedback, asynchronous ingestion and persistence into the datastore, data integrity checks, and retries during database errors or connection issues.
+- `langsmith-backend`: Handles CRUD API requests, business logic, requests from the frontend and SDK, trace preparation for ingestion, and the hub API.
+- `langsmith-platform-backend`: Handles authentication, run ingestion, and other high-volume tasks.
+- `langsmith-queue`: Handles incoming traces and feedback, asynchronous ingestion and persistence into the datastore, data integrity checks, and retries during database errors or connection issues.
 
 For more details on these services, refer to the [self-hosted overview](/langsmith/self-hosted).
 
@@ -24,7 +24,7 @@ The first step in troubleshooting is to gather important debugging information a
 
 You can run our [k8s troubleshooting script](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/get_k8s_debugging_info.sh) which will pull all of the relevant kubernetes information and output it to a folder for investigation. The script also compresses this folder into a zip file for sharing. Here is an example of how to run this script, assuming your langsmith deployment was brought up in a `langsmith` namespace:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 bash get_k8s_debugging_info.sh --namespace langsmith
 ```
 
@@ -34,7 +34,7 @@ You can then inspect the contents of the produced folder for any relevant errors
 
 If running on Docker, you can check the logs your deployment by running the following command:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 docker compose logs >> logs.txt
 ```
 
@@ -88,7 +88,7 @@ This error occurs when the ClickHouse database is in an inconsistent state with 
 
 1. Force migration to an earlier version, where version = dirty version - 1.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl exec -it deployments/langsmith-backend -- bash -c 'migrate -source "file://clickhouse/migrations" -database "clickhouse://$CLICKHOUSE_HOST:$CLICKHOUSE_NATIVE_PORT?username=$CLICKHOUSE_USER&password=$CLICKHOUSE_PASSWORD&database=$CLICKHOUSE_DB&x-multi-statement=true&x-migrations-table-engine=MergeTree&secure=$CLICKHOUSE_TLS" force <version>'
 ```
 
@@ -98,7 +98,7 @@ kubectl exec -it deployments/langsmith-backend -- bash -c 'migrate -source "file
 
 1. Force migration to an earlier version, where version = dirty version - 1.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 docker compose exec langchain-backend migrate -source "file://clickhouse/migrations" -database "clickhouse://$CLICKHOUSE_HOST:$CLICKHOUSE_NATIVE_PORT?username=$CLICKHOUSE_USER&password=$CLICKHOUSE_PASSWORD&database=$CLICKHOUSE_DB&x-multi-statement=true&x-migrations-table-engine=MergeTree&secure=$CLICKHOUSE_TLS" force <version>
 ```
 
@@ -112,7 +112,7 @@ This error occurs when the request size exceeds the maximum allowed size. You wi
 
 1. Edit your `langsmith_config.yaml` and increase the `frontend.maxBodySize` [value](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L519). This might look something like this:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 frontend:
   maxBodySize: "100M"
 ```
@@ -123,7 +123,7 @@ frontend:
 
 This error occurs when your user does not have the necessary permissions to create row policies in Clickhouse. When deploying the Docker deployment, you need to copy the `users.xml` file from the github repo as well. This adds the `<access_management>` tag to the `users.xml` file, which allows the user to create row policies. Below is the default `users.xml` file that we expect to be used.
 
-```xml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```xml
 <clickhouse>
     <users>
         <default>
@@ -151,7 +151,7 @@ In some environments, your mount point may not be writable by the container. In 
 
 Example `Dockerfile`:
 
-```dockerfile theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```dockerfile
 FROM clickhouse/clickhouse-server:24.8
 COPY ./users.xml /etc/clickhouse-server/users.d/users.xml
 ```
@@ -160,20 +160,20 @@ Then take the following steps:
 
 1. Build your custom image.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 docker build -t <image-name> .
 ```
 
 2. Update your `docker-compose.yaml` to use the custom image. Make sure to remove the users.xml mount point.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 langchain-clickhouse:
   image: <image-name>
 ```
 
 3. Restart your instance of LangSmith.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 docker compose down --volumes
 docker compose up
 ```
@@ -187,7 +187,7 @@ Generally this is due to `LD_PRELOAD` being set by AquaSec, which interferes wit
 
 Edit your `langsmith_config.yaml` (or corresponding config file) and set the `AQUA_SKIP_LD_PRELOAD` environment variable:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 clickhouse:
   statefulSet:
     extraEnv:
@@ -199,20 +199,19 @@ clickhouse:
 
 Edit your `docker-compose.yaml` and set the `AQUA_SKIP_LD_PRELOAD` environment variable:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 langchain-clickhouse:
   environment:
     - AQUA_SKIP_LD_PRELOAD=true
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

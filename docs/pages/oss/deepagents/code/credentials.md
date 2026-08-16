@@ -2,8 +2,6 @@
 
 # Provider credentials
 
-Add and manage API keys for model providers, Tavily web search, and LangSmith tracing
-
 Deep Agents Code needs an API key for each model provider you use. The recommended way to add one is the [`/auth`](#use-%2Fauth-recommended) credential manager. For non-interactive runs, manage the same stored keys from the shell with [`dcode auth`](#manage-credentials-from-the-shell-dcode-auth) or set [environment variables](#environment-variables-ci-and-headless) instead.
 
 If the same key is set in more than one place, see [Key resolution order](#key-resolution-order) for which one wins.
@@ -14,30 +12,30 @@ For `.env` loading order and the `DEEPAGENTS_CODE_` prefix, see [Configuration](
 
 Open the credential manager from any session:
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 /auth
 ```
 
 The manager lists installed LLM provider and whether they have an environment key set, surfaces known providers that you can add from within the app, and includes non-model services such as Tavily web search. Select a provider to add or replace its key, install support for an uninstalled provider, or remove one you have already stored. Keys you add persist across sessions.
 
 <Accordion title="Provider row labels" icon="list-check">
-  Each row shows the provider name followed by where its key comes from:
+    Each row shows the provider name followed by where its key comes from:
 
-  | Label            | Meaning                                                                                                                             |
-  | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-  | `[stored]`       | A key saved in this manager via `/auth`                                                                                             |
-  | `[env: VARNAME]` | The key comes from environment variable `VARNAME` (the resolved name, such as `DEEPAGENTS_CODE_OPENAI_API_KEY` or `OPENAI_API_KEY`) |
-  | `[missing]`      | No key is stored and the env var is unset; select the row to paste one                                                              |
+    | Label | Meaning |
+    |-------|---------|
+    | `[stored]` | A key saved in this manager via `/auth` |
+    | `[env: VARNAME]` | The key comes from environment variable `VARNAME` (the resolved name, such as `DEEPAGENTS_CODE_OPENAI_API_KEY` or `OPENAI_API_KEY`) |
+    | `[missing]` | No key is stored and the env var is unset; select the row to paste one |
 </Accordion>
 
 The `/auth` prompt also has an optional **base URL** field. Leave it blank to use the provider's default endpoint, or set a custom one to use with this key. The base URL is saved alongside the key. See [Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways) for how endpoints resolve, including with gateways.
 
 <Warning>
-  A stored base URL is not a secret and may be logged; the key paired with it is never logged.
+    A stored base URL is not a secret and may be logged; the key paired with it is never logged.
 </Warning>
 
 <Note>
-  Keys are scoped to your user account on this machine — Deep Agents Code never transmits them anywhere except to the configured provider's API.
+    Keys are scoped to your user account on this machine — Deep Agents Code never transmits them anywhere except to the configured provider's API.
 </Note>
 
 ### Sign in with ChatGPT
@@ -50,17 +48,17 @@ Selecting the `openai_codex` provider in `/auth` starts a browser sign-in instea
 
 The `dcode auth` command group is the scriptable equivalent of the `/auth` manager: it manages the same stored credentials without launching the TUI, which makes it usable for dotfile bootstrap, CI/CD, and setting a key on a remote box over SSH. The subcommands mirror the modal's verbs:
 
-| Command                                                 | Description                                                   |
-| ------------------------------------------------------- | ------------------------------------------------------------- |
-| `dcode auth list` (alias `ls`)                          | List every known provider and where its key resolves from     |
-| `dcode auth status <provider>`                          | Print the resolution source for one provider                  |
-| `dcode auth set <provider>`                             | Store an API key, read from stdin by default                  |
-| `dcode auth remove <provider>` (aliases `rm`, `delete`) | Delete a stored credential                                    |
-| `dcode auth path`                                       | Print the resolved path to the credential store (`auth.json`) |
+| Command | Description |
+|---------|-------------|
+| `dcode auth list` (alias `ls`) | List every known provider and where its key resolves from |
+| `dcode auth status <provider>` | Print the resolution source for one provider |
+| `dcode auth set <provider>` | Store an API key, read from stdin by default |
+| `dcode auth remove <provider>` (aliases `rm`, `delete`) | Delete a stored credential |
+| `dcode auth path` | Print the resolved path to the credential store (`auth.json`) |
 
 `set` reads the key from **stdin** by default, so it never lands in shell history or `argv`. Pipe the key in, or use `--from-env VAR` to copy it from a process environment variable:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Pipe the key in (stdin)
 echo "$ANTHROPIC_API_KEY" | dcode auth set anthropic
 
@@ -69,25 +67,25 @@ dcode auth set openai --from-env OPENAI_API_KEY
 ```
 
 <Note>
-  `set` refuses to run in an interactive terminal so an accidental invocation cannot hang waiting on input — pipe the key via stdin or use `--from-env VAR`. Stored keys go through the same store as `/auth`, so warnings (for example, about file permissions on `auth.json`) are printed to stderr.
+    `set` refuses to run in an interactive terminal so an accidental invocation cannot hang waiting on input — pipe the key via stdin or use `--from-env VAR`. Stored keys go through the same store as `/auth`, so warnings (for example, about file permissions on `auth.json`) are printed to stderr.
 </Note>
 
 Remove a stored key or print the store location:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 dcode auth remove anthropic
 dcode auth path
 ```
 
 <Note>
-  `dcode auth set` manages API keys only. The `openai_codex` provider uses a ChatGPT browser sign-in rather than an API key, so run [`/auth` and select `openai_codex`](#sign-in-with-chatgpt) to sign in instead. `dcode auth remove openai_codex` does sign you out.
+    `dcode auth set` manages API keys only. The `openai_codex` provider uses a ChatGPT browser sign-in rather than an API key, so run [`/auth` and select `openai_codex`](#sign-in-with-chatgpt) to sign in instead. `dcode auth remove openai_codex` does sign you out.
 </Note>
 
 ## Environment variables (CI and headless)
 
 For non-interactive runs, CI/CD pipelines, or anywhere a TUI isn't available, export the provider's env var in your shell:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 export OPENAI_API_KEY="sk-..."
 
@@ -108,7 +106,7 @@ When a provider's key is set in more than one place, Deep Agents Code uses the f
 
 An app-stored key wins over a plain env-var key for the same provider, but a `DEEPAGENTS_CODE_`-prefixed key wins over an app-stored key. The prefix is the way to override an already-stored key for a single run, without clearing it:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # With a key already stored via /auth, a plain env var does not override it.
 # dcode still uses the app-stored key for this run:
 OPENAI_API_KEY=sk-xxxx dcode -n "..."
@@ -126,54 +124,53 @@ Each provider's API key and its endpoint (`base_url`) resolve as a pair from the
 The built-in `web_search` tool uses [Tavily](https://tavily.com). Deep Agents Code shows a "Web search disabled" notification on startup until you provide a key. You can store the key in the [`/auth`](#use-%2Fauth-recommended) credential manager, where Tavily appears as a non-model service, or set the `TAVILY_API_KEY` environment variable.
 
 <Tabs>
-  <Tab title="Use /auth (recommended)">
-    Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
+    <Tab title="Use /auth (recommended)">
+        Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
 
-    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    /auth
-    ```
-
-    Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
-  </Tab>
-
-  <Tab title="Set an environment variable">
-    <Steps>
-      <Step title="Get a key">
-        Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
-      </Step>
-
-      <Step title="Add it to your environment">
-        Add the key to `~/.deepagents/.env` so every session picks it up:
-
-        ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        TAVILY_API_KEY=tvly-...
+        ```txt
+        /auth
         ```
 
-        Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
-      </Step>
+        Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
+    </Tab>
 
-      <Step title="Reload or restart">
-        In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
-      </Step>
-    </Steps>
-  </Tab>
+    <Tab title="Set an environment variable">
+        <Steps>
+            <Step title="Get a key">
+                Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
+            </Step>
+
+            <Step title="Add it to your environment">
+                Add the key to `~/.deepagents/.env` so every session picks it up:
+
+                ```bash title="~/.deepagents/.env"
+                TAVILY_API_KEY=tvly-...
+                ```
+
+                Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
+            </Step>
+
+            <Step title="Reload or restart">
+                In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
+            </Step>
+        </Steps>
+    </Tab>
 </Tabs>
 
 ## See also
 
-* [Configuration](/oss/deepagents/code/configuration)
-* [Config file](/oss/deepagents/code/config-file)
-* [Providers](/oss/deepagents/code/providers)
-* [Quickstart](/oss/deepagents/code/quickstart)
+- [Configuration](/oss/deepagents/code/configuration)
+- [Config file](/oss/deepagents/code/config-file)
+- [Providers](/oss/deepagents/code/providers)
+- [Quickstart](/oss/deepagents/code/quickstart)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/credentials.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

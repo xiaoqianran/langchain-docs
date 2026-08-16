@@ -2,31 +2,29 @@
 
 # How to use a custom checkpointer
 
-Replace the built-in Postgres checkpointer with a custom BaseCheckpointSaver implementation in your agent deployment.
-
 When deploying agents to LangSmith, the server provides a built-in Postgres-backed checkpointer that handles state persistence across graph runs. You can replace this with your own [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver) implementation to use a different storage backend.
 
 You provide a path to an async context manager that yields a `BaseCheckpointSaver` instance, and the server manages its lifecycle automatically.
 
 <Warning>
-  Custom checkpointers are in **alpha**. This feature may experience breaking changes in minor version updates.
+Custom checkpointers are in **alpha**. This feature may experience breaking changes in minor version updates.
 </Warning>
 
 <Tip>
-  To use MongoDB instead of PostgreSQL for checkpoint storage, see [Configure checkpointer backend](/langsmith/configure-checkpointer). This page is for implementing a fully custom storage backend.
+To use MongoDB instead of PostgreSQL for checkpoint storage, see [Configure checkpointer backend](/langsmith/configure-checkpointer). This page is for implementing a fully custom storage backend.
 </Tip>
 
 ## Define the checkpointer
 
 Starting from an **existing** LangSmith application, create a file that defines an async context manager yielding your custom checkpointer. If you are beginning a new project, you can create an app from a template using the CLI.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph new --template=new-langgraph-project-python my_new_project
 ```
 
 The async context manager pattern lets the server open and close the database connection at the right points in the application lifecycle:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # ./src/agent/checkpointer.py
 import contextlib
 
@@ -56,13 +54,13 @@ Most open source checkpointer implementations do not yet implement all the opera
 
 Install the package:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pip install langgraph-checkpoint-conformance
 ```
 
 Register your checkpointer and run validation:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import asyncio
 
 from langgraph.checkpoint.conformance import checkpointer_test, validate
@@ -85,7 +83,7 @@ asyncio.run(main())
 
 The suite auto-detects which extended capabilities your checkpointer implements and runs the appropriate tests. You can also run it as a pytest test:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import pytest
 
 from langgraph.checkpoint.conformance import checkpointer_test, validate
@@ -110,7 +108,7 @@ To view the full list of base and extended operations that the suite validates, 
 
 Add the `checkpointer` key to your [`langgraph.json` configuration file](/langsmith/application-structure#configuration-file-concepts). The `path` points to the async context manager you [defined earlier](#define-the-checkpointer).
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -127,7 +125,7 @@ Add the `checkpointer` key to your [`langgraph.json` configuration file](/langsm
 
 Test the server out locally:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev --no-browser
 ```
 
@@ -139,21 +137,21 @@ The server checks your checkpointer for **base** (required) and **extended** (op
 
 ### Base capabilities (required)
 
-| Method           | Description           |
-| ---------------- | --------------------- |
-| `aput`           | Store a checkpoint    |
-| `aput_writes`    | Store pending writes  |
-| `aget_tuple`     | Retrieve a checkpoint |
-| `alist`          | List checkpoints      |
-| `adelete_thread` | Delete a thread       |
+| Method | Description |
+|---|---|
+| `aput` | Store a checkpoint |
+| `aput_writes` | Store pending writes |
+| `aget_tuple` | Retrieve a checkpoint |
+| `alist` | List checkpoints |
+| `adelete_thread` | Delete a thread |
 
 ### Extended capabilities (optional)
 
-| Method             | Description                          | Fallback if missing                               |
-| ------------------ | ------------------------------------ | ------------------------------------------------- |
-| `adelete_for_runs` | Delete checkpoints for specific runs | Rollback multitask strategy unavailable           |
-| `acopy_thread`     | Copy a thread                        | Slow fallback (re-inserts checkpoints one by one) |
-| `aprune`           | Prune thread history                 | Thread history pruning unavailable                |
+| Method | Description | Fallback if missing |
+|---|---|---|
+| `adelete_for_runs` | Delete checkpoints for specific runs | Rollback multitask strategy unavailable |
+| `acopy_thread` | Copy a thread | Slow fallback (re-inserts checkpoints one by one) |
+| `aprune` | Prune thread history | Thread history pruning unavailable |
 
 ## Deploying
 
@@ -161,18 +159,17 @@ You can deploy this app as-is to LangSmith or to your self-hosted platform.
 
 ## Next steps
 
-* [Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer) including delta channel support.
-* [Use a custom store](/langsmith/custom-store) to replace the built-in long-term memory store.
-* Learn about [persistence and memory](/oss/python/langgraph/persistence) in LangGraph.
+- [Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer) including delta channel support.
+- [Use a custom store](/langsmith/custom-store) to replace the built-in long-term memory store.
+- Learn about [persistence and memory](/oss/python/langgraph/persistence) in LangGraph.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -8,7 +8,7 @@
 
 要使用 Python SDK 返回多个分数，只需返回以下形式的字典/对象列表：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 [
     # 'key' is the metric name
     # 'score' is the value of a numerical metric
@@ -21,7 +21,7 @@
 
 要使用 JS/TS SDK 执行此操作，请返回一个带有“结果”键的对象，然后返回上述形式的列表
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript
 {results: [{ key: string, score: number }, ...]};
 ```
 
@@ -29,55 +29,56 @@
 
 示例：
 
-* Python：需要`langsmith>=0.2.0`
-* TypeScript：`langsmith@0.1.32`及更高版本支持多种分数
+- Python：需要`langsmith>=0.2.0`
+- TypeScript：`langsmith@0.1.32`及更高版本支持多种分数
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
-      # Replace with real evaluation logic.
-      precision = 0.8
-      recall = 0.9
-      f1 = 0.85
-      return [
-          {"key": "precision", "score": precision},
-          {"key": "recall", "score": recall},
-          {"key": "f1", "score": f1},
-      ]
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { Run, Example } from "langsmith/schemas";
+```python Python
+def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
+    # Replace with real evaluation logic.
+    precision = 0.8
+    recall = 0.9
+    f1 = 0.85
+    return [
+        {"key": "precision", "score": precision},
+        {"key": "recall", "score": recall},
+        {"key": "f1", "score": f1},
+    ]
+```
 
-  function multipleScores(rootRun: Run, example: Example) {
-    // Your evaluation logic here
-    return {
-        results: [
-            { key: "precision", score: 0.8 },
-            { key: "recall", score: 0.9 },
-            { key: "f1", score: 0.85 },
-        ],
-    };
-  }
-  ```
+```typescript TypeScript
+import type { Run, Example } from "langsmith/schemas";
+
+function multipleScores(rootRun: Run, example: Example) {
+  // Your evaluation logic here
+  return {
+      results: [
+          { key: "precision", score: 0.8 },
+          { key: "recall", score: 0.9 },
+          { key: "f1", score: 0.85 },
+      ],
+  };
+}
+```
+
 </CodeGroup>
 
 结果实验中的行将显示每个分数。
 
-<img alt="multiple_scores.png" />
+![multiple_scores.png](/langsmith/images/multiple-scores.png)
 
 ## 相关
 
 * [Return categorical vs numerical metrics](/langsmith/metric-type)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-scores.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

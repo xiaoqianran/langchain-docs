@@ -4,12 +4,10 @@
 
 # Azure Terraform 故障排除
 
-在使用 LangChain Terraform 模块部署的 Azure AKS 上自托管 LangSmith 的常见问题、修复和诊断命令。
-
-本页记录了使用 [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure) 配置的 LangSmith 部署的常见问题、修复和诊断命令。
+本页面记录了使用 [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure) 配置的 LangSmith 部署的常见问题、修复和诊断命令。
 
 <Tip>
-  升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `az aks get-credentials --name <cluster> --resource-group <rg>`。
+升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `az aks get-credentials --name <cluster> --resource-group <rg>`。
 </Tip>
 
 有关本页中使用的 `kubectl`、`helm` 和 `az` 调用的复制粘贴参考，请跳至 [Diagnostic commands](#diagnostic-commands)。
@@ -31,7 +29,7 @@ If you intend to onboard to LTS, please ensure the cluster is in Premium tier ..
 
 **修复：** 将`kubernetes_version`更新为支持`KubernetesOfficial`的版本：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 az aks get-versions --location eastus -o table
 # Versions with KubernetesOfficial in SupportPlan column work on Standard tier
 ```
@@ -52,15 +50,15 @@ Normal   NotTriggerScaleUp    pod/langsmith-backend-xxx  pod didn't trigger scal
 ```
 Error: creating temporary Agent Pool ... "code": "ErrCode_InsufficientVCPUQuota",
 "message": "Insufficient vcpu quota requested 8, remaining 2 for family standardDSv3Family for region eastus."
-```**原因：** 每个 VM 系列的每个区域 vCPU 配额。 `eastus` 中的`standardDSv3Family` 默认通常为 10 个核心。 1个`Standard_D8s_v3`节点使用8个；只剩下2个了。
+```
 
-**为什么 `max_pods = 30` 触发它：** AKS 默认为每个节点 30 个 pod。仅 LangSmith 基础安装就部署了约 37 个 Pod。自动缩放程序尝试添加第二个节点，达到配额，进入退避。修复：`terraform.tfvars` 中的`default_node_pool_max_pods = 60`，以便所有 pod 都适合一个节点。
+**原因：** 每个 VM 系列的每个区域 vCPU 配额。 `eastus` 中的`standardDSv3Family` 默认通常为 10 个核心。 1个`Standard_D8s_v3`节点使用8个；只剩下2个了。**为什么 `max_pods = 30` 触发它：** AKS 默认为每个节点 30 个 pod。仅基础 LangSmith 安装就部署了约 37 个 Pod。自动缩放程序尝试添加第二个节点，达到配额，进入退避。修复：`terraform.tfvars` 中的`default_node_pool_max_pods = 60`，以便所有 pod 都适合一个节点。
 
 **多数据平面（3 个数据平面）的建议配额**：32 个核心。
 
 **请求增加配额：**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Azure portal usually auto-approves within minutes:
 # Portal → Subscriptions → <sub> → Usage + Quotas → search "DSv3" → eastus → Request increase → 32
 
@@ -74,10 +72,10 @@ az quota update \
 az vm list-usage --location eastus --query "[?contains(name.value,'DSv3')]" -o table
 ```
 
-**或者，如果 DSv3 配额耗尽，则切换 VM 系列：** 使用 `Standard_DS4_v2`（基线）+ `Standard_DS5_v2`（大）。相同的 vCPU，略少的 RAM。已验证完整的 LangSmith 安装以及所有附加组件。
+**或者，如果 DSv3 配额耗尽，则切换 VM 系列：** 使用 `Standard_DS4_v2`（基线）+ `Standard_DS5_v2`（大）。相同的 vCPU，略少的 RAM。已验证完整的LangSmith安装以及所有附加组件。
 
 <Note>
-  `max_pods` 在现有节点池上是不可变的。将其设置在第一个`terraform apply`之前。
+`max_pods` 在现有节点池上是不可变的。将其设置在第一个`terraform apply`之前。
 </Note>
 
 ### 不支持 Istio 插件修订版
@@ -86,7 +84,7 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv3')]" -o t
 
 **修复：** 检查当前可用的修订并更新 `istio_addon_revision`：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 az aks mesh get-revisions --location eastus -o table
 ```
 
@@ -99,17 +97,17 @@ az aks mesh get-revisions --location eastus -o table
 ```
 Error: updating Key Vault "langsmith-kv-dz":
 once Purge Protection has been Enabled it's not possible to disable it
-```**原因：** 通过 `terraform destroy` 删除 Key Vault 时，Azure 会对其软删除 90 天。下一个同名的`terraform apply`会默默地恢复旧的Key Vault，包括其原始的`purge_protection_enabled = true`。清除保护是单向的（启用 → 无法禁用）。
+```
 
-**修复（接受净化保护，测试环境）：**
+**原因：** 通过 `terraform destroy` 删除 Key Vault 时，Azure 会对其进行软删除 90 天。下一个同名的`terraform apply`会默默地恢复旧的Key Vault，包括其原始的`purge_protection_enabled = true`。清除保护是单向的（启用 → 无法禁用）。**修复（接受净化保护，测试环境）：**
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 keyvault_purge_protection = true
 ```
 
 **修复（需要`purge_protection = false`）：**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # 1. Remove KV from Terraform state (does not delete from Azure)
 terraform -chdir=infra state rm module.keyvault.azurerm_key_vault.langsmith
 
@@ -133,7 +131,7 @@ already exists - to be managed via Terraform this resource needs to be imported 
 
 **修复：** 导入冲突的秘密：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform import \
   'module.keyvault.azurerm_key_vault_secret.deployments_encryption_key[0]' \
   "$(az keyvault secret show --vault-name langsmith-kv<id> --name langsmith-deployments-encryption-key --query id -o tsv)"
@@ -151,7 +149,7 @@ terraform apply
 
 ## 申请阶段
 
-### `dns_label` 子域无法解析：TLS 证书挂起待处理
+### `dns_label` 子域无法解析：TLS 证书卡在待处理状态
 
 **症状：** `nslookup langsmith-demo.eastus.cloudapp.azure.com` 返回 NXDOMAIN。证书管理器 ACME 挑战无法完成； TLS 证书仍为 `READY: False`。
 
@@ -159,7 +157,7 @@ terraform apply
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl annotate svc ingress-nginx-controller -n ingress-nginx \
   service.beta.kubernetes.io/azure-dns-label-name=<dns_label> \
   --overwrite
@@ -171,11 +169,11 @@ nslookup <dns_label>.eastus.cloudapp.azure.com
 kubectl delete certificate langsmith-tls -n langsmith
 ```
 
-### `istio-addon`：端口 80/443 超时，TLS 握手重置**症状：** 在`make deploy`和`ingress_controller = "istio-addon"`之后无法访问站点。 80端口超时，443端口复位。 ACME 挑战仍然是`pending`。
+### `istio-addon`：端口 80/443 超时，TLS 握手重置
 
-**原因（三个复合问题）：**
+**症状：** 在`make deploy`和`ingress_controller = "istio-addon"`之后无法访问站点。 80端口超时，443端口复位。 ACME 挑战仍然是`pending`。
 
-1. **网关标签错误。** 具有 `ingressClassName: istio` 的 Kubernetes Ingress 目标是具有标签 `istio: ingressgateway` 的 pod。 AKS 托管外部网关使用 `istio: aks-istio-ingressgateway-external`。
+**原因（三个复合问题）：**1. **网关标签错误。** 具有 `ingressClassName: istio` 的 Kubernetes Ingress 目标是具有标签 `istio: ingressgateway` 的 pod。 AKS 托管外部网关使用 `istio: aks-istio-ingressgateway-external`。
 2. **使用 `class: nginx` 创建`ClusterIssuer`。** ACME HTTP-01 求解器入口获取类 `nginx`，而不是 `istio`。
 3. **TLS 密钥位于错误的命名空间中。** Istio SDS 从网关 pod 命名空间 (`aks-istio-ingress`) 读取，而不是应用程序命名空间 (`langsmith`)。
 
@@ -189,7 +187,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 
 **手动修复：**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl apply -f - <<EOF
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -208,15 +206,15 @@ spec:
 EOF
 
 kubectl delete certificate langsmith-tls -n langsmith
-```### `database "langsmith" does not exist`：后端 Pod 崩溃循环
+```
 
-**症状：** 后端 Pod 立即崩溃：`FATAL: database "langsmith" does not exist`。
+### `database "langsmith" does not exist`：后端 Pod 崩溃循环
 
-**原因：** Azure DB for PostgreSQL 灵活服务器不会自动创建应用程序数据库。 Terraform `postgres` 模块现在通过 `azurerm_postgresql_flexible_server_database` 创建数据库。此错误意味着您使用的是缺少该资源的旧模块版本。
+**症状：** 后端 Pod 立即崩溃：`FATAL: database "langsmith" does not exist`。**原因：** Azure DB for PostgreSQL 灵活服务器不会自动创建应用程序数据库。 Terraform `postgres` 模块现在通过 `azurerm_postgresql_flexible_server_database` 创建数据库。此错误意味着您使用的是缺少该资源的旧模块版本。
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform apply
 kubectl rollout restart deployment -n langsmith
 ```
@@ -227,7 +225,7 @@ kubectl rollout restart deployment -n langsmith
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl delete secret langsmith-config-secret -n langsmith
 make k8s-secrets   # recreates with correct key names
 make deploy
@@ -237,21 +235,21 @@ make deploy
 
 **原因：** LangSmith 数据库迁移是仅向前的。降级图表会使数据库处于旧应用程序映像无法找到的修订版本。
 
-**修复：** 前滚到您所在的版本（或更新版本）。将`langsmith_helm_chart_version`设置为`terraform.tfvars`并重新部署。在升级生产之前，始终在单独的环境中测试新的图表版本。
+**修复：** 前滚到您所在的版本（或更高版本）。将`langsmith_helm_chart_version`设置为`terraform.tfvars`并重新部署。在升级生产之前，始终在单独的环境中测试新的图表版本。
 
 ### Helm 安装超时
 
-**原因：** `langsmith-backend-auth-bootstrap` 在每个 `helm upgrade` 上运行数据库迁移；首次安装最多需要 5 分钟。如果没有 `--timeout 20m`，即使安装最终成功，Helm 也会报告失败。**修复：** `make deploy` 已使用 `--timeout 20m`。手动运行 Helm，始终包含 `--timeout 20m`。
+**原因：** `langsmith-backend-auth-bootstrap` 在每个 `helm upgrade` 上运行数据库迁移；首次安装最多需要 5 分钟。如果没有 `--timeout 20m`，即使安装最终成功，Helm 也会报告失败。
+
+**修复：** `make deploy` 已使用 `--timeout 20m`。手动运行 Helm，始终包含 `--timeout 20m`。
 
 ## 附加组件
 
-### Pod 停留在 `DEPLOYING`，永远不会到达 `HEALTHY`
-
-**原因：** 启用 TLS 时，`config.deployment.url` 为空或 `config.deployment.tlsEnabled` 为 `false`。操作员根据这些值构建代理端点 URL。
+### Pod 停留在 `DEPLOYING`，永远不会到达 `HEALTHY`**原因：** 启用 TLS 时，`config.deployment.url` 为空或 `config.deployment.tlsEnabled` 为 `false`。操作员根据这些值构建代理端点 URL。
 
 **修复：** `init-values.sh` 从示例复制后自动注入 `url` 和 `tlsEnabled`。如果手动部署：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   deployment:
     enabled: true
@@ -267,7 +265,7 @@ config:
 
 **修复：** `init-values.sh` 现在在 `clickhouse_source = "in-cluster"` 时生成最小的见解文件。对于存在此问题的现有部署：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cat > helm/values/langsmith-values-insights.yaml << 'EOF'
 insights:
   enabled: true
@@ -283,13 +281,13 @@ make deploy
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl rollout restart deployment langsmith-frontend -n langsmith
 kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 # expect: VITE_POLLY_DEPLOYMENT_URL=https://<hostname>/lgp/smith-polly-<hash>
-```**原因 B，`LANGCHAIN_ENDPOINT` 设置于 `polly.agent.extraEnv`。** `LANGCHAIN_ENDPOINT` 被保留。设置它会导致引导作业失败并显示`400 Bad Request: 'LANGCHAIN_ENDPOINT' is reserved`。波莉从未被创造出来。
+```
 
-**修复：**完全删除`polly.agent.extraEnv`块。操作员自动注入`LANGCHAIN_ENDPOINT`。
+**原因 B，`LANGCHAIN_ENDPOINT` 设置于 `polly.agent.extraEnv`。** `LANGCHAIN_ENDPOINT` 被保留。设置它会导致引导作业失败并显示`400 Bad Request: 'LANGCHAIN_ENDPOINT' is reserved`。波莉从未被创造出来。**修复：**完全删除`polly.agent.extraEnv`块。操作员自动注入`LANGCHAIN_ENDPOINT`。
 
 ### 启用 LangSmith 部署后，`listener` 和 `operator` Pod 永远不会出现
 
@@ -297,7 +295,7 @@ kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 
 **修复：** 在 `deployment` 块内添加 `enabled: true`：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   deployment:
     enabled: true          # required; url alone is not enough
@@ -314,12 +312,12 @@ config:
 
 首次使用后更改 `deployments_encryption_key`、`agent_builder_encryption_key` 或 `insights_encryption_key` 会永久损坏其保护的数据。没有恢复。
 
-* 请勿旋转这些钥匙。
-* 不要将`config.agentBuilder.encryptionKey`或`config.insights.encryptionKey`内联设置在`values-overrides.yaml`中。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
+- 请勿旋转这些钥匙。
+- 不要将`config.agentBuilder.encryptionKey`或`config.insights.encryptionKey`内联设置在`values-overrides.yaml`中。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
 
-CrashLoopBackOff 中的 ### `agent-builder-tool-server` 或 `polly`**症状：** Pod 无限期地重新启动。没有回溯。日志反复显示“子进程死亡”。
+CrashLoopBackOff 中的 ### `agent-builder-tool-server` 或 `polly`
 
-**原因：** `lc_config.settings.SharedSettings` 在 uvicorn Worker 内的模块导入时实例化。在那里升起的 pydantic `ValidationError` 退出了工人，代码为 0； uvicorn 的父进程打印“子进程死亡”，但吞掉了回溯。常见触发器：`BASIC_AUTH_ENABLED = true` 但`BASIC_AUTH_JWT_SECRET` 为空，或者`langsmith-config` 中缺少所需的功能标记键。
+**症状：** Pod 无限期地重新启动。没有回溯。日志反复显示“子进程死亡”。**原因：** `lc_config.settings.SharedSettings` 在 uvicorn Worker 内的模块导入时实例化。在那里升起的 pydantic `ValidationError` 退出了工人，代码为 0； uvicorn 的父进程打印“子进程死亡”，但吞掉了回溯。常见触发器：`BASIC_AUTH_ENABLED = true` 但`BASIC_AUTH_JWT_SECRET` 为空，或者`langsmith-config` 中缺少所需的功能标记键。
 
 通过在调试 Pod 中运行服务器并使用 `envFrom` 指向 `langsmith-config` 和 `PYTHONUNBUFFERED=1` 来进行**诊断**。 **修复：** 将丢失的密钥添加到 Key Vault，重新运行 `make k8s-secrets`，重新启动部署。
 
@@ -341,7 +339,7 @@ WorkloadIdentityCredential authentication failed.
 
 **修复：** 将缺少的ServiceAccount添加到`modules/k8s-cluster/main.tf`中的`service_accounts_for_workload_identity`：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 service_accounts_for_workload_identity = [
   "${var.langsmith_release_name}-backend",
   "${var.langsmith_release_name}-platform-backend",
@@ -354,7 +352,7 @@ service_accounts_for_workload_identity = [
 ]
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform apply -target=module.aks
 kubectl rollout restart deployment/langsmith-<service> -n langsmith
 ```
@@ -365,11 +363,13 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 
 ### `make clean` 在 `make destroy` 孤儿基础设施之前
 
-**症状：** `make clean` 失败后，`make destroy` 出现 `No state file was found!`。 Azure 资源仍在运行，但 Terraform 失去了跟踪。**原因：** `make clean` 删除了 `terraform.tfvars` 和 `secrets.auto.tfvars`。没有它们，Terraform 无法初始化后端。
+**症状：** `make clean` 失败后，`make destroy` 出现 `No state file was found!`。 Azure 资源仍在运行，但 Terraform 失去了跟踪。
+
+**原因：** `make clean` 删除了 `terraform.tfvars` 和 `secrets.auto.tfvars`。没有它们，Terraform 无法初始化后端。
 
 **正确的拆卸顺序**
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 1. make uninstall   ← Helm + namespace
 2. make destroy     ← Azure infra (needs tfstate + tfvars)
 3. make clean       ← local secrets and generated files (LAST)
@@ -377,12 +377,10 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 
 **tfstate消失后恢复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 az group delete --name langsmith-rg<identifier> --yes --no-wait
 az group show --name langsmith-rg<identifier> 2>&1 | grep -E "provisioningState|ResourceGroupNotFound"
-```
-
-如果您之后重复使用相同的 `identifier`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，首先清除：`az keyvault purge --name langsmith-kv<identifier> --location <region>`。
+```如果您之后重复使用相同的 `identifier`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，首先清除：`az keyvault purge --name langsmith-kv<identifier> --location <region>`。
 
 ### `terraform destroy` 在 VNet/子网删除时停止
 
@@ -390,7 +388,7 @@ az group show --name langsmith-rg<identifier> 2>&1 | grep -E "provisioningState|
 
 **修复：** 首先运行`make uninstall`。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make uninstall
 kubectl delete namespace langsmith --timeout=60s
 make destroy
@@ -398,7 +396,7 @@ make destroy
 
 ### `langsmith-agent-bootstrap` 挂钩超时
 
-**症状：** Helm 升级后挂钩超时 (`context deadline exceeded`)。特工们在 20 分钟内完成了`QUEUED → AWAITING_DEPLOY → DEPLOYING`，但没有到达`HEALTHY`。
+**症状：** Helm 升级后挂钩超时 (`context deadline exceeded`)。特工在 20 分钟内完成了`QUEUED → AWAITING_DEPLOY → DEPLOYING`，但没有到达`HEALTHY`。
 
 **原因：** 在冷集群上，三个 LGP 代理（`agent-builder`、`clio`、`smith-polly`）首次拉取映像可能需要 20 分钟以上的时间。 Helm hook 同步等待。
 
@@ -409,7 +407,7 @@ make destroy
 **原因：** 侦听器内存限制由`listener.deployment.resources`下的大小调整覆盖设置。在 `dev` 配置文件上，该限制为 `2Gi`，持续部署负载可能会超出该限制。**修复：** 通过移动到更大的尺寸配置文件或将覆盖添加到在尺寸调整覆盖后加载的值文件中，提高`listener.deployment.resources`（图表读取的键）下的限制，然后重新运行`make init-values`和`make deploy`。
 
 <Note>
-  该图表显示集装箱限制为`listener.deployment.resources`，而不是统一的`listener.resources`。 `langsmith-values-agent-deploys.yaml` 示例设置了 `listener.resources`，图表会默默地忽略它，因此该值不会更改限制。
+该图表显示集装箱限制为`listener.deployment.resources`，而不是统一的`listener.resources`。 `langsmith-values-agent-deploys.yaml` 示例设置了 `listener.resources`，图表会默默地忽略它，因此该值不会更改限制。
 </Note>
 
 ### 过时的 HPA 将 `listener` 或 `host-backend` 扩展到最大副本数
@@ -418,7 +416,7 @@ make destroy
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl delete hpa langsmith-listener langsmith-host-backend -n langsmith 2>/dev/null || true
 kubectl scale deployment langsmith-listener -n langsmith --replicas=1
 kubectl scale deployment langsmith-host-backend -n langsmith --replicas=1
@@ -431,9 +429,9 @@ make deploy
 
 **症状：** `ingress-appgw-deployment` 是 CrashLoopBackOff。日志：`ErrorApplicationGatewayForbidden: does not have authorization to perform action Microsoft.Network/applicationGateways/read`。
 
-**原因：** AKS 为 AGIC 加载项（`MC_` 资源组中的`ingressapplicationgateway-<cluster>`）创建托管标识。该标识是在群集预配期间创建的，但需要大约 5 分钟才能在 Azure AD 中注册，然后角色分配才会生效。**修复：** `k8s-cluster` 模块在集群创建 (`time_sleep.agic_identity_propagation`) 后等待 300 秒，并自动创建三个所需的角色分配。如果`make apply`之后AGIC仍然是403：
+**原因：** AKS 为 AGIC 加载项（`MC_` 资源组中的`ingressapplicationgateway-<cluster>`）创建托管标识。该标识是在群集预配期间创建的，但在角色分配生效之前需要大约 5 分钟的时间在 Azure AD 中注册。**修复：** `k8s-cluster` 模块在集群创建 (`time_sleep.agic_identity_propagation`) 后等待 300 秒，并自动创建三个所需的角色分配。如果`make apply`之后AGIC仍然是403：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 az aks update --name <CLUSTER> --resource-group <RG> --yes
 kubectl delete pod -n kube-system -l app=ingress-azure
 ```
@@ -446,7 +444,7 @@ kubectl delete pod -n kube-system -l app=ingress-azure
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 AGIC_OID=$(az aks show -g <RG> -n <CLUSTER> \
   --query "addonProfiles.ingressApplicationGateway.identity.objectId" -o tsv)
 VNET_ID=$(az network vnet show -g <RG> -n <VNET> --query id -o tsv)
@@ -463,7 +461,7 @@ kubectl rollout restart deployment/ingress-appgw-deployment -n kube-system
 
 **修复：** 触摸 Ingress 触发重新同步：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get certificate langsmith-tls -n langsmith   # verify cert is ready
 kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --overwrite
 ```
@@ -498,7 +496,7 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 **修复**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get crd | grep "istio.io" | awk '{print $1}' | xargs kubectl delete crd
 terraform apply
 ```
@@ -507,7 +505,7 @@ terraform apply
 
 ### 集群访问
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 az aks get-credentials --name <cluster> --resource-group <rg>
 kubectl config current-context
 kubectl get nodes -o wide
@@ -515,7 +513,7 @@ kubectl get nodes -o wide
 
 ### Pod
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
 kubectl describe pod <pod-name> -n langsmith
@@ -525,7 +523,7 @@ kubectl logs <pod-name> -n langsmith --previous --tail=50
 
 ### 入口和 TLS
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get ingress -n langsmith
 kubectl get svc ingress-nginx-controller -n ingress-nginx
 kubectl get certificate -n langsmith
@@ -535,7 +533,7 @@ kubectl get clusterissuer
 
 ### 工作负载身份
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get serviceaccount langsmith-ksa -n langsmith \
   -o jsonpath='{.metadata.annotations.azure\.workload\.identity/client-id}'
 
@@ -545,7 +543,7 @@ kubectl get pod <pod> -n langsmith \
 
 ### 头盔
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
@@ -553,7 +551,7 @@ helm get values langsmith -n langsmith
 
 ### LangSmith 部署
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
@@ -561,7 +559,7 @@ kubectl get crd | grep langchain
 
 ### Key Vault 和 Kubernetes 秘密
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 ./infra/scripts/manage-keyvault.sh list
 ./infra/scripts/manage-keyvault.sh validate
 ./infra/scripts/manage-keyvault.sh diff
@@ -572,19 +570,18 @@ kubectl get secret langsmith-config-secret -n langsmith -o jsonpath='{.data}' | 
 
 ### 快速健康检查
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make status         # 10-section automated check
 make status-quick   # skip Key Vault + K8s secret queries
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

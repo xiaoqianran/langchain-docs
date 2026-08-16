@@ -18,7 +18,7 @@ To make your model configurable in the Playground, you need to add configurable 
 
 You can add configurable fields by implementing the `with_configurable_fields` function in the `config.py` file. You can
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 def with_configurable_fields(self) -> Runnable:
     """Expose fields you want to be configurable in the Playground. We will automatically expose these to the
     Playground. If you don't want to expose any fields, you can remove this method."""
@@ -35,20 +35,19 @@ Once you have deployed a model server, you can use it in the Playground. Enter t
 
 Enter the `URL`. The Playground will automatically detect the available endpoints and configurable fields. You can then invoke the model with the desired parameters.
 
-<img alt="ChatCustomModel in Playground" />
+![ChatCustomModel in Playground](/langsmith/images/playground-custom-model.png)
 
 If everything is set up correctly, you should see the model's response in the Playground as well as the configurable fields specified in the `with_configurable_fields`.
 
 For more information, see [how to store your model configuration for later use](/langsmith/managing-model-configurations).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-endpoint.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

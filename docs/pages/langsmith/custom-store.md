@@ -2,31 +2,29 @@
 
 # How to use a custom store
 
-Replace the built-in Postgres store with a custom BaseStore implementation in your agent deployment.
-
 When deploying agents to LangSmith, the server provides a built-in Postgres-backed long-term memory store with optional vector search via pgvector. You can replace this with your own [BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore) implementation to use a different storage backend, custom indexing, or specialized search capabilities.
 
 You provide a path to an async context manager that yields a `BaseStore` instance, and the server manages the store's lifecycle automatically.
 
 <Warning>
-  Custom stores are in **alpha**. This feature may experience breaking changes in minor version updates.
+Custom stores are in **alpha**. This feature may experience breaking changes in minor version updates.
 </Warning>
 
 ## Define the store
 
 Starting from an **existing** LangSmith application, create a file that defines an async context manager yielding your custom store. If you are beginning a new project, you can create an app from a template using the CLI.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph new --template=new-langgraph-project-python my_new_project
 ```
 
 The async context manager pattern lets the server open and close the store connection at the right points in the application lifecycle. The following example uses `AsyncSqliteStore` with semantic search:
 
 <Note>
-  SQLite is not recommended for use in production deployments.
+SQLite is not recommended for use in production deployments.
 </Note>
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # ./src/agent/store.py
 import contextlib
 
@@ -53,14 +51,14 @@ async def generate_store():
 ```
 
 <Note>
-  When a custom store is configured, it **replaces** the built-in Postgres store entirely. Capabilities like semantic search and TTL sweeping depend on your implementation.
+When a custom store is configured, it **replaces** the built-in Postgres store entirely. Capabilities like semantic search and TTL sweeping depend on your implementation.
 </Note>
 
 ## Configure `langgraph.json`
 
 Add the `store` key to your [`langgraph.json` configuration file](/langsmith/application-structure#configuration-file-concepts). The `path` points to the async context manager you [defined earlier](#define-the-store).
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -77,7 +75,7 @@ Add the `store` key to your [`langgraph.json` configuration file](/langsmith/app
 
 Test the server out locally:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev --no-browser
 ```
 
@@ -93,17 +91,16 @@ You can deploy this app as-is to LangSmith or to your self-hosted platform.
 
 ## Next steps
 
-* [Use a custom checkpointer](/langsmith/custom-checkpointer) to replace the built-in checkpoint storage.
-* Learn about [persistence and memory](/oss/python/langgraph/persistence) in LangGraph.
+- [Use a custom checkpointer](/langsmith/custom-checkpointer) to replace the built-in checkpoint storage.
+- Learn about [persistence and memory](/oss/python/langgraph/persistence) in LangGraph.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-store.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

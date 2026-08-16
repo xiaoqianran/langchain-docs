@@ -4,7 +4,7 @@
 
 In this tutorial, you will extend [the chatbot created in the last tutorial](/langsmith/set-up-custom-auth) to give each user their own private conversations. You'll add [resource-level access control](/langsmith/auth#single-owner-resources) so users can only see their own threads.
 
-<img alt="Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads." />
+![Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads.](/langsmith/images/authorization.png)
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ Authorization handlers are functions that run **after** authentication succeeds.
 
 Update your `src/security/auth.py` and add one authorization handler to run on every request:
 
-```python {highlight={29-39}} title="src/security/auth.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={29-39}} title="src/security/auth.py"
 from langgraph_sdk import Auth
 
 # Keep our test users from the previous tutorial
@@ -107,7 +107,7 @@ async def add_owner(
 
 The handler receives two parameters:
 
-1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext)): contains info about the current `user`, the user's `permissions`, the `resource` ("threads", "crons", "assistants"), and the `action` being taken ("create", "read", "update", "delete", "search", "create\_run")
+1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext)): contains info about the current `user`, the user's `permissions`, the `resource` ("threads", "crons", "assistants"), and the `action` being taken ("create", "read", "update", "delete", "search", "create_run")
 2. `value` (`dict`): data that is being created or accessed. The contents of this dict depend on the resource and action being accessed. See [adding scoped authorization handlers](#scoped-authorization) below for information on how to get more tightly scoped access control.
 
 Notice that the simple handler does two things:
@@ -119,7 +119,7 @@ Notice that the simple handler does two things:
 
 Test your authorization. If you have set things up correctly, you will see all ✅ messages. Be sure to have your development server running (run `langgraph dev`):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import get_client
 
 # Create clients for both users
@@ -172,7 +172,7 @@ print(f"✅ Bob sees {len(bob_threads)} thread")
 
 Output:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 ✅ Alice created assistant: fc50fb08-78da-45a9-93cc-1d3928a3fc37
 ✅ Alice created thread: 533179b7-05bc-4d48-b47a-a83cbdb5781d
 ✅ Bob correctly denied access: Client error '404 Not Found' for url 'http://localhost:2024/threads/533179b7-05bc-4d48-b47a-a83cbdb5781d'
@@ -188,15 +188,14 @@ This means:
 2. Users can't see each other's threads
 3. Listing threads only shows your own
 
-<a />
-
+<a id="scoped-authorization"></a>
 ## 3. Add scoped authorization handlers
 
 The broad `@auth.on` handler matches on all [authorization events](/langsmith/auth#supported-resources). This is concise, but it means the contents of the `value` dict are not well-scoped, and the same user-level access control is applied to every resource. If you want to be more fine-grained, you can also control specific actions on resources.
 
 Update `src/security/auth.py` to add handlers for specific resource types:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Keep our previous handlers...
 
 from langgraph_sdk import Auth
@@ -271,13 +270,13 @@ Notice that instead of one global handler, you now have specific handlers for:
 2. Reading threads
 3. Accessing assistants
 
-The first three of these match specific **actions** on each resource (see [resource actions](/langsmith/auth#resource-specific-handlers)), while the last two (`@auth.on.assistants` and `@auth.on.store`) matche *any* action on the `assistants` and `store` resources. For each request, LangGraph will run the most specific handler that matches the resource and action being accessed. This means that the four handlers above will run rather than the broadly scoped "`@auth.on`" handler.
+The first three of these match specific **actions** on each resource (see [resource actions](/langsmith/auth#resource-specific-handlers)), while the last two (`@auth.on.assistants` and `@auth.on.store`) matche _any_ action on the `assistants` and `store` resources. For each request, LangGraph will run the most specific handler that matches the resource and action being accessed. This means that the four handlers above will run rather than the broadly scoped "`@auth.on`" handler.
 
 Store authorization works differently from threads and assistants. For store isolation patterns and tradeoffs, see [Isolate store per user](/langsmith/store-auth).
 
 Try adding the following test code to your test file:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # ... Same as before
 # Try creating an assistant. This should fail
 try:
@@ -300,7 +299,7 @@ print(f"✅ Alice created thread: {alice_thread['thread_id']}")
 
 Output:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 ✅ Alice created thread: dcea5cd8-eb70-4a01-a4b6-643b14e8f754
 ✅ Bob correctly denied access: Client error '404 Not Found' for url 'http://localhost:2024/threads/dcea5cd8-eb70-4a01-a4b6-643b14e8f754'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
@@ -322,14 +321,13 @@ Now that you can control access to resources, you might want to:
 2. Read more about [authorization patterns](/langsmith/auth#authorization).
 3. Check out the [API reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) for details about the interfaces and methods used in this tutorial.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resource-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

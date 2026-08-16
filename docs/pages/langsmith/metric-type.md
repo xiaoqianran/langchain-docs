@@ -16,55 +16,56 @@ For an evaluator result to be logged as a categorical metric, it must be returne
 
 Here are some examples:
 
-* Python: Requires `langsmith>=0.2.0`
-* TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
+- Python: Requires `langsmith>=0.2.0`
+- TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def numerical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> float:
-      # Evaluation logic...
-      return 0.8
-      # Equivalently
-      # return {"score": 0.8}
-      # Or
-      # return {"key": "numerical_metric", "score": 0.8}
 
-  def categorical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> str:
-      # Evaluation logic...
-      return "english"
-      # Equivalently
-      # return {"key": "categorical_metric", "score": "english"}
-      # Or
-      # return {"score": "english"}
-  ```
+```python Python
+def numerical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> float:
+    # Evaluation logic...
+    return 0.8
+    # Equivalently
+    # return {"score": 0.8}
+    # Or
+    # return {"key": "numerical_metric", "score": 0.8}
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { Run, Example } from "langsmith/schemas";
+def categorical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> str:
+    # Evaluation logic...
+    return "english"
+    # Equivalently
+    # return {"key": "categorical_metric", "score": "english"}
+    # Or
+    # return {"score": "english"}
+```
 
-  function numericalMetric(run: Run, example: Example) {
-    // Your evaluation logic here
-    return { key: "numerical_metric", score: 0.8};
-  }
+```typescript TypeScript
+import type { Run, Example } from "langsmith/schemas";
 
-  function categoricalMetric(run: Run, example: Example) {
-    // Your evaluation logic here
-    return { key: "categorical_metric", value: "english"};
-  }
-  ```
+function numericalMetric(run: Run, example: Example) {
+  // Your evaluation logic here
+  return { key: "numerical_metric", score: 0.8};
+}
+
+function categoricalMetric(run: Run, example: Example) {
+  // Your evaluation logic here
+  return { key: "categorical_metric", value: "english"};
+}
+```
+
 </CodeGroup>
 
 ## Related
 
 * [Return multiple metrics in one evaluator](/langsmith/multiple-scores)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/metric-type.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

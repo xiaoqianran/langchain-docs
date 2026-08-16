@@ -2,103 +2,101 @@
 
 # Discover errors and usage patterns with Insights
 
-Use LangSmith Insights to automatically analyze traces, detect usage patterns, identify common agent behaviors, and surface failure modes without manual trace review.
-
 Insights automatically analyzes your traces to detect usage patterns, common agent behaviors, and failure modes, so you do not need to review thousands of traces manually.
 
 Insights uses hierarchical categorization to make sense of your data and highlight actionable trends.
 
 <Note>
-  Insights is available for LangSmith Plus and Enterprise [plans](/langsmith/pricing-plans).
+Insights is available for LangSmith Plus and Enterprise [plans](/langsmith/pricing-plans).
 </Note>
 
 ## Prerequisites
 
-* A [model configuration](/langsmith/model-configurations) set up for Insights in your workspace.
-* [Permissions](/langsmith/organization-workspace-operations#projects) to create rules in LangSmith (required to generate new Insights Reports).
-* [Permissions](/langsmith/organization-workspace-operations#projects) to view tracing projects in LangSmith (required to view existing Insights Reports).
+- A [model configuration](/langsmith/model-configurations) set up for Insights in your workspace.
+- [Permissions](/langsmith/organization-workspace-operations#projects) to create rules in LangSmith (required to generate new Insights Reports).
+- [Permissions](/langsmith/organization-workspace-operations#projects) to view tracing projects in LangSmith (required to view existing Insights Reports).
 
 ## Generate your first Insights report
 
 <Tabs>
   <Tab title="UI" icon="layout-dashboard">
-    1. Navigate to **Tracing Projects** in the left-hand menu and select a tracing project.
-    2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over the project.
-    3. Enter a name for your job.
-    4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
-    5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
 
-    <Tip>Toggle to Manual mode to [configure the job manually](#configure-a-job).</Tip>
+1. Navigate to **Tracing Projects** in the left-hand menu and select a tracing project.
+1. Click **+New** in the top right corner then **New Insights Report** to generate new insights over the project.
+1. Enter a name for your job.
+1. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
+1. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
 
-    This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
+<Tip>Toggle to Manual mode to [configure the job manually](#configure-a-job).</Tip>
+
+This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
+
   </Tab>
-
   <Tab title="SDK" icon="code">
-    You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
 
-    When you call `generate_insights()`, the SDK will:
+You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
 
-    1. Upload your chat histories as traces to a new LangSmith project.
-    2. Generate an Insights Report over those uploaded traces.
-    3. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights).
+When you call `generate_insights()`, the SDK will:
 
-    <CodeGroup>
-      ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langsmith import Client
+1. Upload your chat histories as traces to a new LangSmith project.
+1. Generate an Insights Report over those uploaded traces.
+1. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-insights).
 
-      client = Client()
+<CodeGroup>
 
-      chat_histories = [
-          [
-              {"role": "user", "content": "how are you"},
-              {"role": "assistant", "content": "good!"},
-          ],
-          [
-              {"role": "user", "content": "do you like art"},
-              {"role": "assistant", "content": "only Tarkovsky"},
-          ],
-      ]
+```python Python
+import os
+from langsmith import Client
 
-      report = client.generate_insights(
-          chat_histories=chat_histories,
-          name="Customer Support Topics - March 2024",
-          instructions="What are the main topics and questions users are asking about?",
-          openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
-      )
+client = Client()
 
-      # client.poll_insights(report=report)
-      ```
-    </CodeGroup>
+chat_histories = [
+    [
+        {"role": "user", "content": "how are you"},
+        {"role": "assistant", "content": "good!"},
+    ],
+    [
+        {"role": "user", "content": "do you like art"},
+        {"role": "assistant", "content": "only Tarkovsky"},
+    ],
+]
+
+report = client.generate_insights(
+    chat_histories=chat_histories,
+    name="Customer Support Topics - March 2024",
+    instructions="What are the main topics and questions users are asking about?",
+    openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
+)
+
+# client.poll_insights(report=report)
+```
+</CodeGroup>
+
   </Tab>
 </Tabs>
 
 <Note>
-  Generating insights over 1,000 threads typically costs \$1.00-\$2.00 with OpenAI models and \$3.00-\$4.00 with current Anthropic models. The cost scales with the number of threads sampled and the size of each thread.
+    Generating insights over 1,000 threads typically costs \$1.00-\$2.00 with OpenAI models and \$3.00-\$4.00 with current Anthropic models. The cost scales with the number of threads sampled and the size of each thread.
 </Note>
 
 ## Understand the results
 
 Once your job has completed, you can navigate to the **Insights** tab where you'll see a table of Insights Report. Each Report contains insights generated over a specific sample of traces from the tracing project.
 
-<Frame>
-  <img />
-</Frame>
+<Frame caption="Insights Reports for a single tracing project"><img src="/langsmith/images/insights-job-results.png" /> </Frame>
 
 Click into your job to see traces organized into a set of auto-generated categories.
 
 You can drill down through categories and subcategories to view the underlying traces, feedback, and run statistics.
 
-<Frame>
-  <img />
-</Frame>
+<Frame caption="Common topics of conversations with the https://chat.langchain.com chatbot"><img src="/langsmith/images/insights-nav.gif" /> </Frame>
 
 ### Executive summary
 
 At the top of each report, you'll find an executive summary that surfaces the most important patterns discovered in your traces. This includes:
 
-* Key findings with percentages showing how often each pattern appears.
-* Clickable references (e.g., #1, #2, #3) to traces the agent identified as exceptionally relevant to your question.
+- Key findings with percentages showing how often each pattern appears.
+- Clickable references (e.g., #1, #2, #3) to traces the agent identified as exceptionally relevant to your question.
 
 ### Top-level categories
 
@@ -108,9 +106,9 @@ The distribution bars show how frequently each pattern occurs, making it easy to
 
 Each category has a brief description and displays aggregated metrics over the traces it contains, including:
 
-* Typical trace stats (like error rates, latency, cost)
-* Feedback scores from your evaluators
-* [Attributes](#attributes) extracted as part of the job
+- Typical trace stats (like error rates, latency, cost)
+- Feedback scores from your evaluators
+- [Attributes](#attributes) extracted as part of the job
 
 ### Subcategories
 
@@ -144,8 +142,8 @@ Explain how your data is organized: are these single runs or multi-turn conversa
 
 Insights uses two models:
 
-* **Thinking model**: performs the clustering step (more capable, higher cost).
-* **Summarization model**: generates the per-trace summaries (faster, lower cost).
+- **Thinking model**: performs the clustering step (more capable, higher cost).
+- **Summarization model**: generates the per-trace summaries (faster, lower cost).
 
 Both models are selected from the providers you have configured in your workspace. When specific models have been enabled for Insights in your [model configurations](/langsmith/model-configurations), you can select them individually. If no individual models are configured, you select a provider (OpenAI or Anthropic) and Insights uses default models for that provider.
 
@@ -157,9 +155,9 @@ Manual configuration gives you more control—for example, predefining categorie
 
 #### Select traces
 
-* **Sample size**: The maximum number of traces to analyze (1,000 limit).
-* **Time range**: Traces are sampled from this time range.
-* **Filters**: Additional trace filters. As you adjust filters, you'll see how many traces match your criteria.
+- **Sample size**: The maximum number of traces to analyze (1,000 limit).
+- **Time range**: Traces are sampled from this time range.
+- **Filters**: Additional trace filters. As you adjust filters, you'll see how many traces match your criteria.
 
 #### Categories
 
@@ -181,24 +179,24 @@ Extracting the right information in the summary is essential for getting useful 
 
 You can edit the prompt used to generate these summaries. The two things to think about when editing the prompt are:
 
-* Summarization instructions: Any information that isn't in the trace summary won't affect the categories that get generated, so make sure to provide clear instructions on what information is important to extract from each trace.
-* Trace content: Use mustache formatting to specify which parts of each trace are passed to the summarizer. Large traces with lots of inputs and outputs can be expensive and noisy. Reducing the prompt to only include the most relevant parts of the trace can improve your results.
+- Summarization instructions: Any information that isn't in the trace summary won't affect the categories that get generated, so make sure to provide clear instructions on what information is important to extract from each trace.
+- Trace content: Use mustache formatting to specify which parts of each trace are passed to the summarizer. Large traces with lots of inputs and outputs can be expensive and noisy. Reducing the prompt to only include the most relevant parts of the trace can improve your results.
 
 You must specify what parts of each trace to send to the summarizer using at least one of these template variables:
 
-| Variable              | Description                                                                                          | Example                        |
-| --------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `run.inputs`          | Inputs of the most recent root run                                                                   | `{{run.inputs}}`               |
-| `run.outputs`         | Outputs of the most recent root run                                                                  | `{{run.outputs}}`              |
-| `run.error`           | Error string, if the run failed                                                                      | `{{run.error}}`                |
-| `run.feedback`        | All feedback scores as a JSON blob                                                                   | `{{run.feedback}}`             |
-| `run.feedback.<key>`  | A specific feedback score by key                                                                     | `{{run.feedback.correctness}}` |
-| `all_thread_messages` | Full message history for the thread (only available for projects with [threads](/langsmith/threads)) | `{{all_thread_messages}}`      |
+| Variable | Description | Example |
+| --- | --- | --- |
+| `run.inputs` | Inputs of the most recent root run | `{{run.inputs}}` |
+| `run.outputs` | Outputs of the most recent root run | `{{run.outputs}}` |
+| `run.error` | Error string, if the run failed | `{{run.error}}` |
+| `run.feedback` | All feedback scores as a JSON blob | `{{run.feedback}}` |
+| `run.feedback.<key>` | A specific feedback score by key | `{{run.feedback.correctness}}` |
+| `all_thread_messages` | Full message history for the thread (only available for projects with [threads](/langsmith/threads)) | `{{all_thread_messages}}` |
 
 You can access nested fields using dot notation. For example, `{{run.inputs.foo.bar}}` includes only the `bar` field within `foo` in the last run's inputs.
 
 <Note>
-  For projects with [threads](/langsmith/threads), Insights analyzes full conversations. Only the most recent root run from each thread is used for `run.*` variables. Use `all_thread_messages` to access the complete conversation history.
+For projects with [threads](/langsmith/threads), Insights analyzes full conversations. Only the most recent root run from each thread is used for `run.*` variables. Use `all_thread_messages` to access the complete conversation history.
 </Note>
 
 #### Attributes
@@ -216,18 +214,17 @@ You can use the `filter_by` parameter on boolean attributes to pre-filter traces
 This is useful when you want to focus your Insights Report on a specific subset of traces. For example, only analyzing errors, only examining English-language conversations, or only including traces that meet certain quality criteria.
 
 **How it works:**
-
-* Add `"filter_by": true` to any boolean attribute when creating a config for Insights.
-* The LLM evaluates each trace against the attribute description during summarization.
-* Traces where the attribute is `false` or missing are excluded before insights are generated.
+- Add `"filter_by": true` to any boolean attribute when creating a config for Insights.
+- The LLM evaluates each trace against the attribute description during summarization.
+- Traces where the attribute is `false` or missing are excluded before insights are generated.
 
 ## Schedule Insights Reports
 
 Schedule Insights reports to run automatically on a recurring basis. When creating or editing a configuration, use the **Schedule** section to choose:
 
-* **Daily**: Runs every day at 8:00 UTC.
-* **Weekly on Monday**: Runs every Monday at 8:00 UTC.
-* **Custom**: Enter your own cron expression (in UTC).
+- **Daily**: Runs every day at 8:00 UTC.
+- **Weekly on Monday**: Runs every Monday at 8:00 UTC.
+- **Custom**: Enter your own cron expression (in UTC).
 
 Each scheduled run generates a new report using your saved configuration. Time ranges are computed dynamically. For example, "last 24 hours" always analyzes the most recent 24-hour window at execution time.
 
@@ -238,14 +235,13 @@ This is especially useful if you want to compare Insights Reports over time to i
 
 Select from previously saved configs in the dropdown in the top-left corner of the pane when creating a new Insights Report.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

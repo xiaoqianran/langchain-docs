@@ -2,8 +2,6 @@
 
 # API and SDK deprecation policy
 
-How LangSmith deprecates and removes API endpoints and SDK methods in cloud and self-hosted deployments.
-
 LangSmith deprecates API endpoints and SDK methods before removing them, so you have time to migrate to a replacement. This page describes how deprecations are announced and how long they stay supported.
 
 <Note>This policy applies only to public endpoints documented in the [LangSmith API reference](/langsmith/smith-api-ref) and the [Agent Server API reference](/langsmith/server-api-ref). Internal, undocumented endpoints are not covered and can change, including with breaking changes, at any time.</Note>
@@ -21,10 +19,10 @@ In Cloud, if active consumers remain close to the removal date, LangSmith may ap
 
 ## Deprecation window by deployment
 
-| Deployment  | Minimum support window                |
-| ----------- | ------------------------------------- |
-| Cloud       | 6 months from announcement to removal |
-| Self-hosted | At least one major release            |
+| Deployment | Minimum support window |
+|---|---|
+| Cloud | 6 months from announcement to removal |
+| Self-hosted | At least one major release |
 
 Self-hosted major releases ship on a roughly six-week cadence. For details, see [Release policy](/langsmith/release-versions).
 
@@ -38,23 +36,22 @@ A method that does not map one-to-one to an endpoint, or is deprecated independe
 
 A deprecated field is removed at a version boundary, not on a date:
 
-* **API fields and parameters**: a deprecated response field, request body field, or query parameter continues to work within the same endpoint version. Removal is a breaking change, so it ships only with the next endpoint version, for example v1 to v2.
-* **SDK method fields and parameters**: continue working within the current major SDK version. Removal requires a new major SDK version, independent of the API's own versioning.
+- **API fields and parameters**: a deprecated response field, request body field, or query parameter continues to work within the same endpoint version. Removal is a breaking change, so it ships only with the next endpoint version, for example v1 to v2.
+- **SDK method fields and parameters**: continue working within the current major SDK version. Removal requires a new major SDK version, independent of the API's own versioning.
 
 ## See also
 
-* [Changelog](/langsmith/changelog) for recent LangSmith updates
-* [Release stages](/langsmith/release-stages) for how features move from alpha to GA
-* [Release policy](/langsmith/release-versions) for self-hosted release channels, cadence, and version support
+- [Changelog](/langsmith/changelog) for recent LangSmith updates
+- [Release stages](/langsmith/release-stages) for how features move from alpha to GA
+- [Release policy](/langsmith/release-versions) for self-hosted release channels, cadence, and version support
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/endpoint-deprecation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,32 +2,33 @@
 
 # Add identity to Managed Deep Agents
 
-Authenticate callers to a Managed Deep Agents deployment with a LangSmith API key or Supabase.
-
 Identity controls who can call your Managed Deep Agents deployment. By default, identity is secure: `mda init` configures authentication with a LangSmith API key.
 
 That default answers whether a caller is allowed. To also keep each signed-in person's conversations private, use [Supabase](#authenticate-end-users-with-supabase).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Choose a path
 
-| Goal                                                            | Use                         |
-| --------------------------------------------------------------- | --------------------------- |
+| Goal | Use |
+| --- | --- |
 | Lock down the deployment for SDK clients, scripts, and services | LangSmith API key (default) |
-| Signed-in end users with private chats                          | Supabase                    |
+| Signed-in end users with private chats | Supabase |
 
 ## Default: LangSmith API key
 
 `mda init` scaffolds this secure default. Callers must present a valid LangSmith workspace API key. Managed Deep Agents verifies the key with LangSmith Cloud.
 
-```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python identity.py
 from managed_deepagents import auth, define_identity
 
 identity = define_identity(auth=auth.langsmith_api_key())
 ```
+
+
+
 
 Clients send the key as `x-api-key`. You do not need to add verification endpoint or tenant settings to your project `.env`. LangSmith Cloud supplies those.
 
@@ -37,11 +38,14 @@ Anyone with the key can reach the deployment, so treat the key as a secret. This
 
 The identity declaration lives at the project root:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   identity.py
 ```
+
+
+
 
 ## Authenticate end users with Supabase
 
@@ -53,7 +57,7 @@ To configure Supabase authentication:
 2. Copy the project reference: the subdomain before `.supabase.co` in your project URL.
 3. Declare identity with that project reference:
 
-```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python identity.py
 from managed_deepagents import auth, define_identity
 
 identity = define_identity(
@@ -61,11 +65,14 @@ identity = define_identity(
 )
 ```
 
+
+
+
 Pass `url` instead of the project reference for a custom auth domain.
 
 4. In the client app, set the Supabase project URL and publishable (anon) key. Sign the user in, then send the access token on every deployment request:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import httpx
 
 response = httpx.post(
@@ -78,12 +85,15 @@ response = httpx.post(
 )
 ```
 
+
+
+
 The publishable (anon) key is only for the client to sign in with Supabase. Do not send a LangSmith API key in this mode. The Bearer token is the caller identity.
 
 Managed Deep Agents verifies the JWT against the project's JWKS URL derived from your project reference (`https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json`).
 
 <Note>
-  Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
+Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
 </Note>
 
 ## Test and deploy
@@ -92,14 +102,13 @@ Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-
 
 Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-identity.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

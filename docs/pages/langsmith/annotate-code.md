@@ -2,38 +2,35 @@
 
 # Custom instrumentation
 
-Instrument your code directly to control which functions are traced and how they appear in LangSmith.
-
 Adding [instrumentation](/langsmith/observability-concepts#manual-instrumentation) directly to your code gives you precise control over which functions your application traces, what inputs and outputs are logged, and how your [trace](/langsmith/observability-concepts#traces) hierarchy is structured. The three core instrumentation approaches are:
 
-* [`@traceable` decorator](#use-%40traceable-%2F-traceable): recommended for most cases
-* [`trace` context manager](#use-the-trace-context-manager-python-only): Python only
-* [`RunTree` API](#use-the-runtree-api): explicit, low-level control
+- [`@traceable` decorator](#use-%40traceable-%2F-traceable): recommended for most cases
+- [`trace` context manager](#use-the-trace-context-manager-python-only): Python only
+- [`RunTree` API](#use-the-runtree-api): explicit, low-level control
 
 This page also covers:
 
-* [Specifying a custom run ID](#specify-a-custom-run-id), which is useful for attaching feedback immediately after a run or correlating with external systems.
-* [Ensuring all traces are submitted](#ensure-all-traces-are-submitted-before-exiting) before your process exits.
+- [Specifying a custom run ID](#specify-a-custom-run-id), which is useful for attaching feedback immediately after a run or correlating with external systems.
+- [Ensuring all traces are submitted](#ensure-all-traces-are-submitted-before-exiting) before your process exits.
 
 For LangChain (Python or JS/TS), refer to the [LangChain-specific instructions](/langsmith/trace-with-langchain).
 
-<Callout icon="plug">
-  If you're using an LLM provider or agent framework with a built-in LangSmith integration, refer to the [integrations overview](/langsmith/integrations) instead
+<Callout icon="plug" color="#4F46E5" iconType="regular">
+If you're using an LLM provider or agent framework with a built-in LangSmith integration, refer to the [integrations overview](/langsmith/integrations) instead
 </Callout>
 
 ## Prerequisites
 
 Before tracing, set the following environment variables:
 
-* `LANGSMITH_TRACING=true`: enables tracing. Set this to toggle tracing on and off without changing your code.
+- `LANGSMITH_TRACING=true`: enables tracing. Set this to toggle tracing on and off without changing your code.
 
-  <Note>
+    <Note>
     `LANGSMITH_TRACING` controls the `@traceable` decorator and the `trace` context manager. To override this at runtime for `@traceable` without changing environment variables, use [`tracing_context(enabled=True/False)`](#use-the-trace-context-manager-python-only) (Python) or pass `tracingEnabled` directly to `traceable` (JS/TS). [`RunTree` objects](#use-the-runtree-api) are not affected by any of these controls; they always send data to LangSmith when posted.
-  </Note>
+    </Note>
 
-* `LANGSMITH_API_KEY`: your [LangSmith API key](/langsmith/create-account-api-key).
-
-* By default, LangSmith logs traces to a project named `default`. To log to a different project, set `LANGSMITH_PROJECT`. For more details, refer to [Log traces to a specific project](/langsmith/log-traces-to-project).
+- `LANGSMITH_API_KEY`: your [LangSmith API key](/langsmith/create-account-api-key).
+- By default, LangSmith logs traces to a project named `default`. To log to a different project, set `LANGSMITH_PROJECT`. For more details, refer to [Log traces to a specific project](/langsmith/log-traces-to-project).
 
 ## Use `@traceable` / `traceable`
 
@@ -44,231 +41,231 @@ The following example traces a simple pipeline: `run_pipeline` calls `format_pro
 Each function is individually traced, and because they're called from within `run_pipeline` (also traced), LangSmith automatically nests them as child runs. `invoke_llm` uses `run_type="llm"` to mark it as an LLM call so LangSmith can render token counts and latency correctly:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
-  from openai import Client
 
-  openai = Client()
+```python Python
+from langsmith import traceable
+from openai import Client
 
-  @traceable
-  def format_prompt(subject):
-    return [
-        {
-            "role": "system",
-            "content": "You are a helpful assistant.",
-        },
-        {
-            "role": "user",
-            "content": f"What's a good name for a store that sells {subject}?"
-        }
-    ]
+openai = Client()
 
-  @traceable(run_type="llm")
-  def invoke_llm(messages):
-    return openai.chat.completions.create(
-        messages=messages, model="gpt-5.4-mini", temperature=0
-    )
-
-  @traceable
-  def parse_output(response):
-    return response.choices[0].message.content
-
-  @traceable
-  def run_pipeline():
-    messages = format_prompt("colorful socks")
-    response = invoke_llm(messages)
-    return parse_output(response)
-
-  run_pipeline()
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
-  import OpenAI from "openai";
-
-  const openai = new OpenAI();
-
-  const formatPrompt = traceable((subject: string) => {
-    return [
+@traceable
+def format_prompt(subject):
+  return [
       {
-        role: "system" as const,
-        content: "You are a helpful assistant.",
+          "role": "system",
+          "content": "You are a helpful assistant.",
       },
       {
-        role: "user" as const,
-        content: `What's a good name for a store that sells ${subject}?`,
-      },
-    ];
-  },{ name: "formatPrompt" });
-
-  const invokeLLM = traceable(
-    async ({ messages }: { messages: { role: string; content: string }[] }) => {
-        return openai.chat.completions.create({
-            model: "gpt-5.4-mini",
-            messages: messages,
-            temperature: 0,
-        });
-    },
-    { run_type: "llm", name: "invokeLLM" }
-  );
-
-  const parseOutput = traceable(
-    (response: any) => {
-        return response.choices[0].message.content;
-    },
-    { name: "parseOutput" }
-  );
-
-  const runPipeline = traceable(
-    async () => {
-        const messages = await formatPrompt("colorful socks");
-        const response = await invokeLLM({ messages });
-        return parseOutput(response);
-    },
-    { name: "runPipeline" }
-  );
-
-  await runPipeline();
-  ```
-
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.tracing.RunType;
-  import com.langchain.smith.tracing.TraceConfig;
-  import com.langchain.smith.tracing.Tracing;
-  import com.openai.client.OpenAIClient;
-  import com.openai.client.okhttp.OpenAIOkHttpClient;
-  import com.openai.models.ChatModel;
-  import com.openai.models.chat.completions.ChatCompletion;
-  import com.openai.models.chat.completions.ChatCompletionCreateParams;
-  import com.openai.models.chat.completions.ChatCompletionMessageParam;
-  import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
-  import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-  import java.util.Arrays;
-  import java.util.List;
-  import java.util.function.Function;
-
-  public class TraceablePipeline {
-    public static void main(String[] args) {
-      new TraceablePipelineRunner().run();
-    }
-
-    private static final class TraceablePipelineRunner {
-      private final OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
-
-      private final Function<String, List<ChatCompletionMessageParam>> formatPrompt =
-          Tracing.traceFunction(
-              subject ->
-                  Arrays.asList(
-                      ChatCompletionMessageParam.ofSystem(
-                          ChatCompletionSystemMessageParam.builder()
-                              .content("You are a helpful assistant.")
-                              .build()),
-                      ChatCompletionMessageParam.ofUser(
-                          ChatCompletionUserMessageParam.builder()
-                              .content("What's a good name for a store that sells " + subject + "?")
-                              .build())),
-              TraceConfig.builder().name("format_prompt").build());
-
-      private final Function<List<ChatCompletionMessageParam>, ChatCompletion> invokeLlm =
-          Tracing.traceFunction(
-              messages ->
-                  openai.chat()
-                      .completions()
-                      .create(
-                          ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_CHAT_LATEST)
-                              .messages(messages)
-                              .temperature(0.0)
-                              .build()),
-              TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build());
-
-      private final Function<ChatCompletion, String> parseOutput =
-          Tracing.traceFunction(
-              response -> response.choices().get(0).message().content().orElse(""),
-              TraceConfig.builder().name("parse_output").build());
-
-      private final Function<String, String> runPipeline =
-          Tracing.traceFunction(
-              subject -> parseOutput.apply(invokeLlm.apply(formatPrompt.apply(subject))),
-              TraceConfig.builder().name("run_pipeline").build());
-
-      void run() {
-        runPipeline.apply("colorful socks");
+          "role": "user",
+          "content": f"What's a good name for a store that sells {subject}?"
       }
+  ]
+
+@traceable(run_type="llm")
+def invoke_llm(messages):
+  return openai.chat.completions.create(
+      messages=messages, model="gpt-5.4-mini", temperature=0
+  )
+
+@traceable
+def parse_output(response):
+  return response.choices[0].message.content
+
+@traceable
+def run_pipeline():
+  messages = format_prompt("colorful socks")
+  response = invoke_llm(messages)
+  return parse_output(response)
+
+run_pipeline()
+```
+
+```typescript TypeScript
+import { traceable } from "langsmith/traceable";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+const formatPrompt = traceable((subject: string) => {
+  return [
+    {
+      role: "system" as const,
+      content: "You are a helpful assistant.",
+    },
+    {
+      role: "user" as const,
+      content: `What's a good name for a store that sells ${subject}?`,
+    },
+  ];
+},{ name: "formatPrompt" });
+
+const invokeLLM = traceable(
+  async ({ messages }: { messages: { role: string; content: string }[] }) => {
+      return openai.chat.completions.create({
+          model: "gpt-5.4-mini",
+          messages: messages,
+          temperature: 0,
+      });
+  },
+  { run_type: "llm", name: "invokeLLM" }
+);
+
+const parseOutput = traceable(
+  (response: any) => {
+      return response.choices[0].message.content;
+  },
+  { name: "parseOutput" }
+);
+
+const runPipeline = traceable(
+  async () => {
+      const messages = await formatPrompt("colorful socks");
+      const response = await invokeLLM({ messages });
+      return parseOutput(response);
+  },
+  { name: "runPipeline" }
+);
+
+await runPipeline();
+```
+
+```java Java
+import com.langchain.smith.tracing.RunType;
+import com.langchain.smith.tracing.TraceConfig;
+import com.langchain.smith.tracing.Tracing;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionMessageParam;
+import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
+import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
+public class TraceablePipeline {
+  public static void main(String[] args) {
+    new TraceablePipelineRunner().run();
+  }
+
+  private static final class TraceablePipelineRunner {
+    private final OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
+
+    private final Function<String, List<ChatCompletionMessageParam>> formatPrompt =
+        Tracing.traceFunction(
+            subject ->
+                Arrays.asList(
+                    ChatCompletionMessageParam.ofSystem(
+                        ChatCompletionSystemMessageParam.builder()
+                            .content("You are a helpful assistant.")
+                            .build()),
+                    ChatCompletionMessageParam.ofUser(
+                        ChatCompletionUserMessageParam.builder()
+                            .content("What's a good name for a store that sells " + subject + "?")
+                            .build())),
+            TraceConfig.builder().name("format_prompt").build());
+
+    private final Function<List<ChatCompletionMessageParam>, ChatCompletion> invokeLlm =
+        Tracing.traceFunction(
+            messages ->
+                openai.chat()
+                    .completions()
+                    .create(
+                        ChatCompletionCreateParams.builder()
+                            .model(ChatModel.GPT_5_CHAT_LATEST)
+                            .messages(messages)
+                            .temperature(0.0)
+                            .build()),
+            TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build());
+
+    private final Function<ChatCompletion, String> parseOutput =
+        Tracing.traceFunction(
+            response -> response.choices().get(0).message().content().orElse(""),
+            TraceConfig.builder().name("parse_output").build());
+
+    private final Function<String, String> runPipeline =
+        Tracing.traceFunction(
+            subject -> parseOutput.apply(invokeLlm.apply(formatPrompt.apply(subject))),
+            TraceConfig.builder().name("run_pipeline").build());
+
+    void run() {
+      runPipeline.apply("colorful socks");
     }
   }
-  ```
+}
+```
+```kotlin Kotlin
+import com.langchain.smith.tracing.RunType
+import com.langchain.smith.tracing.TraceConfig
+import com.langchain.smith.tracing.traceable
+import com.openai.client.okhttp.OpenAIOkHttpClient
+import com.openai.models.ChatModel
+import com.openai.models.chat.completions.ChatCompletion
+import com.openai.models.chat.completions.ChatCompletionCreateParams
+import com.openai.models.chat.completions.ChatCompletionMessageParam
+import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
+import com.openai.models.chat.completions.ChatCompletionUserMessageParam
+import kotlin.jvm.optionals.getOrNull
 
-  ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.tracing.RunType
-  import com.langchain.smith.tracing.TraceConfig
-  import com.langchain.smith.tracing.traceable
-  import com.openai.client.okhttp.OpenAIOkHttpClient
-  import com.openai.models.ChatModel
-  import com.openai.models.chat.completions.ChatCompletion
-  import com.openai.models.chat.completions.ChatCompletionCreateParams
-  import com.openai.models.chat.completions.ChatCompletionMessageParam
-  import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
-  import com.openai.models.chat.completions.ChatCompletionUserMessageParam
-  import kotlin.jvm.optionals.getOrNull
+val openai = OpenAIOkHttpClient.fromEnv()
 
-  val openai = OpenAIOkHttpClient.fromEnv()
+val formatPrompt =
+    traceable(
+        { subject: String ->
+            listOf(
+                ChatCompletionMessageParam.ofSystem(
+                    ChatCompletionSystemMessageParam.builder()
+                        .content("You are a helpful assistant.")
+                        .build(),
+                ),
+                ChatCompletionMessageParam.ofUser(
+                    ChatCompletionUserMessageParam.builder()
+                        .content("What's a good name for a store that sells $subject?")
+                        .build(),
+                ),
+            )
+        },
+        TraceConfig.builder().name("format_prompt").build(),
+    )
 
-  val formatPrompt =
-      traceable(
-          { subject: String ->
-              listOf(
-                  ChatCompletionMessageParam.ofSystem(
-                      ChatCompletionSystemMessageParam.builder()
-                          .content("You are a helpful assistant.")
-                          .build(),
-                  ),
-                  ChatCompletionMessageParam.ofUser(
-                      ChatCompletionUserMessageParam.builder()
-                          .content("What's a good name for a store that sells $subject?")
-                          .build(),
-                  ),
-              )
-          },
-          TraceConfig.builder().name("format_prompt").build(),
-      )
+val invokeLlm =
+    traceable(
+        { messages: List<ChatCompletionMessageParam> ->
+            openai.chat().completions().create(
+                ChatCompletionCreateParams.builder()
+                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .messages(messages)
+                    .temperature(0.0)
+                    .build(),
+            )
+        },
+        TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build(),
+    )
 
-  val invokeLlm =
-      traceable(
-          { messages: List<ChatCompletionMessageParam> ->
-              openai.chat().completions().create(
-                  ChatCompletionCreateParams.builder()
-                      .model(ChatModel.GPT_5_CHAT_LATEST)
-                      .messages(messages)
-                      .temperature(0.0)
-                      .build(),
-              )
-          },
-          TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build(),
-      )
+val parseOutput =
+    traceable(
+        { response: ChatCompletion ->
+            response.choices()[0].message().content().getOrNull().orEmpty()
+        },
+        TraceConfig.builder().name("parse_output").build(),
+    )
 
-  val parseOutput =
-      traceable(
-          { response: ChatCompletion ->
-              response.choices()[0].message().content().getOrNull().orEmpty()
-          },
-          TraceConfig.builder().name("parse_output").build(),
-      )
+val runPipeline =
+    traceable(
+        { subject: String -> parseOutput(invokeLlm(formatPrompt(subject))) },
+        TraceConfig.builder().name("run_pipeline").build(),
+    )
 
-  val runPipeline =
-      traceable(
-          { subject: String -> parseOutput(invokeLlm(formatPrompt(subject))) },
-          TraceConfig.builder().name("run_pipeline").build(),
-      )
-
-  println(runPipeline("colorful socks"))
-  ```
+println(runPipeline("colorful socks"))
+```
 </CodeGroup>
 
-In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code), you'll find a `run_pipeline` trace with `format_prompt`, `invoke_llm`, and `parse_output` as nested child runs.
+In the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotate-code), you'll find a `run_pipeline` trace with `format_prompt`, `invoke_llm`, and `parse_output` as nested child runs.
 
 <Note>
-  When you wrap a sync function with `traceable` (e.g., `formatPrompt` in the previous example), use the `await` keyword when calling it to ensure the trace is logged correctly.
+When you wrap a sync function with `traceable` (e.g., `formatPrompt` in the previous example), use the `await` keyword when calling it to ensure the trace is logged correctly.
 </Note>
 
 ## Use the `trace` context manager (Python only)
@@ -276,15 +273,15 @@ In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_cam
 In Python, you can use the `trace` context manager to log traces to LangSmith. This is useful in situations where:
 
 1. You want to log traces for a specific block of code.
-2. You want control over the inputs, outputs, and other attributes of the trace.
-3. It is not feasible to use a decorator or wrapper.
-4. Any or all of the above.
+1. You want control over the inputs, outputs, and other attributes of the trace.
+1. It is not feasible to use a decorator or wrapper.
+1. Any or all of the above.
 
 The context manager integrates seamlessly with the `traceable` decorator and `wrap_openai` wrapper, so you can use them together in the same application.
 
 The following example shows all three used together. `wrap_openai` wraps the OpenAI client so its calls are traced automatically. `my_tool` uses `@traceable` with `run_type="tool"` and a custom `name` to appear correctly in the trace. `chat_pipeline` itself is not decorated; instead, `ls.trace` wraps the call, letting you pass the project name and inputs explicitly and set outputs manually via `rt.end()`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import openai
 import langsmith as ls
 from langsmith.wrappers import wrap_openai
@@ -320,270 +317,270 @@ Another, more explicit way to log traces to LangSmith is via the `RunTree` API. 
 This method is not recommended for most use cases; manually managing trace context is error-prone compared to `@traceable`, which handles context propagation automatically.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import openai
-  from langsmith.run_trees import RunTree
 
-  # This can be a user input to your app
-  question = "Can you summarize this morning's meetings?"
+```python Python
+import openai
+from langsmith.run_trees import RunTree
 
-  # Create a top-level run
-  pipeline = RunTree(
-    name="Chat Pipeline",
-    run_type="chain",
-    inputs={"question": question}
-  )
-  pipeline.post()
+# This can be a user input to your app
+question = "Can you summarize this morning's meetings?"
 
-  # This can be retrieved in a retrieval step
-  context = "During this morning's meeting, we solved all world conflict."
-  messages = [
-    { "role": "system", "content": "You are a helpful assistant. Please respond to the user's request only based on the given context." },
-    { "role": "user", "content": f"Question: {question}\nContext: {context}"}
-  ]
+# Create a top-level run
+pipeline = RunTree(
+  name="Chat Pipeline",
+  run_type="chain",
+  inputs={"question": question}
+)
+pipeline.post()
 
-  # Create a child run
-  child_llm_run = pipeline.create_child(
-    name="OpenAI Call",
-    run_type="llm",
-    inputs={"messages": messages},
-  )
-  child_llm_run.post()
+# This can be retrieved in a retrieval step
+context = "During this morning's meeting, we solved all world conflict."
+messages = [
+  { "role": "system", "content": "You are a helpful assistant. Please respond to the user's request only based on the given context." },
+  { "role": "user", "content": f"Question: {question}\nContext: {context}"}
+]
 
-  # Generate a completion
-  client = openai.Client()
-  chat_completion = client.chat.completions.create(
-    model="gpt-5.4-mini", messages=messages
-  )
+# Create a child run
+child_llm_run = pipeline.create_child(
+  name="OpenAI Call",
+  run_type="llm",
+  inputs={"messages": messages},
+)
+child_llm_run.post()
 
-  # End the runs and log them
-  child_llm_run.end(outputs=chat_completion)
-  child_llm_run.patch()
-  pipeline.end(outputs={"answer": chat_completion.choices[0].message.content})
-  pipeline.patch()
-  ```
+# Generate a completion
+client = openai.Client()
+chat_completion = client.chat.completions.create(
+  model="gpt-5.4-mini", messages=messages
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { RunTree } from "langsmith";
+# End the runs and log them
+child_llm_run.end(outputs=chat_completion)
+child_llm_run.patch()
+pipeline.end(outputs={"answer": chat_completion.choices[0].message.content})
+pipeline.patch()
+```
 
-  // This can be a user input to your app
-  const question = "Can you summarize this morning's meetings?";
+```typescript TypeScript
+import OpenAI from "openai";
+import { RunTree } from "langsmith";
 
-  const pipeline = new RunTree({
-    name: "Chat Pipeline",
-    run_type: "chain",
-    inputs: { question }
-  });
-  await pipeline.postRun();
+// This can be a user input to your app
+const question = "Can you summarize this morning's meetings?";
 
-  // This can be retrieved in a retrieval step
-  const context = "During this morning's meeting, we solved all world conflict.";
-  const messages = [
-    { role: "system", content: "You are a helpful assistant. Please respond to the user's request only based on the given context." },
-    { role: "user", content: `Question: ${question}Context: ${context}` }
-  ];
+const pipeline = new RunTree({
+  name: "Chat Pipeline",
+  run_type: "chain",
+  inputs: { question }
+});
+await pipeline.postRun();
 
-  // Create a child run
-  const childRun = await pipeline.createChild({
-    name: "OpenAI Call",
-    run_type: "llm",
-    inputs: { messages },
-  });
-  await childRun.postRun();
+// This can be retrieved in a retrieval step
+const context = "During this morning's meeting, we solved all world conflict.";
+const messages = [
+  { role: "system", content: "You are a helpful assistant. Please respond to the user's request only based on the given context." },
+  { role: "user", content: `Question: ${question}Context: ${context}` }
+];
 
-  // Generate a completion
-  const client = new OpenAI();
-  const chatCompletion = await client.chat.completions.create({
-    model: "gpt-5.4-mini",
-    messages: messages,
-  });
+// Create a child run
+const childRun = await pipeline.createChild({
+  name: "OpenAI Call",
+  run_type: "llm",
+  inputs: { messages },
+});
+await childRun.postRun();
 
-  // End the runs and log them
-  childRun.end(chatCompletion);
-  await childRun.patchRun();
-  pipeline.end({ outputs: { answer: chatCompletion.choices[0].message.content } });
-  await pipeline.patchRun();
-  ```
+// Generate a completion
+const client = new OpenAI();
+const chatCompletion = await client.chat.completions.create({
+  model: "gpt-5.4-mini",
+  messages: messages,
+});
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-  import com.langchain.smith.tracing.RunTree;
-  import com.langchain.smith.tracing.RunType;
-  import com.langchain.smith.tracing.TraceConfig;
-  import com.openai.client.OpenAIClient;
-  import com.openai.client.okhttp.OpenAIOkHttpClient;
-  import com.openai.models.ChatModel;
-  import com.openai.models.chat.completions.ChatCompletion;
-  import com.openai.models.chat.completions.ChatCompletionCreateParams;
-  import com.openai.models.chat.completions.ChatCompletionMessageParam;
-  import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
-  import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-  import java.time.Instant;
-  import java.util.Arrays;
-  import java.util.Collections;
-  import java.util.List;
-  import java.util.concurrent.ExecutorService;
-  import java.util.concurrent.Executors;
-  import java.util.concurrent.TimeUnit;
+// End the runs and log them
+childRun.end(chatCompletion);
+await childRun.patchRun();
+pipeline.end({ outputs: { answer: chatCompletion.choices[0].message.content } });
+await pipeline.patchRun();
+```
 
-  public class RunTreeExample {
-      public static void main(String[] args) throws InterruptedException {
-          LangsmithClient langsmith = LangsmithOkHttpClient.fromEnv();
-          OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
-          ExecutorService executor = Executors.newSingleThreadExecutor();
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+import com.langchain.smith.tracing.RunTree;
+import com.langchain.smith.tracing.RunType;
+import com.langchain.smith.tracing.TraceConfig;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionMessageParam;
+import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
+import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-          try {
-              String question = "Can you summarize this morning's meetings?";
-              String runId = "01990f3e-7f97-74c5-a9b6-8d3f7e8e2f11";
+public class RunTreeExample {
+    public static void main(String[] args) throws InterruptedException {
+        LangsmithClient langsmith = LangsmithOkHttpClient.fromEnv();
+        OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-              RunTree pipeline = RunTree.builder()
-                  .id(runId)
-                  .name("Chat Pipeline")
-                  .runType(RunType.CHAIN)
-                  .inputs(Collections.singletonMap("question", question))
-                  .client(langsmith)
-                  .executor(executor)
-                  .build();
-              pipeline.postRun();
+        try {
+            String question = "Can you summarize this morning's meetings?";
+            String runId = "01990f3e-7f97-74c5-a9b6-8d3f7e8e2f11";
 
-              String context = "During this morning's meeting, we solved all world conflict.";
-              List<ChatCompletionMessageParam> messages = Arrays.asList(
-                  ChatCompletionMessageParam.ofSystem(
-                      ChatCompletionSystemMessageParam.builder()
-                          .content(
-                              "You are a helpful assistant. Please respond to the user's " +
-                                  "request only based on the given context.")
-                          .build()),
-                  ChatCompletionMessageParam.ofUser(
-                      ChatCompletionUserMessageParam.builder()
-                          .content("Question: " + question + "\nContext: " + context)
-                          .build()));
+            RunTree pipeline = RunTree.builder()
+                .id(runId)
+                .name("Chat Pipeline")
+                .runType(RunType.CHAIN)
+                .inputs(Collections.singletonMap("question", question))
+                .client(langsmith)
+                .executor(executor)
+                .build();
+            pipeline.postRun();
 
-              RunTree childRun = pipeline.createChild(
-                  TraceConfig.builder().name("OpenAI Call").runType(RunType.LLM).build());
-              childRun.setInputs(Collections.singletonMap("messages", messages));
-              childRun.postRun();
+            String context = "During this morning's meeting, we solved all world conflict.";
+            List<ChatCompletionMessageParam> messages = Arrays.asList(
+                ChatCompletionMessageParam.ofSystem(
+                    ChatCompletionSystemMessageParam.builder()
+                        .content(
+                            "You are a helpful assistant. Please respond to the user's " +
+                                "request only based on the given context.")
+                        .build()),
+                ChatCompletionMessageParam.ofUser(
+                    ChatCompletionUserMessageParam.builder()
+                        .content("Question: " + question + "\nContext: " + context)
+                        .build()));
 
-              ChatCompletion chatCompletion = openai.chat().completions().create(
-                  ChatCompletionCreateParams.builder()
-                      .model(ChatModel.GPT_5_CHAT_LATEST)
-                      .messages(messages)
-                      .build());
+            RunTree childRun = pipeline.createChild(
+                TraceConfig.builder().name("OpenAI Call").runType(RunType.LLM).build());
+            childRun.setInputs(Collections.singletonMap("messages", messages));
+            childRun.postRun();
 
-              String answer = chatCompletion.choices().get(0).message().content().orElse("");
-              System.out.println(answer);
+            ChatCompletion chatCompletion = openai.chat().completions().create(
+                ChatCompletionCreateParams.builder()
+                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .messages(messages)
+                    .build());
 
-              childRun.setOutputs(Collections.singletonMap("response", chatCompletion.toString()));
-              childRun.setEndTime(Instant.now().toString());
-              childRun.patchRun();
+            String answer = chatCompletion.choices().get(0).message().content().orElse("");
+            System.out.println(answer);
 
-              pipeline.setOutputs(Collections.singletonMap(
-                  "answer", answer));
-              pipeline.setEndTime(Instant.now().toString());
-              pipeline.patchRun();
-          } finally {
-              executor.shutdown();
-              if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-                  throw new IllegalStateException(
-                      "Timed out waiting for LangSmith traces to submit");
-              }
-          }
-      }
-  }
-  ```
+            childRun.setOutputs(Collections.singletonMap("response", chatCompletion.toString()));
+            childRun.setEndTime(Instant.now().toString());
+            childRun.patchRun();
 
-  ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-  import com.langchain.smith.tracing.RunTree
-  import com.langchain.smith.tracing.RunType
-  import com.langchain.smith.tracing.TraceConfig
-  import com.openai.client.okhttp.OpenAIOkHttpClient
-  import com.openai.models.ChatModel
-  import com.openai.models.chat.completions.ChatCompletionCreateParams
-  import com.openai.models.chat.completions.ChatCompletionMessageParam
-  import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
-  import com.openai.models.chat.completions.ChatCompletionUserMessageParam
-  import java.time.Instant
-  import java.util.concurrent.Executors
-  import java.util.concurrent.TimeUnit
+            pipeline.setOutputs(Collections.singletonMap(
+                "answer", answer));
+            pipeline.setEndTime(Instant.now().toString());
+            pipeline.patchRun();
+        } finally {
+            executor.shutdown();
+            if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                throw new IllegalStateException(
+                    "Timed out waiting for LangSmith traces to submit");
+            }
+        }
+    }
+}
+```
+```kotlin Kotlin
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.tracing.RunTree
+import com.langchain.smith.tracing.RunType
+import com.langchain.smith.tracing.TraceConfig
+import com.openai.client.okhttp.OpenAIOkHttpClient
+import com.openai.models.ChatModel
+import com.openai.models.chat.completions.ChatCompletionCreateParams
+import com.openai.models.chat.completions.ChatCompletionMessageParam
+import com.openai.models.chat.completions.ChatCompletionSystemMessageParam
+import com.openai.models.chat.completions.ChatCompletionUserMessageParam
+import java.time.Instant
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-  val langsmith = LangsmithOkHttpClient.fromEnv()
-  val openai = OpenAIOkHttpClient.fromEnv()
-  val executor = Executors.newSingleThreadExecutor()
+val langsmith = LangsmithOkHttpClient.fromEnv()
+val openai = OpenAIOkHttpClient.fromEnv()
+val executor = Executors.newSingleThreadExecutor()
 
-  try {
-      val question = "Can you summarize this morning's meetings?"
-      val runId = "01990f3e-7f97-74c5-a9b6-8d3f7e8e2f11"
+try {
+    val question = "Can you summarize this morning's meetings?"
+    val runId = "01990f3e-7f97-74c5-a9b6-8d3f7e8e2f11"
 
-      val pipeline =
-          RunTree.builder()
-              .id(runId)
-              .name("Chat Pipeline")
-              .runType(RunType.CHAIN)
-              .inputs(mapOf("question" to question))
-              .client(langsmith)
-              .executor(executor)
-              .build()
-      println("[run-tree-example] Posting parent run to LangSmith…")
-      pipeline.postRun()
+    val pipeline =
+        RunTree.builder()
+            .id(runId)
+            .name("Chat Pipeline")
+            .runType(RunType.CHAIN)
+            .inputs(mapOf("question" to question))
+            .client(langsmith)
+            .executor(executor)
+            .build()
+    println("[run-tree-example] Posting parent run to LangSmith…")
+    pipeline.postRun()
 
-      val context = "During this morning's meeting, we solved all world conflict."
-      val messages =
-          listOf(
-              ChatCompletionMessageParam.ofSystem(
-                  ChatCompletionSystemMessageParam.builder()
-                      .content(
-                          "You are a helpful assistant. Please respond to the user's " +
-                              "request only based on the given context.",
-                      )
-                      .build(),
-              ),
-              ChatCompletionMessageParam.ofUser(
-                  ChatCompletionUserMessageParam.builder()
-                      .content("Question: $question\nContext: $context")
-                      .build(),
-              ),
-          )
+    val context = "During this morning's meeting, we solved all world conflict."
+    val messages =
+        listOf(
+            ChatCompletionMessageParam.ofSystem(
+                ChatCompletionSystemMessageParam.builder()
+                    .content(
+                        "You are a helpful assistant. Please respond to the user's " +
+                            "request only based on the given context.",
+                    )
+                    .build(),
+            ),
+            ChatCompletionMessageParam.ofUser(
+                ChatCompletionUserMessageParam.builder()
+                    .content("Question: $question\nContext: $context")
+                    .build(),
+            ),
+        )
 
-      val childRun =
-          pipeline.createChild(
-              TraceConfig.builder().name("OpenAI Call").runType(RunType.LLM).build(),
-          )
-      childRun.inputs = mapOf("messages" to messages)
-      println("[run-tree-example] Posting child run to LangSmith…")
-      childRun.postRun()
+    val childRun =
+        pipeline.createChild(
+            TraceConfig.builder().name("OpenAI Call").runType(RunType.LLM).build(),
+        )
+    childRun.inputs = mapOf("messages" to messages)
+    println("[run-tree-example] Posting child run to LangSmith…")
+    childRun.postRun()
 
-      val chatCompletion =
-          openai.chat().completions().create(
-              ChatCompletionCreateParams.builder()
-                  .model(ChatModel.GPT_5_CHAT_LATEST)
-                  .messages(messages)
-                  .build(),
-          )
+    val chatCompletion =
+        openai.chat().completions().create(
+            ChatCompletionCreateParams.builder()
+                .model(ChatModel.GPT_5_CHAT_LATEST)
+                .messages(messages)
+                .build(),
+        )
 
-      val answer = chatCompletion.choices()[0].message().content().orElse("")
-      println("[run-tree-example] Answer:")
-      println(answer)
+    val answer = chatCompletion.choices()[0].message().content().orElse("")
+    println("[run-tree-example] Answer:")
+    println(answer)
 
-      childRun.outputs = mapOf("response" to chatCompletion.toString())
-      childRun.endTime = Instant.now().toString()
-      childRun.patchRun()
+    childRun.outputs = mapOf("response" to chatCompletion.toString())
+    childRun.endTime = Instant.now().toString()
+    childRun.patchRun()
 
-      pipeline.outputs =
-          mapOf(
-              "answer" to answer,
-          )
-      pipeline.endTime = Instant.now().toString()
-      pipeline.patchRun()
-  } finally {
-      executor.shutdown()
-      check(executor.awaitTermination(10, TimeUnit.SECONDS)) {
-          "Timed out waiting for LangSmith traces to submit"
-      }
-  }
-  ```
+    pipeline.outputs =
+        mapOf(
+            "answer" to answer,
+        )
+    pipeline.endTime = Instant.now().toString()
+    pipeline.patchRun()
+} finally {
+    executor.shutdown()
+    check(executor.awaitTermination(10, TimeUnit.SECONDS)) {
+        "Timed out waiting for LangSmith traces to submit"
+    }
+}
+```
 </CodeGroup>
 
 The Java and Kotlin examples use a custom root run ID and a dedicated executor. Shutting down the executor and awaiting termination ensures the background run submissions complete before the process exits.
@@ -594,7 +591,7 @@ You can extend the utilities explained in the previous section to trace any code
 
 Trace any public method in a class:
 
-```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python expandable
 from typing import Any, Callable, Type, TypeVar
 
 T = TypeVar("T")
@@ -646,20 +643,21 @@ MyClass(13).combine(29)
 By default, LangSmith assigns a random ID to each run. You can override this when you need to know the run ID ahead of time (for example, to attach [feedback](/langsmith/attach-user-feedback) immediately after a run), correlate LangSmith runs with IDs from an external system, or make runs idempotent using a deterministic ID.
 
 <Note>
-  Use **UUID v7** for custom run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. The LangSmith SDK exports a `uuid7` helper (Python v0.4.43+, JS v0.3.80+):
+Use **UUID v7** for custom run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. The LangSmith SDK exports a `uuid7` helper (Python v0.4.43+, JS v0.3.80+):
 
-  * **Python**: `from langsmith import uuid7`
-  * **JS/TS**: `import { uuid7 } from 'langsmith'`
+- **Python**: `from langsmith import uuid7`
+- **JS/TS**: `import { uuid7 } from 'langsmith'`
 
-  Any UUID v7 string is accepted — you can use the SDK helper or your own if your system already uses UUID v7 identifiers.
+Any UUID v7 string is accepted — you can use the SDK helper or your own if your system already uses UUID v7 identifiers.
 </Note>
 
 Use one of the following:
 
-* `@traceable`: pass `run_id` inside `langsmith_extra` when calling a `@traceable` function (Python), or pass `id` in the config object passed to `traceable` (TypeScript):
+- `@traceable`: pass `run_id` inside `langsmith_extra` when calling a `@traceable` function (Python), or pass `id` in the config object passed to `traceable` (TypeScript):
 
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <CodeGroup>
+
+    ```python Python
     from langsmith import traceable, uuid7
 
     @traceable
@@ -672,7 +670,7 @@ Use one of the following:
     # run_id can now be used to attach feedback, query the run, etc.
     ```
 
-    ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript TypeScript
     import { traceable } from "langsmith/traceable";
     import { uuid7 } from "langsmith";
 
@@ -689,31 +687,33 @@ Use one of the following:
 
     // runId can now be used to attach feedback, query the run, etc.
     ```
-  </CodeGroup>
 
-* `trace` context manager (Python only): Pass `run_id` directly to the [trace](https://reference.langchain.com/python/langsmith/run_helpers/trace) context manager constructor:
+    </CodeGroup>
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import trace, uuid7
+- `trace` context manager (Python only): Pass `run_id` directly to the [trace](https://reference.langchain.com/python/langsmith/run_helpers/trace) context manager constructor:
 
-  run_id = uuid7()
+    ```python Python
+    from langsmith import trace, uuid7
 
-  with trace("my-pipeline", run_id=run_id) as run:
-      result = "answer"
-      run.end(outputs={"result": result})
+    run_id = uuid7()
 
-  # run_id can now be used to attach feedback, query the run, etc.
-  ```
+    with trace("my-pipeline", run_id=run_id) as run:
+        result = "answer"
+        run.end(outputs={"result": result})
+
+    # run_id can now be used to attach feedback, query the run, etc.
+    ```
 
 ## Ensure all traces are submitted before exiting
 
 LangSmith performs tracing in a background thread to avoid obstructing your production application. This means that your process may end before all traces are successfully posted to LangSmith. Refer to the following options:
 
-* If you are using LangChain, refer to the [LangChain tracing guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting).
-* If you are using the [LangSmith SDK](/langsmith/reference) standalone, you can use the `flush` method before exit:
+- If you are using LangChain, refer to the [LangChain tracing guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting).
+- If you are using the [LangSmith SDK](/langsmith/reference) standalone, you can use the `flush` method before exit:
 
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <CodeGroup>
+
+    ```python Python
     from langsmith import Client
 
     client = Client()
@@ -729,7 +729,7 @@ LangSmith performs tracing in a background thread to avoid obstructing your prod
     await client.flush()
     ```
 
-    ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript TypeScript
     import { Client } from "langsmith";
 
     const langsmithClient = new Client({});
@@ -744,26 +744,26 @@ LangSmith performs tracing in a background thread to avoid obstructing your prod
     await langsmithClient.flush();
     }
     ```
-  </CodeGroup>
+
+    </CodeGroup>
 
 ## Related
 
-* [Observability concepts](/langsmith/observability-concepts): background on runs, traces, and the LangSmith data model
-* [Run (span) data format](/langsmith/run-data-format): schema reference for run fields including `dotted_order`, `trace_id`, and `parent_run_id`
-* [Log user feedback using the SDK](/langsmith/attach-user-feedback): common use case for pre-specifying a run ID
-* [Access the current run (span) within a traced function](/langsmith/access-current-span): read or modify the active run from inside a trace
-* [Log traces to a specific project](/langsmith/log-traces-to-project): route traces to a named project instead of `default`
-* [Trace with API](/langsmith/trace-with-api): low-level REST API alternative to the SDK
-* [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview) from the Introduction to LangSmith Course
+- [Observability concepts](/langsmith/observability-concepts): background on runs, traces, and the LangSmith data model
+- [Run (span) data format](/langsmith/run-data-format): schema reference for run fields including `dotted_order`, `trace_id`, and `parent_run_id`
+- [Log user feedback using the SDK](/langsmith/attach-user-feedback): common use case for pre-specifying a run ID
+- [Access the current run (span) within a traced function](/langsmith/access-current-span): read or modify the active run from inside a trace
+- [Log traces to a specific project](/langsmith/log-traces-to-project): route traces to a named project instead of `default`
+- [Trace with API](/langsmith/trace-with-api): low-level REST API alternative to the SDK
+- [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview) from the Introduction to LangSmith Course
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/annotate-code.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

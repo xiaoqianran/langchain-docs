@@ -5,7 +5,7 @@
 The [LangGraph SDK](/langsmith/langgraph-python-sdk) lets you stream outputs from the [LangSmith Deployment API](/langsmith/server-api-ref) in multiple modes, from full state snapshots after each step to token-by-token LLM output. Thread streaming also supports resumability: if a connection drops, reconnect with the last event ID to pick up where you left off.
 
 <Note>
-  LangGraph SDK and Agent Server are a part of [LangSmith](/langsmith/observability).
+LangGraph SDK and Agent Server are a part of [LangSmith](/langsmith/observability).
 </Note>
 
 ## Basic usage
@@ -13,8 +13,8 @@ The [LangGraph SDK](/langsmith/langgraph-python-sdk) lets you stream outputs fro
 Basic usage example:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={12}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={12}}
     from langgraph_sdk import get_client
     client = get_client(url=<DEPLOYMENT_URL>, api_key=<API_KEY>)
 
@@ -33,11 +33,10 @@ Basic usage example:
         stream_mode="updates"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={12}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={12}}
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL>, apiKey: <API_KEY> });
 
@@ -60,13 +59,12 @@ Basic usage example:
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
+```
+    </Tab>
+    <Tab title="cURL">
     Create a thread:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads \
     --header 'Content-Type: application/json' \
@@ -75,7 +73,7 @@ Basic usage example:
 
     Create a streaming run:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -86,14 +84,14 @@ Basic usage example:
       \"stream_mode\": \"updates\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 <Accordion title="Extended example: streaming updates">
   This is an example graph you can run in the Agent Server.
   See [LangSmith quickstart](/langsmith/deployment-quickstart) for more details.
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   # graph.py
   from typing import TypedDict
   from langgraph.graph import StateGraph, START, END
@@ -122,9 +120,9 @@ Basic usage example:
   Once you have a running Agent Server, you can interact with it using
   [LangGraph SDK](/langsmith/langgraph-python-sdk)
 
-  <Tabs>
-    <Tab title="Python">
-      ```python {highlight={12,16}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tabs>
+        <Tab title="Python">
+      ```python {highlight={12,16}}
       from langgraph_sdk import get_client
       client = get_client(url=<DEPLOYMENT_URL>)
 
@@ -143,14 +141,13 @@ Basic usage example:
           stream_mode="updates"  # (2)!
       ):
           print(chunk.data)
-      ```
+```
 
       1. The `client.runs.stream()` method returns an iterator that yields streamed outputs.
-         2\. Set `stream_mode="updates"` to stream only the updates to the graph state after each node. Other stream modes are also available. See [supported stream modes](#supported-stream-modes) for details.
-    </Tab>
-
-    <Tab title="JavaScript">
-      ```javascript {highlight={12,17}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+            2. Set `stream_mode="updates"` to stream only the updates to the graph state after each node. Other stream modes are also available. See [supported stream modes](#supported-stream-modes) for details.
+        </Tab>
+        <Tab title="JavaScript">
+      ```javascript {highlight={12,17}}
       import { Client } from "@langchain/langgraph-sdk";
       const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
@@ -173,16 +170,15 @@ Basic usage example:
       for await (const chunk of streamResponse) {
         console.log(chunk.data);
       }
-      ```
+```
 
       1. The `client.runs.stream()` method returns an iterator that yields streamed outputs.
       2. Set `streamMode: "updates"` to stream only the updates to the graph state after each node. Other stream modes are also available. See [supported stream modes](#supported-stream-modes) for details.
-    </Tab>
-
-    <Tab title="cURL">
+        </Tab>
+        <Tab title="cURL">
       Create a thread:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
@@ -191,7 +187,7 @@ Basic usage example:
 
       Create a streaming run:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
       --header 'Content-Type: application/json' \
@@ -201,10 +197,10 @@ Basic usage example:
         \"stream_mode\": \"updates\"
       }"
       ```
-    </Tab>
-  </Tabs>
+        </Tab>
+    </Tabs>
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   {'run_id': '1f02c2b3-3cef-68de-b720-eec2a4a8e920', 'attempt': 1}
   {'refine_topic': {'topic': 'ice cream and cats'}}
   {'generate_joke': {'joke': 'This is a joke about ice cream and cats'}}
@@ -213,14 +209,14 @@ Basic usage example:
 
 ### Supported stream modes
 
-| Mode                             | Description                                                                                                                                                                         | LangGraph Library Method                                                                               |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [`values`](#stream-graph-state)  | Stream the full graph state after each [super-step](/langsmith/graph-rebuild#define-graphs).                                                                                        | `.stream()` / `.astream()` with [`stream_mode="values"`](/oss/python/langgraph/streaming#graph-state)  |
+| Mode                             | Description                                                                                                                                                                         | LangGraph Library Method                                                                                 |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| [`values`](#stream-graph-state)  | Stream the full graph state after each [super-step](/langsmith/graph-rebuild#define-graphs).                                                                                            | `.stream()` / `.astream()` with [`stream_mode="values"`](/oss/python/langgraph/streaming#graph-state)  |
 | [`updates`](#stream-graph-state) | Streams the updates to the state after each step of the graph. If multiple updates are made in the same step (e.g., multiple nodes are run), those updates are streamed separately. | `.stream()` / `.astream()` with [`stream_mode="updates"`](/oss/python/langgraph/streaming#graph-state) |
-| [`messages-tuple`](#messages)    | Streams LLM tokens and metadata for the graph node where the LLM is invoked (useful for chat apps).                                                                                 | `.stream()` / `.astream()` with [`stream_mode="messages"`](/oss/python/langgraph/streaming#messages)   |
+| [`messages-tuple`](#messages)    | Streams LLM tokens and metadata for the graph node where the LLM is invoked (useful for chat apps).                                                                                 | `.stream()` / `.astream()` with [`stream_mode="messages"`](/oss/python/langgraph/streaming#messages)          |
 | [`debug`](#debug)                | Streams as much information as possible throughout the execution of the graph.                                                                                                      | `.stream()` / `.astream()` with [`stream_mode="debug"`](/oss/python/langgraph/streaming#graph-state)   |
 | [`custom`](#stream-custom-data)  | Streams custom data from inside your graph                                                                                                                                          | `.stream()` / `.astream()` with [`stream_mode="custom"`](/oss/python/langgraph/streaming#custom-data)  |
-| [`events`](#stream-events)       | Stream all events (including the state of the graph); mainly useful when migrating large LCEL apps.                                                                                 | `.astream_events()`                                                                                    |
+| [`events`](#stream-events)       | Stream all events (including the state of the graph); mainly useful when migrating large LCEL apps.                                                                                 | `.astream_events()`                                                                                      |
 
 ### Stream multiple modes
 
@@ -229,8 +225,8 @@ You can pass a list as the `stream_mode` parameter to stream multiple modes at o
 The streamed outputs will be tuples of `(mode, chunk)` where `mode` is the name of the stream mode and `chunk` is the data streamed by that mode.
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -239,10 +235,9 @@ The streamed outputs will be tuples of `(mode, chunk)` where `mode` is the name 
     ):
         print(chunk)
     ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```js
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -255,10 +250,9 @@ The streamed outputs will be tuples of `(mode, chunk)` where `mode` is the name 
       console.log(chunk);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
      --header 'Content-Type: application/json' \
@@ -271,7 +265,7 @@ The streamed outputs will be tuples of `(mode, chunk)` where `mode` is the name 
        ]
      }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Stream graph state
@@ -282,7 +276,7 @@ Use the stream modes `updates` and `values` to stream the state of the graph as 
 * `values` streams the **full value** of the state after each step of the graph.
 
 <Accordion title="Example graph">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   from typing import TypedDict
   from langgraph.graph import StateGraph, START, END
 
@@ -309,47 +303,45 @@ Use the stream modes `updates` and `values` to stream the state of the graph as 
 </Accordion>
 
 <Note>
-  **Stateful runs**
-  Examples below assume that you want to **persist the outputs** of a streaming run in the [checkpointer](/oss/python/langgraph/persistence) DB and have created a thread. To create a thread:
+**Stateful runs**
+Examples below assume that you want to **persist the outputs** of a streaming run in the [checkpointer](/oss/python/langgraph/persistence) DB and have created a thread. To create a thread:
 
-  <Tabs>
-    <Tab title="Python">
-      ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langgraph_sdk import get_client
-      client = get_client(url=<DEPLOYMENT_URL>)
+<Tabs>
+<Tab title="Python">
+```python
+from langgraph_sdk import get_client
+client = get_client(url=<DEPLOYMENT_URL>)
 
-      # Using the graph deployed with the name "agent"
-      assistant_id = "agent"
-      # create a thread
-      thread = await client.threads.create()
-      thread_id = thread["thread_id"]
-      ```
-    </Tab>
+# Using the graph deployed with the name "agent"
+assistant_id = "agent"
+# create a thread
+thread = await client.threads.create()
+thread_id = thread["thread_id"]
+```
+</Tab>
+<Tab title="JavaScript">
+```js
+import { Client } from "@langchain/langgraph-sdk";
+const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
-    <Tab title="JavaScript">
-      ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { Client } from "@langchain/langgraph-sdk";
-      const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+// Using the graph deployed with the name "agent"
+const assistantID = "agent";
+// create a thread
+const thread = await client.threads.create();
+const threadID = thread["thread_id"]
+```
+</Tab>
+<Tab title="cURL">
+```bash
+curl --request POST \
+--url <DEPLOYMENT_URL>/threads \
+--header 'Content-Type: application/json' \
+--data '{}'
+```
+</Tab>
+</Tabs>
 
-      // Using the graph deployed with the name "agent"
-      const assistantID = "agent";
-      // create a thread
-      const thread = await client.threads.create();
-      const threadID = thread["thread_id"]
-      ```
-    </Tab>
-
-    <Tab title="cURL">
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      curl --request POST \
-      --url <DEPLOYMENT_URL>/threads \
-      --header 'Content-Type: application/json' \
-      --data '{}'
-      ```
-    </Tab>
-  </Tabs>
-
-  If you don't need to persist the outputs of a run, you can pass `None` instead of `thread_id` when streaming.
+If you don't need to persist the outputs of a run, you can pass `None` instead of `thread_id` when streaming.
 </Note>
 
 ### Stream mode: `updates`
@@ -357,8 +349,8 @@ Use the stream modes `updates` and `values` to stream the state of the graph as 
 Use this to stream only the **state updates** returned by the nodes after each step. The streamed outputs include the name of the node as well as the update.
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -366,11 +358,10 @@ Use this to stream only the **state updates** returned by the nodes after each s
         stream_mode="updates"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -382,11 +373,10 @@ Use this to stream only the **state updates** returned by the nodes after each s
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -396,7 +386,7 @@ Use this to stream only the **state updates** returned by the nodes after each s
       \"stream_mode\": \"updates\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Stream mode: `values`
@@ -404,8 +394,8 @@ Use this to stream only the **state updates** returned by the nodes after each s
 Use this to stream the **full state** of the graph after each step.
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -413,11 +403,10 @@ Use this to stream the **full state** of the graph after each step.
         stream_mode="values"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -429,11 +418,10 @@ Use this to stream the **full state** of the graph after each step.
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -443,14 +431,14 @@ Use this to stream the **full state** of the graph after each step.
       \"stream_mode\": \"values\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Subgraphs
 
 To include outputs from [subgraphs](/oss/python/langgraph/use-subgraphs) in the streamed outputs, you can set `subgraphs=True` in the `.stream()` method of the parent graph. This will stream outputs from both the parent graph and any subgraphs.
 
-```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={5}}
 async for chunk in client.runs.stream(
     thread_id,
     assistant_id,
@@ -467,7 +455,7 @@ async for chunk in client.runs.stream(
   This is an example graph you can run in the Agent Server.
   See [LangSmith quickstart](/langsmith/deployment-quickstart) for more details.
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   # graph.py
   from langgraph.graph import START, StateGraph
   from typing import TypedDict
@@ -508,9 +496,9 @@ async for chunk in client.runs.stream(
   Once you have a running Agent Server, you can interact with it using
   [LangGraph SDK](/langsmith/langgraph-python-sdk)
 
-  <Tabs>
-    <Tab title="Python">
-      ```python {highlight={15}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tabs>
+        <Tab title="Python">
+      ```python {highlight={15}}
       from langgraph_sdk import get_client
       client = get_client(url=<DEPLOYMENT_URL>)
 
@@ -529,13 +517,12 @@ async for chunk in client.runs.stream(
           stream_mode="updates",
       ):
           print(chunk)
-      ```
+```
 
-      1. Set `stream_subgraphs=True` to stream outputs from subgraphs.
-    </Tab>
-
-    <Tab title="JavaScript">
-      ```javascript {highlight={17}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+            1. Set `stream_subgraphs=True` to stream outputs from subgraphs.
+        </Tab>
+        <Tab title="JavaScript">
+      ```javascript {highlight={17}}
       import { Client } from "@langchain/langgraph-sdk";
       const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
@@ -559,15 +546,14 @@ async for chunk in client.runs.stream(
       for await (const chunk of streamResponse) {
         console.log(chunk);
       }
-      ```
+```
 
       1. Set `streamSubgraphs: true` to stream outputs from subgraphs.
-    </Tab>
-
-    <Tab title="cURL">
+        </Tab>
+        <Tab title="cURL">
       Create a thread:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
@@ -576,7 +562,7 @@ async for chunk in client.runs.stream(
 
       Create a streaming run:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
       --header 'Content-Type: application/json' \
@@ -589,21 +575,20 @@ async for chunk in client.runs.stream(
         ]
       }"
       ```
-    </Tab>
-  </Tabs>
+        </Tab>
+    </Tabs>
 
   **Note** that we are receiving not just the node updates, but we also the namespaces which tell us what graph (or subgraph) we are streaming from.
 </Accordion>
 
-<a />
-
+<a id="debug"></a>
 ## Debugging
 
 Use the `debug` streaming mode to stream as much information as possible throughout the execution of the graph. The streamed outputs include the name of the node as well as the full state.
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -611,11 +596,10 @@ Use the `debug` streaming mode to stream as much information as possible through
         stream_mode="debug"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -627,11 +611,10 @@ Use the `debug` streaming mode to stream as much information as possible through
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -641,11 +624,10 @@ Use the `debug` streaming mode to stream as much information as possible through
       \"stream_mode\": \"debug\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
-<a />
-
+<a id="messages"></a>
 ## LLM tokens
 
 Use the `messages-tuple` streaming mode to stream Large Language Model (LLM) outputs **token by token** from any part of your graph, including nodes, tools, subgraphs, or tasks.
@@ -656,42 +638,42 @@ The streamed output from [`messages-tuple` mode](#supported-stream-modes) is a t
 * `metadata`: a dictionary containing details about the graph node and LLM invocation.
 
 <Accordion title="Example graph">
-  ```python {highlight={15}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
+    ```python {highlight={15}}
+    from dataclasses import dataclass
 
-  from langchain.chat_models import init_chat_model
-  from langgraph.graph import StateGraph, START
+    from langchain.chat_models import init_chat_model
+    from langgraph.graph import StateGraph, START
 
-  @dataclass
-  class MyState:
-      topic: str
-      joke: str = ""
+    @dataclass
+    class MyState:
+        topic: str
+        joke: str = ""
 
-  model = init_chat_model(model="gpt-5.4-mini")
+    model = init_chat_model(model="gpt-5.4-mini")
 
-  def call_model(state: MyState):
-      """Call the LLM to generate a joke about a topic"""
-      model_response = model.invoke( # (1)!
-          [
-              {"role": "user", "content": f"Generate a joke about {state.topic}"}
-          ]
-      )
-      return {"joke": model_response.content}
+    def call_model(state: MyState):
+        """Call the LLM to generate a joke about a topic"""
+        model_response = model.invoke( # (1)!
+            [
+                {"role": "user", "content": f"Generate a joke about {state.topic}"}
+            ]
+        )
+        return {"joke": model_response.content}
 
-  graph = (
-      StateGraph(MyState)
-      .add_node(call_model)
-      .add_edge(START, "call_model")
-      .compile()
-  )
-  ```
+    graph = (
+        StateGraph(MyState)
+        .add_node(call_model)
+        .add_edge(START, "call_model")
+        .compile()
+    )
+    ```
 
-  1. Note that the message events are emitted even when the LLM is run using `invoke` rather than `stream`.
+    1. Note that the message events are emitted even when the LLM is run using `invoke` rather than `stream`.
 </Accordion>
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -704,13 +686,12 @@ The streamed output from [`messages-tuple` mode](#supported-stream-modes) is a t
         message_chunk, metadata = chunk.data  # (1)!
         if message_chunk["content"]:
             print(message_chunk["content"], end="|", flush=True)
-    ```
+```
 
     1. The "messages-tuple" stream mode returns an iterator of tuples `(message_chunk, metadata)` where `message_chunk` is the token streamed by the LLM and `metadata` is a dictionary with information about the graph node where the LLM was called and other information.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -725,13 +706,12 @@ The streamed output from [`messages-tuple` mode](#supported-stream-modes) is a t
       }
       console.log(chunk.data[0]["content"]);  // (1)!
     }
-    ```
+```
 
     1. The "messages-tuple" stream mode returns an iterator of tuples `(message_chunk, metadata)` where `message_chunk` is the token streamed by the LLM and `metadata` is a dictionary with information about the graph node where the LLM was called and other information.
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -741,7 +721,7 @@ The streamed output from [`messages-tuple` mode](#supported-stream-modes) is a t
       \"stream_mode\": \"messages-tuple\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Filter LLM tokens
@@ -754,8 +734,8 @@ The streamed output from [`messages-tuple` mode](#supported-stream-modes) is a t
 To send **custom user-defined data**:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -763,11 +743,10 @@ To send **custom user-defined data**:
         stream_mode="custom"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -779,11 +758,10 @@ To send **custom user-defined data**:
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -793,7 +771,7 @@ To send **custom user-defined data**:
       \"stream_mode\": \"custom\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Stream events
@@ -801,8 +779,8 @@ To send **custom user-defined data**:
 To stream all events, including the state of the graph:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     async for chunk in client.runs.stream(
         thread_id,
         assistant_id,
@@ -810,11 +788,10 @@ To stream all events, including the state of the graph:
         stream_mode="events"
     ):
         print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={6}}
     const streamResponse = client.runs.stream(
       threadID,
       assistantID,
@@ -826,11 +803,10 @@ To stream all events, including the state of the graph:
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -840,7 +816,7 @@ To stream all events, including the state of the graph:
       \"stream_mode\": \"events\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Stateless runs
@@ -848,8 +824,8 @@ To stream all events, including the state of the graph:
 If you don't want to **persist the outputs** of a streaming run in the [checkpointer](/oss/python/langgraph/persistence) DB, you can create a stateless run without creating a thread:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={5}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={5}}
     from langgraph_sdk import get_client
     client = get_client(url=<DEPLOYMENT_URL>, api_key=<API_KEY>)
 
@@ -860,13 +836,12 @@ If you don't want to **persist the outputs** of a streaming run in the [checkpoi
         stream_mode="updates"
     ):
         print(chunk.data)
-    ```
+```
 
     1. We are passing `None` instead of a `thread_id` UUID.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={5,6}}
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL>, apiKey: <API_KEY> });
 
@@ -882,13 +857,12 @@ If you don't want to **persist the outputs** of a streaming run in the [checkpoi
     for await (const chunk of streamResponse) {
       console.log(chunk.data);
     }
-    ```
+```
 
     1. We are passing `None` instead of a `thread_id` UUID.
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/runs/stream \
     --header 'Content-Type: application/json' \
@@ -899,7 +873,7 @@ If you don't want to **persist the outputs** of a streaming run in the [checkpoi
       \"stream_mode\": \"updates\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Join and stream
@@ -907,8 +881,8 @@ If you don't want to **persist the outputs** of a streaming run in the [checkpoi
 LangSmith allows you to join an active [background run](/langsmith/background-run) and stream outputs from it. To do so, you can use [LangGraph SDK's](/langsmith/langgraph-python-sdk) `client.runs.join_stream` method:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={4,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={4,6}}
     from langgraph_sdk import get_client
     client = get_client(url=<DEPLOYMENT_URL>, api_key=<API_KEY>)
 
@@ -917,13 +891,12 @@ LangSmith allows you to join an active [background run](/langsmith/background-ru
         run_id,  # (1)!
     ):
         print(chunk)
-    ```
+```
 
     1. This is the `run_id` of an existing run you want to join.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={4,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={4,6}}
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL>, apiKey: <API_KEY> });
 
@@ -934,24 +907,23 @@ LangSmith allows you to join an active [background run](/langsmith/background-ru
     for await (const chunk of streamResponse) {
       console.log(chunk);
     }
-    ```
+```
 
     1. This is the `run_id` of an existing run you want to join.
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/stream \
     --header 'Content-Type: application/json' \
     --header 'x-api-key: <API_KEY>'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 <Warning>
-  **Outputs not buffered**
-  When you use `.join_stream`, output is not buffered, so any output produced before joining will not be received.
+**Outputs not buffered**
+When you use `.join_stream`, output is not buffered, so any output produced before joining will not be received.
 </Warning>
 
 ## Stream a thread
@@ -960,20 +932,20 @@ Thread streaming opens a long-lived connection for a thread and streams output f
 
 ### Compare thread and run streaming
 
-|                         | Thread streaming                  | Run streaming                           |
-| ----------------------- | --------------------------------- | --------------------------------------- |
-| **SDK method**          | `client.threads.join_stream()`    | `client.runs.stream()`                  |
-| **REST endpoint**       | `GET /threads/{thread_id}/stream` | `POST /threads/{thread_id}/runs/stream` |
-| **Scope**               | All runs on a thread              | A single run                            |
-| **Connection lifetime** | Open indefinitely                 | Closes when the run completes           |
-| **Creates a run**       | No                                | Yes                                     |
-| **Use case**            | Monitor ongoing thread activity   | Execute and stream a single interaction |
+| | Thread streaming | Run streaming |
+|---|---|---|
+| **SDK method** | `client.threads.join_stream()` | `client.runs.stream()` |
+| **REST endpoint** | `GET /threads/{thread_id}/stream` | `POST /threads/{thread_id}/runs/stream` |
+| **Scope** | All runs on a thread | A single run |
+| **Connection lifetime** | Open indefinitely | Closes when the run completes |
+| **Creates a run** | No | Yes |
+| **Use case** | Monitor ongoing thread activity | Execute and stream a single interaction |
 
 ### Basic usage
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={7}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={7}}
     from langgraph_sdk import get_client
     client = get_client(url=<DEPLOYMENT_URL>, api_key=<API_KEY>)
 
@@ -983,10 +955,9 @@ Thread streaming opens a long-lived connection for a thread and streams output f
     async for chunk in client.threads.join_stream(thread_id):
         print(chunk)
     ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={7}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={7}}
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL>, apiKey: <API_KEY> });
 
@@ -997,55 +968,52 @@ Thread streaming opens a long-lived connection for a thread and streams output f
       console.log(chunk);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/stream \
     --header 'x-api-key: <API_KEY>'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Thread stream modes
 
 Thread streaming supports three stream modes that control which events are returned. Pass one or more modes via the `stream_mode` parameter.
 
-| Mode                  | Description                                                                                                       |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `run_modes` (default) | Streams all run events, equivalent to `client.runs.stream()` output.                                              |
-| `lifecycle`           | Streams only run start and end events. Use this for lightweight monitoring of run status without the full output. |
-| `state_update`        | Streams only state update events, providing the thread state after each run completes.                            |
+| Mode | Description |
+|------|-------------|
+| `run_modes` (default) | Streams all run events, equivalent to `client.runs.stream()` output. |
+| `lifecycle` | Streams only run start and end events. Use this for lightweight monitoring of run status without the full output. |
+| `state_update` | Streams only state update events, providing the thread state after each run completes. |
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={3}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={3}}
     async for chunk in client.threads.join_stream(
         thread_id,
         stream_mode=["lifecycle", "state_update"],
     ):
         print(chunk.event, chunk.data)
     ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={2}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={2}}
     for await (const chunk of client.threads.joinStream(threadID, {
       streamMode: ["lifecycle", "state_update"],
     })) {
       console.log(chunk.event, chunk.data);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
     --url '<DEPLOYMENT_URL>/threads/<THREAD_ID>/stream?stream_modes=lifecycle&stream_modes=state_update' \
     --header 'x-api-key: <API_KEY>'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ### Resume from last event
@@ -1053,48 +1021,45 @@ Thread streaming supports three stream modes that control which events are retur
 Thread streams support resumability via the `Last-Event-ID` header. If the connection drops, pass the ID of the last event you received to resume without missing events. Pass `"-"` to replay from the beginning.
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={3}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={3}}
     async for chunk in client.threads.join_stream(
         thread_id,
         last_event_id="<LAST_EVENT_ID>",
     ):
         print(chunk)
     ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={2}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={2}}
     for await (const chunk of client.threads.joinStream(threadID, {
       lastEventId: "<LAST_EVENT_ID>",
     })) {
       console.log(chunk);
     }
     ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/stream \
     --header 'x-api-key: <API_KEY>' \
     --header 'Last-Event-ID: <LAST_EVENT_ID>'
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## API reference
 
 For API usage and implementation, refer to the [API reference](/langsmith/server-api-ref).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

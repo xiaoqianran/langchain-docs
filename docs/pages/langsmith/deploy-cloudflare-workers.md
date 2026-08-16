@@ -2,8 +2,6 @@
 
 # Deploy with Cloudflare Workers
 
-Deploy a LangChain deep agent on Cloudflare Workers with Vite, React, Hono, and Durable Objects for SSE replay.
-
 The following page details an example app that deploys a LangChain **deep agent** on [Cloudflare Workers](https://developers.cloudflare.com/workers/): streaming chat UI, subagents, and thread history, all backed by the [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) implemented as Worker routes (HTTP + SSE). The React SPA is served from the same Worker via [Workers Assets](https://developers.cloudflare.com/workers/static-assets/). No separate backend process: one Worker serves the SPA and the protocol API.
 
 Source: [`js-cloudflare`](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-cloudflare) in the deployment cookbook.
@@ -11,27 +9,35 @@ Source: [`js-cloudflare`](https://github.com/langchain-ai/deployment-cookbook/tr
 ## Deploy to Cloudflare
 
 <Steps>
-  <Step title="Install and build">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd js-cloudflare
-    cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
-    pnpm install
-    pnpm build
-    ```
-  </Step>
 
-  <Step title="Configure secrets">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx wrangler login
-    npx wrangler secret put OPENAI_API_KEY
-    ```
-  </Step>
+<Step title="Install and build">
 
-  <Step title="Deploy">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm run deploy
-    ```
-  </Step>
+```bash
+cd js-cloudflare
+cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
+
+</Step>
+
+<Step title="Configure secrets">
+
+```bash
+npx wrangler login
+npx wrangler secret put OPENAI_API_KEY
+```
+
+</Step>
+
+<Step title="Deploy">
+
+```bash
+pnpm run deploy
+```
+
+</Step>
+
 </Steps>
 
 Wrangler uploads the Vite build (SPA) and the Worker script in one deploy. `nodejs_compat` and `nodejs_compat_populate_process_env` are enabled so LangChain can read `OPENAI_API_KEY` from the environment.
@@ -44,23 +50,23 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. Routes ar
 
 ### Minimum (streaming chat)
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 ### Optional (sidebar)
 
-| Method   | Path                             | Purpose                                   |
-| -------- | -------------------------------- | ----------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer    |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history              |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history |
 
 ### Request flow
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 %%{init: {"themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%
 flowchart TB
   subgraph browser["Browser (Vite + React)"]
@@ -111,16 +117,16 @@ flowchart TB
 
 ## Cloudflare backend design
 
-| Concern       | Implementation                                          |
-| ------------- | ------------------------------------------------------- |
-| Frontend      | Vite + React SPA (`src/`)                               |
-| API layer     | Hono routes in `worker/index.ts`                        |
-| Runtime       | Workers V8 + `nodejs_compat`                            |
-| SSE replay    | Per-thread **Durable Object** (`ThreadSession`)         |
-| Agent runs    | Worker isolate; protocol events POSTed to the DO        |
-| Static assets | Workers Assets (`wrangler.jsonc` → `assets`)            |
-| Secrets       | `wrangler secret` / `.dev.vars`                         |
-| Local dev     | `vite` (Cloudflare Vite plugin runs the Worker runtime) |
+| Concern | Implementation |
+| --- | --- |
+| Frontend | Vite + React SPA (`src/`) |
+| API layer | Hono routes in `worker/index.ts` |
+| Runtime | Workers V8 + `nodejs_compat` |
+| SSE replay | Per-thread **Durable Object** (`ThreadSession`) |
+| Agent runs | Worker isolate; protocol events POSTed to the DO |
+| Static assets | Workers Assets (`wrangler.jsonc` → `assets`) |
+| Secrets | `wrangler secret` / `.dev.vars` |
+| Local dev | `vite` (Cloudflare Vite plugin runs the Worker runtime) |
 
 The split between **Worker** (agent + checkpointer) and **Durable Object** (SSE event log) is the main design choice on Cloudflare. Worker isolates are ephemeral, so replay buffers live in Durable Objects rather than process memory.
 
@@ -137,7 +143,7 @@ For more information, see [checkpointer libraries](/oss/python/langgraph/checkpo
 
 ## Local development
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cp .env.example .dev.vars   # set OPENAI_API_KEY
 pnpm install
 pnpm dev
@@ -145,7 +151,7 @@ pnpm dev
 
 Open [http://localhost:5173](http://localhost:5173). The Cloudflare Vite plugin runs your Worker in the Workers runtime during dev, so `/api/*` routes behave like production.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pnpm build    # production build (client + worker)
 pnpm preview  # preview the production build locally
 pnpm typecheck
@@ -153,29 +159,28 @@ pnpm typecheck
 
 ## Project layout
 
-* `src/components/` — chat UI (`ChatApp`, `Chat`, `MessageThread`, `Subagents`, `ThreadHistory`, …).
-* `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
-* `worker/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
-* `worker/server/` — protocol helpers: `runs.ts` (start runs on the Worker), `threads.ts` (checkpointer-backed state), `serialize.ts`, `registry.ts`.
-* `worker/durable-objects/thread-session.ts` — per-thread SSE event log (`StreamChannel` + `matchesSubscription`).
-* `worker/index.ts` — Hono app: protocol routes + Worker export.
-* `wrangler.jsonc` — Worker config: `nodejs_compat`, Durable Object bindings, SPA asset routing (`run_worker_first: ["/api/*"]`).
+- `src/components/` — chat UI (`ChatApp`, `Chat`, `MessageThread`, `Subagents`, `ThreadHistory`, …).
+- `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
+- `worker/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
+- `worker/server/` — protocol helpers: `runs.ts` (start runs on the Worker), `threads.ts` (checkpointer-backed state), `serialize.ts`, `registry.ts`.
+- `worker/durable-objects/thread-session.ts` — per-thread SSE event log (`StreamChannel` + `matchesSubscription`).
+- `worker/index.ts` — Hono app: protocol routes + Worker export.
+- `wrangler.jsonc` — Worker config: `nodejs_compat`, Durable Object bindings, SPA asset routing (`run_worker_first: ["/api/*"]`).
 
 ## See also
 
-* [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
-* [Cloudflare Workers](https://developers.cloudflare.com/workers/)
-* [Durable Objects](https://developers.cloudflare.com/durable-objects/)
+- [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
+- [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- [Durable Objects](https://developers.cloudflare.com/durable-objects/)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

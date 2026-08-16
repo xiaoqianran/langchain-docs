@@ -4,22 +4,22 @@
 
 LLM applications can be challenging to evaluate since they often generate conversational text with no single correct answer.
 
-This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge) for [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) using the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge).
+This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge) for [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) using the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-as-judge).
 
 <Note>
-  This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
 
-  To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
+To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
 </Note>
 
 <Tip>
-  If your dataset examples were built with [assertions written in an annotation queue](/langsmith/assertions), an LLM-as-a-judge evaluator can read `example.outputs["assertions"]` and grade each one against your application's output.
+If your dataset examples were built with [assertions written in an annotation queue](/langsmith/assertions), an LLM-as-a-judge evaluator can read `example.outputs["assertions"]` and grade each one against your application's output.
 </Tip>
 
 ## Step 1. Create the evaluator
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge), click **+ Evaluator** from the [Evaluators](/langsmith/evaluators) page, or from the **Evaluators** tab within a dataset or tracing project.
-2. In the **Add Evaluator** panel, select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Alternatively, select **Create from a template** to start from a ready-made evaluator and edit it.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-as-judge), click **+ Evaluator** from the [Evaluators](/langsmith/evaluators) page, or from the **Evaluators** tab within a dataset or tracing project.
+1. In the **Add Evaluator** panel, select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Alternatively, select **Create from a template** to start from a ready-made evaluator and edit it.
 
 ### Evaluator templates
 
@@ -27,9 +27,9 @@ Evaluator templates are a useful starting point when setting up evaluations. Sel
 
 You can configure an LLM-as-a-Judge evaluator:
 
-* From the [Evaluators](/langsmith/evaluators) page
-* As part of a dataset to [automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset)
-* When running an [online evaluation](/langsmith/online-evaluations-llm-as-judge)
+- From the [Evaluators](/langsmith/evaluators) page
+- As part of a dataset to [automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset)
+- When running an [online evaluation](/langsmith/online-evaluations-llm-as-judge)
 
 ### Customize your LLM-as-a-judge evaluator
 
@@ -87,14 +87,13 @@ Behind the scenes, feedback configuration is added as [structured output](/oss/p
 
 Once you are finished configuring, save your changes.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

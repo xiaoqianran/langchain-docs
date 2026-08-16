@@ -5,22 +5,22 @@
 This page describes the [prompt template](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) formats supported in the [Playground](/langsmith/prompt-engineering-concepts#playground), [prompt hub](/langsmith/manage-prompts#public-prompt-hub), and [evaluators](/langsmith/evaluation-concepts#evaluators). Prompt templates allow you to create reusable prompts with dynamic placeholders that get filled in at runtime.
 
 <Tip>
-  For a general overview of prompt engineering and prompt templates, refer to the [Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) page.
+For a general overview of prompt engineering and prompt templates, refer to the [Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) page.
 </Tip>
 
 LangSmith supports two prompt template formats, which work for different levels of complexity:
 
-| Format       | Syntax         | Best for                                                             |
-| ------------ | -------------- | -------------------------------------------------------------------- |
-| **f-string** | `{variable}`   | Simple prompts with basic variable substitution                      |
+| Format | Syntax | Best for |
+|--------|--------|----------|
+| **f-string** | `{variable}` | Simple prompts with basic variable substitution |
 | **mustache** | `{{variable}}` | Complex prompts with loops, conditionals, nested data, or evaluators |
 
 [F-string syntax](#f-string-syntax) is ideal for straightforward prompts. [Mustache](#mustache-syntax) provides features for handling complex data structures and logic, which is helpful for evaluators and advanced use cases.
 
-You can switch between formats in the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-template-format). LangSmith will automatically [convert your template](#conversion-between-formats) when possible, though some mustache features (like loops and conditionals) cannot be converted to f-string format.
+You can switch between formats in the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-prompt-template-format). LangSmith will automatically [convert your template](#conversion-between-formats) when possible, though some mustache features (like loops and conditionals) cannot be converted to f-string format.
 
-<Callout icon="test-pipe">
-  Use the [Playground](https://smith.langchain.com/playground) to test out the examples on this page. Switch the **Prompt format** under the prompt settings <Icon icon="settings" /> menu in the Playground.
+<Callout icon="test-pipe" color="#4F46E5" iconType="regular">
+Use the [Playground](https://smith.langchain.com/playground) to test out the examples on this page. Switch the **Prompt format** under the prompt settings <Icon icon="settings" color="#4F46E5" iconType="solid" /> menu in the Playground.
 </Callout>
 
 ## F-string syntax
@@ -31,7 +31,7 @@ F-string templates use Python-style formatting with single curly braces `{variab
 
 Variables are replaced with their values from the input data. Variable names must match exactly (case-sensitive):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Template
 Hello, {name}! Welcome to {company}.
 
@@ -51,7 +51,7 @@ When the template runs, LangSmith looks up each variable name in the input objec
 
 F-string variable names are treated as simple string identifiers. They cannot contain dots, brackets, or special characters—just alphanumeric characters and underscores.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Template
 Hello, {name}!
 Your topic is: {topic}
@@ -73,7 +73,7 @@ If your input has nested objects like `{"user": {"name": "Ashley"}}`, you **cann
 
 Sometimes you need to include actual curly braces in your output (for example, in JSON examples or code snippets). To do this, **double the braces**:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Template
 Use double braces for literals: {{not_a_variable}}
 But single braces for variables: {variable}
@@ -94,12 +94,12 @@ The template parser recognizes `{{` as an escaped brace, not a variable placehol
 
 LangSmith's f-string implementation is limited to keep templates simple and predictable. The following features are **not supported**:
 
-* **Dot notation for nested access:** Cannot use `{user.name}` to access nested objects. The entire string `"user.name"` would be treated as a single variable name.
-* **Format specifiers:** Cannot use `{price:.2f}` for number formatting or `{rate:.1%}` for percentages.
-* **Expressions:** Cannot use `{x + y}`, `{len(items)}`, or `{value if condition else default}`.
-* **Function calls:** Cannot use `{str.upper()}` or other method calls.
-* **Loops or conditionals:** No control flow structures.
-* **Array indexing:** Cannot use `{items[0]}` to access array elements.
+- **Dot notation for nested access:** Cannot use `{user.name}` to access nested objects. The entire string `"user.name"` would be treated as a single variable name.
+- **Format specifiers:** Cannot use `{price:.2f}` for number formatting or `{rate:.1%}` for percentages.
+- **Expressions:** Cannot use `{x + y}`, `{len(items)}`, or `{value if condition else default}`.
+- **Function calls:** Cannot use `{str.upper()}` or other method calls.
+- **Loops or conditionals:** No control flow structures.
+- **Array indexing:** Cannot use `{items[0]}` to access array elements.
 
 For any of these advanced features, **use mustache format instead**.
 
@@ -109,10 +109,10 @@ For any of these advanced features, **use mustache format instead**.
 
 Mustache is designed for complex data structures and dynamic rendering. It's essential for:
 
-* **Evaluators:** Processing thread histories and conversation context.
-* **Few-shot prompting:** Iterating over example lists.
-* **Nested data:** Accessing deeply nested objects and arrays.
-* **Conditional content:** Showing different text based on data presence.
+- **Evaluators:** Processing thread histories and conversation context.
+- **Few-shot prompting:** Iterating over example lists.
+- **Nested data:** Accessing deeply nested objects and arrays.
+- **Conditional content:** Showing different text based on data presence.
 
 The double-brace syntax `{{variable}}` distinguishes it from f-strings.
 
@@ -120,7 +120,7 @@ The double-brace syntax `{{variable}}` distinguishes it from f-strings.
 
 Like f-strings, mustache replaces variables with their values:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Hello, {{name}}! Welcome to {{company}}.
 
@@ -135,14 +135,14 @@ Hello, Ashley! Welcome to LangChain.
 ```
 
 <Note>
-  `{{!-- ... --}}` is a mustache comment and won't appear in the output. Refer to the [Comments](#comments) section.
+`{{!-- ... --}}` is a mustache comment and won't appear in the output. Refer to the [Comments](#comments) section.
 </Note>
 
 ### Nested object access
 
 You can traverse nested objects using dot notation:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 User: {{user.name}}
 Email: {{user.profile.email}}
@@ -170,14 +170,14 @@ Real-world data is often nested (for example: API responses, database records, e
 
 Sections are mustache's core feature. A section starts with `{{#name}}` and ends with `{{/name}}`. What happens inside depends on the value:
 
-* **Array:** Repeats the content for each element.
-* **Object:** Renders once with that object as context.
-* **Truthy value:** Renders once.
-* **Falsy value (false, null, undefined, empty array):** Doesn't render.
+- **Array:** Repeats the content for each element.
+- **Object:** Renders once with that object as context.
+- **Truthy value:** Renders once.
+- **Falsy value (false, null, undefined, empty array):** Doesn't render.
 
 In the following example, the section `{{#items}}` iterates over the `items` array. For each iteration, the variables inside the section (like `{{name}}` and `{{price}}`) are resolved against the current array element:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Shopping List:
 {{#items}}
@@ -204,7 +204,7 @@ Sections eliminate the need to manually construct repetitive text. In evaluators
 
 For deeply nested hierarchical data, you can nest multiple sections to handle complex structures with multiple levels of arrays and objects:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 {{#company}}
 Company: {{name}}
@@ -248,14 +248,14 @@ Company: TechCorp
 ```
 
 <Tip>
-  You can create a structure as deep as you need, but consider flattening very deep structures before templating for readability. This approach is useful for nested categories, conversation threads with metadata, or any hierarchical data representation.
+You can create a structure as deep as you need, but consider flattening very deep structures before templating for readability. This approach is useful for nested categories, conversation threads with metadata, or any hierarchical data representation.
 </Tip>
 
 ### Nested loops
 
 You can nest sections to handle multi-level data structures:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 {{#categories}}
 Category: {{name}}
@@ -301,7 +301,7 @@ Use nested loops when your data has hierarchical relationships—categories with
 
 Sometimes you need a specific element rather than looping. Use dot notation with numeric indices:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 First item: {{items.0}}
 Second item: {{items.1}}
@@ -326,7 +326,7 @@ Evaluators often need the first user message or last AI response from a conversa
 
 You can use sections as conditionals. They only render if the value exists, is non-empty, and is not `false`:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 {{#user}}
 Welcome back, {{name}}!
@@ -359,11 +359,11 @@ Inverted sections render only when a value doesn’t exist, is false, null, unde
 
 In the following example:
 
-* `{{#results}}` iterates over each result and renders one line per item.
-* `{{^results}}` renders only when the results array is empty or missing.
-* The inverted section provides a clear fallback when there are no results to display.
+- `{{#results}}` iterates over each result and renders one line per item.
+- `{{^results}}` renders only when the results array is empty or missing.
+- The inverted section provides a clear fallback when there are no results to display.
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Search results for "{{query}}":
 
@@ -406,7 +406,7 @@ You can also combine regular and inverted sections to create if/else logic, prov
 
 The regular section `{{#username}}` renders only if `username` exists. The inverted section `{{^username}}` renders only if it doesn't. Together, they create an if/else branch. This is useful for personalizing prompts when user data is optional or showing default instructions when custom ones aren't provided:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 {{#username}}
 Hello, {{username}}!
@@ -426,7 +426,7 @@ Hello, Guest!
 
 This pattern extends to boolean flags, allowing you to change output formatting based on data conditions:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Status: {{status}}
 {{#is_urgent}}
@@ -453,7 +453,7 @@ Use boolean flags in your data to control which content blocks render. This keep
 
 Comments document your templates without affecting output. Use `{{! comment }}` or `{{!-- comment --}}`:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Hello, {{name}}!
 {{! This is a comment and won't appear in output }}
@@ -481,7 +481,7 @@ Evaluators need to analyze conversations holistically—looking at patterns acro
 
 LangSmith provides three pre-structured views of conversation [threads](/langsmith/evaluation-concepts#threads):
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Access all messages in the thread --}}
 {{#all_messages}}
 {{role}}: {{content}}
@@ -504,15 +504,15 @@ First message: {{all_messages.0}}
 Second message: {{all_messages.1}}
 ```
 
-* **`all_messages`**: Every message in chronological order with `role` (user/assistant/system) and `content` fields. Use this to show the full conversation flow.
-* **`human_ai_pairs`**: Messages grouped into question-answer pairs. Each pair has `human` (user message) and `ai` (assistant response). Use this when evaluating response quality.
-* **`first_human_last_ai`**: Just the initial question (`first_human`) and final answer (`last_ai`). Use this to check if the AI ultimately answered the original question, ignoring the middle conversation.
+- **`all_messages`**: Every message in chronological order with `role` (user/assistant/system) and `content` fields. Use this to show the full conversation flow.
+- **`human_ai_pairs`**: Messages grouped into question-answer pairs. Each pair has `human` (user message) and `ai` (assistant response). Use this when evaluating response quality.
+- **`first_human_last_ai`**: Just the initial question (`first_human`) and final answer (`last_ai`). Use this to check if the AI ultimately answered the original question, ignoring the middle conversation.
 
 ### Example with thread context
 
 The following example is a practical evaluator prompt that uses thread context:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 Evaluate this conversation:
 
@@ -553,9 +553,9 @@ Few-shot prompting teaches the LLM by example. You provide several input-output 
 
 [Few-shot examples](/langsmith/create-few-shot-evaluators#how-few-shot-examples-work) help the LLM understand:
 
-* **Format expectations** (e.g., "respond with JSON" or "use this tone")
-* **Edge cases** (e.g., how to handle ambiguous input)
-* **Task nuances** (e.g., the difference between "positive" and "very positive" sentiment)
+- **Format expectations** (e.g., "respond with JSON" or "use this tone")
+- **Edge cases** (e.g., how to handle ambiguous input)
+- **Task nuances** (e.g., the difference between "positive" and "very positive" sentiment)
 
 It is especially useful for classification, formatting, and stylistic tasks where showing is clearer than telling.
 
@@ -563,7 +563,7 @@ It is especially useful for classification, formatting, and stylistic tasks wher
 
 In LangSmith, use the `{{few_shot_examples}}` placeholder where you want your examples to appear:
 
-```mustache theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mustache
 {{!-- Template --}}
 You are a sentiment classifier.
 
@@ -574,7 +574,7 @@ Text: {{text}}
 Sentiment:
 ```
 
-When you enable few-shot examples in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-template-format) (in evaluators or Prompt Hub), you configure the example format separately. LangSmith automatically injects those formatted examples wherever you place the `{{few_shot_examples}}` placeholder. This keeps your prompt template clean and lets you manage examples independently.
+When you enable few-shot examples in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-prompt-template-format) (in evaluators or Prompt Hub), you configure the example format separately. LangSmith automatically injects those formatted examples wherever you place the `{{few_shot_examples}}` placeholder. This keeps your prompt template clean and lets you manage examples independently.
 
 **Example output with configured examples:**
 
@@ -601,28 +601,27 @@ Configure your few-shot examples in the LangSmith UI to match the format you use
 
 **Mustache to f-string** only works for basic variables. Mustache features like dot notation, sections, conditionals, and comments have no equivalent in f-strings and cannot be converted:
 
-* **Dot notation:** `{{user.name}}` F-strings would treat `"user.name"` as a single variable name rather than nested access.
-* **Sections/loops:** `{{#items}}...{{/items}}` No equivalent in f-strings.
-* **Conditionals:** `{{#value}}...{{/value}}` No equivalent in f-strings.
-* **Inverted sections:** `{{^value}}...{{/value}}` No equivalent in f-strings.
-* **Comments:** `{{! comment }}` No equivalent in f-strings.
+- **Dot notation:** `{{user.name}}` F-strings would treat `"user.name"` as a single variable name rather than nested access.
+- **Sections/loops:** `{{#items}}...{{/items}}` No equivalent in f-strings.
+- **Conditionals:** `{{#value}}...{{/value}}` No equivalent in f-strings.
+- **Inverted sections:** `{{^value}}...{{/value}}` No equivalent in f-strings.
+- **Comments:** `{{! comment }}` No equivalent in f-strings.
 
 If you try to convert a mustache template with these features, LangSmith will either refuse the conversion or convert only the simple parts, breaking the template's functionality. Always preview after conversion.
 
 ## Additional resources
 
-* **[LangSmith Prompt Engineering Concepts](https://docs.langchain.com/langsmith/prompt-engineering-concepts)**: Higher-level guidance on effective prompting strategies.
-* **[Mustache Manual](https://mustache.github.io/mustache.5.html)**: Full mustache specification with all features.
-* **[Python f-string Documentation](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)**: Official Python f-string syntax (note: LangSmith uses a simplified subset).
+- **[LangSmith Prompt Engineering Concepts](https://docs.langchain.com/langsmith/prompt-engineering-concepts)**: Higher-level guidance on effective prompting strategies.
+- **[Mustache Manual](https://mustache.github.io/mustache.5.html)**: Full mustache specification with all features.
+- **[Python f-string Documentation](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)**: Official Python f-string syntax (note: LangSmith uses a simplified subset).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

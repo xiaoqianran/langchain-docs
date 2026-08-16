@@ -2,24 +2,22 @@
 
 # View traces
 
-Inspect agent threads in LangSmith using the Messages view or Details view.
-
 From a tracing project, use the **Threads**, **Traces**, or **Runs** tabs to change what appears in the table. Click into any row to open the side panel.
 
 The side panel is organized around [threads](/langsmith/observability-concepts#threads) as the primary unit of navigation. Instead of treating each [run](/langsmith/observability-concepts#runs) as an isolated object, the UI keeps the surrounding conversation visible so you can understand where a run fits in the agent's broader execution.
 
 <Note>
-  The Threads tab and the Turns view are only available for runs instrumented with a `thread_id` metadata field. Without thread instrumentation, you'll see traces as individual runs and won't have access to the Turns view.
+The Threads tab and the Turns view are only available for runs instrumented with a `thread_id` metadata field. Without thread instrumentation, you'll see traces as individual runs and won't have access to the Turns view.
 </Note>
 
 Three views are available at the top of the side panel:
 
-* [**Messages**](#messages-view) (**beta**): The conversation layer. Scan the [trajectory](/langsmith/observability-concepts#trajectories) as inputs, outputs, reasoning, tool calls, and subagent activity. Use this to find where to look. Press `M` to switch to this view.
-* [**Turns**](#turns-view): The per-turn summary. View each turn in the thread as a card showing its inputs and outputs, with expand/collapse. Use this when you want a structural overview without the full conversation rendering. Press `T` to switch to this view.
-* [**Details**](#details-view): The debugging layer. Drill into a specific run to inspect inputs, outputs, timing, token counts, errors, and metadata. Use this to understand what happened at a specific point in execution. Press `D` to switch to this view.
+- [**Messages**](#messages-view) (**beta**): The conversation layer. Scan the [trajectory](/langsmith/observability-concepts#trajectories) as inputs, outputs, reasoning, tool calls, and subagent activity. Use this to find where to look. Press `M` to switch to this view.
+- [**Turns**](#turns-view): The per-turn summary. View each turn in the thread as a card showing its inputs and outputs, with expand/collapse. Use this when you want a structural overview without the full conversation rendering. Press `T` to switch to this view.
+- [**Details**](#details-view): The debugging layer. Drill into a specific run to inspect inputs, outputs, timing, token counts, errors, and metadata. Use this to understand what happened at a specific point in execution. Press `D` to switch to this view.
 
 <Note>
-  The Messages tab is disabled for threads that don't have any renderable messages. The Messages view is in **[beta](/langsmith/release-stages)**—the side panel defaults to the Details view.
+The Messages tab is disabled for threads that don't have any renderable messages. The Messages view is in **[beta](/langsmith/release-stages)**—the side panel defaults to the Details view.
 </Note>
 
 Use the Messages view to orient yourself in the conversation and identify where to focus, then switch to the Details view to inspect a specific run:
@@ -28,15 +26,12 @@ Use the Messages view to orient yourself in the conversation and identify where 
   <Step title="Start in the Messages view">
     Open a thread and switch to the Messages view to see the trajectory.
   </Step>
-
   <Step title="Investigate">
     Scan the trajectory to identify unexpected behavior, for example, a bad tool result, an unexpected subagent handoff, a latency spike.
   </Step>
-
   <Step title="Inspect the run">
     Click the relevant message or tool call to open the Details view at the exact run that produced it. Review its inputs, outputs, timing, errors, and metadata.
   </Step>
-
   <Step title="Return to the trajectory">
     Toggle back to the Messages view to continue scanning the conversation.
   </Step>
@@ -54,10 +49,10 @@ Each turn in the trajectory renders as a single block containing the model's res
 
 The metadata row for each block shows:
 
-* **Token usage:** total tokens for the call
-* **Cost:** total cost for the call
-* **Model name**
-* An **LLM call** link to the corresponding run in the [Details view](#details-view) (shown only when the AI message has visible text)
+- **Token usage:** total tokens for the call
+- **Cost:** total cost for the call
+- **Model name**
+- An **LLM call** link to the corresponding run in the [Details view](#details-view) (shown only when the AI message has visible text)
 
 **Thought** blocks appear inline with assistant messages when a model uses extended thinking, collapsed by default. Click to expand the model's chain of thought for that turn.
 
@@ -71,28 +66,27 @@ To download the thread as a Markdown file, use the download button in the Messag
 
 You can control how runs appear in the Messages view using metadata keys on individual runs.
 
-* `ls_agent_type`: Controls where messages from an agent-like run appear. Accepted values:
+- `ls_agent_type`: Controls where messages from an agent-like run appear. Accepted values:
 
-  | Value        | Messages view behavior                                                         |
-  | ------------ | ------------------------------------------------------------------------------ |
-  | `"root"`     | Messages from this run appear in the main Messages view.                       |
+  | Value | Messages view behavior |
+  |---|---|
+  | `"root"` | Messages from this run appear in the main Messages view. |
   | `"subagent"` | Messages from this run appear as a subagent action in the conversation thread. |
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @traceable(metadata={"ls_agent_type": "root"})
-  def my_agent():
-      ...
-  ```
+    ```python
+    @traceable(metadata={"ls_agent_type": "root"})
+    def my_agent():
+        ...
+    ```
 
-* `ls_message_format`: Overrides automatic format detection. Accepted values:
-  * `"langchain"`: parse as LangChain message format
-  * `"completions"`: parse as OpenAI Chat Completions format
-  * `"responses"`: parse as OpenAI Responses API format
-  * `"anthropic"`: parse as Anthropic message format
-
-* `LS_MESSAGE_VIEW_EXCLUDE`: Exclude an individual run from the Messages view. Import the constant from `langsmith` (Python and JS), or use the literal string `"ls_message_view_exclude"`. For code examples, refer to [Exclude runs from the Messages view](/langsmith/messages-view-integrations#exclude-runs-from-the-messages-view).
-  * For `@traceable` / `traceable()`: child runs that execute inside the tagged run's tracing context inherit the exclusion.
-  * For `wrap_openai` / `wrapOpenAI`, `wrapAISDK`, `RunTree.createChild`, and LangChain `RunnableConfig`: set the key on each run you want to hide. Inheritance to child runs is not guaranteed on these surfaces.
+- `ls_message_format`: Overrides automatic format detection. Accepted values:
+  - `"langchain"`: parse as LangChain message format
+  - `"completions"`: parse as OpenAI Chat Completions format
+  - `"responses"`: parse as OpenAI Responses API format
+  - `"anthropic"`: parse as Anthropic message format
+- `LS_MESSAGE_VIEW_EXCLUDE`: Exclude an individual run from the Messages view. Import the constant from `langsmith` (Python and JS), or use the literal string `"ls_message_view_exclude"`. For code examples, refer to [Exclude runs from the Messages view](/langsmith/messages-view-integrations#exclude-runs-from-the-messages-view).
+  - For `@traceable` / `traceable()`: child runs that execute inside the tagged run's tracing context inherit the exclusion.
+  - For `wrap_openai` / `wrapOpenAI`, `wrapAISDK`, `RunTree.createChild`, and LangChain `RunnableConfig`: set the key on each run you want to hide. Inheritance to child runs is not guaranteed on these surfaces.
 
 For the integrations that set this metadata automatically, refer to [Messages view integrations](/langsmith/messages-view-integrations).
 
@@ -102,9 +96,9 @@ Use the Turns view to scan the structure of a thread one turn at a time, without
 
 The Turns view is useful when:
 
-* The thread doesn't have renderable messages (for example, a trace from an integration that isn't supported by the Messages view).
-* You want a quick structural overview of the thread before deciding which turn to drill into.
-* You want to see raw inputs and outputs per turn without normalization into a chat-style conversation.
+- The thread doesn't have renderable messages (for example, a trace from an integration that isn't supported by the Messages view).
+- You want a quick structural overview of the thread before deciding which turn to drill into.
+- You want to see raw inputs and outputs per turn without normalization into a chat-style conversation.
 
 Click into any turn to open the [Details view](#details-view) at the run that produced it.
 
@@ -128,19 +122,18 @@ Setting `run_type="retriever"` on a run causes the Details view to render each r
 
 From the Details view, you can also:
 
-* **Share a trace:** Generate a public link to the trace. Refer to [Manage a trace](/langsmith/manage-trace#share-a-trace).
-* **View server logs:** Access server logs associated with a trace generated by a LangSmith deployment. Refer to [Manage a trace](/langsmith/manage-trace#view-server-logs).
-* **Add to a dataset:** Save the run as an example in a dataset for use in evaluations. Refer to [Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
-* **Add to an annotation queue:** Send the run or its entire [thread](/langsmith/observability-concepts#threads) to a queue for human review and feedback. Refer to [Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue).
+- **Share a trace:** Generate a public link to the trace. Refer to [Manage a trace](/langsmith/manage-trace#share-a-trace).
+- **View server logs:** Access server logs associated with a trace generated by a LangSmith deployment. Refer to [Manage a trace](/langsmith/manage-trace#view-server-logs).
+- **Add to a dataset:** Save the run as an example in a dataset for use in evaluations. Refer to [Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
+- **Add to an annotation queue:** Send the run or its entire [thread](/langsmith/observability-concepts#threads) to a queue for human review and feedback. Refer to [Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

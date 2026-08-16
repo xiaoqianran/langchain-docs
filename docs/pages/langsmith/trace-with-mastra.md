@@ -10,7 +10,7 @@ This guide shows you how to integrate Mastra with LangSmith using Mastra’s AI 
 
 Install Mastra and the LangSmith exporter:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
 ```
 
@@ -18,35 +18,36 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
 
 1. Set your LangSmith API key and (optionally) a LangSmith project name:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_API_KEY=<your_langsmith_api_key>
-   export LANGCHAIN_PROJECT=<your_project_name> # optional
-   ```
+    ```bash
+    export LANGSMITH_API_KEY=<your_langsmith_api_key>
+    export LANGCHAIN_PROJECT=<your_project_name> # optional
+    ```
 
-   <Tip>
-     If [`LANGCHAIN_PROJECT`](/langsmith/log-traces-to-project) is not set, traces will be sent to the default project.
-   </Tip>
+    <Tip>
+    If [`LANGCHAIN_PROJECT`](/langsmith/log-traces-to-project) is not set, traces will be sent to the default project.
+    </Tip>
 
-2. If you plan to use OpenAI models, also ensure you have an OpenAI API key available at runtime:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export OPENAI_API_KEY=<your_openai_api_key>
-   ```
+1. If you plan to use OpenAI models, also ensure you have an OpenAI API key available at runtime:
 
-3. In your project directory, create the following project structure and files:
+    ```bash
+    export OPENAI_API_KEY=<your_openai_api_key>
+    ```
 
-   ```
-   src/
-       mastra.ts
-       agent.ts
-       index.ts
-   ```
+1. In your project directory, create the following project structure and files:
+
+    ```
+    src/
+        mastra.ts
+        agent.ts
+        index.ts
+    ```
 
 ## Configure Mastra with the LangSmith exporter
 
 Mastra tracing is configured directly on the `Mastra` constructor. Add the following to a `mastra.ts` file:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts
 import { Mastra } from "@mastra/core";
 import { LibSQLStore } from "@mastra/libsql";
 import { LangSmithExporter } from "@mastra/langsmith";
@@ -80,17 +81,17 @@ export const mastra = new Mastra({
 });
 ```
 
-* [Storage is required for tracing](https://mastra.ai/docs/observability/ai-tracing/overview#basic-config) (even when exporting traces externally).
-* The LangSmith exporter reads credentials from environment variables.
-* The [deprecated telemetry system](https://mastra.ai/docs/observability/overview#otel-tracing-deprecated) is disabled to avoid warnings.
-* No separate instrumentation file is required when running Mastra outside of the Mastra server.
-  For more details, refer to the [Mastra docs](https://mastra.ai/docs/observability/ai-tracing/overview).
+- [Storage is required for tracing](https://mastra.ai/docs/observability/ai-tracing/overview#basic-config) (even when exporting traces externally).
+- The LangSmith exporter reads credentials from environment variables.
+- The [deprecated telemetry system](https://mastra.ai/docs/observability/overview#otel-tracing-deprecated) is disabled to avoid warnings.
+- No separate instrumentation file is required when running Mastra outside of the Mastra server.
+For more details, refer to the [Mastra docs](https://mastra.ai/docs/observability/ai-tracing/overview).
 
 ### Define an agent
 
 For compatibility, use [string-based model identifiers](https://mastra.ai/models#basic-usage). Add the following code to an `agent.ts` file:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts
 import { Agent } from "@mastra/core/agent";
 
 export const echoAgent = new Agent({
@@ -106,46 +107,45 @@ Mastra will automatically route the model call using your configured API keys an
 
 1. Add the following to an `index.ts` file:
 
-   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import { mastra } from "./mastra";
+    ```ts
+    import { mastra } from "./mastra";
 
-   async function main() {
-   const agent = mastra.getAgent("echoAgent");
-   const result = await agent.generate("Say hello and explain what Mastra is.");
-   console.log(result.text);
-   }
+    async function main() {
+    const agent = mastra.getAgent("echoAgent");
+    const result = await agent.generate("Say hello and explain what Mastra is.");
+    console.log(result.text);
+    }
 
-   main();
-   ```
+    main();
+    ```
 
-2. Run your application:
+1. Run your application:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   npx ts-node src/index.ts
-   ```
+    ```bash
+    npx ts-node src/index.ts
+    ```
 
 ## View traces in LangSmith
 
 After running the agent:
 
-1. Open the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-mastra).
-2. Select your project. For example, the value of `LANGCHAIN_PROJECT`.
-3. Locate the trace corresponding to `echoAgent.generate`.
+1. Open the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-with-mastra).
+1. Select your project. For example, the value of `LANGCHAIN_PROJECT`.
+1. Locate the trace corresponding to `echoAgent.generate`.
 
 You’ll be able to inspect:
 
-* Model inputs and outputs
-* Agent execution steps
-* Timing and error information
+- Model inputs and outputs
+- Agent execution steps
+- Timing and error information
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -12,16 +12,16 @@ However, you can configure LangSmith to use an external ClickHouse database for 
 
 * Provision a [ClickHouse Cloud](https://clickhouse.cloud/) either directly or through a cloud provider marketplace:
 
-  * [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/clickhouse.clickhouse_cloud?tab=Overview)
+    * [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/clickhouse.clickhouse_cloud?tab=Overview)
   * [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)
   * [AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=adb43736-8b95-4d49-8009-3693cbee8578)
 
 * On a VM in your cloud provider
 
 <Note>
-  Using the first two options (LangSmith-managed ClickHouse or ClickHouse Cloud) will provision a Clickhouse service OUTSIDE of your VPC. However, both options support private endpoints, meaning that you can direct traffic to the ClickHouse service without exposing it to the public internet (eg via AWS PrivateLink, or GCP Private Service Connect).
+Using the first two options (LangSmith-managed ClickHouse or ClickHouse Cloud) will provision a Clickhouse service OUTSIDE of your VPC. However, both options support private endpoints, meaning that you can direct traffic to the ClickHouse service without exposing it to the public internet (eg via AWS PrivateLink, or GCP Private Service Connect).
 
-  Additionally, sensitive information can be configured to be not stored in Clickhouse. Please contact support via [support.langchain.com](https://support.langchain.com) for more information.
+Additionally, sensitive information can be configured to be not stored in Clickhouse. Please contact support via [support.langchain.com](https://support.langchain.com) for more information.
 </Note>
 
 ## Requirements
@@ -32,12 +32,11 @@ However, you can configure LangSmith to use an external ClickHouse database for 
 * We only support ClickHouse versions >= 23.9. Use of ClickHouse versions >= 24.2 requires LangSmith v0.6 or later.
 
 <Warning>
-  Downgrading ClickHouse to an earlier version can cause data corruption of system tables and result in significant downtime. If you need assistance with a ClickHouse version change or are experiencing issues after an upgrade, contact support at [support.langchain.com](https://support.langchain.com) before attempting a downgrade.
+Downgrading ClickHouse to an earlier version can cause data corruption of system tables and result in significant downtime. If you need assistance with a ClickHouse version change or are experiencing issues after an upgrade, contact support at [support.langchain.com](https://support.langchain.com) before attempting a downgrade.
 </Warning>
-
 * We rely on a few configuration parameters to be set on your ClickHouse instance. These are detailed below:
 
-```xml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```xml
 <profiles>
   <default>
       <async_insert>1</async_insert> # Turn on async insert
@@ -53,13 +52,13 @@ However, you can configure LangSmith to use an external ClickHouse database for 
 ```
 
 <Warning>
-  Our system has been tuned to work with the above configuration parameters. Changing these parameters may result in unexpected behavior.
+Our system has been tuned to work with the above configuration parameters. Changing these parameters may result in unexpected behavior.
 </Warning>
 
 ## HA replicated Clickhouse cluster
 
 <Warning>
-  By default, the setup process above will only work with a single node Clickhouse cluster.
+By default, the setup process above will only work with a single node Clickhouse cluster.
 </Warning>
 
 If you would like to use a multi-node Clickhouse cluster for HA, we support this with additional required configuration. This setup can use a Clickhouse cluster with multiple nodes where data replicated via Zookeeper or Clickhouse Keeper. For more information on Clickhouse replication, see [Clickhouse Data Replication Docs](https://clickhouse.com/docs/architecture/replication).
@@ -74,7 +73,7 @@ In order to setup LangSmith with a replicated multi-node Clickhouse setup:
 When running migrations with `cluster` enabled, the migration will create the `Replicated` table engine flavor. This means that data will be replicated among the servers in the cluster. This is a master-master setup where any server can process reads, writes, or merges.
 
 <Note>
-  For an example setup of a replicated ClickHouse cluster, refer to the [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md) in the LangSmith Helm chart repo, under examples.
+For an example setup of a replicated ClickHouse cluster, refer to the [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md) in the LangSmith Helm chart repo, under examples.
 </Note>
 
 ## LangSmith-managed ClickHouse
@@ -83,7 +82,7 @@ When running migrations with `cluster` enabled, the migration will create the `R
 * You will also need to set up Blob Storage. You can read more about Blob Storage in the [Blob Storage documentation](/langsmith/self-host-blob-storage).
 
 <Note>
-  ClickHouse installations managed by LangSmith use a SharedMerge engine, which automatically clusters them and separates compute from storage.
+ClickHouse installations managed by LangSmith use a SharedMerge engine, which automatically clusters them and separates compute from storage.
 </Note>
 
 For more information, refer to the [managed ClickHouse](/langsmith/langsmith-managed-clickhouse) page.
@@ -101,25 +100,25 @@ You will need to provide several parameters to your LangSmith installation to co
 * **Cluster (Optional)**: The name of the ClickHouse cluster if using an external Clickhouse cluster. When set, LangSmith will run migrations on the cluster and replicate data across instances.
 
 <Warning>
-  Important considerations for clustered deployments:
+Important considerations for clustered deployments:
 
-  * Clustered setups must be configured on a fresh schema - existing standalone ClickHouse instances cannot be converted to clustered mode.
+* Clustered setups must be configured on a fresh schema - existing standalone ClickHouse instances cannot be converted to clustered mode.
 
-  * Clustering is only supported with externally managed ClickHouse deployments. It is not compatible with bundled ClickHouse installations as these do not include required ZooKeeper configurations.
+* Clustering is only supported with externally managed ClickHouse deployments. It is not compatible with bundled ClickHouse installations as these do not include required ZooKeeper configurations.
 
-  * When using a clustered deployment, LangSmith will automatically:
+* When using a clustered deployment, LangSmith will automatically:
 
     * Run database migrations across all nodes in the cluster
     * Configure tables for data replication across the cluster
 
-  Note that while data is replicated across nodes, LangSmith does not configure distributed tables or handle query routing - queries will be directed to the specified host. You will need to handle any load balancing or query distribution at the infrastructure level if desired.
+Note that while data is replicated across nodes, LangSmith does not configure distributed tables or handle query routing - queries will be directed to the specified host. You will need to handle any load balancing or query distribution at the infrastructure level if desired.
 </Warning>
 
 ## Configuration
 
 With these parameters in hand, you can configure your LangSmith instance to use the provisioned ClickHouse database. You can do this by modifying the `config.yaml` file for your LangSmith Helm Chart installation.
 
-```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml Helm
 clickhouse:
   external:
     enabled: true
@@ -143,44 +142,46 @@ Use this section to configure TLS for ClickHouse connections. For mounting inter
 
 To enable TLS for ClickHouse connections:
 
-* Set `tls: true` in your configuration (or use `tlsSecretKey` with an external secret).
-* Use the appropriate TLS ports (typically `8443` for HTTP and `9440` for native TCP connections).
-* Provide a CA bundle using `config.customCa.secretName` and `config.customCa.secretKey` if using an internal CA.
+- Set `tls: true` in your configuration (or use `tlsSecretKey` with an external secret).
+- Use the appropriate TLS ports (typically `8443` for HTTP and `9440` for native TCP connections).
+- Provide a CA bundle using `config.customCa.secretName` and `config.customCa.secretKey` if using an internal CA.
 
 <Warning>
-  Mount a custom CA only when your ClickHouse server uses an internal or private CA. Publicly trusted CAs do not require this configuration.
+Mount a custom CA only when your ClickHouse server uses an internal or private CA. Publicly trusted CAs do not require this configuration.
 </Warning>
 
 <CodeGroup>
-  ```yaml Helm (server TLS) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    customCa:
-      secretName: "langsmith-custom-ca"  # Secret containing your CA bundle
-      secretKey: "ca.crt"    # Key in the Secret with the CA bundle
-  clickhouse:
-    external:
-      enabled: true
-      host: "your-clickhouse-host.example.com"
-      port: "8443"
-      nativePort: "9440"
-      user: "default"
-      password: "password"
-      database: "default"
-      tls: true
-  ```
 
-  ```yaml Kubernetes Secret (CA bundle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: langsmith-custom-ca
-  type: Opaque
-  stringData:
-    ca.crt: |
-      -----BEGIN CERTIFICATE-----
-      <ROOT_OR_INTERMEDIATE_CA_CERT_CHAIN>
-      -----END CERTIFICATE-----
-  ```
+```yaml Helm (server TLS)
+config:
+  customCa:
+    secretName: "langsmith-custom-ca"  # Secret containing your CA bundle
+    secretKey: "ca.crt"    # Key in the Secret with the CA bundle
+clickhouse:
+  external:
+    enabled: true
+    host: "your-clickhouse-host.example.com"
+    port: "8443"
+    nativePort: "9440"
+    user: "default"
+    password: "password"
+    database: "default"
+    tls: true
+```
+
+```yaml Kubernetes Secret (CA bundle)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: langsmith-custom-ca
+type: Opaque
+stringData:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    <ROOT_OR_INTERMEDIATE_CA_CERT_CHAIN>
+    -----END CERTIFICATE-----
+```
+
 </CodeGroup>
 
 ### Mutual TLS with client auth (mTLS)
@@ -189,54 +190,56 @@ As of LangSmith helm chart version **0.12.29**, we support mTLS for ClickHouse c
 
 If your ClickHouse server requires client certificate authentication:
 
-* Provide a Secret with your client certificate and key.
-* Reference it via `clickhouse.external.clientCert.secretName` and specify the keys with `certSecretKey` and `keySecretKey`.
+- Provide a Secret with your client certificate and key.
+- Reference it via `clickhouse.external.clientCert.secretName` and specify the keys with `certSecretKey` and `keySecretKey`.
 
 <CodeGroup>
-  ```yaml Helm (client auth) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  clickhouse:
-    external:
-      enabled: true
-      host: "your-clickhouse-host.example.com"
-      port: "8443"
-      nativePort: "9440"
-      user: "default"
-      password: "password"
-      database: "default"
-      tls: true
-      clientCert:
-        secretName: "clickhouse-client-cert"
-        certSecretKey: "tls.crt"
-        keySecretKey: "tls.key"
-  ```
 
-  ```yaml Kubernetes Secret (client cert/key) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: clickhouse-client-cert
-  type: Opaque
-  stringData:
-    tls.crt: |
-      -----BEGIN CERTIFICATE-----
-      <CLIENT_CERT>
-      -----END CERTIFICATE-----
-    tls.key: |
-      -----BEGIN PRIVATE KEY-----
-      <CLIENT_KEY>
-      -----END PRIVATE KEY-----
-  ```
+```yaml Helm (client auth)
+clickhouse:
+  external:
+    enabled: true
+    host: "your-clickhouse-host.example.com"
+    port: "8443"
+    nativePort: "9440"
+    user: "default"
+    password: "password"
+    database: "default"
+    tls: true
+    clientCert:
+      secretName: "clickhouse-client-cert"
+      certSecretKey: "tls.crt"
+      keySecretKey: "tls.key"
+```
+
+```yaml Kubernetes Secret (client cert/key)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: clickhouse-client-cert
+type: Opaque
+stringData:
+  tls.crt: |
+    -----BEGIN CERTIFICATE-----
+    <CLIENT_CERT>
+    -----END CERTIFICATE-----
+  tls.key: |
+    -----BEGIN PRIVATE KEY-----
+    <CLIENT_KEY>
+    -----END PRIVATE KEY-----
+```
+
 </CodeGroup>
 
 #### Non-TLS native port for migrations
 
 <Warning>
-  When using mTLS with ClickHouse, you must **keep a non-TLS native (TCP) port** open for our migrations job, which runs on helm install and upgrade. The application itself will not communicate through this port, it is **only used by the migration job**.
+When using mTLS with ClickHouse, you must **keep a non-TLS native (TCP) port** open for our migrations job, which runs on helm install and upgrade. The application itself will not communicate through this port, it is **only used by the migration job**.
 </Warning>
 
 By default, the migration job connects to port `9000` for migrations. If your ClickHouse instance uses a different non-TLS native port, you can configure it using the `CLICKHOUSE_MIGRATE_NATIVE_PORT` environment variable:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 backend:
   clickhouseMigrations:
     extraEnv:
@@ -254,7 +257,7 @@ You can configure this in one of two ways:
 
 Set the `fsGroup` at the top level to apply it to all pods:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 commonPodSecurityContext:
   fsGroup: 1000
 ```
@@ -263,14 +266,13 @@ commonPodSecurityContext:
 
 If you need more granular control, add the `fsGroup` to each pod's security context individually. See the [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) for a complete reference.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-clickhouse.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,8 +2,6 @@
 
 # LangSmith Remote MCP
 
-Connect MCP-compatible clients to LangSmith over OAuth, or authenticate programmatic clients with a LangSmith API key.
-
 The LangSmith Remote MCP is a [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) server hosted by LangSmith. It exposes the same tools as the [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) (conversation history, prompts, runs and traces, datasets, experiments, billing) without a separate deployment. Interactive MCP clients connect over OAuth with no API key or header configuration; programmatic clients can authenticate with a LangSmith API key via the `X-Api-Key` header.
 
 The Remote MCP is available on all LangSmith Cloud regions, on [BYOC](/langsmith/byoc) data planes, and on [self-hosted LangSmith](/langsmith/self-hosted) deployments running v0.16 or later (self-hosted additionally requires configuring a signing JWKS—see [Self-hosted LangSmith](#self-hosted-langsmith)). Self-hosted deployments on earlier versions should continue to use the [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server).
@@ -12,31 +10,7 @@ The Remote MCP is available on all LangSmith Cloud regions, on [BYOC](/langsmith
 
 **LangSmith Cloud:**
 
-<table>
-  <thead>
-    <tr>
-      <th>Region</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>GCP US</td>
-    </tr>
-
-    <tr>
-      <td>GCP EU</td>
-    </tr>
-
-    <tr>
-      <td>GCP APAC</td>
-    </tr>
-
-    <tr>
-      <td>AWS US</td>
-    </tr>
-  </tbody>
-</table>
+<SaasRegionUrls prefix="api.smith" suffix="/mcp" />
 
 The server discovers the rest of its OAuth metadata via [RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414) at `/.well-known/oauth-authorization-server` on the same host, so a compliant MCP client only needs the URL above.
 
@@ -72,11 +46,11 @@ Send a [LangSmith API key](/langsmith/create-account-api-key) in the `X-Api-Key`
 Requests are authorized as the user that owns the API key, scoped to that key's workspace and permissions—the same authorization the key has elsewhere in the LangSmith API. Tools that accept a `workspace_id` argument can target a specific workspace; otherwise the key's own workspace is used.
 
 <Warning>
-  On [BYOC](/langsmith/byoc), the API key must be assigned to your LangSmith workspace.
+On [BYOC](/langsmith/byoc), the API key must be assigned to your LangSmith workspace.
 </Warning>
 
 <Note>
-  The `X-Api-Key` header is specific to the Remote MCP. The [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) uses a different header, `LANGSMITH-API-KEY`.
+The `X-Api-Key` header is specific to the Remote MCP. The [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) uses a different header, `LANGSMITH-API-KEY`.
 </Note>
 
 ## Quickstart
@@ -85,7 +59,7 @@ Requests are authorized as the user that owns the API key, scoped to that key's 
 
 Add the server to your project's `.mcp.json` (or run `claude mcp add --transport http -s user langsmith https://api.smith.langchain.com/mcp` to install it user-wide):
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "mcpServers": {
     "langsmith": {
@@ -102,7 +76,7 @@ Then run `/mcp` and select **langsmith** to complete the OAuth flow. Tools becom
 
 Add the server to your user-level `~/.deepagents/.mcp.json` file to make it available in every Deep Agents Code project, or add it to a project-level `.mcp.json` file for only that project. See the [Deep Agents Code MCP tools docs](/oss/deepagents/code/mcp-tools) for discovery locations and precedence rules.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "mcpServers": {
     "langsmith": {
@@ -116,10 +90,10 @@ Add the server to your user-level `~/.deepagents/.mcp.json` file to make it avai
 
 Then complete the OAuth login flow in one of two ways:
 
-* In the Deep Agents Code TUI, run `/mcp`, select **langsmith**, and follow the login prompt.
-* From your shell, run:
+- In the Deep Agents Code TUI, run `/mcp`, select **langsmith**, and follow the login prompt.
+- From your shell, run:
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```bash
   dcode mcp login langsmith
   ```
 
@@ -129,7 +103,7 @@ Launch `dcode`, or restart an active session, to load the LangSmith MCP tools. I
 
 Add to your Cursor `mcp.json`:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "mcpServers": {
     "LangSmith": {
@@ -145,7 +119,7 @@ Cursor will prompt you to complete the OAuth flow on first use.
 
 The [LangSmith CLI](/langsmith/langsmith-cli) authenticates against this same OAuth server, so `langsmith auth login` logs you in via the OAuth device flow—no API key required:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # LangSmith Cloud
 langsmith auth login
 
@@ -159,7 +133,7 @@ The CLI prints an activation URL; open it, approve, and the CLI completes login 
 
 For programmatic use from the [AI SDK](https://ai-sdk.dev/), authenticate with an API key via the `X-Api-Key` header and the built-in `http` (Streamable HTTP) transport:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts
 import { createMCPClient } from "@ai-sdk/mcp";
 
 const client = await createMCPClient({
@@ -182,19 +156,19 @@ Any MCP client supporting the [Streamable HTTP transport](https://spec.modelcont
 ## Known client incompatibilities
 
 <Note>
-  **OpenAI Codex CLI** does not work with the LangSmith Remote MCP. Codex omits the [RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707) `resource` parameter required by the [MCP authorization spec](https://modelcontextprotocol.io/specification/draft/basic/authorization) during the OAuth flow, so login appears to succeed but the issued token is not bound to the LangSmith MCP and `initialize` fails with an auth-required error. Two upstream issues affect token exchange and authorize requests in Codex (refer to [openai/codex#20729](https://github.com/openai/codex/issues/20729) and [openai/codex#13891](https://github.com/openai/codex/issues/13891)). In the meantime, use the [LangSmith CLI](/langsmith/langsmith-cli) from Codex. The LangSmith CLI supports the same projects, traces, runs, datasets, experiments, and threads as the MCP server, with native OAuth login.
+**OpenAI Codex CLI** does not work with the LangSmith Remote MCP. Codex omits the [RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707) `resource` parameter required by the [MCP authorization spec](https://modelcontextprotocol.io/specification/draft/basic/authorization) during the OAuth flow, so login appears to succeed but the issued token is not bound to the LangSmith MCP and `initialize` fails with an auth-required error. Two upstream issues affect token exchange and authorize requests in Codex (refer to [openai/codex#20729](https://github.com/openai/codex/issues/20729) and [openai/codex#13891](https://github.com/openai/codex/issues/13891)). In the meantime, use the [LangSmith CLI](/langsmith/langsmith-cli) from Codex. The LangSmith CLI supports the same projects, traces, runs, datasets, experiments, and threads as the MCP server, with native OAuth login.
 </Note>
 
 ## Available tools
 
 The Remote MCP exposes the same tool surface as the [standalone server](/langsmith/langsmith-mcp-server#available-tools):
 
-* **Conversation and threads:** `get_thread_history`
-* **Prompt management:** `list_prompts`, `get_prompt_by_name`, `push_prompt`
-* **Traces and runs:** `fetch_runs`, `list_projects`
-* **Datasets and examples:** `list_datasets`, `list_examples`, `read_dataset`, `read_example`, `create_dataset`, `update_examples`
-* **Experiments and evaluations:** `list_experiments`, `run_experiment`
-* **Billing:** `get_billing_usage`
+- **Conversation and threads:** `get_thread_history`
+- **Prompt management:** `list_prompts`, `get_prompt_by_name`, `push_prompt`
+- **Traces and runs:** `fetch_runs`, `list_projects`
+- **Datasets and examples:** `list_datasets`, `list_examples`, `read_dataset`, `read_example`, `create_dataset`, `update_examples`
+- **Experiments and evaluations:** `list_experiments`, `run_experiment`
+- **Billing:** `get_billing_usage`
 
 See the [standalone server reference](/langsmith/langsmith-mcp-server#available-tools) for parameter and pagination details—both servers share the same tool implementations.
 
@@ -202,9 +176,9 @@ See the [standalone server reference](/langsmith/langsmith-mcp-server#available-
 
 If a client loses its session (for example, after revoking access in your LangSmith account, or if the refresh token is invalidated), trigger re-auth from the client:
 
-* **Claude Code:** run `/mcp`, select **langsmith**, choose re-authenticate.
-* **Cursor:** disable and re-enable the server in MCP settings.
-* **Other clients:** consult the client's MCP settings UI.
+- **Claude Code:** run `/mcp`, select **langsmith**, choose re-authenticate.
+- **Cursor:** disable and re-enable the server in MCP settings.
+- **Other clients:** consult the client's MCP settings UI.
 
 ## Self-hosted LangSmith
 
@@ -216,14 +190,14 @@ The Remote MCP and its OAuth Authorization Server are wired automatically when `
 
 1. **Generate an Ed25519 (OKP) JWKS.** RSA keys are rejected. For example, with [`step`](https://smallstep.com/docs/step-cli/):
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```bash
    step crypto jwk create /dev/null /tmp/jwk.json --kty OKP --crv Ed25519 --no-password --insecure -f
    jq -c '{keys:[.]}' /tmp/jwk.json   # wrap the single key in a JWKS
    ```
 
 2. **Provide it to the chart** as `config.signingJwks` (stored in the chart secret), or as the key `langsmith_signing_jwks` in your [existing secret](/langsmith/self-host-using-an-existing-secret):
 
-   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```yaml
    config:
      hostname: "your-langsmith-host"
      signingJwks: |
@@ -231,25 +205,24 @@ The Remote MCP and its OAuth Authorization Server are wired automatically when `
    ```
 
    <Warning>
-     Do not set `LANGSMITH_SIGNING_JWKS` directly via `commonEnv` or `extraEnv`—the chart already wires it from the secret, and a manual copy fails the install with a duplicate environment-variable error. Use `config.signingJwks` or `config.existingSecretName` instead.
+   Do not set `LANGSMITH_SIGNING_JWKS` directly via `commonEnv` or `extraEnv`—the chart already wires it from the secret, and a manual copy fails the install with a duplicate environment-variable error. Use `config.signingJwks` or `config.existingSecretName` instead.
    </Warning>
 
 After upgrading, the OAuth discovery endpoints and `/api/mcp` become live. Verify with:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl https://<your-langsmith-host>/api/.well-known/oauth-protected-resource/mcp
 ```
 
 For deployments on earlier versions, run the [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) in your own environment and point its `LANGSMITH_ENDPOINT` at your self-hosted instance.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-remote-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

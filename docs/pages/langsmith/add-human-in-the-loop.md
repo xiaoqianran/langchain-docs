@@ -7,8 +7,8 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 ## Dynamic interrupts
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={2,34}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={2,34}}
     from langgraph_sdk import get_client
     from langgraph_sdk.schema import Command
     client = get_client(url=<DEPLOYMENT_URL>)
@@ -45,15 +45,14 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
         command=Command(resume="Edited text")   # (3)!
     ))
     # > {'some_text': 'Edited text'}
-    ```
+```
 
     1. The graph is invoked with some initial state.
     2. When the graph hits the interrupt, it returns an interrupt object with the payload and metadata.
-       3\. The graph is resumed with a `Command(resume=...)`, injecting the human's input and continuing execution.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={32}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        3. The graph is resumed with a `Command(resume=...)`, injecting the human's input and continuing execution.
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={32}}
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
@@ -88,17 +87,16 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
         { command: { resume: "Edited text" }}   # (3)!
     ));
     # > {'some_text': 'Edited text'}
-    ```
+```
 
     1. The graph is invoked with some initial state.
     2. When the graph hits the interrupt, it returns an interrupt object with the payload and metadata.
     3. The graph is resumed with a `{ resume: ... }` command object, injecting the human's input and continuing execution.
-  </Tab>
-
-  <Tab title="cURL">
+    </Tab>
+    <Tab title="cURL">
     Create a thread:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads \
     --header 'Content-Type: application/json' \
@@ -107,7 +105,7 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 
     Run the graph until the interrupt is hit.:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
     --header 'Content-Type: application/json' \
@@ -119,7 +117,7 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 
     Resume the graph:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
      --header 'Content-Type: application/json' \
@@ -130,14 +128,14 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
        }
      }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 <Accordion title="Extended example: using `interrupt`">
   This is an example graph you can run in the Agent Server.
   See [LangSmith quickstart](/langsmith/deployment-quickstart) for more details.
 
-  ```python {highlight={7,13}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python {highlight={7,13}}
   from typing import TypedDict
   import uuid
 
@@ -166,7 +164,7 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
   graph_builder.add_edge(START, "human_node")
 
   graph = graph_builder.compile()
-  ```
+```
 
   1. `interrupt(...)` pauses execution at `human_node`, surfacing the given payload to a human.
   2. Any JSON serializable value can be passed to the [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) function. Here, a dict containing the text to revise.
@@ -175,9 +173,9 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
   Once you have a running Agent Server, you can interact with it using
   [LangGraph SDK](/langsmith/langgraph-python-sdk)
 
-  <Tabs>
-    <Tab title="Python">
-      ```python {highlight={2,34}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tabs>
+        <Tab title="Python">
+      ```python {highlight={2,34}}
       from langgraph_sdk import get_client
       from langgraph_sdk.schema import Command
       client = get_client(url=<DEPLOYMENT_URL>)
@@ -214,15 +212,14 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
           command=Command(resume="Edited text")   # (3)!
       ))
       # > {'some_text': 'Edited text'}
-      ```
+```
 
       1. The graph is invoked with some initial state.
       2. When the graph hits the interrupt, it returns an interrupt object with the payload and metadata.
-         3\. The graph is resumed with a `Command(resume=...)`, injecting the human's input and continuing execution.
-    </Tab>
-
-    <Tab title="JavaScript">
-      ```javascript {highlight={32}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+            3. The graph is resumed with a `Command(resume=...)`, injecting the human's input and continuing execution.
+        </Tab>
+        <Tab title="JavaScript">
+      ```javascript {highlight={32}}
       import { Client } from "@langchain/langgraph-sdk";
       const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
@@ -257,17 +254,16 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
           { command: { resume: "Edited text" }}   # (3)!
       ));
       # > {'some_text': 'Edited text'}
-      ```
+```
 
       1. The graph is invoked with some initial state.
       2. When the graph hits the interrupt, it returns an interrupt object with the payload and metadata.
       3. The graph is resumed with a `{ resume: ... }` command object, injecting the human's input and continuing execution.
-    </Tab>
-
-    <Tab title="cURL">
+        </Tab>
+        <Tab title="cURL">
       Create a thread:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
@@ -276,7 +272,7 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 
       Run the graph until the interrupt is hit:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
       --header 'Content-Type: application/json' \
@@ -288,7 +284,7 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 
       Resume the graph:
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash
       curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
       --header 'Content-Type: application/json' \
@@ -299,8 +295,8 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
         }
       }"
       ```
-    </Tab>
-  </Tabs>
+        </Tab>
+    </Tabs>
 </Accordion>
 
 ## Static interrupts
@@ -308,12 +304,12 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 Static interrupts (also known as static breakpoints) are triggered either before or after a node executes.
 
 <Warning>
-  Static interrupts are **not** recommended for human-in-the-loop workflows. They are best used for debugging and testing.
+Static interrupts are **not** recommended for human-in-the-loop workflows. They are best used for debugging and testing.
 </Warning>
 
 You can set static interrupts by specifying `interrupt_before` and `interrupt_after` at compile time:
 
-```python {highlight={1,2,3}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={1,2,3}}
 graph = graph_builder.compile( # (1)!
     interrupt_before=["node_a"], # (2)!
     interrupt_after=["node_b", "node_c"], # (3)!
@@ -327,8 +323,8 @@ graph = graph_builder.compile( # (1)!
 Alternatively, you can set static interrupts at run time:
 
 <Tabs>
-  <Tab title="Python">
-    ```python {highlight={1,5,6}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python {highlight={1,5,6}}
     await client.runs.wait( # (1)!
         thread_id,
         assistant_id,
@@ -336,15 +332,14 @@ Alternatively, you can set static interrupts at run time:
         interrupt_before=["node_a"], # (2)!
         interrupt_after=["node_b", "node_c"] # (3)!
     )
-    ```
+```
 
     1. `client.runs.wait` is called with the `interrupt_before` and `interrupt_after` parameters. This is a run-time configuration and can be changed for every invocation.
     2. `interrupt_before` specifies the nodes where execution should pause before the node is executed.
     3. `interrupt_after` specifies the nodes where execution should pause after the node is executed.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript {highlight={1,6,7}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```javascript {highlight={1,6,7}}
     await client.runs.wait( // (1)!
         threadID,
         assistantID,
@@ -354,15 +349,14 @@ Alternatively, you can set static interrupts at run time:
         interruptAfter: ["node_b", "node_c"] // (3)!
         }
     )
-    ```
+```
 
     1. `client.runs.wait` is called with the `interruptBefore` and `interruptAfter` parameters. This is a run-time configuration and can be changed for every invocation.
     2. `interruptBefore` specifies the nodes where execution should pause before the node is executed.
     3. `interruptAfter` specifies the nodes where execution should pause after the node is executed.
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="cURL">
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
     --header 'Content-Type: application/json' \
@@ -373,14 +367,14 @@ Alternatively, you can set static interrupts at run time:
         \"input\": <INPUT>
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 The following example shows how to add static interrupts:
 
 <Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="Python">
+    ```python
     from langgraph_sdk import get_client
     client = get_client(url=<DEPLOYMENT_URL>)
 
@@ -408,10 +402,9 @@ The following example shows how to add static interrupts:
 
     1. The graph is run until the first breakpoint is hit.
     2. The graph is resumed by passing in `None` for the input. This will run the graph until the next breakpoint is hit.
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </Tab>
+    <Tab title="JavaScript">
+    ```js
     import { Client } from "@langchain/langgraph-sdk";
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
 
@@ -439,12 +432,11 @@ The following example shows how to add static interrupts:
 
     1. The graph is run until the first breakpoint is hit.
     2. The graph is resumed by passing in `null` for the input. This will run the graph until the next breakpoint is hit.
-  </Tab>
-
-  <Tab title="cURL">
+    </Tab>
+    <Tab title="cURL">
     Create a thread:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads \
     --header 'Content-Type: application/json' \
@@ -453,7 +445,7 @@ The following example shows how to add static interrupts:
 
     Run the graph until the breakpoint:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
     --header 'Content-Type: application/json' \
@@ -465,7 +457,7 @@ The following example shows how to add static interrupts:
 
     Resume the graph:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl --request POST \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
     --header 'Content-Type: application/json' \
@@ -473,7 +465,7 @@ The following example shows how to add static interrupts:
       \"assistant_id\": \"agent\"
     }"
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## Learn more
@@ -481,14 +473,13 @@ The following example shows how to add static interrupts:
 * [Human-in-the-loop conceptual guide](/oss/python/langgraph/interrupts): learn more about LangGraph human-in-the-loop features.
 * [Common patterns](/oss/python/langgraph/interrupts#common-patterns): learn how to implement patterns like approving/rejecting actions, requesting user input, tool call review, and validating human input.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

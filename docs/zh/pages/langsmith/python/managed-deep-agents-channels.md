@@ -4,38 +4,39 @@
 
 # 将托管Deep Agents连接到通道
 
-将托管Deep Agents连接到可以启动运行并接收响应的外部消息传递服务。
-
-通道将托管深度代理连接到外部消息传递服务。来自服务的消息可以启动代理运行，并且代理可以通过同一服务进行响应，而无需单独的应用程序服务器。
+通道将托管深度代理连接到外部消息服务。来自服务的消息可以启动代理运行，并且代理可以通过同一服务进行响应，而无需单独的应用程序服务器。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
 
 通道声明位于项目级 `channels/` 目录中，每个文件一个通道：
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   channels/
     support.py
 ```
 
+
+
+
 ## 了解渠道
 
 通道结合了外部消息传递集成的三个部分：
 
-* **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
-* **出站消息传送**：将代理的响应发送回原始对话。
-* **部署要求**：声明部署所需的机密和提供程序配置。
+- **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
+- **出站消息传送**：将代理的响应发送回原始对话。
+- **部署要求**：声明部署所需的机密和提供程序配置。
 
 在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
 
 托管运行时处理通道生命周期：
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 flowchart LR
     Provider["Messaging provider"] --> Verify["Verify and normalize event"]
     Verify --> Thread["Resolve identity and thread"]
@@ -57,15 +58,24 @@ flowchart LR
 
 从每个文件导出模块级`channel`。
 
+
+
+
 文件名成为配置的通道名称。它在运行时识别通道并构成其入站路由的一部分。
 
 例如，`channels/support.py`中的声明接收以下位置的事件：
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+
+```text
 POST /channels/support/events
 ```
 
 不要将声明命名为 `channels/channel.py`。
+
+
+
 
 通道名称在项目中必须是唯一的。
 
@@ -73,11 +83,17 @@ POST /channels/support/events
 
 例如，`channels.slack()` 创建一个 Slack 通道。
 
+
+
+
 有关完整的声明和设置程序，请参阅提供商指南。
 
 ## 在运行时访问原始通道
 
-通道发起的运行将`runtime.channel`暴露给工具和中间件。
+通道发起的运行将 `runtime.channel` 暴露给工具和中间件。
+
+
+
 
 它包含规范化的事件和对话地址，以及发布和更新消息的方法。
 
@@ -91,7 +107,7 @@ POST /channels/support/events
 
 ## 支持的频道
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Slack" icon="brand-slack" href="/langsmith/python/managed-deep-agents-channels-slack">
     从 Slack 提及、直接消息和线程回复开始运行。
   </Card>
@@ -99,19 +115,18 @@ POST /channels/support/events
 
 ## 另请参阅
 
-* [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
-* [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
-* [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：部署项目更改并配置机密。
-* [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看频道项目文件约定。
+- [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
+- [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
+- [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：部署项目更改并配置机密。
+- [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看频道项目文件约定。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

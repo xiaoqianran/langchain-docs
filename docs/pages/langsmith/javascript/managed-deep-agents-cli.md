@@ -2,14 +2,15 @@
 
 # Managed Deep Agents CLI reference
 
-Reference for mda commands, project files, and deploy behavior.
-
 The `mda` CLI compiles and deploys code-first [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
+
+
 
 It is included with the `managed-deepagents` npm package.
 
+
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/javascript/managed-deep-agents-identity), [Memory](/langsmith/javascript/managed-deep-agents-memory), [Evals](/langsmith/javascript/managed-deep-agents-evals), [Custom tools](/langsmith/javascript/managed-deep-agents-tools), [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware), [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes), [Channels](/langsmith/javascript/managed-deep-agents-channels), [Schedules](/langsmith/javascript/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy).
@@ -18,13 +19,16 @@ For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/mana
 
 Install the package for the language you use to author your agent. The package exposes the `mda` binary.
 
+
+
 For npm, install globally or run the binary with `npm exec`.
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash npm
 npm install managed-deepagents
 ```
 
 The package provides agent, identity, schedule, and sandbox authoring APIs.
+
 
 ## Authentication
 
@@ -36,7 +40,7 @@ The package provides agent, identity, schedule, and sandbox authoring APIs.
 
 The CLI reads those values from the project `.env` file first, then from the process environment. If no key is found in an interactive terminal, `mda deploy` prompts for a LangSmith API key and saves it to the project `.env` file.
 
-```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text .env
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 ```
@@ -49,54 +53,63 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 
 ## Command overview
 
-| Command                                    | Use                                                                         |
-| ------------------------------------------ | --------------------------------------------------------------------------- |
-| `mda --help`                               | Show CLI help.                                                              |
-| `mda --version`                            | Show the installed CLI version.                                             |
-| `mda init <name>`                          | Scaffold a TypeScript Managed Deep Agents project.                          |
-| `mda build [path]`                         | Compile a project into a managed LangGraph app without deploying.           |
-| `mda eval …` / `mda evals …`               | Scaffold optional Harbor tasks and compile the agent into a Harbor handoff. |
-| `mda dev [path]`                           | Compile a project and run it on the local LangGraph dev server.             |
-| `mda deploy [path]`                        | Compile, sync Context Hub context, upload, and deploy to LangSmith.         |
-| `mda channel add slack [path]`             | Configure Slack for a deployed agent.                                       |
-| `mda logs [path]`                          | Tail Agent Server logs for a deployed agent.                                |
-| `mda delete [path]` / `mda destroy [path]` | Delete a deployed agent and the LangSmith resources it created.             |
+
+
+| Command | Use |
+| --- | --- |
+| `mda --help` | Show CLI help. |
+| `mda --version` | Show the installed CLI version. |
+| `mda init <name>` | Scaffold a TypeScript Managed Deep Agents project. |
+| `mda build [path]` | Compile a project into a managed LangGraph app without deploying. |
+| `mda eval …` / `mda evals …` | Scaffold optional Harbor tasks and compile the agent into a Harbor handoff. |
+| `mda dev [path]` | Compile a project and run it on the local LangGraph dev server. |
+| `mda deploy [path]` | Compile, sync Context Hub context, upload, and deploy to LangSmith. |
+| `mda channel add slack [path]` | Configure Slack for a deployed agent. |
+| `mda logs [path]` | Tail Agent Server logs for a deployed agent. |
+| `mda delete [path]` / `mda destroy [path]` | Delete a deployed agent and the LangSmith resources it created. |
+
 
 ## Initialize projects
 
 Use `mda init` to create a new project directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda init my-agent
 ```
 
-| Argument or flag           | Use                                                                                                          |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `name`                     | Required project directory name. The command fails if the destination already exists.                        |
-| `--instructions TEXT`      | System prompt to write into `instructions.md`.                                                               |
-| `--instructions-file PATH` | Read the system prompt for `instructions.md` from a file, or from stdin when set to `-`.                     |
-| `--identity`               | Add managed authentication with user-owned threads.                                                          |
-| `--memory agent\|none`     | Optionally write a root memory declaration. If omitted, no memory file is created and durable memory is off. |
-| `--model SPEC`             | Model the agent runs on, as `provider:model`.                                                                |
-| `--no-sandbox`             | Leave out the managed sandbox declaration.                                                                   |
+| Argument or flag | Use |
+| --- | --- |
+| `name` | Required project directory name. The command fails if the destination already exists. |
+| `--instructions TEXT` | System prompt to write into `instructions.md`. |
+| `--instructions-file PATH` | Read the system prompt for `instructions.md` from a file, or from stdin when set to `-`. |
+| `--identity` | Add managed authentication with user-owned threads. |
+| `--memory agent\|none` | Optionally write a root memory declaration. If omitted, no memory file is created and durable memory is off. |
+| `--model SPEC` | Model the agent runs on, as `provider:model`. |
+| `--no-sandbox` | Leave out the managed sandbox declaration. |
 
 The command detects the language from the current directory:
 
-| Current directory contains | Result                       |
-| -------------------------- | ---------------------------- |
-| `package.json` only        | TypeScript scaffold.         |
-| Both or neither            | Interactive language prompt. |
+
+
+| Current directory contains | Result |
+| --- | --- |
+| `package.json` only | TypeScript scaffold. |
+| Both or neither | Interactive language prompt. |
+
 
 The scaffold creates:
 
-| File              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| `agent.ts`        | Named `agent` export from `defineDeepAgent(...)`.            |
-| `instructions.md` | Managed system prompt.                                       |
-| `package.json`    | Minimal language-specific manifest.                          |
-| `README.md`       | Local project instructions.                                  |
-| `.env`            | Deploy auth and runtime secrets. Do not commit real secrets. |
-| `.gitignore`      | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches.    |
+
+
+| File | Description |
+| --- | --- |
+| `agent.ts` | Named `agent` export from `defineDeepAgent(...)`. |
+| `instructions.md` | Managed system prompt. |
+| `package.json` | Minimal language-specific manifest. |
+| `README.md` | Local project instructions. |
+| `.env` | Deploy auth and runtime secrets. Do not commit real secrets. |
+| `.gitignore` | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches. |
+
 
 Eval tasks are opt-in and are not created by `mda init`. Managed Deep Agents evals are Harbor tasks under `evals/tasks/`. Run `mda evals init <name>` only when you want an optional starter task under `evals/scaffold/`.
 
@@ -104,38 +117,38 @@ Eval tasks are opt-in and are not created by `mda init`. Managed Deep Agents eva
 
 Use `mda build` to compile a project into a managed LangGraph app without deploying it:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda build .
 ```
 
-| Argument or flag | Use                                                                                                                                                                                     |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`           | Project directory. Defaults to the current directory.                                                                                                                                   |
-| `--out OUT`      | Output directory for the compiled app. Defaults to `<path>/.mda/build`. The directory is emptied before the build, so it must be missing, empty, or a directory a previous build wrote. |
+| Argument or flag | Use |
+| --- | --- |
+| `path` | Project directory. Defaults to the current directory. |
+| `--out OUT` | Output directory for the compiled app. Defaults to `<path>/.mda/build`. The directory is emptied before the build, so it must be missing, empty, or a directory a previous build wrote. |
 
 ## Evaluate projects
 
 `evals/tasks/` is the canonical Harbor dataset. Author complete Harbor tasks there directly. The `mda eval` command, also available as `mda evals`, can scaffold a starter task and package the managed agent for Harbor. MDA prints a `harbor run` command but does not run trials.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda evals init smoke
 mda evals compile .
 # then run the printed `harbor run` command
 ```
 
-| Subcommand                 | Use                                                                                                                     |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `mda evals init <name>`    | Create `evals/scaffold/<name>/` with an instruction and a language-native test. Run this command from the project root. |
-| `mda evals compile [path]` | Compile the managed agent, copy selected scaffolds into `evals/tasks/`, and write the Harbor handoff under `evals/`.    |
+| Subcommand | Use |
+| --- | --- |
+| `mda evals init <name>` | Create `evals/scaffold/<name>/` with an instruction and a language-native test. Run this command from the project root. |
+| `mda evals compile [path]` | Compile the managed agent, copy selected scaffolds into `evals/tasks/`, and write the Harbor handoff under `evals/`. |
 
 Task names passed to `mda evals init` can contain ASCII letters, numbers, `_`, and `-`.
 
 `mda evals compile` flags:
 
-| Flag                       | Use                                                                                                                                                                                                                                                                              |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--task <name>`            | Select one task. Repeat to select multiple tasks. A selected scaffold refreshes the matching task under `evals/tasks/`. If omitted, all tasks are selected and every scaffold is refreshed. Existing canonical tasks are preserved unless a selected scaffold has the same name. |
-| `--model <provider:model>` | Record a model in the artifact manifest. Repeat to record multiple models; the generated job config uses the first value.                                                                                                                                                        |
+| Flag | Use |
+| --- | --- |
+| `--task <name>` | Select one task. Repeat to select multiple tasks. A selected scaffold refreshes the matching task under `evals/tasks/`. If omitted, all tasks are selected and every scaffold is refreshed. Existing canonical tasks are preserved unless a selected scaffold has the same name. |
+| `--model <provider:model>` | Record a model in the artifact manifest. Repeat to record multiple models; the generated job config uses the first value. |
 
 For Harbor task authoring, optional scaffolding, credentials, and running trials, see [Evals](/langsmith/javascript/managed-deep-agents-evals).
 
@@ -143,23 +156,26 @@ For Harbor task authoring, optional scaffolding, credentials, and running trials
 
 Use `mda dev` to compile a project and run the local LangGraph dev server:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda dev .
 ```
 
-| Argument or flag      | Use                                                                     |
-| --------------------- | ----------------------------------------------------------------------- |
-| `path`                | Project directory. Defaults to the current directory.                   |
-| `--port PORT`         | Forward a port to the LangGraph dev server.                             |
-| `--hostname HOSTNAME` | Forward a host to the LangGraph dev server.                             |
-| `--no-browser`        | Prevent the dev server from opening Studio in a browser when it starts. |
-| `--no-reload`         | Disable the dev server's hot reload.                                    |
+| Argument or flag | Use |
+| --- | --- |
+| `path` | Project directory. Defaults to the current directory. |
+| `--port PORT` | Forward a port to the LangGraph dev server. |
+| `--hostname HOSTNAME` | Forward a host to the LangGraph dev server. |
+| `--no-browser` | Prevent the dev server from opening Studio in a browser when it starts. |
+| `--no-reload` | Disable the dev server's hot reload. |
 
 `mda dev` compiles into `.mda/build`, then starts the language-specific LangGraph dev server from that directory:
 
-| Project language | Dev server command                       |
-| ---------------- | ---------------------------------------- |
-| TypeScript       | `npx --yes @langchain/langgraph-cli dev` |
+
+
+| Project language | Dev server command |
+| --- | --- |
+| TypeScript | `npx --yes @langchain/langgraph-cli dev` |
+
 
 When a sandbox is configured, `mda dev` tries the configured provider. If provider credentials are unavailable or provider creation fails, it falls back to a local temp-directory sandbox and prints the chosen path.
 
@@ -169,17 +185,20 @@ For local development, `mda dev` stages the project `.env` file into `.mda/build
 
 Use `mda deploy` to compile and deploy a project to LangSmith:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda deploy .
 ```
 
-| Argument or flag              | Use                                                                          |
-| ----------------------------- | ---------------------------------------------------------------------------- |
-| `path`                        | Project directory. Defaults to the current directory.                        |
-| `--name NAME`                 | Deployment name. Defaults to the agent `name` from `defineDeepAgent`.        |
-| `--deployment-type dev\|prod` | Deployment type when creating a deployment. Defaults to `dev`.               |
-| `--workspace-id WORKSPACE_ID` | Workspace ID to deploy into. Overrides `LANGSMITH_WORKSPACE_ID`.             |
-| `--no-wait`                   | Trigger the remote build and exit without polling for deployment completion. |
+
+
+| Argument or flag | Use |
+| --- | --- |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from `defineDeepAgent`. |
+| `--deployment-type dev\|prod` | Deployment type when creating a deployment. Defaults to `dev`. |
+| `--workspace-id WORKSPACE_ID` | Workspace ID to deploy into. Overrides `LANGSMITH_WORKSPACE_ID`. |
+| `--no-wait` | Trigger the remote build and exit without polling for deployment completion. |
+
 
 Deploy runs these steps:
 
@@ -202,56 +221,60 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For secrets r
 
 Use `mda logs` to tail Agent Server logs for a deployed agent:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda logs .
 ```
 
-| Argument or flag              | Use                                                                                                   |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `path`                        | Project directory. Defaults to the current directory.                                                 |
-| `--name NAME`                 | Deployment name. Defaults to the agent `name` from the project.                                       |
-| `--lines LINES`               | Number of recent log lines to fetch. Defaults to `1000`.                                              |
-| `--level LEVEL`               | Only show entries at or above the given severity: `debug`, `info`, `warning`, `error`, or `critical`. |
-| `--follow`                    | Keep streaming new logs. This is the default in an interactive terminal.                              |
-| `--no-follow`                 | Print recent logs and exit. This is the default when output is piped.                                 |
-| `--workspace-id WORKSPACE_ID` | Workspace ID to read from. Overrides `LANGSMITH_WORKSPACE_ID`.                                        |
+| Argument or flag | Use |
+| --- | --- |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from the project. |
+| `--lines LINES` | Number of recent log lines to fetch. Defaults to `1000`. |
+| `--level LEVEL` | Only show entries at or above the given severity: `debug`, `info`, `warning`, `error`, or `critical`. |
+| `--follow` | Keep streaming new logs. This is the default in an interactive terminal. |
+| `--no-follow` | Print recent logs and exit. This is the default when output is piped. |
+| `--workspace-id WORKSPACE_ID` | Workspace ID to read from. Overrides `LANGSMITH_WORKSPACE_ID`. |
 
 ## Delete deployments
 
 Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resources it created. `mda destroy` is an alias.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda delete .
 ```
 
-| Argument or flag              | Use                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------- |
-| `path`                        | Project directory. Defaults to the current directory.                     |
-| `--name NAME`                 | Deployment name. Defaults to the agent `name` from `defineDeepAgent`.     |
+
+
+| Argument or flag | Use |
+| --- | --- |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from `defineDeepAgent`. |
 | `--workspace-id WORKSPACE_ID` | Workspace ID the deployment lives in. Overrides `LANGSMITH_WORKSPACE_ID`. |
-| `--yes`                       | Delete without asking for confirmation.                                   |
+| `--yes` | Delete without asking for confirmation. |
+
 
 ## Troubleshooting
 
-| Symptom                                              | Cause and fix                                                                                                                        |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `project root ... is not a directory`                | Pass a directory path to `mda dev` or `mda deploy`.                                                                                  |
-| `no agent entry file found`                          | Add `agent.ts` or `agent.tsx` at the project root.                                                                                   |
-| `No LangSmith API key found`                         | Set `LANGSMITH_API_KEY` or add it to the project `.env`.                                                                             |
-| Deploy fails with 401 or 403                         | Confirm the API key belongs to a workspace with beta access.                                                                         |
-| Deploy reports a missing model provider API key      | Add the provider key, such as `OPENAI_API_KEY`, to `.env`, export it in your shell, or configure it as a LangSmith workspace secret. |
-| Deploy reports a Context Hub conflict                | The Context Hub repo changed during deploy. Re-run `mda deploy`.                                                                     |
-| The build exceeds 200 MB                             | Remove generated artifacts or large files from the project before deploying.                                                         |
-| Deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED` | Open the printed deployment URL in LangSmith and inspect the revision logs.                                                          |
 
-***
 
-<div>
-  <Callout icon="terminal-2">
+| Symptom | Cause and fix |
+| --- | --- |
+| `project root ... is not a directory` | Pass a directory path to `mda dev` or `mda deploy`. |
+| `no agent entry file found` | Add `agent.ts` or `agent.tsx` at the project root. |
+| `No LangSmith API key found` | Set `LANGSMITH_API_KEY` or add it to the project `.env`. |
+| Deploy fails with 401 or 403 | Confirm the API key belongs to a workspace with beta access. |
+| Deploy reports a missing model provider API key | Add the provider key, such as `OPENAI_API_KEY`, to `.env`, export it in your shell, or configure it as a LangSmith workspace secret. |
+| Deploy reports a Context Hub conflict | The Context Hub repo changed during deploy. Re-run `mda deploy`. |
+| The build exceeds 200 MB | Remove generated artifacts or large files from the project before deploying. |
+| Deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED` | Open the printed deployment URL in LangSmith and inspect the revision logs. |
+
+---
+
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

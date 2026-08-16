@@ -8,7 +8,7 @@ This walkthrough is based on [this repository](https://github.com/langchain-ai/l
 
 The final repository structure will look something like this:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── src # all project code lies within here
 │   ├── utils # optional utilities for your graph
@@ -22,7 +22,7 @@ my-app/
 ```
 
 <Tip>
-  LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
+LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) _graph_. However, the implementation of a _node_ of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
 </Tip>
 
 After each step, an example file directory is provided to demonstrate how code can be organized.
@@ -33,7 +33,7 @@ Dependencies can be specified in a `package.json`. If none of these files is cre
 
 Example `package.json` file:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "name": "langgraphjs-studio-starter",
   "packageManager": "yarn@1.22.22",
@@ -56,7 +56,7 @@ When deploying your app, the dependencies will be installed using the package ma
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 └── package.json # package dependencies
 ```
@@ -76,7 +76,7 @@ TAVILY_API_KEY=key_2
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── package.json
 └── .env # environment variables
@@ -88,7 +88,7 @@ Implement your graphs. Graphs can be defined in a single file or multiple files.
 
 Here is an example `agent.ts`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts
 import type { AIMessage } from "@langchain/core/messages";
 import { TavilySearch } from "@langchain/tavily";
 import { ChatOpenAI } from "@langchain/openai";
@@ -163,7 +163,7 @@ export const graph = workflow.compile();
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── src # all project code lies within here
 │   ├── utils # optional utilities for your graph
@@ -182,7 +182,7 @@ Create a [configuration file](/langsmith/cli#configuration-file) called `langgra
 
 Example `langgraph.json` file:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "node_version": "20",
   "dockerfile_lines": [],
@@ -197,22 +197,21 @@ Example `langgraph.json` file:
 Note that the variable name of the `CompiledGraph` appears at the end of the value of each subkey in the top-level `graphs` key (i.e. `:<variable_name>`).
 
 <Info>
-  **Configuration Location**
-  The configuration file must be placed in a directory that is at the same level or higher than the TypeScript files that contain compiled graphs and associated dependencies.
+    **Configuration Location**
+    The configuration file must be placed in a directory that is at the same level or higher than the TypeScript files that contain compiled graphs and associated dependencies.
 </Info>
 
 ## Next
 
 After you setup your project and place it in a GitHub repository, it's time to [deploy your app](/langsmith/deployment-quickstart).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-javascript.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

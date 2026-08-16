@@ -23,61 +23,61 @@ There are two different types of prompt formats: `chat` style prompts and `compl
 **Completion prompts** are a single string. This is an older prompting style maintained primarily for backward compatibility.
 
 <Note>
-  Unless you have a specific reason to use completion prompts, use chat prompts for new projects. Chat prompts provide better structure for multi-turn conversations and are better supported by modern LLMs.
+Unless you have a specific reason to use completion prompts, use chat prompts for new projects. Chat prompts provide better structure for multi-turn conversations and are better supported by modern LLMs.
 </Note>
 
 ## Prompts vs. prompt templates
 
-While *prompt* and *prompt template* are often used interchangeably, understanding the distinction helps clarify how LangSmith manages and evaluates your AI application.
+While _prompt_ and _prompt template_ are often used interchangeably, understanding the distinction helps clarify how LangSmith manages and evaluates your AI application.
 
-* **Prompts** refer to the messages that are passed into the language model.
-* **Prompt templates** allow you to create reusable prompts with dynamic placeholders that get filled in at runtime. Instead of hardcoding values, you define variables that LangSmith replaces with different inputs each time you run your prompt. This makes prompts flexible, testable, and easier to iterate on.
+- **Prompts** refer to the messages that are passed into the language model.
+- **Prompt templates** allow you to create reusable prompts with dynamic placeholders that get filled in at runtime. Instead of hardcoding values, you define variables that LangSmith replaces with different inputs each time you run your prompt. This makes prompts flexible, testable, and easier to iterate on.
 
 Here's how templates work in practice:
 
 1. **Define the template**: Create a prompt with variables (marked with curly braces) that will be replaced at runtime:
 
-   ```
-   You are a customer support agent. This is the refund policy:
+    ```
+    You are a customer support agent. This is the refund policy:
 
-   {refund_policy}
+    {refund_policy}
 
-   Please respond to the user's question:
+    Please respond to the user's question:
 
-   {question}
-   ```
+    {question}
+    ```
 
-2. **Provide input values**: Supply the actual values for each variable:
+1. **Provide input values**: Supply the actual values for each variable:
 
-   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   {
-   "refund_policy": "no refunds under any circumstances",
-   "question": "can I get a refund for this hat?"
-   }
-   ```
+    ```json
+    {
+    "refund_policy": "no refunds under any circumstances",
+    "question": "can I get a refund for this hat?"
+    }
+    ```
 
-3. **Get the final prompt**: LangSmith replaces the variables with your inputs to create the prompt sent to the model:
+1. **Get the final prompt**: LangSmith replaces the variables with your inputs to create the prompt sent to the model:
 
-   ```
-   You are a customer support agent. This is the refund policy:
+    ```
+    You are a customer support agent. This is the refund policy:
 
-   no refunds under any circumstances
+    no refunds under any circumstances
 
-   Please respond to the user's question:
+    Please respond to the user's question:
 
-   Can I get a refund for this hat?
-   ```
+    Can I get a refund for this hat?
+    ```
 
 <Tip>
-  Learn more about template variable syntax and formatting options in the [Prompt template format](/langsmith/create-a-prompt#template-format) guide.
+Learn more about template variable syntax and formatting options in the [Prompt template format](/langsmith/create-a-prompt#template-format) guide.
 </Tip>
 
 ## Prompts in LangSmith
 
 You can store and version prompt templates in LangSmith. These templates can be tested in the Playground, versioned with commits and tags, and pulled into your application code.
 
-<Callout type="info" icon="player-play">
-  Open the [Playground](https://smith.langchain.com/playground) to create and test your first prompt template. For a step-by-step, refer to [Create a prompt](/langsmith/create-a-prompt).
+<Callout type="info" color="#4F46E5" icon="player-play" iconType="regular">
+Open the [Playground](https://smith.langchain.com/playground) to create and test your first prompt template. For a step-by-step, refer to [Create a prompt](/langsmith/create-a-prompt).
 </Callout>
 
 The following sections describe key aspects of prompt templates.
@@ -89,7 +89,7 @@ You can format your prompt template with input variables using either [f-string]
 For details on how to use these formats in the Playground, see [Template format](/langsmith/create-a-prompt#template-format).
 
 <Check>
-  The [Playground](https://smith.langchain.com/playground) uses `f-string` as the default template format, but you can switch to `mustache` format in the prompt settings/template format section. `mustache` gives you more flexibility around conditional variables, loops, and nested keys. For conditional variables, you'll need to manually add json variables in the 'inputs' section. Read [the documentation](https://mustache.github.io/mustache.5.html)
+The [Playground](https://smith.langchain.com/playground) uses `f-string` as the default template format, but you can switch to `mustache` format in the prompt settings/template format section. `mustache` gives you more flexibility around conditional variables, loops, and nested keys. For conditional variables, you'll need to manually add json variables in the 'inputs' section. Read [the documentation](https://mustache.github.io/mustache.5.html)
 </Check>
 
 ### Tools
@@ -101,7 +101,7 @@ For details on how to use these formats in the Playground, see [Template format]
 Structured output is a feature of most state of the art LLMs, wherein instead of producing raw text as output they stick to a specified schema. This may or may not use [Tools](#tools) under the hood.
 
 <Check>
-  Structured output is similar to tools, but different in a few key ways. With tools, the LLM choose which tool to call (or may choose not to call any); with structured output, the LLM **always** responds in this format. With tools, the LLM may select **multiple** tools; with structured output, only one response is generate.
+Structured output is similar to tools, but different in a few key ways. With tools, the LLM choose which tool to call (or may choose not to call any); with structured output, the LLM **always** responds in this format. With tools, the LLM may select **multiple** tools; with structured output, only one response is generate.
 </Check>
 
 ### Model
@@ -116,10 +116,10 @@ Versioning is a key component of iterating on and collaborating with prompts.
 
 Every saved update to a prompt creates a new commit with a unique commit hash. This allows you to:
 
-* View the full history of changes to a prompt.
-* Review earlier versions.
-* Revert to a previous state if needed.
-* Reference specific versions in your code using the commit hash (e.g., `client.pull_prompt("prompt_name:commit_hash")`).
+- View the full history of changes to a prompt.
+- Review earlier versions.
+- Revert to a previous state if needed.
+- Reference specific versions in your code using the commit hash (e.g., `client.pull_prompt("prompt_name:commit_hash")`).
 
 In the UI, you can compare a commit with its previous version by toggling **Diff** in the top-right corner of the [Prompt detail page](/langsmith/manage-prompts#prompt-detail-page).
 
@@ -129,12 +129,12 @@ Commit tags are human-readable labels that point to specific commits in your pro
 
 Use cases for commit tags can include:
 
-* **Environments**: The `staging` and `production` tags are reserved for the [Environments](/langsmith/manage-prompts#environments) feature, which lets you promote commits between named deployment targets and switch versions without changing your code.
-* **Version control**: Mark stable versions of your prompts, for example, `v1`, `v2`, which lets you reference specific versions in your code and track changes over time.
-* **Collaboration**: Mark versions ready for review, which enables you to share specific versions with collaborators and get feedback.
+- **Environments**: The `staging` and `production` tags are reserved for the [Environments](/langsmith/manage-prompts#environments) feature, which lets you promote commits between named deployment targets and switch versions without changing your code.
+- **Version control**: Mark stable versions of your prompts, for example, `v1`, `v2`, which lets you reference specific versions in your code and track changes over time.
+- **Collaboration**: Mark versions ready for review, which enables you to share specific versions with collaborators and get feedback.
 
 <Note>
-  **Not to be confused with resource tags**: Commit tags reference specific prompt versions. [Resource tags](/langsmith/set-up-resource-tags) are key-value pairs used to organize workspace resources.
+**Not to be confused with resource tags**: Commit tags reference specific prompt versions. [Resource tags](/langsmith/set-up-resource-tags) are key-value pairs used to organize workspace resources.
 </Note>
 
 For detailed information on creating and managing commit tags, see [Manage prompts](/langsmith/manage-prompts#commit-tags).
@@ -154,31 +154,30 @@ In the Playground you can:
 * Observe the outputs
 
 <Callout type="info" icon="feather">
-  Use the **[Chat](/langsmith/chat)** in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
+Use the **[Chat](/langsmith/chat)** in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
 </Callout>
 
 ## Testing multiple prompts
 
 You can add multiple prompts to your Playground to compare outputs and evaluate performance:
 
-<img alt="Add prompt to Playground" />
+![Add prompt to Playground](/langsmith/images/add-prompt-to-playground.gif)
 
 ## Testing over a dataset
 
 To test over a dataset, select the dataset from the top right and click Start. You can configure whether results are streamed and the number of repetitions for the test.
 
-<img alt="Test over dataset in Playground" />
+![Test over dataset in Playground](/langsmith/images/test-over-dataset-in-playground.gif)
 
 Click the "View Experiment" button to view detailed test results.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-engineering-concepts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -8,11 +8,11 @@
 
 本指南展示了一种将重试逻辑构建到评估工作流程中并仅重试失败示例的方法。您可以使用 `error_handling='ignore'` 参数跳过记录错误的运行，然后自动识别不成功的示例并在 Python 中重新运行它们。
 
-## 步骤 1. 运行初始评估
 
+## 步骤 1. 运行初始评估
 运行初始评估，忽略错误以防止记录错误的运行：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 
 client = Client()
@@ -30,8 +30,7 @@ results = await client.aevaluate(
 ## 步骤 2. 重试失败的示例并记录到相同的实验
 
 获取所有不成功的例子：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Identify unsuccessful examples
 runs = client.list_runs(project_name=results.experiment_name)
 successful_example_ids = [r.reference_example_id for r in runs]
@@ -39,8 +38,7 @@ unsuccessful_examples = (e for e in client.list_examples(dataset_name="dataset")
 ```
 
 接下来，重新运行所有失败的示例并将它们记录到同一实验中：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Retry only the failed examples, log
 results_retry = await client.aevaluate(
     target,
@@ -52,21 +50,19 @@ results_retry = await client.aevaluate(
 ```
 
 ## 相关主题
-
 * [Run an evaluation](/langsmith/evaluate-llm-application)
 * [Run an evaluation asynchronously](/langsmith/evaluation-async)
 * [Handle model rate limits](/langsmith/handle-model-rate-limiting)
 * [Experiment configuration](/langsmith/experiment-configuration)
 * [Evaluate existing experiment](/langsmith/evaluate-existing-experiment)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-with-retry.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

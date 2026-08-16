@@ -2,33 +2,33 @@
 
 # How to read experiment results locally
 
-When running [evaluations](/langsmith/evaluation-concepts), you may want to process results programmatically in your script rather than viewing them in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-read-local-experiment-results). This is useful for scenarios like:
+When running [evaluations](/langsmith/evaluation-concepts), you may want to process results programmatically in your script rather than viewing them in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-read-local-experiment-results). This is useful for scenarios like:
 
-* **CI/CD pipelines**: Implement quality gates that fail builds if evaluation scores drop below a threshold.
-* **Local debugging**: Inspect and analyze results without API calls.
-* **Custom aggregations**: Calculate metrics and statistics using your own logic.
-* **Integration testing**: Use evaluation results to gate merges or deployments.
+- **CI/CD pipelines**: Implement quality gates that fail builds if evaluation scores drop below a threshold.
+- **Local debugging**: Inspect and analyze results without API calls.
+- **Custom aggregations**: Calculate metrics and statistics using your own logic.
+- **Integration testing**: Use evaluation results to gate merges or deployments.
 
 This guide shows you how to iterate over and process [experiment](/langsmith/evaluation-concepts#experiment) results from the [`ExperimentResults`](https://reference.langchain.com/python/langsmith/schemas/ExperimentResults) object returned by [`Client.evaluate()`](https://reference.langchain.com/python/langsmith/client/Client/evaluate).
 
 <Note>
-  This page focuses on processing results programmatically while still uploading them to LangSmith.
+This page focuses on processing results programmatically while still uploading them to LangSmith.
 
-  If you want to run evaluations locally **without** recording anything to LangSmith (for quick testing or validation), refer to [Run an evaluation locally](/langsmith/local) which uses `upload_results=False`.
+If you want to run evaluations locally **without** recording anything to LangSmith (for quick testing or validation), refer to [Run an evaluation locally](/langsmith/local) which uses `upload_results=False`.
 </Note>
 
 ## Iterate over evaluation results
 
 The [`evaluate()`](https://reference.langchain.com/python/langsmith/client/Client/evaluate) function returns an [`ExperimentResults`](https://reference.langchain.com/python/langsmith/schemas/ExperimentResults) object that you can iterate over. The `blocking` parameter controls when results become available:
 
-* `blocking=False`: Returns immediately with an iterator that yields results as they're produced. This allows you to process results in real-time as the evaluation runs.
-* `blocking=True` (default): Blocks until all evaluations complete before returning. When you iterate over the results, all data is already available.
+- `blocking=False`: Returns immediately with an iterator that yields results as they're produced. This allows you to process results in real-time as the evaluation runs.
+- `blocking=True` (default): Blocks until all evaluations complete before returning. When you iterate over the results, all data is already available.
 
 Both modes return the same `ExperimentResults` type; the difference is whether the function waits for completion before returning. Use `blocking=False` for streaming and real-time debugging, or `blocking=True` for batch processing when you need the complete dataset.
 
 The following example demonstrates `blocking=False`. It iterates over results as they stream in, collects them in a list, then processes them in a separate loop:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 import random
 
@@ -76,20 +76,20 @@ Evaluation Results: [EvaluationResult(key='randomness', score=1, value=None, com
 
 Each result in the iterator contains:
 
-* `result["run"]`: The execution of your target function.
-  * `result["run"].inputs`: The inputs from your [dataset](/langsmith/evaluation-concepts#datasets) example.
-  * `result["run"].outputs`: The outputs produced by your target function.
-  * `result["run"].id`: The unique ID for this run.
+- `result["run"]`: The execution of your target function.
+  - `result["run"].inputs`: The inputs from your [dataset](/langsmith/evaluation-concepts#datasets) example.
+  - `result["run"].outputs`: The outputs produced by your target function.
+  - `result["run"].id`: The unique ID for this run.
 
-* `result["evaluation_results"]["results"]`: A list of `EvaluationResult` objects, one per evaluator.
-  * `key`: The metric name (from your evaluator's return value).
-  * `score`: The numeric score (typically 0-1 or boolean).
-  * `comment`: Optional explanatory text.
-  * `source_run_id`: The ID of the evaluator run.
+- `result["evaluation_results"]["results"]`: A list of `EvaluationResult` objects, one per evaluator.
+  - `key`: The metric name (from your evaluator's return value).
+  - `score`: The numeric score (typically 0-1 or boolean).
+  - `comment`: Optional explanatory text.
+  - `source_run_id`: The ID of the evaluator run.
 
-* `result["example"]`: The dataset example that was evaluated.
-  * `result["example"].inputs`: The input values.
-  * `result["example"].outputs`: The reference outputs (if any).
+- `result["example"]`: The dataset example that was evaluated.
+  - `result["example"].inputs`: The input values.
+  - `result["example"].outputs`: The reference outputs (if any).
 
 ## Examples
 
@@ -97,7 +97,7 @@ Each result in the iterator contains:
 
 This example uses evaluation results to pass or fail a CI/CD build automatically based on quality thresholds. The script iterates through results, calculates an average accuracy score, and exits with a non-zero status code if the accuracy falls below 85%. This ensures that you can deploy code changes that meet quality standards.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 import sys
 
@@ -145,7 +145,7 @@ print("✅ Evaluation passed!")
 
 When you need to perform operations that require the complete dataset (like calculating percentiles, sorting by score, or generating summary reports), use `blocking=True` to wait for all evaluations to complete before processing:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Run evaluation and wait for all results
 results = client.evaluate(
     target,
@@ -170,18 +170,17 @@ For more information on running evaluations without uploading results, refer to 
 
 ## Related
 
-* [Evaluate your LLM application](/langsmith/evaluate-llm-application)
-* [Run an evaluation locally](/langsmith/local)
-* [Fetch performance metrics from an experiment](/langsmith/fetch-perf-metrics-experiment)
+- [Evaluate your LLM application](/langsmith/evaluate-llm-application)
+- [Run an evaluation locally](/langsmith/local)
+- [Fetch performance metrics from an experiment](/langsmith/fetch-perf-metrics-experiment)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

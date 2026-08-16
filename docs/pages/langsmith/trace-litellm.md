@@ -6,22 +6,24 @@
 
 This guide shows you how to trace LiteLLM calls with LangSmith using:
 
-* The [LangSmith SDK](#use-langsmith_tracing-and-traceable) (`@traceable`) for application-level tracing.
-* [LiteLLM’s built-in langsmith callback](#log-litellm-call-with-the-langsmith-callback) for model-level logging.
-* The [LiteLLM Proxy](#use-the-litellm-proxy) for gateway-level tracing.
+- The [LangSmith SDK](#use-langsmith_tracing-and-traceable) (`@traceable`) for application-level tracing.
+- [LiteLLM’s built-in langsmith callback](#log-litellm-call-with-the-langsmith-callback) for model-level logging.
+- The [LiteLLM Proxy](#use-the-litellm-proxy) for gateway-level tracing.
 
 ## Installation
 
 Install the following when using either the LiteLLM Python SDK or LiteLLM Proxy:
 
 <CodeGroup>
-  ```bash Python SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install litellm langsmith openai
-  ```
 
-  ```bash Proxy usage theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install openai langsmith
-  ```
+```bash Python SDK
+pip install litellm langsmith openai
+```
+
+```bash Proxy usage
+npm install openai langsmith
+```
+
 </CodeGroup>
 
 The examples in this guide use OpenAI models, but you can install the necessary provider for your use case.
@@ -30,11 +32,11 @@ The examples in this guide use OpenAI models, but you can install the necessary 
 
 LiteLLM supports two ways to send traces to LangSmith, which operate at different layers:
 
-* [LangSmith SDK tracing](#use-langsmith_tracing-and-traceable) with `LANGSMITH_TRACING=true` enables application-level tracing via the LangSmith SDK. This is useful when you want to trace broader business logic, multi-step pipelines, or spans created with `@traceable`.
-* LiteLLM’s built-in [`langsmith` callback](#log-litellm-call-with-the-langsmith-callback) logs model calls directly from LiteLLM. This is recommended when you want to trace LiteLLM requests specifically, or run async applications.
+- [LangSmith SDK tracing](#use-langsmith_tracing-and-traceable) with `LANGSMITH_TRACING=true` enables application-level tracing via the LangSmith SDK. This is useful when you want to trace broader business logic, multi-step pipelines, or spans created with `@traceable`.
+- LiteLLM’s built-in [`langsmith` callback](#log-litellm-call-with-the-langsmith-callback) logs model calls directly from LiteLLM. This is recommended when you want to trace LiteLLM requests specifically, or run async applications.
 
 <Note>
-  Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces.
+Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces.
 </Note>
 
 ### Use `LANGSMITH_TRACING` and `traceable`
@@ -43,56 +45,55 @@ You can use `LANGSMITH_TRACING=true` together with `@traceable` for predictable 
 
 1. Set the following environment variables to enable LangSmith tracing for LiteLLM Python SDK usage:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-integration"
-   export LANGSMITH_TRACING="true"
-   ```
+    ```bash
+    export LANGSMITH_API_KEY="your_api_key"
+    export LANGSMITH_PROJECT="litellm-integration"
+    export LANGSMITH_TRACING="true"
+    ```
+    Create LangSmith [API keys](/langsmith/create-account-api-key) in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-litellm).
 
-   Create LangSmith [API keys](/langsmith/create-account-api-key) in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm).
+    Depending on what provider you're using, you'll also need to set API keys:
 
-   Depending on what provider you're using, you'll also need to set API keys:
+    ```bash
+    export OPENAI_API_KEY="your_openai_key"
+    ```
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export OPENAI_API_KEY="your_openai_key"
-   ```
+1. Add the following code to your script file:
 
-2. Add the following code to your script file:
+    ```python
+    from langsmith import traceable
+    from litellm import completion
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   from langsmith import traceable
-   from litellm import completion
+    @traceable(name="LiteLLM Chat Completion")
+    def run(messages):
+        response = completion(
+            model="gpt-4o",
+            messages=messages,
+        )
+        # Return the assistant message so the LangSmith UI shows role + content
+        return response["choices"][0]["message"]
 
-   @traceable(name="LiteLLM Chat Completion")
-   def run(messages):
-       response = completion(
-           model="gpt-4o",
-           messages=messages,
-       )
-       # Return the assistant message so the LangSmith UI shows role + content
-       return response["choices"][0]["message"]
+    messages = [
+        {"role": "user", "content": "Explain observability in LLM systems."}
+    ]
 
-   messages = [
-       {"role": "user", "content": "Explain observability in LLM systems."}
-   ]
+    result = run(messages)
+    print(result["content"])
+    ```
 
-   result = run(messages)
-   print(result["content"])
-   ```
+    `@traceable` instruments your function as a LangSmith run. When `LANGSMITH_TRACING=true` is set, LangSmith automatically:
 
-   `@traceable` instruments your function as a LangSmith run. When `LANGSMITH_TRACING=true` is set, LangSmith automatically:
+    - Creates a run when the function is invoked.
+    - Records the function arguments as the run inputs.
+    - Executes the function body (including the LiteLLM call).
+    - Records the function's return value as the run output.
+    - Captures timing, errors, and nested spans (if any).
 
-   * Creates a run when the function is invoked.
-   * Records the function arguments as the run inputs.
-   * Executes the function body (including the LiteLLM call).
-   * Records the function's return value as the run output.
-   * Captures timing, errors, and nested spans (if any).
+    In this example, the `messages` argument becomes the trace input, and the returned assistant message object becomes the trace output. The LiteLLM call itself runs normally—`@traceable` wraps it with observability rather than modifying its behavior. This approach traces your application logic, not just the model call.
 
-   In this example, the `messages` argument becomes the trace input, and the returned assistant message object becomes the trace output. The LiteLLM call itself runs normally—`@traceable` wraps it with observability rather than modifying its behavior. This approach traces your application logic, not just the model call.
-
-   <Tip>
-     For more general examples using `@traceable`, refer to the [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) page.
-   </Tip>
+    <Tip>
+    For more general examples using `@traceable`, refer to the [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) page.
+    </Tip>
 
 ### Log LiteLLM call with the `langsmith` callback
 
@@ -101,60 +102,59 @@ LiteLLM can send traces directly to LangSmith using its built-in [callback syste
 LiteLLM callbacks run in an asynchronous environment. When making asynchronous calls with `litellm.acompletion()`, you can enable the `langsmith` callback to log successful model calls.
 
 <Tip>
-  This approach is best suited for async applications. For simple synchronous scripts, use the `@traceable` method shown in the [previous section](#use-langsmith_tracing-and-traceable).
+This approach is best suited for async applications. For simple synchronous scripts, use the `@traceable` method shown in the [previous section](#use-langsmith_tracing-and-traceable).
 </Tip>
 
 1. Set the following environment variables:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-integration"
-   ```
+    ```bash
+    export LANGSMITH_API_KEY="your_api_key"
+    export LANGSMITH_PROJECT="litellm-integration"
+    ```
+    Create LangSmith [API keys](/langsmith/create-account-api-key) in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-litellm).
 
-   Create LangSmith [API keys](/langsmith/create-account-api-key) in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-litellm).
+    Depending on what provider you're using, you'll also need to set API keys:
 
-   Depending on what provider you're using, you'll also need to set API keys:
+    ```bash
+    export OPENAI_API_KEY="your_openai_key"
+    ```
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export OPENAI_API_KEY="your_openai_key"
-   ```
+1. To run this in a minimal script:
 
-2. To run this in a minimal script:
+    - Use `acompletion()` (async API).
+    - Run with `asyncio.run(...)` to create an event loop.
+    - Set `langsmith_batch_size = 1` to flush immediately.
 
-   * Use `acompletion()` (async API).
-   * Run with `asyncio.run(...)` to create an event loop.
-   * Set `langsmith_batch_size = 1` to flush immediately.
+    ```python
+    import asyncio
+    import litellm
+    from litellm import acompletion
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   import asyncio
-   import litellm
-   from litellm import acompletion
+    # Enable LiteLLM → LangSmith callback
+    litellm.success_callback = ["langsmith"]
 
-   # Enable LiteLLM → LangSmith callback
-   litellm.success_callback = ["langsmith"]
+    # For short-lived scripts, send immediately instead of waiting for batch flush
+    litellm.langsmith_batch_size = 1
 
-   # For short-lived scripts, send immediately instead of waiting for batch flush
-   litellm.langsmith_batch_size = 1
+    async def main():
+        response = await acompletion(
+            model="gpt-4o",
+            messages=[
+                {"role": "user", "content": "Explain observability in LLM systems."}
+            ],
+        )
 
-   async def main():
-       response = await acompletion(
-           model="gpt-4o",
-           messages=[
-               {"role": "user", "content": "Explain observability in LLM systems."}
-           ],
-       )
+        # Print the assistant message content for local verification
+        print(response["choices"][0]["message"]["content"])
 
-       # Print the assistant message content for local verification
-       print(response["choices"][0]["message"]["content"])
+        # Allow time for background logger to flush before process exit
+        await asyncio.sleep(1)
 
-       # Allow time for background logger to flush before process exit
-       await asyncio.sleep(1)
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
 
-   if __name__ == "__main__":
-       asyncio.run(main())
-   ```
-
-   The callback sends LiteLLM’s model request and response data directly to LangSmith, including provider metadata and token usage. Because LiteLLM controls the payload, the **Input** and **Output** columns may include additional metadata compared to the `@traceable` example.
+    The callback sends LiteLLM’s model request and response data directly to LangSmith, including provider metadata and token usage. Because LiteLLM controls the payload, the **Input** and **Output** columns may include additional metadata compared to the `@traceable` example.
 
 ## Use the LiteLLM Proxy
 
@@ -162,94 +162,95 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
 
 1. To have the proxy log requests directly to LangSmith, configure the callback in `config.yaml`:
 
-   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   model_list:
-     - model_name: gpt-4o
-       litellm_params:
-         model: openai/gpt-4o
+    ```yaml
+    model_list:
+      - model_name: gpt-4o
+        litellm_params:
+          model: openai/gpt-4o
 
-   litellm_settings:
-     callbacks: ["langsmith"]
-   ```
+    litellm_settings:
+      callbacks: ["langsmith"]
+    ```
 
-2. Set environment variables in your proxy environment:
+1. Set environment variables in your proxy environment:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   export LANGSMITH_API_KEY="your_api_key"
-   export LANGSMITH_PROJECT="litellm-proxy"
-   export OPENAI_API_KEY="your_openai_key"
-   ```
+    ```bash
+    export LANGSMITH_API_KEY="your_api_key"
+    export LANGSMITH_PROJECT="litellm-proxy"
+    export OPENAI_API_KEY="your_openai_key"
+    ```
 
-   <Note>
-     The LiteLLM proxy runs as a separate service. If you enable LangSmith tracing at the proxy level, you must configure `LANGSMITH_API_KEY` and related environment variables in the proxy’s runtime environment. These settings are not shared with your application process.
-   </Note>
+    <Note>
+    The LiteLLM proxy runs as a separate service. If you enable LangSmith tracing at the proxy level, you must configure `LANGSMITH_API_KEY` and related environment variables in the proxy’s runtime environment. These settings are not shared with your application process.
+    </Note>
 
-3. Start the proxy:
+1. Start the proxy:
 
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   litellm --config config.yaml
-   ```
+    ```bash
+    litellm --config config.yaml
+    ```
 
-   By default, the proxy runs at `http://localhost:4000/v1`. Your application calls it using any OpenAI-compatible client (Python, JavaScript, curl, etc.).
+    By default, the proxy runs at `http://localhost:4000/v1`. Your application calls it using any OpenAI-compatible client (Python, JavaScript, curl, etc.).
 
-   With `callbacks: ["langsmith"]` enabled, the proxy sends model request and response data directly to LangSmith. No tracing configuration is required in the client application.
+    With `callbacks: ["langsmith"]` enabled, the proxy sends model request and response data directly to LangSmith. No tracing configuration is required in the client application.
 
-4. Call the proxy from another terminal window:
+1. Call the proxy from another terminal window:
 
-   <CodeGroup>
-     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     from openai import OpenAI
+    <CodeGroup>
 
-     client = OpenAI(
-         base_url="http://localhost:4000/v1",
-         api_key="anything"  # proxy may require a key but doesn't validate it by default
-     )
+    ```python Python
+    from openai import OpenAI
 
-     response = client.chat.completions.create(
-         model="gpt-4o",
-         messages=[
-             {"role": "user", "content": "What is LiteLLM?"}
-         ],
-     )
+    client = OpenAI(
+        base_url="http://localhost:4000/v1",
+        api_key="anything"  # proxy may require a key but doesn't validate it by default
+    )
 
-     print(response.choices[0].message.content)
-     ```
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "user", "content": "What is LiteLLM?"}
+        ],
+    )
 
-     ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import OpenAI from "openai";
+    print(response.choices[0].message.content)
+    ```
 
-     const client = new OpenAI({
-     apiKey: "anything",
-     baseURL: "http://localhost:4000/v1",
-     });
+    ```javascript JavaScript
+    import OpenAI from "openai";
 
-     const response = await client.chat.completions.create({
-     model: "gpt-4o",
-     messages: [
-         { role: "user", content: "Explain LiteLLM tracing." }
-     ],
-     });
+    const client = new OpenAI({
+    apiKey: "anything",
+    baseURL: "http://localhost:4000/v1",
+    });
 
-     console.log(response.choices[0].message.content);
-     ```
-   </CodeGroup>
+    const response = await client.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+        { role: "user", content: "Explain LiteLLM tracing." }
+    ],
+    });
 
-   The client sends a normal chat completion request, and the proxy handles provider routing and response formatting.
+    console.log(response.choices[0].message.content);
+    ```
+
+    </CodeGroup>
+
+    The client sends a normal chat completion request, and the proxy handles provider routing and response formatting.
 
 ## Next steps
 
-* [View traces in LangSmith](/langsmith/filter-traces-in-application)
-* [Add custom metadata](/langsmith/ls-metadata-parameters)
-* [Filter and sample traces](/langsmith/sample-traces)
+- [View traces in LangSmith](/langsmith/filter-traces-in-application)
+- [Add custom metadata](/langsmith/ls-metadata-parameters)
+- [Filter and sample traces](/langsmith/sample-traces)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-litellm.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

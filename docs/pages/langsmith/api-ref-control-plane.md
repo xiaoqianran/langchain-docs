@@ -6,37 +6,42 @@ The control plane API is part of [LangSmith Deployment](/langsmith/deployment). 
 
 Browse the full API reference in the **Control Plane API** section in the sidebar, or refer to the endpoint groups:
 
-* [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations): GitHub integrations and repository listings
-* [Deployments (v2)](/api-reference/deployments-v2): Create, manage, and update Agent Server deployments
-* [Listeners (v2)](/api-reference/listeners-v2): Listener resources for self-hosted enterprise organizations
-* [Auth Service (v2)](/api-reference/auth-service-v2): OAuth provider configuration and authentication flows
+- [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations): GitHub integrations and repository listings
+- [Deployments (v2)](/api-reference/deployments-v2): Create, manage, and update Agent Server deployments
+- [Listeners (v2)](/api-reference/listeners-v2): Listener resources for self-hosted enterprise organizations
+- [Auth Service (v2)](/api-reference/auth-service-v2): OAuth provider configuration and authentication flows
 
 ## Host
 
 The control plane hosts for Cloud data regions:
 
+{/* Pass `prefix` to change the hostname before ".langchain.com" (default: "api.smith").
+    Pass `suffix` to append a path (e.g. "/mcp") to each URL.
+    Pass `protocol={false}` to render hostnames without "https://". */}
+
 <table>
   <thead>
     <tr>
       <th>Region</th>
+      <th>{protocol === false ? "Host" : "URL"}</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>GCP US</td>
+      <td><code>{`${protocol === false ? "" : "https://"}${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>GCP EU</td>
+      <td><code>{`${protocol === false ? "" : "https://"}eu.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>GCP APAC</td>
+      <td><code>{`${protocol === false ? "" : "https://"}apac.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
-
     <tr>
       <td>AWS US</td>
+      <td><code>{`${protocol === false ? "" : "https://"}aws.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
     </tr>
   </tbody>
 </table>
@@ -49,7 +54,7 @@ To authenticate with the control plane API, set the `X-Api-Key` header to a vali
 
 Example `curl` command:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 curl --request GET \
   --url http://localhost:8124/v2/deployments \
   --header 'X-Api-Key: LANGSMITH_API_KEY'
@@ -71,7 +76,7 @@ Each endpoint path is prefixed with a version (e.g. `v1`, `v2`).
 
 Below is example Python code that demonstrates how to orchestrate the control plane APIs to create a deployment, update the deployment, and delete the deployment.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import time
 
@@ -282,14 +287,13 @@ if __name__ == "__main__":
     delete_deployment(deployment_id)
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

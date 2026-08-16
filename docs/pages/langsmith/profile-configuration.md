@@ -2,40 +2,38 @@
 
 # Profile configuration
 
-Configure LangSmith SDK credentials and endpoints with a local profile file.
-
 LangSmith SDK profiles let you keep [API keys](/langsmith/create-account-api-key), endpoints, and workspace IDs in a reusable JSON file instead of setting the same environment variables in every shell session.
 
 Use profiles when you switch between [LangSmith Cloud regions](/langsmith/cloud#regional-storage), self-hosted instances, or [workspaces](/langsmith/administration-overview#workspaces) often, or when you want a remote runtime to load the same SDK configuration from a mounted file.
 
 <Warning>
-  Profile files can contain API keys and OAuth refresh tokens. Do not commit them to source control, bake them into container images, or print them in logs. Store and mount them with the same care as other credentials.
+Profile files can contain API keys and OAuth refresh tokens. Do not commit them to source control, bake them into container images, or print them in logs. Store and mount them with the same care as other credentials.
 </Warning>
 
 ## Minimum versions
 
 Profile support is available in the following releases:
 
-| Tool or SDK                    | Minimum version |
-| ------------------------------ | --------------- |
-| LangSmith CLI profile commands | `v0.2.26`       |
-| `langsmith auth login`         | `v0.2.30`       |
-| Go SDK                         | `v0.7.0`        |
-| Python SDK                     | `v0.8.1`        |
-| TypeScript SDK                 | `v0.6.1`        |
-| Java SDK                       | `v0.1.0-beta.3` |
+| Tool or SDK | Minimum version |
+| --- | --- |
+| LangSmith CLI profile commands | `v0.2.26` |
+| `langsmith auth login` | `v0.2.30` |
+| Go SDK | `v0.7.0` |
+| Python SDK | `v0.8.1` |
+| TypeScript SDK | `v0.6.1` |
+| Java SDK | `v0.1.0-beta.3` |
 
 ## Profile file location
 
 By default, [SDKs](/langsmith/reference) look for a profile file at:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 ~/.langsmith/config.json
 ```
 
 To use a different path, set `LANGSMITH_CONFIG_FILE`:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 export LANGSMITH_CONFIG_FILE=/path/to/langsmith-config.json
 ```
 
@@ -45,14 +43,14 @@ The TypeScript SDK only loads profiles in Node.js-like runtimes. Browser and web
 
 Create `~/.langsmith/config.json` with a `profiles` object. Each profile can define:
 
-| Field          | Description                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `api_url`      | LangSmith API endpoint. Use the same value you would use for `LANGSMITH_ENDPOINT`.         |
-| `api_key`      | LangSmith API key. See [Create an account and API key](/langsmith/create-account-api-key). |
-| `workspace_id` | Workspace ID. Required when the API key can access multiple workspaces.                    |
-| `oauth`        | OAuth token metadata created by LangSmith tooling.                                         |
+| Field | Description |
+| --- | --- |
+| `api_url` | LangSmith API endpoint. Use the same value you would use for `LANGSMITH_ENDPOINT`. |
+| `api_key` | LangSmith API key. See [Create an account and API key](/langsmith/create-account-api-key). |
+| `workspace_id` | Workspace ID. Required when the API key can access multiple workspaces. |
+| `oauth` | OAuth token metadata created by LangSmith tooling. |
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "current_profile": "dev",
   "profiles": {
@@ -77,7 +75,7 @@ Create `~/.langsmith/config.json` with a `profiles` object. Each profile can def
 
 Restrict the file so only your user can read it:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 chmod 600 ~/.langsmith/config.json
 ```
 
@@ -86,18 +84,18 @@ chmod 600 ~/.langsmith/config.json
 SDKs select profiles in this order:
 
 1. `LANGSMITH_PROFILE`, if set.
-2. `current_profile` in the profile file, if set.
-3. A profile named `default`, if present.
+1. `current_profile` in the profile file, if set.
+1. A profile named `default`, if present.
 
 For example:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 export LANGSMITH_PROFILE=eu
 ```
 
 The [LangSmith CLI](/langsmith/langsmith-cli) also accepts a global `--profile` flag, which takes precedence over `LANGSMITH_PROFILE` for that command:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith --profile eu project list
 ```
 
@@ -107,7 +105,7 @@ Use the [LangSmith CLI](/langsmith/langsmith-cli) to create, inspect, switch, an
 
 To create an API-key profile from an existing API key:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 export LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 langsmith profile create dev \
   --workspace-id <WORKSPACE_ID> \
@@ -116,7 +114,7 @@ langsmith profile create dev \
 
 You can also pass the key and endpoint as flags. Prefer environment variables on shared machines, because shell history may record command flags.
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith profile create eu \
   --api-key <EU_LANGSMITH_API_KEY> \
   --api-url https://eu.api.smith.langchain.com \
@@ -125,17 +123,17 @@ langsmith profile create eu \
 
 Common profile commands:
 
-| Command                                          | Description                                                 |
-| ------------------------------------------------ | ----------------------------------------------------------- |
-| `langsmith profile list`                         | List saved profiles. Alias: `langsmith profile ls`.         |
-| `langsmith profile show <name>`                  | Show a saved profile. Secret values are redacted in output. |
-| `langsmith profile use <name>`                   | Set `current_profile` in the profile file.                  |
-| `langsmith profile set-workspace <workspace-id>` | Set the default workspace for the selected profile.         |
-| `langsmith profile delete <name>`                | Delete a saved profile.                                     |
+| Command | Description |
+| --- | --- |
+| `langsmith profile list` | List saved profiles. Alias: `langsmith profile ls`. |
+| `langsmith profile show <name>` | Show a saved profile. Secret values are redacted in output. |
+| `langsmith profile use <name>` | Set `current_profile` in the profile file. |
+| `langsmith profile set-workspace <workspace-id>` | Set the default workspace for the selected profile. |
+| `langsmith profile delete <name>` | Delete a saved profile. |
 
 Use `--format pretty` for human-readable tables:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith --format pretty profile list
 ```
 
@@ -144,30 +142,29 @@ langsmith --format pretty profile list
 Run `langsmith auth login` to authenticate with OAuth instead of manually creating an API-key profile. The command starts a browser-based device authorization flow, stores OAuth tokens in the selected profile, and sets that profile as current.
 
 <Note>
-  `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`). On earlier deployments, or if no signing JWKS is configured, create an API-key profile instead.
+`langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`). On earlier deployments, or if no signing JWKS is configured, create an API-key profile instead.
 </Note>
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith auth login
 ```
 
 Choose the profile with `--profile` or `LANGSMITH_PROFILE`:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith auth login --profile dev
 ```
 
 For a self-hosted instance, pass its base URL. The CLI reads the deployment's authorization server metadata to find the OAuth endpoints:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
 ```
-
 Self-hosted OAuth login requires Helm chart `0.16.0` or later with a signing JWKS. For configuration, see [Enabling Remote MCP](/langsmith/langsmith-remote-mcp#enabling-remote-mcp). Otherwise create an API-key profile.
 
 For a headless environment, suppress automatic browser opening and pass a workspace ID:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 langsmith auth login \
   --profile prod \
   --no-browser \
@@ -177,16 +174,16 @@ langsmith auth login \
 `langsmith auth login` chooses the profile name in this order:
 
 1. `--profile`, if passed.
-2. `LANGSMITH_PROFILE`, if set.
-3. `current_profile` in the profile file, if set.
-4. `default`.
+1. `LANGSMITH_PROFILE`, if set.
+1. `current_profile` in the profile file, if set.
+1. `default`.
 
 It chooses the API URL in this order:
 
 1. `--api-url`, if passed.
-2. `LANGSMITH_ENDPOINT`, if set.
-3. The selected profile's `api_url`, if present.
-4. The default LangSmith Cloud endpoint.
+1. `LANGSMITH_ENDPOINT`, if set.
+1. The selected profile's `api_url`, if present.
+1. The default LangSmith Cloud endpoint.
 
 After login, the CLI and SDKs can use the saved profile. The CLI refreshes OAuth tokens when needed and writes refreshed token fields back to the profile file. SDKs also use the OAuth access token from the profile when environment or constructor API-key auth is not set.
 
@@ -194,18 +191,18 @@ After login, the CLI and SDKs can use the saved profile. The CLI refreshes OAuth
 
 Explicit client constructor arguments and environment variables take precedence over profile values.
 
-| Setting        | Precedence                                                                                                                       |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Endpoint       | Constructor `api_url` or `apiUrl`, then `LANGSMITH_ENDPOINT`, then profile `api_url`, then the default LangSmith Cloud endpoint. |
-| Authentication | Constructor API key, then `LANGSMITH_API_KEY`, then profile OAuth access token, then profile `api_key`.                          |
-| Workspace      | Constructor `workspace_id` or `workspaceId`, then `LANGSMITH_WORKSPACE_ID`, then profile `workspace_id`.                         |
+| Setting | Precedence |
+| --- | --- |
+| Endpoint | Constructor `api_url` or `apiUrl`, then `LANGSMITH_ENDPOINT`, then profile `api_url`, then the default LangSmith Cloud endpoint. |
+| Authentication | Constructor API key, then `LANGSMITH_API_KEY`, then profile OAuth access token, then profile `api_key`. |
+| Workspace | Constructor `workspace_id` or `workspaceId`, then `LANGSMITH_WORKSPACE_ID`, then profile `workspace_id`. |
 
 The older `LANGCHAIN_API_KEY`, `LANGCHAIN_ENDPOINT`, and `LANGCHAIN_WORKSPACE_ID` aliases still work, but prefer the `LANGSMITH_*` names for new configuration.
 
 If a profile contains both `oauth.access_token` and `api_key`, SDKs use the OAuth access token first. If an OAuth refresh token is present and the access token is expired or close to expiring, SDKs can refresh the token and write the updated token fields back to the profile file.
 
 <Note>
-  If you mount a profile file as read-only, OAuth token refresh cannot persist updated tokens. Read-only mounts are appropriate for API-key profiles. Use a writable mount only when you intentionally rely on OAuth token refresh.
+If you mount a profile file as read-only, OAuth token refresh cannot persist updated tokens. Read-only mounts are appropriate for API-key profiles. Use a writable mount only when you intentionally rely on OAuth token refresh.
 </Note>
 
 ## Use profiles in code
@@ -213,33 +210,37 @@ If a profile contains both `oauth.access_token` and `api_key`, SDKs use the OAut
 When the profile file is present, create the client normally:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
-  ```
+```python Python
+from langsmith import Client
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+client = Client()
+```
 
-  const client = new Client();
-  ```
+```typescript TypeScript
+import { Client } from "langsmith";
+
+const client = new Client();
+```
+
 </CodeGroup>
 
 To override a profile in code, pass the value explicitly:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client(api_key="<LANGSMITH_API_KEY>")
-  ```
+```python Python
+from langsmith import Client
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+client = Client(api_key="<LANGSMITH_API_KEY>")
+```
 
-  const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
-  ```
+```typescript TypeScript
+import { Client } from "langsmith";
+
+const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
+```
+
 </CodeGroup>
 
 ## Mount profiles in remote runtimes
@@ -250,7 +251,7 @@ For remote runtimes, mount the profile file as a secret file and set `LANGSMITH_
 
 Mount your local profile directory into the container:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 docker run --rm \
   -e LANGSMITH_CONFIG_FILE=/home/app/.langsmith/config.json \
   -e LANGSMITH_PROFILE=prod \
@@ -260,7 +261,7 @@ docker run --rm \
 
 Use a read-write mount only when the profile uses OAuth refresh tokens:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 docker run --rm \
   -e LANGSMITH_CONFIG_FILE=/home/app/.langsmith/config.json \
   -e LANGSMITH_PROFILE=prod \
@@ -272,14 +273,14 @@ docker run --rm \
 
 Create a Kubernetes secret from the profile file:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 kubectl create secret generic langsmith-profile \
   --from-file=config.json="$HOME/.langsmith/config.json"
 ```
 
 Mount the secret and point the SDK to it:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -311,7 +312,7 @@ Kubernetes secret volumes are read-only. Use API-key profiles for this pattern, 
 
 In remote development environments or CI jobs, store the profile JSON in the platform's secret store, write it to a temporary file at runtime, and set `LANGSMITH_CONFIG_FILE` to that file path.
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 mkdir -p "$RUNNER_TEMP/langsmith"
 printf '%s' "$LANGSMITH_PROFILE_JSON" > "$RUNNER_TEMP/langsmith/config.json"
 chmod 600 "$RUNNER_TEMP/langsmith/config.json"
@@ -321,14 +322,13 @@ export LANGSMITH_PROFILE=prod
 
 For hosted [LangSmith Cloud](/langsmith/cloud), configure these values as environment variables or [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) unless the platform explicitly supports mounting secret files.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/profile-configuration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

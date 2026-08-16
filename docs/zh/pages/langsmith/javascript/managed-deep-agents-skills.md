@@ -2,21 +2,21 @@
 
 <!-- langchain-docs: Add skills to Managed Deep Agents | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-skills -->
 
-# 为托管深度代理添加技能
-
-将可重复使用的特定于任务的指令添加到托管深度代理。
+# 将技能添加到托管Deep Agents
 
 技能将特定于任务的过程和上下文打包到可重用的目录中。您可以在 Markdown 文件中定义它们，代理会自动选取它们。
 
 <Note>
-  托管深度代理在 **公共 [beta](/langsmith/release-stages)** 中提供，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
 
 将代理入口点保留在项目根目录，并在`skills/`下定义每个技能：
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```text
 my-agent/
   agent.ts
   skills/
@@ -24,11 +24,12 @@ my-agent/
       SKILL.md
 ```
 
+
 ## 添加技能
 
 每个技能目录都需要一个 `SKILL.md` 文件，其中包含 `name` 和 `description` frontmatter：
 
-```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```markdown skills/research/SKILL.md
 ---
 name: research
 description: Gather and synthesize context before answering complex questions.
@@ -51,7 +52,7 @@ Use this skill when a task needs more than a direct answer.
 
 这种渐进式的披露使代理能够访问详细的过程，而无需将每个技能的完整内容添加到其上下文中。
 
-## 同步到 Context Hub当您运行 `mda deploy` 时，`skills/` 下的每个 UTF-8 文件都会自动同步到代理的 [Context Hub](/langsmith/use-the-context-hub) 存储库。然后，您可以在 LangSmith UI 中编辑技能并使更改可供代理使用。
+## 同步到 Context Hub当您运行 `mda deploy` 时，`skills/` 下的每个 UTF-8 文件都会自动同步到代理的 [Context Hub](/langsmith/use-the-context-hub) 存储库。然后，您可以在 LangSmith UI 中编辑技能，并使更改可供代理使用。
 
 稍后的部署将再次同步项目副本并删除本地不再存在的已部署技能文件。
 
@@ -65,14 +66,13 @@ Use this skill when a task needs more than a direct answer.
 
 有关技能创作模式和完整格式，请参阅[Skills](/oss/javascript/deepagents/skills)。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

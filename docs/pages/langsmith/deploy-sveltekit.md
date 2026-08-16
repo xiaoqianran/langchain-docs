@@ -2,8 +2,6 @@
 
 # Deploy with SvelteKit
 
-Deploy a LangChain deep agent in a SvelteKit project on Cloudflare Workers with streaming chat and thread history.
-
 The following page details an example app that deploys a LangChain **deep agent** inside a [SvelteKit](https://svelte.dev/docs/kit/introduction) project, built for [Cloudflare Workers](https://svelte.dev/docs/kit/adapter-cloudflare) with [`@sveltejs/adapter-cloudflare`](https://www.npmjs.com/package/@sveltejs/adapter-cloudflare): streaming chat UI, subagent detail views, thread history, and the [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) exposed under `/api/threads/...`. No separate backend process is required.
 
 Source: [`js-sveltekit`](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-sveltekit) in the deployment cookbook.
@@ -11,27 +9,35 @@ Source: [`js-sveltekit`](https://github.com/langchain-ai/deployment-cookbook/tre
 ## Deploy to Cloudflare
 
 <Steps>
-  <Step title="Install and build">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd js-sveltekit
-    cp .env.example .env   # set OPENAI_API_KEY for local dev
-    pnpm install
-    pnpm build
-    ```
-  </Step>
 
-  <Step title="Configure secrets">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx wrangler login
-    npx wrangler secret put OPENAI_API_KEY
-    ```
-  </Step>
+<Step title="Install and build">
 
-  <Step title="Deploy">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm run deploy
-    ```
-  </Step>
+```bash
+cd js-sveltekit
+cp .env.example .env   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
+
+</Step>
+
+<Step title="Configure secrets">
+
+```bash
+npx wrangler login
+npx wrangler secret put OPENAI_API_KEY
+```
+
+</Step>
+
+<Step title="Deploy">
+
+```bash
+pnpm run deploy
+```
+
+</Step>
+
 </Steps>
 
 `svelte.config.js` uses `adapter-cloudflare()`. `wrangler.jsonc` points Wrangler at `.svelte-kit/cloudflare/_worker.js` and serves assets from `.svelte-kit/cloudflare`, matching the SvelteKit Cloudflare adapter docs. The build script appends the `ThreadSession` Durable Object export to that generated Worker entry because Durable Object classes must be exported by the Worker module.
@@ -46,31 +52,31 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. SvelteKit
 
 ### Minimum (streaming chat)
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 ### Optional (sidebar)
 
-| Method   | Path                             | Purpose                                   |
-| -------- | -------------------------------- | ----------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer    |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history              |
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history |
 
 ## Cloudflare backend design
 
-| Concern       | Implementation                                          |
-| ------------- | ------------------------------------------------------- |
-| Frontend      | SvelteKit client routes and components                  |
-| API layer     | SvelteKit server endpoints in `src/routes/api/threads/` |
-| Runtime       | Workers V8 + `nodejs_compat`                            |
-| SSE replay    | Per-thread Durable Object (`ThreadSession`)             |
-| Agent runs    | Worker isolate; protocol events POSTed to the DO        |
-| Static assets | Workers Static Assets via `adapter-cloudflare`          |
-| Secrets       | `wrangler secret` / local `.env`                        |
+| Concern | Implementation |
+| --- | --- |
+| Frontend | SvelteKit client routes and components |
+| API layer | SvelteKit server endpoints in `src/routes/api/threads/` |
+| Runtime | Workers V8 + `nodejs_compat` |
+| SSE replay | Per-thread Durable Object (`ThreadSession`) |
+| Agent runs | Worker isolate; protocol events POSTed to the DO |
+| Static assets | Workers Static Assets via `adapter-cloudflare` |
+| Secrets | `wrangler secret` / local `.env` |
 
 ## Production persistence
 
@@ -85,7 +91,7 @@ For production:
 
 ## Local development
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cp .env.example .env   # set OPENAI_API_KEY
 pnpm install
 pnpm dev
@@ -93,7 +99,7 @@ pnpm dev
 
 Open [http://localhost:5173](http://localhost:5173).
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pnpm build      # production build for Cloudflare
 pnpm preview    # preview the production build locally
 pnpm typecheck  # svelte-check over the project
@@ -101,41 +107,44 @@ pnpm typecheck  # svelte-check over the project
 
 For Cloudflare-style local testing after a build, run:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 npx wrangler dev .svelte-kit/cloudflare/_worker.js
 ```
 
 ## Project layout
 
 <AccordionGroup>
-  <Accordion title="Project structure">
-    * `src/lib/server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
-    * `src/lib/server/durable-objects/thread-session.ts` — per-thread Durable Object event log for SSE replay.
-    * `src/lib/server/protocol/` — Agent Streaming Protocol helpers: checkpointer-backed state/history, run publishing, serialization, and registry.
-    * `src/routes/api/threads/` — SvelteKit route handlers for the protocol endpoints.
-    * `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
-    * `src/lib/components/` — Svelte chat UI using `@langchain/svelte`.
-    * `svelte.config.js` — SvelteKit configured with `@sveltejs/adapter-cloudflare`.
-    * `scripts/export-durable-objects.mjs` — postbuild patch that re-exports the Durable Object class from the generated Worker entry.
-    * `wrangler.jsonc` — Cloudflare Workers Static Assets and Durable Object config.
-  </Accordion>
+
+<Accordion title="Project structure">
+
+- `src/lib/server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
+- `src/lib/server/durable-objects/thread-session.ts` — per-thread Durable Object event log for SSE replay.
+- `src/lib/server/protocol/` — Agent Streaming Protocol helpers: checkpointer-backed state/history, run publishing, serialization, and registry.
+- `src/routes/api/threads/` — SvelteKit route handlers for the protocol endpoints.
+- `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
+- `src/lib/components/` — Svelte chat UI using `@langchain/svelte`.
+- `svelte.config.js` — SvelteKit configured with `@sveltejs/adapter-cloudflare`.
+- `scripts/export-durable-objects.mjs` — postbuild patch that re-exports the Durable Object class from the generated Worker entry.
+- `wrangler.jsonc` — Cloudflare Workers Static Assets and Durable Object config.
+
+</Accordion>
+
 </AccordionGroup>
 
 ## See also
 
-* [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
-* [SvelteKit Cloudflare adapter](https://svelte.dev/docs/kit/adapter-cloudflare)
-* [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
-* [`@langchain/svelte`](https://reference.langchain.com/javascript/langchain-svelte/getting-started)
+- [Frameworks and platforms overview](/langsmith/deploy-frameworks-and-platforms)
+- [SvelteKit Cloudflare adapter](https://svelte.dev/docs/kit/adapter-cloudflare)
+- [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)
+- [`@langchain/svelte`](https://reference.langchain.com/javascript/langchain-svelte/getting-started)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-sveltekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

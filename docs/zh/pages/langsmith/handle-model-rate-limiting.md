@@ -10,7 +10,7 @@
 
 如果您在应用程序或评估器中使用 `langchain` Python 聊天模型，您可以向模型添加速率限制器，这将添加客户端对向模型提供程序 API 发送请求的频率的控制，以避免速率限制错误。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain.chat_models import init_chat_model
 from langchain.rate_limiters import InMemoryRateLimiter
 
@@ -42,21 +42,23 @@ def evaluator(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
 如果您使用 `langchain` 组件，您可以使用 `.with_retry(...)` / `.withRetry()` 方法向所有模型调用添加重试：
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain import init_chat_model
 
-  model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
-  ```
+```python Python
+from langchain import init_chat_model
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
+```
 
-  const model = await initChatModel("gpt-5.5", {
-      modelProvider: "openai",
-  });
+```typescript TypeScript
+import { initChatModel } from "langchain";
 
-  const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
-  ```
+const model = await initChatModel("gpt-5.5", {
+    modelProvider: "openai",
+});
+
+const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
+```
+
 </CodeGroup>
 
 有关更多信息，请参阅 `langchain` [Python](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.BaseChatModel.with_retry) 和 [JS](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withRetry) API 参考。
@@ -68,33 +70,34 @@ def evaluator(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
 限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency` 可直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import aevaluate
 
-  results = await aevaluate(
-      ...
-      max_concurrency=4,
-  )
-  ```
+```python Python
+from langsmith import aevaluate
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = await aevaluate(
+    ...
+    max_concurrency=4,
+)
+```
 
-  await evaluate(..., {
-    ...,
-    maxConcurrency: 4,
-  });
-  ```
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
+
+await evaluate(..., {
+  ...,
+  maxConcurrency: 4,
+});
+```
+
 </CodeGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

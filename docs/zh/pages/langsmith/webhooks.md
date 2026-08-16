@@ -4,22 +4,20 @@
 
 # 为规则配置 webhook 通知
 
-配置 Webhook 通知以在自动化规则与 LangSmith 中的新运行匹配时接收 POST 请求。
+当您在自动化操作上添加 Webhook URL 时，每当您定义的规则与任何新运行匹配时，LangSmith 都会向您的 Webhook 端点发出 POST 请求。
 
-当您在自动化操作上添加 Webhook URL 时，只要您定义的规则与任何新运行匹配，LangSmith 就会向您的 Webhook 端点发出 POST 请求。
-
-<img alt="Webhook" />
+![Webhook](/langsmith/images/webhook.png)
 
 ## Webhook 负载
 
-LangSmith 发送到您的 webhook 端点的负载包含：
+发送到您的 webhook 端点的有效负载 LangSmith 包含：
 
-* `"rule_id"`：这是发送此有效负载的自动化的 ID。
-* `"start_time"` 和 `"end_time"`：这些是 LangSmith 找到匹配运行的时间边界。
-* `"runs"`：这是一个运行数组，其中每个运行都是一个字典。如果您需要有关每次运行的更多信息，请使用端点中的 SDK 从 API 获取它。
-* `"feedback_stats"`：这是一本包含运行反馈统计数据的字典。以下代码块显示了此字段的示例有效负载。
+- `"rule_id"`：这是发送此有效负载的自动化的 ID。
+- `"start_time"` 和`"end_time"`：这些是LangSmith 找到匹配运行的时间边界。
+- `"runs"`：这是一个运行数组，其中每个运行都是一个字典。如果您需要有关每次运行的更多信息，请使用端点中的 SDK 从 API 获取它。
+- `"feedback_stats"`：这是一本包含运行反馈统计数据的字典。以下代码块显示了此字段的示例有效负载。
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 "feedback_stats": {
     "about_langchain": {
         "n": 1,
@@ -51,14 +49,16 @@ LangSmith 发送到您的 webhook 端点的负载包含：
 ```
 
 <Note>
-  **从 S3 URL 获取**
+**从 S3 URL 获取**
 
-  根据您运行的最新情况，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。
+根据您运行的最新情况，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。
 
-  `inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
-</Note>这是 LangSmith 发送到您的 webhook 端点的整个有效负载的示例：
+`inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
+</Note>
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+这是 LangSmith 发送到您的 webhook 端点的整个有效负载的示例：
+
+```json
 {
   "rule_id": "d75d7417-0c57-4655-88fe-1db3cda3a47a",
   "start_time": "2024-04-05T01:28:54.734491+00:00",
@@ -104,9 +104,7 @@ LangSmith 发送到您的 webhook 端点的负载包含：
 }
 ```
 
-## 安全
-
-将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。
+## 安全将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。
 
 一个例子是
 
@@ -119,47 +117,48 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 如果您想使用 Webhook 发送任何特定标头，可以根据 URL 进行配置。要进行设置，请单击 URL 字段旁边的 `Headers` 选项并添加标头。
 
 <Note>
-  标头以加密格式存储。
+标头以加密格式存储。
 </Note>
 
-<img alt="Webhook headers" />
+![Webhook headers](/langsmith/images/webhook-headers.png)
 
 ### Webhook 传递
 
-将事件传送到 Webhook 端点时，LangSmith 遵循以下准则：* 如果 LangSmith 无法连接到您的端点，LangSmith 会在声明传送失败之前重试传输连接最多 2 次。
-* 如果您的端点回复时间超过 5 秒，LangSmith 将声明传送失败并且不会重试。
-* 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 将使用指数退避重试最多 2 次。
-* 如果您的端点返回 4xx 状态代码，则 LangSmith 声明传送失败并且不会重试。
-* 您的端点在正文中返回的任何内容都将被忽略。
+将事件传递到 Webhook 端点时，LangSmith 遵循以下准则：
 
-## 确保评估在 webhook 触发之前完成
+- 如果 LangSmith 无法连接到您的端点，LangSmith 在声明传送失败之前会重试传输连接最多 2 次。
+- 如果您的终端回复时间超过 5 秒，LangSmith 声明发送失败，不再重试。
+- 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 将使用指数退避重试最多 2 次。
+- 如果您的终端返回4xx状态码，则LangSmith声明投递失败，不再重试。
+- 您的端点在正文中返回的任何内容都将被忽略。## 确保评估在 webhook 触发之前完成
 
 默认情况下，自动化规则按独立的计划运行。扫描同一项目的 Webhook 规则和在线评估器规则可以在不同时间获取相同的运行，因此 Webhook 可能会在评估器有机会对运行进行评分之前触发。
 
-推荐的解决方案是向您的 Webhook 规则添加*反馈过滤器*。这告诉 LangSmith 仅当运行已达到预期分数时才将运行发送到您的 webhook，无论何时评估。例如，您有一个生成 `answer_usefulness` 分数的在线评估器，以及一个仅在该分数出现后才触发的 Webhook 规则。
+推荐的解决方案是向您的 Webhook 规则添加_反馈过滤器_。这告诉 LangSmith 仅当它已经达到预期分数时才将运行发送到您的 webhook，无论何时评估。
+
+例如，您有一个生成 `answer_usefulness` 分数的在线评估器，以及一个仅在该分数出现后才触发的 Webhook 规则。
 
 1. 在跟踪项目的 **Automations** 选项卡中打开 Webhook 自动化规则。
-
-2. 编辑规则的过滤器以需要反馈密钥。在过滤器构建器中，添加条件：
+1. 编辑规则的过滤器以需要反馈密钥。在过滤器构建器中，添加条件：
 
    ```
    has(feedback_key, "answer_usefulness")
    ```
 
-3. 保存规则。
+1. 保存规则。
 
-现在，webhook 规则将跳过任何尚未获得 `answer_usefulness` 分数的运行。当评估器规则运行并附加分数时，Webhook 规则的下一个轮询周期将获取这些运行并将它们发送到您的端点。
+现在，webhook 规则将跳过任何尚未获得 `answer_usefulness` 分数的运行。当评估器规则运行并附加分数时，Webhook 规则的下一个轮询周期将获取这些运行并将它们发送到您的端点。<Tip>
+您还可以过滤分数值本身，而不仅仅是它的存在。例如，仅将有用性分数较低的运行发送到您的端点：
 
-<Tip>
-  您还可以过滤分数值本身，而不仅仅是它的存在。例如，仅将有用性分数较低的运行发送到您的端点：
+```
+has(feedback_key, "answer_usefulness") and feedback_score < 0.5
+```
 
-  ```
-  has(feedback_key, "answer_usefulness") and feedback_score < 0.5
-  ```
+有关完整的过滤器语法，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
+</Tip>
 
-  有关完整的过滤器语法，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
-</Tip><Note>
-  在单个自动化规则中，操作按固定顺序执行：注释队列 → 数据集 → Webhook → 评估。这意味着，如果您的 Webhook 和评估器在 **相同​​* 规则上配置，则 Webhook 将始终在该规则运行的评估完成之前触发。为了确保 Webhook 收到评估分数，请将 Webhook 和评估器保留为**单独的规则**，并在 Webhook 规则上使用反馈过滤器，如示例中所述。
+<Note>
+在单个自动化规则中，操作按固定顺序执行：注释队列 → 数据集 → Webhook → 评估。这意味着，如果您的 Webhook 和评估器在 **相同​​* 规则上配置，则 Webhook 将始终在该规则运行的评估完成之前触发。为了确保 Webhook 收到评估分数，请将 Webhook 和评估器保留为**单独的规则**，并在 Webhook 规则上使用反馈过滤器，如示例中所述。
 </Note>
 
 ## 模态示例
@@ -171,41 +170,41 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 首先，创建一个模态帐户。然后，本地安装 Modal SDK：
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install modal
-  ```
+```bash pip
+pip install modal
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add modal
-  ```
+```bash uv
+uv add modal
+```
 </CodeGroup>
 
 要完成帐户设置，请运行以下命令：
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 modal setup
 ```
 
 按照说明完成帐户设置。
 
-### 秘密
+### 秘密接下来，您需要在 Modal 中设置一些秘密。
 
-接下来，您需要在 Modal 中设置一些秘密。首先，LangSmith 需要通过传递秘密来向 Modal 进行身份验证。
+首先，LangSmith 需要通过传递秘密来向 Modal 进行身份验证。
 最简单的方法是在查询参数中传递一个秘密。
-要验证此机密，请在 *Modal* 中添加一个机密来验证它。
+要验证此机密，请在 _Modal_ 中添加一个机密以对其进行验证。
 按 [creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
 将密钥命名为 `ls-webhook` 并设置一个名为 `LS_WEBHOOK` 的环境变量。
 
-您还可以设置 LangSmith 秘密 - 幸运的是已经有一个集成模板！
+您还可以设置一个 LangSmith 秘密 - 幸运的是已经有一个集成模板！
 
-<img alt="LangSmith Modal Template" />
+![LangSmith Modal Template](/langsmith/images/modal-langsmith-secret.png)
 
 ### 服务
 
 之后，您可以创建一个 Python 文件作为端点。
 以下代码块显示了一个示例，并带有注释解释了发生的情况：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from fastapi import HTTPException, status, Request, Query
 from modal import Secret, Stub, web_endpoint, Image
 
@@ -279,12 +278,11 @@ https://hwchase17--auth-example-f-dev.modal.run?secret={SECRET}
 
 将 `{SECRET}` 替换为您创建的用于访问 Modal 服务的密钥。
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+---<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

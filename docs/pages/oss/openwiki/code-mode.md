@@ -2,13 +2,11 @@
 
 # Code mode
 
-Generate and maintain repository documentation for coding agents with OpenWiki
-
 Code mode builds a repository wiki in `openwiki/` with durable details such as architecture, integrations, and workflows. Coding agents use that wiki as context so they can work in the package more efficiently, with less rediscovery and fewer tokens. Humans can read the same Markdown, but agents are the primary audience. Agents discover the wiki through pointers OpenWiki adds to `AGENTS.md` and `CLAUDE.md`.
 
 `openwiki`, `openwiki --init`, and `openwiki --update` run in code mode. You can also pass the mode explicitly:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 openwiki code --init
 openwiki code --update
 openwiki code --update --print
@@ -18,10 +16,10 @@ openwiki code --update --print
 
 After a successful init or update, the repository typically includes:
 
-* **`openwiki/`**: Generated Markdown wiki (quickstart, architecture, operations, and related topics)
-* **`openwiki/INSTRUCTIONS.md`**: User-authored brief for scope and priorities. OpenWiki reads it on init and update. Edit it yourself, or ask OpenWiki in chat to change it; normal `--init` and `--update` runs do not rewrite it
-* **`openwiki/.last-update.json`**: Metadata for the last successful documentation change (used to avoid no-op update loops)
-* **`AGENTS.md` / `CLAUDE.md`**: OpenWiki inserts or refreshes an `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block that tells coding agents when to consult the wiki. Existing content outside that block is left untouched
+- **`openwiki/`**: Generated Markdown wiki (quickstart, architecture, operations, and related topics)
+- **`openwiki/INSTRUCTIONS.md`**: User-authored brief for scope and priorities. OpenWiki reads it on init and update. Edit it yourself, or ask OpenWiki in chat to change it; normal `--init` and `--update` runs do not rewrite it
+- **`openwiki/.last-update.json`**: Metadata for the last successful documentation change (used to avoid no-op update loops)
+- **`AGENTS.md` / `CLAUDE.md`**: OpenWiki inserts or refreshes an `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block that tells coding agents when to consult the wiki. Existing content outside that block is left untouched
 
 ## Markdown output
 
@@ -31,16 +29,16 @@ OpenWiki's durable output is Markdown (OKF), not a static HTML site. To explore 
 
 OpenWiki emits [Google Open Knowledge Format (OKF)](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing) v0.1 bundles in both code and personal modes:
 
-* A **concept** is an ordinary wiki Markdown page (one topic file). Every concept has YAML front matter with a non-empty `type`; other standard fields are optional
-* `index.md` and `log.md` are **reserved** scaffolding files, not concepts: `index.md` is a directory listing, and `log.md` is update history. Nested indexes contain no front matter, while the root index declares `okf_version: "0.1"`
-* Valid `timestamp` values and producer-defined extension fields are accepted and preserved during updates and migrations
-* Standard Markdown links between concept documents express relationships
+- A **concept** is an ordinary wiki Markdown page (one topic file). Every concept has YAML front matter with a non-empty `type`; other standard fields are optional
+- `index.md` and `log.md` are **reserved** scaffolding files, not concepts: `index.md` is a directory listing, and `log.md` is update history. Nested indexes contain no front matter, while the root index declares `okf_version: "0.1"`
+- Valid `timestamp` values and producer-defined extension fields are accepted and preserved during updates and migrations
+- Standard Markdown links between concept documents express relationships
 
 ## Ignore paths
 
 Create a `.openwikiignore` file in the repository root to keep generated docs from reading or describing private, generated, or irrelevant paths. The syntax supports comments, blank lines, `*` and `**` globs, directory rules, and `!` negation:
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 secrets/
 *.log
 !logs/keep.log
@@ -49,7 +47,7 @@ secrets/
 When `.openwikiignore` has active rules, OpenWiki filters filesystem discovery and restricts shell execute so ignored paths stay out of the run.
 
 <Note>
-  This is a read boundary: ignored paths are never read, scanned, or reproduced in the generated docs. It does not guarantee a topic will never be mentioned, because the agent may still infer an ignored area from other allowed evidence such as tests, the README, commit messages, or the existing wiki.
+    This is a read boundary: ignored paths are never read, scanned, or reproduced in the generated docs. It does not guarantee a topic will never be mentioned, because the agent may still infer an ignored area from other allowed evidence such as tests, the README, commit messages, or the existing wiki.
 </Note>
 
 ## Diagrams
@@ -58,7 +56,7 @@ OpenWiki embeds Mermaid diagrams where they clarify a concept better than prose.
 
 For validation that matches GitHub rendering more closely, install the Mermaid parser wherever you run OpenWiki:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 npm install mermaid jsdom
 ```
 
@@ -68,7 +66,7 @@ When the parser is present, OpenWiki uses it. When it is absent, OpenWiki falls 
 
 Edit `openwiki/INSTRUCTIONS.md` to steer scope, priorities, and preferred writing conventions for repository documentation (for example tone, terminology, and what to emphasize or skip). OpenWiki reads this file on init and update runs. You can also ask OpenWiki in chat to revise the brief:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 openwiki "Update openwiki/INSTRUCTIONS.md to prioritize the public API and skip internal tooling"
 ```
 
@@ -76,19 +74,18 @@ Normal `--init` and `--update` runs do not rewrite this file.
 
 ## See also
 
-* [Visualize your wiki](/oss/openwiki/visualize)
-* [Automate updates](/oss/openwiki/automate-updates)
-* [Customize OpenWiki](/oss/openwiki/customize)
-* [Personal mode](/oss/openwiki/personal-mode)
+- [Visualize your wiki](/oss/openwiki/visualize)
+- [Automate updates](/oss/openwiki/automate-updates)
+- [Customize OpenWiki](/oss/openwiki/customize)
+- [Personal mode](/oss/openwiki/personal-mode)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

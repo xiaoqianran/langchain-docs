@@ -9,21 +9,21 @@ This works the same way as [adding custom routes](/langsmith/custom-routes). You
 Below is an example using FastAPI.
 
 <Note>
-  "Python only"
-  We currently only support custom lifespan events in Python deployments with `langgraph-api>=0.0.26`.
+"Python only"
+We currently only support custom lifespan events in Python deployments with `langgraph-api>=0.0.26`.
 </Note>
 
 ## Create app
 
 Starting from an **existing** LangSmith application, add the following lifespan code to your `webapp.py` file. If you are starting from scratch, you can create a new app from a template using the CLI.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph new --template=new-langgraph-project-python my_new_project
 ```
 
 Once you have a LangGraph project, add the following app code:
 
-```python {highlight={19}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={19}}
 # ./src/agent/webapp.py
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -51,7 +51,7 @@ app = FastAPI(lifespan=lifespan)
 
 Add the following to your `langgraph.json` configuration file. Make sure the path points to the `webapp.py` file you created above.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -69,7 +69,7 @@ Add the following to your `langgraph.json` configuration file. Make sure the pat
 
 Test the server out locally:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev --no-browser
 ```
 
@@ -83,14 +83,13 @@ You can deploy your app as-is to cloud or to your self-hosted platform.
 
 Now that you've added lifespan events to your deployment, you can use similar techniques to add [custom routes](/langsmith/custom-routes) or [custom middleware](/langsmith/custom-middleware) to further customize your server's behavior.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-lifespan.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

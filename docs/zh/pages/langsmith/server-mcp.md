@@ -6,7 +6,7 @@
 
 模型上下文协议 (MCP) 是一种开放协议，用于以与模型无关的格式描述工具和数据源，使法学硕士能够通过结构化 API 发现和使用它们。
 
-[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 实现 MCP。这允许 LangGraph **代理**作为 **MCP 工具**公开，使其可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
+[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 实现 MCP。这允许 LangGraph **代理** 作为 **MCP 工具**公开，使它们可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
 
 MCP 端点在 [Agent Server](/langsmith/agent-server) 的 `/mcp` 可用。
 
@@ -14,7 +14,7 @@ MCP 端点在 [Agent Server](/langsmith/agent-server) 的 `/mcp` 可用。
 
 此流程的示例架构：
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 sequenceDiagram
   %% Actors
   participant ClientApp as Client
@@ -58,13 +58,13 @@ sequenceDiagram
 安装它们：
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-  ```
+```bash pip
+pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-  ```
+```bash uv
+uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+```
 </CodeGroup>
 
 ## 使用概述
@@ -78,15 +78,15 @@ sequenceDiagram
 ＃＃＃ 客户使用符合 MCP 的客户端连接到代理服务器。以下示例展示了如何使用不同的编程语言进行连接。
 
 <Tabs>
-  <Tab title="JavaScript/TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    <Tab title="JavaScript/TypeScript">
+    ```bash
     npm install @modelcontextprotocol/sdk
     ```
 
-    > **注意**
-    > 将 `serverUrl` 替换为您的代理服务器 URL，并根据需要配置身份验证标头。
+        > **注意**
+        > 将 `serverUrl` 替换为您的代理服务器 URL，并根据需要配置身份验证标头。
 
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```js
     import { Client } from "@modelcontextprotocol/sdk/client/index.js";
     import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
@@ -116,18 +116,17 @@ sequenceDiagram
             console.error("Failed to connect client:", error);
         });
     ```
-  </Tab>
-
-  <Tab title="Python">
+    </Tab>
+    <Tab title="Python">
     安装适配器：
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     pip install langchain-mcp-adapters
     ```
 
     以下是如何连接到远程 MCP 端点并使用代理作为工具的示例：
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python
     # Create server parameters for stdio connection
     from mcp import ClientSession
     from mcp.client.streamable_http import streamablehttp_client
@@ -163,7 +162,7 @@ sequenceDiagram
     if __name__ == "__main__":
         asyncio.run(main())
     ```
-  </Tab>
+    </Tab>
 </Tabs>
 
 ## 将代理公开为 MCP 工具
@@ -179,7 +178,7 @@ sequenceDiagram
 
 您可以在`langgraph.json`中设置您的代理的名称和描述：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
     "graphs": {
         "my_agent": {
@@ -191,7 +190,7 @@ sequenceDiagram
 }
 ```
 
-部署后，您可以使用 LangGraph SDK 更新名称和描述。
+部署后，您可以使用LangGraph SDK 更新名称和描述。
 
 ### 架构
 
@@ -201,7 +200,7 @@ sequenceDiagram
 
 例如，回答文档问题的工作流程可能如下所示：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph.graph import StateGraph, START, END
 from typing_extensions import TypedDict
 
@@ -238,13 +237,13 @@ print(graph.invoke({"question": "hi"}))
 ## 在部署中使用用户范围的 MCP 工具
 
 <Tip>
-  **先决条件**
-  您已经添加了自己的 [custom auth middleware](/langsmith/custom-auth) 来填充 `langgraph_auth_user` 对象，使其可以通过图中每个节点的可配置上下文进行访问。
+**先决条件**
+您已经添加了自己的 [custom auth middleware](/langsmith/custom-auth) 来填充 `langgraph_auth_user` 对象，使其可以通过图中每个节点的可配置上下文进行访问。
 </Tip>
 
-要使用户范围的工具可用于 LangSmith 部署，请首先实现如下所示的代码片段：
+要使用户范围的工具可用于您的 LangSmith 部署，请首先实现如下所示的代码片段：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 def mcp_tools_node(state, config):
@@ -272,7 +271,7 @@ def mcp_tools_node(state, config):
 2. 您的 MCP 服务器 URL。
 3. 从 MCP 服务器获取可用工具。
 
-*这也可以通过[rebuilding your graph at runtime](/langsmith/graph-rebuild)来完成，为新的运行提供不同的配置*
+_这也可以通过 [rebuilding your graph at runtime](/langsmith/graph-rebuild) 来完成，为新的运行提供不同的配置_
 
 ## 会话行为
 
@@ -280,29 +279,28 @@ def mcp_tools_node(state, config):
 
 ## 身份验证
 
-`/mcp`端点使用与LangGraph API的其余部分相同的身份验证。设置详情请参阅[authentication guide](/langsmith/auth)。
+`/mcp` 端点使用与 LangGraph API 的其余部分相同的身份验证。设置详情请参阅[authentication guide](/langsmith/auth)。
 
 ## 禁用 MCP
 
-要禁用 MCP 端点，请在 `langgraph.json` 配置文件中将 `disable_mcp` 设置为 `true`：```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+要禁用 MCP 端点，请在 `langgraph.json` 配置文件中将 `disable_mcp` 设置为 `true`：
+
+```json
 {
   "$schema": "https://langgra.ph/schema.json",
   "http": {
     "disable_mcp": true
   }
 }
-```
+```这将防止服务器公开 `/mcp` 端点。
 
-这将防止服务器公开 `/mcp` 端点。
+---
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-mcp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

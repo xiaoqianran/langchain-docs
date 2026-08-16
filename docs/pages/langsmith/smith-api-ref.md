@@ -10,20 +10,19 @@ Browse the full API reference in the **LangSmith REST API** section in the sideb
 
 Pass the `X-Api-Key` header with each request. The value should be a valid [LangSmith API key](/langsmith/create-account-api-key).
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 curl --request GET \
   --url https://api.smith.langchain.com/api/v1/workspaces \
   --header 'X-Api-Key: LANGSMITH_API_KEY'
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smith-api-ref.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

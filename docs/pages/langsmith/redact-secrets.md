@@ -2,21 +2,19 @@
 
 # Redact secrets from traces
 
-Prevent API keys, tokens, and other secrets from appearing in LangSmith traces using the SDK anonymizer.
-
 When your application handles API keys, tokens, or other credentials, those values can appear in LangSmith traces if they are passed as part of inputs or outputs. Use the LangSmith SDK's built-in anonymizer to redact secrets before they are sent to the backend.
 
 <Note>
-  This page covers redacting secrets (API keys, tokens, credentials) from trace data via the SDK. For redacting personally identifiable information (PII) such as emails, names, or SSNs, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs). To redact secrets at the LLM Gateway layer, see [Data protection](/langsmith/llm-gateway-data-protection).
+This page covers redacting secrets (API keys, tokens, credentials) from trace data via the SDK. For redacting personally identifiable information (PII) such as emails, names, or SSNs, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs). To redact secrets at the LLM Gateway layer, see [Data protection](/langsmith/llm-gateway-data-protection).
 </Note>
 
 ## Use the SDK anonymizer
 
 <Info>
-  The `create_anonymizer` / `createAnonymizer` function requires:
+The `create_anonymizer` / `createAnonymizer` function requires:
 
-  * Python SDK: 0.1.81 and above
-  * TypeScript SDK: 0.1.33 and above
+- Python SDK: 0.1.81 and above
+- TypeScript SDK: 0.1.33 and above
 </Info>
 
 The `create_anonymizer` function accepts a list of regex patterns and replacement strings. Pass the resulting anonymizer to the [Client](https://reference.langchain.com/python/langsmith/client/Client) constructor, and it will automatically apply to all run inputs and outputs before they reach LangSmith.
@@ -24,72 +22,74 @@ The `create_anonymizer` function accepts a list of regex patterns and replacemen
 The following example redacts common secret formats, including OpenAI API keys, generic bearer tokens, and `sk-` prefixed keys:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.anonymizer import create_anonymizer
-  from langsmith import Client, traceable
 
-  # Redact common secret patterns
-  anonymizer = create_anonymizer([
-      # OpenAI-style keys: sk-... or sk-proj-...
-      {"pattern": r"sk-[A-Za-z0-9\-_]{20,}", "replace": "<REDACTED_API_KEY>"},
-      # Generic bearer tokens
-      {"pattern": r"Bearer\s+[A-Za-z0-9\-_\.]{20,}", "replace": "Bearer <REDACTED_TOKEN>"},
-      # Anthropic keys
-      {"pattern": r"sk-ant-[A-Za-z0-9\-_]{20,}", "replace": "<REDACTED_API_KEY>"},
-      # Generic high-entropy strings that look like secrets (40+ hex chars)
-      {"pattern": r"\b[0-9a-fA-F]{40,}\b", "replace": "<REDACTED_TOKEN>"},
-  ])
+```python Python
+from langsmith.anonymizer import create_anonymizer
+from langsmith import Client, traceable
 
-  client = Client(anonymizer=anonymizer)
+# Redact common secret patterns
+anonymizer = create_anonymizer([
+    # OpenAI-style keys: sk-... or sk-proj-...
+    {"pattern": r"sk-[A-Za-z0-9\-_]{20,}", "replace": "<REDACTED_API_KEY>"},
+    # Generic bearer tokens
+    {"pattern": r"Bearer\s+[A-Za-z0-9\-_\.]{20,}", "replace": "Bearer <REDACTED_TOKEN>"},
+    # Anthropic keys
+    {"pattern": r"sk-ant-[A-Za-z0-9\-_]{20,}", "replace": "<REDACTED_API_KEY>"},
+    # Generic high-entropy strings that look like secrets (40+ hex chars)
+    {"pattern": r"\b[0-9a-fA-F]{40,}\b", "replace": "<REDACTED_TOKEN>"},
+])
 
-  @traceable(client=client)
-  def call_external_api(api_key: str, prompt: str) -> str:
-      # The api_key value will be redacted in the trace
-      return f"Response to: {prompt}"
+client = Client(anonymizer=anonymizer)
 
-  call_external_api(
-      api_key="sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
-      prompt="What is LangSmith?",
-  )
-  ```
+@traceable(client=client)
+def call_external_api(api_key: str, prompt: str) -> str:
+    # The api_key value will be redacted in the trace
+    return f"Response to: {prompt}"
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAnonymizer } from "langsmith/anonymizer";
-  import { traceable } from "langsmith/traceable";
-  import { Client } from "langsmith";
+call_external_api(
+    api_key="sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
+    prompt="What is LangSmith?",
+)
+```
 
-  // Redact common secret patterns
-  const anonymizer = createAnonymizer([
-      // OpenAI-style keys: sk-... or sk-proj-...
-      { pattern: /sk-[A-Za-z0-9\-_]{20,}/g, replace: "<REDACTED_API_KEY>" },
-      // Generic bearer tokens
-      { pattern: /Bearer\s+[A-Za-z0-9\-_.]{20,}/g, replace: "Bearer <REDACTED_TOKEN>" },
-      // Anthropic keys
-      { pattern: /sk-ant-[A-Za-z0-9\-_]{20,}/g, replace: "<REDACTED_API_KEY>" },
-      // Generic high-entropy strings that look like secrets (40+ hex chars)
-      { pattern: /\b[0-9a-fA-F]{40,}\b/g, replace: "<REDACTED_TOKEN>" },
-  ]);
+```typescript TypeScript
+import { createAnonymizer } from "langsmith/anonymizer";
+import { traceable } from "langsmith/traceable";
+import { Client } from "langsmith";
 
-  const client = new Client({ anonymizer });
+// Redact common secret patterns
+const anonymizer = createAnonymizer([
+    // OpenAI-style keys: sk-... or sk-proj-...
+    { pattern: /sk-[A-Za-z0-9\-_]{20,}/g, replace: "<REDACTED_API_KEY>" },
+    // Generic bearer tokens
+    { pattern: /Bearer\s+[A-Za-z0-9\-_.]{20,}/g, replace: "Bearer <REDACTED_TOKEN>" },
+    // Anthropic keys
+    { pattern: /sk-ant-[A-Za-z0-9\-_]{20,}/g, replace: "<REDACTED_API_KEY>" },
+    // Generic high-entropy strings that look like secrets (40+ hex chars)
+    { pattern: /\b[0-9a-fA-F]{40,}\b/g, replace: "<REDACTED_TOKEN>" },
+]);
 
-  const callExternalApi = traceable(
-      async (apiKey: string, prompt: string): Promise<string> => {
-          // The apiKey value will be redacted in the trace
-          return `Response to: ${prompt}`;
-      },
-      { client }
-  );
+const client = new Client({ anonymizer });
 
-  await callExternalApi(
-      "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
-      "What is LangSmith?"
-  );
-  ```
+const callExternalApi = traceable(
+    async (apiKey: string, prompt: string): Promise<string> => {
+        // The apiKey value will be redacted in the trace
+        return `Response to: ${prompt}`;
+    },
+    { client }
+);
+
+await callExternalApi(
+    "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
+    "What is LangSmith?"
+);
+```
+
 </CodeGroup>
 
 The anonymizer serializes inputs and outputs to JSON, applies each regex pattern, then deserializes the result before sending to LangSmith. By default, it traverses up to 10 nesting levels deep. To change this, pass the `max_depth` parameter:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 anonymizer = create_anonymizer(
     [{"pattern": r"sk-[A-Za-z0-9\-_]{20,}", "replace": "<REDACTED_API_KEY>"}],
     max_depth=5,
@@ -101,59 +101,60 @@ anonymizer = create_anonymizer(
 If your redaction logic is more complex, pass a function instead of a list of patterns. The function receives a string and returns the redacted string:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import re
-  from langsmith.anonymizer import create_anonymizer
-  from langsmith import Client
 
-  # Example: redact any value that follows a known key name in JSON-like payloads
-  SECRET_KEYS = {"api_key", "apiKey", "token", "secret", "password", "credential"}
+```python Python
+import re
+from langsmith.anonymizer import create_anonymizer
+from langsmith import Client
 
-  def redact_secret_values(text: str) -> str:
-      for key in SECRET_KEYS:
-          # Match patterns like: "api_key": "some-value"
-          pattern = rf'("{key}"\s*:\s*)"[^"]*"'
-          text = re.sub(pattern, r'\1"<REDACTED>"', text)
-      return text
+# Example: redact any value that follows a known key name in JSON-like payloads
+SECRET_KEYS = {"api_key", "apiKey", "token", "secret", "password", "credential"}
 
-  anonymizer = create_anonymizer(redact_secret_values)
-  client = Client(anonymizer=anonymizer)
-  ```
+def redact_secret_values(text: str) -> str:
+    for key in SECRET_KEYS:
+        # Match patterns like: "api_key": "some-value"
+        pattern = rf'("{key}"\s*:\s*)"[^"]*"'
+        text = re.sub(pattern, r'\1"<REDACTED>"', text)
+    return text
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAnonymizer } from "langsmith/anonymizer";
-  import { Client } from "langsmith";
+anonymizer = create_anonymizer(redact_secret_values)
+client = Client(anonymizer=anonymizer)
+```
 
-  const SECRET_KEYS = new Set(["api_key", "apiKey", "token", "secret", "password", "credential"]);
+```typescript TypeScript
+import { createAnonymizer } from "langsmith/anonymizer";
+import { Client } from "langsmith";
 
-  function redactSecretValues(text: string): string {
-      for (const key of SECRET_KEYS) {
-          // Match patterns like: "api_key": "some-value"
-          const pattern = new RegExp(`("${key}"\\s*:\\s*)"[^"]*"`, "g");
-          text = text.replace(pattern, '$1"<REDACTED>"');
-      }
-      return text;
-  }
+const SECRET_KEYS = new Set(["api_key", "apiKey", "token", "secret", "password", "credential"]);
 
-  const anonymizer = createAnonymizer(redactSecretValues);
-  const client = new Client({ anonymizer });
-  ```
+function redactSecretValues(text: string): string {
+    for (const key of SECRET_KEYS) {
+        // Match patterns like: "api_key": "some-value"
+        const pattern = new RegExp(`("${key}"\\s*:\\s*)"[^"]*"`, "g");
+        text = text.replace(pattern, '$1"<REDACTED>"');
+    }
+    return text;
+}
+
+const anonymizer = createAnonymizer(redactSecretValues);
+const client = new Client({ anonymizer });
+```
+
 </CodeGroup>
 
-## Combine with LANGSMITH\_HIDE\_INPUTS
+## Combine with LANGSMITH_HIDE_INPUTS
 
 If your use case requires completely suppressing all inputs (for example, for zero-retention compliance), use `LANGSMITH_HIDE_INPUTS=true` instead. The anonymizer is skipped when `LANGSMITH_HIDE_INPUTS` or `LANGSMITH_HIDE_OUTPUTS` is set to `true`.
 
 For more options, including hiding all inputs and outputs, hiding metadata, function-level processors, and third-party PII libraries, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/redact-secrets.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

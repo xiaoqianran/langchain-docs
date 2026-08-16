@@ -2,22 +2,20 @@
 
 # Configure webhook notifications for rules
 
-Configure webhook notifications to receive POST requests when automation rules match new runs in LangSmith.
-
 When you add a webhook URL on an automation action, LangSmith makes a POST request to your webhook endpoint any time the rules you defined match any new runs.
 
-<img alt="Webhook" />
+![Webhook](/langsmith/images/webhook.png)
 
 ## Webhook payload
 
 The payload LangSmith sends to your webhook endpoint contains:
 
-* `"rule_id"`: this is the ID of the automation that sent this payload.
-* `"start_time"` and `"end_time"`: these are the time boundaries where LangSmith found matching runs.
-* `"runs"`: this is an array of runs, where each run is a dictionary. If you need more information about each run, use the SDK in your endpoint to fetch it from the API.
-* `"feedback_stats"`: this is a dictionary with the feedback statistics for the runs. An example payload for this field is shown in the following code block.
+- `"rule_id"`: this is the ID of the automation that sent this payload.
+- `"start_time"` and `"end_time"`: these are the time boundaries where LangSmith found matching runs.
+- `"runs"`: this is an array of runs, where each run is a dictionary. If you need more information about each run, use the SDK in your endpoint to fetch it from the API.
+- `"feedback_stats"`: this is a dictionary with the feedback statistics for the runs. An example payload for this field is shown in the following code block.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 "feedback_stats": {
     "about_langchain": {
         "n": 1,
@@ -49,16 +47,16 @@ The payload LangSmith sends to your webhook endpoint contains:
 ```
 
 <Note>
-  **fetching from S3 URLs**
+**fetching from S3 URLs**
 
-  Depending on how recent your runs are, the `inputs_s3_urls` and `outputs_s3_urls` fields may contain S3 URLs to the actual data instead of the data itself.
+Depending on how recent your runs are, the `inputs_s3_urls` and `outputs_s3_urls` fields may contain S3 URLs to the actual data instead of the data itself.
 
-  The `inputs` and `outputs` can be fetched by the `ROOT.presigned_url` provided in `inputs_s3_urls` and `outputs_s3_urls` respectively.
+The `inputs` and `outputs` can be fetched by the `ROOT.presigned_url` provided in `inputs_s3_urls` and `outputs_s3_urls` respectively.
 </Note>
 
 This is an example of the entire payload LangSmith sends to your webhook endpoint:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "rule_id": "d75d7417-0c57-4655-88fe-1db3cda3a47a",
   "start_time": "2024-04-05T01:28:54.734491+00:00",
@@ -119,53 +117,52 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 If you'd like to send any specific headers with your webhook, this can be configured per URL. To set this up, click on the `Headers` option next to the URL field and add your headers.
 
 <Note>
-  Headers are stored in encrypted format.
+Headers are stored in encrypted format.
 </Note>
 
-<img alt="Webhook headers" />
+![Webhook headers](/langsmith/images/webhook-headers.png)
 
 ### Webhook delivery
 
 When delivering events to your webhook endpoint, LangSmith follows these guidelines:
 
-* If LangSmith fails to connect to your endpoint, LangSmith retries the transport connection up to 2 times before declaring the delivery failed.
-* If your endpoint takes longer than 5 seconds to reply, LangSmith declares the delivery failed and does not retry.
-* If your endpoint returns a 5xx status code in less than 5 seconds, LangSmith retries up to 2 times with exponential backoff.
-* If your endpoint returns a 4xx status code, LangSmith declares the delivery failed and does not retry.
-* Anything your endpoint returns in the body will be ignored.
+- If LangSmith fails to connect to your endpoint, LangSmith retries the transport connection up to 2 times before declaring the delivery failed.
+- If your endpoint takes longer than 5 seconds to reply, LangSmith declares the delivery failed and does not retry.
+- If your endpoint returns a 5xx status code in less than 5 seconds, LangSmith retries up to 2 times with exponential backoff.
+- If your endpoint returns a 4xx status code, LangSmith declares the delivery failed and does not retry.
+- Anything your endpoint returns in the body will be ignored.
 
 ## Ensuring evaluations complete before the webhook fires
 
 By default, automation rules run on independent schedules. A webhook rule and an online evaluator rule scanning the same project can pick up the same run at different times, so the webhook may fire before the evaluator has had a chance to score the run.
 
-The recommended solution is to add a *feedback filter* to your webhook rule. This tells LangSmith to send a run to your webhook only once it already carries the expected score, regardless of when it was evaluated.
+The recommended solution is to add a _feedback filter_ to your webhook rule. This tells LangSmith to send a run to your webhook only once it already carries the expected score, regardless of when it was evaluated.
 
 For example, you have an online evaluator that produces an `answer_usefulness` score, and a webhook rule that should only fire after that score is present.
 
 1. Open the webhook automation rule in the **Automations** tab of your tracing project.
-
-2. Edit the rule's filter to require the feedback key. In the filter builder, add a condition:
+1. Edit the rule's filter to require the feedback key. In the filter builder, add a condition:
 
    ```
    has(feedback_key, "answer_usefulness")
    ```
 
-3. Save the rule.
+1. Save the rule.
 
 Now the webhook rule will skip any run that does not yet have an `answer_usefulness` score. When the evaluator rule runs and attaches the score, the webhook rule's next polling cycle will pick up those runs and send them to your endpoint.
 
 <Tip>
-  You can also filter on the score value itself, not just its presence. For example, to only send runs with a low usefulness score to your endpoint:
+You can also filter on the score value itself, not just its presence. For example, to only send runs with a low usefulness score to your endpoint:
 
-  ```
-  has(feedback_key, "answer_usefulness") and feedback_score < 0.5
-  ```
+```
+has(feedback_key, "answer_usefulness") and feedback_score < 0.5
+```
 
-  For the full filter syntax, refer to [Filter traces](/langsmith/filter-traces-in-application).
+For the full filter syntax, refer to [Filter traces](/langsmith/filter-traces-in-application).
 </Tip>
 
 <Note>
-  Within a single automation rule, actions execute in a fixed order: annotation queue → dataset → webhook → evaluation. This means that if your webhook and evaluator are configured on the **same** rule, the webhook will always fire before the evaluation completes on that rule's run. To ensure the webhook receives evaluation scores, keep the webhook and evaluator as **separate rules** and use a feedback filter on the webhook rule as described in the example.
+Within a single automation rule, actions execute in a fixed order: annotation queue → dataset → webhook → evaluation. This means that if your webhook and evaluator are configured on the **same** rule, the webhook will always fire before the evaluation completes on that rule's run. To ensure the webhook receives evaluation scores, keep the webhook and evaluator as **separate rules** and use a feedback filter on the webhook rule as described in the example.
 </Note>
 
 ## Example with Modal
@@ -177,18 +174,18 @@ For an example of how to set this up, this guide uses [Modal](https://modal.com/
 First, create a Modal account. Then, locally install the Modal SDK:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install modal
-  ```
+```bash pip
+pip install modal
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add modal
-  ```
+```bash uv
+uv add modal
+```
 </CodeGroup>
 
 To finish setting up your account, run the command:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 modal setup
 ```
 
@@ -200,20 +197,20 @@ Next, you will need to set up some secrets in Modal.
 
 First, LangSmith will need to authenticate to Modal by passing in a secret.
 The easiest way to do this is to pass in a secret in the query parameters.
-To validate this secret, add a secret in *Modal* to validate it.
+To validate this secret, add a secret in _Modal_ to validate it.
 Do this by [creating a Modal secret](https://modal.com/docs/guide/secrets).
 Name the secret `ls-webhook` and set an environment variable with the name `LS_WEBHOOK`.
 
 You can also set up a LangSmith secret—luckily there is already an integration template for this!
 
-<img alt="LangSmith Modal Template" />
+![LangSmith Modal Template](/langsmith/images/modal-langsmith-secret.png)
 
 ### Service
 
 After that, you can create a Python file that will serve as your endpoint.
 An example is shown in the following code block, with comments explaining what is going on:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from fastapi import HTTPException, status, Request, Query
 from modal import Secret, Stub, web_endpoint, Image
 
@@ -287,14 +284,13 @@ https://hwchase17--auth-example-f-dev.modal.run?secret={SECRET}
 
 Replace `{SECRET}` with the secret key you created to access the Modal service.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

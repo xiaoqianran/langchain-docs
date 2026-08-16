@@ -2,8 +2,6 @@
 
 # Add a custom search tool, memory, and a schedule
 
-Replace provider search with a Tavily tool, then add durable memory and a daily schedule to the research assistant from the quickstart.
-
 This tutorial continues from the [quickstart](/langsmith/python/managed-deep-agents-quickstart). Use the `research-assistant` project you created there, with your model, instructions, and a working `mda dev` setup.
 
 `mda init` may also scaffold files such as `identity` and `sandbox/`. Leave those as they are; this tutorial does not change them.
@@ -11,184 +9,205 @@ This tutorial continues from the [quickstart](/langsmith/python/managed-deep-age
 This guide replaces the quickstart's built-in provider search with an authored [Tavily](https://tavily.com) search tool, enables durable memory, adds a daily schedule, then deploys.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Extend the agent
 
 <Steps>
-  <Step title="Add a custom search tool">
-    Built-in provider search is convenient for a first run. Authored tools give you more control: choose the search API, tune parameters, and keep the tool code in your project.
+  <Step title="Add a custom search tool" id="add-tool">
 
-    <Note>
-      If you followed the steps to use Tavily in the [Quickstart](/langsmith/python/managed-deep-agents-quickstart), skip to the next step.
-    </Note>
+Built-in provider search is convenient for a first run. Authored tools give you more control: choose the search API, tune parameters, and keep the tool code in your project.
 
-    Add a [Tavily API key](https://app.tavily.com) to `.env`:
+<Note>
+If you followed the steps to use Tavily in the [Quickstart](/langsmith/python/managed-deep-agents-quickstart), skip to the next step.
+</Note>
 
-    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    TAVILY_API_KEY=<TAVILY_API_KEY>
-    ```
+Add a [Tavily API key](https://app.tavily.com) to `.env`:
 
-    Install the Tavily client:
+```text .env
+TAVILY_API_KEY=<TAVILY_API_KEY>
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv add tavily-python
-    ```
+Install the Tavily client:
 
-    Create a custom `internet_search` tool:
-
-    ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
-    from typing import Literal
-
-    from langchain.tools import tool
-    from tavily import TavilyClient
+```bash
+uv add tavily-python
+```
 
 
-    tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-    @tool
-    def internet_search(
-        query: str,
-        max_results: int = 5,
-        topic: Literal["general", "news", "finance"] = "general",
-    ) -> dict:
-        """Search the internet for relevant sources."""
-        return tavily_client.search(
-            query,
-            max_results=max_results,
-            topic=topic,
-        )
-    ```
+Create a custom `internet_search` tool:
 
-    Replace the provider search tool dict with your authored tool. Keep the `model` value from the quickstart:
+```python tools/search.py
+import os
+from typing import Literal
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+from langchain.tools import tool
+from tavily import TavilyClient
 
-    from tools.search import internet_search
 
-    agent = define_deep_agent(
-        name="research-assistant",
-        model="openai:gpt-5.5",
-        tools=[internet_search],
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+@tool
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+) -> dict:
+    """Search the internet for relevant sources."""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        topic=topic,
     )
-    ```
+```
 
-    Restart `mda dev` if it is already running. In Studio, ask:
 
-    ```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    What were the main announcements from the latest LangChain release?
-    ```
 
-    Confirm the agent calls `internet_search` and returns an answer with citations. For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
+
+Replace the provider search tool dict with your authored tool. Keep the `model` value from the quickstart:
+
+```python agent.py
+from managed_deepagents import define_deep_agent
+
+from tools.search import internet_search
+
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+)
+```
+
+
+
+
+Restart `mda dev` if it is already running. In Studio, ask:
+
+```txt wrap
+What were the main announcements from the latest LangChain release?
+```
+
+Confirm the agent calls `internet_search` and returns an answer with citations. For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
+
   </Step>
 
-  <Step title="Update the instructions for memory">
-    Extend `instructions.md` so the agent knows what shared knowledge to keep. Keep the research behavior and add a memory policy:
+  <Step title="Update the instructions for memory" id="instructions">
 
-    ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Research assistant
+Extend `instructions.md` so the agent knows what shared knowledge to keep. Keep the research behavior and add a memory policy:
 
-    You are a careful research assistant. Use internet search to find sources,
-    keep notes, and return concise answers with citations.
+```markdown instructions.md
+# Research assistant
 
-    ## Memory
+You are a careful research assistant. Use internet search to find sources,
+keep notes, and return concise answers with citations.
 
-    - Record reusable research procedures and project knowledge that can improve future work.
-    - For release research, check the project's official changelog before secondary sources.
-    - Never store personal data or secrets in memory.
-    ```
+## Memory
+
+- Record reusable research procedures and project knowledge that can improve future work.
+- For release research, check the project's official changelog before secondary sources.
+- Never store personal data or secrets in memory.
+```
   </Step>
 
-  <Step title="Enable and use durable memory">
-    Durable memory is opt-in. Before asking the agent to remember anything, add a memory declaration at the project root:
+  <Step title="Enable and use durable memory" id="memory">
 
-    ```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_memory
+Durable memory is opt-in. Before asking the agent to remember anything, add a memory declaration at the project root:
 
-    memory = define_memory(scope="agent")
-    ```
+```python memory.py
+from managed_deepagents import define_memory
 
-    Memory is shared across the deployment and visible to all callers, so do not store personal data or secrets.
+memory = define_memory(scope="agent")
+```
 
-    Restart `mda dev` so it discovers the new file. In one thread, ask the agent to research a release and to record a reusable project rule, such as "For release research, check the official changelog before secondary sources." Then create a **new thread** in Studio and ask how it will research the next release. Confirm that it applies the shared rule even though the new thread has no conversation history.
 
-    See [Memory](/langsmith/python/managed-deep-agents-memory) for details.
+
+
+Memory is shared across the deployment and visible to all callers, so do not store personal data or secrets.
+
+Restart `mda dev` so it discovers the new file. In one thread, ask the agent to research a release and to record a reusable project rule, such as "For release research, check the official changelog before secondary sources." Then create a **new thread** in Studio and ask how it will research the next release. Confirm that it applies the shared rule even though the new thread has no conversation history.
+
+See [Memory](/langsmith/python/managed-deep-agents-memory) for details.
+
   </Step>
 
-  <Step title="Schedule a daily digest">
-    Add a `schedules/` module so the agent runs on a cron cadence without a user message. This schedule runs every weekday at 8am Pacific:
+  <Step title="Schedule a daily digest" id="schedule">
 
-    ```python schedules/daily_digest.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_schedule
+Add a `schedules/` module so the agent runs on a cron cadence without a user message. This schedule runs every weekday at 8am Pacific:
 
-    schedule = define_schedule(
-        cron="0 8 * * 1-5",
-        timezone="America/Los_Angeles",
-        prompt=(
-            "Review durable memory for reusable research rules. "
-            "Summarize anything useful, then list open questions for today."
-        ),
-    )
-    ```
+```python schedules/daily_digest.py
+from managed_deepagents import define_schedule
 
-    If memory is empty on the first fire, the agent still returns open questions.
+schedule = define_schedule(
+    cron="0 8 * * 1-5",
+    timezone="America/Los_Angeles",
+    prompt=(
+        "Review durable memory for reusable research rules. "
+        "Summarize anything useful, then list open questions for today."
+    ),
+)
+```
 
-    `mda deploy` reconciles this schedule into a LangSmith cron job after the deployment is live. After you deploy in the next step, you should see:
 
-    * `mda deploy` finish without schedule errors (do not pass `--no-wait`, or schedules are not reconciled).
-    * A managed cron for this file on the deployment. The schedule name matches the module stem: `daily_digest` (Python) or `daily-digest` (TypeScript).
-    * No immediate digest run from this cron. The first fire waits until 8:00 America/Los\_Angeles on a weekday.
 
-    For thread behavior and constraints, see [Schedules](/langsmith/python/managed-deep-agents-schedules).
+
+If memory is empty on the first fire, the agent still returns open questions.
+
+`mda deploy` reconciles this schedule into a LangSmith cron job after the deployment is live. After you deploy in the next step, you should see:
+
+- `mda deploy` finish without schedule errors (do not pass `--no-wait`, or schedules are not reconciled).
+- A managed cron for this file on the deployment. The schedule name matches the module stem: `daily_digest` (Python) or `daily-digest` (TypeScript).
+- No immediate digest run from this cron. The first fire waits until 8:00 America/Los_Angeles on a weekday.
+
+For thread behavior and constraints, see [Schedules](/langsmith/python/managed-deep-agents-schedules).
+
   </Step>
 
-  <Step title="Deploy and inspect">
-    Deploy the project to LangSmith:
+  <Step title="Deploy and inspect" id="deploy">
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mda deploy .
-    ```
+Deploy the project to LangSmith:
 
-    On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
+```bash
+mda deploy .
+```
 
-    Open that URL and confirm:
+On success, the CLI prints the deployment dashboard URL. The deploy syncs the instructions to Context Hub, uploads the compiled project, and reconciles the daily schedule.
 
-    * The deployment is ready.
-    * The `daily_digest` or `daily-digest` cron exists.
-    * A test chat run shows model calls, `internet_search` tool calls, and memory reads or writes in the traces.
+Open that URL and confirm:
 
-    For deploy flags and troubleshooting, see [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) and the [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects).
+- The deployment is ready.
+- The `daily_digest` or `daily-digest` cron exists.
+- A test chat run shows model calls, `internet_search` tool calls, and memory reads or writes in the traces.
+
+For deploy flags and troubleshooting, see [Deploy an agent](/langsmith/python/managed-deep-agents-deploy) and the [CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects).
+
   </Step>
 </Steps>
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Custom middleware" icon="code" href="/langsmith/python/managed-deep-agents-middleware">
     Add logging, retries, limits, and guardrails around model and tool calls.
   </Card>
-
   <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
     Authenticate callers and use verified identity in tools and middleware.
   </Card>
-
   <Card title="Evals" icon="flask" href="/langsmith/python/managed-deep-agents-evals">
     Author Harbor tasks and compile the managed agent for Harbor.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tutorial.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

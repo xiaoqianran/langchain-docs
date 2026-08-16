@@ -2,12 +2,10 @@
 
 # GCP Terraform troubleshooting
 
-Common issues, fixes, and diagnostic commands for LangSmith self-hosted on GKE deployed with the LangChain Terraform modules.
-
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp).
 
 <Tip>
-  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>` before running any `kubectl` commands.
+Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>` before running any `kubectl` commands.
 </Tip>
 
 For a copy-paste reference of the `kubectl`, `helm`, and `gcloud` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
@@ -16,7 +14,7 @@ For a copy-paste reference of the `kubectl`, `helm`, and `gcloud` calls used thr
 
 Before running individual commands, try the bundled scripts:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Full deployment health check + next-step guidance
 make status
 
@@ -38,7 +36,7 @@ Error 403: ... has not been used in project <project-id> before or it is disable
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud services enable cloudresourcemanager.googleapis.com --project <project-id>
 cd modules/gcp/infra
 terraform apply -var-file=terraform.tfvars
@@ -56,7 +54,7 @@ Error: Get "https://<cluster-endpoint>/api/v1/namespaces": dial tcp: connection 
 
 **Fix:** Wait for `RUNNING`, then re-run:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud container clusters describe <cluster-name> \
   --region <region> --project <project-id> --format="value(status)"
 
@@ -71,7 +69,7 @@ terraform apply -var-file=terraform.tfvars
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud container node-pools describe <pool-name> \
   --cluster <cluster-name> --region <region> \
   --format="value(config.serviceAccount)"
@@ -91,7 +89,7 @@ gcloud compute firewall-rules list --filter="network:<vpc-name>"
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud services vpc-peerings list --network <vpc-name> --project <project-id>
 gcloud sql instances describe <instance-name> --format="value(ipAddresses)"
 gcloud compute networks peerings list --network <vpc-name>
@@ -99,7 +97,7 @@ gcloud compute networks peerings list --network <vpc-name>
 
 If peering is missing, ensure `enable_private_service_connection = true` and re-apply:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform apply -var-file=terraform.tfvars -target=module.networking
 terraform apply -var-file=terraform.tfvars
 ```
@@ -112,7 +110,7 @@ terraform apply -var-file=terraform.tfvars
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud redis instances describe <instance-name> --region <region> \
   --format="value(host,authorizedNetwork)"
 
@@ -129,7 +127,7 @@ kubectl run redis-test --rm -it --image=redis:7 -n langsmith -- \
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get svc -n envoy-gateway-system \
   -l gateway.envoyproxy.io/owning-gateway-name=langsmith-gateway \
   -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}'
@@ -151,7 +149,7 @@ The DNS A record must resolve to the Gateway IP before the certificate can be is
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Confirm the bucket and its IAM bindings
 helm get values langsmith -n langsmith | grep bucketName
 gcloud storage buckets get-iam-policy gs://<bucket-name>
@@ -175,7 +173,7 @@ Error from server (InternalError): failed calling webhook "validate.gateway.envo
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n envoy-gateway-system
 
 kubectl rollout restart deployment/envoy-gateway -n envoy-gateway-system
@@ -190,13 +188,13 @@ kubectl rollout status deployment/envoy-gateway -n envoy-gateway-system
 
 **Prevention**
 
-* Do not `terraform taint` or manually delete the `Gateway` resource.
-* Use `make destroy` + `make apply` only for full teardown and rebuild.
-* Before any operation that might recreate the Gateway, note the current IP.
+- Do not `terraform taint` or manually delete the `Gateway` resource.
+- Use `make destroy` + `make apply` only for full teardown and rebuild.
+- Before any operation that might recreate the Gateway, note the current IP.
 
 **Recovery:** Update your DNS A record to the new IP:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get gateway -n langsmith -o jsonpath='{.items[0].status.addresses[0].value}'
 
 gcloud dns record-sets update <your-domain>. \
@@ -218,13 +216,13 @@ Error: googleapi: Error 409: The instance is protected from deletion.
 
 **Fix**
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # terraform.tfvars
 gke_deletion_protection      = false
 postgres_deletion_protection = false
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform apply -var-file=terraform.tfvars
 terraform destroy
 ```
@@ -242,7 +240,7 @@ AccessDeniedException: 403 <pod-sa>@<project>.iam.gserviceaccount.com
 
 **Diagnosis**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get serviceaccount langsmith-backend -n langsmith \
   -o jsonpath='{.metadata.annotations}' | python3 -m json.tool
 
@@ -256,7 +254,7 @@ gcloud projects get-iam-policy <project-id> \
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform -chdir=infra apply -target=module.iam
 make init-values
 make deploy
@@ -270,14 +268,14 @@ make deploy
 
 **Diagnosis**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get serviceaccount langsmith-ksa -n langsmith \
   -o jsonpath='{.metadata.annotations.iam\.gke\.io/gcp-service-account}'
 ```
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Re-run deploy; idempotently creates and annotates langsmith-ksa
 make deploy
 
@@ -301,7 +299,7 @@ Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progre
 
 **Fix:** `deploy.sh` detects and auto-recovers this state. If running manually:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm rollback langsmith -n langsmith --wait --timeout 5m
 make deploy
 ```
@@ -319,7 +317,7 @@ ERROR: PERMISSION_DENIED: Permission 'secretmanager.versions.access'
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud services enable secretmanager.googleapis.com --project <project-id>
 
 gcloud projects add-iam-policy-binding <project-id> \
@@ -335,7 +333,7 @@ gcloud projects add-iam-policy-binding <project-id> \
 
 **Fix**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 terraform -chdir=infra apply -target=module.k8s_bootstrap
 
 kubectl get secret langsmith-postgres-credentials -n langsmith
@@ -346,7 +344,7 @@ kubectl get secret langsmith-redis-credentials -n langsmith
 
 ### Cluster access
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
 kubectl config current-context
 kubectl get nodes -o wide
@@ -354,7 +352,7 @@ kubectl get nodes -o wide
 
 ### Pods
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
 kubectl describe pod <pod-name> -n langsmith
@@ -365,7 +363,7 @@ kubectl logs -n langsmith deploy/langsmith-backend --tail=100 -f
 
 ### TLS and certificates
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get certificate -n langsmith
 kubectl describe certificate <cert-name> -n langsmith
 kubectl get challenges -n langsmith
@@ -374,7 +372,7 @@ kubectl get clusterissuer
 
 ### Gateway and load balancer
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get gateway -n langsmith
 kubectl get httproute -n langsmith
 kubectl get svc -n envoy-gateway-system -o wide
@@ -383,7 +381,7 @@ kubectl get pods -n envoy-gateway-system
 
 ### Helm
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
@@ -391,7 +389,7 @@ helm get values langsmith -n langsmith
 
 ### LangSmith Deployment
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
@@ -399,7 +397,7 @@ kubectl get crd | grep langchain
 
 ### Workload Identity and IAM
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get serviceaccount langsmith-backend -n langsmith \
   -o jsonpath='{.metadata.annotations}' | python3 -m json.tool
 
@@ -414,7 +412,7 @@ gcloud iam service-accounts list --project <project-id> --filter="displayName:la
 
 ### Secrets and bootstrap
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get secrets -n langsmith
 kubectl get secret langsmith-postgres-credentials -n langsmith
 kubectl get secret langsmith-redis-credentials -n langsmith
@@ -433,7 +431,7 @@ make secrets
 
 ### Quick health check
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 echo "=== Context ===" && kubectl config current-context
 echo "=== Nodes ===" && kubectl get nodes
 echo "=== Pods ===" && kubectl get pods -n langsmith
@@ -443,14 +441,13 @@ echo "=== Secrets ===" && kubectl get secrets -n langsmith | grep -E "langsmith-
 echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E "STATUS|LAST DEPLOYED"
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,17 +2,15 @@
 
 # GCP Terraform architecture
 
-Platform layers, services, Workload Identity, networking, and module dependencies for LangSmith self-hosted on GKE.
-
 Understand what the [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) provision and how the pieces fit together, so you can size, secure, and customize your LangSmith deployment before running `make apply`.
 
 Use this page as a reference while planning a rollout or troubleshooting an existing one. It covers:
 
-* Platform layers and deployment tiers (light versus production).
-* Module descriptions and dependencies.
-* Networking, Workload Identity, and traffic flow.
-* Add-ons: LangSmith Deployment, Fleet, Insights, and Polly.
-* GCP managed services and Secret Manager integration.
+- Platform layers and deployment tiers (light versus production).
+- Module descriptions and dependencies.
+- Networking, Workload Identity, and traffic flow.
+- Add-ons: LangSmith Deployment, Fleet, Insights, and Polly.
+- GCP managed services and Secret Manager integration.
 
 If you are ready to install, start with the [deployment walkthrough](/langsmith/self-host-terraform-gcp-deploy).
 
@@ -20,40 +18,40 @@ If you are ready to install, start with the [deployment walkthrough](/langsmith/
 
 LangSmith on GCP deploys in up to five stages. Each stage adds a capability layer on top of the previous. All layers share the same GKE cluster and `langsmith` namespace.
 
-<img alt="LangSmith on GCP deployment stages and service layout" />
+<img src="/images/self-hosted-terraform/gcp-architecture.png" alt="LangSmith on GCP deployment stages and service layout" />
 
-| Stage | Layer                | What it adds                                                                                                       |
-| ----- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 1     | GCP infrastructure   | VPC, GKE, Cloud SQL, Memorystore, GCS, K8s bootstrap, cert-manager, KEDA, Envoy Gateway                            |
-| 2     | LangSmith base       | frontend, backend, platform-backend, queue, ace-backend, clickhouse, playground                                    |
-| 3     | LangSmith Deployment | host-backend, listener, operator + per-deployment pods                                                             |
-| 4     | Fleet                | standalone-fleet-api-server, standalone-fleet-tool-server, standalone-fleet-trigger-server, standalone-fleet-queue |
-| 5     | Insights + Polly     | Clio analytics (ClickHouse-backed), Polly eval agent                                                               |
+| Stage | Layer | What it adds |
+|---|---|---|
+| 1 | GCP infrastructure | VPC, GKE, Cloud SQL, Memorystore, GCS, K8s bootstrap, cert-manager, KEDA, Envoy Gateway |
+| 2 | LangSmith base | frontend, backend, platform-backend, queue, ace-backend, clickhouse, playground |
+| 3 | LangSmith Deployment | host-backend, listener, operator + per-deployment pods |
+| 4 | Fleet | standalone-fleet-api-server, standalone-fleet-tool-server, standalone-fleet-trigger-server, standalone-fleet-queue |
+| 5 | Insights + Polly | Clio analytics (ClickHouse-backed), Polly eval agent |
 
 <Note>
-  Fleet (chart v0.15+) is the current form of the feature formerly called Agent Builder. Enable it with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require the LangSmith Deployment layer. The two flags are mutually exclusive and share the same encryption key. See [Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons) in the deployment guide.
+Fleet (chart v0.15+) is the current form of the feature formerly called Agent Builder. Enable it with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require the LangSmith Deployment layer. The two flags are mutually exclusive and share the same encryption key. See [Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons) in the deployment guide.
 </Note>
 
 ## Module descriptions
 
-| Module          | Path                           | Purpose                                                                                                              |
-| --------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `networking`    | `infra/modules/networking/`    | VPC, subnet with secondary ranges, Cloud Router, Cloud NAT, private service connection for Cloud SQL and Memorystore |
-| `k8s-cluster`   | `infra/modules/k8s-cluster/`   | GKE Standard or Autopilot cluster, private nodes, node pool with autoscaling, Workload Identity enabled              |
-| `postgres`      | `infra/modules/postgres/`      | Cloud SQL PostgreSQL instance, regional HA standby, private IP, deletion protection                                  |
-| `redis`         | `infra/modules/redis/`         | Memorystore Redis STANDARD\_HA tier, private IP within VPC                                                           |
-| `storage`       | `infra/modules/storage/`       | GCS bucket with versioning and lifecycle rules for `ttl_s/` (14 days) and `ttl_l/` (400 days) prefixes               |
-| `k8s-bootstrap` | `infra/modules/k8s-bootstrap/` | `langsmith` namespace, Kubernetes Secrets for Postgres and Redis URLs, cert-manager and KEDA Helm releases           |
-| `ingress`       | `infra/modules/ingress/`       | Envoy Gateway Helm release, GatewayClass, HTTPRoute, optional HTTPS Gateway listener                                 |
-| `iam`           | `infra/modules/iam/`           | GCP service account and Workload Identity bindings for GCS access (wired by default)                                 |
-| `dns`           | `infra/modules/dns/`           | Cloud DNS managed zone and managed cert (optional, enable with `enable_dns_module`)                                  |
-| `secrets`       | `infra/modules/secrets/`       | Secret Manager secret bundle (optional, enable with `enable_secret_manager_module`)                                  |
+| Module | Path | Purpose |
+|---|---|---|
+| `networking` | `infra/modules/networking/` | VPC, subnet with secondary ranges, Cloud Router, Cloud NAT, private service connection for Cloud SQL and Memorystore |
+| `k8s-cluster` | `infra/modules/k8s-cluster/` | GKE Standard or Autopilot cluster, private nodes, node pool with autoscaling, Workload Identity enabled |
+| `postgres` | `infra/modules/postgres/` | Cloud SQL PostgreSQL instance, regional HA standby, private IP, deletion protection |
+| `redis` | `infra/modules/redis/` | Memorystore Redis STANDARD_HA tier, private IP within VPC |
+| `storage` | `infra/modules/storage/` | GCS bucket with versioning and lifecycle rules for `ttl_s/` (14 days) and `ttl_l/` (400 days) prefixes |
+| `k8s-bootstrap` | `infra/modules/k8s-bootstrap/` | `langsmith` namespace, Kubernetes Secrets for Postgres and Redis URLs, cert-manager and KEDA Helm releases |
+| `ingress` | `infra/modules/ingress/` | Envoy Gateway Helm release, GatewayClass, HTTPRoute, optional HTTPS Gateway listener |
+| `iam` | `infra/modules/iam/` | GCP service account and Workload Identity bindings for GCS access (wired by default) |
+| `dns` | `infra/modules/dns/` | Cloud DNS managed zone and managed cert (optional, enable with `enable_dns_module`) |
+| `secrets` | `infra/modules/secrets/` | Secret Manager secret bundle (optional, enable with `enable_secret_manager_module`) |
 
 ## Deployment tiers
 
 ### Light deploy (all in-cluster)
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 VPC
 └── subnet (10.0.0.0/20, GKE nodes only)
     No Cloud SQL or Memorystore; chart pods handle both
@@ -73,7 +71,7 @@ GCS Bucket (trace payloads, always external)
 
 Set in `terraform.tfvars`:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 postgres_source   = "in-cluster"
 redis_source      = "in-cluster"
 clickhouse_source = "in-cluster"
@@ -81,7 +79,7 @@ clickhouse_source = "in-cluster"
 
 ### Production (external managed services)
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 VPC
 ├── subnet (10.0.0.0/20, GKE nodes, pods, services)
 │   └── Secondary ranges: pods 10.4.0.0/14, services 10.8.0.0/20
@@ -102,40 +100,40 @@ GCS Bucket (Workload Identity, no static keys)
 
 ## Application core services
 
-| Service                      | Purpose                                                    | Port | HPA                         | Workload Identity | Depends on                       |
-| ---------------------------- | ---------------------------------------------------------- | ---- | --------------------------- | ----------------- | -------------------------------- |
-| `langsmith-frontend`         | React UI                                                   | 3000 | 1 to 10                     | No                | `backend`, `platform-backend`    |
-| `langsmith-backend`          | Main API (traces, runs, projects, API keys, feedback)      | 1984 | 3 to 10                     | Yes (GCS)         | Postgres, Redis, ClickHouse, GCS |
-| `langsmith-platform-backend` | Org and user management, auth, billing, settings           | 1986 | 1 to 10                     | Yes (GCS)         | Postgres, Redis, GCS             |
-| `langsmith-playground`       | LLM prompt playground UI                                   | 3001 | 1 to 10                     | No                | `backend`                        |
-| `langsmith-queue`            | Trace ingestion worker (Redis to ClickHouse + GCS)         | —    | 3 to 10 + KEDA              | Yes               | Redis, ClickHouse, GCS           |
-| `langsmith-ingest-queue`     | Dedicated high-throughput ingestion worker                 | —    | 3 to 10 + KEDA              | Yes               | Redis, GCS                       |
-| `langsmith-ace-backend`      | Async compute (dataset runs, evaluations, background jobs) | —    | 1 to 5                      | No                | Postgres, Redis                  |
-| `langsmith-clickhouse`       | Columnar store (trace spans, run metadata, eval results)   | —    | StatefulSet, single replica | No                | 500Gi `premium-rwo` PVC          |
+| Service | Purpose | Port | HPA | Workload Identity | Depends on |
+|---|---|---|---|---|---|
+| `langsmith-frontend` | React UI | 3000 | 1 to 10 | No | `backend`, `platform-backend` |
+| `langsmith-backend` | Main API (traces, runs, projects, API keys, feedback) | 1984 | 3 to 10 | Yes (GCS) | Postgres, Redis, ClickHouse, GCS |
+| `langsmith-platform-backend` | Org and user management, auth, billing, settings | 1986 | 1 to 10 | Yes (GCS) | Postgres, Redis, GCS |
+| `langsmith-playground` | LLM prompt playground UI | 3001 | 1 to 10 | No | `backend` |
+| `langsmith-queue` | Trace ingestion worker (Redis to ClickHouse + GCS) | — | 3 to 10 + KEDA | Yes | Redis, ClickHouse, GCS |
+| `langsmith-ingest-queue` | Dedicated high-throughput ingestion worker | — | 3 to 10 + KEDA | Yes | Redis, GCS |
+| `langsmith-ace-backend` | Async compute (dataset runs, evaluations, background jobs) | — | 1 to 5 | No | Postgres, Redis |
+| `langsmith-clickhouse` | Columnar store (trace spans, run metadata, eval results) | — | StatefulSet, single replica | No | 500Gi `premium-rwo` PVC |
 
 <Warning>
-  In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
+In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
 </Warning>
 
 <Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). These Terraform modules provision ClickHouse, so the guidance in the previous sections applies to current deployments.
+[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). These Terraform modules provision ClickHouse, so the guidance in the previous sections applies to current deployments.
 </Note>
 
 ### One-time jobs
 
-| Job                                | Purpose                                   |
-| ---------------------------------- | ----------------------------------------- |
-| `langsmith-backend-migrations`     | PostgreSQL schema migrations              |
-| `langsmith-backend-ch-migrations`  | ClickHouse schema migrations              |
+| Job | Purpose |
+|---|---|
+| `langsmith-backend-migrations` | PostgreSQL schema migrations |
+| `langsmith-backend-ch-migrations` | ClickHouse schema migrations |
 | `langsmith-backend-auth-bootstrap` | Creates the initial org and admin account |
 
 ## LangSmith Deployment add-on
 
-| Service                  | Purpose                                                                                                 | Workload Identity                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `langsmith-host-backend` | LangGraph control plane API. Manages deployment lifecycle, serves deployment metadata.                  | Yes (GCS)                         |
-| `langsmith-listener`     | Watches host-backend for state changes, creates and updates `LangGraphPlatform` CRDs.                   | Yes (GCS)                         |
-| `langsmith-operator`     | Kubernetes operator. Reconciles `LangGraphPlatform` CRDs, creates and deletes Deployments and Services. | RBAC for Deployments and Services |
+| Service | Purpose | Workload Identity |
+|---|---|---|
+| `langsmith-host-backend` | LangGraph control plane API. Manages deployment lifecycle, serves deployment metadata. | Yes (GCS) |
+| `langsmith-listener` | Watches host-backend for state changes, creates and updates `LangGraphPlatform` CRDs. | Yes (GCS) |
+| `langsmith-operator` | Kubernetes operator. Reconciles `LangGraphPlatform` CRDs, creates and deletes Deployments and Services. | RBAC for Deployments and Services |
 
 Each LangGraph deployment created in the UI produces a Kubernetes Deployment in the `langsmith` namespace, with pods running as the `langsmith-ksa` ServiceAccount. That ServiceAccount must carry the `iam.gke.io/gcp-service-account` annotation, which `deploy.sh` applies idempotently.
 
@@ -145,48 +143,48 @@ When `postgres_source = "external"` and `redis_source = "external"` (the recomme
 
 ### Cloud SQL PostgreSQL
 
-* Default size `db-custom-2-8192` (2 vCPU, 8 GB), private IP, port 5432.
-* REGIONAL availability with automatic failover.
-* Holds orgs, users, projects, API keys, settings.
-* Terraform writes the connection URL directly to the `langsmith-postgres-credentials` Kubernetes Secret.
+- Default size `db-custom-2-8192` (2 vCPU, 8 GB), private IP, port 5432.
+- REGIONAL availability with automatic failover.
+- Holds orgs, users, projects, API keys, settings.
+- Terraform writes the connection URL directly to the `langsmith-postgres-credentials` Kubernetes Secret.
 
 ### Memorystore Redis
 
-* Default 5 GB, STANDARD\_HA tier, private IP, port 6379.
-* Trace ingestion queue, pub/sub, short-lived cache.
-* No auth token required. Access is controlled by VPC private IP only.
-* Terraform writes the connection URL directly to the `langsmith-redis-credentials` Kubernetes Secret.
+- Default 5 GB, STANDARD_HA tier, private IP, port 6379.
+- Trace ingestion queue, pub/sub, short-lived cache.
+- No auth token required. Access is controlled by VPC private IP only.
+- Terraform writes the connection URL directly to the `langsmith-redis-credentials` Kubernetes Secret.
 
 ### Cloud Storage bucket
 
-* Trace payloads: large inputs and outputs, attachments.
-* The shipped Helm values use native GCS mode (`engine: GCS`, `apiURL: https://storage.googleapis.com`), authenticated through Workload Identity with no HMAC keys.
-* An S3-compatible mode (`engine: S3`) is also supported, shown in `helm/values/examples/langsmith-values.yaml`. It requires HMAC keys: create one under Cloud Storage → Settings → Interoperability and pass them to Helm via `config.blobStorage.accessKey` and `config.blobStorage.accessKeySecret`.
-* Lifecycle rules: `ttl_s/` prefix (14 days default), `ttl_l/` prefix (400 days default).
-* The GCS bucket is always required, regardless of tier.
+- Trace payloads: large inputs and outputs, attachments.
+- The shipped Helm values use native GCS mode (`engine: GCS`, `apiURL: https://storage.googleapis.com`), authenticated through Workload Identity with no HMAC keys.
+- An S3-compatible mode (`engine: S3`) is also supported, shown in `helm/values/examples/langsmith-values.yaml`. It requires HMAC keys: create one under Cloud Storage → Settings → Interoperability and pass them to Helm via `config.blobStorage.accessKey` and `config.blobStorage.accessKeySecret`.
+- Lifecycle rules: `ttl_s/` prefix (14 days default), `ttl_l/` prefix (400 days default).
+- The GCS bucket is always required, regardless of tier.
 
 ### Secret Manager (optional module)
 
-* Stores a single JSON secret bundle (generated LangSmith secret key, Postgres password, Redis password) when `enable_secret_manager_module = true`.
-* Core secrets (`langsmith-postgres-credentials`, `langsmith-redis-credentials`) are always stored in Kubernetes Secrets by `k8s-bootstrap` regardless of this module. Secret Manager provides an additional durable store for secrets that must survive cluster recreation.
+- Stores a single JSON secret bundle (generated LangSmith secret key, Postgres password, Redis password) when `enable_secret_manager_module = true`.
+- Core secrets (`langsmith-postgres-credentials`, `langsmith-redis-credentials`) are always stored in Kubernetes Secrets by `k8s-bootstrap` regardless of this module. Secret Manager provides an additional durable store for secrets that must survive cluster recreation.
 
 ## Cluster infrastructure
 
-| Service       | Namespace              | Installed by                                                                                          | Required for                          |
-| ------------- | ---------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| Envoy Gateway | `envoy-gateway-system` | `ingress` module (`install_ingress = true`, default)                                                  | All ingress                           |
-| KEDA          | `keda`                 | `k8s-bootstrap` module when `enable_langsmith_deployment = true`                                      | LangSmith Deployment add-on and later |
-| cert-manager  | `cert-manager`         | `k8s-bootstrap` module when `tls_certificate_source = "letsencrypt"` or `install_cert_manager = true` | Let's Encrypt TLS                     |
+| Service | Namespace | Installed by | Required for |
+|---|---|---|---|
+| Envoy Gateway | `envoy-gateway-system` | `ingress` module (`install_ingress = true`, default) | All ingress |
+| KEDA | `keda` | `k8s-bootstrap` module when `enable_langsmith_deployment = true` | LangSmith Deployment add-on and later |
+| cert-manager | `cert-manager` | `k8s-bootstrap` module when `tls_certificate_source = "letsencrypt"` or `install_cert_manager = true` | Let's Encrypt TLS |
 
 <Note>
-  The `Gateway` resource is managed by Terraform; the `HTTPRoute` is managed by Helm. Do not delete the Gateway resource manually. GCP releases the external IP when the Gateway is deleted, then issues a new IP on recreate.
+The `Gateway` resource is managed by Terraform; the `HTTPRoute` is managed by Helm. Do not delete the Gateway resource manually. GCP releases the external IP when the Gateway is deleted, then issues a new IP on recreate.
 </Note>
 
 ## Workload Identity
 
 GKE pods access GCS through Workload Identity. The Kubernetes ServiceAccount is bound to a GCP service account via an IAM binding; pods receive temporary credentials with no static keys in Secrets or environment variables.
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 GKE pod
   └── Kubernetes ServiceAccount (annotated with iam.gke.io/gcp-service-account)
         └── IAM binding: roles/iam.workloadIdentityUser
@@ -194,15 +192,15 @@ GKE pod
                     └── roles/storage.objectAdmin on the GCS bucket
 ```
 
-| Component                       | Annotation                              | Permissions                                       |
-| ------------------------------- | --------------------------------------- | ------------------------------------------------- |
-| `langsmith-backend`             | `iam.gke.io/gcp-service-account: <gsa>` | GCS `storage.objectAdmin` on the LangSmith bucket |
-| `langsmith-platform-backend`    | Same                                    | GCS `storage.objectAdmin`                         |
-| `langsmith-queue`               | Same                                    | GCS `storage.objectAdmin`                         |
-| `langsmith-ingest-queue`        | Same                                    | GCS `storage.objectAdmin`                         |
-| `langsmith-host-backend`        | Same                                    | GCS `storage.objectAdmin`                         |
-| `langsmith-listener`            | Same                                    | GCS `storage.objectAdmin`                         |
-| `langsmith-ksa` (operator pods) | Same                                    | GCS `storage.objectAdmin`                         |
+| Component | Annotation | Permissions |
+|---|---|---|
+| `langsmith-backend` | `iam.gke.io/gcp-service-account: <gsa>` | GCS `storage.objectAdmin` on the LangSmith bucket |
+| `langsmith-platform-backend` | Same | GCS `storage.objectAdmin` |
+| `langsmith-queue` | Same | GCS `storage.objectAdmin` |
+| `langsmith-ingest-queue` | Same | GCS `storage.objectAdmin` |
+| `langsmith-host-backend` | Same | GCS `storage.objectAdmin` |
+| `langsmith-listener` | Same | GCS `storage.objectAdmin` |
+| `langsmith-ksa` (operator pods) | Same | GCS `storage.objectAdmin` |
 
 The GSA is defined by the `iam` module and output as `workload_identity_annotation`. `init-values.sh` writes these annotations into `values-overrides.yaml` automatically.
 
@@ -210,18 +208,18 @@ In native GCS mode (the shipped default), the GSA bindings above are sufficient.
 
 ## Network topology
 
-| Range                      | CIDR                      | Used by                                  |
-| -------------------------- | ------------------------- | ---------------------------------------- |
-| Subnet                     | `10.0.0.0/20`             | GKE nodes                                |
-| Pods                       | `10.4.0.0/14`             | GKE pod IPs (secondary range)            |
-| Services                   | `10.8.0.0/20`             | GKE ClusterIP services (secondary range) |
-| Private service connection | `/16` allocated by Google | Cloud SQL, Memorystore private IPs       |
+| Range | CIDR | Used by |
+|---|---|---|
+| Subnet | `10.0.0.0/20` | GKE nodes |
+| Pods | `10.4.0.0/14` | GKE pod IPs (secondary range) |
+| Services | `10.8.0.0/20` | GKE ClusterIP services (secondary range) |
+| Private service connection | `/16` allocated by Google | Cloud SQL, Memorystore private IPs |
 
 Cloud SQL and Memorystore are accessed exclusively via private IP. The networking module establishes a private service connection (VPC peering to Google's managed network) whenever `postgres_source = "external"` or `redis_source = "external"`.
 
 ## Traffic flow
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 Internet (HTTPS :443)
   ↓
 Envoy Gateway  (envoy-gateway-system, external LoadBalancer IP)
@@ -242,25 +240,25 @@ Internal traffic (private IPs, never leaving VPC):
 
 ## Component to storage mapping
 
-| Component          | PostgreSQL                 | Redis           | ClickHouse         | GCS                |
-| ------------------ | -------------------------- | --------------- | ------------------ | ------------------ |
-| `backend`          | Org config, run metadata   | Ingestion queue | —                  | Trace objects      |
-| `platform-backend` | —                          | —               | —                  | Blob routing       |
-| `queue`            | —                          | Pops jobs       | —                  | Writes trace blobs |
-| `clickhouse`       | —                          | —               | Trace search index | —                  |
-| `host-backend`     | Deployment lifecycle state | —               | —                  | —                  |
+| Component | PostgreSQL | Redis | ClickHouse | GCS |
+|---|---|---|---|---|
+| `backend` | Org config, run metadata | Ingestion queue | — | Trace objects |
+| `platform-backend` | — | — | — | Blob routing |
+| `queue` | — | Pops jobs | — | Writes trace blobs |
+| `clickhouse` | — | — | Trace search index | — |
+| `host-backend` | Deployment lifecycle state | — | — | — |
 
 ## Secret Manager integration
 
 Without Secret Manager:
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 terraform.tfvars → terraform apply → kubernetes_secret (postgres, redis)
 ```
 
 With Secret Manager:
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 terraform.tfvars → terraform apply ─┬─→ kubernetes_secret (postgres, redis)
                                     └─→ Secret Manager (durable copy, survives cluster recreation)
 ```
@@ -269,7 +267,7 @@ Terraform writes the Kubernetes Secrets directly in both cases. Enabling Secret 
 
 ## Terraform module graph
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```txt
 google_project_service (APIs enabled)
   └── module.networking
         ├── module.gke_cluster
@@ -287,12 +285,12 @@ google_project_service (APIs enabled)
 
 The `infra` layer does not install the LangSmith chart. The application stage installs it one of two ways, both consuming the same layered values files under `helm/values/`:
 
-* Deploy script: `make init-values && make deploy` runs `helm upgrade --install`.
-* Terraform `app` layer: `make init-values && make init-app && make apply-app` manages the chart as a `helm_release` resource. `make init-app` pulls the `infra` outputs (cluster, bucket, Workload Identity annotation) into `app/infra.auto.tfvars.json`, so the `app` layer reads them without a remote-state data source.
+- Deploy script: `make init-values && make deploy` runs `helm upgrade --install`.
+- Terraform `app` layer: `make init-values && make init-app && make apply-app` manages the chart as a `helm_release` resource. `make init-app` pulls the `infra` outputs (cluster, bucket, Workload Identity annotation) into `app/infra.auto.tfvars.json`, so the `app` layer reads them without a remote-state data source.
 
 ## Verification commands
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Cluster connectivity
 gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
 kubectl cluster-info
@@ -325,14 +323,13 @@ kubectl run gcs-test --rm -it --image=google/cloud-sdk -n langsmith -- \
   gsutil ls gs://<bucket-name>
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -13,7 +13,7 @@ Here are the basic steps for backtesting:
 This process will provide you with a new dataset of representative inputs, which you can version and use for backtesting your models.
 
 <Info>
-  Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your application allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
+Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your application allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
 </Info>
 
 ## Setup
@@ -23,20 +23,20 @@ This process will provide you with a new dataset of representative inputs, which
 Install and set environment variables. This guide requires `langsmith>=0.2.4`.
 
 <Info>
-  For convenience we'll use the LangChain OSS framework in this tutorial, but the LangSmith functionality shown is framework-agnostic.
+For convenience we'll use the LangChain OSS framework in this tutorial, but the LangSmith functionality shown is framework-agnostic.
 </Info>
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langsmith langchain langchain-anthropic langchainhub emoji
-  ```
+```bash pip
+pip install -U langsmith langchain langchain-anthropic langchainhub emoji
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith langchain langchain-anthropic langchainhub emoji
-  ```
+```bash uv
+uv add langsmith langchain langchain-anthropic langchainhub emoji
+```
 </CodeGroup>
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import getpass
 import os
 
@@ -60,7 +60,7 @@ os.environ["TAVILY_API_KEY"] = "YOUR TAVILY API KEY"
 
 For this example lets create a simple Tweet-writing application that has access to some internet search tools:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain.chat_models import init_chat_model
 from langchain.agents import create_agent
 from langchain_community.tools import DuckDuckGoSearchRun, TavilySearchResults
@@ -98,7 +98,7 @@ agent = create_agent(gpt_3_5_turbo, tools=tools, system_prompt=instructions)
 
 Now lets simulate some production data:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 fake_production_inputs = [
     "Alan turing's early childhood",
     "Economic impacts of the European Union",
@@ -126,7 +126,7 @@ The first step is to generate a dataset based on the production *inputs*. Then c
 
 You can select the runs to backtest on using the `filter` argument of `list_runs`. The `filter` argument uses the LangSmith [trace query syntax](/langsmith/trace-query-syntax) to select runs.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from langsmith import Client
@@ -155,7 +155,7 @@ prod_runs = list(
 1. The inputs, and optionally the outputs, are saved to a dataset as Examples.
 2. The inputs and outputs are stored as an experiment, as if you had run the `evaluate` function and received those outputs.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Name of the dataset we want to create
 dataset_name = f'{project_name}-backtesting {start_time.strftime("%Y-%m-%d")}-{end_time.strftime("%Y-%m-%d")}'
 # Name of the experiment we want to create from the historical runs
@@ -178,7 +178,7 @@ convert_runs_to_test(
 
 Once this step is complete, you should see a new dataset in your LangSmith project called "Tweet Writing Task-backtesting TODAYS DATE", with a single experiment like so:
 
-<img alt="Baseline experiment" />
+![Baseline experiment](/langsmith/images/baseline-experiment.png)
 
 ## Benchmark against new system
 
@@ -188,7 +188,7 @@ Now we can start the process of benchmarking our production runs against a new s
 
 First let's define the evaluators we will use to compare the two systems. Note that we have no reference outputs, so we'll need to come up with evaluation metrics that only require the actual outputs.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import emoji
 from pydantic import BaseModel, Field
 from langchain_core.messages import convert_to_openai_messages
@@ -236,7 +236,7 @@ async def is_grounded(outputs: dict) -> bool:
 
 Now, let's run our evaluators against the baseline experiment.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 baseline_results = await client.aevaluate(
     baseline_experiment_name,
     evaluators=[lt_280_chars, gte_3_emojis, is_grounded],
@@ -249,7 +249,7 @@ baseline_results = await client.aevaluate(
 
 Now, let's define and evaluate our new system. In this example our new system will be the same as the old system, but will use GPT-4o instead of GPT-3.5. Since we've made our model configurable we can just update the default config passed to our agent:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 candidate_results = await client.aevaluate(
     agent.with_config(model="gpt-5.5"),
     data=dataset_name,
@@ -264,7 +264,7 @@ candidate_results = await client.aevaluate(
 
 After running both experiments, you can view them in your dataset:
 
-<img alt="Dataset page" />
+![Dataset page](/langsmith/images/dataset-page.png)
 
 The results reveal an interesting tradeoff between the two models:
 
@@ -280,16 +280,15 @@ This backtesting exercise revealed that while GPT-4o is generally considered a m
 
 This insight demonstrates the value of backtesting - it helped us identify potential issues before deployment.
 
-<img alt="Tutorial comparison view" />
+![Tutorial comparison view](/langsmith/images/tutorial-comparison-view.png)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

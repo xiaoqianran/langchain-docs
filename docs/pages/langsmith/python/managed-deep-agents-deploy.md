@@ -2,12 +2,10 @@
 
 # Deploy a Managed Deep Agent
 
-Test and deploy a Managed Deep Agent with the mda CLI.
-
 Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/python/managed-deep-agents-cli).
@@ -16,15 +14,15 @@ This page covers secrets routing and deploy options. To test the agent before de
 
 Before you deploy, make sure you have:
 
-* A workspace with Managed Deep Agents public beta access.
+- A workspace with Managed Deep Agents public beta access.
+- A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, either in `.env` or your shell environment.
+- The `mda` CLI installed from `managed-deepagents`.
+- Project dependencies installed with `uv sync` for generated Python projects.
 
-* A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, either in `.env` or your shell environment.
 
-* The `mda` CLI installed from `managed-deepagents`.
 
-* Project dependencies installed with `uv sync` for generated Python projects.
 
-* Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
+- Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
 
 The CLI targets US LangSmith Cloud by default.
 
@@ -32,36 +30,36 @@ The CLI targets US LangSmith Cloud by default.
 
 Deploy the local project:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda deploy .
 ```
 
 <Tip>
-  `mda deploy` routes local project inputs to different managed surfaces:
+`mda deploy` routes local project inputs to different managed surfaces:
 
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  instructions.md + skills/**  -> Context Hub deploy-owned context
-  .env                         -> deploy auth + non-reserved hosted secrets, not archived
-  project source files         -> .mda/build source archive -> hosted deployment
-  schedules/**                 -> LangSmith cron jobs after the deployment is live
-  ```
+```text
+instructions.md + skills/**  -> Context Hub deploy-owned context
+.env                         -> deploy auth + non-reserved hosted secrets, not archived
+project source files         -> .mda/build source archive -> hosted deployment
+schedules/**                 -> LangSmith cron jobs after the deployment is live
+```
 </Tip>
 
 Set the deployment name explicitly when the directory name is not the name you want:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda deploy . --name research-assistant
 ```
 
 Use `--deployment-type prod` when creating a production deployment:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda deploy . --deployment-type prod
 ```
 
 Use `--no-wait` to trigger the build without polling for completion:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 mda deploy . --no-wait
 ```
 
@@ -73,7 +71,7 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For the full 
 
 `mda deploy` reads project `.env` values before shell environment variables. Use `.env` for the LangSmith API key that authenticates the deploy and for runtime secrets the hosted deployment needs:
 
-```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text .env
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
@@ -96,32 +94,28 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
     Authenticate callers and provide private threads.
   </Card>
-
   <Card title="Schedules" icon="calendar" href="/langsmith/python/managed-deep-agents-schedules">
     Run agents on managed cron schedules.
   </Card>
-
   <Card title="Custom tools" icon="tool" href="/langsmith/python/managed-deep-agents-tools">
     Add authored LangChain tools to the agent definition.
   </Card>
-
   <Card title="CLI reference" icon="terminal" href="/langsmith/python/managed-deep-agents-cli">
     Look up every `mda` command and flag.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

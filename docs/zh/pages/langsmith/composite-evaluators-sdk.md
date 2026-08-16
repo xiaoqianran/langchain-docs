@@ -4,14 +4,14 @@
 
 # 如何创建复合评估器
 
-*综合评估器*是将多个评估器分数组合成单个[score](/langsmith/evaluation-concepts#evaluator-outputs)的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
+_综合评估器_是将多个评估器分数组合成单个[score](/langsmith/evaluation-concepts#evaluator-outputs)的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
 
 本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk) 将其分数与自定义聚合函数相结合。
 
 <Note> 需要langsmith>=0.4.29 </Note>
 
 <Tip>
-  要在 LangSmith UI 中创建复合赋值器，请参阅[How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui)。
+要在LangSmith UI 中创建复合赋值器，请参阅[How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui)。
 </Tip>
 
 ## 1. 在数据集上配置评估器
@@ -20,7 +20,7 @@
 
 如果您已经拥有自己的数据集并配置了评估器，则可以跳过此步骤。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -138,7 +138,7 @@ experiment_name = results.experiment_name
 
 创建综合反馈，使用您的自定义函数汇总各个评估者的分数。此示例使用各个评估者分数的加权平均值。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from typing import Dict
 import math
 from langsmith import Client
@@ -201,12 +201,13 @@ for example_with_runs in results["examples_with_runs"]:
                 )
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

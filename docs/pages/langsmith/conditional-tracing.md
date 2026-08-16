@@ -6,482 +6,484 @@ When you have the environment variable `LANGSMITH_TRACING=true` set globally, tr
 
 Use conditional tracing when you need to:
 
-* **Comply with data retention policies**: Some clients may require zero data retention for compliance or privacy reasons.
-* **Handle sensitive operations**: Disable tracing for operations involving PII, credentials, or confidential data.
-* **Implement per-tenant configurations**: Route traces to different projects or apply different settings based on the customer.
-* **Control costs**: Disable tracing for low-value requests while maintaining visibility into critical operations.
-* **Support feature flags**: Enable tracing only when specific features or experimental code paths are active.
+- **Comply with data retention policies**: Some clients may require zero data retention for compliance or privacy reasons.
+- **Handle sensitive operations**: Disable tracing for operations involving PII, credentials, or confidential data.
+- **Implement per-tenant configurations**: Route traces to different projects or apply different settings based on the customer.
+- **Control costs**: Disable tracing for low-value requests while maintaining visibility into critical operations.
+- **Support feature flags**: Enable tracing only when specific features or experimental code paths are active.
 
 <Tip>
-  To reduce trace volume by logging only a percentage of all runs, refer to [Set a sampling rate for traces](/langsmith/sample-traces).
+To reduce trace volume by logging only a percentage of all runs, refer to [Set a sampling rate for traces](/langsmith/sample-traces).
 </Tip>
 
 The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) context manager (Python) and [`tracingEnabled`](https://reference.langchain.com/javascript/classes/langsmith.run_trees.RunTree.html#tracingenabled) option (TypeScript) allow you to override global tracing settings at runtime, without restructuring your code or changing environment variables.
 
 <Note>
-  The following sections provide language-specific examples that you can adapt to your application logic and business requirements.
+The following sections provide language-specific examples that you can adapt to your application logic and business requirements.
 </Note>
 
 <Tabs>
-  <Tab title="Python" icon="brand-python">
-    ## How tracing context works
+<Tab title="Python" icon="brand-python">
 
-    When you use the [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) context manager, it overrides the global tracing configuration for code executed within its scope. This means you can keep automatic tracing enabled globally while selectively controlling tracing behavior for specific function calls.
+## How tracing context works
 
-    There are three priority levels of control:
+When you use the [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) context manager, it overrides the global tracing configuration for code executed within its scope. This means you can keep automatic tracing enabled globally while selectively controlling tracing behavior for specific function calls.
 
-    1. **`tracing_context(enabled=...)`**: highest priority (context manager for scoped tracing control).
-    2. **`ls.configure(enabled=...)`**: global configuration (sets global tracing behavior).
-    3. **Environment variables**: lowest priority (`LANGSMITH_TRACING`).
+There are three priority levels of control:
 
-    ## Disable tracing for specific invocations
+1. **`tracing_context(enabled=...)`**: highest priority (context manager for scoped tracing control).
+1. **`ls.configure(enabled=...)`**: global configuration (sets global tracing behavior).
+1. **Environment variables**: lowest priority (`LANGSMITH_TRACING`).
 
-    To disable tracing for a specific operation, wrap it in a `tracing_context` with `enabled=False`:
+## Disable tracing for specific invocations
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable
+To disable tracing for a specific operation, wrap it in a `tracing_context` with `enabled=False`:
 
-    # LANGSMITH_TRACING=true is set globally
+```python
+import langsmith as ls
+from langsmith import traceable
 
-    @traceable
-    def my_function(input_text: str):
-        return process(input_text)
+# LANGSMITH_TRACING=true is set globally
 
-    # Default invocation - is traced
-    result = my_function("regular data")
+@traceable
+def my_function(input_text: str):
+    return process(input_text)
 
-    # Disable tracing for sensitive data
-    with ls.tracing_context(enabled=False):
-        result = my_function("sensitive data")  # not traced
-    ```
+# Default invocation - is traced
+result = my_function("regular data")
 
-    This pattern is useful for one-off cases where you know specific data should not be logged.
+# Disable tracing for sensitive data
+with ls.tracing_context(enabled=False):
+    result = my_function("sensitive data")  # not traced
+```
 
-    ## Enable conditional tracing based on business logic
+This pattern is useful for one-off cases where you know specific data should not be logged.
 
-    You can dynamically enable or disable tracing based on runtime conditions, such as client settings or request properties.
+## Enable conditional tracing based on business logic
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable
+You can dynamically enable or disable tracing based on runtime conditions, such as client settings or request properties.
 
-    @traceable
-    def my_function(input_text: str):
-        return process(input_text)
+```python
+import langsmith as ls
+from langsmith import traceable
 
-    def client_requires_zero_retention(client_id: str) -> bool:
-        """
-        Check if a client has a zero-retention policy.
+@traceable
+def my_function(input_text: str):
+    return process(input_text)
 
-        In production, this would query a database, configuration service,
-        or feature flag system. Consider caching results for performance.
-        """
-        # Example: Query from database or config
-        zero_retention_clients = get_zero_retention_clients()  # Your implementation
-        return client_id in zero_retention_clients
+def client_requires_zero_retention(client_id: str) -> bool:
+    """
+    Check if a client has a zero-retention policy.
 
-    def handle_request(client_id: str, user_input: str):
-        """
-        Process a request with conditional tracing based on client requirements.
-        """
-        should_disable = client_requires_zero_retention(client_id)
+    In production, this would query a database, configuration service,
+    or feature flag system. Consider caching results for performance.
+    """
+    # Example: Query from database or config
+    zero_retention_clients = get_zero_retention_clients()  # Your implementation
+    return client_id in zero_retention_clients
 
-        with ls.tracing_context(enabled=not should_disable):
-            return my_function(user_input)
+def handle_request(client_id: str, user_input: str):
+    """
+    Process a request with conditional tracing based on client requirements.
+    """
+    should_disable = client_requires_zero_retention(client_id)
 
-    # Example usage
-    handle_request("client-a", "some input")  # Traced or not based on client settings
-    ```
+    with ls.tracing_context(enabled=not should_disable):
+        return my_function(user_input)
 
-    ## Customize tracing configuration per request
+# Example usage
+handle_request("client-a", "some input")  # Traced or not based on client settings
+```
 
-    You can also customize tracing settings dynamically, such as routing traces to different projects or adding request-specific metadata.
+## Customize tracing configuration per request
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable
+You can also customize tracing settings dynamically, such as routing traces to different projects or adding request-specific metadata.
 
-    @traceable
-    def my_function(input_text: str):
-        return process(input_text)
+```python
+import langsmith as ls
+from langsmith import traceable
 
-    def handle_request(client_id: str, user_input: str, region: str):
-        """
-        Route traces to client-specific projects with custom metadata.
-        """
-        client_tier = get_client_tier(client_id)  # e.g., "enterprise", "standard"
+@traceable
+def my_function(input_text: str):
+    return process(input_text)
 
-        with ls.tracing_context(
-            enabled=True,
-            project_name=f"client-{client_id}",
-            tags=["production", f"tier-{client_tier}", f"region-{region}"],
-            metadata={
-                "client_id": client_id,
-                "region": region,
-                "tier": client_tier
-            }
-        ):
-            return my_function(user_input)
+def handle_request(client_id: str, user_input: str, region: str):
+    """
+    Route traces to client-specific projects with custom metadata.
+    """
+    client_tier = get_client_tier(client_id)  # e.g., "enterprise", "standard"
 
-    # Traces go to "client-abc" project with custom tags and metadata
-    handle_request("abc", "some input", "us-west")
-    ```
-
-    This pattern is useful for:
-
-    * **Multi-tenant applications**: Isolate traces by customer in separate projects
-    * **Regional deployments**: Track performance and behavior by geographic region
-    * **Feature branches**: Route experimental feature traces to dedicated projects
-    * **User segmentation**: Analyze behavior by user tier, cohort, or A/B test group
-
-    ## Work with automatic tracing
-
-    The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) context manager works with automatic tracing. You can keep `LANGSMITH_TRACING=true` set globally and use `tracing_context` to override settings for specific requests:
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
-    import langsmith as ls
-
-    # Global environment variable set
-    os.environ["LANGSMITH_TRACING"] = "true"
-
-    @ls.traceable
-    def process_data(data: str):
-        return data.upper()
-
-    # Automatically traced (respects LANGSMITH_TRACING)
-    process_data("hello")
-
-    # Override global setting - disable for this call
-    with ls.tracing_context(enabled=False):
-        process_data("sensitive")  # not traced
-
-    # Override global setting - enable with custom config
     with ls.tracing_context(
         enabled=True,
-        project_name="special-project"
+        project_name=f"client-{client_id}",
+        tags=["production", f"tier-{client_tier}", f"region-{region}"],
+        metadata={
+            "client_id": client_id,
+            "region": region,
+            "tier": client_tier
+        }
     ):
-        process_data("important")  # Traced to "special-project"
-    ```
+        return my_function(user_input)
 
-    ## Nest tracing contexts
+# Traces go to "client-abc" project with custom tags and metadata
+handle_request("abc", "some input", "us-west")
+```
 
-    When you nest `tracing_context` blocks, the innermost context takes precedence.
+This pattern is useful for:
 
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
+- **Multi-tenant applications**: Isolate traces by customer in separate projects
+- **Regional deployments**: Track performance and behavior by geographic region
+- **Feature branches**: Route experimental feature traces to dedicated projects
+- **User segmentation**: Analyze behavior by user tier, cohort, or A/B test group
 
-    @ls.traceable
-    def inner_function(data: str):
-        return data
+## Work with automatic tracing
 
-    @ls.traceable
-    def outer_function(data: str):
-        # This call respects the inner context
-        return inner_function(data)
+The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) context manager works with automatic tracing. You can keep `LANGSMITH_TRACING=true` set globally and use `tracing_context` to override settings for specific requests:
 
-    # Outer context disables tracing
-    with ls.tracing_context(enabled=False):
-        # But inner context re-enables it
-        with ls.tracing_context(enabled=True):
-            outer_function("data")  # is traced
-    ```
+```python
+import os
+import langsmith as ls
 
-    This can be useful when you want to temporarily enable tracing for debugging within a normally non-traced section.
+# Global environment variable set
+os.environ["LANGSMITH_TRACING"] = "true"
 
-    ## Conditionally redact inputs and outputs
+@ls.traceable
+def process_data(data: str):
+    return data.upper()
 
-    Sometimes you want the trace to be recorded—so you keep run timing, structure, errors, and metadata—but the inputs and outputs should be hidden for specific requests (for example, traces from tenants with strict privacy requirements). This is different from [disabling tracing](#disable-tracing-for-specific-invocations) entirely and from [`Client(hide_inputs=...)`](/langsmith/mask-inputs-outputs#hide-inputs-and-outputs), which applies the same redaction to every trace the client sends.
+# Automatically traced (respects LANGSMITH_TRACING)
+process_data("hello")
 
-    To redact per-request, use [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) with the `replicas` parameter and pass an `updates` dict that overrides `inputs` and `outputs` on the recorded run. Because `tracing_context` is scoped to the current execution context, concurrent requests with different redaction policies do not race.
+# Override global setting - disable for this call
+with ls.tracing_context(enabled=False):
+    process_data("sensitive")  # not traced
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable
+# Override global setting - enable with custom config
+with ls.tracing_context(
+    enabled=True,
+    project_name="special-project"
+):
+    process_data("important")  # Traced to "special-project"
+```
 
-    @traceable
-    def my_agent(user_input: str) -> str:
-        return process(user_input)
+## Nest tracing contexts
 
-    def should_redact(tenant_id: str) -> bool:
-        """Return True if traces for this tenant should have inputs/outputs masked."""
-        return tenant_id in get_redacted_tenants()
+When you nest `tracing_context` blocks, the innermost context takes precedence.
 
-    def handle_request(tenant_id: str, user_input: str) -> str:
-        replica: dict = {"project_name": "my-project"}
-        if should_redact(tenant_id):
-            # Recorded run will have empty inputs/outputs but full structure,
-            # timing, metadata, and any errors.
-            replica["updates"] = {"inputs": {}, "outputs": {}}
+```python Python
+import langsmith as ls
 
-        with ls.tracing_context(replicas=[replica]):
-            return my_agent(user_input)
-    ```
+@ls.traceable
+def inner_function(data: str):
+    return data
 
-    You can use any subset of run fields in `updates` (for example, `{"inputs": {"redacted": True}}` to keep a marker, or `{"outputs": {}}` to redact only outputs). The same pattern works for routing different redaction policies to different destinations—each replica can specify its own `project_name`, `api_key`, and `updates`. See [Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas) for the full replica reference.
+@ls.traceable
+def outer_function(data: str):
+    # This call respects the inner context
+    return inner_function(data)
 
-    <Note>
-      Always set `project_name` on the replica when using `updates` to redact inputs or outputs. If the replica's `project_name` matches the active session's project, the `updates` may be dropped and the unredacted inputs/outputs will be sent.
-    </Note>
+# Outer context disables tracing
+with ls.tracing_context(enabled=False):
+    # But inner context re-enables it
+    with ls.tracing_context(enabled=True):
+        outer_function("data")  # is traced
+```
 
-    ## Customize tracing in deployed agents
+This can be useful when you want to temporarily enable tracing for debugging within a normally non-traced section.
 
-    Tracing is enabled by default within LangSmith Deployment's [Agent Server](/langsmith/agent-server). When using a [factory function](/langsmith/graph-rebuild), you can wrap the yielded graph with `tracing_context` to control tracing per-execution. This is useful for adding custom metadata, disabling tracing entirely, or customizing tracing based on the authenticated user.
+## Conditionally redact inputs and outputs
 
-    ### Disable tracing for a graph
+Sometimes you want the trace to be recorded—so you keep run timing, structure, errors, and metadata—but the inputs and outputs should be hidden for specific requests (for example, traces from tenants with strict privacy requirements). This is different from [disabling tracing](#disable-tracing-for-specific-invocations) entirely and from [`Client(hide_inputs=...)`](/langsmith/mask-inputs-outputs#hide-inputs-and-outputs), which applies the same redaction to every trace the client sends.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import contextlib
-    import langsmith as ls
-    from langgraph_sdk.runtime import ServerRuntime
+To redact per-request, use [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) with the `replicas` parameter and pass an `updates` dict that overrides `inputs` and `outputs` on the recorded run. Because `tracing_context` is scoped to the current execution context, concurrent requests with different redaction policies do not race.
+
+```python
+import langsmith as ls
+from langsmith import traceable
+
+@traceable
+def my_agent(user_input: str) -> str:
+    return process(user_input)
+
+def should_redact(tenant_id: str) -> bool:
+    """Return True if traces for this tenant should have inputs/outputs masked."""
+    return tenant_id in get_redacted_tenants()
+
+def handle_request(tenant_id: str, user_input: str) -> str:
+    replica: dict = {"project_name": "my-project"}
+    if should_redact(tenant_id):
+        # Recorded run will have empty inputs/outputs but full structure,
+        # timing, metadata, and any errors.
+        replica["updates"] = {"inputs": {}, "outputs": {}}
+
+    with ls.tracing_context(replicas=[replica]):
+        return my_agent(user_input)
+```
+
+You can use any subset of run fields in `updates` (for example, `{"inputs": {"redacted": True}}` to keep a marker, or `{"outputs": {}}` to redact only outputs). The same pattern works for routing different redaction policies to different destinations—each replica can specify its own `project_name`, `api_key`, and `updates`. See [Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas) for the full replica reference.
+
+<Note>
+Always set `project_name` on the replica when using `updates` to redact inputs or outputs. If the replica's `project_name` matches the active session's project, the `updates` may be dropped and the unredacted inputs/outputs will be sent.
+</Note>
+
+## Customize tracing in deployed agents
+
+Tracing is enabled by default within LangSmith Deployment's [Agent Server](/langsmith/agent-server). When using a [factory function](/langsmith/graph-rebuild), you can wrap the yielded graph with `tracing_context` to control tracing per-execution. This is useful for adding custom metadata, disabling tracing entirely, or customizing tracing based on the authenticated user.
+
+### Disable tracing for a graph
+
+```python
+import contextlib
+import langsmith as ls
+from langgraph_sdk.runtime import ServerRuntime
 
 
-    @contextlib.asynccontextmanager
-    async def make_graph(runtime: ServerRuntime):
-        graph = build_my_graph()
-
-        # You can use tracing_context to dynamically enable/disable tracing,
-        # set metadata or tags, override the tracing project, etc.
-        with ls.tracing_context(enabled=False, metadata={"foo": "bar"}):
-            yield graph
-    ```
-
-    ### Per-user tracing
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import contextlib
-    import langsmith as ls
-    from langgraph_sdk.runtime import ServerRuntime
-
-    def get_project_for_user(user_id: str) -> str | None:
-        ...
-        return "my-project"
-
+@contextlib.asynccontextmanager
+async def make_graph(runtime: ServerRuntime):
     graph = build_my_graph()
 
-    @contextlib.asynccontextmanager
-    async def make_graph(runtime: ServerRuntime):
-        user = runtime.user
-        # Route traces to a different project depending on user or disable tracing entirely
-        project_name = get_project_for_user(user.identity)
+    # You can use tracing_context to dynamically enable/disable tracing,
+    # set metadata or tags, override the tracing project, etc.
+    with ls.tracing_context(enabled=False, metadata={"foo": "bar"}):
+        yield graph
+```
 
-        if project_name is None:
-            with ls.tracing_context(enabled=False):
-                yield graph
-        else:
-            with ls.tracing_context(
-                enabled=True,
-                project_name=project_name,
-                metadata={"user_id": user.identity, "foo": "bar"},
-            ):
-                yield graph
-    ```
+### Per-user tracing
 
-    ## Reusable tracing wrapper
+```python
+import contextlib
+import langsmith as ls
+from langgraph_sdk.runtime import ServerRuntime
 
-    Create a decorator to automatically apply conditional tracing logic.
+def get_project_for_user(user_id: str) -> str | None:
+    ...
+    return "my-project"
 
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import functools
-    import langsmith as ls
-    from langsmith import traceable
+graph = build_my_graph()
 
-    def conditional_trace(check_function):
-        """
-        Decorator that conditionally traces based on a check function.
+@contextlib.asynccontextmanager
+async def make_graph(runtime: ServerRuntime):
+    user = runtime.user
+    # Route traces to a different project depending on user or disable tracing entirely
+    project_name = get_project_for_user(user.identity)
 
-        Args:
-            check_function: Function that returns True if tracing should be enabled
-        """
-        def decorator(func):
-            traced_func = traceable(func)
+    if project_name is None:
+        with ls.tracing_context(enabled=False):
+            yield graph
+    else:
+        with ls.tracing_context(
+            enabled=True,
+            project_name=project_name,
+            metadata={"user_id": user.identity, "foo": "bar"},
+        ):
+            yield graph
+```
 
-            @functools.wraps(func)
-            def wrapper(*args, **kwargs):
-                should_trace = check_function(*args, **kwargs)
-                with ls.tracing_context(enabled=should_trace):
-                    return traced_func(*args, **kwargs)
-            return wrapper
-        return decorator
+## Reusable tracing wrapper
 
-    # Usage
-    def should_trace_client(client_id: str, *args, **kwargs) -> bool:
-        return not client_requires_zero_retention(client_id)
+Create a decorator to automatically apply conditional tracing logic.
 
-    @conditional_trace(should_trace_client)
-    def process_request(client_id: str, data: str):
-        return data.upper()
+```python Python
+import functools
+import langsmith as ls
+from langsmith import traceable
 
-    # Automatically applies conditional tracing based on client_id
-    process_request("client-a", "some data")
-    ```
-  </Tab>
+def conditional_trace(check_function):
+    """
+    Decorator that conditionally traces based on a check function.
 
-  <Tab title="TypeScript" icon="brand-typescript">
-    ## How tracing enabled works
+    Args:
+        check_function: Function that returns True if tracing should be enabled
+    """
+    def decorator(func):
+        traced_func = traceable(func)
 
-    In TypeScript, you control tracing per-function using the [`tracingEnabled`](https://reference.langchain.com/javascript/classes/langsmith.run_trees.RunTree.html#tracingenabled) parameter when calling [`traceable()`](https://reference.langchain.com/python/langsmith/run_helpers/traceable). This allows you to selectively enable or disable tracing at the function level.
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            should_trace = check_function(*args, **kwargs)
+            with ls.tracing_context(enabled=should_trace):
+                return traced_func(*args, **kwargs)
+        return wrapper
+    return decorator
 
-    A two-level system where tracing is controlled per-function:
+# Usage
+def should_trace_client(client_id: str, *args, **kwargs) -> bool:
+    return not client_requires_zero_retention(client_id)
 
-    1. **`tracingEnabled` parameter**: highest priority (pass to [`traceable()`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) config).
-    2. **Environment variables**: lowest priority (`LANGSMITH_TRACING`).
+@conditional_trace(should_trace_client)
+def process_request(client_id: str, data: str):
+    return data.upper()
 
-    ## Disable tracing for specific invocations
+# Automatically applies conditional tracing based on client_id
+process_request("client-a", "some data")
+```
 
-    To disable tracing for a specific operation, create a version of your traceable function with `tracingEnabled: false`:
+</Tab>
+<Tab title="TypeScript" icon="brand-typescript">
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { traceable } from "langsmith/traceable";
+## How tracing enabled works
 
-    const myFunction = traceable(
-        (inputText: string) => {
-            return process(inputText);
-        },
-        { name: "my_function" }
-    );
+In TypeScript, you control tracing per-function using the [`tracingEnabled`](https://reference.langchain.com/javascript/classes/langsmith.run_trees.RunTree.html#tracingenabled) parameter when calling [`traceable()`](https://reference.langchain.com/python/langsmith/run_helpers/traceable). This allows you to selectively enable or disable tracing at the function level.
 
-    // Default invocation - is traced
-    await myFunction("regular data");
+A two-level system where tracing is controlled per-function:
 
-    // Disable tracing for sensitive data
-    const myFunctionNoTrace = traceable(
-        (inputText: string) => {
-            return process(inputText);
-        },
-        { name: "my_function", tracingEnabled: false }
-    );
+1. **`tracingEnabled` parameter**: highest priority (pass to [`traceable()`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) config).
+1. **Environment variables**: lowest priority (`LANGSMITH_TRACING`).
 
-    await myFunctionNoTrace("sensitive data");  // not traced
-    ```
+## Disable tracing for specific invocations
 
-    This pattern is useful for one-off cases where you know specific data should not be logged.
+To disable tracing for a specific operation, create a version of your traceable function with `tracingEnabled: false`:
 
-    ## Enable conditional tracing based on business logic
+```typescript
+import { traceable } from "langsmith/traceable";
 
-    In many applications, you need to dynamically control tracing based on runtime conditions—such as client privacy requirements, regulatory compliance, or feature flags.
+const myFunction = traceable(
+    (inputText: string) => {
+        return process(inputText);
+    },
+    { name: "my_function" }
+);
 
-    In TypeScript, the most efficient approach is to create both traced and non-traced variants of your function upfront, then select between them at runtime based on your business logic. This avoids the performance overhead of creating new traced wrappers on every request while still providing fine-grained control over when tracing occurs. For example:
+// Default invocation - is traced
+await myFunction("regular data");
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { traceable } from "langsmith/traceable";
+// Disable tracing for sensitive data
+const myFunctionNoTrace = traceable(
+    (inputText: string) => {
+        return process(inputText);
+    },
+    { name: "my_function", tracingEnabled: false }
+);
 
-    // Define the core logic once
-    function processText(inputText: string): string {
-        // Your actual processing logic
-        return inputText.toUpperCase();
+await myFunctionNoTrace("sensitive data");  // not traced
+```
+
+This pattern is useful for one-off cases where you know specific data should not be logged.
+
+## Enable conditional tracing based on business logic
+
+In many applications, you need to dynamically control tracing based on runtime conditions—such as client privacy requirements, regulatory compliance, or feature flags.
+
+In TypeScript, the most efficient approach is to create both traced and non-traced variants of your function upfront, then select between them at runtime based on your business logic. This avoids the performance overhead of creating new traced wrappers on every request while still providing fine-grained control over when tracing occurs. For example:
+
+```typescript
+import { traceable } from "langsmith/traceable";
+
+// Define the core logic once
+function processText(inputText: string): string {
+    // Your actual processing logic
+    return inputText.toUpperCase();
+}
+
+// Create traced and non-traced variants upfront
+const myFunction = traceable(processText, { name: "my_function" });
+const myFunctionNoTrace = traceable(processText, {
+    name: "my_function",
+    tracingEnabled: false
+});
+
+function clientRequiresZeroRetention(clientId: string): boolean {
+    /**
+     * Check if a client has a zero-retention policy.
+     *
+     * In production, this would query a database, configuration service,
+     * or feature flag system. Consider caching results for performance.
+     */
+    const zeroRetentionClients = getZeroRetentionClients();  // Your implementation
+    return zeroRetentionClients.includes(clientId);
+}
+
+async function handleRequest(clientId: string, userInput: string) {
+    /**
+     * Process a request with conditional tracing based on client requirements.
+     * Efficiently selects pre-created traced or non-traced variant.
+     */
+    const shouldDisable = clientRequiresZeroRetention(clientId);
+
+    // Select the appropriate pre-created variant
+    const fn = shouldDisable ? myFunctionNoTrace : myFunction;
+    return await fn(userInput);
+}
+
+// Example usage
+await handleRequest("client-a", "some input");  // Traced or not based on client settings
+```
+
+## Work with automatic tracing
+
+The [`tracingEnabled`](https://reference.langchain.com/javascript/classes/langsmith.run_trees.RunTree.html#tracingenabled) option works seamlessly with automatic tracing. You can keep `LANGSMITH_TRACING=true` set globally and use `tracingEnabled` to override settings for specific functions.
+
+```typescript
+import { traceable } from "langsmith/traceable";
+
+// Global tracing enabled via environment
+process.env.LANGSMITH_TRACING = "true";
+
+const processData = traceable(
+    (data: string) => {
+        return data.toUpperCase();
+    },
+    { name: "process_data" }
+);
+
+// Automatically traced (respects LANGSMITH_TRACING)
+await processData("hello");
+
+// Override global setting - disable for this call
+const processDataNoTrace = traceable(
+    (data: string) => {
+        return data.toUpperCase();
+    },
+    { name: "process_data", tracingEnabled: false }
+);
+
+await processDataNoTrace("sensitive");  // not traced
+
+// Override global setting - enable with custom config
+const processDataCustom = traceable(
+    (data: string) => {
+        return data.toUpperCase();
+    },
+    {
+        name: "process_data",
+        project_name: "special-project",
+        tracingEnabled: true
     }
+);
 
-    // Create traced and non-traced variants upfront
-    const myFunction = traceable(processText, { name: "my_function" });
-    const myFunctionNoTrace = traceable(processText, {
-        name: "my_function",
-        tracingEnabled: false
-    });
+await processDataCustom("important");  // Traced to "special-project"
+```
 
-    function clientRequiresZeroRetention(clientId: string): boolean {
-        /**
-         * Check if a client has a zero-retention policy.
-         *
-         * In production, this would query a database, configuration service,
-         * or feature flag system. Consider caching results for performance.
-         */
-        const zeroRetentionClients = getZeroRetentionClients();  // Your implementation
-        return zeroRetentionClients.includes(clientId);
-    }
-
-    async function handleRequest(clientId: string, userInput: string) {
-        /**
-         * Process a request with conditional tracing based on client requirements.
-         * Efficiently selects pre-created traced or non-traced variant.
-         */
-        const shouldDisable = clientRequiresZeroRetention(clientId);
-
-        // Select the appropriate pre-created variant
-        const fn = shouldDisable ? myFunctionNoTrace : myFunction;
-        return await fn(userInput);
-    }
-
-    // Example usage
-    await handleRequest("client-a", "some input");  // Traced or not based on client settings
-    ```
-
-    ## Work with automatic tracing
-
-    The [`tracingEnabled`](https://reference.langchain.com/javascript/classes/langsmith.run_trees.RunTree.html#tracingenabled) option works seamlessly with automatic tracing. You can keep `LANGSMITH_TRACING=true` set globally and use `tracingEnabled` to override settings for specific functions.
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { traceable } from "langsmith/traceable";
-
-    // Global tracing enabled via environment
-    process.env.LANGSMITH_TRACING = "true";
-
-    const processData = traceable(
-        (data: string) => {
-            return data.toUpperCase();
-        },
-        { name: "process_data" }
-    );
-
-    // Automatically traced (respects LANGSMITH_TRACING)
-    await processData("hello");
-
-    // Override global setting - disable for this call
-    const processDataNoTrace = traceable(
-        (data: string) => {
-            return data.toUpperCase();
-        },
-        { name: "process_data", tracingEnabled: false }
-    );
-
-    await processDataNoTrace("sensitive");  // not traced
-
-    // Override global setting - enable with custom config
-    const processDataCustom = traceable(
-        (data: string) => {
-            return data.toUpperCase();
-        },
-        {
-            name: "process_data",
-            project_name: "special-project",
-            tracingEnabled: true
-        }
-    );
-
-    await processDataCustom("important");  // Traced to "special-project"
-    ```
-  </Tab>
+</Tab>
 </Tabs>
 
 ## Comparison with sampling
 
 Conditional tracing and [sampling](/langsmith/sample-traces) serve different purposes:
 
-| Feature            | Conditional tracing                               | Sampling                                     |
-| ------------------ | ------------------------------------------------- | -------------------------------------------- |
-| **Control**        | Deterministic (explicit enable/disable)           | Probabilistic (random sampling)              |
-| **Use case**       | Business logic, compliance, per-request decisions | Cost optimization, high-volume observability |
-| **Predictability** | Guaranteed behavior for specific requests         | Statistical representation of traffic        |
-| **Configuration**  | Runtime code logic                                | Environment variable or client config        |
+| Feature | Conditional tracing | Sampling |
+|---------|-------------------|----------|
+| **Control** | Deterministic (explicit enable/disable) | Probabilistic (random sampling) |
+| **Use case** | Business logic, compliance, per-request decisions | Cost optimization, high-volume observability |
+| **Predictability** | Guaranteed behavior for specific requests | Statistical representation of traffic |
+| **Configuration** | Runtime code logic | Environment variable or client config |
 
 You can combine both approaches for fine-grained control.
 
 ## Related
 
-* [Trace without environment variables](/langsmith/trace-without-env-vars): Configure tracing programmatically instead of using environment variables.
-* [Set a sampling rate for traces](/langsmith/sample-traces): Probabilistically sample traces to reduce volume
-* [Mask inputs and outputs](/langsmith/mask-inputs-outputs): Hide sensitive data in traces instead of disabling tracing entirely.
-* [Add metadata and tags to traces](/langsmith/add-metadata-tags): Categorize and filter traces with custom attributes.
+- [Trace without environment variables](/langsmith/trace-without-env-vars): Configure tracing programmatically instead of using environment variables.
+- [Set a sampling rate for traces](/langsmith/sample-traces): Probabilistically sample traces to reduce volume
+- [Mask inputs and outputs](/langsmith/mask-inputs-outputs): Hide sensitive data in traces instead of disabling tracing entirely.
+- [Add metadata and tags to traces](/langsmith/add-metadata-tags): Categorize and filter traces with custom attributes.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/conditional-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

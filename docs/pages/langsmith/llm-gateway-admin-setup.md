@@ -2,10 +2,8 @@
 
 # Admin setup
 
-One-time organization setup to enable the LLM Gateway and grant user access.
-
 <Note>
-  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 One-time setup to enable the LLM Gateway for your LangSmith [organization](/langsmith/administration-overview#organizations). [Organization admins](/langsmith/rbac#organization-admin) should complete this before individual users can route calls through the gateway.
@@ -20,14 +18,14 @@ The gateway resolves provider API keys from your workspace's Provider Secrets—
 
 Go to **Settings → Integrations → Provider Secrets** and add the keys for the providers you want to proxy through the gateway:
 
-| Secret name                   | Provider         |
-| ----------------------------- | ---------------- |
-| `ANTHROPIC_API_KEY`           | Anthropic        |
-| `AWS_BEARER_TOKEN_BEDROCK`    | AWS Bedrock      |
-| `BASETEN_API_KEY`             | Baseten          |
-| `FIREWORKS_API_KEY`           | Fireworks        |
-| `GOOGLE_API_KEY`              | Google Gemini    |
-| `OPENAI_API_KEY`              | OpenAI           |
+| Secret name | Provider |
+| --- | --- |
+| `ANTHROPIC_API_KEY` | Anthropic |
+| `AWS_BEARER_TOKEN_BEDROCK` | AWS Bedrock |
+| `BASETEN_API_KEY` | Baseten |
+| `FIREWORKS_API_KEY` | Fireworks |
+| `GOOGLE_API_KEY` | Google Gemini |
+| `OPENAI_API_KEY` | OpenAI |
 | `VERTEX_SERVICE_ACCOUNT_JSON` | Google Vertex AI |
 
 Add only the providers your organization uses. The gateway will return an error if a user tries to call a provider whose key hasn't been added.
@@ -41,9 +39,9 @@ The built-in roles `WORKSPACE_USER` and `WORKSPACE_VIEWER` do not include the `g
 Requires an RBAC-enabled plan.
 
 1. Go to **Settings → Members/Roles**.
-2. Create a new workspace role.
-3. Grant it at minimum `gateway:invoke` and `workspaces:read`.
-4. Assign users who need gateway access to this role.
+1. Create a new workspace role.
+1. Grant it at minimum `gateway:invoke` and `workspaces:read`.
+1. Assign users who need gateway access to this role.
 
 Use this when you want to grant gateway access to specific users without giving them full workspace-admin privileges. This gives you the most control over who can use the gateway.
 
@@ -61,8 +59,8 @@ Gateway policy management requires `organization:manage` permission.
 
 Go to **Settings → Gateway → LLM Gateway** to create governance policies. You can configure:
 
-* **Spend limits:** hard caps at the organization, workspace, API key, or user level. Refer to [Spend policies](/langsmith/llm-gateway-spend-policies).
-* **Data protection:** detect and redact PII and secrets before they reach the model. Refer to [Data protection](/langsmith/llm-gateway-data-protection).
+- **Spend limits:** hard caps at the organization, workspace, API key, or user level. Refer to [Spend policies](/langsmith/llm-gateway-spend-policies).
+- **Data protection:** detect and redact PII and secrets before they reach the model. Refer to [Data protection](/langsmith/llm-gateway-data-protection).
 
 Policies are optional during initial setup. The gateway will freely allow invocations until you have configured policies.
 
@@ -80,18 +78,17 @@ Ask a user to run the [verification cURL from the quickstart](/langsmith/llm-gat
 
 ## Next steps
 
-* [Quickstart](/langsmith/llm-gateway-quickstart): share with your users as the getting-started guide.
-* [Set up coding agents](/langsmith/llm-gateway-coding-agents): configure Claude Code, Codex, and other agents org-wide.
-* [Traces, Engine, and access control](/langsmith/llm-gateway-access): deep dive on roles, scoped keys, trace routing, and who can see what.
+- [Quickstart](/langsmith/llm-gateway-quickstart): share with your users as the getting-started guide.
+- [Set up coding agents](/langsmith/llm-gateway-coding-agents): configure Claude Code, Codex, and other agents org-wide.
+- [Traces, Engine, and access control](/langsmith/llm-gateway-access): deep dive on roles, scoped keys, trace routing, and who can see what.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -4,20 +4,19 @@
 
 # 如何使用 REST API
 
-[Python](https://reference.langchain.com/python/langsmith/) 和 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html) SDK 是在 LangSmith 中运行 [evaluations](/langsmith/evaluation-concepts) 的推荐方法。它们包括增强性能和可靠性的优化和功能。
+推荐使用 [Python](https://reference.langchain.com/python/langsmith/) 和 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html) SDK 在 LangSmith 中运行 [evaluations](/langsmith/evaluation-concepts)。它们包括增强性能和可靠性的优化和功能。
 
 如果您无法使用 SDK（例如，如果您使用不同的语言或受限环境），则可以直接使用 REST API。本指南演示了如何使用 [REST API](/langsmith/smith-api-ref) 和 Python 的 [⟦T6⟧](https://requests.readthedocs.io/) 库运行评估，但相同的原则适用于任何语言。
 
 在深入了解此内容之前，阅读以下内容可能会有所帮助：
-
-* [Evaluate LLM applications](/langsmith/evaluate-llm-application)。
-* [LangSmith API Reference](/langsmith/smith-api-ref)：本指南中使用的所有端点的完整 API 文档。
+- [Evaluate LLM applications](/langsmith/evaluate-llm-application)。
+- [LangSmith API Reference](/langsmith/smith-api-ref)：本指南中使用的所有端点的完整 API 文档。
 
 ## 创建数据集
 
 对于这个例子，我们使用Python SDK快速创建一个[dataset](/langsmith/evaluation-concepts#datasets)。要通过 API 或 UI 创建数据集，请参阅[Managing datasets](/langsmith/manage-datasets-in-application)。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 import requests
 
@@ -67,11 +66,11 @@ client.create_examples(dataset_id=dataset.id, examples=examples)
 要通过 API 运行实验，您需要：
 
 1. 从数据集中获取示例。
-2. 创建实验（在 API 中也称为“会话”）。
-3. 对于每个示例，创建引用示例和实验的运行。
-4. 通过设置`end_time` 关闭实验。首先，使用 `/examples` 端点提取您想要在实验中使用的所有示例：
+1. 创建实验（在 API 中也称为“会话”）。
+1. 对于每个示例，创建引用示例和实验的运行。
+1. 通过设置`end_time` 关闭实验。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+首先，使用 `/examples` 端点提取您想要在实验中使用的所有示例：```python
 #  Pick a dataset id. In this case, we are using the dataset we created above.
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/examples/read-examples
 dataset_id = dataset.id
@@ -85,16 +84,15 @@ resp = requests.get(
 
 examples = resp.json()
 ```
-
 从 langsmith 导入 uuid7
 
-接下来，定义一个函数，该函数将在单个示例上运行模型并将结果记录到 LangSmith。直接使用 API 时，您负责：
+接下来，定义一个函数，该函数将在单个示例上运行模型并将结果记录到LangSmith。直接使用 API 时，您负责：
 
-* 通过 POST 创建运行对象到 `/runs`，并设置 `reference_example_id` 和 `session_id`。
-* 跟踪运行之间的父子关系（例如，包含子“llm”运行的父“链”运行）。
-* 通过 PATCH 将输出更新为`/runs/{run_id}`。
+- 通过 POST 创建运行对象到 `/runs`，并设置 `reference_example_id` 和 `session_id`。
+- 跟踪运行之间的父子关系（例如，包含子“llm”运行的父“链”运行）。
+- 通过 PATCH 将输出更新为`/runs/{run_id}`。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 os.environ["OPENAI_API_KEY"] = "sk-..."
 
 def run_completion_on_example(example, model_name, experiment_id):
@@ -175,7 +173,7 @@ def run_completion_on_example(example, model_name, experiment_id):
 
 现在创建实验并对所有示例运行补全。在 API 中，“实验”表示为通过 `reference_dataset_id` 引用数据集的会话（或“跟踪器会话”）。与常规跟踪的主要区别在于，实验中的运行必须有一个 `reference_example_id` 将每次运行链接到数据集中的特定示例。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #  Create a new experiment using the /sessions endpoint
 #  An experiment is a collection of runs with a reference to the dataset used
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-tracer-session
@@ -214,11 +212,11 @@ for model_name in model_names:
 
 ### 添加评价反馈
 
-运行 [experiments](/langsmith/evaluation-concepts#experiment) 后，您通常需要通过添加反馈分数来评估结果。这使您可以跟踪正确性、准确性或任何自定义评估标准等指标。在此示例中，评估检查每个模型的输出是否与数据集中的预期标签匹配。该代码发布了一个“正确性”分数（1.0 表示正确，0.0 表示错误），以跟踪每个模型对有毒文本和无毒文本进行分类的准确程度。
+运行 [experiments](/langsmith/evaluation-concepts#experiment) 后，您通常希望通过添加反馈分数来评估结果。这使您可以跟踪正确性、准确性或任何自定义评估标准等指标。在此示例中，评估检查每个模型的输出是否与数据集中的预期标签匹配。该代码发布了一个“正确性”分数（1.0 表示正确，0.0 表示错误），以跟踪每个模型对有毒文本和无毒文本进行分类的准确程度。
 
 以下代码向 [single experiment example](#run-a-single-experiment) 的运行添加反馈：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Fetch the runs from one of the experiments
 # API Reference: https://docs.langchain.com/langsmith/smith-api/run/query-runs
 experiment_id = experiment_ids[0]  # Evaluate the first experiment
@@ -275,7 +273,7 @@ for run in runs:
 
 欲了解更多信息，请查看[How to run a pairwise evaluation](/langsmith/evaluate-pairwise)。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 #  A comparative experiment allows you to provide a preferential ranking on the outputs of two or more experiments
 #  API Reference: https://docs.langchain.com/langsmith/smith-api/datasets/create-comparative-experiment
 resp = requests.post(
@@ -352,14 +350,13 @@ for example_id, runs in example_id_to_runs_map.items():
         resp.raise_for_status()
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evals-api-only.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

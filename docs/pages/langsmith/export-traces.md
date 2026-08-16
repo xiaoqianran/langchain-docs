@@ -6,13 +6,13 @@ The recommended way to query [runs](/langsmith/observability-concepts#runs) (the
 
 This page covers:
 
-* [Use filter arguments](#use-filter-arguments): keyword-based filtering using SDK parameters.
-* [Use filter query language](#use-filter-query-language): complex queries using LangSmith's filter syntax.
-* [Query trace trees with child-run predicates](#query-trace-trees-with-child-run-predicates): combine server-side narrowing with local child-run traversal.
-* [Rate limits](#rate-limits): per-tenant limits and best practices for staying within them.
+- [Use filter arguments](#use-filter-arguments): keyword-based filtering using SDK parameters.
+- [Use filter query language](#use-filter-query-language): complex queries using LangSmith's filter syntax.
+- [Query trace trees with child-run predicates](#query-trace-trees-with-child-run-predicates): combine server-side narrowing with local child-run traversal.
+- [Rate limits](#rate-limits): per-tenant limits and best practices for staying within them.
 
 <Note>
-  If you are looking to export a large volume of traces, we recommend that you use the [Bulk Data Export](/langsmith/data-export) functionality, as it will better handle large data volumes and will support automatic retries and parallelization across partitions.
+If you are looking to export a large volume of traces, we recommend that you use the [Bulk Data Export](/langsmith/data-export) functionality, as it will better handle large data volumes and will support automatic retries and parallelization across partitions.
 </Note>
 
 ## Use filter arguments
@@ -20,30 +20,32 @@ This page covers:
 For simple queries, you don't have to rely on our query syntax. You can use the filter arguments specified in the [filter arguments reference](/langsmith/trace-query-syntax#filter-arguments).
 
 <Warning>
-  **Prerequisites**
+**Prerequisites**
 
-  Initialize the client before running the below code snippets.
+Initialize the client before running the below code snippets.
 </Warning>
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  client = Client()
-  ```
+```python Python
+from langsmith import Client
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client, Run } from "langsmith";
+client = Client()
+```
 
-  const client = new Client();
-  ```
+```typescript TypeScript
+import { Client, Run } from "langsmith";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.client.LangsmithClient;
-  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+const client = new Client();
+```
 
-  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-  ```
+```java Java
+import com.langchain.smith.client.LangsmithClient;
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+
+LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+```
+
 </CodeGroup>
 
 Below are some examples of ways to list runs using keyword arguments:
@@ -51,62 +53,66 @@ Below are some examples of ways to list runs using keyword arguments:
 ### List all runs in a project
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  project_runs = client.list_runs(project_name="<your_project>")
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Download runs in a project
-  const projectRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "<your_project>",
-  })) {
-    projectRuns.push(run);
-  };
-  ```
+```python Python
+project_runs = client.list_runs(project_name="<your_project>")
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+```typescript TypeScript
+// Download runs in a project
+const projectRuns: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "<your_project>",
+})) {
+  projectRuns.push(run);
+};
+```
 
-  RunQueryParams projectRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .build();
-  ```
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
+
+RunQueryParams projectRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .build();
+```
+
 </CodeGroup>
 
 ### List LLM and chat runs in the last 24 hours
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  todays_llm_runs = client.list_runs(
-      project_name="<your_project>",
-      start_time=datetime.now() - timedelta(days=1),
-      run_type="llm",
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const todaysLlmRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "<your_project>",
-    startTime: new Date(Date.now() - 1000 * 60 * 60 * 24),
-    runType: "llm",
-  })) {
-    todaysLlmRuns.push(run);
-  };
-  ```
+```python Python
+todays_llm_runs = client.list_runs(
+    project_name="<your_project>",
+    start_time=datetime.now() - timedelta(days=1),
+    run_type="llm",
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  OffsetDateTime now = OffsetDateTime.now();
-  OffsetDateTime twentyFourHoursAgo = now.minus(24, ChronoUnit.HOURS);
+```typescript TypeScript
+const todaysLlmRuns: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "<your_project>",
+  startTime: new Date(Date.now() - 1000 * 60 * 60 * 24),
+  runType: "llm",
+})) {
+  todaysLlmRuns.push(run);
+};
+```
 
-  RunQueryParams todaysLlmRuns = RunQueryParams.builder()
-      .runType(RunQueryParams.RunType.LLM)
-      .startTime(twentyFourHoursAgo)
-      .addSession("<your_project>")
-      .limit(50L)
-      .build();
-  ```
+```java Java
+OffsetDateTime now = OffsetDateTime.now();
+OffsetDateTime twentyFourHoursAgo = now.minus(24, ChronoUnit.HOURS);
+
+RunQueryParams todaysLlmRuns = RunQueryParams.builder()
+    .runType(RunQueryParams.RunType.LLM)
+    .startTime(twentyFourHoursAgo)
+    .addSession("<your_project>")
+    .limit(50L)
+    .build();
+```
+
 </CodeGroup>
 
 ### List root runs in a project
@@ -114,97 +120,103 @@ Below are some examples of ways to list runs using keyword arguments:
 Root runs are runs that have no parents. These are assigned a value of `True` for `is_root`. You can use this to filter for root runs.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  root_runs = client.list_runs(
-      project_name="<your_project>",
-      is_root=True
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const rootRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "<your_project>",
-    isRoot: 1,
-  })) {
-    rootRuns.push(run);
-  };
-  ```
+```python Python
+root_runs = client.list_runs(
+    project_name="<your_project>",
+    is_root=True
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+```typescript TypeScript
+const rootRuns: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "<your_project>",
+  isRoot: 1,
+})) {
+  rootRuns.push(run);
+};
+```
 
-  RunQueryParams rootRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .isRoot(true)
-      .build();
-  ```
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
+
+RunQueryParams rootRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .isRoot(true)
+    .build();
+```
+
 </CodeGroup>
 
 ### List runs without errors
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  correct_runs = client.list_runs(project_name="<your_project>", error=False)
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const correctRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "<your_project>",
-    error: false,
-  })) {
-    correctRuns.push(run);
-  };
-  ```
+```python Python
+correct_runs = client.list_runs(project_name="<your_project>", error=False)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+```typescript TypeScript
+const correctRuns: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "<your_project>",
+  error: false,
+})) {
+  correctRuns.push(run);
+};
+```
 
-  RunQueryParams noErrorRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .error(false)
-      .build();
-  ```
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
+
+RunQueryParams noErrorRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .error(false)
+    .build();
+```
+
 </CodeGroup>
 
 ### List runs by run ID
 
 <Warning>
-  **Ignores Other Arguments**
+**Ignores Other Arguments**
 
-  If you provide a list of run IDs in the way described above, it will ignore all other filtering arguments like `project_name`, `run_type`, etc. and directly return the runs matching the given IDs.
+If you provide a list of run IDs in the way described above, it will ignore all other filtering arguments like `project_name`, `run_type`, etc. and directly return the runs matching the given IDs.
 </Warning>
 
 If you have a list of run IDs, you can list them directly:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  run_ids = ['a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836','9398e6be-964f-4aa4-8ae9-ad78cd4b7074']
-  selected_runs = client.list_runs(id=run_ids)
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const runIds = [
-    "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836",
-    "9398e6be-964f-4aa4-8ae9-ad78cd4b7074",
-  ];
-  const selectedRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    id: runIds,
-  })) {
-    selectedRuns.push(run);
-  };
-  ```
+```python Python
+run_ids = ['a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836','9398e6be-964f-4aa4-8ae9-ad78cd4b7074']
+selected_runs = client.list_runs(id=run_ids)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+```typescript TypeScript
+const runIds = [
+  "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836",
+  "9398e6be-964f-4aa4-8ae9-ad78cd4b7074",
+];
+const selectedRuns: Run[] = [];
+for await (const run of client.listRuns({
+  id: runIds,
+})) {
+  selectedRuns.push(run);
+};
+```
 
-  RunQueryParams runIdsRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .id(runIds)
-      .build();
-  ```
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
+
+RunQueryParams runIdsRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .id(runIds)
+    .build();
+```
+
 </CodeGroup>
 
 ### Fetch a single run by ID
@@ -212,40 +224,42 @@ If you have a list of run IDs, you can list them directly:
 To fetch a single run (trace) by its ID, use the `read_run` method. This is useful when you have a specific trace ID (for example, from a LangSmith share link like `https://smith.langchain.com/public/<trace-id>/r`) and want to retrieve its full data.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  run_id = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836"
-  run = client.read_run(run_id)
 
-  # Access run data
-  print(run.inputs)
-  print(run.outputs)
-  print(run.name)
-  ```
+```python Python
+run_id = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836"
+run = client.read_run(run_id)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const runId = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836";
-  const run = await client.readRun(runId);
+# Access run data
+print(run.inputs)
+print(run.outputs)
+print(run.name)
+```
 
-  // Access run data
-  console.log(run.inputs);
-  console.log(run.outputs);
-  console.log(run.name);
-  ```
+```typescript TypeScript
+const runId = "a36092d2-4ad5-4fb4-9c0d-0dba9a2ed836";
+const run = await client.readRun(runId);
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+// Access run data
+console.log(run.inputs);
+console.log(run.outputs);
+console.log(run.name);
+```
 
-  RunQueryParams runIdRun = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .addId(runId)
-      .build();
-  ```
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
+
+RunQueryParams runIdRun = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .addId(runId)
+    .build();
+```
+
 </CodeGroup>
 
 <Tip>
-  **Replay traces locally with LangGraph**
+    **Replay traces locally with LangGraph**
 
-  If you're using LangGraph with checkpointing, you can fetch a trace from LangSmith and replay it locally for debugging. See [LangGraph's time travel and replay documentation](/oss/python/langgraph/use-time-travel) for details on resuming execution from checkpoints.
+    If you're using LangGraph with checkpointing, you can fetch a trace from LangSmith and replay it locally for debugging. See [LangGraph's time travel and replay documentation](/oss/python/langgraph/use-time-travel) for details on resuming execution from checkpoints.
 </Tip>
 
 ## Use filter query language
@@ -258,242 +272,261 @@ This is the way to fetch runs in a conversational thread. For more information o
 Threads are grouped by setting a shared thread ID. The LangSmith UI lets you use either of the following metadata keys: `session_id` or `thread_id`. The session ID is also known as the tracing project ID. The following query matches on either of them.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  group_key = "<your_thread_id>"
-  filter_string = f'and(in(metadata_key, ["session_id","thread_id"]), eq(metadata_value, "{group_key}"))'
-  thread_runs = client.list_runs(
-      project_name="<your_project>",
-      filter=filter_string,
-      is_root=True
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const groupKey = "<your_thread_id>";
-  const filterString = `and(in(metadata_key, ["session_id","thread_id"]), eq(metadata_value, "${groupKey}"))`;
-  const threadRuns: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName: "<your_project>",
-    filter: filterString,
-    isRoot: true
-  })) {
-    threadRuns.push(run);
-  };
-  ```
+```python Python
+group_key = "<your_thread_id>"
+filter_string = f'and(in(metadata_key, ["session_id","thread_id"]), eq(metadata_value, "{group_key}"))'
+thread_runs = client.list_runs(
+    project_name="<your_project>",
+    filter=filter_string,
+    is_root=True
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.runs.RunQueryParams;
+```typescript TypeScript
+const groupKey = "<your_thread_id>";
+const filterString = `and(in(metadata_key, ["session_id","thread_id"]), eq(metadata_value, "${groupKey}"))`;
+const threadRuns: Run[] = [];
+for await (const run of client.listRuns({
+  projectName: "<your_project>",
+  filter: filterString,
+  isRoot: true
+})) {
+  threadRuns.push(run);
+};
+```
 
-  String groupKey = "<your_thread_id>";
+```java Java
+import com.langchain.smith.models.runs.RunQueryParams;
 
-  String filterString = String.format(
-      "and(in(metadata_key, [\"session_id\",\"thread_id\"]), eq(metadata_value, \"%s\"))",
-      groupKey
-  );
+String groupKey = "<your_thread_id>";
 
-  RunQueryParams threadRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter(filterString)
-      .build();
-  ```
+String filterString = String.format(
+    "and(in(metadata_key, [\"session_id\",\"thread_id\"]), eq(metadata_value, \"%s\"))",
+    groupKey
+);
+
+RunQueryParams threadRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter(filterString)
+    .build();
+```
+
 </CodeGroup>
 
-### List all runs called "extractor" whose root of the trace was assigned feedback "user\_score" score of 1
+### List all runs called "extractor" whose root of the trace was assigned feedback "user_score" score of 1
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-      project_name="<your_project>",
-      filter='eq(name, "extractor")',
-      trace_filter='and(eq(feedback_key, "user_score"), eq(feedback_score, 1))'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'eq(name, "extractor")',
-    traceFilter: 'and(eq(feedback_key, "user_score"), eq(feedback_score, 1))'
-  })
-  ```
+```python Python
+client.list_runs(
+    project_name="<your_project>",
+    filter='eq(name, "extractor")',
+    trace_filter='and(eq(feedback_key, "user_score"), eq(feedback_score, 1))'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams extractorRuns = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("eq(name, \"extractor\")")
-      .traceFilter("and(eq(feedback_key, \"user_score\"), eq(feedback_score, 1))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'eq(name, "extractor")',
+  traceFilter: 'and(eq(feedback_key, "user_score"), eq(feedback_score, 1))'
+})
+```
+
+```java Java
+RunQueryParams extractorRuns = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("eq(name, \"extractor\")")
+    .traceFilter("and(eq(feedback_key, \"user_score\"), eq(feedback_score, 1))")
+    .build();
+```
+
 </CodeGroup>
 
-### List runs with "star\_rating" key whose score is greater than 4
+### List runs with "star_rating" key whose score is greater than 4
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-      project_name="<your_project>",
-      filter='and(eq(feedback_key, "star_rating"), gt(feedback_score, 4))'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'and(eq(feedback_key, "star_rating"), gt(feedback_score, 4))'
-  })
-  ```
+```python Python
+client.list_runs(
+    project_name="<your_project>",
+    filter='and(eq(feedback_key, "star_rating"), gt(feedback_score, 4))'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(eq(feedback_key, \"star_rating\"), gt(feedback_score, 4))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'and(eq(feedback_key, "star_rating"), gt(feedback_score, 4))'
+})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(eq(feedback_key, \"star_rating\"), gt(feedback_score, 4))")
+    .build();
+```
+
 </CodeGroup>
 
 ### List runs that took longer than 5 seconds to complete
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(project_name="<your_project>", filter='gt(latency, "5s")')
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({projectName: "<your_project>", filter: 'gt(latency, "5s")'})
-  ```
+```python Python
+client.list_runs(project_name="<your_project>", filter='gt(latency, "5s")')
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("gt(latency, \"5s\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({projectName: "<your_project>", filter: 'gt(latency, "5s")'})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("gt(latency, \"5s\")")
+    .build();
+```
+
 </CodeGroup>
-
 ### List all runs where status is not "error"
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(project_name="<your_project>", filter='neq(status, "error")')
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({projectName: "<your_project>", filter: 'neq(status, "error")'})
-  ```
+```python Python
+client.list_runs(project_name="<your_project>", filter='neq(status, "error")')
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("neq(status, \"error\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({projectName: "<your_project>", filter: 'neq(status, "error")'})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("neq(status, \"error\")")
+    .build();
+```
+
 </CodeGroup>
 
-### List all runs where start\_time is greater than a specific timestamp
+### List all runs where start_time is greater than a specific timestamp
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(project_name="<your_project>", filter='gt(start_time, "2023-07-15T12:34:56Z")')
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({projectName: "<your_project>", filter: 'gt(start_time, "2023-07-15T12:34:56Z")'})
-  ```
+```python Python
+client.list_runs(project_name="<your_project>", filter='gt(start_time, "2023-07-15T12:34:56Z")')
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("gt(start_time, \"2023-07-15T12:34:56Z\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({projectName: "<your_project>", filter: 'gt(start_time, "2023-07-15T12:34:56Z")'})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("gt(start_time, \"2023-07-15T12:34:56Z\")")
+    .build();
+```
+
 </CodeGroup>
 
 ### List all runs that contain the string "substring"
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(project_name="<your_project>", filter='search("substring")')
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({projectName: "<your_project>", filter: 'search("substring")'})
-  ```
+```python Python
+client.list_runs(project_name="<your_project>", filter='search("substring")')
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("search(\"substring\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({projectName: "<your_project>", filter: 'search("substring")'})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("search(\"substring\")")
+    .build();
+```
+
 </CodeGroup>
 
 ### List all runs that are tagged with the git hash "2aa1cf4"
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(project_name="<your_project>", filter='has(tags, "2aa1cf4")')
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({projectName: "<your_project>", filter: 'has(tags, "2aa1cf4")'})
-  ```
+```python Python
+client.list_runs(project_name="<your_project>", filter='has(tags, "2aa1cf4")')
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("has(tags, \"2aa1cf4\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({projectName: "<your_project>", filter: 'has(tags, "2aa1cf4")'})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("has(tags, \"2aa1cf4\")")
+    .build();
+```
+
 </CodeGroup>
 
 ### List all runs that started after a specific timestamp and either have a non-error status or a "Correctness" feedback score equal to 0
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="<your_project>",
-    filter='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
-  })
-  ```
+```python Python
+client.list_runs(
+  project_name="<your_project>",
+  filter='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(gt(start_time, \"2023-07-15T12:34:56Z\"), or(neq(status, \"error\"), and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(gt(start_time, \"2023-07-15T12:34:56Z\"), or(neq(status, \"error\"), and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Complex query: List all runs where tags include "experimental" or "beta" and latency is greater than 2 seconds
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="<your_project>",
-    filter='and(or(has(tags, "experimental"), has(tags, "beta")), gt(latency, 2))'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'and(or(has(tags, "experimental"), has(tags, "beta")), gt(latency, 2))'
-  })
-  ```
+```python Python
+client.list_runs(
+  project_name="<your_project>",
+  filter='and(or(has(tags, "experimental"), has(tags, "beta")), gt(latency, 2))'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(or(has(tags, 'experimental'), has(tags, 'beta')), gt(latency, 2))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'and(or(has(tags, "experimental"), has(tags, "beta")), gt(latency, 2))'
+})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(or(has(tags, 'experimental'), has(tags, 'beta')), gt(latency, 2))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Search trace trees by full text
@@ -501,26 +534,28 @@ Threads are grouped by setting a shared thread ID. The LangSmith UI lets you use
 You can use the `search()` function without any specific field to do a full text search across all string fields in a run. This allows you to quickly find traces that match a search term.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="<your_project>",
-    filter='search("image classification")'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'search("image classification")'
-  })
-  ```
+```python Python
+client.list_runs(
+  project_name="<your_project>",
+  filter='search("image classification")'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("search(\"image classification\")")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'search("image classification")'
+})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("search(\"image classification\")")
+    .build();
+```
+
 </CodeGroup>
 
 ### Check for presence of metadata
@@ -528,47 +563,49 @@ You can use the `search()` function without any specific field to do a full text
 If you want to check for the presence of metadata, you can use the `eq` operator, optionally with an `and` statement to match by value. This is useful if you want to log more structured information about your runs.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  to_search = {
-      "user_id": ""
-  }
 
-  # Check for any run with the "user_id" metadata key
-  client.list_runs(
-    project_name="default",
-    filter="eq(metadata_key, 'user_id')"
-  )
-  # Check for runs with user_id=4070f233-f61e-44eb-bff1-da3c163895a3
-  client.list_runs(
-    project_name="default",
-    filter="and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))"
-  )
-  ```
+```python Python
+to_search = {
+    "user_id": ""
+}
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Check for any run with the "user_id" metadata key
-  client.listRuns({
-    projectName: 'default',
-    filter: `eq(metadata_key, 'user_id')`
-  });
-  // Check for runs with user_id=4070f233-f61e-44eb-bff1-da3c163895a3
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))`
-  });
-  ```
+# Check for any run with the "user_id" metadata key
+client.list_runs(
+  project_name="default",
+  filter="eq(metadata_key, 'user_id')"
+)
+# Check for runs with user_id=4070f233-f61e-44eb-bff1-da3c163895a3
+client.list_runs(
+  project_name="default",
+  filter="and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))"
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("eq(metadata_key, 'user_id')")
-      .build();
+```typescript TypeScript
+// Check for any run with the "user_id" metadata key
+client.listRuns({
+  projectName: 'default',
+  filter: `eq(metadata_key, 'user_id')`
+});
+// Check for runs with user_id=4070f233-f61e-44eb-bff1-da3c163895a3
+client.listRuns({
+  projectName: 'default',
+  filter: `and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))`
+});
+```
 
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))")
-      .build();
-  ```
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("eq(metadata_key, 'user_id')")
+    .build();
+
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(eq(metadata_key, 'user_id'), eq(metadata_value, '4070f233-f61e-44eb-bff1-da3c163895a3'))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Check for environment details in metadata
@@ -576,26 +613,28 @@ If you want to check for the presence of metadata, you can use the `eq` operator
 A common pattern is to add environment information to your traces via metadata. If you want to filter for runs containing environment metadata, you can use the same pattern as above:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="default",
-    filter="and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))"
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))`
-  });
-  ```
+```python Python
+client.list_runs(
+  project_name="default",
+  filter="and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))"
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: 'default',
+  filter: `and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))`
+});
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(eq(metadata_key, 'environment'), eq(metadata_value, 'production'))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Check for thread ID in metadata
@@ -603,26 +642,28 @@ A common pattern is to add environment information to your traces via metadata. 
 A common way to associate traces in the same conversation is by using a shared thread ID. If you want to filter runs based on a thread ID in this way, you can search for that ID in the metadata.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="default",
-    filter="and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
-  });
-  ```
+```python Python
+client.list_runs(
+  project_name="default",
+  filter="and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: 'default',
+  filter: `and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
+});
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(eq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Negative filtering on key-value pairs
@@ -630,83 +671,85 @@ A common way to associate traces in the same conversation is by using a shared t
 You can use negative filtering on metadata, input, and output key-value pairs to exclude specific runs from your results. Here are some examples for metadata key-value pairs but the same logic applies to input and output key-value pairs.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Find all runs where the metadata does not contain a "thread_id" key
-  client.list_runs(
-    project_name="default",
-    filter="and(neq(metadata_key, 'thread_id'))"
-  )
 
-  # Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
-  client.list_runs(
-    project_name="default",
-    filter="and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
-  )
+```python Python
+# Find all runs where the metadata does not contain a "thread_id" key
+client.list_runs(
+  project_name="default",
+  filter="and(neq(metadata_key, 'thread_id'))"
+)
 
-  # Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
-  client.list_runs(
-    project_name="default",
-    filter="and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
-  )
+# Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
+client.list_runs(
+  project_name="default",
+  filter="and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
+)
 
-  # Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
-  client.list_runs(
-    project_name="default",
-    filter="and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
-  )
-  ```
+# Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
+client.list_runs(
+  project_name="default",
+  filter="and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Find all runs where the metadata does not contain a "thread_id" key
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(neq(metadata_key, 'thread_id'))`
-  });
+# Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
+client.list_runs(
+  project_name="default",
+  filter="and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))"
+)
+```
 
-  // Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
-  });
+```typescript TypeScript
+// Find all runs where the metadata does not contain a "thread_id" key
+client.listRuns({
+  projectName: 'default',
+  filter: `and(neq(metadata_key, 'thread_id'))`
+});
 
-  // Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
-  });
+// Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
+client.listRuns({
+  projectName: 'default',
+  filter: `and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
+});
 
-  // Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
-  });
-  ```
+// Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
+client.listRuns({
+  projectName: 'default',
+  filter: `and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
+});
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Find all runs where the metadata does not contain a "thread_id" key
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("default")
-      .filter("and(neq(metadata_key, 'thread_id'))")
-      .build();
+// Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
+client.listRuns({
+  projectName: 'default',
+  filter: `and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))`
+});
+```
 
-  // Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("default")
-      .filter("and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
-      .build();
+```java Java
+// Find all runs where the metadata does not contain a "thread_id" key
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("default")
+    .filter("and(neq(metadata_key, 'thread_id'))")
+    .build();
 
-  // Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("default")
-      .filter("and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
-      .build();
+// Find all runs where the thread_id in metadata is not "a1b2c3d4-e5f6-7890"
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("default")
+    .filter("and(eq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
+    .build();
 
-  // Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("default")
-      .filter("and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
-      .build();
-  ```
+// Find all runs where there is no "thread_id" metadata key and the "a1b2c3d4-e5f6-7890" value is not present
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("default")
+    .filter("and(neq(metadata_key, 'thread_id'), neq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
+    .build();
+
+// Find all runs where the thread_id metadata key is not present but the "a1b2c3d4-e5f6-7890" value is present
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("default")
+    .filter("and(neq(metadata_key, 'thread_id'), eq(metadata_value, 'a1b2c3d4-e5f6-7890'))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Combine multiple filters
@@ -714,61 +757,65 @@ You can use negative filtering on metadata, input, and output key-value pairs to
 If you want to combine multiple conditions to refine your search, you can use the `and` operator along with other filtering functions. Here's how you can search for runs named "ChatOpenAI" that also have a specific `thread_id` in their metadata:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-    project_name="default",
-    filter="and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))"
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: 'default',
-    filter: `and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))`
-  });
-  ```
+```python Python
+client.list_runs(
+  project_name="default",
+  filter="and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))"
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: 'default',
+  filter: `and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))`
+});
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("and(eq(name, 'ChatOpenAI'), eq(metadata_key, 'thread_id'), eq(metadata_value, '69b12c91-b1e2-46ce-91de-794c077e8151'))")
+    .build();
+```
+
 </CodeGroup>
 
 ### Tree filter
 
-List all runs named "RetrieveDocs" whose root run has a "user\_score" feedback of 1 and any run in the full trace is named "ExpandQuery".
+List all runs named "RetrieveDocs" whose root run has a "user_score" feedback of 1 and any run in the full trace is named "ExpandQuery".
 
 This type of query is useful if you want to extract a specific run conditional on various states or steps being reached within the trace.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.list_runs(
-      project_name="<your_project>",
-      filter='eq(name, "RetrieveDocs")',
-      trace_filter='and(eq(feedback_key, "user_score"), eq(feedback_score, 1))',
-      tree_filter='eq(name, "ExpandQuery")'
-  )
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  client.listRuns({
-    projectName: "<your_project>",
-    filter: 'eq(name, "RetrieveDocs")',
-    traceFilter: 'and(eq(feedback_key, "user_score"), eq(feedback_score, 1))',
-    treeFilter: 'eq(name, "ExpandQuery")'
-  })
-  ```
+```python Python
+client.list_runs(
+    project_name="<your_project>",
+    filter='eq(name, "RetrieveDocs")',
+    trace_filter='and(eq(feedback_key, "user_score"), eq(feedback_score, 1))',
+    tree_filter='eq(name, "ExpandQuery")'
+)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  RunQueryParams runs = RunQueryParams.builder()
-      .addSession("<your_project>")
-      .filter("eq(name, \"RetrieveDocs\")")
-      .traceFilter("and(eq(feedback_key, 'user_score'), eq(feedback_score, 1))")
-      .treeFilter("eq(name, 'ExpandQuery')")
-      .build();
-  ```
+```typescript TypeScript
+client.listRuns({
+  projectName: "<your_project>",
+  filter: 'eq(name, "RetrieveDocs")',
+  traceFilter: 'and(eq(feedback_key, "user_score"), eq(feedback_score, 1))',
+  treeFilter: 'eq(name, "ExpandQuery")'
+})
+```
+
+```java Java
+RunQueryParams runs = RunQueryParams.builder()
+    .addSession("<your_project>")
+    .filter("eq(name, \"RetrieveDocs\")")
+    .traceFilter("and(eq(feedback_key, 'user_score'), eq(feedback_score, 1))")
+    .treeFilter("eq(name, 'ExpandQuery')")
+    .build();
+```
+
 </CodeGroup>
 
 ## Query trace trees with child-run predicates
@@ -782,82 +829,84 @@ Use `trace_filter` to match fields on the root run and `tree_filter` to match su
 The following example (Python 0.8 and JS 0.7) returns root traces that contain a tool run whose output contains a specific value. The server-side `tree_filter` narrows candidates to traces that contain the relevant tool run, and the local predicate checks the hydrated `outputs` payload.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from datetime import datetime, timedelta
 
-  from langsmith import Client
+```python Python
+from datetime import datetime, timedelta
 
-  client = Client()
-  project_name = "<your_project>"
+from langsmith import Client
 
-
-  def iter_runs(run):
-      yield run
-      for child in run.child_runs or []:
-          yield from iter_runs(child)
+client = Client()
+project_name = "<your_project>"
 
 
-  candidate_roots = client.list_runs(
-      project_name=project_name,
-      is_root=True,
-      start_time=datetime.now() - timedelta(days=7),
-      tree_filter='and(eq(run_type, "tool"), eq(name, "<tool_name>"))',
-      select=["id"],
-  )
+def iter_runs(run):
+    yield run
+    for child in run.child_runs or []:
+        yield from iter_runs(child)
 
-  matching_roots = []
-  for candidate in candidate_roots:
-      root = client.read_run(candidate.id, load_child_runs=True)
-      has_matching_child = any(
-          child.id != root.id
-          and child.run_type == "tool"
-          and child.name == "<tool_name>"
-          and "<expected_value>" in str(child.outputs or {})
-          for child in iter_runs(root)
-      )
-      if has_matching_child:
-          matching_roots.append(root)
-  ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client, Run } from "langsmith";
+candidate_roots = client.list_runs(
+    project_name=project_name,
+    is_root=True,
+    start_time=datetime.now() - timedelta(days=7),
+    tree_filter='and(eq(run_type, "tool"), eq(name, "<tool_name>"))',
+    select=["id"],
+)
 
-  const client = new Client();
-  const projectName = "<your_project>";
+matching_roots = []
+for candidate in candidate_roots:
+    root = client.read_run(candidate.id, load_child_runs=True)
+    has_matching_child = any(
+        child.id != root.id
+        and child.run_type == "tool"
+        and child.name == "<tool_name>"
+        and "<expected_value>" in str(child.outputs or {})
+        for child in iter_runs(root)
+    )
+    if has_matching_child:
+        matching_roots.append(root)
+```
 
-  function* iterRuns(run: Run): Generator<Run> {
-    yield run;
-    for (const child of run.child_runs ?? []) {
-      yield* iterRuns(child);
-    }
+```typescript TypeScript
+import { Client, Run } from "langsmith";
+
+const client = new Client();
+const projectName = "<your_project>";
+
+function* iterRuns(run: Run): Generator<Run> {
+  yield run;
+  for (const child of run.child_runs ?? []) {
+    yield* iterRuns(child);
   }
+}
 
-  const candidateRoots: Run[] = [];
-  for await (const run of client.listRuns({
-    projectName,
-    isRoot: true,
-    startTime: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
-    treeFilter: 'and(eq(run_type, "tool"), eq(name, "<tool_name>"))',
-    select: ["id"],
-  })) {
-    candidateRoots.push(run);
-  }
+const candidateRoots: Run[] = [];
+for await (const run of client.listRuns({
+  projectName,
+  isRoot: true,
+  startTime: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
+  treeFilter: 'and(eq(run_type, "tool"), eq(name, "<tool_name>"))',
+  select: ["id"],
+})) {
+  candidateRoots.push(run);
+}
 
-  const matchingRoots: Run[] = [];
-  for (const candidate of candidateRoots) {
-    const root = await client.readRun(candidate.id, { loadChildRuns: true });
-    const hasMatchingChild = [...iterRuns(root)].some(
-      (child) =>
-        child.id !== root.id &&
-        child.run_type === "tool" &&
-        child.name === "<tool_name>" &&
-        JSON.stringify(child.outputs ?? {}).includes("<expected_value>"),
-    );
-    if (hasMatchingChild) {
-      matchingRoots.push(root);
-    }
+const matchingRoots: Run[] = [];
+for (const candidate of candidateRoots) {
+  const root = await client.readRun(candidate.id, { loadChildRuns: true });
+  const hasMatchingChild = [...iterRuns(root)].some(
+    (child) =>
+      child.id !== root.id &&
+      child.run_type === "tool" &&
+      child.name === "<tool_name>" &&
+      JSON.stringify(child.outputs ?? {}).includes("<expected_value>"),
+  );
+  if (hasMatchingChild) {
+    matchingRoots.push(root);
   }
-  ```
+}
+```
+
 </CodeGroup>
 
 ### Advanced: export flattened trace view with child tool usage
@@ -873,86 +922,88 @@ To optimize the query, the example:
 2. Fetches root runs in batches while processing tool runs concurrently.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections import defaultdict
-  from concurrent.futures import Future, ThreadPoolExecutor
-  from datetime import datetime, timedelta
 
-  from langsmith import Client
-  from tqdm.auto import tqdm
+```python Python
+from collections import defaultdict
+from concurrent.futures import Future, ThreadPoolExecutor
+from datetime import datetime, timedelta
 
-  client = Client()
-  project_name = "my-project"
-  num_days = 30
+from langsmith import Client
+from tqdm.auto import tqdm
 
-  # List all tool runs
-  tool_runs = client.list_runs(
-      project_name=project_name,
-      start_time=datetime.now() - timedelta(days=num_days),
-      run_type="tool",
-      # We don't need to fetch inputs, outputs, and other values that # may increase the query time
-      select=["trace_id", "name", "run_type"],
-  )
+client = Client()
+project_name = "my-project"
+num_days = 30
 
-  data = []
-  futures: list[Future] = []
-  trace_cursor = 0
-  trace_batch_size = 50
+# List all tool runs
+tool_runs = client.list_runs(
+    project_name=project_name,
+    start_time=datetime.now() - timedelta(days=num_days),
+    run_type="tool",
+    # We don't need to fetch inputs, outputs, and other values that # may increase the query time
+    select=["trace_id", "name", "run_type"],
+)
 
-  tool_runs_by_parent = defaultdict(lambda: defaultdict(set))
-  # Do not exceed rate limit
-  with ThreadPoolExecutor(max_workers=2) as executor:
-      # Group tool runs by parent run ID
-      for run in tqdm(tool_runs):
-          # Collect all tools invoked within a given trace
-          tool_runs_by_parent[run.trace_id]["tools_involved"].add(run.name)
-          # maybe send a batch of parent run IDs to the server
-          # this lets us query for the root runs in batches
-          # while still processing the tool runs
-          if len(tool_runs_by_parent) % trace_batch_size == 0:
-              if this_batch := list(tool_runs_by_parent.keys())[
-                  trace_cursor : trace_cursor + trace_batch_size
-              ]:
-                  trace_cursor += trace_batch_size
-                  futures.append(
-                      executor.submit(
-                          client.list_runs,
-                          project_name=project_name,
-                          run_ids=this_batch,
-                          select=["name", "inputs", "outputs", "run_type"],
-                      )
-                  )
-      if this_batch := list(tool_runs_by_parent.keys())[trace_cursor:]:
-          futures.append(
-              executor.submit(
-                  client.list_runs,
-                  project_name=project_name,
-                  run_ids=this_batch,
-                  select=["name", "inputs", "outputs", "run_type"],
-              )
-          )
+data = []
+futures: list[Future] = []
+trace_cursor = 0
+trace_batch_size = 50
 
-  for future in tqdm(futures):
-      root_runs = future.result()
-      for root_run in root_runs:
-          root_data = tool_runs_by_parent[root_run.id]
-          data.append(
-              {
-                  "run_id": root_run.id,
-                  "run_name": root_run.name,
-                  "run_type": root_run.run_type,
-                  "inputs": root_run.inputs,
-                  "outputs": root_run.outputs,
-                  "tools_involved": list(root_data["tools_involved"]),
-              }
-          )
+tool_runs_by_parent = defaultdict(lambda: defaultdict(set))
+# Do not exceed rate limit
+with ThreadPoolExecutor(max_workers=2) as executor:
+    # Group tool runs by parent run ID
+    for run in tqdm(tool_runs):
+        # Collect all tools invoked within a given trace
+        tool_runs_by_parent[run.trace_id]["tools_involved"].add(run.name)
+        # maybe send a batch of parent run IDs to the server
+        # this lets us query for the root runs in batches
+        # while still processing the tool runs
+        if len(tool_runs_by_parent) % trace_batch_size == 0:
+            if this_batch := list(tool_runs_by_parent.keys())[
+                trace_cursor : trace_cursor + trace_batch_size
+            ]:
+                trace_cursor += trace_batch_size
+                futures.append(
+                    executor.submit(
+                        client.list_runs,
+                        project_name=project_name,
+                        run_ids=this_batch,
+                        select=["name", "inputs", "outputs", "run_type"],
+                    )
+                )
+    if this_batch := list(tool_runs_by_parent.keys())[trace_cursor:]:
+        futures.append(
+            executor.submit(
+                client.list_runs,
+                project_name=project_name,
+                run_ids=this_batch,
+                select=["name", "inputs", "outputs", "run_type"],
+            )
+        )
 
-  # (Optional): Convert to a pandas DataFrame
-  import pandas as pd
+for future in tqdm(futures):
+    root_runs = future.result()
+    for root_run in root_runs:
+        root_data = tool_runs_by_parent[root_run.id]
+        data.append(
+            {
+                "run_id": root_run.id,
+                "run_name": root_run.name,
+                "run_type": root_run.run_type,
+                "inputs": root_run.inputs,
+                "outputs": root_run.outputs,
+                "tools_involved": list(root_data["tools_involved"]),
+            }
+        )
 
-  df = pd.DataFrame(data)
-  df.head()
-  ```
+# (Optional): Convert to a pandas DataFrame
+import pandas as pd
+
+df = pd.DataFrame(data)
+df.head()
+```
+
 </CodeGroup>
 
 ### Advanced: export retriever IO for traces with feedback
@@ -961,118 +1012,120 @@ This query is useful if you want to fine-tune embeddings or diagnose end-to-end 
 The following Python example demonstrates how to export retriever inputs and outputs within traces that have a specific feedback score.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections import defaultdict
-  from concurrent.futures import Future, ThreadPoolExecutor
-  from datetime import datetime, timedelta
 
-  import pandas as pd
-  from langsmith import Client
-  from tqdm.auto import tqdm
+```python Python
+from collections import defaultdict
+from concurrent.futures import Future, ThreadPoolExecutor
+from datetime import datetime, timedelta
 
-  client = Client()
-  project_name = "your-project-name"
-  num_days = 1
+import pandas as pd
+from langsmith import Client
+from tqdm.auto import tqdm
 
-  # List all tool runs
-  retriever_runs = client.list_runs(
-      project_name=project_name,
-      start_time=datetime.now() - timedelta(days=num_days),
-      run_type="retriever",
-      # This time we do want to fetch the inputs and outputs, since they
-      # may be adjusted by query expansion steps.
-      select=["trace_id", "name", "run_type", "inputs", "outputs"],
-      trace_filter='eq(feedback_key, "user_score")',
-  )
+client = Client()
+project_name = "your-project-name"
+num_days = 1
 
-  data = []
-  futures: list[Future] = []
-  trace_cursor = 0
-  trace_batch_size = 50
+# List all tool runs
+retriever_runs = client.list_runs(
+    project_name=project_name,
+    start_time=datetime.now() - timedelta(days=num_days),
+    run_type="retriever",
+    # This time we do want to fetch the inputs and outputs, since they
+    # may be adjusted by query expansion steps.
+    select=["trace_id", "name", "run_type", "inputs", "outputs"],
+    trace_filter='eq(feedback_key, "user_score")',
+)
 
-  retriever_runs_by_parent = defaultdict(lambda: defaultdict(list))
-  # Do not exceed rate limit
-  with ThreadPoolExecutor(max_workers=2) as executor:
-      # Group retriever runs by parent run ID
-      for run in tqdm(retriever_runs):
-          # Collect all retriever calls invoked within a given trace
-          for k, v in run.inputs.items():
-              retriever_runs_by_parent[run.trace_id][f"retriever.inputs.{k}"].append(v)
-          for k, v in (run.outputs or {}).items():
-              # Extend the docs
-              retriever_runs_by_parent[run.trace_id][f"retriever.outputs.{k}"].extend(v)
-          # maybe send a batch of parent run IDs to the server
-          # this lets us query for the root runs in batches
-          # while still processing the retriever runs
-          if len(retriever_runs_by_parent) % trace_batch_size == 0:
-              if this_batch := list(retriever_runs_by_parent.keys())[
-                  trace_cursor : trace_cursor + trace_batch_size
-              ]:
-                  trace_cursor += trace_batch_size
-                  futures.append(
-                      executor.submit(
-                          client.list_runs,
-                          project_name=project_name,
-                          run_ids=this_batch,
-                          select=[
-                              "name",
-                              "inputs",
-                              "outputs",
-                              "run_type",
-                              "feedback_stats",
-                          ],
-                      )
-                  )
-      if this_batch := list(retriever_runs_by_parent.keys())[trace_cursor:]:
-          futures.append(
-              executor.submit(
-                  client.list_runs,
-                  project_name=project_name,
-                  run_ids=this_batch,
-                  select=["name", "inputs", "outputs", "run_type"],
-              )
-          )
+data = []
+futures: list[Future] = []
+trace_cursor = 0
+trace_batch_size = 50
 
-  for future in tqdm(futures):
-      root_runs = future.result()
-      for root_run in root_runs:
-          root_data = retriever_runs_by_parent[root_run.id]
-          feedback = {
-              f"feedback.{k}": v.get("avg")
-              for k, v in (root_run.feedback_stats or {}).items()
-          }
-          inputs = {f"inputs.{k}": v for k, v in root_run.inputs.items()}
-          outputs = {f"outputs.{k}": v for k, v in (root_run.outputs or {}).items()}
-          data.append(
-              {
-                  "run_id": root_run.id,
-                  "run_name": root_run.name,
-                  **inputs,
-                  **outputs,
-                  **feedback,
-                  **root_data,
-              }
-          )
+retriever_runs_by_parent = defaultdict(lambda: defaultdict(list))
+# Do not exceed rate limit
+with ThreadPoolExecutor(max_workers=2) as executor:
+    # Group retriever runs by parent run ID
+    for run in tqdm(retriever_runs):
+        # Collect all retriever calls invoked within a given trace
+        for k, v in run.inputs.items():
+            retriever_runs_by_parent[run.trace_id][f"retriever.inputs.{k}"].append(v)
+        for k, v in (run.outputs or {}).items():
+            # Extend the docs
+            retriever_runs_by_parent[run.trace_id][f"retriever.outputs.{k}"].extend(v)
+        # maybe send a batch of parent run IDs to the server
+        # this lets us query for the root runs in batches
+        # while still processing the retriever runs
+        if len(retriever_runs_by_parent) % trace_batch_size == 0:
+            if this_batch := list(retriever_runs_by_parent.keys())[
+                trace_cursor : trace_cursor + trace_batch_size
+            ]:
+                trace_cursor += trace_batch_size
+                futures.append(
+                    executor.submit(
+                        client.list_runs,
+                        project_name=project_name,
+                        run_ids=this_batch,
+                        select=[
+                            "name",
+                            "inputs",
+                            "outputs",
+                            "run_type",
+                            "feedback_stats",
+                        ],
+                    )
+                )
+    if this_batch := list(retriever_runs_by_parent.keys())[trace_cursor:]:
+        futures.append(
+            executor.submit(
+                client.list_runs,
+                project_name=project_name,
+                run_ids=this_batch,
+                select=["name", "inputs", "outputs", "run_type"],
+            )
+        )
 
-  # (Optional): Convert to a pandas DataFrame
-  import pandas as pd
-  df = pd.DataFrame(data)
-  df.head()
-  ```
+for future in tqdm(futures):
+    root_runs = future.result()
+    for root_run in root_runs:
+        root_data = retriever_runs_by_parent[root_run.id]
+        feedback = {
+            f"feedback.{k}": v.get("avg")
+            for k, v in (root_run.feedback_stats or {}).items()
+        }
+        inputs = {f"inputs.{k}": v for k, v in root_run.inputs.items()}
+        outputs = {f"outputs.{k}": v for k, v in (root_run.outputs or {}).items()}
+        data.append(
+            {
+                "run_id": root_run.id,
+                "run_name": root_run.name,
+                **inputs,
+                **outputs,
+                **feedback,
+                **root_data,
+            }
+        )
+
+# (Optional): Convert to a pandas DataFrame
+import pandas as pd
+df = pd.DataFrame(data)
+df.head()
+```
+
 </CodeGroup>
 
 ## Rate limits
 
 The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint ([`list_runs`](https://reference.langchain.com/python/langsmith/client/Client/list_runs) in Python, [`listRuns`](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) in JavaScript) has per-tenant rate limits that vary based on query parameters:
 
-| **Query type**                                       | **Limit**   | **Window** |
-| ---------------------------------------------------- | ----------- | ---------- |
-| Short time window (≤ 7 days)                         | 10 requests | 10 seconds |
-| Large time window (> 7 days)                         | 3 requests  | 10 seconds |
-| Full-text search, short time window (≤ 7 days)       | 3 requests  | 10 seconds |
-| Full-text search, large time window (> 7 days)       | 1 request   | 10 seconds |
-| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests  | 10 seconds |
-| Select `child_run_ids`, large time window (> 7 days) | 1 request   | 10 seconds |
+| **Query type** | **Limit** | **Window** |
+|---|---|---|
+| Short time window (≤ 7 days) | 10 requests | 10 seconds |
+| Large time window (> 7 days) | 3 requests | 10 seconds |
+| Full-text search, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Full-text search, large time window (> 7 days) | 1 request | 10 seconds |
+| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Select `child_run_ids`, large time window (> 7 days) | 1 request | 10 seconds |
 
 The time window is determined by `end_time - start_time`. If `end_time` is not provided, LangSmith will use the current time. Queries without a `start_time` are treated as large time window queries.
 
@@ -1080,22 +1133,21 @@ The time window is determined by `end_time - start_time`. If `end_time` is not p
 
 To avoid hitting rate limits and reduce query time, especially for runs with large inputs/outputs:
 
-* **Set `start_time`**: omitting it triggers the large time window rate limit tier (3 requests per 10 seconds instead of 10). Use a window of 7 days or less when possible.
-* **Use `select`**: by default all fields are returned. Specifying only the fields you need (e.g., `select=["inputs", "outputs"]`) substantially reduces response size and query time, especially for runs with large inputs/outputs.
-* **Set `limit`**: cap the number of results if you don't need to paginate through everything.
-* **Avoid full-text search**: `filter='search("...")'` has the strictest rate limits; use structured filters (e.g., `eq()`, `has()`) when possible.
-* **Avoid selecting `child_run_ids`**: this also triggers a stricter rate limit tier.
+- **Set `start_time`**: omitting it triggers the large time window rate limit tier (3 requests per 10 seconds instead of 10). Use a window of 7 days or less when possible.
+- **Use `select`**: by default all fields are returned. Specifying only the fields you need (e.g., `select=["inputs", "outputs"]`) substantially reduces response size and query time, especially for runs with large inputs/outputs.
+- **Set `limit`**: cap the number of results if you don't need to paginate through everything.
+- **Avoid full-text search**: `filter='search("...")'` has the strictest rate limits; use structured filters (e.g., `eq()`, `has()`) when possible.
+- **Avoid selecting `child_run_ids`**: this also triggers a stricter rate limit tier.
 
 When you exceed these limits, the API returns a `429 Too Many Requests` response. For general rate limit information, refer to [Administration overview](/langsmith/usage-and-billing#rate-limits).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

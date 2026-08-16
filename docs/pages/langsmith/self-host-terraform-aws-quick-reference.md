@@ -2,15 +2,13 @@
 
 # AWS Terraform quick reference
 
-Make targets, Terraform commands, kubectl, AWS CLI, and Helm operations for LangSmith self-hosted on AWS EKS.
-
 Command cheat sheet for day-to-day operations against an AWS LangSmith deployment provisioned with the [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws). All `make` targets run from `modules/aws/`. Run `make help` for an inline summary.
 
 For the full deploy setup, refer to the [AWS deployment guide](/langsmith/self-host-terraform-aws-deploy).
 
 ## First-time setup
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd terraform/modules/aws
 
 # 1. Generate terraform.tfvars (interactive wizard)
@@ -43,14 +41,14 @@ make deploy
 
 Fast path once `make quickstart` and `source infra/scripts/setup-env.sh` are complete:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make quickdeploy        # interactive (prompts before terraform apply)
 make quickdeploy-auto   # non-interactive (auto-approves terraform)
 ```
 
 ## Day-2 operations
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Check deployment state across all layers; print next-step guidance
 make status
 
@@ -78,7 +76,7 @@ make kubeconfig
 
 ## Preflight checks
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Pre-Terraform: AWS credentials + IAM permissions
 make preflight
 
@@ -93,7 +91,7 @@ make preflight-ssm
 
 Add-ons are controlled by `enable_*` flags in `infra/terraform.tfvars`. Set the flags, re-run `init-values` to copy the matching values files, then re-deploy.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 enable_deployments     = true   # LangGraph Platform (required for Fleet, Agent Builder, and Polly)
 enable_fleet           = true   # Fleet (formerly Agent Builder), standalone (chart v0.15+); requires external Postgres + Redis
@@ -103,7 +101,7 @@ enable_polly           = true   # Polly AI eval/monitoring
 enable_usage_telemetry = false  # Extended usage telemetry
 ```
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make init-values
 make deploy
 ```
@@ -112,7 +110,7 @@ make deploy
 
 Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && make deploy`.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 sizing_profile = "production"        # multi-replica with HPA (recommended)
 sizing_profile = "production-large"  # high-volume (~50 users, ~1000 traces/sec)
 sizing_profile = "dev"               # single-replica, minimal resources
@@ -124,79 +122,79 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ### Setup and secrets
 
-| Command             | Description                                                                                               |
-| ------------------- | --------------------------------------------------------------------------------------------------------- |
-| `make quickstart`   | Interactive wizard. Generates `infra/terraform.tfvars` (region, node size, TLS method, add-ons).          |
-| `make setup-env`    | Prints the exact `source` command for loading secrets into your shell. Cannot export variables directly.  |
-| `make secrets`      | Show SSM secrets status (`✓ SET` / `✗ MISSING`) per parameter, check `TF_VAR_*` exports, give next steps. |
-| `make secrets-list` | List all SSM parameters for this deployment with last-modified timestamps.                                |
-| `make ssm`          | Interactive SSM parameter manager. View, set, rotate, validate, diff vs the cluster Secret.               |
+| Command | Description |
+|---|---|
+| `make quickstart` | Interactive wizard. Generates `infra/terraform.tfvars` (region, node size, TLS method, add-ons). |
+| `make setup-env` | Prints the exact `source` command for loading secrets into your shell. Cannot export variables directly. |
+| `make secrets` | Show SSM secrets status (`✓ SET` / `✗ MISSING`) per parameter, check `TF_VAR_*` exports, give next steps. |
+| `make secrets-list` | List all SSM parameters for this deployment with last-modified timestamps. |
+| `make ssm` | Interactive SSM parameter manager. View, set, rotate, validate, diff vs the cluster Secret. |
 
 ### Preflight
 
-| Command               | Description                                                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `make preflight`      | Verify AWS credentials, IAM permissions, and required CLI tools before Terraform runs.                                       |
+| Command | Description |
+|---|---|
+| `make preflight` | Verify AWS credentials, IAM permissions, and required CLI tools before Terraform runs. |
 | `make preflight-post` | Run after `make apply`. Checks kubectl context, cluster reachability, SSM params populated, Helm values present, TLS config. |
-| `make preflight-ssm`  | Check SSM params only. Narrower scope than `preflight-post`.                                                                 |
+| `make preflight-ssm` | Check SSM params only. Narrower scope than `preflight-post`. |
 
 ### Infrastructure
 
-| Command        | Description                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `make init`    | `terraform init`. Downloads providers and modules. Safe to re-run.                         |
-| `make plan`    | `terraform plan`. Preview changes. Review before every apply.                              |
-| `make apply`   | `terraform apply`. Provisions VPC, EKS, RDS, ElastiCache, S3, ALB, IRSA. 20 to 25 minutes. |
-| `make destroy` | `terraform destroy`. Tears down all infrastructure. Run `make uninstall` first.            |
+| Command | Description |
+|---|---|
+| `make init` | `terraform init`. Downloads providers and modules. Safe to re-run. |
+| `make plan` | `terraform plan`. Preview changes. Review before every apply. |
+| `make apply` | `terraform apply`. Provisions VPC, EKS, RDS, ElastiCache, S3, ALB, IRSA. 20 to 25 minutes. |
+| `make destroy` | `terraform destroy`. Tears down all infrastructure. Run `make uninstall` first. |
 
 ### Helm deploy
 
-| Command            | Description                                                                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Command | Description |
+|---|---|
 | `make init-values` | Generate `helm/values/langsmith-values-overrides.yaml` from Terraform outputs. Copy add-on values files based on `enable_*` flags. |
-| `make deploy`      | Deploy or upgrade LangSmith via Helm. Runs preflight, ESO sync, layered values build, and core readiness checks.                   |
-| `make apply-eso`   | Re-apply ESO `ClusterSecretStore` and `ExternalSecret` only. Use after rotating secrets without a full Helm redeploy.              |
-| `make uninstall`   | Uninstall the LangSmith Helm release. Terraform infrastructure stays intact.                                                       |
+| `make deploy` | Deploy or upgrade LangSmith via Helm. Runs preflight, ESO sync, layered values build, and core readiness checks. |
+| `make apply-eso` | Re-apply ESO `ClusterSecretStore` and `ExternalSecret` only. Use after rotating secrets without a full Helm redeploy. |
+| `make uninstall` | Uninstall the LangSmith Helm release. Terraform infrastructure stays intact. |
 
 ### Terraform-managed Helm
 
-| Command            | Description                                                          |
-| ------------------ | -------------------------------------------------------------------- |
-| `make init-app`    | Pull live infra Terraform outputs into `app/infra.auto.tfvars.json`. |
-| `make plan-app`    | `terraform plan` for the `app/` module. Auto-runs `init-app` first.  |
-| `make apply-app`   | Deploy LangSmith Helm release via Terraform (`app/` module).         |
+| Command | Description |
+|---|---|
+| `make init-app` | Pull live infra Terraform outputs into `app/infra.auto.tfvars.json`. |
+| `make plan-app` | `terraform plan` for the `app/` module. Auto-runs `init-app` first. |
+| `make apply-app` | Deploy LangSmith Helm release via Terraform (`app/` module). |
 | `make destroy-app` | Destroy the Helm release via Terraform. Infrastructure stays intact. |
 
 ### Fast path
 
-| Command                 | Description                                                                                                     |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `make quickdeploy`      | Full deploy in one command. Chains `terraform apply` → `kubeconfig` → `init-values` → `helm deploy` with gates. |
-| `make quickdeploy-auto` | Same as `quickdeploy` but non-interactive. Passes `-auto-approve` to terraform.                                 |
-| `make deploy-all`       | `make apply` → `make kubeconfig` → `make init-values` → `make deploy` in sequence.                              |
-| `make deploy-all-tf`    | `make apply` → `make init-values` → Terraform `app/` plan and apply in sequence.                                |
+| Command | Description |
+|---|---|
+| `make quickdeploy` | Full deploy in one command. Chains `terraform apply` → `kubeconfig` → `init-values` → `helm deploy` with gates. |
+| `make quickdeploy-auto` | Same as `quickdeploy` but non-interactive. Passes `-auto-approve` to terraform. |
+| `make deploy-all` | `make apply` → `make kubeconfig` → `make init-values` → `make deploy` in sequence. |
+| `make deploy-all-tf` | `make apply` → `make init-values` → Terraform `app/` plan and apply in sequence. |
 
 ### Utilities
 
-| Command             | Description                                                                                                                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `make status`       | Check deployment state across all layers, print what to run next.                                                                                                                         |
-| `make status-quick` | Same as `status` but skips SSM and Kubernetes queries (faster).                                                                                                                           |
-| `make kubeconfig`   | Print a `source infra/scripts/set-kubeconfig.sh` command to run. Sourcing it exports `KUBECONFIG` to a dedicated `~/.kube/langsmith-<cluster>` file rather than editing `~/.kube/config`. |
-| `make tls`          | BYO ACM cert + Route 53 A alias. Use when `langsmith_domain` is set and you need DNS wiring.                                                                                              |
-| `make clean`        | Remove all local generated and sensitive files. Run after `make destroy`.                                                                                                                 |
+| Command | Description |
+|---|---|
+| `make status` | Check deployment state across all layers, print what to run next. |
+| `make status-quick` | Same as `status` but skips SSM and Kubernetes queries (faster). |
+| `make kubeconfig` | Print a `source infra/scripts/set-kubeconfig.sh` command to run. Sourcing it exports `KUBECONFIG` to a dedicated `~/.kube/langsmith-<cluster>` file rather than editing `~/.kube/config`. |
+| `make tls` | BYO ACM cert + Route 53 A alias. Use when `langsmith_domain` is set and you need DNS wiring. |
+| `make clean` | Remove all local generated and sensitive files. Run after `make destroy`. |
 
 ### Testing
 
-| Command                  | Description                                                                             |
-| ------------------------ | --------------------------------------------------------------------------------------- |
-| `make test-e2e`          | End-to-end gateway tests (ALB or Envoy Gateway) against the current cluster.            |
+| Command | Description |
+|---|---|
+| `make test-e2e` | End-to-end gateway tests (ALB or Envoy Gateway) against the current cluster. |
 | `make test-permutations` | Permutation tests sequentially on the current cluster. Use `ARGS="1 2 5"` for a subset. |
-| `make test-parallel`     | Permutation tests in parallel across isolated clusters. Your cluster is untouched.      |
+| `make test-parallel` | Permutation tests in parallel across isolated clusters. Your cluster is untouched. |
 
 ## kubectl
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Pod health
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
@@ -232,7 +230,7 @@ kubectl get pods -n keda
 
 ## AWS CLI
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # EKS
 aws eks list-clusters --region <region>
 aws eks describe-cluster --name <cluster-name> --region <region>
@@ -268,7 +266,7 @@ aws iam get-role --role-name <irsa-role-name>
 
 ## Terraform
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/aws/infra
 
 terraform init
@@ -285,7 +283,7 @@ terraform state list
 
 ## Teardown
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd terraform/modules/aws
 
 # Option A: script-driven deploy
@@ -302,14 +300,13 @@ terraform apply
 terraform destroy
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

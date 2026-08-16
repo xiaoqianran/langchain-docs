@@ -9,84 +9,86 @@ This page details how to log feedback using the [SDK](/langsmith/reference). For
 ## Use `create_feedback()` / `createFeedback`
 
 <Info>
-  **Child runs**
-  You can attach user feedback to **any** child run of a trace, not just the trace (root run) itself.
-  This is useful for critiquing specific steps of the LLM application, such as the retrieval step or generation step of a RAG pipeline.
+**Child runs**
+You can attach user feedback to **any** child run of a trace, not just the trace (root run) itself.
+This is useful for critiquing specific steps of the LLM application, such as the retrieval step or generation step of a RAG pipeline.
 </Info>
 
 <Tip>
-  **Non-blocking creation (Python only)**
-  The Python client will automatically background feedback creation if you pass `trace_id=` to [`create_feedback()`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback).
-  This is essential for low-latency environments, where you want to make sure your application isn't blocked on feedback creation.
+**Non-blocking creation (Python only)**
+The Python client will automatically background feedback creation if you pass `trace_id=` to [`create_feedback()`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback).
+This is essential for low-latency environments, where you want to make sure your application isn't blocked on feedback creation.
 </Tip>
 
 The following example creates a trace with two child runs, then logs feedback against the root run and against one of the child runs. The TypeScript snippet shows the equivalent `createFeedback` call shape, assuming a `runId` is already available from your application.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client, trace, traceable
 
-  @traceable
-  def foo(x):
-      return {"y": x * 2}
+```python Python
+from langsmith import Client, trace, traceable
 
-  @traceable
-  def bar(y):
-      return {"z": y - 1}
+@traceable
+def foo(x):
+    return {"y": x * 2}
 
-  client = Client()
+@traceable
+def bar(y):
+    return {"z": y - 1}
 
-  inputs = {"x": 1}
-  with trace(name="foobar", inputs=inputs) as root_run:
-      result = foo(**inputs)
-      result = bar(**result)
-      root_run.outputs = result
-      trace_id = root_run.id
-      child_runs = root_run.child_runs
+client = Client()
 
-  # Resolve the UUID of the project that owns the trace
-  session_id = client.create_project(project_name=root_run.session_name, upsert=True).id
+inputs = {"x": 1}
+with trace(name="foobar", inputs=inputs) as root_run:
+    result = foo(**inputs)
+    result = bar(**result)
+    root_run.outputs = result
+    trace_id = root_run.id
+    child_runs = root_run.child_runs
 
-  # Provide feedback for a trace (a.k.a. a root run)
-  client.create_feedback(
-      key="user_feedback",
-      score=1,
-      trace_id=trace_id,
-      session_id=session_id,
-      comment="the user said that ..."
-  )
+# Resolve the UUID of the project that owns the trace
+session_id = client.create_project(project_name=root_run.session_name, upsert=True).id
 
-  # Provide feedback for a child run
-  foo_run_id = [run for run in child_runs if run.name == "foo"][0].id
-  client.create_feedback(
-      key="correctness",
-      score=0,
-      run_id=foo_run_id,
-      # trace_id= is optional but recommended to enable batched and backgrounded
-      # feedback ingestion.
-      trace_id=trace_id,
-      session_id=session_id,
-  )
-  ```
+# Provide feedback for a trace (a.k.a. a root run)
+client.create_feedback(
+    key="user_feedback",
+    score=1,
+    trace_id=trace_id,
+    session_id=session_id,
+    comment="the user said that ..."
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-  const client = new Client();
+# Provide feedback for a child run
+foo_run_id = [run for run in child_runs if run.name == "foo"][0].id
+client.create_feedback(
+    key="correctness",
+    score=0,
+    run_id=foo_run_id,
+    # trace_id= is optional but recommended to enable batched and backgrounded
+    # feedback ingestion.
+    trace_id=trace_id,
+    session_id=session_id,
+)
+```
 
-      // ... Run your application and get the run_id...
-      // This information can be the result of a user-facing feedback form
+```typescript TypeScript
+import { Client } from "langsmith";
+const client = new Client();
 
-  // Resolve the UUID of the project that owns the trace
-  const { id: sessionId } = await client.createProject({ projectName: "default", upsert: true });
+    // ... Run your application and get the run_id...
+    // This information can be the result of a user-facing feedback form
 
-  await client.createFeedback({
-      runId,
-      sessionId,
-      key: "feedback-key",
-      score: 1.0,
-      comment: "comment",
-  });
-  ```
+// Resolve the UUID of the project that owns the trace
+const { id: sessionId } = await client.createProject({ projectName: "default", upsert: true });
+
+await client.createFeedback({
+    runId,
+    sessionId,
+    key: "feedback-key",
+    score: 1.0,
+    comment: "comment",
+});
+```
+
 </CodeGroup>
 
 You can even log feedback for in-progress runs using [`create_feedback()`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [`createFeedback`](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback). See [Access the current run (span) within a traced function](/langsmith/access-current-span) for how to get the run ID of an in-progress run.
@@ -99,14 +101,13 @@ See [Collect feedback with presigned URLs](/langsmith/presigned-feedback-tokens)
 
 To learn more about how to filter traces based on various attributes, including user feedback, see [Filter traces](/langsmith/filter-traces-in-application).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/attach-user-feedback.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

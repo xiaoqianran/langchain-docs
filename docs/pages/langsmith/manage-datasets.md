@@ -2,12 +2,12 @@
 
 # Manage datasets
 
-LangSmith provides tools for managing and working with your [*datasets*](/langsmith/evaluation-concepts#datasets). This page describes dataset operations including:
+LangSmith provides tools for managing and working with your [_datasets_](/langsmith/evaluation-concepts#datasets). This page describes dataset operations including:
 
-* [Versioning datasets](#version-a-dataset) to track changes over time.
-* [Filtering](#evaluate-on-a-filtered-view-of-a-dataset) and [splitting](#evaluate-on-a-dataset-split) datasets for evaluation.
-* [Sharing datasets](#share-a-dataset) publicly.
-* [Exporting datasets](#export-a-dataset) in various formats.
+- [Versioning datasets](#version-a-dataset) to track changes over time.
+- [Filtering](#evaluate-on-a-filtered-view-of-a-dataset) and [splitting](#evaluate-on-a-dataset-split) datasets for evaluation.
+- [Sharing datasets](#share-a-dataset) publicly.
+- [Exporting datasets](#export-a-dataset) in various formats.
 
 You'll also learn how to [export filtered traces](#export-filtered-traces-from-experiment-to-dataset) from [experiments](/langsmith/evaluation-concepts#experiment) back to datasets for further analysis and iteration.
 
@@ -25,17 +25,17 @@ Any time you add, update, or delete examples in your dataset, a new [version](/l
 
 By default, the version is defined by the timestamp of the change. When you click on a particular version of a dataset (by timestamp) in the **Examples** tab, you will find the state of the dataset at that point in time.
 
-<img alt="Version Datasets" />
+![Version Datasets](/langsmith/images/version-dataset.png)
 
 Note that examples are read-only when viewing a past version of the dataset. You will also see the operations that were between this version of the dataset and the latest version of the dataset.
 
 <Note>
-  By default, the latest version of the dataset is shown in the **Examples** tab and experiments from all versions are shown in the **Tests** tab.
+By default, the latest version of the dataset is shown in the **Examples** tab and experiments from all versions are shown in the **Tests** tab.
 </Note>
 
 In the **Tests** tab, you will find the results of tests run on the dataset at different versions.
 
-<img alt="Version Datasets" />
+![Version Datasets](/langsmith/images/version-dataset-tests.png)
 
 ### Tag a version
 
@@ -45,11 +45,11 @@ For example, you might tag a version of your dataset as "prod" and use it to run
 
 You can tag a version of your dataset in the UI by clicking on **+ Tag this version** in the **Examples** tab.
 
-<img alt="Tagging Datasets" />
+![Tagging Datasets](/langsmith/images/tag-this-version.png)
 
 You can also tag versions of your dataset using the SDK. Here's an example of how to tag a version of a dataset using the [Python SDK](https://docs.smith.langchain.com/reference/python/reference):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 from datetime import datetime
 
@@ -67,10 +67,10 @@ To run an evaluation on a particular tagged version of a dataset, refer to the [
 ## Evaluate on a specific dataset version
 
 <Check>
-  You may find it helpful to refer to the following content before you read this section:
+You may find it helpful to refer to the following content before you read this section:
 
-  * [Version a dataset](#version-a-dataset).
-  * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples).
+- [Version a dataset](#version-a-dataset).
+- [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples).
 </Check>
 
 ### Use `list_examples`
@@ -78,47 +78,49 @@ To run an evaluation on a particular tagged version of a dataset, refer to the [
 You can use `evaluate` / `aevaluate` to pass in an iterable of examples to evaluate on a particular version of a dataset. Use `list_examples` / `listExamples` to fetch examples from a particular version tag using `as_of` / `asOf` and pass that into the `data` argument.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
 
-  ls_client = Client()
+```python Python
+from langsmith import Client
 
-  # Assumes actual outputs have a 'class' key.
-  # Assumes example outputs have a 'label' key.
-  def correct(outputs: dict, reference_outputs: dict) -> bool:
-    return outputs["class"] == reference_outputs["label"]
+ls_client = Client()
 
-  results = ls_client.evaluate(
-      lambda inputs: {"class": "Not toxic"},
-      # Pass in filtered data here:
-      data=ls_client.list_examples(
-        dataset_name="Toxic Queries",
-        as_of="latest",  # specify version here
-      ),
-      evaluators=[correct],
-  )
-  ```
+# Assumes actual outputs have a 'class' key.
+# Assumes example outputs have a 'label' key.
+def correct(outputs: dict, reference_outputs: dict) -> bool:
+  return outputs["class"] == reference_outputs["label"]
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = ls_client.evaluate(
+    lambda inputs: {"class": "Not toxic"},
+    # Pass in filtered data here:
+    data=ls_client.list_examples(
+      dataset_name="Toxic Queries",
+      as_of="latest",  # specify version here
+    ),
+    evaluators=[correct],
+)
+```
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      asOf: "latest",
-    }),
-    evaluators: [correctLabel],
-  });
-  ```
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    asOf: "latest",
+  }),
+  evaluators: [correctLabel],
+});
+```
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .asOf("latest")
-  var examples = client.examples().list(listParams);
-  ```
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
+
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .asOf("latest")
+var examples = client.examples().list(listParams);
+```
+
 </CodeGroup>
 
 Learn more about how to fetch views of a dataset on the [Create and manage datasets programmatically](/langsmith/manage-datasets-programmatically#fetch-datasets) page.
@@ -126,10 +128,10 @@ Learn more about how to fetch views of a dataset on the [Create and manage datas
 ## Evaluate on a split / filtered view of a dataset
 
 <Check>
-  You may find it helpful to refer to the following content before you read this section:
+You may find it helpful to refer to the following content before you read this section:
 
-  * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples).
-  * [Creating and managing dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits).
+- [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples).
+- [Creating and managing dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits).
 </Check>
 
 ### Evaluate on a filtered view of a dataset
@@ -139,39 +141,41 @@ You can use the `list_examples` / `listExamples` method to [fetch](/langsmith/ma
 One common workflow is to fetch examples that have a certain metadata key-value pair.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate
 
-  results = evaluate(
-      lambda inputs: label_text(inputs["text"]),
-      data=client.list_examples(dataset_name=dataset_name, metadata={"desired_key": "desired_value"}),
-      evaluators=[correct_label],
-      experiment_prefix="Toxic Queries",
-  )
-  ```
+```python Python
+from langsmith import evaluate
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = evaluate(
+    lambda inputs: label_text(inputs["text"]),
+    data=client.list_examples(dataset_name=dataset_name, metadata={"desired_key": "desired_value"}),
+    evaluators=[correct_label],
+    experiment_prefix="Toxic Queries",
+)
+```
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      metadata: {"desired_key": "desired_value"},
-    }),
-    evaluators: [correctLabel],
-    experimentPrefix: "Toxic Queries",
-  });
-  ```
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    metadata: {"desired_key": "desired_value"},
+  }),
+  evaluators: [correctLabel],
+  experimentPrefix: "Toxic Queries",
+});
+```
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .metadata("{\"desired_key\":\"desired_value\"}")
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
+
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .metadata("{\"desired_key\":\"desired_value\"}")
+    .build();
+var examples = client.examples().list(listParams);
+```
+
 </CodeGroup>
 
 For more filtering capabilities, refer to this [how-to guide](/langsmith/manage-datasets-programmatically#list-examples-by-structured-filter).
@@ -181,43 +185,45 @@ For more filtering capabilities, refer to this [how-to guide](/langsmith/manage-
 You can use the `list_examples` / `listExamples` method to evaluate on one or multiple [splits](/langsmith/evaluation-concepts#dataset-organization) of your dataset. The `splits` parameter takes a list of the splits you would like to evaluate.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate
 
-  results = evaluate(
-      lambda inputs: label_text(inputs["text"]),
-      data=client.list_examples(dataset_name=dataset_name, splits=["test", "training"]),
-      evaluators=[correct_label],
-      experiment_prefix="Toxic Queries",
-  )
-  ```
+```python Python
+from langsmith import evaluate
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = evaluate(
+    lambda inputs: label_text(inputs["text"]),
+    data=client.list_examples(dataset_name=dataset_name, splits=["test", "training"]),
+    evaluators=[correct_label],
+    experiment_prefix="Toxic Queries",
+)
+```
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      splits: ["test", "training"],
-    }),
-    evaluators: [correctLabel],
-    experimentPrefix: "Toxic Queries",
-  });
-  ```
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
-  import java.util.Arrays;
-  import java.util.List;
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    splits: ["test", "training"],
+  }),
+  evaluators: [correctLabel],
+  experimentPrefix: "Toxic Queries",
+});
+```
 
-  List<String> splits = Arrays.asList("test", "training");
+```java Java
+import com.langchain.smith.models.examples.ExampleListParams;
+import java.util.Arrays;
+import java.util.List;
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .splits(splits)
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
+List<String> splits = Arrays.asList("test", "training");
+
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .splits(splits)
+    .build();
+var examples = client.examples().list(listParams);
+```
+
 </CodeGroup>
 
 For more details on fetching views of a dataset, refer to the guide on [fetching datasets](/langsmith/manage-datasets-programmatically#fetch-datasets).
@@ -227,22 +233,22 @@ For more details on fetching views of a dataset, refer to the guide on [fetching
 ### Share a dataset publicly
 
 <Warning>
-  Sharing a dataset publicly will make the **dataset examples, experiments and associated runs, and feedback on this dataset accessible to anyone with the link**, even if they don't have a LangSmith account. Make sure you're not sharing sensitive information.
+Sharing a dataset publicly will make the **dataset examples, experiments and associated runs, and feedback on this dataset accessible to anyone with the link**, even if they don't have a LangSmith account. Make sure you're not sharing sensitive information.
 
-  This feature is only available in the cloud-hosted version of LangSmith.
+This feature is only available in the cloud-hosted version of LangSmith.
 </Warning>
 
 From the **Dataset & Experiments** tab, select a dataset, click **⋮** (top right of the page), click **Share Dataset**. This will open a dialog where you can copy the link to the dataset.
 
-<img alt="Share Dataset" />
+![Share Dataset](/langsmith/images/share-dataset.gif)
 
 ### Unshare a dataset
 
-1. Click on **Unshare** by clicking on **Public** in the upper right hand corner of any publicly shared dataset, then **Unshare** in the dialog. <img alt="Unshare Dataset" />
+1. Click on **Unshare** by clicking on **Public** in the upper right hand corner of any publicly shared dataset, then **Unshare** in the dialog. ![Unshare Dataset](/langsmith/images/unshare-dataset.png)
 
 2. Navigate to your organization's list of publicly shared datasets, by clicking on **Settings** -> **Shared URLs** or [this link](https://smith.langchain.com/settings/shared), then click on **Unshare** next to the dataset you want to unshare.
 
-<img alt="Unshare Trace List" />
+![Unshare Trace List](/langsmith/images/unshare-trace-list.png)
 
 ## Export a dataset
 
@@ -250,7 +256,7 @@ You can export your LangSmith dataset to a CSV, JSONL, or [OpenAI's fine tuning 
 
 From the **Dataset & Experiments** tab, select a dataset, click **⋮** (top right of the page), click **Download Dataset**.
 
-<img alt="Export Dataset Button" />
+![Export Dataset Button](/langsmith/images/export-dataset-button.gif)
 
 ## Export filtered traces from experiment to dataset
 
@@ -258,28 +264,27 @@ After running an [offline evaluation](/langsmith/evaluation-concepts#offline-eva
 
 ### View experiment traces
 
-<img alt="Export filtered traces" />
+![Export filtered traces](/langsmith/images/export-filtered-trace-to-dataset.png)
 
 To do so, first click on the arrow next to your experiment name. This will direct you to a project that contains the traces generated from your experiment.
 
-<img alt="Export filtered traces" />
+![Export filtered traces](/langsmith/images/experiment-tracing-project.png)
 
 From there, you can filter the traces based on your evaluation criteria. In this example, we're filtering for all traces that received an accuracy score greater than 0.5.
 
-<img alt="Export filtered traces" />
+![Export filtered traces](/langsmith/images/filtered-traces-from-experiment.png)
 
 After applying the filter on the project, we can multi-select runs to add to the dataset, and click **Add to Dataset**.
 
-<img alt="Export filtered traces" />
+![Export filtered traces](/langsmith/images/add-filtered-traces-to-dataset.png)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,19 +2,19 @@
 
 <!-- langchain-docs: Self-hosted LangSmith on Azure | https://docs.langchain.com/langsmith/azure-self-hosted -->
 
-# Azure 上自托管 LangSmith
+# 在 Azure 上自托管 LangSmith
 
 当在[Microsoft Azure](https://azure.microsoft.com/)上运行LangSmith时，[self-hosted](/langsmith/self-hosted)模式会部署一个完整的具有可观察性功能的LangSmith平台。
 
 此页面提供：
 
-* [Initial setup steps](#initial-setup) 用于部署到 AKS、配置托管服务和设置身份验证。
-* [Azure-specific architecture patterns](#reference-architecture) 和参考图。
-* [Compute and networking guidance](#compute-and-networking-on-azure) 和最佳实践。
-* 针对 Azure 部署的[Security and access control](#security-and-access-control) 建议。
+- [Initial setup steps](#initial-setup) 用于部署到 AKS、配置托管服务和设置身份验证。
+- [Azure-specific architecture patterns](#reference-architecture) 和参考图。
+- [Compute and networking guidance](#compute-and-networking-on-azure) 和最佳实践。
+- 针对 Azure 部署的[Security and access control](#security-and-access-control) 建议。
 
 <Note>
-  LangChain 发布了生产就绪的 [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure)，可在单个工作流程中配置 AKS、Azure Database for PostgreSQL、Azure 托管 Redis、Blob 存储和 Key Vault。从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
+LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com/langchain-ai/terraform/tree/main/modules/azure)，可在单个工作流程中预配 AKS、Azure Database for PostgreSQL、Azure 托管 Redis、Blob 存储和 Key Vault。从 [Deploy with Terraform overview](/langsmith/self-host-terraform) 开始，在 Terraform 和仅 Helm 路径之间进行选择。
 </Note>
 
 ## 初始设置
@@ -24,39 +24,34 @@
     沿[Kubernetes installation guide](/langsmith/kubernetes)行驶。 LangSmith 在 Azure Kubernetes 服务 (AKS) 上进行了测试。
 
     **AKS 特定说明：**
-
-    * LangSmith 可与标准 AKS 集群配合使用
-    * 使用 Azure 磁盘存储类作为持久卷
+    - LangSmith 适用于标准 AKS 集群
+    - 使用 Azure 磁盘存储类作为持久卷
   </Step>
 
   <Step title="Configure external services">
     对于生产部署，请连接到 Azure 托管服务：
 
-    <CardGroup>
+    <CardGroup cols={2}>
       <Card title="Azure Blob Storage" icon="database" href="/langsmith/self-host-blob-storage#azure-blob-storage">
         将跟踪数据存储在 Azure Blob 中
       </Card>
-
       <Card title="Azure Database" icon="database" href="/langsmith/self-host-external-postgres#azure-database-for-postgresql">
         PostgreSQL数据库
       </Card>
-
       <Card title="Azure Cache" icon="cpu" href="/langsmith/self-host-external-redis#azure-cache-for-redis">
         Redis 用于缓存
-      </Card><Card title="ClickHouse Cloud" icon="chart-line" href="/langsmith/self-host-external-clickhouse">
+      </Card>
+      <Card title="ClickHouse Cloud" icon="chart-line" href="/langsmith/self-host-external-clickhouse">
         分析数据库
       </Card>
     </CardGroup>
-  </Step>
-
-  <Step title="Set up authentication">
+  </Step><Step title="Set up authentication">
     使用 [Azure Workload Identity](https://azure.github.io/azure-workload-identity/docs/introduction.html) 对 Azure 服务的 LangSmith Pod 进行身份验证。
 
     **关键页面：**
-
-    * [Azure Blob managed identity](/langsmith/self-host-blob-storage#azure-blob-storage)
-    * [Azure Database Entra authentication](/langsmith/self-host-external-postgres#iam-authentication)
-    * [Azure Cache Entra authentication](/langsmith/self-host-external-redis#iam-authentication)
+    - [Azure Blob managed identity](/langsmith/self-host-blob-storage#azure-blob-storage)
+    - [Azure Database Entra authentication](/langsmith/self-host-external-postgres#iam-authentication)
+    - [Azure Cache Entra authentication](/langsmith/self-host-external-redis#iam-authentication)
   </Step>
 </Steps>
 
@@ -64,22 +59,32 @@
 
 ## 参考架构
 
-我们建议使用 Azure 的托管服务来提供可扩展、安全且有弹性的平台。以下架构适用于自托管和混合部署。|                            |组件|如何安装 |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **LangSmith Helm 发布** |前端、后端、队列、平台后端、Playground、ACE 以及可选的 LangSmith 部署控制/数据平面 | [⟦T1⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) 图表中的一个`helm upgrade --install` |
-| **您提供** | AKS、PostgreSQL、托管 Redis、Blob 存储、Key Vault、入口和 ClickHouse |安装 LangSmith 之前的 IaC 工具（Terraform、ARM 模板或 Azure 门户）|
+我们建议使用 Azure 的托管服务来提供可扩展、安全且有弹性的平台。以下架构适用于自托管和混合部署。
 
-<img alt="Architecture diagram showing Azure relations to LangSmith services" />
+| |组件|如何安装 |
+|---|---|---|
+| **LangSmith 头盔释放** |前端、后端、队列、平台后端、Playground、ACE 以及可选的 LangSmith 部署控制/数据平面 | [⟦T1⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) 图表中的一个`helm upgrade --install` |
+| **您提供** | AKS、PostgreSQL、托管 Redis、Blob 存储、Key Vault、入口和 ClickHouse |安装之前的 IaC 工具（Terraform、ARM 模板或 Azure 门户）LangSmith |
 
-<img alt="Architecture diagram showing Azure relations to LangSmith services" />**安装顺序：**配置Azure基础设施→配置或订阅ClickHouse→配置Entra ID和Workload Identity→运行`helm upgrade --install`。 LangSmith Deployment、Fleet、Insights 和 Chat 是通过同一 Helm 版本启用的，而不是单独安装。
+<img
+  className="block dark:hidden"
+  src="/langsmith/images/azure-architecture-self-hosted.png"
+  alt="Architecture diagram showing Azure relations to LangSmith services"
+/>
 
-**合规性表面：** LangSmith 图表及其容器映像的一项应用程序审查，以及每个托管资源的标准 Azure 服务审查。 ClickHouse Cloud 添加了一项第三方 SaaS 评论。
+<img
+  className="hidden dark:block"
+  src="/langsmith/images/azure-architecture-self-hosted-dark.png"
+  alt="Architecture diagram showing Azure relations to LangSmith services"
+/>
 
-* **客户端界面**：用户通过网络浏览器或LangChain SDK与LangSmith交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
-* **存储服务**：平台需要持久存储痕迹、元数据和缓存。在 Azure 上推荐的服务是：
-  * <Icon icon="database" /> **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。* <Icon icon="database" /> **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 版本 5 或更高版本。
-  * <Icon icon="chart-line" /> **ClickHouse** 用于大量跟踪分析。我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)。如果出于安全或合规性原因，这不是一个选项，请使用开源 Operator 在 AKS 上部署 ClickHouse 集群。确保跨[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)进行复制以实现持久性。混合部署不需要 Clickhouse。
-  * <Icon icon="cube" /> **[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)** 适用于大型工件。使用冗余存储配置，例如读取访问异地冗余 (RA-GRS) 或异地区域冗余 (RA-GZRS) 存储，并设计应用程序以在中断期间从次要区域进行读取。
+**安装顺序：**配置Azure基础设施→配置或订阅ClickHouse→配置Entra ID和Workload Identity→运行`helm upgrade --install`。 LangSmith 部署、队列、见解和聊天是通过同一 Helm 版本启用的，而不是单独安装。**合规性表面：** 针对 LangSmith 图表及其容器映像的一项应用程序审查，以及针对每个托管资源的标准 Azure 服务审查。 ClickHouse Cloud 添加了一项第三方 SaaS 评论。
+
+- **客户端界面**：用户通过网络浏览器或LangChain SDK 与LangSmith 交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
+- **存储服务**：平台需要持久存储痕迹、元数据和缓存。在 Azure 上推荐的服务是：
+    - <Icon icon="database" /> **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。- <Icon icon="database" /> **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 版本 5 或更高版本。
+    - <Icon icon="chart-line" /> **ClickHouse** 用于大量跟踪分析。我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)。如果出于安全或合规性原因，这不是一个选项，请使用开源 Operator 在 AKS 上部署 ClickHouse 集群。确保跨[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)进行复制以实现持久性。混合部署不需要 Clickhouse。
+    - <Icon icon="cube" /> **[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)** 用于大型工件。使用冗余存储配置，例如读取访问异地冗余 (RA-GRS) 或异地区域冗余 (RA-GZRS) 存储，并设计应用程序以在中断期间从次要区域进行读取。
 
 ## Azure 上的计算和网络
 
@@ -111,7 +116,7 @@
 
 #### 身份验证
 
-将 LangSmith 与 [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id) (Azure AD) 集成以实现单点登录。使用 Azure AD OAuth2 作为不记名令牌并分配角色来控制对 UI 和 API 的访问。
+将 LangSmith 与 [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id) (Azure AD) 集成以进行单点登录。使用 Azure AD OAuth2 作为不记名令牌并分配角色来控制对 UI 和 API 的访问。
 
 ## 存储和数据服务
 
@@ -175,11 +180,11 @@
 
 #### 秘密管理
 
-使用 [CSI Secret Store](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) 将密钥从 Key Vault 安装到 pod 中。避免将机密存储在环境变量或配置文件中。
+使用 [CSI Secret Store](https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) 将 Key Vault 中的机密装载到 pod 中。避免将机密存储在环境变量或配置文件中。
 
 ## 可观察性和监控
 
-将您的 LangSmith 实例配置为[export telemetry data](/langsmith/export-backend)，以便您可以使用 Azure 的服务来监控它。
+将您的 LangSmith 实例配置为 [export telemetry data](/langsmith/export-backend)，以便您可以使用 Azure 的服务来监控它。
 
 ### Azure 监视器使用 [Azure Monitor](https://azure.microsoft.com/en-us/products/monitor/) 来获取指标、日志和警报。主动监控涉及针对节点 CPU/内存利用率、Pod 状态和服务延迟等关键信号配置警报。当超过预定义阈值时，Azure Monitor 警报会通知你。
 
@@ -196,17 +201,15 @@
 确保 LangSmith 服务将日志发送到 stdout/stderr 并通过 [Fluent Bit](https://fluentbit.io/) 或 Azure Monitor 代理转发它们。
 
 ## 持续集成
+- 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
-* 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
+---
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/azure-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

@@ -10,7 +10,7 @@ LangGraph 允许运行时配置动态修改代理行为和权限。使用[LangSm
 
 以下是自定义包含和排除标头的方法：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "http": {
     "configurable_headers": {
@@ -27,7 +27,7 @@ LangGraph 允许运行时配置动态修改代理行为和权限。使用[LangSm
 
 您可以使用任何节点的 `config` 参数访问图表中包含的标头。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 def my_node(state, config):
   organization_id = config["configurable"].get("x-organization-id")
   ...
@@ -35,7 +35,7 @@ def my_node(state, config):
 
 或者通过从上下文中获取（在工具和/或其他嵌套函数中很有用）。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph.config import get_config
 
 def search_everything(query: str):
@@ -45,7 +45,7 @@ def search_everything(query: str):
 
 您甚至可以使用它来动态编译图表。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # my_graph.py.
 import contextlib
 
@@ -61,7 +61,7 @@ async def generate_agent(config):
 
 ```
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "graphs": {"agent": "my_grph.py:generate_agent"}
 }
@@ -71,7 +71,7 @@ async def generate_agent(config):
 
 如果您想选择退出可配置标头，您可以简单地在 `s` 列表中设置通配符模式：
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "http": {
     "configurable_headers": {
@@ -83,14 +83,13 @@ async def generate_agent(config):
 
 这将排除所有标头添加到您的运行配置中。请注意，排除项优先于包含项。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configurable-headers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

@@ -3,7 +3,7 @@
 # Configure LangSmith for scale
 
 <Warning>
-  The scaling guidance and example configurations on this page apply to **LangSmith version v0.13.0 or higher**.
+The scaling guidance and example configurations on this page apply to **LangSmith version v0.13.0 or higher**.
 </Warning>
 
 A self-hosted LangSmith instance can handle a large number of traces and users. The default configuration for the self-hosted deployment can handle substantial load, and you can configure your deployment to be able to achieve higher scale. This page describes scaling considerations and provides some examples to help configure your self-hosted instance.
@@ -14,19 +14,20 @@ For example configurations, refer to [Example LangSmith configurations for scale
 
 The table below provides an overview comparing different LangSmith configurations for various load patterns (reads / writes):
 
-|                                                             | **[Low / low](#low-reads-low-writes)**               | **[Low / high](#low-reads-high-writes)**             | **[High / low](#high-reads-low-writes)**             | [Medium / medium](#medium-reads-medium-writes)       | [High / high](#high-reads-high-writes)               |
-| :---------------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- |
-| <Tooltip>Concurrent frontend users</Tooltip>                | 5                                                    | 5                                                    | 50                                                   | 20                                                   | 50                                                   |
-| <Tooltip>Traces submitted per second</Tooltip>              | 10                                                   | 1000                                                 | 10                                                   | 100                                                  | 1000                                                 |
-| **Frontend replicas**<br />(500m CPU, 1Gi per replica)      | 1 (default)                                          | 4                                                    | 2                                                    | 2                                                    | 4                                                    |
-| **Platform backend replicas**<br />(1 CPU, 2Gi per replica) | 3 (default)                                          | 20                                                   | 3 (default)                                          | 3 (default)                                          | 20                                                   |
-| **Ingest queue replicas**<br />(1 CPU, 2Gi per replica)     | 3 (default)                                          | 24                                                   | 3 (default)                                          | 6                                                    | 24                                                   |
-| **Backend replicas**<br />(1 CPU, 2Gi per replica)          | 2 (default)                                          | 5                                                    | 40                                                   | 16                                                   | 50                                                   |
-| **Redis resources**                                         | 8 Gi (default)                                       | 26 Gi external                                       | 8 Gi (default)                                       | 13Gi external                                        | 26 Gi external                                       |
-| **ClickHouse resources**                                    | 4 CPU<br />16 Gi (default)                           | 10 CPU<br />32Gi memory                              | 8 CPU<br />16 Gi per replica                         | 16 CPU<br />24Gi memory                              | 14 CPU<br />24 Gi per replica                        |
-| **ClickHouse setup**                                        | Single instance                                      | Single instance                                      | 3-node <Tooltip>replicated cluster</Tooltip>         | Single instance                                      | 3-node <Tooltip>replicated cluster</Tooltip>         |
-| <Tooltip>Postgres resources</Tooltip>                       | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) |
-| **Blob storage**                                            | Disabled                                             | Enabled                                              | Enabled                                              | Enabled                                              | Enabled                                              |
+|  | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| <Tooltip tip="Number of users actively viewing traces on the frontend">Concurrent frontend users</Tooltip> | 5 | 5 | 50 | 20 | 50 |
+| <Tooltip tip="Number of traces being ingested via SDKs or API endpoints">Traces submitted per second</Tooltip> | 10 | 1000 | 10 | 100 | 1000 |
+| **Frontend replicas**<br />(500m CPU, 1Gi per replica) | 1 (default) | 4 | 2 | 2 | 4 |
+| **Platform backend replicas**<br />(1 CPU, 2Gi per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 |
+| **Ingest queue replicas**<br />(1 CPU, 2Gi per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 |
+| **Backend replicas**<br />(1 CPU, 2Gi per replica) | 2 (default) | 5 | 40 | 16 | 50 |
+| **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13Gi external | 26 Gi external |
+| **ClickHouse resources** | 4 CPU<br />16 Gi (default) | 10 CPU<br />32Gi memory | 8 CPU<br />16 Gi per replica | 16 CPU<br />24Gi memory | 14 CPU<br />24 Gi per replica |
+| **ClickHouse setup** | Single instance | Single instance | 3-node <Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).">replicated cluster</Tooltip> | Single instance | 3-node <Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).">replicated cluster</Tooltip> |
+| <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres resources</Tooltip> | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) |
+| **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
+
 
 Below we go into more details about the read and write paths as well as provide a `values.yaml` snippet for you to start with for your self-hosted LangSmith instance.
 
@@ -34,56 +35,56 @@ Below we go into more details about the read and write paths as well as provide 
 
 Common usage that put load on the write path:
 
-* Ingesting traces via the Python or JavaScript LangSmith SDK
-* Ingesting traces via the `@traceable` wrapper
-* Submitting traces via the `/runs/multipart` endpoint
+- Ingesting traces via the Python or JavaScript LangSmith SDK
+- Ingesting traces via the `@traceable` wrapper
+- Submitting traces via the `/runs/multipart` endpoint
 
 Services that play a large role in trace ingestion:
 
-* Platform backend service: Receives initial request to ingest traces and places traces on a Redis queue
-* Redis cache: Used to queue traces that need to be persisted
-* Ingest queue service: Persists traces for querying
-* ClickHouse: Persistent storage used for traces
+- Platform backend service: Receives initial request to ingest traces and places traces on a Redis queue
+- Redis cache: Used to queue traces that need to be persisted
+- Ingest queue service: Persists traces for querying
+- ClickHouse: Persistent storage used for traces
 
 When scaling up the write path (trace ingestion), it is helpful to monitor the four services/resources listed above. Here are some typical changes that can help increase performance of trace ingestion:
 
-* Give ClickHouse more resources (CPU and memory) if it is approaching resource limits.
-* Increase the number of platform-backend pods if ingest requests are taking long to respond.
-* Increase ingest queue service pod replicas if traces are not being processed from Redis fast enough.
-* Use a larger Redis cache if you notice that the current Redis instance is reaching resource limits. This could also be a reason why ingest requests take a long time.
+- Give ClickHouse more resources (CPU and memory) if it is approaching resource limits.
+- Increase the number of platform-backend pods if ingest requests are taking long to respond.
+- Increase ingest queue service pod replicas if traces are not being processed from Redis fast enough.
+- Use a larger Redis cache if you notice that the current Redis instance is reaching resource limits. This could also be a reason why ingest requests take a long time.
 
 ## Trace querying (read path)
 
 Common usage that puts load on the read path:
 
-* Users on the frontend looking at tracing projects or individual traces
-* Scripts used to query for trace info
-* Hitting either the `/runs/query` or `/runs/<run-id>` api endpoints
+- Users on the frontend looking at tracing projects or individual traces
+- Scripts used to query for trace info
+- Hitting either the `/runs/query` or `/runs/<run-id>` api endpoints
 
 Services that play a large role in querying traces:
 
-* Backend service: Receives the request and submits a query to ClickHouse to then respond to the request
-* ClickHouse: Persistent storage for traces. This is the main database that is queried when requesting trace info.
+- Backend service: Receives the request and submits a query to ClickHouse to then respond to the request
+- ClickHouse: Persistent storage for traces. This is the main database that is queried when requesting trace info.
 
 When scaling up the read path (trace querying), it is helpful to monitor the two services/resources listed above. Here are some typical changes that can help improve performance of trace querying:
 
-* Increase the number of backend service pods. This would be most impactful if backend service pods are reaching 1 core CPU usage.
-* Give ClickHouse more resources (CPU or Memory). ClickHouse can be very resource intensive, but it should lead to better performance.
-* Move to a [replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster). Adding replicas of ClickHouse helps with read performance, but we recommend staying below 5 replicas (start with 3).
+- Increase the number of backend service pods. This would be most impactful if backend service pods are reaching 1 core CPU usage.
+- Give ClickHouse more resources (CPU or Memory). ClickHouse can be very resource intensive, but it should lead to better performance.
+- Move to a [replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster). Adding replicas of ClickHouse helps with read performance, but we recommend staying below 5 replicas (start with 3).
 
 For more precise guidance on how this translates to helm chart values, refer to the examples the following [section](#example-langsmith-configurations-for-scale). If you are unsure why your LangSmith instance cannot handle a certain load pattern, contact the LangChain team.
 
 ## KEDA autoscaling for LangSmith queues
 
 <Note>
-  Available in LangSmith v0.13.0 and later.
+Available in LangSmith v0.13.0 and later.
 </Note>
 
 We highly recommend installing [KEDA](https://keda.sh/) (Kubernetes Event-driven Autoscaling) on your cluster. KEDA enables the `queue` and `ingest-queue` services to scale automatically based on their queue backlog size, as well as CPU and memory. This results in more efficient resource utilization and better handling of traffic spikes.
 
 ### Install KEDA
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm repo add kedacore https://kedacore.github.io/charts
 helm install keda kedacore/keda --namespace keda --create-namespace
 ```
@@ -92,7 +93,7 @@ helm install keda kedacore/keda --namespace keda --create-namespace
 
 Once KEDA is installed, you can enable KEDA-based autoscaling for the `queue` and `ingest-queue` services in your `values.yaml`:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 queue:
   autoscaling:
     keda:
@@ -107,7 +108,7 @@ ingestQueue:
 With KEDA enabled, the queue services will automatically scale up when their backlog grows and scale down when their backlog is processed. This is especially useful for handling variable trace ingestion loads without over-provisioning resources.
 
 <Note>
-  You can also enable KEDA for other services (`backend`, `platformBackend`, etc) but they will still only scale with CPU and memory.
+You can also enable KEDA for other services (`backend`, `platformBackend`, etc) but they will still only scale with CPU and memory.
 </Note>
 
 ## Example LangSmith configurations for scale
@@ -116,31 +117,31 @@ Below we provide some example LangSmith configurations based on expected read an
 
 For read load (trace querying):
 
-* Low means roughly 5 users looking at traces at a time (about 10 requests per second)
-* Medium means roughly 20 users looking at traces at a time (about 40 requests per second)
-* High means roughly 50 users looking at traces at a time (about 100 requests per second)
+- Low means roughly 5 users looking at traces at a time (about 10 requests per second)
+- Medium means roughly 20 users looking at traces at a time (about 40 requests per second)
+- High means roughly 50 users looking at traces at a time (about 100 requests per second)
 
 For write load (trace ingestion):
 
-* Low means up to 10 traces submitted per second
-* Medium means up to 100 traces submitted per second
-* High means up to 1000 traces submitted per second
+- Low means up to 10 traces submitted per second
+- Medium means up to 100 traces submitted per second
+- High means up to 1000 traces submitted per second
 
 <Note>
-  The exact optimal configuration depends on your usage and trace payloads. Use the examples below in combination with the information above and your specific usage to update your LangSmith configuration as you see fit. If you have any questions, please reach out to the LangChain team.
+The exact optimal configuration depends on your usage and trace payloads. Use the examples below in combination with the information above and your specific usage to update your LangSmith configuration as you see fit. If you have any questions, please reach out to the LangChain team.
 </Note>
 
-### Low reads, low writes <a name="low-reads-low-writes" />
+### Low reads, low writes <a name="low-reads-low-writes"></a>
 
 The default LangSmith configuration will handle this load. No custom resource configuration is needed here.
 
-### Low reads, high writes <a name="low-reads-high-writes" />
+### Low reads, high writes <a name="low-reads-high-writes"></a>
 
 You have a very high scale of trace ingestions, but single digit number of users on the frontend querying traces at any one time.
 
 For this, we recommend a configuration like this:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   blobStorage:
     # Please also set the other keys to connect to your blob storage. See configuration section.
@@ -214,7 +215,7 @@ commonEnv:
     value: "0"
 ```
 
-### High reads, low writes <a name="high-reads-low-writes" />
+### High reads, low writes <a name="high-reads-low-writes"></a>
 
 You have a relatively low scale of trace ingestions, but many frontend users querying traces and/or have scripts that hit the `/runs/query` or `/runs/<run-id>` endpoints frequently.
 
@@ -222,7 +223,7 @@ You have a relatively low scale of trace ingestions, but many frontend users que
 
 For this, we recommend a configuration like this:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   blobStorage:
     # Please also set the other keys to connect to your blob storage. See configuration section.
@@ -265,13 +266,13 @@ clickhouse:
     cluster: "replicated"
 ```
 
-### Medium reads, medium writes <a name="medium-reads-medium-writes" />
+### Medium reads, medium writes <a name="medium-reads-medium-writes"></a>
 
 This is a good all around configuration that should be able to handle most usage patterns of LangSmith. In internal testing, this configuration allowed us to scale to 100 traces ingested per second and 40 read requests per second.
 
 For this, we recommend a configuration like this:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   blobStorage:
     # Please also set the other keys to connect to your blob storage. See configuration section.
@@ -334,10 +335,10 @@ commonEnv:
 ```
 
 <Warning>
-  If you still notice slow reads with the above configuration, we recommend moving to a [replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
+If you still notice slow reads with the above configuration, we recommend moving to a [replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
 </Warning>
 
-### High reads, high writes <a name="high-reads-high-writes" />
+### High reads, high writes <a name="high-reads-high-writes"></a>
 
 You have a very high rate of trace ingestion (approaching 1000 traces submitted per second) and also have many users querying traces on the frontend (over 50 users) and/or scripts that are consistently making requests to `/runs/query` or `/runs/<run-id>` endpoints.
 
@@ -345,7 +346,7 @@ You have a very high rate of trace ingestion (approaching 1000 traces submitted 
 
 Overall, we recommend a configuration like this:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   blobStorage:
     # Please also set the other keys to connect to your blob storage. See configuration section.
@@ -420,19 +421,18 @@ commonEnv:
 ```
 
 <Note>
-  Ensure that the Kubernetes cluster is configured with sufficient resources to scale to the recommended size. After deployment, all of the pods in the Kubernetes cluster should be in a `Running` state. Pods stuck in `Pending` may indicate that you are reaching node pool limits or need larger nodes.
+Ensure that the Kubernetes cluster is configured with sufficient resources to scale to the recommended size. After deployment, all of the pods in the Kubernetes cluster should be in a `Running` state. Pods stuck in `Pending` may indicate that you are reaching node pool limits or need larger nodes.
 
-  Also, ensure that any ingress controller deployed on the cluster is able to handle the desired load to prevent bottlenecks.
+Also, ensure that any ingress controller deployed on the cluster is able to handle the desired load to prevent bottlenecks.
 </Note>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-scale.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

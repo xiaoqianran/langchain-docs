@@ -4,20 +4,28 @@
 
 The [Playground](/langsmith/prompt-engineering-concepts#playground) enables you to control various settings for your prompts. The **Prompt Settings** window contains:
 
-* [Model configuration](#model-configurations)
-* [Tool settings](#tool-settings)
-* [Prompt formatting](#prompt-formatting)
+- [Model configuration](#model-configurations)
+- [Tool settings](#tool-settings)
+- [Prompt formatting](#prompt-formatting)
 
 To access **Prompt Settings**:
 
 1. Navigate to the **Playground** in the left sidebar.
-2. Under the **Prompts** heading select the gear <Icon icon="settings" /> icon next to the model name, which will launch the **Prompt Settings** window.
+1. Under the **Prompts** heading select the gear <Icon icon="settings" iconType="solid" /> icon next to the model name, which will launch the **Prompt Settings** window.
 
-   <div>
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
+    <div style={{ textAlign: 'center' }}>
+    <img
+        className="block dark:hidden"
+        src="/langsmith/images/model-config-light.png"
+        alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc."
+    />
 
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
-   </div>
+    <img
+        className="hidden dark:block"
+        src="/langsmith/images/model-config-dark.png"
+        alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc."
+    />
+    </div>
 
 ## Model configurations
 
@@ -26,24 +34,24 @@ To access **Prompt Settings**:
 ### Create saved configurations
 
 1. In the **Model Configurations** tab, adjust the model configuration as needed—you can select a [saved configuration to edit](#edit-configurations).
-2. Click the **Save As** button in the top bar.
-3. Enter a name and optional description for your configuration and confirm.
-4. Now that you've saved the configuration, anyone in your organization's [workspace](/langsmith/administration-overview#workspaces) can access it. All saved configurations are available in the **Model Configuration** dropdown.
-5. Once you have created a saved configuration, you can set it as your default, so any new prompt you create will automatically use this configuration. To set a configuration as your default, click the **Set as default** <Icon icon="pinned" /> icon next to the model name in the dropdown.
+1. Click the **Save As** button in the top bar.
+1. Enter a name and optional description for your configuration and confirm.
+1. Now that you've saved the configuration, anyone in your organization's [workspace](/langsmith/administration-overview#workspaces) can access it. All saved configurations are available in the **Model Configuration** dropdown.
+1. Once you have created a saved configuration, you can set it as your default, so any new prompt you create will automatically use this configuration. To set a configuration as your default, click the **Set as default** <Icon icon="pinned" iconType="solid" /> icon next to the model name in the dropdown.
 
 <Note>
-  OAuth client credential fields appear in this popover only after the configuration is saved as a preset. To attach OAuth to a one-off configuration, save it as a preset first (refer to [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)).
+OAuth client credential fields appear in this popover only after the configuration is saved as a preset. To attach OAuth to a one-off configuration, save it as a preset first (refer to [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)).
 </Note>
 
 ### Edit configurations
 
 1. To rename a saved configuration, or update the description, select the configuration name or description and make the necessary changes.
-2. Update the current configuration's parameters as needed and click the **Save** button at the top.
+1. Update the current configuration's parameters as needed and click the **Save** button at the top.
 
 ### Delete configurations
 
 1. Select the configuration you want to remove.
-2. Click the trash <Icon icon="trash" /> icon to delete it.
+1. Click the trash <Icon icon="trash" iconType="solid" /> icon to delete it.
 
 ### Extra parameters
 
@@ -51,46 +59,45 @@ The **Extra Parameters** field allows you to pass additional model parameters th
 
 1. When model providers release new parameters that haven't yet been integrated into the LangSmith interface. You can specify these parameters in JSON format to use them right away. For example:
 
-   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   {
-       "reasoning_effort": "medium"
-   }
-   ```
+    ```json
+    {
+        "reasoning_effort": "medium"
+    }
+    ```
 
-2. When troubleshooting parameter-related errors in the Playground, such as:
+1. When troubleshooting parameter-related errors in the Playground, such as:
 
-   ```
-   TypeError: AsyncCompletions.create() got an unexpected keyword argument 'max_concurrency'
-   ```
+    ```
+    TypeError: AsyncCompletions.create() got an unexpected keyword argument 'max_concurrency'
+    ```
 
-   If you receive an error about unnecessary parameters (which is more common when using [LangChain JS](/oss/python/langchain/overview) for run tracing), you can use this field to remove the extra parameters.
+    If you receive an error about unnecessary parameters (which is more common when using [LangChain JS](/oss/python/langchain/overview) for run tracing), you can use this field to remove the extra parameters.
 
 ## Tool settings
 
-[*Tools*](/langsmith/prompt-engineering-concepts#tools) enable your LLM to perform tasks like searching the web, looking up information, and so on. In the **Tools Settings** tab, you can manage the ways your LLM uses and accesses the tools you have defined in your prompt, including:
+[_Tools_](/langsmith/prompt-engineering-concepts#tools) enable your LLM to perform tasks like searching the web, looking up information, and so on. In the **Tools Settings** tab, you can manage the ways your LLM uses and accesses the tools you have defined in your prompt, including:
 
-* **Parallel Tool Calls**: Calling multiple tools in parallel when appropriate. This allows the model to gather information from different sources simultaneously. (Dependent on model support for parallel execution.)
-* **Tool Choice**: Select the tools that the model can access. For more details, refer to [Use tools in a prompt](/langsmith/use-tools).
+- **Parallel Tool Calls**: Calling multiple tools in parallel when appropriate. This allows the model to gather information from different sources simultaneously. (Dependent on model support for parallel execution.)
+- **Tool Choice**: Select the tools that the model can access. For more details, refer to [Use tools in a prompt](/langsmith/use-tools).
 
-<Callout icon="tool">
-  To manage which tools are available in your workspace, including enabling, disabling, and editing tools across prompts, refer to [Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry).
+<Callout icon="tool" color="#A855F7" iconType="regular">
+To manage which tools are available in your workspace, including enabling, disabling, and editing tools across prompts, refer to [Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry).
 </Callout>
 
 ## Prompt formatting
 
 The **Prompt Format** tab allows you to specify:
 
-* The **Prompt type**. For details on chat and completion prompts, refer to [Prompt engineering](/langsmith/prompt-engineering-concepts#prompt-types) concepts.
-* The **Template format**. For details on prompt templating and using variables, refer to [F-string vs. mustache](/langsmith/prompt-engineering-concepts#f-string-vs-mustache).
+- The **Prompt type**. For details on chat and completion prompts, refer to [Prompt engineering](/langsmith/prompt-engineering-concepts#prompt-types) concepts.
+- The **Template format**. For details on prompt templating and using variables, refer to [F-string vs. mustache](/langsmith/prompt-engineering-concepts#f-string-vs-mustache).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managing-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

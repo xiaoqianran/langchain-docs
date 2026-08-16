@@ -4,8 +4,6 @@
 
 # 跟踪克劳德管理的代理
 
-使用 LangSmith 自动跟踪 Claude Managed Agent 会话和事件。
-
 [Claude Managed Agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) 是Anthropic 的托管、基于云的代理，在托管环境中运行。 LangSmith 支持通过 `wrapAnthropic` 包装器跟踪 Claude Managed Agent 会话，使您可以了解代理创建、会话事件和消息流。
 
 <Note>
@@ -14,17 +12,17 @@
 
 ## 安装
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash npm
 npm install langsmith @anthropic-ai/sdk
 ```
 
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash yarn
 yarn add langsmith @anthropic-ai/sdk
 ```
 
 ## 环境设置
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash Shell
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export ANTHROPIC_API_KEY=<your-anthropic-api-key>
@@ -34,7 +32,7 @@ export ANTHROPIC_API_KEY=<your-anthropic-api-key>
 
 用 `wrapAnthropic` 包装 Anthropic 客户端。包装器将自动跟踪代理创建、会话创建以及流经会话的所有事件。
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript
 import Anthropic from "@anthropic-ai/sdk";
 import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 
@@ -93,23 +91,24 @@ for await (const event of stream) {
 ```
 
 <Note>
-  Anthropic 多智能体架构中子智能体的完整追踪需要
+  Anthropic的多代理架构中子代理的完整跟踪需要
   接入单独的事件流，尚不支持。仅限顶级
   跟踪会话事件。
 </Note>
 
 ## 后续步骤
 
-* [Trace Anthropic models](/langsmith/trace-anthropic) — 跟踪标准Anthropic API 调用和工具使用
-* [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk) — 跟踪本地代理应用程序的 Claude Agent SDK
-* [Monitor your agent](/langsmith/dashboards) — 为生产代理设置仪表板和警报
+- [Trace Anthropic models](/langsmith/trace-anthropic) — 跟踪标准Anthropic API 调用和工具使用
+- [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk) — 跟踪本地代理应用程序的 Claude Agent SDK
+- [Monitor your agent](/langsmith/dashboards) — 为生产代理设置仪表板和警报
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

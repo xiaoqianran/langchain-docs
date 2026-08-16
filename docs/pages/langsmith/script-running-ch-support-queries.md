@@ -38,26 +38,25 @@ Ensure you have the following tools/items ready.
 
 Run the following command to run the desired query:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_ch.sh <clickhouse_url> --input path/to/query.sql
 ```
 
 For example, if you are using the bundled version with port-forwarding, the command might look like:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_ch.sh "clickhouse://default:password@localhost:8123/default" --input support_queries/clickhouse/ch_get_query_exceptions.sql
 ```
 
 which will output query logs for all queries that have thrown exceptions in Clickhouse in the last 7 days. To extract this to a file add the flag `--output path/to/file.csv`
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-ch-support-queries.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

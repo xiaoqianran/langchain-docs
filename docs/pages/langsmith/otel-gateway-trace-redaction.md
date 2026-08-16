@@ -2,13 +2,11 @@
 
 # Redact sensitive data with the OpenTelemetry Gateway architecture
 
-Use an OpenTelemetry collector to redact sensitive data from traces before they land in LangSmith.
-
 [LangChain](/langsmith/trace-with-langchain), [LangGraph](/langsmith/trace-with-langgraph), and [Deep Agents](/langsmith/trace-deep-agents) applications support [OpenTelemetry-based tracing](/langsmith/trace-with-opentelemetry). Instead of sending traces directly to LangSmith, you can route them through an OpenTelemetry collector you control, apply redaction rules to strip sensitive fields, and forward the sanitized traces to LangSmith.
 
 Traces flow from your application to the collector over OTLP/HTTP. The collector runs a transform processor that redacts sensitive span attributes, such as prompt inputs and model completions, before forwarding the sanitized spans to the LangSmith API.
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 flowchart TD
     A["Application<br/>(LangChain / LangGraph / Deep Agents)"]
 
@@ -29,7 +27,7 @@ flowchart TD
 
 Both of the following approaches require the following environment variables. Set `OTEL_EXPORTER_OTLP_ENDPOINT` to the address of your collector:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_OTEL_ENABLED="true"
 LANGSMITH_TRACING="true"
 LANGSMITH_OTEL_ONLY="true"
@@ -43,7 +41,7 @@ For more on `LANGSMITH_PROJECT`, refer to [Log traces to a specific project](/la
 
 Both approaches also require an OpenTelemetry collector running as an intermediary between your application and LangSmith. The following configuration sets up an OTLP receiver on port `4318`, a transform processor that redacts the `gen_ai.prompt` and `gen_ai.completion` span attributes, and an exporter that forwards the sanitized traces to the LangSmith API:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 receivers:
   otlp:
     protocols:
@@ -81,7 +79,7 @@ service:
 
 Use this approach if your application already uses [LangChain](/langsmith/trace-with-langchain), [LangGraph](/langsmith/trace-with-langgraph), or [Deep Agents](/langsmith/trace-deep-agents). The tracing integration handles span creation automatically based on your environment variables, so no additional instrumentation code is required:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
@@ -116,7 +114,7 @@ print(result["messages"][-1].content)
 
 Use this approach if you need programmatic control over the tracer provider and exporter. For example, to set per-request project names or configure custom headers at runtime. You configure the provider explicitly in code rather than relying on environment variables alone:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import os
 
 from langchain.prompts import ChatPromptTemplate
@@ -157,17 +155,16 @@ provider.shutdown()
 ```
 
 <Note>
-  If you prefer to redact sensitive data without routing through a collector, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
+If you prefer to redact sensitive data without routing through a collector, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
 </Note>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/otel-gateway-trace-redaction.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

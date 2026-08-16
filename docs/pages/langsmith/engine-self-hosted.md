@@ -2,10 +2,8 @@
 
 # LangSmith Engine on Self-hosted
 
-How LangSmith Engine runs in a self-hosted deployment, what it depends on outside your environment, and how it handles your data.
-
 <Info>
-  Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact your account team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
+Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact your account team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
 </Info>
 
 LangSmith Engine is an agent within LangSmith that monitors your production traces, clusters them into issues, diagnoses each issue against your source code, proposes a fix as a PR, and identifies ground truth evals to add to your datasets. For a product overview, see [Engine](/langsmith/engine-overview).
@@ -16,18 +14,18 @@ To install Engine, see [Enable Engine](/langsmith/deploy-self-hosted-full-platfo
 
 Engine works with three kinds of data:
 
-* **Code** (optional)**:** Your agent's source, which Engine reads to diagnose issues and propose fixes.
-* **Traces:** Runtime data from your agents, which can include user messages, tool outputs, and PII.
-* **Model:** The LLM calls Engine makes to run diagnosis, generate fixes, and write evaluators.
+- **Code** (optional)**:** Your agent's source, which Engine reads to diagnose issues and propose fixes.
+- **Traces:** Runtime data from your agents, which can include user messages, tool outputs, and PII.
+- **Model:** The LLM calls Engine makes to run diagnosis, generate fixes, and write evaluators.
 
 ## Availability by cloud and region
 
 Engine is available where LSI is available:
 
-| Cloud | Region | Status    |
-| ----- | ------ | --------- |
-| AWS   | US     | Available |
-| GCP   | US     | Available |
+| Cloud | Region | Status |
+| --- | --- | --- |
+| AWS | US | Available |
+| GCP | US | Available |
 
 For availability in other regions, contact your account team.
 
@@ -37,10 +35,10 @@ LSI is the LangChain-managed service that powers Engine.
 
 The flow:
 
-* Your self-hosted Engine sends an HTTPS request to the LSI gateway for its cloud, listed in the per-cloud sections on this page.
-* Engine authenticates with a short-lived license JWT obtained during LangSmith license verification. You do not provide separate model-provider credentials.
-* LSI validates the JWT and routes the request to the model provider over private networking inside LangChain's environment.
-* LSI returns the response to your self-hosted Engine.
+- Your self-hosted Engine sends an HTTPS request to the LSI gateway for its cloud, listed in the per-cloud sections on this page.
+- Engine authenticates with a short-lived license JWT obtained during LangSmith license verification. You do not provide separate model-provider credentials.
+- LSI validates the JWT and routes the request to the model provider over private networking inside LangChain's environment.
+- LSI returns the response to your self-hosted Engine.
 
 Each request carries the trace content, code, and intermediate outputs Engine needs to do its work. LSI and the model provider process that content to serve the request.
 
@@ -52,8 +50,8 @@ If the connection to LSI is unavailable, Engine stops and returns an error rathe
 
 LSI does not persist the content of prompts or model responses. It retains the following metadata for usage attribution and billing:
 
-* Account, workspace, and project identifiers used to attribute usage.
-* Model and token-usage metadata used for billing.
+- Account, workspace, and project identifiers used to attribute usage.
+- Model and token-usage metadata used for billing.
 
 For model-provider retention and training commitments, see [Engine security](/langsmith/engine-security).
 
@@ -82,10 +80,10 @@ To connect your VPC to LSI:
     Configure the AWS provider for the region that contains your VPC. Keep `service_region` set to `us-east-2`, including when your VPC is in another region. Select one private subnet per availability zone.
 
     <Note>
-      The `service_region` argument requires HashiCorp AWS provider `5.82.0` or later.
+    The `service_region` argument requires HashiCorp AWS provider `5.82.0` or later.
     </Note>
 
-    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```hcl
     resource "aws_vpc_endpoint" "langsmith_intelligence" {
       vpc_id              = var.vpc_id
       service_name        = "com.amazonaws.vpce.us-east-2.vpce-svc-054f37092752bff6b"
@@ -105,7 +103,7 @@ To connect your VPC to LSI:
   <Step title="Route the LSI hostname to the endpoint">
     Enable DNS resolution and DNS hostnames for your VPC. Then, create a Route 53 private hosted zone and alias record so `beacon.aws.langchain.com` resolves to the VPC endpoint inside your VPC. Keep this hostname unchanged so TLS certificate validation succeeds. The private hosted zone also prevents fallback to public DNS when the endpoint is unavailable.
 
-    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```hcl
     resource "aws_route53_zone" "langsmith_intelligence" {
       name = "beacon.aws.langchain.com"
 
@@ -133,7 +131,7 @@ To connect your VPC to LSI:
   <Step title="Verify private connectivity">
     From a node or container that runs Engine, resolve the gateway hostname:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     getent ahostsv4 beacon.aws.langchain.com
     ```
 
@@ -141,8 +139,11 @@ To connect your VPC to LSI:
   </Step>
 </Steps>
 
-<Frame>
-  <img alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment." />
+<Frame caption="AWS: LangSmith and Engine run in your VPC; LSI and Bedrock run in LangChain's AWS environment.">
+  <img
+    src="/langsmith/images/engine-self-hosted-aws.png"
+    alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment."
+  />
 </Frame>
 
 ### GCP (available in US)
@@ -150,11 +151,14 @@ To connect your VPC to LSI:
 The gateway host is [`beacon.langchain.com`](/langsmith/deploy-self-hosted-full-platform#allow-egress-to-langsmith-intelligence). LSI routes requests to Vertex in LangChain's GCP environment.
 
 <Note>
-  This is the same host self-hosted LangSmith uses for license verification and billing telemetry, so a GCP deployment adds a path rather than a new egress destination. See [Configure egress](/langsmith/self-host-egress).
+This is the same host self-hosted LangSmith uses for license verification and billing telemetry, so a GCP deployment adds a path rather than a new egress destination. See [Configure egress](/langsmith/self-host-egress).
 </Note>
 
-<Frame>
-  <img alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment." />
+<Frame caption="GCP: LangSmith and Engine run in your project; LSI and Vertex run in LangChain's GCP environment.">
+  <img
+    src="/langsmith/images/engine-self-hosted-gcp.png"
+    alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment."
+  />
 </Frame>
 
 ## Model selection and quality
@@ -167,26 +171,25 @@ Engine uses managed inference, not a bring-your-own-key setup. This keeps Engine
 
 In a self-hosted deployment, Engine separates data handling between your environment and LangChain's:
 
-* **Your environment:** Engine orchestration and LangSmith-stored traces remain in your self-hosted environment.
-* **LangChain's environment:** LSI and the model provider process content that Engine sends. LSI retains the billing metadata described above.
+- **Your environment:** Engine orchestration and LangSmith-stored traces remain in your self-hosted environment.
+- **LangChain's environment:** LSI and the model provider process content that Engine sends. LSI retains the billing metadata described above.
 
 Engine's deployment-independent data handling, including zero data retention with every model provider and no use of customer data to train or fine-tune models, is described in [Engine security](/langsmith/engine-security).
 
 ## See also
 
-* [Engine](/langsmith/engine-overview)
-* [Configure Engine](/langsmith/engine)
-* [Engine security](/langsmith/engine-security)
-* [Engine webhooks](/langsmith/engine-webhooks)
+- [Engine](/langsmith/engine-overview)
+- [Configure Engine](/langsmith/engine)
+- [Engine security](/langsmith/engine-security)
+- [Engine webhooks](/langsmith/engine-webhooks)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

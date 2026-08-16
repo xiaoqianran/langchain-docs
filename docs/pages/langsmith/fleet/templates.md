@@ -2,12 +2,10 @@
 
 # Templates
 
-Start faster with curated Fleet templates and customize tools, prompts, and channels.
-
 LangSmith Fleet includes [starter templates](https://www.langchain.com/templates) to help you create agents quickly. Templates include predefined instructions, [tools](/langsmith/fleet/tools), and [channels](/langsmith/fleet/essentials#channels) (if applicable) for common use cases. You can use templates as-is, or as a baseline to customize.
 
 <Tip>
-  If you're new to Fleet, start with the step-by-step [quickstart](/langsmith/fleet/quickstart) to build your first agent using a template.
+If you're new to Fleet, start with the step-by-step [quickstart](/langsmith/fleet/quickstart) to build your first agent using a template.
 </Tip>
 
 ## Features
@@ -20,7 +18,7 @@ Templates come with a curated set of [tools](/langsmith/fleet/essentials#tools) 
 
 ### System instructions
 
-Each template includes a *system prompt* (also called *instructions*) that defines the agent's behavior, personality, and capabilities. The system prompt guides how the agent interprets user requests and uses its available tools. You can customize these instructions to match your specific needs.
+Each template includes a _system prompt_ (also called _instructions_) that defines the agent's behavior, personality, and capabilities. The system prompt guides how the agent interprets user requests and uses its available tools. You can customize these instructions to match your specific needs.
 
 ### Channels (optional)
 
@@ -32,28 +30,26 @@ Templates serve as starting points that you clone to create your own agent. When
 
 ## Available templates
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Executive Assistant" icon="mail">
     Manages your inbox, calendar, and daily brief.
   </Card>
-
   <Card title="Software Engineer" icon="code">
     Ships code from Slack, Linear, and GitHub in a sandbox.
   </Card>
 </CardGroup>
 
 <Info>
-  The available templates may change over time. For the most up-to-date set, open **Templates** in Fleet or the [templates gallery](https://www.langchain.com/templates).
+The available templates may change over time. For the most up-to-date set, open **Templates** in Fleet or the [templates gallery](https://www.langchain.com/templates).
 </Info>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

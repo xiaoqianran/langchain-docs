@@ -2,18 +2,18 @@
 
 <!-- langchain-docs: LangSmith data plane | https://docs.langchain.com/langsmith/data-plane -->
 
-# LangSmith 数据平面
+# LangSmith数据平面
 
-*数据平面* 由您的 [Agent Servers](/langsmith/agent-server)（部署）、其支持基础设施以及不断轮询来自 [LangSmith control plane](/langsmith/control-plane) 的更新的“侦听器”应用程序组成。
+_数据平面_ 由您的 [Agent Servers](/langsmith/agent-server)（部署）、其支持基础设施以及不断轮询来自 [LangSmith control plane](/langsmith/control-plane) 的更新的“侦听器”应用程序组成。
 
 ## 服务器基础设施
 
 除了[Agent Server](/langsmith/agent-server)本身之外，每个服务器的以下基础设施组件也包含在“数据平面”的广泛定义中：
 
-* **PostgreSQL**：用户、运行和内存数据的持久层。
-* **Redis**：工作人员的通信和临时元数据。
-* **秘密存储**：环境秘密的安全管理。
-* **自动缩放器**：根据负载缩放服务器容器。
+- **PostgreSQL**：用户、运行和内存数据的持久层。
+- **Redis**：工作人员的通信和临时元数据。
+- **秘密存储**：环境秘密的安全管理。
+- **自动缩放器**：根据负载缩放服务器容器。
 
 ## “监听器”应用程序
 
@@ -62,39 +62,40 @@
 ### MongoDB 检查点
 
 <Info>
-  适用于 [Cloud](/langsmith/cloud)（具有外部管理的 MongoDB 实例）和 [Standalone](/langsmith/deploy-standalone-server) 部署。
+适用于 [Cloud](/langsmith/cloud)（具有外部管理的 MongoDB 实例）和 [Standalone](/langsmith/deploy-standalone-server) 部署。
 </Info>
 
 您可以使用 MongoDB 作为检查点存储的替代后端。配置后，MongoDB 仅处理检查点数据 - 所有其他服务器资源仍然需要 PostgreSQL。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer) 了解设置说明。
 
 ### LangSmith 追踪
 
-代理服务器自动配置为将跟踪发送到 LangSmith。有关每个部署选项的详细信息，请参阅下表。
+代理服务器自动配置为将跟踪发送到LangSmith。有关每个部署选项的详细信息，请参阅下表。
 
 |云|混合动力|自托管 |
-| -------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-|必需<br />追踪 LangSmith SaaS。 |可选<br />禁用跟踪或跟踪到 LangSmith SaaS。 |可选<br />禁用跟踪、跟踪到 LangSmith SaaS 或跟踪到自托管 LangSmith。 |
+|------------------------|------------------------------------|----------------------|
+|需要<br />追踪到LangSmith SaaS。 |可选<br />禁用跟踪或跟踪到LangSmith SaaS。 |可选<br />禁用跟踪，跟踪到LangSmith SaaS，或跟踪到自托管LangSmith。 |
 
 ### 遥测
 
-代理服务器会自动配置为报告遥测元数据以用于计费目的。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
-| --------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-|遥测数据发送至 LangSmith SaaS。 |遥测数据发送至 LangSmith SaaS。 |自我报告气隙许可证密钥的使用情况（审核）。<br />将遥测发送到 LangSmith SaaS 以获取 LangSmith 许可证密钥。 |
+代理服务器会自动配置为报告遥测元数据以用于计费目的。有关每个部署选项的详细信息，请参阅下表。
+
+|云|混合动力|自托管 |
+|------------------------|------------------------------------|----------------------|
+|遥测数据发送至LangSmith SaaS。 |遥测数据发送至LangSmith SaaS。 |自我报告气隙许可证密钥的使用情况（审核）。<br />将遥测发送至 LangSmith SaaS 以获取 LangSmith 许可证密钥。 |
 
 ### 许可
 
 代理服务器自动配置为执行许可证密钥验证。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
-| --------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
-| LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 | LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 |根据 LangSmith SaaS 验证的气隙许可证密钥或平台许可证密钥。 |
+|------------------------|------------------------------------|----------------------|
+| LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 | LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 |气隙许可证密钥或针对LangSmith SaaS 进行验证的平台许可证密钥。 |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

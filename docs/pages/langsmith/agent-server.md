@@ -6,19 +6,16 @@ LangSmith Deployment's **Agent Server** offers an API for creating and managing 
 
 Use Agent Server to create and manage:
 
-<CardGroup>
+<CardGroup cols={4}>
   <Card title="Assistants" icon="robot" href="/langsmith/assistants" />
-
   <Card title="Threads" icon="messages" href="/langsmith/use-threads" />
-
   <Card title="Runs" icon="player-play" href="/langsmith/runs" />
-
   <Card title="Cron jobs" icon="clock" href="/langsmith/cron-jobs" />
 </CardGroup>
 
 <Tip>
-  **API reference**<br />
-  For detailed information on the API endpoints and data models, refer to the [Agent Server API reference](/langsmith/server-api-ref).
+**API reference**<br></br>
+For detailed information on the API endpoints and data models, refer to the [Agent Server API reference](/langsmith/server-api-ref).
 </Tip>
 
 ## Application structure
@@ -28,7 +25,7 @@ To deploy an Agent Server application, you need to specify the graph(s) you want
 Read the [application structure](/langsmith/application-structure) guide to learn how to structure your LangGraph application for deployment.
 
 <Note>
-  [LangSmith cloud](/langsmith/cloud) manages the database for you. If you're deploying on your [own infrastructure](/langsmith/self-hosted), you'll need to set it up yourself.
+[LangSmith cloud](/langsmith/cloud) manages the database for you. If you're deploying on your [own infrastructure](/langsmith/self-hosted), you'll need to set it up yourself.
 </Note>
 
 ## Parts of a deployment
@@ -51,7 +48,7 @@ How and when your graph is compiled depends on how you register it in your [appl
 2. **Factory function**: Export an agent factory function that the server invokes each time it needs the graph. Use this only when you need per-run graph customization (for example, choosing different models or tools based on the assistant config). Keep factory functions lightweight, since they run on every invocation.
 
 <Tip>
-  Use a compiled graph unless you specifically need per-run customization. Factory functions add overhead on every invocation; compiled graphs do not.
+Use a compiled graph unless you specifically need per-run customization. Factory functions add overhead on every invocation; compiled graphs do not.
 </Tip>
 
 In both cases, the server automatically injects the checkpointer and memory store configured for that deployment at runtime. **Do not configure these in your graph code** because the server needs to manage them for other operations.
@@ -60,9 +57,9 @@ In both cases, the server automatically injects the checkpointer and memory stor
 
 Agent Server persists three types of data, all backed by [PostgreSQL](https://www.postgresql.org/) by default:
 
-* **Core resource data**: assistants, threads, runs, and cron jobs. Always stored in PostgreSQL.
-* **Checkpoints (short-term memory)**: snapshots of graph execution state written at each step. They make runs durable: if a worker is interrupted, the run can resume from the last checkpoint rather than from the beginning. Durability mode controls checkpoint frequency—`async` (default) writes after each step; `exit` stores only the final state. LangSmith stores this in PostgreSQL by default; but you can switch to [MongoDB](https://www.mongodb.com/) or a custom implementation. For details, refer to [Configure checkpointer backend](/langsmith/configure-checkpointer).
-* **Store (long-term memory)**: memory that persists across threads, enabling agents to retain information between separate conversations. Stored in PostgreSQL by default but can be replaced with a custom implementation. For details, refer to [Add custom store](/langsmith/custom-store).
+- **Core resource data**: assistants, threads, runs, and cron jobs. Always stored in PostgreSQL.
+- **Checkpoints (short-term memory)**: snapshots of graph execution state written at each step. They make runs durable: if a worker is interrupted, the run can resume from the last checkpoint rather than from the beginning. Durability mode controls checkpoint frequency—`async` (default) writes after each step; `exit` stores only the final state. LangSmith stores this in PostgreSQL by default; but you can switch to [MongoDB](https://www.mongodb.com/) or a custom implementation. For details, refer to [Configure checkpointer backend](/langsmith/configure-checkpointer).
+- **Store (long-term memory)**: memory that persists across threads, enabling agents to retain information between separate conversations. Stored in PostgreSQL by default but can be replaced with a custom implementation. For details, refer to [Add custom store](/langsmith/custom-store).
 
 ### Task queue
 
@@ -78,9 +75,9 @@ For more information on how to set up and manage these components, review the [h
 
 Agent Server supports three runtime configurations:
 
-* **Single host**: The API server manages the task queue directly with no separate queue workers. This is the default for self-hosted deployments and is suitable for development and low-traffic use cases.
-* **Split API and queue**: Dedicated queue workers handle run execution on separate hosts from the API server. For self-hosted deployments, enable this by setting `queue.enabled: true` in your configuration. Each tier scales independently—API servers scale on request volume, queue workers scale on pending run count.
-* **Distributed runtime**: The API and queue processes are again run separately, but instead of a single queue process handling both the orchestration and execution of your graph, the distributed runtime uses one process for orchestration and one process for execution. Use this for large-scale deployments with high concurrency requirements.
+- **Single host**: The API server manages the task queue directly with no separate queue workers. This is the default for self-hosted deployments and is suitable for development and low-traffic use cases.
+- **Split API and queue**: Dedicated queue workers handle run execution on separate hosts from the API server. For self-hosted deployments, enable this by setting `queue.enabled: true` in your configuration. Each tier scales independently—API servers scale on request volume, queue workers scale on pending run count.
+- **Distributed runtime**: The API and queue processes are again run separately, but instead of a single queue process handling both the orchestration and execution of your graph, the distributed runtime uses one process for orchestration and one process for execution. Use this for large-scale deployments with high concurrency requirements.
 
 The container architecture and run lifecycle described below apply to single host and split API and queue configurations.
 
@@ -88,14 +85,14 @@ The container architecture and run lifecycle described below apply to single hos
 
 A typical deployment consists of two kinds of long-running containers, both built from the same Docker image (a base image with your project code installed on top):
 
-* **API servers** handle client requests (creating runs, reading thread state, streaming results) but do not execute agent code themselves.
-* **Queue workers** are the execution engine. They listen to the durable task queue, execute your graph code, and write checkpoints.
+- **API servers** handle client requests (creating runs, reading thread state, streaming results) but do not execute agent code themselves.
+- **Queue workers** are the execution engine. They listen to the durable task queue, execute your graph code, and write checkpoints.
 
 Containers are **stateless** but persistent. At least 1 queue worker must listen to the task queue at any time to ensure no runs are orphaned. The containers can serve many runs over their lifetime.
 
 API servers and queue workers are separate container pools and [scale independently](/langsmith/data-plane#autoscaling).
 
-```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid
 flowchart TB
     User["User"]
 
@@ -151,17 +148,16 @@ Each worker executes up to [`N_JOBS_PER_WORKER`](/langsmith/env-var-self-hosted)
 
 ## Learn more
 
-* [Application Structure](/langsmith/application-structure) guide explains how to structure your application for deployment.
-* The [API Reference](https://docs.langchain.com/langsmith/server-api-ref) provides detailed information on the API endpoints and data models.
+- [Application Structure](/langsmith/application-structure) guide explains how to structure your application for deployment.
+- The [API Reference](https://docs.langchain.com/langsmith/server-api-ref) provides detailed information on the API endpoints and data models.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

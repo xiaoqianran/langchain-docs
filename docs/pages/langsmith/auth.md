@@ -10,8 +10,8 @@ LangSmith provides a flexible authentication and authorization system that can i
 
 While often used interchangeably, these terms represent distinct security concepts:
 
-* [**Authentication**](#authentication) ("AuthN") verifies *who* you are. This runs as middleware for every request.
-* [**Authorization**](#authorization) ("AuthZ") determines *what you can do*. This validates the user's privileges and roles on a per-resource basis.
+* [**Authentication**](#authentication) ("AuthN") verifies _who_ you are. This runs as middleware for every request.
+* [**Authorization**](#authorization) ("AuthZ") determines _what you can do_. This validates the user's privileges and roles on a per-resource basis.
 
 In LangSmith, authentication is handled by your [`@auth.authenticate`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) handler, and authorization is handled by your [`@auth.on`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/on) handlers.
 
@@ -26,8 +26,8 @@ LangSmith provides different security defaults:
 * Can be customized with your auth handler
 
 <Note>
-  **Custom auth**
-  Custom auth **is supported** for all plans in LangSmith.
+**Custom auth**
+Custom auth **is supported** for all plans in LangSmith.
 </Note>
 
 ### Self-hosted
@@ -35,6 +35,7 @@ LangSmith provides different security defaults:
 * No default authentication
 * Complete flexibility to implement your security model
 * You control all aspects of authentication and authorization
+
 
 ## System architecture
 
@@ -58,7 +59,7 @@ A typical authentication setup involves three main components:
 
 Here's how these components typically interact:
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 sequenceDiagram
     participant Client as Client App
     participant Auth as Auth Provider
@@ -84,7 +85,7 @@ Authentication in LangGraph runs as middleware on every request. Your [`@auth.au
 2. Return [user info](https://reference.langchain.com/python/langgraph-sdk/auth/types/MinimalUserDict) containing the user's identity and user information if valid
 3. Raise an [HTTP exception](https://reference.langchain.com/python/langgraph-sdk/auth/exceptions/HTTPException) or AssertionError if invalid
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import Auth
 
 auth = Auth()
@@ -123,9 +124,9 @@ The returned user information is available:
   * request (Request): The raw ASGI request object
   * path (str): The request path, e.g., `"/threads/abcd-1234-abcd-1234/runs/abcd-1234-abcd-1234/stream"`
   * method (str): The HTTP method, e.g., `"GET"`
-  * path\_params (dict\[str, str]): URL path parameters, e.g., `{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
-  * query\_params (dict\[str, str]): URL query parameters, e.g., `{"stream": "true"}`
-  * headers (dict\[bytes, bytes]): Request headers
+  * path_params (dict[str, str]): URL path parameters, e.g., `{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
+  * query_params (dict[str, str]): URL query parameters, e.g., `{"stream": "true"}`
+  * headers (dict[bytes, bytes]): Request headers
   * authorization (str | None): The Authorization header value (e.g., `"Bearer <token>"`)
 
   In many of our tutorials, we will just show the "authorization" parameter to be concise, but you can opt to accept more information as needed
@@ -136,7 +137,7 @@ The returned user information is available:
 
 Custom authentication permits delegated access. The values you return in  `@auth.authenticate` are added to the run context, giving agents user-scoped credentials lets them access resources on the user’s behalf.
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```mermaid actions={false}
 sequenceDiagram
   %% Actors
   participant ClientApp as Client
@@ -190,7 +191,7 @@ After authentication, LangGraph calls your [`@auth.on`](https://reference.langch
 
 If you want to just implement simple user-scoped access control, you can use a single [`@auth.on`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) handler for all resources and actions. If you want to have different control depending on the resource and action, you can use [resource-specific handlers](#resource-specific-handlers). See the [Supported Resources](#supported-resources) section for a full list of the resources that support access control.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 @auth.on
 async def add_owner(
     ctx: Auth.types.AuthContext,
@@ -230,8 +231,7 @@ async def add_owner(
     return filters
 ```
 
-<a />
-
+<a id="resource-specific-handlers"></a>
 ### Resource-specific handlers
 
 You can register handlers for specific resources and actions by chaining the resource and action names together with the [`@auth.on`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) decorator.
@@ -242,11 +242,11 @@ When a request is made, the most specific handler that matches that resource and
 3. All other endpoints (e.g., e.g., delete assistant, crons, store) are disabled for all users.
 
 <Tip>
-  **Supported Handlers**
-  For a full list of supported resources and actions, see the [Supported Resources](#supported-resources) section below.
+**Supported Handlers**
+For a full list of supported resources and actions, see the [Supported Resources](#supported-resources) section below.
 </Tip>
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Generic / global handler catches calls that aren't handled by more specific handlers
 @auth.on
 async def reject_unhandled_requests(ctx: Auth.types.AuthContext, value: Any) -> False:
@@ -334,8 +334,7 @@ async def on_assistant_create(
 
 Notice that we are mixing global and resource-specific handlers in the above example. Since each request is handled by the most specific handler, a request to create a `thread` would match the `on_thread_create` handler but NOT the `reject_unhandled_requests` handler. A request to `update` a thread, however would be handled by the global handler, since we don't have a more specific handler for that resource and action.
 
-<a />
-
+<a id="filter-operations"></a>
 ### Filter operations
 
 Authorization handlers can return `None`, a boolean, or a filter dictionary.
@@ -346,11 +345,11 @@ Authorization handlers can return `None`, a boolean, or a filter dictionary.
 
 A filter dictionary is a dictionary with keys that match the resource metadata. It supports three operators:
 
-* The default value is a shorthand for exact match, or "\$eq", below. For example, `{"owner": user_id}` will include only resources with metadata containing `{"owner": user_id}`
+* The default value is a shorthand for exact match, or "$eq", below. For example, `{"owner": user_id}` will include only resources with metadata containing `{"owner": user_id}`
 * `$eq`: Exact match (e.g., `{"owner": {"$eq": user_id}}`) - this is equivalent to the shorthand above, `{"owner": user_id}`
 * `$contains`: List membership (e.g., `{"allowed_users": {"$contains": user_id}}`) or list containment (e.g., `{"allowed_users": {"$contains": [user_id_1, user_id_2]}}`). The value here must be an element of the list or a subset of the elements of the list, respectively. The metadata in the stored resource must be a list/container type.
 
-A dictionary with multiple keys is treated using a logical `AND` filter. For example, `{"owner": org_id, "allowed_users": {"$contains": user_id}}` will only match resources with metadata whose "owner" is `org_id` and whose "allowed\_users" list contains `user_id`.
+A dictionary with multiple keys is treated using a logical `AND` filter. For example, `{"owner": org_id, "allowed_users": {"$contains": user_id}}` will only match resources with metadata whose "owner" is `org_id` and whose "allowed_users" list contains `user_id`.
 See the reference [`Auth`](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)(Auth) for more information.
 
 ## Common access patterns
@@ -361,7 +360,7 @@ Here are some typical authorization patterns:
 
 This common pattern lets you scope all threads, assistants, crons, and runs to a single user. It's useful for common single-user use cases like regular chatbot-style apps.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 @auth.on
 async def owner_only(ctx: Auth.types.AuthContext, value: dict):
     metadata = value.setdefault("metadata", {})
@@ -373,7 +372,7 @@ async def owner_only(ctx: Auth.types.AuthContext, value: dict):
 
 This pattern lets you control access based on **permissions**. It's useful if you want certain roles to have broader or more restricted access to resources.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # In your auth handler:
 @auth.authenticate
 async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
@@ -421,73 +420,72 @@ The most specific matching handler will be used. For example, `@auth.on.threads.
 If a more specific handler is registered, the more general handler will not be called for that resource and action.
 
 <Tip>
-  "Type Safety"
-  Each handler has type hints available for its `value` parameter at `Auth.types.on.<resource>.<action>.value`. For example:
+"Type Safety"
+Each handler has type hints available for its `value` parameter at `Auth.types.on.<resource>.<action>.value`. For example:
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @auth.on.threads.create
-  async def on_thread_create(
-  ctx: Auth.types.AuthContext,
-  value: Auth.types.on.threads.create.value  # Specific type for thread creation
-  ):
-  ...
+```python
+@auth.on.threads.create
+async def on_thread_create(
+ctx: Auth.types.AuthContext,
+value: Auth.types.on.threads.create.value  # Specific type for thread creation
+):
+...
 
-  @auth.on.threads
-  async def on_threads(
-  ctx: Auth.types.AuthContext,
-  value: Auth.types.on.threads.value  # Union type of all thread actions
-  ):
-  ...
+@auth.on.threads
+async def on_threads(
+ctx: Auth.types.AuthContext,
+value: Auth.types.on.threads.value  # Union type of all thread actions
+):
+...
 
-  @auth.on
-  async def on_all(
-  ctx: Auth.types.AuthContext,
-  value: dict  # Union type of all possible actions
-  ):
-  ...
-  ```
+@auth.on
+async def on_all(
+ctx: Auth.types.AuthContext,
+value: dict  # Union type of all possible actions
+):
+...
+```
 
-  More specific handlers provide better type hints since they handle fewer action types.
+More specific handlers provide better type hints since they handle fewer action types.
 </Tip>
 
-<a />
-
+<a id="supported-actions"></a>
 #### Supported actions and types
 
 Here are all the supported action handlers:
 
-| Resource       | Handler                          | Description                | Value Type                                                                                             |
-| -------------- | -------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **Threads**    | `@auth.on.threads.create`        | Thread creation            | [`ThreadsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate)       |
-|                | `@auth.on.threads.read`          | Thread retrieval           | [`ThreadsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead)           |
-|                | `@auth.on.threads.update`        | Thread updates             | [`ThreadsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate)       |
-|                | `@auth.on.threads.delete`        | Thread deletion            | [`ThreadsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete)       |
-|                | `@auth.on.threads.search`        | Listing threads            | [`ThreadsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch)       |
-|                | `@auth.on.threads.create_run`    | Creating or updating a run | [`RunsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate)             |
-| **Assistants** | `@auth.on.assistants.create`     | Assistant creation         | [`AssistantsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
-|                | `@auth.on.assistants.read`       | Assistant retrieval        | [`AssistantsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead)     |
-|                | `@auth.on.assistants.update`     | Assistant updates          | [`AssistantsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
-|                | `@auth.on.assistants.delete`     | Assistant deletion         | [`AssistantsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
-|                | `@auth.on.assistants.search`     | Listing assistants         | [`AssistantsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
-| **Crons**      | `@auth.on.crons.create`          | Cron job creation          | [`CronsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsCreate)           |
-|                | `@auth.on.crons.read`            | Cron job retrieval         | [`CronsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead)               |
-|                | `@auth.on.crons.update`          | Cron job updates           | [`CronsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate)           |
-|                | `@auth.on.crons.delete`          | Cron job deletion          | [`CronsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete)           |
-|                | `@auth.on.crons.search`          | Listing cron jobs          | [`CronsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch)           |
-| **Store**      | `@auth.on.store`                 | All store operations       | `Auth.types.on.store.value`                                                                            |
-|                | `@auth.on.store.put`             | Store an item              | `Auth.types.on.store.put.value`                                                                        |
-|                | `@auth.on.store.get`             | Retrieve an item           | `Auth.types.on.store.get.value`                                                                        |
-|                | `@auth.on.store.search`          | Search items               | `Auth.types.on.store.search.value`                                                                     |
-|                | `@auth.on.store.delete`          | Delete an item             | `Auth.types.on.store.delete.value`                                                                     |
-|                | `@auth.on.store.list_namespaces` | List namespaces            | `Auth.types.on.store.list_namespaces.value`                                                            |
+| Resource | Handler | Description | Value Type |
+|----------|---------|-------------|------------|
+| **Threads** | `@auth.on.threads.create` | Thread creation | [`ThreadsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
+| | `@auth.on.threads.read` | Thread retrieval | [`ThreadsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
+| | `@auth.on.threads.update` | Thread updates | [`ThreadsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate) |
+| | `@auth.on.threads.delete` | Thread deletion | [`ThreadsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete) |
+| | `@auth.on.threads.search` | Listing threads | [`ThreadsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
+| | `@auth.on.threads.create_run` | Creating or updating a run | [`RunsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
+| **Assistants** | `@auth.on.assistants.create` | Assistant creation | [`AssistantsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
+| | `@auth.on.assistants.read` | Assistant retrieval | [`AssistantsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
+| | `@auth.on.assistants.update` | Assistant updates | [`AssistantsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
+| | `@auth.on.assistants.delete` | Assistant deletion | [`AssistantsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
+| | `@auth.on.assistants.search` | Listing assistants | [`AssistantsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
+| **Crons** | `@auth.on.crons.create` | Cron job creation | [`CronsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsCreate) |
+| | `@auth.on.crons.read` | Cron job retrieval | [`CronsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead) |
+| | `@auth.on.crons.update` | Cron job updates | [`CronsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate) |
+| | `@auth.on.crons.delete` | Cron job deletion | [`CronsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete) |
+| | `@auth.on.crons.search` | Listing cron jobs | [`CronsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch) |
+| **Store** | `@auth.on.store` | All store operations | `Auth.types.on.store.value` |
+| | `@auth.on.store.put` | Store an item | `Auth.types.on.store.put.value` |
+| | `@auth.on.store.get` | Retrieve an item | `Auth.types.on.store.get.value` |
+| | `@auth.on.store.search` | Search items | `Auth.types.on.store.search.value` |
+| | `@auth.on.store.delete` | Delete an item | `Auth.types.on.store.delete.value` |
+| | `@auth.on.store.list_namespaces` | List namespaces | `Auth.types.on.store.list_namespaces.value` |
 
 Store authorization differs from threads and assistants. Handlers must rewrite the mutable `namespace` field in `value` to scope data per user rather than returning metadata filters. For a walkthrough, see [Isolate store per user](/langsmith/store-auth).
 
 <Note>
-  "About Runs"
+"About Runs"
 
-  Runs are scoped to their parent thread for access control. This means permissions are typically inherited from the thread, reflecting the conversational nature of the data model. All run operations (reading, listing) except creation are controlled by the thread's handlers.
-  There is a specific `create_run` handler for creating new runs because it had more arguments that you can view in the handler.
+Runs are scoped to their parent thread for access control. This means permissions are typically inherited from the thread, reflecting the conversational nature of the data model. All run operations (reading, listing) except creation are controlled by the thread's handlers.
+There is a specific `create_run` handler for creating new runs because it had more arguments that you can view in the handler.
 </Note>
 
 ## Next steps
@@ -497,14 +495,13 @@ For implementation details:
 * Check out the introductory tutorial on [setting up authentication](/langsmith/set-up-custom-auth)
 * See the how-to guide on implementing a [custom auth handlers](/langsmith/custom-auth)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

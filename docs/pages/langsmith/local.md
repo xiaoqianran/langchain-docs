@@ -9,7 +9,7 @@ You can do this by using the LangSmith Python SDK and passing `upload_results=Fa
 This will run you application and evaluators exactly as it always does and return the same output, but nothing will be recorded to LangSmith. This includes not just the experiment results but also the application and evaluator traces.
 
 <Note>
-  If you want to upload results to LangSmith but also need to process them in your script (for quality gates, custom aggregations, etc.), refer to [Read experiment results locally](/langsmith/read-local-experiment-results).
+If you want to upload results to LangSmith but also need to process them in your script (for quality gates, custom aggregations, etc.), refer to [Read experiment results locally](/langsmith/read-local-experiment-results).
 </Note>
 
 ## Example
@@ -18,7 +18,7 @@ Let's take a look at an example:
 
 Requires `langsmith>=0.2.0`. Example also uses `pandas`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import Client
 
 # 1. Create and/or select your dataset
@@ -62,7 +62,7 @@ df = experiment.to_pandas()
 df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concise"]]
 ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 {'question': 'What is the largest mammal?'}
 {'answer': "What is the largest mammal? is a good question. I don't know the answer."}
 {'question': 'What do mammals and birds have in common?'}
@@ -74,14 +74,13 @@ df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concis
 | 0 | What is the largest mammal?               | What is the largest mammal? is a good question. I don't know the answer.               | The blue whale             | False                |
 | 1 | What do mammals and birds have in common? | What do mammals and birds have in common? is a good question. I don't know the answer. | They are both warm-blooded | False                |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

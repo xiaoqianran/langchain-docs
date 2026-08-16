@@ -2,8 +2,6 @@
 
 # Isolate store data per user
 
-Scope long-term store data to each authenticated user in LangSmith Deployment using auth handlers.
-
 Every [LangSmith Deployment](/langsmith/deployment) includes a Postgres-backed [store](/oss/python/langgraph/stores) for long-term memory and cross-thread data. By default, store namespaces are shared across all callers. To give each user their own isolated store, configure [custom authentication](/langsmith/custom-auth) and add a store [authorization handler](/langsmith/auth#authorization) that rewrites namespaces to include the authenticated user's identity.
 
 This guide shows how to configure that isolation in LangSmith Deployment. The same pattern works for [self-hosted](/langsmith/self-hosted) deployments with custom auth enabled.
@@ -19,19 +17,19 @@ Store items are organized by a **namespace** tuple (for example, `("memories", "
 A user who writes to logical namespace `("memories",)` with automatic prefix rewriting actually stores data at `("user-123", "memories")`. Another user cannot read or overwrite that data because their requests are scoped to `("user-456", ...)`.
 
 <Note>
-  Store authorization handlers receive a **mutable** `value` dict. Changes to `value["namespace"]` take effect on the operation. You do not return a metadata filter like you do for threads.
+Store authorization handlers receive a **mutable** `value` dict. Changes to `value["namespace"]` take effect on the operation. You do not return a metadata filter like you do for threads.
 </Note>
 
 ## Prerequisites
 
-* A LangSmith Deployment with [custom authentication](/langsmith/set-up-custom-auth) configured.
-* An `@auth.authenticate` handler that returns a stable, unique `identity` for each end user.
+- A LangSmith Deployment with [custom authentication](/langsmith/set-up-custom-auth) configured.
+- An `@auth.authenticate` handler that returns a stable, unique `identity` for each end user.
 
 ## Configure auth in LangSmith Deployment
 
 Point your deployment at your auth module in [`langgraph.json`](/langsmith/application-structure#configuration-file-concepts):
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -49,22 +47,22 @@ The `auth` object must expose an instance of `langgraph_sdk.Auth` (commonly name
 
 Store isolation requires a `@auth.on.store` handler. Two common patterns work well; pick one based on where you want user scoping to live.
 
-| Pattern                        | Where user scope is set                                         | Best when                                                                                               |
-| ------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Explicit namespace + deny**  | Application code puts `user_id` first in every namespace        | You already pass user identity into graph code, or you want namespaces to reflect the full storage path |
-| **Automatic prefix rewriting** | Auth handler prepends `ctx.user.identity` to logical namespaces | You want simpler agent code and transparent isolation at the API layer                                  |
+| Pattern | Where user scope is set | Best when |
+| --- | --- | --- |
+| **Explicit namespace + deny** | Application code puts `user_id` first in every namespace | You already pass user identity into graph code, or you want namespaces to reflect the full storage path |
+| **Automatic prefix rewriting** | Auth handler prepends `ctx.user.identity` to logical namespaces | You want simpler agent code and transparent isolation at the API layer |
 
 Both patterns use a single `@auth.on.store` handler that covers all store actions (`put`, `get`, `search`, `delete`, and `list_namespaces`). You only need action-specific handlers such as `@auth.on.store.put` if you want different rules per operation.
 
 <Tip>
-  If you use a global `@auth.on` handler that denies unhandled requests, register `@auth.on.store` explicitly so store operations are allowed. See the [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) for action-specific handler names.
+If you use a global `@auth.on` handler that denies unhandled requests, register `@auth.on.store` explicitly so store operations are allowed. See the [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) for action-specific handler names.
 </Tip>
 
 ### Explicit namespace + deny
 
 Your application code includes the user's identity as the first segment of every namespace (for example, `("user-123", "memories")`). The auth handler validates that the caller matches that prefix and rejects mismatches:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import Auth
 
 auth = Auth()
@@ -91,7 +89,7 @@ This pattern makes the storage layout explicit in your graph code. A request for
 
 Your application code uses logical namespaces without a user prefix (for example, `("memories", "preferences")`). The auth handler prepends the authenticated user's identity on every store operation:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import Auth
 
 auth = Auth()
@@ -118,7 +116,7 @@ This pattern keeps agent code simpler because the auth layer handles user isolat
 
 If you use automatic prefix rewriting, your graph code uses logical namespaces without the user prefix. The auth layer adds the user scope automatically at request time. Put the following in your graph nodes or tools (for example, `graph.py`):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph.store.base import BaseStore
 
 async def save_preference(state: State, *, store: BaseStore):
@@ -140,7 +138,7 @@ When User A calls the store API, the server persists data at `("user-a", "memori
 
 If you use **explicit namespace + deny**, include the user identity in every namespace from your graph code instead:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain_core.runnables import RunnableConfig
 from langgraph.store.base import BaseStore
 
@@ -157,13 +155,16 @@ async def save_preference(state: State, *, store: BaseStore, config: RunnableCon
 
 If you use [Deep Agents](/oss/python/deepagents/overview) with a [`StoreBackend`](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend), align your namespace factory with the auth-scoped layout. When auth prepends `ctx.user.identity`, use logical namespaces in the backend and let auth handle user isolation:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from deepagents.backends import StoreBackend
 
 StoreBackend(
     namespace=lambda rt: ("memories",),  # auth adds user identity
 )
 ```
+
+
+
 
 Alternatively, if you scope by user inside the graph (for example, with `rt.server_info.user.identity`), ensure your auth handler does not double-prefix namespaces. Pick one scoping layer: auth rewriting **or** application-level namespaces, not both.
 
@@ -173,7 +174,7 @@ For more on namespace design, see [Deep Agents backends](/oss/python/deepagents/
 
 With `langgraph dev` running and two test users configured in your auth handler, verify that store data does not leak across users:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import asyncio
 
 from langgraph_sdk import get_client
@@ -225,29 +226,28 @@ if __name__ == "__main__":
 
 Store isolation and [thread isolation](/langsmith/resource-auth) solve different problems:
 
-| Concern              | Mechanism                         | Scopes                                            |
-| -------------------- | --------------------------------- | ------------------------------------------------- |
-| Conversation history | Thread metadata filters (`owner`) | Per-thread checkpoints and messages               |
-| Long-term memory     | Store namespace rewriting         | Cross-thread memories, preferences, and documents |
+| Concern | Mechanism | Scopes |
+| --- | --- | --- |
+| Conversation history | Thread metadata filters (`owner`) | Per-thread checkpoints and messages |
+| Long-term memory | Store namespace rewriting | Cross-thread memories, preferences, and documents |
 
 For multi-user agents, configure both. See [Make conversations private](/langsmith/resource-auth) for thread and run scoping.
 
 ## See also
 
-* [Authentication and access control](/langsmith/auth)
-* [Set up custom authentication](/langsmith/set-up-custom-auth)
-* [Make conversations private](/langsmith/resource-auth)
-* [Semantic search in deployments](/langsmith/semantic-search)
-* [LangGraph stores](/oss/python/langgraph/stores)
+- [Authentication and access control](/langsmith/auth)
+- [Set up custom authentication](/langsmith/set-up-custom-auth)
+- [Make conversations private](/langsmith/resource-auth)
+- [Semantic search in deployments](/langsmith/semantic-search)
+- [LangGraph stores](/oss/python/langgraph/stores)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

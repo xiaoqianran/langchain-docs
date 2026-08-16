@@ -3,8 +3,8 @@
 # How to evaluate a runnable
 
 <Info>
-  * `langchain`: [Python](https://docs.langchain.com/oss/python/langchain/overview) and [JS/TS](https://docs.langchain.com/oss/javascript/langchain/overview)
-  * Runnable: [Python](https://reference.langchain.com/python/langchain_core/runnables/) and [JS/TS](https://reference.langchain.com/javascript/classes/_langchain_core.runnables.Runnable.html)
+* `langchain`: [Python](https://docs.langchain.com/oss/python/langchain/overview) and [JS/TS](https://docs.langchain.com/oss/javascript/langchain/overview)
+* Runnable: [Python](https://reference.langchain.com/python/langchain_core/runnables/) and [JS/TS](https://reference.langchain.com/javascript/classes/_langchain_core.runnables.Runnable.html)
 </Info>
 
 `langchain` [`Runnable`](https://reference.langchain.com/python/langchain_core/runnables/) objects (such as chat models, retrievers, chains, etc.) can be passed directly into `evaluate()` / `aevaluate()`.
@@ -14,51 +14,55 @@
 Let's define a simple chain to evaluate. First, install all the required packages:
 
 <CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langsmith langchain[openai]
-  ```
 
-  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langsmith @langchain/openai
-  ```
+```bash Python
+pip install -U langsmith langchain[openai]
+```
+
+```bash TypeScript
+yarn add langsmith @langchain/openai
+```
+
 </CodeGroup>
 
 Now define a chain:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.chat_models import init_chat_model
-  from langchain_core.output_parsers import StrOutputParser
-  from langchain_core.prompts import ChatPromptTemplate
 
-  instructions = (
-      "Please review the user query below and determine if it contains any form "
-      "of toxic behavior, such as insults, threats, or highly negative comments. "
-      "Respond with 'Toxic' if it does, and 'Not toxic' if it doesn't."
-  )
+```python Python
+from langchain.chat_models import init_chat_model
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 
-  prompt = ChatPromptTemplate(
-      [("system", instructions), ("user", "{text}")],
-  )
+instructions = (
+    "Please review the user query below and determine if it contains any form "
+    "of toxic behavior, such as insults, threats, or highly negative comments. "
+    "Respond with 'Toxic' if it does, and 'Not toxic' if it doesn't."
+)
 
-  model = init_chat_model("gpt-5.5")
-  chain = prompt | model | StrOutputParser()
-  ```
+prompt = ChatPromptTemplate(
+    [("system", instructions), ("user", "{text}")],
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { ChatPromptTemplate } from "@langchain/core/prompts";
-  import { StringOutputParser } from "@langchain/core/output_parsers";
+model = init_chat_model("gpt-5.5")
+chain = prompt | model | StrOutputParser()
+```
 
-  const prompt = ChatPromptTemplate.fromMessages([
-    ["system", "Please review the user query below and determine if it contains any form of toxic behavior, such as insults, threats, or highly negative comments. Respond with 'Toxic' if it does, and 'Not toxic' if it doesn't."],
-    ["user", "{text}"]
-  ]);
+```typescript TypeScript
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
-  const chatModel = new ChatOpenAI();
-  const outputParser = new StringOutputParser();
-  const chain = prompt.pipe(chatModel).pipe(outputParser);
-  ```
+const prompt = ChatPromptTemplate.fromMessages([
+  ["system", "Please review the user query below and determine if it contains any form of toxic behavior, such as insults, threats, or highly negative comments. Respond with 'Toxic' if it does, and 'Not toxic' if it doesn't."],
+  ["user", "{text}"]
+]);
+
+const chatModel = new ChatOpenAI();
+const outputParser = new StringOutputParser();
+const chain = prompt.pipe(chatModel).pipe(outputParser);
+```
+
 </CodeGroup>
 
 ## Evaluate
@@ -66,73 +70,74 @@ Now define a chain:
 To evaluate our chain we can pass it directly to the `evaluate()` / `aevaluate()` method. Note that the input variables of the chain must match the keys of the example inputs. In this case, the example inputs should have the form `{"text": "..."}`.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from langsmith import Client, aevaluate
 
-  client = Client()
+```python Python
+import asyncio
+from langsmith import Client, aevaluate
 
-  # Clone a dataset of texts with toxicity labels.
-  # Each example input has a "text" key and each output has a "label" key.
-  dataset = client.clone_public_dataset(
-      "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d"
-  )
+client = Client()
 
-  def correct(outputs: dict, reference_outputs: dict) -> bool:
-      # Since our chain outputs a string not a dict, this string
-      # gets stored under the default "output" key in the outputs dict:
-      actual = outputs["output"]
-      expected = reference_outputs["label"]
-      return actual == expected
-
-  async def main():
-      results = await aevaluate(
-          chain,
-          data=dataset,
-          evaluators=[correct],
-          experiment_prefix="gpt-5.5, baseline",
-          metadata={"models": "openai:gpt-5.5"},  # optional, used to populate model/prompt/tool columns in UI
-      )
-      print(results)
-
-  asyncio.run(main())
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
-  import { Client } from "langsmith";
-
-  const langsmith = new Client();
-
-  const dataset = await client.clonePublicDataset(
+# Clone a dataset of texts with toxicity labels.
+# Each example input has a "text" key and each output has a "label" key.
+dataset = client.clone_public_dataset(
     "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d"
-  )
+)
 
-  await evaluate(chain, {
-    data: dataset.name,
-    evaluators: [correct],
-    experimentPrefix: "gpt-5.5, baseline",
-    metadata: { models: "openai:gpt-5.5" },  // optional, used to populate model/prompt/tool columns in UI
-  });
-  ```
+def correct(outputs: dict, reference_outputs: dict) -> bool:
+    # Since our chain outputs a string not a dict, this string
+    # gets stored under the default "output" key in the outputs dict:
+    actual = outputs["output"]
+    expected = reference_outputs["label"]
+    return actual == expected
+
+async def main():
+    results = await aevaluate(
+        chain,
+        data=dataset,
+        evaluators=[correct],
+        experiment_prefix="gpt-5.5, baseline",
+        metadata={"models": "openai:gpt-5.5"},  # optional, used to populate model/prompt/tool columns in UI
+    )
+    print(results)
+
+asyncio.run(main())
+```
+
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
+import { Client } from "langsmith";
+
+const langsmith = new Client();
+
+const dataset = await client.clonePublicDataset(
+  "https://smith.langchain.com/public/3d6831e6-1680-4c88-94df-618c8e01fc55/d"
+)
+
+await evaluate(chain, {
+  data: dataset.name,
+  evaluators: [correct],
+  experimentPrefix: "gpt-5.5, baseline",
+  metadata: { models: "openai:gpt-5.5" },  // optional, used to populate model/prompt/tool columns in UI
+});
+```
+
 </CodeGroup>
 
 The runnable is traced appropriately for each output.
 
-<img alt="Runnable Evaluation" />
+![Runnable Evaluation](/langsmith/images/runnable-eval.png)
 
 ## Related
 
 * [How to evaluate a `langgraph` graph](/langsmith/evaluate-on-intermediate-steps)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langchain-runnable.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

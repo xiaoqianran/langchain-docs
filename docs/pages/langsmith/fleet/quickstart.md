@@ -2,12 +2,10 @@
 
 # Quickstart
 
-Build an agent from a template
-
 By the end of this quickstart, you will have an Executive Assistant that labels the Gmail messages needing your attention and pauses for approval before acting, all set up without code or a model API key and controlled through chat.
 
-<Callout icon="message">
-  You interact with your agent through chat, just like texting a helpful assistant.
+<Callout icon="message" color="#8B5CF6" iconType="regular">
+You interact with your agent through chat, just like texting a helpful assistant.
 </Callout>
 
 You will start from the prebuilt **Executive Assistant** [template](/langsmith/fleet/templates), which manages your inbox, calendar, and daily brief.
@@ -15,10 +13,9 @@ You will start from the prebuilt **Executive Assistant** [template](/langsmith/f
 ## Before you start
 
 You need:
-
-* A LangSmith account ([sign up here](https://smith.langchain.com/agents?skipOnboarding=true\&utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-quickstart)).
-* A Gmail account.
-* A Google Calendar.
+- A LangSmith account ([sign up here](https://smith.langchain.com/agents?skipOnboarding=true&utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-quickstart)).
+- A Gmail account.
+- A Google Calendar.
 
 Fleet manages the AI model for you, so you do not need your own model provider API key. For more information, see [Models](/langsmith/fleet/essentials#models).
 
@@ -26,16 +23,16 @@ Fleet manages the AI model for you, so you do not need your own model provider A
 
 <Steps>
   <Step title="Navigate to Fleet">
-    1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-quickstart), click <Icon icon="pointer" /> **Switch to Fleet** at the top of the left-hand navigation.
+    1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-quickstart), click <Icon icon="pointer"/> **Switch to Fleet** at the top of the left-hand navigation.
   </Step>
 
   <Step title="Choose a template">
     1. Select **Templates** in the left-hand navigation, or click **+** in **My Agents** and select **From template**.
-    2. Select the **Executive Assistant** template to create your agent.
-    3. Click **Create Agent** at the top right.
+    1. Select the **Executive Assistant** template to create your agent.
+    1. Click **Create Agent** at the top right.
 
     <Tip>
-      If you do not want to start with a template, choose **Build with AI** or **New agent** when you create an agent and describe the agent you want. The agent configures itself and pauses at key points for your input.
+    If you do not want to start with a template, choose **Build with AI** or **New agent** when you create an agent and describe the agent you want. The agent configures itself and pauses at key points for your input.
     </Tip>
   </Step>
 
@@ -46,6 +43,7 @@ Fleet manages the AI model for you, so you do not need your own model provider A
   <Step title="Answer onboarding questions">
     Provide information so your agent knows how to work the way you prefer.
   </Step>
+
 </Steps>
 
 ## 2. Connect tools
@@ -72,24 +70,26 @@ A connection gives your agent the [tools](/langsmith/fleet/tools) to use a servi
     5. LangSmith redirects you back to Fleet. Close the dialog.
     6. Click **Save and continue**.
   </Step>
+
 </Steps>
 
 <Info>
-  Your agent only accesses your accounts when working on tasks you give it. You can revoke access anytime in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) or your Google account settings.
+Your agent only accesses your accounts when working on tasks you give it. You can revoke access anytime in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) or your Google account settings.
 </Info>
 
 ## 3. Configure your agent
 
 There are two ways to configure your agent:
 
-* Chatting with your agent directly
-* Modifying settings in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar)
+- Chatting with your agent directly
+- Modifying settings in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar)
 
 This section describes how to configure your agent using the agent sidebar.
 
 <Steps>
+
   <Step title="Open the agent sidebar">
-    Click **<Icon icon="settings" /> Configure** at the top right to open the agent sidebar.
+    Click **<Icon icon="settings"/> Configure** at the top right to open the agent sidebar.
   </Step>
 
   <Step title="View connections">
@@ -109,15 +109,17 @@ This section describes how to configure your agent using the agent sidebar.
   <Step title="Save your changes">
     Click **Save** at the top of the sidebar to save your changes, then click **X** to close the panel.
   </Step>
+
 </Steps>
 
 ## 4. Test your agent
 
 <Steps>
+
   <Step title="Send your agent a task">
     In the agent chat, try out the Executive Assistant, for example:
 
-    > *Apply a "Review" label to emails that I receive, which require some kind of review from me.*
+    > _Apply a "Review" label to emails that I receive, which require some kind of review from me._
   </Step>
 
   <Step title="Accept or reject the agent's action">
@@ -127,23 +129,24 @@ This section describes how to configure your agent using the agent sidebar.
   <Step title="Check your inbox in Gmail">
     If you clicked **Accept**, emails that need review now have the **Review** label in your inbox.
   </Step>
+
 </Steps>
 
 ## Edit your agent
 
 You may want to update your agent's instructions or include more tools. You can chat with your agent directly to ask for updates, or configure it from the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar):
 
-* Edit the agent's instructions (its `AGENTS.md`) in the **Knowledge** drawer. See [Instructions](/langsmith/fleet/essentials#instructions).
-* Add integrations and tools in the **Connections** drawer, and set each tool to run automatically or [ask for approval](/langsmith/fleet/essentials#human-in-the-loop). See [Tools](/langsmith/fleet/tools).
-* Connect [Slack](/langsmith/fleet/slack-app), [Gmail](/langsmith/fleet/channels#add-a-gmail-channel), or [Microsoft Teams](/langsmith/fleet/teams-app) in the **Channels** drawer.
-* Run your agent on a [schedule](/langsmith/fleet/schedules) in the **Schedules** drawer.
-* Change the [model](/langsmith/fleet/manage-agent-settings#change-the-model) in the **Advanced settings** drawer.
+- Edit the agent's instructions (its `AGENTS.md`) in the **Knowledge** drawer. See [Instructions](/langsmith/fleet/essentials#instructions).
+- Add integrations and tools in the **Connections** drawer, and set each tool to run automatically or [ask for approval](/langsmith/fleet/essentials#human-in-the-loop). See [Tools](/langsmith/fleet/tools).
+- Connect [Slack](/langsmith/fleet/slack-app), [Gmail](/langsmith/fleet/channels#add-a-gmail-channel), or [Microsoft Teams](/langsmith/fleet/teams-app) in the **Channels** drawer.
+- Run your agent on a [schedule](/langsmith/fleet/schedules) in the **Schedules** drawer.
+- Change the [model](/langsmith/fleet/manage-agent-settings#change-the-model) in the **Advanced settings** drawer.
 
 ## Next steps
 
 Now that you have created your first agent, here is what to explore:
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Try more templates" icon="layout-grid" href="/langsmith/fleet/templates">
     Explore prebuilt agents for common tasks
   </Card>
@@ -161,14 +164,13 @@ Now that you have created your first agent, here is what to explore:
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

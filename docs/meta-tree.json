@@ -1,376 +1,4 @@
 {
-  "api-reference": {
-    "id": "api-reference",
-    "name": "API Reference",
-    "groups": {
-      "create-connection": [
-        {
-          "title": "Create Connection",
-          "rel": "api-reference/agent-connections-v2/create-connection.md"
-        }
-      ],
-      "list-connections": [
-        {
-          "title": "List Connections",
-          "rel": "api-reference/agent-connections-v2/list-connections.md"
-        }
-      ],
-      "remove-connection": [
-        {
-          "title": "Remove Connection",
-          "rel": "api-reference/agent-connections-v2/remove-connection.md"
-        }
-      ],
-      "upsert-agent-provider-token": [
-        {
-          "title": "Upsert Agent Provider Token",
-          "rel": "api-reference/agent-connections-v2/upsert-agent-provider-token.md"
-        }
-      ],
-      "authenticate": [
-        {
-          "title": "Authenticate",
-          "rel": "api-reference/auth-service-v2/authenticate.md"
-        }
-      ],
-      "check-oauth-token-exists": [
-        {
-          "title": "Check Oauth Token Exists",
-          "rel": "api-reference/auth-service-v2/check-oauth-token-exists.md"
-        }
-      ],
-      "check-oauth-tokens-exist-batch": [
-        {
-          "title": "Check Oauth Tokens Exist Batch",
-          "rel": "api-reference/auth-service-v2/check-oauth-tokens-exist-batch.md"
-        }
-      ],
-      "check-workspace-slack-tokens-exist": [
-        {
-          "title": "Check Workspace Slack Tokens Exist",
-          "rel": "api-reference/auth-service-v2/check-workspace-slack-tokens-exist.md"
-        }
-      ],
-      "create-mcp-oauth-provider": [
-        {
-          "title": "Create Mcp Oauth Provider",
-          "rel": "api-reference/auth-service-v2/create-mcp-oauth-provider.md"
-        }
-      ],
-      "create-oauth-provider": [
-        {
-          "title": "Create Oauth Provider",
-          "rel": "api-reference/auth-service-v2/create-oauth-provider.md"
-        }
-      ],
-      "delete-oauth-provider": [
-        {
-          "title": "Delete Oauth Provider",
-          "rel": "api-reference/auth-service-v2/delete-oauth-provider.md"
-        }
-      ],
-      "delete-oauth-tokens-for-user": [
-        {
-          "title": "Delete Oauth Tokens For User",
-          "rel": "api-reference/auth-service-v2/delete-oauth-tokens-for-user.md"
-        }
-      ],
-      "delete-single-oauth-token": [
-        {
-          "title": "Delete Single Oauth Token",
-          "rel": "api-reference/auth-service-v2/delete-single-oauth-token.md"
-        }
-      ],
-      "get-oauth-provider": [
-        {
-          "title": "Get Oauth Provider",
-          "rel": "api-reference/auth-service-v2/get-oauth-provider.md"
-        }
-      ],
-      "get-platform-oauth-provider": [
-        {
-          "title": "Get Platform Oauth Provider",
-          "rel": "api-reference/auth-service-v2/get-platform-oauth-provider.md"
-        }
-      ],
-      "import-oauth-token": [
-        {
-          "title": "Import Oauth Token",
-          "rel": "api-reference/auth-service-v2/import-oauth-token.md"
-        }
-      ],
-      "list-oauth-providers": [
-        {
-          "title": "List Oauth Providers",
-          "rel": "api-reference/auth-service-v2/list-oauth-providers.md"
-        }
-      ],
-      "list-oauth-tokens-for-user": [
-        {
-          "title": "List Oauth Tokens For User",
-          "rel": "api-reference/auth-service-v2/list-oauth-tokens-for-user.md"
-        }
-      ],
-      "list-platform-oauth-providers": [
-        {
-          "title": "List Platform Oauth Providers",
-          "rel": "api-reference/auth-service-v2/list-platform-oauth-providers.md"
-        }
-      ],
-      "list-token-events-for-user": [
-        {
-          "title": "List Token Events For User",
-          "rel": "api-reference/auth-service-v2/list-token-events-for-user.md"
-        }
-      ],
-      "oauth-callback": [
-        {
-          "title": "Oauth Callback",
-          "rel": "api-reference/auth-service-v2/oauth-callback.md"
-        }
-      ],
-      "oauth-callback-get": [
-        {
-          "title": "Oauth Callback Get",
-          "rel": "api-reference/auth-service-v2/oauth-callback-get.md"
-        }
-      ],
-      "oauth-setup-callback": [
-        {
-          "title": "Oauth Setup Callback",
-          "rel": "api-reference/auth-service-v2/oauth-setup-callback.md"
-        }
-      ],
-      "revoke-all-slack-tokens-for-workspace": [
-        {
-          "title": "Revoke All Slack Tokens For Workspace",
-          "rel": "api-reference/auth-service-v2/revoke-all-slack-tokens-for-workspace.md"
-        }
-      ],
-      "update-oauth-provider": [
-        {
-          "title": "Update Oauth Provider",
-          "rel": "api-reference/auth-service-v2/update-oauth-provider.md"
-        }
-      ],
-      "update-token-label": [
-        {
-          "title": "Update Token Label",
-          "rel": "api-reference/auth-service-v2/update-token-label.md"
-        }
-      ],
-      "wait-for-auth-completion": [
-        {
-          "title": "Wait For Auth Completion",
-          "rel": "api-reference/auth-service-v2/wait-for-auth-completion.md"
-        }
-      ],
-      "create-deployment": [
-        {
-          "title": "Create Deployment",
-          "rel": "api-reference/deployments-v2/create-deployment.md"
-        }
-      ],
-      "create-deployment-revision": [
-        {
-          "title": "Create Deployment Revision",
-          "rel": "api-reference/deployments-v2/create-deployment-revision.md"
-        }
-      ],
-      "delete-deployment": [
-        {
-          "title": "Delete Deployment",
-          "rel": "api-reference/deployments-v2/delete-deployment.md"
-        }
-      ],
-      "delete-deployments": [
-        {
-          "title": "Delete Deployments",
-          "rel": "api-reference/deployments-v2/delete-deployments.md"
-        }
-      ],
-      "get-deployment": [
-        {
-          "title": "Get Deployment",
-          "rel": "api-reference/deployments-v2/get-deployment.md"
-        }
-      ],
-      "get-free-deployment-count": [
-        {
-          "title": "Get Free Deployment Count",
-          "rel": "api-reference/deployments-v2/get-free-deployment-count.md"
-        }
-      ],
-      "get-revision": [
-        {
-          "title": "Get Revision",
-          "rel": "api-reference/deployments-v2/get-revision.md"
-        }
-      ],
-      "interrupt-deployment-revision": [
-        {
-          "title": "Interrupt Deployment Revision",
-          "rel": "api-reference/deployments-v2/interrupt-deployment-revision.md"
-        }
-      ],
-      "list-deployment-log-entries": [
-        {
-          "title": "List Deployment Log Entries",
-          "rel": "api-reference/deployments-v2/list-deployment-log-entries.md"
-        }
-      ],
-      "list-deployment-logs": [
-        {
-          "title": "List Deployment Logs",
-          "rel": "api-reference/deployments-v2/list-deployment-logs.md"
-        }
-      ],
-      "list-deployments": [
-        {
-          "title": "List Deployments",
-          "rel": "api-reference/deployments-v2/list-deployments.md"
-        }
-      ],
-      "list-revision-logs": [
-        {
-          "title": "List Revision Logs",
-          "rel": "api-reference/deployments-v2/list-revision-logs.md"
-        }
-      ],
-      "list-revisions": [
-        {
-          "title": "List Revisions",
-          "rel": "api-reference/deployments-v2/list-revisions.md"
-        }
-      ],
-      "patch-deployment": [
-        {
-          "title": "Patch Deployment",
-          "rel": "api-reference/deployments-v2/patch-deployment.md"
-        }
-      ],
-      "patch-deployment-resource-tiers": [
-        {
-          "title": "Patch Deployment Resource Tiers",
-          "rel": "api-reference/deployments-v2/patch-deployment-resource-tiers.md"
-        }
-      ],
-      "patch-deployment-tier": [
-        {
-          "title": "Patch Deployment Tier",
-          "rel": "api-reference/deployments-v2/patch-deployment-tier.md"
-        }
-      ],
-      "redeploy-revision": [
-        {
-          "title": "Redeploy Revision",
-          "rel": "api-reference/deployments-v2/redeploy-revision.md"
-        }
-      ],
-      "list-forge-github-integrations": [
-        {
-          "title": "List Forge GitHub Integrations",
-          "rel": "api-reference/integrations-v1/list-forge-github-integrations.md"
-        }
-      ],
-      "list-forge-github-repositories": [
-        {
-          "title": "List Forge GitHub Repositories",
-          "rel": "api-reference/integrations-v1/list-forge-github-repositories.md"
-        }
-      ],
-      "list-github-integrations": [
-        {
-          "title": "List GitHub Integrations",
-          "rel": "api-reference/integrations-v1/list-github-integrations.md"
-        }
-      ],
-      "list-github-repositories": [
-        {
-          "title": "List GitHub Repositories",
-          "rel": "api-reference/integrations-v1/list-github-repositories.md"
-        }
-      ],
-      "create-engine-picker-session-selection": [
-        {
-          "title": "Create Engine Picker Session Selection",
-          "rel": "api-reference/integrations-v2/create-engine-picker-session-selection.md"
-        }
-      ],
-      "get-engine-picker-session-endpoint": [
-        {
-          "title": "Get Engine Picker Session Endpoint",
-          "rel": "api-reference/integrations-v2/get-engine-picker-session-endpoint.md"
-        }
-      ],
-      "get-forge-github-install-link-endpoint": [
-        {
-          "title": "Get Forge Github Install Link Endpoint",
-          "rel": "api-reference/integrations-v2/get-forge-github-install-link-endpoint.md"
-        }
-      ],
-      "get-github-install-link-endpoint": [
-        {
-          "title": "Get Github Install Link Endpoint",
-          "rel": "api-reference/integrations-v2/get-github-install-link-endpoint.md"
-        }
-      ],
-      "list-forge-github-installation-repositories": [
-        {
-          "title": "List Forge Github Installation Repositories",
-          "rel": "api-reference/integrations-v2/list-forge-github-installation-repositories.md"
-        }
-      ],
-      "list-forge-github-installations": [
-        {
-          "title": "List Forge Github Installations",
-          "rel": "api-reference/integrations-v2/list-forge-github-installations.md"
-        }
-      ],
-      "list-github-installation-repositories": [
-        {
-          "title": "List Github Installation Repositories",
-          "rel": "api-reference/integrations-v2/list-github-installation-repositories.md"
-        }
-      ],
-      "list-github-installations": [
-        {
-          "title": "List Github Installations",
-          "rel": "api-reference/integrations-v2/list-github-installations.md"
-        }
-      ],
-      "create-listener": [
-        {
-          "title": "Create Listener",
-          "rel": "api-reference/listeners-v2/create-listener.md"
-        }
-      ],
-      "delete-listener": [
-        {
-          "title": "Delete Listener",
-          "rel": "api-reference/listeners-v2/delete-listener.md"
-        }
-      ],
-      "get-listener": [
-        {
-          "title": "Get Listener",
-          "rel": "api-reference/listeners-v2/get-listener.md"
-        }
-      ],
-      "list-listeners": [
-        {
-          "title": "List Listeners",
-          "rel": "api-reference/listeners-v2/list-listeners.md"
-        }
-      ],
-      "patch-listener": [
-        {
-          "title": "Patch Listener",
-          "rel": "api-reference/listeners-v2/patch-listener.md"
-        }
-      ]
-    }
-  },
   "build-overview": {
     "id": "build-overview",
     "name": "build-overview",
@@ -379,6 +7,18 @@
         {
           "title": "Build",
           "rel": "build-overview.md"
+        }
+      ]
+    }
+  },
+  "index": {
+    "id": "index",
+    "name": "index",
+    "groups": {
+      "pages": [
+        {
+          "title": "Home",
+          "rel": "index.md"
         }
       ]
     }
@@ -435,22 +75,16 @@
           "rel": "langsmith/agent-auth.md"
         }
       ],
-      "agent-server": [
+      "agent-server-changelog-link": [
         {
-          "title": "Agent Server",
-          "rel": "langsmith/agent-server.md"
+          "title": "Agent Server changelog",
+          "rel": "langsmith/agent-server-changelog-link.md"
         }
       ],
       "agent-server-changelog": [
         {
           "title": "Agent Server changelog",
           "rel": "langsmith/agent-server-changelog.md"
-        }
-      ],
-      "agent-server-changelog-link": [
-        {
-          "title": "Agent Server changelog",
-          "rel": "langsmith/agent-server-changelog-link.md"
         }
       ],
       "agent-server-distributed-tracing": [
@@ -477,6 +111,12 @@
           "rel": "langsmith/agent-server-scale.md"
         }
       ],
+      "agent-server": [
+        {
+          "title": "Agent Server",
+          "rel": "langsmith/agent-server.md"
+        }
+      ],
       "alerts": [
         {
           "title": "Alerts in LangSmith",
@@ -501,16 +141,16 @@
           "rel": "langsmith/annotate-traces-inline.md"
         }
       ],
-      "annotation-queues": [
-        {
-          "title": "Use annotation queues",
-          "rel": "langsmith/annotation-queues.md"
-        }
-      ],
       "annotation-queues-sdk": [
         {
           "title": "Manage feedback & annotation queues programmatically",
           "rel": "langsmith/annotation-queues-sdk.md"
+        }
+      ],
+      "annotation-queues": [
+        {
+          "title": "Use annotation queues",
+          "rel": "langsmith/annotation-queues.md"
         }
       ],
       "api-ref-control-plane": [
@@ -597,22 +237,16 @@
           "rel": "langsmith/billing.md"
         }
       ],
-      "bind-evaluator-to-dataset": [
-        {
-          "title": "Automatically run evaluators on experiments",
-          "rel": "langsmith/bind-evaluator-to-dataset.md"
-        }
-      ],
       "bind-evaluator-to-dataset-link": [
         {
           "title": "Automatically run evaluators on experiments",
           "rel": "langsmith/bind-evaluator-to-dataset-link.md"
         }
       ],
-      "byoc": [
+      "bind-evaluator-to-dataset": [
         {
-          "title": "Bring Your Own Cloud (BYOC)",
-          "rel": "langsmith/byoc.md"
+          "title": "Automatically run evaluators on experiments",
+          "rel": "langsmith/bind-evaluator-to-dataset.md"
         }
       ],
       "byoc-architecture": [
@@ -657,6 +291,12 @@
           "rel": "langsmith/byoc-why.md"
         }
       ],
+      "byoc": [
+        {
+          "title": "Bring Your Own Cloud (BYOC)",
+          "rel": "langsmith/byoc.md"
+        }
+      ],
       "caching": [
         {
           "title": "Use server-side caching",
@@ -673,12 +313,6 @@
         {
           "title": "LangSmith Cloud changelog",
           "rel": "langsmith/changelog.md"
-        }
-      ],
-      "chat": [
-        {
-          "title": "LangSmith Chat",
-          "rel": "langsmith/chat.md"
         }
       ],
       "chat-evaluation": [
@@ -699,6 +333,12 @@
           "rel": "langsmith/chat-prompt-engineering.md"
         }
       ],
+      "chat": [
+        {
+          "title": "LangSmith Chat",
+          "rel": "langsmith/chat.md"
+        }
+      ],
       "cicd-pipeline-example": [
         {
           "title": "Implement a CI/CD pipeline using LangSmith Deployment and Evaluation",
@@ -711,16 +351,16 @@
           "rel": "langsmith/cli.md"
         }
       ],
-      "cloud": [
-        {
-          "title": "Cloud (SaaS)",
-          "rel": "langsmith/cloud.md"
-        }
-      ],
       "cloud-platform-features": [
         {
           "title": "Cloud platform features",
           "rel": "langsmith/cloud-platform-features.md"
+        }
+      ],
+      "cloud": [
+        {
+          "title": "Cloud (SaaS)",
+          "rel": "langsmith/cloud.md"
         }
       ],
       "code-evaluator-sdk": [
@@ -831,6 +471,12 @@
           "rel": "langsmith/control-plane.md"
         }
       ],
+      "core-capabilities": [
+        {
+          "title": "Core capabilities overview",
+          "rel": "langsmith/core-capabilities.md"
+        }
+      ],
       "cost-tracking": [
         {
           "title": "Cost tracking",
@@ -921,6 +567,12 @@
           "rel": "langsmith/custom-routes.md"
         }
       ],
+      "custom-run-id": [
+        {
+          "title": "Specify a custom run ID",
+          "rel": "langsmith/custom-run-id.md"
+        }
+      ],
       "custom-store": [
         {
           "title": "How to use a custom store",
@@ -931,12 +583,6 @@
         {
           "title": "Monitor projects with dashboards",
           "rel": "langsmith/dashboards.md"
-        }
-      ],
-      "data-export": [
-        {
-          "title": "Bulk export trace data",
-          "rel": "langsmith/data-export.md"
         }
       ],
       "data-export-destinations": [
@@ -955,6 +601,12 @@
         {
           "title": "Monitor and troubleshoot bulk exports",
           "rel": "langsmith/data-export-monitor.md"
+        }
+      ],
+      "data-export": [
+        {
+          "title": "Bulk export trace data",
+          "rel": "langsmith/data-export.md"
         }
       ],
       "data-plane": [
@@ -1059,16 +711,16 @@
           "rel": "langsmith/deploy-sveltekit.md"
         }
       ],
-      "deploy-to-cloud": [
-        {
-          "title": "Deploy on Cloud",
-          "rel": "langsmith/deploy-to-cloud.md"
-        }
-      ],
       "deploy-to-cloud-overview": [
         {
           "title": "Deploy to Cloud",
           "rel": "langsmith/deploy-to-cloud-overview.md"
+        }
+      ],
+      "deploy-to-cloud": [
+        {
+          "title": "Deploy on Cloud",
+          "rel": "langsmith/deploy-to-cloud.md"
         }
       ],
       "deploy-to-self-hosted-overview": [
@@ -1089,16 +741,22 @@
           "rel": "langsmith/deploy-with-control-plane.md"
         }
       ],
-      "deployment": [
+      "deployment-quickstart-da": [
         {
-          "title": "LangSmith Deployment",
-          "rel": "langsmith/deployment.md"
+          "title": "Deploy Managed Deep Agents",
+          "rel": "langsmith/deployment-quickstart-da.md"
         }
       ],
       "deployment-quickstart": [
         {
           "title": "Deploy your app to cloud",
           "rel": "langsmith/deployment-quickstart.md"
+        }
+      ],
+      "deployment": [
+        {
+          "title": "LangSmith Deployment",
+          "rel": "langsmith/deployment.md"
         }
       ],
       "diagnostics-self-hosted": [
@@ -1129,12 +787,6 @@
         {
           "title": "API and SDK deprecation policy",
           "rel": "langsmith/endpoint-deprecation.md"
-        }
-      ],
-      "engine": [
-        {
-          "title": "Find and fix your agent's issues with LangSmith Engine",
-          "rel": "langsmith/engine.md"
         }
       ],
       "engine-github": [
@@ -1171,6 +823,12 @@
         {
           "title": "LangSmith Engine webhook events",
           "rel": "langsmith/engine-webhooks.md"
+        }
+      ],
+      "engine": [
+        {
+          "title": "Find and fix your agent's issues with LangSmith Engine",
+          "rel": "langsmith/engine.md"
         }
       ],
       "enqueue-concurrent": [
@@ -1263,12 +921,6 @@
           "rel": "langsmith/evaluate-with-retry.md"
         }
       ],
-      "evaluation": [
-        {
-          "title": "LangSmith Evaluation",
-          "rel": "langsmith/evaluation.md"
-        }
-      ],
       "evaluation-approaches": [
         {
           "title": "Application-specific evaluation approaches",
@@ -1299,6 +951,12 @@
           "rel": "langsmith/evaluation-types.md"
         }
       ],
+      "evaluation": [
+        {
+          "title": "LangSmith Evaluation",
+          "rel": "langsmith/evaluation.md"
+        }
+      ],
       "evaluator-spend": [
         {
           "title": "Track and limit evaluator spend",
@@ -1309,6 +967,12 @@
         {
           "title": "Manage evaluators",
           "rel": "langsmith/evaluators.md"
+        }
+      ],
+      "event-streaming": [
+        {
+          "title": "Event streaming API",
+          "rel": "langsmith/event-streaming.md"
         }
       ],
       "example-data-format": [
@@ -1377,10 +1041,22 @@
           "rel": "langsmith/generative-ui-react.md"
         }
       ],
+      "get-started-integrations": [
+        {
+          "title": "Integrations",
+          "rel": "langsmith/get-started-integrations.md"
+        }
+      ],
       "govern-overview": [
         {
           "title": "Govern",
           "rel": "langsmith/govern-overview.md"
+        }
+      ],
+      "govern": [
+        {
+          "title": "Governance",
+          "rel": "langsmith/govern.md"
         }
       ],
       "granular-usage": [
@@ -1413,16 +1089,16 @@
           "rel": "langsmith/human-in-the-loop-time-travel.md"
         }
       ],
-      "hybrid": [
-        {
-          "title": "Hybrid",
-          "rel": "langsmith/hybrid.md"
-        }
-      ],
       "hybrid-legacy": [
         {
           "title": "Setup guide (legacy)",
           "rel": "langsmith/hybrid-legacy.md"
+        }
+      ],
+      "hybrid": [
+        {
+          "title": "Hybrid",
+          "rel": "langsmith/hybrid.md"
         }
       ],
       "improve-judge-evaluator-feedback": [
@@ -1509,10 +1185,10 @@
           "rel": "langsmith/langsmith-remote-mcp.md"
         }
       ],
-      "llm-as-judge": [
+      "legacy-trace-with-vercel-ai-sdk": [
         {
-          "title": "How to define an LLM-as-a-judge evaluator",
-          "rel": "langsmith/llm-as-judge.md"
+          "title": "Trace with the Vercel AI SDK (Legacy)",
+          "rel": "langsmith/legacy-trace-with-vercel-ai-sdk.md"
         }
       ],
       "llm-as-judge-sdk": [
@@ -1521,16 +1197,16 @@
           "rel": "langsmith/llm-as-judge-sdk.md"
         }
       ],
+      "llm-as-judge": [
+        {
+          "title": "How to define an LLM-as-a-judge evaluator",
+          "rel": "langsmith/llm-as-judge.md"
+        }
+      ],
       "llm-auth-proxy-self-hosted": [
         {
           "title": "Set up the LLM auth proxy",
           "rel": "langsmith/llm-auth-proxy-self-hosted.md"
-        }
-      ],
-      "llm-gateway": [
-        {
-          "title": "LLM Gateway",
-          "rel": "langsmith/llm-gateway.md"
         }
       ],
       "llm-gateway-access": [
@@ -1617,16 +1293,22 @@
           "rel": "langsmith/llm-gateway-spend-policies.md"
         }
       ],
-      "local": [
+      "llm-gateway": [
         {
-          "title": "How to run an evaluation locally (Python only)",
-          "rel": "langsmith/local.md"
+          "title": "LLM Gateway",
+          "rel": "langsmith/llm-gateway.md"
         }
       ],
       "local-dev-testing": [
         {
           "title": "Local development & testing",
           "rel": "langsmith/local-dev-testing.md"
+        }
+      ],
+      "local": [
+        {
+          "title": "How to run an evaluation locally (Python only)",
+          "rel": "langsmith/local.md"
         }
       ],
       "log-llm-trace": [
@@ -1665,12 +1347,6 @@
           "rel": "langsmith/manage-contexts-sdk.md"
         }
       ],
-      "manage-datasets": [
-        {
-          "title": "Manage datasets",
-          "rel": "langsmith/manage-datasets.md"
-        }
-      ],
       "manage-datasets-in-application": [
         {
           "title": "Create and manage datasets in the UI",
@@ -1681,6 +1357,12 @@
         {
           "title": "How to create and manage datasets programmatically",
           "rel": "langsmith/manage-datasets-programmatically.md"
+        }
+      ],
+      "manage-datasets": [
+        {
+          "title": "Manage datasets",
+          "rel": "langsmith/manage-datasets.md"
         }
       ],
       "manage-evaluators-sdk": [
@@ -1695,16 +1377,16 @@
           "rel": "langsmith/manage-organization-by-api.md"
         }
       ],
-      "manage-prompts": [
-        {
-          "title": "Manage prompts",
-          "rel": "langsmith/manage-prompts.md"
-        }
-      ],
       "manage-prompts-programmatically": [
         {
           "title": "Manage prompts programmatically",
           "rel": "langsmith/manage-prompts-programmatically.md"
+        }
+      ],
+      "manage-prompts": [
+        {
+          "title": "Manage prompts",
+          "rel": "langsmith/manage-prompts.md"
         }
       ],
       "manage-trace": [
@@ -1785,12 +1467,6 @@
           "rel": "langsmith/nest-traces.md"
         }
       ],
-      "observability": [
-        {
-          "title": "LangSmith Observability",
-          "rel": "langsmith/observability.md"
-        }
-      ],
       "observability-concepts": [
         {
           "title": "Observability concepts",
@@ -1819,6 +1495,12 @@
         {
           "title": "Observability in Studio",
           "rel": "langsmith/observability-studio.md"
+        }
+      ],
+      "observability": [
+        {
+          "title": "LangSmith Observability",
+          "rel": "langsmith/observability.md"
         }
       ],
       "online-evaluations-code": [
@@ -2277,12 +1959,6 @@
           "rel": "langsmith/self-host-sso.md"
         }
       ],
-      "self-host-terraform": [
-        {
-          "title": "Deploy LangSmith with Terraform",
-          "rel": "langsmith/self-host-terraform.md"
-        }
-      ],
       "self-host-terraform-aws-architecture": [
         {
           "title": "AWS Terraform architecture",
@@ -2373,6 +2049,12 @@
           "rel": "langsmith/self-host-terraform-gcp-variables.md"
         }
       ],
+      "self-host-terraform": [
+        {
+          "title": "Deploy LangSmith with Terraform",
+          "rel": "langsmith/self-host-terraform.md"
+        }
+      ],
       "self-host-ttl": [
         {
           "title": "Enable TTL and data retention",
@@ -2409,12 +2091,6 @@
           "rel": "langsmith/self-host-using-an-existing-secret.md"
         }
       ],
-      "self-hosted": [
-        {
-          "title": "Self-hosted LangSmith",
-          "rel": "langsmith/self-hosted.md"
-        }
-      ],
       "self-hosted-agent-server-metrics": [
         {
           "title": "Agent Server metrics",
@@ -2437,6 +2113,12 @@
         {
           "title": "Self-hosted platform features",
           "rel": "langsmith/self-hosted-platform-features.md"
+        }
+      ],
+      "self-hosted": [
+        {
+          "title": "Self-hosted LangSmith",
+          "rel": "langsmith/self-hosted.md"
         }
       ],
       "semantic-search": [
@@ -2559,12 +2241,6 @@
           "rel": "langsmith/smith-python-sdk.md"
         }
       ],
-      "smithdb-sdk-migration": [
-        {
-          "title": "Migrate to SmithDB-backed SDK methods",
-          "rel": "langsmith/smithdb-sdk-migration.md"
-        }
-      ],
       "smithdb-sdk-migration-experiments": [
         {
           "title": "Migrate dataset experiment runs to SmithDB",
@@ -2601,6 +2277,12 @@
           "rel": "langsmith/smithdb-sdk-migration-traces.md"
         }
       ],
+      "smithdb-sdk-migration": [
+        {
+          "title": "Migrate to SmithDB-backed SDK methods",
+          "rel": "langsmith/smithdb-sdk-migration.md"
+        }
+      ],
       "stateless-runs": [
         {
           "title": "Stateless runs",
@@ -2625,16 +2307,16 @@
           "rel": "langsmith/streaming.md"
         }
       ],
-      "studio": [
-        {
-          "title": "LangSmith Studio",
-          "rel": "langsmith/studio.md"
-        }
-      ],
       "studio-deploy": [
         {
           "title": "Studio",
           "rel": "langsmith/studio-deploy.md"
+        }
+      ],
+      "studio": [
+        {
+          "title": "LangSmith Studio",
+          "rel": "langsmith/studio.md"
         }
       ],
       "summary": [
@@ -2715,16 +2397,16 @@
           "rel": "langsmith/trace-litellm.md"
         }
       ],
-      "trace-openai": [
-        {
-          "title": "Trace OpenAI applications",
-          "rel": "langsmith/trace-openai.md"
-        }
-      ],
       "trace-openai-realtime": [
         {
           "title": "Trace OpenAI Realtime applications",
           "rel": "langsmith/trace-openai-realtime.md"
+        }
+      ],
+      "trace-openai": [
+        {
+          "title": "Trace OpenAI applications",
+          "rel": "langsmith/trace-openai.md"
         }
       ],
       "trace-query-syntax": [
@@ -2919,12 +2601,6 @@
           "rel": "langsmith/trajectory-evals.md"
         }
       ],
-      "troubleshooting": [
-        {
-          "title": "Troubleshooting",
-          "rel": "langsmith/troubleshooting.md"
-        }
-      ],
       "troubleshooting-studio": [
         {
           "title": "Studio troubleshooting",
@@ -2935,6 +2611,12 @@
         {
           "title": "Troubleshoot variable caching",
           "rel": "langsmith/troubleshooting-variable-caching.md"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "title": "Troubleshooting",
+          "rel": "langsmith/troubleshooting.md"
         }
       ],
       "upload-existing-experiments": [
@@ -3031,284 +2713,6 @@
         {
           "title": "Write your prompt with AI",
           "rel": "langsmith/write-prompt-with-ai.md"
-        }
-      ]
-    }
-  },
-  "agent-server-api": {
-    "id": "agent-server-api",
-    "name": "Agent Server API",
-    "groups": {
-      "a2a": [
-        {
-          "title": "A2A JSON-RPC",
-          "rel": "langsmith/agent-server-api/a2a/a2a-json-rpc.md"
-        }
-      ],
-      "assistants": [
-        {
-          "title": "Count Assistants",
-          "rel": "langsmith/agent-server-api/assistants/count-assistants.md"
-        },
-        {
-          "title": "Create Assistant",
-          "rel": "langsmith/agent-server-api/assistants/create-assistant.md"
-        },
-        {
-          "title": "Delete Assistant",
-          "rel": "langsmith/agent-server-api/assistants/delete-assistant.md"
-        },
-        {
-          "title": "Get Assistant",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant.md"
-        },
-        {
-          "title": "Get Assistant Graph",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant-graph.md"
-        },
-        {
-          "title": "Get Assistant Schemas",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant-schemas.md"
-        },
-        {
-          "title": "Get Assistant Subgraphs",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant-subgraphs.md"
-        },
-        {
-          "title": "Get Assistant Subgraphs by Namespace",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant-subgraphs-by-namespace.md"
-        },
-        {
-          "title": "Get Assistant Versions",
-          "rel": "langsmith/agent-server-api/assistants/get-assistant-versions.md"
-        },
-        {
-          "title": "Patch Assistant",
-          "rel": "langsmith/agent-server-api/assistants/patch-assistant.md"
-        },
-        {
-          "title": "Search Assistants",
-          "rel": "langsmith/agent-server-api/assistants/search-assistants.md"
-        },
-        {
-          "title": "Set Latest Assistant Version",
-          "rel": "langsmith/agent-server-api/assistants/set-latest-assistant-version.md"
-        }
-      ],
-      "crons": [
-        {
-          "title": "Count Crons",
-          "rel": "langsmith/agent-server-api/crons/count-crons.md"
-        },
-        {
-          "title": "Create Cron",
-          "rel": "langsmith/agent-server-api/crons/create-cron.md"
-        },
-        {
-          "title": "Create Thread Cron",
-          "rel": "langsmith/agent-server-api/crons/create-thread-cron.md"
-        },
-        {
-          "title": "Delete Cron",
-          "rel": "langsmith/agent-server-api/crons/delete-cron.md"
-        },
-        {
-          "title": "Get Cron",
-          "rel": "langsmith/agent-server-api/crons/get-cron.md"
-        },
-        {
-          "title": "Search Crons",
-          "rel": "langsmith/agent-server-api/crons/search-crons.md"
-        },
-        {
-          "title": "Update Cron",
-          "rel": "langsmith/agent-server-api/crons/update-cron.md"
-        }
-      ],
-      "mcp": [
-        {
-          "title": "MCP Get",
-          "rel": "langsmith/agent-server-api/mcp/mcp-get.md"
-        },
-        {
-          "title": "MCP Post",
-          "rel": "langsmith/agent-server-api/mcp/mcp-post.md"
-        },
-        {
-          "title": "Terminate Session",
-          "rel": "langsmith/agent-server-api/mcp/terminate-session.md"
-        }
-      ],
-      "stateless-runs": [
-        {
-          "title": "Create Background Run",
-          "rel": "langsmith/agent-server-api/stateless-runs/create-background-run.md"
-        },
-        {
-          "title": "Create Run Batch",
-          "rel": "langsmith/agent-server-api/stateless-runs/create-run-batch.md"
-        },
-        {
-          "title": "Create Run, Stream Output",
-          "rel": "langsmith/agent-server-api/stateless-runs/create-run-stream-output.md"
-        },
-        {
-          "title": "Create Run, Wait for Output",
-          "rel": "langsmith/agent-server-api/stateless-runs/create-run-wait-for-output.md"
-        }
-      ],
-      "store": [
-        {
-          "title": "Delete an item.",
-          "rel": "langsmith/agent-server-api/store/delete-an-item.md"
-        },
-        {
-          "title": "List namespaces with optional match conditions.",
-          "rel": "langsmith/agent-server-api/store/list-namespaces-with-optional-match-conditions.md"
-        },
-        {
-          "title": "Retrieve a single item.",
-          "rel": "langsmith/agent-server-api/store/retrieve-a-single-item.md"
-        },
-        {
-          "title": "Search or list items within a namespace prefix.",
-          "rel": "langsmith/agent-server-api/store/search-or-list-items-within-a-namespace-prefix.md"
-        },
-        {
-          "title": "Store or update an item.",
-          "rel": "langsmith/agent-server-api/store/store-or-update-an-item.md"
-        }
-      ],
-      "streaming": [
-        {
-          "title": "Protocol v2 Command",
-          "rel": "langsmith/agent-server-api/streaming/protocol-v2-command.md"
-        },
-        {
-          "title": "Protocol v2 Event Stream (SSE)",
-          "rel": "langsmith/agent-server-api/streaming/protocol-v2-event-stream-sse.md"
-        }
-      ],
-      "system": [
-        {
-          "title": "API Documentation",
-          "rel": "langsmith/agent-server-api/system/api-documentation.md"
-        },
-        {
-          "title": "Health Check",
-          "rel": "langsmith/agent-server-api/system/health-check.md"
-        },
-        {
-          "title": "Server Information",
-          "rel": "langsmith/agent-server-api/system/server-information.md"
-        },
-        {
-          "title": "System Metrics",
-          "rel": "langsmith/agent-server-api/system/system-metrics.md"
-        }
-      ],
-      "thread-runs": [
-        {
-          "title": "Cancel Run",
-          "rel": "langsmith/agent-server-api/thread-runs/cancel-run.md"
-        },
-        {
-          "title": "Cancel Runs",
-          "rel": "langsmith/agent-server-api/thread-runs/cancel-runs.md"
-        },
-        {
-          "title": "Create Background Run",
-          "rel": "langsmith/agent-server-api/thread-runs/create-background-run.md"
-        },
-        {
-          "title": "Create Run, Stream Output",
-          "rel": "langsmith/agent-server-api/thread-runs/create-run-stream-output.md"
-        },
-        {
-          "title": "Create Run, Wait for Output",
-          "rel": "langsmith/agent-server-api/thread-runs/create-run-wait-for-output.md"
-        },
-        {
-          "title": "Delete Run",
-          "rel": "langsmith/agent-server-api/thread-runs/delete-run.md"
-        },
-        {
-          "title": "Get Run",
-          "rel": "langsmith/agent-server-api/thread-runs/get-run.md"
-        },
-        {
-          "title": "Join Run",
-          "rel": "langsmith/agent-server-api/thread-runs/join-run.md"
-        },
-        {
-          "title": "Join Run Stream",
-          "rel": "langsmith/agent-server-api/thread-runs/join-run-stream.md"
-        },
-        {
-          "title": "List Runs",
-          "rel": "langsmith/agent-server-api/thread-runs/list-runs.md"
-        }
-      ],
-      "threads": [
-        {
-          "title": "Copy Thread",
-          "rel": "langsmith/agent-server-api/threads/copy-thread.md"
-        },
-        {
-          "title": "Count Threads",
-          "rel": "langsmith/agent-server-api/threads/count-threads.md"
-        },
-        {
-          "title": "Create Thread",
-          "rel": "langsmith/agent-server-api/threads/create-thread.md"
-        },
-        {
-          "title": "Delete Thread",
-          "rel": "langsmith/agent-server-api/threads/delete-thread.md"
-        },
-        {
-          "title": "Get Thread",
-          "rel": "langsmith/agent-server-api/threads/get-thread.md"
-        },
-        {
-          "title": "Get Thread History",
-          "rel": "langsmith/agent-server-api/threads/get-thread-history.md"
-        },
-        {
-          "title": "Get Thread History Post",
-          "rel": "langsmith/agent-server-api/threads/get-thread-history-post.md"
-        },
-        {
-          "title": "Get Thread State",
-          "rel": "langsmith/agent-server-api/threads/get-thread-state.md"
-        },
-        {
-          "title": "Get Thread State At Checkpoint",
-          "rel": "langsmith/agent-server-api/threads/get-thread-state-at-checkpoint.md"
-        },
-        {
-          "title": "Get Thread State At Checkpoint",
-          "rel": "langsmith/agent-server-api/threads/get-thread-state-at-checkpoint-1.md"
-        },
-        {
-          "title": "Join Thread Stream",
-          "rel": "langsmith/agent-server-api/threads/join-thread-stream.md"
-        },
-        {
-          "title": "Patch Thread",
-          "rel": "langsmith/agent-server-api/threads/patch-thread.md"
-        },
-        {
-          "title": "Prune Threads",
-          "rel": "langsmith/agent-server-api/threads/prune-threads.md"
-        },
-        {
-          "title": "Search Threads",
-          "rel": "langsmith/agent-server-api/threads/search-threads.md"
-        },
-        {
-          "title": "Update Thread State",
-          "rel": "langsmith/agent-server-api/threads/update-thread-state.md"
         }
       ]
     }
@@ -3473,28 +2877,22 @@
     "id": "langsmith-js",
     "name": "LangSmith · JS",
     "groups": {
-      "managed-deep-agents": [
-        {
-          "title": "Managed Deep Agents",
-          "rel": "langsmith/javascript/managed-deep-agents.md"
-        }
-      ],
       "managed-deep-agents-agent-definition": [
         {
           "title": "Define a Managed Deep Agent",
           "rel": "langsmith/javascript/managed-deep-agents-agent-definition.md"
         }
       ],
-      "managed-deep-agents-channels": [
-        {
-          "title": "Connect Managed Deep Agents to channels",
-          "rel": "langsmith/javascript/managed-deep-agents-channels.md"
-        }
-      ],
       "managed-deep-agents-channels-slack": [
         {
           "title": "Connect a Managed Deep Agent to Slack",
           "rel": "langsmith/javascript/managed-deep-agents-channels-slack.md"
+        }
+      ],
+      "managed-deep-agents-channels": [
+        {
+          "title": "Connect Managed Deep Agents to channels",
+          "rel": "langsmith/javascript/managed-deep-agents-channels.md"
         }
       ],
       "managed-deep-agents-cli": [
@@ -3598,6 +2996,12 @@
           "title": "Add a custom search tool, memory, and a schedule",
           "rel": "langsmith/javascript/managed-deep-agents-tutorial.md"
         }
+      ],
+      "managed-deep-agents": [
+        {
+          "title": "Managed Deep Agents",
+          "rel": "langsmith/javascript/managed-deep-agents.md"
+        }
       ]
     }
   },
@@ -3605,28 +3009,22 @@
     "id": "langsmith-py",
     "name": "LangSmith · Python",
     "groups": {
-      "managed-deep-agents": [
-        {
-          "title": "Managed Deep Agents",
-          "rel": "langsmith/python/managed-deep-agents.md"
-        }
-      ],
       "managed-deep-agents-agent-definition": [
         {
           "title": "Define a Managed Deep Agent",
           "rel": "langsmith/python/managed-deep-agents-agent-definition.md"
         }
       ],
-      "managed-deep-agents-channels": [
-        {
-          "title": "Connect Managed Deep Agents to channels",
-          "rel": "langsmith/python/managed-deep-agents-channels.md"
-        }
-      ],
       "managed-deep-agents-channels-slack": [
         {
           "title": "Connect a Managed Deep Agent to Slack",
           "rel": "langsmith/python/managed-deep-agents-channels-slack.md"
+        }
+      ],
+      "managed-deep-agents-channels": [
+        {
+          "title": "Connect Managed Deep Agents to channels",
+          "rel": "langsmith/python/managed-deep-agents-channels.md"
         }
       ],
       "managed-deep-agents-cli": [
@@ -3730,2277 +3128,11 @@
           "title": "Add a custom search tool, memory, and a schedule",
           "rel": "langsmith/python/managed-deep-agents-tutorial.md"
         }
-      ]
-    }
-  },
-  "langsmith-api": {
-    "id": "langsmith-api",
-    "name": "LangSmith API",
-    "groups": {
-      "access_policies": [
-        {
-          "title": "Attach access policies to a role",
-          "rel": "langsmith/smith-api/access_policies/attach-access-policies-to-a-role.md"
-        },
-        {
-          "title": "Attach access policies to a role",
-          "rel": "langsmith/smith-api/access_policies/attach-access-policies-to-a-role-1.md"
-        },
-        {
-          "title": "Create an access policy",
-          "rel": "langsmith/smith-api/access_policies/create-an-access-policy.md"
-        },
-        {
-          "title": "Delete an access policy",
-          "rel": "langsmith/smith-api/access_policies/delete-an-access-policy.md"
-        },
-        {
-          "title": "Detach access policies from a role",
-          "rel": "langsmith/smith-api/access_policies/detach-access-policies-from-a-role.md"
-        },
-        {
-          "title": "Get an access policy",
-          "rel": "langsmith/smith-api/access_policies/get-an-access-policy.md"
-        },
-        {
-          "title": "List access policies",
-          "rel": "langsmith/smith-api/access_policies/list-access-policies.md"
-        },
-        {
-          "title": "Update an access policy",
-          "rel": "langsmith/smith-api/access_policies/update-an-access-policy.md"
-        }
       ],
-      "ace": [
+      "managed-deep-agents": [
         {
-          "title": "Execute",
-          "rel": "langsmith/smith-api/ace/execute.md"
-        }
-      ],
-      "alert_rules": [
-        {
-          "title": "Create an alert rule",
-          "rel": "langsmith/smith-api/alert_rules/create-an-alert-rule.md"
-        },
-        {
-          "title": "Delete an alert rule",
-          "rel": "langsmith/smith-api/alert_rules/delete-an-alert-rule.md"
-        },
-        {
-          "title": "Get an alert rule",
-          "rel": "langsmith/smith-api/alert_rules/get-an-alert-rule.md"
-        },
-        {
-          "title": "Test an alert action to determine if configuration is valid",
-          "rel": "langsmith/smith-api/alert_rules/test-an-alert-action-to-determine-if-configuration-is-valid.md"
-        },
-        {
-          "title": "Update an alert rule",
-          "rel": "langsmith/smith-api/alert_rules/update-an-alert-rule.md"
-        }
-      ],
-      "annotation-queues": [
-        {
-          "title": "Add runs to annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue.md"
-        },
-        {
-          "title": "Add runs to annotation queue by key",
-          "rel": "langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue-by-key.md"
-        },
-        {
-          "title": "Create annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/create-annotation-queue.md"
-        },
-        {
-          "title": "Create identity annotation queue run status",
-          "rel": "langsmith/smith-api/annotation-queues/create-identity-annotation-queue-run-status.md"
-        },
-        {
-          "title": "Delete annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/delete-annotation-queue.md"
-        },
-        {
-          "title": "Delete annotation queues",
-          "rel": "langsmith/smith-api/annotation-queues/delete-annotation-queues.md"
-        },
-        {
-          "title": "Delete run from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/delete-run-from-annotation-queue.md"
-        },
-        {
-          "title": "Delete runs from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/delete-runs-from-annotation-queue.md"
-        },
-        {
-          "title": "Export annotation queue archived runs",
-          "rel": "langsmith/smith-api/annotation-queues/export-annotation-queue-archived-runs.md"
-        },
-        {
-          "title": "Get annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-annotation-queue.md"
-        },
-        {
-          "title": "Get annotation queues",
-          "rel": "langsmith/smith-api/annotation-queues/get-annotation-queues.md"
-        },
-        {
-          "title": "Get annotation queues for run",
-          "rel": "langsmith/smith-api/annotation-queues/get-annotation-queues-for-run.md"
-        },
-        {
-          "title": "Get run from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-run-from-annotation-queue.md"
-        },
-        {
-          "title": "Get runs from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-runs-from-annotation-queue.md"
-        },
-        {
-          "title": "Get size from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-size-from-annotation-queue.md"
-        },
-        {
-          "title": "Get total archived from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-total-archived-from-annotation-queue.md"
-        },
-        {
-          "title": "Get total size from annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/get-total-size-from-annotation-queue.md"
-        },
-        {
-          "title": "Populate annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/populate-annotation-queue.md"
-        },
-        {
-          "title": "Resolve annotation queue run",
-          "rel": "langsmith/smith-api/annotation-queues/resolve-annotation-queue-run.md"
-        },
-        {
-          "title": "Update annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/update-annotation-queue.md"
-        },
-        {
-          "title": "Update run in annotation queue",
-          "rel": "langsmith/smith-api/annotation-queues/update-run-in-annotation-queue.md"
-        }
-      ],
-      "annotation_queues": [
-        {
-          "title": "Add a reviewer to an annotation queue",
-          "rel": "langsmith/smith-api/annotation_queues/add-a-reviewer-to-an-annotation-queue.md"
-        },
-        {
-          "title": "Add annotation queue items",
-          "rel": "langsmith/smith-api/annotation_queues/add-annotation-queue-items.md"
-        },
-        {
-          "title": "Create annotation queue item status",
-          "rel": "langsmith/smith-api/annotation_queues/create-annotation-queue-item-status.md"
-        },
-        {
-          "title": "Delete annotation queue items",
-          "rel": "langsmith/smith-api/annotation_queues/delete-annotation-queue-items.md"
-        },
-        {
-          "title": "Get annotation queue item placement",
-          "rel": "langsmith/smith-api/annotation_queues/get-annotation-queue-item-placement.md"
-        },
-        {
-          "title": "Get the annotation queue item count",
-          "rel": "langsmith/smith-api/annotation_queues/get-the-annotation-queue-item-count.md"
-        },
-        {
-          "title": "List annotation queue items",
-          "rel": "langsmith/smith-api/annotation_queues/list-annotation-queue-items.md"
-        },
-        {
-          "title": "Remove a reviewer from an annotation queue",
-          "rel": "langsmith/smith-api/annotation_queues/remove-a-reviewer-from-an-annotation-queue.md"
-        },
-        {
-          "title": "Update an annotation queue item",
-          "rel": "langsmith/smith-api/annotation_queues/update-an-annotation-queue-item.md"
-        }
-      ],
-      "api-key": [
-        {
-          "title": "Delete API key",
-          "rel": "langsmith/smith-api/api-key/delete-api-key.md"
-        },
-        {
-          "title": "Delete personal access token",
-          "rel": "langsmith/smith-api/api-key/delete-personal-access-token.md"
-        },
-        {
-          "title": "Generate API key",
-          "rel": "langsmith/smith-api/api-key/generate-api-key.md"
-        },
-        {
-          "title": "Generate personal access token",
-          "rel": "langsmith/smith-api/api-key/generate-personal-access-token.md"
-        },
-        {
-          "title": "Get API keys",
-          "rel": "langsmith/smith-api/api-key/get-api-keys.md"
-        },
-        {
-          "title": "Get personal access tokens",
-          "rel": "langsmith/smith-api/api-key/get-personal-access-tokens.md"
-        }
-      ],
-      "audit-logs": [
-        {
-          "title": "Get audit logs",
-          "rel": "langsmith/smith-api/audit-logs/get-audit-logs.md"
-        }
-      ],
-      "auth": [
-        {
-          "title": "Check SSO email verification status",
-          "rel": "langsmith/smith-api/auth/check-sso-email-verification-status.md"
-        },
-        {
-          "title": "Confirm SSO user email",
-          "rel": "langsmith/smith-api/auth/confirm-sso-user-email.md"
-        },
-        {
-          "title": "Get public auth info",
-          "rel": "langsmith/smith-api/auth/get-public-auth-info.md"
-        },
-        {
-          "title": "Get SSO settings",
-          "rel": "langsmith/smith-api/auth/get-sso-settings.md"
-        },
-        {
-          "title": "Login",
-          "rel": "langsmith/smith-api/auth/login.md"
-        },
-        {
-          "title": "Lookup SSO by email",
-          "rel": "langsmith/smith-api/auth/lookup-sso-by-email.md"
-        },
-        {
-          "title": "Send SSO email confirmation",
-          "rel": "langsmith/smith-api/auth/send-sso-email-confirmation.md"
-        }
-      ],
-      "aws_marketplace": [
-        {
-          "title": "AWS marketplace fulfillment URL registration",
-          "rel": "langsmith/smith-api/aws_marketplace/aws-marketplace-fulfillment-url-registration.md"
-        }
-      ],
-      "backfills": [
-        {
-          "title": "Restart a backfill job",
-          "rel": "langsmith/smith-api/backfills/restart-a-backfill-job.md"
-        }
-      ],
-      "bulk-exports": [
-        {
-          "title": "Cancel bulk export",
-          "rel": "langsmith/smith-api/bulk-exports/cancel-bulk-export.md"
-        },
-        {
-          "title": "Create bulk export",
-          "rel": "langsmith/smith-api/bulk-exports/create-bulk-export.md"
-        },
-        {
-          "title": "Create bulk export destination",
-          "rel": "langsmith/smith-api/bulk-exports/create-bulk-export-destination.md"
-        },
-        {
-          "title": "Get bulk export",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export.md"
-        },
-        {
-          "title": "Get bulk export destination",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export-destination.md"
-        },
-        {
-          "title": "Get bulk export destinations",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export-destinations.md"
-        },
-        {
-          "title": "Get bulk export run",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export-run.md"
-        },
-        {
-          "title": "Get bulk export runs",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export-runs.md"
-        },
-        {
-          "title": "Get bulk export runs filtered",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-export-runs-filtered.md"
-        },
-        {
-          "title": "Get bulk exports",
-          "rel": "langsmith/smith-api/bulk-exports/get-bulk-exports.md"
-        },
-        {
-          "title": "Update bulk export destination",
-          "rel": "langsmith/smith-api/bulk-exports/update-bulk-export-destination.md"
-        }
-      ],
-      "charts": [
-        {
-          "title": "Clone section",
-          "rel": "langsmith/smith-api/charts/clone-section.md"
-        },
-        {
-          "title": "Create chart",
-          "rel": "langsmith/smith-api/charts/create-chart.md"
-        },
-        {
-          "title": "Create section",
-          "rel": "langsmith/smith-api/charts/create-section.md"
-        },
-        {
-          "title": "Delete chart",
-          "rel": "langsmith/smith-api/charts/delete-chart.md"
-        },
-        {
-          "title": "Delete section",
-          "rel": "langsmith/smith-api/charts/delete-section.md"
-        },
-        {
-          "title": "Org create chart",
-          "rel": "langsmith/smith-api/charts/org-create-chart.md"
-        },
-        {
-          "title": "Org create section",
-          "rel": "langsmith/smith-api/charts/org-create-section.md"
-        },
-        {
-          "title": "Org delete chart",
-          "rel": "langsmith/smith-api/charts/org-delete-chart.md"
-        },
-        {
-          "title": "Org delete section",
-          "rel": "langsmith/smith-api/charts/org-delete-section.md"
-        },
-        {
-          "title": "Org read chart preview",
-          "rel": "langsmith/smith-api/charts/org-read-chart-preview.md"
-        },
-        {
-          "title": "Org read charts",
-          "rel": "langsmith/smith-api/charts/org-read-charts.md"
-        },
-        {
-          "title": "Org read sections",
-          "rel": "langsmith/smith-api/charts/org-read-sections.md"
-        },
-        {
-          "title": "Org read single chart",
-          "rel": "langsmith/smith-api/charts/org-read-single-chart.md"
-        },
-        {
-          "title": "Org read single section",
-          "rel": "langsmith/smith-api/charts/org-read-single-section.md"
-        },
-        {
-          "title": "Org update chart",
-          "rel": "langsmith/smith-api/charts/org-update-chart.md"
-        },
-        {
-          "title": "Org update section",
-          "rel": "langsmith/smith-api/charts/org-update-section.md"
-        },
-        {
-          "title": "Read chart preview",
-          "rel": "langsmith/smith-api/charts/read-chart-preview.md"
-        },
-        {
-          "title": "Read charts",
-          "rel": "langsmith/smith-api/charts/read-charts.md"
-        },
-        {
-          "title": "Read sections",
-          "rel": "langsmith/smith-api/charts/read-sections.md"
-        },
-        {
-          "title": "Read single chart",
-          "rel": "langsmith/smith-api/charts/read-single-chart.md"
-        },
-        {
-          "title": "Read single section",
-          "rel": "langsmith/smith-api/charts/read-single-section.md"
-        },
-        {
-          "title": "Update chart",
-          "rel": "langsmith/smith-api/charts/update-chart.md"
-        },
-        {
-          "title": "Update section",
-          "rel": "langsmith/smith-api/charts/update-section.md"
-        }
-      ],
-      "comments": [
-        {
-          "title": "Create comment",
-          "rel": "langsmith/smith-api/comments/create-comment.md"
-        },
-        {
-          "title": "Create sub comment",
-          "rel": "langsmith/smith-api/comments/create-sub-comment.md"
-        },
-        {
-          "title": "Get comments",
-          "rel": "langsmith/smith-api/comments/get-comments.md"
-        },
-        {
-          "title": "Get sub comments",
-          "rel": "langsmith/smith-api/comments/get-sub-comments.md"
-        },
-        {
-          "title": "Like comment",
-          "rel": "langsmith/smith-api/comments/like-comment.md"
-        },
-        {
-          "title": "Unlike comment",
-          "rel": "langsmith/smith-api/comments/unlike-comment.md"
-        }
-      ],
-      "commits": [
-        {
-          "title": "Create a commit",
-          "rel": "langsmith/smith-api/commits/create-a-commit.md"
-        },
-        {
-          "title": "Get a commit",
-          "rel": "langsmith/smith-api/commits/get-a-commit.md"
-        },
-        {
-          "title": "List commits",
-          "rel": "langsmith/smith-api/commits/list-commits.md"
-        }
-      ],
-      "data_planes": [
-        {
-          "title": "Create a new data plane",
-          "rel": "langsmith/smith-api/data_planes/create-a-new-data-plane.md"
-        },
-        {
-          "title": "Delete a data plane",
-          "rel": "langsmith/smith-api/data_planes/delete-a-data-plane.md"
-        },
-        {
-          "title": "List data planes for the current organization",
-          "rel": "langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization.md"
-        }
-      ],
-      "datasets": [
-        {
-          "title": "Clone dataset",
-          "rel": "langsmith/smith-api/datasets/clone-dataset.md"
-        },
-        {
-          "title": "Create comparative experiment",
-          "rel": "langsmith/smith-api/datasets/create-comparative-experiment.md"
-        },
-        {
-          "title": "Create dataset",
-          "rel": "langsmith/smith-api/datasets/create-dataset.md"
-        },
-        {
-          "title": "Delete comparative experiment",
-          "rel": "langsmith/smith-api/datasets/delete-comparative-experiment.md"
-        },
-        {
-          "title": "Delete dataset",
-          "rel": "langsmith/smith-api/datasets/delete-dataset.md"
-        },
-        {
-          "title": "Delete datasets",
-          "rel": "langsmith/smith-api/datasets/delete-datasets.md"
-        },
-        {
-          "title": "Diff dataset versions",
-          "rel": "langsmith/smith-api/datasets/diff-dataset-versions.md"
-        },
-        {
-          "title": "Download dataset csv",
-          "rel": "langsmith/smith-api/datasets/download-dataset-csv.md"
-        },
-        {
-          "title": "Download dataset jsonl",
-          "rel": "langsmith/smith-api/datasets/download-dataset-jsonl.md"
-        },
-        {
-          "title": "Download dataset openai",
-          "rel": "langsmith/smith-api/datasets/download-dataset-openai.md"
-        },
-        {
-          "title": "Download dataset openai ft",
-          "rel": "langsmith/smith-api/datasets/download-dataset-openai-ft.md"
-        },
-        {
-          "title": "Fetch experiment runs for dataset examples",
-          "rel": "langsmith/smith-api/datasets/fetch-experiment-runs-for-dataset-examples.md"
-        },
-        {
-          "title": "Fetch shared experiment runs for dataset examples",
-          "rel": "langsmith/smith-api/datasets/fetch-shared-experiment-runs-for-dataset-examples.md"
-        },
-        {
-          "title": "Generate",
-          "rel": "langsmith/smith-api/datasets/generate.md"
-        },
-        {
-          "title": "Get dataset splits",
-          "rel": "langsmith/smith-api/datasets/get-dataset-splits.md"
-        },
-        {
-          "title": "Get dataset version",
-          "rel": "langsmith/smith-api/datasets/get-dataset-version.md"
-        },
-        {
-          "title": "Get dataset versions",
-          "rel": "langsmith/smith-api/datasets/get-dataset-versions.md"
-        },
-        {
-          "title": "Read dataset",
-          "rel": "langsmith/smith-api/datasets/read-dataset.md"
-        },
-        {
-          "title": "Read dataset share state",
-          "rel": "langsmith/smith-api/datasets/read-dataset-share-state.md"
-        },
-        {
-          "title": "Read datasets",
-          "rel": "langsmith/smith-api/datasets/read-datasets.md"
-        },
-        {
-          "title": "Read datasets stream",
-          "rel": "langsmith/smith-api/datasets/read-datasets-stream.md"
-        },
-        {
-          "title": "Read examples with runs",
-          "rel": "langsmith/smith-api/datasets/read-examples-with-runs.md"
-        },
-        {
-          "title": "Share dataset",
-          "rel": "langsmith/smith-api/datasets/share-dataset.md"
-        },
-        {
-          "title": "Studio experiment",
-          "rel": "langsmith/smith-api/datasets/studio-experiment.md"
-        },
-        {
-          "title": "Unshare dataset",
-          "rel": "langsmith/smith-api/datasets/unshare-dataset.md"
-        },
-        {
-          "title": "Update dataset",
-          "rel": "langsmith/smith-api/datasets/update-dataset.md"
-        },
-        {
-          "title": "Update dataset splits",
-          "rel": "langsmith/smith-api/datasets/update-dataset-splits.md"
-        },
-        {
-          "title": "Update dataset version",
-          "rel": "langsmith/smith-api/datasets/update-dataset-version.md"
-        },
-        {
-          "title": "Upload csv dataset",
-          "rel": "langsmith/smith-api/datasets/upload-csv-dataset.md"
-        },
-        {
-          "title": "Upload experiment",
-          "rel": "langsmith/smith-api/datasets/upload-experiment.md"
-        }
-      ],
-      "directories": [
-        {
-          "title": "Create directory commit",
-          "rel": "langsmith/smith-api/directories/create-directory-commit.md"
-        },
-        {
-          "title": "Delete directory repository",
-          "rel": "langsmith/smith-api/directories/delete-directory-repository.md"
-        },
-        {
-          "title": "Get directory contents",
-          "rel": "langsmith/smith-api/directories/get-directory-contents.md"
-        }
-      ],
-      "evaluators": [
-        {
-          "title": "Bulk delete evaluators",
-          "rel": "langsmith/smith-api/evaluators/bulk-delete-evaluators.md"
-        },
-        {
-          "title": "Create evaluator",
-          "rel": "langsmith/smith-api/evaluators/create-evaluator.md"
-        },
-        {
-          "title": "Delete evaluator",
-          "rel": "langsmith/smith-api/evaluators/delete-evaluator.md"
-        },
-        {
-          "title": "Get evaluator",
-          "rel": "langsmith/smith-api/evaluators/get-evaluator.md"
-        },
-        {
-          "title": "Get evaluator spend",
-          "rel": "langsmith/smith-api/evaluators/get-evaluator-spend.md"
-        },
-        {
-          "title": "List evaluators",
-          "rel": "langsmith/smith-api/evaluators/list-evaluators.md"
-        },
-        {
-          "title": "Update evaluator",
-          "rel": "langsmith/smith-api/evaluators/update-evaluator.md"
-        }
-      ],
-      "examples": [
-        {
-          "title": "Count examples",
-          "rel": "langsmith/smith-api/examples/count-examples.md"
-        },
-        {
-          "title": "Create example",
-          "rel": "langsmith/smith-api/examples/create-example.md"
-        },
-        {
-          "title": "Create examples",
-          "rel": "langsmith/smith-api/examples/create-examples.md"
-        },
-        {
-          "title": "Delete example",
-          "rel": "langsmith/smith-api/examples/delete-example.md"
-        },
-        {
-          "title": "Delete examples",
-          "rel": "langsmith/smith-api/examples/delete-examples.md"
-        },
-        {
-          "title": "Hard delete examples",
-          "rel": "langsmith/smith-api/examples/hard-delete-examples.md"
-        },
-        {
-          "title": "Legacy update examples",
-          "rel": "langsmith/smith-api/examples/legacy-update-examples.md"
-        },
-        {
-          "title": "Read example",
-          "rel": "langsmith/smith-api/examples/read-example.md"
-        },
-        {
-          "title": "Read examples",
-          "rel": "langsmith/smith-api/examples/read-examples.md"
-        },
-        {
-          "title": "Update example",
-          "rel": "langsmith/smith-api/examples/update-example.md"
-        },
-        {
-          "title": "Update examples",
-          "rel": "langsmith/smith-api/examples/update-examples.md"
-        },
-        {
-          "title": "Upload examples",
-          "rel": "langsmith/smith-api/examples/upload-examples.md"
-        },
-        {
-          "title": "Upload examples from csv",
-          "rel": "langsmith/smith-api/examples/upload-examples-from-csv.md"
-        },
-        {
-          "title": "Validate example",
-          "rel": "langsmith/smith-api/examples/validate-example.md"
-        },
-        {
-          "title": "Validate examples",
-          "rel": "langsmith/smith-api/examples/validate-examples.md"
-        }
-      ],
-      "experiment-view-overrides": [
-        {
-          "title": "Create new experiment view override configuration for a dataset",
-          "rel": "langsmith/smith-api/experiment-view-overrides/create-new-experiment-view-override-configuration-for-a-dataset.md"
-        },
-        {
-          "title": "Delete experiment view override configuration",
-          "rel": "langsmith/smith-api/experiment-view-overrides/delete-experiment-view-override-configuration.md"
-        },
-        {
-          "title": "Get experiment view override configuration by specific ID",
-          "rel": "langsmith/smith-api/experiment-view-overrides/get-experiment-view-override-configuration-by-specific-id.md"
-        },
-        {
-          "title": "Get experiment view override configurations for a dataset",
-          "rel": "langsmith/smith-api/experiment-view-overrides/get-experiment-view-override-configurations-for-a-dataset.md"
-        },
-        {
-          "title": "Update existing experiment view override configuration",
-          "rel": "langsmith/smith-api/experiment-view-overrides/update-existing-experiment-view-override-configuration.md"
-        }
-      ],
-      "experiments": [
-        {
-          "title": "Evaluate experiment adhoc",
-          "rel": "langsmith/smith-api/experiments/evaluate-experiment-adhoc.md"
-        }
-      ],
-      "features": [
-        {
-          "title": "Delete default model for a feature",
-          "rel": "langsmith/smith-api/features/delete-default-model-for-a-feature.md"
-        },
-        {
-          "title": "Disable a model for a feature",
-          "rel": "langsmith/smith-api/features/disable-a-model-for-a-feature.md"
-        },
-        {
-          "title": "List feature configurations",
-          "rel": "langsmith/smith-api/features/list-feature-configurations.md"
-        },
-        {
-          "title": "Re-enable a disabled model for a feature",
-          "rel": "langsmith/smith-api/features/re-enable-a-disabled-model-for-a-feature.md"
-        },
-        {
-          "title": "Set default model for a feature",
-          "rel": "langsmith/smith-api/features/set-default-model-for-a-feature.md"
-        }
-      ],
-      "feedback-configs": [
-        {
-          "title": "Create feedback config endpoint",
-          "rel": "langsmith/smith-api/feedback-configs/create-feedback-config-endpoint.md"
-        },
-        {
-          "title": "Delete feedback config endpoint",
-          "rel": "langsmith/smith-api/feedback-configs/delete-feedback-config-endpoint.md"
-        },
-        {
-          "title": "List feedback configs endpoint",
-          "rel": "langsmith/smith-api/feedback-configs/list-feedback-configs-endpoint.md"
-        },
-        {
-          "title": "Update feedback config endpoint",
-          "rel": "langsmith/smith-api/feedback-configs/update-feedback-config-endpoint.md"
-        }
-      ],
-      "feedback": [
-        {
-          "title": "Create feedback",
-          "rel": "langsmith/smith-api/feedback/create-feedback.md"
-        },
-        {
-          "title": "Create feedback formula ep",
-          "rel": "langsmith/smith-api/feedback/create-feedback-formula-ep.md"
-        },
-        {
-          "title": "Create feedback ingest token",
-          "rel": "langsmith/smith-api/feedback/create-feedback-ingest-token.md"
-        },
-        {
-          "title": "Create feedback with token get",
-          "rel": "langsmith/smith-api/feedback/create-feedback-with-token-get.md"
-        },
-        {
-          "title": "Create feedback with token post",
-          "rel": "langsmith/smith-api/feedback/create-feedback-with-token-post.md"
-        },
-        {
-          "title": "Delete feedback",
-          "rel": "langsmith/smith-api/feedback/delete-feedback.md"
-        },
-        {
-          "title": "Delete feedback formula endpoint",
-          "rel": "langsmith/smith-api/feedback/delete-feedback-formula-endpoint.md"
-        },
-        {
-          "title": "Get feedback formula ep",
-          "rel": "langsmith/smith-api/feedback/get-feedback-formula-ep.md"
-        },
-        {
-          "title": "List feedback formula ep",
-          "rel": "langsmith/smith-api/feedback/list-feedback-formula-ep.md"
-        },
-        {
-          "title": "List feedback ingest tokens",
-          "rel": "langsmith/smith-api/feedback/list-feedback-ingest-tokens.md"
-        },
-        {
-          "title": "Read feedback",
-          "rel": "langsmith/smith-api/feedback/read-feedback.md"
-        },
-        {
-          "title": "Read feedbacks",
-          "rel": "langsmith/smith-api/feedback/read-feedbacks.md"
-        },
-        {
-          "title": "Update feedback",
-          "rel": "langsmith/smith-api/feedback/update-feedback.md"
-        },
-        {
-          "title": "Update feedback formula ep",
-          "rel": "langsmith/smith-api/feedback/update-feedback-formula-ep.md"
-        }
-      ],
-      "gateway-policies": [
-        {
-          "title": "Create a gateway policy",
-          "rel": "langsmith/smith-api/gateway-policies/create-a-gateway-policy.md"
-        },
-        {
-          "title": "Delete a gateway policy",
-          "rel": "langsmith/smith-api/gateway-policies/delete-a-gateway-policy.md"
-        },
-        {
-          "title": "Get a gateway policy",
-          "rel": "langsmith/smith-api/gateway-policies/get-a-gateway-policy.md"
-        },
-        {
-          "title": "List gateway policies",
-          "rel": "langsmith/smith-api/gateway-policies/list-gateway-policies.md"
-        },
-        {
-          "title": "Search gateway policies by subject value set",
-          "rel": "langsmith/smith-api/gateway-policies/search-gateway-policies-by-subject-value-set.md"
-        },
-        {
-          "title": "Update a gateway policy",
-          "rel": "langsmith/smith-api/gateway-policies/update-a-gateway-policy.md"
-        }
-      ],
-      "hub_environments": [
-        {
-          "title": "Create hub environments model",
-          "rel": "langsmith/smith-api/hub_environments/create-hub-environments-model.md"
-        },
-        {
-          "title": "Delete hub environments model",
-          "rel": "langsmith/smith-api/hub_environments/delete-hub-environments-model.md"
-        },
-        {
-          "title": "List hub environments",
-          "rel": "langsmith/smith-api/hub_environments/list-hub-environments.md"
-        },
-        {
-          "title": "Update hub environments model",
-          "rel": "langsmith/smith-api/hub_environments/update-hub-environments-model.md"
-        }
-      ],
-      "info": [
-        {
-          "title": "Get health info",
-          "rel": "langsmith/smith-api/info/get-health-info.md"
-        },
-        {
-          "title": "Get server info",
-          "rel": "langsmith/smith-api/info/get-server-info.md"
-        }
-      ],
-      "integrations": [
-        {
-          "title": "Get agent builder integrations settings",
-          "rel": "langsmith/smith-api/integrations/get-agent-builder-integrations-settings.md"
-        },
-        {
-          "title": "Update agent builder integrations settings",
-          "rel": "langsmith/smith-api/integrations/update-agent-builder-integrations-settings.md"
-        }
-      ],
-      "issues-agent": [
-        {
-          "title": "Create the issues agent for a session (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/create-the-issues-agent-for-a-session-beta.md"
-        },
-        {
-          "title": "Delete the issues agent for a session (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/delete-the-issues-agent-for-a-session-beta.md"
-        },
-        {
-          "title": "Get the issues agent config for a session (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/get-the-issues-agent-config-for-a-session-beta.md"
-        },
-        {
-          "title": "List issues agent configs (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/list-issues-agent-configs-beta.md"
-        },
-        {
-          "title": "Roll an issues agent webhook signing secret",
-          "rel": "langsmith/smith-api/issues-agent/roll-an-issues-agent-webhook-signing-secret.md"
-        },
-        {
-          "title": "Save the agent overview for a session (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/save-the-agent-overview-for-a-session-beta.md"
-        },
-        {
-          "title": "Update the issues agent config for a session (Beta)",
-          "rel": "langsmith/smith-api/issues-agent/update-the-issues-agent-config-for-a-session-beta.md"
-        }
-      ],
-      "issues": [
-        {
-          "title": "Get issue (Beta)",
-          "rel": "langsmith/smith-api/issues/get-issue-beta.md"
-        },
-        {
-          "title": "List issues (Beta)",
-          "rel": "langsmith/smith-api/issues/list-issues-beta.md"
-        },
-        {
-          "title": "List viewed issues for a session (Beta)",
-          "rel": "langsmith/smith-api/issues/list-viewed-issues-for-a-session-beta.md"
-        },
-        {
-          "title": "Mark issue viewed (Beta)",
-          "rel": "langsmith/smith-api/issues/mark-issue-viewed-beta.md"
-        },
-        {
-          "title": "Record a fix-verification verdict",
-          "rel": "langsmith/smith-api/issues/record-a-fix-verification-verdict.md"
-        },
-        {
-          "title": "Start preview-deploy verification for a fix",
-          "rel": "langsmith/smith-api/issues/start-preview-deploy-verification-for-a-fix.md"
-        }
-      ],
-      "likes": [
-        {
-          "title": "Like repo",
-          "rel": "langsmith/smith-api/likes/like-repo.md"
-        }
-      ],
-      "mcp": [
-        {
-          "title": "Get tools",
-          "rel": "langsmith/smith-api/mcp/get-tools.md"
-        },
-        {
-          "title": "Invalidate tools cache",
-          "rel": "langsmith/smith-api/mcp/invalidate-tools-cache.md"
-        },
-        {
-          "title": "Proxy",
-          "rel": "langsmith/smith-api/mcp/proxy.md"
-        },
-        {
-          "title": "Proxy get",
-          "rel": "langsmith/smith-api/mcp/proxy-get.md"
-        }
-      ],
-      "mcp_vendors": [
-        {
-          "title": "Create vendor settings",
-          "rel": "langsmith/smith-api/mcp_vendors/create-vendor-settings.md"
-        },
-        {
-          "title": "Delete vendor settings",
-          "rel": "langsmith/smith-api/mcp_vendors/delete-vendor-settings.md"
-        },
-        {
-          "title": "Get MCP vendor",
-          "rel": "langsmith/smith-api/mcp_vendors/get-mcp-vendor.md"
-        },
-        {
-          "title": "Get vendor account",
-          "rel": "langsmith/smith-api/mcp_vendors/get-vendor-account.md"
-        },
-        {
-          "title": "Get vendor settings",
-          "rel": "langsmith/smith-api/mcp_vendors/get-vendor-settings.md"
-        },
-        {
-          "title": "List MCP servers for a vendor",
-          "rel": "langsmith/smith-api/mcp_vendors/list-mcp-servers-for-a-vendor.md"
-        },
-        {
-          "title": "List MCP vendors",
-          "rel": "langsmith/smith-api/mcp_vendors/list-mcp-vendors.md"
-        },
-        {
-          "title": "List tools for a vendor",
-          "rel": "langsmith/smith-api/mcp_vendors/list-tools-for-a-vendor.md"
-        },
-        {
-          "title": "Replace vendor settings",
-          "rel": "langsmith/smith-api/mcp_vendors/replace-vendor-settings.md"
-        }
-      ],
-      "me": [
-        {
-          "title": "Create onboarding state",
-          "rel": "langsmith/smith-api/me/create-onboarding-state.md"
-        },
-        {
-          "title": "Get ls user ID",
-          "rel": "langsmith/smith-api/me/get-ls-user-id.md"
-        },
-        {
-          "title": "Get onboarding state",
-          "rel": "langsmith/smith-api/me/get-onboarding-state.md"
-        },
-        {
-          "title": "Get the authenticated user's provider user ID",
-          "rel": "langsmith/smith-api/me/get-the-authenticated-users-provider-user-id.md"
-        },
-        {
-          "title": "Update onboarding state field",
-          "rel": "langsmith/smith-api/me/update-onboarding-state-field.md"
-        }
-      ],
-      "model-price-map": [
-        {
-          "title": "Create new model price",
-          "rel": "langsmith/smith-api/model-price-map/create-new-model-price.md"
-        },
-        {
-          "title": "Delete model price",
-          "rel": "langsmith/smith-api/model-price-map/delete-model-price.md"
-        },
-        {
-          "title": "Read model price map",
-          "rel": "langsmith/smith-api/model-price-map/read-model-price-map.md"
-        },
-        {
-          "title": "Update model price",
-          "rel": "langsmith/smith-api/model-price-map/update-model-price.md"
-        }
-      ],
-      "oauth": [
-        {
-          "title": "Approve OAuth2 authorization request",
-          "rel": "langsmith/smith-api/oauth/approve-oauth2-authorization-request.md"
-        },
-        {
-          "title": "Authorize a device code",
-          "rel": "langsmith/smith-api/oauth/authorize-a-device-code.md"
-        },
-        {
-          "title": "Create an oauth client",
-          "rel": "langsmith/smith-api/oauth/create-an-oauth-client.md"
-        },
-        {
-          "title": "Delete an oauth client",
-          "rel": "langsmith/smith-api/oauth/delete-an-oauth-client.md"
-        },
-        {
-          "title": "Exchange grant for OAuth2 tokens",
-          "rel": "langsmith/smith-api/oauth/exchange-grant-for-oauth2-tokens.md"
-        },
-        {
-          "title": "Get an oauth client",
-          "rel": "langsmith/smith-api/oauth/get-an-oauth-client.md"
-        },
-        {
-          "title": "Get OAuth2 authorization server metadata",
-          "rel": "langsmith/smith-api/oauth/get-oauth2-authorization-server-metadata.md"
-        },
-        {
-          "title": "Get openid connect provider configuration",
-          "rel": "langsmith/smith-api/oauth/get-openid-connect-provider-configuration.md"
-        },
-        {
-          "title": "Get openid connect userinfo",
-          "rel": "langsmith/smith-api/oauth/get-openid-connect-userinfo.md"
-        },
-        {
-          "title": "Get public OAuth2 client metadata",
-          "rel": "langsmith/smith-api/oauth/get-public-oauth2-client-metadata.md"
-        },
-        {
-          "title": "Initiate OAuth2 authorization",
-          "rel": "langsmith/smith-api/oauth/initiate-oauth2-authorization.md"
-        },
-        {
-          "title": "List authorized applications",
-          "rel": "langsmith/smith-api/oauth/list-authorized-applications.md"
-        },
-        {
-          "title": "List oauth clients",
-          "rel": "langsmith/smith-api/oauth/list-oauth-clients.md"
-        },
-        {
-          "title": "Register an OAuth2 dynamic client",
-          "rel": "langsmith/smith-api/oauth/register-an-oauth2-dynamic-client.md"
-        },
-        {
-          "title": "Request OAuth2 device authorization",
-          "rel": "langsmith/smith-api/oauth/request-oauth2-device-authorization.md"
-        },
-        {
-          "title": "Revoke an authorized application",
-          "rel": "langsmith/smith-api/oauth/revoke-an-authorized-application.md"
-        },
-        {
-          "title": "Revoke an OAuth2 token",
-          "rel": "langsmith/smith-api/oauth/revoke-an-oauth2-token.md"
-        },
-        {
-          "title": "Rotate an oauth client secret",
-          "rel": "langsmith/smith-api/oauth/rotate-an-oauth-client-secret.md"
-        },
-        {
-          "title": "Update an oauth client",
-          "rel": "langsmith/smith-api/oauth/update-an-oauth-client.md"
-        }
-      ],
-      "optimization-jobs": [
-        {
-          "title": "Create job",
-          "rel": "langsmith/smith-api/optimization-jobs/create-job.md"
-        },
-        {
-          "title": "Create log",
-          "rel": "langsmith/smith-api/optimization-jobs/create-log.md"
-        },
-        {
-          "title": "Delete job",
-          "rel": "langsmith/smith-api/optimization-jobs/delete-job.md"
-        },
-        {
-          "title": "Delete log",
-          "rel": "langsmith/smith-api/optimization-jobs/delete-log.md"
-        },
-        {
-          "title": "Get job",
-          "rel": "langsmith/smith-api/optimization-jobs/get-job.md"
-        },
-        {
-          "title": "Get log",
-          "rel": "langsmith/smith-api/optimization-jobs/get-log.md"
-        },
-        {
-          "title": "List job logs",
-          "rel": "langsmith/smith-api/optimization-jobs/list-job-logs.md"
-        },
-        {
-          "title": "List jobs",
-          "rel": "langsmith/smith-api/optimization-jobs/list-jobs.md"
-        },
-        {
-          "title": "Update job",
-          "rel": "langsmith/smith-api/optimization-jobs/update-job.md"
-        }
-      ],
-      "organizations": [
-        {
-          "title": "Get current organization info",
-          "rel": "langsmith/smith-api/organizations/get-current-organization-info.md"
-        }
-      ],
-      "orgs": [
-        {
-          "title": "Add basic auth members to current org",
-          "rel": "langsmith/smith-api/orgs/add-basic-auth-members-to-current-org.md"
-        },
-        {
-          "title": "Add member to current org",
-          "rel": "langsmith/smith-api/orgs/add-member-to-current-org.md"
-        },
-        {
-          "title": "Add members to current org batch",
-          "rel": "langsmith/smith-api/orgs/add-members-to-current-org-batch.md"
-        },
-        {
-          "title": "Change payment plan",
-          "rel": "langsmith/smith-api/orgs/change-payment-plan.md"
-        },
-        {
-          "title": "Claim pending organization invite",
-          "rel": "langsmith/smith-api/orgs/claim-pending-organization-invite.md"
-        },
-        {
-          "title": "Create customers and get stripe setup intent",
-          "rel": "langsmith/smith-api/orgs/create-customers-and-get-stripe-setup-intent.md"
-        },
-        {
-          "title": "Create org personal access token",
-          "rel": "langsmith/smith-api/orgs/create-org-personal-access-token.md"
-        },
-        {
-          "title": "Create org service key",
-          "rel": "langsmith/smith-api/orgs/create-org-service-key.md"
-        },
-        {
-          "title": "Create organization",
-          "rel": "langsmith/smith-api/orgs/create-organization.md"
-        },
-        {
-          "title": "Create organization roles",
-          "rel": "langsmith/smith-api/orgs/create-organization-roles.md"
-        },
-        {
-          "title": "Create SSO settings",
-          "rel": "langsmith/smith-api/orgs/create-sso-settings.md"
-        },
-        {
-          "title": "Create stripe account links endpoint",
-          "rel": "langsmith/smith-api/orgs/create-stripe-account-links-endpoint.md"
-        },
-        {
-          "title": "Create stripe checkout sessions endpoint",
-          "rel": "langsmith/smith-api/orgs/create-stripe-checkout-sessions-endpoint.md"
-        },
-        {
-          "title": "Delete current org pending member",
-          "rel": "langsmith/smith-api/orgs/delete-current-org-pending-member.md"
-        },
-        {
-          "title": "Delete org personal access token",
-          "rel": "langsmith/smith-api/orgs/delete-org-personal-access-token.md"
-        },
-        {
-          "title": "Delete org service key",
-          "rel": "langsmith/smith-api/orgs/delete-org-service-key.md"
-        },
-        {
-          "title": "Delete organization roles",
-          "rel": "langsmith/smith-api/orgs/delete-organization-roles.md"
-        },
-        {
-          "title": "Delete pending organization invite",
-          "rel": "langsmith/smith-api/orgs/delete-pending-organization-invite.md"
-        },
-        {
-          "title": "Delete SSO settings",
-          "rel": "langsmith/smith-api/orgs/delete-sso-settings.md"
-        },
-        {
-          "title": "Export granular usage csv",
-          "rel": "langsmith/smith-api/orgs/export-granular-usage-csv.md"
-        },
-        {
-          "title": "Get company info",
-          "rel": "langsmith/smith-api/orgs/get-company-info.md"
-        },
-        {
-          "title": "Get current active org members",
-          "rel": "langsmith/smith-api/orgs/get-current-active-org-members.md"
-        },
-        {
-          "title": "Get current org members",
-          "rel": "langsmith/smith-api/orgs/get-current-org-members.md"
-        },
-        {
-          "title": "Get current organization info",
-          "rel": "langsmith/smith-api/orgs/get-current-organization-info.md"
-        },
-        {
-          "title": "Get current pending org members",
-          "rel": "langsmith/smith-api/orgs/get-current-pending-org-members.md"
-        },
-        {
-          "title": "Get current SSO settings",
-          "rel": "langsmith/smith-api/orgs/get-current-sso-settings.md"
-        },
-        {
-          "title": "Get current user login methods",
-          "rel": "langsmith/smith-api/orgs/get-current-user-login-methods.md"
-        },
-        {
-          "title": "Get dashboard",
-          "rel": "langsmith/smith-api/orgs/get-dashboard.md"
-        },
-        {
-          "title": "Get granular usage",
-          "rel": "langsmith/smith-api/orgs/get-granular-usage.md"
-        },
-        {
-          "title": "Get org usage",
-          "rel": "langsmith/smith-api/orgs/get-org-usage.md"
-        },
-        {
-          "title": "Get organization billing info",
-          "rel": "langsmith/smith-api/orgs/get-organization-billing-info.md"
-        },
-        {
-          "title": "Get organization info",
-          "rel": "langsmith/smith-api/orgs/get-organization-info.md"
-        },
-        {
-          "title": "List org members with workspace roles",
-          "rel": "langsmith/smith-api/orgs/list-org-members-with-workspace-roles.md"
-        },
-        {
-          "title": "List org personal access tokens",
-          "rel": "langsmith/smith-api/orgs/list-org-personal-access-tokens.md"
-        },
-        {
-          "title": "List org service keys",
-          "rel": "langsmith/smith-api/orgs/list-org-service-keys.md"
-        },
-        {
-          "title": "List organization roles",
-          "rel": "langsmith/smith-api/orgs/list-organization-roles.md"
-        },
-        {
-          "title": "List organizations",
-          "rel": "langsmith/smith-api/orgs/list-organizations.md"
-        },
-        {
-          "title": "List pending organization invites",
-          "rel": "langsmith/smith-api/orgs/list-pending-organization-invites.md"
-        },
-        {
-          "title": "List permissions",
-          "rel": "langsmith/smith-api/orgs/list-permissions.md"
-        },
-        {
-          "title": "List TTL settings",
-          "rel": "langsmith/smith-api/orgs/list-ttl-settings.md"
-        },
-        {
-          "title": "On payment method created",
-          "rel": "langsmith/smith-api/orgs/on-payment-method-created.md"
-        },
-        {
-          "title": "Patch current org pending member",
-          "rel": "langsmith/smith-api/orgs/patch-current-org-pending-member.md"
-        },
-        {
-          "title": "Remove member from current org",
-          "rel": "langsmith/smith-api/orgs/remove-member-from-current-org.md"
-        },
-        {
-          "title": "Set company info",
-          "rel": "langsmith/smith-api/orgs/set-company-info.md"
-        },
-        {
-          "title": "Set default SSO provision",
-          "rel": "langsmith/smith-api/orgs/set-default-sso-provision.md"
-        },
-        {
-          "title": "Set role restriction",
-          "rel": "langsmith/smith-api/orgs/set-role-restriction.md"
-        },
-        {
-          "title": "Update allowed login methods",
-          "rel": "langsmith/smith-api/orgs/update-allowed-login-methods.md"
-        },
-        {
-          "title": "Update current org member",
-          "rel": "langsmith/smith-api/orgs/update-current-org-member.md"
-        },
-        {
-          "title": "Update current organization info",
-          "rel": "langsmith/smith-api/orgs/update-current-organization-info.md"
-        },
-        {
-          "title": "Update current user",
-          "rel": "langsmith/smith-api/orgs/update-current-user.md"
-        },
-        {
-          "title": "Update org service key",
-          "rel": "langsmith/smith-api/orgs/update-org-service-key.md"
-        },
-        {
-          "title": "Update organization roles",
-          "rel": "langsmith/smith-api/orgs/update-organization-roles.md"
-        },
-        {
-          "title": "Update SSO settings",
-          "rel": "langsmith/smith-api/orgs/update-sso-settings.md"
-        },
-        {
-          "title": "Upsert TTL settings",
-          "rel": "langsmith/smith-api/orgs/upsert-ttl-settings.md"
-        }
-      ],
-      "ownerships": [
-        {
-          "title": "Add repo owner",
-          "rel": "langsmith/smith-api/ownerships/add-repo-owner.md"
-        },
-        {
-          "title": "List repo owners",
-          "rel": "langsmith/smith-api/ownerships/list-repo-owners.md"
-        },
-        {
-          "title": "Remove repo owner",
-          "rel": "langsmith/smith-api/ownerships/remove-repo-owner.md"
-        }
-      ],
-      "playground-settings": [
-        {
-          "title": "Create playground settings",
-          "rel": "langsmith/smith-api/playground-settings/create-playground-settings.md"
-        },
-        {
-          "title": "Delete playground settings",
-          "rel": "langsmith/smith-api/playground-settings/delete-playground-settings.md"
-        },
-        {
-          "title": "Get playground settings",
-          "rel": "langsmith/smith-api/playground-settings/get-playground-settings.md"
-        },
-        {
-          "title": "List playground settings",
-          "rel": "langsmith/smith-api/playground-settings/list-playground-settings.md"
-        },
-        {
-          "title": "Update playground settings",
-          "rel": "langsmith/smith-api/playground-settings/update-playground-settings.md"
-        }
-      ],
-      "prompt-webhooks": [
-        {
-          "title": "Create prompt webhook",
-          "rel": "langsmith/smith-api/prompt-webhooks/create-prompt-webhook.md"
-        },
-        {
-          "title": "Delete prompt webhook",
-          "rel": "langsmith/smith-api/prompt-webhooks/delete-prompt-webhook.md"
-        },
-        {
-          "title": "Get prompt webhook",
-          "rel": "langsmith/smith-api/prompt-webhooks/get-prompt-webhook.md"
-        },
-        {
-          "title": "List prompt webhooks",
-          "rel": "langsmith/smith-api/prompt-webhooks/list-prompt-webhooks.md"
-        },
-        {
-          "title": "Test prompt webhook",
-          "rel": "langsmith/smith-api/prompt-webhooks/test-prompt-webhook.md"
-        },
-        {
-          "title": "Update prompt webhook",
-          "rel": "langsmith/smith-api/prompt-webhooks/update-prompt-webhook.md"
-        }
-      ],
-      "prompts": [
-        {
-          "title": "Invoke prompt",
-          "rel": "langsmith/smith-api/prompts/invoke-prompt.md"
-        },
-        {
-          "title": "Prompt canvas",
-          "rel": "langsmith/smith-api/prompts/prompt-canvas.md"
-        }
-      ],
-      "public": [
-        {
-          "title": "Count shared examples",
-          "rel": "langsmith/smith-api/public/count-shared-examples.md"
-        },
-        {
-          "title": "Generate query for shared dataset runs",
-          "rel": "langsmith/smith-api/public/generate-query-for-shared-dataset-runs.md"
-        },
-        {
-          "title": "Get message JSON schema",
-          "rel": "langsmith/smith-api/public/get-message-json-schema.md"
-        },
-        {
-          "title": "Get shared run",
-          "rel": "langsmith/smith-api/public/get-shared-run.md"
-        },
-        {
-          "title": "Get shared run by ID",
-          "rel": "langsmith/smith-api/public/get-shared-run-by-id.md"
-        },
-        {
-          "title": "Get tool def JSON schema",
-          "rel": "langsmith/smith-api/public/get-tool-def-json-schema.md"
-        },
-        {
-          "title": "Query shared dataset runs",
-          "rel": "langsmith/smith-api/public/query-shared-dataset-runs.md"
-        },
-        {
-          "title": "Query shared runs",
-          "rel": "langsmith/smith-api/public/query-shared-runs.md"
-        },
-        {
-          "title": "Read shared comparative experiments",
-          "rel": "langsmith/smith-api/public/read-shared-comparative-experiments.md"
-        },
-        {
-          "title": "Read shared dataset",
-          "rel": "langsmith/smith-api/public/read-shared-dataset.md"
-        },
-        {
-          "title": "Read shared dataset feedback",
-          "rel": "langsmith/smith-api/public/read-shared-dataset-feedback.md"
-        },
-        {
-          "title": "Read shared dataset run",
-          "rel": "langsmith/smith-api/public/read-shared-dataset-run.md"
-        },
-        {
-          "title": "Read shared dataset tracer sessions",
-          "rel": "langsmith/smith-api/public/read-shared-dataset-tracer-sessions.md"
-        },
-        {
-          "title": "Read shared dataset tracer sessions bulk",
-          "rel": "langsmith/smith-api/public/read-shared-dataset-tracer-sessions-bulk.md"
-        },
-        {
-          "title": "Read shared examples",
-          "rel": "langsmith/smith-api/public/read-shared-examples.md"
-        },
-        {
-          "title": "Read shared feedbacks",
-          "rel": "langsmith/smith-api/public/read-shared-feedbacks.md"
-        },
-        {
-          "title": "Stats shared dataset runs",
-          "rel": "langsmith/smith-api/public/stats-shared-dataset-runs.md"
-        }
-      ],
-      "repos": [
-        {
-          "title": "Create repo",
-          "rel": "langsmith/smith-api/repos/create-repo.md"
-        },
-        {
-          "title": "Delete repo",
-          "rel": "langsmith/smith-api/repos/delete-repo.md"
-        },
-        {
-          "title": "Delete repos",
-          "rel": "langsmith/smith-api/repos/delete-repos.md"
-        },
-        {
-          "title": "Fork repo",
-          "rel": "langsmith/smith-api/repos/fork-repo.md"
-        },
-        {
-          "title": "Get repo",
-          "rel": "langsmith/smith-api/repos/get-repo.md"
-        },
-        {
-          "title": "List repo tags",
-          "rel": "langsmith/smith-api/repos/list-repo-tags.md"
-        },
-        {
-          "title": "List repos",
-          "rel": "langsmith/smith-api/repos/list-repos.md"
-        },
-        {
-          "title": "Optimize prompt job",
-          "rel": "langsmith/smith-api/repos/optimize-prompt-job.md"
-        },
-        {
-          "title": "Update repo",
-          "rel": "langsmith/smith-api/repos/update-repo.md"
-        }
-      ],
-      "run": [
-        {
-          "title": "Create rule",
-          "rel": "langsmith/smith-api/run/create-rule.md"
-        },
-        {
-          "title": "Delete rule",
-          "rel": "langsmith/smith-api/run/delete-rule.md"
-        },
-        {
-          "title": "Delete runs",
-          "rel": "langsmith/smith-api/run/delete-runs.md"
-        },
-        {
-          "title": "Delete runs abac",
-          "rel": "langsmith/smith-api/run/delete-runs-abac.md"
-        },
-        {
-          "title": "Generate query for runs",
-          "rel": "langsmith/smith-api/run/generate-query-for-runs.md"
-        },
-        {
-          "title": "Get last applied rule",
-          "rel": "langsmith/smith-api/run/get-last-applied-rule.md"
-        },
-        {
-          "title": "Group runs",
-          "rel": "langsmith/smith-api/run/group-runs.md"
-        },
-        {
-          "title": "List rule logs",
-          "rel": "langsmith/smith-api/run/list-rule-logs.md"
-        },
-        {
-          "title": "List rule logs (v2)",
-          "rel": "langsmith/smith-api/run/list-rule-logs-v2.md"
-        },
-        {
-          "title": "List rules",
-          "rel": "langsmith/smith-api/run/list-rules.md"
-        },
-        {
-          "title": "Query runs",
-          "rel": "langsmith/smith-api/run/query-runs.md"
-        },
-        {
-          "title": "Read run",
-          "rel": "langsmith/smith-api/run/read-run.md"
-        },
-        {
-          "title": "Read run share state",
-          "rel": "langsmith/smith-api/run/read-run-share-state.md"
-        },
-        {
-          "title": "Share run",
-          "rel": "langsmith/smith-api/run/share-run.md"
-        },
-        {
-          "title": "Stats group runs",
-          "rel": "langsmith/smith-api/run/stats-group-runs.md"
-        },
-        {
-          "title": "Stats runs",
-          "rel": "langsmith/smith-api/run/stats-runs.md"
-        },
-        {
-          "title": "Thread preview",
-          "rel": "langsmith/smith-api/run/thread-preview.md"
-        },
-        {
-          "title": "Trigger rule",
-          "rel": "langsmith/smith-api/run/trigger-rule.md"
-        },
-        {
-          "title": "Trigger rules",
-          "rel": "langsmith/smith-api/run/trigger-rules.md"
-        },
-        {
-          "title": "Unshare run",
-          "rel": "langsmith/smith-api/run/unshare-run.md"
-        },
-        {
-          "title": "Update rule",
-          "rel": "langsmith/smith-api/run/update-rule.md"
-        },
-        {
-          "title": "Validate rule",
-          "rel": "langsmith/smith-api/run/validate-rule.md"
-        },
-        {
-          "title": "Validate runs query",
-          "rel": "langsmith/smith-api/run/validate-runs-query.md"
-        }
-      ],
-      "runs": [
-        {
-          "title": "Create a run",
-          "rel": "langsmith/smith-api/runs/create-a-run.md"
-        },
-        {
-          "title": "Get a public shared trace run",
-          "rel": "langsmith/smith-api/runs/get-a-public-shared-trace-run.md"
-        },
-        {
-          "title": "Get a single run",
-          "rel": "langsmith/smith-api/runs/get-a-single-run.md"
-        },
-        {
-          "title": "Get the LangSmith UI URL for a run",
-          "rel": "langsmith/smith-api/runs/get-the-langsmith-ui-url-for-a-run.md"
-        },
-        {
-          "title": "Ingest runs (batch json)",
-          "rel": "langsmith/smith-api/runs/ingest-runs-batch-json.md"
-        },
-        {
-          "title": "Ingest runs (multipart)",
-          "rel": "langsmith/smith-api/runs/ingest-runs-multipart.md"
-        },
-        {
-          "title": "List runs in a trace",
-          "rel": "langsmith/smith-api/runs/list-runs-in-a-trace.md"
-        },
-        {
-          "title": "Query public shared trace runs",
-          "rel": "langsmith/smith-api/runs/query-public-shared-trace-runs.md"
-        },
-        {
-          "title": "Query runs",
-          "rel": "langsmith/smith-api/runs/query-runs.md"
-        },
-        {
-          "title": "Query traces",
-          "rel": "langsmith/smith-api/runs/query-traces.md"
-        },
-        {
-          "title": "Share a run",
-          "rel": "langsmith/smith-api/runs/share-a-run.md"
-        },
-        {
-          "title": "Unshare a run",
-          "rel": "langsmith/smith-api/runs/unshare-a-run.md"
-        },
-        {
-          "title": "Update a run",
-          "rel": "langsmith/smith-api/runs/update-a-run.md"
-        }
-      ],
-      "sandboxes": [
-        {
-          "title": "Batch delete sandboxes",
-          "rel": "langsmith/smith-api/sandboxes/batch-delete-sandboxes.md"
-        },
-        {
-          "title": "Capture a snapshot from a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/capture-a-snapshot-from-a-sandbox.md"
-        },
-        {
-          "title": "Create a registry",
-          "rel": "langsmith/smith-api/sandboxes/create-a-registry.md"
-        },
-        {
-          "title": "Create a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/create-a-sandbox.md"
-        },
-        {
-          "title": "Create a snapshot",
-          "rel": "langsmith/smith-api/sandboxes/create-a-snapshot.md"
-        },
-        {
-          "title": "Delete a registry",
-          "rel": "langsmith/smith-api/sandboxes/delete-a-registry.md"
-        },
-        {
-          "title": "Delete a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/delete-a-sandbox.md"
-        },
-        {
-          "title": "Delete a snapshot",
-          "rel": "langsmith/smith-api/sandboxes/delete-a-snapshot.md"
-        },
-        {
-          "title": "Download a sandbox file",
-          "rel": "langsmith/smith-api/sandboxes/download-a-sandbox-file.md"
-        },
-        {
-          "title": "Execute a sandbox command",
-          "rel": "langsmith/smith-api/sandboxes/execute-a-sandbox-command.md"
-        },
-        {
-          "title": "Execute a sandbox command over WebSocket",
-          "rel": "langsmith/smith-api/sandboxes/execute-a-sandbox-command-over-websocket.md"
-        },
-        {
-          "title": "Generate a service access token",
-          "rel": "langsmith/smith-api/sandboxes/generate-a-service-access-token.md"
-        },
-        {
-          "title": "Get a registry",
-          "rel": "langsmith/smith-api/sandboxes/get-a-registry.md"
-        },
-        {
-          "title": "Get a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/get-a-sandbox.md"
-        },
-        {
-          "title": "Get a snapshot",
-          "rel": "langsmith/smith-api/sandboxes/get-a-snapshot.md"
-        },
-        {
-          "title": "Get a snapshot name",
-          "rel": "langsmith/smith-api/sandboxes/get-a-snapshot-name.md"
-        },
-        {
-          "title": "Get sandbox resource usage",
-          "rel": "langsmith/smith-api/sandboxes/get-sandbox-resource-usage.md"
-        },
-        {
-          "title": "Get sandbox status",
-          "rel": "langsmith/smith-api/sandboxes/get-sandbox-status.md"
-        },
-        {
-          "title": "Glob a sandbox filesystem",
-          "rel": "langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem.md"
-        },
-        {
-          "title": "Grep a sandbox filesystem",
-          "rel": "langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem.md"
-        },
-        {
-          "title": "List registries",
-          "rel": "langsmith/smith-api/sandboxes/list-registries.md"
-        },
-        {
-          "title": "List sandboxes",
-          "rel": "langsmith/smith-api/sandboxes/list-sandboxes.md"
-        },
-        {
-          "title": "List snapshots",
-          "rel": "langsmith/smith-api/sandboxes/list-snapshots.md"
-        },
-        {
-          "title": "Open a sandbox TCP tunnel",
-          "rel": "langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel.md"
-        },
-        {
-          "title": "Resume a streamed sandbox command",
-          "rel": "langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command.md"
-        },
-        {
-          "title": "Start a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/start-a-sandbox.md"
-        },
-        {
-          "title": "Start a streamed sandbox command",
-          "rel": "langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command.md"
-        },
-        {
-          "title": "Stop a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/stop-a-sandbox.md"
-        },
-        {
-          "title": "Update a registry",
-          "rel": "langsmith/smith-api/sandboxes/update-a-registry.md"
-        },
-        {
-          "title": "Update a sandbox",
-          "rel": "langsmith/smith-api/sandboxes/update-a-sandbox.md"
-        },
-        {
-          "title": "Upload a sandbox file",
-          "rel": "langsmith/smith-api/sandboxes/upload-a-sandbox-file.md"
-        }
-      ],
-      "scim-tokens": [
-        {
-          "title": "Create a SCIM token",
-          "rel": "langsmith/smith-api/scim-tokens/create-a-scim-token.md"
-        },
-        {
-          "title": "Delete a SCIM token",
-          "rel": "langsmith/smith-api/scim-tokens/delete-a-scim-token.md"
-        },
-        {
-          "title": "Get a SCIM token",
-          "rel": "langsmith/smith-api/scim-tokens/get-a-scim-token.md"
-        },
-        {
-          "title": "List SCIM tokens",
-          "rel": "langsmith/smith-api/scim-tokens/list-scim-tokens.md"
-        },
-        {
-          "title": "Update a SCIM token",
-          "rel": "langsmith/smith-api/scim-tokens/update-a-scim-token.md"
-        }
-      ],
-      "service-accounts": [
-        {
-          "title": "Create service account",
-          "rel": "langsmith/smith-api/service-accounts/create-service-account.md"
-        },
-        {
-          "title": "Delete service account",
-          "rel": "langsmith/smith-api/service-accounts/delete-service-account.md"
-        },
-        {
-          "title": "Get service accounts",
-          "rel": "langsmith/smith-api/service-accounts/get-service-accounts.md"
-        }
-      ],
-      "sessions": [
-        {
-          "title": "List agent versions for a project",
-          "rel": "langsmith/smith-api/sessions/list-agent-versions-for-a-project.md"
-        }
-      ],
-      "settings": [
-        {
-          "title": "Get settings",
-          "rel": "langsmith/smith-api/settings/get-settings.md"
-        },
-        {
-          "title": "Set tenant handle",
-          "rel": "langsmith/smith-api/settings/set-tenant-handle.md"
-        }
-      ],
-      "tag-transitions": [
-        {
-          "title": "Get tag transition history",
-          "rel": "langsmith/smith-api/tag-transitions/get-tag-transition-history.md"
-        }
-      ],
-      "tags": [
-        {
-          "title": "Create tag",
-          "rel": "langsmith/smith-api/tags/create-tag.md"
-        },
-        {
-          "title": "Delete tag",
-          "rel": "langsmith/smith-api/tags/delete-tag.md"
-        },
-        {
-          "title": "Get tag",
-          "rel": "langsmith/smith-api/tags/get-tag.md"
-        },
-        {
-          "title": "Get tags",
-          "rel": "langsmith/smith-api/tags/get-tags.md"
-        },
-        {
-          "title": "Update tag",
-          "rel": "langsmith/smith-api/tags/update-tag.md"
-        }
-      ],
-      "tenant": [
-        {
-          "title": "Create tenant",
-          "rel": "langsmith/smith-api/tenant/create-tenant.md"
-        },
-        {
-          "title": "List tenants",
-          "rel": "langsmith/smith-api/tenant/list-tenants.md"
-        }
-      ],
-      "threads": [
-        {
-          "title": "Query single thread stats",
-          "rel": "langsmith/smith-api/threads/query-single-thread-stats.md"
-        },
-        {
-          "title": "Query thread traces",
-          "rel": "langsmith/smith-api/threads/query-thread-traces.md"
-        },
-        {
-          "title": "Query threads",
-          "rel": "langsmith/smith-api/threads/query-threads.md"
-        }
-      ],
-      "tools": [
-        {
-          "title": "Create a tool",
-          "rel": "langsmith/smith-api/tools/create-a-tool.md"
-        },
-        {
-          "title": "Delete a tool by handle",
-          "rel": "langsmith/smith-api/tools/delete-a-tool-by-handle.md"
-        },
-        {
-          "title": "Delete a tool by ID",
-          "rel": "langsmith/smith-api/tools/delete-a-tool-by-id.md"
-        },
-        {
-          "title": "Get a tool by handle",
-          "rel": "langsmith/smith-api/tools/get-a-tool-by-handle.md"
-        },
-        {
-          "title": "Get a tool by ID",
-          "rel": "langsmith/smith-api/tools/get-a-tool-by-id.md"
-        },
-        {
-          "title": "List tools",
-          "rel": "langsmith/smith-api/tools/list-tools.md"
-        },
-        {
-          "title": "Update a tool by handle",
-          "rel": "langsmith/smith-api/tools/update-a-tool-by-handle.md"
-        },
-        {
-          "title": "Update a tool by ID",
-          "rel": "langsmith/smith-api/tools/update-a-tool-by-id.md"
-        }
-      ],
-      "tracer-sessions": [
-        {
-          "title": "Auto-generate insights job config (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/auto-generate-insights-job-config-beta.md"
-        },
-        {
-          "title": "Create filter view",
-          "rel": "langsmith/smith-api/tracer-sessions/create-filter-view.md"
-        },
-        {
-          "title": "Create insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/create-insights-job-beta.md"
-        },
-        {
-          "title": "Create insights job config (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/create-insights-job-config-beta.md"
-        },
-        {
-          "title": "Create tracer session",
-          "rel": "langsmith/smith-api/tracer-sessions/create-tracer-session.md"
-        },
-        {
-          "title": "Delete filter view",
-          "rel": "langsmith/smith-api/tracer-sessions/delete-filter-view.md"
-        },
-        {
-          "title": "Delete insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/delete-insights-job-beta.md"
-        },
-        {
-          "title": "Delete insights job config (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/delete-insights-job-config-beta.md"
-        },
-        {
-          "title": "Delete tracer session",
-          "rel": "langsmith/smith-api/tracer-sessions/delete-tracer-session.md"
-        },
-        {
-          "title": "Delete tracer sessions",
-          "rel": "langsmith/smith-api/tracer-sessions/delete-tracer-sessions.md"
-        },
-        {
-          "title": "Get insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/get-insights-job-beta.md"
-        },
-        {
-          "title": "Get insights job configs (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/get-insights-job-configs-beta.md"
-        },
-        {
-          "title": "Get insights jobs (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/get-insights-jobs-beta.md"
-        },
-        {
-          "title": "Get run cluster from insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/get-run-cluster-from-insights-job-beta.md"
-        },
-        {
-          "title": "Get runs from insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/get-runs-from-insights-job-beta.md"
-        },
-        {
-          "title": "Get tracing project prebuilt dashboard",
-          "rel": "langsmith/smith-api/tracer-sessions/get-tracing-project-prebuilt-dashboard.md"
-        },
-        {
-          "title": "Read filter view",
-          "rel": "langsmith/smith-api/tracer-sessions/read-filter-view.md"
-        },
-        {
-          "title": "Read filter views",
-          "rel": "langsmith/smith-api/tracer-sessions/read-filter-views.md"
-        },
-        {
-          "title": "Read tracer session",
-          "rel": "langsmith/smith-api/tracer-sessions/read-tracer-session.md"
-        },
-        {
-          "title": "Read tracer sessions",
-          "rel": "langsmith/smith-api/tracer-sessions/read-tracer-sessions.md"
-        },
-        {
-          "title": "Read tracer sessions runs metadata",
-          "rel": "langsmith/smith-api/tracer-sessions/read-tracer-sessions-runs-metadata.md"
-        },
-        {
-          "title": "Rename filter view",
-          "rel": "langsmith/smith-api/tracer-sessions/rename-filter-view.md"
-        },
-        {
-          "title": "Update filter view",
-          "rel": "langsmith/smith-api/tracer-sessions/update-filter-view.md"
-        },
-        {
-          "title": "Update insights job (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/update-insights-job-beta.md"
-        },
-        {
-          "title": "Update insights job config (Beta)",
-          "rel": "langsmith/smith-api/tracer-sessions/update-insights-job-config-beta.md"
-        },
-        {
-          "title": "Update tracer session",
-          "rel": "langsmith/smith-api/tracer-sessions/update-tracer-session.md"
-        }
-      ],
-      "ttl-settings": [
-        {
-          "title": "Get workspace TTL settings",
-          "rel": "langsmith/smith-api/ttl-settings/get-workspace-ttl-settings.md"
-        },
-        {
-          "title": "List TTL settings",
-          "rel": "langsmith/smith-api/ttl-settings/list-ttl-settings.md"
-        },
-        {
-          "title": "Update workspace TTL settings",
-          "rel": "langsmith/smith-api/ttl-settings/update-workspace-ttl-settings.md"
-        },
-        {
-          "title": "Upsert TTL settings",
-          "rel": "langsmith/smith-api/ttl-settings/upsert-ttl-settings.md"
-        }
-      ],
-      "usage-limits": [
-        {
-          "title": "Delete usage limit",
-          "rel": "langsmith/smith-api/usage-limits/delete-usage-limit.md"
-        },
-        {
-          "title": "List org usage limits",
-          "rel": "langsmith/smith-api/usage-limits/list-org-usage-limits.md"
-        },
-        {
-          "title": "List usage limits",
-          "rel": "langsmith/smith-api/usage-limits/list-usage-limits.md"
-        },
-        {
-          "title": "Upsert usage limit",
-          "rel": "langsmith/smith-api/usage-limits/upsert-usage-limit.md"
-        }
-      ],
-      "workspaces": [
-        {
-          "title": "Add member to current workspace",
-          "rel": "langsmith/smith-api/workspaces/add-member-to-current-workspace.md"
-        },
-        {
-          "title": "Add members to current workspace batch",
-          "rel": "langsmith/smith-api/workspaces/add-members-to-current-workspace-batch.md"
-        },
-        {
-          "title": "Bulk unshare entities",
-          "rel": "langsmith/smith-api/workspaces/bulk-unshare-entities.md"
-        },
-        {
-          "title": "Claim pending workspace invite",
-          "rel": "langsmith/smith-api/workspaces/claim-pending-workspace-invite.md"
-        },
-        {
-          "title": "Create tag key",
-          "rel": "langsmith/smith-api/workspaces/create-tag-key.md"
-        },
-        {
-          "title": "Create tag value",
-          "rel": "langsmith/smith-api/workspaces/create-tag-value.md"
-        },
-        {
-          "title": "Create tagging",
-          "rel": "langsmith/smith-api/workspaces/create-tagging.md"
-        },
-        {
-          "title": "Create workspace",
-          "rel": "langsmith/smith-api/workspaces/create-workspace.md"
-        },
-        {
-          "title": "Delete current workspace member",
-          "rel": "langsmith/smith-api/workspaces/delete-current-workspace-member.md"
-        },
-        {
-          "title": "Delete current workspace pending member",
-          "rel": "langsmith/smith-api/workspaces/delete-current-workspace-pending-member.md"
-        },
-        {
-          "title": "Delete pending workspace invite",
-          "rel": "langsmith/smith-api/workspaces/delete-pending-workspace-invite.md"
-        },
-        {
-          "title": "Delete tag key",
-          "rel": "langsmith/smith-api/workspaces/delete-tag-key.md"
-        },
-        {
-          "title": "Delete tag value",
-          "rel": "langsmith/smith-api/workspaces/delete-tag-value.md"
-        },
-        {
-          "title": "Delete tagging",
-          "rel": "langsmith/smith-api/workspaces/delete-tagging.md"
-        },
-        {
-          "title": "Delete workspace",
-          "rel": "langsmith/smith-api/workspaces/delete-workspace.md"
-        },
-        {
-          "title": "Get current active workspace members",
-          "rel": "langsmith/smith-api/workspaces/get-current-active-workspace-members.md"
-        },
-        {
-          "title": "Get current pending workspace members",
-          "rel": "langsmith/smith-api/workspaces/get-current-pending-workspace-members.md"
-        },
-        {
-          "title": "Get current workspace encrypted secrets",
-          "rel": "langsmith/smith-api/workspaces/get-current-workspace-encrypted-secrets.md"
-        },
-        {
-          "title": "Get current workspace members",
-          "rel": "langsmith/smith-api/workspaces/get-current-workspace-members.md"
-        },
-        {
-          "title": "Get current workspace stats",
-          "rel": "langsmith/smith-api/workspaces/get-current-workspace-stats.md"
-        },
-        {
-          "title": "Get current workspace usage limits info",
-          "rel": "langsmith/smith-api/workspaces/get-current-workspace-usage-limits-info.md"
-        },
-        {
-          "title": "Get shared tokens",
-          "rel": "langsmith/smith-api/workspaces/get-shared-tokens.md"
-        },
-        {
-          "title": "Get tag key",
-          "rel": "langsmith/smith-api/workspaces/get-tag-key.md"
-        },
-        {
-          "title": "Get tag value",
-          "rel": "langsmith/smith-api/workspaces/get-tag-value.md"
-        },
-        {
-          "title": "Get workspace",
-          "rel": "langsmith/smith-api/workspaces/get-workspace.md"
-        },
-        {
-          "title": "List current workspace secrets",
-          "rel": "langsmith/smith-api/workspaces/list-current-workspace-secrets.md"
-        },
-        {
-          "title": "List pending workspace invites",
-          "rel": "langsmith/smith-api/workspaces/list-pending-workspace-invites.md"
-        },
-        {
-          "title": "List tag keys",
-          "rel": "langsmith/smith-api/workspaces/list-tag-keys.md"
-        },
-        {
-          "title": "List tag values",
-          "rel": "langsmith/smith-api/workspaces/list-tag-values.md"
-        },
-        {
-          "title": "List taggings",
-          "rel": "langsmith/smith-api/workspaces/list-taggings.md"
-        },
-        {
-          "title": "List tags",
-          "rel": "langsmith/smith-api/workspaces/list-tags.md"
-        },
-        {
-          "title": "List tags for resource",
-          "rel": "langsmith/smith-api/workspaces/list-tags-for-resource.md"
-        },
-        {
-          "title": "List tags for resources",
-          "rel": "langsmith/smith-api/workspaces/list-tags-for-resources.md"
-        },
-        {
-          "title": "List workspaces",
-          "rel": "langsmith/smith-api/workspaces/list-workspaces.md"
-        },
-        {
-          "title": "Patch current workspace member",
-          "rel": "langsmith/smith-api/workspaces/patch-current-workspace-member.md"
-        },
-        {
-          "title": "Patch current workspace pending member",
-          "rel": "langsmith/smith-api/workspaces/patch-current-workspace-pending-member.md"
-        },
-        {
-          "title": "Patch workspace",
-          "rel": "langsmith/smith-api/workspaces/patch-workspace.md"
-        },
-        {
-          "title": "Update tag key",
-          "rel": "langsmith/smith-api/workspaces/update-tag-key.md"
-        },
-        {
-          "title": "Update tag value",
-          "rel": "langsmith/smith-api/workspaces/update-tag-value.md"
-        },
-        {
-          "title": "Upsert current workspace secrets",
-          "rel": "langsmith/smith-api/workspaces/upsert-current-workspace-secrets.md"
+          "title": "Managed Deep Agents",
+          "rel": "langsmith/python/managed-deep-agents.md"
         }
       ]
     }
@@ -6077,846 +3209,6 @@
       ]
     }
   },
-  "oss-js": {
-    "id": "oss-js",
-    "name": "OSS · JavaScript",
-    "groups": {
-      "common-errors": [
-        {
-          "title": "Errors",
-          "rel": "oss/javascript/common-errors.md"
-        }
-      ],
-      "concepts": [
-        {
-          "title": "Context overview",
-          "rel": "oss/javascript/concepts/context.md"
-        },
-        {
-          "title": "Memory overview",
-          "rel": "oss/javascript/concepts/memory.md"
-        },
-        {
-          "title": "Runtimes, frameworks, and harnesses",
-          "rel": "oss/javascript/concepts/products.md"
-        },
-        {
-          "title": "Providers and models",
-          "rel": "oss/javascript/concepts/providers-and-models.md"
-        }
-      ],
-      "contributing": [
-        {
-          "title": "Contributing to code",
-          "rel": "oss/javascript/contributing/code.md"
-        },
-        {
-          "title": "Co-marketing",
-          "rel": "oss/javascript/contributing/comarketing.md"
-        },
-        {
-          "title": "Contributing to documentation",
-          "rel": "oss/javascript/contributing/documentation.md"
-        },
-        {
-          "title": "Implement a LangChain integration",
-          "rel": "oss/javascript/contributing/implement-langchain.md"
-        },
-        {
-          "title": "Contributing integrations",
-          "rel": "oss/javascript/contributing/integrations-langchain.md"
-        },
-        {
-          "title": "Contributing",
-          "rel": "oss/javascript/contributing/overview.md"
-        },
-        {
-          "title": "Publish an integration",
-          "rel": "oss/javascript/contributing/publish-langchain.md"
-        },
-        {
-          "title": "Using standard tests",
-          "rel": "oss/javascript/contributing/standard-tests-langchain.md"
-        }
-      ],
-      "deepagents": [
-        {
-          "title": "A2A server",
-          "rel": "oss/javascript/deepagents/a2a.md"
-        },
-        {
-          "title": "Agent Client Protocol (ACP)",
-          "rel": "oss/javascript/deepagents/acp.md"
-        },
-        {
-          "title": "Async subagents",
-          "rel": "oss/javascript/deepagents/async-subagents.md"
-        },
-        {
-          "title": "Backends",
-          "rel": "oss/javascript/deepagents/backends.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/deepagents/changelog-js.md"
-        },
-        {
-          "title": "Deep Agents Code",
-          "rel": "oss/javascript/deepagents/code-link.md"
-        },
-        {
-          "title": "Comparison with Claude Agent SDK",
-          "rel": "oss/javascript/deepagents/comparison.md"
-        },
-        {
-          "title": "Build a content builder agent",
-          "rel": "oss/javascript/deepagents/content-builder.md"
-        },
-        {
-          "title": "Context engineering in Deep Agents",
-          "rel": "oss/javascript/deepagents/context-engineering.md"
-        },
-        {
-          "title": "Customize Deep Agents",
-          "rel": "oss/javascript/deepagents/customization.md"
-        },
-        {
-          "title": "Build a deep research agent",
-          "rel": "oss/javascript/deepagents/deep-research.md"
-        },
-        {
-          "title": "Dynamic subagents",
-          "rel": "oss/javascript/deepagents/dynamic-subagents.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/javascript/deepagents/event-streaming.md"
-        },
-        {
-          "title": "Fault tolerance",
-          "rel": "oss/javascript/deepagents/fault-tolerance.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/javascript/deepagents/frontend/overview.md"
-        },
-        {
-          "title": "Sandbox",
-          "rel": "oss/javascript/deepagents/frontend/sandbox.md"
-        },
-        {
-          "title": "Subagent streaming",
-          "rel": "oss/javascript/deepagents/frontend/subagent-streaming.md"
-        },
-        {
-          "title": "Todo list",
-          "rel": "oss/javascript/deepagents/frontend/todo-list.md"
-        },
-        {
-          "title": "Going to production",
-          "rel": "oss/javascript/deepagents/going-to-production.md"
-        },
-        {
-          "title": "Human-in-the-loop",
-          "rel": "oss/javascript/deepagents/human-in-the-loop.md"
-        },
-        {
-          "title": "Interpreters",
-          "rel": "oss/javascript/deepagents/interpreters.md"
-        },
-        {
-          "title": "Model Context Protocol",
-          "rel": "oss/javascript/deepagents/mcp.md"
-        },
-        {
-          "title": "Memory",
-          "rel": "oss/javascript/deepagents/memory.md"
-        },
-        {
-          "title": "Models",
-          "rel": "oss/javascript/deepagents/models.md"
-        },
-        {
-          "title": "Multimodal inputs and outputs",
-          "rel": "oss/javascript/deepagents/multimodal.md"
-        },
-        {
-          "title": "OpenWiki",
-          "rel": "oss/javascript/deepagents/openwiki.md"
-        },
-        {
-          "title": "Deep Agents overview",
-          "rel": "oss/javascript/deepagents/overview.md"
-        },
-        {
-          "title": "Permissions",
-          "rel": "oss/javascript/deepagents/permissions.md"
-        },
-        {
-          "title": "Profiles",
-          "rel": "oss/javascript/deepagents/profiles.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/javascript/deepagents/quickstart.md"
-        },
-        {
-          "title": "Retrieval Augmented Generation (RAG) with Deep Agents",
-          "rel": "oss/javascript/deepagents/rag.md"
-        },
-        {
-          "title": "Retrieval",
-          "rel": "oss/javascript/deepagents/retrieval.md"
-        },
-        {
-          "title": "Sandboxes",
-          "rel": "oss/javascript/deepagents/sandboxes.md"
-        },
-        {
-          "title": "Skills",
-          "rel": "oss/javascript/deepagents/skills.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/javascript/deepagents/streaming.md"
-        },
-        {
-          "title": "Subagents",
-          "rel": "oss/javascript/deepagents/subagents.md"
-        },
-        {
-          "title": "Tools",
-          "rel": "oss/javascript/deepagents/tools.md"
-        }
-      ],
-      "integrations": [
-        {
-          "title": "Backend integrations",
-          "rel": "oss/javascript/integrations/backends/index.md"
-        },
-        {
-          "title": "ChatAnthropic integration",
-          "rel": "oss/javascript/integrations/chat/anthropic.md"
-        },
-        {
-          "title": "AzureChatOpenAI integration",
-          "rel": "oss/javascript/integrations/chat/azure.md"
-        },
-        {
-          "title": "ChatBedrockConverse integration",
-          "rel": "oss/javascript/integrations/chat/bedrock_converse.md"
-        },
-        {
-          "title": "ChatGoogle integration",
-          "rel": "oss/javascript/integrations/chat/google.md"
-        },
-        {
-          "title": "ChatGoogleGenerativeAI integration",
-          "rel": "oss/javascript/integrations/chat/google_generative_ai.md"
-        },
-        {
-          "title": "ChatVertexAI integration",
-          "rel": "oss/javascript/integrations/chat/google_vertex_ai.md"
-        },
-        {
-          "title": "Chat model integrations",
-          "rel": "oss/javascript/integrations/chat/index.md"
-        },
-        {
-          "title": "ChatOpenAI integration",
-          "rel": "oss/javascript/integrations/chat/openai.md"
-        },
-        {
-          "title": "Document loader integrations",
-          "rel": "oss/javascript/integrations/document_loaders/index.md"
-        },
-        {
-          "title": "Document transformer integrations",
-          "rel": "oss/javascript/integrations/document_transformers/index.md"
-        },
-        {
-          "title": "AzureOpenAIEmbeddings integration",
-          "rel": "oss/javascript/integrations/embeddings/azure_openai.md"
-        },
-        {
-          "title": "BedrockEmbeddings integration",
-          "rel": "oss/javascript/integrations/embeddings/bedrock.md"
-        },
-        {
-          "title": "Embedding model integrations",
-          "rel": "oss/javascript/integrations/embeddings/index.md"
-        },
-        {
-          "title": "OpenAIEmbeddings integration",
-          "rel": "oss/javascript/integrations/embeddings/openai.md"
-        },
-        {
-          "title": "Cache integrations",
-          "rel": "oss/javascript/integrations/llm_caching/index.md"
-        },
-        {
-          "title": "LLM integrations",
-          "rel": "oss/javascript/integrations/llms/index.md"
-        },
-        {
-          "title": "Middleware integrations",
-          "rel": "oss/javascript/integrations/middleware/index.md"
-        },
-        {
-          "title": "All LangChain JavaScript integration providers",
-          "rel": "oss/javascript/integrations/providers/all_providers.md"
-        },
-        {
-          "title": "Anthropic integrations",
-          "rel": "oss/javascript/integrations/providers/anthropic.md"
-        },
-        {
-          "title": "AWS integrations",
-          "rel": "oss/javascript/integrations/providers/aws.md"
-        },
-        {
-          "title": "Google integrations",
-          "rel": "oss/javascript/integrations/providers/google.md"
-        },
-        {
-          "title": "Microsoft integrations",
-          "rel": "oss/javascript/integrations/providers/microsoft.md"
-        },
-        {
-          "title": "OpenAI integrations",
-          "rel": "oss/javascript/integrations/providers/openai.md"
-        },
-        {
-          "title": "LangChain JavaScript integrations",
-          "rel": "oss/javascript/integrations/providers/overview.md"
-        },
-        {
-          "title": "Retriever integrations",
-          "rel": "oss/javascript/integrations/retrievers/index.md"
-        },
-        {
-          "title": "Sandbox integrations",
-          "rel": "oss/javascript/integrations/sandboxes/index.md"
-        },
-        {
-          "title": "Text splitter integrations",
-          "rel": "oss/javascript/integrations/splitters/index.md"
-        },
-        {
-          "title": "Store integrations",
-          "rel": "oss/javascript/integrations/stores/index.md"
-        },
-        {
-          "title": "Anthropic integration",
-          "rel": "oss/javascript/integrations/tools/anthropic.md"
-        },
-        {
-          "title": "Google integration",
-          "rel": "oss/javascript/integrations/tools/google.md"
-        },
-        {
-          "title": "Tool integrations",
-          "rel": "oss/javascript/integrations/tools/index.md"
-        },
-        {
-          "title": "OpenAI integration",
-          "rel": "oss/javascript/integrations/tools/openai.md"
-        },
-        {
-          "title": "Vector store integrations",
-          "rel": "oss/javascript/integrations/vectorstores/index.md"
-        }
-      ],
-      "langchain": [
-        {
-          "title": "LangChain Academy",
-          "rel": "oss/javascript/langchain/academy.md"
-        },
-        {
-          "title": "Agents",
-          "rel": "oss/javascript/langchain/agents.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/langchain/changelog-js.md"
-        },
-        {
-          "title": "Component architecture",
-          "rel": "oss/javascript/langchain/component-architecture.md"
-        },
-        {
-          "title": "Context engineering in agents",
-          "rel": "oss/javascript/langchain/context-engineering.md"
-        },
-        {
-          "title": "Deployment",
-          "rel": "oss/javascript/langchain/deploy.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/javascript/langchain/event-streaming.md"
-        },
-        {
-          "title": "Branching chat",
-          "rel": "oss/javascript/langchain/frontend/branching-chat.md"
-        },
-        {
-          "title": "Controlled generative UI",
-          "rel": "oss/javascript/langchain/frontend/controlled-generative-ui.md"
-        },
-        {
-          "title": "Declarative generative UI",
-          "rel": "oss/javascript/langchain/frontend/declarative-generative-ui.md"
-        },
-        {
-          "title": "Generative UI overview",
-          "rel": "oss/javascript/langchain/frontend/generative-ui-overview.md"
-        },
-        {
-          "title": "Headless tools",
-          "rel": "oss/javascript/langchain/frontend/headless-tools.md"
-        },
-        {
-          "title": "Human-in-the-Loop",
-          "rel": "oss/javascript/langchain/frontend/human-in-the-loop.md"
-        },
-        {
-          "title": "AI Elements",
-          "rel": "oss/javascript/langchain/frontend/integrations/ai-elements.md"
-        },
-        {
-          "title": "assistant-ui",
-          "rel": "oss/javascript/langchain/frontend/integrations/assistant-ui.md"
-        },
-        {
-          "title": "CopilotKit",
-          "rel": "oss/javascript/langchain/frontend/integrations/copilotkit.md"
-        },
-        {
-          "title": "OpenUI",
-          "rel": "oss/javascript/langchain/frontend/integrations/openui.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/javascript/langchain/frontend/integrations/overview.md"
-        },
-        {
-          "title": "Join & rejoin streams",
-          "rel": "oss/javascript/langchain/frontend/join-rejoin.md"
-        },
-        {
-          "title": "Markdown messages",
-          "rel": "oss/javascript/langchain/frontend/markdown-messages.md"
-        },
-        {
-          "title": "Message queues",
-          "rel": "oss/javascript/langchain/frontend/message-queues.md"
-        },
-        {
-          "title": "Open-ended generative UI",
-          "rel": "oss/javascript/langchain/frontend/open-ended-generative-ui.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/javascript/langchain/frontend/overview.md"
-        },
-        {
-          "title": "Reasoning tokens",
-          "rel": "oss/javascript/langchain/frontend/reasoning-tokens.md"
-        },
-        {
-          "title": "Structured output",
-          "rel": "oss/javascript/langchain/frontend/structured-output.md"
-        },
-        {
-          "title": "Time travel",
-          "rel": "oss/javascript/langchain/frontend/time-travel.md"
-        },
-        {
-          "title": "Tool calling",
-          "rel": "oss/javascript/langchain/frontend/tool-calling.md"
-        },
-        {
-          "title": "Get help",
-          "rel": "oss/javascript/langchain/get-help.md"
-        },
-        {
-          "title": "Guardrails",
-          "rel": "oss/javascript/langchain/guardrails.md"
-        },
-        {
-          "title": "Human-in-the-loop",
-          "rel": "oss/javascript/langchain/human-in-the-loop.md"
-        },
-        {
-          "title": "Install LangChain",
-          "rel": "oss/javascript/langchain/install.md"
-        },
-        {
-          "title": "Build a semantic search engine with LangChain",
-          "rel": "oss/javascript/langchain/knowledge-base.md"
-        },
-        {
-          "title": "Long-term memory",
-          "rel": "oss/javascript/langchain/long-term-memory.md"
-        },
-        {
-          "title": "Model Context Protocol (MCP)",
-          "rel": "oss/javascript/langchain/mcp.md"
-        },
-        {
-          "title": "Messages",
-          "rel": "oss/javascript/langchain/messages.md"
-        },
-        {
-          "title": "Prebuilt middleware",
-          "rel": "oss/javascript/langchain/middleware/built-in.md"
-        },
-        {
-          "title": "Custom middleware",
-          "rel": "oss/javascript/langchain/middleware/custom.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/javascript/langchain/middleware/overview.md"
-        },
-        {
-          "title": "Models",
-          "rel": "oss/javascript/langchain/models.md"
-        },
-        {
-          "title": "Custom workflow",
-          "rel": "oss/javascript/langchain/multi-agent/custom-workflow.md"
-        },
-        {
-          "title": "Handoffs",
-          "rel": "oss/javascript/langchain/multi-agent/handoffs.md"
-        },
-        {
-          "title": "Build customer support with handoffs",
-          "rel": "oss/javascript/langchain/multi-agent/handoffs-customer-support.md"
-        },
-        {
-          "title": "Multi-agent",
-          "rel": "oss/javascript/langchain/multi-agent/index.md"
-        },
-        {
-          "title": "Router",
-          "rel": "oss/javascript/langchain/multi-agent/router.md"
-        },
-        {
-          "title": "Build a multi-source knowledge base with routing",
-          "rel": "oss/javascript/langchain/multi-agent/router-knowledge-base.md"
-        },
-        {
-          "title": "Skills",
-          "rel": "oss/javascript/langchain/multi-agent/skills.md"
-        },
-        {
-          "title": "Build a SQL assistant with on-demand skills",
-          "rel": "oss/javascript/langchain/multi-agent/skills-sql-assistant.md"
-        },
-        {
-          "title": "Subagents",
-          "rel": "oss/javascript/langchain/multi-agent/subagents.md"
-        },
-        {
-          "title": "Build a personal assistant with subagents",
-          "rel": "oss/javascript/langchain/multi-agent/subagents-personal-assistant.md"
-        },
-        {
-          "title": "LangSmith Observability",
-          "rel": "oss/javascript/langchain/observability.md"
-        },
-        {
-          "title": "LangChain overview",
-          "rel": "oss/javascript/langchain/overview.md"
-        },
-        {
-          "title": "Philosophy",
-          "rel": "oss/javascript/langchain/philosophy.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/javascript/langchain/quickstart.md"
-        },
-        {
-          "title": "Retrieval",
-          "rel": "oss/javascript/langchain/retrieval.md"
-        },
-        {
-          "title": "Runtime",
-          "rel": "oss/javascript/langchain/runtime.md"
-        },
-        {
-          "title": "Short-term memory",
-          "rel": "oss/javascript/langchain/short-term-memory.md"
-        },
-        {
-          "title": "Build a SQL agent",
-          "rel": "oss/javascript/langchain/sql-agent.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/javascript/langchain/streaming.md"
-        },
-        {
-          "title": "Structured output",
-          "rel": "oss/javascript/langchain/structured-output.md"
-        },
-        {
-          "title": "LangSmith Studio",
-          "rel": "oss/javascript/langchain/studio.md"
-        },
-        {
-          "title": "Agent Evals",
-          "rel": "oss/javascript/langchain/test/evals.md"
-        },
-        {
-          "title": "Test",
-          "rel": "oss/javascript/langchain/test/index.md"
-        },
-        {
-          "title": "Integration testing",
-          "rel": "oss/javascript/langchain/test/integration-testing.md"
-        },
-        {
-          "title": "Unit testing",
-          "rel": "oss/javascript/langchain/test/unit-testing.md"
-        },
-        {
-          "title": "Tools",
-          "rel": "oss/javascript/langchain/tools.md"
-        },
-        {
-          "title": "Agent Chat UI",
-          "rel": "oss/javascript/langchain/ui.md"
-        },
-        {
-          "title": "Build a voice agent with LangChain",
-          "rel": "oss/javascript/langchain/voice-agent.md"
-        }
-      ],
-      "langgraph": [
-        {
-          "title": "Memory",
-          "rel": "oss/javascript/langgraph/add-memory.md"
-        },
-        {
-          "title": "Build a custom RAG agent with LangGraph",
-          "rel": "oss/javascript/langgraph/agentic-rag.md"
-        },
-        {
-          "title": "Application structure",
-          "rel": "oss/javascript/langgraph/application-structure.md"
-        },
-        {
-          "title": "Backward compatibility",
-          "rel": "oss/javascript/langgraph/backward-compatibility.md"
-        },
-        {
-          "title": "Case studies",
-          "rel": "oss/javascript/langgraph/case-studies.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/langgraph/changelog-js.md"
-        },
-        {
-          "title": "Checkpointers",
-          "rel": "oss/javascript/langgraph/checkpointers.md"
-        },
-        {
-          "title": "Choosing between Graph and Functional APIs",
-          "rel": "oss/javascript/langgraph/choosing-apis.md"
-        },
-        {
-          "title": "Deployment",
-          "rel": "oss/javascript/langgraph/deploy.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/javascript/langgraph/event-streaming.md"
-        },
-        {
-          "title": "Fault tolerance",
-          "rel": "oss/javascript/langgraph/fault-tolerance.md"
-        },
-        {
-          "title": "Custom stream channels",
-          "rel": "oss/javascript/langgraph/frontend/custom-stream-channels.md"
-        },
-        {
-          "title": "Graph execution",
-          "rel": "oss/javascript/langgraph/frontend/graph-execution.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/javascript/langgraph/frontend/overview.md"
-        },
-        {
-          "title": "Functional API overview",
-          "rel": "oss/javascript/langgraph/functional-api.md"
-        },
-        {
-          "title": "Graph API overview",
-          "rel": "oss/javascript/langgraph/graph-api.md"
-        },
-        {
-          "title": "Install LangGraph",
-          "rel": "oss/javascript/langgraph/install.md"
-        },
-        {
-          "title": "Interrupts",
-          "rel": "oss/javascript/langgraph/interrupts.md"
-        },
-        {
-          "title": "Run a local server",
-          "rel": "oss/javascript/langgraph/local-server.md"
-        },
-        {
-          "title": "LangSmith Observability",
-          "rel": "oss/javascript/langgraph/observability.md"
-        },
-        {
-          "title": "LangGraph overview",
-          "rel": "oss/javascript/langgraph/overview.md"
-        },
-        {
-          "title": "Persistence",
-          "rel": "oss/javascript/langgraph/persistence.md"
-        },
-        {
-          "title": "LangGraph runtime",
-          "rel": "oss/javascript/langgraph/pregel.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/javascript/langgraph/quickstart.md"
-        },
-        {
-          "title": "Stores",
-          "rel": "oss/javascript/langgraph/stores.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/javascript/langgraph/streaming.md"
-        },
-        {
-          "title": "LangSmith Studio",
-          "rel": "oss/javascript/langgraph/studio.md"
-        },
-        {
-          "title": "Test",
-          "rel": "oss/javascript/langgraph/test.md"
-        },
-        {
-          "title": "Thinking in LangGraph",
-          "rel": "oss/javascript/langgraph/thinking-in-langgraph.md"
-        },
-        {
-          "title": "Agent Chat UI",
-          "rel": "oss/javascript/langgraph/ui.md"
-        },
-        {
-          "title": "Use the functional API",
-          "rel": "oss/javascript/langgraph/use-functional-api.md"
-        },
-        {
-          "title": "Use the graph API",
-          "rel": "oss/javascript/langgraph/use-graph-api.md"
-        },
-        {
-          "title": "Subgraphs",
-          "rel": "oss/javascript/langgraph/use-subgraphs.md"
-        },
-        {
-          "title": "Use time-travel",
-          "rel": "oss/javascript/langgraph/use-time-travel.md"
-        },
-        {
-          "title": "Workflows and agents",
-          "rel": "oss/javascript/langgraph/workflows-agents.md"
-        }
-      ],
-      "learn": [
-        {
-          "title": "Learn",
-          "rel": "oss/javascript/learn.md"
-        }
-      ],
-      "migrate": [
-        {
-          "title": "LangChain v1 migration guide",
-          "rel": "oss/javascript/migrate/langchain-v1.md"
-        },
-        {
-          "title": "LangGraph v1 migration guide",
-          "rel": "oss/javascript/migrate/langgraph-v1.md"
-        }
-      ],
-      "reference": [
-        {
-          "title": "Deep Agents",
-          "rel": "oss/javascript/reference/deepagents-javascript.md"
-        },
-        {
-          "title": "Integrations",
-          "rel": "oss/javascript/reference/integrations-javascript.md"
-        },
-        {
-          "title": "LangChain SDK",
-          "rel": "oss/javascript/reference/langchain-javascript.md"
-        },
-        {
-          "title": "LangGraph SDK",
-          "rel": "oss/javascript/reference/langgraph-javascript.md"
-        },
-        {
-          "title": "Reference",
-          "rel": "oss/javascript/reference/overview.md"
-        }
-      ],
-      "release-policy": [
-        {
-          "title": "Release policy",
-          "rel": "oss/javascript/release-policy.md"
-        }
-      ],
-      "releases": [
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/releases/changelog.md"
-        },
-        {
-          "title": "What's new in LangChain v1",
-          "rel": "oss/javascript/releases/langchain-v1.md"
-        },
-        {
-          "title": "What's new in LangGraph v1",
-          "rel": "oss/javascript/releases/langgraph-v1.md"
-        }
-      ],
-      "security-policy": [
-        {
-          "title": "Security policy",
-          "rel": "oss/javascript/security-policy.md"
-        }
-      ],
-      "studio": [
-        {
-          "title": "Studio",
-          "rel": "oss/javascript/studio.md"
-        }
-      ],
-      "versioning": [
-        {
-          "title": "Versioning",
-          "rel": "oss/javascript/versioning.md"
-        }
-      ]
-    }
-  },
   "oss-openwiki": {
     "id": "oss-openwiki",
     "name": "OSS · OpenWiki",
@@ -6974,825 +3266,23 @@
           "title": "Quickstart",
           "rel": "oss/openwiki/quickstart.md"
         }
+      ],
+      "visualize": [
+        {
+          "title": "Visualize your wiki",
+          "rel": "oss/openwiki/visualize.md"
+        }
       ]
     }
   },
-  "oss-python": {
-    "id": "oss-python",
-    "name": "OSS · Python",
+  "use-these-docs": {
+    "id": "use-these-docs",
+    "name": "use-these-docs",
     "groups": {
-      "common-errors": [
+      "pages": [
         {
-          "title": "Errors",
-          "rel": "oss/python/common-errors.md"
-        }
-      ],
-      "concepts": [
-        {
-          "title": "Context overview",
-          "rel": "oss/python/concepts/context.md"
-        },
-        {
-          "title": "Memory overview",
-          "rel": "oss/python/concepts/memory.md"
-        },
-        {
-          "title": "Runtimes, frameworks, and harnesses",
-          "rel": "oss/python/concepts/products.md"
-        },
-        {
-          "title": "Providers and models",
-          "rel": "oss/python/concepts/providers-and-models.md"
-        }
-      ],
-      "contributing": [
-        {
-          "title": "Contributing to code",
-          "rel": "oss/python/contributing/code.md"
-        },
-        {
-          "title": "Co-marketing",
-          "rel": "oss/python/contributing/comarketing.md"
-        },
-        {
-          "title": "Contributing to documentation",
-          "rel": "oss/python/contributing/documentation.md"
-        },
-        {
-          "title": "Implement a LangChain integration",
-          "rel": "oss/python/contributing/implement-langchain.md"
-        },
-        {
-          "title": "Contributing integrations",
-          "rel": "oss/python/contributing/integrations-langchain.md"
-        },
-        {
-          "title": "Contributing",
-          "rel": "oss/python/contributing/overview.md"
-        },
-        {
-          "title": "Publish an integration",
-          "rel": "oss/python/contributing/publish-langchain.md"
-        },
-        {
-          "title": "Using standard tests",
-          "rel": "oss/python/contributing/standard-tests-langchain.md"
-        }
-      ],
-      "deepagents": [
-        {
-          "title": "A2A server",
-          "rel": "oss/python/deepagents/a2a.md"
-        },
-        {
-          "title": "Agent Client Protocol (ACP)",
-          "rel": "oss/python/deepagents/acp.md"
-        },
-        {
-          "title": "Async subagents",
-          "rel": "oss/python/deepagents/async-subagents.md"
-        },
-        {
-          "title": "Backends",
-          "rel": "oss/python/deepagents/backends.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/python/deepagents/changelog-py.md"
-        },
-        {
-          "title": "Deep Agents Code",
-          "rel": "oss/python/deepagents/code-link.md"
-        },
-        {
-          "title": "Comparison with Claude Agent SDK",
-          "rel": "oss/python/deepagents/comparison.md"
-        },
-        {
-          "title": "Build a content builder agent",
-          "rel": "oss/python/deepagents/content-builder.md"
-        },
-        {
-          "title": "Context engineering in Deep Agents",
-          "rel": "oss/python/deepagents/context-engineering.md"
-        },
-        {
-          "title": "Customize Deep Agents",
-          "rel": "oss/python/deepagents/customization.md"
-        },
-        {
-          "title": "Build a data analysis agent",
-          "rel": "oss/python/deepagents/data-analysis.md"
-        },
-        {
-          "title": "Build a deep research agent",
-          "rel": "oss/python/deepagents/deep-research.md"
-        },
-        {
-          "title": "Dynamic subagents",
-          "rel": "oss/python/deepagents/dynamic-subagents.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/python/deepagents/event-streaming.md"
-        },
-        {
-          "title": "Fault tolerance",
-          "rel": "oss/python/deepagents/fault-tolerance.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/python/deepagents/frontend/overview.md"
-        },
-        {
-          "title": "Sandbox",
-          "rel": "oss/python/deepagents/frontend/sandbox.md"
-        },
-        {
-          "title": "Subagent streaming",
-          "rel": "oss/python/deepagents/frontend/subagent-streaming.md"
-        },
-        {
-          "title": "Todo list",
-          "rel": "oss/python/deepagents/frontend/todo-list.md"
-        },
-        {
-          "title": "Going to production",
-          "rel": "oss/python/deepagents/going-to-production.md"
-        },
-        {
-          "title": "Human-in-the-loop",
-          "rel": "oss/python/deepagents/human-in-the-loop.md"
-        },
-        {
-          "title": "Interpreters",
-          "rel": "oss/python/deepagents/interpreters.md"
-        },
-        {
-          "title": "Model Context Protocol",
-          "rel": "oss/python/deepagents/mcp.md"
-        },
-        {
-          "title": "Memory",
-          "rel": "oss/python/deepagents/memory.md"
-        },
-        {
-          "title": "Models",
-          "rel": "oss/python/deepagents/models.md"
-        },
-        {
-          "title": "Multimodal inputs and outputs",
-          "rel": "oss/python/deepagents/multimodal.md"
-        },
-        {
-          "title": "OpenWiki",
-          "rel": "oss/python/deepagents/openwiki.md"
-        },
-        {
-          "title": "Deep Agents overview",
-          "rel": "oss/python/deepagents/overview.md"
-        },
-        {
-          "title": "Permissions",
-          "rel": "oss/python/deepagents/permissions.md"
-        },
-        {
-          "title": "Profiles",
-          "rel": "oss/python/deepagents/profiles.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/python/deepagents/quickstart.md"
-        },
-        {
-          "title": "Retrieval Augmented Generation (RAG) with Deep Agents",
-          "rel": "oss/python/deepagents/rag.md"
-        },
-        {
-          "title": "Retrieval",
-          "rel": "oss/python/deepagents/retrieval.md"
-        },
-        {
-          "title": "Grading rubrics",
-          "rel": "oss/python/deepagents/rubric.md"
-        },
-        {
-          "title": "Sandboxes",
-          "rel": "oss/python/deepagents/sandboxes.md"
-        },
-        {
-          "title": "Skills",
-          "rel": "oss/python/deepagents/skills.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/python/deepagents/streaming.md"
-        },
-        {
-          "title": "Subagents",
-          "rel": "oss/python/deepagents/subagents.md"
-        },
-        {
-          "title": "Tools",
-          "rel": "oss/python/deepagents/tools.md"
-        }
-      ],
-      "integrations": [
-        {
-          "title": "Backend integrations",
-          "rel": "oss/python/integrations/backends/index.md"
-        },
-        {
-          "title": "Chat model integrations",
-          "rel": "oss/python/integrations/chat/index.md"
-        },
-        {
-          "title": "Checkpointer integrations",
-          "rel": "oss/python/integrations/checkpointers/index.md"
-        },
-        {
-          "title": "Document loader integrations",
-          "rel": "oss/python/integrations/document_loaders/index.md"
-        },
-        {
-          "title": "Embedding model integrations",
-          "rel": "oss/python/integrations/embeddings/index.md"
-        },
-        {
-          "title": "Store integrations",
-          "rel": "oss/python/integrations/long-term-memory/index.md"
-        },
-        {
-          "title": "Middleware integrations",
-          "rel": "oss/python/integrations/middleware/index.md"
-        },
-        {
-          "title": "All LangChain Python integration providers",
-          "rel": "oss/python/integrations/providers/all_providers.md"
-        },
-        {
-          "title": "Anthropic (Claude) integrations",
-          "rel": "oss/python/integrations/providers/anthropic.md"
-        },
-        {
-          "title": "AWS (Amazon) integrations",
-          "rel": "oss/python/integrations/providers/aws.md"
-        },
-        {
-          "title": "Fireworks integrations",
-          "rel": "oss/python/integrations/providers/fireworks.md"
-        },
-        {
-          "title": "Google integrations",
-          "rel": "oss/python/integrations/providers/google.md"
-        },
-        {
-          "title": "Groq integrations",
-          "rel": "oss/python/integrations/providers/groq.md"
-        },
-        {
-          "title": "Hugging Face integrations",
-          "rel": "oss/python/integrations/providers/huggingface.md"
-        },
-        {
-          "title": "Microsoft integrations",
-          "rel": "oss/python/integrations/providers/microsoft.md"
-        },
-        {
-          "title": "NVIDIA",
-          "rel": "oss/python/integrations/providers/nvidia.md"
-        },
-        {
-          "title": "Ollama integrations",
-          "rel": "oss/python/integrations/providers/ollama.md"
-        },
-        {
-          "title": "OpenAI integrations",
-          "rel": "oss/python/integrations/providers/openai.md"
-        },
-        {
-          "title": "LangChain Python integrations",
-          "rel": "oss/python/integrations/providers/overview.md"
-        },
-        {
-          "title": "Retriever integrations",
-          "rel": "oss/python/integrations/retrievers/index.md"
-        },
-        {
-          "title": "Sandbox integrations",
-          "rel": "oss/python/integrations/sandboxes/index.md"
-        },
-        {
-          "title": "Text splitter integrations",
-          "rel": "oss/python/integrations/splitters/index.md"
-        },
-        {
-          "title": "Tool integrations",
-          "rel": "oss/python/integrations/tools/index.md"
-        },
-        {
-          "title": "Vector store integrations",
-          "rel": "oss/python/integrations/vectorstores/index.md"
-        }
-      ],
-      "langchain": [
-        {
-          "title": "LangChain Academy",
-          "rel": "oss/python/langchain/academy.md"
-        },
-        {
-          "title": "Agents",
-          "rel": "oss/python/langchain/agents.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/python/langchain/changelog-py.md"
-        },
-        {
-          "title": "Component architecture",
-          "rel": "oss/python/langchain/component-architecture.md"
-        },
-        {
-          "title": "Context engineering in agents",
-          "rel": "oss/python/langchain/context-engineering.md"
-        },
-        {
-          "title": "Build a data analysis agent from scratch",
-          "rel": "oss/python/langchain/deep-agent-from-scratch.md"
-        },
-        {
-          "title": "Deployment",
-          "rel": "oss/python/langchain/deploy.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/python/langchain/event-streaming.md"
-        },
-        {
-          "title": "Branching chat",
-          "rel": "oss/python/langchain/frontend/branching-chat.md"
-        },
-        {
-          "title": "Controlled generative UI",
-          "rel": "oss/python/langchain/frontend/controlled-generative-ui.md"
-        },
-        {
-          "title": "Declarative generative UI",
-          "rel": "oss/python/langchain/frontend/declarative-generative-ui.md"
-        },
-        {
-          "title": "Generative UI overview",
-          "rel": "oss/python/langchain/frontend/generative-ui-overview.md"
-        },
-        {
-          "title": "Headless tools",
-          "rel": "oss/python/langchain/frontend/headless-tools.md"
-        },
-        {
-          "title": "Human-in-the-Loop",
-          "rel": "oss/python/langchain/frontend/human-in-the-loop.md"
-        },
-        {
-          "title": "AI Elements",
-          "rel": "oss/python/langchain/frontend/integrations/ai-elements.md"
-        },
-        {
-          "title": "assistant-ui",
-          "rel": "oss/python/langchain/frontend/integrations/assistant-ui.md"
-        },
-        {
-          "title": "CopilotKit",
-          "rel": "oss/python/langchain/frontend/integrations/copilotkit.md"
-        },
-        {
-          "title": "OpenUI",
-          "rel": "oss/python/langchain/frontend/integrations/openui.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/python/langchain/frontend/integrations/overview.md"
-        },
-        {
-          "title": "Join & rejoin streams",
-          "rel": "oss/python/langchain/frontend/join-rejoin.md"
-        },
-        {
-          "title": "Markdown messages",
-          "rel": "oss/python/langchain/frontend/markdown-messages.md"
-        },
-        {
-          "title": "Message queues",
-          "rel": "oss/python/langchain/frontend/message-queues.md"
-        },
-        {
-          "title": "Open-ended generative UI",
-          "rel": "oss/python/langchain/frontend/open-ended-generative-ui.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/python/langchain/frontend/overview.md"
-        },
-        {
-          "title": "Reasoning tokens",
-          "rel": "oss/python/langchain/frontend/reasoning-tokens.md"
-        },
-        {
-          "title": "Structured output",
-          "rel": "oss/python/langchain/frontend/structured-output.md"
-        },
-        {
-          "title": "Time travel",
-          "rel": "oss/python/langchain/frontend/time-travel.md"
-        },
-        {
-          "title": "Tool calling",
-          "rel": "oss/python/langchain/frontend/tool-calling.md"
-        },
-        {
-          "title": "Get help",
-          "rel": "oss/python/langchain/get-help.md"
-        },
-        {
-          "title": "Guardrails",
-          "rel": "oss/python/langchain/guardrails.md"
-        },
-        {
-          "title": "Human-in-the-loop",
-          "rel": "oss/python/langchain/human-in-the-loop.md"
-        },
-        {
-          "title": "Install LangChain",
-          "rel": "oss/python/langchain/install.md"
-        },
-        {
-          "title": "Build a semantic search engine with LangChain",
-          "rel": "oss/python/langchain/knowledge-base.md"
-        },
-        {
-          "title": "Long-term memory",
-          "rel": "oss/python/langchain/long-term-memory.md"
-        },
-        {
-          "title": "Model Context Protocol (MCP)",
-          "rel": "oss/python/langchain/mcp.md"
-        },
-        {
-          "title": "Messages",
-          "rel": "oss/python/langchain/messages.md"
-        },
-        {
-          "title": "Prebuilt middleware",
-          "rel": "oss/python/langchain/middleware/built-in.md"
-        },
-        {
-          "title": "Custom middleware",
-          "rel": "oss/python/langchain/middleware/custom.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/python/langchain/middleware/overview.md"
-        },
-        {
-          "title": "Models",
-          "rel": "oss/python/langchain/models.md"
-        },
-        {
-          "title": "Custom workflow",
-          "rel": "oss/python/langchain/multi-agent/custom-workflow.md"
-        },
-        {
-          "title": "Handoffs",
-          "rel": "oss/python/langchain/multi-agent/handoffs.md"
-        },
-        {
-          "title": "Build customer support with handoffs",
-          "rel": "oss/python/langchain/multi-agent/handoffs-customer-support.md"
-        },
-        {
-          "title": "Multi-agent",
-          "rel": "oss/python/langchain/multi-agent/index.md"
-        },
-        {
-          "title": "Router",
-          "rel": "oss/python/langchain/multi-agent/router.md"
-        },
-        {
-          "title": "Build a multi-source knowledge base with routing",
-          "rel": "oss/python/langchain/multi-agent/router-knowledge-base.md"
-        },
-        {
-          "title": "Skills",
-          "rel": "oss/python/langchain/multi-agent/skills.md"
-        },
-        {
-          "title": "Build a SQL assistant with on-demand skills",
-          "rel": "oss/python/langchain/multi-agent/skills-sql-assistant.md"
-        },
-        {
-          "title": "Subagents",
-          "rel": "oss/python/langchain/multi-agent/subagents.md"
-        },
-        {
-          "title": "Build a personal assistant with subagents",
-          "rel": "oss/python/langchain/multi-agent/subagents-personal-assistant.md"
-        },
-        {
-          "title": "LangSmith Observability",
-          "rel": "oss/python/langchain/observability.md"
-        },
-        {
-          "title": "LangChain overview",
-          "rel": "oss/python/langchain/overview.md"
-        },
-        {
-          "title": "Philosophy",
-          "rel": "oss/python/langchain/philosophy.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/python/langchain/quickstart.md"
-        },
-        {
-          "title": "Retrieval",
-          "rel": "oss/python/langchain/retrieval.md"
-        },
-        {
-          "title": "Runtime",
-          "rel": "oss/python/langchain/runtime.md"
-        },
-        {
-          "title": "Short-term memory",
-          "rel": "oss/python/langchain/short-term-memory.md"
-        },
-        {
-          "title": "Build a SQL agent",
-          "rel": "oss/python/langchain/sql-agent.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/python/langchain/streaming.md"
-        },
-        {
-          "title": "Structured output",
-          "rel": "oss/python/langchain/structured-output.md"
-        },
-        {
-          "title": "LangSmith Studio",
-          "rel": "oss/python/langchain/studio.md"
-        },
-        {
-          "title": "Agent Evals",
-          "rel": "oss/python/langchain/test/evals.md"
-        },
-        {
-          "title": "Test",
-          "rel": "oss/python/langchain/test/index.md"
-        },
-        {
-          "title": "Integration testing",
-          "rel": "oss/python/langchain/test/integration-testing.md"
-        },
-        {
-          "title": "Unit testing",
-          "rel": "oss/python/langchain/test/unit-testing.md"
-        },
-        {
-          "title": "Tools",
-          "rel": "oss/python/langchain/tools.md"
-        },
-        {
-          "title": "Agent Chat UI",
-          "rel": "oss/python/langchain/ui.md"
-        },
-        {
-          "title": "Build a voice agent with LangChain",
-          "rel": "oss/python/langchain/voice-agent.md"
-        }
-      ],
-      "langgraph": [
-        {
-          "title": "Memory",
-          "rel": "oss/python/langgraph/add-memory.md"
-        },
-        {
-          "title": "Build a custom RAG agent with LangGraph",
-          "rel": "oss/python/langgraph/agentic-rag.md"
-        },
-        {
-          "title": "Application structure",
-          "rel": "oss/python/langgraph/application-structure.md"
-        },
-        {
-          "title": "Backward compatibility",
-          "rel": "oss/python/langgraph/backward-compatibility.md"
-        },
-        {
-          "title": "Case studies",
-          "rel": "oss/python/langgraph/case-studies.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/python/langgraph/changelog-py.md"
-        },
-        {
-          "title": "Checkpointers",
-          "rel": "oss/python/langgraph/checkpointers.md"
-        },
-        {
-          "title": "Choosing between Graph and Functional APIs",
-          "rel": "oss/python/langgraph/choosing-apis.md"
-        },
-        {
-          "title": "Deployment",
-          "rel": "oss/python/langgraph/deploy.md"
-        },
-        {
-          "title": "Event streaming",
-          "rel": "oss/python/langgraph/event-streaming.md"
-        },
-        {
-          "title": "Fault tolerance",
-          "rel": "oss/python/langgraph/fault-tolerance.md"
-        },
-        {
-          "title": "Custom stream channels",
-          "rel": "oss/python/langgraph/frontend/custom-stream-channels.md"
-        },
-        {
-          "title": "Graph execution",
-          "rel": "oss/python/langgraph/frontend/graph-execution.md"
-        },
-        {
-          "title": "Overview",
-          "rel": "oss/python/langgraph/frontend/overview.md"
-        },
-        {
-          "title": "Functional API overview",
-          "rel": "oss/python/langgraph/functional-api.md"
-        },
-        {
-          "title": "Graph API overview",
-          "rel": "oss/python/langgraph/graph-api.md"
-        },
-        {
-          "title": "Install LangGraph",
-          "rel": "oss/python/langgraph/install.md"
-        },
-        {
-          "title": "Interrupts",
-          "rel": "oss/python/langgraph/interrupts.md"
-        },
-        {
-          "title": "Run a local server",
-          "rel": "oss/python/langgraph/local-server.md"
-        },
-        {
-          "title": "LangSmith Observability",
-          "rel": "oss/python/langgraph/observability.md"
-        },
-        {
-          "title": "LangGraph overview",
-          "rel": "oss/python/langgraph/overview.md"
-        },
-        {
-          "title": "Persistence",
-          "rel": "oss/python/langgraph/persistence.md"
-        },
-        {
-          "title": "LangGraph runtime",
-          "rel": "oss/python/langgraph/pregel.md"
-        },
-        {
-          "title": "Quickstart",
-          "rel": "oss/python/langgraph/quickstart.md"
-        },
-        {
-          "title": "Build a custom SQL agent",
-          "rel": "oss/python/langgraph/sql-agent.md"
-        },
-        {
-          "title": "Stores",
-          "rel": "oss/python/langgraph/stores.md"
-        },
-        {
-          "title": "Streaming",
-          "rel": "oss/python/langgraph/streaming.md"
-        },
-        {
-          "title": "LangSmith Studio",
-          "rel": "oss/python/langgraph/studio.md"
-        },
-        {
-          "title": "Test",
-          "rel": "oss/python/langgraph/test.md"
-        },
-        {
-          "title": "Thinking in LangGraph",
-          "rel": "oss/python/langgraph/thinking-in-langgraph.md"
-        },
-        {
-          "title": "Agent Chat UI",
-          "rel": "oss/python/langgraph/ui.md"
-        },
-        {
-          "title": "Use the functional API",
-          "rel": "oss/python/langgraph/use-functional-api.md"
-        },
-        {
-          "title": "Use the graph API",
-          "rel": "oss/python/langgraph/use-graph-api.md"
-        },
-        {
-          "title": "Subgraphs",
-          "rel": "oss/python/langgraph/use-subgraphs.md"
-        },
-        {
-          "title": "Use time-travel",
-          "rel": "oss/python/langgraph/use-time-travel.md"
-        },
-        {
-          "title": "Workflows and agents",
-          "rel": "oss/python/langgraph/workflows-agents.md"
-        }
-      ],
-      "learn": [
-        {
-          "title": "Learn",
-          "rel": "oss/python/learn.md"
-        }
-      ],
-      "migrate": [
-        {
-          "title": "LangChain v1 migration guide",
-          "rel": "oss/python/migrate/langchain-v1.md"
-        },
-        {
-          "title": "Migrate from langgraph-supervisor",
-          "rel": "oss/python/migrate/langgraph-supervisor.md"
-        },
-        {
-          "title": "LangGraph v1 migration guide",
-          "rel": "oss/python/migrate/langgraph-v1.md"
-        }
-      ],
-      "reference": [
-        {
-          "title": "Deep Agents",
-          "rel": "oss/python/reference/deepagents-python.md"
-        },
-        {
-          "title": "Integrations",
-          "rel": "oss/python/reference/integrations-python.md"
-        },
-        {
-          "title": "LangChain SDK",
-          "rel": "oss/python/reference/langchain-python.md"
-        },
-        {
-          "title": "LangGraph SDK",
-          "rel": "oss/python/reference/langgraph-python.md"
-        },
-        {
-          "title": "Reference",
-          "rel": "oss/python/reference/overview.md"
-        }
-      ],
-      "release-policy": [
-        {
-          "title": "Release policy",
-          "rel": "oss/python/release-policy.md"
-        }
-      ],
-      "releases": [
-        {
-          "title": "Changelog",
-          "rel": "oss/python/releases/changelog.md"
-        },
-        {
-          "title": "What's new in LangChain v1",
-          "rel": "oss/python/releases/langchain-v1.md"
-        },
-        {
-          "title": "What's new in LangGraph v1",
-          "rel": "oss/python/releases/langgraph-v1.md"
-        }
-      ],
-      "security-policy": [
-        {
-          "title": "Security policy",
-          "rel": "oss/python/security-policy.md"
-        }
-      ],
-      "studio": [
-        {
-          "title": "Studio",
-          "rel": "oss/python/studio.md"
-        }
-      ],
-      "versioning": [
-        {
-          "title": "Versioning",
-          "rel": "oss/python/versioning.md"
+          "title": "Use docs programmatically",
+          "rel": "use-these-docs.md"
         }
       ]
     }

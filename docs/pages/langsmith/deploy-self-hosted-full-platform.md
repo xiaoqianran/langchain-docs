@@ -2,19 +2,17 @@
 
 # Enable additional LangSmith features
 
-Enable LangSmith Deployment, Fleet, Insights, Chat, Sandboxes, and Engine on a self-hosted LangSmith instance.
-
 In addition to the base [LangSmith](/langsmith/self-hosted) platform, you can enable the following features on LangSmith Self-hosted:
 
-* **[LangSmith Deployment](/langsmith/deployment)** adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) that let you deploy, scale, and manage agents and applications directly through the LangSmith UI. If you don't need the full UI-based setup, refer to [standalone servers](/langsmith/deploy-standalone-server) for a lightweight alternative.
-* **[Fleet](/langsmith/fleet/index)** allows you to create, deploy, and manage AI agents directly within LangSmith with no code.
-* **[Insights](/langsmith/insights)** provides AI-powered analysis of your traces and application data within LangSmith.
-* **[Chat](/langsmith/chat)** provides an in-workspace chat experience to help you analyze traces, threads, prompts, and experiment results.
-* **[Sandboxes](/langsmith/sandboxes)** let users run code, expose temporary services, and create memory snapshots from LangSmith.
-* **[Engine](/langsmith/engine-overview)** finds recurring issues in a tracing project, diagnoses them against your source code, and proposes fixes. Engine requires Sandboxes.
+- **[LangSmith Deployment](/langsmith/deployment)** adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) that let you deploy, scale, and manage agents and applications directly through the LangSmith UI. If you don't need the full UI-based setup, refer to [standalone servers](/langsmith/deploy-standalone-server) for a lightweight alternative.
+- **[Fleet](/langsmith/fleet/index)** allows you to create, deploy, and manage AI agents directly within LangSmith with no code.
+- **[Insights](/langsmith/insights)** provides AI-powered analysis of your traces and application data within LangSmith.
+- **[Chat](/langsmith/chat)** provides an in-workspace chat experience to help you analyze traces, threads, prompts, and experiment results.
+- **[Sandboxes](/langsmith/sandboxes)** let users run code, expose temporary services, and create memory snapshots from LangSmith.
+- **[Engine](/langsmith/engine-overview)** finds recurring issues in a tracing project, diagnoses them against your source code, and proposes fixes. Engine requires Sandboxes.
 
 <Info>
-  These features require an [Enterprise](https://langchain.com/pricing) plan. [Get a demo](https://www.langchain.com/contact-sales) to learn more.
+These features require an [Enterprise](https://langchain.com/pricing) plan. [Get a demo](https://www.langchain.com/contact-sales) to learn more.
 </Info>
 
 ## Prerequisites
@@ -23,38 +21,33 @@ In addition to the base [LangSmith](/langsmith/self-hosted) platform, you can en
   <Step title="Install the base LangSmith platform">
     Follow the [Kubernetes installation guide](/langsmith/kubernetes) to install the base LangSmith platform before continuing.
   </Step>
-
   <Step title="Install KEDA">
     Run the following commands to install `KEDA` on your cluster:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm repo add kedacore https://kedacore.github.io/charts
     helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
     ```
 
     <Info>
-      KEDA automatically scales the deployment system based on queue size.
+    KEDA automatically scales the deployment system based on queue size.
     </Info>
   </Step>
-
   <Step title="Configure an ingress">
     Configure an ingress, gateway, or Istio for your LangSmith instance. All agents will be deployed as Kubernetes services behind this ingress. See [Set up an ingress](/langsmith/self-host-ingress). You must provide a `hostname` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts).
   </Step>
-
   <Step title="Verify cluster capacity">
     Ensure your cluster has available capacity for multiple deployments. A cluster autoscaler is recommended.
   </Step>
-
   <Step title="Verify storage">
     Ensure a valid dynamic PV provisioner or PVs are available on your cluster.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl get storageclass
     ```
 
     At least one StorageClass should have a `PROVISIONER` value (not `kubernetes.io/no-provisioner`) and be marked `(default)`, or you must configure one before proceeding.
   </Step>
-
   <Step title="Verify egress">
     Ensure egress to `https://beacon.langchain.com` is available. See the [egress documentation](/langsmith/self-host-egress).
   </Step>
@@ -66,10 +59,10 @@ In addition to the base [LangSmith](/langsmith/self-hosted) platform, you can en
 
 Enabling LangSmith Deployment provisions the following resources in your cluster:
 
-* `listener`: Listens to the [control plane](/langsmith/control-plane) for changes to your deployments and creates or updates downstream CRDs.
-* `LangGraphPlatform CRD`: Manages instances of LangSmith Deployment.
-* `operator`: Handles changes to your LangSmith CRDs.
-* `host-backend`: The [control plane](/langsmith/control-plane).
+- `listener`: Listens to the [control plane](/langsmith/control-plane) for changes to your deployments and creates or updates downstream CRDs.
+- `LangGraphPlatform CRD`: Manages instances of LangSmith Deployment.
+- `operator`: Handles changes to your LangSmith CRDs.
+- `host-backend`: The [control plane](/langsmith/control-plane).
 
 ### Enable the feature
 
@@ -79,21 +72,21 @@ To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith
   <Step title="Enable deployment in your config">
     In your `langsmith_config.yaml`, enable the `deployment` option. You must also have a valid ingress configured.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     config:
       deployment:
         enabled: true
     ```
-
     <Note>
-      As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
+    As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
     </Note>
+
   </Step>
 
   <Step title="(Optional) Configure image mirroring">
     If you need to mirror images to a private registry, configure the `hostBackendImage` and `operatorImage` options in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Use the image tags specified in the [latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases).
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     hostBackendImage:
       repository: "docker.io/langchain/hosted-langserve-backend"
       pullPolicy: IfNotPresent
@@ -110,13 +103,13 @@ To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith
   <Step title="Apply the changes">
     Run the following command to apply the changes. This command is used throughout this guide whenever you are asked to apply changes. Replace `<version>` and `<namespace>` with your values:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
 
     Verify that the new pods are running before continuing:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl get pods -n <namespace>
     ```
 
@@ -127,7 +120,7 @@ To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith
 ## Enable Fleet, Insights, and Chat
 
 <Info>
-  Fleet requires [LangSmith Self-Hosted v0.13](https://changelog.langchain.com/announcements/langsmith-self-hosted-v0-13) or later. The standalone deployment model described below requires v0.15 or later.
+Fleet requires [LangSmith Self-Hosted v0.13](https://changelog.langchain.com/announcements/langsmith-self-hosted-v0-13) or later. The standalone deployment model described below requires v0.15 or later.
 </Info>
 
 Each feature requires a Fernet encryption key. You can enable all three features in a single Helm configuration.
@@ -136,27 +129,26 @@ Each feature requires a Fernet encryption key. You can enable all three features
 
 Enabling these features provisions the following components in your cluster for each feature (Fleet, Insights, Chat):
 
-* `api-server`: The main API server that handles requests for the feature.
-* `queue`: Background task processing queue.
-* `postgres`: Dedicated PostgreSQL instance for the feature's data. Can be replaced with an external PostgreSQL instance.
-* `redis`: Dedicated Redis instance for the feature's caching and pub/sub. Can be replaced with an external Redis instance.
+- `api-server`: The main API server that handles requests for the feature.
+- `queue`: Background task processing queue.
+- `postgres`: Dedicated PostgreSQL instance for the feature's data. Can be replaced with an external PostgreSQL instance.
+- `redis`: Dedicated Redis instance for the feature's caching and pub/sub. Can be replaced with an external Redis instance.
 
 Fleet additionally provisions:
-
-* `toolServer`: Provides MCP tool execution for agents.
-* `triggerServer`: Handles webhooks and scheduled triggers.
+- `toolServer`: Provides MCP tool execution for agents.
+- `triggerServer`: Handles webhooks and scheduled triggers.
 
 <Warning>
-  As of chart `0.16.0`, Insights runs on `langsmith-insights-engine`, a combined image that serves both the `insights` and `engine` graphs, and the chart uses it by default. The previous Insights-only image, `langsmith-clio`, is retired.
+As of chart `0.16.0`, Insights runs on `langsmith-insights-engine`, a combined image that serves both the `insights` and `engine` graphs, and the chart uses it by default. The previous Insights-only image, `langsmith-clio`, is retired.
 
-  If your values pin `images.engineInsightsAgentImage.repository` to `langsmith-clio`, remove or update that pin before upgrading. The chart rejects it. If you mirror images to a private registry, mirror `langsmith-insights-engine` and point the repository at your copy. See [Mirroring images](/langsmith/self-host-mirroring-images#additional-images-for-engine).
+If your values pin `images.engineInsightsAgentImage.repository` to `langsmith-clio`, remove or update that pin before upgrading. The chart rejects it. If you mirror images to a private registry, mirror `langsmith-insights-engine` and point the repository at your copy. See [Mirroring images](/langsmith/self-host-mirroring-images#additional-images-for-engine).
 </Warning>
 
 ### Generate encryption keys
 
 Each feature uses its own Fernet encryption key to encrypt feature-specific secrets such as credentials and tokens. Separate keys allow independent rotation and limit exposure if a key is compromised. Generate one key per feature using Python:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
 
@@ -170,7 +162,7 @@ We recommend storing each key in a predefined Kubernetes secret rather than sett
       <Tab title="Using Kubernetes secrets (recommended)">
         Reference your existing secret by name. The chart reads `agent_builder_encryption_key`, `insights_encryption_key`, and `polly_encryption_key` from it automatically.
 
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        ```yaml
         config:
           existingSecretName: "<your-secret-name>"
 
@@ -191,11 +183,10 @@ We recommend storing each key in a predefined Kubernetes secret rather than sett
           enabled: true
         ```
       </Tab>
-
       <Tab title="Using inline values">
         Set the encryption keys directly in your config file. Avoid committing this file to version control.
 
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        ```yaml
         fleet:
           enabled: true
           encryptionKey: "<fleet-encryption-key>"
@@ -218,18 +209,18 @@ We recommend storing each key in a predefined Kubernetes secret rather than sett
     </Tabs>
 
     <Warning>
-      If you are migrating from the legacy `agentBootstrap` deployment model, disable `backend.agentBootstrap` and the old `config.agentBuilder`, `config.insights`, and `config.polly` flags. These are the flags under the `config` section, not the top-level `fleet`, `insights`, and `polly` flags shown above.
+    If you are migrating from the legacy `agentBootstrap` deployment model, disable `backend.agentBootstrap` and the old `config.agentBuilder`, `config.insights`, and `config.polly` flags. These are the flags under the `config` section, not the top-level `fleet`, `insights`, and `polly` flags shown above.
 
-      You must also manually delete the existing Fleet, Insights, and Chat deployments through the LangSmith Deployments UI. If you did not use an external PostgreSQL database for Fleet with the legacy `agentBootstrap` model and want to preserve existing Fleet agents, contact technical support via the [Support Portal](https://support.langchain.com) before applying this configuration.
+    You must also manually delete the existing Fleet, Insights, and Chat deployments through the LangSmith Deployments UI. If you did not use an external PostgreSQL database for Fleet with the legacy `agentBootstrap` model and want to preserve existing Fleet agents, contact technical support via the [Support Portal](https://support.langchain.com) before applying this configuration.
     </Warning>
 
     <Note>
-      `fleetToolServer` and `fleetTriggerServer` are required for Fleet. These replaced the deprecated `agentBuilderToolServer` and `agentBuilderTriggerServer` keys as of v15 of the Helm chart.
+    `fleetToolServer` and `fleetTriggerServer` are required for Fleet. These replaced the deprecated `agentBuilderToolServer` and `agentBuilderTriggerServer` keys as of v15 of the Helm chart.
     </Note>
 
     Each feature deploys its own dedicated PostgreSQL and Redis instances by default. To use external databases instead, configure the `postgres.external` and `redis.external` sections under each feature. For example:
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     fleet:
       enabled: true
       encryptionKey: "<fleet-encryption-key>"
@@ -243,15 +234,14 @@ We recommend storing each key in a predefined Kubernetes secret rather than sett
           connectionUrl: "<fleet-redis-connection-url>"
     ```
   </Step>
-
   <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
 
     Verify the Fleet, Insights, and Chat pods are running:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl get pods -n <namespace>
     ```
   </Step>
@@ -263,20 +253,20 @@ To enable OAuth-based tools such as Gmail, Slack, or Linear in Fleet, configure 
 
 #### Available providers
 
-| Provider                                                                 | Tools enabled                                                      | Trigger enabled |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------ | --------------- |
-| `googleOAuthProvider`<br />[setup guide](#google-oauth-provider)         | Gmail, Google Calendar,<br />Google Sheets, BigQuery               | Gmail           |
-| `linearOAuthProvider`<br />[setup guide](#linear-oauth-provider)         | Linear                                                             | -               |
-| `linkedinOAuthProvider`<br />[setup guide](#linkedin-oauth-provider)     | LinkedIn                                                           | -               |
-| `microsoftOAuthProvider`<br />[setup guide](#microsoft-oauth-provider)   | Outlook, Calendar, Teams, SharePoint,<br />Word, Excel, PowerPoint | Outlook         |
-| `salesforceOAuthProvider`<br />[setup guide](#salesforce-oauth-provider) | Salesforce                                                         | -               |
-| `slackOAuthProvider`<br />[setup guide](#slack-oauth-provider)           | Slack                                                              | Slack           |
+| Provider | Tools enabled | Trigger enabled |
+|----------|---------------|-----------------|
+| `googleOAuthProvider`<br />[setup guide](#google-oauth-provider) | Gmail, Google Calendar,<br />Google Sheets, BigQuery | Gmail |
+| `linearOAuthProvider`<br />[setup guide](#linear-oauth-provider) | Linear | - |
+| `linkedinOAuthProvider`<br />[setup guide](#linkedin-oauth-provider) | LinkedIn | - |
+| `microsoftOAuthProvider`<br />[setup guide](#microsoft-oauth-provider) | Outlook, Calendar, Teams, SharePoint,<br />Word, Excel, PowerPoint | Outlook |
+| `salesforceOAuthProvider`<br />[setup guide](#salesforce-oauth-provider) | Salesforce | - |
+| `slackOAuthProvider`<br />[setup guide](#slack-oauth-provider) | Slack | Slack |
 
 #### General configuration
 
 Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Include only the providers you need.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 fleet:
   oauth:
     # Organization ID where OAuth providers are configured
@@ -291,340 +281,343 @@ fleet:
 ```
 
 <Warning>
-  The provider ID must be unique and cannot end with `-agent-builder` or `-oauth-provider`.
+The provider ID must be unique and cannot end with `-agent-builder` or `-oauth-provider`.
 </Warning>
 
 #### Provider setup guides
 
 <AccordionGroup>
-  <Accordion title="Google OAuth provider">
-    To enable Google OAuth for Fleet, create an OAuth client in GCP and configure it with the required URLs and credentials.
-
-    <Steps>
-      <Step title="Create OAuth client in GCP">
-        Create a new OAuth client app (Web application) in [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
-      </Step>
-
-      <Step title="Add URLs to GCP">
-        Add the following URLs to your OAuth client, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with the provider ID you'll use (for example, `google`):
-
-        **Authorized JavaScript origins:**
-
-        * `https://<hostname>`
-
-        **Authorized redirect URIs:**
-
-        * `https://<hostname>/api-host/v2/auth/callback/<provider-id>`
-        * `https://<hostname>/host-oauth-callback/<provider-id>`
-      </Step>
-
-      <Step title="Copy credentials">
-        Copy the **Client ID** and **Client Secret** from the GCP OAuth app.
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
-
-        * **Client ID**: from GCP
-        * **Client Secret**: from GCP
-        * **Authorization URL**: `https://accounts.google.com/o/oauth2/auth`
-        * **Token URL**: `https://oauth2.googleapis.com/token`
-        * **Provider ID**: Unique string, for example: `google`
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the LangSmith OAuth provider ID to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-org-id>"
-            googleOAuthProvider: "<provider-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-    </Steps>
-  </Accordion>
-
-  <Accordion title="Microsoft OAuth provider">
-    To enable Microsoft OAuth for Fleet, create an Azure app registration, add the required Microsoft Graph delegated permissions, and configure a Microsoft OAuth provider in LangSmith.
-
-    <Steps>
-      <Step title="Create an Azure app registration">
-        In the [Microsoft Entra admin center](https://entra.microsoft.com/), go to **Applications > App registrations** and create a new registration.
-      </Step>
-
-      <Step title="Choose supported account types">
-        Select the account type that matches your deployment. If you need users from multiple Microsoft Entra tenants to authenticate, choose a multi-tenant option. If your deployment is limited to one tenant, you can use a single-tenant app registration.
-      </Step>
-
-      <Step title="Add the redirect URI">
-        Add the following web redirect URI, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
-
-        ```
-        https://<hostname>/host-oauth-callback/<provider-id>
-        ```
-      </Step>
-
-      <Step title="Create a client secret">
-        In **Certificates & secrets**, create a new client secret. Copy the **Application (client) ID** and the generated client secret value.
-      </Step>
-
-      <Step title="Add Microsoft Graph delegated permissions">
-        In **API permissions**, add the following Microsoft Graph delegated permissions:
-
-        * `Mail.ReadWrite`
-        * `Mail.Send`
-        * `Calendars.ReadWrite`
-        * `Team.ReadBasic.All`
-        * `Channel.ReadBasic.All`
-        * `Channel.Create`
-        * `ChannelMessage.Send`
-        * `ChannelMessage.Read.All`
-        * `Chat.Create`
-        * `Chat.ReadWrite`
-        * `User.ReadBasic.All`
-        * `Files.ReadWrite.All`
-        * `Sites.ReadWrite.All`
-
-        <Note>
-          LangSmith automatically requests `offline_access` for Microsoft providers so users can receive refresh tokens.
-        </Note>
-      </Step>
-
-      <Step title="Grant tenant consent">
-        Grant admin consent for the tenant if your Microsoft 365 policies require it for these delegated permissions.
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
-
-        * **Name**: For example, `Microsoft`
-        * **Provider ID**: Unique string, for example: `microsoft-oauth-provider`
-        * **Client ID**: Application (client) ID from Azure
-        * **Client Secret**: Client secret value from Azure
-        * **Authorization URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
-        * **Token URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
-        * **Provider Type**: `microsoft`
-        * **Token endpoint auth method**: `client_secret_post`
-
-        <Note>
-          If you created a single-tenant app registration, replace `common` in the authorization and token URLs with your tenant ID.
-        </Note>
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-org-id>"
-            microsoftOAuthProvider: "<provider-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-    </Steps>
-  </Accordion>
-
-  <Accordion title="Linear OAuth provider">
-    To enable Linear OAuth for Fleet, create a Linear OAuth app and configure it with the required credentials.
-
-    <Steps>
-      <Step title="Create a Linear OAuth app">
-        Go to [Linear Settings > API > Applications](https://linear.app/settings/api/applications/new) and create a new OAuth application.
-      </Step>
-
-      <Step title="Add callback URL">
-        Set the callback URL, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
-
-        ```
-        https://<hostname>/host-oauth-callback/<provider-id>
-        ```
-      </Step>
-
-      <Step title="Copy credentials">
-        After creating the app, copy the **Client ID** and **Client Secret**.
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
-
-        * **Client ID**: from Linear app
-        * **Client Secret**: from Linear app
-        * **Authorization URL**: `https://linear.app/oauth/authorize`
-        * **Token URL**: `https://api.linear.app/oauth/token`
-        * **Provider ID**: Unique string, for example: `linear`
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-org-id>"
-            linearOAuthProvider: "<provider-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-    </Steps>
-  </Accordion>
-
-  <Accordion title="LinkedIn OAuth provider">
-    To enable LinkedIn OAuth for Fleet, create a LinkedIn OAuth app and configure it with the required credentials.
-
-    <Steps>
-      <Step title="Create a LinkedIn OAuth app">
-        Go to [linkedin.com/developers/apps](https://www.linkedin.com/developers/apps/) and create a new app.
-      </Step>
-
-      <Step title="Add redirect URI">
-        In your app settings, go to the **Auth** tab. Add the following redirect URI, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
-
-        ```
-        https://<hostname>/host-oauth-callback/<provider-id>
-        ```
-      </Step>
-
-      <Step title="Copy credentials">
-        Copy the **Client ID** and **Client Secret** from the Auth tab.
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
-
-        * **Client ID**: from LinkedIn app
-        * **Client Secret**: from LinkedIn app
-        * **Authorization URL**: `https://www.linkedin.com/oauth/v2/authorization`
-        * **Token URL**: `https://www.linkedin.com/oauth/v2/accessToken`
-        * **Provider ID**: Unique string, for example: `linkedin`
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-org-id>"
-            linkedinOAuthProvider: "<provider-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-    </Steps>
-  </Accordion>
-
-  <Accordion title="Salesforce OAuth provider">
-    To enable Salesforce OAuth for Fleet, create a Salesforce External Client App, configure its OAuth settings and policies, retrieve its credentials, then configure a Salesforce OAuth provider in LangSmith.
-
-    <Steps>
-      <Step title="Create an External Client App">
-        In Salesforce **Setup**, use **Quick Find** to open **External Client App Manager**, then click **New External Client App**.
-
-        Under **Basic Information**, set:
-
-        * **External Client App Name**: for example, `LangSmith Fleet`
-        * **Contact Email**: an admin email address
-        * **Distribution State**: **Local**
-
-        <Note>
-          External Client Apps are the current framework Salesforce uses for OAuth integrations. If **New External Client App** is unavailable, confirm that app creation is enabled for your org under **Setup > External Client App Settings**.
-        </Note>
-      </Step>
-
-      <Step title="Enable OAuth and configure the OAuth settings">
-        Expand **API (Enable OAuth Settings)** and select **Enable OAuth**. Then configure:
-
-        * **Callback URL**, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
-
-        ```
-        https://<hostname>/host-oauth-callback/<provider-id>
-        ```
-
-        * **Selected OAuth Scopes**: add **Manage user data via APIs (api)** and **Perform requests at any time (refresh\_token, offline\_access)**.
-        * Keep **Require Secret for the Web Server Flow** selected.
-        * Leave **Enable Authorization Code and Credentials Flow** and **Enable Client Credentials Flow** unselected. Fleet uses the standard web server (authorization code) flow.
-
-        Click **Create**.
-      </Step>
-
-      <Step title="Set the OAuth policies">
-        Open the app, select the **Policies** tab, and click **Edit**:
-
-        * **Refresh Token Policy**: select **Refresh token is valid until revoked**.
-        * **Permitted Users**: leave **All users may self-authorize**. If you choose **Admin approved users are pre-authorized** instead, you must first assign the app to a permission set or profile, or authorization fails.
-
-        Click **Save**.
-
-        <Note>
-          An External Client App is configured in two places: **Settings** (the OAuth definition from the previous step) and **Policies** (this step). Both must be saved.
-        </Note>
-      </Step>
-
-      <Step title="Copy the credentials">
-        On the **Settings** tab, under **OAuth Settings**, select **Consumer Key and Secret**. The **Consumer Key** is your Client ID and the **Consumer Secret** is your Client Secret.
-
-        <Note>
-          After you create the app, allow up to 30 minutes for it to propagate before the first connection attempt.
-        </Note>
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers**, click **OAuth Provider**, and fill in:
-
-        * **Provider ID**: Unique string, for example: `salesforce-oauth-provider`. Use this same value for `salesforceOAuthProvider` in the next step.
-        * **Display Name**: For example, `Salesforce`
-        * **Client ID**: Consumer Key from Salesforce
-        * **Client Secret**: Consumer Secret from Salesforce
-        * **Authorization URL**: `https://<MyDomain>.my.salesforce.com/services/oauth2/authorize`
-        * **Token URL**: `https://<MyDomain>.my.salesforce.com/services/oauth2/token`
-
-        LangSmith recognizes Salesforce automatically from the Token URL, so there is no provider-type or token-auth-method field to set. Leave **Enable PKCE** off to match the web server flow configured above.
-
-        <Note>
-          Replace `<MyDomain>` with your org's My Domain, found under **Setup > My Domain**. For a sandbox, use `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` and the matching token URL.
-        </Note>
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-langsmith-org-id>"
-            salesforceOAuthProvider: "<provider-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-    </Steps>
-
-    <Warning>
-      If sign-in fails: confirm the **Callback URL** in Salesforce exactly matches `https://<hostname>/host-oauth-callback/<provider-id>` (HTTPS, no trailing slash); if you selected **Admin approved users are pre-authorized**, assign the app via a permission set; and if your org enforces login IP ranges, allowlist your Fleet server's egress IPs on the user's profile or set **IP Relaxation** to **Relax IP restrictions** in the app's policies.
-    </Warning>
-  </Accordion>
-
-  <Accordion title="Slack OAuth provider">
-    One Slack OAuth provider powers both Slack tools and the Slack apps you add to individual agents, so Slack setup lives with the rest of the Slack integration.
-
-    For the full walkthrough, see [Set up Slack on Self-hosted](/langsmith/fleet/slack-app#set-up-slack-on-self-hosted). It covers creating the Slack app, adding bot scopes, registering the provider, setting the redirect URI, and configuring Helm values.
-  </Accordion>
+<Accordion title="Google OAuth provider" id="google-oauth-provider">
+
+To enable Google OAuth for Fleet, create an OAuth client in GCP and configure it with the required URLs and credentials.
+
+<Steps>
+  <Step title="Create OAuth client in GCP">
+    Create a new OAuth client app (Web application) in [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+  </Step>
+
+  <Step title="Add URLs to GCP">
+    Add the following URLs to your OAuth client, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with the provider ID you'll use (for example, `google`):
+
+    **Authorized JavaScript origins:**
+    - `https://<hostname>`
+
+    **Authorized redirect URIs:**
+    - `https://<hostname>/api-host/v2/auth/callback/<provider-id>`
+    - `https://<hostname>/host-oauth-callback/<provider-id>`
+  </Step>
+
+  <Step title="Copy credentials">
+    Copy the **Client ID** and **Client Secret** from the GCP OAuth app.
+  </Step>
+
+  <Step title="Configure OAuth provider in LangSmith">
+    In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
+    - **Client ID**: from GCP
+    - **Client Secret**: from GCP
+    - **Authorization URL**: `https://accounts.google.com/o/oauth2/auth`
+    - **Token URL**: `https://oauth2.googleapis.com/token`
+    - **Provider ID**: Unique string, for example: `google`
+  </Step>
+
+  <Step title="Apply the changes">
+    Add the LangSmith OAuth provider ID to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
+
+    ```yaml
+    fleet:
+      oauth:
+        providerOrgId: "<your-org-id>"
+        googleOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+</Steps>
+
+</Accordion>
+
+<Accordion title="Microsoft OAuth provider" id="microsoft-oauth-provider">
+
+To enable Microsoft OAuth for Fleet, create an Azure app registration, add the required Microsoft Graph delegated permissions, and configure a Microsoft OAuth provider in LangSmith.
+
+<Steps>
+  <Step title="Create an Azure app registration">
+    In the [Microsoft Entra admin center](https://entra.microsoft.com/), go to **Applications > App registrations** and create a new registration.
+  </Step>
+
+  <Step title="Choose supported account types">
+    Select the account type that matches your deployment. If you need users from multiple Microsoft Entra tenants to authenticate, choose a multi-tenant option. If your deployment is limited to one tenant, you can use a single-tenant app registration.
+  </Step>
+
+  <Step title="Add the redirect URI">
+    Add the following web redirect URI, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+
+    ```
+    https://<hostname>/host-oauth-callback/<provider-id>
+    ```
+  </Step>
+
+  <Step title="Create a client secret">
+    In **Certificates & secrets**, create a new client secret. Copy the **Application (client) ID** and the generated client secret value.
+  </Step>
+
+  <Step title="Add Microsoft Graph delegated permissions">
+    In **API permissions**, add the following Microsoft Graph delegated permissions:
+    - `Mail.ReadWrite`
+    - `Mail.Send`
+    - `Calendars.ReadWrite`
+    - `Team.ReadBasic.All`
+    - `Channel.ReadBasic.All`
+    - `Channel.Create`
+    - `ChannelMessage.Send`
+    - `ChannelMessage.Read.All`
+    - `Chat.Create`
+    - `Chat.ReadWrite`
+    - `User.ReadBasic.All`
+    - `Files.ReadWrite.All`
+    - `Sites.ReadWrite.All`
+
+    <Note>
+    LangSmith automatically requests `offline_access` for Microsoft providers so users can receive refresh tokens.
+    </Note>
+  </Step>
+
+  <Step title="Grant tenant consent">
+    Grant admin consent for the tenant if your Microsoft 365 policies require it for these delegated permissions.
+  </Step>
+
+  <Step title="Configure OAuth provider in LangSmith">
+    In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
+    - **Name**: For example, `Microsoft`
+    - **Provider ID**: Unique string, for example: `microsoft-oauth-provider`
+    - **Client ID**: Application (client) ID from Azure
+    - **Client Secret**: Client secret value from Azure
+    - **Authorization URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
+    - **Token URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
+    - **Provider Type**: `microsoft`
+    - **Token endpoint auth method**: `client_secret_post`
+
+    <Note>
+    If you created a single-tenant app registration, replace `common` in the authorization and token URLs with your tenant ID.
+    </Note>
+  </Step>
+
+  <Step title="Apply the changes">
+    Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
+
+    ```yaml
+    fleet:
+      oauth:
+        providerOrgId: "<your-org-id>"
+        microsoftOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+</Steps>
+
+</Accordion>
+
+<Accordion title="Linear OAuth provider" id="linear-oauth-provider">
+
+To enable Linear OAuth for Fleet, create a Linear OAuth app and configure it with the required credentials.
+
+<Steps>
+  <Step title="Create a Linear OAuth app">
+    Go to [Linear Settings > API > Applications](https://linear.app/settings/api/applications/new) and create a new OAuth application.
+  </Step>
+
+  <Step title="Add callback URL">
+    Set the callback URL, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+
+    ```
+    https://<hostname>/host-oauth-callback/<provider-id>
+    ```
+  </Step>
+
+  <Step title="Copy credentials">
+    After creating the app, copy the **Client ID** and **Client Secret**.
+  </Step>
+
+  <Step title="Configure OAuth provider in LangSmith">
+    In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
+    - **Client ID**: from Linear app
+    - **Client Secret**: from Linear app
+    - **Authorization URL**: `https://linear.app/oauth/authorize`
+    - **Token URL**: `https://api.linear.app/oauth/token`
+    - **Provider ID**: Unique string, for example: `linear`
+  </Step>
+
+  <Step title="Apply the changes">
+    Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
+
+    ```yaml
+    fleet:
+      oauth:
+        providerOrgId: "<your-org-id>"
+        linearOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+</Steps>
+
+</Accordion>
+
+<Accordion title="LinkedIn OAuth provider" id="linkedin-oauth-provider">
+
+To enable LinkedIn OAuth for Fleet, create a LinkedIn OAuth app and configure it with the required credentials.
+
+<Steps>
+  <Step title="Create a LinkedIn OAuth app">
+    Go to [linkedin.com/developers/apps](https://www.linkedin.com/developers/apps/) and create a new app.
+  </Step>
+
+  <Step title="Add redirect URI">
+    In your app settings, go to the **Auth** tab. Add the following redirect URI, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+
+    ```
+    https://<hostname>/host-oauth-callback/<provider-id>
+    ```
+  </Step>
+
+  <Step title="Copy credentials">
+    Copy the **Client ID** and **Client Secret** from the Auth tab.
+  </Step>
+
+  <Step title="Configure OAuth provider in LangSmith">
+    In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
+    - **Client ID**: from LinkedIn app
+    - **Client Secret**: from LinkedIn app
+    - **Authorization URL**: `https://www.linkedin.com/oauth/v2/authorization`
+    - **Token URL**: `https://www.linkedin.com/oauth/v2/accessToken`
+    - **Provider ID**: Unique string, for example: `linkedin`
+  </Step>
+
+  <Step title="Apply the changes">
+    Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
+
+    ```yaml
+    fleet:
+      oauth:
+        providerOrgId: "<your-org-id>"
+        linkedinOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+</Steps>
+
+</Accordion>
+
+<Accordion title="Salesforce OAuth provider" id="salesforce-oauth-provider">
+
+To enable Salesforce OAuth for Fleet, create a Salesforce External Client App, configure its OAuth settings and policies, retrieve its credentials, then configure a Salesforce OAuth provider in LangSmith.
+
+<Steps>
+  <Step title="Create an External Client App">
+    In Salesforce **Setup**, use **Quick Find** to open **External Client App Manager**, then click **New External Client App**.
+
+    Under **Basic Information**, set:
+    - **External Client App Name**: for example, `LangSmith Fleet`
+    - **Contact Email**: an admin email address
+    - **Distribution State**: **Local**
+
+    <Note>
+    External Client Apps are the current framework Salesforce uses for OAuth integrations. If **New External Client App** is unavailable, confirm that app creation is enabled for your org under **Setup > External Client App Settings**.
+    </Note>
+  </Step>
+
+  <Step title="Enable OAuth and configure the OAuth settings">
+    Expand **API (Enable OAuth Settings)** and select **Enable OAuth**. Then configure:
+
+    - **Callback URL**, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+
+    ```
+    https://<hostname>/host-oauth-callback/<provider-id>
+    ```
+
+    - **Selected OAuth Scopes**: add **Manage user data via APIs (api)** and **Perform requests at any time (refresh_token, offline_access)**.
+    - Keep **Require Secret for the Web Server Flow** selected.
+    - Leave **Enable Authorization Code and Credentials Flow** and **Enable Client Credentials Flow** unselected. Fleet uses the standard web server (authorization code) flow.
+
+    Click **Create**.
+  </Step>
+
+  <Step title="Set the OAuth policies">
+    Open the app, select the **Policies** tab, and click **Edit**:
+
+    - **Refresh Token Policy**: select **Refresh token is valid until revoked**.
+    - **Permitted Users**: leave **All users may self-authorize**. If you choose **Admin approved users are pre-authorized** instead, you must first assign the app to a permission set or profile, or authorization fails.
+
+    Click **Save**.
+
+    <Note>
+    An External Client App is configured in two places: **Settings** (the OAuth definition from the previous step) and **Policies** (this step). Both must be saved.
+    </Note>
+  </Step>
+
+  <Step title="Copy the credentials">
+    On the **Settings** tab, under **OAuth Settings**, select **Consumer Key and Secret**. The **Consumer Key** is your Client ID and the **Consumer Secret** is your Client Secret.
+
+    <Note>
+    After you create the app, allow up to 30 minutes for it to propagate before the first connection attempt.
+    </Note>
+  </Step>
+
+  <Step title="Configure OAuth provider in LangSmith">
+    In LangSmith, go to **Settings > OAuth Providers**, click **OAuth Provider**, and fill in:
+    - **Provider ID**: Unique string, for example: `salesforce-oauth-provider`. Use this same value for `salesforceOAuthProvider` in the next step.
+    - **Display Name**: For example, `Salesforce`
+    - **Client ID**: Consumer Key from Salesforce
+    - **Client Secret**: Consumer Secret from Salesforce
+    - **Authorization URL**: `https://<MyDomain>.my.salesforce.com/services/oauth2/authorize`
+    - **Token URL**: `https://<MyDomain>.my.salesforce.com/services/oauth2/token`
+
+    LangSmith recognizes Salesforce automatically from the Token URL, so there is no provider-type or token-auth-method field to set. Leave **Enable PKCE** off to match the web server flow configured above.
+
+    <Note>
+    Replace `<MyDomain>` with your org's My Domain, found under **Setup > My Domain**. For a sandbox, use `https://<MyDomain>--<SandboxName>.sandbox.my.salesforce.com/services/oauth2/authorize` and the matching token URL.
+    </Note>
+  </Step>
+
+  <Step title="Apply the changes">
+    Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
+
+    ```yaml
+    fleet:
+      oauth:
+        providerOrgId: "<your-langsmith-org-id>"
+        salesforceOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+If sign-in fails: confirm the **Callback URL** in Salesforce exactly matches `https://<hostname>/host-oauth-callback/<provider-id>` (HTTPS, no trailing slash); if you selected **Admin approved users are pre-authorized**, assign the app via a permission set; and if your org enforces login IP ranges, allowlist your Fleet server's egress IPs on the user's profile or set **IP Relaxation** to **Relax IP restrictions** in the app's policies.
+</Warning>
+
+</Accordion>
+
+<Accordion title="Slack OAuth provider" id="slack-oauth-provider">
+
+One Slack OAuth provider powers both Slack tools and the Slack apps you add to individual agents, so Slack setup lives with the rest of the Slack integration.
+
+For the full walkthrough, see [Set up Slack on Self-hosted](/langsmith/fleet/slack-app#set-up-slack-on-self-hosted). It covers creating the Slack app, adding bot scopes, registering the provider, setting the redirect URI, and configuring Helm values.
+
+</Accordion>
 </AccordionGroup>
 
 ### (Optional) Enable GitHub App for Fleet
@@ -638,14 +631,14 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     Go to [GitHub Settings > Developer settings > GitHub Apps](https://github.com/settings/apps) and click **New GitHub App**.
 
     <Note>
-      You can create the app under a personal account or an organization. If multiple people will manage the integration, an organization-owned app is recommended.
+    You can create the app under a personal account or an organization. If multiple people will manage the integration, an organization-owned app is recommended.
     </Note>
   </Step>
 
   <Step title="Fill in basic details">
-    * **GitHub App name**: Any unique name, for example `acme-langsmith-fleet`. Make a note of the slug GitHub generates (the lowercased, hyphenated form of the name), as this is the value you'll use for `FLEET_GITHUB_APP_SLUG`.
-    * **Homepage URL**: Your LangSmith hostname, for example `https://langsmith.acme.com`.
-    * Deselect **Active** under **Webhook** for now. You'll enable it in a later step after generating a webhook secret.
+    - **GitHub App name**: Any unique name, for example `acme-langsmith-fleet`. Make a note of the slug GitHub generates (the lowercased, hyphenated form of the name), as this is the value you'll use for `FLEET_GITHUB_APP_SLUG`.
+    - **Homepage URL**: Your LangSmith hostname, for example `https://langsmith.acme.com`.
+    - Deselect **Active** under **Webhook** for now. You'll enable it in a later step after generating a webhook secret.
   </Step>
 
   <Step title="Set callback URLs">
@@ -669,35 +662,33 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
   <Step title="Set webhook URL and generate a webhook secret">
     Generate a random webhook secret:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     python3 -c "import secrets; print(secrets.token_urlsafe(48))"
     ```
 
     Under **Webhook**:
-
-    * Select **Active**.
-
-    * Set the **Webhook URL** to:
+    - Select **Active**.
+    - Set the **Webhook URL** to:
 
       ```
       https://<hostname>/v1/platform/fleet/providers/github-app/webhooks
       ```
 
-    * Paste the generated value into **Webhook secret**. Save it, as you'll need the same value when creating the Kubernetes secret in a later step.
+    - Paste the generated value into **Webhook secret**. Save it, as you'll need the same value when creating the Kubernetes secret in a later step.
   </Step>
 
   <Step title="Set repository permissions">
     Under **Permissions > Repository permissions**, grant the following:
 
-    * **Contents**: Read and write
-    * **Issues**: Read and write
-    * **Pull requests**: Read and write
-    * **Metadata**: Read-only (automatically selected)
+    - **Contents**: Read and write
+    - **Issues**: Read and write
+    - **Pull requests**: Read and write
+    - **Metadata**: Read-only (automatically selected)
 
     Under **Permissions > Account permissions**, grant **Email addresses: Read-only**.
 
     <Note>
-      These are the minimum permissions required for Fleet's built-in GitHub tools (issue management, pull request creation, repository content access). Adjust if you need additional tool capabilities.
+    These are the minimum permissions required for Fleet's built-in GitHub tools (issue management, pull request creation, repository content access). Adjust if you need additional tool capabilities.
     </Note>
   </Step>
 
@@ -708,12 +699,12 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
   <Step title="Create the app">
     Click **Create GitHub App**. On the app settings page, note the following values:
 
-    | Value           | Where to find it                                            | Environment variable           |
-    | --------------- | ----------------------------------------------------------- | ------------------------------ |
-    | **App ID**      | Numeric, at the top of the page                             | `FLEET_GITHUB_APP_ID`          |
+    | Value | Where to find it | Environment variable |
+    |-------|-----------------|----------------------|
+    | **App ID** | Numeric, at the top of the page | `FLEET_GITHUB_APP_ID` |
     | **Public link** | For example, `https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
-    | App slug        | Last path segment of the public link                        | `FLEET_GITHUB_APP_SLUG`        |
-    | **Client ID**   | Under **About**                                             | `FLEET_GITHUB_APP_CLIENT_ID`   |
+    | App slug | Last path segment of the public link | `FLEET_GITHUB_APP_SLUG` |
+    | **Client ID** | Under **About** | `FLEET_GITHUB_APP_CLIENT_ID` |
   </Step>
 
   <Step title="Generate a client secret">
@@ -727,7 +718,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
   <Step title="Generate a state JWT secret">
     LangSmith signs short-lived OAuth state tokens with an HMAC key. Generate one:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     python3 -c "import secrets; print(secrets.token_urlsafe(48))"
     ```
 
@@ -737,7 +728,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
   <Step title="Create a Kubernetes secret">
     Store the sensitive values in a Kubernetes secret:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl create secret generic fleet-github-app \
       --namespace <your-langsmith-namespace> \
       --from-literal=client_secret="<client-secret>" \
@@ -752,7 +743,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
   <Step title="Add the configuration to your langsmith_config.yaml">
     Add the following, replacing the placeholder values with the non-sensitive values gathered above:
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     commonEnv:
       - name: FLEET_GITHUB_APP_ID
         value: "<app-id>"
@@ -791,14 +782,14 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     ```
 
     <Note>
-      `FLEET_GITHUB_APP_ENABLED` must be set on the tool server so the GitHub tools are registered. The remaining `FLEET_GITHUB_APP_*` variables are consumed by the platform backend and live under `commonEnv`.
+    `FLEET_GITHUB_APP_ENABLED` must be set on the tool server so the GitHub tools are registered. The remaining `FLEET_GITHUB_APP_*` variables are consumed by the platform backend and live under `commonEnv`.
     </Note>
   </Step>
 
   <Step title="Deploy and install the app on repositories">
     Run the following command to apply the changes:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
 
@@ -809,7 +800,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
     3. For private repositories, you must explicitly select each repository during installation.
 
     <Note>
-      Each user must also authorize the GitHub App against their own GitHub account using the re-auth flow in LangSmith. This allows Fleet to resolve per-user tokens for tools that act on behalf of a user.
+    Each user must also authorize the GitHub App against their own GitHub account using the re-auth flow in LangSmith. This allows Fleet to resolve per-user tokens for tools that act on behalf of a user.
     </Note>
   </Step>
 </Steps>
@@ -818,7 +809,7 @@ Setup involves creating a GitHub App, gathering its credentials, storing them as
 
 To disable any combination of Fleet, Insights, and Chat, set the corresponding flags to `false` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts):
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 fleet:
   enabled: false
 
@@ -832,7 +823,7 @@ polly:
 ## Enable Sandboxes
 
 <Info>
-  Self-hosted Sandboxes require LangSmith Helm chart `0.16.0` or later.
+Self-hosted Sandboxes require LangSmith Helm chart `0.16.0` or later.
 </Info>
 
 Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes](/langsmith/sandboxes) for user workflows in the LangSmith UI and APIs.
@@ -841,8 +832,8 @@ Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes]
 
 Self-hosted Sandboxes are supported on:
 
-* Amazon Elastic Kubernetes Service (EKS)
-* Google Kubernetes Engine (GKE)
+- Amazon Elastic Kubernetes Service (EKS)
+- Google Kubernetes Engine (GKE)
 
 Azure Kubernetes Service (AKS) is supported by the base LangSmith chart, but self-hosted Sandboxes are not supported on AKS.
 
@@ -850,10 +841,10 @@ Azure Kubernetes Service (AKS) is supported by the base LangSmith chart, but sel
 
 Enabling Sandboxes provisions the following resources:
 
-* Sandbox runtime pods that run sandbox workloads on KVM-capable nodes.
-* The JuiceFS CSI driver and a JuiceFS-backed volume for sandbox files and snapshots.
-* A JuiceFS metadata store backed by Redis and object storage backed by S3 or GCS.
-* Optional wildcard ingress for services exposed from inside Sandboxes.
+- Sandbox runtime pods that run sandbox workloads on KVM-capable nodes.
+- The JuiceFS CSI driver and a JuiceFS-backed volume for sandbox files and snapshots.
+- A JuiceFS metadata store backed by Redis and object storage backed by S3 or GCS.
+- Optional wildcard ingress for services exposed from inside Sandboxes.
 
 ### Prerequisites
 
@@ -867,18 +858,18 @@ Enabling Sandboxes provisions the following resources:
   <Step title="Add KVM-capable nodes">
     Your cluster must include dedicated nodes that can run nested workloads with Linux KVM available at `/dev/kvm`.
 
-    These can be bare-metal machines or supported cloud instances with nested virtualization enabled. On AWS and GCP, use x86\_64 Linux instances that expose `/dev/kvm` to the sandbox runtime.
+    These can be bare-metal machines or supported cloud instances with nested virtualization enabled. On AWS and GCP, use x86_64 Linux instances that expose `/dev/kvm` to the sandbox runtime.
 
     <Warning>
-      On EKS, the VPC CNI addon must be **v1.21 or later**. `v1.20.0` crashes on 8th-generation
-      Intel instances (for example `m8i`): `aws-node` enters `CrashLoopBackOff`, the node reports
-      `cni plugin not initialized`, and the managed node group eventually fails with
-      `NodeCreationFailure: Unhealthy nodes in the kubernetes cluster`.
+    On EKS, the VPC CNI addon must be **v1.21 or later**. `v1.20.0` crashes on 8th-generation
+    Intel instances (for example `m8i`): `aws-node` enters `CrashLoopBackOff`, the node reports
+    `cni plugin not initialized`, and the managed node group eventually fails with
+    `NodeCreationFailure: Unhealthy nodes in the kubernetes cluster`.
     </Warning>
 
     The default Helm scheduling values expect these nodes to have the following label and taint:
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     label:
       sandbox.langsmith.com/host: "true"
     taint:
@@ -893,27 +884,27 @@ Enabling Sandboxes provisions the following resources:
   <Step title="Configure JuiceFS storage">
     Sandboxes require JuiceFS-backed shared storage. You must provide:
 
-    * A Redis-compatible metadata store.
-    * An object storage bucket or bucket root.
-    * A JuiceFS CSI configuration Secret, or enough Helm values for the chart to create one.
+    - A Redis-compatible metadata store.
+    - An object storage bucket or bucket root.
+    - A JuiceFS CSI configuration Secret, or enough Helm values for the chart to create one.
 
     <Warning>
-      Enabling Sandboxes installs the JuiceFS CSI driver. The CSI driver includes cluster-scoped Kubernetes resources. Only one sandbox-enabled LangSmith release should manage the JuiceFS CSI driver in a cluster unless you have verified resource ownership.
+    Enabling Sandboxes installs the JuiceFS CSI driver. The CSI driver includes cluster-scoped Kubernetes resources. Only one sandbox-enabled LangSmith release should manage the JuiceFS CSI driver in a cluster unless you have verified resource ownership.
     </Warning>
 
     Supported object storage backends:
 
-    | Platform | `sandboxes.juicefs.storage` | `sandboxes.juicefs.bucket` format                                                           |
-    | -------- | --------------------------- | ------------------------------------------------------------------------------------------- |
-    | AWS      | `s3`                        | Region-explicit HTTPS S3 endpoint, such as `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP      | `gs`                        | GCS URL, such as `gs://bucket-name`                                                         |
+    | Platform | `sandboxes.juicefs.storage` | `sandboxes.juicefs.bucket` format |
+    | --- | --- | --- |
+    | AWS | `s3` | Region-explicit HTTPS S3 endpoint, such as `https://bucket-name.s3.us-west-2.amazonaws.com` |
+    | GCP | `gs` | GCS URL, such as `gs://bucket-name` |
 
     Do not use object-store subpaths in `sandboxes.juicefs.name`. Use a flat name, such as `sandbox-juicefs`. JuiceFS stores objects under that name inside the configured bucket.
 
     <Tip>
-      For the Redis metadata store, we recommend setting `maxmemory-policy` to `noeviction`. This avoids evicting JuiceFS metadata under memory pressure. Monitor Redis capacity and scale it before it reaches memory limits.
+    For the Redis metadata store, we recommend setting `maxmemory-policy` to `noeviction`. This avoids evicting JuiceFS metadata under memory pressure. Monitor Redis capacity and scale it before it reaches memory limits.
 
-      With `noeviction`, Redis writes can fail when the instance reaches max memory, so keep enough memory headroom for sandbox metadata growth.
+    With `noeviction`, Redis writes can fail when the instance reaches max memory, so keep enough memory headroom for sandbox metadata growth.
     </Tip>
   </Step>
 
@@ -924,17 +915,16 @@ Enabling Sandboxes provisions the following resources:
       <Tab title="Using Kubernetes secrets (recommended)">
         If you use `config.existingSecretName`, add the sandbox keys to the same LangSmith app Secret. Do not set the secret values directly in Helm.
 
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        ```yaml
         stringData:
           sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
           # Optional, only during service-auth secret rotation:
         ```
       </Tab>
-
       <Tab title="Using inline values">
         If the Helm chart manages your LangSmith app Secret, set the sandbox secret values directly in your config file. Avoid committing this file to version control.
 
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        ```yaml
         config:
           sandboxes:
             callbackSigningJwk: '<ed25519-private-jwk>'
@@ -948,10 +938,10 @@ Enabling Sandboxes provisions the following resources:
   <Step title="Choose a proxy CA mode">
     The chart supports two proxy CA modes:
 
-    | Mode              | Use when                                                                                                                                   |
-    | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-    | `generatedSecret` | You want Helm to create a self-signed CA Secret. This is the default.                                                                      |
-    | `existingSecret`  | You manage the CA Secret outside the LangSmith chart. The Secret can be created manually, by cert-manager, or by another external process. |
+    | Mode | Use when |
+    | --- | --- |
+    | `generatedSecret` | You want Helm to create a self-signed CA Secret. This is the default. |
+    | `existingSecret` | You manage the CA Secret outside the LangSmith chart. The Secret can be created manually, by cert-manager, or by another external process. |
 
     In GitOps workflows that render manifests without live cluster access, prefer `existingSecret`. The `generatedSecret` mode uses Helm's live `lookup` behavior to reuse the generated Secret on upgrades; pure render workflows cannot read the live Secret and may produce new cert material on each render.
   </Step>
@@ -961,7 +951,7 @@ Enabling Sandboxes provisions the following resources:
 
 Add the following values to your `langsmith_config.yaml`, along with the sandbox secret values described in the [Prerequisites](#prerequisites-2). Replace placeholders with your deployment-specific values.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 images:
   sandboxHostImage:
     tag: "<same-release-tag-as-your-langsmith-images>"
@@ -980,7 +970,7 @@ sandboxes:
 
 If you create the JuiceFS CSI config Secret yourself, set `sandboxes.juicefs.csi.existingSecretName` and omit `sandboxes.juicefs.name`, `storage`, `bucket`, and `redis.metaURL` from the Helm values:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 sandboxes:
   enabled: true
   juicefs:
@@ -990,7 +980,7 @@ sandboxes:
 
 The existing Secret must be in the LangSmith release namespace and contain these keys:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 stringData:
   name: "sandbox-juicefs"
   metaurl: "redis://redis-host:6379/1"
@@ -1000,7 +990,7 @@ stringData:
 
 Apply the updated chart:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm upgrade -i langsmith langchain/langsmith \
   --values langsmith_config.yaml \
   --version <version> \
@@ -1016,7 +1006,7 @@ The LangSmith Terraform modules can provision the required AWS and GCP infrastru
 
 In `modules/aws/infra/terraform.tfvars`, enable Sandboxes and configure the sandbox node capacity:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 enable_sandboxes = true
 redis_source     = "external"
 
@@ -1032,17 +1022,17 @@ sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 
 AWS Sandboxes require `redis_source = "external"`. The Terraform module:
 
-* Creates a dedicated ElastiCache Redis instance for JuiceFS sandbox metadata.
-* Configures that dedicated instance with the recommended `noeviction` policy.
-* Reuses the LangSmith S3 bucket for sandbox object storage.
-* Creates the JuiceFS CSI config Secret.
-* Adds the expected node label and taint.
+- Creates a dedicated ElastiCache Redis instance for JuiceFS sandbox metadata.
+- Configures that dedicated instance with the recommended `noeviction` policy.
+- Reuses the LangSmith S3 bucket for sandbox object storage.
+- Creates the JuiceFS CSI config Secret.
+- Adds the expected node label and taint.
 
 The AWS setup script generates the sandbox service-auth secret, callback signing JWK, and dedicated JuiceFS Redis auth token through the normal SSM-backed setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
 
 If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/aws/app/terraform.tfvars` as well:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 enable_sandboxes      = true
 chart_version          = "~0.16.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
@@ -1052,7 +1042,7 @@ When `enable_sandboxes = true`, the Terraform app module requires an explicit La
 
 Run the normal AWS flow:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make apply
 make init-values
 CHART_VERSION="~0.16.0" make deploy
@@ -1062,7 +1052,7 @@ CHART_VERSION="~0.16.0" make deploy
 
 In `modules/gcp/infra/terraform.tfvars`, enable Sandboxes and configure a Standard GKE node pool:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 enable_sandboxes = true
 redis_source     = "external"
 
@@ -1082,17 +1072,17 @@ sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 
 GCP Sandboxes require `redis_source = "external"`. The Terraform module:
 
-* Creates a dedicated Memorystore Redis instance for JuiceFS sandbox metadata.
-* Configures that dedicated instance with the recommended `noeviction` policy.
-* Reuses the LangSmith GCS bucket for sandbox object storage.
-* Creates the JuiceFS CSI config Secret.
-* Adds the expected node label and taint.
+- Creates a dedicated Memorystore Redis instance for JuiceFS sandbox metadata.
+- Configures that dedicated instance with the recommended `noeviction` policy.
+- Reuses the LangSmith GCS bucket for sandbox object storage.
+- Creates the JuiceFS CSI config Secret.
+- Adds the expected node label and taint.
 
 The GCP setup script generates the sandbox service-auth secret and callback signing JWK through the normal Secret Manager setup flow. Run the infra setup script before applying Terraform if those values do not exist yet.
 
 If you deploy the Helm release with the Terraform app module, set the sandbox app values in `modules/gcp/app/terraform.tfvars` as well:
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 enable_sandboxes      = true
 chart_version          = "~0.16.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
@@ -1102,7 +1092,7 @@ When `enable_sandboxes = true`, the Terraform app module requires an explicit La
 
 Run the normal GCP flow:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make apply
 make init-values
 CHART_VERSION="~0.16.0" make deploy
@@ -1112,7 +1102,7 @@ CHART_VERSION="~0.16.0" make deploy
 
 Set `sandboxes.serviceUrlBaseUrl` when users need browser or programmatic access to HTTP services running inside Sandboxes.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 sandboxes:
   serviceUrlBaseUrl: "https://sandbox-services.example.com"
 ```
@@ -1123,7 +1113,7 @@ This requires wildcard DNS and TLS for `*.sandbox-services.example.com`. When `i
 
 After the upgrade completes, verify that the sandbox runtime pods and JuiceFS volumes are ready:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl rollout status deployment/sandbox-host -n <namespace>
 kubectl get pods,pvc -n <namespace>
 ```
@@ -1147,7 +1137,7 @@ Sandboxes are not proactively restarted. They start again when a user or API act
 ## Enable Engine
 
 <Info>
-  Self-hosted deployments require LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. Engine is licensed separately and meters its own usage in LCUs. [Contact your account team](https://www.langchain.com/contact-sales) to have it added to your order.
+Self-hosted deployments require LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. Engine is licensed separately and meters its own usage in LCUs. [Contact your account team](https://www.langchain.com/contact-sales) to have it added to your order.
 </Info>
 
 [Engine](/langsmith/engine-overview) watches production traces, clusters recurring failures into issues, diagnoses each issue, and proposes fixes. Engine is disabled by default.
@@ -1162,10 +1152,10 @@ Unlike the other features on this page, Engine cannot run entirely inside your c
 
 Enabling Engine provisions or reuses:
 
-* `standalone-insights-api-server`: serves both the `engine` and `insights` graphs.
-* `standalone-insights-queue`: background run processing for Engine and Insights.
-* A dedicated PostgreSQL and Redis instance for the shared deployment, each replaceable with an external instance.
-* The sandbox components described under [Enable Sandboxes](#enable-sandboxes).
+- `standalone-insights-api-server`: serves both the `engine` and `insights` graphs.
+- `standalone-insights-queue`: background run processing for Engine and Insights.
+- A dedicated PostgreSQL and Redis instance for the shared deployment, each replaceable with an external instance.
+- The sandbox components described under [Enable Sandboxes](#enable-sandboxes).
 
 Engine also adds configuration to `platform-backend` and `ingest-queue`, which dispatch and schedule its runs.
 
@@ -1178,13 +1168,13 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
     Engine's sandboxes are associated with one workspace. An install with Engine must have a [shared organization](/langsmith/administration-overview#organizations). If the shared organization has exactly one workspace, LangSmith uses that workspace. If the shared organization has more than one workspace, LangSmith does not choose one automatically. You must set `engine.sandboxTenantId` to the workspace ID.
 
     <Warning>
-      Use a workspace reserved for Engine:
+    Use a workspace reserved for Engine:
 
-      * Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LCUs.
-      * Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
-      * Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
-      * Each sandbox runs agent-generated code.
-      * Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
+    - Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LCUs.
+    - Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
+    - Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
+    - Each sandbox runs agent-generated code.
+    - Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
     </Warning>
   </Step>
 
@@ -1192,37 +1182,37 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
     Engine is licensed separately, in the same way as Sandboxes. Your license must carry the Engine entitlement. LangSmith validates your license key against `https://beacon.langchain.com` at startup and periodically thereafter, so the entitlement takes effect without you changing any configuration once it is added to your order.
   </Step>
 
-  <Step title="Allow egress to LangSmith Intelligence">
+  <Step title="Allow egress to LangSmith Intelligence" id="allow-egress-to-langsmith-intelligence">
     Allow outbound HTTPS from the cluster to the LangSmith Intelligence gateway URL for your cloud. Use this URL as the value of `engine.intelligenceBaseUrl`.
 
-    | Cloud | `engine.intelligenceBaseUrl`                    |
-    | ----- | ----------------------------------------------- |
-    | AWS   | `https://beacon.aws.langchain.com/intelligence` |
-    | GCP   | `https://beacon.langchain.com/intelligence`     |
+    | Cloud | `engine.intelligenceBaseUrl` |
+    | --- | --- |
+    | AWS | `https://beacon.aws.langchain.com/intelligence` |
+    | GCP | `https://beacon.langchain.com/intelligence` |
 
     On GCP, this uses the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
 
     <Note>
-      Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with your account team before planning a rollout.
+    Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region) and confirm coverage with your account team before planning a rollout.
     </Note>
 
     Add the gateway as a specific allowlist entry rather than opening general egress. To keep AWS traffic on private networking, [connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink). Requests use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
 
     <Note>
-      Offline (air-gapped) installs cannot run Engine. There is no in-cluster model for it to fall back on.
+    Offline (air-gapped) installs cannot run Engine. There is no in-cluster model for it to fall back on.
     </Note>
   </Step>
 
-  <Step title="Verify your hostname is externally reachable">
+  <Step title="Verify your hostname is externally reachable" id="verify-your-hostname-is-externally-reachable">
     Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
 
     Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine does not require you to expose anything beyond the address your own users already reach. Sandbox egress is allowlisted to your LangSmith hostname, `github.com`, `api.github.com`, and the Python package registries. Per-run credentials are injected by a proxy outside the sandbox rather than being readable inside it.
   </Step>
 
-  <Step title="Generate the Engine encryption key">
+  <Step title="Generate the Engine encryption key" id="generate-the-engine-encryption-key">
     Engine uses its own Fernet key to encrypt the run payloads LangSmith passes to it, which carry short-lived credentials. Generate one:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
     ```
 
@@ -1240,7 +1230,7 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
   <Tab title="Using Kubernetes secrets (recommended)">
     Reference your existing Secret by name. The chart reads `engine_encryption_key` from it automatically.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     config:
       existingSecretName: "<your-secret-name>"
       # Must be reachable from the sandbox network.
@@ -1254,15 +1244,14 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
       enabled: true
     ```
   </Tab>
-
   <Tab title="Using inline values">
     Set the encryption key directly in your config file.
 
     <Warning>
-      This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret.
+    This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret.
     </Warning>
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml
     config:
       hostname: "https://langsmith.example.com"
 
@@ -1278,21 +1267,21 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
 </Tabs>
 
 <Note>
-  If your install has a shared organization with more than one workspace, set the workspace that owns Engine's sandboxes:
+If your install has a shared organization with more than one workspace, set the workspace that owns Engine's sandboxes:
 </Note>
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 engine:
   sandboxTenantId: "<workspace-id>"
 ```
 
 <Warning>
-  Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
+Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
 </Warning>
 
 Validate the updated chart before applying it:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm template langsmith langchain/langsmith \
   --values langsmith_config.yaml \
   --version <version> \
@@ -1303,7 +1292,7 @@ The chart validates the Engine configuration at render time and fails with a mes
 
 Apply the updated chart:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 helm upgrade -i langsmith langchain/langsmith \
   --values langsmith_config.yaml \
   --version <version> \
@@ -1315,13 +1304,13 @@ helm upgrade -i langsmith langchain/langsmith \
 
 Confirm the shared Engine and Insights deployment is running:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
 Both the API server and queue pods should be `Running`. Then, confirm `platform-backend` is healthy, since it dispatches Engine runs:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 ```
 
@@ -1336,7 +1325,7 @@ If the analysis does not complete, check that Engine pods are running, the sandb
 Enabling Engine in Helm makes the feature available; it does not start any scans. After enabling the chart values, finish setup in LangSmith:
 
 1. An [Organization Admin](/langsmith/rbac#organization-admin) turns Engine on for the organization under **Settings > Engine enablement**. For more information, see [Find and fix issues](/langsmith/engine#enable-engine-for-your-organization).
-2. Any user sets Engine up for a tracing project from the project's **Engine** tab. For more information, see [Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project).
+1. Any user sets Engine up for a tracing project from the project's **Engine** tab. For more information, see [Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project).
 
 Connecting a GitHub repository is optional and improves Engine's diagnosis and fixes. Without one, Engine cannot read your source code or open pull requests. To create the GitHub App and configure `host-backend`, see [Connect Engine to GitHub](/langsmith/engine-github#self-hosted).
 
@@ -1344,7 +1333,7 @@ Connecting a GitHub repository is optional and improves Engine's diagnosis and f
 
 Set `engine.enabled` to `false` and re-apply:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 engine:
   enabled: false
 ```
@@ -1356,7 +1345,7 @@ Engine stops dispatching runs. Insights shares the same deployment, so the `stan
 ### Configure additional data planes
 
 <Warning>
-  **Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
+**Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
 </Warning>
 
 In addition to the data plane created above, you can create more data planes in different Kubernetes clusters or in the same cluster under a different namespace. There are different ways to achieve this, so implement the solution that works best for your use case.
@@ -1375,7 +1364,7 @@ In addition to the data plane created above, you can create more data planes in 
   <Step title="Enable the feature in Postgres">
     Run the following against your LangSmith Postgres instance to enable this feature. Note the workspace ID for later steps.
 
-    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```sql
     update organizations set config = config || '{"enable_lgp_listeners_page": true}' where id = '<org id here>';
     update tenants set config = config || '{"langgraph_remote_reconciler_enabled": true}' where id = '<workspace id here>';
     ```
@@ -1388,7 +1377,6 @@ In addition to the data plane created above, you can create more data planes in 
   <Step title="Follow the hybrid setup guide">
     Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step.
   </Step>
-
   <Step title="(Optional) Add more data planes to the same cluster">
     To add more than one data plane to the same cluster, follow the instructions for [configuring additional data planes in the same cluster](/langsmith/hybrid-legacy#configuring-additional-data-planes-in-the-same-cluster).
   </Step>
@@ -1399,21 +1387,17 @@ In addition to the data plane created above, you can create more data planes in 
 <Steps>
   <Step title="Update your config">
     In your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), make the following modifications:
-
-    * Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
-    * Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
+    - Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
+    - Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
   </Step>
-
   <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
   </Step>
-
   <Step title="Follow the hybrid setup guide">
     Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step. Set `config.watchNamespaces` to a different namespace than the one used by the existing data plane.
   </Step>
-
   <Step title="(Optional) Configure log access">
     Configure access for the control plane to read Agent Server deployment logs from the new namespace. See [Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces).
   </Step>
@@ -1425,7 +1409,7 @@ If your [Agent Server deployments](/langsmith/agent-server) will use images from
 
 <Steps>
   <Step title="Create a Kubernetes image pull secret">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl create secret docker-registry langsmith-registry-secret \
         --docker-server=myregistry.com \
         --docker-username=your-username \
@@ -1435,17 +1419,15 @@ If your [Agent Server deployments](/langsmith/agent-server) will use images from
     ```
 
     Replace the values with your registry credentials:
-
-    * `myregistry.com`: Your registry URL
-    * `your-username`: Your registry username
-    * `your-password`: Your registry password or access token
-    * `langsmith`: The Kubernetes namespace where LangSmith is installed
+    - `myregistry.com`: Your registry URL
+    - `your-username`: Your registry username
+    - `your-password`: Your registry password or access token
+    - `langsmith`: The Kubernetes namespace where LangSmith is installed
   </Step>
-
   <Step title="Configure the deployment template in your langsmith_config.yaml">
     To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
 
-    ```yaml {21-22} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```yaml {21-22}
     operator:
       templates:
         deployment: |
@@ -1491,9 +1473,8 @@ If your [Agent Server deployments](/langsmith/agent-server) will use images from
                     failureThreshold: 6
     ```
   </Step>
-
   <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
 
@@ -1506,7 +1487,7 @@ For registry-specific authentication methods, refer to the [Kubernetes documenta
 ### Read Agent Server logs from other namespaces
 
 <Warning>
-  Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
+Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
 </Warning>
 
 For deployments where the control plane and data plane are in the same cluster, ensure the control plane Kubernetes deployment (`host-backend`) has permission to `get`, `list`, and `watch` Kubernetes `deployments`, `pods`, `replicasets`, and `logs` from the namespace where the Agent Server deployment exists. There are different ways to achieve this. The following example uses Kubernetes RBAC, but use the approach that best fits your use case:
@@ -1515,7 +1496,7 @@ For deployments where the control plane and data plane are in the same cluster, 
   <Step title="Create a Role with the required permissions">
     Create a `Role` in the Agent Server namespace. Replace `<data_plane_namespace>`:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl apply -n <data_plane_namespace> -f - <<EOF
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
@@ -1537,19 +1518,17 @@ For deployments where the control plane and data plane are in the same cluster, 
     EOF
     ```
   </Step>
-
   <Step title="Get the control plane ServiceAccount">
     Replace `<control_plane_namespace>`:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl get serviceaccounts -n <control_plane_namespace> | grep host-backend
     ```
   </Step>
-
   <Step title="Bind the Role to the control plane ServiceAccount">
     Replace `<data_plane_namespace>`, `<control_plane_namespace>`, and `<control_plane_service_account>`:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     kubectl apply -n <data_plane_namespace> -f - <<EOF
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
@@ -1569,21 +1548,20 @@ For deployments where the control plane and data plane are in the same cluster, 
 </Steps>
 
 <Note>
-  In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
+In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
 </Note>
 
 ## Next steps
 
 Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith/deploy-with-control-plane) to build and deploy your applications via the LangSmith UI.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-self-hosted-full-platform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

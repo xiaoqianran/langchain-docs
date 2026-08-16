@@ -3,7 +3,7 @@
 # Export LangSmith telemetry to your observability backend
 
 <Warning>
-  **This section is only applicable for Kubernetes deployments.**
+**This section is only applicable for Kubernetes deployments.**
 </Warning>
 
 Self-Hosted LangSmith instances produce telemetry data in the form of logs, metrics and traces. This section will show you how to access and export that data to an observability collector or backend.
@@ -45,7 +45,7 @@ You can use a [Prometheus](https://prometheus.io/docs/prometheus/latest/getting_
 The frontend service exposes its Nginx metrics at the following endpoint: `langsmith-frontend.langsmith.svc.cluster.local:80/nginx_status`. You can either scrape them yourself, or bring up a [Prometheus Nginx exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-nginx-exporter).
 
 <Warning>
-  **The following sections apply for in-cluster databases only. If you are using external databases, you will need to configure exposing and fetching metrics.**
+**The following sections apply for in-cluster databases only. If you are using external databases, you will need to configure exposing and fetching metrics.**
 </Warning>
 
 ### Postgres + Redis
@@ -62,7 +62,7 @@ For a reference setup, see the [OTel collector example](/langsmith/langsmith-col
 
 The LangSmith Backend, Platform Backend, Playground and LangSmith Queue deployments have been instrumented to emit [Otel](https://opentelemetry.io/docs/concepts/signals/traces/) traces. Tracing is toggled off by default, and can be enabled for all LangSmith services with the following in your `langsmith_config.yaml` (or equivalent) file:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   tracing:
     enabled: true
@@ -72,14 +72,13 @@ config:
     exporter: "http" # must be either http or grpc
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-backend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

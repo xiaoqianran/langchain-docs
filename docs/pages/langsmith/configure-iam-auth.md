@@ -2,24 +2,22 @@
 
 # Configure IAM authentication for data stores
 
-Configure Agent Server to use cloud workload identities for PostgreSQL and Redis authentication.
-
 Agent Server can use a cloud workload identity to generate short-lived PostgreSQL and Redis credentials at runtime. This removes static database and cache passwords from your deployment configuration. Connection and pooling behavior stay the same.
 
 <Note>
-  Data store IAM authentication requires `langgraph-api>=0.12.0`.
+Data store IAM authentication requires `langgraph-api>=0.12.0`.
 </Note>
 
 ## Supported services
 
-| Provider value | PostgreSQL                                    | Redis                                                               | Credential source                            |
-| -------------- | --------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------- |
-| `aws`          | Amazon RDS or Aurora PostgreSQL               | Amazon ElastiCache provisioned cache clusters or replication groups | AWS SDK default credential chain             |
-| `azure`        | Azure Database for PostgreSQL Flexible Server | Azure Managed Redis or Azure Cache for Redis                        | Microsoft Entra `DefaultAzureCredential`     |
-| `gcp`          | Cloud SQL for PostgreSQL                      | Memorystore for Redis Cluster                                       | Google Application Default Credentials (ADC) |
+| Provider value | PostgreSQL | Redis | Credential source |
+|----------------|------------|-------|-------------------|
+| `aws` | Amazon RDS or Aurora PostgreSQL | Amazon ElastiCache provisioned cache clusters or replication groups | AWS SDK default credential chain |
+| `azure` | Azure Database for PostgreSQL Flexible Server | Azure Managed Redis or Azure Cache for Redis | Microsoft Entra `DefaultAzureCredential` |
+| `gcp` | Cloud SQL for PostgreSQL | Memorystore for Redis Cluster | Google Application Default Credentials (ADC) |
 
 <Warning>
-  The GCP PostgreSQL provider supports Cloud SQL. It does not support AlloyDB, which requires a different token scope.
+The GCP PostgreSQL provider supports Cloud SQL. It does not support AlloyDB, which requires a different token scope.
 </Warning>
 
 The provider setting controls authentication only. Configure network access, TLS, database users, cache users, and provider permissions before starting Agent Server.
@@ -34,26 +32,26 @@ To enable IAM authentication:
 4. Set a connection URI that contains the principal name but no static password.
 5. Set the corresponding provider selector to `aws`, `azure`, or `gcp`:
 
-   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   AGENT_POSTGRES_IAM_AUTH_PROVIDER=<provider>
-   AGENT_REDIS_IAM_AUTH_PROVIDER=<provider>
-   ```
+    ```shell
+    AGENT_POSTGRES_IAM_AUTH_PROVIDER=<provider>
+    AGENT_REDIS_IAM_AUTH_PROVIDER=<provider>
+    ```
 
 You can enable IAM authentication for PostgreSQL, Redis, or both. When a selector is unset, Agent Server continues to use the password from that data store's connection URI.
 
 Use these connection URI variables for your deployment type:
 
-| Deployment                                  | PostgreSQL URI        | Redis URI          |
-| ------------------------------------------- | --------------------- | ------------------ |
-| Standalone Agent Server                     | `DATABASE_URI`        | `REDIS_URI`        |
+| Deployment | PostgreSQL URI | Redis URI |
+|------------|----------------|-----------|
+| Standalone Agent Server | `DATABASE_URI` | `REDIS_URI` |
 | Self-hosted deployment with a control plane | `POSTGRES_URI_CUSTOM` | `REDIS_URI_CUSTOM` |
 
 The connection URIs must meet the following requirements:
 
-* **Transport security**: Use `sslmode=require` or a stricter verification mode for PostgreSQL, and `rediss://` for Redis.
-* **Character encoding**: Percent-encode URI-reserved characters in usernames, such as `@` as `%40`.
-* **Private certificate authority**: If Redis TLS uses a private certificate authority, set `REDIS_TLS_CA_CERT` to the base64-encoded PEM CA bundle.
-* **Cluster mode**: If the Redis service uses cluster mode, also set `REDIS_CLUSTER=true`.
+- **Transport security**: Use `sslmode=require` or a stricter verification mode for PostgreSQL, and `rediss://` for Redis.
+- **Character encoding**: Percent-encode URI-reserved characters in usernames, such as `@` as `%40`.
+- **Private certificate authority**: If Redis TLS uses a private certificate authority, set `REDIS_TLS_CA_CERT` to the base64-encoded PEM CA bundle.
+- **Cluster mode**: If the Redis service uses cluster mode, also set `REDIS_CLUSTER=true`.
 
 ## Configure AWS
 
@@ -61,13 +59,13 @@ Agent Server uses the AWS SDK default credential chain to create RDS authenticat
 
 Before configuring Agent Server:
 
-* [Enable IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) for RDS or Aurora PostgreSQL. Grant the database user the `rds_iam` role and grant the workload identity `rds-db:connect` for that user.
-* [Enable IAM authentication](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth-iam.html) for the ElastiCache user. Grant the workload identity `elasticache:Connect` for both the ElastiCache cache or replication group and the ElastiCache user.
-* Configure AWS credentials through EKS Pod Identity, IAM roles for service accounts (IRSA), an instance profile, or another AWS SDK credential source. Set `AWS_REGION` or `AWS_DEFAULT_REGION` to the data store's region.
+- [Enable IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) for RDS or Aurora PostgreSQL. Grant the database user the `rds_iam` role and grant the workload identity `rds-db:connect` for that user.
+- [Enable IAM authentication](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth-iam.html) for the ElastiCache user. Grant the workload identity `elasticache:Connect` for both the ElastiCache cache or replication group and the ElastiCache user.
+- Configure AWS credentials through EKS Pod Identity, IAM roles for service accounts (IRSA), an instance profile, or another AWS SDK credential source. Set `AWS_REGION` or `AWS_DEFAULT_REGION` to the data store's region.
 
 Set the database usernames in the connection URIs:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AWS_REGION=<region>
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=aws
 AGENT_REDIS_IAM_AUTH_PROVIDER=aws
@@ -83,13 +81,13 @@ Agent Server uses `DefaultAzureCredential` to obtain Microsoft Entra tokens for 
 
 Before configuring Agent Server:
 
-* [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/postgresql/security/security-connect-with-managed-identity) for Azure Database for PostgreSQL Flexible Server. Create a database role for the managed identity or service principal. Use that role name as the PostgreSQL URI username.
-* [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/redis/entra-for-authentication) and a data access policy for Azure Managed Redis. Use the managed identity or service principal object ID as the Redis URI username.
-* Configure Azure Workload Identity, a managed identity, or another `DefaultAzureCredential` source for each Agent Server workload.
+- [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/postgresql/security/security-connect-with-managed-identity) for Azure Database for PostgreSQL Flexible Server. Create a database role for the managed identity or service principal. Use that role name as the PostgreSQL URI username.
+- [Configure Microsoft Entra authentication](https://learn.microsoft.com/azure/redis/entra-for-authentication) and a data access policy for Azure Managed Redis. Use the managed identity or service principal object ID as the Redis URI username.
+- Configure Azure Workload Identity, a managed identity, or another `DefaultAzureCredential` source for each Agent Server workload.
 
 Set the Microsoft Entra principal identifiers in the connection URIs:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=azure
 AGENT_REDIS_IAM_AUTH_PROVIDER=azure
 DATABASE_URI="postgresql://<entra-principal-name>@<postgres-host>:5432/<database>?sslmode=require"
@@ -104,13 +102,13 @@ Agent Server uses Google ADC to obtain Cloud SQL login tokens and Memorystore ac
 
 Before configuring Agent Server:
 
-* [Configure Cloud SQL IAM database authentication](https://cloud.google.com/sql/docs/postgres/iam-logins), add the IAM principal as a database user, and grant it `roles/cloudsql.instanceUser`. Grant database privileges separately.
-* [Configure Memorystore IAM authentication](https://cloud.google.com/memorystore/docs/cluster/manage-iam-auth) and grant the workload identity `roles/redis.dbConnectionUser`.
-* Configure ADC for each Agent Server workload. Prefer Workload Identity Federation or an attached service account over a service account key.
+- [Configure Cloud SQL IAM database authentication](https://cloud.google.com/sql/docs/postgres/iam-logins), add the IAM principal as a database user, and grant it `roles/cloudsql.instanceUser`. Grant database privileges separately.
+- [Configure Memorystore IAM authentication](https://cloud.google.com/memorystore/docs/cluster/manage-iam-auth) and grant the workload identity `roles/redis.dbConnectionUser`.
+- Configure ADC for each Agent Server workload. Prefer Workload Identity Federation or an attached service account over a service account key.
 
 Set the Cloud SQL IAM database user in the PostgreSQL URI. Memorystore supports only the `default` Redis username:
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```shell
 AGENT_POSTGRES_IAM_AUTH_PROVIDER=gcp
 AGENT_REDIS_IAM_AUTH_PROVIDER=gcp
 DATABASE_URI="postgresql://<cloud-sql-iam-user>@<cloud-sql-host>:5432/<database>?sslmode=require"
@@ -126,7 +124,7 @@ For a [standalone Agent Server deployment](/langsmith/deploy-standalone-server) 
 
 The following example uses AWS for both data stores. Set each provider value to `azure` or `gcp` when using another cloud provider:
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 postgres:
   external:
     enabled: true
@@ -158,19 +156,18 @@ Configure `apiServer.serviceAccount` and `queue.serviceAccount` with the cloud p
 
 ## See also
 
-* [Self-host standalone servers](/langsmith/deploy-standalone-server)
-* [Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)
-* [Self-hosted platform features](/langsmith/self-hosted-platform-features)
-* [Configure Agent Server for scale](/langsmith/agent-server-scale)
+- [Self-host standalone servers](/langsmith/deploy-standalone-server)
+- [Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)
+- [Self-hosted platform features](/langsmith/self-hosted-platform-features)
+- [Configure Agent Server for scale](/langsmith/agent-server-scale)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

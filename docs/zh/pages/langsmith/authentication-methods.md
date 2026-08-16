@@ -4,13 +4,13 @@
 
 # 认证方式
 
-LangSmith 支持多种身份验证方法，方便注册和登录。
+LangSmith支持多种认证方式，方便注册和登录。
 
 ## 云
 
 ### 电子邮件/密码
 
-用户可以使用电子邮件地址和密码注册并登录 LangSmith。
+用户可以使用电子邮件地址和密码注册并登录LangSmith。
 
 ### 社交提供商
 
@@ -22,7 +22,7 @@ LangSmith 支持多种身份验证方法，方便注册和登录。
 
 ## 自托管
 
-自托管客户可以更好地控制用户登录 LangSmith 的方式。有关配置选项的更深入介绍，请参阅[the self-hosting docs](/langsmith/self-hosted)和[Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith)。
+自托管客户可以更好地控制用户如何登录LangSmith。有关配置选项的更深入介绍，请参阅[the self-hosting docs](/langsmith/self-hosted)和[Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith)。
 
 ### 使用 OAuth 2.0 和 OIDC 的 SSO
 
@@ -35,17 +35,16 @@ LangSmith 支持多种身份验证方法，方便注册和登录。
 ### 无
 
 <Warning>
-  基本认证上线后，该认证方式将被取消。
+基本认证上线后，该认证方式将被取消。
 </Warning>如果启用零身份验证方法，则自托管安装不需要任何登录/注册。此配置仅应用于验证基础架构级别的安装，因为此模式中支持的功能集仅限于单个组织和工作区。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/authentication-methods.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

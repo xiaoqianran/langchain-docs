@@ -6,14 +6,14 @@
 
 LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 
-虽然您可以在运行时从 [dynamically fetch prompts](/langsmith/manage-prompts-programmatically#pull-a-prompt) 到您的应用程序，但您可能更喜欢将提示与您自己的数据库或版本控制系统同步。为了支持此工作流程，LangSmith 允许您通过 Webhooks 接收提示更新的通知。
+虽然您可以在运行时将 [dynamically fetch prompts](/langsmith/manage-prompts-programmatically#pull-a-prompt) 从 LangSmith 转换到应用程序中，但您可能更喜欢将提示与您自己的数据库或版本控制系统同步。为了支持此工作流程，LangSmith 允许您通过 Webhooks 接收提示更新的通知。
 
 **为什么要与 GitHub 同步提示？**
 
 * **版本控制：** 在熟悉的系统中将提示与应用程序代码一起进行版本控制。
 * **CI/CD 集成：** 当关键提示发生变化时触发自动暂存或生产部署。
 
-<img alt="Prompt Webhook Diagram" />
+![Prompt Webhook Diagram](/langsmith/images/prompt-excalidraw.png)
 
 ## 先决条件
 
@@ -39,7 +39,7 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
 Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 <Accordion title="Sample Webhook Payload">
-  ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```json
   {
     "prompt_id": "f33dcb51-eb17-47a5-83ca-64ac8a027a29",
     "prompt_name": "My Prompt",
@@ -146,7 +146,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
   }
   ```
 </Accordion><Note>
-  重要的是要了解用于提示提交的 LangSmith webhooks 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
+重要的是要了解用于提示提交的 LangSmith webhooks 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
 </Note>
 
 ## 实现用于 webhook 接收的 FastAPI 服务器
@@ -166,7 +166,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
   该服务器将侦听来自 LangSmith 的传入 Webhook，并将收到的提示清单提交到您的 GitHub 存储库。
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python
   import base64
   import json
   import uuid
@@ -346,13 +346,13 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 2. 转至 **提示** 部分。您将在此处看到提示列表。
 
-   <img alt="LangSmith Prompts section" />
+   ![LangSmith Prompts section](/langsmith/images/prompt-commit-main.png)
 
 3. 在“提示”页面右上角，单击“**+ Webhook**”按钮。
 
 4. 您将看到一个用于配置 Webhook 的表单：
 
-   <img alt="LangSmith Webhook configuration modal" />* **Webhook URL：** 输入已部署的 FastAPI 服务器端点的完整公共 URL。对于我们的示例服务器，这将是`https://<your-render-service>.onrender.com/webhook/commit`。
+   ![LangSmith Webhook configuration modal](/langsmith/images/prompt-commit-webhook.png)* **Webhook URL：** 输入已部署的 FastAPI 服务器端点的完整公共 URL。对于我们的示例服务器，这将是`https://<your-render-service>.onrender.com/webhook/commit`。
    * **标题（可选）：**
      * 您可以添加 LangSmith 将随每个 Webhook 请求发送的自定义标头。
 
@@ -362,7 +362,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 ## 实际工作流程
 
-<img alt="Workflow Diagram showing: User saves prompt in LangSmith, LangSmith sends webhook to FastAPI Server, which interacts with GitHub to update files" />
+![Workflow Diagram showing: User saves prompt in LangSmith, LangSmith sends webhook to FastAPI Server, which interacts with GitHub to update files](/langsmith/images/prompt-sequence-diagram.png)
 
 现在，一切就绪后，将发生以下情况：
 
@@ -379,7 +379,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 6. **确认：** 您应该会看到新的提交出现在您的 GitHub 存储库中。
 
-   <img alt="Manifest committed to GitHub" />
+   ![Manifest committed to GitHub](/langsmith/images/prompt-commit-github.png)
 
 您现在已成功将 LangSmith 提示与 GitHub 同步！
 
@@ -391,14 +391,13 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 * **通知：** 向 Slack、电子邮件或其他通信渠道发送有关提示更改的通知。
 * **选择性处理：** 基于 LangSmith 有效负载中的元数据（如果可用，例如，哪个特定提示更改或由谁更改），您可以应用不同的逻辑。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-commit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

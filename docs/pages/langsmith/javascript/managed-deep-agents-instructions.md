@@ -2,29 +2,30 @@
 
 # Add instructions to Managed Deep Agents
 
-Define the system prompt for a Managed Deep Agent in instructions.md.
-
 Instructions define the agent's behavior. They make up the core of the agent's system prompt. You can define them in a simple markdown file and they are picked up automatically by the agent.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 The `instructions.md` file lives at the project root:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+
+```text
 my-agent/
   agent.ts
   instructions.md
 ```
 
+
 ## Add instructions
 
 Create or modify `instructions.md`:
 
-```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```markdown instructions.md
 # Assistant
 
 You are a helpful assistant.
@@ -44,14 +45,13 @@ When you run `mda deploy` to deploy the agent, instructions are automatically sy
 
 Use [skills](/langsmith/javascript/managed-deep-agents-skills) for task-specific procedures that the agent loads only when relevant. Use [memory](/langsmith/javascript/managed-deep-agents-memory) for knowledge the agent learns and retains across threads.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-instructions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

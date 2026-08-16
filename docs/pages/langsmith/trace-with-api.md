@@ -2,20 +2,18 @@
 
 # Trace with API
 
-Learn how to trace LLM applications using the LangSmith REST API directly.
-
 This guide covers two approaches to tracing with the [REST API](/langsmith/smith-api-ref): basic tracing using the `POST /runs` and `PATCH /runs` endpoints, and batch ingestion using `POST /runs/multipart` for higher throughput.
 
 For a full list of endpoints and request/response schemas, refer to the [API reference](/langsmith/smith-api-ref).
 
 <Warning>
-  We strongly recommend using the [Python](/langsmith/smith-python-sdk) or [TypeScript](/langsmith/smith-js-ts-sdk) SDK to send traces to LangSmith instead of the REST API directly. The SDKs include batching and background sending optimizations that prevent tracing from affecting your application's performance.
+We strongly recommend using the [Python](/langsmith/smith-python-sdk) or [TypeScript](/langsmith/smith-js-ts-sdk) SDK to send traces to LangSmith instead of the REST API directly. The SDKs include batching and background sending optimizations that prevent tracing from affecting your application's performance.
 
-  If you cannot use an SDK, note that sending traces synchronously may impact application performance.
+If you cannot use an SDK, note that sending traces synchronously may impact application performance.
 </Warning>
 
 <Note>
-  We recommend using **UUID v7** for run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. Use `uuid7()` from the LangSmith SDK to generate them, or see [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) for more details.
+We recommend using **UUID v7** for run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. Use `uuid7()` from the LangSmith SDK to generate them, or see [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) for more details.
 </Note>
 
 ## Basic tracing
@@ -23,16 +21,16 @@ For a full list of endpoints and request/response schemas, refer to the [API ref
 The simplest way to log runs is via the `POST /runs` and `PATCH /runs` endpoints. This approach requires minimal information to establish the trace hierarchy.
 
 <Note>
-  When using the LangSmith REST API, provide your [API key](/langsmith/create-account-api-key) in the request headers as `"x-api-key"`.
+When using the LangSmith REST API, provide your [API key](/langsmith/create-account-api-key) in the request headers as `"x-api-key"`.
 
-  If your API key is linked to multiple workspaces, specify the workspace in the header with `"x-tenant-id"`.
+If your API key is linked to multiple workspaces, specify the workspace in the header with `"x-tenant-id"`.
 
-  In this approach, you do not need to set the `dotted_order` or `trace_id` fields—the system generates them automatically. Though simpler, it is slower and subject to lower rate limits than batch ingestion.
+In this approach, you do not need to set the `dotted_order` or `trace_id` fields—the system generates them automatically. Though simpler, it is slower and subject to lower rate limits than batch ingestion.
 </Note>
 
 The following example traces a chat completion with a parent chain run and a child LLM run. Set [`parent_run_id`](/langsmith/run-data-format) on a child run to attach it to its parent:
 
-```python expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python expandable wrap
 import openai
 import os
 import requests
@@ -117,7 +115,7 @@ Unlike basic tracing, this endpoint requires you to compute and set [`dotted_ord
 
 The following example creates a parent run and a child run, sends them in a single batch request, then patches both with their outputs:
 
-```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python expandable
 import json
 import os
 import uuid
@@ -312,18 +310,17 @@ batch_ingest_runs(api_url, api_key, patches=patches)
 
 ## Related
 
-* [Run (span) data format](/langsmith/run-data-format)
-* [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id)
-* [Custom instrumentation](/langsmith/annotate-code)
+- [Run (span) data format](/langsmith/run-data-format)
+- [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id)
+- [Custom instrumentation](/langsmith/annotate-code)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

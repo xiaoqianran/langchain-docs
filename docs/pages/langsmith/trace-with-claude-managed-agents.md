@@ -2,8 +2,6 @@
 
 # Trace Claude Managed Agents
 
-Automatically trace Claude Managed Agent sessions and events with LangSmith.
-
 [Claude Managed Agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) are Anthropic's hosted, cloud-based agents that run in managed environments. LangSmith supports tracing Claude Managed Agent sessions via the `wrapAnthropic` wrapper, giving you visibility into agent creation, session events, and message flows.
 
 <Note>
@@ -12,17 +10,17 @@ Automatically trace Claude Managed Agent sessions and events with LangSmith.
 
 ## Installation
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash npm
 npm install langsmith @anthropic-ai/sdk
 ```
 
-```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash yarn
 yarn add langsmith @anthropic-ai/sdk
 ```
 
 ## Environment setup
 
-```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash Shell
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export ANTHROPIC_API_KEY=<your-anthropic-api-key>
@@ -32,7 +30,7 @@ export ANTHROPIC_API_KEY=<your-anthropic-api-key>
 
 Wrap the Anthropic client with `wrapAnthropic`. The wrapper will automatically trace agent creation, session creation, and all events that flow through the session.
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript
 import Anthropic from "@anthropic-ai/sdk";
 import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 
@@ -98,18 +96,17 @@ for await (const event of stream) {
 
 ## Next steps
 
-* [Trace Anthropic models](/langsmith/trace-anthropic) — trace standard Anthropic API calls and tool use
-* [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk) — trace the Claude Agent SDK for local agentic apps
-* [Monitor your agent](/langsmith/dashboards) — set up dashboards and alerts for production agents
+- [Trace Anthropic models](/langsmith/trace-anthropic) — trace standard Anthropic API calls and tool use
+- [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk) — trace the Claude Agent SDK for local agentic apps
+- [Monitor your agent](/langsmith/dashboards) — set up dashboards and alerts for production agents
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

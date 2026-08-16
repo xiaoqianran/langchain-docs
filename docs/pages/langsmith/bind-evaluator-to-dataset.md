@@ -9,16 +9,16 @@ LangSmith supports two ways to grade experiments created via the SDK:
 
 ## Configuring an evaluator on a dataset
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-bind-evaluator-to-dataset), select a dataset.
-2. Click the **Evaluators** tab.
-3. Click **+ Evaluator** to open the **Add Evaluator** panel.
-4. Choose one of the following:
-   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).
-   * **Attach an existing evaluator**: Select an evaluator already in your workspace to reuse it.
-   * **Create from a template**: Start from a ready-made evaluator.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-bind-evaluator-to-dataset), select a dataset.
+1. Click the **Evaluators** tab.
+1. Click **+ Evaluator** to open the **Add Evaluator** panel.
+1. Choose one of the following:
+   - **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).
+   - **Attach an existing evaluator**: Select an evaluator already in your workspace to reuse it.
+   - **Create from a template**: Start from a ready-made evaluator.
 
 <Note>
-  When you configure an evaluator for a dataset, it will only affect the experiment runs that are created after the evaluator is configured. It will not affect the evaluation of experiment runs that were created before the evaluator was configured.
+When you configure an evaluator for a dataset, it will only affect the experiment runs that are created after the evaluator is configured. It will not affect the evaluation of experiment runs that were created before the evaluator was configured.
 </Note>
 
 ## LLM-as-a-judge evaluators
@@ -39,32 +39,34 @@ For custom code evaluators bound to a dataset, the evaluator function takes in t
 The code below shows an example of a simple evaluator function that checks that the outputs exactly equal the reference outputs.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import numpy as np
 
-  def perform_eval(run, example):
-      # run is a Run object
-      # example is an Example object
-      output = run['outputs']['output']
-      ref_output = example['outputs']['outputs']
-      output_match = np.array_equal(output, ref_output)
+```python Python
+import numpy as np
 
-      return { "exact_match": output_match }
-  ```
+def perform_eval(run, example):
+    # run is a Run object
+    # example is an Example object
+    output = run['outputs']['output']
+    ref_output = example['outputs']['outputs']
+    output_match = np.array_equal(output, ref_output)
 
-  ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function perform_eval(run, example) {
-      // run is a Run object
-      // example is an Example object
-      const output = run.outputs.output;
-      const refOutput = example.outputs.outputs;
+    return { "exact_match": output_match }
+```
 
-      // Deep equality check for arrays/objects
-      const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
+```javascript JavaScript
+function perform_eval(run, example) {
+    // run is a Run object
+    // example is an Example object
+    const output = run.outputs.output;
+    const refOutput = example.outputs.outputs;
 
-      return { "exact_match": outputMatch };
-  }
-  ```
+    // Deep equality check for arrays/objects
+    const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
+
+    return { "exact_match": outputMatch };
+}
+```
+
 </CodeGroup>
 
 ## Next steps
@@ -72,14 +74,13 @@ The code below shows an example of a simple evaluator function that checks that 
 * Analyze your experiment results in the [experiments tab](/langsmith/analyze-an-experiment)
 * Compare your experiment results in the [comparison view](/langsmith/compare-experiment-results)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

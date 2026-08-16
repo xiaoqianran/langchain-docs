@@ -8,7 +8,7 @@ This example is based on [this repository](https://github.com/langchain-ai/langg
 
 The final repository structure will look something like this:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -22,15 +22,14 @@ my-app/
 ├── langgraph.json  # configuration file for LangGraph
 └── pyproject.toml # dependencies for your project
 ```
-
 <Tip>
-  LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
+LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) _graph_. However, the implementation of a _node_ of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
 </Tip>
 
 You can also set up with:
 
-* `requirements.txt`: for dependency management, check out [this how-to guide](/langsmith/setup-app-requirements-txt) on using `requirements.txt` for LangSmith.
-* a monorepo: To deploy a graph located inside a monorepo, take a look at [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) for an example of how to do so.
+- `requirements.txt`: for dependency management, check out [this how-to guide](/langsmith/setup-app-requirements-txt) on using `requirements.txt` for LangSmith.
+- a monorepo: To deploy a graph located inside a monorepo, take a look at [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) for an example of how to do so.
 
 After each step, an example file directory is provided to demonstrate how code can be organized.
 
@@ -68,7 +67,7 @@ opentelemetry-exporter-otlp-proto-http>=0.0.1
 
 Example `pyproject.toml` file:
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```toml
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -94,7 +93,7 @@ packages = ["my_agent"]
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 └── pyproject.toml   # Python packages required for your graph
 ```
@@ -113,17 +112,17 @@ FIREWORKS_API_KEY=key
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── .env # file with environment variables
 └── pyproject.toml
 ```
 
 <Tip>
-  By default, LangSmith follows the `uv`/`pip` behavior of **not** installing prerelease versions unless explicitly allowed. If want to use prereleases, you have the following options:
+By default, LangSmith follows the `uv`/`pip` behavior of **not** installing prerelease versions unless explicitly allowed. If want to use prereleases, you have the following options:
 
-  * With `pyproject.toml`: add `allow-prereleases = true` to your `[tool.uv]` section.
-  * With `requirements.txt` or `setup.py`: you must explicitly specify every prerelease dependency, including transitive ones. For example, if you declare `a==0.0.1a1` and `a` depends on `b==0.0.1a1`, then you must also explicitly include `b==0.0.1a1` in your dependencies.
+- With `pyproject.toml`: add `allow-prereleases = true` to your `[tool.uv]` section.
+- With `requirements.txt` or `setup.py`: you must explicitly specify every prerelease dependency, including transitive ones. For example, if you declare `a==0.0.1a1` and `a` depends on `b==0.0.1a1`, then you must also explicitly include `b==0.0.1a1` in your dependencies.
 </Tip>
 
 ## Define graphs
@@ -132,7 +131,7 @@ Implement your graphs. Graphs can be defined in a single file or multiple files.
 
 Example `agent.py` file, which shows how to import from other modules you define (code for the modules is not shown here, please see [this repository](https://github.com/langchain-ai/langgraph-example-pyproject) to see their implementation):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # my_agent/agent.py
 from typing import Literal
 from typing_extensions import TypedDict
@@ -164,7 +163,7 @@ graph = workflow.compile()
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -184,7 +183,7 @@ Create a [configuration file](/langsmith/cli#configuration-file) called `langgra
 
 Example `langgraph.json` file:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "dependencies": ["."],
   "graphs": {
@@ -197,13 +196,13 @@ Example `langgraph.json` file:
 Note that the variable name of the `CompiledGraph` appears at the end of the value of each subkey in the top-level `graphs` key (i.e. `:<variable_name>`).
 
 <Warning>
-  **Configuration file location**
-  The configuration file must be placed in a directory that is at the same level or higher than the Python files that contain compiled graphs and associated dependencies.
+    **Configuration file location**
+    The configuration file must be placed in a directory that is at the same level or higher than the Python files that contain compiled graphs and associated dependencies.
 </Warning>
 
 Example file directory:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -222,14 +221,13 @@ my-app/
 
 After you setup your project and place it in a GitHub repository, it's time to [deploy your app](/langsmith/deployment-quickstart).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-pyproject.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

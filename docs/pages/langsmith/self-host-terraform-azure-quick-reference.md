@@ -2,27 +2,25 @@
 
 # Azure Terraform quick reference
 
-Make targets, Terraform, kubectl, Azure CLI, and Helm commands for LangSmith self-hosted on AKS.
-
 Command cheat sheet for day-to-day operations against an Azure LangSmith deployment provisioned with the [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure). All `make` targets run from `modules/azure/`. Run `make help` for an inline summary.
 
 For the full deployment walkthrough, see the [Azure deployment guide](/langsmith/self-host-terraform-azure-deploy).
 
 ## Deployment overview
 
-| Stage                       | What gets deployed                                                              | Command                                         |
-| --------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Infrastructure              | AKS + Postgres + Redis + Blob + Key Vault + cert-manager + KEDA + ingress       | `make apply`                                    |
-| Cluster credentials         | Kubeconfig + Kubernetes Secrets from Key Vault                                  | `make kubeconfig && make k8s-secrets`           |
-| LangSmith (Helm path)       | LangSmith Helm (\~17 pods) via shell scripts                                    | `make init-values && make deploy`               |
-| LangSmith (Terraform path)  | Secrets + SA + Helm release managed in Terraform state                          | `make init-app && make apply-app`               |
+| Stage | What gets deployed | Command |
+|---|---|---|
+| Infrastructure | AKS + Postgres + Redis + Blob + Key Vault + cert-manager + KEDA + ingress | `make apply` |
+| Cluster credentials | Kubeconfig + Kubernetes Secrets from Key Vault | `make kubeconfig && make k8s-secrets` |
+| LangSmith (Helm path) | LangSmith Helm (~17 pods) via shell scripts | `make init-values && make deploy` |
+| LangSmith (Terraform path) | Secrets + SA + Helm release managed in Terraform state | `make init-app && make apply-app` |
 | LangSmith Deployment add-on | host-backend, listener, operator. Bump `default_node_pool_min_count` to 5 first | `make apply && make init-values && make deploy` |
-| Agent Builder add-on        | tool-server, trigger-server, agent-builder LGP                                  | `make init-values && make deploy`               |
-| Insights + Polly add-on     | Clio analytics, Polly eval agent                                                | `make init-values && make deploy`               |
+| Agent Builder add-on | tool-server, trigger-server, agent-builder LGP | `make init-values && make deploy` |
+| Insights + Polly add-on | Clio analytics, Polly eval agent | `make init-values && make deploy` |
 
 ## First-time setup
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd terraform/modules/azure
 
 # 1. Generate terraform.tfvars (interactive wizard)
@@ -55,14 +53,14 @@ make status
 
 Or run the whole flow in one shot:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make deploy-all      # apply → kubeconfig → k8s-secrets → init-values → deploy
 make deploy-all-tf   # apply → init-values → init-app → apply-app (Terraform path)
 ```
 
 ## Day-2 operations
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make status         # 10-section health check
 make status-quick   # skip Key Vault + K8s secret queries (faster)
 make deploy         # re-deploy after any Helm value changes
@@ -84,7 +82,7 @@ make keyvault                                       # interactive menu
 
 Add-on stages (3 to 5) are controlled by flags in `infra/terraform.tfvars`. Set the flags, re-run `init-values && deploy`. `init-values.sh` copies the matching example file into `helm/values/` automatically.
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 # infra/terraform.tfvars
 sizing_profile       = "production"   # minimum | dev | production | production-large
 enable_deployments   = true           # LangSmith Deployment add-on (listener + operator + host-backend)
@@ -94,23 +92,23 @@ enable_polly         = true           # Polly AI eval add-on (requires enable_de
 ```
 
 <Warning>
-  The LangSmith Deployment add-on requires `default_node_pool_min_count = 5` first. Operator-spawned pods need node headroom; without it, agent pods stay in `Pending` indefinitely.
+The LangSmith Deployment add-on requires `default_node_pool_min_count = 5` first. Operator-spawned pods need node headroom; without it, agent pods stay in `Pending` indefinitely.
 </Warning>
 
 ## Sizing profiles
 
 Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && make deploy`.
 
-| Profile            | When to use                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| `minimum`          | Cost parking, CI smoke tests, single-user demos. Expect OOM under real traffic.                 |
-| `dev`              | Light non-production for local dev, CI pipelines, integration tests, short-lived POCs.          |
-| `production`       | *Recommended* for production. Multi-replica with HPA on all stateless components.               |
-| `production-large` | High-volume starting point based on the scale guide (\~50 concurrent users, \~1000 traces/sec). |
+| Profile | When to use |
+|---|---|
+| `minimum` | Cost parking, CI smoke tests, single-user demos. Expect OOM under real traffic. |
+| `dev` | Light non-production for local dev, CI pipelines, integration tests, short-lived POCs. |
+| `production` | _Recommended_ for production. Multi-replica with HPA on all stateless components. |
+| `production-large` | High-volume starting point based on the scale guide (~50 concurrent users, ~1000 traces/sec). |
 
 ## kubectl
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Pod health
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
@@ -149,7 +147,7 @@ kubectl get crd | grep langchain
 
 ## Azure CLI
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Re-auth
 az login
 az account set --subscription <subscription-id>
@@ -183,7 +181,7 @@ az network application-gateway list
 
 ## Terraform
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 cd modules/azure/infra
 
 terraform init
@@ -201,31 +199,30 @@ terraform state list
 
 ## Key constraints
 
-* Skip `make plan` on a fresh deploy. `kubernetes_manifest` resources need a live cluster API. Use `make apply` directly.
-* Uninstall Helm before `terraform destroy`. The Azure Load Balancer holds a subnet reference; leaving it blocks VNet deletion. Run `make uninstall` first.
-* `config.deployment.url` must include `https://`. Without it, operator-spawned agents stay stuck in `DEPLOYING`.
-* `config.deployment.enabled: true` is required for the LangSmith Deployment add-on. Setting only the URL without `enabled: true` silently skips `listener` and `operator`.
-* Encryption keys must never change after first enable. Rotating `insights_encryption_key` or `polly_encryption_key` permanently breaks existing encrypted data.
-* Roll the frontend after first Polly enable. `agentBootstrap` creates `langsmith-polly-config` after registering; frontend pods started earlier do not pick it up.
-* `letsencrypt` (HTTP-01) only works with `nginx`, `istio` (self-managed), and `envoy-gateway`. For `istio-addon` or `agic`, use `dns01` with a custom domain, or `none` for HTTP-only.
-* Key Vault enters 90-day soft-delete after destroy. With `keyvault_purge_protection = false`, run `az keyvault purge` to reclaim the name immediately.
+- Skip `make plan` on a fresh deploy. `kubernetes_manifest` resources need a live cluster API. Use `make apply` directly.
+- Uninstall Helm before `terraform destroy`. The Azure Load Balancer holds a subnet reference; leaving it blocks VNet deletion. Run `make uninstall` first.
+- `config.deployment.url` must include `https://`. Without it, operator-spawned agents stay stuck in `DEPLOYING`.
+- `config.deployment.enabled: true` is required for the LangSmith Deployment add-on. Setting only the URL without `enabled: true` silently skips `listener` and `operator`.
+- Encryption keys must never change after first enable. Rotating `insights_encryption_key` or `polly_encryption_key` permanently breaks existing encrypted data.
+- Roll the frontend after first Polly enable. `agentBootstrap` creates `langsmith-polly-config` after registering; frontend pods started earlier do not pick it up.
+- `letsencrypt` (HTTP-01) only works with `nginx`, `istio` (self-managed), and `envoy-gateway`. For `istio-addon` or `agic`, use `dns01` with a custom domain, or `none` for HTTP-only.
+- Key Vault enters 90-day soft-delete after destroy. With `keyvault_purge_protection = false`, run `az keyvault purge` to reclaim the name immediately.
 
 ## Teardown
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 make uninstall   # removes Helm release + LGP resources; prompts to delete namespace
 make destroy     # destroys all Azure infrastructure via terraform destroy
 make clean       # removes local secrets, config, helm values, and tfstate files
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -14,7 +14,7 @@
 
 ### 使用 asyncio 进行上下文传播
 
-在 Python 版本中使用异步调用（尤其是流式传输）时 \< 3.11, you may encounter issues with trace nesting. This is because Python's ⟦T5⟧ only ⟦T13⟧ in version 3.11.
+在 Python 版本中使用异步调用（尤其是流式传输）时 < 3.11, you may encounter issues with trace nesting. This is because Python's ⟦T5⟧ only ⟦T13⟧ in version 3.11.
 
 #### Why
 
@@ -64,14 +64,13 @@ In this approach, we use ⟦T11⟧ to obtain the current run tree and pass it to
 
 Both methods ensure that the inner function calls are correctly aggregated under the initial trace stack, even when executed in separate threads.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/nest-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

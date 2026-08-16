@@ -12,21 +12,21 @@
 
 在[Python SDK](/langsmith/smith-python-sdk)中，您可以使用`Attachment`类型将文件添加到轨迹中。每个`Attachment`需要：
 
-* `mime_type` (str)：文件的 MIME 类型（例如 `"image/png"`）。
-* `data` (bytes | Path)：文件的二进制内容，或者文件路径。
+- `mime_type` (str)：文件的 MIME 类型（例如，`"image/png"`）。
+- `data` (bytes | Path)：文件的二进制内容，或者文件路径。
 
 为了方便起见，您还可以使用 `(mime_type, data)` 形式的元组定义附件。
 
 有两种方式提供文件数据：
 
-* 自己加载字节并直接传递它们（适用于所有环境），或者
-* 传递一个 `Path` 对象，并通过在 `@traceable` 装饰器上设置 `dangerously_allow_filesystem=True` 来让 SDK 读取文件。<Note>
+- 自己加载字节并直接传递它们（适用于所有环境），或者
+- 传递一个 `Path` 对象，并通过在 `@traceable` 装饰器上设置 `dangerously_allow_filesystem=True` 来让 SDK 读取文件。<Note>
     `dangerously_allow_filesystem` 标志的存在是为了保护服务器和多租户环境，其中用户控制的输入可能会影响文件路径。在受信任的环境（本地脚本或您拥有文件路径的受控管道）中，启用它是安全的。
-  </Note>
+    </Note>
 
 使用 `@traceable` 装饰函数并包含 `Attachment` 实例作为参数。以下示例演示了两种方法：手动将文件字节加载到 `Attachment` 中，并使用 `dangerously_allow_filesystem=True` 传递 `Path` 对象：
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python
 from langsmith import traceable
 from langsmith.schemas import Attachment
 from pathlib import Path
@@ -82,16 +82,16 @@ result = trace_with_attachments(
 
 在[TypeScript SDK](/langsmith/smith-js-ts-sdk)中，您可以使用`Uint8Array`或`ArrayBuffer`作为数据类型向跟踪添加附件。每个附件的 MIME 类型在 `extractAttachments` 中指定：
 
-* `Uint8Array`：用于直接处理二进制数据。
-* `ArrayBuffer`：表示定长二进制数据，您可以根据需要转换为`Uint8Array`。
+- `Uint8Array`：用于直接处理二进制数据。
+- `ArrayBuffer`：表示定长二进制数据，您可以根据需要转换为`Uint8Array`。
 
 在 TypeScript SDK 中，`extractAttachments` 函数是`traceable` 配置中的可选参数。当调用可跟踪包装函数时，它会从您的输入中提取二进制数据（例如图像、音频文件），并将它们与其他跟踪数据一起记录，并指定其 MIME 类型。<Note>
-  TypeScript SDK 中不能直接传入文件路径，因为并非所有运行时环境都支持访问本地文件。
+TypeScript SDK 中不能直接传入文件路径，因为并非所有运行时环境都支持访问本地文件。
 </Note>
 
 使用 `traceable` 包装您的函数，并将附件包含在 `extractAttachments` 选项中。签名是：
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript
 type AttachmentData = Uint8Array | ArrayBuffer;
 type Attachments = Record<string, [string, AttachmentData]>;
 
@@ -102,7 +102,7 @@ extractAttachments?: (
 
 以下示例显示了完整的实现：
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript
 import { traceable } from "langsmith/traceable";
 
 const traceableWithAttachments = traceable(
@@ -160,17 +160,16 @@ const result = await traceableWithAttachments(
 
 ## 相关
 
-* [Manage datasets](/langsmith/manage-datasets)
-* [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)
+- [Manage datasets](/langsmith/manage-datasets)
+- [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-files-with-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

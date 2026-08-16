@@ -4,8 +4,6 @@
 
 # 自托管平台功能
 
-用于 LangSmith 部署的仅自托管平台功能，包括自定义数据库、侦听器和资源自定义。
-
 本页面介绍仅适用于 [self-hosted](/langsmith/self-hosted) 部署的平台功能。
 
 ## 自定义 PostgreSQL
@@ -28,14 +26,13 @@
 
 自托管部署的资源可以完全定制。与公开固定无服务器和专用[deployment types](/langsmith/cloud-platform-features#deployment-types)的云不同，自托管部署根据您的基础设施配置调整 CPU、内存、副本和存储的大小。请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-platform-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

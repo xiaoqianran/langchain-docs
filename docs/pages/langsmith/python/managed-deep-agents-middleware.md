@@ -2,26 +2,30 @@
 
 # Add custom middleware to Managed Deep Agents
 
-Add built-in or custom middleware to Managed Deep Agents projects.
-
 Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
 
 Add LangChain middleware to `define_deep_agent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
 
+
+
+
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 Keep the agent entry point at the project root and custom middleware under `middleware/`:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 my-agent/
   agent.py
   middleware/
     audit.py
 ```
+
+
+
 
 The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Middleware should focus on agent behavior around model calls, tool calls, and lifecycle hooks.
 
@@ -29,9 +33,9 @@ For deeper hook, state, and context details, see [custom middleware](/oss/python
 
 ## Use prebuilt middleware
 
-You can use LangChain prebuilt middleware directly in the agent definition.
+You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition.
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py
 from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
 from managed_deepagents import define_deep_agent
 
@@ -45,17 +49,21 @@ agent = define_deep_agent(
 )
 ```
 
+
+
+
 Middleware is the right place for cross-cutting behavior such as PII handling, rate limits, retry policies, model fallbacks, dynamic model selection, and tool-call monitoring.
+
 
 ## Add a custom middleware module
 
 For a more advanced option, you can also define [custom middleware](/oss/python/langchain/middleware/custom).
 
 <Note>
-  Managed Deep Agents use `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain supported with Deep Agents `invoke` and `stream`.
+Managed Deep Agents use `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain supported with Deep Agents `invoke` and `stream`.
 </Note>
 
-```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python middleware/audit.py
 from collections.abc import Awaitable, Callable
 
 from langchain.agents.middleware import wrap_tool_call
@@ -75,9 +83,13 @@ async def log_tool_calls(
     return result
 ```
 
+
+
+
+
 Import the middleware into the project-root agent entry and pass it in the `middleware` list.
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py
 from managed_deepagents import define_deep_agent
 
 from middleware.audit import log_tool_calls
@@ -89,9 +101,15 @@ agent = define_deep_agent(
 )
 ```
 
+
+
+
 `mda dev` and `mda deploy` copy the project files into the compiled build.
 
 Your middleware imports should work the same way they do in a normal local Python project.
+
+
+
 
 ## Use runtime context
 
@@ -99,14 +117,13 @@ Middleware can read per-run context through the normal LangChain runtime APIs. U
 
 For examples, see [Custom middleware](/oss/python/langchain/middleware/custom).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

@@ -2,13 +2,11 @@
 
 # Command reference
 
-OpenWiki command-line usage, flags, and connector subcommands
-
 OpenWiki ships as a single `openwiki` binary for interactive chat and one-shot documentation runs. For installation and first use, see [Quickstart](/oss/openwiki/quickstart).
 
 ## Core commands
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Interactive chat in code mode (current repository)
 openwiki
 openwiki "Please generate documentation for this repository"
@@ -40,21 +38,21 @@ openwiki --help
 
 ### Common flags
 
-| Flag                       | Description                                                                                                                                                                             |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--init`                   | Generate initial documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
-| `--update`                 | Update existing documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined.  |
-| `--mode <personal\|code>`  | Choose personal brain or repository docs.                                                                                                                                               |
-| `-p`, `--print`            | Run once, print the final assistant output, and exit. Provide a message or command. Interactive chat without `--print` stays open for follow-ups.                                       |
-| `--modelId` / `--model-id` | Choose a model ID for the run.                                                                                                                                                          |
-| `--telemetry-file=<path>`  | Also write the telemetry payload for the run to a local JSON file.                                                                                                                      |
-| `-h`, `--help`             | Print usage.                                                                                                                                                                            |
+| Flag | Description |
+| --- | --- |
+| `--init` | Generate initial documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
+| `--update` | Update existing documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
+| `--mode <personal\|code>` | Choose personal brain or repository docs. |
+| `-p`, `--print` | Run once, print the final assistant output, and exit. Provide a message or command. Interactive chat without `--print` stays open for follow-ups. |
+| `--modelId` / `--model-id` | Choose a model ID for the run. |
+| `--telemetry-file=<path>` | Also write the telemetry payload for the run to a local JSON file. |
+| `-h`, `--help` | Print usage. |
 
 ## Visualize
 
 You can visualize the generated wiki as an interactive node graph and live Markdown reader.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 openwiki visualize
 openwiki visualize openwiki --port 4400 --no-open
 openwiki visualize ~/.openwiki/wiki
@@ -64,7 +62,7 @@ For details, see [Visualize your wiki](/oss/openwiki/visualize).
 
 ## Auth and connectors
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # List supported auth providers and status
 openwiki auth
 
@@ -91,7 +89,7 @@ openwiki ngrok start [url] [--port <port>]
 
 Manage optional connector schedules for [personal mode](/oss/openwiki/personal-mode) sources. On macOS, OpenWiki can install schedules as user LaunchAgents that periodically refresh a source (for example Gmail or web search). Use these commands to list, pause, resume, or delete them:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 openwiki cron list
 openwiki cron pause <source|all>
 openwiki cron resume <source|all>
@@ -104,26 +102,25 @@ openwiki cron delete <source|all>
 
 In interactive chat mode, you can use the following commands:
 
-* `/api-key`: Update the current provider API key (masked prompt)
-* `/langsmith-key`: Update or clear LangSmith tracing credentials (masked prompt)
-* `/provider` and `/model`: Change provider or model for the session (persisted to `~/.openwiki/.env`)
-* `/init` and `/update`: Launch init or update from the session
-* `/exit`: Exit the app
+- `/api-key`: Update the current provider API key (masked prompt)
+- `/langsmith-key`: Update or clear LangSmith tracing credentials (masked prompt)
+- `/provider` and `/model`: Change provider or model for the session (persisted to `~/.openwiki/.env`)
+- `/init` and `/update`: Launch init or update from the session
+- `/exit`: Exit the app
 
 ## See also
 
-* [Personal mode](/oss/openwiki/personal-mode)
-* [Model providers](/oss/openwiki/providers)
-* [Automate updates](/oss/openwiki/automate-updates)
+- [Personal mode](/oss/openwiki/personal-mode)
+- [Model providers](/oss/openwiki/providers)
+- [Automate updates](/oss/openwiki/automate-updates)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/cli-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

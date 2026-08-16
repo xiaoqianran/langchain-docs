@@ -4,8 +4,6 @@
 
 # 导入导出的数据
 
-将 LangSmith 批量导出的 Parquet 数据导入 BigQuery、Snowflake、Redshift、Clickhouse 或 DuckDB。
-
 大多数分析系统普遍支持从 S3 和 Parquet 格式导入数据。请参阅下面的文档链接：
 
 ## 大查询
@@ -25,7 +23,7 @@
 
 您可以在Clickhouse中直接查询S3/Parquet格式的数据。例如，如果使用GCS，可以按如下方式查询数据：
 
-```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```sql
 SELECT count(distinct id) FROM s3('https://storage.googleapis.com/<bucket>/<prefix>/export_id=<export_id>/**',
  'access_key_id', 'access_secret', 'Parquet')
 ```
@@ -34,16 +32,15 @@ SELECT count(distinct id) FROM s3('https://storage.googleapis.com/<bucket>/<pref
 
 ## 鸭数据库
 
-您可以使用 DuckDB 通过 SQL 从内存中的 S3 查询数据。参见[S3 import Documentation](https://duckdb.org/docs/guides/network_cloud_storage/s3_import.html)。
+您可以使用 DuckDB 通过 SQL 查询 S3 内存中的数据。参见[S3 import Documentation](https://duckdb.org/docs/guides/network_cloud_storage/s3_import.html)。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-downstream.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

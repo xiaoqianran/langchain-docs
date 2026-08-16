@@ -2,33 +2,31 @@
 
 # Deploy Google ADK agents
 
-Deploy Google Agent Development Kit (ADK) agents to LangSmith Agent Server using the deployments-wrap-sdk package.
-
 This guide shows you how to deploy a [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) agent on [LangSmith Agent Server](/langsmith/agent-server) using the [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/) package.
 
 `deployments-wrap-sdk` provides a thin wrapper that turns a configured ADK `Runner` into a LangGraph-compatible graph, so you can deploy ADK agents without writing the [Functional API](/oss/python/langgraph/functional-api) glue yourself. The wrapper:
 
-* Bridges ADK sessions to Agent Server's [checkpoint persistence](/langsmith/agent-server#persistence), so session state survives restarts and resumes across runs.
-* Forwards ADK token events through LangGraph's streaming pipeline, so partial tokens show up in [`stream_mode="messages"`](/langsmith/streaming) and in [LangSmith Studio](/langsmith/studio).
-* Automatically enables [LangSmith tracing](/langsmith/trace-with-google-adk) for ADK when `LANGSMITH_TRACING` is set.
+- Bridges ADK sessions to Agent Server's [checkpoint persistence](/langsmith/agent-server#persistence), so session state survives restarts and resumes across runs.
+- Forwards ADK token events through LangGraph's streaming pipeline, so partial tokens show up in [`stream_mode="messages"`](/langsmith/streaming) and in [LangSmith Studio](/langsmith/studio).
+- Automatically enables [LangSmith tracing](/langsmith/trace-with-google-adk) for ADK when `LANGSMITH_TRACING` is set.
 
 ## Prerequisites
 
-* Python 3.11+
-* [LangGraph CLI](/langsmith/cli) for local dev and deployment
-* A LangSmith API key, refer to [Create an account and API key](https://docs.langchain.com/langsmith/create-account-api-key)
-* A Google AI API key if you use Gemini models, refer to [Google AI Studio](https://aistudio.google.com/api-keys)
+- Python 3.11+
+- [LangGraph CLI](/langsmith/cli) for local dev and deployment
+- A LangSmith API key, refer to [Create an account and API key](https://docs.langchain.com/langsmith/create-account-api-key)
+- A Google AI API key if you use Gemini models, refer to [Google AI Studio](https://aistudio.google.com/api-keys)
 
 ## Installation
 
 Install the package with the `google-adk` extra. The extra pulls in `google-adk` and other dependencies needed for the wrapper:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pip install "deployments-wrap-sdk[google-adk]"
 ```
 
 <Note>
-  The PyPI distribution name is `deployments-wrap-sdk`, but the Python import path is `saf_sdk`. Both refer to the same package.
+The PyPI distribution name is `deployments-wrap-sdk`, but the Python import path is `saf_sdk`. Both refer to the same package.
 </Note>
 
 ## Quickstart
@@ -37,7 +35,7 @@ This minimal example builds an agent that returns the input as its response and 
 
 Create `agent.py`:
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python agent.py
 from google.adk.agents import Agent
 from google.adk.models.llm_response import LlmResponse
 from google.adk.runners import Runner
@@ -84,24 +82,24 @@ For a real agent, drop the `before_model_callback` and configure a model directl
 
 ### Supported
 
-* **Agent primitives**: `Agent`, `SequentialAgent`, and `ParallelAgent`, including nested sub-agent delegation through the `sub_agents` parameter.
-* **Tools**: Python function tools and `LongRunningFunctionTool`.
-* **Models**: Gemini models directly, and any model supported by ADK's LiteLLM adapter (`google.adk.models.lite_llm.LiteLlm`, available through `google-adk[extensions]`). Set the provider's API key on the deployment.
-* **Token streaming**: ADK partial events are forwarded through LangGraph's async callback manager, so token chunks reach clients consuming `stream_mode="messages"` and the Studio chat view.
-* **Structured output**: agents configured with `output_schema` and `output_key` expose the typed value on the graph's response in addition to `messages`.
-* **Session persistence**: `LangsmithSessionService` stores ADK session state in the deployment's checkpoint store. State survives restarts and is loaded on each subsequent turn of the same thread.
-* **Tracing**: when `LANGSMITH_TRACING=true`, the wrapper calls `configure_google_adk()` automatically (see [Enable tracing](#enable-tracing)).
-* **Authentication**: if Agent Server [authentication](/langsmith/auth) is enabled, the authenticated user id becomes ADK's `user_id`. Otherwise the user id is `"anonymous"`.
+- **Agent primitives**: `Agent`, `SequentialAgent`, and `ParallelAgent`, including nested sub-agent delegation through the `sub_agents` parameter.
+- **Tools**: Python function tools and `LongRunningFunctionTool`.
+- **Models**: Gemini models directly, and any model supported by ADK's LiteLLM adapter (`google.adk.models.lite_llm.LiteLlm`, available through `google-adk[extensions]`). Set the provider's API key on the deployment.
+- **Token streaming**: ADK partial events are forwarded through LangGraph's async callback manager, so token chunks reach clients consuming `stream_mode="messages"` and the Studio chat view.
+- **Structured output**: agents configured with `output_schema` and `output_key` expose the typed value on the graph's response in addition to `messages`.
+- **Session persistence**: `LangsmithSessionService` stores ADK session state in the deployment's checkpoint store. State survives restarts and is loaded on each subsequent turn of the same thread.
+- **Tracing**: when `LANGSMITH_TRACING=true`, the wrapper calls `configure_google_adk()` automatically (see [Enable tracing](#enable-tracing)).
+- **Authentication**: if Agent Server [authentication](/langsmith/auth) is enabled, the authenticated user id becomes ADK's `user_id`. Otherwise the user id is `"anonymous"`.
 
 ### Not supported
 
-* **Multimodal input**: the wrapper forwards only `messages[-1].content` as a single text part. Inbound images, files, audio, or inline binary blocks are not passed to the ADK runner.
-* **Multiple new messages per turn**: only the last item in `messages` is treated as the new user message. Conversation history is reconstructed from ADK session state, not from the LangGraph message list.
-* **Bidirectional / live streaming**: the wrapper hard-codes `RunConfig(streaming_mode=StreamingMode.SSE)`. ADK's `Runner.run_live()` and the bidirectional streaming mode used for audio or voice agents are not invoked, so live audio and voice agents cannot be deployed through `wrap()`.
-* **Non-text output parts**: only `part.text` values are collected from ADK events. Inline images, audio, or files produced by the agent are not surfaced on the graph's `messages` output.
-* **Intermediate events as messages**: the response is emitted as one `AIMessage` containing the concatenated text. Tool calls, tool results, and intermediate sub-agent turns are not exposed as separate items in the graph's `messages` field. Inspect them in [LangSmith traces](/langsmith/observability) instead.
-* **Alternative ADK session services**: `runner.session_service` must be a `LangsmithSessionService`. ADK's `InMemorySessionService`, `DatabaseSessionService`, and `VertexAiSessionService` are rejected with a `TypeError`, because session state is held in the LangGraph checkpoint.
-* **Native LangGraph interrupts**: the wrapper does not expose LangGraph's `interrupt` or `Command(resume=...)` mechanism. Human-in-the-loop flows built on `LongRunningFunctionTool` follow ADK's own pattern: the tool returns a status such as `pending_approval`, the agent replies, and a follow-up turn resolves the pending call.
+- **Multimodal input**: the wrapper forwards only `messages[-1].content` as a single text part. Inbound images, files, audio, or inline binary blocks are not passed to the ADK runner.
+- **Multiple new messages per turn**: only the last item in `messages` is treated as the new user message. Conversation history is reconstructed from ADK session state, not from the LangGraph message list.
+- **Bidirectional / live streaming**: the wrapper hard-codes `RunConfig(streaming_mode=StreamingMode.SSE)`. ADK's `Runner.run_live()` and the bidirectional streaming mode used for audio or voice agents are not invoked, so live audio and voice agents cannot be deployed through `wrap()`.
+- **Non-text output parts**: only `part.text` values are collected from ADK events. Inline images, audio, or files produced by the agent are not surfaced on the graph's `messages` output.
+- **Intermediate events as messages**: the response is emitted as one `AIMessage` containing the concatenated text. Tool calls, tool results, and intermediate sub-agent turns are not exposed as separate items in the graph's `messages` field. Inspect them in [LangSmith traces](/langsmith/observability) instead.
+- **Alternative ADK session services**: `runner.session_service` must be a `LangsmithSessionService`. ADK's `InMemorySessionService`, `DatabaseSessionService`, and `VertexAiSessionService` are rejected with a `TypeError`, because session state is held in the LangGraph checkpoint.
+- **Native LangGraph interrupts**: the wrapper does not expose LangGraph's `interrupt` or `Command(resume=...)` mechanism. Human-in-the-loop flows built on `LongRunningFunctionTool` follow ADK's own pattern: the tool returns a status such as `pending_approval`, the agent replies, and a follow-up turn resolves the pending call.
 
 ## Project layout
 
@@ -116,7 +114,7 @@ my-adk-agent/
 
 [`langgraph.json`](/langsmith/application-structure#configuration-file-concepts) points Agent Server at the exported symbol:
 
-```json langgraph.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json langgraph.json
 {
   "$schema": "https://langgra.ph/schema.json",
   "dependencies": ["."],
@@ -129,7 +127,7 @@ my-adk-agent/
 
 `pyproject.toml` declares dependencies:
 
-```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```toml pyproject.toml
 [project]
 name = "my-adk-agent"
 version = "0.0.1"
@@ -141,7 +139,7 @@ dependencies = [
 
 ## Install dependencies
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pip install -e .
 ```
 
@@ -149,13 +147,13 @@ pip install -e .
 
 Start the local Agent Server with the [LangGraph CLI](/langsmith/cli):
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph dev
 ```
 
 This serves the agent at `http://127.0.0.1:2024` and opens [LangSmith Studio](/langsmith/studio) so you can chat with the agent. Send a request directly with `curl`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 # Create a thread
 THREAD=$(curl -s -X POST http://127.0.0.1:2024/threads \
   -H "Content-Type: application/json" -d '{}' | python -c "import sys, json; print(json.load(sys.stdin)['thread_id'])")
@@ -173,7 +171,7 @@ curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
 
 Once the agent runs locally, deploy it to LangSmith with `langgraph deploy`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 langgraph deploy --name my-adk-agent
 ```
 
@@ -183,14 +181,14 @@ For environment configuration, deployment types, and revision management, refer 
 
 `wrap()` calls `langsmith.integrations.google_adk.configure_google_adk()` automatically whenever LangSmith tracing is enabled, so all you need to do is set the environment variables on the deployment:
 
-```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash .env
 LANGSMITH_API_KEY=your-langsmith-api-key
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=my-adk-agent     # optional
 GOOGLE_API_KEY=your-google-api-key
 ```
 
-[Traces](/langsmith/observability) show agent invocations, tool calls, and LLM interactions in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-google-adk). For more on the underlying tracing integration, see [Trace Google ADK applications](/langsmith/trace-with-google-adk).
+[Traces](/langsmith/observability) show agent invocations, tool calls, and LLM interactions in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-deploy-google-adk). For more on the underlying tracing integration, see [Trace Google ADK applications](/langsmith/trace-with-google-adk).
 
 ## API reference
 
@@ -198,8 +196,8 @@ GOOGLE_API_KEY=your-google-api-key
 
 Wraps a configured `google.adk.runners.Runner` and returns a LangGraph `Pregel` graph that can be exported from your module and served by Agent Server.
 
-| Argument | Type                        | Description                                                                             |
-| -------- | --------------------------- | --------------------------------------------------------------------------------------- |
+| Argument | Type | Description |
+|---|---|---|
 | `runner` | `google.adk.runners.Runner` | A configured ADK Runner. Its `session_service` **must** be a `LangsmithSessionService`. |
 
 **Returns:** A `Pregel` graph whose name is `runner.app_name`.
@@ -214,7 +212,7 @@ A `google.adk.sessions.BaseSessionService` implementation backed by Agent Server
 
 Use a fresh instance per `Runner`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 session_service = LangsmithSessionService()
 ```
 
@@ -224,17 +222,17 @@ You should not need to call its methods directly; `wrap()` drives them through A
 
 The default input schema for a wrapped agent.
 
-| Field         | Type                     | Description                                                                                                           |
-| ------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `messages`    | `list[AnyMessage]`       | (Required) Conversation messages; the wrapper sends `messages[-1].content` to the ADK runner as the new user message. |
-| `state_delta` | `dict[str, Any] \| None` | (Optional) Passed through to `runner.run_async(state_delta=...)` to mutate ADK session state for this turn.           |
+| Field | Type | Description |
+|---|---|---|
+| `messages` | `list[AnyMessage]` | (Required) Conversation messages; the wrapper sends `messages[-1].content` to the ADK runner as the new user message. |
+| `state_delta` | `dict[str, Any] \| None` | (Optional) Passed through to `runner.run_async(state_delta=...)` to mutate ADK session state for this turn. |
 
 ### `ADKOutput`
 
 The default output schema for a wrapped agent.
 
-| Field      | Type               | Description                                                                                   |
-| ---------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| Field | Type | Description |
+|---|---|---|
 | `messages` | `list[AnyMessage]` | The agent's response messages, appended to the thread via LangGraph's `add_messages` reducer. |
 
 Exposing `messages` as a typed field (rather than a plain `dict`) is what lets Studio detect the graph as chat-compatible and enable the chat-mode toggle.
@@ -250,14 +248,13 @@ When a run arrives:
 
 This means ADK's own session/state semantics are preserved end-to-end while the deployment gets the standard Agent Server features: durable runs, streaming, multi-thread persistence, and tracing.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

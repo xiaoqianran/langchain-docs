@@ -3,7 +3,7 @@
 # Customize user management
 
 <Note>
-  This guide assumes you have read the [admin guide](/langsmith/administration-overview) and [organization setup guide](/langsmith/set-up-hierarchy#set-up-an-organization).
+This guide assumes you have read the [admin guide](/langsmith/administration-overview) and [organization setup guide](/langsmith/set-up-hierarchy#set-up-an-organization).
 </Note>
 
 LangSmith offers additional customization features for user management using feature flags.
@@ -23,7 +23,7 @@ Admins may invite users for both cases at the same time.
 
 #### Configuration
 
-```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml Helm
 config:
   workspaceScopeOrgInvitesEnabled: true
 ```
@@ -34,21 +34,20 @@ As of helm **v0.11.10**, self-hosted deployments using OAuth SSO will no longer 
 
 For your **default** organization, you can set which workspace(s) and workspace role is assigned to new members. For **non-default** organizations, the invitation flow remains the same.
 Once a user joins an organization, any changes to their workspaces or roles beyond the default organization settings must be managed either through LangSmith settings (as before) or via SCIM.
+<Note>
+By default, all new users are added to the organization’s initially provisioned workspace (**Workspace 1** by default) with the **Workspace Editor** role.
+</Note>
+![Update SSO Member Settings](/langsmith/images/sso-member-settings-update.png)
 
 <Note>
-  By default, all new users are added to the organization’s initially provisioned workspace (**Workspace 1** by default) with the **Workspace Editor** role.
+To change your default organization, use **Set Default Organization** in the organization selector dropdown. (Org Admin permissions required in both the source and target organization.)
 </Note>
 
-<img alt="Update SSO Member Settings" />
-
-<Note>
-  To change your default organization, use **Set Default Organization** in the organization selector dropdown. (Org Admin permissions required in both the source and target organization.)
-</Note>
 
 ### SSO Groups Sync
 
 <Note>
-  SSO Groups Sync on self-hosted requires LangSmith chart version **0.15.0-rc.3** (application version **0.15.2rc1**) or later.
+SSO Groups Sync on self-hosted requires LangSmith chart version **0.15.0-rc.3** (application version **0.15.2rc1**) or later.
 </Note>
 
 [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) reads group memberships from the OIDC ID token and assigns org and workspace roles using the [SCIM naming convention](/langsmith/user-management#group-naming-convention). It is a simpler alternative to [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) for self-hosted organizations whose IdP can include groups in the OIDC token but cannot easily run SCIM provisioning.
@@ -59,13 +58,13 @@ For IdP-side configuration (claim, scope) refer to the [SSO Groups Sync section 
 
 By default, any user can create an organization in LangSmith. For self-hosted customers, an admin may want to restrict this ability after setting up initial organizations. This feature flag allows an admin to disable the ability for users to create new organizations.
 
+
 #### Configuration
 
 <Note>
-  The `userOrgCreationDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
+The `userOrgCreationDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
 </Note>
-
-```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml Helm
 config:
   userOrgCreationDisabled: true
 ```
@@ -77,10 +76,10 @@ By default, any user who logs in to LangSmith will have a personal organization 
 #### Configuration
 
 <Note>
-  The `personalOrgsDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
+The `personalOrgsDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
 </Note>
 
-```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml Helm
 config:
   personalOrgsDisabled: true
 ```
@@ -88,7 +87,7 @@ config:
 ### Disabling personal access token creation
 
 <Note>
-  This feature requires Helm chart version 0.13.12 (application version 0.13.12) or later.
+This feature requires Helm chart version 0.13.12 (application version 0.13.12) or later.
 </Note>
 
 By default, users can create Personal Access Tokens (PATs) in any organization. For self-hosted customers, an admin may want to globally disable PAT creation across all organizations. This environment variable allows an admin to prevent users from creating new PATs in any organization on the instance.
@@ -97,20 +96,19 @@ To disable PAT creation for a single organization instead, see the [per-organiza
 
 #### Configuration
 
-```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml Helm
 commonEnv:
   - name: PAT_CREATION_DISABLED
     value: "true"
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-user-management.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

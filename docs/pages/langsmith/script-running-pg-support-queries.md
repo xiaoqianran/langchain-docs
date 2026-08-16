@@ -42,13 +42,13 @@ Ensure you have the following tools/items ready.
 
 Run the following command to run the desired query:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh <postgres_url> --input path/to/query.sql
 ```
 
 For example, if you are using the bundled version with port-forwarding, the command might look like:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres" --input support_queries/postgres/pg_get_historic_trace_counts_daily.sql
 ```
 
@@ -59,15 +59,15 @@ which will output the count of daily traces by workspace ID and organization ID.
 All export methods produce the same data: LangSmith trace counts, LangSmith Deployments node usage, and Fleet run counts across all workspaces and organizations.
 
 <Note>
-  The UI and API exports require both of the following:
+The UI and API exports require both of the following:
 
-  * The `organization:manage` permission.
-  * The caller's email must be listed in `USAGE_EXPORT_ADMIN_EMAILS`, or `ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED` must be set to `true`.
+- The `organization:manage` permission.
+- The caller's email must be listed in `USAGE_EXPORT_ADMIN_EMAILS`, or `ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED` must be set to `true`.
 
-  ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
-  ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
-  ```
+```env
+USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
+ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
+```
 </Note>
 
 ### Export from the UI (recommended)
@@ -80,7 +80,7 @@ All export methods produce the same data: LangSmith trace counts, LangSmith Depl
 
 If you prefer to export usage data programmatically, you can call the export API endpoint directly.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -OJ \
   -H "X-API-Key: <your_api_key>" \
   https://<langsmith_url>/api/v1/orgs/current/usage/backfill-export
@@ -92,7 +92,7 @@ You can also run SQL scripts directly against your PostgreSQL database to export
 
 To export trace usage (requires Helm chart version 0.11.4 or later):
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_traces_full_export.sql \
   --output ls_export.csv
@@ -100,7 +100,7 @@ sh run_support_query_pg.sh <postgres_url> \
 
 To export node usage (requires Helm chart version 0.11.4 or later):
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_nodes_full_export.sql \
   --output lgp_export.csv
@@ -108,7 +108,7 @@ sh run_support_query_pg.sh <postgres_url> \
 
 To export Fleet run counts (requires Helm chart version 0.13.25 or later):
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_agent_builder_full_export.sql \
   --output ab_export.csv
@@ -116,20 +116,19 @@ sh run_support_query_pg.sh <postgres_url> \
 
 To export usage snapshots (daily entity counts such as workspaces, projects, datasets, prompts, and active users):
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_snapshots_full_export.sql \
   --output usage_snapshots_export.csv
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-pg-support-queries.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

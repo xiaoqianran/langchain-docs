@@ -8,7 +8,7 @@ A common issue when running large evaluation jobs is running into third-party AP
 
 If you're using `langchain` Python chat models in your application or evaluators, you can add rate limiters to your model(s) that will add client-side control of the frequency with which requests are sent to the model provider API to avoid rate limit errors.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langchain.chat_models import init_chat_model
 from langchain.rate_limiters import InMemoryRateLimiter
 
@@ -40,21 +40,23 @@ A very common way to deal with rate limit errors is retrying with exponential ba
 If you're using `langchain` components you can add retries to all model calls with the `.with_retry(...)` / `.withRetry()` method:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain import init_chat_model
 
-  model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
-  ```
+```python Python
+from langchain import init_chat_model
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
+```
 
-  const model = await initChatModel("gpt-5.5", {
-      modelProvider: "openai",
-  });
+```typescript TypeScript
+import { initChatModel } from "langchain";
 
-  const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
-  ```
+const model = await initChatModel("gpt-5.5", {
+    modelProvider: "openai",
+});
+
+const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
+```
+
 </CodeGroup>
 
 See the `langchain` [Python](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.BaseChatModel.with_retry) and [JS](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withRetry) API references for more.
@@ -68,33 +70,34 @@ If you're not using `langchain` you can use other libraries like `tenacity` (Pyt
 Limiting the number of concurrent calls you're making to your application and evaluators is another way to decrease the frequency of model calls you're making, and in that way avoid rate limit errors. `max_concurrency` can be set directly on the [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) functions. This parallelizes evaluation by effectively splitting the dataset across threads.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import aevaluate
 
-  results = await aevaluate(
-      ...
-      max_concurrency=4,
-  )
-  ```
+```python Python
+from langsmith import aevaluate
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = await aevaluate(
+    ...
+    max_concurrency=4,
+)
+```
 
-  await evaluate(..., {
-    ...,
-    maxConcurrency: 4,
-  });
-  ```
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
+
+await evaluate(..., {
+  ...,
+  maxConcurrency: 4,
+});
+```
+
 </CodeGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

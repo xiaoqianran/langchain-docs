@@ -4,26 +4,24 @@
 
 # 使用 Terraform 管理 LangSmith
 
-使用官方 LangSmith Terraform 提供程序以代码形式管理工作区、访问控制、资源标签、评估器、运行规则和警报规则。
-
-官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码的形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
+官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
 
 <Note>
-  管理资源标签和访问策略需要 LangSmith Terraform 提供程序 v0.0.6 或更高版本。
+管理资源标签和访问策略需要 LangSmith Terraform 提供程序 v0.0.6 或更高版本。
 </Note>
 
 <Check>
-  在深入研究之前，阅读以下内容可能会有所帮助：
+在深入研究之前，阅读以下内容可能会有所帮助：
 
-  * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
-  * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
+* [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
+* [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
 </Check>
 
 ## 安装和配置
 
 将提供程序添加到您的 Terraform 配置并固定版本：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 terraform {
   required_providers {
     langsmith = {
@@ -47,21 +45,21 @@ provider "langsmith" {
 
 ## 身份验证
 
-提供商解析凭据的方式与LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
+提供程序解析凭据的方式与 LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
 
 * **环境**—`LANGSMITH_API_KEY`、`LANGSMITH_ENDPOINT`（API URL）、`LANGSMITH_WORKSPACE_ID`。
 * **配置文件** — 设置 `profile`（或 `LANGSMITH_PROFILE`）以使用 LangSmith CLI 配置文件。
-* **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。在 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。
+* **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。
 
-<Warning>
-  组织范围内的操作（例如创建工作区、邀请组织成员和管理访问策略）需要 **具有组织管理员权限的组织范围服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
+在 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。<Warning>
+组织范围的操作（例如创建工作区、邀请组织成员和管理访问策略）需要**具有组织管理员权限的组织范围的服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
 </Warning>
 
 ## 示例
 
 ### 创建工作区
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 resource "langsmith_workspace" "demo" {
   display_name  = "Demo Workspace"
   tenant_handle = "demo-workspace"
@@ -72,7 +70,7 @@ resource "langsmith_workspace" "demo" {
 
 使用数据源查找内置角色，然后分配它们。这会邀请用户加入组织并授予他们对工作区的管理员权限：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 data "langsmith_org_role" "user" {
   name = "ORGANIZATION_USER"
 }
@@ -95,7 +93,7 @@ resource "langsmith_workspace_membership" "alice_demo" {
 
 您还可以定义自定义工作区角色，例如通过克隆现有角色的权限：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 resource "langsmith_workspace_role" "issues_agent" {
   display_name = "Issues Agent"
   description  = data.langsmith_workspace_role.admin.description
@@ -109,7 +107,7 @@ resource "langsmith_workspace_role" "issues_agent" {
 
 以下配置创建一个 `Environment=production` 标签，将其应用于跟踪项目，并将工作区角色限制为生产项目：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 resource "langsmith_tag" "production" {
   key               = "Environment"
   value             = "production"
@@ -150,11 +148,11 @@ resource "langsmith_access_policy_attachment" "production_reader" {
   role_id          = langsmith_workspace_role.production_reader.id
   access_policy_id = langsmith_access_policy.production_readers.id
 }
-```### 自动化评估器、运行规则和警报
+```
 
-提供商管理的不仅仅是帐户。您可以将 [online code evaluators](/langsmith/online-evaluations-code)、应用它们的 [run rules](/langsmith/rules) 以及 [alerts](/langsmith/alerts) 与您的工作区一起编码：
+### 自动化评估器、运行规则和警报提供商管理的不仅仅是帐户。您可以将 [online code evaluators](/langsmith/online-evaluations-code)、应用它们的 [run rules](/langsmith/rules) 以及 [alerts](/langsmith/alerts) 与您的工作区一起编码：
 
-```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```hcl
 resource "langsmith_evaluator" "tool_calls" {
   workspace_id = langsmith_workspace.demo.id
   name         = "tool call counts"
@@ -207,14 +205,13 @@ resource "langsmith_alert_rule" "error_rate" {
   浏览所有资源和数据源的完整参考。
 </Card>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

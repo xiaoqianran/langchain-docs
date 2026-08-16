@@ -8,11 +8,11 @@ Below, we will discuss evaluation of a few popular types of LLM applications.
 
 [LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/) combine three components (1) Tool calling, (2) Memory, and (3) Planning. Agents [use tool calling](https://docs.langchain.com/oss/python/langchain/tools) with planning (e.g., often via prompting) and memory (e.g., often short-term message history) to generate responses. [Tool calling](https://docs.langchain.com/oss/python/langchain/tools) allows a model to respond to a given prompt by generating two things: (1) a tool to invoke and (2) the input arguments required.
 
-<img alt="Tool use" />
+![Tool use](/langsmith/images/tool-use.png)
 
 Below is a tool-calling agent in [LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/). The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. The `tool condition` sees if a tool was selected by the `assistant node` and, if so, routes to the `tool node`. The `tool node` executes the tool and returns the output as a tool message to the `assistant node`. This loop continues as long as the `assistant node` selects a tool. If no tool is selected, then the agent directly returns the LLM response.
 
-<img alt="Agent" />
+![Agent](/langsmith/images/langgraph-agent.png)
 
 This sets up three general types of agent evaluations that users are often interested in:
 
@@ -20,7 +20,7 @@ This sets up three general types of agent evaluations that users are often inter
 * `Single step`: Evaluate any agent step in isolation (e.g., whether it selects the appropriate tool).
 * `Trajectory`: Evaluate whether the agent took the expected path (e.g., of tool calls) to arrive at the final answer.
 
-<img alt="Agent-eval" />
+![Agent-eval](/langsmith/images/agent-eval.png)
 
 The following sections cover what these are, the components (inputs, outputs, evaluators) needed for each one, and when you should consider this. Common use cases often use multiple or all of these types of evaluations; they are not mutually exclusive.
 
@@ -70,25 +70,25 @@ However, none of these approaches evaluate the input to the tools; they only foc
 
 When you evaluate RAG applications, start by deciding whether you have a reference answer for each example:
 
-* **With reference answers**: Use them as ground truth to score answer correctness.
-* **Without reference answers**: Use reference-free prompts that check document relevance, answer faithfulness, and helpfulness (see [RAG evaluation summary](#rag-evaluation-summary)).
+- **With reference answers**: Use them as ground truth to score answer correctness.
+- **Without reference answers**: Use reference-free prompts that check document relevance, answer faithfulness, and helpfulness (see [RAG evaluation summary](#rag-evaluation-summary)).
 
 ### Choose evaluators
 
 LLM-as-judge evaluators work well for RAG because they can score factual accuracy and consistency between texts.
 
-<img alt="rag-types.png" />
+![rag-types.png](/langsmith/images/rag-types.png)
 
 You can use two kinds of evaluators:
 
-* **Reference-based**: Compare the generated answer or retrieved documents to a reference answer or reference retrievals.
-* **Reference-free**: Run self-consistency checks that do not need a reference answer (orange, green, and red in the figure above).
+- **Reference-based**: Compare the generated answer or retrieved documents to a reference answer or reference retrievals.
+- **Reference-free**: Run self-consistency checks that do not need a reference answer (orange, green, and red in the figure above).
 
 ### Choose an evaluation mode
 
-* **Offline**: Use when the prompt needs a reference answer, most often for answer correctness.
-* **Online**: Use for reference-free prompts so you can score live traffic.
-* **Pairwise**: Compare answers from different RAG chains on criteria such as format or style. Use self-consistency or a reference answer for correctness instead.
+- **Offline**: Use when the prompt needs a reference answer, most often for answer correctness.
+- **Online**: Use for reference-free prompts so you can score live traffic.
+- **Pairwise**: Compare answers from different RAG chains on criteria such as format or style. Use self-consistency or a reference answer for correctness instead.
 
 ### RAG evaluation summary
 
@@ -132,14 +132,13 @@ If ground truth reference labels are provided, then it's common to simply define
 | Precision | Standard definition | Yes                    | No            | No                |
 | Recall    | Standard definition | Yes                    | No            | No                |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-approaches.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

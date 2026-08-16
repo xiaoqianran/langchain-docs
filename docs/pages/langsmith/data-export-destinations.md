@@ -2,39 +2,37 @@
 
 # Manage bulk export destinations
 
-Configure and manage S3-compatible export destinations for LangSmith bulk exports.
-
 <Note>
-  **For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
+**For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
 
-  Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
+Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
 </Note>
 
 A destination is a named configuration that tells LangSmith where to write exported trace data. You [create a destination](/langsmith/data-export#1-create-a-destination) once, then reference it by ID when [creating export jobs](/langsmith/data-export#2-create-an-export-job). LangSmith currently supports S3 and any S3-compatible bucket (such as GCS or MinIO) as a destination. Exported data is written in [Parquet](https://parquet.apache.org/docs/overview/) columnar format and contains equivalent fields to the [Run data format](/langsmith/run-data-format).
 
 This page covers:
 
-* The [configuration fields](#configuration-fields) needed to set up a destination.
-* Required bucket [permissions](#permissions-required) for AWS S3 and GCS.
-* How to [create a destination](#create-a-destination) via the API, including provider-specific examples and credential options.
-* How to [rotate destination credentials](#rotate-destination-credentials) without recreating the destination.
-* How to [debug destination errors](#debug-destination-errors).
+- The [configuration fields](#configuration-fields) needed to set up a destination.
+- Required bucket [permissions](#permissions-required) for AWS S3 and GCS.
+- How to [create a destination](#create-a-destination) via the API, including provider-specific examples and credential options.
+- How to [rotate destination credentials](#rotate-destination-credentials) without recreating the destination.
+- How to [debug destination errors](#debug-destination-errors).
 
 ## Configuration fields
 
 The following information is needed to configure a destination:
 
-* **Bucket Name**: The name of the S3 bucket where the data will be exported to.
-* **Prefix**: The root prefix within the bucket where the data will be exported to.
-* **S3 Region**: The region of the bucket—required for AWS S3 buckets.
-* **Endpoint URL**: The endpoint URL for the S3 bucket—required for S3 API compatible buckets.
-* **Access Key**: The access key for the S3 bucket.
-* **Secret Key**: The secret key for the S3 bucket.
-* **Include Bucket in Prefix** (optional): Whether to include the bucket name as part of the path prefix. Defaults to `true`. Set to `false` when using virtual-hosted style endpoints where the bucket name is already in the endpoint URL.
-* **S3 Config Options** (`config_kwargs_s3`, optional): Advanced S3 addressing style and request settings passed to botocore. The most common use is setting `addressing_style` for S3-compatible services that require virtual-hosted or path-style requests:
-  * `"virtual"`: bucket name is part of the hostname (e.g. `bucket.endpoint/key`). Required for some S3-compatible services such as Volcengine TOS.
-  * `"path"`: bucket name is part of the URL path (e.g. `endpoint/bucket/key`).
-  * `"auto"` (default): boto3 decides based on the endpoint.
+- **Bucket Name**: The name of the S3 bucket where the data will be exported to.
+- **Prefix**: The root prefix within the bucket where the data will be exported to.
+- **S3 Region**: The region of the bucket—required for AWS S3 buckets.
+- **Endpoint URL**: The endpoint URL for the S3 bucket—required for S3 API compatible buckets.
+- **Access Key**: The access key for the S3 bucket.
+- **Secret Key**: The secret key for the S3 bucket.
+- **Include Bucket in Prefix** (optional): Whether to include the bucket name as part of the path prefix. Defaults to `true`. Set to `false` when using virtual-hosted style endpoints where the bucket name is already in the endpoint URL.
+- **S3 Config Options** (`config_kwargs_s3`, optional): Advanced S3 addressing style and request settings passed to botocore. The most common use is setting `addressing_style` for S3-compatible services that require virtual-hosted or path-style requests:
+  - `"virtual"`: bucket name is part of the hostname (e.g. `bucket.endpoint/key`). Required for some S3-compatible services such as Volcengine TOS.
+  - `"path"`: bucket name is part of the URL path (e.g. `endpoint/bucket/key`).
+  - `"auto"` (default): boto3 decides based on the endpoint.
 
 We support any S3 compatible bucket. For non-AWS buckets such as GCS or MinIO, you will need to provide the endpoint URL.
 
@@ -42,21 +40,21 @@ We support any S3 compatible bucket. For non-AWS buckets such as GCS or MinIO, y
 
 Both the `backend` and `queue` services require write access to the destination bucket:
 
-* The `backend` service attempts to write a test file to the destination bucket when the export destination is created. It will delete the test file if it has permission to do so (delete access is optional).
-* The `queue` service is responsible for bulk export execution and uploading the files to the bucket.
+- The `backend` service attempts to write a test file to the destination bucket when the export destination is created. It will delete the test file if it has permission to do so (delete access is optional).
+- The `queue` service is responsible for bulk export execution and uploading the files to the bucket.
 
 ### AWS S3 permissions
 
 The minimal AWS S3 permission policy relies on the following permissions:
 
-* `s3:PutObject` (required): Allows writing Parquet files to the bucket.
-* `s3:DeleteObject` (optional): Cleans up test files during destination creation. If this permission isn't present, the file is left under the `/tmp` directory after destination creation.
-* `s3:GetObject` (optional but recommended): Verifies file size after writing.
-* `s3:AbortMultipartUpload` (optional but recommended): Avoids dangling multipart uploads.
+- `s3:PutObject` (required): Allows writing Parquet files to the bucket.
+- `s3:DeleteObject` (optional): Cleans up test files during destination creation. If this permission isn't present, the file is left under the `/tmp` directory after destination creation.
+- `s3:GetObject` (optional but recommended): Verifies file size after writing.
+- `s3:AbortMultipartUpload` (optional but recommended): Avoids dangling multipart uploads.
 
 Minimal IAM policy example:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -75,7 +73,7 @@ Minimal IAM policy example:
 
 Recommended IAM policy example with additional permissions:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -98,9 +96,9 @@ Recommended IAM policy example with additional permissions:
 
 When using GCS with the S3-compatible XML API, the following IAM permissions are required:
 
-* `storage.objects.create` (required): Allows writing files to the bucket.
-* `storage.objects.delete` (optional): Cleans up test files during destination creation. If this permission isn't present, the file is left under the `/tmp` directory after destination creation.
-* `storage.objects.get` (optional but recommended): Verifies file size after writing.
+- `storage.objects.create` (required): Allows writing files to the bucket.
+- `storage.objects.delete` (optional): Cleans up test files during destination creation. If this permission isn't present, the file is left under the `/tmp` directory after destination creation.
+- `storage.objects.get` (optional but recommended): Verifies file size after writing.
 
 These permissions can be granted through the "Storage Object Admin" predefined role or a custom role.
 
@@ -109,7 +107,7 @@ These permissions can be granted through the "Storage Object Admin" predefined r
 The following example demonstrates how to create a destination using cURL. Replace the placeholder values with your actual configuration details.
 Note that credentials will be stored securely in an encrypted form in our system.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -142,9 +140,9 @@ Use the returned `id` to reference this destination in subsequent bulk export op
 
 We support the following additional credentials formats besides static `access_key_id` and `secret_access_key`:
 
-* To use [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) that include an AWS session token,
+- To use [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) that include an AWS session token,
   additionally provide the `credentials.session_token` key when creating the bulk export destination.
-* (Self-hosted only): To use environment-based credentials such as with [AWS IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) (IRSA),
+- (Self-hosted only): To use environment-based credentials such as with [AWS IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) (IRSA),
   omit the `credentials` key from the request when creating the bulk export destination.
   In this case, the [standard Boto3 credentials locations](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#credentials) will be checked in the order defined by the library.
 
@@ -152,7 +150,7 @@ We support the following additional credentials formats besides static `access_k
 
 For AWS S3, you can leave off the `endpoint_url` and supply the region that matches the region of your bucket.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -179,7 +177,7 @@ When using Google's GCS bucket, you need to use the XML S3 compatible API, and s
 which is typically `https://storage.googleapis.com`.
 Here is an example of the API request when using the GCS XML API which is compatible with S3:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -207,7 +205,7 @@ See [Google documentation](https://cloud.google.com/storage/docs/interoperabilit
 
 Some S3-compatible services (such as Volcengine TOS) require virtual-hosted style addressing, where the bucket name is part of the hostname rather than the URL path. Use `config_kwargs_s3` with `addressing_style: "virtual"` to enable this:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -235,7 +233,7 @@ curl --request POST \
 
 If your endpoint URL already includes the bucket name (virtual-hosted style), set `include_bucket_in_prefix` to `false` to avoid duplicating the bucket name in the path:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -265,15 +263,15 @@ Use `PATCH /api/v1/bulk-exports/destinations/{destination_id}` to update the cre
 
 The changeover is not instantaneous:
 
-* **New bulk export runs** use the updated credentials immediately after the PATCH completes.
-* **Already running bulk export runs** continue using the previous credentials until they finish.
-* **Both sets of credentials are active simultaneously** during the transition period. This window lasts up to the maximum runtime of a single bulk export run.
+- **New bulk export runs** use the updated credentials immediately after the PATCH completes.
+- **Already running bulk export runs** continue using the previous credentials until they finish.
+- **Both sets of credentials are active simultaneously** during the transition period. This window lasts up to the maximum runtime of a single bulk export run.
 
 Plan your rotation accordingly: the old credentials must remain valid until all in-flight runs complete.
 
 ### Request
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl --request PATCH \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations/{destination_id}' \
   --header 'Content-Type: application/json' \
@@ -297,7 +295,7 @@ Before storing new credentials, LangSmith validates them by performing a test wr
 
 Returns the updated destination object. Credential values are never returned—only the credential field names are included in the response under `credentials_keys`.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "id": "destination-uuid",
   "tenant_id": "tenant-uuid",
@@ -310,9 +308,9 @@ Returns the updated destination object. Credential values are never returned—o
 ### Rotation checklist
 
 1. Provision new credentials in your cloud provider with write access to the destination bucket and prefix.
-2. Call the PATCH endpoint with the new credentials. LangSmith validates them before saving.
-3. Keep old credentials active until all in-flight bulk export runs finish (up to the [maximum run duration](/langsmith/data-export-monitor#automatic-retry-behavior)).
-4. Revoke old credentials once no runs are using them.
+1. Call the PATCH endpoint with the new credentials. LangSmith validates them before saving.
+1. Keep old credentials active until all in-flight bulk export runs finish (up to the [maximum run duration](/langsmith/data-export-monitor#automatic-retry-behavior)).
+1. Revoke old credentials once no runs are using them.
 
 ## Debug destination errors
 
@@ -325,7 +323,7 @@ data that you supplied to the destinations API above.
 
 **AWS S3:**
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 aws configure
 
 # set the same access key credentials and region as you used for the destination
@@ -343,10 +341,10 @@ aws s3 cp ./test.txt s3://<bucket-name>/tmp/test.txt
 
 **GCS Compatible Buckets:**
 
-You will need to supply the endpoint\_url with `--endpoint-url` option.
+You will need to supply the endpoint_url with `--endpoint-url` option.
 For GCS, the `endpoint_url` is typically `https://storage.googleapis.com`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 aws configure
 
 # set the same access key credentials and region as you used for the destination
@@ -366,22 +364,21 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 Here are some common errors:
 
-| Error                              | Description                                                                                                                                                                                                                                                                                              |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Access denied                      | The blob store credentials or bucket are not valid. This error occurs when the provided access key and secret key combination doesn't have the necessary permissions to access the specified bucket or perform the required operations.                                                                  |
-| Bucket is not valid                | The specified blob store bucket is not valid. This error is thrown when the bucket doesn't exist or there is not enough access to perform writes on the bucket.                                                                                                                                          |
-| Key ID you provided does not exist | The blob store credentials provided are not valid. This error occurs when the access key ID used for authentication is not a valid key.                                                                                                                                                                  |
-| Invalid endpoint                   | The endpoint\_url provided is invalid. This error is raised when the specified endpoint is an invalid endpoint. Only S3 compatible endpoints are supported, for example `https://storage.googleapis.com` for GCS, `https://play.min.io` for minio, etc. If using AWS, you should omit the endpoint\_url. |
-| InvalidBucketName                  | The S3-compatible service rejected the request due to addressing style mismatch. Some services require virtual-hosted style addressing. Set `config_kwargs_s3: {"addressing_style": "virtual"}` in your destination config to resolve this.                                                              |
+| Error                              | Description                                                                                                                                                                                                                                                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Access denied                      | The blob store credentials or bucket are not valid. This error occurs when the provided access key and secret key combination doesn't have the necessary permissions to access the specified bucket or perform the required operations.                                                                |
+| Bucket is not valid                | The specified blob store bucket is not valid. This error is thrown when the bucket doesn't exist or there is not enough access to perform writes on the bucket.                                                                                                                                        |
+| Key ID you provided does not exist | The blob store credentials provided are not valid. This error occurs when the access key ID used for authentication is not a valid key.                                                                                                                                                                |
+| Invalid endpoint                   | The endpoint_url provided is invalid. This error is raised when the specified endpoint is an invalid endpoint. Only S3 compatible endpoints are supported, for example `https://storage.googleapis.com` for GCS, `https://play.min.io` for minio, etc. If using AWS, you should omit the endpoint_url. |
+| InvalidBucketName                  | The S3-compatible service rejected the request due to addressing style mismatch. Some services require virtual-hosted style addressing. Set `config_kwargs_s3: {"addressing_style": "virtual"}` in your destination config to resolve this. |
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

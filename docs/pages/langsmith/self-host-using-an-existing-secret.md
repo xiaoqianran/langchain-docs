@@ -21,16 +21,16 @@ By default we will provision the following secrets corresponding to different co
 You will need to create your own Kubernetes secrets that adhere to the structure of the secrets provisioned by the LangSmith Helm Chart.
 
 <Warning>
-  The secrets must have the same structure as the ones provisioned by the LangSmith Helm Chart (refer to the links above to see the specific secrets). If you miss any of the required keys, your LangSmith instance may not work correctly.
+The secrets must have the same structure as the ones provisioned by the LangSmith Helm Chart (refer to the links above to see the specific secrets). If you miss any of the required keys, your LangSmith instance may not work correctly.
 </Warning>
 
 An example secret may look like this:
 
 <Warning>
-  Set `api_key_salt` once and do not change it. This value is used to hash all API keys at rest. Rotating it will permanently invalidate every existing API key in your organization, requiring all users to regenerate their keys.
+Set `api_key_salt` once and do not change it. This value is used to hash all API keys at rest. Rotating it will permanently invalidate every existing API key in your organization, requiring all users to regenerate their keys.
 </Warning>
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -74,7 +74,7 @@ stringData:
 
 With these secrets provisioned, you can configure your LangSmith instance to use the secrets directly to avoid passing in secret values through plaintext. You can do this by modifying the `langsmith_config.yaml` file for your LangSmith Helm Chart installation.
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 config:
   existingSecretName: "langsmith-secrets" # The name of the secret that contains the license key and other basic configuration parameters
 redis:
@@ -93,25 +93,24 @@ clickhouse:
 
 Once configured, you will need to update your LangSmith installation. You can follow the [upgrade guide](/langsmith/self-host-upgrades). If everything is configured correctly, your LangSmith instance should now be accessible via the Ingress. You can run the following to check that your secrets are being used correctly:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 kubectl describe deployment langsmith-backend | grep -i <secret-name>
 ```
 
 You should see something like this in the output:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 POSTGRES_DATABASE_URI:                    <set to the key 'connection_url' in secret <your-secret-name>  Optional: false
 CLICKHOUSE_DB:                            <set to the key 'clickhouse_db' in secret <your-secret-name>   Optional: false
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-using-an-existing-secret.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

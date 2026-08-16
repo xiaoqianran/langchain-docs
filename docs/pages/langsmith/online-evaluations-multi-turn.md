@@ -5,7 +5,6 @@
 Multi-turn online evaluators allow you to evaluate entire conversations between a human and an agent—not just individual exchanges. They measure end-to-end interaction quality across all turns in a thread.
 
 You can use multi-turn evaluations to measure:
-
 1. Semantic Intent: What the user was trying to do.
 2. Semantic Outcome: What actually happened, did the task succeed.
 3. Trajectory: How the conversation unfolded, including trajectory of tool calls.
@@ -26,15 +25,15 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 ## Prerequisites
 
-* Your tracing project must be using [threads](/langsmith/threads).
-* The top-level inputs and outputs of each trace in a thread must have a `messages` key that contains a list of messages. We support messages in [LangChain](/langsmith/log-llm-trace#messages-format), [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create), and [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) formats.
-  * If the top-level inputs and outputs of each trace only contain the latest message in the conversation, LangSmith will automatically combine messages across turns into a thread.
-  * If the top-level inputs and outputs of each trace contain the full conversation history, LangSmith will use that directly.
+- Your tracing project must be using [threads](/langsmith/threads).
+- The top-level inputs and outputs of each trace in a thread must have a `messages` key that contains a list of messages. We support messages in [LangChain](/langsmith/log-llm-trace#messages-format), [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create), and [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) formats.
+    - If the top-level inputs and outputs of each trace only contain the latest message in the conversation, LangSmith will automatically combine messages across turns into a thread.
+    - If the top-level inputs and outputs of each trace contain the full conversation history, LangSmith will use that directly.
 
 <Note>
-  If your traces don't follow the format above, thread level evaluators won't work. You'll need to update how you trace to LangSmith to ensure each trace's top-level inputs and outputs contain a list of `messages`.
+If your traces don't follow the format above, thread level evaluators won't work. You'll need to update how you trace to LangSmith to ensure each trace's top-level inputs and outputs contain a list of `messages`.
 
-  Please refer to the [troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting) section for more information.
+Please refer to the [troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting) section for more information.
 </Note>
 
 ## Configuration
@@ -43,28 +42,26 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 2. Click the **Evaluators** tab, then click **+ Evaluator**. Select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Under **Source**, select **Threads**.
 3. **Name your evaluator**.
 4. Apply **Filters** or a **Sampling Rate**. <br />
-   Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
+Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
 5. **Configure an idle time**. <br />
-   The first time you configure a thread level evaluator, you'll define the idle time—the amount of time after the last trace in a thread before it's considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. It applies across all evaluators in the project.
-
+The first time you configure a thread level evaluator, you'll define the idle time—the amount of time after the last trace in a thread before it's considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. It applies across all evaluators in the project.
 <Tip>
-  When first testing your evaluator, use a short idle time so you can see results quickly. Once validated, increase it to match the expected length of user interactions.
+When first testing your evaluator, use a short idle time so you can see results quickly. Once validated, increase it to match the expected length of user interactions.
 </Tip>
-
 6. **Configure your model.**<br />
-   Select the provider and model you want to use for your evaluator. Threads tend to get long, so you should use a model with a higher context window in order to avoid running into limits. For example, OpenAI's GPT-5.4 mini or Gemini 2.5 Flash are good options as they both have 1M+ token context windows.
+Select the provider and model you want to use for your evaluator. Threads tend to get long, so you should use a model with a higher context window in order to avoid running into limits. For example, OpenAI's GPT-5.4 mini or Gemini 2.5 Flash are good options as they both have 1M+ token context windows.
 
 7. **Configure your LLM-as-a-judge prompt.**<br />
-   Define what you want to evaluate. This prompt will be used to evaluate the thread. You can also configure which parts of the assembled conversation are passed to the evaluator through the `all_messages` variable to control the content it receives:
-   * All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
-   * Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
-   * First human and last AI: Send only the first user message and the last assistant reply.
+Define what you want to evaluate. This prompt will be used to evaluate the thread. You can also configure which parts of the assembled conversation are passed to the evaluator through the `all_messages` variable to control the content it receives:
+    - All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
+    - Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
+    - First human and last AI: Send only the first user message and the last assistant reply.
 
-8. **Set up your feedback configuration**.<br />
-   Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
+9. **Set up your feedback configuration**.<br />
+Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
 
 <Warning>
-  We don't recommend using the same feedback key for a thread-level evaluator and a run-level evaluator as it can be hard to distinguish between the two.
+We don't recommend using the same feedback key for a thread-level evaluator and a run-level evaluator as it can be hard to distinguish between the two.
 </Warning>
 
 8. **Save your evaluator.**
@@ -75,9 +72,9 @@ After saving, your evaluator will appear in the **Evaluators** tab. You can test
 
 These are the current limits for multi-turn online evaluators (subject to change). Please reach out if you are running into any of these limits.
 
-* **Runs must be less than one week old**: When a thread becomes idle, only runs within the past 7 days are eligible for evaluation.
-* **Maximum of 500 threads evaluated at once**: If you have more than 500 threads marked as idle in a five minute period, we will automatically sample beyond 500.
-* **Maximum of 10 multi-turn online evaluators per workspace**
+- **Runs must be less than one week old**: When a thread becomes idle, only runs within the past 7 days are eligible for evaluation.
+- **Maximum of 500 threads evaluated at once**: If you have more than 500 threads marked as idle in a five minute period, we will automatically sample beyond 500.
+- **Maximum of 10 multi-turn online evaluators per workspace**
 
 ## Troubleshooting
 
@@ -89,14 +86,13 @@ Inspect the data sent to the evaluator by heading to the **Evaluators** tab with
 
 In this tab, you can see the inputs passed into the LLM-as-a-judge evaluator. If your messages are not being passed in correctly, you will see blank values in the inputs. This can happen if your messages are not formatted in one of [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites).
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-multi-turn.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

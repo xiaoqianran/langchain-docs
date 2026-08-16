@@ -7,40 +7,42 @@
 代码评估器是一种函数，它采用数据集示例和生成的应用程序输出，并返回一个或多个指标。这些函数可以直接传递到[⟦T4⟧](https://reference.langchain.com/python/langsmith/client/Client/evaluate)或[⟦T5⟧](https://reference.langchain.com/python/langsmith/client/Client/aevaluate)函数中。
 
 <Tip>
-  要在 LangSmith UI 中定义代码评估器，请参阅[How to define a code evaluator (UI)](/langsmith/code-evaluator-ui)。要根据数据集示例中保存的断言对输出进行评分，请参阅[Use assertions](/langsmith/assertions)。
+要在LangSmith UI 中定义代码评估器，请参阅[How to define a code evaluator (UI)](/langsmith/code-evaluator-ui)。要根据数据集示例中保存的断言对输出进行评分，请参阅[Use assertions](/langsmith/assertions)。
 </Tip>
 
 ## 基本示例
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate
 
-  def correct(outputs: dict, reference_outputs: dict) -> bool:
-      """Check if the answer exactly matches the expected answer."""
-      return outputs["answer"] == reference_outputs["answer"]
+```python Python
+from langsmith import evaluate
 
-  def dummy_app(inputs: dict) -> dict:
-      return {"answer": "hmm i'm not sure", "reasoning": "i didn't understand the question"}
+def correct(outputs: dict, reference_outputs: dict) -> bool:
+    """Check if the answer exactly matches the expected answer."""
+    return outputs["answer"] == reference_outputs["answer"]
 
-  results = evaluate(
-      dummy_app,
-      data="dataset_name",
-      evaluators=[correct]
-  )
-  ```
+def dummy_app(inputs: dict) -> dict:
+    return {"answer": "hmm i'm not sure", "reasoning": "i didn't understand the question"}
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { EvaluationResult } from "langsmith/evaluation";
+results = evaluate(
+    dummy_app,
+    data="dataset_name",
+    evaluators=[correct]
+)
+```
 
-  const correct = async ({ outputs, referenceOutputs }: {
-    outputs: Record<string, any>;
-    referenceOutputs?: Record<string, any>;
-  }): Promise<EvaluationResult> => {
-    const score = outputs?.answer === referenceOutputs?.answer;
-    return { key: "correct", score };
-  }
-  ```
+```typescript TypeScript
+import type { EvaluationResult } from "langsmith/evaluation";
+
+const correct = async ({ outputs, referenceOutputs }: {
+  outputs: Record<string, any>;
+  referenceOutputs?: Record<string, any>;
+}): Promise<EvaluationResult> => {
+  const score = outputs?.answer === referenceOutputs?.answer;
+  return { key: "correct", score };
+}
+```
+
 </CodeGroup>
 
 ## 评估器参数
@@ -74,163 +76,164 @@ Python 和 JS/TS
 需要`langsmith>=0.2.0`
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate, wrappers
-  from langsmith.schemas import Run, Example
-  from openai import AsyncOpenAI
-  # Assumes you've installed pydantic.
-  from pydantic import BaseModel
 
-  # We can still pass in Run and Example objects if we'd like
-  def correct_old_signature(run: Run, example: Example) -> dict:
-      """Check if the answer exactly matches the expected answer."""
-      return {"key": "correct", "score": run.outputs["answer"] == example.outputs["answer"]}
+```python Python
+from langsmith import evaluate, wrappers
+from langsmith.schemas import Run, Example
+from openai import AsyncOpenAI
+# Assumes you've installed pydantic.
+from pydantic import BaseModel
 
-  # Just evaluate actual outputs
-  def concision(outputs: dict) -> int:
-      """Score how concise the answer is. 1 is the most concise, 5 is the least concise."""
-      return min(len(outputs["answer"]) // 1000, 4) + 1
+# We can still pass in Run and Example objects if we'd like
+def correct_old_signature(run: Run, example: Example) -> dict:
+    """Check if the answer exactly matches the expected answer."""
+    return {"key": "correct", "score": run.outputs["answer"] == example.outputs["answer"]}
 
-  # Use an LLM-as-a-judge
-  oai_client = wrappers.wrap_openai(AsyncOpenAI())
+# Just evaluate actual outputs
+def concision(outputs: dict) -> int:
+    """Score how concise the answer is. 1 is the most concise, 5 is the least concise."""
+    return min(len(outputs["answer"]) // 1000, 4) + 1
 
-  async def valid_reasoning(inputs: dict, outputs: dict) -> bool:
-      """Use an LLM to judge if the reasoning and the answer are consistent."""
-      instructions = """
-  Given the following question, answer, and reasoning, determine if the reasoning for the
-  answer is logically valid and consistent with question and the answer."""
+# Use an LLM-as-a-judge
+oai_client = wrappers.wrap_openai(AsyncOpenAI())
 
-      class Response(BaseModel):
-          reasoning_is_valid: bool
+async def valid_reasoning(inputs: dict, outputs: dict) -> bool:
+    """Use an LLM to judge if the reasoning and the answer are consistent."""
+    instructions = """
+Given the following question, answer, and reasoning, determine if the reasoning for the
+answer is logically valid and consistent with question and the answer."""
 
-      msg = f"Question: {inputs['question']}\nAnswer: {outputs['answer']}\nReasoning: {outputs['reasoning']}"
-      response = await oai_client.beta.chat.completions.parse(
-          model="gpt-5.4-mini",
-          messages=[{"role": "system", "content": instructions,}, {"role": "user", "content": msg}],
-          response_format=Response
-      )
-      return response.choices[0].message.parsed.reasoning_is_valid
+    class Response(BaseModel):
+        reasoning_is_valid: bool
 
-  def dummy_app(inputs: dict) -> dict:
-      return {"answer": "hmm i'm not sure", "reasoning": "i didn't understand the question"}
+    msg = f"Question: {inputs['question']}\nAnswer: {outputs['answer']}\nReasoning: {outputs['reasoning']}"
+    response = await oai_client.beta.chat.completions.parse(
+        model="gpt-5.4-mini",
+        messages=[{"role": "system", "content": instructions,}, {"role": "user", "content": msg}],
+        response_format=Response
+    )
+    return response.choices[0].message.parsed.reasoning_is_valid
 
-  results = evaluate(
-      dummy_app,
-      data="dataset_name",
-      evaluators=[correct_old_signature, concision, valid_reasoning]
-  )
-  ```
+def dummy_app(inputs: dict) -> dict:
+    return {"answer": "hmm i'm not sure", "reasoning": "i didn't understand the question"}
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-  import { evaluate } from "langsmith/evaluation";
-  import { Run, Example } from "langsmith/schemas";
-  import OpenAI from "openai";
+results = evaluate(
+    dummy_app,
+    data="dataset_name",
+    evaluators=[correct_old_signature, concision, valid_reasoning]
+)
+```
 
-  // Type definitions
-  interface AppInputs {
-      question: string;
-  }
+```typescript TypeScript
+import { Client } from "langsmith";
+import { evaluate } from "langsmith/evaluation";
+import { Run, Example } from "langsmith/schemas";
+import OpenAI from "openai";
 
-  interface AppOutputs {
-      answer: string;
-      reasoning: string;
-  }
+// Type definitions
+interface AppInputs {
+    question: string;
+}
 
-  interface Response {
-      reasoning_is_valid: boolean;
-  }
+interface AppOutputs {
+    answer: string;
+    reasoning: string;
+}
 
-  // Old signature evaluator
-  function correctOldSignature(run: Run, example: Example) {
-      return {
-          key: "correct",
-          score: run.outputs?.["answer"] === example.outputs?.["answer"],
-      };
-  }
+interface Response {
+    reasoning_is_valid: boolean;
+}
 
-  // Output-only evaluator
-  function concision({ outputs }: { outputs: AppOutputs }) {
-      return {
-          key: "concision",
-          score: Math.min(Math.floor(outputs.answer.length / 1000), 4) + 1,
-      };
-  }
+// Old signature evaluator
+function correctOldSignature(run: Run, example: Example) {
+    return {
+        key: "correct",
+        score: run.outputs?.["answer"] === example.outputs?.["answer"],
+    };
+}
 
-  // LLM-as-judge evaluator
-  const openai = new OpenAI();
+// Output-only evaluator
+function concision({ outputs }: { outputs: AppOutputs }) {
+    return {
+        key: "concision",
+        score: Math.min(Math.floor(outputs.answer.length / 1000), 4) + 1,
+    };
+}
 
-  async function validReasoning({
-      inputs,
-      outputs
-  }: {
-      inputs: AppInputs;
-      outputs: AppOutputs;
-  }) {
-      const instructions = `\
-    Given the following question, answer, and reasoning, determine if the reasoning for the \
-    answer is logically valid and consistent with question and the answer.`;
+// LLM-as-judge evaluator
+const openai = new OpenAI();
 
-      const msg = `Question: ${inputs.question}
-  Answer: ${outputs.answer}
-  Reasoning: ${outputs.reasoning}`;
+async function validReasoning({
+    inputs,
+    outputs
+}: {
+    inputs: AppInputs;
+    outputs: AppOutputs;
+}) {
+    const instructions = `\
+  Given the following question, answer, and reasoning, determine if the reasoning for the \
+  answer is logically valid and consistent with question and the answer.`;
 
-      const response = await openai.chat.completions.create({
-          model: "gpt-4",
-          messages: [
-              { role: "system", content: instructions },
-              { role: "user", content: msg }
-          ],
-          response_format: { type: "json_object" },
-          functions: [{
-              name: "parse_response",
-              parameters: {
-                  type: "object",
-                  properties: {
-                      reasoning_is_valid: {
-                          type: "boolean",
-                          description: "Whether the reasoning is valid"
-                      }
-                  },
-                  required: ["reasoning_is_valid"]
-              }
-          }]
-      });
+    const msg = `Question: ${inputs.question}
+Answer: ${outputs.answer}
+Reasoning: ${outputs.reasoning}`;
 
-      const parsed = JSON.parse(response.choices[0].message.content ?? "{}") as Response;
-      return {
-          key: "valid_reasoning",
-          score: parsed.reasoning_is_valid ? 1 : 0
-      };
-  }
+    const response = await openai.chat.completions.create({
+        model: "gpt-4",
+        messages: [
+            { role: "system", content: instructions },
+            { role: "user", content: msg }
+        ],
+        response_format: { type: "json_object" },
+        functions: [{
+            name: "parse_response",
+            parameters: {
+                type: "object",
+                properties: {
+                    reasoning_is_valid: {
+                        type: "boolean",
+                        description: "Whether the reasoning is valid"
+                    }
+                },
+                required: ["reasoning_is_valid"]
+            }
+        }]
+    });
 
-  // Example application
-  function dummyApp(inputs: AppInputs): AppOutputs {
-      return {
-          answer: "hmm i'm not sure",
-          reasoning: "i didn't understand the question"
-      };
-  }
+    const parsed = JSON.parse(response.choices[0].message.content ?? "{}") as Response;
+    return {
+        key: "valid_reasoning",
+        score: parsed.reasoning_is_valid ? 1 : 0
+    };
+}
 
-  const results = await evaluate(dummyApp, {
-      data: "dataset_name",
-      evaluators: [correctOldSignature, concision, validReasoning],
-      client: new Client()
-  });
-  ```
+// Example application
+function dummyApp(inputs: AppInputs): AppOutputs {
+    return {
+        answer: "hmm i'm not sure",
+        reasoning: "i didn't understand the question"
+    };
+}
+
+const results = await evaluate(dummyApp, {
+    data: "dataset_name",
+    evaluators: [correctOldSignature, concision, validReasoning],
+    client: new Client()
+});
+```
+
 </CodeGroup>
 
 ## 相关* [Evaluate aggregate experiment results](/langsmith/summary)：定义摘要评估器，计算整个实验的指标。
-* [Run an evaluation comparing two experiments](/langsmith/evaluate-pairwise)：定义成对评估器，它通过比较两个（或更多）实验来计算指标。
+* [Run an evaluation comparing two experiments](/langsmith/evaluate-pairwise)：定义成对评估器，它通过相互比较两个（或更多）实验来计算指标。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/code-evaluator-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

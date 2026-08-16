@@ -6,7 +6,7 @@
 
 作为对 LangSmith 自托管实例进行故障排除的一部分，LangChain 团队可能会要求您生成 LangSmith 查询统计信息，这将帮助我们了解推动 LangSmith 产品体验的各种查询的性能。
 
-该命令将生成一个可以与LangChain团队共享的CSV。
+此命令将生成一个可与 LangChain 团队共享的 CSV。
 
 ### 先决条件
 
@@ -40,24 +40,23 @@
 
 运行以下命令来运行统计数据生成脚本：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh get_query_stats.sh <clickhouse_url> --output path/to/file.csv
 ```例如，如果您使用带有端口转发的捆绑版本，则命令将如下所示：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh get_query_stats.sh "clickhouse://default:password@localhost:8123/default" --output query_stats.csv
 ```
 
-运行此命令后，您应该会看到已使用 LangSmith 查询统计信息创建了一个文件 query\_stats.csv。
+运行此命令后，您应该看到一个包含 LangSmith 查询统计信息的文件 query\_stats.csv。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-query-stats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

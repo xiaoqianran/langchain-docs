@@ -15,15 +15,15 @@ The Playground has native support for a variety of tools from OpenAI and Anthrop
 
 ### OpenAI tools
 
-* **Web search**: [Search the web for real-time information](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
-* **Image generation**: [Generate images based on a text prompt](https://platform.openai.com/docs/guides/tools-image-generation).
-* **MCP**: [Gives the model access to tools hosted on a remote MCP server](https://platform.openai.com/docs/guides/tools-remote-mcp).
-* [View all OpenAI tools](https://platform.openai.com/docs/guides/tools?api-mode=responses).
+- **Web search**: [Search the web for real-time information](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
+- **Image generation**: [Generate images based on a text prompt](https://platform.openai.com/docs/guides/tools-image-generation).
+- **MCP**: [Gives the model access to tools hosted on a remote MCP server](https://platform.openai.com/docs/guides/tools-remote-mcp).
+- [View all OpenAI tools](https://platform.openai.com/docs/guides/tools?api-mode=responses).
 
 ### Anthropic tools
 
-* **Web search**: [Search the web for up-to-date information](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool).
-* [View all Anthropic tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview).
+- **Web search**: [Search the web for up-to-date information](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool).
+- [View all Anthropic tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview).
 
 ## Add and use tools
 
@@ -33,30 +33,38 @@ The Playground lets you quickly [add tools](#add-a-tool) to any prompt with a si
 
 To add a tool to your prompt, click the **+ Tool** button at the bottom of the prompt editor.
 
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
+<img
+  className="block dark:hidden"
+  src="/langsmith/images/add-tool-light.png"
+  alt="The prompt interface with the + Tool button following the editing boxes."
+/>
 
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
+<img
+  className="hidden dark:block"
+  src="/langsmith/images/add-tool-dark.png"
+  alt="The prompt interface with the + Tool button following the editing boxes."
+/>
 
 ### Use a built-in tool
 
 1. In the tool section, select the built-in tool you want to use. You'll only see the tools that are compatible with the provider and model you've chosen.
 2. When the model calls the tool, the Playground will display the response.
 
-   <img alt="Web search tool" />
+    ![Web search tool](/langsmith/images/web-search-tool.gif)
 
 ### Create a custom tool
 
 To create a custom tool, you'll need to provide:
 
-* **Name**: A descriptive name for your tool.
-* **Description**: Clear explanation of what the tool does.
-* **Arguments**: The inputs your tool requires.
+- **Name**: A descriptive name for your tool.
+- **Description**: Clear explanation of what the tool does.
+- **Arguments**: The inputs your tool requires.
 
-<img alt="Custom tool" />
+![Custom tool](/langsmith/images/custom-tool.gif)
 
 When running a custom tool in the Playground, the model will respond with a JSON object containing the tool name and the tool call.
 
-<img alt="Tool call" />
+![Tool call](/langsmith/images/tool-call.png)
 
 ### Manage tools with the registry
 
@@ -64,14 +72,22 @@ The Playground includes a [workspace](/langsmith/administration-overview#workspa
 
 Click the **+ Tool** button in the Playground to open **Manage tools**. You can do the following:
 
-* Select and view existing tools in the **Available Tools** tab.
-* Toggle individual tools on/off using the **Enabled** switch.
-* Edit existing tools by clicking on them in the list.
-* Delete tools using the **Delete** at the bottom of **Manage tools**.
+- Select and view existing tools in the **Available Tools** tab.
+- Toggle individual tools on/off using the **Enabled** switch.
+- Edit existing tools by clicking on them in the list.
+- Delete tools using the **Delete** at the bottom of **Manage tools**.
 
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />
+<img
+  className="block dark:hidden"
+  src="/langsmith/images/tool-registry-manage-light.png"
+  alt="Manage tools with a list of available tools, Enabled switch, and edit functionality."
+/>
 
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />
+<img
+  className="hidden dark:block"
+  src="/langsmith/images/tool-registry-manage-dark.png"
+  alt="Manage tools with a list of available tools, Enabled switch, and edit functionality."
+/>
 
 Tools are stored with their complete configuration including name, description, parameters, and metadata. The registry supports both custom function tools and built-in tool configurations.
 
@@ -80,23 +96,30 @@ Tools are stored with their complete configuration including name, description, 
 Some models provide control over which tools are called. To configure this:
 
 1. Select **+ Tool** under the prompt editor.
-2. Navigate to the **Tool Choice Setting** tab.
-3. Select your tool choice.
+1. Navigate to the **Tool Choice Setting** tab.
+1. Select your tool choice.
 
 To understand the available tool choice options, check the documentation for your specific provider. For example, [OpenAI's documentation on tool choice](https://platform.openai.com/docs/guides/function-calling/function-calling-behavior?api-mode=responses#tool-choice).
 
-<img alt="Select tools from the Tool Choice Settings tab." />
+<img
+  className="block dark:hidden"
+  src="/langsmith/images/tool-choice-light.png"
+  alt="Select tools from the Tool Choice Settings tab."
+/>
 
-<img alt="Select tools from the Tool Choice Settings tab." />
+<img
+  className="hidden dark:block"
+  src="/langsmith/images/tool-choice-dark.png"
+  alt="Select tools from the Tool Choice Settings tab."
+/>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

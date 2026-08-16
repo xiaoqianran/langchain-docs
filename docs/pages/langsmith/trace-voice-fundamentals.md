@@ -2,14 +2,12 @@
 
 # Voice tracing fundamentals
 
-Best practices for tracing voice and audio agents in LangSmith, including conversation audio, single-trace conversations, and the audio modality flag.
-
 [Tracing](/langsmith/observability-concepts#traces) a voice agent is different from tracing a text agent. A conversation is continuous, bidirectional, and interruptible: users talk over the agent, change topics mid-sentence, and expect sub-second responses. To debug and evaluate these systems, your traces need to capture the conversation as a single, audio-aware unit rather than a series of disconnected text exchanges.
 
 This page covers the core conventions for tracing voice applications in LangSmith. Follow these patterns regardless of which framework or model provider you use ([OpenAI Realtime](/langsmith/trace-openai-realtime), [Gemini Live](/langsmith/trace-gemini-live), [LiveKit](/langsmith/trace-with-livekit), [Pipecat](/langsmith/trace-with-pipecat), or your own).
 
 <Note>
-  These conventions assume you are exporting traces to LangSmith through one of the supported [tracing setups](/langsmith/observability). For audio rendering and playback in the UI, see [Log multimodal traces](/langsmith/log-multimodal-traces) and [Upload files with traces](/langsmith/upload-files-with-traces).
+These conventions assume you are exporting traces to LangSmith through one of the supported [tracing setups](/langsmith/observability). For audio rendering and playback in the UI, see [Log multimodal traces](/langsmith/log-multimodal-traces) and [Upload files with traces](/langsmith/upload-files-with-traces).
 </Note>
 
 ## Two architectures, two trace shapes
@@ -48,14 +46,14 @@ A conversation is a single interaction, so we recommend keeping it in a single t
 
 Do not split a conversation into multiple traces. If you start a new trace for each exchange, you lose the information that lives **between** exchanges:
 
-* **Interruptions**: when the user talks over the agent and the agent stops (barge-in).
-* **Timing and latency**: gaps between speakers, and how long the agent took to respond.
-* **Context**: references back to earlier parts of the conversation.
-* **Conversation-level outcomes**: whether the user's goal was ultimately resolved.
+- **Interruptions**: when the user talks over the agent and the agent stops (barge-in).
+- **Timing and latency**: gaps between speakers, and how long the agent took to respond.
+- **Context**: references back to earlier parts of the conversation.
+- **Conversation-level outcomes**: whether the user's goal was ultimately resolved.
 
 What hangs under the root run depends on your [architecture](#two-architectures-two-trace-shapes). For a [cascade](#cascade), the children are the model calls and middleware:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 conversation                      ← root run (whole conversation; combined audio; ls_modality="audio")
 │
 ├─ stt                            ← a transcription call
@@ -66,7 +64,7 @@ conversation                      ← root run (whole conversation; combined aud
 
 For a [speech-to-speech](#speech-to-speech-s2s) agent, the children are the **events** that crossed the socket:
 
-```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```text
 conversation                      ← root run (whole conversation; combined audio; ls_modality="audio")
 │
 ├─ input_transcription            ← a fragment of the user's speech transcript
@@ -78,7 +76,7 @@ conversation                      ← root run (whole conversation; combined aud
 ```
 
 <Note>
-  A voice agent has no reliable notion of a "turn". Speakers overlap, interrupt, and trail off. Do not group runs into synthetic turns. Trace the real units instead: the model calls in a cascade, or the event payloads in a speech-to-speech stream.
+A voice agent has no reliable notion of a "turn". Speakers overlap, interrupt, and trail off. Do not group runs into synthetic turns. Trace the real units instead: the model calls in a cascade, or the event payloads in a speech-to-speech stream.
 </Note>
 
 For background on grouping related runs, see [Nest traces](/langsmith/nest-traces). To group several separate sessions for one user, use [Threads](/langsmith/threads).
@@ -91,7 +89,7 @@ Record at the client. A common approach is a stereo WAV with the user's micropho
 
 Attach the file using the [attachments API](/langsmith/upload-files-with-traces):
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python
 from langsmith import traceable
 from langsmith.schemas import Attachment
 
@@ -104,14 +102,14 @@ def run_conversation(session_id: str, conversation_audio: bytes):
 ```
 
 <Tip>
-  Audio files can be large. For high-volume production workloads, consider downsampling, using a compressed format (such as MP3 or Opus), or sampling which conversations you record in full.
+Audio files can be large. For high-volume production workloads, consider downsampling, using a compressed format (such as MP3 or Opus), or sampling which conversations you record in full.
 </Tip>
 
 ### Mark the trace as audio
 
 Set the `ls_modality` metadata field to `"audio"` on the root run. This flags the trace as a voice trace so LangSmith can render it appropriately and so you can [filter](/langsmith/filter-traces-in-application) for voice traces in your project.
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python
 from langsmith import traceable
 
 @traceable(
@@ -123,45 +121,40 @@ def run_conversation(session_id: str):
 ```
 
 <Note>
-  For other `ls_` metadata fields, refer to [Metadata parameters reference](/langsmith/ls-metadata-parameters).
+For other `ls_` metadata fields, refer to [Metadata parameters reference](/langsmith/ls-metadata-parameters).
 </Note>
+
 
 ## Next steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Trace OpenAI Realtime" icon="microphone" href="/langsmith/trace-openai-realtime">
     Trace voice agents built on the OpenAI Realtime API.
   </Card>
-
   <Card title="Trace Gemini Live" icon="microphone" href="/langsmith/trace-gemini-live">
     Trace voice agents built on the Gemini Live API.
   </Card>
-
   <Card title="Trace LiveKit" icon="microphone" href="/langsmith/trace-with-livekit">
     Trace voice agents built with LiveKit Agents.
   </Card>
-
   <Card title="Trace Pipecat" icon="microphone" href="/langsmith/trace-with-pipecat">
     Trace voice agents built with Pipecat.
   </Card>
-
   <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
     Attach the conversation audio recording to your trace.
   </Card>
-
   <Card title="Log multimodal traces" icon="photo" href="/langsmith/log-multimodal-traces">
     Render audio and other media in the LangSmith UI.
   </Card>
 </CardGroup>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-voice-fundamentals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

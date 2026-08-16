@@ -4,20 +4,22 @@
 
 # 跟踪语义内核应用程序
 
-LangSmith 可以使用其内置的 OpenTelemetry 支持捕获由 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动从语义内核应用程序捕获跟踪并将其发送到 LangSmith 进行监控和分析。
+LangSmith 可以使用其内置的 OpenTelemetry 支持捕获 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动从语义内核应用程序捕获跟踪并将其发送到LangSmith进行监控和分析。
 
 ## 安装
 
 使用您首选的包管理器安装所需的包：
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith semantic-kernel opentelemetry-instrumentation-openai
-  ```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith semantic-kernel opentelemetry-instrumentation-openai
-  ```
+```bash pip
+pip install langsmith semantic-kernel opentelemetry-instrumentation-openai
+```
+
+```bash uv
+uv add langsmith semantic-kernel opentelemetry-instrumentation-openai
+```
+
 </CodeGroup>
 
 ## 设置
@@ -26,7 +28,7 @@ LangSmith 可以使用其内置的 OpenTelemetry 支持捕获由 [Semantic Kerne
 
 设置您的 [API keys](/langsmith/create-account-api-key) 和项目名称：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_PROJECT=<your_project_name>
 export OPENAI_API_KEY=<your_openai_api_key>
@@ -36,7 +38,7 @@ export OPENAI_API_KEY=<your_openai_api_key>
 
 在您的语义内核应用程序中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith.integrations.otel import configure
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 
@@ -48,14 +50,14 @@ OpenAIInstrumentor().instrument()
 ```
 
 <Note>
-  您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
+您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
 </Note>
 
 ### 3. 创建并运行您的语义内核应用程序
 
-配置完成后，您的语义内核应用程序将自动向 LangSmith 发送跟踪：
+配置完成后，您的语义内核应用程序将自动将跟踪发送到LangSmith：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import asyncio
 from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai.open_ai import OpenAIChatCompletion
@@ -123,7 +125,7 @@ if __name__ == "__main__":
 
 您可以通过设置 span 属性将自定义元数据添加到跟踪中：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from opentelemetry import trace
 
 tracer = trace.get_tracer(__name__)
@@ -138,9 +140,9 @@ async def analyze_with_metadata(code: str):
         return result
 ```
 
-### 与其他乐器结合您可以将语义内核跟踪与其他 OpenTelemetry 仪器结合起来：
+### 与其他乐器结合
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+您可以将语义内核跟踪与其他 OpenTelemetry 仪器结合起来：```python
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 
@@ -151,18 +153,17 @@ HTTPXClientInstrumentor().instrument()
 
 ## 资源
 
-* [Semantic Kernel documentation](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
-* [Semantic Kernel observability guide](https://learn.microsoft.com/en-us/semantic-kernel/concepts/enterprise-readiness/observability/)
-* [LangSmith OpenTelemetry guide](/langsmith/trace-with-opentelemetry)
+- [Semantic Kernel documentation](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
+- [Semantic Kernel observability guide](https://learn.microsoft.com/en-us/semantic-kernel/concepts/enterprise-readiness/observability/)
+- [LangSmith OpenTelemetry guide](/langsmith/trace-with-opentelemetry)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-semantic-kernel.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

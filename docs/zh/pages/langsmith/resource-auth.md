@@ -6,7 +6,7 @@
 
 在本教程中，您将扩展 [the chatbot created in the last tutorial](/langsmith/set-up-custom-auth) 为每个用户提供自己的私人对话。您将添加 [resource-level access control](/langsmith/auth#single-owner-resources)，以便用户只能看到自己的线程。
 
-<img alt="Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads." />
+![Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads.](/langsmith/images/authorization.png)
 
 ## 先决条件
 
@@ -14,13 +14,13 @@
 
 ## 1.添加资源授权
 
-回想一下，在上一个教程中，[⟦T6⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 对象允许您注册一个 [authentication function](/langsmith/auth#authentication)，LangSmith 使用它来验证传入请求中的承载令牌。现在您将使用它来注册一个**授权**处理程序。
+回想一下，在上一篇教程中，[⟦T6⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 对象允许您注册一个 [authentication function](/langsmith/auth#authentication)，LangSmith 使用它来验证传入请求中的承载令牌。现在您将使用它来注册一个**授权**处理程序。
 
 授权处理程序是在身份验证成功后运行的函数。这些处理程序可以将 [metadata](/langsmith/auth#filter-operations) 添加到资源（例如谁拥有它们）并过滤每个用户可以看到的内容。
 
 更新您的 `src/security/auth.py` 并添加一个授权处理程序以针对每个请求运行：
 
-```python {highlight={29-39}} title="src/security/auth.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python {highlight={29-39}} title="src/security/auth.py"
 from langgraph_sdk import Auth
 
 # Keep our test users from the previous tutorial
@@ -107,7 +107,7 @@ async def add_owner(
     return filters
 ```
 
-处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含有关当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建\_运行”）
+处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含有关当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建运行”）
 2. `value` (`dict`)：正在创建或访问的数据。该字典的内容取决于正在访问的资源和操作。有关如何获得更严格范围的访问控制的信息，请参阅下面的[adding scoped authorization handlers](#scoped-authorization)。
 
 请注意，简单处理程序做了两件事：
@@ -119,7 +119,7 @@ async def add_owner(
 
 测试您的授权。如果您设置正确，您将看到所有 ✅ 消息。确保您的开发服务器正在运行（运行`langgraph dev`）：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import get_client
 
 # Create clients for both users
@@ -172,7 +172,7 @@ print(f"✅ Bob sees {len(bob_threads)} thread")
 
 输出：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 ✅ Alice created assistant: fc50fb08-78da-45a9-93cc-1d3928a3fc37
 ✅ Alice created thread: 533179b7-05bc-4d48-b47a-a83cbdb5781d
 ✅ Bob correctly denied access: Client error '404 Not Found' for url 'http://localhost:2024/threads/533179b7-05bc-4d48-b47a-a83cbdb5781d'
@@ -188,13 +188,12 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2. 用户无法看到彼此的话题
 3. 列出线程仅显示您自己的线程
 
-<a />
-
+<a id="scoped-authorization"></a>
 ## 3. 添加范围授权处理程序广泛的 `@auth.on` 处理程序与所有 [authorization events](/langsmith/auth#supported-resources) 匹配。这很简洁，但这意味着 `value` 字典的内容范围不明确，并且相同的用户级访问控制应用于每个资源。如果想要更细粒度，还可以控制对资源的特定操作。
 
 更新 `src/security/auth.py` 添加特定资源类型的处理程序：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # Keep our previous handlers...
 
 from langgraph_sdk import Auth
@@ -269,13 +268,13 @@ async def authorize_store(ctx: Auth.types.AuthContext, value: dict):
 2. 读取线程
 3. 访问助手
 
-其中前三个匹配每个资源上的特定**操作（请参阅[resource actions](/langsmith/auth#resource-specific-handlers)），而后两个（`@auth.on.assistants`和`@auth.on.store`）匹配`assistants`和`store`资源上的*任何*操作。对于每个请求，LangGraph 将运行与正在访问的资源和操作相匹配的最具体的处理程序。这意味着上面的四个处理程序将运行，而不是范围广泛的“`@auth.on`”处理程序。
+其中前三个匹配每个资源上的特定**操作（请参阅[resource actions](/langsmith/auth#resource-specific-handlers)），而后两个（`@auth.on.assistants`和`@auth.on.store`）匹配`assistants`和`store`资源上的_any_操作。对于每个请求，LangGraph 将运行与正在访问的资源和操作相匹配的最具体的处理程序。这意味着上面的四个处理程序将运行，而不是范围广泛的“`@auth.on`”处理程序。
 
 存储授权的工作方式与线程和助手不同。有关存储隔离模式和权衡，请参阅[Isolate store per user](/langsmith/store-auth)。
 
 尝试将以下测试代码添加到您的测试文件中：
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # ... Same as before
 # Try creating an assistant. This should fail
 try:
@@ -298,7 +297,7 @@ print(f"✅ Alice created thread: {alice_thread['thread_id']}")
 
 输出：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 ✅ Alice created thread: dcea5cd8-eb70-4a01-a4b6-643b14e8f754
 ✅ Bob correctly denied access: Client error '404 Not Found' for url 'http://localhost:2024/threads/dcea5cd8-eb70-4a01-a4b6-643b14e8f754'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
@@ -314,18 +313,17 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 
 现在您可以控制对资源的访问，您可能想要：
 
-1. 继续[Connect an authentication provider](/langsmith/add-auth-server)添加真实用户帐户。
+1. 前往[Connect an authentication provider](/langsmith/add-auth-server)添加真实用户帐户。
 2. 了解更多关于[authorization patterns](/langsmith/auth#authorization)的信息。
 3. 本教程中使用的接口和方法的详细信息请查看[API reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resource-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

@@ -3,13 +3,13 @@
 # Improve LLM-as-judge evaluators using human feedback
 
 <Check>
-  Before working through this page, it might be helpful to read the following:
+Before working through this page, it might be helpful to read the following:
 
-  * [Evaluation concepts](/langsmith/evaluation-concepts#evaluators)
-  * [Creating LLM-as-a-judge evaluators](/langsmith/llm-as-judge)
+* [Evaluation concepts](/langsmith/evaluation-concepts#evaluators)
+* [Creating LLM-as-a-judge evaluators](/langsmith/llm-as-judge)
 </Check>
 
-Reliable [*LLM-as-a-judge evaluators*](/langsmith/evaluation-concepts#llm-as-judge) are critical for making informed decisions about your AI applications (e.g., prompt, model, architecture changes). Defining the evaluator prompt correctly can be difficult, but it directly affects the trustworthiness of your evaluations.
+Reliable [_LLM-as-a-judge evaluators_](/langsmith/evaluation-concepts#llm-as-judge) are critical for making informed decisions about your AI applications (e.g., prompt, model, architecture changes). Defining the evaluator prompt correctly can be difficult, but it directly affects the trustworthiness of your evaluations.
 
 This guide describes how to align your LLM-as-a-judge evaluator using human feedback to improve your evaluator's quality and help you build reliable AI applications.
 
@@ -28,35 +28,35 @@ You'll need the following before starting this guide for [offline evaluations](#
 
 ### Offline evaluations
 
-* A [dataset](/langsmith/evaluation-concepts#datasets) with at least one [experiment](/langsmith/evaluation-concepts#experiment).
-* You'll need to upload or create datasets via the [SDK](/langsmith/manage-datasets-programmatically#create-a-dataset) or the [UI](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples) and run an experiment via the [SDK](/langsmith/evaluate-llm-application#run-the-evaluation) or the [Playground](/langsmith/run-evaluation-from-playground).
+- A [dataset](/langsmith/evaluation-concepts#datasets) with at least one [experiment](/langsmith/evaluation-concepts#experiment).
+- You'll need to upload or create datasets via the [SDK](/langsmith/manage-datasets-programmatically#create-a-dataset) or the [UI](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples) and run an experiment via the [SDK](/langsmith/evaluate-llm-application#run-the-evaluation) or the [Playground](/langsmith/run-evaluation-from-playground).
 
 ### Online evaluations
 
-* An application that’s already sending traces to LangSmith.
-* Configure this with one of the [tracing integrations](/langsmith/observability-concepts) to start.
+- An application that’s already sending traces to LangSmith.
+- Configure this with one of the [tracing integrations](/langsmith/observability-concepts) to start.
 
 ## Getting started
 
 You can enter the alignment flow for both new and existing evaluators in datasets and tracing projects.
 
-|                                              | Dataset Evaluators                                                                                                                                                                                     | Tracing Project Evaluators                                                                                                                                                                         |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Create an aligned evaluator from scratch** | 1. **Datasets & Experiments** and select your dataset<br />2. Click **+ Evaluator** > **Create from labeled data**<br />3. Enter a descriptive feedback key name (e.g. `correctness`, `hallucination`) | 1. **Projects** and select your project<br />2. Click **+ New** > **Evaluator** > **Create from labeled data**<br />3. Enter a descriptive feedback‑key name (e.g. `correctness`, `hallucination`) |
-| **Align an existing evaluator**              | 1. **Datasets & Experiments** > select your dataset > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                                     | 1. **Projects** > select your project > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                                               |
+|                                              | Dataset Evaluators                                                                                                                                                                         | Tracing Project Evaluators                                                                                                                                                             |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Create an aligned evaluator from scratch** | 1. **Datasets & Experiments** and select your dataset<br></br>2. Click **+ Evaluator** > **Create from labeled data**<br></br>3. Enter a descriptive feedback key name (e.g. `correctness`, `hallucination`) | 1. **Projects** and select your project<br></br>2. Click **+ New** > **Evaluator** > **Create from labeled data**<br></br>3. Enter a descriptive feedback‑key name (e.g. `correctness`, `hallucination`) |
+| **Align an existing evaluator**              | 1. **Datasets & Experiments** > select your dataset > **Evaluators** tab<br></br>2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                              | 1. **Projects** > select your project > **Evaluators** tab<br></br>2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                                         |
 
 ## 1. Select experiments or runs
 
 Select one or more experiments (or runs) to send for human labeling. This will add runs to an [annotation queue](/langsmith/annotation-queues).
 
-<img alt="Add to evaluator queue" />
+![Add to evaluator queue](/langsmith/images/add-to-evaluator-queue.gif)
 
 To add any new experiments/runs to an existing annotation queue, head to the **Evaluators** tab, select the evaluator you are aligning and click **Add to Queue.**
 
 <Check>
-  Datasets should be representative of inputs and outputs you expect to see in production.
+Datasets should be representative of inputs and outputs you expect to see in production.
 
-  While you don’t need to cover every possible scenario, it’s important to include examples across the full range of expected use cases. For example, if you're building a sports bot that answers questions about baseball, basketball, and football, your dataset should include at least one labeled example from each sport.
+While you don’t need to cover every possible scenario, it’s important to include examples across the full range of expected use cases. For example, if you're building a sports bot that answers questions about baseball, basketball, and football, your dataset should include at least one labeled example from each sport.
 </Check>
 
 ## 2. Label examples
@@ -64,7 +64,7 @@ To add any new experiments/runs to an existing annotation queue, head to the **E
 Label examples in the annotation queue by adding a feedback score. Once you've labeled an example, click **Add to Reference Dataset**.
 
 <Check>
-  If you have a large number of examples in your experiments, you don't need to label every example to get started. We recommend starting with at least 20 examples, you can always add more later. We recommend that the examples that you label are diverse (balanced in both 0 and 1 labels) to ensure that you're building a well rounded evaluator prompt.
+If you have a large number of examples in your experiments, you don't need to label every example to get started. We recommend starting with at least 20 examples, you can always add more later. We recommend that the examples that you label are diverse (balanced in both 0 and 1 labels) to ensure that you're building a well rounded evaluator prompt.
 </Check>
 
 ## 3. Test your evaluator prompt against the labeled examples
@@ -73,7 +73,7 @@ Once you have labeled examples, the next step is iterating on your evaluator pro
 
 To go to the evaluator playground: Click the **View evaluator** button on the top right of the evaluator queue. This will take you to the detail page of the evaluator you are aligning. Click the **Evaluator Playground** button to access the playground.
 
-<img alt="Evaluator Playground" />
+![Evaluator Playground](/langsmith/images/evaluator-pg.gif)
 
 In the evaluator playground you can create or edit your evaluator prompt and click **Start Alignment** to run it over the set of labeled examples that you created in Step 2. After running your evaluator, you'll see how its generated scores compare to your human labels. The alignment score is the percentage of examples where the evaluator's judgment matches that of the human expert.
 
@@ -82,9 +82,9 @@ In the evaluator playground you can create or edit your evaluator prompt and cli
 Iterate by updating your prompt and testing again to improve evaluator alignment.
 
 <Check>
-  Updates to your evaluator prompt are **not saved by default**. We recommend saving your evaluator prompt regularly, and especially after you see your alignment score improve.
+Updates to your evaluator prompt are **not saved by default**. We recommend saving your evaluator prompt regularly, and especially after you see your alignment score improve.
 
-  The evaluator playground will show the alignment score for the most recently saved version of your evaluator prompt for comparison when you're iterating on your prompt.
+The evaluator playground will show the alignment score for the most recently saved version of your evaluator prompt for comparison when you're iterating on your prompt.
 </Check>
 
 Improving the alignment score of your evaluator isn't an exact science but there are a few strategies that are helpful in increasing the alignment score.
@@ -103,7 +103,7 @@ To understand why the LLM scored an example the way it did, you can enable reaso
 
 In order to see the reasoning in the evaluator playground, hover over the LLM score.
 
-<img alt="Enable reasoning" />
+![Enable reasoning](/langsmith/images/enable-reasoning.gif)
 
 This will show the reasoning behind the LLM's score in the evaluator playground.
 
@@ -112,17 +112,22 @@ This will show the reasoning behind the LLM's score in the evaluator playground.
 To avoid overfitting to the labeled examples, it's important to add more labeled examples and test performance, especially if you started off with a small number of examples.
 
 ## Video guide
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/-9o94oj4x0A?si=wfv9cN3L4DalMD2e"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
-<iframe title="YouTube video player" />
+---
 
-***
-
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/improve-judge-evaluator-feedback.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

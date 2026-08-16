@@ -26,20 +26,19 @@ LangSmith 旨在随着您的工作负载水平扩展。该服务的每个实例�
 
 对于 LangSmith 管理 Postgres 数据库的部署模式，有定期备份和连续复制的备用副本以实现自动故障转移。此 Postgres 配置仅在 [Cloud deployment option](/langsmith/cloud) 中适用于 [Dedicated deployment type](/langsmith/cloud-platform-features#deployment-types)。
 
-所有与 Postgres 的通信都会针对可重试的错误实现重试。如果 Postgres 暂时不可用，例如在数据库重新启动期间，大多数/所有流量应继续成功。 Postgres 长时间故障将导致代理服务器不可用。
+所有与 Postgres 的通信都会针对可重试的错误实现重试。如果 Postgres 暂时不可用，例如在数据库重新启动期间，大多数/所有流量应继续成功。 Postgres 的长期故障将导致代理服务器不可用。
 
 ## Redis 弹性
 
 所有需要持久存储的数据都存储在 Postgres 中，而不是 Redis 中。 Redis 仅用于临时元数据以及实例之间的通信。因此我们对 Redis 没有持久性要求。所有与 Redis 的通信都会针对可重试的错误实现重试。如果 Redis 暂时不可用（例如在数据库重新启动期间），则大多数/所有流量应继续成功。 Redis 长时间故障将导致 Agent Server 不可用。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/scalability-and-resilience.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

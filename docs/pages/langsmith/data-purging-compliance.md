@@ -8,21 +8,21 @@ This guide covers the various features available after data reaches LangSmith Cl
 
 LangSmith provides automatic data retention capabilities to help with compliance and storage management. Data retention policies can be configured at two levels:
 
-* **Workspace level**: Enterprise customers with the required permissions can set extended retention as the workspace default and customize the retention duration (up to 400 days). See [Customize extended retention policy](#customize-extended-retention-policy).
-* **Project level**: Customers with the required permissions can set the default retention tier per tracing project, choosing between base (14 days) or extended retention (400 days). See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
+- **Workspace level**: Enterprise customers with the required permissions can set extended retention as the workspace default and customize the retention duration (up to 400 days). See [Customize extended retention policy](#customize-extended-retention-policy).
+- **Project level**: Customers with the required permissions can set the default retention tier per tracing project, choosing between base (14 days) or extended retention (400 days). See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
 
 For detailed information about data retention configuration and management, please refer to the [Data Retention concepts](/langsmith/usage-and-billing#data-retention) documentation.
 
 ## Customize extended retention policy
 
 <Note>
-  This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
+This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
 </Note>
 
 [Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. By default, extended retention is set to 400 days, but you can adjust this based on your organization's needs. Changes to the retention period apply to new traces only.
 
 <Note>
-  Changes to the retention period apply to new traces only. Existing traces are not affected.
+Changes to the retention period apply to new traces only. Existing traces are not affected.
 </Note>
 
 ### Configure extended retention
@@ -31,29 +31,28 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
 
 <Tabs>
   <Tab title="UI">
-    In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance):
+    In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-data-purging-compliance):
 
     1. Navigate to **Settings** at the bottom of the page.
-    2. Select **Usage configuration** from the left-hand menu.
-    3. Find the workspace in the list that you would like to configure.
-    4. Click on the value under the **Data retention policy** column for that workspace.
-    5. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations are: 30d, 60d, 90d, 120d, 150d, 180d, 240d, 300d, 365d, and 400d.
-    6. Select **Save**.
+    1. Select **Usage configuration** from the left-hand menu.
+    1. Find the workspace in the list that you would like to configure.
+    1. Click on the value under the **Data retention policy** column for that workspace.
+    1. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations are: 30d, 60d, 90d, 120d, 150d, 180d, 240d, 300d, 365d, and 400d.
+    1. Select **Save**.
   </Tab>
-
   <Tab title="API">
     To read current settings:
 
     **Organization level** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
       -H "x-api-key: YOUR_API_KEY"
     ```
 
     **Workspace level** (`workspaces:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
       -H "x-api-key: YOUR_API_KEY"
     ```
@@ -62,7 +61,7 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
 
     **Organization level** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
       -H "x-api-key: YOUR_API_KEY" \
       -H "Content-Type: application/json" \
@@ -71,7 +70,7 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
 
     **Workspace level** (`workspaces:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
       -H "x-api-key: YOUR_API_KEY" \
       -H "Content-Type: application/json" \
@@ -85,7 +84,7 @@ Organization Admins and Operators (`organization:manage`) can configure retentio
 Self-hosted [Enterprise](/langsmith/pricing-plans) customers can also use workspace-level extended retention configuration instead of system-wide TTL settings. This provides more granular control over data retention for different workspaces without requiring environment variable changes.
 
 <Warning>
-  If you use blob storage, you **must** add a lifecycle rule for each custom retention period you configure. For example, setting a workspace to 90-day retention means blob data is written to the `ttl_90d/` prefix, which requires a matching lifecycle rule to be cleaned up automatically. See [blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes) for details and examples.
+If you use blob storage, you **must** add a lifecycle rule for each custom retention period you configure. For example, setting a workspace to 90-day retention means blob data is written to the `ttl_90d/` prefix, which requires a matching lifecycle rule to be cleaned up automatically. See [blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes) for details and examples.
 </Warning>
 
 To configure this for self-hosted deployments, refer to the [self-hosted TTL documentation](/langsmith/self-host-ttl) for the legacy system-wide approach or contact [support](https://support.langchain.com).
@@ -100,7 +99,7 @@ You can use the API to complete trace deletes. The API supports two methods for 
 For more details, refer to the [API spec](/langsmith/smith-api/run/delete-runs).
 
 <Warning>
-  All trace deletions will delete related entities like feedbacks, aggregations, and stats across all data storages.
+All trace deletions will delete related entities like feedbacks, aggregations, and stats across all data storages.
 </Warning>
 
 ### Deletion timeline
@@ -112,10 +111,10 @@ Trace deletions are processed during non-peak usage times and are not instant. L
 To delete specific traces by their trace IDs from a single session:
 
 <Note>
-  The `session_id` is the project ID for the trace you are trying to delete. You can find it on the tracing project page in the LangSmith UI.
+The `session_id` is the project ID for the trace you are trying to delete. You can find it on the tracing project page in the LangSmith UI.
 </Note>
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -130,7 +129,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 You can delete dataset examples self-serve via our API, which supports both soft and hard deletion methods depending on your data retention needs.
 
 <Warning>
-  Hard deletes will permanently remove inputs, outputs, and metadata from ALL versions of the specified examples across the entire dataset history.
+Hard deletes will permanently remove inputs, outputs, and metadata from ALL versions of the specified examples across the entire dataset history.
 </Warning>
 
 ### Deleting examples is a two-step process
@@ -143,9 +142,9 @@ Find all examples with matching metadata across all datasets in a workspace.
 
 [GET /examples](/langsmith/smith-api/examples/read-examples)
 
-* `as_of` must be explicitly specified as a timestamp. Only examples created before the `as_of` date will be returned
+- `as_of` must be explicitly specified as a timestamp. Only examples created before the `as_of` date will be returned
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -X GET "https://api.smith.langchain.com/api/v1/examples?as_of=2024-01-01T00:00:00Z" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -165,9 +164,9 @@ Once you have the example IDs, send a delete request. This will zero-out the inp
 
 [POST /v1/platform/datasets/examples/delete/](/langsmith/smith-api/examples/hard-delete-examples)
 
-* Specify `example_ids` (list of example IDs) and `hard_delete` (boolean) in the request body
+- Specify `example_ids` (list of example IDs) and `hard_delete` (boolean) in the request body
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/delete/" \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
@@ -181,24 +180,23 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/dele
 
 #### Soft delete (default)
 
-* Creates tombstoned entries with NULL inputs/outputs in the dataset
-* Preserves historical data and maintains dataset versioning
-* Only affects the current version of the dataset
+- Creates tombstoned entries with NULL inputs/outputs in the dataset
+- Preserves historical data and maintains dataset versioning
+- Only affects the current version of the dataset
 
 #### Hard delete
 
-* Permanently removes inputs, outputs, and metadata from ALL dataset versions
-* Complete data removal when compliance requires zero-out across all versions
-* Set `"hard_delete": true` in the request body
+- Permanently removes inputs, outputs, and metadata from ALL dataset versions
+- Complete data removal when compliance requires zero-out across all versions
+- Set `"hard_delete": true` in the request body
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

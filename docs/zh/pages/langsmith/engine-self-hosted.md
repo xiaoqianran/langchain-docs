@@ -4,10 +4,8 @@
 
 # LangSmith 自托管引擎
 
-LangSmith 引擎如何在自托管部署中运行、它依赖于您的环境之外的什么以及它如何处理您的数据。
-
 <Info>
-  自承载引擎需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。它在早期图表版本中不可用。 [Contact your account team](https://www.langchain.com/contact-sales) 将权利添加到您的订单中。
+自承载引擎需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。它在早期图表版本中不可用。 [Contact your account team](https://www.langchain.com/contact-sales) 将权利添加到您的订单中。
 </Info>
 
 LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，将它们聚集成问题，根据源代码诊断每个问题，提出修复作为PR，并识别地面真实评估以添加到您的数据集。有关产品概述，请参阅[Engine](/langsmith/engine-overview)。
@@ -16,16 +14,16 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 
 要安装引擎，请参阅[Enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)。要将 Engine 连接到您的源代码，请按照[Connect Engine to GitHub](/langsmith/engine-github)中所述创建并配置您自己的 GitHub 应用程序。
 
-引擎处理三种数据：* **代码**（可选）**：** 您的代理的来源，引擎读取该来源以诊断问题并提出修复建议。
-* **跟踪：** 来自代理的运行时数据，其中可以包括用户消息、工具输出和 PII。
-* **模型：** LLM 调用引擎来运行诊断、生成修复程序和编写评估程序。
+引擎处理三种数据：- **代码**（可选）**：** 您的代理的来源，引擎读取该来源以诊断问题并提出修复建议。
+- **跟踪：** 来自代理的运行时数据，其中可以包括用户消息、工具输出和 PII。
+- **模型：** LLM 调用引擎来运行诊断、生成修复程序和编写评估程序。
 
 ## 按云和区域划分的可用性
 
 当 LSI 可用时，引擎可用：
 
 |云|地区 |状态 |
-| -----| ------ | --------- |
+| ---| ---| ---|
 |亚马逊AWS |美国 |可用 |
 | GCP |美国 |可用 |
 
@@ -37,10 +35,10 @@ LSI 是为引擎提供支持的LangChain 托管服务。
 
 流程：
 
-* 您的自托管引擎向其云的 LSI 网关发送 HTTPS 请求，该云在此页面的每个云部分中列出。
-* 引擎使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。您不提供单独的模型提供者凭据。
-* LSI 验证 JWT 并通过 LangChain 环境内的专用网络将请求路由到模型提供者。
-* LSI 将响应返回到您的自承载引擎。每个请求都携带引擎完成其工作所需的跟踪内容、代码和中间输出。 LSI 和模型提供者处理该内容来满足请求。
+- 您的自托管引擎向其云的 LSI 网关发送 HTTPS 请求，该云在此页面的每个云部分中列出。
+- 引擎使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。您不提供单独的模型提供者凭据。
+- LSI 验证 JWT 并通过 LangChain 环境内的专用网络将请求路由到模型提供者。
+- LSI 将响应返回到您的自承载引擎。每个请求都携带引擎完成其工作所需的跟踪内容、代码和中间输出。 LSI 和模型提供者处理该内容来满足请求。
 
 您的集群必须允许到该网关的出站 HTTPS。连接可以使用公共出口或专用连接。在 AWS 上，请遵循 [Connect with AWS PrivateLink](#connect-with-aws-privatelink) 将引擎流量保持在专用网络上。
 
@@ -50,8 +48,8 @@ LSI 是为引擎提供支持的LangChain 托管服务。
 
 LSI 不会保留提示或模型响应的内容。它保留以下元数据用于使用归因和计费：
 
-* 用于归因使用情况的帐户、工作区和项目标识符。
-* 用于计费的模型和令牌使用元数据。
+- 用于归因使用情况的帐户、工作区和项目标识符。
+- 用于计费的模型和令牌使用元数据。
 
 有关模型提供商的保留和培训承诺，请参阅[Engine security](/langsmith/engine-security)。
 
@@ -78,10 +76,10 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
     为包含您的 VPC 的区域配置 AWS 提供商。将 `service_region` 设置为 `us-east-2`，包括当您的 VPC 位于其他区域时。每个可用区选择一个私有子网。
 
     <Note>
-      `service_region` 参数需要 HashiCorp AWS 提供商 `5.82.0` 或更高版本。
+    `service_region` 参数需要 HashiCorp AWS 提供商 `5.82.0` 或更高版本。
     </Note>
 
-    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```hcl
     resource "aws_vpc_endpoint" "langsmith_intelligence" {
       vpc_id              = var.vpc_id
       service_name        = "com.amazonaws.vpce.us-east-2.vpce-svc-054f37092752bff6b"
@@ -99,7 +97,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
   <Step title="Route the LSI hostname to the endpoint">
     为您的 VPC 启用 DNS 解析和 DNS 主机名。然后，创建 Route 53 私有托管区域和别名记录，以便 `beacon.aws.langchain.com` 解析为 VPC 内的 VPC 终端节点。保持此主机名不变，以便 TLS 证书验证成功。当端点不可用时，私有托管区域还可以防止回退到公共 DNS。
 
-    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```hcl
     resource "aws_route53_zone" "langsmith_intelligence" {
       name = "beacon.aws.langchain.com"
 
@@ -127,7 +125,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
   <Step title="Verify private connectivity">
     从运行引擎的节点或容器中，解析网关主机名：
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash
     getent ahostsv4 beacon.aws.langchain.com
     ```
 
@@ -135,18 +133,24 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
   </Step>
 </Steps>
 
-<Frame>
-  <img alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment." />
+<Frame caption="AWS: LangSmith and Engine run in your VPC; LSI and Bedrock run in LangChain's AWS environment.">
+  <img
+    src="/langsmith/images/engine-self-hosted-aws.png"
+    alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment."
+  />
 </Frame>### GCP（在美国提供）
 
 网关主机是[⟦T15⟧](/langsmith/deploy-self-hosted-full-platform#allow-egress-to-langsmith-intelligence)。 LSI 将请求路由到 LangChain 的 GCP 环境中的 Vertex。
 
 <Note>
-  这与自托管 LangSmith 用于许可证验证和计费遥测的主机相同，因此 GCP 部署添加了一条路径，而不是新的出口目的地。参见[Configure egress](/langsmith/self-host-egress)。
+这与自托管 LangSmith 用于许可证验证和计费遥测的主机相同，因此 GCP 部署添加了一条路径，而不是新的出口目的地。参见[Configure egress](/langsmith/self-host-egress)。
 </Note>
 
-<Frame>
-  <img alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment." />
+<Frame caption="GCP: LangSmith and Engine run in your project; LSI and Vertex run in LangChain's GCP environment.">
+  <img
+    src="/langsmith/images/engine-self-hosted-gcp.png"
+    alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment."
+  />
 </Frame>
 
 ## 型号选择和质量
@@ -157,26 +161,25 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 ## 引擎处理数据的地方
 
-在自托管部署中，引擎将您的环境和 LangChain 之间的数据处理分开：* **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
-* **LangChain的环境：** LSI和模型提供者处理Engine发送的内容。 LSI 保留上述计费元数据。
+在自托管部署中，引擎将您的环境和 LangChain 之间的数据处理分开：- **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
+- **LangChain的环境：** LSI和模型提供者处理Engine发送的内容。 LSI 保留上述计费元数据。
 
 [Engine security](/langsmith/engine-security) 中描述了引擎独立于部署的数据处理，包括每个模型提供商的零数据保留以及不使用客户数据来训练或微调模型。
 
 ## 另请参阅
 
-* [Engine](/langsmith/engine-overview)
-* [Configure Engine](/langsmith/engine)
-* [Engine security](/langsmith/engine-security)
-* [Engine webhooks](/langsmith/engine-webhooks)
+- [Engine](/langsmith/engine-overview)
+- [Configure Engine](/langsmith/engine)
+- [Engine security](/langsmith/engine-security)
+- [Engine webhooks](/langsmith/engine-webhooks)
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

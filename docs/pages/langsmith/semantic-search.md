@@ -6,58 +6,58 @@ Semantic search lets your agent recall stored memories and documents by meaning 
 
 ## Prerequisites
 
-* A deployment (refer to [how to set up an application for deployment](/langsmith/setup-app-requirements-txt)) and details on [hosting options](/langsmith/platform-setup).
-* API keys for your embedding provider (in this case, OpenAI).
-* `langchain >= 0.3.8` (if you specify using the string format in this guide).
+- A deployment (refer to [how to set up an application for deployment](/langsmith/setup-app-requirements-txt)) and details on [hosting options](/langsmith/platform-setup).
+- API keys for your embedding provider (in this case, OpenAI).
+- `langchain >= 0.3.8` (if you specify using the string format in this guide).
 
 ## Steps
 
 1. Update your [`langgraph.json` configuration file](/langsmith/application-structure#configuration-file) to include the store configuration:
 
-   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   {
-       ...
-       "store": {
-           "index": {
-               "embed": "openai:text-embedding-3-small",
-               "dims": 1536,
-               "fields": ["$"]
-           }
-       }
-   }
-   ```
+    ```json
+    {
+        ...
+        "store": {
+            "index": {
+                "embed": "openai:text-embedding-3-small",
+                "dims": 1536,
+                "fields": ["$"]
+            }
+        }
+    }
+    ```
 
-   This configuration:
+    This configuration:
 
-   * Uses OpenAI's text-embedding-3-small model for generating embeddings.
-   * Sets the embedding dimension to 1536 (matching the model's output).
-   * Indexes all fields in your stored data (`["$"]` means index everything, or specify specific fields like `["text", "metadata.title"]`).
+    - Uses OpenAI's text-embedding-3-small model for generating embeddings.
+    - Sets the embedding dimension to 1536 (matching the model's output).
+    - Indexes all fields in your stored data (`["$"]` means index everything, or specify specific fields like `["text", "metadata.title"]`).
 
-   <Note>
-     Each deployment supports a single embedding model. LangSmith does not support configuring multiple embedding models, because it would cause ambiguity in `/store` endpoints and result in mixed-index issues.
-   </Note>
+    <Note>
+    Each deployment supports a single embedding model. LangSmith does not support configuring multiple embedding models, because it would cause ambiguity in `/store` endpoints and result in mixed-index issues.
+    </Note>
 
-2. To use the string embedding format, make sure your dependencies include `langchain >= 0.3.8`:
+1. To use the string embedding format, make sure your dependencies include `langchain >= 0.3.8`:
 
-   ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   # In pyproject.toml
-   [project]
-   dependencies = [
-       "langchain>=0.3.8"
-   ]
-   ```
+    ```toml
+    # In pyproject.toml
+    [project]
+    dependencies = [
+        "langchain>=0.3.8"
+    ]
+    ```
 
-   Or, if using [requirements.txt](/langsmith/setup-app-requirements-txt):
+    Or, if using [requirements.txt](/langsmith/setup-app-requirements-txt):
 
-   ```
-   langchain>=0.3.8
-   ```
+    ```
+    langchain>=0.3.8
+    ```
 
 ## Usage
 
 Once configured, you can use semantic search in your [nodes](/oss/python/langgraph/graph-api#nodes). The store requires a namespace tuple to organize memories:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 async def search_memory(state: State, *, store: BaseStore):
     # Search the store using semantic similarity
     # The namespace tuple helps organize different types of memories
@@ -72,7 +72,7 @@ async def search_memory(state: State, *, store: BaseStore):
 
 Each result is a `SearchItem` (extends `Item` with an additional `score` field). When semantic search is configured, `score` contains the similarity score:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 results[0].key       # "07e0caf4-1631-47b7-b15f-65515d4c1843"
 results[0].value     # {"text": "User prefers dark mode"}
 results[0].namespace # ("memory", "facts")
@@ -82,14 +82,14 @@ results[0].score     # 0.92 (similarity score, present when semantic search is c
 ### Changing your embedding model
 
 <Warning>
-  Changing the embedding model or dimensions requires re-embedding all existing data. There is no automated migration tooling for this. Plan accordingly if you need to switch models.
+Changing the embedding model or dimensions requires re-embedding all existing data. There is no automated migration tooling for this. Plan accordingly if you need to switch models.
 </Warning>
 
 ## Custom embeddings
 
 If you want to use custom embeddings, you can pass a path to a custom embedding function:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
     ...
     "store": {
@@ -104,7 +104,7 @@ If you want to use custom embeddings, you can pass a path to a custom embedding 
 
 The deployment will look for the function in the specified path. The function must be async and accept a list of strings:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # path/to/embedding_function.py
 from openai import AsyncOpenAI
 
@@ -127,7 +127,7 @@ async def aembed_texts(texts: list[str]) -> list[list[float]]:
 
 You can also query the store using the [LangGraph SDK](/langsmith/langgraph-python-sdk). Since the SDK uses async operations:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langgraph_sdk import get_client
 
 async def search_store():
@@ -145,21 +145,20 @@ results = await search_store()
 
 Each result item includes a `score` field when semantic search is configured:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 results["items"][0]["key"]       # "07e0caf4-1631-47b7-b15f-65515d4c1843"
 results["items"][0]["value"]     # {"text": "User prefers dark mode"}
 results["items"][0]["namespace"] # ["memory", "facts"]
 results["items"][0]["score"]     # 0.92 (similarity score)
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

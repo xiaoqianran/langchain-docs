@@ -2,52 +2,68 @@
 
 # How to compare experiment results
 
-When you are iterating on your LLM application (such as changing the model or the prompt), you may want to compare the results of different [*experiments*](/langsmith/evaluation-concepts#experiment).
+When you are iterating on your LLM application (such as changing the model or the prompt), you may want to compare the results of different [_experiments_](/langsmith/evaluation-concepts#experiment).
 
 LangSmith supports a comparison view that lets you identify key differences, regressions, and improvements between different experiments.
 
 ## Open the comparison view
 
 1. To access the experiment comparison view, navigate to the **Datasets & Experiments** page.
-2. Select a dataset, which will open the **Experiments** tab.
-3. Select two or more experiments and then click **Compare**.
+1. Select a dataset, which will open the **Experiments** tab.
+1. Select two or more experiments and then click **Compare**.
 
-<div>
-  <img alt="The Experiments view in the UI with 3 experiments selected and the Compare button highlighted, in light mode." />
+<div style={{ textAlign: 'center' }}>
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/compare-select-light.png"
+    alt="The Experiments view in the UI with 3 experiments selected and the Compare button highlighted, in light mode."
+/>
 
-  <img alt="The Experiments view in the UI with 3 experiments selected and the Compare button highlighted, in dark mode." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/compare-select-dark.png"
+    alt="The Experiments view in the UI with 3 experiments selected and the Compare button highlighted, in dark mode."
+/>
 </div>
 
 ## Adjust the table display
 
 You can toggle between different display options on the top right of the comparison view.
 
-<img alt="Table display options, in light mode." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/comparison-table-display-options-light.png"
+    alt="Table display options, in light mode."
+/>
 
-<img alt="Table display options, in dark mode." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/comparison-table-display-options-dark.png"
+    alt="Table display options, in dark mode."
+/>
 
 ### Filters
 
-Click the <Icon icon="filter-2" /> icon to apply filters to the comparison view to narrow down specific examples. Common examples for filters include:
+Click the <Icon icon="filter-2"/> icon to apply filters to the comparison view to narrow down specific examples. Common examples for filters include:
 
-* Examples that contain specific `input` / `output`.
-* Runs with status `success` or `error`.
-* Runs that take more than x seconds in `latency`.
-* Specific `metadata`, `tag`, or `feedback`.
+- Examples that contain specific `input` / `output`.
+- Runs with status `success` or `error`.
+- Runs that take more than x seconds in `latency`.
+- Specific `metadata`, `tag`, or `feedback`.
 
-In addition to applying filters on the overall experiment view, you can apply filters on individual columns as well. Select the <Icon icon="dots-vertical" /> icon at the top of any column to view the available filters for that column's data.
+In addition to applying filters on the overall experiment view, you can apply filters on individual columns as well. Select the <Icon icon="dots-vertical"/> icon at the top of any column to view the available filters for that column's data.
 
 ### Columns
 
-Click the <Icon icon="columns-3" /> icon to show or hide individual feedback keys or metrics in the comparison view.
+Click the <Icon icon="columns-3"/> icon to show or hide individual feedback keys or metrics in the comparison view.
 
 ### Table views
 
 Select one of three table view icons at the top right of the comparison view:
 
-* **Compact**: Shows a preview of the experiment results for each example.
-* **Full**: Shows the full text of the input, output, and reference output for each run. If the output is too long to display in the table, you can click **Expand** to view the full content.
-* **Diff**: Shows the text difference between experiment outputs for each run. This is only supported for 2 experiments at a time. See [View side-by-side diffs](#view-side-by-side-diffs) for more details.
+- **Compact**: Shows a preview of the experiment results for each example.
+- **Full**: Shows the full text of the input, output, and reference output for each run. If the output is too long to display in the table, you can click **Expand** to view the full content.
+- **Diff**: Shows the text difference between experiment outputs for each run. This is only supported for 2 experiments at a time. See [View side-by-side diffs](#view-side-by-side-diffs) for more details.
 
 ### Display types
 
@@ -59,18 +75,35 @@ In the comparison view, red highlights runs that *regressed* on any feedback key
 
 Click the regression or improvement buttons at the top of each column to show only runs that regressed or improved in that experiment.
 
-<img alt="The comparison view comparing 4 experiments with the regressions and improvements in red and green respectively." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/regression-view-light.png"
+    alt="The comparison view comparing 4 experiments with the regressions and improvements in red and green respectively."
+/>
 
-<img alt="The comparison view comparing 4 experiments with the regressions and improvements in red and green respectively." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/regression-view-dark.png"
+    alt="The comparison view comparing 4 experiments with the regressions and improvements in red and green respectively."
+/>
 
 ## View side-by-side diffs
 
 When comparing two experiments, for JSON and YAML display styles, you can toggle on the experiment diff mode to compare experiment outputs. The diff mode highlights modifications between outputs, and can be particularly useful for structured output comparisons.
 
-<div>
-  <img alt="The comparison diff mode in light." />
 
-  <img alt="The comparison diff mode in dark." />
+<div style={{ textAlign: 'center' }}>
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/comparison-diff-view-light.png"
+    alt="The comparison diff mode in light."
+/>
+
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/comparison-diff-view-dark.png"
+    alt="The comparison diff mode in dark."
+/>
 </div>
 
 ## Update source experiment and metric
@@ -79,15 +112,33 @@ To track regressions across experiments, you can:
 
 1. At the top of the comparison view, hover over an experiment icon and select **Set as source experiment** from the dropdown. You can also add or remove experiments from this dropdown. By default, the first selected experiment is set as the source.
 
-   <img alt="Setting a source experiment from the experiment icons at the top of the Comparison view." />
+    <img
+        className="block dark:hidden"
+        src="/langsmith/images/set-source-experiment-light.png"
+        alt="Setting a source experiment from the experiment icons at the top of the Comparison view."
+    />
 
-   <img alt="Setting a source experiment from the experiment icons at the top of the Comparison view." />
+    <img
+        className="hidden dark:block"
+        src="/langsmith/images/set-source-experiment-dark.png"
+        alt="Setting a source experiment from the experiment icons at the top of the Comparison view."
+    />
 
-2. Within the **Feedback** columns, you can configure whether a higher score is better for each feedback key. This preference will be stored. By default, a higher score is assumed to be better.
 
-   <img alt="Dropdown for feedback metric column, configuring whether a higher score is better, in light mode." />
+1. Within the **Feedback** columns, you can configure whether a higher score is better for each feedback key. This preference will be stored. By default, a higher score is assumed to be better.
 
-   <img alt="Dropdown for feedback metric column, configuring whether a higher score is better, in dark mode." />
+
+    <img
+        className="block dark:hidden"
+        src="/langsmith/images/comparison-feedback-score-light.png"
+        alt="Dropdown for feedback metric column, configuring whether a higher score is better, in light mode."
+    />
+
+    <img
+        className="hidden dark:block"
+        src="/langsmith/images/comparison-feedback-score-dark.png"
+        alt="Dropdown for feedback metric column, configuring whether a higher score is better, in dark mode."
+    />
 
 ## Expand details panel
 
@@ -95,17 +146,33 @@ Click on any row to open a details panel for that example for the compared exper
 
 Use the toggle in the top right of the panel to switch between two modes:
 
-* **Details**: Shows feedback keys and scores, along with a metrics summary for the example, as well as the input, output, and reference output, and attributes for each experiment.
+- **Details**: Shows feedback keys and scores, along with a metrics summary for the example, as well as the input, output, and reference output, and attributes for each experiment.
 
-  <img alt="An example in the expanded Comparing Experiments view, in light mode." />
+    <img
+        className="block dark:hidden"
+        src="/langsmith/images/expanded-view-details-light.png"
+        alt="An example in the expanded Comparing Experiments view, in light mode."
+    />
 
-  <img alt="An example in the expanded Comparing Experiments view, in dark mode." />
+    <img
+        className="hidden dark:block"
+        src="/langsmith/images/expanded-view-details-dark.png"
+        alt="An example in the expanded Comparing Experiments view, in dark mode."
+    />
 
-* **Traces**: Shows traces for each experiment side by side.
+- **Traces**: Shows traces for each experiment side by side.
 
-  <img alt="An example in the expanded Comparing Experiments view, in light mode." />
+    <img
+        className="block dark:hidden"
+        src="/langsmith/images/expanded-view-traces-light.png"
+        alt="An example in the expanded Comparing Experiments view, in light mode."
+    />
 
-  <img alt="An example in the expanded Comparing Experiments view, in dark mode." />
+    <img
+        className="hidden dark:block"
+        src="/langsmith/images/expanded-view-traces-dark.png"
+        alt="An example in the expanded Comparing Experiments view, in dark mode."
+    />
 
 When comparing more than two experiments, the panel displays two experiments at a time. Use the header to switch which experiment you are comparing against.
 
@@ -115,18 +182,25 @@ You can configure the x-axis labels for the charts based on [experiment metadata
 
 Select a metadata key from the **Charts** dropdown at the top-right of the comparison view to change the x-axis labels.
 
-<img alt="x-axis dropdown highlighted with a list of the metadata attached to the experiment, in light mode." />
+<img
+    className="block dark:hidden"
+    src="/langsmith/images/metadata-in-charts-light.png"
+    alt="x-axis dropdown highlighted with a list of the metadata attached to the experiment, in light mode."
+/>
 
-<img alt="x-axis dropdown highlighted with a list of the metadata attached to the experiment, in dark mode." />
+<img
+    className="hidden dark:block"
+    src="/langsmith/images/metadata-in-charts-dark.png"
+    alt="x-axis dropdown highlighted with a list of the metadata attached to the experiment, in dark mode."
+/>
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/compare-experiment-results.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

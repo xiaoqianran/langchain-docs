@@ -5,9 +5,9 @@
 # 删除工作区
 
 <Note>
-  LangSmith 自托管 v0.10 中 **nativley 支持删除工作区**。查看[instructions for deleting a workspace](/langsmith/set-up-hierarchy#delete-a-workspace)。
+**LangSmith 自托管 v0.10** 原生支持删除工作区。查看[instructions for deleting a workspace](/langsmith/set-up-hierarchy#delete-a-workspace)。
 
-  对于 v0.10 之前的自托管版本，请遵循以下指南。
+对于 v0.10 之前的自托管版本，请遵循以下指南。
 </Note>
 
 LangSmith UI 目前不支持从组织中删除单个工作区。不过，这可以通过直接从 ClickHouse 中的所有物化视图（runs\_history 视图除外）以及运行和反馈表中删除所有跟踪，然后从 Postgres 租户表中删除工作区来实现。
@@ -65,24 +65,23 @@ LangSmith UI 目前不支持从组织中删除单个工作区。不过，这可�
 
 运行以下命令来运行工作区删除脚本：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh delete_workspace.sh <postgres_url> <clickhouse_url> --workspace_id <workspace_id>
 ```例如，如果您使用带有端口转发的捆绑版本，则命令将如下所示：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 sh delete_workspace.sh "postgres://postgres:postgres@localhost:5432/postgres" "clickhouse://default:password@localhost:8123/default" --workspace_id 4ec70ec7-0808-416a-b836-7100aeec934b
 ```
 
-如果您访问 LangSmith UI，您现在应该看到工作区已被删除。
+如果您访问 LangSmith UI，您现在应该看到工作区已删除。
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-a-workspace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

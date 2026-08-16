@@ -2,12 +2,10 @@
 
 # Run evals with openevals package
 
-Run evaluations using the open-source openevals and agentevals packages with LangSmith.
-
 LangSmith integrates with the open-source `openevals` package to provide a suite of evaluation utilities and prompts that you can use as starting points for evaluation.
 
 <Note>
-  This how-to guide will demonstrate how to set up and run one type of evaluator (LLM-as-a-judge). For a complete list of evaluation utilities and prompts with usage examples, refer to the [openevals](https://github.com/langchain-ai/openevals) and [agentevals](https://github.com/langchain-ai/agentevals) repos.
+This how-to guide will demonstrate how to set up and run one type of evaluator (LLM-as-a-judge). For a complete list of evaluation utilities and prompts with usage examples, refer to the [openevals](https://github.com/langchain-ai/openevals) and [agentevals](https://github.com/langchain-ai/agentevals) repos.
 </Note>
 
 ## Setup
@@ -15,18 +13,20 @@ LangSmith integrates with the open-source `openevals` package to provide a suite
 You'll need to install the `openevals` package to use the LLM-as-a-judge evaluator.
 
 <CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U openevals
-  ```
 
-  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add openevals @langchain/core
-  ```
+```bash Python
+pip install -U openevals
+```
+
+```bash TypeScript
+yarn add openevals @langchain/core
+```
+
 </CodeGroup>
 
 You'll also need to set your OpenAI API key as an environment variable, though you can choose different providers too:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 export OPENAI_API_KEY="your_openai_api_key"
 ```
 
@@ -41,134 +41,137 @@ Note that not all evaluators will require each parameter (the exact match evalua
 Set up your test file like this:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import pytest
-  from langsmith import testing as t
-  from openevals.llm import create_llm_as_judge
-  from openevals.prompts import CORRECTNESS_PROMPT
 
-  correctness_evaluator = create_llm_as_judge(
-      prompt=CORRECTNESS_PROMPT,
-      feedback_key="correctness",
-      model="openai:o3-mini",
-  )
+```python Python
+import pytest
+from langsmith import testing as t
+from openevals.llm import create_llm_as_judge
+from openevals.prompts import CORRECTNESS_PROMPT
 
-  # Mock standin for your application
-  def my_llm_app(inputs: dict) -> str:
-      return "Doodads have increased in price by 10% in the past year."
+correctness_evaluator = create_llm_as_judge(
+    prompt=CORRECTNESS_PROMPT,
+    feedback_key="correctness",
+    model="openai:o3-mini",
+)
 
-  @pytest.mark.langsmith
-  def test_correctness():
-      inputs = "How much has the price of doodads changed in the past year?"
-      reference_outputs = "The price of doodads has decreased by 50% in the past year."
-      outputs = my_llm_app(inputs)
+# Mock standin for your application
+def my_llm_app(inputs: dict) -> str:
+    return "Doodads have increased in price by 10% in the past year."
 
-      t.log_inputs({"question": inputs})
-      t.log_outputs({"answer": outputs})
-      t.log_reference_outputs({"answer": reference_outputs})
+@pytest.mark.langsmith
+def test_correctness():
+    inputs = "How much has the price of doodads changed in the past year?"
+    reference_outputs = "The price of doodads has decreased by 50% in the past year."
+    outputs = my_llm_app(inputs)
 
-      correctness_evaluator(
-          inputs=inputs,
-          outputs=outputs,
-          reference_outputs=reference_outputs
-      )
-  ```
+    t.log_inputs({"question": inputs})
+    t.log_outputs({"answer": outputs})
+    t.log_reference_outputs({"answer": reference_outputs})
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as ls from "langsmith/vitest";
-  // import * as ls from "langsmith/jest";
-  import { createLLMAsJudge, CORRECTNESS_PROMPT } from "openevals";
+    correctness_evaluator(
+        inputs=inputs,
+        outputs=outputs,
+        reference_outputs=reference_outputs
+    )
+```
 
-  const correctnessEvaluator = createLLMAsJudge({
-      prompt: CORRECTNESS_PROMPT,
-      feedbackKey: "correctness",
-      model: "openai:o3-mini",
-  });
+```typescript TypeScript
+import * as ls from "langsmith/vitest";
+// import * as ls from "langsmith/jest";
+import { createLLMAsJudge, CORRECTNESS_PROMPT } from "openevals";
 
-  // Mock standin for your application
-  const myLLMApp = async (_inputs: Record<string, unknown>) => {
-      return "Doodads have increased in price by 10% in the past year.";
-  };
+const correctnessEvaluator = createLLMAsJudge({
+    prompt: CORRECTNESS_PROMPT,
+    feedbackKey: "correctness",
+    model: "openai:o3-mini",
+});
 
-  ls.describe("Correctness", () => {
-      ls.test("incorrect answer", {
-          inputs: {
-              question: "How much has the price of doodads changed in the past year?"
-          },
-          referenceOutputs: {
-              answer: "The price of doodads has decreased by 50% in the past year."
-          }
-      }, async ({ inputs, referenceOutputs }) => {
-          const outputs = await myLLMApp(inputs);
-          ls.logOutputs({ answer: outputs });
-          await correctnessEvaluator({
-              inputs,
-              outputs,
-              referenceOutputs,
-          });
-      });
-  });
-  ```
+// Mock standin for your application
+const myLLMApp = async (_inputs: Record<string, unknown>) => {
+    return "Doodads have increased in price by 10% in the past year.";
+};
+
+ls.describe("Correctness", () => {
+    ls.test("incorrect answer", {
+        inputs: {
+            question: "How much has the price of doodads changed in the past year?"
+        },
+        referenceOutputs: {
+            answer: "The price of doodads has decreased by 50% in the past year."
+        }
+    }, async ({ inputs, referenceOutputs }) => {
+        const outputs = await myLLMApp(inputs);
+        ls.logOutputs({ answer: outputs });
+        await correctnessEvaluator({
+            inputs,
+            outputs,
+            referenceOutputs,
+        });
+    });
+});
+```
+
 </CodeGroup>
 
 The `feedback_key`/`feedbackKey` parameter will be used as the name of the feedback in your experiment.
 
 Running the eval in your terminal will result in something like the following:
 
-<img alt="Prebuilt evaluator terminal result" />
+![Prebuilt evaluator terminal result](/langsmith/images/prebuilt-eval-result.png)
 
 You can also pass evaluators directly into the `evaluate` method if you have already created a dataset in LangSmith. If using Python, this requires `langsmith>=0.3.11`:
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  from openevals.llm import create_llm_as_judge
-  from openevals.prompts import CONCISENESS_PROMPT
 
-  client = Client()
-  conciseness_evaluator = create_llm_as_judge(
-      prompt=CONCISENESS_PROMPT,
-      feedback_key="conciseness",
-      model="openai:o3-mini",
-  )
+```python Python
+from langsmith import Client
+from openevals.llm import create_llm_as_judge
+from openevals.prompts import CONCISENESS_PROMPT
 
-  experiment_results = client.evaluate(
-      # This is a dummy target function, replace with your actual LLM-based system
-      lambda inputs: "What color is the sky?",
-      data="Sample dataset",
-      evaluators=[
-          conciseness_evaluator
-      ]
-  )
-  ```
+client = Client()
+conciseness_evaluator = create_llm_as_judge(
+    prompt=CONCISENESS_PROMPT,
+    feedback_key="conciseness",
+    model="openai:o3-mini",
+)
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
-  import { createLLMAsJudge, CONCISENESS_PROMPT } from "openevals";
+experiment_results = client.evaluate(
+    # This is a dummy target function, replace with your actual LLM-based system
+    lambda inputs: "What color is the sky?",
+    data="Sample dataset",
+    evaluators=[
+        conciseness_evaluator
+    ]
+)
+```
 
-  const concisenessEvaluator = createLLMAsJudge({
-      prompt: CONCISENESS_PROMPT,
-      feedbackKey: "conciseness",
-      model: "openai:o3-mini",
-  });
+```typescript TypeScript
+import { evaluate } from "langsmith/evaluation";
+import { createLLMAsJudge, CONCISENESS_PROMPT } from "openevals";
 
-  await evaluate((inputs) => "What color is the sky?", {
-      data: datasetName,
-      evaluators: [concisenessEvaluator],
-  });
-  ```
+const concisenessEvaluator = createLLMAsJudge({
+    prompt: CONCISENESS_PROMPT,
+    feedbackKey: "conciseness",
+    model: "openai:o3-mini",
+});
+
+await evaluate((inputs) => "What color is the sky?", {
+    data: datasetName,
+    evaluators: [concisenessEvaluator],
+});
+```
+
 </CodeGroup>
 
 For a complete list of available evaluation utilities and prompts, see the [openevals](https://github.com/langchain-ai/openevals) and [agentevals](https://github.com/langchain-ai/agentevals) repos.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/openevals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

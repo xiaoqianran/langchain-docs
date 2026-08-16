@@ -2,23 +2,23 @@
 
 <!-- langchain-docs: Configure your collector for LangSmith telemetry | https://docs.langchain.com/langsmith/langsmith-collector -->
 
-# 配置您的收集器以进行 LangSmith 遥测
+# 配置您的收集器以进行LangSmith遥测
 
 LangSmith 部署中的各种服务以日志、指标和跟踪的形式发出遥测数据。您可能已经在 Kubernetes 集群中设置了遥测收集器，或者想要部署一个来监控您的应用程序。
 
 本页介绍如何配置 [OTel Collector](https://opentelemetry.io/docs/collector/configuration/) 以从 LangSmith 收集遥测数据。请注意，下面讨论的所有概念都可以转换为其他收集器，例如[Fluentd](https://www.fluentd.org/)或[FluentBit](https://fluentbit.io/)。
 
 <Warning>
-  **本节仅适用于 Kubernetes 部署。**
+**本节仅适用于 Kubernetes 部署。**
 </Warning>
 
 # 接收器
 
 ## 日志
 
-这是 ***Sidecar*** 收集器从其自己的 Pod 读取日志的示例，不包括来自非特定域容器的日志。 Sidecar 配置在这里很有用，因为我们需要访问每个容器的文件系统。也可以使用 DaemonSet。
+这是一个 ***Sidecar*** 收集器从其自己的 Pod 读取日志的示例，不包括来自非特定域容器的日志。 Sidecar 配置在这里很有用，因为我们需要访问每个容器的文件系统。也可以使用 DaemonSet。
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 filelog:
   exclude:
     - "**/otc-container/*.log"
@@ -56,12 +56,12 @@ volumeMounts:
 ```
 
 <Info>
-  **此配置需要对给定命名空间中的 pod 具有“get”、“list”和“watch”权限。**
+**此配置需要对给定命名空间中的 pod 具有“get”、“list”和“watch”权限。**
 </Info>
 
 ## 指标可以使用 Prometheus 端点来抓取指标。单实例***Gateway***收集器可用于避免在获取指标时重复查询。以下配置会抓取所有默认命名的 LangSmith 服务：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 prometheus:
   config:
     scrape_configs:
@@ -93,14 +93,14 @@ prometheus:
 ```
 
 <Info>
-  **此配置需要对给定命名空间中的 pod、服务和端点具有“get”、“list”和“watch”权限。**
+**此配置需要对给定命名空间中的 pod、服务和端点具有“get”、“list”和“watch”权限。**
 </Info>
 
 ### 痕迹
 
 对于跟踪，您需要启用 OTLP 接收器。以下配置可用于侦听端口 4318 上的 HTTP 跟踪和端口 4317 上的 GRPC：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 otlp:
   protocols:
     grpc:
@@ -123,7 +123,7 @@ otlp:
 
 导出器只需指向您喜欢的外部端点。以下配置允许您为日志、指标和跟踪配置单独的端点：
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 otlphttp/logs:
   endpoint: <your_logs_endpoint>
 otlphttp/metrics:
@@ -131,12 +131,12 @@ otlphttp/metrics:
 otlphttp/traces:
   endpoint: <your_traces_endpoint>
 ```<Note>
-  **OTel Collector 还支持直接导出到 [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) 端点。**
+**OTel Collector 还支持直接导出到 [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) 端点。**
 </Note>
 
 # 收集器配置示例：日志 sidecar
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 mode: sidecar
 image: otel/opentelemetry-collector-contrib
 config:
@@ -196,7 +196,7 @@ volumeMounts:
 
 # 收集器配置示例：指标和跟踪网关
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```yaml
 mode: deployment
 image: otel/opentelemetry-collector-contrib
 config:
@@ -260,14 +260,13 @@ config:
         exporters: [otlphttp/traces]
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
+</Callout>
 </div>

@@ -12,7 +12,7 @@ Compared to the standard evaluation flow, this is useful when:
 * **You already use pytest to test your app**: Add LangSmith tracking to existing pytest workflows
 
 <Info>
-  The JS/TS SDK has an analogous [Vitest/Jest integration](/langsmith/vitest-jest).
+The JS/TS SDK has an analogous [Vitest/Jest integration](/langsmith/vitest-jest).
 </Info>
 
 ## Installation
@@ -22,13 +22,13 @@ This functionality requires Python SDK version `langsmith>=0.3.4`.
 For extra features like [rich terminal outputs](#rich-outputs) and [test caching](#caching) install:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langsmith[pytest]"
-  ```
+```bash pip
+pip install -U "langsmith[pytest]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[pytest]"
-  ```
+```bash uv
+uv add "langsmith[pytest]"
+```
 </CodeGroup>
 
 ## Define and run tests
@@ -38,58 +38,60 @@ The pytest integration lets you define datasets and evaluators as test cases.
 To track a test in LangSmith add the `@pytest.mark.langsmith` decorator. Every decorated test case will be synced to a dataset example. When you run the test suite, the dataset will be updated and a new experiment will be created with one result for each test case.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ###################### my_app/main.py ######################
-  import openai
-  from langsmith import traceable, wrappers
 
-  oai_client = wrappers.wrap_openai(openai.OpenAI())
+```python Python
+###################### my_app/main.py ######################
+import openai
+from langsmith import traceable, wrappers
 
-  @traceable
-  def generate_sql(user_query: str) -> str:
-      result = oai_client.chat.completions.create(
-          model="gpt-5.4-mini",
-          messages=[
-              {"role": "system", "content": "Convert the user query to a SQL query."},
-              {"role": "user", "content": user_query},
-          ],
-      )
-      return result.choices[0].message.content
+oai_client = wrappers.wrap_openai(openai.OpenAI())
 
-  ###################### tests/test_my_app.py ######################
-  import pytest
-  from langsmith import testing as t
+@traceable
+def generate_sql(user_query: str) -> str:
+    result = oai_client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[
+            {"role": "system", "content": "Convert the user query to a SQL query."},
+            {"role": "user", "content": user_query},
+        ],
+    )
+    return result.choices[0].message.content
 
-  def is_valid_sql(query: str) -> bool:
-      """Return True if the query is valid SQL."""
-      return True  # Dummy implementation
+###################### tests/test_my_app.py ######################
+import pytest
+from langsmith import testing as t
 
-  @pytest.mark.langsmith  # <-- Mark as a LangSmith test case
-  def test_sql_generation_select_all() -> None:
-      user_query = "Get all users from the customers table"
-      t.log_inputs({"user_query": user_query})  # <-- Log example inputs, optional
-      expected = "SELECT * FROM customers;"
-      t.log_reference_outputs({"sql": expected})  # <-- Log example reference outputs, optional
+def is_valid_sql(query: str) -> bool:
+    """Return True if the query is valid SQL."""
+    return True  # Dummy implementation
 
-      sql = generate_sql(user_query)
-      t.log_outputs({"sql": sql})  # <-- Log run outputs, optional
+@pytest.mark.langsmith  # <-- Mark as a LangSmith test case
+def test_sql_generation_select_all() -> None:
+    user_query = "Get all users from the customers table"
+    t.log_inputs({"user_query": user_query})  # <-- Log example inputs, optional
+    expected = "SELECT * FROM customers;"
+    t.log_reference_outputs({"sql": expected})  # <-- Log example reference outputs, optional
 
-      t.log_feedback(key="valid_sql", score=is_valid_sql(sql))  # <-- Log feedback, optional
-      assert sql == expected  # <-- Test pass/fail status automatically logged to LangSmith under 'pass' feedback key
-  ```
+    sql = generate_sql(user_query)
+    t.log_outputs({"sql": sql})  # <-- Log run outputs, optional
+
+    t.log_feedback(key="valid_sql", score=is_valid_sql(sql))  # <-- Log feedback, optional
+    assert sql == expected  # <-- Test pass/fail status automatically logged to LangSmith under 'pass' feedback key
+```
+
 </CodeGroup>
 
 When you run this test it will have a default `pass` boolean feedback key based on the test case passing / failing. It will also track any inputs, outputs, and reference (expected) outputs that you log.
 
 Use `pytest` as you normally would to run the tests:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pytest tests/
 ```
 
 In most cases we recommend setting a test suite name:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_TEST_SUITE='SQL app tests' pytest tests/
 ```
 
@@ -102,17 +104,17 @@ Each time you run this test suite, LangSmith:
 
 Here's what a test suite dataset looks like:
 
-<img alt="Dataset" />
+![Dataset](/langsmith/images/simple-pytest-dataset.png)
 
 And what an experiment against that test suite looks like:
 
-<img alt="Experiment" />
+![Experiment](/langsmith/images/simple-pytest.png)
 
 ## Log inputs, outputs, and reference outputs
 
 Every time we run a test we're syncing it to a dataset example and tracing it as a run. There's a few different ways that we can trace the example inputs and reference outputs and the run outputs. The simplest is to use the `log_inputs`, `log_outputs`, and `log_reference_outputs` methods. You can run these any time in a test to update the example and run for that test:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import pytest
 from langsmith import testing as t
 
@@ -124,13 +126,13 @@ def test_foo() -> None:
     assert True
 ```
 
-Running this test will create/update an example with name "test\_foo", inputs `{"a": 1, "b": 2}`, reference outputs `{"foo": "bar"}` and trace a run with outputs `{"foo": "baz"}`.
+Running this test will create/update an example with name "test_foo", inputs `{"a": 1, "b": 2}`, reference outputs `{"foo": "bar"}` and trace a run with outputs `{"foo": "baz"}`.
 
 **NOTE**: If you run `log_inputs`, `log_outputs`, or `log_reference_outputs` twice, the previous values will be overwritten.
 
 Another way to define example inputs and reference outputs is via pytest fixtures/parametrizations. By default any arguments to your test function will be logged as inputs on the corresponding example. If certain arguments are meant to represent reference outputs, you can specify that they should be logged as such using `@pytest.mark.langsmith(output_keys=["name_of_ref_output_arg"])`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import pytest
 
 @pytest.fixture
@@ -148,13 +150,13 @@ def test_cd(c: int, d: int) -> None:
     assert result == d
 ```
 
-This will create/sync an example with name "test\_cd", inputs `{"c": 5}` and reference outputs `{"d": 6}`, and run output `{"d": 10}`.
+This will create/sync an example with name "test_cd", inputs `{"c": 5}` and reference outputs `{"d": 6}`, and run output `{"d": 10}`.
 
 ## Log feedback
 
 By default LangSmith collects the pass/fail rate under the `pass` feedback key for each test case. You can add additional feedback with `log_feedback`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import openai
 import pytest
 from langsmith import wrappers
@@ -206,7 +208,7 @@ LangSmith will automatically trace any traceable intermediate calls that happen 
 
 By default, all tests within a given file will be grouped as a single "test suite" with a corresponding dataset. You can configure which test suite a test belongs to by passing the `test_suite_name` parameter to `@pytest.mark.langsmith` for case-by-case grouping, or you can set the `LANGSMITH_TEST_SUITE` env var to group all tests from an execution into a single test suite:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_TEST_SUITE="SQL app tests" pytest tests/
 ```
 
@@ -216,7 +218,7 @@ We generally recommend setting `LANGSMITH_TEST_SUITE` to get a consolidated view
 
 You can name an experiment using the `LANGSMITH_EXPERIMENT` env var:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_TEST_SUITE="SQL app tests" LANGSMITH_EXPERIMENT="baseline" pytest tests/
 ```
 
@@ -228,7 +230,7 @@ You can attach custom metadata to the experiment (project) created by each test 
 
 Define a session-scoped fixture in your `conftest.py`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 # conftest.py
 import os
 import pytest
@@ -248,14 +250,14 @@ The fixture is dynamic (can read env vars, call functions, etc.) and follows pyt
 
 Set `LANGSMITH_EXPERIMENT_METADATA` to a JSON string. This is useful in CI/CD pipelines where you don't want to modify code:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-4o","env":"staging"}' pytest tests/
 ```
 
 If both the fixture and the env var are set, the fixture takes precedence. System-managed metadata keys (like `revision_id` and git info) always take precedence over user-supplied keys.
 
 <Note>
-  This feature requires `langsmith>=0.7.13`.
+This feature requires `langsmith>=0.7.13`.
 </Note>
 
 ## Caching
@@ -263,22 +265,22 @@ If both the fixture and the env var are set, the fixture takes precedence. Syste
 LLMs on every commit in CI can get expensive. To save time and resources, LangSmith lets you cache HTTP requests to disk. To enable caching, install with `langsmith[pytest]` and set an env var: `LANGSMITH_TEST_CACHE=/my/cache/path`:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langsmith[pytest]"
-  LANGSMITH_TEST_CACHE=tests/cassettes pytest tests/my_llm_tests
-  ```
+```bash pip
+pip install -U "langsmith[pytest]"
+LANGSMITH_TEST_CACHE=tests/cassettes pytest tests/my_llm_tests
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[pytest]"
-  LANGSMITH_TEST_CACHE=tests/cassettes pytest tests/my_llm_tests
-  ```
+```bash uv
+uv add "langsmith[pytest]"
+LANGSMITH_TEST_CACHE=tests/cassettes pytest tests/my_llm_tests
+```
 </CodeGroup>
 
 All requests will be cached to `tests/cassettes` and loaded from there on subsequent runs. If you check this in to your repository, your CI will be able to use the cache as well.
 
 In `langsmith>=0.4.10`, you may selectively enable caching for requests to individual URLs or hostnames like this:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 @pytest.mark.langsmith(cached_hosts=["api.openai.com", "https://api.anthropic.com"])
 def my_test():
     ...
@@ -292,7 +294,7 @@ def my_test():
 
 You can use the `parametrize` decorator as before. This will create a new test case for each parametrized instance of the test.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 @pytest.mark.langsmith(output_keys=["expected_sql"])
 @pytest.mark.parametrize(
     "user_query, expected_sql",
@@ -313,15 +315,15 @@ def test_sql_generation_parametrized(user_query, expected_sql):
 You can use [pytest-xdist](https://pytest-xdist.readthedocs.io/en/stable/) as you normally would to parallelize test execution:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U pytest-xdist
-  pytest -n auto tests
-  ```
+```bash pip
+pip install -U pytest-xdist
+pytest -n auto tests
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add pytest-xdist
-  pytest -n auto tests
-  ```
+```bash uv
+uv add pytest-xdist
+pytest -n auto tests
+```
 </CodeGroup>
 
 ### Async tests with `pytest-asyncio`
@@ -333,22 +335,22 @@ You can use [pytest-xdist](https://pytest-xdist.readthedocs.io/en/stable/) as yo
 Use watch mode to quickly iterate on your tests. We *highly* recommend only using this with test caching (see below) enabled to avoid unnecessary LLM calls:
 
 <CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install pytest-watch
-  LANGSMITH_TEST_CACHE=tests/cassettes ptw tests/my_llm_tests
-  ```
+```bash pip
+pip install pytest-watch
+LANGSMITH_TEST_CACHE=tests/cassettes ptw tests/my_llm_tests
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add pytest-watch
-  LANGSMITH_TEST_CACHE=tests/cassettes ptw tests/my_llm_tests
-  ```
+```bash uv
+uv add pytest-watch
+LANGSMITH_TEST_CACHE=tests/cassettes ptw tests/my_llm_tests
+```
 </CodeGroup>
 
 ## Rich outputs
 
 If you'd like to see a rich display of the LangSmith results of your test run you can specify `--langsmith-output`:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 pytest --langsmith-output tests
 ```
 
@@ -356,7 +358,7 @@ pytest --langsmith-output tests
 
 You'll get a nice table per test suite that updates live as the results are uploaded to LangSmith:
 
-<img alt="Rich pytest outputs" />
+![Rich pytest outputs](/langsmith/images/rich-pytest-outputs.png)
 
 Some important notes for using this feature:
 
@@ -364,14 +366,14 @@ Some important notes for using this feature:
 * Rich outputs do not currently work with `pytest-xdist`
 
 <Note>
-  The custom output removes all the standard pytest outputs. If you're trying to debug some unexpected behavior it's often better to show the regular pytest outputs so to get full error traces.
+    The custom output removes all the standard pytest outputs. If you're trying to debug some unexpected behavior it's often better to show the regular pytest outputs so to get full error traces.
 </Note>
 
 ## Dry-run mode
 
 If you want to run the tests without syncing the results to LangSmith, you can set `LANGSMITH_TEST_TRACKING=false` in your environment.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_TEST_TRACKING=false pytest tests/
 ```
 
@@ -381,7 +383,7 @@ The tests will run as normal, but the experiment logs will not be sent to LangSm
 
 LangSmith provides an [expect](https://reference.langchain.com/python/langsmith/observability/sdk/expect/) utility to help define expectations about your LLM output. For example:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import expect
 
 @pytest.mark.langsmith
@@ -395,7 +397,7 @@ This will log the binary "expectation" score to the experiment results, addition
 
 `expect` also provides "fuzzy match" methods. For example:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 @pytest.mark.langsmith(output_keys=["expectation"])
 @pytest.mark.parametrize(
     "query, expectation",
@@ -433,7 +435,7 @@ The `expect` utility is modeled off of [Jest](https://jestjs.io/docs/expect)'s e
 
 The legacy method for marking test cases is using the `@test` or `@unit` decorators:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 from langsmith import test
 
 @test
@@ -441,14 +443,13 @@ def test_foo() -> None:
     pass
 ```
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/pytest.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

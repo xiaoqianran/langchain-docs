@@ -2,24 +2,22 @@
 
 # Sandbox access permissions
 
-Control who in your workspace can interact with a sandbox after it has been created.
-
 Each sandbox has a recorded **creator**, the workspace member whose API key or session created it. By default, only the creator can run commands, read or write files, open tunnels, or reach service URLs on that sandbox. Other workspace members need the `sandboxes:exec` [permission](/langsmith/rbac) to interact with sandboxes they did not create. Sandboxes are never reachable from workspaces other than the one they were created in.
 
 ## Who can do what
 
-| Caller                 | Default                         | With `sandboxes:exec`           |
-| ---------------------- | ------------------------------- | ------------------------------- |
-| Sandbox creator        | ✅ All runtime actions           | ✅ All runtime actions           |
-| Other workspace member | ❌ Denied                        | ✅ All runtime actions           |
-| Different workspace    | ❌ Hidden (treated as not found) | ❌ Hidden (treated as not found) |
+| Caller | Default | With `sandboxes:exec` |
+| --- | --- | --- |
+| Sandbox creator | ✅ All runtime actions | ✅ All runtime actions |
+| Other workspace member | ❌ Denied | ✅ All runtime actions |
+| Different workspace | ❌ Hidden (treated as not found) | ❌ Hidden (treated as not found) |
 
 "Runtime actions" covers the four ways you interact with a running sandbox after creation:
 
-* **Execute** a command (`langsmith sandbox exec`, `SandboxClient.exec`)
-* **File** operations (read, write, list paths inside the sandbox)
-* **Tunnel** a TCP port back to your machine (`langsmith sandbox tunnel`)
-* **Proxy** requests through a [service URL](/langsmith/sandbox-service-urls)
+- **Execute** a command (`langsmith sandbox exec`, `SandboxClient.exec`)
+- **File** operations (read, write, list paths inside the sandbox)
+- **Tunnel** a TCP port back to your machine (`langsmith sandbox tunnel`)
+- **Proxy** requests through a [service URL](/langsmith/sandbox-service-urls)
 
 Lifecycle operations—creating, listing, updating, deleting sandboxes—continue to use the existing `sandboxes:create` / `sandboxes:read` / `sandboxes:update` / `sandboxes:delete` permissions. Those are unchanged.
 
@@ -27,7 +25,7 @@ Lifecycle operations—creating, listing, updating, deleting sandboxes—continu
 
 When a request is denied, the sandbox returns `HTTP 403` with a body that names the rule that fired:
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json
 {
   "detail": {
     "error": "Forbidden",
@@ -47,14 +45,13 @@ You have two ways to let teammates work with a sandbox you own:
 
 For ad-hoc collaboration the service-URL approach is usually simpler; reach for `sandboxes:exec` when a teammate needs broad access to operate sandboxes they did not create.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-permissions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>

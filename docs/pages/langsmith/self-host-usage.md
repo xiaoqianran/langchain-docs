@@ -5,7 +5,7 @@
 This guide will walk you through the process of using your self-hosted instance of LangSmith.
 
 <Info>
-  This guide assumes you have already deployed a self-hosted LangSmith instance. If you have not, please refer to the [kubernetes deployment guide](/langsmith/kubernetes).
+This guide assumes you have already deployed a self-hosted LangSmith instance. If you have not, please refer to the [kubernetes deployment guide](/langsmith/kubernetes).
 </Info>
 
 ### Configuring the application you want to use with LangSmith
@@ -18,14 +18,14 @@ LangSmith has a single API for interacting with both the hub and the LangSmith b
 
 To use the API of your instance, you will need to set the following environment variables in your application:
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash
 LANGSMITH_ENDPOINT=http://<host>/api/v1
 LANGSMITH_API_KEY=foo # Set to a legitimate API key if using OAuth
 ```
 
 You can also configure these variables directly in the LangSmith SDK client:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import langsmith
 langsmith_client = langsmith.Client(
     api_key='<api_key>',
@@ -45,7 +45,7 @@ You can do this like so:
 
 Then use the following code to load the system certificates:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python
 import truststore
 truststore.inject_into_ssl()
 # The rest of your code
@@ -56,20 +56,19 @@ langsmith_client = langsmith.Client(
 )
 ```
 
-***
+---
 
 ## API reference
 
 To access the API reference, navigate to `http://<host>/api/docs` in your browser.
 
-***
+---
 
-<div>
-  <Callout icon="terminal-2">
+<div className="source-links">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
+</Callout>
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
+</Callout>
 </div>
