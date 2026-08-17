@@ -6409,10 +6409,10 @@
       "translatedAt": "2026-08-16T09:28:29.740Z"
     }
   },
-  "updatedAt": "2026-08-16T09:28:29.740Z",
+  "updatedAt": "2026-08-17T09:29:04.289Z",
   "stats": {
-    "translated": 544,
-    "skipped": 0,
+    "translated": 0,
+    "skipped": 544,
     "failed": 0,
     "total": 544
   }
