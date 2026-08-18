@@ -2,7 +2,7 @@
 
 # Add custom tools to Managed Deep Agents
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 Define LangChain tools in your project, import them into `agent.py`, and pass them to `define_deep_agent`.
 

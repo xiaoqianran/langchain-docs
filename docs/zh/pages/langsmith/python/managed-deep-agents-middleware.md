@@ -4,7 +4,7 @@
 
 # 将自定义中间件添加到托管Deep Agents
 
-托管Deep Agents支持正常的Deep Agents`middleware`配置界面。
+托管 Deep Agents 支持 Deep Agents `middleware` 配置界面。
 
 将LangChain中间件添加到`define_deep_agent`以监视工具调用、添加护栏、编辑数据、重试瞬时故障或自定义模型调用。
 

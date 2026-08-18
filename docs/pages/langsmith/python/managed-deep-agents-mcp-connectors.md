@@ -2,7 +2,7 @@
 
 # Connect to MCP servers
 
-An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) servers to a Managed Deep Agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
+An MCP connector adds tools from remote [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) servers to a managed deep agent. Managed Deep Agents creates the MCP client, loads the tools, and adds them to the agent.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.

@@ -48,8 +48,8 @@ channel = channels.slack()
 ## 创建并部署 Slack 应用程序
 
 设置 Slack 通道后，您需要创建并部署 Slack 应用程序。<Steps>
-  <Step title="Deploy your Managed Deep Agent">
-  首先，[deploy your Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+  <Step title="Deploy your managed deep agent">
+  首先，[deploy your managed deep agent](/langsmith/python/managed-deep-agents-deploy)。
   
   ```
   mda deploy .
@@ -64,7 +64,7 @@ channel = channels.slack()
     ```bash
     mda channel add slack .
     ```
-    MDA 找到现有部署并写入两个文件：
+    Managed Deep Agents 找到现有部署并写入两个文件：
     - `slack-app-manifest.json` 的“模板”清单
     - `.mda/slack/app-manifest.json` 的完整清单
     
@@ -217,7 +217,7 @@ async def send_channel_reply(
 
 Slack 事件作为从 Slack 工作区和用户派生的身份运行，例如 `slack:T123:U456`。此身份与用于 HTTP 请求的调用者身份是分开的。不支持 Slack 帐户链接。
 
-## 部署更改更改通道声明、机密或身份配置后重新部署。当您更改 `slack-app-manifest.json`、通道名称或部署时，重新运行 `mda channel add slack .`，以便 MDA 可以使用当前事件 URL 重新生成最终清单。部署完成后，将生成的清单应用到现有的 Slack 应用程序。
+## 部署更改更改通道声明、机密或身份配置后重新部署。当您更改 `slack-app-manifest.json`、通道名称或部署时重新运行 `mda channel add slack .`，以便托管 Deep Agents 可以使用当前事件 URL 重新生成最终清单。部署完成后，将生成的清单应用到现有的 Slack 应用程序。
 
 避免仅在 Slack 仪表板中进行持久配置更改。稍后的清单更新可以替换签入模板中不存在的设置。
 
@@ -233,9 +233,9 @@ Slack 事件作为从 Slack 工作区和用户派生的身份运行，例如 `sl
 </Warning>
 
 ## Slack 通道故障排除- **`mda channel add slack` 报告它只需要一个通道**：使用清单工作流程时，在项目中仅保留一个 `channels.slack(...)` 声明。
-- **MDA 无法读取模板**：确认 `slack-app-manifest.json` 是项目根目录下的常规 JSON 文件。删除凭据和任何 `settings.event_subscriptions.request_url`，并保持套接字模式禁用。
+- **托管Deep Agents无法读取模板**：确认`slack-app-manifest.json`是项目根目录下的常规JSON文件。删除凭据和任何 `settings.event_subscriptions.request_url`，并保持套接字模式禁用。
 - **第一个部署写入引导清单并退出**：当 Slack 凭证尚不存在时，这是预期的。创建并安装应用程序，添加两个凭据，然后重新运行相同的命令。
-- **MDA 不会编写最终清单**：在没有 `--no-wait` 的情况下运行 `mda deploy .`，然后重新运行 `mda channel add slack .`。 CLI 需要部署的代理服务器 URL。
+- **托管Deep Agents不编写最终清单**：在没有`--no-wait`的情况下运行`mda deploy .`，然后重新运行`mda channel add slack .`。 CLI 需要部署的代理服务器 URL。
 - **Slack 无法验证请求 URL**：确认部署正常，应用程序的 **事件订阅** 页面上的 URL 与 `https://<agent-server>/channels/<name>/events` 匹配，并且 `SLACK_SIGNING_SECRET` 属于该应用程序。添加 Slack 凭据后重新部署，然后应用重新生成的最终清单。
 - **提及不会开始运行**：订阅`app_mention`，添加`app_mentions:read`，邀请机器人加入对话，并在更改范围后重新安装应用程序。
 - **直接消息不会开始运行**：订阅`message.im`并添加`im:history`。- **线程回复不开始运行**：在代理先前参与的线程内回复。订阅`message.channels`或`message.groups`，添加匹配的历史范围，并确认机器人仍在对话中。

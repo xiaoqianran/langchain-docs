@@ -6,6 +6,8 @@
 
 多轮在线评估器允许您评估人类和代理之间的整个对话，而不仅仅是个人交流。他们测量线程中所有回合的端到端交互质量。
 
+<Tip>要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。</Tip>
+
 您可以使用多轮评估来衡量：
 1. 语义意图：用户想要做什么。
 2.语义结果：实际发生了什么，任务是否成功。
@@ -17,14 +19,14 @@
 
 多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
 2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
-3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
+3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
 4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
 
 此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条迹线评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
 
 ## 先决条件
 
-- 您的跟踪项目必须使用[threads](/langsmith/threads)。
+- 您的追踪项目必须使用[threads](/langsmith/threads)。
 - 线程中每个跟踪的顶级输入和输出必须有一个包含消息列表的 `messages` 键。我们支持[LangChain](/langsmith/log-llm-trace#messages-format)、[OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)和[Anthropic Messages](https://platform.claude.com/docs/en/api/messages)格式的消息。
     - 如果每个跟踪的顶级输入和输出仅包含对话中的最新消息，LangSmith将自动将跨轮的消息组合成一个线程。
     - 如果每个跟踪的顶级输入和输出包含完整的对话历史记录，LangSmith将直接使用它。
@@ -47,9 +49,9 @@
 </Tip>
 6. **配置您的模型。**<br />选择您想要用于评估器的提供商和模型。线程往往会变长，因此您应该使用具有较高上下文窗口的模型，以避免遇到限制。例如，OpenAI 的 GPT-5.4 mini 或 Gemini 2.5 Flash 都是不错的选择，因为它们都有 1M+ 令牌上下文窗口。
 
-7. **配置您的 LLM 法官提示。**<br />
+7. **配置您的LLM法官提示。**<br />
 定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：
-    - 所有消息：以OpenAI聊天格式（`{"role": ..., "content": ...}`）将完整对话作为JSON消息对象列表发送，每条消息呈现为缩进的JSON并用空行分隔。
+    - 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
     - 人类和人工智能对：仅发送用户和助理消息，格式为`<user>...</user>`和`<assistant>...</assistant>`，不包括系统消息、工具调用和其他角色。
     - 第一个人类和最后一个人工智能：仅发送第一条用户消息和最后一个助理回复。9. **设置您的反馈配置**。<br />
 配置反馈键的名称、要收集的反馈的格式，并可选择启用反馈推理。
@@ -76,7 +78,7 @@
 **检查发送给评估器的数据** <br />
 通过前往跟踪项目中的 **Evaluators** 选项卡、单击您创建的评估器并单击 **Evaluator Traces** 选项卡来检查发送到评估器的数据。
 
-在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的消息未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
+在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的邮件未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
 
 ---
 

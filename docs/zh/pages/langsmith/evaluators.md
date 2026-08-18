@@ -35,6 +35,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 1. 单击 **+ Evaluator** 打开新的评估器面板。
 1. 该面板可让您：
    - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。
+   - **添加LangChain调谐评估器**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，无需配置提示、模型或API密钥。
    - **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先显示流行的模板，然后是按以下类别组织的模板：|类别 |描述 |
      |----------|-------------|
      |安全|检测泄漏、注入和对抗性输入。 |
@@ -110,7 +111,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 由于评估器是共享的，因此更改适用于其附加的所有跟踪项目和数据集。
 
-## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪中。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在[tracing project](/langsmith/observability-concepts#projects)上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基础保留中。
+## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪中。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在 [tracing project](/langsmith/observability-concepts#projects) 上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基本保留中。
 
 仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 

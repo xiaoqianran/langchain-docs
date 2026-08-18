@@ -28,24 +28,26 @@ bash mirror_langsmith_images.sh <your-registry> [<platform>]
 
 其中 `<your-registry>` 是 Docker 注册表的 URL（例如 `myregistry.com`），`<platform>` 是您正在使用的平台（例如 `linux/amd64`、`linux/arm64` 等）。如果不指定平台，则默认为`linux/amd64`。
 
-例如，如果您的注册表是`myregistry.com`，您的平台是`linux/arm64`，并且您想使用最新版本的映像，则可以运行：
+例如，如果您的注册表是 `myregistry.com`，您的平台是 `linux/arm64`，并且您的 LangSmith 应用程序版本是 `0.16.36`，请运行：
 
 ```bash
-bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.10.66
+bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.16.36
 ```
 
 请注意，此脚本将假定您已安装 Docker 并且您已通过注册表的身份验证。它还会将图像推送到具有与原始图像相同的存储库/标签的指定注册表。
 
-或者，您可以手动拉取、镜像和推送图像。您需要镜像的图像可以在 LangSmith Helm Chart 的 `values.yaml` 文件中找到。这些可以在这里找到：[LangSmith Helm Chart values.yaml](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L14)
+对于 LangSmith 图像，请使用 Helm 图表版本中的 `appVersion` 作为图像标签。不要使用 `latest`：它是可变的，在发布版本时拉取映像可能会导致服务版本不匹配。或者，您可以手动拉取、镜像和推送图像。您需要镜像的图像可以在 LangSmith Helm Chart 的 `values.yaml` 文件中找到。这些可以在这里找到：[LangSmith Helm Chart values.yaml](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L14)
 
 以下是如何使用 Docker 镜像镜像的示例：
 
 ```bash
 # Pull the images from the public registry
-docker pull langchain/langsmith-backend:latest
-docker tag langchain/langsmith-backend:latest <your-registry>/langsmith-backend:latest
-docker push <your-registry>/langsmith-backend:latest
-```您需要对要镜像的每个图像重复此操作。
+docker pull langchain/langsmith-backend:0.16.36
+docker tag langchain/langsmith-backend:0.16.36 <your-registry>/langsmith-backend:0.16.36
+docker push <your-registry>/langsmith-backend:0.16.36
+```
+
+您需要对要镜像的每个图像重复此操作。
 
 ## 配置
 
@@ -87,13 +89,13 @@ images:
 
 ## 沙箱的附加图像
 
-如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。发布了`linux/amd64`的沙箱运行时镜像。
+如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。沙箱运行时镜像已发布为`linux/amd64`。
 
 ```bash
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时镜像：
+然后，在 `values.yaml` 中配置沙箱运行时映像：
 
 ```yaml
 images:
@@ -105,9 +107,7 @@ images:
 
 如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。
 
-`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
-
-- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
+`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
 - `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
 - `docker.io/juicedata/mount:ce-v1.3.1` 适用于 JuiceFS 安装盒
 
@@ -124,7 +124,9 @@ images:
   juicefsMountImage:
     repository: "(your-registry)/juicedata/mount"
     tag: "ce-v1.3.1"
-```图表默认不设置`images.juicefsMountImage`。取消设置时，JuiceFS CSI 驱动程序使用 CSI 驱动程序映像中烘焙的 `JUICEFS_CE_MOUNT_IMAGE` 后备。对于图表当前的 `docker.io/juicedata/juicefs-csi-driver:v0.31.4` 默认值，后备为 `juicedata/mount:ce-v1.3.1`。在私有注册表或气隙环境中，设置 `images.juicefsMountImage.repository` 和 `images.juicefsMountImage.tag`，以便挂载 Pod 从镜像注册表中提取，而不是公共默认值。
+```
+
+图表默认不设置`images.juicefsMountImage`。取消设置时，JuiceFS CSI 驱动程序使用 CSI 驱动程序映像中烘焙的 `JUICEFS_CE_MOUNT_IMAGE` 后备。对于图表当前的 `docker.io/juicedata/juicefs-csi-driver:v0.31.4` 默认值，后备为 `juicedata/mount:ce-v1.3.1`。在私有注册表或气隙环境中，设置 `images.juicefsMountImage.repository` 和 `images.juicefsMountImage.tag`，以便挂载 Pod 从镜像注册表中提取，而不是公共默认值。
 
 ## 引擎的附加图像
 
@@ -132,7 +134,7 @@ images:
 
 要镜像所需的图像：
 
-1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私有注册表。
+1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私人注册表。
 1. 使用`--include-sandboxes`镜像沙箱运行时镜像，并按照[Additional images for sandboxes](#additional-images-for-sandboxes)中的说明进行配置。
 
 覆盖 `images.engineInsightsAgentImage.repository` 以使用镜像引擎和 Insights 映像：
@@ -146,12 +148,12 @@ images:
 ```
 
 <Note>
-不要使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。仓库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
-</Note>
+请勿使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。仓库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
+</Note>镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。
 
-镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。## 舰队的附加图片
+## 舰队的附加图片
 
-如果您使用的是 Fleet，LangGraph 运算符会为每个部署动态创建 Redis 和 PostgreSQL (pgvector) Pod。这些 Pod 使用在需要单独配置的操作员模板中定义的映像。
+如果您使用 Fleet，LangGraph 运算符会为每个部署动态创建 Redis 和 PostgreSQL (pgvector) Pod。这些 Pod 使用在需要单独配置的操作员模板中定义的映像。
 
 您必须镜像这些附加图像：
 - `docker.io/redis:7`
@@ -250,9 +252,9 @@ operator:
 
 <Note>
 **从 v15 开始** 提供图像签名（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
-</Note>`docker.io/langchain/*` 上的稳定通道LangSmith 镜像在发布时使用发布工作流程中的无密钥[Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
+</Note>`docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
 
-安装`cosign`（[installation guide](https://docs.sigstore.dev/cosign/system_config/installation/)），然后验证任何标签：
+安装`cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/))，然后验证任何标签：
 
 ```bash
 cosign verify \

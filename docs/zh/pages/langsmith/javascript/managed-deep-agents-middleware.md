@@ -4,7 +4,7 @@
 
 # 将自定义中间件添加到托管Deep Agents
 
-托管Deep Agents支持正常的Deep Agents`middleware`配置界面。
+托管 Deep Agents 支持 Deep Agents `middleware` 配置界面。
 
 
 

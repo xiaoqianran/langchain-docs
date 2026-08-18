@@ -48,7 +48,7 @@ schedule = define_schedule(
 
 Each schedule must define exactly one of:
 
-- `prompt`: A natural-language prompt. MDA converts it to a user message when the cron fires.
+- `prompt`: A natural-language prompt. Managed Deep Agents converts it to a user message when the cron fires.
 - `input`: A structured LangGraph input object. Use this when you need to pass custom graph input instead of a single prompt.
 
 ```python schedules/nightly_sweep.py
@@ -71,7 +71,7 @@ schedule = define_schedule(
 
 ## Choose thread behavior
 
-Schedules use ephemeral threads by default. MDA creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
+Schedules use ephemeral threads by default. Managed Deep Agents creates a fresh thread for each run and asks LangSmith to delete that temporary thread after the run completes.
 
 Use a persistent thread only when scheduled runs should accumulate durable thread state across invocations.
 
@@ -145,7 +145,7 @@ Schedule declarations are extracted at compile time. Keep schedule configuration
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing MDA-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
 
 <Warning>
 If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy .` without `--no-wait` when adding, changing, or removing schedules.

@@ -119,7 +119,7 @@ mda build .
 
 ## 评估项目
 
-`evals/tasks/` 是规范的 Harbor 数据集。作者直接在那里完成Harbor任务。 `mda eval` 命令（也可用作 `mda evals`）可以构建启动任务并打包 Harbor 的托管代理。 MDA 打印 `harbor run` 命令，但不运行试验。
+`evals/tasks/` 是规范的 Harbor 数据集。作者直接在那里完成Harbor任务。 `mda eval` 命令（也可用作 `mda evals`）可以构建启动任务并打包 Harbor 的托管代理。托管 Deep Agents 打印 `harbor run` 命令，但不运行试验。
 
 ```bash
 mda evals init smoke
@@ -130,9 +130,9 @@ mda evals compile .
 |子命令 |使用|
 | ---| ---|
 | `mda evals init <name>` |使用指令和语言本机测试创建`evals/scaffold/<name>/`。从项目根运行此命令。 |
-| `mda evals compile [path]` |编译托管代理，将选定的脚手架复制到`evals/tasks/`，并在`evals/`下编写Harbor handoff。 |
+| `mda evals compile [path]` |编译托管代理，将选定的脚手架复制到`evals/tasks/`，并在`evals/`下编写Harbor handoff。 |传递给`mda evals init`的任务名称可以包含ASCII字母、数字、`_`和`-`。
 
-传递给`mda evals init`的任务名称可以包含ASCII字母、数字、`_`和`-`。`mda evals compile` 标志：
+`mda evals compile` 标志：
 
 |旗帜|使用|
 | ---| ---|
@@ -157,18 +157,18 @@ mda dev .
 | `--no-browser` |防止开发服务器启动时在浏览器中打开 Studio。 |
 | `--no-reload` |禁用开发服务器的热重载。 |
 
-`mda dev` 编译为 `.mda/build`，然后从该目录启动特定于语言的 LangGraph 开发服务器：
-
-|项目语言|开发服务器命令 |
+`mda dev` 编译为 `.mda/build`，然后从该目录启动特定于语言的 LangGraph 开发服务器：|项目语言|开发服务器命令 |
 | ---| ---|
-|蟒蛇 | `uv run --with langgraph-cli[inmem]>=0.4.30 langgraph dev` |在运行`mda dev`之前安装`uv`。 CLI 会自动解析本地LangGraph 开发服务器，因此您无需自行安装`langgraph-cli[inmem]`。
+|蟒蛇 | `uv run --with langgraph-cli[inmem]>=0.4.30 langgraph dev` |
+
+在运行`mda dev`之前安装`uv`。 CLI 会自动解析本地LangGraph 开发服务器，因此您无需自行安装`langgraph-cli[inmem]`。
 
 
 
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
 
 ## 部署项目
 
@@ -248,7 +248,7 @@ mda delete .
 |部署报告缺少模型提供程序 API 密钥 |将提供程序密钥（例如 `OPENAI_API_KEY`）添加到 `.env`，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。 |
 |部署报告 Context Hub 冲突 | Context Hub 存储库在部署期间发生了更改。重新运行`mda deploy`。 |
 |构建超过 200 MB |在部署之前从项目中删除生成的工件或大文件。 |
-|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |打开 LangSmith 中打印的部署 URL 并检查修订日志。 |
+|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |在 LangSmith 中打开打印的部署 URL 并检查修订日志。 |
 
 ---
 

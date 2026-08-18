@@ -2,7 +2,7 @@
 
 # Add custom middleware to Managed Deep Agents
 
-Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
+Managed Deep Agents support the Deep Agents `middleware` configuration surface.
 
 
 

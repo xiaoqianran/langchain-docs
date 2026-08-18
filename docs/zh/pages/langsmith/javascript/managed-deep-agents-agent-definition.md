@@ -76,7 +76,7 @@ export const agent = defineDeepAgent({
 
 ## 姓名
 
-需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。MDA 使用该名称作为 LangGraph 助手 ID 和默认的 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
+需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。托管 Deep Agents 使用该名称作为 LangGraph 助手 ID 和默认 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
 
 ## 型号
 
@@ -118,7 +118,7 @@ export const agent = defineDeepAgent({
 
 ### 使用LLM网关
 
-您可以使用 [LangSmith Gateway](langsmith/llm-gateway) 来控制速率限制、回退等。
+您可以使用 [LLM Gateway](langsmith/llm-gateway) 来控制速率限制、回退等。
 
 为了使用 LLM Gateway，您应该：
 - 直接使用ChatOpenAI模型

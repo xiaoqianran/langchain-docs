@@ -36,7 +36,7 @@ evals/scaffold/<task>/ → mda evals compile → evals/tasks/<task>/
 ```
 
 <Note>
-`evals/scaffold/` 不是第二个评估系统。 Harbor 在`evals/tasks/`下运行任务。仅当您希望 MDA 创建最小起点时才使用脚手架。
+`evals/scaffold/` 不是第二个评估系统。 Harbor 在`evals/tasks/`下运行任务。仅当您希望 Managed Deep Agents 创建最小起点时才使用脚手架。
 </Note>
 
 ## 选择创作工作流程
@@ -53,7 +53,7 @@ evals/scaffold/<task>/ → mda evals compile → evals/tasks/<task>/
 - 在运行 Harbor 的 shell 中导出的模型和工具凭据。
 
 <Note>
-Harbor 不会从项目 `.env` 文件加载值。当 MDA 生成 Harbor 作业配置时，它会为符合条件的 `.env` 键写入 `${VAR}` 占位符，而不是它们的值。在运行 Harbor 之前导出所需的变量。
+Harbor 不会从项目 `.env` 文件加载值。当 Managed Deep Agents 生成 Harbor 作业配置时，它会为符合条件的 `.env` 键写入 `${VAR}` 占位符，而不是它们的值。在运行 Harbor 之前导出所需的变量。
 </Note>
 
 ## 作者 Harbor 直接评估
@@ -80,15 +80,15 @@ evals/
 
 验证者必须将数字奖励写入`/logs/verifier/reward.txt`或将数字指标写入`/logs/verifier/reward.json`。有关完整的任务格式和验证器选项，请参阅[Harbor task documentation](https://www.harborframework.com/docs/tasks)。
 
-当 MDA 编译具有其他名称的脚手架时，您直接在 `evals/tasks/` 下编写的文件将被保留。
+当 Managed Deep Agents 编译具有其他名称的脚手架时，您直接在 `evals/tasks/` 下创作的文件将被保留。
 
 ## 搭建 Harbor 任务
 
-此可选工作流程创建 MDA 可以完成的最小源任务并将其复制到规范的 Harbor 数据集中。
+此可选工作流程创建一个最小源任务，托管 Deep Agents 可以完成该任务并将其复制到规范的 Harbor 数据集中。
 
 
 
-MDA 通过指令和 TypeScript 测试构建任务。
+托管 Deep Agents 通过指令和 TypeScript 测试构建任务。
 
 
 从托管 Deep Agents 项目根运行以下命令：
@@ -140,7 +140,7 @@ mda evals compile .
 mda evals compile . --task smoke --task regression
 ```
 
-对于每个选定的支架，MDA：
+对于每个选定的脚手架，托管Deep Agents：
 
 1.替换`evals/tasks/`下的匹配目录。
 2. 从`evals/scaffold/`复制完整的脚手架。
@@ -152,7 +152,7 @@ mda evals compile . --task smoke --task regression
 将`evals/scaffold/<name>/`视为脚手架任务的事实来源。编译该脚手架会替换整个匹配的 `evals/tasks/<name>/` 目录，包括仅对规范副本进行的更改。
 </Warning>
 
-您可以将 Harbour 文件（例如 `task.toml`、`environment/` 或自定义 `tests/test.sh`）添加到`evals/scaffold/<name>/` 下的脚手架。 MDA 在编译期间将它们复制到规范的 Harbor 任务中。
+您可以将 Harbour 文件（例如 `task.toml`、`environment/` 或自定义 `tests/test.sh`）添加到`evals/scaffold/<name>/` 下的脚手架。 Managed Deep Agents 在编译期间将它们复制到规范的 Harbor 任务中。
 
 ### 检查编译后的切换
 
@@ -168,21 +168,21 @@ mda evals compile . --task smoke --task regression
 
 |旗帜|目的|
 | ---| ---|
-| `--task <name>` |选择一项任务。重复此操作以选择更多任务。如果选定任务的源位于 `evals/scaffold/` 下，MDA 会刷新其规范副本。省略该标志以选择所有任务并刷新每个脚手架。 |
-| `--model <provider:model>` |在工件清单中记录模型。生成的作业配置使用第一个模型。如果省略，MDA 将使用可用的代理模型。 |
+| `--task <name>` |选择一项任务。重复此操作以选择更多任务。如果选定任务的源位于 `evals/scaffold/` 下，则托管 Deep Agents 会刷新其规范副本。省略该标志以选择所有任务并刷新每个脚手架。 |
+| `--model <provider:model>` |在工件清单中记录模型。生成的作业配置使用第一个模型。如果省略，托管 Deep Agents 使用代理的模型（如果可用）。 |
 
 检查您的项目使用的 `evals/` 下的 Harbor 定义和配置。将 `evals/harbor-jobs/` 下的本地运行输出保持在版本控制之外。 `evals/` 目录不包含在已部署的代理版本中。
 
-## 使用 Harbor 进行试验
-
-`mda evals compile` 打印为编译后的代理配置的 Harbor 命令。导出编译摘要中列出的变量，然后从项目根目录运行命令：
+## 使用 Harbor 进行试验`mda evals compile` 打印为编译后的代理配置的 Harbor 命令。导出编译摘要中列出的变量，然后从项目根目录运行命令：
 
 ```bash
 export OPENAI_API_KEY="<OPENAI_API_KEY>"
 
 PYTHONPATH=evals/harbor-adapter \
   uv run --with harbor harbor run --config evals/harbor-job.json --yes
-```如果`harbor`已经在您的`PATH`上，则打印的命令直接使用`harbor run`而不是`uv run --with harbor`。
+```
+
+如果`harbor`已经在您的`PATH`上，则打印的命令直接使用`harbor run`而不是`uv run --with harbor`。
 
 编辑 `evals/harbor-job.json` 以更改任务数据集、模型、环境、并发或尝试。 Harbor 拥有试验编排、环境和报告。有关作业配置和运行选项，请参阅[Harbor documentation](https://www.harborframework.com/docs)。
 

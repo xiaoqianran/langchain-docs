@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-17T09:29:04.185Z",
+  "fetchedAt": "2026-08-18T09:21:04.230Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 173,
-  "ok": 544,
+  "ok": 545,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 448
+      "count": 449
     },
     "fleet": {
       "name": "Fleet",
@@ -495,7 +495,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "changelog",
-      "bytes": 174773
+      "bytes": 183008
     },
     {
       "rel": "langsmith/chat-evaluation.md",
@@ -1449,7 +1449,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-types",
-      "bytes": 10065
+      "bytes": 10109
     },
     {
       "rel": "langsmith/evaluation.md",
@@ -1476,7 +1476,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluators",
-      "bytes": 9201
+      "bytes": 9403
     },
     {
       "rel": "langsmith/event-streaming.md",
@@ -1611,7 +1611,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "changelog",
-      "bytes": 30861
+      "bytes": 33294
     },
     {
       "rel": "langsmith/fleet/channels.md",
@@ -1944,7 +1944,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 6454
+      "bytes": 6464
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels-slack.md",
@@ -1953,7 +1953,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 14063
+      "bytes": 14127
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels.md",
@@ -1971,7 +1971,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-cli",
-      "bytes": 12708
+      "bytes": 12724
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-deploy.md",
@@ -1989,7 +1989,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-evals",
-      "bytes": 8842
+      "bytes": 8986
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-identity.md",
@@ -2043,7 +2043,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-middleware",
-      "bytes": 3487
+      "bytes": 3480
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-overview.md",
@@ -2052,7 +2052,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 5191
+      "bytes": 5240
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-project-structure.md",
@@ -2061,7 +2061,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 3337
+      "bytes": 3385
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-quickstart.md",
@@ -2088,7 +2088,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-schedules",
-      "bytes": 5746
+      "bytes": 5794
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-skills.md",
@@ -2106,7 +2106,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tools",
-      "bytes": 4650
+      "bytes": 4643
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
@@ -2727,7 +2727,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-multi-turn",
-      "bytes": 8232
+      "bytes": 8403
     },
     {
       "rel": "langsmith/openapi-security.md",
@@ -2889,7 +2889,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 6315
+      "bytes": 6325
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels-slack.md",
@@ -2898,7 +2898,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 13917
+      "bytes": 13981
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels.md",
@@ -2916,7 +2916,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-cli",
-      "bytes": 13145
+      "bytes": 13161
     },
     {
       "rel": "langsmith/python/managed-deep-agents-deploy.md",
@@ -2934,7 +2934,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-evals",
-      "bytes": 8687
+      "bytes": 8831
     },
     {
       "rel": "langsmith/python/managed-deep-agents-identity.md",
@@ -2988,7 +2988,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-middleware",
-      "bytes": 3868
+      "bytes": 3861
     },
     {
       "rel": "langsmith/python/managed-deep-agents-overview.md",
@@ -2997,7 +2997,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 7343
+      "bytes": 7392
     },
     {
       "rel": "langsmith/python/managed-deep-agents-project-structure.md",
@@ -3006,7 +3006,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 3235
+      "bytes": 3283
     },
     {
       "rel": "langsmith/python/managed-deep-agents-quickstart.md",
@@ -3033,7 +3033,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-schedules",
-      "bytes": 5708
+      "bytes": 5756
     },
     {
       "rel": "langsmith/python/managed-deep-agents-skills.md",
@@ -3051,7 +3051,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tools",
-      "bytes": 4511
+      "bytes": 4504
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
@@ -3528,7 +3528,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-mirroring-images",
-      "bytes": 17274
+      "bytes": 17483
     },
     {
       "rel": "langsmith/self-host-organization-charts.md",
@@ -3780,7 +3780,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 184839
+      "bytes": 185211
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -4555,6 +4555,15 @@
       "trackName": "LangSmith",
       "group": "troubleshooting",
       "bytes": 9922
+    },
+    {
+      "rel": "langsmith/tuned-evaluators.md",
+      "title": "Set up LangChain Tuned Evaluators",
+      "url": "https://docs.langchain.com/langsmith/tuned-evaluators",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "tuned-evaluators",
+      "bytes": 6792
     },
     {
       "rel": "langsmith/upload-existing-experiments.md",

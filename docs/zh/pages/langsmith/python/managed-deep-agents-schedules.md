@@ -50,7 +50,7 @@ schedule = define_schedule(
 
 每个计划必须准确定义以下之一：
 
-- `prompt`：自然语言提示。当 cron 触发时，MDA 将其转换为用户消息。
+- `prompt`：自然语言提示。当 cron 触发时，托管 Deep Agents 将其转换为用户消息。
 - `input`：结构化LangGraph 输入对象。当您需要传递自定义图形输入而不是单个提示时，请使用此选项。
 
 ```python schedules/nightly_sweep.py
@@ -69,11 +69,11 @@ schedule = define_schedule(
 
 
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
 
 ## 选择线程行为
 
-默认情况下，调度使用临时线程。 MDA 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。仅当计划运行应在调用之间累积持久线程状态时，才使用持久线程。
+默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。仅当计划运行应在调用之间累积持久线程状态时，才使用持久线程。
 
 <Note>
 以下示例需要 [durable memory](/langsmith/python/managed-deep-agents-memory)。
@@ -143,7 +143,7 @@ Slack 机器人必须有权访问目的地。
 
 ## 部署计划
 
-使用[⟦T15⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T16⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。当部署达到 `DEPLOYED` 时，`mda deploy` 在已部署的代理服务器上搜索现有 MDA 拥有的 cron 作业，删除它们，并为当前 `schedules/` 声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。
+使用[⟦T15⟧](/langsmith/python/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T16⟧](/langsmith/python/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。当部署达到 `DEPLOYED` 时，`mda deploy` 在已部署的代理服务器上搜索现有的托管 Deep Agents 拥有的 cron 作业，删除它们，并为当前 `schedules/` 声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。
 
 <Warning>
 如果您使用 `--no-wait` 进行部署，CLI 会在部署到达 `DEPLOYED` 之前触发远程构建并退出，因此它不会在该调用期间协调计划。添加、更改或删除计划时，运行 `mda deploy .`，而不运行 `--no-wait`。

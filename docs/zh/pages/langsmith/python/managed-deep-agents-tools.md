@@ -4,7 +4,7 @@
 
 # 将自定义工具添加到托管Deep Agents
 
-托管 Deep Agents 支持普通 Deep Agents `tools` 配置界面。
+托管 Deep Agents 支持 Deep Agents `tools` 配置界面。
 
 在您的项目中定义LangChain工具，将其导入`agent.py`，然后将其传递给`define_deep_agent`。
 

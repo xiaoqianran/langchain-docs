@@ -15,7 +15,7 @@
 
 离线评估在部署之前在精选数据集上测试应用程序。通过对具有参考输出的示例进行评估，团队可以在向用户公开更改之前比较版本、验证功能并建立信心。
 
-使用LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/)或[TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过[Playground](/langsmith/prompt-engineering-concepts#playground)或[binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset)在服务器端运行离线评估。
+使用 LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/) 或 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过 [Playground](/langsmith/prompt-engineering-concepts#playground) 或 [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset) 在服务器端运行离线评估。
 
 ![Offline](/langsmith/images/offline.png)
 
@@ -55,7 +55,7 @@ _回测_根据历史生产数据评估新的应用程序版本。生产日志被
 
 在线评估近乎实时地评估生产应用输出。在没有参考输出的情况下，这些评估侧重于检测问题、监控质量趋势以及识别为未来离线测试提供信息的边缘案例。
 
-在线评估器通常在服务器端运行。 LangSmith 提供内置的 [LLM-as-judge evaluators](/langsmith/llm-as-judge) 进行配置，并支持在 LangSmith 中运行的自定义代码评估器。
+在线评估器通常在服务器端运行。 LangSmith 支持自定义 [LLM-as-judge evaluators](/langsmith/llm-as-judge) 和代码评估器。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators)提供由LangChain管理的专业评委。
 
 ![Online](/langsmith/images/online.png)
 

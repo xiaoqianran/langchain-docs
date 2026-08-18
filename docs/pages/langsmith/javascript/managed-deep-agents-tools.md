@@ -2,7 +2,7 @@
 
 # Add custom tools to Managed Deep Agents
 
-Managed Deep Agents support the normal Deep Agents `tools` configuration surface.
+Managed Deep Agents support the Deep Agents `tools` configuration surface.
 
 
 

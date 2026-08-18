@@ -57,10 +57,10 @@ my-agent/
 
 一个项目中仅使用一个代理条目。参见[Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)。
 
-## MDA 如何处理项目文件- **托管上下文**：`instructions.md`定义系统提示符。 `skills/`下的每个目录都包含特定于任务的指令。 MDA 将两者同步到 Context Hub。
+## Managed Deep Agents 如何处理项目文件- **托管上下文**：`instructions.md`定义系统提示符。 `skills/`下的每个目录都包含特定于任务的指令。托管 Deep Agents 将两者同步到 Context Hub。
 - **应用程序代码**：`tools/`和`middleware/`下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
 - **托管配置**：根`identity.ts`和`memory.ts`、`channels/`、`connectors/`和`schedules/`以及`sandbox/index.ts`的直接子级启用其相应的功能。 MCP 连接器模块导出名为 `connector`。
-- **依赖关系和秘密**：在`package.json`中声明依赖关系。 MDA 在本地加载 `.env` 并将符合条件的值作为部署机密转发，但从不在构建存档中包含 `.env` 文件。
+- **依赖关系和秘密**：在`package.json`中声明依赖关系。托管 Deep Agents 在本地加载 `.env` 并将符合条件的值作为部署机密转发，但从不在构建存档中包含 `.env` 文件。
 - **评估**：托管 Deep Agents 评估是 Harbor 评估。 `evals/tasks/` 是规范的 Harbor 任务数据集。直接在那里编写任务，或者运行 `mda evals init <name>` 在 `evals/scaffold/` 下创建一个可选的启动器。 `mda evals compile` 将脚手架复制到`evals/tasks/` 并打包Harbor 的代理。 `evals/` 目录不包含在已部署的代理版本中。
 
 

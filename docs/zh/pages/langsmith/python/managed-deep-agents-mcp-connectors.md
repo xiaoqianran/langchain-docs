@@ -4,7 +4,7 @@
 
 # 连接到 MCP 服务器
 
-MCP 连接器将工具从远程 [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) 服务器添加到托管深度代理。托管 Deep Agents 创建 MCP 客户端、加载工具并将它们添加到代理。
+MCP 连接器将远程[Model Context Protocol (MCP)](/oss/python/deepagents/mcp) 服务器中的工具添加到托管深度代理中。托管 Deep Agents 创建 MCP 客户端、加载工具并将它们添加到代理。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -73,12 +73,12 @@ connector = connectors.mcp(
 
 |选项 |描述 |
 | ---| ---|
-| `transport` |必需的。对可流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
+| `transport` |必需的。对流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
-| `headers` |发送到服务器的静态标头，例如授权标头。 |
+| `headers` |要发送到服务器的静态标头，例如授权标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
 | `exclude_tools` / `excludeTools` |要隐藏的原始 MCP 工具名称。 |
-| `default_tool_timeout` / `defaultToolTimeout` |每个工具调用的超时时间，Python 以秒为单位，TypeScript 以毫秒为单位。 |
+| `default_tool_timeout` / `defaultToolTimeout` |每个工具调用的超时时间，对于 Python 以秒为单位，对于 TypeScript 以毫秒为单位。 |
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 

@@ -9,7 +9,7 @@
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
 - **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
-- **托管运行时**：LangSmith 代理服务器托管并操作代理，并在重新启动时保持会话运行。
+- **托管运行时**：[LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) 托管并操作代理，并在重新启动时保持会话运行。
 
 ```mermaid actions={false}
 %%{init: {"theme": "base", "themeVariables": {"lineColor": "#40668D", "primaryColor": "#E5F4FF", "primaryTextColor": "#030710", "primaryBorderColor": "#006DDD"}}}%%

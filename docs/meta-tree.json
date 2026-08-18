@@ -2619,6 +2619,12 @@
           "rel": "langsmith/troubleshooting.md"
         }
       ],
+      "tuned-evaluators": [
+        {
+          "title": "Set up LangChain Tuned Evaluators",
+          "rel": "langsmith/tuned-evaluators.md"
+        }
+      ],
       "upload-existing-experiments": [
         {
           "title": "How to upload experiments run outside of LangSmith with the REST API",

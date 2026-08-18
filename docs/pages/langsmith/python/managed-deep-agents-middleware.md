@@ -2,7 +2,7 @@
 
 # Add custom middleware to Managed Deep Agents
 
-Managed Deep Agents support the normal Deep Agents `middleware` configuration surface.
+Managed Deep Agents support the Deep Agents `middleware` configuration surface.
 
 Add LangChain middleware to `define_deep_agent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
 

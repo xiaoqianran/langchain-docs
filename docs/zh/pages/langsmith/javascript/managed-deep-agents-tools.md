@@ -4,7 +4,7 @@
 
 # 将自定义工具添加到托管Deep Agents
 
-托管 Deep Agents 支持普通 Deep Agents `tools` 配置界面。
+托管 Deep Agents 支持 Deep Agents `tools` 配置界面。
 
 
 
