@@ -17,7 +17,7 @@ LangSmith SDK 配置文件允许您将 [API keys](/langsmith/create-account-api-
 以下版本提供配置文件支持：
 
 |工具或SDK |最低版本 |
-| ---| ---|
+| --- | --- |
 | LangSmith CLI 配置文件命令 | `v0.2.26` |
 | `langsmith auth login` | `v0.2.30` |
 |去SDK | `v0.7.0` |
@@ -43,8 +43,8 @@ TypeScript SDK 仅在类似 Node.js 的运行时中加载配置文件。浏览�
 
 使用 `profiles` 对象创建 `~/.langsmith/config.json`。每个配置文件可以定义：
 
-|领域|描述 |
-| ---| ---|
+|领域 |描述 |
+| --- | --- |
 | `api_url` | LangSmith API 端点。使用与 `LANGSMITH_ENDPOINT` 相同的值。 |
 | `api_key` | LangSmith API 密钥。参见[Create an account and API key](/langsmith/create-account-api-key)。 |
 | `workspace_id` |工作区 ID。当 API 密钥可以访问多个工作区时需要。 |
@@ -122,17 +122,17 @@ langsmith profile create eu \
 ```
 
 常用配置文件命令：|命令 |描述 |
-| ---| ---|
+| --- | --- |
 | `langsmith profile list` |列出已保存的配置文件。别名：`langsmith profile ls`。 |
 | `langsmith profile show <name>` |显示已保存的配置文件。秘密值在输出中被编辑。 |
 | `langsmith profile use <name>` |在配置文件中设置`current_profile`。 |
 | `langsmith profile set-workspace <workspace-id>` |为选定的配置文件设置默认工作区。 |
 | `langsmith profile delete <name>` |删除已保存的配置文件。 |
 
-使用 `--format pretty` 作为人类可读的表格：
+默认情况下，输出是人类可读的表格。使用 `--format json` 进行可编写脚本的输出：
 
 ```shell
-langsmith --format pretty profile list
+langsmith --format json profile list
 ```
 
 ## 使用`langsmith auth login`进行身份验证
@@ -185,8 +185,8 @@ langsmith auth login \
 
 ## 覆盖配置文件值
 
-显式客户端构造函数参数和环境变量优先于配置文件值。|设置|优先级|
-| ---| ---|
+显式客户端构造函数参数和环境变量优先于配置文件值。|设置|优先级 |
+| --- | --- |
 |端点 |构造函数 `api_url` 或 `apiUrl`，然后是 `LANGSMITH_ENDPOINT`，然后是配置文件 `api_url`，然后是默认的 LangSmith 云端点。 |
 |认证|构造函数 API 密钥，然后是 `LANGSMITH_API_KEY`，然后是配置文件 OAuth 访问令牌，然后是配置文件 `api_key`。 |
 |工作空间 |构造函数`workspace_id`或`workspaceId`，然后是`LANGSMITH_WORKSPACE_ID`，然后是概要文件`workspace_id`。 |
@@ -312,7 +312,7 @@ export LANGSMITH_CONFIG_FILE="$RUNNER_TEMP/langsmith/config.json"
 export LANGSMITH_PROFILE=prod
 ```
 
-对于托管的[LangSmith Cloud](/langsmith/cloud)，请将这些值配置为环境变量或[workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)，除非平台明确支持挂载秘密文件。
+对于托管的[LangSmith Cloud](/langsmith/cloud)，请将这些值配置为环境变量或[workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings)，除非平台明确支持挂载机密文件。
 
 ---
 

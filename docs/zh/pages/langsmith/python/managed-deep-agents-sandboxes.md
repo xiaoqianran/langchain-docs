@@ -52,7 +52,7 @@ sandbox = define_sandbox(
 
 
 ## 选择范围|范围 |行为 |
-| ---| ---|
+| --- | --- |
 | `thread`（默认）|为每个持久线程创建一个沙箱，并在该线程上的运行中重复使用它。 |
 | `agent` |跨代理进程处理的线程共享一个沙箱。 |
 
@@ -67,7 +67,7 @@ sandbox = define_sandbox(
 
 ## 代理如何使用沙箱
 
-该代理使用`ls`、`read_file`、`write_file`、`edit_file`、`glob`和`grep`等文件系统工具，并使用`execute`运行shell命令。使用`instructions.md`指定代理应该在哪里工作以及不能修改什么。
+该代理使用`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`和`grep`等文件系统工具，并使用`execute`运行shell命令。使用`instructions.md`指定代理应该在哪里工作以及不能修改什么。
 
 ## 沙箱生命周期
 

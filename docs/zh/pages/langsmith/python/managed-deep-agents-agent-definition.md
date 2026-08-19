@@ -63,7 +63,7 @@ agent = define_deep_agent(
 |参数|它有什么作用 |
 |---|---|
 | [⟦T11⟧](#name) |设置代理和默认部署名称 |
-| [⟦T12⟧](#model) |选择聊天模式 |
+| [⟦T12⟧](#model) |选择聊天模式|
 | [⟦T13⟧](#tools) |添加代理可以调用​​的工具 |
 | [⟦T14⟧](#middleware) |添加有关模型调用、工具调用和代理生命周期的行为 |
 | [⟦T15⟧](#subagents) |为委派任务定义专门代理 |
@@ -76,7 +76,7 @@ agent = define_deep_agent(
 
 ## 姓名
 
-需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。托管 Deep Agents 使用该名称作为 LangGraph 助手 ID 和默认 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
+需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。托管 Deep Agents 使用该名称作为 LangGraph 助理 ID 和默认 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
 
 ## 型号
 
@@ -114,7 +114,7 @@ agent = define_deep_agent(
 
 
 
-当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关模型选项和支持的提供程序，请参阅[Models](/oss/python/deepagents/models)。
+当您需要在代码中配置模型参数时，请传递 LangChain 聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/python/deepagents/models)。
 
 ### 使用LLM网关
 
@@ -123,7 +123,7 @@ agent = define_deep_agent(
 为了使用 LLM Gateway，您应该：
 - 直接使用ChatOpenAI模型
 - 设置基本url为`https://gateway.smith.langchain.com/v1`
-- 将环境变量 `LANGSMITH_GATEWAY_API_KEY` 设置为您的 LangSmith API 密钥。
+- 使用您的`LANGSMITH_API_KEY`进行身份验证。仅当您需要不同的密钥用于网关呼叫时才设置`LANGSMITH_GATEWAY_API_KEY`。
 
 ```py
 import os
@@ -133,7 +133,7 @@ from langchain_openai import ChatOpenAI
 
 api_key = os.environ.get(
     "LANGSMITH_GATEWAY_API_KEY",
-    "missing-langsmith-gateway-api-key",
+    os.environ.get("LANGSMITH_API_KEY", "missing-langsmith-api-key"),
 )
 base_url = "https://gateway.smith.langchain.com/v1"
 
@@ -151,7 +151,7 @@ agent = define_deep_agent(
 
 
 <Note>
-使用网关时，模型段应该是`provider/model-name`。不使用网关时，通常为`provider:model-name`
+使用网关时，模型段应为`provider/model-name`。不使用网关时，通常为`provider:model-name`
 </Note>
 
 为了让您的项目从一开始就使用 Gateway，您可以在初始化代理时传递 `--gateway` 标志：
@@ -166,7 +166,7 @@ mda init my-agent --gateway
 
 ## 中间件
 
-传递 `middleware` 列表中的中间件，以添加有关模型调用、工具调用和代理生命周期的行为。中间件按列表顺序运行。
+传递 `middleware` 列表中的中间件以添加有关模型调用、工具调用和代理生命周期的行为。中间件按列表顺序运行。
 
 
 

@@ -7,12 +7,12 @@
 LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[tracing projects](/langsmith/observability-concepts#projects)和[datasets](/langsmith/evaluation-concepts#datasets)，因此您可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
 <Tip>
-[LangSmith Engine](/langsmith/engine) 针对检测到的问题建议自定义评估程序，并可以一键部署它们。
+[LangSmith Engine](/langsmith/engine) 针对检测到的问题建议自定义评估程序，并且可以一键部署它们。
 </Tip>
 
 ## 查看评估者
 
-在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**以查看工作区中的所有评估器。
+在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluators) 中，选择左侧边栏中的 **评估器** 以查看工作区中的所有评估器。
 
 评估者表显示以下列：|专栏 |描述 |
 |--------|-------------|
@@ -35,7 +35,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 1. 单击 **+ Evaluator** 打开新的评估器面板。
 1. 该面板可让您：
    - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。
-   - **添加LangChain调谐评估器**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，无需配置提示、模型或API密钥。
+   - **添加LangChain Tuned Evaluator**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，无需配置提示、模型或API密钥。
    - **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先显示流行的模板，然后是按以下类别组织的模板：|类别 |描述 |
      |----------|-------------|
      |安全|检测泄漏、注入和对抗性输入。 |
@@ -125,7 +125,26 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 上述 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
-## 删除评估器当评估器附加到跟踪项目或数据集时，您无法将其删除。要删除评估器：
+## 包括扩展统计数据使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计数据（反馈、成本、令牌）** 来评估运行中的反馈统计数据、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
+
+LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估逻辑或提示需要这些字段时才启用它。
+
+要包含扩展统计数据：
+
+1. 当您使用 [create](#create-an-evaluator) 或 [edit](#edit-an-evaluator) 运行级别评估器时，请展开评估器配置面板中的 **高级** 部分。
+1. 选择**包括扩展统计信息（反馈、成本、代币）**。
+
+### 访问扩展统计数据
+
+[Code evaluators](/langsmith/online-evaluations-code)接收`run`对象中的这些字段，包括`feedback_stats`、`total_tokens`、`total_cost`。无论您是否启用扩展统计数据，他们还会在 `run["feedback"]` 中收到 [individual feedback records](/langsmith/feedback-data-format)。对于 [LLM-as-a-judge evaluators](/langsmith/online-evaluations-llm-as-judge)，将相应的 `run.*` 字段映射到提示变量。例如，将 `{{correctness_average}}` 映射到 `run.feedback_stats.correctness.avg` 以在提示中包含 `correctness` 反馈平均值。可用的`run.*`字段还包括提示和完成令牌、成本和详细信息字段。有关完整运行数据架构，请参阅[Run data format](/langsmith/run-data-format)。
+
+### 链评估器扩展统计数据可用于链接评估器，其中代码评估器读取另一个评估器已经生成的分数。根据第一个评估者的反馈键（例如，`has(feedback_key, "answer_usefulness")`）筛选第二个评估者，然后启用扩展统计信息。过滤器使代码评估器仅在分数存在后运行，并且扩展统计数据使分数在 `run["feedback_stats"]["answer_usefulness"]["avg"]` 处可读。
+
+过滤器匹配反馈键而不是生成反馈键的评估器，因此来自任何具有该键的源的反馈都会触发代码评估器。要配置过滤器，请参阅[Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-code#configure-online-evaluators)。
+
+## 删除评估器
+
+当评估器附加到跟踪项目或数据集时，您无法将其删除。要删除评估器：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
 1. 选择您要删除的评估者。

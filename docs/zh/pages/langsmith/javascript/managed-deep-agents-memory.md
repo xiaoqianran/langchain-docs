@@ -6,7 +6,7 @@
 
 通常，托管深度代理的会话内存范围仅限于线程或会话。持久内存是代理可以在**跨**线程和会话中保留的可选知识。
 
-启用后，持久内存由 [Context Hub](/langsmith/use-the-context-hub) 支持。部署在`/memories/agent/`获取一棵读/写树，由每个调用者共享。默认情况下，托管 Deep Agents **没有** 具有持久内存。
+启用后，耐用内存由 [Context Hub](/langsmith/use-the-context-hub) 支持。部署在`/memories/agent/`获取一棵读/写树，由每个调用者共享。默认情况下，托管 Deep Agents **不** 有持久内存。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -27,13 +27,13 @@ my-agent/
 
 ## 内存与相关状态的比较
 
-|概念 |角色 |范围 |
-| ---| ---| ---|
+|概念|角色 |范围 |
+| --- | --- | --- |
 | **说明和技巧** |部署拥有的代理行为 |由部署共享并对代理只读 |
 | **线程状态** |对话连续性 |一根线 |
 | **持久记忆** |在 Context Hub 中学习和保留的知识 |跨线程部署共享|
 
-内存不是你的系统提示符。在[instructions](/langsmith/javascript/managed-deep-agents-instructions)中定义始终在线的行为，并在[skills](/langsmith/javascript/managed-deep-agents-skills)中定义特定于任务的过程；使用内存来获取代理在运行时学到的持久知识。
+内存不是你的系统提示符。在[instructions](/langsmith/javascript/managed-deep-agents-instructions)中定义始终在线的行为，在[skills](/langsmith/javascript/managed-deep-agents-skills)中定义特定于任务的过程；使用内存来获取代理在运行时学到的持久知识。
 
 ## 启用内存导出具有 `"agent"` 范围的命名 `memory` 声明：
 
@@ -57,17 +57,17 @@ export const memory = defineMemory({ scope: "agent" });
 
 启用内存会在代理文件系统中的 `/memories/agent/` 处挂载一棵 Context Hub 树 `memories/agent`：
 
-|路径|使用|
-| ---| ---|
+|路径|使用 |
+| --- | --- |
 | `/memories/agent/AGENTS.md` | **热记忆**用于紧凑、频繁相关的知识。它的内容会加载到每次运行中。 |
-| `/memories/agent/`下的其他文件 | **冷记忆**用于代理仅在相关时读取的详细知识。 |
+| `/memories/agent/`下的其他文件| **冷记忆**用于代理仅在相关时读取的详细知识。 |
 
 保持热内存紧凑，因为它会在每次运行时消耗上下文。将详细的材料（例如程序、决策日志和研究笔记）放入冷文件中，并在有用时从热内存中链接到它们。
 
-代理使用 `read_file`、`edit_file` 和 `write_file` 读取和更新内存。其他地方的写入，包括`/memories/`下的其他地方，都是不持久的。
+代理使用 `read_file`、`edit_file` 和 `write_file` 读取和更新内存。只有对安装在代理文件系统中的 `/memories/agent/` 的 `memories/agent` Context Hub 树的写入才是持久的并且在未来的线程和会话中可用。代理文件系统中其他位置的写入（包括 `/memories/` 下的其他位置）仅限运行时，并且可能会在当前运行后被丢弃。<Warning>
+内存由部署的每个调用者共享，并且每个调用者都可以影响它。仅存储每个调用者都可以读取和修改的知识。切勿存储个人或客户私有数据、凭证、API 密钥、令牌或其他机密。
 
-<Warning>
-内存由部署的每个调用者共享，并且每个调用者都可以影响它。仅存储每个调用者都可以读取和修改的知识。切勿存储个人或客户私有数据、凭证、API 密钥、令牌或其他机密。将内存视为不受信任的输入：为后来的调用者加载由一个调用者保存的内容，并且不得授予权限、更改工具权限或绕过批准。将这些控件保留在代理定义中。当调用者不应该互相影响时，不要启用共享内存。
+将内存视为不受信任的输入：为后来的调用者加载由一个调用者保存的内容，并且不得授予权限、更改工具权限或绕过批准。将这些控件保留在代理定义中。当调用者不应该互相影响时，不要启用共享内存。
 </Warning>
 
 ## 智能体如何决定记住什么
@@ -97,9 +97,7 @@ write fails, do not claim that you remembered it.
 
 `instructions.md` 始终是只读的。代理从不更新它。部署同步项目拥有的指令和技能，但不会覆盖已存储在 Context Hub 中的 `memories/agent` 下的持久内容。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

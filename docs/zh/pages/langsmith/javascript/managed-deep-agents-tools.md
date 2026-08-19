@@ -8,7 +8,7 @@
 
 
 
-在您的项目中定义LangChain工具，将它们导入到`agent.ts`中，然后将它们传递给`defineDeepAgent`。
+在您的项目中定义LangChain工具，将其导入`agent.ts`，然后将其传递给`defineDeepAgent`。
 
 
 要从远程 MCP 服务器加载工具，请使用 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
@@ -30,12 +30,6 @@ my-agent/
     customer.ts
 ```
 
-
-## 添加创作工具
-
-使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。托管 Deep Agents 将源代码复制到已编译的版本中，并将工具传递给 Deep Agents。
-
-有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
 
 ## 添加工具模块
 
@@ -86,7 +80,9 @@ export const agent = defineDeepAgent({
 
 使用清晰、独特的工具名称以避免冲突。
 
-## 人机交互在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
+## 人机交互
+
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
 
 
@@ -113,10 +109,7 @@ export const agent = defineDeepAgent({
 
 
 
-`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。
-
-
-有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
+`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
 
 ### 响应中断
 
@@ -133,13 +126,13 @@ export const agent = defineDeepAgent({
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用秘密和上下文工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
+## 使用秘密和上下文
+
+工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
 对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

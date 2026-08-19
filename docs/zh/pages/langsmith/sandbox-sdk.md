@@ -331,10 +331,10 @@ try {
 
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
 
 <Warning>
-Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，如果它属于存储库，则将其写入[push it with the SDK](/langsmith/manage-contexts-sdk)。
+Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 </Warning>
 
 将安装座穿过`mount_config`。创建沙箱的 API 密钥必须有权访问存储库，否则创建会失败并显示 `403`。
@@ -399,22 +399,57 @@ try {
 
 通过 `initial_pull_only` / `initialPullOnly` 在启动时同步一次，而不是轮询存储库更新。
 
+## 调整沙箱大小
+
+在创建时传递 `vcpus`、`mem_bytes` 和 `fs_capacity_bytes`（在 TypeScript 中为 `vCpus`、`memBytes`、`fsCapacityBytes`）以调整沙箱的大小。省略它们，沙箱将获得以下默认值。
+
+<CodeGroup>
+
+```python Python
+sb = client.create_sandbox(
+    name="big-vm",
+    vcpus=4,
+    mem_bytes=16 * 1024**3,        # 16 GiB
+    fs_capacity_bytes=32 * 1024**3, # 32 GiB
+)
+```
+
+```ts TypeScript
+const sb = await client.createSandbox({
+  name: "big-vm",
+  vCpus: 4,
+  memBytes: 17_179_869_184,        // 16 GiB
+  fsCapacityBytes: 34_359_738_368, // 32 GiB
+});
+```
+
+</CodeGroup>
+
+|资源 |默认|范围 |
+|----------|---------|--------|
+|中央处理器| 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
+|内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
+|文件系统 |快照容量|高达 64 GiB，且绝不会小于其启动的快照。 |当主机有空闲容量时，沙箱会爆发到其请求的 CPU 的两倍。使用 `update_sandbox` / `updateSandbox` 调整现有沙箱的大小会在下次启动时生效，并且调整大小仅强制执行 64 GiB 上限，而不是每个 vCPU 的比率。
+
+<Note>
+可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。除非被覆盖，否则沙箱会继承其快照的标签。 `langsmith.sandbox` 客户端尚未公开此字段。
+</Note>
+
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。
-
-|领域|它控制什么 |当它发生时 |
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
 |--------|------------------|------------------------|
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
 
-两个值都必须是 60（分钟分辨率）的倍数。完整的生命周期是：
+两个值都必须是 60（分钟分辨率）的倍数，并且 `delete_after_stop_seconds` 上限为 2592000（30 天）。完整的生命周期是：
 
 ```
 running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_stop_seconds)──▶ deleted
-```您还可以显式调用 `stop_sandbox` / `stopSandbox` — 这也
-填充`stopped_at`并启动删除计时器。
+```
+
+您还可以显式调用 `stop_sandbox` / `stopSandbox` 在空闲超时触发之前释放资源；它还会填充`stopped_at`并启动删除计时器。之后您无需再次启动它：停止的沙箱会在下一个命令、文件操作或服务 URL 请求时唤醒。
 
 <CodeGroup>
 
@@ -470,10 +505,8 @@ await client.updateSandbox(sb.name, {
 
 ## 命令生命周期和 TTL
 
-沙箱守护进程使用两种超时机制来管理命令会话生命周期：
-
-- **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。
-- **空闲超时（运行命令）**：在空闲超时（默认值：5 分钟）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。设置为 `-1` 无空闲超时。
+沙箱守护进程使用两种超时机制来管理命令会话生命周期：- **会话 TTL（已完成的命令）**：命令完成后，其会话将在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
+- **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
 
 ### 组合生命周期选项
 
@@ -529,7 +562,7 @@ try {
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python
 with client.sandbox() as sb:
@@ -545,9 +578,9 @@ with client.sandbox() as sb:
     resp = svc.post("/api/data", json={"key": "value"})
 ```
 
-有关更多详细信息，包括用例、REST API 访问和完整的 FastAPI 示例，请参阅 [Service URLs](/langsmith/sandbox-service-urls)。## TCP 隧道 (Python)
+有关更多详细信息，包括用例、REST API 访问和完整的 FastAPI 示例，请参阅 [Service URLs](/langsmith/sandbox-service-urls)。
 
-访问沙箱内运行的任何 TCP 服务，就好像它是本地服务一样。隧道打开本地 TCP 端口，并通过 WebSocket 将连接转发到沙箱内的目标端口。
+## TCP 隧道 (Python)访问沙箱内运行的任何 TCP 服务，就好像它是本地服务一样。隧道打开本地 TCP 端口，并通过 WebSocket 将连接转发到沙箱内的目标端口。
 
 ```python
 import psycopg2

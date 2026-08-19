@@ -4,7 +4,7 @@
 
 # LangSmith CLI
 
-LangSmith CLI 是一个用于查询和管理 LangSmith 数据的命令行工具。它是为开发人员和 AI 编码代理设计的，默认情况下输出 JSON 用于脚本编写，并带有用于人类可读表格的 `--format pretty` 选项。当您需要对 LangSmith 数据进行脚本化访问时，例如批量导出、自动化或让编码代理直接访问您的 [traces, runs, and datasets](/langsmith/observability-concepts)，请使用它。
+LangSmith CLI 是一个用于查询和管理 LangSmith 数据的命令行工具。它是为开发人员和 AI 编码代理设计的，默认情况下输出人类可读的表格，并带有用于脚本编写的 `--format json` 选项。当您需要对 LangSmith 数据进行脚本化访问时，例如批量导出、自动化或让编码代理直接访问您的 [traces, runs, and datasets](/langsmith/observability-concepts)，请使用它。
 
 ## 安装
 
@@ -97,7 +97,7 @@ export LANGSMITH_API_KEY="lsv2_..."
 export LANGSMITH_PROJECT="my-default-project"
 ```
 
-如果您使用 LangSmith [self-hosted](/langsmith/self-hosted)，还需设置端点：
+如果您使用 LangSmith [self-hosted](/langsmith/self-hosted)，还请设置端点：
 
 ```bash
 export LANGSMITH_ENDPOINT="https://your-langsmith-instance.com"
@@ -186,19 +186,19 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 
 **默认**
 
-JSON 到 stdout — 易于通过管道、脚本或提供给代理：
+人类可读的表格：
 
   ```bash
   langsmith trace list --project my-app
   ```
 
-**漂亮的桌子**`--format pretty` 用于人类可读的输出：
+**JSON**
+
+`--format json` 通过管道、脚本或将输出提供给代理：
 
   ```bash
-  langsmith --format pretty trace list --project my-app
-  ```
-
-**写入文件**
+  langsmith --format json trace list --project my-app
+  ```**写入文件**
 
 `-o <path>`：
 
@@ -208,7 +208,7 @@ JSON 到 stdout — 易于通过管道、脚本或提供给代理：
 
 ## 命令
 
-每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 以及一组共享的 [filter flags](#filter-flags)。
+每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 和一组共享的 [filter flags](#filter-flags)。
 
 ### 列出项目
 
@@ -217,7 +217,7 @@ JSON 到 stdout — 易于通过管道、脚本或提供给代理：
 ```bash
 langsmith project list
 langsmith project list --limit 50 --name-contains chatbot
-langsmith --format pretty project list
+langsmith --format json project list
 ```
 
 ### 查询痕迹
@@ -284,7 +284,9 @@ langsmith example create --dataset my-dataset \
 langsmith example delete <example-id> --yes
 ```
 
-### 管理评估者评估器可以离线（在实验期间针对数据集运行）或在线（针对实时项目运行）。使用 `--sampling-rate` 仅评估生产运行的一小部分，并使用 `--replace` 按名称覆盖现有评估器。
+### 管理评估者
+
+评估器可以离线（在实验期间针对数据集运行）或在线（针对实时项目运行）。使用 `--sampling-rate` 仅评估生产运行的一小部分，并使用 `--replace` 按名称覆盖现有评估器。
 
 ```bash
 langsmith evaluator list
@@ -297,9 +299,7 @@ langsmith evaluator upload evals.py --name accuracy \
 langsmith evaluator delete accuracy --yes
 ```
 
-### 查看实验
-
-`experiment list` 显示评估实验，而不是跟踪项目。 （使用[⟦T79⟧](#list-projects)列出跟踪项目。）
+### 查看实验`experiment list` 显示评估实验，而不是跟踪项目。 （使用[⟦T79⟧](#list-projects)列出跟踪项目。）
 
 ```bash
 langsmith experiment list
@@ -349,7 +349,7 @@ langsmith api sessions --include
 langsmith api sessions -H "Accept: text/csv"
 ```
 
-关键标志：|旗帜|短|默认 |描述 |
+关键标志：|旗帜|短|默认|描述 |
 |------|--------|---------|-------------|
 | `--method` | `-X` | `GET` | HTTP 方法 |
 | `--field` | `-F` | — |输入 JSON 字段为 `key=value`。可重复。使用 `@<path>` 或 `@-` 作为文件/标准输入值。 |

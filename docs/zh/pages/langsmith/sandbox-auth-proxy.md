@@ -55,7 +55,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "db-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "access_control": {
         "allow_list": [
@@ -69,7 +68,9 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 与`db.example.com:5432`的连接在 TCP 层传递，不会被拦截，因此 PostgreSQL 有线协议以及 TLS、主机密钥检查以及其上的任何其他端到端协议都保持不变。
 
-### 通过SDK配置
+<Note>
+创建沙箱会启动它，并在报告 `ready` 后返回，因此无需添加等待步骤。如果您稍后需要重新检查，`GET /api/v2/sandboxes/boxes/{name}/status` 会报告当前状态。
+</Note>### 通过SDK配置
 
 <CodeGroup>
 
@@ -105,9 +106,11 @@ await client.createSandbox({
 
 </CodeGroup>
 
-## 配置授权代理规则创建沙箱时添加`proxy_config`，或通过修补其`proxy_config`来更新现有沙箱。每条规则指定：
+## 配置授权代理规则
 
-|领域|描述 |
+创建沙箱时添加`proxy_config`，或通过修补其`proxy_config`来更新现有沙箱。每条规则指定：
+
+|领域 |描述 |
 |--------|-------------|
 | `match_hosts` |要拦截的主机（支持 `*.github.com` 等 glob）|
 | `match_paths` |要匹配的路径（空=所有路径）|
@@ -117,7 +120,7 @@ await client.createSandbox({
 
 ### 标头类型
 
-每个标头都有一个 `type` 来控制其值的存储和显示方式：
+每个标头都有一个 `type` 控制其值的存储和显示方式：
 
 |类型 |描述 |
 |------|-------------|
@@ -131,7 +134,7 @@ await client.createSandbox({
 
 环境变量按以下顺序解析，从最低优先级到最高优先级：
 
-1. **启用的代理规则**：当两个启用的规则声明相同名称时，`rules`中较晚的规则获胜。
+1. **启用代理规则**：当两个启用的规则声明相同名称时，`rules`中较晚的规则获胜。
 2. **沙箱自己的`env_vars`**：显式的每个沙箱值会覆盖规则中的值。
 3. **由启用的 AWS 或 GCP 身份验证规则管理的变量**：启用匹配的身份验证规则时，声明这些名称之一的规则将被拒绝。
 
@@ -159,7 +162,7 @@ AWS 身份验证规则与标头注入规则不同：
 - 将`type`设置为`aws`。
 - 将凭证放在 `aws` 对象下。
 - 请勿设置`match_hosts`、`match_paths`、`headers`； AWS 主机匹配内置于代理中。
-- 每个沙箱最多配置一个 AWS 身份验证规则。
+- 每个沙箱最多配置一个 AWS 身份验证规则。该限制计算每个 AWS 规则，包括禁用的规则。
 
 ```bash
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -167,7 +170,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "aws-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -256,11 +258,11 @@ AWS 身份验证代理规则当前支持访问密钥 ID 和秘密访问密钥凭
 不要将真实服务帐户 JSON 设置为沙箱环境变量。将其配置为 `workspace_secret` 或 `opaque` 代理值。明文 GCP 凭证值被拒绝。
 </Warning>
 
-GCP 身份验证规则与标头注入规则不同：- 将`type`设置为`gcp`。
+GCP 身份验证规则与标头注入规则不同：- 将 `type` 设置为 `gcp`。
 - 将凭据放在`gcp.service_account_json`下。
 - 将 `gcp.scopes` 设置为 OAuth 范围的非空列表。
 - 代理自动匹配 Google API 主机，并使用配置的服务帐户对这些请求进行身份验证。
-- 每个沙箱最多配置一个启用的 GCP 身份验证规则。
+- 每个沙箱最多配置一个 GCP 身份验证规则。该限制计算每个 GCP 规则，包括已禁用的规则。
 
 SDK `gcp_auth` 和 `gcpAuth` 帮助程序构建了相同的规则形状。
 
@@ -270,7 +272,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "gcp-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -348,7 +349,7 @@ await client.createSandbox({
 
 ## 单个 API 示例
 
-创建一个沙箱，自动将 OpenAI API 密钥注入出站请求中：
+创建一个沙箱，自动将 OpenAI API 密钥注入出站请求：
 
 ```bash
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -356,7 +357,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "openai-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -375,7 +375,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   }'
 ```
 
-沙箱现在可以在没有 API 密钥设置的情况下调用 OpenAI——代理会自动注入它。
+沙箱现在可以调用OpenAI，无需设置 API 密钥 - 代理会自动注入它。
 
 ## 多个API示例
 
@@ -387,7 +387,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "multi-api-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "rules": [
         {
@@ -569,7 +568,7 @@ await client.createSandbox({
 
 回调与`proxy_config`下的规则一起配置：
 
-|领域|描述 |
+|领域 |描述 |
 |--------|-------------|
 | `match_hosts` |要拦截的主机（与规则相同的语法；支持像`*.github.com`这样的通配符）。 |
 | `url` |您的回调端点。必须是可从代​​理访问的 `http://` 或 `https://` URL。 |
@@ -612,7 +611,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -d '{
     "snapshot_id": "<snapshot-uuid>",
     "name": "callback-sandbox",
-    "wait_for_ready": true,
     "proxy_config": {
       "callbacks": [
         {

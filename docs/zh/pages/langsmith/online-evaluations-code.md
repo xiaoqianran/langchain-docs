@@ -26,11 +26,13 @@
 
 例如，您可能希望根据以下条件应用特定的评估器：
 
-- 运行时，[user left feedback](/langsmith/attach-user-feedback) 指示响应不令人满意。
+- 当 [user left feedback](/langsmith/attach-user-feedback) 指示响应不令人满意时运行。
 - 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 - 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 
-评估器上的过滤器的工作方式与过滤项目中的跟踪时的工作方式相同。更多关于滤镜的信息，可以参考[Filter traces](/langsmith/filter-traces-in-application)。<Tip>
+求值器上的过滤器的工作方式与过滤项目中的跟踪时的工作方式相同。更多关于滤镜的信息，可以参考[Filter traces](/langsmith/filter-traces-in-application)。要处理来自早期评估器的反馈，请过滤该评估器以获取反馈键，然后过滤[include extended stats](/langsmith/evaluators#include-extended-stats)。例如，当`answer_usefulness`反馈存在时，使用`has(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。
+
+<Tip>
 当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
 </Tip>
 
@@ -38,11 +40,11 @@
 
 配置采样率以控制触发自动化操作的过滤运行的百分比。例如，为了控制成本，您可能需要设置一个过滤器以仅将求值器应用于 10% 的迹线。为此，您可以将采样率设置为 0.1。
 
-### 5.（可选）将规则应用于过去的运行
+### 5.（可选）将规则应用于过去的运行通过切换**应用于过去的运行**并输入“回填自”日期，将规则应用于过去的运行。这只有在创建规则时才有可能。注意：回填作为后台作业进行处理，因此您不会立即看到结果。
 
-通过切换 **应用到过去的运行** 并输入“回填自”日期，将规则应用于过去的运行。这只有在创建规则时才有可能。注意：回填作为后台作业进行处理，因此您不会立即看到结果。
+为了跟踪回填的进度，您可以通过前往跟踪项目中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。
 
-为了跟踪回填的进度，您可以通过前往跟踪项目中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。- 添加评估者姓名
+- 添加评估者姓名
 - （可选）过滤您想要应用评估器的运行或配置采样率。
 - 选择**应用评估器**
 
@@ -68,13 +70,11 @@ sklearn (v1.26.4): "scikit-learn"
 
 在 UI 中，您将找到一个面板，可让您内联编写代码以及一些起始代码。
 
-代码评估器接受一个参数：
-
-- A `Run` ([reference](/langsmith/run-data-format))。这代表要评估的采样运行。
+代码评估器接受一个参数：- A `Run` ([reference](/langsmith/run-data-format))。这代表要评估的采样运行。
 
 它们返回一个值：
 
-- 反馈字典：一个字典，其键是您要返回的反馈类型，值是您对该反馈键给出的分数。例如，`{"correctness": 1, "silliness": 0}`会在运行中创建两种类型的反馈，一种说它是正确的，另一种说它并不愚蠢。
+- 反馈字典：一个字典，其键是您要返回的反馈类型，值是您对该反馈键给出的分数。例如，`{"correctness": 1, "silliness": 0}`会在跑步时创建两种类型的反馈，一种说它是正确的，另一种说它并不愚蠢。
 
 以下示例显示了一个函数，该函数验证实验中的每次运行是否具有已知的 JSON 字段：
 
@@ -128,7 +128,9 @@ function perform_eval(run) {
 
     return { "formatted": true };
 }
-```</CodeGroup>
+```
+
+</CodeGroup>
 
 ## 测试并保存您的评估函数
 

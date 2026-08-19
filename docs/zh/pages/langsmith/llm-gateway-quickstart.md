@@ -44,35 +44,31 @@ export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 
 ```bash Bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 ```python Python
 import os
 
 os.environ["LANGSMITH_GATEWAY"] = "true"
-os.environ["LANGSMITH_GATEWAY_API_KEY"] = os.environ["LANGSMITH_API_KEY"]
 ```
 
 ```typescript TypeScript
 process.env.LANGSMITH_GATEWAY = "true";
-process.env.LANGSMITH_GATEWAY_API_KEY = process.env.LANGSMITH_API_KEY;
 ```
 
 </CodeGroup>
 
-这将通过`https://gateway.smith.langchain.com`处的网关路由所有支持的聊天模型。要使用不同的网关（例如 EU 实例），请设置其 URL 而不是 `true`：
+这将通过`https://gateway.smith.langchain.com`处的网关路由所有支持的聊天模型，并使用`LANGSMITH_API_KEY`进行身份验证。要使用不同的网关（例如 EU 实例），请设置其 URL 而不是 `true`：
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 <Note>
-如果网关已启用但`LANGSMITH_GATEWAY_API_KEY`未设置，网关将回退到`LANGSMITH_API_KEY`。
+如果您需要使用与默认 `LANGSMITH_API_KEY` 不同的 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。
 </Note>
 
-配置这些环境变量将通过其[direct access endpoints](/langsmith/llm-gateway-direct-model-access)路由支持的聊天模型。要访问统一的`/v1`端点或[Gateway Credits](/langsmith/llm-gateway-credits)，请在[⟦T23⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T24⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)或其他入口点中指定`"langsmith"`提供程序，如下所示（需要`langchain >= 1.3.15`）
+配置这些环境变量将通过其[direct access endpoints](/langsmith/llm-gateway-direct-model-access)路由支持的聊天模型。要访问统一的`/v1`端点或[Gateway Credits](/langsmith/llm-gateway-credits)，请在[⟦T25⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T26⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)或其他入口点中指定`"langsmith"`提供程序，如下所示（需要`langchain >= 1.3.15`）
 
 ```python
 from deepagents import create_deep_agent
@@ -91,21 +87,19 @@ agent = create_deep_agent(
 
 <Tab title="Python">
 
-支持的聊天模型：
-
-- [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`)
+支持的聊天模型：- [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`)
 - [Baseten](/oss/python/integrations/chat/baseten) (`langchain-baseten >= 0.2.3`)
 - [Fireworks](/oss/python/integrations/chat/fireworks) (`langchain-fireworks >= 1.5.1`)
 - [Google Gemini](/oss/python/integrations/chat/google_generative_ai) (`langchain-google-genai >= 4.3.2`)
-- [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`)特定于提供商的基本 URL 优先于网关，因此您仍然可以将单个提供商路由到其他地方。例如，启用网关后，`OPENAI_API_BASE` 将 OpenAI 发送到该 URL，而其他所有提供商继续使用该网关：
+- [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`)
+
+特定于提供商的基本 URL 优先于网关，因此您仍然可以将单个提供商路由到其他地方。例如，启用网关后，`OPENAI_API_BASE` 将 OpenAI 发送到该 URL，而其他所有提供商继续使用该网关：
 
 ```bash
 export OPENAI_API_BASE="https://my.custom.gateway/openai/v2"
 ```
 
-下表显示了如何解析基本 URL 和密钥，以 OpenAI 为例（其他提供商使用自己的 `*_API_BASE` 和 `*_API_KEY` 变量）。 `GW default` 是 `https://gateway.smith.langchain.com/openai/v1`。
-
-| `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_API_BASE` | `OPENAI_API_KEY` | `base_url=` 夸格 |已解析的基本 URL |已解决的关键 |
+下表显示了如何解析基本 URL 和密钥，以 OpenAI 为例（其他提供商使用自己的 `*_API_BASE` 和 `*_API_KEY` 变量）。 `GW default` 是`https://gateway.smith.langchain.com/openai/v1`。| `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_API_BASE` | `OPENAI_API_KEY` | `base_url=` 夸格 |已解析的基本 URL |已解决的关键 |
 |---|---|---|---|---|---|---|
 |未设置 / `false` | — | — | — | — | `api.openai.com` |无 |
 |未设置 / `false` | ✓ | — |供应商密钥 | — | `api.openai.com` |供应商密钥 |
@@ -117,7 +111,8 @@ export OPENAI_API_BASE="https://my.custom.gateway/openai/v2"
 | `true` | ✓ | `api.openai.com/v1` | — | — | `api.openai.com/v1` |网关密钥 |
 | `true` | ✓ | `my.dev.gateway` | — | — | `my.dev.gateway` |网关密钥 |
 | `https://eu…` | ✓ | — | — | — | `eu…/openai/v1` |网关密钥 |
-| `https://eu…` | ✓ | — | — | `https://apac…` | `apac…` |网关密钥 || `https://eu…` | ✓ | — |供应商密钥 | `https://apac…` | `apac…` |供应商密钥 |
+| `https://eu…` | ✓ | — | — | `https://apac…` | `apac…` |网关密钥 |
+| `https://eu…` | ✓ | — |供应商密钥 | `https://apac…` | `apac…` |供应商密钥 |
 
 </Tab>
 
@@ -133,13 +128,13 @@ export OPENAI_API_BASE="https://my.custom.gateway/openai/v2"
 
 ```bash
 export OPENAI_BASE_URL="https://my.custom.gateway/openai/v2"
-```
-
-<Note>
+```<Note>
 每个提供程序还读取其 `*_API_BASE` 变量，该变量优先于 `*_BASE_URL`。
 </Note>
 
-下表显示了如何解析基本 URL 和密钥，以 OpenAI 为例（其他提供商使用自己的 `*_BASE_URL` 和 `*_API_KEY` 变量）。 `GW default` 是 `https://gateway.smith.langchain.com/openai/v1`。| `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_BASE_URL` | `OPENAI_API_KEY` | `configuration.baseURL` |已解析的基本 URL |已解决的关键 |
+下表显示了如何解析基本 URL 和密钥，以 OpenAI 为例（其他提供商使用自己的 `*_BASE_URL` 和 `*_API_KEY` 变量）。 `GW default` 是 `https://gateway.smith.langchain.com/openai/v1`。
+
+| `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_BASE_URL` | `OPENAI_API_KEY` | `configuration.baseURL` |已解析的基本 URL |已解决的关键 |
 |---|---|---|---|---|---|---|
 |未设置 / `false` | — | — | — | — | `api.openai.com` |无 |
 |未设置 / `false` | ✓ | — |供应商密钥 | — | `api.openai.com` |供应商密钥 |
@@ -218,13 +213,13 @@ result = agent.invoke({"messages": [{"role": "user", "content": "ping"}]})
 print(result["messages"][-1].content)
 ```
 
-</CodeGroup>
-
-包含聊天完成的 `200` 响应确认网关、您的 API 密钥、角色权限和所选模型路由正在运行。
+</CodeGroup>包含聊天完成的 `200` 响应确认网关、您的 API 密钥、角色权限和所选模型路由正在运行。
 
 ## 3. 查看您的踪迹
 
-打开 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-gateway-quickstart) 并导航到与您的 API 密钥关联的工作区中名为 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 的跟踪项目。您应该会看到刚刚拨打的电话的新跟踪。<Note>
+打开 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-gateway-quickstart) 并导航到与您的 API 密钥关联的工作区中名为 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 的跟踪项目。您应该会看到刚刚拨打的电话的新跟踪。
+
+<Note>
 如果您的应用程序还发出自己的 LangSmith 跟踪（例如通过 [LangChain or LangGraph tracing](/langsmith/observability)），则网关端跟踪和您的应用程序跟踪将显示为单独的运行。尚不支持将网关跟踪链接到父应用程序运行。
 </Note>
 
@@ -236,7 +231,7 @@ print(result["messages"][-1].content)
 
 ## 网关如何处理请求
 
-网关对每个标准端点请求执行以下步骤：1. **使用 LangSmith API 密钥对请求进行身份验证。
+网关对每个标准端点请求执行以下步骤：1. **使用 LangSmith API 密钥对请求进行身份验证**。
 1. **从模型 ID 中选择**托管模型或配置的自带密钥提供商。
 1. **解析**上游凭证。托管模型使用网关积分，而自带密钥模型则使用工作区提供商秘密。
 1. **评估**主动策略，包括支出限制、PII 编辑和秘密编辑。

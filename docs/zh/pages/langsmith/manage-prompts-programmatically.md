@@ -36,7 +36,7 @@ implementation("com.langchain.smith:langsmith-java:0.1.0-beta.4")
 
 ## 配置环境变量
 
-如果您已将 `LANGSMITH_API_KEY` 从 LangSmith 设置为当前工作区的 api 密钥，则可以跳过此步骤。
+如果您已将 `LANGSMITH_API_KEY` 设置为 LangSmith 中当前工作区的 api 密钥，则可以跳过此步骤。
 
 否则，请导航至 LangSmith 中的 `Settings > API Keys > Create API Key` 获取工作区的 API 密钥。
 
@@ -127,7 +127,7 @@ client.commits().create(
 
 </CodeGroup>
 
-您还可以将提示作为提示和模型的 RunnableSequence 推送。这对于存储您想要与此提示一起使用的模型配置非常有用。该提供程序必须得到 Playground 的支持，请参阅[supported model providers](/langsmith/playground-model-providers)。
+您还可以将提示作为提示和模型的 RunnableSequence 推送。这对于存储您想要与此提示一起使用的模型配置非常有用。该提供者必须得到 Playground 的支持，请参阅[supported model providers](/langsmith/playground-model-providers)。
 
 <CodeGroup>
 
@@ -397,26 +397,26 @@ Prompt publicPrompt = promptClient.pull("efriis/my-first-prompt");
 </CodeGroup>
 
 <Note>
-对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，则非 OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
+对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，非OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
 </Note>
 
 ## 配合LangSmith网关使用
 
-如果您的工作区使用[LangSmith LLM Gateway](/langsmith/llm-gateway)，您可以通过在拉取和调用提示之前设置两个环境变量来通过它路由提示模型调用。无需更改其他代码。
+如果您的工作区使用[LangSmith LLM Gateway](/langsmith/llm-gateway)，您可以通过在拉取和调用提示之前设置环境变量来通过它路由提示模型调用。无需更改其他代码。
 
 ```bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="lsv2_..."
 ```
 
-将 `LANGSMITH_GATEWAY_API_KEY` 设置为工作区范围内具有 `gateway:invoke` 权限的 LangSmith API 密钥。如果未设置此变量，网关将回退到`LANGSMITH_API_KEY`。
-
-要使用区域网关实例而不是默认网关实例，请将 `LANGSMITH_GATEWAY` 设置为完整网关 URL：
+这使用您现有的 `LANGSMITH_API_KEY` 进行身份验证。要使用区域网关实例而不是默认网关实例，请将 `LANGSMITH_GATEWAY` 设置为完整网关 URL：
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="lsv2_..."
 ```
+
+<Note>
+如果您需要使用与默认 `LANGSMITH_API_KEY` 不同的 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。
+</Note>
 
 设置环境变量后，像平常一样使用模型拉取并调用提示：
 
@@ -433,7 +433,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 ```
 
 <Note>
-LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包（最低版本在[gateway quickstart](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents) 中列出）。如果集成包低于最低版本，调用将绕过网关，直接转至提供商。
+LangChain 聊天模型的网关路由需要 Python 和[gateway quickstart](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents) 中列出的最低版本的受支持的 `langchain-*` 集成包。如果集成包低于最低版本，调用将绕过网关，直接转至提供商。
 </Note>
 
 有关完整的配置选项、提供商支持和区域端点，请参阅 [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart)。
@@ -448,7 +448,7 @@ LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*`
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置|默认 |描述 |
+|设置|默认|描述 |
 |---------|---------|-------------|
 | `max_size` | 100 | 100缓存的最大提示数|
 | `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
@@ -755,7 +755,7 @@ promptCacheSingleton.stop();
 
 ## 使用不带 LangChain 的提示
 
-如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，您可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
+如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，则可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
 
 这些转换方法依赖于LangChain集成包中的逻辑，除了您选择的官方 SDK 之外，您还需要安装适当的包作为依赖项。以下是一些示例：
 

@@ -118,7 +118,9 @@ try {
 
 ## Mount a GCS bucket
 
-GCS mounts require GCP auth. Read/write mounts require the `https://www.googleapis.com/auth/devstorage.read_write` or `https://www.googleapis.com/auth/cloud-platform` OAuth scope. Read-only mounts can use `https://www.googleapis.com/auth/devstorage.read_only`.
+GCS mounts require GCP auth. The OAuth scope is supplied by the backend, derived from the mounts themselves: read-only mounts get `devstorage.read_only` and writable mounts get `devstorage.read_write`.
+
+Because a single `mount_config` resolves to one scope, all of its GCS mounts must agree: mixing read-only and writable GCS mounts in one config is rejected. Use writable mounts throughout, or create separate sandboxes.
 
 <CodeGroup>
 
@@ -139,7 +141,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         )
     ],
     mounts=[
@@ -173,7 +174,6 @@ const mountCfg = mountConfig({
   auth: [
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [
@@ -291,7 +291,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         ),
     ],
     mounts=[
@@ -333,7 +332,6 @@ const mountCfg = mountConfig({
     }),
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [

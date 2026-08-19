@@ -8,7 +8,7 @@
 自托管 LangSmith 是企业计划的附加组件，专为我们最大、最注重安全的客户而设计。请参阅我们的 [pricing page](https://www.langchain.com/pricing) 了解更多详细信息，如果您想获得在您的环境中试用 LangSmith 的许可证密钥，请参阅 [contact our sales team](https://www.langchain.com/contact-sales)。
 </Info>
 
-本页面介绍如何在 Kubernetes 集群中设置**LangSmith**（可观察性、跟踪和评估）。您将使用 Helm 安装 LangSmith 及其依赖项。
+本页面介绍如何在 Kubernetes 集群中设置 **LangSmith**（可观察性、跟踪和评估）。您将使用 Helm 安装 LangSmith 及其依赖项。
 
 完成此页面后，您将拥有：
 
@@ -34,7 +34,7 @@ LangChain 已在以下 Kubernetes 发行版上成功测试 LangSmith：
 
 1. LangSmith 许可证密钥
 
-   1. 您可以从您的LangChain 代表处获取此信息。 [Contact our sales team](https://www.langchain.com/contact-sales) 了解更多信息。
+   1. 您可以从您的LangChain代表处获取此信息。 [Contact our sales team](https://www.langchain.com/contact-sales) 了解更多信息。
 
 2.API密钥盐
 
@@ -79,7 +79,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    2. 集群上可用的有效动态 PV 配置程序或 PV（仅当您在集群内运行数据库时才需要）* 为了实现持久性，我们将尝试为集群中运行的任何数据库提供卷。
       * 如果在集群中使用 PV，我们强烈建议在生产环境中设置备份。
       * **我们强烈鼓励使用 SSD 支持的存储类别以获得更好的性能。我们建议 7000 IOPS 和 1000 MiB/s 吞吐量。**
-      * 在 EKS 上，您可能需要确保已安装并配置`ebs-csi-driver`以进行动态配置。请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)了解更多信息。
+      * 在 EKS 上，您可能需要确保已安装并配置`ebs-csi-driver`以进行动态配置。更多信息请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 
       您可以通过运行以下命令来验证这一点：
 
@@ -173,7 +173,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    helm repo add langchain https://langchain-ai.github.io/helm
    ```
 
-3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用的版本。
+3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用版本。
 
    * 我们通常建议使用最新版本。
    * 您还可以运行`helm search repo langchain/langsmith --versions`来查看可用的版本。输出将如下所示：
@@ -191,6 +191,10 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    * 将 `<namespace>` 替换为您想要部署 LangSmith 的命名空间。
    * 将 `<version>` 替换为上一步中您要安装的 LangSmith 版本。大多数用户应该安装可用的最新版本。
 
+   <Note>
+   在运行此命令之前，使用 `-n <namespace>` 指定的命名空间必须已经存在。如果不存在，您可以先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
+   </Note>
+
    一旦 `helm install` 命令运行并成功完成，您应该看到类似以下的输出：
 
    ```
@@ -200,9 +204,9 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    STATUS: deployed
    REVISION: 1
    TEST SUITE: None
-   ```
+   ```这可能需要几分钟才能完成，因为它将创建多个 Kubernetes 资源并运行多个作业来初始化数据库和其他服务。
 
-   这可能需要几分钟才能完成，因为它将创建多个 Kubernetes 资源并运行多个作业来初始化数据库和其他服务。5. 运行 `kubectl get pods` 输出现在应该如下所示（请注意，确切的 Pod 名称可能会根据您使用的版本和配置而有所不同）：
+5. 运行 `kubectl get pods` 输出现在应该如下所示（请注意，确切的 Pod 名称可能会根据您使用的版本和配置而有所不同）：
 
    ```
     langsmith-ace-backend-98fbd468c-x9gjl         1/1     Running   0
@@ -246,7 +250,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    [{"id":"00000000-0000-0000-0000-000000000000","has_waitlist_access":true,"created_at":"2023-09-13T18:25:10.488407","display_name":"Personal","config":{"is_personal":true,"max_identities":1},"tenant_handle":"default"}]
    ```
 
-3. 在浏览器上访问`langsmith-frontend`服务的外网ip
+3、在浏览器上访问`langsmith-frontend`服务的外网ip
 
    LangSmith UI 应该可见/可操作
 
@@ -264,7 +268,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 * 配置 SSL 以确保提交到 LangSmith 的跟踪数据在传输过程中加密
 * 使用 [Single Sign-On](/langsmith/self-host-sso) 配置 LangSmith 以保护您的 LangSmith 实例
 * 将LangSmith连接到外部Postgres和Redis实例
-* 设置[Blob Storage](/langsmith/self-host-blob-storage)用于存储大文件
+* 设置[Blob Storage](/langsmith/self-host-blob-storage)来存储大文件
 
 查看我们的[configuration section](/langsmith/self-hosted)，了解有关如何配置这些选项的更多信息。
 
@@ -278,7 +282,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 - **[Chat](/langsmith/chat)**：跨越 LangSmith 的工作区聊天体验，帮助您分析跟踪、线程、提示和实验结果。
 - **[Sandboxes](/langsmith/sandboxes)**：运行代码，公开临时服务，并从LangSmith创建内存快照。
 
-按照 [Enable additional features](/langsmith/deploy-self-hosted-full-platform) 指南​​设置这些组件。
+按照 [Enable additional features](/langsmith/deploy-self-hosted-full-platform) 指南设置这些组件。
 
 ---
 

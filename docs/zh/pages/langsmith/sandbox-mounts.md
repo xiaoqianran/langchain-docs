@@ -118,7 +118,9 @@ try {
 
 ##挂载GCS存储桶
 
-GCS 安装需要 GCP 身份验证。读/写安装需要 `https://www.googleapis.com/auth/devstorage.read_write` 或 `https://www.googleapis.com/auth/cloud-platform` OAuth 范围。只读挂载可以使用`https://www.googleapis.com/auth/devstorage.read_only`。
+GCS 安装需要 GCP 身份验证。 OAuth 范围由后端提供，源自挂载本身：只读挂载获取`devstorage.read_only`，可写挂载获取`devstorage.read_write`。
+
+由于单个 `mount_config` 解析为一个作用域，因此其所有 GCS 挂载必须一致：在一个配置中混合只读和可写 GCS 挂载将被拒绝。始终使用可写挂载，或创建单独的沙箱。
 
 <CodeGroup>
 
@@ -139,7 +141,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         )
     ],
     mounts=[
@@ -173,7 +174,6 @@ const mountCfg = mountConfig({
   auth: [
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [
@@ -291,7 +291,6 @@ mount_cfg = mount_config(
             service_account_json=workspace_secret(
                 "SANDBOX_GCP_SERVICE_ACCOUNT_JSON"
             ),
-            scopes=["https://www.googleapis.com/auth/devstorage.read_write"],
         ),
     ],
     mounts=[
@@ -333,7 +332,6 @@ const mountCfg = mountConfig({
     }),
     gcpAuth({
       serviceAccountJson: workspaceSecret("SANDBOX_GCP_SERVICE_ACCOUNT_JSON"),
-      scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     }),
   ],
   mounts: [
@@ -356,14 +354,14 @@ const mountCfg = mountConfig({
 });
 ```
 
-</CodeGroup>
+</CodeGroup>## 缓存桶挂载
 
-## 缓存桶挂载S3 和 GCS 安装支持可选的缓存设置。缓存设置调整本地
+S3 和 GCS 安装支持可选的缓存设置。缓存设置调整本地
 Bucket挂载使用的VFS缓存；水桶仍然是真相的来源。使用
 缓存设置来控制本地磁盘使用和写回时间，而不是作为
 单独的持久层。缓存设置不适用于 Git 挂载。
 
-|领域|描述 |
+|领域 |描述 |
 |--------|-------------|
 | `max_size_bytes` |本地安装缓存的可选最大大小（以字节为单位）。设置正值以添加显式上限；省略它以保留运行时默认值。 |
 | `writeback_seconds` |在将缓存的写入写回存储桶之前，可选延迟（以秒为单位）。默认为`0`。值越低，写入操作越快对存储桶可见；较高的值可以减少重写相同文件的工作负载的写入流量。 |

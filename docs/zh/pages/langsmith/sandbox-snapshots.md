@@ -192,7 +192,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
 
 </CodeGroup>### 加速冷构建
 
-`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，默认情况下争夺单个核心，因此为构建器提供额外的 vCPU 可以大大缩短冷构建的挂壁时间。
+`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
 
 <CodeGroup>
 
@@ -202,7 +202,7 @@ snapshot = client.create_snapshot_from_dockerfile(
     dockerfile="Dockerfile",
     fs_capacity_bytes=2 * 1024**3,
     vcpus=2,
-    mem_bytes=4 * 1024**3,  # 4 GiB
+    mem_bytes=8 * 1024**3,  # 8 GiB
     timeout=600,
 )
 ```
@@ -214,7 +214,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
   2_147_483_648,
   {
     vCpus: 2,
-    memBytes: 4_294_967_296, // 4 GiB
+    memBytes: 8_589_934_592, // 8 GiB
     timeout: 600,
   },
 );
@@ -269,11 +269,11 @@ try {
 }
 ```
 
-</CodeGroup>
+</CodeGroup><Note>
+默认情况下，捕获仅保留**文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）和写入这些位置的文件将被保留，就像`/tmp`一样。只有 `/dev/shm` 是 tmpfs，因此其他所有内容都位于沙箱的磁盘上。正在运行的进程、打开的套接字和内存中的状态都不会被保留：启动新的沙箱并再次启动您需要的进程，或者[capture memory too](#resume-from-memory)。
+</Note>
 
-<Note>
-捕获仅保留**持久文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）以及写入这些位置的文件将被保留。正在运行的进程、打开的套接字、内存中的状态以及`/tmp`（这是一个 tmpfs）下的任何内容都不会被保留——启动新的沙箱并再次启动您需要的进程。
-</Note><Tip>
+<Tip>
 您可以通过**名称**而不是 ID 从快照启动沙箱 - 当您知道捕获的人类可读标签时会很方便：
 
 <CodeGroup>
@@ -306,6 +306,45 @@ const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
 ```
 
 </CodeGroup>
+
+### 从内存中恢复快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。
+
+<Note>
+内存快照仅可通过 REST API 获取。 `langsmith.sandbox` Python 和 TypeScript 客户端尚未公开这些字段。
+</Note>
+
+通过在捕获上设置 `include_memory` 来捕获内存：
+
+```bash
+curl -X POST \
+  "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes/my-vm/snapshot" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "warm-model", "include_memory": true}'
+```
+
+当内存被捕获时，响应报告`memory_snapshot_size_bytes`。 `include_memory` 需要一个正在运行或停止的沙箱，并且它不能与 `checkpoint` 或 `docker_image` 结合使用。
+
+一些沙箱在无法携带内存映像的覆盖文件系统运行时上运行。捕获一个会返回`include_memory is not supported for overlay-rootfs sandboxes`。 LangSmith 分配该运行时，因此它不是您为每个沙箱选择的东西。
+
+create 上的两个字段控制另一半：|领域 |它有什么作用 |
+|--------|--------------|
+| `restore_memory` |当快照有它时忽略它以从内存中恢复，而当快照没有时则冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
+| `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙盒在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
+
+```bash
+curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "warm-vm",
+    "snapshot": "warm-model",
+    "restore_memory": true,
+    "preserve_memory_on_stop": true
+  }'
+```
+
+仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **已停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
 
 ## 列出、获取和删除快照
 
@@ -354,9 +393,7 @@ const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
 
 </Note>
 
-## 停止和启动沙箱
-
-沙箱可以停止和重新启动，而不会丢失文件系统状态。当沙箱恢复时，您在上次运行期间编写的文件仍然存在。
+## 停止沙箱停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会重新启动并为其提供服务。
 
 <CodeGroup>
 
@@ -364,12 +401,10 @@ const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
 sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
 sb.run("echo 'hello' > /tmp/state.txt")
 
-# Stop the sandbox — preserves files on disk
+# Stop early to release resources. The idle timeout does this for you.
 sb.stop()
 
-# Later: start it again (blocks until ready, default timeout=120s)
-sb.start()
-
+# No start call: this wakes the sandbox and runs once it is up.
 result = sb.run("cat /tmp/state.txt")
 assert result.stdout.strip() == "hello"
 ```
@@ -380,21 +415,21 @@ await sb.run("echo 'hello' > /tmp/state.txt");
 
 await sb.stop();
 
-await sb.start();
-
 const result = await sb.run("cat /tmp/state.txt");
 console.log(result.stdout.trim()); // "hello"
 ```
 
 </CodeGroup>
 
-您还可以直接通过客户端按名称停止和启动（Python 中的`client.stop_sandbox(name)` / `client.start_sandbox(name)`，TypeScript 中的`client.stopSandbox(name)` / `client.startSandbox(name)`）。
+停止后的第一个请求会支付启动成本，因此它比后面的请求慢。使用 `preserve_memory_on_stop` 到 [resume from memory](#resume-from-memory) 创建沙箱，而不是冷启动。
 
 ## 后续步骤
 
 - [Create sandboxes from snapshots with the SDK](/langsmith/sandbox-sdk)
 - [Expose HTTP services with Service URLs](/langsmith/sandbox-service-urls)
-- [Inject credentials via the Auth proxy](/langsmith/sandbox-auth-proxy)---
+- [Inject credentials via the Auth proxy](/langsmith/sandbox-auth-proxy)
+
+---
 
 <div className="source-links">
 <Callout icon="terminal-2">

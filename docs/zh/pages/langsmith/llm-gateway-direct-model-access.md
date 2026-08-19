@@ -17,7 +17,7 @@
 将提供商路径附加到您的区域网关基本 URL：
 
 |供应商|网关路径|秘密名字|
-| ---| ---| ---|
+| --- | --- | --- |
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
@@ -87,19 +87,21 @@ print(message.content[0].text)
 
 ## 配置LangChain和Deep Agents
 
-[LangChain](/oss/python/langchain/overview)聊天模型和[Deep Agents](/oss/python/deepagents/overview)，包括[Deep Agents Code](/oss/deepagents/code/overview)，通过两个便利的环境变量支持直接网关路径：
+[LangChain](/oss/python/langchain/overview)聊天模型和[Deep Agents](/oss/python/deepagents/overview)，包括[Deep Agents Code](/oss/deepagents/code/overview)，通过便利的环境变量支持直接网关路径：
 
 ```bash
 export LANGSMITH_GATEWAY="true"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-这通过`https://gateway.smith.langchain.com`的提供商特定路径路由支持的聊天模型。要使用区域网关，请设置其 URL 而不是 `true`：
+这通过 `https://gateway.smith.langchain.com` 处的提供商特定路径路由支持的聊天模型，并使用 `LANGSMITH_API_KEY` 进行身份验证。要使用区域网关，请设置其 URL 而不是 `true`：
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
-export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
+
+<Note>
+如果您需要使用与默认 `LANGSMITH_API_KEY` 不同的 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。
+</Note>
 
 <Accordion title="Supported models and configuration precedence">
 
@@ -110,16 +112,16 @@ export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
   - [Fireworks](/oss/python/integrations/chat/fireworks) (`langchain-fireworks >= 1.5.1`)
   - [Google Gemini](/oss/python/integrations/chat/google_generative_ai) (`langchain-google-genai >= 4.3.2`)
   - [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`)
-- 特定于提供商的基本 URL 优先于网关设置。例如，`OPENAI_API_BASE` 将 OpenAI 发送到该 URL，而所有其他受支持的提供商继续使用该网关。
+- 提供商特定的基本 URL 优先于网关设置。例如，`OPENAI_API_BASE` 将 OpenAI 发送到该 URL，而所有其他受支持的提供商继续使用该网关。
 
 </Accordion>
 
-## 使用区域网关
+## 使用区域网关如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) 并附加提供程序路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
 
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) 并附加提供程序路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
+## 另请参阅
 
-## 另请参阅- [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
-- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
+- [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
+- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供商机密和访问权限。
 - [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
 
 ---
