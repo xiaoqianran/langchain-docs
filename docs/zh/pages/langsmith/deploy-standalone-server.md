@@ -8,7 +8,7 @@
 
 ## 概述
 
-您管理一个简化的<Tooltip tip="The runtime environment where your Agent Servers and agents execute.">数据平面</Tooltip>，由代理服务器及其所需的支持服务（PostgreSQL、Redis 等）组成：
+您管理一个简化的<Tooltip tip="The runtime environment where your Agent Servers and agents execute.">数据平面</Tooltip>，由代理服务器及其所需的支持服务（PostgreSQL、Redis等）组成：
 
 |组件|职责|它在哪里运行 |谁来管理|
 |------------|--------------------|------------------------|----------------|
@@ -74,10 +74,14 @@
   5. `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
 4. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。
 
-<a id="helm"></a>
-## 库伯内特斯
+<Note>
+从 0.14.0 开始，代理服务器服务默认侦听 IPv4 和 IPv6。双栈集群无需额外配置。要侦听单个地址系列，请将 `LANGGRAPH_SERVER_HOST` 设置为 `0.0.0.0`（仅适用于 IPv4）或 `::`（仅适用于 IPv6）。参见[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
+</Note>
 
-使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。
+<a id="helm"></a>
+## 库伯内特斯使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。
+
+Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。
 
 ## 码头工人
 
@@ -158,9 +162,7 @@ services:
             DATABASE_URI: postgres://postgres:postgres@langgraph-postgres:5432/postgres?sslmode=disable
 ```
 
-将此文件放在同一文件夹中运行 `docker compose up`。
-
-<Accordion title="With MongoDB checkpointing">
+将此文件放在同一文件夹中运行 `docker compose up`。<Accordion title="With MongoDB checkpointing">
 要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
 
 ```yml
@@ -225,7 +227,9 @@ services:
             DATABASE_URI: postgres://postgres:postgres@langgraph-postgres:5432/postgres?sslmode=disable
             LS_DEFAULT_CHECKPOINTER_BACKEND: mongo
             LS_MONGODB_URI: mongodb://langgraph-mongo:27017/langgraph?replicaSet=rs0
-```有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
+```
+
+有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 </Accordion>
 
 这将在端口 `8123` 上启动代理服务器（如果需要，请更改 `langgraph-api` 中的端口映射）。测试应用程序是否健康：

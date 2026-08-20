@@ -4,7 +4,7 @@
 
 # 托管 Deep Agents 快速入门
 
-创建并部署您的第一个托管深度代理：构建项目，配置模型和指令，添加搜索，在[LangSmith Studio](/langsmith/studio)中进行测试，然后使用[⟦T14⟧ CLI](/langsmith/python/managed-deep-agents-cli)进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
+创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T15⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
 
 在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了持久内存和每日计划。
 
@@ -22,6 +22,14 @@
 
 
 - 您选择的模型提供商的 API 密钥。
+
+## 添加`managed-deep-agents`技能
+
+[⟦T18⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
+
+```bash
+npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
+```
 
 ## 创建并部署代理
 
@@ -53,19 +61,19 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # GOOGLE_API_KEY=<GOOGLE_API_KEY>
 ```
 
-本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
-
-<Warning>
+本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。<Warning>
 不要将 `.env` 文件提交到版本控制中。它包含秘密。
 </Warning>
 
   </Step>
 
-  <Step title="Set up LangSmith" id="set-up-langsmith">托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
+  <Step title="Set up LangSmith" id="set-up-langsmith">
+
+托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -149,12 +157,7 @@ TAVILY_API_KEY=<TAVILY_API_KEY>
 
 ```bash
 uv add tavily-python
-```
-
-
-
-
-创建自定义 `internet_search` 工具：
+```创建自定义 `internet_search` 工具：
 
 ```python tools/search.py
 import os
@@ -196,7 +199,12 @@ agent = define_deep_agent(
     model="openai:gpt-5.5",
     tools=[internet_search],
 )
-```有关更多创作工具，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。
+```
+
+
+
+
+有关更多创作工具，请参阅[Custom tools](/langsmith/python/managed-deep-agents-tools)。
 
 </Accordion>
 

@@ -4,7 +4,7 @@
 
 # 自托管代理服务器环境变量
 
-当部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
+部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
 
@@ -15,7 +15,7 @@
 </Warning>
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。<Warning>
-启用 `BG_JOB_ISOLATED_LOOPS` 后，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作程序都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 </Warning>
 
 默认为`False`。
@@ -46,7 +46,7 @@
 
 默认为 `*`（所有来源）。
 
-## 支持的 Datadog 环境变量 {#dd_api_key}在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
+## 支持的 Datadog 环境变量 {#dd_api_key}在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时才生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
 
 - **`DD_API_KEY`**：你的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
 - **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
@@ -68,7 +68,7 @@
 
 例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。
 
-当[⟦T64⟧](#bg_job_isolated_loops)启用时，池不被共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
+当[⟦T64⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
 
 默认为 `150` 连接。
 
@@ -108,7 +108,7 @@
 
 ## `LOG_COLOR`
 
-这主要与通过 `langgraph dev` 命令使用开发服务器的上下文相关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色的控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
+这主要与通过 `langgraph dev` 命令使用开发服务器的上下文有关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色的控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
 
 ## `LOG_LEVEL`
 
@@ -208,15 +208,25 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
 
-## `LANGSMITH_API_KEY`
+## `LANGGRAPH_SERVER_HOST`
 
-要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_API_KEY` 设置为从自托管实例创建的 API 密钥。
+设置 `LANGGRAPH_SERVER_HOST` 来控制代理服务器监听哪些地址族：
+
+* **空字符串**：同时监听 IPv4 和 IPv6。这是从 `langgraph-api>=0.14.0` 开始的默认设置。
+* **`0.0.0.0`**：仅在 IPv4 上侦听。
+* **`::`**：仅在 IPv6 上侦听。
+
+`langgraph-api` 0.14.0 之前的版本默认为`0.0.0.0`，仅侦听 IPv4。
+
+## `LANGSMITH_API_KEY`要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_API_KEY` 设置为从自托管实例创建的 API 密钥。
 
 ## `LANGSMITH_ENDPOINT`
 
 要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管实例的主机名。
 
-## `MOUNT_PREFIX`设置 `MOUNT_PREFIX` 以在特定路径前缀下为代理服务器提供服务。这对于服务器位于需要特定路径前缀的反向代理或负载均衡器后面的部署非常有用。
+## `MOUNT_PREFIX`
+
+设置 `MOUNT_PREFIX` 以在特定路径前缀下为代理服务器提供服务。这对于服务器位于需要特定路径前缀的反向代理或负载均衡器后面的部署非常有用。
 
 例如，如果服务器要在`https://example.com/langgraph`下提供服务，请将`MOUNT_PREFIX`设置为`/langgraph`。
 
@@ -229,15 +239,15 @@ Postgres：
 * 版本 15.8 或更高版本。
 * 必须存在初始数据库，并且连接 URI 必须引用该数据库。
 
-控制平面功能：
-
-* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
+控制平面功能：* 如果指定`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库。
 * 如果删除`POSTGRES_URI_CUSTOM`，控制平面将不会为服务器提供数据库，也不会删除外部管理的Postgres实例。
 * 如果删除`POSTGRES_URI_CUSTOM`，修订版部署将不会成功。一旦指定了 `POSTGRES_URI_CUSTOM`，就必须始终为部署的生命周期进行设置。
 * 如果删除部署，控制平面不会删除外部管理的 Postgres 实例。
 * `POSTGRES_URI_CUSTOM`的值可以更新。例如，可以更新 URI 中的密码。
 
-数据库连接：* 自定义 Postgres 实例必须可由代理服务器访问。用户负责确保连接。
+数据库连接：
+
+* 自定义 Postgres 实例必须可由代理服务器访问。用户负责确保连接。
 
 ## `REDIS_CLUSTER`
 
@@ -253,9 +263,7 @@ Postgres：
 
 指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

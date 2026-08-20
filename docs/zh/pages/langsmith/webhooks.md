@@ -4,7 +4,7 @@
 
 # 为规则配置 webhook 通知
 
-当您在自动化操作上添加 Webhook URL 时，每当您定义的规则与任何新运行匹配时，LangSmith 都会向您的 Webhook 端点发出 POST 请求。
+当您在自动化操作上添加 Webhook URL 时，每当您定义的规则与任何新的运行或线程匹配时，LangSmith 都会向您的 Webhook 端点发出 POST 请求。
 
 ![Webhook](/langsmith/images/webhook.png)
 
@@ -13,9 +13,10 @@
 发送到您的 webhook 端点的有效负载 LangSmith 包含：
 
 - `"rule_id"`：这是发送此有效负载的自动化的 ID。
-- `"start_time"` 和`"end_time"`：这些是LangSmith 找到匹配运行的时间边界。
-- `"runs"`：这是一个运行数组，其中每个运行都是一个字典。如果您需要有关每次运行的更多信息，请使用端点中的 SDK 从 API 获取它。
-- `"feedback_stats"`：这是一本包含运行反馈统计数据的字典。以下代码块显示了此字段的示例有效负载。
+- `"start_time"` 和`"end_time"`：这些是LangSmith 找到匹配项的时间边界。
+- `"runs"`：这是一个运行数组，其中每个运行都是一个字典。如果您需要有关每次运行的更多信息，请使用端点中的 SDK 从 API 获取它。每个运行字典包括：
+    - `"feedback_stats"`：包含该运行的反馈统计数据的字典。以下代码块显示了此字段的示例。
+- `"threads"`：这是一个线程数组，当规则的 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **线程** 时，代替 `"runs"` 发送。有效负载携带一个数组或另一个数组，而不是两者都携带。欲了解更多信息，请参阅[Read a thread rule payload](#read-a-thread-rule-payload)。
 
 ```json
 "feedback_stats": {
@@ -51,9 +52,7 @@
 <Note>
 **从 S3 URL 获取**
 
-根据您运行的最新情况，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。
-
-`inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
+根据您运行的最新情况，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。`inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
 </Note>
 
 这是 LangSmith 发送到您的 webhook 端点的整个有效负载的示例：
@@ -104,6 +103,53 @@
 }
 ```
 
+### 处理批量有效负载
+
+有效负载涵盖轮询窗口而不是单个匹配。 LangSmith 收集 `"start_time"` 和 `"end_time"` 之间匹配的规则的每个项目，并在一个 POST 中传递它们，而不是每个项目发送一个 POST。
+
+编写端点来迭代数组，而不是仅读取第一个元素。线程规则每次执行最多提供 500 个线程。
+
+### 读取线程规则有效负载
+
+[item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则将顶级 `"runs"` 数组替换为 `"threads"` 数组。该数组中的每个条目包含：
+
+- `"thread_id"`：空闲且符合规则的线程ID。
+- `"session_id"`：线程所属跟踪项目的ID。
+- `"runs"`：线程根运行的数组，每个跟踪一个，每个跟踪的输入和输出。不包括工具和模型调用等子运行。这些运行字典还省略了`"feedback_stats"`，它仅出现在`"runs"`有效负载中的运行中。
+
+此示例经过简化，显示了一个具有单根运行的线程：
+
+```json
+{
+  "rule_id": "7f3e9c21-5b48-4a6d-8e12-9f0a1b2c3d4e",
+  "start_time": "2026-08-14T09:00:00.000000+00:00",
+  "end_time": "2026-08-14T09:01:00.000000+00:00",
+  "threads": [
+    {
+      "thread_id": "019a1b2c-3d4e-7f80-9a1b-2c3d4e5f6071",
+      "session_id": "2a9d6e4b-1c37-4f58-b0e9-6d5c4a3b2f10",
+      "runs": [
+        {
+          "trace_id": "019a1b2c-3d4e-7f80-9a1b-2c3d4e5f6072",
+          "start_time": "2026-08-14T08:57:12.412000",
+          "inputs": {
+            "messages": [
+              {
+                "type": "human",
+                "id": "019a1b2c-3d4e-7f80-9a1b-2c3d4e5f6073",
+                "content": "How do I group traces into a thread?",
+                "additional_kwargs": {},
+                "response_metadata": {}
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## 安全将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。
 
 一个例子是
@@ -128,7 +174,7 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 
 - 如果 LangSmith 无法连接到您的端点，LangSmith 在声明传送失败之前会重试传输连接最多 2 次。
 - 如果您的终端回复时间超过 5 秒，LangSmith 声明发送失败，不再重试。
-- 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 将使用指数退避重试最多 2 次。
+- 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 会以指数退避方式重试最多 2 次。
 - 如果您的终端返回4xx状态码，则LangSmith声明投递失败，不再重试。
 - 您的端点在正文中返回的任何内容都将被忽略。## 确保评估在 webhook 触发之前完成
 
@@ -192,7 +238,7 @@ modal setup
 首先，LangSmith 需要通过传递秘密来向 Modal 进行身份验证。
 最简单的方法是在查询参数中传递一个秘密。
 要验证此机密，请在 _Modal_ 中添加一个机密以对其进行验证。
-按 [creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
+按[creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
 将密钥命名为 `ls-webhook` 并设置一个名为 `LS_WEBHOOK` 的环境变量。
 
 您还可以设置一个 LangSmith 秘密 - 幸运的是已经有一个集成模板！

@@ -28,11 +28,11 @@ LangSmith支持两种队列样式：
 |能力|运行项目 |主题项目 |
 | ---| ---| ---|
 |评分标准反馈 |是的 |是的 |
-|审稿人笔记 |是的 |没有 |
+|审稿人笔记|是的 |没有 |
 |断言|是的 |没有 |
-|添加到数据集 |是的 |没有 |
+|添加到数据集|是的 |没有 |
 |默认数据集 |是的 |没有 |
-|自动化规则 |是的 |没有 |
+|自动化规则|是的 |是的 |
 
 ### 创建单次运行队列
 
@@ -70,7 +70,7 @@ LangSmith支持两种队列样式：
     当启用“使用分配的审阅者”时，**每次运行的审阅者数量**设置将被隐藏（见下文）。
     </Note>
 
-- **使用指定的审阅者**：启用此切换以使用特定工作区成员而不是基于计数的阈值。启用后：- 将出现一个多选用户选择器，以便您可以选择特定的工作区成员作为指定的审阅者。
+- **使用分配的审阅者**：启用此切换以使用特定工作区成员而不是基于计数的阈值。启用后：- 将出现一个多选用户选择器，以便您可以选择特定的工作区成员作为指定的审阅者。
     - 仅当每个指定的审阅者都提交了审阅时，项目才会被标记为“**已完成**”。队列项目会经历三种状态：**需要审核** → **需要其他人审核** → **已完成**。
     - 未分配的工作区成员仍然可以对项目进行注释，但他们的提交不计入完成。
     - 任何工作区成员都可以在队列设置中编辑分配的审阅者列表。
@@ -138,10 +138,8 @@ LangSmith支持两种队列样式：
       alt="Threads tab with selected threads and the Add to Annotation Queue bulk action."
     />
 
-- **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器匹配的**运行**（例如，错误或低用户分数）分配到队列中。
-
-    <Note>
-    自动化规则仅将运行项目排入队列。他们不会将整个线程添加为线程项。
+- **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。<Note>
+    规则入队的内容取决于其[item type](/langsmith/rules#set-the-item-type-to-runs-or-threads)。项目类型为 **Runs** 的规则将运行项目排入队列。一旦线程空闲，项目类型为 **Threads** 的规则会将整个对话作为线程项目排队。
     </Note>
 - **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击**<Icon icon="pencil"/>注释**。选择 **添加到注释队列**，然后选择现有队列或创建一个新队列。实验注释流程添加运行项目。
 
@@ -155,13 +153,13 @@ LangSmith支持两种队列样式：
       className="hidden dark:block"
       src="/langsmith/images/annotate-experiment-dark.png"
       alt="Selected experiments with the Annotate button at the bottom of the page."
-    /><Note>
+    />
+
+<Note>
 您可以在单个操作中最多将 **100** 运行或线程添加到注释队列。要排队更多，请以 100 或更少的批次重复添加流程。
 
-默认情况下，手动将运行或线程添加到注释队列不会更改跟踪保留。跟踪会保留为其项目配置的保留，除非另一个操作显式延长保留。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
-</Note>
-
-### 查看单次运行队列
+默认情况下，手动将运行或线程添加到注释队列不会更改跟踪保留。跟踪会保留为其项目配置的保留，除非另一个操作显式延长保留。由 [automation rule](/langsmith/rules) 执行的添加有所不同：默认情况下，为注释队列操作启用规则的 **扩展数据保留** 切换。运行规则升级包含每个匹配运行的整个跟踪，线程规则升级匹配线程中的每个跟踪。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+</Note>### 查看单次运行队列
 
 1. 通过左侧导航栏导航至 **注释队列** 部分。
 
@@ -172,7 +170,7 @@ LangSmith支持两种队列样式：
 1. 查看当前项目：- **运行项目**：检查中心窗格中的输入和输出。添加 **审阅者注释**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请编辑运行的输入和输出以创建更正的参考示例，然后单击 **添加到数据集**。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。
     - **话题项目**：中心窗格显示该话题的对话记录。阅读文字记录并对相同的**反馈**键进行评分。使用 **查看项目** 在对话中打开线程。
 
-    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预留或队列设置如何。
+    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预订或队列设置如何。
 
     <Note>
     主题项目仅支持标题反馈。请参阅 [capability table](#single-run-annotation-queues) 了解运行项和线程项之间的差异。
@@ -200,7 +198,7 @@ LangSmith支持两种队列样式：
 
 ### 创建一个成对队列
 
-1. 导航至**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
+1. 导航到**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
 1. 单击**注释**。在弹出窗口中，选择 **添加到成对注释队列**。 （在恰好选择了两个实验之前，该按钮将被禁用。）
 
     ![Popover showing the "Add to Pairwise Annotation Queue" card highlighted after two experiments are selected.](/langsmith/images/pairwise-annotation-queue-popup.png)

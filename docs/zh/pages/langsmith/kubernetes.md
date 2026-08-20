@@ -107,6 +107,9 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到`https://beacon.langchain.com` 进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
 
+<Note>
+从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行额外配置。
+</Note>
 
 ## 配置您的 Helm 图表：
 
@@ -258,7 +261,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 ## 使用LangSmith
 
-现在LangSmith正在运行，您可以开始使用它来跟踪您的代码。您可以在[self-hosted usage guide](/langsmith/self-hosted)中找到有关如何使用自托管LangSmith的更多信息。
+现在 LangSmith 正在运行，您可以开始使用它来跟踪您的代码。您可以在[self-hosted usage guide](/langsmith/self-hosted)中找到有关如何使用自托管LangSmith的更多信息。
 
 您的 LangSmith 实例正在运行，但可能尚未完全设置。
 
