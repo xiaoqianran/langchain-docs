@@ -50,7 +50,7 @@ alt="Chat in the sidebar on a dataset view."
 <Note>如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。</Note>
 
 <Note>
-聊天从 LangSmith 的出口 IP 地址调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/deploy-to-cloud#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
+聊天从 LangSmith 的出口 IP 地址调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
 </Note>
 
 ### 支持的型号

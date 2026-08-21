@@ -50,7 +50,7 @@ In the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta
 <Note>If your provider authenticates with OAuth2 `client_credentials`, configure the credentials on the model configuration instead. Workspace secrets are not required in that case. See [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials).</Note>
 
 <Note>
-Chat calls model providers from LangSmith's egress IP addresses. If your model provider (or a proxy in front of it) restricts traffic by IP, allowlist the LangSmith egress IPs listed in [Allowlist IP addresses](/langsmith/deploy-to-cloud#allowlist-ip-addresses).
+Chat calls model providers from LangSmith's egress IP addresses. If your model provider (or a proxy in front of it) restricts traffic by IP, allowlist the LangSmith egress IPs listed in [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses).
 </Note>
 
 ### Supported models

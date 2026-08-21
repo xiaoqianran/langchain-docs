@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-20T09:22:43.076Z",
+  "fetchedAt": "2026-08-21T09:24:54.554Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 173,
-  "ok": 545,
+  "ok": 549,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 449
+      "count": 453
     },
     "fleet": {
       "name": "Fleet",
@@ -153,7 +153,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-server-changelog",
-      "bytes": 134411
+      "bytes": 138422
     },
     {
       "rel": "langsmith/agent-server-distributed-tracing.md",
@@ -531,7 +531,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "chat",
-      "bytes": 9579
+      "bytes": 9587
     },
     {
       "rel": "langsmith/cicd-pipeline-example.md",
@@ -558,7 +558,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cloud-platform-features",
-      "bytes": 8012
+      "bytes": 9223
     },
     {
       "rel": "langsmith/cloud.md",
@@ -567,7 +567,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cloud",
-      "bytes": 26020
+      "bytes": 26039
     },
     {
       "rel": "langsmith/code-evaluator-sdk.md",
@@ -1102,12 +1102,12 @@
     },
     {
       "rel": "langsmith/deploy-to-cloud.md",
-      "title": "Deploy on Cloud",
+      "title": "Create a deployment",
       "url": "https://docs.langchain.com/langsmith/deploy-to-cloud",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-to-cloud",
-      "bytes": 17815
+      "bytes": 5228
     },
     {
       "rel": "langsmith/deploy-to-self-hosted-overview.md",
@@ -1153,6 +1153,15 @@
       "trackName": "LangSmith",
       "group": "deployment-quickstart",
       "bytes": 9277
+    },
+    {
+      "rel": "langsmith/deployment-revisions.md",
+      "title": "Revisions",
+      "url": "https://docs.langchain.com/langsmith/deployment-revisions",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "deployment-revisions",
+      "bytes": 2961
     },
     {
       "rel": "langsmith/deployment.md",
@@ -2052,7 +2061,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-overview",
-      "bytes": 5240
+      "bytes": 5629
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-project-structure.md",
@@ -2106,7 +2115,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tools",
-      "bytes": 4309
+      "bytes": 4279
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
@@ -2487,6 +2496,15 @@
       "bytes": 11380
     },
     {
+      "rel": "langsmith/manage-deployment.md",
+      "title": "Manage a deployment",
+      "url": "https://docs.langchain.com/langsmith/manage-deployment",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "manage-deployment",
+      "bytes": 2319
+    },
+    {
       "rel": "langsmith/manage-evaluators-sdk.md",
       "title": "Manage evaluators with the SDK",
       "url": "https://docs.langchain.com/langsmith/manage-evaluators-sdk",
@@ -2584,6 +2602,15 @@
       "trackName": "LangSmith",
       "group": "model-configurations",
       "bytes": 15139
+    },
+    {
+      "rel": "langsmith/monitor-deployment.md",
+      "title": "Monitor a deployment",
+      "url": "https://docs.langchain.com/langsmith/monitor-deployment",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "monitor-deployment",
+      "bytes": 2953
     },
     {
       "rel": "langsmith/monorepo-support.md",
@@ -2811,6 +2838,15 @@
       "bytes": 7259
     },
     {
+      "rel": "langsmith/preview-builds.md",
+      "title": "Preview builds",
+      "url": "https://docs.langchain.com/langsmith/preview-builds",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "preview-builds",
+      "bytes": 2398
+    },
+    {
       "rel": "langsmith/pricing-plans.md",
       "title": "Pricing plans",
       "url": "https://docs.langchain.com/langsmith/pricing-plans",
@@ -2997,7 +3033,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-overview",
-      "bytes": 7392
+      "bytes": 7781
     },
     {
       "rel": "langsmith/python/managed-deep-agents-project-structure.md",
@@ -3051,7 +3087,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tools",
-      "bytes": 4174
+      "bytes": 4144
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
@@ -3780,7 +3816,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 189832
+      "bytes": 217726
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",

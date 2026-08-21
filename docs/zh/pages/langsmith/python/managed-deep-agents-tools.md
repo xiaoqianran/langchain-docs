@@ -4,7 +4,7 @@
 
 # 将自定义工具添加到托管Deep Agents
 
-托管 Deep Agents 支持 Deep Agents `tools` 配置界面。
+工具为您的代理添加自定义功能。
 
 在您的项目中定义LangChain工具，将它们导入到`agent.py`中，然后将它们传递给`define_deep_agent`。
 
@@ -52,7 +52,7 @@ def lookup_customer(customer_id: str) -> str:
 
 ## 将工具附加到代理
 
-将工具导入到项目根代理条目中，并将它们传递到`tools`列表中。
+将工具导入到项目根代理条目中，并将它们传递到 `tools` 列表中。
 
 ```python agent.py
 from managed_deepagents import define_deep_agent
@@ -82,7 +82,7 @@ agent = define_deep_agent(
 
 在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
-在代理定义中设置 `interrupt_on`，并可选择设置 `permissions` 以控制工具和文件系统访问。
+在代理定义中设置`interrupt_on`，并可以选择设置`permissions`来控制工具和文件系统访问。
 
 
 
@@ -122,7 +122,7 @@ agent = define_deep_agent(
 
 ## 使用秘密和上下文
 
-工具可以从环境变量中读取部署机密。将`mda dev`的局部值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
+工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
 对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 

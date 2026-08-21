@@ -719,7 +719,7 @@
       ],
       "deploy-to-cloud": [
         {
-          "title": "Deploy on Cloud",
+          "title": "Create a deployment",
           "rel": "langsmith/deploy-to-cloud.md"
         }
       ],
@@ -751,6 +751,12 @@
         {
           "title": "Deploy your app to cloud",
           "rel": "langsmith/deployment-quickstart.md"
+        }
+      ],
+      "deployment-revisions": [
+        {
+          "title": "Revisions",
+          "rel": "langsmith/deployment-revisions.md"
         }
       ],
       "deployment": [
@@ -1365,6 +1371,12 @@
           "rel": "langsmith/manage-datasets.md"
         }
       ],
+      "manage-deployment": [
+        {
+          "title": "Manage a deployment",
+          "rel": "langsmith/manage-deployment.md"
+        }
+      ],
       "manage-evaluators-sdk": [
         {
           "title": "Manage evaluators with the SDK",
@@ -1429,6 +1441,12 @@
         {
           "title": "Manage model configurations",
           "rel": "langsmith/model-configurations.md"
+        }
+      ],
+      "monitor-deployment": [
+        {
+          "title": "Monitor a deployment",
+          "rel": "langsmith/monitor-deployment.md"
         }
       ],
       "monorepo-support": [
@@ -1579,6 +1597,12 @@
         {
           "title": "Collect feedback with presigned URLs",
           "rel": "langsmith/presigned-feedback-tokens.md"
+        }
+      ],
+      "preview-builds": [
+        {
+          "title": "Preview builds",
+          "rel": "langsmith/preview-builds.md"
         }
       ],
       "pricing-plans": [

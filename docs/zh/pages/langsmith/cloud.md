@@ -137,7 +137,7 @@ LangSmith 使用以下 AWS 存储和数据服务：
 | 104.198.162.55 | 35.204.48.32 | 34.40.198.11 |                |
 
 如果连接到您自己的 AzureOpenAI 服务或 Playground 或在线评估可能需要的其他端点，将这些 IP 地址列入白名单可能会有所帮助。<Note>
-来自部署在 [LangSmith Deployment](/langsmith/deployment) 上的代理的流量通过一组单独的 NAT IP 流出。有关该列表，请参阅云部署指南中的[Allowlist IP addresses](/langsmith/deploy-to-cloud#allowlist-ip-addresses)。
+来自部署在 [LangSmith Deployment](/langsmith/deployment) 上的代理的流量通过一组单独的 NAT IP 流出。有关该列表，请参阅云平台功能参考中的[Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses)。
 </Note>
 
 ### 进入LangChain SaaS
@@ -200,7 +200,7 @@ resource "aws_vpc_endpoint" "langsmith" {
 
 ####配置DNS
 
-配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、公司 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
+配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、企业 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
 
 首先，获取端点的 DNS 名称：
 
