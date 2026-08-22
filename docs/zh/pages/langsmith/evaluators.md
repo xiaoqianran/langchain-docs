@@ -7,7 +7,7 @@
 LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[tracing projects](/langsmith/observability-concepts#projects)和[datasets](/langsmith/evaluation-concepts#datasets)，因此您可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
 <Tip>
-[LangSmith Engine](/langsmith/engine) 针对检测到的问题建议自定义评估程序，并且可以一键部署它们。
+评估器分数是 [LangSmith Engine](/langsmith/engine) 的高优先级信号：在选择要分析的内容时，它会拉出低分跟踪，因此将评估器附加到项目会加剧引擎在那里发现的问题。
 </Tip>
 
 ## 查看评估者

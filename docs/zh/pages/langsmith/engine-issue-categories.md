@@ -78,7 +78,7 @@
 
 ## 系统提示漂移
 
-该代理回答了一个超出申请目的的题外话问题，而不是拒绝。
+该代理没有拒绝，而是回答了一个超出申请目的的题外话问题。
 
 **示例：** 当询问“给我写一首关于猫的诗”时，电子商务商店的客户支持机器人会编写 Python 脚本，而不是将用户重定向到适当的渠道。
 
@@ -98,14 +98,14 @@
 
 **示例：** 用户要求按 ID 查找单个订单，但代理调用“列出所有订单”工具而不是“按 ID 获取订单”工具，返回一页结果，但没有直接回答问题。
 
-## 另请参阅
-
-- [Find and fix your agent's issues](/langsmith/engine)：设置引擎、完成问题生命周期并控制成本。
+## 另请参阅- [Find and fix your agent's issues](/langsmith/engine)：设置引擎、完成问题生命周期并控制成本。
 - [Engine](/langsmith/engine-overview)：产品概述以及引擎在开发生命周期中的位置。
 - [Engine webhook events](/langsmith/engine-webhooks)：将检测到的问题转发到您的事件管理、寻呼或聊天工具。
-- [Evaluators](/langsmith/evaluators)：部署引擎为每个问题生成的建议评估器。
+- [Manage datasets](/langsmith/manage-datasets)：将问题的踪迹引擎链接转换为用于离线评估的真实示例。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

@@ -4,14 +4,14 @@
 
 # 以编程方式管理反馈和注释队列
 
-使用 LangSmith SDK 以编程方式管理反馈配置和 [annotation queue](/langsmith/evaluation-concepts#human) 评分标准。在组织级别定义可重用的反馈模式（例如准确性分数或通过/失败判断），然后使用自定义指令将它们分配到特定队列。这可以实现版本控制、跨项目自动化和一致性，对于 CI/CD 管道或跨环境复制评估设置特别有用。
+使用 LangSmith SDK 以编程方式管理反馈配置和 [annotation queue](/langsmith/evaluation-concepts#human) 评分标准，并将运行和线程添加到队列中以供审核。在组织级别定义可重用的反馈模式（例如准确性分数或通过/失败判断），然后使用自定义指令将它们分配到特定队列。这可以实现版本控制、跨项目自动化和一致性，对于 CI/CD 管道或跨环境复制评估设置特别有用。
 
 <Callout icon="code">
 本指南使用 Python 和 TypeScript SDK。安装和设置请参考[Python SDK documentation](https://reference.langchain.com/python/langsmith)和[TypeScript SDK documentation](https://reference.langchain.com/javascript/modules/langsmith.html)。
 </Callout>
 
 <Note>
-要在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotation-queues-sdk) 中审核时编写各个运行的自由形式验收标准，请参阅[Use assertions](/langsmith/assertions)。
+要在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotation-queues-sdk) 中进行审查时编写关于各个运行的自由形式验收标准，请参阅 [Use assertions](/langsmith/assertions)。
 </Note>
 
 ## 反馈层
@@ -25,7 +25,7 @@ LangSmith 使用三层架构来实现结构化的人类反馈：1. **反馈配�
 ### 创建反馈配置
 
 反馈配置定义反馈键的架构 - 无论是连续分数、分类选择还是自由格式文本。唯一的密钥标识组织内的每个配置，并指定注释者如何提交该指标的反馈。<Note>
-使用已存在的相同配置调用 [⟦T18⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_config) 将返回现有配置。如果同一密钥已存​​在不同的配置，系统将引发 400 错误。
+使用已存在的相同配置调用 [⟦T20⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_config) 将返回现有配置。如果同一密钥已存​​在不同的配置，系统将引发 400 错误。
 </Note>
 
 <CodeGroup>
@@ -101,7 +101,7 @@ await client.createFeedbackConfig({
 
 ### 列出反馈配置
 
-使用 [⟦T25⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_configs) 检索反馈配置以查看您的组织中可用的评估标准。您可以列出所有配置或按特定键进行过滤。每个返回的配置对象包括密钥、类型、配置详细信息（如`min`/`max`或`categories`）以及元数据（如`is_lower_score_better`）：
+使用 [⟦T27⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_configs) 检索反馈配置以查看您的组织中可用的评估标准。您可以列出所有配置或按特定键进行过滤。每个返回的配置对象包括密钥、类型、配置详细信息（如`min`/`max`或`categories`）以及元数据（如`is_lower_score_better`）：
 
 <CodeGroup>
 ```python Python
@@ -128,9 +128,9 @@ for await (const config of client.listFeedbackConfigs({
   console.log(config.feedback_key);
 }
 ```
-</CodeGroup>
+</CodeGroup>### 更新反馈配置
 
-### 更新反馈配置通过更新特定字段，使用 [⟦T30⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_config) 修改现有反馈配置。该方法仅更改您提供的字段，其余字段保持不变。这是保留其他配置设置的部分更新：
+通过更新特定字段，使用 [⟦T32⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_config) 修改现有反馈配置。该方法仅更改您提供的字段，其余字段保持不变。这是保留其他配置设置的部分更新：
 
 <CodeGroup>
 ```python Python
@@ -148,7 +148,7 @@ await client.updateFeedbackConfig("accuracy", {
 
 ### 删除反馈配置
 
-使用 [⟦T31⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_config) 从您的组织中删除反馈配置。这将执行软删除，将配置标记为已删除，但不会将其从系统中永久删除。如果需要，您可以稍后使用相同的密钥重新创建配置：
+使用 [⟦T33⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_config) 从您的组织中删除反馈配置。这将执行软删除，将配置标记为已删除，但不会将其从系统中永久删除。如果需要，您可以稍后使用相同的密钥重新创建配置：
 
 <CodeGroup>
 ```python Python
@@ -163,11 +163,11 @@ await client.deleteFeedbackConfig("accuracy");
 
 Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释者在审阅该队列中的[runs](/langsmith/observability-concepts#runs)时看到哪些反馈表单，以及每个表单是必需的还是可选的。
 
-### 创建一个包含标题项目的队列
+### 创建一个包含标题项的队列
 
-使用 [⟦T32⟧](https://reference.langchain.com/python/langsmith/client/Client/create_annotation_queue) 创建注释队列，并通过 rubric 项目为其分配反馈配置。每个标题项都通过其键引用反馈配置，并自定义它在此特定队列中的注释者面前的显示方式。
+使用 [⟦T34⟧](https://reference.langchain.com/python/langsmith/client/Client/create_annotation_queue) 创建注释队列，并通过 rubric 项目为其分配反馈配置。每个标题项都通过其键引用反馈配置，并自定义它在此特定队列中的注释者面前的显示方式。该示例创建一个包含三个标题项的队列。队列级别`rubric_instructions`提供了注释界面顶部显示的一般指导：
 
-该示例创建一个包含三个标题项的队列。队列级别`rubric_instructions`提供了注释界面顶部显示的一般指导：<CodeGroup>
+<CodeGroup>
 ```python Python
 queue = client.create_annotation_queue(
     name="QA Review Queue",
@@ -235,7 +235,7 @@ const queue = await client.createAnnotationQueue({
 
 ### 更新现有队列上的标题项
 
-使用 [⟦T41⟧](https://reference.langchain.com/python/langsmith/client/Client/update_annotation_queue) 修改分配给注释队列的标题项。此操作会替换整个标题项目列表，因此您必须包括要保留的所有项目 - 该操作会删除您不包括的所有项目。
+使用 [⟦T43⟧](https://reference.langchain.com/python/langsmith/client/Client/update_annotation_queue) 修改分配给注释队列的标题项。此操作会替换整个标题项目列表，因此您必须包括要保留的所有项目 - 该操作会删除您不包括的所有项目。
 
 您将需要队列 ID，该 ID 是在创建队列或通过列出队列时获得的：
 
@@ -268,6 +268,130 @@ await client.updateAnnotationQueue(queue.id, {
 });
 ```
 </CodeGroup>
+
+## 将运行和线程添加到队列中将 [runs](/langsmith/observability-concepts#runs) 和 [threads](/langsmith/observability-concepts#threads) 添加到具有注释队列 `items` 资源的单次运行注释队列。单个请求接受混合批次的运行项和线程项，因此此方法涵盖了 UI [add flow](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 支持的所有内容。
+
+<Note>
+`items` 资源需要 `langsmith>=0.10.13` (Python) 或 `langsmith>=0.8.8` (TypeScript)，由 `0.16.14` 或更高版本上的 LangSmith 后端提供服务。
+</Note>
+
+每个项目设置 `item_type` 为 `RUN` 或 `THREAD`：
+
+- **运行项目**需要`run_id`。还提供`project_id`（项目UUID）和`start_time`，它们一起直接定位运行。
+- **THREAD 项目**需要 `thread_id` 和 `project_id`。
+
+使用 SDK 解析这些 ID：
+
+- **`project_id`**：通过名称查找带有[⟦T58⟧](https://reference.langchain.com/python/langsmith/client/Client/read_project)的项目并读取其`id`，例如`client.read_project(project_name="my-project").id`。
+- **`run_id`**：查询使用 `client.runs.query()` 运行。每次运行都会公开 `id`、`project_id` 和 `start_time`，这是 RUN 项所需的字段。
+- **`thread_id`**：使用`client.threads.query()`查询线程。每个结果都会暴露其`thread_id`。
+
+您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：- **`project_id`**：在[tracing project](/langsmith/observability-concepts#projects)中，单击项目名称旁边的**ID**徽章以复制项目UUID。
+- **`run_id`**：在 [Details view](/langsmith/view-traces#details-view) 中打开运行，然后单击运行名称旁边的 **ID** 徽章以复制运行 ID。
+- **`thread_id`**：在跟踪项目的 **Threads** 视图中，复制 **Thread ID** 列中的值。
+
+要延长添加的运行项目的跟踪保留时间，请传递 `extend_trace_retention=True`。响应是一个带有 `items` 数组的信封，每个添加的项目一个条目。
+
+<Note>
+在 Python 中，`annotation_queues.items.create` 是异步的，因此 `await` 它位于事件循环内。
+</Note>
+
+<CodeGroup>
+```python Python
+import asyncio
+
+async def main():
+    queue_name = "<queue_name>"
+    project_id = "<project_id>"
+    run_id = "<run_id>"
+    thread_id = "<thread_id>"
+
+    # Look up the annotation queue by name to get its ID.
+    queue = next(client.list_annotation_queues(name=queue_name), None)
+    if queue is None:
+        raise SystemExit(f"No annotation queue named {queue_name!r}")
+
+    # Fetch the run to add by id + project_id. runs.retrieve() requires
+    # `selects` (uppercase RunSelectField names) to return fields like
+    # start_time.
+    run = await client.runs.retrieve(
+        run_id=run_id,
+        project_id=project_id,
+        selects=["ID", "PROJECT_ID", "START_TIME"],
+    )
+
+    response = await client.annotation_queues.items.create(
+        str(queue.id),
+        items=[
+            {
+                "item_type": "RUN",
+                "run_id": run_id,
+                "project_id": project_id,
+                "start_time": run.start_time,
+            },
+            {
+                "item_type": "THREAD",
+                "thread_id": thread_id,
+                "project_id": project_id,
+            },
+        ],
+    )
+
+    # response.items contains one entry per added item.
+    for item in response.items or []:
+        print(item.id, item.item_type)
+
+asyncio.run(main())
+```
+```typescript TypeScript
+const queueName = "<queue_name>";
+const projectId = "<project_id>";
+const runId = "<run_id>";
+const threadId = "<thread_id>";
+
+// Look up the annotation queue by name to get its ID.
+let queue;
+for await (const q of client.listAnnotationQueues({ name: queueName })) {
+  queue = q;
+  break;
+}
+if (!queue) {
+  throw new Error(`No annotation queue named ${queueName}`);
+}
+
+// Fetch the run to add by id + project_id. retrieve() requires `selects`
+// (uppercase RunSelectField names) to return fields like start_time.
+const run = await client.runs.retrieve(runId, {
+  project_id: projectId,
+  selects: ["ID", "PROJECT_ID", "START_TIME"],
+});
+
+const response = await client.annotationQueues.items.create(queue.id, {
+  items: [
+    {
+      item_type: "RUN",
+      run_id: runId,
+      project_id: projectId,
+      start_time: run.start_time,
+    },
+    {
+      item_type: "THREAD",
+      thread_id: threadId,
+      project_id: projectId,
+    },
+  ],
+});
+
+// response.items contains one entry per added item.
+for (const item of response.items ?? []) {
+  console.log(item.id, item.item_type);
+}
+```
+</CodeGroup>
+
+<Note>
+对于仅运行添加，[⟦T76⟧](https://reference.langchain.com/python/langsmith/client/Client/add_runs_to_annotation_queue) 仍然有效，并且在不添加线程时仍然是最简单的选项。添加线程或混合运行和线程批次的新代码应使用 `items` 资源。
+</Note>
 
 ## 反馈配置类型（详细）
 
@@ -406,9 +530,9 @@ await client.createFeedbackConfig({
 
 ## 验证规则
 
-|类型 |最小/最大 |类别 |限制条件|
+|类型 |最小/最大|类别 |限制条件|
 |------|---------|------------|------------|
-| `continuous` |可选|可选（标记刻度点）| `min < max`； [`min`, `max`] 内的类别值 |
+| `continuous` |可选|可选（标记刻度点）| `min < max`; [`min`, `max`] 内的类别值 |
 | `categorical` |不得设置 |必需，最少 2 |独特的价值观和标签|
 | `freeform` |不得设置 |不得设置 |不适用 |
 
@@ -420,9 +544,9 @@ await client.createFeedbackConfig({
 |------|--------|-------------|
 | `continuous` | `min`、`max` |范围内的数值分数 |
 | `categorical` |类别（`{value, label}`列表）|从预定义选项中进行选择 |
-| `freeform` |无 |自由文本输入 |
+| `freeform` |无 |自由文本输入|
 
-### 评分项字段|领域|类型 |描述 |
+### 评分项字段|领域 |类型 |描述 |
 |--------|------|-------------|
 | `feedback_key` | `string` |必需的。必须与现有反馈配置键匹配。 |
 | `description` | `string` |显示此项目的注释者指南。 |

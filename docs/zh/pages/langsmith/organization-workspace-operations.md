@@ -19,7 +19,7 @@
 ## 内容|组织层面的运营 |工作区级操作 |
 |------------------------------------------|----------------------------------------|
 | **核心管理：**<br/>• [Organization settings](#organization-settings)：组织信息和配置<br/>• [Workspaces](#workspaces)：工作空间管理<br/>• [Organization members](#organization-members)：成员管理<br/>• [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：**<br/>• [Projects](#projects)：组织跟踪和运行<br/>• [Runs](#runs)：单独的执行跟踪<br/>• [Datasets](#datasets)：用于评估的测试数据集<br/>• [Examples](#examples)：单独的数据集示例<br/>• [Experiments](#experiments)：比较实验|
-| **安全和身份验证：**<br/>• [SSO and authentication](#sso-and-authentication)：单点登录设置<br/>• [SCIM](#scim)：身份配置<br/>• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br/>• [Rules](#rules)：自动运行规则<br/>• [Alerts](#alerts)：监控警报规则<br/>• [Feedback](#feedback)：输出的分数和标签<br/>• [Annotation Queues](#annotation-queues)：人工审核队列<br/>• [Charts](#charts)：自定义可视化|| **计费和帐户：**<br/>• [Billing and payments](#billing-and-payments)：订阅管理<br/>• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br/>• [Prompts](#prompts)：提示模板（LangChain Hub）<br/>• [Deployments](#deployments)：部署配置<br/>• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br/>• [Fleet](#fleet)：车队管理操作 |
+| **安全和身份验证：**<br/>​​• [SSO and authentication](#sso-and-authentication)：单点登录设置<br/>• [SCIM](#scim)：身份配置<br/>• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br/>• [Rules](#rules)：自动运行规则<br/>• [Alerts](#alerts)：监控警报规则<br/>• [Feedback](#feedback)：输出的分数和标签<br/>• [Annotation Queues](#annotation-queues)：人工审核队列<br/>• [Charts](#charts)：自定义可视化|| **计费和帐户：**<br/>• [Billing and payments](#billing-and-payments)：订阅管理<br/>• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br/>• [Prompts](#prompts)：提示模板（LangChain Hub）<br/>• [Deployments](#deployments)：部署配置<br/>• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br/>• [Fleet](#fleet)：车队管理操作 |
 | **分析：**<br/>• [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化<br/>• [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：**<br/>• [Workspace settings](#workspace-settings-and-management)：成员、设置<br/>• [Tags](#tags)：元数据标记系统<br/>• [Bulk Exports](#bulk-exports)：数据导出操作|
 
 **附加信息：**
@@ -36,7 +36,7 @@
 ## 组织级运营
 
 <Info>
-组织级操作由组织角色控制，与 RBAC 功能分开。在 [Role-based access control](/langsmith/rbac#organization-roles) 指南中了解更多信息。
+组织级操作由组织角色控制，与 RBAC 功能分开。在 [Role-based access control](/langsmith/rbac#organization-roles) 指南​​中了解更多信息。
 </Info>
 
 ### 组织设置|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
@@ -116,27 +116,26 @@
 |创建 Stripe 设置意图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |处理付款方式创建 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |更改付款计划 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|创建 Stripe 结帐会话 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|创建 Stripe 结账会话 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |确认结帐完成 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |创建 Stripe 帐户链接 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
-### API 密钥
-
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
+### API 密钥|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 |------------|:---------:|:------------:|:--------:|:------------:|---------------------|
 |列出组织范围的服务键 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|创建组织范围的服务密钥（工作空间范围）* | ✓ | ✓ | ⚠ | ✗ | `organization:pats:create` |
+|创建组织范围的服务密钥（工作空间范围）* | ✓ | ✓ | ⚠ | ✗ | `organization:pats:create` + `workspaces:manage-keys` |
 |创建组织范围的服务密钥（组织范围）* | ✓ | ✗ | ✗ | ✗ | `organization:pats:create` + `organization:manage` |
+|删除组织范围的服务密钥（工作空间范围）* | ✓ | ✓ | ⚠ | ✗ | `organization:read` + `workspaces:manage-keys` |
 |更新服务关键角色 | ✓ | ✗ | ✗ | ✗ | `organization:manage` |
 |列出个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 |创建个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:pats:create` |
-|删除个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |<Note>
-\* 组织操作员和组织用户只能为他们作为工作区管理员的工作区创建工作区范围的服务密钥。组织范围的服务密钥需要组织管理员角色。
+|删除个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
+
+<Note>
+\* 组织操作员和组织用户只能在其角色授予 `workspaces:manage-keys` 的工作区（例如工作区管理员角色）中创建或删除工作区范围的服务密钥。创建组织范围的服务密钥需要组织管理员角色。
 </Note>
 
-### 组织结构图和仪表板
-
-|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
+### 组织结构图和仪表板|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 |------------|:---------:|:------------:|:--------:|:------------:|---------------------|
 |列出组织结构图 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
 |按 ID 获取组织结构图 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
@@ -233,12 +232,12 @@
 |查看规则日志 | ✓ | ✓ | ✓ | `rules:read` |
 |获取最后应用的规则 | ✓ | ✓ | ✓ | `rules:read` |
 |手动触发规则 | ✓ | ✓ | ✗ | `rules:update` |
-|触发多个规则| ✓ | ✓ | ✗ | `rules:update` |
+|触发多个规则 | ✓ | ✓ | ✗ | `rules:update` |
 |配置每个操作的数据保留 | ✓ | ✗ | ✗ | `rules:configure-retention` |
 
 ### 警报
 
-用于监控运行状况的警报规则。
+用于监控运行条件的警报规则。
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 |----------|:----------------:|:--------------:|:----------------:|------------------------|
@@ -273,7 +272,7 @@
 |公开分享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |取消共享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |获取索引信息 | ✓ | ✓ | ✓ | `datasets:read` |
-|索引数据集 | ✓ | ✓ | ✗ | `datasets:update` ||同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
+|索引数据集| ✓ | ✓ | ✗ | `datasets:update` ||同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |删除数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |搜索数据集 | ✓ | ✓ | ✓ | `datasets:read` |
 |生成综合示例 | ✓ | ✓ | ✗ | `datasets:update` |
@@ -292,7 +291,7 @@
 数据集中的单个示例。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 |----------|:----------------:|:--------------:|:----------------:|------------------------|
 |数个例子 | ✓ | ✓ | ✓ | `datasets:read` |
-|查看具体示例| ✓ | ✓ | ✓ | `datasets:read` |
+|查看具体示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |列出示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |创建一个新示例 | ✓ | ✓ | ✗ | `datasets:update` |
 |创建示例（批量）| ✓ | ✓ | ✗ | `datasets:update` |
@@ -362,7 +361,7 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |获取注释队列 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |创建注释队列 | ✓ | ✓ | ✗ | `annotation-queues:create` |
 |更新注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
-|删除注释队列| ✓ | ✗ | ✗ | `annotation-queues:delete` |
+|删除注释队列 | ✓ | ✗ | ✗ | `annotation-queues:delete` |
 |填充注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |从队列中获取运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |从队列中获取运行（按索引）| ✓ | ✓ | ✓ | `annotation-queues:read` |
@@ -406,9 +405,9 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` ||删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` |
 |调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
-|列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|创建快速行动| ✓ | ✓ | ✓ | `prompts:read` |
-|删除快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|列出快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
+|删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
 
 <Note>
@@ -477,7 +476,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取标签值 | ✓ | ✓ | ✓ | `workspaces:read` |
 |创建标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
 |更新标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
-|删除标签值 | ✓ | ✗ | ✗ | `workspaces:manage` |
+|删除标签值| ✓ | ✗ | ✗ | `workspaces:manage` |
 |列表标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签 | ✓ | ✓ | ✓ | `workspaces:read` |
 |列出资源标签（批量）| ✓ | ✓ | ✓ | `workspaces:read` |
@@ -491,7 +490,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-|创建批量导出| ✓ | ✗ | ✗ | `bulk-exports:manage` |
+|创建批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |取消批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -509,7 +508,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |----------|:----------------:|:--------------:|:----------------:|------------------------|
 |列出 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建MCP服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
+|创建MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |更新MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |删除 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 
@@ -548,7 +547,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 ### 工作区角色独立性
 
 - 用户可以在不同的工作空间中拥有不同的工作空间角色。
-- 用户可能在一个工作空间中是 [Workspace Admin](/langsmith/rbac#workspace-admin)，在另一个工作空间中是 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
+- 用户可能是一个工作空间中的 [Workspace Admin](/langsmith/rbac#workspace-admin)，而另一个工作空间中的 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
 
 ---
 

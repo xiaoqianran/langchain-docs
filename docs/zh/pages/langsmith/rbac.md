@@ -4,7 +4,7 @@
 
 # 基于角色的访问控制
 
-本参考资料介绍了 LangSmith 用于管理组织级和工作区级权限的基于角色的访问控制 (RBAC) 系统。
+本参考资料解释了LangSmith用于管理组织级和工作区级权限的基于角色的访问控制（RBAC）系统。
 
 <Note>
 RBAC（基于角色的访问控制）是一项用于管理工作区级别权限的企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。其他计划默认为所有用户使用管理员角色。
@@ -142,7 +142,7 @@ RBAC（基于角色的访问控制）是一项仅适用于 [Enterprise](https://
 
 #### 工作区管理员
 
-**描述**：具有所有资源的完全权限以及管理工作区的能力的角色。
+**描述**：具有所有资源的完全权限和管理工作区的能力的角色。
 
 **权限**：
 - 所有资源类型的所有创建、读取、更新、删除和共享权限
@@ -175,7 +175,7 @@ RBAC（基于角色的访问控制）是一项仅适用于 [Enterprise](https://
 
 [Organization Admins](#organization-admin) 可以根据组织的需求创建具有特定权限组合的自定义角色。
 
-### 创建自定义角色自定义角色在 [organization](/langsmith/administration-overview#organizations) 级别创建，并且可以分配给该组织内任何 [workspace](/langsmith/administration-overview#workspaces) 中的用户。
+### 创建自定义角色自定义角色在 [organization](/langsmith/administration-overview#organizations) 级别创建，可以分配给该组织内任何 [workspace](/langsmith/administration-overview#workspaces) 中的用户。
 
 **步骤**：
 1. 导航到组织 **设置** > **角色**。
@@ -205,21 +205,20 @@ RBAC（基于角色的访问控制）是一项仅适用于 [Enterprise](https://
 
 1. 导航到组织 **设置** > **角色**。
 1. 在角色表中找到您要限制的角色。
-1. 启用该角色的 **Restricted** 设置。
+1. 启用该角色的 **Restricted** 设置。角色受到限制后，不拥有工作区管理员角色的用户无法在成员邀请、成员编辑或 API 密钥创建流程中查看或分配该角色。 API 还会拒绝不具有工作区管理员角色的调用者的分配尝试。如果不拥有工作区管理员角色的用户创建 API 密钥，他们无法使用自己的受限角色作为密钥的默认角色。
 
-一旦角色受到限制，成员邀请和成员编辑流程将对不拥有工作区管理员角色的用户隐藏该角色，并且 API 将拒绝非工作区管理员调用者分配该角色的尝试。
+要取消限制角色，请按照相同的步骤操作并关闭 **Restricted** 设置。
 
-要取消限制角色，请按照相同的步骤操作并关闭 **Restricted** 设置。<Note>
+<Note>
 角色限制适用于系统角色（工作区管理员、工作区编辑者、工作区查看者）和自定义角色。它适用于 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
 </Note>
 
 ### 了解权限行为
 
-某些权限在用于自定义角色时提供精细控制：
-
-- `workspaces:manage` **不** 包含管理工作区成员的功能。要允许自定义角色添加、删除或更新工作区成员，您必须显式授予 `workspaces:manage-members`。内置的工作区管理员角色自动包含这两种权限。
+某些权限在用于自定义角色时提供精细控制：- `workspaces:manage` **不** 包含管理工作区成员的功能。要允许自定义角色添加、删除或更新工作区成员，您必须显式授予 `workspaces:manage-members`。内置的工作区管理员角色自动包含这两种权限。
 - `workspaces:manage-model-configs` 控制创建、编辑或删除 [model configurations](/langsmith/model-configurations)（包括附加 [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）以及更改每个模型可用的 LangSmith 功能的能力。它与 `workspaces:manage` 是分开的——在应该能够配置模型的自定义角色上显式授予它。内置的工作区管理员角色自动包含它。
-- `bulk-exports:read` 和 `bulk-exports:manage` 涵盖批量导出端点（列出、创建、取消导出和管理目的地）。在自定义角色中使用它们来授予最低权限的批量导出访问权限，而无需 `workspaces:manage`。内置工作区管理员角色包括 `bulk-exports:manage`，所有具有读取功能的角色自动包括 `bulk-exports:read`。- `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
+- `workspaces:manage-keys` 控制创建和删除工作区 API 密钥（工作区范围内的服务密钥）的能力。它与 `workspaces:manage` 是分开的——在自定义角色上显式授予它，这些角色应该能够管理 API 密钥，而无需完整的工作区管理。为了防止权限升级，由不具有 `workspaces:manage` 的用户创建的密钥不能被授予比该用户拥有的权限更多的权限，并且不能被分配组织标记为受限的角色。内置的工作区管理员角色自动包含它。- `bulk-exports:read` 和 `bulk-exports:manage` 涵盖批量导出端点（列出、创建、取消导出和管理目的地）。在自定义角色中使用它们来授予最低权限的批量导出访问权限，而无需 `workspaces:manage`。内置工作区管理员角色包括 `bulk-exports:manage`，所有具有读取功能的角色自动包括 `bulk-exports:read`。
+- `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
 - `projects:update` 仅涵盖元数据更新（名称、描述、标签），并且 **不** 授予更改跟踪保留的能力。要允许自定义角色修改跟踪层，您必须显式授予 `projects:increase-trace-tier`、`projects:decrease-trace-tier` 或两者。
 
 ---
