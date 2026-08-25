@@ -8,7 +8,106 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
-<Update label="2026-08-20" tags={["self-hosted"]} rss={{ title: "2026-08-20 - self-hosted" }}>
+<Update label="2026-08-24" tags={["Stable"]} rss={{ title: "2026-08-24 - self-hosted" }}>
+## langsmith-0.16.12
+
+**LangSmith version:** `0.16.46`
+
+- Self-hosted Fleet attached access profiles whose callback URLs used Kubernetes-internal service names when the deployment enabled internal Kubernetes destinations.
+
+**Download the Helm chart:** [`langsmith-0.16.12.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.12/langsmith-0.16.12.tgz)
+{/* langsmith-release-image: 0.16.12 0.16.46 */}
+</Update>
+
+<Update label="2026-08-24" tags={["Preview"]} rss={{ title: "2026-08-24 - self-hosted" }}>
+## langsmith-0.17.0-rc.13
+
+**LangSmith version:** `0.17.14rc1`
+
+- POST /v1/fleet/sandboxes created a sandbox from a snapshot and returned it ready to use, allowing a headless client on external OIDC to provision one without accessing the platform sandboxes API; you could choose the boot image with snapshot_id or a name:tag reference, or omit both for the workspace default.  
+- Added Homebase breadcrumb to Langster.  
+- DELETE /v1/fleet/sandboxes/{sandbox_slug} removed one sandbox, allowing a headless client on external OIDC to clean up a sandbox without accessing the platform sandboxes API; it was idempotent—deleting a sandbox that was already gone still returned 204—and the sandbox was torn down in the background, so a read taken immediately after showed it in a deleting state rather than absent.  
+- POST /v1/fleet/sandboxes/{sandbox_slug}/files wrote a file into a sandbox from a multipart/form-data body, completing the Fleet file API alongside the existing list and read endpoints, with the path query parameter naming the destination on its own, so the upload no longer depended on accessing a sandbox's dataplane URL directly; files were streamed rather than buffered, and one over 100MB was refused with 413.  
+- Self-hosted Fleet could attach access profiles whose callback URLs used Kubernetes-internal service names when the deployment enabled internal Kubernetes destinations.  
+- Tuned Evaluators were now hidden in BYOC workspaces and self-hosted deployments, where LangChain-managed inference was unavailable.  
+- Fleet usage charts now displayed spend, tool, and model data instead of appearing blank.  
+- Deployments could now have the general-purpose agent build a new agent directly in the chat, writing its name, description, tools, triggers, and instructions, instead of showing a Create agent button that handed setup to the new agent, with FLEET_INLINE_AGENT_GENERATION needed to be set on the Fleet API server, the Fleet queue, and the platform backend to turn it on; it was off by default.  
+- Controlled inputs no longer created redundant local state updates, preventing rare page crashes while typing in tracing filters.  
+- Attached a free-form description when creating or capturing a snapshot, and to proxy rules and proxy configs, with descriptions stored and returned on reads, allowing an agent to have a plain-language summary of what its sandbox image and network access could do.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.13/langsmith-0.17.0-rc.13.tgz)
+{/* langsmith-release-image: 0.17.0-rc.13 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
+</Update>
+
+<Update label="2026-08-22" tags={["Preview"]} rss={{ title: "2026-08-22 - self-hosted" }}>
+## langsmith-0.17.0-rc.12
+
+**LangSmith version:** `0.17.12rc1`
+
+- Updated a sandbox's proxy configuration so that it no longer required the sandbox to be running; a stopped sandbox stored the new configuration and applied it the next time it started instead of rejecting the request.
+- GET /v1/fleet/users listed and searched the members of your workspace by email or name, returning the user ID that agent sharing took; API-only Fleet clients no longer needed a user ID from elsewhere before sharing an agent.
+- Moved periodic loops to SAQ.
+- The LLM Gateway now supported xAI API keys and Grok models through native and unified Responses and Chat Completions endpoints, with tracing and spend attribution.
+- LangSmith Chat now read as a record of what it did; every tool it ran got a row naming the action and what it acted on, with the result one click away; a plan appeared when it took one on, and a subagent showed the steps it was working through; long results folded to a readable height, files and diffs rendered as files and diffs, and the panel could be resized or docked to the sidebar.
+- Fixed BarChart storybook sidebar bug.
+- The Gateway Credits balance card now explained that credits accessed models hosted by LangChain, and the Gateway home quickstart noted that running a request cost a trace but no additional LangChain fee.
+- The Model Fallbacks tab in LLM Gateway now supported filtering routing configurations by workspace and by fallback trigger status code, making it easier to find the routes that applied to a given workspace or error condition.
+- Sandboxes now mounted Context Hub repositories through a read-only, host-served filesystem, so files were directly accessible without polling for asynchronous guest materialization; repository updates appeared atomically, and mounts recovered across memory-backed stop and start.
+- LLM Gateway fallback policies could now route failed provider-model requests through an ordered chain of native provider models and saved model configurations; configure which HTTP status codes advanced to the next candidate, while successful requests continued directly to the original model.
+- GET /v2/sandboxes/snapshots now paged with page_size and an opaque cursor, returning items and next_cursor; the limit and offset parameters and the snapshots and offset response fields still worked but were deprecated.
+- Workspace API key creation and deletion were now gated by a new workspaces:manage-keys permission, separate from workspaces:manage; organization admins could grant a custom workspace role the ability to manage API keys without granting full workspace management.
+- Automation rules scoped to threads now showed the project's thread idle time, with a link to change it in project settings.
+- Default gateway spend and rate limits could now track and enforce separate buckets for each value of a configured X-Gateway request header.
+- Freeform rubric items in an annotation queue now supported an optional regex validator; a reviewer's comment that didn't match the configured pattern was blocked from saving, with an inline error, instead of silently persisting.
+- Custom roles could now grant feedback-configs:create, feedback-configs:update, and feedback-configs:delete independently of feedback submission, so a role could be scoped to submit feedback without also being able to create, edit, or delete feedback config (rubric) definitions.
+- Context Hub repositories containing legacy files beneath linked directories could now be read, materialized, cloned, and edited; reads used the linked directory contents, and the next successful edit removed conflicting legacy entries without changing linked repositories.
+- Webhook test notifications now showed the destination's HTTP status and reason phrase, helping you diagnose URL, availability, and authentication failures.
+- GET /v2/sandboxes/boxes now paged with page_size and an opaque cursor, returning items and next_cursor; the limit and offset parameters and the sandboxes and offset response fields still worked but were deprecated.
+- Gateway spend limit forms could configure custom-header buckets, and cost policy tables showed which header separated each default limit.
+- Created and edited alert actions now remained in a sticky footer, so you could submit changes without scrolling to the bottom of the form.
+- Annotation queues now supported a Data Formatting setting that hid selected JSON paths from a run's inputs and outputs while reviewing—pick fields via checkboxes generated from a sample run, or type a path manually; applied to run items only, not threads.
+- The LLM Gateway now forwarded Claude Code Max OAuth credentials for every organization, without requiring a workspace Anthropic API key.
+- Runs using the bare "gpt-5.6" model ID now calculated cost correctly; the pricing rule previously only matched the "gpt-5.6-sol" ID variant.
+- Tolerated disappearing Agent Builder popover.
+- The Model Fallbacks tab now let you create and manage automatic fallback chains for provider models, choosing ordered backup models or saved model configurations, selecting which HTTP errors triggered fallback, and copying a ready-to-use Gateway request example.
+- Enabled shadowing v1 -> v2 charts to compare data.
+- GET /v1/fleet/users now worked for Fleet deployments authenticating through an external OIDC provider, not only for API-key callers; headless clients on OIDC could resolve a colleague's user ID for agent sharing.
+- GET /v1/fleet/sandboxes/{sandbox_slug}/files returned the files under a path in a sandbox, matched by a glob pattern and paged with page_size and an opaque cursor; paging replaced the silent result cap the sandbox glob applied, so a large directory could be read in full instead of stopping partway.
+- GET /v1/fleet/sandboxes/{sandbox_slug}/files/content returned the raw bytes of a file in a sandbox; byte ranges were supported via the Range header, and HEAD reported a file's size without transferring it.
+- Excluded first bucket from shadowing.
+- GET /v1/fleet/sandbox-snapshots/{snapshot_id} returned one sandbox snapshot, so a client could watch a snapshot's build status without re-reading the whole list; the path parameter accepted a snapshot ID or a Docker-style reference, where a bare name meant name:latest.
+- Workspace roles could grant API key creation and deletion without granting full workspace administration; key managers could scope service keys to permitted workspaces and assign unrestricted roles.
+- LLM Gateway model fallback policies could now route between providers that used OpenAI Chat Completions, OpenAI Responses, or Anthropic Messages formats; the gateway translated requests, non-streaming responses, and streaming responses for both unified and direct provider endpoints.
+- DELETE /v1/fleet/sandbox-snapshots/{snapshot_id} removed a sandbox snapshot, which paired with snapshot creation for the delete-then-recreate retry after a failed build; it was idempotent and returned 409 while any sandbox was still booted from the snapshot, including a stopped one.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.12.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.12/langsmith-0.17.0-rc.12.tgz)
+{/* langsmith-release-image: 0.17.0-rc.12 0.17.12-2e235ec495df0816243eed918091c56b38348ff1 */}
+</Update>
+
+<Update label="2026-08-22" tags={["Stable"]} rss={{ title: "2026-08-22 - self-hosted" }}>
+## langsmith-0.16.11
+
+**LangSmith version:** `0.16.45`
+
+- Deleted an agent cleanly and removed the agent's files along with it, as previously the deletion could return a permission error after the agent had already disappeared from the agent list.
+- Updated the GET /v1/fleet/users endpoint to list and search members of your workspace by email or name, returning the user ID needed for agent sharing; API-only Fleet clients no longer needed a user ID from elsewhere before sharing an agent.
+
+**Download the Helm chart:** [`langsmith-0.16.11.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.11/langsmith-0.16.11.tgz)
+{/* langsmith-release-image: 0.16.11 0.16.45 */}
+</Update>
+
+<Update label="2026-08-21" tags={["Preview"]} rss={{ title: "2026-08-21 - self-hosted" }}>
+## langsmith-0.17.0-rc.11
+
+**LangSmith version:** `0.17.10rc1`
+
+- This release packages the same LangSmith application version as langsmith-0.17.0-rc.7. Refer to the [langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.17.0-rc.11.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.11/langsmith-0.17.0-rc.11.tgz)
+{/* langsmith-release-image: 0.17.0-rc.11 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
+</Update>
+
+<Update label="2026-08-20" tags={["Stable"]} rss={{ title: "2026-08-20 - self-hosted" }}>
 ## langsmith-0.16.10
 
 - This release packages the same LangSmith application version as langsmith-0.16.9. Refer to the [langsmith-0.16.9](#langsmith-0-16-9) release notes below.
@@ -17,7 +116,7 @@
 {/* langsmith-release-image: 0.16.10 0.16.43 */}
 </Update>
 
-<Update label="2026-08-20" tags={["self-hosted"]} rss={{ title: "2026-08-20 - self-hosted" }}>
+<Update label="2026-08-20" tags={["Preview"]} rss={{ title: "2026-08-20 - self-hosted" }}>
 ## langsmith-0.17.0-rc.10
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.7. Refer to the [langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7) release notes below.
@@ -26,7 +125,7 @@
 {/* langsmith-release-image: 0.17.0-rc.10 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
-<Update label="2026-08-19" tags={["self-hosted"]} rss={{ title: "2026-08-19 - self-hosted" }}>
+<Update label="2026-08-19" tags={["Preview"]} rss={{ title: "2026-08-19 - self-hosted" }}>
 ## langsmith-0.17.0-rc.9
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.7. Refer to the [langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7) release notes below.
@@ -35,7 +134,7 @@
 {/* langsmith-release-image: 0.17.0-rc.9 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
-<Update label="2026-08-19" tags={["self-hosted"]} rss={{ title: "2026-08-19 - self-hosted" }}>
+<Update label="2026-08-19" tags={["Preview"]} rss={{ title: "2026-08-19 - self-hosted" }}>
 ## langsmith-0.17.0-rc.8
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.7. Refer to the [langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7) release notes below.
@@ -44,7 +143,7 @@
 {/* langsmith-release-image: 0.17.0-rc.8 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
-<Update label="2026-08-19" tags={["self-hosted"]} rss={{ title: "2026-08-19 - self-hosted" }}>
+<Update label="2026-08-19" tags={["Preview"]} rss={{ title: "2026-08-19 - self-hosted" }}>
 ## langsmith-0.17.0-rc.7
 
 - Pinned full UV workspace for BYOC FE skew e2e.
@@ -201,7 +300,7 @@
 {/* langsmith-release-image: 0.17.0-rc.7 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
-<Update label="2026-08-19" tags={["self-hosted"]} rss={{ title: "2026-08-19 - self-hosted" }}>
+<Update label="2026-08-19" tags={["Stable"]} rss={{ title: "2026-08-19 - self-hosted" }}>
 ## langsmith-0.16.9
 
 - GCP Redis IAM cluster discovery now used TLS when the Redis cluster TLS was enabled, allowing self-hosted deployments to combine IAM authentication with TLS-required Memorystore clusters.
@@ -210,7 +309,7 @@
 {/* langsmith-release-image: 0.16.9 0.16.43 */}
 </Update>
 
-<Update label="2026-08-18" tags={["self-hosted"]} rss={{ title: "2026-08-18 - self-hosted" }}>
+<Update label="2026-08-18" tags={["Stable"]} rss={{ title: "2026-08-18 - self-hosted" }}>
 ## langsmith-0.16.8
 
 - Self-hosted v16 deployments could attach and detach ABAC access policies from roles through the canonical organization API.
@@ -220,7 +319,7 @@
 {/* langsmith-release-image: 0.16.8 0.16.41 */}
 </Update>
 
-<Update label="2026-08-16" tags={["self-hosted"]} rss={{ title: "2026-08-16 - self-hosted" }}>
+<Update label="2026-08-16" tags={["Stable"]} rss={{ title: "2026-08-16 - self-hosted" }}>
 ## langsmith-0.16.7
 
 - LangSmith workers using Microsoft Entra ID authentication for standalone Redis started successfully and continued refreshing credentials after the event loop starts.
@@ -229,7 +328,7 @@
 {/* langsmith-release-image: 0.16.7 0.16.38 */}
 </Update>
 
-<Update label="2026-08-14" tags={["self-hosted"]} rss={{ title: "2026-08-14 - self-hosted" }}>
+<Update label="2026-08-14" tags={["Stable"]} rss={{ title: "2026-08-14 - self-hosted" }}>
 ## langsmith-0.16.6
 
 - This release packages the same LangSmith application version as langsmith-0.16.5. Refer to the [langsmith-0.16.5](#langsmith-0-16-5) release notes below.
@@ -238,7 +337,7 @@
 {/* langsmith-release-image: 0.16.6 0.16.37 */}
 </Update>
 
-<Update label="2026-08-13" tags={["self-hosted"]} rss={{ title: "2026-08-13 - self-hosted" }}>
+<Update label="2026-08-13" tags={["Stable"]} rss={{ title: "2026-08-13 - self-hosted" }}>
 ## langsmith-0.16.5
 
 - Internal improvements and maintenance updates
@@ -247,7 +346,7 @@
 {/* langsmith-release-image: 0.16.5 0.16.37 */}
 </Update>
 
-<Update label="2026-08-12" tags={["self-hosted"]} rss={{ title: "2026-08-12 - self-hosted" }}>
+<Update label="2026-08-12" tags={["Stable"]} rss={{ title: "2026-08-12 - self-hosted" }}>
 ## langsmith-0.16.4
 
 - This release packages the same LangSmith application version as langsmith-0.16.2. Refer to the [langsmith-0.16.2](#langsmith-0-16-2) release notes below.
@@ -256,7 +355,7 @@
 {/* langsmith-release-image: 0.16.4 0.16.36 */}
 </Update>
 
-<Update label="2026-08-12" tags={["self-hosted"]} rss={{ title: "2026-08-12 - self-hosted" }}>
+<Update label="2026-08-12" tags={["Preview"]} rss={{ title: "2026-08-12 - self-hosted" }}>
 ## langsmith-0.17.0-rc.6
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.1. Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
@@ -265,7 +364,7 @@
 {/* langsmith-release-image: 0.17.0-rc.6 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-08-11" tags={["self-hosted"]} rss={{ title: "2026-08-11 - self-hosted" }}>
+<Update label="2026-08-11" tags={["Stable"]} rss={{ title: "2026-08-11 - self-hosted" }}>
 ## langsmith-0.16.3
 
 - This release packages the same LangSmith application version as langsmith-0.16.2. Refer to the [langsmith-0.16.2](#langsmith-0-16-2) release notes below.
@@ -274,7 +373,7 @@
 {/* langsmith-release-image: 0.16.3 0.16.36 */}
 </Update>
 
-<Update label="2026-08-11" tags={["self-hosted"]} rss={{ title: "2026-08-11 - self-hosted" }}>
+<Update label="2026-08-11" tags={["Preview"]} rss={{ title: "2026-08-11 - self-hosted" }}>
 ## langsmith-0.17.0-rc.5
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.1. Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
@@ -283,7 +382,7 @@
 {/* langsmith-release-image: 0.17.0-rc.5 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-08-11" tags={["self-hosted"]} rss={{ title: "2026-08-11 - self-hosted" }}>
+<Update label="2026-08-11" tags={["Stable"]} rss={{ title: "2026-08-11 - self-hosted" }}>
 ## langsmith-0.16.2
 
 - Self-hosted Fleet agents can use sandbox-backed computer access without requiring a cloud billing plan tier.
@@ -292,7 +391,7 @@
 {/* langsmith-release-image: 0.16.2 0.16.36 */}
 </Update>
 
-<Update label="2026-08-07" tags={["self-hosted"]} rss={{ title: "2026-08-07 - self-hosted" }}>
+<Update label="2026-08-07" tags={["Preview"]} rss={{ title: "2026-08-07 - self-hosted" }}>
 ## langsmith-0.17.0-rc.4
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.1. Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
@@ -301,7 +400,7 @@
 {/* langsmith-release-image: 0.17.0-rc.4 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-08-07" tags={["self-hosted"]} rss={{ title: "2026-08-07 - self-hosted" }}>
+<Update label="2026-08-07" tags={["Stable"]} rss={{ title: "2026-08-07 - self-hosted" }}>
 ## langsmith-0.16.1
 
 - Fixed issues with initial file uploads on Sandbox-backed Fleet agents.
@@ -310,7 +409,7 @@
 {/* langsmith-release-image: 0.16.1 0.16.34 */}
 </Update>
 
-<Update label="2026-08-05" tags={["self-hosted"]} rss={{ title: "2026-08-05 - self-hosted" }}>
+<Update label="2026-08-05" tags={["Stable"]} rss={{ title: "2026-08-05 - self-hosted" }}>
 ## langsmith-0.16.0
 
 LangSmith Self-Hosted v0.16 is our recommended release for all self-hosted deployments. It brings three major capabilities to Self-hosted: **SmithDB**, **Engine**, and **Sandboxes**, alongside broad improvements across the rest of our platform.
@@ -382,7 +481,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0 0.16.0 */}
 </Update>
 
-<Update label="2026-08-04" tags={["self-hosted"]} rss={{ title: "2026-08-04 - self-hosted" }}>
+<Update label="2026-08-04" tags={["Preview"]} rss={{ title: "2026-08-04 - self-hosted" }}>
 ## langsmith-0.16.0-rc.29
 
 - Dataset and run attachments resolved relative signed download URLs before previewing, opening, or downloading them in self-hosted deployments.
@@ -395,7 +494,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.29 0.16.33rc1 */}
 </Update>
 
-<Update label="2026-08-04" tags={["self-hosted"]} rss={{ title: "2026-08-04 - self-hosted" }}>
+<Update label="2026-08-04" tags={["Preview"]} rss={{ title: "2026-08-04 - self-hosted" }}>
 ## langsmith-0.16.0-rc.28
 
 - Correcting an evaluator score from the experiment results grid updated the cell and its popover immediately, without requiring a page refresh.
@@ -407,7 +506,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.28 0.16.32rc1 */}
 </Update>
 
-<Update label="2026-08-01" tags={["self-hosted"]} rss={{ title: "2026-08-01 - self-hosted" }}>
+<Update label="2026-08-01" tags={["Preview"]} rss={{ title: "2026-08-01 - self-hosted" }}>
 ## langsmith-0.16.0-rc.27
 
 - The Configure Evaluator pane header and templates navigation painted the same background as the pane itself in dark mode.
@@ -417,7 +516,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.27 0.16.31rc1 */}
 </Update>
 
-<Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
+<Update label="2026-07-31" tags={["Preview"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.26
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.25. Refer to the [langsmith-0.16.0-rc.25](#langsmith-0-16-0-rc-25) release notes below.
@@ -426,7 +525,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.26 0.16.30rc1 */}
 </Update>
 
-<Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
+<Update label="2026-07-31" tags={["Preview"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.25
 
 - Internal improvements and maintenance updates
@@ -435,7 +534,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.25 0.16.30rc1 */}
 </Update>
 
-<Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
+<Update label="2026-07-31" tags={["Preview"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.24
 
 - Tracing project activity and sorting stayed up to date for self-hosted deployments using Redis versions before 6.2.
@@ -449,7 +548,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.24 0.16.28rc1 */}
 </Update>
 
-<Update label="2026-07-31" tags={["self-hosted"]} rss={{ title: "2026-07-31 - self-hosted" }}>
+<Update label="2026-07-31" tags={["Preview"]} rss={{ title: "2026-07-31 - self-hosted" }}>
 ## langsmith-0.16.0-rc.23
 
 - Updated the `langsmith` CLI in sandboxes to v0.2.44. Its requests now resolve on self-hosted deployments that serve the API under `/api`, where commands such as `trace messages` and the project issues commands previously failed.
@@ -459,7 +558,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.23 0.16.27rc1 */}
 </Update>
 
-<Update label="2026-07-29" tags={["self-hosted"]} rss={{ title: "2026-07-29 - self-hosted" }}>
+<Update label="2026-07-29" tags={["Preview"]} rss={{ title: "2026-07-29 - self-hosted" }}>
 ## langsmith-0.16.0-rc.22
 
 - The Granular usage page showed a notice that long-lived trace usage is not tracked in self-hosted deployments, so the Long-lived only filter is expected to return zero results.
@@ -468,7 +567,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.22 0.16.25rc1 */}
 </Update>
 
-<Update label="2026-07-28" tags={["self-hosted"]} rss={{ title: "2026-07-28 - self-hosted" }}>
+<Update label="2026-07-28" tags={["Preview"]} rss={{ title: "2026-07-28 - self-hosted" }}>
 ## langsmith-0.17.0-rc.3
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.1. Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
@@ -477,7 +576,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.17.0-rc.3 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-07-28" tags={["self-hosted"]} rss={{ title: "2026-07-28 - self-hosted" }}>
+<Update label="2026-07-28" tags={["Preview"]} rss={{ title: "2026-07-28 - self-hosted" }}>
 ## langsmith-0.16.0-rc.21
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.20. Refer to the [langsmith-0.16.0-rc.20](#langsmith-0-16-0-rc-20) release notes below.
@@ -486,7 +585,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.21 0.16.24rc1 */}
 </Update>
 
-<Update label="2026-07-28" tags={["self-hosted"]} rss={{ title: "2026-07-28 - self-hosted" }}>
+<Update label="2026-07-28" tags={["Preview"]} rss={{ title: "2026-07-28 - self-hosted" }}>
 ## langsmith-0.16.0-rc.20
 
 - Internal improvements and maintenance updates
@@ -495,7 +594,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.20 0.16.24rc1 */}
 </Update>
 
-<Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
+<Update label="2026-07-27" tags={["Preview"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.17.0-rc.2
 
 - This release packages the same LangSmith application version as langsmith-0.17.0-rc.1. Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
@@ -504,7 +603,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.17.0-rc.2 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
+<Update label="2026-07-27" tags={["Preview"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.17.0-rc.1
 
 - Engine worked in supported self-hosted deployments without Eppo rollout configuration, while organization enablement and existing permissions remain enforced.
@@ -513,7 +612,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.17.0-rc.1 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
-<Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
+<Update label="2026-07-27" tags={["Preview"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.16.0-rc.19
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.18. Refer to the [langsmith-0.16.0-rc.18](#langsmith-0-16-0-rc-18) release notes below.
@@ -522,7 +621,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.19 0.16.23rc1 */}
 </Update>
 
-<Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
+<Update label="2026-07-27" tags={["Preview"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.16.0-rc.18
 
 - Internal improvements and maintenance updates
@@ -531,7 +630,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.18 0.16.23rc1 */}
 </Update>
 
-<Update label="2026-07-27" tags={["self-hosted"]} rss={{ title: "2026-07-27 - self-hosted" }}>
+<Update label="2026-07-27" tags={["Stable"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.15.17
 
 - Internal improvements and maintenance updates
@@ -540,7 +639,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.17 0.15.24 */}
 </Update>
 
-<Update label="2026-07-26" tags={["self-hosted"]} rss={{ title: "2026-07-26 - self-hosted" }}>
+<Update label="2026-07-26" tags={["Preview"]} rss={{ title: "2026-07-26 - self-hosted" }}>
 ## langsmith-0.16.0-rc.17
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.16. Refer to the [langsmith-0.16.0-rc.16](#langsmith-0-16-0-rc-16) release notes below.
@@ -549,7 +648,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.17 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
 </Update>
 
-<Update label="2026-07-25" tags={["self-hosted"]} rss={{ title: "2026-07-25 - self-hosted" }}>
+<Update label="2026-07-25" tags={["Preview"]} rss={{ title: "2026-07-25 - self-hosted" }}>
 ## langsmith-0.16.0-rc.16
 
 - Giving feedback on a thread annotation queue item recorded the last reviewed time using the queue membership ID, so review progress is saved for both runs and threads.
@@ -567,7 +666,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.16 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
 </Update>
 
-<Update label="2026-07-24" tags={["self-hosted"]} rss={{ title: "2026-07-24 - self-hosted" }}>
+<Update label="2026-07-24" tags={["Stable"]} rss={{ title: "2026-07-24 - self-hosted" }}>
 ## langsmith-0.15.16
 
 - Internal improvements and maintenance updates
@@ -576,7 +675,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.16 0.15.23 */}
 </Update>
 
-<Update label="2026-07-24" tags={["self-hosted"]} rss={{ title: "2026-07-24 - self-hosted" }}>
+<Update label="2026-07-24" tags={["Preview"]} rss={{ title: "2026-07-24 - self-hosted" }}>
 ## langsmith-0.16.0-rc.15
 
 - None (internal engine triage behavior, behind the `ISSUES_AGENT_MAIN_AGENT_SEMANTIC` flag).
@@ -585,7 +684,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.15 0.16.19-2293f2294539e1edf823170ad9a1694e4c42b1a2 */}
 </Update>
 
-<Update label="2026-07-21" tags={["self-hosted"]} rss={{ title: "2026-07-21 - self-hosted" }}>
+<Update label="2026-07-21" tags={["Preview"]} rss={{ title: "2026-07-21 - self-hosted" }}>
 ## langsmith-0.16.0-rc.14
 
 - Fixed incorrect dashboard tooltip time ranges when the first aggregation bucket was partial.
@@ -595,7 +694,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.14 0.16.17-559378e0c85ce867a0d8defa0d3103c101c41bdc */}
 </Update>
 
-<Update label="2026-07-16" tags={["self-hosted"]} rss={{ title: "2026-07-16 - self-hosted" }}>
+<Update label="2026-07-16" tags={["Preview"]} rss={{ title: "2026-07-16 - self-hosted" }}>
 ## langsmith-0.16.0-rc.13
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.12. Refer to the [langsmith-0.16.0-rc.12](#langsmith-0-16-0-rc-12) release notes below.
@@ -604,7 +703,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.13 0.16.13-94749faf1173b86a8dbf656dba668d7d442452ea */}
 </Update>
 
-<Update label="2026-07-09" tags={["self-hosted"]} rss={{ title: "2026-07-09 - self-hosted" }}>
+<Update label="2026-07-09" tags={["Preview"]} rss={{ title: "2026-07-09 - self-hosted" }}>
 ## langsmith-0.16.0-rc.12
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete".
@@ -680,7 +779,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.12 0.16.13-94749faf1173b86a8dbf656dba668d7d442452ea */}
 </Update>
 
-<Update label="2026-07-09" tags={["self-hosted"]} rss={{ title: "2026-07-09 - self-hosted" }}>
+<Update label="2026-07-09" tags={["Preview"]} rss={{ title: "2026-07-09 - self-hosted" }}>
 ## langsmith-0.16.0-rc.11
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -754,7 +853,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.11 0.16.12-c727f17750a97082b0ea07659729ac5c95517b49 */}
 </Update>
 
-<Update label="2026-07-09" tags={["self-hosted"]} rss={{ title: "2026-07-09 - self-hosted" }}>
+<Update label="2026-07-09" tags={["Stable"]} rss={{ title: "2026-07-09 - self-hosted" }}>
 ## langsmith-0.15.13
 
 - Added support for new model integrations to enhance AI deployments in self-hosted environments.
@@ -768,7 +867,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.13 0.15.18 */}
 </Update>
 
-<Update label="2026-07-08" tags={["self-hosted"]} rss={{ title: "2026-07-08 - self-hosted" }}>
+<Update label="2026-07-08" tags={["Preview"]} rss={{ title: "2026-07-08 - self-hosted" }}>
 ## langsmith-0.16.0-rc.10
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -841,7 +940,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.10 0.16.11-fab52e9a9f77fd7ec4cf5b0a7b245edde75ae02c */}
 </Update>
 
-<Update label="2026-07-07" tags={["self-hosted"]} rss={{ title: "2026-07-07 - self-hosted" }}>
+<Update label="2026-07-07" tags={["Preview"]} rss={{ title: "2026-07-07 - self-hosted" }}>
 ## langsmith-0.16.0-rc.9
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.8. Refer to the [langsmith-0.16.0-rc.8](#langsmith-0-16-0-rc-8) release notes below.
@@ -850,7 +949,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.9 0.16.10-c9e87a3e0c8be7a90e8e868ac389d220ea2de7df */}
 </Update>
 
-<Update label="2026-07-02" tags={["self-hosted"]} rss={{ title: "2026-07-02 - self-hosted" }}>
+<Update label="2026-07-02" tags={["Preview"]} rss={{ title: "2026-07-02 - self-hosted" }}>
 ## langsmith-0.16.0-rc.8
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -925,7 +1024,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.8 0.16.10-c9e87a3e0c8be7a90e8e868ac389d220ea2de7df */}
 </Update>
 
-<Update label="2026-07-01" tags={["self-hosted"]} rss={{ title: "2026-07-01 - self-hosted" }}>
+<Update label="2026-07-01" tags={["Preview"]} rss={{ title: "2026-07-01 - self-hosted" }}>
 ## langsmith-0.16.0-rc.7
 
 - Patched dependencies.
@@ -998,7 +1097,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.7 0.16.9-e5a4480b5adc026c2a867710d1fd6bdcc98a8839 */}
 </Update>
 
-<Update label="2026-06-26" tags={["self-hosted"]} rss={{ title: "2026-06-26 - self-hosted" }}>
+<Update label="2026-06-26" tags={["Preview"]} rss={{ title: "2026-06-26 - self-hosted" }}>
 ## langsmith-0.16.0-rc.6
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -1064,7 +1163,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.6 0.16.8-d7febe6536e428812053c48cdf3ddc969252753c */}
 </Update>
 
-<Update label="2026-06-24" tags={["self-hosted"]} rss={{ title: "2026-06-24 - self-hosted" }}>
+<Update label="2026-06-24" tags={["Stable"]} rss={{ title: "2026-06-24 - self-hosted" }}>
 ## langsmith-0.15.12
 
 - Patched dependencies.
@@ -1073,7 +1172,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.12 0.15.17 */}
 </Update>
 
-<Update label="2026-06-24" tags={["self-hosted"]} rss={{ title: "2026-06-24 - self-hosted" }}>
+<Update label="2026-06-24" tags={["Preview"]} rss={{ title: "2026-06-24 - self-hosted" }}>
 ## langsmith-0.16.0-rc.5
 
 - This release packages the same LangSmith application version as langsmith-0.16.0-rc.4. Refer to the [langsmith-0.16.0-rc.4](#langsmith-0-16-0-rc-4) release notes below.
@@ -1082,7 +1181,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.5 0.16.5-51eaa96f56bc7d7a37eef03b4b8bb601359e4653 */}
 </Update>
 
-<Update label="2026-06-18" tags={["self-hosted"]} rss={{ title: "2026-06-18 - self-hosted" }}>
+<Update label="2026-06-18" tags={["Preview"]} rss={{ title: "2026-06-18 - self-hosted" }}>
 ## langsmith-0.16.0-rc.4
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete".
@@ -1136,7 +1235,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.4 0.16.5-51eaa96f56bc7d7a37eef03b4b8bb601359e4653 */}
 </Update>
 
-<Update label="2026-06-18" tags={["self-hosted"]} rss={{ title: "2026-06-18 - self-hosted" }}>
+<Update label="2026-06-18" tags={["Stable"]} rss={{ title: "2026-06-18 - self-hosted" }}>
 ## langsmith-0.15.11
 
 - Improved the UI for tracing to enhance the user experience.
@@ -1153,7 +1252,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.11 0.15.16 */}
 </Update>
 
-<Update label="2026-06-15" tags={["self-hosted"]} rss={{ title: "2026-06-15 - self-hosted" }}>
+<Update label="2026-06-15" tags={["Preview"]} rss={{ title: "2026-06-15 - self-hosted" }}>
 ## langsmith-0.16.0-rc.3
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -1228,7 +1327,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.3 0.16.4-eba35cd3072d3768a461da28c84020402ea4c505 */}
 </Update>
 
-<Update label="2026-06-11" tags={["self-hosted"]} rss={{ title: "2026-06-11 - self-hosted" }}>
+<Update label="2026-06-11" tags={["Preview"]} rss={{ title: "2026-06-11 - self-hosted" }}>
 ## langsmith-0.16.0-rc.2
 
 - For the full list of changes in the 0.16.0 release candidate, refer to the [langsmith-0.16.0-rc.1](#langsmith-0-16-0-rc-1) release notes below.
@@ -1237,7 +1336,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.2 0.16.4rc1 */}
 </Update>
 
-<Update label="2026-06-11" tags={["self-hosted"]} rss={{ title: "2026-06-11 - self-hosted" }}>
+<Update label="2026-06-11" tags={["Stable"]} rss={{ title: "2026-06-11 - self-hosted" }}>
 ## langsmith-0.15.10
 
 - Patched dependencies.
@@ -1248,7 +1347,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.10 0.15.15 */}
 </Update>
 
-<Update label="2026-06-09" tags={["self-hosted"]} rss={{ title: "2026-06-09 - self-hosted" }}>
+<Update label="2026-06-09" tags={["Preview"]} rss={{ title: "2026-06-09 - self-hosted" }}>
 ## langsmith-0.16.0-rc.1
 
 - Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
@@ -1323,7 +1422,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.16.0-rc.1 0.16.1rc1 */}
 </Update>
 
-<Update label="2026-06-09" tags={["self-hosted"]} rss={{ title: "2026-06-09 - self-hosted" }}>
+<Update label="2026-06-09" tags={["Stable"]} rss={{ title: "2026-06-09 - self-hosted" }}>
 ## langsmith-0.15.9
 
 - This release packages the same LangSmith application version as langsmith-0.15.7. Refer to the [langsmith-0.15.7](#langsmith-0-15-7) release notes below.
@@ -1332,7 +1431,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.9 0.15.13 */}
 </Update>
 
-<Update label="2026-06-08" tags={["self-hosted"]} rss={{ title: "2026-06-08 - self-hosted" }}>
+<Update label="2026-06-08" tags={["Stable"]} rss={{ title: "2026-06-08 - self-hosted" }}>
 ## langsmith-0.15.8
 
 - This release packages the same LangSmith application version as langsmith-0.15.7. Refer to the [langsmith-0.15.7](#langsmith-0-15-7) release notes below.
@@ -1341,7 +1440,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.8 0.15.13 */}
 </Update>
 
-<Update label="2026-06-06" tags={["self-hosted"]} rss={{ title: "2026-06-06 - self-hosted" }}>
+<Update label="2026-06-06" tags={["Stable"]} rss={{ title: "2026-06-06 - self-hosted" }}>
 ## langsmith-0.15.7
 
 - Added support for API key authentication with Amazon Bedrock in the Playground. Bedrock API keys let you authenticate requests with a bearer token instead of AWS credentials.
@@ -1351,7 +1450,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.7 0.15.13 */}
 </Update>
 
-<Update label="2026-06-03" tags={["self-hosted"]} rss={{ title: "2026-06-03 - self-hosted" }}>
+<Update label="2026-06-03" tags={["Stable"]} rss={{ title: "2026-06-03 - self-hosted" }}>
 ## langsmith-0.15.6
 
 - Fixed a bug in SSO Groups Sync where the group-name separator was ignored and did not behave like SCIM sync.
@@ -1362,7 +1461,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.6 0.15.12 */}
 </Update>
 
-<Update label="2026-06-02" tags={["self-hosted"]} rss={{ title: "2026-06-02 - self-hosted" }}>
+<Update label="2026-06-02" tags={["Stable"]} rss={{ title: "2026-06-02 - self-hosted" }}>
 ## langsmith-0.15.5
 
 - Fixed the SSRF policy for the `playground` service so that it respected `SSRF_ALLOW_K8S_INTERNAL`.
@@ -1373,7 +1472,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.5 0.15.11 */}
 </Update>
 
-<Update label="2026-06-01" tags={["self-hosted"]} rss={{ title: "2026-06-01 - self-hosted" }}>
+<Update label="2026-06-01" tags={["Stable"]} rss={{ title: "2026-06-01 - self-hosted" }}>
 ## langsmith-0.15.4
 
 - This release packages the same LangSmith application version as langsmith-0.15.2. Refer to the [langsmith-0.15.2](#langsmith-0-15-2) release notes below.
@@ -1382,7 +1481,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.4 0.15.10 */}
 </Update>
 
-<Update label="2026-05-29" tags={["self-hosted"]} rss={{ title: "2026-05-29 - self-hosted" }}>
+<Update label="2026-05-29" tags={["Stable"]} rss={{ title: "2026-05-29 - self-hosted" }}>
 ## langsmith-0.15.3
 
 - This release packages the same LangSmith application version as langsmith-0.15.2. Refer to the [langsmith-0.15.2](#langsmith-0-15-2) release notes below.
@@ -1391,7 +1490,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.3 0.15.10 */}
 </Update>
 
-<Update label="2026-05-29" tags={["self-hosted"]} rss={{ title: "2026-05-29 - self-hosted" }}>
+<Update label="2026-05-29" tags={["Stable"]} rss={{ title: "2026-05-29 - self-hosted" }}>
 ## langsmith-0.15.2
 
 - Fixed an OIDC login redirect loop (`ERR_TOO_MANY_REDIRECTS`) for identity providers that use the hybrid flow with a `form_post` callback.
@@ -1400,7 +1499,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.2 0.15.10 */}
 </Update>
 
-<Update label="2026-05-29" tags={["self-hosted"]} rss={{ title: "2026-05-29 - self-hosted" }}>
+<Update label="2026-05-29" tags={["Stable"]} rss={{ title: "2026-05-29 - self-hosted" }}>
 ## langsmith-0.15.1
 
 - Fixed a bug where the blob storage banner incorrectly flashed on page load.
@@ -1410,7 +1509,7 @@ If you want to book time for your upgrade, feel free to contact LangChain suppor
 {/* langsmith-release-image: 0.15.1 0.15.9 */}
 </Update>
 
-<Update label="2026-05-26" tags={["self-hosted"]}>
+<Update label="2026-05-26" tags={["Stable"]}>
 ## langsmith-0.15.0
 
 LangSmith Self-Hosted v0.15 brings **reusable evaluators and a library of 30+ evaluator templates** that centralize evaluation across your workspace, ships **per-example assertions** alongside reference outputs in annotation queues, lets you download **Insights reports** as PDFs for offline analysis, and introduces the **Context Hub** for version-controlled, environment-aware management of agent instructions and tools. Several breaking changes are worth reviewing before upgrade: the `agent-bootstrap` script is deprecated, the Agent Builder rename to [Fleet](/langsmith/fleet) may require workload-identity service-account updates, and the `projects:update-retention` permission splits into `projects:increase-trace-tier` and `projects:decrease-trace-tier`.
@@ -1447,7 +1546,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 {/* langsmith-release-image: 0.15.0 0.15.8 */}
 </Update>
 
-<Update label="2026-05-26" tags={["self-hosted"]} rss={{ title: "2026-05-26 - self-hosted" }}>
+<Update label="2026-05-26" tags={["Preview"]} rss={{ title: "2026-05-26 - self-hosted" }}>
 ## langsmith-0.15.0-rc.17
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.14. Refer to the [langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14) release notes below.
@@ -1456,7 +1555,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 {/* langsmith-release-image: 0.15.0-rc.17 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
-<Update label="2026-05-21" tags={["self-hosted"]} rss={{ title: "2026-05-21 - self-hosted" }}>
+<Update label="2026-05-21" tags={["Preview"]} rss={{ title: "2026-05-21 - self-hosted" }}>
 ## langsmith-0.15.0-rc.16
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.14. Refer to the [langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14) release notes below.
@@ -1465,7 +1564,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 {/* langsmith-release-image: 0.15.0-rc.16 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
-<Update label="2026-05-20" tags={["self-hosted"]} rss={{ title: "2026-05-20 - self-hosted" }}>
+<Update label="2026-05-20" tags={["Preview"]} rss={{ title: "2026-05-20 - self-hosted" }}>
 ## langsmith-0.15.0-rc.15
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.14. Refer to the [langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14) release notes below.
@@ -1474,7 +1573,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 {/* langsmith-release-image: 0.15.0-rc.15 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
-<Update label="2026-05-20" tags={["self-hosted"]} rss={{ title: "2026-05-20 - self-hosted" }}>
+<Update label="2026-05-20" tags={["Stable"]} rss={{ title: "2026-05-20 - self-hosted" }}>
 ## langsmith-0.8.31
 
 - This release packages the same LangSmith application version as langsmith-0.8.30. Refer to the [langsmith-0.8.30](#langsmith-0-8-30) release notes below.
@@ -1483,7 +1582,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 {/* langsmith-release-image: 0.8.31 0.8.92 */}
 </Update>
 
-<Update label="2026-05-18" tags={["self-hosted"]}>
+<Update label="2026-05-18" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.14
 
 - Fixed the truncation issue of the 'Enabled' column in the automations table.
@@ -1506,7 +1605,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.15.0-rc.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.14/langsmith-0.15.0-rc.14.tgz)
 {/* langsmith-release-image: 0.15.0-rc.14 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
-<Update label="2026-05-14" tags={["self-hosted"]}>
+<Update label="2026-05-14" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.13
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.12. Refer to the [langsmith-0.15.0-rc.12](#langsmith-0-15-0-rc-12) release notes below.
@@ -1514,7 +1613,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.15.0-rc.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.13/langsmith-0.15.0-rc.13.tgz)
 {/* langsmith-release-image: 0.15.0-rc.13 0.15.3-4a1b22708d0a402b664df96c75c6ffa261a2546a */}
 </Update>
-<Update label="2026-05-14" tags={["self-hosted"]}>
+<Update label="2026-05-14" tags={["Stable"]}>
 ## langsmith-0.14.6
 
 - Fixed storage issue by backporting S3 CopyObject KMS headers to v14, improving data transfer security for S3 integrations.
@@ -1523,7 +1622,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.14.6.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.6/langsmith-0.14.6.tgz)
 {/* langsmith-release-image: 0.14.6 0.14.9 */}
 </Update>
-<Update label="2026-05-13" tags={["self-hosted"]}>
+<Update label="2026-05-13" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.12
 
 - Fixed the truncation issue in the 'Enabled' column of the automations table to improve UI usability.
@@ -1546,7 +1645,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.12.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.12/langsmith-0.15.0-rc.12.tgz)
 {/* langsmith-release-image: 0.15.0-rc.12 0.15.3-4a1b22708d0a402b664df96c75c6ffa261a2546a */}
 </Update>
-<Update label="2026-05-11" tags={["self-hosted"]}>
+<Update label="2026-05-11" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.10
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1554,7 +1653,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.10.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.10/langsmith-0.15.0-rc.10.tgz)
 {/* langsmith-release-image: 0.15.0-rc.10 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-09" tags={["self-hosted"]}>
+<Update label="2026-05-09" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.9
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1562,7 +1661,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.9.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.9/langsmith-0.15.0-rc.9.tgz)
 {/* langsmith-release-image: 0.15.0-rc.9 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-08" tags={["self-hosted"]}>
+<Update label="2026-05-08" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.8
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1570,7 +1669,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.8.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.8/langsmith-0.15.0-rc.8.tgz)
 {/* langsmith-release-image: 0.15.0-rc.8 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-08" tags={["self-hosted"]}>
+<Update label="2026-05-08" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.7
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1578,7 +1677,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.7.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.7/langsmith-0.15.0-rc.7.tgz)
 {/* langsmith-release-image: 0.15.0-rc.7 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-06" tags={["self-hosted"]}>
+<Update label="2026-05-06" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.6
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1586,7 +1685,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.6.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.6/langsmith-0.15.0-rc.6.tgz)
 {/* langsmith-release-image: 0.15.0-rc.6 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-05" tags={["self-hosted"]}>
+<Update label="2026-05-05" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.5
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.4. Refer to the [langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4) release notes below.
@@ -1594,7 +1693,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.5/langsmith-0.15.0-rc.5.tgz)
 {/* langsmith-release-image: 0.15.0-rc.5 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-04" tags={["self-hosted"]}>
+<Update label="2026-05-04" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.4
 
 - Enhanced the Messages View with auto-scroll navigation, parallel tool calls rendering, and improved styling
@@ -1612,7 +1711,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.4/langsmith-0.15.0-rc.4.tgz)
 {/* langsmith-release-image: 0.15.0-rc.4 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
-<Update label="2026-05-01" tags={["self-hosted"]}>
+<Update label="2026-05-01" tags={["Stable"]}>
 ## langsmith-0.14.5
 
 - Fixed the agent-builder failure to start on v14 self-hosted 0.14.6 due to the `langgraph-api 0.8.3` base image bundling `LangSmith 0.7.37`, which removed `SandboxTemplate`, by pinning `LangSmith<0.7.34` to downgrade to a compatible version.
@@ -1620,7 +1719,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.14.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.5/langsmith-0.14.5.tgz)
 {/* langsmith-release-image: 0.14.5 0.14.7 */}
 </Update>
-<Update label="2026-04-30" tags={["self-hosted"]}>
+<Update label="2026-04-30" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.3
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.1. Refer to the [langsmith-0.15.0-rc.1](#langsmith-0-15-0-rc-1) release notes below.
@@ -1628,7 +1727,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.3.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.3/langsmith-0.15.0-rc.3.tgz)
 {/* langsmith-release-image: 0.15.0-rc.3 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
-<Update label="2026-04-29" tags={["self-hosted"]}>
+<Update label="2026-04-29" tags={["Stable"]}>
 ## langsmith-0.14.3
 
 - Fixed silent corruption of `traceId`, `spanId`, and `parentSpanId` for OTLP/JSON (`Content-Type: application/json`) trace ingestion.
@@ -1637,7 +1736,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.14.3.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.3/langsmith-0.14.3.tgz)
 {/* langsmith-release-image: 0.14.3 0.14.5 */}
 </Update>
-<Update label="2026-04-24" tags={["self-hosted"]}>
+<Update label="2026-04-24" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.2
 
 - This release packages the same LangSmith application version as langsmith-0.15.0-rc.1. Refer to the [langsmith-0.15.0-rc.1](#langsmith-0-15-0-rc-1) release notes below.
@@ -1645,7 +1744,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.2/langsmith-0.15.0-rc.2.tgz)
 {/* langsmith-release-image: 0.15.0-rc.2 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
-<Update label="2026-04-24" tags={["self-hosted"]}>
+<Update label="2026-04-24" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.1
 
 - Fixed truncation issue by widening the 'Enabled' column in the automations table for better header visibility.
@@ -1688,7 +1787,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.15.0-rc.1.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.1/langsmith-0.15.0-rc.1.tgz)
 {/* langsmith-release-image: 0.15.0-rc.1 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
-<Update label="2026-04-20" tags={["self-hosted"]}>
+<Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.2
 
 - This release packages the same LangSmith application version as langsmith-0.14.0. Refer to the [langsmith-0.14.0](#langsmith-0-14-0) release notes below.
@@ -1696,7 +1795,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.14.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.2/langsmith-0.14.2.tgz)
 {/* langsmith-release-image: 0.14.2 0.14.3 */}
 </Update>
-<Update label="2026-04-20" tags={["self-hosted"]}>
+<Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.1
 
 - This release packages the same LangSmith application version as langsmith-0.14.0. Refer to the [langsmith-0.14.0](#langsmith-0-14-0) release notes below.
@@ -1704,7 +1803,7 @@ These updates focus on improving user experience, performance, security, and fea
 **Download the Helm chart:** [`langsmith-0.14.1.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.1/langsmith-0.14.1.tgz)
 {/* langsmith-release-image: 0.14.1 0.14.3 */}
 </Update>
-<Update label="2026-04-20" tags={["self-hosted"]}>
+<Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.0
 
 LangSmith Self-Hosted v0.14 brings **Chat** (our in-product chat for traces and runs) to self-hosted, takes **ABAC and audit logs** GA (on by default), and enables the **LLM Auth Proxy** by default with URL allowlisting and richer JWT claims. Admins get **unified model configurations** shared across Agent Builder, Chat, Insights, Playground, and Evaluators, and fine-grained **Prompt Owners** for locking down who can promote or delete individual prompts. Evaluators gain **multi-modal support** and workspaces can now set **cost alerts** on tracing projects. Playground model support expands (Anthropic via Vertex AI, custom Azure models, Bedrock inference profiles, Gemini 3.1 Pro, GPT-5.3 / 5.4, Baseten + GLM-5), and new agent tools and triggers land for Google Sheets & Docs, Outlook, Teams, and Salesforce SOQL. On the infrastructure side, v0.14 adds **GCS Workload Identity** support for blob storage, **Valkey** as a drop-in Redis replacement, and a pre-upgrade migration hook for safer rollouts.
@@ -1746,7 +1845,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.14.0.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.0/langsmith-0.14.0.tgz)
 {/* langsmith-release-image: 0.14.0 0.14.3 */}
 </Update>
-<Update label="2026-04-17" tags={["self-hosted"]}>
+<Update label="2026-04-17" tags={["Stable"]}>
 ## langsmith-0.13.43
 
 - This release packages the same LangSmith application version as langsmith-0.13.42. Refer to the [langsmith-0.13.42](#langsmith-0-13-42) release notes below.
@@ -1754,7 +1853,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.43.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.43/langsmith-0.13.43.tgz)
 {/* langsmith-release-image: 0.13.43 0.13.44 */}
 </Update>
-<Update label="2026-04-14" tags={["self-hosted"]}>
+<Update label="2026-04-14" tags={["Stable"]}>
 ## langsmith-0.13.42
 
 - Fixed issue in metadata filtering to recognize json.Number as a primitive type, improving data ingestion accuracy.
@@ -1762,7 +1861,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.42.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.42/langsmith-0.13.42.tgz)
 {/* langsmith-release-image: 0.13.42 0.13.44 */}
 </Update>
-<Update label="2026-04-14" tags={["self-hosted"]}>
+<Update label="2026-04-14" tags={["Stable"]}>
 ## langsmith-0.13.41
 
 - Internal improvements and maintenance updates
@@ -1770,7 +1869,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.41.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.41/langsmith-0.13.41.tgz)
 {/* langsmith-release-image: 0.13.41 0.13.43 */}
 </Update>
-<Update label="2026-04-09" tags={["self-hosted"]}>
+<Update label="2026-04-09" tags={["Stable"]}>
 ## langsmith-0.13.40
 
 - Added support for mTLS configuration to enhance self-hosted security.
@@ -1782,7 +1881,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.40.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.40/langsmith-0.13.40.tgz)
 {/* langsmith-release-image: 0.13.40 0.13.41 */}
 </Update>
-<Update label="2026-04-07" tags={["self-hosted"]}>
+<Update label="2026-04-07" tags={["Stable"]}>
 ## langsmith-0.13.39
 
 - Users can now run experiments without `projects:create`, decoupling experiment execution from project governance controls.
@@ -1829,7 +1928,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.39.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.39/langsmith-0.13.39.tgz)
 {/* langsmith-release-image: 0.13.39 0.13.40-7ed913b583e68d2684b0d7af1c72b5b2ad054639 */}
 </Update>
-<Update label="2026-04-03" tags={["self-hosted"]}>
+<Update label="2026-04-03" tags={["Stable"]}>
 ## langsmith-0.13.38
 
 - Fixed MCP OAuth tools (e.g., Hex, Notion) failing on self-hosted deployments when `HOST_BACKEND_ENDPOINT_PUBLIC` lacked an `https://` scheme.
@@ -1851,7 +1950,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.38.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.38/langsmith-0.13.38.tgz)
 {/* langsmith-release-image: 0.13.38 0.13.38-4359ae1c6829e7f2fb885191f12897d950bcb71e */}
 </Update>
-<Update label="2026-04-01" tags={["self-hosted"]}>
+<Update label="2026-04-01" tags={["Stable"]}>
 ## langsmith-0.13.37
 
 - Added URL allowlist for the LLM Auth Proxy to prevent credential forwarding to unintended hosts.
@@ -1863,7 +1962,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.37.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.37/langsmith-0.13.37.tgz)
 {/* langsmith-release-image: 0.13.37 0.13.37-3314407e0d73f796df84d6d0d2249e1efa16fbee */}
 </Update>
-<Update label="2026-03-30" tags={["self-hosted"]}>
+<Update label="2026-03-30" tags={["Stable"]}>
 ## langsmith-0.13.36
 
 - This release packages the same LangSmith application version as langsmith-0.13.32. Refer to the [langsmith-0.13.32](#langsmith-0-13-32) release notes below.
@@ -1871,7 +1970,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.36.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.36/langsmith-0.13.36.tgz)
 {/* langsmith-release-image: 0.13.36 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
-<Update label="2026-03-27" tags={["self-hosted"]}>
+<Update label="2026-03-27" tags={["Stable"]}>
 ## langsmith-0.13.35
 
 - This release packages the same LangSmith application version as langsmith-0.13.32. Refer to the [langsmith-0.13.32](#langsmith-0-13-32) release notes below.
@@ -1879,7 +1978,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.35.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.35/langsmith-0.13.35.tgz)
 {/* langsmith-release-image: 0.13.35 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
-<Update label="2026-03-27" tags={["self-hosted"]}>
+<Update label="2026-03-27" tags={["Stable"]}>
 ## langsmith-0.13.34
 
 - This release packages the same LangSmith application version as langsmith-0.13.32. Refer to the [langsmith-0.13.32](#langsmith-0-13-32) release notes below.
@@ -1887,7 +1986,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.34.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.34/langsmith-0.13.34.tgz)
 {/* langsmith-release-image: 0.13.34 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
-<Update label="2026-03-27" tags={["self-hosted"]}>
+<Update label="2026-03-27" tags={["Stable"]}>
 ## langsmith-0.13.33
 
 - This release packages the same LangSmith application version as langsmith-0.13.32. Refer to the [langsmith-0.13.32](#langsmith-0-13-32) release notes below.
@@ -1895,7 +1994,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.33.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.33/langsmith-0.13.33.tgz)
 {/* langsmith-release-image: 0.13.33 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
-<Update label="2026-03-27" tags={["self-hosted"]}>
+<Update label="2026-03-27" tags={["Stable"]}>
 ## langsmith-0.13.32
 
 - Added ability for users to find account labels for first-class providers.
@@ -1935,7 +2034,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.32.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.32/langsmith-0.13.32.tgz)
 {/* langsmith-release-image: 0.13.32 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
-<Update label="2026-03-23" tags={["self-hosted"]}>
+<Update label="2026-03-23" tags={["Stable"]}>
 ## langsmith-0.13.31
 
 - This release packages the same LangSmith application version as langsmith-0.13.28. Refer to the [langsmith-0.13.28](#langsmith-0-13-28) release notes below.
@@ -1943,7 +2042,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.31.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.31/langsmith-0.13.31.tgz)
 {/* langsmith-release-image: 0.13.31 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
-<Update label="2026-03-23" tags={["self-hosted"]}>
+<Update label="2026-03-23" tags={["Stable"]}>
 ## langsmith-0.13.30
 
 - This release packages the same LangSmith application version as langsmith-0.13.28. Refer to the [langsmith-0.13.28](#langsmith-0-13-28) release notes below.
@@ -1951,7 +2050,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.30.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.30/langsmith-0.13.30.tgz)
 {/* langsmith-release-image: 0.13.30 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
-<Update label="2026-03-21" tags={["self-hosted"]}>
+<Update label="2026-03-21" tags={["Stable"]}>
 ## langsmith-0.13.29
 
 - This release packages the same LangSmith application version as langsmith-0.13.28. Refer to the [langsmith-0.13.28](#langsmith-0-13-28) release notes below.
@@ -1959,7 +2058,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.29.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.29/langsmith-0.13.29.tgz)
 {/* langsmith-release-image: 0.13.29 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
-<Update label="2026-03-21" tags={["self-hosted"]}>
+<Update label="2026-03-21" tags={["Stable"]}>
 ## langsmith-0.13.28
 
 - Fixed ABAC permission checks to improve self-hosted instance functionality.
@@ -1995,7 +2094,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.28.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.28/langsmith-0.13.28.tgz)
 {/* langsmith-release-image: 0.13.28 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
-<Update label="2026-03-18" tags={["self-hosted"]}>
+<Update label="2026-03-18" tags={["Stable"]}>
 ## langsmith-0.13.27
 
 - Organization admins can now edit member display names inline from the members table in Settings.
@@ -2009,7 +2108,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.27/langsmith-0.13.27.tgz)
 {/* langsmith-release-image: 0.13.27 0.13.28-27251604f6050b18943ac32020fab85f716ff4df */}
 </Update>
-<Update label="2026-03-13" tags={["self-hosted"]}>
+<Update label="2026-03-13" tags={["Stable"]}>
 ## langsmith-0.13.26
 
 - Sub-agents spawned during Fleet conversations now display real-time status cards inline in the chat, with a detail sidebar showing the sub-agent's live timeline, tool calls, and results.
@@ -2030,7 +2129,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.26.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.26/langsmith-0.13.26.tgz)
 {/* langsmith-release-image: 0.13.26 0.13.27-88ce214af9cd3650c88004f9ad81e72f5d2c819a */}
 </Update>
-<Update label="2026-03-12" tags={["self-hosted"]}>
+<Update label="2026-03-12" tags={["Stable"]}>
 ## langsmith-0.13.25
 
 - This release packages the same LangSmith application version as langsmith-0.13.24. Refer to the [langsmith-0.13.24](#langsmith-0-13-24) release notes below.
@@ -2038,7 +2137,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.25.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.25/langsmith-0.13.25.tgz)
 {/* langsmith-release-image: 0.13.25 0.13.24-2ab8af1b0ecad3820d3938be644d83e6a78835e9 */}
 </Update>
-<Update label="2026-03-10" tags={["self-hosted"]}>
+<Update label="2026-03-10" tags={["Stable"]}>
 ## langsmith-0.13.24
 
 - Added rich markdown editor with toolbar and slash commands in Fleet.
@@ -2063,7 +2162,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.24.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.24/langsmith-0.13.24.tgz)
 {/* langsmith-release-image: 0.13.24 0.13.24-2ab8af1b0ecad3820d3938be644d83e6a78835e9 */}
 </Update>
-<Update label="2026-03-07" tags={["self-hosted"]}>
+<Update label="2026-03-07" tags={["Stable"]}>
 ## langsmith-0.13.23
 
 - Patched security vulnerabilities in smith-frontend.
@@ -2076,7 +2175,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.23.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.23/langsmith-0.13.23.tgz)
 {/* langsmith-release-image: 0.13.23 0.13.23-bedf8cf99dd9af6e545f5245b0aeed6b338f09f2 */}
 </Update>
-<Update label="2026-03-06" tags={["self-hosted"]}>
+<Update label="2026-03-06" tags={["Stable"]}>
 ## langsmith-0.13.21
 
 - This release packages the same LangSmith application version as langsmith-0.13.20. Refer to the [langsmith-0.13.20](#langsmith-0-13-20) release notes below.
@@ -2084,7 +2183,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.21.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.21/langsmith-0.13.21.tgz)
 {/* langsmith-release-image: 0.13.21 0.13.21-62853708b9669274abaddeffacfb2aeea616120f */}
 </Update>
-<Update label="2026-03-06" tags={["self-hosted"]}>
+<Update label="2026-03-06" tags={["Stable"]}>
 ## langsmith-0.13.20
 
 - Added JSON/YAML syntax highlighting to experiment comparison for better readability.
@@ -2114,7 +2213,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.20.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.20/langsmith-0.13.20.tgz)
 {/* langsmith-release-image: 0.13.20 0.13.21-62853708b9669274abaddeffacfb2aeea616120f */}
 </Update>
-<Update label="2026-03-06" tags={["self-hosted"]}>
+<Update label="2026-03-06" tags={["Stable"]}>
 ## langsmith-0.13.19
 
 - This release packages the same LangSmith application version as langsmith-0.13.18. Refer to the [langsmith-0.13.18](#langsmith-0-13-18) release notes below.
@@ -2122,7 +2221,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.19.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.19/langsmith-0.13.19.tgz)
 {/* langsmith-release-image: 0.13.19 0.13.20-4a89d00b2ff6c55991ead2929f8bf0acd5c7a85b */}
 </Update>
-<Update label="2026-03-05" tags={["self-hosted"]}>
+<Update label="2026-03-05" tags={["Stable"]}>
 ## langsmith-0.13.18
 
 - Introduced a redesigned run details view in threads for improved user experience.
@@ -2149,7 +2248,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.18.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.18/langsmith-0.13.18.tgz)
 {/* langsmith-release-image: 0.13.18 0.13.20-4a89d00b2ff6c55991ead2929f8bf0acd5c7a85b */}
 </Update>
-<Update label="2026-03-03" tags={["self-hosted"]}>
+<Update label="2026-03-03" tags={["Stable"]}>
 ## langsmith-0.13.17
 
 - Fixed a bug in the executor deployment handling for new operator versions.
@@ -2181,7 +2280,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.17.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.17/langsmith-0.13.17.tgz)
 {/* langsmith-release-image: 0.13.17 0.13.18-aed2fb010d6d6a4a73dc2305aabafc0684091ec5 */}
 </Update>
-<Update label="2026-02-26" tags={["self-hosted"]}>
+<Update label="2026-02-26" tags={["Stable"]}>
 ## langsmith-0.13.16
 
 - This release packages the same LangSmith application version as langsmith-0.13.15. Refer to the [langsmith-0.13.15](#langsmith-0-13-15) release notes below.
@@ -2189,7 +2288,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.16.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.16/langsmith-0.13.16.tgz)
 {/* langsmith-release-image: 0.13.16 0.13.16-a68bd778f5123fe302ed2b2838b2bff0f6e82b5b */}
 </Update>
-<Update label="2026-02-26" tags={["self-hosted"]}>
+<Update label="2026-02-26" tags={["Stable"]}>
 ## langsmith-0.13.15
 
 - Added rebranded primary colors to button under feature flag in the frontend UI.
@@ -2216,7 +2315,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.15.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.15/langsmith-0.13.15.tgz)
 {/* langsmith-release-image: 0.13.15 0.13.16-a68bd778f5123fe302ed2b2838b2bff0f6e82b5b */}
 </Update>
-<Update label="2026-02-24" tags={["self-hosted"]}>
+<Update label="2026-02-24" tags={["Stable"]}>
 ## langsmith-0.13.14
 
 - Fixed agent generation interruptions and handling, improving stability in the user experience.
@@ -2241,7 +2340,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.14/langsmith-0.13.14.tgz)
 {/* langsmith-release-image: 0.13.14 0.13.15-e059ae344d55e040bb7c87df3fc16aaab6d6f9ac */}
 </Update>
-<Update label="2026-02-14" tags={["self-hosted"]}>
+<Update label="2026-02-14" tags={["Stable"]}>
 ## langsmith-0.13.13
 
 - Reverted the PostgreSQL version to v14.7 and the Redis version to v7. This fixes breaking changes introduced in langsmith-0.13.10.
@@ -2260,7 +2359,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.13/langsmith-0.13.13.tgz)
 {/* langsmith-release-image: 0.13.13 0.13.14-2ed26ea85b0ff71037df88ab587fb47d0fdd106b */}
 </Update>
-<Update label="2026-02-12" tags={["self-hosted"]}>
+<Update label="2026-02-12" tags={["Stable"]}>
 ## langsmith-0.13.12
 
 - Improved button sizes and filter chip alignment in the InlineFilters UX.
@@ -2285,7 +2384,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.12.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.12/langsmith-0.13.12.tgz)
 {/* langsmith-release-image: 0.13.12 0.13.11-f55bf497782e1d13e9f6fc9d8325906e0024c49d */}
 </Update>
-<Update label="2026-02-12" tags={["self-hosted"]}>
+<Update label="2026-02-12" tags={["Stable"]}>
 ## langsmith-0.13.11
 
 - Improved Agent Builder by using persisted simple model config.
@@ -2307,7 +2406,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.11.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.11/langsmith-0.13.11.tgz)
 {/* langsmith-release-image: 0.13.11 0.13.10-0115b4d5095876591bb9cfdc9bc2d5f3aecdf4e3 */}
 </Update>
-<Update label="2026-02-10" tags={["self-hosted"]}>
+<Update label="2026-02-10" tags={["Stable"]}>
 ## langsmith-0.13.10
 
 - This release packages the same LangSmith application version as langsmith-0.13.9. Refer to the [langsmith-0.13.9](#langsmith-0-13-9) release notes below.
@@ -2315,7 +2414,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.10.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.10/langsmith-0.13.10.tgz)
 {/* langsmith-release-image: 0.13.10 0.13.9-d0c6453c5301e4f2d40bbb2d93106479ed1f6daa */}
 </Update>
-<Update label="2026-02-09" tags={["self-hosted"]}>
+<Update label="2026-02-09" tags={["Stable"]}>
 ## langsmith-0.13.9
 
 - Fixed sorting of workspaces alphabetically in the new switcher to improve user experience.
@@ -2343,7 +2442,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.9.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.9/langsmith-0.13.9.tgz)
 {/* langsmith-release-image: 0.13.9 0.13.9-d0c6453c5301e4f2d40bbb2d93106479ed1f6daa */}
 </Update>
-<Update label="2026-02-06" tags={["self-hosted"]}>
+<Update label="2026-02-06" tags={["Stable"]}>
 ## langsmith-0.13.7
 
 - This release packages the same LangSmith application version as langsmith-0.13.6. Refer to the [langsmith-0.13.6](#langsmith-0-13-6) release notes below.
@@ -2351,7 +2450,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.7.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.7/langsmith-0.13.7.tgz)
 {/* langsmith-release-image: 0.13.7 0.13.7-2398b372e4c1544f0970d796874afaf8372161ee */}
 </Update>
-<Update label="2026-02-05" tags={["self-hosted"]}>
+<Update label="2026-02-05" tags={["Stable"]}>
 ## langsmith-0.13.6
 
 - Fixed an issue with truncated large numbers affecting the user interface.
@@ -2370,7 +2469,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.6.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.6/langsmith-0.13.6.tgz)
 {/* langsmith-release-image: 0.13.6 0.13.7-2398b372e4c1544f0970d796874afaf8372161ee */}
 </Update>
-<Update label="2026-02-05" tags={["self-hosted"]}>
+<Update label="2026-02-05" tags={["Stable"]}>
 ## langsmith-0.13.5
 
 - Fixed regression on cloning prebuilt dashboards to enhance user experience.
@@ -2394,7 +2493,7 @@ Follow the [upgrade instructions](/langsmith/self-host-upgrades) to get access t
 **Download the Helm chart:** [`langsmith-0.13.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.5/langsmith-0.13.5.tgz)
 {/* langsmith-release-image: 0.13.5 0.13.6-29e5da7450495599f5ce57cd8cde994817596910 */}
 </Update>
-<Update label="2026-02-04" tags={["self-hosted"]}>
+<Update label="2026-02-04" tags={["Stable"]}>
 ## langsmith-0.13.4
 
 - Fixed the toggle functionality for all column sections when clicking the Columns header.
@@ -2425,7 +2524,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.13.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.4/langsmith-0.13.4.tgz)
 {/* langsmith-release-image: 0.13.4 0.13.5-35e6309abc1e6ebf33f05e794f9950d6ea4dde62 */}
 </Update>
-<Update label="2026-01-26" tags={["self-hosted"]}>
+<Update label="2026-01-26" tags={["Stable"]}>
 ## langsmith-0.13.3
 
 - Improved streaming to accumulate streamed delta data without loss.
@@ -2451,7 +2550,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.13.3.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.3/langsmith-0.13.3.tgz)
 {/* langsmith-release-image: 0.13.3 0.13.4-680826fad888b367b4fe596ffaf0e5d2149deae3 */}
 </Update>
-<Update label="2026-01-21" tags={["self-hosted"]}>
+<Update label="2026-01-21" tags={["Stable"]}>
 ## langsmith-0.13.2
 
 - Fixed content-type validation for dataset uploads to improve data handling.
@@ -2467,7 +2566,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.13.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.2/langsmith-0.13.2.tgz)
 {/* langsmith-release-image: 0.13.2 0.13.3-d095866874cf9521b255f6d43dcc81497466c734 */}
 </Update>
-<Update label="2026-01-16" tags={["self-hosted"]}>
+<Update label="2026-01-16" tags={["Stable"]}>
 ## langsmith-0.13.1
 
 - This release packages the same LangSmith application version as langsmith-0.13.0. Refer to the [langsmith-0.13.0](#langsmith-0-13-0) release notes below.
@@ -2475,7 +2574,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.13.1.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.1/langsmith-0.13.1.tgz)
 {/* langsmith-release-image: 0.13.1 0.13.1-69f6835dd37394eea1f5087287ae0e1ab3c7d183 */}
 </Update>
-<Update label="2026-01-16" tags={["self-hosted"]}>
+<Update label="2026-01-16" tags={["Stable"]}>
 ## langsmith-0.13.0
 
 - Added support for [Agent Builder](/langsmith/fleet/index) in self-hosted deployments
@@ -2488,7 +2587,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.13.0.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.0/langsmith-0.13.0.tgz)
 {/* langsmith-release-image: 0.13.0 0.13.1-69f6835dd37394eea1f5087287ae0e1ab3c7d183 */}
 </Update>
-<Update label="2026-01-12" tags={["self-hosted"]}>
+<Update label="2026-01-12" tags={["Stable"]}>
 ## langsmith-0.12.37
 
 - This release packages the same LangSmith application version as langsmith-0.12.36. Refer to the [langsmith-0.12.36](#langsmith-0-12-36) release notes below.
@@ -2496,7 +2595,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.37.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.37/langsmith-0.12.37.tgz)
 {/* langsmith-release-image: 0.12.37 0.12.76-5ca59e94d09e0911efacb79b06ded4a97c4d6e91 */}
 </Update>
-<Update label="2026-01-09" tags={["self-hosted"]}>
+<Update label="2026-01-09" tags={["Stable"]}>
 ## langsmith-0.12.36
 
 - Added support for custom MCP servers with OAuth in Agent Builder
@@ -2511,7 +2610,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.36.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.36/langsmith-0.12.36.tgz)
 {/* langsmith-release-image: 0.12.36 0.12.76-5ca59e94d09e0911efacb79b06ded4a97c4d6e91 */}
 </Update>
-<Update label="2026-01-08" tags={["self-hosted"]}>
+<Update label="2026-01-08" tags={["Stable"]}>
 ## langsmith-0.12.35
 
 - Added per-bar highlighting for feedback charts in experiments
@@ -2525,7 +2624,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.35.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.35/langsmith-0.12.35.tgz)
 {/* langsmith-release-image: 0.12.35 0.12.75-683d01f652578ff2194de4498b8a4cf70183b71d */}
 </Update>
-<Update label="2025-12-26" tags={["self-hosted"]}>
+<Update label="2025-12-26" tags={["Stable"]}>
 ## langsmith-0.12.34
 
 - Added Redis IAM authentication support for GCP and Azure
@@ -2545,7 +2644,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.34.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.34/langsmith-0.12.34.tgz)
 {/* langsmith-release-image: 0.12.34 0.12.73-354d2af50f45ae3a123eae6ed538fa046913b43f */}
 </Update>
-<Update label="2025-12-20" tags={["self-hosted"]}>
+<Update label="2025-12-20" tags={["Stable"]}>
 ## langsmith-0.12.33
 
 - Security fix: fixed Studio vulnerability to malicious `baseUrl` param by requiring user-defined allowed origins
@@ -2555,7 +2654,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.33.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.33/langsmith-0.12.33.tgz)
 {/* langsmith-release-image: 0.12.33 0.12.72-b5405ce6d2d43a0b2dc2609e573ac08989de6f5d */}
 </Update>
-<Update label="2025-12-12" tags={["self-hosted"]}>
+<Update label="2025-12-12" tags={["Stable"]}>
 ## langsmith-0.12.32
 
 - Added IAM connection support for PostgreSQL (AWS only).
@@ -2565,7 +2664,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.32.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.32/langsmith-0.12.32.tgz)
 {/* langsmith-release-image: 0.12.32 0.12.70-ffd583f46b6808c02284b9063745d9bb8d787e64 */}
 </Update>
-<Update label="2025-12-11" tags={["self-hosted"]}>
+<Update label="2025-12-11" tags={["Stable"]}>
 ## langsmith-0.12.31
 
 - Improved error messages for basic authentication misconfiguration.
@@ -2575,7 +2674,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.31.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.31/langsmith-0.12.31.tgz)
 {/* langsmith-release-image: 0.12.31 0.12.69-5564f97c9c64b4657862cd1f8f1bd626941f0c39 */}
 </Update>
-<Update label="2025-12-09" tags={["self-hosted"]}>
+<Update label="2025-12-09" tags={["Stable"]}>
 ## langsmith-0.12.30
 
 - This release packages the same LangSmith application version as langsmith-0.12.29. Refer to the [langsmith-0.12.29](#langsmith-0-12-29) release notes below.
@@ -2583,7 +2682,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.30.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.30/langsmith-0.12.30.tgz)
 {/* langsmith-release-image: 0.12.30 0.12.68-4036298d6ea110f8ede0b6104e01d8fc50cd95a1 */}
 </Update>
-<Update label="2025-12-08" tags={["self-hosted"]}>
+<Update label="2025-12-08" tags={["Stable"]}>
 ## langsmith-0.12.29
 
 - Added mTLS (mutual TLS) support for ClickHouse connections to enhance security for database communication.
@@ -2591,7 +2690,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.29.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.29/langsmith-0.12.29.tgz)
 {/* langsmith-release-image: 0.12.29 0.12.68-4036298d6ea110f8ede0b6104e01d8fc50cd95a1 */}
 </Update>
-<Update label="2025-12-05" tags={["self-hosted"]}>
+<Update label="2025-12-05" tags={["Stable"]}>
 ## langsmith-0.12.28
 
 - Added mTLS (mutual TLS) support for PostgreSQL connections to enhance security for database communication.
@@ -2601,7 +2700,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.28.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.28/langsmith-0.12.28.tgz)
 {/* langsmith-release-image: 0.12.28 0.12.67-121ec27c2de094684873ea2ff6fb11af8f30b956 */}
 </Update>
-<Update label="2025-12-04" tags={["self-hosted"]}>
+<Update label="2025-12-04" tags={["Stable"]}>
 ## langsmith-0.12.27
 
 - Added mTLS (mutual TLS) support for Redis connections to enhance security.
@@ -2611,7 +2710,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.27/langsmith-0.12.27.tgz)
 {/* langsmith-release-image: 0.12.27 0.12.66-7d27a5b91d0a4df9341a97ada0eee1cd440f31ea */}
 </Update>
-<Update label="2025-12-02" tags={["self-hosted"]}>
+<Update label="2025-12-02" tags={["Stable"]}>
 ## langsmith-0.8.30
 
 - Internal improvements and maintenance updates
@@ -2619,7 +2718,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.8.30.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.30/langsmith-0.8.30.tgz)
 {/* langsmith-release-image: 0.8.30 0.8.92 */}
 </Update>
-<Update label="2025-12-01" tags={["self-hosted"]}>
+<Update label="2025-12-01" tags={["Stable"]}>
 ## langsmith-0.12.25
 
 - Enabled Agent Builder UI feature flag for self-hosted deployments.
@@ -2628,7 +2727,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.25.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.25/langsmith-0.12.25.tgz)
 {/* langsmith-release-image: 0.12.25 0.12.64-bd72fb0a24339b17682ad90a5572e5a554faafbc */}
 </Update>
-<Update label="2025-11-27" tags={["self-hosted"]}>
+<Update label="2025-11-27" tags={["Stable"]}>
 ## langsmith-0.12.24
 
 - Added dequeue timeouts to all SAQ (Simple Async Queue) queues to improve reliability.
@@ -2637,7 +2736,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.24.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.24/langsmith-0.12.24.tgz)
 {/* langsmith-release-image: 0.12.24 0.12.63 */}
 </Update>
-<Update label="2025-11-26" tags={["self-hosted"]}>
+<Update label="2025-11-26" tags={["Stable"]}>
 ## langsmith-0.12.23
 
 - Internal improvements and maintenance updates
@@ -2645,7 +2744,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.23.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.23/langsmith-0.12.23.tgz)
 {/* langsmith-release-image: 0.12.23 0.12.62 */}
 </Update>
-<Update label="2025-11-26" tags={["self-hosted"]}>
+<Update label="2025-11-26" tags={["Stable"]}>
 ## langsmith-0.12.22
 
 - This release packages the same LangSmith application version as langsmith-0.12.21. Refer to the [langsmith-0.12.21](#langsmith-0-12-21) release notes below.
@@ -2653,7 +2752,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.22.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.22/langsmith-0.12.22.tgz)
 {/* langsmith-release-image: 0.12.22 0.12.61 */}
 </Update>
-<Update label="2025-11-26" tags={["self-hosted"]}>
+<Update label="2025-11-26" tags={["Stable"]}>
 ## langsmith-0.12.21
 
 - Added explicit `revisionHistoryLimit` configuration for operator deployment template.
@@ -2661,7 +2760,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.21.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.21/langsmith-0.12.21.tgz)
 {/* langsmith-release-image: 0.12.21 0.12.61 */}
 </Update>
-<Update label="2025-11-24" tags={["self-hosted"]}>
+<Update label="2025-11-24" tags={["Stable"]}>
 ## langsmith-0.12.20
 
 - This release packages the same LangSmith application version as langsmith-0.12.18. Refer to the [langsmith-0.12.18](#langsmith-0-12-18) release notes below.
@@ -2669,7 +2768,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.20.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.20/langsmith-0.12.20.tgz)
 {/* langsmith-release-image: 0.12.20 0.12.57 */}
 </Update>
-<Update label="2025-11-24" tags={["self-hosted"]}>
+<Update label="2025-11-24" tags={["Stable"]}>
 ## langsmith-0.12.19
 
 - This release packages the same LangSmith application version as langsmith-0.12.18. Refer to the [langsmith-0.12.18](#langsmith-0-12-18) release notes below.
@@ -2677,7 +2776,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.19.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.19/langsmith-0.12.19.tgz)
 {/* langsmith-release-image: 0.12.19 0.12.57 */}
 </Update>
-<Update label="2025-11-20" tags={["self-hosted"]}>
+<Update label="2025-11-20" tags={["Stable"]}>
 ## langsmith-0.12.18
 
 - Internal improvements and maintenance updates
@@ -2685,7 +2784,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.18.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.18/langsmith-0.12.18.tgz)
 {/* langsmith-release-image: 0.12.18 0.12.57 */}
 </Update>
-<Update label="2025-11-19" tags={["self-hosted"]}>
+<Update label="2025-11-19" tags={["Stable"]}>
 ## langsmith-0.12.17
 
 - Internal improvements and maintenance updates
@@ -2693,7 +2792,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.17.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.17/langsmith-0.12.17.tgz)
 {/* langsmith-release-image: 0.12.17 0.12.51 */}
 </Update>
-<Update label="2025-11-19" tags={["self-hosted"]}>
+<Update label="2025-11-19" tags={["Stable"]}>
 ## langsmith-0.12.16
 
 - Internal improvements and maintenance updates
@@ -2701,7 +2800,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.16.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.16/langsmith-0.12.16.tgz)
 {/* langsmith-release-image: 0.12.16 0.12.50 */}
 </Update>
-<Update label="2025-11-17" tags={["self-hosted"]}>
+<Update label="2025-11-17" tags={["Stable"]}>
 ## langsmith-0.12.15
 
 - Internal improvements and maintenance updates
@@ -2709,7 +2808,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.15.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.15/langsmith-0.12.15.tgz)
 {/* langsmith-release-image: 0.12.15 0.12.48 */}
 </Update>
-<Update label="2025-11-17" tags={["self-hosted"]}>
+<Update label="2025-11-17" tags={["Stable"]}>
 ## langsmith-0.12.14
 
 - Internal improvements and maintenance updates
@@ -2717,7 +2816,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.14/langsmith-0.12.14.tgz)
 {/* langsmith-release-image: 0.12.14 0.12.46 */}
 </Update>
-<Update label="2025-11-13" tags={["self-hosted"]}>
+<Update label="2025-11-13" tags={["Stable"]}>
 ## langsmith-0.12.13
 
 - This release packages the same LangSmith application version as langsmith-0.12.12. Refer to the [langsmith-0.12.12](#langsmith-0-12-12) release notes below.
@@ -2725,7 +2824,7 @@ These changes improve user interaction, enhance system performance, and expand s
 **Download the Helm chart:** [`langsmith-0.12.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.13/langsmith-0.12.13.tgz)
 {/* langsmith-release-image: 0.12.13 0.12.42 */}
 </Update>
-<Update label="2025-11-13" tags={["self-hosted"]}>
+<Update label="2025-11-13" tags={["Stable"]}>
 ## langsmith-0.12.12
 
 - Internal improvements and maintenance updates

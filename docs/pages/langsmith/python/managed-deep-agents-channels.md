@@ -2,7 +2,7 @@
 
 # Connect Managed Deep Agents to channels
 
-A channel connects a managed deep agent to an external messaging service. Messages from the service can start agent runs, and the agent can respond through the same service without a separate application server.
+A channel makes a managed deep agent available in an external messaging service. Messages from the service can start agent runs, and the agent's final responses return through the same service.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -10,13 +10,13 @@ Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and avail
 
 ## Project structure
 
-Channel declarations live in the project-level `channels/` directory, with one channel per file:
+Channel declarations live in the project-level `channels/` directory:
 
 ```text
 my-agent/
   agent.py
   channels/
-    support.py
+    slack.py
 ```
 
 
@@ -28,7 +28,7 @@ A channel combines three parts of an external messaging integration:
 
 - **Inbound events**: Verify and normalize provider events, then start an agent run.
 - **Outbound messaging**: Send the agent's response back to the originating conversation.
-- **Deployment requirements**: Declare the secrets and provider configuration that the deployment needs.
+- **Provisioning**: Create and configure the provider resources that connect the service to the deployed agent.
 
 In Managed Deep Agents, a channel connects a deployed agent to a messaging provider.
 
@@ -61,16 +61,7 @@ Export a module-level `channel` from each file.
 
 
 
-The file name becomes the configured channel name. It identifies the channel at runtime and forms part of its inbound route.
-
-For example, a declaration in `channels/support.py` receives events at:
-
-
-
-
-```text
-POST /channels/support/events
-```
+The file name becomes the configured channel name and identifies the channel within the deployment.
 
 Do not name a declaration `channels/channel.py`.
 
@@ -86,25 +77,7 @@ For example, `channels.slack()` creates a Slack channel.
 
 
 
-See the provider guide for its complete declaration and setup procedure.
-
-## Access the originating channel at runtime
-
-Channel-originated runs expose `runtime.channel` to tools and middleware.
-
-
-
-
-It contains the normalized event and conversation address, plus methods for posting and updating messages.
-
-Ordinary HTTP runs and scheduled runs do not have an originating channel, so `runtime.channel` is absent for those runs.
-
-
-
-
-By default, the managed runner posts the agent's final response to the originating conversation. Provider guides describe how to customize that behavior and send intermediate messages.
-
-Scheduled runs can deliver results through a named channel even though they do not originate from one. See [Schedules](/langsmith/python/managed-deep-agents-schedules#deliver-results-to-slack).
+See the provider guide for its declaration, app configuration, and deployment procedure.
 
 ## Distinguish channels from connectors
 
