@@ -3,7 +3,6 @@
 # Self-hosted LangSmith
 
 <Note>
-**Important**<br></br>
 Self-hosted LangSmith is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 </Note>
 
