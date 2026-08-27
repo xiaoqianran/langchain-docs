@@ -8,12 +8,12 @@
 
 - [Completely hide inputs and outputs](#hide-inputs-and-outputs) 使用环境变量或 [Client](https://reference.langchain.com/python/langsmith/client/Client) 配置。
 - [Hide metadata](#hide-metadata) 删除或转换运行元数据。
-- [Apply rule-based masking](#rule-based-masking-of-inputs-and-outputs) 使用正则表达式模式或匿名化库来选择性地编辑敏感信息。
+- [Apply rule-based masking](#rule-based-masking-of-inputs-and-outputs) 使用正则表达式模式或匿名库来选择性地编辑敏感信息。
 - [Redact secrets from traces](/langsmith/redact-secrets) 使用 SDK 匿名器以及 API 密钥、令牌和凭证的现成正则表达式模式。
 - [Process inputs and outputs for individual functions](#processing-inputs-and-outputs-for-a-single-function) 具有功能级定制。
 - [Use third-party anonymizers](#examples) 类似于 Microsoft Presidio 和 Amazon Comprehend，用于高级 PII 检测。
-- [Batch process run operations](#batch-processing-for-high-throughput-masking) 一次在多个运行中应用昂贵的屏蔽逻辑，减少每次运行的开销。 LangSmith 进程在后台线程中运行，不会阻塞您的应用程序。
-- [Redact inputs and outputs per request](/langsmith/conditional-tracing#conditionally-redact-inputs-and-outputs) 使用`tracing_context` 仅屏蔽特定调用的数据（例如，基于租户或功能标志），同时保持其他跟踪不变。<Note>
+- [Batch process run operations](#batch-processing-for-high-throughput-masking) 一次在多个运行中应用昂贵的屏蔽逻辑，减少每次运行的开销。 LangSmith 进程在后台线程中运行，这不会阻塞您的应用程序。
+- [Redact inputs and outputs per request](/langsmith/conditional-tracing#conditionally-redact-inputs-and-outputs) 使用 `tracing_context` 仅屏蔽特定调用的数据（例如，基于租户或功能标志），同时保持其他跟踪不变。<Note>
 如果您的合规性或隐私要求要求某些操作根本不应该被跟踪（例如，具有零保留策略的客户端），请考虑使用 [conditional tracing](/langsmith/conditional-tracing) 有选择地禁用对特定请求的跟踪，而不是屏蔽数据。
 </Note>
 
@@ -189,7 +189,7 @@ client = Client(hide_metadata=add_marker)
 
 如果`LANGSMITH_HIDE_INPUTS = true`，匿名器将被跳过。如果`LANGSMITH_HIDE_OUTPUTS = true`，同样适用于输出。
 
-但是，如果要将输入或输出发送到[Client](https://reference.langchain.com/python/langsmith/client/Client)，则`anonymizer`方法将优先于`hide_inputs`和`hide_outputs`中的函数。默认情况下，`create_anonymizer` 只会查看最多 10 层嵌套，可以通过 `max_depth` 参数进行配置。
+但是，如果要将输入或输出发送到[Client](https://reference.langchain.com/python/langsmith/client/Client)，则`anonymizer`方法将优先于`hide_inputs`和`hide_outputs`中的函数。默认情况下，`create_anonymizer` 最多仅查看 10 层嵌套深度，可以通过 `max_depth` 参数进行配置。
 
 <CodeGroup>
 
@@ -247,7 +247,7 @@ const main = traceable(async (inputs: any) => {
 
 ![Hide inputs outputs](/langsmith/images/hide-inputs-outputs.png)
 
-旧版本的LangSmith SDK 可以使用`hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数来更有效地处理输入和输出。
+旧版本的LangSmith SDK 可以使用 `hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数来更有效地处理输入和输出。
 
 <CodeGroup>
 
@@ -354,7 +354,7 @@ await parent(inputs);
 
 除了[Client](https://reference.langchain.com/python/langsmith/client/Client)级别的输入输出处理之外，LangSmith还通过`@traceable`装饰器的`process_inputs`和`process_outputs`参数提供函数级别的处理。
 
-这些参数接受的函数允许您在将特定函数的输入和输出记录到LangSmith之前对其进行转换。这对于减少有效负载大小、删除敏感信息或自定义对象如何在 LangSmith 中针对特定函数进行序列化和表示非常有用。
+这些参数接受函数，允许您在将特定函数的输入和输出记录到LangSmith之前对其进行转换。这对于减少有效负载大小、删除敏感信息或自定义对象如何在 LangSmith 中针对特定函数进行序列化和表示非常有用。
 
 以下是如何使用 `process_inputs` 和 `process_outputs` 的示例：
 
@@ -396,7 +396,7 @@ async def async_function(key: str) -> int:
     return len(key)
 ```
 
-当定义了两者时，这些功能级处理器优先于[Client](https://reference.langchain.com/python/langsmith/client/Client)级处理器（`hide_inputs`和`hide_outputs`）。
+当定义了[Client](https://reference.langchain.com/python/langsmith/client/Client)级别处理器（`hide_inputs`和`hide_outputs`）时，这些功能级处理器优先于两者。
 
 ## 示例
 
@@ -408,7 +408,7 @@ async def async_function(key: str) -> int:
 下面的实现并不详尽，可能会遗漏一些格式或边缘情况。在生产中使用任何实现之前，请对其进行彻底测试。
 </Info>
 
-您可以在输入和输出发送到LangSmith之前使用正则表达式来屏蔽它们。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
+您可以使用正则表达式在输入和输出发送到LangSmith之前对其进行屏蔽。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
 
 ```python
 import re
@@ -610,8 +610,12 @@ response_without_anonymization = openai_client.chat.completions.create(
 ### 亚马逊理解
 
 <Info>
-下面的实现提供了如何对用户和 LLM 之间交换的消息中的敏感信息进行匿名化的一般示例。它并不详尽，也没有考虑到所有情况。在生产中使用任何实现之前，请对其进行彻底测试。
-</Info>Comprehend 是一种自然语言处理服务，可以检测个人身份信息。下面的实现使用 Comprehend 在将输入和输出发送到 LangSmith 之前对其进行匿名化。有关最新信息，请参阅 Comprehend 的[official documentation](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html)。
+下面的实施提供了如何使用 Amazon Comprehend 对敏感信息进行匿名化的一般示例。它并不详尽，也没有考虑所有运行形状或内容类型。在生产中使用任何实现之前，请对其进行彻底测试。
+</Info>Comprehend 是一种自然语言处理服务，可以检测个人身份信息。下面的实现使用 Comprehend 的 [⟦T69⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html) API 在输入和输出发送到 LangSmith 之前对其进行匿名化。
+
+<Warning>
+Amazon Comprehend **不**提供批量 PII 终端节点。 `detect_pii_entities` 每次调用处理一份文档，`batch_detect_entities` 检测通用实体（人员、地点、组织）——它不是特定于 PII 的 API。要处理许多文档，可以在循环中调用 `detect_pii_entities`（如下所示），或者对 S3 中的文档使用异步 [⟦T73⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html)。
+</Warning>
 
 要使用 Comprehend，请安装 [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)：
 
@@ -639,126 +643,121 @@ uv add openai
 
 您需要在 AWS 中设置凭证并使用 AWS CLI 进行身份验证。沿[AWS Comprehend setup instructions](https://docs.aws.amazon.com/comprehend/latest/dg/setting-up.html)行驶。
 
+下面的示例递归地遍历整个输入/输出负载，并通过 Comprehend 运行每个字符串。遍历有效负载（而不是仅检查 `data["messages"]` 或 `data["choices"][0]["message"]`）可确保 PII 在所有形状的跨度上进行清理，而不仅仅是聊天完成形状的运行。
+
 ```python
 import openai
 import boto3
 from langsmith import Client
 from langsmith.wrappers import wrap_openai
 
-comprehend = boto3.client('comprehend', region_name='us-east-1')
+comprehend = boto3.client("comprehend", region_name="us-east-1")
 
-def redact_pii_entities(text, entities):
-    """
-    Redact PII entities in the text based on the detected entities.
-    Args:
-        text (str): The original text containing PII.
-        entities (list): A list of detected PII entities.
-    Returns:
-        str: The text with PII entities redacted.
-    """
-    sorted_entities = sorted(entities, key=lambda x: x['BeginOffset'], reverse=True)
-    redacted_text = text
-    for entity in sorted_entities:
-        begin = entity['BeginOffset']
-        end = entity['EndOffset']
-        entity_type = entity['Type']
-        # Define the redaction placeholder based on entity type
-        placeholder = f"[{entity_type}]"
-        # Replace the PII in the text with the placeholder
-        redacted_text = redacted_text[:begin] + placeholder + redacted_text[end:]
-    return redacted_text
+# Skip strings shorter than this — Comprehend rarely finds PII in them
+# and skipping reduces API calls significantly.
+MIN_LENGTH_FOR_DETECTION = 3
+# Comprehend's per-call text limit is 100 KB of UTF-8.
+MAX_BYTES_PER_CALL = 100_000
 
-def detect_pii(text):
-    """
-    Detect PII entities in the given text using AWS Comprehend.
-    Args:
-        text (str): The text to analyze.
-    Returns:
-        list: A list of detected PII entities.
-    """
+def redact_pii_entities(text: str, entities: list) -> str:
+    """Replace each detected entity with `[TYPE]`, working back-to-front to preserve offsets."""
+    for entity in sorted(entities, key=lambda e: e["BeginOffset"], reverse=True):
+        begin, end = entity["BeginOffset"], entity["EndOffset"]
+        text = text[:begin] + f"[{entity['Type']}]" + text[end:]
+    return text
+
+def detect_and_redact(text: str) -> str:
+    """Detect PII in `text` with Comprehend and return the redacted version."""
+    if not text or len(text) < MIN_LENGTH_FOR_DETECTION:
+        return text
+    if len(text.encode("utf-8")) > MAX_BYTES_PER_CALL:
+        # Skip oversized strings — chunk them yourself if you need to redact them.
+        return text
     try:
-        response = comprehend.detect_pii_entities(
-            Text=text,
-            LanguageCode='en',
-        )
-        entities = response.get('Entities', [])
-        return entities
+        response = comprehend.detect_pii_entities(Text=text, LanguageCode="en")
     except Exception as e:
-        print(f"Error detecting PII: {e}")
-        return []
+        print(f"Comprehend error: {e}")
+        return text
+    entities = response.get("Entities", [])
+    return redact_pii_entities(text, entities) if entities else text
 
-def comprehend_anonymize(data):
+def comprehend_anonymize(data, depth: int = 10):
     """
-    Anonymize sensitive information sent by the user or returned by the model.
-    Args:
-        data (any): The input data to be anonymized.
-    Returns:
-        any: The anonymized data.
+    Recursively walk a payload and redact PII in every string we find.
+    This works on arbitrary run shapes — chat messages, tool inputs/outputs,
+    retrieval results, custom run types, etc.
     """
-    message_list = (
-        data.get('messages') or [data.get('choices', [{}])[0].get('message')]
-    )
-    if not message_list or not all(isinstance(msg, dict) and msg for msg in message_list):
+    if depth == 0:
         return data
-
-    for message in message_list:
-        content = message.get('content', '')
-        if not content.strip():
-            print("Empty content detected. Skipping anonymization.")
-            continue
-
-        entities = detect_pii(content)
-        if entities:
-            anonymized_text = redact_pii_entities(content, entities)
-            message['content'] = anonymized_text
-        else:
-            print("No PII detected. Content remains unchanged.")
-
+    if isinstance(data, dict):
+        return {k: comprehend_anonymize(v, depth - 1) for k, v in data.items()}
+    if isinstance(data, list):
+        return [comprehend_anonymize(item, depth - 1) for item in data]
+    if isinstance(data, str):
+        return detect_and_redact(data)
     return data
 
 openai_client = wrap_openai(openai.Client())
 
 # initialize the langsmith Client with the anonymization functions
 langsmith_client = Client(
-  hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
+    hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
 )
 
 # The trace produced will have its metadata present, but the inputs and outputs will be anonymized
 response_with_anonymization = openai_client.chat.completions.create(
-  model="gpt-5.4-mini",
-  messages=[
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
-  ],
-  langsmith_extra={"client": langsmith_client},
+    model="gpt-5.4-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
+    ],
+    langsmith_extra={"client": langsmith_client},
 )
 
 # The trace produced will not have anonymized inputs and outputs
 response_without_anonymization = openai_client.chat.completions.create(
-  model="gpt-5.4-mini",
-  messages=[
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
-  ],
+    model="gpt-5.4-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "My name is Slim Shady, call me at 313-666-7440 or email me at real.slim.shady@gmail.com"},
+    ],
 )
-```
+```<Note>
+由于 `comprehend_anonymize` 对遇到的每个字符串发出一个 Comprehend API 调用，因此它可能会在高吞吐量跟踪上受到速率限制。为了获得更高的吞吐量，请使用[batch processing approach below](#batch-processing-for-high-throughput-masking)，或使用[⟦T77⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_ContainsPiiEntities.html)进行预过滤，并且仅在存在 PII 时调用`detect_pii_entities`。
+</Note>
 
 匿名运行在LangSmith中将如下所示：![Anonymized run](/langsmith/images/aws-comprehend-anonymized.png)
 
 非匿名运行在LangSmith中将如下所示：![Non-anonymized run](/langsmith/images/aws-comprehend-not-anonymized.png)
 
+#### 将 `create_anonymizer` 与 Comprehend 结合使用
+
+如果您更喜欢 LangSmith 的内置 [⟦T80⟧](#rule-based-masking-of-inputs-and-outputs) 帮助器（它已经处理递归遍历并与 `langchain` 代理中间件干净地集成），您可以向其传递一个 Comprehend 支持的可调用函数，而不是自己编写遍历：
+
+```python
+from langsmith import Client
+from langsmith.anonymizer import create_anonymizer
+
+def comprehend_replacer(value: str, path: list) -> str:
+    return detect_and_redact(value)
+
+client = Client(anonymizer=create_anonymizer(comprehend_replacer))
+```
+
+这为您提供了与上面的`comprehend_anonymize`相同的编辑行为，并且样板更少，并且当您还在堆栈中的其他地方使用`create_anonymizer`时，这是推荐的方法。
+
 ### 高通量掩蔽的批处理
 
 <Info>
-[⟦T68⟧](https://reference.langchain.com/python/langsmith/client/Client) 可在 [Python SDK only](/langsmith/smith-python-sdk) 中使用。
-</Info>本页之前的方法均单独运行。如果您的屏蔽逻辑涉及速率受限的 API 或模型推理（例如 Presidio 或 Amazon Comprehend 示例），则一次运行一个处理可能会造成瓶颈。 [⟦T69⟧](https://reference.langchain.com/python/langsmith/client/Client) 允许您在一批原始运行指令被序列化并发送到 API 之前拦截它们，因此您可以一次性分摊多个运行的成本。 LangSmith 在后台线程中处理这些运行，这不会阻塞您的应用程序。
+[⟦T84⟧](https://reference.langchain.com/python/langsmith/client/Client) 可在 [Python SDK only](/langsmith/smith-python-sdk) 中使用。
+</Info>本页之前的方法均单独运行。如果您的屏蔽逻辑涉及速率受限的 API 或模型推理（例如 Presidio 或 Amazon Comprehend 示例），则一次运行一个处理可能会造成瓶颈。 [⟦T85⟧](https://reference.langchain.com/python/langsmith/client/Client) 允许您在一批原始运行指令被序列化并发送到 API 之前拦截它们，因此您可以一次性分摊多次运行的成本。 LangSmith 在后台线程中处理这些运行，这不会阻塞您的应用程序。
 
 LangSmith 将运行保存在内存缓冲区中，并在以下情况下将其作为批处理刷新：
 
 - `run_ops_buffer_size` 运行操作已累积，或
 - 自上次添加运行以来已过去`run_ops_buffer_timeout_ms` 毫秒（默认值：5000 毫秒）。
 
-您的函数接收批处理作为原始运行指令列表，并且必须返回**相同长度**、**相同顺序**、**运行 ID 不变**的列表。打破任一约束都会引发 `ValueError`。<Note>
+您的函数接收批处理作为原始运行指令列表，并且必须返回**相同长度**、**相同顺序**、**运行 ID 不变**的列表。打破任何一个约束都会引发`ValueError`。<Note>
 `run_ops_buffer_size` 计算单个运行*操作*，而不是唯一运行。每个跟踪的调用通常会产生两个操作：创建（运行开始时）和更新（以输出结束时）。相应地设置缓冲区大小。例如，`run_ops_buffer_size=1000` 将缓冲大约 500 个跟踪的调用。因此，相同的运行 ID 可能会在单个批次中出现两次：一次带有输入，一次带有输出。
 </Note>
 
@@ -790,9 +789,11 @@ LangSmith 将运行保存在内存缓冲区中，并在以下情况下将其作�
     "trace_id": "018f1b2c-...",
     "dotted_order": "20240101T000000000000Z018f1b2c-...",
 }
-```
+```<Warning>
+Amazon Comprehend **不** 有批量 PII 终端节点。 `batch_detect_entities` 检测通用实体（人员、地点、组织），而不是 PII，并且不是 `detect_pii_entities` 的直接替代品。下面的批量优化来自于跨运行重复删除相同的字符串以及分摊每次运行的缓冲开销，而不是来自单个批量 API 调用。如果您需要真正的批量 PII 检测，请对跟踪路径之外的 S3 中的文档运行异步 [⟦T96⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html)。
+</Warning>
 
-以下示例使用 Comprehend 的 [⟦T78⟧ endpoint](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_BatchDetectEntities.html)，每次调用最多接受 25 条文本。使用每次运行方法 (`hide_inputs`)，您将在每次运行时进行一次 API 调用。在这里，首先收集整个缓冲区中的所有消息文本，然后以 25 个块的形式发送到 Comprehend，这会导致高吞吐量时 API 调用显着减少。
+以下示例收集整个缓冲区中的每个字符串，对它们进行重复数据删除，并为每个唯一字符串调用一次 Comprehend 的 [⟦T97⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html) 端点。对于重复常见提示、系统消息或工具输入的流量，与每次运行方法相比，这可以大大减少 Comprehend 调用的数量。该示例递归地遍历完整的有效负载，因此它适用于任何运行形状 - 聊天消息、工具输入/输出、检索器跨度等。
 
 ```python
 import boto3
@@ -800,44 +801,53 @@ from langsmith import Client, traceable
 
 comprehend = boto3.client("comprehend", region_name="us-east-1")
 
+MIN_LENGTH_FOR_DETECTION = 3
+MAX_BYTES_PER_CALL = 100_000
+
 def redact_entities(text: str, entities: list) -> str:
     for entity in sorted(entities, key=lambda e: e["BeginOffset"], reverse=True):
         placeholder = f"[{entity['Type']}]"
         text = text[:entity["BeginOffset"]] + placeholder + text[entity["EndOffset"]:]
     return text
 
+def detect_and_redact(text: str) -> str:
+    if len(text) < MIN_LENGTH_FOR_DETECTION:
+        return text
+    if len(text.encode("utf-8")) > MAX_BYTES_PER_CALL:
+        return text
+    try:
+        response = comprehend.detect_pii_entities(Text=text, LanguageCode="en")
+    except Exception as e:
+        print(f"Comprehend error: {e}")
+        return text
+    entities = response.get("Entities", [])
+    return redact_entities(text, entities) if entities else text
+
+def _redact_in_place(data, cache: dict, depth: int = 10):
+    """Recursively redact every string in `data`, using `cache` to dedupe API calls."""
+    if depth == 0:
+        return data
+    if isinstance(data, dict):
+        return {k: _redact_in_place(v, cache, depth - 1) for k, v in data.items()}
+    if isinstance(data, list):
+        return [_redact_in_place(item, cache, depth - 1) for item in data]
+    if isinstance(data, str):
+        if data not in cache:
+            cache[data] = detect_and_redact(data)
+        return cache[data]
+    return data
+
 def comprehend_anonymize_batch(runs: list[dict]) -> list[dict]:
-    # Collect all message texts and remember where they came from.
+    # One shared cache per buffer flush. Identical strings (e.g. the same
+    # system prompt repeated across runs) only hit Comprehend once.
     # Note: the same run ID may appear twice — once as a create (with inputs)
     # and once as an update (with outputs).
-    locations = []  # (run_idx, field, msg_idx)
-    texts = []
-    for run_idx, run in enumerate(runs):
+    cache: dict[str, str] = {}
+    for run in runs:
         for field in ("inputs", "outputs"):
             data = run.get(field)
-            if not isinstance(data, dict):
-                continue
-            for msg_idx, message in enumerate(data.get("messages") or []):
-                content = message.get("content", "")
-                if content.strip():
-                    locations.append((run_idx, field, msg_idx))
-                    texts.append(content)
-
-    # Send all texts to Comprehend in batches of 25 (API limit).
-    # For 1000 ops (~500 runs) with 2 messages each: 40 API calls instead of 1000.
-    redacted_texts = []
-    for i in range(0, len(texts), 25):
-        chunk = texts[i : i + 25]
-        response = comprehend.batch_detect_entities(
-            TextList=chunk, LanguageCode="en"
-        )
-        for text, result in zip(chunk, response["ResultList"]):
-            redacted_texts.append(redact_entities(text, result.get("Entities", [])))
-
-    # Write redacted text back into the run dicts
-    for (run_idx, field, msg_idx), redacted in zip(locations, redacted_texts):
-        runs[run_idx][field]["messages"][msg_idx]["content"] = redacted
-
+            if isinstance(data, (dict, list)):
+                run[field] = _redact_in_place(data, cache)
     return runs
 
 client = Client(
@@ -855,7 +865,9 @@ try:
     my_llm_call([{"role": "user", "content": "My name is Jane Smith, call me at 555-867-5309"}])
 finally:
     client.flush()  # always flush before exit
-```[⟦T80⟧](https://reference.langchain.com/python/langsmith/client/Client) 和 `run_ops_buffer_size` 必须始终设置在一起 — 如果其中一个没有另一个则引发 `ValueError`。
+```
+
+[⟦T98⟧](https://reference.langchain.com/python/langsmith/client/Client) 和 `run_ops_buffer_size` 必须始终设置在一起 — 如果其中一个没有另一个则引发 `ValueError`。
 
 ---
 
@@ -864,6 +876,6 @@ finally:
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/mask-inputs-outputs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/mask-inputs-outputs.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
 </Callout>
 </div>

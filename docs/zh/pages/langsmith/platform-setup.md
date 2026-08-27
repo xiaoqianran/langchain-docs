@@ -8,9 +8,11 @@
     <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
         <h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">概述</h1>
 
-        为 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation) 和 [prompt engineering](/langsmith/prompt-context-hub#prompts) 设置 **LangSmith**。 LangSmith 提供云、自带云 (BYOC) 和自托管选项。
+        为 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation) 和 [prompt engineering](/langsmith/prompt-context-hub#prompts) 设置 **LangSmith**。 LangSmith 提供云、自带云 (BYOC) 和自托管选项。选择与您的数据存放位置以及基础设施运行人员相匹配的选项。
 
+        <Note>
         如果您还想在生产中部署代理，则可以将 [**LangSmith Deployment**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
+        </Note>
 
         <CardGroup cols={3}>
 
@@ -29,7 +31,7 @@
           href="/langsmith/byoc"
           icon="cloud-cog"
         >
-        **（企业）** 完全控制您的数据，而 LangChain 管理基础设施。
+        完全控制您的数据，同时 LangChain 管理基础设施。
         </Card>
 
         <Card
@@ -38,7 +40,7 @@
           href="/langsmith/self-hosted"
           icon="server"
         >
-        **（企业）** 通过基础设施中的可观察性、评估和及时工程进行完全控制。
+        通过可观察性、评估和及时工程来完全控制您的基础设施。
         </Card>
 
         </CardGroup>
@@ -47,7 +49,7 @@
         [Enterprise plan](/langsmith/pricing-plans) 上提供自托管和 BYOC。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
         </Callout>
 
-        <h2 class="flex whitespace-pre-wrap group font-semibold">比较云、BYOC 和自托管</h2>|特色| **云** | **自带设备** | **自托管** |
+        <h2 class="flex whitespace-pre-wrap group font-semibold">比较云、BYOC 和自托管</h2>|特色 | **云** | **自带设备** | **自托管** |
         |--------|---------|----------|------|
         | **谁运行基础设施** | LangChain | LangChain 运行控制平面，您运行数据平面 |你|
         | **敏感数据所在的地方** | LangChain的云 |您的 VPC |您的 VPC |

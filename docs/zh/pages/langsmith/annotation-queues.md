@@ -7,7 +7,7 @@
 _注释队列_为人类审阅者提供了一个集中的工作流程，用于将反馈附加到特定的[runs](/langsmith/observability-concepts#runs)或[threads](/langsmith/observability-concepts#threads)。虽然您始终可以内联注释 [traces](/langsmith/observability-concepts#traces)，但注释队列可让您将运行和线程分组在一起、规定细则并跟踪审阅者进度。通过查看整个线程，您可以评估完整的多轮对话，捕获单次运行无法捕获的质量信号。
 
 <Info>
-您还可以使用 SDK 以编程方式管理注释队列和反馈配置。参见[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
+您还可以使用 SDK 以编程方式管理注释队列和反馈配置。参考[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
 </Info>
 
 要自定义运行输出在审核期间的显示方式，[configure custom output rendering for annotation queues](/langsmith/custom-output-rendering#for-annotation-queues)。
@@ -15,7 +15,7 @@ _注释队列_为人类审阅者提供了一个集中的工作流程，用于将
 LangSmith支持两种队列样式：
 
 - [**Single-run annotation queues**](#single-run-annotation-queues) 一次呈现一个队列项目，可以是一次运行，也可以是一个线程，并让审阅者提交您配置的任何标题反馈。对于**运行**项目，单运行队列还支持[assertions](/langsmith/assertions)来捕获离线评估的验收标准。
-- [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两次运行，以便审阅者可以根据您定义的标题项目快速决定哪个输出更好（或者它们是否等效）。
+- [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两个运行，以便审阅者可以根据您定义的标题项目快速决定哪个输出更好（或者它们是否等效）。
 
 <Tip>
 有关使用注释队列的演示，请观看 [Getting started with annotation queues](#video-guide) 视频指南。
@@ -26,13 +26,13 @@ LangSmith支持两种队列样式：
 运行项和线程项支持不同的功能：
 
 |能力|运行项目 |主题项目 |
-| ---| ---| ---|
+| --- | --- | --- |
 |评分标准反馈 |是的 |是的 |
 |审稿人笔记|是的 |没有 |
 |断言|是的 |没有 |
-|添加到数据集|是的 |没有 |
+|添加到数据集 |是的 |是的 |
 |默认数据集 |是的 |没有 |
-|自动化规则|是的 |是的 |
+|自动化规则 |是的 |是的 |
 
 ### 创建单次运行队列
 
@@ -41,7 +41,7 @@ LangSmith支持两种队列样式：
 
 #### 基本细节1. 填写队列的**名称**和**描述**。
 1. （可选）选择一个**应用程序**。
-1. （可选）**选择默认数据集**，以简化将审核的运行导出到 LangSmith [workspace](/langsmith/administration-overview#workspaces) 中的数据集的过程。当您在运行项目上使用 **添加到数据集** 时，将应用默认数据集；线程项不支持添加到数据集。
+1. （可选）**选择默认数据集**，以简化将审核的运行导出到 LangSmith [workspace](/langsmith/administration-overview#workspaces) 中的数据集的过程。当您在运行项目上使用 **添加到数据集** 时，将应用默认数据集；线程项不支持默认数据集。
 
 #### 注释栏
 
@@ -55,9 +55,9 @@ LangSmith支持两种队列样式：
 
 - **所有工作区成员审阅每次运行**：启用后，项目将保留在队列中，直到每个 [workspace](/langsmith/administration-overview#workspaces) 成员将其审阅标记为 **完成**。
 
-- **启用运行预订**：预订项目会将其锁定一段时间内供您审阅。当项目被保留时，其他审阅者可以查看它，但无法添加反馈或注释。如果所有工作区成员都查看每次运行，则预约将被禁用。
+- **启用运行预订**：预订项目会将其锁定一段时间以供您查看。当项目被保留时，其他审阅者可以查看它，但无法添加反馈或注释。如果所有工作区成员都查看每次运行，则预约将被禁用。
 
-    如果审阅者查看了某个项目，然后离开而没有将其标记为**完成**，则预订将在指定的**预订长度**后过期。然后，该项目将被释放回队列中，并可由另一位审阅者保留。<Note>
+    如果审阅者查看了某个项目，然后在没有将其标记为“完成”的情况下离开，则预订将在指定的“预订长度”后过期。然后，该项目将被释放回队列中，并可由另一位审阅者保留。<Note>
         点击项目注释的**重新排队**只会将当前项目移动到当前用户队列的末尾；它不会影响任何其他用户的队列顺序。它还将释放当前用户对该项目的预订。
     </Note>
 
@@ -167,16 +167,14 @@ LangSmith支持两种队列样式：
 
 1. 单击您要查看的队列。这将带您集中、循环地查看队列中需要审核的项目。左侧面板列出了队列项目（运行和线程）并显示每个项目的状态（**需要审核**、**需要其他人审核**、**已完成**）。使用 **查看所有项目** 打开完整队列列表。
 
-1. 查看当前项目：- **运行项目**：检查中心窗格中的输入和输出。添加 **审阅者注释**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请编辑运行的输入和输出以创建更正的参考示例，然后单击 **添加到数据集**。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。
-    - **话题项目**：中心窗格显示该话题的对话记录。阅读文字记录并对相同的**反馈**键进行评分。使用 **查看项目** 在对话中打开线程。
+1. 查看当前项目：- **运行项目**：检查中心窗格中的输入和输出。添加 **审阅者备注**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请编辑运行的输入和输出以创建更正的参考示例，然后单击 **添加到数据集**。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。
+    - **话题项目**：中心窗格显示话题的对话记录。阅读文字记录并对其标题 **反馈** 标准进行评分。单击“**查看项目**”以打开对话预览中的线程。作为示例，要将完整对话添加到数据集，请单击“**添加到数据集**”，然后选择一个数据集。要从选取器创建数据集，请单击“**新建数据集**”。要了解线程示例包含哪些内容，请参阅[Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
 
-    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预订或队列设置如何。
+    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预留或队列设置如何。
 
     <Note>
-    主题项目仅支持标题反馈。请参阅 [capability table](#single-run-annotation-queues) 了解运行项和线程项之间的差异。
-    </Note>
-
-    <img
+    对于话题项，您可以提交评分标准反馈并使用 **添加到数据集**。审稿人注释和断言不可用。请参阅 [capability table](#single-run-annotation-queues) 来比较运行项和线程项功能。
+    </Note><img
       className="block dark:hidden"
       src="/langsmith/images/annotation-queue-thread-review-light.png"
       alt="Annotation queue reviewing a thread item with the conversation transcript and rubric feedback pane."
@@ -194,36 +192,36 @@ LangSmith支持两种队列样式：
         使用每个选项旁边的键盘快捷键可以更快地查看项目。
     </Tip>
 
-## 成对注释队列成对注释队列 (PAQ) 并排显示两个运行，以便审阅者可以根据您定义的标题项目快速确定哪个输出更好（或者它们是否等效）。它们专为两个实验（通常是基线与候选模型）之间的快速 A/B 比较而设计，并且必须从**数据集和实验**页面创建。成对队列仅使用运行比较；它们不会将线程项排入队列。
+## 成对注释队列
+
+成对注释队列 (PAQ) 并排显示两个运行，以便审阅者可以根据您定义的标题项目快速确定哪个输出更好（或者它们是否等效）。它们专为两个实验（通常是基线与候选模型）之间的快速 A/B 比较而设计，并且必须从**数据集和实验**页面创建。成对队列仅使用运行比较；它们不会将线程项排入队列。
 
 ### 创建一个成对队列
 
-1. 导航到**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
+1. 导航至**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
 1. 单击**注释**。在弹出窗口中，选择 **添加到成对注释队列**。 （在恰好选择了两个实验之前，该按钮将被禁用。）
 
-    ![Popover showing the "Add to Pairwise Annotation Queue" card highlighted after two experiments are selected.](/langsmith/images/pairwise-annotation-queue-popup.png)
-
-1. 决定是将实验发送到现有的成对队列还是创建一个新队列。
+    ![Popover showing the "Add to Pairwise Annotation Queue" card highlighted after two experiments are selected.](/langsmith/images/pairwise-annotation-queue-popup.png)1. 决定是将实验发送到现有的成对队列还是创建一个新队列。
 1. 提供队列详细信息：
     - **基本详细信息**（名称和描述）
     - **说明和评分标准**专为配对评分而定制
     - **协作者设置**（审阅者数量、预订、预订时长）
-1. 提交表单以创建队列。 LangSmith 立即将两个实验的运行配对并填充队列。默认情况下，创建或填充成对注释队列不会更改跟踪保留。运行会保留添加到队列之前的[retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+1. 提交表单以创建队列。 LangSmith 立即将两个实验的运行配对并填充队列。
 
-PAQ 的主要区别：
+默认情况下，创建或填充成对注释队列不会更改跟踪保留。运行会保留添加到队列之前的[retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
-- **实验**：您必须预先提供两个实验会话。 LangSmith 自动按时间顺序配对它们的运行，并在创建过程中填充队列。
-- **Rubric**：成对的Rubric项目仅需要反馈键和（可选）描述。注释者决定运行 A、运行 B 或两者对于每个标题项是否更好。
+PAQ 的主要区别：- **实验**：您必须预先提供两个实验会话。 LangSmith 自动按时间顺序配对它们的运行，并在创建过程中填充队列。
+- **Rubric**：成对的Rubric项目仅需要反馈键和（可选）描述。注释者决定运行 A、运行 B 或两者对于每个标题项目是否更好。
 - **数据集**：成对队列不使用默认数据集，因为比较跨越两个实验。
 - **预订和审阅者**：适用相同的协作者控制。保留有助于防止两个人同时判断相同的比较。
 
 ### 向成对队列添加更多比较
 
-如果稍后需要添加更多比较，请返回**数据集和实验**，再次选择两个实验，然后选择**添加到成对注释队列**以附加新对。选择两个实验并创建 PAQ 会自动配对运行。扩充现有 PAQ 时，LangSmith 保留历史比较并将新对添加到队列中。
+如果稍后需要添加更多比较，请返回**数据集和实验**，再次选择两个实验，然后选择**添加到成对注释队列**以附加新对。
 
-### 查看成对队列
+选择两个实验并创建 PAQ 会自动配对运行。扩充现有 PAQ 时，LangSmith 保留历史比较并将新对添加到队列中。
 
-1. 从**注释队列**中，选择要查看的成对队列。
+### 查看成对队列1. 从**注释队列**中，选择要查看的成对队列。
 1. 每个队列项目在左侧显示运行 A，在右侧显示运行 B，以及您的评分标准。
 1. 对于每个评分标准项目：
     - 选择**A 更好**、**B 更好**或**等于**。 UI 在后台记录了两次运行的二进制反馈。
@@ -234,7 +232,7 @@ PAQ 的主要区别：
     - 如果您需要稍后重新访问，请重新排队比较。
     - 打开详细信息视图以进行更深入的调试。
 
-预留、审阅者阈值和评论的行为与单次运行队列中的行为相同，使团队能够使用不同的队列类型，而无需修改其现有工作流程。
+预订、审阅者阈值和评论的行为与单次运行队列中的行为相同，使团队能够使用不同的队列类型，而无需修改现有工作流程。
 
     ![Pairwise review screen showing runs side-by-side with the feedback pane containing A/B/Equal buttons and keyboard shortcuts.](/langsmith/images/pairwise-annotation-queue-review-feedback-pane.png)<Check>
 考虑将已经有用户反馈（例如，反对）的运行路由到单运行队列中进行分类，并路由到成对队列中，以便与更强的基线进行头对头比较。这可以帮助您快速识别回归。要了解有关如何从 LLM 申请中获取用户反馈的更多信息，请按照 [attaching user feedback](/langsmith/attach-user-feedback) 上的指南进行操作。

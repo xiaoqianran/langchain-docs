@@ -4,7 +4,7 @@
 
 # 模型提供者
 
-Deep Agents 代码支持任何[chat model provider compatible with LangChain](/oss/python/integrations/chat)，解锁几乎任何支持工具调用的LLM。任何公开 OpenAI 兼容或 Anthropic 兼容 API 的服务也可以开箱即用 - 请参阅 [Compatible APIs](/oss/deepagents/code/config-file#compatible-apis)。
+Deep Agents代码支持任何[chat model provider compatible with LangChain](/oss/python/integrations/chat)，解锁几乎任何支持工具调用的LLM。任何公开 OpenAI 兼容或 Anthropic 兼容 API 的服务也可以开箱即用 - 请参阅 [Compatible APIs](/oss/deepagents/code/config-file#compatible-apis)。
 
 ## 快速入门
 
@@ -12,7 +12,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 1. **安装提供程序包**
 
-    每个模型提供商都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
+    每个模型提供者都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
 
     <CodeGroup>
         ```txt In session
@@ -24,7 +24,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
         ```
     </CodeGroup>
 
-    运行不带参数的`/install`来列出有效的额外内容。要在初始 CLI 安装期间预安装附加功能，请设置 `DEEPAGENTS_CODE_EXTRAS`：
+    不带参数运行 `/install` 来列出有效的额外内容。要在初始 CLI 安装期间预安装附加功能，请设置 `DEEPAGENTS_CODE_EXTRAS`：
 
     ```bash
     DEEPAGENTS_CODE_EXTRAS="baseten,groq" curl -LsSf https://langch.in/dcode | bash
@@ -32,63 +32,111 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 2. **设置凭证**
 
-    使用 [⟦T34⟧](/oss/deepagents/code/credentials#use-%2Fauth-recommended) 凭证管理器为您的提供商添加 API 密钥：
+    使用 [⟦T40⟧](/oss/deepagents/code/credentials#use-%2Fauth-recommended) 凭证管理器为您的提供商添加 API 密钥：
 
     ```txt
     /auth
     ```
 
-    `/auth` 显示可用提供者的列表并存储凭据以供跨会话重用。对于非交互式运行、CI/CD 或 TUI 不可用的任何地方，请使用 [⟦T36⟧](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth) 从 shell 存储相同的密钥，或者改为设置提供程序的环境变量。请参阅[Provider credentials](/oss/deepagents/code/credentials)了解完整的密钥解析顺序，[⟦T37⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)了解Deep Agents代码的密钥范围，以及[Provider reference](#provider-reference)了解每个提供商的环境变量。
+    `/auth` 显示可用提供者的列表并存储凭据以供跨会话重用。对于非交互式运行、CI/CD 或 TUI 不可用的任何地方，请使用 [⟦T42⟧](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth) 从 shell 存储相同的密钥，或者改为设置提供程序的环境变量。请参阅[Provider credentials](/oss/deepagents/code/credentials)了解完整的密钥解析顺序，[⟦T43⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)了解Deep Agents代码的密钥范围，以及[Provider reference](#provider-reference)了解每个提供商的环境变量。
 
     要配置模型参数，请参阅[Model parameters](#model-parameters)。
 
 ## 提供者参考
 
 使用此处未列出的提供商？请参阅 [Arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)：任何与 LangChain 兼容的提供程序都可以在 Deep Agents 代码中使用，并进行额外设置。|供应商|套餐 |凭证环境变量 |型号简介|
-| ---| ---| ---| ---|
-| OpenAI | [⟦T38⟧](/oss/python/integrations/chat/openai) | `OPENAI_API_KEY` | ✅ |
-| OpenAI（法典）| [⟦T40⟧](/oss/python/integrations/chat/openai) |无 — [sign in with ChatGPT](#sign-in-with-chatgpt) | ✅ |
-|天蓝色OpenAI| [⟦T41⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
-| Anthropic | [⟦T43⟧](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
-|谷歌双子座 API | [⟦T45⟧](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
-|谷歌顶点人工智能 | [⟦T47⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
-|巴斯坦| [⟦T49⟧](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
-| AWS 基岩 | [⟦T51⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
-| AWS Bedrock 匡威 | AWS Bedrock [⟦T54⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
-| Hugging Face | [⟦T57⟧](/oss/python/integrations/chat/huggingface) | `HUGGINGFACEHUB_API_TOKEN` | ✅ |
-|奥拉玛 | [⟦T59⟧](/oss/python/integrations/chat/ollama) | `OLLAMA_API_KEY`（仅限云；可选）| ❌ |
-|格罗克 | [⟦T61⟧](/oss/python/integrations/chat/groq) | `GROQ_API_KEY` | ✅ |
-|连贯| [⟦T63⟧](/oss/python/integrations/chat/cohere) | `COHERE_API_KEY` | ❌ |
-|烟花| [⟦T65⟧](/oss/python/integrations/chat/fireworks) | `FIREWORKS_API_KEY` | ✅ |
-|一起| [⟦T67⟧](/oss/python/integrations/chat/together) | `TOGETHER_API_KEY` | ❌ |
-|元| [⟦T69⟧](https://github.com/langchain-ai/langchain-meta) | `MODEL_API_KEY` | ✅ |
-|米斯特拉尔人工智能 | [⟦T71⟧](/oss/python/integrations/chat/mistralai) | `MISTRAL_API_KEY` | ✅ |
-|深度搜索 | [⟦T73⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
-| IBM（watsonx.ai）| [⟦T75⟧](/oss/python/integrations/chat/ibm_watsonx) | `WATSONX_APIKEY` | ❌ |
-|英伟达 | [⟦T77⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
-| xAI | [⟦T79⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
-|困惑| [⟦T81⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
-|开放路由器| [⟦T84⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
-|莱特法学硕士 | [⟦T86⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |<Tip>
-    您可以通过添加 `DEEPAGENTS_CODE_` 前缀将任何凭证范围限定为 Deep Agents 代码。例如，在Deep Agents代码中，`DEEPAGENTS_CODE_OPENAI_API_KEY`优先于`OPENAI_API_KEY`，而不影响其他工具。详情请参阅[⟦T90⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
+| --- | --- | --- | --- |
+| OpenAI | [⟦T44⟧](/oss/python/integrations/chat/openai) | `OPENAI_API_KEY` | ✅ |
+| OpenAI（法典）| [⟦T46⟧](/oss/python/integrations/chat/openai) |没有任何; [sign in with ChatGPT](#sign-in-with-chatgpt) | ✅ |
+|天蓝色OpenAI| [⟦T47⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
+| Anthropic | [⟦T49⟧](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
+|谷歌双子座 API | [⟦T51⟧](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
+|谷歌顶点人工智能 | [⟦T53⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
+|谷歌 Vertex AI (Anthropic) | [⟦T55⟧](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`、`GOOGLE_CLOUD_LOCATION` | ✅ |
+|巴斯坦| [⟦T58⟧](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
+| AWS 基岩 | [⟦T60⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
+| AWS Bedrock 匡威 | AWS Bedrock [⟦T63⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
+| Hugging Face | [⟦T66⟧](/oss/python/integrations/chat/huggingface) | `HUGGINGFACEHUB_API_TOKEN` | ✅ |
+|奥拉玛 | [⟦T68⟧](/oss/python/integrations/chat/ollama) | `OLLAMA_API_KEY`（仅限云；可选）| ❌ |
+|格罗克 | [⟦T70⟧](/oss/python/integrations/chat/groq) | `GROQ_API_KEY` | ✅ |
+|连贯| [⟦T72⟧](/oss/python/integrations/chat/cohere) | `COHERE_API_KEY` | ❌ |
+|烟花| [⟦T74⟧](/oss/python/integrations/chat/fireworks) | `FIREWORKS_API_KEY` | ✅ |
+|一起| [⟦T76⟧](/oss/python/integrations/chat/together) | `TOGETHER_API_KEY` | ❌ |
+|元 | [⟦T78⟧](https://github.com/langchain-ai/langchain-meta) | `MODEL_API_KEY` | ✅ |
+|米斯特拉尔人工智能 | [⟦T80⟧](/oss/python/integrations/chat/mistralai) | `MISTRAL_API_KEY` | ✅ |
+|深度搜索 | [⟦T82⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
+| IBM（watsonx.ai）| [⟦T84⟧](/oss/python/integrations/chat/ibm_watsonx) | `WATSONX_APIKEY` | ❌ |
+|英伟达 | [⟦T86⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
+| xAI | [⟦T88⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
+|困惑| [⟦T90⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
+|开放路由器 | [⟦T93⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
+|莱特法学硕士 | [⟦T95⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |<Accordion title="Configure Anthropic models on Vertex AI" icon="brand-google">
+    `google_anthropic_vertex` 提供商通过 Vertex AI 上的Anthropic 的消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
+
+    要使用提供程序：
+
+    1. 安装 Vertex AI 额外组件：
+
+        <CodeGroup>
+            ```txt In session
+            /install vertex
+            ```
+
+            ```bash Shell
+            dcode --install vertex
+            ```
+        </CodeGroup>
+
+    2. [Enable a Claude model in your Google Cloud project](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude)，然后配置ADC：
+
+        ```bash
+        gcloud auth application-default login
+        ```
+
+    3. 设置您的 Google Cloud 项目和位置：
+
+        ```bash
+        export GOOGLE_CLOUD_PROJECT="your-project-id"
+        export GOOGLE_CLOUD_LOCATION="global"
+        ```
+
+        您可以使用 `DEEPAGENTS_CODE_GOOGLE_CLOUD_PROJECT` 和 `DEEPAGENTS_CODE_GOOGLE_CLOUD_LOCATION` 将这些值的范围限定为 Deep Agents 代码。
+
+    4. 选择具有 `google_anthropic_vertex` 提供商的 Claude 模型：
+
+        <CodeGroup>
+            ```txt In session
+            /model google_anthropic_vertex:claude-sonnet-4-6
+            ```
+
+            ```bash Shell
+            dcode --model google_anthropic_vertex:claude-sonnet-4-6
+            ```
+        </CodeGroup>
+
+    对于 Google 模型，请使用 `google_vertexai`。 Claude 模型使用 Anthropic 的消息 API，并且必须使用 `google_anthropic_vertex` 代替。
+</Accordion>
+
+<Tip>
+    您可以通过添加 `DEEPAGENTS_CODE_` 前缀将任何凭证范围限定为 Deep Agents 代码。例如，在Deep Agents代码中，`DEEPAGENTS_CODE_OPENAI_API_KEY`优先于`OPENAI_API_KEY`，而不影响其他工具。详情请参阅[⟦T105⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
 </Tip>
 
 <Tip>
     [Model profiles](/oss/python/langchain/models#model-profiles) 提供交互式`/model` 切换器使用的模型元数据。如果切换器中缺少型号，请直接传递型号名称或通过`config.toml`添加。
 </Tip>
 
-### 使用 ChatGPT 登录
-
-`openai_codex` 提供商允许您在付费 **ChatGPT** 订阅中使用 OpenAI 的 Codex 模型，而不是 `OPENAI_API_KEY`。您使用 ChatGPT 帐户登录，它会在 `/auth` 和 `/model` 切换器中显示为自己的提供商，与基于 API 密钥的 `openai` 提供商分开。
+### 使用 ChatGPT 登录`openai_codex` 提供商允许您在付费 **ChatGPT** 订阅中使用 OpenAI 的 Codex 模型，而不是 `OPENAI_API_KEY`。您使用 ChatGPT 帐户登录，它会在 `/auth` 和 `/model` 切换器中显示为自己的提供商，与基于 API 密钥的 `openai` 提供商分开。
 
 <Steps>
     <Step title="Start the sign-in">
-        在任意会话中运行 `/auth` 并选择 **`openai_codex`**。由于 ChatGPT 通过浏览器让您登录，因此这会启动浏览器登录，而不是要求 API 密钥。
+        在任何会话中运行 `/auth` 并选择 **`openai_codex`**。由于 ChatGPT 通过浏览器让您登录，因此这会启动浏览器登录，而不是要求 API 密钥。
     </Step>
 
     <Step title="Authorize in your browser">
         Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果它无法打开浏览器（例如，通过 SSH），它还会在屏幕上显示登录 URL，以便您可以将其复制到另一台设备上的浏览器。
-    </Step><Step title="Select a Codex model">
+    </Step>
+
+    <Step title="Select a Codex model">
         登录后，Codex 模型将显示在 `openai_codex` 提供商下的 `/model` 切换器中。直接根据其规格切换到一个：
 
         ```txt
@@ -101,9 +149,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 <Note>
     `openai_codex` 与 `openai` 是分开的。要使用带有标准 API 密钥的 OpenAI 模型，请使用常规 `openai` 提供程序（例如 `/model openai:gpt-5.5`）。
-</Note>
-
-<Note>
+</Note><Note>
     某些提供商特定的帐户类型或关键范围可能不适用于 API 访问。如果提供程序在 `/auth` 中已配置，但请求仍然失败，请验证帐户计划和 API 密钥权限是否符合提供程序的 API 要求。
 </Note>
 
@@ -114,16 +160,18 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 使用这些服务的专用集成包：
 
 |路由器|套餐 |配置 |
-| ---| ---| ---|
-|开放路由器| [⟦T109⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
-|莱特法学硕士 | [⟦T111⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
+| --- | --- | --- |
+|开放路由器 | [⟦T124⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
+|莱特法学硕士 | [⟦T126⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
 
 **OpenRouter** 是一个内置提供程序 - 安装额外的并直接使用它：
 
 <CodeGroup>
     ```txt In session
     /install openrouter
-    ``````bash Shell
+    ```
+
+    ```bash Shell
     dcode --install openrouter
     ```
 </CodeGroup>
@@ -142,11 +190,9 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 ## 切换型号
 
-要在Deep Agents代码中切换型号，请执行以下任一操作：
+要在 Deep Agents 代码中切换模型，可以：
 
-1. **通过 `/model` 命令使用交互式模型切换器**。
-
-    <Note>
+1. **通过 `/model` 命令使用交互式模型切换器**。<Note>
         并非所有模型都出现在这里。如果您的型号丢失，请直接传递型号名称（例如`/model gpt-5.5`）或将其添加到`config.toml`。
     </Note>
 2. **直接指定模型名称**作为参数，例如`/model gpt-5.5`。您可以使用所选提供商支持的任何模型，无论它是否出现在选项 1 的列表中。模型名称将传递到 API 请求。
@@ -162,23 +208,23 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     1. **`--model` 标志** 在提供时始终获胜。
     2. `~/.deepagents/config.toml`中的**`[models].default`**——用户有意的长期偏好。
     3. **`~/.deepagents/config.toml`中的`[models].recent`**——最后一个模型通过`/model`切换到。自动写入；永远不会覆盖`[models].default`。
-    4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Vertex AI）。此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
+    4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Vertex AI）。
+
+    此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
 </Accordion>
 
-### 哪些型号出现在切换器中
-
-`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
+### 哪些型号出现在切换器中`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
 
 <Accordion title="How the switcher builds its model list" icon="list-search">
-    交互式 `/model` 选择器根据已安装的提供程序包和在 `config.toml` 中配置的模型构建其列表。
+    交互式 `/model` 选择器根据 `config.toml` 中配置的已安装提供程序包和模型构建其列表。
 
     在以下情况下会出现模型：
 
     1. 安装提供程序包。
-    2. 该模型可从提供商包、本地提供商或您的`config.toml` 获得。
+    2. 该模型可从提供商包、本地提供商或您的`config.toml` 获取。
     3. 模型配置文件不会将文本输入或输出标记为不支持。
 
-    如果缺少型号，请直接使用`/model <provider>:<model>`或将其添加到[⟦T138⟧](/oss/deepagents/code/config-file#adding-models-to-the-interactive-switcher)。
+    如果缺少型号，请直接使用`/model <provider>:<model>`或将其添加到[⟦T153⟧](/oss/deepagents/code/config-file#adding-models-to-the-interactive-switcher)。
 
     <Tip>
         凭证状态**不**影响模型是否列出。您仍然可以选择缺少凭据的模型。提供商在请求时报告身份验证错误。
@@ -187,7 +233,9 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 ### 开放式重量模型
 
-如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。**使用 Ollama 进行本地推理**是免费开始的最简单方法，无需 API 密钥：
+如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。
+
+**使用 Ollama 进行本地推理**是免费开始的最简单方法，无需 API 密钥：
 
 1. [Install Ollama](https://ollama.com/) 并拉取一个模型，例如：
 
@@ -205,9 +253,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
         ```bash Shell
         dcode --install ollama
         ```
-    </CodeGroup>
-
-3、选择型号：
+    </CodeGroup>3、选择型号：
 
     <CodeGroup>
         ```txt In session
@@ -281,7 +327,9 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     ```
 </CodeGroup>
 
-使用交互式切换器，或者直接使用`/model baseten:moonshotai/Kimi-K2.7-Code`传递模型。<Tip>
+使用交互式切换器，或者直接使用`/model baseten:moonshotai/Kimi-K2.7-Code`传递模型。
+
+<Tip>
     如果您希望与 CLI 本身同时预安装提供程序，请在初始安装期间使用 `DEEPAGENTS_CODE_EXTRAS`：
 
     ```bash
@@ -289,9 +337,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     ```
 
     您可以组合多个提供商：`DEEPAGENTS_CODE_EXTRAS="groq,fireworks,ollama"`。如果已安装 Deep Agents 代码，请在会话中使用 `/install <extra>` 或从 shell 中使用 `dcode --install <extra>`。
-</Tip>
-
-**一起**、**OpenRouter** 和 **Hugging Face** (`langchain-huggingface`) 是云托管开放权重的其他选项。有关凭据和包名称，请参阅 [Provider reference](#provider-reference)。
+</Tip>**一起**、**OpenRouter** 和 **Hugging Face** (`langchain-huggingface`) 是云托管开放权重的其他选项。有关凭据和包名称，请参阅 [Provider reference](#provider-reference)。
 
 ### 设置默认模型
 
@@ -325,7 +371,9 @@ dcode --default-model
 
 如果没有默认值，Deep Agents代码将使用最近使用的模型。
 
-### 模型参数将额外的构造函数 kwargs 传递给模型 - 采样控制、推理/思考预算、上下文窗口大小、请求超时以及底层聊天模型类接受的任何其他内容。设置它们的三个位置，按优先级顺序（最高优先）：
+### 模型参数
+
+将额外的构造函数 kwargs 传递给模型 - 采样控制、推理/思考预算、上下文窗口大小、请求超时以及底层聊天模型类接受的任何其他内容。设置它们的三个位置，按优先级顺序（最高优先）：
 
 1. **启动时一次性使用 `--model-params`。** JSON 字符串，仅限会话：
 
@@ -335,9 +383,7 @@ dcode --default-model
 
     # Anthropic extended thinking
     dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "enabled", "budget_tokens": 10000}, "max_tokens": 16000}'
-    ```
-
-2. **通过 `/model --model-params` 进行中会话。** 相同的 JSON 语法 — 交换参数（以及可选的模型）而无需重新启动：
+    ```2. **通过 `/model --model-params` 进行中会话。** 相同的 JSON 语法 — 交换参数（以及可选的模型）而无需重新启动：
 
     ```txt
     /model --model-params '{"temperature": 0.7}' anthropic:claude-opus-4-8
@@ -366,19 +412,19 @@ dcode --default-model
 
 CLI 标志覆盖配置文件 `params` 并且仅适用于会话（会话中的更改不会保留）。 `config.toml` 中的每个模型子表覆盖提供者级别的键（浅合并 - 有关完整语义，请参阅[Model constructor params](/oss/deepagents/code/config-file#model-constructor-params)）。 `--model-params` 不能与`--default` 组合使用。
 
-对于重试计数，首选 `--max-retries` 或顶级 [⟦T165⟧ config](/oss/deepagents/code/config-file#retries)。
+对于重试计数，首选 `--max-retries` 或顶级 [⟦T180⟧ config](/oss/deepagents/code/config-file#retries)。
 
 <Tip>
-    底层聊天模型构造函数接受的任何 kwarg 都是有效的。请参阅提供商的参考文档以获取完整列表，例如[⟦T166⟧](https://reference.langchain.com/python/langchain-anthropic/langchain_anthropic/chat_models/ChatAnthropic)、[⟦T167⟧](https://reference.langchain.com/python/langchain-openai/langchain_openai/chat_models/base/ChatOpenAI)、[⟦T168⟧](https://reference.langchain.com/python/langchain-ollama/langchain_ollama/chat_models/ChatOllama)。未知的 kwargs 会转发到上游 API 请求，因此新发布的参数无需 CLI 更新即可工作。
-</Tip><Note>
-    不要将凭据 (`api_key`) 放入 `params` — 使用 [⟦T171⟧](/oss/deepagents/code/config-file#provider-configuration) 来指向环境变量。
+    底层聊天模型构造函数接受的任何 kwarg 都是有效的。请参阅提供商的参考文档以获取完整列表，例如[⟦T181⟧](https://reference.langchain.com/python/langchain-anthropic/langchain_anthropic/chat_models/ChatAnthropic)、[⟦T182⟧](https://reference.langchain.com/python/langchain-openai/langchain_openai/chat_models/base/ChatOpenAI)、[⟦T183⟧](https://reference.langchain.com/python/langchain-ollama/langchain_ollama/chat_models/ChatOllama)。未知的 kwargs 会转发到上游 API 请求，因此新发布的参数无需 CLI 更新即可工作。
+</Tip>
+
+<Note>
+    不要将凭据 (`api_key`) 放入 `params` — 使用 [⟦T186⟧](/oss/deepagents/code/config-file#provider-configuration) 来指向环境变量。
 </Note>
 
-要覆盖模型运行时*配置文件*上的字段（`max_input_tokens`、`tool_calling`、功能标志）（与构造函数参数不同），请参阅[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
+要覆盖模型运行时 *profile* 上的字段（`max_input_tokens`、`tool_calling`、功能标志）（与构造函数参数不同），请参阅 [Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
 
-## 高级配置
-
-有关提供程序参数、配置文件覆盖、自定义基本 URL、兼容 API、任意提供程序和生命周期挂钩的详细配置，请参阅 [Config file](/oss/deepagents/code/config-file) 和 [Hooks](/oss/deepagents/code/hooks)。
+## 高级配置有关提供程序参数、配置文件覆盖、自定义基本 URL、兼容 API、任意提供程序和生命周期挂钩的详细配置，请参阅 [Config file](/oss/deepagents/code/config-file) 和 [Hooks](/oss/deepagents/code/hooks)。
 
 ---
 

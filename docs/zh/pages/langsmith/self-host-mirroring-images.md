@@ -15,10 +15,10 @@
 ## 镜像图像
 
 <Note>
-  **从 LangSmith 0.16.21（图表 `0.16.0-rc.17`）开始，镜像数量减少。** 平台后端、playground、主机后端以及 Fleet 工具和触发器服务器现在都从单个 `langsmith-backend` 镜像运行，因此您不再需要镜像 `langsmith-go-backend`、`langsmith-playground`， `hosted-langserve-backend`、`agent-builder-tool-server` 或 `agent-builder-trigger-server`（或其 `-fips` 变体）。对应的`values.yaml`键：`platformBackendImage`、`playgroundImage`、`hostBackendImage`、`fleetToolServerImage`和`fleetTriggerServerImage`已从图表中删除；您仍然为它们设置的任何值都将被忽略。如果您要安装 **早期** 版本，请继续镜像这些映像并像以前一样设置这些密钥。
+  **从 LangSmith 0.16.21（图表 `0.16.0-rc.17`）开始，镜像数量减少。** 平台后端、playground、主机后端以及 Fleet 工具和触发器服务器现在都从单个 `langsmith-backend` 镜像运行，因此您不再需要镜像 `langsmith-go-backend`、`langsmith-playground`、 `hosted-langserve-backend`、`agent-builder-tool-server` 或 `agent-builder-trigger-server`（或其 `-fips` 变体）。对应的`values.yaml`键：`platformBackendImage`、`playgroundImage`、`hostBackendImage`、`fleetToolServerImage`和`fleetTriggerServerImage`已从图表中删除；您仍然为它们设置的任何值都将被忽略。如果您要安装**早期**版本，请继续镜像这些映像并像以前一样设置这些密钥。
 </Note>
 
-为了您的方便，我们提供了一个脚本来为您镜像图像。您可以在[LangSmith Helm Chart repository](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/mirror_langsmith_images.sh)找到脚本
+为了您的方便，我们提供了一个脚本来为您镜像图像。您可以在[LangSmith Helm Chart repository](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/mirror_langsmith_images.sh)找到该脚本
 
 要使用该脚本，您需要使用以下命令运行该脚本并指定您的注册表和平台：
 
@@ -95,7 +95,7 @@ images:
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时映像：
+然后，在 `values.yaml` 中配置沙箱运行时镜像：
 
 ```yaml
 images:
@@ -105,9 +105,11 @@ images:
     tag: "0.16.0"
 ```
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。
+`sandbox-host` 镜像包含用于生成默认沙箱快照的压缩 ext4 文件系统。请参见[Inspect the default snapshot filesystem](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments)独立提取和扫描。
 
-`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
+
+- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
 - `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
 - `docker.io/juicedata/mount:ce-v1.3.1` 适用于 JuiceFS 安装盒
 
@@ -145,11 +147,11 @@ images:
     repository: "(your-registry)/langchain/langsmith-insights-engine"
     pullPolicy: IfNotPresent
     tag: "0.16.0"
-```
+```<Note>
+请勿使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。存储库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
+</Note>
 
-<Note>
-请勿使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。仓库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
-</Note>镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。
+镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。
 
 ## 舰队的附加图片
 
@@ -246,13 +248,13 @@ operator:
 
 将 `(your-registry)` 替换为您的注册表 URL。模板变量（`${service_name}`、`${namespace}`、`${max_connections}`、`${storage_gi}`）在运行时由运算符替换，必须保持原样。
 
-配置完成后，您将需要更新 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。
+配置完成后，您将需要更新您的 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。
 
-## 验证图像签名
-
-<Note>
+## 验证图像签名<Note>
 **从 v15 开始** 提供图像签名（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
-</Note>`docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
+</Note>
+
+`docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
 
 安装`cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/))，然后验证任何标签：
 
@@ -267,11 +269,11 @@ cosign verify \
 
 - 签名上的联署声明有效。
 - 证书链接到 Sigstore 根并记录在 [Rekor](https://docs.sigstore.dev/rekor/overview/) 透明度日志中。
-- 签名证书通过 GitHub Actions OIDC 颁发给稳定分支发布工作流程。
+- 签名证书通过 GitHub Actions OIDC 颁发给稳定分支发布工作流程。相同的命令通过替换存储库（`langsmith-frontend`，`langsmith-go-backend`，`agent-builder-deep-agent`，`langsmith-insights-engine`，`langsmith-polly`，`agent-builder-tool-server`，`agent-builder-trigger-server`，`hosted-langserve-backend`，`langsmith-playground`，对任何已发布的图像起作用） `langsmith-ace-backend`，以及它们的 `*-fips` 变体）。
 
-相同的命令通过替换存储库（`langsmith-frontend`，`langsmith-go-backend`，`agent-builder-deep-agent`，`langsmith-insights-engine`，`langsmith-polly`，`agent-builder-tool-server`，`agent-builder-trigger-server`，`hosted-langserve-backend`，`langsmith-playground`，对任何已发布的图像起作用） `langsmith-ace-backend`，以及它们的 `*-fips` 变体）。
+### 固定到特定版本
 
-### 固定到特定版本对于更严格的验证（例如，固定到单个稳定分支或特定提交），请删除正则表达式并提供准确的证书身份。每个签名的证书还带有工作流运行 ID 和提交 SHA 作为主题备用名称扩展，因此您可以限制到特定版本：
+对于更严格的验证（例如，固定到单个稳定分支或特定提交），请删除正则表达式并提供准确的证书身份。每个签名的证书还带有工作流运行 ID 和提交 SHA 作为主题备用名称扩展，因此您可以限制到特定版本：
 
 ```bash
 cosign verify \
@@ -298,11 +300,11 @@ cosign verify-attestation \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity-regexp 'https://github\.com/langchain-ai/langchainplus/\.github/workflows/release_self_hosted_on_version_bump\.yaml@refs/heads/v[0-9]+-stable' \
   docker.io/langchain/langsmith-backend:<tag>
-```
+```该命令为每个架构返回一个经过验证的语句。成功的验证提供与图像签名相同的保证：证明是由稳定分支发布工作流程生成的，其声明记录在[Rekor](https://docs.sigstore.dev/rekor/overview/)透明度日志中。
 
-该命令为每个架构返回一个经过验证的语句。成功的验证提供了与图像签名相同的保证：证明是由稳定分支发布工作流程生成的，其声明记录在[Rekor](https://docs.sigstore.dev/rekor/overview/)透明度日志中。
+### 获取 SBOM
 
-### 获取 SBOM要将 SBOM 送入漏洞扫描程序或 SBOM 管理工具，请将经过验证的 CycloneDX 文档提取到文件中。由于索引为每个架构携带一个语句，因此首先解析单个架构的子摘要，这样您就可以获得一个 CycloneDX 文档，而不是每个架构一个。
+要将 SBOM 送入漏洞扫描程序或 SBOM 管理工具，请将经过验证的 CycloneDX 文档提取到文件中。由于索引为每个架构携带一个语句，因此首先解析单个架构的子摘要，这样您就可以获得一个 CycloneDX 文档，而不是每个架构一个。
 
 列出标签的每个架构摘要：
 
@@ -325,7 +327,7 @@ cosign verify-attestation \
 您可以将生成的`langsmith-backend.cdx.json`直接传递给扫描仪，例如[Grype](https://github.com/anchore/grype)（`grype sbom:langsmith-backend.cdx.json`）或[Trivy](https://trivy.dev/)（`trivy sbom langsmith-backend.cdx.json`）。
 
 <Note>
-通过 `cosign verify-attestation` 而不是 `cosign download attestation` 提取 SBOM，可确保您仅使用签名和签名身份已验证的 SBOM。
+通过`cosign verify-attestation`而不是`cosign download attestation`提取SBOM，可确保您只使用签名和签名身份已验证的SBOM。
 </Note>
 
 ---

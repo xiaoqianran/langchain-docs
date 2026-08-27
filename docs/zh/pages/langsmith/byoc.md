@@ -4,17 +4,17 @@
 
 # 自带云 (BYOC)
 
-<Warning>
+<Note>
 BYOC 仅适用于 [Enterprise plan](https://www.langchain.com/pricing) 的客户。
-</Warning>
+</Note>
 
-自带云 (BYOC) 允许您在自己的云环境中部署 LangSmith 服务并存储数据，而 LangChain 则运营、扩展和升级基础设施。 BYOC 适合需要对其数据拥有完全主权，但又不想承担配置和管理基础设施开销的组织。
+自带云 (BYOC) 允许您在自己的云环境中部署 LangSmith 服务并存储数据，而 LangChain 则运行、扩展和升级基础设施。 BYOC 适合需要对其数据拥有完全主权，但又不想承担配置和管理基础设施开销的组织。
 
 BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数据平面完全在您的云环境中运行。
 
 ## 开始吧
 
-部署LangSmith BYOC、[contact the LangChain sales team](https://www.langchain.com/contact-sales)。在LangChain团队为您的组织启用BYOC后，请按照[onboarding guide](/langsmith/byoc-onboarding)创建您的第一个数据平面。
+部署LangSmith BYOC、[contact our sales team](https://www.langchain.com/contact-sales)。在LangChain团队为您的组织启用BYOC后，请按照[onboarding guide](/langsmith/byoc-onboarding)创建您的第一个数据平面。
 
 ## 区域和云提供商
 
@@ -25,8 +25,9 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 |面积 | AWS 区域 |
 |------|-------------|
 | **美国** | `us-east-1`、`us-east-2`、`us-west-1`、`us-west-2` |
+| **加拿大** | `ca-central-1` |
 | **欧盟** | `eu-central-1`、`eu-west-1`、`eu-west-2`、`eu-west-3`、`eu-north-1` |
-| **亚太地区** | `ap-south-1`、`ap-northeast-1`、`ap-northeast-2`、`ap-northeast-3`、`ap-southeast-1`、`ap-southeast-2` |无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在欧盟或亚太地区配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
+| **亚太地区** | `ap-south-1`、`ap-northeast-1`、`ap-northeast-2`、`ap-northeast-3`、`ap-southeast-1`、`ap-southeast-2` |无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
 
 |控制平面（美国）|数据平面（您所在的地区）|
 |--------------------------------|--------------------------|
@@ -52,12 +53,12 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 
 ## 先决条件
 
-在 LangChain 可以配置数据平面之前，您需要满足以下条件：
+在LangChain配置数据平面之前，您需要满足以下条件：
 
 - **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
 - **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
 - **受支持的区域**：选择上面列出的 AWS 区域之一。
-- **IAM 角色和外部 ID**：应用 [⟦T16⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
+- **IAM 角色和外部 ID**：应用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
 
 ---
 

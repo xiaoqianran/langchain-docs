@@ -5,7 +5,7 @@
 # 使用 Terraform 部署 LangSmith
 
 <Info>
-自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。请参阅[pricing](https://www.langchain.com/pricing)了解详细信息，或参阅[contact sales](https://www.langchain.com/contact-sales)申请试用许可证密钥。
+自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。请参阅[pricing](https://www.langchain.com/pricing)了解详细信息，或参阅[contact our sales team](https://www.langchain.com/contact-sales)申请试用许可证密钥。
 </Info>
 
 LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-ai/terraform) 发布了适用于 [LangSmith self-hosted](/langsmith/self-hosted) 的生产就绪 Terraform 模块。这些模块提供云基础（网络、集群、数据库、缓存、对象存储、机密、DNS）并使用合理的默认值安装 LangSmith Helm 图表。
@@ -41,16 +41,16 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 您还需要：
 
-- LangSmith 许可证密钥。 [Contact sales](https://www.langchain.com/contact-sales) 索取一份。
+- LangSmith 许可证密钥。 [Contact our sales team](https://www.langchain.com/contact-sales) 索取一份。
 - 目标云帐户中创建 VPC 或 VNet 网络、托管 Kubernetes 集群、托管数据库、对象存储、机密和 IAM 角色的权限。
 - LangSmith UI 端点的注册域（或子域）。
 
 ## 部署层
 
-选择具有单个 Terraform 变量的层。模块相应地调整每个依赖资源的大小。|等级 | PostgreSQL | Redis |点击屋|使用案例|
+选择具有单个 Terraform 变量的层。模块相应地调整每个依赖资源的大小。|等级 | PostgreSQL | Redis |点击屋 |使用案例|
 |---|---|---|---|---|
 | `dev` |集群内|集群内|集群内|演示、评估、短暂的 POC |
-| `production` |云管理（RDS、Cloud SQL、Azure 数据库）|云管理（ElastiCache、Memorystore、Azure 缓存）| [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) |持续、可扩展的生产 |
+| `production` |云管理（RDS、Cloud SQL、Azure 数据库）|云托管（ElastiCache、Memorystore、Azure 缓存）| [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) |持续、可扩展的生产 |
 | `production-large` |云管理的更大实例类 |云管理的更大实例类 | LangChain 托管 ClickHouse |高通量生产|
 
 <Warning>

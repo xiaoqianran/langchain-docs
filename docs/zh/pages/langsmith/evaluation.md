@@ -6,6 +6,8 @@
 
 LangSmith 的测试工具可帮助您测量代理质量、迭代提示以及在交互式环境中进行实时调试。评估是测试的核心：它根据数据集和标准对代理的输出进行评分，以便您可以对版本进行基准测试、捕获回归并跟踪一段时间内的质量。
 
+将真实的跟踪添加到数据集中，以便您曾经看到的故障成为您每次运行的测试。
+
 LangSmith 支持两种类型的基于运行时间和地点的评估：
 
 <CardGroup cols={2}>
@@ -43,10 +45,10 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
 
 一旦您的帐户和 API 密钥准备就绪，[run your first evaluation](/langsmith/evaluation-quickstart)。
 
-## 评估工作流程
+## 评估工作流程<Tabs>
+<Tab title="Offline evaluation flow">
 
-<Tabs>
-<Tab title="Offline evaluation flow"><Steps>
+<Steps>
   <Step title="Create a dataset">
     根据手动策划的测试用例、历史生产跟踪或合成数据生成，使用 <Tooltip tip="Individual test cases with inputs and reference outputs">[examples](/langsmith/evaluation-concepts#examples)</Tooltip> 创建[dataset](/langsmith/manage-datasets)。
   </Step>
@@ -60,7 +62,7 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
   </Step>
 
   <Step title="Run an experiment">
-    在数据集上执行您的应用程序以创建 <Tooltip tip="Results of evaluating a specific application version on a dataset">[experiment](/langsmith/evaluation-concepts#experiment)</Tooltip>。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
+    在数据集上执行应用程序以创建 <Tooltip tip="Results of evaluating a specific application version on a dataset">[experiment](/langsmith/evaluation-concepts#experiment)</Tooltip>。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
   </Step>
 
   <Step title="Analyze results">
@@ -150,7 +152,7 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
     href="/langsmith/evaluate-chatbot-tutorial"
     arrow="true"
   >
-    通过遵循从简单的聊天机器人到复杂的代理评估的分步教程来学习。
+    按照分步教程进行学习，从简单的聊天机器人到复杂的代理评估。
   </Card>
 
   <Card

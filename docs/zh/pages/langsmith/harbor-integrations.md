@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Harbor integrations | https://docs.langchain.com/langsmith/harbor-integrations -->
 
-# 港口集成
+# Harbor integrations
 
 使用 LangSmith 从一个地方运行、跟踪、比较和成本代理评估，并以 [Harbor](https://harborframework.com/docs) 作为执行层。 Harbor 是一个用于在沙盒环境中评估和优化代理和语言模型的框架，由 [Terminal-Bench](https://www.tbench.ai) 的创建者开发。它在独立的容器中运行每个试验，因此您可以同时跨多个环境并行评估和部署。
 
@@ -12,7 +12,7 @@ LangSmith与Harbor在三个点上集成：
 - **Deep Agents**：使用 `--agent langgraph` 作为 Harbor 代理运行 LangGraph 或 Deep Agents 应用程序。
 - **沙箱**：在具有 `--env langsmith` 的 LangSmith 沙箱上运行每个 Harbor 试验。
 
-本页涵盖了 LangSmith 特定的港口标志。要获得完整的 CLI，请运行 `harbor run --help` 或参阅 [Harbor documentation](https://harborframework.com/docs)。
+本页涵盖 LangSmith 特定的港口旗帜。要获得完整的 CLI，请运行 `harbor run --help` 或参阅 [Harbor documentation](https://harborframework.com/docs)。
 
 ## 先决条件
 
@@ -20,7 +20,7 @@ LangSmith与Harbor在三个点上集成：
 - Python 3.12 或更高版本，带有 `pip`。
 - 您的代理调用的模型的提供商 API 密钥，例如 `ANTHROPIC_API_KEY`。
 
-### 安装
+### Install
 
 使用 `langsmith` 额外安装 Harbor。额外内容包括 LangSmith 插件、环境和代理使用的 `harbor-langsmith` 包：
 
@@ -28,14 +28,14 @@ LangSmith与Harbor在三个点上集成：
 pip install "harbor[langsmith]"
 ```
 
-### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
+### AuthenticateHarbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
 
 ```bash
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
 export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
 
-`LANGSMITH_ENDPOINT` 默认为 `https://api.smith.langchain.com` (GCP US)。将其设置为 [BYOC](/langsmith/byoc) 上的数据平面 URL、[self-hosted](/langsmith/self-hosted) 上的实例 URL 或其他云区域上的 [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk)。
+`LANGSMITH_ENDPOINT` defaults to `https://api.smith.langchain.com` (GCP US).将其设置为 [BYOC](/langsmith/byoc) 上的数据平面 URL、[self-hosted](/langsmith/self-hosted) 上的实例 URL 或其他云区域上的 [API URL for your region](/langsmith/create-account-api-key#configure-the-sdk)。
 
 或者，选择 [LangSmith SDK profile](/langsmith/profile-configuration) 而不是导出密钥：
 
@@ -45,7 +45,7 @@ export LANGSMITH_PROFILE=prod
 
 ## 快速入门
 
-将 Harbor 作业记录到 LangSmith 作为实验：
+将Harbor作业记录到LangSmith作为实验：
 
 ```bash
 harbor run -d "terminal-bench@2.0" \
@@ -58,9 +58,9 @@ harbor run -d "terminal-bench@2.0" \
 
 打开[Datasets & Experiments](/langsmith/manage-datasets)，选择Harbor同步的数据集，例如`terminal-bench@2.0`，然后打开Experiments选项卡查看运行情况。
 
-## LangSmith 评测
+## LangSmith evaluations
 
-LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。使用`--plugin langsmith`启用它。 [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。选择一个可追踪到 LangSmith 的代理，以在实验过程中捕获完整的代理跟踪。如果代理未跟踪到LangSmith，插件仍会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
+LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。 Enable it with `--plugin langsmith`. [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。选择一个可追踪到 LangSmith 的代理，以在实验过程中捕获完整的代理追踪。如果代理没有跟踪到LangSmith，插件仍然会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
 
 当您需要消除歧义时，传递完整的导入路径而不是简短的插件名称：
 
@@ -77,9 +77,9 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 - **数据集**：同步作业中的参考数据集。默认名称来自数据集或任务，例如`terminal-bench@2.0`。每个任务都成为一个示例，其输入是任务名称、指令和任务 ID。
 - **实验**：为每个作业创建一个实验，名为 `<name>-<job-id-prefix>`，链接到参考数据集。
 - **运行**：为每个试验创建一个根运行，其中包含任务名称、指令、代理和模型的输入，以及环境、代理和验证阶段的子运行。
-- **反馈**：为每个验证者奖励密钥附加一个反馈分数，例如`reward`，以及当试验引发异常时的`harbor_error`反馈。- **输出**：记录每次试运行的`tokens`（`input`、`cache`、`output`）下的令牌计数以及`cost_usd`下的运行成本。
+- **反馈**：为每个验证者奖励密钥附加一个反馈分数，例如`reward`，以及当试验引发异常时的`harbor_error`反馈。- **输出**：记录每次试运行的`tokens`（`input`、`cache`、`output`）下的令牌计数和`cost_usd`下的运行成本。
 
-### 查看LangSmith的结果
+### 在LangSmith查看结果
 
 在LangSmith中打开[Datasets & Experiments](/langsmith/manage-datasets)，选择插件同步的数据集，例如`terminal-bench@2.0`，然后打开实验选项卡。每个 Harbor 作业都显示为一个实验，您可以通过 `reward` 和 `harbor_error` 反馈、每次运行记录的令牌计数和成本以及延迟来[compare experiments](/langsmith/analyze-an-experiment)。
 
@@ -156,7 +156,7 @@ terminal-bench/
 - **`--ak project_path=<dir>`**：包含`langgraph.json`的本地目录。
 - **`--ak graph=<name>`**：运行`langgraph.json`中的哪个图。
 - **`--ak config=<file>`**：`project_path`内声明图形的配置文件名。默认为 `langgraph.json`。
-- **`--ak configurable='{...}'`**：LangGraph 每次运行配置传递到 `config["configurable"]` 并由图形在调用时读取。常用键有`model`、`model_kwargs`、`cwd`。
+- **`--ak configurable='{...}'`**：LangGraph 每次运行配置传递给 `config["configurable"]` 并由图形在调用时读取。常用按键有`model`、`model_kwargs`、`cwd`。
 - **`--ak model_kwargs='{...}'`**：`configurable`中嵌套的`model_kwargs`键的简写，例如`{"temperature": 0, "max_tokens": 8000}`。
 - **`--ak dependency_overrides='[...]'`**：代理虚拟环境的 Pip 包。此列表替换了`langgraph.json`中声明的依赖项，这使您可以固定或交换版本而无需编辑项目，例如`'["deepagents==0.1.5"]'`。
 
@@ -237,7 +237,7 @@ harbor run -d "<org/name>" \
   -n "<n-parallel-trials>"
 ```
 
-Harbor 每次试验都会创建一个 LangSmith 沙箱，并在其中运行代理和验证程序。
+Harbor 每次试验都会创建一个 LangSmith 沙箱，并在其中运行代理和验证器。
 
 ### 配置沙箱环境
 
@@ -267,6 +267,7 @@ harbor run -d "<org/name>" \
 
 ## 另请参阅
 
+- [Evaluate Managed Deep Agents](/langsmith/python/managed-deep-agents-evals)
 - [Deep Agents documentation](/oss/python/deepagents/overview)
 - [Datasets & Experiments](/langsmith/manage-datasets)
 - [Analyze an experiment](/langsmith/analyze-an-experiment)

@@ -16,7 +16,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.list_runs()` | `client.runs.query()` |
 
@@ -27,28 +27,28 @@
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/query_v2)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.listRuns()` | `client.runs.query()` |
 
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/queryV2)。
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.runs().query()` | `client.runs().queryV2()` |
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/RunService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunService.QueryV2AutoPaging)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |有关完整参数和字段列表，请参阅[API doc](/langsmith/smith-api/runs/query-runs)。
   </Tab>
@@ -63,7 +63,7 @@
     </Warning>
 
     <Warning>
-    省略时，`min_start_time` 默认为 **1 天前**。没有 `start_time` 的 `list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
+    省略时，`min_start_time` 默认为 **1 天前**。没有 `start_time` 的`list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
     </Warning>|之前 (`list_runs`) |之后（`runs.query`）|笔记|
     |---|---|---|
     | `project_name` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
@@ -84,7 +84,7 @@
     | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小 |
     | *（不可用）* | `max_start_time` | `start_time` 的上限；默认为现在 |
     | *（不可用）* | `page_size` |每个请求结果计数（默认 100，最大 1000）|
-    | *（不可用）* | `reference_dataset_id` |替代`project_ids`；互斥|| *（不可用）* | `cursor` |从上一个响应中传递 `next_cursor` 来获取下一页 |
+    | *（不可用）* | `reference_dataset_id` |替代`project_ids`；互斥|| *（不可用）* | `cursor` |从上一个响应中传递 `next_cursor` 以获取下一页 |
   </Tab>
   <Tab title="TypeScript">
     <Warning>
@@ -332,7 +332,7 @@
     | `run.promptTokens()` | `run.promptTokens()` |不变 |
     | `run.completionTokens()` | `run.completionTokens()` |不变 || `run.totalCost()` | `run.totalCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
     | `run.promptCost()` | `run.promptCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
-    | `run.completionCost()` | `run.completionCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
+    | `run.completionCost()` | `run.completionCost()` |返回类型从 `Optional<String>` 更改为 `Optional<Double>` |
     | `run.promptTokenDetails()` | `run.promptTokenDetails()` |不变 |
     | `run.completionTokenDetails()` | `run.completionTokenDetails()` |不变 |
     | `run.promptCostDetails()` | `run.promptCostDetails()` |不变 |
@@ -387,7 +387,7 @@
     | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
     | `run.PriceModelID` | `run.PriceModelID` |不变 |
     | `run.PromptCost` | `run.PromptCost` |不变 |
-    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
@@ -453,12 +453,12 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
     | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
     | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -495,6 +495,40 @@
     | *（不可用）* | `share_url` |新功能：公共共享 URL（仅在共享运行时设置）|| *（不可用）* | `thread_evaluation_time` |新 |
   </Tab>
 </Tabs>
+
+#### 速率限制
+
+SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制。每个 API 密钥在云中均存在限制。
+
+<Tabs>
+  <Tab title="Python">
+    | |之前 (`client.list_runs()`) |之后（`client.runs.query()`）|
+    |--------|--------|--------|
+    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="TypeScript">
+    | |之前 (`client.listRuns()`) |之后（`client.runs.query()`）|
+    |--------|--------|--------|
+    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="Java">
+    | |之前 (`client.runs().query()`) |之后（`client.runs().queryV2()`）|
+    |--------|--------|--------|
+    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="Go">
+    | |之前 (`client.Runs.Query()`) |之后（`client.Runs.QueryV2()`）|
+    |--------|--------|--------|
+    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="cURL">
+    | |之前 (`POST /api/v1/runs/query`) |之后（`POST /api/v2/runs/query`）|
+    |--------|--------|--------|
+    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+</Tabs>已弃用的方法还受到每个租户的限制，这些限制因查询形状而异，如 [Query traces using the SDK](/langsmith/export-traces#rate-limits) 中所述。 SmithDB 支持的方法不受这些每个租户的限制。
+
+超过限制的请求将返回`429 Too Many Requests`。有关一般速率限制信息，请参阅[Usage and billing](/langsmith/usage-and-billing#rate-limits)。
 
 ### 示例
 
@@ -598,9 +632,7 @@ val runs = client.runs().queryV2(
 
   </Tab>
   <Tab title="Go">
-    `QueryV2()` 不直接接受项目名称。首先用`client.Sessions.List()`解析项目UUID，然后将其作为字符串传递到`ProjectIDs`。
-
-<Tabs sync={false}>
+    `QueryV2()` 不直接接受项目名称。首先用`client.Sessions.List()`解析项目UUID，然后将其作为字符串传递到`ProjectIDs`。<Tabs sync={false}>
   <Tab title="Before">
     ```go Before
 package main
@@ -653,7 +685,9 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `POST /api/v2/runs/query` 不直接接受项目名称。首先使用 `GET /api/v1/sessions` 请求解析项目 UUID，然后将其作为字符串传递到 `project_ids` 中。<Tabs sync={false}>
+    `POST /api/v2/runs/query` 不直接接受项目名称。首先使用 `GET /api/v1/sessions` 请求解析项目 UUID，然后将其作为字符串传递到 `project_ids` 中。
+
+<Tabs sync={false}>
   <Tab title="Before">
     ```bash
 PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
@@ -724,7 +758,7 @@ asyncio.run(main())
 
   </Tab>
   <Tab title="TypeScript">
-    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id`，请通过 `selects: [...]` 请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
+    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id`，请通过 `selects: [...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -813,11 +847,11 @@ for (run in runs) {
 }
 ```
   </Tab>
-</Tabs>
-
-  </Tab>
+</Tabs></Tab>
   <Tab title="Go">
-    `Query` 返回一组默认字段，无需选择。默认情况下，`QueryV2` 仅返回 `ID` — 将 `Selects` 与您需要的大写字段常量一起传递（例如 `RunQueryV2ParamsSelectName`）。<Tabs sync={false}>
+    `Query` 返回一组默认字段，无需选择。默认情况下，`QueryV2` 仅返回 `ID` — 将 `Selects` 与您需要的大写字段常量一起传递（例如 `RunQueryV2ParamsSelectName`）。
+
+<Tabs sync={false}>
   <Tab title="Before">
     ```go Before
 package main
@@ -998,9 +1032,7 @@ const runs = client.runs.query({
 
   </Tab>
   <Tab title="Java">
-    `.startTime()` 已重命名为 `.minStartTime()`，`.runType()` 现在采用新的 `RunQueryV2Params.RunType` 枚举而不是 `RunTypeEnum`。
-
-<Tabs sync={false}>
+    `.startTime()` 已重命名为 `.minStartTime()`，`.runType()` 现在采用新的 `RunQueryV2Params.RunType` 枚举而不是 `RunTypeEnum`。<Tabs sync={false}>
   <Tab title="Before">
     ```kotlin Before
 import java.time.OffsetDateTime
@@ -1053,7 +1085,9 @@ val runs = client.runs().queryV2(
 
   </Tab>
   <Tab title="Go">
-    `StartTime` 已重命名为 `MinStartTime`，`RunType` 现在采用新的 `RunQueryV2ParamsRunType` 枚举而不是 `RunTypeEnum`。<Tabs sync={false}>
+    `StartTime` 重命名为 `MinStartTime`，`RunType` 现在采用新的 `RunQueryV2ParamsRunType` 枚举而不是 `RunTypeEnum`。
+
+<Tabs sync={false}>
   <Tab title="Before">
     ```go Before
 package main
@@ -1112,7 +1146,7 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `start_time` 已重命名为 `min_start_time`，并且 `run_type` 值现在为大写 (`"llm"` → `"LLM"`)。
+    `start_time` 重命名为 `min_start_time`，`run_type` 值现在为大写 (`"llm"` → `"LLM"`)。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -1327,14 +1361,14 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
   -d "$(jq -n --arg pid "$PROJECT_ID" '{"project_ids": [$pid], "is_root": true}')"
 ```
   </Tab>
+</Tabs></Tab>
 </Tabs>
 
-  </Tab>
-</Tabs>
+<Note>要具体枚举跟踪，请使用`traces.query`而不是`is_root=True`。请参阅[Traces: query](/langsmith/smithdb-sdk-migration-traces)：它还通过`trace_aggregates`公开跟踪范围的`total_tokens`/`total_cost`。</Note>
 
-<Note>要具体枚举跟踪，请使用 `traces.query` 而不是 `is_root=True`。请参阅 [Traces: query](/langsmith/smithdb-sdk-migration-traces)：它还通过 `trace_aggregates`.</Note> 公开跟踪范围 `total_tokens`/`total_cost`。
+#### 通过 ID 列表获取运行
 
-#### 通过 ID 列表获取运行<Tabs>
+<Tabs>
   <Tab title="Python">
     `id=[...]` 更名为`ids=[...]`。即使按运行 ID 进行过滤，现在也需要 `project_ids` — v1 允许省略项目上下文。
 
@@ -1505,11 +1539,9 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 })
 ```
   </Tab>
-</Tabs>
-
-  </Tab>
+</Tabs></Tab>
   <Tab title="cURL">
-    `id` 更名为`ids`。即使按运行 ID 进行过滤，现在请求正文中也需要 `project_ids` — v1 允许省略项目上下文。
+    `id` 更名为 `ids`。即使按运行 ID 进行过滤，现在请求正文中也需要 `project_ids` — v1 允许省略项目上下文。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -1540,7 +1572,9 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
 </Tabs>
 
   </Tab>
-</Tabs>#### 迭代运行
+</Tabs>
+
+#### 迭代运行
 
 <Tabs>
   <Tab title="Python">
@@ -1660,9 +1694,7 @@ for (run in client.runs().queryV2(
 }
 ```
   </Tab>
-</Tabs>
-
-  </Tab>
+</Tabs></Tab>
   <Tab title="Go">
     `QueryAutoPaging`更名为`QueryV2AutoPaging`；两者都使用相同的`iter.Next()`/`iter.Current()`模式——一旦你有足够的运行就跳出循环。
 
@@ -1729,7 +1761,9 @@ for iter.Next() {
 }
 ```
   </Tab>
-</Tabs></Tab>
+</Tabs>
+
+  </Tab>
   <Tab title="cURL">
     v1 API 在一个响应中返回所有匹配的运行，不带光标。 v2 API 分页 — 从响应的 `next_cursor` 字段传递 `cursor` 以获取下一页。
 
@@ -1875,7 +1909,7 @@ val runs = client.runs().queryV2(
 
   </Tab>
   <Tab title="Go">
-    `Error` 更名为`HasError`。
+    `Error` 更名为 `HasError`。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -1932,9 +1966,7 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `error` 更名为`has_error`。
-
-<Tabs sync={false}>
+    `error` 更名为 `has_error`。<Tabs sync={false}>
   <Tab title="Before">
     ```bash
 PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
@@ -1966,7 +1998,9 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
 
 <Tabs>
   <Tab title="Python">
-    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。<Tabs sync={false}>
+    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+
+<Tabs sync={false}>
   <Tab title="Before">
     ```python Before
 from langsmith import Client
@@ -2128,9 +2162,7 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 组合以匹配特定值。
-
-<Tabs sync={false}>
+    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 组合以匹配特定值。<Tabs sync={false}>
   <Tab title="Before">
     ```bash
 PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
@@ -2203,7 +2235,9 @@ async def main():
 asyncio.run(main())
 ```
   </Tab>
-</Tabs></Tab>
+</Tabs>
+
+  </Tab>
   <Tab title="TypeScript">
     嵌套 `and()` / `or()` 过滤器表达式未更改。
 
@@ -2380,11 +2414,9 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
   </Tab>
 </Tabs>
 
-#### 作用域过滤器：filter、trace_filter、tree_filter
-
-<Tabs>
+#### 作用域过滤器：filter、trace_filter、tree_filter<Tabs>
   <Tab title="Python">
-    `filter`、`trace_filter` 和 `tree_filter` 保持不变。 `filter` 适用于匹配的运行，`trace_filter` 应用于其跟踪的根，`tree_filter` 应用于跟踪树中的其他运行（同级和子级）。
+    `filter`、`trace_filter` 和 `tree_filter` 不变。 `filter` 适用于匹配的运行，`trace_filter` 应用于其跟踪的根，`tree_filter` 应用于跟踪树中的其他运行（同级和子级）。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -2421,7 +2453,9 @@ async def main():
 asyncio.run(main())
 ```
   </Tab>
-</Tabs></Tab>
+</Tabs>
+
+  </Tab>
   <Tab title="TypeScript">
     `filter`、`trace_filter` 和 `tree_filter` 不变。 `filter` 适用于匹配的运行，`trace_filter` 应用于其跟踪的根，`tree_filter` 应用于跟踪树中的其他运行（同级和子级）。
 
@@ -2565,9 +2599,7 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 })
 ```
   </Tab>
-</Tabs>
-
-  </Tab>
+</Tabs></Tab>
   <Tab title="cURL">
     `filter`、`trace_filter` 和 `tree_filter` 不变。 `filter` 适用于匹配的运行，`trace_filter` 应用于其跟踪的根，`tree_filter` 应用于跟踪树中的其他运行（同级和子级）。
 
@@ -2617,7 +2649,9 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
   </Tab>
 </Tabs>
 
-## 另请参阅- [Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
+## 另请参阅
+
+- [Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
 - [Traces](/langsmith/smithdb-sdk-migration-traces)
 - [Migration overview](/langsmith/smithdb-sdk-migration)
 

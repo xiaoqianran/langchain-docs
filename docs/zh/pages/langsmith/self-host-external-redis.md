@@ -9,7 +9,7 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
 [Valkey](https://valkey.io/) 也得到官方支持作为 Redis 的直接替代品。此页面在任何涉及 Redis 的地方，您都可以使用兼容的 Valkey 实例。有关支持的版本，请参阅[Requirements](#requirements)。
 
 <Warning>
-每个 LangSmith 安装必须使用自己的专用 Redis 实例。 Redis 无法在单独的 LangSmith 安装之间共享（例如，迁移期间在现有集群和新集群之间）。跨安装共享它会导致部署任务被路由到错误的集群。
+每个 LangSmith 安装必须使用自己专用的 Redis 实例。 Redis 无法在单独的 LangSmith 安装之间共享（例如，迁移期间在现有集群和新集群之间）。跨安装共享它会导致部署任务被路由到错误的集群。
 </Warning>
 
 <Tip>
@@ -27,19 +27,23 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
   * [Google Cloud Memorystore](https://cloud.google.com/memorystore)（Redis 或 Valkey）
   * [Azure Cache for Redis](https://azure.microsoft.com/en-us/services/cache/)
 
-* **支持的版本：** Redis >= 5 或 Valkey 8。在本指南中，Valkey 被视为 Redis 的直接替代品。
+* **支持的版本：** Redis >= 6.2 或 Valkey 8。在本指南中，Valkey 被视为 Redis 的直接替代品。
 * 我们支持Standalone和Redis Cluster（包括Valkey Cluster）。有关部署说明，请参阅相应部分。
 * 支持免认证、密码、[IAM/Workload Identity](#iam-authentication)认证。
 * 默认情况下，我们建议实例至少具有 2 个 vCPU 和 8GB 内存。但是，实际要求将取决于您的跟踪工作负载。我们建议监控您的 Redis 实例并根据需要进行扩展。
 
-<Tip>
+<Note>
+Redis 6.2 是底层，因为 Agent Server (`langgraph-api`) 0.8.0 中引入了 Redis 支持的运行队列。队列排队使用 `ZADD ... LT` 标志运行，该标志是在 Redis 6.2 中添加的。在 Redis 5.0 到 6.1 上，运行 enqueue 失败，并显示通用 `ERR syntax error`，该通用 `ERR syntax error` 并不指示版本不匹配。 Valkey 8 包含该标志。
+</Note><Tip>
 如果您启用[LangSmith Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，我们建议将沙箱存储使用的Redis元数据存储的Redis `maxmemory-policy`设置为`noeviction`。这可以避免在内存压力下驱逐文件系统元数据。
 使用`noeviction`，当实例达到最大内存时，Redis 写入可能会失败，因此请为沙箱元数据增长保留足够的内存空间。
 </Tip>
 
 ## 独立Redis
 
-### 连接字符串您将需要为您的 Redis 实例组装连接字符串。该连接字符串应包含以下信息：
+### 连接字符串
+
+您需要为 Redis 实例组装连接字符串。该连接字符串应包含以下信息：
 
 * 主持人
 * 数据库
@@ -84,9 +88,7 @@ redis:
   external:
     enabled: true
     connectionUrl: "Your connection url"
-```
-
-您还可以将连接 URL 存储在现有 Kubernetes Secret 中，并在 Helm 值中引用它。
+```您还可以将连接 URL 存储在现有 Kubernetes Secret 中，并在 Helm 值中引用它。
 
 <CodeGroup>
 
@@ -113,7 +115,9 @@ stringData:
 
 </CodeGroup>
 
-配置完成后，您应该能够重新安装 LangSmith 实例。如果一切配置正确，您的 LangSmith 实例现在应该使用外部 Redis 实例。## Redis集群
+配置完成后，您应该能够重新安装 LangSmith 实例。如果一切配置正确，您的 LangSmith 实例现在应该使用外部 Redis 实例。
+
+## Redis集群
 从 LangSmith helm 版本 **0.12.25** 开始，我们正式支持 **Redis Cluster**。
 
 ### 主机名
@@ -196,15 +200,15 @@ stringData:
   redis_cluster_password: "your_redis_password"
 ```
 
-</CodeGroup>
+</CodeGroup>## Azure 托管 Redis
 
-## Azure 托管 Redis
-
-[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis) 支持两种影响LangSmith 连接方式的集群策略。根据您实例的集群策略选择以下配置。
+[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis) 支持两种影响 LangSmith 连接方式的集群策略。根据您实例的集群策略选择以下配置。
 
 ### OSS集群
 
-LangSmith使用Redis Cluster模式连接OSS集群策略实例。从 LangSmith helm Chart 版本 **0.13.33** 开始，支持 `ssl_check_hostname=false` 作为节点 URI 参数。在我们的测试中，OSS集群策略要求禁用SSL主机名验证。 Azure 的代理解析与证书 SAN 中不存在的内部节点 IP 的连接，从而导致主机名验证失败。
+LangSmith使用Redis Cluster模式连接OSS集群策略实例。
+
+从 LangSmith helm Chart 版本 **0.13.33** 开始，支持 `ssl_check_hostname=false` 作为节点 URI 参数。在我们的测试中，OSS集群策略要求禁用SSL主机名验证。 Azure 的代理解析与证书 SAN 中不存在的内部节点 IP 的连接，从而导致主机名验证失败。
 
 ```yaml
 redis:
@@ -232,15 +236,15 @@ redis:
 
 对于 EnterpriseCluster 的 Microsoft Entra (IAM) 身份验证，请参阅 [Azure tab in IAM authentication](#azure-cache-for-redis) 并在 Helm 值中包含 `clusterSafeMode: true`。
 
-## TLS 与 Redis
-
-使用此部分为 Redis 连接配置 TLS。要安装内部/公共 CA 以便 LangSmith 信任您的 Redis 服务器证书，请参阅 [Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
+## TLS 与 Redis使用此部分为 Redis 连接配置 TLS。要安装内部/公共 CA 以便 LangSmith 信任您的 Redis 服务器证书，请参阅 [Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
 
 ### 服务器 TLS（单向）
 
-验证 Redis 服务器证书：- 使用 `config.customCa.secretName` 和 `config.customCa.secretKey` 提供 CA 捆绑包。
+验证 Redis 服务器证书：
+
+- 使用 `config.customCa.secretName` 和 `config.customCa.secretKey` 提供 CA 捆绑包。
 - 对于独立 Redis，请在连接 URL 中使用 `rediss://`。
-- 对于 Redis 集群，`redis.external.cluster.tlsEnabled` 默认为 `true`。确保其未设置为`false`。
+- 对于 Redis 集群，`redis.external.cluster.tlsEnabled` 默认为 `true`。确保其未设置为 `false`。
 
 <Warning>
 仅当您的 Redis 服务器使用内部或私有 CA 时才安装自定义 CA。公众信任的 CA 不需要此配置。
@@ -295,12 +299,12 @@ stringData:
 
 ### 具有客户端身份验证的双向 TLS (mTLS)
 
-从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 Redis 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用[Server TLS steps](#server-tls-one-way)（自定义 CA）。
+从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 Redis 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。
 
 如果您的 Redis 服务器需要客户端证书身份验证：
 
 - 提供包含您的客户端证书和密钥的 Secret。
-- 通过`redis.external.clientCert.secretName`引用它并使用`certSecretKey`和`keySecretKey`指定键。
+- 通过`redis.external.clientCert.secretName`引用它并用`certSecretKey`和`keySecretKey`指定键。
 - 对于独立 Redis，请在连接 URL 中继续使用 `rediss://`。
 - 对于 Redis 集群，`redis.external.cluster.tlsEnabled` 默认为 `true`。确保其未设置为 `false`。
 
@@ -344,9 +348,9 @@ stringData:
     -----END PRIVATE KEY-----
 ```
 
-</CodeGroup>
+</CodeGroup>#### 证书卷的 Pod 安全上下文
 
-#### 证书卷的 Pod 安全上下文为 mTLS 安装的证书卷受文件访问限制的保护。为了确保所有LangSmith Pod 都可以读取证书文件，您必须在 Pod 安全上下文中设置`fsGroup: 1000`。
+为 mTLS 安装的证书卷受文件访问限制的保护。为了确保所有LangSmith Pod 都可以读取证书文件，您必须在 Pod 安全上下文中设置`fsGroup: 1000`。
 
 您可以通过以下两种方式之一进行配置：
 
@@ -359,7 +363,7 @@ commonPodSecurityContext:
   fsGroup: 1000
 ```
 
-**选项 2：添加到单个 pod 安全上下文**
+**选项 2：添加到各个 pod 安全上下文**
 
 如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mtls configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
 

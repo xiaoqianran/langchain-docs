@@ -82,9 +82,9 @@ LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com
 
 - **客户端界面**：用户通过网络浏览器或LangChain SDK 与LangSmith 交互。所有流量都终止于 [Azure Load Balancer](https://azure.microsoft.com/en-us/products/load-balancer/) 并路由到 [AKS](https://azure.microsoft.com/en-us/products/kubernetes-service/) 集群中的前端 (NGINX)，然后在必要时路由到集群中的另一个服务。
 - **存储服务**：平台需要持久存储痕迹、元数据和缓存。在 Azure 上推荐的服务是：
-    - <Icon icon="database" /> **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。- <Icon icon="database" /> **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 版本 5 或更高版本。
+    - <Icon icon="database" /> **[Azure Database for PostgreSQL (Flexible Server)](https://azure.microsoft.com/en-us/products/postgresql/)** 用于事务数据（例如运行、项目）。 Azure 的高可用性选项在另一个区域中配置备用副本；数据同步提交到主服务器和备用服务器。 LangSmith 需要 PostgreSQL 版本 14 或更高版本。- <Icon icon="database" /> **[Azure Managed Redis](https://azure.microsoft.com/en-us/products/managed-redis/)** 用于队列和缓存。最佳实践包括存储小值并将大对象分解为多个键，使用管道来最大化吞吐量并确保客户端和服务器驻留在同一区域。您还可以使用[Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)，以单实例或集群模式运行。 LangSmith 需要 Redis OSS 6.2 或更高版本。
     - <Icon icon="chart-line" /> **ClickHouse** 用于大量跟踪分析。我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)。如果出于安全或合规性原因，这不是一个选项，请使用开源 Operator 在 AKS 上部署 ClickHouse 集群。确保跨[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview)进行复制以实现持久性。混合部署不需要 Clickhouse。
-    - <Icon icon="cube" /> **[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)** 用于大型工件。使用冗余存储配置，例如读取访问异地冗余 (RA-GRS) 或异地区域冗余 (RA-GZRS) 存储，并设计应用程序以在中断期间从次要区域进行读取。
+    - <Icon icon="cube" /> **[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)** 用于大型工件。使用冗余存储配置，例如读取访问地理冗余 (RA-GRS) 或地理区域冗余 (RA-GZRS) 存储，并设计应用程序以在中断期间从次要区域进行读取。
 
 ## Azure 上的计算和网络
 

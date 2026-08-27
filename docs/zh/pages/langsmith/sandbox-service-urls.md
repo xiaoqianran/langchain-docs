@@ -4,7 +4,7 @@
 
 # 沙盒服务 URL
 
-服务 URL 允许您访问沙箱内运行的 HTTP 服务（REST API、Streamlit 应用程序、Jupyter 笔记本、API 文档），而无需隧道、端口转发或 CLI 工具。每个沙箱 + 端口组合都有自己的 URL，您可以在浏览器中打开该 URL、从代码中调用或与团队成员共享。
+服务 URL 允许您访问沙箱内运行的 HTTP 服务（REST API、Streamlit 应用程序、Jupyter 笔记本、API 文档），无需隧道、端口转发或 CLI 工具。每个沙箱 + 端口组合都有自己的 URL，您可以在浏览器中打开该 URL、从代码中调用或与团队成员共享。
 
 ![Service URLs view](/images/langsmith/sandboxes/sb-service-feature.png)
 
@@ -34,7 +34,7 @@ with client.sandbox() as sb:
 
 ## 用例
 
-|场景|如何|
+|场景 |如何|
 |----------|-----|
 |预览 Web 应用程序（Streamlit、Jupyter 等）| `sb.service(port=<PORT>)` 然后打开`browser_url` |
 |从代码或 CI 调用 API | `svc.get(...)` / `svc.post(...)` 或 `curl` 以及服务令牌 |
@@ -69,7 +69,9 @@ svc = sb.service(port=3000, expires_in_seconds=3600)
 
 ### 提出请求
 
-返回的 `ServiceURL` 对象具有内置的 HTTP 帮助器，可以自动处理身份验证。令牌在过期前透明刷新，因此无需手动管理。
+返回的 `ServiceURL` 对象具有内置的 HTTP 帮助器，可以为您注入 auth 标头。
+
+令牌的寿命很短（默认 10 分钟，最长 24 小时），并且没有服务器端刷新机制。当令牌过期时，请再次调用`sb.service(port=...)`请求新的令牌。
 
 ```python
 svc = sb.service(port=8000)
@@ -105,7 +107,7 @@ svc = sb.service(port=8000)
 print(svc.browser_url)
 ```
 
-您可以与队友共享此 URL。无需 LangSmith 登录即可访问它。
+您可以与队友共享此 URL。无需登录LangSmith即可访问。
 
 ### 通过 REST API 生成 URL
 

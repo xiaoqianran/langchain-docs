@@ -24,7 +24,7 @@ LangChain 发布生产就绪的 [Terraform modules for AWS](https://github.com/l
     沿着[Kubernetes installation guide](/langsmith/kubernetes)行驶。 LangSmith 在 Amazon Elastic Kubernetes Service (EKS) 上进行了测试。
 
     **EKS 特定说明：**
-    - 确保安装 EBS CSI 驱动程序以实现持久存储
+    - 确保安装 EBS CSI 驱动程序以进行持久存储
     - 使用`ebs.csi.aws.com`存储类配置器
   </Step>
 
@@ -61,11 +61,11 @@ LangChain 发布生产就绪的 [Terraform modules for AWS](https://github.com/l
 
 我们建议利用 AWS 的托管服务来提供可扩展、安全且有弹性的平台。以下架构适用于自托管和混合，并与 [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) 保持一致：
 
-![Architecture diagram showing AWS relations to LangSmith services](/langsmith/images/aws-architecture-self-hosted.png)- <Icon icon="globe" /> **入口和网络**：请求通过 [Amazon Application Load Balancer (ALB)](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) 在 [VPC](https://aws.amazon.com/vpc/) 内输入，使用基于 [AWS WAF](https://aws.amazon.com/waf/) 和 [IAM](https://aws.amazon.com/iam/) 的身份验证进行保护。
+![Architecture diagram showing AWS relations to LangSmith services](/langsmith/images/aws-architecture-self-hosted.png)- <Icon icon="globe" /> **入口和网络**：请求通过 [Amazon Application Load Balancer (ALB)](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) 在您的 [VPC](https://aws.amazon.com/vpc/) 内输入，使用基于 [AWS WAF](https://aws.amazon.com/waf/) 和 [IAM](https://aws.amazon.com/iam/) 的身份验证进行保护。
 - <Icon icon="cube" /> **前端和后端服务：** 容器在 [Amazon EKS](https://aws.amazon.com/eks/) 上运行，在 ALB 后面进行编排，并根据需要将请求路由到集群内的其他服务。
 - <Icon icon="database" /> **存储和数据库：**
   - [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/) 或 [Aurora](https://aws.amazon.com/rds/aurora/)：已部署代理的元数据、项目、用户以及短期和长期内存。 LangSmith 支持 PostgreSQL 版本 14 或更高版本。
-  - [Amazon ElastiCache](https://aws.amazon.com/elasticache/)（Redis 或 Valkey）：缓存和作业队列。 ElastiCache 可以处于单实例或集群模式。 LangSmith 需要 Redis OSS 版本 5 或更高版本，或 Valkey 8。
+  - [Amazon ElastiCache](https://aws.amazon.com/elasticache/)（Redis 或 Valkey）：缓存和作业队列。 ElastiCache 可以处于单实例或集群模式。 LangSmith 需要 Redis OSS 6.2 或更高版本，或 Valkey 8。
   - ClickHouse + [Amazon EBS](https://aws.amazon.com/ebs/)：分析和跟踪存储。
     - 我们建议使用[externally managed ClickHouse solution](/langsmith/self-host-external-clickhouse)，除非出于安全或合规原因
     阻止你这样做。

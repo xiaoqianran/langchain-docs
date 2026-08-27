@@ -4,9 +4,9 @@
 
 # 添加自定义搜索工具、内存和时间表
 
-本教程从[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
+本教程从[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)继续。使用您在其中创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
 
-`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+`mda init` 还可以构建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
 
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
@@ -193,7 +193,7 @@ mda deploy .
     对调用者进行身份验证并在工具和中间件中使用经过验证的身份。
   </Card>
   <Card title="Evals" icon="flask" href="/langsmith/javascript/managed-deep-agents-evals">
-    编写 Harbor 任务并编译 Harbor 的托管代理。
+    使用编码代理和评估工程技能开发 Harbor 评估。
   </Card>
 </CardGroup>
 

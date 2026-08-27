@@ -24,7 +24,7 @@
 在几分钟内将您的第一个 LangGraph 应用程序部署到云。
 </Card>
 
-</CardGroup>为了部署代码优先的深度代理而无需建立自己的代理服务器，[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在私人测试版中提供了 CLI 优先的托管运行时。
+</CardGroup>要部署代码优先的深度代理而无需建立自己的代理服务器，[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)在公共测试版中提供了 CLI 优先的托管运行时。
 
 ## 后续步骤
 

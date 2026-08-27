@@ -4,7 +4,7 @@
 
 # 使用 Terraform 在 AWS 上部署 LangSmith
 
-使用公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws) 将 LangSmith 部署到 AWS。通过将部署管理为代码，您可以跨账户版本控制、查看和重现 LangSmith 环境，而无需单击 AWS 控制台。
+使用公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws) 将 LangSmith 部署到 AWS。通过将部署管理为代码，您可以跨账户版本控制、检查和重现 LangSmith 环境，而无需单击 AWS 控制台。
 
 安装分两个阶段运行：
 
@@ -122,7 +122,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 
 ### 许可证密钥和域名
 
-必须在 `terraform apply` 之前准备好两个非 AWS 项目：- **LangSmith 许可证密钥。** [Contact sales](https://www.langchain.com/contact-sales) 请求一个。密钥由设置脚本存储在 AWS SSM Parameter Store 中，而不是存储在 `tfvars` 中。
+必须在 `terraform apply` 之前准备好两个非 AWS 项目：- **LangSmith 许可证密钥。** [Contact our sales team](https://www.langchain.com/contact-sales) 请求一个。密钥由设置脚本存储在 AWS SSM Parameter Store 中，而不是存储在 `tfvars` 中。
 - **解析为 AWS 账户的域或子域**，以及覆盖该账户的 ACM 证书（或 `letsencrypt` / `none` 对于 `tls_certificate_source` 变量）。
 
 ### 集群大小参考
@@ -260,7 +260,7 @@ langsmith_domain       = "langsmith.example.com"
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重用导出的值，读取现有的 SSM 参数，自动生成一个（用于盐和令牌），要么提示您。许可证密钥和管理员密码是您以交互方式提供的两个值。必须获取脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生 SSM 路径 `/langsmith/{name_prefix}-{environment}/`，然后对于每个机密，要么重用导出的值，读取现有的 SSM 参数，自动生成一个（用于盐和令牌），要么提示您。许可证密钥和管理员密码是您交互提供的两个值。必须获取脚本（而不是执行），因为 `make` 无法将环境变量导出回父 shell。
 
 该脚本管理以下 SSM 参数：| SSM 密钥 |如何设置 |笔记|
 |---|---|---|
@@ -268,7 +268,7 @@ source infra/scripts/setup-env.sh
 | `redis-auth-token` |自动生成 (`openssl rand -hex 32`) | ElastiCache 需要十六进制 |
 | `langsmith-api-key-salt` |自动生成 (`openssl rand -base64 32`) |永不旋转，会破坏所有 API 密钥 |
 | `langsmith-jwt-secret` |自动生成 (`openssl rand -base64 32`) |永不轮换，使所有会话无效 |
-| `langsmith-license-key` |提示|来自您的 LangChain 客户团队 |
+| `langsmith-license-key` |提示|来自[our sales team](https://www.langchain.com/contact-sales) |
 | `langsmith-admin-password` |提示|必须包含符号 |
 | `deployments-encryption-key` |自动生成 Fernet 密钥 | LangSmith 部署附加组件 |
 | `agent-builder-encryption-key` |自动生成 Fernet 密钥 | Agent Builder 附加组件（由 Fleet 重复使用）|
@@ -473,7 +473,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 
 - 参考[AWS variables](/langsmith/self-host-terraform-aws-variables)和[quick reference](/langsmith/self-host-terraform-aws-quick-reference)。
 - 查看 [AWS architecture](/langsmith/self-host-terraform-aws-architecture) 的平台层、IRSA 和模块依赖性。
-- 当出现故障时，检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
+- 当出现故障时，请检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
 - 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
 
 ---

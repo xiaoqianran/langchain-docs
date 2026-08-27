@@ -4,7 +4,7 @@
 
 # 管理您帐户中的账单
 
-本页面介绍如何管理您的 LangSmith 组织的账单：
+本页面介绍如何管理 LangSmith 组织的账单：
 
 - [Set up billing for your account](#set-up-billing-for-your-account)：完成 Developer 和 Plus 计划的计费设置流程，包括旧帐户的特殊说明。
 - [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
@@ -16,7 +16,7 @@
 <Note>
 使用本指南之前，请注意以下事项：
 
-- 如果您对[Enterprise](https://www.langchain.com/pricing)计划感兴趣，请[contact sales](https://www.langchain.com/contact-sales)。本指南仅适用于我们的自助计费计划。
+- 如果您对[Enterprise](https://www.langchain.com/pricing)计划感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。本指南仅适用于我们的自助计费计划。
 </Note>
 
 要为您的 LangSmith 组织设置计费，请导航至 **设置** 下的 [Billing and Usage](https://smith.langchain.com/settings/payments) 页面。根据您组织的设置，有不同的设置指南：
@@ -46,7 +46,7 @@
 合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有 [⟦T0⟧ permission](/langsmith/organization-workspace-operations) 才能访问此功能。查看预付合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
 
 <Note>
-有关企业计划的更多详细信息，[contact the sales team](https://www.langchain.com/contact-sales)。
+有关企业计划的更多详细信息，[contact our sales team](https://www.langchain.com/contact-sales)。
 </Note>
 
 ## 更新您的信息（仅限付费计划）
@@ -151,11 +151,11 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 400 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 </Note>
 
-例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
 
 ![P2sampletraces](/langsmith/images/P2SampleTraces.png)
 
-如果出于数据收集目的，您希望将跟踪子集保留**超过 400 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
+如果出于数据收集目的而希望将跟踪子集保留**超过 400 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
 
 ### LangSmith 部署计费
 
@@ -168,7 +168,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 这种基于使用情况的模型取代了之前的按运行和正常运行时间定价。现有客户在 2026 年 10 月 1 日之前仍保持当前定价，然后转向新型号。缩放至零仅适用于按新定价进行的部署。随着功能的推出，无服务器部署扩展到零之前的不活动窗口可能会发生变化。有关转换的问题，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
 </Note>
 
-对于大批量部署使用，[contact the sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。
+对于大批量部署使用，[contact our sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。
 
 ### 总结
 

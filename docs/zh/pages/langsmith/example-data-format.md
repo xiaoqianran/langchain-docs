@@ -20,7 +20,8 @@ LangSmith 将示例存储在数据集中，如下所示：
 | **修改\_at** |日期时间 |上次修改此示例的时间 || **输入** |对象|该示例的输入映射。                                                                                  |
 | **输出** |对象|运行生成的映射或输出集。                                                                     |
 | **数据集\_id** | UUID |示例所属的数据集 |
-| **源\_run\_id** | UUID |如果此示例是从 LangSmith [⟦T0⟧](/langsmith/run-data-format) 创建的，则所述运行的 ID |
+| **源\_run\_id** | UUID |对于从 LangSmith [⟦T0⟧](/langsmith/run-data-format) 创建的示例，该运行的 ID |
+| **源\_线程\_id** |字符串|对于从 [thread](/langsmith/observability-concepts#threads) 或从线程中的运行创建的示例，该线程的 ID |
 | **元数据** |对象|可以存储在示例中的附加、用户或 SDK 定义信息的映射。                            |
 
 要了解有关如何在评估中使用示例的更多信息，请阅读我们关于 [evaluating LLM applications](/langsmith/evaluate-llm-application) 的操作指南。

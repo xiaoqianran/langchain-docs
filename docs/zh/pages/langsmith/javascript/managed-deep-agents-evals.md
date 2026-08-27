@@ -4,195 +4,160 @@
 
 # 评估托管Deep Agents
 
-托管 Deep Agents 评估是 [Harbor](https://www.harborframework.com/docs/tasks) 评估。 `evals/tasks/` 是规范的 Harbor 数据集。作者使用 Harbor 的任务格式、环境和验证器完成任务。
+托管 Deep Agents 评估是 [Harbor](https://www.harborframework.com/docs/tasks) 任务。使用具有[⟦T8⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md)的编码代理来检查项目，起草任务规范供您审阅，并在`evals/`下编写完整的任务。
 
-`mda evals` 命令不会引入单独的 eval 格式或运行试验。他们打包了 Harbor 的托管代理，并且可以选择将 `evals/scaffold/` 下的最小启动任务转换为 `evals/tasks/` 下的完整任务。
+Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针对每个任务运行托管代理并记录结果。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
-## 项目结构
+## 先决条件
 
-将所有 eval 文件保存在一个顶级 `evals/` 目录下：
+在评估之前，请确保您拥有：
+
+- 使用 `mda init` 创建的托管 Deep Agents 项目，或具有代理条目的现有项目。
+- [⟦T11⟧](https://docs.astral.sh/uv/)，运行固定的 Harbor 版本和插件。
+- [Docker](https://docs.docker.com/get-docker/)，Harbor 用于任务环境。
+- 编码剂。支持特工技能的特工可以直接安装`eval-engineering`。对于其他代理，请在会话中提供技能说明。
+
+## 添加`eval-engineering`技能
+
+[⟦T14⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md) 引导编码代理发现代理、提出任务规范并构建经过审查的 Harbor 任务。要将其添加到当前项目，请运行：
 
 
+
+```bash
+npx skills add langchain-ai/langchain-skills --skill eval-engineering --yes
+```
+
+
+您可以使用任何编码剂。
+
+<Tip>
+要使用 [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`)，请安装：
+
+```bash
+curl -LsSf https://langch.in/dcode | bash
+```
+
+请参阅 [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) 了解提供程序设置和交互使用。
+</Tip>## 使用编码代理开发评估
+
+<Steps>
+  <Step title="Initialize the eval workspace" id="initialize-the-eval-workspace">
+
+从项目根目录运行：
+
+```bash
+mda evals init -i
+```
+
+交互式切换列出了检测到的编码代理，包括Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
+
+初始化创建：
 
 ```text
 my-agent/
-├── agent.ts
-└── evals/                          # Harbor workspace
-    ├── tasks/                      # Canonical Harbor dataset
-    │   └── <task>/
-    └── scaffold/                   # Optional starter tasks
-        └── <task>/
+├── evals/
+│   └── harbor-job.json
+└── .mda/
+    └── evals/
+        ├── runtime.json
+        └── harbor-adapter/
 ```
 
+`evals/harbor-job.json` 是用户拥有的。托管 Deep Agents 仅在丢失时才写入它，因此会保留以后的编辑。生成`.mda/evals/`下的文件。
 
-可选脚手架与其规范的 Harbor 任务具有单向关系：
+  </Step>
+
+  <Step title="Start the coding-agent session" id="start-the-coding-agent-session">
+
+切换要求选定的编码代理安装`eval-engineering`技能并将其用于项目。如果您已添加该技能，请继续该会话。
+
+要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：
 
 ```text
-evals/scaffold/<task>/ → mda evals compile → evals/tasks/<task>/
+Use the eval-engineering skill to develop Harbor evals for this Managed
+Deep Agent. Inspect the project and existing evals first. Draft the Task
+Spec and wait for my review before implementing the approved task directly
+under evals/<task>/.
 ```
 
-<Note>
-`evals/scaffold/` 不是第二个评估系统。 Harbor 在`evals/tasks/`下运行任务。仅当您希望 Managed Deep Agents 创建最小起点时才使用脚手架。
-</Note>
+与编码代理一起审查任务规范、任务说明、环境、验证者和可重用的项目知识。在您批准设计后，编码代理将编写可运行的任务。
 
-## 选择创作工作流程
+  </Step>
 
-使用以下方法之一来填充规范 Harbor 数据集：- **直接创作Harbor任务**：在`evals/tasks/`下创建一个完整的任务并使用Harbor进行管理。当您需要完整的 Harbor 任务格式时，请使用此工作流程。
-- **从可选的脚手架开始**：运行`mda evals init <name>`在`evals/scaffold/`下创建一个最小任务，然后使用代理工件和Harbor适配器将其编译为`evals/tasks/`。
+  <Step title="Review the Harbor task" id="review-the-harbor-task">
 
-## 先决条件
-
-- 使用 `mda init` 创建的托管 Deep Agents 项目，或具有代理条目的现有项目。
-- 使用Harbor默认的`docker`环境时，[Docker](https://docs.docker.com/get-docker/)在本地运行。
-- 来自 `managed-deepagents` 的 `mda` CLI。请参阅[CLI reference](/langsmith/javascript/managed-deep-agents-cli#install)。
-- [Harbor](https://www.harborframework.com/docs) 在您的 `PATH` 或 [⟦T25⟧](https://docs.astral.sh/uv/) 上，这样您就可以运行 `uv run --with harbor …`。
-- 在运行 Harbor 的 shell 中导出的模型和工具凭据。
-
-<Note>
-Harbor 不会从项目 `.env` 文件加载值。当 Managed Deep Agents 生成 Harbor 作业配置时，它会为符合条件的 `.env` 键写入 `${VAR}` 占位符，而不是它们的值。在运行 Harbor 之前导出所需的变量。
-</Note>
-
-## 作者 Harbor 直接评估
-
-当您需要完全控制时，请使用 Harbor 的完整任务格式。一个任务可以定义它的指令、环境、验证器、元数据和其他Harbor配置：
+包含指令和测试的`evals/`的每个直接子级都是Harbor任务：
 
 ```text
 evals/
-  tasks/
-    my-task/
-      instruction.md
-      task.toml
-      environment/
-        Dockerfile
-      tests/
-        test.sh
-```每个任务都描述了代理应该做什么。 Harbor在任务环境中运行代理，然后运行`tests/test.sh`对结果进行评分。评分时，主要路径有：
+├── harbor-job.json
+└── <task>/
+    ├── Task.md
+    ├── instruction.md
+    ├── task.toml
+    ├── environment/
+    │   └── Dockerfile
+    └── tests/
+        ├── test.sh
+        └── <verifier>
+````Task.md` 是经过人工审核的规范。 `instruction.md` 告诉代理要做什么。 Harbor构建任务环境，运行托管代理，然后运行`tests/test.sh`。验证者将数字奖励写入`/logs/verifier/reward.txt`或将数字指标写入`/logs/verifier/reward.json`。
 
-|路径|目的|
-| ---| ---|
-| `/app` |代理工作目录和任务输出。 |
-| `/tests` |任务验证器文件。 |
-| `/logs/verifier/` |验证者奖励输出。 |
+完整的任务格式请参见[Harbor task documentation](https://www.harborframework.com/docs/tasks)。
 
-验证者必须将数字奖励写入`/logs/verifier/reward.txt`或将数字指标写入`/logs/verifier/reward.json`。有关完整的任务格式和验证器选项，请参阅[Harbor task documentation](https://www.harborframework.com/docs/tasks)。
+  </Step>
 
-当 Managed Deep Agents 编译具有其他名称的脚手架时，您直接在 `evals/tasks/` 下创作的文件将被保留。
+  <Step title="Run the evals" id="run-the-evals">
 
-## 搭建 Harbor 任务
+编码代理切换包括为项目和当前 shell 配置的命令。从项目根目录运行该命令。
 
-此可选工作流程创建一个最小源任务，托管 Deep Agents 可以完成该任务并将其复制到规范的 Harbor 数据集中。
-
-
-
-托管 Deep Agents 通过指令和 TypeScript 测试构建任务。
-
-
-从托管 Deep Agents 项目根运行以下命令：
+在 macOS 或 Linux 上，它具有以下形式：
 
 ```bash
-mda evals init smoke
+HARBOR_LANGSMITH_DATASET=mda-my-agent-evals \
+PYTHONPATH=.mda/evals/harbor-adapter \
+uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor run \
+  --config evals/harbor-job.json --yes \
+  --plugin mda_harbor.job_plugin:MDAJobPlugin \
+  --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
 ```
 
-任务名称可以包含 ASCII 字母、数字、`_` 和 `-`。使用其他名称运行命令以添加另一个任务。 `mda init` 不会自动创建 eval 任务。
+将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。
 
-该命令创建以下布局：
+编辑代理后重新运行命令会拾取项目更改。
 
+  </Step>
 
+  <Step title="Inspect the results" id="inspect-the-results">
 
-```text
-evals/
-  scaffold/
-    smoke/
-      instruction.md
-      tests/
-        answer.test.ts
-```启动任务要求代理写入包含`PONG`的`answer.txt`。将指令和测试替换为代表您的应用程序的行为。
-
-
-
-```ts
-import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { test } from "node:test";
-
-test("answer.txt contains exactly PONG", () => {
-  const text = readFileSync("/app/answer.txt", "utf8").trim();
-  assert.equal(text, "PONG");
-});
-```
-
-
-### 编译脚手架任务
-
-编译`evals/scaffold/`下的每个脚手架：
+打开Harbor结果：
 
 ```bash
-mda evals compile .
+uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
+  harbor view .mda/evals/jobs
 ```
 
-要刷新特定的脚手架，请重复`--task`：
+与您的编码代理一起审查失败的试验。当评估未测量预期行为时更新任务或验证程序。当评估暴露产品故障时更新托管代理，然后再次运行相同的 Harbor 命令。
 
-```bash
-mda evals compile . --task smoke --task regression
-```
+  </Step>
+</Steps>
 
-对于每个选定的脚手架，托管Deep Agents：
+## 编辑 Harbor 作业
 
-1.替换`evals/tasks/`下的匹配目录。
-2. 从`evals/scaffold/`复制完整的脚手架。
-3. 当脚手架不提供时，增加`tests/test.sh`。包装器运行语言本机测试并编写 `1` 或 `0` 奖励。
+编辑 `evals/harbor-job.json` 以更改数据集、尝试、并发、环境设置或代理环境变量。当您再次运行 `mda evals init` 时，托管 Deep Agents 会保留该文件。
 
-`evals/tasks/` 下未选择的任务将被保留，包括直接作为 Harbor 任务编写的任务。生成的Harbor作业使用`evals/tasks/`下的所有任务作为其数据集。
+## 记录LangSmith的运行情况当`LANGSMITH_API_KEY`可用时，LangSmith插件将Harbor运行记录在由`HARBOR_LANGSMITH_DATASET`命名的数据集中。
 
-<Warning>
-将`evals/scaffold/<name>/`视为脚手架任务的事实来源。编译该脚手架会替换整个匹配的 `evals/tasks/<name>/` 目录，包括仅对规范副本进行的更改。
-</Warning>
+## 另请参阅
 
-您可以将 Harbour 文件（例如 `task.toml`、`environment/` 或自定义 `tests/test.sh`）添加到`evals/scaffold/<name>/` 下的脚手架。 Managed Deep Agents 在编译期间将它们复制到规范的 Harbor 任务中。
-
-### 检查编译后的切换
-
-编译写入或更新Harbor工作区：|路径|内容 |
-| ---| ---|
-| `evals/artifact/` |已编译的托管代理和工件清单。 |
-| `evals/harbor-adapter/` | Harbor 导入用于运行代理的嵌入式 `mda_harbor` 适配器。 |
-| `evals/tasks/` | Canonical Harbor 数据集，包括编译的支架和直接编写的任务。 |
-| `evals/harbor-job.json` |准备编辑 Harbor 作业配置。 |
-| `evals/harbor-jobs/<id>/` |本次编译的本地试验结果。 |
-
-编译支持以下可重复标志：
-
-|旗帜|目的|
-| ---| ---|
-| `--task <name>` |选择一项任务。重复此操作以选择更多任务。如果选定任务的源位于 `evals/scaffold/` 下，则托管 Deep Agents 会刷新其规范副本。省略该标志以选择所有任务并刷新每个脚手架。 |
-| `--model <provider:model>` |在工件清单中记录模型。生成的作业配置使用第一个模型。如果省略，托管 Deep Agents 使用代理的模型（如果可用）。 |
-
-检查您的项目使用的 `evals/` 下的 Harbor 定义和配置。将 `evals/harbor-jobs/` 下的本地运行输出保持在版本控制之外。 `evals/` 目录不包含在已部署的代理版本中。
-
-## 使用 Harbor 进行试验`mda evals compile` 打印为编译后的代理配置的 Harbor 命令。导出编译摘要中列出的变量，然后从项目根目录运行命令：
-
-```bash
-export OPENAI_API_KEY="<OPENAI_API_KEY>"
-
-PYTHONPATH=evals/harbor-adapter \
-  uv run --with harbor harbor run --config evals/harbor-job.json --yes
-```
-
-如果`harbor`已经在您的`PATH`上，则打印的命令直接使用`harbor run`而不是`uv run --with harbor`。
-
-编辑 `evals/harbor-job.json` 以更改任务数据集、模型、环境、并发或尝试。 Harbor 拥有试验编排、环境和报告。有关作业配置和运行选项，请参阅[Harbor documentation](https://www.harborframework.com/docs)。
-
-再次运行相同的命令将恢复配置引用的作业目录。重新编译，或者传递一个新的`--job-name`，开始新的运行。
-
-## 后续步骤
-
-- [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看所有 `mda evals` 命令和标志。
+- [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看`mda evals init` 和相关标志。
 - [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：在评估通过后部署代理。
-- [Harbor documentation](https://www.harborframework.com/docs)：配置任务、环境、作业和验证者。
+- [Deep Agents Code quickstart](/oss/deepagents/code/quickstart)：安装并运行`dcode`。
+- [Harbor integrations](/langsmith/harbor-integrations)：在LangSmith记录Harbor工作。
+- [Harbor task documentation](https://www.harborframework.com/docs/tasks)：配置任务、环境和验证者。
 
 ---
 

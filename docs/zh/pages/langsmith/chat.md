@@ -14,6 +14,7 @@
 - [Projects](#projects)：浏览和过滤项目中的运行。
 - [Trace pages](#trace-pages)：分析各个运行和执行跟踪。
 - [Thread views](#thread-views)：了解对话线程和用户交互。
+- [Engine](#engine)：调查检测到的问题及其链接的痕迹。
 
 **及时工程：**
 - [Playground](#playground)：编辑和优化提示。
@@ -37,9 +38,9 @@ src="/langsmith/images/polly-datasets-dark.png"
 alt="Chat in the sidebar on a dataset view."
 />
 
-## 开始吧
+## 开始吧在开始使用 Chat 之前，您需要为您使用的模型添加 API 密钥：
 
-在开始使用 Chat 之前，您需要为您使用的模型添加 API 密钥：在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
+在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
 
 1. 导航至 <Icon icon="settings" /> **设置**，然后移至 **秘密** 选项卡。
 1. 选择 **添加密钥** 并输入密钥环境变量（例如`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）以及您的 API 密钥作为 **值**。
@@ -65,9 +66,9 @@ Chat 支持以下开箱即用的模型提供程序：
 - 米斯特拉尔
 - xAI
 - 深寻
-- 烟花人工智能
+- 烟花人工智能您还可以通过启用该配置上的 **在聊天中可用** 切换来使用您在 [Playground Settings](/langsmith/prompt-engineering-concepts#playground) 中配置的任何自定义模型。工作区管理员管理可用的自定义模型。
 
-您还可以通过启用该配置上的 **在聊天中可用** 切换来使用您在 [Playground Settings](/langsmith/prompt-engineering-concepts#playground) 中配置的任何自定义模型。工作区管理员管理可用的自定义模型。### 键盘快捷键
+### 键盘快捷键
 
 |行动|苹果电脑| Windows/Linux |
 |---|---|---|
@@ -88,15 +89,15 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 跟踪页面
 
-在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。
-
-**问题示例：**
+在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。**问题示例：**
 - “特工有什么可以做得更好的地方吗？”
 - “为什么这次运行失败了？”
 - “在这条追踪中什么花费了最多的时间？”
 - “总结一下这段痕迹中发生了什么”
 
-### 线程视图在 **Threads** 选项卡下，Chat 会分析对话 [threads](/langsmith/observability-concepts#threads)，以帮助您了解用户情绪、对话结果和交互模式。使用聊天来识别用户痛点并了解问题是否得到解决。
+### 线程视图
+
+在 **Threads** 选项卡下，Chat 会分析对话 [threads](/langsmith/observability-concepts#threads)，以帮助您了解用户情绪、对话结果和交互模式。使用聊天来识别用户痛点并了解问题是否得到解决。
 
 **问题示例：**
 - “用户看起来是否感到沮丧？”
@@ -104,11 +105,20 @@ Chat 支持以下开箱即用的模型提供程序：
 - “用户的问题解决了吗？”
 - “这个帖子的主题是什么？”
 
+### 引擎
+
+在 [Engine](/langsmith/engine) 页面上，打开聊天以调查检测到的问题及其链接的跟踪。聊天可以帮助您了解所选问题，或回答多个引擎问题的问题。例如：
+
+**问题示例：**
+- “出了什么问题？”
+- “为什么会被标记？”
+- “解释建议的修复方案”
+- “我最紧迫的问题是什么？”
+- “我有多少新问题？”
+
 ## 快速工程
 
-### 游乐场
-
-在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用自动化选项，如**优化提示**、**生成工具**或**生成输出架构**，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态（更新消息、工具、输出模式和示例），以便您可以通过对话方式迭代提示。
+### 游乐场在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用自动化选项，如**优化提示**、**生成工具**或**生成输出架构**，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态（更新消息、工具、输出模式和示例），以便您可以通过对话方式迭代提示。
 
 **问题示例：**
 - “让它用意大利语回应”
@@ -118,7 +128,9 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 提示中心页面
 
-在[LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。**问题示例：**
+在[LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
+
+**问题示例：**
 - “这个提示有什么作用？”
 - “这个提示使用什么工具？”
 - “解释一下这个提示的结构”
@@ -126,9 +138,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ## 评价
 
-### 数据集实验
-
-在 **实验** 选项卡下的 **数据集** 页面上，Chat 分析实验结果并帮助您比较不同实验的运行情况。聊天可以识别模式、总结性能并帮助您了解哪些方法最有效。
+### 数据集实验在 **实验** 选项卡下的 **数据集** 页面上，Chat 分析实验结果并帮助您比较不同实验的运行情况。聊天可以识别模式、总结性能并帮助您了解哪些方法最有效。
 
 **问题示例：**
 - “哪个实验表现最好？”
@@ -138,7 +148,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 数据集示例
 
-在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用哪些数据以及准备实验数据集非常有用。
+在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用的数据以及准备实验数据集非常有用。
 
 **问题示例：**
 - “这个数据集中的数据是什么类型？”
@@ -146,9 +156,9 @@ Chat 支持以下开箱即用的模型提供程序：
 - “您在输入中看到什么模式？”
 - “这个数据集中有多少个例子？”
 
-### 注释队列在**注释队列**中，聊天可以帮助您在做出注释决策之前分析运行。无论您是单独查看运行还是成对比较，Chat 都可以提供有关运行行为、错误和执行模式的见解，以便为您的评分提供信息。
+### 注释队列
 
-**问题示例：**
+在**注释队列**中，聊天可以帮助您在做出注释决策之前分析运行。无论您是单独查看运行还是成对比较，Chat 都可以提供有关运行行为、错误和执行模式的见解，以便为您的评分提供信息。**问题示例：**
 - “这次跑步出了什么问题？”
 - “总结一下这次运行中发生的事情”
 - “比较这两次运行”
@@ -200,7 +210,9 @@ Chat 支持以下开箱即用的模型提供程序：
   >
     系统地评估和测试您的应用程序
   </Card>
-</CardGroup>---
+</CardGroup>
+
+---
 
 <div className="source-links">
 <Callout icon="terminal-2">

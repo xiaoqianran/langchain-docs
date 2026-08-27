@@ -5,7 +5,7 @@
 # LangSmith 自托管引擎
 
 <Info>
-自承载引擎需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。它在早期图表版本中不可用。 [Contact your account team](https://www.langchain.com/contact-sales) 将权利添加到您的订单中。
+自承载引擎需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。它在早期图表版本中不可用。 [Contact our sales team](https://www.langchain.com/contact-sales) 将权利添加到您的订单中。
 </Info>
 
 LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，将它们聚集成问题，根据源代码诊断每个问题，提出修复作为PR，并识别地面真实评估以添加到您的数据集。有关产品概述，请参阅[Engine](/langsmith/engine-overview)。
@@ -23,11 +23,11 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 当 LSI 可用时，引擎可用：
 
 |云|地区 |状态 |
-| ---| ---| ---|
+| --- | --- | --- |
 |亚马逊AWS |美国 |可用 |
 | GCP |美国 |可用 |
 
-有关其他地区的可用性，请联系您的客户团队。
+对于其他地区的可用性，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ## 它是如何工作的
 
@@ -69,7 +69,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 <Steps>
   <Step title="Request access">
-    请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
+    请联系您的客户代表或 [sales@langchain.dev](mailto:sales@langchain.dev) 并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
   </Step>
 
   <Step title="Create the interface VPC endpoint">

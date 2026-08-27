@@ -11,7 +11,7 @@ LangSmith Engine 是用于代理工程的LangSmith Agent。它从生产跟踪到
 ## 引擎的整个生命周期
 
 对于每个问题，引擎都会显示贡献的跟踪，提出修复方案，通过附加与相同故障模式匹配的新跟踪来保持问题最新，并根据生产跟踪输入创建地面实况数据集示例。<CardGroup cols={3}>
-  <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-a-pull-request">
+  <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-or-view-a-pull-request">
     通过在连接的存储库中打开拉取请求来应用建议的修复。引擎可以对使用Deep Agents、LangChain和LangGraph构建的代理提出代码更改建议。
   </Card>
   <Card title="Test: Generate datasets" icon="database" href="/langsmith/engine#add-offline-examples">

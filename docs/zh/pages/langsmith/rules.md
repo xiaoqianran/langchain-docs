@@ -42,15 +42,16 @@
 ### 配置线程规则
 
 选择 **Threads** 会更改规则形式的三个部分：- **线程过滤器**：过滤器构建器将 **跟踪计数** 和 **线程 ID** 添加到可用字段。根据 **跟踪计数** 进行过滤，将规则范围限定为给定长度的对话。其他字段评估线程中的每个跟踪而不是整个线程，因此当任何跟踪匹配时，线程就匹配。例如，**状态** 上的筛选器会选择包含错误跟踪的每个线程，而不仅仅是上次跟踪出错的线程。
-- **操作**：表单提供一个操作，**添加到注释队列**或**触发 Webhooks**。 **添加到数据集** 目前不可用。
+- **操作**：表单提供**添加到注释队列**、**添加到数据集**或**触发 Webhooks**。
 - **应用于过去的运行**：当前不为线程规则提供回填。
 
-两个线程操作的行为如下：
+三个线程操作的行为如下：
 
 - **添加到注释队列**：将线程作为线程项添加到队列中。主题项目显示对话记录并仅支持标题反馈。关于运行项和线程项的区别，请参阅[annotation queue capability table](/langsmith/annotation-queues#single-run-annotation-queues)。
-- **触发 Webhooks**：发送一个有效负载，其顶级 `threads` 数组保存每个匹配的线程。欲了解更多信息，请参阅[Read a thread rule payload](/langsmith/webhooks#read-a-thread-rule-payload)。
+- **添加到数据集**：为每个匹配线程创建一个数据集示例。每个示例都包含该线程的完整对话。
+- **触发 Webhooks**：发送一个有效负载，其顶级 `threads` 数组保存每个匹配的线程。欲了解更多信息，请参阅[Read a thread rule payload](/langsmith/webhooks#read-a-thread-rule-payload)。### 设置线程空闲时间
 
-### 设置线程空闲时间线程规则仅在线程空闲后起作用。一旦提取了线程中的最后一个跟踪，LangSmith 就会等待跟踪项目配置的空闲时间过去，这表示会话已完成。空闲时间默认为 10 分钟，且不能设置低于 2 分钟。
+线程规则仅在线程空闲后起作用。一旦提取了线程中的最后一个跟踪，LangSmith 就会等待跟踪项目配置的空闲时间过去，这表示会话已完成。空闲时间默认为 10 分钟，且不能设置低于 2 分钟。
 
 空闲时间是与[multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)共享的项目级设置。在项目上创建第一个线程规则会应用默认值，而不会覆盖已为该项目设置的值，并且更改该值会影响其中的每个线程评估器和线程规则。
 
@@ -79,18 +80,18 @@
     回填作为后台作业进行处理，因此您不会立即看到结果。为了跟踪回填进度，您可以[view logs for your automations](#view-logs-for-your-automations)。
     </Note>
 
-1. 选择应用规则时要触发的操作。项目类型为 **运行** 的规则提供以下所有操作。项目类型为 **线程** 的规则仅提供 **添加到注释队列** 和 **触发 Webhooks**。- **添加到数据集**：将跟踪的输入和输出添加到[dataset](/langsmith/evaluation-concepts#datasets)。
-    - **添加到注释队列**：将匹配的运行或跟踪添加到[annotation queue](/langsmith/annotation-queues)作为运行项。话题规则将整个对话添加为话题项目。如需手动添加线程，请参阅[Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
+1. 选择规则执行的操作。 **运行** 项目类型的规则支持下面的每个操作。具有**线程**项目类型的规则仅支持**添加到注释队列**、**添加到数据集**和**触发 Webhooks**。- **添加到注释队列**：将匹配的运行或跟踪添加到[annotation queue](/langsmith/annotation-queues)作为运行项。话题规则将整个对话添加为话题项目。如需手动添加螺纹，请参阅[Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
+    - **添加到数据集**：运行规则将跟踪的输入和输出添加到[dataset](/langsmith/evaluation-concepts#datasets)。线程规则为每个匹配线程创建一个示例。每个示例都包含该线程的完整对话。
     - **触发 Webhooks**：将匹配的项目发布到规则上配置的每个 [webhook](/langsmith/webhooks) URL。
     - **延长数据保留**：延长使用基本保留[(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention)的匹配跟踪的数据保留期限。
 
         <Note>
-        每个操作都有一个独立的**扩展数据保留**开关，用于控制匹配跟踪是否升级为扩展保留。两种项目类型的默认值相同：
-
-        - **添加到数据集**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
+        每个操作都有一个独立的**扩展数据保留**开关，用于控制匹配跟踪是否升级为扩展保留。两种项目类型的默认值相同：- **添加到数据集**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
         - **添加到注释队列**：选择退出（默认：打开）。禁用切换以跳过升级匹配跟踪。
         - **触发 Webhooks**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
-        - **扩展数据保留**操作和在线/代码评估器：不变；始终升级匹配的痕迹。对于线程规则，启用的切换会升级匹配线程中的每个跟踪。欲了解更多信息，请参阅[Extend data retention for a thread](#extend-data-retention-for-a-thread)。
+        - **扩展数据保留**操作和在线/代码评估器：不变；始终升级匹配的痕迹。
+
+        对于线程规则，启用的切换会升级匹配线程中的每个跟踪。欲了解更多信息，请参阅[Extend data retention for a thread](#extend-data-retention-for-a-thread)。
 
         每个操作的保留切换是仅限管理员控制，由 [⟦T2⟧](/langsmith/organization-workspace-operations#rules) 权限控制。非管理工作区成员会看到切换已禁用并且无法更改它们，但仍然可以创建和编辑规则而不影响保留设置。完全保留模型请参考[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
         </Note>

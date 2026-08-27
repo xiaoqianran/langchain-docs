@@ -4,7 +4,7 @@
 
 # 将托管Deep Agents连接到通道
 
-通道将托管深度代理连接到外部消息服务。来自服务的消息可以启动代理运行，并且代理可以通过同一服务进行响应，而无需单独的应用程序服务器。
+通道使托管深度代理可在外部消息传递服务中使用。来自服务的消息可以启动代理运行，并且代理的最终响应通过同一服务返回。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -12,13 +12,13 @@
 
 ## 项目结构
 
-通道声明位于项目级 `channels/` 目录中，每个文件一个通道：
+通道声明位于项目级 `channels/` 目录中：
 
 ```text
 my-agent/
   agent.py
   channels/
-    support.py
+    slack.py
 ```
 
 
@@ -30,7 +30,7 @@ my-agent/
 
 - **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
 - **出站消息传送**：将代理的响应发送回原始对话。
-- **部署要求**：声明部署所需的机密和提供程序配置。
+- **配置**：创建并配置将服务连接到已部署代理的提供者资源。
 
 在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
 
@@ -50,9 +50,9 @@ flowchart LR
     class Provider trigger;
     class Verify,Thread,Run process;
     class Reply output;
-```提供程序适配器确定接受哪些事件、提供程序对话如何映射到托管Deep Agents线程以及如何传递响应。通道声明公开了该提供程序支持的配置。
+```
 
-## 声明项目中的通道
+提供程序适配器确定接受哪些事件、提供程序对话如何映射到托管Deep Agents线程以及如何传递响应。通道声明公开了该提供程序支持的配置。## 声明项目中的通道
 
 将每个通道放在`channels/`下的单独模块中。
 
@@ -61,16 +61,7 @@ flowchart LR
 
 
 
-文件名成为配置的通道名称。它在运行时识别通道并构成其入站路由的一部分。
-
-例如，`channels/support.py`中的声明接收以下位置的事件：
-
-
-
-
-```text
-POST /channels/support/events
-```
+文件名成为配置的通道名称并标识部署中的通道。
 
 不要将声明命名为 `channels/channel.py`。
 
@@ -86,20 +77,7 @@ POST /channels/support/events
 
 
 
-有关完整的声明和设置程序，请参阅提供商指南。
-
-## 在运行时访问原始通道
-
-通道发起的运行将 `runtime.channel` 暴露给工具和中间件。
-
-
-
-
-它包含规范化的事件和对话地址，以及发布和更新消息的方法。
-
-普通 HTTP 运行和计划运行没有原始通道，因此这些运行不存在 `runtime.channel`。默认情况下，托管运行器将代理对原始对话的最终响应发布。提供程序指南描述了如何自定义该行为并发送中间消息。
-
-计划运行可以通过指定通道提供结果，即使它们并非源自某个通道。参见[Schedules](/langsmith/python/managed-deep-agents-schedules#deliver-results-to-slack)。
+请参阅提供程序指南以了解其声明、应用程序配置和部署过程。
 
 ## 区分通道和连接器
 
@@ -116,13 +94,11 @@ POST /channels/support/events
 ## 另请参阅
 
 - [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
-- [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
+- [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定结果。
 - [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：部署项目更改并配置机密。
 - [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看频道项目文件约定。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

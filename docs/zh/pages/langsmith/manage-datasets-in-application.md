@@ -26,7 +26,7 @@
 
 <Check>
 构建数据集的技术是过滤最有趣的跟踪，例如标记有不良用户反馈的跟踪，并将它们添加到数据集。有关如何过滤跟踪的提示，请参阅 [Filter traces](/langsmith/filter-traces-in-application) 指南。
-</Check>有两种方法可以手动将数据从跟踪项目添加到数据集。导航到 **跟踪项目** 并选择一个项目。
+</Check>可通过三种方式将数据从跟踪项目手动添加到数据集。导航到 **跟踪项目** 并选择一个项目。
 
 1. 从运行表中选择多项运行。在 **运行** 选项卡上，多选运行。在页面底部，单击<Icon icon="database" /> **添加到数据集**。
 1. 在 **运行** 选项卡上，从表中选择运行。在单个运行详细信息页面上，选择右上角的 **添加到** -> **数据集**。
@@ -35,24 +35,33 @@
 
     然后，您可以选择编辑运行，然后再将其添加到数据集。
 
+1. 从线程表中多选线程。在 **线程** 选项卡上，多选线程。在页面底部，单击<Icon icon="database" /> **添加到数据集**。您可以在单个操作中最多添加 **100** 个线程。
+
+    要将线程发送到新数据集，请单击数据集选择器中的 **新数据集**。此窗格仅从头开始创建数据集，不提供架构编辑器。
+
+向数据集添加线程与添加运行不同：- **每个线程一个示例**：每个线程的完整对话都保存为一个示例。当您从线程添加运行时，每次运行都会成为一个单独的示例。
+- **无参考输出**：线程示例仅包含作为输入的对话。它们不包括参考输出。
+
 ### 自动从跟踪项目
 
-您可以使用[run rules](/langsmith/rules)根据特定条件自动将轨迹添加到数据集。例如，您可以添加具有特定用例的 [tagged](/langsmith/observability-concepts#tags) 或具有 [low feedback score](/langsmith/observability-concepts#feedback) 的所有跟踪。
+当满足指定条件时，使用[automation rules](/langsmith/rules)自动将轨迹添加到数据集中。例如，添加针对特定用例的 [tagged](/langsmith/observability-concepts#tags) 或具有 [low feedback score](/langsmith/observability-concepts#feedback) 的跟踪。
+
+规则的 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 控制它添加的内容。具有 **Runs** 项目类型的规则为每个匹配跟踪添加一个示例。项目类型为 **Threads** 的规则会等待对话空闲，然后为每个匹配的线程添加一个示例。
 
 ### 来自注释队列中的示例
 
 <Check>
 如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。
-</Check>您可以选择使用默认数据集配置注释队列，但您可以使用屏幕底部的数据集切换器将运行添加到任何数据集。选择正确的数据集后，单击 **添加到数据集** 或按热键 `D` 将运行添加到其中。
+</Check>您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为一个示例，运行项添加运行，线程项添加完整对话。
 
-您对注释队列中的运行所做的任何修改都将保留到数据集，并且与运行关联的所有元数据也将被复制。
+您对注释队列中的运行所做的更改（包括其元数据）将复制到数据集。您无法编辑主题项目。它们是在追踪时添加的。
 
 <Note>
-**添加到数据集**仅适用于**运行**队列项目。注释队列中的[Thread](/langsmith/observability-concepts#threads)项目支持评分反馈，但不支持数据集导出。
+默认数据集不可用于线程项目。
 </Note>
 
 <Tip>
-您还可以使用 [automation rules](/langsmith/rules) 设置规则以将满足特定条件的运行添加到注释队列。
+使用 [automation rules](/langsmith/rules) 将满足特定条件的运行或线程添加到注释队列。
 </Tip>
 
 ### 来自游乐场
@@ -74,7 +83,7 @@
 
 在 **数据集和实验** 页面上，单击 **+新建数据集**，然后 **从 CSV 或 JSONL 文件导入** 现有数据集。
 
-### 从数据集和实验页面创建新数据集
+### 从数据集和实验页面创建一个新数据集
 
 1. 从左侧菜单导航至 **数据集和实验** 页面。
 1. 单击 **+ 新建数据集**。
@@ -89,7 +98,7 @@
 
 在**生成示例**中，执行以下操作：
 
-1. 单击窗格右上角的 **API Key**，将您的 OpenAI API 密钥设置为 [workspace secret](/langsmith/administration-overview#workspaces)。如果您的工作区已有 OpenAI API 密钥集，您可以跳过此步骤。
+1. 单击窗格右上角的 **API Key**，将您的 OpenAI API 密钥设置为 [workspace secret](/langsmith/administration-overview#workspaces)。如果您的工作区已有 OpenAI API 密钥集，则可以跳过此步骤。
 1. 选择<Tooltip tip="A few sample input–output pairs that guide the model on how to perform a task.">few-shot Examples</Tooltip>：切换**自动**或**手动**参考示例。您可以从数据集中手动选择这些示例，也可以使用自动选择选项。
 1. 输入您要生成的综合示例的数量。
 1. 单击“**生成**”。

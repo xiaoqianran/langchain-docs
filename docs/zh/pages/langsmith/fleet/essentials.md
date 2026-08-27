@@ -72,27 +72,27 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 1. 在 **说明** 部分中，编辑代理说明。
 
 <Tip>
-您还可以通过直接在聊天中提示客服人员来更新说明。例如：“更新您的说明，始终以要点形式进行回复。”
+您还可以通过直接在聊天中提示客服人员来更新说明。例如：“更新您的说明，以便始终以要点进行回应。”
 </Tip>
 
 ## LangChain 计算单元 (LCU)
 
-队列使用情况以LangChain 计算单元 (LCU) 来衡量。 LCU 使用情况基于代理执行的 [model](#models) 工作，包括所选层及其处理和生成的内容量。<Note>
-新的 [model tiers](#models) 和 LCU 定价适用于自 **2026 年 7 月 15 日**起的新机队使用情况。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请联系您的 LangChain 客户团队了解转换事宜。
+队列使用情况以 LangChain 计算单元 (LCU) 来衡量。 LCU 使用情况基于代理执行的[model](#models) 工作，包括所选层及其处理和生成的内容量。<Note>
+新的 [model tiers](#models) 和 LCU 定价适用于自 **2026 年 7 月 15 日**开始的新机队使用情况。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
 </Note>
 
-配额在您的组织内共享并每月重置：
+配额在整个组织内共享并每月重置：
 
 - **免费计划**：每个组织每月 5 个 LCU。当配额用完时，Fleet 会暂停新的运行，直到配额重置或组织升级到 Plus。
 - **Plus 计划**：每个组织每月 25 个 LCU。额外使用需付费。有关当前费率，请参阅[LangSmith pricing page](https://www.langchain.com/pricing)。
 
-运行成本各不相同。舰队运行可以进行多个模型调用，任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LCU。
+运行成本各不相同。舰队运行可以进行多个模型调用，并且任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LCU。
 
-如果您的组织采用了祖父级 Plus 席位或跟踪定价，则当机队转向 LCU 定价时，这些费率不会发生变化。请联系您的客户团队以确认您组织的定价。
+如果您的组织采用了祖父级 Plus 席位或跟踪定价，则当机队转向 LCU 定价时，这些费率不会发生变化。 [Contact our sales team](https://www.langchain.com/contact-sales) 确认您组织的定价。
 
-＃＃ 记忆客服人员会记住之前对话中的重要信息，并可以自我更新以更好地工作。舰队代理使用两种内存来源：
+## 内存
 
-- **线程范围内存**：当前对话线程的上下文，包括该线程中的消息和操作。
+客服人员会记住之前对话中的重要信息，并可以自我更新以更好地工作。舰队代理使用两种内存来源：- **线程范围内存**：当前对话线程的上下文，包括该线程中的消息和操作。
 - **长期记忆**：代理工作区中的持久文件，例如`AGENTS.md`、`tools.json`（工具配置）、`subagents/*` 和 `skills/*`。它们在运行时加载，并在每次运行开始时可用。 `AGENTS.md` 自动插入到系统提示符中。其他长期文件不会自动添加到提示中；代理必须按需阅读它们（例如，使用`read_file`工具）。
 
 代理通过将文件写入**内存文件夹**（使用`write_file`和`edit_file`工具调用）来保留过去交互的相关详细信息。这有助于他们在未来的对话中做出更好的决定。
@@ -103,12 +103,12 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 对于在自动化 [schedules](/langsmith/fleet/schedules#add-a-schedule) 上运行的代理，我们建议使用 [disabling the approval requirement](/langsmith/fleet/manage-agent-settings#disable-required-approval-for-memory-updates)，以便代理可以在无需手动干预的情况下保留信息。
 </Note>
 
-欲了解更多信息，请参阅[How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/conceptual-guides/how-we-built-agent-builders-memory)。
+有关更多信息，请参阅[How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/conceptual-guides/how-we-built-agent-builders-memory)。
 
 ## 型号Fleet 为您管理模型。它为每项任务选择并维护一个强大的模型，因此您无需选择提供者、配置模型或提供 API 密钥即可获得良好的结果。使用量按[LangChain Compute Units (LCUs)](#langchain-compute-units-lcus)计费。
 
 <Note>
-自 **2026 年 7 月 15 日**起，新车型等级和 [LCU](#langchain-compute-units-lcus) 定价适用于新车队使用。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请联系您的 LangChain 客户团队了解转换事宜。
+自 **2026 年 7 月 15 日**起，新车型等级和 [LCU](#langchain-compute-units-lcus) 定价适用于新车队使用。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
 </Note>
 
 Fleet 提供三个托管层。随着新模型的推出，每层背后的模型可能会随着时间的推移而发生变化，因此您可以根据需要完成的工作而不是特定的提供商或模型进行选择。
@@ -119,7 +119,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 | **专业版** |更复杂的任务受益于更强的推理 |中等|
 | **最大** |最苛刻的任务，最大能力最重要 |高|
 
-### 定制模型在托管舰队模型选择器中，自定义模型不与 Fast、Pro 和 Max 一起使用。 LangChain 管理托管层的模型提供程序访问，因此您不需要自己的模型提供程序 API 密钥。如果企业部署需要自定义模型，请联系您的LangChain客户团队或[reach out to sales](https://www.langchain.com/contact-sales)。
+### 定制模型在托管舰队模型选择器中，自定义模型不与 Fast、Pro 和 Max 一起使用。 LangChain 管理托管层的模型提供程序访问，因此您不需要自己的模型提供程序 API 密钥。如果企业部署需要自定义模型，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ## 自我更新
 
@@ -184,7 +184,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 要查看特定线程的跟踪：1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-essentials) 中，导航至代理的收件箱。
 1. 右键单击​​要跟踪的线程，然后选择“**查看跟踪**”。
 
-欲了解更多信息，请参阅[LangSmith Observability](/langsmith/observability)。
+有关更多信息，请参阅[LangSmith Observability](/langsmith/observability)。
 
 <Note>
 Fleet 跟踪所有代理运行并将其存储在 LangSmith 中。 LLM 提供商不会保留您的数据。在LangSmith云上，跟踪数据默认保存14天。

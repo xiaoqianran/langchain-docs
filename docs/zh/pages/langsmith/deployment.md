@@ -4,7 +4,7 @@
 
 # LangSmith 部署
 
-**LangSmith 部署** 是专为代理工作负载构建的工作流编排运行时。它提供了在生产中大规模可靠运行所需的托管基础​​设施代理，支持从本地开发到部署的整个生命周期。
+**LangSmith 部署** 是专为代理工作负载构建的工作流编排运行时。它提供了在生产中大规模可靠运行所需的托管基础​​设施代理，支持从本地开发到部署的整个生命周期。部署到云、BYOC 或您自己的基础设施。
 
 <Note>
 本页介绍了您的 **代理** 如何通过 **LangSmith 部署** 在生产环境中运行。
@@ -57,11 +57,11 @@ LangSmith 部署与框架无关，这意味着您可以部署使用以下方式�
 
 </CardGroup>
 
-## LangSmith 部署环境
+## LangSmith 部署环境根据您希望运行 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)（代理服务器及其数据库）的位置选择环境。所有基础设施类型都使用相同的[Agent Server](/langsmith/agent-server)运行时。
 
-根据您希望运行 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)（代理服务器及其数据库）的位置选择环境。所有基础设施类型都使用相同的[Agent Server](/langsmith/agent-server)运行时。
+<CardGroup cols={2}>
 
-<CardGroup cols={2}><Card
+<Card
   title="Cloud"
   cta="View guide"
   href="/langsmith/deploy-to-cloud-overview"

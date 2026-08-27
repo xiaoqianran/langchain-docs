@@ -2,17 +2,81 @@
 
 <!-- langchain-docs: Sandbox snapshots | https://docs.langchain.com/langsmith/sandbox-snapshots -->
 
-# 沙箱快照
+# 沙盒快照
 
-**快照**是由 Docker 映像支持的可重用文件系统包。当您想要从自定义文件系统映像启动沙箱时，构建或捕获快照。
+**快照**是可重用的沙箱文件系统。当您想要从自定义文件系统映像启动沙箱时，可以从容器映像构建自定义快照。
 
 您还可以从正在运行的沙箱捕获快照 - 安装包、写入数据文件或配置状态，然后对结果进行快照并将其重新用作新的起点。
 
 ![Sandboxes snapshots page](/images/langsmith/sandboxes/sb-snapshots.png)
 
-## 从 Docker 镜像构建快照
+## 了解默认快照
 
-通过指向任何 Docker 映像来构建快照。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大图像，请提高超时时间）。
+当您创建沙箱而不选择快照时，LangSmith 使用内置的默认快照。默认提供带有通用开发工具的 Ubuntu 24.04 文件系统。 LangSmith 可能会随着时间的推移更新默认快照中包含的软件包和工具。
+
+### 检查自托管部署中的默认快照文件系统
+
+在自托管部署中，LangSmith从嵌入沙箱运行时容器映像中的文件系统创建默认快照，`sandbox-host`：
+
+1. 在`sandbox-host`镜像构建过程中，LangSmith从Ubuntu 24.04启动并安装默认开发工具。
+2. LangSmith 将该文件系统打包为`/opt/sandbox-host/bin/builder-base.ext4.gz` 处的压缩 16 GiB ext4 文件。
+3. 当`sandbox-host`启动时，LangSmith使用嵌入式文件系统创建默认快照。压缩的 ext4 文件，而不是单独拉取的容器映像，是默认快照文件系统的源。
+
+单独扫描 `sandbox-host` 容器映像不会检查此压缩工件内的文件。要验证默认快照，请单独提取并扫描嵌入式文件系统。
+
+<Note>
+此过程验证默认快照文件系统。 LangSmith 在沙箱启动时单独提供其他所需的运行时组件；它们不是快照的一部分。
+</Note>
+
+要独立检查默认快照，请使用 Helm 版本配置的确切 `sandbox-host` 容器映像。如果您镜像镜像，请使用您的私人注册表中的`images.sandboxHostImage`中的参考。
+
+您需要：
+
+- 访问已部署的 `sandbox-host` 映像。
+- Linux 系统上 `e2fsprogs` 软件包中的 Docker、`gzip`、GNU `dd` 和 `debugfs`。
+- 支持稀疏文件的本地文件系统，以及足够的空间用于压缩工件和提取的文件。 ext4 映像的逻辑大小为 16 GiB，但稀疏解压缩避免分配其零填充的可用空间。将文件提取到临时目录中，然后使用您首选的文件系统或软件物料清单 (SBOM) 扫描仪扫描生成的目录。
+
+设置部署使用的确切图像引用并创建临时工作目录：
+
+```bash
+export SANDBOX_HOST_IMAGE="<sandbox-host-image-reference>"
+export SNAPSHOT_WORKDIR="$(mktemp -d)"
+
+docker pull "$SANDBOX_HOST_IMAGE"
+```
+
+解压压缩的 ext4 文件而不启动 `sandbox-host` 进程：
+
+```bash
+SANDBOX_HOST_CONTAINER="$(docker create "$SANDBOX_HOST_IMAGE")"
+docker cp \
+  "${SANDBOX_HOST_CONTAINER}:/opt/sandbox-host/bin/builder-base.ext4.gz" \
+  "$SNAPSHOT_WORKDIR/"
+docker rm "$SANDBOX_HOST_CONTAINER"
+```
+
+将文件系统解压缩为稀疏文件：
+
+```bash
+gzip -dc "$SNAPSHOT_WORKDIR/builder-base.ext4.gz" | \
+  dd of="$SNAPSHOT_WORKDIR/builder-base.ext4" \
+    bs=1M conv=sparse status=progress
+```
+
+使用`debugfs`提取ext4内容。 `debugfs` 以只读方式打开文件系统，除非您通过 `-w`：
+
+```bash
+mkdir -p "$SNAPSHOT_WORKDIR/rootfs"
+debugfs \
+  -R "rdump / $SNAPSHOT_WORKDIR/rootfs" \
+  "$SNAPSHOT_WORKDIR/builder-base.ext4"
+```
+
+将文件系统或 SBOM 扫描仪指向 `$SNAPSHOT_WORKDIR/rootfs`。扫描器从 LangSmith 用于默认快照的同一根文件系统读取包数据库和文件。
+
+## 从容器镜像构建快照
+
+通过指向任何容器映像来构建快照。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大图像，请提高超时时间）。
 
 <CodeGroup>
 
@@ -45,6 +109,14 @@ console.log(snapshot.id);
 ```
 
 </CodeGroup>
+
+### 验证从容器镜像构建的快照
+
+LangSmith 从您提供的容器映像中的文件系统构建自定义快照。要独立验证这些内容：1. 将源容器镜像解析为不可变引用，例如`registry.example.com/example/image@sha256:<digest>`。
+2. 检查并扫描该精确图像。
+3. 创建快照时，使用与 `docker_image` 相同的摘要限定引用。
+
+LangSmith 在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
 
 ### 私有注册表
 
@@ -94,9 +166,9 @@ const snapshot = await client.createSnapshot(
 
 使用 `client.registries.list()`、`client.registries.retrieve(name)`、`client.registries.update(name, ...)` 和 `client.registries.delete(name)` 列出、检查、更新和删除注册表。
 
-## 从 Dockerfile 构建快照当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
+## 从 Dockerfile 构建快照
 
-该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
+当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
 
 <CodeGroup>
 
@@ -190,9 +262,9 @@ const snapshot = await client.createSnapshotFromDockerfile(
 );
 ```
 
-</CodeGroup>### 加速冷构建
+</CodeGroup>
 
-`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
+### 加速冷构建`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
 
 <CodeGroup>
 
@@ -329,8 +401,8 @@ curl -X POST \
 
 create 上的两个字段控制另一半：|领域 |它有什么作用 |
 |--------|--------------|
-| `restore_memory` |当快照有它时忽略它以从内存中恢复，而当快照没有时则冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
-| `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙盒在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
+| `restore_memory` |当快照有它时忽略它以从内存中恢复，而在没有它时冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
+| `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙箱在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
 
 ```bash
 curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
@@ -377,7 +449,7 @@ await client.deleteSnapshot(snapshot.id);
 </CodeGroup>
 
 <Note>
-`list_snapshots` / `listSnapshots` 在服务器端分页（默认页面大小 50，最大 500）并接受可选过滤器：`name_contains` / `nameContains`（名称中不区分大小写的子字符串）、`limit` (1–500) 和 `offset` (≥ 0)。通过前进 `offset` 翻页结果。
+`list_snapshots` / `listSnapshots` 在服务器端分页（默认页面大小 50，最大 500）并接受可选过滤器：`name_contains` / `nameContains`（名称中不区分大小写的子字符串）、`limit` (1–500) 和 `offset` (≥ 0）。通过前进 `offset` 翻页结果。
 
 <CodeGroup>
 
@@ -393,7 +465,7 @@ const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
 
 </Note>
 
-## 停止沙箱停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会重新启动并为其提供服务。
+## 停止沙箱停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会回来为其提供服务。
 
 <CodeGroup>
 

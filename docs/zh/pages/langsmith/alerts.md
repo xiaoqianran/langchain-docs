@@ -31,7 +31,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 |公制类型 |描述 |使用案例|
 | ------------------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
+| **运行计数** |跟踪一个时间窗口内 [runs](/langsmith/observability-concepts#runs) 的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
 | **成本** |跟踪一个时间窗口内运行的总成本。 |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。 || **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。 |
 | **反馈分数** |衡量平均反馈分数。 |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 |
 | **延迟** |测量平均运行执行时间。 |跟踪应用程序的延迟，以针对峰值和性能瓶颈发出警报。 |
@@ -72,15 +72,16 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     **先决条件**
 
-    - 连接到您的 LangSmith 组织的 Slack 工作区。如果您尚未连接，当您配置此通知类型时，LangSmith 将提示您内联连接。
+    - 连接到您的 LangSmith 组织的 Slack 工作区。如果您尚未连接，当您配置此通知类型时，LangSmith 会提示您内联连接。
 
     ### 1.配置Slack通知
 
     1. 在警报设置的 **通知设置** 部分中，选择 **Slack**。
-    2. 单击通道选择器。如果尚未链接 Slack 工作区，请单击 **连接 Slack** 并完成 OAuth 流程以授权 LangSmith。
-    3. 将 `@LangSmith` 应用程序添加到您想要接收通知的频道。该应用程序必须是该频道的成员 — 在频道中键入 `/invite @LangSmith` 进行添加。
-    4. 从下拉列表中选择工作区和通道。如果频道没有立即出现，请单击刷新图标。
-    5. 单击“**保存**”保存通知配置。
+    1. 单击通道选择器。如果尚未链接 Slack 工作区，请单击 **连接 Slack** 并完成 OAuth 流程以授权 LangSmith。
+    1. 从下拉列表中选择工作区和通道。如果频道没有立即出现，请单击刷新图标。
+    1. 单击“**保存**”保存通知配置。
+
+    LangSmith 自动加入您选择的公共频道。要发布到私人频道，请先在 Slack 中邀请 `@LangSmith` 应用程序到该频道。
 
     ### 2. 测试集成
 
@@ -157,7 +158,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     - 活动的 Dynatrace 环境（SaaS 或托管）。
     - 具有 `events.ingest` 范围的 Dynatrace API 访问令牌。
 
-    如果您使用的是 LangSmith 的自定义 [deployment](/langsmith/self-hosted)，请确保没有防火墙设置阻止来自 LangSmith 服务的出站流量。
+    如果您使用 LangSmith 的自定义 [deployment](/langsmith/self-hosted) 进行工作，请确保没有防火墙设置阻止来自 LangSmith 服务的出站流量。
 
     ### 1. 在 Dynatrace 中创建 API 令牌1. 登录您的 Dynatrace 环境。
     1. 导航至 **访问令牌**。
@@ -169,7 +170,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2. 获取您的 Dynatrace 环境 URL
 
-    您的 Dynatrace 环境 URL 采用以下格式：
+    您的 Dynatrace 环境 URL 遵循以下格式：
 
     ```
     https://{your-environment-id}.live.dynatrace.com
@@ -199,7 +200,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     - [Dynatrace Access Tokens](https://docs.dynatrace.com/docs/manage/access-control/access-tokens)
   </Tab>
   <Tab title="Webhook">
-    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhooks 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
+    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhook 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
 
     **先决条件**
 
@@ -239,7 +240,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       - 默认：LangSmith 发送定义的有效负载以及附加到有效负载的以下附加键值对：
         - `project_name`：警报范围内的 LangSmith 项目的名称。
         - `workspace_name`：LangSmith 工作空间的名称。
-        - `alert_rule_id`：用于识别LangSmith 警报的 UUID。这可以用作 webhook 服务中的重复数据删除密钥。
+        - `alert_rule_id`：用于识别 LangSmith 警报的 UUID。这可以用作 webhook 服务中的重复数据删除密钥。
         - `alert_rule_name`：报警规则名称。
         - `alert_rule_description`：警报规则的描述（如果没有设置则为空字符串）。
         - `alert_rule_type`：警报类型（截至 2025 年 4 月 1 日，所有警报均为 `threshold` 类型）。
@@ -279,7 +280,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     ### 食谱示例
 
     <Accordion title="Configure Slack notifications via webhook">
-      以下是配置 LangSmith 警报以使用 [⟦T57⟧](https://api.slack.com/methods/chat.postMessage) API 向 Slack 通道发送通知的示例。**先决条件**
+      以下是配置 LangSmith 警报以使用 [⟦T56⟧](https://api.slack.com/methods/chat.postMessage) API 向 Slack 通道发送通知的示例。**先决条件**
 
       - 访问 Slack 工作区。
       - 用于设置警报的LangSmith项目。
@@ -301,7 +302,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       3. 添加以下范围：
          - `chat:write`（作为应用程序发送消息）。
          - `chat:write.public`（向应用程序不在的频道发送消息）。
-         - `channels:read`（查看频道基本信息）。
+         - `channels:read`（查看基本频道信息）。
 
       **第 3 步：将应用程序安装到您的工作区**
 
@@ -339,7 +340,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       ```
 
       **请求正文模板**
-      <Note>需要填写步骤 4 中找到的值中的`{channel_id}`。 <br /><br />其余字段：`alert_name`、`project_name` 和 `project_url` 可以选择向警报消息添加其他上下文。您可以在浏览器的地址栏中找到您的`project_url`。复制该部分，但不包括任何查询参数。</Note>
+      <Note>需要填写步骤 4 中找到的值中的`{channel_id}`。 <br /><br />其余字段：`alert_name`、`project_name` 和 `project_url` 可以选择向警报消息添加其他上下文。您可以在浏览器的地址栏中找到您的`project_url`。复制该部分直至但不包括任何查询参数。</Note>
 
       ```json
       {
@@ -445,7 +446,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **请求正文模板**
 
-      LangSmith 自动将自动填充的警报字段（`alert_rule_name`、`project_name`、`triggered_metric_value`、`triggered_threshold`、`timestamp`、`alert_rule_url` 等）作为顶级 JSON 键合并到请求正文中。 Power Automate 直接从传入的有效负载中读取这些字段，因此空正文就足够了：
+      LangSmith 自动将自动填充的警报字段（`alert_rule_name`、`project_name`、`triggered_metric_value`、`triggered_threshold`、`timestamp`、`alert_rule_url` 等）合并到请求正文中作为顶级 JSON 键。 Power Automate 直接从传入的有效负载中读取这些字段，因此空正文就足够了：
 
       ```json
       {}
@@ -454,7 +455,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       6. 单击 **保存** 以激活 Webhook 配置。
 
       **第 4 步：测试集成**1. 在LangSmith警报配置中，单击**发送测试警报**。
-      2. 检查您指定的 Teams 频道是否有测试通知。
+      2. 检查您指定的 Teams 频道中是否有测试通知。
       3. 验证该卡是否包含预期的警报信息。
 
       **参考实现**
@@ -551,11 +552,11 @@ LangSmith 针对以下指标提供基于阈值的警报：
       |供应商|网络钩子 URL | Auth 标头格式 |
       |----------|-------------|--------------------|
       |邮枪 | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
-      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，带有 HTTP 触发器的 Lambda 函数）进行路由。
+      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，具有 HTTP 触发器的 Lambda 函数）进行路由。
     </Accordion>
 
     <Accordion title="Configure Google Chat notifications via webhook (requires middleware)">
-      Google Chat 的传入 webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键合并到请求正文中作为顶级字段，因此 Google Chat 会拒绝每个请求并显示 400 错误：
+      Google Chat 的传入 webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键作为顶级字段合并到请求正文中，因此 Google Chat 会拒绝每个请求并显示 400 错误：
 
       ```
       Invalid JSON payload received. Unknown name "project_name" at 'message': Cannot find field.
@@ -565,7 +566,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
 
-      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook、提取相关字段，并将干净的 `{"text": "..."}` 负载转发到 Google Chat 空间 webhook URL。
+      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 
       **先决条件**- 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间 → **应用程序和集成** → **添加 Webhooks**，创建 Webhook，然后复制 URL。
       - 启用了 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。

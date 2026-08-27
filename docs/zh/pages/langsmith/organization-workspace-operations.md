@@ -18,8 +18,8 @@
 
 ## 内容|组织层面的运营 |工作区级操作 |
 |------------------------------------------|----------------------------------------|
-| **核心管理：**<br/>• [Organization settings](#organization-settings)：组织信息和配置<br/>• [Workspaces](#workspaces)：工作空间管理<br/>• [Organization members](#organization-members)：成员管理<br/>• [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：**<br/>• [Projects](#projects)：组织跟踪和运行<br/>• [Runs](#runs)：单独的执行跟踪<br/>• [Datasets](#datasets)：用于评估的测试数据集<br/>• [Examples](#examples)：单独的数据集示例<br/>• [Experiments](#experiments)：比较实验|
-| **安全和身份验证：**<br/>​​• [SSO and authentication](#sso-and-authentication)：单点登录设置<br/>• [SCIM](#scim)：身份配置<br/>• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br/>• [Rules](#rules)：自动运行规则<br/>• [Alerts](#alerts)：监控警报规则<br/>• [Feedback](#feedback)：输出的分数和标签<br/>• [Annotation Queues](#annotation-queues)：人工审核队列<br/>• [Charts](#charts)：自定义可视化|| **计费和帐户：**<br/>• [Billing and payments](#billing-and-payments)：订阅管理<br/>• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br/>• [Prompts](#prompts)：提示模板（LangChain Hub）<br/>• [Deployments](#deployments)：部署配置<br/>• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br/>• [Fleet](#fleet)：车队管理操作 |
+| **核心管理：**<br/>• [Organization settings](#organization-settings)：组织信息和配置<br/>• [Workspaces](#workspaces)：工作空间管理<br/>• [Organization members](#organization-members)：成员管理<br/>• [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：**<br/>• [Projects](#projects)：组织跟踪和运行<br/>• [Runs](#runs)：单独的执行跟踪<br/>• [Datasets](#datasets)：用于评估的测试数据集<br/>• [Examples](#examples)：单独的数据集示例<br/>• [Experiments](#experiments)：对比实验|
+| **安全和身份验证：**<br/>• [SSO and authentication](#sso-and-authentication)：单点登录设置<br/>• [SCIM](#scim)：身份配置<br/>• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br/>• [Rules](#rules)：自动运行规则<br/>• [Alerts](#alerts)：监控警报规则<br/>• [Feedback](#feedback)：输出的分数和标签<br/>• [Annotation Queues](#annotation-queues)：人工审核队列<br/>• [Charts](#charts)：自定义可视化|| **计费和帐户：**<br/>• [Billing and payments](#billing-and-payments)：订阅管理<br/>• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br/>• [Prompts](#prompts)：提示模板（LangChain Hub）<br/>• [Custom apps](#custom-apps)：用户编写的迷你Web应用<br/>• [Deployments](#deployments)：部署配置<br/>• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br/>• [Fleet](#fleet)：队列管理操作|
 | **分析：**<br/>• [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化<br/>• [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：**<br/>• [Workspace settings](#workspace-settings-and-management)：成员、设置<br/>• [Tags](#tags)：元数据标记系统<br/>• [Bulk Exports](#bulk-exports)：数据导出操作|
 
 **附加信息：**
@@ -36,7 +36,7 @@
 ## 组织级运营
 
 <Info>
-组织级操作由组织角色控制，与 RBAC 功能分开。在 [Role-based access control](/langsmith/rbac#organization-roles) 指南​​中了解更多信息。
+组织级操作由组织角色控制，与 RBAC 功能分开。请参阅 [Role-based access control](/langsmith/rbac#organization-roles) 指南了解更多信息。
 </Info>
 
 ### 组织设置|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
@@ -108,7 +108,7 @@
 |列出访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
 |获取访问策略 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
 |创建访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|删除访问策略| ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|删除访问策略 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |将访问策略附加到角色 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
 ### 账单和付款|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
@@ -155,7 +155,7 @@
 | [View granular billable usage](/langsmith/granular-usage) | ✓ | ✓ | ✓ | `organization:read` |
 | [Export granular usage as CSV](/langsmith/granular-usage#csv-export) | ✓ | ✓ | ✓ | `organization:read` |
 |查看工作区跟踪保留设置 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|设置工作区默认跟踪层（基本/扩展） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|设置工作区默认跟踪层（基本/扩展）| ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |设置工作区延长保留期限（企业） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
 ## 工作区级别的操作
@@ -185,7 +185,7 @@
 |更新过滤器视图 | ✓ | ✓ | ✗ | `projects:update` |
 |删除筛选视图 | ✓ | ✗ | ✗ | `projects:delete` |
 |删除项目 | ✓ | ✗ | ✗ | `projects:delete` |
-|删除多个项目 | ✓ | ✗ | ✗ | `projects:delete` |
+|删除多个项目| ✓ | ✗ | ✗ | `projects:delete` |
 |获取洞察职位 | ✓ | ✓ | ✓ | `projects:read` |
 |获得具体的工作见解 | ✓ | ✓ | ✓ | `projects:read` |
 |创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
@@ -199,7 +199,7 @@
 |从见解作业获取运行 | ✓ | ✓ | ✓ | `projects:read` |
 
 <Note>
-\* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
+\* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
 </Note>
 
 ### 运行
@@ -237,7 +237,7 @@
 
 ### 警报
 
-用于监控运行条件的警报规则。
+用于监控运行状况的警报规则。
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 |----------|:----------------:|:--------------:|:----------------:|------------------------|
@@ -259,7 +259,7 @@
 |更新数据集元数据 | ✓ | ✓ | ✗ | `datasets:update` |
 |删除数据集 | ✓ | ✗ | ✗ | `datasets:delete` |
 |上传 CSV 数据集 | ✓ | ✓ | ✗ | `datasets:create` |
-|克隆数据集 | ✓ | ✓ | ✗ | `datasets:update` |
+|克隆数据集 | ✓ | ✓ | ✗ | `datasets:clone` |
 |获取数据集版本 | ✓ | ✓ | ✓ | `datasets:read` |
 |获取数据集版本 | ✓ | ✓ | ✓ | `datasets:read` |
 |差异数据集版本 | ✓ | ✓ | ✓ | `datasets:read` |
@@ -312,7 +312,7 @@
 评估法学硕士输出的比较实验。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 |----------|:----------------:|:--------------:|:----------------:|------------------------|
 |查看对比实验| ✓ | ✓ | ✓ | `projects:read` |
-|创建对比实验 | ✓ | ⚠ | ✗ | `projects:create` |
+|创建比较实验 | ✓ | ⚠ | ✗ | `projects:create` |
 |删除对比实验| ✓ | ✗ | ✗ | `projects:delete` |
 |查看运行示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |查看带有运行的分组示例 | ✓ | ✓ | ✓ | `datasets:read` |
@@ -376,6 +376,21 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |创建身份标注队列运行状态| ✓ | ✓ | ✗ | `annotation-queues:update` |
 |导出存档的运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 
+### 自定义应用程序
+
+用户创作的迷你 Web 应用程序在 LangSmith 中呈现。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+|----------|:----------------:|:--------------:|:----------------:|------------------------|
+|列出自定义应用程序 | ✓ | ✓ | ✓ | `custom-apps:read` |
+|获取定制应用程序 | ✓ | ✓ | ✓ | `custom-apps:read` |
+|创建自定义应用程序 | ✓ | ✓ | ✗ | `custom-apps:create` |
+|更新自定义应用程序 | ✓ | ✓ | ✗ | `custom-apps:update` |
+|删除自定义应用程序 | ✓ | ✓ | ✗ | `custom-apps:delete` |
+|删除自定义应用程序（批量）| ✓ | ✓ | ✗ | `custom-apps:delete` |
+|下载自定义应用程序源 | ✓ | ✓ | ✗ | `custom-apps:download` |
+|记录自定义应用程序视图 | ✓ | ✓ | ✓ | `custom-apps:read` |
+|在组织范围内共享自定义应用程序 | ✓ | ✓ | ✗ | `custom-apps:update` |
+|声明（取消共享）自定义应用程序 | ✓ | ✓ | ✗ | `custom-apps:update` |
+
 ### 提示
 
 LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
@@ -394,7 +409,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取所有标签 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建标签 | ✓ | ✓ | ✗ | `prompts:tag` |
 |更新标签 | ✓ | ✓ | ✗ | `prompts:tag` |
-|删除标签| ✓ | ✓ | ✗ | `prompts:tag` |
+|删除标签 | ✓ | ✓ | ✗ | `prompts:tag` |
 |查看活动 | ✓ | ✓ | ✓ | `prompts:read` |
 |列出评论 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建评论 | ✓ | ✓ | ✗ | `prompts:read` |

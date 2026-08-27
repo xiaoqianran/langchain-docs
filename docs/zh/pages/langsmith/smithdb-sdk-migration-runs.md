@@ -16,7 +16,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.read_run()` | `client.runs.retrieve()` |
 
@@ -27,28 +27,28 @@
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/retrieve_v2)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.readRun()` | `client.runs.retrieve()` |
 
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/retrieveV2)。
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.runs().retrieve()` | `client.runs().retrieveV2()` |
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/RunService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Get()` | `client.Runs.GetV2()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunService.GetV2)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `GET /api/v1/runs/{run_id}` | `GET /api/v2/runs/{run_id}` |
 
@@ -62,21 +62,21 @@
     `runs.retrieve` 需要一个新的 `project_id` 字段，而 `read_run` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
     </Warning>
 
-    |之前 (`read_run`) |之后(`runs.retrieve`)|笔记|
+    |之前 (`read_run`) |之后(`runs.retrieve`) |笔记|
     |---|---|---|
     | `run_id` | `run_id` |不变 |
-    | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs)|
+    | `load_child_runs` | *（已删除）* |使用 `traces.list_runs` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
     | *（不可用）* | `project_id` | **必需** - 拥有运行的项目的 UUID |
     | *（不可用）* | `start_time` |可选 — 运行的开始时间 (RFC3339)；提供它可以加快检索速度|
     | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |
   </Tab>
   <Tab title="TypeScript">
     <Warning>
-    `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
-    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`) |笔记|
+    `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。
+    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`)|笔记|
     |---|---|---|
     | `runId` | `runId` |不变（位置参数）|
-    | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs) |
+    | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs)|
     | *（不可用）* | `project_id` | **必填**—`snake_case`；拥有运行的项目的 UUID |
     | *（不可用）* | `start_time` |可选—`snake_case`；运行的开始时间（RFC3339）；提供它可以加快检索速度|
     | *（默认返回所有字段）* | `selects` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |
@@ -87,7 +87,7 @@
     </Warning>|之前 (`RunRetrieveParams`) |之后（`RunRetrieveV2Params`）|笔记|
     |---|---|---|
     | `runId()` | `runId()` |不变 |
-    | `sessionId()` | *（已删除）* |替换为`projectId()` |
+    | `sessionId()` | *（已删除）* |替换为`projectId()`|
     | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度|
     | `excludeS3StoredAttributes()` | *（已删除）* |没有同等的 |
     | `excludeSerialized()` | *（已删除）* |没有同等的 |
@@ -98,7 +98,7 @@
   <Tab title="Go">
     <Warning>
     `GetV2()` 需要 `ProjectID`，它取代了已删除的 `SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
-    </Warning>|之前 (`RunGetParams`) |之后(`RunGetV2Params`) |笔记|
+    </Warning>|之前 (`RunGetParams`) |之后（`RunGetV2Params`）|笔记|
     |---|---|---|
     | `runID`（位置）| `runID`（位置）|不变 |
     | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的 |
@@ -159,8 +159,8 @@
     | `run.first_token_time` | `run.first_token_time` |不变 |
     | `run.latency`（属性）| `run.latency_seconds` |更名；是一个计算的 `timedelta` 属性，现在是一个原生的 `float` 字段 |
     | `run.in_dataset` | `run.is_in_dataset` |更名|
-    | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
-    | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。参见[Load a run's child runs](#load-a-runs-child-runs)|
+    | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。参见[Load a run's child runs](#load-a-runs-child-runs) |
+    | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
     | `run.serialized` | *（已删除）* |使用`run.manifest` |
     | `run.manifest_id` | *（已删除）* |使用`run.manifest`|
     | *（不可用）* | `run.is_root` |新 |
@@ -375,12 +375,12 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
-    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
+    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -418,9 +418,41 @@
   </Tab>
 </Tabs>
 
-### 示例
+#### 速率限制
 
-#### 通过 ID 获取单次运行
+SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制。每个 API 密钥在云中均存在限制。
+
+<Tabs>
+  <Tab title="Python">
+    | |之前 (`client.read_run()`) |之后(`client.runs.retrieve()`) |
+    |--------|--------|--------|
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="TypeScript">
+    | |之前 (`client.readRun()`) |之后(`client.runs.retrieve()`)|
+    |--------|--------|--------|
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="Java">
+    | |之前 (`client.runs().retrieve()`) |之后(`client.runs().retrieveV2()`) |
+    |--------|--------|--------|
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="Go">
+    | |之前 (`client.Runs.Get()`) |之后(`client.Runs.GetV2()`) |
+    |--------|--------|--------|
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+  <Tab title="cURL">
+    | |之前 (`GET /api/v1/runs/{run_id}`) |之后(`GET /api/v2/runs/{run_id}`)|
+    |--------|--------|--------|
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
+  </Tab>
+</Tabs>
+
+超过限制的请求将返回`429 Too Many Requests`。有关一般速率限制信息，请参阅[Usage and billing](/langsmith/usage-and-billing#rate-limits)。
+
+### 示例#### 通过 ID 获取单次运行
 
 <Tabs>
   <Tab title="Python">
@@ -496,7 +528,7 @@ await client.runs.retrieve(runId, {
 
   </Tab>
   <Tab title="Java">
-    `retrieveV2()` 需要额外的 `projectId()` (UUID) 参数，而 `client.runs().retrieve()` 不需要。它还接受可选的 `startTime()` — 提供它加快检索速度，但不是必需的。首先通过`client.sessions().list()`解析项目UUID。
+    `retrieveV2()` 需要额外的 `projectId()` (UUID) 参数，而 `client.runs().retrieve()` 不需要。它还接受可选的 `startTime()` — 前提是它可以加快检索速度，但不是必需的。首先通过`client.sessions().list()`解析项目UUID。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -536,11 +568,11 @@ client.runs().retrieveV2(
 )
 ```
   </Tab>
-</Tabs></Tab>
-  <Tab title="Go">
-    `GetV2()` 需要额外的 `ProjectID` (UUID) 参数，而 `client.Runs.Get()` 不需要。它还接受可选的 `StartTime` — 提供它加快检索速度，但不是必需的。首先通过`client.Sessions.List()`解析项目UUID。
+</Tabs>
 
-<Tabs sync={false}>
+  </Tab>
+  <Tab title="Go">
+    `GetV2()` 需要额外的 `ProjectID` (UUID) 参数，而 `client.Runs.Get()` 不需要。它还接受可选的 `StartTime` — 前提是它可以加快检索速度，但不是必需的。首先通过`client.Sessions.List()`解析项目UUID。<Tabs sync={false}>
   <Tab title="Before">
     ```go Before
 package main
@@ -585,7 +617,7 @@ run, err := client.Runs.GetV2(ctx, runID, langsmith.RunGetV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `GET /api/v2/runs/{run_id}` 需要额外的 `project_id` (UUID) 查询参数，而 `GET /api/v1/runs/{run_id}` 不需要。它还接受可选的 `start_time` — 提供它加快检索速度，但不是必需的。首先通过 `GET /api/v1/sessions` 请求解析项目 UUID。
+    `GET /api/v2/runs/{run_id}` 需要额外的 `project_id` (UUID) 查询参数，而 `GET /api/v1/runs/{run_id}` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。首先通过 `GET /api/v1/sessions` 请求解析项目 UUID。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -617,7 +649,7 @@ curl "https://api.smith.langchain.com/api/v2/runs/$RUN_ID?project_id=$PROJECT_ID
 
 <Tabs>
   <Tab title="Python">
-    `read_run` 返回完整运行对象，无需选择。默认情况下，`runs.retrieve` 仅返回 `id`，传递 `selects=[...]` 即可请求更多。
+    `read_run` 返回完整运行对象，无需选择。默认情况下，`runs.retrieve` 仅返回 `id` — 通过 `selects=[...]` 请求更多。
 
     <Tabs sync={false}>
       <Tab title="Before">
@@ -661,7 +693,9 @@ asyncio.run(main())
     </Tabs>
   </Tab>
   <Tab title="TypeScript">
-    `readRun` 返回完整运行对象，无需选择。默认情况下，`client.runs.retrieve` 仅返回 `id` — 通过 `selects: [...]` 请求更多。<Tabs sync={false}>
+    `readRun` 返回完整运行对象，无需选择。默认情况下，`client.runs.retrieve` 仅返回 `id` — 通过 `selects: [...]` 请求更多。
+
+    <Tabs sync={false}>
       <Tab title="Before">
         ```ts Before
 import { Client } from "langsmith";
@@ -691,9 +725,7 @@ console.log(retrievedRun.name, retrievedRun.status, retrievedRun.total_tokens);
     </Tabs>
   </Tab>
   <Tab title="Java">
-    `.retrieve()` 返回完整运行对象，无需选择。默认情况下，`.retrieveV2()` 仅返回 `id`，为您需要的每个字段调用 `.addSelect(...)`。
-
-    <Tabs sync={false}>
+    `.retrieve()` 返回完整运行对象，无需选择。默认情况下，`.retrieveV2()` 仅返回 `id`，为您需要的每个字段调用 `.addSelect(...)`。<Tabs sync={false}>
       <Tab title="Before">
         ```kotlin Before
 import com.langchain.smith.client.LangsmithClient
@@ -825,7 +857,9 @@ curl "https://api.smith.langchain.com/api/v2/runs/$RUN_ID?project_id=$PROJECT_ID
 
 <Tabs>
   <Tab title="Python">
-    `read_run`从`langsmith.utils`提高了`LangSmithNotFoundError`，因为缺少运行。 `runs.retrieve` 从 `langsmith` 提高 `NotFoundError`。<Tabs sync={false}>
+    `read_run` 从 `langsmith.utils` 提高了`LangSmithNotFoundError`，因为缺少运行。 `runs.retrieve` 从 `langsmith` 提高 `NotFoundError`。
+
+    <Tabs sync={false}>
       <Tab title="Before">
         ```python Before
 from langsmith import Client
@@ -870,9 +904,7 @@ asyncio.run(main())
     </Tabs>
   </Tab>
   <Tab title="TypeScript">
-    `client.runs.retrieve`因错过一局而加注`NotFoundError`。
-
-    <Tabs sync={false}>
+    `client.runs.retrieve`因错过一局而加注`NotFoundError`。<Tabs sync={false}>
       <Tab title="Before">
         ```ts Before
 import { Client } from "langsmith";
@@ -1070,13 +1102,13 @@ fi
   </Tab>
 </Tabs>
 
-#### 加载运行的子运行`load_child_runs` 标志和嵌套 `child_runs` 字段被删除。使用 `traces.list_runs` 获取跟踪中的每个运行，然后对 `parent_run_ids` 进行过滤，它保存每个运行的完整祖先链，首先是根，最后是最接近的父级。
+#### 加载运行的子运行
+
+`load_child_runs` 标志和嵌套 `child_runs` 字段被删除。使用 `traces.list_runs` 获取跟踪中的每个运行，然后对 `parent_run_ids` 进行过滤，它保存每个运行的完整祖先链，首先是根，最后是最接近的父级。
 
 <Tabs>
   <Tab title="Python">
-    将 `read_run(run_id, load_child_runs=True)` 替换为 `client.traces.list_runs`。
-
-    <Tabs sync={false}>
+    将 `read_run(run_id, load_child_runs=True)` 替换为 `client.traces.list_runs`。<Tabs sync={false}>
       <Tab title="Before">
         ```python Before
 from langsmith import Client
@@ -1213,7 +1245,7 @@ for (const child of children) {
     无需迁移：Java SDK 从未在一次调用中加载子运行，因此请使用 `client.traces().listRuns()` 遍历跟踪的运行。
   </Tab>
   <Tab title="Go">
-    无需迁移：Go SDK 从未在一次调用中加载子运行，因此请使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
+    无需迁移：Go SDK 从未在一次调用中加载子运行，因此使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
   </Tab>
   <Tab title="cURL">
     无需迁移：`GET /api/v1/runs/{run_id}` 从未返回子运行，因此使用 `GET /api/v2/traces/{trace_id}/runs` 遍历跟踪的运行。
@@ -1230,25 +1262,25 @@ for (const child of children) {
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.get_run_url()` | `client.runs.get_url()` |
 
     <Note>
-    `client.runs.get_url()` 现在是异步的。用`await`来调用。
-    </Note>完整参数列表请参见[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/get_url)。
+    `client.runs.get_url()` 现在是异步的。用`await`来调用它。
+    </Note>
+
+    完整参数列表请参见[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/runs/RunsResource/get_url)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
-    | `client.getRunUrl()` | `client.runs.getURL()` |
-
-    完整参数列表请参见[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/getURL)。
+    | `client.getRunUrl()` | `client.runs.getURL()` |完整参数列表请参见[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/getURL)。
   </Tab>
   <Tab title="Java">
     <Note>Java SDK 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | *（无遗留方法）* | `client.runs().getUrl()` |
 
@@ -1257,7 +1289,7 @@ for (const child of children) {
   <Tab title="Go">
     <Note>Go SDK 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | *（无遗留方法）* | `client.Runs.GetURL()` |
 
@@ -1266,7 +1298,7 @@ for (const child of children) {
   <Tab title="cURL">
     <Note>REST API 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | *（无旧端点）* | `GET /api/v2/runs/{run_id}/url` |
   </Tab>
@@ -1326,27 +1358,27 @@ for (const child of children) {
 
 #### 回应<Tabs>
   <Tab title="Python">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性|
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | `string`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；阅读`.url`属性|
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | *（无遗留方法）* | `RunGetUrlResponse.url`() |返回 `Optional<String>` |
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | *（无遗留方法）* | `RunGetURLResponse.URL` |返回`string` |
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | *（无旧端点）* | `{"url": "..."}` |具有单个 `url` 字段的 JSON 对象 |
   </Tab>

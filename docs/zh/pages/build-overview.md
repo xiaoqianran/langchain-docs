@@ -8,7 +8,7 @@
     <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
         <h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">构建</h1>
 
-        LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。
+        LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都可以由您配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">选择起点</h2>
 
@@ -51,16 +51,16 @@
         </Tab>
         <Tab title="TypeScript">
 
-        <CardGroup cols={3}>
-
-        <Card
+        <CardGroup cols={3}><Card
           title="Deep Agents"
           cta="Get started"
           href="/oss/javascript/deepagents/overview"
           icon="/images/brand/deep-agents-icon.png"
         >
         为复杂、长时间运行的任务构建代理。完整的代理工具，包含规划、子代理、虚拟文件系统和内置长期内存。最快的启动方式。
-        </Card><Card
+        </Card>
+
+        <Card
           title="LangChain"
           cta="Get started"
           href="/oss/javascript/langchain/overview"
@@ -93,7 +93,7 @@
           href="/oss/deepagents/code/overview"
           icon="code"
         >
-        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
+        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
         </Card>
 
         </CardGroup>
@@ -121,9 +121,7 @@
           icon="book"
         >
         遵循常见代理模式和用例的教程和概念指南。
-        </Card>
-
-        <Card
+        </Card><Card
           title="Reference"
           cta="View reference"
           href="/oss/python/reference/overview"
@@ -146,7 +144,9 @@
         </Tab>
         <Tab title="TypeScript">
 
-        <CardGroup cols={4}><Card
+        <CardGroup cols={4}>
+
+        <Card
           title="Integrations"
           cta="Browse providers"
           href="/oss/javascript/integrations/providers/overview"

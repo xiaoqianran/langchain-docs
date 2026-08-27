@@ -86,7 +86,7 @@ az account set --subscription <your-subscription-id>
 az account show
 ```
 
-您还需要 LangSmith 许可证密钥 ([contact sales](https://www.langchain.com/contact-sales)) 和 `dns_label`（Azure 子域，无需 DNS 设置）或自定义 `langsmith_domain`。
+您还需要 LangSmith 许可证密钥 ([contact our sales team](https://www.langchain.com/contact-sales)) 和 `dns_label`（Azure 子域，无需 DNS 设置）或自定义 `langsmith_domain`。
 
 ## 快速入门
 
@@ -286,7 +286,7 @@ terraform -chdir=infra output -raw storage_account_k8s_managed_identity_client_i
 |路径|命令 |何时使用 |
 |---|---|---|
 | Helm 路径_（默认）_ | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
-|地形路径| `make init-app && make apply-app` | Helm 版本 + Kubernetes Secrets + 在 Terraform 状态下管理的 Workload Identity SA。最适合 GitOps 和 CI/CD 管道。 |
+|地形路径 | `make init-app && make apply-app` | Helm 版本 + Kubernetes Secrets + 在 Terraform 状态下管理的 Workload Identity SA。最适合 GitOps 和 CI/CD 管道。 |
 
 ### Helm 路径（推荐）
 
@@ -552,7 +552,7 @@ kubectl get pods -n langsmith | grep agent-builder
 kubectl get lgp -n langsmith
 ```
 
-预期：3 个静态 Pod（工具服务器、触发器服务器、引导作业）+ 4 个动态 Pod。总数：~26 个豆荚。在 `make deploy` 之后，**Agent Builder** 部分将出现在 LangSmith UI 导航中。<Warning>
+预期：3 个静态 Pod（工具服务器、触发器服务器、引导作业）+ 4 个动态 Pod。总数：~26 个豆荚。在 `make deploy` 之后，**Agent Builder** 部分会出现在 LangSmith UI 导航中。<Warning>
 **在 `agentBootstrap` 完成后滚动前端。** `agentBootstrap` 作业创建前端为 Polly UI 读取的 `langsmith-polly-config` ConfigMap。如果引导完成时前端正在运行，Polly 将显示“无法连接到 LangGraph 服务器”。修复：
 
 ```bash
@@ -564,7 +564,7 @@ kubectl rollout restart deployment langsmith-frontend -n langsmith
 **加密密钥从`langsmith-config-secret`读取。**请勿在`values-overrides.yaml`中内联设置`config.agentBuilder.encryptionKey`。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它。将其内联设置会覆盖秘密引用并造成不匹配。
 </Warning>
 
-`langsmith-agent-builder-tool-server` 和 `langsmith-agent-builder-trigger-server` 都需要工作负载标识才能访问 Azure Blob 存储。他们的联合凭证已在`modules/k8s-cluster/main.tf`中预先注册；无需额外设置。
+`langsmith-agent-builder-tool-server` 和 `langsmith-agent-builder-trigger-server` 都需要工作负载标识来访问 Azure Blob 存储。他们的联合凭证已在`modules/k8s-cluster/main.tf`中预先注册；无需额外设置。
 
 ### 见解和波莉
 
@@ -648,14 +648,14 @@ kubectl rollout restart deployment langsmith-frontend -n langsmith
 | `istio` | `istio-base` + `istiod` + `istio-ingressgateway` |自我管理的 Istio。全网格和边车注入。 |
 | `agic` | Azure 应用程序网关 v2 + AKS 管理的 `ingress_application_gateway` 附加组件 |企业 Azure、本机 L7 WAF、仅 HTTP 或 dns01 + 自定义域。 |
 | `envoy-gateway` | `gateway-helm` OCI 图表，Kubernetes 网关 API | Gateway API 原生，Ingress 的现代替代品。 |<Warning>
-`letsencrypt` (HTTP-01) 仅适用于 `nginx`、`istio`（自我管理）和 `envoy-gateway`。 `istio-addon` 不会创建 IngressClass，因此 ACME 求解器无法接收流量。使用 `agic`，应用程序网关重写了 ACME 质询路径，因此 HTTP-01 求解器失败。对于两者，请将 `dns01` 与自定义域一起使用，或将 `none` 用于仅 HTTP。
+`letsencrypt` (HTTP-01) 仅适用于 `nginx`、`istio`（自我管理）和 `envoy-gateway`。 `istio-addon` 不会创建 IngressClass，因此 ACME 求解器无法接收流量。使用`agic`，应用程序网关重写了 ACME 质询路径，因此 HTTP-01 求解器失败。对于两者，请将 `dns01` 与自定义域一起使用，或将 `none` 用于仅 HTTP。
 </Warning>
 
 ## DNS 和 TLS
 
-`dns_label` 为您提供免费的 Azure 子域 `<label>.<region>.cloudapp.azure.com`，无需域注册或 DNS 区域。 `deploy.sh` 自动注释正确的 LoadBalancer 服务。
+`dns_label` 为您提供免费的 Azure 子域 `<label>.<region>.cloudapp.azure.com`，无需域注册或 DNS 区域。 `deploy.sh` 自动标注正确的 LoadBalancer 服务。
 
-**快速启动默认值（HTTP，零设置）：**
+**快速入门默认值（HTTP，零设置）：**
 
 ```hcl
 dns_label              = "langsmith-prod"

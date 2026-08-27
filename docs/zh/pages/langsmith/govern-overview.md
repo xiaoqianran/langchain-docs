@@ -4,7 +4,9 @@
 
 # 治理
 
-管理您的 LangSmith 组织：管理用户和访问控制、组织工作区和应用程序以及配置策略和合规性。
+Administer your LangSmith organization: manage users and access control, organize workspaces and applications, and configure policies and compliance.
+
+治理还扩展到代理在运行时执行的操作：模型调用时的[spend and data-protection policies](/langsmith/llm-gateway-spend-policies)、代理代码的[sandboxed execution](/langsmith/sandboxes)以及敏感操作之前的[human approval](/langsmith/add-human-in-the-loop)。
 
 ## 探索
 
@@ -33,7 +35,7 @@
     href="/langsmith/chat"
     icon="tool"
   >
-    管理工具和 LangSmith CLI。
+    Administrative tools and the LangSmith CLI.
   </Card>
 
   <Card

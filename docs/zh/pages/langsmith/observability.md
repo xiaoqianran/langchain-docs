@@ -8,7 +8,7 @@
 <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
 <h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">LangSmith 可观察性</h1>
 
-LangSmith 可观察性为您的 LLM 申请提供全面的可见性：从单个跟踪到整个生产范围的性能指标。
+LangSmith 可观察性为您的 LLM 申请提供全面的可见性：从单个跟踪到整个生产范围的性能指标。痕迹是您的代理在生产中所做的事情的记录。使用它们来调试故障、监控质量并构建您评估的数据集。
 
 <Callout icon="plug" color="#4F46E5" iconType="regular">
 LangSmith 可与许多框架和提供商合作。浏览 [available integrations](/langsmith/integrations) 连接您的堆栈，包括 OpenAI、Anthropic、CrewAI、Vercel AI SDK、Pydantic AI 等。
@@ -49,9 +49,7 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
   </Card>
 </CardGroup>
 
-<h2 class="flex whitespace-pre-wrap group font-semibold">调查监控</h2>
-
-<CardGroup cols={2}>
+<h2 class="flex whitespace-pre-wrap group font-semibold">调查监控</h2><CardGroup cols={2}>
   <Card
     title="View traces"
     icon="route"
@@ -68,7 +66,9 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
     arrow="true"
   >
     构建仪表板并设置警报以跟踪质量并尽早发现问题。
-  </Card><Card
+  </Card>
+
+  <Card
     title="Configure automations"
     icon="robot"
     href="/langsmith/rules"
@@ -93,7 +93,7 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
     href="/langsmith/engine-overview"
     arrow="true"
 >
-    自动检测跟踪中重复出现的问题，诊断其根本原因，并使用 LangSmith 引擎解决它们。
+    自动检测跟踪中重复出现的问题，诊断其根本原因，并使用LangSmith引擎解决它们。
 </Card>
 
 术语和核心概念请参考[Observability concepts](/langsmith/observability-concepts)。有关跟踪定价、保留和限制，请参阅[Usage and billing](/langsmith/usage-and-billing)。

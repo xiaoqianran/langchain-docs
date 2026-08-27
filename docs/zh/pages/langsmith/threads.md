@@ -36,7 +36,7 @@
 
 此示例演示如何使用结构化消息格式记录和检索对话历史记录以维护长时间运行的聊天。
 
-该示例设置一个 `THREAD_ID` 并通过 `metadata` 将其传递到跟踪包装器，从而将该会话中的每次运行链接到 LangSmith 中的同一线程。对话历史记录在轮次之间保留在本地 - 将基于文件的或内存中的存储替换为生产中的数据库或缓存。 `get_chat_history` 标志控制管道是继续现有线程还是启动新线程：
+该示例设置一个 `THREAD_ID` 并通过 `metadata` 将其传递到跟踪包装器，从而将该会话中的每个运行链接到 LangSmith 中的同一线程。对话历史记录在轮次之间保留在本地 - 将基于文件的或内存中的存储替换为生产中的数据库或缓存。 `get_chat_history` 标志控制管道是继续现有线程还是启动新线程：
 
 <CodeGroup>
 
@@ -544,6 +544,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 - [Filter traces](/langsmith/filter-traces-in-application)：在跟踪 UI 中按线程元数据过滤。
 - [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)：评估线程而不是单独的运行。
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback)：将反馈附加到线程内的运行。
+- [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)：将线程添加到数据集。
 
 ---
 

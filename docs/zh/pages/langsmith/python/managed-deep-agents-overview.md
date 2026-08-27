@@ -15,27 +15,25 @@
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
 flowchart LR
     subgraph you["<b>You provide</b>"]
-        Logic(["<div style='text-align:left;padding:4px 8px'><b>Business logic</b><br/><br/>&nbsp;•&nbsp; Instructions<br/>&nbsp;•&nbsp; Tools<br/>&nbsp;•&nbsp; Skills<br/>&nbsp;•&nbsp; Model</div>"])
+        Logic("<div style='text-align:left;padding:2px 6px'><b>Business logic</b><br/>&nbsp;•&nbsp; Instructions<br/>&nbsp;•&nbsp; Tools<br/>&nbsp;•&nbsp; Skills<br/>&nbsp;•&nbsp; Model</div>")
     end
     subgraph mda["<b>Managed Deep Agents</b>"]
         direction TB
-        Harness("<div style='text-align:left;padding:4px 8px'><b>Deep Agents harness</b><br/><br/>&nbsp;•&nbsp; Agent loop<br/>&nbsp;•&nbsp; Filesystem<br/>&nbsp;•&nbsp; Subagents</div>")
-        Runtime("<div style='text-align:left;padding:4px 8px'><b>Managed runtime</b><br/><br/>&nbsp;•&nbsp; Agent Server<br/>&nbsp;•&nbsp; Sandboxes<br/>&nbsp;•&nbsp; Schedules</div>")
+        Harness("<div style='text-align:left;padding:2px 6px'><b>Deep Agents harness</b><br/>&nbsp;•&nbsp; Agent loop<br/>&nbsp;•&nbsp; Filesystem<br/>&nbsp;•&nbsp; Subagents</div>")
+        Runtime("<div style='text-align:left;padding:2px 6px'><b>Managed runtime</b><br/>&nbsp;•&nbsp; Agent Server<br/>&nbsp;•&nbsp; Sandboxes<br/>&nbsp;•&nbsp; Schedules</div>")
         Harness --> Runtime
     end
 
     Logic ==> mda
 
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68,rx:10,ry:10
     classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710,rx:10,ry:10
-    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900,rx:18,ry:18
-    classDef output fill:#F6E7FB,stroke:#885270,stroke-width:2px,color:#441E33,rx:10,ry:10
 
-    class Logic trigger
-    class Harness process
-    class Runtime output
+    class Logic neutral
+    class Harness,Runtime process
 
-    style you fill:#FCFFF2,stroke:#B7C77A,stroke-width:1.5px,stroke-dasharray:4 4
-    style mda fill:#F5FAFF,stroke:#7FB2E5,stroke-width:1.5px,stroke-dasharray:4 4
+    style you fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
+    style mda fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
 ```
 
 ## 代理示例
@@ -143,7 +141,7 @@ connector = connectors.mcp(
 ## 核心能力代理的每个部分都映射到一个文件或目录。添加您的代理需要的：
 
 |能力|路径|描述 |
-| ---| ---| ---|
+| --- | --- | --- |
 | [Model and configuration](/langsmith/python/managed-deep-agents-agent-definition) | `agent.py` |模型和核心选项。必需的。 |
 | [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` |定义代理行为方式的系统提示。 |
 | [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` |代理在相关时加载特定于任务的剧本。 |
@@ -155,7 +153,7 @@ connector = connectors.mcp(
 | [Identity](/langsmith/python/managed-deep-agents-identity) | `identity.py` |用于多用户部署的每个调用者专用线程、内存和凭据。 |
 | [Channels](/langsmith/python/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
 | [Schedules](/langsmith/python/managed-deep-agents-schedules) | `schedules/` |定期运行代理的托管 cron 计划。 |
-| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |测试代理的港口式任务。 |
+| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
 
 
 

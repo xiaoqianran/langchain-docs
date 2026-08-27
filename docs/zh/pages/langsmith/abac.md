@@ -4,7 +4,7 @@
 
 # 基于属性的访问控制
 
-本参考文献介绍了LangSmith基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
+本参考文献介绍了LangSmith的基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
 
 <Note>
 ABAC（基于属性的访问控制）是一项用于管理细粒度访问控制的企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。其他计划默认为所有用户使用管理员角色。
@@ -36,7 +36,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
         ```
 
         <Note>
-        该环境变量对个人组织没有影响，因为个人组织未启用[RBAC](/langsmith/rbac)。
+        该环境变量对个人组织没有影响，因为个人组织未启用 [RBAC](/langsmith/rbac)。
         </Note>
 
 1. 设置身份验证。要通过 API 管理访问策略，您需要来自 [Organization Admin](/langsmith/rbac#organization-admin) 用户的个人访问令牌 (PAT)，或具有组织管理员权限的组织范围的服务密钥。在运行任何脚本之前设置以下环境变量：
@@ -101,7 +101,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 |--------------|----------------------|
 | `project` | `projects:read`、`projects:update`、`projects:delete`、`runs:read`、`runs:share`、`runs:delete`、`projects:increase-trace-tier`、`projects:decrease-trace-tier` |
 | `prompt` | `prompts:read`、`prompts:update`、`prompts:delete`、`prompts:share`、`prompts:tag` |
-| `dataset` | `datasets:read`、`datasets:update`、`datasets:delete`、`datasets:share`、`datasets:download` |
+| `dataset` | `datasets:read`、`datasets:update`、`datasets:delete`、`datasets:share`、`datasets:download`、`datasets:clone` |
 | `deployment` | `deployments:read`、`deployments:update`、`deployments:delete` |
 | `queues` | `annotation-queues:create`、`annotation-queues:delete`、`annotation-queues:read`、`annotation-queues:update` |
 | `mcp_server` | `mcp-servers:read`、`mcp-servers:invoke`、`mcp-servers:update`、`mcp-servers:delete`。参见[Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control)。 |
@@ -109,9 +109,13 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 <Note>
 运行没有自己的标签。运行权限（`runs:read`、`runs:create`、`runs:share`、`runs:delete`）根据父项目的标签进行评估。
+</Note><Note>
+克隆将示例从源数据集复制到目标数据集。对两个数据集检查`datasets:clone`权限：一次使用源数据集的标签，一次使用目标数据集的标签。要成功克隆，策略必须授予 `datasets:clone` 对两个数据集的访问权限。
 </Note>
 
-#### 条件`conditions` 数组中的每个条件指定：
+#### 条件
+
+`conditions` 数组中的每个条件指定：
 - **`attribute_name`** - 目前仅支持`resource_tag_key`
 - **`attribute_key`** - 要匹配的标签键（例如，`Environment`、`Team`）
 - **`operator`** - 比较运算符
@@ -151,9 +155,9 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ## 管理访问策略
 
-访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在您的工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
 
-## ABAC 如何与 RBAC 配合使用在确定对资源的访问权限时，会同时考虑[RBAC](/langsmith/rbac) 权限和 ABAC 策略：
+## ABAC 如何与 RBAC 配合使用在确定对资源的访问权限时，会同时考虑[RBAC](/langsmith/rbac)权限和ABAC策略：
 
 - ABAC **拒绝**策略覆盖 RBAC 权限
 - ABAC **允许**策略即使没有 RBAC 权限也可以授予访问权限
@@ -329,6 +333,6 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
 </Callout>
 </div>

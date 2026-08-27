@@ -17,7 +17,7 @@ BYOC 在具有美国控制平面的 AWS 上普遍可用 (GA)。计划于 2026 �
 </Accordion>
 
 <Accordion title="Can I install BYOC into an existing EKS cluster?">
-不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使得可靠管理成为可能。
+不，并且没有计划支持它。 LangChain 代表您操作集群，包括升级和修补，专用集群使可靠的管理成为可能。
 </Accordion>
 
 <Accordion title="Can I run my own workloads in the LangSmith VPC or cluster?">
@@ -37,7 +37,7 @@ LangChain 不对因工作负载干扰而导致的停机或问题负责。
 </Accordion>
 
 <Accordion title="What happens if provisioning fails?">
-数据平面转换到`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限引起的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作而引起的。
+数据平面转换到`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限造成的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作造成的。
 
 完全按照发布的方式应用[⟦T1⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 
@@ -81,7 +81,7 @@ LangChain 可以管理LangSmith 创建的资源的基础设施，仅此而已。
 </Accordion>
 
 <Accordion title="Can LangChain read my traces or database contents?">
-不。跨账户角色是基础设施范围而不是数据范围。它可以管理保存数据的资源，但在跟踪存储桶上不保存 `s3:GetObject`，不保存 PostgreSQL 的 `rds-db:connect`，也不保存 Redis 的 `elasticache:Connect`。
+不。跨账户角色是基础设施范围而不是数据范围。它可以管理保存数据的资源，但跟踪存储桶上不保存`s3:GetObject`，PostgreSQL 不保存`rds-db:connect`，Redis 也不保存`elasticache:Connect`。
 
 访问数据本身需要您明确授予权限，例如在事件期间。参见[How least privilege is enforced](/langsmith/byoc-architecture#how-least-privilege-is-enforced)。
 </Accordion>
@@ -105,7 +105,7 @@ LangChain 可以管理LangSmith 创建的资源的基础设施，仅此而已。
 <Accordion title="What does LangChain hold in the control plane?">
 身份验证、组织和工作区配置、计费和使用元数据、哈希 API 密钥以及静态前端资产。
 
-跟踪、提示、数据集、评估器、实验、见解运行、注释队列、代理部署和工作区秘密都存在于您的数据平面中。
+跟踪、提示、数据集、评估器、实验、见解运行、注释队列、代理部署和工作区秘密都位于您的数据平面中。
 </Accordion>
 
 <Accordion title="What data leaves my account?">
@@ -137,8 +137,8 @@ LangChain 可以管理LangSmith 创建的资源的基础设施，仅此而已。
 EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。参见[Connectivity](/langsmith/byoc-architecture#connectivity)。
 </Accordion>
 
-<Accordion title="Where does the control plane run if my data plane is in the EU or APAC?">
-无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在欧盟或亚太地区配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国。参见[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。
+<Accordion title="Where does the control plane run if my data plane is outside the US?">
+无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该地区，而控制平面元数据将保留在美国。参见[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。
 </Accordion>
 
 ## 数据平面和工作空间<Accordion title="How do organizations, data planes, and workspaces relate?">
@@ -168,7 +168,7 @@ LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并
 </Accordion>
 
 <Accordion title="Do upgrades cause downtime?">
-不会。服务运行由水平 Pod 自动缩放器确定大小的多个副本，并且 Pod 中断预算限制了同时不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务容量低于其所需容量。
+不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了一次不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务容量低于其所需的容量。
 
 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在 LangChain 提前与您协调的计划维护时段内。
 </Accordion>
@@ -217,7 +217,7 @@ LangChain 提供与 AWS Marketplace 的集成。
 </Accordion>
 
 <Accordion title="Can I migrate an existing LangSmith instance to BYOC?">
-部分。用户、角色、数据集、实验、提示、注释队列配置、自动化规则和仪表板可以从云或自托管实例复制。今天没有迁移痕迹。要计划迁移，[contact the LangChain sales team](https://www.langchain.com/contact-sales)。
+部分。用户、角色、数据集、实验、提示、注释队列配置、自动化规则和仪表板可以从云或自托管实例复制。今天没有迁移痕迹。要计划迁移，[contact our sales team](https://www.langchain.com/contact-sales)。
 </Accordion>
 
 ## 另请参阅

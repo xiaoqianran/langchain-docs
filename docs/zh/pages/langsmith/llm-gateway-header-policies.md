@@ -8,43 +8,64 @@
 **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
 </Note>
 
-[spend policy](/langsmith/llm-gateway-spend-policies) 或 [rate limit policy](/langsmith/llm-gateway-rate-limit-policies) 可以在自定义请求标头上携带条件，因此来自单个主题的流量按标头值分成单独的限制。使用此功能来限制您自己的每个最终客户、租户或团队，而无需为每个人单独发布 [LangSmith API key](/langsmith/create-account-api-key)。
+[spend policy](/langsmith/llm-gateway-spend-policies) 可以通过自定义请求标头分隔默认限制，因此每个标头值都会获得独立的限制。 Spend 和 [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) 也可以匹配一个特定的标头值。使用这些选项来限制您自己的最终客户、租户或团队，而无需为每个人单独发布 [LangSmith API key](/langsmith/create-account-api-key)。
 
-例如，范围为 [workspace](/langsmith/administration-overview#workspaces) 且条件为 `X-Gateway-Customer-Id: acme` 的策略仅限制来自该工作区且携带该标头值的请求。来自同一工作区且携带 `X-Gateway-Customer-Id: globex` 的请求将根据不同的策略进行计数。
+例如，由 `X-Gateway-Customer-Id` 分隔的默认工作区支出限制在每个 [workspace](/langsmith/administration-overview#workspaces) 内给出 `acme` 和 `globex` 独立限制。具有条件 `X-Gateway-Customer-Id: acme` 的显式策略仅限制携带该确切值的请求。
 
 ## 可匹配的标头
 
 网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
 
-标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
+标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，并且 `a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
 
-## 标头条件规则
-
-- **每个策略一个条件**：策略接受具有单个值的单个标头键。
-- **与一个主题范围配对**：将标头条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。标头一侧仅接受一个值。
-- **仅限支出上限和速率限制**：默认策略无法携带标头条件，因此网关绝不会自行创建每个标头策略。要限制多个标头值，请为每个标头值创建一个策略。
-- **缺少标头不匹配**：不携带标头的请求与策略不匹配。将每个标头策略与主题本身的更广泛策略配对，因此未标记的流量仍然受到限制。- **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
-- **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。
-
-## 添加标题条件
+<Warning>
+网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
+</Warning>
 
 <Warning>
 创建和管理策略需要`organization:manage`权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 </Warning>
 
+## 按标题分隔默认支出限额
+
+默认支出限额对主题维度的每个成员应用相同的上限。通过标头分隔它，将该上限独立地应用于每个主题和标头值对，而不需要为每个值制定策略。
+
+默认支出分桶遵循以下规则：- **每个默认一个标头**：仅输入标头名称。该请求提供标识存储桶的值。
+- **独立限制**：每个主题和标头值对都会收到配置的支出限制。
+- **回退限制**：没有配置标头的请求共享其主题的回退限制。
+
+要按标题分隔默认支出限额：
+
+1. 转至 **设置 → 网关 → LLM 网关**，然后选择 **成本控制**。
+1. 单击**创建支出限额**。
+1. 选择 **工作空间**、**用户** 或 **API 密钥**，然后选择默认情况下将限制应用于该类型的每个主题的选项。
+1. 选择**通过自定义标头单独限制**。
+1. 输入 **标头名称**，不带 `X-Gateway-` 前缀。例如，为 `X-Gateway-Customer-Id` 请求标头输入 `Customer-Id`。
+1. 设置支出限额，然后单击**创建支出限额**。
+
+策略表显示用于分隔默认限制的标头。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
+
+当不同的标头值需要不同的限制时，请使用显式策略。
+
+## 添加显式标头条件明确的支出或速率限制策略可以匹配一个精确的标头值。使用显式策略为不同的标头值分配不同的限制。
+
+显式标头条件遵循以下规则：
+
+- **每个策略一个条件**：策略接受一个标头名称和一个值。
+- **一个主题范围**：将条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。
+- **缺少标头不匹配**：没有配置标头的请求与策略不匹配。
+- **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
+- **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。
+
 1. 进入**设置 → 网关 → LLM 网关**。
 1. 单击**创建策略**。
 1. 选择保单类型和主体范围，然后设置限制。
 1. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
-1. 保存。
-
-创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。
+1. 保存。创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，代表许多最终客户使用一个工作区范围的 API 密钥。标头条件为每个最终客户提供了该单一密钥下的单独上限。<Warning>
-网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择花费的上限。
-</Warning>
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 

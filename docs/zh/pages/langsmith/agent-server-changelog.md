@@ -13,7 +13,7 @@
 
 ## 发布节奏
 
-`langgraph-api` 维护三个发布流：- `latest`：每天早上发布最新的错误修复和测试功能。语义版本控制使用次要版本之外的开发标签，例如 `0.9.0.dev1`。
+`langgraph-api` 维护三个发布流：- `latest`：每天早上发布最新的错误修复和测试功能。语义版本控制使用次要版本之外的开发标记，例如 `0.9.0.dev1`。
 - `rc`（候选版本）：每三周发布一次，并在关键错误回填的烘焙窗口期间根据需要进行修补。推荐给想要测试下一个稳定版本中的功能的用户。语义版本控制使用次要版本的 rc 标签，例如 `0.9.0rc1`。
 - `stable`：从 rc 起每三周发布一次。修补了与安全相关的依赖项冲突或关键错误修复。这是新部署使用的默认版本，建议用于生产使用。语义版本控制使用小凹凸进行常规促销（例如`0.9.0`），并使用补丁凹凸进行回填（例如`0.9.1`）。
 
@@ -50,7 +50,7 @@
 - 恢复任务历史记录中的 A2A 工具结果 DataPart 和流状态更新。
 
 #### 安全
-- 在 Postgres 运行时创建条件线程期间强制执行线程授权过滤器 ([GHSA-747p-c922-m55f](https://github.com/langchain-ai/helm/security/advisories/GHSA-747p-c922-m55f))。受影响的版本并未始终在此路径上应用自定义`@auth`过滤器，因此知道其他用户线程 ID 的经过身份验证的用户可以针对该线程创建运行并观察或修改其对话状态。仅使用内存运行时的部署不受影响。
+- 在 Postgres 运行时创建条件线程期间强制执行线程授权过滤器 ([GHSA-747p-c922-m55f](https://github.com/langchain-ai/helm/security/advisories/GHSA-747p-c922-m55f))。受影响的版本并未始终在此路径上应用自定义 `@auth` 过滤器，因此知道其他用户线程 ID 的经过身份验证的用户可以针对该线程创建运行并观察或修改其对话状态。仅使用内存运行时的部署不受影响。
 
 <Accordion title="v0.13 releases">
 <Update label="2026-08-17" tags={["agent-server"]}>
@@ -126,7 +126,7 @@
 - 添加 gRPC 支持的存储后端，支持使用 TTL 进行获取和放置操作。
 - 将速率限制配置限制仪表和每个存储桶关键标签添加到运行时指标。
 - 将删除、搜索和列出命名空间添加到 gRPC 存储。
-- 在运行中添加`langsmith_session_name`字段以存储LangSmith跟踪项目名称。
+- 在运行中添加`langsmith_session_name`字段来存储LangSmith跟踪项目名称。
 - 添加对 Postgres 连接的 Azure IAM 身份验证支持。
 - 添加对 Redis 连接的 Azure IAM 身份验证支持。
 - 添加 Wolfi Python 和 Node.js 服务器映像的 FIPS 变体。
@@ -233,7 +233,7 @@
 ## v0.12.0rc8
 
 ### 修复
-- 修复存储搜索和 list_namespaces 以完全匹配命名空间段并将 `_` 和 `%` 视为文字字符。
+- 修复存储搜索和 list_namespaces 以完全匹配命名空间段，并将 `_` 和 `%` 视为文字字符。
 - 修复工具路由使用 Send 对象时 JS 图形检查点失败的问题。
 
 </Update>
@@ -295,7 +295,7 @@
 - 添加 gRPC 支持的存储后端，支持使用 TTL 进行获取和放置操作。
 - 将速率限制配置限制仪表和每个存储桶关键标签添加到运行时指标。
 - 将删除、搜索和列出命名空间添加到 gRPC 存储。
-- 在运行中添加`langsmith_session_name`字段来存储LangSmith跟踪项目名称。
+- 在运行中添加 `langsmith_session_name` 字段以存储 LangSmith 跟踪项目名称。
 - 添加对 Postgres 连接的 Azure IAM 身份验证支持。
 - 添加对 Redis 连接的 Azure IAM 身份验证支持。
 - 添加 Wolfi Python 和 Node.js 服务器映像的 FIPS 变体。### 修复
@@ -337,13 +337,13 @@
 - 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量指标）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。
 - 添加了针对一元 core-api RPC 和 Redis 流发布字节的选择加入 Go 核心速率限制，以及 Redis 支持的 GCRA 强制、影子/强制模式以及带有 YAML 覆盖的 `LS_RATE_LIMITS` 引导配置。
 - 允许传递自定义证书和密钥文件（`ssl_certfile`、`ssl_keyfile`）以通过 HTTPS 运行开发服务器。
-- 添加了 `coreApi.runQueueTraceLog` 配置标志（`LSD_RUN_QUEUE_TRACE_LOG` 环境变量，默认为 `false`）以启用详细的 Redis 运行队列跟踪日志。- 添加了速率限制可观测性指标，包括配置限制指标（`lg_api_rate_limit_configured_rate`、`lg_api_rate_limit_configured_burst`）以及决策、错误和成本指标上的每个存储桶`rate_limit_key`标签。
+- 添加了 `coreApi.runQueueTraceLog` 配置标志（`LSD_RUN_QUEUE_TRACE_LOG` 环境变量，默认为 `false`）以启用详细的 Redis 运行队列跟踪日志。- 添加了速率限制可观测性指标，包括配置限制仪表（`lg_api_rate_limit_configured_rate`、`lg_api_rate_limit_configured_burst`）以及决策、错误和成本指标上的每个存储桶`rate_limit_key`标签。
 - 为助手、运行、crons 和线程搜索添加了核心搜索成本率限制，通过现有的速率限制配置和指标进行连接。
 - 在每次运行中添加了 `langsmith_session_name` 字段。该字段是启用跟踪时的LangSmith跟踪项目名称。通过 `/info` 公开支持，以便 Studio 可以检测支持该字段的 API 版本。
 - 添加了 Wolfi Python 和 JS 服务器映像的 `-fips` 变体（例如 `3.13-wolfi-fips`、`22-wolfi-fips`），使用 Go FIPS 140 加密模块和适用于 Node.js 的 FIPS 强化 OpenSSL 构建。
 - 添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点，取代了之前拒绝修剪具有活动 Delta 通道的线程的方法。
 - 在每次运行中添加了 `langsmith_session_name` 字段，并通过 `/info` 公开支持，以便 Studio 可以检测支持该字段的 API 版本。#### 修复
-- 修复了协议 v2 在 JS 图上运行时默默失败的问题。由于严格的流模式验证，sidecar 以 400 拒绝了`streamEvents`，错误被吞没，并运行错误报告成功，执行了 0 个节点。在 HTTP 边界处放宽了流模式验证，现在在非 2xx sidecar 响应上引发明显的错误，而不是掩盖故障。
+- 修复了协议 v2 在 JS 图上运行时默默失败的问题。由于严格的流模式验证，sidecar 以 400 拒绝了`streamEvents`，错误被吞没，并运行错误地报告成功，执行了 0 个节点。在 HTTP 边界处放宽了流模式验证，现在在非 2xx sidecar 响应上引发明显的错误，而不是掩盖故障。
 - 修复了针对 JS sidecar（远程）图的协议 v2 事件流，该事件流通过遗留重建路径错误地提供服务。远程图现在使用 LangGraphJS 的本机 v3 流进行 v2 事件流运行，解决工具调用不渲染、无头中断从不执行或恢复以及恢复后最终消息上出现 `400: tool_use ids must be unique` 错误的问题。
 - 现在删除运行会跳过使用 DeltaChannel 的线程的检查点删除，并仅删除运行记录。存储增量写入的检查点稍后检查点所依赖的将被保留。使用线程修剪 API 回收增量通道线程上的检查点存储。
 - 修复了 Prometheus 指标导出并调整了 OpenTelemetry 导出器配置。- 将 0.11.0rc1 中引入的`starlette`下限放回到`>=0.38.6`，因此`langgraph-api`可以与固定旧版 Starlette 版本的环境一起安装。构建仍然通过锁定文件将 Starlette 解析为 1.0.1。
@@ -512,7 +512,7 @@
 
 <Update label="2026-06-17" tags={["agent-server"]}>
 ## v0.11.0rc2### 修复
-- 将0.11.0rc1中引入的`starlette`下限放回到`>=0.38.6`，因此`langgraph-api`可以与固定旧Starlette版本的环境一起安装。构建仍然通过锁定文件将 Starlette 解析为 1.0.1。
+- 将 0.11.0rc1 中引入的`starlette`下限放回到`>=0.38.6`，因此`langgraph-api`可以与固定旧版 Starlette 版本的环境一起安装。构建仍然通过锁定文件将 Starlette 解析为 1.0.1。
 
 </Update>
 
@@ -525,7 +525,7 @@
 ### 新功能
 - 添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点，取代了之前拒绝修剪具有活动 Delta 通道的线程的方法。支持 Postgres、SQLite、DeferredDelete 和内存运行时。
 - 为 MongoDB 检查点添加了 DeltaChannel 感知修剪，仅保留状态重建所需的最小祖先检查点和 delta 通道 blob。
-- 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量指标）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。- 添加了针对一元 core-api RPC 和 Redis 流发布字节的选择加入 Go 核心速率限制，以及 Redis 支持的 GCRA 强制、影子/强制模式以及带有 YAML 覆盖的 `LS_RATE_LIMITS` 引导配置。
+- 添加了选择加入 Prometheus 指标抓取支持。设置 `LSD_PROM_METRICS_ENABLED=true` 以在端口 `LSD_PROM_METRICS_PORT`（默认 9464）的专用 Prometheus 抓取端点上公开 OTel 指标（运行生命周期、延迟、流、工作量表）。当两者都配置完毕后，Datadog OTLP 推送将继续与 Prometheus 一起工作。- 添加了针对一元 core-api RPC 和 Redis 流发布字节的选择加入 Go 核心速率限制，以及 Redis 支持的 GCRA 强制、影子/强制模式以及带有 YAML 覆盖的 `LS_RATE_LIMITS` 引导配置。
 - 允许传递自定义证书和密钥文件（`ssl_certfile`、`ssl_keyfile`）以通过 HTTPS 运行开发服务器。
 
 ### 修复
@@ -554,7 +554,7 @@
 - 修复了针对 JS sidecar（远程）图的协议 v2 事件流，该事件流通过遗留重建路径错误地提供服务。远程图现在使用 LangGraphJS 的本机 v3 流进行 v2 事件流运行，解决工具调用不渲染、无头中断从不执行或恢复以及恢复后最终消息上出现 `400: tool_use ids must be unique` 错误的问题。- 使队列运行查询向后兼容添加新字段的更高版本。
 
 #### 安全
-- **可能会破坏** 现在默认会拒绝环回 Webhook 目标，以修复身份验证绕过原语 ([GHSA-2c9q-c2q9-qgqv](https://github.com/langchain-ai/helm/security/advisories/GHSA-2c9q-c2q9-qgqv))。 `webhooks.url.disable_loopback` 策略现在默认为 `true`，阻止相对 URL Webhooks（通过进程内 ASGI 传输进行调度并绕过身份验证），以及 localhost / 127.x / ::1 / host.docker.internal 绝对 URL 和 DNS 解析到环回范围的任何主机名（减轻 DNS 重新绑定）。合法需要环回 Webhook 的部署（例如，具有本地主机 Webhook 接收器的 `langgraph dev`，或分派到安装在同一服务器上的自定义 FastAPI 路由的生产设置）可以通过在 `langgraph.json`（或等效的 `LANGGRAPH_WEBHOOKS` JSON env var）中设置 `webhooks.url.disable_loopback: false` 来选择重新加入。仅当您控制环回 Webhook 到达的路由时才执行此操作，因为这些路由是在未经身份验证的情况下调度的。- **可能会破坏** `POST /runs` 和 `POST /threads/{thread_id}/runs` 现在通过 `assistants.read` auth 事件（匹配 cron 创建和直接 GET）授权附加的助手，而不是之前使用的具有不完整负载的 `assistants.search` 事件 ([GHSA-jfj5-wrj9-63x4](https://github.com/langchain-ai/helm/security/advisories/GHSA-jfj5-wrj9-63x4))。仅注册 `@auth.on.assistants.read`（且没有 `.search` 处理程序）的部署容易受到跨用户授权绕过的攻击；现在将在运行创建路径上调用它们现有的读取处理程序。作为深度防御的后续措施，客户端提供的 run/cron 元数据不再从 `Runs.put` 或 `Crons.put` 转发到 `assistants.read` auth 事件有效负载，并且 inmem/postgres 运行时现在同意值形状。使用自定义身份验证处理程序进行部署的重大更改：(1) 之前在运行创建期间调用的任何 `@auth.on.assistants.search` 处理程序不再在那里调用 - 确保您有一个等效的 `@auth.on.assistants.read` 处理程序返回相同的所有者样式过滤器； (2) 从 run/cron 创建调用的 `assistants.read` 事件上的 `value["metadata"]` 不再填充，因此检查或改变它的处理程序必须将该逻辑移至 `@auth.on.runs.create_run` 和 `@auth.on.crons.create` 并依赖于返回过滤器来执行所有权。- 部署现在会在服务器开始时看到一个结构化警告，列出每个未覆盖的调度路径以及要复制的默认拒绝片段。对于注册全局 `@auth.on` 处理程序或仅使用 `@auth.authenticate` 而不使用任何资源级处理程序的部署，该警告不会出现。
+- **可能会破坏** 现在默认会拒绝环回 Webhook 目标，以修复身份验证绕过原语 ([GHSA-2c9q-c2q9-qgqv](https://github.com/langchain-ai/helm/security/advisories/GHSA-2c9q-c2q9-qgqv))。 `webhooks.url.disable_loopback` 策略现在默认为 `true`，阻止相对 URL Webhooks（通过进程内 ASGI 传输进行调度并绕过身份验证），以及 localhost / 127.x / ::1 / host.docker.internal 绝对 URL 和 DNS 解析到环回范围的任何主机名（减轻 DNS 重新绑定）。合法需要环回 Webhook 的部署（例如，具有本地主机 Webhook 接收器的 `langgraph dev`，或分派到安装在同一服务器上的自定义 FastAPI 路由的生产设置）可以通过在 `langgraph.json`（或等效的 `LANGGRAPH_WEBHOOKS` JSON env var）中设置 `webhooks.url.disable_loopback: false` 来选择重新加入。仅当您控制环回 Webhook 到达的路由时才执行此操作，因为这些路由是在未经身份验证的情况下调度的。- **可能会破坏** `POST /runs` 和 `POST /threads/{thread_id}/runs` 现在通过 `assistants.read` auth 事件（匹配 cron 创建和直接 GET）而不是之前使用的具有不完整负载的 `assistants.search` 事件 ([GHSA-jfj5-wrj9-63x4](https://github.com/langchain-ai/helm/security/advisories/GHSA-jfj5-wrj9-63x4)) 来授权附加的助手。仅注册 `@auth.on.assistants.read`（且没有 `.search` 处理程序）的部署容易受到跨用户授权绕过的攻击；现在将在运行创建路径上调用它们现有的读取处理程序。作为深度防御的后续措施，客户端提供的 run/cron 元数据不再从 `Runs.put` 或 `Crons.put` 转发到 `assistants.read` auth 事件有效负载，并且 inmem/postgres 运行时现在同意值形状。使用自定义身份验证处理程序进行部署的重大更改：(1) 之前在运行创建期间调用的任何 `@auth.on.assistants.search` 处理程序不再在那里调用 - 确保您有一个等效的 `@auth.on.assistants.read` 处理程序返回相同的所有者样式过滤器； (2) 从 run/cron 创建调用的 `assistants.read` 事件上的 `value["metadata"]` 不再填充，因此检查或改变它的处理程序必须将该逻辑移至 `@auth.on.runs.create_run` 和 `@auth.on.crons.create` 并依赖于返回过滤器来执行所有权。- 部署现在会在服务器开始时看到一个结构化警告，列出每个未覆盖的调度路径以及要复制的默认拒绝片段。对于注册全局 `@auth.on` 处理程序或仅使用 `@auth.authenticate` 而不使用任何资源级处理程序的部署，该警告不会出现。
 
 #### 一般说明
 - v0.10.0rc1 包含安全性和正确性方面的重大更改。更多详情请参阅[Security section](#security)。
@@ -623,7 +623,7 @@
 - 修复了事件流 v2 运行开始处理，以便遵守通过 `config.configurable.checkpoint_id` 提供的检查点重播目标。
 - 修复了事件流 v2 `input.respond` 通过 HTTP `POST /commands` 返回 `no_such_interrupt` 的 postgres 后端合法中断。
 - 修复了先前时间旅行运行中的线程 `checkpoint_map` 会持续存在并污染后续 `Command(resume=...)` 的错误，导致嵌套子图从一开始就错误地重放。### 安全
-- **可能会破坏** 现在默认会拒绝环回 Webhook 目标，以修复身份验证绕过原语 ([GHSA-2c9q-c2q9-qgqv](https://github.com/langchain-ai/helm/security/advisories/GHSA-2c9q-c2q9-qgqv))。 `webhooks.url.disable_loopback` 策略现在默认为 `true`，阻止相对 URL Webhook（通过进程内 ASGI 传输进行调度并绕过身份验证），以及 localhost / 127.x / ::1 / host.docker.internal 绝对 URL 和 DNS 解析到环回范围的任何主机名（减轻 DNS 重新绑定）。合法需要环回 Webhook 的部署（例如，具有本地主机 Webhook 接收器的 `langgraph dev`，或分派到安装在同一服务器上的自定义 FastAPI 路由的生产设置）可以通过在 `langgraph.json`（或等效的 `LANGGRAPH_WEBHOOKS` JSON env var）中设置 `webhooks.url.disable_loopback: false` 来选择重新加入。仅当您控制环回 Webhook 到达的路由时才执行此操作，因为这些路由是在未经身份验证的情况下调度的。- **可能会破坏** `POST /runs` 和 `POST /threads/{thread_id}/runs` 现在通过 `assistants.read` auth 事件（匹配 cron 创建和直接 GET）授权附加的助手，而不是之前使用的具有不完整负载的 `assistants.search` 事件 ([GHSA-jfj5-wrj9-63x4](https://github.com/langchain-ai/helm/security/advisories/GHSA-jfj5-wrj9-63x4))。仅注册 `@auth.on.assistants.read`（且没有 `.search` 处理程序）的部署容易受到跨用户授权绕过的影响；现在将在运行创建路径上调用它们现有的读取处理程序。作为深度防御的后续措施，客户端提供的 run/cron 元数据不再从 `Runs.put` 或 `Crons.put` 转发到 `assistants.read` auth 事件有效负载，并且 inmem/postgres 运行时现在同意值形状。使用自定义身份验证处理程序进行部署的重大更改：(1) 之前在运行创建期间调用的任何 `@auth.on.assistants.search` 处理程序不再被调用 — 确保您有一个等效的 `@auth.on.assistants.read` 处理程序返回相同的所有者样式过滤器； (2) 从 run/cron 创建调用的 `assistants.read` 事件上的 `value["metadata"]` 不再填充，因此检查或改变它的处理程序必须将该逻辑移至 `@auth.on.runs.create_run` 和 `@auth.on.crons.create` 并依赖于返回过滤器来执行所有权。- 部署现在会在服务器开始时看到一个结构化警告，列出每个未覆盖的调度路径以及要复制的默认拒绝片段。对于注册全局 `@auth.on` 处理程序或仅使用 `@auth.authenticate` 而不使用任何资源级处理程序的部署，该警告不会出现。
+- **可能会破坏** 现在默认会拒绝环回 Webhook 目标，以修复身份验证绕过原语 ([GHSA-2c9q-c2q9-qgqv](https://github.com/langchain-ai/helm/security/advisories/GHSA-2c9q-c2q9-qgqv))。 `webhooks.url.disable_loopback` 策略现在默认为 `true`，阻止相对 URL Webhook（通过进程内 ASGI 传输进行调度并绕过身份验证），以及 localhost / 127.x / ::1 / host.docker.internal 绝对 URL 和 DNS 解析到环回范围的任何主机名（减轻 DNS 重新绑定）。合法需要环回 Webhook 的部署（例如，具有本地主机 Webhook 接收器的 `langgraph dev`，或分派到安装在同一服务器上的自定义 FastAPI 路由的生产设置）可以通过在 `langgraph.json`（或等效的 `LANGGRAPH_WEBHOOKS` JSON env var）中设置 `webhooks.url.disable_loopback: false` 来选择重新加入。仅当您控制环回 Webhook 到达的路由时才执行此操作，因为这些路由是在未经身份验证的情况下调度的。- **可能会破坏** `POST /runs` 和 `POST /threads/{thread_id}/runs` 现在通过 `assistants.read` auth 事件（匹配 cron 创建和直接 GET）授权附加的助手，而不是之前使用的具有不完整负载的 `assistants.search` 事件 ([GHSA-jfj5-wrj9-63x4](https://github.com/langchain-ai/helm/security/advisories/GHSA-jfj5-wrj9-63x4))。仅注册 `@auth.on.assistants.read`（且没有 `.search` 处理程序）的部署容易受到跨用户授权绕过的影响；现在将在运行创建路径上调用它们现有的读取处理程序。作为深度防御的后续措施，客户端提供的 run/cron 元数据不再从 `Runs.put` 或 `Crons.put` 转发到 `assistants.read` auth 事件有效负载，并且 inmem/postgres 运行时现在同意值形状。使用自定义身份验证处理程序进行部署的重大更改：(1) 之前在运行创建期间调用的任何 `@auth.on.assistants.search` 处理程序不再在那里调用 - 确保您有一个等效的 `@auth.on.assistants.read` 处理程序返回相同的所有者样式过滤器； (2) 从 run/cron 创建调用的 `assistants.read` 事件上的 `value["metadata"]` 不再填充，因此检查或改变它的处理程序必须将该逻辑移至 `@auth.on.runs.create_run` 和 `@auth.on.crons.create` 并依赖于返回过滤器来执行所有权。- 部署现在会在服务器开始时看到一个结构化警告，列出每个未覆盖的调度路径以及要复制的默认拒绝片段。对于注册全局 `@auth.on` 处理程序或仅使用 `@auth.authenticate` 而不使用任何资源级处理程序的部署，该警告不会出现。
 
 </Update>
 
@@ -714,9 +714,10 @@
 
 此次要版本将运行队列轮询从 Postgres 移至 Redis，从而节省了数据库负载并提高了性能。
 
-在底层，代理服务器使用持久运行队列来管理运行执行。工作人员轮询队列中是否有新的运行并执行它们。以前，队列轮询逻辑通过 Postgres。这可能会导致查询长时间运行，尤其是在高负载下。通过此更新，队列轮询逻辑现在通过 Redis，然后从 Postgres 获取运行详细信息。这使得队列轮询的热路径速度大大加快，并减少了数据库的负载。这不是重大更改，不需要更改代码即可升级，但需要注意以下几点：
+在底层，代理服务器使用持久运行队列来管理运行执行。工作人员轮询队列中是否有新的运行并执行它们。以前，队列轮询逻辑通过 Postgres。这可能会导致查询长时间运行，尤其是在高负载下。通过此更新，队列轮询逻辑现在通过 Redis，然后从 Postgres 获取运行详细信息。这使得队列轮询的热路径速度大大加快，并减少了数据库的负载。这不需要更改代码即可升级，但有几点需要注意：
 - 升级后立即部署时，队列会转移。可能存在一个短暂的窗口，其中线程按非时间顺序进行调度。每个线程内的运行执行顺序仍然得到保证。
 - **仅限自托管：** Redis 流量可能会略有增加。在内部测试中，增长幅度不大。
+- **仅限自托管：** 此版本将最低 Redis 版本提高到 6.2。 Redis 支持的运行队列使用 `ZADD ... LT` 标志来排队运行，该标志是在 Redis 6.2 中添加的。在 Redis 5.0 到 6.1 上，运行 enqueue 失败，并出现通用 `ERR syntax error`，这并不表示版本不匹配，因此在部署此版本之前，请将 Redis 升级到 6.2 或更高版本。 Valkey 8 包含该标志。参见[self-hosted dependency versions](/langsmith/self-host-dependency-versions)。
 </Update>
 
 <Update label="2026-04-15" tags={["agent-server"]}>
@@ -726,15 +727,15 @@
 </Update>
 
 <Update label="2026-04-14" tags={["agent-server"]}>
-## v0.7.102
-
-- 通过合并多个中断块并确保一致的中断返回行为，改进了并行中断的处理。
+## v0.7.102- 通过合并多个中断块并确保一致的中断返回行为，改进了并行中断的处理。
 - 更新了 Vite 依赖项以修补安全漏洞 CVE-2026-39363 和 CVE-2026-39364。
 - 由于 `1.9.10` 清单中缺少 `arm64` 支持，因此将 Datadog 映像版本固定到 `1.9.9`。
 </Update>
 
 <Update label="2026-04-14" tags={["agent-server"]}>
-## v0.7.101- 将 Go stdlib 升级到 1.25.9，以解决高严重性漏洞 CVE-2026-32280 和 CVE-2026-32282。
+## v0.7.101
+
+- 将 Go stdlib 升级到 1.25.9，以解决高严重性漏洞 CVE-2026-32280 和 CVE-2026-32282。
 - 改进了 DD 和 OTEL 跟踪器中的错误传播，以处理 UserInterrupt 异常，而不会导致生成器错误。
 </Update>
 
@@ -764,7 +765,7 @@
 <Update label="2026-04-06" tags={["agent-server"]}>
 ## v0.7.97
 
-- 改进了 JS 图的错误传播，确保来自 `/assistants/<ID>/schemas` 端点的错误消息更清晰。
+- 改进了 JS 图表的错误传播，确保来自 `/assistants/<ID>/schemas` 端点的错误消息更清晰。
 - 当`LANGGRAPH_SERVER_HOST`等环境变量设置为IPv6地址时，确保稳定启动。
 - 通过使用`->>`作为`EqAuthFilter`中的字符串值过滤器来增强查询性能，从而支持使用B树索引。
 </Update>
@@ -879,7 +880,7 @@
 <Update label="2026-03-16" tags={["agent-server"]}>
 ## v0.7.73
 
-- 通过避免不必要的大型 JSONB 值的解构，使用 `extract` 改进了线程搜索性能。
+- 通过避免不必要的大型 JSONB 值的解冻，使用 `extract` 改进了线程搜索性能。
 </Update>
 
 <Update label="2026-03-13" tags={["agent-server"]}>
@@ -913,7 +914,7 @@
 <Update label="2026-03-06" tags={["agent-server"]}>
 ## v0.7.66
 
-- 当`LANGGRAPH_CHECKPOINTER`未设置时，为默认检查点配置添加了`LS_CHECKPOINTER_BACKEND`的回退。
+- 当 `LANGGRAPH_CHECKPOINTER` 未设置时，为默认检查点配置添加了`LS_CHECKPOINTER_BACKEND`的回退。
 </Update>
 
 <Update label="2026-03-05" tags={["agent-server"]}>
@@ -960,7 +961,7 @@
 ## v0.7.56
 
 - 添加了对商店 HTTP API 端点中的 `ttl`、`index` 和 `refresh_ttl` 参数的支持，以与 SDK 和进程内商店接口保持一致。
-- 在`GET /threads/{thread_id}`端点中添加了对`?include=ttl`查询参数的支持，以返回TTL信息。
+- 添加了对`GET /threads/{thread_id}`端点中的`?include=ttl`查询参数的支持，以返回TTL信息。
 - 更新了指标报告以准确说明 PostgreSQL 和 Redis 连接，确保 GRPC 和 Python 指标之间的统计数据一致。
 </Update>
 
@@ -993,7 +994,7 @@
 <Update label="2026-02-20" tags={["agent-server"]}>
 ## v0.7.49
 
-- 请求有效负载中保留的元数据键现在被悄悄地剥离，而不是导致 422 错误，从而增强了用户体验。
+- 请求有效负载中保留的元数据键现在会被静默剥离，而不是导致 422 错误，从而增强了用户体验。
 - 修复了存储默认 TTL 不适用于没有显式 TTL 参数写入的项目的问题。
 </Update>
 
@@ -1033,7 +1034,7 @@
 
 - 向线程添加了 `state_updated_at` 字段，用于跟踪有意义的状态更改，允许根据这些更改进行过滤和排序。
 - 添加了对核心系统内调度 cron 的支持。
-- 使用 x-forwarded-proto 标头确保代理卡中`https` 协议的准确显示，以实现正确的 A2A 客户端功能。
+- 使用 x-forwarded-proto 标头确保在代理卡中准确显示 `https` 协议，以实现正确的 A2A 客户端功能。
 </Update>
 
 <Update label="2026-02-15" tags={["agent-server"]}>
@@ -1103,7 +1104,7 @@
 <Update label="2026-02-07" tags={["agent-server"]}>
 ## v0.7.27
 
-- 通过删除常见消息类型以实现更清晰的工具定义，改进了 MCP 工具输入模式。
+- 通过删除常见消息类型以实现更清晰的工具定义，改进了 MCP 工具输入架构。
 - 添加了 MCP 工具的名称清理，以确保工具名称有效。
 </Update>
 
@@ -1223,7 +1224,7 @@
 </Update>
 
 <Update label="2026-01-21" tags={["agent-server"]} rss={{ title: "2026-01-21 - agent-server" }}>
-## v0.7.4- 修复了 Redis URL `ssl_cert_reqs` 字段解析的错误，确保与 redis-go 的兼容性。
+## v0.7.4- 修复了Redis URL解析`ssl_cert_reqs`字段的错误，确保与redis-go的兼容性。
 - 添加了用于流式运行的 gRPC 客户端，由 `FF_USE_CORE_API` 功能标志控制。
 </Update>
 
@@ -1340,7 +1341,7 @@
 
 <Update label="2026-01-05" tags={["agent-server"]} rss={{ title: "2026-01-05 - agent-server" }}>
 ## v0.6.18- 添加了对自托管企业用户实施特定许可证声明的功能，从而可以远程禁用 Agent Builder 产品。
-- 添加了新的修剪端点以实现更好的资源管理。
+- 添加了新的 Prune 端点以实现更好的资源管理。
 - 将图形配置与 Pregel 中的调用配置合并，优先调用设置。
 - 向 GET /threads/{id} 端点引入了 `include=ttl` 查询参数，用于可选的 TTL 信息检索，而不影响标准读取性能。
 - 引入了 `keep_latest` TTL 策略来保留最新状态，同时通过核心 API 修剪旧检查点。
@@ -1365,7 +1366,7 @@
 </Update>
 
 <Update label="2025-12-23" tags={["agent-server"]} rss={{ title: "2025-12-23 - agent-server" }}>
-## v0.6.12- 改进了resolve_embeddings，使其更加健壮，从而可以无错误地进行多次调用。
+## v0.6.12- 改进了resolve_embeddings，使其更加健壮，支持多次调用而不会出现错误。
 - 将`@langchain/langgraph`从版本1.0.4更新到1.0.7，添加了对远程图上的resumableStreams的支持并取消了toolsCondition。
 - 实现`RemoteCheckpointer`以启用子图检查点，增强任务执行的可靠性。
 </Update>
@@ -1422,7 +1423,7 @@
 <Update label="2025-12-15" tags={["agent-server"]} rss={{ title: "2025-12-15 - agent-server" }}>
 ## v0.6.0
 
-此次要版本更新了流 API `/join-stream` 和 `/stream` 相对于 `last-event-id` 参数的行为，以与 SSE 规范保持一致。以前，传递last-event-id 会返回该消息以及任何后续消息。今后，这些 API 将仅返回提供的 last-event-id 之后的新消息。例如，对于以下流，之前传递last-event-id `2` 将返回id 为`2` 和`3` 的消息，但现在仅返回id 为`3` 的消息：
+此次要版本更新了流 API `/join-stream` 和 `/stream` 相对于 `last-event-id` 参数的行为，以与 SSE 规范保持一致。以前，传递last-event-id 会返回该消息以及任何后续消息。今后，这些 API 将仅返回提供的 last-event-id 之后的新消息。例如，对于以下流，之前传递 Last-event-id `2` 将返回 id `2` 和 `3` 的消息，但现在仅返回 id `3` 的消息：
 
 ```json
 {
@@ -1454,7 +1455,7 @@
 </Update>
 
 <Update label="2025-12-12" tags={["agent-server"]} rss={{ title: "2025-12-12 - agent-server" }}>
-## v0.5.42- 修改了 Go 服务器，使其仅依赖 CLI `-service` 标志来确定服务模式，忽略全局设置 `FF_USE_CORE_API` 以实现更好的部署特异性。
+## v0.5.42- 修改了 Go 服务器，使其仅依靠 CLI `-service` 标志来确定服务模式，忽略全局设置 `FF_USE_CORE_API` 以实现更好的部署特异性。
 </Update>
 
 <Update label="2025-12-11" tags={["agent-server"]} rss={{ title: "2025-12-11 - agent-server" }}>
@@ -1481,14 +1482,14 @@
 <Update label="2025-12-09" tags={["agent-server"]} rss={{ title: "2025-12-09 - agent-server" }}>
 ## v0.5.37
 
-向助手计数 API 添加了 `name` 参数，以提高搜索灵活性。
+在助手计数 API 中添加了 `name` 参数，以提高搜索灵活性。
 </Update>
 
 <Update label="2025-12-09" tags={["agent-server"]} rss={{ title: "2025-12-09 - agent-server" }}>
 ## v0.5.36
 
 - 引入了可配置的 Webhook 支持，允许用户自定义提交的 Webhook 和标头。
-- 在根目录添加了 `/ok` 端点，以便更轻松地进行运行状况检查和简化配置。
+- 在根目录添加了一个 `/ok` 端点，以便更轻松地进行运行状况检查和简化配置。
 </Update><Update label="2025-12-08" tags={["agent-server"]} rss={{ title: "2025-12-08 - agent-server" }}>
 ## v0.5.34
 
@@ -1524,7 +1525,7 @@
 ## v0.5.28
 
 - 引入了更快的、基于 Rust 的 uuid7 实现来提高性能，现在用于 langsmith 和 langchain-core。
-- 在 PostgreSQL 身份验证过滤器中添加了对 `$or`​​ 和 `$and` 的支持，以在身份验证检查中启用复杂逻辑。
+- 在 PostgreSQL 身份验证过滤器中添加了对 `$or` 和 `$and` 的支持，以在身份验证检查中启用复杂逻辑。
 - 限制 psycopg 和 psycopg-pool 版本以防止启动时无限等待。
 </Update>
 
@@ -1615,7 +1616,7 @@
 <Update label="2025-11-07" tags={["agent-server"]} rss={{ title: "2025-11-07 - agent-server" }}>
 ## v0.5.8
 
-- 确保在启动 langgraph-ui 时将环境变量作为字典传递，以与 `uvloop` 兼容。
+- 确保启动 langgraph-ui 时将环境变量作为字典传递，以与 `uvloop` 兼容。
 - 参考 PostgreSQL，实现了 Go 中运行的 CRUD 操作，简化了 JSON 合并并提高了事务可读性。
 </Update>
 
@@ -1679,7 +1680,7 @@
 
 <Update label="2025-10-29" tags={["agent-server"]} rss={{ title: "2025-10-29 - agent-server" }}>
 ## v0.4.47- 使用 TypeAdapter 验证和自动更正环境配置类型。
-- 添加了对 LangChain.js 和 LangGraph.js 1.x 版的支持，确保兼容性。
+- 添加了对 LangChain.js 和 LangGraph.js 1.x 版本的支持，确保兼容性。
 - 将 hono 库从版本 4.9.7 更新到 4.10.3，解决了 CORS 中间件安全问题并增强了 JWT 受众验证。
 - 引入了模块化基准框架，增加了对助手和流的支持，并改进了现有的斜坡基准方法。
 - 引入了用于核心线程 CRUD 操作的 gRPC API，以及更新的 Python 和 TypeScript 客户端。
@@ -1729,7 +1730,7 @@
 </Update><Update label="2025-10-08" tags={["agent-server"]} rss={{ title: "2025-10-08 - agent-server" }}>
 ## v0.4.38
 
-- 将 `LANGSMITH_API_KEY` 替换为 `LANGSMITH_CONTROL_PLANE_API_KEY`，以支持需要许可证验证的混合部署。
+- 将`LANGSMITH_API_KEY`替换为`LANGSMITH_CONTROL_PLANE_API_KEY`，以支持需要许可证验证的混合部署。
 - 引入了自托管日志摄取支持，可通过 `SELF_HOSTED_LOGS_ENABLED` 和 `SELF_HOSTED_LOGS_ENDPOINT` 环境变量进行配置。
 </Update>
 
@@ -1749,7 +1750,7 @@
 
 <Update label="2025-10-02" tags={["agent-server"]} rss={{ title: "2025-10-02 - agent-server" }}>
 ## v0.4.35- 解决了核心API中的时区问题，确保准确的时间数据检索。
-- 引入了新的`middleware_order`设置，在自定义中间件之前应用身份验证中间件，从而可以更好地控制受保护的路由配置。
+- 引入了新的`middleware_order`设置，可在自定义中间件之前应用身份验证中间件，从而可以更好地控制受保护的路由配置。
 - 在 Redis 客户端创建期间发生错误时记录 Redis URL。
 - 改进了 Go 引擎/运行时上下文传播，以确保一致的执行流程。
 - 从执行器入口点删除了不必要的 `assistants.put` 调用以简化流程。
@@ -1776,7 +1777,7 @@
 </Update>
 
 <Update label="2025-09-30" tags={["agent-server"]} rss={{ title: "2025-09-30 - agent-server" }}>
-## v0.4.30- 添加了使用 `stream_mode="events"` 时对上下文的支持，并包含了对此功能的新测试。
+## v0.4.30- 添加了使用`stream_mode="events"`时对上下文的支持，并包含了对此功能的新测试。
 - 添加了对使用 `$LANGGRAPH_SERVER_PORT` 覆盖服务器端口的支持，并删除了不必要的 Dockerfile `ARG` 以实现更清晰的配置。
 - 对线程删除 CTE 中的所有表引用应用授权过滤器以增强安全性。
 - 引入了自托管指标摄取功能，允许在设置相应的环境变量时每分钟将指标发送到 OTLP 收集器。
@@ -1792,11 +1793,11 @@
 <Update label="2025-09-25" tags={["agent-server"]} rss={{ title: "2025-09-25 - agent-server" }}>
 ## v0.4.28- 向队列指标服务器添加了格式参数以增强自定义功能。
 - 更正了 CLI 中的 `MOUNT_PREFIX` 环境变量用法，以与文档保持一致并防止混淆。
-- 添加了一项功能，用于在由于没有订阅者而导致消息被丢弃时记录警告，可通过功能标志进行控制。
+- 添加了一项功能，用于在由于没有订阅者而导致消息丢失时记录警告，可通过功能标志进行控制。
 - 在 Node 镜像中添加了对 Bookworm 和 Bullseye 发行版的支持。
 - 通过将执行器定义从`langgraph-go`存储库中移出来合并执行器定义，提高可管理性并更新服务器迁移的检查点设置方法。
 - 确保为 a2a 发送正确的响应标头，提高兼容性和通信。
-- 整合 PostgreSQL 检查点实现，添加了`/core`目录的 CI 测试，修复了 RemoteStore 测试错误，并通过事务增强了 Store 实现。
+- 整合了 PostgreSQL 检查点实现，添加了`/core`目录的 CI 测试，修复了 RemoteStore 测试错误，并通过事务增强了 Store 实现。
 - 将 PostgreSQL 迁移添加到队列服务器，以防止在执行迁移之前添加图表时出现错误。
 </Update>
 
@@ -1835,7 +1836,7 @@
 <Update label="2025-09-11" tags={["agent-server"]} rss={{ title: "2025-09-11 - agent-server" }}>
 ## v0.4.20
 
-优化 Pubsub 初始化，以防止开销并解决订阅计时问题，确保更顺畅的运行执行。
+优化了 Pubsub 初始化，以防止开销并解决订阅计时问题，确保更顺畅的运行执行。
 </Update>
 
 <Update label="2025-09-11" tags={["agent-server"]} rss={{ title: "2025-09-11 - agent-server" }}>
@@ -1914,7 +1915,7 @@
 ## v0.4.4
 
 - 将无状态运行的自定义身份验证 thread_id 设置为 None 以防止冲突。
-- 通过添加唤醒工作器和 Redis 锁实现以及更新的扫描逻辑，改进了 Go 运行时中的 Redis 信号。
+- 通过添加唤醒工作线程和 Redis 锁实现以及更新的扫描逻辑，改进了 Go 运行时中的 Redis 信号发送。
 </Update><Update label="2025-08-27" tags={["agent-server"]} rss={{ title: "2025-08-27 - agent-server" }}>
 ## v0.4.3
 
@@ -1952,7 +1953,7 @@
 <Update label="2025-08-22" tags={["agent-server"]} rss={{ title: "2025-08-22 - agent-server" }}>
 ## v0.3.3
 
-- 为特定的 Redis 调用添加了超时，以防止工作人员处于活动状态。
+- 为特定 Redis 调用添加了超时，以防止工作人员保持活动状态。
 - 更新了 Golang 运行时并添加了 pytest 跳过不受支持的功能，包括对将存储传递到节点和消息流的初始支持。
 - 引入了反向代理设置，用于服务组合的 Python 和 Node.js 图形，并使用 nginx 处理服务器路由，以促进 Node.js API 服务器的 Postgres/Redis 后端。
 </Update><Update label="2025-08-21" tags={["agent-server"]} rss={{ title: "2025-08-21 - agent-server" }}>
@@ -2081,7 +2082,7 @@
 ## v0.2.120
 
 - 恢复了运行的原始流行为，确保基于 `stream_mode` 设置一致包含中断事件。
-- 优化 `Runs.next` 查询，将平均执行时间从约 14.43 毫秒减少到约 2.42 毫秒，从而提高性能。
+- 优化`Runs.next`查询，将平均执行时间从~14.43ms减少到~2.42ms，提高性能。
 - 添加了对流模式“任务”和“检查点”的支持，标准化了 UI 命名空间，并升级了`@langchain/langgraph-api`以增强功能。
 </Update>
 
@@ -2230,7 +2231,7 @@
 <Update label="2025-07-16" tags={["agent-server"]} rss={{ title: "2025-07-16 - agent-server" }}>
 ## v0.2.91
 
-通过内联小值（null、numeric、str 等）减少对 `checkpoint_blobs` 表的写入。这意味着我们不需要为尚未更新的通道存储额外的值。
+通过内联小值（null、numeric、str 等）减少对 `checkpoint_blobs` 表的写入。这意味着我们不需要为尚未更新的频道存储额外的值。
 </Update>
 
 <Update label="2025-07-16" tags={["agent-server"]} rss={{ title: "2025-07-16 - agent-server" }}>
@@ -2266,7 +2267,7 @@
 <Update label="2025-07-10" tags={["agent-server"]} rss={{ title: "2025-07-10 - agent-server" }}>
 ## v0.2.85
 
-在 `runs/wait` 中添加了对 `on_disconnect` 字段的支持，并包含断开连接日志以实现更好的调试。
+向 `runs/wait` 添加了对 `on_disconnect` 字段的支持，并包含断开连接日志以实现更好的调试。
 </Update>
 
 <Update label="2025-07-09" tags={["agent-server"]} rss={{ title: "2025-07-09 - agent-server" }}>
@@ -2397,7 +2398,7 @@
 ## v0.2.60
 
 - 增强的错误日志记录包括字典操作的回溯详细信息。
-- 添加了 `/metrics` 端点以公开队列工作器指标以进行监控。
+- 添加了一个`/metrics`端点来公开队列工作器指标以进行监控。
 </Update>
 
 <Update label="2025-06-18" tags={["agent-server"]} rss={{ title: "2025-06-18 - agent-server" }}>
@@ -2459,7 +2460,7 @@
 </Update>
 
 <Update label="2025-06-05" tags={["agent-server"]} rss={{ title: "2025-06-05 - agent-server" }}>
-## v0.2.45- 通过合并跟踪上下文增强流功能。
+## v0.2.45- 通过合并跟踪上下文来增强流功能。
 - 从 Crons.search 函数中删除了不必要的查询。
 - 解决了为多个 cron 作业安排下一次运行时的连接重用问题。
 - 删除了 Crons.search 函数中不必要的查询以提高效率。

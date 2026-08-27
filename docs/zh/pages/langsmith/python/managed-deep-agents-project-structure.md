@@ -44,10 +44,12 @@ my-agent/
 ├── .env
 
 └── evals/                          # Harbor workspace
-    ├── tasks/                      # Canonical Harbor tasks
-    │   └── <task>/
-    └── scaffold/                   # Optional task scaffolds
-        └── <task>/
+    ├── harbor-job.json
+    └── <task>/                     # Harbor task
+        ├── Task.md
+        ├── instruction.md
+        ├── environment/
+        └── tests/
 ```
 
 唯一需要的文件是项目根目录下的`agent.py`。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。
@@ -61,14 +63,16 @@ my-agent/
 - **应用程序代码**：`tools/`和`middleware/`下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
 - **托管配置**：根`identity.py`和`memory.py`、`channels/`、`connectors/`和`schedules/`的直接子级以及`sandbox/__init__.py`启用其相应的功能。 MCP 连接器模块导出模块级 `connector`。
 - **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。托管 Deep Agents 在本地加载 `.env` 并将符合条件的值作为部署机密转发，但从不在构建存档中包含 `.env` 文件。
-- **评估**：托管 Deep Agents 评估是 Harbor 评估。 `evals/tasks/` 是规范的 Harbor 任务数据集。直接在那里编写任务，或者运行 `mda evals init <name>` 在 `evals/scaffold/` 下创建一个可选的启动器。 `mda evals compile` 将脚手架复制到`evals/tasks/` 并打包Harbor 的代理。 `evals/` 目录不包含在已部署的代理版本中。
+- **评估**：托管 Deep Agents 评估是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 
 
 
 
 上面的布局显示了常见的 `.py` 名称。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

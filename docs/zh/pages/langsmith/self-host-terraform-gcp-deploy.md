@@ -114,7 +114,7 @@ gcloud config set project <your-project-id>
 gcloud auth application-default login
 ```
 
-您还需要一个 LangSmith 许可证密钥 ([contact sales](https://www.langchain.com/contact-sales)) 以及解析为 GCP 的域或子域。
+您还需要一个 LangSmith 许可证密钥 ([contact our sales team](https://www.langchain.com/contact-sales)) 以及解析为 GCP 的域或子域。
 
 ## 快速入门
 
@@ -164,7 +164,7 @@ kubectl get gateway -n langsmith \
 Terraform 提供以下 GCP 资源：|资源 |目的|
 |---|---|
 | VPC+子网+云NAT |集群和托管服务的专用网络|
-|私人服务连接 | Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
+|私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
 |内存存储Redis |队列和缓存、STANDARD_HA 层、私有 IP |
@@ -231,7 +231,7 @@ enable_langsmith_deployment = true
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值，读取现有的秘密管理器秘密，自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您以交互方式提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值，读取现有的秘密管理器秘密，自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您交互提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
 
 验证秘密是否存在：
 
