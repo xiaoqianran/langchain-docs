@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-27T19:18:44.224Z",
+  "fetchedAt": "2026-08-28T20:28:12.932Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 174,
-  "ok": 549,
+  "ok": 550,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 453
+      "count": 454
     },
     "fleet": {
       "name": "Fleet",
@@ -444,6 +444,15 @@
       "bytes": 5065
     },
     {
+      "rel": "langsmith/byoc-shared-responsibility.md",
+      "title": "BYOC shared responsibility model",
+      "url": "https://docs.langchain.com/langsmith/byoc-shared-responsibility",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "byoc-shared-responsibility",
+      "bytes": 11559
+    },
+    {
       "rel": "langsmith/byoc-usage.md",
       "title": "BYOC usage",
       "url": "https://docs.langchain.com/langsmith/byoc-usage",
@@ -468,7 +477,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc",
-      "bytes": 5133
+      "bytes": 5278
     },
     {
       "rel": "langsmith/caching.md",
@@ -549,7 +558,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cli",
-      "bytes": 64000
+      "bytes": 64003
     },
     {
       "rel": "langsmith/cloud-platform-features.md",
@@ -1494,7 +1503,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "event-streaming",
-      "bytes": 30724
+      "bytes": 30709
     },
     {
       "rel": "langsmith/example-data-format.md",
@@ -1584,7 +1593,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "access-and-oversight",
-      "bytes": 7226
+      "bytes": 7217
     },
     {
       "rel": "langsmith/fleet/agent-identity.md",
@@ -1764,7 +1773,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "teams-app",
-      "bytes": 8301
+      "bytes": 8286
     },
     {
       "rel": "langsmith/fleet/templates.md",
@@ -3960,7 +3969,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "shared-responsibility-model",
-      "bytes": 4117
+      "bytes": 4219
     },
     {
       "rel": "langsmith/skills.md",
@@ -4437,7 +4446,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-n8n",
-      "bytes": 2567
+      "bytes": 2552
     },
     {
       "rel": "langsmith/trace-with-openai-agents-sdk.md",
@@ -4752,7 +4761,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 9981
+      "bytes": 9652
     },
     {
       "rel": "oss/deepagents/code/changelog.md",
@@ -4770,7 +4779,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 26109
+      "bytes": 30203
     },
     {
       "rel": "oss/deepagents/code/config-file.md",
@@ -4779,7 +4788,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 31058
+      "bytes": 34975
     },
     {
       "rel": "oss/deepagents/code/configuration.md",
@@ -4788,7 +4797,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 29473
+      "bytes": 47168
     },
     {
       "rel": "oss/deepagents/code/credentials.md",
@@ -4806,7 +4815,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 5755
+      "bytes": 6085
     },
     {
       "rel": "oss/deepagents/code/hooks.md",
@@ -4824,7 +4833,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 24914
+      "bytes": 25334
     },
     {
       "rel": "oss/deepagents/code/memory-and-skills.md",
@@ -4833,7 +4842,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 8567
+      "bytes": 8700
     },
     {
       "rel": "oss/deepagents/code/overview.md",
@@ -4869,7 +4878,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 19086
+      "bytes": 20080
     },
     {
       "rel": "oss/deepagents/code/remote-sandboxes.md",

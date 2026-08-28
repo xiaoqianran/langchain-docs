@@ -279,6 +279,12 @@
           "rel": "langsmith/byoc-operations.md"
         }
       ],
+      "byoc-shared-responsibility": [
+        {
+          "title": "BYOC shared responsibility model",
+          "rel": "langsmith/byoc-shared-responsibility.md"
+        }
+      ],
       "byoc-usage": [
         {
           "title": "BYOC usage",

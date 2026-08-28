@@ -6427,13 +6427,18 @@
     "langsmith/preview-builds.md": {
       "hash": "53fd0bdad35b85a7fa44d2b092cf70297645592c",
       "translatedAt": "2026-08-21T09:25:14.352Z"
+    },
+    "langsmith/byoc-shared-responsibility.md": {
+      "hash": "d4619e1fcb476d51899c0476f8e58259cc864cee",
+      "translatedAt": "2026-08-28T20:28:18.842Z",
+      "failed": true
     }
   },
-  "updatedAt": "2026-08-27T19:22:18.630Z",
+  "updatedAt": "2026-08-28T20:28:49.166Z",
   "stats": {
-    "translated": 75,
-    "skipped": 474,
-    "failed": 0,
-    "total": 549
+    "translated": 0,
+    "skipped": 533,
+    "failed": 17,
+    "total": 550
   }
 }
