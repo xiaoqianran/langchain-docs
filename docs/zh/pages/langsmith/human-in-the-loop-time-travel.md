@@ -9,9 +9,9 @@ LangGraph 提供了 [**time travel**](/oss/python/langgraph/use-time-travel) 功
 使用 LangSmith 部署 API 进行时间旅行（通过 LangGraph SDK）：
 
 1. **使用 [LangGraph SDK](/langsmith/langgraph-python-sdk) 的 [client.runs.wait](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.wait) 或 [client.runs.stream](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) API 使用初始输入运行图表**。
-2. **识别现有线程中的检查点**：使用[client.threads.get_history](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history)方法检索特定`thread_id`的执行历史记录并找到所需的`checkpoint_id`。
+2. **识别现有线程中的检查点**：使用[client.threads.get_history](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history)方法检索特定`thread_id`的执行历史记录并找到所需的`checkpoint_id`。
   或者，在要暂停执行的节点之前设置 [breakpoint](/oss/python/langgraph/interrupts)。然后，您可以找到截至该断点记录的最新检查点。
-3. **（可选）修改图状态**：使用[client.threads.update_state](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.update_state)方法修改图在检查点的状态并从替代状态恢复执行。
+3. **（可选）修改图状态**：使用[client.threads.update_state](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/update_state)方法修改图在检查点的状态并从替代状态恢复执行。
 4. **从检查点恢复执行**：使用 [client.runs.wait](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.wait) 或 [client.runs.stream](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) API 并输入 `None` 以及相应的 `thread_id` 和 `checkpoint_id`。
 
 ## 在工作流程中使用时间旅行

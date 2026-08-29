@@ -28,14 +28,16 @@
 2. **响应**：执行过程中不确定时检查内存
 3. **学习**：自动保存新信息以供将来使用
 
-代理按主题和描述性文件名组织其记忆：
+要在停止自动保存的同时继续加载内存，请参阅[Automatic memory](/oss/deepagents/code/configuration#automatic-memory)。代理按主题和描述性文件名组织其记忆：
 
 ```
 ~/.deepagents/backend-dev/memories/
 ├── api-conventions.md
 ├── database-schema.md
 └── deployment-process.md
-```当您教授代理约定时：
+```
+
+当您教授代理约定时：
 
 ```bash
 dcode --agent backend-dev
@@ -64,14 +66,14 @@ dcode --agent backend-dev
 
 ### 记忆是如何运作的
 
-在回答特定于项目的问题或参考过去的工作或模式时，代理还可以读取其内存文件。
+在回答特定于项目的问题或引用过去的工作或模式时，代理还可以读取其内存文件。
 
 当您提供有关代理应如何行为的信息、对其工作的反馈或记住某些内容的指示时，代理会更新`AGENTS.md`。
-如果它从你的交互中识别出模式或偏好，它也会更新它的记忆。
-
-要在附加内存文件中添加更多结构化项目知识，请将它们添加到`.deepagents/`中并在`AGENTS.md`文件中引用它们。
+如果它从你的交互中识别出模式或偏好，它也会更新它的记忆。要在附加内存文件中添加更多结构化项目知识，请将它们添加到`.deepagents/`中并在`AGENTS.md`文件中引用它们。
 您必须引用 `AGENTS.md` 文件中的其他文件，代理才能了解它们。
-启动时不会读取附加文件，但代理可以在需要时引用并更新它们。### 何时使用全局与项目 AGENTS.md
+启动时不会读取附加文件，但代理可以在需要时引用并更新它们。
+
+### 何时使用全局与项目 AGENTS.md
 
 使用全局 `AGENTS.md` (`~/.deepagents/agent/AGENTS.md`) 用于：
 
@@ -89,10 +91,8 @@ dcode --agent backend-dev
 - 测试策略和部署流程
 - 团队指南和项目结构
 
-## 技能
-
-技能将工作流程、最佳实践、脚本和参考文档等领域专业知识打包到可重用目录中，代理仅在相关时发现和读取这些目录。
-深厚的代理技能遵循[Agent Skills specification](https://agentskills.io/)。有关技能如何发挥作用以及如何编写有效技能的更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
+## 技能技能将工作流程、最佳实践、脚本和参考文档等领域专业知识打包到可重用目录中，代理仅在相关时发现和读取这些目录。
+深厚的特工技能遵循[Agent Skills specification](https://agentskills.io/)。有关技能如何发挥作用以及如何编写有效技能的更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
 
 启动时，Deep Agents代码从每个`SKILL.md`文件的frontmatter中读取名称和描述。当任务与技能的描述相匹配时，代理会读取技能文件并遵循其说明。 Discovery 再次在 `/reload` 上运行。
 
@@ -107,7 +107,9 @@ dcode --agent backend-dev
 
         # Project skill (stored in .deepagents/skills/)
         dcode skills create test-skill --project
-        ```这会生成：
+        ```
+
+        这会生成：
 
         ```plaintext
         skills/
@@ -141,9 +143,7 @@ npx skills add vercel-labs/agent-skills --skill web-design-guidelines -a deepage
 
 # List installed skills
 npx skills ls -a deepagents -g
-```
-
-全局将 (`-g`) 符号链接技能安装到 `~/.deepagents/agent/skills/` — 默认代理的用户级技能目录中。项目级安装（省略 `-g`）将技能放置在相对于当前目录的 `.deepagents/skills/` 中，使它们可供该项目中运行的任何代理使用，无论代理名称如何。
+```全局将 (`-g`) 符号链接技能安装到 `~/.deepagents/agent/skills/` — 默认代理的用户级技能目录中。项目级安装（省略 `-g`）将技能放置在相对于当前目录的 `.deepagents/skills/` 中，使它们可供该项目中运行的任何代理使用，无论代理名称如何。
 
 <Note>
     全局安装仅针对默认的 `agent` 目录。如果您使用自定义命名的代理，请使用项目级安装或手动将技能符号链接到`~/.deepagents/{your-agent}/skills/`。
@@ -162,7 +162,9 @@ npx skills ls -a deepagents -g
 .claude/skills/            (experimental)
 ```
 
-当存在重复的技能名称时，较后优先的目录会覆盖较早的目录（请参阅[App data](/oss/deepagents/code/configuration#skills)）。对于特定于项目的技能（在`.deepagents/skills/`或`.agents/skills/`下），项目根由包含的`.git`文件夹标识。
+当存在重复的技能名称时，较后优先的目录会覆盖较早的目录（请参阅[App data](/oss/deepagents/code/configuration#skills)）。
+
+对于特定于项目的技能（在`.deepagents/skills/`或`.agents/skills/`下），项目根由包含的`.git`文件夹标识。
 
 ### 在会话中调用技能
 
@@ -197,9 +199,7 @@ dcode --skill code-review -n 'review this patch'
 
 # Quiet mode (only agent output on stdout)
 dcode --skill code-review -n 'review this patch' -q
-```
-
-<Note>
+```<Note>
     `--skill` 与 `--quiet` 或 `--no-stream` 需要 `-n`（非交互模式）。
 </Note>
 

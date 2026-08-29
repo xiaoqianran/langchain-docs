@@ -267,6 +267,12 @@
           "rel": "langsmith/byoc-faq.md"
         }
       ],
+      "byoc-migration": [
+        {
+          "title": "Migrate to BYOC",
+          "rel": "langsmith/byoc-migration.md"
+        }
+      ],
       "byoc-onboarding": [
         {
           "title": "BYOC onboarding",
@@ -3201,6 +3207,10 @@
         {
           "title": "Provider credentials",
           "rel": "oss/deepagents/code/credentials.md"
+        },
+        {
+          "title": "Python extensions",
+          "rel": "oss/deepagents/code/extensions.md"
         },
         {
           "title": "Goals and rubrics",

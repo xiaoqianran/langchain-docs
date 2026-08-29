@@ -6,7 +6,7 @@
 
 [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) 允许您使用来自外部服务器的工具（文件系统、API、数据库等）扩展 Deep Agents 代码，而无需修改代理本身。 Deep Agents 代码在启动时连接到 MCP 服务器，发现它们的工具，并使它们与内置工具一起可供代理使用。
 
-通过向您的项目添加 `.mcp.json` 配置文件来添加 MCP 服务器以实现项目级范围，或在用户级应用到所有项目。
+通过将 `.mcp.json` 配置文件添加到您的项目以在项目级别范围内添加 MCP 服务器，或在用户级别添加 MCP 服务器以应用于所有项目。
 
 ## 快速入门
 
@@ -116,7 +116,7 @@
 
 ### 克劳德代码兼容性
 
-如果您的项目根目录中已经有 Claude Code 的 `.mcp.json`，Deep Agents Code 会自动选取它 — 无需额外设置。
+如果您的项目根目录中已经有 Claude Code 的 `.mcp.json`，则 Deep Agents Code 会自动选取它 — 无需额外设置。
 
 ## 配置格式
 
@@ -163,7 +163,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 
 <AccordionGroup>
     <Accordion title="stdio (default)">
-        **必需：** `command`。 **可选：** `args`、`env`，加上共享的[tool-filter fields](#tool-filtering)。
+        **必填：** `command`。 **可选：** `args`、`env`，加上共享的[tool-filter fields](#tool-filtering)。
 
         <ResponseField name="command" type="string" required>
             要运行的可执行文件。
@@ -188,7 +188,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
         </ResponseField>
 
         <ResponseField name="headers" type="object">
-            随每个请求发送的 HTTP 标头。常用于身份验证。值支持对父 shell 环境变量的 `${VAR}` 引用（在服务器激活时解析）。
+            随每个请求发送的 HTTP 标头。常用于身份验证。值支持`${VAR}`对父shell环境变量的引用（在服务器激活时解析）。
         </ResponseField>
 
         <ResponseField name="auth" type='"oauth"'>
@@ -223,17 +223,17 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
     服务器名称必须匹配 `[A-Za-z0-9_-]+`。名称用作 OAuth 令牌文件的磁盘基本名称，因此路径分隔符和其他 shell 元字符在配置加载时被拒绝。
 </Note>
 
-### 标头环境变量
+### 环境变量插值
 
-标头值支持从父 shell 进行 `${VAR}` 替换，在服务器激活时解析，而不是在配置加载时解析。一个未设置的变量只会使需要它的服务器失败；其余的仍然出现。
+`command`、`args`、`env`、`url` 和 `headers` 中的字符串值支持`${VAR}` 对父 shell 环境变量的引用。当变量未设置或为空时，使用 `${VAR:-default}` 提供值。
 
-```json title=".mcp.json"
+```json title="~/.deepagents/.mcp.json"
 {
     "mcpServers": {
-        "internal-api": {
-            "type": "http",
-            "url": "https://api.example.com/mcp",
-            "headers": { "Authorization": "Bearer ${INTERNAL_API_TOKEN}" }
+        "work-docs": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-filesystem", "${WORK_DOCS_DIR:-/tmp/work-docs}"],
+            "env": { "LOG_LEVEL": "${MCP_LOG_LEVEL:-info}" }
         }
     }
 }
@@ -293,7 +293,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 
 ### 比赛规则
 
-每个条目都是一个文字工具名称或一个 [⟦T83⟧](https://docs.python.org/3/library/fnmatch.html) 样式的 glob（任何包含 `*`、`?` 或 `[` 的条目都被视为模式）。条目与裸 MCP 工具名称和服务器前缀形式 (`{server}_{tool}`) 相匹配，因此任一形式都有效：
+每个条目都是一个文字工具名称或一个 [⟦T90⟧](https://docs.python.org/3/library/fnmatch.html) 样式的 glob（任何包含 `*`、`?` 或 `[` 的条目都被视为模式）。条目与裸 MCP 工具名称和服务器前缀形式 (`{server}_{tool}`) 相匹配，因此任一形式都有效：
 
 ```json
 {
@@ -313,7 +313,7 @@ stdio 服务器作为子进程生成。 Deep Agents 代码通过 stdin/stdout �
 
 ### 自动模式下只读工具注释
 
-MCP 服务器在宣传工具时可以附加标准`ToolAnnotations`。仅当满足以下所有条件时，Deep Agents 代码才允许工具绕过 [Auto approval mode](/oss/deepagents/code/approval-modes) 中的分类器审查：
+MCP 服务器在宣传工具时可以附加标准`ToolAnnotations`。仅当满足以下所有条件时，Deep Agents 代码才允许工具绕过[Auto approval mode](/oss/deepagents/code/approval-modes) 中的分类器审查：
 
 - `readOnlyHint` 是字面布尔值 `true`。
 - `destructiveHint` 缺失、`null` 或 `false`。
@@ -355,22 +355,32 @@ MCP 服务器在宣传工具时可以附加标准`ToolAnnotations`。仅当满�
 
 ### 运行登录流程
 
+列出未存储凭据的已配置 OAuth 服务器：
+
+```bash
+dcode mcp login
+```
+
+然后运行服务器的登录流程：
+
 ```bash
 dcode mcp login linear
 ```
+
+该列表使用与登录流程相同的信任门控配置。它报告具有`auth: "oauth"`但没有存储令牌的服务器。它不检查令牌过期情况。
 
 发生的情况取决于服务器的主机：
 
 - **符合规范的服务器**（默认）：Deep Agents 代码执行动态客户端注册，在浏览器中打开授权代码 + PKCE 流程，并要求您将重定向的 URL 粘贴回终端。
 - **Slack** (`slack.com`、`*.slack.com`)：相同的回贴流程，但预置了 Slack 的公共客户端。系统会提示您输入可选的团队 ID（例如 `T01234567`），以便应用程序安装到正确的工作区中。
-- **GitHub** (`api.githubcopilot.com`)：RFC 8628 设备授权。 Deep AgentsCode打印验证URL和用户码；您在浏览器中输入代码，Deep Agents 代码会轮询是否完成。
-
-默认情况下，`dcode mcp login` 读取代码在运行时使用的相同自动发现配置 Deep Agents（受项目级信任门控的约束）。通过 `--mcp-config <path>` 使用特定文件：
+- **GitHub** (`api.githubcopilot.com`)：RFC 8628 设备授权。 Deep AgentsCode打印验证URL和用户码；您在浏览器中输入代码，Deep Agents 代码会轮询是否完成。默认情况下，`dcode mcp login` 读取代码在运行时使用的相同自动发现配置 Deep Agents（受项目级信任门控的约束）。通过 `--mcp-config <path>` 使用特定文件：
 
 ```bash
 dcode mcp login linear --mcp-config ./mcp-config.json
-```<Warning>
-    在`mcp login`期间，将跳过不受信任的项目级配置（请参阅[Project-level trust](#project-level-trust)），以防止攻击者控制的`headers`条目通过`${VAR}`插值窃取本地机密。在项目中运行`dcode`并选择`Allow for this project — until changed`保存批准，或显式传递`--mcp-config <path>`。
+```
+
+<Warning>
+    在 `mcp login` 期间会跳过不受信任的项目级配置（请参阅[Project-level trust](#project-level-trust)），以防止攻击者控制的 `headers` 条目通过 `${VAR}` 插值窃取本地机密。在项目中运行`dcode`，然后选择`Allow for this project — until changed`保存批准，或显式传递`--mcp-config <path>`。
 </Warning>
 
 ### 令牌存储
@@ -389,6 +399,8 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 
 ### 重新验证当刷新在运行时失败（刷新令牌已过期或被撤销）时，Deep Agents代码将服务器标记为`unauthenticated`，而不是使代理崩溃。欢迎横幅显示未经身份验证的服务器的数量，`/mcp` 报告每台服务器的原因。重新运行 `dcode mcp login <server>` 以刷新凭据 — 您的对话将继续，无需重新启动。
 
+要在不离开会话的情况下重新验证​​ OAuth 服务器，请打开 `/mcp`，选择服务器，然后按 `Enter`。
+
 ## 服务器状态
 
 每个配置的服务器在启动后都会处于三种状态之一：
@@ -397,23 +409,21 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 |--------|---------|
 | `ok` |已连接；工具已加载并可供代理使用 |
 | `unauthenticated` |需要 OAuth 登录或刷新失败 — 运行 `dcode mcp login <server>` |
-| `error` |飞行前、发现或传输设置失败；附有错误消息 |
+| `error` |飞行前、发现或传输设置失败；附有错误消息 |单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
 
-单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
+## 项目级信任
 
-## 项目级信任项目级配置可以包含执行本地命令的 stdio 服务器和远程服务器，其 `headers` 可以从您的环境中插入 `${VAR}`。为了防止不受信任的存储库在 CLI 启动时运行任意代码或窃取本地机密，Deep Agents代码对项目级条目强制执行 **默认拒绝** 策略。
+项目级配置可以包含执行本地命令的 stdio 服务器和远程服务器，其 `headers` 可以从您的环境中插入 `${VAR}`。为了防止不受信任的存储库在 CLI 启动时运行任意代码或窃取本地机密，Deep Agents代码对项目级条目强制执行 **默认拒绝** 策略。
 
 <Note>
     保存的项目 MCP 批准和每服务器允许和拒绝策略需要 `deepagents-code>=0.1.40`。
 </Note>
 
-### 它是如何工作的
-
-- **交互模式：** Deep Agents 激活项目服务器之前代码会提示批准，显示每个 stdio 命令和远程 URL。选择`Allow once`激活当前会话的每个提示服务器。选择 `Allow for this project — until changed` 激活会话的每个提示服务器，并选择为将来的会话保存哪些批准。
-- **保存的批准：** Deep Agents 代码将选定的服务器批准写入用户级别`~/.deepagents/config.toml`。每个批准的范围仅限于已解析的项目根、服务器名称以及该服务器定义的 SHA-256 指纹。如果服务器命令、URL、标头或其他配置字段发生更改，Deep Agents 代码会再次提示。- **非交互模式（`-n`）：** 没有匹配保存或环境批准的项目服务器将被静默跳过，除非通过`--trust-project-mcp`。明确否认仍然适用。
+### 它是如何工作的- **交互模式：** Deep Agents 激活项目服务器之前代码会提示批准，显示每个 stdio 命令和远程 URL。选择`Allow once`激活当前会话的每个提示服务器。选择 `Allow for this project — until changed` 激活会话的每个提示服务器，并选择为将来的会话保存哪些批准。
+- **保存的批准：** Deep Agents 代码将选定的服务器批准写入用户级别`~/.deepagents/config.toml`。每个批准的范围仅限于已解析的项目根、服务器名称以及该服务器定义的 SHA-256 指纹。如果服务器命令、URL、标头或其他配置字段发生更改，Deep Agents 代码会再次提示。
+- **非交互模式（`-n`）：** 没有匹配的已保存或环境批准的项目服务器将被静默跳过，除非通过`--trust-project-mcp`。明确否认仍然适用。
 - **信任涵盖 stdio 和远程条目：** 远程服务器可以在飞行前探测期间 SSRF 进入本地主机或云元数据端点，并通过标头渗漏 `${VAR}` 值，因此 Deep Agents 代码以与 stdio 服务器相同的方式对它们进行门控。
-- **用户级配置** (`~/.deepagents/.mcp.json`) 始终受信任，遵循与 `config.toml` 和 `hooks.json` 相同的信任模型。
-- **`dcode mcp login`** 还尊重项目信任：在登录发现期间会跳过不受信任的项目级配置，因此攻击者控制的远程条目无法将机密提取到 OAuth 握手中。
+- **用户级配置** (`~/.deepagents/.mcp.json`) 始终受信任，遵循与 `config.toml` 和 `hooks.json` 相同的信任模型。- **`dcode mcp login`** 还尊重项目信任：在登录发现期间会跳过不受信任的项目级配置，因此攻击者控制的远程条目无法将机密提取到 OAuth 握手中。
 
 ### 旗帜
 
@@ -440,25 +450,25 @@ enabled_project_server_approvals = [
 ]
 ```
 
-要撤销批准，请从`enabled_project_server_approvals` 中删除其条目。要强制重新批准而不编辑`config.toml`，请更改项目的`.mcp.json`中的服务器定义；保存的指纹不再匹配。旧平面 `[mcp].enabled_project_servers` 列表在 `config.toml` 中被忽略。使用 `enabled_project_server_approvals` 保存批准。
+要撤销批准，请从`enabled_project_server_approvals` 中删除其条目。要强制重新批准而不编辑`config.toml`，请更改项目的`.mcp.json`中的服务器定义；保存的指纹不再匹配。
+
+旧平面 `[mcp].enabled_project_servers` 列表在 `config.toml` 中被忽略。使用 `enabled_project_server_approvals` 保存批准。
 
 ### 高级允许和拒绝策略
 
-在 `~/.deepagents/config.toml` 中使用 `[mcp].disabled_project_servers`，或在 shell 中使用 `DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS` 或全局 `~/.deepagents/.env`，始终按名称拒绝项目 MCP 服务器。拒绝赢得已保存的批准和`--trust-project-mcp`标志。
-
-对于必须按名称预先批准项目 MCP 服务器的自动化，请将 shell 中的 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 或全局 `~/.deepagents/.env` 设置为以逗号分隔的服务器名称列表。这是一个进程范围的逃生口：同一服务器名称下的不同项目、命令更改或 URL 更改仍然匹配。设置此变量后，Deep Agents代码会忽略该流程已保存的批准。首选已保存的批准或`--trust-project-mcp`，除非您需要跨项目和服务器定义更改进行基于名称的批准。
+在 `~/.deepagents/config.toml` 中使用 `[mcp].disabled_project_servers`，或在 shell 中使用 `DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS` 或全局 `~/.deepagents/.env`，始终按名称拒绝项目 MCP 服务器。拒绝赢得已保存的批准和`--trust-project-mcp`标志。对于必须按名称预先批准项目 MCP 服务器的自动化，请将 shell 中的 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 或全局 `~/.deepagents/.env` 设置为以逗号分隔的服务器名称列表。这是一个进程范围的逃生口：同一服务器名称下的不同项目、命令更改或 URL 更改仍然匹配。设置此变量后，Deep Agents代码会忽略该流程已保存的批准。首选已保存的批准或`--trust-project-mcp`，除非您需要跨项目和服务器定义更改进行基于名称的批准。
 
 `deepagents-code>=0.1.40` 忽略前一个 `DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS` 变量。如果您需要相同的基于名称的行为，请将其替换为 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS`。
 
 <Warning>
     受信任的 stdio MCP 服务器以您的用户帐户的权限运行。批准远程服务器允许 Deep Agents 代码在飞行前联系其 URL 并发送其配置的标头。仅批准来自您信任的存储库的服务器，并查看批准提示中显示的命令和 URL。
-</Warning>## 系统提示感知
+</Warning>
+
+## 系统提示感知
 
 连接的 MCP 服务器及其工具会自动列在代理的系统提示符中，并按服务器名称和传输类型进行分组。这有助于模型推理工具来源和故障域，而无需手动上下文。
 
-## 故障排除
-
-<AccordionGroup>
+## 故障排除<AccordionGroup>
     <Accordion title="Server fails to start (stdio)">
         验证该命令在Deep Agents之外是否有效代码：
 
@@ -477,14 +487,14 @@ enabled_project_server_approvals = [
         Deep Agents 代码打印启动时加载的工具数量（例如，`✓ Loaded 3 MCP tools`）。如果您看到`0`，则服务器已成功启动，但没有公布任何工具 - 检查服务器自己的日志或文档。
     </Accordion>
 
-    <Accordion title="Server shows ⟦T170⟧ in /mcp">
+    <Accordion title="Server shows ⟦T180⟧ in /mcp">
         您尚未运行 `dcode mcp login <server>`，或者持久刷新令牌已过期或在服务器端被撤销。再次运行登录命令 - 您的会话继续运行，一旦刷新令牌，服务器将重新连接。
-    </Accordion><Accordion title="⟦T172⟧">
+    </Accordion><Accordion title="⟦T182⟧">
         飞行前验证被拒绝 `--mcp-config`（或自动发现的 `.mcp.json`）。常见原因：不支持的服务器名称（必须匹配 `[A-Za-z0-9_-]+`）、stdio 服务器上的 `auth: oauth`、在同一条目上设置的 `command` 和 `url`，或者不是字符串的标头值。修复突出显示的原因并重新启动 - Deep Agents 代码不再转储配置错误的多页面子进程跟踪。
     </Accordion>
 
-    <Accordion title="⟦T179⟧ header references fail">
-        标头插值在激活时运行，因此未设置的变量只会使需要它的服务器失败。导出父 shell 中的变量或将其添加到 `~/.deepagents/.env`。要调试，请设置 `DEEPAGENTS_CODE_DEBUG=1` 并检查关闭时打印到 stderr 的每个会话日志路径。
+    <Accordion title="⟦T189⟧ references fail">
+        导出父 shell 中的变量，将其添加到 `~/.deepagents/.env`，或为引用提供 `${VAR:-default}` 后备。要调试，请设置 `DEEPAGENTS_CODE_DEBUG=1` 并检查关闭时打印到 stderr 的每个会话日志路径。
     </Accordion>
 </AccordionGroup>
 

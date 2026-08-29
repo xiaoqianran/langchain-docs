@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-28T20:28:12.932Z",
+  "fetchedAt": "2026-08-29T14:03:35.965Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 174,
-  "ok": 550,
+  "ok": 552,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 454
+      "count": 455
     },
     "fleet": {
       "name": "Fleet",
@@ -35,7 +35,7 @@
     },
     "oss-deepagents": {
       "name": "OSS · DeepAgents",
-      "count": 16
+      "count": 17
     },
     "oss-openwiki": {
       "name": "OSS · OpenWiki",
@@ -72,7 +72,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "abac",
-      "bytes": 14642
+      "bytes": 14740
     },
     {
       "rel": "langsmith/access-current-span.md",
@@ -423,7 +423,16 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-faq",
-      "bytes": 15575
+      "bytes": 16028
+    },
+    {
+      "rel": "langsmith/byoc-migration.md",
+      "title": "Migrate to BYOC",
+      "url": "https://docs.langchain.com/langsmith/byoc-migration",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "byoc-migration",
+      "bytes": 7657
     },
     {
       "rel": "langsmith/byoc-onboarding.md",
@@ -432,7 +441,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-onboarding",
-      "bytes": 3905
+      "bytes": 3945
     },
     {
       "rel": "langsmith/byoc-operations.md",
@@ -459,7 +468,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-usage",
-      "bytes": 5898
+      "bytes": 6246
     },
     {
       "rel": "langsmith/byoc-why.md",
@@ -1080,7 +1089,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-self-hosted-full-platform",
-      "bytes": 68753
+      "bytes": 69659
     },
     {
       "rel": "langsmith/deploy-standalone-server.md",
@@ -1899,7 +1908,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "human-in-the-loop-time-travel",
-      "bytes": 7878
+      "bytes": 7842
     },
     {
       "rel": "langsmith/hybrid-legacy.md",
@@ -2799,7 +2808,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "organization-workspace-operations",
-      "bytes": 36973
+      "bytes": 37957
     },
     {
       "rel": "langsmith/otel-gateway-trace-redaction.md",
@@ -3825,7 +3834,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 229138
+      "bytes": 229809
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -3870,7 +3879,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "server-a2a",
-      "bytes": 17130
+      "bytes": 26770
     },
     {
       "rel": "langsmith/server-api-ref.md",
@@ -4410,7 +4419,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-livekit",
-      "bytes": 10758
+      "bytes": 10408
     },
     {
       "rel": "langsmith/trace-with-mastra.md",
@@ -4671,7 +4680,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "use-threads",
-      "bytes": 24653
+      "bytes": 24410
     },
     {
       "rel": "langsmith/use-tools.md",
@@ -4779,7 +4788,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 30203
+      "bytes": 33470
     },
     {
       "rel": "oss/deepagents/code/config-file.md",
@@ -4788,7 +4797,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 34975
+      "bytes": 38540
     },
     {
       "rel": "oss/deepagents/code/configuration.md",
@@ -4797,7 +4806,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 47168
+      "bytes": 49414
     },
     {
       "rel": "oss/deepagents/code/credentials.md",
@@ -4807,6 +4816,15 @@
       "trackName": "OSS · DeepAgents",
       "group": "code",
       "bytes": 9899
+    },
+    {
+      "rel": "oss/deepagents/code/extensions.md",
+      "title": "Python extensions",
+      "url": "https://docs.langchain.com/oss/deepagents/code/extensions",
+      "track": "oss-deepagents",
+      "trackName": "OSS · DeepAgents",
+      "group": "code",
+      "bytes": 9591
     },
     {
       "rel": "oss/deepagents/code/goals-and-rubrics.md",
@@ -4860,7 +4878,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 9669
+      "bytes": 10690
     },
     {
       "rel": "oss/deepagents/code/providers.md",
@@ -4878,7 +4896,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 20080
+      "bytes": 20259
     },
     {
       "rel": "oss/deepagents/code/remote-sandboxes.md",

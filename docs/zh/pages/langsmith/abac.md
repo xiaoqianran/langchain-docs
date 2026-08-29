@@ -4,7 +4,7 @@
 
 # 基于属性的访问控制
 
-本参考文献介绍了LangSmith的基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
+本参考资料介绍了LangSmith基于属性的访问控制（ABAC）系统，该系统能够基于资源属性进行细粒度的访问控制，是对[RBAC](/langsmith/rbac)的补充。有关自动将用户配置为角色的信息，请参阅[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)。
 
 <Note>
 ABAC（基于属性的访问控制）是一项用于管理细粒度访问控制的企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。其他计划默认为所有用户使用管理员角色。
@@ -151,13 +151,13 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 `role_ids` 数组指定策略适用于哪些工作区角色。当具有该角色的用户访问资源时，将评估策略条件。
 
-可以在创建策略时将策略附加到角色，或者稍后通过 API 附加。
+创建策略时可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后通过 API 附加。
 
 ## 管理访问策略
 
-访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在您的工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
 
-## ABAC 如何与 RBAC 配合使用在确定对资源的访问权限时，会同时考虑[RBAC](/langsmith/rbac)权限和ABAC策略：
+## ABAC 如何与 RBAC 配合使用在确定对资源的访问权限时，会同时考虑[RBAC](/langsmith/rbac) 权限和 ABAC 策略：
 
 - ABAC **拒绝**策略覆盖 RBAC 权限
 - ABAC **允许**策略即使没有 RBAC 权限也可以授予访问权限

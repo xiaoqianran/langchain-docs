@@ -100,7 +100,7 @@ curl --request POST \
     --header 'Content-Type: application/json' \
     --data '{}'
 ```
-</CodeGroup>有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/create-thread) 参考。
+</CodeGroup>有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/create-thread) 参考。
 
 输出：
 
@@ -138,7 +138,7 @@ curl --request POST --url <DEPLOYMENT_URL>/threads/thread["thread_id"]/copy \
 ```
 </CodeGroup>
 
-有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/copy-thread) 参考。
+有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/copy-thread) 参考。
 
 ### 预填充状态
 
@@ -355,7 +355,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/search-threads) 参考。
+有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/search-threads) 参考。
 
 输出：
 
@@ -503,7 +503,7 @@ SDK 还支持使用 `sort_by` 和 `sort_order` 参数按 `thread_id`、`status`�
 
 ### 获取线程
 
-要查看给定 `thread_id` 的特定线程，请使用 [⟦T76⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) 方法：
+要查看给定 `thread_id` 的特定线程，请使用 [⟦T76⟧](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) 方法：
 
 <CodeGroup>
 ```python Python
@@ -542,11 +542,11 @@ curl --request GET \
 }
 ```
 
-有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread) 参考。
+有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread) 参考。
 
 ### 检查线程状态
 
-要查看给定线程的当前状态，请使用 [⟦T77⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) 方法。这将返回当前值、下一个要执行的节点以及检查点信息：
+要查看给定线程的当前状态，请使用 [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) 方法。这将返回当前值、下一个要执行的节点以及检查点信息：
 
 <CodeGroup>
 ```python Python
@@ -633,7 +633,7 @@ curl --request GET \
 }
 ```
 
-有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread-state) 参考。
+有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread-state) 参考。
 
 或者，要查看给定检查点处线程的状态，请传入检查点 ID。这对于检查执行历史记录中特定点的线程状态非常有用。
 
@@ -688,7 +688,7 @@ curl --request GET \
 
 ### 检查完整线程历史记录
 
-要查看线程的历史记录，请使用 [⟦T78⟧](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) 方法。这将返回线程经历的每个状态的列表，允许您跟踪完整的执行路径：
+要查看线程的历史记录，请使用 [⟦T78⟧](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) 方法。这将返回线程经历的每个状态的列表，允许您跟踪完整的执行路径：
 
 <CodeGroup>
 ```python Python
@@ -732,7 +732,7 @@ curl --request POST \
 - 审核对话历史记录和状态更改。
 - 重播或分析过去的互动。
 
-有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) 和 [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread-history) 参考。
+有关更多信息，请参阅 [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) 和 [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) SDK 文档，或 [REST API](/langsmith/agent-server-api/threads/get-thread-history) 参考。
 
 </Tab>
 <Tab title="UI">

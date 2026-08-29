@@ -21,41 +21,29 @@
 | **自动** |自动批准日常行动；要求模型审查任何不确定的事情；在多次否认或失败后，又回到你身边|
 | **YOLO** |运行门控操作，根本无需审查 |
 
-在会话期间随时使用 `Shift+Tab` 或 `Ctrl+T` 在手动和自动之间切换。 YOLO 无法通过键盘切换输入。
-
 <Warning>
     Auto 是本地编码代理的授权启发式方法。它不是沙箱遏制、操作系统边界或模型生成的操作安全的保证。
-</Warning>## 启用自动
+</Warning>
 
-Auto 是一个实验性测试版。要使用它，请设置选择加入标志，然后为您的会话选择“自动”。
+## 启用自动
+
+自动仅适用于交互式、非沙盒会话。
 
 <Steps>
-
-    <Step title="Set the experimental opt-in" icon="key">
-        将环境变量添加到您的 shell 或 `~/.deepagents/.env`：
-
-        ```bash
-        export DEEPAGENTS_CODE_EXPERIMENTAL=1
-        ```
-    </Step>
 
     <Step title="Launch with Auto" icon="terminal">
         ```bash
         dcode -y
-        ```
-
-        或者在`~/.deepagents/config.toml`中将其设置为默认值：
+        ```或者在`~/.deepagents/config.toml`中将其设置为默认值：
 
         ```toml
         [startup]
         mode = "auto"
         ```
 
-        您还可以使用 `Shift+Tab` 或 `Ctrl+T` 在会话中打开和关闭自动。
+        您还可以使用 `Shift+Tab` 循环至自动中途。
     </Step>
 </Steps>
-
-如果在没有实验性选择加入的情况下请求“自动”，或者在沙盒会话中请求“自动”，则会退回到“手动”并发出警告。
 
 ## 启用 YOLO
 
@@ -79,12 +67,12 @@ YOLO 运行门控操作，无需任何审查。仅当您接受代理无需询问
     </Step>
 </Steps>
 
-当您按 `Shift+Tab` 或 `Ctrl+T` 时，在 YOLO 中启动的会话将转至手动。您无法使用键盘切换切换回 YOLO。
+按`Shift+Tab`循环YOLO→手动→自动→YOLO。设置[⟦T24⟧](/oss/deepagents/code/config-file#startup-approval-mode)以从循环中省略YOLO。
 
 ## 自动工作原理
 
 自动保留与手动相同的门控操作规则，但更改了审查这些操作的方式。它使用两个阶段：1. **例行操作自动运行。** 对源文件（如 `src/parser.py`）或只读 Git 命令（如`git status`）的写入将在没有提示的情况下继续进行。像`.github/workflows/ci.yml`这样的敏感目标或像`git commit`这样的变异命令会进入下一阶段。
-2. **模型审查其余部分。** 对于任何不明显常规的事情，主动模型会检查操作是否符合您的要求。只有您的文字提示才能授权执行操作。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
+2. **模型审查其余部分。** 对于任何不明显例行公事的事情，主动模型会检查该操作是否与您请求的结果相匹配。即使您没有指定每个实现细节，也可以继续执行获得该结果所需的合理步骤。高风险效果（例如将本地内容发送到未配置的目的地）仍然需要显式授权。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
 
 重复拒绝或分类器失败后，自动停止并向您显示下一批的正常批准提示，然后在自动模式下继续。
 
@@ -136,16 +124,16 @@ flowchart TD
 
 默认情况下，自动分类器使用与主代理相同的模型。您可以将其指向不同的（通常更便宜且更快）模型，以减少自动审核期间的成本和延迟。
 
-通过以下任意来源设置分类器模型：
-
-<Tabs>
+通过以下任意来源设置分类器模型：<Tabs>
     <Tab title="TUI command">
         运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
 
         ```txt
         /auto model openai:gpt-5.6-luna
         /auto model clear
-        ```使用`/auto model clear`返回继承主模型。
+        ```
+
+        使用`/auto model clear`返回继承主模型。
     </Tab>
     <Tab title="CLI flag">
         ```bash
@@ -172,10 +160,10 @@ flowchart TD
 </Tabs>
 <br />
 <Accordion title="Precedence order">
-    1. **`/auto model` TUI 命令**：对当前会话立即生效。
+    1. **`/auto model` TUI命令**：对当前会话立即生效。
     2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
     3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
-    4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
+    4. **`config.toml`** 中的`[models].auto_classifier`：您的持久默认值。
     5. **继承**：使用主代理模型（不配置时默认）。
 
     任何级别的空白值都意味着“从下一个源继承”。例如，未设置的环境变量会变为 `config.toml`。
@@ -191,27 +179,15 @@ flowchart TD
 - 活动模型不是独立的安全机构。 [MCP read-only annotations](/oss/deepagents/code/mcp-tools#read-only-tool-annotations-in-auto-mode) 被认为是经过深思熟虑的 beta 权衡。
 - 父级自动审查不涵盖在委派子代理或更广泛的显式配置 `js_eval` 扇出内执行的操作。即使 TUI 隐藏了分类器输入和输出，模型提供者和跟踪后端仍可能观察到它们。
 
-## Auto 和 YOLO 可用的地方
+## Auto 和 YOLO 可用的地方Auto 和 YOLO 是交互模式功能。自动仅适用于交互式、非沙盒会话；遥控器 `--sandbox` 强制其设为手动。 YOLO 也是纯交互式的，并且无论沙箱如何，都需要风险确认。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
 
-Auto 和 YOLO 是交互模式功能。它们在非交互模式（`-n` 或管道标准输入）或 ACP 服务器模式下不可用。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
+在非交互模式下（`-n`或管道标准输入），`-y`/`--auto-approve`和`--yolo`被忽略。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
 
-在以下情况下，“自动”也会退回到“手动”：- `DEEPAGENTS_CODE_EXPERIMENTAL=1` 未设置。
-- 远程 `--sandbox` 处于活动状态（自动仅适用于非沙盒本地会话）。
+### 记住跨会话的最后一个模式
 
-## 参考
+当没有标志或配置的模式适用时，Deep Agents代码恢复最后选择的手动或自动模式。 YOLO 必须明确选择。参见[Startup approval mode](/oss/deepagents/code/config-file#startup-approval-mode)。
 
-### 标志和配置优先级
-
-`--yolo` 优先于`-y`/`--auto-approve`，`-y`/`--auto-approve` 优先于`[startup].mode`。
-
-|来源 |价值|选择|
-|---|---|---|
-| `--yolo` |旗帜| YOLO（仅交互式，确认后）|
-| `-y`、`--auto-approve` |旗帜|自动（需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`）|
-| `[startup].mode` | `"manual"` |手册|
-| `[startup].mode` | `"auto"` |汽车 |
-| `[startup].mode` | `"yolo"` |优洛 |
-| `Shift+Tab`、`Ctrl+T` |切换|手动和自动（从不进入YOLO） |
+有关标志和配置优先级，请参阅[Startup approval mode](/oss/deepagents/code/config-file#startup-approval-mode)。
 
 ## 另请参阅
 

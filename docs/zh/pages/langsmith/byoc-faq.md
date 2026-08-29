@@ -9,7 +9,7 @@ BYOC 在具有美国控制平面的 AWS 上普遍可用 (GA)。计划于 2026 �
 </Accordion>
 
 <Accordion title="Do I need a dedicated AWS account?">
-不可以。LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
+不可以。 LangChain 建议使用新帐户以实现更清晰的计费，并且因为某些权限无法限定到特定资源，但这不是必需的。
 </Accordion>
 
 <Accordion title="Can I install BYOC into an existing VPC?">
@@ -21,7 +21,7 @@ BYOC 在具有美国控制平面的 AWS 上普遍可用 (GA)。计划于 2026 �
 </Accordion>
 
 <Accordion title="Can I run my own workloads in the LangSmith VPC or cluster?">
-是的，只要它们不干扰 LangSmith 的功能即可。
+是的，只要它们不干扰LangSmith的功能即可。
 
 在 AWS 账户中，请记住，授予跨账户角色的某些权限无法按标签限定范围，这就是 LangChain 建议使用专用账户的原因。
 
@@ -157,28 +157,34 @@ EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节
 
 ## 操作
 
-<Accordion title="Who upgrades LangSmith, and how often?">
+<Accordion title="Who is responsible for what in a BYOC deployment?">
+LangChain 运行控制平面并通过委派的最小权限访问管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
+
+有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
+</Accordion><Accordion title="Who upgrades LangSmith, and how often?">
 LangChain 每周升级一次数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
 
 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations)。
 </Accordion>
 
 <Accordion title="What about Kubernetes upgrades?">
-LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
+LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。
+
+控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
 </Accordion>
 
 <Accordion title="Do upgrades cause downtime?">
 不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了一次不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务容量低于其所需的容量。
 
-可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在 LangChain 提前与您协调的计划维护时段内。
-</Accordion>
-
-<Accordion title="Who monitors the data plane?">
+可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。
+</Accordion><Accordion title="Who monitors the data plane?">
 LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。
 </Accordion>
 
 <Accordion title="Can I set up my own observability for LangSmith BYOC?">
-是的。您可以在EKS集群中安装收集器、代理等可观测性工具，只要不干扰LangSmith的运行即可。LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
+是的。您可以在EKS集群中安装收集器、代理等可观察性工具，只要不干扰LangSmith的运行即可。
+
+LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
 </Accordion>
 
 <Accordion title="How are high availability and disaster recovery handled?">
@@ -193,18 +199,18 @@ LangChain 在配置后操作数据平面，包括监控正常运行时间和错�
 - **RDS**：每天进行备份。
 - **ClickHouse**：每天进行备份并存储在 S3 存储桶中。
 - **ElastiCache**：不进行备份，因为数据是短暂的。
-</Accordion>
-
-<Accordion title="Does LangChain offer an uptime SLA for BYOC data planes?">
+</Accordion><Accordion title="Does LangChain offer an uptime SLA for BYOC data planes?">
 不会。数据平面在您的 AWS 账户中运行，因此其可用性取决于您控制的资源，包括账户本身、您配置用于访问数据平面的专用连接以及适用于账户的服务配额和策略。 LangChain 不承诺其不单独控制的基础设施的正常运行时间目标。
 
-LangChain 仍然监视数据平面的正常运行时间和错误恢复、扩展它并应用升级和安全补丁。参见[Operations](/langsmith/byoc-operations)。
+LangChain 仍然监控数据平面的正常运行时间和错误恢复、扩展它并应用升级和安全补丁。参见[Operations](/langsmith/byoc-operations)。
 </Accordion>
 
 ## 成本
 
 <Accordion title="What do I pay for with BYOC?">
-两份单独的账单：- **基础设施**：数据平面在您自己的 AWS 账户中运行，因此您拥有基础设施并通过云提供商账单支付费用。
+两份单独的账单：
+
+- **基础设施**：数据平面在您自己的 AWS 账户中运行，因此您拥有基础设施并通过云提供商账单支付费用。
 - **LangSmith**：由 LangChain 根据您的合同和使用情况开具发票。
 
 LangChain 提供与 AWS Marketplace 的集成。
@@ -217,7 +223,7 @@ LangChain 提供与 AWS Marketplace 的集成。
 </Accordion>
 
 <Accordion title="Can I migrate an existing LangSmith instance to BYOC?">
-部分。用户、角色、数据集、实验、提示、注释队列配置、自动化规则和仪表板可以从云或自托管实例复制。今天没有迁移痕迹。要计划迁移，[contact our sales team](https://www.langchain.com/contact-sales)。
+部分。可以复制用户、角色、数据集、实验、提示、注释队列配置、自动化规则、仪表板和队列资源。今天没有迁移痕迹。参见[Migrate to BYOC](/langsmith/byoc-migration)。
 </Accordion>
 
 ## 另请参阅
@@ -226,9 +232,7 @@ LangChain 提供与 AWS Marketplace 的集成。
 - [Why BYOC](/langsmith/byoc-why)
 - [BYOC architecture](/langsmith/byoc-architecture)
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

@@ -4,9 +4,11 @@
 
 `~/.deepagents/config.toml` lets you customize model providers, set defaults, and pass extra parameters to model constructors. For environment variables and inspection commands, see [Configuration](/oss/deepagents/code/configuration). This page covers:
 
-- **Defaults**: pin a [default model](#default-and-recent-model) or [agent](#default-and-recent-agent), or [restrict usable models](#allowed-models) with an allowlist.
+- **Defaults**: pin a [default model](#default-and-recent-model), [summarization model](#set-a-summarization-model), or [agent](#default-and-recent-agent), or [restrict usable models](#allowed-models) with an allowlist.
 - **Warnings**: [session cost](#session-cost-warning) and [cold prompt-cache](#cold-prompt-cache-warning) thresholds, and [trusted gateway endpoints](#trust-a-gateway-endpoint-for-cache-policies).
+- **Display**: [provider-visible reasoning](#show-provider-visible-reasoning) and diff line numbers.
 - **Interpreter**: the [`[interpreter]` settings](#js-interpreter) for the built-in QuickJS REPL.
+- **Python extensions**: [discovery and project trust](#python-extensions) for custom tools, middleware, and storage routes.
 - **Tracing**: [client-side secret redaction](#redact-langsmith-trace-secrets) for LangSmith traces.
 - **Provider setup**: the [`[models.providers.<name>]` table](#provider-configuration), [constructor params](#model-constructor-params), [retries](#retries), [profile overrides](#profile-overrides-advanced), and [adding models to the `/model` switcher](#adding-models-to-the-interactive-switcher).
 - **Auto mode**: the [auto classifier timeout](#auto-classifier-timeout).
@@ -25,6 +27,23 @@ auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto appr
 `[models].default` always takes priority over `[models].recent`. The `/model` command only writes to `[models].recent`, so your configured default is never overwritten by mid-session switches. To remove the default, use `/model --default --clear` or delete the `default` key from the config file.
 
 `[models].auto_classifier` sets the model used by the [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) to review gated tool calls. When unset, the classifier inherits the main agent model. You can override this at runtime with `--auto-classifier-model` or `/auto model`. See [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) for full precedence and security notes.
+
+## Set a summarization model
+
+Set a dedicated model for automatic context compaction, `/offload`, and `/compact`:
+
+```toml title="~/.deepagents/config.toml"
+[models]
+summarization_default = "openai:gpt-5.6-sol"
+```
+
+The summarization model resolves in this order:
+
+1. `--summarization-model` for the current launch.
+2. `[models].summarization_default`.
+3. The main agent model.
+
+In an interactive session, run `/summarization-model` to open the model picker, `/summarization-model <provider:model>` to switch directly, or `/summarization-model clear` to follow the main agent model again. Changing the summarization model does not change the main agent model.
 
 ## Default and recent agent
 
@@ -73,6 +92,23 @@ trusted_cache_endpoints = ["smith.langchain.com"]
 ```
 
 Entries are hostnames matched exactly — trusting `example.com` does not trust `gw.example.com`. One entry covers every provider routed through that endpoint. Cross-format routes through the LangSmith gateway (for example, an OpenAI-format request routed to an Anthropic model) stay silent even when trusted, because translation rewrites the cache settings the estimate assumes.
+
+## Show provider-visible reasoning
+
+Provider-visible reasoning is hidden by default. To show it in the interactive transcript and non-interactive output, set:
+
+```toml title="~/.deepagents/config.toml"
+[ui]
+show_reasoning = true
+```
+
+In an interactive session, reasoning streams into a separate row that collapses when the phase ends. Click the row or press `Ctrl+O` to reopen it. In non-interactive mode, reasoning goes to stderr so the final answer on stdout remains pipeable.
+
+Set `DEEPAGENTS_CODE_SHOW_REASONING=1` to override `config.toml`, or pass `--show-reasoning` to enable the setting for one launch. The launch flag takes precedence over the environment variable, which takes precedence over `config.toml`.
+
+<Note>
+    Deep Agents Code displays only reasoning content that the model provider exposes. Redacted or opaque reasoning remains hidden.
+</Note>
 
 ## Diff line numbers
 
@@ -263,7 +299,7 @@ max_retries = 0
 
 The global `[retries].max_retries` value applies to all supported providers. A provider-specific table, such as `[retries.fireworks]`, overrides the global value for that provider. Values must be integers greater than or equal to `0`.
 
-For an arbitrary provider, set `param` to its retry-count constructor argument so Deep Agents Code can disable the provider's retry loop and use the configured retry budget:
+For an arbitrary provider, set `param` to the name of its retry-count constructor argument. Deep Agents Code uses `param` only to disable the provider SDK's retry loop, which leaves the model-node middleware as the sole owner of the configured retry budget:
 
 ```toml
 [retries]
@@ -274,7 +310,7 @@ param = "retries"
 max_retries = 4
 ```
 
-`param` must be a valid Python identifier string, such as `"max_retries"` or `"retries"`.
+`param` must be a valid Python identifier string, such as `"max_retries"` or `"retries"`. It does not set the retry budget. Set the budget with `max_retries` in this section or with `--max-retries`.
 
 The retry-budget precedence order is:
 
@@ -583,6 +619,32 @@ ptc_acknowledge_unsafe = false  # default
     Acknowledge that `ptc = "all"` exposes every tool to PTC calls that bypass approval prompts. Required for `ptc = "all"` unless running with approvals disabled.
 </ResponseField>
 
+## Python extensions
+
+The `[extensions]` section controls [Python extension](/oss/deepagents/code/extensions) discovery and project trust. The experimental feature gate is required even when extension loading is enabled here.
+
+```toml title="~/.deepagents/config.toml"
+[extensions]
+enabled = true
+trust = "ask"
+extra_paths = [
+    "extensions/policy.py",
+    "~/src/company-extensions",
+]
+```
+
+<ResponseField name="enabled" type="boolean" default="true" post={["optional"]}>
+    Enable Python extension discovery for every source, including `-e` / `--extension` paths, user and project directories, plugins, and entry points. Set `DEEPAGENTS_CODE_EXTENSIONS` to override this value. Both settings require `DEEPAGENTS_CODE_EXPERIMENTAL=1` before starting Deep Agents Code.
+</ResponseField>
+
+<ResponseField name="trust" type="string" default='"ask"' post={["optional"]}>
+    Set the default policy for project extensions in `<project>/.deepagents/extensions/`: `ask` prompts in an interactive launch, `always` loads them, and `never` skips them. Set `DEEPAGENTS_CODE_EXTENSIONS_TRUST` to override this value. Only use `always` when every project you open is trusted.
+</ResponseField>
+
+<ResponseField name="extra_paths" type="string[]" default="[]" post={["optional"]}>
+    Add user-authorized Python extension files or directories. Relative paths resolve from the Deep Agents Code profile directory; `~` expands to your home directory.
+</ResponseField>
+
 ## Agent runtime limits
 
 The LangGraph graph step budget is the maximum number of node invocations the `dcode` agent graph may execute in a single turn. Configure this recursion limit with the `[runtime]` section:
@@ -600,7 +662,8 @@ Precedence (highest to lowest):
 2. `--recursion-limit` CLI flag
 3. `DEEPAGENTS_CODE_RECURSION_LIMIT` environment variable
 4. `[runtime].recursion_limit` in `config.toml`
-5. LangGraph server default
+5. `LANGGRAPH_DEFAULT_RECURSION_LIMIT` environment variable
+6. LangGraph server default
 
 Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents Code value and its source. An unset result leaves the limit to the LangGraph server.
 
@@ -632,6 +695,7 @@ Use `dcode config get runtime.recursion_limit` to see the effective Deep Agents 
 - [Configuration](/oss/deepagents/code/configuration)
 - [Provider credentials](/oss/deepagents/code/credentials)
 - [Providers](/oss/deepagents/code/providers)
+- [Python extensions](/oss/deepagents/code/extensions)
 - [CLI reference](/oss/deepagents/code/cli-reference)
 
 ---

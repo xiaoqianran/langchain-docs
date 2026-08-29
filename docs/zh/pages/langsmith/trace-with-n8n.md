@@ -20,13 +20,13 @@ LangSmith 跟踪仅适用于**自托管 n8n 实例**。
 1. 在托管 n8n 实例的环境中设置以下环境变量，与 [n8n configuration](https://docs.n8n.io/hosting/configuration/configuration-methods/) 的其余部分相同。
 
    所需的环境变量：
-   - `LANGCHAIN_TRACING_V2` — 设置为 `true` 以启用跟踪。
-   - `LANGCHAIN_API_KEY` — 您的 LangSmith API 密钥。
+   - `LANGCHAIN_TRACING_V2`：设置为`true` 以启用跟踪。
+   - `LANGCHAIN_API_KEY`：您的LangSmith API 密钥。
 
    可选环境变量：
-   - `LANGCHAIN_ENDPOINT` — LangSmith API 端点。默认为`https://api.smith.langchain.com`。如果使用自托管 LangSmith、GCP EU (`https://eu.api.smith.langchain.com`)、GCP APAC (`https://apac.api.smith.langchain.com`) 或 AWS US (`https://aws.api.smith.langchain.com`)，请设置此选项。
-   - `LANGCHAIN_PROJECT` — 跟踪的项目名称。默认为`"default"`。
-   - `LANGCHAIN_CALLBACKS_BACKGROUND` — 设置为 `true` 进行异步跟踪上传（默认），或设置为 `false` 进行同步上传。 （默认：`true`）
+   - `LANGCHAIN_ENDPOINT`：LangSmith API 端点。默认为`https://api.smith.langchain.com`。如果使用自托管 LangSmith、GCP EU (`https://eu.api.smith.langchain.com`)、GCP APAC (`https://apac.api.smith.langchain.com`) 或 AWS US (`https://aws.api.smith.langchain.com`)，请设置此选项。
+   - `LANGCHAIN_PROJECT`：跟踪的项目名称。默认为`"default"`。
+   - `LANGCHAIN_CALLBACKS_BACKGROUND`：设置为 `true` 进行异步跟踪上传（默认），或设置为 `false` 进行同步上传。 （默认：`true`）
 
 1. 重启n8n实例以使环境变量生效。
 

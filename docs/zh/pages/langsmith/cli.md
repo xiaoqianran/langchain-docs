@@ -37,8 +37,8 @@
 
 ### 快速命令
 
-|命令 |它有什么作用 |
-| ---| ---|
+|命令|它有什么作用 |
+| --- | --- |
 | [⟦T43⟧](#dev) |启动轻量级本地开发服务器（不需要 Docker），非常适合快速测试。 |
 | [⟦T44⟧](#build) |构建 LangGraph API 服务器的 Docker 映像以进行部署。 |
 | [⟦T45⟧](#deploy) |只需一步即可构建 LangGraph 映像并将其直接部署到 LangSmith 部署。 |
@@ -53,23 +53,23 @@
 
 <Tabs>
     <Tab title="Python">
-    |关键|描述 || ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | <span style={{ whiteSpace: "nowrap" }}>`dependencies`</span> | **必需的**。 LangSmith API 服务器的依赖项数组。依赖项可以是以下之一： <ul><li>单个句点 (`"."`)，它将查找本地 Python 包。</li><li>`pyproject.toml`、`setup.py` 或 `requirements.txt` 所在的目录路径位于。<br></br>例如，如果`requirements.txt`位于项目目录的根目录中，则指定`"./"`。如果它位于名为 `local_package` 的子目录中，请指定 `"./local_package"`。请勿指定字符串 `"requirements.txt"` 本身。</li><li>Python 包名称。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`graphs`</span> | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./your_package/your_file.py:variable`，其中`variable`是`langgraph.graph.state.CompiledStateGraph`</li><li>`./your_package/your_file.py:make_graph`的实例，其中`make_graph`是采用配置字典的函数(`langchain_core.runnables.RunnableConfig`) 并返回`langgraph.graph.state.StateGraph`或`langgraph.graph.state.CompiledStateGraph`的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> |
+    |关键|描述 || ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | <span style={{ whiteSpace: "nowrap" }}>`dependencies`</span> | **必需的**。 LangSmith API 服务器的依赖项数组。依赖项可以是以下之一： <ul><li>单个句点 (`"."`)，它将查找本地 Python 包。</li><li>`pyproject.toml`、`setup.py` 或 `requirements.txt` 所在的目录路径位于。<br></br>例如，如果`requirements.txt`位于项目根目录，则指定`"./"`。如果它位于名为 `local_package` 的子目录中，请指定 `"./local_package"`。请勿指定字符串 `"requirements.txt"` 本身。</li><li>Python 包名称。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`graphs`</span> | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./your_package/your_file.py:variable`，其中`variable`是`langgraph.graph.state.CompiledStateGraph`</li><li>`./your_package/your_file.py:make_graph`的实例，其中`make_graph`是采用配置字典的函数(`langchain_core.runnables.RunnableConfig`) 并返回 `langgraph.graph.state.StateGraph` 或 `langgraph.graph.state.CompiledStateGraph` 的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> |
     | <span style={{ whiteSpace: "nowrap" }}>`auth`</span> | _（在 v0.0.11 中添加）_ 包含身份验证处理程序路径的身份验证配置。示例：`./your_package/auth.py:auth`，其中 `auth` 是 `langgraph_sdk.Auth` 的实例。详情请参阅[authentication guide](/langsmith/auth)。                                                                                                                                                                                                                                                                                                                        || <span style={{ whiteSpace: "nowrap" }}>`base_image`</span> |选修的。用于 LangGraph API 服务器的基础镜像。默认为 `langchain/langgraph-api` 或 `langchain/langgraphjs-api`。使用它可以将您的构建固定到 langgraph API 的特定版本，例如 `"langchain/langgraph-server:0.2"`。有关更多详细信息，请参阅 https://hub.docker.com/r/langchain/langgraph-server/tags。 （在`langgraph-cli==0.2.8`添加）|
     | <span style={{ whiteSpace: "nowrap" }}>`image_distro`</span> |选修的。基础镜像的 Linux 发行版。必须是 `"debian"`、`"wolfi"`、`"bookworm"` 或 `"bullseye"` 之一。如果省略，则默认为`"debian"`。提供`langgraph-cli>=0.2.11`。|
-    | <span style={{ whiteSpace: "nowrap" }}>`env`</span> | `.env` 文件的路径或从环境变量到其值的映射。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        || <span style={{ whiteSpace: "nowrap" }}>`store`</span> |用于向 BaseStore 添加语义搜索和/或生存时间 (TTL) 的配置。包含以下字段： <ul><li>`index`（可选）：使用字段 `embed`、`dims` 和可选 `fields`.</li><li>`ttl`（可选）进行语义搜索索引配置：项目过期的配置。具有可选字段的对象：`refresh_on_read`（布尔值，默认为`true`），`default_ttl`（浮点型，生命周期以**分钟**为单位；仅适用于新创建的项目；现有项目不变；默认不过期）和`sweep_interval_minutes`（整数，检查过期项目的频率，默认为否扫）。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`ui`</span> |选修的。代理发出的 UI 组件的命名定义，每个组件都指向一个 JS/TS 文件。 （在`langgraph-cli==0.1.84`中添加）|
+    | <span style={{ whiteSpace: "nowrap" }}>`env`</span> | `.env` 文件的路径或从环境变量到其值的映射。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        || <span style={{ whiteSpace: "nowrap" }}>`store`</span> |用于向 BaseStore 添加语义搜索和/或生存时间 (TTL) 的配置。包含以下字段： <ul><li>`index`（可选）：使用字段 `embed`、`dims` 和可选 `fields`.</li><li>`ttl`（可选）进行语义搜索索引配置：项目过期的配置。具有可选字段的对象：`refresh_on_read`（布尔值，默认为`true`），`default_ttl`（浮点型，生命周期以**分钟**为单位；仅适用于新创建的项目；现有项目不变；默认不过期）和`sweep_interval_minutes`（整数，检查过期项目的频率，默认为否扫）。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`ui`</span> |选修的。代理发出的 UI 组件的命名定义，每个组件都指向一个 JS/TS 文件。 （在`langgraph-cli==0.1.84`添加）|
     | <span style={{ whiteSpace: "nowrap" }}>`python_version`</span> | `3.11`、`3.12` 或 `3.13`。默认为`3.11`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  || <span style={{ whiteSpace: "nowrap" }}>`node_version`</span> |指定`node_version: 20`以使用LangGraph.js。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
     | <span style={{ whiteSpace: "nowrap" }}>`pip_config_file`</span> | `pip` 配置文件的路径。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      || <span style={{ whiteSpace: "nowrap" }}>`pip_installer`</span> | _（在 v0.3 中添加）_ 可选。 Python 包安装程序选择器。可设置为 `"auto"`、`"pip"` 或 `"uv"`。从版本 0.3 开始，默认策略是运行 `uv pip`，它通常可以提供更快的构建，同时保持直接替代。在不常见的情况下，`uv`无法处理您的依赖图或`pyproject.toml`的结构，请在此处指定`"pip"`以恢复到之前的行为。 |
     | <span style={{ whiteSpace: "nowrap" }}>`keep_pkg_tools`</span> | _（在 v0.3.4 中添加）_ 可选。控制最终镜像中是否保留Python打包工具（`pip`、`setuptools`、`wheel`）。接受的值： <ul><li><code>true</code> ：保留所有三个工具（跳过卸载）。</li><li><code>false</code> / 省略：卸载所有三个工具（默认）行为）。</li><li><code>list[str]</code>：<strong>要保留</strong>的工具名称。每个值必须是“pip”、“setuptools”、“wheel”之一。</li></ul>。默认情况下，所有三个工具均已卸载。 || <span style={{ whiteSpace: "nowrap" }}>`dockerfile_lines`</span> |从父映像导入后添加到 Dockerfile 的附加行数组。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-    | <span style={{ whiteSpace: "nowrap" }}>`checkpointer`</span> |检查点的配置。支持：<ul><li>`backend`（可选）：`"default"`、`"mongo"`或`"custom"`。默认为 `"default"` (PostgreSQL)。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。</li><li>`path`（可选）：自定义检查点工厂的路径（当`backend`为`"custom"`时）。请参阅 [Custom checkpointer](/langsmith/custom-checkpointer)。</li><li>`ttl`（可选）：具有 `strategy`、`sweep_interval_minutes`、`default_ttl` 和 `sweep_limit`（代理服务器 v0.8+）控制检查点的对象</li><li>`serde`（可选，代理服务器 v0.5+）：带有 `allowed_json_modules` 和 `pickle_fallback` 的对象，用于调整反序列化行为。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`http`</span> |具有以下字段的 HTTP 服务器配置： <ul><li>`app`：自定义 Starlette/FastAPI 应用程序的路径（例如，`"./src/agent/webapp.py:app"`）。请参阅[custom routes guide](/langsmith/custom-routes)。</li><li>`cors`：CORS 配置，包含`allow_origins`、`allow_methods`、`allow_headers`、`allow_credentials`、`allow_origin_regex`、 `expose_headers` 和 `max_age`.</li><li>`configurable_headers`：通过 `includes` / `excludes` 定义要公开为可配置值的请求标头</li><li>`logging_headers`：`configurable_headers`的镜像，用于从日志中排除敏感标头。</li><li>`middleware_order`：选择自定义中间件和身份验证的交互方式。 `auth_first` 在自定义中间件之前运行身份验证挂钩，而`middleware_first`（默认）首先运行中间件。</li><li>`enable_custom_route_auth`：对通过`app`添加的路由应用身份验证检查。</li><li>路由禁用flags — 有选择地关闭内置端点组：<ul><li>`disable_meta`：禁用 `/`（根）、`/info`、`/metrics`、`/docs` 和 `/openapi.json` 系统路由。 `/ok` 健康检查仍然可用。</li><li>`disable_assistants`：禁用所有 `/assistants/*` 路由。</li><li>`disable_runs`：禁用所有 `/runs/*`路线。</li><li>`disable_threads`：禁用所有`/threads/*`路线。</li><li>`disable_store`：禁用所有`/store/*`路线。</li><li>`disable_ui`：禁用所有`/ui/*`路线。</li><li>`disable_mcp`：禁用`/mcp`端点。请参阅[Disable MCP](/langsmith/server-mcp#disable-mcp)。</li><li>`disable_a2a`：禁用`/a2a/*`端点。请参阅[Disable A2A](/langsmith/server-a2a#disable-a2a)。</li><li>`disable_webhooks`：在运行完成时禁用 Webhook 传递（不是路由切换）。请参阅 [Disable webhooks](/langsmith/use-webhooks#disable-webhooks)。</li></ul></li><li>`mount_prefix`：挂载路由的前缀（例如“/my-deployment/api”）。</li></ul> |
-    | <span style={{ whiteSpace: "nowrap" }}>`webhooks`</span> | _（在 v0.5.36 中添加）_ 出站 Webhook 传递的配置。包含： <ul><li>`env_prefix`：标头模板中引用的环境变量所需的前缀（默认为`LG_WEBHOOK_`）。</li><li>`headers`：要包含在 Webhook 请求中的静态标头。值可能包含类似 `${{ env.VAR }}`.</li><li>`url` 的模板：带有 `allowed_domains`、`allowed_ports`、`require_https`、`disable_loopback` 的 URL 验证策略和`max_url_length`.</li></ul> |
+    | <span style={{ whiteSpace: "nowrap" }}>`checkpointer`</span> |检查点的配置。支持：<ul><li>`backend`（可选）：`"default"`、`"mongo"`或`"custom"`。默认为 `"default"` (PostgreSQL)。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。</li><li>`path`（可选）：自定义检查点工厂的路径（当`backend`为`"custom"`时）。请参阅 [Custom checkpointer](/langsmith/custom-checkpointer)。</li><li>`ttl`（可选）：具有 `strategy`、`sweep_interval_minutes`、`default_ttl` 和 `sweep_limit`（代理服务器 v0.8+）控制检查点的对象</li><li>`serde`（可选，代理服务器 v0.5+）：具有 `allowed_json_modules` 和 `pickle_fallback` 的对象，用于调整反序列化行为。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`http`</span> |具有以下字段的 HTTP 服务器配置： <ul><li>`app`：自定义 Starlette/FastAPI 应用程序的路径（例如，`"./src/agent/webapp.py:app"`）。请参阅[custom routes guide](/langsmith/custom-routes)。</li><li>`cors`：CORS 配置，包含`allow_origins`、`allow_methods`、`allow_headers`、`allow_credentials`、`allow_origin_regex`、 `expose_headers` 和 `max_age`.</li><li>`configurable_headers`：通过 `includes` / `excludes` 定义要公开为可配置值的请求标头模式。</li><li>`logging_headers`：`configurable_headers`的镜像，用于从日志中排除敏感标头。</li><li>`middleware_order`：选择自定义中间件和身份验证的交互方式。 `auth_first` 在自定义中间件之前运行身份验证挂钩，而`middleware_first`（默认）首先运行中间件。</li><li>`enable_custom_route_auth`：对通过`app`添加的路由应用身份验证检查。</li><li>路由禁用标志，选择性地关闭内置端点组：<ul><li>`disable_meta`：禁用`/`（根）、`/info`、`/metrics`、`/docs`和`/openapi.json`系统路由。 `/ok` 健康检查仍然可用。</li><li>`disable_assistants`：禁用所有 `/assistants/*` 路由。</li><li>`disable_runs`：禁用所有 `/runs/*`路线。</li><li>`disable_threads`：禁用所有`/threads/*`路线。</li><li>`disable_store`：禁用所有`/store/*`路线。</li><li>`disable_ui`：禁用所有`/ui/*`路线。</li><li>`disable_mcp`：禁用`/mcp`端点。请参阅[Disable MCP](/langsmith/server-mcp#disable-mcp)。</li><li>`disable_a2a`：禁用`/a2a/*`端点。请参阅[Disable A2A](/langsmith/server-a2a#disable-a2a)。</li><li>`disable_webhooks`：在运行完成时禁用 Webhook 传递（不是路由切换）。请参阅 [Disable webhooks](/langsmith/use-webhooks#disable-webhooks)。</li></ul></li><li>`mount_prefix`：挂载路由的前缀（例如“/my-deployment/api”）。</li></ul> |
+    | <span style={{ whiteSpace: "nowrap" }}>`webhooks`</span> | _（在 v0.5.36 中添加）_ 出站 Webhook 传递的配置。包含： <ul><li>`env_prefix`：标头模板中引用的环境变量所需的前缀（默认为`LG_WEBHOOK_`）。</li><li>`headers`：要包含在 Webhook 请求中的静态标头。值可能包含类似 `${{ env.VAR }}`.</li><li>`url` 的模板：具有 `allowed_domains`、`allowed_ports`、`require_https`、`disable_loopback` 的 URL 验证策略和`max_url_length`.</li></ul> |
     | <span style={{ whiteSpace: "nowrap" }}>`api_version`</span> | _（在 v0.3.7 中添加）_ 使用LangGraph API 服务器的语义版本（例如，`"0.3"`）。默认为最新。检查服务器[changelog](/langsmith/agent-server-changelog)以了解每个版本的详细信息。 |
     </Tab>
-    <Tab title="JS">|关键|描述 || ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | <span style={{ whiteSpace: "nowrap" }}>`graphs`</span> | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./src/graph.ts:variable`，其中`variable`是[⟦T198⟧](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph)</li><li>`./src/graph.ts:makeGraph`的实例，其中`makeGraph`是采用配置字典的函数(`LangGraphRunnableConfig`) 并返回[⟦T202⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)或[⟦T203⟧](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph)的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`env`</span> | `.env` 文件的路径或从环境变量到其值的映射。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        || <span style={{ whiteSpace: "nowrap" }}>`store`</span> |用于向 BaseStore 添加语义搜索和/或生存时间 (TTL) 的配置。包含以下字段： <ul><li>`index`（可选）：使用字段 `embed`、`dims` 和可选字段进行语义搜索索引配置`fields`.</li><li>`ttl`（可选）：项目过期配置。具有可选字段的对象：`refresh_on_read`（布尔值，默认为`true`），`default_ttl`（浮点型，生命周期以**分钟**为单位；仅适用于新创建的项目；现有项目不变；默认不过期）和`sweep_interval_minutes`（整数，检查过期项目的频率，默认为否扫）。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`node_version`</span> |指定`node_version: 20`以使用LangGraph.js。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-    | <span style={{ whiteSpace: "nowrap" }}>`dockerfile_lines`</span> |从父映像导入后添加到 Dockerfile 的附加行数组。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          || <span style={{ whiteSpace: "nowrap" }}>`checkpointer`</span> |检查点的配置。支持：<ul><li>`backend`（可选）：`"default"`、`"mongo"`或`"custom"`。默认为 `"default"` (PostgreSQL)。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。</li><li>`path`（可选）：自定义检查点工厂的路径（当`backend`为`"custom"`时）。请参阅 [Custom checkpointer](/langsmith/custom-checkpointer)。</li><li>`ttl`（可选）：具有 `strategy`、`sweep_interval_minutes`、`default_ttl` 和 `sweep_limit`（代理服务器 v0.8+）控制检查点的对象</li><li>`serde`（可选，代理服务器 v0.5+）：具有 `allowed_json_modules` 和 `pickle_fallback` 的对象，用于调整反序列化行为。</li></ul> |
-    | <span style={{ whiteSpace: "nowrap" }}>`http`</span> | HTTP 服务器配置镜像 Python 选项：<ul><li>`cors` 与 `allow_origins`、`allow_methods`、`allow_headers`、`allow_credentials`、`allow_origin_regex`、`expose_headers`、 `max_age`。</li><li>`configurable_headers` 和 `logging_headers` 模式列表。</li><li>`middleware_order`（`auth_first` 或`middleware_first`)。</li><li>`enable_custom_route_auth`加上与上面相同的布尔路由切换。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`webhooks`</span> | _（在 v0.5.36 中添加）_ 出站 Webhook 传递的配置。包含： <ul><li>`env_prefix`：标头模板中引用的环境变量所需的前缀（默认为`LG_WEBHOOK_`）。</li><li>`headers`：要包含在 Webhook 请求中的静态标头。值可能包含类似 `${{ env.VAR }}`.</li><li>`url` 的模板：带有 `allowed_domains`、`allowed_ports`、`require_https`、`disable_loopback` 的 URL 验证策略和`max_url_length`.</li></ul> |
-    | <span style={{ whiteSpace: "nowrap" }}>`api_version`</span> | _（在 v0.3.7 中添加）_ 使用LangGraph API 服务器的语义版本（例如，`"0.3"`）。默认为最新。检查服务器[changelog](/langsmith/agent-server-changelog)以了解每个版本的详细信息。 |
+    <Tab title="JS">|关键|描述 || ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | <span style={{ whiteSpace: "nowrap" }}>`graphs`</span> | **必需的**。从图形 ID 映射到定义已编译图形或生成图形的函数的路径。示例：<ul><li>`./src/graph.ts:variable`，其中`variable`是[⟦T198⟧](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph)</li><li>`./src/graph.ts:makeGraph`的实例，其中`makeGraph`是采用配置字典的函数(`LangGraphRunnableConfig`) 并返回[⟦T202⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)或[⟦T203⟧](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph)的实例。详情请参阅[how to rebuild a graph at runtime](/langsmith/graph-rebuild)。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`env`</span> | `.env` 文件的路径或从环境变量到其值的映射。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        || <span style={{ whiteSpace: "nowrap" }}>`store`</span> |用于向 BaseStore 添加语义搜索和/或生存时间 (TTL) 的配置。包含以下字段： <ul><li>`index`（可选）：使用字段 `embed`、`dims` 和可选字段进行语义搜索索引的配置`fields`.</li><li>`ttl`（可选）：项目过期配置。具有可选字段的对象：`refresh_on_read`（布尔值，默认为`true`），`default_ttl`（浮点型，生命周期以**分钟**为单位；仅适用于新创建的项目；现有项目不变；默认不过期）和`sweep_interval_minutes`（整数，检查过期项目的频率，默认为否扫）。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`node_version`</span> |指定`node_version: 20`以使用LangGraph.js。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+    | <span style={{ whiteSpace: "nowrap" }}>`dockerfile_lines`</span> |从父映像导入后添加到 Dockerfile 的附加行数组。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          || <span style={{ whiteSpace: "nowrap" }}>`checkpointer`</span> |检查点的配置。支持：<ul><li>`backend`（可选）：`"default"`、`"mongo"`或`"custom"`。默认为 `"default"` (PostgreSQL)。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。</li><li>`path`（可选）：自定义检查点工厂的路径（当`backend`为`"custom"`时）。请参阅 [Custom checkpointer](/langsmith/custom-checkpointer)。</li><li>`ttl`（可选）：具有 `strategy`、`sweep_interval_minutes`、`default_ttl` 和 `sweep_limit`（代理服务器 v0.8+）控制检查点的对象</li><li>`serde`（可选，代理服务器 v0.5+）：带有 `allowed_json_modules` 和 `pickle_fallback` 的对象，用于调整反序列化行为。</li></ul> |
+    | <span style={{ whiteSpace: "nowrap" }}>`http`</span> | HTTP 服务器配置镜像 Python 选项：<ul><li>`cors` 与 `allow_origins`、`allow_methods`、`allow_headers`、`allow_credentials`、`allow_origin_regex`、`expose_headers`、 `max_age`。</li><li>`configurable_headers` 和 `logging_headers` 模式列表。</li><li>`middleware_order`（`auth_first` 或`middleware_first`)。</li><li>`enable_custom_route_auth`加上与上面相同的布尔路由切换。</li></ul> || <span style={{ whiteSpace: "nowrap" }}>`webhooks`</span> | _（在 v0.5.36 中添加）_ 出站 Webhook 传递的配置。包含： <ul><li>`env_prefix`：标头模板中引用的环境变量所需的前缀（默认为`LG_WEBHOOK_`）。</li><li>`headers`：要包含在 Webhook 请求中的静态标头。值可能包含类似 `${{ env.VAR }}`.</li><li>`url` 的模板：具有 `allowed_domains`、`allowed_ports`、`require_https`、`disable_loopback` 的 URL 验证策略和`max_url_length`.</li></ul> |
+    | <span style={{ whiteSpace: "nowrap" }}>`api_version`</span> | _（在 v0.3.7 中添加）_ 使用LangGraph API 服务器的语义版本（例如，`"0.3"`）。默认为最新。检查服务器[changelog](/langsmith/agent-server-changelog)以获取每个版本的详细信息。 |
     </Tab>
 </Tabs>
 
@@ -205,7 +205,7 @@
 
     * `refresh_on_read`：如果`true`（默认），通过`get`或`search`访问项目会重置其过期计时器。设置为 `false` 仅在写入时刷新 TTL (`put`)。
     * `default_ttl`：项目的默认寿命（以**分钟**为单位）。仅适用于新创建的项目；现有项目不会被修改。如果未设置，则默认情况下项目不会过期。
-    * `sweep_interval_minutes`：系统应运行后台进程来删除过期项目的频率（以分钟为单位）。如果未设置，则不会自动进行扫描。下面是一个启用 7 天 TTL（10080 分钟）、读取刷新并每小时扫描的示例：
+    * `sweep_interval_minutes`：系统应运行后台进程来删除过期项目的频率（以分钟为单位）。如果未设置，则不会自动进行扫描。以下是启用 7 天 TTL（10080 分钟）、读取刷新并每小时扫描的示例：
 
     ```json
     {
@@ -277,7 +277,7 @@
     * `middleware_order`：选择 `"auth_first"` 在中间件之前运行身份验证，或选择 `"middleware_first"`（默认）来反转该顺序。
     * `enable_custom_route_auth`：将身份验证扩展到通过`http.app`挂载的路由。
     * `configurable_headers` / `logging_headers`：每个都接受一个带有可选 `includes` 和 `excludes` 数组的对象；支持通配符，并且排除在包含之前运行。
-    * `cors`：自定义服务器的 CORS（跨源资源共享）配置。用于配置 CORS 的示例 `langgraph.json` 文件：
+    * `cors`：自定义服务器的 CORS（跨域资源共享）配置。用于配置 CORS 的示例 `langgraph.json` 文件：
 
         ```json
         {
@@ -430,7 +430,7 @@
 
     即使设置了 `disable_meta`，`/ok` 运行状况检查端点仍然可用，因此 Kubernetes 等编排器仍然可以执行活性和就绪性探测。
 
-    其他路由禁用标志包括 `disable_assistants`、`disable_runs`、`disable_threads`、`disable_store` 和 `disable_ui`。对于 MCP、A2A 和 webhook，请参阅各自的指南：[Disable MCP](/langsmith/server-mcp#disable-mcp)、[Disable A2A](/langsmith/server-a2a#disable-a2a)、[Disable webhooks](/langsmith/use-webhooks#disable-webhooks)。
+    其他路由禁用标志包括 `disable_assistants`、`disable_runs`、`disable_threads`、`disable_store` 和 `disable_ui`。对于 MCP、A2A 和 webhooks，请参阅各自的指南：[Disable MCP](/langsmith/server-mcp#disable-mcp)、[Disable A2A](/langsmith/server-a2a#disable-a2a)、[Disable webhooks](/langsmith/use-webhooks#disable-webhooks)。
 
     </Tab>
 </Tabs>
@@ -482,7 +482,7 @@
     langgraph dev [OPTIONS]
     ```
 
-    **选项**|选项 |默认 |描述 |
+    **选项**|选项 |默认|描述 |
     | -------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
     | `-c, --config FILE` | `langgraph.json` |声明依赖项、图形和环境变量的配置文件路径 |
     | `--host TEXT` | `127.0.0.1` |将服务器绑定到的主机 |
@@ -505,7 +505,7 @@
     npx @langchain/langgraph-cli dev [OPTIONS]
     ```
 
-    **选项**|选项 |默认 |描述 |
+    **选项**|选项 |默认|描述 |
     | -------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
     | `-c, --config FILE` | `langgraph.json` |声明依赖项、图形和环境变量的配置文件路径 |
     | `--host TEXT` | `127.0.0.1` |将服务器绑定到的主机 |
@@ -533,7 +533,7 @@
     langgraph build [OPTIONS]
     ```
 
-    **选项**|选项|默认 |描述 |
+    **选项**|选项 |默认|描述 |
     | -------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
     | `--platform TEXT`​​ |                  |要为其构建 Docker 映像的目标平台。示例：`langgraph build --platform linux/amd64,linux/arm64` |
     | `-t, --tag TEXT` |                  | **必需的**。 Docker 镜像的标签。示例：`langgraph build -t my-image` |
@@ -555,7 +555,7 @@
 
     **选项**
 
-    |选项|默认 |描述 |
+    |选项 |默认|描述 |
     | -------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
     | `--platform TEXT` |                  |要为其构建 Docker 映像的目标平台。示例：`langgraph build --platform linux/amd64,linux/arm64` |
     | `-t, --tag TEXT` |                  | **必需的**。 Docker 镜像的标签。示例：`langgraph build -t my-image` |
@@ -568,7 +568,7 @@
 
 <Tabs>
     <Tab title="Python">
-    <Note>此命令位于[beta](/langsmith/release-stages)中并且正在积极开发中。期待频繁的更新和改进。</Note>
+    <Note>此命令位于 [beta](/langsmith/release-stages) 中并且正在积极开发中。期待频繁的更新和改进。</Note>
 
     构建LangGraph镜像并将其直接部署到[LangSmith Deployments](/langsmith/deployment)。此命令在本地构建 Docker 映像，将其推送到托管注册表，并创建或更新部署 - 所有这些都只需一步即可完成。如果未安装 Docker，则会触发远程构建。
 
@@ -587,14 +587,14 @@
 
     此命令还接受所有 [⟦T426⟧](#build) 标志（`--platform`、`-t`、`--pull`、`--no-pull`、`-c`）。详情请参阅`langgraph build --help`。
 
-    **选项**|选项|默认 |描述 |
+    **选项**|选项|默认|描述 |
     | ------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `--api-key TEXT` |                      | LangSmith 部署的 API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
     | `--name TEXT` |当前目录名称 |部署名称。也可以通过 `LANGSMITH_DEPLOYMENT_NAME` 环境变量或 `.env` 文件设置。                                                           |
     | `--deployment-id TEXT` |                      |要更新的现有部署的 ID。如果省略，则使用 `--name` 查找或创建部署。                                                           |
-    | `--deployment-type TEXT` | `serverless` |在云上创建新部署时的部署类型：基于新的基于使用的定价的`serverless`或`dedicated`； `dev` 或 `prod` 适用于仍采用之前定价的组织。 || `--remote / --no-remote` |                      |强制远程或本地构建。默认情况下，如果 Docker 本地不可用，则远程构建。
+    | `--deployment-type TEXT` | `serverless` |在云上创建新部署时的部署类型：基于新的基于使用情况的定价的`serverless`或`dedicated`； `dev` 或 `prod` 适用于仍采用之前定价的组织。 || `--remote / --no-remote` |                      |强制远程或本地构建。默认情况下，如果 Docker 本地不可用，则远程构建。
     | `--no-wait` | `False` |推送后跳过等待部署状态。                                                                                                                |
-    | `--verbose` | `False` |显示详细的输出，包括 Docker 构建和推送日志。                                                                                                       |
+    | `--verbose` | `False` |显示详细输出，包括 Docker 构建和推送日志。                                                                                                       |
     | `--help` |                      |显示命令文档。                                                                                                                                   |
 
     <Note>
@@ -632,8 +632,8 @@
 
     **选项**
 
-    |选项 |默认 |描述 |
-    | ---| ---| ---|
+    |选项 |默认|描述 |
+    | --- | --- | --- |
     | `--name-contains TEXT` |  |仅显示名称包含此值的部署。 |
     | `--api-key TEXT` |  | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
     | `--help` |  |显示此消息并退出。 |
@@ -650,14 +650,14 @@
 
     **选项**
 
-    |选项 |默认 |描述 |
-    | ---| ---| ---|
+    |选项 |默认|描述 |
+    | --- | --- | --- |
     | `--help` |  |显示此消息并退出。 |
 
     **命令**
 
-    |命令 |描述 |
-    | ---| ---|
+    |命令|描述 |
+    | --- | --- |
     | `list` | [Beta] 列出 LangSmith 部署的修订版本。 |
 
     #### `deploy revisions list`
@@ -672,8 +672,8 @@
     langgraph deploy revisions list [OPTIONS] DEPLOYMENT_ID
     ```
 
-    **选项**|选项 |默认 |描述 |
-    | ---| ---| ---|
+    **选项**|选项 |默认|描述 |
+    | --- | --- | --- |
     | `--limit INTEGER` | `10` |返回的最大修订数。 |
     | `--api-key TEXT` |  | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
     | `--help` |  |显示此消息并退出。 |
@@ -692,8 +692,8 @@
 
     **选项**
 
-    |选项 |默认 |描述 |
-    | ---| ---| ---|
+    |选项 |默认|描述 |
+    | --- | --- | --- |
     | `--force` |  |删除而不提示确认。 |
     | `--api-key TEXT` |  | API 密钥。也可以通过 `LANGGRAPH_HOST_API_KEY`、`LANGSMITH_API_KEY` 或 `LANGCHAIN_API_KEY` 环境变量或 `.env` 文件进行设置。 |
     | `--help` |  |显示此消息并退出。 |
@@ -708,8 +708,8 @@
     langgraph deploy logs [OPTIONS]
     ```
 
-    **选项**|选项 |默认 |描述 |
-    | ---| ---| ---|
+    **选项**|选项 |默认|描述 |
+    | --- | --- | --- |
     | `-f, --follow` | `False` |不断轮询新日志。 |
     | `--end-time TEXT` |  | ISO8601 结束时间。示例：`2026-03-08T00:00:00Z`。 |
     | `--start-time TEXT` |  | ISO8601 开始时间。示例：`2026-03-08T00:00:00Z`。 |
@@ -793,7 +793,7 @@
 
     **选项**
 
-    |选项 |默认 |描述 |
+    |选项 |默认|描述 |
     | ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
     | `-c, --config FILE` | `langgraph.json` |声明依赖项、图表和环境变量的[configuration file](#configuration-file)的路径。 |
     | `--help` |                  |显示此消息并退出。                                                                                     |
@@ -826,11 +826,11 @@
     RUN PIP_CONFIG_FILE=/pipconfig.txt PYTHONDONTWRITEBYTECODE=1 pip install --no-cache-dir -c /api/constraints.txt -e /deps/*
 
     ENV LANGSERVE_GRAPHS='{"agent": "/deps/__outer_graphs/src/agent.py:graph", "storm": "/deps/__outer_graphs/src/storm.py:graph"}'
-    ```<Note>`langgraph dockerfile` 命令将 `langgraph.json` 文件中的所有配置转换为 Dockerfile 命令。使用此命令时，每当更新 `langgraph.json` 文件时，都必须重新运行它。否则，当您构建或运行 dockerfile 时，您的更改将不会反映出来。</Note>
+    ```<Note>`langgraph dockerfile` 命令将 `langgraph.json` 文件中的所有配置转换为 Dockerfile 命令。使用此命令时，每当您更新 `langgraph.json` 文件时，您都必须重新运行它。否则，当您构建或运行 dockerfile 时，您的更改将不会反映出来。</Note>
 
     </Tab>
     <Tab title="JS">
-    生成用于构建LangSmith API 服务器 Docker 镜像的 Dockerfile。
+    生成用于构建 LangSmith API 服务器 Docker 镜像的 Dockerfile。
 
     **使用**
 
@@ -840,7 +840,7 @@
 
     **选项**
 
-    |选项 |默认 |描述 |
+    |选项 |默认|描述 |
     | ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
     | `-c, --config FILE` | `langgraph.json` |声明依赖项、图表和环境变量的[configuration file](#configuration-file)的路径。 |
     | `--help` |                  |显示此消息并退出。                                                                                     |
@@ -865,7 +865,7 @@
     WORKDIR /deps/agent
 
     RUN (test ! -f /api/langgraph_api/js/build.mts && echo "Prebuild script not found, skipping") || tsx /api/langgraph_api/js/build.mts
-    ```<Note>`npx @langchain/langgraph-cli dockerfile` 命令将 `langgraph.json` 文件中的所有配置转换为 Dockerfile 命令。使用此命令时，每当您更新 `langgraph.json` 文件时，您都必须重新运行它。否则，当您构建或运行 dockerfile 时，您的更改将不会反映出来。</Note>
+    ```<Note>`npx @langchain/langgraph-cli dockerfile`命令将`langgraph.json`文件中的所有配置转换为Dockerfile命令。使用此命令时，每当更新 `langgraph.json` 文件时，都必须重新运行它。否则，当您构建或运行 dockerfile 时，您的更改将不会反映出来。</Note>
     </Tab>
 </Tabs>
 

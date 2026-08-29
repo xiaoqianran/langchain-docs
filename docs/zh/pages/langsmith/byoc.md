@@ -10,7 +10,7 @@ BYOC 仅适用于 [Enterprise plan](https://www.langchain.com/pricing) 的客户
 
 自带云 (BYOC) 允许您在自己的云环境中部署 LangSmith 服务并存储数据，而 LangChain 则运行、扩展和升级基础设施。 BYOC 适合需要对其数据拥有完全主权，但又不想承担配置和管理基础设施开销的组织。
 
-BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数据平面完全在您的云环境中运行。
+BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数据平面完全在您的云环境中运行。有关 LangChain 管理的内容与您管理的内容的详细信息，请参阅 [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
 
 ## 开始吧
 
@@ -20,14 +20,14 @@ BYOC 使用责任分离模型：控制平面在 LangChain 的云中运行，数�
 
 BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云提供商。
 
-您可以在以下任何 AWS 区域部署 LangSmith BYOC：
-
-|面积 | AWS 区域 |
+您可以在以下任何 AWS 区域部署 LangSmith BYOC：|面积 | AWS 区域 |
 |------|-------------|
 | **美国** | `us-east-1`、`us-east-2`、`us-west-1`、`us-west-2` |
 | **加拿大** | `ca-central-1` |
 | **欧盟** | `eu-central-1`、`eu-west-1`、`eu-west-2`、`eu-west-3`、`eu-north-1` |
-| **亚太地区** | `ap-south-1`、`ap-northeast-1`、`ap-northeast-2`、`ap-northeast-3`、`ap-southeast-1`、`ap-southeast-2` |无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
+| **亚太地区** | `ap-south-1`、`ap-northeast-1`、`ap-northeast-2`、`ap-northeast-3`、`ap-southeast-1`、`ap-southeast-2` |
+
+无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该区域，而控制平面元数据将保留在美国：
 
 |控制平面（美国）|数据平面（您所在的地区）|
 |--------------------------------|--------------------------|
@@ -53,7 +53,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 
 ## 先决条件
 
-在LangChain配置数据平面之前，您需要满足以下条件：
+在 LangChain 可以配置数据平面之前，您需要满足以下条件：
 
 - **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
 - **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。

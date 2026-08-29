@@ -10,22 +10,22 @@ LangSmith UI 会自动处理此问题：它根据您选择的工作空间路由�
 
 ## 组织、数据平面和工作空间
 
-BYOC 部署分为三个级别：
+BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-overview#resource-hierarchy) 添加了一个级别：数据平面，位于组织和工作区之间。
 
 - **组织**：顶层。用户、角色、计费、SSO 配置和 API 密钥属于组织并位于控制平面中。
 - **数据平面**：属于一个组织，代表数据的物理分离。一个组织可以拥有多个数据平面，每个数据平面都位于自己的 AWS 账户和区域中。
-- **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。跟踪、数据集、实验和其他应用程序数据位于工作区中，与云或自托管相同。
+- **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。跟踪、数据集、实验和其他应用程序数据位于工作区中。
 
 <img
   src="/langsmith/images/byoc-org-structure.png"
-  alt="Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and holds three workspaces named Production, Staging, and Dev. The second is in eu-west-1 and holds two workspaces named Production and Dev. Every workspace is labeled as logical separation within its data plane."
-/>
+  alt="Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane."
+/>使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。划分数据平面的常用方法有：
 
-使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。常见的组合有：|数据平面|工作空间 |
-|-------------|------------|
-|每个区域，例如 `us-east-1` 和 `us-west-2` |每个环境，例如开发、登台和生产 |
-|每个环境和区域，例如 prod `us-east-1`、staging `us-east-1` 和 dev `us-east-1` |每队|
-|每个业务部门|每队|
+- **每个区域**，例如`us-east-1`和`us-west-2`，将敏感应用程序数据保留在特定区域。
+- **每个环境和区域**，例如 prod `us-east-1` 和 dev `us-east-1`，将生产和开发数据保存在单独的 AWS 账户中。
+- **每个业务部门**，当每个部门拥有自己的 AWS 账户时。
+
+在数据平面下方，工作区和应用程序的工作方式与在云或自托管上相同。有关更多信息，请参阅 [Administration overview](/langsmith/administration-overview) 和 [Workload isolation](/langsmith/workload-isolation)。
 
 ## 找到您的数据平面端点
 
@@ -37,21 +37,21 @@ BYOC 部署分为三个级别：
 
 ## 跟踪数据平面
 
-要将跟踪发送到位于数据平面中的工作区，请将 LangSmith SDK 指向数据平面端点，并使用作用域为该数据平面中的工作区的 API 密钥进行身份验证：
+要将跟踪发送到数据平面中的工作区，请将 LangSmith SDK 指向数据平面端点，并使用作用域为该数据平面中的工作区的 API 密钥进行身份验证：
 
 ```bash
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="<your-api-key>"
 export LANGSMITH_ENDPOINT="https://<data_plane_host>"
-```
-
-<Warning>
+```<Warning>
 从目标数据平面内的工作空间创建`LANGSMITH_API_KEY`。跟踪是租户范围的，因此来自不同数据平面上的工作区（包括云工作区）的 API 密钥会被拒绝。
 </Warning>
 
 对于完整的、可运行的示例，请遵循 [Observability quickstart](/langsmith/observability-quickstart) 并替换上面的环境变量。
 
-## 路由 API 请求基本 URL 根据路径前缀路由到不同的服务：
+## 路由 API 请求
+
+基本 URL 根据路径前缀路由到不同的服务：
 
 |服务 |路径前缀 |示例|
 |---------|-------------|---------|

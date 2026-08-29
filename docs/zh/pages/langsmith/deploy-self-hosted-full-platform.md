@@ -34,7 +34,7 @@
     </Info>
   </Step>
   <Step title="Configure an ingress">
-    为您的 LangSmith 实例配置入口、网关或 Istio。所有代理都将部署为该入口后面的 Kubernetes 服务。参见[Set up an ingress](/langsmith/self-host-ingress)。您必须在 [⟦T70⟧](/langsmith/kubernetes#configure-your-helm-charts) 中提供`hostname`。
+    为您的 LangSmith 实例配置入口、网关或 Istio。所有代理都将部署为该入口后面的 Kubernetes 服务。参见[Set up an ingress](/langsmith/self-host-ingress)。您必须在 [⟦T70⟧](/langsmith/kubernetes#configure-your-helm-charts) 中提供 `hostname`。
   </Step>
   <Step title="Verify cluster capacity">
     确保您的集群具有可用于多个部署的可用容量。建议使用集群自动缩放程序。
@@ -239,7 +239,7 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 ### （可选）为队列启用 OAuth 工具和触发器
 
-要在 Fleet 中启用基于 OAuth 的工具（例如 Gmail、Slack 或 Linear），请配置 `providerOrgId` 并为您要使用的每个集成添加提供商 ID。您可以启用提供商的任意组合。
+要在 Fleet 中启用基于 OAuth 的工具（例如 Gmail、Slack 或 Linear），请配置 `providerOrgId` 并为要使用的每个集成添加提供商 ID。您可以启用提供商的任意组合。
 
 #### 可用的提供商
 
@@ -328,11 +328,11 @@ fleet:
 
 <Accordion title="Microsoft OAuth provider" id="microsoft-oauth-provider">
 
-要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
+要为队列启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
 
 <Steps>
   <Step title="Create an Azure app registration">
-    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建新的注册。
+    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建一个新的注册。
   </Step><Step title="Choose supported account types">
     选择与您的部署匹配的帐户类型。如果需要来自多个 Microsoft Entra 租户的用户进行身份验证，请选择多租户选项。如果您的部署仅限于一个租户，您可以使用单租户应用程序注册。
   </Step>
@@ -589,7 +589,7 @@ fleet:
 
 一个 Slack OAuth 提供商为您添加到各个代理的 Slack 工具和 Slack 应用程序提供支持，因此 Slack 设置可以与 Slack 集成的其余部分一起使用。
 
-有关完整演练，请参阅 [Set up Slack on Self-hosted](/langsmith/fleet/slack-app#set-up-slack-on-self-hosted)。它涵盖了创建 Slack 应用程序、添加机器人范围、注册提供程序、设置重定向 URI 以及配置 Helm 值。
+有关完整演练，请参阅[Set up Slack on Self-hosted](/langsmith/fleet/slack-app#set-up-slack-on-self-hosted)。它涵盖了创建 Slack 应用程序、添加机器人范围、注册提供程序、设置重定向 URI 以及配置 Helm 值。
 
 </Accordion>
 </AccordionGroup>
@@ -766,7 +766,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     3. 对于私有存储库，您必须在安装过程中明确选择每个存储库。
 
     <Note>
-    每个用户还必须使用 LangSmith 中的重新授权流程针对自己的 GitHub 帐户授权 GitHub 应用程序。这允许 Fleet 解析代表用户操作的工具的每用户令牌。
+    每个用户还必须使用LangSmith中的重新授权流程针对自己的 GitHub 帐户授权 GitHub 应用程序。这允许 Fleet 解析代表用户操作的工具的每用户令牌。
     </Note>
   </Step>
 </Steps>
@@ -788,9 +788,9 @@ polly:
 
 ## 启用沙箱
 
-<Info>
-自托管沙盒需要 LangSmith Helm 图表 `0.16.0` 或更高版本。
-</Info>
+<Note>
+自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
+</Note>
 
 默认情况下，沙箱处于禁用状态。安装后，请参阅 [LangSmith Sandboxes](/langsmith/sandboxes) 了解 LangSmith UI 和 API 中的用户工作流程。### 支持的平台
 
@@ -798,16 +798,14 @@ polly:
 
 - 亚马逊弹性 Kubernetes 服务 (EKS)
 - 谷歌 Kubernetes 引擎 (GKE)
-
-基本 LangSmith 图表支持 Azure Kubernetes 服务 (AKS)，但 AKS 不支持自托管沙箱。
+- Azure Kubernetes 服务 (AKS)
 
 ### 组件
 
 启用沙箱可提供以下资源：
 
 - 在支持 KVM 的节点上运行沙箱工作负载的沙箱运行时 Pod。
-- JuiceFS CSI 驱动程序和 JuiceFS 支持的沙箱文件和快照卷。
-- 由 Redis 支持的 JuiceFS 元数据存储以及由 S3 或 GCS 支持的对象存储。
+- 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
 - 从沙箱内部公开的服务的可选通配符入口。
 
 ### 先决条件
@@ -816,7 +814,7 @@ polly:
   <Step title="Install the base LangSmith platform">
     在启用沙箱之前，在 Kubernetes 上安装LangSmith。参见[Self-host LangSmith on Kubernetes](/langsmith/kubernetes)。
 
-    沙箱在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
+    沙盒在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
   </Step>
 
   <Step title="Add KVM-capable nodes">
@@ -848,18 +846,15 @@ polly:
 
     - 与 Redis 兼容的元数据存储。
     - 对象存储桶或桶根。
-    - JuiceFS CSI 配置 Secret，或足够的 Helm 值供图表创建。
+    - JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
 
-    <Warning>
-    启用沙箱会安装 JuiceFS CSI 驱动程序。 CSI 驱动程序包含集群范围的 Kubernetes 资源。除非您已验证资源所有权，否则只有一个启用沙箱的 LangSmith 版本应管理集群中的 JuiceFS CSI 驱动程序。
-    </Warning>
+    将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
-    支持的对象存储后端：|平台| `sandboxes.juicefs.storage` | `sandboxes.juicefs.bucket` 格式 |
+    | **平台** | **存储价值** | **桶格式** |
     | --- | --- | --- |
     |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
     | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
-
-    不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
+    |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>
     对于 Redis 元数据存储，我们建议将 `maxmemory-policy` 设置为 `noeviction`。这可以避免在内存压力下驱逐 JuiceFS 元数据。监控 Redis 容量并在达到内存限制之前对其进行扩展。
@@ -873,7 +868,7 @@ polly:
 
     <Tabs>
       <Tab title="Using Kubernetes secrets (recommended)">
-        如果您使用 `config.existingSecretName`，请将沙盒密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
+        如果您使用 `config.existingSecretName`，请将沙箱密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
 
         ```yaml
         stringData:
@@ -882,18 +877,19 @@ polly:
         ```
       </Tab>
       <Tab title="Using inline values">
-        如果 Helm 图表管理您的 LangSmith 应用程序 Secret，请直接在配置文件中设置沙箱机密值。避免将此文件提交给版本控制。```yaml
-        config:
-          sandboxes:
-            callbackSigningJwk: '<ed25519-private-jwk>'
+        如果 Helm 图表管理您的 LangSmith 应用程序密钥，请直接在配置文件中设置沙箱密钥值。避免将此文件提交给版本控制。
+
+        ```yaml
+        sandboxes:
+          callbackSigningJwk: '<ed25519-private-jwk>'
         ```
       </Tab>
     </Tabs>
 
     回调签名值必须是 Ed25519 私有 JWK。在升级过程中保持稳定。
-  </Step>
+  </Step><Step title="Choose a proxy CA mode">
+    沙箱出口身份验证代理使用此 CA 进行 TLS 拦截和凭证注入。
 
-  <Step title="Choose a proxy CA mode">
     该图表支持两种代理 CA 模式：
 
     |模式|使用时 |
@@ -909,6 +905,9 @@ polly:
 
 将以下值以及 [Prerequisites](#prerequisites-2) 中描述的沙箱秘密值添加到您的 `langsmith_config.yaml` 中。将占位符替换为特定于部署的值。
 
+<Tabs>
+  <Tab title="AWS">
+
 ```yaml
 images:
   sandboxHostImage:
@@ -922,27 +921,76 @@ sandboxes:
     bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
     redis:
       metaURL: "redis://redis-host:6379/1"
-  proxyCa:
-    mode: "generatedSecret"
+  sandboxHost:
+    deployment:
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "<role_arn>"
 ```
 
-如果您自己创建 JuiceFS CSI 配置 Secret，请设置 `sandboxes.juicefs.csi.existingSecretName` 并从 Helm 值中省略 `sandboxes.juicefs.name`、`storage`、`bucket` 和 `redis.metaURL`：
+  </Tab>
+  <Tab title="GCP">
 
 ```yaml
+images:
+  sandboxHostImage:
+    tag: "<same-release-tag-as-your-langsmith-images>"
+
 sandboxes:
   enabled: true
   juicefs:
-    csi:
-      existingSecretName: "juicefs-csi-config"
+    name: "sandbox-juicefs"
+    storage: "gs"
+    bucket: "gs://bucket-name"
+    redis:
+      metaURL: "redis://redis-host:6379/1"
+  sandboxHost:
+    deployment:
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
 ```
 
-现有的 Secret 必须位于 LangSmith 发布命名空间中并包含以下密钥：```yaml
-stringData:
-  name: "sandbox-juicefs"
-  metaurl: "redis://redis-host:6379/1"
-  storage: "s3"
-  bucket: "https://bucket-name.s3.us-west-2.amazonaws.com"
+  </Tab>
+  <Tab title="Azure">
+
+```yaml
+images:
+  sandboxHostImage:
+    tag: "<same-release-tag-as-your-langsmith-images>"
+
+sandboxes:
+  enabled: true
+  juicefs:
+    name: "sandbox-juicefs"
+    storage: "wasb"
+    bucket: "https://container-name.core.windows.net"
+    accessKey: "<storage-account-name>" # Account name, not a credential.
+    redis:
+      metaURL: "redis://redis-host:6379/1"
+  juicefsFormatJob:
+    labels:
+      azure.workload.identity/use: "true"
+  sandboxHost:
+    deployment:
+      labels:
+        azure.workload.identity/use: "true"
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
+        sandbox.langsmith.com/host: "true"
+    serviceAccount:
+      annotations:
+        azure.workload.identity/client-id: "<client_id>"
 ```
+
+  </Tab>
+</Tabs>
 
 应用更新后的图表：
 
@@ -956,9 +1004,10 @@ helm upgrade -i langsmith langchain/langsmith \
 
 ### 使用 Terraform 启用
 
-LangSmith Terraform 模块可以配置所需的 AWS 和 GCP 基础设施并生成相应的 Helm 值。
+<div className="my-6 rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900/40">LangSmith Terraform 模块可以配置所需的 AWS 和 GCP 基础设施并生成相应的 Helm 值。
 
-#### AWS
+<Tabs>
+  <Tab title="AWS">
 
 在`modules/aws/infra/terraform.tfvars`中，启用沙箱并配置沙箱节点容量：
 
@@ -976,35 +1025,38 @@ sandbox_host_configure_instance_store = true
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 ```
 
-AWS 沙箱需要 `redis_source = "external"`。 Terraform 模块：
+AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
 
-- 为 JuiceFS 沙箱元数据创建专用 ElastiCache Redis 实例。
+- 为 JuiceFS 沙盒元数据创建专用 ElastiCache Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
 - 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
-- 创建 JuiceFS CSI 配置密钥。
+- 创建 JuiceFS 配置 Secret。
 - 添加预期的节点标签和污点。
 
-AWS 设置脚本通过正常的 SSM 支持的设置流程生成沙箱服务身份验证密钥、回调签名 JWK 和专用 JuiceFS Redis 身份验证令牌。如果这些值尚不存在，请在应用 Terraform 之前运行基础设置脚本。
+AWS 设置脚本通过正常的 SSM 支持的设置流程生成沙箱服务身份验证密钥、回调签名 JWK 和专用 JuiceFS Redis 身份验证令牌。如果这些值尚不存在，请在应用 Terraform 之前运行基础设施设置脚本。
 
 如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/aws/app/terraform.tfvars` 中设置沙箱应用程序值：
 
 ```hcl
 enable_sandboxes      = true
-chart_version          = "~0.16.0"
+chart_version          = "~0.17.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 ```
 
-当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表版本`0.16.0`或更高版本以及沙箱运行时图像标签。
+当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
 
 运行正常的 AWS 流程：
 
 ```bash
 make apply
 make init-values
-CHART_VERSION="~0.16.0" make deploy
+CHART_VERSION="~0.17.0" make deploy
 ```
 
-#### GCP在 `modules/gcp/infra/terraform.tfvars` 中，启用沙盒并配置标准 GKE 节点池：
+  </Tab>
+  <Tab title="GCP">
+
+在 `modules/gcp/infra/terraform.tfvars` 中，启用沙盒并配置标准 GKE 节点池：
 
 ```hcl
 enable_sandboxes = true
@@ -1022,35 +1074,38 @@ sandbox_host_max_node_count = 5
 sandbox_host_machine_type   = "n2-standard-8"
 
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```
-
-GCP 沙盒需要 `redis_source = "external"`。 Terraform 模块：
+```GCP 沙箱需要 `redis_source = "external"`。 Terraform 模块：
 
 - 为 JuiceFS 沙箱元数据创建专用 Memorystore Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
 - 重复使用LangSmith GCS 存储桶进行沙箱对象存储。
-- 创建 JuiceFS CSI 配置密钥。
+- 创建 JuiceFS 配置 Secret。
 - 添加预期的节点标签和污点。
 
-GCP 设置脚本通过正常的 Secret Manager 设置流程生成沙箱服务身份验证密钥和回调签名 JWK。如果这些值尚不存在，请在应用 Terraform 之前运行基础设置脚本。
+GCP 设置脚本通过正常的 Secret Manager 设置流程生成沙箱服务身份验证密钥和回调签名 JWK。如果这些值尚不存在，请在应用 Terraform 之前运行基础设施设置脚本。
 
 如果您使用 Terraform 应用程序模块部署 Helm 版本，还要在 `modules/gcp/app/terraform.tfvars` 中设置沙箱应用程序值：
 
 ```hcl
 enable_sandboxes      = true
-chart_version          = "~0.16.0"
+chart_version          = "~0.17.0"
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 ```
 
-当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表版本`0.16.0`或更高版本以及沙箱运行时图像标签。
+当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
 
 运行正常的 GCP 流程：
 
 ```bash
 make apply
 make init-values
-CHART_VERSION="~0.16.0" make deploy
+CHART_VERSION="~0.17.0" make deploy
 ```
+
+  </Tab>
+</Tabs>
+
+</div>
 
 ### 可选：启用服务 URL
 
@@ -1059,11 +1114,11 @@ CHART_VERSION="~0.16.0" make deploy
 ```yaml
 sandboxes:
   serviceUrlBaseUrl: "https://sandbox-services.example.com"
-```这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。
+```
 
-### 验证安装
+这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。### 验证安装
 
-升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash
 kubectl rollout status deployment/sandbox-host -n <namespace>
@@ -1090,11 +1145,11 @@ kubectl get pods,pvc -n <namespace>
 自托管部署需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。引擎单独获得许可并计量其在 LCU 中的使用情况。 [Contact our sales team](https://www.langchain.com/contact-sales) 将其添加到您的订单中。
 </Info>
 
-[Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障集中到问题中，诊断每个问题并提出修复建议。默认情况下禁用引擎。
+[Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障聚类为问题，诊断每个问题并提出修复建议。默认情况下禁用引擎。
 
-引擎需要[Sandboxes](#enable-sandboxes)、到[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接、外部可访问的[⟦T267⟧](#verify-your-hostname-is-externally-reachable)和[Engine encryption key](#generate-the-engine-encryption-key)。在启用引擎之前完成先决条件。
+引擎需要[Sandboxes](#enable-sandboxes)、到[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接、外部可访问的[⟦T262⟧](#verify-your-hostname-is-externally-reachable)和[Engine encryption key](#generate-the-engine-encryption-key)。在启用引擎之前完成先决条件。
 
-引擎和 [Insights](#enable-fleet-insights-and-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是添加新 Pod。与本页上的其他功能不同，引擎无法完全在集群内运行。 Engine 使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来支持诊断和修复的模型工作。数据流向和保留的计费元数据请参见[Engine on Self-hosted](/langsmith/engine-self-hosted)。
+引擎和 [Insights](#enable-fleet-insights-and-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是新 Pod。与本页上的其他功能不同，引擎无法完全在集群内运行。 Engine 使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来支持诊断和修复的模型工作。数据流向和保留的计费元数据请参见[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
 ### 组件
 
@@ -1113,8 +1168,8 @@ kubectl get pods,pvc -n <namespace>
   <Step title="Enable Sandboxes">
     首先完成[Enable Sandboxes](#enable-sandboxes)，包括支持KVM的节点池和JuiceFS存储。
 
-    引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则 LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。<Warning>
-    使用为引擎保留的工作区：
+    引擎的沙箱与一个工作区相关联。使用 Engine 进行安装必须具有 [shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则 LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。<Warning>
+    使用为引擎保留的工作空间：
 
     - Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
     - 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
@@ -1140,7 +1195,7 @@ kubectl get pods,pvc -n <namespace>
     引擎可用于 **AWS US** 和 **GCP US** 中的自托管部署。在计划推出之前，检查[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)并确认[our sales team](https://www.langchain.com/contact-sales)的覆盖范围。
     </Note>
 
-    将网关添加为特定白名单条目，而不是打开常规出口。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)​​。请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT。引擎的流量与[Configure egress](/langsmith/self-host-egress)中描述的计费和操作遥测是分开的，即使它共享主机。
+    将网关添加为特定白名单条目，而不是打开常规出口。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT。引擎的流量与[Configure egress](/langsmith/self-host-egress)中描述的计费和操作遥测是分开的，即使它共享主机。
 
     <Note>
     离线（气隙）安装无法运行引擎。没有可供其依赖的集群内模型。
@@ -1148,11 +1203,11 @@ kubectl get pods,pvc -n <namespace>
   </Step>
 
   <Step title="Verify your hostname is externally reachable" id="verify-your-hostname-is-externally-reachable">
-    引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。使用 TLS 通过入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎不要求您公开超出您自己的用户已经到达的地址的任何内容。沙盒出口已列入您的 LangSmith 主机名、`github.com`、`api.github.com` 和 Python 包注册表的允许名单。每次运行的凭据由沙箱外部的代理注入，而不是在沙箱内部可读。
+    引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。使用 TLS 通过您的入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎不要求您公开超出您自己的用户已经到达的地址的任何内容。沙盒出口已列入您的 LangSmith 主机名、`github.com`、`api.github.com` 和 Python 包注册表的允许名单。每次运行的凭据由沙箱外部的代理注入，而不是在沙箱内部可读。
   </Step>
 
   <Step title="Generate the Engine encryption key" id="generate-the-engine-encryption-key">
-    引擎使用自己的 Fernet 密钥来加密传递给它的运行有效负载LangSmith，这些负载携带短期凭证。生成一个：
+    引擎使用自己的 Fernet 密钥来加密传递给它的运行负载LangSmith，这些负载携带短期凭证。生成一个：
 
     ```bash
     python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -1166,7 +1221,7 @@ kubectl get pods,pvc -n <namespace>
 
 ### 使用 Helm 启用
 
-将以下内容添加到您的 [⟦T289⟧](/langsmith/kubernetes#configure-your-helm-charts) 以及 [Enable Sandboxes](#enable-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
+将以下内容添加到您的 [⟦T284⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](#enable-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
 
 <Tabs>
   <Tab title="Using Kubernetes secrets (recommended)">
@@ -1216,7 +1271,7 @@ engine:
 ```
 
 <Warning>
-从较旧的 Insights 图像引脚升级需要一项额外检查：如果您的值引脚 `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该引脚。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。有关更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
+从较旧的 Insights 图像引脚升级需要一项额外检查：如果您的值引脚 `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该引脚。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。欲了解更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
 </Warning>
 
 在应用更新的图表之前验证它：
@@ -1248,22 +1303,22 @@ helm upgrade -i langsmith langchain/langsmith \
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
-API 服务器和队列 Pod 都应该是`Running`。然后，确认`platform-backend`是健康的，因为它调度引擎运行：
+API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度 Engine 运行：
 
 ```bash
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 ```如果在此之后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
 
-在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith) 之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
+在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith)之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
 
-如果分析未完成，请检查 Engine Pod 是否正在运行、沙箱工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
+如果分析未完成，请检查 Engine Pod 是否正在运行、沙盒工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
 
 ### 在LangSmith中打开引擎
 
 在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith中完成设置：
 
 1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎启用**下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
-1. 任何用户都可以从项目的 **Engine** 选项卡为跟踪项目设置 Engine。欲了解更多信息，请参阅[Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
+1. 任何用户都可以从项目的 **Engine** 选项卡为跟踪项目设置 Engine。有关更多信息，请参阅[Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
 
 ### 禁用引擎
 
@@ -1318,9 +1373,9 @@ engine:
 
 #### 部署到同一集群中的不同命名空间<Steps>
   <Step title="Update your config">
-    在您的[⟦T308⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
+    在您的[⟦T303⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
     - 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例正在运行的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
-    - 使用[Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api)或[Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
+    - 使用 [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) 或 [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
   </Step>
   <Step title="Apply the changes">
     ```bash
@@ -1418,7 +1473,7 @@ engine:
 
 <Warning>
 对于控制平面 (`host-backend`) 和数据平面 (`listener`) 部署在不同 Kubernetes 集群中的自托管部署，不支持检索服务器日志。
-</Warning>对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets`、`replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
+</Warning>对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets`、`deployments`、`replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
 
 <Steps>
   <Step title="Create a Role with the required permissions">

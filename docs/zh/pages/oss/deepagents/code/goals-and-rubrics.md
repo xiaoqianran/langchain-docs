@@ -27,7 +27,15 @@
 
 Deep Agents 代码在开始任务之前起草验收标准以供审查。
 
-在在线审核中，您可以接受提案、编辑标准、请求另一次修订或取消提案。接受条件后，目标在各个回合中保持活动状态，直到暂停、完成、阻止或清除。
+如何处理草案标准取决于您的 [approval mode](/oss/deepagents/code/approval-modes)：
+
+<Accordion title="Review behavior by approval mode">
+    - **手动**：始终打开内联审核。
+    - **自动**：默认打开评论。在`~/.deepagents/config.toml`中设置`goals.auto_accept_criteria = true`以自动应用生成的条件。
+    - **YOLO**：应用生成的标准，无需审核。
+</Accordion>
+
+接受标准后，目标在各个回合中保持活动状态，直到暂停、完成、阻止或清除。
 
 这种方法可以让你在多个回合中朝着更大的目标努力：
 
@@ -59,7 +67,7 @@ check the docs too
 
 <AccordionGroup>
     <Accordion title="Goal command reference">
-        - `/goal <objective>`：根据简单语言的目标起草验收标准，并在工作开始前进行审查。
+        - `/goal <objective>`：根据简单语言的目标起草验收标准，并在工作开始前对其进行审查。
         - `/goal amend <feedback>`：建议对目标和审查标准进行协调更新。
         - `/goal pause`：保存目标，不要让它驱动工作或评分。
         - `/goal resume`：重新激活暂停的目标并从现有对话继续。

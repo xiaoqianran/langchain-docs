@@ -108,8 +108,8 @@
 
 ## 事件流提供什么
 
-`client.threads.stream(...)` 返回的流公开了一个底层事件流上的类型化投影：|投影|使用|
-| ---------- | ---|
+`client.threads.stream(...)` 返回的流公开了一个底层事件流上的类型化投影：|投影|使用 |
+| ---------- | --- |
 | `thread.events` |迭代每个原始协议事件 (Python)。在 JavaScript 中，打开 `thread.subscribe(...)`。 |
 | `thread.messages` |流式传输聊天模型消息、令牌增量、推理和工具调用参数块。 |
 | `thread.values` |迭代状态快照并等待最终值。 |
@@ -527,7 +527,7 @@
 
         async for event in thread.events:
             print(event["method"], event["params"]["namespace"], event["params"]["data"])
-    ```要缩小到特定频道，请在线程上打开 `subscribe`：
+    ```要缩小到特定通道，请在线程上打开 `subscribe`：
 
     ```python
     async for event in thread.subscribe(["messages", "tools"]):
@@ -662,7 +662,7 @@
 
 ## 从上次活动继续
 
-事件流是可恢复的。代理服务器在有界缓冲区中缓冲每次运行的事件，为每个事件分配一个`seq`（每个会话排序）和一个持久的`event_id`（在重播和副本中稳定），并在重新连接时从游标重播。 SDK 自动处理瞬时丢弃：每个打开的订阅都会跟踪其观察到的最高值 `seq`，重新连接时，SDK 会从该游标重播并按 `event_id` 删除重复事件。要跨进程边界恢复（页面重新加载、工作人员切换或单独的客户端），请使用相同的 `thread_id` 重新打开线程。当新的订阅打开时，服务器会重播缓冲的事件，并且 SDK 将它们解复用为相同类型的投影。由于每次运行的缓冲区是有限的，因此很长的运行中最早的事件可能已被逐出。
+事件流是可恢复的。代理服务器在有界缓冲区中缓冲每次运行的事件，为每个事件分配一个`seq`（每个会话排序）和一个持久的`event_id`（在重播和副本中稳定），并在重新连接时从游标重播。 SDK 自动处理瞬时丢失：每个打开的订阅都会跟踪其观察到的最高 `seq`，并在重新连接时从该游标重播并按 `event_id` 删除重复事件。要跨进程边界恢复（页面重新加载、工作人员切换或单独的客户端），请使用相同的 `thread_id` 重新打开线程。当新的订阅打开时，服务器会重播缓冲的事件，并且 SDK 将它们解复用为相同类型的投影。由于每次运行缓冲区是有界的，因此很长时间运行的最早事件可能已被逐出。
 
 <Tabs>
     <Tab title="Python">
@@ -705,13 +705,13 @@
 
 ## 相关
 
-- [Streaming API](/langsmith/streaming) — 基于 `stream_mode` 的流 API。也得到`langgraph-api>=0.10.0`的支持。
-- [LangGraph event streaming](/oss/python/langgraph/event-streaming) — 相同的概念适用于进程内 LangGraph 应用程序。
-- [LangChain agent event streaming](/oss/python/langchain/event-streaming) — 以代理为中心的消息、工具调用和中间件更新的投影。
-- [Deep Agents event streaming](/oss/python/deepagents/event-streaming) — 子代理流、嵌套消息和子代理工具调用。
-- [LangSmith Deployment API](/langsmith/server-api-ref) — `POST /threads/{thread_id}/stream/events` 和相关端点的线路级参考。线路级事件和命令格式在 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 存储库中定义。
+- [Streaming API](/langsmith/streaming)：基于`stream_mode`的流媒体API。也得到`langgraph-api>=0.10.0`的支持。
+- [LangGraph event streaming](/oss/python/langgraph/event-streaming)：相同的概念适用于进程内LangGraph 应用程序。
+- [LangChain agent event streaming](/oss/python/langchain/event-streaming)：以代理为中心的消息、工具调用和中间件更新的投影。
+- [Deep Agents event streaming](/oss/python/deepagents/event-streaming)：子代理流、嵌套消息和子代理工具调用。
+- [LangSmith Deployment API](/langsmith/server-api-ref)：`POST /threads/{thread_id}/stream/events` 及相关端点的线路级参考。
 
----
+线路级事件和命令格式在 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 存储库中定义。---
 
 <div className="source-links">
 <Callout icon="terminal-2">

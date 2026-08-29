@@ -102,7 +102,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.create) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/create-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/create) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/create-thread) reference.
 
 Output:
 
@@ -140,7 +140,7 @@ curl --request POST --url <DEPLOYMENT_URL>/threads/thread["thread_id"]/copy \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.copy) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/copy-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/copy) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/copy-thread) reference.
 
 ### Prepopulated state
 
@@ -359,7 +359,7 @@ curl --request POST \
 ```
 </CodeGroup>
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.search) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/search-threads) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/search) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/search-threads) reference.
 
 Output:
 
@@ -511,7 +511,7 @@ This will load a table of all threads in your deployment.
 
 ### Get thread
 
-To view a specific thread given its `thread_id`, use the [`get`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) method:
+To view a specific thread given its `thread_id`, use the [`get`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) method:
 
 <CodeGroup>
 ```python Python
@@ -550,11 +550,11 @@ Output:
 }
 ```
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient#member-get-0) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread) reference.
 
 ### Inspect thread state
 
-To view the current state of a given thread, use the [`get_state`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) method. This returns the current values, next nodes to execute, and checkpoint information:
+To view the current state of a given thread, use the [`get_state`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) method. This returns the current values, next nodes to execute, and checkpoint information:
 
 <CodeGroup>
 ```python Python
@@ -641,7 +641,7 @@ Output:
 }
 ```
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_state) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-state) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_state) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-state) reference.
 
 Optionally, to view the state of a thread at a given checkpoint, pass in the checkpoint ID. This is useful for inspecting the thread state at a specific point in its execution history.
 
@@ -696,7 +696,7 @@ curl --request GET \
 
 ### Inspect full thread history
 
-To view a thread's history, use the [`get_history`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) method. This returns a list of every state the thread experienced, allowing you to trace the full execution path:
+To view a thread's history, use the [`get_history`](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) method. This returns a list of every state the thread experienced, allowing you to trace the full execution path:
 
 <CodeGroup>
 ```python Python
@@ -742,7 +742,7 @@ This method is particularly useful for:
 - Auditing conversation history and state changes.
 - Replaying or analyzing past interactions.
 
-For more information, refer to the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) and [JS](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.ThreadsClient.get_history) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-history) reference.
+For more information, refer to the [Python](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) and [JS](https://reference.langchain.com/python/langgraph-sdk/_async/threads/ThreadsClient/get_history) SDK docs, or the [REST API](/langsmith/agent-server-api/threads/get-thread-history) reference.
 
 </Tab>
 <Tab title="UI">

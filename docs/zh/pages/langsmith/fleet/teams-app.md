@@ -125,11 +125,11 @@
 
 1. 在边栏中，展开 **连接** 抽屉并单击 **添加连接**。
 1. 搜索“Teams”并添加您需要的工具：
-   - **teams_bot_send_proactive_message** — 将消息发送回 Teams 对话
-   - **microsoft_teams_list_my_teams** — 列出经过身份验证的用户所属的团队
-   - **microsoft_teams_list_channels** — 列出团队中的频道
-   - **microsoft_teams_post_channel_message** — 将消息发布到频道
-   - **microsoft_teams_read_channel_messages** — 从频道读取最近的消息
+   - **teams_bot_send_proactive_message**：将消息发送回团队对话
+   - **microsoft_teams_list_my_teams**：列出经过身份验证的用户所属的团队
+   - **microsoft_teams_list_channels**：列出团队中的频道
+   - **microsoft_teams_post_channel_message**：将消息发布到频道
+   - **microsoft_teams_read_channel_messages**：从频道读取最近的消息
 1. 如果出现提示，请单击 **连接** 以授权 Microsoft Graph 工具。
 
 <Note>
@@ -153,7 +153,7 @@ for bidirectional communication
 - 在频道对话中，确保您 **@提及** 机器人。没有提及的频道消息将被忽略。
 - 检查 **Feed** 选项卡是否有错误。
 - 验证 Azure Bot 资源中的消息传递终结点与队列中的 Webhook URL 匹配。
-- 确保舰队中的机器人注册未暂停。
+- 确保机器人注册在 Fleet 中未暂停。
 
 ### 注册期间凭据无效错误
 
@@ -162,7 +162,7 @@ for bidirectional communication
 - 检查 Azure 中的机器人类型是否设置为 **多租户**。
 
 ### 机器人可以在直接消息中工作，但不能在渠道中工作- 机器人必须在频道对话中明确**@提及**。
-- 确保机器人已添加到团队中，并且有权限读取频道中的消息。
+- 确保机器人已添加到团队中并有权读取频道中的消息。
 
 ## 后续步骤
 

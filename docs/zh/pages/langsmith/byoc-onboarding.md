@@ -9,7 +9,7 @@
 <Steps>
 
 <Step title="Enable BYOC on your organization">
-在 AWS 上的 [aws.smith.langchain.com](https://aws.smith.langchain.com) 在 LangSmith 中创建一个组织，或重复使用现有组织。
+在 AWS 上的 [aws.smith.langchain.com](https://aws.smith.langchain.com) 的 LangSmith 中创建一个组织，或重复使用现有组织。
 
 将您的组织 ID 发送给 LangChain 团队以启用 BYOC。
 </Step>
@@ -57,9 +57,9 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 创建工作区时请仔细选择正确的数据平面。工作空间创建后无法移动到另一个数据平面。
 </Warning>
 </Step><Step title="(Optional) Migrate existing data">
-如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则和仪表板。今天无法迁移痕迹。
+如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则、仪表板和队列资源。今天无法迁移痕迹。
 
-要计划迁移，请联系 LangChain 团队。
+有关更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
 </Step>
 
 </Steps>
