@@ -46,13 +46,13 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 
 `dcode auth` 命令组是 `/auth` 管理器的可编写脚本的等效项：它管理相同的存储凭据，而无需启动 TUI，这使其可用于 dotfile 引导、CI/CD 以及通过 SSH 在远程设备上设置密钥。子命令反映了情态动词的动词：
 
-|命令 |描述 |
+|命令|描述 |
 |---------|-------------|
 | `dcode auth list`（别名`ls`）|列出每个已知的提供商及其密钥解析的位置 |
 | `dcode auth status <provider>` |打印一个提供商的解析源 |
 | `dcode auth set <provider>` |存储 API 密钥，默认从 stdin 读取 |
 | `dcode auth remove <provider>`（别名`rm`、`delete`）|删除存储的凭据 |
-| `dcode auth path` |打印凭证存储的已解析路径 (`auth.json`) |
+| `dcode auth path` |打印凭证存储的解析路径 (`auth.json`) |
 
 默认情况下，`set` 从 **stdin** 读取密钥，因此它永远不会出现在 shell 历史记录或 `argv` 中。通过管道输入密钥，或使用 `--from-env VAR` 从进程环境变量中复制它：
 
@@ -119,7 +119,7 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
 
 <Tabs>
     <Tab title="Use /auth (recommended)">
-        从 [tavily.com](https://tavily.com) 获取密钥（以 `tvly-` 开头；免费套餐足以满足大多数 Deep Agents 代码使用），然后将其存储在凭证管理器中：```txt
+        从[tavily.com](https://tavily.com)获取密钥（以`tvly-`开头；免费套餐足以满足大多数Deep Agents代码使用），然后将其存储在凭证管理器中：```txt
         /auth
         ```
 
@@ -129,11 +129,11 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
     <Tab title="Set an environment variable">
         <Steps>
             <Step title="Get a key">
-                在[tavily.com](https://tavily.com)注册并复制密钥（以`tvly-`开头）。免费套餐足以满足大多数 Deep Agents 代码的使用。
+                在[tavily.com](https://tavily.com)注册并复制密钥（以`tvly-`开头）。免费套餐足以满足大多数Deep Agents代码的使用。
             </Step>
 
             <Step title="Add it to your environment">
-                将密钥添加到`~/.deepagents/.env`，以便每个会话都会拾取它：
+                将密钥添加到 `~/.deepagents/.env`，以便每个会话都会拾取它：
 
                 ```bash title="~/.deepagents/.env"
                 TAVILY_API_KEY=tvly-...

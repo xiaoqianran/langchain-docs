@@ -10,7 +10,7 @@
 
 - **[Skills](#skills)**：代理仅在相关时发现和读取的可重用、按需功能。使用针对特定任务上下文的技能，例如工作流程、最佳实践和参考文档。
 
-在实践中，技能和记忆力是有一定范围的。有关何时使用每种方法的更多信息，请参阅[Skills, memory, and tools](/oss/python/deepagents/skills#skills-memory-and-tools)。
+在实践中，技能和记忆是有一定范围的。有关何时使用每种方法的更多信息，请参阅[Skills, memory, and tools](/oss/python/deepagents/skills#skills-memory-and-tools)。
 
 使用`/remember`明确提示代理从当前对话中更新其记忆和技能。
 

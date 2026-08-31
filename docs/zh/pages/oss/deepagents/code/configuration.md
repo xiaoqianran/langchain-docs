@@ -125,7 +125,7 @@ DEEPAGENTS_CODE_ANTHROPIC_API_KEY=
 
 ## 技能目录白名单
 
-默认情况下，当Deep Agents代码加载技能时，它会验证已解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
+默认情况下，当Deep Agents代码加载技能时，它会验证解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
 
 <ResponseField name="extra_allowed_dirs" type="string[]" post={["optional"]}>
     添加到技能限制允许列表的路径。支持`~`扩展。
@@ -231,7 +231,7 @@ theme = "langchain-dark"
 
     1. `DEEPAGENTS_CODE_THEME`环境变量（显式覆盖）。
     2. `[ui.terminal_themes]` 映射当前`TERM_PROGRAM`。
-    3. `[ui] theme` 已保存的偏好设置（由`/theme` 设置）。
+    3. `[ui] theme`已保存的偏好设置（由`/theme`设置）。
     4. 内置默认值（`langchain`）。
 </Accordion>
 
@@ -320,13 +320,13 @@ Deep Agents 代码在后台每小时从上游刷新其模型定价目录，以�
 
 升级后，Deep Agents代码会在下次启动时显示“新增内容”横幅，并附有更改日志的链接。
 
-会话退出时，如果在会话期间检测到较新版本，则会显示更新横幅作为提醒。
+会话退出时，如果在会话期间检测到较新版本，则会显示更新横幅作为提醒。## 显示选项
 
-## 显示选项这些 `[ui]` 键可调整终端 UI 显示的内容。
+这些 `[ui]` 键可调整终端 UI 显示的内容。
 
 ### 会话使用统计
 
-Deep Agents 代码显示会话结束时的会话使用统计信息（默认打开）：
+Deep Agents 代码显示会话结束时的会话使用统计信息（默认开启）：
 
 <Tabs>
     <Tab title="Config file">
@@ -461,7 +461,7 @@ enable_interpreter = false
 langsmith_redact = true
 ```
 
-只有管理员才有权编辑此文件。 Deep Agents 代码将其视为只读。用户仍然可以将首选项保存到 `config.toml`，但管理员设置仍然有效，直到从 `managed_config.toml` 中删除。
+只有管理员才有权编辑此文件。 Deep Agents 代码将其视为只读。用户仍然可以将首选项保存到 `config.toml`，但管理员设置在从 `managed_config.toml` 中删除之前仍然有效。
 
 ### 限制模型使用
 
@@ -575,7 +575,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_VERBOSE" type="string" post={["optional"]}>
-    设置为 `1` 以显示 uv 的原始标准错误（时间线、未过滤的包差异）和默认安静状态线（可选工具检查、安装后页脚）。调试安装时很有用。
+    设置为 `1` 以显示 uv 的原始 stderr（时间线、未过滤的包差异）和默认安静状态线（可选工具检查、安装后页脚）。调试安装时很有用。
 </ResponseField>
 
 <ResponseField name="UV_BIN" type="string" post={["optional"]}>
@@ -607,7 +607,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_EXTENSIONS_TRUST" type="string" default='"ask"' post={["optional"]}>
-    将默认项目扩展信任策略设置为`ask`、`always`或`never`。覆盖 `config.toml` 中的 `[extensions].trust`。仅当您打开的每个项目都可信时才使用`always`。
+    将默认项目扩展信任策略设置为 `ask`、`always` 或 `never`。覆盖 `config.toml` 中的 `[extensions].trust`。仅当您打开的每个项目都可信时才使用`always`。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_DEBUG_FILE" type="string" default="/tmp/deepagents_debug.log" post={["optional"]}>
@@ -785,9 +785,9 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 |------|----------|------------|--------|
 | **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写 |支持[⟦T386⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T386⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
 | **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
-| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
+| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
 | **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
@@ -831,7 +831,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 ### `.deepagents` vs `.agents`|目录 |目的|何时使用 |
 |------------|---------|-------------|
 | `.deepagents/` | Deep Agents 代码特定 |使用 Deep Agents 代码特定功能的技能和配置 |
-| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间共享的技能 |
+| `.agents/` |与工具无关 |您希望在不同的 AI CLI 工具之间分享的技能 |
 
 <Tip>
 使用 `.agents/skills/` 获得可与任何 AI 编码助手配合使用的技能。

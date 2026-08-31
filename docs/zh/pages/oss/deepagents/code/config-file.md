@@ -26,7 +26,7 @@ recent = "google_genai:gemini-3.6-flash"   # last /model switch (written automat
 auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto approval review
 ```
 
-`[models].default` 始终优先于 `[models].recent`。 `/model` 命令仅写入`[models].recent`，因此您配置的默认值永远不会被会话中切换覆盖。要删除默认值，请使用 `/model --default --clear` 或从配置文件中删除 `default` 键。`[models].auto_classifier` 设置 [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型。未设置时，分类器继承主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解完整的优先级和安全说明。
+`[models].default` 始终优先于 `[models].recent`。 `/model` 命令仅写入`[models].recent`，因此您配置的默认值永远不会被会话中切换覆盖。要删除默认值，请使用 `/model --default --clear` 或从配置文件中删除 `default` 键。`[models].auto_classifier` 设置[Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型。未设置时，分类器继承主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解完整的优先级和安全说明。
 
 ## 设置汇总模型
 
@@ -53,7 +53,7 @@ default = "backend-dev"  # your intentional long-term preference (Ctrl+S in /age
 recent = "frontend-dev"  # last /agents switch (written automatically)
 ```
 
-`[agents].default` 始终优先于 `[agents].recent`。在 `/agents` 选择器中使用 `Enter` 选择代理会写入`recent`；在突出显示的行上按 `Ctrl+S` 将其固定为 `default`。在同一行再次按 `Ctrl+S` 将清除默认值。
+`[agents].default` 始终优先于 `[agents].recent`。在 `/agents` 选择器中使用 `Enter` 选择代理会写入`recent`；在突出显示的行上按`Ctrl+S`，将其固定为`default`。在同一行再次按 `Ctrl+S` 将清除默认值。
 
 显式 `-a`/`--agent` 始终覆盖两者，而 `-r`/`--resume` 绕过两者，以便恢复线程的原始代理。相关标志请参见[Command reference](/oss/deepagents/code/cli-reference#command-line-options)。
 
@@ -98,7 +98,7 @@ trusted_cache_endpoints = ["smith.langchain.com"]
 show_reasoning = true
 ```在交互式会话中，推理流入单独的行，该行在阶段结束时折叠。单击该行或按 `Ctrl+O` 重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。
 
-设置 `DEEPAGENTS_CODE_SHOW_REASONING=1` 覆盖 `config.toml`，或传递 `--show-reasoning` 启用一次启动的设置。启动标志优先于环境变量，环境变量优先于`config.toml`。
+设置 `DEEPAGENTS_CODE_SHOW_REASONING=1` 覆盖 `config.toml`，或传递 `--show-reasoning` 启用一次启动的设置。启动标志优先于环境变量，而环境变量又优先于`config.toml`。
 
 <Note>
     Deep Agents 代码仅显示模型提供者公开的推理内容。经过编辑或不透明的推理仍然被隐藏。
@@ -124,7 +124,7 @@ show_diff_line_numbers = false
 allowed = ["anthropic:claude-fable-5", "openai:*"]
 ```
 
-条目是精确的 `provider:model` 规格或 `provider:*` 通配符，允许提供商的整个产品线。设置列表后，被阻止的模型将从 `/model` 切换器中隐藏，如果在其他地方选择则被拒绝。当密钥未设置时，所有模型均被允许。显式的空列表不允许任何内容：
+条目是精确的 `provider:model` 规格或 `provider:*` 通配符，允许提供商的整个阵容。设置列表后，被阻止的模型将从`/model`切换器中隐藏，如果在其他地方选择则被拒绝。当密钥未设置时，所有模型均被允许。显式的空列表不允许任何内容：
 
 ```toml
 [models]
@@ -235,7 +235,7 @@ temperature = 0.7
 </ResponseField>
 
 <ResponseField name="enabled" type="boolean" default="true" post={["optional"]}>
-    该提供者是否出现在`/model`选择器中。设置为 `false` 以隐藏从已安装的包中自动发现的提供程序（例如，您不希望使模型切换器混乱的传递依赖项）。您仍然可以直接通过 `/model provider:model` 或 `--model` 使用禁用的提供商。
+    该提供者是否出现在`/model`选择器中。设置为 `false` 以隐藏从已安装的包中自动发现的提供程序（例如，您不希望弄乱模型切换器的传递依赖项）。您仍然可以直接通过 `/model provider:model` 或 `--model` 使用禁用的提供商。
 </ResponseField>
 
 ## 模型构造函数参数[⟦T129⟧ field](#provider-configuration) 将额外的参数转发给模型构造函数。要为一个模型提供不同的值，请添加一个模型键控子表，这样您就不必复制整个提供程序配置：
@@ -279,7 +279,7 @@ max_retries = 3
 max_retries = 0
 ```
 
-全局 `[retries].max_retries` 值适用于所有支持的提供商。特定于提供者的表（例如 `[retries.fireworks]`）会覆盖该提供者的全局值。值必须是大于或等于 `0` 的整数。对于任意提供程序，将 `param` 设置为其重试计数构造函数参数的名称。 Deep Agents 代码仅使用 `param` 来禁用提供者 SDK 的重试循环，这使得模型节点中间件成为配置的重试预算的唯一所有者：
+全局 `[retries].max_retries` 值适用于所有受支持的提供商。特定于提供者的表（例如 `[retries.fireworks]`）会覆盖该提供者的全局值。值必须是大于或等于 `0` 的整数。对于任意提供程序，将 `param` 设置为其重试计数构造函数参数的名称。 Deep Agents 代码仅使用 `param` 来禁用提供者 SDK 的重试循环，这使得模型节点中间件成为配置的重试预算的唯一所有者：
 
 ```toml
 [retries]
@@ -499,13 +499,13 @@ Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获�
 2. **以 `DEEPAGENTS_CODE_` 为前缀的端点变量。**
 3. **环境中的普通端点变量**（例如，`OPENAI_BASE_URL`）。
 4. **使用`/auth`凭证保存的端点。**此步骤将保存的端点应用于没有端点变量的提供程序，例如您在未声明[⟦T223⟧](#provider-configuration)的情况下添加的提供程序。步骤 2-3 没有可供读取的变量，因此此处直接使用保存的端点。对于确实具有端点变量的提供程序，保存的端点已在步骤 2 或 3 中生效（它被写入该变量），因此此步骤不会更改任何内容。无论哪种方式，在 `/auth` 中输入的端点都适用。
-5. **当以上均未设置时，提供者 SDK 自己的默认端点**。
+5. **当以上均未设置时，提供商 SDK 自己的默认端点**。
 
 <Note>
     解析的端点作为 `base_url` 构造函数参数传递给模型。
 </Note>
 
-与 API 密钥一样，[⟦T226⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix) 将端点范围限定为 Deep Agents 代码，而不影响其他工具。对于任何其他提供程序，使用 [⟦T227⟧](#provider-configuration) 声明名称，端点以相同的方式解析和配对：
+与 API 密钥一样，[⟦T226⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix) 将端点范围限制为 Deep Agents 代码，而不影响其他工具。对于任何其他提供程序，使用 [⟦T227⟧](#provider-configuration) 声明名称，端点以相同的方式解析和配对：
 
 ```toml
 [models.providers.myprovider]
@@ -605,7 +605,7 @@ extra_paths = [
 
 ## 代理运行时间限制
 
-LangGraph图步预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
+LangGraph图步骤预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
 
 ```toml title="~/.deepagents/config.toml"
 [runtime]

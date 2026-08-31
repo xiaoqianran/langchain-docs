@@ -177,7 +177,7 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
 
 ## 沙箱标志和示例|旗帜|描述 |
 |------|-------------|
-| `--sandbox TYPE` |要使用的沙箱提供程序。内置：`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`（默认：`none`）。也接受[Third-party](#third-party-providers) 和[config-declared](#config-declared-providers) 提供商。传递 `--sandbox` ，但没有值可以从您的配置中使用 `[sandboxes].default` |
+| `--sandbox TYPE` |要使用的沙箱提供程序。内置：`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`（默认：`none`）。也接受[Third-party](#third-party-providers) 和[config-declared](#config-declared-providers) 提供商。传递 `--sandbox`，但没有值可以从您的配置中使用 `[sandboxes].default` |
 | `--sandbox-id ID` |按 ID 重用现有沙箱，而不是创建新沙箱。跳过创建和清理。仅适用于支持通过 ID 重新连接的提供商。有关更多信息，请参阅您的沙箱文档 |
 | `--sandbox-snapshot-name NAME` |使用或创建沙箱快照。由 `langsmith` 和 `runloop`（以及宣传快照支持的任何第三方提供商）支持。不能与`--sandbox-id`组合使用 |
 | `--sandbox-setup PATH` |创建后在沙箱内运行的安装脚本的路径 |

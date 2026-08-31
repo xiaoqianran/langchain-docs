@@ -12,7 +12,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 1. **安装提供程序包**
 
-    每个模型提供者都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
+    每个模型提供商都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
 
     <CodeGroup>
         ```txt In session
@@ -64,7 +64,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |一起| [⟦T76⟧](/oss/python/integrations/chat/together) | `TOGETHER_API_KEY` | ❌ |
 |元 | [⟦T78⟧](https://github.com/langchain-ai/langchain-meta) | `MODEL_API_KEY` | ✅ |
 |米斯特拉尔人工智能 | [⟦T80⟧](/oss/python/integrations/chat/mistralai) | `MISTRAL_API_KEY` | ✅ |
-|深度搜索 | [⟦T82⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
+|深度搜索| [⟦T82⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
 | IBM（watsonx.ai）| [⟦T84⟧](/oss/python/integrations/chat/ibm_watsonx) | `WATSONX_APIKEY` | ❌ |
 |英伟达 | [⟦T86⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
 | xAI | [⟦T88⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
@@ -133,7 +133,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     </Step>
 
     <Step title="Authorize in your browser">
-        Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果它无法打开浏览器（例如，通过 SSH），它还会在屏幕上显示登录 URL，以便您可以将其复制到另一台设备上的浏览器。
+        Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果无法打开浏览器（例如，通过 SSH），它还会在屏幕上显示登录 URL，以便您可以将其复制到另一台设备上的浏览器。
     </Step>
 
     <Step title="Select a Codex model">
@@ -159,7 +159,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 使用这些服务的专用集成包：
 
-|路由器|套餐 |配置 |
+|路由器|套餐 |配置|
 | --- | --- | --- |
 |开放路由器 | [⟦T124⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
 |莱特法学硕士 | [⟦T126⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
@@ -231,7 +231,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     </Tip>
 </Accordion>
 
-### 开放式重量模型
+### 开放重量模型
 
 如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。
 

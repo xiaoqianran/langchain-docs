@@ -4489,28 +4489,28 @@
       "translatedAt": "2026-08-27T19:21:42.156Z"
     },
     "oss/deepagents/code/config-file.md": {
-      "hash": "f3713446b916cb29a8a8506edcd77dae2e87d3a3",
-      "translatedAt": "2026-08-29T14:05:12.334Z"
+      "hash": "9a0d59a5d5a200ed0019f590ab9b4380f04f8920",
+      "translatedAt": "2026-08-31T16:29:09.155Z"
     },
     "oss/deepagents/code/credentials.md": {
-      "hash": "1b32da3c99f939e034e9b11be88b68e9b76d81db",
-      "translatedAt": "2026-08-16T09:28:10.930Z"
+      "hash": "dd7b7a4cfe77f054ecd17e1dfdff67c707e42ea4",
+      "translatedAt": "2026-08-31T16:28:57.104Z"
     },
     "oss/deepagents/code/goals-and-rubrics.md": {
       "hash": "8d8af936803d43ac1d42b00d8882166e0d1733bc",
       "translatedAt": "2026-08-29T14:05:21.370Z"
     },
     "oss/deepagents/code/configuration.md": {
-      "hash": "2f3ebd9ecaf0ee1dc3e47c71223bd7889f0bbc52",
-      "translatedAt": "2026-08-29T14:05:31.661Z"
+      "hash": "bfc900945d8c08fb692f94752d45fc5a8cc072dc",
+      "translatedAt": "2026-08-31T16:29:17.101Z"
     },
     "oss/deepagents/code/cli-reference.md": {
       "hash": "b34745427f5c0271dfaaf7c1a67be6acd133bcf2",
       "translatedAt": "2026-08-29T14:05:07.121Z"
     },
     "oss/deepagents/code/memory-and-skills.md": {
-      "hash": "cade6ca712e4bf668080adfff166076a8ba6af7b",
-      "translatedAt": "2026-08-29T14:05:36.501Z"
+      "hash": "8ead9d27b4d0d2b496cb52d13977f79afb346d23",
+      "translatedAt": "2026-08-31T16:29:16.179Z"
     },
     "oss/deepagents/code/hooks.md": {
       "hash": "893e74c9a9a566949840588b3698aef53954be8e",
@@ -4521,20 +4521,20 @@
       "translatedAt": "2026-08-29T14:05:41.237Z"
     },
     "oss/deepagents/code/mcp-tools.md": {
-      "hash": "084ea8a608a5090e7e9fccf1a7c6b4ba9bd4ec57",
-      "translatedAt": "2026-08-29T14:05:37.898Z"
+      "hash": "608e69b8ec878d4fc35d3dbbf8518125c670cdee",
+      "translatedAt": "2026-08-31T16:29:08.832Z"
     },
     "oss/deepagents/code/remote-sandboxes.md": {
-      "hash": "778d2e438bffd3a0c475e8af143e25908c9de3db",
-      "translatedAt": "2026-08-16T09:28:23.872Z"
+      "hash": "5ce5348d0c419186446008b2f9ba013008305167",
+      "translatedAt": "2026-08-31T16:29:21.763Z"
     },
     "oss/deepagents/code/subagents.md": {
       "hash": "04832e3820a5d80e9dbb2f438fda7d51a23347a1",
       "translatedAt": "2026-08-16T09:28:24.095Z"
     },
     "oss/deepagents/code/providers.md": {
-      "hash": "4c49ed1ea4c1bcf010313e477eb0a97753b29b7b",
-      "translatedAt": "2026-08-27T19:21:32.447Z"
+      "hash": "ef57246ecff25a1b03ddc93198f88a832a5981af",
+      "translatedAt": "2026-08-31T16:29:21.352Z"
     },
     "oss/javascript/common-errors.md": {
       "hash": "43b81c52898278e8c50c15278aade11d23998d05",
@@ -6442,10 +6442,10 @@
       "translatedAt": "2026-08-29T14:05:17.660Z"
     }
   },
-  "updatedAt": "2026-08-30T14:03:24.386Z",
+  "updatedAt": "2026-08-31T16:29:21.763Z",
   "stats": {
-    "translated": 0,
-    "skipped": 552,
+    "translated": 7,
+    "skipped": 545,
     "failed": 0,
     "total": 552
   }
