@@ -4,12 +4,7 @@
 
 # 将自定义工具添加到托管Deep Agents
 
-工具为您的代理添加自定义功能。
-
-
-
-在您的项目中定义LangChain工具，将它们导入到`agent.ts`中，然后将它们传递给`defineDeepAgent`。
-
+工具通过让代理与外部系统交互来扩展代理的功能，例如获取实时数据、查询数据库、执行代码和采取操作。工具是具有定义的输入和输出的可调用函数。该模型使用工具的描述和对话上下文来决定何时调用它以及提供哪些参数。
 
 要从远程 MCP 服务器加载工具，请使用 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
@@ -82,11 +77,7 @@ export const agent = defineDeepAgent({
 
 ## 人机交互
 
-在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
-
-
-
-在代理定义中设置`interruptOn`，并可以选择设置`permissions`来控制工具和文件系统访问。
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。在代理定义中设置`interruptOn`，并可以选择设置`permissions`来控制工具和文件系统访问。
 
 
 
@@ -109,7 +100,10 @@ export const agent = defineDeepAgent({
 
 
 
-`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
+`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。
+
+
+有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
 
 ### 响应中断
 
@@ -126,13 +120,13 @@ export const agent = defineDeepAgent({
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用秘密和上下文
+## 使用秘密和上下文工具可以从环境变量中读取部署机密。将`mda dev`的局部值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-工具可以从环境变量中读取部署机密。将`mda dev`的局部值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
+对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+---
 
----<div className="source-links">
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

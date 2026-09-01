@@ -64,19 +64,19 @@ export const agent = defineDeepAgent({
 
 |参数|它有什么作用 |
 |---|---|
-| [⟦T12⟧](#name) |设置代理和默认部署名称 |
-| [⟦T13⟧](#model) |选择聊天模式|
-| [⟦T14⟧](#tools) |添加代理可以调用​​的工具 |
-| [⟦T15⟧](#middleware) |添加有关模型调用、工具调用和代理生命周期的行为 |
-| [⟦T16⟧](#subagents) |为委派任务定义专门代理 |
-| [⟦T17⟧](#permissions) |控制文件系统工具的路径级访问
-| [⟦T18⟧](#human-in-the-loop) |在选定的工具需要人工批准之前暂停 |
-| [⟦T19⟧](#structured-output) |定义结构化输出模式 |
+| [⟦T11⟧](#name) |设置代理和默认部署名称 |
+| [⟦T12⟧](#model) |选择聊天模式|
+| [⟦T13⟧](#tools) |添加代理可以调用​​的工具 |
+| [⟦T14⟧](#middleware) |添加有关模型调用、工具调用和代理生命周期的行为 |
+| [⟦T15⟧](#subagents) |为委派任务定义专门代理 |
+| [⟦T16⟧](#permissions) |控制文件系统工具的路径级访问
+| [⟦T17⟧](#human-in-the-loop) |在选定的工具需要人工批准之前暂停 |
+| [⟦T18⟧](#structured-output) |定义结构化输出模式 |
 
 
 ## 姓名
 
-需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。托管 Deep Agents 使用该名称作为 LangGraph 助手 ID 和默认 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
+需要`name`。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。托管 Deep Agents 使用该名称作为 LangGraph 助理 ID 和默认 LangSmith 部署名称。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。
 
 ## 型号
 
@@ -114,55 +114,38 @@ export const agent = defineDeepAgent({
 </CodeGroup>
 
 
-当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。
+当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关模型选项和支持的提供程序，请参阅[Models](/oss/javascript/deepagents/models)。
 
 ### 使用LLM网关
 
-您可以使用 [LLM Gateway](langsmith/llm-gateway) 来控制速率限制、回退等。
+您可以使用 [LLM Gateway](/langsmith/llm-gateway) 将速率限制、回退和其他策略应用于模型调用。
 
-为了使用 LLM Gateway，您应该：
-- 直接使用ChatOpenAI模型
-- 设置基本url为`https://gateway.smith.langchain.com/v1`
-- 使用您的`LANGSMITH_API_KEY`进行身份验证。仅当您需要不同的密钥用于网关呼叫时才设置`LANGSMITH_GATEWAY_API_KEY`。
+网关型号 ID 前面加上 `langsmith:`：
 
 
 
 ```ts
 import { defineDeepAgent } from "managed-deepagents";
-import { ChatOpenAI } from "@langchain/openai";
-
-const apiKey =
-  process.env.LANGSMITH_GATEWAY_API_KEY ??
-  process.env.LANGSMITH_API_KEY ??
-  "missing-langsmith-api-key";
-const baseURL = "https://gateway.smith.langchain.com/v1";
 
 export const agent = defineDeepAgent({
   name: "my-agent",
-  model: new ChatOpenAI({
-    model: "moonshotai/Kimi-K3",
-    apiKey,
-    configuration: { baseURL },
-  }),
+  model: "langsmith:moonshotai/kimi-k3",
 });
 ```
 
 
 <Note>
-使用网关时，模型段应该是`provider/model-name`。不使用网关时，通常为`provider:model-name`
+网关模型 ID 在提供者和模型之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 </Note>
 
-为了让您的项目从一开始就使用 Gateway，您可以在初始化代理时传递 `--gateway` 标志：
+网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是 LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 并向您自己的提供商帐户计费。
 
-```bash
-mda init my-agent --gateway
-```
+有关更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
 
-## 工具
+＃＃ 工具传递`tools`数组中的工具，让代理调用应用程序逻辑或外部服务。
 
 
-
-传递`tools`数组中的工具，让代理调用应用程序逻辑或外部服务。在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
+在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
 ## 中间件
 
@@ -197,11 +180,11 @@ mda init my-agent --gateway
 当代理必须返回与模式匹配的数据而不是不受约束的文本响应时，设置`responseFormat`。
 
 
-参见[Structured output](/oss/javascript/langchain/structured-output)。
+参见[Structured output](/oss/javascript/langchain/structured-output)。通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
-通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+---
 
----<div className="source-links">
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

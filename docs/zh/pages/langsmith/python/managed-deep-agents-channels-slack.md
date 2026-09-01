@@ -36,14 +36,20 @@ my-agent/
 要在创建项目时包含 Slack，请传递 `--channel slack`：
 
 ```bash
-mda init my-agent --channel slack
+uvx --from managed-deepagents mda init my-agent --channel slack
 ```
+
+
+
 
 要将 Slack 添加到现有项目，请从项目根运行通道初始化命令：
 
 ```bash
-mda channel init slack
+uv run mda channel init slack
 ```
+
+
+
 
 ```python channels/slack.py
 from managed_deepagents import channels
@@ -119,8 +125,11 @@ channel = channels.slack(
 <Steps>
   <Step title="Deploy your agent">
     从项目根目录运行部署命令：```bash
-    mda deploy
+    uv run mda deploy
     ```
+
+
+
 
     Managed Deep Agents 部署代理并设置它需要出现在 Slack 中的资源。
   </Step>

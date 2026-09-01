@@ -50,8 +50,11 @@ curl -LsSf https://langch.in/dcode | bash
 从项目根目录运行：
 
 ```bash
-mda evals init -i
+uv run mda evals init -i
 ```
+
+
+
 
 交互式切换列出了检测到的编码代理，包括Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
 

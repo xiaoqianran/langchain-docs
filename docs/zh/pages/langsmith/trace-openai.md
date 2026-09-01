@@ -4,10 +4,10 @@
 
 # 跟踪OpenAI应用程序
 
-Python/TypeScript 中的 [⟦T2⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) / [⟦T3⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) 方法允许您包装 OpenAI 客户端以便自动记录跟踪 - 不需要装饰器或函数包装！使用包装器可确保消息（包括工具调用和多模式内容块）在 LangSmith 中得到良好呈现。另请注意，包装器与 [⟦T4⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器或 [⟦T5⟧](https://reference.langchain.com/javascript/functions/langsmith.traceable.traceable.html) 函数无缝协作，您可以在同一应用程序中使用两者。
+Python/TypeScript 中的 [⟦T2⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) / [⟦T3⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) 方法允许您包装 OpenAI 客户端以便自动记录跟踪 - 无需装饰器或函数包装！使用包装器可确保消息（包括工具调用和多模式内容块）在 LangSmith 中得到良好呈现。另请注意，包装器与 [⟦T4⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器或 [⟦T5⟧](https://reference.langchain.com/javascript/langsmith/traceable/traceable) 函数无缝协作，您可以在同一应用程序中使用两者。
 
 <Note>
-`LANGSMITH_TRACING` 环境变量必须设置为 `'true'`，以便将跟踪记录到 LangSmith，即使在使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) 或 [⟦T9⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) 时也是如此。这允许您在不更改代码的情况下打开和关闭跟踪。
+`LANGSMITH_TRACING` 环境变量必须设置为 `'true'`，以便将跟踪记录到 LangSmith，即使使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) 或 [⟦T9⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) 也是如此。这允许您在不更改代码的情况下打开和关闭跟踪。
 
 此外，您需要将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥（有关更多信息，请参阅 [Setup](/)）。
 

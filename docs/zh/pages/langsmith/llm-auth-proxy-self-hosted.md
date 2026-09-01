@@ -4,7 +4,7 @@
 
 # 设置 LLM 身份验证代理
 
-LLM 身份验证代理可让您的组织对来自 LangSmith 的所有模型调用强制实施自己的身份验证流程，以便提供商凭证永远不会暴露给最终用户，并且每个请求都可以追溯到特定参与者。
+LLM 身份验证代理可让您的组织对来自 LangSmith 的所有模型调用强制执行自己的身份验证流程，以便提供商凭证永远不会暴露给最终用户，并且每个请求都可以追溯到特定参与者。
 
 LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组件，在您的环境中运行，位于 LangSmith 和上游 LLM 提供商或网关（例如 OpenAI、Anthropic 或内部 LLM 网关（如 LiteLLM））之间。 LangSmith 使用短期 JWT（JSON Web 令牌）对每个请求进行签名。代理验证 JWT，可选择注入提供者凭据或转换请求和响应正文，然后将请求转发到上游。 [SaaS](/langsmith/cloud) 和 [self-hosted](/langsmith/self-hosted) LangSmith 客户均可使用。
 
@@ -110,7 +110,8 @@ WHERE id = '<organization_id>';
 
 ```yaml
 commonEnv:
-  DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY: "true"
+  - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
+    value: "true"
 ```
 
 <Note>
@@ -204,7 +205,7 @@ authProxy:
 在转发每个请求之前，Envoy 使用与原始请求相同的 HTTP 方法在 `<serviceUrl>/check<original_path>` 调用您的服务。您的服务在 `x-langsmith-llm-auth` 标头中接收经过验证的 JWT。
 
 您的服务返回一个简单的 HTTP 响应：- **`2xx`：**允许请求。任何匹配 `allowedUpstreamHeaders` 模式（默认：`authorization` 和 `x-*`）的标头都会注入到上游请求中。要在转发之前剥离 JWT，请在响应中包含 `x-envoy-auth-headers-to-remove: x-langsmith-llm-auth`。
-- **非`2xx`：**拒绝请求。状态代码和任何与 `allowedClientHeaders` 模式匹配的标头（默认：`www-authenticate` 和 `x-*`）都会返回给客户端。
+- **非`2xx`：**拒绝请求。状态代码和任何匹配 `allowedClientHeaders` 模式的标头（默认：`www-authenticate` 和 `x-*`）都会返回给客户端。
 
 ### 部署选项
 
@@ -387,7 +388,7 @@ authProxy:
 - 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
 - 使用`STREAMED`进行流式LLM响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
 - 使用`NONE`完全跳过一个阶段。<Warning>
-更改主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
+改变主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
 </Warning>
 
 ### 请求流程
@@ -674,7 +675,8 @@ authProxy:
 ```yaml
 # Allow all LLM-calling services to reach the auth proxy on private IPs
 commonEnv:
-  SSRF_ALLOW_K8S_INTERNAL: "true"
+  - name: SSRF_ALLOW_K8S_INTERNAL
+    value: "true"
 
 # Allow the playground service to reach the auth proxy on private IPs
 playground:

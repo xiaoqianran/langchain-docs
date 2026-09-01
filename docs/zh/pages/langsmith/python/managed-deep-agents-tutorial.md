@@ -4,9 +4,9 @@
 
 # 添加自定义搜索工具、内存和时间表
 
-本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在其中创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
+本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
 
-`mda init` 还可以构建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
 
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
@@ -169,8 +169,11 @@ schedule = define_schedule(
 将项目部署到LangSmith：
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 

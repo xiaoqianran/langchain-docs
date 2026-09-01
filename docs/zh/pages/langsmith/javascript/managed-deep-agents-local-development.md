@@ -18,9 +18,22 @@
 
 从项目根目录运行：
 
-```bash
-mda dev .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda dev
+    ```
+
+    ```bash pnpm
+    pnpm exec mda dev
+    ```
+
+    ```bash bun
+    bunx mda dev
+    ```
+</CodeGroup>
+
 
 CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 Studio 中发送消息以检查模型响应、工具调用、状态和中断。
 
@@ -30,7 +43,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 `mda dev`：
 
-1. 验证项目并将其编译为`.mda/build`。
+1. 验证项目并编译为`.mda/build`。
 2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
 3. 创建本地 Context Hub 模拟以获取说明、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
@@ -39,13 +52,13 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 本地开发不会创建或更新托管部署。
 
 ## 配置本地服务器|旗帜|使用|
-| ---| ---|
+| --- | --- |
 | `--port PORT` |设置本地服务器端口。 |
 | `--hostname HOSTNAME` |设置服务器侦听的主机名。 |
 | `--no-browser` |启动服务器而不自动打开 Studio。 |
 | `--no-reload` |禁用LangGraph开发服务器的热重载。 |
 
-有关所有命令的详细信息，请参阅[⟦T12⟧ CLI reference](/langsmith/javascript/managed-deep-agents-cli#develop-locally)。
+有关所有命令的详细信息，请参阅[⟦T14⟧ CLI reference](/langsmith/javascript/managed-deep-agents-cli#develop-locally)。
 
 ## 了解当地行为
 

@@ -670,7 +670,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
     |--------------------|-----------------|----------------------|
     | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
+    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
     |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
     | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
   </Step>
@@ -814,7 +814,7 @@ polly:
   <Step title="Install the base LangSmith platform">
     在启用沙箱之前，在 Kubernetes 上安装LangSmith。参见[Self-host LangSmith on Kubernetes](/langsmith/kubernetes)。
 
-    沙盒在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
+    沙箱在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
   </Step>
 
   <Step title="Add KVM-capable nodes">
@@ -971,7 +971,7 @@ sandboxes:
     name: "sandbox-juicefs"
     storage: "wasb"
     bucket: "https://container-name.core.windows.net"
-    accessKey: "<storage-account-name>" # Account name, not a credential.
+    storageAccountName: "<storage-account-name>"
     redis:
       metaURL: "redis://redis-host:6379/1"
   juicefsFormatJob:
@@ -1027,7 +1027,7 @@ sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 
 AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
 
-- 为 JuiceFS 沙盒元数据创建专用 ElastiCache Redis 实例。
+- 为 JuiceFS 沙箱元数据创建专用 ElastiCache Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
 - 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
 - 创建 JuiceFS 配置 Secret。
@@ -1118,7 +1118,7 @@ sandboxes:
 
 这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。### 验证安装
 
-升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash
 kubectl rollout status deployment/sandbox-host -n <namespace>
@@ -1127,7 +1127,7 @@ kubectl get pods,pvc -n <namespace>
 
 然后运行沙箱冒烟测试：
 
-1. 从公共镜像（例如 Python 镜像）创建沙箱。
+1. 从公共镜像（例如Python镜像）创建沙箱。
 2. 在沙箱内启动Python HTTP 服务器。
 3. 在启用内存的情况下对沙箱进行快照。
 4. 从快照创建一个新的沙箱。
@@ -1169,7 +1169,7 @@ kubectl get pods,pvc -n <namespace>
     首先完成[Enable Sandboxes](#enable-sandboxes)，包括支持KVM的节点池和JuiceFS存储。
 
     引擎的沙箱与一个工作区相关联。使用 Engine 进行安装必须具有 [shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则 LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。<Warning>
-    使用为引擎保留的工作空间：
+    使用为引擎保留的工作区：
 
     - Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
     - 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
@@ -1203,11 +1203,11 @@ kubectl get pods,pvc -n <namespace>
   </Step>
 
   <Step title="Verify your hostname is externally reachable" id="verify-your-hostname-is-externally-reachable">
-    引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。使用 TLS 通过您的入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎不要求您公开超出您自己的用户已经到达的地址的任何内容。沙盒出口已列入您的 LangSmith 主机名、`github.com`、`api.github.com` 和 Python 包注册表的允许名单。每次运行的凭据由沙箱外部的代理注入，而不是在沙箱内部可读。
+    引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。使用 TLS 通过入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎不要求您公开超出您自己的用户已经到达的地址的任何内容。沙盒出口已列入您的 LangSmith 主机名、`github.com`、`api.github.com` 和 Python 包注册表的允许名单。每次运行的凭据由沙箱外部的代理注入，而不是在沙箱内部可读。
   </Step>
 
   <Step title="Generate the Engine encryption key" id="generate-the-engine-encryption-key">
-    引擎使用自己的 Fernet 密钥来加密传递给它的运行负载LangSmith，这些负载携带短期凭证。生成一个：
+    引擎使用自己的 Fernet 密钥来加密传递给它的运行有效负载LangSmith，这些负载携带短期凭证。生成一个：
 
     ```bash
     python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -1303,7 +1303,7 @@ helm upgrade -i langsmith langchain/langsmith \
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
-API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度 Engine 运行：
+API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度引擎运行：
 
 ```bash
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>

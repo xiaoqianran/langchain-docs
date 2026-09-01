@@ -19,15 +19,16 @@
 
 ## 安装
 
-安装用于编写代理的语言的包。该软件包公开了 `mda` 二进制文件。
+`mda init` 将 `managed-deepagents` 声明为项目依赖项，因此从项目中运行 `mda` 二进制文件。
 
 ```bash uv
-uv tool install managed-deepagents
+uvx --from managed-deepagents mda init my-agent
+cd my-agent
+uv sync
+uv run mda --version
 ```
 
-`uv tool install managed-deepagents` 安装 `mda` CLI。 `mda init`生成的项目有自己的`pyproject.toml`；在该项目内运行 `uv sync` 以在本地开发或部署之前安装项目依赖项。
-
-该软件包提供代理、身份、计划和带有蛇形命名的沙箱创作 API，以及 `mda` 控制台脚本。
+该软件包提供代理、身份、计划和具有蛇形命名的沙箱创作 API，以及 `mda` 控制台脚本。
 
 
 
@@ -45,13 +46,13 @@ CLI 首先从项目 `.env` 文件中读取这些值，然后从流程环境中�
 ```text .env
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
-```要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。
+```
 
-LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-5.5`需要`OPENAI_API_KEY`。
+要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-5.5`需要`OPENAI_API_KEY`。
 
 `mda deploy` 将非保留的 `.env` 条目（例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证）作为托管部署机密转发。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用 |
+## 命令概述|命令 |使用|
 | --- | --- |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -72,37 +73,35 @@ LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运
 使用`mda init`创建一个新的项目目录：
 
 ```bash
-mda init my-agent
-```|参数或标志 |使用 |
+uvx --from managed-deepagents mda init my-agent
+```|参数或标志 |使用|
 | --- | --- |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
 | `--instructions-file PATH` |从文件中读取 `instructions.md` 的系统提示，或者当设置为 `-` 时从标准输入中读取。 |
 | `--identity` |使用用户拥有的线程添加托管身份验证。 |
 | `--memory agent\|none` |可以选择编写根内存声明。如果省略，则不会创建内存文件并且持久内存将关闭。 |
-| `--model SPEC` |对代理运行的模型进行建模，如 `provider:model`。 |
+| `--model SPEC` |对代理运行的模型进行建模，如`provider:model`。 |
 | `--no-sandbox` |省略托管沙箱声明。 |
 | `--channel slack` |使用 Slack 通道声明初始化代理。可重复； `--channels` 是别名。 |
 
 要将 Slack 包含在新项目中：
 
 ```bash
-mda init my-agent --channel slack
+uvx --from managed-deepagents mda init my-agent --channel slack
 ```
 
-该命令从当前目录检测语言：
 
-|当前目录包含 |结果 |
+
+
+脚手架语言来自您运行的包，而不是来自当前目录：PyPI 包总是编写一个 Python 项目。从 PyPI 安装的 CLI 拒绝 TypeScript 项目。
+
+
+
+
+脚手架创建：|文件 |描述 |
 | --- | --- |
-|仅`pyproject.toml` | Python 脚手架。 |
-|两者或都不 |交互式语言提示。 |
-
-
-
-
-脚手架创建：|文件|描述 |
-| --- | --- |
-| `agent.py` |命名为`agent`从`define_deep_agent(...)`导出。 |
+| `agent.py` |命名为 `agent` 从 `define_deep_agent(...)` 导出。 |
 | `instructions.md` |托管系统提示。 |
 | `pyproject.toml` |最小的特定于语言的清单。 |
 | `README.md` |本地项目说明。 |
@@ -112,38 +111,44 @@ mda init my-agent --channel slack
 
 
 
-评估任务是选择性加入的，不是由 `mda init` 创建的。从项目根运行`mda evals init -i`来初始化Harbor工作区，并使用`eval-engineering`技能继续在编码代理中。
+评估任务是选择性加入的，不是由 `mda init` 创建的。从项目根运行`mda evals init -i`来初始化Harbor工作区，并继续使用`eval-engineering`技能在编码代理中。
 
 ## 初始化 Slack 通道
 
-从现有托管深度代理项目的根运行以下命令：
+从现有托管深度代理项目的根目录运行以下命令：
 
 ```bash
-mda channel init slack
+uv run mda channel init slack
 ```
 
-该命令在 `channels/` 目录中创建 Slack 通道声明。接下来的 `mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack)。
+
+
+
+该命令在 `channels/` 目录中创建 Slack 通道声明。接下来`mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack)。
 
 ## 构建项目
 
 使用 `mda build` 将项目编译为托管 LangGraph 应用程序，而无需部署它：
 
 ```bash
-mda build .
-```|参数或标志 |使用 |
+uv run mda build
+```|参数或标志 |使用|
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
-| `--out OUT` |已编译应用程序的输出目录。默认为 `<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
+| `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
 
 ## 评估项目
 
 使用`mda evals init`初始化Harbor工作区。该命令也可用作 `mda eval`。使用交互式切换，通过编码代理和 `eval-engineering` 技能来开发完整的任务。
 
 ```bash
-mda evals init -i
+uv run mda evals init -i
 ```
 
-|命令或标志|使用 |
+
+
+
+|命令或标志 |使用|
 | --- | --- |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -157,10 +162,13 @@ mda evals init -i
 使用`mda dev`编译项目并运行本地LangGraph开发服务器：
 
 ```bash
-mda dev .
+uv run mda dev
 ```
 
-|参数或标志 |使用 |
+
+
+
+|参数或标志 |使用|
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -181,19 +189,22 @@ mda dev .
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
 
-## 部署项目使用`mda deploy`编译并部署项目到LangSmith：
+## 部署项目使用`mda deploy`编译项目并部署到LangSmith：
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
 
-|参数或标志 |使用 |
+
+
+
+|参数或标志 |使用|
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
-| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为 `dev`。 |
+| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
 
@@ -201,7 +212,7 @@ mda deploy .
 
 
 部署运行以下步骤：1. 验证项目目录并加载代理条目文件。
-2. 解析LangSmith API 密钥和可选工作区 ID。
+2. 解析 LangSmith API 密钥和可选工作区 ID。
 3. 收集非保留的 `.env` 值作为托管部署机密。
 4. 验证模型提供程序 API 密钥可从 `.env`、shell 环境或 LangSmith 工作区机密获取。
 5. 将部署拥有的上下文同步到 Context Hub。
@@ -212,17 +223,20 @@ mda deploy .
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
-具有 Slack 通道的项目无法使用 `--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack)。
+具有 Slack 通道的项目无法使用`--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack)。
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关秘密路由和部署技巧，请参阅[Deploy an agent](/langsmith/python/managed-deep-agents-deploy)。
 
 ## 读取部署日志使用 `mda logs` 跟踪已部署代理的代理服务器日志：
 
 ```bash
-mda logs .
+uv run mda logs
 ```
 
-|参数或标志 |使用 |
+
+
+
+|参数或标志 |使用|
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
@@ -237,10 +251,13 @@ mda logs .
 使用 `mda delete` 删除已部署的托管深度代理及其创建的 LangSmith 资源。 `mda destroy` 是别名。
 
 ```bash
-mda delete .
+uv run mda delete
 ```
 
-|参数或标志 |使用 |
+
+
+
+|参数或标志 |使用|
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
@@ -269,6 +286,6 @@ mda delete .
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
 </Callout>
 </div>

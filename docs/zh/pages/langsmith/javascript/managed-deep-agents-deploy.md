@@ -32,9 +32,22 @@ CLI 默认针对 US LangSmith 云。
 
 部署本地项目：
 
-```bash
-mda deploy .
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy
+    ```
+
+    ```bash bun
+    bunx mda deploy
+    ```
+</CodeGroup>
+
 
 <Tip>
 `mda deploy` 将本地项目输入路由到不同的托管表面：
@@ -45,23 +58,62 @@ instructions.md + skills/**  -> Context Hub deploy-owned context
 project source files         -> .mda/build source archive -> hosted deployment
 schedules/**                 -> LangSmith cron jobs after the deployment is live
 ```
-</Tip>
+</Tip>当目录名称不是您想要的名称时，显式设置部署名称：
 
-当目录名称不是您想要的名称时，显式设置部署名称：
 
-```bash
-mda deploy . --name research-assistant
-```创建生产部署时使用`--deployment-type prod`：
 
-```bash
-mda deploy . --deployment-type prod
-```
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --name research-assistant
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --name research-assistant
+    ```
+
+    ```bash bun
+    bunx mda deploy --name research-assistant
+    ```
+</CodeGroup>
+
+
+创建生产部署时使用`--deployment-type prod`：
+
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --deployment-type prod
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --deployment-type prod
+    ```
+
+    ```bash bun
+    bunx mda deploy --deployment-type prod
+    ```
+</CodeGroup>
+
 
 使用 `--no-wait` 触发构建而不轮询完成：
 
-```bash
-mda deploy . --no-wait
-```
+
+
+<CodeGroup>
+    ```bash npm
+    npx mda deploy --no-wait
+    ```
+
+    ```bash pnpm
+    pnpm exec mda deploy --no-wait
+    ```
+
+    ```bash bun
+    bunx mda deploy --no-wait
+    ```
+</CodeGroup>
+
 
 设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
 
@@ -69,7 +121,7 @@ mda deploy . --no-wait
 
 ## 秘密和环境文件
 
-`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
+`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为 LangSmith API 密钥来验证部署以及托管部署所需的运行时机密：
 
 ```text .env
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -78,7 +130,7 @@ GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
 DATABASE_URL=<DATABASE_URL>
 ```
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
 
 保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 

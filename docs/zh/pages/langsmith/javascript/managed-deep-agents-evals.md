@@ -4,12 +4,12 @@
 
 # 评估托管Deep Agents
 
-托管 Deep Agents 评估是 [Harbor](https://www.harborframework.com/docs/tasks) 任务。使用具有[⟦T8⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md)的编码代理来检查项目，起草任务规范供您审阅，并在`evals/`下编写完整的任务。
+托管 Deep Agents 评估是 [Harbor](https://www.harborframework.com/docs/tasks) 任务。使用具有[⟦T10⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md)的编码代理来检查项目，起草任务规范供您审阅，并在`evals/`下编写完整的任务。
 
 Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针对每个任务运行托管代理并记录结果。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 先决条件
@@ -17,13 +17,13 @@ Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针�
 在评估之前，请确保您拥有：
 
 - 使用 `mda init` 创建的托管 Deep Agents 项目，或具有代理条目的现有项目。
-- [⟦T11⟧](https://docs.astral.sh/uv/)，运行固定的 Harbor 版本和插件。
+- [⟦T13⟧](https://docs.astral.sh/uv/)，运行固定的 Harbor 版本和插件。
 - [Docker](https://docs.docker.com/get-docker/)，Harbor 用于任务环境。
 - 编码剂。支持特工技能的特工可以直接安装`eval-engineering`。对于其他代理，请在会话中提供技能说明。
 
 ## 添加`eval-engineering`技能
 
-[⟦T14⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md) 引导编码代理发现代理、提出任务规范并构建经过审查的 Harbor 任务。要将其添加到当前项目，请运行：
+[⟦T16⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/eval-engineering/SKILL.md) 引导编码代理发现代理、提出任务规范并构建经过审查的 Harbor 任务。要将其添加到当前项目，请运行：
 
 
 
@@ -35,7 +35,7 @@ npx skills add langchain-ai/langchain-skills --skill eval-engineering --yes
 您可以使用任何编码剂。
 
 <Tip>
-要使用 [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`)，请安装：
+要使用 [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`)，请安装它：
 
 ```bash
 curl -LsSf https://langch.in/dcode | bash
@@ -49,11 +49,24 @@ curl -LsSf https://langch.in/dcode | bash
 
 从项目根目录运行：
 
-```bash
-mda evals init -i
-```
 
-交互式切换列出了检测到的编码代理，包括Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
+
+<CodeGroup>
+    ```bash npm
+    npx mda evals init -i
+    ```
+
+    ```bash pnpm
+    pnpm exec mda evals init -i
+    ```
+
+    ```bash bun
+    bunx mda evals init -i
+    ```
+</CodeGroup>
+
+
+交互式切换列出了检测到的编码代理，包括 Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
 
 初始化创建：
 
@@ -73,7 +86,7 @@ my-agent/
 
   <Step title="Start the coding-agent session" id="start-the-coding-agent-session">
 
-切换要求选定的编码代理安装`eval-engineering`技能并将其用于项目。如果您已添加该技能，请继续该会话。
+交接要求选定的编码代理安装`eval-engineering`技能并将其用于项目。如果您已添加该技能，请继续该会话。
 
 要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：
 
@@ -149,7 +162,7 @@ uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
 
 编辑 `evals/harbor-job.json` 以更改数据集、尝试、并发、环境设置或代理环境变量。当您再次运行 `mda evals init` 时，托管 Deep Agents 会保留该文件。
 
-## 记录LangSmith的运行情况当`LANGSMITH_API_KEY`可用时，LangSmith插件将Harbor运行记录在由`HARBOR_LANGSMITH_DATASET`命名的数据集中。
+## 记录LangSmith的运行情况当`LANGSMITH_API_KEY`可用时，LangSmith插件将Harbor运行记录在由`HARBOR_LANGSMITH_DATASET`命名的​​数据集中。
 
 ## 另请参阅
 

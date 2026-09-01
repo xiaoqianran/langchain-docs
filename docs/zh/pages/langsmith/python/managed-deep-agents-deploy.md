@@ -7,7 +7,7 @@
 部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。
@@ -33,8 +33,11 @@ CLI 默认针对 US LangSmith 云。
 部署本地项目：
 
 ```bash
-mda deploy .
+uv run mda deploy
 ```
+
+
+
 
 <Tip>
 `mda deploy` 将本地项目输入路由到不同的托管表面：
@@ -50,18 +53,24 @@ schedules/**                 -> LangSmith cron jobs after the deployment is live
 当目录名称不是您想要的名称时，显式设置部署名称：
 
 ```bash
-mda deploy . --name research-assistant
+uv run mda deploy --name research-assistant
 ```创建生产部署时使用`--deployment-type prod`：
 
 ```bash
-mda deploy . --deployment-type prod
+uv run mda deploy --deployment-type prod
 ```
+
+
+
 
 使用 `--no-wait` 触发构建而不轮询完成：
 
 ```bash
-mda deploy . --no-wait
+uv run mda deploy --no-wait
 ```
+
+
+
 
 设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
 
