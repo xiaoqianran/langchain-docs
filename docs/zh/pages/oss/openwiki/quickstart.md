@@ -29,12 +29,17 @@ OpenWiki 是一个 CLI，可以为您的代码库或个人知识编写和维护 
         - 推理提供者和模型
         - 提供商 API 密钥（或等效凭据）
         - 用于跟踪的可选 LangSmith API 密钥
+        - LangSmith 项目从运行时跟踪中丰富 wiki
 
-        OpenWiki 将其配置和机密保存到`~/.openwiki/.env`。
-    </Step><Step title="Review the generated wiki" icon="book">
-        OpenWiki 将文档写入存储库中的`openwiki/`，包括快速入门入口点和主题页面。它还在存储库根维护一个`AGENTS.md`和`CLAUDE.md`，添加一个指示编码代理查阅wiki以获取代码库上下文的块。
+        OpenWiki 将其配置和机密保存到`~/.openwiki/.env`。再次运行 `--init` 会从头开始重新生成存储库 wiki 和声明，同时保留 `openwiki/INSTRUCTIONS.md`。 `openwiki/.run.json` 的持久结帐恢复运行中断。
 
-        存储库特定的 wiki 指令位于 `openwiki/INSTRUCTIONS.md`。 OpenWiki 读取此文件以了解范围和优先级。要更改它，请编辑文件，或在聊天中要求 OpenWiki 更改摘要（例如，`openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`）。正常的 `--init` 和 `--update` 运行不会重写它。
+        要在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki，而不是在独立模型会话中运行，请参阅 [Coding-agent integrations](/oss/openwiki/integrations)。
+    </Step>
+
+    <Step title="Review the generated wiki" icon="book">
+        OpenWiki 将文档写入存储库中的`openwiki/`，包括快速入门入口点和主题页面。它还在存储库根维护一个`AGENTS.md`和`CLAUDE.md`，添加一个块来指示编码代理查阅wiki以获取代码库上下文。事实页面以`openwiki/.claims/`下的声明为基础。
+
+        存储库特定的 wiki 说明位于 `openwiki/INSTRUCTIONS.md`。 OpenWiki 读取此文件以了解范围和优先级。要更改它，请编辑文件，或在聊天中要求 OpenWiki 更改摘要（例如，`openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`）。正常的 `--init` 和 `--update` 运行不会重写它。
 
         要在浏览器中浏览 wiki，请运行：
 
@@ -50,9 +55,7 @@ OpenWiki 是一个 CLI，可以为您的代码库或个人知识编写和维护 
 
         ```bash
         openwiki --update
-        ```
-
-        有关 CI 中的自动更新，请参阅[Automate updates](/oss/openwiki/automate-updates)。
+        ```在代码模式下，当源证据发生变化时，更新还会协调陈旧的声明。有关 CI 中的自动更新，请参阅[Automate updates](/oss/openwiki/automate-updates)。
     </Step>
 </Steps>
 
@@ -64,9 +67,11 @@ OpenWiki 是一个 CLI，可以为您的代码库或个人知识编写和维护 
 openwiki personal --init
 ```
 
-个人模式写入 `~/.openwiki/wiki` 并可以摄取配置的连接器，例如本地 git 存储库、Gmail、Notion、网络搜索、黑客新闻和 X/Twitter。参见[Personal mode](/oss/openwiki/personal-mode)。
+个人模式写入 `~/.openwiki/wiki` 并可以摄取已配置的连接器，例如本地 git 存储库、自定义 MCP、Gmail、Notion、网络搜索、黑客新闻和 X/Twitter。参见[Personal mode](/oss/openwiki/personal-mode)。
 
-## 交互式和一次性运行Bare `openwiki` 以代码模式为当前存储库打开一个交互式会话。传递消息以开始请求：
+## 交互式和一次性运行
+
+Bare `openwiki` 以代码模式为当前存储库打开一个交互式会话。传递消息以开始请求：
 
 ```bash
 openwiki "Please generate documentation for this repository"
@@ -78,11 +83,11 @@ openwiki "Please generate documentation for this repository"
 openwiki -p "Summarize what you can do"
 ```
 
-在聊天中，使用 `/api-key` 更新当前提供商 API 密钥，使用 `/langsmith-key` 更新或清除 LangSmith 跟踪凭证。
+在聊天中，使用 `/api-key` 更新当前提供商 API 密钥，使用 `/langsmith-key` 更新或清除 LangSmith 跟踪凭证，并使用 `/effort` 设置受支持模型的推理工作。
 
 ## 使用 LangSmith 进行追踪
 
-在入职期间，提供 LangSmith API 密钥来跟踪 OpenWiki 运行到名为 `openwiki` 的 LangSmith 项目。您还可以在 `~/.openwiki/.env` 或进程环境中设置这些值：
+在入职期间，提供 LangSmith API 密钥来跟踪 OpenWiki 运行到名为 `openwiki` 的 LangSmith 项目。您还可以在 `~/.openwiki/.env` 或流程环境中设置这些值：
 
 ```bash
 LANGSMITH_API_KEY=your-key
@@ -90,10 +95,11 @@ LANGCHAIN_TRACING_V2=true
 LANGCHAIN_PROJECT=openwiki
 ```
 
-## 后续步骤
+要从 LangSmith 跟踪（与跟踪 OpenWiki 本身分开）丰富存储库 wiki，请参阅 [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)。
 
-- [Code mode](/oss/openwiki/code-mode)：存储库 wiki、OKF 输出和代理指令文件
-- [Personal mode](/oss/openwiki/personal-mode)：局部大脑和连接器
+## 后续步骤- [Code mode](/oss/openwiki/code-mode)：存储库 wiki、声明、OKF 输出和代理指令文件
+- [Coding-agent integrations](/oss/openwiki/integrations)：在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki
+- [Personal mode](/oss/openwiki/personal-mode)：本地大脑和连接器
 - [Model providers](/oss/openwiki/providers)：支持的提供商和凭证
 - [Automate updates](/oss/openwiki/automate-updates)：GitHub Actions、GitLab CI 和 Bitbucket Pipelines
 - [CLI reference](/oss/openwiki/cli-reference)：命令和标志

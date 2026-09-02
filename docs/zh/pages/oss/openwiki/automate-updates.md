@@ -11,7 +11,7 @@ OpenWiki 可以按计划刷新存储库文档，并在 wiki 更改时打开拉�
 复制您的 Git 提供商的示例：
 
 |供应商|示例|目的地 |
-| ---| ---| ---|
+| --- | --- | --- |
 | GitHub 操作 | [⟦T2⟧](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.yml) | `.github/workflows/openwiki-update.yml` |
 |亚搏体育appGitLab CI | [⟦T4⟧](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.gitlab-ci.yml) | `.gitlab-ci.yml`，或从现有管道中包含它 |
 | Bitbucket 管道 | [⟦T6⟧](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.bitbucket-pipelines.yml) | `bitbucket-pipelines.yml`，然后安排`openwiki-update`自定义管道 |
@@ -24,7 +24,7 @@ OpenWiki 可以按计划刷新存储库文档，并在 wiki 更改时打开拉�
 openwiki code --update --print
 ```
 
-您不需要在 CI 中运行 `--init`。只要工作流提供所需的提供程序和模型环境变量，`--update` 就会创建初始 `openwiki/` 文档（如果它们尚不存在）。
+您不需要在 CI 中运行 `--init`。只要工作流程提供所需的提供程序和模型环境变量，`--update` 就会创建初始 `openwiki/` 文档（如果尚不存在）。
 
 提供凭证作为存储库机密或 CI 变量。典型值包括：
 
@@ -32,10 +32,13 @@ openwiki code --update --print
 - `OPENWIKI_PROVIDER`
 - `OPENWIKI_MODEL_ID`
 - 可选`LANGSMITH_API_KEY`用于追踪
+- 当存储库使用 [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector) 时，可选 `OPENWIKI_LANGSMITH_API_KEY`
 
-计划的工作流程包括生成的 wiki 文件、`AGENTS.md`、`CLAUDE.md`，以及这些文件更改时文档拉取请求中的工作流程本身。
+计划的工作流程包括生成的 wiki 文件、`openwiki/.claims/`、`AGENTS.md`、`CLAUDE.md` 下的声明，以及这些文件更改时文档拉取请求中的工作流程本身。存储库生成可通过 `openwiki/.run.json` 和 `openwiki/.page-manifest.json` 在持久工作区上恢复。临时 CI 运行程序会在失败后重新启动，除非保留其工作空间，并且当某些页面完成后运行失败时，OpenWiki 仍然可以发布部分进度。
 
-## 空更新OpenWiki 自动跟踪 `openwiki/.last-update.json` 中的 wiki 内容，并且仅在 wiki 实际更改时重写该文件。如果计划的 `--update` 运行不会导致更改，则 wiki 文件保持不变，并且 CI 不会打开拉取请求。
+## 空更新
+
+干净的 `--update` 运行会跳过模型工作，并在刷新 `openwiki/.last-update.json` 时保持 wiki 内容不变，因此新鲜度检查反映了检查已运行。如果 wiki Markdown 和声明没有更改，CI 不会打开拉取请求。
 
 ## CI 中的遥测
 

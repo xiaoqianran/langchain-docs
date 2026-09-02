@@ -12,7 +12,7 @@
 
 ## 先决条件
 
-您需要LangSmith中的[⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
 
 ## 1. 添加提供商机密
 
@@ -21,9 +21,11 @@
 转到 **设置 → 集成 → 提供商机密** 并添加您想要通过网关代理的提供商的密钥：
 
 |秘密名字|供应商|
-| ---| ---|
+| --- | --- |
 | `ANTHROPIC_API_KEY` | Anthropic |
 | `AWS_BEARER_TOKEN_BEDROCK` | AWS 基岩 |
+| `AZURE_FOUNDRY_API_KEY` | Azure 铸造厂 |
+| `AZURE_FOUNDRY_RESOURCE_NAME` | Azure 铸造厂 |
 | `BASETEN_API_KEY` |巴斯坦|
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
@@ -66,7 +68,7 @@
 
 为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。
 
-使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
+使用工作区范围的键，而不是组织范围的键。详情请参见[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
 
 与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
 

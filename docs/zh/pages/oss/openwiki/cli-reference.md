@@ -23,16 +23,26 @@ openwiki code --init
 openwiki code --update
 openwiki code --update --print
 
-# Defaults to code mode
+# Defaults to code mode and specify a language
 openwiki --init
 openwiki --update
+openwiki --init --language ko
 
 # One-shot print mode
 openwiki -p "Summarize what you can do"
 
-# Explore the wiki locally
+# Explore the wiki locally or export a static visualizer
 openwiki visualize
 openwiki visualize openwiki --port 4400 --no-open
+openwiki visualize openwiki --export docs/openwiki-visualizer
+
+# Coding-agent integrations
+openwiki integrations list
+openwiki integrations install codex
+openwiki integrations install claude
+openwiki integrations install opencode
+openwiki integrations install cursor
+openwiki integrations uninstall codex
 
 # Help
 openwiki --help
@@ -41,26 +51,39 @@ openwiki --help
 ### 常用标志
 
 |旗帜|描述 |
-| ---| ---|
-| `--init` |生成初始文档。默认为代码模式。在没有 `--print` 的 TTY 中，流代理输出并在成功时自动退出。 `--init` 和 `--update` 不能组合。 |
+| --- | --- |
+| `--init` |生成初始文档。默认为代码模式。重新运行将从头开始重新生成存储库 wiki，同时保留 `openwiki/INSTRUCTIONS.md`。在没有 `--print` 的 TTY 中，流代理输出并在成功时自动退出。 `--init` 和 `--update` 不能组合。 |
 | `--update` |更新现有文档。默认为代码模式。在没有 `--print` 的 TTY 中，流代理输出并在成功时自动退出。 `--init` 和 `--update` 不能组合。 |
+| `-l`、`--language <locale>` |在给定的 BCP-47 语言环境中生成 wiki 文档，例如 `ko`、`zh-CN` 或 `pt-BR`。无法识别的值将被拒绝。 |
 | `--mode <personal\|code>` |选择个人大脑或存储库文档。 |
 | `-p`、`--print` |运行一次，打印最终的助手输出，然后退出。提供消息或命令。没有 `--print` 的互动聊天将保持开放以供后续跟进。 |
 | `--modelId` / `--model-id` |选择运行的模型 ID。 |
-| `--telemetry-file=<path>` |还将运行的遥测有效负载写入本地 JSON 文件。 |
-| `-h`、`--help` |打印使用情况。 |
+| `--telemetry-file=<path>` |还将运行的遥测有效负载写入本地 JSON 文件。 || `-h`、`--help` |打印使用情况。 |
 
 ## 可视化
 
-您可以将生成的 wiki 可视化为交互式节点图和实时 Markdown 阅读器。
+您可以将生成的 wiki 可视化为交互式节点图和实时 Markdown 阅读器，或导出静态站点进行托管：
 
 ```bash
 openwiki visualize
 openwiki visualize openwiki --port 4400 --no-open
+openwiki visualize openwiki --export docs/openwiki-visualizer
 openwiki visualize ~/.openwiki/wiki
 ```
 
 详情请参见[Visualize your wiki](/oss/openwiki/visualize)。
+
+## 编码代理集成
+
+将 OpenWiki 安装到主机编码代理中，以便主机的模型和存储库工具驱动生成，同时 OpenWiki 拥有持久的页面作业生命周期：
+
+```bash
+openwiki integrations list [--project [path]]
+openwiki integrations install <codex|claude|opencode|cursor> [--force] [--project [path]]
+openwiki integrations uninstall <codex|claude|opencode|cursor> [--project [path]]
+```
+
+详情请参见[Coding-agent integrations](/oss/openwiki/integrations)。
 
 ## 身份验证和连接器
 
@@ -87,7 +110,9 @@ openwiki ingest <source|source-instance|all>
 openwiki ngrok start [url] [--port <port>]
 ```
 
-## 计划任务 (macOS)管理 [personal mode](/oss/openwiki/personal-mode) 源的可选连接器计划。在 macOS 上，OpenWiki 可以将计划安装为定期刷新源（例如 Gmail 或网络搜索）的用户 LaunchAgent。使用以下命令列出、暂停、恢复或删除它们：
+## 计划任务 (macOS)
+
+管理 [personal mode](/oss/openwiki/personal-mode) 源的可选连接器计划。在 macOS 上，OpenWiki 可以将计划安装为定期刷新源（例如 Gmail 或网络搜索）的用户 LaunchAgent。使用以下命令列出、暂停、恢复或删除它们：
 
 ```bash
 openwiki cron list
@@ -100,16 +125,16 @@ openwiki cron delete <source|all>
 
 ## 斜线命令（交互式）
 
-在交互聊天模式下，您可以使用以下命令：
-
-- `/api-key`：更新当前提供商 API 密钥（屏蔽提示）
+在交互聊天模式下，您可以使用以下命令：- `/api-key`：更新当前提供商 API 密钥（屏蔽提示）
 - `/langsmith-key`：更新或清除LangSmith跟踪凭证（屏蔽提示）
 - `/provider` 和 `/model`：更改会话的提供程序或模型（保留到 `~/.openwiki/.env`）
+- `/effort`：为受支持的OpenAI GPT-5.6 和 NVIDIA NIM 模型设置推理工作，或`/effort default` 恢复提供程序默认值
 - `/init` 和 `/update`：从会话启动 init 或 update
 - `/exit`：退出应用程序
 
 ## 另请参阅
 
+- [Coding-agent integrations](/oss/openwiki/integrations)
 - [Personal mode](/oss/openwiki/personal-mode)
 - [Model providers](/oss/openwiki/providers)
 - [Automate updates](/oss/openwiki/automate-updates)

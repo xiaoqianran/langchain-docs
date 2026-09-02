@@ -10,7 +10,7 @@
 
 直接模型访问通过特定于提供商的网关路径公开每个提供商 API。网关仍然处理身份验证、提供商机密、策略和跟踪，但它不会将请求和响应转换为另一个提供商的 API 格式。
 
-对于跨提供商的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
+对于跨提供者的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
 
 ## 选择提供商路径
 
@@ -20,6 +20,7 @@
 | --- | --- | --- |
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
+| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`、`AZURE_FOUNDRY_RESOURCE_NAME` |
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
@@ -28,9 +29,7 @@
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
 
-## 配置提供商 SDK
-
-将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
+## 配置提供商 SDK将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
 
 ```bash
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
@@ -44,7 +43,9 @@ export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
 export OPENAI_API_KEY="$LANGSMITH_API_KEY"
 export GEMINI_API_KEY="$LANGSMITH_API_KEY"
 export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
-```网关从工作区的提供者密钥中解析实际的提供者密钥，因此提供者密钥不需要存储在本地。
+```
+
+网关从工作区的提供者密钥中解析实际的提供者密钥，因此提供者密钥不需要存储在本地。
 
 <CodeGroup>
 
@@ -103,9 +104,7 @@ export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
 如果您需要使用与默认 `LANGSMITH_API_KEY` 不同的 API 密钥进行网关调用，请将 `LANGSMITH_GATEWAY_API_KEY` 设置为覆盖。它必须是具有 `gateway:invoke` 权限的工作区范围密钥。
 </Note>
 
-<Accordion title="Supported models and configuration precedence">
-
-- 仅在 Python 中受支持。
+<Accordion title="Supported models and configuration precedence">- 仅在 Python 中受支持。
 - 支持的聊天模式：
   - [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`)
   - [Baseten](/oss/python/integrations/chat/baseten) (`langchain-baseten >= 0.2.3`)
@@ -116,12 +115,14 @@ export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
 
 </Accordion>
 
-## 使用区域网关如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) 并附加提供程序路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
+## 使用区域网关
+
+如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) 并附加提供程序路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
 
 ## 另请参阅
 
 - [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
-- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供商机密和访问权限。
+- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
 - [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
 
 ---

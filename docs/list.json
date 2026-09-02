@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-01T13:46:16.628Z",
+  "fetchedAt": "2026-09-02T13:02:44.669Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
-  "tocLinks": 174,
-  "ok": 552,
+  "tocLinks": 175,
+  "ok": 553,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -39,7 +39,7 @@
     },
     "oss-openwiki": {
       "name": "OSS · OpenWiki",
-      "count": 10
+      "count": 11
     },
     "use-these-docs": {
       "name": "use-these-docs",
@@ -423,7 +423,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-faq",
-      "bytes": 16028
+      "bytes": 16595
     },
     {
       "rel": "langsmith/byoc-migration.md",
@@ -2295,7 +2295,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-admin-setup",
-      "bytes": 4895
+      "bytes": 4989
     },
     {
       "rel": "langsmith/llm-gateway-api-formats.md",
@@ -2304,7 +2304,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-api-formats",
-      "bytes": 14210
+      "bytes": 14238
     },
     {
       "rel": "langsmith/llm-gateway-coding-agents.md",
@@ -2349,7 +2349,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-direct-model-access",
-      "bytes": 5562
+      "bytes": 5648
     },
     {
       "rel": "langsmith/llm-gateway-fallbacks.md",
@@ -2412,7 +2412,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway",
-      "bytes": 6050
+      "bytes": 6078
     },
     {
       "rel": "langsmith/local-dev-testing.md",
@@ -4923,7 +4923,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "automate-updates",
-      "bytes": 2939
+      "bytes": 3395
     },
     {
       "rel": "oss/openwiki/changelog.md",
@@ -4941,7 +4941,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "cli-reference",
-      "bytes": 4187
+      "bytes": 5624
     },
     {
       "rel": "oss/openwiki/code-mode.md",
@@ -4950,7 +4950,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "code-mode",
-      "bytes": 5096
+      "bytes": 9002
     },
     {
       "rel": "oss/openwiki/customize.md",
@@ -4959,7 +4959,16 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "customize",
-      "bytes": 4262
+      "bytes": 4836
+    },
+    {
+      "rel": "oss/openwiki/integrations.md",
+      "title": "Coding-agent integrations",
+      "url": "https://docs.langchain.com/oss/openwiki/integrations",
+      "track": "oss-openwiki",
+      "trackName": "OSS · OpenWiki",
+      "group": "integrations",
+      "bytes": 2568
     },
     {
       "rel": "oss/openwiki/overview.md",
@@ -4968,7 +4977,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "overview",
-      "bytes": 3856
+      "bytes": 4201
     },
     {
       "rel": "oss/openwiki/personal-mode.md",
@@ -4977,7 +4986,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "personal-mode",
-      "bytes": 6222
+      "bytes": 6593
     },
     {
       "rel": "oss/openwiki/providers.md",
@@ -4986,7 +4995,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "providers",
-      "bytes": 5224
+      "bytes": 9194
     },
     {
       "rel": "oss/openwiki/quickstart.md",
@@ -4995,7 +5004,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "quickstart",
-      "bytes": 4638
+      "bytes": 5595
     },
     {
       "rel": "oss/openwiki/visualize.md",
@@ -5004,7 +5013,7 @@
       "track": "oss-openwiki",
       "trackName": "OSS · OpenWiki",
       "group": "visualize",
-      "bytes": 1821
+      "bytes": 2754
     },
     {
       "rel": "use-these-docs.md",

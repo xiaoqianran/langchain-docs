@@ -4,7 +4,7 @@
 
 # 法学硕士网关
 
-使用一个[LangSmith API key](/langsmith/create-account-api-key)跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个调用并应用集中式治理策略。
+使用一个 [LangSmith API key](/langsmith/create-account-api-key) 跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个调用并应用集中式治理策略。
 
 <Note>
 **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
@@ -57,20 +57,20 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
 
-| API格式 |端点 |
-| ---| ---|
+| API格式 |端点|
+| --- | --- |
 | OpenAI 聊天完成 | `POST /v1/chat/completions` |
 | Anthropic 留言 | `POST /v1/messages` |
 | OpenAI 回应 | `POST /v1/responses` |
 
-将 `model` 设置为提供者前缀的自带密钥 ID，例如 `openai/gpt-5.4-mini` 或 `anthropic/claude-opus-5`，或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型段，例如 `moonshotai/kimi-k3`。型号ID决定上游路由。当所选提供商使用不同的本机格式时，网关会转换请求和响应。在 BYOC 上，相同的路径位于 `/gateway` 前缀后面，例如 `POST /gateway/v1/chat/completions`。
+将 `model` 设置为提供者前缀的自带密钥 ID，例如 `openai/gpt-5.4-mini`、`anthropic/claude-opus-5` 或 `azure/<deployment-name>`，或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型段，例如 `moonshotai/kimi-k3`。型号ID决定上游路由。当所选提供商使用不同的本机格式时，网关会转换请求和响应。在 BYOC 上，相同的路径位于 `/gateway` 前缀后面，例如 `POST /gateway/v1/chat/completions`。
 
 有关基本 URL、示例、转换行为、区域端点和 BYOC 数据平面端点，请参阅 [API formats](/langsmith/llm-gateway-api-formats)。
 
 ## 选择凭证的管理方式
 
 |选项 |上游凭证|设置和计费|
-| ---| ---| ---|
+| --- | --- | --- |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
 

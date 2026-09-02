@@ -13,14 +13,14 @@
 ## 比较API格式
 
 | API格式 |基本网址 |提示端点|兼容客户端|
-| ---| ---| ---| ---|
+| --- | --- | --- | --- |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
-| Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户留言 |
+| Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户留言|
 | OpenAI 回复 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
 
 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。
 
-对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`或`anthropic/claude-sonnet-4-6`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
+对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-sonnet-4-6`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
 
 ## 使用聊天完成
 
@@ -256,7 +256,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 - 当提供商本身支持所选格式时，网关将保留该格式。
 - 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-- 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
+- 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 
@@ -281,12 +281,12 @@ curl https://gateway.smith.langchain.com/v1/models \
 }
 ```
 
-自带密钥模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
+自带密钥型号 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
 
 ## 使用区域网关
 
 将 `gateway.smith.langchain.com` 替换为您的 LangSmith 区域的主机名：|地区 |网关主机名 |
-| ---| ---|
+| --- | --- |
 |基仕伯美国 | `gateway.smith.langchain.com` |
 | GCP 欧盟 | `eu.gateway.smith.langchain.com` |
 |基仕伯亚太区 | `apac.gateway.smith.langchain.com` |
@@ -299,12 +299,12 @@ curl https://gateway.smith.langchain.com/v1/models \
 LLM 网关也可在 [BYOC](/langsmith/byoc) 上使用，它在您的数据平面内运行，因此模型请求及其跟踪保留在您的 VPC 中。将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：
 
 | API格式 |基本网址 |提示端点|
-| ---| ---| ---|
+| --- | --- | --- |
 | OpenAI 聊天完成 | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
 | Anthropic 留言 | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
-| OpenAI 回应 | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
+| OpenAI 回复 | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
 
-使用作用域为该数据平面中的工作区的 API 密钥进行身份验证。将其作为 `Authorization: Bearer` 令牌传递：
+使用范围仅限于该数据平面中工作区的 API 密钥进行身份验证。将其作为 `Authorization: Bearer` 令牌传递：
 
 <CodeGroup>
 
@@ -396,12 +396,12 @@ const message = await client.messages.create({
 </Warning>
 
 ## 处理错误|状态或症状 |意义|
-| ---| ---|
+| --- | --- |
 | `400 Bad Request` |请求格式错误、模型 ID 不可用或格式不正确，或者请求无法翻译。 |
 | `401 Unauthorized` | LangSmith API 密钥丢失或无效。 |
 | `403 Forbidden` |该密钥没有所需的网关权限。 |
 | `429 Too Many Requests` |已达到网关速率限制或上游提供商速率限制。 |
-| `GET /v1/models` | 中没有出现带有提供商前缀的模型提供者可能未配置或可能未返回模型目录。 |
+| `GET /v1/models` | 中没有出现带有提供者前缀的模型提供者可能未配置或可能未返回模型目录。 |
 
 有关特定于设置的分辨率，请参阅[Quickstart](/langsmith/llm-gateway-quickstart)。
 

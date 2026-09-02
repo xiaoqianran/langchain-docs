@@ -7,8 +7,8 @@ Each section index below lists the markdown version of every page in that sectio
 ## Section indexes
 
 - [/langsmith](https://docs.langchain.com/langsmith/llms.txt): 455 pages
-- [/langsmith/javascript](https://docs.langchain.com/langsmith/javascript/llms.txt): 21 pages
-- [/langsmith/python](https://docs.langchain.com/langsmith/python/llms.txt): 21 pages
+- [/langsmith/javascript](https://docs.langchain.com/langsmith/javascript/llms.txt): 22 pages
+- [/langsmith/python](https://docs.langchain.com/langsmith/python/llms.txt): 22 pages
 - [/langsmith/smith-api](https://docs.langchain.com/langsmith/smith-api/llms.txt): 361 pages
 - [/langsmith/smith-api/access_policies](https://docs.langchain.com/langsmith/smith-api/access_policies/llms.txt): 8 pages
 - [/langsmith/smith-api/ace](https://docs.langchain.com/langsmith/smith-api/ace/llms.txt): 1 pages
@@ -54,10 +54,10 @@ Each section index below lists the markdown version of every page in that sectio
 - [/langsmith/smith-api/tools](https://docs.langchain.com/langsmith/smith-api/tools/llms.txt): 8 pages
 - [/langsmith/smith-api/ttl-settings](https://docs.langchain.com/langsmith/smith-api/ttl-settings/llms.txt): 4 pages
 - [/langsmith/smith-api/usage-limits](https://docs.langchain.com/langsmith/smith-api/usage-limits/llms.txt): 4 pages
-- [/oss/javascript](https://docs.langchain.com/oss/javascript/llms.txt): 357 pages
+- [/oss/javascript](https://docs.langchain.com/oss/javascript/llms.txt): 358 pages
 - [/oss/python](https://docs.langchain.com/oss/python/llms.txt): 370 pages
 - [/oss/python/concepts](https://docs.langchain.com/oss/python/concepts/llms.txt): 4 pages
-- [/oss/python/deepagents](https://docs.langchain.com/oss/python/deepagents/llms.txt): 40 pages
+- [/oss/python/deepagents](https://docs.langchain.com/oss/python/deepagents/llms.txt): 41 pages
 - [/oss/python/langchain](https://docs.langchain.com/oss/python/langchain/llms.txt): 76 pages
 - [/oss/python/langgraph](https://docs.langchain.com/oss/python/langgraph/llms.txt): 43 pages
 - [/oss/python/migrate](https://docs.langchain.com/oss/python/migrate/llms.txt): 3 pages
@@ -93,6 +93,7 @@ Each section index below lists the markdown version of every page in that sectio
 - [Command reference](https://docs.langchain.com/oss/openwiki/cli-reference.md): OpenWiki command-line usage, flags, and connector subcommands
 - [Code mode](https://docs.langchain.com/oss/openwiki/code-mode.md): Generate and maintain repository documentation for coding agents with OpenWiki
 - [Customize OpenWiki](https://docs.langchain.com/oss/openwiki/customize.md): Ignore paths, wiki instructions, agent pointers, and telemetry for OpenWiki
+- [Coding-agent integrations](https://docs.langchain.com/oss/openwiki/integrations.md): Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and tools
 - [OpenWiki](https://docs.langchain.com/oss/openwiki/overview.md): CLI that writes and maintains agent wikis so coding agents work faster
 - [Personal mode](https://docs.langchain.com/oss/openwiki/personal-mode.md): Build a local personal brain wiki from configured sources with OpenWiki.
 - [Model providers](https://docs.langchain.com/oss/openwiki/providers.md): Configure inference providers and credentials for OpenWiki

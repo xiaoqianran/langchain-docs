@@ -3289,6 +3289,12 @@
           "rel": "oss/openwiki/customize.md"
         }
       ],
+      "integrations": [
+        {
+          "title": "Coding-agent integrations",
+          "rel": "oss/openwiki/integrations.md"
+        }
+      ],
       "overview": [
         {
           "title": "OpenWiki",

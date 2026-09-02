@@ -4,7 +4,7 @@
 
 # 个人模式
 
-个人模式从本地存储库、Gmail、Notion、网络搜索、黑客新闻、Slack 和 X/Twitter 等配置源在 `~/.openwiki/wiki` 中构建本地个人大脑 wiki。
+个人模式从本地存储库、自定义 MCP、Gmail、Notion、网络搜索、黑客新闻、Slack 和 X/Twitter 等配置源在 `~/.openwiki/wiki` 中构建本地个人大脑 wiki。
 
 ```bash
 openwiki personal
@@ -12,6 +12,8 @@ openwiki personal --init
 openwiki personal --update
 openwiki personal --update "Refresh the wiki from configured connectors"
 ```
+
+要将个人 wiki 状态存储在 `~/.openwiki` 以外的位置，请设置 `OPENWIKI_CONFIG_DIR`。参见[Customize OpenWiki](/oss/openwiki/customize#override-the-state-directory)。
 
 ## 首次运行入门
 
@@ -24,9 +26,9 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 
 **计划**是连接器源的可选 cron，例如定期刷新 Gmail 或网络搜索。 OpenWiki 将这些 cron 表达式和相关设置详细信息以及其余的入门首选项（选定的模板、连接的源和每个源的摄取注释）存储在 `~/.openwiki/onboarding.json` 中。全球个人wiki指令单独保存在`~/.openwiki/INSTRUCTIONS.md`中。
 
-在 macOS 上，OpenWiki 可以作为用户 LaunchAgents 在 `~/Library/LaunchAgents/` 下安装受支持的计划。这些作业运行`openwiki --update --print`并在`~/.openwiki/logs/`下写入日志。
+在 macOS 上，OpenWiki 可以作为用户 LaunchAgents 在 `~/Library/LaunchAgents/` 下安装支持的计划。这些作业运行`openwiki --update --print`并在`~/.openwiki/logs/`下写入日志。
 
-## 连接您的来源在个人模式下，OpenWiki 从您已经使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
+## 连接您的来源在个人模式下，OpenWiki 从您已经使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
 
 在摄取运行期间，连接器工具在 `~/.openwiki/connectors/<connector>/raw/` 下写入原始数据和清单，然后特定于源的代理运行从这些本地文件更新 wiki。
 
@@ -37,20 +39,21 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 </Important>
 
 ### 内置源|来源 |证书 |行为 |
-| ---| ---| ---|
-| `git-repo` |本地路径 |读取配置的本地存储库路径并写入紧凑的清单 |
+| --- | --- | --- |
+| `custom-mcp` |默认情况下不需要 |连接到任何已配置的 HTTP 或 stdio MCP 服务器，并仅允许显式安全的只读工具 |
+| `git-repo` |本地路径|读取配置的本地存储库路径并写入紧凑的清单 |
 | `x` | OAuth 用户上下文凭据 |通过 X API 的主页时间线、用户帖子、提及、书签和列表帖子 |
 | `notion` |概念 OAuth（托管 MCP）|通过 Notion OAuth 进行身份验证，而不是粘贴 Notion 令牌 |
-| `google` | Gmail OAuth | `openwiki auth gmail` 之后通过 Gmail API 获取最近的邮件 |
+| `google` | Gmail OAuth |在 `openwiki auth gmail` 之后通过 Gmail API 获取最近的邮件 |
 | `web-search` | `TAVILY_API_KEY` |通过 LangChain 使用 Tavilly |
 | `hackernews` |无 |公共黑客新闻提要和搜索 API |
-| `slack` | Slack 应用程序客户端凭据 + OAuth | OAuth 需要 HTTPS 回调设置；参见[Slack OAuth](#slack-oauth)|
+| `slack` | Slack 应用程序客户端凭据 + OAuth | OAuth 需要 HTTPS 回调设置；参见[Slack OAuth](#slack-oauth) |
 
 您可以多次配置同一源。例如，添加一个用于 AI 研究的网络搜索源，另一个用于 NBA 新闻的网络搜索源。 OpenWiki 将它们存储为单独的实例，例如 `web-search-1` 和 `web-search-2`。
 
 ### 连接源
 
-对于需要凭据的源，请先进行身份验证，然后摄取。黑客新闻等来源无需授权；网络搜索需要`~/.openwiki/.env`中的`TAVILY_API_KEY`。<Steps>
+对于需要凭据的源，请先进行身份验证，然后摄取。 Hacker News、Custom MCP 等来源默认不需要授权；网络搜索需要 `~/.openwiki/.env` 中的 `TAVILY_API_KEY`。<Steps>
     <Step title="Authenticate the provider" icon="key">
         为需要的提供商运行本地浏览器 OAuth 流程。 OpenWiki 将返回的令牌保存到`~/.openwiki/.env`，在可能的情况下创建连接器配置，并为 MCP 支持的提供商发现 MCP 工具：
 
@@ -64,7 +67,7 @@ openwiki personal --update "Refresh the wiki from configured connectors"
         - Slack 和 Gmail 要求已在 `~/.openwiki/.env` 中设置应用程序客户端凭据
         - Notion 使用动态客户端注册来托管 MCP
         - X 使用带有 PKCE 的 OAuth 2.0
-        - `openwiki auth gmail`之后，Google 连接器可以直接接收 Gmail，无需 MCP 传输设置
+        - 在`openwiki auth gmail`之后，Google 连接器可以直接接收 Gmail，无需 MCP 传输设置
 
         高级重试助手：
 
