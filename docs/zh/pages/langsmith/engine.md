@@ -45,7 +45,7 @@ flowchart LR
 ## 设置引擎
 
 设置引擎分为两步：[Organization Admin](/langsmith/rbac#organization-admin)首先为[workspace](/langsmith/administration-overview#workspaces)启用引擎，然后任何用户都可以为每个跟踪项目配置引擎。<Note>
-在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。请参阅[Enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)和[Engine on Self-hosted](/langsmith/engine-self-hosted)。
+在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。参见[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 </Note>
 
 ### 为您的组织启用引擎
@@ -59,7 +59,7 @@ flowchart LR
   <Step title="Toggle Enable Engine">
     打开 **启用引擎** 并确认 AI 功能使用条款。该对话框逐字显示以下产品内通知：
 
-    > LangSmith AI 功能由 LangChain 托管推理提供支持，为您的可观察性工作流程带来智能。启用LangSmith人工智能后，您的团队可以更快地发现问题、运行更智能的评估并构建更可靠的法学硕士申请。通过启用此功能，您组织的跟踪数据将使用 LangChain 管理的 LLM 密钥进行处理。遵守我们的服务条款。
+    > LangSmith AI 功能由 LangChain 托管推理提供支持，为您的可观察性工作流程带来智能。启用 LangSmith AI 后，您的团队可以更快地发现问题、运行更智能的评估并构建更可靠的 LLM 申请。通过启用此功能，您组织的跟踪数据将使用 LangChain 管理的 LLM 密钥进行处理。遵守我们的服务条款。
 
   </Step>
 </Steps>
@@ -83,7 +83,7 @@ flowchart LR
 
 组织管理员可以在两个级别设置支出限制：
 
-- **组织范围限制**：打开**设置**，选择 **引擎** 下的 **引擎启用**，然后在 **每月 LCU 支出限制** 下输入一个值。
+- **组织范围限制**：打开 **设置**，选择 **引擎** 下的 **引擎启用**，然后在 **每月 LCU 支出限制** 下输入一个值。
 - **每个项目限制**：打开跟踪项目中的 **引擎** 选项卡，单击 **引擎设置** <Icon icon="settings"/> 图标，然后在 **每月 LCU 支出限制** 下设置限制。
 
 您可以以本币或美元输入限额（1 本币 = 1.50 美元）。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
@@ -102,12 +102,12 @@ flowchart LR
   <Step title="Select preference categories (optional)">在**什么对您最重要？**下，选择要优先审核的类别（例如，**工具调用失败**或**延迟**）。单击 **+ 添加特定内容** 来描述自定义问题。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新**首选项**。
   </Step>
   <Step title="Focus on specific traces (optional)">
-    在 **关注特定跟踪** 下，按运行名称或元数据将引擎的注意力缩小到运行的子集。将其留空以分析所有痕迹。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新范围。欲了解更多信息，请参阅[Focus on specific traces](#focus-on-specific-traces)。
+    在 **关注特定跟踪** 下，按运行名称或元数据将引擎的注意力缩小到运行的子集。将其留空以分析所有痕迹。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新范围。有关更多信息，请参阅[Focus on specific traces](#focus-on-specific-traces)。
   </Step>
   <Step title="Start analyzing">
     单击**开始分析**。该对话框可能会根据您的项目使用情况显示估计的每月成本范围。引擎可能需要长达 20 分钟的时间来分析项目的跟踪并开始提出建议。在等待期间，您可以在设置面板中点击[set up notifications](#get-notified-about-new-issues)，以便在发现不同优先级的问题时在 Slack 中或通过 Webhook 收到警报。
   </Step>
-  <Step title="Review the agent overview document">在出现问题之前，引擎会根据您的跟踪生成一个代理概述文档，描述项目的目的、架构和关键指标。查看并编辑文档，然后单击“**接受并继续**”继续。如果概述不准确，请在继续之前对其进行编辑，因为引擎将其用作所有分析的上下文，因此此处的准确性会影响检测到的问题的质量。您可以随时从[**Engine Settings**](#configure-engine)面板进行更新。
+  <Step title="Review the agent overview document">在出现问题之前，引擎会根据您的跟踪生成一个代理概述文档，描述项目的目的、架构和关键指标。查看并编辑文档，然后单击“**接受并继续**”继续。如果概述不准确，请在继续之前对其进行编辑，因为引擎将其用作所有分析的上下文，因此此处的准确性会影响检测到的问题的质量。您可以随时从[**Engine Settings**](#configure-engine)面板更新它。
   </Step>
 </Steps>
 
@@ -144,7 +144,7 @@ flowchart LR
 
 ## 浏览和过滤问题
 
-设置完成后，**引擎**页面会在左侧面板中显示自动检测到的问题的列表。每个条目都会显示标题、简短描述、贡献痕迹的数量以及最近观察到该问题的时间。每个问题都标有故障类别，例如**无声工具错误**或**幻觉**。有关引擎分配的类别的完整列表以及描述和检测方法，请参阅[Engine issue categories](/langsmith/engine-issue-categories)。
+设置完成后，**引擎**页面会在左侧面板中显示自动检测到的问题的列表。每个条目都会显示标题、简短描述、贡献痕迹的数量以及最近观察到问题的时间。每个问题都标有故障类别，例如**无声工具错误**或**幻觉**。有关引擎分配的类别的完整列表以及描述和检测方法，请参阅[Engine issue categories](/langsmith/engine-issue-categories)。
 
 在列表顶部，您可以单击：- **过滤问题**图标可按**优先级**、**状态**和**标签**进行过滤。
 - **排序问题**图标可按**严重性**、**上次更新**和**创建**进行排序。
@@ -197,7 +197,7 @@ flowchart LR
 
 ### Watch：关注一个问题
 
-观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine Settings](#configure-engine) 面板的 **通知** 部分。
+观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这将打开 [Engine Settings](#configure-engine) 面板的 **通知** 部分。
 
 当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数，以便您可以选择修复或继续关注。
 
@@ -225,7 +225,7 @@ flowchart LR
 langsmith project issues list --project <project-name>
 ```## 获取有关新问题的通知
 
-当引擎打开新问题、将新跟踪链接到现有问题或无法完成运行时，它可以通知您。将这些通知传递到 **Slack 通道**、**HTTP Webhook 端点**，或两者。每个目标都有自己的事件类型和最低优先级，因此您可以将紧急问题路由到寻呼 Webhook，同时将每个问题发送到 Slack 通道。
+当引擎打开新问题、将新跟踪链接到现有问题或无法完成运行时，它可以通知您。将这些通知传送到 **Slack 通道**、**HTTP Webhook 端点**，或两者。每个目标都有自己的事件类型和最低优先级，因此您可以将紧急问题路由到寻呼 Webhook，同时将每个问题发送到 Slack 通道。
 
 从 [**Engine Settings**](#configure-engine) 面板管理通知目标：在 **引擎** 页面上，单击 **配置引擎**，然后在 **通知** 下单击 **+ 添加目标**。
 
@@ -237,7 +237,7 @@ langsmith project issues list --project <project-name>
     在 **引擎** 页面上，单击 **配置引擎**，然后单击 **添加目标**。将 **Deliver to** 字段设置为 **Slack**，然后在 **Channel** 下选择工作区和通道。
   </Step>
   <Step title="Choose events and priority">
-    在**通知时间**下，选择哪个[event types](/langsmith/engine-webhooks#event-types)向频道发布消息。在 **最低优先级**下，选择触发通知的最低优先级 [severity](/langsmith/engine-webhooks#severity-filtering)。单击“**添加目的地**”进行保存。
+    在**通知时间**下，选择哪个[event types](/langsmith/engine-webhooks#event-types)向频道发布消息。在 **最低优先级** 下，选择触发通知的最低优先级 [severity](/langsmith/engine-webhooks#severity-filtering)。单击“**添加目的地**”进行保存。
   </Step>
 </Steps>
 
@@ -258,10 +258,10 @@ LangSmith 自动加入您选择的公共频道。要发布到私人频道，请�
 - **引擎支出**：查看该项目本月至今的引擎 LCU 支出。单击“**设置限制**”以限制每月支出。当达到每月限制时，新的运行将暂停。
 - **分析级别**：选择**标准**或**降低**。使用**减少**让引擎以更低的成本检查更少的跟踪。
 - **关注特定跟踪**：窄引擎关注按运行名称或元数据运行的子集。编辑自动保存并在下次扫描时生效。范围条件仅接受运行名称和元数据；您无法按反馈键或分数进行过滤。参见[Focus on specific traces](#focus-on-specific-traces)。- **通知**：单击 **添加目标** 以添加 Slack 通道或 Webhook 目标，以便在引擎检测到新问题时接收通知。设置每个目的地的最低优先级以控制哪些问题触发通知。参见[Get notified about new issues](#get-notified-about-new-issues)。
-- **代码存储库**：连接或更新 GitHub 存储库，以便代理在诊断问题时可以引用源代码。可以选择设置**子文件夹**和**分支**（默认为存储库默认值）。设置请参见[Connect Engine to GitHub](/langsmith/engine-github)。
+- **代码存储库**：连接或更新 GitHub 存储库，以便代理在诊断问题时可以引用源代码。可以选择设置 **子文件夹** 和 **分支** （默认为存储库默认值）。设置请参见[Connect Engine to GitHub](/langsmith/engine-github)。
 - **Context 存储库**：连接 Context Hub 存储库，以便引擎可以针对说明、文档和链接技能提出修复建议。
 - **Linear**：连接 Linear，然后为新问题选择一个团队和可选项目。 Engine 保留与其创建的问题的持久链接，但不会同步 Linear 的后续编辑。删除所有引擎问题不会删除现有的线性票证。参见[Create a Linear issue](#create-a-linear-issue)。
-- **暂停**：引擎按照动态时间表扫描您的痕迹，以平衡成本和性能。单击“**暂停**”停止扫描而不删除现有问题，或单击“**恢复**”继续扫描。- **删除所有问题**：此操作无法撤消。所有问题和设置都将被永久删除。
+- **暂停**：引擎按照动态计划扫描您的痕迹，以平衡成本和性能。单击“**暂停**”停止扫描而不删除现有问题，或单击“**恢复**”继续扫描。- **删除所有问题**：此操作无法撤消。所有问题和设置都将被永久删除。
 
 ## 另请参阅
 

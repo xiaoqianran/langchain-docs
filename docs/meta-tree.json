@@ -831,6 +831,12 @@
           "rel": "langsmith/engine-security.md"
         }
       ],
+      "engine-self-hosted-link": [
+        {
+          "title": "Enable Engine",
+          "rel": "langsmith/engine-self-hosted-link.md"
+        }
+      ],
       "engine-self-hosted": [
         {
           "title": "LangSmith Engine on Self-hosted",
@@ -2925,6 +2931,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-agent-definition.md"
         }
       ],
+      "managed-deep-agents-changelog": [
+        {
+          "title": "Changelog",
+          "rel": "langsmith/javascript/managed-deep-agents-changelog.md"
+        }
+      ],
       "managed-deep-agents-channels-slack": [
         {
           "title": "Connect a Managed Deep Agent to Slack",
@@ -3055,6 +3067,12 @@
         {
           "title": "Define a Managed Deep Agent",
           "rel": "langsmith/python/managed-deep-agents-agent-definition.md"
+        }
+      ],
+      "managed-deep-agents-changelog": [
+        {
+          "title": "Changelog",
+          "rel": "langsmith/python/managed-deep-agents-changelog.md"
         }
       ],
       "managed-deep-agents-channels-slack": [

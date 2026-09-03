@@ -68,18 +68,18 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用|
+## 命令概述|命令|使用 |
 | --- | --- |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
 | `mda init <name>` |搭建 TypeScript 托管的 Deep Agents 项目。 |
 | `mda build [path]` |将项目编译为托管 LangGraph 应用程序，无需部署。 |
-| `mda eval …` / `mda evals …` |初始化 Harbor 工作区并继续在编码代理中进行评估创作。 |
+| `mda evals …` |初始化 Harbor 工作区并继续在编码代理中进行评估创作。 |
 | `mda dev [path]` |编译一个项目并在本地LangGraph开发服务器上运行。 |
 | `mda deploy [path]` |编译、同步 Context Hub 上下文、上传并部署到 LangSmith。 |
-| `mda channel init slack` |将 Slack 通道声明添加到当前项目。 |
+| `mda channels init slack` |将 Slack 通道声明添加到当前项目。 |
 | `mda logs [path]` |已部署代理的尾部代理服务器日志。 |
-| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的LangSmith资源。 |
+| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的 LangSmith 资源。 |
 
 
 ## 初始化项目
@@ -100,7 +100,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
     ```bash bun
     bunx managed-deepagents init my-agent
     ```
-</CodeGroup>|参数或标志 |使用|
+</CodeGroup>|参数或标志 |使用 |
 | --- | --- |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -155,20 +155,20 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 <CodeGroup>
     ```bash npm
-    npx mda channel init slack
+    npx mda channels init slack
     ```
 
     ```bash pnpm
-    pnpm exec mda channel init slack
+    pnpm exec mda channels init slack
     ```
 
     ```bash bun
-    bunx mda channel init slack
+    bunx mda channels init slack
     ```
 </CodeGroup>
 
 
-该命令在 `channels/` 目录中创建 Slack 通道声明。接下来`mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
+该命令在 `channels/` 目录中创建 Slack 通道声明。接下来的`mda deploy` 设置代理需要出现在 Slack 中的资源。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
 
 ## 构建项目
 
@@ -188,14 +188,14 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
     ```bash bun
     bunx mda build
     ```
-</CodeGroup>|参数或标志 |使用|
+</CodeGroup>|参数或标志 |使用 |
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
-| `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
+| `--out OUT` |已编译应用程序的输出目录。默认为 `<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
 
 ## 评估项目
 
-使用`mda evals init`初始化Harbor工作区。该命令也可用作 `mda eval`。使用交互式切换，通过编码代理和 `eval-engineering` 技能来开发完整的任务。
+使用`mda evals init`初始化Harbor工作区。使用交互式切换，通过编码代理和 `eval-engineering` 技能来开发完整的任务。
 
 
 
@@ -214,7 +214,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 </CodeGroup>
 
 
-|命令或标志 |使用|
+|命令或标志 |使用 |
 | --- | --- |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -244,7 +244,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 </CodeGroup>
 
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -286,24 +286,24 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |
-| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
+| `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
+| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为 `dev`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
 
 
 部署运行以下步骤：1. 验证项目目录并加载代理条目文件。
-2. 解析LangSmith API 密钥和可选工作区 ID。
+2. 解析 LangSmith API 密钥和可选工作区 ID。
 3. 收集非保留的 `.env` 值作为托管部署机密。
 4. 验证模型提供程序 API 密钥可从 `.env`、shell 环境或 LangSmith 工作区机密获取。
 5. 将部署拥有的上下文同步到 Context Hub。
 6. 将项目编译为`.mda/build`并提取可选的`schedules/`和`channels/`声明。
 7. 按名称创建或查找 LangSmith 托管部署。
 8. 归档构建、上传并触发远程构建。
-9. 轮询修订版本，直到达到 `DEPLOYED`，除非设置了 `--no-wait`。
+9. 轮询修订版，直到达到`DEPLOYED`，除非设置了`--no-wait`。
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
@@ -330,11 +330,11 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 </CodeGroup>
 
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
-| `--lines LINES` |要获取的最近日志行数。默认为 `1000`。 |
+| `--lines LINES` |要获取的最近日志行数。默认为`1000`。 |
 | `--level LEVEL` |仅显示等于或高于给定严重性的条目：`debug`、`info`、`warning`、`error` 或 `critical`。 |
 | `--follow` |继续传输新日志。这是交互式终端中的默认设置。 |
 | `--no-follow` |打印最近的日志并退出。这是通过管道输出时的默认设置。 |
@@ -363,10 +363,10 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | --- | --- |
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |
+| `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
 | `--workspace-id WORKSPACE_ID` |部署所在的工作区 ID。覆盖 `LANGSMITH_WORKSPACE_ID`。 |
 | `--yes` |删除时无需询问确认。 |## 故障排除
 

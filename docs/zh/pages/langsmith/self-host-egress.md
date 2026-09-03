@@ -8,7 +8,7 @@
 此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
 </Info>
 
-自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 才能执行以下操作：
+自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则LangSmith需要出口到`https://beacon.langchain.com`以实现以下目的：
 
 - **计费遥测**：许可证验证和订阅/使用报告（必需）
 - **操作遥测**：用于支持诊断的日志、指标和跟踪（可选，可以禁用）
@@ -19,7 +19,7 @@
 </Warning>
 
 <Note>
-如果您启用 [Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)，它需要第二个出口目的地，并且引擎内容通过它离开您的环境。参见[LangSmith Intelligence for Engine](#langsmith-intelligence-for-engine)。
+如果您启用 [Engine](/langsmith/engine-self-hosted)，它需要第二个出口目的地，并且引擎内容通过它离开您的环境。参见[LangSmith Intelligence for Engine](#langsmith-intelligence-for-engine)。
 </Note>
 
 ## 计费遥测
@@ -30,7 +30,7 @@
 
 ### 它的作用
 
-- **许可证验证**：在启动时以及此后定期验证您的 LangSmith 许可证密钥。
+- **许可证验证**：在启动时验证您的 LangSmith 许可证密钥，并在此后定期验证。
 - **订阅/使用报告**：根据订单中的权利报告平台使用指标以用于计费目的。
 
 ### 我们收集什么
@@ -132,7 +132,7 @@ config:
     traces: false
 ```
 
-您还可以通过仅将特定值设置为 `false` 来禁用单个遥测类型。<Warning>
+您还可以通过仅将特定值设置为 `false` 来禁用各个遥测类型。<Warning>
 禁用操作遥测会停止导出本节中描述的日志、指标和跟踪。它**不会**禁用计费遥测（许可证验证和订阅/使用报告）。
 </Warning>
 
@@ -312,7 +312,7 @@ config:
 
 #### 操作日志消息
 
-我们仅从自托管 LangSmith 实例导出错误日志消息。这使得 LangChain 团队能够排除应用程序错误，而无需与您的团队来回沟通。
+我们仅从自托管 LangSmith 实例导出错误日志消息。这使得LangChain团队能够排除应用程序错误，而无需与您的团队来回沟通。
 
 **端点：** `POST beacon.langchain.com/v1/beacon/v1/logs`
 
@@ -403,7 +403,7 @@ config:
 </Info>
 
 ### 它的作用- 定期捕获聚合使用指标
-- 提供对功能采用和平台增长的深入了解
+- 提供有关功能采用和平台增长的见解
 - 帮助LangChain根据实际使用情况确定改进和新功能的优先级
 
 ### 我们收集什么
@@ -414,7 +414,7 @@ config:
 - **时间戳**：快照的时间范围（从/到 UTC 时间戳）
 
 <Info>
-所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
+所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户身份的信息。
 </Info>
 
 ### 负载示例
@@ -447,7 +447,7 @@ config:
 
 ### 如何禁用
 
-您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
+您可以通过在部署配置中设置以下环境变量来禁用使用遥测：
 
 ```yaml
 PHONE_HOME_USAGE_REPORTING_ENABLED: false
@@ -459,7 +459,7 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 ## LangSmith 发动机智能
 
-本节仅在您启用 [Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine) 时适用。 LangSmith Intelligence 是由 LangChain 管理的服务，为引擎提供动力。没有其他LangSmith功能依赖于它，并且不需要超出本页已经描述的出口。
+本节仅在您启用 [Engine](/langsmith/engine-self-hosted) 时适用。 LangSmith Intelligence 是由 LangChain 管理的服务，为引擎提供动力。没有其他LangSmith功能依赖于它，并且不需要超出本页已经描述的出口。
 
 引擎无法完全在集群内运行。它将请求发送到 LangSmith Intelligence，这是一个 LangChain 管理的零数据保留 (ZDR) 服务，该服务将请求路由到 LangChain 环境内的模型提供商。允许出站 HTTPS 到您的云网关：AWS 上的`beacon.aws.langchain.com`，或 GCP 上的`beacon.langchain.com`。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。在 GCP 上，网关与此页面已需要的主机相同，因此引擎添加了一条路径而不是新的目的地。
 
@@ -475,7 +475,7 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 ### 我们收集什么
 
-每个请求可能携带跟踪内容、源代码和引擎完成其工作所需的中间输出。 LangSmith 情报和模型提供者处理该内容来服务请求。 LangSmith 智能不会保留提示体或完成体。
+每个请求可能携带跟踪内容、源代码和引擎完成其工作所需的中间输出。 LangSmith 情报和模型提供者处理该内容以服务请求。 LangSmith 智能不会保留提示体或完成体。
 
 LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 

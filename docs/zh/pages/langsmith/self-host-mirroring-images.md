@@ -95,7 +95,7 @@ images:
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时镜像：
+然后，在 `values.yaml` 中配置沙箱运行时映像：
 
 ```yaml
 images:
@@ -107,7 +107,7 @@ images:
 
 `sandbox-host` 镜像包含用于生成默认沙箱快照的压缩 ext4 文件系统。请参见[Inspect the default snapshot filesystem](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments)独立提取和扫描。
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙盒运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
 
 - `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
 - `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
@@ -132,7 +132,7 @@ images:
 
 ## 引擎的附加图像
 
-如果将映像镜像到私有注册表，[Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine) 使用单个组合映像：`langsmith-insights-engine`。引擎还需要沙箱，它使用[Additional images for sandboxes](#additional-images-for-sandboxes)中描述的单独图像。
+如果将映像镜像到私有注册表，[Engine](/langsmith/engine-self-hosted) 使用单个组合映像：`langsmith-insights-engine`。引擎还需要沙箱，它使用[Additional images for sandboxes](#additional-images-for-sandboxes)中描述的单独图像。
 
 要镜像所需的图像：
 
@@ -304,7 +304,7 @@ cosign verify-attestation \
 
 ### 获取 SBOM
 
-要将 SBOM 送入漏洞扫描程序或 SBOM 管理工具，请将经过验证的 CycloneDX 文档提取到文件中。由于索引为每个架构携带一个语句，因此首先解析单个架构的子摘要，这样您就可以获得一个 CycloneDX 文档，而不是每个架构一个。
+要将 SBOM 馈送到漏洞扫描程序或 SBOM 管理工具中，请将经过验证的 CycloneDX 文档提取到文件中。因为索引为每个架构携带一个语句，所以首先解析单个架构的子摘要，这样您就可以获得一个 CycloneDX 文档，而不是每个架构一个。
 
 列出标签的每个架构摘要：
 

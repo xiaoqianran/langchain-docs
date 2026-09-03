@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-02T13:02:44.669Z",
+  "fetchedAt": "2026-09-03T13:05:22.932Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 175,
-  "ok": 553,
+  "ok": 556,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 455
+      "count": 456
     },
     "fleet": {
       "name": "Fleet",
@@ -27,11 +27,11 @@
     },
     "langsmith-js": {
       "name": "LangSmith · JS",
-      "count": 21
+      "count": 22
     },
     "langsmith-py": {
       "name": "LangSmith · Python",
-      "count": 21
+      "count": 22
     },
     "oss-deepagents": {
       "name": "OSS · DeepAgents",
@@ -1089,7 +1089,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-self-hosted-full-platform",
-      "bytes": 69634
+      "bytes": 59178
     },
     {
       "rel": "langsmith/deploy-standalone-server.md",
@@ -1242,7 +1242,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-github",
-      "bytes": 8643
+      "bytes": 8525
     },
     {
       "rel": "langsmith/engine-issue-categories.md",
@@ -1272,13 +1272,22 @@
       "bytes": 9606
     },
     {
+      "rel": "langsmith/engine-self-hosted-link.md",
+      "title": "Enable Engine",
+      "url": "https://docs.langchain.com/langsmith/engine-self-hosted-link",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "engine-self-hosted-link",
+      "bytes": 429
+    },
+    {
       "rel": "langsmith/engine-self-hosted.md",
       "title": "LangSmith Engine on Self-hosted",
       "url": "https://docs.langchain.com/langsmith/engine-self-hosted",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-self-hosted",
-      "bytes": 10776
+      "bytes": 21718
     },
     {
       "rel": "langsmith/engine-webhooks.md",
@@ -1296,7 +1305,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine",
-      "bytes": 27121
+      "bytes": 27042
     },
     {
       "rel": "langsmith/enqueue-concurrent.md",
@@ -1974,13 +1983,22 @@
       "bytes": 6404
     },
     {
+      "rel": "langsmith/javascript/managed-deep-agents-changelog.md",
+      "title": "Changelog",
+      "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-changelog",
+      "track": "langsmith-js",
+      "trackName": "LangSmith · JS",
+      "group": "managed-deep-agents-changelog",
+      "bytes": 431
+    },
+    {
       "rel": "langsmith/javascript/managed-deep-agents-channels-slack.md",
       "title": "Connect a Managed Deep Agent to Slack",
       "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-slack",
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 5914
+      "bytes": 5917
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels.md",
@@ -1998,7 +2016,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-cli",
-      "bytes": 14909
+      "bytes": 14851
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-deploy.md",
@@ -2313,7 +2331,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-coding-agents",
-      "bytes": 8859
+      "bytes": 11482
     },
     {
       "rel": "langsmith/llm-gateway-credits.md",
@@ -2763,7 +2781,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-llm-as-judge",
-      "bytes": 7986
+      "bytes": 8681
     },
     {
       "rel": "langsmith/online-evaluations-multi-turn.md",
@@ -2946,13 +2964,22 @@
       "bytes": 6258
     },
     {
+      "rel": "langsmith/python/managed-deep-agents-changelog.md",
+      "title": "Changelog",
+      "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-changelog",
+      "track": "langsmith-py",
+      "trackName": "LangSmith · Python",
+      "group": "managed-deep-agents-changelog",
+      "bytes": 431
+    },
+    {
       "rel": "langsmith/python/managed-deep-agents-channels-slack.md",
       "title": "Connect a Managed Deep Agent to Slack",
       "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-slack",
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 5342
+      "bytes": 5343
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels.md",
@@ -2970,7 +2997,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-cli",
-      "bytes": 13548
+      "bytes": 13488
     },
     {
       "rel": "langsmith/python/managed-deep-agents-deploy.md",
@@ -3519,7 +3546,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-egress",
-      "bytes": 17803
+      "bytes": 17747
     },
     {
       "rel": "langsmith/self-host-environment-variables.md",
@@ -3582,7 +3609,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-mirroring-images",
-      "bytes": 17777
+      "bytes": 17749
     },
     {
       "rel": "langsmith/self-host-organization-charts.md",

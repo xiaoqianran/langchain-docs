@@ -58,15 +58,15 @@ my-agent/
 
 <CodeGroup>
     ```bash npm
-    npx mda channel init slack
+    npx mda channels init slack
     ```
 
     ```bash pnpm
-    pnpm exec mda channel init slack
+    pnpm exec mda channels init slack
     ```
 
     ```bash bun
-    bunx mda channel init slack
+    bunx mda channels init slack
     ```
 </CodeGroup>
 

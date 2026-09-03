@@ -45,7 +45,7 @@ uvx --from managed-deepagents mda init my-agent --channel slack
 要将 Slack 添加到现有项目，请从项目根运行通道初始化命令：
 
 ```bash
-uv run mda channel init slack
+uv run mda channels init slack
 ```
 
 

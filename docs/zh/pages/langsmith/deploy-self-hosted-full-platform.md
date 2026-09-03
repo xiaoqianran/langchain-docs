@@ -4,14 +4,14 @@
 
 # 启用额外的LangSmith功能
 
-除了基本 [LangSmith](/langsmith/self-hosted) 平台之外，您还可以在 LangSmith 自托管上启用以下功能：
+除了基础 [LangSmith](/langsmith/self-hosted) 平台之外，您还可以在 LangSmith 自托管上启用以下功能：
 
 - **[LangSmith Deployment](/langsmith/deployment)** 添加了 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)，让您可以直接通过 LangSmith UI 部署、扩展和管理代理和应用程序。如果您不需要完整的基于 UI 的设置，请参阅 [standalone servers](/langsmith/deploy-standalone-server) 以获得轻量级替代方案。
 - **[Fleet](/langsmith/fleet/index)** 允许您直接在 LangSmith 中创建、部署和管理 AI 代理，无需任何代码。
 - **[Insights](/langsmith/insights)** 在 LangSmith 中提供人工智能驱动的痕迹和应用程序数据分析。
 - **[Chat](/langsmith/chat)** 提供工作区中的聊天体验，帮助您分析跟踪、线程、提示和实验结果。
 - **[Sandboxes](/langsmith/sandboxes)** 让用户运行代码、公开临时服务并从 LangSmith 创建内存快照。
-- **[Engine](/langsmith/engine-overview)** 查找跟踪项目中重复出现的问题，根据源代码进行诊断，并提出修复建议。引擎需要沙箱。
+- **[Engine](/langsmith/engine-overview)** 查找跟踪项目中重复出现的问题，根据源代码进行诊断，并提出修复建议。引擎需要沙箱，并从[Engine on Self-hosted](/langsmith/engine-self-hosted)安装。
 
 <Info>
 这些功能需要[Enterprise](https://langchain.com/pricing)计划。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
@@ -19,7 +19,7 @@
 
 ## 先决条件<Steps>
   <Step title="Install the base LangSmith platform">
-    在继续之前，请按照 [Kubernetes installation guide](/langsmith/kubernetes) 安装基础 LangSmith 平台。
+    在继续之前，请按照[Kubernetes installation guide](/langsmith/kubernetes) 安装基础LangSmith 平台。
   </Step>
   <Step title="Install KEDA">
     运行以下命令在集群上安装`KEDA`：
@@ -34,7 +34,7 @@
     </Info>
   </Step>
   <Step title="Configure an ingress">
-    为您的 LangSmith 实例配置入口、网关或 Istio。所有代理都将部署为该入口后面的 Kubernetes 服务。参见[Set up an ingress](/langsmith/self-host-ingress)。您必须在 [⟦T70⟧](/langsmith/kubernetes#configure-your-helm-charts) 中提供 `hostname`。
+    为您的 LangSmith 实例配置入口、网关或 Istio。所有代理都将部署为该入口后面的 Kubernetes 服务。参见[Set up an ingress](/langsmith/self-host-ingress)。您必须在 [⟦T61⟧](/langsmith/kubernetes#configure-your-helm-charts) 中提供 `hostname`。
   </Step>
   <Step title="Verify cluster capacity">
     确保您的集群具有可用于多个部署的可用容量。建议使用集群自动缩放程序。
@@ -46,7 +46,7 @@
     kubectl get storageclass
     ```
 
-    至少一个 StorageClass 应具有 `PROVISIONER` 值（不是 `kubernetes.io/no-provisioner`）并标记为 `(default)`，否则您必须在继续之前配置一个。
+    至少一个 StorageClass 应具有 `PROVISIONER` 值（而不是 `kubernetes.io/no-provisioner`）并标记为 `(default)`，否则您必须在继续之前配置一个。
   </Step>
   <Step title="Verify egress">
     确保通往 `https://beacon.langchain.com` 的出口可用。请参阅[egress documentation](/langsmith/self-host-egress)。
@@ -64,7 +64,7 @@
 
 ### 启用该功能
 
-要启用 LangSmith 部署，请更新您的 [⟦T79⟧](/langsmith/kubernetes#configure-your-helm-charts)：
+要启用 LangSmith 部署，请更新您的 [⟦T70⟧](/langsmith/kubernetes#configure-your-helm-charts)：
 
 <Steps>
   <Step title="Enable deployment in your config">
@@ -82,7 +82,7 @@
   </Step>
 
   <Step title="(Optional) Configure image mirroring">
-    如果您需要将映像镜像到私有注册表，请在 [⟦T86⟧](/langsmith/kubernetes#configure-your-helm-charts) 中配置 `hostBackendImage` 和 `operatorImage` 选项。使用[latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases)中指定的图像标签。
+    如果您需要将映像镜像到私有注册表，请在 [⟦T77⟧](/langsmith/kubernetes#configure-your-helm-charts) 中配置 `hostBackendImage` 和 `operatorImage` 选项。使用[latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases)中指定的图像标签。
 
     ```yaml
     hostBackendImage:
@@ -95,7 +95,7 @@
   </Step>
 
   <Step title="(Optional) Configure base agent templates">
-    如果您需要自定义 Operator 创建代理 Kubernetes 资源的方式，请覆盖 [base agent templates in ⟦T87⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428)。最常见的用例是添加 `imagePullSecrets` 以使用私有容器注册表进行身份验证。详情请参阅[Configure authentication for private registries](#configure-authentication-for-private-registries)。
+    如果您需要自定义 Operator 创建代理 Kubernetes 资源的方式，请覆盖 [base agent templates in ⟦T78⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428)。最常见的用例是添加 `imagePullSecrets` 以使用私有容器注册表进行身份验证。详情请参阅[Configure authentication for private registries](#configure-authentication-for-private-registries)。
   </Step>
 
   <Step title="Apply the changes">
@@ -254,7 +254,7 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 #### 通用配置
 
-将以下内容添加到您的[⟦T134⟧](/langsmith/kubernetes#configure-your-helm-charts)。仅包含您需要的提供商。
+将以下内容添加到您的[⟦T125⟧](/langsmith/kubernetes#configure-your-helm-charts)。仅包含您需要的提供商。
 
 ```yaml
 fleet:
@@ -309,7 +309,7 @@ fleet:
   </Step>
 
   <Step title="Apply the changes">
-    将 LangSmith OAuth 提供商 ID 添加到您的 [⟦T146⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+    将 LangSmith OAuth 提供商 ID 添加到您的 [⟦T137⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 
     ```yaml
     fleet:
@@ -328,11 +328,11 @@ fleet:
 
 <Accordion title="Microsoft OAuth provider" id="microsoft-oauth-provider">
 
-要为队列启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
+要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
 
 <Steps>
   <Step title="Create an Azure app registration">
-    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建一个新的注册。
+    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建新的注册。
   </Step><Step title="Choose supported account types">
     选择与您的部署匹配的帐户类型。如果需要来自多个 Microsoft Entra 租户的用户进行身份验证，请选择多租户选项。如果您的部署仅限于一个租户，您可以使用单租户应用程序注册。
   </Step>
@@ -389,7 +389,7 @@ fleet:
   </Step>
 
   <Step title="Apply the changes">
-    将以下内容添加到您的 [⟦T170⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+    将以下内容添加到您的 [⟦T161⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 
     ```yaml
     fleet:
@@ -435,7 +435,7 @@ fleet:
   </Step>
 
   <Step title="Apply the changes">
-    将以下内容添加到您的 [⟦T176⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+    将以下内容添加到您的 [⟦T167⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 
     ```yaml
     fleet:
@@ -481,7 +481,7 @@ fleet:
     - **令牌 URL**：`https://www.linkedin.com/oauth/v2/accessToken`
     - **提供商 ID**：唯一字符串，例如：`linkedin`
   </Step><Step title="Apply the changes">
-    将以下内容添加到您的 [⟦T182⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+    将以下内容添加到您的 [⟦T173⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 
     ```yaml
     fleet:
@@ -519,7 +519,7 @@ fleet:
   <Step title="Enable OAuth and configure the OAuth settings">
     展开 **API（启用 OAuth 设置）** 并选择 **启用 OAuth**。然后配置：
 
-    - **回调 URL**，将 `<hostname>` 替换为您的 LangSmith 主机名，将 `<provider-id>` 替换为您的提供商 ID：
+    - **回调 URL**，将 `<hostname>` 替换为您的 LangSmith 主机名，并将 `<provider-id>` 替换为您的提供商 ID：
 
     ```
     https://<hostname>/host-oauth-callback/<provider-id>
@@ -566,7 +566,7 @@ fleet:
   </Step>
 
   <Step title="Apply the changes">
-    将以下内容添加到您的 [⟦T193⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
+    将以下内容添加到您的 [⟦T184⟧](/langsmith/kubernetes#configure-your-helm-charts) 并部署：
 
     ```yaml
     fleet:
@@ -596,7 +596,7 @@ fleet:
 
 ### （可选）为队列启用 GitHub 应用程序
 
-Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置涉及创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T195⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
+Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置过程包括创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T186⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
 
 <Steps>
   <Step title="Create a GitHub App">
@@ -608,7 +608,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
   </Step>
 
   <Step title="Fill in basic details">
-    - **GitHub 应用程序名称**：任何唯一名称，例如 `acme-langsmith-fleet`。记下 GitHub 生成的 slug（名称的小写连字符形式），因为这是您将用于 `FLEET_GITHUB_APP_SLUG` 的值。
+    - **GitHub 应用程序名称**：任何唯一的名称，例如 `acme-langsmith-fleet`。记下 GitHub 生成的 slug（名称的小写连字符形式），因为这是您将用于 `FLEET_GITHUB_APP_SLUG` 的值。
     - **主页 URL**：您的 LangSmith 主机名，例如 `https://langsmith.acme.com`。
     - 暂时取消选择 **Webhook** 下的 **Active**。您将在生成 Webhook 密钥后的后续步骤中启用它。
   </Step>
@@ -766,14 +766,14 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     3. 对于私有存储库，您必须在安装过程中明确选择每个存储库。
 
     <Note>
-    每个用户还必须使用LangSmith中的重新授权流程针对自己的 GitHub 帐户授权 GitHub 应用程序。这允许 Fleet 解析代表用户操作的工具的每用户令牌。
+    每个用户还必须使用 LangSmith 中的重新授权流程针对自己的 GitHub 帐户授权 GitHub 应用程序。这允许 Fleet 解析代表用户操作的工具的每用户令牌。
     </Note>
   </Step>
 </Steps>
 
 ### 禁用功能
 
-要禁用舰队、见解和聊天的任意组合，请在 [⟦T213⟧](/langsmith/kubernetes#configure-your-helm-charts) 中将相应的标志设置为 `false`：
+要禁用舰队、见解和聊天的任意组合，请在 [⟦T204⟧](/langsmith/kubernetes#configure-your-helm-charts) 中将相应的标志设置为 `false`：
 
 ```yaml
 fleet:
@@ -789,10 +789,10 @@ polly:
 ## 启用沙箱
 
 <Note>
-自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
+自托管沙盒需要 LangSmith Helm Chart v17 (`0.17.x`)。
 </Note>
 
-默认情况下，沙箱处于禁用状态。安装后，请参阅 [LangSmith Sandboxes](/langsmith/sandboxes) 了解 LangSmith UI 和 API 中的用户工作流程。### 支持的平台
+默认情况下，沙箱处于禁用状态。安装后，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)了解LangSmith UI 和 API 中的用户工作流程。### 支持的平台
 
 自托管沙箱受以下支持：
 
@@ -1074,7 +1074,7 @@ sandbox_host_max_node_count = 5
 sandbox_host_machine_type   = "n2-standard-8"
 
 sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-```GCP 沙箱需要 `redis_source = "external"`。 Terraform 模块：
+```GCP 沙盒需要 `redis_source = "external"`。 Terraform 模块：
 
 - 为 JuiceFS 沙箱元数据创建专用 Memorystore Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
@@ -1147,189 +1147,7 @@ kubectl get pods,pvc -n <namespace>
 
 [Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障聚类为问题，诊断每个问题并提出修复建议。默认情况下禁用引擎。
 
-引擎需要[Sandboxes](#enable-sandboxes)、到[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接、外部可访问的[⟦T262⟧](#verify-your-hostname-is-externally-reachable)和[Engine encryption key](#generate-the-engine-encryption-key)。在启用引擎之前完成先决条件。
-
-引擎和 [Insights](#enable-fleet-insights-and-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是新 Pod。与本页上的其他功能不同，引擎无法完全在集群内运行。 Engine 使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来支持诊断和修复的模型工作。数据流向和保留的计费元数据请参见[Engine on Self-hosted](/langsmith/engine-self-hosted)。
-
-### 组件
-
-启用引擎配置或重用：
-
-- `standalone-insights-api-server`：同时服务于`engine`和`insights`图表。
-- `standalone-insights-queue`：Engine 和 Insights 的后台运行处理。
-- 用于共享部署的专用 PostgreSQL 和 Redis 实例，每个实例都可以替换为外部实例。
-- [Enable Sandboxes](#enable-sandboxes)下描述的沙箱组件。
-
-引擎还向`platform-backend`和`ingest-queue`添加了配置，用于调度和安排其运行。
-
-### 先决条件
-
-<Steps>
-  <Step title="Enable Sandboxes">
-    首先完成[Enable Sandboxes](#enable-sandboxes)，包括支持KVM的节点池和JuiceFS存储。
-
-    引擎的沙箱与一个工作区相关联。使用 Engine 进行安装必须具有 [shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则 LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。<Warning>
-    使用为引擎保留的工作区：
-
-    - Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
-    - 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
-    - 引擎的沙箱列在该工作区中，任何有权访问它的人都可以停止。
-    - 每个沙箱都运行代理生成的代码。
-    - 存储库凭据保留在沙箱身份验证代理中，并且不可用于沙箱内运行的代码。
-    </Warning>
-  </Step>
-
-  <Step title="Confirm the license entitlement">
-    引擎是单独许可的，与沙盒相同。您的许可证必须包含引擎权利。 LangSmith 在启动时根据 `https://beacon.langchain.com` 验证您的许可证密钥，并在此后定期验证，因此，一旦将其添加到订单中，您无需更改任何配置，即可生效。
-  </Step>
-
-  <Step title="Allow egress to LangSmith Intelligence" id="allow-egress-to-langsmith-intelligence">
-    允许从集群到云的 LangSmith 智能网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。|云| `engine.intelligenceBaseUrl` |
-    | --- | --- |
-    |亚马逊AWS | `https://beacon.aws.langchain.com/intelligence` |
-    | GCP | `https://beacon.langchain.com/intelligence` |
-
-    在 GCP 上，这使用已用于许可证验证和计费遥测的同一主机LangSmith，因此引擎添加了一条路径而不是新的出口目的地。
-
-    <Note>
-    引擎可用于 **AWS US** 和 **GCP US** 中的自托管部署。在计划推出之前，检查[Availability by cloud and region](/langsmith/engine-self-hosted#availability-by-cloud-and-region)并确认[our sales team](https://www.langchain.com/contact-sales)的覆盖范围。
-    </Note>
-
-    将网关添加为特定白名单条目，而不是打开常规出口。为了将 AWS 流量保持在专用网络上，[connect to LangSmith Intelligence with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT。引擎的流量与[Configure egress](/langsmith/self-host-egress)中描述的计费和操作遥测是分开的，即使它共享主机。
-
-    <Note>
-    离线（气隙）安装无法运行引擎。没有可供其依赖的集群内模型。
-    </Note>
-  </Step>
-
-  <Step title="Verify your hostname is externally reachable" id="verify-your-hostname-is-externally-reachable">
-    引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。使用 TLS 通过入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎不要求您公开超出您自己的用户已经到达的地址的任何内容。沙盒出口已列入您的 LangSmith 主机名、`github.com`、`api.github.com` 和 Python 包注册表的允许名单。每次运行的凭据由沙箱外部的代理注入，而不是在沙箱内部可读。
-  </Step>
-
-  <Step title="Generate the Engine encryption key" id="generate-the-engine-encryption-key">
-    引擎使用自己的 Fernet 密钥来加密传递给它的运行有效负载LangSmith，这些负载携带短期凭证。生成一个：
-
-    ```bash
-    python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-    ```
-
-    将其存储在预定义的 Kubernetes Secret 中，名称为 `engine_encryption_key`，而不是存储在配置文件中。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret#parameters)。
-
-    要稍后轮换密钥，请将当前值复制到 `engine_encryption_key_previous` 并将新密钥设置为 `engine_encryption_key`。之前的密钥仅用于解密，因此在交换完成之前以加密方式运行。
-  </Step>
-</Steps>
-
-### 使用 Helm 启用
-
-将以下内容添加到您的 [⟦T284⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](#enable-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
-
-<Tabs>
-  <Tab title="Using Kubernetes secrets (recommended)">
-    按名称引用您现有的 Secret。图表自动从中读取`engine_encryption_key`。```yaml
-    config:
-      existingSecretName: "<your-secret-name>"
-      # Must be reachable from the sandbox network.
-      hostname: "https://langsmith.example.com"
-
-    engine:
-      enabled: true
-      intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-
-    sandboxes:
-      enabled: true
-    ```
-  </Tab>
-  <Tab title="Using inline values">
-    直接在配置文件中设置加密密钥。
-
-    <Warning>
-    这会将实时凭证放入您的配置文件中。不要将其提交给版本控制；更喜欢 Kubernetes Secret。
-    </Warning>
-
-    ```yaml
-    config:
-      hostname: "https://langsmith.example.com"
-
-    engine:
-      enabled: true
-      intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-      encryptionKey: "<engine-encryption-key>"
-
-    sandboxes:
-      enabled: true
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-如果您的安装具有包含多个工作区的共享组织，请设置拥有引擎沙箱的工作区：
-</Note>
-
-```yaml
-engine:
-  sandboxTenantId: "<workspace-id>"
-```
-
-<Warning>
-从较旧的 Insights 图像引脚升级需要一项额外检查：如果您的值引脚 `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该引脚。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。欲了解更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
-</Warning>
-
-在应用更新的图表之前验证它：
-
-```bash
-helm template langsmith langchain/langsmith \
-  --values langsmith_config.yaml \
-  --version <version> \
-  --namespace <namespace>
-```
-
-该图表在渲染时验证引擎配置，并失败并显示一条消息，指出缺少的值，因此此命令会在错误配置到达集群之前捕获它。
-
-应用更新后的图表：
-
-```bash
-helm upgrade -i langsmith langchain/langsmith \
-  --values langsmith_config.yaml \
-  --version <version> \
-  --namespace <namespace> \
-  --wait
-```
-
-### 验证安装
-
-确认共享 Engine 和 Insights 部署正在运行：
-
-```bash
-kubectl get pods -n <namespace> | grep standalone-insights
-```
-
-API 服务器和队列 Pod 都应该是`Running`。然后，确认 `platform-backend` 是健康的，因为它调度引擎运行：
-
-```bash
-kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
-```如果在此之后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
-
-在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith)之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
-
-如果分析未完成，请检查 Engine Pod 是否正在运行、沙盒工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
-
-### 在LangSmith中打开引擎
-
-在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith中完成设置：
-
-1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎启用**下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
-1. 任何用户都可以从项目的 **Engine** 选项卡为跟踪项目设置 Engine。有关更多信息，请参阅[Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
-
-### 禁用引擎
-
-将 `engine.enabled` 设置为 `false` 并重新应用：
-
-```yaml
-engine:
-  enabled: false
-```
-
-引擎停止调度运行。 Insights 共享相同的部署，因此当 `insights.enabled` 为 `true` 时，`standalone-insights` Pod 会继续运行。
+引擎需要[Sandboxes](#enable-sandboxes)，并且在启用时与[Insights](#enable-fleet-insights-and-chat)共享部署。与本页上的其他功能不同，Engine 无法完全在集群内运行：它使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来进行支持诊断和修复的模型工作。因此，引擎的安装、出口和数据处理都记录在一页上。请参阅 [Engine on Self-hosted](/langsmith/engine-self-hosted) 了解区域可用性、先决条件、Helm 值和验证步骤。
 
 ## 可选配置
 
@@ -1346,11 +1164,11 @@ engine:
 <Steps>
   <Step title="Review cluster organization">
     通读 [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) 中的集群组织指南，了解如何针对您的用例进行组织。
-  </Step><Step title="Verify hybrid prerequisites">
-    验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，将出口配置为[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
   </Step>
 
-  <Step title="Enable the feature in Postgres">
+  <Step title="Verify hybrid prerequisites">
+    验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，配置到[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)的出口，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
+  </Step><Step title="Enable the feature in Postgres">
     针对您的 LangSmith Postgres 实例运行以下命令以启用此功能。记下工作区 ID 以供后续步骤使用。
 
     ```sql
@@ -1371,11 +1189,13 @@ engine:
   </Step>
 </Steps>
 
-#### 部署到同一集群中的不同命名空间<Steps>
+#### 部署到同一集群中的不同命名空间
+
+<Steps>
   <Step title="Update your config">
-    在您的[⟦T303⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
-    - 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例正在运行的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
-    - 使用 [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) 或 [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
+    在您的[⟦T256⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
+    - 将 `operator.watchNamespaces` 设置为自托管 LangSmith 实例运行所在的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
+    - 使用[Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api)或[Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
   </Step>
   <Step title="Apply the changes">
     ```bash
@@ -1388,9 +1208,7 @@ engine:
   <Step title="(Optional) Configure log access">
     配置控制平面的访问权限以从新命名空间读取代理服务器部署日志。参见[Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces)。
   </Step>
-</Steps>
-
-### 配置私有注册表的身份验证
+</Steps>### 配置私有注册表的身份验证
 
 如果您的 [Agent Server deployments](/langsmith/agent-server) 将使用私有容器注册表（例如 AWS ECR、Azure ACR 或 GCP Artifact Registry）中的映像，请配置映像拉取密钥。此配置自动应用于所有部署，允许它们通过您的私有注册表进行身份验证。
 
@@ -1403,7 +1221,9 @@ engine:
         --docker-password=your-password \
         --docker-email=your-email@example.com \
         -n langsmith
-    ```将这些值替换为您的注册表凭据：
+    ```
+
+    将这些值替换为您的注册表凭据：
     - `myregistry.com`：您的注册表 URL
     - `your-username`：您的注册表用户名
     - `your-password`：您的注册表密码或访问令牌
@@ -1473,7 +1293,7 @@ engine:
 
 <Warning>
 对于控制平面 (`host-backend`) 和数据平面 (`listener`) 部署在不同 Kubernetes 集群中的自托管部署，不支持检索服务器日志。
-</Warning>对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets`、`deployments`、`replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
+</Warning>对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets`、`replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
 
 <Steps>
   <Step title="Create a Role with the required permissions">

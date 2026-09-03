@@ -8,7 +8,7 @@
 
 **[LLM-as-a-judge](/langsmith/evaluation-concepts#llm-as-judge)** 评估者使用 LLM 来评估痕迹，作为类人判断的可扩展替代品。本指南涵盖了评估单次运行的**运行级别**评估器。要评估整个对话线程，请参阅[multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留符合您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
 
 ## 查看在线评估器
 
@@ -36,26 +36,32 @@
 </Tip>
 
 <Tip>
-如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 负载包含此评估者的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `has(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
+如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 负载包含此评估程序的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `has(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
 </Tip>
 
 ## 配置采样率
 
 配置采样率以控制触发自动化操作的过滤运行的百分比。例如，为了控制成本，您可能需要设置一个过滤器以仅将求值器应用于 10% 的迹线。为此，您可以将采样率设置为 0.1。
 
-## 对过去的运行应用规则
+## 将规则应用于过去的运行或线程
 
-通过切换 **应用到过去的运行** 并输入“回填自”日期，将规则应用于过去的运行。这只有在创建规则时才有可能。
+要将规则应用于过去的运行或线程，请在 **配置评估器** 面板中：1. 在**源**中，选择**运行**或**线程**。
+1. 展开**高级**。
+1. 切换到 **应用到日期以来的过去运行** 或 **应用到日期以来的过去线程**，然后输入日期。
+
+您只能在创建规则时回填。
+
+当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 评估其根运行历史并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
 
 <Note>
 回填作为后台作业进行处理，因此您不会立即看到结果。
-</Note>为了跟踪回填的进度，您可以通过前往跟踪项目中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。
+</Note>
+
+为了跟踪回填的进度，您可以通过前往跟踪项目中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。
 
 1. 添加评估者姓名。
 1. （可选）过滤您想要应用评估器的运行或配置采样率。
-1. 选择**应用评估器**。
-
-## 设置支出限额
+1. 选择**应用评估器**。## 设置支出限额
 
 您可以限制该评估者每周附加项目和数据集的 LLM 成本。默认情况下，适用组织范围的评估者限制。组织管理员可以通过在**高级**下的**支出限制**字段中设置自定义值来覆盖特定评估者的此设置。要删除覆盖并再次继承组织默认值，请单击“**重置为组织默认值**”。当每周支出达到有效限制时，LangSmith 会暂停该项目或数据集的评估程序，直到在世界标准时间星期一上午 12 点重置限制或手动增加限制。
 
@@ -65,13 +71,13 @@
 
 查看[LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates)了解更多信息。
 
-## 将多模式内容映射到评估器如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：
+## 将多模式内容映射到评估器
 
-- **使用跟踪中的 Base64 编码内容**：如果您的应用程序将多模式内容记录为跟踪中的 Base64 编码数据（例如，在运行的输入或输出中），您可以使用模板变量在评估器提示中直接引用此内容。评估器将从跟踪中提取 base64 数据并将其传递给 LLM。
+如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：- **使用跟踪中的 Base64 编码内容**：如果您的应用程序将多模式内容记录为跟踪中的 Base64 编码数据（例如，在运行的输入或输出中），您可以使用模板变量在评估器提示中直接引用此内容。评估器将从跟踪中提取 base64 数据并将其传递给 LLM。
 - **使用痕迹中的附件**：与[offline evaluations with attachments](/langsmith/evaluate-with-attachments)类似，您可以在在线评估中使用痕迹中的附件。由于您的跟踪已经包含通过 SDK 记录的附件，因此您可以直接在评估器中引用它们。
     1. 从数据集页面选择 **+ Evaluator**。
     1. 在 **模板变量** 编辑器中，为附件添加一个变量以包括：
-        - 如果您想包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中的文件与`file_name`映射到将其传递给评估器。
+        - 如果您想包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件，以将其传递给评估器。
         - 如果您想包含所有附件，请使用 `{{attachments}`}` 变量。
 
     <img
@@ -84,9 +90,9 @@
         className="hidden dark:block"
         src="/langsmith/images/variable-multimodal-content-dark.png"
         alt="Edit evaluator modal with an image attachment selected for the input."
-    />然后，评估者可以在评估跟踪时访问这些附件。这对于需要执行以下操作的评估人员非常有用：
+    />
 
-- 验证图像描述是否与跟踪中的实际图像匹配。
+然后，评估者可以在评估跟踪时访问这些附件。这对于需要执行以下操作的评估人员非常有用：- 验证图像描述是否与跟踪中的实际图像匹配。
 - 检查转录是否准确反映了音频输入。
 - 验证从文档中提取的文本是否正确。
 

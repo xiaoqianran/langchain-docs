@@ -4,7 +4,7 @@
 
 # 将LangSmith引擎连接到GitHub
 
-连接 GitHub 存储库是可选的。连接后，LangSmith引擎读取源代码来诊断问题并打开拉取请求以及建议的修复。引擎在LangSmith云中使用LangChain管理的GitHub应用程序，而自托管操作员则创建和管理自己的GitHub应用程序。
+连接 GitHub 存储库是可选的。连接后，LangSmith 引擎会读取源代码来诊断问题并打开拉取请求并提供建议的修复方案。引擎在LangSmith云中使用LangChain管理的GitHub应用程序，而自托管操作员则创建和管理自己的GitHub应用程序。
 
 ## LangSmith 云
 
@@ -75,10 +75,10 @@
   <Step title="Generate a state JWT secret">
     LangSmith 使用 HMAC 密钥来签署短期 OAuth 状态令牌并保护回调状态。使用秘密管理器或其他加密安全生成器生成至少 32 字节的随机秘密。 GitHub 不提供此值。
 
-    这是`FORGE_GITHUB_STATE_JWT_SECRET`。单独生成它，并且不要重复使用 webhook 密钥或任何其他凭据。
+    这是`FORGE_GITHUB_STATE_JWT_SECRET`。单独生成它，并且不要重复使用 Webhook 密钥或任何其他凭据。
   </Step><Step title="Create a Kubernetes Secret">
     <Warning>
-    GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，而不是存储在 Helm 值或命令行参数中。
+    GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，切勿存储在 Helm 值或命令行参数中。
     </Warning>
 
 使用现有的 [secret-management workflow](/langsmith/self-host-using-an-existing-secret)，使用以下密钥创建一个名为 `langsmith-forge-github` 的 Kubernetes Secret：
@@ -147,9 +147,8 @@
 ## 另请参阅
 
 - [Find and fix your agent's issues](/langsmith/engine)：引擎设置、成本和问题工作流程。
-- [Engine on self-hosted](/langsmith/engine-self-hosted)：自托管架构和数据处理。
+- [Engine on self-hosted](/langsmith/engine-self-hosted)：安装、架构和数据处理。
 - [Engine security](/langsmith/engine-security)：引擎如何处理您的数据和 GitHub 访问。
-- [Enable Engine](/langsmith/deploy-self-hosted-full-platform#enable-engine)：在LangSmith Helm 图表中启用引擎。
 
 ---
 
