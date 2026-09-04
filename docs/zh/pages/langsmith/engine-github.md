@@ -19,9 +19,13 @@
 
 有关托管应用程序的访问和保留模型，请参阅[Engine security](/langsmith/engine-security#github-integration)。
 
-## 自托管
+## 自托管<Note>
+引擎仅连接至`github.com`。不支持 GitHub Enterprise Server：引擎的沙箱达到 `github.com` 和 `api.github.com`，并且沙箱身份验证代理单独为这些主机注入存储库凭据。无法使用在 GitHub Enterprise Server 实例上创建的 GitHub 应用程序。
+</Note>
 
-要为自托管部署创建和配置 GitHub 应用程序：### 创建 GitHub 应用程序
+要为自托管部署创建和配置 GitHub 应用程序：
+
+### 创建 GitHub 应用程序
 
 <Steps>
   <Step title="Create the app">
@@ -47,9 +51,7 @@
 
     ```
     https://<langsmith-host>/api-host/v1/integrations/forge/github/webhook
-    ```
-
-    在 **Webhook 密钥** 中输入生成的值。
+    ```在 **Webhook 密钥** 中输入生成的值。
   </Step>
 
   <Step title="Set repository permissions">
@@ -57,7 +59,9 @@
 
     - **内容**：阅读和写作。
     - **拉取请求**：读取和写入。
-    - **元数据**：只读（自动选择）。在**订阅事件**下，选择无事件。引擎不需要任何事件订阅。
+    - **元数据**：只读（自动选择）。
+
+    在**订阅事件**下，选择无事件。引擎不需要任何事件订阅。
   </Step>
 
   <Step title="Create the app and gather its values">
@@ -70,13 +74,13 @@
     | **客户端ID** |在 **关于** |下`FORGE_GITHUB_CLIENT_ID` |
     | **客户秘密** |在 **客户端密钥** 下，单击 **生成新的客户端密钥**（显示一次）| `FORGE_GITHUB_CLIENT_SECRET` |
     | **私钥** |在 **私钥** 下，单击 **生成私钥**（下载 `.pem` 文件）| `FORGE_GITHUB_APP_PEM` |
-  </Step>
-
-  <Step title="Generate a state JWT secret">
+  </Step><Step title="Generate a state JWT secret">
     LangSmith 使用 HMAC 密钥来签署短期 OAuth 状态令牌并保护回调状态。使用秘密管理器或其他加密安全生成器生成至少 32 字节的随机秘密。 GitHub 不提供此值。
 
     这是`FORGE_GITHUB_STATE_JWT_SECRET`。单独生成它，并且不要重复使用 Webhook 密钥或任何其他凭据。
-  </Step><Step title="Create a Kubernetes Secret">
+  </Step>
+
+  <Step title="Create a Kubernetes Secret">
     <Warning>
     GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，切勿存储在 Helm 值或命令行参数中。
     </Warning>
@@ -91,10 +95,8 @@
     | `forge_github_webhook_secret` | Webhook 秘密也在 GitHub 中配置 |
 
     对于生产部署，请使用现有的机密工作流程，例如 [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) 或 [External Secrets Operator](https://external-secrets.io/)。
-  </Step>
-
-  <Step title="Add the configuration to your langsmith_config.yaml">
-    将以下内容添加到 [⟦T22⟧](/langsmith/kubernetes#configure-your-helm-charts) 中的 `hostBackend.deployment.extraEnv`。应用程序 ID、公共链接和客户端 ID 使用文字 `value` 条目。使用 `secretKeyRef` 引用客户端密钥、状态 JWT 密钥、私钥和 Webhook 密钥；切勿通过 `commonEnv` 设置它们或将其设置为内联值：
+  </Step><Step title="Add the configuration to your langsmith_config.yaml">
+    将以下内容添加到 [⟦T25⟧](/langsmith/kubernetes#configure-your-helm-charts) 中的 `hostBackend.deployment.extraEnv`。应用程序 ID、公共链接和客户端 ID 使用文字 `value` 条目。使用 `secretKeyRef` 引用客户端密钥、状态 JWT 密钥、私钥和 Webhook 密钥；切勿通过 `commonEnv` 设置它们或将其设置为内联值：
 
     ```yaml
     hostBackend:
@@ -136,7 +138,9 @@
   </Step>
 
   <Step title="Install the app on repositories">
-    一旦 Pod 健康，请在引擎应访问的存储库上安装 GitHub 应用程序：1. 打开应用程序的公共链接 (`FORGE_GITHUB_APP_PUBLIC_LINK`) 并单击 **安装**，或在 GitHub 组织中打开 **设置 > 应用程序 > GitHub 应用程序**。
+    一旦 Pod 健康，请在引擎应访问的存储库上安装 GitHub 应用程序：
+
+    1. 打开应用程序的公共链接 (`FORGE_GITHUB_APP_PUBLIC_LINK`) 并单击 **安装**，或在 GitHub 组织中打开 **设置 > 应用程序 > GitHub 应用程序**。
     2. 选择引擎应访问的存储库。如果安装未授予对所有存储库的访问权限，请显式选择引擎需要的每个私有存储库。
     3. 在LangSmith中，打开跟踪项目，进入**Engine**选项卡，然后在**GitHub Repository**字段中选择存储库。
 
@@ -150,9 +154,7 @@
 - [Engine on self-hosted](/langsmith/engine-self-hosted)：安装、架构和数据处理。
 - [Engine security](/langsmith/engine-security)：引擎如何处理您的数据和 GitHub 访问。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

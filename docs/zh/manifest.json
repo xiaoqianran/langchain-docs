@@ -877,8 +877,8 @@
       "translatedAt": "2026-08-16T09:20:30.461Z"
     },
     "langsmith/diagnostics-self-hosted.md": {
-      "hash": "f8bdeebe959369472635a62466e6162169286500",
-      "translatedAt": "2026-08-16T09:20:29.586Z"
+      "hash": "3ec7c30c94f6e47cfcba57613506ce84120c6fdc",
+      "translatedAt": "2026-09-04T12:59:43.419Z"
     },
     "langsmith/endpoint-deprecation.md": {
       "hash": "db932785993881987e922b471063f6a67bb4001b",
@@ -889,8 +889,8 @@
       "translatedAt": "2026-08-16T09:20:35.213Z"
     },
     "langsmith/engine-github.md": {
-      "hash": "a7d6528544010ed6210cb00211815b07920df5f5",
-      "translatedAt": "2026-09-03T13:05:29.002Z"
+      "hash": "c05e6a65b2d2cc5dea1a3206d3c818bff9792aac",
+      "translatedAt": "2026-09-04T12:59:42.210Z"
     },
     "langsmith/engine-issue-categories.md": {
       "hash": "4aaca98414820d6c6fafe597345a40b3965f2fc2",
@@ -937,8 +937,8 @@
       "translatedAt": "2026-08-16T09:20:49.102Z"
     },
     "langsmith/engine.md": {
-      "hash": "11fb550fb4b48dec6cc0eacb7d5ad552617b5d77",
-      "translatedAt": "2026-09-03T13:05:53.477Z"
+      "hash": "be3c803f351fa6063f064090055297e003336c3a",
+      "translatedAt": "2026-09-04T12:59:59.973Z"
     },
     "langsmith/evaluate-graph.md": {
       "hash": "82f42f1dd24a046b331fcf2f43f66afe1ec01ce6",
@@ -4481,16 +4481,16 @@
       "translatedAt": "2026-08-16T09:27:58.055Z"
     },
     "oss/deepagents/code/approval-modes.md": {
-      "hash": "73a2607babb18437b3199919d5b023666cbdbe52",
-      "translatedAt": "2026-08-29T14:04:49.956Z"
+      "hash": "b58962a0c007134c0dd4d824d194cad19ce53d54",
+      "translatedAt": "2026-09-04T12:59:46.362Z"
     },
     "langsmith/user-management.md": {
       "hash": "e70688f82b0c2fb6c4cfd62397d5cceba85739fe",
       "translatedAt": "2026-09-01T13:48:37.174Z"
     },
     "oss/deepagents/code/config-file.md": {
-      "hash": "9a0d59a5d5a200ed0019f590ab9b4380f04f8920",
-      "translatedAt": "2026-08-31T16:29:09.155Z"
+      "hash": "012c1254bea9d9a25fa1b1ad3a68d78dc01de27a",
+      "translatedAt": "2026-09-04T13:00:03.653Z"
     },
     "oss/deepagents/code/credentials.md": {
       "hash": "dd7b7a4cfe77f054ecd17e1dfdff67c707e42ea4",
@@ -4501,8 +4501,8 @@
       "translatedAt": "2026-08-29T14:05:21.370Z"
     },
     "oss/deepagents/code/configuration.md": {
-      "hash": "bfc900945d8c08fb692f94752d45fc5a8cc072dc",
-      "translatedAt": "2026-08-31T16:29:17.101Z"
+      "hash": "d5a963c1cace905ed479a1e8d8543f1be17ea6f4",
+      "translatedAt": "2026-09-04T13:00:11.666Z"
     },
     "oss/deepagents/code/cli-reference.md": {
       "hash": "b34745427f5c0271dfaaf7c1a67be6acd133bcf2",
@@ -4521,16 +4521,16 @@
       "translatedAt": "2026-08-29T14:05:41.237Z"
     },
     "oss/deepagents/code/mcp-tools.md": {
-      "hash": "608e69b8ec878d4fc35d3dbbf8518125c670cdee",
-      "translatedAt": "2026-08-31T16:29:08.832Z"
+      "hash": "164be9d50f11920da4d9fe48974a231440f52116",
+      "translatedAt": "2026-09-04T13:00:14.641Z"
     },
     "oss/deepagents/code/remote-sandboxes.md": {
       "hash": "5ce5348d0c419186446008b2f9ba013008305167",
       "translatedAt": "2026-08-31T16:29:21.763Z"
     },
     "oss/deepagents/code/subagents.md": {
-      "hash": "04832e3820a5d80e9dbb2f438fda7d51a23347a1",
-      "translatedAt": "2026-08-16T09:28:24.095Z"
+      "hash": "7693c5bf3b92cbfebd37e6d833b8298b7834faed",
+      "translatedAt": "2026-09-04T13:00:05.383Z"
     },
     "oss/deepagents/code/providers.md": {
       "hash": "ef57246ecff25a1b03ddc93198f88a832a5981af",
@@ -6458,10 +6458,10 @@
       "translatedAt": "2026-09-03T13:05:54.815Z"
     }
   },
-  "updatedAt": "2026-09-03T13:06:11.673Z",
+  "updatedAt": "2026-09-04T13:00:14.641Z",
   "stats": {
-    "translated": 16,
-    "skipped": 540,
+    "translated": 8,
+    "skipped": 548,
     "failed": 0,
     "total": 556
   }

@@ -7,7 +7,7 @@
 本页面提供诊断步骤，帮助您在联系支持之前解决自托管 [LangSmith Deployment](/langsmith/deployment) 的问题。系统地遵循以下步骤来识别和解决常见部署问题。
 
 <Callout icon="headset" iconType="solid" color="#9333ea">
-如果您完成这些诊断步骤但仍然需要帮助，请参阅本指南末尾的[Support](#support)，了解有关在联系之前需要收集哪些内容的信息。
+如果您完成这些诊断步骤但仍需要帮助，请参阅本指南末尾的[Support](#support)，了解有关在联系之前应收集哪些内容的信息。
 </Callout>
 
 ## 先决条件
@@ -55,7 +55,7 @@ kubectl get lgps
 您的部署包括以下核心组件：
 
 - **`langsmith-frontend`**：您在其中创建代理服务器部署的 LangSmith 前端 UI。该应用程序对`langsmith-host-backend`进行API调用。 [control plane](/langsmith/control-plane) 的一部分。
-- **`langsmith-host-backend`**：LangSmith部署[control plane](/langsmith/control-plane)接收来自`langsmith-frontend`的请求并将部署请求保存到控制平面Postgres数据库。
+- **`langsmith-host-backend`**：LangSmith部署[control plane](/langsmith/control-plane)接收来自`langsmith-frontend`的请求并将部署请求持久保存到控制平面Postgres数据库。
 - **`langsmith-listener`**：LangSmith部署[data plane](/langsmith/data-plane)的一部分。通过 HTTP API 轮询 `langsmith-host-backend` 来创建、更新或删除部署。将任务排队以供工作进程处理。
 - **`langsmith-redis`**：[Redis](/langsmith/data-plane#redis)实例充当`langsmith-listener`的任务队列。侦听器将任务放入此处，工作人员从该队列中提取任务。
 - **`langsmith-operator`**：`lgps` Kubernetes 运算符，用于协调 `lgps` 资源的底层 Kubernetes 资源。数据平面基础设施的一部分。
@@ -94,7 +94,7 @@ extraEnv:
 
 ### 查看应用程序日志
 
-跟踪每个 Pod 的日志以了解基线行为：
+追踪每个 Pod 的日志以了解基线行为：
 
 ```bash
 kubectl logs -f <pod_name>
@@ -161,16 +161,16 @@ kubectl describe lgps <lgps_name>
 
 ## 支持
 
-如果您已执行这些诊断步骤但仍需要帮助，请在联系支持之前收集以下信息：
+如果您已执行这些诊断步骤但仍需要帮助，请收集以下信息并联系 [Technical Support](https://support.langchain.com/)：
 
-- [diagnostic steps](#step-1-understand-your-deployment) 的输出。
-- 您的 Helm 图表配置。
-- 相关错误消息和日志。
+- 捕获[diagnostic bundle](https://support.langchain.com/articles/2087799075-how-to-share-diags)。
 - 问题发生时您尝试执行的操作的描述。
 
-准备好这些信息将有助于[support](https://support.langchain.com)团队更快地诊断和解决您的问题。
+在票证中包含此信息将有助于 [support](https://support.langchain.com/) 团队更快地诊断和解决您的问题。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

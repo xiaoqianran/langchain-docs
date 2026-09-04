@@ -26,7 +26,7 @@ recent = "google_genai:gemini-3.6-flash"   # last /model switch (written automat
 auto_classifier = "openai:gpt-5.6-luna"  # optional: cheaper model for Auto approval review
 ```
 
-`[models].default` 始终优先于 `[models].recent`。 `/model` 命令仅写入`[models].recent`，因此您配置的默认值永远不会被会话中切换覆盖。要删除默认值，请使用 `/model --default --clear` 或从配置文件中删除 `default` 键。`[models].auto_classifier` 设置[Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型。未设置时，分类器继承主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解完整的优先级和安全说明。
+`[models].default` 始终优先于 `[models].recent`。 `/model` 命令仅写入`[models].recent`，因此您配置的默认值永远不会被会话中切换覆盖。要删除默认值，请使用 `/model --default --clear` 或从配置文件中删除 `default` 键。`[models].auto_classifier` 设置 [Auto approval classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型。未设置时，Deep Agents Code 会为受支持的主模型提供程序选择较低延迟的默认值：Anthropic 为 Claude Sonnet、Google 为 Gemini Flash、OpenAI 为 GPT Luna。其他提供商继承了主代理模型。您可以在运行时使用 `--auto-classifier-model` 或 `/auto model` 覆盖它。请参阅 [Select a classifier model](/oss/deepagents/code/approval-modes#select-a-classifier-model) 了解确切的型号规格、完整优先级和安全说明。
 
 ## 设置汇总模型
 
@@ -53,11 +53,11 @@ default = "backend-dev"  # your intentional long-term preference (Ctrl+S in /age
 recent = "frontend-dev"  # last /agents switch (written automatically)
 ```
 
-`[agents].default` 始终优先于 `[agents].recent`。在 `/agents` 选择器中使用 `Enter` 选择代理会写入`recent`；在突出显示的行上按`Ctrl+S`，将其固定为`default`。在同一行再次按 `Ctrl+S` 将清除默认值。
+`[agents].default` 始终优先于 `[agents].recent`。在 `/agents` 选择器中使用 `Enter` 选择代理会写入`recent`；在突出显示的行上按 `Ctrl+S` 将其固定为 `default`。在同一行再次按 `Ctrl+S` 将清除默认值。显式 `-a`/`--agent` 始终覆盖两者，而 `-r`/`--resume` 绕过两者，以便恢复线程的原始代理。相关标志请参见[Command reference](/oss/deepagents/code/cli-reference#command-line-options)。
 
-显式 `-a`/`--agent` 始终覆盖两者，而 `-r`/`--resume` 绕过两者，以便恢复线程的原始代理。相关标志请参见[Command reference](/oss/deepagents/code/cli-reference#command-line-options)。
+## 会话成本警告
 
-## 会话成本警告当每个线程的累计估计成本超过 50 美元时，Deep Agents 代码会发出警告一次，并建议使用 `/offload` 或 `/clear`。您可以以美元为单位配置阈值，或将其设置为`0`或负值以禁用警告：
+当每个线程的累计估计成本超过 50 美元时，Deep Agents 代码会发出警告，并建议使用`/offload` 或 `/clear`。您可以以美元为单位配置阈值，或将其设置为`0`或负值以禁用警告：
 
 ```toml
 [warnings]
@@ -66,12 +66,12 @@ session_cost_threshold_usd = 25
 
 ## 冷提示-缓存警告
 
-一些 LLM 提供商会自动缓存轮次之间的对话前缀，因此在缓存正常时发送的后续内容只会重新处理新令牌。该缓存在特定于提供商的空闲窗口后过期。 Deep Agents 代码当前针对 Anthropic 和 OpenAI 模型检测到这一点：当交互式聊天消息发送到缓存可能已过期（或其模型或缓存设置自上一轮以来发生更改）的线程时，它会估计重新预热成本，如果达到阈值，则在发送之前询问：
-
-- **仍然发送**：本轮发送；该警告在未来的冷缓存轮流中仍然会出现。
+一些 LLM 提供商会自动缓存轮次之间的对话前缀，因此在缓存正常时发送的后续内容只会重新处理新令牌。该缓存在特定于提供商的空闲窗口后过期。 Deep Agents 代码当前针对 Anthropic 和 OpenAI 模型检测到这一点：当交互式聊天消息发送到缓存可能已过期（或其模型或缓存设置自上一轮以来发生更改）的线程时，它会估计重新预热成本，如果达到阈值，则在发送之前询问：- **仍然发送**：本轮发送；该警告在未来的冷缓存轮流中仍然会出现。
 - **发送此会话并且不再发出警告**：将警告静音，直到应用程序重新启动。
 - **发送并不再警告**：持续抑制警告。从 `/notifications` 设置屏幕重新启用它。
-- **不发送（保留草稿）**：将消息恢复到聊天输入，以便您可以先`/clear`。设置触发警告的最低估计额外成本（冷缓存与热缓存），以美元为单位。默认为`0.50`；将其设置为`0`以禁用：
+- **不发送（保留草稿）**：将消息恢复到聊天输入，以便您可以先`/clear`。
+
+设置触发警告的最低估计额外成本（冷缓存与热缓存），以美元为单位。默认为`0.50`；将其设置为`0`以禁用：
 
 ```toml title="~/.deepagents/config.toml"
 [warnings]
@@ -80,14 +80,12 @@ cold_cache_min_delta_usd = 1.00
 
 ### 信任缓存策略的网关端点
 
-如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持静默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
+如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持沉默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
 
 ```toml title="~/.deepagents/config.toml"
 [warnings]
 trusted_cache_endpoints = ["smith.langchain.com"]
-```
-
-条目是完全匹配的主机名 - 信任 `example.com` 不信任 `gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 LangSmith 网关的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假设的缓存设置。
+```条目是完全匹配的主机名 - 信任 `example.com` 不信任 `gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 LangSmith 网关的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假设的缓存设置。
 
 ## 显示提供者可见的推理
 
@@ -96,7 +94,9 @@ trusted_cache_endpoints = ["smith.langchain.com"]
 ```toml title="~/.deepagents/config.toml"
 [ui]
 show_reasoning = true
-```在交互式会话中，推理流入单独的行，该行在阶段结束时折叠。单击该行或按 `Ctrl+O` 重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。
+```
+
+在交互式会话中，推理流入单独的行，该行在阶段结束时折叠。单击该行或按 `Ctrl+O` 重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。
 
 设置 `DEEPAGENTS_CODE_SHOW_REASONING=1` 覆盖 `config.toml`，或传递 `--show-reasoning` 启用一次启动的设置。启动标志优先于环境变量，而环境变量又优先于`config.toml`。
 
@@ -104,9 +104,7 @@ show_reasoning = true
     Deep Agents 代码仅显示模型提供者公开的推理内容。经过编辑或不透明的推理仍然被隐藏。
 </Note>
 
-## 不同的行号
-
-Deep Agents 代码默认显示记录和批准差异中与文件相关的行号。要隐藏它们，请设置：
+## 不同的行号Deep Agents 代码默认显示记录和批准差异中与文件相关的行号。要隐藏它们，请设置：
 
 ```toml
 [ui]
@@ -124,7 +122,9 @@ show_diff_line_numbers = false
 allowed = ["anthropic:claude-fable-5", "openai:*"]
 ```
 
-条目是精确的 `provider:model` 规格或 `provider:*` 通配符，允许提供商的整个阵容。设置列表后，被阻止的模型将从`/model`切换器中隐藏，如果在其他地方选择则被拒绝。当密钥未设置时，所有模型均被允许。显式的空列表不允许任何内容：
+条目是精确的 `provider:model` 规格或 `provider:*` 通配符，允许提供商的整个阵容。设置列表后，被阻止的模型将从`/model`切换器中隐藏，如果在其他地方选择则被拒绝。
+
+当密钥未设置时，所有模型均被允许。显式的空列表不允许任何内容：
 
 ```toml
 [models]
@@ -160,9 +160,7 @@ allowed = []   # no model may be used
         export DEEPAGENTS_CODE_LANGSMITH_REDACT=false
         ```
     </Tab>
-</Tabs>
-
-环境变量优先于配置文件。启用编辑后，如果无法配置编辑，则Deep Agents 代码将禁用对该运行的跟踪。秘密编辑不会编辑一般个人身份信息 (PII)、跟踪元数据或 shell 进程发出的跟踪。有关更广泛的选项，请参阅[Redact secrets from traces](/langsmith/redact-secrets)。
+</Tabs>环境变量优先于配置文件。启用密文后，如果无法配置密文，则Deep Agents 代码将禁用对该运行的跟踪。秘密编辑不会编辑一般个人身份信息 (PII)、跟踪元数据或 shell 进程发出的跟踪。有关更广泛的选项，请参阅[Redact secrets from traces](/langsmith/redact-secrets)。
 
 ## 提供者配置
 
@@ -186,20 +184,22 @@ max_tokens = 4096
 temperature = 0.7
 ```
 
-提供者有以下配置选项：<ResponseField name="models" type="string[]" post={["optional"]}>
+提供者有以下配置选项：
+
+<ResponseField name="models" type="string[]" post={["optional"]}>
     要在定义为 `<name>` 的提供程序的交互式 `/model` 切换器中显示的模型名称列表。对于已经附带模型配置文件的提供程序，除了捆绑的名称之外，您在此处添加的任何名称也会显示（对于尚未添加到包中的新发布的模型很有用）。对于[arbitrary providers](#arbitrary-providers)，此列表是切换器中模型的唯一来源。
 
-    此处列出的型号**绕过**任何应用的基于配置文件的[filtering criteria](/oss/deepagents/code/providers#which-models-appear-in-the-switcher)，始终出现在切换器中。这使得它成为显示被排除的模型的推荐方法，因为它们的配置文件缺乏 `tool_calling` 支持或尚不存在。
-
-    该键是可选的。您始终可以将任何型号名称直接传递给`/model`或`--model`，无论它是否出现在切换器中；提供者在请求时验证名称。
+    此处列出的型号**绕过**任何应用的基于配置文件的[filtering criteria](/oss/deepagents/code/providers#which-models-appear-in-the-switcher)，始终出现在切换器中。这使得它成为显示被排除的模型的推荐方法，因为它们的配置文件缺乏 `tool_calling` 支持或尚不存在。该键是可选的。您始终可以将任何型号名称直接传递给`/model`或`--model`，无论它是否出现在切换器中；提供者在请求时验证名称。
 </ResponseField>
 
 <ResponseField name="api_key_env" type="string" post={["optional"]}>
-    保存 API 密钥的环境变量的**名称**（例如，`"OPENAI_API_KEY"`）。 Deep Agents 代码在启动时从此环境变量中读取凭据，以在创建模型之前验证访问权限。大多数聊天模型包会自动从默认环境变量中读取。请参阅 [Provider reference](/oss/deepagents/code/providers#provider-reference) 表，了解每个内置提供程序检查的变量名称。对于不在该表中的提供程序，将 `api_key_env` 设置为其变量名称（请参阅 [Arbitrary providers](#arbitrary-providers)）。
+    保存 API 密钥的环境变量的**名称**（例如，`"OPENAI_API_KEY"`）。 Deep Agents 代码在启动时从此环境变量中读取凭据，以在创建模型之前验证访问权限。
+
+    大多数聊天模型包会自动从默认环境变量中读取。请参阅 [Provider reference](/oss/deepagents/code/providers#provider-reference) 表，了解每个内置提供程序检查的变量名称。对于不在该表中的提供程序，将 `api_key_env` 设置为其变量名称（请参阅 [Arbitrary providers](#arbitrary-providers)）。
 </ResponseField>
 
 <ResponseField name="display_name" type="string" post={["optional"]}>
-    身份验证 UI 中显示的人类可读的提供程序名称。将此用于任意提供商，其配置密钥针对机器进行了优化（例如，`my_gateway`），但其 UI 标签应包含空格或品牌大写。
+    身份验证 UI 中显示的人类可读的提供程序名称。 Use this for arbitrary providers whose config key is optimized for machines (for example, `my_gateway`) but whose UI label should include spaces or brand capitalization.
 </ResponseField>
 
 <ResponseField name="api_key_url" type="string" post={["optional"]}>
@@ -207,10 +207,10 @@ temperature = 0.7
 </ResponseField>
 
 <ResponseField name="base_url" type="string" post={["optional"]}>
-    覆盖提供者使用的基本 URL（如果支持）。请参阅您的提供商包的 [reference docs](https://reference.langchain.com/python/integrations/) 了解更多信息。
+    覆盖提供者使用的基本 URL（如果支持）。请参阅您的提供商包的 [reference docs](https://reference.langchain.com/python/integrations/) 了解更多信息。请参阅 [Compatible APIs](#compatible-apis) 将内置提供程序指向有线兼容端点，或参阅 [Arbitrary providers](#arbitrary-providers) 了解通过 `class_path` 配置的提供程序。
+</ResponseField>
 
-    请参阅 [Compatible APIs](#compatible-apis) 将内置提供程序指向有线兼容端点，或参阅 [Arbitrary providers](#arbitrary-providers) 了解通过 `class_path` 配置的提供程序。
-</ResponseField><ResponseField name="base_url_env" type="string" post={["optional"]}>
+<ResponseField name="base_url_env" type="string" post={["optional"]}>
     保存此提供程序的基本 URL 的环境变量的名称，与 `api_key_env` 平行。当端点来自环境而不是固定值时（例如，因机器或 CI 作业而异的网关 URL），请使用此值而不是 `base_url`，因此它可以在不编辑 `config.toml` 的情况下进行更改，并且可以参与端点解析和密钥/端点配对（请参阅[Endpoints, keys, and gateways](#endpoints-keys-and-gateways)）。它还将这些范围扩展到[built-in set](/oss/deepagents/code/providers#provider-reference)之外的提供商；参见[Arbitrary providers](#arbitrary-providers)。
 
     如果两者都设置了，则静态 `base_url` 获胜：
@@ -235,7 +235,7 @@ temperature = 0.7
 </ResponseField>
 
 <ResponseField name="enabled" type="boolean" default="true" post={["optional"]}>
-    该提供者是否出现在`/model`选择器中。设置为 `false` 以隐藏从已安装的包中自动发现的提供程序（例如，您不希望弄乱模型切换器的传递依赖项）。您仍然可以直接通过 `/model provider:model` 或 `--model` 使用禁用的提供商。
+    该提供者是否出现在`/model`选择器中。设置为 `false` 以隐藏从已安装的包中自动发现的提供程序（例如，您不希望使模型切换器混乱的传递依赖项）。您仍然可以直接通过 `/model provider:model` 或 `--model` 使用禁用的提供商。
 </ResponseField>
 
 ## 模型构造函数参数[⟦T129⟧ field](#provider-configuration) 将额外的参数转发给模型构造函数。要为一个模型提供不同的值，请添加一个模型键控子表，这样您就不必复制整个提供程序配置：
@@ -499,13 +499,13 @@ Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获�
 2. **以 `DEEPAGENTS_CODE_` 为前缀的端点变量。**
 3. **环境中的普通端点变量**（例如，`OPENAI_BASE_URL`）。
 4. **使用`/auth`凭证保存的端点。**此步骤将保存的端点应用于没有端点变量的提供程序，例如您在未声明[⟦T223⟧](#provider-configuration)的情况下添加的提供程序。步骤 2-3 没有可供读取的变量，因此此处直接使用保存的端点。对于确实具有端点变量的提供程序，保存的端点已在步骤 2 或 3 中生效（它被写入该变量），因此此步骤不会更改任何内容。无论哪种方式，在 `/auth` 中输入的端点都适用。
-5. **当以上均未设置时，提供商 SDK 自己的默认端点**。
+5. **当以上均未设置时，提供者 SDK 自己的默认端点**。
 
 <Note>
     解析的端点作为 `base_url` 构造函数参数传递给模型。
 </Note>
 
-与 API 密钥一样，[⟦T226⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix) 将端点范围限制为 Deep Agents 代码，而不影响其他工具。对于任何其他提供程序，使用 [⟦T227⟧](#provider-configuration) 声明名称，端点以相同的方式解析和配对：
+与 API 密钥一样，[⟦T226⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix) 将端点范围限定为 Deep Agents 代码，而不影响其他工具。对于任何其他提供程序，使用 [⟦T227⟧](#provider-configuration) 声明名称，端点以相同的方式解析和配对：
 
 ```toml
 [models.providers.myprovider]
@@ -605,12 +605,12 @@ extra_paths = [
 
 ## 代理运行时间限制
 
-LangGraph图步骤预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
+LangGraph图步预算是`dcode`代理图在单轮中可以执行的最大节点调用数。使用 `[runtime]` 部分配置此递归限制：
 
 ```toml title="~/.deepagents/config.toml"
 [runtime]
 recursion_limit = 5000
-```Deep Agents 代码未设置默认值。当没有源设置有效值时，LangGraph 服务器默认值适用。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
+```Deep Agents 代码未设置默认值。当没有源设置有效值时，将应用 LangGraph 服务器默认值。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
 
 优先级（从最高到最低）：
 
@@ -619,7 +619,7 @@ recursion_limit = 5000
 3. `DEEPAGENTS_CODE_RECURSION_LIMIT`环境变量
 4.`[runtime].recursion_limit`在`config.toml`
 5. `LANGGRAPH_DEFAULT_RECURSION_LIMIT`环境变量
-6. LangGraph服务器默认
+6. LangGraph 服务器默认
 
 使用`dcode config get runtime.recursion_limit`查看有效的Deep AgentsCode值及其来源。未设置的结果将限制留给LangGraph服务器。
 

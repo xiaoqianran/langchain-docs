@@ -19,9 +19,17 @@
 
 项目子代理会覆盖同名的用户子代理（请参阅[precedence rules](/oss/deepagents/code/configuration#subagents)）。
 
-frontmatter 需要`name` 和`description`（与[⟦T6⟧ dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based) 相同）。 Markdown 主体成为子代理的 `system_prompt`。除了基本规范之外，`AGENTS.md` 文件还支持可选的 `model` frontmatter 字段，该字段会覆盖该子代理的主代理模型。使用 `provider:model-name` 格式（例如，`anthropic:claude-opus-4-8`、`openai:gpt-5.5`）。省略它以继承主代理的模型。
+## 继续家长对话
 
-<Note>
+内置`general-purpose`子座席继承了父座席的对话和系统提示。这种上下文允许委派的工作继续进行，而无需重复父级对话中已确定的调查、决策或其他细节。
+
+要以隔离模式运行内置 `general-purpose` 子代理，请在 shell 或全局 `~/.deepagents/.env` 中设置以下变量：
+
+```bash
+export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
+```
+
+frontmatter 需要`name` 和`description`（与[⟦T10⟧ dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based) 相同）。 Markdown 主体成为子代理的 `system_prompt`。除了基本规范之外，`AGENTS.md` 文件还支持可选的 `model` frontmatter 字段，该字段会覆盖该子代理的主代理模型。使用 `provider:model-name` 格式（例如，`anthropic:claude-opus-4-8`、`openai:gpt-5.5`）。省略它以继承主代理的模型。<Note>
     其他 `SubAgent` 字段（`tools`、`middleware`、`interrupt_on`、`skills`）当前无法通过 `AGENTS.md` frontmatter 配置 - 以这种方式定义的自定义子代理继承主代理的工具。直接使用SDK进行完全控制。
 </Note>
 
@@ -45,7 +53,9 @@ You are a research assistant with access to web search.
 
 ## 动态子代理
 
-`dcode` 附带启用的代码解释器，因此 [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 开箱即用。要触发动态子代理，请要求“工作流程”。代理不是自行完成工作或通过其本机 `task` 工具管理扇出，而是编写一个编排脚本来调用内置 `task()` 全局并在代码解释器中运行它。例如：“运行工作流来检查 src/ 中的每个文件以进行 SQL 注入。”
+`dcode` 附带启用的代码解释器，因此 [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 开箱即用。
+
+要触发动态子代理，请要求“工作流程”。代理不是自行完成工作或通过其本机 `task` 工具管理扇出，而是编写一个编排脚本来调用内置 `task()` 全局并在代码解释器中运行它。例如：“运行工作流来检查 src/ 中的每个文件以进行 SQL 注入。”
 
 当子代理生成时，`dcode` 在动态子代理面板中显示它们，并按调度分组为阶段。
 
@@ -57,7 +67,7 @@ You are a research assistant with access to web search.
 
 ## 示例：具有成本效益的子代理
 
-使用更便宜、更快的模型来执行简单的委托任务，同时将主代理保持在更强大的模型上：
+使用更便宜、更快的模型来执行简单的委托任务，同时使主代理保持在更强大的模型上：
 
 ```markdown
 ---
@@ -67,9 +77,7 @@ model: anthropic:claude-haiku-4-5-20251001
 ---
 
 You are a general-purpose assistant. Complete the task efficiently and return a concise summary.
-```
-
-这会覆盖内置的通用子代理，将所有委派的任务路由到更便宜的模型。更多信息请参见[Override the general-purpose subagent](/oss/python/deepagents/subagents#override-the-general-purpose-subagent)。
+```这会覆盖内置的通用子代理，将所有委派的任务路由到更便宜的模型。更多信息请参见[Override the general-purpose subagent](/oss/python/deepagents/subagents#override-the-general-purpose-subagent)。
 
 ---
 

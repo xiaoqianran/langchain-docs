@@ -98,7 +98,7 @@
 |优先|地点 |范围 |
 |----------|----------|--------|
 | 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目|
-| 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录|
+| 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录 |
 | 3（最高）| `<project>/.mcp.json` |项目级—root（兼容 Claude 代码）|
 
 项目根目录是包含 `.git` 文件夹的最近父目录，回退到当前工作目录。
@@ -409,7 +409,7 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 |--------|---------|
 | `ok` |已连接；工具已加载并可供代理使用 |
 | `unauthenticated` |需要 OAuth 登录或刷新失败 — 运行 `dcode mcp login <server>` |
-| `error` |飞行前、发现或传输设置失败；附有错误消息|单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
+| `error` |飞行前、发现或传输设置失败；附有错误消息 |单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
 
 ## 项目级信任
 
@@ -422,7 +422,7 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 ### 它是如何工作的- **交互模式：** Deep Agents 激活项目服务器之前代码会提示批准，显示每个 stdio 命令和远程 URL。选择`Allow once`激活当前会话的每个提示服务器。选择 `Allow for this project — until changed` 激活会话的每个提示服务器，并选择为将来的会话保存哪些批准。
 - **保存的批准：** Deep Agents 代码将选定的服务器批准写入用户级别`~/.deepagents/config.toml`。每个批准的范围仅限于已解析的项目根、服务器名称以及该服务器定义的 SHA-256 指纹。如果服务器命令、URL、标头或其他配置字段发生更改，Deep Agents 代码会再次提示。
 - **非交互模式（`-n`）：** 没有匹配的已保存或环境批准的项目服务器将被静默跳过，除非通过`--trust-project-mcp`。明确否认仍然适用。
-- **信任涵盖 stdio 和远程条目：** 远程服务器可以在飞行前探测期间通过 SSRF 进入本地主机或云元数据端点，并通过标头渗漏 `${VAR}` 值，因此 Deep Agents 代码以与 stdio 服务器相同的方式对它们进行门控。
+- **信任涵盖 stdio 和远程条目：** 远程服务器可以在飞行前探测期间 SSRF 进入本地主机或云元数据端点，并通过标头渗漏 `${VAR}` 值，因此 Deep Agents 代码以与 stdio 服务器相同的方式对它们进行门控。
 - **用户级配置** (`~/.deepagents/.mcp.json`) 始终受信任，遵循与 `config.toml` 和 `hooks.json` 相同的信任模型。- **`dcode mcp login`** 还尊重项目信任：在登录发现期间会跳过不受信任的项目级配置，因此攻击者控制的远程条目无法将机密提取到 OAuth 握手中。
 
 ### 旗帜
@@ -498,10 +498,10 @@ enabled_project_server_approvals = [
     </Accordion>
 </AccordionGroup>
 
-## 进一步阅读
+## Further reading
 
 - [LangSmith Remote MCP](/langsmith/langsmith-remote-mcp)：通过 OAuth 将 Deep Agents 代码连接到 LangSmith 工具
-- [LangChain MCP guide](/oss/python/langchain/mcp)：协议详细信息、构建自定义服务器以及以编程方式使用`langchain-mcp-adapters`
+- [LangChain MCP guide](/oss/python/langchain/mcp)：使用 `MCPAdapter` 将代理连接到 MCP 服务器
 - [MCP specification](https://modelcontextprotocol.io/)：官方协议规范和服务器注册表
 
 ---

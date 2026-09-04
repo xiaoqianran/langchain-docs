@@ -122,9 +122,19 @@ flowchart TD
 
 ### 选择分类器模型
 
-默认情况下，自动分类器使用与主代理相同的模型。您可以将其指向不同的（通常更便宜且更快）模型，以减少自动审核期间的成本和延迟。
+当您不配置自动分类器时，Deep Agents代码会根据主模型的提供程序选择较低延迟的默认值：
 
-通过以下任意来源设置分类器模型：<Tabs>
+|主要型号提供商 |默认分类器 |
+|---|---|
+| Anthropic | `anthropic:claude-sonnet-5` |
+|谷歌人工智能 | `google_genai:gemini-3.8-flash` |
+|谷歌顶点人工智能 | `google_vertexai:gemini-3.8-flash` |
+| OpenAI | `openai:gpt-5.6-luna` |
+| OpenAI 法典 | `openai_codex:gpt-5.6-luna` |对于其他提供者，分类器使用主代理模型。您可以选择不同的模型来控制自动审核期间的成本和延迟。
+
+通过以下任意来源设置分类器模型：
+
+<Tabs>
     <Tab title="TUI command">
         运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
 
@@ -145,9 +155,7 @@ flowchart TD
     <Tab title="Environment variable">
         ```bash
         export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
-        ```
-
-        <Warning>
+        ```<Warning>
             **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
         </Warning>
     </Tab>
@@ -163,10 +171,11 @@ flowchart TD
     1. **`/auto model` TUI命令**：对当前会话立即生效。
     2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
     3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
-    4. **`config.toml`** 中的`[models].auto_classifier`：您的持久默认值。
-    5. **继承**：使用主代理模型（不配置时默认）。
+    4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
+    5. **提供程序默认值**：当主模型使用受支持的提供程序时，使用上面列出的较低延迟模型。
+    6. **继承**：对没有内置默认值的提供者使用主代理模型。
 
-    任何级别的空白值都意味着“从下一个源继承”。例如，未设置的环境变量会变为 `config.toml`。
+    未设置的值会传递到下一个源。使用 `/auto model clear` 或空 CLI 标志显式清除分类器会选择主代理模型而不是提供程序默认模型。
 </Accordion>
 
 当自动打开并在 `/auto model` 输出中时，TUI 会显示正在检查的模型。
