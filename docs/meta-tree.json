@@ -1815,6 +1815,12 @@
           "rel": "langsmith/sandbox-cli.md"
         }
       ],
+      "sandbox-download-links": [
+        {
+          "title": "Sandbox download links",
+          "rel": "langsmith/sandbox-download-links.md"
+        }
+      ],
       "sandbox-mounts": [
         {
           "title": "Sandbox mounts",

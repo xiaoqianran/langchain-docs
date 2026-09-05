@@ -130,7 +130,7 @@ class Configuration:
 
 ### 游乐场
 
-[Playground](/langsmith/create-a-prompt) 接口允许测试单个 LLM 调用，而无需运行完整图表：1. 选择一个线程。
+[Playground](/langsmith/create-a-prompt) 接口允许测试单独的 LLM 调用，而无需运行完整的图表：1. 选择一个线程。
 1. 单击节点上的 **查看 LLM 运行**。这列出了节点内进行的所有 LLM 调用（如果有）。
 1. 选择要在 Playground 中打开的 LLM 运行。
 1.修改提示并测试不同的模型和工具设置。
@@ -151,7 +151,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
   - 通过[langgraph-cli](/langsmith/local-dev-testing)启动本地运行的应用程序。
 
 <Note>
-工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基本层保留期（14 天）。但是，如果添加反馈，跟踪将自动升级到延长层保留（400 天）。可以通过以下两种方式之一添加反馈：
+工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基本层保留期（14 天）。但是，如果向跟踪添加反馈，跟踪将自动升级到延长级别保留（截至 2026 年 9 月 14 日为 180 天）。可以通过以下两种方式之一添加反馈：
 
 - [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset)。
 - [Feedback](/langsmith/observability-concepts#feedback) 手动添加到轨迹中。
@@ -160,7 +160,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 </Note>
 
 ### 实验设置1. 启动实验。单击 Studio 页面右上角的 **运行实验** 按钮。
-1. 选择您的数据集。在出现的模式中，选择要用于实验的数据集（或特定数据集拆分），然后单击 **开始**。
+1. 选择您的数据集。在出现的模式中，选择要用于实验的数据集（或特定的数据集拆分），然后单击 **开始**。
 1. 监控进度。现在，数据集中的所有输入都将针对活动助手运行。通过右上角的徽章监控实验进度。
 1. 当实验在后台运行时，您可以继续在 Studio 中工作。随时点击箭头图标按钮即可导航至LangSmith并查看详细的实验结果。
 
@@ -206,7 +206,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 1. 选择要添加到数据集的输入/输出的节点。
 1. 对于每个选定的节点，选择要在其中创建示例的目标数据集。默认情况下，将选择特定助手和节点的数据集。如果此数据集尚不存在，则会创建它。
 1. 在将示例添加到数据集之前，根据需要编辑示例的输入/输出。
-1. 选择页面底部的**添加到数据集**，将所有选定的节点添加到各自的数据集。
+1. 选择页面底部的**添加到数据集**，将所有选定的节点添加到各自的数据集中。
 
 更多详情请参考[How to evaluate an application's intermediate steps](/langsmith/evaluate-on-intermediate-steps)。
 

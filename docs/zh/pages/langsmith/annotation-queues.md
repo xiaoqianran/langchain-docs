@@ -7,7 +7,7 @@
 _注释队列_为人类审阅者提供了一个集中的工作流程，用于将反馈附加到特定的[runs](/langsmith/observability-concepts#runs)或[threads](/langsmith/observability-concepts#threads)。虽然您始终可以内联注释 [traces](/langsmith/observability-concepts#traces)，但注释队列可让您将运行和线程分组在一起、规定细则并跟踪审阅者进度。通过查看整个线程，您可以评估完整的多轮对话，捕获单次运行无法捕获的质量信号。
 
 <Info>
-您还可以使用 SDK 以编程方式管理注释队列和反馈配置。参考[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
+您还可以使用 SDK 以编程方式管理注释队列和反馈配置。请参阅[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
 </Info>
 
 要自定义运行输出在审核期间的显示方式，[configure custom output rendering for annotation queues](/langsmith/custom-output-rendering#for-annotation-queues)。
@@ -15,7 +15,7 @@ _注释队列_为人类审阅者提供了一个集中的工作流程，用于将
 LangSmith支持两种队列样式：
 
 - [**Single-run annotation queues**](#single-run-annotation-queues) 一次呈现一个队列项目，可以是一次运行，也可以是一个线程，并让审阅者提交您配置的任何标题反馈。对于**运行**项目，单运行队列还支持[assertions](/langsmith/assertions)来捕获离线评估的验收标准。
-- [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两个运行，以便审阅者可以根据您定义的标题项目快速决定哪个输出更好（或者它们是否等效）。
+- [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) 并排呈现两次运行，以便审阅者可以根据您定义的标题项目快速决定哪个输出更好（或者它们是否等效）。
 
 <Tip>
 有关使用注释队列的演示，请观看 [Getting started with annotation queues](#video-guide) 视频指南。
@@ -30,9 +30,9 @@ LangSmith支持两种队列样式：
 |评分标准反馈 |是的 |是的 |
 |审稿人笔记|是的 |没有 |
 |断言|是的 |没有 |
-|添加到数据集 |是的 |是的 |
+|添加到数据集|是的 |是的 |
 |默认数据集 |是的 |没有 |
-|自动化规则 |是的 |是的 |
+|自动化规则|是的 |是的 |
 
 ### 创建单次运行队列
 
@@ -57,7 +57,7 @@ LangSmith支持两种队列样式：
 
 - **启用运行预订**：预订项目会将其锁定一段时间以供您查看。当项目被保留时，其他审阅者可以查看它，但无法添加反馈或注释。如果所有工作区成员都查看每次运行，则预约将被禁用。
 
-    如果审阅者查看了某个项目，然后在没有将其标记为“完成”的情况下离开，则预订将在指定的“预订长度”后过期。然后，该项目将被释放回队列中，并可由另一位审阅者保留。<Note>
+    如果审阅者查看了某个项目，然后离开而没有将其标记为**完成**，则预订将在指定的**预订长度**后过期。然后，该项目将被释放回队列中，并可由另一位审阅者保留。<Note>
         点击项目注释的**重新排队**只会将当前项目移动到当前用户队列的末尾；它不会影响任何其他用户的队列顺序。它还将释放当前用户对该项目的预订。
     </Note>
 
@@ -92,25 +92,28 @@ LangSmith支持两种队列样式：
 
 有多种方法可以用项目填充单次运行队列：
 
-- **从详细信息视图**：在 [tracing project](/langsmith/observability-concepts#projects) 中，单击任意行以打开 [Details view](/langsmith/view-traces#details-view) 中的侧面板。单击 **+ 添加**，然后单击右上角的 **添加到注释队列**。在弹出窗口中的“**添加内容**”下，选择“**选定的运行**”（当前运行）或“**整个线程**”（运行所属的完整对话）。
+- **从“详细信息”视图**：在 [tracing project](/langsmith/observability-concepts#projects) 中，单击任意行以打开 [Details view](/langsmith/view-traces#details-view) 中的侧面板。该面板提供两个操作，每个操作都有固定的范围：
 
-    您可以添加任何中间 [run](/langsmith/observability-concepts#runs) 作为运行项，但不能添加根运行。 **整个线程** 要求运行是线程的一部分（使用 `thread_id` / `session_id` 元数据进行检测）。
+    - **添加到** <Icon icon="plus"/>：在运行标题中，打开此菜单并选择 **添加到注释队列**。这会将您选择的运行添加为运行项目。
+    - **将线程添加到注释队列** <Icon icon="pencil"/>：在 **消息**、**轮数** 和 **详细信息** 选项卡旁边，单击 图标。这会将整个线程添加为线程项。
+
+    这两个操作都会打开一个弹出窗口，您可以在其中选择现有队列或创建新队列。
 
     <img
       className="block dark:hidden"
-      src="/langsmith/images/add-to-annotation-queue-what-to-add-light.png"
-      alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker."
+      src="/langsmith/images/details-view-add-to-annotation-queue-light.png"
+      alt="Details view side panel showing the Add to icon in the run header with its menu open, and the Add thread to annotation queue icon next to the view tabs."
     />
 
     <img
       className="hidden dark:block"
-      src="/langsmith/images/add-to-annotation-queue-what-to-add-dark.png"
-      alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker."
-    />
+      src="/langsmith/images/details-view-add-to-annotation-queue-dark.png"
+      alt="Details view side panel showing the Add to icon in the run header with its menu open, and the Add thread to annotation queue icon next to the view tabs."
+    /><Note>
+    线程操作仅在使用 `thread_id` / `session_id` 元数据检测的运行中出现。如果没有该元数据，面板将自行打开运行，并且只有运行操作可用。
+    </Note>
 
-    <Note>
-    如果 **整个线程** 选项不可用或 **线程** 选项卡为空，则不会使用 `thread_id` / `session_id` 元数据对运行进行检测。
-    </Note>- **从“跟踪”或“运行”选项卡**：在跟踪项目中，选择 **跟踪** 或 **运行** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
+- **从“跟踪”或“运行”选项卡**：在跟踪项目中，选择 **跟踪** 或 **运行** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
 
     <img
       className="block dark:hidden"
@@ -198,7 +201,7 @@ LangSmith支持两种队列样式：
 
 ### 创建一个成对队列
 
-1. 导航至**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
+1. 导航到**数据集和实验**，打开数据集，然后选择**要比较的**两个实验**。
 1. 单击**注释**。在弹出窗口中，选择 **添加到成对注释队列**。 （在恰好选择了两个实验之前，该按钮将被禁用。）
 
     ![Popover showing the "Add to Pairwise Annotation Queue" card highlighted after two experiments are selected.](/langsmith/images/pairwise-annotation-queue-popup.png)1. 决定是将实验发送到现有的成对队列还是创建一个新队列。
@@ -211,7 +214,7 @@ LangSmith支持两种队列样式：
 默认情况下，创建或填充成对注释队列不会更改跟踪保留。运行会保留添加到队列之前的[retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 PAQ 的主要区别：- **实验**：您必须预先提供两个实验会话。 LangSmith 自动按时间顺序配对它们的运行，并在创建过程中填充队列。
-- **Rubric**：成对的Rubric项目仅需要反馈键和（可选）描述。注释者决定运行 A、运行 B 或两者对于每个标题项目是否更好。
+- **Rubric**：成对的Rubric项目仅需要反馈键和（可选）描述。注释者决定运行 A、运行 B 或两者对于每个标题项是否更好。
 - **数据集**：成对队列不使用默认数据集，因为比较跨越两个实验。
 - **预订和审阅者**：适用相同的协作者控制。保留有助于防止两个人同时判断相同的比较。
 

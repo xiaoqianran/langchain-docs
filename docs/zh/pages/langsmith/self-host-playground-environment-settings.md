@@ -35,13 +35,13 @@ playground:
       eks.amazonaws.com/role-arn: <your_role_arn>
 ```
 
-## VertexAI 配置
+## Gemini 企业代理平台配置
 
-您可以使用带有密钥或工作负载身份的环境变量（适用于 GKE 的 GCP 工作负载身份或适用于 EKS 的 AWS IRSA）为 Playground 服务配置 VertexAI 凭证。
+您可以使用带有密钥或工作负载身份的环境变量（适用于 GKE 的 GCP 工作负载身份或适用于 EKS 的 AWS IRSA）为 Playground 服务配置 Gemini Enterprise Agent Platform 凭证。
 
 ### 使用秘密
 
-使用 Kubernetes 密钥配置 VertexAI 凭证：
+使用 Kubernetes 密钥配置 Gemini Enterprise Agent Platform 凭据：
 
 ```yaml Helm
 playground:
@@ -105,7 +105,7 @@ playground:
 </CodeGroup>
 
 <Note>
-使用 GCP Workload Identity 时，请确保 GCP 服务帐户具有所需的 VertexAI 权限（例如 `roles/aiplatform.user`）。
+使用 GCP Workload Identity 时，请确保 GCP 服务帐户具有所需的 Gemini Enterprise Agent Platform 权限（例如 `roles/aiplatform.user`）。
 </Note>
 
 #### AWS IRSA (EKS)
@@ -133,7 +133,7 @@ playground:
 ```
 
 </CodeGroup><Note>
-使用 AWS IRSA 时，请确保您的 AWS IAM 角色具有代入 GCP 服务账户角色所需的权限，并且 GCP 服务账户具有所需的 VertexAI 权限。
+使用 AWS IRSA 时，请确保您的 AWS IAM 角色具有代入 GCP 服务账户角色所需的权限，并且 GCP 服务账户具有所需的 Gemini Enterprise Agent Platform 权限。
 </Note>
 
 ---

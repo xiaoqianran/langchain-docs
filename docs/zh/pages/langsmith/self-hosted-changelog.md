@@ -192,12 +192,12 @@
 - 除了现有的平均值、最小值和最大值之外，自定义仪表板图表现在还可以按总和、P50、P90、P95 和 P99 汇总反馈分数。
 - 在线评估器定义现在包括一个高级设置，用于打开或关闭评估器执行跟踪，并在禁用跟踪时继续运行反馈生成。
 - 停止重试跟踪查询超时，限制为 5 次尝试。
-- 接受以前的 Fernet 密钥，以便可以轮换密钥。- 现在，删除LangGraph部署会在一小时宽限期后删除其运行资源，并在一周后永久删除其数据库和元数据，从而留下一个从意外删除中恢复的窗口。
+- 接受以前的 Fernet 密钥，以便可以轮换密钥。- 删除LangGraph部署现在会在一小时宽限期后删除其运行资源，并在一周后永久删除其数据库和元数据，留下一个从意外删除中恢复的窗口。
 - 现在可以上传 .csv 或 .jsonl 数据集，无论浏览器报告的内容类型如何； Windows 浏览器将 .csv 文件标记为 Excel 类型，这此前会导致有效上传失败，并且也接受 DATASET.CSV 等大写文件名。
 - 附加到 Slack 消息的文件现在可在 /workspace/uploads 下用于沙箱支持的代理，匹配从 Fleet 上传的文件。
 - LangSmith 公开注释队列项端点，用于通过公共 API 和 SDK 生成流程添加、列出、更新、删除、计数、定位和查看运行或线程队列项。
 - 自托管舰队代理可以使用沙箱支持的计算机访问，而不需要云计费计划层。
-- 实验比较网格中的元数据列（包括`example.metadata.<key>`）现在呈现其值而不是保持为空。-“粒度使用”页面现在显示一条通知，即在自托管部署中未跟踪长期跟踪使用情况，因此“仅长期”过滤器预计会在那里显示零结果。
+- 实验比较网格中的元数据列（包括 `example.metadata.<key>`）现在呈现其值而不是保持为空。-“粒度使用”页面现在显示一条通知，即在自托管部署中未跟踪长期跟踪使用情况，因此“仅长期”过滤器预计会在那里显示零结果。
 - API 密钥范围的 LLM Gateway 支出上限和速率限制策略现在可以添加自定义 X-Gateway-* 标头条件，因此单个 API 密钥可以匹配每个标头值的不同限制，例如，经销商可以为每个下游客户设置单独的上限，而无需分发多个密钥。
 - 清理代理上下文以减少初始令牌成本。
 - 跟踪详细信息窗格再次使用与其部分标题相匹配的升高背景。
@@ -209,7 +209,7 @@
 - 当代理详细信息仍在加载时，导航到与选定代理的代理聊天不再崩溃；聊天显示加载状态，直到代理准备好，然后正常渲染。
 - 禁用 ace 请求上的 keepalive。
 - 在 Python 和 TypeScript SDK 中启用注释队列。
-- 一旦引擎链接到新的匹配跟踪，引擎问题板上已解决的问题现在就会返回“打开”；此前，跟踪记录已作为证据提交，但问题一直处于关闭状态，因此反复出现的问题从未在主板上重新出现。被驳回的问题仍然被驳回。
+- 一旦引擎链接到新的匹配跟踪，引擎问题板上已解决的问题现在就会返回“打开”；此前，该跟踪已作为证据提交，但该问题一直处于关闭状态，因此反复出现的问题从未在董事会上重新出现。被驳回的问题仍然被驳回。
 - 在使用 OAuth/SSO 进行身份验证的自托管安装中，远程 MCP 授权端点返回 400，因为 SSO 登录路由对其进行了隐藏； OAuth 客户端现在可以完成授权步骤并连接到远程 MCP 服务器。- 具有空白或仅空白名称的网关策略现在回退到显示策略 ID，而不是呈现空名称单元格，并且策略更新端点现在以与创建相同的方式拒绝空白名称。
 - 解决了重复的 Z 导入错误。
 - LangSmith 主页现在提供快速访问以复制当前组织和工作区 ID。
@@ -233,8 +233,8 @@
 - 记录已完成的 langchain 提供商信用购买。
 - 沙箱中的 `langsmith` CLI 已更新至 v0.2.44，其请求现已在为 `/api` 下的 API 提供服务的自托管部署上得到解决，其中 `trace messages` 等命令和项目问题命令之前失败。
 - 当模型提供者拒绝 Playground 运行（例如错误的 API 密钥或配额耗尽）时，Playground 现在会显示提供者自己的错误消息，而不是通用服务器错误，从而从错误本身澄清原因。
-- 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在会计划将项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
-- 现在，每个人都可以使用新的代理创建体验，助手会显示“创建代理”按钮，并且新代理会运行自己的设置对话，而不是内联构建。- 分叉评估者将副本附加到分叉对话框中指定的项目或数据集；以前，可以创建不附加任何内容的副本，让原始评估器运行您刚刚编辑过的版本。
+- 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在会安排该项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
+- 现在，每个人都可以使用新的代理创建体验，助手会显示“创建代理”按钮，并且新代理会运行自己的设置对话，而不是内联构建。- 分叉评估者将副本附加到分叉对话框中指定的项目或数据集；以前，可以创建不附加任何内容的副本，让原始评估器运行您刚刚编辑的版本。
 - LangGraph 部署的删除确认现在表明，在您确认后会运行底层数据库的清理，并且已删除部署的名称将保持保留状态，直到清理完成。
 - 当您在入职期间选择网关积分时，复制到编码代理中的提示现在包含适合您的部署的正确网关 URL。
 - 恢复了 #30448 中删除的重复数据删除/生命周期块。
@@ -254,16 +254,16 @@
 - 配置评估器窗格的标题和模板导航再次在深色模式下绘制与窗格本身相同的背景。
 - 确认破坏性操作后，从运行详细信息操作菜单中删除了整个跟踪。
 - 在跟踪项目中，重置视图现在会将线程/跟踪/运行切换器与显示的行同步移动；以前，当表已经返回到跟踪状态时，切换器可以保持在运行状态。- 自托管部署现在可以捕获丢失的跟踪项目上次运行时间戳，因此项目排序反映了最近的历史活动。
-- 主页间距和表面着色现在与设计审核反馈相匹配，并且几个小副本修复了澄清的信用限额、提供商状态和组织级购买限制。
-- 当项目配置自定义输出渲染器时，跟踪输出部分现在将其作为自定义选项与 Markdown、Plain、JSON 和 YAML 一起提供，而不是替换它们；自定义仍为默认值，您的选择将被记住。
+- 主页间距和表面着色现在与设计审核反馈相匹配，并且几个小副本修复了澄清的信用限额、提供商状态和组织级购买限额。
+- 当项目配置自定义输出渲染器时，跟踪输出部分现在将其作为自定义选项与 Markdown、Plain、JSON 和 YAML 一起提供，而不是替换它们；自定义仍为默认设置，您的选择将被记住。
 - 跳过新安装的回填发布列车检查。
 - 当LLM网关将OpenAI聊天完成或响应请求转换为Claude模型时，设置prompt_cache_options（或已弃用的prompt_cache_retention）的请求现在启用Anthropic提示缓存，而不是忽略该字段；在聊天完成和响应格式之间进行转换时，应用了Anthropic的默认缓存生命周期，并保留了prompt_cache_key、prompt_cache_retention和prompt_cache_options。- 舰队代理现在可以正确地将沙箱创建和组织配置请求路由到自托管部署上的 Go 平台后端服务，其中 Go 和 Python 服务在不同的地址上运行，从而无需反向代理解决方法。
 - 从实验结果网格中更正评估者分数现在会立即更新单元格及其弹出窗口，而不需要刷新页面。
 - 提示列表不再在页面底部显示持久的 LangChain Hub 横幅。
 - 使用现场史密斯前端设计系统。
-- 引擎运行的 webhook 和沙箱链接现在解析了 LANGSMITH_PUBLIC_API_ENDPOINT 的外部可访问 API 库，回退到 LANGCHAIN_PLATFORM_ENDPOINT，然后是 LANGCHAIN_ENDPOINT；其图表集仅 LANGSMITH_PUBLIC_API_ENDPOINT 正在构建相对 URL 的安装，这使得每个非影子引擎运行失败，因为运行 Webhook 作为环回地址被拒绝。
+- 引擎运行的 webhooks 和沙箱链接现在解析了 LANGSMITH_PUBLIC_API_ENDPOINT 的外部可访问 API 库，回退到 LANGCHAIN_PLATFORM_ENDPOINT，然后是 LANGCHAIN_ENDPOINT；其图表集仅 LANGSMITH_PUBLIC_API_ENDPOINT 正在构建相对 URL 的安装，这使得每个非影子引擎运行失败，因为运行 Webhook 作为环回地址被拒绝。
 - llm-gateway：从网关进程初始化节拍器客户端。
-- 数据集 JSON 模式描述现在可以在编辑器工具提示中安全呈现。
+- 数据集 JSON 架构描述现在可以在编辑器工具提示中安全呈现。
 - 除了自托管和非数据平面工作区之外，在所有情况下都在侧边栏中显示网关和积分小部件。- 数据集和运行附件现在可以在自托管部署中预览、打开或下载之前解析相对签名的下载 URL。
 - 从数据集或主页空状态创建数据集现在会打开新数据集，而不是短暂显示“未找到页面”屏幕。
 - Playground 批处理和调用端点现在在响应之前将缓冲的运行树清理为 JSON 安全的有效负载，因此当运行图无法序列化时，在线评估不再因不透明 500 而失败。
@@ -271,8 +271,8 @@
 - 反馈修正现在可以将分数重置为其原始值，包括零。
 - 当客户端请求机密身份验证方法时，与托管 LangSmith MCP 服务器的新连接无法注册；在这种情况下，动态客户端注册现在发出一个公共客户端，而不是返回错误，因此从 Claude 和其他 MCP 客户端进行的连接再次正常工作。- 通过LLM网关中的网关信用模型向moonshotai/kimi-k3和moonshotai/kimi-k2.6发送的请求现在在用户跟踪代码中发送时与价格图进行匹配。
 - 自托管部署形式现在支持 Redis CPU 和内存请求和限制，并且配置的值已应用于 Kubernetes 操作员管理的 Redis 工作负载。
-- 当未配置凭证密钥时，Vertex AI 上的 Claude 模型现在可以在 Playground 中成功加载，与 GCP Workload Identity 或 AWS IRSA 下的现有 Gemini 行为相匹配。
-- 将资源标签键或值描述设置为`null`以通过PATCH API将其清除。
+- 现在，当未配置凭证密钥时，Gemini Enterprise Agent Platform 上的 Claude 模型可以在 Playground 中成功加载，与 GCP Workload Identity 或 AWS IRSA 下的现有 Gemini 行为相匹配。
+- 将资源标签键或值描述设置为`null`，以通过 PATCH API 清除它。
 - 见解报告仅分析跟踪，因此报告过滤器中的“Is Trace”条件现已修复；将其设置为 false 之前会生成一份成功运行但从未发现任何见解的报告。
 - 现在渲染消息上的大型 PDF、JSON 和 CSV 预览，而不是显示空框架，并且 PDF 和 JSON 预览在扩展控件旁边获得了在新选项卡中打开控件。- 沙盒支持的 Fleet 代理可以构建新的牌组、修改现有的牌组并回答有关 .pptx 文件内容的问题，而无需先安装演示工具；内置技能指导创作并在交付前验证文件。
 - 当客服人员进行转弯时，聊天现在会显示实时经过时间计数，该计数会在几秒钟后出现，并在等待时间较长时拾取旋转状态标签，因此缓慢的转弯会被视为正在进行中而不是停止；一旦答案到来，流式推理的模型仍然会崩溃到它们思考的时间。
@@ -496,9 +496,9 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 </Update>
 
 <Update label="2026-08-04" tags={["Preview"]} rss={{ title: "2026-08-04 - self-hosted" }}>
-## langsmith-0.16.0-rc.28- 更正实验结果网格中的评估者分数会立即更新单元格及其弹出窗口，无需刷新页面。
+## langsmith-0.16.0-rc.28- 更正实验结果网格中的评估分数会立即更新单元格及其弹出窗口，无需刷新页面。
 - 引擎运行的 webhook 和沙箱链接解决了从 `LANGSMITH_PUBLIC_API_ENDPOINT` 到外部可访问的 API 基础，回落到 `LANGCHAIN_PLATFORM_ENDPOINT`，然后是 `LANGCHAIN_ENDPOINT`。仅设置 `LANGSMITH_PUBLIC_API_ENDPOINT` 先前构建的相对 URL 的安装，这会导致每个非影子引擎运行失败。
-- 对于无法持有 WebSocket 的客户端，添加了一个流沙箱执行请求，该请求将 stdout 和 stderr 作为服务器发送的事件返回。传递命令 ID 重用正在运行的命令，单独的恢复请求将继续中断的流。
+- 添加了一个流沙箱执行请求，为无法持有 WebSocket 的客户端返回 stdout 和 stderr 作为服务器发送的事件。传递命令 ID 重用正在运行的命令，单独的恢复请求将继续中断的流。
 - 具有在线许可证密钥的自托管部署自动显示每月组织使用情况图表，无需 `enable_monthly_usage_charts` 组织配置。离线部署现在指向“粒度使用”选项卡，以获取本地记录的计费使用情况。
 
 **下载 Helm 图表：** [⟦T83⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.28/langsmith-0.16.0-rc.28.tgz)
@@ -547,7 +547,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 ## langsmith-0.16.0-rc.23- 将沙盒中的`langsmith` CLI 更新至 v0.2.44。它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
 - 当 ClickHouse 使用优化的运行表时，负反馈键过滤器正确返回匹配跟踪。
 
-**Download the Helm chart:** [⟦T96⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
+**下载 Helm 图表：** [⟦T96⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
 {/* langsmith-release-image: 0.16.0-rc.23 0.16.27rc1 */}
 </Update>
 
@@ -556,16 +556,16 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 粒度使用页面显示一条通知，即在自托管部署中不会跟踪长期跟踪使用情况，因此仅长期过滤器预计将返回零结果。
 
-**Download the Helm chart:** [⟦T97⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.22/langsmith-0.16.0-rc.22.tgz)
+**下载 Helm 图表：** [⟦T97⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.22/langsmith-0.16.0-rc.22.tgz)
 {/* langsmith-release-image: 0.16.0-rc.22 0.16.25rc1 */}
 </Update>
 
 <Update label="2026-07-28" tags={["Preview"]} rss={{ title: "2026-07-28 - self-hosted" }}>
 ## langsmith-0.17.0-rc.3
 
-- 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。 Refer to the [langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1) release notes below.
+- 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**Download the Helm chart:** [⟦T98⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.3/langsmith-0.17.0-rc.3.tgz)
+**下载 Helm 图表：** [⟦T98⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.3/langsmith-0.17.0-rc.3.tgz)
 {/* langsmith-release-image: 0.17.0-rc.3 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
@@ -646,7 +646,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 在 LLM Gateway 监控日期范围选择器中选择特定的开始和结束日期会显示 UTC 格式的日期，并在按钮上附加“(UTC)”。相对范围（例如过去 7 天）不受影响。
 - 全新部署可以容忍未迁移的计费配置。
 - 自定义输出渲染器 URL 仅限于 HTTPS。
-- 修复了单源部署中`/api/v1/info`的路由。- 从跟踪项目批量添加运行会首先在数据集选择器中列出该项目的默认数据集。
+- 修复了单源部署中`/api/v1/info`的路由。- 从跟踪项目批量添加运行会首先在数据集选取器中列出该项目的默认数据集。
 
 **下载 Helm 图表：** [⟦T108⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.16/langsmith-0.16.0-rc.16.tgz)
 {/* langsmith-release-image: 0.16.0-rc.16 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
@@ -870,7 +870,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织管理员可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
-- 支持运行计数、错误、延迟和成本的警报规则 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。
+- 支持运行计数、错误、延迟和成本的警报规则 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
 - 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。- 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
@@ -885,7 +885,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了对 Claude Opus 4.8 的代币定价支持。
 - Agent Builder 提供了 Claude Opus 4.8 作为内置 Anthropic 模型。
 - 组织管理员可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。- 托管Deep Agents MCP 服务器设置支持`/v1/deepagents` API 命名空间下的 OAuth。
-- 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供程序）输入的额外参数保留了其原始密钥大小写。
+- 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供者）输入的额外参数保留了其原始的密钥大小写。
 - 自托管 OIDC 用户获得了从 `name` / `given_name`+`family_name` id_token 声明解析的显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
 - 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏 Anthropic 图像或文档。
@@ -918,7 +918,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。
@@ -1016,7 +1016,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
 - 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。
-- 对于沙盒支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验；每次导出仅限 250 个实验，可根据要求增加。
+- 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验；每次导出仅限 250 个实验，可根据要求增加。
 - Fleet 使用 `langchain-fireworks 1.4.2` 进行 Fireworks 模型调用。
 - 重新设计了运行详细信息面板，提高了可读性和更强大的消息解析。
 - Fleet/Agent Builder 包含 Gemini 3.5 Flash 作为可选择的内置模型。
@@ -1064,7 +1064,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 网关支出上限策略现在可以配置为每周一次。
 - 添加了 Centralize 作为 MCP 市场集成。
 - 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅限主机的身份验证代理部分。
-- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
+- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙盒导航条目和 `/sandboxes` 页面。
 - 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 - 修复了线程 ID 中的特殊字符未编码，导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
@@ -1089,7 +1089,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了对 Claude Opus 4.8 的代币定价支持。
 - Agent Builder 现在提供 Claude Opus 4.8 作为内置 Anthropic 模型。
 - 组织管理员现在可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。
-- 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。- 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供程序）输入的额外参数现在保留了其原始密钥大小写。
+- 托管 Deep Agents MCP 服务器设置现在支持`/v1/deepagents` API 命名空间下的 OAuth。- 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供程序）输入的额外参数现在保留了其原始密钥大小写。
 - 自托管 OIDC 用户现在可以从 `name` / `given_name` + `family_name` id_token 声明解析显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
 - 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。
@@ -1225,7 +1225,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
 - 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封；旧的 URL 返回 404。- 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
-- 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡；有意义的扩展思维内容继续正常呈现。
+- 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空卡或乱码卡；有意义的扩展思维内容继续正常呈现。
 - 对于沙箱支持的代理，队列代理 API 现在需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox`。
 - 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验，每次导出仅限 250 个实验，并可根据要求增加。
 - Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
@@ -1283,7 +1283,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 现在可以使用相同的表达式多次创建同一代理上的类似 cron 计划。
@@ -1310,7 +1310,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织管理员现在可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
-- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封。旧的 URL 返回 404。
+- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
 - 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
@@ -1437,13 +1437,13 @@ LangSmith 自托管 v0.15 带来了**可重用评估器和包含 30 多个评估
 - 将 Agent Builder 重命名为 [Fleet](/langsmith/fleet)。如果您使用工作负载身份，则可能需要更新任何服务帐户。
 - 对于支持 [RBAC](/langsmith/rbac) 的组织，`POST /workspaces/current/members`​​ 现在需要 `role_id`。没有它的请求返回`400`，而不是默认为`WORKSPACE_ADMIN`。
 - 弃用了 `USAGE_EXPORT_ADMIN_EMAILS` 环境变量。请使用 `INSTANCE_ADMIN_EMAILS` 代替。
-- 将 `projects:update-retention` 权限替换为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`，以单独控制提高和降低跟踪保留。权限已回填到现有角色，因此不需要对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
-- 添加了 `fleet-admin:read` 权限，用于控制新的舰队管理部分。现有租户的管理员需要授予它。权限已回填到现有角色，因此不需要对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
+- 将 `projects:update-retention` 权限替换为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`，以单独控制提高和降低跟踪保留。权限已回填到现有角色，因此无需对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
+- 添加了 `fleet-admin:read` 权限，用于控制新的舰队管理部分。现有租户的管理员需要授予它。权限已回填到现有角色，因此无需对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
 
 ### 基础设施变化- **来自舰队重命名的部分重命名** - 作为 Agent Builder 的一部分，多个部分被重命名为 [Fleet](/langsmith/fleet) 重命名（请参阅 [Breaking changes](#breaking-changes)）。您可能需要更新服务帐户或更改配置中的值。
 - **没有公共入口的 LLM 身份验证代理** - 如果部署的 LLM 身份验证代理没有公共入口，并且只能通过内部 Kubernetes 网络访问，则必须将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。如果没有这些设置，内置 SSRF 保护将阻止对私有 IP 的请求。有关完整配置详细信息，请参阅[Deploy without a public ingress](/langsmith/llm-auth-proxy-self-hosted#deploy-without-a-public-ingress)。
 
-### 新功能- **Context Hub** - 代理指令和工具的版本控制、环境感知管理。创建和管理版本化的[skill and agent repos](/langsmith/context-engineering-concepts)，促进对`staging`或`production`环境的提交，并在运行时通过环境标签解析上下文。请参阅 [Use the Context Hub](/langsmith/use-the-context-hub) 和 [Manage contexts with the SDK](/langsmith/manage-contexts-sdk) 开始使用。
+### 新功能- **Context Hub**——代理指令和工具的版本控制、环境感知管理。创建和管理版本化的[skill and agent repos](/langsmith/context-engineering-concepts)，促进对`staging`或`production`环境的提交，并在运行时通过环境标签解析上下文。请参阅 [Use the Context Hub](/langsmith/use-the-context-hub) 和 [Manage contexts with the SDK](/langsmith/manage-contexts-sdk) 开始使用。
 - **可重复使用的评估器和评估器模板** - 新的 [Evaluators](/langsmith/evaluators) 选项卡集中了工作区中的每个评估器，其中包含 30 多个模板，涵盖安全性、响应质量、轨迹、用户行为和多模式评估。在几秒钟内将现有评估器附加到新的跟踪项目，无需维护重复副本。
 - **每个示例断言** - 在 [annotation queue](/langsmith/annotation-queues) 中编辑示例时，写入 [assertions](/langsmith/assertions) 代替参考输出或与参考输出一起编写。
 - **可下载的见解报告** — 从报告详细信息页面下载 PDF 格式的 [Insights](/langsmith/insights) 报告以进行离线分析。
@@ -1647,7 +1647,7 @@ LangSmith 自托管 v0.15 带来了**可重用评估器和包含 30 多个评估
 - 通过从会话统计查询中删除死的 run_stats_facets 连接来提高性能。
 - 修复了 MCP 服务器过滤器下拉列表，使其可滚动。
 - 添加了“用户成本”表并在队列中切换代理/用户视图。
-- 通过添加 JWT 注入的 URL 白名单实施来增强安全性。
+- 通过添加 JWT 注入的 URL 白名单强制来增强安全性。
 - 增加了在后端按创建和更新时间对评估器进行排序的功能。
 - 在评估者表中添加了“反馈键”过滤，以实现更精确的搜索。
 - 在全页跟踪视图上显示后退按钮以增强导航。
@@ -1697,7 +1697,7 @@ LangSmith 自托管 v0.15 带来了**可重用评估器和包含 30 多个评估
 <Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.0
 
-LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下启用），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic 通过 Vertex AI、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），并且针对 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL 推出了新的代理工具和触发器。在基础设施方面，v0.14 添加了对 blob 存储的 **GCS Workload Identity** 支持，**Valkey** 作为 Redis 的直接替代品，以及用于更安全部署的预升级迁移挂钩。
+LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下启用），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic 通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），并且针对 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL 推出了新的代理工具和触发器。在基础设施方面，v0.14 添加了对 Blob 存储的 **GCS Workload Identity** 支持，**Valkey** 作为替代项Redis 替换，以及用于更安全部署的预升级迁移挂钩。
 
 跟随[upgrade instructions](/langsmith/self-host-upgrades)即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
 
@@ -1717,7 +1717,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - **统一的模型配置** - Agent Builder、Chat、Insights、Playground 和 Evaluator 现在共享一组模型配置，工作区管理员可以控制跨所有 AI 功能的模型访问。
 - **提示所有者** — 指定一组具有细粒度权限的特定用户，以提升或删除单个提示，而无需授予更广泛的组织访问权限。
 - **多模式评估器** - 将附件和 Base64 内容（图像、音频、PDF）直接传递给评估器。
-- **跟踪项目的成本警报** — 设置跟踪项目级成本的警报以及现有的 LangSmith 警报。- **扩展的 Playground 模型支持** —Anthropic 通过 Vertex AI、自定义 Azure 模型、Bedrock 推理配置文件和可配置的基本 URL、Gemini 3.1 Pro、GPT-5.3 / 5.4（现在默认）和 Baseten + GLM-5。
+- **跟踪项目的成本警报** — 设置跟踪项目级成本的警报以及现有的 LangSmith 警报。- **扩展的 Playground 模型支持**—Anthropic 通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件和可配置的基本 URL、Gemini 3.1 Pro、GPT-5.3 / 5.4（现在默认）和 Baseten + GLM-5。
 - **新的代理工具和触发器** - Google 表格和文档、Outlook 邮件和日历、Microsoft Teams、Salesforce SOQL、带有刷新令牌的 Gmail OAuth v2 以及 Outlook 触发器。
 - **见解增强** - 预定的见解报告、随时间变化的类别趋势、分析中的完整反馈意见以及较低的最小工作间隔（6 小时 → 1 小时）。
 - **注释和审阅升级** - 每个队列所需的审阅者、遵守 `reviewer_access_mode` 的成对队列、“分配给我”过滤器、每个注释器 CSV 导出和批量表操作。
@@ -1761,7 +1761,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 提高了舰队界面的加载速度。
 - 修复了跟踪 UI 中导致间歇性显示问题的错误。
 - 添加了对 Redis 集群的支持，提高了自托管部署的可扩展性。
-- 改进了 PostgreSQL IAM 集成，以便在自托管实例中实现更好的数据库管理。
+- 改进了 PostgreSQL IAM 集成，以便在自托管实例中更好地进行数据库管理。
 
 **下载 Helm 图表：** [⟦T460⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.40/langsmith-0.13.40.tgz)
 {/* langsmith-release-image: 0.13.40 0.13.41 */}
@@ -2357,7 +2357,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 ## langsmith-0.13.3
 
 - 改进了流式传输，以无丢失地累积流式增量数据。
-- 添加了 Google 表格/文档工具集成。
+- 添加了 Google Sheets/Docs 工具集成。
 - 在设置中增强了 OAuth 服务器的用户体验。
 - 使视图跟踪链接在用户界面中更加明显。
 - 解决了 Agent Builder 中的多个错误和性能问题，包括将自托管 Agent Builder 运行写入单个项目以及默认折叠子代理工具卡。

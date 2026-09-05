@@ -17,9 +17,9 @@ OpenWiki 支持以下提供商：
 | `gemini-enterprise` |谷歌 ADC + `GOOGLE_CLOUD_PROJECT` |可选`GOOGLE_CLOUD_LOCATION`（默认为`global`）|
 | `bedrock` | AWS 凭证 + 区域 |显式基岩密钥或 AWS 开发工具包默认链 |
 | `baseten` | `BASETEN_API_KEY` |可选`BASETEN_BASE_URL`|
-| `fireworks` | `FIREWORKS_API_KEY` |可选`FIREWORKS_BASE_URL`|
+| `fireworks` | `FIREWORKS_API_KEY` |可选`FIREWORKS_BASE_URL` |
 | `nebius` | `NEBIUS_API_KEY` | Nebius 代币工厂 |
-| `nvidia` | `NVIDIA_API_KEY` |可选`NVIDIA_BASE_URL`|
+| `nvidia` | `NVIDIA_API_KEY` |可选`NVIDIA_BASE_URL` |
 | `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` |需要 `OPENAI_COMPATIBLE_BASE_URL` 和自定义型号 ID |
 
 凭证和默认值存储在`~/.openwiki/.env`中。进程环境值优先于文件值。
@@ -88,7 +88,7 @@ OPENWIKI_REASONING_EFFORT=high
 要使用 GitHub Copilot：1. 在`openwiki --init`期间选择 GitHub Copilot。如果您有活动的 GitHub CLI 会话，OpenWiki 可以重用它。否则，从凭据提示符处运行 `gh auth login`。
 2. 选择型号（例如`gpt-5.5`）。
 
-OpenWiki 将 GitHub CLI 令牌保留在 GitHub CLI 凭证存储中。它不会将该令牌复制到`~/.openwiki/.env`。对于没有 GitHub CLI 会话的 CI 或无头环境，请将 `COPILOT_API_KEY` 设置为 GitHub **OAuth 令牌**。个人访问令牌（经典或细粒度）被用于第三方集成的 Copilot API 拒绝。
+OpenWiki 将 GitHub CLI 令牌保留在 GitHub CLI 凭证存储中。它不会将该令牌复制到`~/.openwiki/.env`。对于没有 GitHub CLI 会话的 CI 或无头环境，请将 `COPILOT_API_KEY` 设置为 GitHub **OAuth 令牌**。个人访问令牌（经典或细粒度）被 Copilot API 拒绝用于第三方集成。
 
 ```bash
 OPENWIKI_PROVIDER=copilot
@@ -105,7 +105,7 @@ OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 
 该向导在浏览器中打开 OpenAI 身份验证页面（并打印 URL 以供无头使用）。登录后，OpenWiki 将托管的 OAuth 令牌存储在`~/.openwiki/.env` 中并自动刷新访问令牌。将刷新令牌视为密码。
 
-## Gemini 企业（Vertex AI）
+## Gemini 企业代理平台
 
 `gemini-enterprise` 提供商使用 Google 应用程序默认凭据。不需要 API 密钥：
 
@@ -113,7 +113,7 @@ OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 OPENWIKI_PROVIDER=gemini-enterprise
 GOOGLE_CLOUD_PROJECT=your-gcp-project
 GOOGLE_CLOUD_LOCATION=global
-```凭证需要 Vertex AI 访问权限 (`roles/aiplatform.user`)，并且您使用的模型必须在 Model Garden 中启用。合作伙伴/开放权重 (MaaS) 模型是特定于区域的，因此在使用它们时明确设置 `GOOGLE_CLOUD_LOCATION`。
+```凭证需要 Gemini Enterprise Agent Platform 访问权限 (`roles/aiplatform.user`)，并且您使用的模型必须在 Model Garden 中启用。合作伙伴/开放权重 (MaaS) 模型是特定于区域的，因此在使用它们时明确设置 `GOOGLE_CLOUD_LOCATION`。
 
 ## AWS 基岩
 
@@ -140,9 +140,9 @@ OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
 OPENWIKI_MODEL_ID=your-gateway-model-name
-```
+```Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。即使本地服务器忽略键值，OpenWiki 仍然需要`OPENAI_COMPATIBLE_API_KEY`。
 
-Ollama (`http://localhost:11434/v1`) 和 LM Studio (`http://localhost:1234/v1`) 等本地示例使用相同的模式。即使本地服务器忽略键值，OpenWiki 仍然需要`OPENAI_COMPATIBLE_API_KEY`。即使您没有在终端中观看实时输出，OpenWiki 也会在内部发送非流请求。某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，该网关可能会拒绝该调用或返回带有空内容的 HTTP 200。没有错误的空白 wiki 通常意味着您需要启用流式传输。
+即使您没有在终端中观看实时输出，OpenWiki 也会在内部发送非流请求。某些网关仅接受流请求，其中模型通过开放连接以块形式返回输出。当 OpenWiki 通过非流式请求访问这些网关之一时，该网关可能会拒绝该调用或返回带有空内容的 HTTP 200。没有错误的空白 wiki 通常意味着您需要启用流式传输。
 
 当您的网关需要时，为 `openai-compatible` 提供商启用流式传输：
 
@@ -168,9 +168,7 @@ OPENROUTER_API_KEY=your-key
 OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 ```
 
-## 另请参阅
-
-- [Quickstart](/oss/openwiki/quickstart)
+## 另请参阅- [Quickstart](/oss/openwiki/quickstart)
 - [CLI reference](/oss/openwiki/cli-reference)
 - [Customize OpenWiki](/oss/openwiki/customize)
 

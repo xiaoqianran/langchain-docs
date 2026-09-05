@@ -24,7 +24,7 @@
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
-|谷歌顶点人工智能 | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
+| Gemini企业代理平台 | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
 | OpenAI | `/openai` | `OPENAI_API_KEY` |
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
@@ -94,7 +94,7 @@ print(message.content[0].text)
 export LANGSMITH_GATEWAY="true"
 ```
 
-这通过 `https://gateway.smith.langchain.com` 处的提供商特定路径路由支持的聊天模型，并使用 `LANGSMITH_API_KEY` 进行身份验证。要使用区域网关，请设置其 URL 而不是 `true`：
+这通过 `https://gateway.smith.langchain.com` 处的提供商特定路径路由受支持的聊天模型，并使用 `LANGSMITH_API_KEY` 进行身份验证。要使用区域网关，请设置其 URL 而不是 `true`：
 
 ```bash
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"

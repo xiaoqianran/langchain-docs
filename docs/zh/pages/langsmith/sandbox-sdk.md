@@ -26,7 +26,7 @@ yarn add langsmith
 
 </CodeGroup>
 
-Python 的 `[sandbox]` 额外安装了 `websockets`，它支持实时流媒体和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
+Python 的 `[sandbox]` 额外安装了 `websockets`，可实现实时流式传输和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
 
 ```bash
 npm install ws
@@ -79,7 +79,7 @@ await sandbox.delete();
 
 ## 运行命令
 
-每个 `run()` 调用都会返回一个 `ExecutionResult`，其中包含 `stdout`、`stderr`、`exit_code` 和 `success`。
+每个 `run()` 调用都会返回一个 `ExecutionResult` 以及 `stdout`、`stderr`、`exit_code` 和 `success`。
 
 <CodeGroup>
 
@@ -329,11 +329,31 @@ try {
 
 </CodeGroup>
 
+### 将文件共享为链接
+
+要将一个文件交给无法发送 API 密钥的设备（例如浏览器选项卡、`<a href>` 或 Webhook 使用者），请创建一个下载链接，而不是自己读取字节：
+
+<CodeGroup>
+
+```python Python
+link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
+print(link.download_url)
+```
+
+```ts TypeScript
+const link = await sandbox.generateDownloadURL("/app/report.csv", {
+  expiresInSeconds: 3600,
+});
+console.log(link.download_url);
+```
+
+</CodeGroup>
+
+忽略永不过期的链接的过期时间。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。有关选项和安全注意事项，请参阅[Sandbox download links](/langsmith/sandbox-download-links)。
+
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
-
-<Warning>
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。<Warning>
 Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 </Warning>
 
@@ -395,7 +415,9 @@ try {
 
 </CodeGroup>
 
-`repo` 是存储库句柄，可以选择限定为 `owner/repo`，其中 `-` 是当前工作区。`mount_path` 必须是绝对、干净的路径，并且不能是文件系统根目录或位于系统目录（例如 `/etc` 或 `/usr`）下。任何其他路径都可以 - 与存储桶和 Git 挂载不同，Context Hub 挂载不限于 `/mnt/mounts`。
+`repo` 是存储库句柄，可以选择限定为 `owner/repo`，其中 `-` 是当前工作区。
+
+`mount_path` 必须是绝对、干净的路径，并且不能是文件系统根目录或位于系统目录（例如 `/etc` 或 `/usr`）下。任何其他路径都可以 — 与存储桶和 Git 挂载不同，Context Hub 挂载不限于 `/mnt/mounts`。
 
 通过 `initial_pull_only` / `initialPullOnly` 在启动时同步一次，而不是轮询存储库更新。
 
@@ -423,27 +445,27 @@ const sb = await client.createSandbox({
 });
 ```
 
-</CodeGroup>
-
-|资源 |默认|范围 |
+</CodeGroup>|资源 |默认 |范围 |
 |----------|---------|--------|
 |中央处理器| 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
-|文件系统 |快照容量|高达 64 GiB，且绝不会小于其启动的快照。 |当主机有空闲容量时，沙箱会爆发到其请求的 CPU 的两倍。使用 `update_sandbox` / `updateSandbox` 调整现有沙箱的大小会在下次启动时生效，并且调整大小仅强制执行 64 GiB 上限，而不是每个 vCPU 的比率。
+|文件系统 |快照容量|高达 64 GiB，并且永远不会小于其启动的快照。 |
+
+当主机有空闲容量时，沙箱会爆发到其请求的 CPU 的两倍。使用 `update_sandbox` / `updateSandbox` 调整现有沙箱的大小会在下次启动时生效，并且调整大小仅强制执行 64 GiB 上限，而不是每个 vCPU 的比率。
 
 <Note>
-可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。除非被覆盖，否则沙箱会继承其快照的标签。 `langsmith.sandbox` 客户端尚未公开此字段。
+可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
 </Note>
 
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时 |
 |--------|------------------|------------------------|
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
 
-两个值都必须是 60（分钟分辨率）的倍数，并且 `delete_after_stop_seconds` 上限为 2592000（30 天）。完整的生命周期是：
+两个值都必须是 60（分钟分辨率）的倍数，`delete_after_stop_seconds` 上限为 2592000（30 天）。完整的生命周期是：
 
 ```
 running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_stop_seconds)──▶ deleted
@@ -505,8 +527,8 @@ await client.updateSandbox(sb.name, {
 
 ## 命令生命周期和 TTL
 
-沙箱守护进程使用两种超时机制来管理命令会话生命周期：- **会话 TTL（已完成的命令）**：命令完成后，其会话将在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
-- **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
+沙箱守护进程使用两种超时机制来管理命令会话生命周期：- **会话 TTL（已完成的命令）**：命令完成后，其会话将在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清理。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
+- **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 即可无空闲超时。
 
 ### 组合生命周期选项
 
@@ -700,7 +722,7 @@ try {
 在沙箱内，任何 LangSmith 检测代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
 
 <Warning>
-在沙箱进程退出之前始终调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
+始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
 </Warning>
 
 ## 错误处理
@@ -757,7 +779,7 @@ try {
 ```
 
 </CodeGroup><Note>
-有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙盒 SDK 参考。
+有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙箱 SDK 参考。
 </Note>
 
 ---

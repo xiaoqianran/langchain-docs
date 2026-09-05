@@ -183,17 +183,19 @@ def create_item(item: dict):
 ## 服务 URL 与 TCP 隧道| |服务网址 | TCP 隧道 |
 |---|---|---|
 | **协议** | HTTP |任何 TCP（数据库、Redis、SSH、HTTP）|
-| **设置** |零 — 只是一个 URL |需要 SDK 或 CLI |
+| **设置** |零——只是一个 URL |需要 SDK 或 CLI |
 | **访问自** |浏览器、脚本、CI，随处可见 |仅限本地机器 |
 | **分享** |复制网址并发送 |不可分享 |
-| **多页网络应用程序** |全面支持（子域路由） |全面支持（本地端口）|
-| **非 HTTP 服务** |不支持 |全力支持 |
+| **多页网络应用程序** |全面支持（子域路由）|全面支持（本地端口）|
+| **非 HTTP 服务** |不支持 |全力支持|
 
-将 **服务 URL** 用于您想要从浏览器访问或与其他人共享的 HTTP 服务。对于非 HTTP 协议（​​如 `psql` 或 `redis-cli`）或需要仅本地访问时，请使用 **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)**。
+将**服务 URL** 用于您想要从浏览器访问或与其他人共享的 HTTP 服务。对于非 HTTP 协议（​​如 `psql` 或 `redis-cli`）或需要仅本地访问时，请使用 **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)**。
+
+要共享单个文件而不是正在运行的服务，请使用 **[download link](/langsmith/sandbox-download-links)**。
 
 ## 故障排除
 
-|错误 |原因 |修复 |
+|错误|原因 |修复 |
 |--------|--------|-----|
 | **“服务链接已过期”** |超过令牌生命周期 |从 LangSmith 再次打开服务或致电 `sb.service()` 获取新的 URL |
 | **“服务无法访问”** |没有任何东西正在监听该端口 |验证服务器是否在沙箱内运行 |

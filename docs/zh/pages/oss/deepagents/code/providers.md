@@ -12,7 +12,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 1. **安装提供程序包**
 
-    每个模型提供商都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
+    每个模型提供者都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
 
     <CodeGroup>
         ```txt In session
@@ -51,8 +51,8 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |天蓝色OpenAI| [⟦T47⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
 | Anthropic | [⟦T49⟧](/oss/python/integrations/chat/anthropic) | `ANTHROPIC_API_KEY` | ✅ |
 |谷歌双子座 API | [⟦T51⟧](/oss/python/integrations/chat/google_generative_ai) | `GOOGLE_API_KEY` | ✅ |
-|谷歌顶点人工智能 | [⟦T53⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
-|谷歌 Vertex AI (Anthropic) | [⟦T55⟧](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`、`GOOGLE_CLOUD_LOCATION` | ✅ |
+| Gemini企业代理平台 | [⟦T53⟧](/oss/python/integrations/chat/google_generative_ai#credentials) | `GOOGLE_CLOUD_PROJECT` | ✅ |
+| Gemini企业代理平台(Anthropic)| [⟦T55⟧](/oss/python/integrations/chat/google_anthropic_vertex) | `GOOGLE_CLOUD_PROJECT`、`GOOGLE_CLOUD_LOCATION` | ✅ |
 |巴斯坦| [⟦T58⟧](https://github.com/basetenlabs/langchain-baseten) | `BASETEN_API_KEY` | ✅ |
 | AWS 基岩 | [⟦T60⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
 | AWS Bedrock 匡威 | AWS Bedrock [⟦T63⟧](/oss/python/integrations/chat/bedrock) | `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` | ✅ |
@@ -64,18 +64,18 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |一起| [⟦T76⟧](/oss/python/integrations/chat/together) | `TOGETHER_API_KEY` | ❌ |
 |元 | [⟦T78⟧](https://github.com/langchain-ai/langchain-meta) | `MODEL_API_KEY` | ✅ |
 |米斯特拉尔人工智能 | [⟦T80⟧](/oss/python/integrations/chat/mistralai) | `MISTRAL_API_KEY` | ✅ |
-|深度搜索| [⟦T82⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
+|深度搜索 | [⟦T82⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
 | IBM（watsonx.ai）| [⟦T84⟧](/oss/python/integrations/chat/ibm_watsonx) | `WATSONX_APIKEY` | ❌ |
 |英伟达 | [⟦T86⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
 | xAI | [⟦T88⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
 |困惑| [⟦T90⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
 |开放路由器 | [⟦T93⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
-|莱特法学硕士 | [⟦T95⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |<Accordion title="Configure Anthropic models on Vertex AI" icon="brand-google">
-    `google_anthropic_vertex` 提供商通过 Vertex AI 上的Anthropic 的消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
+|莱特法学硕士 | [⟦T95⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |<Accordion title="Configure Anthropic models on Gemini Enterprise Agent Platform" icon="brand-google">
+    `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的Anthropic 的消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
 
     要使用提供程序：
 
-    1. 安装 Vertex AI 额外组件：
+    1. 额外安装 Gemini Enterprise Agent Platform：
 
         <CodeGroup>
             ```txt In session
@@ -87,7 +87,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
             ```
         </CodeGroup>
 
-    2. [Enable a Claude model in your Google Cloud project](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude)，然后配置ADC：
+    2. [Enable a Claude model in your Google Cloud project](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)，然后配置ADC：
 
         ```bash
         gcloud auth application-default login
@@ -159,7 +159,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 使用这些服务的专用集成包：
 
-|路由器|套餐 |配置|
+|路由器|套餐 |配置 |
 | --- | --- | --- |
 |开放路由器 | [⟦T124⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
 |莱特法学硕士 | [⟦T126⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
@@ -208,7 +208,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     1. **`--model` 标志** 在提供时始终获胜。
     2. `~/.deepagents/config.toml`中的**`[models].default`**——用户有意的长期偏好。
     3. **`~/.deepagents/config.toml`中的`[models].recent`**——最后一个模型通过`/model`切换到。自动写入；永远不会覆盖`[models].default`。
-    4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Vertex AI）。
+    4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Gemini Enterprise Agent Platform）。
 
     此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
 </Accordion>

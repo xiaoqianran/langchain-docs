@@ -45,10 +45,10 @@
         <span className="font-semibold">谷歌双子座</span>
     </a>
 
-    <a href="#google-vertex-ai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
+    <a href="#gemini-enterprise-agent-platform" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
         <img className="block dark:hidden w-5 h-5" src="/images/providers/light/gemini.svg" alt="" noZoom />
         <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/gemini.svg" alt="" noZoom />
-        <span className="font-semibold">Google Vertex AI</span>
+        <span className="font-semibold">Gemini企业代理平台</span>
     </a>
 
     <a href="#groq" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
@@ -144,7 +144,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 - **亚马逊：** 泰坦型号。
 - **连贯：** 命令模型。
 - **元：** 骆驼模型。
-- **其他：** 根据地区提供其他提供商。
+- **其他：** 根据地区提供其他可用的提供商。
 
 有关当前可用型号的列表，请参阅[AWS Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html)。
 
@@ -215,7 +215,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 - **基本 URL：** 覆盖自定义部署的 API 端点。
 
-### 工具调用- **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
+### 工具调用- **支持的工具选择：** `auto`、`any`（需要至少一种工具）。
 - **并行执行：** 否（仅顺序执行）。
 
 ## 天蓝色OpenAI
@@ -245,7 +245,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 #### 高级参数
 
@@ -257,7 +257,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 - **JSON 模式：** 强制有效的 JSON 响应。
 - **并行工具调用：**同时执行多个工具。
 
-#### Azure 特定功能- **部署管理：**模型必须在使用前进行部署。
+#### Azure 特定功能- **部署管理：** 模型必须在使用前进行部署。
 - **区域可用性：** 选择 Azure 区域作为数据驻留。
 - **内容过滤：** 内置内容审核和安全功能。
 - **托管身份：** Azure AD 身份验证支持。
@@ -337,13 +337,13 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 - **支持的工具选择：** `auto`、`any`、`none`。
 - **并行执行：** 否。
 
-## 谷歌顶点人工智能
+## Gemini 企业代理平台
 
-在使用此型号之前，请确保您拥有 [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) 和 [Vertex AI API enabled](https://cloud.google.com/vertex-ai/docs/start/client-libraries)。
+在使用此型号之前，请确保您拥有 [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) 和 [Gemini Enterprise Agent Platform API enabled](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/start/client-libraries)。
 
 ### 身份验证
 
-Google Vertex AI 使用 **服务帐户 JSON 密钥** 在 LangSmith Playground 中进行身份验证。这是您从 Google Cloud Console 下载的 JSON 文件，其中包含具有 Vertex AI 访问权限的服务帐户的凭据。
+Gemini 企业代理平台使用 **服务帐户 JSON 密钥** 在 LangSmith Playground 中进行身份验证。这是您从 Google Cloud Console 下载的 JSON 文件，其中包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐号的凭据。
 
 #### 第 1 步：创建服务帐户
 
@@ -352,11 +352,11 @@ Google Vertex AI 使用 **服务帐户 JSON 密钥** 在 LangSmith Playground �
 3. 为其命名（例如，`langsmith-vertex-ai`），然后单击“**创建并继续**”。
 4. 分配角色 **Vertex AI User** (`roles/aiplatform.user`) 并单击 **完成**。
 
-#### 第 2 步：下载 JSON 密钥
-
-1. 单击您刚刚创建的服务帐户。
+#### 第 2 步：下载 JSON 密钥1. 单击您刚刚创建的服务帐户。
 2. 转至 **密钥** 选项卡并单击 **添加密钥 → 创建新密钥**。
-3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。下载的文件如下所示：
+3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。
+
+下载的文件如下所示：
 
 ```json
 {
@@ -373,7 +373,7 @@ Google Vertex AI 使用 **服务帐户 JSON 密钥** 在 LangSmith Playground �
 
 #### 步骤 3：在 LangSmith Playground 中配置
 
-在 LangSmith Playground 中，打开 Google Vertex AI 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
+在 LangSmith Playground 中，打开 Gemini Enterprise Agent Platform 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
 
 <Warning>
 将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
@@ -381,13 +381,11 @@ Google Vertex AI 使用 **服务帐户 JSON 密钥** 在 LangSmith Playground �
 
 ### 可用型号
 
-Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Vertex AI 提供的其他模型。
+Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Gemini Enterprise Agent Platform 提供的其他模型。
 
-有关当前可用型号的列表，请参阅[Vertex AI documentation](https://cloud.google.com/vertex-ai/docs/generative-ai/models)。
+有关当前可用型号的列表，请参阅[Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models)。
 
-### 配置参数
-
-|参数|范围 |描述 |
+### 配置参数|参数|范围 |描述 |
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
@@ -399,7 +397,9 @@ Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro
 - **区域选择：** 在特定 Google Cloud 区域中部署。
 - **安全设置：** 配置内容过滤阈值。
 
-### 工具调用- **支持的工具选择：** `auto`、`any`、`none`。
+### 工具调用
+
+- **支持的工具选择：** `auto`、`any`、`none`。
 - **并行执行：** 否。
 
 ## 格罗克
@@ -428,9 +428,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 
 在使用此型号之前，请确保您拥有[Mistral AI API key](https://console.mistral.ai/api-keys/)。
 
-### 可用型号
-
-Mistral 提供针对不同性能和成本要求进行优化的多层（大、中、小）型号。
+### 可用型号Mistral 提供针对不同性能和成本要求进行优化的多层（大、中、小）型号。
 
 有关当前可用型号的列表，请参阅[Mistral's documentation](https://docs.mistral.ai/platform/endpoints/)。
 
@@ -442,7 +440,9 @@ Mistral 提供针对不同性能和成本要求进行优化的多层（大、中
 | **最大代币** | 1+ |最大响应长度|
 | **顶P** | 0.0 - 1.0 |细胞核取样 |
 
-### 工具调用- **支持的工具选择：** `auto`、`any`、`none`。
+### 工具调用
+
+- **支持的工具选择：** `auto`、`any`、`none`。
 - **并行执行：** 否。
 
 ## OpenAI
@@ -461,18 +461,18 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 ### 配置参数
 
-标准：
-
-|参数|范围 |描述 |
+标准：|参数|范围 |描述 |
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |控制随机性。较低=更专注，较高=更具创造力。 |
 | **最大输出代币** | 1+ |响应的最大长度 |
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
-先进的：**推理工作**：适用于推理优化模型（o 系列和较新的 GPT 模型）。
+高级：
+
+**推理工作**：适用于推理优化模型（o 系列和较新的 GPT 模型）。
 
 在回应之前控制推理深度。更高的努力=复杂任务的更好质量，更长的延迟。
 
@@ -487,16 +487,14 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 <Note>
 当 Reasoning_effort 处于活动状态时（不是`none`），温度、top_p 和惩罚会自动禁用。
-</Note>
-
-**服务等级**：适用于较新的型号。
+</Note>**服务等级**：适用于较新的型号。
 
 控制请求优先级和处理分配。
 
 |价值|描述 |
 |--------|-------------|
-| `auto` |系统根据负载决定（默认） |
-| `default` |标准处理队列|
+| `auto` |系统根据负载决定（默认）|
+| `default` |标准处理队列 |
 | `flex` |成本更低、延迟可变（如果型号支持）|
 | `priority` |高优先级队列，延迟更低，成本更高 |
 
@@ -505,7 +503,9 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 - **响应 API：** 改进的流式传输（默认：启用）。
 - **并行工具调用：**同时执行多个工具。
 
-### 工具调用- **支持的工具选择：** `auto`、`required`、`none` 或特定工具名称
+### 工具调用
+
+- **支持的工具选择：** `auto`、`required`、`none` 或特定工具名称
 - **并行执行：** 是
 
 ## OpenAI 兼容端点
@@ -520,9 +520,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 **必填：**
 - **基本 URL：** 您的端点 URL（例如，`https://your-endpoint.com/v1`）。
-- **型号名称：** 您的型号标识符。
-
-可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
+- **型号名称：** 您的型号标识符。可与实现 OpenAI 兼容 API 格式的任何框架或服务配合使用，包括：
 
 - 自托管开源推理服务器
 - 模型路由代理
@@ -537,8 +535,10 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
 | **顶P** | 0.0 - 1.0 |细胞核取样 |
-| **频率惩罚** | -2.0 - 2.0 |减少重复|
-| **在场处罚** | -2.0 - 2.0 |鼓励新话题|**高级：**
+| **频率惩罚** | -2.0 - 2.0 |减少重复 |
+| **在场处罚** | -2.0 - 2.0 |鼓励新话题|
+
+**高级：**
 - **JSON 模式：** 如果端点支持。
 - **流式传输：** 如果端点支持。
 - **函数调用：** 如果端点实现 OpenAI 格式。
@@ -574,9 +574,7 @@ Model: gpt-4 (routes to configured backend)
 
 ### 可用型号
 
-xAI 为不同的用例提供多种尺寸的 Grok 模型。
-
-有关当前可用型号的列表，请参阅[xAI's documentation](https://docs.x.ai/docs)。
+xAI 为不同的用例提供多种尺寸的 Grok 模型。有关当前可用型号的列表，请参阅[xAI's documentation](https://docs.x.ai/docs)。
 
 ### 配置参数
 
@@ -595,7 +593,9 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 - **支持的工具选择：** OpenAI 兼容。
 - **并行执行：** 是（如果支持）。
 
-## 所有提供商的通用配置### 额外参数
+## 所有提供商的通用配置
+
+### 额外参数
 
 所有提供程序都支持 **JSON 编辑器以获取 UI 中未公开的额外参数**：
 
@@ -616,13 +616,11 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 ### 速率限制
 
-**每秒请求数 (RPS)** - 在数据集上运行时可用于所有提供者：
-
-- **范围：** 0 - 500 RPS
+**每秒请求数 (RPS)** - 在数据集上运行时可用于所有提供者：- **范围：** 0 - 500 RPS
 - **目的：** 尊重 API 速率限制，控制成本
 - **默认值：** 因提供商而异
 
-在运行实验或评估时设置此项以避免达到速率限制。
+在运行实验或评估时设置此值以避免达到速率限制。
 
 ## 后续步骤
 

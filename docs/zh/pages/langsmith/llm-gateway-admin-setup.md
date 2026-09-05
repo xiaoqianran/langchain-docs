@@ -30,7 +30,7 @@
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
-| `VERTEX_SERVICE_ACCOUNT_JSON` |谷歌顶点人工智能 |
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |
 
 仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
 

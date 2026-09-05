@@ -112,10 +112,10 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 
 <Note>
-对于具有**仅多个工作区**的组织：为简单起见，LangSmith将免费跟踪纳入**仅第一个工作区**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，尽管多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
+对于具有**仅多个工作区**的组织：为简单起见，LangSmith将免费跟踪纳入**仅第一个工作区**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 </Note>
 
-#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认情况下为 400 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
+#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
 通过选择 **默认数据保留** 标签下方的选项来设置所需的默认跟踪层。所有跟踪在注册时都会默认具有此层。请注意，由于扩展跟踪的成本高于基本跟踪，因此选择“**扩展**”作为默认数据保留选项将导致计费周期内允许的总体跟踪减少。默认情况下，更新此设置将仅适用于将来的传入跟踪。要应用到工作区中的所有现有轨迹，请选中该复选框。如果默认数据保留设置为 **Base**，您可以选择使用滑块在基本跟踪和扩展跟踪之间分配跟踪限制。 LangSmith 自动提供对此发行版的建议，但您可以根据您的需要进行定制。例如，如果您正在运行大量自动化或其他可能将跟踪升级为扩展的功能，您可能需要增加扩展跟踪限制。要查看可能升级跟踪的功能的完整列表，[see here](https://docs.langchain.com/langsmith/usage-and-billing#how-it-works:~:text=Data%20retention%20auto%2Dupgrades)。
 
@@ -128,9 +128,9 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 #### 自定义延长保留期（仅限[Enterprise](/langsmith/pricing-plans)）
 
-[Enterprise](/langsmith/pricing-plans) 客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 400 天，但可以根据您组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
+[Enterprise](/langsmith/pricing-plans) 客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 180 天，但可以根据您组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
 
-#### 更改项目级默认保留每个跟踪项目的数据保留设置均可调整。在项目级别，您可以在两个级别之间进行选择：基础（14 天）或扩展（400 天）。要自定义超过 400 天的延长持续时间，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
+#### 更改项目级默认保留每个跟踪项目的数据保留设置均可调整。在项目级别，您可以在两个级别之间进行选择：基础（14 天）或扩展（180 天）。要自定义最长 180 天的延长期限，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
 
 导航到 **项目** > ***您的项目名称*** > 选择 **保留** 并选择所需的默认保留。这只会影响**未来跟踪**的保留（和定价）。
 
@@ -148,14 +148,14 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 2. 命名您的规则并可选择应用过滤器或采样率。有关配置过滤器的更多信息，请参阅[filtering techniques](/langsmith/filter-traces-in-application#filter-operators)。
 
 <Note>
-当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 400 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
+当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 </Note>
 
-例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
 
 ![P2sampletraces](/langsmith/images/P2SampleTraces.png)
 
-如果出于数据收集目的而希望将跟踪子集保留**超过 400 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
+如果出于数据收集目的而希望将跟踪子集保留**超过 180 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
 
 ### LangSmith 部署计费
 

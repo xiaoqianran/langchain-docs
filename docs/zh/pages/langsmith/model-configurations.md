@@ -24,8 +24,8 @@
 |评估者|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |舰队|默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |聊天 |默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
-|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
-|见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
+|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商建议的精选列表中进行选择。您还可以添加自定义工作区配置。 |
+|见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商建议的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 
 所有功能都支持自定义工作区配置，因此您可以使用任何提供程序或模型，甚至对于默认显示精选列表的功能也是如此。<Note>
 **见解** 使用两行，一行用于分析，一行用于总结。如果您为任一行选择不兼容的提供程序或不推荐的型号，UI 会显示警告。
@@ -50,7 +50,7 @@
 提供商的可用性在两个层面上进行控制：- **组织**（组织管理员）：为**整个组织**打开或关闭提供程序 - 每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能。在 **设置** > **模型提供商** 中管理。
 - **工作区**（工作区管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作区中**每个功能**的提供者和模型可用性。
 
-组织级别优先。为组织禁用的提供程序在每个工作区和每个功能中均不可用，并且在每个工作区的功能访问表中显示为**锁定** - 工作区管理员可以看到它，但无法重新启用它。工作空间仅在组织允许的提供商中进行选择。
+组织级别优先。为组织禁用的提供程序在每个工作区和每个功能中都不可用，并且在每个工作区的功能访问表中显示为**锁定** - 工作区管理员可以看到它，但无法重新启用它。工作空间仅在组织允许的提供商中进行选择。
 
 管理组织范围内的提供商需要 [Organization Admin](/langsmith/rbac#organization-admin) 角色（`organization:manage` 权限），并且可在组织（非个人帐户）的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 上使用。
 
@@ -91,13 +91,11 @@
 OAuth 客户端凭据可在运行版本 `0.16.0-rc.6` 或更高版本的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 部署上使用。
 </Note>
 
-当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。
+当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
 
-OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Google Vertex AI 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。### 在模型配置上配置 OAuth
+### 在模型配置上配置 OAuth
 
-配置 OAuth 需要 [Workspace Admin](/langsmith/rbac#workspace-admin) 角色，或具有 `workspaces:manage-model-configs` 权限的 [custom role](/langsmith/rbac#custom-roles)。没有它的成员会看到 OAuth 字段被禁用，并带有隐藏的秘密提示。在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-model-configurations)中：
-
-1. 导航到 **设置** > **模型配置**，然后单击 **+ 创建** 或通过溢出菜单 <Icon icon="dots-vertical" iconType="regular" /> > **编辑** 打开现有行。
+配置 OAuth 需要 [Workspace Admin](/langsmith/rbac#workspace-admin) 角色，或具有 `workspaces:manage-model-configs` 权限的 [custom role](/langsmith/rbac#custom-roles)。没有它的成员会看到 OAuth 字段被禁用，并带有隐藏的秘密提示。在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-model-configurations)中：1. 导航到 **设置** > **模型配置**，然后单击 **+ 创建** 或通过溢出菜单 <Icon icon="dots-vertical" iconType="regular" /> > **编辑** 打开现有行。
 1. 选择兼容的提供商并照常配置模型参数。
 1. 打开**使用自定义 OAuth**。
 1. 填写 OAuth 字段：
@@ -120,9 +118,9 @@ OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmit
     alt="Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic."
 />
 
-### 编辑语义OAuth 字段遵循保护存储秘密的编辑行为：
+### 编辑语义
 
-- **秘密往返**：服务器返回秘密为`********`。输入呈现为空，并带有“已设置秘密。键入要替换的内容。”* 提示。提交而不重新输入会使存储的秘密保持不变。
+OAuth 字段遵循保护存储秘密的编辑行为：- **秘密往返**：服务器返回秘密为`********`。输入呈现为空，并带有“已设置秘密。键入要替换的内容。”* 提示。提交而不重新输入会使存储的秘密保持不变。
 - **关闭保留凭据**：关闭**使用自定义 OAuth** 会停用 OAuth 流程，但保留存储的字段。使用相同的凭据切换回简历。
 - **清除字段**：编辑配置并将字段清空以明确清除它。
 - **通过另存为预设进行克隆**：当您将一次性配置保存为新预设时，非秘密 OAuth 字段会复制到新行中。该机密无法传输，因为它永远不会公开供读取，因此在克隆上强制禁用 OAuth，直到您重新输入该机密。
@@ -180,7 +178,7 @@ sequenceDiagram
 <Accordion title="Can a single set of OAuth credentials be shared across workspaces?">
 不会。OAuth 凭据存储在模型配置中，该模型配置是工作区范围内的。每个工作区都会输入自己的凭据，即使这些凭据指向同一 IdP 客户端也是如此。
 </Accordion><Accordion title="Why is my OAuth-enabled configuration suddenly using a static workspace key?">
-如果代理无法创建承载（IdP 无法访问、凭据无效、在请求准备和执行之间删除配置），则请求将回退到提供程序的静态工作区 API 密钥。重新打开模型配置并验证令牌 URL 是否可访问、客户端 ID 和密钥是否最新以及令牌端点身份验证方法与您的 IdP 期望的相匹配。
+如果代理无法创建承载（IdP 无法访问、凭据无效、在请求准备和执行之间删除配置），则请求将回退到提供程序的静态工作区 API 密钥。重新打开模型配置并验证令牌 URL 是否可访问、客户端 ID 和密钥是否最新以及令牌端点身份验证方法是否与您的 IdP 期望的相匹配。
 </Accordion>
 
 <Accordion title="How do I rotate the client secret?">

@@ -25,7 +25,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 |公制|这算什么 |
 |--------|----------------|
 | **LangSmith 痕迹（基本电荷）** |在计费期间发送到LangSmith的每个跟踪，无论数据保留层如何。 |
-| **LangSmith 跟踪（扩展数据保留升级）** |跟踪升级为延长保留期（默认为 400 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。这些费用是在基本费用之外收取的。 |
+| **LangSmith 跟踪（扩展数据保留升级）** |跟踪升级为延长保留期（截至 2026 年 9 月 14 日，默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。这些费用是在基本费用之外收取的。 |
 | **LangSmith 部署运行** |已部署的LangGraph代理的端到端调用。有关定价详情，请参阅[LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing)。 |
 | **LangSmith 舰队运行** | [Fleet](/langsmith/fleet) 代理的端到端调用。单独跟踪云托管和自托管部署。 |
 | **LangSmith 执行的部署节点** |跨部署代理的单独LangGraph节点执行。已部署代理图中的每个步骤都算作一个节点执行。单独跟踪云托管和自托管部署。 |

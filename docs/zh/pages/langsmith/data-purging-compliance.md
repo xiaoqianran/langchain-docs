@@ -10,8 +10,8 @@
 
 LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。数据保留策略可以在两个级别进行配置：
 
-- **工作区级别**：具有所需权限的企业客户可以将延长保留设置为工作区默认值，并自定义保留期限（最长 400 天）。参见[Customize extended retention policy](#customize-extended-retention-policy)。
-- **项目级别**：具有所需权限的客户可以为每个跟踪项目设置默认保留层，在基本保留（14 天）或延长保留（400 天）之间进行选择。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
+- **工作区级别**：具有所需权限的企业客户可以将延长保留设置为工作区默认值，并自定义保留期限（截至 2026 年 9 月 14 日最多 180 天）。参见[Customize extended retention policy](#customize-extended-retention-policy)。
+- **项目级别**：具有所需权限的客户可以为每个跟踪项目设置默认保留层，在基本保留（14 天）或延长保留（180 天）之间进行选择。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
 
 有关数据保留配置和管理的详细信息，请参阅[Data Retention concepts](/langsmith/usage-and-billing#data-retention)文档。
 
@@ -19,7 +19,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 <Note>
 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
-</Note>[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。默认情况下，延长保留时间设置为 400 天，但您可以根据组织的需求进行调整。对保留期的更改仅适用于新跟踪。
+</Note>[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。默认情况下，延长保留时间设置为 180 天，但您可以根据组织的需求进行调整。对保留期的更改仅适用于新跟踪。
 
 <Note>
 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
@@ -55,7 +55,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
       -H "x-api-key: YOUR_API_KEY"
     ```
 
-    要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。可用的持续时间为：30、60、90、120、150、180、240、300、365 和 400 天。
+    要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
 
     **组织级别** (`organization:manage`)
 
@@ -96,11 +96,11 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 所有跟踪删除都将删除所有数据存储中的相关实体，例如反馈、聚合和统计信息。
 </Warning>
 
-### 删除时间线
+### Deletion timeline
 
-跟踪删除是在非高峰使用时间进行的，并且不是即时的。 LangChain 在周末运行删除作业。没有删除确认 - 您需要再次查询数据以验证它是否已被删除。
+跟踪删除是在非高峰使用时间进行的，并且不是即时的。 LangChain runs the delete job on the weekend.没有删除确认 - 您需要再次查询数据以验证它是否已被删除。
 
-### 删除特定痕迹
+### Delete specific traces
 
 要根据跟踪 ID 从单个会话中删除特定跟踪：
 
@@ -118,7 +118,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
   }'
 ```
 
-## 删除示例
+## Example deletes
 
 您可以通过我们的 API 自助删除数据集示例，该 API 根据您的数据保留需求支持软删除和硬删除方法。
 
@@ -126,11 +126,11 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 硬删除将从整个数据集历史记录中指定示例的所有版本中永久删除输入、输出和元数据。
 </Warning>
 
-### 删除示例分为两步
+### Deleting examples is a two-step process
 
 对于批量操作，示例删除遵循两步过程：
 
-#### 1. 通过元数据搜索示例
+#### 1. Search for examples by metadata
 
 查找工作区中所有数据集具有匹配元数据的所有示例。
 
