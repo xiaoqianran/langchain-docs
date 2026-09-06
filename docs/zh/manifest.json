@@ -6462,10 +6462,10 @@
       "translatedAt": "2026-09-05T12:13:01.364Z"
     }
   },
-  "updatedAt": "2026-09-05T12:16:51.014Z",
+  "updatedAt": "2026-09-06T12:26:37.972Z",
   "stats": {
-    "translated": 24,
-    "skipped": 533,
+    "translated": 0,
+    "skipped": 557,
     "failed": 0,
     "total": 557
   }
