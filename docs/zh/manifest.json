@@ -6093,8 +6093,8 @@
       "translatedAt": "2026-08-11T09:51:37.829Z"
     },
     "index.md": {
-      "hash": "767b8c826215c18cf38c9a76e59f04449b511f19",
-      "translatedAt": "2026-09-05T12:11:58.760Z"
+      "hash": "b43b73ae6ee25a9b42424a46f2ffaed39193941c",
+      "translatedAt": "2026-09-07T14:33:31.005Z"
     },
     "build-overview.md": {
       "hash": "50bbcaa1524972456c0337deb2a2728ac6439bc0",
@@ -6462,10 +6462,10 @@
       "translatedAt": "2026-09-05T12:13:01.364Z"
     }
   },
-  "updatedAt": "2026-09-06T12:26:37.972Z",
+  "updatedAt": "2026-09-07T14:33:31.005Z",
   "stats": {
-    "translated": 0,
-    "skipped": 557,
+    "translated": 1,
+    "skipped": 556,
     "failed": 0,
     "total": 557
   }
