@@ -26,6 +26,26 @@
 
 ## 使用我们的 MCP 服务器
 
+<Prompt
+    description="Connect LangChain docs MCP servers"
+    icon="plug"
+    actions={["copy", "cursor"]}
+>
+将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+
+要添加的服务器：
+
+- `docs-langchain`：https://docs.langchain.com/mcp
+- `reference-langchain`：https://reference.langchain.com/mcp
+
+检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 https://docs.langchain.com/use-这些-docs.md 中的匹配设置：- Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
+- Codex CLI：`codex mcp add` 以及每个服务器 URL。
+- 光标、Deep Agents 代码、VS 代码或反重力：使用该页面上为我的客户显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+- Claude Desktop：在“设置”>“连接器”下添加两个 URL。
+
+不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
+</Prompt>
+
 我们的文档公开了两个互补的 **模型上下文协议 (MCP) 服务器**，让 AI 应用程序可以实时查询 LangChain 内容。为了获得最佳结果，我们建议连接两者：
 
 |服务器|网址 |它涵盖什么 |
@@ -45,7 +65,7 @@ claude mcp add --transport http reference-langchain https://reference.langchain.
 <Note>
     **项目（本地）范围**
 
-    上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 来添加用户范围：
+    上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 添加用户范围：
 
     ```bash
     claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp

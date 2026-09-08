@@ -6,7 +6,7 @@
 
 模型上下文协议 (MCP) 是一种开放协议，用于以与模型无关的格式描述工具和数据源，使法学硕士能够通过结构化 API 发现和使用它们。
 
-[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 实现 MCP。这允许 LangGraph **代理** 作为 **MCP 工具**公开，使它们可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
+[Agent Server](/langsmith/agent-server) 使用[Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) 实现 MCP。这允许 LangGraph **代理** 作为 **MCP 工具**公开，使它们可与任何支持 Streamable HTTP 的 MCP 兼容客户端一起使用。
 
 MCP 端点在 [Agent Server](/langsmith/agent-server) 的 `/mcp` 可用。
 
@@ -238,7 +238,7 @@ print(graph.invoke({"question": "hi"}))
 
 <Tip>
 **先决条件**
-您已经添加了自己的 [custom auth middleware](/langsmith/custom-auth) 来填充 `langgraph_auth_user` 对象，使其可以通过图中每个节点的可配置上下文进行访问。
+您已添加自己的 [custom auth middleware](/langsmith/custom-auth) 来填充 `langgraph_auth_user` 对象，使其可以通过图中每个节点的可配置上下文进行访问。
 </Tip>
 
 要使用户范围的工具可用于您的 LangSmith 部署，请首先实现如下所示的代码片段：

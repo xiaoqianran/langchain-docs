@@ -337,7 +337,7 @@ const { thread, submit } = useStream({
     });
   },
 });
-```然后，您可以通过使用与您要更新的 UI 消息相同的 ID 调用 `ui.push()` / `push_ui_message()` 将更新推送到 UI 组件。
+```然后，您可以通过调用与您要更新的 UI 消息相同的 ID 的 `ui.push()` / `push_ui_message()` 将更新推送到 UI 组件。
 
 <Tabs>
     <Tab title="Python">
@@ -519,6 +519,10 @@ const { thread, submit } = useStream({
     ```
     </Tab>
 </Tabs>
+
+## 了解更多
+
+* [JS/TS SDK Reference](https://reference.langchain.com/javascript/langchain-langgraph-sdk/)
 
 ---
 

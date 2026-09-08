@@ -6,7 +6,7 @@
 
 将代理部署到 LangSmith 部署时，您的服务器会自动公开用于创建运行和线程、与长期内存存储交互、管理可配置助手和其他核心功能 ([see all default API endpoints](/langsmith/server-api-ref)) 的路由。
 
-您可以通过提供自己的应用程序对象并在 `langgraph.json` 中传递其路径（例如，Python 中的 [⟦T9⟧](https://www.starlette.io/applications/) 应用程序或 TypeScript 中的 [⟦T10⟧](https://hono.dev/) 应用程序）来添加自定义路由。
+您可以通过提供自己的应用程序对象并在 `langgraph.json` 中传递其路径（例如，Python 中的 [⟦T9⟧](https://starlette.dev/applications/) 应用程序或 TypeScript 中的 [⟦T10⟧](https://hono.dev/) 应用程序）来添加自定义路由。
 
 定义自定义应用程序对象可让您添加所需的任何路由，因此您可以执行任何操作，从添加 `/login` 端点到编写整个全栈 Web 应用程序，所有这些都部署在单个代理服务器中。
 
@@ -14,7 +14,7 @@
 
 ## 创建应用程序
 
-从 **现有** LangSmith 应用程序开始，将以下自定义路由代码添加到您的应用程序文件中。如果您是从头开始，则可以使用 CLI 从模板创建新应用程序。
+从 **现有** LangSmith 应用程序开始，将以下自定义路由代码添加到您的应用程序文件中。如果您从头开始，则可以使用 CLI 从模板创建新应用程序。
 
 <Tabs>
     <Tab title="Python">

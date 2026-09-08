@@ -27,7 +27,7 @@ Playground 原生支持 OpenAI 和 Anthropic 的各种工具。如果您想使�
 
 ## 添加和使用工具
 
-Playground 让您只需单击一下即可快速[add tools](#add-a-tool) 到达任何提示。您可以从模型提供商提供的内置工具（如OpenAI和Anthropic）中进行选择，或者根据您的特定需求定义自己的[custom tools](#create-a-custom-tool)。创建自定义工具后，它会自动添加到工作区范围的[tool registry](#manage-tools-with-the-registry)，您可以在其中跨不同提示启用、禁用或编辑它，而无需重新创建它。
+Playground 让您只需单击一下即可快速[add tools](#add-a-tool) 到达任何提示。您可以从模型提供商提供的内置工具（如OpenAI和Anthropic）中进行选择，或者根据您的特定需求定义您自己的[custom tools](#create-a-custom-tool)。创建自定义工具后，它会自动添加到工作区范围的[tool registry](#manage-tools-with-the-registry)，您可以在其中跨不同提示启用、禁用或编辑它，而无需重新创建它。
 
 ### 添加工具
 
@@ -95,7 +95,7 @@ Playground 包括一个 [workspace](/langsmith/administration-overview#workspace
 1. 导航至 **工具选择设置** 选项卡。
 1. 选择您的工具选择。
 
-要了解可用的工具选择选项，请查看特定提供商的文档。例如，[OpenAI's documentation on tool choice](https://platform.openai.com/docs/guides/function-calling/function-calling-behavior?api-mode=responses#tool-choice)。
+要了解可用的工具选择选项，请查看特定提供商的文档。例如，[OpenAI's documentation on tool choice](https://platform.openai.com/docs/guides/function-calling)。
 
 <img
   className="block dark:hidden"

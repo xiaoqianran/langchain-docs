@@ -40,7 +40,7 @@
     * tls.crt：证书
     * tls.key: 私钥
 
-  * 欲了解更多信息，请参阅[creating a TLS secret](https://kubernetes.io/do/langsmith/observability-concepts/services-networking/ingress/#tls)。
+  * 欲了解更多信息，请参阅[creating a TLS secret](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls)。
 
 ## 配置
 
@@ -67,7 +67,7 @@ frontend:
     type: ClusterIP
 ```
 
-配置完成后，您将需要更新 LangSmith 安装。如果一切配置正确，您的 LangSmith 实例现在应该可以通过 Ingress 访问。您可以运行以下命令来检查 Ingress 的状态：
+配置完成后，您将需要更新您的 LangSmith 安装。如果一切配置正确，您的 LangSmith 实例现在应该可以通过 Ingress 访问。您可以运行以下命令来检查 Ingress 的状态：
 
 ```bash
 kubectl get ingress
@@ -134,7 +134,7 @@ Istio 网关支持从 LangSmith v0.12.0 开始提供
 
 ＃＃＃＃ 参数* *名称（可选）*：要引用的 Istio 网关资源的名称。默认为 `"istio-gateway"`
 * *命名空间（可选）*：Istio 网关资源所在的命名空间。默认为 `"istio-system"`
-* *主机名（可选）*：您想要用于 LangSmith 安装的主机名。例如`"langsmith.example.com"`
+* *主机名（可选）*：您希望用于 LangSmith 安装的主机名。例如`"langsmith.example.com"`
 * *basePath（可选）*：如果您想在基本路径下提供LangSmith，您可以在此处指定。例如“example.com/langsmith”
 * *注释（可选）*：添加到 VirtualService 资源的附加注释
 * *标签（可选）*：添加到 VirtualService 资源的其他标签

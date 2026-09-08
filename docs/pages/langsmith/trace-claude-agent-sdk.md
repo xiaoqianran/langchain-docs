@@ -60,7 +60,7 @@ ANTHROPIC_API_KEY=<your_anthropic_api_key>
 
 You can find your LangSmith API key and project name in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-claude-agent-sdk) under **Settings**.
 
-For an Anthropic API key, refer to the [Claude console](https://claude.ai/login).
+For an Anthropic API key, refer to the [Claude console](https://console.anthropic.com/settings/keys).
 
 ## Quickstart
 

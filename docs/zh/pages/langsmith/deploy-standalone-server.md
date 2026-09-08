@@ -11,7 +11,7 @@
 您管理一个简化的<Tooltip tip="The runtime environment where your Agent Servers and agents execute.">数据平面</Tooltip>，由代理服务器及其所需的支持服务（PostgreSQL、Redis等）组成：
 
 |组件|职责|它在哪里运行 |谁来管理|
-|------------|--------------------|------------------------|----------------|
+|------------|------------------|------------------------|----------------|
 | **控制平面** |不适用 |不适用 |不适用 |
 | **数据平面** | <ul><li>代理服务器</li><li>Postgres、Redis等</li></ul> |您的基础设施|你|
 
@@ -41,7 +41,7 @@
 ### 支持的计算平台
 
 - **Kubernetes**：使用 LangSmith Helm 图表在 Kubernetes 集群中运行代理服务器。这是生产级部署的推荐选项。
-- **Docker**：在任何 Docker 支持的计算平台（本地开发机器、VM、ECS 等）中运行。这最适合开发或小规模工作负载。
+- **Docker**：在任何 Docker 支持的计算平台（本地开发机、VM、ECS 等）中运行。这最适合开发或小规模工作负载。
 
 <Warning>
 对于生产部署，请使用 Kubernetes 和维护的 LangSmith Helm 图表。这是LangChain定期测试的生产路径。 LangChain 不定期测试其他编排器。
@@ -56,7 +56,7 @@
 ## 先决条件1. 使用[LangGraph CLI](/langsmith/cli)至[test your application locally](/langsmith/local-dev-testing)。
 2. 使用[LangGraph CLI](/langsmith/cli)构建Docker镜像（即`langgraph build`）。
 3. 数据平面部署需要以下环境变量。
-  1. `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
+  1. `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
         <Note>
         **共享Redis实例**
         多个自托管部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/2`。`1` 和`2` 是同一实例内的不同数据库编号，但`<hostname_1>` 是共享的。 **相同的数据库编号不能用于单独的部署**。
@@ -64,7 +64,7 @@
   2. `DATABASE_URI`：Postgres 连接详细信息。 Postgres 将用于存储助手、线程、运行、持久线程状态和长期内存，并使用“恰好一次”语义管理后台任务队列的状态。 `DATABASE_URI` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。
         <Note>
         **共享 Postgres 实例**
-        多个自托管部署可以共享同一个 Postgres 实例。例如，对于`Deployment A`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。`<database_name_1>`和`database_name_2`是同一实例中的不同数据库，但`<hostname_1>`是共享的。 **同一数据库不能用于单独的部署**。
+        多个自托管部署可以共享同一个 Postgres 实例。例如，对于`Deployment A`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。`<database_name_1>` 和 `database_name_2` 是同一实例中的不同数据库，但 `<hostname_1>` 是共享的。 **同一数据库不能用于单独的部署**。
         </Note>
         <Tip>
         您可以选择将检查点数据存储在 MongoDB 而不是 PostgreSQL 中。所有其他服务器数据仍然需要 PostgreSQL。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
@@ -112,7 +112,7 @@ docker run \
 ## Docker 组合
 
 <Warning>
-此 Docker Compose 示例旨在用于本地开发和测试。对于生产，请使用 Kubernetes 部署。
+此 Docker Compose 示例适用于本地开发和测试。对于生产，请使用 Kubernetes 部署。
 </Warning>
 
 使用以下 Docker Compose 文件：
@@ -232,7 +232,7 @@ services:
 有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 </Accordion>
 
-这将在端口 `8123` 上启动代理服务器（如果需要，请更改 `langgraph-api` 中的端口映射）。测试应用程序是否健康：
+这将在端口`8123`上启动代理服务器（如果需要，请更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
 
 ```shell
 curl --request GET --url 0.0.0.0:8123/ok

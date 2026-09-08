@@ -11,7 +11,7 @@
 
 每个 SDK 方法及其底层端点共享相同的弃用日期。
 
-|部署 |弃用 |移除 |
+|部署|弃用 |移除 |
 |---|---|---|
 |所有云区域 | 2026 年 7 月结束 | 2027 年 1 月 31 日 |
 |自托管 | `v0.16` | `v0.18` |
@@ -28,7 +28,7 @@
 |打字稿 | `langsmith` | `>=0.8.9` |
 |爪哇 | `langsmith-java` | `0.1.0-beta.22` |
 |去 | `langsmith-go` | `v0.25.4` |
-|命令行 | `langsmith-cli` | `v0.2.44` |
+|命令行| `langsmith-cli` | `v0.2.44` |
 
 [LangSmith CLI](/langsmith/langsmith-cli) 查询相同的 SmithDB 支持的端点，并需要 `v0.2.44` 或更高版本。
 
@@ -63,58 +63,56 @@
 
 本指南旨在由 AI 编码代理直接获取和应用。将以下提示复制到您的代理中，以将您的代码库迁移到 SmithDB 支持的方法。
 
-```text
-Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
+<Prompt
+    description="Migrate LangSmith SDK usage to SmithDB methods"
+    icon="arrow-right"
+    actions={["copy", "cursor"]}
+>
+将此代码库的 LangSmith SDK 使用迁移到新的 SmithDB 支持的方法。
 
-Fetch https://docs.langchain.com/langsmith/smithdb-sdk-migration.md first. It
-carries the minimum SDK versions, deprecation dates, exception changes, and
-discontinued methods that apply to every call site.
+首先获取 https://docs.langchain.com/langsmith/smithdb-sdk-migration.md。它
+包含最低 SDK 版本、弃用日期、例外更改以及
+适用于每个调用站点的已停止方法。
 
-The before/after change for each method lives on a per-area page. Fetch the
-ones covering the functionality this codebase actually uses:
-
-- Searching the runs in a project (filters, field projection, sorting,
-  pagination):
+每种方法的之前/之后的更改位于每个区域的页面上。获取
+涵盖了该代码库实际使用的功能：- 搜索项目中的运行（过滤器、字段投影、排序、
+  分页）：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md
-- Fetching one run by ID, loading its child runs, and building the URL of a
-  run in the LangSmith UI:
+- 通过 ID 获取一个运行，加载其子运行，并构建一个运行的 URL
+  在 LangSmith UI 中运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md
-- Querying the traces in a project, reading their token and cost aggregates,
-  and listing the runs in one trace:
+- 查询项目中的痕迹，读取其代币和成本汇总，
+  并在一个跟踪中列出运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md
-- Querying the threads in a project and listing the traces (turns) in one
-  thread:
+- 查询项目中的线程并在一个中列出痕迹（回合）
+  线程：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md
-- Querying the runs recorded by an experiment on a dataset:
+- 查询数据集上的实验记录的运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md
-- Creating feedback on a run, adding runs to an annotation queue, and
-  sharing, unsharing, or reading publicly shared runs:
+- 创建运行反馈，将运行添加到注释队列，以及
+  共享、取消共享或阅读公开共享的运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md
 
-Treat those pages together as the source of truth for what changed, including
-which methods and parameters are affected, what replaces them, and deployment
-support.
+将这些页面一起视为发生变化的事实来源，包括
+哪些方法和参数受到影响、用什么来替代它们以及部署
+支持。1.检查已安装的LangSmith SDK版本与最低版本
+   根据本指南，SmithDB 支持的方法需要，并升级
+   如果不满足该最小值，则依赖。
+2. 识别此代码库中使用指南中方法的每个调用站点
+   标记为已迁移，无论该代码库使用哪种语言。
+3. 对于每个调用站点，应用相应的之前/之后的更改
+   该方法的区域页面，包括任何添加、删除或重命名的内容
+   参数。
 
-1. Check the installed LangSmith SDK version against the minimum version
-   required for the SmithDB-backed methods per this guide, and upgrade the
-   dependency if it does not meet that minimum.
-2. Identify every call site in this codebase that uses a method the guide
-   marks as migrated, in whichever language(s) this codebase uses.
-3. For each call site, apply the corresponding before/after change from the
-   area page for that method, including any added, removed, or renamed
-   parameters.
-
-If a call site or parameter is not covered by the guide, stop and ask rather
-than guessing.
-```
+如果指南未涵盖某个调用站点或参数，请停下来询问
+比猜测。
+</Prompt>
 
 ## 例外情况
 
 <Tabs>
   <Tab title="Python">
-    SmithDB 支持的方法引发新的异常类，而不是旧的 `langsmith.utils` 异常类。
-
-    |之前 (`langsmith.utils`) |之后（`langsmith`）|笔记|
+    SmithDB 支持的方法引发新的异常类，而不是旧的 `langsmith.utils` 异常类。|之前 (`langsmith.utils`) | (`langsmith`)之后|笔记|
     |---|---|---|
     | `LangSmithError` | `LangsmithError` | SDK的异常基类；外壳已更改 |
     | `LangSmithAPIError` | `InternalServerError` | 5xx |
@@ -125,17 +123,17 @@ than guessing.
     | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
     | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
     | `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
-    | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 || *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
+    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的|
+    | *（不可用）* | `APIError` |新增：所有与 API 相关的错误的基类，具有 `message`、`request` 和 `body` 属性 |
+    | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
     | *（不可用）* | `BadRequestError` |新：400 |
     | *（不可用）* | `PermissionDeniedError` |新：403 |
     | *（不可用）* | `UnprocessableEntityError` |新：422 |
     | *（不可用）* | `APIResponseValidationError` |新：当响应与预期模式不匹配时引发 |
   </Tab>
-  <Tab title="TypeScript">
-    SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。
+  <Tab title="TypeScript">SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。
 
-    |之前（简单`Error`）| (`langsmith`)之后|笔记|
+    |之前（普通`Error`）|之后(`langsmith`)|笔记|
     |---|---|---|
     | *（不可用）* | `LangsmithError` |所有 SDK 错误的基类 |
     | *（不可用）* | `InternalServerError` | 5xx |
@@ -148,7 +146,8 @@ than guessing.
     | *（不可用）* | `APIError` |所有与 API 相关的错误的基类，具有 `status`、`headers` 和 `error` 属性 |
     | *（不可用）* | `BadRequestError` | 400 |
     | *（不可用）* | `PermissionDeniedError` | 403 | 403
-    | *（不可用）* | `UnprocessableEntityError` | 422 | 422| *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发
+    | *（不可用）* | `UnprocessableEntityError` | 422 | 422
+    | *（不可用）* | `APIUserAbortError` |当请求通过 `AbortController` | 中止时引发
   </Tab>
   <Tab title="Java">
     没有变化。错误处理不受此迁移的影响。
@@ -161,19 +160,17 @@ than guessing.
   </Tab>
 </Tabs>
 
-## 停产
-
-以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在以 [composite evaluators](/langsmith/composite-evaluators-ui) 的形式进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
+## 停产以下方法已停止使用。他们调用已退役的 `/feedback/formulas` 端点，这些端点在复合反馈 v2 上返回 `410 Gone`，并计划于 2026 年 8 月 20 日删除。综合分数现在作为[composite evaluators](/langsmith/composite-evaluators-ui)进行管理，它将综合分数实现为代码评估器加运行规则。没有 SDK 替代品。
 
 ###反馈公式方法
 
 |蟒蛇 |打字稿 |
 |---|---|
-| [⟦T70⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
-| [⟦T71⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
-| [⟦T72⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
-| [⟦T73⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
-| [⟦T74⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
+| [⟦T69⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
+| [⟦T70⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
+| [⟦T71⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
+| [⟦T72⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
+| [⟦T73⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
 
 ---
 

@@ -70,8 +70,8 @@ Azure Blob 存储在 Helm 图表版本 0.8.9 及更高版本中可用。从 Helm
 }
 ```
 
-一旦您拥有正确的策略，可以通过三种方式使用 Amazon S3 进行身份验证：1. [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)（推荐）：您可以为 LangSmith 实例创建 IAM 角色并将策略附加到该角色。这是在生产环境中使用 Amazon S3 进行身份验证的推荐方法。
-    1. 您需要创建一个 IAM 角色并附加策略。
+一旦您拥有正确的策略，可以通过三种方式使用 Amazon S3 进行身份验证：1. [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)（推荐）：您可以为LangSmith实例创建 IAM 角色并将策略附加到该角色。这是在生产环境中使用 Amazon S3 进行身份验证的推荐方法。
+    1. 您需要创建一个附加策略的 IAM 角色。
     1. 您需要允许 LangSmith 服务帐户承担该角色。 `langsmith-queue`、`langsmith-backend`、`langsmith-platform-backend` 和 `langsmith-ingest-queue` 服务帐户需要能够承担该角色。
         <Warning>
         如果您使用自定义版本名称，服务帐户名称将会有所不同。您可以通过在集群中运行 `kubectl get serviceaccounts` 来查找服务帐户名称。
@@ -79,9 +79,9 @@ Azure Blob 存储在 Helm 图表版本 0.8.9 及更高版本中可用。从 Helm
     1. 您需要向LangSmith提供角色ARN。您可以通过将 `eks.amazonaws.com/role-arn: "<role_arn>"` 注释添加到 Helm Chart 安装中的 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 服务来完成此操作。
 
 2. [Access Key and Secret Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)：您可以向LangSmith提供访问密钥和秘密密钥。这是使用 Amazon S3 进行身份验证的最简单方法。但是，不建议将其用于生产用途，因为它的安全性较低。
-    1. 您需要创建一个附加策略的用户。然后您可以为该用户提供访问密钥和秘密密钥。3. [VPC Endpoint Access](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)：您可以通过 VPC 终端节点启用对 S3 存储桶的访问，这允许流量安全地从 VPC 流向 S3 存储桶。
+    1. 您需要创建一个附加策略的用户。然后，您可以为该用户提供访问密钥和秘密密钥。3. [VPC Endpoint Access](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)：您可以通过 VPC 终端节点启用对 S3 存储桶的访问，这允许流量安全地从 VPC 流向 S3 存储桶。
     1. 您需要配置 VPC 终端节点并将其配置为允许访问您的 S3 存储桶。
-    1. 您可以参考我们的[public Terraform modules](https://github.com/langchain-ai/terraform/blob/main/modules/aws/s3/main.tf#L12)获取指导和配置示例。
+    1. 您可以参考我们的[public Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws)获取指导和配置示例。
 
 ### KMS 加密标头支持
 
@@ -121,7 +121,7 @@ config:
 
 要使用 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 进行身份验证，您需要使用以下方法之一来授予 LangSmith 工作负载访问您的 [container](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) 的权限（按优先顺序列出）：1.[Storage account and access key](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage)
 2.[Connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)
-3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T40⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
+3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T40⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
    1. 要使用工作负载身份，请将标签 `azure.workload.identity/use: true` 添加到 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 部署。此外，将 `azure.workload.identity/client-id` 注释添加到相应的服务帐户，该帐户应该是现有 Azure AD 应用程序的客户端 ID 或用户分配的托管标识的客户端 ID。有关更多详细信息，请参阅[Azure's documentation](https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html)。
 
 <Note>

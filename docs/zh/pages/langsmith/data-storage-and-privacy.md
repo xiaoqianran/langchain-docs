@@ -10,12 +10,12 @@
 
 LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界面；请参阅[CLI guide](/langsmith/cli)了解更多信息。
 
-默认情况下，对大多数 CLI 命令的调用会在调用时记录单个分析事件。这有助于我们更好地优先考虑 CLI 体验的改进。每个遥测事件包含调用进程的操作系统、操作系统版本、Python 版本、CLI 版本、命令名称（`dev`、`up`、`run` 等）以及表示是否将标志传递给命令的布尔值。欲了解更多信息，请参阅[full analytics logic](https://github.com/langchain-ai/langgraph/blob/main/libs/cli/langgraph-cli/analytics.py)。
+默认情况下，对大多数 CLI 命令的调用会在调用时记录单个分析事件。这有助于我们更好地优先考虑 CLI 体验的改进。每个遥测事件包含调用进程的操作系统、操作系统版本、Python 版本、CLI 版本、命令名称（`dev`、`up`、`run` 等）以及表示是否将标志传递给命令的布尔值。欲了解更多信息，请参阅[full analytics logic](https://github.com/langchain-ai/langgraph/blob/main/libs/cli/langgraph_cli/analytics.py)。
 
 您可以通过设置 `LANGGRAPH_CLI_NO_ANALYTICS=1` 禁用所有 CLI 遥测。
 
 <a id="in-memory-docker"></a>
-## 代理服务器[Agent Server](/langsmith/agent-server) 提供了持久的执行运行时，它依赖于应用程序状态、长期记忆、线程元数据、助手以及本地文件系统或数据库的类似资源的持久检查点。除非您故意自定义存储位置，否则此信息将写入本地磁盘（对于`langgraph dev`）或 PostgreSQL 数据库（对于`langgraph up` 以及所有部署中）。
+## 代理服务器[Agent Server](/langsmith/agent-server) 提供了持久的执行运行时，它依赖于应用程序状态、长期记忆、线程元数据、助手以及本地文件系统或数据库的类似资源的持久检查点。除非您有意自定义存储位置，否则此信息将写入本地磁盘（对于`langgraph dev`）或 PostgreSQL 数据库（对于`langgraph up` 以及所有部署中）。
 
 ### LangSmith 追踪
 
@@ -37,7 +37,7 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 ## 工作室
 
-[Studio](/langsmith/studio) 是一个用于与代理服务器交互的图形界面。它不会保留任何私人数据（您发送到服务器的数据不会发送到LangSmith）。虽然 Studio 界面在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-data-storage-and-privacy) 上提供服务，但它在您的浏览器中运行并直接连接到本地代理服务器，因此不需要将数据发送到 LangSmith。
+[Studio](/langsmith/studio) 是用于与代理服务器交互的图形界面。它不会保留任何私人数据（您发送到服务器的数据不会发送到LangSmith）。虽然 Studio 界面在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-data-storage-and-privacy) 上提供服务，但它在您的浏览器中运行并直接连接到本地代理服务器，因此不需要将数据发送到 LangSmith。
 
 如果您已登录，LangSmith 会收集一些使用情况分析，以帮助改善调试用户体验。这包括：
 
@@ -50,7 +50,7 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 总之，您可以通过关闭 CLI 分析和禁用跟踪来选择退出服务器端遥测。
 
-|变量|目的|默认|
+|变量|目的|默认 |
 | ------------------------------------------ | ---------------------------------- | -------------------------------- |
 | `LANGGRAPH_CLI_NO_ANALYTICS=1` |禁用 CLI 分析 |启用分析 |
 | `LANGSMITH_API_KEY` |启用 LangSmith 跟踪 |跟踪已禁用 |

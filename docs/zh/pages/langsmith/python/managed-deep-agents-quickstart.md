@@ -4,7 +4,7 @@
 
 # 托管 Deep Agents 快速入门
 
-创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在[LangSmith Studio](/langsmith/studio)中进行测试，然后使用[⟦T15⟧ CLI](/langsmith/python/managed-deep-agents-cli)进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
+创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T16⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
 
 在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
@@ -25,11 +25,47 @@
 
 ## 添加`managed-deep-agents`技能
 
-[⟦T18⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
+[⟦T19⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
 
 ```bash
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```
+
+或者将此提示粘贴到您的编码代理中：
+
+<Prompt
+    description="Build a Managed Deep Agent with the quickstart"
+    icon="sparkles"
+    actions={["copy", "cursor"]}
+>
+按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
+
+## 第 1 步：阅读指南
+
+获取并遵循 https://docs.langchain.com/langsmith/driven-deep-agents-quickstart.md 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
+
+## 第二步：安装技能如果 `managed-deep-agents` 技能尚不可用，请安装它：
+
+```bash
+npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
+```
+
+当该技能可用时，将其用于工作流程的其余部分。
+
+## 步骤 3：先决条件和秘密
+
+确认用户具有 LangSmith 访问权限以及任何所需的模型或搜索凭据。如果缺少所需的 API 密钥，请要求他们在 shell 或 `.env` 文件中设置它，然后等待。不要发明、硬编码或提交秘密。
+
+## 步骤 4：搭建、配置、测试和部署
+
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
+
+## 规则
+
+- 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
+- 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
+- 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
+</Prompt>
 
 ## 创建并部署代理
 
@@ -41,12 +77,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```bash
 uvx --from managed-deepagents mda init research-assistant
 cd research-assistant
-```
-
-
-
-
-您现在已经为您的代理准备好了所有的脚手架。
+```您现在已经为您的代理准备好了所有的脚手架。
 
   </Step>
 
@@ -60,7 +91,9 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 # GOOGLE_API_KEY=<GOOGLE_API_KEY>
 ```
 
-本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。<Warning>
+本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
+
+<Warning>
 不要将 `.env` 文件提交到版本控制中。它包含秘密。
 </Warning>
 
@@ -96,9 +129,7 @@ keep notes, and return concise answers with citations.
 
   </Step>
 
-  <Step title="Configure your model and search" id="configure-model-and-search">
-
-现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
+  <Step title="Configure your model and search" id="configure-model-and-search">现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
 打开`agent.py`：
 
@@ -156,7 +187,12 @@ TAVILY_API_KEY=<TAVILY_API_KEY>
 
 ```bash
 uv add tavily-python
-```创建自定义 `internet_search` 工具：
+```
+
+
+
+
+创建自定义 `internet_search` 工具：
 
 ```python tools/search.py
 import os
@@ -231,7 +267,7 @@ What were the main announcements from the latest LangChain release?
 
 您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。
+欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。
   </Step>
 
   <Step title="Deploy the agent" id="deploy-the-agent">
@@ -240,19 +276,16 @@ What were the main announcements from the latest LangChain release?
 
 ```bash
 uv run mda deploy
-```
+```托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
-
-
-
-托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
-
-打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查代理的执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
+打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
 
   </Step>
 </Steps>
 
-## 后续步骤<CardGroup cols={2}>
+## 后续步骤
+
+<CardGroup cols={2}>
   <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
     添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
   </Card>

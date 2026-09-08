@@ -8,7 +8,7 @@
 [langgraph](https://langchain-ai.github.io/langgraph/)
 </Info>
 
-`langgraph` 是一个用于使用 LLM 构建有状态、多参与者应用程序的库，用于创建代理和多代理工作流程。评估 `langgraph` 图可能具有挑战性，因为单个调用可能涉及许多 LLM 调用，并且进行哪些 LLM 调用可能取决于先前调用的输出。在本指南中，我们将重点关注如何将图和图节点传递给`evaluate()`/`aevaluate()`的机制。如需了解构建代理时的评估技术和最佳实践，请前往[langgraph docs](https://langchain-ai.github.io/langgraph/tutorials/#evaluation)。
+`langgraph` 是一个用于使用 LLM 构建有状态、多参与者应用程序的库，用于创建代理和多代理工作流程。评估 `langgraph` 图可能具有挑战性，因为单个调用可能涉及许多 LLM 调用，并且进行哪些 LLM 调用可能取决于先前调用的输出。在本指南中，我们将重点关注如何将图和图节点传递给 `evaluate()` / `aevaluate()` 的机制。如需了解构建代理时的评估技术和最佳实践，请前往[LangSmith evaluation docs](/langsmith/evaluation)。
 
 ## 端到端评估
 
@@ -161,8 +161,8 @@ async def correct(outputs: dict, reference_outputs: dict) -> bool:
 
 ### 运行评估
 
-现在我们可以进行评估并探索结果。我们只需要包装我们的图形函数，以便它可以按照存储在我们的示例中的格式接受输入：<Note>
-如果所有图形节点都定义为同步函数，那么您可以使用 `evaluate` 或 `aevaluate`。如果任何节点被定义为异步，则需要使用 `aevaluate`
+现在我们可以进行评估并探索结果。我们只需要包装我们的图形函数，以便它可以按照示例中存储的格式接受输入：<Note>
+如果所有图形节点都定义为同步函数，那么您可以使用`evaluate`或`aevaluate`。如果任何节点被定义为异步，则需要使用 `aevaluate`
 </Note>
 
 需要`langsmith>=0.2.0`
@@ -274,7 +274,7 @@ async def main():
 
 ## 相关
 
-* [⟦T20⟧ evaluation docs](https://langchain-ai.github.io/langgraph/tutorials/#evaluation)
+* [⟦T20⟧ evaluation docs](/langsmith/evaluation)
 
 ## 参考代码
 

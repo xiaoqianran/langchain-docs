@@ -4,7 +4,7 @@
 
 # 自托管代理服务器环境变量
 
-部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
+当部署在 [self-hosted](/langsmith/deploy-to-self-hosted-overview) 基础设施上时，代理服务器支持以下环境变量。有关特定于云部署的变量，请参阅[Cloud Agent Server environment variables](/langsmith/env-var-cloud)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
 
@@ -15,14 +15,14 @@
 </Warning>
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。<Warning>
-启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作程序都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+启用 `BG_JOB_ISOLATED_LOOPS` 后，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 </Warning>
 
 默认为`False`。
 
 ## `BG_JOB_MAX_RETRIES`
 
-可重试故障（例如暂时性数据库错误、服务器关闭取消）后后台运行重试的最大次数。当运行因可重试错误而失败时，它会被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
+在可重试的故障（例如暂时性数据库错误、服务器关闭取消）后重试后台运行的最大次数。当运行因可重试错误而失败时，它会被放回队列中并从最后一个检查点步骤恢复。如果运行超过最大重试次数，则将其标记为失败。
 
 默认为`3`。
 
@@ -30,9 +30,9 @@
 
 ## `BG_JOB_TIMEOUT_SECS`
 
-可以增加后台运行的超时时间。但是，云部署的基础设施对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
+可以增加后台运行的超时时间。但是，云部署的基础架构对 API 请求强制执行 1 小时的超时限制。这意味着客户端和服务器之间的连接将在 1 小时后超时。这是不可配置的。
 
-后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过`POST /threads/{thread_id}/runs/{run_id}/stream`加入流）以检索运行的输出。
+后台运行可以执行超过 1 小时，但如果运行时间超过 1 小时，客户端必须重新连接到服务器（例如通过 `POST /threads/{thread_id}/runs/{run_id}/stream` 加入流）以检索运行的输出。
 
 默认为`86400`。
 
@@ -46,7 +46,7 @@
 
 默认为 `*`（所有来源）。
 
-## 支持的 Datadog 环境变量 {#dd_api_key}在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时才生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
+## 支持的 Datadog 环境变量 {#dd_api_key}在部署上设置这些环境变量或机密，以将代理服务器跟踪和日志发送到 Datadog。每个变量仅在设置`DD_API_KEY`时生效，它将应用程序进程包装在Datadog的[⟦T33⟧](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html)跟踪器和日志收集代理中。
 
 - **`DD_API_KEY`**：你的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。必需的。将任何跟踪或日志发送到 Datadog 都需要它。
 - **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
@@ -75,7 +75,7 @@
 ## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。有`langgraph-api>=0.8.1`可供选择。
 
 <Note>
-仅支持默认的 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
+仅支持默认 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
 </Note>
 
 接受的字段：
@@ -83,7 +83,7 @@
 - `enabled`（布尔值，默认`false`）：当`true`时，线程删除和修剪操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
 - `enabledWorkerOnly`（布尔值，默认`false`）：仅运行后台排出工作程序，而不将新条目排队。在将 `enabled` 回滚到 `false` 后，使用它来完成队列的排空。
 - `pollIntervalMs`（整数，默认`5000`）：工作线程轮询队列的频率，以毫秒为单位。
-- `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的漏电延迟。
+- `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的排出延迟。
 - `batchSleepMs`（整数，默认`500`）：当队列非空时，worker 在批次之间休眠的时间，以毫秒为单位。
 
 示例：`LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`。默认为禁用（同步检查点删除）。
@@ -124,7 +124,7 @@
 
 ## `LS_APM_OTEL_ENABLED`
 
-要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪摄取端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
+要为您的部署配置 OpenTelemetry APM 跟踪，请将 `LS_APM_OTEL_ENABLED` 设置为 `true`，并将 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 或 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为目标跟踪引入端点。请注意，在 `0.7.17` 之后的服务器版本中，需要 `LS_APM_OTEL_ENABLED` 和其他两个导出端点之一来激活 OpenTelemetry APM 跟踪。
 
 指定其他[⟦T119⟧ environment variables](https://opentelemetry.io/docs/collector/configuration/)来配置跟踪、日志记录和其他检测。
 
@@ -176,23 +176,32 @@ API Server 版本 0.1.9 及更高版本支持此环境变量。
 
 默认为`''`。
 
+## `REDIS_URI_CUSTOM`
+
+<Info>
+**仅适用于混合和自托管**
+自定义 Redis 实例仅适用于 [Hybrid](/langsmith/hybrid) 和 [Self-Hosted](/langsmith/self-hosted) 部署。
+</Info>
+
+指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
+
 ## `REDIS_MAX_CONNECTIONS`
 
 Redis 连接池（每个副本）的最大大小可以使用 `REDIS_MAX_CONNECTIONS` 环境变量进行控制。通过设置此变量，您可以确定服务器与 Redis 实例建立的同时连接数的上限。
 
-例如，如果部署扩展到 10 个副本，并且 `REDIS_MAX_CONNECTIONS` 配置为 `150`，则最多可以建立 `1500` 与 Redis 的连接。
+例如，如果部署扩展到 10 个副本，并且 `REDIS_MAX_CONNECTIONS` 配置为 `150`，则最多可以建立 `1500` 到 Redis 的连接。
 
-默认为 `2000`。
+默认为`2000`。
 
 ## `RESUMABLE_STREAM_TTL_SECONDS`
 
-Redis 中可恢复流数据的生存时间（以秒为单位）。
+Redis 中可恢复流数据的生存时间（以秒为单位）。创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
 
-创建运行并对输出进行流式传输时，可以将流配置为可恢复（例如`stream_resumable=True`）。如果流是可恢复的，则流的输出将临时存储在 Redis 中。该数据的 TTL 可以通过设置`RESUMABLE_STREAM_TTL_SECONDS`来配置。
+有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://reference.langchain.com/javascript/langchain-langgraph-sdk/client/RunsClient) SDK。
 
-有关如何实现可恢复流的更多详细信息，请参阅 [Python](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.RunsClient.stream) 和 [JS/TS](https://langchain-ai.github.io/langgraphjs/reference/classes/sdk_client.RunsClient.html#stream) SDK。
+默认为 `120` 秒。
 
-默认为 `120` 秒。<Note>
+<Note>
 当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
 </Note>
 
@@ -208,9 +217,7 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 有关提供程序先决条件和连接 URI 要求，请参阅 [Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。
 
-## `LANGGRAPH_SERVER_HOST`
-
-设置 `LANGGRAPH_SERVER_HOST` 来控制代理服务器监听哪些地址族：
+## `LANGGRAPH_SERVER_HOST`设置 `LANGGRAPH_SERVER_HOST` 来控制代理服务器监听哪些地址族：
 
 * **空字符串**：同时监听 IPv4 和 IPv6。这是从 `langgraph-api>=0.14.0` 开始的默认设置。
 * **`0.0.0.0`**：仅在 IPv4 上侦听。
@@ -218,7 +225,9 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。
 
 `langgraph-api` 0.14.0 之前的版本默认为`0.0.0.0`，仅侦听 IPv4。
 
-## `LANGSMITH_API_KEY`要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_API_KEY` 设置为从自托管实例创建的 API 密钥。
+## `LANGSMITH_API_KEY`
+
+要将跟踪发送到自托管 LangSmith 实例，请将 `LANGSMITH_API_KEY` 设置为从自托管实例创建的 API 密钥。
 
 ## `LANGSMITH_ENDPOINT`
 

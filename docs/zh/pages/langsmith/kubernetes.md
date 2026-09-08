@@ -74,7 +74,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
       * 您可能需要根据组织规模/使用情况调整我们所有不同服务的资源请求/限制。您可以在[self-host scale guide](/langsmith/self-host-scale)找到我们的建议。
       * 我们建议使用集群自动缩放器来根据资源使用情况处理节点的扩展/缩减。
       * 我们建议设置指标服务器，以便可以打开自动缩放。
-      * 如果您在集群内运行 Clickhouse，则必须有一个至少具有 4 个 vCPU 和 16GB **可分配** 内存的节点，因为 ClickHouse 默认情况下会请求此数量的资源。
+      * 如果您在集群内运行 Clickhouse，则必须拥有一个至少具有 4 个 vCPU 和 **可分配** 16GB 内存的节点，因为 ClickHouse 默认情况下会请求此数量的资源。
 
    2. 集群上可用的有效动态 PV 配置程序或 PV（仅当您在集群内运行数据库时才需要）* 为了实现持久性，我们将尝试为集群中运行的任何数据库提供卷。
       * 如果在集群中使用 PV，我们强烈建议在生产环境中设置备份。
@@ -98,7 +98,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
             我们强烈建议使用支持卷扩展的存储类。这是因为跟踪可能需要大量磁盘空间，并且您的卷可能需要随着时间的推移调整大小。
             </Note>
 
-      有关存储类别的更多信息，请参阅[Kubernetes documentation](https://kubernetes.io/do/langsmith/observability-concepts/storage/storage-classes/)。
+      有关存储类别的更多信息，请参阅[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
 
 2. 头盔
 
@@ -108,7 +108,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到`https://beacon.langchain.com` 进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
 
 <Note>
-从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行额外配置。
+从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
 </Note>
 
 ## 配置您的 Helm 图表：
@@ -152,7 +152,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
      encryptionKey: "<chat-encryption-key>"
    ```
 
-   Insights（人工智能驱动的跟踪分析）和 Polly（工作区内聊天）在最新的图表版本中默认启用，并且在安装时需要加密密钥。使用 `openssl rand -hex 32` 等命令生成每个密钥。
+   Insights（人工智能驱动的跟踪分析）和 Polly（工作区内聊天）在最近的图表版本中默认启用，并且在安装时需要加密密钥。使用 `openssl rand -hex 32` 等命令生成每个密钥。
 
 您还需要指定您正在使用的任何外部数据库的连接详细信息。
 

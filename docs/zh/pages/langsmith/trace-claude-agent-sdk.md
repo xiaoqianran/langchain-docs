@@ -62,7 +62,7 @@ ANTHROPIC_API_KEY=<your_anthropic_api_key>
 
 您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-claude-agent-sdk) 中找到您的 LangSmith API 密钥和项目名称。
 
-对于Anthropic API 密钥，请参阅[Claude console](https://claude.ai/login)。
+对于Anthropic API 密钥，请参阅[Claude console](https://console.anthropic.com/settings/keys)。
 
 ## 快速入门
 

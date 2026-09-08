@@ -4,7 +4,7 @@
 
 # 如何添加自定义中间件
 
-将代理部署到 LangSmith 时，您可以向服务器添加自定义中间件，以处理诸如记录请求指标、注入或检查标头以及执行安全策略等问题，而无需修改核心服务器逻辑。这与 [adding custom routes](/langsmith/custom-routes) 的工作方式相同。您只需提供自己的[⟦T5⟧](https://www.starlette.io/applications/)应用程序（包括[⟦T6⟧](https://fastapi.tiangolo.com/)、[⟦T7⟧](https://fastht.ml/)及其他兼容应用程序）。
+将代理部署到LangSmith时，您可以将自定义中间件添加到服务器来处理诸如记录请求指标、注入或检查标头以及执行安全策略等问题，而无需修改核心服务器逻辑。这与 [adding custom routes](/langsmith/custom-routes) 的工作方式相同。您只需提供自己的[⟦T5⟧](https://starlette.dev/applications/)应用程序（包括[⟦T6⟧](https://fastapi.tiangolo.com/)、[⟦T7⟧](https://fastht.ml/)及其他兼容应用程序）。
 
 通过添加中间件，您可以在整个部署中全局拦截和修改请求和响应，无论它们是访问您的自定义端点还是内置的 LangSmith API。
 
@@ -17,7 +17,7 @@
 
 ## 创建应用程序
 
-从 **现有** LangSmith 应用程序开始，将以下中间件代码添加到您的 `webapp.py` 文件中。如果您是从头开始，则可以使用 CLI 从模板创建新应用程序。
+从 **现有** LangSmith 应用程序开始，将以下中间件代码添加到您的 `webapp.py` 文件中。如果您从头开始，则可以使用 CLI 从模板创建新应用程序。
 
 ```bash
 langgraph new --template=new-langgraph-project-python my_new_project
