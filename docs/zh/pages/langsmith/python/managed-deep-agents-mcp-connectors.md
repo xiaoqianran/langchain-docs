@@ -4,7 +4,9 @@
 
 # 连接到 MCP 服务器
 
-MCP 连接器将远程[Model Context Protocol (MCP)](/oss/python/deepagents/mcp) 服务器中的工具添加到托管深度代理中。托管 Deep Agents 创建 MCP 客户端、加载工具并将它们添加到代理。
+将托管深度代理连接到远程 [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) 服务器，以将其工具添加到代理中。 Managed Deep Agents 创建 MCP 客户端并加载工具。
+
+大多数远程 MCP 服务器需要身份验证。 [connection](/langsmith/python/managed-deep-agents-connections) 提供它，并将连接声明为用户所有，使每个调用者授权自己的帐户。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -12,29 +14,29 @@ MCP 连接器将远程[Model Context Protocol (MCP)](/oss/python/deepagents/mcp)
 
 ## 项目结构
 
-在 `connectors/` 正下方的模块中声明 MCP 服务器：
+在 `tools/` 正下方的模块中声明 MCP 服务器：
 
 ```text
 my-agent/
   agent.py
-  connectors/
+  tools/
     mcp.py
 ```
 
-该模块必须导出模块级别`connector`。
+该模块必须导出模块级别`mcp`。
 
 
 
 
-## 添加 MCP 连接器
+## 添加 MCP 服务器
 
-使用 `connectors.mcp` 声明一台或多台远程服务器：
+使用 `define_mcp` 声明一台或多台远程服务器：
 
-```python connectors/mcp.py
-from managed_deepagents import connectors
+```python tools/mcp.py
+from managed_deepagents import define_mcp
 
-connector = connectors.mcp(
-    mcp_servers={
+mcp = define_mcp(
+    servers={
         "langchainDocs": {
             "transport": "http",
             "url": "https://docs.langchain.com/mcp",
@@ -50,7 +52,7 @@ connector = connectors.mcp(
 
 ## 选择工具
 
-默认情况下，连接器公开每个服务器的每个工具。要仅公开选定的工具，请在该服务器的配置中设置允许列表：
+默认情况下，托管Deep Agents公开每个服务器的每个工具。要仅公开选定的工具，请在该服务器的配置中设置允许列表：
 
 ```python
 {
@@ -67,33 +69,40 @@ connector = connectors.mcp(
 
 您可以同时使用这两个选项。拒绝列表在允许列表之后应用，并且同一工具不能出现在两个列表中。选择在 Managed Deep Agents 前缀之前使用原始 MCP 工具名称。默认情况下，工具名称以服务器名称为前缀以避免冲突。例如，来自 `langchainDocs` 服务器的 `search_docs_by_lang_chain` 工具公开为 `langchainDocs__search_docs_by_lang_chain`。
 
-## 配置连接
+## 配置 MCP 服务器
 
-每个服务器接受以下选项：
+每个服务器都支持以下核心选项：
 
 |选项 |描述 |
-| ---| ---|
+| --- | --- |
 | `transport` |必需的。对流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
-| `headers` |要发送到服务器的静态标头，例如授权标头。 |
+| `headers` |发送到服务器的静态标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
 | `exclude_tools` / `excludeTools` |要隐藏的原始 MCP 工具名称。 |
 | `default_tool_timeout` / `defaultToolTimeout` |每个工具调用的超时时间，对于 Python 以秒为单位，对于 TypeScript 以毫秒为单位。 |
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-连接器还接受以下选项：
+MCP 定义还接受以下选项：
 
 |选项 |默认 |描述 |
-| ---| ---| ---|
+| --- | --- | --- |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
-| `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |如果服务器需要凭据，请从环境变量中读取它们并通过`headers`传递它们。将本地值保留在`.env`中；托管 Deep Agents 将符合条件的值作为部署机密转发。不要在连接器声明中对凭据进行硬编码。
+| `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
 
-## 将连接器与其他功能区分开来
-
-- **MCP 连接器** 添加由远程 MCP 服务器托管的工具。
+## 将 MCP 与其他功能进行比较- **MCP 服务器** 提供远程托管工具。
 - **[Authored tools](/langsmith/python/managed-deep-agents-tools)** 在项目中实现应用程序逻辑并通过代理定义传递。
 - **[Channels](/langsmith/python/managed-deep-agents-channels)** 接收启动代理运行并传递响应的外部消息。
+
+## 使用需要身份验证的 MCP 服务器
+
+如果 MCP 服务器需要凭据，请在服务器配置上声明连接并在工作区中创建该连接。
+
+- **MCP OAuth**：对于通告 OAuth 并支持自动客户端注册的服务器，请使用`mda connections create <slug>`（从 MCP 声明推断）或`mda connections create <slug> --mcp <url>` 创建。您不提供客户端 ID 或密码。
+- **不透明机密或通用 OAuth**：对于静态 API 密钥，或您自己注册的 BYOT OAuth 应用程序，创建不透明机密或通用 OAuth 连接，然后将服务器的 `connection` 选项设置为 `connections.get(...)`。
+
+有关创建模式、所有者和运行时授权，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
 ---
 

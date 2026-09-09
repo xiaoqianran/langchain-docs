@@ -13,7 +13,7 @@
 ## 要求
 
 * 运行 `playground` 服务的自托管 LangSmith 实例。
-* 您要配置的provider必须支持配置环境变量。检查提供商的聊天模型 [documentation](https://docs.langchain.com/oss/python/integrations/providers/overview) 了解更多信息。
+* 您要配置的provider必须支持配置环境变量。检查提供商的聊天模型[documentation](https://docs.langchain.com/oss/python/integrations/providers/overview)以获取更多信息。
 * 您可能想要附加到 `playground` 服务的秘密/角色。
   * 请注意，对于 [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)，您可能需要授予 `langsmith-playground` 服务帐户必要的权限来访问云提供商中的机密或角色。
 
@@ -37,7 +37,7 @@ playground:
 
 ## Gemini 企业代理平台配置
 
-您可以使用带有密钥或工作负载身份的环境变量（适用于 GKE 的 GCP 工作负载身份或适用于 EKS 的 AWS IRSA）为 Playground 服务配置 Gemini Enterprise Agent Platform 凭证。
+您可以使用带有密钥的环境变量或 GKE 的 GCP 工作负载身份来配置 Playground 服务的 Gemini Enterprise Agent Platform 凭据。
 
 ### 使用秘密
 
@@ -76,7 +76,7 @@ playground:
 
 ### 使用工作负载身份
 
-您可以将 Playground 服务帐户配置为使用工作负载身份来承担 GCP 服务帐户角色，而无需存储凭据。这是 GKE 集群的推荐方法。
+您可以将 Playground 服务帐户配置为使用 GCP Workload Identity 来承担 GCP 服务帐户角色，而无需存储凭据。这是 GKE 集群的推荐方法。
 
 #### GCP 工作负载身份 (GKE)
 
@@ -108,32 +108,22 @@ playground:
 使用 GCP Workload Identity 时，请确保 GCP 服务帐户具有所需的 Gemini Enterprise Agent Platform 权限（例如 `roles/aiplatform.user`）。
 </Note>
 
-#### AWS IRSA (EKS)
-
-对于 EKS 集群，您可以使用 AWS IRSA 代入 GCP 服务账户角色：
+## AWS IRSA (EKS)对于 EKS 集群，您可以使用 AWS IRSA（服务账户的 IAM 角色）授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
 
 <CodeGroup>
 
 ```yaml Helm
 playground:
-  deployment:
-    extraEnv:
-      # Optional: Set project/location if not in model config
-      - name: GOOGLE_CLOUD_PROJECT
-        value: "your-gcp-project-id"
-      - name: VERTEXAI_PROJECT_ID
-        value: "your-gcp-project-id"
-      - name: VERTEXAI_LOCATION
-        value: "us-central1"
-    # No credentials needed - pod assumes GCP SA role via AWS IAM role
   serviceAccount:
     create: true  # Enable if not exists
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-VertexAI-Role
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-Playground-Role
 ```
 
-</CodeGroup><Note>
-使用 AWS IRSA 时，请确保您的 AWS IAM 角色具有代入 GCP 服务账户角色所需的权限，并且 GCP 服务账户具有所需的 Gemini Enterprise Agent Platform 权限。
+</CodeGroup>
+
+<Note>
+确保您的 AWS IAM 角色拥有游乐场服务需要访问的 AWS 资源的必要权限。
 </Note>
 
 ---

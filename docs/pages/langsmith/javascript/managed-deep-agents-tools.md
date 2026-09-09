@@ -4,7 +4,7 @@
 
 Tools extend what your agent can do by letting it interact with external systems, such as fetching real-time data, querying databases, executing code, and taking actions. A tool is a callable function with defined inputs and outputs. The model uses the tool's description and the conversation context to decide when to call it and which arguments to provide.
 
-To load tools from a remote MCP server, use an [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors).
+To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
@@ -122,9 +122,11 @@ During public beta, Managed Deep Agents is CLI-first and programmatic invocation
 
 Human-in-the-loop needs durable thread state to pause and resume. The managed runtime owns the checkpointer, so no extra setup is required.
 
-## Use secrets and context
+## Use tools that require authentication
 
-Tools can read deployment secrets from environment variables. Put local values in `.env` for `mda dev`; `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
+If a tool requires an API key or OAuth token, use a connection to resolve the credential at runtime. See [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+
+## Access runtime context
 
 For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/javascript/langchain/tools#access-context).
 

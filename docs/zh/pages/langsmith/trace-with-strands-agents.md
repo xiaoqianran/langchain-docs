@@ -31,7 +31,7 @@ uv add "langsmith[strands-agents]"
 设置您的 [LangSmith API key](/langsmith/create-account-api-key) 和项目名称。如果您使用 Amazon Bedrock 作为 Strands Agent 的模型提供程序，还可以使用您的首选 AWS 身份验证方法配置 AWS 凭证。
 
 ```bash
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
+export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
 export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Project=<your_project_name>"
 
 # Required when using Amazon Bedrock.

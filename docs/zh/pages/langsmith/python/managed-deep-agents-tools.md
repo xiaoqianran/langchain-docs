@@ -6,7 +6,7 @@
 
 工具通过让代理与外部系统交互来扩展代理的功能，例如获取实时数据、查询数据库、执行代码和采取操作。工具是具有定义的输入和输出的可调用函数。该模型使用工具的描述和对话上下文来决定何时调用它以及提供哪些参数。
 
-要从远程 MCP 服务器加载工具，请使用 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors)。
+要从远程 MCP 服务器加载工具，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -118,9 +118,11 @@ agent = define_deep_agent(
 
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用秘密和上下文工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
+## 使用需要身份验证的工具
 
-对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。## 访问运行时上下文
+
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
 ---
 

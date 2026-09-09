@@ -65,7 +65,7 @@ Context Hub 目前支持两种环境标签进行升级：`staging` 和 `producti
 - [Context engineering concepts](/langsmith/context-engineering-concepts)：了解技能、代理、版本控制和共享。
 - [Manage contexts with the SDK](/langsmith/manage-contexts-sdk)：以编程方式推送、拉取、列出和删除上下文。
 - [Configure commit webhooks](/langsmith/context-hub-webhooks)：将工作区 Context Hub 提交发送到外部 HTTPS 端点。
-- [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-sdk#mount-a-context-hub-repo)：为沙箱代码提供对存储库的只读文件系统访问权限，并在更改时保持同步。
+- [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-mounts#mount-a-context-hub-repo)：为沙箱代码提供对存储库的只读文件系统访问权限，该存储库在更改时保持同步。
 
 ---
 

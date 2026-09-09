@@ -20,7 +20,7 @@ LangSmith Fleet 是一个用于创建和管理 AI 代理的无代码平台。它
 ## 开始构建
 
 <CardGroup cols={2}>
-  <Card title="Build with AI" icon="wand">
+  <Card title="Build with AI" icon="wand" href="https://smith.langchain.com/agents">
     描述您想要创建的代理并让 Fleet 构建它，并在关键点暂停以等待您的输入。
   </Card>
   <Card title="Build from a template" icon="layout-grid" href="/langsmith/fleet/quickstart">

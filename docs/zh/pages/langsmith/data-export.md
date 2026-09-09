@@ -22,9 +22,9 @@ LangSmith 的批量数据导出功能可让您将特定项目和日期范围内�
 
 ## 1. 创建目的地
 
-目的地告诉 LangSmith 将导出的数据写入何处。在提出此请求之前，您需要：- 您的 [LangSmith API key](/langsmith/create-account-api-key) 和 [workspace ID](/langsmith/set-up-hierarchy#set-up-a-workspace)。
+目的地告诉 LangSmith 将导出的数据写入何处。在提出此请求之前，您需要：- 你的[LangSmith API key](/langsmith/create-account-api-key)和[workspace ID](/langsmith/set-up-hierarchy#set-up-a-workspace)。
 - 向 LangSmith 授予**写入访问权限**的 S3 或 S3 兼容存储桶（请参阅 [Permissions required](/langsmith/data-export-destinations#permissions-required)）。
-- 存储桶名称、前缀以及 AWS 区域（对于 AWS S3）或终端节点 URL（对于 GCS、MinIO 或其他与 S3 兼容的提供商）。
+- 存储桶名称、前缀以及 AWS 区域（对于 AWS S3）或终端节点 URL（对于 GCS、MinIO 或其他 S3 兼容提供商）。
 - 存储桶的访问密钥和秘密密钥。
 
 ```bash
@@ -85,9 +85,9 @@ curl --request POST \
 <Note>
 **LangSmith 云限制：每个工作区每小时 250 个批量导出创建**
 
-在 [LangSmith cloud](/langsmith/cloud) 上，每个工作区每小时最多可以创建 250 个批量导出。该预算包括一次性导出和由 [scheduled bulk exports](#schedule-recurring-exports) 生成的导出，因此具有许多活动计划的工作区会自动消耗部分每小时预算。
+在[LangSmith cloud](/langsmith/cloud)上，每个工作区每小时最多可以创建250个批量导出。该预算包括一次性导出和由 [scheduled bulk exports](#schedule-recurring-exports) 生成的导出，因此具有许多活动计划的工作区会自动消耗部分每小时预算。
 
-如果您的工作区达到限制，新的创建请求将被拒绝并返回 429，直到较早的创建时间超过滚动 60 分钟窗口。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+如果您的工作区达到限制，新的创建请求将被拒绝并返回 429，直到较早的创建时间超过滚动 60 分钟窗口为止。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 [Self-hosted LangSmith](/langsmith/self-hosted) 默认情况下不强制执行此限制。
 </Note>
@@ -115,7 +115,7 @@ curl --request POST \
     "end_time": "2024-02-01T00:00:00Z",
     "format_version": "v2_beta"
   }'
-```LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交作业后但在协调器开始处理之前创建的任何实验。
+```LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交作业后但编排器开始处理之前创建的任何实验。
 
 相同的 `all_experiments` 标志适用于 [scheduled exports](#schedule-recurring-exports) — 包括 `interval_hours` 并省略 `end_time`，而不是提供 `end_time`。
 
@@ -136,7 +136,7 @@ curl --request POST \
 需要 LangSmith Helm 版本 >= `0.10.42`（应用程序版本 >= `0.10.109`）
 </Note>
 
-计划导出收集定期运行并导出到配置的目标。要创建计划导出，请包含 `interval_hours` 并省略 `end_time`：
+计划导出定期运行收集并导出到配置的目标。要创建计划导出，请包含 `interval_hours` 并省略 `end_time`：
 
 ```bash
 curl --request POST \
@@ -213,7 +213,7 @@ curl --request POST \
 允许的值：`zstandard`、`gzip`、`snappy`、`none`。加载到 BigQuery 时使用 `snappy`，请参阅 [Export trace data to BigQuery](/langsmith/big-query-bulk-export)。
 
 <Note>
-在[Self-hosted LangSmith](/langsmith/self-hosted)上，默认为`gzip`。设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量以更改默认值。
+从 LangSmith 0.16.0 开始，当省略 `compression` 时，[Self-hosted LangSmith](/langsmith/self-hosted) 也默认为 `zstandard`。这是对之前版本的重大更改，之前版本默认为 `gzip`。要覆盖默认值，请设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量。
 </Note>
 
 ### 可导出字段
@@ -222,7 +222,7 @@ curl --request POST \
 
 **标识符和层次结构：**
 
-|领域|描述 |
+|领域 |描述 |
 |--------|-------------|
 | `id` |运行 ID |
 | `tenant_id` |工作区/租户 ID |
@@ -232,7 +232,7 @@ curl --request POST \
 | `parent_run_ids` |所有父运行 ID 的列表 |
 | `reference_example_id` |如果数据集的一部分，请参考示例 |
 
-**基本元数据：**|领域|描述 |
+**基本元数据：**|领域 |描述 |
 |--------|-------------|
 | `name` |运行名称|
 | `run_type` |运行类型（例如“链”、“llm”、“工具”）|
@@ -245,7 +245,7 @@ curl --request POST \
 
 **运行数据：**
 
-|领域|描述 |
+|领域 |描述 |
 |--------|-------------|
 | `inputs` |运行输入 (JSON) |
 | `outputs` |运行输出 (JSON) |
@@ -255,7 +255,7 @@ curl --request POST \
 
 **标签和反馈：**
 
-|领域|描述 |
+|领域 |描述 |
 |--------|-------------|
 | `tags` |标签列表 |
 | `feedback_stats` |反馈统计（JSON）。有关聚合限制，请参阅以下注释。 |
@@ -267,7 +267,7 @@ curl --request POST \
 `feedback_stats` 字段仅包含字符串类型反馈的值细分。非字符串值（数字、布尔值、复杂类型）的反馈不包括在这些细分中。要分析非字符串反馈值，请单独导出原始反馈数据。
 </Note>
 
-**代币使用和成本：**|领域|描述 |
+**代币使用和成本：**|领域 |描述 |
 |--------|-------------|
 | `total_tokens` |代币总数 |
 | `prompt_tokens` |提示令牌计数 |

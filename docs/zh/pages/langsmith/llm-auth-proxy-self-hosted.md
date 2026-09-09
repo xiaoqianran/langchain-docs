@@ -4,12 +4,12 @@
 
 # 设置 LLM 身份验证代理
 
-LLM 身份验证代理可让您的组织对来自 LangSmith 的所有模型调用强制执行自己的身份验证流程，以便提供商凭证永远不会暴露给最终用户，并且每个请求都可以追溯到特定参与者。
+LLM 身份验证代理可让您的组织对来自 LangSmith 的所有模型调用强制实施自己的身份验证流程，以便提供商凭证永远不会暴露给最终用户，并且每个请求都可以追溯到特定参与者。
 
-LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组件，在您的环境中运行，位于 LangSmith 和上游 LLM 提供商或网关（例如 OpenAI、Anthropic 或内部 LLM 网关（如 LiteLLM））之间。 LangSmith 使用短期 JWT（JSON Web 令牌）对每个请求进行签名。代理验证 JWT，可选择注入提供者凭据或转换请求和响应正文，然后将请求转发到上游。 [SaaS](/langsmith/cloud) 和 [self-hosted](/langsmith/self-hosted) LangSmith 客户均可使用。
+LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组件，在您的环境中运行，位于 LangSmith 和您的上游 LLM 提供商或网关（例如 OpenAI、Anthropic 或内部 LLM 网关（如 LiteLLM））之间。 LangSmith 使用短期 JWT（JSON Web 令牌）对每个请求进行签名。代理验证 JWT，可选择注入提供者凭据或转换请求和响应正文，然后将请求转发到上游。 [SaaS](/langsmith/cloud) 和 [self-hosted](/langsmith/self-hosted) LangSmith 客户均可使用。
 
 <Info>
-LLM 身份验证代理需要LangSmith 企业计划。详情请参阅[Pricing](https://www.langchain.com/pricing)或[contact our sales team](https://www.langchain.com/contact-sales)。
+LLM 身份验证代理需要 LangSmith 企业计划。详情请参阅[Pricing](https://www.langchain.com/pricing)或[contact our sales team](https://www.langchain.com/contact-sales)。
 </Info>
 
 当您需要执行以下操作时，请使用 LLM 身份验证代理：
@@ -27,7 +27,7 @@ LLM 身份验证代理需要LangSmith 企业计划。详情请参阅[Pricing](ht
 3. 可以选择调用[⟦T19⟧](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)转换器，它可以重写请求和响应正文（例如，在OpenAI格式和自定义网关格式之间进行转换）
 4. 将带有自定义标头（静态或动态）的请求转发给上游提供商
 
-`ext_authz` 服务和转换器都是客户部署的组件，在您的环境中与代理一起运行。可以启用其中一个或两个 [depending on your use case](#when-to-use-ext_proc-vs-ext_authz)。
+`ext_authz` 服务和转换器都是客户部署的组件，在您的环境中与代理一起运行。可以启用其中一个或两者 [depending on your use case](#when-to-use-ext_proc-vs-ext_authz)。
 
 <img
   className="block dark:hidden"
@@ -94,7 +94,7 @@ platformBackend:
 
 **选项 A：** 为特定组织启用：
 
-在 LangSmith UI 中，导航至 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
+在 LangSmith UI 中，导航到 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
 
 针对您的 LangSmith PostgreSQL 数据库运行以下命令：
 
@@ -211,7 +211,7 @@ authProxy:
 
 您的 `ext_authz` 服务可以通过两种方式运行：
 
-- **Sidecar：** 在与代理相同的 Pod 中运行服务。在 `authProxy.deployment.sidecars` 下添加容器，并在 `values.yaml` 中的 `authProxy.deployment.volumes` 下添加任何所需卷。使用 `localhost` URL，例如 `http://localhost:10002`。
+- **Sidecar：** 在与代理相同的 Pod 中运行服务。在`authProxy.deployment.sidecars`下添加容器，并在`values.yaml`中的`authProxy.deployment.volumes`下添加任何所需的卷。使用 `localhost` URL，例如 `http://localhost:10002`。
 - **单独部署：**独立部署服务并将`extAuthz.serviceUrl`指向它。使用集群内 DNS 名称，例如 `http://my-auth-service.my-namespace.svc.cluster.local:8080`，或者如果服务有自己的入口，则使用外部 HTTPS URL。
 
 ### 示例部署
@@ -376,7 +376,7 @@ authProxy:
 
 通过 `processingMode` 控制将哪些相发送到变压器。仅启用您需要的阶段，因为禁用未使用的阶段会减少延迟。
 
-|领域|选项|描述 |
+|领域 |选项|描述 |
 |--------|---------|-------------|
 | `requestHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发请求头。 |
 | `responseHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发响应头。 |
@@ -751,13 +751,17 @@ LangSmith 使用 **Ed25519 (EdDSA)** 签署 JWT。公钥由 `/.well-known/jwks.j
 | `iss` |发行人。 `langsmith` 用于 SaaS；通过 `LLM_AUTH_PROXY_ISSUER` 设置自托管 |
 | `aud` |观众。匹配 LangSmith 组织设置中的 JWT 受众 |
 | `sub` |参与者标识符（用户 ID、评估者 ID、助理 ID 或 API 密钥 ID）|
-| `actor_type` |其中之一：`user`、`evaluator`、`agent-builder`、`api_key` |
+| `actor_type` |以下之一：`user`、`evaluator`、`agent-builder`、`insights`、`polly`、`api_key:pat`（个人访问令牌）或`api_key:service`（服务帐户密钥）|
 | `workspace_id` |工作区 ID |
 | `workspace_name` |工作区名称 |
 | `organization_id` |组织 ID |
 | `organization_name` |组织名称 |
 | `request_id` |请求相关 ID |
-| `ls_user_id` | LangSmith 用户 ID（仅当 `actor_type` 为 `user` 时出现）|
+| `ls_user_id` | LangSmith 用户 ID（每当请求有关联用户时就会出现）|
+
+<Warning>
+使用`ls_user_id`来识别最终用户。在代理运行时，`sub`是助手的ID，`actor_type`是`agent-builder`，因此两者都无法识别该人。
+</Warning>
 
 JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换器服务。
 
@@ -768,25 +772,23 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 </Accordion>
 
 <Accordion title="Does the auth proxy support custom certificates?">
-是的，通过 `customCa` 获取自定义 CA 证书，通过 `mtls` 获取相互 TLS。
-</Accordion>
-
-<Accordion title="Can a single auth proxy route to multiple upstream LLM gateways?">
+是的，对于自定义 CA 证书，通过 `customCa`；对于相互 TLS，通过 `mtls`。
+</Accordion><Accordion title="Can a single auth proxy route to multiple upstream LLM gateways?">
 不会。身份验证代理有一个 `upstream` 字段。
 </Accordion>
 
 <Accordion title="Can the auth proxy serve multiple organizations?">
 是的。多个组织可以通过LangSmith中的模型配置指向同一个身份验证代理实例。
-</Accordion><Accordion title="Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?">
-是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T169⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
+</Accordion>
+
+<Accordion title="Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?">
+是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T174⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
 要启用到 [Chat and Insights](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
 </Accordion>
 
 <Accordion title="Does the auth proxy work without a public ingress?">
-是的。当身份验证代理只能通过 Kubernetes 内部网络（无公共入口）访问时，请将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_K8S_INTERNAL` 和 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。有关配置详细信息，请参阅[Deploy without a public ingress](#deploy-without-a-public-ingress)。
-</Accordion>
-
-<Accordion title="When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?">
+是的。当身份验证代理只能通过内部 Kubernetes 网络（无公共入口）访问时，请将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_K8S_INTERNAL` 和 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。有关配置详细信息，请参阅[Deploy without a public ingress](#deploy-without-a-public-ingress)。
+</Accordion><Accordion title="When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?">
 当身份验证需要 OAuth2 `client_credentials` 之外的自定义逻辑时，请使用 LLM 身份验证代理。例如，将 LangSmith JWT 交换为提供商特定的令牌、注入 GCP 或 AWS 身份，或者重写请求和响应正文。当每个工作区或团队需要针对自定义网关对其自己的 OAuth2 `client_credentials` 进行自助控制时，请使用 [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials)。两者可以在同一组织中共存；路由是按配置进行的。
 </Accordion>
 
@@ -794,7 +796,9 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 
 有关可配置值的完整列表，请参阅[Helm chart README](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy)。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

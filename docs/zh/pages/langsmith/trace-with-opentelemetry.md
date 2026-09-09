@@ -55,7 +55,7 @@ OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 O
    </CodeGroup>
 
    <Info>
-   需要 Python SDK 版本`langsmith>=0.3.18`。我们推荐 `langsmith>=0.4.25` 从重要的 OpenTelemetry 修复中受益。
+   需要 Python SDK 版本`langsmith>=0.3.18`。我们建议使用 `langsmith>=0.4.25` 来受益于重要的 OpenTelemetry 修复。
    </Info>
 
 2. 在您的 LangChain/LangGraph 应用程序中，通过设置 `LANGSMITH_OTEL_ENABLED` 环境变量来启用 OpenTelemetry 集成：
@@ -290,23 +290,23 @@ print(result.content)
 当通过 OpenTelemetry 发送跟踪到 LangSmith 时，以下属性将映射到 LangSmith 字段：
 
 ### 核心LangSmith属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
-| ------------------------------------------ | ---------------- | ---------------------------------------------------------------------------------------- |
+| ------------------------------ | ---------------- | -------------------------------------------------------------------------------------------------- |
 | `langsmith.trace.name` |运行名称 |覆盖运行的跨度名称 |
 | `langsmith.span.kind` | [Run type](/langsmith/run-data-format#run-types) |值：`llm`、`chain`、`tool`、`retriever`、`embedding`、`prompt`、`parser` |
 | `langsmith.trace.id` |跟踪 ID |跨度所属的跟踪（根运行）；设置为附加到现有跟踪 |
-| `langsmith.span.id` |运行 ID |该跨度的运行 ID（UUID）；覆盖从 OTLP 范围 ID 派生的 ID |
+| `langsmith.span.id` |运行 ID |该跨度的运行 ID（UUID）；覆盖从 OTLP 跨度 ID 派生的 ID |
 | `langsmith.span.parent_id` |家长跑步ID |通过运行 ID 将跨度嵌套在现有运行下 |
 | `langsmith.span.dotted_order` |点线顺序|在跟踪树中的位置：`<parent.dotted_order>.<timestamp><span.id>`。参见[⟦T46⟧](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order)。 |
 | `langsmith.trace.session_id` |会话 ID |相关跟踪的会话标识符 |
-| `langsmith.trace.session_name` |会议名称 |会议名称 || `langsmith.span.tags` |标签 |附加到跨度的自定义标签（逗号分隔）|
+| `langsmith.trace.session_name` |会议名称 |会议名称 || `langsmith.span.tags` |标签 |附加到跨度的自定义标签（逗号分隔） |
 | `langsmith.metadata.{key}` | `metadata.{key}` |带有 langsmith 前缀的自定义元数据 |
 
 ### GenAI 标准属性
 
 | OpenTelemetry 属性 | LangSmith领域|笔记|
-| --------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------ |
+| --------------------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------- |
 | `gen_ai.system` | `metadata.ls_provider` | GenAI 系统（例如“openai”、“anthropic”）|
-| `gen_ai.operation.name` |运行类型 |将“聊天”/“完成”映射到“llm”，将“嵌入”映射到“嵌入”|
+| `gen_ai.operation.name` |运行类型|将“聊天”/“完成”映射到“llm”，将“嵌入”映射到“嵌入”|
 | `gen_ai.prompt` | `inputs` |发送到模型的输入提示 |
 | `gen_ai.completion` | `outputs` |模型生成的输出 |
 | `gen_ai.prompt.{n}.role` | `inputs.messages[n].role` |第 n 个输入消息的作用 || `gen_ai.prompt.{n}.content` | `inputs.messages[n].content` |第 n 个输入消息的内容 |
@@ -321,13 +321,13 @@ print(result.content)
 | `gen_ai.tool.name` | `invocation_params.tool_name` |工具名称，还将运行类型设置为“工具”|
 
 ### GenAI请求参数| OpenTelemetry 属性 | LangSmith 领域 |笔记|
-| ---------------------------------- | -------------------------------------------------- | --------------------------------------- |
+| ---------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
 | `gen_ai.request.model` | `invocation_params.model` |用于请求的型号名称 |
 | `gen_ai.response.model` | `invocation_params.model` |响应中返回的型号名称 |
 | `gen_ai.request.temperature` | `invocation_params.temperature` |温度设定|
 | `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p 采样设置 |
 | `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置|
-| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置|
+| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置 |
 | `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` |存在惩罚设置 |
 | `gen_ai.request.seed` | `invocation_params.seed` |用于生成的随机种子 |
 | `gen_ai.request.stop_sequences` | `invocation_params.stop` |停止生成的序列 |
@@ -335,7 +335,7 @@ print(result.content)
 | `gen_ai.request.encoding_formats` | `invocation_params.encoding_formats` |输出编码格式 |
 
 ### GenAI 使用指标| OpenTelemetry 属性 | LangSmith领域|笔记|
-| -------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
+| -------------------------------- | ------------------------------ | ---------------------------------------------------- |
 | `gen_ai.usage.input_tokens` | `usage_metadata.input_tokens` |使用的输入令牌数量 |
 | `gen_ai.usage.output_tokens` | `usage_metadata.output_tokens` |使用的输出令牌数量 |
 | `gen_ai.usage.total_tokens` | `usage_metadata.total_tokens` |使用的代币总数 |
@@ -344,7 +344,7 @@ print(result.content)
 | `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.reasoning_tokens` |使用的推理令牌数量 |
 
 ### TraceLoop 属性| OpenTelemetry 属性 | LangSmith领域|笔记|
-| ---------------------------------------------------- | ---------------- | ------------------------------------------------ |
+| ---------------------------------------------------------------- | ---------------- | ------------------------------------------------ |
 | `traceloop.entity.input` | `inputs` |来自 TraceLoop 的完整输入值 |
 | `traceloop.entity.output` | `outputs` | TraceLoop 的完整输出值 |
 | `traceloop.entity.name` |运行名称 |来自 TraceLoop 的实体名称 |
@@ -377,24 +377,24 @@ print(result.content)
 
 ### 提示模板属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | ------------------------------------------- | ---------------- | ------------------------------------------------ |
-| `llm.prompt_template.variables` |运行类型|将运行类型设置为“提示”，与 input.value 一起使用 |
+| `llm.prompt_template.variables` |运行类型 |将运行类型设置为“提示”，与 input.value 一起使用 |
 
 ### 检索器属性
 
 | OpenTelemetry 属性 | LangSmith 领域 |笔记|
-| ------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| ------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
 | `retrieval.documents.{n}.document.content` | `outputs.documents[n].page_content` |第 n 个检索到的文档的内容 |
 | `retrieval.documents.{n}.document.metadata` | `outputs.documents[n].metadata` |第 n 个检索到的文档的元数据 (JSON) |
 
 ### 工具属性
 
 | OpenTelemetry 属性 | LangSmith领域|笔记|
-| ----------------------- | ---------------------------------- | ---------------------------------------------------- |
+| ------------------------ | ---------------------------------- | ---------------------------------------------------- |
 | `tools` | `invocation_params.tools` |工具定义数组 |
 | `tool_arguments` | `invocation_params.tool_arguments` | JSON 或键值对形式的工具参数 |
 
 ### Logfire 属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
-| ----------------------- | ------------------ | ------------------------------------------------ |
+| ------------------------ | ------------------ | ------------------------------------------------ |
 | `prompt` | `inputs` | Logfire提示输入|
 | `all_messages_events` | `outputs` | Logfire消息事件输出|
 | `events` | `inputs`/`outputs` | Logfire 事件数组，分割输入/选择事件 |
@@ -406,7 +406,7 @@ print(result.content)
 | `gen_ai.system.message` | `inputs.messages[]` |对话中的系统消息 |
 | `gen_ai.user.message` | `inputs.messages[]` |对话中的用户消息 |
 | `gen_ai.assistant.message` | `outputs.messages[]` |对话中的助理消息 |
-| `gen_ai.tool.message` | `outputs.messages[]` |工具回复消息 |
+| `gen_ai.tool.message` | `outputs.messages[]` |工具回复消息|
 | `gen_ai.choice` | `outputs` |模型选择/响应以及完成原因 |
 | `exception` | `status`、`error` |将状态设置为“错误”并提取异常消息/堆栈跟踪 |
 
@@ -422,7 +422,7 @@ print(result.content)
 * `finish_reason` → 选择完成原因
 * `message.content`→选择留言内容
 * `message.role`→选择消息角色
-* `tool_calls.{n}.id` → 工具调用ID
+* `tool_calls.{n}.id` → 工具调用 ID
 * `tool_calls.{n}.function.name` → 工具功能名称
 * `tool_calls.{n}.function.arguments` → 工具函数参数
 * `tool_calls.{n}.type` → 工具调用类型
@@ -480,7 +480,7 @@ if __name__ == "__main__":
 
 以下是 LangSmith 中生成的跟踪结果的 [example](https://smith.langchain.com/public/d6d47eeb-511e-4fda-ad17-2caa7bd7150b/r)。
 
-### 将 OpenTelemetry 跨度链接到 LangSmith SDK 跟踪本机 OTLP `parentSpanId` 无法引用现有的 LangSmith 运行：OTLP 跨度 ID 为 8 字节，而 LangSmith 运行 ID 是完整的 UUID。要将 OpenTelemetry 范围附加到在其他位置创建的运行（例如，LangChain-SDK 运行），请使用父级的完整 UUID 设置 `langsmith.*` 属性。它们覆盖从本机 OTLP 范围派生的 ID，因此该范围嵌套在同一跟踪中的现有运行下。
+### 将 OpenTelemetry 跨度链接到 LangSmith SDK 跟踪本机 OTLP `parentSpanId` 无法引用现有的 LangSmith 运行：OTLP 跨度 ID 为 8 字节，而 LangSmith 运行 ID 是完整的 UUID。要将 OpenTelemetry 范围附加到在其他位置创建的运行（例如，LangChain-SDK 运行），请使用父级的完整 UUID 设置 `langsmith.*` 属性。它们会覆盖从本机 OTLP 范围派生的 ID，因此该范围嵌套在同一跟踪中的现有运行下。
 
 ```python
 import uuid
@@ -522,7 +522,7 @@ def my_agent():
 
 LangSmith支持[attaching files to traces](/langsmith/upload-files-with-traces)。当构建具有多模式输入或输出的代理时，这非常有用。使用 OpenTelemetry 进行跟踪时也支持附件。
 
-下面的示例 [traces a Google ADK agent](/langsmith/trace-with-google-adk) 并向跟踪添加了一个附件。它使用 LangSmith 的 `OtelSpanProcessor` 和自定义 `AttachmentSpanProcessor` 的组合，该自定义 `AttachmentSpanProcessor` 使用 [⟦T211⟧](https://opentelemetry-python.readthedocs.io/en/latest/sdk/trace.export.html#opentelemetry.sdk.trace.export.SimpleSpanProcessor.on_end) 将图像附件添加到父范围。
+下面的示例 [traces a Google ADK agent](/langsmith/trace-with-google-adk) 并向跟踪添加了一个附件。它使用 LangSmith 的 `OtelSpanProcessor` 和自定义 `AttachmentSpanProcessor` 的组合，后者使用 [⟦T211⟧](https://opentelemetry-python.readthedocs.io/en/latest/sdk/trace.export.html#opentelemetry.sdk.trace.export.SimpleSpanProcessor.on_end) 将图像附件添加到父范围。
 
 
 ```python
@@ -673,12 +673,12 @@ if __name__ == "__main__":
 
    exporters:
      otlphttp/langsmith:
-       endpoint: https://api.smith.langchain.com/otel/v1/traces
+       traces_endpoint: https://api.smith.langchain.com/otel/v1/traces
        headers:
          x-api-key: ${env:LANGSMITH_API_KEY}
          Langsmith-Project: my_project
      otlphttp/other_provider:
-       endpoint: https://otel.your-provider.com/v1/traces
+       traces_endpoint: https://otel.your-provider.com/v1/traces
        headers:
          api-key: ${env:OTHER_PROVIDER_API_KEY}
 

@@ -8,7 +8,7 @@
 
 例如，对于检索增强生成 (RAG)，您可能想要
 
-1. 评估检索步骤以确保根据输入查询检索到正确的文档。
+1. 评估检索步骤以确保针对输入查询检索到正确的文档。
 2. 评估生成步骤以确保针对检索到的文档生成正确的答案。
 
 在本指南中，我们将使用一个简单的、完全自定义的评估器来评估标准 1，并使用一个基于 LLM 的评估器来评估标准 2，以突出显示这两种情况。
@@ -29,9 +29,7 @@ pip install -U langsmith langchain[openai] wikipedia
 yarn add langsmith langchain @langchain/openai wikipedia
 ```
 
-</CodeGroup>
-
-需要`langsmith>=0.3.13`
+</CodeGroup>需要`langsmith>=0.3.13`
 
 <CodeGroup>
 
@@ -99,7 +97,9 @@ def qa_pipeline(question: str) -> str:
     query = generate_wiki_search(question)
     context = "\n\n".join([doc["page_content"] for doc in retrieve(query)])
     return generate_answer(question, context)
-``````typescript TypeScript
+```
+
+```typescript TypeScript
 import OpenAI from "openai";
 import wiki from "wikipedia";
 import { Client } from "langsmith";
@@ -242,7 +242,7 @@ await client.createExamples({ datasetId: dataset.id, inputs, outputs });
 
 ## 3. 定义您的自定义评估器
 
-如上所述，我们将定义两个评估器：一个评估检索到的文档与输入查询的相关性，另一个评估生成的答案与检索到的文档的幻觉。我们将使用 LangChain LLM 包装器以及 [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/with_structured_output) 来定义幻觉评估器。
+如上所述，我们将定义两个评估器：一个评估检索到的文档相对于输入查询的相关性，另一个评估生成的答案相对于检索到的文档的幻觉。我们将使用 LangChain LLM 包装器以及 [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/with_structured_output) 来定义幻觉评估器。
 
 这里的关键是评估器函数应该遍历 `run` / `rootRun` 参数来访问管道的中间步骤。然后评估者可以处理中间步骤的输入和输出，以根据所需的标准进行评估。
 

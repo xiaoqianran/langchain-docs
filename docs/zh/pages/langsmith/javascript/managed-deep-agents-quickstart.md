@@ -340,6 +340,9 @@ What were the main announcements from the latest LangChain release?
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
     从您的项目中添加创作的 LangChain 工具。
   </Card>
+  <Card title="Connections" icon="key" href="/langsmith/javascript/managed-deep-agents-connections">
+    作为代理或调用者通过外部服务进行身份验证。
+  </Card>
 </CardGroup>
 
 ---

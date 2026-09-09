@@ -2961,6 +2961,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-cli.md"
         }
       ],
+      "managed-deep-agents-connections": [
+        {
+          "title": "Manage connections",
+          "rel": "langsmith/javascript/managed-deep-agents-connections.md"
+        }
+      ],
       "managed-deep-agents-deploy": [
         {
           "title": "Deploy a Managed Deep Agent",
@@ -3097,6 +3103,12 @@
         {
           "title": "Managed Deep Agents CLI reference",
           "rel": "langsmith/python/managed-deep-agents-cli.md"
+        }
+      ],
+      "managed-deep-agents-connections": [
+        {
+          "title": "Manage connections",
+          "rel": "langsmith/python/managed-deep-agents-connections.md"
         }
       ],
       "managed-deep-agents-deploy": [
