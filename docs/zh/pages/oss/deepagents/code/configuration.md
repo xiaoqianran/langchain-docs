@@ -62,7 +62,7 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 ## 环境变量
 
-In addition to shell exports, Deep Agents Code reads environment variables from dotenv files, so you can keep API keys out of your shell profile and avoid duplicating `.env` files across projects.
+除了 shell 导出之外，Deep Agents 代码还从 dotenv 文件中读取环境变量，因此您可以将 API 密钥保留在 shell 配置文件之外，并避免跨项目重复 `.env` 文件。
 
 ```bash title="~/.deepagents/.env"
 ANTHROPIC_API_KEY=sk-ant-...
@@ -73,7 +73,7 @@ OPENAI_API_KEY=sk-...
 
 ### 加载顺序和优先级
 
-At startup, Deep Agents Code reads the nearest project `.env`, found by searching the directory you launch from and walking up through its parents (the first `.env` found wins), then `~/.deepagents/.env` as a global fallback for all projects.项目 `.env` 胜过全局项目，并且两者都不会覆盖 shell 中已设置的值。
+启动时，Deep Agents代码读取最近的项目`.env`，通过搜索您启动的目录并向上遍历其父项找到（第一个找到的`.env`获胜），然后读取`~/.deepagents/.env`作为所有项目的全局后备。项目 `.env` 胜过全局项目，并且两者都不会覆盖 shell 中已设置的值。
 
 要完全跳过项目`.env`（全局`~/.deepagents/.env`仍然加载），请设置`startup.read_project_dotenv`。<Tabs>
     <Tab title="Config file">
@@ -156,7 +156,7 @@ export DEEPAGENTS_CODE_EXTRA_SKILLS_DIRS="~/shared-skills:/opt/team-skills"
 ```bash
 export DEEPAGENTS_HOME="~/profiles/work"        # resolved against your home directory
 export DEEPAGENTS_HOME="/opt/dcode-profiles/work"  # absolute; works even with no resolvable home
-```相对路径和`~user`形式被拒绝。解析的路径也不能是文件系统根目录、主目录本身、现有的非目录、不可读或不可搜索的目录或缺少目标的符号链接——这些在启动时会失败并出现错误。
+```相对路径和`~user`形式被拒绝。解析的路径也不能是文件系统根、主目录本身、现有的非目录、不可读或不可搜索的目录或缺少目标的符号链接——这些在启动时会失败并出现错误。
 
 <Warning>
     `DEEPAGENTS_HOME` 是信任边界：它选择代码将哪个 `config.toml`、`.env` 和 `.mcp.json` Deep Agents 视为用户信任。它必须在继承的 shell 环境中设置（例如，启动前的`export DEEPAGENTS_HOME=...`）。它是在启动时、dotenv 加载之前捕获的，并且没有任何 `.env` 文件可以设置或更改它 — 项目控制的 `.env` 可能会将信任根重新定位到它控制的文件。子进程继承解析的路径。
@@ -220,7 +220,7 @@ theme = "langchain-dark"
     #### 常见 `TERM_PROGRAM` 值
 
     |终端| `TERM_PROGRAM` |
-    | ---| ---|
+    | --- | --- |
     |苹果终端| `Apple_Terminal` |
     | iTerm2 | `iTerm.app` |
     | WezTerm | `WezTerm` |
@@ -326,7 +326,7 @@ Deep Agents 代码在后台每小时从上游刷新其模型定价目录，以�
 
 ### 会话使用统计
 
-Deep Agents 代码显示会话结束时的会话使用统计信息（默认开启）：
+Deep Agents 代码显示会话结束时的会话使用统计信息（默认打开）：
 
 <Tabs>
     <Tab title="Config file">
@@ -475,7 +475,7 @@ allowed = [
 ]
 default = "acme:production"
 auto_classifier = "openai:gpt-5.5"
-```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户的列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
+```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
 
 在`[models.providers.<name>].models`下添加模型使其可供选择，但不会自动允许。将确切的型号或提供商通配符添加到允许列表中。通配符仅涵盖该提供商可用的模型。如果没有可用型号，Deep Agents代码无法选择默认值。当Deep Agents代码可以识别界面中输入的裸模型名称的提供者时，它会在检查白名单之前将该名称转换为`provider:model`。
 
@@ -582,7 +582,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
     uv 二进制文件的路径。如果未设置则自动检测。
 </ResponseField>
 
-默认情况下，托管安装启用自动更新。要控制每个用户的更新，请在[⟦T304⟧](#managed-configuration)中设置`[update] auto_update = false`或`[update] check = false`。对于其他安装，请使用`DEEPAGENTS_CODE_AUTO_UPDATE=0`、`DEEPAGENTS_CODE_NO_UPDATE_CHECK=1`或`~/.deepagents/config.toml`中的相应设置。要通过托管网关路由每个用户的模型流量（在整个队列范围内配置网关密钥和基本 URL），请参阅 [Managed gateways](/oss/deepagents/code/config-file#managed-gateways)。
+默认情况下，托管安装启用自动更新。要控制每个用户的更新，请在[⟦T304⟧](#managed-configuration)中设置`[update] auto_update = false`或`[update] check = false`。对于其他安装，请使用`DEEPAGENTS_CODE_AUTO_UPDATE=0`、`DEEPAGENTS_CODE_NO_UPDATE_CHECK=1`或`~/.deepagents/config.toml`中的相应设置。要通过托管网关路由每个用户的模型流量（在整个队列范围内配置网关密钥和基本 URL），请参阅[Managed gateways](/oss/deepagents/code/config-file#managed-gateways)。
 
 ## 环境变量引用
 
@@ -643,7 +643,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REDACT" type="string" default="true" post={["optional"]}>
-    切换Deep Agents代码的LangSmith代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
+    切换 Deep Agents 代码的 LangSmith 代理跟踪输入和输出的客户端秘密编辑。默认启用。接受 `1`、`true`、`yes` 或 `on` 以启用密文，并接受 `0`、`false`、`no` 或 `off` 来禁用密文，不区分大小写。启用编辑后，如果无法配置编辑，则会禁用该运行的跟踪。参见[Configure LangSmith trace redaction](/oss/deepagents/code/config-file#redact-langsmith-trace-secrets)。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS" type="string" post={["optional"]}>
@@ -670,6 +670,10 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 
 <ResponseField name="DEEPAGENTS_CODE_READ_PROJECT_DOTENV" type="string" default="true" post={["optional"]}>
     将项目`.env`（从工作目录向上找到）加载到流程环境中。设置为假值以跳过不受信任的存储库的文件；全局 `~/.deepagents/.env` 仍在加载。覆盖`[startup].read_project_dotenv`。参见[Loading order and precedence](#loading-order-and-precedence)。
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_RECENT_THREADS" type="integer" default="20" post={["optional"]}>
+    在线程列表和选择器中加载和显示的最近线程的最大数量。低于 `1` 的值被限制为 `1`，非整数值使用默认值。 `-n` 或 `--limit` 会覆盖 `dcode threads list` 的此值。
 </ResponseField><ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer" post={["optional"]}>
     LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangGraph服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
 </ResponseField>
@@ -741,7 +745,7 @@ dcode doctor
 
 Deep Agents 代码将数据存储在两个目录层次结构中：
 
-- **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T389⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
+- **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T394⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
 - **`~/.agents/`** — 与工具无关的数据（跨 AI CLI 工具共享的技能）
 
 ### 目录结构
@@ -785,20 +789,20 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
             └── SKILL.md
 ```
 
-#### 什么去哪里|数据|地点 |读/写 |笔记|
+#### 什么去哪里|数据|地点 |读/写|笔记|
 |------|----------|------------|--------|
 | **会议** | `~/.deepagents/.state/sessions.db` |读/写 | SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T394⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
-| **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
-| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写 |支持[⟦T399⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **基本说明** |套餐`default_agent_prompt.md`​​ |右 |不可变，通过 Deep Agents 代码升级进行更新 |
+| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
-| **共享技能** | `~/.agents/skills/`​​ |右 |与工具无关、跨 CLI |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
+| **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
 | **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions)|
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
-| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写 |用户定义的子代理 |
+| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |
 
 ### 优先规则当同一项目存在于多个位置时，**较高的优先级完全获胜**（不合并）。
@@ -812,7 +816,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 3. `.deepagents/skills/` — 项目Deep Agents代码
 4. `.agents/skills/` — 项目工具无关*（最高）*
 
-加载技能时，Deep Agents代码会验证解析的文件路径是否位于这些目录之一中。在所有技能根之外解析的符号链接将被拒绝。要允许其他目录中的符号链接目标，请参阅[⟦T411⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)。
+加载技能时，Deep Agents代码会验证解析的文件路径是否位于这些目录之一中。在所有技能根之外解析的符号链接将被拒绝。要允许其他目录中的符号链接目标，请参阅[⟦T416⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)。
 
 #### 子代理
 
@@ -835,7 +839,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 ### `.deepagents` vs `.agents`|目录 |目的|何时使用 |
 |------------|---------|-------------|
 | `.deepagents/` | Deep Agents 代码特定 |使用 Deep Agents 代码特定功能的技能和配置 |
-| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间共享的技能 |
+| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间分享的技能 |
 
 <Tip>
 使用 `.agents/skills/` 获得可与任何 AI 编码助手配合使用的技能。

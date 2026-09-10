@@ -11,7 +11,7 @@
 使用 LangSmith LiveKit 集成来跟踪您的 [LiveKit Agents](https://docs.livekit.io/agents/) 语音代理，包括他们的文字记录和录音。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
 <Note>
-此设置需要 `langsmith[livekit]>=0.11.2` 和 `livekit-agents>=1.6`。
+此设置需要 `langsmith[livekit]>=0.11.2` 和 `livekit-agents>=1.6`。 LiveKit Agents 1.7 及更高版本需要 `langsmith[livekit]>=0.12.4`。
 </Note>
 
 每个对话都显示为一个 LangSmith 跟踪及其管道事件、延迟和令牌指标。
@@ -167,7 +167,7 @@ async def my_agent(ctx: agents.JobContext):
 
 ### 记录出口
 
-当您想要在自己的对象存储中进行录制或需要视频时，请使用[LiveKit Egress](https://docs.livekit.io/home/egress/overview/)。出口记录传送需要线程 ID。配置 Egress 的集成，然后在 Egress 文件可用后调用 `complete_recording`：
+当您想要在自己的对象存储中录制或需要视频时，请使用[LiveKit Egress](https://docs.livekit.io/home/egress/overview/)。出口记录传送需要线程 ID。配置 Egress 的集成，然后在 Egress 文件可用后调用 `complete_recording`：
 
 ```python
 import asyncio

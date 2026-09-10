@@ -4,7 +4,7 @@
 
 ## 控制平面和数据平面模型
 
-BYOC 部署分为两个平面。本页介绍了每个平面的组件、它们如何通信以及您帐户中的 LangChain 规定。
+BYOC 部署分为两个平面。本页描述了每个平面的组件、它们如何通信以及您帐户中的 LangChain 规定。
 
 **控制平面**在LangChain的云中运行，并处理身份验证、组织配置和计费。它配置、监控和编排您的部署，但不保存任何敏感的应用程序数据。
 
@@ -27,9 +27,9 @@ BYOC 部署分为两个平面。本页介绍了每个平面的组件、它们如
 - **VPC**：分布在区域可用区的专用 VPC，默认情况下完全私有。它使用 VPC 终端节点与 AWS 服务进行私有通信，并使用 PrivateLink 在数据平面和控制平面之间进行通信。
 - **托管数据库**：用于关系工作负载的 RDS，以及用于缓存的 ElastiCache。
 - **存储**：用于保存跟踪数据、VPC 流日志和 ClickHouse 备份的 Blob 存储的 S3 存储桶。
-- **EKS**：带有托管附加组件的私有 EKS 集群。
+- **EKS**：具有托管附加组件的私有 EKS 集群。
 - **计算**：用于平台工作负载的系统节点组，以及通过 Karpenter 的应用程序节点组。
-- **集群内资源**：LangSmith Helm Chart、Istio、KEDA 和其他集群内资源。
+- **集群内资源**：LangSmith Helm 图表、Istio、KEDA 和其他集群内资源。
 - **IAM角色**：Kubernetes资源所需的角色和权限。
 
 ## 跨账户 IAM 权限
@@ -41,6 +41,8 @@ LangChain 需要跨账户 IAM 权限来预置和管理您的 AWS 账户内的资
 - **运营支持服务**：部署和管理入口和自动扩展，以及扩展和升级LangSmith工作负载。
 
 权限是通过您在入职期间应用 [⟦T1⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建的单个跨账户 IAM 角色授予的。
+
+LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，并在应用模块时使用它。角色的 `ExternalId` 条件必须与该值匹配。
 
 ### 如何强制执行最小权限
 
@@ -65,8 +67,8 @@ LangChain 需要跨账户 IAM 权限来预置和管理您的 AWS 账户内的资
 
 ### 连接性控制平面和数据平面之间的所有通信都通过 AWS PrivateLink 双向传输。 LangChain 无法通过公共互联网到达您的环境。 BYOC 建立两个 PrivateLink 连接：
 
-- **控制平面到数据平面（管理路径）**：仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。无法通过此连接访问您的数据。
-- **数据平面到控制平面（运行时路径）**：数据平面调用控制平面来验证请求、验证 API 密钥、解析角色和权限以及加载组织和工作区配置。
+- **Control plane to data plane (management path)**: Exposes only your cluster's Kubernetes API server, which LangChain uses to install and reconcile the LangSmith components.无法通过此连接访问您的数据。
+- **Data plane to control plane (runtime path)**: The data plane calls the control plane to authenticate requests, validate API keys, resolve roles and permissions, and load organization and workspace configuration.
 
 容器镜像通过 VPC 端点从 LangChain 的控制平面 ECR 存储库中以只读方式拉取。
 

@@ -6,7 +6,7 @@ Each section index below lists the markdown version of every page in that sectio
 
 ## Section indexes
 
-- [/langsmith](https://docs.langchain.com/langsmith/llms.txt): 457 pages
+- [/langsmith](https://docs.langchain.com/langsmith/llms.txt): 458 pages
 - [/langsmith/javascript](https://docs.langchain.com/langsmith/javascript/llms.txt): 23 pages
 - [/langsmith/python](https://docs.langchain.com/langsmith/python/llms.txt): 23 pages
 - [/langsmith/smith-api](https://docs.langchain.com/langsmith/smith-api/llms.txt): 360 pages
@@ -19,10 +19,10 @@ Each section index below lists the markdown version of every page in that sectio
 - [/langsmith/smith-api/auth](https://docs.langchain.com/langsmith/smith-api/auth/llms.txt): 7 pages
 - [/langsmith/smith-api/aws_marketplace](https://docs.langchain.com/langsmith/smith-api/aws_marketplace/llms.txt): 1 pages
 - [/langsmith/smith-api/backfills](https://docs.langchain.com/langsmith/smith-api/backfills/llms.txt): 1 pages
-- [/langsmith/smith-api/comments](https://docs.langchain.com/langsmith/smith-api/comments/llms.txt): 6 pages
 - [/langsmith/smith-api/commits](https://docs.langchain.com/langsmith/smith-api/commits/llms.txt): 3 pages
 - [/langsmith/smith-api/data_planes](https://docs.langchain.com/langsmith/smith-api/data_planes/llms.txt): 4 pages
 - [/langsmith/smith-api/directories](https://docs.langchain.com/langsmith/smith-api/directories/llms.txt): 3 pages
+- [/langsmith/smith-api/evaluators](https://docs.langchain.com/langsmith/smith-api/evaluators/llms.txt): 7 pages
 - [/langsmith/smith-api/experiment-view-overrides](https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/llms.txt): 5 pages
 - [/langsmith/smith-api/experiments](https://docs.langchain.com/langsmith/smith-api/experiments/llms.txt): 1 pages
 - [/langsmith/smith-api/features](https://docs.langchain.com/langsmith/smith-api/features/llms.txt): 5 pages
@@ -66,7 +66,7 @@ Each section index below lists the markdown version of every page in that sectio
 
 ## Docs
 
-- [Build](https://docs.langchain.com/build-overview.md): Build agents with LangChain, LangGraph, and Deep Agents.
+- [Build](https://docs.langchain.com/build-overview.md): Build agents with LangChain, LangGraph, Deep Agents, Managed Deep Agents, and Fleet.
 - [Home](https://docs.langchain.com/index.md)
 - [Use docs programmatically](https://docs.langchain.com/use-these-docs.md): Connect LangChain documentation to your AI tools and workflows
 

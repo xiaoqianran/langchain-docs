@@ -34,7 +34,9 @@
 
 ![An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree.](/langsmith/images/context-hub-agent-view.png)
 
-中间面板显示当前提交的文件树，右侧面板预览所选文件。单击中间面板中的文件将其打开，然后在右侧面板中对其进行编辑并保存更改以创建新的提交。
+中间面板显示当前提交的文件树，右侧面板预览所选文件。单击中间面板中的文件将其打开。
+
+Markdown 文件在 **预览** 中打开，这是只读渲染。要更改文件，请切换到右侧面板右上角的“编辑”选项卡：它显示文件中的确切文本。保存您的更改以创建新的提交。
 
 每个保存的更改都会在 **Commit History** 面板中创建一个新的 **commit**
 左侧，这样您就可以浏览、比较和恢复以前的版本而不会丢失

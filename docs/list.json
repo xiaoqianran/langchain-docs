@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-09T13:13:48.877Z",
+  "fetchedAt": "2026-09-10T13:11:47.777Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 176,
-  "ok": 559,
+  "ok": 560,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 457
+      "count": 458
     },
     "fleet": {
       "name": "Fleet",
@@ -54,7 +54,7 @@
       "track": "build-overview",
       "trackName": "build-overview",
       "group": "pages",
-      "bytes": 6329
+      "bytes": 7684
     },
     {
       "rel": "index.md",
@@ -405,7 +405,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-architecture",
-      "bytes": 7267
+      "bytes": 7521
     },
     {
       "rel": "langsmith/byoc-billing.md",
@@ -423,7 +423,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-faq",
-      "bytes": 16595
+      "bytes": 16975
     },
     {
       "rel": "langsmith/byoc-migration.md",
@@ -441,7 +441,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-onboarding",
-      "bytes": 3945
+      "bytes": 4128
     },
     {
       "rel": "langsmith/byoc-operations.md",
@@ -486,7 +486,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc",
-      "bytes": 5278
+      "bytes": 5426
     },
     {
       "rel": "langsmith/caching.md",
@@ -2349,7 +2349,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-credits",
-      "bytes": 5657
+      "bytes": 5636
     },
     {
       "rel": "langsmith/llm-gateway-custom-providers.md",
@@ -2395,6 +2395,15 @@
       "trackName": "LangSmith",
       "group": "llm-gateway-header-policies",
       "bytes": 13865
+    },
+    {
+      "rel": "langsmith/llm-gateway-model-access-policies.md",
+      "title": "Model access policies",
+      "url": "https://docs.langchain.com/langsmith/llm-gateway-model-access-policies",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "llm-gateway-model-access-policies",
+      "bytes": 3375
     },
     {
       "rel": "langsmith/llm-gateway-monitoring.md",
@@ -4473,7 +4482,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-livekit",
-      "bytes": 10408
+      "bytes": 10475
     },
     {
       "rel": "langsmith/trace-with-mastra.md",
@@ -4545,7 +4554,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-opentelemetry",
-      "bytes": 41753
+      "bytes": 42070
     },
     {
       "rel": "langsmith/trace-with-pi.md",
@@ -4725,7 +4734,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "use-the-context-hub",
-      "bytes": 4386
+      "bytes": 4538
     },
     {
       "rel": "langsmith/use-threads.md",
@@ -4842,7 +4851,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 33493
+      "bytes": 33560
     },
     {
       "rel": "oss/deepagents/code/config-file.md",
@@ -4860,7 +4869,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 50026
+      "bytes": 50376
     },
     {
       "rel": "oss/deepagents/code/credentials.md",

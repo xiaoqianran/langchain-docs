@@ -10,7 +10,7 @@
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">Choose your starting point</h2>
 
-        Deep Agents, LangChain, and LangGraph share the same stack, so choose based on how much control you need:
+        Deep Agents, LangChain, and LangGraph share the same open source stack, so choose based on how much control you need. For managed hosting or no-code, start with Managed Deep Agents or Fleet:
 
         <Tabs>
         <Tab title="Python">
@@ -24,6 +24,15 @@
           icon="/images/brand/deep-agents-icon.png"
         >
         Build agents for complex, long-running tasks. A complete agent harness with planning, subagents, a virtual filesystem, and long-term memory built in. The fastest way to start.
+        </Card>
+
+        <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/python/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        Build deep agents with managed deployment infrastructure. You write the agent; LangSmith runs the harness and runtime.
         </Card>
 
         <Card
@@ -44,6 +53,17 @@
         Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
         </Card>
 
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        Build and run agents without writing code using LangSmith Fleet.
+        </Card>
+
         </CardGroup>
 
         </Tab>
@@ -58,6 +78,15 @@
           icon="/images/brand/deep-agents-icon.png"
         >
         Build agents for complex, long-running tasks. A complete agent harness with planning, subagents, a virtual filesystem, and long-term memory built in. The fastest way to start.
+        </Card>
+
+        <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/javascript/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        Build deep agents with managed deployment infrastructure. You write the agent; LangSmith runs the harness and runtime.
         </Card>
 
         <Card
@@ -76,6 +105,17 @@
           icon="/images/brand/langgraph-icon.png"
         >
         Low-level orchestration for stateful, long-running agents: durable execution, streaming, memory, and human-in-the-loop.
+        </Card>
+
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        Build and run agents without writing code using LangSmith Fleet.
         </Card>
 
         </CardGroup>

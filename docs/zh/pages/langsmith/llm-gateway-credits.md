@@ -29,7 +29,7 @@ https://gateway.smith.langchain.com/v1
 通过请求正文中的 ID 选择托管模型。型号 ID 不区分大小写。
 
 |型号 ID |描述 |
-| ---| ---|
+| --- | --- |
 | `moonshotai/kimi-k2.6` | Moonshot AI 的 Kimi K2.6。强大的通用模型。由烟花推理提供支持。 |
 | `moonshotai/kimi-k3` | Moonshot AI 的 Kimi K3。由烟花推理提供支持。 |
 
@@ -97,7 +97,7 @@ print(model.invoke("ping").content)
 托管模型使用与自带密钥模型相同的标准 API 格式：
 
 |方法与路径|行为 |
-| ---| ---|
+| --- | --- |
 | `POST /v1/chat/completions` | OpenAI 聊天完成，包括流媒体。 |
 | `POST /v1/messages` | Anthropic 消息，包括流媒体。 |
 | `POST /v1/responses` | OpenAI 回应。 |
@@ -107,7 +107,7 @@ print(model.invoke("ping").content)
 
 ## 定价
 
-Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。 Gateway 积分以 **LangChain 积分单位 (LCU)** 计价，**每 LCU 1.50 美元**；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限额（包括托管模型调用）。
+Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
 
 ## 追踪
 
@@ -118,7 +118,7 @@ Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计�
 - [Quickstart](/langsmith/llm-gateway-quickstart)：进行第一个网关代理呼叫。
 - [API formats](/langsmith/llm-gateway-api-formats)：通过聊天完成、消息或响应调用模型。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：为网关信用使用添加成本限制。
-- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商本机 API 和模型 ID。
+- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商原生 API 和模型 ID。
 
 ---
 

@@ -12,7 +12,7 @@
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">选择起点</h2>
 
-        Deep Agents、LangChain 和 LangGraph 共享相同的堆栈，因此请根据您需要的控制程度进行选择：
+        Deep Agents、LangChain和LangGraph共享相同的开源堆栈，因此请根据您需要的控制程度进行选择。对于托管或无代码，请从 Managed Deep Agents 或 Fleet 开始：
 
         <Tabs>
         <Tab title="Python">
@@ -29,15 +29,22 @@
         </Card>
 
         <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/python/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        使用托管部署基础架构构建深度代理。您写代理； LangSmith 运行线束和运行时。
+        </Card>
+
+        <Card
           title="LangChain"
           cta="Get started"
           href="/oss/python/langchain/overview"
           icon="/images/brand/langchain-icon.png"
         >
-        一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确构建您需要的内容。
-        </Card>
-
-        <Card
+        一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。
+        </Card><Card
           title="LangGraph"
           cta="Get started"
           href="/oss/python/langgraph/overview"
@@ -46,12 +53,25 @@
         有状态、长时间运行的代理的低级编排：持久执行、流式传输、内存和人机交互。
         </Card>
 
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        使用 LangSmith Fleet 构建并运行代理，无需编写代码。
+        </Card>
+
         </CardGroup>
 
         </Tab>
         <Tab title="TypeScript">
 
-        <CardGroup cols={3}><Card
+        <CardGroup cols={3}>
+
+        <Card
           title="Deep Agents"
           cta="Get started"
           href="/oss/javascript/deepagents/overview"
@@ -61,12 +81,21 @@
         </Card>
 
         <Card
+          title="Managed Deep Agents"
+          cta="Get started"
+          href="/langsmith/javascript/managed-deep-agents-overview"
+          icon="/images/brand/deep-agents-icon.png"
+        >
+        使用托管部署基础架构构建深度代理。您写代理； LangSmith 运行线束和运行时。
+        </Card>
+
+        <Card
           title="LangChain"
           cta="Get started"
           href="/oss/javascript/langchain/overview"
           icon="/images/brand/langchain-icon.png"
         >
-        一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确构建您需要的内容。
+        一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。
         </Card>
 
         <Card
@@ -78,6 +107,17 @@
         有状态、长时间运行的代理的低级编排：持久执行、流式传输、内存和人机交互。
         </Card>
 
+        <Card
+          title="Prefer no-code?"
+          cta="View Fleet"
+          href="/langsmith/fleet"
+          icon="wand"
+          type="tip"
+          className="card-tip"
+        >
+        使用 LangSmith Fleet 构建并运行代理，无需编写代码。
+        </Card>
+
         </CardGroup>
 
         </Tab>
@@ -85,15 +125,13 @@
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">使用现成的代理</h2>
 
-        <CardGroup cols={1}>
-
-        <Card
+        <CardGroup cols={1}><Card
           title="Deep Agents Code"
           cta="Install and run"
           href="/oss/deepagents/code/overview"
           icon="code"
         >
-        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
+        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
         </Card>
 
         </CardGroup>
@@ -121,7 +159,9 @@
           icon="book"
         >
         遵循常见代理模式和用例的教程和概念指南。
-        </Card><Card
+        </Card>
+
+        <Card
           title="Reference"
           cta="View reference"
           href="/oss/python/reference/overview"
@@ -171,9 +211,7 @@
           icon="code"
         >
         API 参考、错误代码、发行说明和迁移指南。
-        </Card>
-
-        <Card
+        </Card><Card
           title="Contribute"
           cta="Start contributing"
           href="/oss/javascript/contributing/overview"

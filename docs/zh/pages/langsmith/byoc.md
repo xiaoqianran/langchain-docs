@@ -58,7 +58,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 - **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
 - **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
 - **受支持的区域**：选择上面列出的 AWS 区域之一。
-- **IAM 角色和外部 ID**：应用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
+- **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
 
 ---
 

@@ -1293,6 +1293,12 @@
           "rel": "langsmith/llm-gateway-header-policies.md"
         }
       ],
+      "llm-gateway-model-access-policies": [
+        {
+          "title": "Model access policies",
+          "rel": "langsmith/llm-gateway-model-access-policies.md"
+        }
+      ],
       "llm-gateway-monitoring": [
         {
           "title": "Monitor LLM Gateway spend",
