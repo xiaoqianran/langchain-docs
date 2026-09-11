@@ -7,7 +7,7 @@
 当您的应用程序处理 API 密钥、令牌或其他凭据时，如果这些值作为输入或输出的一部分传递，则它们可能会出现在 LangSmith 跟踪中。使用 LangSmith SDK 的内置匿名器在将机密发送到后端之前对其进行编辑。
 
 <Note>
-本页面介绍通过 SDK 从跟踪数据中编辑机密（API 密钥、令牌、凭据）。如需编辑电子邮件、姓名或 SSN 等个人身份信息 (PII)，请参阅 [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。要在 LLM 网关层编辑机密，请参阅 [Data protection](/langsmith/llm-gateway-data-protection)。
+本页面介绍通过 SDK 从跟踪数据中编辑机密（API 密钥、令牌、凭据）。如需编辑电子邮件、姓名或 SSN 等个人身份信息 (PII)，请参阅 [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。要在 LLM 网关层编辑机密，请参阅 [Data policy](/langsmith/llm-gateway-data-policy)。
 </Note>
 
 ## 使用 SDK 匿名器
@@ -144,7 +144,7 @@ const client = new Client({ anonymizer });
 
 ## 与 LANGSMITH_HIDE_INPUTS 结合
 
-如果您的用例需要完全抑制所有输入（例如，为了实现零保留合规性），请改用 `LANGSMITH_HIDE_INPUTS=true`。当 `LANGSMITH_HIDE_INPUTS` 或 `LANGSMITH_HIDE_OUTPUTS` 设置为 `true` 时，将跳过匿名器。
+如果您的用例需要完全抑制所有输入（例如，为了实现零保留合规性），请改用 `LANGSMITH_HIDE_INPUTS=true`。当`LANGSMITH_HIDE_INPUTS`或`LANGSMITH_HIDE_OUTPUTS`设置为`true`时，将跳过匿名器。
 
 有关更多选项，包括隐藏所有输入和输出、隐藏元数据、功能级处理器和第三方 PII 库，请参阅[Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。
 

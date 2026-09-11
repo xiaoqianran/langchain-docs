@@ -34,7 +34,7 @@ async def my_client_function():
         return await client.post("/my-route", headers=headers)
 ```
 
-然后服务器（或其他服务）可以通过适当地处理标头来继续跟踪。如果您使用 asgi 应用程序 Starlette 或 FastAPI，则可以使用 LangSmith 的 `TracingMiddleware` 连接分布式跟踪。<Info>
+然后服务器（或其他服务）可以通过适当处理标头来继续跟踪。如果您使用 asgi 应用程序 Starlette 或 FastAPI，则可以使用 LangSmith 的 `TracingMiddleware` 连接分布式跟踪。<Info>
 `TracingMiddleware`类已添加到`langsmith==0.1.133`中。
 </Info>
 
@@ -106,7 +106,7 @@ async def fake_route(request: Request):
 ## TypeScript 中的分布式跟踪
 
 <Note>
-TypeScript 中的分布式跟踪需要 `langsmith` 版本 `>=0.1.31`
+TypeScript 中的分布式跟踪需要 `langsmith>=0.1.31`
 </Note>
 
 首先，我们从客户端获取当前的运行树并将其转换为 `langsmith-trace` 和 `baggage` 标头值，我们可以将其传递给服务器：

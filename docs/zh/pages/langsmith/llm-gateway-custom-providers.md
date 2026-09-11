@@ -8,14 +8,14 @@
 **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
 </Note>
 
-除了 [built-in providers](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path) 之外，LLM 网关还可以将请求代理到您自己配置的 **任何 OpenAI 兼容或 Anthropic 兼容端点**，例如通过推理服务器（vLLM、Ollama 等）提供服务的自托管开源模型。
+除了[built-in providers](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path)之外，LLM网关还可以将请求代理到您自己配置的**任何OpenAI兼容或Anthropic兼容端点**，例如通过推理服务器（vLLM、Ollama等）提供服务的自托管开源模型。
 
 ## 它是如何工作的
 
-自定义提供程序由 [model configuration](/langsmith/model-configurations) 定义，您保存在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-gateway-custom-providers) 的 **设置 → 模型配置** 下。您在该配置中选择的提供商设置网关与上游对话的格式：
+自定义提供程序由您保存在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-llm-gateway-custom-providers) 中的 **设置 > 模型配置** 下的 [model configuration](/langsmith/model-configurations) 定义。您在该配置中选择的提供商设置网关与上游对话的格式：
 
 |配置提供者|电线格式 |端点示例 |
-| ---| ---| ---|
+| --- | --- | --- |
 | **OpenAI 兼容端点** | OpenAI | `POST /v1/chat/completions`、`POST /v1/responses` |
 | **Anthropic** | Anthropic 留言 | `POST /v1/messages`、`POST /v1/messages/count_tokens` |
 
@@ -26,7 +26,7 @@
 - **API 密钥**：存储为 [workspace secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)，从未由客户端发送。
 
 您可以通过两种路由之一按名称寻址已保存的配置，具体取决于您是希望调用者选择模型还是希望强制执行已配置的模型：|路线 |请求正文中的型号名称 |
-| ---| ---|
+| --- | --- |
 | `https://gateway.smith.langchain.com/providers/{configName}` |按原样转发到上游——客户端选择模型。 |
 | `https://gateway.smith.langchain.com/models/{configName}` |使用配置的模型名称覆盖 — 客户端的值将被忽略。 |
 
@@ -36,8 +36,8 @@
 `{configName}` 是工作区[model configuration](/langsmith/model-configurations) 中的配置名称。如果名称包含非 URL 安全的字符（例如 `/` 或空格），请在路径中对它们进行 URL 编码。例如，名为 `meta-llama/Llama-3.1-8B-Instruct` 的配置将变为 `https://gateway.smith.langchain.com/providers/meta-llama%2FLlama-3.1-8B-Instruct/v1/chat/completions`。
 </Note>
 
-## 1. 创建自定义提供程序配置1. 将上游端点的 API 密钥添加为 **设置 → 集成 → 提供商机密** 下的工作区机密。为其指定一个描述性名称（例如，`MY_PROVIDER_API_KEY`）。
-1. 转到 **设置 → 模型配置** 并使用 **OpenAI 兼容端点** 或 **Anthropic** 作为提供程序创建配置。
+## 1. 创建自定义提供程序配置1. 在 **设置 > 集成 > 提供商机密** 下添加上游端点的 API 密钥作为工作区机密。为其指定一个描述性名称（例如，`MY_PROVIDER_API_KEY`）。
+1. 转到 **设置 > 模型配置** 并使用 **OpenAI 兼容端点** 或 **Anthropic** 作为提供程序创建配置。
 1. 将 **基本 URL** 设置为您的上游端点（例如，`https://my-inference-server.example.com/v1`），将 **模型名称** 设置为端点所需的模型标识符。
 1. 将 **API Key Name** 设置为您创建的密钥。
 1. 使用**名称**保存配置。该名称是您将在网关路由中使用的名称。
@@ -101,7 +101,7 @@ curl https://gateway.smith.langchain.com/models/my-anthropic-endpoint/v1/message
 
 - [Model fallbacks](/langsmith/llm-gateway-fallbacks)：链接这些配置，以便在出现速率限制或错误时由备份接管。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：对定制提供商应用成本限制。
-- [Data protection](/langsmith/llm-gateway-data-protection)：在敏感数据到达端点之前对其进行编辑。
+- [Data policy](/langsmith/llm-gateway-data-policy)：在敏感数据到达端点之前对其进行编辑。
 
 ---
 

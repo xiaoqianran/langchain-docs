@@ -14,7 +14,7 @@ LangSmith 可以将跟踪数据以 Parquet 格式导出到 Google Cloud Storage 
 
 本指南涵盖：
 
-- 为 LangSmith 设置 GCS 存储桶和 HMAC 凭据。
+- 为 LangSmith 设置 GCS 存储桶和 HMAC 凭证。
 - 创建批量导出目的地和导出作业。
 - 将导出的数据加载到 BigQuery 中。
 
@@ -72,7 +72,7 @@ gcloud storage hmac create \
   langsmith-bulk-export@YOUR_PROJECT.iam.gserviceaccount.com
 ```
 
-保存输出中的 `accessId` 和 `secret`。您还可以在 GCP Console 中的**云存储→设置→互操作性→为服务帐户创建密钥**下生成 HMAC 密钥。
+保存输出中的 `accessId` 和 `secret`。您还可以在 GCP Console 中的**云存储 > 设置 > 互操作性 > 为服务帐户创建密钥**下生成 HMAC 密钥。
 
 ## 4. 创建批量导出目的地在 LangSmith 中创建一个指向您的 GCS 存储桶的目标。将 `endpoint_url` 设置为 `https://storage.googleapis.com` 以使用 GCS S3 兼容 API。
 
@@ -252,7 +252,7 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 | `400 Access denied` 关于目的地创建 | HMAC 凭证缺乏写入权限 |验证服务帐户在存储桶上有`storage.objects.create` |
 | `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 |
 | `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com`|
-| BigQuery 表不显示任何行 |出口尚未完成 |使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
+| BigQuery 表不显示任何行 |出口尚未完成|使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
 | BigQuery 分区修剪不起作用 |源 URI 前缀不正确 |确保源 URI 前缀在第一个分区键之前结束，例如`gs://BUCKET/PREFIX` |
 | BigQuery 拾取 `tmp/` 文件 |广泛的文件路径 glob |在文件路径中使用 `export_id=*` 而不是 `*` |
 

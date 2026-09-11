@@ -11,7 +11,7 @@ Paste this prompt into your coding agent to connect the servers, or follow the s
 <Prompt
     description="Connect LangChain docs MCP servers"
     icon="plug"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 

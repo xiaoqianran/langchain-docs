@@ -51,7 +51,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 - **一键，多个提供商：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供商密钥。
 - **一种请求格式，多个模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
 - **内置可观察性：** 每个网关调用都显示为 [LangSmith trace](/langsmith/llm-gateway-access)。
-- **中央治理：**应用[spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies)和[data-protection policies](/langsmith/llm-gateway-data-protection)。
+- **中央治理：**应用[spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies)和[data policies](/langsmith/llm-gateway-data-policy)。
 
 ## 使用标准API
 
@@ -69,7 +69,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 ## 选择凭证的管理方式
 
-|选项 |上游凭证|设置和计费|
+|选项|上游凭证|设置和计费|
 | --- | --- | --- |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |

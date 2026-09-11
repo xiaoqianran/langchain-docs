@@ -18,7 +18,7 @@ LangSmith 通过捕获 [_traces_](/langsmith/observability-concepts#traces) 为�
 
 - **LangSmith帐户**：在[smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-quickstart)注册或登录。
 - **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-- **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成。
+- **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成此密钥。
 
 此示例使用 OpenAI 作为 LLM 提供商。您可以根据自己的提供商进行调整。
 
@@ -92,7 +92,7 @@ LangSmith 通过捕获 [_traces_](/langsmith/observability-concepts#traces) 为�
     例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
     </Note>
 
-    如果您使用Anthropic，请使用[Anthropic wrapper](/langsmith/trace-anthropic)。如果您使用的是 Google Gemini，请使用 [Gemini wrapper](/langsmith/trace-with-google-gemini)。对于其他提供商，请使用 [⟦T21⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
+    如果您使用Anthropic，请使用[Anthropic wrapper](/langsmith/trace-anthropic)。如果您使用 Google Gemini，请使用 [Gemini wrapper](/langsmith/trace-with-google-gemini)。对于其他提供商，请使用 [⟦T21⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
 
 ## 2. 构建应用程序以下应用程序使用两个LangSmith工具来添加跟踪：
 
@@ -209,7 +209,7 @@ class ObservabilityQuickstartApp {
                       .completions()
                       .create(
                           ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_CHAT_LATEST)
+                              .model(ChatModel.GPT_5_5)
                               .addMessage(
                                   ChatCompletionMessageParam.ofSystem(
                                       ChatCompletionSystemMessageParam.builder()
@@ -232,6 +232,10 @@ class ObservabilityQuickstartApp {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2529a15-5c87-4c29-9c34-9aa9a899bcf1/r" arrow horizontal>
+  为此示例打开公共 LangSmith 运行。
+</Card>
 ```kotlin Kotlin
 import com.langchain.smith.tracing.RunType
 import com.langchain.smith.tracing.TraceConfig
@@ -260,7 +264,7 @@ val assistant =
             val response =
                 client.chat().completions().create(
                     ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_5_CHAT_LATEST)
+                        .model(ChatModel.GPT_5_5)
                         .addMessage(
                             ChatCompletionMessageParam.ofSystem(
                                 ChatCompletionSystemMessageParam.builder()
@@ -284,6 +288,10 @@ val assistant =
 
 println(assistant("How long are LangSmith traces stored?"))
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/95567c68-5e7b-44f2-9355-7705ac00de5a/r" arrow horizontal>
+  为此示例打开公共 LangSmith 运行。
+</Card>
 </CodeGroup>
 
 ## 3. 运行应用程序
@@ -304,9 +312,7 @@ npx tsx index.ts
 
 </CodeGroup>
 
-## 4. 查看您的踪迹
-
-在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。单击 `assistant` 行打开轨迹。 **消息** 选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
+## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。单击 `assistant` 行打开轨迹。 **消息** 选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
 
 <img
     className="block dark:hidden"
@@ -318,7 +324,9 @@ npx tsx index.ts
     className="hidden dark:block"
     src="/langsmith/images/trace-quickstart-app-dark.png"
     alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span."
-/>外部跨度捕获 `assistant` 函数的输入和输出。嵌套的 **get_context** 范围记录工具调用，而 **ChatOpenAI** 范围记录发送到模型的确切提示和返回的响应。
+/>
+
+外部跨度捕获 `assistant` 函数的输入和输出。嵌套的 **get_context** 范围记录工具调用，而 **ChatOpenAI** 范围记录发送到模型的确切提示和返回的响应。
 
 <Tip>
 您还可以使用[LangSmith CLI](/langsmith/langsmith-cli)从终端检查痕迹。

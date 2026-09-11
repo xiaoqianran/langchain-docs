@@ -23,7 +23,7 @@ LangSmith 使用 PostgreSQL 数据库作为事务工作负载和操作数据（�
   * [Google Cloud SQL](https://cloud.google.com/curated-resources/cloud-sql#section-1)
   * [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/products/postgresql#features)
 
-* 注意：我们仅官方支持 PostgreSQL 版本 >= 14。
+* 注意：我们仅正式支持 PostgreSQL 14 或更高版本。
 
 * 我们支持密码和[IAM/Workload Identity](#iam-authentication)认证。
 
@@ -373,7 +373,7 @@ Azure Database for PostgreSQL 支持 [Microsoft Entra authentication](https://le
 #### 先决条件
 
 1. 使用 [Azure Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 在 Kubernetes 集群中**配置工作负载身份**
-2. **在 Azure Database for PostgreSQL 实例上启用 Microsoft Entra 身份验证**，并授予对工作负载身份的访问权限
+2. **在 Azure Database for PostgreSQL 实例上启用 Microsoft Entra 身份验证**并授予对工作负载身份的访问权限
 
 #### 配置
 
@@ -413,7 +413,7 @@ IAM 身份验证需要 TLS。您必须在连接字符串中包含 `sslmode=requi
 **工作：** `migrations`、`authBootstrap`、`feedbackConfigMigration`、`feedbackDataMigration`、`e2eTest`
 
 <Note>
-上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。对于这些作业，您只需配置 pod 标签（Azure 要求 pod 上使用`azure.workload.identity/use: "true"`）。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
+上面列出的所有作业（`e2eTest` 除外）都使用 `backend` 服务帐户。对于这些作业，您只需要配置 pod 标签（Azure 要求 pod 上使用`azure.workload.identity/use: "true"`）。 `e2eTest`作业使用自己的服务帐户，并且需要单独的注释配置。
 </Note>
 
 后端服务的配置示例：

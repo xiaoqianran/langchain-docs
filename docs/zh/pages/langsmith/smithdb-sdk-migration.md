@@ -32,7 +32,7 @@
 
 [LangSmith CLI](/langsmith/langsmith-cli) 查询相同的 SmithDB 支持的端点，并需要 `v0.2.44` 或更高版本。
 
-## 关于自托管- 本指南中记录的新方法需要 `>=0.16` 自托管版本，独立于所使用的数据存储。
+## 关于自托管- 本指南中记录的新方法需要自托管版本 0.16 或更高版本，与所使用的数据存储无关。
 - 一旦 ClickHouse 被禁用，已弃用的方法就会停止工作。
 - 在可能的情况下，SDK 会发出警告或错误，标识要升级到的版本，而不是在没有解释的情况下失败。
 
@@ -66,7 +66,7 @@
 <Prompt
     description="Migrate LangSmith SDK usage to SmithDB methods"
     icon="arrow-right"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 将此代码库的 LangSmith SDK 使用迁移到新的 SmithDB 支持的方法。
 
@@ -81,7 +81,7 @@
 - 通过 ID 获取一个运行，加载其子运行，并构建一个运行的 URL
   在 LangSmith UI 中运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md
-- 查询项目中的痕迹，读取其代币和成本汇总，
+- 查询项目中的痕迹，读取其代币和成本聚合，
   并在一个跟踪中列出运行：
   https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md
 - 查询项目中的线程并在一个中列出痕迹（回合）
@@ -123,8 +123,8 @@
     | `LangSmithNotFoundError` | `NotFoundError` | 404;不变的名字 |
     | `LangSmithConflictError` | `ConflictError` | 409；不变的名字 |
     | `LangSmithConnectionError` | `APIConnectionError` |当客户端无法连接到 API 时引发 |
-    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的|
-    | *（不可用）* | `APIError` |新增：所有与 API 相关的错误的基类，具有 `message`、`request` 和 `body` 属性 |
+    | `LangSmithExceptionGroup` | *（已删除）* |没有同等的 |
+    | *（不可用）* | `APIError` |新增：所有 API 相关错误的基类，具有 `message`、`request` 和 `body` 属性 |
     | *（不可用）* | `APIStatusError` |新：所有 4xx/5xx 状态错误的基类 |
     | *（不可用）* | `BadRequestError` |新：400 |
     | *（不可用）* | `PermissionDeniedError` |新：403 |
@@ -133,7 +133,7 @@
   </Tab>
   <Tab title="TypeScript">SmithDB 支持的方法引发新的异常类，而不是普通的 `Error`。
 
-    |之前（普通`Error`）|之后(`langsmith`)|笔记|
+    |之前（普通`Error`）|之后(`langsmith`) |笔记|
     |---|---|---|
     | *（不可用）* | `LangsmithError` |所有 SDK 错误的基类 |
     | *（不可用）* | `InternalServerError` | 5xx |
@@ -166,11 +166,11 @@
 
 |蟒蛇 |打字稿 |
 |---|---|
-| [⟦T69⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
-| [⟦T70⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
-| [⟦T71⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
-| [⟦T72⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
-| [⟦T73⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
+| [⟦T68⟧](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) |不适用 |
+| [⟦T69⟧](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) |不适用 |
+| [⟦T70⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) |不适用 |
+| [⟦T71⟧](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) |不适用 |
+| [⟦T72⟧](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) |不适用 |
 
 ---
 

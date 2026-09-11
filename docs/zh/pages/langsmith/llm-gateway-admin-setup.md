@@ -18,7 +18,7 @@
 
 网关从工作区的提供者密钥中解析提供者 API 密钥 - 这就是它代理对上游提供者的调用的方式，而无需单个用户需要提供者密钥的本地副本。
 
-转到 **设置 → 集成 → 提供商机密** 并添加您想要通过网关代理的提供商的密钥：
+转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：
 
 |秘密名字|供应商|
 | --- | --- |
@@ -40,7 +40,7 @@
 
 需要启用 RBAC 的计划。
 
-1. 转至 **设置 → 成员/角色**。
+1. 转至 **设置 > 成员/角色**。
 1. 创建新的工作区角色。
 1. 至少授予`gateway:invoke`和`workspaces:read`。
 1. 将需要网关访问权限的用户分配给此角色。
@@ -59,8 +59,8 @@
 
 网关策略管理需要`organization:manage`权限。
 
-转到 **设置 → 网关 → LLM 网关** 以创建治理策略。您可以配置：- **支出限制：** 组织、工作区、API 密钥或用户级​​别的硬上限。参考[Spend policies](/langsmith/llm-gateway-spend-policies)。
-- **数据保护：** 在 PII 和机密到达模型之前检测并编辑它们。参考[Data protection](/langsmith/llm-gateway-data-protection)。
+转至 **LLM Gateway** 创建治理策略。您可以配置：- **支出限制：** 组织、工作区、API 密钥或用户级​​别的硬上限。参考[Spend policies](/langsmith/llm-gateway-spend-policies)。
+- **数据策略：** 在 PII 和机密到达模型之前对其进行检测和编辑，并控制是否跟踪请求和响应正文。参考[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 
@@ -68,7 +68,7 @@
 
 为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。
 
-使用工作区范围的键，而不是组织范围的键。详情请参见[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
+使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
 
 与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
 

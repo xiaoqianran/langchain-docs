@@ -133,7 +133,7 @@ curl --request POST \
 ### 安排定期导出
 
 <Note>
-需要 LangSmith Helm 版本 >= `0.10.42`（应用程序版本 >= `0.10.109`）
+需要 LangSmith Helm 版本 `0.10.42` 或更高版本（应用程序版本 `0.10.109` 或更高版本）
 </Note>
 
 计划导出定期运行收集并导出到配置的目标。要创建计划导出，请包含 `interval_hours` 并省略 `end_time`：
@@ -181,7 +181,7 @@ curl --request POST \
 ### 限制导出字段
 
 <Note>
-需要 LangSmith Helm 版本 >= `0.12.11`（应用程序版本 >= `0.12.42`）。支持一次性导出和定期导出。
+需要 LangSmith Helm 版本 `0.12.11` 或更高版本（应用程序版本 `0.12.42` 或更高版本）。支持一次性导出和定期导出。
 </Note>
 
 您可以通过使用 `export_fields` 参数限制包含哪些字段来提高导出速度并减小文件大小。如果省略 `export_fields`，则包含除 `feedbacks` 之外的所有字段。

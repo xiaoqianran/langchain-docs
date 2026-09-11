@@ -18,7 +18,7 @@
 对于LangChain（Python或JS/TS），请参阅[LangChain-specific instructions](/langsmith/trace-with-langchain)。
 
 <Callout icon="plug" color="#4F46E5" iconType="regular">
-如果您使用的是具有内置 LangSmith 集成的 LLM 提供商或代理框架，请改为参阅 [integrations overview](/langsmith/integrations)
+如果您使用的是具有内置 LangSmith 集成的 LLM 提供商或代理框架，请参阅 [integrations overview](/langsmith/integrations)
 </Callout>
 
 ## 先决条件
@@ -26,7 +26,7 @@
 在跟踪之前，请设置以下环境变量：
 
 - `LANGSMITH_TRACING=true`：启用跟踪。设置此选项可在不更改代码的情况下打开和关闭跟踪。<Note>
-    `LANGSMITH_TRACING` 控制 `@traceable` 装饰器和 `trace` 上下文管理器。要在运行时为 `@traceable` 覆盖此设置而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布时将数据发送到LangSmith。
+    `LANGSMITH_TRACING` 控制 `@traceable` 装饰器和 `trace` 上下文管理器。要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布时将数据发送到LangSmith。
     </Note>
 
 - `LANGSMITH_API_KEY`：你的[LangSmith API key](/langsmith/create-account-api-key)。
@@ -34,7 +34,7 @@
 
 ## 使用 `@traceable` / `traceable`
 
-将 [⟦T32⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python)、[⟦T33⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript)、`traceable` (Kotlin) 或 `Tracing.traceFunction` (Java) 应用于任何函数以使其成为跟踪运行。 LangSmith 自动处理嵌套调用之间的上下文传播。
+将 [⟦T32⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python)、[⟦T33⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript)、`traceable` (Kotlin) 或 `Tracing.traceFunction` (Java) 应用于任何函数以使其成为跟踪运行。 LangSmith 自动处理跨嵌套调用的上下文传播。
 
 以下示例跟踪一个简单的管道：`run_pipeline` 调用 `format_prompt` 构建消息，`invoke_llm` 调用模型，以及 `parse_output` 提取结果。
 
@@ -174,9 +174,8 @@ public class TraceablePipeline {
                     .completions()
                     .create(
                         ChatCompletionCreateParams.builder()
-                            .model(ChatModel.GPT_5_CHAT_LATEST)
+                            .model(ChatModel.GPT_5_5)
                             .messages(messages)
-                            .temperature(0.0)
                             .build()),
             TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build());
 
@@ -196,6 +195,10 @@ public class TraceablePipeline {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e686a13-436f-41ec-9e21-7f38d8babcb8/r" arrow horizontal>
+  为此示例打开公共 LangSmith 运行。
+</Card>
 ```kotlin Kotlin
 import com.langchain.smith.tracing.RunType
 import com.langchain.smith.tracing.TraceConfig
@@ -235,9 +238,8 @@ val invokeLlm =
         { messages: List<ChatCompletionMessageParam> ->
             openai.chat().completions().create(
                 ChatCompletionCreateParams.builder()
-                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .model(ChatModel.GPT_5_5)
                     .messages(messages)
-                    .temperature(0.0)
                     .build(),
             )
         },
@@ -259,8 +261,12 @@ val runPipeline =
     )
 
 println(runPipeline("colorful socks"))
-```
-</CodeGroup>在 [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/397a7c30-a236-43bb-b104-89f8d9e3145c/r" arrow horizontal>
+  为此示例打开公共 LangSmith 运行。
+</Card>
+</CodeGroup>
+
+在 [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。
 
 <Note>
 当您使用 `traceable` 包装同步函数时（例如上例中的 `formatPrompt`），请在调用它时使用 `await` 关键字以确保正确记录跟踪。
@@ -275,9 +281,7 @@ println(runPipeline("colorful socks"))
 1. 使用装饰器或包装器是不可行的。
 1. 上述任何一项或全部。
 
-上下文管理器与 `traceable` 装饰器和 `wrap_openai` 包装器无缝集成，因此您可以在同一应用程序中一起使用它们。
-
-以下示例显示了所有三个一起使用的情况。 `wrap_openai` 包装 OpenAI 客户端，以便自动跟踪其调用。 `my_tool` 使用 `@traceable` 与 `run_type="tool"` 以及自定义 `name` 来正确显示在跟踪中。 `chat_pipeline`本身没有装饰；相反，`ls.trace` 包装调用，让您显式传递项目名称和输入，并通过 `rt.end()` 手动设置输出：
+上下文管理器与 `traceable` 装饰器和 `wrap_openai` 包装器无缝集成，因此您可以在同一应用程序中一起使用它们。以下示例显示了所有三个一起使用的情况。 `wrap_openai` 包装 OpenAI 客户端，以便自动跟踪其调用。 `my_tool` 使用 `@traceable` 与 `run_type="tool"` 以及自定义 `name` 来正确显示在跟踪中。 `chat_pipeline`本身没有装饰；相反，`ls.trace` 包装调用，让您显式传递项目名称和输入，并通过 `rt.end()` 手动设置输出：
 
 ```python
 import openai
@@ -308,7 +312,9 @@ with ls.trace("Chat Pipeline", "chain", project_name="my_test", inputs=app_input
     rt.end(outputs={"output": output})
 ```
 
-## 使用`RunTree` API将跟踪记录到 LangSmith 的另一种更明确的方法是通过 `RunTree` API。此 API 使您可以更好地控制跟踪。您可以手动创建运行和子运行来组装跟踪。您仍然需要设置`LANGSMITH_API_KEY`，但`LANGSMITH_TRACING`对于此方法不是必需的。
+## 使用`RunTree` API
+
+将跟踪记录到 LangSmith 的另一种更明确的方法是通过 `RunTree` API。此 API 使您可以更好地控制跟踪。您可以手动创建运行和子运行来组装跟踪。您仍然需要设置`LANGSMITH_API_KEY`，但`LANGSMITH_TRACING`对于此方法不是必需的。
 
 对于大多数用例，不建议使用此方法；与自动处理上下文传播的`@traceable`相比，手动管理跟踪上下文很容易出错。
 
@@ -462,7 +468,7 @@ public class RunTreeExample {
 
             ChatCompletion chatCompletion = openai.chat().completions().create(
                 ChatCompletionCreateParams.builder()
-                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .model(ChatModel.GPT_5_5)
                     .messages(messages)
                     .build());
 
@@ -551,7 +557,7 @@ try {
     val chatCompletion =
         openai.chat().completions().create(
             ChatCompletionCreateParams.builder()
-                .model(ChatModel.GPT_5_CHAT_LATEST)
+                .model(ChatModel.GPT_5_5)
                 .messages(messages)
                 .build(),
         )
@@ -581,9 +587,7 @@ try {
 
 Java 和 Kotlin 示例使用自定义根运行 ID 和专用执行器。关闭执行器并等待终止可确保后台运行提交在进程退出之前完成。
 
-## 用法示例
-
-您可以扩展上一节中介绍的实用程序来跟踪任何代码。以下代码显示了一些示例扩展。
+## 用法示例您可以扩展上一节中介绍的实用程序来跟踪任何代码。以下代码显示了一些示例扩展。
 
 跟踪类中的任何公共方法：
 
@@ -636,7 +640,9 @@ MyClass(13).combine(29)
 
 ## 指定自定义运行ID
 
-默认情况下，LangSmith为每次运行分配一个随机ID。当您需要提前知道运行 ID 时（例如，在运行后立即附加 [feedback](/langsmith/attach-user-feedback)）、将 LangSmith 运行与来自外部系统的 ID 相关联，或者使用确定性 ID 使运行具有幂等性，您可以覆盖此设置。<Note>
+默认情况下，LangSmith为每次运行分配一个随机ID。当您需要提前知道运行 ID 时（例如，在运行后立即附加 [feedback](/langsmith/attach-user-feedback)）、将 LangSmith 运行与来自外部系统的 ID 相关联，或者使用确定性 ID 使运行具有幂等性，您可以覆盖此设置。
+
+<Note>
 使用 **UUID v7** 作为自定义运行 ID。 UUIDv7 嵌入了时间戳，可保留跟踪中运行的正确时间顺序。 LangSmith SDK 导出 `uuid7` 帮助程序（Python v0.4.43+、JS v0.3.80+）：
 
 - **Python**：`from langsmith import uuid7`
@@ -696,9 +702,7 @@ MyClass(13).combine(29)
         run.end(outputs={"result": result})
 
     # run_id can now be used to attach feedback, query the run, etc.
-    ```
-
-## 确保退出前所有跟踪都已提交
+    ```## 确保退出前所有跟踪都已提交
 
 LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程序。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。请参考以下选项：
 
@@ -741,13 +745,15 @@ LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程�
 
     </CodeGroup>
 
-## 相关- [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和LangSmith 数据模型的背景
+## 相关
+
+- [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和LangSmith 数据模型的背景
 - [Run (span) data format](/langsmith/run-data-format)：运行字段的架构参考，包括`dotted_order`、`trace_id` 和 `parent_run_id`
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback)：预先指定运行 ID 的常见用例
 - [Access the current run (span) within a traced function](/langsmith/access-current-span)：从跟踪内部读取或修改活动运行
 - [Log traces to a specific project](/langsmith/log-traces-to-project)：将跟踪路由到指定项目而不是`default`
-- [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代品
-- [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)来自LangSmith课程介绍
+- [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代方案
+- [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)来自LangSmith课程简介
 
 ---
 

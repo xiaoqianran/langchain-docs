@@ -29,7 +29,7 @@
 <Prompt
     description="Connect LangChain docs MCP servers"
     icon="plug"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
 

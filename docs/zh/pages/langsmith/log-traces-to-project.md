@@ -23,14 +23,14 @@ export LANGSMITH_PROJECT=my-custom-project
 ```
 
 <Warning>
-`LANGSMITH_PROJECT` 标志仅在 JS SDK 版本 >= 0.2.16 中受支持，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
+仅 JS SDK 0.2.16 或更高版本支持 `LANGSMITH_PROJECT` 标志，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
 </Warning>
 
 如果指定的项目不存在，LangSmith将在摄取第一个跟踪时自动创建它。
 
 ## 动态设置目标项目
 
-您还可以通过多种方式在程序运行时设置项目名称，具体取决于您的情况[annotating your code for tracing](/langsmith/annotate-code)。当您想要在同一应用程序中记录对不同项目的跟踪时，这非常有用：
+您还可以通过多种方式在程序运行时设置项目名称，具体取决于您的情况[annotating your code for tracing](/langsmith/annotate-code)。当您想要记录同一应用程序中不同项目的跟踪时，这非常有用：
 
 - 在装饰或配置时传递项目名称。
 - 每次单独调用时覆盖它。
@@ -223,9 +223,9 @@ public class OtelLangSmithSimpleExample {
 如果您需要根据运行时配置将跟踪动态路由到不同的LangSmith[workspaces](/langsmith/administration-overview#workspaces)（例如，将不同的用户或租户路由到单独的工作区），则方法因语言而异：
 
 - **Python**：将工作区特定的 LangSmith 客户端与 [⟦T23⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 结合使用。
-- **TypeScript**：将自定义客户端传递给[⟦T24⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable)，或将`LangChainTracer`与回调一起使用。
+- **TypeScript**：将自定义客户端传递给[⟦T24⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable)，或使用带有回调的`LangChainTracer`。
 
-此方法对于您希望在工作区级别按客户、环境或团队隔离跟踪的多租户应用程序非常有用。它适用于任何LangSmith兼容的跟踪，包括LangChain、OpenAI以及用`@traceable`修饰的自定义函数。
+此方法对于您希望在工作区级别按客户、环境或团队隔离跟踪的多租户应用程序非常有用。它适用于任何与 LangSmith 兼容的跟踪，包括 LangChain、OpenAI 以及用 `@traceable` 修饰的自定义函数。
 
 ### 先决条件
 
@@ -537,7 +537,7 @@ await invokeWithWorkspaceTracing("workspace_b", { response: "" });
 </CodeGroup>
 
 <Note>
-使用跨工作区跟踪进行部署时，请确保您的服务密钥或 PAT 具有所有目标工作区的必要权限。我们建议使用多工作区服务密钥进行生产部署。对于 LangSmith 部署，您必须添加可跨工作空间访问环境变量的服务密钥（例如，`LS_CROSS_WORKSPACE_KEY`），以覆盖部署生成的默认服务密钥。
+使用跨工作区跟踪进行部署时，请确保您的服务密钥或 PAT 具有所有目标工作区的必要权限。我们建议使用多工作区服务密钥进行生产部署。对于 LangSmith 部署，您必须添加对环境变量具有跨工作空间访问权限的服务密钥（例如，`LS_CROSS_WORKSPACE_KEY`），以覆盖部署生成的默认服务密钥。
 </Note>## 使用副本将跟踪写入多个目标
 
 副本让您可以**同时**将每个跟踪发送到多个项目或工作区。与每条跟踪都转到一个目标的动态路由模式不同，副本会将跟踪并行复制到所有已配置的目标。
@@ -561,7 +561,7 @@ await invokeWithWorkspaceTracing("workspace_b", { response: "" });
     }'
     ```
 
-- **数组格式**：副本对象列表，当您需要多个副本指向同一 URL 或您想要为每个副本设置 `project_name` 时非常有用：
+- **数组格式**：副本对象列表，当您需要多个副本指向同一 URL 或当您想要为每个副本设置 `project_name` 时非常有用：
 
     ```bash
     export LANGSMITH_RUNS_ENDPOINTS='[
@@ -826,7 +826,7 @@ if (primaryRunId) {
 </CodeGroup>
 
 <Note>
-`compute_run_id_for_secondary_replica` / `computeRunIdForSecondaryReplica` 帮助程序在 Python SDK >= 0.10.8 和 JS SDK >= 0.8.5 中可用。如果您使用的是较早的 SDK 版本，请升级以使用此功能。
+`compute_run_id_for_secondary_replica` / `computeRunIdForSecondaryReplica` 帮助程序在 Python SDK 0.10.8 或更高版本以及 JS SDK 0.8.5 或更高版本中可用。如果您使用的是较早的 SDK 版本，请升级以使用此功能。
 </Note>
 
 ### LangSmith 和 OpenTelemetry 目的地之间的路线
@@ -834,7 +834,7 @@ if (primaryRunId) {
 您可以在运行时决定给定调用是否将跟踪发送到LangSmith、OpenTelemetry (OTel) 后端或同时发送到两者，而无需重新部署或修改应用程序逻辑。当您想要在每个环境甚至每个请求的可观察性后端之间切换并在运行时做出决定时，这非常有用。使用 `tracing_mode` 构造函数参数或 `LANGSMITH_TRACING_MODE` 环境变量设置跟踪模式。两者都接受相同的价值观；显式 `tracing_mode` 参数始终优先于环境变量：
 
 - **`"langsmith"`（默认）**：将跟踪本机发送到LangSmith。
-- **`"otel"`**：将跟踪作为 OpenTelemetry 跨度导出到配置的 OTel 后端。
+- **`"otel"`**：将跟踪作为 OpenTelemetry 跨度导出到已配置的 OTel 后端。
 - **`"hybrid"`（仅限 Python）**：从单个副本发送到 LangSmith 和 OTel 后端。
 
 <Note>

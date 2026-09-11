@@ -27,7 +27,7 @@ This includes our `llms.txt`, MCP server connection, and other quick access opti
 <Prompt
     description="Connect LangChain docs MCP servers"
     icon="plug"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 

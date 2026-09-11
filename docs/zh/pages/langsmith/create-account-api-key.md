@@ -23,7 +23,7 @@ LangSmith 支持两种类型的 API 密钥。您可以使用这两种类型的�
     对于服务密钥，请在组织范围的密钥和工作区范围的密钥之间进行选择。如果密钥是工作区范围的，则必须指定工作区。[Enterprise](/langsmith/pricing-plans) 用户还可以 [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) 服务密钥，这可以独立于任何用户调整其权限。
   </Step>
   <Step title="Set expiration" icon="calendar">
-    设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了该天数）。
+    设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了）。
   </Step>
   <Step title="Create the key" icon="circle-check">
     单击 **创建 API 密钥。** LangSmith 只会显示 API 密钥一次，因此请务必复制它并将其存储在安全的地方。
@@ -31,11 +31,13 @@ LangSmith 支持两种类型的 API 密钥。您可以使用这两种类型的�
 </Steps>
 
 <Tip>
-  要删除 API 密钥，请导航至 [**Settings** page](https://smith.langchain.com/settings)，在 **API 密钥** 部分中找到该密钥，然后在 **操作** 列中选择垃圾桶图标 <Icon icon="trash" iconType="solid"/>。
+  要撤销或删除密钥，请导航至 [**Settings** page](https://smith.langchain.com/settings)，在 **API 密钥** 部分中找到该密钥，然后在 **操作** 列中选择垃圾桶图标 <Icon icon="trash" iconType="solid"/>。对于个人访问令牌，请键入密钥的名称，然后选择“**撤销**”以阻止令牌进行身份验证，同时保留其记录，或选择“**删除**”以完全删除记录。这两个操作都无法撤消。服务密钥只能删除。
 </Tip>
 
 <Tip>
-  [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles-rbac)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色（对于组织范围的键，更新组织角色），然后单击 **保存**。密钥字符串本身没有改变。
+  [Organization Admins](/langsmith/rbac#organization-admin)和[Organization Operators](/langsmith/rbac#organization-operator)可以查看、撤销和删除每个成员的个人访问令牌。在 [**Settings** page](https://smith.langchain.com/settings) 的 **API 密钥** 部分中，打开 **个人** 选项卡，并将范围从 **我的密钥** 切换到 **所有成员**。
+</Tip><Tip>
+  [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles-rbac)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色（对于组织范围的键，更新组织角色）并单击 **保存**。密钥字符串本身没有改变。
 </Tip>
 
 ## 配置SDK
@@ -67,15 +69,15 @@ LangSmith 支持两种类型的 API 密钥。您可以使用这两种类型的�
 ```bash
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_TRACING=true
-```您可能还需要以下附加环境变量：
+```
+
+您可能还需要以下附加环境变量：
 
 - `LANGSMITH_ENDPOINT` 控制SDK 将数据发送到哪个LangSmith 服务器。默认为 `https://api.smith.langchain.com` (GCP US)。仅当您处于不同的部署时才设置它。对于区域 SaaS，将其设置为您所在区域的 API URL：
 
     {/* 通过 `prefix` 更改“.langchain.com”之前的主机名（默认：“api.smith”）。
     传递 `suffix` 将路径（例如“/mcp”）附加到每个 URL。
-    传递 `protocol={false}` 来渲染不带“https://”的主机名。 */}
-
-<table>
+    传递 `protocol={false}` 来渲染不带“https://”的主机名。 */}<table>
   <thead>
     <tr>
       <th>地区</th>
@@ -106,7 +108,9 @@ export LANGSMITH_TRACING=true
 
     `LANGSMITH_WORKSPACE_ID=<Workspace ID>`
 
-要跨本地 shell 或远程运行时重用端点、API 密钥和工作区设置，请参阅[Profile configuration](/langsmith/profile-configuration)。## 在 SDK 之外使用 API 密钥
+要跨本地 shell 或远程运行时重用端点、API 密钥和工作区设置，请参阅[Profile configuration](/langsmith/profile-configuration)。
+
+## 在 SDK 之外使用 API 密钥
 
 参见[instructions for managing your organization via API](/langsmith/manage-organization-by-api)。
 

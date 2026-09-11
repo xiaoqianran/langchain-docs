@@ -28,7 +28,7 @@ export LANGSMITH_GATEWAY_BASE_URL="https://gateway.smith.langchain.com/v1"
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 ```
 
-统一基本 URL 接受提供者前缀的自带密钥模型 ID（例如 `anthropic/claude-opus-5`）和托管模型 slugs（例如 `moonshotai/kimi-k3`）。型号ID决定上游路由。
+统一基本 URL 接受以提供商为前缀的自带密钥模型 ID（例如 `anthropic/claude-opus-5`）和托管模型 slugs（例如 `moonshotai/kimi-k3`）。型号ID决定上游路由。
 
 <Note>
 如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway)。
@@ -225,7 +225,7 @@ print(result["messages"][-1].content)
 
 ## 4. 设置支出政策（可选）
 
-转到LangSmith中的**设置→网关→LLM网关**以创建支出政策。例如，您可以为 API 密钥设置每日 10 美元的上限。当达到上限时，网关将返回 `402` 响应，其中包含消息：`"Request blocked by gateway policies: R&D Spend Cap"`。
+前往LangSmith中的 **LLM Gateway** 创建支出政策。例如，您可以为 API 密钥设置每日 10 美元的上限。当达到上限时，网关将返回 `402` 响应，其中包含消息：`"Request blocked by gateway policies: R&D Spend Cap"`。
 
 有关政策维度、时间窗口和冲突解决的完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
 
@@ -245,7 +245,7 @@ print(result["messages"][-1].content)
 - [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商本机请求和响应格式。
 - [Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway)：使用两个环境变量通过网关路由 Prompt Hub 模型调用。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：配置整个组织的成本限制。
-- [Data protection](/langsmith/llm-gateway-data-protection)：防止敏感数据到达提供商。
+- [Data policy](/langsmith/llm-gateway-data-policy)：防止敏感数据到达提供商。
 
 ---
 

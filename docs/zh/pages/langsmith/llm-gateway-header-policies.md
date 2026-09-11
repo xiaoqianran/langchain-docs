@@ -16,7 +16,7 @@
 
 网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
 
-标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，并且 `a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
+标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
 
 <Warning>
 网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
@@ -36,7 +36,7 @@
 
 要按标题分隔默认支出限额：
 
-1. 转至 **设置 → 网关 → LLM 网关**，然后选择 **成本控制**。
+1. 转至 **LLM Gateway** 并选择 **成本控制**。
 1. 单击**创建支出限额**。
 1. 选择 **工作空间**、**用户** 或 **API 密钥**，然后选择默认情况下将限制应用于该类型的每个主题的选项。
 1. 选择**通过自定义标头单独限制**。
@@ -57,7 +57,7 @@
 - **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
 - **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。
 
-1. 进入**设置 → 网关 → LLM 网关**。
+1. 转至 **LLM 网关**。
 1. 单击**创建策略**。
 1. 选择保单类型和主体范围，然后设置限制。
 1. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
@@ -277,7 +277,7 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
         }'
 ```
 
-[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和速率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中之一。## 后续步骤
+[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。## 后续步骤
 
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
 - [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。

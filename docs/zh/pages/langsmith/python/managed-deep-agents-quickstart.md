@@ -36,7 +36,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 <Prompt
     description="Build a Managed Deep Agent with the quickstart"
     icon="sparkles"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
@@ -105,7 +105,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 

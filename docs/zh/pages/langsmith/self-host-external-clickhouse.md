@@ -6,7 +6,7 @@
 
 ClickHouse是一个高性能、面向列的数据库系统。它允许快速摄取数据并针对分析查询进行了优化。
 
-LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认情况下，自托管 LangSmith 将使用与 LangSmith 实例捆绑的内部 ClickHouse 数据库。它作为有状态集在与 LangSmith 应用程序相同的 Kubernetes 集群中运行。
+LangSmith使用ClickHouse作为跟踪和反馈的主要数据存储。默认情况下，自托管 LangSmith 将使用与 LangSmith 实例捆绑的内部 ClickHouse 数据库。它作为有状态集在与 LangSmith 应用程序相同的 Kubernetes 集群中运行。
 
 但是，您可以将 LangSmith 配置为使用外部 ClickHouse 数据库，以便于管理和扩展。通过配置外部 ClickHouse 数据库，您可以管理数据库的备份、扩展和其他操作任务。虽然 ClickHouse 还不是 Azure、AWS 或 Google Cloud 中的原生服务，但您可以通过以下方式使用外部 ClickHouse 数据库运行 LangSmith：
 
@@ -29,7 +29,7 @@ LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认�
 * 一个预配置的 ClickHouse 实例，您的 LangSmith 应用程序将对其进行网络访问（请参阅上面的选项）。
 * 对 ClickHouse 数据库具有管理员访问权限的用户。该用户将用于创建必要的表、索引和视图。
 * 我们支持独立的 ClickHouse 和外部管理的集群部署。对于集群部署，请确保所有节点都运行相同的版本。请注意，捆绑的 ClickHouse 安装不支持集群设置。
-* 我们仅支持 ClickHouse 版本 >= 23.9。使用 >= 24.2 的 ClickHouse 版本需要 LangSmith v0.6 或更高版本。<Warning>
+* 我们仅支持 ClickHouse 23.9 或更高版本。使用 ClickHouse 24.2 或更高版本需要 LangSmith v0.6 或更高版本。<Warning>
 将 ClickHouse 降级到早期版本可能会导致系统表数据损坏并导致严重停机。如果您需要有关 ClickHouse 版本更改的帮助或在升级后遇到问题，请在尝试降级之前通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
 </Warning>
 * 我们依赖于在 ClickHouse 实例上设置的一些配置参数。这些详细信息如下：

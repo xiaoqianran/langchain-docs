@@ -6,7 +6,7 @@
 
 <div class="home-page mx-auto max-w-8xl px-0 lg:px-5" style={{ paddingBottom: "8rem" }}>
 <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
-<h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">LangSmith 可观察性</h1>
+<h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">LangSmith 可观测性</h1>
 
 LangSmith 可观察性为您的 LLM 申请提供全面的可见性：从单个跟踪到整个生产范围的性能指标。痕迹是您的代理在生产中所做的事情的记录。使用它们来调试故障、监控质量并构建您评估的数据集。
 
@@ -22,7 +22,7 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
         您可以使用 **Google**、**GitHub** 或 **电子邮件** 登录。
     </Step>
     <Step title="Create an API key" icon="key">
-        转到您的 [Settings page](https://smith.langchain.com/settings) → **API 密钥** → **创建 API 密钥**。
+        转到您的 [Settings page](https://smith.langchain.com/settings) > **API 密钥** > **创建 API 密钥**。
         复制密钥并安全保存。
     </Step>
 </Steps>

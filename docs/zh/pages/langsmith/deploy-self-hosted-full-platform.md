@@ -504,22 +504,22 @@ fleet:
 
 <Steps>
   <Step title="Create an External Client App">
-    在 Salesforce **设置**中，使用 **快速查找** 打开 **外部客户端应用程序管理器**，然后单击 **新建外部客户端应用程序**。
+    In Salesforce **Setup**, use **Quick Find** to open **External Client App Manager**, then click **New External Client App**.
 
     在**基本信息**下，设置：
-    - **外部客户端应用程序名称**：例如，`LangSmith Fleet`
+    - **External Client App Name**: for example, `LangSmith Fleet`
     - **联系电子邮件**：管理员电子邮件地址
     - **分布状态**：**本地**
 
     <Note>
-    外部客户端应用程序是 Salesforce 当前用于 OAuth 集成的框架。如果**新外部客户端应用程序**不可用，请确认在**设置 > 外部客户端应用程序设置**下为您的组织启用了应用程序创建。
+    External Client Apps are the current framework Salesforce uses for OAuth integrations. If **New External Client App** is unavailable, confirm that app creation is enabled for your org under **Setup > External Client App Settings**.
     </Note>
   </Step>
 
   <Step title="Enable OAuth and configure the OAuth settings">
-    展开 **API（启用 OAuth 设置）** 并选择 **启用 OAuth**。然后配置：
+    Expand **API (Enable OAuth Settings)** and select **Enable OAuth**.然后配置：
 
-    - **回调 URL**，将 `<hostname>` 替换为您的 LangSmith 主机名，并将 `<provider-id>` 替换为您的提供商 ID：
+    - **Callback URL**, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
 
     ```
     https://<hostname>/host-oauth-callback/<provider-id>
@@ -789,7 +789,7 @@ polly:
 ## 启用沙箱
 
 <Note>
-自托管沙盒需要 LangSmith Helm Chart v17 (`0.17.x`)。
+Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
 </Note>
 
 默认情况下，沙箱处于禁用状态。安装后，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)了解LangSmith UI 和 API 中的用户工作流程。### 支持的平台
@@ -806,7 +806,7 @@ polly:
 
 - 在支持 KVM 的节点上运行沙箱工作负载的沙箱运行时 Pod。
 - 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
-- 从沙箱内部公开的服务的可选通配符入口。
+- 可选通配符入口用于从沙箱内部公开的服务。
 
 ### 先决条件
 
@@ -1027,7 +1027,7 @@ sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 
 AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
 
-- 为 JuiceFS 沙箱元数据创建专用 ElastiCache Redis 实例。
+- 为 JuiceFS 沙盒元数据创建专用 ElastiCache Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
 - 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
 - 创建 JuiceFS 配置 Secret。
@@ -1118,7 +1118,7 @@ sandboxes:
 
 这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。### 验证安装
 
-升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash
 kubectl rollout status deployment/sandbox-host -n <namespace>
@@ -1127,7 +1127,7 @@ kubectl get pods,pvc -n <namespace>
 
 然后运行沙箱冒烟测试：
 
-1. 从公共镜像（例如Python镜像）创建沙箱。
+1. 从公共镜像（例如 Python 镜像）创建沙箱。
 2. 在沙箱内启动Python HTTP 服务器。
 3. 在启用内存的情况下对沙箱进行快照。
 4. 从快照创建一个新的沙箱。

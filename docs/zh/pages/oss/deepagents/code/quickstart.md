@@ -138,7 +138,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
             终端模拟器会在 `Cmd` 修改的密钥到达正在运行的应用程序之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。
 
             - **Ghostty：** 开箱即用。默认情况下，`Cmd+Left`、`Cmd+Right` 和 `Cmd+Delete` 会转换为 `Ctrl+A`、`Ctrl+E` 和 `Ctrl+U`。
-            - **iTerm2：** 默认情况下不受约束。在 **设置 → 配置文件 → 按键 → 按键映射** 下添加以下内容作为 `Send Text with vim special chars`：
+            - **iTerm2：** 默认情况下不受约束。在 **设置 > 配置文件 > 按键 > 按键映射** 下添加以下内容作为 `Send Text with vim special chars`：
                 - `Cmd+Left`→`\x01`（Ctrl+A）
                 - `Cmd+Right` → `\x05` (Ctrl+E)
                 - `Cmd+Delete` → `\x15` (Ctrl+U)

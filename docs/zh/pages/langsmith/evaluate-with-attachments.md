@@ -40,7 +40,7 @@ LangSmith UI 允许您在评估多模式模型时在提示中包含附件：
 
 首先，单击消息中要添加多模式内容的文件图标。接下来，为每个示例要包含的附件​​添加模板变量。
 
-- 如果您想包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件以将其传递给评估器
+- 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件以将其传递给评估器
 - 如果您想包含所有附件，请使用 `{{attachments}}` 变量。
 
 ![Adding multimodal variable](/langsmith/images/adding-multimodal-variable.gif)
@@ -171,7 +171,7 @@ ls_client.create_examples(
 
 #### 打字稿
 
-需要版本 >= 0.2.13
+需要0.2.13或更高版本
 
 您可以使用`uploadExamplesMultipart`方法上传带有附件的示例。
 

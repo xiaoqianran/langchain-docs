@@ -13,7 +13,7 @@
 <Prompt
     description="Connect LangChain docs MCP servers"
     icon="plug"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
 
@@ -119,8 +119,8 @@
 
 |优先|地点 |范围 |
 |----------|----------|--------|
-| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目 |
-| 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录 |
+| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目|
+| 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录|
 | 3（最高）| `<project>/.mcp.json` |项目级—root（兼容 Claude 代码）|
 
 项目根目录是包含 `.git` 文件夹的最近父目录，回退到当前工作目录。

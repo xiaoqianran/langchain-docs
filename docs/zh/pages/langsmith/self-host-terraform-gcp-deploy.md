@@ -187,7 +187,7 @@ cd terraform/modules/gcp
 make quickstart
 ```
 
-该向导会提示输入项目 ID、命名前缀、区域、GKE 大小、TLS 源、外部服务与集群内服务以及可选的附加标志。上面写着`infra/terraform.tfvars`。重新运行预选现有值；在每次提示时按 Enter 键以保留当前配置。
+该向导会提示输入项目 ID、命名前缀、区域、GKE 大小、TLS 源、外部与集群内服务以及可选的附加标志。上面写着`infra/terraform.tfvars`。重新运行预选现有值；在每次提示时按 Enter 键以保留当前配置。
 
 更喜欢手动编辑：
 
@@ -231,7 +231,7 @@ enable_langsmith_deployment = true
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值，读取现有的秘密管理器秘密，自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您交互提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值、读取现有的秘密管理器秘密、自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您以交互方式提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
 
 验证秘密是否存在：
 
@@ -292,7 +292,7 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 使用三个受支持的部署路径之一：
 
-|路径|命令 |何时使用 |
+|路径|命令|何时使用 |
 |---|---|---|
 | [Script-driven Helm deploy _(recommended)_](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Terraform-managed Helm release](#terraform-managed-helm-release) | `make init-app && make apply-app` | Helm 版本在 Terraform 状态下与基础设施一起管理。最适合 GitOps 和 CI/CD 管道。 |
@@ -309,7 +309,7 @@ make init-values
 make deploy
 ````init-values.sh` 提示输入管理员电子邮件，然后从 `terraform.tfvars` 读取 `sizing_profile` 和 `enable_*` 标志，并将匹配值文件从 `helm/values/examples/` 复制到 `helm/values/`。它还会使用您的主机名、工作负载身份注释和 GCS 存储桶名称生成 `values-overrides.yaml`。
 
-`make deploy` 运行 `helm/scripts/deploy.sh`，它刷新 kubeconfig、运行预检检查、应用分层值文件并运行 `helm upgrade --install`。
+`make deploy` 运行 `helm/scripts/deploy.sh`，它会刷新 kubeconfig、运行预检检查、应用分层值文件并运行 `helm upgrade --install`。
 
 图表安装和 Pod 准备就绪预计需要 8 到 12 分钟。
 
@@ -346,7 +346,7 @@ export ADMIN_EMAIL="admin@example.com"
 export ADMIN_PASSWORD="<strong-password>"
 ```
 
-附带的 `helm/values/values.yaml` 设置 `config.blobStorage.engine: GCS`（本机 GCS 模式），因此 Blob 存储通过 Workload Identity 进行身份验证，无需 HMAC 密钥。每个组件的 Workload Identity 注释位于 `values-overrides.yaml` 中；使用`make init-values`生成它，或者手动添加每个组件的`serviceAccount.annotations."iam.gke.io/gcp-service-account"`。
+附带的 `helm/values/values.yaml` 设置 `config.blobStorage.engine: GCS`（本机 GCS 模式），因此 Blob 存储通过 Workload Identity 进行身份验证，无需 HMAC 密钥。每个组件的 Workload Identity 注释位于 `values-overrides.yaml`；使用`make init-values`生成它，或者手动添加每个组件的`serviceAccount.annotations."iam.gke.io/gcp-service-account"`。
 
 ```bash
 helm repo add langchain https://langchain-ai.github.io/helm
@@ -462,7 +462,7 @@ Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服�
 </Note>您可以通过`enable_fleet`启用舰队。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署。 Terraform 在 Cloud SQL 上配置专用的 `fleet` 数据库，并将 `langsmith-fleet-postgres` 和 `langsmith-fleet-redis` 密钥连接到现有的 Cloud SQL 和 Memorystore 实例。队列重用`langsmith_agent_builder_encryption_key`，因此从`enable_agent_builder` 迁移会保留相同的密钥和数据。
 
 <Note>
-Fleet 需要 LangSmith Helm 图表 `>=0.15.0` 以及许可证中的 Agent Builder 或 Fleet 权利。
+Fleet 需要 LangSmith Helm Chart 0.15.0 或更高版本以及许可证中的 Agent Builder 或 Fleet 权利。
 </Note>
 
 ```hcl
@@ -561,7 +561,7 @@ kubectl get pods -n langsmith -w
 - 加密密钥在首次启用后不得更改。旋转`insights_encryption_key`或`polly_encryption_key`会永久破坏现有的加密数据。
 - 首次启用 Polly 后滚动前端。 `agentBootstrap` 注册后创建`langsmith-polly-config` ConfigMap。在引导程序完成之前启动的前端 Pod 不会自动拾取它。
 - Envoy 网关 IP 在拆卸时发生变化。删除网关后，GCP 会释放外部 IP。重新申请后，会发出新的IP，因此请更新您的DNS A记录。
-- `langsmith-ksa`注释不是永久的。操作符在运行时创建`langsmith-ksa`；它无法在名称空间删除后幸存。 `deploy.sh` 幂等地重新注释它。如果操作员 Pod 在集群重建后失去 GCS 访问权限，请重新运行 `make deploy`。
+- `langsmith-ksa`注释不是永久的。运算符在运行时创建`langsmith-ksa`；它无法在名称空间删除后幸存。 `deploy.sh` 幂等地重新注释它。如果操作员 Pod 在集群重建后失去 GCS 访问权限，请重新运行 `make deploy`。
 
 ## 后续步骤
 

@@ -34,7 +34,7 @@ Or paste this prompt into your coding agent:
 <Prompt
     description="Build a Managed Deep Agent with the quickstart"
     icon="sparkles"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
 

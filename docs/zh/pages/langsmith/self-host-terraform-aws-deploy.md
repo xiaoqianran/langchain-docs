@@ -60,7 +60,7 @@ graph TB
 |---|---|---|
 | AWS CLI | v2 |身份验证、查询 AWS 资源、管理 EKS kubeconfig |
 |地形 | 1.5 | 1.5运行基础设施模块 |
-| `kubectl` | 1.33 | 1.33检查EKS集群 |
+| `kubectl` | 1.33 | 1.33检查EKS集群|
 |头盔| 3.12 | 3.12安装和管理LangSmith图表|
 | `eksctl` |最新 |可选，方便 kubeconfig 和调试 |
 
@@ -89,7 +89,7 @@ helm version
 | `AmazonEKSClusterPolicy` |创建和管理 EKS 集群 |
 | `AmazonVPCFullAccess` |创建 VPC、子网、路由表和 NAT |
 | `AmazonRDSFullAccess` |创建和管理 RDS PostgreSQL 实例 |
-| `AmazonElastiCacheFullAccess` |创建ElastiCache Redis集群 |
+| `AmazonElastiCacheFullAccess` |创建ElastiCache Redis集群|
 | `AmazonS3FullAccess` |创建 S3 存储桶和 VPC 终端节点 |
 | `IAMFullAccess` |创建 IRSA 角色和策略 |
 
@@ -129,7 +129,7 @@ aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --out
 
 两个独立的设置控制能力：
 
-- **基础设施容量**直接通过基础设施变量`eks_managed_node_groups`、`postgres_instance_type`、`redis_instance_type` 设置实例类型和节点数量。模块默认为 1 个 `m5.4xlarge` 节点组（最少 3 个，最多 10 个）、RDS 的 `db.t3.large` 和 ElastiCache 的 `cache.m6g.xlarge`。
+- **基础设施容量**直接通过基础设施变量`eks_managed_node_groups`、`postgres_instance_type`、`redis_instance_type` 设置实例类型和节点数量。模块默认值为 1 个 `m5.4xlarge` 节点组（最少 3 个，最多 10 个）、`db.t3.large`（适用于 RDS）和 `cache.m6g.xlarge`（适用于 ElastiCache）。
 - **`sizing_profile`** 选择 Helm 大小调整覆盖（pod 资源请求和限制）。 `init-values.sh`和`deploy.sh`阅读； Terraform 没有。
 
 在部署之前，根据目标层调整基础架构的大小。有关每层建议，请参阅[Scaling guidance](/langsmith/self-host-scale)。
@@ -270,8 +270,8 @@ source infra/scripts/setup-env.sh
 | `langsmith-jwt-secret` |自动生成 (`openssl rand -base64 32`) |永不轮换，使所有会话无效 |
 | `langsmith-license-key` |提示|来自[our sales team](https://www.langchain.com/contact-sales) |
 | `langsmith-admin-password` |提示|必须包含符号 |
-| `deployments-encryption-key` |自动生成 Fernet 密钥 | LangSmith 部署附加组件 |
-| `agent-builder-encryption-key` |自动生成 Fernet 密钥 | Agent Builder 附加组件（由 Fleet 重复使用）|
+| `deployments-encryption-key` |自动生成 Fernet 密钥 | LangSmith 部署插件 |
+| `agent-builder-encryption-key` |自动生成 Fernet 密钥 | Agent Builder 附加组件（由 Fleet 重复使用） |
 | `insights-encryption-key` |自动生成 Fernet 密钥 |见解附加组件 |
 | `polly-encryption-key` |自动生成 Fernet 密钥 |波莉附加组件 |
 
@@ -336,7 +336,7 @@ kubectl get pods -n langsmith
 kubectl get ingress -n langsmith
 ```
 
-当所有 Pod 均为 `Running` 并且入口显示 ALB DNS 名称时，部署已准备就绪。使用您在 `langsmith_domain` 中配置的域（或 ALB DNS 名称）来访问 UI。如果您完成了脚本驱动的部署，那么您就完成了。以下部分是替代部署路径，而不是附加步骤。
+当所有 Pod 均为 `Running` 并且入口显示 ALB DNS 名称时，部署已准备就绪。使用您在 `langsmith_domain` 中配置的域（或 ALB DNS 名称）访问 UI。如果您完成了脚本驱动的部署，那么您就完成了。以下部分是替代部署路径，而不是附加步骤。
 
 ### Terraform 管理的 Helm 部署
 
@@ -373,7 +373,7 @@ clickhouse_host      = "clickhouse.example.com"
 ```
 
 <Warning>
-在`make plan-app`之前需要`make init-values`。应用程序模块从`helm/values/`读取值文件，并根据`infra/terraform.tfvars`中的大小和附加选项从`helm/values/examples/`填充它们。
+在`make plan-app`之前需要`make init-values`。应用程序模块从 `helm/values/` 读取值文件，并根据 `infra/terraform.tfvars` 中的大小和附加选项从 `helm/values/examples/` 填充它们。
 </Warning>
 
 对于“自带基础设施”，请跳过`make init-app`并在`app/terraform.tfvars`中手动设置所有变量。
@@ -407,7 +407,7 @@ Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服�
 Terraform 在 RDS 上创建专用的 `langsmith_fleet` 数据库，并将 `langsmith-fleet-postgres` 和 `langsmith-fleet-redis` 密钥连接到现有 RDS 和 ElastiCache 实例。队列重用`langsmith_agent_builder_encryption_key`，因此从`enable_agent_builder` 迁移会保留相同的密钥和数据。
 
 <Note>
-Fleet 需要 LangSmith Helm 图表 `>=0.15.0` 以及许可证中的 Agent Builder 或 Fleet 权利。
+Fleet 需要 LangSmith Helm Chart 0.15.0 或更高版本以及许可证中的 Agent Builder 或 Fleet 权利。
 </Note>
 
 车队安装 `standalone-fleet-api-server`、`standalone-fleet-tool-server`、`standalone-fleet-trigger-server` 和 `standalone-fleet-queue` 服务。
@@ -473,7 +473,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 
 - 参考[AWS variables](/langsmith/self-host-terraform-aws-variables)和[quick reference](/langsmith/self-host-terraform-aws-quick-reference)。
 - 查看 [AWS architecture](/langsmith/self-host-terraform-aws-architecture) 的平台层、IRSA 和模块依赖性。
-- 当出现故障时，请检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
+- 当出现故障时，检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
 - 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
 
 ---

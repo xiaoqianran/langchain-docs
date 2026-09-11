@@ -108,7 +108,7 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
     ```
     </Tab>
     <Tab title="PyCharm">
-    1. 转到运行→编辑配置
+    1. 转到“运行”>“编辑配置”
     2.点击+并选择“Python调试服务器”
     3.设置IDE主机名：`localhost`
     4. 设置端口：`5678`（或者您在上一步中选择的端口号）

@@ -14,7 +14,7 @@
         您可以使用 **Google**、**GitHub** 或 **电子邮件** 登录。
     </Step>
     <Step title="Create an API key" icon="key">
-        转到您的 [Settings page](https://smith.langchain.com/settings) → **API 密钥** → **创建 API 密钥**。
+        转到您的 [Settings page](https://smith.langchain.com/settings) > **API 密钥** > **创建 API 密钥**。
         复制密钥并安全保存。
     </Step>
 </Steps>

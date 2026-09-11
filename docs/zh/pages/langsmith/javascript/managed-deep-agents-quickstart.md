@@ -36,7 +36,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 <Prompt
     description="Build a Managed Deep Agent with the quickstart"
     icon="sparkles"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 

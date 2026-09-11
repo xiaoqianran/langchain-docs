@@ -44,6 +44,8 @@ Organization roles are **distinct from the workspace RBAC feature** and are used
 - `organization:manage` - Full control over organization settings, SSO, security, billing
 - `organization:read` - Read access to all organization information
 - `organization:pats:create` - Create organization-level [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
+- `organization:pats:read` - View every organization member's personal access tokens
+- `organization:pats:manage` - Revoke or delete any organization member's personal access token
 
 For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
@@ -53,6 +55,7 @@ For a comprehensive list of required permissions along with the operations and r
 - Manage [billing](/langsmith/billing) and subscription plans
 - Create and delete [workspaces](/langsmith/set-up-hierarchy)
 - Invite and remove organization members
+- View, revoke, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - Assign organization and workspace roles to members
 - Create and manage [custom roles](#custom-roles)
 - Configure RBAC and ABAC (Attribute-Based Access Control) policies
@@ -69,6 +72,8 @@ Management access for day-to-day operations including workspace and user managem
 - `organization:manage` - Control over organization settings, workspaces, and non-admin users
 - `organization:read` - Read access to all organization information
 - `organization:pats:create` - Create personal access tokens
+- `organization:pats:read` - View every organization member's personal access tokens
+- `organization:pats:manage` - Revoke or delete any organization member's personal access token
 
 For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
@@ -76,6 +81,7 @@ For a comprehensive list of required permissions along with the operations and r
 - Create and manage [workspaces](/langsmith/set-up-hierarchy#set-up-a-workspace)
 - Invite organization members (all roles except Organization Admin)
 - Manage non-admin organization members (modify and remove Organization Users, Viewers, and Operators)
+- View, revoke, and delete any member's [personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - Assign workspace roles to members
 - Create workspace-scoped service keys and service accounts
 - View organization [usage](/langsmith/usage-and-billing#usage-limits) and analytics

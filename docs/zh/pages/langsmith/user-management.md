@@ -144,7 +144,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 
 属性名称是端到端保留的：IdP 属性名称、SAML 属性映射条目和下游 LangSmith 设置均使用相同的字符串。
 
-＃＃＃＃ 配置在 **设置** → **成员和角色** → **SSO 配置**，滚动到 **SAML 属性映射** 部分，并为每个要转发的非标准属性添加一行：
+＃＃＃＃ 配置在 **设置** > **成员和角色** > **SSO 配置** 中，滚动到 **SAML 属性映射** 部分，并为每个要转发的非标准属性添加一行：
 
 |专栏 |描述 |
 | --- | --- |
@@ -158,7 +158,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 有关更多信息，请参阅 Microsoft 的 [documentation](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal-setup-sso)。
 
 <div id="create-application-entra-id"></div>
-**第 1 步：创建新的 Entra ID 应用程序集成**
+**步骤 1：创建新的 Entra ID 应用程序集成**
 
 1. 使用特权角色（例如`Global Administrator`）登录[Azure portal](https://portal.azure.com/#home)。在左侧导航窗格中，选择`Entra ID`服务。
 
@@ -224,7 +224,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 
 1. 确保您已登录具有适当权限的管理员帐户。
 
-2. 在管理控制台中，转到 **菜单** -> **应用程序** -> **网络和移动应用程序**。
+2. 在管理控制台中，转至 **菜单** -> **应用程序** -> **网络和移动应用程序**。
 
 3. 单击“**添加应用程序**”，然后单击“**添加自定义 SAML 应用程序**”。
 
@@ -263,7 +263,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 
       1. 在左侧选择组织单位，然后选择`On`。
       2. 如果服务状态设置为`Inherited`，并且您想要保留更新的设置，即使父设置发生更改，请单击`Override`。
-      3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或单击 `Save` 保留新设置，即使父级设置发生更改也是如此。3. 要为组织部门内或跨组织部门的一组用户启用服务，请选择一个访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
+      3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或单击 `Save` 保留新设置，即使父级设置发生更改也是如此。3. 要为跨组织部门或组织部门内的一组用户启用服务，请选择访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
 
 4. 确保您的用户用于登录 LangSmith 的电子邮件地址与他们用于登录您的 Google 域的电子邮件地址匹配。
 
@@ -424,7 +424,7 @@ SCIM 可用于 Helm 图表版本 0.10.41（应用程序版本 0.10.108）及更�
 SCIM 支持仅限 API（请参阅下面的说明）。
 </Note>SCIM 消除了手动用户管理的需要，并确保用户访问始终与组织的身份系统保持同步。这允许：
 
-- **自动用户管理**：根据用户在 IdP 中的状态，自动从 LangSmith 添加、更新和删除用户。
+- **自动用户管理**：根据用户在 IdP 中的状态，自动在 LangSmith 中添加、更新和删除用户。
 - **减少管理开销**：无需跨多个系统手动管理用户访问。
 - **提高安全性**：离开组织的用户将自动从 LangSmith 取消配置。
 - **一致的访问控制**：用户属性和组成员身份在系统之间同步。
@@ -654,7 +654,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 
 2. 单击“**测试连接**”以验证配置。
 
-3. 单击“**保存**”。
+3. 单击**保存**。
 
 **步骤 3：配置属性映射**
 
@@ -769,7 +769,7 @@ SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配�
 | --- | --- | --- |
 | **同步触发** |每次 SSO 登录时 |来自 IdP 的主动推送（大约 1 小时节奏）|
 | **IdP 管理员参与** |最少，只需在 SSO 令牌中包含组 |必需，配置 SCIM 配置应用程序 |
-| **取消配置** |延迟到下次登录 |通过 IdP 推送实现近乎实时 |
+| **取消配置** |延迟到下次登录|通过 IdP 推送实现近乎实时 |
 | **命名约定** |重复使用[SCIM convention](#group-naming-convention) | [SCIM convention](#group-naming-convention) |
 | **自定义分隔符** |重用组织级别[⟦T237⟧](#configure-custom-separator) | [⟦T238⟧](#configure-custom-separator) |
 
@@ -778,7 +778,7 @@ SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配�
 #### 配置
 
 1. 在您的 IdP 中：将用户的组成员身份添加到 SSO 令牌声明（默认声明名称：`groups`）。组名称必须遵循[SCIM naming convention](#group-naming-convention)。
-2. 在 LangSmith 中：转到 **设置** → **成员和角色** → **SSO 配置** → **SSO 组同步** 并配置以下内容：|设置|描述 |
+2. 在 LangSmith 中：转至 **设置** > **成员和角色** > **SSO 配置** > **SSO 组同步** 并配置以下内容：|设置|描述 |
    | --- | --- |
    | **启用 SSO 组同步** |根据 SSO 令牌中的组成员身份自动分配工作区角色。 |
    | **群组声明字段**（默认`groups`）|包含组成员资格的 SSO 令牌中的声明名称。 |
@@ -824,9 +824,9 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
 <Tabs>
 <Tab title="Okta">
 
-在 LangSmith SAML 应用程序中：1. **目录** → **配置文件编辑器** → 选择 LangSmith 应用程序的用户配置文件。
+在 LangSmith SAML 应用程序中：1. 转至 **目录** > **配置文件编辑器**，然后选择 LangSmith 应用程序的用户配置文件。
 2. 添加名为 `groups` 且 **Type** `string array` 的自定义属性。
-3. **登录** → 编辑 SAML 设置并添加属性语句：
+3. 在 **Sign On** 上，编辑 SAML 设置并添加属性语句：
    - **姓名**：`groups`
    - **名称格式**：`Unspecified`（或`Basic`）
    - **过滤器**：`Matches regex` 与 `.*` 一起发送所有组，或使用更具限制性的正则表达式（例如 `^LS:.*`）来限制以 LangSmith 为前缀的组。
@@ -836,7 +836,7 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
 
 在LangSmith企业应用程序中：
 
-1. **单点登录** → **属性和声明** → **添加群组声明**。
+1. **单点登录** > **属性和声明** > **添加群组声明**。
 2. 选择要发出的组（通常是**分配给应用程序的组**）。
 3. 将 **Source 属性** 设置为 `Cloud-only group display names`，以便发送组名称（必须与 [naming convention](#group-naming-convention) 匹配）而不是对象 ID。
 4. 将声明 **名称** 设置为 `groups`（或您配置的 **组声明字段** 值），不带命名空间。
@@ -844,10 +844,10 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
 </Tab>
 <Tab title="Google Workspace">
 
-Google 的 SAML SSO 本身并不将 Google 群组成员资格作为 SAML 属性发出。要将 SSO Groups Sync 与 Google Workspace 结合使用，您必须：
+Google 的 SAML SSO 本身并不将 Google 群组成员资格作为 SAML 属性发出。要将 SSO Groups Sync 与 Google Workspace 结合使用，您必须：- 通过目录同步工具管理组成员身份，该工具将组公开为 SAML 属性，或者
+- 请改用[SCIM](#set-up-scim-for-your-organization)，它支持 Google Workspace 的群组推送。
 
-- 通过目录同步工具管理组成员身份，该工具将组公开为 SAML 属性，或者
-- 请改用[SCIM](#set-up-scim-for-your-organization)，它支持 Google Workspace 的群组推送。</Tab>
+</Tab>
 </Tabs>
 
 #### 组命名示例
@@ -862,16 +862,13 @@ Google 的 SAML SSO 本身并不将 Google 群组成员资格作为 SAML 属性�
 | `Marketing` 中的工作区查看器 | `LS:Organization User:Marketing:Viewer` |
 | `Production` 中的自定义角色`Annotators` | `LS:Organization User:Production:Annotators` |
 
-#### 行为
-
-- **命名约定**：组名称遵循与 SCIM 相同的格式（例如，`LS:Organization Admins` 表示组织管理员，`LS:Organization User:Production:Editor` 表示工作区范围）。完整格式请参见[Group naming convention](#group-naming-convention)。分隔符通过 [⟦T267⟧](#configure-custom-separator) 按组织进行配置，并与 SCIM 共享。
+＃＃＃＃ 行为- **命名约定**：组名称遵循与 SCIM 相同的格式（例如，`LS:Organization Admins` 表示组织管理员，`LS:Organization User:Production:Editor` 表示工作区范围）。完整格式请参见[Group naming convention](#group-naming-convention)。分隔符通过 [⟦T267⟧](#configure-custom-separator) 按组织进行配置，并与 SCIM 共享。
 - **格式错误的组名称**：不符合约定的组名称将被静默跳过（记录），并且不会阻止有效组的登录。
 - **登录门**：当启用**需要匹配组登录**且 SSO 令牌包含零个匹配组时，登录将被阻止。
-- **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。它对自己的分配具有完全的权威性，并在每次登录时根据令牌的组成员身份替换它们。- **组织管理员传播**：如果用户从其组收到组织管理员角色，他们将被授予所有工作区中的工作区管理员权限（与 SCIM 行为相同）。
+- **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。它对自己的分配具有完全的权威性，并在每次登录时根据令牌的组成员身份替换它们。
+- **组织管理员传播**：如果用户从其组收到组织管理员角色，他们将被授予所有工作区中的工作区管理员权限（与 SCIM 行为相同）。
 
-#### 注意事项
-
-- **取消配置滞后**：与 SCIM（主动推送）不同，SSO 组同步仅在登录时更新。从 IdP 中的组中删除的用户将保留其现有工作区访问权限，直到下次 LangSmith 登录。 **需要匹配组才能登录** 门通过在下次登录时完全阻止用户来缓解这种情况。
+#### 注意事项- **取消配置滞后**：与 SCIM（主动推送）不同，SSO 组同步仅在登录时更新。从 IdP 中的组中删除的用户将保留其现有工作区访问权限，直到下次 LangSmith 登录。 **需要匹配组才能登录** 门通过在下次登录时完全阻止用户来缓解这种情况。
 - **无追溯同步**：更改角色映射或启用该功能不会更新现有用户，直到他们再次登录。
 - **需要命名约定**：客户必须按照 SCIM 约定命名其 IdP 组。如果您的 IdP 组遵循不同的命名策略，则具有基于 `description` 的映射（请参阅 [Group attributes](#group-attributes)）的 SCIM 可能更适合。
 

@@ -6,7 +6,7 @@
 
 LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) authentication](/langsmith/authentication-methods) 时如何加入您的 [organization](/langsmith/administration-overview#organizations)。您可以独立启用或禁用即时 (JIT) 配置和用户邀请，以满足您组织的安全和入职要求。
 
-启用 SSO 后，您有两个独立的设置：[JIT provisioning](#jit-provisioning) 在用户通过 SSO 登录时自动添加用户，而 [invites](#invites) 允许管理员在用户访问组织之前手动邀请他们。 [Configure these settings](#configuration-scenarios) 以任意组合来控制您的用户入门工作流程。
+启用 SSO 后，您有两个独立的设置：[JIT provisioning](#jit-provisioning) 在用户通过 SSO 登录时自动添加用户，而 [invites](#invites) 允许管理员在用户访问组织之前手动邀请用户。 [Configure these settings](#configuration-scenarios) 以任意组合来控制您的用户入门工作流程。
 
 本页介绍了这些设置的工作原理以及如何配置它们。
 
@@ -29,9 +29,9 @@ LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) au
 
 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-jit-invite-sso)中：
 
-1. 导航到 **设置** → **组织** → **访问和安全** → **常规**。
+1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
 1. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
-1. **设置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings) → **组织** → **SSO 配置**。
+1. **设置** > **组织** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
 
 </Tab>
 <Tab title="API" icon="code">
@@ -178,7 +178,7 @@ User billy@company.com signs in via SSO:
     - **[Editor](/langsmith/rbac#workspace-editor)**：可以修改资源
     - **[Admin](/langsmith/rbac#workspace-admin)**：完全工作区控制1. 默认工作区。选择自动添加用户的一个或多个工作区。用户在所有选定的工作区中获得相同的角色。配置：
 
-    1. 转至 **设置** → **组织** → **SSO 配置**。
+    1. 转至 **设置** > **组织** > **SSO 配置**。
     1. 设置**默认工作区角色**。
     1. 选择**默认工作区**。
     1. 保存您的配置。

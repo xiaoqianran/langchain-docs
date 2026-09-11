@@ -27,7 +27,7 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
   * [Google Cloud Memorystore](https://cloud.google.com/memorystore)（Redis 或 Valkey）
   * [Azure Cache for Redis](https://azure.microsoft.com/en-us/services/cache/)
 
-* **支持的版本：** Redis >= 6.2 或 Valkey 8。在本指南中，Valkey 被视为 Redis 的直接替代品。
+* **支持的版本：** Redis 6.2 或更高版本，或 Valkey 8。在本指南中，Valkey 被视为 Redis 的直接替代品。
 * 我们支持Standalone和Redis Cluster（包括Valkey Cluster）。有关部署说明，请参阅相应部分。
 * 支持免认证、密码、[IAM/Workload Identity](#iam-authentication)认证。
 * 默认情况下，我们建议实例至少具有 2 个 vCPU 和 8GB 内存。但是，实际要求将取决于您的跟踪工作负载。我们建议监控您的 Redis 实例并根据需要进行扩展。
@@ -299,7 +299,7 @@ stringData:
 
 ### 具有客户端身份验证的双向 TLS (mTLS)
 
-从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 Redis 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。
+从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 Redis 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用[Server TLS steps](#server-tls-one-way)（自定义 CA）。
 
 如果您的 Redis 服务器需要客户端证书身份验证：
 
@@ -356,14 +356,14 @@ stringData:
 
 **选项 1：使用 `commonPodSecurityContext`**
 
-将 `fsGroup` 设置在顶层以将其应用于所有 pod：
+将 `fsGroup` 设置在顶层以将其应用于所有 Pod：
 
 ```yaml
 commonPodSecurityContext:
   fsGroup: 1000
 ```
 
-**选项 2：添加到各个 pod 安全上下文**
+**选项 2：添加到单个 pod 安全上下文**
 
 如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mtls configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
 

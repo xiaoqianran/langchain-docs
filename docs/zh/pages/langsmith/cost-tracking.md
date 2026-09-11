@@ -63,7 +63,7 @@ UI 将代币使用和成本分为三类：
 
 |方法|运行类型：法学硕士|运行类型: 其他|
 |--------|-------------|-----------------|
-| **自动** | <ul><li>使用 [LangChain](/oss/python/langchain/overview)</li><li>调用 LLM 跟踪对 OpenAI、Anthropic 或遵循 OpenAI 兼容格式的模型的 LLM 调用`@traceable`</li><li> 使用[OpenAI](/langsmith/trace-openai)或[Anthropic](/langsmith/trace-anthropic)</li><li>使用LangSmith包装器对于其他模型提供程序，请阅读[token and cost information guide](/langsmith/log-llm-trace#provide-token-and-cost-information)</li></ul> |不适用。 |
+| **自动** | <ul><li>使用 [LangChain](/oss/python/langchain/overview)</li><li>调用 LLM 跟踪对 OpenAI、Anthropic 或遵循 OpenAI 兼容格式的模型的 LLM 调用`@traceable`</li><li> 使用 [OpenAI](/langsmith/trace-openai) 或 [Anthropic](/langsmith/trace-anthropic)</li><li> 对于其他模型提供程序，请阅读 [token and cost information guide](/langsmith/log-llm-trace#provide-token-and-cost-information)</li></ul> |不适用。 |
 | **手动** |如果LLM通话成本是非线性的（例如遵循自定义成本函数）|发送任何运行类型的成本，例如工具调用、检索步骤|
 
 
@@ -869,6 +869,10 @@ try {
     }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fcb46808-1b10-4847-a3c9-164c47413524/r" arrow horizontal>
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 </CodeGroup>
 

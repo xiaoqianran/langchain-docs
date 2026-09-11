@@ -174,9 +174,8 @@ public class TraceablePipeline {
                     .completions()
                     .create(
                         ChatCompletionCreateParams.builder()
-                            .model(ChatModel.GPT_5_CHAT_LATEST)
+                            .model(ChatModel.GPT_5_5)
                             .messages(messages)
-                            .temperature(0.0)
                             .build()),
             TraceConfig.builder().name("invoke_llm").runType(RunType.LLM).build());
 
@@ -196,6 +195,10 @@ public class TraceablePipeline {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e686a13-436f-41ec-9e21-7f38d8babcb8/r" arrow horizontal>
+  Open a public LangSmith run for this example.
+</Card>
 ```kotlin Kotlin
 import com.langchain.smith.tracing.RunType
 import com.langchain.smith.tracing.TraceConfig
@@ -235,9 +238,8 @@ val invokeLlm =
         { messages: List<ChatCompletionMessageParam> ->
             openai.chat().completions().create(
                 ChatCompletionCreateParams.builder()
-                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .model(ChatModel.GPT_5_5)
                     .messages(messages)
-                    .temperature(0.0)
                     .build(),
             )
         },
@@ -260,6 +262,10 @@ val runPipeline =
 
 println(runPipeline("colorful socks"))
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/397a7c30-a236-43bb-b104-89f8d9e3145c/r" arrow horizontal>
+  Open a public LangSmith run for this example.
+</Card>
 </CodeGroup>
 
 In the [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-annotate-code), you'll find a `run_pipeline` trace with `format_prompt`, `invoke_llm`, and `parse_output` as nested child runs.
@@ -466,7 +472,7 @@ public class RunTreeExample {
 
             ChatCompletion chatCompletion = openai.chat().completions().create(
                 ChatCompletionCreateParams.builder()
-                    .model(ChatModel.GPT_5_CHAT_LATEST)
+                    .model(ChatModel.GPT_5_5)
                     .messages(messages)
                     .build());
 
@@ -555,7 +561,7 @@ try {
     val chatCompletion =
         openai.chat().completions().create(
             ChatCompletionCreateParams.builder()
-                .model(ChatModel.GPT_5_CHAT_LATEST)
+                .model(ChatModel.GPT_5_5)
                 .messages(messages)
                 .build(),
         )

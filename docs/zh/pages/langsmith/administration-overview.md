@@ -12,7 +12,7 @@
 
 组织是 LangSmith 中用户的逻辑分组，定义了应用于其所有工作区的共享设置。这些设置管理组织范围内的问题，而不是工作区中的单个项目。常见的组织级配置包括用户管理、单点登录 (SSO)、OAuth 提供程序配置、自定义角色创建、计费和使用情况跟踪。通常，每个公司有一个组织。一个组织可以有多个工作区。欲了解更多详情，请参阅[setup guide](/langsmith/set-up-hierarchy#set-up-an-organization)。
 
-当您第一次登录时，系统会自动为您创建一个个人组织。如果您想与其他人协作，您可以创建一个单独的组织并邀请您的团队成员加入。您的个人组织和共享组织之间存在一些重要区别：|特色 |个人|共享|
+当您第一次登录时，系统会自动为您创建一个个人组织。如果您想与其他人协作，您可以创建一个单独的组织并邀请您的团队成员加入。您的个人组织和共享组织之间存在一些重要区别：|特色|个人|共享|
 | ------------------- | ------------------- | -------------------------------------------------------------------------------------------------------- |
 |最大工作空间| 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing-langsmith)）|
 |合作|无法邀请用户 |可以邀请用户 |
@@ -96,14 +96,16 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 
 PAT 前缀为 `lsv2_pt_`
 
-#### 服务键服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。只有管​​理员可以创建服务密钥。我们建议将这些用于需要与 LangSmith API 交互的应用程序/服务，例如 LangGraph 代理或其他集成。服务密钥的范围可以是单个工作区、多个工作区或整个组织，并且可用于验证对其有权访问的任何工作区的LangSmith API 的请求。
+成员可以撤销或删除自己的 PAT。 [Organization Admins](/langsmith/rbac#organization-admin)和[Organization Operators](/langsmith/rbac#organization-operator)还可以列出、撤销和删除任何成员的PAT。步骤请参考[Create an account and API key](/langsmith/create-account-api-key)。撤销令牌会阻止其进行身份验证，但会保留其记录，并列出**已撤销**徽章，因此令牌、其所有者及其上次使用情况保持可见。删除会完全删除记录。由于身份验证结果会被缓存，因此撤销或删除的令牌会在一分钟内而不是立即停止工作。服务密钥只能删除，不能撤销。
+
+#### 服务键
+
+服务密钥与 PAT 类似，但用于代表服务帐户对LangSmith API 的请求进行身份验证。只有管​​理员可以创建服务密钥。我们建议将这些用于需要与 LangSmith API 交互的应用程序/服务，例如 LangGraph 代理或其他集成。服务密钥的范围可以是单个工作区、多个工作区或整个组织，并且可用于验证对其有权访问的任何工作区的LangSmith API 的请求。
 
 服务键以 `lsv2_sk_` 为前缀
 
 <Warning>
-使用 `X-Tenant-Id` 标头指定目标工作空间。
-
-- **使用 PAT 时**：如果省略此标头，请求将针对与密钥关联的默认工作区运行。
+使用 `X-Tenant-Id` 标头指定目标工作空间。- **使用 PAT 时**：如果省略此标头，请求将针对与密钥关联的默认工作区运行。
 - **使用组织范围的服务密钥时**：访问工作区范围的资源时，必须包含 `X-Tenant-Id` 标头。如果没有它，请求将失败并出现 `403 Forbidden` 错误。
 </Warning>
 
@@ -111,33 +113,34 @@ PAT 前缀为 `lsv2_pt_`
 要了解如何创建服务密钥或个人访问令牌，请参阅 [setup guide](/langsmith/create-account-api-key)
 </Note>
 
-### 组织角色组织角色与[Enterprise feature workspace RBAC](#workspace-roles-rbac)不同，并且在多个[workspaces](#workspaces)的上下文中使用。您的组织角色决定了您的工作区成员特征和您的 [organization-level permissions](/langsmith/organization-workspace-operations)。
+### 组织角色
 
-选择的组织角色还会影响工作区成员身份，如下所述：
+组织角色与[Enterprise feature workspace RBAC](#workspace-roles-rbac)不同，并且在多个[workspaces](#workspaces)的上下文中使用。您的组织角色决定了您的工作区成员特征和您的 [organization-level permissions](/langsmith/organization-workspace-operations)。
 
-- [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
+选择的组织角色还会影响工作区成员身份，如下所述：- [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
     - 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
 - [Organization User](/langsmith/rbac#organization-user) 可以读取组织信息，但不能在组织级别执行任何写入操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
     - 可以将组织用户添加到工作区子集并照常分配工作区角色（如果启用了 RBAC），这些角色指定工作区级别的权限。
 - [Organization Viewer](/langsmith/rbac#organization-viewer) 相当于组织用户，但**不能**创建个人访问令牌。 （对于自托管，可在 Helm 图表版本 0.11.25+ 中使用）。
 
 <Info>
-组织用户和组织查看者角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发人员组织（单个工作区）中，默认情况下为所有用户分配组织管理员角色。有关如何禁用整个组织的 PAT 创建的说明，请参阅 [security settings](/langsmith/manage-organization-by-api#security-settings)。
+组织用户和组织查看者角色仅在 [Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发人员组织（单个工作区）中，默认情况下为所有用户分配组织管理员角色。
+
+有关如何禁用整个组织的 PAT 创建的说明，请参阅 [security settings](/langsmith/manage-organization-by-api#security-settings)。
 </Info>
 
 有关设置组织和工作空间的更多信息，请参阅[organization setup guide](/langsmith/set-up-hierarchy#organization-roles) 了解更多信息。
 
-下表提供了组织级别权限的概述：
-
-|                                             |组织查看器 |组织用户|组织管理|
+下表提供了组织级别权限的概述：|                                             |组织查看器 |组织用户|组织管理|
 | ------------------------------------------- | ------------------- | ----------------- | ------------------ |
 |查看组织配置 | ✅ | ✅ | ✅ |
 |查看组织角色 | ✅ | ✅ | ✅ |
 |查看组织成员 | ✅ | ✅ | ✅ |
 |查看数据保留设置 | ✅ | ✅ | ✅ |
 |查看使用限制 | ✅ | ✅ | ✅ |
-|创建个人访问令牌 (PAT) | ❌ | ✅ | ✅ ||对所有工作区的管理员访问权限 | ❌ | ❌ | ✅ |
-|管理计费设置 | ❌ | ❌ | ✅ |
+|创建个人访问令牌 (PAT) | ❌ | ✅ | ✅ |
+|查看、撤销和删除任何成员的 PAT | ❌ | ❌ | ✅ |
+|对所有工作区的管理员访问权限 | ❌ | ❌ | ✅ ||管理计费设置 | ❌ | ❌ | ✅ |
 |创建工作区 | ❌ | ❌ | ✅ |
 |创建、编辑和删除组织角色 | ❌ | ❌ | ✅ |
 |邀请新用户加入组织 | ❌ | ❌ | ✅ |
@@ -188,7 +191,7 @@ RBAC（基于角色的访问控制）是一项仅适用于企业客户的功能�
 #### 为什么保留很重要
 
 * **隐私**：许多数据隐私法规（例如欧洲的 GDPR 或加利福尼亚州的 CCPA）要求组织在个人数据不再用于收集目的时将其删除。设置保留期限有助于遵守此类法规。
-* **成本**：LangSmith 对于数据保留率较低的跟踪收费较低。如需了解更多信息，请了解如何[enforce spend limits](/langsmith/billing#enforce-spend-limits)。
+* **成本**：LangSmith 对于数据保留率较低的跟踪收费较低。欲了解更多信息，请了解如何[enforce spend limits](/langsmith/billing#enforce-spend-limits)。
 
 <Tip>
 在开始发送跟踪之前规划您的保留层。更改仅适用于新跟踪 - 现有跟踪保留其原始层。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
@@ -212,16 +215,16 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：|         
 #### 数据保留自动升级
 
 <Warning>
-自动升级可能会对您的账单产生影响。请仔细阅读本节，以充分了解您预计的 LangSmith 追踪费用。
+自动升级可能会对您的账单产生影响。请仔细阅读本节，以充分了解您预计的LangSmith追踪费用。
 </Warning>
 
-大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。当您将某些功能与 `base` 层跟踪一起使用时，其数据保留可能会自动升级到 `extended` 层。这会增加跟踪的保留期限和成本。
+大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。当您将某些功能与`base`层跟踪一起使用时，其数据保留可能会自动升级到`extended`层。这会增加跟踪的保留期限和成本。
 
 按操作保留行为：
 
-* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为`extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
+* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为`extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。有关更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
-* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)与跟踪中的任何运行相匹配。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
+* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)匹配跟踪中的任何运行。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
 * **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。此更改仅适用于新操作。已通过先前操作升级的跟踪将保持其长期保留。
 
 <Note>
@@ -237,7 +240,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：|         
 我们采用自动升级跟踪模型有两个原因：
 
 1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
-2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会收取更高的费用。如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！
+2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会以更高的费率收费。如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！
 
 **数据保留如何影响下游功能？**
 
@@ -267,7 +270,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：|         
 
 如果您的跟踪记录为扩展保留跟踪，则 `base` 和 `extended` 指标都将使用相同的时间戳进行记录。
 
-### Rate limits
+### 速率限制
 
 LangSmith具有速率限制，旨在确保所有用户的服务稳定性。
 
@@ -306,7 +309,7 @@ LangSmith SDK 采取措施，通过将单个会话 ID 中的最多 100 次运行
 
 #### 计划级每小时跟踪数据摄取限制此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
 
-通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制，该存储将计为 5.0MB。
+通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制计为 5.0MB 存储。
 
 这是由我们的应用程序引发的，并因计划级别而异，我们的 Startup/Plus 和 Enterprise 计划级别的组织的每小时限制高于专为个人使用而设计的免费和开发人员计划级别。
 
@@ -378,7 +381,7 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 
 #### 每个项目和每个用户的跟踪限制
 
-除了 [workspace-wide limits](#usage-limits) 之外，您还可以限制单个跟踪项目或单个工作区成员的每月跟踪。这可以防止一个项目或用户消耗过多的工作空间跟踪预算。
+除了 [workspace-wide limits](#usage-limits) 之外，您还可以为单个跟踪项目或单个工作区成员设置每月跟踪上限。这可以防止一个项目或用户消耗过多的工作空间跟踪预算。
 
 要配置这些限制，请打开 **设置**，转到 **使用配置**，然后选择 **项目和用户限制** 选项卡。选择**添加限制**，然后设置：
 

@@ -8,7 +8,7 @@ LangSmith [Self-Hosted](/langsmith/self-hosted) 通过 OAuth2.0 和 OIDC 提供 
 
 LangSmith 实现支持任何符合 OIDC 的提供程序。配置完成后，您将看到一个登录屏幕，提示**通过 SSO 登录**。
 
-默认情况下，LangSmith自托管支持`Authorization Code`流和`Client Secret`。在此版本的流程中，您的客户端密钥安全地存储在LangSmith（而不是在前端）中，并用于身份验证和建立身份验证会话。
+默认情况下，LangSmith自托管支持`Authorization Code`流和`Client Secret`。在此版本的流程中，您的客户端密钥安全地存储在 LangSmith 中（而不是在前端），并用于身份验证和建立身份验证会话。
 
 <div id="with-client-secret-recommended"></div>
 
@@ -35,7 +35,7 @@ LangSmith 实现支持任何符合 OIDC 的提供程序。配置完成后，您�
 ## 配置- 您需要将 IdP 中的回调 URL 设置为 `https://<host>/api/v1/oauth/custom-oidc/callback`，其中 `host` 是您为 LangSmith 实例配置的域或 IP。您的 IdP 将在用户通过身份验证后重定向用户。
 - 要在注销时终止 IdP 会话（因此用户必须重新进行身份验证），请在 IdP 中将您的 LangSmith URL（例如 `https://<host>`）注册为 **注销后重定向 URI**（有时称为“注销重定向 URI”），然后通过 Helm 中的 `commonEnv` 在您的环境中设置 `OAUTH_IDP_LOGOUT_ENABLED=true`。
 - 您需要在 `values.yaml` 文件中提供 `oauthClientId`、`oauthClientSecret`、`hostname` 和 `oauthIssuerUrl`。您将在此处配置 LangSmith 实例。
-- 如果您尚未**使用客户端密钥配置 OAuth，或者您只有个人组织，则必须提供一个电子邮件地址以分配为新配置的 SSO 组织的 `initialOrgAdminEmail`。如果您从 [basic auth](/langsmith/self-host-basic-auth) 升级，LangSmith 将改用您现有的组织。
+- 如果您尚未**使用客户端密钥配置 OAuth，或者如果您只有个人组织，则必须提供一个电子邮件地址以分配为新配置的 SSO 组织的 `initialOrgAdminEmail`。如果您从 [basic auth](/langsmith/self-host-basic-auth) 升级，LangSmith 将改用您现有的组织。
 
 ```yaml Helm
 config:
@@ -66,16 +66,16 @@ config:
 4. 在 **重定向 URI** 下，选择 **Web** 作为平台并输入 `https://<host>/api/v1/oauth/custom-oidc/callback`，其中 `<host>` 是您的 LangSmith 实例的域。
 5. 单击**注册**。
 
-在应用程序的 **概述** 页面中，记录以下值以在 Helm 配置中使用：
+在应用程序的 **Overview** 页面中，记录以下值以在 Helm 配置中使用：
 
 - **应用程序（客户端）ID**：用作`oauthClientId`。
-- **目录（租户）ID**：用于构造发行者 URL。
+- **目录（租户）ID**：用于构建发行者 URL。
 - **OIDC 发行人 URL**：`https://login.microsoftonline.com/<tenant-id>/v2.0`，用作 `oauthIssuerUrl`。
 
 #### 步骤 2. 创建客户端密钥
 
 1. 在应用程序注册中，转到 **证书和机密** > **客户端机密** > **新客户端机密**。
-2. 输入描述，选择过期时间，然后单击 **添加**。
+2. 输入描述，选择到期时间，然后单击“**添加**”。
 3. 立即复制秘密**值**。 Microsoft Entra ID 在您离开页面后隐藏此值。将其用作`oauthClientSecret`。在配置 Helm 之前，将客户端 ID、客户端密钥和颁发者 URL 存储在密钥存储中。
 
 #### 步骤 3. 添加电子邮件可选声明
@@ -122,13 +122,13 @@ config:
 
 2. 创建项目后，打开Google API Console中的[Credentials](https://console.developers.google.com/apis/credentials)页面（确保左上角的项目正确）
 
-3. 创建新凭证：`Create Credentials → OAuth client ID`
+3. 创建新凭证：`Create Credentials > OAuth client ID`
 
 4. 选择 `Web application` 作为 `Application type` 并输入应用程序的名称，例如`LangSmith`
 
 5. 在 `Authorized Javascript origins` 中输入您的 LangSmith 实例的域名，例如`https://langsmith.yourdomain.com`
 
-6. 在`Authorized redirect URIs`中输入LangSmith实例的域，后跟`/api/v1/oauth/custom-oidc/callback`，例如`https://langsmith.yourdomain.com/api/v1/oauth/custom-oidc/callback`
+6. 在 `Authorized redirect URIs` 中输入 LangSmith 实例的域，后跟 `/api/v1/oauth/custom-oidc/callback`，例如`https://langsmith.yourdomain.com/api/v1/oauth/custom-oidc/callback`
 
 7. 单击 `Create`，然后下载 JSON 或复制 `Client ID`（以 `.apps.googleusercontent.com` 结尾）和 `Client secret` 保存在安全的地方。 **如果需要，您稍后可以访问这些**。
 
@@ -209,7 +209,7 @@ config:
 SCIM 与此配置方法不兼容。请参阅[**Via Okta Integration Network**](#via-okta-integration-network)。
 </Warning>
 
-1. 以管理员身份登录 Okta，然后转至 **Okta 管理控制台**。
+1. 以管理员身份登录 Okta，然后转到 **Okta 管理控制台**。
 1. 在 **应用程序** > **应用程序** 下，单击 **创建应用程序集成**。
 1. 选择 **OIDC - OpenID Connect** 作为登录方法，选择 **Web 应用程序** 作为应用程序类型，然后单击 **下一步**。
 1. 输入 `App integration name`（例如，`LangSmith`）。
@@ -221,7 +221,7 @@ SCIM 与此配置方法不兼容。请参阅[**Via Okta Integration Network**](#
     * 允许组织中的每个人访问。
     * 限制对选定组的访问。* 暂时跳过小组作业。
 1. 单击“**保存**”。
-1. 在 **登录 > OpenID Connect ID 令牌** 下，将 **颁发者** 设置为 **Okta URL**。
+1. 在 **登录 > OpenID Connect ID 令牌**下，将 **颁发者** 设置为 **Okta URL**。
 1. （可选）在**常规 > 登录**下，将 **登录发起者** 设置为 `Either Okta or App` 以启用 IdP 发起的登录。
 1.（推荐）在**常规 > 登录 > 电子邮件验证体验**下，使用 LangSmith URL 填写 **Callback URI**，例如 `https://langsmith.yourdomain.com`。
 1. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息请参阅[general configuration section](#configuration)）：
@@ -256,7 +256,7 @@ config:
 
 ### 严格身份提供者的范围编码
 
-默认情况下，LangSmith 将授权请求中`oauthScopes` 之间的空格编码为`+`（`application/x-www-form-urlencoded` 约定）。大多数身份提供商都接受这一点，但有些身份提供商（例如 CA SiteMinder）不会将 `+` 解码为空格，并拒绝登录并显示 `invalid_scope` 错误。如果您的 IdP 出于此原因拒绝多范围登录，请在 Helm 中设置 `urlEncodeScopeSpaces: true` 将空格编码为 `%20`，这是所有符合 OIDC 的提供商都接受的编码。这仅适用于具有 OAuth 客户端密钥的 `authType: mixed`，并且默认为关闭。
+默认情况下，LangSmith 将授权请求中`oauthScopes` 之间的空格编码为`+`（`application/x-www-form-urlencoded` 约定）。大多数身份提供商都接受这一点，但有些身份提供商（例如 CA SiteMinder）不会将 `+` 解码为空格，并拒绝登录并显示 `invalid_scope` 错误。如果您的 IdP 出于此原因拒绝多范围登录，请在 Helm 中设置 `urlEncodeScopeSpaces: true` 将空格编码为 `%20`，这是所有符合 OIDC 的提供商接受的编码。这仅适用于具有 OAuth 客户端密钥的 `authType: mixed`，并且默认为关闭。
 
 ```yaml Helm
 config:
@@ -296,8 +296,8 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 
 **IdP 端配置（因提供商而异）：**
 
-1. 配置您的 IdP 应用程序以在 OIDC ID 令牌中发出组成员资格声明。源属性和生成的声明名称因 IdP 而异。常见示例包括 `groups`、`roles` 或自定义声明名称。 LangSmith 不规定源属性。
-1. 根据您的 IdP，您可能需要向 `oauthScopes` 添加额外范围（通常为 `groups`）才能接收声明。检查 IdP 的文档，了解所需的范围以及在令牌中包含组成员资格所需的任何其他配置。
+1. 配置您的 IdP 应用程序以在 OIDC ID 令牌中发出组成员身份声明。源属性和生成的声明名称因 IdP 而异。常见示例包括 `groups`、`roles` 或自定义声明名称。 LangSmith 不规定源属性。
+1. 根据您的 IdP，您可能需要向 `oauthScopes` 添加额外范围（通常为 `groups`）才能接收声明。检查 IdP 的文档，了解所需的范围以及在令牌中包含组成员身份所需的任何其他配置。
 1. 群组名称必须遵循[SCIM naming convention](/langsmith/user-management#group-naming-convention)（例如`LS:Organization Admin`、`LS:Organization User:prod:Editor`）。分隔符通过 [⟦T150⟧](/langsmith/user-management#configure-custom-separator) 与 SCIM 共享。
 
 **头盔配置：**
@@ -322,7 +322,7 @@ config:
 
 <Tabs>
 <Tab title="UI">
-您的 IdP 发出组声明后，从 UI 中的 **设置** → **成员和角色** → **SSO 配置** → **SSO 组同步** 配置 SSO 组同步。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
+您的 IdP 发出组声明后，从 UI 的 **设置** > **成员和角色** > **SSO 配置** > **SSO 组同步** 中配置 SSO 组同步。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
 </Tab>
 <Tab title="API">
 

@@ -38,7 +38,7 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
         您可以使用 **Google**、**GitHub** 或 **电子邮件** 登录。
     </Step>
     <Step title="Create an API key" icon="key">
-        转到您的 [Settings page](https://smith.langchain.com/settings) → **API 密钥** → **创建 API 密钥**。
+        转到您的 [Settings page](https://smith.langchain.com/settings) > **API 密钥** > **创建 API 密钥**。
         复制密钥并安全保存。
     </Step>
 </Steps>
@@ -62,7 +62,7 @@ LangSmith 支持两种类型的基于运行时间和地点的评估：
   </Step>
 
   <Step title="Run an experiment">
-    在数据集上执行应用程序以创建 <Tooltip tip="Results of evaluating a specific application version on a dataset">[experiment](/langsmith/evaluation-concepts#experiment)</Tooltip>。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
+    在数据集上执行您的应用程序以创建 <Tooltip tip="Results of evaluating a specific application version on a dataset">[experiment](/langsmith/evaluation-concepts#experiment)</Tooltip>。配置[repetitions, concurrency, and caching](/langsmith/experiment-configuration)以优化运行。
   </Step>
 
   <Step title="Analyze results">

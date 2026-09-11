@@ -16,7 +16,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.list_threads()` | `client.threads.query()` |
 
@@ -27,7 +27,7 @@
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/threads/ThreadsResource/query)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.listThreads()` | `client.threads.query()` |
 
@@ -36,21 +36,21 @@
   <Tab title="Java">
     <Note>Java 从来没有专门的线程列表方法。最接近的传统等效项是通用运行查询，按 `thread_id` 元数据约定手动分组。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.runs().query()`（通用、分组客户端）| `client.threads().query()` |完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/ThreadService.html)。
   </Tab>
   <Tab title="Go">
     <Note>Go 从来没有专门的线程列表方法。最接近的传统等效项是通用运行查询，按 `thread_id` 元数据约定手动分组。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Query()`（通用、分组客户端）| `client.Threads.Query()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#ThreadService.QueryAutoPaging)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/runs/query`（`is_root=true`，分组客户端）| `POST /api/v2/threads/query` |
 
@@ -60,15 +60,15 @@
 
 #### 查询参数<Tabs>
   <Tab title="Python">
-    |之前 (`list_threads`) |之后(`threads.query`)|笔记|
+    |之前 (`list_threads`) |之后(`threads.query`) |笔记|
     |---|---|---|
-    | `project_id` 异或 `project_name` | `project_id` |新方法只需要 UUID；首先通过 `aread_project()` 解析名称，与 `Runs: query` 相同的模式 |
+    | `project_id` 异或 `project_name` | `project_id` |新方法只需要 UUID；首先通过 `aread_project()` 解析名称，与 `Runs: query` 模式相同 |
     | `start_time`（默认为 1 天前）| `min_start_time` + `max_start_time` |选修的;默认为现在结束的 1 天窗口，与 `start_time` |
     | `offset` + `limit` | `cursor` + `page_size` |偏移分页被光标分页取代 |
     | `filter`（根据运行进行评估）| `filter` |语法相同；现在针对每个线程的根运行进行评估 |
   </Tab>
   <Tab title="TypeScript">
-    |之前 (`listThreads`) |之后(`threads.query`) |笔记|
+    |之前 (`listThreads`) |之后(`threads.query`)|笔记|
     |---|---|---|
     | `projectId` 异或 `projectName` | `project_id` |新方法只需要 UUID；首先通过 `readProject()` 解析名称 |
     | `startTime`（默认为 1 天前）| `min_start_time` + `max_start_time` |选修的;默认为现在结束的 1 天窗口，与 `startTime` |
@@ -100,13 +100,13 @@
     | `max_start_time` | `max_start_time` |不变 |
     | *（不可用）* | `start_time` |新：该行的参考开始时间，例如用于排序 |
     | *（不可用）* | `trace_id` |新功能：具有代表性的根跟踪 UUID，例如用于深层链接 |
-    | *（不可用）* | `first_trace_id`、`last_trace_id` |新功能：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
+    | *（不可用）* | `first_trace_id`、`last_trace_id` |新：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
     | *（不可用）* | `first_inputs`、`last_outputs` |新功能：第一条/最后一条轨迹的预览被截断 |
     | *（不可用）* | `last_error` |新 |
     | *（不可用）* | `num_errored_turns` |新 |
     | *（不可用）* | `latency_p50`、`latency_p99` |新 |
     | *（不可用）* | `total_tokens`、`total_cost` |新 |
-    | *（不可用）* | `total_token_details`、`total_cost_details` |新功能：按类别的字典，与 `threads.list_traces` 不同，它们不包含在 `.raw` | 中
+    | *（不可用）* | `total_token_details`、`total_cost_details` |新功能：按类别的字典，与 `threads.list_traces` 不同，这些字典不包含在 `.raw` | 中
     | *（不可用）* | `feedback_stats` |新 |
   </Tab>
   <Tab title="TypeScript">
@@ -124,7 +124,7 @@
     | `last_error` | `last_error` |不变 |
     | *（不可用）* | `start_time` |新：该行的参考开始时间，例如用于排序 |
     | *（不可用）* | `trace_id` |新功能：具有代表性的根跟踪 UUID，例如用于深层链接 |
-    | *（不可用）* | `first_trace_id`、`last_trace_id` |新功能：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
+    | *（不可用）* | `first_trace_id`、`last_trace_id` |新：查询窗口中按时间顺序排列的第一个/最后一个跟踪 UUID |
     | *（不可用）* | `num_errored_turns` |新 |
     | *（不可用）* | `total_token_details`、`total_cost_details` |新功能：按类别的字典，与 `threads.listTraces` 不同，这些字典不包含在 `.raw` 中 |
   </Tab>
@@ -721,7 +721,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.read_thread()` | `client.threads.list_traces()` |
 
@@ -732,14 +732,14 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/threads/ThreadsResource/list_traces)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.readThread()` | `client.threads.listTraces()` |
 
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Threads/listTraces)。
   </Tab>
   <Tab title="Java">
-    <Note>Java 从来没有专用的每线程方法。最接近的传统等效项是按 `thread_id` 元数据约定过滤的通用运行查询。</Note>|之前 |之后 |
+    <Note>Java 从来没有专用的每线程方法。最接近的传统等效项是按 `thread_id` 元数据约定过滤的通用运行查询。</Note>|之前 |之后|
     |--------|--------|
     | `client.runs().query()`（由`thread_id`过滤）| `client.threads().listTraces()` |
 
@@ -748,14 +748,14 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
   <Tab title="Go">
     <Note>Go 从来没有专用的每线程方法。最接近的传统等效项是按 `thread_id` 元数据约定过滤的通用运行查询。</Note>
 
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Query()`（由`thread_id`过滤）| `client.Threads.ListTraces()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#ThreadService.ListTracesAutoPaging)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/runs/query` (`filter=eq(thread_id, ...)`) | `GET /api/v2/threads/{thread_id}/traces` |
 
@@ -802,7 +802,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
 
 <Tabs>
   <Tab title="Python">
-    旧版 `read_thread` 返回完整的 `Run` 对象（生成器）。新的`ThreadTrace`是轻量级的：预览字段（`inputs_preview`/`outputs_preview`）而不是完整的`inputs`/`outputs`，没有嵌入式子运行。 `selects` 控制填充的内容，与 `traces.query` 相同。
+    旧版 `read_thread` 返回完整的 `Run` 对象（生成器）。新的`ThreadTrace`是轻量级的：预览字段（`inputs_preview`/`outputs_preview`）而不是完整的`inputs`/`outputs`，没有嵌入式子运行。 `selects` 控制填充的内容，与`traces.query` 相同。
 
     |之前（旧版 `Run` 字段，来自 `read_thread`）|之后（新`ThreadTrace`字段）|笔记|
     |---|---|---|
@@ -812,7 +812,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
     | `start_time` | `start_time` |除非包含在 `selects` 中，否则将被省略 |
     | `end_time` | `end_time` |除非包含在 `selects` 中，否则将被省略 |
     | `run_type` | `op` |更名；编码为数字而不是字符串 |
-    | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载 || `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 |
+    | `inputs` | `inputs_preview`，或 `inputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载|| `outputs` | `outputs_preview`，或 `outputs` 对于未截断的有效负载 |默认情况下预览被截断；选择`OUTPUTS`作为完整有效负载 |
     | `error` | `error_preview`，或 `error` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整错误消息 |
     | `latency`（属性）| `latency` |原生字段而不是计算的 `timedelta` 属性 |
     | `total_tokens`、`prompt_tokens`、`completion_tokens` | `total_tokens`、`prompt_tokens`、`completion_tokens` |不变 |
@@ -853,7 +853,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
     | `endTime()` | `endTime()` |除非包含在 `selects` 中，否则将被省略 |
     | `runType()` | `op()` |更名；编码为数字而不是字符串 |
     | `inputs()` | `inputsPreview()`，或 `inputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择`INPUTS`作为完整有效负载 |
-    | `outputs()` | `outputsPreview()`，或 `outputs()` 用于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 |
+    | `outputs()` | `outputsPreview()`，或 `outputs()` 对于未截断的有效负载 |默认情况下预览被截断；选择 `OUTPUTS` 作为完整有效负载 |
     | `error()` | `errorPreview()`，或 `error()` 获取完整消息 |默认情况下摘要被截断；选择 `ERROR` 查看完整的错误消息 |
     | `latency()` | `latency()` |不变 |
     | `totalTokens()`、`promptTokens()`、`completionTokens()` | `totalTokens()`、`promptTokens()`、`completionTokens()` |不变 |
@@ -918,33 +918,33 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
 <Tabs sync={false}>
   <Tab title="Before">
     ```python Before
-from langsmith import Client
+    from langsmith import Client
 
-client = Client()
-thread_id = "<thread-id>"
-for run in client.read_thread(thread_id=thread_id, project_name="default"):
-    print(run.id, run.start_time)
-```
+    client = Client()
+    thread_id = "<thread-id>"
+    for run in client.read_thread(thread_id=thread_id, project_name="default"):
+        print(run.id, run.start_time)
+    ```
   </Tab>
   <Tab title="After">
     ```python After
-import asyncio
+    import asyncio
 
-from langsmith import Client
-
-
-async def main():
-    client = Client()
-    project = await client.aread_project(project_name="default")
-    thread_id = "<thread-id>"
-    async for trace in client.threads.list_traces(
-        thread_id, project_id=str(project.id), selects=["TRACE_ID", "START_TIME"]
-    ):
-        print(trace.trace_id, trace.start_time)
+    from langsmith import Client
 
 
-asyncio.run(main())
-```
+    async def main():
+        client = Client()
+        project = await client.aread_project(project_name="default")
+        thread_id = "<thread-id>"
+        async for trace in client.threads.list_traces(
+            thread_id, project_id=str(project.id), selects=["TRACE_ID", "START_TIME"]
+        ):
+            print(trace.trace_id, trace.start_time)
+
+
+    asyncio.run(main())
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -952,29 +952,29 @@ asyncio.run(main())
 <Tabs sync={false}>
   <Tab title="Before">
     ```ts Before
-import { Client } from "langsmith";
+    import { Client } from "langsmith";
 
-const client = new Client();
-let threadId = "<thread-id>";
-for await (const run of client.readThread({ threadId, projectName: "default" })) {
-  console.log(run.id, run.start_time);
-}
-```
+    const client = new Client();
+    let threadId = "<thread-id>";
+    for await (const run of client.readThread({ threadId, projectName: "default" })) {
+      console.log(run.id, run.start_time);
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```ts After
-import { Client } from "langsmith";
+    import { Client } from "langsmith";
 
-const client = new Client();
-const project = await client.readProject({ projectName: "default" });
-let threadId = "<thread-id>";
-for await (const trace of client.threads.listTraces(threadId, {
-  project_id: project.id,
-  selects: ["TRACE_ID", "START_TIME"],
-})) {
-  console.log(trace.trace_id, trace.start_time);
-}
-```
+    const client = new Client();
+    const project = await client.readProject({ projectName: "default" });
+    let threadId = "<thread-id>";
+    for await (const trace of client.threads.listTraces(threadId, {
+      project_id: project.id,
+      selects: ["TRACE_ID", "START_TIME"],
+    })) {
+      console.log(trace.trace_id, trace.start_time);
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -983,59 +983,59 @@ for await (const trace of client.threads.listTraces(threadId, {
   <Tab title="Before">
     ```kotlin Before
 
-import com.langchain.smith.client.LangsmithClient
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-import com.langchain.smith.models.runs.RunQueryParams
-import com.langchain.smith.models.sessions.SessionListParams
+    import com.langchain.smith.client.LangsmithClient
+    import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+    import com.langchain.smith.models.runs.RunQueryParams
+    import com.langchain.smith.models.sessions.SessionListParams
 
-val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+    val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-val project = client.sessions().list(
-    SessionListParams.builder().name("default").limit(1L).build()
-).items().first()
+    val project = client.sessions().list(
+        SessionListParams.builder().name("default").limit(1L).build()
+    ).items().first()
 
-var threadId = "<thread-id>"
+    var threadId = "<thread-id>"
 
-val runs = client.runs().query(
-    RunQueryParams.builder()
-        .addSession(project.id())
-        .isRoot(true)
-        .filter("eq(thread_id, \"$threadId\")")
-        .build()
-).runs()
-for (run in runs) {
-    println("${run.id()} ${run.startTime().get()}")
-}
-```
+    val runs = client.runs().query(
+        RunQueryParams.builder()
+            .addSession(project.id())
+            .isRoot(true)
+            .filter("eq(thread_id, \"$threadId\")")
+            .build()
+    ).runs()
+    for (run in runs) {
+        println("${run.id()} ${run.startTime().get()}")
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```kotlin After
 
-import com.langchain.smith.client.LangsmithClient
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-import com.langchain.smith.models.sessions.SessionListParams
-import com.langchain.smith.models.threads.ThreadListTracesParams
+    import com.langchain.smith.client.LangsmithClient
+    import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+    import com.langchain.smith.models.sessions.SessionListParams
+    import com.langchain.smith.models.threads.ThreadListTracesParams
 
-val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+    val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-val project = client.sessions().list(
-    SessionListParams.builder().name("default").limit(1L).build()
-).items().first()
+    val project = client.sessions().list(
+        SessionListParams.builder().name("default").limit(1L).build()
+    ).items().first()
 
-var threadId = "<thread-id>"
+    var threadId = "<thread-id>"
 
-val traces = client.threads().listTraces(
-    threadId,
-    ThreadListTracesParams.builder()
-        .projectId(project.id())
-        .addSelect(ThreadListTracesParams.Select.TRACE_ID)
-        .addSelect(ThreadListTracesParams.Select.START_TIME)
-        .build()
-).items()
-for (trace in traces) {
-    println("${trace.traceId().get()} ${trace.startTime().get()}")
-}
-```
+    val traces = client.threads().listTraces(
+        threadId,
+        ThreadListTracesParams.builder()
+            .projectId(project.id())
+            .addSelect(ThreadListTracesParams.Select.TRACE_ID)
+            .addSelect(ThreadListTracesParams.Select.START_TIME)
+            .build()
+    ).items()
+    for (trace in traces) {
+        println("${trace.traceId().get()} ${trace.startTime().get()}")
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1043,83 +1043,83 @@ for (trace in traces) {
 <Tabs sync={false}>
   <Tab title="Before">
     ```go Before
-package main
+    package main
 
-import (
-	"context"
-	"fmt"
-	"time"
+    import (
+    	"context"
+    	"fmt"
+    	"time"
 
-	"github.com/langchain-ai/langsmith-go"
-)
+    	"github.com/langchain-ai/langsmith-go"
+    )
 
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
+    func main() {
+    	ctx := context.Background()
+    	client := langsmith.NewClient()
 
-	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-		Name:  langsmith.F("default"),
-		Limit: langsmith.F(int64(1)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	projectID := sessions.Items[0].ID
-	threadID := "<thread-id>"
+    	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+    		Name:  langsmith.F("default"),
+    		Limit: langsmith.F(int64(1)),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	projectID := sessions.Items[0].ID
+    	threadID := "<thread-id>"
 
-	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-		Session: langsmith.F([]string{projectID}),
-		IsRoot:  langsmith.F(true),
-		Filter:  langsmith.F(fmt.Sprintf(`eq(thread_id, "%s")`, threadID)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, run := range runs.Runs {
-		fmt.Println(run.ID, run.StartTime)
-	}
-}
-```
+    	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+    		Session: langsmith.F([]string{projectID}),
+    		IsRoot:  langsmith.F(true),
+    		Filter:  langsmith.F(fmt.Sprintf(`eq(thread_id, "%s")`, threadID)),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	for _, run := range runs.Runs {
+    		fmt.Println(run.ID, run.StartTime)
+    	}
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```go After
-package main
+    package main
 
-import (
-	"context"
-	"fmt"
-	"time"
+    import (
+    	"context"
+    	"fmt"
+    	"time"
 
-	"github.com/langchain-ai/langsmith-go"
-)
+    	"github.com/langchain-ai/langsmith-go"
+    )
 
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
+    func main() {
+    	ctx := context.Background()
+    	client := langsmith.NewClient()
 
-	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-		Name:  langsmith.F("default"),
-		Limit: langsmith.F(int64(1)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	projectID := sessions.Items[0].ID
-	threadID := "<thread-id>"
+    	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+    		Name:  langsmith.F("default"),
+    		Limit: langsmith.F(int64(1)),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	projectID := sessions.Items[0].ID
+    	threadID := "<thread-id>"
 
-	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
-		ProjectID: langsmith.F(projectID),
-		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectTraceID, langsmith.ThreadListTracesParamsSelectStartTime}),
-	})
-	for iter.Next() {
-		trace := iter.Current()
-		fmt.Println(trace.TraceID, trace.StartTime)
-	}
-	if err := iter.Err(); err != nil {
-		panic(err.Error())
-	}
-}
-```
+    	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
+    		ProjectID: langsmith.F(projectID),
+    		Selects:   langsmith.F([]langsmith.ThreadListTracesParamsSelect{langsmith.ThreadListTracesParamsSelectTraceID, langsmith.ThreadListTracesParamsSelectStartTime}),
+    	})
+    	for iter.Next() {
+    		trace := iter.Current()
+    		fmt.Println(trace.TraceID, trace.StartTime)
+    	}
+    	if err := iter.Err(); err != nil {
+    		panic(err.Error())
+    	}
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1127,29 +1127,29 @@ func main() {
 <Tabs sync={false}>
   <Tab title="Before">
     ```bash
-PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-THREAD_ID="<thread-id>"
+    PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+      -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+    THREAD_ID="<thread-id>"
 
-curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-  -H "x-api-key: $LANGSMITH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$THREAD_ID" '{"session": [$pid], "is_root": true, "filter": ("eq(thread_id, \"" + $tid + "\")")}')" \
-  | jq '.runs // []'
-```
+    curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+      -H "x-api-key: $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$THREAD_ID" '{"session": [$pid], "is_root": true, "filter": ("eq(thread_id, \"" + $tid + "\")")}')" \
+      | jq '.runs // []'
+    ```
   </Tab>
   <Tab title="After">
     ```bash
-PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-THREAD_ID="<thread-id>"
+    PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+      -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+    THREAD_ID="<thread-id>"
 
-curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
-  -H "x-api-key: $LANGSMITH_API_KEY" \
-  --data-urlencode "project_id=$PROJECT_ID" \
-  --data-urlencode "selects=TRACE_ID" \
-  --data-urlencode "selects=START_TIME"
-```
+    curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
+      -H "x-api-key: $LANGSMITH_API_KEY" \
+      --data-urlencode "project_id=$PROJECT_ID" \
+      --data-urlencode "selects=TRACE_ID" \
+      --data-urlencode "selects=START_TIME"
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1162,39 +1162,39 @@ curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
 <Tabs sync={false}>
   <Tab title="Before">
     ```python Before
-from langsmith import Client
+    from langsmith import Client
 
-client = Client()
-thread_id = "<thread-id>"
-for run in client.read_thread(
-    thread_id=thread_id,
-    project_name="default",
-    select=["id", "total_tokens", "total_cost"],
-):
-    print(run.id, run.total_tokens, run.total_cost)
-```
+    client = Client()
+    thread_id = "<thread-id>"
+    for run in client.read_thread(
+        thread_id=thread_id,
+        project_name="default",
+        select=["id", "total_tokens", "total_cost"],
+    ):
+        print(run.id, run.total_tokens, run.total_cost)
+    ```
   </Tab>
   <Tab title="After">
     ```python After
-import asyncio
+    import asyncio
 
-from langsmith import Client
-
-
-async def main():
-    client = Client()
-    project = await client.aread_project(project_name="default")
-    thread_id = "<thread-id>"
-    async for trace in client.threads.list_traces(
-        thread_id,
-        project_id=str(project.id),
-        selects=["TRACE_ID", "TOTAL_TOKENS", "TOTAL_COST"],
-    ):
-        print(trace.trace_id, trace.total_tokens, trace.total_cost)
+    from langsmith import Client
 
 
-asyncio.run(main())
-```
+    async def main():
+        client = Client()
+        project = await client.aread_project(project_name="default")
+        thread_id = "<thread-id>"
+        async for trace in client.threads.list_traces(
+            thread_id,
+            project_id=str(project.id),
+            selects=["TRACE_ID", "TOTAL_TOKENS", "TOTAL_COST"],
+        ):
+            print(trace.trace_id, trace.total_tokens, trace.total_cost)
+
+
+    asyncio.run(main())
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1202,33 +1202,33 @@ asyncio.run(main())
 <Tabs sync={false}>
   <Tab title="Before">
     ```ts Before
-import { Client } from "langsmith";
+    import { Client } from "langsmith";
 
-const client = new Client();
-let threadId = "<thread-id>";
-for await (const run of client.readThread({
-  threadId,
-  projectName: "default",
-  select: ["id", "total_tokens", "total_cost"],
-})) {
-  console.log(run.id, run.total_tokens, run.total_cost);
-}
-```
+    const client = new Client();
+    let threadId = "<thread-id>";
+    for await (const run of client.readThread({
+      threadId,
+      projectName: "default",
+      select: ["id", "total_tokens", "total_cost"],
+    })) {
+      console.log(run.id, run.total_tokens, run.total_cost);
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```ts After
-import { Client } from "langsmith";
+    import { Client } from "langsmith";
 
-const client = new Client();
-const project = await client.readProject({ projectName: "default" });
-let threadId = "<thread-id>";
-for await (const trace of client.threads.listTraces(threadId, {
-  project_id: project.id,
-  selects: ["TRACE_ID", "TOTAL_TOKENS", "TOTAL_COST"],
-})) {
-  console.log(trace.trace_id, trace.total_tokens, trace.total_cost);
-}
-```
+    const client = new Client();
+    const project = await client.readProject({ projectName: "default" });
+    let threadId = "<thread-id>";
+    for await (const trace of client.threads.listTraces(threadId, {
+      project_id: project.id,
+      selects: ["TRACE_ID", "TOTAL_TOKENS", "TOTAL_COST"],
+    })) {
+      console.log(trace.trace_id, trace.total_tokens, trace.total_cost);
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1238,67 +1238,67 @@ for await (const trace of client.threads.listTraces(threadId, {
   <Tab title="Before">
     ```kotlin Before
 
-import com.langchain.smith.client.LangsmithClient
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-import com.langchain.smith.models.runs.RunQueryParams
-import com.langchain.smith.models.sessions.SessionListParams
-import kotlin.jvm.optionals.getOrNull
+    import com.langchain.smith.client.LangsmithClient
+    import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+    import com.langchain.smith.models.runs.RunQueryParams
+    import com.langchain.smith.models.sessions.SessionListParams
+    import kotlin.jvm.optionals.getOrNull
 
-val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+    val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-val project = client.sessions().list(
-    SessionListParams.builder().name("default").limit(1L).build()
-).items().first()
+    val project = client.sessions().list(
+        SessionListParams.builder().name("default").limit(1L).build()
+    ).items().first()
 
-var threadId = "<thread-id>"
+    var threadId = "<thread-id>"
 
-// Note: selecting total_cost here triggers a known deserialization bug in the
-// v1 Java binding (RunSchema.totalCost() expects a string, the API returns a
-// number) — omitted to keep this example runnable; see the migration notes.
-val runs = client.runs().query(
-    RunQueryParams.builder()
-        .addSession(project.id())
-        .isRoot(true)
-        .filter("eq(thread_id, \"$threadId\")")
-        .addSelect(RunQueryParams.Select.ID)
-        .addSelect(RunQueryParams.Select.TOTAL_TOKENS)
-        .build()
-).runs()
-for (run in runs) {
-    println("${run.id()} ${run.totalTokens().getOrNull()}")
-}
-```
+    // Note: selecting total_cost here triggers a known deserialization bug in the
+    // v1 Java binding (RunSchema.totalCost() expects a string, the API returns a
+    // number) — omitted to keep this example runnable; see the migration notes.
+    val runs = client.runs().query(
+        RunQueryParams.builder()
+            .addSession(project.id())
+            .isRoot(true)
+            .filter("eq(thread_id, \"$threadId\")")
+            .addSelect(RunQueryParams.Select.ID)
+            .addSelect(RunQueryParams.Select.TOTAL_TOKENS)
+            .build()
+    ).runs()
+    for (run in runs) {
+        println("${run.id()} ${run.totalTokens().getOrNull()}")
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```kotlin After
 
-import com.langchain.smith.client.LangsmithClient
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-import com.langchain.smith.models.sessions.SessionListParams
-import com.langchain.smith.models.threads.ThreadListTracesParams
-import kotlin.jvm.optionals.getOrNull
+    import com.langchain.smith.client.LangsmithClient
+    import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+    import com.langchain.smith.models.sessions.SessionListParams
+    import com.langchain.smith.models.threads.ThreadListTracesParams
+    import kotlin.jvm.optionals.getOrNull
 
-val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+    val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-val project = client.sessions().list(
-    SessionListParams.builder().name("default").limit(1L).build()
-).items().first()
+    val project = client.sessions().list(
+        SessionListParams.builder().name("default").limit(1L).build()
+    ).items().first()
 
-var threadId = "<thread-id>"
+    var threadId = "<thread-id>"
 
-val traces = client.threads().listTraces(
-    threadId,
-    ThreadListTracesParams.builder()
-        .projectId(project.id())
-        .addSelect(ThreadListTracesParams.Select.TRACE_ID)
-        .addSelect(ThreadListTracesParams.Select.TOTAL_TOKENS)
-        .addSelect(ThreadListTracesParams.Select.TOTAL_COST)
-        .build()
-).items()
-for (trace in traces) {
-    println("${trace.traceId().get()} ${trace.totalTokens().getOrNull()} ${trace.totalCost().getOrNull()}")
-}
-```
+    val traces = client.threads().listTraces(
+        threadId,
+        ThreadListTracesParams.builder()
+            .projectId(project.id())
+            .addSelect(ThreadListTracesParams.Select.TRACE_ID)
+            .addSelect(ThreadListTracesParams.Select.TOTAL_TOKENS)
+            .addSelect(ThreadListTracesParams.Select.TOTAL_COST)
+            .build()
+    ).items()
+    for (trace in traces) {
+        println("${trace.traceId().get()} ${trace.totalTokens().getOrNull()} ${trace.totalCost().getOrNull()}")
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1306,92 +1306,92 @@ for (trace in traces) {
 <Tabs sync={false}>
   <Tab title="Before">
     ```go Before
-package main
+    package main
 
-import (
-	"context"
-	"fmt"
-	"time"
+    import (
+    	"context"
+    	"fmt"
+    	"time"
 
-	"github.com/langchain-ai/langsmith-go"
-)
+    	"github.com/langchain-ai/langsmith-go"
+    )
 
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
+    func main() {
+    	ctx := context.Background()
+    	client := langsmith.NewClient()
 
-	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-		Name:  langsmith.F("default"),
-		Limit: langsmith.F(int64(1)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	projectID := sessions.Items[0].ID
-	threadID := "<thread-id>"
+    	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+    		Name:  langsmith.F("default"),
+    		Limit: langsmith.F(int64(1)),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	projectID := sessions.Items[0].ID
+    	threadID := "<thread-id>"
 
-	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-		Session: langsmith.F([]string{projectID}),
-		IsRoot:  langsmith.F(true),
-		Filter:  langsmith.F(fmt.Sprintf(`eq(thread_id, "%s")`, threadID)),
-		Select: langsmith.F([]langsmith.RunQueryParamsSelect{
-			langsmith.RunQueryParamsSelectID,
-			langsmith.RunQueryParamsSelectTotalTokens,
-			langsmith.RunQueryParamsSelectTotalCost,
-		}),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	for _, run := range runs.Runs {
-		fmt.Println(run.ID, run.TotalTokens, run.TotalCost)
-	}
-}
-```
+    	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+    		Session: langsmith.F([]string{projectID}),
+    		IsRoot:  langsmith.F(true),
+    		Filter:  langsmith.F(fmt.Sprintf(`eq(thread_id, "%s")`, threadID)),
+    		Select: langsmith.F([]langsmith.RunQueryParamsSelect{
+    			langsmith.RunQueryParamsSelectID,
+    			langsmith.RunQueryParamsSelectTotalTokens,
+    			langsmith.RunQueryParamsSelectTotalCost,
+    		}),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	for _, run := range runs.Runs {
+    		fmt.Println(run.ID, run.TotalTokens, run.TotalCost)
+    	}
+    }
+    ```
   </Tab>
   <Tab title="After">
     ```go After
-package main
+    package main
 
-import (
-	"context"
-	"fmt"
-	"time"
+    import (
+    	"context"
+    	"fmt"
+    	"time"
 
-	"github.com/langchain-ai/langsmith-go"
-)
+    	"github.com/langchain-ai/langsmith-go"
+    )
 
-func main() {
-	ctx := context.Background()
-	client := langsmith.NewClient()
+    func main() {
+    	ctx := context.Background()
+    	client := langsmith.NewClient()
 
-	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-		Name:  langsmith.F("default"),
-		Limit: langsmith.F(int64(1)),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	projectID := sessions.Items[0].ID
-	threadID := "<thread-id>"
+    	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+    		Name:  langsmith.F("default"),
+    		Limit: langsmith.F(int64(1)),
+    	})
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	projectID := sessions.Items[0].ID
+    	threadID := "<thread-id>"
 
-	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
-		ProjectID: langsmith.F(projectID),
-		Selects: langsmith.F([]langsmith.ThreadListTracesParamsSelect{
-			langsmith.ThreadListTracesParamsSelectTraceID,
-			langsmith.ThreadListTracesParamsSelectTotalTokens,
-			langsmith.ThreadListTracesParamsSelectTotalCost,
-		}),
-	})
-	for iter.Next() {
-		trace := iter.Current()
-		fmt.Println(trace.TraceID, trace.TotalTokens, trace.TotalCost)
-	}
-	if err := iter.Err(); err != nil {
-		panic(err.Error())
-	}
-}
-```
+    	iter := client.Threads.ListTracesAutoPaging(ctx, threadID, langsmith.ThreadListTracesParams{
+    		ProjectID: langsmith.F(projectID),
+    		Selects: langsmith.F([]langsmith.ThreadListTracesParamsSelect{
+    			langsmith.ThreadListTracesParamsSelectTraceID,
+    			langsmith.ThreadListTracesParamsSelectTotalTokens,
+    			langsmith.ThreadListTracesParamsSelectTotalCost,
+    		}),
+    	})
+    	for iter.Next() {
+    		trace := iter.Current()
+    		fmt.Println(trace.TraceID, trace.TotalTokens, trace.TotalCost)
+    	}
+    	if err := iter.Err(); err != nil {
+    		panic(err.Error())
+    	}
+    }
+    ```
   </Tab>
 </Tabs>
   </Tab>
@@ -1399,30 +1399,30 @@ func main() {
 <Tabs sync={false}>
   <Tab title="Before">
     ```bash
-PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-THREAD_ID="<thread-id>"
+    PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+      -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+    THREAD_ID="<thread-id>"
 
-curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-  -H "x-api-key: $LANGSMITH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$THREAD_ID" '{"session": [$pid], "is_root": true, "filter": ("eq(thread_id, \"" + $tid + "\")"), "select": ["id", "total_tokens", "total_cost"]}')" \
-  | jq '.runs // []'
-```
+    curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+      -H "x-api-key: $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$THREAD_ID" '{"session": [$pid], "is_root": true, "filter": ("eq(thread_id, \"" + $tid + "\")"), "select": ["id", "total_tokens", "total_cost"]}')" \
+      | jq '.runs // []'
+    ```
   </Tab>
   <Tab title="After">
     ```bash
-PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-THREAD_ID="<thread-id>"
+    PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+      -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+    THREAD_ID="<thread-id>"
 
-curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
-  -H "x-api-key: $LANGSMITH_API_KEY" \
-  --data-urlencode "project_id=$PROJECT_ID" \
-  --data-urlencode "selects=TRACE_ID" \
-  --data-urlencode "selects=TOTAL_TOKENS" \
-  --data-urlencode "selects=TOTAL_COST"
-```
+    curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
+      -H "x-api-key: $LANGSMITH_API_KEY" \
+      --data-urlencode "project_id=$PROJECT_ID" \
+      --data-urlencode "selects=TRACE_ID" \
+      --data-urlencode "selects=TOTAL_TOKENS" \
+      --data-urlencode "selects=TOTAL_COST"
+    ```
   </Tab>
 </Tabs>
   </Tab>

@@ -1053,6 +1053,12 @@
           "rel": "langsmith/filter-traces-in-application.md"
         }
       ],
+      "filter-traces": [
+        {
+          "title": "Filter traces",
+          "rel": "langsmith/filter-traces.md"
+        }
+      ],
       "gcp-self-hosted": [
         {
           "title": "Self-hosted LangSmith on GCP",
@@ -1269,10 +1275,10 @@
           "rel": "langsmith/llm-gateway-custom-providers.md"
         }
       ],
-      "llm-gateway-data-protection": [
+      "llm-gateway-data-policy": [
         {
-          "title": "Data protection",
-          "rel": "langsmith/llm-gateway-data-protection.md"
+          "title": "Data policy",
+          "rel": "langsmith/llm-gateway-data-policy.md"
         }
       ],
       "llm-gateway-direct-model-access": [

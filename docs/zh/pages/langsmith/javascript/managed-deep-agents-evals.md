@@ -93,7 +93,7 @@ my-agent/
 <Prompt
     description="Develop Harbor evals with the eval-engineering skill"
     icon="flask"
-    actions={["copy", "cursor"]}
+    actions={["copy"]}
 >
 使用评估工程技能为此托管开发 Harbor 评估
 深度代理。首先检查项目和现有评估。起草任务
@@ -142,7 +142,7 @@ uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor r
   --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
 ```
 
-将 `my-agent` 替换为项目目录名称。生成的命令将填写名称并在 Windows 上使用 PowerShell 语法。
+将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。
 
 编辑代理后重新运行命令会拾取项目更改。
 

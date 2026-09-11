@@ -251,7 +251,7 @@ class ThreadsChatPipeline {
                       .completions()
                       .create(
                           ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_CHAT_LATEST)
+                              .model(ChatModel.GPT_5_5)
                               .messages(allMessages)
                               .build());
 
@@ -367,7 +367,7 @@ val chatPipeline by lazy {
             val chatCompletion =
                 openai.chat().completions().create(
                     ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_5_CHAT_LATEST)
+                        .model(ChatModel.GPT_5_5)
                         .messages(allMessages)
                         .build(),
                 )

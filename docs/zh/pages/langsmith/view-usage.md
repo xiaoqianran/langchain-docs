@@ -18,7 +18,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 ## 使用图使用情况图表显示 [organization](/langsmith/administration-overview#organizations) 的聚合跟踪消耗，按 [workspace](/langsmith/administration-overview#workspaces) 细分。它涵盖当前计费周期，并且不显示支出 - 有关支出，请参阅发票。
 
-导航至 **设置** → **计费和使用情况** → **使用情况图表**。
+导航到 **设置** > **计费和使用情况** > **使用情况图表**。
 
 ### 可计费指标
 
@@ -38,7 +38,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 具有预付费承诺的企业客户可以查看其合同已消耗了多少。
 
-导航至 **设置** → **使用配置** → **合同使用**。
+导航到 **设置** > **使用配置** > **合同使用**。
 
 该视图显示：
 
@@ -57,15 +57,15 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 **仅自助云计划**提供发票。企业云组织有一个单独的使用视图来跟踪支出。
 
-导航至 **设置** → **计费和使用情况** → **发票** 以查看您的使用情况如何转化为支出。显示的第一张发票是您当月发票的草稿，反映了您迄今为止的运行支出。
+导航至 **设置** > **计费和使用情况** > **发票** 以查看您的使用情况如何转化为支出。显示的第一张发票是您当月发票的草稿，反映了您迄今为止的运行支出。
 
 ## 细化使用
 
 粒度使用情况为您提供在您选择的时间范围内按您选择的维度（工作空间、项目、用户或 API 密钥）细分的跟踪计数。这对于内部退款、识别高使用率团队或审核跟踪活动非常有用。
 
-导航至 **设置** → **计费和使用情况** → **详细使用情况**，或使用 [granular usage API](/langsmith/granular-usage)。
+导航到 **设置** > **计费和使用情况** > **详细使用情况**，或使用 [granular usage API](/langsmith/granular-usage)。
 
-### 这里的“痕迹”是什么意思粒度使用视图对**跟踪**进行计数：根级别运行及其所有子跨度均算作一个单元。这与 [billing](/langsmith/billing) 使用的单位相同。它不会单独计算各个范围、令牌或模型调用。
+### 这里的“痕迹”是什么意思精细使用视图对**跟踪**进行计数：根级别运行及其所有子跨度均算作一个单元。这与 [billing](/langsmith/billing) 使用的单位相同。它不会单独计算各个范围、令牌或模型调用。
 
 ### 记录使用情况时
 
@@ -78,7 +78,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 由于计费基础设施的差异，与 [Cloud](/langsmith/cloud) 相比，[Self-hosted](/langsmith/self-hosted) LangSmith 具有一组不同的可用使用视图。
 
 | **功能** | **自托管可用性** |
-|---------|--------------------------|
+|----------|--------------------------|
 |细化使用（追踪归因）|可用于功能标志或版本 ≥ 0.13.12 |
 |使用图（聚合痕迹）|适用于 Helm Chart 0.9.5 及更高版本 |
 |合约使用 |启用 Beacon 回拨功能后可用 |
@@ -100,7 +100,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 ### 自托管的聚合使用情况
 
-使用情况图表可在运行 Helm Chart 0.9.5 或更高版本的 [Self-hosted](/langsmith/self-hosted) 上获得。 LangSmith 自动生成并同步组织使用情况图表，可在**设置** → **使用情况和计费** → **使用情况图表**下找到：
+使用情况图表可在运行 Helm Chart 0.9.5 或更高版本的 [Self-hosted](/langsmith/self-hosted) 上获得。 LangSmith 自动生成并同步组织使用情况图表，可在**设置** > **使用情况和计费** > **使用情况图表**下找到：
 
 - **工作空间的使用情况**：每个工作空间的跟踪计数（根运行）
 - **组织使用情况**：整个组织的总跟踪计数

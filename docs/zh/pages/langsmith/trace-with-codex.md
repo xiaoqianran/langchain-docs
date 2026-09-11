@@ -10,7 +10,8 @@
 
 在设置跟踪之前，请确保您拥有：
 
-- [Codex CLI](https://developers.openai.com/codex/quickstart?setup=cli) v0.128 或更高版本。
+- [Node.js](https://nodejs.org/) 22.x 或更高版本。
+- [Codex CLI](https://developers.openai.com/codex/quickstart?setup=cli) v0.153.4 或更高版本，启用并信任同步 `UserPromptSubmit` 插件挂钩。
 - [LangSmith API key](/langsmith/create-account-api-key)。
 
 ## 安装并启用插件
@@ -21,7 +22,7 @@
 codex plugin marketplace add langchain-ai/langsmith-codex-plugins
 ```
 
-在 `~/.codex/config.toml` 中全局启用插件钩子和跟踪插件，或者仅在 `.codex/config.toml` 中为特定项目启用：
+在 `~/.codex/config.toml` 中全局启用插件挂钩和跟踪插件，或者仅在 `.codex/config.toml` 中为特定项目启用：
 
 ```toml
 [features]
@@ -37,11 +38,11 @@ enabled = true
 
 ### 环境变量
 
-该插件首先读取 Codex 特定的变量，然后回退到通用 LangSmith SDK 变量。|变量|必填|默认 |描述 |
-| ---| ---| ---| ---|
+该插件首先读取 Codex 特定的变量，然后回退到通用 LangSmith SDK 变量。|变量|必填|默认|描述 |
+| --- | --- | --- | --- |
 | `TRACE_TO_LANGSMITH` |是的 | - |设置为 `"true"` 以启用跟踪。 |
 | `LANGSMITH_CODEX_API_KEY` |有条件| - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
-| `LANGSMITH_CODEX_ENDPOINT` |没有 | `https://api.smith.langchain.com` | LangSmith API URL。回落至`LANGSMITH_ENDPOINT`。 |
+| `LANGSMITH_CODEX_ENDPOINT` |没有 | `https://api.smith.langchain.com` | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
 | `LANGSMITH_CODEX_PROJECT` |没有 | `codex` | LangSmith 项目名称。回落到`LANGSMITH_PROJECT`。 |
 | `LANGSMITH_CODEX_METADATA` |没有 | - | JSON 对象合并到根跟踪元数据中。回落到`LANGSMITH_METADATA`。 |
 | `LANGSMITH_CODEX_RUNS_ENDPOINTS` |没有 | - |副本目标的 JSON 数组。回落到`LANGSMITH_RUNS_ENDPOINTS`。 |
@@ -69,8 +70,8 @@ export LANGSMITH_CODEX_PROJECT="codex"
     "environment": "dev"
   }
 }
-```|领域|环境变量 |默认 |描述 |
-| ---| ---| ---| ---|
+```|领域 |环境变量 |默认|描述 |
+| --- | --- | --- | --- |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CODEX_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
 | `api_url` | `LANGSMITH_CODEX_ENDPOINT`、`LANGSMITH_ENDPOINT` | LangSmith 默认 | LangSmith API URL。 |
@@ -82,7 +83,7 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 ## 追踪到多个目的地
 
-在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas`，以将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
+在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas` 可将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
 
 追踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
 
@@ -133,8 +134,8 @@ echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
 
 </Tabs>
 
-每个副本对象支持以下字段：|领域|必填|描述 |
-| ---| ---| ---|
+每个副本对象支持以下字段：|领域 |必填|描述 |
+| --- | --- | --- |
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）。 |
 | `apiKey` |是的 |目标工作区的 API 密钥。 |
 | `projectName` |是的 |目标工作区中的项目名称。 |
@@ -162,7 +163,7 @@ echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
 
 如果LangSmith中没有出现痕迹：
 
-- 确认`plugin_hooks = true`并在`config.toml`中启用跟踪插件。
+- 确认`plugin_hooks = true`，并在`config.toml`中启用跟踪插件。
 - 确认 `TRACE_TO_LANGSMITH=true` 对 Codex 流程可见。
 - 确认`LANGSMITH_CODEX_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
 - 如果运行在错误的项目中，请设置`LANGSMITH_CODEX_PROJECT`或`project`配置键。

@@ -32,7 +32,7 @@
 
 您需要：
 
-- 访问已部署的 `sandbox-host` 映像。
+- 访问已部署的`sandbox-host`镜像。
 - Linux 系统上 `e2fsprogs` 软件包中的 Docker、`gzip`、GNU `dd` 和 `debugfs`。
 - 支持稀疏文件的本地文件系统，以及足够的空间用于压缩工件和提取的文件。 ext4 映像的逻辑大小为 16 GiB，但稀疏解压缩避免分配其零填充的可用空间。将文件提取到临时目录中，然后使用您首选的文件系统或软件物料清单 (SBOM) 扫描仪扫描生成的目录。
 
@@ -116,11 +116,27 @@ LangSmith 从您提供的容器映像中的文件系统构建自定义快照。�
 2. 检查并扫描该精确图像。
 3. 创建快照时，使用与 `docker_image` 相同的摘要限定引用。
 
-LangSmith 在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
+LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
 
 ### 私有注册表
 
-要从私有注册表中提取数据，请使用其凭据创建一次注册表，然后在构建快照时通过 id 引用它。注册表会持续存在，因此可以跨快照重复使用注册表。
+要从私有注册表中提取数据，请使用其凭据创建一次注册表，然后在构建快照时通过 ID 引用它。注册表会持续存在，因此可以跨快照重复使用注册表。
+
+#### 查找存储库和标签
+
+在 LangSmith UI 中，**Container Image URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：|来源 |存储库发现 |标签发现 |
+| --- | --- | --- |
+| Docker Hub，没有保存注册表 |在 Docker 官方镜像中搜索裸镜像名称或指定的 Docker Hub 命名空间 |选择或输入存储库后搜索标签 |
+| Docker 注册表 |当注册表支持时搜索注册表目录 |选择或输入存储库后搜索标签 |
+|港口|搜索可访问的目录 |选择或输入存储库后搜索标签 |
+| GitHub 容器注册表 (GHCR) |在指定的 GitHub 所有者内搜索 |选择或输入存储库后搜索标签 |
+| Google Artifact 注册表 (GAR) |搜索项目和位置中的存储库，然后搜索所选存储库中的包 |选择或输入图像存储库后搜索标签 |
+| Amazon Elastic Container Registry (ECR)，带有用户名和密码 |需要您输入完整的存储库 |进入存储库后搜索标签 |
+| Amazon ECR，具有 AWS IAM 角色 |在配置的 AWS 账户中搜索存储库 |选择或输入存储库后搜索标签 |存储库和标签发现是建议性的且有限制的。您始终可以手动输入已知的存储库、标签或摘要，包括当提供程序不支持搜索或不返回匹配项时。当您需要不可变的快照源时，请使用摘要限定的图像 URI。
+
+#### 使用用户名和密码进行身份验证
+
+用户名和密码身份验证适用于所有受支持的私有注册表提供商。对于 ECR，密码是 ECR 授权令牌，并在 12 小时后过期。当令牌过期时更新保存的注册表凭据。
 
 <CodeGroup>
 
@@ -166,9 +182,76 @@ const snapshot = await client.createSnapshot(
 
 使用 `client.registries.list()`、`client.registries.retrieve(name)`、`client.registries.update(name, ...)` 和 `client.registries.delete(name)` 列出、检查、更新和删除注册表。
 
+#### 使用 AWS IAM 角色对 ECR 进行身份验证
+
+AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSmith 中。它支持商业AWS分区中的私有ECR注册表。公共 ECR、AWS GovCloud、AWS China 和自定义 ECR 兼容域继续使用用户名和密码身份验证。
+
+<Note>
+仅当您的 LangSmith 部署支持时，**AWS IAM 角色**身份验证方法才会出现。如果该选项不可用，请使用用户名和密码身份验证。
+</Note>注册 ECR 角色：
+
+1. 在 LangSmith 中，打开 **沙盒 > 注册表**，选择 **注册私有注册表**，然后以 `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com` 的形式输入您的注册表 URL。
+2. 在**身份验证方法**下选择**AWS IAM 角色**。复制 LangSmith 显示的 AWS 主体 ARN 和工作区 ID。 LangSmith 使用工作空间 ID 作为 `sts:ExternalId`。
+3. 在 AWS 中，创建 IAM 角色或使用信任策略更新现有角色，该信任策略使用 LangSmith 中显示的确切值：
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "<principal-arn-shown-in-langsmith>"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<workspace-id-shown-in-langsmith>"
+        }
+      }
+    }
+  ]
+}
+```
+
+4. 授予角色发现并拉取所需 ECR 映像的权限。以下策略授予对一个 AWS 账户和区域中每个存储库的访问权限。替换占位符，或将存储库资源缩小到LangSmith可以使用的存储库：
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "GetAuthorizationToken",
+      "Effect": "Allow",
+      "Action": "ecr:GetAuthorizationToken",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DiscoverAndPullImages",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DescribeRepositories",
+        "ecr:ListImages",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "Resource": "arn:aws:ecr:<aws-region>:<aws-account-id>:repository/*"
+    }
+  ]
+}
+```
+
+5. 对于托管 LangSmith，将 `LangSmithSandboxECR=true` 标签添加到 IAM 角色。
+6. 返回LangSmith，在**AWS角色ARN**中输入角色ARN，然后注册私有注册表。
+
+LangSmith 分别承担存储库发现、标签发现和每个快照构建尝试的角色。它为延迟的作业和重试获取新的 ECR 授权令牌，并且不会保留临时 AWS 凭证或生成的 ECR 令牌。对于自托管部署，管理员必须设置 `SANDBOX_ECR_AWS_ROLE_PRINCIPAL_ARN` 并为平台后端和快照工作人员提供兼容的 AWS SDK 凭证源。不设置该设置会隐藏 AWS IAM 角色身份验证并保留用户名和密码身份验证。
+
 ## 从 Dockerfile 构建快照
 
-当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
+当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
+
+该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
 
 <CodeGroup>
 
@@ -208,9 +291,7 @@ console.log(snapshot.id);
 `dockerfile` 相对于 `context` 进行解析，除非您传递绝对路径，并且它必须位于上下文目录内。 `.git` 目录会自动从上传的上下文中排除。
 </Note>
 
-### 构建参数和目标阶段
-
-通过 `build_args` / `buildArgs` 设置 Docker `ARG` 值，并通过 `target` 在多阶段构建的特定阶段停止。
+### 构建参数和目标阶段通过 `build_args` / `buildArgs` 设置 Docker `ARG` 值，并通过 `target` 在多阶段构建的特定阶段停止。
 
 <CodeGroup>
 
@@ -264,7 +345,9 @@ const snapshot = await client.createSnapshotFromDockerfile(
 
 </CodeGroup>
 
-### 加速冷构建`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
+### 加速冷构建
+
+`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
 
 <CodeGroup>
 
@@ -298,9 +381,7 @@ const snapshot = await client.createSnapshotFromDockerfile(
 同步 `SandboxClient` 和 `AsyncSandboxClient` 都在异步客户端上使用相同的参数 — `await client.create_snapshot_from_dockerfile(...)` 公开此方法。
 </Tip>
 
-## 从正在运行的沙箱捕获快照
-
-从现有快照启动沙箱，安装软件包或准备数据，然后捕获结果作为新快照。返回的快照将其 `source_sandbox_id` 设置为从中捕获它的沙箱，并且可以用作任何后续 `create_sandbox` 调用的 `snapshot_id`。
+## 从正在运行的沙箱捕获快照从现有快照启动沙箱，安装软件包或准备数据，然后捕获结果作为新快照。返回的快照将其 `source_sandbox_id` 设置为从中捕获它的沙箱，并且可以用作任何后续 `create_sandbox` 调用的 `snapshot_id`。
 
 <CodeGroup>
 
@@ -341,7 +422,9 @@ try {
 }
 ```
 
-</CodeGroup><Note>
+</CodeGroup>
+
+<Note>
 默认情况下，捕获仅保留**文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）和写入这些位置的文件将被保留，就像`/tmp`一样。只有 `/dev/shm` 是 tmpfs，因此其他所有内容都位于沙箱的磁盘上。正在运行的进程、打开的套接字和内存中的状态都不会被保留：启动新的沙箱并再次启动您需要的进程，或者[capture memory too](#resume-from-memory)。
 </Note>
 
@@ -377,9 +460,9 @@ snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
 const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
 ```
 
-</CodeGroup>
+</CodeGroup>### 从内存中恢复
 
-### 从内存中恢复快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。
+快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。
 
 <Note>
 内存快照仅可通过 REST API 获取。 `langsmith.sandbox` Python 和 TypeScript 客户端尚未公开这些字段。
@@ -395,7 +478,7 @@ curl -X POST \
   -d '{"name": "warm-model", "include_memory": true}'
 ```
 
-当内存被捕获时，响应报告`memory_snapshot_size_bytes`。 `include_memory` 需要一个正在运行或停止的沙箱，并且它不能与 `checkpoint` 或 `docker_image` 结合使用。
+当内存被捕获时，响应报告`memory_snapshot_size_bytes`。 `include_memory`需要一个正在运行或停止的沙箱，并且它不能与`checkpoint`或`docker_image`结合使用。
 
 一些沙箱在无法携带内存映像的覆盖文件系统运行时上运行。捕获一个会返回`include_memory is not supported for overlay-rootfs sandboxes`。 LangSmith 分配该运行时，因此它不是您为每个沙箱选择的东西。
 
@@ -416,7 +499,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
   }'
 ```
 
-仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **已停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
+仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
 
 ## 列出、获取和删除快照
 

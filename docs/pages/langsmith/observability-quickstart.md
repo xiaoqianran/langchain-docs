@@ -211,7 +211,7 @@ class ObservabilityQuickstartApp {
                       .completions()
                       .create(
                           ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_CHAT_LATEST)
+                              .model(ChatModel.GPT_5_5)
                               .addMessage(
                                   ChatCompletionMessageParam.ofSystem(
                                       ChatCompletionSystemMessageParam.builder()
@@ -234,6 +234,10 @@ class ObservabilityQuickstartApp {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2529a15-5c87-4c29-9c34-9aa9a899bcf1/r" arrow horizontal>
+  Open a public LangSmith run for this example.
+</Card>
 ```kotlin Kotlin
 import com.langchain.smith.tracing.RunType
 import com.langchain.smith.tracing.TraceConfig
@@ -262,7 +266,7 @@ val assistant =
             val response =
                 client.chat().completions().create(
                     ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_5_CHAT_LATEST)
+                        .model(ChatModel.GPT_5_5)
                         .addMessage(
                             ChatCompletionMessageParam.ofSystem(
                                 ChatCompletionSystemMessageParam.builder()
@@ -286,6 +290,10 @@ val assistant =
 
 println(assistant("How long are LangSmith traces stored?"))
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/95567c68-5e7b-44f2-9355-7705ac00de5a/r" arrow horizontal>
+  Open a public LangSmith run for this example.
+</Card>
 </CodeGroup>
 
 ## 3. Run the app

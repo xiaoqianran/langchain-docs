@@ -28,7 +28,7 @@
 |等级 |适用于 |
 | --- | --- |
 |组织|组织中的所有用户和工作区 |
-|工作空间 |工作区中的所有用户|
+|工作空间 |工作区中的所有用户 |
 |用户|单个用户|
 | API 密钥 |单个 API 密钥 |
 
@@ -42,7 +42,7 @@
 创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 </Warning>
 
-1. 转到**设置→网关→LLM 网关**并选择**模型访问**。
+1. 转至 **LLM Gateway** 并选择 **模型访问**。
 1. 单击**创建模型访问**。
 1. 输入**策略名称**。
 1. 在**适用于**下选择范围（组织、工作区、用户或 API 密钥）。
@@ -53,7 +53,7 @@
 
 ## 后续步骤- [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。
 - [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：限制请求或令牌吞吐量。
-- [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的限额。
+- [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的津贴。
 - [Data protection](/langsmith/llm-gateway-data-protection)：添加数据保护策略。
 
 ---

@@ -31,7 +31,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 |公制类型 |描述 |使用案例|
 | ------------------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **运行计数** |跟踪一个时间窗口内 [runs](/langsmith/observability-concepts#runs) 的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
+| **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
 | **成本** |跟踪一个时间窗口内运行的总成本。 |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。 || **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。 |
 | **反馈分数** |衡量平均反馈分数。 |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 |
 | **延迟** |测量平均运行执行时间。 |跟踪应用程序的延迟，以针对峰值和性能瓶颈发出警报。 |
@@ -104,7 +104,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     如果在 LangSmith 的自定义部署中，请确保没有防火墙设置阻止来自 LangSmith 服务的出口流量。
 
     ### 1. 在 PagerDuty 中创建服务1. 登录您的 PagerDuty 帐户
-    2. 导航至 **服务 → 服务目录**
+    2. 导航至 **服务 > 服务目录**
     3. 点击**+新服务**
     4. 填写以下字段：
        - **名称**：提供描述性名称（例如，“LangSmith 监控”）
@@ -200,7 +200,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     - [Dynatrace Access Tokens](https://docs.dynatrace.com/docs/manage/access-control/access-tokens)
   </Tab>
   <Tab title="Webhook">
-    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhook 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
+    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhooks 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
 
     **先决条件**
 
@@ -240,7 +240,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       - 默认：LangSmith 发送定义的有效负载以及附加到有效负载的以下附加键值对：
         - `project_name`：警报范围内的 LangSmith 项目的名称。
         - `workspace_name`：LangSmith 工作空间的名称。
-        - `alert_rule_id`：用于识别 LangSmith 警报的 UUID。这可以用作 webhook 服务中的重复数据删除密钥。
+        - `alert_rule_id`：用于识别LangSmith 警报的 UUID。这可以用作 webhook 服务中的重复数据删除密钥。
         - `alert_rule_name`：报警规则名称。
         - `alert_rule_description`：警报规则的描述（如果没有设置则为空字符串）。
         - `alert_rule_type`：警报类型（截至 2025 年 4 月 1 日，所有警报均为 `threshold` 类型）。
@@ -318,7 +318,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       **第5步：在LangSmith中配置webhook警报**
 
       1. 在 LangSmith 中，导航到您的项目。
-      2. 选择**警报 → 创建警报**。
+      2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
       5. 使用以下设置配置 Webhook：
@@ -423,7 +423,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       **步骤3：在LangSmith中配置webhook警报**
 
       1. 在 LangSmith 中，导航到您的项目。
-      2. 选择**警报 → 创建警报**。
+      2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
       5. 使用以下设置配置 Webhook：
@@ -455,7 +455,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       6. 单击 **保存** 以激活 Webhook 配置。
 
       **第 4 步：测试集成**1. 在LangSmith警报配置中，单击**发送测试警报**。
-      2. 检查您指定的 Teams 频道中是否有测试通知。
+      2. 检查您指定的 Teams 频道是否有测试通知。
       3. 验证该卡是否包含预期的警报信息。
 
       **参考实现**
@@ -473,20 +473,20 @@ LangSmith 针对以下指标提供基于阈值的警报：
       - 用于设置警报的LangSmith项目。
 
       **步骤 1：创建 SendGrid API 密钥**1. 登录您的[SendGrid dashboard](https://app.sendgrid.com)。
-      2. 导航至 **设置 → API 密钥**。
+      2. 导航到 **设置 > API 密钥**。
       3. 单击**创建 API 密钥**。
-      4. 选择**受限访问**并启用**邮件发送 → 完全访问**。
+      4. 选择 **受限访问** 并启用 **邮件发送 > 完全访问**。
       5. 单击“**创建并查看**”，复制密钥并安全存储。
 
       **第 2 步：验证您的发件人电子邮件**
 
-      1. 在 SendGrid 中，导航至 **设置 → 发件人身份验证**。
+      1. 在 SendGrid 中，导航至 **设置 > 发件人身份验证**。
       2. 针对您要发送的地址完成**域身份验证**（推荐）或**单一发件人验证**。
 
       **步骤3：在LangSmith中配置webhook警报**
 
       1. 在 LangSmith 中，导航到您的项目。
-      2. 选择**警报 → 创建警报**。
+      2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
       5. 使用以下设置配置 Webhook：
@@ -552,7 +552,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       |供应商|网络钩子 URL | Auth 标头格式 |
       |----------|-------------|--------------------|
       |邮枪 | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
-      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，具有 HTTP 触发器的 Lambda 函数）进行路由。
+      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，带有 HTTP 触发器的 Lambda 函数）进行路由。
     </Accordion>
 
     <Accordion title="Configure Google Chat notifications via webhook (requires middleware)">
@@ -568,7 +568,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 
-      **先决条件**- 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间 → **应用程序和集成** → **添加 Webhooks**，创建 Webhook，然后复制 URL。
+      **先决条件**- 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhooks**，创建 Webhook，然后复制 URL。
       - 启用了 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。
 
       **第 1 步：部署处理程序**
@@ -651,7 +651,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       </Note>
 
       <Note>
-      Google Chat 强制执行 **每个空间每秒 1 条消息** 的写入速率限制，并在写入该空间的所有 Webhook 之间共享。如果您有多个 LangSmith 警报路由到同一空间并且它们同时触发，则某些消息可能会被丢弃。
+      Google Chat 强制执行 **每个空间每秒 1 条消息** 的写入速率限制，在写入该空间的所有 Webhook 之间共享。如果您有多个 LangSmith 警报路由到同一空间并且它们同时触发，则某些消息可能会被丢弃。
       </Note>
 
       **选项 B：Google Apps 脚本（无需基础设施）**
@@ -680,7 +680,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       }
       ```
 
-      在**项目设置→脚本属性**中设置`GCHAT_WEBHOOK_URL`和`LANGSMITH_SHARED_SECRET`。<Warning>
+      在 **项目设置 > 脚本属性** 中设置 `GCHAT_WEBHOOK_URL` 和 `LANGSMITH_SHARED_SECRET`。<Warning>
       Apps 脚本 Web 应用程序无法读取自定义 HTTP 请求标头，因此共享密钥必须作为 **查询字符串参数** (`?secret=...`) 而不是标头传递。将其包含在 LangSmith webhook URL 中而不是 headers 字段中。
       </Warning>
     </Accordion>

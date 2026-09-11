@@ -33,7 +33,7 @@
 创建和管理后备链需要`organization:manage`权限。有关完整权限细分，请参阅[Access control](/langsmith/llm-gateway-access)。
 </Warning>
 
-创建后备链：1. 转至 **设置 → 网关 → LLM 网关**，然后选择 **模型回退** 选项卡。
+创建后备链：1. 转到 **LLM Gateway** 并选择 **模型回退** 选项卡。
 1. 单击**创建后备链**。
 1. 选择链适用的**工作区**。
 1. 选择主要提供商和型号。当主要尝试失败时，对此提供者前缀的模型 ID 的请求将使用该链。
@@ -63,9 +63,9 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
     -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
-</CodeGroup>网关应用在 API 密钥工作区中为 `anthropic/claude-sonnet-4-6` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。
+</CodeGroup>
 
-## 选择后备候选人
+网关应用在 API 密钥工作区中为 `anthropic/claude-sonnet-4-6` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。## 选择后备候选人
 
 您可以添加两种类型的后备候选项：
 
@@ -76,7 +76,9 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 例如，将 `anthropic/claude-sonnet-4-6` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-sonnet-4-6`；网关在需要时选择并转换后备调用。
 
-## 另请参阅- [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
+## 另请参阅
+
+- [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
 - [Custom model providers](/langsmith/llm-gateway-custom-providers)：为自定义OpenAI或Anthropic兼容端点创建模型配置。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：在后备路由的同时应用成本限制。
 

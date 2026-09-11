@@ -85,14 +85,14 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 
     `export LANGCHAIN_CALLBACKS_BACKGROUND=true`
 
-    如果您处于无服务器环境中，我们建议相反设置以允许跟踪在函数结束之前完成：
+    如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
 
     `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 </Info>
 
 ### 2. 记录跟踪
 
-无需额外代码即可将跟踪记录到 LangSmith。只需像平常一样运行您的 LangChain 代码即可。
+无需额外代码即可将跟踪记录到LangSmith。只需像平常一样运行您的 LangChain 代码即可。
 
 <CodeGroup>
 
@@ -192,12 +192,12 @@ export LANGSMITH_PROJECT=my-project
 ```
 
 <Warning>
-`LANGSMITH_PROJECT` 标志仅在 JS SDK 版本 >= 0.2.16 中受支持，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
+仅 JS SDK 0.2.16 或更高版本支持 `LANGSMITH_PROJECT` 标志，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
 </Warning>
 
 ### 动态地
 
-这主要基于 [previous section](#trace-selectively) 构建，并允许您为特定的 `LangChainTracer` 实例设置项目名称或作为 Python 中 `tracing_context` 上下文管理器的参数。
+这很大程度上是基于 [previous section](#trace-selectively) 构建的，并允许您为特定的 `LangChainTracer` 实例设置项目名称或作为 Python 中 `tracing_context` 上下文管理器的参数。
 
 <CodeGroup>
 
@@ -228,7 +228,7 @@ await chain.invoke(
 您可以通过在 [⟦T52⟧](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供任意元数据和标签来注释您的跟踪。这对于将附加信息与跟踪相关联非常有用，例如执行跟踪的环境或启动跟踪的用户。有关如何通过元数据和标签查询跟踪和运行的信息，请参阅[Query traces (SDK)](/langsmith/export-traces)
 
 <Note>
-当您将元数据或标签附加到可运行对象时（通过[⟦T53⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig)或在运行时使用调用参数），它们将被该可运行对象的所有子可运行对象继承。
+当您将元数据或标签附加到可运行时（通过 [⟦T53⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 或在运行时使用调用参数），它们将被该可运行的所有子可运行继承。
 </Note>
 
 <CodeGroup>
@@ -312,7 +312,7 @@ await chain.invoke({ input: "What is the meaning of life?" }, {runName: "MyCusto
 
 ## 覆盖跟踪中的模型名称
 
-跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。但是，出于组织目的或区分不同的模型配置，您可能希望在跟踪中显示不同的、更具描述性的名称。您可以通过在构建或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
+跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。但是，出于组织目的或区分不同的模型配置，您可能希望在跟踪中显示不同的、更具描述性的名称。您可以通过在构造或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
 
 这在以下情况下特别有用：- 使用自托管或本地模型，其中模型 ID 可能不具有描述性。
 - 使用具有不同配置的相同模型并希望在痕迹中区分它们。
@@ -470,7 +470,7 @@ console.log(runId);
 
 </CodeGroup>
 
-## 确保退出前所有跟踪都已提交在 LangChain Python 中，LangSmith 的跟踪是在后台线程中完成的，以避免阻碍您的生产应用程序。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。这在无服务器环境中尤其普遍，在这种环境中，一旦链或代理完成，您的虚拟机可能会立即终止。
+## 确保退出前所有跟踪都已提交在 LangChain Python 中，LangSmith 的跟踪是在后台线程中完成的，以避免阻塞您的生产应用程序。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。这在无服务器环境中尤其普遍，在这种环境中，一旦链或代理完成，您的虚拟机可能会立即终止。
 
 您可以通过将 `LANGCHAIN_CALLBACKS_BACKGROUND` 环境变量设置为 `"false"` 来使回调同步。
 
@@ -665,7 +665,7 @@ const main = traceable(
 3. 不同的子运行可能具有相同的`execution_order`和`child_execution_order`值。因此，在极端情况下，某些运行可能会以不同的顺序结束，具体取决于 `start_time`。
 </Note>
 
-在某些用例中，您可能希望将 `traceable` 函数作为 RunnableSequence 的一部分运行，或者跟踪通过 `RunTree` API 命令式运行的 LangChain 子运行。从 LangSmith 0.1.39 和 @langchain/core 0.2.18 开始，您可以直接在 RunnableLambda 中调用 `traceable` 包装的函数。
+在某些用例中，您可能希望将 `traceable` 函数作为 RunnableSequence 的一部分来运行，或者跟踪通过 `RunTree` API 命令式运行的 LangChain 子运行。从 LangSmith 0.1.39 和 @langchain/core 0.2.18 开始，您可以直接在 RunnableLambda 中调用 `traceable` 包装的函数。
 
 ```typescript
 import { traceable } from "langsmith/traceable";

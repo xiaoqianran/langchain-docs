@@ -4,7 +4,7 @@
 
 # 跟踪光标会话
 
-使用 [Cursor hooks](https://cursor.com/docs/agent/hooks) 跟踪 LangSmith 中的 [Cursor](https://cursor.com/) 代理会话。每个回合都成为一个跟踪，每个游标对话分组为一个线程，它捕获提示、模型响应、工具调用、令牌使用和子代理活动。使用跟踪来调试代理行为、审核工具调用、跟踪每轮令牌花费以及比较游标运行。
+使用 [Cursor hooks](https://cursor.com/docs/agent/hooks) 跟踪 LangSmith 中的 [Cursor](https://cursor.com/) 代理会话。每个回合都成为一个跟踪，每个光标对话分组为一个线程，它捕获提示、模型响应、工具调用、令牌使用和子代理活动。使用跟踪来调试代理行为、审核工具调用、跟踪每轮令牌花费以及比较游标运行。
 
 插件源可在 [⟦T7⟧](https://github.com/langchain-ai/langsmith-cursor-plugins) 获取。
 
@@ -20,7 +20,7 @@
 
 直接从 Cursor 设置中的 GitHub 存储库安装插件：
 
-1. 打开 **光标 → 设置 → 插件**。
+1. 打开 **光标 > 设置 > 插件**。
 2. 将`https://github.com/langchain-ai/langsmith-cursor-plugins`粘贴到插件链接字段中。
 3. 确认添加 **LangSmith 光标跟踪**。
 
@@ -58,8 +58,8 @@ node scripts/install.mjs --print
 
 ### 环境变量
 
-每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*`优先。|变量|默认 |描述 |
-| ---| ---| ---|
+每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*`优先。|变量|默认|描述 |
+| --- | --- | --- |
 | `TRACE_TO_LANGSMITH` | `false` |设置为 `"true"` 以启用跟踪。 |
 | `LANGSMITH_CURSOR_API_KEY` | - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。 |
 | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。回落至`LANGSMITH_ENDPOINT`。 |
@@ -97,8 +97,8 @@ tail -f ~/.cursor/langsmith-hook.log
   "api_url": "https://api.smith.langchain.com",
   "project": "cursor"
 }
-```|领域|环境变量 |默认 |描述 |
-| ---| ---| ---| ---|
+```|领域 |环境变量 |默认|描述 |
+| --- | --- | --- | --- |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT`、`LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。 |
@@ -112,9 +112,9 @@ tail -f ~/.cursor/langsmith-hook.log
 
 ## 追踪什么
 
-该插件监听 Cursor hooks 并在每个代理轮次中组装一个跟踪：- **转弯**：每个转弯都成为自己的轨迹，使用 `thread_id` = 光标的 `conversation_id` 分组为一个线程。跟踪嵌套模型运行，并且任何工具或子代理在转弯下方运行。
+该插件监听 Cursor hooks 并在每个代理轮次中组装一个跟踪：- **转弯**：每个转弯都成为其自己的轨迹，使用 `thread_id` = 光标的 `conversation_id` 分组为一个线程。跟踪嵌套模型运行，并且任何工具或子代理在转弯下方运行。
 - **令牌使用**：模型运行时每回合`usage_metadata`。
-- **模型和提供商**：`ls_model_name` 和 `ls_provider`，从 Cursor 的模型标签标准化为规范的提供商 ID（例如，`claude-4.6-sonnet` 变为 `claude-sonnet-4-6`）。自动模式向提供商`cursor`报告`default`。
+- **模型和提供商**：`ls_model_name`和`ls_provider`，从光标的模型标签标准化为规范的提供商ID（例如，`claude-4.6-sonnet`变为`claude-sonnet-4-6`）。自动模式向提供商`cursor`报告`default`。
 - **工具调用**：工具针对成功调用和失败调用运行，并带有输入和输出。
 - **附件**：从 Cursor 的本地数据库恢复并内联呈现在用户消息上的图像和文件附件。将 `attachments` 设置为 `false` 可跳过此步骤。
 - **子代理**：每个子代理显示为嵌套链运行，其下方有自己的工具调用，链接到父回合。
@@ -130,8 +130,8 @@ tail -f ~/.cursor/langsmith-hook.log
 每次运行都在 `run.extra.metadata` 上承载共享的 `coding-agent-v1` 元数据合约，它可以识别来自任何编码代理（Claude Code、Codex、Cursor）的跟踪，并使用相同的稳定密钥进行分组。
 
 |范围 |按键|
-| ---| ---|
-|永远在场| `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`、`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、`ls_agent_runtime` (`"Cursor"`), `ls_trace_schema_version` (`"coding-agent-v1"`), `thread_id` (= 光标的`conversation_id`)。 |
+| --- | --- |
+|永远在场 | `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`、`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、`ls_agent_runtime` (`"Cursor"`), `ls_trace_schema_version` (`"coding-agent-v1"`), `thread_id` (= 光标的`conversation_id`)。 |
 |在已知的地方出现 | `ls_integration_version`、`ls_agent_runtime_version`（光标的`cursor_version`）、`turn_id`（= 光标的`generation_id`）、`turn_number`、`repository_url`、`repository_provider`、 `repository_name`、`git_branch`、`git_commit_sha`、`cwd`。 |
 |上下文 | `local_username`、`user_email`（暂定）。 |
 |子代理仅运行 | `ls_subagent_id`，`ls_subagent_type`。 |

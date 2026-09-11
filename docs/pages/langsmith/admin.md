@@ -12,7 +12,7 @@ Set up your LangSmith account: create API keys, configure your profile, connect 
         You can log in with **Google**, **GitHub**, or **email**.
     </Step>
     <Step title="Create an API key" icon="key">
-        Go to your [Settings page](https://smith.langchain.com/settings) → **API Keys** → **Create API Key**.
+        Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
         Copy the key and save it securely.
     </Step>
 </Steps>

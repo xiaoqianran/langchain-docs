@@ -251,7 +251,7 @@ class ThreadsChatPipeline {
                       .completions()
                       .create(
                           ChatCompletionCreateParams.builder()
-                              .model(ChatModel.GPT_5_CHAT_LATEST)
+                              .model(ChatModel.GPT_5_5)
                               .messages(allMessages)
                               .build());
 
@@ -367,7 +367,7 @@ val chatPipeline by lazy {
             val chatCompletion =
                 openai.chat().completions().create(
                     ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_5_CHAT_LATEST)
+                        .model(ChatModel.GPT_5_5)
                         .messages(allMessages)
                         .build(),
                 )
@@ -527,7 +527,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 
 ### 查看反馈
 
-反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“消息”视图，然后单击轮次元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
+反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“消息”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
 
 ### 保存线程级过滤器
 
