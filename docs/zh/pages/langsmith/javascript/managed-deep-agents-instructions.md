@@ -2,30 +2,29 @@
 
 <!-- langchain-docs: Add instructions to Managed Deep Agents | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-instructions -->
 
-# 将指令添加到托管Deep Agents
+# 向托管Deep Agents添加指令
 
-指令定义了代理的行为。它们构成了座席系统提示的核心。您可以在简单的 Markdown 文件中定义它们，代理会自动选取它们。
+指令定义永远在线的代理行为。它们构成了座席系统提示的核心。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
-## 项目结构
-
-`instructions.md` 文件位于项目根目录：
+将代理指令放入项目根目录下的 `instructions.md` 中：
 
 
 
 ```text
 my-agent/
-  agent.ts
   instructions.md
 ```
 
 
+完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+
 ## 添加说明
 
-创建或修改`instructions.md`：
+创建或修改 `instructions.md` 来定义代理的角色、行为、约束以及使用其工具的指导：
 
 ```markdown instructions.md
 # Assistant
@@ -33,21 +32,28 @@ my-agent/
 You are a helpful assistant.
 ```
 
-使用此文件定义代理的角色、行为、约束以及使用其工具的指南。
+MDA 在每次运行时将指令插入代理的系统提示符中。
+代理无法在运行时修改这些指令。
 
-## 代理如何使用指令
+## 部署
 
-每次运行时都会将说明插入到代理系统提示符中。他们始终在场并帮助指导代理的行为。
+当您运行 `mda deploy` 时，MDA 会将 `instructions.md` 同步到代理的 [Context Hub](/langsmith/use-the-context-hub)。
 
-## 同步到 Context Hub
+然后，您可以在 LangSmith UI 中编辑说明并将这些更改应用到代理。
 
-当您运行 `mda deploy` 部署代理时，指令会自动同步到代理的 [Context Hub](/langsmith/use-the-context-hub) 存储库。然后，您可以在 LangSmith UI 中编辑说明，并将更改自动传播到代理。
+最好将 `instructions.md` 文件保留在存储库中作为持久更改的事实来源，因为稍后的部署会再次同步项目副本。
 
-## 指令与其他概念的比较
+## 何时使用说明|概念|角色 |加载时间 |
+| --- | --- | --- |
+| **说明** |永远在线的系统提示 |每次跑步 |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时 |
+| **[Memory](/langsmith/javascript/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
-将 [skills](/langsmith/javascript/managed-deep-agents-skills) 用于代理仅在相关时加载的任务特定过程。使用 [memory](/langsmith/javascript/managed-deep-agents-memory) 来获取代理跨线程学习和保留的知识。
+有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

@@ -4,7 +4,9 @@
 
 # BYOC 入职
 
-在开始之前，请先查看 [prerequisites](/langsmith/byoc#prerequisites)。
+在开始之前，请先查看[prerequisites](/langsmith/byoc#prerequisites)。
+
+默认情况下，LangChain 为您的数据平面创建 VPC。要自行创建和管理网络，请在创建下面的 IAM 角色和数据平面之前遵循[Bring your own VPC on AWS](/langsmith/byoc-byovpc)。
 
 <Steps>
 
@@ -19,6 +21,8 @@ LangChain 提供 IAM 角色的外部 ID。导航到 **设置 > 数据平面**，
 
 使用复制的外部 ID 在您的 AWS 账户中应用 [⟦T0⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)。这将创建跨账户角色LangChain，负责配置和管理数据平面。角色的信任策略必须在其 `ExternalId` 条件下使用此值。
 
+对于 BYOVPC，设置 `allow_vpc_creation_permissions = false` 并在 `vpc_ids` 中提供您的 VPC ID。参见[Create the reduced-permission IAM role](/langsmith/byoc-byovpc#create-the-reduced-permission-iam-role)。
+
 <Note>
 LangChain 建议专门用于 LangSmith BYOC 的新 AWS 账户。
 </Note>
@@ -29,12 +33,14 @@ LangChain 建议专门用于 LangSmith BYOC 的新 AWS 账户。
 导航到 **设置 > 数据平面** 并使用以下参数创建数据平面：- **名称**：小写字母、数字和连字符，最多 24 个字符。
 - **AWS 区域**：[supported regions](/langsmith/byoc#regions-and-cloud-providers) 之一。
 - **AWS IAM 角色 ARN**：您在上一步中创建的角色的 ARN，LangSmith 在您的账户中采用该角色。
-- **VPC CIDR 范围**：私有 RFC 1918 范围，从 `/16` 到 `/18`。
+- **网络配置**：对于 LangChain 管理的 VPC，提供从 `/16` 到 `/18` 的私有 RFC 1918 CIDR 范围。对于 BYOVPC，请提供 [VPC and subnet IDs](/langsmith/byoc-byovpc#supply-the-vpc-and-subnet-ids) 而不是 CIDR 范围。
 - **负载均衡器访问**：默认情况下为私有，这使得入口负载均衡器只能从您的 VPC 访问。将其设置为 **Public** 以使负载均衡器面向互联网。
 </Step>
 
 <Step title="Wait for provisioning">
 LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Provisioning`再到`Active`。
+
+对于 BYOVPC，LangSmith 在预配之前验证您的 VPC 和子网，然后在 VPC 内创建工作负载基础设施。
 
 <Note>
 数据平面的端到端配置大约需要 60 到 90 分钟。
@@ -44,10 +50,10 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 </Step>
 
 <Step title="Set up private connectivity">
-默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能访问它，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
+默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能访问它，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。在 **设置 > 数据平面** 下找到 API URL。如果前端无法访问您的数据平面，LangSmith 会提示您切换到可访问的数据平面上的工作区，该工作区可以是云工作区。
+</Step>
 
-在 **设置 > 数据平面** 下找到 API URL。如果前端无法访问您的数据平面，LangSmith 会提示您切换到可访问的数据平面上的工作区，该工作区可以是云工作区。
-</Step><Step title="Create workspaces">
+<Step title="Create workspaces">
 名为 `dp-<data_plane_name>` 的工作空间会在新数据平面内自动配置。在数据平面可达之前，它是不可访问的。
 
 您可以在数据平面中创建其他工作区。创建每个数据平面时选择目标数据平面：一个工作空间只属于一个数据平面，一个数据平面可以容纳多个工作空间。
@@ -60,7 +66,7 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 <Step title="(Optional) Migrate existing data">
 如果您从现有的LangSmith云或[self-hosted](/langsmith/self-hosted)实例迁移，则可以复制用户、角色、数据集、提示、实验、注释队列配置、自动化规则、仪表板和队列资源。今天无法迁移痕迹。
 
-有关更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
+欲了解更多信息，请参阅[Migrate to BYOC](/langsmith/byoc-migration)。
 </Step>
 
 </Steps>
@@ -70,9 +76,7 @@ LangChain 代表您配置基础设施。数据平面从`Requested`移动到`Prov
 - [Use your data plane](/langsmith/byoc-usage) 将应用程序和 API 客户端指向正确的端点。
 - [BYOC architecture](/langsmith/byoc-architecture) 涵盖了 LangChain 的规定以及飞机如何通信。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

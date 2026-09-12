@@ -19,7 +19,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 <Note>
 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
-</Note>[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。默认情况下，延长保留时间设置为 180 天，但您可以根据组织的需求进行调整。对保留期的更改仅适用于新跟踪。
+</Note>[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期为 180 天。您可以根据组织的需要将保留期调整为低于此最大值。对保留期的更改仅适用于新跟踪。
 
 <Note>
 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
@@ -35,7 +35,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
     1. 从左侧菜单中选择**使用配置**。
     1. 在列表中找到您要配置的工作区。
     1. 单击该工作区的 **数据保留策略** 列下的值。
-    1. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。可用的持续时间有：30d、60d、90d、120d、150d、180d、240d、300d、365d 和 400d。
+    1. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
     1. 选择**保存**。
   </Tab>
   <Tab title="API">
@@ -96,11 +96,11 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 所有跟踪删除都将删除所有数据存储中的相关实体，例如反馈、聚合和统计信息。
 </Warning>
 
-### Deletion timeline
+### 删除时间线
 
-跟踪删除是在非高峰使用时间进行的，并且不是即时的。 LangChain runs the delete job on the weekend.没有删除确认 - 您需要再次查询数据以验证它是否已被删除。
+跟踪删除是在非高峰使用时间进行的，并且不是即时的。 LangChain 在周末运行删除作业。没有删除确认 - 您需要再次查询数据以验证它是否已被删除。
 
-### Delete specific traces
+### 删除特定痕迹
 
 要根据跟踪 ID 从单个会话中删除特定跟踪：
 
@@ -118,7 +118,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
   }'
 ```
 
-## Example deletes
+## 删除示例
 
 您可以通过我们的 API 自助删除数据集示例，该 API 根据您的数据保留需求支持软删除和硬删除方法。
 
@@ -126,11 +126,11 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 硬删除将从整个数据集历史记录中指定示例的所有版本中永久删除输入、输出和元数据。
 </Warning>
 
-### Deleting examples is a two-step process
+### 删除示例分为两步
 
 对于批量操作，示例删除遵循两步过程：
 
-#### 1. Search for examples by metadata
+#### 1. 通过元数据搜索示例
 
 查找工作区中所有数据集具有匹配元数据的所有示例。
 

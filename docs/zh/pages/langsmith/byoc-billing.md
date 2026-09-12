@@ -13,19 +13,17 @@ LangSmith BYOC 可以与 AWS Marketplace 集成。
 
 ## 可计费的 AWS 服务
 
-每个数据平面都会在您的帐户中创建以下资源。 AWS 按自己的费率收费，与您的 LangSmith 合同无关。
-
-|服务 |它涵盖什么 |计费依据|
+以下资源会增加您账户中的数据平面成本。 AWS 按自己的费率收费，与您的 LangSmith 合同无关。使用[BYOVPC](/langsmith/byoc-byovpc)，网络成本取决于您配置和管理的网关、端点和日志记录。|服务 |它涵盖什么 |计费依据|
 |--------------------|----------------|------------------------|
 | **亚马逊 EKS** |数据平面集群的 Kubernetes 控制平面 |每集群小时 |
 | **亚马逊EC2** | EKS 集群中运行的节点 |每实例小时 |
 | **亚马逊RDS** |关系工作负载的实例 |每个实例小时，包括多可用区，以及存储、备份和快照 |
 | **亚马逊ElastiCache** |用于缓存和排队工作负载的 Redis 实例 |每节点小时 |
-| **亚马逊S3** |用于 LangSmith 工作负载、ClickHouse 备份和 VPC 流日志的存储桶 |存储、请求和数据传输 || **亚马逊EBS** |节点根磁盘和 ClickHouse 存储卷 |每月每 GB，加上高于 gp3 基准的预配置 IOPS 和吞吐量 |
+| **亚马逊S3** |用于 LangSmith 工作负载、ClickHouse 备份和 VPC 流日志的存储桶 |存储、请求和数据传输 |
+| **亚马逊EBS** |节点根磁盘和 ClickHouse 存储卷 |每月每 GB，加上高于 gp3 基准的预配置 IOPS 和吞吐量 |
 | **区域 NAT 网关** |私有子网的出站出站流量 |每小时，加上处理的数据|
 | **弹性负载平衡** |两个网络负载均衡器：一个位于 Istio 入口前面，另一个用于 EKS API PrivateLink 端点 |每 NLB 小时，加上 NLCU |
-| **AWS PrivateLink** |数据平面使用的接口 VPC 端点 |每个可用区小时的每个接口端点，以及处理的数据 |
-| **AWS Lambda 和 Amazon EventBridge** | PrivateLink 端点的协调 |每次调用和每个发布的事件 |
+| **AWS PrivateLink** |数据平面使用的接口 VPC 端点 |每个可用区小时的每个接口端点，以及处理的数据 || **AWS Lambda 和 Amazon EventBridge** | PrivateLink 端点的协调 |每次调用和每个发布的事件 |
 | **亚马逊 CloudWatch 日志** | EKS 控制平面日志 |摄入和储存|
 | **VPC 流日志** |将流日志传送到 S3 |每 GB 交付 |
 | **亚马逊 53 号公路** |私人托管区 |每个托管区域月，加上查询 |
@@ -33,7 +31,9 @@ LangSmith BYOC 可以与 AWS Marketplace 集成。
 
 ### 数据传输
 
-BYOC 中有一些数据传输成本驱动因素：- 跨可用区流量，因为数据平面跨区域运行[highly available](/langsmith/byoc-operations#high-availability)。
+BYOC 中有一些数据传输成本驱动因素：
+
+- 跨可用区流量，因为数据平面跨区域运行[highly available](/langsmith/byoc-operations#high-availability)。
 - 通过 NAT 网关出口，例如，如果调用模型提供程序，或通过 Webhook 调用外部 API。
 - 公共 IPv4 地址，AWS 按地址小时收费。当启用公共入口时，区域 NAT 网关使用一个，面向互联网的负载均衡器使用另一个。
 
@@ -50,6 +50,8 @@ AWS 强制执行每个区域和每个账户的默认配额。对于新帐户或�
 
 有关当前默认值，请参阅[AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)。
 
+使用 BYOVPC，在检查配额时考虑现有资源使用情况以及您选择的端点和出口配置。您提供的子网还必须满足 [subnet size and available IP requirements](/langsmith/byoc-byovpc#configure-the-vpc-and-subnets)。
+
 如果配置停止或失败，配额耗尽是一个常见原因，此外还有缺少权限和服务控制策略。参见[What happens if provisioning fails?](/langsmith/byoc-faq)。
 
 ## 另请参阅
@@ -58,9 +60,7 @@ AWS 强制执行每个区域和每个账户的默认配额。对于新帐户或�
 - [Operations](/langsmith/byoc-operations)
 - [BYOC FAQ](/langsmith/byoc-faq)
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

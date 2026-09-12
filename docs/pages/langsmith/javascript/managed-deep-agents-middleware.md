@@ -2,20 +2,13 @@
 
 # Add custom middleware to Managed Deep Agents
 
-Managed Deep Agents support the Deep Agents `middleware` configuration surface.
-
-
-
-Add LangChain middleware to `defineDeepAgent` to monitor tool calls, add guardrails, redact data, retry transient failures, or customize model calls.
-
+Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/javascript/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
-Keep the agent entry point at the project root and custom middleware under `middleware/`:
+Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
 
 
@@ -27,13 +20,18 @@ my-agent/
 ```
 
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+
 The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Middleware should focus on agent behavior around model calls, tool calls, and lifecycle hooks.
 
-For deeper hook, state, and context details, see [custom middleware](/oss/javascript/langchain/middleware/custom).
+## Add middleware
 
-## Use prebuilt middleware
+Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
-You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition.
+<Steps>
+  <Step title="Use prebuilt middleware" id="use-prebuilt-middleware">
+
+You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition:
 
 
 
@@ -52,12 +50,10 @@ export const agent = defineDeepAgent({
 ```
 
 
-Middleware is the right place for cross-cutting behavior such as PII handling, rate limits, retry policies, model fallbacks, dynamic model selection, and tool-call monitoring.
+  </Step>
+  <Step title="Define custom middleware (Optional)" id="define-custom-middleware">
 
-
-## Add a custom middleware module
-
-For a more advanced option, you can also define [custom middleware](/oss/javascript/langchain/middleware/custom).
+For a more advanced option, define [custom middleware](/oss/javascript/langchain/middleware/custom) in a local module.
 
 
 
@@ -76,8 +72,7 @@ export const logToolCalls = createMiddleware({
 ```
 
 
-
-Import the middleware into the project-root agent entry and pass it in the `middleware` list.
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
 
 
@@ -94,18 +89,33 @@ export const agent = defineDeepAgent({
 ```
 
 
-`mda dev` and `mda deploy` copy the project files into the compiled build.
-
 
 
 Your middleware imports should work the same way they do in a normal local TypeScript project.
 
+
+  </Step>
+</Steps>
 
 ## Use runtime context
 
 Middleware can read per-run context through the normal LangChain runtime APIs. Use context for user IDs, organization IDs, feature flags, request metadata, or credentials that should not be part of the model prompt by default.
 
 For examples, see [Custom middleware](/oss/javascript/langchain/middleware/custom).
+
+## Deployment
+
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `middleware/`. Middleware is not synced to Context Hub; it ships with the agent code.
+
+## When to use middleware
+
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **Middleware** | Application code | Import and pass in the agent definition |
+| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 

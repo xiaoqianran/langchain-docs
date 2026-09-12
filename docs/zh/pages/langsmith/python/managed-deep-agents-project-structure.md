@@ -4,9 +4,7 @@
 
 # 托管Deep Agents项目结构
 
-托管 Deep Agents 项目具有必需的代理条目和启用托管功能的可选文件。
-
-这是一个常规的 Python 项目。
+托管 Deep Agents 项目是一个普通的 Python 包，具有一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
 
 
@@ -40,8 +38,8 @@ my-agent/
 ├── identity.py
 ├── memory.py
 
-├── pyproject.toml                  # Dependencies and secrets
-├── .env
+├── pyproject.toml                  # Dependencies
+├── .env                            # Local and deploy secrets
 
 └── evals/                          # Harbor workspace
     ├── harbor-job.json
@@ -52,23 +50,42 @@ my-agent/
         └── tests/
 ```
 
-唯一需要的文件是项目根目录下的`agent.py`。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。
+唯一需要的文件是项目根目录下的 `agent.py`，其中包含名为 `agent` 的 [agent definition](/langsmith/python/managed-deep-agents-agent-definition)。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
 
 
 
 
-一个项目中仅使用一个代理条目。参见[Agent definition](/langsmith/python/managed-deep-agents-agent-definition)。
+## MDA 如何处理项目文件
 
-## Managed Deep Agents 如何处理项目文件- **托管上下文**：`instructions.md`定义系统提示符。 `skills/`下的每个目录都包含特定于任务的指令。托管 Deep Agents 将两者同步到 Context Hub。
-- **应用程序代码**：`tools/`和`middleware/`下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
-- **托管配置**：根`identity.py`和`memory.py`、`channels/`、`connectors/`和`schedules/`的直接子级以及`sandbox/__init__.py`启用其相应的功能。 MCP 连接器模块导出模块级 `connector`。
-- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。托管 Deep Agents 在本地加载 `.env` 并将符合条件的值作为部署机密转发，但从不在构建存档中包含 `.env` 文件。
-- **评估**：托管 Deep Agents 评估是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
+- **托管上下文**：[⟦T5⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T6⟧](/langsmith/python/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 Context Hub。
+- **应用程序代码**：[⟦T10⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T11⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
+- **托管配置**：某些路径在存在时启用功能。对于`channels/`、`connectors/`和`schedules/`，只有直接子级是托管声明；嵌套模块不是。|路径|启用|
+    | --- | --- |
+    | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
+    | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
+    | `channels/<name>.py` | [Messaging channels](/langsmith/python/managed-deep-agents-channels) |
+    | `connectors/<name>.py` | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) |
+    | `schedules/<name>.py` | [Cron schedules](/langsmith/python/managed-deep-agents-schedules) |
+    | `sandbox/__init__.py` | [Sandbox filesystem and shell](/langsmith/python/managed-deep-agents-sandboxes) |
+
+    MCP 连接器模块导出模块级 `connector`。
+
+- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。有关更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+- **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
 
 
 
 
-上面的布局显示了常见的 `.py` 名称。
+## 后续步骤
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
+    使用 `mda` CLI 创建并部署您的第一个托管深度代理。
+  </Card>
+  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
+    为快速入门研究助手添加持久记忆和每日日程安排。
+  </Card>
+</CardGroup>
 
 ---
 

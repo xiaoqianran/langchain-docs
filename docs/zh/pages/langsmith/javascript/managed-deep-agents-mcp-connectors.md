@@ -12,8 +12,6 @@
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
-## 项目结构
-
 在 `tools/` 正下方的模块中声明 MCP 服务器：
 
 
@@ -25,10 +23,19 @@ my-agent/
     mcp.ts
 ```
 
-该模块必须导出名为 `mcp`。
 
+完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+
+要在项目中实现应用程序逻辑，请使用[authored tool](/langsmith/javascript/managed-deep-agents-tools)。
 
 ## 添加 MCP 服务器
+
+当工具已存在于远程 MCP 服务器上并且您希望 MDA 加载它们而不将它们导入代理定义中时，请使用 MCP 服务器。
+
+<Steps>
+  <Step title="Declare the connector" id="declare-the-connector">
+
+使用 `connectors.mcp` 声明一台或多台远程服务器：
 
 
 
@@ -48,11 +55,17 @@ export const mcp = defineMcp({
 ```
 
 
+
+
+该模块必须导出名为 `connector`。
+
+
 托管 Deep Agents 支持可流式 HTTP (`"http"`) 和旧版 SSE (`"sse"`) 传输。不支持 Stdio MCP 服务器。通过 HTTP 公开 stdio 服务器或将其操作实现为 [authored tool](/langsmith/javascript/managed-deep-agents-tools)。
 
-## 选择工具
+有关连接选项，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
 
-默认情况下，托管Deep Agents公开每个服务器的每个工具。要仅公开选定的工具，请在该服务器的配置中设置允许列表：
+  </Step>
+  <Step title="Select tools (Optional)" id="select-tools">默认情况下，托管Deep Agents公开每个服务器的每个工具。要仅公开选定的工具，请在该服务器的配置中设置允许列表：
 
 
 
@@ -67,15 +80,28 @@ export const mcp = defineMcp({
 要公开除选定工具之外的所有工具，请将 `includeTools` 替换为 `excludeTools`。
 
 
-您可以同时使用这两个选项。拒绝列表在允许列表之后应用，并且同一工具不能出现在两个列表中。选择在 Managed Deep Agents 前缀之前使用原始 MCP 工具名称。默认情况下，工具名称以服务器名称为前缀以避免冲突。例如，来自 `langchainDocs` 服务器的 `search_docs_by_lang_chain` 工具公开为 `langchainDocs__search_docs_by_lang_chain`。
+您可以同时使用这两个选项。拒绝列表在允许列表之后应用，并且同一工具不能出现在两个列表中。
 
-## 配置 MCP 服务器
+选择在 Managed Deep Agents 前缀之前使用原始 MCP 工具名称。默认情况下，工具名称以服务器名称为前缀以避免冲突。例如，来自 `langchainDocs` 服务器的 `search_docs_by_lang_chain` 工具公开为 `langchainDocs__search_docs_by_lang_chain`。
+
+  </Step>
+  <Step title="Pass credentials (Optional)" id="pass-credentials">
+
+如果 MCP 服务器需要凭据，请在服务器配置上声明连接并在工作区中创建该连接。
+
+- **MCP OAuth**：对于通告 OAuth 并支持自动客户端注册的服务器，请使用`mda connections create <slug>`（从 MCP 声明推断）或`mda connections create <slug> --mcp <url>` 创建。您不提供客户端 ID 或密码。
+- **不透明秘密或通用 OAuth**：对于静态 API 密钥，或您自己注册的 BYOT OAuth 应用程序，创建不透明秘密或通用 OAuth 连接，然后将服务器的 `connection` 选项设置为 `connections.get(...)`。
+
+有关创建模式、所有者和运行时授权，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+
+  </Step>
+</Steps>## 配置 MCP 服务器
 
 每个服务器都支持以下核心选项：
 
-|选项 |描述 |
+|选项|描述 |
 | --- | --- |
-| `transport` |必需的。对流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
+| `transport` |必需的。对于可流式 HTTP 使用 `http`，对于旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
 | `headers` |发送到服务器的静态标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
@@ -86,23 +112,22 @@ export const mcp = defineMcp({
 
 MCP 定义还接受以下选项：
 
-|选项 |默认 |描述 |
+|选项|默认 |描述 |
 | --- | --- | --- |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
 
-## 将 MCP 与其他功能进行比较- **MCP 服务器** 提供远程托管工具。
-- **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** 在项目中实现应用程序逻辑并通过代理定义传递。
-- **[Channels](/langsmith/javascript/managed-deep-agents-channels)** 接收启动代理运行并传递响应的外部消息。
+## 部署
 
-## 使用需要身份验证的 MCP 服务器
+`mda dev` 和 `mda deploy` 发现 `connectors/` 下的连接器模块并将它们包含在托管配置中。连接器未同步到 Context Hub。
 
-如果 MCP 服务器需要凭据，请在服务器配置上声明连接并在工作区中创建该连接。
+## 何时使用 MCP 连接器|概念|亲切 |它如何到达代理|
+| --- | --- | --- |
+| **MCP 服务器** |托管配置|根据`tools/`声明；没有导入到代理条目|
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
-- **MCP OAuth**：对于通告 OAuth 并支持自动客户端注册的服务器，请使用`mda connections create <slug>`（从 MCP 声明推断）或`mda connections create <slug> --mcp <url>` 创建。您不提供客户端 ID 或密码。
-- **不透明机密或通用 OAuth**：对于静态 API 密钥，或您自己注册的 BYOT OAuth 应用程序，创建不透明机密或通用 OAuth 连接，然后将服务器的 `connection` 选项设置为 `connections.get(...)`。
-
-有关创建模式、所有者和运行时授权，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ---
 

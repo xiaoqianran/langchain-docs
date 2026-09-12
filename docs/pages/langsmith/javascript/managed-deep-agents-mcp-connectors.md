@@ -10,8 +10,6 @@ Most remote MCP servers require authentication. A [connection](/langsmith/javasc
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-## Project structure
-
 Declare MCP servers in a module directly under `tools/`:
 
 
@@ -23,10 +21,19 @@ my-agent/
     mcp.ts
 ```
 
-The module must export a named `mcp`.
 
+For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
-## Add MCP servers
+To implement application logic in the project instead, use an [authored tool](/langsmith/javascript/managed-deep-agents-tools).
+
+## Add an MCP servers
+
+Use an MCP server when tools already live on a remote MCP server and you want MDA to load them without importing them into the agent definition.
+
+<Steps>
+  <Step title="Declare the connector" id="declare-the-connector">
+
+Use `connectors.mcp` to declare one or more remote servers:
 
 
 
@@ -46,9 +53,17 @@ export const mcp = defineMcp({
 ```
 
 
-Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/javascript/managed-deep-agents-tools).
 
-## Select tools
+
+The module must export a named `connector`.
+
+
+Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/javascript/managed-deep-agents-tools) instead.
+
+For connection options, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+
+  </Step>
+  <Step title="Select tools (Optional)" id="select-tools">
 
 By default, Managed Deep Agents exposes every tool from each server. To expose only selected tools, set an allowlist inside that server's configuration:
 
@@ -68,6 +83,19 @@ To expose every tool except selected tools, replace `includeTools` with `exclude
 You can use both options together. The denylist applies after the allowlist, and the same tool cannot appear in both lists.
 
 Selection uses raw MCP tool names before Managed Deep Agents prefixes them. Tool names are prefixed with the server name by default to avoid collisions. For example, the `search_docs_by_lang_chain` tool from the `langchainDocs` server is exposed as `langchainDocs__search_docs_by_lang_chain`.
+
+  </Step>
+  <Step title="Pass credentials (Optional)" id="pass-credentials">
+
+If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+
+- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
+- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
+
+For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+
+  </Step>
+</Steps>
 
 ## Configure MCP servers
 
@@ -91,20 +119,19 @@ The MCP definition also accepts these options:
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` | Prefix each tool with `{server}__`. |
 | `throw_on_load_error` / `throwOnLoadError` | `true` | Fail loading instead of starting with a partial tool set. |
 
-## Compare MCP with other capabilities
+## Deployment
 
-- **MCP servers** provide remotely hosted tools.
-- **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** implement application logic in the project and are passed through the agent definition.
-- **[Channels](/langsmith/javascript/managed-deep-agents-channels)** receive external messages that start agent runs and deliver responses.
+`mda dev` and `mda deploy` discover connector modules under `connectors/` and include them in the managed configuration. Connectors are not synced to Context Hub.
 
-## Use MCP servers that require authentication
+## When to use MCP connectors
 
-If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+| Concept | Kind | How it reaches the agent |
+| --- | --- | --- |
+| **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
-- **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
-- **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
-
-For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/javascript/managed-deep-agents-connections).
+For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
 ---
 

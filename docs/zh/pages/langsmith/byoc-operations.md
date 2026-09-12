@@ -15,7 +15,7 @@ LangChain 随着负载变化缩放数据平面，因此您无需调整大小或�
 
 ## 高可用性
 
-默认情况下，数据平面是为了实现高可用性而配置的。 VPC 跨越您所在区域的可用区，RDS 和 ElastiCache 运行具有自动故障转移功能的多可用区。
+默认情况下，数据平面是为了实现高可用性而配置的。该部署跨越您所在区域的多个可用区，并且 RDS 和 ElastiCache 运行具有自动故障转移功能的多可用区。
 
 <Note>
 要运行没有高可用性的数据平面，请联系 LangChain 团队。
@@ -27,9 +27,9 @@ LangChain 随着负载变化缩放数据平面，因此您无需调整大小或�
 
 ## LangSmith 升级
 
-LangChain 每天都会升级数据平面中的 LangSmith 版本。升级是滚动的、逐个副本的，因此不会出现整个服务停机。
+LangChain 每天都会升级数据平面中的 LangSmith 版本。升级是滚动的、逐个副本的，因此不会出现整个服务停机。有两种机制可确保升级不停机：
 
-有两种机制可确保升级不停机：- **水平 Pod 自动缩放**：LangSmith 服务运行多个副本，由水平 Pod 自动缩放器调整大小，因此一次替换几个 Pod，而其余副本继续提供流量。
+- **水平 Pod 自动缩放**：LangSmith 服务运行多个副本，由水平 Pod 自动缩放器调整大小，因此一次替换几个 Pod，而其余副本继续提供流量。
 - **Pod 中断预算**：Pod 中断预算限制了一次可以有多少个服务副本不可用，因此滚动更新和节点消耗都不会导致服务低于保持可用所需的容量。
 
 ## 支持服务升级
@@ -65,8 +65,8 @@ LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因�
 ## 审计
 
 - **LangSmith 审核日志**：对数据平面资源的操作记录在数据平面中，并可在数据平面端点访问。控制平面操作（例如创建用户）在控制平面中进行审核。有关如何访问两者的信息，请参阅[Audit logs](/langsmith/audit-logs)。
-- **EKS 审核日志**：发送到您帐户中的 CloudWatch，以便您可以监控所运行的命令。
-- **VPC 流日志**：记录在您账户的 S3 存储桶中。
+- **EKS 审核日志**：发送到您帐户中的 CloudWatch，以便您可以监控运行的命令。
+- **VPC 流日志**：记录在您账户的 S3 存储桶中。使用[BYOVPC](/langsmith/byoc-byovpc)，您可以自行配置VPC流日志。
 
 您有责任对这些日志设置警报。
 
@@ -75,9 +75,7 @@ LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因�
 - [BYOC architecture](/langsmith/byoc-architecture)
 - [Using BYOC](/langsmith/byoc-usage)
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

@@ -33,7 +33,7 @@ const apiKey = await connections.get("organization-tavily", { type: "agent" });
 
 ## 选择凭证所有者
 
-每个 `connections.get(...)` 调用名称都拥有它解析的凭证：|业主|决定|使用时 |
+每个 `connections.get(...)` 调用名称都拥有它解析的凭证：|业主|决定 |使用时 |
 | --- | --- | --- |
 | `agent` |属于部署的一份凭证。每个呼叫者都使用它。 |每个呼叫者都需要相同的功能：使用 Tavily（共享知识库）进行网络搜索，或发布到一个团队频道。 |
 | `user` |呼叫者自己的凭据。每个人都授权自己的帐户。 |代理充当提出问题的人：搜索只有他们可以看到的 Notion 页面、以他们的名义提交问题或以他们的身份发送电子邮件。 |
@@ -50,19 +50,19 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
 
 连接是一个容器，它属于工作区而不是所有者。其中的凭证有所有者。没有 `--owner` 标志：您使用的 [create mode](#choose-a-create-mode) 设置所有者。
 
-`connections.get(...)` 选择所有者。它不会创造一个。请求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T55⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少一次成功[⟦T57⟧](/langsmith/javascript/managed-deep-agents-deploy)之后创建它们。部署仅读取其拥有的凭证。要从第二个部署中解析相同的 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
+`connections.get(...)` 选择所有者。它不会创造一个。请求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T55⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T57⟧](/langsmith/javascript/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要从第二个部署中解析相同的 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
 
 ### 识别来电者
 
 用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：
 
-|表面|来电者身份 |
+|表面|来电者身份|
 | --- | --- |
 | [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
 | SDK 客户端或自定义前端 |项目[identity declaration](/langsmith/javascript/managed-deep-agents-identity)验证的身份。 |
 
-默认身份声明验证LangSmith API 密钥。该密钥对调用客户端（而不是个人）进行身份验证，因此提供该密钥的每个调用者都会解析为相同的身份。要为每个登录者提供自己的凭据，请声明 [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#authenticate-end-users-with-supabase)。
+默认身份声明验证LangSmith API 密钥。该密钥对调用客户端（而不是个人）进行身份验证，因此提供该密钥的每个调用者都会解析为相同的身份。要为每个登录者提供自己的凭据，请声明 [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-supabase)。
 
 代码永远不会将用户 ID 传递给 `connections.get(...)`。运行时解析调用者并返回该人的凭据。<Note>
 Slack 和 Studio 为调用者完成授权往返。对自定义渠道的一流支持正在开发中。要立即针对呼叫者身份构建自定义前端，请参阅 [Handle the authorization interrupt](#handle-the-authorization-interrupt) 并联系 [LangChain team](https://forum.langchain.com/c/help/langsmith/)。
@@ -251,7 +251,7 @@ export const searchWeb = tool(
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
-没有默认范围的服务需要 `--scope`。
+没有默认范围的服务需要`--scope`。
 
 <Accordion title="Some services run separate OAuth apps for their API and their MCP server">
 观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。
@@ -283,7 +283,7 @@ export const searchWeb = tool(
 </CodeGroup>
 
 
-创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
+创建时，CLI 会打印重定向 URI 以向提供者注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
 
 可选标志：
 
@@ -526,7 +526,7 @@ export const mcp = defineMcp({
 
 一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。有关更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
-|领域 |礼物给 |意义|
+|领域|礼物给 |意义|
 | --- | --- | --- |
 | `type` |永远 |鉴别器。必须是`credential_authorization_required`。 |
 | `message` |永远 |人类可读的摘要显示在待决拨款上方。 |
@@ -780,7 +780,7 @@ GET /v1/agent-auth/oauth-authorization-sessions/{auth_id}?wait_seconds=25
 
 ## 查看当前限制
 
-连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：- **用户拥有的 API 密钥**：用户拥有的连接持有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+连接是 Managed Deep Agents 公共测试版的一部分。当前版本存在以下差距：- **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
 - **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 - **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 - **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示了 slug。从项目根目录运行`mda connections create <slug>`来创建一个。

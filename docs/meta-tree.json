@@ -261,6 +261,12 @@
           "rel": "langsmith/byoc-billing.md"
         }
       ],
+      "byoc-byovpc": [
+        {
+          "title": "Bring your own VPC on AWS",
+          "rel": "langsmith/byoc-byovpc.md"
+        }
+      ],
       "byoc-faq": [
         {
           "title": "BYOC FAQ",
