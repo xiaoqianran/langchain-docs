@@ -6485,10 +6485,10 @@
       "translatedAt": "2026-09-12T12:29:33.110Z"
     }
   },
-  "updatedAt": "2026-09-12T12:30:20.903Z",
+  "updatedAt": "2026-09-13T13:31:00.395Z",
   "stats": {
-    "translated": 35,
-    "skipped": 527,
+    "translated": 0,
+    "skipped": 562,
     "failed": 0,
     "total": 562
   }
