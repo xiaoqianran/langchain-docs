@@ -4,7 +4,7 @@
 
 # 部署托管深度代理
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -50,15 +50,15 @@ CLI 默认针对 US LangSmith 云。
 
 
 <Tip>
-`mda deploy` 将本地项目输入路由到不同的托管表面：
-
-```text
+`mda deploy` 将本地项目输入路由到不同的托管表面：```text
 instructions.md + skills/**  -> Context Hub deploy-owned context
 .env                         -> deploy auth + non-reserved hosted secrets, not archived
 project source files         -> .mda/build source archive -> hosted deployment
 schedules/**                 -> LangSmith cron jobs after the deployment is live
 ```
-</Tip>当目录名称不是您想要的名称时，显式设置部署名称：
+</Tip>
+
+当目录名称不是您想要的名称时，显式设置部署名称：
 
 
 
@@ -121,7 +121,7 @@ schedules/**                 -> LangSmith cron jobs after the deployment is live
 
 ## 秘密和环境文件
 
-`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为 LangSmith API 密钥来验证部署以及托管部署所需的运行时机密：
+`mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
 
 ```text .env
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
@@ -142,9 +142,13 @@ DATABASE_URL=<DATABASE_URL>
 
 如果部署达到`BUILD_FAILED`或`DEPLOY_FAILED`，请打开LangSmith中打印的部署URL并检查修订日志。
 
-## 后续步骤
-
-<CardGroup cols={2}>
+## 后续步骤<CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    探索托管部署的运行时。
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
+    将部署的代理作为工具公开给 MCP 客户端。
+  </Card>
   <Card title="Identity" icon="fingerprint" href="/langsmith/javascript/managed-deep-agents-identity">
     对调用者进行身份验证并提供私有线程。
   </Card>
@@ -159,7 +163,9 @@ DATABASE_URL=<DATABASE_URL>
   </Card>
 </CardGroup>
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

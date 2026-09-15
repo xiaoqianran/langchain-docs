@@ -3,15 +3,15 @@
 Unofficial mirror of [Docs by LangChain](https://docs.langchain.com).
 
 - Source: `llms-full.txt` + `llms.txt`
-- Pages: 562
+- Pages: 564
 - TOC links: 177
 
 ## Sections
 
 - **LangSmith** (`langsmith`): 460 pages
 - **Fleet** (`fleet`): 25 pages
-- **LangSmith · JS** (`langsmith-js`): 23 pages
-- **LangSmith · Python** (`langsmith-py`): 23 pages
+- **LangSmith · JS** (`langsmith-js`): 24 pages
+- **LangSmith · Python** (`langsmith-py`): 24 pages
 - **OSS · DeepAgents** (`oss-deepagents`): 17 pages
 - **OSS · OpenWiki** (`oss-openwiki`): 11 pages
 - **build-overview** (`build-overview`): 1 pages

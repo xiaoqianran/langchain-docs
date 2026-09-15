@@ -99,8 +99,8 @@ export const mcp = defineMcp({
 
 每个服务器都支持以下核心选项：
 
-|选项|描述 |
-| --- | --- |
+|选项 |描述 |
+| ---| ---|
 | `transport` |必需的。对于可流式 HTTP 使用 `http`，对于旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
 | `headers` |发送到服务器的静态标头。 |
@@ -112,8 +112,8 @@ export const mcp = defineMcp({
 
 MCP 定义还接受以下选项：
 
-|选项|默认 |描述 |
-| --- | --- | --- |
+|选项 |默认 |描述 |
+| ---| ---| ---|
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
 
@@ -122,12 +122,13 @@ MCP 定义还接受以下选项：
 `mda dev` 和 `mda deploy` 发现 `connectors/` 下的连接器模块并将它们包含在托管配置中。连接器未同步到 Context Hub。
 
 ## 何时使用 MCP 连接器|概念|亲切 |它如何到达代理|
-| --- | --- | --- |
+| ---| ---| ---|
 | **MCP 服务器** |托管配置|根据`tools/`声明；没有导入到代理条目|
-| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
+| **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
 | **[Channels](/langsmith/javascript/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
-有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ---
 

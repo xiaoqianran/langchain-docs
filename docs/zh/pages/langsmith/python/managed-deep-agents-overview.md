@@ -8,8 +8,8 @@
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
-- **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
-- **托管运行时**：[LangSmith Deployment's Agent Server](/langsmith/agent-server-overview) 托管并操作代理，并在重新启动时保持会话运行。
+- **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统并委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
+- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -134,14 +134,14 @@ connector = connectors.mcp(
 
 
 当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
+您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
-要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+## 核心能力
 
-## 核心能力代理的每个部分都映射到一个文件或目录。添加您的代理需要的：
+代理的每个部分都映射到一个文件或目录。添加您的代理需要的：
 
 |能力|路径|描述 |
-| --- | --- | --- |
+| ---| ---| ---|
 | [Model and configuration](/langsmith/python/managed-deep-agents-agent-definition) | `agent.py` |模型和核心选项。必需的。 |
 | [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` |定义代理行为方式的系统提示。 |
 | [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` |代理在相关时加载特定于任务的剧本。 |
@@ -158,14 +158,20 @@ connector = connectors.mcp(
 
 
 
-完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 后续步骤
 
-## 后续步骤<CardGroup cols={2}>
+<CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
     使用 `mda` CLI 创建并部署您的第一个托管深度代理。
   </Card>
   <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
     添加自定义搜索工具、持久内存和每日日程安排。
+  </Card>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    探索托管托管 Deep Agents 部署的运行时。
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
+    从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
   </Card>
 </CardGroup>
 

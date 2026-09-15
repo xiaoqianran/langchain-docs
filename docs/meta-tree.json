@@ -3021,6 +3021,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-mcp-connectors.md"
         }
       ],
+      "managed-deep-agents-mcp-endpoint": [
+        {
+          "title": "Connect MCP clients to a Managed Deep Agent",
+          "rel": "langsmith/javascript/managed-deep-agents-mcp-endpoint.md"
+        }
+      ],
       "managed-deep-agents-memory": [
         {
           "title": "Add memory to Managed Deep Agents",
@@ -3163,6 +3169,12 @@
         {
           "title": "Connect to MCP servers",
           "rel": "langsmith/python/managed-deep-agents-mcp-connectors.md"
+        }
+      ],
+      "managed-deep-agents-mcp-endpoint": [
+        {
+          "title": "Connect MCP clients to a Managed Deep Agent",
+          "rel": "langsmith/python/managed-deep-agents-mcp-endpoint.md"
         }
       ],
       "managed-deep-agents-memory": [

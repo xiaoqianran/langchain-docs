@@ -4,10 +4,10 @@
 
 # 部署托管深度代理
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
 <Note>
-托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。
@@ -48,13 +48,16 @@ instructions.md + skills/**  -> Context Hub deploy-owned context
 project source files         -> .mda/build source archive -> hosted deployment
 schedules/**                 -> LangSmith cron jobs after the deployment is live
 ```
-</Tip>
-
-当目录名称不是您想要的名称时，显式设置部署名称：
+</Tip>当目录名称不是您想要的名称时，显式设置部署名称：
 
 ```bash
 uv run mda deploy --name research-assistant
-```创建生产部署时使用`--deployment-type prod`：
+```
+
+
+
+
+创建生产部署时使用`--deployment-type prod`：
 
 ```bash
 uv run mda deploy --deployment-type prod
@@ -99,9 +102,13 @@ DATABASE_URL=<DATABASE_URL>
 
 如果部署达到`BUILD_FAILED`或`DEPLOY_FAILED`，请打开LangSmith中打印的部署URL并检查修订日志。
 
-## 后续步骤
-
-<CardGroup cols={2}>
+## 后续步骤<CardGroup cols={2}>
+  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
+    探索托管部署的运行时。
+  </Card>
+  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
+    将部署的代理作为工具公开给 MCP 客户端。
+  </Card>
   <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
     对调用者进行身份验证并提供私有线程。
   </Card>
@@ -116,7 +123,9 @@ DATABASE_URL=<DATABASE_URL>
   </Card>
 </CardGroup>
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>
