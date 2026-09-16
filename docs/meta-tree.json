@@ -1275,12 +1275,6 @@
           "rel": "langsmith/llm-gateway-credits.md"
         }
       ],
-      "llm-gateway-custom-providers": [
-        {
-          "title": "Custom model providers",
-          "rel": "langsmith/llm-gateway-custom-providers.md"
-        }
-      ],
       "llm-gateway-data-policy": [
         {
           "title": "Data policy",
@@ -2985,6 +2979,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-connections.md"
         }
       ],
+      "managed-deep-agents-context-hub": [
+        {
+          "title": "Manage Context Hub for Managed Deep Agents",
+          "rel": "langsmith/javascript/managed-deep-agents-context-hub.md"
+        }
+      ],
       "managed-deep-agents-deploy": [
         {
           "title": "Deploy a Managed Deep Agent",
@@ -3133,6 +3133,12 @@
         {
           "title": "Manage connections",
           "rel": "langsmith/python/managed-deep-agents-connections.md"
+        }
+      ],
+      "managed-deep-agents-context-hub": [
+        {
+          "title": "Manage Context Hub for Managed Deep Agents",
+          "rel": "langsmith/python/managed-deep-agents-context-hub.md"
         }
       ],
       "managed-deep-agents-deploy": [

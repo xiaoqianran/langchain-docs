@@ -69,7 +69,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 您可以添加两种类型的后备候选项：
 
-- **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或使用符合条件的托管模型的网关积分。
+- **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或者使用符合条件的托管模型的网关积分。
 - **模型配置**：选择已保存的工作空间[model configuration](/langsmith/model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
 
 模型配置是工作空间范围内的。后备链只能使用其选定工作区中的配置。
@@ -79,7 +79,6 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 ## 另请参阅
 
 - [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
-- [Custom model providers](/langsmith/llm-gateway-custom-providers)：为自定义OpenAI或Anthropic兼容端点创建模型配置。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：在后备路由的同时应用成本限制。
 
 ---

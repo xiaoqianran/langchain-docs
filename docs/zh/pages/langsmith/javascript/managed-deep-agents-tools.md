@@ -28,6 +28,11 @@ my-agent/
 
 要从远程 MCP 服务器加载工具而不将其导入代理条目，请改用 [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
+
+
+MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为该声明保留的。
+
+
 ## 添加工具
 
 使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。
@@ -59,7 +64,7 @@ export const lookupCustomer = tool(
   </Step>
   <Step title="Attach the tool to the agent" id="attach-the-tool">
 
-将工具导入到项目根代理条目中并将其传递到`tools`列表中：
+将工具导入到项目根代理条目中并将其传递到 `tools` 列表中：
 
 
 
@@ -73,16 +78,13 @@ export const agent = defineDeepAgent({
   model: "openai:gpt-5.5",
   tools: [lookupCustomer],
 });
-```
-
-
-
-
-您的导入工作方式应该与在普通本地 TypeScript 项目中的工作方式相同。
+```您的导入工作方式应该与在普通本地 TypeScript 项目中的工作方式相同。
 
 
   </Step>
-  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
+  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">
+
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
 
 
@@ -123,16 +125,16 @@ export const agent = defineDeepAgent({
 
 工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 ## 部署
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念|亲切 |它如何到达代理|
-| --- | --- | --- |
+## 何时使用工具|概念 |亲切 |它如何到达代理|
+| ---| ---| ---|
 | **工具** |申请代码 |导入并传入代理定义 |
-| **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|根据`connectors/`声明；没有导入到代理条目|
+| **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 

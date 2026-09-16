@@ -18,7 +18,7 @@
 - **选定的型号**：仅允许您指定的型号。至少需要一种型号。
 
 <Note>
-模型访问策略尚不支持[custom model providers](/langsmith/llm-gateway-custom-providers)。当模型访问策略应用于请求时，网关会阻止 `/providers/{configName}` 和 `/models/{configName}` 路由。
+模型访问策略尚不支持自定义模型提供程序。当模型访问策略应用于请求时，网关会阻止 `/providers/{configName}` 和 `/models/{configName}` 路由。
 </Note>
 
 ## 范围和覆盖
@@ -26,10 +26,10 @@
 模型访问策略的范围仅限于一个主题层：
 
 |等级 |适用于 |
-| --- | --- |
+| ---| ---|
 |组织|组织中的所有用户和工作区 |
-|工作空间 |工作区中的所有用户 |
-|用户|单个用户|
+|工作空间 |工作区中的所有用户|
+|用户 |单个用户|
 | API 密钥 |单个 API 密钥 |
 
 ### 策略覆盖策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。
@@ -53,7 +53,7 @@
 
 ## 后续步骤- [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。
 - [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：限制请求或令牌吞吐量。
-- [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的津贴。
+- [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的限额。
 - [Data protection](/langsmith/llm-gateway-data-protection)：添加数据保护策略。
 
 ---

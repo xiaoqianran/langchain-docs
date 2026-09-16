@@ -105,7 +105,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转至 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
 将您的 LangSmith API 密钥添加到 `.env`：
 
@@ -125,7 +125,7 @@ You are a careful research assistant. Use internet search to find sources,
 keep notes, and return concise answers with citations.
 ```
 
-部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/use-the-context-hub)，您可以在其中更新它们，而无需重新部署代理。
+部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
 
   </Step>
 

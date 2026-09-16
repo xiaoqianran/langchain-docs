@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: Trace Claude Code applications | https://docs.langchain.com/langsmith/trace-claude-code -->
 
-# Trace Claude Code applications
+# 跟踪克劳德代码应用程序
 
 本指南向您展示如何自动从[Claude Code CLI](https://code.claude.com/docs/en/overview)发送对话到LangSmith。
 
-配置完成后，每个 Claude Code 项目都可以选择将跟踪发送到 LangSmith。每个跟踪包括用户消息、工具调用、压缩、子代理运行和助理响应。系统提示不包括在内，因为 Claude Code 不会在对话记录中返回它们。
+配置完成后，每个 Claude Code 项目都可以选择将跟踪发送到LangSmith。每个跟踪包括用户消息、工具调用、压缩、子代理运行和助理响应。系统提示不包括在内，因为 Claude Code 不会在对话记录中返回它们。
 
 ## 先决条件
 
@@ -18,7 +18,7 @@
 
 ## 开始使用
 
-From within Claude Code, run:
+从 Claude Code 中运行：
 
 ```bash
 /plugin marketplace add langchain-ai/langsmith-claude-code-plugins
@@ -109,9 +109,55 @@ export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
 
 元数据键和值将出现在 LangSmith 中的所有运行中，您可以使用它们来过滤和搜索跟踪。
 
-## 与 GitHub Actions 一起使用
+## 使线程静音
 
-您可以将此插件与 [⟦T29⟧](https://github.com/anthropics/claude-code-action) 一起使用来跟踪 Claude Code 在 CI 中的运行情况。将以下内容添加到您的工作流程中：
+静音会抑制跟踪中线程的输入和输出内容，而无需禁用跟踪。静音默认关闭，除非您[set a default](#set-a-default-mute-configuration)。
+
+启用跟踪后，在 Claude Code 中运行这些插件命令。这两个命令都没有参数：
+
+- `/langsmith-tracing:mute`：在后面的跟踪中省略该线程的输入和输出内容。
+- `/langsmith-tracing:unmute`：恢复完整跟踪以供此线程中的后续回合使用。
+
+这两个命令从下一回合开始应用，因此当前回合不变。当回合开始时，回合的模式是固定的，并且其子代理继承该模式。静音运行保持正常的嵌套、名称、计时、状态、模型和工具标识以及令牌使用。输入和输出被系统通知替换。静音模式还忽略原始错误、身份和存储库属性、自定义元数据、SDK 运行时元数据和副本元数据覆盖。静音独立于秘密编辑。
+
+### 设置默认静音配置
+
+要以仅元数据模式启动线程而不在每个线程中运行命令，请将 `CC_LANGSMITH_DEFAULT_MUTED` 设置为 `"true"`：
+
+<Tabs>
+
+<Tab title="Settings file (recommended)">
+
+```json
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
+    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_DEFAULT_MUTED": "true"
+  }
+}
+```
+
+</Tab>
+
+<Tab title="Shell environment variable">
+
+```bash
+export CC_LANGSMITH_DEFAULT_MUTED="true"
+```
+
+</Tab>
+
+</Tabs>
+
+将变量设置为 `"false"` 以返回到未静音的默认值。比较不区分大小写，任何其他值都会静音，包括空字符串。
+
+该插件还从其自己的配置文件中读取`defaultMuted`布尔值，按以下顺序：项目目录中的`.claude/langsmith.json`和`langsmith-plugins.json`，然后是`~/.claude/langsmith.json`和`~/.langsmith-plugins.json`。环境变量优先于所有四个变量。
+
+线程首选项是粘性的。该插件将每个显式静音或取消静音保存到隐私文件中，默认情况下为`~/.claude/state/langsmith_state.privacy.json`，并且保存的线程首选项在两个方向上都优于配置的默认值。删除隐私文件将删除每个线程覆盖并将每个线程返回到配置的默认值。## 与 GitHub Actions 一起使用
+
+您可以将此插件与 [⟦T42⟧](https://github.com/anthropics/claude-code-action) 一起使用来跟踪 Claude Code 在 CI 中的运行情况。将以下内容添加到您的工作流程中：
 
 ```yaml
 - uses: anthropics/claude-code-action@v1
@@ -202,7 +248,9 @@ const runClaude = traceable(
 );
 ```
 
-生成的跟踪层次结构如下所示：```
+生成的跟踪层次结构如下所示：
+
+```
 Your outer run (chain)
 └── Claude Code Turn (chain)
     ├── Claude (llm)
@@ -214,15 +262,13 @@ Your outer run (chain)
 
 您可以使用 `CC_LANGSMITH_RUNS_ENDPOINTS` 环境变量同时跟踪多个 LangSmith 项目或工作区。将 `CC_LANGSMITH_RUNS_ENDPOINTS` 设置为副本配置的 JSON 数组。这会覆盖其他客户端设置。
 
-跟踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
+追踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
 
 - 将跟踪发送到生产和暂存项目。
 - 使用不同的 API 密钥跟踪多个工作区。
 - 将额外的元数据添加到特定的副本目的地。
 
-每个副本对象支持以下字段：
-
-|领域|必填|描述 |
+每个副本对象支持以下字段：|领域 |必填 |描述 |
 | ---| ---| ---|
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）|
 | `apiKey` |是的 |目的地的 API 密钥 [workspace](/langsmith/administration-overview#workspaces) |
@@ -272,7 +318,9 @@ export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com"
 
 ## 故障排除
 
-###LangSmith没有出现任何痕迹1. **检查钩子是否正在运行**：
+### LangSmith没有出现任何痕迹
+
+1. **检查钩子是否正在运行**：
    ```bash
    tail -f ~/.claude/state/hook.log
    ```
@@ -291,9 +339,7 @@ export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com"
      }
    }
    ```
-   然后检查日志中的 API 调用和 HTTP 状态代码。
-
-### 用户中断后不会出现子代理运行
+   然后检查日志中的 API 调用和 HTTP 状态代码。### 用户中断后不会出现子代理运行
 仅在完成后才跟踪子代理。这意味着，如果您在子代理运行过程中中断对话轮次，则不会跟踪子代理的子运行。
 
 ### 管理日志文件大小
@@ -314,9 +360,11 @@ ls -lh ~/.claude/state/hook.log
 
 ## 源代码
 
-该插件是在 MIT 许可下开源的，可在 [this GitHub repo](https://github.com/langchain-ai/langsmith-claude-code-plugins) 中使用。
+该插件是在 MIT 许可证下开源的，可在 [this GitHub repo](https://github.com/langchain-ai/langsmith-claude-code-plugins) 中使用。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

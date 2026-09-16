@@ -28,6 +28,11 @@ my-agent/
 
 要从远程 MCP 服务器加载工具而不将其导入代理条目，请改用 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
+MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.py` 文件名是为该声明保留的。
+
+
+
+
 ## 添加工具
 
 使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。
@@ -57,7 +62,7 @@ def lookup_customer(customer_id: str) -> str:
   </Step>
   <Step title="Attach the tool to the agent" id="attach-the-tool">
 
-将工具导入到项目根代理条目中并将其传递到`tools`列表中：
+将工具导入到项目根代理条目中并将其传递到 `tools` 列表中：
 
 ```python agent.py
 from managed_deepagents import define_deep_agent
@@ -69,18 +74,15 @@ agent = define_deep_agent(
     model="openai:gpt-5.5",
     tools=[lookup_customer],
 )
-```
-
-
-
-
-您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
+```您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
 
 
 
 
   </Step>
-  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
+  <Step title="Add human-in-the-loop (Optional)" id="human-in-the-loop">
+
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
 在代理定义中设置`interrupt_on`，并可以选择设置`permissions`来控制工具和文件系统访问：
 
@@ -125,21 +127,21 @@ agent = define_deep_agent(
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念|亲切 |它如何到达代理|
-| --- | --- | --- |
+## 何时使用工具|概念 |亲切 |它如何到达代理|
+| ---| ---| ---|
 | **工具** |申请代码 |导入并传入代理定义 |
-| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|根据`connectors/`声明；没有导入到代理条目|
+| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/python/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ## 响应中断
 
 当运行遇到中断时，它会暂停并等待人类响应，然后再继续。
 
 - **在本地开发期间**，`mda dev` 在 LangSmith Studio 中运行代理，它会显示中断，以便您可以检查挂起的工具调用并恢复运行。
-- **在已部署的代理上**，通过具有 `Command(resume=...)` 负载的 LangGraph 服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
+- **在已部署的代理上**，使用 `Command(resume=...)` 负载通过 LangGraph 服务器 API 恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
 
 
@@ -153,7 +155,7 @@ agent = define_deep_agent(
 
 ## 访问运行时上下文
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
 
 ---
 

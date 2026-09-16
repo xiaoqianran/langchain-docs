@@ -37,16 +37,18 @@ MDA 在每次运行时将指令插入代理的系统提示符中。
 
 ## 部署
 
-当您运行 `mda deploy` 时，MDA 会将 `instructions.md` 同步到代理的 [Context Hub](/langsmith/use-the-context-hub)。
+当您运行 `mda deploy` 时，MDA 会将 `instructions.md` 同步到代理的 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。
 
 然后，您可以在 LangSmith UI 中编辑说明并将这些更改应用到代理。
 
 最好将 `instructions.md` 文件保留在存储库中作为持久更改的事实来源，因为稍后的部署会再次同步项目副本。
 
-## 何时使用说明|概念|角色 |加载时间 |
-| --- | --- | --- |
+有关同步哪些内容、不同步哪些内容以及如何从部署中打开存储库，请参阅[Context Hub](/langsmith/python/managed-deep-agents-context-hub)。
+
+## 何时使用说明|概念 |角色 |加载时间 |
+| ---| ---| ---|
 | **说明** |永远在线的系统提示 |每次跑步 |
-| **[Skills](/langsmith/python/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时 |
+| **[Skills](/langsmith/python/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时|
 | **[Memory](/langsmith/python/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
 有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。

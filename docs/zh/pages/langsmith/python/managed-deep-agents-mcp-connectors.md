@@ -6,13 +6,13 @@
 
 将托管深度代理连接到远程 [Model Context Protocol (MCP)](/oss/python/deepagents/mcp) 服务器，以将其工具添加到代理中。 Managed Deep Agents 创建 MCP 客户端并加载工具。
 
-大多数远程 MCP 服务器需要身份验证。 [connection](/langsmith/python/managed-deep-agents-connections) 提供它，并将连接声明为用户所有，使每个调用者授权自己的帐户。
+大多数远程 MCP 服务器需要身份验证。 [connection](/langsmith/python/managed-deep-agents-connections) 提供它，并将连接声明为用户拥有，使每个调用者授权自己的帐户。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
-在 `tools/` 正下方的模块中声明 MCP 服务器：
+在`tools/mcp.py`中声明MCP服务器：
 
 ```text
 my-agent/
@@ -33,9 +33,7 @@ my-agent/
 当工具已存在于远程 MCP 服务器上并且您希望 MDA 加载它们而不将它们导入代理定义中时，请使用 MCP 服务器。
 
 <Steps>
-  <Step title="Declare the connector" id="declare-the-connector">
-
-使用 `connectors.mcp` 声明一台或多台远程服务器：
+  <Step title="Declare the servers" id="declare-the-servers">
 
 使用 `define_mcp` 声明一台或多台远程服务器：
 
@@ -55,7 +53,7 @@ mcp = define_mcp(
 
 
 
-该模块必须导出模块级别`connector`。
+该模块必须导出模块级别`mcp`。一个项目有一个 MCP 声明，因此声明其中的每个服务器。
 
 
 
@@ -99,9 +97,9 @@ mcp = define_mcp(
 
 每个服务器都支持以下核心选项：
 
-|选项 |描述 |
+|选项|描述 |
 | ---| ---|
-| `transport` |必需的。对于可流式 HTTP 使用 `http`，对于旧版 SSE 使用 `sse`。 |
+| `transport` |必需的。对可流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
 | `headers` |发送到服务器的静态标头。 |
 | `include_tools` / `includeTools` |要公开的原始 MCP 工具名称。 |
@@ -112,23 +110,23 @@ mcp = define_mcp(
 
 MCP 定义还接受以下选项：
 
-|选项 |默认 |描述 |
+|选项|默认 |描述 |
 | ---| ---| ---|
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
 
 ## 部署
 
-`mda dev` 和 `mda deploy` 发现 `connectors/` 下的连接器模块并将它们包含在托管配置中。连接器未同步到 Context Hub。
+`mda dev`和`mda deploy`发现`tools/`下的MCP声明并将其包含在托管配置中。该声明未同步到 Context Hub。
 
-## 何时使用 MCP 连接器|概念|亲切 |它如何到达代理|
+## 何时使用 MCP 连接器|概念 |亲切 |它如何到达代理|
 | ---| ---| ---|
-| **MCP 服务器** |托管配置|根据`tools/`声明；没有导入到代理条目|
+| **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
-| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
+| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
-欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ---
 

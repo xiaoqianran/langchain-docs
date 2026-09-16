@@ -9,7 +9,7 @@
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
 - **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
-- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
+- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -55,7 +55,7 @@ flowchart LR
 | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) | `instructions.md` |定义代理行为方式的系统提示。 |
 | [Skills](/langsmith/javascript/managed-deep-agents-skills) | `skills/` |代理在相关时加载特定于任务的剧本。 |
 | [Tools](/langsmith/javascript/managed-deep-agents-tools) | `tools/` |代理调用以运行应用程序逻辑或访问外部服务的函数。 |
-| [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) | `connectors/` |为代理提供工具的远程 MCP 服务器。 |
+| [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) | `tools/mcp.ts` |为代理提供工具的远程 MCP 服务器。 |
 | [Middleware](/langsmith/javascript/managed-deep-agents-middleware) | `middleware/` |围绕模型和工具调用运行的自定义逻辑。 |
 | [Sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) | `sandbox/` |用于运行代理编写的代码的隔离文件系统和 shell。 |
 | [Memory](/langsmith/javascript/managed-deep-agents-memory) | `memory.ts` |跨线程持续存在的偏好和知识。 |
@@ -65,7 +65,7 @@ flowchart LR
 | [Evals](/langsmith/javascript/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
 
 
-完整布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+完整布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)中。
 
 ## 后续步骤<CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">

@@ -10,9 +10,9 @@ Most remote MCP servers require authentication. A [connection](/langsmith/javasc
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
-Declare MCP servers in a module directly under `tools/`:
 
 
+Declare MCP servers in `tools/mcp.ts`:
 
 ```text
 my-agent/
@@ -26,14 +26,12 @@ For the full project layout, see [Project structure](/langsmith/javascript/manag
 
 To implement application logic in the project instead, use an [authored tool](/langsmith/javascript/managed-deep-agents-tools).
 
-## Add an MCP servers
+## Add MCP servers
 
 Use an MCP server when tools already live on a remote MCP server and you want MDA to load them without importing them into the agent definition.
 
 <Steps>
-  <Step title="Declare the connector" id="declare-the-connector">
-
-Use `connectors.mcp` to declare one or more remote servers:
+  <Step title="Declare the servers" id="declare-the-servers">
 
 
 
@@ -55,7 +53,7 @@ export const mcp = defineMcp({
 
 
 
-The module must export a named `connector`.
+The module must export a named `mcp`. A project has one MCP declaration, so declare every server in it. The file name also accepts the `.tsx`, `.mts`, or `.cts` variants.
 
 
 Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/javascript/managed-deep-agents-tools) instead.
@@ -121,13 +119,13 @@ The MCP definition also accepts these options:
 
 ## Deployment
 
-`mda dev` and `mda deploy` discover connector modules under `connectors/` and include them in the managed configuration. Connectors are not synced to Context Hub.
+`mda dev` and `mda deploy` discover the MCP declaration under `tools/` and include it in the managed configuration. The declaration is not synced to Context Hub.
 
 ## When to use MCP connectors
 
 | Concept | Kind | How it reaches the agent |
 | --- | --- | --- |
-| **MCP servers** | Managed configuration | Declared under `tools/`; no import into the agent entry |
+| **MCP servers** | Managed configuration | Declared in the MCP module under `tools/`; no import into the agent entry |
 | **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** | Deployment API | Exposes the agent as a tool to MCP clients |
 | **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
 | **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |

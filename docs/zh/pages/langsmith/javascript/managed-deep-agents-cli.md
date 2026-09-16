@@ -12,7 +12,7 @@
 
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/javascript/managed-deep-agents-identity)、[Memory](/langsmith/javascript/managed-deep-agents-memory)、[Evals](/langsmith/javascript/managed-deep-agents-evals)、[Custom tools](/langsmith/javascript/managed-deep-agents-tools)、[Connections](/langsmith/javascript/managed-deep-agents-connections)、[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)、[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)、[Channels](/langsmith/javascript/managed-deep-agents-channels)、[Schedules](/langsmith/javascript/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
@@ -68,8 +68,8 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用 |
-| --- | --- |
+## 命令概述|命令|使用 |
+| ---| ---|
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
 | `mda init <name>` |搭建 TypeScript 托管的 Deep Agents 项目。 |
@@ -102,7 +102,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
     bunx managed-deepagents init my-agent
     ```
 </CodeGroup>|参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
 | `--instructions-file PATH` |从文件中读取 `instructions.md` 的系统提示，或者当设置为 `-` 时从标准输入中读取。 |
@@ -137,7 +137,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 脚手架创建：|文件|描述 |
-| --- | --- |
+| ---| ---|
 | `agent.ts` |命名为`agent`从`defineDeepAgent(...)`导出。 |
 | `instructions.md` |托管系统提示。 |
 | `package.json` |最小的特定于语言的清单。 |
@@ -190,7 +190,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
     bunx mda build
     ```
 </CodeGroup>|参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
 
@@ -216,7 +216,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 |命令或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
 
@@ -246,7 +246,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 |参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
 | `--hostname HOSTNAME` |将主机转发到LangGraph开发服务器。 |
@@ -258,7 +258,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 
 |项目语言|开发服务器命令 |
-| --- | --- |
+| ---| ---|
 |打字稿 | `npx --yes @langchain/langgraph-cli dev` |
 
 
@@ -266,12 +266,12 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 ## 管理连接
 
-连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
+连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析调用代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令 |使用 |
-| --- | --- |
+|命令|使用 |
+| ---| ---|
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
 | `mda connections list` |列出工作区的连接元数据。 |
@@ -317,7 +317,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 
 以下标志控制连接创建：|旗帜|使用 |
-| --- | --- |
+| ---| ---|
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
@@ -339,7 +339,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 ## 部署项目
 
-使用`mda deploy`编译并部署项目到LangSmith：
+使用`mda deploy`编译项目并部署到LangSmith：
 
 
 
@@ -361,11 +361,12 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 
 |参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
 | `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
+| `--context-strategy overwrite\|keep-hub` |解决自上次同步以来 Hub 中的 `instructions.md` 或 `skills/` 发生更改时的 Context Hub 冲突。在非交互式 shell 中需要。参见[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth)。 |
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
 
 
@@ -381,7 +382,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
-具有 Slack 通道的项目无法使用 `--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
+具有 Slack 通道的项目无法使用`--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关秘密路由和部署技巧，请参阅[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
@@ -405,7 +406,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 
 |参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
 | `--lines LINES` |要获取的最近日志行数。默认为`1000`。 |
@@ -438,7 +439,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 
 |参数或标志 |使用 |
-| --- | --- |
+| ---| ---|
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为 `defineDeepAgent` 的代理`name`。 |
 | `--workspace-id WORKSPACE_ID` |部署所在的工作区 ID。覆盖 `LANGSMITH_WORKSPACE_ID`。 |
@@ -447,13 +448,13 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 
 |症状|原因及解决办法 |
-| --- | --- |
+| ---| ---|
 | `project root ... is not a directory` |将目录路径传递给`mda dev`或`mda deploy`。 |
 | `no agent entry file found` |在项目根目录添加`agent.ts`或`agent.tsx`。 |
 | `No LangSmith API key found` |设置`LANGSMITH_API_KEY`或将其添加到项目`.env`。 |
 |部署失败并显示 401 或 403 |确认 API 密钥属于具有部署访问权限的工作区。参见[Pricing plans](/langsmith/pricing-plans)。 |
 |部署报告缺少模型提供程序 API 密钥 |将提供程序密钥（例如 `OPENAI_API_KEY`）添加到 `.env`，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。 |
-|部署报告 Context Hub 冲突 | Context Hub 存储库在部署期间发生了更改。重新运行`mda deploy`。 |
+|部署报告 Context Hub 冲突 |自上次同步以来，Context Hub 中的 `instructions.md` 或 `skills/` 发生了更改，或者存储库在同步期间发生了更改。在交互式终端中，回答覆盖提示。在非交互式 shell 中，使用 `--context-strategy overwrite` 或 `--context-strategy keep-hub` 重新运行。参见[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth)。 |
 |构建超过 200 MB |在部署之前从项目中删除生成的工件或大文件。 |
 |部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |在 LangSmith 中打开打印的部署 URL 并检查修订日志。 |
 

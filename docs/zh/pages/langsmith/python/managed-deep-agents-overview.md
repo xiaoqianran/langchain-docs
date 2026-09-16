@@ -8,7 +8,7 @@
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
-- **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统并委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
+- **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
 - **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false}
@@ -116,11 +116,11 @@ async def log_tool_calls(
 ```
   </Tab>
   <Tab title="MCP Connectors">
-```python connectors/mcp.py
-from managed_deepagents import connectors
+```python tools/mcp.py
+from managed_deepagents import define_mcp
 
-connector = connectors.mcp(
-    mcp_servers={
+mcp = define_mcp(
+    servers={
         "langchainDocs": {
             "transport": "http",
             "url": "https://docs.langchain.com/mcp",
@@ -134,7 +134,7 @@ connector = connectors.mcp(
 
 
 当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 ## 核心能力
 
@@ -146,19 +146,16 @@ connector = connectors.mcp(
 | [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` |定义代理行为方式的系统提示。 |
 | [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` |代理在相关时加载特定于任务的剧本。 |
 | [Tools](/langsmith/python/managed-deep-agents-tools) | `tools/` |代理调用以运行应用程序逻辑或访问外部服务的函数。 |
-| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) | `connectors/` |为代理提供工具的远程 MCP 服务器。 |
+| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) | `tools/mcp.py` |为代理提供工具的远程 MCP 服务器。 |
 | [Middleware](/langsmith/python/managed-deep-agents-middleware) | `middleware/` |围绕模型和工具调用运行的自定义逻辑。 |
 | [Sandbox](/langsmith/python/managed-deep-agents-sandboxes) | `sandbox/` |用于运行代理编写的代码的隔离文件系统和 shell。 |
 | [Memory](/langsmith/python/managed-deep-agents-memory) | `memory.py` |跨线程持续存在的偏好和知识。 |
 | [Identity](/langsmith/python/managed-deep-agents-identity) | `identity.py` |用于多用户部署的每个调用者专用线程、内存和凭据。 |
 | [Channels](/langsmith/python/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
 | [Schedules](/langsmith/python/managed-deep-agents-schedules) | `schedules/` |定期运行代理的托管 cron 计划。 |
-| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
+| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
 
-
-
-
-完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 后续步骤
+## 后续步骤
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">

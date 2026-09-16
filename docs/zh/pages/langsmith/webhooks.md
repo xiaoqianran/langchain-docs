@@ -4,19 +4,21 @@
 
 # 为规则配置 webhook 通知
 
+<Note>
+  本页面涵盖 **LangSmith 自动化 webhook**，自动化规则匹配运行或线程时触发的 POST 通知。如果您正在寻找 **LangGraph API Webhooks**（创建或流式传输运行时传递的回调参数），请参阅 [Use webhooks](/langsmith/use-webhooks)。
+</Note>
+
 当您在自动化操作上添加 Webhook URL 时，每当您定义的规则与任何新的运行或线程匹配时，LangSmith 都会向您的 Webhook 端点发出 POST 请求。
 
 ![Webhook](/langsmith/images/webhook.png)
 
 ## Webhook 负载
 
-发送到您的 webhook 端点的有效负载 LangSmith 包含：
-
-- `"rule_id"`：这是发送此有效负载的自动化的 ID。
+发送到您的 webhook 端点的有效负载 LangSmith 包含：- `"rule_id"`：这是发送此有效负载的自动化的 ID。
 - `"start_time"` 和`"end_time"`：这些是LangSmith 找到匹配项的时间边界。
 - `"runs"`：这是一个运行数组，其中每个运行都是一个字典。如果您需要有关每次运行的更多信息，请使用端点中的 SDK 从 API 获取它。每个运行字典包括：
     - `"feedback_stats"`：包含该运行的反馈统计数据的字典。以下代码块显示了此字段的示例。
-- `"threads"`：这是一个线程数组，当规则的 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **线程** 时，代替 `"runs"` 发送。有效负载携带一个数组或另一个数组，而不是两者都携带。欲了解更多信息，请参阅[Read a thread rule payload](#read-a-thread-rule-payload)。
+- `"threads"`：这是一个线程数组，当规则的 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **线程** 时，将代替 `"runs"` 发送。有效负载携带一个数组或另一个数组，而不是两者都携带。欲了解更多信息，请参阅[Read a thread rule payload](#read-a-thread-rule-payload)。
 
 ```json
 "feedback_stats": {
@@ -52,7 +54,9 @@
 <Note>
 **从 S3 URL 获取**
 
-根据您运行的最新情况，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。`inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
+根据您运行的最新时间，`inputs_s3_urls` 和 `outputs_s3_urls` 字段可能包含实际数据的 S3 URL，而不是数据本身。
+
+`inputs`和`outputs`可以分别通过`inputs_s3_urls`和`outputs_s3_urls`中提供的`ROOT.presigned_url`来获取。
 </Note>
 
 这是 LangSmith 发送到您的 webhook 端点的整个有效负载的示例：
@@ -103,9 +107,7 @@
 }
 ```
 
-### 处理批量有效负载
-
-有效负载涵盖轮询窗口而不是单个匹配。 LangSmith 收集 `"start_time"` 和 `"end_time"` 之间匹配的规则的每个项目，并在一个 POST 中传递它们，而不是每个项目发送一个 POST。
+### 处理批量有效负载有效负载涵盖轮询窗口而不是单个匹配。 LangSmith 收集 `"start_time"` 和 `"end_time"` 之间匹配的规则的每个项目，并在一个 POST 中传递它们，而不是每个项目发送一个 POST。
 
 编写端点来迭代数组，而不是仅读取第一个元素。线程规则每次执行最多提供 500 个线程。
 
@@ -150,9 +152,9 @@
 }
 ```
 
-## 安全将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。
+## 安全
 
-一个例子是
+将秘密查询字符串参数添加到 Webhook URL 并在每个传入请求上验证它。这可确保如果有人发现您的 Webhook URL，您可以将这些调用与真实的 Webhook 通知区分开来。一个例子是
 
 ```
 https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87d
@@ -160,7 +162,7 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 
 ### Webhook 自定义 HTTP 标头
 
-如果您想使用 Webhook 发送任何特定标头，可以根据 URL 进行配置。要进行设置，请单击 URL 字段旁边的 `Headers` 选项并添加标头。
+如果您想使用 Webhook 发送任何特定标头，可以针对每个 URL 进行配置。要进行设置，请单击 URL 字段旁边的 `Headers` 选项并添加标头。
 
 <Note>
 标头以加密格式存储。
@@ -176,9 +178,9 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 - 如果您的终端回复时间超过 5 秒，LangSmith 声明发送失败，不再重试。
 - 如果您的端点在 5 秒内返回 5xx 状态代码，LangSmith 会以指数退避方式重试最多 2 次。
 - 如果您的终端返回4xx状态码，则LangSmith声明投递失败，不再重试。
-- 您的端点在正文中返回的任何内容都将被忽略。## 确保评估在 webhook 触发之前完成
+- 您的端点在正文中返回的任何内容都将被忽略。
 
-默认情况下，自动化规则按独立的计划运行。扫描同一项目的 Webhook 规则和在线评估器规则可以在不同时间获取相同的运行，因此 Webhook 可能会在评估器有机会对运行进行评分之前触发。
+## 确保评估在 webhook 触发之前完成默认情况下，自动化规则按独立的计划运行。扫描同一项目的 Webhook 规则和在线评估器规则可以在不同时间获取相同的运行，因此 Webhook 可能会在评估器有机会对运行进行评分之前触发。
 
 推荐的解决方案是向您的 Webhook 规则添加_反馈过滤器_。这告诉 LangSmith 仅当它已经达到预期分数时才将运行发送到您的 webhook，无论何时评估。
 
@@ -204,7 +206,7 @@ has(feedback_key, "answer_usefulness") and feedback_score < 0.5
 </Tip>
 
 <Note>
-在单个自动化规则中，操作按固定顺序执行：注释队列 → 数据集 → Webhook → 评估。这意味着，如果您的 Webhook 和评估器在 **相同​​* 规则上配置，则 Webhook 将始终在该规则运行的评估完成之前触发。为了确保 Webhook 收到评估分数，请将 Webhook 和评估器保留为**单独的规则**，并在 Webhook 规则上使用反馈过滤器，如示例中所述。
+在单个自动化规则中，操作按固定顺序执行：注释队列 → 数据集 → Webhook → 评估。这意味着，如果您的 Webhook 和评估器配置为**相同**规则，则 Webhook 将始终在该规则运行的评估完成之前触发。为了确保 Webhook 收到评估分数，请将 Webhook 和评估器保留为**单独的规则**，并在 Webhook 规则上使用反馈过滤器，如示例中所述。
 </Note>
 
 ## 模态示例
@@ -238,7 +240,7 @@ modal setup
 首先，LangSmith 需要通过传递秘密来向 Modal 进行身份验证。
 最简单的方法是在查询参数中传递一个秘密。
 要验证此机密，请在 _Modal_ 中添加一个机密以对其进行验证。
-按[creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
+通过 [creating a Modal secret](https://modal.com/docs/guide/secrets) 执行此操作。
 将密钥命名为 `ls-webhook` 并设置一个名为 `LS_WEBHOOK` 的环境变量。
 
 您还可以设置一个 LangSmith 秘密 - 幸运的是已经有一个集成模板！

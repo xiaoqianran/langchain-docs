@@ -25,12 +25,11 @@ my-agent/
 │       └── SKILL.md
 
 ├── tools/                          # Application code
+│   └── mcp.py                      # MCP server declaration
 ├── middleware/
 
 ├── channels/                       # Managed configuration
 │   └── <name>.py
-├── connectors/
-│   └── mcp.py
 ├── schedules/
 │   └── <name>.py
 ├── sandbox/
@@ -50,28 +49,28 @@ my-agent/
         └── tests/
 ```
 
-唯一需要的文件是项目根目录下的 `agent.py`，其中包含名为 `agent` 的 [agent definition](/langsmith/python/managed-deep-agents-agent-definition)。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
+唯一需要的文件是项目根目录下的 `agent.py`，其中包含 [agent definition](/langsmith/python/managed-deep-agents-agent-definition) 作为命名的 `agent`。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
 
 
 
 
 ## MDA 如何处理项目文件
 
-- **托管上下文**：[⟦T5⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T6⟧](/langsmith/python/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 Context Hub。
+- **托管上下文**：[⟦T5⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T6⟧](/langsmith/python/managed-deep-agents-skills)下的每个目录都包含特定于任务的指令，例如`SKILL.md`和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/python/managed-deep-agents-memory) 也由 Context Hub 支持。
 - **应用程序代码**：[⟦T10⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T11⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
-- **托管配置**：某些路径在存在时启用功能。对于`channels/`、`connectors/`和`schedules/`，只有直接子级是托管声明；嵌套模块不是。|路径|启用|
-    | --- | --- |
+- **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。|路径|启用|
+    | ---| ---|
     | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
     | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
     | `channels/<name>.py` | [Messaging channels](/langsmith/python/managed-deep-agents-channels) |
-    | `connectors/<name>.py` | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) |
+    | `tools/mcp.py` | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) |
     | `schedules/<name>.py` | [Cron schedules](/langsmith/python/managed-deep-agents-schedules) |
     | `sandbox/__init__.py` | [Sandbox filesystem and shell](/langsmith/python/managed-deep-agents-sandboxes) |
 
-    MCP 连接器模块导出模块级 `connector`。
+    `tools/` 包含普通模块，但有一个例外。 `tools/mcp.py` 是托管声明并导出模块级`mcp`。 `tools/` 下的所有其他模块都是您导入的应用程序代码。
 
-- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。有关更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
-- **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
+- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+- **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 
 
 

@@ -139,7 +139,7 @@ You are a careful research assistant. Use internet search to find sources,
 keep notes, and return concise answers with citations.
 ```
 
-部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/use-the-context-hub)，您可以在其中更新它们，而无需重新部署代理。
+部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
 
   </Step>
 

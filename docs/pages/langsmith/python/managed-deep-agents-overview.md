@@ -114,11 +114,11 @@ async def log_tool_calls(
 ```
   </Tab>
   <Tab title="MCP Connectors">
-```python connectors/mcp.py
-from managed_deepagents import connectors
+```python tools/mcp.py
+from managed_deepagents import define_mcp
 
-connector = connectors.mcp(
-    mcp_servers={
+mcp = define_mcp(
+    servers={
         "langchainDocs": {
             "transport": "http",
             "url": "https://docs.langchain.com/mcp",
@@ -146,7 +146,7 @@ Each part of the agent maps to a file or directory. Add the ones your agent need
 | [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` | The system prompt that defines how the agent behaves. |
 | [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` | Task-specific playbooks the agent loads when they are relevant. |
 | [Tools](/langsmith/python/managed-deep-agents-tools) | `tools/` | Functions the agent calls to run your application logic or reach external services. |
-| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) | `connectors/` | Remote MCP servers that provide tools to the agent. |
+| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) | `tools/mcp.py` | Remote MCP servers that provide tools to the agent. |
 | [Middleware](/langsmith/python/managed-deep-agents-middleware) | `middleware/` | Custom logic that runs around model and tool calls. |
 | [Sandbox](/langsmith/python/managed-deep-agents-sandboxes) | `sandbox/` | An isolated filesystem and shell for running agent-written code. |
 | [Memory](/langsmith/python/managed-deep-agents-memory) | `memory.py` | Preferences and knowledge that persist across threads. |
@@ -158,7 +158,7 @@ Each part of the agent maps to a file or directory. Add the ones your agent need
 
 
 
-For the full layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+For the full layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure). Instructions, skills, and optional durable memory are stored in [Context Hub](/langsmith/python/managed-deep-agents-context-hub).
 
 ## Next steps
 

@@ -6,7 +6,7 @@
 
 通常，托管深度代理的会话内存范围仅限于线程或会话。持久内存是代理可以跨线程和会话保留的可选知识。托管Deep Agents默认没有持久内存。
 
-启用后，耐用内存由 [Context Hub](/langsmith/use-the-context-hub) 支持。部署在`/memories/agent/`获取一棵读/写树，由每个调用者共享。
+启用后，耐用内存由 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 支持。部署在`/memories/agent/`获取一棵读/写树，由每个调用者共享。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -75,9 +75,9 @@ write fails, do not claim that you remembered it.
 启用内存会在代理文件系统中的 `/memories/agent/` 处挂载一棵 Context Hub 树 `memories/agent`：
 
 |路径|使用 |
-| --- | --- |
+| ---| ---|
 | `/memories/agent/AGENTS.md` | **热记忆**用于紧凑、频繁相关的知识。它的内容会加载到每次运行中。 |
-| `/memories/agent/`下的其他文件 | **冷记忆**用于代理仅在相关时读取的详细知识。 |
+| `/memories/agent/`下的其他文件| **冷记忆**用于代理仅在相关时读取的详细知识。 |
 
 保持热内存紧凑，因为它会在每次运行时消耗上下文。将详细的材料（例如程序、决策日志和研究笔记）放入冷文件中，并在有用时从热内存中链接到它们。
 
@@ -102,13 +102,15 @@ write fails, do not claim that you remembered it.
 
 当您运行 `mda deploy` 时，MDA 会从项目声明中启用持久内存，并通过 Context Hub 为其提供支持。部署不会覆盖已存储在 `memories/agent` 下的持久内容。
 
-## 何时使用内存
+有关内存与 Context Hub 中部署拥有的指令和技能的关系，请参阅 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)。
 
-|概念|角色 |范围 |
-| --- | --- | --- |
+## 何时使用内存|概念 |角色 |范围 |
+| ---| ---| ---|
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [skills](/langsmith/javascript/managed-deep-agents-skills)** |部署拥有的代理行为 |由部署共享并对代理只读 |
 | **线程状态** |对话连续性 |一根线 |
-| **持久记忆** |在 Context Hub 中学习和保留的知识 |跨线程部署共享|有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+| **持久记忆** |在 Context Hub 中学习和保留的知识 |跨线程部署共享|
+
+有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ---
 

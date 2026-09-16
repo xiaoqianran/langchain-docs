@@ -2,7 +2,7 @@
 
 # Deploy a Managed Deep Agent
 
-Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/use-the-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
+Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
 
 <Note>
 Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.

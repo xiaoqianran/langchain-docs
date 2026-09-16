@@ -4,7 +4,7 @@
 
 # 部署托管深度代理
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/use-the-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 <Note>
 托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
@@ -77,7 +77,7 @@ schedules/**                 -> LangSmith cron jobs after the deployment is live
 </CodeGroup>
 
 
-创建生产部署时使用`--deployment-type prod`：
+创建生产部署时使用 `--deployment-type prod`：
 
 
 

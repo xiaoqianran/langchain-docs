@@ -4,21 +4,25 @@
 
 # 使用网络钩子
 
+<Note>
+  本页面涵盖 **LangGraph API webhooks**，这是一种在特定运行完成时接收 POST 回调的方法。如果您正在寻找 **LangSmith 自动化 Webhook**（当自动化规则匹配运行或线程时触发），请参阅 [Configure webhook notifications for rules](/langsmith/webhooks)。
+</Note>
+
 Webhook 支持从 LangSmith 应用程序到外部服务的事件驱动通信。例如，您可能希望在对 LangSmith 的 API 调用完成运行后发布对单独服务的更新。
 
-许多 LangSmith 端点接受 `webhook` 参数。如果此参数由可以接受 POST 请求的端点指定，LangSmith 将在运行完成时发送请求。
+许多 LangSmith 端点接受 `webhook` 参数。如果该参数由可以接受 POST 请求的端点指定，LangSmith 将在运行完成时发送请求。
 
-使用 LangSmith 时，您可能希望使用 Webhooks 在 API 调用完成后接收更新。 Webhooks 对于在运行完成处理后触发服务中的操作非常有用。为了实现这一点，您需要公开一个可以接受 `POST` 请求的端点，并将该端点作为 API 请求中的 `webhook` 参数传递。
+使用 LangSmith 时，您可能希望使用 Webhook 在 API 调用完成后接收更新。 Webhook 对于在运行完成处理后触发服务中的操作非常有用。为了实现这一点，您需要公开一个可以接受 `POST` 请求的端点，并将该端点作为 API 请求中的 `webhook` 参数传递。
 
 目前，SDK 不提供对定义 Webhook 端点的内置支持，但您可以使用 API 请求手动指定它们。
 
-## 支持的端点
+## 支持的端点以下 API 端点接受 `webhook` 参数：
 
-以下 API 端点接受 `webhook` 参数：|运营| HTTP 方法 |端点 |
+|运营| HTTP 方法 |端点 |
 |----------------------|-------------------------|------------------------------------|
 |创建运行 | `POST` | `/thread/{thread_id}/runs` |
 |创建线程 Cron | `POST` | `/thread/{thread_id}/runs/crons` |
-|流运行 | `POST` | `/thread/{thread_id}/runs/stream` |
+|流运行| `POST` | `/thread/{thread_id}/runs/stream` |
 |等待运行| `POST` | `/thread/{thread_id}/runs/wait` |
 |创建 Cron | `POST` | `/runs/crons` |
 |无状态流运行 | `POST` | `/runs/stream` |
@@ -136,7 +140,7 @@ LangSmith 以[Run](/langsmith/runs) 的格式发送 webhook 通知。请求负�
 
 完整的 Webhook 负载包含以下字段：
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 |--------|------|-------------|
 | `run_id` | `string`（UUID）|运行的唯一标识符。 |
 | `thread_id` | `string`（UUID）|运行所属线程的标识符。 |
@@ -250,7 +254,7 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 ```
 
 <Note>
-缺少必需的环境变量将阻止服务器启动，确保您不会在配置不完整的情况下进行部署。
+缺少所需的环境变量将阻止服务器启动，确保您不会使用不完整的配置进行部署。
 </Note>
 
 ## 限制 webhook 目标
@@ -274,9 +278,9 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 
 可用选项：
 
-|选项 |描述 |
+|选项|描述 |
 |--------|-------------|
-| `allowed_domains` |主机名白名单。支持子域的通配符（例如`*.mycompany.com`）。 |
+| `allowed_domains` |主机名白名单。支持子域的通配符（例如，`*.mycompany.com`）。 |
 | `require_https` |当 `true` 时拒绝 `http://` URL。 |
 | `allowed_ports` |显式端口白名单。默认为 443 (https) 和 80 (http)。 |
 | `disable_loopback` |当 `true` 时，禁止相对 URL（内部环回调用）。 |
@@ -294,7 +298,7 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 }
 ```此功能主要适用于自托管部署，其中平台管理员或开发人员可能更愿意禁用 Webhooks 以简化其安全状况，尤其是在他们不配置防火墙规则或其他网络控制的情况下。禁用 Webhook 有助于防止不受信任的负载发送到内部端点。
 
-完整配置详情请参阅[configuration file reference](/langsmith/cli?h=disable_webhooks#configuration-file)。
+有关完整配置详细信息，请参阅[configuration file reference](/langsmith/cli?h=disable_webhooks#configuration-file)。
 
 ## 测试网络钩子
 
