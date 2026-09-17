@@ -3,7 +3,7 @@
 # Per-customer policies
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A [spend policy](/langsmith/llm-gateway-spend-policies) can separate a default limit by custom request header, so each header value gets an independent limit. Spend and [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) can also match one specific header value. Use these options to cap your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
@@ -108,7 +108,7 @@ print(response.choices[0].message.content)
 </CodeGroup>
 
 <Note>
-If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
+If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
 </Note>
 
 ### Step 2. Create a cap for one customer

@@ -1299,6 +1299,12 @@
           "rel": "langsmith/llm-gateway-header-policies.md"
         }
       ],
+      "llm-gateway-how-it-works": [
+        {
+          "title": "How the gateway works",
+          "rel": "langsmith/llm-gateway-how-it-works.md"
+        }
+      ],
       "llm-gateway-model-access-policies": [
         {
           "title": "Model access policies",
@@ -1313,7 +1319,7 @@
       ],
       "llm-gateway-quickstart": [
         {
-          "title": "Quickstart",
+          "title": "LLM Gateway quickstart",
           "rel": "langsmith/llm-gateway-quickstart.md"
         }
       ],

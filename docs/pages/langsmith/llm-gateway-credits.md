@@ -3,7 +3,7 @@
 # Gateway Credits
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages). APIs and features may change as we iterate.
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 **Gateway Credits** let you call LangChain-hosted models through the standard LLM Gateway API without setting up a provider account or key. Authenticate with only your [LangSmith API key](/langsmith/create-account-api-key). No [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) is required.
@@ -19,7 +19,7 @@ https://gateway.smith.langchain.com/v1
 
 Authenticate with your LangSmith API key as a bearer token.
 
-For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
+For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
 </Card>
 
 ## Available models

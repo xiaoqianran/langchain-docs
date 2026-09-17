@@ -3,7 +3,7 @@
 # Admin setup
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 One-time setup to enable the LLM Gateway for your LangSmith [organization](/langsmith/administration-overview#organizations). [Organization admins](/langsmith/rbac#organization-admin) should complete this before individual users can route calls through the gateway.
@@ -76,7 +76,7 @@ Share the key and the gateway endpoint with each user, or distribute them via MD
 
 ## Verification
 
-Ask a user to run the [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#2-make-a-call). A `200` response confirms the gateway, the API key, provider secrets, and role permissions are all configured correctly. The call will appear as a trace in the **gateway** tracing project in the workspace.
+Ask a user to run the [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request). A `200` response confirms the gateway, the API key, provider secrets, and role permissions are all configured correctly. The call will appear as a trace in the **gateway** tracing project in the workspace.
 
 ## Next steps
 

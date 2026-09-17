@@ -2,12 +2,12 @@
 
 # LLM Gateway
 
-Use one [LangSmith API key](/langsmith/create-account-api-key) to call models across configured providers. Switch providers by changing the model ID, while the LLM Gateway traces every call and applies centralized governance policies.
+Use one [LangSmith API key](/langsmith/create-account-api-key) to call models across configured providers. Switch providers by changing the model ID, while the LLM Gateway traces every model call and applies centralized governance policies.
 
 <Note>
 **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 
-The gateway is also available on [BYOC](/langsmith/byoc), where it runs inside your data plane. Send requests to your [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) behind the `/gateway` path prefix, and authenticate with an API key scoped to a workspace in that data plane. For more information, see [Use a BYOC data plane](/langsmith/llm-gateway-api-formats#use-a-byoc-data-plane).
+The gateway is also available on [BYOC](/langsmith/byoc), where it runs inside your data plane. Send requests to your [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) behind the `/gateway` path prefix, and authenticate with an API key scoped to a workspace in that data plane. For more information, see [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane).
 </Note>
 
 <Note>

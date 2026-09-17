@@ -3,7 +3,7 @@
 # Spend policies
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A spend policy defines a cost cap for a specific scope (organization, workspace, API key, or user) over a time window (monthly, weekly, daily, or hourly). The [LLM Gateway](/langsmith/llm-gateway) tracks spend in real time and blocks any request that would push spend past the cap, returning a `402` response:

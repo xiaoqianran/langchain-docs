@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-16T13:49:30.859Z",
+  "fetchedAt": "2026-09-17T13:53:36.978Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 177,
-  "ok": 565,
+  "ok": 566,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 459
+      "count": 460
     },
     "fleet": {
       "name": "Fleet",
@@ -1278,7 +1278,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-security",
-      "bytes": 9620
+      "bytes": 9714
     },
     {
       "rel": "langsmith/engine-self-hosted-link.md",
@@ -2349,7 +2349,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-access",
-      "bytes": 7435
+      "bytes": 7425
     },
     {
       "rel": "langsmith/llm-gateway-admin-setup.md",
@@ -2358,7 +2358,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-admin-setup",
-      "bytes": 5022
+      "bytes": 5013
     },
     {
       "rel": "langsmith/llm-gateway-api-formats.md",
@@ -2367,7 +2367,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-api-formats",
-      "bytes": 14238
+      "bytes": 11022
     },
     {
       "rel": "langsmith/llm-gateway-coding-agents.md",
@@ -2376,7 +2376,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-coding-agents",
-      "bytes": 11482
+      "bytes": 11473
     },
     {
       "rel": "langsmith/llm-gateway-credits.md",
@@ -2385,7 +2385,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-credits",
-      "bytes": 5636
+      "bytes": 5583
     },
     {
       "rel": "langsmith/llm-gateway-data-policy.md",
@@ -2394,7 +2394,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-data-policy",
-      "bytes": 10390
+      "bytes": 10711
     },
     {
       "rel": "langsmith/llm-gateway-direct-model-access.md",
@@ -2403,7 +2403,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-direct-model-access",
-      "bytes": 5664
+      "bytes": 4727
     },
     {
       "rel": "langsmith/llm-gateway-fallbacks.md",
@@ -2412,7 +2412,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-fallbacks",
-      "bytes": 5367
+      "bytes": 5337
     },
     {
       "rel": "langsmith/llm-gateway-header-policies.md",
@@ -2421,7 +2421,16 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-header-policies",
-      "bytes": 13815
+      "bytes": 13806
+    },
+    {
+      "rel": "langsmith/llm-gateway-how-it-works.md",
+      "title": "How the gateway works",
+      "url": "https://docs.langchain.com/langsmith/llm-gateway-how-it-works",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "llm-gateway-how-it-works",
+      "bytes": 6384
     },
     {
       "rel": "langsmith/llm-gateway-model-access-policies.md",
@@ -2430,7 +2439,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-model-access-policies",
-      "bytes": 3307
+      "bytes": 3297
     },
     {
       "rel": "langsmith/llm-gateway-monitoring.md",
@@ -2439,16 +2448,16 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-monitoring",
-      "bytes": 4591
+      "bytes": 4664
     },
     {
       "rel": "langsmith/llm-gateway-quickstart.md",
-      "title": "Quickstart",
+      "title": "LLM Gateway quickstart",
       "url": "https://docs.langchain.com/langsmith/llm-gateway-quickstart",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-quickstart",
-      "bytes": 12866
+      "bytes": 6139
     },
     {
       "rel": "langsmith/llm-gateway-rate-limit-policies.md",
@@ -2457,7 +2466,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-rate-limit-policies",
-      "bytes": 4607
+      "bytes": 4597
     },
     {
       "rel": "langsmith/llm-gateway-spend-policies.md",
@@ -2466,7 +2475,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-spend-policies",
-      "bytes": 5672
+      "bytes": 5662
     },
     {
       "rel": "langsmith/llm-gateway.md",
@@ -2475,7 +2484,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway",
-      "bytes": 6063
+      "bytes": 6070
     },
     {
       "rel": "langsmith/local-dev-testing.md",
@@ -2610,7 +2619,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "manage-prompts-programmatically",
-      "bytes": 30474
+      "bytes": 30442
     },
     {
       "rel": "langsmith/manage-prompts.md",
@@ -3717,7 +3726,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-scale",
-      "bytes": 18021
+      "bytes": 19749
     },
     {
       "rel": "langsmith/self-host-sso.md",
@@ -3942,7 +3951,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 252564
+      "bytes": 253166
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -4815,7 +4824,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "user-management",
-      "bytes": 53376
+      "bytes": 55137
     },
     {
       "rel": "langsmith/view-traces.md",

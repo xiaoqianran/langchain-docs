@@ -2,6 +2,10 @@
 
 # Monitor LLM Gateway spend
 
+<Note>
+The LLM Gateway is in [beta](/langsmith/release-stages).
+</Note>
+
 The LLM Gateway **Spend Monitoring** dashboard shows how much LLM cost a [workspace](/langsmith/administration-overview#workspaces) has accrued through the gateway. Use it to compare spend over time and identify the users, [API keys](/langsmith/create-account-api-key), and models that account for that spend. The dashboard covers one workspace at a time; switch workspaces to compare them.
 
 Viewing the dashboard requires the [Organization Admin](/langsmith/rbac#organization-admin) role and a Plus or Enterprise [plan](/langsmith/pricing-plans). Without both, the **Usage** tab does not appear.

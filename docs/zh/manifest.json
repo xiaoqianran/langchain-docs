@@ -6499,13 +6499,18 @@
     "langsmith/python/managed-deep-agents-context-hub.md": {
       "hash": "3c6f336226b303b8e364d73f05d10bc636b6ab41",
       "translatedAt": "2026-09-16T13:49:51.296Z"
+    },
+    "langsmith/llm-gateway-how-it-works.md": {
+      "hash": "cc89f60e061be2be492a6d8364e3bbbb54ddb62a",
+      "translatedAt": "2026-09-17T13:54:00.397Z",
+      "failed": true
     }
   },
-  "updatedAt": "2026-09-16T13:53:08.624Z",
+  "updatedAt": "2026-09-17T13:54:24.090Z",
   "stats": {
-    "translated": 34,
-    "skipped": 531,
-    "failed": 0,
-    "total": 565
+    "translated": 0,
+    "skipped": 543,
+    "failed": 23,
+    "total": 566
   }
 }

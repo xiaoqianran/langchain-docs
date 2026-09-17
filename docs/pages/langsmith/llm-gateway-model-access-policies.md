@@ -3,7 +3,7 @@
 # Model access policies
 
 <Note>
-**Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
+The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A model access policy defines which providers and models are permitted through the [LLM Gateway](/langsmith/llm-gateway). The gateway blocks requests for providers or models the policy does not include, returning a `403` response. If no policy applies, all providers and models are available.
