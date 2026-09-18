@@ -5,7 +5,7 @@
 # 网关积分
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。 API 和功能可能会随着我们的迭代而改变。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 **Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
@@ -21,7 +21,7 @@ https://gateway.smith.langchain.com/v1
 
 使用您的 LangSmith API 密钥作为不记名令牌进行身份验证。
 
-有关区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-api-formats#use-a-regional-gateway)。
+有关区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 </Card>
 
 ## 可用型号
@@ -107,7 +107,7 @@ print(model.invoke("ping").content)
 
 ## 定价
 
-Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
+Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限额（包括托管模型调用）。
 
 ## 追踪
 
@@ -118,7 +118,7 @@ Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计�
 - [Quickstart](/langsmith/llm-gateway-quickstart)：进行第一个网关代理呼叫。
 - [API formats](/langsmith/llm-gateway-api-formats)：通过聊天完成、消息或响应调用模型。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：为网关信用使用添加成本限制。
-- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商原生 API 和模型 ID。
+- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商本机 API 和模型 ID。
 
 ---
 

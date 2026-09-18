@@ -1,10 +1,17 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Filter traces | https://docs.langchain.com/langsmith/filter-traces-in-application -->
+<!-- langchain-docs: Filter traces (ClickHouse) | https://docs.langchain.com/langsmith/filter-traces-in-application -->
 
-# 过滤痕迹
+# 过滤痕迹（ClickHouse）
 
 跟踪项目可以跨[threads](/langsmith/observability-concepts#threads)、[traces](/langsmith/observability-concepts#traces)和[runs](/langsmith/observability-concepts#runs)积累大量数据。 LangSmith 的过滤工具可让您精确导航和分析数据。
+
+<Note>
+追踪项目有两种过滤体验。检查项目的顶部，看看哪一个适合您：
+
+- **单个搜索栏，左侧有范围选择器**：请参阅[Filter traces](/langsmith/filter-traces)。
+- **构建滤波器芯片的添加滤波器按钮**：参考[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)。
+</Note>
 
 此页面涵盖：
 
@@ -25,11 +32,11 @@
 1. **过滤器**：位于**追踪**项目页面的左上角。您可以在此处构建和管理过滤条件。
     - 第一个下拉菜单过滤默认值和[saved views](#save-a-filter)。
     - 按**线程**、**跟踪**或**运行**进行快速过滤。
-    - **将过滤器**添加到属性或全文搜索的[configure a filter based](#specific-filtering-techniques)。
+    - **将过滤器**添加到属性或全文搜索的[configure a filter based](#specific-filtering-techniques)。1. **过滤器快捷方式**：位于**跟踪**项目页面的右侧边栏。过滤器快捷方式栏提供对基于项目运行中最常出现的属性的过滤器的快速访问。
 
-1. **过滤器快捷方式**：位于**跟踪**项目页面的右侧边栏。过滤器快捷方式栏提供对基于项目运行中最常出现的属性的过滤器的快速访问。
+### 过滤运算符
 
-### 过滤运算符可用的过滤运算符取决于您要过滤的属性的数据类型。以下是常见运算符的概述：
+可用的过滤运算符取决于您要过滤的属性的数据类型。以下是常见运算符的概述：
 
 - **is**：与过滤器值完全匹配
 - **不是**：过滤器值的负匹配
@@ -46,14 +53,14 @@
 
 运行元数据和标签对于过滤也很有用。这些依赖于管道所有部分的良好标记。要了解更多信息，请参阅[Add metadata and tags to traces](/langsmith/add-metadata-tags)。
 
-当您指定更多过滤器时，您可以单独单击每个过滤器来更新您正在搜索的属性。
+当您指定更多过滤器时，您可以单独单击每个过滤器来更新您正在搜索的属性。### 基于输入和输出的过滤器
 
-### 基于输入和输出的过滤器
+您可以根据线程、跟踪或运行的输入和输出中的内容过滤跟踪数据。
 
-您可以根据线程、跟踪或运行的输入和输出中的内容过滤跟踪数据。要过滤输入或输出，您可以使用**<Icon icon="zoom"/>全文搜索**过滤器，它将匹配任一字段中的关键字。要进行更有针对性的搜索，您可以使用 **{<Icon icon="arrow-down-right"/>} 输入** 或 **<Icon icon="arrow-up-left"/> 输出** 过滤器，它们仅根据相应字段匹配内容。
+要过滤输入或输出，您可以使用**<Icon icon="zoom"/>全文搜索**过滤器，它将匹配任一字段中的关键字。要进行更有针对性的搜索，您可以使用 **{<Icon icon="arrow-down-right"/>} 输入** 或 **<Icon icon="arrow-up-left"/> 输出** 过滤器，它们仅根据相应字段匹配内容。
 
 <Note>
-为了提高性能，LangSmith 为全文搜索索引最多 250 个字符的数据。如果您的搜索查询超出此限制，我们建议改用[Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs)。
+为了提高性能，LangSmith 为最多 250 个字符的数据建立索引以进行全文搜索。如果您的搜索查询超出此限制，我们建议改用[Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs)。
 </Note>
 
 您还可以指定多个以匹配提供的所有术语，方法是：
@@ -65,9 +72,7 @@ LangSmith 分割文本并以任意顺序匹配任何部分关键字匹配。 Lan
 
 <Note>
 令牌的长度必须至少为 2 个字符才能编制索引。单字符标记（例如，`a`、`x`）从搜索中排除。
-</Note>
-
-<img
+</Note><img
     className="block dark:hidden"
     src="/langsmith/images/filter-bar-search-light.png"
     alt="LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune"
@@ -77,13 +82,15 @@ LangSmith 分割文本并以任意顺序匹配任何部分关键字匹配。 Lan
     className="hidden dark:block"
     src="/langsmith/images/filter-bar-search-dark.png"
     alt="LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune"
-/>根据图像中的过滤器，系统将在输入或输出中搜索`python`和`tensorflow`，并在输入中搜索`embedding`以及输出中的`fine`和`tune`。
+/>
+
+根据图像中的过滤器，系统将在输入或输出中搜索`python`和`tensorflow`，并在输入中搜索`embedding`以及输出中的`fine`和`tune`。
 
 您可以根据需要从过滤器路径中删除过滤器，这会将搜索范围扩大到剩余的过滤器。
 
 ### 根据输入/输出键值对进行过滤
 
-除了全文搜索之外，您还可以根据输入和输出中的特定键值对进行过滤。这允许更精确的过滤，特别是在处理结构化数据时。
+除了全文搜索之外，您还可以根据输入和输出中的特定键值对进行过滤。这可以实现更精确的过滤，尤其是在处理结构化数据时。
 
 <Note>
 LangSmith 每次运行最多可索引 100 个唯一键，以保持数据井然有序且可搜索。每个键的每个值的字符数限制为 250 个字符。如果您的数据超出其中任一限制，则文本将不会被索引。这有助于确保快速、可靠的性能。
@@ -99,7 +106,7 @@ LangSmith 每次运行最多可索引 100 个唯一键，以保持数据井然�
 
 1. 选择**添加过滤器**。
 1. 从第一个下拉列表中选择 **Input**，将 **Key** 保留为第二个下拉列表，然后选择 **input** 作为键。
-1. 单击 **+ Value** 并输入值：`What is the capital of France?` 作为值。您还可以通过使用点表示法选择嵌套键名称来匹配嵌套键。例如，要匹配输出中的嵌套键：
+1. 单击 **+ Value** 并输入值：`What is the capital of France?` 作为值。您还可以通过使用点表示法来选择嵌套键名称来匹配嵌套键。例如，要匹配输出中的嵌套键：
 
 ```json
 {
@@ -176,7 +183,7 @@ LangSmith 每次运行最多可索引 100 个唯一键，以保持数据井然�
 }
 ```
 
-在示例中，KV 搜索会将每个嵌套 JSON 路径映射为可用于搜索和过滤的键值对。
+在该示例中，KV 搜索会将每个嵌套 JSON 路径映射为可用于搜索和过滤的键值对。
 
 LangSmith 会将其分解为以下一组可搜索的键值对：|关键|价值|
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -209,7 +216,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：|关键|价值|
 
 要查找没有特定元数据键的运行：将 **Key** 运算符设置为 `is not`。例如，将 `Key` 运算符设置为 `is not`，并以 `phone` 作为键，将匹配元数据中没有 `phone` 字段的所有运行。您还可以过滤既没有特定键也没有特定值的运行。要查找元数据既没有键 `phone` 也没有任何具有值 `1234567890` 的字段的运行，请将 **Key** 运算符设置为 `is not`，键为 `phone`，将 **Value** 运算符设置为 `is not`，值 `1234567890`。
 
-最后，您还可以过滤没有特定键但具有特定值的运行。要查找没有 `phone` 键但其他键有 `1234567890` 值的运行，请将 **Key** 运算符设置为 `is not`，键为 `phone`，将 **Value** 运算符设置为 `is`，值 `1234567890`。
+最后，您还可以过滤没有特定键但具有特定值的运行。要查找没有 `phone` 键但其他键有 `1234567890` 值的运行，请将 **Key** 运算符设置为 `is not`，键为 `phone`，将 **Value** 运算符设置为 `is`，值为 `1234567890`。
 
 <Tip>
 您可以使用 `does not contain` 运算符代替 `is not` 来执行子字符串匹配。
@@ -243,7 +250,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：|关键|价值|
 
 ## 过滤器在“详细信息”视图中运行
 
-您还可以直接在[Details view](/langsmith/view-traces#details-view)中应用过滤器，这对于筛选具有大量运行的轨迹非常有用。此处可以应用主运行表视图中可用的相同过滤器。默认情况下，仅显示与过滤器匹配的运行。要在跟踪树的更广泛上下文中查看匹配的运行，请将视图选项从“仅过滤”切换为“显示全部”或“最相关”。
+您还可以直接在[Details view](/langsmith/view-traces#details-view)中应用过滤器，这对于筛选具有大量运行的跟踪非常有用。此处可以应用主运行表视图中可用的相同过滤器。默认情况下，仅显示与过滤器匹配的运行。要在跟踪树的更广泛上下文中查看匹配的运行，请将视图选项从“仅过滤”切换为“显示全部”或“最相关”。
 
 <img
     className="block dark:hidden"

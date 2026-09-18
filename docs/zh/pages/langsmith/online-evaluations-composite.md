@@ -8,7 +8,7 @@
 
 [**Composite evaluators**](/langsmith/composite-evaluators-ui) 是将多个评估者分数合并为单个 [score](/langsmith/evaluation-concepts#evaluator-outputs) 的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留符合您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
 
 ## 查看在线评估器
 
@@ -22,10 +22,10 @@
 
 从跟踪项目视图中，导航到 **Evaluators** 选项卡。单击 **+ 评估器** 打开 **添加评估器** 面板。单击“从头开始创建”下的“综合得分”。
 
-### 2. 配置复合求值器
+### 2. 配置复合评估器
 
 1. 指定您的评估员。
-2. 选择聚合方法：**平均** 或 **求和**。
+2. 选择一种聚合方法，**平均** 或 **求和**。
     - **平均**：Σ（体重*分数）/Σ（体重）。
     - **总和**：Σ（体重*分数）。
 3. 添加您想要包含在综合乐谱中的反馈键。
@@ -38,7 +38,7 @@
 
 **关于追踪项目**：
 - 综合分数显示为跑步反馈。
-- [Filter for runs](/langsmith/filter-traces-in-application) 具有综合分数，或综合分数满足特定阈值。
+- [Filter for runs](/langsmith/filter-traces) 具有综合分数，或综合分数满足特定阈值。
 - [Create a chart](/langsmith/dashboards#custom-dashboards) 可视化综合分数随时间变化的趋势。
 
 <Note> 如果运行时未配置任何组成评估器，则不会计算该运行的综合分数。 </Note>

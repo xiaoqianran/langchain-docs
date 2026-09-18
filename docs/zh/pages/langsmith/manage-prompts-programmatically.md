@@ -400,7 +400,7 @@ Prompt publicPrompt = promptClient.pull("efriis/my-first-prompt");
 对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，非OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
 </Note>
 
-## 配合LangSmith网关使用
+## 与LangSmith网关配合使用
 
 如果您的工作区使用[LangSmith LLM Gateway](/langsmith/llm-gateway)，您可以通过在拉取和调用提示之前设置环境变量来通过它路由提示模型调用。无需更改其他代码。
 
@@ -433,7 +433,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 ```
 
 <Note>
-LangChain 聊天模型的网关路由需要 Python 和[gateway quickstart](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents) 中列出的最低版本的受支持的 `langchain-*` 集成包。如果集成包低于最低版本，调用将绕过网关，直接转至提供商。
+LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包（最低版本在[gateway quickstart](/langsmith/llm-gateway-quickstart) 中列出）。如果集成包低于最低版本，调用将绕过网关，直接转至提供商。
 </Note>
 
 有关完整的配置选项、提供商支持和区域端点，请参阅 [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart)。
@@ -451,7 +451,7 @@ LangChain 聊天模型的网关路由需要 Python 和[gateway quickstart](/lang
 |设置|默认|描述 |
 |---------|---------|-------------|
 | `max_size` | 100 | 100缓存的最大提示数|
-| `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
+| `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |
 | `refresh_interval_seconds` | 60|多久检查一次过时的提示并在后台刷新它们 |
 
 刷新时，全局缓存将使用最后一个请求给定提示的客户端来获取新数据。

@@ -4,14 +4,14 @@
 
 # 记录 LLM 通话
 
-当您在[LangChain](/oss/python/langchain/overview)或LangSmith[supported integration](/langsmith/integrations)之外直接调用LLM时，您需要提供特定的元数据，以便LangSmith可以显示代币计数，计算成本，并让您使用正确的提供商和模型打开[Playground](/langsmith/prompt-engineering-concepts#playground)中的[run](/langsmith/observability-concepts#runs)。
+当您在[LangChain](/oss/python/langchain/overview)或LangSmith[supported integration](/langsmith/integrations)之外直接调用LLM时，您需要提供特定的元数据，以便LangSmith可以显示令牌计数，计算成本，并让您使用正确的提供商和模型打开[Playground](/langsmith/prompt-engineering-concepts#playground)中的[run](/langsmith/observability-concepts#runs)。
 
 功能齐全的 LLM 跟踪有四个要求：
 
 |要求 |该怎么办 |启用|
 |---|---|---|
 | 1. 设置[⟦T10⟧](/langsmith/run-data-format#run-types) |通过 `run_type="llm"` 至 `@traceable` | LLM 特定渲染、代币/成本显示 |
-| 2. 格式化输入/输出|使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染，Playground 支持 |
+| 2. 格式化输入/输出|使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染、Playground 支持 |
 | 3. 设置`ls_provider`和`ls_model_name` | `metadata` 均通过 |成本跟踪、Playground 模型选择 |
 | 4. 提供代币数量 |在运行时设置`usage_metadata` |代币数量和成本计算 |
 
@@ -38,7 +38,7 @@
 
       <Expandable title="Content options">
         <ParamField path="type" type="string" required>
-          其中之一：<code>文本</code> | <code>图片</code> | <code>文件</code> | <code>音频</code> | <code>视频</code> | <code>工具调用</code> | <code>服务器工具调用</code> | <code>服务器工具结果</code>。
+          其中之一：<code>文本</code>| <code>图片</code> | <code>文件</code> | <code>音频</code> | <code>视频</code> | <code>工具调用</code> | <code>服务器工具调用</code> | <code>服务器工具结果</code>。
         </ParamField>
 
         <Expandable title="text">
@@ -155,7 +155,7 @@
             该工具调用的唯一标识符。
           </ParamField>
         <ParamField path="status" type="string" required>
-            服务器端工具的执行状态。其中之一：<code>成功</code>| <code>错误</code>。
+            服务器端工具的执行状态。其中之一：<code>成功</code> | <code>错误</code>。
           </ParamField>
           <ParamField path="output">
             已执行工具的输出。
@@ -344,7 +344,7 @@ output = {
 
 ## 将自定义 I/O 格式转换为 LangSmith 兼容格式如果您使用自定义输入或输出格式，则可以使用 [⟦T29⟧ decorator](https://docs.smith.langchain.com/reference/python/run_helpers/langsmith.run_helpers.traceable) (Python) 或 [⟦T30⟧ function](https://docs.smith.langchain.com/reference/js/functions/traceable.traceable) (TS) 上的 `process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 函数将其转换为 LangSmith 兼容格式。
 
-`process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 接受的函数允许您在将特定跟踪的输入和输出记录到 LangSmith 之前对其进行转换。他们可以访问跟踪的输入和输出，并且可以返回包含处理后的数据的新字典。
+`process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 接受允许您在将特定跟踪的输入和输出记录到 LangSmith 之前对其进行转换的函数。他们可以访问跟踪的输入和输出，并且可以返回包含处理后的数据的新字典。
 
 以下是如何使用 `process_inputs` 和 `process_outputs` 将自定义 I/O 格式转换为 LangSmith 兼容格式的样板示例：
 
@@ -380,7 +380,7 @@ def chat_model(inputs: dict) -> dict:
 
 ## 识别跟踪中的自定义模型
 
-使用自定义模型时，建议还提供以下 `metadata` 字段，以便在查看迹线和 [filtering](/langsmith/filter-traces-in-application) 时识别模型。
+使用自定义模型时，建议还提供以下 `metadata` 字段，以便在查看跟踪和 [filtering](/langsmith/filter-traces) 时识别模型。
 
 - `ls_provider`：模型的提供者，例如`"openai"`、`"anthropic"`。
 - `ls_model_name`：型号名称，例如`"gpt-5.4-mini"`、`"claude-opus-4-8"`。
@@ -515,7 +515,7 @@ LangSmith 需要在 `metadata` 中设置 `ls_model_name` 来识别模型并计�
 
 令牌计数启用成本计算，LangSmith 显示在[Tracing Projects UI](https://smith.langchain.com/projects) 中。有两种方式提供它们：
 
-- **在运行树上设置`usage_metadata`**：在[⟦T51⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable)函数内调用[⟦T49⟧ / ⟦T50⟧](/langsmith/access-current-span)并设置`usage_metadata`字段。这不会改变函数的返回值。
+- **在运行树上设置 `usage_metadata`**：在 [⟦T51⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 函数中调用 [⟦T49⟧ / ⟦T50⟧](/langsmith/access-current-span) 并设置 `usage_metadata` 字段。这不会改变函数的返回值。
 - **在输出中返回`usage_metadata`**：将`usage_metadata`作为顶级键包含在函数返回的字典中。
 
 ### 支持的 `usage_metadata` 字段

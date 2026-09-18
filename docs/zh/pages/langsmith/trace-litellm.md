@@ -97,7 +97,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
 LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
 
-LiteLLM 回调在异步环境中运行。当使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。<Tip>
+LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。<Tip>
 这种方法最适合异步应用程序。对于简单的同步脚本，请使用[previous section](#use-langsmith_tracing-and-traceable)中所示的`@traceable`方法。
 </Tip>
 
@@ -234,7 +234,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
 
 ## 后续步骤
 
-- [View traces in LangSmith](/langsmith/filter-traces-in-application)
+- [View traces in LangSmith](/langsmith/filter-traces)
 - [Add custom metadata](/langsmith/ls-metadata-parameters)
 - [Filter and sample traces](/langsmith/sample-traces)
 

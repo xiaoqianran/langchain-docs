@@ -4,12 +4,16 @@
 
 # 监控 LLM 网关支出
 
+<Note>
+LLM 网关位于[beta](/langsmith/release-stages)。
+</Note>
+
 LLM 网关 **支出监控** 仪表板显示 [workspace](/langsmith/administration-overview#workspaces) 通过网关累积的 LLM 成本。使用它来比较一段时间内的支出并确定用户、[API keys](/langsmith/create-account-api-key)以及导致该支出的模型。仪表板一次覆盖一个工作区；切换工作空间以进行比较。
 
 查看仪表板需要 [Organization Admin](/langsmith/rbac#organization-admin) 角色和 Plus 或 Enterprise [plan](/langsmith/pricing-plans)。如果没有两者，**使用**选项卡就不会出现。
 
 <Warning>
-该仪表板目前在欧盟、亚太地区或 AWS 环境中不可用。
+该控制面板目前在欧盟、亚太地区或 AWS 环境中不可用。
 </Warning>
 
 ## 打开仪表板
@@ -48,7 +52,7 @@ LLM 网关 **支出监控** 仪表板显示 [workspace](/langsmith/administratio
 
 堆叠条形图显示每个实体如何在每个时间段内贡献支出。将鼠标悬停在栏上可查看存储桶总数以及每个可见实体的贡献。当不应用过滤器时，图表将六个支出最高的实体显示为单独的系列，并将其余实体合并到**其他**中。
 
-该表总结了相同的选择，每个可见实体一行。用它来比较：
+该表总结了相同的选择，每个可见实体一行。 Use it to compare:
 
 - **每小时、每日或每周平均**：实体的总支出除以时间段数量。
 - **支出份额**：实体支出的百分比。

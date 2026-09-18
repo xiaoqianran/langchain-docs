@@ -5,7 +5,7 @@
 # 设置编码代理
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 配置编码代理以使用标准 LLM 网关端点来实现集中成本控制、可观察性和审计跟踪。网关对每个呼叫者进行身份验证、按模型 ID 进行路由、执行策略并跟踪每个呼叫。
@@ -33,7 +33,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：- 
 
 将 `ANTHROPIC_API_KEY` 设置为您的 LangSmith API 密钥。 Claude Code 从您的 shell 环境或通过 `--settings` 传递的设置文件中的 `env` 块读取这些变量。
 
-如果您的 LangSmith 部署位于区域或自托管实例上，请将以下示例中的网关主机名替换为您的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway) 主机名。
+如果您的 LangSmith 部署位于区域或自托管实例上，请将以下示例中的网关主机名替换为您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 主机名。
 
 #### 仅使用 Anthropic 型号
 
@@ -61,7 +61,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：- 
 
 #### 跨提供商路由模型层
 
-将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到提供商前缀的网关模型 ID。
+将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到以提供商为前缀的网关模型 ID。
 
 <Tabs>
   <Tab title="Settings file (recommended)">
@@ -167,7 +167,7 @@ codex
 gemini
 ```
 
-## Deep Agents 代码
+## Deep Agents Code
 
 将 OpenAI 兼容客户端与标准端点结合使用，然后通过 `openai` 集成传递托管模型 slug：
 
@@ -180,23 +180,23 @@ dcode --model openai:moonshotai/kimi-k3
 
 要使用自带密钥模型，请保留标准基本 URL 并在 `openai:` 之后传递提供者前缀模型，例如 `openai:anthropic/claude-opus-5`。有关提供商本机集成和模型 ID，请参阅 [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
 
-## 全公司部署
+## Company-wide deployment
 
-对于向所有开发人员推出网关的组织，可以通过移动设备管理或共享 shell 配置文件分发配置。分发：
+对于向所有开发人员推出网关的组织，可以通过移动设备管理或共享 shell 配置文件分发配置。 Distribute:
 
 1. 每个客户端的标准网关基本 URL。
 1. 每个用户或团队一个工作区范围的[LangSmith API key](/langsmith/create-account-api-key)，具体取决于您的策略粒度。
-1. 为每个编码代理批准的型号 ID。
+1. The model IDs approved for each coding agent.
 1. Codex `config.toml`（如果您的组织使用 Codex）。
 
 提供商 API 密钥集中在 LangSmith 工作区机密中。 Gateway Credits 模型不需要提供商 API 密钥。
 
-## 验证设置
+## Verify the setup
 
 配置编码代理后，进行测试呼叫并确认：1. 呼叫成功，座席收到响应。
 1. 跟踪出现在您的 LangSmith 工作区的 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 跟踪项目中。
 
-如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并出现 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
+如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并显示 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
 
 ## 后续步骤
 

@@ -39,7 +39,7 @@ uv add deepagents
 
 ## 设置
 
-您可以在**设置**下的[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents)中找到您的LangSmith API密钥和项目名称：
+您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents) 中找到您的 LangSmith API 密钥和项目名称：
 
 ```bash
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
@@ -133,28 +133,28 @@ print(result)
 
 ## 查看痕迹
 
-### Details View
+### 详情查看
 
 单击跟踪，然后切换到右上角的 **详细信息** 视图。 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents) 中的跟踪树将类似于 [this](https://smith.langchain.com/public/ec82be64-b158-425e-a959-924be16b8588/r)，具有以下结构：
 
 - 代理运行（顶层）代表完整的Deep Agents调用。
 - LLM 调用，代理分析用户请求并决定使用哪些工具。
-- Tool run: `compute_compound_interest`:
+- 工具运行：`compute_compound_interest`：
     - 显示工具输入（例如，本金、annual_rate、years 和compounds_per_year）。
     - 显示结构化输出，包括期末余额和赚取的总利息。
 - LLM 调用解释计算结果并确定下一步。
-- Tool run: `yearly_balance_schedule`:
+- 工具运行：`yearly_balance_schedule`：
     - 显示用于生成计划的输入。
     - 返回期末余额和利息收入的逐年细目。
 - 最终的法学硕士回复，为用户总结了结果。
 
 生成的跟踪包含多个嵌套跨度，使您可以在 LangSmith UI 中遵循代理的规划、计算步骤和解释流程。
 
-### Messages ViewLangSmith UI 中的 **消息** 视图显示用户和客服人员之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应）并以类似聊天的格式表示它们。
+### 消息查看LangSmith UI 中的 **消息** 视图显示用户和客服人员之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
-### Filter by subagent
+### 按子代理过滤
 
-在子代理生成的每次运行中，Deep Agents 自动将子代理的 `name` 写入到 `lc_agent_name` 元数据键。使用它可以将所有运行与LangSmith中的特定子代理隔离，这对于调试、监视或比较子代理行为非常有用。
+在子代理生成的每次运行中，Deep Agents 自动将子代理的 `name` 写入到 `lc_agent_name` 元数据键。使用它可以将所有运行与 LangSmith 中的特定子代理隔离，这对于调试、监视或比较子代理行为非常有用。
 
 **在LangSmith UI 中过滤：**
 
@@ -165,7 +165,7 @@ print(result)
 
 ![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](/langsmith/images/deepagents-lc-agent-name-filter.png)
 
-将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
+将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
 **使用 SDK 以编程方式过滤：**
 

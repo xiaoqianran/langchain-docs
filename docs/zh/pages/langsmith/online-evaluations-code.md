@@ -8,7 +8,7 @@
 
 代码评估器允许您直接在 LangSmith 中用 Python 或 JavaScript 编写评估器。通常用于验证数据的结构或统计属性。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留符合您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
 
 ## 查看在线评估器
 
@@ -16,7 +16,7 @@
 
 ## 配置在线评估器
 
-### 1. 导航至在线评估器导航到 **跟踪** 页面并选择一个跟踪项目。单击“**评估器**”选项卡，然后单击“**+ 评估器**”以打开“**添加评估器**”面板。选择 **从头开始创建** 下的 **代码评估器** 以构建新的评估器，或从 **附加现有评估器** 下的工作区中选择现有代码评估器。
+### 1. 导航至在线评估器导航到 **跟踪** 页面并选择一个跟踪项目。单击“**评估器**”选项卡，然后单击“**+ 评估器**”以打开“**添加评估器**”面板。在 **从头开始创建** 下选择 **代码评估器** 以构建新的评估器，或从 **附加现有评估器** 下的工作区中选择现有代码评估器。
 
 ### 2. 指定您的评估员
 
@@ -30,7 +30,7 @@
 - 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 - 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 
-求值器上的过滤器的工作方式与过滤项目中的跟踪时的工作方式相同。更多关于滤镜的信息，可以参考[Filter traces](/langsmith/filter-traces-in-application)。要处理来自早期评估器的反馈，请过滤该评估器以获取反馈键，然后过滤[include extended stats](/langsmith/evaluators#include-extended-stats)。例如，当`answer_usefulness`反馈存在时，使用`has(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。
+评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤该评估器以获取反馈键，然后过滤[include extended stats](/langsmith/evaluators#include-extended-stats)。例如，当`answer_usefulness`反馈存在时，使用`has(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。
 
 <Tip>
 当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
@@ -40,7 +40,7 @@
 
 配置采样率以控制触发自动化操作的过滤运行的百分比。例如，为了控制成本，您可能需要设置一个过滤器以仅将求值器应用于 10% 的迹线。为此，您可以将采样率设置为 0.1。
 
-### 5.（可选）将规则应用于过去的运行通过切换**应用于过去的运行**并输入“回填自”日期，将规则应用于过去的运行。这只有在创建规则时才有可能。注意：回填作为后台作业进行处理，因此您不会立即看到结果。
+### 5.（可选）将规则应用于过去的运行通过切换 **应用到过去的运行** 并输入“回填自”日期，将规则应用于过去的运行。这只有在创建规则时才有可能。注意：回填作为后台作业进行处理，因此您不会立即看到结果。
 
 为了跟踪回填的进度，您可以通过前往跟踪项目中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。
 

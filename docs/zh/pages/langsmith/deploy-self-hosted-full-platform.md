@@ -332,7 +332,7 @@ fleet:
 
 <Steps>
   <Step title="Create an Azure app registration">
-    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建新的注册。
+    在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建一个新的注册。
   </Step><Step title="Choose supported account types">
     选择与您的部署匹配的帐户类型。如果需要来自多个 Microsoft Entra 租户的用户进行身份验证，请选择多租户选项。如果您的部署仅限于一个租户，您可以使用单租户应用程序注册。
   </Step>
@@ -504,22 +504,22 @@ fleet:
 
 <Steps>
   <Step title="Create an External Client App">
-    In Salesforce **Setup**, use **Quick Find** to open **External Client App Manager**, then click **New External Client App**.
+    在 Salesforce **设置**中，使用 **快速查找** 打开 **外部客户端应用程序管理器**，然后单击 **新建外部客户端应用程序**。
 
     在**基本信息**下，设置：
-    - **External Client App Name**: for example, `LangSmith Fleet`
+    - **外部客户端应用程序名称**：例如，`LangSmith Fleet`
     - **联系电子邮件**：管理员电子邮件地址
     - **分布状态**：**本地**
 
     <Note>
-    External Client Apps are the current framework Salesforce uses for OAuth integrations. If **New External Client App** is unavailable, confirm that app creation is enabled for your org under **Setup > External Client App Settings**.
+    外部客户端应用程序是 Salesforce 当前用于 OAuth 集成的框架。如果**新外部客户端应用程序**不可用，请确认在**设置 > 外部客户端应用程序设置**下为您的组织启用了应用程序创建。
     </Note>
   </Step>
 
   <Step title="Enable OAuth and configure the OAuth settings">
-    Expand **API (Enable OAuth Settings)** and select **Enable OAuth**.然后配置：
+    展开 **API（启用 OAuth 设置）** 并选择 **启用 OAuth**。然后配置：
 
-    - **Callback URL**, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+    - **回调 URL**，将 `<hostname>` 替换为您的 LangSmith 主机名，并将 `<provider-id>` 替换为您的提供商 ID：
 
     ```
     https://<hostname>/host-oauth-callback/<provider-id>
@@ -617,7 +617,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     在 **识别和授权用户** 下，添加以下 **回调 URL**，将 `<hostname>` 替换为您的 LangSmith 主机名：
 
     ```
-    https://<hostname>/v1/platform/fleet/providers/github-app/auth/callback
+    https://<hostname>/api/v1/platform/fleet/providers/github-app/auth/callback
     ```
 
     选择**更新时重定向**。
@@ -625,7 +625,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     在**安装后**下，添加以下**安装 URL**：
 
     ```
-    https://<hostname>/v1/platform/fleet/providers/github-app/callback
+    https://<hostname>/api/v1/platform/fleet/providers/github-app/callback
     ```
 
     选择**更新时重定向**。
@@ -641,7 +641,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     - 将 **Webhook URL** 设置为：
 
       ```
-      https://<hostname>/v1/platform/fleet/providers/github-app/webhooks
+      https://<hostname>/api/v1/platform/fleet/providers/github-app/webhooks
       ```
 
     - 将生成的值粘贴到 **Webhook 密钥**。保存它，因为在后续步骤中创建 Kubernetes 密钥时您将需要相同的值。
@@ -667,10 +667,10 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
   </Step>
 
   <Step title="Create the app">
-    单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
+    单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量|
     |--------------------|-----------------|----------------------|
     | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
+    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
     |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
     | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
   </Step>
@@ -806,7 +806,7 @@ Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
 
 - 在支持 KVM 的节点上运行沙箱工作负载的沙箱运行时 Pod。
 - 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
-- 可选通配符入口用于从沙箱内部公开的服务。
+- 从沙箱内部公开的服务的可选通配符入口。
 
 ### 先决条件
 
@@ -853,7 +853,7 @@ Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
     | **平台** | **存储价值** | **桶格式** |
     | --- | --- | --- |
     |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
+    | GCP | `gs` | GCS URL，例如`gs://bucket-name`|
     |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>

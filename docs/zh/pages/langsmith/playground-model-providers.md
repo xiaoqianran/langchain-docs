@@ -85,11 +85,11 @@
 
 ## 亚马逊基岩
 
-在使用此型号之前，请确保您拥有[AWS credentials or IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)。
+在使用此模型之前，请确保您拥有[AWS credentials or IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)。
 
 ### 身份验证
 
-Amazon Bedrock 支持两种身份验证方法。 **推荐使用 IAM 可信实体方法**，因为它可以避免与 LangSmith 共享长期存在的 AWS 访问密钥。
+Amazon Bedrock 支持两种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
 
 #### IAM 可信实体（推荐）
 
@@ -97,7 +97,7 @@ Amazon Bedrock 支持两种身份验证方法。 **推荐使用 IAM 可信实体
 **不适用于 [self-hosted LangSmith](/langsmith/self-hosted)。** 请改用访问密钥（或 Bedrock API 密钥）。
 </Note>
 
-通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用[AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 来承担每个请求的角色。
+通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用[AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
 
 要进行此设置：
 
@@ -158,7 +158,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 |------------|---------|-------------|
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 #### AWS 特定设置
 
@@ -176,7 +176,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 ### 可用型号
 
-Anthropic 提供 Claude 一代的三层型号：
+Anthropic 在 Claude 一代中提供了三层型号：
 
 - **作品：** 最高的智力和能力。
 - **十四行诗：**平衡的性能和成本。
@@ -220,7 +220,43 @@ Anthropic 提供 Claude 一代的三层型号：
 
 ## 天蓝色OpenAI
 
-在使用此模型之前，请确保您拥有 [Azure OpenAI credentials](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)（端点 + API 密钥）。
+在使用此模型之前，请创建一个[Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)。
+
+### 身份验证
+
+#### API 密钥
+
+在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
+
+#### 自托管 LangSmith 的工作负载标识
+
+<Note>
+Azure OpenAI 工作负载标识需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
+</Note>
+
+使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：
+
+1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
+2. 创建或选择用户分配的托管身份。
+3. 将 [federated identity credential](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#create-the-federated-identity-credential) 添加到托管身份。使用 AKS OIDC 发行者和受众 `api://AzureADTokenExchange`。将其主题设置为`system:serviceaccount:<namespace>:<playground-service-account-name>`。
+4. 为托管身份分配最低权限 `Cognitive Services OpenAI User` 角色。将角色范围限定为 Azure OpenAI 资源。参见[Azure OpenAI role-based access control](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control)。
+5. 将以下值添加到您的 LangSmith Helm 配置中：
+
+```yaml Helm
+playground:
+  serviceAccount:
+    annotations:
+      azure.workload.identity/client-id: "<managed-identity-client-id>"
+  deployment:
+    labels:
+      azure.workload.identity/use: "true"
+```
+
+在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
+
+工作负载身份令牌仅限于端口 `443` 上的 HTTPS Azure AI 和 Azure OpenAI 端点。每个配置必须使用一个受支持的 Azure 云：公共云、美国政府云或中国云。 LangSmith 拒绝混合 Azure 云的无效端点和配置。
+
+有关更广泛的 AKS 部署指南，请参阅 [Self-host LangSmith on Azure](/langsmith/azure-self-hosted)。
 
 ### 可用型号
 
@@ -257,7 +293,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 - **JSON 模式：** 强制有效的 JSON 响应。
 - **并行工具调用：**同时执行多个工具。
 
-#### Azure 特定功能- **部署管理：** 模型必须在使用前进行部署。
+#### Azure 特定功能- **部署管理：**模型必须在使用前进行部署。
 - **区域可用性：** 选择 Azure 区域作为数据驻留。
 - **内容过滤：** 内置内容审核和安全功能。
 - **托管身份：** Azure AD 身份验证支持。
@@ -284,7 +320,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **在场处罚** | -2.0 - 2.0 |  |
 | **频率惩罚** | -2.0 - 2.0 |  |
 
@@ -308,7 +344,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 ### 工具调用
 
@@ -329,7 +365,7 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **前 K** | 1+ | Top-k 采样 |
 
 ### 工具调用
@@ -389,7 +425,7 @@ Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **前 K** | 1+ | Top-k 采样 |
 
 #### 高级选项
@@ -438,7 +474,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 |------------|---------|-------------|
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 ### 工具调用
 
@@ -451,7 +487,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 
 ### 可用型号
 
-OpenAI 提供多种具有不同功能和价位的型号系列：
+OpenAI 提供多个具有不同功能和价位的型号系列：
 
 - **GPT 系列：** 具有各种大小/功能级别的通用聊天模型。
 - **o 系列：** 针对复杂问题解决而优化的以推理为中心的模型。
@@ -493,8 +529,8 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 
 |价值|描述 |
 |--------|-------------|
-| `auto` |系统根据负载决定（默认） |
-| `default` |标准处理队列 |
+| `auto` |系统根据负载决定（默认）|
+| `default` |标准处理队列|
 | `flex` |成本更低、延迟可变（如果型号支持）|
 | `priority` |高优先级队列，延迟更低，成本更高 |
 
@@ -534,8 +570,8 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
-| **频率惩罚** | -2.0 - 2.0 |减少重复|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **频率惩罚** | -2.0 - 2.0 |减少重复 |
 | **在场处罚** | -2.0 - 2.0 |鼓励新话题|
 
 **高级：**
@@ -584,7 +620,7 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。有关当前可用型�
 |------------|---------|-------------|
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **在场处罚** | 0 - 2.0 |隐藏在推理模型中 |
 | **频率惩罚** | 0 - 2.0 |隐藏在推理模型中 |
 

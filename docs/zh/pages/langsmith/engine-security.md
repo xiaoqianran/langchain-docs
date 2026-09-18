@@ -15,10 +15,10 @@ LangSmith引擎是内置于LangSmith中的AI代理，可改进您构建的代理
 | **数据来源** | **引擎读取什么** | **存储和持久性** | **启用** |
 |---|---|---|---|
 | LangSmith 工作区内容 |跟踪您存储在 LangSmith 中的数据和其他工作区内容，例如提示和评估器。 |在您的LangSmith租户内。截至 2026 年 9 月 14 日，对于 SaaS 客户，[Trace retention](/langsmith/usage-and-billing#data-retention) 为 14 天（基本）或最长 180 天（扩展），按项目选择。 |问题检测、优先级排序和评估建议。 |
-| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||模型提供者（推理）|仅每个分析任务所需的内容。 |每个引擎模型提供商都实现零数据保留（请参阅[Model subprocessors](#model-subprocessors)）。 |引擎推理和生成。 |
+| GitHub 存储库 |来自您连接的存储库的源代码和存储库上下文（请参阅[GitHub integration](#github-integration)）。 |在每次分析运行期间在隔离的、LangChain 管理的沙箱内进行处理，然后丢弃。 |使用建议的代码修复来编写拉取请求。 ||模型提供者（推理）|仅每个分析任务所需的内容。 |配置为每个引擎模型提供商的零数据保留（请参阅[Model subprocessors](#model-subprocessors)）。 |引擎推理和生成。 |
 
 <Note>
-  引擎的读取范围可能会随着时间的推移而扩大。此页面已更新以反映重大变化。上次审核日期为 2026 年 6 月 25 日。
+  引擎的读取范围可能会随着时间的推移而扩大。此页面已更新以反映重大变化。上次审核日期为 2026 年 9 月 16 日。
 </Note>
 
 发送到引擎的跟踪内容可以包括用户消息、工具输出和 PII，并且该内容会在每个分析任务的零数据保留下发送到模型子处理器。要在迹线到达LangSmith之前删除敏感字段，请使用[client-side masking](/langsmith/mask-inputs-outputs)。
@@ -30,7 +30,7 @@ LangSmith引擎是内置于LangSmith中的AI代理，可改进您构建的代理
 引擎通过 LangChain 管理的 GitHub 应用程序连接到您的源代码。仅支持 GitHub.com。尚不支持 GitLab、Bitbucket 和其他版本控制提供程序。
 
 该应用程序的范围是：- 对您在安装时选择的存储库的**读取访问权限**。
-- **写访问**以打开来自它创建的新分支的拉取请求。推送到现有分支受您的分支保护规则的约束。
+- **写访问**以打开来自其创建的新分支的拉取请求。推送到现有分支受您的分支保护规则的约束。
 
 Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个短暂的安装令牌运行，该令牌在一小时后过期，不能超出安装时授予的权限，并且无法访问您未选择的存储库。代币是在每次分析运行时铸造的，而不是作为长期凭证持有。
 
@@ -38,7 +38,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 您可以随时通过从 GitHub 组织卸载应用程序来撤销 Engine 对 GitHub 的访问权限。
 
-## 模型子处理器Engine 的模型子处理器（目前为 OpenAI、Anthropic、Fireworks 和 Baseten）均在零数据保留下运行，并且根据合同禁止使用客户数据来训练或微调其模型。 [LangChain Trust Center](https://trust.langchain.com/)公布权威分处理商名单。
+## 模型子处理器Engine 的模型子处理器（当前为 OpenAI、Anthropic、Fireworks 和 Baseten）配置为零数据保留，并且根据与 LangChain 的协议，禁止使用客户数据来训练或微调其模型。 [LangChain Trust Center](https://trust.langchain.com/)公布权威分处理商名单。
 
 引擎不支持自带密钥 (BYOK)。
 
@@ -48,15 +48,15 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 - **显式选择加入**：引擎默认情况下不会开启，只能由组织管理员启用。
 - **建议输出，人工掌舵**：引擎不会自动合并、自动部署或对您的系统采取破坏性操作。每个提议的更改都是一个拉取请求，遵循您的分支保护、审查和合并策略。建议的提示更改将写入LangSmith中的单独建议记录中，并且在授权用户明确应用它们之前不会修改任何提示。在这两条路径中，由人类决定运送什么。
-- **每个引擎模型提供商都实现零数据保留**：推理供应商不会保留提示和完成。
-- **不得使用客户数据来训练或微调任何模型**：此限制写入每个提供商合同中。- **逻辑租户隔离**：引擎对数据的访问仅限于您的 LangSmith 租户。应用程序级控制可防止跨租户访问，这与 LangSmith Cloud 的租赁模型一致。每个分析运行都在其自己的隔离沙箱内执行。
+- **每个引擎模型提供程序配置的零数据保留**：推理供应商不会在请求之外保留提示和完成。- **不使用客户数据来训练或微调任何模型**：每个提供商均受协议约束，不得使用客户内容进行培训。
+- **逻辑租户隔离**：引擎对数据的访问仅限于您的 LangSmith 租户。应用程序级控制可防止跨租户访问，这与 LangSmith Cloud 的租赁模型一致。每个分析运行都在其自己的隔离沙箱内执行。
 - **可审核性**：引擎将其工作作为 GitHub Pull 请求进行展示，并在 [Engine tab](/langsmith/engine) 的问题列表中提供支持上下文。代码更改流经您的分支保护、审查和自动构建控制，因此您的软件开发生命周期仍然是发布内容的记录系统。
 - **客户端 PII 清理**：LangSmith 的 [client libraries](/langsmith/mask-inputs-outputs) 可以在将痕迹发送到 LangSmith 之前从痕迹中删除敏感内容。建议处理受监管数据的客户使用。
-- **由LangChain** 管理的模型选择：LangChain 选择用于这些子处理器中每个引擎任务的特定模型，并且可以更改该集中的选择，而无需单独通知。添加任何新的子处理者都遵循标准的子处理者更改通知流程。- **撤销和删除**：您可以随时通过卸载应用程序来撤销 GitHub 访问权限，并通过[Engine settings](/langsmith/engine#configure-engine)中的**删除所有问题**删除引擎的发现结果。跟踪数据遵循您的 LangSmith [retention and purging](/langsmith/data-purging-compliance) 设置。
+- **由LangChain** 管理的模型选择：LangChain 选择用于这些子处理器中每个引擎任务的特定模型，并且可能会更改该集中的选择，而无需单独通知。添加任何新的子处理者都遵循标准的子处理者更改通知流程。- **撤销和删除**：您可以随时通过卸载应用程序来撤销 GitHub 访问权限，并通过[Engine settings](/langsmith/engine#configure-engine)中的**删除所有问题**删除引擎的发现结果。跟踪数据遵循您的 LangSmith [retention and purging](/langsmith/data-purging-compliance) 设置。
 
 ## 合规姿态
 
-Engine 在LangSmith 的控制环境下运行，该环境每年根据 SOC 2 Type II 进行审核并通过 ISO 27001 认证。Engine 的模型子处理器列于[LangChain Trust Center](https://trust.langchain.com/)，这是采购和数据保护影响评估的权威来源。
+Engine 在LangSmith 的控制环境下运行，该环境每年根据 SOC 2 Type II 进行审核并通过 ISO 27001 认证。Engine 的模型子处理器列在[LangChain Trust Center](https://trust.langchain.com/) 上，这是采购和数据保护影响评估的权威来源。
 
 ## 人工智能固有的风险和缓解措施
 

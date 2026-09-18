@@ -6,7 +6,7 @@
 
 <div class="home-page mx-auto max-w-8xl px-0 lg:px-5" style={{ paddingBottom: "8rem" }}>
 <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
-<h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">LangSmith 可观测性</h1>
+<h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">LangSmith 可观察性</h1>
 
 LangSmith 可观察性为您的 LLM 申请提供全面的可见性：从单个跟踪到整个生产范围的性能指标。痕迹是您的代理在生产中所做的事情的记录。使用它们来调试故障、监控质量并构建您评估的数据集。
 
@@ -53,10 +53,10 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
   <Card
     title="View traces"
     icon="route"
-    href="/langsmith/filter-traces-in-application"
+    href="/langsmith/view-traces"
     arrow="true"
   >
-    通过 UI 或 API 过滤、导出、共享和比较跟踪。
+    在“消息”、“轮次”和“详细信息”视图中检查线程和运行。
   </Card>
 
   <Card
@@ -93,7 +93,7 @@ LangSmith 可与许多框架和提供商合作。浏览 [available integrations]
     href="/langsmith/engine-overview"
     arrow="true"
 >
-    自动检测跟踪中重复出现的问题，诊断其根本原因，并使用LangSmith引擎解决它们。
+    自动检测跟踪中重复出现的问题，诊断其根本原因，并使用 LangSmith 引擎解决它们。
 </Card>
 
 术语和核心概念请参考[Observability concepts](/langsmith/observability-concepts)。有关跟踪定价、保留和限制，请参阅[Usage and billing](/langsmith/usage-and-billing)。

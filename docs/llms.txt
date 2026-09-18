@@ -9,7 +9,7 @@ Each section index below lists the markdown version of every page in that sectio
 - [/langsmith](https://docs.langchain.com/langsmith/llms.txt): 460 pages
 - [/langsmith/javascript](https://docs.langchain.com/langsmith/javascript/llms.txt): 25 pages
 - [/langsmith/python](https://docs.langchain.com/langsmith/python/llms.txt): 25 pages
-- [/langsmith/smith-api](https://docs.langchain.com/langsmith/smith-api/llms.txt): 359 pages
+- [/langsmith/smith-api](https://docs.langchain.com/langsmith/smith-api/llms.txt): 358 pages
 - [/langsmith/smith-api/access_policies](https://docs.langchain.com/langsmith/smith-api/access_policies/llms.txt): 8 pages
 - [/langsmith/smith-api/ace](https://docs.langchain.com/langsmith/smith-api/ace/llms.txt): 1 pages
 - [/langsmith/smith-api/alert_rules](https://docs.langchain.com/langsmith/smith-api/alert_rules/llms.txt): 5 pages
@@ -31,18 +31,17 @@ Each section index below lists the markdown version of every page in that sectio
 - [/langsmith/smith-api/gateway-policies](https://docs.langchain.com/langsmith/smith-api/gateway-policies/llms.txt): 6 pages
 - [/langsmith/smith-api/hub_environments](https://docs.langchain.com/langsmith/smith-api/hub_environments/llms.txt): 4 pages
 - [/langsmith/smith-api/info](https://docs.langchain.com/langsmith/smith-api/info/llms.txt): 2 pages
-- [/langsmith/smith-api/integrations](https://docs.langchain.com/langsmith/smith-api/integrations/llms.txt): 2 pages
 - [/langsmith/smith-api/issues](https://docs.langchain.com/langsmith/smith-api/issues/llms.txt): 4 pages
 - [/langsmith/smith-api/issues-agent](https://docs.langchain.com/langsmith/smith-api/issues-agent/llms.txt): 7 pages
 - [/langsmith/smith-api/likes](https://docs.langchain.com/langsmith/smith-api/likes/llms.txt): 1 pages
 - [/langsmith/smith-api/mcp](https://docs.langchain.com/langsmith/smith-api/mcp/llms.txt): 4 pages
 - [/langsmith/smith-api/mcp_vendors](https://docs.langchain.com/langsmith/smith-api/mcp_vendors/llms.txt): 9 pages
 - [/langsmith/smith-api/me](https://docs.langchain.com/langsmith/smith-api/me/llms.txt): 5 pages
+- [/langsmith/smith-api/model-price-map](https://docs.langchain.com/langsmith/smith-api/model-price-map/llms.txt): 4 pages
 - [/langsmith/smith-api/optimization-jobs](https://docs.langchain.com/langsmith/smith-api/optimization-jobs/llms.txt): 9 pages
 - [/langsmith/smith-api/organizations](https://docs.langchain.com/langsmith/smith-api/organizations/llms.txt): 1 pages
 - [/langsmith/smith-api/ownerships](https://docs.langchain.com/langsmith/smith-api/ownerships/llms.txt): 3 pages
 - [/langsmith/smith-api/playground-settings](https://docs.langchain.com/langsmith/smith-api/playground-settings/llms.txt): 5 pages
-- [/langsmith/smith-api/productfeedback](https://docs.langchain.com/langsmith/smith-api/productfeedback/llms.txt): 2 pages
 - [/langsmith/smith-api/prompt-webhooks](https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/llms.txt): 6 pages
 - [/langsmith/smith-api/prompts](https://docs.langchain.com/langsmith/smith-api/prompts/llms.txt): 1 pages
 - [/langsmith/smith-api/repos](https://docs.langchain.com/langsmith/smith-api/repos/llms.txt): 9 pages
@@ -57,13 +56,14 @@ Each section index below lists the markdown version of every page in that sectio
 - [/langsmith/smith-api/ttl-settings](https://docs.langchain.com/langsmith/smith-api/ttl-settings/llms.txt): 4 pages
 - [/langsmith/smith-api/usage-limits](https://docs.langchain.com/langsmith/smith-api/usage-limits/llms.txt): 4 pages
 - [/oss/javascript](https://docs.langchain.com/oss/javascript/llms.txt): 365 pages
-- [/oss/python](https://docs.langchain.com/oss/python/llms.txt): 369 pages
+- [/oss/python](https://docs.langchain.com/oss/python/llms.txt): 367 pages
 - [/oss/python/concepts](https://docs.langchain.com/oss/python/concepts/llms.txt): 4 pages
 - [/oss/python/contributing](https://docs.langchain.com/oss/python/contributing/llms.txt): 8 pages
 - [/oss/python/deepagents](https://docs.langchain.com/oss/python/deepagents/llms.txt): 40 pages
 - [/oss/python/langchain](https://docs.langchain.com/oss/python/langchain/llms.txt): 79 pages
 - [/oss/python/langgraph](https://docs.langchain.com/oss/python/langgraph/llms.txt): 43 pages
 - [/oss/python/migrate](https://docs.langchain.com/oss/python/migrate/llms.txt): 4 pages
+- [/oss/python/releases](https://docs.langchain.com/oss/python/releases/llms.txt): 3 pages
 
 ## Docs
 

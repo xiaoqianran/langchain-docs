@@ -5,7 +5,7 @@
 # 每个客户的政策
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 [spend policy](/langsmith/llm-gateway-spend-policies) 可以通过自定义请求标头分隔默认限制，因此每个标头值都会获得独立的限制。 Spend 和 [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) 也可以匹配一个特定的标头值。使用这些选项来限制您自己的最终客户、租户或团队，而无需为每个人单独发布 [LangSmith API key](/langsmith/create-account-api-key)。
@@ -65,7 +65,7 @@
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
@@ -102,7 +102,7 @@ print(response.choices[0].message.content)
 </CodeGroup>
 
 <Note>
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway)。
+如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 </Note>
 
 ### 步骤 2. 为一位客户创建上限
@@ -290,6 +290,6 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>

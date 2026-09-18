@@ -1055,7 +1055,7 @@
       ],
       "filter-traces-in-application": [
         {
-          "title": "Filter traces",
+          "title": "Filter traces (ClickHouse)",
           "rel": "langsmith/filter-traces-in-application.md"
         }
       ],

@@ -4,23 +4,25 @@
 
 # API 格式
 
-标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥或网关积分模型。
-
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
+
+标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥或网关积分模型。
 
 ## 比较API格式
 
-| API格式 |基本网址 |提示端点|兼容客户端|
+| API格式|基本网址 |提示端点 |兼容客户端|
 | --- | --- | --- | --- |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
-| Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户留言|
-| OpenAI 回复 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
+| Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户发消息 |
+| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
 
 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。
 
-对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-sonnet-4-6`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
+这些基本 URL 适用于 LangSmith 云上的美国网关。对于其他区域和 BYOC 数据平面，请参阅[Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。
+
+对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-opus-5`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
 
 ## 使用聊天完成
 
@@ -32,7 +34,7 @@
 curl https://gateway.smith.langchain.com/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
 ```python Python
@@ -45,7 +47,7 @@ client = OpenAI(
     api_key=os.environ["LANGSMITH_API_KEY"],
 )
 response = client.chat.completions.create(
-    model="anthropic/claude-sonnet-4-6",
+    model="anthropic/claude-opus-5",
     messages=[{"role": "user", "content": "Hello!"}],
 )
 ```
@@ -58,16 +60,14 @@ const client = new OpenAI({
   apiKey: process.env.LANGSMITH_API_KEY,
 });
 const response = await client.chat.completions.create({
-  model: "anthropic/claude-sonnet-4-6",
+  model: "anthropic/claude-opus-5",
   messages: [{ role: "user", content: "Hello!" }],
 });
 ```
 
 </CodeGroup>
 
-## 使用消息
-
-将Anthropic客户端指向`https://gateway.smith.langchain.com`。有关完整的请求和响应架构，请参阅[Anthropic Messages API](https://docs.anthropic.com/en/api/messages)。
+## 使用消息将Anthropic客户端指向`https://gateway.smith.langchain.com`。有关完整的请求和响应架构，请参阅[Anthropic Messages API](https://docs.anthropic.com/en/api/messages)。
 
 <CodeGroup>
 
@@ -108,7 +108,9 @@ const message = await client.messages.create({
 });
 ```
 
-</CodeGroup>## 使用响应
+</CodeGroup>
+
+## 使用响应
 
 将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses)。
 
@@ -118,7 +120,7 @@ const message = await client.messages.create({
 curl https://gateway.smith.langchain.com/v1/responses \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","input":"Hello!"}'
+    -d '{"model":"anthropic/claude-opus-5","input":"Hello!"}'
 ```
 
 ```python Python
@@ -131,7 +133,7 @@ client = OpenAI(
     api_key=os.environ["LANGSMITH_API_KEY"],
 )
 response = client.responses.create(
-    model="anthropic/claude-sonnet-4-6",
+    model="anthropic/claude-opus-5",
     input="Hello!",
 )
 ```
@@ -144,7 +146,7 @@ const client = new OpenAI({
   apiKey: process.env.LANGSMITH_API_KEY,
 });
 const response = await client.responses.create({
-  model: "anthropic/claude-sonnet-4-6",
+  model: "anthropic/claude-opus-5",
   input: "Hello!",
 });
 ```
@@ -224,7 +226,7 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
     }'
 ```
 
-### 较旧的 OpenAI 型号
+### 老款OpenAI型号
 
 一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于`gpt-5.5`，请使用`"24h"`：
 
@@ -250,9 +252,9 @@ curl https://gateway.smith.langchain.com/v1/responses \
     }'
 ```
 
-有关完整的 `prompt_cache_retention` 文档，请参阅 [OpenAI prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention)。
+有关完整的 `prompt_cache_retention` 文档，请参阅 [OpenAI prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention)。## 了解翻译行为
 
-## 了解翻译行为端点决定您的应用程序发送和接收的格式。型号 ID 确定上游提供商。
+端点决定您的应用程序发送和接收的格式。型号 ID 确定上游提供商。
 
 - 当提供商本身支持所选格式时，网关将保留该格式。
 - 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
@@ -281,119 +283,7 @@ curl https://gateway.smith.langchain.com/v1/models \
 }
 ```
 
-自带密钥型号 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
-
-## 使用区域网关
-
-将 `gateway.smith.langchain.com` 替换为您的 LangSmith 区域的主机名：|地区 |网关主机名 |
-| --- | --- |
-|基仕伯美国 | `gateway.smith.langchain.com` |
-| GCP 欧盟 | `eu.gateway.smith.langchain.com` |
-|基仕伯亚太区 | `apac.gateway.smith.langchain.com` |
-| AWS 美国 | `aws.gateway.smith.langchain.com` |
-
-为所选 API 格式保留相同的路径。
-
-## 使用 BYOC 数据平面
-
-LLM 网关也可在 [BYOC](/langsmith/byoc) 上使用，它在您的数据平面内运行，因此模型请求及其跟踪保留在您的 VPC 中。将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：
-
-| API格式 |基本网址 |提示端点|
-| --- | --- | --- |
-| OpenAI 聊天完成 | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
-| Anthropic 留言 | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
-| OpenAI 回复 | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
-
-使用范围仅限于该数据平面中工作区的 API 密钥进行身份验证。将其作为 `Authorization: Bearer` 令牌传递：
-
-<CodeGroup>
-
-```bash cURL
-curl https://<data_plane_host>/gateway/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
-```python Python
-import os
-
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://<data_plane_host>/gateway/v1",
-    api_key=os.environ["LANGSMITH_API_KEY"],
-)
-response = client.chat.completions.create(
-    model="anthropic/claude-sonnet-4-6",
-    messages=[{"role": "user", "content": "Hello!"}],
-)
-```
-
-```typescript TypeScript
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  baseURL: "https://<data_plane_host>/gateway/v1",
-  apiKey: process.env.LANGSMITH_API_KEY,
-});
-const response = await client.chat.completions.create({
-  model: "anthropic/claude-sonnet-4-6",
-  messages: [{ role: "user", content: "Hello!" }],
-});
-```
-
-</CodeGroup>
-
-或者将其作为提供商 API 密钥传递。例如，Anthropic消息请求发送`X-Api-Key`标头中的密钥：
-
-<CodeGroup>
-
-```bash cURL
-curl https://<data_plane_host>/gateway/v1/messages \
-    -H "X-Api-Key: $LANGSMITH_API_KEY" \
-    -H "Anthropic-Version: 2023-06-01" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
-```
-
-```python Python
-import os
-
-import anthropic
-
-client = anthropic.Anthropic(
-    base_url="https://<data_plane_host>/gateway",
-    api_key=os.environ["LANGSMITH_API_KEY"],
-)
-message = client.messages.create(
-    model="openai/gpt-5.4-mini",
-    max_tokens=1024,
-    messages=[{"role": "user", "content": "Hello!"}],
-)
-```
-
-```typescript TypeScript
-import Anthropic from "@anthropic-ai/sdk";
-
-const client = new Anthropic({
-  baseURL: "https://<data_plane_host>/gateway",
-  apiKey: process.env.LANGSMITH_API_KEY,
-});
-const message = await client.messages.create({
-  model: "openai/gpt-5.4-mini",
-  max_tokens: 1024,
-  messages: [{ role: "user", content: "Hello!" }],
-});
-```
-
-</CodeGroup>
-
-提供者机密、模型 ID、策略和跟踪的行为与云上相同。
-
-<Warning>
-默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
-</Warning>
+自带密钥模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
 
 ## 处理错误|状态或症状 |意义|
 | --- | --- |
@@ -408,6 +298,7 @@ const message = await client.messages.create({
 ## 另请参阅
 
 - [Quickstart](/langsmith/llm-gateway-quickstart)：发出您的第一个请求并查看其跟踪。
+- [How the gateway works](/langsmith/llm-gateway-how-it-works)：每个请求会发生什么，以及在每个区域和 BYOC 上使用哪个主机名。
 - [Direct model access](/langsmith/llm-gateway-direct-model-access)：绕过格式转换并使用提供商本机 API。
 - [Model fallbacks](/langsmith/llm-gateway-fallbacks)：针对备份模型重试请求。
 

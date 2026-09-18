@@ -5,7 +5,7 @@
 # 模型回退
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 当主模型返回配置错误（例如速率限制或提供程序中断）时，模型回退会针对一个或多个备份模型重试请求。在 LangSmith 中定义一次后备顺序，然后继续在应用程序中使用标准 LLM 网关端点和模型 ID。
@@ -53,19 +53,19 @@
 curl https://gateway.smith.langchain.com/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
 ```bash BYOC
 curl https://<data_plane_host>/gateway/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
 </CodeGroup>
 
-网关应用在 API 密钥工作区中为 `anthropic/claude-sonnet-4-6` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。## 选择后备候选人
+网关应用在 API 密钥工作区中为 `anthropic/claude-opus-5` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。## 选择后备候选人
 
 您可以添加两种类型的后备候选项：
 
@@ -74,7 +74,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 模型配置是工作空间范围内的。后备链只能使用其选定工作区中的配置。
 
-例如，将 `anthropic/claude-sonnet-4-6` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-sonnet-4-6`；网关在需要时选择并转换后备调用。
+例如，将 `anthropic/claude-opus-5` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-opus-5`；网关在需要时选择并转换后备调用。
 
 ## 另请参阅
 

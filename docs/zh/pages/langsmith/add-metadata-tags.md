@@ -8,7 +8,7 @@ LangSmith 支持发送任意元数据和标签以及跟踪。
 
 标签是可用于对跟踪进行分类或标记的字符串。元数据是键值对的字典，可用于存储有关跟踪的附加信息。
 
-两者对于将附加信息与跟踪关联起来都很有用，例如执行跟踪的环境、启动跟踪的用户或内部关联 ID。有关标签和元数据的更多信息，请参阅[Concepts](/langsmith/observability-concepts#tags)页面。有关如何通过元数据和标签查询跟踪和运行的信息，请参阅 [Filter traces in the application](/langsmith/filter-traces-in-application) 页面。
+两者对于将附加信息与跟踪关联起来都很有用，例如执行跟踪的环境、启动跟踪的用户或内部关联 ID。有关标签和元数据的更多信息，请参阅[Concepts](/langsmith/observability-concepts#tags)页面。有关如何按元数据和标签查询跟踪和运行的信息，请参阅 [Filter traces](/langsmith/filter-traces) 页面。
 
 <CodeGroup>
 

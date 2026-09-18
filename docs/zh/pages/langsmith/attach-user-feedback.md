@@ -91,15 +91,15 @@ await client.createFeedback({
 });
 ```
 
-</CodeGroup>您甚至可以使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T9⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
+</CodeGroup>您甚至可以使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T9⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback) 记录正在进行的运行的反馈。 See [Access the current run (span) within a traced function](/langsmith/access-current-span) for how to get the run ID of an in-progress run.
 
 ## 收集客户端应用程序的反馈
 
-如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。它们会生成一个范围为特定运行和反馈密钥的 URL，客户端可以直接调用该 URL。
+如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。 These generate a URL scoped to a specific run and feedback key that clients can call directly.
 
 完整指南请参阅[Collect feedback with presigned URLs](/langsmith/presigned-feedback-tokens)。
 
-要了解有关如何根据各种属性（包括用户反馈）过滤跟踪的更多信息，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
+要了解有关如何根据各种属性（包括用户反馈）过滤跟踪的更多信息，请参阅[Filter traces](/langsmith/filter-traces)。
 
 ---
 

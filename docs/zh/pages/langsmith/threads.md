@@ -535,13 +535,13 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 线程过滤器会查看所有运行，如果至少有 1 个运行与过滤器匹配，则显示线程。
 </Note>
 
-在项目的 **线程** 选项卡上，您可以使用 **添加过滤器** 按钮保存常用过滤器：[Set a filter](/langsmith/filter-traces-in-application#create-and-apply-filters)，然后单击 **保存视图**。
+在项目的 **Threads** 选项卡上，您可以 [save commonly used filters](/langsmith/filter-traces#save-a-filter)。
 
 ## 相关
 
 - [Observability concepts](/langsmith/observability-concepts#threads)：线程背景以及它们与运行和跟踪的关系。
 - [Add metadata and tags to traces](/langsmith/add-metadata-tags)：如何传递`thread_id`和其他元数据键。
-- [Filter traces](/langsmith/filter-traces-in-application)：在跟踪 UI 中按线程元数据过滤。
+- [Filter traces](/langsmith/filter-traces)：在跟踪 UI 中按线程元数据过滤。
 - [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)：评估线程而不是单独的运行。
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback)：将反馈附加到线程内的运行。
 - [Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)：将线程添加到数据集。

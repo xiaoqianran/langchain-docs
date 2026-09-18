@@ -26,6 +26,10 @@
 
 对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
 
+## 网络访问
+
+默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。如果您需要不受限制的出口，请在 [file a support ticket](https://support.langchain.com) 中注明您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
+
 ## 开始吧
 
 ### 1.安装SDK
@@ -84,9 +88,11 @@ await sandbox.delete();
 
 ### 4. 与代理一起使用沙箱
 
-要将沙箱连接到代理代码中，请参阅开源文档：- **Deep Agents**：[Use ⟦T9⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
+要将沙箱连接到代理代码中，请参阅开源文档：
+
+- **Deep Agents**：[Use ⟦T9⟧ as a backend](/oss/python/integrations/sandboxes/langsmith)，涵盖安装、后端创建和清理。
 - **沙箱作为代理后端**：[Configure any sandbox as the execution backend](/oss/python/deepagents/sandboxes)自动为您的代理提供`execute`和文件系统工具。
-- **LangChain / LangGraph 集成**：使用 LangSmith 沙箱作为第一方选项，或使用 [connect third-party providers](/oss/python/integrations/sandboxes)，例如 AgentCore、Daytona、E2B、Modal、Runloop 和 Vercel。
+- **LangChain / LangGraph 集成**：使用 LangSmith 沙箱作为第一方选项，或 [connect third-party providers](/oss/python/integrations/sandboxes) 例如 AgentCore、Daytona、E2B、Modal、Runloop 和 Vercel。
 
 ## 资源
 
@@ -98,9 +104,7 @@ await sandbox.delete();
 
 <Card title="Service URLs" icon="globe" href="/langsmith/sandbox-service-urls">
   通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。
-</Card>
-
-<Card title="Auth proxy" icon="shield-lock" href="/langsmith/sandbox-auth-proxy">
+</Card><Card title="Auth proxy" icon="shield-lock" href="/langsmith/sandbox-auth-proxy">
   将凭证注入出站 API 请求，无需硬编码机密。
 </Card>
 
@@ -125,8 +129,10 @@ await sandbox.delete();
 </Card>
 
 <Card title="Harbor" icon="flask" href="/langsmith/harbor-integrations#sandboxes">
-  在 LangSmith 沙箱上运行 Harbor 评估和部署。
-</Card></CardGroup>
+  在 LangSmith 沙盒上运行 Harbor 评估和部署。
+</Card>
+
+</CardGroup>
 
 ---
 

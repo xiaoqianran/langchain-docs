@@ -222,7 +222,7 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 
 </CodeGroup>
 
-调用 `support_bot("How many users can I have on the Starter plan?")` 现在会生成完整 RAG 管道的跟踪。
+现在调用 `support_bot("How many users can I have on the Starter plan?")` 会生成完整 RAG 管道的跟踪。
 
 <img
     className="block dark:hidden"
@@ -256,7 +256,7 @@ langsmith trace get <trace-id> --full
 
 ### 收集反馈
 
-将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应是有帮助的或无帮助的。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，并在之后附加分数：
+将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应有帮助或无帮助。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，并在之后附加分数：
 
 <CodeGroup>
 
@@ -492,9 +492,9 @@ const supportBot = traceable(
 分组依据功能需要给定元数据键至少有两个不同的值。
 </Note>
 
-由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。在 UI 侧边栏中的 **监控** 中，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。从 UI 侧边栏中的 **监控**，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
-### 深入分析当监控图表显示意外情况时，单击数据点以冻结工具提示，然后单击指标名称（例如，**输入**）以跳转到该时间窗口的筛选运行表。有关搜索和过滤运行的更多信息，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
+### 深入分析当监控图表显示意外情况时，单击数据点以冻结工具提示，然后单击指标名称（例如，**输入**）以跳转到该时间窗口的已筛选运行表。有关搜索和过滤运行的更多信息，请参阅[Filter traces](/langsmith/filter-traces)。
 
 <img
     className="block dark:hidden"
@@ -510,7 +510,7 @@ const supportBot = traceable(
 
 ## 结论
 
-在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以了解各个跟踪和聚合性能趋势。
+在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以看到各个跟踪和聚合性能趋势。
 
 有关更多信息，请参阅：
 

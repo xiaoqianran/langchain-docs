@@ -5,7 +5,7 @@
 # 支出政策
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 支出策略定义特定范围（组织、工作区、API 密钥或用户）在时间窗口（每月、每周、每天或每小时）内的成本上限。 [LLM Gateway](/langsmith/llm-gateway) 实时跟踪支出并阻止任何会使支出超过上限的请求，返回 `402` 响应：
@@ -38,7 +38,7 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 
 |窗口|重置 |使用案例 |
 | --- | --- | --- |
-| **每月** |每个月的第一天 |预算调整，总体成本控制|
+| **每月** |每个月的第一天 |预算调整，总体成本控制 |
 | **每周** |每周一午夜 UTC |每周预算|
 | **每日** | UTC 午夜 |防止单日成本飙升（例如，编码代理在重试循环中过夜）|
 | **每小时** |每小时顶部 |快速抓获逃跑特工 |

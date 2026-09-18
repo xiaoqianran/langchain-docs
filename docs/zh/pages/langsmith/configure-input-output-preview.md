@@ -51,9 +51,9 @@ alt="Configure Input and Output previews side panel showing the tree view of tra
     1. 单击要在预览中显示的字段旁边的复选框。所选路径出现在树前面的文本输入中。
 
     当您选择复选框时，系统会使用正确的语法自动构建路径（例如 messages[-1].content）。|方法|最适合 |示例|
-| ---| ---| ---|
+| --- | --- | --- |
 |树种选择|探索不熟悉的数据结构，查看样本值 |点击：消息 → [-1] → 内容 |
-|手动打字 |当您确切知道自己想要什么时，深度路径会更快 |类型：output.data.results[0].answer |
+|手动打字|当您确切知道自己想要什么时，深度路径会更快 |类型：output.data.results[0].answer |
 
 超过 3 个项目的数组会自动压缩，以防止出现过多的视图：
 
@@ -107,7 +107,7 @@ alt="Configure Input and Output previews side panel showing the tree view of tra
 
 ## 后续步骤
 
-- 了解更多关于[viewing and filtering traces](/langsmith/filter-traces-in-application)的信息。
+- 了解有关 [viewing](/langsmith/view-traces) 和 [filtering](/langsmith/filter-traces) 迹线的更多信息。
 - 探索[custom output rendering](/langsmith/custom-output-rendering)以实现高级可视化。
 - 设置[metadata and tags](/langsmith/add-metadata-tags)来整理您的踪迹。
 

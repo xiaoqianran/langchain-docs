@@ -5,10 +5,14 @@
 # 跟踪和访问控制
 
 <Note>
-**测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
-通过 LLM 网关的每个调用都会追溯到 LangSmith，并且策略违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
+通过 LLM 网关的每个调用都会追踪到 LangSmith，并且策略违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
+
+<Note>
+网关跟踪记录每个呼叫的元数据（令牌计数、策略结果、呼叫者身份）。默认情况下**不**记录输入和输出内容，并且没有内容的跟踪**不会根据您的 LangSmith 跟踪配额计费**。内容日志记录以及相关的计费仅在您使用 [data policy](/langsmith/llm-gateway-data-policy) 显式启用时才适用。
+</Note>
 
 ## 网关痕迹出现的位置
 
@@ -25,11 +29,11 @@
 
 ### 跟踪内容
 
-默认情况下，跟踪内容（请求和响应正文）处于关闭状态。使用 [data policy](/langsmith/llm-gateway-data-policy#data-retention) 打开它，它适用于通过网关发出的与策略范围匹配的任何跟踪。
+默认情况下，跟踪内容（请求和响应正文）处于关闭状态。没有内容的跟踪不会根据您的 LangSmith 跟踪配额进行计费。使用 [data policy](/langsmith/llm-gateway-data-policy#data-retention) 打开内容日志记录，这适用于通过网关发出的与策略范围匹配的任何跟踪。与内容记录数据策略匹配的跟踪计入您的计划的跟踪量。
 
-## LangSmith 引擎集成
+## LangSmith 发动机集成当治理策略触发时（例如达到支出限制、检测到并编辑 PII 或捕获秘密时），该事件将作为元数据记录在跟踪上。这些违反政策的行为在 LangSmith 引擎中表现为问题。
 
-当治理策略触发时（例如达到支出限制、检测到并编辑 PII 或捕获秘密时），该事件将作为元数据记录在跟踪上。这些违反政策的行为在 LangSmith 引擎中表现为问题。对于引擎问题，您可以：
+对于引擎问题，您可以：
 
 1. **查看违规行为：** 触发了哪些政策，哪些内容被阻止或编辑。
 1. **点击跟踪：** 准确查看策略触发时代理正在执行的操作。
@@ -49,14 +53,14 @@
 
 ## 权限
 
-### 所需权限
-
-|行动|需要许可 |谁默认拥有它 |
+### 所需权限|行动|需要许可 |谁默认拥有它 |
 | --- | --- | --- |
 |通过网关拨打电话 | `gateway:invoke` + `workspaces:read` |仅限`WORKSPACE_ADMIN` |
 |创建、编辑或删除策略 | `organization:manage` |组织管理员 |
 |查看网关痕迹 | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`、`WORKSPACE_USER`、`WORKSPACE_VIEWER` |
-|查看审核日志 | `organization:manage` |组织管理员 |内置 `WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 角色**不**包括 `gateway:invoke` 并且无法编辑。要在没有完整工作区管理权限的情况下授予网关访问权限，请使用 `gateway:invoke` 和 `workspaces:read` 创建自定义工作区角色（需要启用 RBAC 的计划）。有关说明，请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)。
+|查看审核日志 | `organization:manage` |组织管理员 |
+
+内置 `WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 角色**不**包括 `gateway:invoke` 并且无法编辑。要在没有完整工作区管理权限的情况下授予网关访问权限，请使用 `gateway:invoke` 和 `workspaces:read` 创建自定义工作区角色（需要启用 RBAC 的计划）。有关说明，请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)。
 
 ### API 密钥范围
 
@@ -64,18 +68,18 @@
 
 ### 集中提供者凭证
 
-网关将提供商 API 密钥集中在 LangSmith 工作区机密中。各个开发人员和代理使用他们的[LangSmith API key](/langsmith/create-account-api-key)进行身份验证，并且永远不需要直接访问提供商密钥。
+网关将提供商 API 密钥集中在 LangSmith 工作区机密中。个人开发人员和代理使用他们的[LangSmith API key](/langsmith/create-account-api-key)进行身份验证，并且永远不需要直接访问提供商密钥。
 
-这意味着：
+这意味着：- **凭证控制：** 提供商密钥位于一处，由管理员管理。撤销访问权限意味着撤销LangSmith API 密钥，而不是查找提供者密钥的分布式副本。
+- **策略执行：** 因为所有呼叫都流经网关，所以策略执行一致。无法通过直接调用提供商来绕过成本限制（只要开发人员无法单独访问提供商密钥）。
 
-- **凭证控制：** 提供商密钥位于一处，由管理员管理。撤销访问权限意味着撤销LangSmith API 密钥，而不是查找提供者密钥的分布式副本。
-- **策略执行：** 因为所有呼叫都流经网关，所以策略执行一致。无法通过直接调用提供商来绕过成本限制（只要开发人员无法单独访问提供商密钥）。对于 Claude Code Plus 和 Max 用户，每个组织都可以使用 Anthropic OAuth 直通。调用者发送工作区范围的 LangSmith API 密钥以进行网关身份验证，并发送 Anthropic OAuth 承载以进行提供商身份验证。网关权限、策略和跟踪仍然适用，而 OAuth 承载仅转发到Anthropic，并且网关不会加载工作区的`ANTHROPIC_API_KEY`。 Anthropic 将这些呼叫计入用户的 Claude 订阅费用。配置说明请参见[Set up coding agents](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth)。
+对于 Claude Code Plus 和 Max 用户，每个组织都可以使用 Anthropic OAuth 直通。调用者发送工作区范围的 LangSmith API 密钥以进行网关身份验证，并发送 Anthropic OAuth 承载以进行提供商身份验证。网关权限、策略和跟踪仍然适用，而 OAuth 承载仅转发到Anthropic，并且网关不会加载工作区的`ANTHROPIC_API_KEY`。 Anthropic 将这些呼叫计入用户的 Claude 订阅费用。配置说明请参见[Set up coding agents](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth)。
 
-### 限制跟踪可见性
+### 限制跟踪可见性网关跟踪被写入工作区项目中，并遵循 LangSmith 的标准工作区成员资格模型。工作区中具有 `runs:read`（和 `projects:read` 查看项目本身）的任何人都可以查看该工作区的网关项目中的跟踪。默认情况下，内置角色 `WORKSPACE_ADMIN`、`WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 都包含这两种权限。
 
-网关跟踪被写入工作区项目中，并遵循 LangSmith 的标准工作区成员资格模型。工作区中具有 `runs:read`（和 `projects:read` 查看项目本身）的任何人都可以查看该工作区的网关项目中的跟踪。默认情况下，内置角色 `WORKSPACE_ADMIN`、`WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 都包含这两种权限。
+如果您需要限制谁可以查看网关跟踪，您有两种选择：
 
-如果您需要限制谁可以查看网关跟踪，您有两种选择：- **单独的工作区**（适用于任何[plan](/langsmith/pricing-plans)）：创建一个具有受限成员资格的工作区，并为具有更广泛成员资格的开发人员编码代理创建另一个工作区。每个工作区都有自己的提供者机密和跟踪项目。
+- **单独的工作区**（适用于任何[plan](/langsmith/pricing-plans)）：创建一个具有有限成员资格的工作区，并为具有更广泛成员资格的开发人员编码代理创建另一个工作区。每个工作区都有自己的提供者机密和跟踪项目。
 - **项目级访问策略**（需要[Enterprise plan](/langsmith/pricing-plans)）：编写ABAC策略，将网关项目上的`projects:read`和`runs:read`限制为特定用户或角色。
 
 ## 后续步骤

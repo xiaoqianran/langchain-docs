@@ -336,7 +336,7 @@ npx tsx index.ts
 
 - [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。
 - [Trace an LLM application](/langsmith/observability-llm-tutorial)：完整的生命周期教程，从原型设计到生产。
-- [Filter traces](/langsmith/filter-traces-in-application)：搜索和导航大型跟踪项目。
+- [Filter traces](/langsmith/filter-traces)：搜索和导航大型跟踪项目。
 - [Log to a specific project](/langsmith/log-traces-to-project)：将跟踪发送到指定项目而不是**默认**。
 
 <Callout type="info" icon="feather">

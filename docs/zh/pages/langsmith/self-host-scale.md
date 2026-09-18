@@ -8,7 +8,7 @@
 本页上的扩展指南和示例配置适用于 **LangSmith 版本 v0.13.0 或更高版本**。
 </Warning>
 
-自托管 LangSmith 实例可以处理大量跟踪和用户。自托管部署的默认配置可以处理大量负载，您可以配置您的部署以实现更高的规模。本页面介绍了扩展注意事项并提供了一些示例来帮助配置您的自托管实例。
+自托管 LangSmith 实例可以处理大量跟踪和用户。自托管部署的默认配置可以处理大量负载，并且您可以配置您的部署以实现更高的规模。本页面介绍了扩展注意事项并提供了一些示例来帮助配置您的自托管实例。
 
 配置示例请参考[Example LangSmith configurations for scale](#example-langsmith-configurations-for-scale)。
 
@@ -18,17 +18,49 @@
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | <Tooltip tip="Number of users actively viewing traces on the frontend">并发前端用户</Tooltip> | 5 | 5 | 50 | 50 20 | 50 | 50
 | <Tooltip tip="Number of traces being ingested via SDKs or API endpoints">每秒提交的跟踪数</Tooltip> | 10 | 10 1000 | 1000 10 | 10 100 | 100 1000 | 1000
-| **前端副本**<br />（500m CPU，每个副本 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
-| **平台后端副本**<br />（1 个 CPU，每个副本 2Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 |
-| **摄取队列副本**<br />（1 个 CPU，每个副本 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
-| **后端副本**<br />（1 个 CPU，每个副本 2Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50
+| **前端副本**<br />（500m CPU，每个副本请求 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
+| **平台后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 |
+| **摄取队列副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
+| **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40| 16 | 16 50 | 50
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
 | **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10 CPU<br />32Gi 内存 |每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
-| **ClickHouse 设置** |单实例 |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T30⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T31⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
+| **ClickHouse 设置** |单实例 |单实例| 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T45⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T46⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
 | **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
 
 
+<Note>
+上面每个副本的数字是资源请求，是 Kubernetes 调度程序保留的资源。
+每种情况下的限制都更高。有关图表附带的默认值，请参阅
+[Default resource requests and limits](#default-resource-requests-and-limits)。
+
+超过其内存限制的容器将被 OOM 杀死，超过其 CPU 限制的容器将被 OOM 杀死。
+节流。在未对结果进行负载测试的情况下，请勿将任一值降低到低于出厂默认值。
+</Note>
+
 下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
+
+## 默认资源请求和限制
+
+Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
+上面的[summary table](#summary)涵盖了Postgres、Redis和ClickHouse，以及副本
+针对每种负载模式运行的计数。| `values.yaml`键|请求（CPU/内存）|限制（CPU/内存）|默认副本 |
+| :--- | :--- | :--- | :--- |
+| `frontend` | 500m / 1Gi | 1000m / 2Gi | 1 |
+| `backend` | 1000m / 2Gi | 2000米/4Gi | 2 |
+| `platformBackend` | 1000m / 2Gi | 2000米/4Gi | 3 |
+| `ingestQueue` | 1000m / 2Gi | 2000米/4Gi | 3 |
+| `queue` | 1000m / 2Gi | 2000米/4Gi | 1 |
+| `playground` | 500m / 1Gi | 1000m / 8Gi | 1 |
+| `aceBackend` | 1000m / 2000Mi | 2000米/4000米| 1 |
+| `hostBackend` | 200m / 1000Mi | 1000m / 2Gi | 1 |
+| `listener` | 1000m / 2Gi | 2000米/4Gi | 1 |
+| `operator` | 1000m / 2Gi | 2000米/4Gi | 1 |
+
+每个键都将其资源嵌套在`deployment`下，因此后端的请求位于
+`backend.deployment.resources.requests`。 `playground` 是一个有内存限制的服务
+远高于其请求，8Gi 与 1Gi，因此调整其调度到的节点大小
+限制。要确认图表版本的默认值，请运行
+`helm show values langchain/langsmith`。
 
 ## 跟踪摄取（写入路径）
 
@@ -38,12 +70,12 @@
 - 通过 `@traceable` 包装器摄取痕迹
 - 通过`/runs/multipart`端点提交跟踪
 
-在跟踪摄取中发挥重要作用的服务：
-
-- 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
+在跟踪摄取中发挥重要作用的服务：- 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
 - Redis缓存：用于对需要持久化的痕迹进行排队
 - 摄取队列服务：保留查询痕迹
-- ClickHouse：用于跟踪的持久存储当扩展写入路径（跟踪摄取）时，监视上面列出的四个服务/资源会很有帮助。以下是一些有助于提高跟踪摄取性能的典型更改：
+- ClickHouse：用于跟踪的持久存储
+
+当扩展写入路径（跟踪摄取）时，监视上面列出的四个服务/资源会很有帮助。以下是一些有助于提高跟踪摄取性能的典型更改：
 
 - 如果 ClickHouse 接近资源限制，则为其提供更多资源（CPU 和内存）。
 - 如果摄取请求需要很长时间才能响应，请增加平台后端 Pod 的数量。
@@ -56,12 +88,12 @@
 
 - 前端用户查看跟踪项目或单个跟踪
 - 用于查询跟踪信息的脚本
-- 点击 `/runs/query` 或 `/runs/<run-id>` api 端点
-
-在查询跟踪中发挥重要作用的服务：
+- 点击 `/runs/query` 或 `/runs/<run-id>` api 端点在查询跟踪中发挥重要作用的服务：
 
 - 后端服务：接收请求并向ClickHouse提交查询，然后响应请求
-- ClickHouse：痕迹的持久存储。这是请求跟踪信息时查询的主数据库。当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：
+- ClickHouse：痕迹的持久存储。这是请求跟踪信息时查询的主数据库。
+
+当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：
 
 - 增加后端服务 Pod 的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
 - 为 ClickHouse 提供更多资源（CPU 或内存）。 ClickHouse 可能会占用大量资源，但它应该会带来更好的性能。
@@ -72,7 +104,7 @@
 ## LangSmith 队列的 KEDA 自动缩放
 
 <Note>
-适用于 LangSmith v0.13.0 及更高版本。
+在 LangSmith v0.13.0 及更高版本中可用。
 </Note>我们强烈建议您在集群上安装[KEDA](https://keda.sh/)（Kubernetes 事件驱动的自动缩放）。 KEDA 使 `queue` 和 `ingest-queue` 服务能够根据队列积压大小以及 CPU 和内存自动扩展。这可以提高资源利用率并更好地处理流量峰值。
 
 ### 安装科达
@@ -98,7 +130,7 @@ ingestQueue:
       enabled: true
 ```
 
-启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于处理可变跟踪摄取负载而无需过度配置资源特别有用。
+启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于在不过度配置资源的情况下处理可变跟踪摄取负载特别有用。
 
 <Note>
 您还可以为其他服务（`backend`、`platformBackend` 等）启用 KEDA，但它们仍然只能根据 CPU 和内存进行扩展。
@@ -324,7 +356,7 @@ commonEnv:
 ```
 
 <Warning>
-如果您仍然发现上述配置读取速度缓慢，我们建议您改用[replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
+如果您仍然发现上述配置读取速度慢，我们建议您改用[replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
 </Warning>
 
 ### 高读取，高写入<a name="high-reads-high-writes"></a>您的跟踪摄取率非常高（接近每秒提交 1000 个跟踪），并且还有许多用户在前端查询跟踪（超过 50 个用户）和/或脚本持续向 `/runs/query` 或 `/runs/<run-id>` 端点发出请求。
@@ -408,7 +440,7 @@ commonEnv:
 ```
 
 <Note>
-确保 Kubernetes 集群配置了足够的资源以扩展到建议的大小。部署后，Kubernetes 集群中的所有 Pod 都应处于`Running` 状态。 Pod 陷入`Pending` 可能表明您已达到节点池限制或需要更大的节点。此外，请确保集群上部署的任何入口控制器都能够处理所需的负载，以防止出现瓶颈。
+确保 Kubernetes 集群配置了足够的资源以扩展到建议的大小。部署后，Kubernetes 集群中的所有 Pod 都应处于 `Running` 状态。 Pod 陷入 `Pending` 可能表明您已达到节点池限制或需要更大的节点。此外，请确保集群上部署的任何入口控制器都能够处理所需的负载，以防止出现瓶颈。
 </Note>
 
 ---

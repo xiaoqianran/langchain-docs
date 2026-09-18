@@ -4,9 +4,9 @@
 
 # 元数据参数参考
 
-当您使用 LangSmith 跟踪 LLM 调用时，您通常需要 [track costs](/langsmith/cost-tracking)、比较模型配置并分析不同提供商的性能。 LangSmith 的本机集成（如 [LangChain](/langsmith/trace-with-langchain) 或 [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) 包装器）会自动处理此问题，但自定义模型包装器和自托管模型需要标准化的方式来提供此信息。 LangSmith 为此目的使用 `ls_` 元数据参数。
+当您使用 LangSmith 跟踪 LLM 调用时，您通常需要 [track costs](/langsmith/cost-tracking)，比较模型配置并分析不同提供商的性能。 LangSmith 的本机集成（如 [LangChain](/langsmith/trace-with-langchain) 或 [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) 包装器）会自动处理此问题，但自定义模型包装器和自托管模型需要标准化的方式来提供此信息。 LangSmith 为此目的使用 `ls_` 元数据参数。
 
-这些元数据参数（均以 `ls_` 为前缀）允许您通过标准 `metadata` 字段传递模型配置和标识信息。设置后，LangSmith 可以自动计算成本，在 UI 中显示模型信息，并启用 [filtering](/langsmith/filter-traces-in-application) 和跨跟踪分析。
+这些元数据参数（均以 `ls_` 为前缀）允许您通过标准 `metadata` 字段传递模型配置和标识信息。设置后，LangSmith 可以自动计算成本，在 UI 中显示模型信息，并启用 [filtering](/langsmith/filter-traces) 和跨跟踪分析。
 
 使用 `ls_` 元数据参数可以：- **通过识别提供商和模型名称，为自定义或自托管模型启用自动成本跟踪**。
 - **跟踪模型配置**，如温度、最大令牌和其他参数以进行实验比较。
@@ -271,7 +271,7 @@ def my_llm_call(prompt: str):
 - **必填：** 是（使用 `ls_provider`）
 
 **它的作用：**
-标识具体型号。结合`ls_provider`，匹配定价数据库，自动计算成本。
+标识具体型号。结合`ls_provider`，与定价数据库匹配，自动计算成本。
 
 **共同价值观：**
 - OpenAI：`"gpt-5.5"`、`"gpt-5.4-mini"`、`"gpt-3.5-turbo"`
@@ -559,7 +559,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 **主要要求：** [⟦T137⟧](#ls_provider) + [⟦T138⟧](#ls_model_name)
 - 两者都应存在以进行自动成本计算。
-- 如果[⟦T139⟧](#ls_model_name)缺失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
+- 如果[⟦T139⟧](#ls_model_name)丢失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
 - [⟦T141⟧](#ls_provider) 必须与 [pricing database](https://smith.langchain.com/settings/workspaces/models) 中的提供商匹配（或使用自定义定价）。**附加要求：**
 - 运行必须具有`run_type="llm"`（或必须启用[arbitrary cost tracking](/langsmith/cost-tracking#other-runs-send-costs)）。
 - [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) 必须出现在跟踪中（prompt_tokens、completion_tokens）。
@@ -700,7 +700,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 - [Trace query syntax](/langsmith/trace-query-syntax)：过滤和搜索痕迹的完整参考。
 - [Evaluation quickstart](/langsmith/evaluation-quickstart)：在数据集上运行实验以比较模型配置。
 - [Add metadata and tags](/langsmith/add-metadata-tags)：向跟踪添加元数据的一般指南。
-- [Filter traces in application](/langsmith/filter-traces-in-application)：以编程方式过滤代码中的跟踪。
+- [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)：以编程方式过滤代码中的跟踪。
 
 ---
 

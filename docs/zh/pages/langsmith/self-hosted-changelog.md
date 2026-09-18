@@ -5,10 +5,54 @@
 # 自托管 LangSmith 变更日志
 
 <Callout icon="rss" color="#4F46E5" iconType="regular">
-**订阅**：我们的变更日志包括 [RSS feed](https://docs.langchain.com/langsmith/self-hosted-changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
+**订阅**：我们的变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/self-hosted-changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) 是企业计划的附加组件，专为我们最大、最注重安全的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想获得许可证密钥以在您的环境中试用LangSmith。
+
+<Update label="2026-09-17" tags={["Stable"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.16.23
+
+**LangSmith 版本：** `0.16.57`
+
+- 修复角色无权限时列出组织角色失败的问题；现在，这样的角色会返回一个空的权限列表，而不是使整个角色列表不可用。
+
+- 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-7210。
+
+**下载 Helm 图表：** [⟦T1⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.23/langsmith-0.16.23.tgz)
+{/* langsmith-release-image: 0.16.23 0.16.57 */}
+</Update>
+
+<Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.32
+
+**LangSmith版本：** `0.17.24rc1`
+
+- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+
+**下载 Helm 图表：** [⟦T3⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.32/langsmith-0.17.0-rc.32.tgz)
+{/* langsmith-release-image: 0.17.0-rc.32 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update><Update label="2026-09-17" tags={["Preview"]} rss={{ title: "2026-09-17 - self-hosted" }}>
+## langsmith-0.17.0-rc.31
+
+**LangSmith版本：** `0.17.24rc1`
+
+- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+
+**下载 Helm 图表：** [⟦T5⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.31/langsmith-0.17.0-rc.31.tgz)
+{/* langsmith-release-image: 0.17.0-rc.31 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
+
+<Update label="2026-09-15" tags={["Preview"]} rss={{ title: "2026-09-15 - self-hosted" }}>
+## langsmith-0.17.0-rc.30
+
+**LangSmith版本：** `0.17.24rc1`
+
+- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+
+**下载 Helm 图表：** [⟦T7⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.30/langsmith-0.17.0-rc.30.tgz)
+{/* langsmith-release-image: 0.17.0-rc.30 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
+</Update>
 
 <Update label="2026-09-14" tags={["Preview"]} rss={{ title: "2026-09-14 - self-hosted" }}>
 ## langsmith-0.17.0-rc.29
@@ -17,7 +61,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
 
-**下载 Helm 图表：** [⟦T1⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.29/langsmith-0.17.0-rc.29.tgz)
+**下载 Helm 图表：** [⟦T9⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.29/langsmith-0.17.0-rc.29.tgz)
 {/* langsmith-release-image: 0.17.0-rc.29 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
 </Update>
 
@@ -26,18 +70,18 @@
 
 **LangSmith版本：** `0.17.24rc1`
 
-- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
-
-**下载 Helm 图表：** [⟦T3⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.28/langsmith-0.17.0-rc.28.tgz)
+- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。**下载 Helm 图表：** [⟦T11⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.28/langsmith-0.17.0-rc.28.tgz)
 {/* langsmith-release-image: 0.17.0-rc.28 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
 </Update>
 
 <Update label="2026-09-14" tags={["Preview"]} rss={{ title: "2026-09-14 - self-hosted" }}>
 ## langsmith-0.17.0-rc.27
 
-**LangSmith版本：** `0.17.24rc1`- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+**LangSmith 版本：** `0.17.24rc1`
 
-**下载 Helm 图表：** [⟦T5⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.27/langsmith-0.17.0-rc.27.tgz)
+- 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+
+**下载 Helm 图表：** [⟦T13⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.27/langsmith-0.17.0-rc.27.tgz)
 {/* langsmith-release-image: 0.17.0-rc.27 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
 </Update>
 
@@ -48,7 +92,7 @@
 
 - 当启用端点身份验证时，LangSmith 为部署信息端点提供经过身份验证的启动请求。
 
-**下载 Helm 图表：** [⟦T7⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.22/langsmith-0.16.22.tgz)
+**下载 Helm 图表：** [⟦T15⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.22/langsmith-0.16.22.tgz)
 {/* langsmith-release-image: 0.16.22 0.16.55 */}
 </Update>
 
@@ -59,7 +103,7 @@
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T9⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.26/langsmith-0.17.0-rc.26.tgz)
+**下载 Helm 图表：** [⟦T17⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.26/langsmith-0.17.0-rc.26.tgz)
 {/* langsmith-release-image: 0.17.0-rc.26 0.17.24-8b343557026d97c8b4cbbac94dbe07e6eae3cd92 */}
 </Update>
 
@@ -68,9 +112,7 @@
 
 **LangSmith版本：** `0.16.54`
 
-- 此版本打包了与 langsmith-0.16.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.20](#langsmith-0-16-20)发行说明。
-
-**下载 Helm 图表：** [⟦T11⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.21/langsmith-0.16.21.tgz)
+- 此版本打包了与 langsmith-0.16.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.20](#langsmith-0-16-20)发行说明。**下载 Helm 图表：** [⟦T19⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.21/langsmith-0.16.21.tgz)
 {/* langsmith-release-image: 0.16.21 0.16.54 */}
 </Update>
 
@@ -79,29 +121,31 @@
 
 **LangSmith版本：** `0.16.54`
 
-- 内部改进和维护更新**下载 Helm 图表：** [⟦T13⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.20/langsmith-0.16.20.tgz)
+- 内部改进和维护更新
+
+**下载 Helm 图表：** [⟦T21⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.20/langsmith-0.16.20.tgz)
 {/* langsmith-release-image: 0.16.20 0.16.54 */}
 </Update>
 
 <Update label="2026-09-11" tags={["Stable"]} rss={{ title: "2026-09-11 - self-hosted" }}>
 ## langsmith-0.16.19
 
-**LangSmith 版本：** `0.16.52`
+**LangSmith版本：** `0.16.52`
 
 - 此版本打包了与 langsmith-0.16.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.18](#langsmith-0-16-18)发行说明。
 
-**下载 Helm 图表：** [⟦T15⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.19/langsmith-0.16.19.tgz)
+**下载 Helm 图表：** [⟦T23⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.19/langsmith-0.16.19.tgz)
 {/* langsmith-release-image: 0.16.19 0.16.52 */}
 </Update>
 
 <Update label="2026-09-10" tags={["Stable"]} rss={{ title: "2026-09-10 - self-hosted" }}>
 ## langsmith-0.16.18
 
-**LangSmith版本：** `0.16.52`
+**LangSmith 版本：** `0.16.52`
 
 - 避免在 v16 版本中进行完全安装。
 
-**下载 Helm 图表：** [⟦T17⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.18/langsmith-0.16.18.tgz)
+**下载 Helm 图表：** [⟦T25⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.18/langsmith-0.16.18.tgz)
 {/* langsmith-release-image: 0.16.18 0.16.52 */}
 </Update>
 
@@ -112,49 +156,47 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.23 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.23](#langsmith-0-17-0-rc-23)发行说明。
 
-**下载 Helm 图表：** [⟦T19⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.25/langsmith-0.17.0-rc.25.tgz)
+**下载 Helm 图表：** [⟦T27⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.25/langsmith-0.17.0-rc.25.tgz)
 {/* langsmith-release-image: 0.17.0-rc.25 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
 </Update>
 
 <Update label="2026-09-09" tags={["Stable"]} rss={{ title: "2026-09-09 - self-hosted" }}>
 ## langsmith-0.16.17
 
-**LangSmith版本：** `0.16.50`
+**LangSmith版本：** `0.16.50`- 此版本打包了与 langsmith-0.16.16 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.16](#langsmith-0-16-16)发行说明。
 
-- 此版本打包了与 langsmith-0.16.16 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.16](#langsmith-0-16-16)发行说明。
-
-**下载 Helm 图表：** [⟦T21⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.17/langsmith-0.16.17.tgz)
+**下载 Helm 图表：** [⟦T29⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.17/langsmith-0.16.17.tgz)
 {/* langsmith-release-image: 0.16.17 0.16.50 */}
-</Update><Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
+</Update>
+
+<Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
 ## langsmith-0.17.0-rc.24
 
 **LangSmith版本：** `0.17.20rc1`
 
 - 此版本打包了与 langsmith-0.17.0-rc.23 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.23](#langsmith-0-17-0-rc-23)发行说明。
 
-**下载 Helm 图表：** [⟦T23⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.24/langsmith-0.17.0-rc.24.tgz)
+**下载 Helm 图表：** [⟦T31⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.24/langsmith-0.17.0-rc.24.tgz)
 {/* langsmith-release-image: 0.17.0-rc.24 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
 </Update>
 
 <Update label="2026-09-09" tags={["Preview"]} rss={{ title: "2026-09-09 - self-hosted" }}>
 ## langsmith-0.17.0-rc.23
 
-**LangSmith版本：** `0.17.20rc1`
-
-- 修复了前端部署和警报故障。
+**LangSmith版本：** `0.17.20rc1`- 修复了前端部署和警报故障。
 - 无需面向用户的发行说明；仅依赖项维护更新。
 - 允许部署离开托管模式。
 - 按缓存读取速率定价顶点引擎输入令牌。
 - 修复了打开的 Dependabot 警报。
-- 当 Slack 通道事件由于交付失败、机器人令牌丢失、无法显示的中断或不明确的路线而在到达托管深度代理之前失败时，它会出现在 `mda logs` 和部署日志 UI 中，而不是静默失败。
+- 当 Slack 通道事件在到达托管深度代理之前因交付失败、机器人令牌丢失、无法显示的中断或不明确的路线而失败时，它会出现在 `mda logs` 和部署日志 UI 中，而不是静默失败。
 - 路由的 Bedrock xAI 推理配置文件。
 - 将计费警报路由至专用计费渠道。
 - 配置代理身份验证 OAuth 回调。
 - 忽略没有名字的特工。
-- 路由欧盟修复贯穿区域OpenAI。- 已发送的代理身份验证路由上的轮询凭证会话。
+- 路由欧盟修复贯穿区域OpenAI。
+- 已发送的代理身份验证路由上的轮询凭证会话。
 - Led Slack 发出带有标题的警报。
-- 共享线程创建了一个任何人都可以在没有LangSmith帐户的情况下打开的链接，显示线程中的每个回合及其运行轨迹和反馈分数。该链接始终反映线程的当前内容，包括共享后添加的回合，取消共享会立即撤销它。
-- 在顶点路径上设置所有三个提示缓存断点。
+- 共享线程创建了一个任何人都可以在没有LangSmith帐户的情况下打开的链接，显示线程中的每个回合及其运行轨迹和反馈分数。该链接始终反映线程的当前内容，包括共享后添加的回合，取消共享会立即撤销它。- 在顶点路径上设置所有三个提示缓存断点。
 - 增加了最近的过滤器去抖。
 - 在粘性标题下方保留代理概述编辑。
 - 监控 Asynq 速率限制重试，无需日志。
@@ -168,43 +210,42 @@
 - 当请求上下文完成时退出后备链。
 - 将 BYOC M​​anager 移至基础设施。
 - 将验证错误记录为字符串。
-- 隐藏跟踪过滤器而不闪烁。- 当代理因连接的集成仍需要 OAuth 而暂停时，Slack 现在会显示一个可直接打开授权链接的连接按钮。以前，运行会因一般通知而暂停，并且无法完成从 Slack 的连接。
-- LangSmith MCP 连接器在支持时使用客户端 ID 元数据文档，并保留动态客户端注册作为兼容性回退。
-- 工作区编辑者现在可以从“设置”>“资源标签”将资源分配给应用程序标签值。尽管允许编辑者应用应用程序标签，但该页面之前仍因权限错误而失败。
+- 隐藏跟踪过滤器而不闪烁。
+- 当代理因连接的集成仍需要 OAuth 而暂停时，Slack 现在会显示一个可直接打开授权链接的连接按钮。以前，运行会因一般通知而暂停，并且无法完成从 Slack 的连接。
+- LangSmith MCP 连接器在支持时使用客户端 ID 元数据文档，并保留动态客户端注册作为兼容性回退。- 工作区编辑者现在可以从“设置”>“资源标签”将资源分配给应用程序标签值。尽管允许编辑者应用应用程序标签，但该页面之前仍因权限错误而失败。
 - 解码轨迹端点上的 @openai/agents JS SDK 的 `function_call_result` 项和驼峰式`callId` 字段，解锁管理工具状态客户端的 JS 代理的消息视图。
 - Alembic git-revisions（删除了 ALEMBIC_HEAD 合并冲突）。
 - 减少嘈杂的 BYOC Kubernetes 警报。
 - 清理失败的线程沙箱。
 - 在提交查找中显示当前 SHA。
-- 注册后恢复组织邀请。- 当候选者未在配置的超时内返回响应标头时，LLM 网关后备链现在可以前进到下一个模型。标头到达后，活动响应流继续。
+- 注册后恢复组织邀请。
+- 当候选者未在配置的超时内返回响应标头时，LLM 网关后备链现在可以前进到下一个模型。标头到达后，活动响应流继续。
 - 同时启动本地堆栈和工作区。
 - 用于 BYOC 数据平面引脚的烘焙 Alembic 链。
 - 同时运行后端启动堆栈和本地堆栈。
-- 规范化亚太地区负载均衡器环境。
-- OAuth 授权会话现在接受规范的 `owner_type` 和 `owner_id` 字段，允许人员为用户或代理授权托管凭据。旧版请求和响应形状仍然支持已弃用的 `principal_id` 和 `agent_id` 字段。
+- 规范化亚太地区负载均衡器环境。- OAuth 授权会话现在接受规范的 `owner_type` 和 `owner_id` 字段，允许人员为用户或代理授权托管凭据。旧版请求和响应形状仍然支持已弃用的 `principal_id` 和 `agent_id` 字段。
 - 自托管部署现在可以将 REST 调用者的 `X-Fleet-Forward-*` 标头转发到代理调用的自定义 MCP 服务器，因此这些服务器前面的策略网关可以查看每次调用上下文，例如最终用户身份。默认关闭；通过`FLEET_MCP_FORWARD_CALLER_HEADERS=true`启用。值由调用者断言，未经 LangSmith 验证。
 - 默认跟踪过滤器为根运行。
 - GitHub Actions 配额页面。
-- 将 Studio 消息操作向右对齐。- 部署的自定义安装和构建命令现在显示在“详细信息”面板中，并且“新修订”对话框会根据当前有效的值预先填充它们。以前，这些命令会持续存在并应用于每个构建，但不会在任何地方显示，因此任何必须调试构建的人都看不到继承的命令。
-- 更新了组织计划徽章颜色。
-- 商业私有 ECR 注册表现在可以按需承担 AWS IAM 角色，启用存储库和标签搜索，同时避免保存的授权令牌过期。
+- 将 Studio 消息操作向右对齐。
+- 部署的自定义安装和构建命令现在显示在“详细信息”面板中，并且“新修订”对话框会根据当前有效的值预先填充它们。以前，这些命令会持续存在并应用于每个构建，但不会在任何地方显示，因此任何必须调试构建的人都看不到继承的命令。
+- 更新了组织计划徽章颜色。- 商业私有 ECR 注册表现在可以按需承担 AWS IAM 角色，启用存储库和标签搜索，同时避免保存的授权令牌过期。
 - OAuth 授权会话现在接受工作区所有者，允许在工作区中共享一个托管 OAuth 凭据。
 - 线程查询客户端可以请求服务器发送的事件以逐步接收结果，同时保留光标分页。
 - 工作区切换器现在除了工作区名称之外还接受工作区 ID，这样在仅知道工作区 ID 的情况下可以更轻松地找到工作区。
-- 使用新的`/v2/threads/stats`端点来检索跟踪项目的线程和跟踪计数、延迟、令牌、成本和反馈统计信息。- 队列代理现在支持使用您配置的工作区 URL、服务端点和工作区凭据保存的 Databricks 模型配置。您可以通过 Databricks Model Serving 或 AI Gateway 路由进行连接。
+- 使用新的`/v2/threads/stats`端点来检索跟踪项目的线程和跟踪计数、延迟、令牌、成本和反馈统计信息。
+- 队列代理现在支持使用您配置的工作区 URL、服务端点和工作区凭据保存的 Databricks 模型配置。您可以通过 Databricks Model Serving 或 AI Gateway 路由进行连接。
 
-**下载 Helm 图表：** [⟦T35⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
+**下载 Helm 图表：** [⟦T43⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
 {/* langsmith-release-image: 0.17.0-rc.23 0.17.20-c51af74dff42dec250ba0cab263735c86f226ab7 */}
 </Update>
 
 <Update label="2026-09-05" tags={["Stable"]} rss={{ title: "2026-09-05 - self-hosted" }}>
 ## langsmith-0.16.16
 
-**LangSmith版本：** `0.16.50`
+**LangSmith 版本：** `0.16.50`
 
-- 内部改进和维护更新
-
-**下载 Helm 图表：** [⟦T37⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
+- 内部改进和维护更新**下载 Helm 图表：** [⟦T45⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
 {/* langsmith-release-image: 0.16.16 0.16.50 */}
 </Update>
 
@@ -215,7 +256,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.20](#langsmith-0-17-0-rc-20)发行说明。
 
-**下载 Helm 图表：** [⟦T39⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.22/langsmith-0.17.0-rc.22.tgz)
+**下载 Helm 图表：** [⟦T47⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.22/langsmith-0.17.0-rc.22.tgz)
 {/* langsmith-release-image: 0.17.0-rc.22 0.17.18-2b16cc1d7616285b7a3e4cc29a849511182c094b */}
 </Update>
 
@@ -224,16 +265,16 @@
 
 **LangSmith版本：** `0.17.18rc1`
 
-- 此版本打包了与 langsmith-0.17.0-rc.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.20](#langsmith-0-17-0-rc-20)发行说明。**下载 Helm 图表：** [⟦T41⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.21/langsmith-0.17.0-rc.21.tgz)
+- 此版本打包了与 langsmith-0.17.0-rc.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.20](#langsmith-0-17-0-rc-20)发行说明。
+
+**下载 Helm 图表：** [⟦T49⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.21/langsmith-0.17.0-rc.21.tgz)
 {/* langsmith-release-image: 0.17.0-rc.21 0.17.18-2b16cc1d7616285b7a3e4cc29a849511182c094b */}
 </Update>
 
 <Update label="2026-09-02" tags={["Preview"]} rss={{ title: "2026-09-02 - self-hosted" }}>
 ## langsmith-0.17.0-rc.20
 
-**LangSmith版本：** `0.17.18rc1`
-
-- 隐藏运行树展开/折叠控制平面树。
+**LangSmith版本：** `0.17.18rc1`- 隐藏运行树展开/折叠控制平面树。
 - 创建了一个跟踪项目，现在等待该项目变得可用后再打开它，从而防止错误的创建错误和未找到页面。
 - 在主机耗尽期间首先暂停最小的沙箱。
 - 高级过去选定的过滤器值。
@@ -246,10 +287,10 @@
 - 需要持续的最大副本数。
 - 防止浏览器翻译 DOM 突变。
 - 在 OpenAI 兼容模型配置上设置提供商名称，以填充 `ls_provider` 跟踪元数据，并通过 LLM 网关将自定义模型与提供商特定的定价进行匹配。
-- 使用真正的 15m p95 进行 V2 运行延迟监控。- 当成本策略按自定义标头拆分 API 密钥的支出限制时，允许用户查看按每个标头值细分 API 密钥支出的图表和表格。
+- 使用真正的 15m p95 进行 V2 运行延迟监控。
+- 当成本策略按自定义标头拆分 API 密钥的支出限制时，允许用户查看按每个标头值细分 API 密钥支出的图表和表格。
 - 按组织修改了目标过滤器。
-- 关于自托管和 BYOC 故障的通知。
-- 隔离的不定时批处理测试。
+- 关于自托管和 BYOC 故障的通知。- 隔离的不定时批处理测试。
 - 允许自托管 LangSmith 运营商配置许可证到期前多少天会出现带有 `LICENSE_EXPIRATION_WARNING_DAYS` 的警告横幅；默认保留 7 天。
 - 问题现在有一个“克劳德代码修复”操作，可以打开本地编码代理，其中包含诊断、链接的跟踪以及已填写的获取它们的命令，并带有一个下拉菜单，可切换到 Codex 或复制任何其他代理的提示。
 - 防止仪表板行因重叠卡片而悬停。
@@ -259,10 +300,10 @@
 - 在源更改时部署云功能。
 - 具有不受支持的完成输出的验证示例现在报告架构验证错误，而不是因内部错误而失败。
 - 使侧面导航悬停状态立即生效。
-- 对齐的 API 前缀平台路线。- 添加了组织限制，这是一个新的组织范围、系统定义的角色，可以访问分配的工作区，同时组织级别的设置、计费和使用表面保持隐藏。
+- 对齐的 API 前缀平台路线。
+- 添加了组织限制，这是一个新的组织范围、系统定义的角色，可以访问分配的工作区，同时组织级别的设置、计费和使用表面保持隐藏。
 - 减少预览 PR 评论更新插入中 GitHub API 的使用。
-- 将基岩Anthropic配置文件路由到运行时。
-- 消息视图上的门控转向迁移​​指南。
+- 将基岩Anthropic配置文件路由到运行时。- 消息视图上的门控转向迁移​​指南。
 - 延迟内部 HPA 饱和警报。
 - 保留用户添加的过滤器范围。
 - 保留概念审计外部表。
@@ -272,7 +313,7 @@
 - 按推出状态进行门控线程回填。
 - 当引擎将问题标记为重复时，问题标题现在显示原始问题的重复链接，而不是包含其他问题 ID 的历史记录。
 
-**下载 Helm 图表：** [⟦T45⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.20/langsmith-0.17.0-rc.20.tgz)
+**下载 Helm 图表：** [⟦T53⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.20/langsmith-0.17.0-rc.20.tgz)
 {/* langsmith-release-image: 0.17.0-rc.20 0.17.18-2b16cc1d7616285b7a3e4cc29a849511182c094b */}
 </Update>
 
@@ -283,16 +324,16 @@
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T47⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.15/langsmith-0.16.15.tgz)
+**下载 Helm 图表：** [⟦T55⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.15/langsmith-0.16.15.tgz)
 {/* langsmith-release-image: 0.16.15 0.16.48 */}
-</Update><Update label="2026-09-01" tags={["Preview"]} rss={{ title: "2026-09-01 - self-hosted" }}>
+</Update>
+
+<Update label="2026-09-01" tags={["Preview"]} rss={{ title: "2026-09-01 - self-hosted" }}>
 ## langsmith-0.17.0-rc.19
 
 **LangSmith版本：** `0.17.17rc1`
 
-- 此版本打包了与 langsmith-0.17.0-rc.17 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.17](#langsmith-0-17-0-rc-17)发行说明。
-
-**下载 Helm 图表：** [⟦T49⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.19/langsmith-0.17.0-rc.19.tgz)
+- 此版本打包了与 langsmith-0.17.0-rc.17 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.17](#langsmith-0-17-0-rc-17)发行说明。**下载 Helm 图表：** [⟦T57⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.19/langsmith-0.17.0-rc.19.tgz)
 {/* langsmith-release-image: 0.17.0-rc.19 0.17.17-fc3f91b2704a32feee2b7d4a2eeeb7e8180552f2 */}
 </Update>
 
@@ -314,11 +355,11 @@
 - 提供LangGraph平面图像存储库。
 - Context Hub 目录写入现在支持链接代理和技能的显式最新和提交选择器；省略最新的选择器；要固定链接，请将旧版 `{"commit_id":"<uuid>"}` 替换为 `{"selector":{"type":"COMMIT","commit_id":"<uuid>"}}`。
 - 按大小缩放复选框半径。
-- 保留用于产品切换的 v2 过滤器。- 对共享面板 URL 使用设计系统链接颜色。
+- 保留用于产品切换的 v2 过滤器。
+- 对共享面板 URL 使用设计系统链接颜色。
 - 允许 LangSmith 预览 CORS 预检。
 - 稳定的在线过滤器控制。
-- 简化的使用配置标题。
-- 对齐修改后的过滤器范围默认值。
+- 简化的使用配置标题。- 对齐修改后的过滤器范围默认值。
 - Ran FE 预览建立在冲突的 PR 之上。
 - 减少了图表 v2 阴影比较中的误报。
 - 停止删除长问题验证原因。
@@ -333,7 +374,7 @@
 - 使用 LangSmith 密钥进行身份验证验证重播。
 - 允许创建审核 Webhook 警报。
 
-**下载 Helm 图表：** [⟦T53⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.17/langsmith-0.17.0-rc.17.tgz)
+**下载 Helm 图表：** [⟦T61⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.17/langsmith-0.17.0-rc.17.tgz)
 {/* langsmith-release-image: 0.17.0-rc.17 0.17.17-fc3f91b2704a32feee2b7d4a2eeeb7e8180552f2 */}
 </Update>
 
@@ -342,29 +383,29 @@
 
 **LangSmith版本：** `0.17.14rc1`
 
-- 此版本打包了与 langsmith-0.17.0-rc.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。**下载 Helm 图表：** [⟦T55⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.16/langsmith-0.17.0-rc.16.tgz)
+- 此版本打包了与 langsmith-0.17.0-rc.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。
+
+**下载 Helm 图表：** [⟦T63⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.16/langsmith-0.17.0-rc.16.tgz)
 {/* langsmith-release-image: 0.17.0-rc.16 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
 </Update>
 
 <Update label="2026-08-28" tags={["Preview"]} rss={{ title: "2026-08-28 - self-hosted" }}>
-## langsmith-0.17.0-rc.15
-
-**LangSmith版本：** `0.17.14rc1`
+## langsmith-0.17.0-rc.15**LangSmith 版本：** `0.17.14rc1`
 
 - 此版本打包了与 langsmith-0.17.0-rc.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。
 
-**下载 Helm 图表：** [⟦T57⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.15/langsmith-0.17.0-rc.15.tgz)
+**下载 Helm 图表：** [⟦T65⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.15/langsmith-0.17.0-rc.15.tgz)
 {/* langsmith-release-image: 0.17.0-rc.15 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
 </Update>
 
 <Update label="2026-08-28" tags={["Stable"]} rss={{ title: "2026-08-28 - self-hosted" }}>
 ## langsmith-0.16.14
 
-**LangSmith版本：** `0.16.47`
+**LangSmith 版本：** `0.16.47`
 
 - 此版本打包了与 langsmith-0.16.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.13](#langsmith-0-16-13)发行说明。
 
-**下载 Helm 图表：** [⟦T59⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.14/langsmith-0.16.14.tgz)
+**下载 Helm 图表：** [⟦T67⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.14/langsmith-0.16.14.tgz)
 {/* langsmith-release-image: 0.16.14 0.16.47 */}
 </Update>
 
@@ -375,7 +416,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。
 
-**下载 Helm 图表：** [⟦T61⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.14/langsmith-0.17.0-rc.14.tgz)
+**下载 Helm 图表：** [⟦T69⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.14/langsmith-0.17.0-rc.14.tgz)
 {/* langsmith-release-image: 0.17.0-rc.14 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
 </Update>
 
@@ -385,7 +426,7 @@
 **LangSmith版本：** `0.16.47`- 通过 ABAC 策略授予 `runs:read` 的用户能够在标签与策略匹配的项目中打开跟踪，而对于策略范围之外的项目，跟踪访问仍然被拒绝。
 - 启用 Redis 集群安全模式时，运行规则和自动化可避免跨槽事务失败。
 
-**下载 Helm 图表：** [⟦T64⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.13/langsmith-0.16.13.tgz)
+**下载 Helm 图表：** [⟦T72⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.13/langsmith-0.16.13.tgz)
 {/* langsmith-release-image: 0.16.13 0.16.47 */}
 </Update>
 
@@ -396,7 +437,7 @@
 
 - 当部署启用内部 Kubernetes 目标时，自托管队列附加访问配置文件，其回调 URL 使用 Kubernetes 内部服务名称。
 
-**下载 Helm 图表：** [⟦T66⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.12/langsmith-0.16.12.tgz)
+**下载 Helm 图表：** [⟦T74⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.12/langsmith-0.16.12.tgz)
 {/* langsmith-release-image: 0.16.12 0.16.46 */}
 </Update>
 
@@ -411,14 +452,14 @@
 - 车队使用图表现在显示支出、工具和模型数据，而不是显示为空白。  
 - 部署现在可以让通用代理直接在聊天中构建新代理，写入其名称、描述、工具、触发器和说明，而不是显示将设置交给新代理的“创建代理”按钮，需要在 Fleet API 服务器、Fleet 队列和平台后端上设置 FLEET_INLINE_AGENT_GENERATION 才能将其打开；默认情况下它是关闭的。  
 - 受控输入不再创建冗余的本地状态更新，从而防止在跟踪过滤器中输入时罕见的页面崩溃。  
-- 在创建或捕获快照时附加自由格式的描述，并附加到代理规则和代理配置，并在读取时存储和返回描述，从而允许代理对其沙箱映像和网络访问可以执行的操作有一个简单的语言摘要。**下载 Helm 图表：** [⟦T68⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.13/langsmith-0.17.0-rc.13.tgz)
+- 在创建或捕获快照时附加自由格式的描述，并附加到代理规则和代理配置，并在读取时存储和返回描述，从而允许代理对其沙箱映像和网络访问可以执行的操作有一个简单的语言摘要。**下载 Helm 图表：** [⟦T76⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.13/langsmith-0.17.0-rc.13.tgz)
 {/* langsmith-release-image: 0.17.0-rc.13 0.17.14-46e65c1732f0b90c2e392a2be2b720623ac31d3b */}
 </Update>
 
 <Update label="2026-08-22" tags={["Preview"]} rss={{ title: "2026-08-22 - self-hosted" }}>
 ## langsmith-0.17.0-rc.12
 
-**LangSmith 版本：** `0.17.12rc1`
+**LangSmith版本：** `0.17.12rc1`
 
 - 更新了沙箱的代理配置，使其不再需要沙箱运行；停止的沙箱存储新配置并在下次启动时应用它，而不是拒绝请求。
 - GET /v1/fleet/users 通过电子邮件或姓名列出并搜索您工作区的成员，返回代理共享所占用的用户 ID；仅 API 队列客户端在共享代理之前不再需要来自其他地方的用户 ID。
@@ -447,10 +488,10 @@
 - GET /v1/fleet/sandboxes/{sandbox_slug}/files/content 返回沙箱中文件的原始字节；字节范围通过 Range 标头支持，HEAD 报告文件的大小而不传输它。
 - 从阴影中排除第一个存储桶。
 - GET /v1/fleet/sandbox-snapshots/{snapshot_id} 返回一个沙箱快照，因此客户端可以查看快照的构建状态，而无需重新读取整个列表；路径参数接受快照 ID 或 Docker 风格的引用，其中裸名称意味着 name:latest。- 工作区角色可以授予 API 密钥创建和删除权限，而无需授予完整的工作区管理权限；密钥管理人员可以将服务密钥范围限定到允许的工作空间并分配不受限制的角色。
-- LLM 网关模型后备策略现在可以在使用OpenAI聊天完成、OpenAI响应或⟦T1384​​⟧消息格式的提供商之间路由；统一和直接提供商端点的网关转换请求、非流响应和流响应。
+- LLM 网关模型后备策略现在可以在使用OpenAI聊天完成、OpenAI响应或Anthropic消息格式的提供商之间路由；统一和直接提供商端点的网关转换请求、非流响应和流响应。
 - DELETE /v1/fleet/sandbox-snapshots/{snapshot_id} 删除了沙箱快照，该快照与构建失败后删除然后重新创建重试的快照创建配对；它是幂等的，并返回 409，同时任何沙箱仍从快照启动，包括停止的沙箱。
 
-**下载 Helm 图表：** [⟦T70⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.12/langsmith-0.17.0-rc.12.tgz)
+**下载 Helm 图表：** [⟦T78⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.12/langsmith-0.17.0-rc.12.tgz)
 {/* langsmith-release-image: 0.17.0-rc.12 0.17.12-2e235ec495df0816243eed918091c56b38348ff1 */}
 </Update>
 
@@ -460,7 +501,7 @@
 **LangSmith版本：** `0.16.45`- 干净地删除代理并删除代理的文件，因为以前在代理已经从代理列表中消失后，删除可能会返回权限错误。
 - 更新了 GET /v1/fleet/users 端点，以通过电子邮件或姓名列出和搜索工作区成员，返回代理共享所需的用户 ID；仅 API 队列客户端在共享代理之前不再需要来自其他地方的用户 ID。
 
-**下载 Helm 图表：** [⟦T72⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.11/langsmith-0.16.11.tgz)
+**下载 Helm 图表：** [⟦T80⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.11/langsmith-0.16.11.tgz)
 {/* langsmith-release-image: 0.16.11 0.16.45 */}
 </Update>
 
@@ -471,7 +512,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7)发行说明。
 
-**下载 Helm 图表：** [⟦T74⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.11/langsmith-0.17.0-rc.11.tgz)
+**下载 Helm 图表：** [⟦T82⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.11/langsmith-0.17.0-rc.11.tgz)
 {/* langsmith-release-image: 0.17.0-rc.11 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
@@ -480,14 +521,14 @@
 
 - 此版本打包了与 langsmith-0.16.9 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.9](#langsmith-0-16-9)发行说明。
 
-**下载 Helm 图表：** [⟦T75⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.10/langsmith-0.16.10.tgz)
+**下载 Helm 图表：** [⟦T83⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.10/langsmith-0.16.10.tgz)
 {/* langsmith-release-image: 0.16.10 0.16.43 */}
 </Update>
 
 <Update label="2026-08-20" tags={["Preview"]} rss={{ title: "2026-08-20 - self-hosted" }}>
 ## langsmith-0.17.0-rc.10- 此版本打包了与 langsmith-0.17.0-rc.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7)发行说明。
 
-**下载 Helm 图表：** [⟦T76⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.10/langsmith-0.17.0-rc.10.tgz)
+**下载 Helm 图表：** [⟦T84⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.10/langsmith-0.17.0-rc.10.tgz)
 {/* langsmith-release-image: 0.17.0-rc.10 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
@@ -496,7 +537,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7)发行说明。
 
-**下载 Helm 图表：** [⟦T77⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.9/langsmith-0.17.0-rc.9.tgz)
+**下载 Helm 图表：** [⟦T85⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.9/langsmith-0.17.0-rc.9.tgz)
 {/* langsmith-release-image: 0.17.0-rc.9 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
@@ -505,7 +546,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7)发行说明。
 
-**下载 Helm 图表：** [⟦T78⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.8/langsmith-0.17.0-rc.8.tgz)
+**下载 Helm 图表：** [⟦T86⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.8/langsmith-0.17.0-rc.8.tgz)
 {/* langsmith-release-image: 0.17.0-rc.8 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
@@ -554,12 +595,12 @@
 - 舰队代理可以使用 slack_send_file 和 slack_send_file_to_user 将工作区文件发送到 Slack 通道、线程和直接消息。
 - Gateway Credits 购买对话框现在会显示您购买时可获得的积分余额，并在单个购买按钮的正上方注明含费用总额；大金额不再将学分读数和总数推到对话框之外。
 - 当 ClickHouse 使用优化的运行表时，负反馈键过滤器现在可以正确返回匹配跟踪。
-- 注释队列项端点现在记录在 /api/v1/platform 下的服务路径中，因此生成的用于列出、添加、更新、计数、删除和放置队列项的 SDK 方法到达了 API，而不是返回 404。- 融合响应中`stream_options.include_usage`产生有损。
+- 注释队列项端点现在记录在 /api/v1/platform 下的服务路径中，因此生成的用于列出、添加、更新、计数、删除和放置队列项的 SDK 方法到达了 API，而不是返回 404。- 融合响应产生有损`stream_options.include_usage`。
 - 在计划矩阵中添加了网关策略和网关积分行。
 - 记录已完成的 langchain 提供商信用购买。
-- 沙箱中的 `langsmith` CLI 已更新至 v0.2.44，其请求现已在为 `/api` 下的 API 提供服务的自托管部署上得到解决，其中 `trace messages` 等命令和项目问题命令之前失败。
+- 沙盒中的 `langsmith` CLI 已更新至 v0.2.44，其请求现已在为 `/api` 下的 API 提供服务的自托管部署上得到解决，其中 `trace messages` 等命令和项目问题命令之前失败。
 - 当模型提供者拒绝 Playground 运行（例如错误的 API 密钥或配额耗尽）时，Playground 现在会显示提供者自己的错误消息，而不是通用服务器错误，从而从错误本身澄清原因。
-- 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在计划将项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
+- 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在会安排该项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
 - 现在，每个人都可以使用新的代理创建体验，助手会显示“创建代理”按钮，并且新代理会运行自己的设置对话，而不是内联构建。- 分叉评估者将副本附加到分叉对话框中指定的项目或数据集；以前，可以创建不附加任何内容的副本，让原始评估器运行您刚刚编辑的版本。
 - LangGraph 部署的删除确认现在表明，在您确认后会运行底层数据库的清理，并且已删除部署的名称将保持保留状态，直到清理完成。
 - 当您在入职期间选择网关积分时，复制到编码代理中的提示现在包含适合您的部署的正确网关 URL。
@@ -639,7 +680,7 @@
 - 附件和对象下载现在总是声明浏览器应如何处理响应；类型无法识别的文件或存储时没有类型的文件将作为下载提供，而不是在页面中呈现。
 - 非编码代理板上的引擎扫描应用了配置的优先级芯片、用户指令和跟踪范围过滤器，而不是检查整个项目。
 
-**下载 Helm 图表：** [⟦T95⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.7/langsmith-0.17.0-rc.7.tgz)
+**下载 Helm 图表：** [⟦T103⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.7/langsmith-0.17.0-rc.7.tgz)
 {/* langsmith-release-image: 0.17.0-rc.7 0.17.10-66fa2096fc3567cb4e6a434f70dc0009bb4066bd */}
 </Update>
 
@@ -648,7 +689,7 @@
 
 - 当启用 Redis 集群 TLS 时，GCP Redis IAM 集群发现现在使用 TLS，允许自托管部署将 IAM 身份验证与需要 TLS 的 Memorystore 集群结合起来。
 
-**下载 Helm 图表：** [⟦T96⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.9/langsmith-0.16.9.tgz)
+**下载 Helm 图表：** [⟦T104⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.9/langsmith-0.16.9.tgz)
 {/* langsmith-release-image: 0.16.9 0.16.43 */}
 </Update>
 
@@ -656,7 +697,7 @@
 ## langsmith-0.16.8- 自托管 v16 部署可以通过规范的组织 API 将 ABAC 访问策略与角色附加和分离。
 - Microsoft Teams 回复频道工具现在默认请求批准，与其他 Teams 写入工具相匹配；已将该工具设置为自动运行的代理将保留其当前行为，并且您可以将其切换回“每个代理自动”。
 
-**下载 Helm 图表：** [⟦T97⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.8/langsmith-0.16.8.tgz)
+**下载 Helm 图表：** [⟦T105⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.8/langsmith-0.16.8.tgz)
 {/* langsmith-release-image: 0.16.8 0.16.41 */}
 </Update>
 
@@ -665,7 +706,7 @@
 
 - LangSmith 使用 Microsoft Entra ID 身份验证进行独立 Redis 的工作人员已成功启动，并在事件循环启动后继续刷新凭据。
 
-**下载 Helm 图表：** [⟦T98⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.7/langsmith-0.16.7.tgz)
+**下载 Helm 图表：** [⟦T106⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.7/langsmith-0.16.7.tgz)
 {/* langsmith-release-image: 0.16.7 0.16.38 */}
 </Update>
 
@@ -674,7 +715,7 @@
 
 - 此版本打包了与 langsmith-0.16.5 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.5](#langsmith-0-16-5)发行说明。
 
-**下载 Helm 图表：** [⟦T99⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.6/langsmith-0.16.6.tgz)
+**下载 Helm 图表：** [⟦T107⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.6/langsmith-0.16.6.tgz)
 {/* langsmith-release-image: 0.16.6 0.16.37 */}
 </Update>
 
@@ -683,14 +724,14 @@
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T100⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.5/langsmith-0.16.5.tgz)
+**下载 Helm 图表：** [⟦T108⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.5/langsmith-0.16.5.tgz)
 {/* langsmith-release-image: 0.16.5 0.16.37 */}
 </Update><Update label="2026-08-12" tags={["Stable"]} rss={{ title: "2026-08-12 - self-hosted" }}>
 ## langsmith-0.16.4
 
 - 此版本打包了与 langsmith-0.16.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.2](#langsmith-0-16-2)发行说明。
 
-**下载 Helm 图表：** [⟦T101⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.4/langsmith-0.16.4.tgz)
+**下载 Helm 图表：** [⟦T109⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.4/langsmith-0.16.4.tgz)
 {/* langsmith-release-image: 0.16.4 0.16.36 */}
 </Update>
 
@@ -699,7 +740,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T102⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.6/langsmith-0.17.0-rc.6.tgz)
+**下载 Helm 图表：** [⟦T110⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.6/langsmith-0.17.0-rc.6.tgz)
 {/* langsmith-release-image: 0.17.0-rc.6 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
@@ -708,7 +749,7 @@
 
 - 此版本打包了与 langsmith-0.16.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.2](#langsmith-0-16-2)发行说明。
 
-**下载 Helm 图表：** [⟦T103⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.3/langsmith-0.16.3.tgz)
+**下载 Helm 图表：** [⟦T111⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.3/langsmith-0.16.3.tgz)
 {/* langsmith-release-image: 0.16.3 0.16.36 */}
 </Update>
 
@@ -717,14 +758,14 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T104⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.5/langsmith-0.17.0-rc.5.tgz)
+**下载 Helm 图表：** [⟦T112⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.5/langsmith-0.17.0-rc.5.tgz)
 {/* langsmith-release-image: 0.17.0-rc.5 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
 <Update label="2026-08-11" tags={["Stable"]} rss={{ title: "2026-08-11 - self-hosted" }}>
 ## langsmith-0.16.2- 自托管舰队代理可以使用沙箱支持的计算机访问，而无需云计费计划层。
 
-**下载 Helm 图表：** [⟦T105⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.2/langsmith-0.16.2.tgz)
+**下载 Helm 图表：** [⟦T113⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.2/langsmith-0.16.2.tgz)
 {/* langsmith-release-image: 0.16.2 0.16.36 */}
 </Update>
 
@@ -733,7 +774,7 @@
 
 - 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T106⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.4/langsmith-0.17.0-rc.4.tgz)
+**下载 Helm 图表：** [⟦T114⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.4/langsmith-0.17.0-rc.4.tgz)
 {/* langsmith-release-image: 0.17.0-rc.4 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
@@ -742,7 +783,7 @@
 
 - 修复了沙盒支持的舰队代理上初始文件上传的问题。
 
-**下载 Helm 图表：** [⟦T107⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.1/langsmith-0.16.1.tgz)
+**下载 Helm 图表：** [⟦T115⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.1/langsmith-0.16.1.tgz)
 {/* langsmith-release-image: 0.16.1 0.16.34 */}
 </Update>
 
@@ -756,7 +797,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 如果您想预订升级时间，请随时联系LangChain支持人员`support@langchain.dev`。### 重大变更
 
 - 当创建时省略 `compression` 参数时，批量导出现在默认为 `zstandard` 压缩。有关在 Helm 图表中覆盖此默认值的说明，请参阅 [Compression](/langsmith/data-export#compression)。每次批量导出时显式设置 `compression` 的工作方式与以前一样。
-- `agent-bootstrap` 脚本已完全弃用并删除。如果您使用 `agent-bootstrap` 部署 Fleet（以前称为 Agent Builder），请迁移到独立部署。有关更多信息，请参阅[Migrating LangSmith Deployments control plane Fleet to standalone Fleet](https://support.langchain.com/articles/8306585004-migrating-langsmith-deployments-control-plane-fleet-to-standalone-fleet)。
+- `agent-bootstrap` 脚本已完全弃用并删除。如果您使用 `agent-bootstrap` 部署 Fleet（以前称为 Agent Builder），请迁移到独立部署。欲了解更多信息，请参阅[Migrating LangSmith Deployments control plane Fleet to standalone Fleet](https://support.langchain.com/articles/8306585004-migrating-langsmith-deployments-control-plane-fleet-to-standalone-fleet)。
 - 新的`backfillCheck`作业可防止在所需检查完成之前升级版本。如果您依赖其他服务中的基于 IAM 的身份验证等功能，则可能需要添加匹配的注释和标签。
 
 ### 基础设施变化
@@ -772,14 +813,14 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - **自托管引擎**在 AWS/GCP US 中可用。有关安装说明，请参阅[LangSmith Engine on self-hosted](/langsmith/engine-self-hosted)。您可能需要联系您的客户代表才能在您的许可证上启用此功能。
     - 代理工程的代理：引擎根据您的生产痕迹工作，找出重复出现的问题，诊断其根本原因，并推动修复。
     - 持续扫描启用跟踪项目，识别故障和潜在改进，并将其转化为按严重程度排名的可操作问题。- 提出修复建议，在连接源代码的情况下打开 PR，创建评估器和真实示例以捕获回归，并自动监控问题是否再次出现。
-    - 使用费按[LangChain Compute Units (LCUs)](/langsmith/pricing-plans)收费，并在组织和项目级别设置可选的每月支出限额。在自托管上，引擎不会发出 LangSmith 痕迹。
-    - 将跟踪内容发送到 LangSmith Intelligence，这是 LangChain 管理的零数据保留服务。需要出口到 GCP 上的`beacon.langchain.com` 或 AWS 上的`beacon.aws.langchain.com`。气隙安装无法运行引擎。
+    - 使用费按[LangChain Compute Units (LCUs)](/langsmith/pricing-plans)收费，并在组织和项目级别可选择每月支出限额。在自托管上，引擎不会发出 LangSmith 痕迹。
+    - 将跟踪内容发送到 LangSmith Intelligence，这是 LangChain 管理的零数据保留服务。需要出口至 GCP 上的`beacon.langchain.com` 或 AWS 上的`beacon.aws.langchain.com`。气隙安装无法运行引擎。
 - **自托管沙箱**可在 AWS 和 GCP 中使用。有关安装说明，请参阅[Enable sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)和[LangSmith Sandboxes](/langsmith/sandboxes)。您可能需要联系您的客户代表才能在您的许可证上启用此功能。
     - 隔离环境，代理可以安全地执行任意代码并与文件系统交互，而无需触及主要基础设施。
     - 从基于 Docker 映像、本地`Dockerfile`或捕获的运行沙箱构建的快照启动，并挂载 S3、GCS 和 Git 存储库，而无需向代理公开凭据。
     - 身份验证代理可将凭据保留在运行时之外。
 - **平台和工具**- **LangSmith MCP**：将任何支持 MCP 的客户端指向您的实例以读取跟踪、项目、数据集和提示。欲了解更多信息，请参阅[LangSmith Remote MCP](/langsmith/langsmith-remote-mcp)。远程 MCP OAuth 授权现在适用于使用 SSO 的自托管。
-    - **LangSmith OAuth 令牌**：通过 `langsmith auth login` 基于浏览器的登录，发出短期访问令牌和刷新令牌，以及用于跨 CLI 和 SDK 共享端点、工作区和身份验证配置的配置文件。欲了解更多信息，请参阅[LangSmith CLI](/langsmith/langsmith-cli)。
+    - **LangSmith OAuth 令牌**：通过 `langsmith auth login` 基于浏览器的登录，发出短期访问令牌和刷新令牌，以及用于跨 CLI 和 SDK 共享端点、工作区和身份验证配置的配置文件。有关更多信息，请参阅[LangSmith CLI](/langsmith/langsmith-cli)。
         - **Terraform 提供程序**：以代码形式管理工作区、自定义角色、组织和工作区成员、评估者、运行规则和警报规则。欲了解更多信息，请参阅[Manage LangSmith with Terraform](/langsmith/manage-with-terraform)。
     - **部署**：从“设置”中重命名部署，在一个代理上使用相同的表达式创建多个 cron 计划，并查看本地时区的 cron 计划。
 - **可观察性和评估**
@@ -798,7 +839,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 ### 管理员变更
 
 - 组织管理员可以更新现有的 [service key's](/langsmith/administration-overview#service-keys) 角色，而无需轮换。
-- 从组织设置中重命名您的[organization](/langsmith/set-up-hierarchy#set-up-an-organization)，并管理[SCIM tokens](/langsmith/user-management#set-up-scim-for-your-organization)。
+- 从组织设置中重命名您的 [organization](/langsmith/set-up-hierarchy#set-up-an-organization) 并管理 [SCIM tokens](/langsmith/user-management#set-up-scim-for-your-organization)。
 - [Disable model providers](/langsmith/model-configurations#disable-a-provider-for-the-organization) 适用于整个组织。
 - 来自用户界面的[Edit pending member invite roles](/langsmith/user-management#assign-a-role-to-a-user)。
 - 来自“组织”选项卡的[Restrict roles](/langsmith/rbac#restrict-roles)。
@@ -806,7 +847,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织和工作区 ID 显示在主页上，[workspace switching](/langsmith/set-up-hierarchy#manage-and-navigate-workspaces) 保留您当前的页面。
 - 每月的 [usage graph](/langsmith/view-usage#aggregate-usage-on-self-hosted) 自动显示在在线自托管部署上。
 
-**下载 Helm 图表：** [⟦T130⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0/langsmith-0.16.0.tgz)
+**下载 Helm 图表：** [⟦T138⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0/langsmith-0.16.0.tgz)
 {/* langsmith-release-image: 0.16.0 0.16.0 */}
 </Update>
 
@@ -817,7 +858,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 仅当部署许可证包含沙箱访问时，自托管LangSmith才启用沙箱 API 和 UI 访问。
 - 在自托管部署表单中添加了 Redis CPU 和内存请求和限制，应用于 Kubernetes 操作员管理的 Redis 工作负载。
 
-**下载 Helm 图表：** [⟦T131⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.29/langsmith-0.16.0-rc.29.tgz)
+**下载 Helm 图表：** [⟦T139⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.29/langsmith-0.16.0-rc.29.tgz)
 {/* langsmith-release-image: 0.16.0-rc.29 0.16.33rc1 */}
 </Update>
 
@@ -827,7 +868,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了一个流沙箱执行请求，为无法持有 WebSocket 的客户端返回 stdout 和 stderr 作为服务器发送的事件。传递命令 ID 重用正在运行的命令，单独的恢复请求将继续中断的流。
 - 具有在线许可证密钥的自托管部署自动显示每月组织使用情况图表，无需 `enable_monthly_usage_charts` 组织配置。离线部署现在指向“粒度使用”选项卡，以获取本地记录的计费使用情况。
 
-**下载 Helm 图表：** [⟦T137⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.28/langsmith-0.16.0-rc.28.tgz)
+**下载 Helm 图表：** [⟦T145⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.28/langsmith-0.16.0-rc.28.tgz)
 {/* langsmith-release-image: 0.16.0-rc.28 0.16.32rc1 */}
 </Update>
 
@@ -835,7 +876,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 ## langsmith-0.16.0-rc.27- 配置评估器窗格标题和模板导航在深色模式下绘制了与窗格本身相同的背景。
 - 自托管部署捕获了丢失的跟踪项目上次运行时间戳，因此项目排序反映了最近的历史活动。
 
-**下载 Helm 图表：** [⟦T138⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.27/langsmith-0.16.0-rc.27.tgz)
+**下载 Helm 图表：** [⟦T146⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.27/langsmith-0.16.0-rc.27.tgz)
 {/* langsmith-release-image: 0.16.0-rc.27 0.16.31rc1 */}
 </Update>
 
@@ -844,7 +885,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.16.0-rc.25 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.25](#langsmith-0-16-0-rc-25)发行说明。
 
-**下载 Helm 图表：** [⟦T139⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.26/langsmith-0.16.0-rc.26.tgz)
+**下载 Helm 图表：** [⟦T147⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.26/langsmith-0.16.0-rc.26.tgz)
 {/* langsmith-release-image: 0.16.0-rc.26 0.16.30rc1 */}
 </Update>
 
@@ -853,7 +894,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T140⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.25/langsmith-0.16.0-rc.25.tgz)
+**下载 Helm 图表：** [⟦T148⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.25/langsmith-0.16.0-rc.25.tgz)
 {/* langsmith-release-image: 0.16.0-rc.25 0.16.30rc1 */}
 </Update>
 
@@ -865,15 +906,15 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 实验比较网格中的元数据列（包括`example.metadata.<key>`）呈现其值而不是保持为空。
 - 无论浏览器报告的内容类型如何，上传`.csv`或`.jsonl`数据集都有效。 Windows 浏览器将 `.csv` 文件标记为 Excel 类型，此前这会导致有效上传失败。也接受大写文件名，例如 `DATASET.CSV`。
 
-**下载 Helm 图表：** [⟦T146⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.24/langsmith-0.16.0-rc.24.tgz)
+**下载 Helm 图表：** [⟦T154⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.24/langsmith-0.16.0-rc.24.tgz)
 {/* langsmith-release-image: 0.16.0-rc.24 0.16.28rc1 */}
 </Update>
 
 <Update label="2026-07-31" tags={["Preview"]} rss={{ title: "2026-07-31 - self-hosted" }}>
-## langsmith-0.16.0-rc.23- 将沙盒中的`langsmith` CLI 更新至 v0.2.44。它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
+## langsmith-0.16.0-rc.23- 将沙箱中的`langsmith` CLI 更新至 v0.2.44。它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
 - 当 ClickHouse 使用优化的运行表时，负反馈键过滤器正确返回匹配跟踪。
 
-**下载 Helm 图表：** [⟦T150⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
+**下载 Helm 图表：** [⟦T158⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
 {/* langsmith-release-image: 0.16.0-rc.23 0.16.27rc1 */}
 </Update>
 
@@ -882,7 +923,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 粒度使用页面显示一条通知，即在自托管部署中不会跟踪长期跟踪使用情况，因此仅长期过滤器预计将返回零结果。
 
-**下载 Helm 图表：** [⟦T151⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.22/langsmith-0.16.0-rc.22.tgz)
+**下载 Helm 图表：** [⟦T159⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.22/langsmith-0.16.0-rc.22.tgz)
 {/* langsmith-release-image: 0.16.0-rc.22 0.16.25rc1 */}
 </Update>
 
@@ -891,14 +932,14 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T152⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.3/langsmith-0.17.0-rc.3.tgz)
+**下载 Helm 图表：** [⟦T160⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.3/langsmith-0.17.0-rc.3.tgz)
 {/* langsmith-release-image: 0.17.0-rc.3 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
 <Update label="2026-07-28" tags={["Preview"]} rss={{ title: "2026-07-28 - self-hosted" }}>
 ## langsmith-0.16.0-rc.21- 此版本打包了与 langsmith-0.16.0-rc.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.20](#langsmith-0-16-0-rc-20)发行说明。
 
-**下载 Helm 图表：** [⟦T153⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.21/langsmith-0.16.0-rc.21.tgz)
+**下载 Helm 图表：** [⟦T161⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.21/langsmith-0.16.0-rc.21.tgz)
 {/* langsmith-release-image: 0.16.0-rc.21 0.16.24rc1 */}
 </Update>
 
@@ -907,7 +948,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T154⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.20/langsmith-0.16.0-rc.20.tgz)
+**下载 Helm 图表：** [⟦T162⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.20/langsmith-0.16.0-rc.20.tgz)
 {/* langsmith-release-image: 0.16.0-rc.20 0.16.24rc1 */}
 </Update>
 
@@ -916,7 +957,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.17.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.1](#langsmith-0-17-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T155⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.2/langsmith-0.17.0-rc.2.tgz)
+**下载 Helm 图表：** [⟦T163⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.2/langsmith-0.17.0-rc.2.tgz)
 {/* langsmith-release-image: 0.17.0-rc.2 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
@@ -925,14 +966,14 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 引擎在支持的自托管部署中工作，无需 Eppo 部署配置，同时组织启用和现有权限仍然强制执行。
 
-**下载 Helm 图表：** [⟦T156⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.1/langsmith-0.17.0-rc.1.tgz)
+**下载 Helm 图表：** [⟦T164⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.1/langsmith-0.17.0-rc.1.tgz)
 {/* langsmith-release-image: 0.17.0-rc.1 0.17.1-ed94ed999b0247a39e3b5942ce6fcd1024ecaec7 */}
 </Update>
 
 <Update label="2026-07-27" tags={["Preview"]} rss={{ title: "2026-07-27 - self-hosted" }}>
 ## langsmith-0.16.0-rc.19- 此版本打包了与 langsmith-0.16.0-rc.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.18](#langsmith-0-16-0-rc-18)发行说明。
 
-**下载 Helm 图表：** [⟦T157⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.19/langsmith-0.16.0-rc.19.tgz)
+**下载 Helm 图表：** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.19/langsmith-0.16.0-rc.19.tgz)
 {/* langsmith-release-image: 0.16.0-rc.19 0.16.23rc1 */}
 </Update>
 
@@ -941,7 +982,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T158⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.18/langsmith-0.16.0-rc.18.tgz)
+**下载 Helm 图表：** [⟦T166⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.18/langsmith-0.16.0-rc.18.tgz)
 {/* langsmith-release-image: 0.16.0-rc.18 0.16.23rc1 */}
 </Update>
 
@@ -950,7 +991,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T159⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.17/langsmith-0.15.17.tgz)
+**下载 Helm 图表：** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.17/langsmith-0.15.17.tgz)
 {/* langsmith-release-image: 0.15.17 0.15.24 */}
 </Update>
 
@@ -959,7 +1000,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.16.0-rc.16 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.16](#langsmith-0-16-0-rc-16)发行说明。
 
-**下载 Helm 图表：** [⟦T160⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.17/langsmith-0.16.0-rc.17.tgz)
+**下载 Helm 图表：** [⟦T168⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.17/langsmith-0.16.0-rc.17.tgz)
 {/* langsmith-release-image: 0.16.0-rc.17 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
 </Update>
 
@@ -974,7 +1015,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 自定义输出渲染器 URL 仅限于 HTTPS。
 - 修复了单源部署中`/api/v1/info`的路由。- 从跟踪项目批量添加运行会首先在数据集选取器中列出该项目的默认数据集。
 
-**下载 Helm 图表：** [⟦T162⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.16/langsmith-0.16.0-rc.16.tgz)
+**下载 Helm 图表：** [⟦T170⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.16/langsmith-0.16.0-rc.16.tgz)
 {/* langsmith-release-image: 0.16.0-rc.16 0.16.21-320f1d6ced0904aa8b9af51fc6d6bd346df16c6e */}
 </Update>
 
@@ -983,7 +1024,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T163⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.16/langsmith-0.15.16.tgz)
+**下载 Helm 图表：** [⟦T171⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.16/langsmith-0.15.16.tgz)
 {/* langsmith-release-image: 0.15.16 0.15.23 */}
 </Update>
 
@@ -992,7 +1033,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 无（内部引擎分类行为，位于 `ISSUES_AGENT_MAIN_AGENT_SEMANTIC` 标志后面）。
 
-**下载 Helm 图表：** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.15/langsmith-0.16.0-rc.15.tgz)
+**下载 Helm 图表：** [⟦T173⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.15/langsmith-0.16.0-rc.15.tgz)
 {/* langsmith-release-image: 0.16.0-rc.15 0.16.19-2293f2294539e1edf823170ad9a1694e4c42b1a2 */}
 </Update>
 
@@ -1002,14 +1043,14 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了当第一个聚合存储桶不完整时仪表板工具提示时间范围不正确的问题。
 - 通过将发送到评估器沙箱的运行负载修剪为仅评估器实际读取的内容，修复了在大型代理跟踪上失败的引擎问题检测评估器。
 
-**下载 Helm 图表：** [⟦T166⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.14/langsmith-0.16.0-rc.14.tgz)
+**下载 Helm 图表：** [⟦T174⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.14/langsmith-0.16.0-rc.14.tgz)
 {/* langsmith-release-image: 0.16.0-rc.14 0.16.17-559378e0c85ce867a0d8defa0d3103c101c41bdc */}
 </Update>
 
 <Update label="2026-07-16" tags={["Preview"]} rss={{ title: "2026-07-16 - self-hosted" }}>
 ## langsmith-0.16.0-rc.13- 此版本打包了与 langsmith-0.16.0-rc.12 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.12](#langsmith-0-16-0-rc-12)发行说明。
 
-**下载 Helm 图表：** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.13/langsmith-0.16.0-rc.13.tgz)
+**下载 Helm 图表：** [⟦T175⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.13/langsmith-0.16.0-rc.13.tgz)
 {/* langsmith-release-image: 0.16.0-rc.13 0.16.13-94749faf1173b86a8dbf656dba668d7d442452ea */}
 </Update>
 
@@ -1021,7 +1062,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
 - 线程表在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。- 代理生成器“查看代理跟踪”和“查看跟踪”链接始终在车队跟踪项目中打开。
@@ -1032,7 +1073,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 网关支出上限策略现在可以配置为每周一次。
 - 添加了 Centralize 作为 MCP 市场集成。
 -启用沙箱的代理在其系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅主机身份验证代理部分。
-- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙盒导航条目和 `/sandboxes` 页面。
+- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
 - 自托管的 DockerHub 镜像包含 Cosign 签名和签名的 SPDX SBOM 证明。
 - 修复了线程 ID 中的特殊字符导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
@@ -1040,20 +1081,20 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 从`queue`工作人员发出普罗米修斯指标。
 - 澄清了应用文本过滤器时统计数据不可用的消息。
 - 上下文存储库支持元数据更新和从集线器溢出菜单中删除。
-- 舰队`/v1/fleet/agents/{agent_id}/connections`（列表/创建/删除）的键入响应和标准错误信封。
+- 舰队 `/v1/fleet/agents/{agent_id}/connections` 的键入响应和标准错误信封（列表/创建/删除）。
 - 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
 - 修复了 ACE 子进程处理，以便早期子进程退出返回请求失败，而不是导致服务崩溃。
 - 修复了本机运行摄取有效负载中的大整数保留。
 - 瀑布转弯视图现在采用全高度（如果可用）。
 - 组织管理员现在可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
-- 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
+- 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。
 - 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
 - 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
-- 对于沙盒支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。
-- 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
+- 对于沙盒支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 的队列代理 API。
+- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
 - 没有面向用户的更改 - 仅内部 OpenAPI 规范更新。
 - Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 - 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
@@ -1078,7 +1119,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 恢复了自 2026 年 3 月上旬以来一直未能触发的企业舰队代理的 cron 执行。
 - 运行规则 Webhook 有效负载现在包含每次运行的 `trace_url` 深层链接。
 
-- 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。**下载 Helm 图表：** [⟦T197⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.12/langsmith-0.16.0-rc.12.tgz)
+- 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。**下载 Helm 图表：** [⟦T205⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.12/langsmith-0.16.0-rc.12.tgz)
 {/* langsmith-release-image: 0.16.0-rc.12 0.16.13-94749faf1173b86a8dbf656dba668d7d442452ea */}
 </Update>
 
@@ -1095,7 +1136,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。
 - 代理生成器“查看代理跟踪”和“查看跟踪”链接始终在车队跟踪项目中打开。
-- 添加了`gemini-3.1-flash-lite`的LangSmith型号定价条目。- LLM 作为法官评估者现在可以选择包括来自 `run.*` 字段的扩展统计数据和地图提示变量。
+- 添加了`gemini-3.1-flash-lite`的LangSmith型号定价条目。- LLM 作为法官评估者现在可以选择包含来自 `run.*` 字段的扩展统计数据和地图提示变量。
 - 默认沙箱 rootfs 映像现在包含 Docker Compose 并自动启动 Docker 守护进程。
 - 添加了`gemini-3.6-flash`的成本跟踪。
 - 网关支出上限策略现在可以配置为每周一次。
@@ -1117,12 +1158,12 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织管理员现在可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
-- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
+- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
 - 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
 - 对于沙箱支持的代理，队列代理 API 现在需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox`。
-- 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验，每次导出仅限 250 个实验，可以根据要求增加。
+- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验，每次导出仅限 250 个实验，可以根据要求增加。
 - Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 - 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
 - Fleet/Agent Builder 现在包含 Gemini 3.5 Flash 作为可选择的内置模型。
@@ -1135,7 +1176,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰命名法 API 字段的提供程序）输入的额外参数现在保留其原始密钥大小写。
 - 自托管 OIDC 用户现在可以从 `name` / `given_name` + `family_name` id_token 声明解析显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
-- 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。
+- 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏 Anthropic 图像或文档。
 - 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 - 引擎现在支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。- 当启用沙箱时，代理构建器/队列中的聊天输入文件上传现在在`/tmp/uploads/`到达沙箱文件系统。
 - 舰队默认现在首先出现在符合条件的计划的模型选择器中。
@@ -1147,7 +1188,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T228⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.11/langsmith-0.16.0-rc.11.tgz)
+**下载 Helm 图表：** [⟦T236⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.11/langsmith-0.16.0-rc.11.tgz)
 {/* langsmith-release-image: 0.16.0-rc.11 0.16.12-c727f17750a97082b0ea07659729ac5c95517b49 */}
 </Update>
 
@@ -1159,7 +1200,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 实施了新的 API 功能，以支持开发人员的扩展功能和集成选项。
 - 将安全性改进与更新的身份验证和授权功能结合起来，以更好地保护自托管实例。
 
-**下载 Helm 图表：** [⟦T229⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.13/langsmith-0.15.13.tgz)
+**下载 Helm 图表：** [⟦T237⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.13/langsmith-0.15.13.tgz)
 {/* langsmith-release-image: 0.15.13 0.15.18 */}
 </Update>
 
@@ -1197,10 +1238,10 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 工作区管理员可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
 - 支持运行计数、错误、延迟和成本的警报规则 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
-- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
+- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。- 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
-- 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 的队列代理 API。
+- 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。
 - 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
 - Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 - 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
@@ -1214,7 +1255,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供程序）输入的额外参数保留了其原始密钥大小写。
 - 自托管 OIDC 用户获得了从 `name` / `given_name`+`family_name` id_token 声明解析的显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
-- 修复了 LLM 网关数据保护错误，该错误在启用 PII 修订时可能会损坏 Anthropic 图像或文档。
+- 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏 Anthropic 图像或文档。
 - 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 - 引擎支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。
 - 当启用沙箱时，代理构建器/队列中的聊天输入文件上传在`/tmp/uploads/`到达沙箱文件系统。
@@ -1225,7 +1266,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T260⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.10/langsmith-0.16.0-rc.10.tgz)
+**下载 Helm 图表：** [⟦T268⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.10/langsmith-0.16.0-rc.10.tgz)
 {/* langsmith-release-image: 0.16.0-rc.10 0.16.11-fab52e9a9f77fd7ec4cf5b0a7b245edde75ae02c */}
 </Update>
 
@@ -1234,7 +1275,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.16.0-rc.8 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.8](#langsmith-0-16-0-rc-8)发行说明。
 
-**下载 Helm 图表：** [⟦T261⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.9/langsmith-0.16.0-rc.9.tgz)
+**下载 Helm 图表：** [⟦T269⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.9/langsmith-0.16.0-rc.9.tgz)
 {/* langsmith-release-image: 0.16.0-rc.9 0.16.10-c9e87a3e0c8be7a90e8e868ac389d220ea2de7df */}
 </Update>
 
@@ -1244,7 +1285,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限 `bulk-exports:read` 和 `bulk-exports:manage` 用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。
@@ -1261,7 +1302,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
 - 自托管 OIDC：修复了登录期间静默无操作的 SSO 组同步。
 - 托管 Deep Agents 私人预览现在支持使用基于标头的身份验证进行 MCP 服务器注册。
-- 从`queue`工作人员发出普罗米修斯指标。
+- 从 `queue` 工作人员发出 Prometheus 指标。
 - 澄清了应用文本过滤器时统计数据不可用的消息。
 - 上下文存储库现在支持元数据更新和从集线器溢出菜单中删除。
 - 沙箱快照现在可以导出沙箱内构建的 Docker 映像。- 修复了 ACE 子进程处理，以便早期子进程退出返回请求失败，而不是导致服务崩溃。
@@ -1285,7 +1326,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 这启用了一种直接在运行详细信息面板中留下运行反馈的新方法。
 - 添加了对 Claude Opus 4.8 的代币定价支持。
 - Agent Builder 现在提供 Claude Opus 4.8 作为内置 Anthropic 模型。- 组织管理员现在可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。
-- 托管 Deep Agents MCP 服务器设置现在支持`/v1/deepagents` API 命名空间下的 OAuth。
+- 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。
 - 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰命名法 API 字段的提供程序）输入的额外参数现在保留其原始密钥大小写。
 - 自托管 OIDC 用户现在可以从 `name` / `given_name`+`family_name` id_token 声明解析显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
@@ -1302,7 +1343,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T291⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.8/langsmith-0.16.0-rc.8.tgz)
+**下载 Helm 图表：** [⟦T299⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.8/langsmith-0.16.0-rc.8.tgz)
 {/* langsmith-release-image: 0.16.0-rc.8 0.16.10-c9e87a3e0c8be7a90e8e868ac389d220ea2de7df */}
 </Update>
 
@@ -1331,7 +1372,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
 - 自托管 OIDC：修复了登录期间静默无操作的 SSO 组同步。
 - 托管 Deep Agents 私人预览支持 MCP 服务器注册以及基于标头的身份验证。
-- 从`queue`工作人员发出普罗米修斯指标。
+- 从 `queue` 工作人员发出 Prometheus 指标。
 - 澄清了应用文本过滤器时统计数据不可用的消息。- 上下文存储库现在支持元数据更新和从集线器溢出菜单中删除。
 - 舰队`/v1/fleet/agents/{agent_id}/connections`（列表/创建/删除）的键入响应和标准错误包络。
 - 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
@@ -1341,8 +1382,8 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织管理员现在可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
-- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
-- 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 的队列代理 API。- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验；每次导出仅限 250 个实验，可根据要求增加。
+- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。
+- 对于沙盒支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验；每次导出仅限 250 个实验，可根据要求增加。
 - Fleet 使用 `langchain-fireworks 1.4.2` 进行 Fireworks 模型调用。
 - 重新设计了运行详细信息面板，提高了可读性和更强大的消息解析。
 - Fleet/Agent Builder 包含 Gemini 3.5 Flash 作为可选择的内置模型。
@@ -1368,7 +1409,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T321⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.7/langsmith-0.16.0-rc.7.tgz)
+**下载 Helm 图表：** [⟦T329⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.7/langsmith-0.16.0-rc.7.tgz)
 {/* langsmith-release-image: 0.16.0-rc.7 0.16.9-e5a4480b5adc026c2a867710d1fd6bdcc98a8839 */}
 </Update>
 
@@ -1377,9 +1418,9 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 评估器分离确认对话框显示“分离”按钮而不是“删除”。
 - “包括扩展统计信息”可供所有组织的代码评估人员使用。
-- 添加了两个专用权限，`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
+- 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。- Agent Builder 的“查看代理跟踪”和“查看跟踪”链接始终在车队跟踪项目中打开。
@@ -1395,7 +1436,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了线程 ID 中的特殊字符未编码，导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
 - 自托管 OIDC：修复了登录期间静默无操作的 SSO 组同步。- 托管 Deep Agents 私人预览现在支持使用基于标头的身份验证进行 MCP 服务器注册。
-- 从 `queue` 工作人员发出 Prometheus 指标。
+- 从`queue`工作人员发出普罗米修斯指标。
 - 澄清了应用文本过滤器时统计数据不可用的消息。
 - 为舰队`/v1/fleet/agents/{agent_id}/connections`（列表/创建/删除）添加了键入的响应和标准错误信封。
 - 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
@@ -1418,7 +1459,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。- 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供程序）输入的额外参数现在保留了其原始密钥大小写。
 - 自托管 OIDC 用户现在可以从 `name` / `given_name` + `family_name` id_token 声明解析显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
-- 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏 Anthropic 图像或文档。
+- 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。
 - 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 - 引擎现在支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。
 - 当启用沙箱时，代理构建器/队列中的聊天输入文件上传现在在`/tmp/uploads/`到达沙箱文件系统。
@@ -1429,7 +1470,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T348⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.6/langsmith-0.16.0-rc.6.tgz)
+**下载 Helm 图表：** [⟦T356⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.6/langsmith-0.16.0-rc.6.tgz)
 {/* langsmith-release-image: 0.16.0-rc.6 0.16.8-d7febe6536e428812053c48cdf3ddc969252753c */}
 </Update>
 
@@ -1438,7 +1479,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修补了依赖项。
 
-**下载 Helm 图表：** [⟦T349⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.12/langsmith-0.15.12.tgz)
+**下载 Helm 图表：** [⟦T357⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.12/langsmith-0.15.12.tgz)
 {/* langsmith-release-image: 0.15.12 0.15.17 */}
 </Update>
 
@@ -1447,7 +1488,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.16.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.4](#langsmith-0-16-0-rc-4)发行说明。
 
-**下载 Helm 图表：** [⟦T350⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.5/langsmith-0.16.0-rc.5.tgz)
+**下载 Helm 图表：** [⟦T358⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.5/langsmith-0.16.0-rc.5.tgz)
 {/* langsmith-release-image: 0.16.0-rc.5 0.16.5-51eaa96f56bc7d7a37eef03b4b8bb601359e4653 */}
 </Update>
 
@@ -1457,7 +1498,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。
@@ -1468,7 +1509,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 网关支出上限策略现在可以配置为每周一次。
 - 添加了 Centralize 作为 MCP 市场集成。
 - 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅限主机的身份验证代理部分。
-- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
+- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙盒导航条目和 `/sandboxes` 页面。
 - 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 - 修复了线程 ID 中的特殊字符未编码，导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
@@ -1496,7 +1537,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T370⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.4/langsmith-0.16.0-rc.4.tgz)
+**下载 Helm 图表：** [⟦T378⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.4/langsmith-0.16.0-rc.4.tgz)
 {/* langsmith-release-image: 0.16.0-rc.4 0.16.5-51eaa96f56bc7d7a37eef03b4b8bb601359e4653 */}
 </Update>
 
@@ -1511,7 +1552,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 改进了 Agent Builder 界面，以便更直观地使用。
 - 更新了身份验证功能以提高自托管部署的安全性。
 
-**下载 Helm 图表：** [⟦T371⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.11/langsmith-0.15.11.tgz)
+**下载 Helm 图表：** [⟦T379⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.11/langsmith-0.15.11.tgz)
 {/* langsmith-release-image: 0.15.11 0.15.16 */}
 </Update>
 
@@ -1527,7 +1568,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 用户现在可以在同一代理上使用相同的表达式创建多个 cron 计划。
 - 代理生成器“查看代理跟踪”和“查看跟踪”链接现在始终在车队跟踪项目中打开。
 - 添加了`gemini-3.1-flash-lite`的LangSmith型号定价条目。
-- LLM 作为法官评估者现在可以选择包括来自 `run.*` 字段的扩展统计数据和地图提示变量。
+- LLM 作为法官评估者现在可以选择包含来自 `run.*` 字段的扩展统计数据和地图提示变量。
 - 默认沙箱 rootfs 映像现在包含 Docker Compose 并自动启动 Docker 守护进程。- 添加了`gemini-3.6-flash`的成本跟踪。
 - 网关支出上限策略现在可以配置为每周一次。
 - 添加了 Centralize 作为 MCP 市场集成。
@@ -1537,8 +1578,8 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了线程 ID 中的特殊字符未编码，导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
 - 自托管 OIDC：修复了登录期间静默无操作的 SSO 组同步。
-- 托管 Deep Agents 私人预览版现在支持使用基于标头的身份验证进行 MCP 服务器注册。
-- 从`queue`工作人员发出普罗米修斯指标。
+- 托管 Deep Agents 私人预览现在支持使用基于标头的身份验证进行 MCP 服务器注册。
+- 从 `queue` 工作人员发出 Prometheus 指标。
 - 澄清了应用文本过滤器时统计数据不可用的消息。
 - 上下文存储库现在支持元数据更新和从集线器溢出菜单中删除。- 队列`/v1/fleet/agents/{agent_id}/connections`（列出/创建/删除）端点的键入响应和标准错误包络。
 - 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
@@ -1549,11 +1590,11 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 工作区管理员可以从评估者侧面板按每个评估者规则覆盖工作区默认的每周支出上限，而非管理员则将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
 - 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。
-- 舰队`/v1/fleet/auth-agents/{agent_id}/connections`端点移动到`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准舰队错误包络；旧的 URL 返回 404。- 修复了删除活动代理后舰队重定向的问题。
+- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封；旧的 URL 返回 404。- 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
 - 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空卡或乱码卡；有意义的扩展思维内容继续正常呈现。
-- 对于沙箱支持的代理，队列代理 API 现在需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox`。
-- 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验，每次导出仅限 250 个实验，并可根据要求增加。
+- 对于沙箱支持的代理，队列代理 API 现在需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox`​​。
+- 允许通过批量导出的新`all_experiments`参数导出工作区中的所有实验，每次导出仅限 250 个实验，并可根据要求增加。
 - Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 - 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
 - Fleet/Agent Builder 现在包含 Gemini 3.5 Flash 作为可选择的内置模型。
@@ -1569,7 +1610,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。
 - 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 - 引擎现在支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。
-- 当启用沙箱时，代理构建器/队列中的聊天输入文件上传现在在`/tmp/uploads/`​​到达沙箱文件系统。
+- 当启用沙箱时，代理构建器/队列中的聊天输入文件上传现在在`/tmp/uploads/`到达沙箱文件系统。
 - 舰队默认现在首先出现在符合条件的计划的模型选择器中。- 修复了项目统计侧边栏跟踪计数标签和标题布局。
 - 数据平面无访问屏幕上的工作区切换器仅列出当前组织工作区。
 - 恢复了企业舰队代理的 cron 执行，这些代理自 2026 年 3 月上旬以来一直默默地未能启动。
@@ -1579,7 +1620,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T402⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.3/langsmith-0.16.0-rc.3.tgz)
+**下载 Helm 图表：** [⟦T410⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.3/langsmith-0.16.0-rc.3.tgz)
 {/* langsmith-release-image: 0.16.0-rc.3 0.16.4-eba35cd3072d3768a461da28c84020402ea4c505 */}
 </Update>
 
@@ -1588,7 +1629,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 有关 0.16.0 候选版本中更改的完整列表，请参阅下面的 [langsmith-0.16.0-rc.1](#langsmith-0-16-0-rc-1) 发行说明。
 
-**下载 Helm 图表：** [⟦T403⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.2/langsmith-0.16.0-rc.2.tgz)
+**下载 Helm 图表：** [⟦T411⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.2/langsmith-0.16.0-rc.2.tgz)
 {/* langsmith-release-image: 0.16.0-rc.2 0.16.4rc1 */}
 </Update>
 
@@ -1597,7 +1638,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修补了依赖项。- 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-25087、CVE-2026-45134、CVE-2026-9256。
 
-**下载 Helm 图表：** [⟦T404⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.10/langsmith-0.15.10.tgz)
+**下载 Helm 图表：** [⟦T412⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.10/langsmith-0.15.10.tgz)
 {/* langsmith-release-image: 0.15.10 0.15.15 */}
 </Update>
 
@@ -1609,7 +1650,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了两个专用权限`bulk-exports:read`和`bulk-exports:manage`，用于获取和创建/更新批量导出。
 - 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 - 在`smith-frontend`中将`@langchain/langgraph-sdk`提升至1.9.4。
-- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个选择加入的 Smith-ACE v2 沙箱实现。
+- 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
 - 线程表现在在*最后输出*列中显示实际的最后输出，并在新的*最后错误*列中显示线程级错误。
 - 在跟踪树视图中隐藏工具调用的 0.00 美元成本徽章。
 - 现在可以使用相同的表达式多次创建同一代理上的类似 cron 计划。
@@ -1620,7 +1661,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 网关支出上限策略现在可以配置为每周一次。
 - 添加了 Centralize 作为 MCP 市场集成。
 - 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅限主机的身份验证代理部分。
-- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
+- 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏沙箱导航条目和 `/sandboxes` 页面。
 - 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 - 修复了线程 ID 中的特殊字符未编码，导致 UI 无法查询这些线程的错误。
 - 修复了打开大型跟踪时出现的“超出查询超时”错误。
@@ -1636,7 +1677,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 组织管理员现在可以禁用引擎，即使他们的计划自动启用它；他们的明确选择在用户界面和后端门中持续存在。
 - 工作区管理员现在可以从评估者侧面板基于每个评估者规则覆盖工作区默认的每周支出上限；非管理员将已解决的上限视为只读文本。
 - 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
-- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封。旧的 URL 返回 404。
+- 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 仅允许 `>=`）。- 队列`/v1/fleet/auth-agents/{agent_id}/connections`端点已移至`/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 - 修复了删除活动代理后舰队重定向的问题。
 - 从 LangSmith 数据集表中删除了类型列。
 - 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空或乱码卡。有意义的扩展思维内容继续正常呈现。
@@ -1650,7 +1691,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 这启用了一种直接在运行详细信息面板中留下运行反馈的新方法。- 添加了对 Claude Opus 4.8 的代币定价支持。
 - Agent Builder 现在提供 Claude Opus 4.8 作为内置 Anthropic 模型。
 - 组织管理员现在可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。
-- 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。
+- 托管 Deep Agents MCP 服务器设置现在支持`/v1/deepagents` API 命名空间下的 OAuth。
 - 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰命名法 API 字段的提供程序）输入的额外参数现在保留其原始密钥大小写。
 - 自托管 OIDC 用户现在可以从 `name` / `given_name`+`family_name` id_token 声明解析显示名称。
 - 修复了`playground`服务的SSRF策略，使其尊重`SSRF_ALLOW_K8S_INTERNAL`。
@@ -1667,7 +1708,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664、CVE-2025-71176。
 
-**下载 Helm 图表：** [⟦T435⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.1/langsmith-0.16.0-rc.1.tgz)
+**下载 Helm 图表：** [⟦T443⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.1/langsmith-0.16.0-rc.1.tgz)
 {/* langsmith-release-image: 0.16.0-rc.1 0.16.1rc1 */}
 </Update>
 
@@ -1676,14 +1717,14 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.15.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.7](#langsmith-0-15-7)发行说明。
 
-**下载 Helm 图表：** [⟦T436⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.9/langsmith-0.15.9.tgz)
+**下载 Helm 图表：** [⟦T444⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.9/langsmith-0.15.9.tgz)
 {/* langsmith-release-image: 0.15.9 0.15.13 */}
 </Update>
 
 <Update label="2026-06-08" tags={["Stable"]} rss={{ title: "2026-06-08 - self-hosted" }}>
 ## langsmith-0.15.8- 此版本打包了与 langsmith-0.15.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.7](#langsmith-0-15-7)发行说明。
 
-**下载 Helm 图表：** [⟦T437⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.8/langsmith-0.15.8.tgz)
+**下载 Helm 图表：** [⟦T445⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.8/langsmith-0.15.8.tgz)
 {/* langsmith-release-image: 0.15.8 0.15.13 */}
 </Update>
 
@@ -1693,7 +1734,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了对 Playground 中 Amazon Bedrock 的 API 密钥身份验证的支持。 Bedrock API 密钥可让您使用不记名令牌（而不是 AWS 凭证）对请求进行身份验证。
 - 修复了以下两种情况的 LLM 身份验证代理：评估器批量请求和基岩模型配置。
 
-**下载 Helm 图表：** [⟦T438⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.7/langsmith-0.15.7.tgz)
+**下载 Helm 图表：** [⟦T446⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.7/langsmith-0.15.7.tgz)
 {/* langsmith-release-image: 0.15.7 0.15.13 */}
 </Update>
 
@@ -1704,7 +1745,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 添加了结构化服务器日志，用于识别哪些工作区组声明已解决，哪些未解决，从而简化了 SSO 组同步诊断。
 - 修补了依赖项。
 
-**下载 Helm 图表：** [⟦T439⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.6/langsmith-0.15.6.tgz)
+**下载 Helm 图表：** [⟦T447⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.6/langsmith-0.15.6.tgz)
 {/* langsmith-release-image: 0.15.6 0.15.12 */}
 </Update>
 
@@ -1713,7 +1754,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 - 修补了依赖项。
 - 修复了安全漏洞。有关详细信息，请参阅 CVE-2026-45736、CVE-2026-44664。
 
-**下载 Helm 图表：** [⟦T442⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.5/langsmith-0.15.5.tgz)
+**下载 Helm 图表：** [⟦T450⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.5/langsmith-0.15.5.tgz)
 {/* langsmith-release-image: 0.15.5 0.15.11 */}
 </Update>
 
@@ -1722,7 +1763,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.15.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.2](#langsmith-0-15-2)发行说明。
 
-**下载 Helm 图表：** [⟦T443⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.4/langsmith-0.15.4.tgz)
+**下载 Helm 图表：** [⟦T451⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.4/langsmith-0.15.4.tgz)
 {/* langsmith-release-image: 0.15.4 0.15.10 */}
 </Update>
 
@@ -1731,7 +1772,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 此版本打包了与 langsmith-0.15.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.2](#langsmith-0-15-2)发行说明。
 
-**下载 Helm 图表：** [⟦T444⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.3/langsmith-0.15.3.tgz)
+**下载 Helm 图表：** [⟦T452⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.3/langsmith-0.15.3.tgz)
 {/* langsmith-release-image: 0.15.3 0.15.10 */}
 </Update>
 
@@ -1740,7 +1781,7 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 
 - 修复了使用带有 `form_post` 回调的混合流的身份提供商的 OIDC 登录重定向循环 (`ERR_TOO_MANY_REDIRECTS`)。
 
-**下载 Helm 图表：** [⟦T447⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.2/langsmith-0.15.2.tgz)
+**下载 Helm 图表：** [⟦T455⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.2/langsmith-0.15.2.tgz)
 {/* langsmith-release-image: 0.15.2 0.15.10 */}
 </Update>
 
@@ -1748,23 +1789,23 @@ LangSmith 自托管 v0.16 是我们为所有自托管部署推荐的版本。它
 ## langsmith-0.15.1- 修复了 Blob 存储横幅在页面加载时错误闪烁的错误。
 - 修复了自托管 OIDC (v15) 中的问题，其中 SSO 组同步在登录期间静默无操作。
 
-**下载 Helm 图表：** [⟦T448⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.1/langsmith-0.15.1.tgz)
+**下载 Helm 图表：** [⟦T456⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.1/langsmith-0.15.1.tgz)
 {/* langsmith-release-image: 0.15.1 0.15.9 */}
 </Update>
 
 <Update label="2026-05-26" tags={["Stable"]}>
 ## langsmith-0.15.0
 
-LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多个评估器模板的库**，可在整个工作区集中评估，在注释队列中随参考输出提供**每个示例断言**，允许您下载 **Insights 报告** 作为 PDF 进行离线分析，并引入 **Context Hub** 用于对代理指令和工具进行版本控制、环境感知管理。升级前值得检查几个重大更改：`agent-bootstrap` 脚本已弃用，Agent Builder 重命名为 [Fleet](/langsmith/fleet) 可能需要工作负载身份服务帐户更新，以及 `projects:update-retention` 权限分为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`。
+LangSmith 自托管 v0.15 带来了**可重用评估器和包含 30 多个评估器模板的库**，可在整个工作区集中评估，在注释队列中附带**每个示例断言**以及参考输出，允许您下载 **Insights 报告** 作为 PDF 进行离线分析，并引入 **Context Hub** 用于对代理指令和工具进行版本控制、环境感知管理。升级前值得检查几个重大更改：`agent-bootstrap` 脚本已弃用，Agent Builder 重命名为 [Fleet](/langsmith/fleet) 可能需要工作负载身份服务帐户更新，以及 `projects:update-retention` 权限分为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`。
 
-跟随[upgrade instructions](/langsmith/self-host-upgrades)即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
+按照 [upgrade instructions](/langsmith/self-host-upgrades) 即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
 
-### 重大变更- Deprecated the `agent-bootstrap` script. LangSmith 代理现在是独立服务，使用 Helm 图表部署，而不是通过 LangSmith 部署控制平面。如果您之前通过此脚本使用 [Fleet](/langsmith/fleet)，则可能需要迁移。请参阅 [Fleet rename and migration guide](https://kb.langchain.com/articles/9482666900-upgrading-self-hosted-langsmith-to-v0-15-fleet-rename-and-migration-guide) 或联系支持人员以逐步完成迁移。
-- Renamed Agent Builder to [Fleet](/langsmith/fleet).如果您使用工作负载身份，则可能需要更新任何服务帐户。
+### 重大变更- 弃用了 `agent-bootstrap` 脚本。 LangSmith 代理现在是独立服务，使用 Helm 图表部署，而不是通过 LangSmith 部署控制平面。如果您之前通过此脚本使用[Fleet](/langsmith/fleet)，则可能需要迁移。请参阅 [Fleet rename and migration guide](https://kb.langchain.com/articles/9482666900-upgrading-self-hosted-langsmith-to-v0-15-fleet-rename-and-migration-guide) 或联系支持人员以逐步完成迁移。
+- 将 Agent Builder 重命名为 [Fleet](/langsmith/fleet)。如果您使用工作负载身份，则可能需要更新任何服务帐户。
 - 对于支持 [RBAC](/langsmith/rbac) 的组织，`POST /workspaces/current/members` 现在需要 `role_id`。没有它的请求返回`400`，而不是默认为`WORKSPACE_ADMIN`。
 - 弃用了 `USAGE_EXPORT_ADMIN_EMAILS` 环境变量。请使用 `INSTANCE_ADMIN_EMAILS` 代替。
-- 将 `projects:update-retention` 权限替换为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`，以单独控制提高和降低跟踪保留。权限已回填到现有角色，因此无需对现有角色进行任何更改。 New roles should use the new permissions.参见[RBAC permissions](/langsmith/rbac)。
-- 添加了 `fleet-admin:read` 权限，用于控制新的舰队管理部分。 Admins of existing tenants need to grant it.权限已回填到现有角色，因此无需对现有角色进行任何更改。 New roles should use the new permissions.参见[RBAC permissions](/langsmith/rbac)。
+- 将 `projects:update-retention` 权限替换为 `projects:increase-trace-tier` 和 `projects:decrease-trace-tier`，以单独控制提高和降低跟踪保留。权限已回填到现有角色，因此无需对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
+- 添加了 `fleet-admin:read` 权限，用于控制新的舰队管理部分。现有租户的管理员需要授予它。权限已回填到现有角色，因此无需对现有角色进行任何更改。新角色应使用新权限。参见[RBAC permissions](/langsmith/rbac)。
 
 ### 基础设施变化- **来自舰队重命名的部分重命名** - 作为 Agent Builder 的一部分，多个部分被重命名为 [Fleet](/langsmith/fleet) 重命名（请参阅 [Breaking changes](#breaking-changes)）。您可能需要更新服务帐户或更改配置中的值。
 - **没有公共入口的 LLM 身份验证代理** - 如果部署的 LLM 身份验证代理没有公共入口，并且只能通过内部 Kubernetes 网络访问，则必须将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。如果没有这些设置，内置 SSRF 保护将阻止对私有 IP 的请求。有关完整配置详细信息，请参阅[Deploy without a public ingress](/langsmith/llm-auth-proxy-self-hosted#deploy-without-a-public-ingress)。
@@ -1772,12 +1813,12 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 ### 新功能- **Context Hub**——代理指令和工具的版本控制、环境感知管理。创建和管理版本化的[skill and agent repos](/langsmith/context-engineering-concepts)，促进对`staging`或`production`环境的提交，并在运行时通过环境标签解析上下文。请参阅 [Use the Context Hub](/langsmith/use-the-context-hub) 和 [Manage contexts with the SDK](/langsmith/manage-contexts-sdk) 开始使用。
 - **可重复使用的评估器和评估器模板** - 新的 [Evaluators](/langsmith/evaluators) 选项卡集中了工作区中的每个评估器，其中包含 30 多个模板，涵盖安全性、响应质量、轨迹、用户行为和多模式评估。在几秒钟内将现有评估器附加到新的跟踪项目，无需维护重复副本。
 - **每个示例断言** - 在 [annotation queue](/langsmith/annotation-queues) 中编辑示例时，写入 [assertions](/langsmith/assertions) 来代替参考输出或与参考输出一起编写。
-- **可下载的见解报告** — 从报告详细信息页面下载 PDF 格式的 [Insights](/langsmith/insights) 报告以进行离线分析。
+- **可下载的见解报告** — 从报告详细信息页面下载 PDF 格式的[Insights](/langsmith/insights) 报告以进行离线分析。
 
 ### 管理员变更
 
 - **扩大了 ABAC 覆盖范围**—[ABAC](/langsmith/abac) 现在适用于 `POST /runs` 和 `POST /runs/batch` 上的 `runs:create`，以及其余的 `/sessions/{session_id}/` 端点。
-- **SCIM 电子邮件大小写不匹配修复** - 发送不同电子邮件大小写的身份提供商不再因电子邮件更改尝试而被拒绝。**下载 Helm 图表：** [⟦T473⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0/langsmith-0.15.0.tgz)
+- **SCIM 电子邮件大小写不匹配修复** - 发送不同电子邮件大小写的身份提供商不再因电子邮件更改尝试而被拒绝。**下载 Helm 图表：** [⟦T481⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0/langsmith-0.15.0.tgz)
 {/* langsmith-release-image: 0.15.0 0.15.8 */}
 </Update>
 
@@ -1786,7 +1827,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.14 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14)发行说明。
 
-**下载 Helm 图表：** [⟦T474⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.17/langsmith-0.15.0-rc.17.tgz)
+**下载 Helm 图表：** [⟦T482⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.17/langsmith-0.15.0-rc.17.tgz)
 {/* langsmith-release-image: 0.15.0-rc.17 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
@@ -1795,7 +1836,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.14 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14)发行说明。
 
-**下载 Helm 图表：** [⟦T475⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.16/langsmith-0.15.0-rc.16.tgz)
+**下载 Helm 图表：** [⟦T483⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.16/langsmith-0.15.0-rc.16.tgz)
 {/* langsmith-release-image: 0.15.0-rc.16 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
@@ -1804,14 +1845,14 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.14 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.14](#langsmith-0-15-0-rc-14)发行说明。
 
-**下载 Helm 图表：** [⟦T476⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.15/langsmith-0.15.0-rc.15.tgz)
+**下载 Helm 图表：** [⟦T484⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.15/langsmith-0.15.0-rc.15.tgz)
 {/* langsmith-release-image: 0.15.0-rc.15 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 
 <Update label="2026-05-20" tags={["Stable"]} rss={{ title: "2026-05-20 - self-hosted" }}>
 ## langsmith-0.8.31
 
-- 此版本打包了与 langsmith-0.8.30 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.8.30](#langsmith-0-8-30)发行说明。**下载 Helm 图表：** [⟦T477⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.31/langsmith-0.8.31.tgz)
+- 此版本打包了与 langsmith-0.8.30 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.8.30](#langsmith-0-8-30)发行说明。**下载 Helm 图表：** [⟦T485⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.31/langsmith-0.8.31.tgz)
 {/* langsmith-release-image: 0.8.31 0.8.92 */}
 </Update>
 
@@ -1834,7 +1875,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 - 添加了通过新端点邀请用户加入组织的功能。
 - 使用 SubAgentDetails 增强消息处理，促进更好的上下文捕获和管理。
 
-**下载 Helm 图表：** [⟦T478⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.14/langsmith-0.15.0-rc.14.tgz)
+**下载 Helm 图表：** [⟦T486⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.14/langsmith-0.15.0-rc.14.tgz)
 {/* langsmith-release-image: 0.15.0-rc.14 0.15.7-d6de5e64598efb40bc8a3ba25730f8807309e15a */}
 </Update>
 <Update label="2026-05-14" tags={["Preview"]}>
@@ -1842,14 +1883,14 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.12 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.12](#langsmith-0-15-0-rc-12)发行说明。
 
-**下载 Helm 图表：** [⟦T479⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.13/langsmith-0.15.0-rc.13.tgz)
+**下载 Helm 图表：** [⟦T487⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.13/langsmith-0.15.0-rc.13.tgz)
 {/* langsmith-release-image: 0.15.0-rc.13 0.15.3-4a1b22708d0a402b664df96c75c6ffa261a2546a */}
 </Update>
 <Update label="2026-05-14" tags={["Stable"]}>
 ## langsmith-0.14.6- 通过将 S3 CopyObject KMS 标头向后移植到 v14 修复了存储问题，提高了 S3 集成的数据传输安全性。
 - 修复了安全漏洞：CVE-2026-40192、CVE-2026-40347、CVE-2026-41205、CVE-2026-42561
 
-**下载 Helm 图表：** [⟦T480⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.6/langsmith-0.14.6.tgz)
+**下载 Helm 图表：** [⟦T488⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.6/langsmith-0.14.6.tgz)
 {/* langsmith-release-image: 0.14.6 0.14.9 */}
 </Update>
 <Update label="2026-05-13" tags={["Preview"]}>
@@ -1871,7 +1912,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 这些更新侧重于改进自托管部署的用户体验、性能、安全性和功能集。
 
-**下载 Helm 图表：** [⟦T481⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.12/langsmith-0.15.0-rc.12.tgz)
+**下载 Helm 图表：** [⟦T489⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.12/langsmith-0.15.0-rc.12.tgz)
 {/* langsmith-release-image: 0.15.0-rc.12 0.15.3-4a1b22708d0a402b664df96c75c6ffa261a2546a */}
 </Update>
 <Update label="2026-05-11" tags={["Preview"]}>
@@ -1879,13 +1920,13 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。
 
-**下载 Helm 图表：** [⟦T482⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.10/langsmith-0.15.0-rc.10.tgz)
+**下载 Helm 图表：** [⟦T490⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.10/langsmith-0.15.0-rc.10.tgz)
 {/* langsmith-release-image: 0.15.0-rc.10 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-09" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.9
 
-- 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。**下载 Helm 图表：** [⟦T483⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.9/langsmith-0.15.0-rc.9.tgz)
+- 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。**下载 Helm 图表：** [⟦T491⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.9/langsmith-0.15.0-rc.9.tgz)
 {/* langsmith-release-image: 0.15.0-rc.9 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-08" tags={["Preview"]}>
@@ -1893,7 +1934,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。
 
-**下载 Helm 图表：** [⟦T484⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.8/langsmith-0.15.0-rc.8.tgz)
+**下载 Helm 图表：** [⟦T492⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.8/langsmith-0.15.0-rc.8.tgz)
 {/* langsmith-release-image: 0.15.0-rc.8 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-08" tags={["Preview"]}>
@@ -1901,7 +1942,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。
 
-**下载 Helm 图表：** [⟦T485⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.7/langsmith-0.15.0-rc.7.tgz)
+**下载 Helm 图表：** [⟦T493⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.7/langsmith-0.15.0-rc.7.tgz)
 {/* langsmith-release-image: 0.15.0-rc.7 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-06" tags={["Preview"]}>
@@ -1909,13 +1950,13 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。
 
-**下载 Helm 图表：** [⟦T486⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.6/langsmith-0.15.0-rc.6.tgz)
+**下载 Helm 图表：** [⟦T494⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.6/langsmith-0.15.0-rc.6.tgz)
 {/* langsmith-release-image: 0.15.0-rc.6 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-05" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.5
 
-- 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。**下载 Helm 图表：** [⟦T487⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.5/langsmith-0.15.0-rc.5.tgz)
+- 此版本打包了与 langsmith-0.15.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.4](#langsmith-0-15-0-rc-4)发行说明。**下载 Helm 图表：** [⟦T495⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.5/langsmith-0.15.0-rc.5.tgz)
 {/* langsmith-release-image: 0.15.0-rc.5 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-04" tags={["Preview"]}>
@@ -1933,13 +1974,13 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 - 删除了舰队使用页面的自托管门
 - 游乐场中 GPT-5.x 模型的隐藏最小推理工作选项
 
-**下载 Helm 图表：** [⟦T488⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.4/langsmith-0.15.0-rc.4.tgz)
+**下载 Helm 图表：** [⟦T496⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.4/langsmith-0.15.0-rc.4.tgz)
 {/* langsmith-release-image: 0.15.0-rc.4 0.15.2-0dd2b56c14e44fbf384d9bb0bf094f2ca896c914 */}
 </Update>
 <Update label="2026-05-01" tags={["Stable"]}>
 ## langsmith-0.14.5- 修复了由于 `langgraph-api 0.8.3` 基础映像捆绑 `LangSmith 0.7.37`（通过固定 `LangSmith<0.7.34` 降级到兼容版本而删除了 `SandboxTemplate`）导致代理构建器无法在 v14 自托管 0.14.6 上启动的问题。
 
-**下载 Helm 图表：** [⟦T493⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.5/langsmith-0.14.5.tgz)
+**下载 Helm 图表：** [⟦T501⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.5/langsmith-0.14.5.tgz)
 {/* langsmith-release-image: 0.14.5 0.14.7 */}
 </Update>
 <Update label="2026-04-30" tags={["Preview"]}>
@@ -1947,7 +1988,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.15.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.1](#langsmith-0-15-0-rc-1)发行说明。
 
-**下载 Helm 图表：** [⟦T494⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.3/langsmith-0.15.0-rc.3.tgz)
+**下载 Helm 图表：** [⟦T502⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.3/langsmith-0.15.0-rc.3.tgz)
 {/* langsmith-release-image: 0.15.0-rc.3 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
 <Update label="2026-04-29" tags={["Stable"]}>
@@ -1956,13 +1997,13 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 - 修复了 OTLP/JSON (`Content-Type: application/json`) 跟踪摄取的 `traceId`、`spanId` 和 `parentSpanId` 的静默损坏。
 - 减少了 Microsoft 365 文档和 Teams 私人消息工具的 Microsoft Graph 权限要求。
 
-**下载 Helm 图表：** [⟦T499⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.3/langsmith-0.14.3.tgz)
+**下载 Helm 图表：** [⟦T507⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.3/langsmith-0.14.3.tgz)
 {/* langsmith-release-image: 0.14.3 0.14.5 */}
 </Update>
 <Update label="2026-04-24" tags={["Preview"]}>
 ## langsmith-0.15.0-rc.2
 
-- 此版本打包了与 langsmith-0.15.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.1](#langsmith-0-15-0-rc-1)发行说明。**下载 Helm 图表：** [⟦T500⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.2/langsmith-0.15.0-rc.2.tgz)
+- 此版本打包了与 langsmith-0.15.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.0-rc.1](#langsmith-0-15-0-rc-1)发行说明。**下载 Helm 图表：** [⟦T508⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.2/langsmith-0.15.0-rc.2.tgz)
 {/* langsmith-release-image: 0.15.0-rc.2 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
 <Update label="2026-04-24" tags={["Preview"]}>
@@ -2003,7 +2044,7 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 - 添加了带有提示消息的集成用户流程，以便顺利操作和理解。
 - 修复了对 Fleet 的默认跟踪项目选择，以防止不一致。
 
-**下载 Helm 图表：** [⟦T501⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.1/langsmith-0.15.0-rc.1.tgz)
+**下载 Helm 图表：** [⟦T509⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0-rc.1/langsmith-0.15.0-rc.1.tgz)
 {/* langsmith-release-image: 0.15.0-rc.1 0.15.1-bc7b710bcfb878cb28e908ad748ad8717431a51a */}
 </Update>
 <Update label="2026-04-20" tags={["Stable"]}>
@@ -2011,19 +2052,19 @@ LangSmith 自托管 v0.15 带来了**可重复使用的评估器和包含 30 多
 
 - 此版本打包了与 langsmith-0.14.0 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.14.0](#langsmith-0-14-0)发行说明。
 
-**下载 Helm 图表：** [⟦T502⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.2/langsmith-0.14.2.tgz)
+**下载 Helm 图表：** [⟦T510⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.2/langsmith-0.14.2.tgz)
 {/* langsmith-release-image: 0.14.2 0.14.3 */}
 </Update>
 <Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.1- 此版本打包了与 langsmith-0.14.0 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.14.0](#langsmith-0-14-0)发行说明。
 
-**下载 Helm 图表：** [⟦T503⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.1/langsmith-0.14.1.tgz)
+**下载 Helm 图表：** [⟦T511⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.1/langsmith-0.14.1.tgz)
 {/* langsmith-release-image: 0.14.1 0.14.3 */}
 </Update>
 <Update label="2026-04-20" tags={["Stable"]}>
 ## langsmith-0.14.0
 
-LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下启用），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic，通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），以及适用于 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL 的新代理工具和触发器。在基础设施方面，v0.14 添加了对 blob 存储的 **GCS Workload Identity** 支持，**Valkey** 作为替代项Redis 替换，以及用于更安全部署的预升级迁移挂钩。
+LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下启用），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic，通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），并且新的代理工具和触发器适用于 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL。在基础设施方面，v0.14 添加了对 blob 存储的 **GCS Workload Identity** 支持，**Valkey** 作为替代项Redis 替换，以及用于更安全部署的预升级迁移挂钩。
 
 按照[upgrade instructions](/langsmith/self-host-upgrades)即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
 
@@ -2055,7 +2096,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - **精细的使用情况报告** - 精细的计费使用 API，允许您检索按工作区、项目、用户或 API 密钥细分的详细跟踪使用数据。
 
-**下载 Helm 图表：** [⟦T510⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.0/langsmith-0.14.0.tgz)
+**下载 Helm 图表：** [⟦T518⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.14.0/langsmith-0.14.0.tgz)
 {/* langsmith-release-image: 0.14.0 0.14.3 */}
 </Update>
 <Update label="2026-04-17" tags={["Stable"]}>
@@ -2063,7 +2104,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.42 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.42](#langsmith-0-13-42)发行说明。
 
-**下载 Helm 图表：** [⟦T511⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.43/langsmith-0.13.43.tgz)
+**下载 Helm 图表：** [⟦T519⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.43/langsmith-0.13.43.tgz)
 {/* langsmith-release-image: 0.13.43 0.13.44 */}
 </Update>
 <Update label="2026-04-14" tags={["Stable"]}>
@@ -2071,13 +2112,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 修复了元数据过滤中的问题，以将 json.Number 识别为原始类型，从而提高数据摄取的准确性。
 
-**下载 Helm 图表：** [⟦T512⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.42/langsmith-0.13.42.tgz)
+**下载 Helm 图表：** [⟦T520⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.42/langsmith-0.13.42.tgz)
 {/* langsmith-release-image: 0.13.42 0.13.44 */}
 </Update>
 <Update label="2026-04-14" tags={["Stable"]}>
 ## langsmith-0.13.41
 
-- 内部改进和维护更新**下载 Helm 图表：** [⟦T513⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.41/langsmith-0.13.41.tgz)
+- 内部改进和维护更新**下载 Helm 图表：** [⟦T521⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.41/langsmith-0.13.41.tgz)
 {/* langsmith-release-image: 0.13.41 0.13.43 */}
 </Update>
 <Update label="2026-04-09" tags={["Stable"]}>
@@ -2089,7 +2130,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了对 Redis 集群的支持，提高了自托管部署的可扩展性。
 - 改进了 PostgreSQL IAM 集成，以便在自托管实例中实现更好的数据库管理。
 
-**下载 Helm 图表：** [⟦T514⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.40/langsmith-0.13.40.tgz)
+**下载 Helm 图表：** [⟦T522⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.40/langsmith-0.13.40.tgz)
 {/* langsmith-release-image: 0.13.40 0.13.41 */}
 </Update>
 <Update label="2026-04-07" tags={["Stable"]}>
@@ -2131,7 +2172,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 向会话 API 添加了会话级反馈统计信息，以与 Python 后端保持一致。
 - 改进了代理运行时请求的 MCP 代理授权和 URL 安全检查。
 
-**下载 Helm 图表：** [⟦T525⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.39/langsmith-0.13.39.tgz)
+**下载 Helm 图表：** [⟦T533⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.39/langsmith-0.13.39.tgz)
 {/* langsmith-release-image: 0.13.39 0.13.40-7ed913b583e68d2684b0d7af1c72b5b2ad054639 */}
 </Update>
 <Update label="2026-04-03" tags={["Stable"]}>
@@ -2150,7 +2191,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 在保存提示对话框的“触发 Webhook”部分添加了文档链接按钮，以便更轻松地访问 webhook 文档。
 - 修复了在流媒体期间卸载复制按钮导致的代理聊天布局变化。
 
-**下载 Helm 图表：** [⟦T537⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.38/langsmith-0.13.38.tgz)
+**下载 Helm 图表：** [⟦T545⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.38/langsmith-0.13.38.tgz)
 {/* langsmith-release-image: 0.13.38 0.13.38-4359ae1c6829e7f2fb885191f12897d950bcb71e */}
 </Update>
 <Update label="2026-04-01" tags={["Stable"]}>
@@ -2160,7 +2201,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 默认情况下为自托管部署启用审核日志。
 - MCP 服务器现在尊重 UI 中的精细 RBAC 权限；用户只能看到其角色允许的操作。
 - 默认情况下为自托管部署启用 ABAC。
-- 修复了OpenAI工具渲染的错误。**下载 Helm 图表：** [⟦T538⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.37/langsmith-0.13.37.tgz)
+- 修复了OpenAI工具渲染的错误。**下载 Helm 图表：** [⟦T546⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.37/langsmith-0.13.37.tgz)
 {/* langsmith-release-image: 0.13.37 0.13.37-3314407e0d73f796df84d6d0d2249e1efa16fbee */}
 </Update>
 <Update label="2026-03-30" tags={["Stable"]}>
@@ -2168,7 +2209,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
 
-**下载 Helm 图表：** [⟦T539⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.36/langsmith-0.13.36.tgz)
+**下载 Helm 图表：** [⟦T547⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.36/langsmith-0.13.36.tgz)
 {/* langsmith-release-image: 0.13.36 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
 <Update label="2026-03-27" tags={["Stable"]}>
@@ -2176,7 +2217,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
 
-**下载 Helm 图表：** [⟦T540⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.35/langsmith-0.13.35.tgz)
+**下载 Helm 图表：** [⟦T548⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.35/langsmith-0.13.35.tgz)
 {/* langsmith-release-image: 0.13.35 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
 <Update label="2026-03-27" tags={["Stable"]}>
@@ -2184,13 +2225,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
 
-**下载 Helm 图表：** [⟦T541⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.34/langsmith-0.13.34.tgz)
+**下载 Helm 图表：** [⟦T549⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.34/langsmith-0.13.34.tgz)
 {/* langsmith-release-image: 0.13.34 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
 <Update label="2026-03-27" tags={["Stable"]}>
 ## langsmith-0.13.33
 
-- 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。**下载 Helm 图表：** [⟦T542⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.33/langsmith-0.13.33.tgz)
+- 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。**下载 Helm 图表：** [⟦T550⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.33/langsmith-0.13.33.tgz)
 {/* langsmith-release-image: 0.13.33 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
 <Update label="2026-03-27" tags={["Stable"]}>
@@ -2227,7 +2268,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了信任库主机后端中的导入。
 - 在 Agent Builder 中向身份验证中间件错误日志添加了请求上下文。
 - 修复了评估器中的编辑提示功能。
-- 在新的实验详细信息窗格中获取完整的运行数据。**下载 Helm 图表：** [⟦T543⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.32/langsmith-0.13.32.tgz)
+- 在新的实验详细信息窗格中获取完整的运行数据。**下载 Helm 图表：** [⟦T551⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.32/langsmith-0.13.32.tgz)
 {/* langsmith-release-image: 0.13.32 0.13.35-7f6d0b900ea9cd45220782e793c6860d7abed822 */}
 </Update>
 <Update label="2026-03-23" tags={["Stable"]}>
@@ -2235,7 +2276,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.28 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.28](#langsmith-0-13-28)发行说明。
 
-**下载 Helm 图表：** [⟦T544⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.31/langsmith-0.13.31.tgz)
+**下载 Helm 图表：** [⟦T552⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.31/langsmith-0.13.31.tgz)
 {/* langsmith-release-image: 0.13.31 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
 <Update label="2026-03-23" tags={["Stable"]}>
@@ -2243,7 +2284,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.28 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.28](#langsmith-0-13-28)发行说明。
 
-**下载 Helm 图表：** [⟦T545⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.30/langsmith-0.13.30.tgz)
+**下载 Helm 图表：** [⟦T553⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.30/langsmith-0.13.30.tgz)
 {/* langsmith-release-image: 0.13.30 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
 <Update label="2026-03-21" tags={["Stable"]}>
@@ -2251,7 +2292,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.28 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.28](#langsmith-0-13-28)发行说明。
 
-**下载 Helm 图表：** [⟦T546⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.29/langsmith-0.13.29.tgz)
+**下载 Helm 图表：** [⟦T554⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.29/langsmith-0.13.29.tgz)
 {/* langsmith-release-image: 0.13.29 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
 <Update label="2026-03-21" tags={["Stable"]}>
@@ -2282,7 +2323,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了对运行、会话和沙箱端点的服务密钥身份验证，以增强安全性。
 - 添加了LangChain供应商提取器以增强消息处理能力。
 - 修复了与缓存读取相关的解析错误，该错误会影响更好的性能指标的成本。
-- 引入了对从秘密引用指定环境变量的支持，以改进配置管理。**下载 Helm 图表：** [⟦T550⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.28/langsmith-0.13.28.tgz)
+- 引入了对从秘密引用指定环境变量的支持，以改进配置管理。**下载 Helm 图表：** [⟦T558⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.28/langsmith-0.13.28.tgz)
 {/* langsmith-release-image: 0.13.28 0.13.31-25d6895016f70da39a652bf2a8a088d5347cfeb9 */}
 </Update>
 <Update label="2026-03-18" tags={["Stable"]}>
@@ -2296,7 +2337,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了 Slack 集成上的连接/断开按钮。
 - 添加了提示环境支持。
 
-**下载 Helm 图表：** [⟦T551⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.27/langsmith-0.13.27.tgz)
+**下载 Helm 图表：** [⟦T559⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.27/langsmith-0.13.27.tgz)
 {/* langsmith-release-image: 0.13.27 0.13.28-27251604f6050b18943ac32020fab85f716ff4df */}
 </Update>
 <Update label="2026-03-13" tags={["Stable"]}>
@@ -2314,7 +2355,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了聊天助手工具提示在聊天框后面的渲染。
 - 添加ABAC授权中间件。
 
-**下载 Helm 图表：** [⟦T552⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.26/langsmith-0.13.26.tgz)
+**下载 Helm 图表：** [⟦T560⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.26/langsmith-0.13.26.tgz)
 {/* langsmith-release-image: 0.13.26 0.13.27-88ce214af9cd3650c88004f9ad81e72f5d2c819a */}
 </Update>
 <Update label="2026-03-12" tags={["Stable"]}>
@@ -2322,7 +2363,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.24 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.24](#langsmith-0-13-24)发行说明。
 
-**下载 Helm 图表：** [⟦T553⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.25/langsmith-0.13.25.tgz)
+**下载 Helm 图表：** [⟦T561⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.25/langsmith-0.13.25.tgz)
 {/* langsmith-release-image: 0.13.25 0.13.24-2ab8af1b0ecad3820d3938be644d83e6a78835e9 */}
 </Update>
 <Update label="2026-03-10" tags={["Stable"]}>
@@ -2344,7 +2385,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了见解时间序列图表上重复的 x 轴日期标签。- 重新启用 ABAC 以列出数据集。
 - 添加了 ABAC 运行删除端点。
 
-**下载 Helm 图表：** [⟦T555⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.24/langsmith-0.13.24.tgz)
+**下载 Helm 图表：** [⟦T563⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.24/langsmith-0.13.24.tgz)
 {/* langsmith-release-image: 0.13.24 0.13.24-2ab8af1b0ecad3820d3938be644d83e6a78835e9 */}
 </Update>
 <Update label="2026-03-07" tags={["Stable"]}>
@@ -2357,7 +2398,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 通过在 RichTextEditor 中转义 URL 修复了 XSS 漏洞。
 - 修复了自托管环境中的 Playground 功能。
 
-**下载 Helm 图表：** [⟦T557⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.23/langsmith-0.13.23.tgz)
+**下载 Helm 图表：** [⟦T565⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.23/langsmith-0.13.23.tgz)
 {/* langsmith-release-image: 0.13.23 0.13.23-bedf8cf99dd9af6e545f5245b0aeed6b338f09f2 */}
 </Update>
 <Update label="2026-03-06" tags={["Stable"]}>
@@ -2365,14 +2406,14 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.20](#langsmith-0-13-20)发行说明。
 
-**下载 Helm 图表：** [⟦T558⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.21/langsmith-0.13.21.tgz)
+**下载 Helm 图表：** [⟦T566⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.21/langsmith-0.13.21.tgz)
 {/* langsmith-release-image: 0.13.21 0.13.21-62853708b9669274abaddeffacfb2aeea616120f */}
 </Update>
 <Update label="2026-03-06" tags={["Stable"]}>
 ## langsmith-0.13.20- 添加了 JSON/YAML 语法突出显示以进行实验比较，以获得更好的可读性。
 - 改进了前端的线程跟踪打开行为，不再需要扩展按钮。
 - 消除了后端列出个人访问令牌的 n+1 查询问题，提高了性能。
-- 修复了对带有 smith-polly 集成的 OpenAI 兼容端点的支持。
+- 修复了对具有 smith-polly 集成的 OpenAI 兼容端点的支持。
 - 超时批量导出卡在`CREATED`状态，以避免无限期处理。
 - 解决了创建存储库端点时阻止服务身份访问的问题。
 - 在实验会话元数据中记录集线器提示提交，以实现更好的会话跟踪。
@@ -2385,14 +2426,14 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 增加了`RunTags`组件中显示的最大标签数，以获得更好的可见性。
 - 在实验表中添加了模型和提示列，增强了数据洞察力。- 解决了限制设置更改时代理生成器运行拒绝的问题。
 - 修复了 /sessions go 端点中的浮动错误，以改进数据处理。
-- Redis缓存`SET`故障时返回取值，提高可靠性。
+- Redis缓存`SET`失败时返回取值，提高可靠性。
 - 为代理构建器、Polly 和 Insights 功能启用了 AWS IAM 角色支持。
 - 重新设计前端自定义图表CRUD，提高用户满意度。
 - 在实验表中引入了提示过滤，以进行有针对性的数据分析。
 - 更新了 Agent Builder 中的收件箱计数和线程获取逻辑以获取实时信息。
 - 添加了通过提示对实验进行分组的功能，以简化数据管理。
 
-**下载 Helm 图表：** [⟦T562⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.20/langsmith-0.13.20.tgz)
+**下载 Helm 图表：** [⟦T570⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.20/langsmith-0.13.20.tgz)
 {/* langsmith-release-image: 0.13.20 0.13.21-62853708b9669274abaddeffacfb2aeea616120f */}
 </Update>
 <Update label="2026-03-06" tags={["Stable"]}>
@@ -2400,7 +2441,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.18](#langsmith-0-13-18)发行说明。
 
-**下载 Helm 图表：** [⟦T563⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.19/langsmith-0.13.19.tgz)
+**下载 Helm 图表：** [⟦T571⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.19/langsmith-0.13.19.tgz)
 {/* langsmith-release-image: 0.13.19 0.13.20-4a89d00b2ff6c55991ead2929f8bf0acd5c7a85b */}
 </Update>
 <Update label="2026-03-05" tags={["Stable"]}>
@@ -2424,7 +2465,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 引入了会话 API 的兼容性测试，并增加了 PostgreSQL 和 Redis 连接的安全检查。
 - 添加了动态绑定 Slack 代理的功能，增强了集成体验。
 
-**下载 Helm 图表：** [⟦T564⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.18/langsmith-0.13.18.tgz)
+**下载 Helm 图表：** [⟦T572⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.18/langsmith-0.13.18.tgz)
 {/* langsmith-release-image: 0.13.18 0.13.20-4a89d00b2ff6c55991ead2929f8bf0acd5c7a85b */}
 </Update>
 <Update label="2026-03-03" tags={["Stable"]}>
@@ -2453,7 +2494,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 增强了入门片段，以便更好地与 Langchain Python 集成。
 - 添加了对[custom separators in SCIM group names](/langsmith/user-management#configure-custom-separator)的支持。
 
-**下载 Helm 图表：** [⟦T565⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.17/langsmith-0.13.17.tgz)
+**下载 Helm 图表：** [⟦T573⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.17/langsmith-0.13.17.tgz)
 {/* langsmith-release-image: 0.13.17 0.13.18-aed2fb010d6d6a4a73dc2305aabafc0684091ec5 */}
 </Update>
 <Update label="2026-02-26" tags={["Stable"]}>
@@ -2461,7 +2502,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.15 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.15](#langsmith-0-13-15)发行说明。
 
-**下载 Helm 图表：** [⟦T566⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.16/langsmith-0.13.16.tgz)
+**下载 Helm 图表：** [⟦T574⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.16/langsmith-0.13.16.tgz)
 {/* langsmith-release-image: 0.13.16 0.13.16-a68bd778f5123fe302ed2b2838b2bff0f6e82b5b */}
 </Update>
 <Update label="2026-02-26" tags={["Stable"]}>
@@ -2477,7 +2518,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 解决了游乐场和评估器提供者选择器未过滤掉禁用提供者的问题。
 - 改进了消息模式的用户体验和样式。
 - 为内联过滤器实现了原始查询模式。
-- 允许`K8sEnvVarSource`中的`secret_key_ref`变为`None`以进行后端改进。
+- 允许`secret_key_ref`在`K8sEnvVarSource`中变为`None`以进行后端改进。
 - 修复了代理构建器 UI，以将问题文本包装在狭窄的视口上并关闭“添加 API 密钥以开始”对话框。
 - 更新了用户体验，使评估器按钮高度与工具按钮图案相匹配。- 将选定的模型保留在本地存储中，以获得一致的 UI 体验。
 - 自动生成线程标题以改进线程管理。
@@ -2485,7 +2526,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 在代理生成器中实施了 Outlook 电子邮件工具。
 - 改进了 Agent Builder UI 收件箱功能中的键盘快捷键。
 
-**下载 Helm 图表：** [⟦T570⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.15/langsmith-0.13.15.tgz)
+**下载 Helm 图表：** [⟦T578⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.15/langsmith-0.13.15.tgz)
 {/* langsmith-release-image: 0.13.15 0.13.16-a68bd778f5123fe302ed2b2838b2bff0f6e82b5b */}
 </Update>
 <Update label="2026-02-24" tags={["Stable"]}>
@@ -2507,7 +2548,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 在实验视图中添加了新模型列，并更新了过滤选项。
 - 支持查询影子日志改进的多个路径。- 添加了用于在 Playground 中管理和编辑模型 API 键名称的 UI。
 
-**下载 Helm 图表：** [⟦T571⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.14/langsmith-0.13.14.tgz)
+**下载 Helm 图表：** [⟦T579⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.14/langsmith-0.13.14.tgz)
 {/* langsmith-release-image: 0.13.14 0.13.15-e059ae344d55e040bb7c87df3fc16aaab6d6f9ac */}
 </Update>
 <Update label="2026-02-14" tags={["Stable"]}>
@@ -2525,7 +2566,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 新增图片上传支持，方便更好的资产管理。- 向通用代理添加了入门对话框，以改进用户指导。
 - 在加载触发器骨架中添加了微调器，以获得更好的加载指示。
 
-**下载 Helm 图表：** [⟦T572⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.13/langsmith-0.13.13.tgz)
+**下载 Helm 图表：** [⟦T580⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.13/langsmith-0.13.13.tgz)
 {/* langsmith-release-image: 0.13.13 0.13.14-2ed26ea85b0ff71037df88ab587fb47d0fdd106b */}
 </Update>
 <Update label="2026-02-12" tags={["Stable"]}>
@@ -2549,7 +2590,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了用于自托管代理生成器运行限制的信标端点。
 - 启用新的“粒度使用”选项卡，用于按工作区、项目、用户和 API 密钥报告计费使用情况（使用 `DEFAULT_ORG_FEATURE_ENABLE_GRANULAR_USAGE_REPORTING=true` 和 `GRANULAR_USAGE_TABLE_ENABLED=true` 环境变量在 `commonEnv` 中启用）
 
-**下载 Helm 图表：** [⟦T576⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.12/langsmith-0.13.12.tgz)
+**下载 Helm 图表：** [⟦T584⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.12/langsmith-0.13.12.tgz)
 {/* langsmith-release-image: 0.13.12 0.13.11-f55bf497782e1d13e9f6fc9d8325906e0024c49d */}
 </Update>
 <Update label="2026-02-12" tags={["Stable"]}>
@@ -2569,13 +2610,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 为 Agent Builder 添加了跟踪增强功能，包括工具调用跟踪。
 - 集成更改以暂时支持自定义模型配置。
 
-**下载 Helm 图表：** [⟦T577⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.11/langsmith-0.13.11.tgz)
+**下载 Helm 图表：** [⟦T585⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.11/langsmith-0.13.11.tgz)
 {/* langsmith-release-image: 0.13.11 0.13.10-0115b4d5095876591bb9cfdc9bc2d5f3aecdf4e3 */}
 </Update>
 <Update label="2026-02-10" tags={["Stable"]}>
 ## langsmith-0.13.10- 此版本打包了与 langsmith-0.13.9 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.9](#langsmith-0-13-9)发行说明。
 
-**下载 Helm 图表：** [⟦T578⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.10/langsmith-0.13.10.tgz)
+**下载 Helm 图表：** [⟦T586⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.10/langsmith-0.13.10.tgz)
 {/* langsmith-release-image: 0.13.10 0.13.9-d0c6453c5301e4f2d40bbb2d93106479ed1f6daa */}
 </Update>
 <Update label="2026-02-09" tags={["Stable"]}>
@@ -2602,7 +2643,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了反馈和注释队列列表中潜在的 SQL 注入风险。
 - 为 OAuth HTTP 客户端添加了 15 秒超时，以提高连接可靠性。
 
-**下载 Helm 图表：** [⟦T579⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.9/langsmith-0.13.9.tgz)
+**下载 Helm 图表：** [⟦T587⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.9/langsmith-0.13.9.tgz)
 {/* langsmith-release-image: 0.13.9 0.13.9-d0c6453c5301e4f2d40bbb2d93106479ed1f6daa */}
 </Update>
 <Update label="2026-02-06" tags={["Stable"]}>
@@ -2610,7 +2651,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.6 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.6](#langsmith-0-13-6)发行说明。
 
-**下载 Helm 图表：** [⟦T580⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.7/langsmith-0.13.7.tgz)
+**下载 Helm 图表：** [⟦T588⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.7/langsmith-0.13.7.tgz)
 {/* langsmith-release-image: 0.13.7 0.13.7-2398b372e4c1544f0970d796874afaf8372161ee */}
 </Update>
 <Update label="2026-02-05" tags={["Stable"]}>
@@ -2627,7 +2668,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 更新了与跟踪相关的查询的措辞以提高清晰度。
 - 增强了向 S3 的单次运行 POST/PATCH 端点的大字段上传。
 
-**下载 Helm 图表：** [⟦T581⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.6/langsmith-0.13.6.tgz)
+**下载 Helm 图表：** [⟦T589⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.6/langsmith-0.13.6.tgz)
 {/* langsmith-release-image: 0.13.6 0.13.7-2398b372e4c1544f0970d796874afaf8372161ee */}
 </Update>
 <Update label="2026-02-05" tags={["Stable"]}>
@@ -2648,7 +2689,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 将 gRPC 流块大小从 1MB 减少到 64KB，以提高性能。- 在 Agent Builder Explorer 中添加了下载 zip 按钮。
 - 通过将 URL 添加到 Datadog RUM 配置来增强跟踪 URL。
 
-**下载 Helm 图表：** [⟦T584⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.5/langsmith-0.13.5.tgz)
+**下载 Helm 图表：** [⟦T592⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.5/langsmith-0.13.5.tgz)
 {/* langsmith-release-image: 0.13.5 0.13.6-29e5da7450495599f5ce57cd8cde994817596910 */}
 </Update>
 <Update label="2026-02-04" tags={["Stable"]}>
@@ -2676,7 +2717,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 允许专门在自托管环境中更新和创建 SSO 设置。
 - 添加了对显示 SCIM 用户的 `displayName` 属性的支持。
 
-这些变化改善了用户交互，增强了系统性能，并扩展了对自定义模型和基础设施的支持，从而有利于自托管部署。**下载 Helm 图表：** [⟦T587⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.4/langsmith-0.13.4.tgz)
+这些变化改善了用户交互，增强了系统性能，并扩展了对自定义模型和基础设施的支持，从而有利于自托管部署。**下载 Helm 图表：** [⟦T595⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.4/langsmith-0.13.4.tgz)
 {/* langsmith-release-image: 0.13.4 0.13.5-35e6309abc1e6ebf33f05e794f9950d6ea4dde62 */}
 </Update>
 <Update label="2026-01-26" tags={["Stable"]}>
@@ -2701,7 +2742,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 改进了前端以优雅地处理格式错误的 LLM 输出。
 - 通过允许 DateTimeRangePicker 组件使用粗体“上次”值，改进了日期/时间选择 UI。
 
-**下载 Helm 图表：** [⟦T588⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.3/langsmith-0.13.3.tgz)
+**下载 Helm 图表：** [⟦T596⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.3/langsmith-0.13.3.tgz)
 {/* langsmith-release-image: 0.13.3 0.13.4-680826fad888b367b4fe596ffaf0e5d2149deae3 */}
 </Update>
 <Update label="2026-01-21" tags={["Stable"]}>
@@ -2715,7 +2756,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了新的内联 UX 过滤器和视图下拉组件以增强用户交互。
 - 增加了 XS 文本变体的行高，以防止前端出现剪切问题。
 
-**下载 Helm 图表：** [⟦T589⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.2/langsmith-0.13.2.tgz)
+**下载 Helm 图表：** [⟦T597⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.2/langsmith-0.13.2.tgz)
 {/* langsmith-release-image: 0.13.2 0.13.3-d095866874cf9521b255f6d43dcc81497466c734 */}
 </Update>
 <Update label="2026-01-16" tags={["Stable"]}>
@@ -2723,7 +2764,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.13.0 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.0](#langsmith-0-13-0)发行说明。
 
-**下载 Helm 图表：** [⟦T590⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.1/langsmith-0.13.1.tgz)
+**下载 Helm 图表：** [⟦T598⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.1/langsmith-0.13.1.tgz)
 {/* langsmith-release-image: 0.13.1 0.13.1-69f6835dd37394eea1f5087287ae0e1ab3c7d183 */}
 </Update>
 <Update label="2026-01-16" tags={["Stable"]}>
@@ -2734,7 +2775,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了反馈分页和自动分页错误
 - 修复了跟踪抽屉骨架没有立即出现的问题
 
-**下载 Helm 图表：** [⟦T591⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.0/langsmith-0.13.0.tgz)
+**下载 Helm 图表：** [⟦T599⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.0/langsmith-0.13.0.tgz)
 {/* langsmith-release-image: 0.13.0 0.13.1-69f6835dd37394eea1f5087287ae0e1ab3c7d183 */}
 </Update>
 <Update label="2026-01-12" tags={["Stable"]}>
@@ -2742,7 +2783,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.36 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.36](#langsmith-0-12-36)发行说明。
 
-**下载 Helm 图表：** [⟦T592⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.37/langsmith-0.12.37.tgz)
+**下载 Helm 图表：** [⟦T600⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.37/langsmith-0.12.37.tgz)
 {/* langsmith-release-image: 0.12.37 0.12.76-5ca59e94d09e0911efacb79b06ded4a97c4d6e91 */}
 </Update>
 <Update label="2026-01-09" tags={["Stable"]}>
@@ -2755,7 +2796,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了当运行存在时登录屏幕显示不正确的问题
 - 将每个工作区的最大自动化规则增加到 200 个
 
-**下载 Helm 图表：** [⟦T593⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.36/langsmith-0.12.36.tgz)
+**下载 Helm 图表：** [⟦T601⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.36/langsmith-0.12.36.tgz)
 {/* langsmith-release-image: 0.12.36 0.12.76-5ca59e94d09e0911efacb79b06ded4a97c4d6e91 */}
 </Update>
 <Update label="2026-01-08" tags={["Stable"]}>
@@ -2769,7 +2810,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 修复了比较页面上的差异模式回退
 - 修复了 OAuth 身份验证请求中的竞争条件
 
-**下载 Helm 图表：** [⟦T594⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.35/langsmith-0.12.35.tgz)
+**下载 Helm 图表：** [⟦T602⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.35/langsmith-0.12.35.tgz)
 {/* langsmith-release-image: 0.12.35 0.12.75-683d01f652578ff2194de4498b8a4cf70183b71d */}
 </Update>
 <Update label="2025-12-26" tags={["Stable"]}>
@@ -2787,7 +2828,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 反馈图表默认可见
 - 使 SCIM 组名称匹配不区分大小写
 
-**下载 Helm 图表：** [⟦T595⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.34/langsmith-0.12.34.tgz)
+**下载 Helm 图表：** [⟦T603⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.34/langsmith-0.12.34.tgz)
 {/* langsmith-release-image: 0.12.34 0.12.73-354d2af50f45ae3a123eae6ed538fa046913b43f */}
 </Update>
 <Update label="2025-12-20" tags={["Stable"]}>
@@ -2795,7 +2836,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 安全修复：通过要求用户定义的允许来源修复了 Studio 对恶意 `baseUrl` 参数的漏洞
 - 允许启用邀请以及 SSO 的 JIT 配置（仅限具有客户端密钥模式的 OAuth）
-- 添加了管理操作的自助审核日志（私人预览）**下载 Helm 图表：** [⟦T597⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.33/langsmith-0.12.33.tgz)
+- 添加了管理操作的自助审核日志（私人预览）**下载 Helm 图表：** [⟦T605⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.33/langsmith-0.12.33.tgz)
 {/* langsmith-release-image: 0.12.33 0.12.72-b5405ce6d2d43a0b2dc2609e573ac08989de6f5d */}
 </Update>
 <Update label="2025-12-12" tags={["Stable"]}>
@@ -2805,7 +2846,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 为 Playground 添​​加了 GPT-5.2 模型支持。
 - 添加了对执行程序 Pod 上设置内存限制的支持。
 
-**下载 Helm 图表：** [⟦T598⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.32/langsmith-0.12.32.tgz)
+**下载 Helm 图表：** [⟦T606⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.32/langsmith-0.12.32.tgz)
 {/* langsmith-release-image: 0.12.32 0.12.70-ffd583f46b6808c02284b9063745d9bb8d787e64 */}
 </Update>
 <Update label="2025-12-11" tags={["Stable"]}>
@@ -2815,7 +2856,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了组织操作员角色支持。
 - 修复了流数据集端点的问题。
 
-**下载 Helm 图表：** [⟦T599⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.31/langsmith-0.12.31.tgz)
+**下载 Helm 图表：** [⟦T607⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.31/langsmith-0.12.31.tgz)
 {/* langsmith-release-image: 0.12.31 0.12.69-5564f97c9c64b4657862cd1f8f1bd626941f0c39 */}
 </Update>
 <Update label="2025-12-09" tags={["Stable"]}>
@@ -2823,13 +2864,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.29 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.29](#langsmith-0-12-29)发行说明。
 
-**下载 Helm 图表：** [⟦T600⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.30/langsmith-0.12.30.tgz)
+**下载 Helm 图表：** [⟦T608⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.30/langsmith-0.12.30.tgz)
 {/* langsmith-release-image: 0.12.30 0.12.68-4036298d6ea110f8ede0b6104e01d8fc50cd95a1 */}
 </Update>
 <Update label="2025-12-08" tags={["Stable"]}>
 ## langsmith-0.12.29- 添加了对 ClickHouse 连接的 mTLS（相互 TLS）支持，以增强数据库通信的安全性。
 
-**下载 Helm 图表：** [⟦T601⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.29/langsmith-0.12.29.tgz)
+**下载 Helm 图表：** [⟦T609⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.29/langsmith-0.12.29.tgz)
 {/* langsmith-release-image: 0.12.29 0.12.68-4036298d6ea110f8ede0b6104e01d8fc50cd95a1 */}
 </Update>
 <Update label="2025-12-05" tags={["Stable"]}>
@@ -2839,7 +2880,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了对 ClickHouse 客户端的 mTLS 支持。
 - 修复了在自托管部署中禁用时的 Agent Builder 入门和侧面导航可见性。
 
-**下载 Helm 图表：** [⟦T602⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.28/langsmith-0.12.28.tgz)
+**下载 Helm 图表：** [⟦T610⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.28/langsmith-0.12.28.tgz)
 {/* langsmith-release-image: 0.12.28 0.12.67-121ec27c2de094684873ea2ff6fb11af8f30b956 */}
 </Update>
 <Update label="2025-12-04" tags={["Stable"]}>
@@ -2849,13 +2890,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 添加了对自托管部署中的空触发服务器配置的支持。
 - 改进了事件横幅样式和内容。
 
-**下载 Helm 图表：** [⟦T603⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.27/langsmith-0.12.27.tgz)
+**下载 Helm 图表：** [⟦T611⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.27/langsmith-0.12.27.tgz)
 {/* langsmith-release-image: 0.12.27 0.12.66-7d27a5b91d0a4df9341a97ada0eee1cd440f31ea */}
 </Update>
 <Update label="2025-12-02" tags={["Stable"]}>
 ## langsmith-0.8.30
 
-- 内部改进和维护更新**下载 Helm 图表：** [⟦T604⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.30/langsmith-0.8.30.tgz)
+- 内部改进和维护更新**下载 Helm 图表：** [⟦T612⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.30/langsmith-0.8.30.tgz)
 {/* langsmith-release-image: 0.8.30 0.8.92 */}
 </Update>
 <Update label="2025-12-01" tags={["Stable"]}>
@@ -2864,7 +2905,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 为自托管部署启用了 Agent Builder UI 功能标志。
 - 添加了 Redis 集群支持，以提高可扩展性和高可用性。
 
-**下载 Helm 图表：** [⟦T605⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.25/langsmith-0.12.25.tgz)
+**下载 Helm 图表：** [⟦T613⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.25/langsmith-0.12.25.tgz)
 {/* langsmith-release-image: 0.12.25 0.12.64-bd72fb0a24339b17682ad90a5572e5a554faafbc */}
 </Update>
 <Update label="2025-11-27" tags={["Stable"]}>
@@ -2873,7 +2914,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 - 向所有 SAQ（简单异步队列）队列添加了出队超时，以提高可靠性。
 - 性能改进和错误修复。
 
-**下载 Helm 图表：** [⟦T606⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.24/langsmith-0.12.24.tgz)
+**下载 Helm 图表：** [⟦T614⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.24/langsmith-0.12.24.tgz)
 {/* langsmith-release-image: 0.12.24 0.12.63 */}
 </Update>
 <Update label="2025-11-26" tags={["Stable"]}>
@@ -2881,7 +2922,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T607⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.23/langsmith-0.12.23.tgz)
+**下载 Helm 图表：** [⟦T615⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.23/langsmith-0.12.23.tgz)
 {/* langsmith-release-image: 0.12.23 0.12.62 */}
 </Update>
 <Update label="2025-11-26" tags={["Stable"]}>
@@ -2889,13 +2930,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.21 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.21](#langsmith-0-12-21)发行说明。
 
-**下载 Helm 图表：** [⟦T608⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.22/langsmith-0.12.22.tgz)
+**下载 Helm 图表：** [⟦T616⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.22/langsmith-0.12.22.tgz)
 {/* langsmith-release-image: 0.12.22 0.12.61 */}
 </Update>
 <Update label="2025-11-26" tags={["Stable"]}>
 ## langsmith-0.12.21
 
-- 为操作员部署模板添加了显式 `revisionHistoryLimit` 配置。**下载 Helm 图表：** [⟦T610⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.21/langsmith-0.12.21.tgz)
+- 为操作员部署模板添加了显式 `revisionHistoryLimit` 配置。**下载 Helm 图表：** [⟦T618⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.21/langsmith-0.12.21.tgz)
 {/* langsmith-release-image: 0.12.21 0.12.61 */}
 </Update>
 <Update label="2025-11-24" tags={["Stable"]}>
@@ -2903,7 +2944,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.18](#langsmith-0-12-18)发行说明。
 
-**下载 Helm 图表：** [⟦T611⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.20/langsmith-0.12.20.tgz)
+**下载 Helm 图表：** [⟦T619⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.20/langsmith-0.12.20.tgz)
 {/* langsmith-release-image: 0.12.20 0.12.57 */}
 </Update>
 <Update label="2025-11-24" tags={["Stable"]}>
@@ -2911,7 +2952,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.18](#langsmith-0-12-18)发行说明。
 
-**下载 Helm 图表：** [⟦T612⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.19/langsmith-0.12.19.tgz)
+**下载 Helm 图表：** [⟦T620⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.19/langsmith-0.12.19.tgz)
 {/* langsmith-release-image: 0.12.19 0.12.57 */}
 </Update>
 <Update label="2025-11-20" tags={["Stable"]}>
@@ -2919,7 +2960,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T613⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.18/langsmith-0.12.18.tgz)
+**下载 Helm 图表：** [⟦T621⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.18/langsmith-0.12.18.tgz)
 {/* langsmith-release-image: 0.12.18 0.12.57 */}
 </Update>
 <Update label="2025-11-19" tags={["Stable"]}>
@@ -2927,7 +2968,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T614⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.17/langsmith-0.12.17.tgz)
+**下载 Helm 图表：** [⟦T622⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.17/langsmith-0.12.17.tgz)
 {/* langsmith-release-image: 0.12.17 0.12.51 */}
 </Update>
 <Update label="2025-11-19" tags={["Stable"]}>
@@ -2935,13 +2976,13 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T615⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.16/langsmith-0.12.16.tgz)
+**下载 Helm 图表：** [⟦T623⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.16/langsmith-0.12.16.tgz)
 {/* langsmith-release-image: 0.12.16 0.12.50 */}
 </Update>
 <Update label="2025-11-17" tags={["Stable"]}>
 ## langsmith-0.12.15
 
-- 内部改进和维护更新**下载 Helm 图表：** [⟦T616⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.15/langsmith-0.12.15.tgz)
+- 内部改进和维护更新**下载 Helm 图表：** [⟦T624⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.15/langsmith-0.12.15.tgz)
 {/* langsmith-release-image: 0.12.15 0.12.48 */}
 </Update>
 <Update label="2025-11-17" tags={["Stable"]}>
@@ -2949,7 +2990,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T617⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.14/langsmith-0.12.14.tgz)
+**下载 Helm 图表：** [⟦T625⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.14/langsmith-0.12.14.tgz)
 {/* langsmith-release-image: 0.12.14 0.12.46 */}
 </Update>
 <Update label="2025-11-13" tags={["Stable"]}>
@@ -2957,7 +2998,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 此版本打包了与 langsmith-0.12.12 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.12.12](#langsmith-0-12-12)发行说明。
 
-**下载 Helm 图表：** [⟦T618⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.13/langsmith-0.12.13.tgz)
+**下载 Helm 图表：** [⟦T626⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.13/langsmith-0.12.13.tgz)
 {/* langsmith-release-image: 0.12.13 0.12.42 */}
 </Update>
 <Update label="2025-11-13" tags={["Stable"]}>
@@ -2965,7 +3006,7 @@ LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天
 
 - 内部改进和维护更新
 
-**下载 Helm 图表：** [⟦T619⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.12/langsmith-0.12.12.tgz)
+**下载 Helm 图表：** [⟦T627⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.12.12/langsmith-0.12.12.tgz)
 {/* langsmith-release-image: 0.12.12 0.12.42 */}
 </Update>
 

@@ -4,12 +4,12 @@
 
 # 法学硕士网关
 
-使用一个 [LangSmith API key](/langsmith/create-account-api-key) 跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个调用并应用集中式治理策略。
+使用一个 [LangSmith API key](/langsmith/create-account-api-key) 跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个模型调用并应用集中式治理策略。
 
 <Note>
 **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
 
-该网关也可在 [BYOC](/langsmith/byoc) 上使用，它在数据平面内运行。将请求发送到 `/gateway` 路径前缀后面的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint)，并使用作用域为该数据平面中工作区的 API 密钥进行身份验证。欲了解更多信息，请参阅[Use a BYOC data plane](/langsmith/llm-gateway-api-formats#use-a-byoc-data-plane)。
+该网关也可在 [BYOC](/langsmith/byoc) 上使用，它在数据平面内运行。将请求发送到 `/gateway` 路径前缀后面的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint)，并使用作用域为该数据平面中工作区的 API 密钥进行身份验证。欲了解更多信息，请参阅[Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane)。
 </Note>
 
 <Note>
@@ -57,7 +57,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
 
-| API格式 |端点|
+| API格式|端点 |
 | --- | --- |
 | OpenAI 聊天完成 | `POST /v1/chat/completions` |
 | Anthropic 留言 | `POST /v1/messages` |
@@ -69,7 +69,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 ## 选择凭证的管理方式
 
-|选项|上游凭证|设置和计费|
+|选项 |上游凭证|设置和计费|
 | --- | --- | --- |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |

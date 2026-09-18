@@ -202,7 +202,7 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 has(feedback_key, "answer_usefulness") and feedback_score < 0.5
 ```
 
-有关完整的过滤器语法，请参阅[Filter traces](/langsmith/filter-traces-in-application)。
+有关完整的过滤器语法，请参阅[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)。
 </Tip>
 
 <Note>

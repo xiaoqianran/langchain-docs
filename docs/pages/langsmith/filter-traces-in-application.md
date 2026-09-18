@@ -1,8 +1,15 @@
-<!-- langchain-docs: Filter traces | https://docs.langchain.com/langsmith/filter-traces-in-application -->
+<!-- langchain-docs: Filter traces (ClickHouse) | https://docs.langchain.com/langsmith/filter-traces-in-application -->
 
-# Filter traces
+# Filter traces (ClickHouse)
 
 Tracing projects can accumulate large amounts of data across [threads](/langsmith/observability-concepts#threads), [traces](/langsmith/observability-concepts#traces), and [runs](/langsmith/observability-concepts#runs). LangSmith's filtering tools let you navigate and analyze that data precisely.
+
+<Note>
+Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
+
+- **A single search bar with a scope selector to its left**: Refer to [Filter traces](/langsmith/filter-traces).
+- **An Add filter button that builds filter chips**: Refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
+</Note>
 
 This page covers:
 
