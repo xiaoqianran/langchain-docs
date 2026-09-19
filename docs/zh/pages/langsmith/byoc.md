@@ -45,24 +45,23 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 - **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。
 - **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 - **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
-- **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。
+- **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。- **[Engine](/langsmith/engine-overview)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。引擎使用LangSmith智能服务进行模型工作。详情请参阅[self-hosted Engine architecture](/langsmith/engine-self-hosted#how-it-works)。
 
-以下功能已计划但尚未支持：- **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**：LangChain托管的深度代理，具有连接器、通道和时间表。
+以下功能已计划但尚未支持：
+
+- **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**：LangChain托管的深度代理，具有连接器、通道和时间表。
 - **[LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)**：对模型调用强制执行您自己的身份验证流程，以便提供程序凭据永远不会暴露给最终用户。
-- **[Engine](/langsmith/engine-overview)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。
 
 ## 先决条件
 
 在 LangChain 可以配置数据平面之前，您需要满足以下条件：
 
 - **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
-- **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
+- **AWS 账户**：LangChain 建议专门用于 LangSmith BYOC 的新账户，但这不是必需的。
 - **受支持的区域**：选择上面列出的 AWS 区域之一。
 - **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

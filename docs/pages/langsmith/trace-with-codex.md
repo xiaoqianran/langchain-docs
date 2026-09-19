@@ -46,6 +46,8 @@ The plugin reads Codex-specific variables first, then falls back to the generic 
 | `LANGSMITH_CODEX_PROJECT` | No | `codex` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
 | `LANGSMITH_CODEX_METADATA` | No | - | JSON object merged into root trace metadata. Falls back to `LANGSMITH_METADATA`. |
 | `LANGSMITH_CODEX_RUNS_ENDPOINTS` | No | - | JSON array of replica destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`. |
+| `LANGSMITH_CODEX_REDACT` | No | `true` | Set to a falsy value to disable secret redaction. Falls back to `LANGSMITH_REDACT`. |
+| `LANGSMITH_CODEX_REDACT_EXTRA` | No | - | JSON array of extra `{ pattern, replace }` redaction rules. Falls back to `LANGSMITH_REDACT_EXTRA`. |
 
 Add the variables to your shell configuration file (`~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`):
 
@@ -80,6 +82,8 @@ Use `<project>/.codex/langsmith.json` for project-level settings or `~/.codex/la
 | `project` | `LANGSMITH_CODEX_PROJECT`, `LANGSMITH_PROJECT` | `codex` | LangSmith project name. |
 | `metadata` | `LANGSMITH_CODEX_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
 | `replicas` | `LANGSMITH_CODEX_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
+| `redact` | `LANGSMITH_CODEX_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
+| `redact_extra_rules` | `LANGSMITH_CODEX_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
 
 Keep config files that include API keys out of version control.
 
@@ -144,6 +148,33 @@ Each replica object supports the following fields:
 | `apiKey` | Yes | API key for the destination workspace. |
 | `projectName` | Yes | Project name in the destination workspace. |
 | `updates` | No | Optional run fields to override on replicated runs, such as extra metadata. |
+
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+To turn redaction off, set `LANGSMITH_CODEX_REDACT` to `false`, `0`, `no`, or `off`, or set `"redact": false` in a config file. Values are trimmed and compared case-insensitively.
+
+To redact additional patterns, set `LANGSMITH_CODEX_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules, or set `redact_extra_rules` in a config file. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`. Extra rules run after the built-in ones.
+
+```json
+{
+  "enabled": true,
+  "project": "codex",
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+Setting `redact_extra_rules` to `[]` clears rules inherited from a lower-priority source. In a config file, one rule with an invalid regular expression discards every setting in that file, so verify the patterns before committing them.
+
+Because a project-level `.codex/langsmith.json` or `langsmith-plugins.json` can set `redact` to `false`, review those files before enabling tracing in a repository you do not control.
 
 ## What gets traced
 

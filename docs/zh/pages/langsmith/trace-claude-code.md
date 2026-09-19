@@ -118,7 +118,7 @@ export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
 - `/langsmith-tracing:mute`：在后面的跟踪中省略该线程的输入和输出内容。
 - `/langsmith-tracing:unmute`：恢复完整跟踪以供此线程中的后续回合使用。
 
-这两个命令从下一回合开始应用，因此当前回合不变。当回合开始时，回合的模式是固定的，并且其子代理继承该模式。静音运行保持正常的嵌套、名称、计时、状态、模型和工具标识以及令牌使用。输入和输出被系统通知替换。静音模式还忽略原始错误、身份和存储库属性、自定义元数据、SDK 运行时元数据和副本元数据覆盖。静音独立于秘密编辑。
+这两个命令从下一回合开始应用，因此当前回合不变。当回合开始时，回合的模式是固定的，并且其子代理继承该模式。静音运行保持正常的嵌套、名称、时间、状态、模型和工具标识以及令牌使用。输入和输出被系统通知替换。静音模式还忽略原始错误、身份和存储库属性、自定义元数据、SDK 运行时元数据和副本元数据覆盖。静音独立于秘密编辑。
 
 ### 设置默认静音配置
 
@@ -153,11 +153,54 @@ export CC_LANGSMITH_DEFAULT_MUTED="true"
 
 将变量设置为 `"false"` 以返回到未静音的默认值。比较不区分大小写，任何其他值都会静音，包括空字符串。
 
-该插件还从其自己的配置文件中读取`defaultMuted`布尔值，按以下顺序：项目目录中的`.claude/langsmith.json`和`langsmith-plugins.json`，然后是`~/.claude/langsmith.json`和`~/.langsmith-plugins.json`。环境变量优先于所有四个变量。
+该插件还从其自己的配置文件中读取`defaultMuted`布尔值，按以下顺序：项目目录中的`.claude/langsmith.json`和`langsmith-plugins.json`，然后是`~/.claude/langsmith.json`和`~/.langsmith-plugins.json`。环境变量优先于所有四个变量。线程首选项是粘性的。该插件将每个显式静音或取消静音保存到隐私文件中，默认情况下为`~/.claude/state/langsmith_state.privacy.json`，并且保存的线程首选项在两个方向上都优于配置的默认值。删除隐私文件将删除每个线程覆盖并将每个线程返回到配置的默认值。
 
-线程首选项是粘性的。该插件将每个显式静音或取消静音保存到隐私文件中，默认情况下为`~/.claude/state/langsmith_state.privacy.json`，并且保存的线程首选项在两个方向上都优于配置的默认值。删除隐私文件将删除每个线程覆盖并将每个线程返回到配置的默认值。## 与 GitHub Actions 一起使用
+## 秘密编辑
 
-您可以将此插件与 [⟦T42⟧](https://github.com/anthropics/claude-code-action) 一起使用来跟踪 Claude Code 在 CI 中的运行情况。将以下内容添加到您的工作流程中：
+该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
+
+上传前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
+
+检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍然达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
+
+修订的目标是凭证值，而不是身份。插件附加的 `anthropic_user_id` 和 `local_username` 元数据不受影响。省略内容和归属，而不是删除其中的凭据，[mute the thread](#mute-a-thread)。
+
+### 关闭密文
+
+将 `CC_LANGSMITH_REDACT` 设置为 `false`、`0`、`no` 或 `off`。比较不区分大小写，任何其他值都会保留密文。
+
+```bash
+export CC_LANGSMITH_REDACT="false"
+```
+
+### 编辑其他模式
+
+将 `CC_LANGSMITH_REDACT_EXTRA` 设置为 `{ "pattern": ..., "replace": ... }` 规则的 JSON 数组。每个`pattern`都是一个正则表达式字符串，全局应用且区分大小写。 `replace` 是可选的，并回退到 `[redacted]`。
+
+```json
+{
+  "env": {
+    "CC_LANGSMITH_REDACT_EXTRA": "[{\"pattern\":\"ACME-[A-Z0-9]{16}\",\"replace\":\"[REDACTED_ACME_KEY]\"}]"
+  }
+}
+```
+
+额外规则在内置规则之后运行。该插件会跳过具有无效正则表达式的规则，记录错误，并上传应用了其余规则的回合。这两个设置也从 [Set a default mute configuration](#set-a-default-mute-configuration) 中描述的插件配置文件中读取，如 `redact` 和 `redact_extra_rules` 键：
+
+```json
+{
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+环境变量优先于所有四个文件。文件的行为比环境变量更严格。具有无效正则表达式的规则会丢弃该文件中的所有设置，而不仅仅是该规则。
+
+由于项目级别 `.claude/langsmith.json` 可以将 `redact` 设置为 `false`，因此请在不受您控制的存储库中启用跟踪之前查看该文件。
+
+## 与 GitHub Actions 一起使用
+
+您可以将此插件与 [⟦T65⟧](https://github.com/anthropics/claude-code-action) 一起使用来跟踪 Claude Code 在 CI 中的运行情况。将以下内容添加到您的工作流程中：
 
 ```yaml
 - uses: anthropics/claude-code-action@v1
@@ -258,9 +301,7 @@ Your outer run (chain)
     └── Claude (llm)
 ```
 
-## 跟踪到多个目的地（副本）
-
-您可以使用 `CC_LANGSMITH_RUNS_ENDPOINTS` 环境变量同时跟踪多个 LangSmith 项目或工作区。将 `CC_LANGSMITH_RUNS_ENDPOINTS` 设置为副本配置的 JSON 数组。这会覆盖其他客户端设置。
+## 跟踪到多个目的地（副本）您可以使用 `CC_LANGSMITH_RUNS_ENDPOINTS` 环境变量同时跟踪多个 LangSmith 项目或工作区。将 `CC_LANGSMITH_RUNS_ENDPOINTS` 设置为副本配置的 JSON 数组。这会覆盖其他客户端设置。
 
 追踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
 
@@ -268,8 +309,10 @@ Your outer run (chain)
 - 使用不同的 API 密钥跟踪多个工作区。
 - 将额外的元数据添加到特定的副本目的地。
 
-每个副本对象支持以下字段：|领域 |必填 |描述 |
-| ---| ---| ---|
+每个副本对象支持以下字段：
+
+|领域|必填|描述 |
+| --- | --- | --- |
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）|
 | `apiKey` |是的 |目的地的 API 密钥 [workspace](/langsmith/administration-overview#workspaces) |
 | `projectName` |是的 |目标工作区中的项目名称 |
@@ -318,9 +361,7 @@ export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com"
 
 ## 故障排除
 
-### LangSmith没有出现任何痕迹
-
-1. **检查钩子是否正在运行**：
+###LangSmith没有出现任何痕迹1. **检查钩子是否正在运行**：
    ```bash
    tail -f ~/.claude/state/hook.log
    ```
@@ -339,7 +380,9 @@ export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com"
      }
    }
    ```
-   然后检查日志中的 API 调用和 HTTP 状态代码。### 用户中断后不会出现子代理运行
+   然后检查日志中的 API 调用和 HTTP 状态代码。
+
+### 用户中断后不会出现子代理运行
 仅在完成后才跟踪子代理。这意味着，如果您在子代理运行过程中中断对话轮次，则不会跟踪子代理的子运行。
 
 ### 管理日志文件大小
@@ -356,15 +399,13 @@ ls -lh ~/.claude/state/hook.log
 
 ## 从手动停止钩子迁移
 
-如果您使用旧版本的 LangSmith 跟踪 Claude 代码，则需要删除 `~/.claude/hooks/stop_hook.sh` 并从之前添加到的任何先前 `settings.local.json` 或 `settings.json` 文件中删除对钩子的引用，然后按照 [plugin installation instructions](#getting-started) 进行操作。
+如果您使用旧版本的 LangSmith 跟踪 Claude 代码，则需要删除 `~/.claude/hooks/stop_hook.sh` 并从之前添加的任何先前 `settings.local.json` 或 `settings.json` 文件中删除对钩子的引用，然后按照 [plugin installation instructions](#getting-started) 进行操作。
 
 ## 源代码
 
 该插件是在 MIT 许可证下开源的，可在 [this GitHub repo](https://github.com/langchain-ai/langsmith-claude-code-plugins) 中使用。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

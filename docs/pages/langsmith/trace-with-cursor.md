@@ -68,6 +68,8 @@ Every `LANGSMITH_CURSOR_*` variable also accepts the shorter `LANGSMITH_*` form.
 | `LANGSMITH_CURSOR_PROJECT` | `cursor` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
 | `LANGSMITH_CURSOR_METADATA` | - | JSON object merged into root trace metadata. |
 | `LANGSMITH_CURSOR_RUNS_ENDPOINTS` | - | JSON array of replica destinations. |
+| `LANGSMITH_CURSOR_REDACT` | `true` | Set to `"false"` to disable secret redaction. |
+| `LANGSMITH_CURSOR_REDACT_EXTRA` | - | JSON array of extra `{ pattern, replace }` redaction rules. |
 | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `"false"` to disable attachment enrichment. |
 | `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
 | `LANGSMITH_CURSOR_STATE_FILE` | `~/.cursor/langsmith-state.json` | Override the on-disk event-buffer state file. |
@@ -109,10 +111,41 @@ Use `~/.cursor/langsmith.json` for global defaults or `./.cursor/langsmith.json`
 | `project` | `LANGSMITH_CURSOR_PROJECT`, `LANGSMITH_PROJECT` | `cursor` | LangSmith project name. |
 | `metadata` | `LANGSMITH_CURSOR_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
 | `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
+| `redact` | `LANGSMITH_CURSOR_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
+| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
 | `attachments` | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `false` to skip enriching turns with image and file attachment bytes from Cursor's local database. |
 | `cursor_db_path` | `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
 
 Keep config files that include API keys out of version control.
+
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+Attachments bypass redaction entirely. The plugin recovers image and file attachments from Cursor's local database and sends their bytes, which the anonymizer never inspects. Set `LANGSMITH_CURSOR_ATTACHMENTS` to `"false"` to stop sending them.
+
+To turn redaction off, set `LANGSMITH_CURSOR_REDACT` to `false`, `0`, `no`, or `off`, or set `"redact": false` in a config file.
+
+To redact additional patterns, set `LANGSMITH_CURSOR_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules, or set `redact_extra_rules` in a config file. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`. Extra rules run after the built-in ones.
+
+```json
+{
+  "enabled": true,
+  "project": "cursor",
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+Setting `redact_extra_rules` to `[]` clears rules inherited from a lower-priority source. One rule with an invalid regular expression discards every setting in that file, so keep the patterns simple and verify them before committing.
+
+Because a project-level `.cursor/langsmith.json` can set `redact` to `false`, review that file before enabling tracing in a repository you do not control.
 
 ## What gets traced
 

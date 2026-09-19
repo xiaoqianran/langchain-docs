@@ -60,7 +60,7 @@
     <a href="#mistral-ai" className="flex items-center justify-center gap-1.5 p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 no-underline">
         <img className="block dark:hidden w-5 h-5" src="/images/providers/light/mistral.svg" alt="" noZoom />
         <img className="hidden dark:block w-5 h-5" src="/images/providers/dark/mistral.svg" alt="" noZoom />
-        <span className="font-semibold">米斯特拉尔AI</span>
+        <span className="font-semibold">米斯特拉尔人工智能</span>
     </a>
 
 
@@ -85,19 +85,19 @@
 
 ## 亚马逊基岩
 
-在使用此模型之前，请确保您拥有[AWS credentials or IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)。
+在使用此模型之前，请确保您拥有 AWS 凭证、[IAM role](https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html) 或 [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
 
 ### 身份验证
 
-Amazon Bedrock 支持两种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
+Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
 
 #### IAM 可信实体（推荐）
 
 <Note>
-**不适用于 [self-hosted LangSmith](/langsmith/self-hosted)。** 请改用访问密钥（或 Bedrock API 密钥）。
+**不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。
 </Note>
 
-通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用[AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
+通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
 
 要进行此设置：
 
@@ -122,11 +122,11 @@ Amazon Bedrock 支持两种身份验证方法。 **IAM 可信实体是推荐的�
     }
   ]
 }
-```
-
-<Tip>
+```<Tip>
 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
-</Tip>3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
+</Tip>
+
+3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
 
     ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](/images/langsmith/bedrock-secrets-config.png)
 
@@ -136,9 +136,18 @@ Amazon Bedrock 支持两种身份验证方法。 **IAM 可信实体是推荐的�
 
 或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
 
-### 可用型号
+#### 基岩 API 密钥
 
-AWS Bedrock 提供对来自多个提供商的基础模型的访问：
+Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
+
+1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
+2. 在 LangSmith 中，转到 **设置** > **提供商密钥**，添加新密钥，然后选择 **Amazon Bedrock** 作为提供商。
+3. 选择**身份验证**下的**不记名令牌**。
+4. 输入 API 密钥`AWS_BEARER_TOKEN_BEDROCK`。
+5. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
+6. 选择**保存**。
+
+### 可用型号AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 - **Anthropic：** 克劳德模型。
 - **亚马逊：** 泰坦型号。
@@ -153,7 +162,9 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 参数取决于底层模型提供者：
 
 #### 适用于 Anthropic 型号
-使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。#### 对于亚马逊泰坦
+使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
+
+#### 对于亚马逊泰坦
 |参数|范围 |描述 |
 |------------|---------|-------------|
 | **温度** | 0.0 - 1.0 |响应随机性 |
@@ -180,13 +191,13 @@ Anthropic 在 Claude 一代中提供了三层型号：
 
 - **作品：** 最高的智力和能力。
 - **十四行诗：**平衡的性能和成本。
-- **俳句：** 快速且经济高效。
-
-最近的克劳德模型支持扩展思维能力来显示推理过程。
+- **俳句：** 快速且经济高效。最近的克劳德模型支持扩展思维能力来显示推理过程。
 
 有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
 
-### 配置参数|参数|范围 |默认|描述 |
+### 配置参数
+
+|参数|范围 |默认|描述 |
 |------------|---------|---------|-------------|
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -209,13 +220,13 @@ Anthropic 在 Claude 一代中提供了三层型号：
 启用后，响应包括：
 
 1. 模型推理的“思考”部分。
-1.最终回应。
-
-#### 高级选项
+1.最终回应。#### 高级选项
 
 - **基本 URL：** 覆盖自定义部署的 API 端点。
 
-### 工具调用- **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
+### 工具调用
+
+- **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
 - **并行执行：** 否（仅顺序执行）。
 
 ## 天蓝色OpenAI
@@ -228,7 +239,7 @@ Anthropic 在 Claude 一代中提供了三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载标识
+#### 自托管 LangSmith 的工作负载身份
 
 <Note>
 Azure OpenAI 工作负载标识需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
@@ -250,9 +261,9 @@ playground:
   deployment:
     labels:
       azure.workload.identity/use: "true"
-```
+```在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。
 
-在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
+当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
 
 工作负载身份令牌仅限于端口 `443` 上的 HTTPS Azure AI 和 Azure OpenAI 端点。每个配置必须使用一个受支持的 Azure 云：公共云、美国政府云或中国云。 LangSmith 拒绝混合 Azure 云的无效端点和配置。
 
@@ -379,7 +390,7 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 
 ### 身份验证
 
-Gemini 企业代理平台使用 **服务帐户 JSON 密钥** 在 LangSmith Playground 中进行身份验证。这是您从 Google Cloud Console 下载的 JSON 文件，其中包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐号的凭据。
+Gemini 企业代理平台使用**服务帐户 JSON 密钥**在 LangSmith Playground 中进行身份验证。这是您从 Google Cloud Console 下载的 JSON 文件，其中包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐号的凭据。
 
 #### 第 1 步：创建服务帐户
 
@@ -487,7 +498,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 
 ### 可用型号
 
-OpenAI 提供多个具有不同功能和价位的型号系列：
+OpenAI 提供多种具有不同功能和价位的型号系列：
 
 - **GPT 系列：** 具有各种大小/功能级别的通用聊天模型。
 - **o 系列：** 针对复杂问题解决而优化的以推理为中心的模型。

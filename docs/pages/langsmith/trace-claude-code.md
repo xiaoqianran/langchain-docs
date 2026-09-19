@@ -161,6 +161,53 @@ The plugin also reads a `defaultMuted` boolean from its own configuration files,
 
 Thread preferences are sticky. The plugin saves each explicit mute or unmute to a privacy file, `~/.claude/state/langsmith_state.privacy.json` by default, and a saved thread preference wins over the configured default in both directions. Deleting the privacy file removes every thread override and returns each thread to the configured default.
 
+## Secret redaction
+
+The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+
+Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+
+Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+
+Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+
+Redaction targets credential values, not identity. The `anthropic_user_id` and `local_username` metadata that the plugin attaches is unaffected. To omit content and attribution instead of scrubbing credentials out of it, [mute the thread](#mute-a-thread).
+
+### Turn redaction off
+
+Set `CC_LANGSMITH_REDACT` to `false`, `0`, `no`, or `off`. The comparison is case-insensitive, and any other value leaves redaction on.
+
+```bash
+export CC_LANGSMITH_REDACT="false"
+```
+
+### Redact additional patterns
+
+Set `CC_LANGSMITH_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`.
+
+```json
+{
+  "env": {
+    "CC_LANGSMITH_REDACT_EXTRA": "[{\"pattern\":\"ACME-[A-Z0-9]{16}\",\"replace\":\"[REDACTED_ACME_KEY]\"}]"
+  }
+}
+```
+
+Extra rules run after the built-in ones. The plugin skips a rule with an invalid regular expression, logs an error, and uploads the turn with the remaining rules applied.
+
+Both settings also read from the plugin configuration files described in [Set a default mute configuration](#set-a-default-mute-configuration), as the `redact` and `redact_extra_rules` keys:
+
+```json
+{
+  "redact": true,
+  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
+}
+```
+
+The environment variables take precedence over all four files. A file behaves more strictly than the environment variable. One rule with an invalid regular expression discards every setting in that file, not only that rule.
+
+Because a project-level `.claude/langsmith.json` can set `redact` to `false`, review that file before enabling tracing in a repository you do not control.
+
 ## Usage with GitHub Actions
 
 You can use this plugin with [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action) to trace Claude Code runs in CI. Add the following to your workflow:
