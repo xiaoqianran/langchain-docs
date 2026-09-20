@@ -6506,10 +6506,10 @@
       "failed": true
     }
   },
-  "updatedAt": "2026-09-19T12:48:25.857Z",
+  "updatedAt": "2026-09-20T13:16:32.659Z",
   "stats": {
-    "translated": 7,
-    "skipped": 559,
+    "translated": 0,
+    "skipped": 566,
     "failed": 0,
     "total": 566
   }
