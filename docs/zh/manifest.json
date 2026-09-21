@@ -1305,8 +1305,8 @@
       "translatedAt": "2026-08-22T09:17:24.966Z"
     },
     "langsmith/llm-gateway-admin-setup.md": {
-      "hash": "6ebe0182ce1cb554859fbcd45c5f65fbaa90dc44",
-      "translatedAt": "2026-09-18T13:14:52.038Z"
+      "hash": "9c9d5bef544cc520a1d44c838dd146e356a3684c",
+      "translatedAt": "2026-09-21T15:26:36.462Z"
     },
     "langsmith/llm-gateway-access.md": {
       "hash": "8c8f295c3903d06b0d2d85b919c12b276bff568f",
@@ -1321,8 +1321,8 @@
       "translatedAt": "2026-09-18T13:15:00.913Z"
     },
     "langsmith/llm-gateway-credits.md": {
-      "hash": "85858ee2b4a1d6e3c135c5a73bd23750a0d10d6e",
-      "translatedAt": "2026-09-18T13:14:58.255Z"
+      "hash": "a599f8fbdc1f170c4857e8ed77792b7a5fbaa550",
+      "translatedAt": "2026-09-21T15:26:35.697Z"
     },
     "langsmith/llm-gateway-direct-model-access.md": {
       "hash": "6904be25ba0ae944905b51ee58d10423c2d09512",
@@ -6093,8 +6093,8 @@
       "translatedAt": "2026-08-11T09:51:37.829Z"
     },
     "index.md": {
-      "hash": "63181b48a446afed9a579b083790be50b8af6175",
-      "translatedAt": "2026-09-18T13:14:00.755Z"
+      "hash": "77ec3fa7f24e6cf2a1bc3afc84d4701e92bb676c",
+      "translatedAt": "2026-09-21T15:26:33.905Z"
     },
     "build-overview.md": {
       "hash": "6f0946767c848fd0324c0667e4a9ee42ebc715dd",
@@ -6504,13 +6504,17 @@
       "hash": "cc89f60e061be2be492a6d8364e3bbbb54ddb62a",
       "translatedAt": "2026-09-17T13:54:00.397Z",
       "failed": true
+    },
+    "langsmith/llm-gateway-decision-models.md": {
+      "hash": "30864577d05a13365da5e61dbb172b9c38b2027a",
+      "translatedAt": "2026-09-21T15:26:37.387Z"
     }
   },
-  "updatedAt": "2026-09-20T13:16:32.659Z",
+  "updatedAt": "2026-09-21T15:26:37.387Z",
   "stats": {
-    "translated": 0,
-    "skipped": 566,
+    "translated": 4,
+    "skipped": 563,
     "failed": 0,
-    "total": 566
+    "total": 567
   }
 }

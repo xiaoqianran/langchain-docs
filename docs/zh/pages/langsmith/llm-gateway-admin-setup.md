@@ -12,16 +12,18 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 先决条件
 
-您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+您需要LangSmith中的[⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
 
 ## 1. 添加提供商机密
+
+对于 LangChain 托管模型，请跳过此步骤：它们使用您的 LangSmith API 密钥，而不是提供商机密。请参阅[Gateway Credits](/langsmith/llm-gateway-credits)了解付费聊天模型或[Decision models](/langsmith/llm-gateway-decision-models#semif)了解SemIf。继续步骤 2 以授予网关访问权限。
 
 网关从工作区的提供者密钥中解析提供者 API 密钥 - 这就是它代理对上游提供者的调用的方式，而无需单个用户需要提供者密钥的本地副本。
 
 转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：
 
 |秘密名字|供应商|
-| --- | --- |
+| ---| ---|
 | `ANTHROPIC_API_KEY` | Anthropic |
 | `AWS_BEARER_TOKEN_BEDROCK` | AWS 基岩 |
 | `AZURE_FOUNDRY_API_KEY` | Azure 铸造厂 |
@@ -30,11 +32,11 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台|
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台|仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
 
-仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
+## 2.配置用户的网关访问
 
-## 2.配置用户的网关访问内置角色`WORKSPACE_USER`、`WORKSPACE_VIEWER`不包含`gateway:invoke`权限，无法编辑。您有两种授予网关访问权限的选项：
+内置角色`WORKSPACE_USER`、`WORKSPACE_VIEWER`不包含`gateway:invoke`权限，无法编辑。您有两种授予网关访问权限的选项：
 
 ### 选项 A：创建自定义工作区角色（推荐）
 
@@ -57,10 +59,10 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 3.配置策略（可选）
 
-网关策略管理需要`organization:manage`权限。
+网关策略管理需要`organization:manage`权限。转至 **LLM Gateway** 创建治理策略。您可以配置：
 
-转至 **LLM Gateway** 创建治理策略。您可以配置：- **支出限制：** 组织、工作区、API 密钥或用户级​​别的硬上限。参考[Spend policies](/langsmith/llm-gateway-spend-policies)。
-- **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应正文。参考[Data policy](/langsmith/llm-gateway-data-policy)。
+- **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
+- **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 
@@ -74,9 +76,11 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 验证
 
-要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
+对于 SemIf，要求用户运行 [SemIf request example](/langsmith/llm-gateway-decision-models#call-semif)。 `200` 响应确认模型访问、API 密钥和角色权限。对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
 
-## 后续步骤- [Quickstart](/langsmith/llm-gateway-quickstart)：与您的用户分享作为入门指南。
+## 后续步骤
+
+- [Quickstart](/langsmith/llm-gateway-quickstart)：与您的用户分享作为入门指南。
 - [Set up coding agents](/langsmith/llm-gateway-coding-agents)：在组织范围内配置 Claude Code、Codex 和其他代理。
 - [Traces, Engine, and access control](/langsmith/llm-gateway-access)：深入探讨角色、范围键、跟踪路由以及谁可以看到什么。
 

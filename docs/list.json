@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-20T13:16:32.551Z",
+  "fetchedAt": "2026-09-21T15:26:33.501Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 177,
-  "ok": 566,
+  "ok": 567,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 460
+      "count": 461
     },
     "fleet": {
       "name": "Fleet",
@@ -2358,7 +2358,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-admin-setup",
-      "bytes": 5013
+      "bytes": 5531
     },
     {
       "rel": "langsmith/llm-gateway-api-formats.md",
@@ -2385,7 +2385,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-credits",
-      "bytes": 5583
+      "bytes": 5699
     },
     {
       "rel": "langsmith/llm-gateway-data-policy.md",
@@ -2395,6 +2395,15 @@
       "trackName": "LangSmith",
       "group": "llm-gateway-data-policy",
       "bytes": 10711
+    },
+    {
+      "rel": "langsmith/llm-gateway-decision-models.md",
+      "title": "Decision models",
+      "url": "https://docs.langchain.com/langsmith/llm-gateway-decision-models",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "llm-gateway-decision-models",
+      "bytes": 6557
     },
     {
       "rel": "langsmith/llm-gateway-direct-model-access.md",

@@ -10,6 +10,8 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 **Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
 
+有关 SemIf 的可用性和用法，请参阅[Decision models](/langsmith/llm-gateway-decision-models#semif)。
+
 网关根据其模型 ID 路由每个请求。诸如 `moonshotai/kimi-k3` 之类的托管模型 slug 使用 Gateway Credits。以配置的自带密钥提供程序（例如 `anthropic/claude-opus-5`）开头的模型 ID 会改用该提供程序的密钥。
 
 <Card title="Base URL" icon="link">
@@ -29,7 +31,7 @@ https://gateway.smith.langchain.com/v1
 通过请求正文中的 ID 选择托管模型。型号 ID 不区分大小写。
 
 |型号 ID |描述 |
-| --- | --- |
+| ---| ---|
 | `moonshotai/kimi-k2.6` | Moonshot AI 的 Kimi K2.6。强大的通用模型。由烟花推理提供支持。 |
 | `moonshotai/kimi-k3` | Moonshot AI 的 Kimi K3。由烟花推理提供支持。 |
 
@@ -94,10 +96,10 @@ print(model.invoke("ping").content)
 
 ## 支持的端点
 
-托管模型使用与自带密钥模型相同的标准 API 格式：
+信用资助聊天模型使用与自带密钥模型相同的标准 API 格式：
 
 |方法与路径|行为 |
-| --- | --- |
+| ---| ---|
 | `POST /v1/chat/completions` | OpenAI 聊天完成，包括流媒体。 |
 | `POST /v1/messages` | Anthropic 消息，包括流媒体。 |
 | `POST /v1/responses` | OpenAI 回应。 |
@@ -107,7 +109,7 @@ print(model.invoke("ping").content)
 
 ## 定价
 
-Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限额（包括托管模型调用）。
+Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
 
 ## 追踪
 

@@ -1281,6 +1281,12 @@
           "rel": "langsmith/llm-gateway-data-policy.md"
         }
       ],
+      "llm-gateway-decision-models": [
+        {
+          "title": "Decision models",
+          "rel": "langsmith/llm-gateway-decision-models.md"
+        }
+      ],
       "llm-gateway-direct-model-access": [
         {
           "title": "Direct model access",
