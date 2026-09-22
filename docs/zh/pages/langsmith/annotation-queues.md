@@ -26,11 +26,11 @@ LangSmith支持两种队列样式：
 运行项和线程项支持不同的功能：
 
 |能力|运行项目 |主题项目 |
-| --- | --- | --- |
+| ---| ---| ---|
 |评分标准反馈 |是的 |是的 |
 |审稿人笔记 |是的 |没有 |
 |断言|是的 |没有 |
-|添加到数据集 |是的 |是的 |
+|添加到数据集|是的 |是的 |
 |默认数据集 |是的 |没有 |
 |自动化规则 |是的 |是的 |
 
@@ -95,7 +95,7 @@ LangSmith支持两种队列样式：
 - **从“详细信息”视图**：在 [tracing project](/langsmith/observability-concepts#projects) 中，单击任意行以打开 [Details view](/langsmith/view-traces#details-view) 中的侧面板。该面板提供两个操作，每个操作都有固定的范围：
 
     - **添加到** <Icon icon="plus"/>：在运行标题中，打开此菜单并选择 **添加到注释队列**。这会将您选择的运行添加为运行项目。
-    - **将线程添加到注释队列** <Icon icon="pencil"/>：在 **消息**、**轮数** 和 **详细信息** 选项卡旁边，单击 图标。这会将整个线程添加为线程项。
+    - **将线程添加到注释队列** <Icon icon="pencil"/>：在“轨迹”、“转弯”和“详细信息”选项卡旁边，单击 图标。这会将整个线程添加为线程项。
 
     这两个操作都会打开一个弹出窗口，您可以在其中选择现有队列或创建新队列。
 
@@ -144,7 +144,7 @@ LangSmith支持两种队列样式：
 - **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。<Note>
     规则入队的内容取决于其[item type](/langsmith/rules#set-the-item-type-to-runs-or-threads)。项目类型为 **Runs** 的规则将运行项目排入队列。一旦线程空闲，项目类型为 **Threads** 的规则会将整个对话作为线程项目排队。
     </Note>
-- **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击**<Icon icon="pencil"/>注释**。选择 **添加到注释队列**，然后选择现有队列或创建一个新队列。实验注释流程添加运行项目。
+- **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击**<Icon icon="pencil"/>注释**。选择 **添加到注释队列**，然后选择一个现有队列或创建一个新队列。实验注释流程添加运行项目。
 
     <img
       className="block dark:hidden"
@@ -171,9 +171,9 @@ LangSmith支持两种队列样式：
 1. 单击您要查看的队列。这将带您集中、循环地查看队列中需要审核的项目。左侧面板列出了队列项目（运行和线程）并显示每个项目的状态（**需要审核**、**需要其他人审核**、**已完成**）。使用 **查看所有项目** 打开完整队列列表。
 
 1. 查看当前项目：- **运行项目**：检查中心窗格中的输入和输出。添加 **审阅者备注**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请编辑运行的输入和输出以创建更正的参考示例，然后单击 **添加到数据集**。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。
-    - **话题项目**：中心窗格显示话题的对话记录。阅读文字记录并对其标题 **反馈** 标准进行评分。单击“**查看项目**”以打开对话预览中的线程。作为示例，要将完整对话添加到数据集，请单击“**添加到数据集**”，然后选择一个数据集。要从选取器创建数据集，请单击“**新建数据集**”。要了解线程示例包含哪些内容，请参阅[Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
+    - **话题项**：中心窗格显示话题的对话记录。阅读文字记录并对其标题 **反馈** 标准进行评分。单击“**查看项目**”以打开对话预览中的线程。作为示例，要将完整对话添加到数据集，请单击“**添加到数据集**”，然后选择一个数据集。要从选取器创建数据集，请单击“**新建数据集**”。要了解线程示例包含哪些内容，请参阅[Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
 
-    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预留或队列设置如何。
+    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预订或队列设置如何。
 
     <Note>
     对于话题项，您可以提交评分标准反馈并使用 **添加到数据集**。审稿人注释和断言不可用。请参阅 [capability table](#single-run-annotation-queues) 来比较运行项和线程项功能。

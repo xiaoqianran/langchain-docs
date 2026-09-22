@@ -11,7 +11,7 @@
 使用 `ls_` 元数据参数可以：- **通过识别提供商和模型名称，为自定义或自托管模型启用自动成本跟踪**。
 - **跟踪模型配置**，如温度、最大令牌和其他参数以进行实验比较。
 - **按提供商或配置设置过滤和分析跟踪**
-- **自定义消息视图呈现**以用于自定义代理检测。
+- **自定义轨迹视图渲染**以用于自定义代理检测。
 - **标记中断的错误**，因此LangSmith可以将中断的运行与其他错误分开渲染。
 - **通过准确记录每次运行使用的模型设置来改进调试**。
 
@@ -198,15 +198,15 @@ val myConfiguredLlm =
 ## 所有参数
 
 ### 用户可配置的参数|参数|类型 |必填|描述 |
-|------------|------|----------|----------|
+|------------|------|----------|-------------|
 | [⟦T29⟧](#ls_provider) | `string` |是* |用于成本跟踪的 LLM 提供商名称 |
 | [⟦T31⟧](#ls_model_name) | `string` |是* |用于成本跟踪的型号标识符 |
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
 | [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
-| [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在消息视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
-| [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从消息视图隐藏运行 |
+| [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
+| [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
 | [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
 
 \* `ls_provider` 和 `ls_model_name` 必须一起提供以进行成本跟踪
@@ -215,7 +215,7 @@ val myConfiguredLlm =
 
 |参数|类型 |描述 |
 |------------|------|-------------|
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数|参数|类型 |描述 |
@@ -402,17 +402,17 @@ metadata={
 - **必填：** 否
 
 **它的作用：**
-控制来自自定义代理运行的消息如何显示在 [Messages view](/langsmith/view-traces#messages-view) 中。
+控制来自自定义代理运行的消息如何显示在 [Trajectory view](/langsmith/view-traces#trajectory-view) 中。
 
 从最新版本的 LangSmith SDK 跟踪包装器集成会在需要时自动设置此元数据。对于自定义检测，请在代表代理或中间件步骤的运行上设置此键。**数值：**
-- `"root"`：来自此运行的消息出现在主消息视图中。
+- `"root"`：来自此运行的消息出现在主轨迹视图中。
 - `"subagent"`：来自此运行的消息出现在与主对话分开的副线程中。
-- `"middleware"`：来自此运行的消息在消息视图中隐藏。
+- `"middleware"`：来自此运行的消息在轨迹视图中隐藏。
 
 **何时使用：**
-当您构建自定义代理检测并希望消息视图区分根代理、子代理和中间件时。
+当您构建自定义代理检测并希望轨迹视图区分根代理、子代理和中间件时。
 
-欲了解更多详情，请参阅[Customize the Messages view](/langsmith/view-traces#customize-the-messages-view)。
+欲了解更多详情，请参阅[Customize the Trajectory view](/langsmith/view-traces#customize-the-trajectory-view)。
 
 **关系：**
 - 独立于模型识别和成本跟踪元数据。
@@ -424,7 +424,7 @@ metadata={
 - **必填：** 否
 
 **它的作用：**
-隐藏 [Messages view](/langsmith/view-traces#messages-view) 的运行。排除的运行仍显示在常规跟踪视图、运行资源管理器和指标中。
+隐藏 [Trajectory view](/langsmith/view-traces#trajectory-view) 的运行。排除的运行仍显示在常规跟踪视图、运行资源管理器和指标中。
 
 过滤器检查**是否存在密钥**，而不是真实性。 `{LS_MESSAGE_VIEW_EXCLUDE: False}` 仍然排除运行。完全省略该键以包含运行。
 
@@ -441,7 +441,7 @@ def classify_intent(query: str) -> str:
     return llm.predict(f"Classify: {query}")
 ```
 
-有关 Python 和 JS 上下文（`@traceable`、`trace`、`wrap_openai`、`RunnableConfig`、`wrapAISDK`、`RunTree.createChild`）的其他代码示例，请参阅[Exclude runs from the Messages view](/langsmith/messages-view-integrations#exclude-runs-from-the-messages-view)。
+有关 Python 和 JS 上下文（`@traceable`、`trace`、`wrap_openai`、`RunnableConfig`、`wrapAISDK`、`RunTree.createChild`）的其他代码示例，请参阅[Exclude runs from the Trajectory view](/langsmith/trajectory-view-integrations#exclude-runs-from-the-trajectory-view)。
 
 **关系：**
 - 独立于模型识别和成本跟踪元数据。
@@ -498,7 +498,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 - **设置者：** SDK（自动）
 
 **它的作用：**
-指示哪个 SDK 方法创建了跟踪（通常为 `@traceable` 装饰器使用 `"traceable"`）。
+指示哪个 SDK 方法创建了跟踪（通常为 `@traceable` 装饰器的 `"traceable"`）。
 
 **使用时：**
 由跟踪SDK自动设置。用于调试和分析。
@@ -559,7 +559,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 **主要要求：** [⟦T137⟧](#ls_provider) + [⟦T138⟧](#ls_model_name)
 - 两者都应存在以进行自动成本计算。
-- 如果[⟦T139⟧](#ls_model_name)丢失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
+- 如果[⟦T139⟧](#ls_model_name)缺失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
 - [⟦T141⟧](#ls_provider) 必须与 [pricing database](https://smith.langchain.com/settings/workspaces/models) 中的提供商匹配（或使用自定义定价）。**附加要求：**
 - 运行必须具有`run_type="llm"`（或必须启用[arbitrary cost tracking](/langsmith/cost-tracking#other-runs-send-costs)）。
 - [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) 必须出现在跟踪中（prompt_tokens、completion_tokens）。

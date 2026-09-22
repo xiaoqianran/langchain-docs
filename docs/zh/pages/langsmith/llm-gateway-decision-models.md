@@ -4,26 +4,23 @@
 
 # 决策模型
 
+决策模型对文本进行分类或评分，并返回结构化答案，而不是生成的聊天消息。使用 System One API 通过 [LLM Gateway](/langsmith/llm-gateway) 调用它们。
+
+LangSmith 通过网关免费提供开源决策模型 SemIf (`semif-qwen3.5-4b`)，截止日期为 2026 年 9 月 28 日。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+SemIf 已为美国组织的 Free、Developer 和 Plus 计划启用。
 </Note>
 
-决策模型返回结构化答案而不是生成的聊天消息。通过 [LLM Gateway](/langsmith/llm-gateway) 使用它们对文本进行分类并根据评分标准对其进行评分。 System One API 接受状态和命名问题，然后返回每个问题的答案。
+## 快速入门
 
-## 半假设法
+设置您的[LangSmith API key](/langsmith/create-account-api-key)：
 
-SemIf 是一个 LangChain 托管的决策模型，模型 ID 为 `semif-qwen3.5-4b`。 2026 年 9 月 28 日之前免费。无需提供提供商密钥或购买[Gateway Credits](/langsmith/llm-gateway-credits)。
+```bash
+export LANGSMITH_API_KEY="<your-api-key>"
+```
 
-### 先决条件
-
-- 您的组织必须使用启用 SemIf 的付费非企业 [plan](/langsmith/pricing-plans)。可用性取决于您的组织和地区。
-- 您需要一个工作空间范围的 [LangSmith API key](/langsmith/create-account-api-key) 以及 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations)。请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)以授予访问权限。
-
-### 调用 SemIf
-
-通过 `POST /v1/systemone` 呼叫 `semif-qwen3.5-4b`，而不是聊天完成、消息或响应。将 `LANGSMITH_API_KEY` 设置为工作区范围的 LangSmith API 密钥。
-
-TypeSafe SDK 将 `/v1/systemone` 附加到基本 URL。将 Python 中的 `base_url` 或 JavaScript 中的 `baseURL` 设置为 `https://gateway.smith.langchain.com`，不带 `/v1`。
+然后运行一个请求：
 
 <Tabs>
 <Tab title="Python">
@@ -101,7 +98,11 @@ curl https://gateway.smith.langchain.com/v1/systemone \
 ```
 
 </Tab>
-</Tabs>在 `state` 中传递要评估的文本，并在 `questions` 中传递 1 到 32 个命名问题。 SemIf 支持三种问题类型：
+</Tabs>
+
+## 了解决策模型
+
+在 `state` 中传递要评估的文本，并在 `questions` 中传递 1 到 32 个命名问题。决策模型支持三种问题类型：
 
 - **`noul`**：返回答案为真的概率。
 - **`choice`**：将状态分类为提供的选项之一。
@@ -109,20 +110,20 @@ curl https://gateway.smith.langchain.com/v1/systemone \
 
 响应包含由问题名称而不是聊天消息键入的`answers`。不支持流式传输。
 
-您还可以从网关主页上的托管模型中选择 SemIf 以获取请求示例。有关区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-direct-model-access#use-a-regional-gateway)。
+## 半假设法
 
-### 应用网关策略
+您可以从网关主页上的托管模型中选择 SemIf 以获取请求示例。有关区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-direct-model-access#use-a-regional-gateway)。SemIf 调用不消耗网关积分。网关[access](/langsmith/llm-gateway-model-access-policies)、[rate-limit](/langsmith/llm-gateway-rate-limit-policies)和[budget policies](/langsmith/llm-gateway-spend-policies)仍然适用。
 
-SemIf 调用不消耗网关积分。网关[access](/langsmith/llm-gateway-model-access-policies)、[rate-limit](/langsmith/llm-gateway-rate-limit-policies)和[budget policies](/langsmith/llm-gateway-spend-policies)仍然适用。
-
-## 类型安全
+## TypeSafe (Jev)
 
 该网关还支持带有自带密钥 (BYOK) 的 TypeSafe 决策模型。将 `TYPESAFE_API_KEY` 配置为工作区 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。请参阅 [TypeSafe setup](/oss/python/integrations/providers/typesafe#setup) 创建密钥并安装 LangChain 集成。
 
 将 `LANGSMITH_API_KEY` 设置为工作区范围的 LangSmith API 密钥。 `typesafe/` 前缀通过工作区的 TypeSafe 提供程序密钥（而不是托管的 SemIf 模型）路由请求。调用网关时，请勿将 TypeSafe API 密钥作为 SDK 的 `api_key` 或 `apiKey` 传递。对 SDK 使用不带 `/v1` 的网关基本 URL：
 
 <Tabs>
-<Tab title="Python">安装 TypeSafe SDK：
+<Tab title="Python">
+
+安装 TypeSafe SDK：
 
 ```bash
 pip install typesafe-sdk

@@ -312,7 +312,7 @@ npx tsx index.ts
 
 </CodeGroup>
 
-## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。单击 `assistant` 行打开轨迹。 **消息** 选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
+## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。单击 `assistant` 行打开轨迹。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
 
 <img
     className="block dark:hidden"

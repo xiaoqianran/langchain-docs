@@ -30,7 +30,7 @@ _run_ 表示由代理执行的单个工作单元，例如调用 LLM、格式化�
 
 ### 痕迹_trace_ 是单个操作的运行集合。例如，如果用户请求触发调用模型的代理，运行工具，然后再次调用模型，则所有这些运行都属于同一跟踪。运行通过唯一的跟踪 ID 绑定到跟踪。
 
-<Note>每条轨迹最多可运行 25,000 次。一旦跟踪达到此限制，LangSmith 将拒绝您为该跟踪发送的任何其他运行。</Note>
+<Note>每个跟踪最多运行 25,000 次。一旦跟踪达到此限制，LangSmith 将拒绝您为该跟踪发送的任何其他运行。</Note>
 
 ### 话题
 
@@ -44,20 +44,16 @@ _trajectory_ 是一个平面、有序的消息列表，显示代理从开始到�
 
 在 LangSmith 中，轨迹是线程中轨迹的投影。它包含会话期间交换的人类、AI 和工具消息，每个消息按照首次出现的顺序出现一次，并删除了运行的嵌套。
 
-<Note>
-[Messages view](/langsmith/view-traces#messages-view)，在 LangSmith UI 中渲染轨迹，位于 **[beta](/langsmith/release-stages)**。
-</Note>
+[Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-[Learn how trajectories render in the Messages view](/langsmith/messages-view-integrations)。### 比较迹线、线程和轨迹
-
-|  |追踪|主题 |轨迹 |
+### 比较迹线、线程和轨迹|  |追踪 |主题 |轨迹|
 | ---| ---| ---| ---|
 |形状|运行树 |痕迹序列|扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
 |当 | 时伸手去拿它您正在调试为什么一项操作失败或运行缓慢 |您正在检查代理在回合中的行为方式，计时和嵌套完好无损 |您正在阅读会话中交换的内容，但没有执行详细信息 |
 
 <Callout type="info" icon="feather">
-使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获取见解，而无需手动挖掘数据。
+使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获得见解，而无需手动挖掘数据。
 </Callout>
 
 ### 项目
@@ -68,9 +64,9 @@ _project_ 是与单个应用程序或服务相关的所有跟踪的容器。
 
 ## 痕量富集
 
-### 反馈_反馈_允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。
+### 反馈
 
-有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
+_反馈_允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
 
 ### 标签
 
@@ -94,9 +90,9 @@ LangSmith _integrations_ 为流行的 LLM 提供商和代理框架提供自动�
 
 [Browse all integrations](/langsmith/integrations)。
 
-### 手动仪器_手动检测_允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
+### 手动仪器
 
-- `@traceable` / `traceable`：用于跟踪任何函数的装饰器
+_手动检测_允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：- `@traceable` / `traceable`：用于跟踪任何函数的装饰器
 - `trace` 上下文管理器 (Python)：包装特定的代码块
 - `RunTree` API：低级、显式跟踪构造
 

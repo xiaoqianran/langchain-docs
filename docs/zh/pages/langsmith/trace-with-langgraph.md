@@ -234,9 +234,9 @@ finalState.messages[finalState.messages.length - 1].content;
 
 **详情查看**单击跟踪，然后切换到右上角的 **详细信息** 视图。您在 LangSmith 中的踪迹应该是 [look like this](https://smith.langchain.com/public/79061a0f-c602-4012-b022-03fd46bce89e/r)。
 
-**消息查看**
+**轨迹视图**
 
-LangSmith UI 中的 **消息** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
+LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
 ## 没有LangChain
 
@@ -544,9 +544,9 @@ await graph.invoke({
 
 单击跟踪，然后切换到右上角的 **详细信息** 视图。您在 LangSmith 中的踪迹应该是 [look like this](https://smith.langchain.com/public/c3d128fa-c618-4b0e-b9d0-ccbb619440d8/r)。
 
-**消息查看**
+**轨迹视图**
 
-LangSmith UI 中的 **消息** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
+LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
 ---
 

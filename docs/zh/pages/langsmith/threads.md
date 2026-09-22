@@ -511,7 +511,7 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 
 ## 查看主题
 
-您可以通过单击任意 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、回合数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
+您可以通过单击任意 [project details](https://smith.langchain.com/tracing) 页面中的 **线程** 选项卡来查看 [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-threads) 中的线程。该表显示每个线程的第一个输入、最后一个输出、启动时间、轮数、延迟 (P50/P99)、令牌使用情况、成本和反馈分数。
 
 右侧面板显示项目的汇总统计信息，包括线程和跟踪计数、令牌使用总数和中位数、错误率和 P50/P99 延迟。
 
@@ -519,15 +519,15 @@ chatPipeline(ChatRequest(messages, getChatHistory = true))
 使用线程视图中的**[Chat](/langsmith/chat)**来分析对话线程，了解用户情绪，识别痛点并跟踪问题是否得到解决。
 </Callout>
 
-然后您可以单击进入特定线程。您可以通过三种不同的方式查看线程：- **消息**视图（测试版）：对话层。将每一轮扫描为聊天式线程，显示用户和助理消息、工具调用和子代理活动。
+然后您可以单击进入特定线程。您可以通过三种不同的方式查看线程：- **轨迹**视图：对话层。将每一轮扫描为聊天式线程，显示用户和助理消息、工具调用和子代理活动。
 - **回合**视图：每回合摘要。将每个回合视为显示其输入和输出的卡片，并具有展开/折叠和可自定义的输入/输出字段。
 - **详细信息**视图：调试层。深入研究特定运行以检查输入、输出、元数据、计时、错误和子运行。周围的线程上下文保持可见，因此您可以看到运行在更广泛的对话中的位置。
 
-使用页面顶部的按钮或键盘快捷键`M`（消息）、`T`（转弯）和`D`（详细信息）在视图之间切换。虽然“消息”视图处于测试阶段，但线程侧面板默认为“详细信息”视图。右侧面板显示线程的统计信息，包括轮数、第一次和最后一次启动时间、P50/P99 延迟以及按输入和输出令牌划分的成本细分。有关每个视图的完整描述，请参阅[View traces](/langsmith/view-traces)。
+使用页面顶部的按钮或键盘快捷键`T`（轨迹）和`D`（详细信息）在视图之间切换。线程侧面板默认为“详细信息”视图。右侧面板显示线程的统计信息，包括轮数、第一次和最后一次启动时间、P50/P99 延迟以及按输入和输出令牌划分的成本细分。有关每个视图的完整描述，请参阅[View traces](/langsmith/view-traces)。
 
 ### 查看反馈
 
-反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“消息”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
+反馈分数在项目的 **Threads** 选项卡上的线程表的 **Feedback** 列中可见。在线程中，打开“轨迹”视图，然后单击回合元数据行中的 **LLM 调用** 链接，转至该运行的“详细信息”视图，您可以在其中查看该运行的反馈。您还可以在那里看到[thread-level feedback](/langsmith/online-evaluations-multi-turn)。
 
 ### 保存线程级过滤器
 

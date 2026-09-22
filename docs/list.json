@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-09-21T15:26:33.501Z",
+  "fetchedAt": "2026-09-22T13:44:49.488Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
-  "tocLinks": 177,
+  "tocLinks": 178,
   "ok": 567,
   "failed": 0,
   "tracks": {
@@ -252,7 +252,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "annotation-queues",
-      "bytes": 19793
+      "bytes": 19795
     },
     {
       "rel": "langsmith/api-ref-control-plane.md",
@@ -441,7 +441,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-migration",
-      "bytes": 7657
+      "bytes": 8901
     },
     {
       "rel": "langsmith/byoc-onboarding.md",
@@ -522,7 +522,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "changelog",
-      "bytes": 340155
+      "bytes": 356883
     },
     {
       "rel": "langsmith/chat-evaluation.md",
@@ -1278,7 +1278,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-security",
-      "bytes": 9714
+      "bytes": 9899
     },
     {
       "rel": "langsmith/engine-self-hosted-link.md",
@@ -1296,7 +1296,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-self-hosted",
-      "bytes": 21718
+      "bytes": 21822
     },
     {
       "rel": "langsmith/engine-webhooks.md",
@@ -1665,7 +1665,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "changelog",
-      "bytes": 59642
+      "bytes": 60878
     },
     {
       "rel": "langsmith/fleet/channels.md",
@@ -2403,7 +2403,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-decision-models",
-      "bytes": 6557
+      "bytes": 5782
     },
     {
       "rel": "langsmith/llm-gateway-direct-model-access.md",
@@ -2520,7 +2520,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "log-llm-trace",
-      "bytes": 21269
+      "bytes": 21275
     },
     {
       "rel": "langsmith/log-multimodal-traces.md",
@@ -2556,7 +2556,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "ls-metadata-parameters",
-      "bytes": 26235
+      "bytes": 26265
     },
     {
       "rel": "langsmith/manage-contexts-sdk.md",
@@ -2676,15 +2676,6 @@
       "bytes": 38045
     },
     {
-      "rel": "langsmith/messages-view-integrations.md",
-      "title": "Messages view integrations",
-      "url": "https://docs.langchain.com/langsmith/messages-view-integrations",
-      "track": "langsmith",
-      "trackName": "LangSmith",
-      "group": "messages-view-integrations",
-      "bytes": 13825
-    },
-    {
       "rel": "langsmith/metric-type.md",
       "title": "How to return categorical vs numerical metrics",
       "url": "https://docs.langchain.com/langsmith/metric-type",
@@ -2700,7 +2691,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "model-configurations",
-      "bytes": 15155
+      "bytes": 17663
     },
     {
       "rel": "langsmith/monitor-deployment.md",
@@ -2772,7 +2763,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "observability-concepts",
-      "bytes": 7034
+      "bytes": 6870
     },
     {
       "rel": "langsmith/observability-llm-tutorial.md",
@@ -2790,7 +2781,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "observability-quickstart",
-      "bytes": 14965
+      "bytes": 14967
     },
     {
       "rel": "langsmith/observability-stack.md",
@@ -3735,7 +3726,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-scale",
-      "bytes": 19749
+      "bytes": 21733
     },
     {
       "rel": "langsmith/self-host-sso.md",
@@ -3960,7 +3951,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 267788
+      "bytes": 269202
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -4320,7 +4311,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "threads",
-      "bytes": 21319
+      "bytes": 21268
     },
     {
       "rel": "langsmith/trace-anthropic.md",
@@ -4365,7 +4356,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-deep-agents",
-      "bytes": 12690
+      "bytes": 12694
     },
     {
       "rel": "langsmith/trace-deepseek.md",
@@ -4536,7 +4527,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-langgraph",
-      "bytes": 18253
+      "bytes": 18261
     },
     {
       "rel": "langsmith/trace-with-livekit.md",
@@ -4710,6 +4701,15 @@
       "bytes": 20993
     },
     {
+      "rel": "langsmith/trajectory-view-integrations.md",
+      "title": "Trajectory view integrations",
+      "url": "https://docs.langchain.com/langsmith/trajectory-view-integrations",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "trajectory-view-integrations",
+      "bytes": 13728
+    },
+    {
       "rel": "langsmith/troubleshooting-studio.md",
       "title": "Studio troubleshooting",
       "url": "https://docs.langchain.com/langsmith/troubleshooting-studio",
@@ -4842,7 +4842,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "view-traces",
-      "bytes": 9468
+      "bytes": 9543
     },
     {
       "rel": "langsmith/view-usage.md",

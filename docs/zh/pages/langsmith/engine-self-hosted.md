@@ -23,7 +23,7 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 当 LSI 可用时，引擎可用：
 
 |云|地区 |状态 |
-| --- | --- | --- |
+| ---| ---| ---|
 |亚马逊AWS |美国 |可用 |
 | GCP |美国 |可用 |
 
@@ -69,7 +69,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 <Steps>
   <Step title="Request access">
-    请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
+    请联系您的客户代表或 [sales@langchain.dev](mailto:sales@langchain.dev) 并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
   </Step>
 
   <Step title="Create the interface VPC endpoint">
@@ -155,6 +155,8 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 ## 型号选择和质量
 
+Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和 GCP 上的 Vertex AI。
+
 引擎使用不同的模型，每个模型都针对其角色进行了调整，以集群问题、根据代码诊断根本原因、生成修复程序并编写验证它们的评估器。 LangChain 调整这些模型的质量和代币效率，并随着更好的模型可用而更新它们。
 
 引擎使用托管推理，而不是自带密钥设置。这可以保持引擎行为的一致性，并随着 LangChain 更新模型而改进。通过自带密钥设置，模型选择、调整和令牌效率可能会因请求而异。
@@ -190,7 +192,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
     引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。
 
     <Warning>
-    使用为引擎保留的工作区：- Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
+    使用为引擎保留的工作空间：- Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
     - 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
     - 引擎的沙箱列在该工作区中，任何有权访问它的人都可以停止。
     - 每个沙箱都运行代理生成的代码。
@@ -206,7 +208,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
     允许从集群到云的 LangSmith 智能网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。
 
     |云| `engine.intelligenceBaseUrl` |
-    | --- | --- |
+    | ---| ---|
     |亚马逊AWS | `https://beacon.aws.langchain.com/intelligence` |
     | GCP | `https://beacon.langchain.com/intelligence` |在 GCP 上，这使用已用于许可证验证和计费遥测的同一主机LangSmith，因此引擎添加了一条路径而不是新的出口目的地。
 

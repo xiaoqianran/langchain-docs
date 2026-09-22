@@ -23,8 +23,8 @@
 | **摄取队列副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
 | **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40| 16 | 16 50 | 50
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
-| **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10 CPU<br />32Gi 内存 |每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
-| **ClickHouse 设置** |单实例 |单实例| 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T45⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T46⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
+| **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10个CPU<br />32Gi内存 |每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
+| **ClickHouse 设置** |单实例 |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T69⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T70⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
 | **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
 
 
@@ -34,7 +34,7 @@
 [Default resource requests and limits](#default-resource-requests-and-limits)。
 
 超过其内存限制的容器将被 OOM 杀死，超过其 CPU 限制的容器将被 OOM 杀死。
-节流。在未对结果进行负载测试的情况下，请勿将任一值降低到低于出厂默认值。
+节流。在不对结果进行负载测试的情况下，请勿将其降低到低于出厂默认值。
 </Note>
 
 下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
@@ -62,6 +62,45 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 限制。要确认图表版本的默认值，请运行
 `helm show values langchain/langsmith`。
 
+## 默认自动缩放范围
+
+默认情况下，下表中的每个服务都禁用自动缩放。每一件运送两件
+具有相同副本范围的块：`autoscaling.hpa`，对于 Kubernetes
+HorizontalPodAutoscaler (HPA) 和 `autoscaling.keda`，用于
+[KEDA](https://keda.sh/)（Kubernetes 事件驱动的自动缩放）。启用其中之一，而不启用
+两者都有。| `values.yaml` 键 |最小副本 |最大副本数 |
+| :--- | :--- | :--- |
+| `frontend` | 1 | 5 |
+| `backend` | 2 | 6 |
+| `platformBackend` | 3 | 10 | 10
+| `ingestQueue` | 3 | 10 | 10
+| `queue` | 1 | 10 | 10
+| `playground` | 1 | 5 |
+| `aceBackend` | 1 | 5 |
+| `hostBackend` | 1 | 5 |
+| `listener` | 1 | 10 | 10
+
+HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项是 `minReplicaCount`
+和`maxReplicaCount`。 `operator` 没有自动缩放块，并且始终以其配置运行
+副本数。对于队列服务，更喜欢 KEDA，它根据队列积压进行扩展，而不是
+仅在CPU和内存上。有关更多信息，请参阅
+[KEDA autoscaling for LangSmith queues](#keda-autoscaling-for-langsmith-queues)。
+
+<Warning>
+启用自动缩放会覆盖您的副本计数。当任一块启用时
+服务，图表停止在该部署上设置 `replicas` 并且自动缩放器拥有它，因此
+您配置的 `deployment.replicas` 值不再应用。
+
+发货的最大值是通用起点，而不是与负载模式匹配的值
+[summary table](#summary)。 [High reads, high writes](#high-reads-high-writes) 呼吁
+50 个`backend` 副本、24 个`ingestQueue` 和 20 个`platformBackend`，相对于发货的最大值
+6、10 和 10。针对该负载确定部署大小，然后切换到自动缩放，运行速度为
+您配置的容量的一部分。
+</Warning>将 `maxReplicas` 设置为等于或高于负载模式的副本计数，并将 `minReplicas` 设置为
+您想要保持的稳态计数。的
+[example configurations](#example-langsmith-configurations-for-scale) 给两者一个固定的
+每个服务的副本计数和注释的自动缩放范围。
+
 ## 跟踪摄取（写入路径）
 
 在写入路径上施加负载的常见用法：
@@ -70,14 +109,14 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 - 通过 `@traceable` 包装器摄取痕迹
 - 通过`/runs/multipart`端点提交跟踪
 
-在跟踪摄取中发挥重要作用的服务：- 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
+在跟踪摄取中发挥重要作用的服务：
+
+- 平台后端服务：接收初始请求以提取跟踪并将跟踪放置在 Redis 队列上
 - Redis缓存：用于对需要持久化的痕迹进行排队
 - 摄取队列服务：保留查询痕迹
 - ClickHouse：用于跟踪的持久存储
 
-当扩展写入路径（跟踪摄取）时，监视上面列出的四个服务/资源会很有帮助。以下是一些有助于提高跟踪摄取性能的典型更改：
-
-- 如果 ClickHouse 接近资源限制，则为其提供更多资源（CPU 和内存）。
+当扩展写入路径（跟踪摄取）时，监视上面列出的四个服务/资源会很有帮助。以下是一些有助于提高跟踪摄取性能的典型更改：- 如果 ClickHouse 接近资源限制，则为其提供更多资源（CPU 和内存）。
 - 如果摄取请求需要很长时间才能响应，请增加平台后端 Pod 的数量。
 - 如果 Redis 处理跟踪的速度不够快，则增加摄取队列服务 Pod 副本。
 - 如果您发现当前 Redis 实例达到资源限制，请使用更大的 Redis 缓存。这也可能是摄取请求需要很长时间的原因。
@@ -88,16 +127,16 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 
 - 前端用户查看跟踪项目或单个跟踪
 - 用于查询跟踪信息的脚本
-- 点击 `/runs/query` 或 `/runs/<run-id>` api 端点在查询跟踪中发挥重要作用的服务：
+- 点击 `/runs/query` 或 `/runs/<run-id>` api 端点
+
+在查询跟踪中发挥重要作用的服务：
 
 - 后端服务：接收请求并向ClickHouse提交查询，然后响应请求
 - ClickHouse：痕迹的持久存储。这是请求跟踪信息时查询的主数据库。
 
-当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：
-
-- 增加后端服务 Pod 的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
+当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：- 增加后端服务 Pod 的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
 - 为 ClickHouse 提供更多资源（CPU 或内存）。 ClickHouse 可能会占用大量资源，但它应该会带来更好的性能。
-- 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议将副本数量保持在 5 个以下（从 3 个开始）。
+- 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议副本数量保持在 5 个以下（从 3 个开始）。
 
 有关如何将其转换为舵图值的更精确指导，请参阅以下示例[section](#example-langsmith-configurations-for-scale)。如果您不确定为什么您的 LangSmith 实例无法处理特定负载模式，请联系 LangChain 团队。
 
@@ -105,7 +144,9 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 
 <Note>
 在 LangSmith v0.13.0 及更高版本中可用。
-</Note>我们强烈建议您在集群上安装[KEDA](https://keda.sh/)（Kubernetes 事件驱动的自动缩放）。 KEDA 使 `queue` 和 `ingest-queue` 服务能够根据队列积压大小以及 CPU 和内存自动扩展。这可以提高资源利用率并更好地处理流量峰值。
+</Note>
+
+我们强烈建议您在集群上安装 KEDA。 KEDA 使 `queue` 和 `ingest-queue` 服务能够根据队列积压大小以及 CPU 和内存自动扩展。这可以提高资源利用率并更好地处理流量峰值。
 
 ### 安装科达
 
@@ -128,9 +169,7 @@ ingestQueue:
   autoscaling:
     keda:
       enabled: true
-```
-
-启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于在不过度配置资源的情况下处理可变跟踪摄取负载特别有用。
+```启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于处理可变跟踪摄取负载而无需过度配置资源特别有用。
 
 <Note>
 您还可以为其他服务（`backend`、`platformBackend` 等）启用 KEDA，但它们仍然只能根据 CPU 和内存进行扩展。
@@ -140,7 +179,9 @@ ingestQueue:
 
 下面我们提供一些基于预期读写负载的 LangSmith 配置示例。
 
-对于读取负载（跟踪查询）：- 低意味着大约 5 个用户同时查看跟踪（每秒大约 10 个请求）
+对于读取负载（跟踪查询）：
+
+- 低意味着大约 5 个用户同时查看跟踪（每秒大约 10 个请求）
 - 中意味着大约 20 个用户同时查看跟踪（每秒大约 40 个请求）
 - 高意味着大约 50 个用户同时查看跟踪（每秒大约 100 个请求）
 
@@ -148,10 +189,8 @@ ingestQueue:
 
 - 低意味着每秒最多提交 10 条跟踪
 - 中意味着每秒最多提交 100 条跟踪
-- 高意味着每秒最多提交 1000 条跟踪
-
-<Note>
-确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用法来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
+- 高意味着每秒最多提交 1000 条跟踪<Note>
+确切的最佳配置取决于您的使用情况和跟踪负载。使用下面的示例并结合上述信息和您的具体用法来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
 </Note>
 
 ### 低读取，低写入<a name="low-reads-low-writes"></a>
@@ -238,9 +277,9 @@ commonEnv:
     value: "0"
 ```
 
-### 高读取，低写入<a name="high-reads-low-writes"></a>您的跟踪摄取规模相对较低，但许多前端用户查询跟踪和/或拥有频繁命中 `/runs/query` 或 `/runs/<run-id>` 端点的脚本。
+### 高读取，低写入<a name="high-reads-low-writes"></a>
 
-**为此，我们强烈建议设置复制 ClickHouse 集群，以低延迟实现高读取规模。** 有关如何设置复制 ClickHouse 集群的更多指导，请参阅我们的 [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。对于此负载模式，我们建议使用 3 节点复制设置，其中集群中的每个副本应具有 8 个以上核心和 16 GB 以上内存的资源请求，以及 12 个核心和 32 GB 内存的资源限制。
+您的跟踪摄取规模相对较低，但许多前端用户查询跟踪和/或拥有频繁命中 `/runs/query` 或 `/runs/<run-id>` 端点的脚本。**为此，我们强烈建议设置复制 ClickHouse 集群，以低延迟实现高读取规模。** 有关如何设置复制 ClickHouse 集群的更多指导，请参阅我们的 [external ClickHouse doc](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。对于此负载模式，我们建议使用 3 节点复制设置，其中集群中的每个副本应具有 8 个以上核心和 16 GB 以上内存的资源请求，以及 12 个核心和 32 GB 内存的资源限制。
 
 为此，我们推荐这样的配置：
 
@@ -289,7 +328,7 @@ clickhouse:
 
 ### 中等读取，中等写入<a name="medium-reads-medium-writes"></a>
 
-这是一个很好的全方位配置，应该能够处理 LangSmith 的大多数使用模式。在内部测试中，此配置允许我们扩展到每秒摄取 100 个跟踪和每秒 40 个读取请求。
+这是一个很好的全面配置，应该能够处理 LangSmith 的大多数使用模式。在内部测试中，此配置允许我们扩展到每秒摄取 100 个跟踪和每秒 40 个读取请求。
 
 为此，我们推荐这样的配置：
 
@@ -440,7 +479,7 @@ commonEnv:
 ```
 
 <Note>
-确保 Kubernetes 集群配置了足够的资源以扩展到建议的大小。部署后，Kubernetes 集群中的所有 Pod 都应处于 `Running` 状态。 Pod 陷入 `Pending` 可能表明您已达到节点池限制或需要更大的节点。此外，请确保集群上部署的任何入口控制器都能够处理所需的负载，以防止出现瓶颈。
+确保 Kubernetes 集群配置了足够的资源以扩展到建议的大小。部署后，Kubernetes 集群中的所有 Pod 都应处于 `Running` 状态。 Pod 陷入`Pending` 可能表明您已达到节点池限制或需要更大的节点。此外，请确保集群上部署的任何入口控制器都能够处理所需的负载，以防止出现瓶颈。
 </Note>
 
 ---

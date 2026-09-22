@@ -1467,12 +1467,6 @@
           "rel": "langsmith/mask-inputs-outputs.md"
         }
       ],
-      "messages-view-integrations": [
-        {
-          "title": "Messages view integrations",
-          "rel": "langsmith/messages-view-integrations.md"
-        }
-      ],
       "metric-type": [
         {
           "title": "How to return categorical vs numerical metrics",
@@ -2671,6 +2665,12 @@
         {
           "title": "How to evaluate your agent with trajectory evaluations",
           "rel": "langsmith/trajectory-evals.md"
+        }
+      ],
+      "trajectory-view-integrations": [
+        {
+          "title": "Trajectory view integrations",
+          "rel": "langsmith/trajectory-view-integrations.md"
         }
       ],
       "troubleshooting-studio": [

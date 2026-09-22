@@ -76,7 +76,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 验证
 
-对于 SemIf，要求用户运行 [SemIf request example](/langsmith/llm-gateway-decision-models#call-semif)。 `200` 响应确认模型访问、API 密钥和角色权限。对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
+对于 SemIf，要求用户运行 [SemIf request example](/langsmith/llm-gateway-decision-models#quickstart)。 `200` 响应确认模型访问、API 密钥和角色权限。对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
 
 ## 后续步骤
 

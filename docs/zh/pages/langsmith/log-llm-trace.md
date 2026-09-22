@@ -8,7 +8,7 @@
 
 功能齐全的 LLM 跟踪有四个要求：
 
-|要求 |该怎么办 |启用|
+|要求|该怎么办 |启用|
 |---|---|---|
 | 1. 设置[⟦T10⟧](/langsmith/run-data-format#run-types) |通过 `run_type="llm"` 至 `@traceable` | LLM 特定渲染、代币/成本显示 |
 | 2. 格式化输入/输出|使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染、Playground 支持 |
@@ -30,7 +30,7 @@
   包含对话内容的消息列表。
 
     <ParamField path="role" type="string" required>
-  标识消息类型。其中之一：<code>系统</code> | <code>推理</code> | <code>用户</code> | <code>助理</code> | <code>工具</code>
+  标识消息类型。其中之一：<code>系统</code>| <code>推理</code> | <code>用户</code> | <code>助理</code> | <code>工具</code>
 </ParamField>
 
     <ParamField path="content" type="array" required>
@@ -155,7 +155,7 @@
             该工具调用的唯一标识符。
           </ParamField>
         <ParamField path="status" type="string" required>
-            服务器端工具的执行状态。其中之一：<code>成功</code> | <code>错误</code>。
+            服务器端工具的执行状态。其中之一：<code>成功</code>| <code>错误</code>。
           </ParamField>
           <ParamField path="output">
             已执行工具的输出。
@@ -509,7 +509,7 @@ list(
 LangSmith 需要在 `metadata` 中设置 `ls_model_name` 来识别模型并计算自定义 LLM 跟踪的成本。如果没有它，令牌计数可能仍会被记录，但不会估计成本。
 </Check>
 
-要了解有关如何使用 `metadata` 字段的更多信息，请参阅 [Add metadata and tags](/langsmith/add-metadata-tags) 指南。要自定义自定义代理运行在消息视图中的显示方式，请参阅 [Customize the Messages view](/langsmith/view-traces#customize-the-messages-view)。
+要了解有关如何使用 `metadata` 字段的更多信息，请参阅 [Add metadata and tags](/langsmith/add-metadata-tags) 指南。要自定义自定义代理运行在轨迹视图中的显示方式，请参阅 [Customize the Trajectory view](/langsmith/view-traces#customize-the-trajectory-view)。
 
 ## 提供代币和费用信息
 
@@ -520,7 +520,7 @@ LangSmith 需要在 `metadata` 中设置 `ls_model_name` 来识别模型并计�
 
 ### 支持的 `usage_metadata` 字段
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 |---|---|---|
 | `input_tokens` | `int` |输入/提示令牌总数 |
 | `output_tokens` | `int` |总输出/完成代币 |

@@ -150,7 +150,7 @@ print(result)
 
 生成的跟踪包含多个嵌套跨度，使您可以在 LangSmith UI 中遵循代理的规划、计算步骤和解释流程。
 
-### 消息查看LangSmith UI 中的 **消息** 视图显示用户和客服人员之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
+### 轨迹视图LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
 ### 按子代理过滤
 
@@ -208,10 +208,10 @@ uv add langsmith
 
 此示例调用同一深度代理两次：
 
-- 第一次调用未被跟踪，因为它在 `tracing_context` 之外运行。
+- 第一次调用是未被跟踪的，因为它在 `tracing_context` 之外运行。
 - 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内运行。
 
-您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 启用整个流程的全局跟踪：
+您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 对整个流程启用全局跟踪：
 
 ```python
 from typing import Dict, Any, List
