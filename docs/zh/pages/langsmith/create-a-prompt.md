@@ -72,7 +72,7 @@ Playground 的左侧面板是提示的可编辑视图。
 有关一般提示模板格式和两种语法示例的更多详细信息，请参阅 [Prompt template format](/langsmith/prompt-template-format) 指南。
 </Callout>
 
-### 结构化输出将输出模式添加到提示中将以结构化格式获得输出。了解更多关于[structured output](/langsmith/prompt-engineering-concepts#structured-output)的信息。
+### 结构化输出将输出模式添加到提示中将会获得结构化格式的输出。了解更多关于[structured output](/langsmith/prompt-engineering-concepts#structured-output)的信息。
 
 ### 工具
 
@@ -86,21 +86,25 @@ Playground 的左侧面板是提示的可编辑视图。
 
 要运行提示，请使用 Playground 右侧面板顶部的 <Icon icon="player-play"/> **开始**。
 
+## 设置模型后备
+
+要在提示的主要模型失败时使用备用模型，[configure per-prompt fallbacks through LLM Gateway](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt)。选择 **LangSmith Gateway** 作为提供者，并使用 `custom/<my_config_name>` 引用已保存的模型配置。
+
 ## 保存您的提示
 
-要保存提示，请单击“**保存**”按钮并为提示命名。
+要保存提示，请单击 **保存** 按钮并为提示命名。
 
-您在游乐场设置中选择的模型和配置将随提示一起保存。当您重新打开提示时，模型和配置将自动从保存的版本加载。
-
-<Check>
-第一次创建公共提示时，系统会要求您设置 LangChain 集线器句柄。您的所有公共提示都将链接到此句柄。在共享工作区中，将为整个工作区设置此句柄。
+您在游乐场设置中选择的模型和配置将随提示一起保存。当您重新打开提示时，模型和配置将自动从保存的版本加载。<Check>
+第一次创建公共提示时，系统会要求您设置 LangChain 集线器句柄。您的所有公共提示都将链接到此句柄。在共享工作区中，将为整个工作区设置该句柄。
 </Check>
 
 ## 查看提示
 
 创建提示后，您可以在左侧边栏中的 **提示** 下查看提示表。
 
-## 添加元数据要将元数据添加到提示中，请单击页面右上角的 <Icon icon="dots-vertical"/> **更多** 图标，然后从下拉列表中单击 <Icon icon="pencil"/> **更新元数据**。这将带您进入一个页面，您可以在其中添加有关提示的其他信息，包括说明和自述文件。
+## 添加元数据
+
+要将元数据添加到提示中，请单击页面右上角的 <Icon icon="dots-vertical"/> **更多** 图标，然后从下拉列表中单击 <Icon icon="pencil"/> **更新元数据**。这将带您进入一个页面，您可以在其中添加有关提示的其他信息，包括说明和自述文件。
 
 # 后续步骤
 

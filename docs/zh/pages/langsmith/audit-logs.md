@@ -96,7 +96,7 @@ curl -G \
 | `resources` |受操作影响的资源的 UUID 列表（例如，更新的角色、创建的工作区）。 |
 | `metadata.uid` |此审核日志事件的唯一标识符。 |
 | `unmapped.original_audit_log` |完整的LangSmith本机审计日志记录，包括`organization_id`和`workspace_id`。 |
-| `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` |拥有操作所操作资源的成员的 UUID，用于记录该资源的操作，例如撤销或删除个人访问令牌。与`actor.user.uid`不同的值表示管理员对另一个成员的资源进行了操作。 |
+| `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` |拥有操作所操作资源的成员的 UUID，用于记录该资源的操作，例如停用或删除个人访问令牌。与`actor.user.uid`不同的值表示管理员对另一个成员的资源进行了操作。 |
 
 ## 转发到外部系统
 
@@ -124,7 +124,7 @@ curl -G \
 | **过滤视图** | `create_filter_view`、`update_filter_view`、`delete_filter_view`、`rename_filter_view` |
 | **提示提交和中心** | `create_commit`、`create_directory_commit`、`delete_directory`、`create_hub_environment`、`update_hub_environment`、`delete_hub_environment` |
 | **提示画布快速操作** | `create_prompt_canvas_quick_action`、`update_prompt_canvas_quick_action`、`delete_prompt_canvas_quick_action` |
-| **提示 webhooks** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
+| **提示 webhook** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
 | **部署** | `create_deployment`、`update_deployment`、`delete_deployment` |
 | **批量出口** | `create_bulk_export`、`cancel_bulk_export`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`list_bulk_exports`、`create_bulk_export_destination`、`update_bulk_export_destination`、 `read_bulk_export_destination`、`list_bulk_export_destinations` || **资源标签** | `create_tag_key`、`update_tag_key`、`delete_tag_key`、`create_tag_value`、`update_tag_value`、`delete_tag_value`、`create_tagging`、`delete_tagging` |
 | **访问政策** | `create_access_policy`、`delete_access_policy`、`list_access_policies`、`read_access_policy`、`attach_access_policies`、`read_role_access_policies` |
@@ -135,7 +135,7 @@ curl -G \
 | **锻造配置** | `create_forge_configuration`、`update_forge_configuration`、`delete_forge_configuration`、`trigger_forge_configuration` |
 | **洞察工作** | `create_insights_job`、`update_insights_job`、`delete_insights_job`、`create_insights_job_config`、`update_insights_job_config`、`delete_insights_job_config`、`generate_insights_job_config`、`get_insights_job_runs` |
 | **队列使用限制和 webhook** | `create_fleet_usage_limit`、`update_fleet_usage_limit`、`delete_fleet_usage_limit`、`create_fleet_webhook`、`update_fleet_webhook`、`delete_fleet_webhook`、`test_fleet_webhook` |
-| **沙盒代理配置文件** | `create_sandbox_proxy_profile`、`update_sandbox_proxy_profile`、`delete_sandbox_proxy_profile` |
+| **沙箱代理配置文件** | `create_sandbox_proxy_profile`、`update_sandbox_proxy_profile`、`delete_sandbox_proxy_profile` |
 | **游乐场设置** | `create_playground_settings`、`update_playground_settings`、`delete_playground_settings` |
 | **自托管许可** | `create_self_hosted_customer`、`update_self_hosted_customer`、`mint_self_hosted_license`、`update_self_hosted_license` |
 | **功能模型默认值** | `upsert_feature_default_model`、`delete_feature_default_model`、`upsert_feature_disabled_model`、`delete_feature_disabled_model` |

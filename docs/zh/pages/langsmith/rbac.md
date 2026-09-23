@@ -43,7 +43,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 - `organization:read` - 对所有组织信息的读取权限
 - `organization:pats:create` - 创建组织级别[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - `organization:pats:read` - 查看每个组织成员的个人访问令牌
-- `organization:pats:manage` - 撤销或删除任何组织成员的个人访问令牌
+- `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌
 
 有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
@@ -53,10 +53,10 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 - 管理[billing](/langsmith/billing)和订阅计划
 - 创建和删除[workspaces](/langsmith/set-up-hierarchy)
 - 邀请和删除组织成员
-- 查看、撤销和删除任何会员的[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
+- 查看、停用、重新激活和删除任何会员的[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - 为成员分配组织和工作区角色
 - 创建和管理[custom roles](#custom-roles)
-- 配置RBAC和ABAC（基于属性的访问控制）策略
+- 配置 RBAC 和 ABAC（基于属性的访问控制）策略
 - 查看组织[usage](/langsmith/usage-and-billing#usage-limits)和分析
 - 查看[audit logs](/langsmith/audit-logs)（企业）
 
@@ -69,7 +69,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 - `organization:read` - 对所有组织信息的读取权限
 - `organization:pats:create` - 创建个人访问令牌
 - `organization:pats:read` - 查看每个组织成员的个人访问令牌
-- `organization:pats:manage` - 撤销或删除任何组织成员的个人访问令牌
+- `organization:pats:manage` - 停用、重新激活或删除任何组织成员的个人访问令牌
 
 有关所需权限以及可以执行这些权限的操作和角色的完整列表，请参阅[Organization and workspace reference](/langsmith/organization-workspace-operations)。
 
@@ -77,7 +77,7 @@ LangSmith 的 RBAC 系统管理工作空间内的用户权限。 RBAC 允许您�
 - 创建和管理[workspaces](/langsmith/set-up-hierarchy#set-up-a-workspace)
 - 邀请组织成员（除组织管理员之外的所有角色）
 - 管理非管理员组织成员（修改和删除组织用户、查看者和操作员）
-- 查看、撤销和删除任何会员的[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
+- 查看、停用、重新激活和删除任何会员的[personal access tokens](/langsmith/administration-overview#personal-access-tokens-pats)
 - 为成员分配工作空间角色
 - 创建工作区范围的服务密钥和服务帐户
 - 查看组织[usage](/langsmith/usage-and-billing#usage-limits)和分析
@@ -224,7 +224,7 @@ RBAC（基于角色的访问控制）是一项仅适用于 [Enterprise](https://
 某些权限在用于自定义角色时提供精细控制：- `workspaces:manage` **不** 包含管理工作区成员的功能。要允许自定义角色添加、删除或更新工作区成员，您必须显式授予 `workspaces:manage-members`。内置的工作区管理员角色自动包含这两种权限。
 - `workspaces:manage-model-configs` 控制创建、编辑或删除 [model configurations](/langsmith/model-configurations)（包括附加 [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）以及更改每个模型可用的 LangSmith 功能的能力。它与 `workspaces:manage` 是分开的——在应该能够配置模型的自定义角色上显式授予它。内置的工作区管理员角色自动包含它。
 - `workspaces:manage-keys` 控制创建和删除工作区 API 密钥（工作区范围内的服务密钥）的能力。它与 `workspaces:manage` 是分开的——在自定义角色上显式授予它，这些角色应该能够管理 API 密钥，而无需完整的工作区管理。为了防止权限升级，由不具有 `workspaces:manage` 的用户创建的密钥不能被授予比该用户拥有的权限更多的权限，也不能被分配组织标记为受限的角色。内置的工作区管理员角色自动包含它。- `bulk-exports:read` 和 `bulk-exports:manage` 涵盖批量导出端点（列出、创建、取消导出和管理目的地）。在自定义角色中使用它们来授予最低权限的批量导出访问权限，而无需 `workspaces:manage`。内置工作区管理员角色包括 `bulk-exports:manage`，所有具有读取功能的角色自动包括 `bulk-exports:read`。
-- `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
+- `projects:increase-trace-tier`和`projects:decrease-trace-tier`是独立的，可以单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
 - `projects:update` 仅涵盖元数据更新（名称、描述、标签），并且 **不** 授予更改跟踪保留的能力。要允许自定义角色修改跟踪层，您必须显式授予 `projects:increase-trace-tier`、`projects:decrease-trace-tier` 或两者。
 
 ---

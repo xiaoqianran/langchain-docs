@@ -40,7 +40,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
 </Steps>
 
 <Note>
-    Deep Agents Windows 上不正式支持代码。 Windows用户可以尝试在[Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)下运行它。
+    Deep Agents Windows 上不正式支持代码。 Windows用户可以尝试在[Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)下运行。
 </Note>
 
 ## 交互模式
@@ -103,12 +103,13 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
     </Accordion>
 
     <Accordion title="Keyboard shortcuts" icon="keyboard">
-        **一般**|快捷方式 |行动|
+        **一般**|快捷方式|行动|
         |-|-|
         | `Enter` |提交提示 |
         | `Shift+Enter`、`Ctrl+J`、`Alt+Enter` 或 `Ctrl+Enter` |插入换行符 |
         | `@filename` |自动完成文件并注入内容 |
-        | `Shift+Tab` |周期[approval modes](/oss/deepagents/code/approval-modes) |
+        | `@@query` |搜索最近的主题并插入主题引用 |
+        | `Shift+Tab` |循环[approval modes](/oss/deepagents/code/approval-modes)|
         | `Ctrl+G` |在外部编辑器中打开提示 |
         | `Ctrl+T` |当子代理面板存在时，展开或折叠子代理面板 |
         | `Ctrl+N` |面板打开时查看待处理的通知 |
@@ -121,7 +122,7 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
 
         聊天输入使用标准的 readline 样式绑定：
 
-        |快捷方式 |行动|
+        |快捷方式|行动|
         |-|-|
         | `Ctrl+A` 或 `Home` |将光标移至行首 |
         | `Ctrl+E` 或 `End` |将光标移至行尾 |
@@ -132,12 +133,16 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
 
         **搜索提示历史记录**提示历史记录搜索可让您查找并重复使用以前提交的提示，而无需离开聊天输入。按 `Ctrl+R` 打开计算机上存储的提示的内联搜索。
 
+        **参考之前的帖子**
+
+        在聊天输入中键入`@@`，可按初始提示、线程 ID、代理、分支或工作目录搜索最近的线程。选择一个结果以插入 `@@(thread:<thread-id>)` 参考。 Deep Agents 当上下文与您的请求相关时，代码可以检查引用的对话。
+
+        在`@@`后添加文本以过滤结果。当建议打开时，按 `Ctrl+R` 浏览具有相同搜索的所有线程。在完整线程选择器中，按`Ctrl+C`复制所选线程ID。
+
         <Note>
             **macOS `Cmd+Left` / `Cmd+Right` / `Cmd+Delete`**
 
-            终端模拟器会在 `Cmd` 修改的密钥到达正在运行的应用程序之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。
-
-            - **Ghostty：** 开箱即用。默认情况下，`Cmd+Left`、`Cmd+Right` 和 `Cmd+Delete` 会转换为 `Ctrl+A`、`Ctrl+E` 和 `Ctrl+U`。
+            终端模拟器会在 `Cmd` 修改的密钥到达正在运行的应用程序之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。- **Ghostty：** 开箱即用。默认情况下，`Cmd+Left`、`Cmd+Right` 和 `Cmd+Delete` 会转换为 `Ctrl+A`、`Ctrl+E` 和 `Ctrl+U`。
             - **iTerm2：** 默认情况下不受约束。在 **设置 > 配置文件 > 按键 > 按键映射** 下添加以下内容作为 `Send Text with vim special chars`：
                 - `Cmd+Left`→`\x01`（Ctrl+A）
                 - `Cmd+Right` → `\x05` (Ctrl+E)
@@ -149,13 +154,15 @@ Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/qui
     </Accordion>
 </AccordionGroup>
 
-### 检查上下文窗口的使用情况运行 `/context` 打开当前模型上下文窗口使用情况的颜色编码报告。该报告显示模型的上下文限制、已使用的令牌、剩余容量以及对话和系统提示以及这些值可用时的工具之间的细分。
+### 检查上下文窗口的使用情况
 
-提供商报告的总数仍然与当地对话的估计不同。当提供商总数不可用时，报告会将对话计数标记为估计值，并将总使用量标记为不可用。当您想要在对话记录中使用文本摘要时，请使用`/tokens`。
+运行 `/context` 打开当前模型上下文窗口使用情况的颜色编码报告。该报告显示模型的上下文限制、已使用的令牌、剩余容量以及对话和系统提示以及这些值可用时的工具之间的细分。提供商报告的总数仍然与当地对话的估计不同。当提供商总数不可用时，报告会将对话计数标记为估计值，并将总使用量标记为不可用。当您想要在对话记录中使用文本摘要时，请使用`/tokens`。
 
 当使用量增长快于预期时，运行 `/context-doctor` 将令牌归因于每个注入的组件：基本系统提示、内存文件、技能索引、内置工具模式和 MCP 工具模式。要确认代理当前可以调用哪些工具，请运行`/tools`。对于线程的运行成本估算，运行`/cost`；状态栏中出现相同的数字。参见[Diagnose and audit a session](/oss/deepagents/code/cli-reference#diagnose-and-audit-a-session)。
 
-### 外部编辑器按 `Ctrl+G` 或键入 `/editor` 在外部编辑器中编写提示。 Deep Agents 代码先检查 `$VISUAL`，然后检查 `$EDITOR`，然后回退到 `vi` (macOS/Linux) 或 `notepad` (Windows)。 GUI 编辑器（VS Code、Cursor、Zed 等）会自动接收 `--wait` 标志，因此 Deep Agents 代码会阻塞，直到您关闭文件。
+### 外部编辑器
+
+按 `Ctrl+G` 或键入 `/editor` 在外部编辑器中编写提示。 Deep Agents 代码先检查 `$VISUAL`，然后检查 `$EDITOR`，然后回退到 `vi` (macOS/Linux) 或 `notepad` (Windows)。 GUI 编辑器（VS Code、Cursor、Zed 等）会自动接收 `--wait` 标志，因此 Deep Agents 代码会阻塞，直到您关闭文件。
 
 ```bash
 # Set in your shell profile (~/.zshrc, ~/.bashrc, etc.)
@@ -169,9 +176,7 @@ export EDITOR="nvim"    # Terminal fallback
 
 ```bash
 dcode -n "Write a Python script that prints hello world"
-```
-
-每个非交互式运行都会启动一个新线程 - 调用之间不会携带对话历史记录。基于文件的状态（内存、技能、配置）仍然存在。
+```每个非交互式运行都会启动一个新线程 - 调用之间不会携带对话历史记录。基于文件的状态（内存、技能、配置）仍然存在。
 
 您还可以通过 stdin 管道输入。当输入通过管道传输时，Deep Agents代码会自动以非交互方式运行：
 
@@ -188,17 +193,17 @@ git diff | dcode --skill code-review -n 'summarize changes'
     最大管道输入大小为 10 MiB。
 </Note>
 
-默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如 `-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。<AccordionGroup>
+默认情况下，在非交互模式下禁用 Shell 执行。使用 `-S`/`--shell-allow-list` 启用特定命令（例如，`-S "pytest,git,make"`），使用 `recommended` 实现安全默认值，或使用 `all` 允许任何命令。
+
+<AccordionGroup>
     <Accordion title="Cap turn count" icon="gauge">
-        CI/CD 管道中长时间运行或行为不当的代理可能会无限期循环。 `--max-turns N` 为操作员提供了硬性上限，而无需触及 SDK 内部结构：
+        CI/CD 管道中长时间运行或行为不当的代理可能会无限期循环。 `--max-turns N` 为操作员提供了一个硬上限，而无需触及 SDK 内部：
 
         ```bash
         dcode -n "fix the failing tests" --max-turns 10
         ```
 
-        `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124 退出（与 GNU `timeout` 匹配），因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
-
-        对于基于时间的限制而不是（或除此之外）回合计数限制，请参阅[Cap wall-clock time with ⟦T146⟧](#non-interactive-mode-and-piping)。
+        `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124（匹配 GNU `timeout`）退出，因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。对于基于时间的限制而不是（或除此之外）回合数限制，请参阅[Cap wall-clock time with ⟦T152⟧](#non-interactive-mode-and-piping)。
     </Accordion>
 
     <Accordion title="Cap wall-clock time" icon="clock">
@@ -212,8 +217,10 @@ git diff | dcode --skill code-review -n 'summarize changes'
         dcode -n "refactor auth module" --timeout 300 --max-turns 20
         ```
 
-        到期时，代理将被取消，流程以代码 124 退出，与`--max-turns` 使用的代码相同，因此 CI 可以统一处理两个预算命中。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
-    </Accordion><Accordion title="Clean output and buffering" icon="buffer">
+        到期时，代理将被取消，流程会以代码 124 退出，与`--max-turns` 使用的代码相同，因此 CI 可以统一处理两个预算命中。需要 `-n` 或管道标准输入；否则退出并返回代码 2。
+    </Accordion>
+
+    <Accordion title="Clean output and buffering" icon="buffer">
         使用 `-q` 进行干净的输出，适合通过管道传输到其他命令，并使用 `--no-stream` 在写入标准输出之前缓冲完整响应（而不是流式传输）：
 
         ```bash
@@ -244,9 +251,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
     `-S all`（或`--shell-allow-list all`）允许代理执行任意 shell 命令，无需人工确认。
 </Warning>
 
-## 使用 LangSmith 进行追踪
-
-启用[LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=oss-deepagents-code-quickstart)跟踪以查看LangSmith项目中的代理操作、工具调用和决策。
+## 使用 LangSmith 进行跟踪启用[LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=oss-deepagents-code-quickstart)跟踪以查看LangSmith项目中的代理操作、工具调用和决策。
 
 运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪在下次启动时启用，并在会话之间持续存在。有关凭证管理器的详细信息，请参阅[Provider credentials](/oss/deepagents/code/credentials#use-%2Fauth-recommended)。
 
@@ -256,9 +261,11 @@ git diff | dcode --skill code-review -n 'summarize changes'
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
 DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Code's own traces; defaults to "deepagents-code"
-```使用 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 来命名接收 Deep Agents 代码自身跟踪的项目。它的作用域为 Deep Agents 代码，因此它不受项目的 `.env` 中设置的 `LANGSMITH_PROJECT` 的影响（它路由该项目的应用程序跟踪；请参阅下面的 **将代理跟踪与应用程序跟踪分开**）。
+```
 
-要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。完整装载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
+使用 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 来命名接收 Deep Agents 代码自身跟踪的项目。它的作用域为 Deep Agents 代码，因此它不受项目的 `.env` 中设置的 `LANGSMITH_PROJECT` 的影响（它路由该项目的应用程序跟踪；请参阅下面的 **将代理跟踪与应用程序跟踪分开**）。
+
+要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。满载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
 
 对于 CI、无头运行或临时覆盖，请改为设置 shell 环境变量。 Shell 导出始终优先于 `.env` 值：
 
@@ -267,9 +274,7 @@ export LANGSMITH_TRACING=false
 ```
 
 <Accordion title="Separate agent traces from app traces">
-    Deep Agents 代码可以产生两种LangSmith 痕迹：
-
-    - `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
+    Deep Agents 代码可以产生两种LangSmith 痕迹：- `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
     - `Shell-command traces` 是Deep Agents 代码在 shell 中为您运行的代码发出的跟踪，例如测试、脚本或本地 LangGraph 应用程序。
 
     要将Deep Agents代码自己的跟踪发送到专用项目，请设置`DEEPAGENTS_CODE_LANGSMITH_PROJECT`：
@@ -279,7 +284,7 @@ export LANGSMITH_TRACING=false
     DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code
     ```
 
-    然后为您的应用程序跟踪配置`LANGSMITH_PROJECT`：
+    然后为您的应用程序跟踪配置 `LANGSMITH_PROJECT`：
 
     ```bash title=".env"
     LANGSMITH_PROJECT=customer-support-agent
@@ -289,9 +294,11 @@ export LANGSMITH_TRACING=false
 
     ```bash
     uv run pytest tests/test_escalation_flow.py
-    ```如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
+    ```
 
-    您还可以使用 [⟦T171⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
+    如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
+
+    您还可以使用 [⟦T177⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
 </Accordion>
 
 <Accordion title="Dual-write traces to a second project">
@@ -302,16 +309,14 @@ export LANGSMITH_TRACING=false
     ```
 
     当设置和跟踪处于活动状态时，每个代理运行都会写入主项目（默认为`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和您在此处命名的项目。保持变量未设置，以像往常一样写入单个项目。
-</Accordion>
-
-配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
+</Accordion>配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
 
 ```sh
 ✓ LangSmith tracing: 'my-project'
 ```
 
 <Tip>
-我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 另请参阅
@@ -323,7 +328,9 @@ export LANGSMITH_TRACING=false
 - [Providers](/oss/deepagents/code/providers)
 - [Memory and skills](/oss/deepagents/code/memory-and-skills)
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
     通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
 </Callout>

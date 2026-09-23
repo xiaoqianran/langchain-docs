@@ -261,6 +261,12 @@
           "rel": "langsmith/byoc-billing.md"
         }
       ],
+      "byoc-byoiam": [
+        {
+          "title": "Bring your own IAM roles (AWS)",
+          "rel": "langsmith/byoc-byoiam.md"
+        }
+      ],
       "byoc-byovpc": [
         {
           "title": "Bring your own VPC on AWS",

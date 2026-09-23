@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-22T13:44:49.488Z",
+  "fetchedAt": "2026-09-23T13:56:36.129Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 178,
-  "ok": 567,
+  "ok": 568,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 461
+      "count": 462
     },
     "fleet": {
       "name": "Fleet",
@@ -126,7 +126,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "administration-overview",
-      "bytes": 36056
+      "bytes": 36280
     },
     {
       "rel": "langsmith/agent-auth.md",
@@ -315,7 +315,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "audit-logs",
-      "bytes": 24990
+      "bytes": 24994
     },
     {
       "rel": "langsmith/auth.md",
@@ -415,6 +415,15 @@
       "trackName": "LangSmith",
       "group": "byoc-billing",
       "bytes": 4923
+    },
+    {
+      "rel": "langsmith/byoc-byoiam.md",
+      "title": "Bring your own IAM roles (AWS)",
+      "url": "https://docs.langchain.com/langsmith/byoc-byoiam",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "byoc-byoiam",
+      "bytes": 4680
     },
     {
       "rel": "langsmith/byoc-byovpc.md",
@@ -783,7 +792,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "create-a-prompt",
-      "bytes": 5684
+      "bytes": 6004
     },
     {
       "rel": "langsmith/create-account-api-key.md",
@@ -792,7 +801,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "create-account-api-key",
-      "bytes": 6532
+      "bytes": 8086
     },
     {
       "rel": "langsmith/create-few-shot-evaluators.md",
@@ -2421,7 +2430,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-fallbacks",
-      "bytes": 5337
+      "bytes": 7404
     },
     {
       "rel": "langsmith/llm-gateway-header-policies.md",
@@ -2880,7 +2889,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "organization-workspace-operations",
-      "bytes": 38199
+      "bytes": 38233
     },
     {
       "rel": "langsmith/otel-gateway-trace-redaction.md",
@@ -3258,7 +3267,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "rbac",
-      "bytes": 17041
+      "bytes": 17107
     },
     {
       "rel": "langsmith/read-local-experiment-results.md",
@@ -4923,7 +4932,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 40037
+      "bytes": 43091
     },
     {
       "rel": "oss/deepagents/code/configuration.md",
@@ -5022,7 +5031,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 20253
+      "bytes": 20890
     },
     {
       "rel": "oss/deepagents/code/remote-sandboxes.md",
