@@ -72,13 +72,13 @@
 
 ### 尺寸
 
-Serverless 和 Dedicated 均提供三种大小：小型、中型和大型。每个大小都会设置为部署配置的计算和内存，较大的大小会自动缩放到更多副本。下表显示了每个尺寸包含的资源：|资源 |无服务器 S |无服务器 M |无服务器 L |专用S|专用M|专用L|
+Serverless 和 Dedicated 均提供三种大小：小型、中型和大型。每个大小都会设置为部署配置的计算和内存，较大的大小会自动缩放到更多副本。下表显示了每个尺寸包含的资源：|资源|无服务器 S |无服务器 M |无服务器 L |专用S|专用M|专用L|
 |---|---|---|---|---|---|---|
 |运行时计算 (vCPU) | 1 | 2 | 4 | 3 | 5 | 10 | 10
 |运行时内存 (GiB) | 2 | 5 | 9 | 6 | 12 | 12 24 |
 |数据库计算 (vCPU) | — | — | — | 1 | 2 | 4 |
 |数据库内存 (GiB) | — | — | — | 4 | 8 | 16 | 16
-|存储|共享|共享|共享|自动缩放|自动缩放|自动缩放|
+|存储|共享|共享|共享|自动缩放|自动缩放 |自动缩放 |
 
 <Note>
 运行时计算和内存是跨部署容器调配的总 vCPU 和内存，四舍五入到最接近的整体单位。无服务器部署使用共享的多租户数据库，因此没有专用的数据库资源。专用存储是一种随着使用量而增长的自动缩放磁盘。
@@ -106,7 +106,7 @@ Serverless 和 Dedicated 均提供三种大小：小型、中型和大型。每�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

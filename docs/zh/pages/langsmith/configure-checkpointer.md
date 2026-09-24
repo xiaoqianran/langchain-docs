@@ -12,8 +12,8 @@
 
 ## 可用的后端
 
-|后端|存储|配置|使用案例|
-|--------|---------|----------------|---------|
+|后端 |存储|配置|使用案例 |
+|--------|---------|----------------|----------|
 | `default` | PostgreSQL |无（内置）|标准部署 |
 | `mongo` | MongoDB | `langgraph.json` 或 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量 |与现有 MongoDB 基础设施的团队 |
 | `custom` |用户提供| `langgraph.json` |自定义存储后端（请参阅[custom checkpointer](/langsmith/custom-checkpointer)）|
@@ -28,7 +28,7 @@ PostgreSQL 是默认的检查点后端。无需配置。要使用自定义 Postg
 需要代理服务器 v0.7.64 或更高版本。
 </Info>
 
-### 先决条件- MongoDB **副本集**（不支持独立`mongod`）。这可以是自我管理的副本集、`mongos`路由器或托管服务（例如 MongoDB Atlas）。
+### 先决条件- MongoDB **副本集**（不支持独立 `mongod`）。这可以是自我管理的副本集、`mongos`路由器或托管服务（例如 MongoDB Atlas）。
 - 在路径中包含数据库名称的连接 URI（例如，`/langgraph`）。
 
 ### 选择后端
@@ -167,7 +167,7 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-checkpointer.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

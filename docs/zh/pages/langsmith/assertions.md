@@ -42,7 +42,7 @@
       alt="Annotation queue run editor with assertions added in the side panel and the Outputs panel showing a read-only preview of those assertions."
     />您可以随时继续编辑运行的**输入**，例如在保存示例之前优化提示。当任何断言保留时，**输出**面板保持锁定到断言预览。
 
-1. 单击侧面板页脚中的 **添加到数据集和下一步**（键盘快捷键：在 macOS 上按 <kbd>⌘ Enter</kbd> 或在其他地方按 <kbd>Ctrl Enter</kbd>）。 LangSmith 将当前运行添加到队列的 [default dataset](/langsmith/annotation-queues#basic-details)，或者如果未配置默认值，则提示您选择一个。然后队列会将您移至下一次运行。
+1. 单击侧面板页脚中的“**添加到数据集和下一步**”（键盘快捷键：在 macOS 上按 <kbd>⌘ Enter</kbd> 或在其他地方按 <kbd>Ctrl Enter</kbd>）。 LangSmith 将当前运行添加到队列的 [default dataset](/langsmith/annotation-queues#basic-details)，或者如果未配置默认值，则提示您选择一个。然后队列会将您移至下一次运行。
 
 保存示例的 `outputs` 字段存储为 JSON。例如：
 
@@ -79,14 +79,14 @@ def grade_against_assertions(outputs: dict, reference_outputs: dict) -> list[dic
 ```
 
 如何对每项索赔进行评分取决于您。三种模式很常见，可以组合在一个评估器中：- **[LLM-as-a-judge](/langsmith/llm-as-judge)**：对于每个断言，使用应用程序的输出和断言的 `comment` 提示模型，并让它返回一个分数。当声明是主观的或难以机械验证时最好。
-- **[Code-based checks](/langsmith/code-evaluator-ui)**：对于每个断言，运行与断言的 `key` 无关的确定性检查，例如正则表达式匹配、模式验证或子字符串存在。当主张有一个清晰、机械的答案时最好。
+- **[Code-based checks](/langsmith/code-evaluator-ui)**：对于每个断言，运行确定性检查，以断言的 `key` 为关键，例如正则表达式匹配、模式验证或子字符串存在。当主张有一个清晰、机械的答案时最好。
 - **[Partial-credit scoring](/langsmith/multiple-scores)**：返回数字分数（例如，0.0 到 1.0 之间）而不是布尔值，以按比例评分，并对满足部分（但不是全部）要求的输出给予“部分学分”。
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/assertions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

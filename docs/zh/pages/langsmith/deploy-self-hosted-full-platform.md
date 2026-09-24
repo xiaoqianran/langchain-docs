@@ -596,7 +596,7 @@ fleet:
 
 ### （可选）为队列启用 GitHub 应用程序
 
-Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置过程包括创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T186⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
+Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置涉及创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T186⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
 
 <Steps>
   <Step title="Create a GitHub App">
@@ -670,7 +670,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
     单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量|
     |--------------------|-----------------|----------------------|
     | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
-    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet`| `FLEET_GITHUB_APP_PUBLIC_LINK` |
+    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
     |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
     | **客户端ID** |在 **关于** |下`FLEET_GITHUB_APP_CLIENT_ID` |
   </Step>
@@ -806,7 +806,7 @@ Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
 
 - 在支持 KVM 的节点上运行沙箱工作负载的沙箱运行时 Pod。
 - 由 Redis 支持的 JuiceFS 元数据存储以及由 S3、GCS 或 Azure Blob 存储支持的对象存储。
-- 从沙箱内部公开的服务的可选通配符入口。
+- 可选通配符入口用于从沙箱内部公开的服务。
 
 ### 先决条件
 
@@ -851,9 +851,9 @@ Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
     将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
     | **平台** | **存储价值** | **桶格式** |
-    | --- | --- | --- |
+    | ---| ---| ---|
     |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP | `gs` | GCS URL，例如`gs://bucket-name`|
+    | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
     |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>
@@ -893,7 +893,7 @@ Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
     该图表支持两种代理 CA 模式：
 
     |模式|使用时 |
-    | --- | --- |
+    | ---| ---|
     | `generatedSecret` |您希望 Helm 创建一个自签名的 CA Secret。这是默认设置。 |
     | `existingSecret` |您可以在 LangSmith 图表之外管理 CA 秘密。秘密可以由证书管理器或其他外部进程手动创建。 |
 
@@ -1027,7 +1027,7 @@ sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
 
 AWS 沙盒需要 `redis_source = "external"`。 Terraform 模块：
 
-- 为 JuiceFS 沙盒元数据创建专用 ElastiCache Redis 实例。
+- 为 JuiceFS 沙箱元数据创建专用 ElastiCache Redis 实例。
 - 使用推荐的 `noeviction` 策略配置该专用实例。
 - 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
 - 创建 JuiceFS 配置 Secret。
@@ -1118,7 +1118,7 @@ sandboxes:
 
 这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。### 验证安装
 
-升级完成后，验证沙盒运行时 Pod 和 JuiceFS 卷是否已准备就绪：
+升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
 
 ```bash
 kubectl rollout status deployment/sandbox-host -n <namespace>
@@ -1127,7 +1127,7 @@ kubectl get pods,pvc -n <namespace>
 
 然后运行沙箱冒烟测试：
 
-1. 从公共镜像（例如 Python 镜像）创建沙箱。
+1. 从公共镜像（例如Python镜像）创建沙箱。
 2. 在沙箱内启动Python HTTP 服务器。
 3. 在启用内存的情况下对沙箱进行快照。
 4. 从快照创建一个新的沙箱。
@@ -1362,7 +1362,7 @@ kubectl get pods,pvc -n <namespace>
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-self-hosted-full-platform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,7 +4,7 @@
 
 # LangSmith 引擎 webhook 事件
 
-将LangSmith检测到的代理问题转发到您的事件管理、寻呼或聊天工具中。当[LangSmith Engine](/langsmith/engine)打开新问题或将新跟踪链接到已打开的问题时，它会向您的端点发送 webhook 事件。
+将LangSmith检测到的代理问题转发到您的事件管理、寻呼或聊天工具中。当[LangSmith Engine](/langsmith/engine)打开新问题或将新跟踪链接到已打开的问题时，[LangSmith Engine](/langsmith/engine)会向您的端点发送Webhook事件。
 
 要配置 Webhook 订阅，请打开跟踪项目的 **Engine** 选项卡上的 **Engine Settings** 面板。参见[Configure Engine](/langsmith/engine#configure-engine)。
 
@@ -22,8 +22,8 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 |身体| JSON，下面[common envelope](#event-envelope) |
 |方案|接受`http://`和`https://`。 `https://`强烈推荐|
 |签名| `X-LangSmith-Signature` 标头，使用订阅的签名密钥进行签名 |
-|超时 |每次尝试 20 秒 |
-|尝试|针对传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
+|超时|每次尝试 20 秒 |
+|尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
 |回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
 <Note>
@@ -134,7 +134,7 @@ export function verifyLangSmithSignature({
 |领域|类型 |描述 |
 | ---| ---| ---|
 | `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。 |
-| `type` |字符串|事件类型。 [⟦T40⟧](#issue-created)、[⟦T41⟧](#issue-trace-added) 或 [⟦T42⟧](#issue-agent_run-failed) 之一。 |
+| `type` |字符串 |事件类型。 [⟦T40⟧](#issue-created)、[⟦T41⟧](#issue-trace-added) 或 [⟦T42⟧](#issue-agent_run-failed) 之一。 |
 | `created` |整数 |事件排队时的 Unix 秒 (UTC)。 |
 | `request_id` | UUID |由同一上游操作触发的每个事件共享。参见[Batch coalescing](#batch-coalescing)。 |
 | `data` |对象|事件有效负载。始终包含`data.object`。仅在 [⟦T48⟧](#issue-trace-added) 事件中包含 [⟦T47⟧](#data-trace)。 |
@@ -144,14 +144,14 @@ export function verifyLangSmithSignature({
 对于 [⟦T50⟧](#issue-created) 和 [⟦T51⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。|领域|类型 |描述 |
 | ---| ---| ---|
 | `id` | UUID |问题 ID。 |
-| `name` |字符串|问题的简短标题。 |
-| `description` |字符串|人类可读的描述。 |
+| `name` |字符串 |问题的简短标题。 |
+| `description` |字符串 |人类可读的描述。 |
 | `severity` |整数 | `0`（紧急）至 `3`（低）。参见[Severity filtering](#severity-filtering)。 |
 | `tenant_id` | UUID |问题所属的工作区。 |
-| `tenant_name` |字符串|工作区显示名称。 |
+| `tenant_name` |字符串 |工作区显示名称。 |
 | `session_id` | UUID |跟踪问题所属的项目。 |
-| `session_name` |字符串|跟踪项目名称。 |
-| `url` |字符串| LangSmith UI 中问题的深层链接。 |
+| `session_name` |字符串 |跟踪项目名称。 |
+| `url` |字符串 | LangSmith UI 中问题的深层链接。 |
 
 ### 运行失败`data.object`
 
@@ -160,28 +160,28 @@ export function verifyLangSmithSignature({
 |领域|类型 |描述 |
 | ---| ---| ---|
 | `tenant_id` | UUID |运行所属的工作空间。 |
-| `tenant_name` |字符串|工作区显示名称。 |
+| `tenant_name` |字符串 |工作区显示名称。 |
 | `session_id` | UUID |跟踪运行所属的项目。 |
-| `session_name` |字符串|跟踪项目名称。 |
-| `url` |字符串| UI 中LangSmith 项目的深层链接。 |
-| `thread_id` |字符串|引擎线程ID。 |
-| `run_id` |字符串|发动机运行 ID。不可用时省略。 |
-| `status` |字符串|最终运行状态。 |
-| `error_message` |字符串|运行失败的错误文本。不可用时省略。 |
-| `occurred_at` |字符串|发生故障时的 RFC 3339 时间戳。 |
+| `session_name` |字符串 |跟踪项目名称。 |
+| `url` |字符串 | UI 中LangSmith 项目的深层链接。 |
+| `thread_id` |字符串 |引擎线程ID。 |
+| `run_id` |字符串 |发动机运行 ID。不可用时省略。 |
+| `status` |字符串 |最终运行状态。 |
+| `error_message` |字符串 |运行失败的错误文本。不可用时省略。 |
+| `occurred_at` |字符串 |发生故障时的 RFC 3339 时间戳。 |
 
-### `data.trace``data.trace` 仅包含在 [⟦T79⟧](#issue-trace-added) 活动中。
+### `data.trace``data.trace` is included only on [⟦T79⟧](#issue-trace-added) events.
 
 |领域|类型 |描述 |
 | ---| ---| ---|
-| `run_id` | UUID |与问题关联的运行的 ID。 |
-| `trace_id` | UUID |包含运行的跟踪的 ID。 |
-| `start_time` |字符串|运行开始时的 RFC 3339 时间戳。 |
+| `run_id` | UUID | ID of the run that was linked to the issue. |
+| `trace_id` | UUID | ID of the trace that contains the run. |
+| `start_time` |字符串 | RFC 3339 timestamp of when the run started. |
 | `comment` |字符串\|空 |链接跟踪时记录的可选注释。空时省略。 |
 
 ### 批量合并
 
-单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T84⟧](#issue-created) 事件和五个 [⟦T85⟧](#issue-trace-added) 事件，所有事件共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
+单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T84⟧](#issue-created) 事件和五个 [⟦T85⟧](#issue-trace-added) 事件，它们都共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
 
 ## 事件类型
 
@@ -189,7 +189,7 @@ export function verifyLangSmithSignature({
 
 ### `issue.created`
 
-当LangSmith引擎创建新问题时发送。 `data.trace` 被省略。
+Sent when LangSmith Engine creates a new issue. `data.trace` 被省略。
 
 ```json
 {
@@ -215,7 +215,7 @@ export function verifyLangSmithSignature({
 
 ### `issue.trace.added`
 
-当新跟踪链接到现有问题时发送。 `data.trace` 描述链接的跟踪。
+当新跟踪链接到现有问题时发送。 `data.trace` describes the linked trace.
 
 ```json
 {
@@ -294,13 +294,13 @@ curl -X POST https://your-endpoint.example.com/webhook \
 
 ## 最佳实践
 
-- **快速确认。** 一旦您坚持了该事件，请立即使用 `2xx` 进行响应。将缓慢的工作（扇出、分页、下游 API 调用）移至队列中，以便您的处理程序保持在 20 秒超时范围内。
+- **快速确认。** 一旦您坚持了该事件，请立即回复`2xx`。将缓慢的工作（扇出、分页、下游 API 调用）移至队列中，以便您的处理程序保持在 20 秒超时范围内。
 - **容忍未知事件类型。** 忽略处理程序无法识别的 `type` 值。可能会添加新的事件类型，恕不另行通知。
 - **容忍新字段。** 使用宽松的模式解析有效负载。新字段可能会添加到现有事件类型中，恕不另行通知。
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

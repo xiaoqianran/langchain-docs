@@ -258,7 +258,7 @@
 }
 ```
 
-完美！正如我们预期的那样，运行成功了。我们可以通过打印最终状态来仔细检查运行是否按预期进行：<Tabs>
+完美！正如我们预期的那样，运行成功了。我们可以通过打印出最终状态来仔细检查运行是否按预期进行：<Tabs>
     <Tab title="Python">
     ```python
     final_result = await client.threads.get_state(thread["thread_id"])
@@ -464,7 +464,7 @@ The search results provide the current weather conditions in San Francisco. Acco
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/background-run.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

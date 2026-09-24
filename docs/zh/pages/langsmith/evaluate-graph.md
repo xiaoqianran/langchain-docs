@@ -161,8 +161,8 @@ async def correct(outputs: dict, reference_outputs: dict) -> bool:
 
 ### 运行评估
 
-现在我们可以进行评估并探索结果。我们只需要包装我们的图形函数，以便它可以按照示例中存储的格式接受输入：<Note>
-如果所有图形节点都定义为同步函数，那么您可以使用`evaluate`或`aevaluate`。如果任何节点被定义为异步，则需要使用 `aevaluate`
+现在我们可以进行评估并探索结果。我们只需要包装我们的图形函数，以便它可以按照存储在我们的示例中的格式接受输入：<Note>
+如果所有图形节点都定义为同步函数，那么您可以使用 `evaluate` 或 `aevaluate`。如果任何节点被定义为异步，则需要使用 `aevaluate`
 </Note>
 
 需要`langsmith>=0.2.0`
@@ -444,7 +444,7 @@ asyncio.run(main())
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-graph.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -67,22 +67,22 @@
   <Step title="Create the app and gather its values">
     单击“**创建 GitHub 应用程序**”。 GitHub 在应用程序设置页面上提供以下值：
 
-    |价值|在哪里可以找到它 |环境变量 |
+    |价值|在哪里可以找到它 |环境变量|
     |--------|------------------|----------------------|
     | **应用程序ID** |数字，位于页面顶部 | `FORGE_GITHUB_APP_ID` |
-    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-engine` | `FORGE_GITHUB_APP_PUBLIC_LINK` |
+    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-engine`| `FORGE_GITHUB_APP_PUBLIC_LINK` |
     | **客户端ID** |在 **关于** |下`FORGE_GITHUB_CLIENT_ID` |
     | **客户秘密** |在 **客户端密钥** 下，单击 **生成新的客户端密钥**（显示一次）| `FORGE_GITHUB_CLIENT_SECRET` |
     | **私钥** |在 **私钥** 下，单击 **生成私钥**（下载 `.pem` 文件）| `FORGE_GITHUB_APP_PEM` |
   </Step><Step title="Generate a state JWT secret">
     LangSmith 使用 HMAC 密钥来签署短期 OAuth 状态令牌并保护回调状态。使用秘密管理器或其他加密安全生成器生成至少 32 字节的随机秘密。 GitHub 不提供此值。
 
-    这是`FORGE_GITHUB_STATE_JWT_SECRET`。单独生成它，并且不要重复使用 Webhook 密钥或任何其他凭据。
+    这是`FORGE_GITHUB_STATE_JWT_SECRET`。单独生成它，并且不要重复使用 webhook 密钥或任何其他凭据。
   </Step>
 
   <Step title="Create a Kubernetes Secret">
     <Warning>
-    GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，切勿存储在 Helm 值或命令行参数中。
+    GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，而不是存储在 Helm 值或命令行参数中。
     </Warning>
 
 使用现有的 [secret-management workflow](/langsmith/self-host-using-an-existing-secret)，使用以下密钥创建一个名为 `langsmith-forge-github` 的 Kubernetes Secret：
@@ -156,7 +156,7 @@
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-github.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

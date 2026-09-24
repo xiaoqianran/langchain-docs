@@ -48,10 +48,10 @@ GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不�
 
 连接 URI 必须满足以下要求：- **传输安全**：对于 PostgreSQL 使用`sslmode=require`或更严格的验证模式，对于 Redis 使用`rediss://`。
 - **字符编码**：对用户名中的 URI 保留字符进行百分比编码，例如 `@` 为 `%40`。
-- **私有证书颁发机构**：如果 Redis TLS 使用私有证书颁发机构，请将 `REDIS_TLS_CA_CERT` 设置为 Base64 编码的 PEM CA 捆绑包。
+- **私有证书颁发机构**：如果 Redis TLS 使用私有证书颁发机构，请将 `REDIS_TLS_CA_CERT` 设置为 base64 编码的 PEM CA 捆绑包。
 - **集群模式**：如果Redis服务使用集群模式，还要设置`REDIS_CLUSTER=true`。
 
-## 配置AWS
+## 配置 AWS
 
 代理服务器使用 AWS 开发工具包默认凭证链创建 RDS 身份验证令牌和 ElastiCache SigV4 身份验证令牌。
 
@@ -92,7 +92,7 @@ REDIS_URI="rediss://<entra-object-id>@<redis-host>:<port>"
 
 在集群模式下使用 Azure 托管 Redis 时设置 `REDIS_CLUSTER=true`。代理服务器刷新 Microsoft Entra 令牌并在令牌过期之前重新验证打开的 Redis 连接。## 配置 GCP
 
-代理服务器使用 Google ADC 获取 Cloud SQL 登录令牌和 Memorystore 访问令牌。 ADC 支持 GKE 工作负载身份联合、附加服务帐户、服务帐户模拟和`GOOGLE_APPLICATION_CREDENTIALS`。
+代理服务器使用 Google ADC 获取 Cloud SQL 登录令牌和 Memorystore 访问令牌。 ADC 支持 GKE 工作负载身份联合、附加服务帐户、服务帐户模拟和 `GOOGLE_APPLICATION_CREDENTIALS`。
 
 配置代理服务器之前：
 
@@ -157,7 +157,7 @@ queue:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

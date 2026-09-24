@@ -6,11 +6,11 @@
 
 要在 LangSmith 上部署，应用程序必须包含一个或多个图、一个配置文件 (`langgraph.json`)、一个指定依赖项的文件以及一个指定环境变量的可选 `.env` 文件。
 
-本页介绍了 LangSmith 应用程序的组织方式以及如何提供部署所需的配置详细信息。
+本页介绍如何组织 LangSmith 应用程序以及如何提供部署所需的配置详细信息。
 
 ## 关键概念
 
-要使用LangSmith进行部署，请提供以下信息：
+要使用 LangSmith 进行部署，请提供以下信息：
 
 1. [configuration file](#configuration-file-concepts) (`langgraph.json`)，指定应用程序使用的依赖项、图表和环境变量。
 1. 实现应用程序逻辑的[graphs](#graphs)。
@@ -80,12 +80,12 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 <a id="configuration-file-concepts"></a>
 ## 配置文件
 
-`langgraph.json` 文件是一个 JSON 文件，指定部署应用程序所需的依赖项、图表、环境变量和其他设置。
+`langgraph.json` 文件是一个 JSON 文件，指定部署应用程序所需的依赖项、图形、环境变量和其他设置。
 
 有关 JSON 文件中所有支持的键的详细信息，请参阅 [LangGraph configuration file reference](/langsmith/cli#configuration-file)。
 
 <Tip>
-[LangGraph CLI](/langsmith/cli)默认使用当前目录下的配置文件`langgraph.json`。
+[LangGraph CLI](/langsmith/cli) 默认使用当前目录下的配置文件`langgraph.json`。
 </Tip>
 
 ### 示例
@@ -135,7 +135,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 您通常需要指定以下信息才能正确设置依赖项：
 
 1. 目录中指定依赖项的文件（例如，`requirements.txt`、`pyproject.toml` 或 `package.json`）。
-2. [configuration file](#configuration-file-concepts) 中的`dependencies` 键指定运行应用程序所需的依赖项。
+2. [configuration file](#configuration-file-concepts) 中的`dependencies` 键，指定运行应用程序所需的依赖项。
 3. 任何其他二进制文件或系统库都可以使用 [LangGraph configuration file](#configuration-file-concepts) 中的 `dockerfile_lines` 键指定。
 
 ## 图表
@@ -144,7 +144,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 
 您可以在配置文件中指定一个或多个图表。每个图都由唯一的名称和 (1) 已编译图或 (2) 定义图的函数的路径来标识。
 
-### 使用任何带有 LangSmith 部署的框架虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础架构。
+### 使用任何带有 LangSmith 部署的框架虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础设施。
 
 图结构充当部署接口，但您的核心应用程序逻辑可以使用最适合您需求的工具和框架。
 
@@ -240,7 +240,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/application-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -57,13 +57,13 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 在 LangChain 可以配置数据平面之前，您需要满足以下条件：
 
 - **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
-- **AWS 账户**：LangChain 建议专门用于 LangSmith BYOC 的新账户，但这不是必需的。
+- **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
 - **受支持的区域**：选择上面列出的 AWS 区域之一。
 - **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

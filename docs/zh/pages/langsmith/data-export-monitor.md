@@ -4,7 +4,7 @@
 
 # 监控批量导出并排除故障
 
-获得 [created an export job](/langsmith/data-export#2-create-an-export-job) 后，您可以使用此页面上的 API 来跟踪其进度、检查各个运行并在需要时停止它。本页还介绍了 LangSmith 如何自动处理失败，以及在用尽重试后导出失败时该怎么做。
+获得 [created an export job](/langsmith/data-export#2-create-an-export-job) 后，您可以使用此页面上的 API 来跟踪其进度、检查各个运行并在需要时停止它。本页还介绍了 LangSmith 如何自动处理失败，以及在用尽重试后导出失败时该怎么办。
 
 此页面涵盖：
 
@@ -22,7 +22,7 @@
 
 ## 监控导出状态
 
-要监控导出作业的状态，请使用以下 cURL 命令：
+要监视导出作业的状态，请使用以下 cURL 命令：
 
 ```bash
 curl --request GET \
@@ -99,7 +99,7 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 - **总体工作流程超时**：整个导出为 72 小时。
 
 ### 失败场景|故障类型|原因 |自动重试？ |需要采取行动|
-|--------------|--------|------------------|-----------------|
+|--------------|-------|------------------|-----------------|
 | **基础设施中断** | [Deployments](/langsmith/deployment)，服务器重启，worker崩溃 |是的，自动重新排队并进行剩余的重试。 |没有，作业会自动恢复。 |
 | **运行超时** |单次运行超过4小时限制 |是的，最多重试 20 次（可能会发生变化）。 |如果持续存在，缩小日期范围，请添加过滤器，或[limit the exported fields](/langsmith/data-export#limit-exported-fields)。 |
 | **工作流程超时** |全程出口超过72小时 |没有 |缩小导出范围（日期范围、过滤器）或分成较小的导出。 |
@@ -108,7 +108,7 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 | **终端处理错误** |数据序列化问题，资源耗尽 |是的，最多重试 20 次（可能会发生变化）。 |检查运行错误详细信息；可能需要调查。 |
 
 <Note>
-任何单次运行失败（在所有重试都用尽之后）都会导致整个导出失败。
+任何一次运行失败（在所有重试都用尽之后）都会导致整个导出失败。
 </Note>
 
 ### 导出状态生命周期
@@ -131,13 +131,13 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 - **每次导出的最大并发运行数**：45
 - **每个工作区最大并发导出**：15
 
-如果您正在运行多个导出，新的运行作业将排队，直到容量可用。
+如果您正在运行多个导出，则新的运行作业将排队，直到容量可用。
 
 #### 自托管：调整批量导出并发性和负载大小
 
-在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量 |默认 |描述 |
+在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量|默认 |描述 |
 |---|---|---|
-| `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` |每个调度阶段在单个导出中并行排队的分区运行的最大数量。处理大型日期分区时减少内存以限制峰值内存。 |
+| `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` |每个调度阶段在单个导出中并行排队的分区运行的最大数量。处理大型日期分区时减少以限制峰值内存。 |
 | `DATA_EXPORT_RUN_LIMIT` | `500` |在导出窗口中分页时，从每个查询的运行存储中获取的页面大小（最大行数）。 |
 | `DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB` | `100000` (100 MB) |在导出运行期间刷新批次之前的最大累积负载大小 (KB)。减少以降低每个批次的内存占用量。 |
 
@@ -168,7 +168,7 @@ DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB: "512"
 
 1. **查看导出状态**：使用[⟦T30⟧ endpoint](/langsmith/smith-api/bulk-exports/get-bulk-export)检索导出详情和状态。
 2. **查看运行错误**：您可以使用[List Runs API](#list-runs-for-an-export)监控您的运行。每次运行都包含一个 `errors` 字段，其中包含通过重试尝试键入的详细错误消息（例如，`retry_0`、`retry_1`）。
-3. **验证目的地访问**：确保您的[destination bucket](/langsmith/data-export-destinations#configuration-fields)仍然存在并且[credentials](/langsmith/data-export-destinations#credentials-configuration)有效。
+3. **验证目的地访问**：确保您的[destination bucket](/langsmith/data-export-destinations#configuration-fields)仍然存在且[credentials](/langsmith/data-export-destinations#credentials-configuration)有效。
 4. **检查运行大小**：如果您看到超时错误，则您的日期分区可能包含太多数据。可能对[limit the exported fields](/langsmith/data-export#limit-exported-fields)有帮助。
 5. **检查系统限制**：确保您没有达到 [concurrency limits](#concurrency-and-rate-limits)（每次导出 5 次运行，每个工作区 3 次导出）。
 
@@ -176,7 +176,7 @@ DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB: "512"
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-monitor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

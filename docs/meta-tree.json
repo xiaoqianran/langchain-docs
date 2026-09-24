@@ -825,12 +825,6 @@
           "rel": "langsmith/engine-github.md"
         }
       ],
-      "engine-issue-categories": [
-        {
-          "title": "LangSmith Engine issue categories",
-          "rel": "langsmith/engine-issue-categories.md"
-        }
-      ],
       "engine-overview": [
         {
           "title": "LangSmith Engine",
@@ -2135,7 +2129,7 @@
       ],
       "self-host-ui-customization": [
         {
-          "title": "Customize the error support message",
+          "title": "Customize the UI",
           "rel": "langsmith/self-host-ui-customization.md"
         }
       ],
@@ -2353,6 +2347,12 @@
         {
           "title": "Migrate to SmithDB-backed SDK methods",
           "rel": "langsmith/smithdb-sdk-migration.md"
+        }
+      ],
+      "smithtune": [
+        {
+          "title": "Fine-tune models with Smithtune",
+          "rel": "langsmith/smithtune.md"
         }
       ],
       "stateless-runs": [

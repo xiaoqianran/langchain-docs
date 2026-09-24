@@ -4,7 +4,7 @@
 
 # 使用 SvelteKit 进行部署
 
-以下页面详细介绍了一个示例应用程序，该应用程序在 [SvelteKit](https://svelte.dev/docs/kit/introduction) 项目内部署 LangChain **深度代理**，该项目为 [Cloudflare Workers](https://svelte.dev/docs/kit/adapter-cloudflare) 和 [⟦T6⟧](https://www.npmjs.com/package/@sveltejs/adapter-cloudflare) 构建：流聊天 UI、子代理详细信息视图、线程历史记录以及在 `/api/threads/...` 下公开的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)。不需要单独的后端进程。
+以下页面详细介绍了一个示例应用程序，该应用程序在 [SvelteKit](https://svelte.dev/docs/kit/introduction) 项目内部署 LangChain **深度代理**，该项目为 [Cloudflare Workers](https://svelte.dev/docs/kit/adapter-cloudflare) 和 [⟦T6⟧](https://www.npmjs.com/package/@sveltejs/adapter-cloudflare) 构建：流式聊天 UI、子代理详细信息视图、线程历史记录以及在 `/api/threads/...` 下公开的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)。不需要单独的后端进程。
 
 来源：部署手册中的[⟦T8⟧](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-sveltekit)。
 
@@ -68,13 +68,13 @@ pnpm run deploy
 
 ## Cloudflare 后端设计
 
-|关注|实施 |
+|关注|实施|
 | ---| ---|
 |前端 | SvelteKit 客户端路由和组件 |
 | API层| `src/routes/api/threads/` 中的 SvelteKit 服务器端点 |
 |运行时 |工人V8 + `nodejs_compat` |
 |上交所回放 |每线程持久对象 (`ThreadSession`) |
-|代理运行 |工人隔离；协议事件发布到 DO |
+|代理运行|工人隔离；协议事件发布到 DO |
 |静态资产| Workers 静态资产来自 `adapter-cloudflare` |
 |秘密 | `wrangler secret` / 本地 `.env` |
 
@@ -138,7 +138,7 @@ npx wrangler dev .svelte-kit/cloudflare/_worker.js
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-sveltekit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

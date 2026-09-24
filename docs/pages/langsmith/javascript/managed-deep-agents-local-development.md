@@ -66,6 +66,7 @@ For all command details, see the [`mda dev` CLI reference](/langsmith/javascript
 
 - If the agent uses identity, Studio provides a local test user automatically.
 - If the configured sandbox is unavailable, the agent uses a temporary local folder instead. The CLI prints the folder path.
+- [Schedules](/langsmith/javascript/managed-deep-agents-schedules) do not run. `mda dev` lists each schedule at startup but does not provision it, so no scheduled run fires locally.
 
 These defaults differ from a deployed agent. Test identity and sandbox behavior in a development deployment before using the agent in production.
 
@@ -73,7 +74,7 @@ These defaults differ from a deployed agent. Test identity and sandbox behavior 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-local-development.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

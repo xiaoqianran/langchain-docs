@@ -33,7 +33,7 @@
 
 - **将输入、输出和参考输出**中的字段分解为各自的列。如果您有很长的输入/输出/参考输出并且想要显示重要字段，这尤其有用。
 - **隐藏和重新排序列**以创建用于分析的重点视图。
-- **控制反馈分数的小数精度**。默认情况下，LangSmith 以小数点精度 2 表示数字反馈分数，但您可以将此设置自定义为最多 6 位小数。
+- **控制反馈分数的小数精度**。默认情况下，LangSmith 显示小数点精度为 2 的数字反馈分数，但您可以将此设置自定义为最多 6 位小数。
 - **将实验中的数字反馈分数的热图阈值**设置为高、中、低，这会影响分数片呈现为红色或绿色的阈值：
 
 ![Column heatmap configuration](/langsmith/images/column-heat-map.png)
@@ -206,7 +206,7 @@ CSV 导出始终包含所有列，无论您在实验视图中应用了任何列�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/analyze-an-experiment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

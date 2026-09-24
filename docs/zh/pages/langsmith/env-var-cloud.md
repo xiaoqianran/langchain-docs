@@ -4,7 +4,7 @@
 
 # 云代理服务器环境变量
 
-部署在[Cloud](/langsmith/deploy-to-cloud-overview)上时，代理服务器支持以下环境变量。有关自托管部署特定的变量，请参阅[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
+部署在 [Cloud](/langsmith/deploy-to-cloud-overview) 上时，代理服务器支持以下环境变量。有关自托管部署特定的变量，请参阅[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
 
 ## `BG_JOB_ISOLATED_LOOPS`
 
@@ -15,7 +15,7 @@
 </Warning>
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。<Warning>
-启用 `BG_JOB_ISOLATED_LOOPS` 后，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易受到连接失败的影响，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 </Warning>
 
 默认为`False`。
@@ -66,7 +66,7 @@
 
 从 langgraph-api 版本 `0.2.12` 开始，可以使用 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 环境变量控制 Postgres 连接池（每个副本）的最大大小。通过设置此变量，您可以确定服务器与 Postgres 数据库建立的同时连接数的上限。
 
-例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 到 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。
+例如，如果部署扩展到 10 个副本，并且 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 配置为 `150`，则最多可以建立 `1500` 与 Postgres 的连接。这对于数据库资源有限（或更多可用）的部署或者出于性能或扩展原因需要调整连接行为的部署特别有用。
 
 当[⟦T64⟧](#bg_job_isolated_loops)启用时，池不共享。相反，每个后台工作线程都会创建自己的池，最大大小为`LANGGRAPH_POSTGRES_POOL_MAX_SIZE / N_JOBS_PER_WORKER`。减小池大小时请记住这一点。适合共享池的值可能会导致隔离循环下的每个工作线程池非常小。
 
@@ -75,7 +75,7 @@
 ## `LS_CHECKPOINT_DELETE`用于延迟检查点删除的 JSON 值配置。启用后，线程删除和修剪操作会将检查点排入队列以进行后台删除，而不是同步删除，从而将 I/O 移出请求热路径。有`langgraph-api>=0.8.1`可供选择。
 
 <Note>
-仅支持默认 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
+仅支持默认的 PostgreSQL 检查点后端。延迟删除将成为未来版本中的默认设置。
 </Note>
 
 接受的字段：
@@ -108,7 +108,7 @@
 
 ## `LOG_COLOR`
 
-这主要与通过 `langgraph dev` 命令使用开发服务器的上下文有关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色的控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
+这主要与通过 `langgraph dev` 命令使用开发服务器的上下文相关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
 
 ## `LOG_LEVEL`
 
@@ -205,13 +205,13 @@ Redis 中可恢复流数据的生存时间（以秒为单位）。创建运行�
 当存在大量具有大量或频繁流输出的并发运行时，为 `RESUMABLE_STREAM_TTL_SECONDS` 设置非常高的值可能会导致大量 Redis 内存使用。将此值设置为最小值以在网络中断期间启用恢复，并首选检查点以实现长期持久性和执行快照。
 </Note>
 
-{/* 占位符。目前没有云专有的代理服务器环境变量。当新的部分出现时，在此处添加它们。 */}
+{/* 占位符。目前没有云专用代理服务器环境变量。当新的部分出现时，在此处添加它们。 */}
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

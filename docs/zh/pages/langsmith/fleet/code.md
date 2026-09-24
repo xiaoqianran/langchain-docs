@@ -567,12 +567,12 @@ make run    # terminal REPL via cli.py — text-only chat
 
 ### 5.自定义代理
 
-启动器将舰队拥有的文件与您拥有的文件分开，并且可以自由编辑：|文件/目录|业主|目的|
+启动器将舰队拥有的文件与您拥有的文件分开，并且可以自由编辑：|文件/目录 |业主|目的|
 |---|---|---|
 | `fleet/` |舰队|将导出内容拖放到此处。重新解压即可更新；没有其他的东西被触及。 |
 | `agent.py` |你|图形接线。通过替换 `model = components.pop("model")` 行来覆盖模型。 |
 | `custom_tools.py` |你|添加代码定义工具；在运行时与 Fleet MCP 工具合并。 |
-| `custom_middleware.py` |你|添加`AgentMiddleware`实例用于日志记录、过滤器、前/后挂钩等。
+| `custom_middleware.py` |你|添加用于日志记录、过滤器、前/后挂钩等的 `AgentMiddleware` 实例。
 | `custom_skills/` |你|删除`<skill-name>/SKILL.md`文件；分层在`fleet/skills/`之上。 |
 | `cli.py` |你|终端 REPL；自由编辑。 |
 
@@ -655,7 +655,7 @@ rm -rf fleet && unzip path/to/my-new-export.zip -d fleet/
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

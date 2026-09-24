@@ -67,6 +67,7 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
         - `/tools`: List the built-in and MCP tools available to the current agent. See [List available tools](/oss/deepagents/code/cli-reference#list-available-tools).
         - `/extensions`: List loaded [Python extensions](/oss/deepagents/code/extensions), their registrations, and their source paths. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
         - `/cost`: Show the thread's estimated cost. See [Track thread cost](/oss/deepagents/code/cli-reference#track-thread-cost).
+        - `/btw`: Ask a side question about the conversation without interrupting the main task. See [Ask a side question](/oss/deepagents/code/cli-reference#ask-a-side-question).
         - `/tokens`: Display current context window token usage breakdown.
         - `/clear`: Start a fresh thread.
         - `/force-clear`: Recover a stuck session with a fresh thread.
@@ -353,7 +354,7 @@ We recommend you also set up [LangSmith Engine](/langsmith/engine), which monito
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -118,7 +118,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ## 快速工程
 
-### 游乐场在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用自动化选项，如**优化提示**、**生成工具**或**生成输出架构**，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态（更新消息、工具、输出模式和示例），以便您可以通过对话方式迭代提示。
+### 游乐场在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用**优化提示**、**生成工具**或**生成输出架构**等自动化选项，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态——更新消息、工具、输出模式和示例——这样您就可以通过对话方式迭代提示。
 
 **问题示例：**
 - “让它用意大利语回应”
@@ -148,7 +148,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 数据集示例
 
-在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用的数据以及准备实验数据集非常有用。
+在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用哪些数据以及准备实验数据集非常有用。
 
 **问题示例：**
 - “这个数据集中的数据是什么类型？”
@@ -216,7 +216,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/chat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -14,7 +14,7 @@
 
 添加网络钩子：
 
-1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-context-hub-webhooks) 中，转到 **设置** > **集成** > **Context Hub webhooks**。
+1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-context-hub-webhooks) 中，转到 **设置** > **集成** > **Context Hub Webhooks**。
 1. 单击“**添加 Webhook**”。
 1. 输入可公开访问的 HTTPS URL。
 1. （可选）添加自定义请求标头，例如 `Authorization` 标头。
@@ -34,14 +34,14 @@
 ## 送货
 
 LangSmith 为每个事件发送 JSON `POST` 请求。自定义标头无法覆盖 `Content-Type` 或 `X-LangSmith-Signature`，LangSmith 在应用自定义标头后设置。|物业 |价值|
-| --- | --- |
+| ---| ---|
 |方法| `POST` |
 |网址 |可公开访问的 HTTPS 端点 |
 |内容类型 | `application/json` |
 |签名| `X-LangSmith-Signature` 标头，使用 webhook 的签名密钥进行签名 |
 |超时|每次尝试 20 秒 |
 |尝试|最多 4 次尝试：1 次初始尝试，最多 3 次重试 |
-|重试条件 |传输失败、HTTP `408`、`425`、`429` 和 `5xx` 响应 |
+|重试条件|传输失败、HTTP `408`、`425`、`429` 和 `5xx` 响应 |
 |永久回复 |其他 `4xx` 响应不会重试 |
 |响应处理 |低于`400`的状态成功。响应机构不影响成功。 |
 
@@ -142,35 +142,35 @@ export function verifyLangSmithSignature({
 }
 ```
 
-|领域 |类型 |描述 |
-| --- | --- | --- |
+|领域|类型 |描述 |
+| ---| ---| ---|
 | `id` | UUID |唯一的事件标识符在重试后保持稳定。用它来删除重复事件。 |
-| `type` |字符串|确切的事件类型。目前`context_hub.commit.created.v1`。 |
+| `type` |字符串 |确切的事件类型。目前`context_hub.commit.created.v1`。 |
 | `created` |整数 |事件排队时的 UTC Unix 秒数。 |
 | `data` |对象|版本化事件数据。包含`data.commit`。 |
 
 ### `data.commit`
 
-`data.commit` 对象描述触发事件的 Context Hub 提交。|领域 |类型 |描述 |
-| --- | --- | --- |
+`data.commit` 对象描述触发事件的 Context Hub 提交。|领域|类型 |描述 |
+| ---| ---| ---|
 | `repo_id` | UUID | Context Hub 存储库 ID。 |
-| `repo_handle` |字符串|存储库句柄。 |
-| `repo_type` |字符串|存储库类型：`agent` 或 `skill`。 |
-| `commit_hash` |字符串|新提交的哈希值。 |
-| `parent_commit_hash` |字符串|父提交的哈希值。初始提交或不可用时省略。 |
-| `created_at` |字符串|创建提交时的 RFC 3339 时间戳。 |
-| `created_by` |字符串| LangSmith 创建提交的用户 ID。不可用时省略。 |
-| `url` |字符串| LangSmith UI 中提交的深层链接。 |
+| `repo_handle` |字符串 |存储库句柄。 |
+| `repo_type` |字符串 |存储库类型：`agent` 或 `skill`。 |
+| `commit_hash` |字符串 |新提交的哈希值。 |
+| `parent_commit_hash` |字符串 |父提交的哈希值。首次提交或不可用时省略。 |
+| `created_at` |字符串 |创建提交时的 RFC 3339 时间戳。 |
+| `created_by` |字符串 | LangSmith 创建提交的用户 ID。不可用时省略。 |
+| `url` |字符串 | LangSmith UI 中提交的深层链接。 |
 | `files_changed` |数组|提交中包含文件更改。每个条目包含`path`和`action`。 |
 
 ### `data.commit.files_changed`
 
 每个条目都总结了一条更改的路径。它不包含文件内容。
 
-|领域 |类型 |描述 |
-| --- | --- | --- |
-| `path` |字符串|路径被提交更改。 |
-| `action` |字符串|更改类型：`added`、`modified` 或 `removed`。 |
+|领域|类型 |描述 |
+| ---| ---| ---|
+| `path` |字符串 |路径被提交更改。 |
+| `action` |字符串 |更改类型：`added`、`modified` 或 `removed`。 |
 
 ## 处理事件版本
 
@@ -192,7 +192,7 @@ if (event.type === "context_hub.commit.created.v1") {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-hub-webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

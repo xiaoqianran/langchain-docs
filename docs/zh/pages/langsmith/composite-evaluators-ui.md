@@ -37,7 +37,7 @@ _综合评估器_是将多个评估器分数组合成单个[score](/langsmith/ev
 - 从跟踪项目中：**+ 新建** > **评估器** > **综合分数**
 - 从数据集中：**+ 评估器** > **综合得分**
 
-### 2. 配置复合评估器1. 指定您的评估员。
+### 2. 配置复合求值器1. 指定您的评估员。
 2. 选择一种聚合方法，**平均** 或 **求和**。
     - **平均**：Σ（体重*分数）/Σ（体重）。
     - **总和**：Σ（体重*分数）。
@@ -63,7 +63,7 @@ _综合评估器_是将多个评估器分数组合成单个[score](/langsmith/ev
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

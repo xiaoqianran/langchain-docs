@@ -4,7 +4,7 @@
 
 # 如何通过少量示例改进评估器
 
-当您无法以编程方式评估系统时，使用 LLM 作为法官评估器会非常有帮助。然而，它们的有效性取决于它们的质量以及它们与人类审阅者反馈的一致性程度。 LangSmith 提供了使用少量示例来提高 LLM 作为法官评估者与人类偏好的一致性的能力。
+当您无法以编程方式评估系统时，使用 LLM 作为法官评估器会非常有帮助。然而，它们的有效性取决于它们的质量以及它们与人类审阅者反馈的一致性。 LangSmith 提供了使用少量示例来提高 LLM 作为法官评估者与人类偏好的一致性的能力。
 
 使用少量示例，人工更正会自动插入到评估器提示中。 Few-shot Examples 是一种受 [few-shot prompting](https://www.promptingguide.ai/techniques/fewshot) 启发的技术，它通过一些高质量的示例来指导模型输出。
 
@@ -17,18 +17,18 @@
 ## 配置你的评估器
 
 <Note>
-目前，使用提示中心的 LLM-as-a-judge 评估器不支持少数样本示例，并且仅与使用胡子格式的提示兼容。
+目前，使用提示中心的 LLM-as-a-judge 评估程序不支持少数样本示例，并且仅与使用胡子格式的提示兼容。
 
 Few-shot 示例仅支持运行级别评估器，而不支持线程级别。在 [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator) 中打开 **运行**。
 </Note>
 
-在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge) 中的步骤操作。
+在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge)中的步骤操作。
 
-### 1.配置变量映射每个小样本示例均根据配置中指定的变量映射进行格式化。少数镜头示例的变量映射应包含与主提示相同的变量，以及一个 `few_shot_explanation` 和一个 `score` 变量，它们应与您的反馈键具有相同的名称。
+### 1.配置变量映射每个小样本示例均根据配置中指定的变量映射进行格式化。少量示例的变量映射应包含与主提示相同的变量，以及一个 `few_shot_explanation` 和一个 `score` 变量，它们应与您的反馈键具有相同的名称。
 
-例如，如果您的主提示具有变量 `question` 和 `response`，并且您的评估器输出 `correctness` 分数，则您的几次提示应具有变量 `question`、`response`、`few_shot_explanation` 和 `correctness`。
+例如，如果您的主提示具有变量 `question` 和 `response`，并且您的评估器输出 `correctness` 分数，那么您的小提示应具有变量 `question`、`response`、`few_shot_explanation` 和 `correctness`。
 
-### 2.指定要使用的小样本示例的数量
+### 2. 指定要使用的少样本示例的数量
 
 您还可以指定要使用的少数样本示例的数量。默认值为 5。如果您的示例很长，您可能需要将此数字设置得较低以节省标记，而如果您的示例往往很短，您可以设置一个较高的数字，以便为评估者提供更多示例以供学习。如果您的数据集中的示例数量超过此数量，我们将为您随机选择它们。
 
@@ -59,7 +59,7 @@ Few-shot 示例仅支持运行级别评估器，而不支持线程级别。在 [
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-few-shot-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

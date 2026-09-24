@@ -70,7 +70,7 @@ Agent Server 持久保存三种类型的数据，默认情况下均由 [PostgreS
 Agent Server 支持三种运行时配置：
 
 - **单主机**：API 服务器直接管理任务队列，没有单独的队列工作人员。这是自托管部署的默认设置，适用于开发和低流量用例。
-- **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展 - API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。- **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程来处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
+- **拆分 API 和队列**：专用队列工作程序在与 API 服务器不同的主机上处理运行执行。对于自托管部署，请通过在配置中设置 `queue.enabled: true` 来启用此功能。每个层都可以独立扩展 - API 服务器根据请求量进行扩展，队列工作线程根据挂起的运行计数进行扩展。- **分布式运行时**：API 和队列进程再次单独运行，但分布式运行时使用一个进程进行编排，一个进程用于执行，而不是使用单个队列进程处理图形的编排和执行。将此用于具有高并发要求的大规模部署。
 
 下面描述的容器架构和运行生命周期适用于单主机和拆分 API 和队列配置。
 
@@ -133,7 +133,7 @@ flowchart TB
 2. 队列工作线程获取运行，获取其租约，加载适当的图形，然后开始执行。队列强制规定给定线程一次最多可以执行 1 次运行。
 3. 当图执行时，工作线程将检查点写入持久层（频率取决于[durability mode](/oss/python/langgraph/persistence#durability-modes)）并通过配置的 pubsub 提供程序广播流事件。
 4. 如果客户端打开了 `/stream` 连接，API 服务器会订阅 pubsub 通道，并通过服务器发送的事件实时将事件转发给客户端。
-5. 执行完成后，worker 更新运行状态并释放其插槽以供下一次运行。每个工作线程最多同时执行 [⟦T8⟧](/langsmith/env-var-self-hosted) 次运行（默认值：10），因此单个工作线程容器可并行运行多个运行。这限制了并发运行执行，而不是部署可以服务的 API 请求的数量。 API 服务器独立处理请求并单独扩展，因此请求服务能力不受`N_JOBS_PER_WORKER` 的限制。请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
+5. 执行完成后，worker 更新运行状态并释放其插槽以供下一次运行。每个工作线程最多同时执行 [⟦T8⟧](/langsmith/env-var-self-hosted) 次运行（默认值：10），因此单个工作线程容器可以并行运行多个运行。这限制了并发运行执行，而不是部署可以服务的 API 请求的数量。 API 服务器独立处理请求并单独扩展，因此请求服务能力不受`N_JOBS_PER_WORKER` 的限制。请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale) 获取调整指南。
 
 ## 了解更多
 
@@ -144,7 +144,7 @@ flowchart TB
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

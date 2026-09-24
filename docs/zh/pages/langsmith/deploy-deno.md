@@ -4,7 +4,7 @@
 
 # 使用 Deno Deploy 进行部署
 
-以下页面详细介绍了一个在 [Deno Deploy](https://deno.com/deploy) 上部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理和线程历史记录，所有这些都由在 Hono 服务器上实现为 HTTP + SSE 路由处理程序的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。 React 前端是一个 Vite SPA（从 Next.js 示例移植）； Deno 从单个 `main.ts` 入口点提供构建的静态资产和 API。
+以下页面详细介绍了在 [Deno Deploy](https://deno.com/deploy) 上部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理和线程历史记录，所有这些都由在 Hono 服务器上实现为 HTTP + SSE 路由处理程序的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。 React 前端是一个 Vite SPA（从 Next.js 示例移植）； Deno 从单个 `main.ts` 入口点提供构建的静态资产和 API。
 
 它是 Next.js 示例到 Deno + Hono 的移植，展示了如何在 Deno Deploy 而不是 Vercel 上运行相同的代理堆栈。
 
@@ -31,7 +31,7 @@
 
 <Step title="Deploy">
 
-从仪表板部署。 Deno 的构建环境运行构建命令，因此 `dist/` 在云端生成，无需提交。
+从仪表板部署。 Deno 的构建环境运行构建命令，因此 `dist/` 是在云端生成的，永远不需要提交。
 
 </Step>
 
@@ -55,8 +55,8 @@ deno task deploy
 <Warning>
 CLI `--source local` 流程特有的两个陷阱：
 
-- **`dist/` 不得被 gitignored。** 上传者尊重 `.gitignore`，因此新构建的 `dist/` 必须在上传窗口期间可见，否则每个非 `/api` 路由都会返回 **404**。存储库根`.gitignore`忽略所有`dist`，因此`js-deno/.gitignore`将其重新包含在`!dist/`和`!dist/**`中。 `deno task deploy`流程在上传后删除`dist/`，因此尽管没有被忽略，但它不会停留在`git status`中。
-- **不要使用 `deploy.include` 列表。** 有一个 Deno Deploy 错误，添加 `include` 会使构建将入口点解析为 `src/main.ts` 并失败。改为依赖默认的基于 `.gitignore` 的上传。
+- **`dist/` 不得被 gitignored。** 上传者尊重 `.gitignore`，因此新构建的 `dist/` 必须在上传窗口期间可见，否则每个非 `/api` 路由都会返回 **404**。存储库根`.gitignore`忽略所有`dist`，因此`js-deno/.gitignore`将其重新包含在`!dist/`和`!dist/**`中。 `deno task deploy`流程在上传后删除了`dist/`，因此尽管没有被忽略，它也不会停留在`git status`中。
+- **不要使用 `deploy.include` 列表。** 有一个 Deno Deploy 错误，其中添加 `include` 会使构建将入口点解析为 `src/main.ts` 并失败。改为依赖默认的基于 `.gitignore` 的上传。
 </Warning>
 
 （可选）通过添加 [⟦T42⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-deno/.env.example) 中的变量来启用 LangSmith 跟踪。
@@ -133,7 +133,7 @@ Deno Deploy 使用自己的内存中 `MemorySaver` 检查指针运行每个隔�
 
 ## 生产坚持
 
-该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/registry.ts`)。这适用于本地开发和单隔离部署，但在 Deno Deploy（多个隔离、冷启动）上，跨实例的对话状态**不持久**。将`server/agent/index.ts`中的`MemorySaver`替换为持久检查指针，例如`@langchain/langgraph-checkpoint-postgres`或`@langchain/langgraph-checkpoint-redis`。您还需要一个共享会话/重播存储，以便 SSE 重新连接可以跨隔离运行。
+该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/registry.ts`)。这适用于本地开发和单隔离部署，但在 Deno Deploy（多个隔离、冷启动）上，对话状态在实例之间**不持久**。将`server/agent/index.ts`中的`MemorySaver`替换为持久检查指针，例如`@langchain/langgraph-checkpoint-postgres`或`@langchain/langgraph-checkpoint-redis`。您还需要一个共享会话/重播存储，以便 SSE 重新连接可以跨隔离运行。
 
 ## 本地开发
 
@@ -180,7 +180,7 @@ deno task start
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-deno.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

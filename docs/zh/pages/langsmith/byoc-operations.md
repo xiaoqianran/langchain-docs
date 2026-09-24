@@ -41,7 +41,7 @@ Istio、KEDA 和 ClickHouse Operator 等后台服务定期升级。这些升级�
 托管数据平面的 EKS 集群需要定期升级，以保持安全性、兼容性和对新功能的访问。 LangChain 在 AWS 支持终止日期之前主动执行这些升级，并与您协调窗口。
 
 集群升级分为两种：- **控制平面升级**：涵盖 Kubernetes API 服务器以及 AWS 与之一起管理的组件。这些对于您的工作负载是透明的，并且不会重新启动 Pod。
-- **节点组升级**：使用 make-before-break 语义将节点一一滚动。在更新的版本上配置新节点，pod 移动到它们上，迁移完成后旧节点将被终止。 Pod 中断预算适用于排水，因此每项服务都保持可用，尽管您可能会在各个 Pod 重新启动时看到短暂的连接重置。没有数据丢失。
+- **节点组升级**：使用 make-before-break 语义将节点一一滚动。在更新的版本上配置新节点，Pod 移动到它们上，迁移完成后旧节点将终止。 Pod 中断预算适用于排水，因此每项服务都保持可用，尽管您可能会在各个 Pod 重新启动时看到短暂的连接重置。没有数据丢失。
 
 ## 维护窗口
 
@@ -65,7 +65,7 @@ LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因�
 ## 审计
 
 - **LangSmith 审核日志**：对数据平面资源的操作记录在数据平面中，并可在数据平面端点访问。控制平面操作（例如创建用户）在控制平面中进行审核。有关如何访问两者的信息，请参阅[Audit logs](/langsmith/audit-logs)。
-- **EKS 审核日志**：发送到您帐户中的 CloudWatch，以便您可以监控运行的命令。
+- **EKS 审核日志**：发送到您帐户中的 CloudWatch，以便您可以监控所运行的命令。
 - **VPC 流日志**：记录在您账户的 S3 存储桶中。使用[BYOVPC](/langsmith/byoc-byovpc)，您可以自行配置VPC流日志。
 
 您有责任对这些日志设置警报。
@@ -77,7 +77,7 @@ LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因�
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-operations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -461,12 +461,12 @@
 
 - **人机循环和中断**：代理可以在 [interrupts](/langsmith/add-human-in-the-loop) 暂停以进行人工输入。取消运行会停止执行；它与中断不同，中断中运行被暂停并且可以通过新输入恢复。
 - **时间旅行**：通过操作`interrupt`取消后，跑步和检查点仍然可用。您可以通过[resume from a checkpoint](/langsmith/human-in-the-loop-time-travel)（时间旅行）来重放或分支执行。
-- **双短信**：当用户在运行正在进行时发送新输入时，[multitask strategy](/langsmith/double-texting)（入队、拒绝、中断、回滚）确定是否中断或回滚现有运行以及如何处理新运行。要从您的应用程序显式取消运行，请使用本页所述的取消 API。
+- **双短信**：当用户在运行正在进行时发送新输入时，[multitask strategy](/langsmith/double-texting)（入队、拒绝、中断、回滚）确定是否中断或回滚现有运行以及如何处理新运行。要从您的应用程序显式取消运行，请使用本页描述的取消 API。
 - **Studio**：在[Studio](/langsmith/use-studio)中，使用运行UI中的**取消**按钮取消当前运行。
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cancel-run.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

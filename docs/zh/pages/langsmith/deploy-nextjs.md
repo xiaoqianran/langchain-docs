@@ -30,7 +30,7 @@
 
 <Step title="Deploy">
 
-部署项目。路由处理程序已设置 `runtime = "nodejs"`，SSE 路由设置 `dynamic = "force-dynamic"`，这是 Vercel 进行流式处理所需的。
+部署项目。路由处理程序已设置 `runtime = "nodejs"`，SSE 路由设置 `dynamic = "force-dynamic"`，这是 Vercel 进行流处理所需的。
 
 </Step>
 
@@ -106,13 +106,13 @@ flowchart TB
 1.引导线程状态（`GET`/`POST /state`）。
 2. 提交时，SDK 发送`run.start` 到`/commands` 并接收`run_id`。
 3. SDK订阅`/stream`（SSE）进行回放+直播协议事件。
-4. 子代理 (`task`) 运行时发出命名空间事件，表现为 `stream.subagents`。
+4. 子代理 (`task`) 运行，发出命名空间事件，表现为 `stream.subagents`。
 
-## 生产坚持该代理开箱即用，使用内存中的 `MemorySaver` 检查指针 (`lib/agent/index.ts`) 和进程本地会话映射 (`lib/server/registry.ts`)。这适用于本地开发和单实例服务器，但在 Vercel（无服务器、多个副本）上，对话状态在冷启动或实例中**不持久**。
+## 生产坚持该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`lib/agent/index.ts`) 和进程本地会话映射 (`lib/server/registry.ts`)。这适用于本地开发和单实例服务器，但在 Vercel（无服务器、多个副本）上，对话状态在冷启动或实例中**不持久**。
 
 对于生产，请换入 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
-|套餐 |后端|
+|套餐 |后端 |
 | ---| ---|
 | [⟦T42⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T44⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
@@ -134,7 +134,7 @@ const checkpointer = await RedisSaver.fromUrl(process.env.REDIS_URL!);
 
 使用 Redis 提供程序公开的连接字符串（Upstash 提供 REST 和 Redis 协议 URL；检查点需要 Redis URL）。
 
-您还需要在 `lib/server/registry.ts` 中有一个共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。检查指针交换是持久线程历史的主要步骤；会话存储是实时运行重放的一个单独关注点。有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。
+您还需要在 `lib/server/registry.ts` 中有一个共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。检查指针交换是持久线程历史的主要步骤；会话存储是实时运行重播的一个单独关注点。有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。
 
 ## 本地开发
 
@@ -154,7 +154,7 @@ pnpm lint    # eslint
 
 ## 项目布局
 
-- `lib/agent/`：带有`researcher`和`math-whiz`子代理和模拟工具的深度代理（`createDeepAgent`）。标记为`server-only`。
+- `lib/agent/`：深度代理（`createDeepAgent`），带有`researcher`和`math-whiz`子代理和模拟工具。标记为`server-only`。
 - `lib/server/`：协议服务器逻辑：`session.ts`（SSE 运行）、`threads.ts`（检查指针支持的状态）、`serialize.ts`、`registry.ts`。
 - `app/api/threads/`：上述协议端点的路由处理程序。
 - `lib/chat/threads-client.ts`：浏览器线程引导和侧边栏帮助程序。
@@ -171,7 +171,7 @@ pnpm lint    # eslint
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

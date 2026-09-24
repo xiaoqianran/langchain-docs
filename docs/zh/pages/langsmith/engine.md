@@ -4,7 +4,7 @@
 
 # 查找并修复代理与 LangSmith 引擎的问题
 
-LangSmith 引擎可帮助您发送更可靠的代理，而无需手动搜索痕迹。它是用于代理工程的 LangSmith 代理：根据您的生产跟踪，它会显示重复出现的问题，诊断其根本原因，并在开发生命周期的每个阶段推动修复。有关产品概述，请参阅[Engine](/langsmith/engine-overview)。
+LangSmith 引擎可帮助您发送更可靠的代理，而无需手动搜索痕迹。它是用于代理工程的LangSmith代理：根据您的生产跟踪，它会显示重复出现的问题，诊断其根本原因，并在开发生命周期的每个阶段推动修复。有关产品概述，请参阅[Engine](/langsmith/engine-overview)。
 
 ## 引擎如何工作
 
@@ -45,7 +45,7 @@ flowchart LR
 ## 设置引擎
 
 设置引擎分为两步：[Organization Admin](/langsmith/rbac#organization-admin)首先为[workspace](/langsmith/administration-overview#workspaces)启用引擎，然后任何用户都可以为每个跟踪项目配置引擎。<Note>
-在自托管 LangSmith 上，操作员必须在任一步骤可用之前在 LangSmith Helm 图表中启用引擎。参考[Engine on Self-hosted](/langsmith/engine-self-hosted)。
+在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。参考[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 </Note>
 
 ### 为您的组织启用引擎
@@ -101,7 +101,7 @@ flowchart LR
   <Step title="Open Engine and select a project">
     在 [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine) 中，选择 UI 侧栏中的 **Engine**。项目选择器列出了已配置的项目。要设置未列出的项目，请单击 **+ 设置另一个项目**，然后在 **选择要分析的项目** 下选择它。跟踪项目中的 **Engine** 选项卡也可用。
   </Step>
-  <Step title="Connect a code repository (optional)">尽管可选，但建议连接代码存储库。引擎读取您的源代码以找到失败跟踪背后的代码路径，在实际实现中落实其建议的修复，并直接从问题中打开拉取请求。在 **连接代理的代码存储库** 下，在 **GitHub 存储库** 字段中选择一个存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to GitHub](/langsmith/engine-github)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新任一存储库。
+  <Step title="Connect a code repository (optional)">尽管可选，但建议连接代码存储库。引擎读取您的源代码以找到失败跟踪背后的代码路径，在实际实现中落实其建议的修复，并直接从问题中打开拉取请求。在 **连接代理的代码存储库** 下，在 **GitHub 存储库** 字段中选择一个存储库。仅显示 GitHub 应用程序可以访问的存储库。单击“**管理应用程序访问权限→**”以更新权限。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to GitHub](/langsmith/engine-github)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新任一存储库。
   </Step>
   <Step title="Select preference categories (optional)">
     在**什么对您最重要？**下，选择要优先审核的类别（例如，**工具调用失败**或**延迟**）。单击 **+ 添加特定内容** 来描述自定义问题。您可以随时从 [**Engine Settings**](#configure-engine) 面板更新**首选项**。
@@ -147,7 +147,7 @@ flowchart LR
 
 范围确定引擎分析哪些跟踪来检测问题并构建代理概述文档。初始设置期间设置的范围适用于引擎的第一次扫描。稍后在[**Engine Settings**](#configure-engine)面板中更改范围不会立即重新运行引擎；它适用于下一次扫描。
 
-## 浏览和过滤问题设置完成后，**引擎**页面会在左侧面板中显示自动检测到的问题的列表。每个条目都会显示标题、简短描述、贡献痕迹的数量以及最近观察到该问题的时间。每个问题都标有故障类别，例如**无声工具错误**或**幻觉**。有关引擎分配的类别的完整列表以及描述和检测方法，请参阅[Engine issue categories](/langsmith/engine-issue-categories)。
+## 浏览和过滤问题设置完成后，**引擎**页面会在左侧面板中显示自动检测到的问题的列表。每个条目都会显示标题、简短描述、贡献痕迹的数量以及最近观察到该问题的时间。每个问题都标有故障类别，例如**无声工具错误**或**幻觉**。
 
 在列表顶部，您可以单击：
 
@@ -163,37 +163,37 @@ flowchart LR
 
 ## 审查一个问题
 
-单击列表中的任何问题以打开其详细信息面板。顶部的诊断描述了问题及其影响。**证据**部分包含支持诊断的跟踪，包括每个跟踪的片段。从本节中，您可以：
+单击列表中的任何问题以打开其详细信息面板。顶部的诊断描述了问题及其影响。
 
-- **查看跟踪**：单击“**查看跟踪**”以打开证据跟踪。当引擎识别出导致问题的子运行时，它会打开该确切的运行。跟踪视图包含返回引擎问题的 **查看问题** 链接。
+**证据**部分包含支持诊断的跟踪，包括每个跟踪的片段。从本节中，您可以：- **查看跟踪**：单击“**查看跟踪**”以打开证据跟踪。当引擎识别出导致问题的子运行时，它会打开该确切的运行。跟踪视图包含返回引擎问题的 **查看问题** 链接。
 - **创建离线示例**：单击[**Add offline examples**](#add-offline-examples)从生产跟踪输入生成自定义地面事实[dataset examples](/langsmith/manage-datasets)以进行离线评估。
 - **查看项目证据**：点击**查看项目中的全部**，可以查看追踪项目中的证据。
 
-有关更多信息，请参阅[Manage a trace](/langsmith/manage-trace)。
+欲了解更多信息，请参阅[Manage a trace](/langsmith/manage-trace)。
 
 引擎在提交问题后会持续跟踪问题。在以后的扫描中，任何与问题的故障模式匹配的新跟踪都会自动添加到 **证据**，因此问题反映了在您不重新运行任何内容的情况下故障仍然发生的频率。
 
 **建议的修复**部分描述了该问题并建议如何解决它，其中可能包括特定代码或提示更改（如果连接了存储库）。
 
-## 对问题采取行动每个问题都有一个工具栏，用于打开或查看拉取请求、创建线性问题、观察问题、关闭问题（解决或标记为错误标记）以及设置其优先级。
+## 对问题采取行动
 
-### 更改优先级
+每个问题都有一个工具栏，用于打开或查看拉取请求、创建线性问题、观察问题、关闭问题（解决或标记为错误标记）以及设置其优先级。
 
-从优先级下拉列表中选择 **低**、**中** 或 **高** 以更新问题的优先级。您可以选择提供一个原因，该原因会反馈到引擎中，以帮助随着时间的推移改进其分析。
+### 更改优先级从优先级下拉列表中选择 **低**、**中** 或 **高** 以更新问题的优先级。您可以选择提供一个原因，该原因会反馈到引擎中，以帮助随着时间的推移改进其分析。
 
 ### 打开或查看拉取请求
 
 单击 **打开 PR** 以打开 GitHub 拉取请求，其中包含连接的存储库中建议的代码更改。如果还没有，请先连接存储库。一旦存在拉取请求，引擎就会用 **View PR #\<number\>** 替换 **Open PR**。单击 **View PR #\<number\>** 在 GitHub 中打开拉取请求。引擎反映了 PR 在整个问题中的状态（开放、合并或关闭）。您还可以将问题的修复上下文复制到剪贴板，以便与法学硕士或编码助理一起使用。引擎可以对任何连接的存储库提出代码更改建议，包括使用[Deep Agents](/oss/python/deepagents/overview)、[LangChain](/oss/python/langchain/overview)和[LangGraph](/oss/python/langgraph/overview)构建的代理。
 
-### 创建一个线性问题在创建线性问题之前，请从 **配置引擎** 配置线性连接。在“线性”下，单击“连接”，选择一个团队，还可以选择一个项目，然后单击“保存更改”。
+### 创建一个线性问题
 
-要创建问题，请单击引擎问题上的“**以线性方式创建**”。引擎在创建问题时显示**线性创建挂起**。创建完成后，引擎会在引擎问题和问题列表中显示链接的线性问题标识符。
+在创建线性问题之前，请从 **配置引擎** 配置线性连接。在“线性”下，单击“连接”，选择一个团队，还可以选择一个项目，然后单击“保存更改”。要创建问题，请单击引擎问题上的“**以线性方式创建**”。引擎在创建问题时显示**线性创建挂起**。创建完成后，引擎会在引擎问题和问题列表中显示链接的线性问题标识符。
 
 线性问题包括引擎问题标题和描述、严重性、类别、标签、**在 LangSmith** 链接中查看问题以及证据跟踪 ID。引擎保留了线性问题的链接。如果您关闭线性工单，引擎将关闭相应的问题。如果您取消线性票证，引擎会将相应的问题标记为错误标记。引擎还跟踪与相应引擎问题上的线性票证链接的拉取请求。
 
 ### 添加离线示例
 
-此步骤捕获作为地面事实[dataset examples](/langsmith/manage-datasets)出现问题的痕迹，因此您可以在修复进入生产之前离线评估修复。您还可以从页面下方的 **证据** 部分开始。1. 单击“证据”列表右上角的“添加离线示例”，打开“添加为离线示例”对话框。
+此步骤将捕获问题的痕迹作为事实[dataset examples](/langsmith/manage-datasets)，因此您可以在修复进入生产之前离线评估修复。您还可以从页面下方的 **证据** 部分开始。1. 单击“证据”列表右上角的“添加离线示例”，打开“添加为离线示例”对话框。
 2. 检查每条迹线。该对话框显示输入、代理生成的错误输出以及作为自定义地面实况示例的建议预期输出。
 3. 单击“**添加到数据集**”直接添加它们，或单击“**在注释队列中编辑**”先查看它们。
 4. 在注释队列中，每个示例显示运行输入以及引擎提出的参考输出，其结构为从跟踪分析生成的名为[assertions](/langsmith/assertions)。每个断言都是一个简短的断言，描述正确答案应该或不应该包含的内容。根据需要编辑断言，使用 **+ 添加断言** 添加新断言，然后单击 **添加到数据集并继续** 以完成每个示例。
@@ -202,7 +202,7 @@ flowchart LR
 
 ### Watch：关注一个问题
 
-观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这将打开 [Engine Settings](#configure-engine) 面板的 **通知** 部分。
+观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine Settings](#configure-engine) 面板的 **通知** 部分。
 
 当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数，以便您可以选择修复或继续关注。
 
@@ -246,7 +246,7 @@ langsmith project issues list --project <project-name>
   </Step>
 </Steps>
 
-LangSmith 自动加入您选择的公共频道。要发布到私人频道，请先在 Slack 中邀请 LangSmith 应用程序到该频道。每条 Slack 消息都包含问题标题、描述和严重性、返回LangSmith的 **查看问题** 链接，以及（对于问题事件）问题随时间重复发生的图表。如果工作区的连接变得无效（例如，应用程序从 Slack 中删除），其目标将停止传送，直到您从组织的 **常规** 设置重新连接它。
+LangSmith 自动加入您选择的公共频道。要发布到私人频道，请先在 Slack 中邀请 LangSmith 应用程序到该频道。每条 Slack 消息都包含问题标题、描述和严重性、返回到 LangSmith 的 **查看问题** 链接，以及（对于问题事件）问题随时间重复发生的图表。如果工作区的连接变得无效（例如，应用程序从 Slack 中删除），其目标将停止传送，直到您从组织的 **常规** 设置重新连接它。
 
 ### 发送到 webhook
 
@@ -263,7 +263,7 @@ LangSmith 自动加入您选择的公共频道。要发布到私人频道，请�
 - **引擎支出**：查看该项目本月至今的引擎 LCU 支出。单击“**设置限制**”以限制每月支出。当达到每月限制时，新的运行将暂停。
 - **分析级别**：选择**标准**或**降低**。使用**减少**让引擎以更低的成本检查更少的跟踪。
 - **关注特定跟踪**：窄引擎关注按运行名称或元数据运行的子集。编辑自动保存并在下次扫描时生效。范围条件仅接受运行名称和元数据；您无法按反馈键或分数进行过滤。参见[Focus on specific traces](#focus-on-specific-traces)。- **通知**：单击 **添加目标** 以添加 Slack 通道或 Webhook 目标，以便在引擎检测到新问题时接收通知。设置每个目的地的最低优先级以控制哪些问题触发通知。参见[Get notified about new issues](#get-notified-about-new-issues)。
-- **代码存储库**：连接或更新 GitHub 存储库，以便代理在诊断问题时可以引用源代码。可以选择设置**子文件夹**和**分支**（默认为存储库默认值）。设置请参见[Connect Engine to GitHub](/langsmith/engine-github)。
+- **代码存储库**：连接或更新 GitHub 存储库，以便代理在诊断问题时可以引用源代码。可以选择设置 **子文件夹** 和 **分支** （默认为存储库默认值）。设置请参见[Connect Engine to GitHub](/langsmith/engine-github)。
 - **Context 存储库**：连接 Context Hub 存储库，以便引擎可以针对说明、文档和链接技能提出修复建议。
 - **Linear**：连接 Linear，然后为新问题选择一个团队和可选项目。 Engine 保留与其创建的问题的持久链接，但不会同步 Linear 的后续编辑。删除所有引擎问题不会删除现有的线性票证。参见[Create a Linear issue](#create-a-linear-issue)。
 - **暂停**：引擎按照动态时间表扫描您的痕迹，以平衡成本和性能。单击“**暂停**”停止扫描而不删除现有问题，或单击“**恢复**”继续扫描。- **删除所有问题**：此操作无法撤消。所有问题和设置都将被永久删除。
@@ -272,7 +272,6 @@ LangSmith 自动加入您选择的公共频道。要发布到私人频道，请�
 
 - [Engine](/langsmith/engine-overview)：产品概述以及引擎在开发生命周期中的位置。
 - [Connect Engine to GitHub](/langsmith/engine-github)：连接LangSmith云中的存储库，或创建和配置您自己的 GitHub 应用程序以进行自托管部署。
-- [Engine issue categories](/langsmith/engine-issue-categories)：引擎分配给检测到的问题的故障类别的参考。
 - [Engine webhook events](/langsmith/engine-webhooks)：事件负载参考、签名秘密验证和传递语义。
 - [Engine on self-hosted](/langsmith/engine-self-hosted)：自托管架构和数据处理。
 - [Manage datasets](/langsmith/manage-datasets)、[Use annotation queues](/langsmith/annotation-queues) 和 [Use assertions](/langsmith/assertions)：使用引擎生成的离线示例。
@@ -282,7 +281,7 @@ LangSmith 自动加入您选择的公共频道。要发布到私人频道，请�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

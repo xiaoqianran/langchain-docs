@@ -12,7 +12,7 @@
 
 以下集成实现了此架构：
 
-|整合 | `ls_integration`值 |
+|整合 | `ls_integration`值|
 |---|---|
 | [Claude Code](/langsmith/trace-claude-code) | `claude-code` |
 | [OpenAI Codex](/langsmith/trace-with-codex) | `openai-codex` |
@@ -45,7 +45,7 @@
 
 ## 运行类型
 
-该架构区分了五种运行类型。某些字段仅适用于运行类型的子集。|运行类型 |描述 |
+该架构区分了五种运行类型。某些字段仅适用于运行类型的子集。|运行类型|描述 |
 |---|---|
 | `root` |代表完整座席轮次或会话的顶级运行。 |
 | `llm` |一个回合内调用一个语言模型。 |
@@ -100,7 +100,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/coding-agent-metadata-contract.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

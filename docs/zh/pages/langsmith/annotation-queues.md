@@ -113,7 +113,7 @@ LangSmith支持两种队列样式：
     线程操作仅在使用 `thread_id` / `session_id` 元数据检测的运行中出现。如果没有该元数据，面板将自行打开运行，并且只有运行操作可用。
     </Note>
 
-- **从 Traces 或 Runs 选项卡**：在跟踪项目中，选择 **Traces** 或 **Runs** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
+- **从“跟踪”或“运行”选项卡**：在跟踪项目中，选择 **跟踪** 或 **运行** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
 
     <img
       className="block dark:hidden"
@@ -144,7 +144,7 @@ LangSmith支持两种队列样式：
 - **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。<Note>
     规则入队的内容取决于其[item type](/langsmith/rules#set-the-item-type-to-runs-or-threads)。项目类型为 **Runs** 的规则将运行项目排入队列。一旦线程空闲，项目类型为 **Threads** 的规则会将整个对话作为线程项目排队。
     </Note>
-- **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击**<Icon icon="pencil"/>注释**。选择 **添加到注释队列**，然后选择一个现有队列或创建一个新队列。实验注释流程添加运行项目。
+- **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击**<Icon icon="pencil"/>注释**。选择 **添加到注释队列**，然后选择现有队列或创建一个新队列。实验注释流程添加运行项目。
 
     <img
       className="block dark:hidden"
@@ -173,7 +173,7 @@ LangSmith支持两种队列样式：
 1. 查看当前项目：- **运行项目**：检查中心窗格中的输入和输出。添加 **审阅者备注**，对 [**Feedback**](/langsmith/observability-concepts#feedback) 标准进行评分，或将项目标记为已审阅。要构建数据集，请编辑运行的输入和输出以创建更正的参考示例，然后单击 **添加到数据集**。您可以直接在审阅侧面板中 [write **Assertions**](/langsmith/assertions) 并将它们保存为示例的预期输出，而不是手动制作校正后的参考输出。
     - **话题项**：中心窗格显示话题的对话记录。阅读文字记录并对其标题 **反馈** 标准进行评分。单击“**查看项目**”以打开对话预览中的线程。作为示例，要将完整对话添加到数据集，请单击“**添加到数据集**”，然后选择一个数据集。要从选取器创建数据集，请单击“**新建数据集**”。要了解线程示例包含哪些内容，请参阅[Create and manage datasets in the UI](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
 
-    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预订或队列设置如何。
+    单击“**删除**”可从所有用户的队列中删除该项目，无论当前的预留或队列设置如何。
 
     <Note>
     对于话题项，您可以提交评分标准反馈并使用 **添加到数据集**。审稿人注释和断言不可用。请参阅 [capability table](#single-run-annotation-queues) 来比较运行项和线程项功能。
@@ -256,7 +256,7 @@ PAQ 的主要区别：- **实验**：您必须预先提供两个实验会话。 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/annotation-queues.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

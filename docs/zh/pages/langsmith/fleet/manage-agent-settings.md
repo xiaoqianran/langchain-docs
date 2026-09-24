@@ -6,7 +6,7 @@
 
 本页介绍如何管理 LangSmith 舰队中座席的设置。
 
-## 更改模型
+## 改变模型
 
 要更改代理的模型：
 
@@ -31,7 +31,7 @@
 
 ## 更改代理的访问权限
 
-代理可以是创建者私有的、与特定人员共享的，或者与整个 LangSmith 工作区共享的。|特色|私人代理| [Workspace agents](#workspace-scoped-agent-details) |
+代理可以是创建者私有的、与特定人员共享的，或者与整个 LangSmith 工作区共享的。|特色 |私人代理| [Workspace agents](#workspace-scoped-agent-details) |
 | ---| ---| ---|
 | **所有权和访问权** |仅对创建者可见 |对同一 LangSmith 工作区中的任何人都可见 |
 | **OAuth 身份验证** | OAuth 凭证的范围仅限于创建者 | OAuth 凭证的范围仅限于每个用户；新用户克隆工作区代理必须使用选定的工具重新进行身份验证
@@ -50,7 +50,7 @@
 您的代理可以记住之前对话中的信息，并使用它在未来的对话中做出更好的决策。代理通过使用 `write_file` 和 `edit_file` 工具调用将文件写入 **memories 文件夹** 来保留内存。默认情况下，您的代理在保存到记忆文件夹之前需要批准。启用此设置后，代理会暂停并等待您在队列 UI 中接受、编辑或拒绝每个内存更新，然后再继续。
 
 <Tip>
-如果您的代理按照 [schedule](/langsmith/fleet/schedules#add-a-schedule) 或其他自动计划运行，请禁用内存批准要求。否则，代理将暂停涉及内存更新的每个计划运行，并无限期等待手动批准。
+如果您的代理按照 [schedule](/langsmith/fleet/schedules#add-a-schedule) 或其他自动计划运行，请禁用内存批准要求。否则，代理将在涉及内存更新的每个计划运行中暂停，并无限期地等待手动批准。
 </Tip>
 
 ### 禁用内存更新所需的批准
@@ -92,14 +92,14 @@
 1. 要确认删除，请单击 **删除** 按钮。
 
 <Warning>
-此操作无法撤消。它将永久删除代理、链接到代理的所有线程，并取消链接任何附加的通道。
+此操作无法撤消。它将永久删除代理、链接到代理的所有线程，并取消链接任何附加通道。
 </Warning>
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/manage-agent-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

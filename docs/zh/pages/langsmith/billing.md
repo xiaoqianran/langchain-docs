@@ -43,7 +43,7 @@
 
 ## 跟踪合约使用情况（企业）
 
-合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有 [⟦T0⟧ permission](/langsmith/organization-workspace-operations) 才能访问此功能。查看预付合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
+合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有[⟦T0⟧ permission](/langsmith/organization-workspace-operations)才能访问此功能。查看预付合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
 
 <Note>
 有关企业计划的更多详细信息，[contact our sales team](https://www.langchain.com/contact-sales)。
@@ -157,7 +157,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 </Note>
 
-例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
 
 ![P2sampletraces](/langsmith/images/P2SampleTraces.png)
 
@@ -165,7 +165,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 ### LangSmith 部署计费
 
-除了跟踪之外，LangSmith还通过LangSmith部署对部署的代理进行收费。部署根据其消耗的资源进行计费：- **计算**：配置资源时部署使用的 vCPU 和内存，以 LangChain 计算单元 (LCU) 为单位进行衡量。 [Serverless](/langsmith/cloud-platform-features#serverless) 部署在一段时间不活动后可以[scale to zero (beta)](/langsmith/cloud-platform-features#serverless)，因此计算费用仅在规模缩小后停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署始终在线并持续消耗计算。
+除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：- **计算**：配置资源时部署使用的 vCPU 和内存，以 LangChain 计算单元 (LCU) 为单位进行衡量。 [Serverless](/langsmith/cloud-platform-features#serverless) 部署在一段时间不活动后可以[scale to zero (beta)](/langsmith/cloud-platform-features#serverless)，因此计算费用仅在规模缩小后停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署始终在线并持续消耗计算。
 - **存储**：部署用于持久状态的数据库存储，以 LangChain 存储单元 (LSU) 为单位进行测量。
 
 有关当前 LCU 和 LSU 费率以及估计部署成本的信息，请参阅 [pricing page](https://www.langchain.com/pricing)，其中包括部署成本计算器。
@@ -182,7 +182,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/billing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

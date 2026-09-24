@@ -41,7 +41,7 @@
 ### 支持的计算平台
 
 - **Kubernetes**：使用 LangSmith Helm 图表在 Kubernetes 集群中运行代理服务器。这是生产级部署的推荐选项。
-- **Docker**：在任何 Docker 支持的计算平台（本地开发机、VM、ECS 等）中运行。这最适合开发或小规模工作负载。
+- **Docker**：在任何 Docker 支持的计算平台（本地开发机器、VM、ECS 等）中运行。这最适合开发或小规模工作负载。
 
 <Warning>
 对于生产部署，请使用 Kubernetes 和维护的 LangSmith Helm 图表。这是LangChain定期测试的生产路径。 LangChain 不定期测试其他编排器。
@@ -106,7 +106,7 @@ docker run \
 
 并且您应该为 `REDIS_URI`、`DATABASE_URI` 和 `LANGSMITH_API_KEY` 提供适当的值。
 
-* 如果您的应用程序需要额外的环境变量，您可以以类似的方式传递它们。
+* 如果您的应用程序需要额外的环境变量，您可以通过类似的方式传递它们。
 </Note>
 
 ## Docker 组合
@@ -232,7 +232,7 @@ services:
 有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
 </Accordion>
 
-这将在端口`8123`上启动代理服务器（如果需要，请更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
+这将在端口`8123`上启动代理服务器（如果需要，更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
 
 ```shell
 curl --request GET --url 0.0.0.0:8123/ok
@@ -248,7 +248,7 @@ curl --request GET --url 0.0.0.0:8123/ok
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-standalone-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

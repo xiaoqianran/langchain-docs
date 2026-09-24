@@ -25,7 +25,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 
 <Steps>
   <Step title="Navigate to Fleet">
-    1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-quickstart)中，点击左侧导航顶部的<Icon icon="pointer"/>**切换到车队**。
+    1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-quickstart)中，点击左侧导航顶部的<Icon icon="pointer"/>**切换到舰队**。
   </Step>
 
   <Step title="Choose a template">
@@ -61,7 +61,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
     5. LangSmith 将您重定向回舰队。选择 **Gmail** 以展开该行。
     6. 单击 **选择帐户** 并选择您在步骤 3 中选择的帐户。
   </Step><Step title="Connect Google Calendar">
-    1. 连接 Gmail 仅授权您的 Google 帐户使用 Gmail，而不授权使用 Google 日历。要授予日历访问权限，请点击 **Google 日历** 行右侧的 **更新权限**。
+    1. 连接 Gmail 仅授权您的 Google 帐户使用 Gmail，而非 Google 日历。要授予日历访问权限，请点击 **Google 日历** 行右侧的 **更新权限**。
     2. 在对话框中，单击“**重新授权**”。
     3. 选择您的帐户并单击**继续**。
     4. 检查权限并单击“**允许**”。
@@ -72,7 +72,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 </Steps>
 
 <Info>
-您的代理仅在执行您指定的任务时才会访问您的帐户。您可以随时在 [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) 或 Google 帐户设置中撤销访问权限。
+您的代理仅在执行您指定的任务时才会访问您的帐户。您可以随时在 [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) 或您的 Google 帐户设置中撤销访问权限。
 </Info>
 
 ## 3. 配置您的代理
@@ -162,7 +162,7 @@ Fleet 为您管理 AI 模型，因此您不需要自己的模型提供商 API �
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

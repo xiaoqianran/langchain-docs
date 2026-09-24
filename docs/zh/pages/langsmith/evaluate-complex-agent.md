@@ -80,7 +80,7 @@ import sqlite3
 
 ### 定义客户支持代理
 
-我们将创建一个对数据库具有有限访问权限的 [LangGraph](https://langchain-ai.github.io/langgraph/) 代理。出于演示目的，我们的代理将支持两种基本类型的请求：
+我们将创建一个 [LangGraph](https://langchain-ai.github.io/langgraph/) 代理，对数据库的访问权限有限。出于演示目的，我们的代理将支持两种基本类型的请求：
 
 * 查找：客户可以根据其他识别信息查找歌曲名称、艺术家姓名和专辑。例如：“你有吉米·亨德里克斯的哪些歌曲？”
 * 退款：客户可以针对过去的购买申请退款。例如：“我的名字是克劳德·香农，我想对上周购买的商品进行退款，你能帮我吗？”
@@ -501,7 +501,7 @@ if not client.has_dataset(dataset_name=dataset_name):
     )
 ```
 
-我们将创建一个自定义的 [LLM-as-judge](/langsmith/evaluation-concepts#llm-as-judge) 评估器，它使用另一个模型将每个示例的代理输出与参考响应进行比较，并判断它们是否相等：
+我们将创建一个自定义的 [LLM-as-judge](/langsmith/evaluation-concepts#llm-as-judge) 评估器，它使用另一个模型将每个示例的代理输出与参考响应进行比较，并判断它们是否等效：
 
 ```python
 # LLM-as-judge instructions
@@ -543,7 +543,7 @@ async def final_answer_correct(inputs: dict, outputs: dict, reference_outputs: d
     return grade["is_correct"]
 ```
 
-现在我们可以进行评估了。我们的评估器假设我们的目标函数返回一个“响应”键，因此让我们定义一个执行此操作的目标函数。还请记住，在我们的退款图中，我们使退款节点可配置，因此，如果我们指定`config={"env": "test"}`，我们将模拟退款而不实际更新数据库。调用图表时，我们将在目标 `run_graph` 方法中使用此可配置变量：
+现在我们可以进行评估了。我们的评估器假设我们的目标函数返回一个“响应”键，因此让我们定义一个执行此操作的目标函数。另请记住，在我们的退款图中，我们使退款节点可配置，因此如果我们指定`config={"env": "test"}`，我们将模拟退款而不实际更新数据库。调用图表时，我们将在目标 `run_graph` 方法中使用此可配置变量：
 
 ```python
 # Target function
@@ -637,7 +637,7 @@ experiment_results.to_pandas()
 
 ### 单步评估器
 
-虽然端到端测试可以为您提供有关代理性能的最大信号，但为了在代理上进行调试和迭代，查明困难的特定步骤并直接评估它们可能会有所帮助。
+虽然端到端测试可以为您提供有关代理性能的最大信息，但为了在代理上进行调试和迭代，查明困难的特定步骤并直接评估它们可能会有所帮助。
 
 在我们的例子中，代理的一个关键部分是它将用户的意图正确地路由到“退款”路径或“问答”路径。让我们创建一个数据集并运行一些评估来直接对这一组件进行压力测试。
 
@@ -1602,7 +1602,7 @@ experiment_results.to_pandas()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-complex-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -27,10 +27,10 @@
 <Tabs>
 <Tab title="UI" icon="window">
 
-## 1. 设置工作区机密
+## 1. 设置工作区秘密
 
 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。1. 导航至 <Icon icon="settings" /> **设置**，然后移至 **秘密** 选项卡。
-1. 选择 **添加密钥** 并输入密钥环境变量（例如，`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）以及您的 API 密钥作为 **值**。
+1. 选择 **添加密钥** 并输入密钥环境变量（例如`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）以及您的 API 密钥作为 **值**。
 1. 选择**保存机密**。
 
 <Note> 在 LangSmith UI 中添加工作区密钥时，请确保密钥与模型提供程序期望的环境变量名称匹配。</Note>
@@ -41,7 +41,7 @@
 
 [Playground](/langsmith/prompt-engineering-concepts#playground) 可以对不同的提示、新模型进行评估，或测试不同的模型配置。
 
-1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluation-quickstart)中，点击侧边栏中的**Playground**。
+1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluation-quickstart)中，点击侧边栏的**Playground**。
 1. 在 **Prompts** 面板下，将 **system** 提示符修改为：
 
     ```
@@ -69,8 +69,8 @@
     />
     </div>1. 将以下示例添加到数据集中：
 
-    |输入|参考输出|
-    | -------------------------------------------------------------------- | ------------------------------------------------- |
+    |输入 |参考输出|
+    | -------------------------------------------------------------------------------- | ------------------------------------------------- |
     |问：乞力马扎罗山位于哪个国家？ |输出：乞力马扎罗山位于坦桑尼亚。 |
     |问题：地球的最低点是哪里？                  |输出：地球的最低点是死海。     |
 
@@ -138,7 +138,7 @@ npx tsc --init
 </CodeGroup>
 
 <Info>
-如果您使用 `yarn` 作为包管理器，您还需要手动安装 `@langchain/core` 作为 `openevals` 的对等依赖项。一般来说，这对于 LangSmith 评估不是必需的，您可以定义评估器 [using arbitrary custom code](/langsmith/code-evaluator-ui)。
+如果您使用 `yarn` 作为包管理器，则还需要手动安装 `@langchain/core` 作为 `openevals` 的对等依赖项。一般来说，这对于 LangSmith 评估不是必需的，您可以定义评估器 [using arbitrary custom code](/langsmith/code-evaluator-ui)。
 </Info>
 
 ## 2.设置环境变量
@@ -417,7 +417,7 @@ async function correctnessEvaluator(run: {
 - 将每个示例的输入从 [Step 4](#4-add-an-evaluator) 发送到您的目标函数。
 - 收集输出（模型的答案）。
 - 将输出连同 `reference_outputs` 从 [Step 5](#5-define-an-evaluator) 传递给您的评估器。
-- 将LangSmith中的所有结果记录为实验，以便您可以在UI中查看它们。
+- 将所有结果记录在LangSmith中作为实验，以便您可以在UI中查看它们。
 
 1. 将突出显示的代码添加到您的 `eval` 文件中：
 
@@ -589,7 +589,7 @@ async function correctnessEvaluator(run: {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

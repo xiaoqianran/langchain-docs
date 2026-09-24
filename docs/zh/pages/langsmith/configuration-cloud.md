@@ -4,7 +4,7 @@
 
 # 管理助手
 
-本页介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deployment) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
+本页面介绍如何创建、配置和管理[assistants](/langsmith/assistants)。助手允许您通过配置自定义 [deployed](/langsmith/deployment) 图形的行为（例如模型选择、提示和工具可用性），而无需更改底层图形代码。
 
 您可以使用 [SDK](https://reference.langchain.com/python/langsmith/deployment/sdk/) 或在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-configuration-cloud) 中工作。
 
@@ -134,7 +134,7 @@ API 返回一个辅助对象，其中包含：
 <Note>
 **图形 ID 与助理 ID**
 
-创建助手时，您指定**图ID**（图名称如`"agent"`）。这将返回一个**助手 ID**（UUID，例如 `"62e209ca..."`）。您可以在运行图表时使用：
+创建助手时，您指定**图ID**（图名称如`"agent"`）。这将返回一个**助理 ID**（UUID，例如 `"62e209ca..."`）。您可以在运行图表时使用：
 - **图表 ID**（例如，`"agent"`）：使用该图表的默认助手
 - **助手ID** (UUID)：使用特定的助手配置
 
@@ -408,7 +408,7 @@ curl --request POST \
 3. 找到助手并选择您要使用的版本。
 4. 切换该版本的 **Active** 开关。
 
-这会更新助手以在以后的所有运行中使用所选版本。
+这会更新助手以在所有未来运行中使用所选版本。
 
 <Warning>
 删除助手将删除其**所有**版本。目前无法删除单个版本。要跳过某个版本，只需将另一个版本设置为活动版本即可。
@@ -419,7 +419,7 @@ curl --request POST \
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configuration-cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

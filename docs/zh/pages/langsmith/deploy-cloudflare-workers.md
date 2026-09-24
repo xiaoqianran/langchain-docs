@@ -48,7 +48,7 @@ Wrangler 在一次部署中上传 Vite 构建 (SPA) 和 Worker 脚本。 `nodejs
 
 ## 所需的 API 端点
 
-该应用程序在 `/api/threads/...` 下公开代理流协议。路由在`worker/index.ts`和[Hono](https://hono.dev)中实现。
+该应用程序在`/api/threads/...`下公开代理流协议。路由在`worker/index.ts`和[Hono](https://hono.dev)中实现。
 
 ### 最低（流媒体聊天）
 
@@ -117,16 +117,16 @@ flowchart TB
 
 ## Cloudflare 后端设计
 
-|关注|实施 |
+|关注|实施|
 | ---| ---|
 |前端 | Vite + React SPA (`src/`) |
 | API层| `worker/index.ts` | 霍诺 (Hono) 路线
 |运行时 |工人V8 + `nodejs_compat` |
 |上交所回放 |每线程 **持久对象** (`ThreadSession`) |
-|代理运行 |工人隔离；协议事件发布到 DO |
+|代理运行|工人隔离；协议事件发布到 DO |
 |静态资产|工人资产 (`wrangler.jsonc` → `assets`) |
 |秘密 | `wrangler secret` / `.dev.vars` |
-|本地开发| `vite`（Cloudflare Vite 插件运行 Worker 运行时）|**Worker**（代理 + 检查点）和 **Durable Object**（SSE 事件日志）之间的划分是 Cloudflare 上的主要设计选择。工作隔离是短暂的，因此重播缓冲区位于持久对象中而不是进程内存中。
+|本地开发 | `vite`（Cloudflare Vite 插件运行 Worker 运行时）|**Worker**（代理 + 检查点）和 **Durable Object**（SSE 事件日志）之间的划分是 Cloudflare 上的主要设计选择。工作隔离是短暂的，因此重播缓冲区位于持久对象中而不是进程内存中。
 
 ## 生产坚持
 
@@ -174,7 +174,7 @@ pnpm typecheck
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -136,7 +136,7 @@ handle_request("abc", "some input", "us-west")
 
 ## 使用自动跟踪
 
-[⟦T21⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以保持 `LANGSMITH_TRACING=true` 全局设置，并使用 `tracing_context` 覆盖特定请求的设置：
+[⟦T21⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以全局设置 `LANGSMITH_TRACING=true` 并使用 `tracing_context` 覆盖特定请求的设置：
 
 ```python
 import os
@@ -216,13 +216,13 @@ def handle_request(tenant_id: str, user_input: str) -> str:
         return my_agent(user_input)
 ```
 
-您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 来保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地——每个副本都可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas)。
+您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 来保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地——每个副本可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas)。
 
 <Note>
 使用 `updates` 编辑输入或输出时，请始终在副本上设置 `project_name`。如果副本的 `project_name` 与活动会话的项目匹配，则可能会删除 `updates` 并发送未编辑的输入/输出。
 </Note>
 
-## 在已部署的代理中自定义跟踪默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或根据经过身份验证的用户自定义跟踪非常有用。
+## 在已部署的代理中自定义跟踪默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或基于经过身份验证的用户自定义跟踪非常有用。
 
 ### 禁用图表跟踪
 
@@ -356,7 +356,7 @@ await myFunctionNoTrace("sensitive data");  // not traced
 
 ## 启用基于业务逻辑的条件跟踪在许多应用程序中，您需要根据运行时条件（例如客户端隐私要求、法规遵从性或功能标志）动态控制跟踪。
 
-在 TypeScript 中，最有效的方法是预先创建函数的跟踪和非跟踪变体，然后根据业务逻辑在运行时在它们之间进行选择。这避免了在每个请求上创建新的跟踪包装器的性能开销，同时仍然提供对跟踪发生时间的细粒度控制。例如：
+在 TypeScript 中，最有效的方法是预先创建函数的跟踪和非跟踪变体，然后在运行时根据您的业务逻辑在它们之间进行选择。这避免了在每个请求上创建新的跟踪包装器的性能开销，同时仍然提供对跟踪发生时间的细粒度控制。例如：
 
 ```typescript
 import { traceable } from "langsmith/traceable";
@@ -451,7 +451,7 @@ await processDataCustom("important");  // Traced to "special-project"
 
 ## 与抽样比较
 
-条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色|条件追踪 |取样|
+条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色 |条件追踪 |取样|
 |--------|--------------------|----------|
 | **控制** |确定性（显式启用/禁用）|概率（随机抽样）|
 | **用例** |业务逻辑、合规性、每个请求的决策 |成本优化、大批量可观测性 |
@@ -463,7 +463,7 @@ await processDataCustom("important");  // Traced to "special-project"
 ## 相关
 
 - [Trace without environment variables](/langsmith/trace-without-env-vars)：以编程方式配置跟踪，而不是使用环境变量。
-- [Set a sampling rate for traces](/langsmith/sample-traces)：概率性采样痕迹以减少体积
+- [Set a sampling rate for traces](/langsmith/sample-traces)：概率采样痕迹以减少体积
 - [Mask inputs and outputs](/langsmith/mask-inputs-outputs)：隐藏跟踪中的敏感数据，而不是完全禁用跟踪。
 - [Add metadata and tags to traces](/langsmith/add-metadata-tags)：使用自定义属性对跟踪进行分类和过滤。
 
@@ -471,7 +471,7 @@ await processDataCustom("important");  // Traced to "special-project"
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/conditional-tracing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

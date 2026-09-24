@@ -8,8 +8,8 @@
 
 ## 选择加密方法
 
-|方法|什么是加密的 |使用案例|
-|--------|--------------------|----------|
+|方法|什么是加密的 |使用案例 |
+|--------|------------------|----------|
 | **基本加密** |检查点 blob，可选 JSON 字段 |单静态密钥、自动 AES 加密、选择性字段加密 |
 | **自定义加密** |检查点、线程、运行、助手、cron 和存储 |每租户密钥、KMS 集成 |
 
@@ -94,7 +94,7 @@ export LANGGRAPH_AES_JSON_KEYS="api_key,secret_token,user_credentials"
 
 #### Blob 加密（检查点）
 
-Blob 处理程序对检查点数据进行加密 - 来自图形执行的序列化状态。下面是一个使用每个租户密钥与 [Fernet](https://cryptography.io/en/latest/fernet/)（`cryptography` 库中的对称加密方案）的简化示例：
+Blob 处理程序对检查点数据进行加密 - 来自图形执行的序列化状态。下面是使用每个租户密钥与 [Fernet](https://cryptography.io/en/latest/fernet/)（`cryptography` 库中的对称加密方案）的简化示例：
 
 ```python
 import os
@@ -197,7 +197,7 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 </Warning>
 
 <Warning>
-**JSON 加密器必须保留密钥结构。** SQL JSONB 合并操作在密钥级别工作。更改密钥的加密器——无论是通过合并字段（例如，将敏感数据移至`__encrypted__`）还是通过加密密钥名称本身——都会在合并过程中导致数据丢失。使用每密钥加密：在保留密钥的同时就地转换值。
+**JSON 加密器必须保留密钥结构。** SQL JSONB 合并操作在密钥级别工作。更改密钥的加密器（无论是通过合并字段（例如，将敏感数据移至`__encrypted__`）还是通过加密密钥名称本身）都会在合并期间导致数据丢失。使用每密钥加密：在保留密钥的同时就地转换值。
 </Warning>
 
 <Note>
@@ -210,8 +210,8 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 - 资源标识符（`thread_id`、`run_id`、`assistant_id`、`graph_id`、`checkpoint_id`、`task_id`）
 - 大多数以`langgraph_`开头的字段（`langgraph_auth_user`除外）
-- 所需的检查点元数据（`source`、`step`、`parents`、`run_attempt`）
-- 用于调度和编排的内部字段（`__after_seconds__`、`__request_start_time_ms__`，大多数字段以`__pregel`开头）
+- 必需的检查点元数据（`source`、`step`、`parents`、`run_attempt`）
+- 用于调度和编排的内部字段（`__after_seconds__`、`__request_start_time_ms__`，大多数以`__pregel`开头的字段）
 - 在运行的 `config` 中指定的运行级别执行限制（`max_concurrency`、`recursion_limit`）
 - 在运行的 `config.configurable` 中指定的线程 TTL 更新 (`ttl`)
 
@@ -227,7 +227,7 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 [Some fields are excluded from encryption.](#what-gets-encrypted) 除非另有说明，这些排除适用于嵌套 JSON 对象的每个级别，而不仅仅是根级别。
 
-**Blob 处理程序** (`@encryption.encrypt.blob` / `@encryption.decrypt.blob`) 应用于检查点 blob（图形执行状态）。
+**Blob 处理程序** (`@encryption.encrypt.blob` / `@encryption.decrypt.blob`) 应用于检查点 blob（图执行状态）。
 
 
 #### 从身份验证中获取上下文
@@ -250,7 +250,7 @@ async def get_encryption_context(user: BaseUser, ctx: EncryptionContext) -> dict
 
 ### 传递加密上下文
 
-通过 `X-Encryption-Context` 标头传递加密上下文。上下文是您定义的任意数据 - 您可以控制架构，并且可以包含您的加密逻辑需要的任何字段（例如，`tenant_id`、`key_version`）。上下文在您的处理程序中以 `ctx.metadata` 的形式提供，并以明文形式存储以供解密期间使用。
+通过 `X-Encryption-Context` 标头传递加密上下文。上下文是您定义的任意数据 - 您可以控制架构，并且可以包含加密逻辑所需的任何字段（例如，`tenant_id`、`key_version`）。上下文在您的处理程序中以 `ctx.metadata` 的形式提供，并以明文形式存储以供解密期间使用。
 
 ```python
 import base64
@@ -375,7 +375,7 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 #### 密钥轮换
 
-KMS 自动处理主密钥轮换。当您启用 KMS 密钥自动轮换时，旧的加密数据密钥仍然可以解密，而新操作则使用轮换的密钥材料。不需要对现有数据进行重新加密。
+KMS 自动处理主密钥轮换。当您对 KMS 密钥启用自动轮换时，旧的加密数据密钥仍然可以解密，而新操作则使用轮换的密钥材料。不需要对现有数据进行重新加密。
 
 ## 相关
 
@@ -385,7 +385,7 @@ KMS 自动处理主密钥轮换。当您启用 KMS 密钥自动轮换时，旧�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/encryption.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

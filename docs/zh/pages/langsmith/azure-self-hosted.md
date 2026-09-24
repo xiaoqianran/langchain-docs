@@ -100,7 +100,7 @@ LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com
 
 #### Web 应用程序防火墙 (WAF)
 
-为了针对攻击提供额外保护，请部署[WAF](https://learn.microsoft.com/en-us/azure/web-application-firewall/overview)，例如[Azure Application Gateway](https://azure.microsoft.com/en-us/products/application-gateway/)。 WAF 使用 OWASP 规则筛选流量，并可以在流量到达 AKS 群集之前终止 TLS。
+为了针对攻击提供额外保护，请部署 [WAF](https://learn.microsoft.com/en-us/azure/web-application-firewall/overview)，例如 [Azure Application Gateway](https://azure.microsoft.com/en-us/products/application-gateway/)。 WAF 使用 OWASP 规则筛选流量，并可以在流量到达 AKS 群集之前终止 TLS。
 
 #### 网络政策应用 [Kubernetes network policies](https://learn.microsoft.com/en-us/azure/aks/use-network-policies) 限制 Pod 到 Pod 的流量并减少受损工作负载的影响。创建集群时启用网络策略支持并基于应用程序连接设计规则。
 
@@ -138,7 +138,7 @@ LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com
 
 选择提供复制和持久性的层。配置 Redis 持久性或数据备份以实现持久性。为了获得高可用性，请根据层使用[active geo-replication](https://learn.microsoft.com/en-us/azure/redis/how-to-active-geo-replication)或区域冗余缓存。
 
-### Azure 上的 ClickHouseClickHouse 用于分析工作负载（跟踪和反馈）。如果无法使用外部管理的解决方案，请使用 Helm 或官方运营商在 AKS 上部署 ClickHouse 集群。为了实现弹性，跨节点和可用区复制数据。考虑使用 [Azure Disks](https://azure.microsoft.com/en-us/products/storage/disks/) 进行本地存储并将它们挂载为 StatefulSet。
+### Azure 上的 ClickHouseClickHouse 用于分析工作负载（跟踪和反馈）。如果无法使用外部管理的解决方案，请使用 Helm 或官方运营商在 AKS 上部署 ClickHouse 集群。为了实现弹性，跨节点和可用性区域复制数据。考虑使用 [Azure Disks](https://azure.microsoft.com/en-us/products/storage/disks/) 进行本地存储并将它们挂载为 StatefulSet。
 
 ### Azure Blob 存储
 
@@ -186,7 +186,7 @@ LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com
 
 将您的 LangSmith 实例配置为 [export telemetry data](/langsmith/export-backend)，以便您可以使用 Azure 的服务来监控它。
 
-### Azure 监视器使用 [Azure Monitor](https://azure.microsoft.com/en-us/products/monitor/) 来获取指标、日志和警报。主动监控涉及针对节点 CPU/内存利用率、Pod 状态和服务延迟等关键信号配置警报。当超过预定义阈值时，Azure Monitor 警报会通知你。
+### Azure 监视器使用 [Azure Monitor](https://azure.microsoft.com/en-us/products/monitor/) 来获取指标、日志和警报。主动监控涉及配置关键信号的警报，例如节点 CPU/内存利用率、Pod 状态和服务延迟。当超过预定义阈值时，Azure Monitor 警报会通知你。
 
 ### 管理 Prometheus 和 Grafana
 
@@ -207,7 +207,7 @@ LangChain 发布生产就绪的 [Terraform modules for Azure](https://github.com
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/azure-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

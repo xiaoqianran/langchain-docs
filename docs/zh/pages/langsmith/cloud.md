@@ -38,7 +38,7 @@
 </Note>
 
 <Note>
-自 2026 年 4 月起，LangSmith SaaS 在`us-east-2`（俄亥俄州）的 AWS 上可用。
+截至 2026 年 4 月，LangSmith SaaS 在`us-east-2`（俄亥俄州）的 AWS 上可用。
 </Note>
 
 <Note>
@@ -48,11 +48,11 @@
 ### 区域存储此表中的资源和服务存储在与注册发生的 URL 对应的位置（GCP US、GCP EU、GCP APAC 或 AWS US）。云管理的 LangSmith 使用 [Supabase](https://supabase.com) 进行身份验证/授权，使用 [ClickHouse Cloud](https://clickhouse.com/cloud) 进行数据仓库。
 
 |                                     |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
-| ----------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| ----------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 |网址 | [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-cloud) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com) | [https://apac.smith.langchain.com](https://apac.smith.langchain.com) | [https://aws.smith.langchain.com](https://aws.smith.langchain.com) |
 | API 网址 | [https://api.smith.langchain.com](https://api.smith.langchain.com) | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) ||云| GCP us-central1（爱荷华州）| GCP europe-west4（荷兰） | GCP 澳大利亚-southeast1（悉尼）| AWS us-east-2（俄亥俄州）|
 |苏帕巴斯| AWS us-east-1（弗吉尼亚北部）| AWS eu-central-1（德国）| AWS ap-southeast-2（悉尼）| AWS us-east-2（俄亥俄州）|
-| ClickHouse云| us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） || [LangSmith deployment](/langsmith/deployment) | GCP us-central1（爱荷华州）； `*.us.langgraph.app` | GCP europe-west4（荷兰）； `*.eu.langgraph.app` | GCP 澳大利亚-东南部1（悉尼）； `*.apac.langgraph.app` | AWS us-east-2（俄亥俄州）； `*.aws.us.langgraph.app` |
+| ClickHouse云 | us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） || [LangSmith deployment](/langsmith/deployment) | GCP us-central1（爱荷华州）； `*.us.langgraph.app` | GCP europe-west4（荷兰）； `*.eu.langgraph.app` | GCP 澳大利亚-东南部1（悉尼）； `*.apac.langgraph.app` | AWS us-east-2（俄亥俄州）； `*.aws.us.langgraph.app` |
 
 请参阅[Regions FAQ](/langsmith/regions-faq)了解更多信息。
 
@@ -76,7 +76,7 @@ LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE)
 
 LangSmith 使用以下 GCP 存储服务：- 用于运行输入和输出的 Google 云存储 (GCS)。
 - 用于事务工作负载的 Google Cloud SQL PostgreSQL。
-- Google Cloud Memorystore for Redis 用于排队和缓存。
+- 用于 Redis 的 Google Cloud Memorystore 用于排队和缓存。
 - GCP 上的 Clickhouse Cloud，用于跟踪摄取和分析。我们的服务通过专用端点连接到托管在同一 GCP 区域的 Clickhouse Cloud。
 
 我们使用的一些其他 GCP 服务包括：
@@ -123,7 +123,7 @@ LangSmith 使用以下 AWS 存储和数据服务：
 </div>## 将 IP 地址列入白名单
 
 ### 来自 LangChain SaaS 的出站流量
-所有离开 LangSmith 服务的流量都将通过 NAT 网关进行路由。所有流量都将显示为源自以下 IP 地址：
+所有离开 LangSmith 服务的流量都将通过 NAT 网关路由。所有流量都将显示为源自以下 IP 地址：
 
 |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | -------------- | -------------- | -------------- | -------------- |
@@ -158,7 +158,7 @@ LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP
 [**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
 </Callout>
 
-企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需将流量暴露到公共互联网。
+企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
 
 ### AWS PrivateLink
 
@@ -382,7 +382,7 @@ LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平�
 - 当端点列中未指定 HTTP 方法时，速率限制适用于该端点的所有 HTTP 方法。
 - 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。
 
-|匹配/端点（方法）|身份密钥 |美国产品限价|欧盟产品限制|类别 |
+|匹配/端点（方法）|身份密钥|美国产品限价|欧盟产品限制|类别 |
 | ---| ---| ---| ---| ---|
 |选项，`/info`，`*/v1/metadata/submit` |知识产权| 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
@@ -426,17 +426,17 @@ LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平�
 - **运行查找**：通过 UUID 检索特定运行。
 - **示例**：获取数据集示例以进行少量提示。
 - **默认（API 密钥）**：经过身份验证的 API 请求与特定模式不匹配的回退速率限制。
-- **默认（用户）**：经过身份验证的用户请求与特定模式不匹配的回退速率限制。- **公共下载**：共享资源的大容量公共下载端点。
-- **统计**：运行统计和分析端点（适用区域特定限制）。
-- **公共（包罗万象）**：未经身份验证的公共访问的默认速率限制。
+- **默认（用户）**：经过身份验证的用户请求与特定模式不匹配的回退速率限制。- **Public download**: High-volume public download endpoints for shared resources.
+- **Stats**: Run statistics and analytics endpoints (region-specific limits apply).
+- **Public (catch-all)**: Default rate limit for unauthenticated public access.
 
-有关速率限制和其他服务限制的更多信息，请参阅[Administration overview](/langsmith/usage-and-billing#rate-limits)。
+For more information on rate limits and other service limits, refer to the [Administration overview](/langsmith/usage-and-billing#rate-limits).
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

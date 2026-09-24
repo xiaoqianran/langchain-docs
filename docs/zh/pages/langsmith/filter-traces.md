@@ -97,9 +97,9 @@ status:error
 
 |餐桌选择|默认范围|可用范围 |
 | ---------------- | ------------- | ---------------- |
-| **话题** |任意运行 |线程、根运行、任意运行 |
+| **话题** |任意运行|线程、根运行、任意运行 |
 | **痕迹** |根运行|根运行，任意运行 |
-| **运行** |单跑 |单次运行、根运行、任意运行 |
+| **运行** |单跑|单次运行、根运行、任意运行 |
 
 ### 合并范围要一次过滤多个范围，请单击“**过滤器**”。这将添加一行及其自己的范围选择器和搜索栏。行与 `AND` 组合，因此线程、跟踪或运行必须满足表中出现的每一行。
 
@@ -110,7 +110,7 @@ status:error
 |范围 |查询 |
 | -----| -----|
 |主题 | `turn_count:>20` |
-|任意运行 | `run_type:tool AND status:error` |
+|任意运行| `run_type:tool AND status:error` |
 
 <img
     className="block dark:hidden"
@@ -358,7 +358,7 @@ total_cost:>0.5
 
 1. [Build the query](#build-a-query)。
 1. 单击**保存视图**。
-1. 输入名称和描述，然后保存。然后，该视图将与 **默认视图** 一起显示在 **视图** 下拉列表中。每个条目都会列出其过滤器使用的范围，一目了然地显示它是否适用于当前的表选择。
+1. 输入名称和描述，然后保存。然后，该视图将显示在 **视图** 下拉列表中与 **默认视图** 一起。每个条目都会列出其过滤器使用的范围，一目了然地显示它是否适用于当前的表选择。
 
 要更新已保存的视图，请选择它，更改查询，然后单击“**保存视图**”。要重命名或删除视图，请在 **视图** 下拉列表中单击该视图旁边的 <Icon icon="dots-vertical"/> 图标。
 
@@ -370,7 +370,7 @@ total_cost:>0.5
 
 ## 过滤跟踪中的运行
 
-在打开的跟踪内进行过滤会突出显示匹配的运行，这就是您如何在大型跟踪中找到重要的运行。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
+在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
 
 <img
     className="block dark:hidden"
@@ -420,7 +420,7 @@ total_cost:>0.5
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

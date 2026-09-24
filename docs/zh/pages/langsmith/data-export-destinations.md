@@ -25,11 +25,11 @@
 
 配置目标需要以下信息：- **存储桶名称**：数据将导出到的 S3 存储桶的名称。
 - **前缀**：数据将导出到的存储桶内的根前缀。
-- **S3 区域**：存储桶的区域 — AWS S3 存储桶必需的。
+- **S3 区域**：存储桶的区域 - AWS S3 存储桶必需的。
 - **端点 URL**：S3 存储桶的端点 URL — 对于 S3 API 兼容存储桶是必需的。
 - **访问密钥**：S3 存储桶的访问密钥。
 - **密钥**：S3 存储桶的密钥。
-- **在前缀中包含存储桶**（可选）：是否包含存储桶名称作为路径前缀的一部分。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已在端点 URL 中）时，设置为 `false`。
+- **在前缀中包含存储桶**（可选）：是否包含存储桶名称作为路径前缀的一部分。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已存在于端点 URL 中）时，设置为 `false`。
 - **S3 配置选项**（`config_kwargs_s3`，可选）：传递给 botocore 的高级 S3 寻址样式和请求设置。最常见的用途是为需要虚拟托管或路径式请求的 S3 兼容服务设置 `addressing_style`：
   - `"virtual"`：存储桶名称是主机名的一部分（例如`bucket.endpoint/key`）。对于某些 S3 兼容服务（例如 Volcengine TOS）是必需的。
   - `"path"`：存储桶名称是 URL 路径的一部分（例如 `endpoint/bucket/key`）。
@@ -437,7 +437,7 @@ resource "aws_iam_role" "langsmith_bulk_export" {
 
 ## 切换认证模式
 
-在静态凭证和[AWS IAM role assumption](#authenticate-with-an-aws-iam-role)之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
+在静态凭据和 [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) 之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports)：`bulk-exports:manage`。
 
@@ -541,7 +541,7 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 以下是一些常见错误：
 
 |错误 |描述 |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ||访问被拒绝 | Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。                                                                |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ||访问被拒绝| Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。                                                                |
 |存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。                                                                                                                                        |
 |您提供的密钥 ID 不存在 |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。                                                                                                                                                                ||无效端点 |提供的端点_url 无效。当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的 `https://storage.googleapis.com`、minio 的 `https://play.min.io` 等。如果使用 AWS，则应省略 endpoint_url。 |
 |无效的BucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。 |
@@ -550,7 +550,7 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

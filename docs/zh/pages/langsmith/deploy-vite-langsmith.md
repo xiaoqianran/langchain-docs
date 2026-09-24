@@ -4,7 +4,7 @@
 
 # 使用LangSmith和Vite进行部署
 
-此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端作为[LangSmith Deployment](/langsmith/deployment)运行，前端是一个从其流式传输的 Vite + React 应用程序。
+此示例让您从本地结帐到已部署的具有工作聊天 UI 的 LangChain 深度代理。后端作为 [LangSmith Deployment](/langsmith/deployment) 运行，前端是一个从其流式传输的 Vite + React 应用程序。
 
 当您想要在本地运行代理、将其部署到 LangSmith 并将 UI 指向已部署的代理服务器时，请使用本指南。
 
@@ -268,10 +268,10 @@ pnpm run dev
 ## 故障排除
 
 - `pnpm run dev`启动但UI无法连接：将本地开发者的`VITE_AGENT_API_URL`留空，然后重新启动`pnpm run dev`。
-- 座席本地应答失败：确认`OPENAI_API_KEY`已在`.env`中设置。
+- 座席无法本地应答：确认`OPENAI_API_KEY`已在`.env`中设置。
 - `pnpm run deploy` 失败并出现身份验证错误：确认 `LANGSMITH_API_KEY` 具有部署访问权限。
 - 远程UI连接失败：确认`VITE_AGENT_API_URL`是没有路径后缀的部署根URL。
-- 重启本地开发后线程消失：本地`langgraph dev`使用内存中的`MemorySaver`； LangSmith 部署在生产中提供持久存储。
+- 重启本地开发后线程消失：本地`langgraph dev`使用内存中`MemorySaver`； LangSmith 部署在生产中提供持久存储。
 - 您更改了`agent/`中的文件，但生产没有改变：再次运行`pnpm run deploy`。
 
 ## 了解该项目
@@ -379,7 +379,7 @@ pnpm preview
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-vite-langsmith.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -109,7 +109,7 @@
 ## 事件流提供什么
 
 `client.threads.stream(...)` 返回的流公开了一个底层事件流上的类型化投影：|投影|使用 |
-| ---------- | --- |
+| ---------- | ---|
 | `thread.events` |迭代每个原始协议事件 (Python)。在 JavaScript 中，打开 `thread.subscribe(...)`。 |
 | `thread.messages` |流式传输聊天模型消息、令牌增量、推理和工具调用参数块。 |
 | `thread.values` |迭代状态快照并等待最终值。 |
@@ -217,7 +217,7 @@
 
 `thread.values`也值得期待。等待`thread.values`解析为最终状态，相当于`await thread.output`。
 
-## 流工具调用`thread.tool_calls`（JavaScript 中的`thread.toolCalls`）公开组装的工具调用。每个句柄都带有工具名称 (`call.name`) 和组装的输入（`call.input`，一个普通值 - 不等待）。调用完成后，等待 `call.output` 获取工具结果：
+## 流工具调用`thread.tool_calls`（JavaScript 中的`thread.toolCalls`）公开组装的工具调用。每个句柄都带有工具名称（`call.name`）和组装的输入（`call.input`，一个普通值 - 不等待）。调用完成后，等待 `call.output` 获取工具结果：
 
 <Tabs>
     <Tab title="Python">
@@ -281,7 +281,7 @@
     ```
     </Tab>
     <Tab title="cURL">
-    子图活动由每个事件的 `params.namespace` 路径传达。打开范围为 `lifecycle` 通道的订阅（以及您想要在子图中观察的任何通道）：
+    子图活动由每个事件的 `params.namespace` 路径传达。打开`lifecycle`通道的订阅（以及您想要在子图中观察的任何通道）：
 
     ```bash
     curl --request POST \
@@ -715,7 +715,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

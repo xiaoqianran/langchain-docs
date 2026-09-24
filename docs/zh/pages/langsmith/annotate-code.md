@@ -752,14 +752,14 @@ LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程�
 - [Log user feedback using the SDK](/langsmith/attach-user-feedback)：预先指定运行 ID 的常见用例
 - [Access the current run (span) within a traced function](/langsmith/access-current-span)：从跟踪内部读取或修改活动运行
 - [Log traces to a specific project](/langsmith/log-traces-to-project)：将跟踪路由到指定项目而不是`default`
-- [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代方案
-- [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)来自LangSmith课程简介
+- [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代品
+- [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)摘自LangSmith课程介绍
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/annotate-code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

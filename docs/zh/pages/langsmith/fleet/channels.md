@@ -59,7 +59,7 @@ Slack 频道可让您的团队直接在 Slack 中与代理聊天。使用 Slack 
 线程的标记方式取决于代理是否使用通道：
 
 - **聊天代理（无通道）**：响应将线程标记为**未读**。查看该线程会将其标记为已读。
-- **基于通道的代理**：默认情况下，响应将线程保持为**已读**。
+- **基于通道的代理**：默认情况下，响应将线程保持为**读取**。
 
 您可以随时手动将任何线程标记为已读或未读。
 
@@ -67,7 +67,7 @@ Slack 频道可让您的团队直接在 Slack 中与代理聊天。使用 Slack 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

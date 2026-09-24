@@ -171,7 +171,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 |--------------|--------------|----------|
 | ✗ | ✗ |所有工作区成员都具有管理员级别访问权限 |
 | ✓ | ✗ |标准RBAC——基于角色权限的访问|
-| ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制|
+| ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制 |
 
 **同时启用 RBAC 和 ABAC 时：**
 
@@ -250,7 +250,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ### 4. 客户端和目的隔离（AND 逻辑）
 
-仅当满足两个条件时才授予访问权限 - 数据集用于训练并且属于特定客户端：
+仅当满足两个条件时才授予访问权限 - 数据集用于训练且属于特定客户端：
 
 ```json
 {
@@ -279,7 +279,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ### 5. 客户端数据加上没有使用 `_if_exists` `Client` 标签的资源
 
-顾问没有 RBAC `datasets:read` 权限，但此策略允许他们访问标记为 `Client=Acme-Corp` 的数据集，以及根本没有 `Client` 标签的数据集。用不同客户端标记的数据集（例如，`Client=Other-Corp`）仍然被阻止：
+顾问没有 RBAC `datasets:read` 权限，但此策略允许他们访问标记为 `Client=Acme-Corp` 的数据集，以及根本没有 `Client` 标签的数据集。用不同客户端标记的数据集（例如`Client=Other-Corp`）仍然被阻止：
 
 ```json
 {
@@ -330,7 +330,7 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

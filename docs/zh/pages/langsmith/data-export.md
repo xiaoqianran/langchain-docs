@@ -163,7 +163,7 @@ curl --request POST \
 
 在 [LangSmith cloud](/langsmith/cloud) 上，每个工作区一次最多可以有 200 个活动**计划**（重复）批量导出。即，使用 `interval_hours` 值配置的导出。该限制限制了**计划**的数量，而不是它们运行的​​次数：已生成数千次历史导出运行的计划仍算作一次。
 
-一次性（非经常性）批量出口不受此限制。如果您的工作空间达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+一次性（非经常性）批量出口不受此限制。如果您的工作区达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 [Self-hosted LangSmith](/langsmith/self-hosted) 默认情况下不强制执行此限制。
 </Note>
@@ -222,7 +222,7 @@ curl --request POST \
 
 **标识符和层次结构：**
 
-|领域 |描述 |
+|领域|描述 |
 |--------|-------------|
 | `id` |运行 ID |
 | `tenant_id` |工作区/租户 ID |
@@ -232,7 +232,7 @@ curl --request POST \
 | `parent_run_ids` |所有父运行 ID 的列表 |
 | `reference_example_id` |如果数据集的一部分，请参考示例 |
 
-**基本元数据：**|领域 |描述 |
+**基本元数据：**|领域|描述 |
 |--------|-------------|
 | `name` |运行名称|
 | `run_type` |运行类型（例如“链”、“llm”、“工具”）|
@@ -245,7 +245,7 @@ curl --request POST \
 
 **运行数据：**
 
-|领域 |描述 |
+|领域|描述 |
 |--------|-------------|
 | `inputs` |运行输入 (JSON) |
 | `outputs` |运行输出 (JSON) |
@@ -255,7 +255,7 @@ curl --request POST \
 
 **标签和反馈：**
 
-|领域 |描述 |
+|领域|描述 |
 |--------|-------------|
 | `tags` |标签列表 |
 | `feedback_stats` |反馈统计（JSON）。有关聚合限制，请参阅以下注释。 |
@@ -267,7 +267,7 @@ curl --request POST \
 `feedback_stats` 字段仅包含字符串类型反馈的值细分。非字符串值（数字、布尔值、复杂类型）的反馈不包括在这些细分中。要分析非字符串反馈值，请单独导出原始反馈数据。
 </Note>
 
-**代币使用和成本：**|领域 |描述 |
+**代币使用和成本：**|领域|描述 |
 |--------|-------------|
 | `total_tokens` |代币总数 |
 | `prompt_tokens` |提示令牌计数 |
@@ -305,7 +305,7 @@ curl --request GET \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

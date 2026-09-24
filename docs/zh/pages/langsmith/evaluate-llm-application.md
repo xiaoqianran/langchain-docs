@@ -300,7 +300,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 ## 将元数据添加到实验中
 
-元数据是一组键值对，您可以将其附加到实验，以对实验表中的实验进行分组和筛选。您可以在运行实验时通过 `metadata` 参数传递元数据（请参阅[Run the evaluation](#run-the-evaluation)），或者随后直接在 LangSmith UI 中添加元数据。
+元数据是一组键值对，您可以附加到实验以对实验表中的实验进行分组和筛选。您可以在运行实验时通过 `metadata` 参数传递元数据（请参阅 [Run the evaluation](#run-the-evaluation)），或者随后直接在 LangSmith UI 中添加元数据。
 
 要打开 **编辑实验** 面板，请将鼠标悬停在实验表中的实验行上，然后单击该行右侧显示的 **编辑** 铅笔图标。
 
@@ -334,7 +334,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 每次调用`evaluate()`都会创建一个[experiment](/langsmith/evaluation-concepts#experiment)，您可以在LangSmith UI中查看或通过SDK查询。更多详情请参见[Analyze an experiment](/langsmith/analyze-an-experiment)。
 
-实验表中列出了针对数据集运行的实验。
+针对数据集运行的实验列在实验表中。
 
 <img
   className="block dark:hidden"
@@ -602,7 +602,7 @@ await evaluate((inputs) => toxicityClassifier(inputs["input"]), {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-llm-application.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

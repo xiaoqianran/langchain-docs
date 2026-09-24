@@ -30,7 +30,7 @@ LangSmith引擎是内置于LangSmith中的AI代理，可改进您构建的代理
 引擎通过 LangChain 管理的 GitHub 应用程序连接到您的源代码。仅支持 GitHub.com。尚不支持 GitLab、Bitbucket 和其他版本控制提供程序。
 
 该应用程序的范围是：- 对您在安装时选择的存储库的**读取访问权限**。
-- **写访问**以打开来自其创建的新分支的拉取请求。推送到现有分支受您的分支保护规则的约束。
+- **写访问**以打开来自它创建的新分支的拉取请求。推送到现有分支受您的分支保护规则的约束。
 
 Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个短暂的安装令牌运行，该令牌在一小时后过期，不能超出安装时授予的权限，并且无法访问您未选择的存储库。代币是在每次分析运行时铸造的，而不是作为长期凭证持有。
 
@@ -83,7 +83,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-security.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

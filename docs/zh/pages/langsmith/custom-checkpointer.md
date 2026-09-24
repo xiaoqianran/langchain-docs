@@ -4,7 +4,7 @@
 
 # 如何使用自定义检查点
 
-将代理部署到 LangSmith 时，服务器提供内置的 Postgres 支持的检查指针，用于处理图形运行之间的状态持久性。您可以将其替换为您自己的 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver) 实现，以使用不同的存储后端。
+将代理部署到LangSmith时，服务器提供内置的 Postgres 支持的检查指针，用于处理图形运行之间的状态持久性。您可以将其替换为您自己的 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver) 实现，以使用不同的存储后端。
 
 您提供一个生成 `BaseCheckpointSaver` 实例的异步上下文管理器的路径，并且服务器自动管理其生命周期。
 
@@ -102,7 +102,7 @@ async def test_conformance():
     assert report.passed_all_base()
 ```
 
-要查看套件验证的基本和扩展操作的完整列表，请参阅 [capabilities](#capabilities) 部分。
+To view the full list of base and extended operations that the suite validates, refer to the [capabilities](#capabilities) section.
 
 ## 配置`langgraph.json`
 
@@ -133,7 +133,7 @@ langgraph dev --no-browser
 
 ## 能力
 
-服务器在启动时检查您的检查指针的**基本**（必需）和**扩展**（可选）功能。如果缺少扩展功能，服务器将使用回退或禁用相应的功能。
+The server checks your checkpointer for **base** (required) and **extended** (optional) capabilities at startup. If an extended capability is missing, the server either uses a fallback or disables the corresponding feature.
 
 ### 基本能力（必填）|方法|描述 |
 |---|---|
@@ -145,7 +145,7 @@ langgraph dev --no-browser
 
 ### 扩展功能（可选）
 
-|方法|描述 |如果丢失则后备|
+|方法|描述 |如果丢失则后备 |
 |---|---|---|
 | `adelete_for_runs` |删除特定运行的检查点 |回滚多任务策略不可用 |
 | `acopy_thread` |复制主题 |缓慢回退（一一重新插入检查点）|
@@ -165,7 +165,7 @@ langgraph dev --no-browser
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

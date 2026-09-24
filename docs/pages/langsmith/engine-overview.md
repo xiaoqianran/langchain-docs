@@ -24,16 +24,13 @@ For each issue, Engine surfaces the contributing traces, proposes a fix, keeps t
 
 ## How Engine runs
 
-Engine scans each connected tracing project on a dynamic schedule tuned to balance cost and performance, clustering and prioritizing issues by severity. It uses LangChain-managed inference and charges in LangChain Compute Units (LCUs). Each detected issue is tagged with an [issue category](/langsmith/engine-issue-categories) such as **Silent tool error** or **Hallucination**. For setup, costs, and the full issue workflow, see [Find and fix your agent's issues](/langsmith/engine). For how Engine handles your data, its GitHub and model subprocessor controls, and its compliance posture, see [Engine security](/langsmith/engine-security). For how Engine runs in a self-hosted deployment, see [Engine on self-hosted](/langsmith/engine-self-hosted).
+Engine scans each connected tracing project on a dynamic schedule tuned to balance cost and performance, clustering and prioritizing issues by severity. It uses LangChain-managed inference and charges in LangChain Compute Units (LCUs). For setup, costs, and the full issue workflow, see [Find and fix your agent's issues](/langsmith/engine). For how Engine handles your data, its GitHub and model subprocessor controls, and its compliance posture, see [Engine security](/langsmith/engine-security). For how Engine runs in a self-hosted deployment, see [Engine on self-hosted](/langsmith/engine-self-hosted).
 
 ## Get started
 
 <CardGroup cols={3}>
   <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-engine">
     Enable Engine for your organization and configure it for a tracing project.
-  </Card>
-  <Card title="Engine issue categories" icon="tag" href="/langsmith/engine-issue-categories">
-    Reference for the failure categories Engine assigns to detected issues, with descriptions and detection methods.
   </Card>
   <Card title="Engine webhook events" icon="webhook" href="/langsmith/engine-webhooks">
     Forward detected issues into your incident-management, paging, or chat tools.
@@ -44,7 +41,7 @@ Engine scans each connected tracing project on a dynamic schedule tuned to balan
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -185,14 +185,14 @@ flowchart TB
 
 ## Nitro 后端设计
 
-|关注|实施 |
+|关注|实施|
 | ---| ---|
 |前端 | `app/` 中的 Vue 组件（针对 SSE 封装在 `<ClientOnly>` 中）|
 | API层| `server/api/threads/` 中的 Nitro 路线处理程序 |
 |运行时 | Node.js（Nitro 预设取决于部署目标）|
 |上交所回放 |进程本地 `LocalThreadSession` (`server/utils/session.ts`) |
-|代理运行 |相同的硝基工艺；事件缓冲在 LangGraph `StreamChannel` |
-|线程存储|内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) |
+|代理运行|相同的硝基工艺；事件缓冲在 LangGraph `StreamChannel` |
+|线程存储 |内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) |
 |秘密 | `.env`本地；生产中的主机环境变量|代理的检查指针是线程的唯一事实来源。没有客户端缓存：侧边栏始终从服务器获取，重新启动服务器会清除每个线程。
 
 ## 生产坚持
@@ -201,7 +201,7 @@ flowchart TB
 
 对于生产，换入[durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
-|套餐 |后端|
+|套餐 |后端 |
 | ---| ---|
 | [⟦T58⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T60⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
@@ -209,7 +209,7 @@ flowchart TB
 
 替换`server/agent/index.ts`中的`MemorySaver`，并将新的检查指针传递给`createDeepAgent`。 Nitro 路线处理程序和 `server/utils/threads.ts` 助手保持不变。
 
-您还需要在 `server/utils/runtime.ts` 中有一个共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。
+您还需要 `server/utils/runtime.ts` 中的共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。
 
 有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。
 
@@ -243,7 +243,7 @@ pnpm typecheck  # vue-tsc over the project
 
 <Accordion title="Backend details">
 
-- `server/agent/index.ts` — 协调器在响应 API 上使用推理模型；使用工具的子代理使用聊天完成（以避免通过检查点重放推理项）。
+- `server/agent/index.ts` — 协调器在 Responses API 上使用推理模型；使用工具的子代理使用聊天完成（以避免通过检查点重放推理项）。
 - `server/agent/middleware.ts` — 重建来自 `content` + `tool_calls` 的先前辅助消息，因此过时的推理 ID 永远不会重播到响应 API。
 - `server/utils/session.ts` — `LocalThreadSession` 缓冲协议事件并通过 `matchesSubscription` 通过 SSE 匹配帧。
 - `server/api/threads/index.get.ts` — `GET /api/threads`，检查指针支持的线程列表。
@@ -252,8 +252,8 @@ pnpm typecheck  # vue-tsc over the project
 </Accordion>
 
 <Accordion title="Frontend details">- `app/components/ChatThread.vue` — 构建 `HttpAgentServerAdapter` 并调用 `provideStream({ transport, threadId })`。
-- `app/components/Chat.vue` — 带有编辑器和每个子代理详细信息视图的消息视图（带有面包屑）。
-- `app/components/SubagentList.vue` / `SubagentDetail.vue` — 内联子代理卡和范围子代理聊天（`useMessages` 绑定到命名空间）。
+- `app/components/Chat.vue` — 带有作曲家和每个子代理详细信息视图（带有面包屑）的消息视图。
+- `app/components/SubagentList.vue` / `SubagentDetail.vue` — 内联子代理卡和作用域子代理聊天（`useMessages` 绑定到命名空间）。
 - `app/components/MessageReasoning.vue` — 用于推理总结的可折叠“思考”块。
 
 </Accordion>
@@ -272,7 +272,7 @@ pnpm typecheck  # vue-tsc over the project
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nuxt.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

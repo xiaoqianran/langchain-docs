@@ -19,7 +19,7 @@ _数据平面_ 由您的 [Agent Servers](/langsmith/agent-server)（部署）、
 
 数据平面“监听器”应用程序定期调用 [control plane APIs](/langsmith/control-plane#control-plane-api) 来：
 
-* 确定是否应创建新的部署。
+* 确定是否应创建新部署。
 * 确定是否应更新现有部署（即新修订版）。
 * 确定是否应删除现有部署。
 
@@ -35,7 +35,7 @@ _数据平面_ 由您的 [Agent Servers](/langsmith/agent-server)（部署）、
 
 代理服务器中的所有运行均由属于每个部署一部分的后台工作人员池执行。为了启用这些运行的某些功能（例如取消和输出流），我们需要一个用于服务器和处理特定运行的工作人员之间双向通信的通道。我们使用 Redis 来组织这种通信。1. Redis 列表用作在创建新运行时立即唤醒工作线程的机制。此列表中仅存储哨兵值，没有实际运行信息。然后工作程序从 PostgreSQL 检索运行信息。
 2. Redis 字符串和 Redis PubSub 通道的组合用于服务器将运行取消请求传达给适当的工作线程。
-3. 在处理运行时，工作线程使用 Redis PubSub 通道广播来自代理的流输出。服务器中任何打开的 `/stream` 请求都将订阅该通道，并在任何事件到达时将其转发到响应。 Redis 中任何时候都不会存储任何事件。
+3. 在处理运行时，工作线程使用 Redis PubSub 通道广播来自代理的流输出。服务器中任何打开的 `/stream` 请求都将订阅该通道，并在事件到达时将其转发到响应。 Redis 中任何时候都不会存储任何事件。
 
 ### 临时元数据
 
@@ -51,7 +51,7 @@ _数据平面_ 由您的 [Agent Servers](/langsmith/agent-server)（部署）、
 2. 内存利用率
 3.待处理（进行中）数量[runs](/langsmith/runs)
 
-对于 CPU 利用率，自动缩放器的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
+对于 CPU 利用率，自动缩放程序的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
 
 对于挂起运行的数量，自动缩放器的目标是 10 个挂起运行。例如，如果当前容器数量为 1，但挂起运行的数量为 20，则自动缩放程序会将部署扩展到 2 个容器（20 个挂起运行 / 2 个容器 = 每个容器 10 个挂起运行）。
 
@@ -93,7 +93,7 @@ _数据平面_ 由您的 [Agent Servers](/langsmith/agent-server)（部署）、
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

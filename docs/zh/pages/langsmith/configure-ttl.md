@@ -9,7 +9,7 @@
 本指南假设您熟悉 [LangSmith](/langsmith/observability)、[Persistence](/oss/python/langgraph/persistence) 和 [Cross-thread persistence](/oss/python/langgraph/stores) 概念。
 </Tip>
 
-LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)（线程状态）和[cross-thread memories](/oss/python/langgraph/stores)（存储项）。您可以在[⟦T4⟧](/langsmith/application-structure#configuration-file)中配置生存时间（TTL）策略来自动管理该数据的生命周期，防止无限期累积。
+LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)（线程状态）和[cross-thread memories](/oss/python/langgraph/stores)（存储项目）。您可以在 [⟦T4⟧](/langsmith/application-structure#configuration-file) 中配置生存时间 (TTL) 策略来自动管理此数据的生命周期，防止无限期累积。
 
 ## 配置线程和检查点TTL
 
@@ -107,7 +107,7 @@ thread = await client.threads.create(
 ```
 
 <Note>
-线程级 TTL 会覆盖该线程的默认 TTL 并使用上述策略行为。
+线程级 TTL 会覆盖该线程的默认 TTL，并使用上述策略行为。
 </Note>
 
 ## 运行时覆盖对于商店物品，将 `ttl` 传递给 `put` 以覆盖默认寿命。将`refresh_ttl`传递给`get`或`search`来控制读取刷新是否过期。
@@ -122,7 +122,7 @@ thread = await client.threads.create(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-ttl.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

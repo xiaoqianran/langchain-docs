@@ -117,7 +117,7 @@ RunQueryParams todaysLlmRuns = RunQueryParams.builder()
 
 ### 列出项目中的根运行
 
-根运行是没有父运行的运行。这些为 `is_root` 分配了值 `True`。您可以使用它来过滤根运行。
+根运行是没有父运行的运行。这些被分配给 `is_root` 的值 `True`。您可以使用它来过滤根运行。
 
 <CodeGroup>
 
@@ -264,7 +264,7 @@ RunQueryParams runIdRun = RunQueryParams.builder()
 
 对于更复杂的查询，您可以使用过滤查询语言。以下示例涵盖了最常见的模式。有关完整的运算符和字段参考，包括所有比较器、可过滤字段、值格式化规则和快速参考示例表，请参阅[Trace query syntax: filter query language](/langsmith/trace-query-syntax#filter-query-language)。
 
-### 列出对话线程中的所有根运行
+### 列出对话线程中的所有 root 运行
 
 这是在会话线程中获取运行的方法。有关设置线程的更多信息，请参阅我们的[how-to guide on setting up threads](/langsmith/threads)。
 通过设置共享线程 ID 对线程进行分组。 LangSmith UI 允许您使用以下元数据键之一：`session_id` 或 `thread_id`。会话 ID 也称为跟踪项目 ID。以下查询与其中任何一个匹配。
@@ -901,12 +901,12 @@ for (const candidate of candidateRoots) {
 
 ### 高级：导出带有子工具使用情况的扁平化跟踪视图
 
-以下 Python 示例演示了如何导出跟踪的扁平视图，包括有关代理在每个跟踪中使用的工具（来自嵌套运行）的信息。
+以下 Python 示例演示如何导出跟踪的扁平视图，包括有关代理在每个跟踪中使用的工具（来自嵌套运行）的信息。
 这可用于分析代理在多个跟踪中的行为。此示例查询指定天数内的所有工具运行，并按其父（根）运行 ID 对它们进行分组。然后，它获取每个根运行的相关信息，例如运行名称、输入、输出，并将该信息与子运行信息组合。
 
 为了优化查询，示例：
 
-1、查询工具运行时只选择必要的字段，以减少查询时间。
+1. 查询工具运行时只选择必要的字段，以减少查询时间。
 2. 批量获取根运行，同时处理工具同时运行。
 
 <CodeGroup>
@@ -1129,7 +1129,7 @@ df.head()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

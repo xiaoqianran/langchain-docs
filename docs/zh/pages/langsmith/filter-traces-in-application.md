@@ -186,7 +186,7 @@ LangSmith 每次运行最多可索引 100 个唯一键，以保持数据井然�
 在该示例中，KV 搜索会将每个嵌套 JSON 路径映射为可用于搜索和过滤的键值对。
 
 LangSmith 会将其分解为以下一组可搜索的键值对：|关键|价值|
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `generations.type` | `ChatGeneration` |
 | `generations.message.type` | `constructor` |
 | `generations.message.kwargs.type` | `ai` |
@@ -296,7 +296,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：|关键|价值|
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces-in-application.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

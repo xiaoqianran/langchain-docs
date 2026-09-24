@@ -36,10 +36,10 @@ BYOC 在具有美国控制平面的 AWS 上普遍可用 (GA)。计划于 2026 �
 在 Kubernetes 集群中，不干扰LangSmith的被动工作负载就可以，例如可观察性和安全监控代理。当您部署它们时：
 
 - 使用您自己的节点组和容忍度，而不是运行 LangSmith 的节点组和容忍度。
-- 部署到 LangSmith 使用的命名空间以外的命名空间中。
+- 部署到 LangSmith 使用的命名空间之外的命名空间中。
 - 请勿编辑资源LangChain条款。
 
-LangChain 不对由干扰工作负载引起的停机或问题负责。
+LangChain 不对因工作负载干扰而导致的停机或问题负责。
 </Accordion>
 
 <Accordion title="What value do I set to the external ID for my role?">
@@ -257,7 +257,7 @@ LangChain 提供与 AWS Marketplace 的集成。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

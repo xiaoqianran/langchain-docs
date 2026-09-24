@@ -20,7 +20,7 @@
 2. 针对这些问题运行 RAG 应用程序。
 3. 使用 [evaluators](/langsmith/evaluators) 对答案相关性、答案准确性和检索质量进行评分。
 
-本教程构建并评估一个机器人，该机器人回答有关一些 [Lilian Weng's](https://lilianweng.github.io/) 博客文章的问题。
+本教程构建并评估了一个机器人，该机器人可以回答有关一些 [Lilian Weng's](https://lilianweng.github.io/) 博客文章的问题。
 
 ## 设置
 
@@ -352,7 +352,7 @@ RAG 评估者将一个工件与另一个工件进行比较（响应、输入、�
    - **模式**：无参考答案；将问题与检索到的文档进行比较。
    - **评估者**：法学硕士作为检索相关性的法官。
 
-有关这些赋值器类型的更多信息，请参阅[Evaluate RAG applications](/langsmith/evaluation-approaches#evaluate-rag-applications)。
+有关这些赋值器类型的更多信息，请参阅 [Evaluate RAG applications](/langsmith/evaluation-approaches#evaluate-rag-applications)。
 
 ![Rag eval overview](/langsmith/images/rag-eval-overview.png)
 
@@ -634,7 +634,7 @@ async function groundedness({
 
 ### 检索相关性：检索的文档与输入
 
-使用 LLM 作为法官对检索到的文档是否与用户问题相关进行评分：
+使用法学硕士作为法官对检索到的文档是否与用户问题相关进行评分：
 
 <CodeGroup>
 
@@ -1349,7 +1349,7 @@ const experimentResults = await evaluate(targetFunc, {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-rag-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

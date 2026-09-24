@@ -172,7 +172,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
 
 默认情况下禁用引擎。它需要[Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)、到[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接、外部可访问的[⟦T25⟧](#verify-your-hostname-is-externally-reachable)和[Engine encryption key](#generate-the-engine-encryption-key)。在启用引擎之前完成先决条件。
 
-引擎和 [Insights](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是新 Pod。
+引擎和 [Insights](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是添加新 Pod。
 
 ### 组件
 
@@ -192,7 +192,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
     引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。
 
     <Warning>
-    使用为引擎保留的工作空间：- Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
+    使用为引擎保留的工作区：- Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
     - 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
     - 引擎的沙箱列在该工作区中，任何有权访问它的人都可以停止。
     - 每个沙箱都运行代理生成的代码。
@@ -242,7 +242,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
 
 ### 使用 Helm 启用
 
-将以下内容添加到您的 [⟦T47⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
+将以下内容添加到您的 [⟦T47⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes) 中的完整沙盒值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
 
 <Tabs>
   <Tab title="Using Kubernetes secrets (recommended)">
@@ -365,7 +365,7 @@ engine:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

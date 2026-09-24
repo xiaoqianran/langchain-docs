@@ -19,7 +19,7 @@ BYOC 共享责任模型定义了 LangChain 管理的内容以及您的组织在 
 | **网络** | <ul><li>为支持的连接模型配置LangSmith组件，例如PrivateLink</li><li>传达所需的端点和约束</li></ul> | <ul><li>拥有您的用户和应用程序到达LangSmith BYOC 数据平面</li></ul> 所需的内部连接
 | **控制平面** | <ul><li>操作身份验证、组织配置和 API 密钥管理</li><li>服务静态前端资产并操作使用和计费界面</li></ul> | <ul><li>管理组织级管理员并控制谁可以创建和管理数据平面和工作区</li></ul> || **数据平面服务** | <ul><li>操作摄取和查询跟踪、提示、数据集、评估、见解和部署的服务</li><li>通过监控、扩展和升级保持这些服务的健康</li></ul> | <ul><li>不要将不相关的工作负载放在 BYOC 集群或 VPC 中</li><li>验证环境中的应用程序行为</li></ul> |
 | **缩放比例和容量** | <ul><li>监控和扩展 BYOC 管理的服务</li><li>尽可能在发生重大扩展事件之前提前发出通知，并提供预期的成本影响</li></ul> | <ul><li>确保 AWS 服务配额对于已部署的服务来说足够高，并根据需要增加请求</li><li>接受云账户中的成本影响</li><li>定义内部成本护栏和警报</li></ul> |
-| **升级和修补** | <ul><li>对 BYOC 管理的组件推出升级和补丁</li><li>协调重大变更和维护窗口</li></ul> | <ul><li>内部规划变更管理，包括利益相关者沟通和阶段验证</li><li>遵循您自己的变更控制流程</li></ul> |有关升级、自动缩放和维护时段如何工作的详细信息，请参阅[BYOC operations](/langsmith/byoc-operations)。
+| **升级和修补** | <ul><li>对 BYOC 管理的组件推出升级和补丁</li><li>协调重大变更和维护时段</li></ul> | <ul><li>内部规划变更管理，包括利益相关者沟通和阶段验证</li><li>遵循您自己的变更控制流程</li></ul> |有关升级、自动缩放和维护时段如何工作的详细信息，请参阅[BYOC operations](/langsmith/byoc-operations)。
 
 <Note>
 使用 [BYOVPC](/langsmith/byoc-byovpc)，您还可以创建和维护：
@@ -38,7 +38,7 @@ LangChain 在配置之前验证所提供的网络并管理其中的工作负载�
 | :---- | :---- | :---- |
 | **客户数据** | <ul><li>设计系统，使敏感数据不会传输LangChain正常运行的基础设施</li><li>避免在正常运行中访问客户数据</li></ul> | <ul><li>拥有数据平面中的数据，包括分类、保留和访问控制</li><li>拥有该数据的法律和合规义务</li><li>批准任何数据导出或共享内部</li></ul> |
 | **数据驻留** | <ul><li>仅在您指定的 AWS 区域内配置所有数据平面组件和存储</li><li>在正常操作期间将客户数据排除在LangChain托管基础设施之外</li></ul> | <ul><li>在入职时指定所需的 AWS 区域</li><li>提前传达对数据驻留要求的任何更改</li></ul> || **秘密管理** | <ul><li>在客户帐户中使用秘密存储来存储运行时秘密</li><li>参考秘密而不在控制平面中保留敏感值</li></ul> | <ul><li>应用任何组织特定的密钥管理要求</li></ul> |
-| **打破玻璃访问** | <ul><li>仅在获得客户批准和定义流程的情况下，使用打破玻璃访问来缓解事件</li><li>最大限度地减少该访问的持续时间和范围</li><li>尽可能提前通知</li><li>交付访问后摘要，涵盖时间戳、采取的操作以及访问的任何数据</li></ul> | <ul><li>在需要时批准打破玻璃访问</li><li>定义内部审批工作流程</li><li>查看事件后访问日志和注释</li></ul> || **访问审核日志** | <ul><li>在您的账户中配置日志记录基础设施，以便记录LangChain访问，包括EKS审核日志</li><li>请勿代表您查看、分析或警告这些日志</li></ul> | <ul><li>保留所有LangChain承担的角色的AWS CloudTrail和账户级日志</li><li>查看和分析这些日志，并针对它们设置您自己的警报</li><li>将异常情况升级到LangChain通过共享支持渠道</li></ul> || **安全事件通知** | <ul><li>通知您LangChain拥有的基础设施中已确认影响您的部署的安全事件，涵盖控制平面、企业系统以及BYOC构建和发布管道</li><li>共享事件范围、影响评估和补救措施步骤</li><li>配合联合取证</li><li>不要在云账户内部运行安全监控</li></ul> | <ul><li>为您账户中的 BYOC 组件部署和运行安全监控，例如 EDR、IDS、容器安全、云安全态势管理和日志聚合</li><li>确保监控不会影响 BYOC 托管资源的运行</li><li>指定安全联系人并定义内部事件响应程序</li><li>立即通知LangChain任何可疑的客户端凭证或访问权限</li></ul>|| **合规性和审核** | <ul><li>提供有关BYOC架构和操作模型的文档</li><li>为LangChain操作的控制提供审计证据，包括访问日志、更改历史记录、安全策略和渗透测试摘要</li><li>支持SOC 2、ISO 27001 及同等审核程序</li></ul> | <ul><li>掌握 AWS 环境和所有客户管理的控制措施的合规性</li><li>运行或协调该环境的审计和证据收集</li></ul> |
+| **打破玻璃访问** | <ul><li>仅在获得客户批准和定义流程的情况下，使用打破玻璃访问来缓解事件</li><li>最大限度地减少该访问的持续时间和范围</li><li>尽可能提前通知</li><li>交付访问后摘要，涵盖时间戳、采取的操作以及访问的任何数据</li></ul> | <ul><li>在需要时批准打破玻璃访问</li><li>定义内部审批工作流程</li><li>查看事件后访问日志和注释</li></ul> || **访问审核日志** | <ul><li>在您的账户中配置日志记录基础设施，以便记录LangChain访问，包括EKS审核日志</li><li>请勿代表您查看、分析或警告这些日志</li></ul> | <ul><li>保留所有LangChain承担的角色的AWS CloudTrail和账户级日志</li><li>查看和分析这些日志，并针对它们设置您自己的警报</li><li>将异常情况升级到LangChain 通过共享支持渠道</li></ul> || **安全事件通知** | <ul><li>通知您LangChain拥有的基础设施中已确认影响您的部署的安全事件，涵盖控制平面、企业系统以及BYOC构建和发布管道</li><li>共享事件范围、影响评估和补救措施步骤</li><li>配合联合取证</li><li>不要在云账户内部运行安全监控</li></ul> | <ul><li>为您账户中的 BYOC 组件部署和运行安全监控，例如 EDR、IDS、容器安全、云安全态势管理和日志聚合</li><li>确保监控不会影响 BYOC 托管资源的运行</li><li>指定安全联系人并定义内部事件响应程序</li><li>立即通知LangChain任何可疑的客户端凭证或访问权限</li></ul>|| **合规性和审核** | <ul><li>提供有关BYOC架构和操作模型的文档</li><li>为LangChain操作的控制提供审计证据，包括访问日志、更改历史记录、安全策略和渗透测试摘要</li><li>支持SOC 2、ISO 27001 及同等审核程序</li></ul> | <ul><li>掌握 AWS 环境和所有客户管理的控制措施的合规性</li><li>运行或协调该环境的审计和证据收集</li></ul> |
 
 LangChain 访问范围的 IAM 权限在 [Cross-account IAM permissions](/langsmith/byoc-architecture#cross-account-iam-permissions) 中描述。有关破碎玻璃通道在实践中的工作原理，请参阅[Troubleshooting](/langsmith/byoc-operations#troubleshooting)。有关审核日志所在位置以及如何访问它们的信息，请参阅[Auditing](/langsmith/byoc-operations#auditing)。
 
@@ -59,7 +59,7 @@ LangChain 访问范围的 IAM 权限在 [Cross-account IAM permissions](/langsmi
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-shared-responsibility.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

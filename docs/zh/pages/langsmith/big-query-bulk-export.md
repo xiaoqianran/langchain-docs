@@ -247,11 +247,11 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 
 有关完整详细信息，请参阅[Rotate destination credentials](/langsmith/data-export-destinations#rotate-destination-credentials)。
 
-## 故障排除|症状|可能的原因 |修复 |
+## 故障排除|症状|可能的原因 |修复|
 |---------|--------------|-----|
 | `400 Access denied` 关于目的地创建 | HMAC 凭证缺乏写入权限 |验证服务帐户在存储桶上有`storage.objects.create` |
 | `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 |
-| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com`|
+| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com` |
 | BigQuery 表不显示任何行 |出口尚未完成|使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
 | BigQuery 分区修剪不起作用 |源 URI 前缀不正确 |确保源 URI 前缀在第一个分区键之前结束，例如`gs://BUCKET/PREFIX` |
 | BigQuery 拾取 `tmp/` 文件 |广泛的文件路径 glob |在文件路径中使用 `export_id=*` 而不是 `*` |
@@ -262,7 +262,7 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/big-query-bulk-export.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

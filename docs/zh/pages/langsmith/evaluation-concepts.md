@@ -27,7 +27,7 @@ LangSmith 支持两种类型的评估，它们在开发工作流程中具有不�
 - **单元测试**：验证各个组件的正确性。
 - **回测**：根据历史数据测试新版本。
 
-离线评估目标是[_datasets_](#datasets)的[_examples_](#examples)：精心策划的测试用例，其中包含定义“好”的参考输出。
+离线评估目标是[_datasets_](#datasets)的[_examples_](#examples)：精心策划的测试用例，带有定义“好”的参考输出。
 
 ### 在线评价
 
@@ -106,7 +106,7 @@ graph LR
 
 每个示例包括：
 
-- **输入**：传递到应用程序的输入变量的字典。
+- **输入**：传递给应用程序的输入变量字典。
 - **参考输出**（可选）：参考输出字典。这些不会传递到您的应用程序，它们仅在评估器中使用。
 - **元数据**（可选）：附加信息的字典，可用于创建数据集的过滤视图。
 
@@ -148,7 +148,7 @@ _run_ 是来自 [deployed application](/langsmith/deployment) 的单个执行跟
 
 #### 话题
 
-_线程_是代表多轮对话的相关运行的集合。在线评估器可以在线程级别运行来评估整个对话而不是单个回合。这使得能够评估对话级别的属性，例如交互过程中的一致性、主题维护和用户满意度。
+_Threads_ 是代表多轮对话的相关运行的集合。在线评估器可以在线程级别运行来评估整个对话而不是单个回合。这使得能够评估对话级别的属性，例如交互过程中的一致性、主题维护和用户满意度。
 
 ## 评估者
 
@@ -322,7 +322,7 @@ LangSmith支持不同开发和部署阶段的多种评估方法。了解何时�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -30,7 +30,7 @@ LangSmith 中的警报是项目范围的，需要为每个受监控的项目单�
 LangSmith 针对以下指标提供基于阈值的警报：
 
 |公制类型 |描述 |使用案例|
-| ------------------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
 | **成本** |跟踪一个时间窗口内运行的总成本。 |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。 || **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。 |
 | **反馈分数** |衡量平均反馈分数。 |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 |
@@ -170,7 +170,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2. 获取您的 Dynatrace 环境 URL
 
-    您的 Dynatrace 环境 URL 遵循以下格式：
+    您的 Dynatrace 环境 URL 采用以下格式：
 
     ```
     https://{your-environment-id}.live.dynatrace.com
@@ -183,7 +183,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     1. 单击钥匙图标将 API 令牌保存为工作区密钥或选择现有工作区密钥。最佳实践是将 API 令牌保存为工作区机密，而不是直接添加。这允许您在工作区的警报之间重复使用相同的令牌。
     1. 配置附加通知选项：
        - **事件类型**：选择 Dynatrace 事件类型（例如，`CUSTOM_ALERT`、`ERROR_EVENT`）
-    1. 单击 **发送测试通知** 发送测试警报。
+    1. 单击“**发送测试通知**”发送测试警报。
     1. 验证该事件是否出现在您的 Dynatrace 环境中。
 
     ### 故障排除
@@ -200,7 +200,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     - [Dynatrace Access Tokens](https://docs.dynatrace.com/docs/manage/access-control/access-tokens)
   </Tab>
   <Tab title="Webhook">
-    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhooks 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
+    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhook 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
 
     **先决条件**
 
@@ -220,7 +220,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2.配置webhook参数
 
-    在 **Alerts** 选项卡下的[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
+    在 **Alerts** 选项卡下[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
 
     在 **通知设置** 部分中，使用以下参数完成 Webhook 配置：
 
@@ -568,7 +568,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 
-      **先决条件**- 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhooks**，创建 Webhook，然后复制 URL。
+      **先决条件**- 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhook**，创建 Webhook，然后复制 URL。
       - 启用了 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。
 
       **第 1 步：部署处理程序**
@@ -707,7 +707,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/alerts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -9,7 +9,7 @@ LangSmith 可让您通过反馈分数和元数据过滤以前的实验，以便�
 
 ## 背景：将元数据添加到您的实验中
 
-当您在 SDK 中运行实验时，您可以附加元数据，以便更轻松地在 UI 中进行过滤。如果您知道在运行实验时想要深入到哪些轴，这会很有帮助。
+当您在 SDK 中运行实验时，您可以附加元数据，以便更轻松地在 UI 中进行筛选。如果您知道在运行实验时想要深入到哪些轴，这会很有帮助。
 
 在我们的示例中，我们将围绕所使用的模型、模型提供程序和提示的已知 ID 将元数据附加到我们的实验中：
 
@@ -77,13 +77,13 @@ for model_type, model in models.items():
 
 ![Filter feedback](/langsmith/images/filter-feedback.png)
 
-最后，我们可以清除和重置过滤器。例如，如果我们看到有明显的获胜者并带有 `singleminded` 提示，我们可以更改过滤设置以查看是否有任何其他模型提供者的模型也适用于它：
+最后，我们可以清除和重置过滤器。例如，如果我们看到明显有 `singleminded` 提示的获胜者，我们可以更改过滤设置以查看是否有任何其他模型提供者的模型也适用于它：
 
 ![Filter singleminded](/langsmith/images/filter-singleminded.png)
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

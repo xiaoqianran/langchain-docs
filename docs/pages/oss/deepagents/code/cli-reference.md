@@ -378,6 +378,10 @@ The total includes model calls from the assistant, subagents, offloading, Auto c
 
 Use `/tokens` for the token counts behind the estimate. For uncovered models, [add a custom pricing override](/oss/deepagents/code/configuration#custom-pricing-overrides).
 
+### Ask a side question
+
+`/btw` lets you ask a question about the conversation while the agent keeps working. Type `/btw <question>`, or enter `/btw` to open a question field. The answer appears in a temporary dialog, not in the main conversation. Press `Esc` to dismiss it.
+
 ## Startup commands and initial prompts
 
 Use `-m`/`--message` to auto-submit an initial prompt when an interactive session starts. Combine with `--startup-cmd` to run a shell command first:
@@ -568,7 +572,7 @@ Destructive commands (`agents reset`, `skills delete`, `threads delete`) support
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

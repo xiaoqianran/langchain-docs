@@ -9,7 +9,7 @@
 常见用例包括：
 
 - **每日简报**：每天早上总结电子邮件、日历事件或 Slack 活动。
-- **内存综合**：定期检查和整合代理的内存文件，以保持上下文干净和相关。
+- **内存综合**：定期检查和整合代理的内存文件，以保持上下文干净且相关。
 - **主动外展**：起草每周状态更新、后续提醒或定期报告。
 - **数据监控**：按设定的节奏检查仪表板、指标或源，并显示任何值得注意的内容。
 
@@ -38,7 +38,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

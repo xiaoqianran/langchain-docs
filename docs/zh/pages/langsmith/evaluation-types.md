@@ -15,7 +15,7 @@
 
 离线评估在部署之前在精选数据集上测试应用程序。通过对具有参考输出的示例进行评估，团队可以在向用户公开更改之前比较版本、验证功能并建立信心。
 
-使用 LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/) 或 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过 [Playground](/langsmith/prompt-engineering-concepts#playground) 或 [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset) 在服务器端运行离线评估。
+使用LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/)或[TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过[Playground](/langsmith/prompt-engineering-concepts#playground)或[binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset)在服务器端运行离线评估。
 
 ![Offline](/langsmith/images/offline.png)
 
@@ -120,7 +120,7 @@ _回测_根据历史生产数据评估新的应用程序版本。生产日志被
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-types.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

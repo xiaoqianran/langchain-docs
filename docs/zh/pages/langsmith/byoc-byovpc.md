@@ -36,7 +36,7 @@ LangChain 保留管理工作负载安全组、用于访问数据平面的 EKS AP
 - **子网 ID 和标签**：每个子网 ID 在所有层中必须是唯一的。
 
 |子网层 |最小子网大小 |每个子网的最小可用 IPv4 地址 |
-|------------------------|--------------------------------|--------------------------------------------|
+|------------------------|---------------------------------|--------------------------------------------------------|
 |私人申请| `/20` 或更大 | 256 | 256
 |私人数据库| `/26` 或更大 | 16 | 16
 |公开，当提供时 | `/26` 或更大 | 16 | 16
@@ -52,8 +52,8 @@ VPC必须有一个主路由表。验证使用每个子网的显式路由表关�
 ### 配置网络 ACL
 
 每个提供的子网必须有一个允许以下流量的关联网络 ACL。验证按优先级顺序评估规则，包括拒绝规则。|子网层 |方向 |协议和端口|来源或目的地|
-|------------------------|----------|--------------------|------------------------|
-|所有提供的子网 |入境和出境| TCP 和 UDP，端口 1–65535 | VPC 主 CIDR |
+|------------|----------|--------------------|------------------------|
+|所有提供的子网|入境和出境| TCP 和 UDP，端口 1–65535 | VPC 主 CIDR |
 |私人申请|出境 | TCP 443 | TCP 443 `0.0.0.0/0` |
 |私人申请|入境 | TCP 1024–65535，用于返回流量 | `0.0.0.0/0` |
 |公共|入境 | TCP 443 | TCP 443 `0.0.0.0/0` |
@@ -69,7 +69,7 @@ VPC必须有一个主路由表。验证使用每个子网的显式路由表关�
 
 {/* 发布依赖项：在发布本指南之前，在 Terraform 存储库中发布modules/byoc/aws/byovpc 以及角色模块的allow_vpc_creation_permissions 和vpc_ids 输入。 */}
 
-[⟦T12⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) 创建符合 LangSmith 数据平面要求的网络。使用它来创建VPC，或配置现有VPC以满足[network requirements](#meet-the-network-requirements)。
+[⟦T12⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) 创建符合LangSmith 数据平面要求的网络。使用它来创建VPC，或配置现有VPC以满足[network requirements](#meet-the-network-requirements)。
 
 创建 VPC：1. 为您的目标账户和 [supported region](/langsmith/byoc#regions-and-cloud-providers) 配置 AWS 提供商。
 2. 将模块添加到您的 Terraform 配置中。选择不与您计划对等的网络重叠的专用 CIDR 范围。
@@ -153,7 +153,7 @@ VPC、可用区和私有子网配置创建后无法更改。您无法在 LangCha
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

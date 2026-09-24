@@ -89,7 +89,7 @@ LangSmith 根据您的要求支持多种计算选项：|计算选项 |描述 |�
 
 ### 卓越运营
 
-- 使用 IaC ([CloudFormation](https://aws.amazon.com/cloudformation/) / [Terraform](https://www.terraform.io/)) 自动化部署。
+- 使用 IaC 自动化部署 ([CloudFormation](https://aws.amazon.com/cloudformation/) / [Terraform](https://www.terraform.io/))。
 - 使用[AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)进行配置。
 - 将您的 LangSmith 实例配置为 [export telemetry data](/langsmith/export-backend) 并通过 [CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) 持续监控。
 - 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[ECR](https://aws.amazon.com/ecr/)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
@@ -146,7 +146,7 @@ LangSmith 可配置为：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/aws-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

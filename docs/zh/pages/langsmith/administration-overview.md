@@ -15,7 +15,7 @@
 当您第一次登录时，系统会自动为您创建一个个人组织。如果您想与其他人协作，您可以创建一个单独的组织并邀请您的团队成员加入。您的个人组织和共享组织之间存在一些重要区别：|特色 |个人|共享|
 | ------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
 |最大工作空间 | 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing-langsmith)）|
-|合作|无法邀请用户 |可以邀请用户|
+|合作|无法邀请用户 |可以邀请用户 |
 |计费：付费计划|仅限开发者计划 |所有其他可用计划 |
 
 ### 工作区
@@ -64,7 +64,7 @@
 
 \*\* 自托管安装可以通过功能标志启用工作区级别的用户邀请到组织。详情请参阅[self-hosted user management docs](/langsmith/self-host-user-management)。
 
-### 资源标签资源标签允许您进一步隔离工作区中的资源以与 [ABAC](/langsmith/organization-workspace-operations#access-policies) 一起使用。每个标签都是一个可以分配给资源的键值对。
+### 资源标签资源标签允许您进一步隔离工作区中的资源以与[ABAC](/langsmith/organization-workspace-operations#access-policies)一起使用。每个标签都是一个可以分配给资源的键值对。
 
 LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/userguide/tagging.html) 等云服务中的标签非常相似。
 
@@ -92,13 +92,13 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 
 #### 个人访问令牌 (PAT)
 
-个人访问令牌 (PAT) 用于验证对 LangSmith API 的请求。它们由用户创建并限定于用户。 PAT 将具有与创建它的用户相同的权限。我们建议不要使用它们来验证来自应用程序的请求，而是将它们用于与 LangSmith API 交互的个人脚本或工具。如果与 PAT 关联的用户从组织中删除，则 PAT 将不再起作用。
+个人访问令牌 (PAT) 用于验证对 LangSmith API 的请求。它们由用户创建并限定用户范围。 PAT 将具有与创建它的用户相同的权限。我们建议不要使用它们来验证来自应用程序的请求，而是将它们用于与 LangSmith API 交互的个人脚本或工具。如果与 PAT 关联的用户从组织中删除，则 PAT 将不再起作用。
 
 PAT 前缀为 `lsv2_pt_`
 
 成员可以停用、重新激活或删除自己的 PAT。 [Organization Admins](/langsmith/rbac#organization-admin)和[Organization Operators](/langsmith/rbac#organization-operator)还可以列出、停用、重新激活和删除任何成员的PAT。停用令牌会停止身份验证，但会通过 **停用** 徽章保持其记录、所有者和上次使用情况可见。停用是可逆的；删除会永久删除该记录。重新激活会保留原始到期日期，并且一旦过了该日期，将不可用。由于身份验证结果会被缓存，因此这些更改会在一分钟内生效，而不是立即生效。服务密钥只能删除，不能停用。
 
-步骤和认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
+步骤及认证缓存时序请参考[Deactivate or delete a personal access token](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
 
 #### 服务键
 
@@ -119,7 +119,7 @@ PAT 前缀为 `lsv2_pt_`
 
 组织角色与[Enterprise feature workspace RBAC](#workspace-roles-rbac)不同，并且在多个[workspaces](#workspaces)的上下文中使用。您的组织角色决定了您的工作区成员特征和您的 [organization-level permissions](/langsmith/organization-workspace-operations)。
 
-选择的组织角色还会影响工作区成员资格，如下所述：- [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
+选择的组织角色还会影响工作区成员身份，如下所述：- [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
     - 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
 - [Organization User](/langsmith/rbac#organization-user) 可以读取组织信息，但不能在组织级别执行任何写入操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
     - 可以将组织用户添加到工作区子集并照常分配工作区角色（如果启用了 RBAC），这些角色指定工作区级别的权限。
@@ -393,7 +393,7 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 * **项目** 或 **用户**：要限制的目标。
 * **每月跟踪限制**：每个日历月允许的最大跟踪数。
 
-更新这些限制需要与工作区使用限制 (`Update usage limits`) 相同的权限。与工作区限制一样，每个项目和每个用户的限制按照 UTC 的每个日历月进行评估，并在每个新月开始时重置。一旦项目或用户达到其限制，其新跟踪就会被丢弃，并且不会再次被摄取，直到限制重置。强制执行是近似的，因此在限制生效之前，可能会在阈值以上处理少量跟踪。这些限制适用于 [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
+更新这些限制需要与工作区使用限制 (`Update usage limits`) 相同的权限。与工作区限制一样，每个项目和每个用户的限制按照 UTC 的每个日历月进行评估，并在每个新月开始时重置。一旦项目或用户达到其限制，其新跟踪将被丢弃，并且不会再次被摄取，直到限制重置。强制执行是近似的，因此在限制生效之前，可能会在阈值以上处理少量跟踪。这些限制适用于 [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
 
 <Note>
 每个项目和每个用户的限制是您的工作区范围和计划限制的**附加**。痕迹必须在每个适用的摄入限值内。
@@ -415,7 +415,7 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/administration-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

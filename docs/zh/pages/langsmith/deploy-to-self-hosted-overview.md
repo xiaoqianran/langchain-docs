@@ -45,7 +45,7 @@ Agent Server 的 Prometheus 和 Datadog 导出，包括部署 UI 指标和内部
 ## 谁管理什么
 
 自托管将基础设施运营的所有权从LangChain转移给您的团队，这为您配置和操作层的方式提供了灵活性和控制：|                                              | **谁管理它** | **它在哪里运行** |
-|--------------------------------------------------------|--------------------------------|----------------------------------------|
+|----------------------------------------------------------|--------------------------------|----------------------------------------|
 | LangSmith 平台（UI、API、数据存储）|你|您的基础设施|
 |代理服务器运行时 |你|您的基础设施|
 | PostgreSQL 和 Redis |你|您的基础设施|
@@ -70,7 +70,7 @@ Agent Server 的 Prometheus 和 Datadog 导出，包括部署 UI 指标和内部
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-self-hosted-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

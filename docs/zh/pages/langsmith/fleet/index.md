@@ -33,7 +33,7 @@ LangSmith Fleet 是一个用于创建和管理 AI 代理的无代码平台。它
     报名参加[LangSmith account](https://smith.langchain.com/agents?skipOnboarding=true&utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-index)。
   </Step>
   <Step title="Create an agent" icon="circle-plus">
-    通过描述您想要的代理来使用 AI 进行构建，或者从模板开始。当您使用人工智能进行构建时，代理会自行配置并在关键点暂停以等待您的输入。 [Browse templates](https://www.langchain.com/templates)。
+    通过描述您想要的代理来使用 AI 进行构建，或者从模板开始。当您使用 AI 进行构建时，代理会自行配置并在关键点暂停以等待您的输入。 [Browse templates](https://www.langchain.com/templates)。
   </Step>
   <Step title="Connect your accounts" icon="link">
     安全登录您希望代理使用的服务。
@@ -77,7 +77,7 @@ Fleet 使用以下 AI 方法：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

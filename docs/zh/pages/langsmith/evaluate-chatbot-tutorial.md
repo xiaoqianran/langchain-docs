@@ -47,7 +47,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 * 我应该收集多少个数据点？
 * 我应该如何收集这些数据点？
 
-**架构：** 每个数据点至少应包含应用程序的输入。如果可以的话，定义预期输出也非常有帮助 - 这些输出代表您期望正常运行的应用程序输出的内容。很多时候你无法定义完美的输出——没关系！评估是一个迭代过程。有时您可能还想为每个示例定义更多信息 - 例如在 RAG 中获取的预期文档，或作为代理采取的预期步骤。 LangSmith 数据集非常灵活，允许您定义任意模式。
+**架构：** 每个数据点至少应包含应用程序的输入。如果可以的话，定义预期输出也非常有帮助 - 这些输出代表您期望正常运行的应用程序输出的内容。很多时候你无法定义完美的输出——没关系！评估是一个迭代过程。有时您可能还想为每个示例定义更多信息 - 例如在 RAG 中获取的预期文档，或者作为代理采取的预期步骤。 LangSmith 数据集非常灵活，允许您定义任意模式。
 
 **数量：** 对于您应该收集多少没有硬性规定。最重要的是确保您对可能想要防范的边缘情况有适当的覆盖。即使 10-50 个示例也可以提供很多价值！不用担心开始时会得到大量的数据 - 您可以（并且应该）随着时间的推移不断添加！**如何获得：** 这可能是最棘手的部分。一旦你知道你想要收集数据集......你实际上如何去做呢？对于大多数开始新项目的团队来说，我们通常会看到他们首先手动收集前 10-20 个数据点。从这些数据点开始之后，这些数据集通常是“活的”结构，并随着时间的推移而增长。通常，在了解真实用户将如何使用您的应用程序、了解存在的痛点，然后将其中一些数据点移入该集合后，它们通常会增长。还有一些方法，例如综合生成数据，可用于增强数据集。首先，我们建议不要担心这些，只需手动标记大约 10-20 个示例。
 
@@ -213,7 +213,7 @@ experiment_results = client.evaluate(
 )
 ```
 
-如果我们返回数据集页面上的 `Experiments` 选项卡，我们应该看到所有三个运行现在都显示了！
+如果我们返回数据集页面上的`Experiments`选项卡，我们应该看到所有三个运行现在都显示了！
 
 ![Testing tutorial three runs](/langsmith/images/testing-tutorial-three-runs.png)
 
@@ -387,7 +387,7 @@ experiment_results_v3 = client.evaluate(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-chatbot-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -35,14 +35,14 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 1. 单击 **+ Evaluator** 打开新的评估器面板。
 1. 该面板可让您：
    - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。
-   - **添加LangChain Tuned Evaluator**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，无需配置提示、模型或API密钥。
+   - **添加LangChain Tuned Evaluator**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，而无需配置提示、模型或API密钥。
    - **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先显示流行的模板，然后是按以下类别组织的模板：|类别 |描述 |
      |----------|-------------|
      |安全|检测泄漏、注入和对抗性输入。 |
      |安全|评估内容的安全性和适度性。 |
      |品质 |测量输出质量和准确性。 |
      |对话 |评估对话质量和用户体验。 |
-     |轨迹 |评估代理工具的使用和决策路径。 |
+     |轨迹|评估代理工具的使用和决策路径。 |
      |图像评估|评估图像内容质量和安全性。 |
      |语音评估|评估语音和音频交互质量。 |
 
@@ -111,7 +111,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 由于评估器是共享的，因此更改适用于其附加的所有跟踪项目和数据集。
 
-## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪中。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在 [tracing project](/langsmith/observability-concepts#projects) 上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基本保留中。
+## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在 [tracing project](/langsmith/observability-concepts#projects) 上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基本保留中。
 
 仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 
@@ -123,7 +123,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
 
-上述 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
+上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
 ## 包括扩展统计数据使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计数据（反馈、成本、令牌）** 来评估运行中的反馈统计数据、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
 
@@ -132,7 +132,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 要包含扩展统计数据：
 
 1. 当您使用 [create](#create-an-evaluator) 或 [edit](#edit-an-evaluator) 运行级别评估器时，请展开评估器配置面板中的 **高级** 部分。
-1. 选择**包括扩展统计信息（反馈、成本、代币）**。
+1. 选择**包括扩展统计数据（反馈、成本、代币）**。
 
 ### 访问扩展统计数据
 
@@ -155,7 +155,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

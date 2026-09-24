@@ -4,7 +4,7 @@
 
 # 自动运行实验评估器
 
-LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
+LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 
 * **以编程方式**，通过在代码中指定评估器（有关详细信息，请参阅[How to evaluate an LLM application](/langsmith/evaluate-llm-application)）
 * 通过 **将评估器绑定到 UI 中的数据集**。除了您通过 SDK 设置的任何评估器之外，这还将自动对创建的任何新实验运行评估器。当您迭代应用程序（目标函数）并且拥有一组要为所有实验运行的标准评估器时，这非常有用。
@@ -29,7 +29,7 @@ LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
 
 将代码评估器绑定到数据集的过程与在线评估中配置代码评估器的过程非常相似。查看[configuring code evaluators](/langsmith/online-evaluations-code)的说明。
 
-在在线评估中配置代码评估器与将代码评估器绑定到数据集之间的唯一区别在于，自定义代码评估器可以引用属于数据集`Example`一部分的输出。
+在在线评估中配置代码评估器与将代码评估器绑定到数据集之间的唯一区别在于，自定义代码评估器可以引用属于数据集 `Example` 一部分的输出。
 
 对于绑定到数据集的自定义代码评估器，评估器函数接受两个参数：* A `Run` ([reference](/langsmith/run-data-format))。这代表您实验中的新运行。例如，如果您通过 SDK 运行实验，这将包含您正在测试的链或模型的输入/输出。
 * `Example` ([reference](/langsmith/example-data-format))。这代表您正在测试的链或模型使用的数据集中的参考示例。运行和示例的 `inputs` 应该相同。如果您的示例有参考 `outputs`，那么您可以使用它来与运行的输出进行比较以进行评分。
@@ -76,7 +76,7 @@ function perform_eval(run, example) {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

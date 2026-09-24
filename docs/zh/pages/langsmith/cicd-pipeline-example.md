@@ -4,7 +4,7 @@
 
 # 使用LangSmith部署和评估实现 CI/CD 管道
 
-本指南演示了如何为LangSmith部署中部署的AI代理应用程序实现全面的CI/CD管道。在此示例中，您将使用 [LangGraph](/oss/python/langgraph/overview) 开源框架来编排和构建代理，使用 [LangSmith](/langsmith/observability) 来进行可观察性和评估。该管道基于[cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example)。
+本指南演示了如何为LangSmith部署中部署的AI代理应用程序实现全面的CI/CD管道。在此示例中，您将使用 [LangGraph](/oss/python/langgraph/overview) 开源框架来编排和构建代理，使用 [LangSmith](/langsmith/observability) 进行可观察性和评估。该管道基于[cicd-pipeline-example repository](https://github.com/langchain-ai/cicd-pipeline-example)。
 
 ## 概述
 
@@ -281,7 +281,7 @@ langgraph build -t my-agent:latest
 docker push my-agent:latest
 ```
 
-您可以推送到部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
+您可以推送到您的部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
 
 **支持的部署：**
 - <Icon icon="cloud" /> **云LangSmith**：使用控制平面 API 从 GitHub 存储库创建部署
@@ -350,7 +350,7 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
 对于自托管 LangSmith 实例，请使用 `http(s)://<langsmith-url>/api`，其中 `<langsmith-url>` 是您的自托管实例 URL。
 
 <Note>
-如果您在 `LANGSMITH_ENDPOINT` 环境变量中设置端点，请使用完整的 API URL，不带尾部斜杠（例如，`https://api.smith.langchain.com` 或 `http(s)://<langsmith-url>/api`，如果是自托管）。尾部斜杠可能会导致某些端点出现身份验证错误。
+如果您在 `LANGSMITH_ENDPOINT` 环境变量中设置端点，请使用完整的 API URL，不带尾部斜杠（例如，如果是自托管，则为 `https://api.smith.langchain.com` 或 `http(s)://<langsmith-url>/api`）。尾部斜杠可能会导致某些端点出现身份验证错误。
 </Note>
 
 #### LangSmith 部署 API（部署）
@@ -392,7 +392,7 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cicd-pipeline-example.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

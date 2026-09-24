@@ -39,7 +39,7 @@ sklearn (v1.26.4): "scikit-learn"
 您的评估器函数必须命名为 `perform_eval` 并且应该：
 
 1. 接受`run`和`example`参数。
-1. 通过`run['inputs']`、`run['outputs']`、`example['outputs']` 访问数据。
+1. Access data via `run['inputs']`, `run['outputs']`, and `example['outputs']`.
 1. 返回一个字典，其中每个键是指标名称，每个值是该指标的分数。每个键代表您想要返回的一条反馈。例如，`{"correctness": 1, "silliness": 0}` 会在运行中创建两条反馈。
 
 ### 函数签名
@@ -103,7 +103,7 @@ def perform_eval(run, example):
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/code-evaluator-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

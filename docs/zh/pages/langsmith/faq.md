@@ -43,7 +43,7 @@
 ### *应用程序的资源要求？*
 
 * 在 kubernetes 中，我们推荐最低 Helm 配置，您可以在 [medium size example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/medium_size.yaml) 中看到。对于 docker，我们建议至少 16GB RAM 和 4 个 CPU。
-* 对于 Postgres，我们建议至少使用 8GB RAM 和 2 个 CPU。
+* 对于 Postgres，我们建议至少 8GB RAM 和 2 个 CPU。
 * 对于 Redis，我们建议 4GB RAM 和 2 个 CPU。
 * 对于 Clickhouse，我们建议 32GB RAM 和 8 个 CPU。
 
@@ -92,7 +92,7 @@ JIT 配置和 SCIM 可能会相互冲突。我们建议在启用 SCIM 之前禁�
 
 ### *支持降级吗？*
 
-官方不支持降级。 LangSmith 升级可能包括数据库迁移和其他不向后兼容的更改。如需回滚到之前版本，请通过[Support Portal](https://support.langchain.com)联系技术支持指导。
+官方不支持降级。 LangSmith 升级可能包括数据库迁移和其他不向后兼容的更改。如果您需要回退到之前的版本，请通过[Support Portal](https://support.langchain.com)联系技术支持指导。
 
 ## 部署
 
@@ -113,16 +113,16 @@ LangGraph 不会给您的代码增加任何开销，并且是专为流式工作�
 ### LangGraph 和 LangSmith 有什么不同？
 
 LangGraph 是一个有状态的编排框架，可为代理工作流程带来更多控制。 LangSmith 是一项用于部署和扩展代理应用程序的服务，具有用于构建代理 UX 的固定 API，以及集成的开发人员 UI。|特点| LangGraph（开源）| LangSmith |
-|--------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+|--------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 |描述 |代理应用程序的状态编排框架|用于部署 LangGraph 应用程序的可扩展基础架构 |
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
-|流媒体|基本 |逐个令牌消息的专用模式 ||检查点 |社区贡献 |开箱即用的支持 |
+|流媒体 |基本 |逐个令牌消息的专用模式 ||检查点|社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
 |部署|自我管理| • 云<br /> • 免费自托管<br /> • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
 |容错|自我管理|自动重试 |
-|并发控制|简单的线程 |支持双短信 ||日程安排 |无 | Cron 调度 |
+|并发控制|简单的线程 |支持双短信||日程安排 |无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
 
@@ -134,9 +134,9 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 
 ### LangGraph 是否适用于不支持工具调用的法学硕士？
 
-是的！您可以将 LangGraph 与任何法学硕士一起使用。我们使用支持工具调用的 LLM 的主要原因是，这通常是让 LLM 决定要做什么的最方便的方式。如果您的 LLM 不支持工具调用，您仍然可以使用它 - 您只需要编写一些逻辑即可将原始 LLM 字符串响应转换为关于要做什么的决定。
+是的！您可以将 LangGraph 与任何法学硕士一起使用。我们使用支持工具调用的 LLM 的主要原因是，这通常是让 LLM 决定要做什么的最方便的方式。如果您的 LLM 不支持工具调用，您仍然可以使用它 - 您只需要编写一些逻辑即可将原始 LLM 字符串响应转换为有关要做什么的决定。
 
-### LangGraph 可以与 OSS LLM 一起使用吗？是的！ LangGraph 与法学硕士在幕后使用的内容完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)），因此您完全可以将LangGraph与OSS LLM一起使用。
+### LangGraph 可以与 OSS LLM 一起使用吗？是的！ LangGraph 与法学硕士的幕后用途完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)），因此您完全可以将LangGraph与OSS LLM一起使用。
 
 ### 不登录LangSmith可以使用Studio吗？
 
@@ -146,13 +146,13 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 
 ### 什么是部署运行？
 
-部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将根据托管被调用代理的部署单独收费。人机交互中断在恢复时会创建单独的部署运行。
+部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将单独向托管被调用代理的部署收费。人机交互中断在恢复时会创建单独的部署运行。
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

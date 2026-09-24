@@ -4,10 +4,10 @@
 
 # 将您的应用程序部署到云端
 
-本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 LangSmith 云（AWS 和 GCP）。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都以相同的方式部署，无论您使用哪个框架来编写代理。
+本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 LangSmith 云（AWS 和 GCP）。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都会以相同的方式部署，无论您使用哪个框架来编写代理。
 
 <Tip>
-有关包括基于 GitHub 的部署和所有配置选项的全面云部署指南，请参阅[Cloud deployment setup guide](/langsmith/deploy-to-cloud)。
+有关全面的云部署指南（包括基于 GitHub 的部署和所有配置选项），请参阅[Cloud deployment setup guide](/langsmith/deploy-to-cloud)。
 </Tip>
 
 <Note>
@@ -29,7 +29,7 @@
 
 ## 1. 创建一个可部署的应用程序
 
-`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您编写代理的方式相匹配的路径：
+`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您创作代理的方式相匹配的路径：
 
 <Tabs>
     <Tab title="LangGraph template">
@@ -232,7 +232,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

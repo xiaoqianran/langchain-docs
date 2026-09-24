@@ -73,7 +73,7 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
   </Step>
 </Steps>
 
-### 基于属性的访问控制基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记单个 MCP 服务器或集成，并创建基于这些标记授予或限制访问权限的策略。
+### 基于属性的访问控制基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记各个 MCP 服务器或集成，并创建基于这些标签授予或限制访问权限的策略。
 
 ABAC 使用两种工具资源类型：
 
@@ -132,7 +132,7 @@ Fleet 中的代理操作以结构化[LangSmith trace](/langsmith/observability) 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

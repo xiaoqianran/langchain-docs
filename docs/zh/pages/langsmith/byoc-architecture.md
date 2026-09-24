@@ -6,14 +6,14 @@
 
 BYOC 部署分为两个平面。本页介绍了每个平面的组件、它们如何通信以及您帐户中的 LangChain 规定。
 
-**控制平面**在LangChain的云中运行并处理身份验证、组织配置和计费。它配置、监控和编排您的部署，但不保存任何敏感的应用程序数据。
+**控制平面**在LangChain的云中运行，并处理身份验证、组织配置和计费。它配置、监控和编排您的部署，但不保存任何敏感的应用程序数据。
 
 **数据平面**在您的 AWS 账户中运行，并摄取、存储和查询您的所有敏感应用程序数据。它保存您的 VPC、EKS 集群、数据库和其他资源。
 
 下表总结了拆分情况：
 
 |飞机|它在哪里运行 |它包含什么 |
-|--------|-------------|---------------|
+|--------|-------------|------------|
 | **控制平面** | LangChain的云，`us-east-2` |身份验证、组织和工作区配置、计费和使用元数据、LangSmith API 密钥以及静态前端资产 |
 | **数据平面** |您选择的区域中的 AWS 账户 |跟踪、提示、数据集、评估器、实验、见解运行、注释队列、代理部署、工作区机密和其他应用程序数据 |
 
@@ -88,7 +88,7 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

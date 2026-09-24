@@ -10,7 +10,7 @@
 
 - 将 ADK 会话桥接到代理服务器的[checkpoint persistence](/langsmith/agent-server#persistence)，因此会话状态可以在重新启动后继续存在并在运行期间恢复。
 - 通过LangGraph的流管道转发ADK令牌事件，因此部分令牌显示在[⟦T14⟧](/langsmith/streaming)和[LangSmith Studio](/langsmith/studio)中。
-- 设置`LANGSMITH_TRACING`时，自动为ADK启用[LangSmith tracing](/langsmith/trace-with-google-adk)。
+- 当设置`LANGSMITH_TRACING`时，自动为ADK启用[LangSmith tracing](/langsmith/trace-with-google-adk)。
 
 ## 先决条件
 
@@ -74,7 +74,7 @@ agent = wrap(
 1. **将`LangsmithSessionService()`**传递为跑步者的`session_service`。如果您忘记了，`wrap()` 会引发 `TypeError`。代理服务器需要此挂钩通过其检查指针加载和保存 ADK 会话状态。
 2. **将包装的`agent`**导出为模块级变量。代理服务器在提供图形服务时导入此符号。
 
-对于真正的代理，删除`before_model_callback`并直接配置模型。例如，通过设置 `model="gemini-2.5-flash"` 和 `GOOGLE_API_KEY` 设置来使用 Gemini，或者通过 ADK 的 LiteLLM 适配器使用 Claude/OpenAI（`google.adk.models.lite_llm.LiteLlm`，可通过 `google-adk[extensions]` 获得）。
+对于真正的代理，删除`before_model_callback`并直接配置模型。例如，通过设置 `model="gemini-2.5-flash"` 和 `GOOGLE_API_KEY` 来使用 Gemini，或者通过 ADK 的 LiteLLM 适配器使用 Claude/OpenAI（`google.adk.models.lite_llm.LiteLlm`，可通过 `google-adk[extensions]` 获得）。
 
 ## 功能和限制
 
@@ -107,7 +107,7 @@ my-adk-agent/
 └── pyproject.toml        # Python dependencies
 ```
 
-[⟦T67⟧](/langsmith/application-structure#configuration-file-concepts) 将 Agent Server 指向导出的符号：
+[⟦T67⟧](/langsmith/application-structure#configuration-file-concepts) 将代理服务器指向导出的符号：
 
 ```json langgraph.json
 {
@@ -197,7 +197,7 @@ GOOGLE_API_KEY=your-google-api-key
 
 **加薪：** `TypeError` 如果 `runner.session_service` 不是 `LangsmithSessionService`。
 
-如果 `runner.agent` 定义了 `output_key`，则除了 `messages` 之外，该键的值也会在图的输出中公开。这就是 ADK 结构化输出代理（`output_schema=...`、`output_key=...`）与 Studio 和 `/runs/wait` 响应配合使用的原因。
+如果 `runner.agent` 定义了 `output_key`，则除了 `messages` 之外，该键的值也会公开在图的输出中。这就是 ADK 结构化输出代理（`output_schema=...`、`output_key=...`）与 Studio 和 `/runs/wait` 响应配合使用的原因。
 
 ### `LangsmithSessionService`
 
@@ -232,7 +232,7 @@ session_service = LangsmithSessionService()
 
 当跑步到达时：1. 包装图从运行配置中读取 `thread_id` 并将其用作 ADK `session_id`。如果启用[authentication](/langsmith/auth)，则经过身份验证的用户的id将成为ADK`user_id`；否则用户 ID 为`"anonymous"`。
 2. 包装器将之前的会话（如果有）从LangGraph 检查点加载到`LangsmithSessionService`，然后要求运行器处理最新消息。
-3. 运行器发出 ADK 事件。包装器通过 LangGraph 的异步回调管理器转发部分令牌事件，以便它们通过 `stream_mode="messages"` 流出，并收集响应消息的最终文本。
+3. 运行器发出 ADK 事件。包装器通过LangGraph的异步回调管理器转发部分令牌事件，以便它们通过`stream_mode="messages"`流出，并收集响应消息的最终文本。
 4. 运行完成后，包装器序列化 ADK 会话并通过 `entrypoint.final(save=...)` 将其保存到检查点。同一线程上的下一次运行将从该状态恢复。
 
 这意味着 ADK 自己的会话/状态语义被端到端保留，同时部署获得标准代理服务器功能：持久运行、流式传输、多线程持久性和跟踪。
@@ -241,7 +241,7 @@ session_service = LangsmithSessionService()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

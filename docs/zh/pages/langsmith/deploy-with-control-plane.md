@@ -12,7 +12,7 @@
 
 ## 拓扑结构
 
-在现有自托管 LangSmith 实例上启用 LangSmith 部署会添加控制平面、数据平面侦听器以及在集群中配置代理服务器的操作员。基础LangSmith平台继续处理可观测性、评估和提示；部署的代理服务器将跟踪发送回它。
+在现有自托管 LangSmith 实例上启用 LangSmith 部署会添加控制平面、数据平面侦听器以及在集群中配置代理服务器的操作员。基础LangSmith平台继续处理可观察性、评估和提示；部署的代理服务器将跟踪发送回它。
 
 开启LangSmith部署添加的组件详情请参见[Enable LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment)。
 
@@ -51,7 +51,7 @@ langgraph build -t my-image
 
 构建命令选项包括：|选项 |默认 |描述 |
 |--------|---------|-------------|
-| `-t, --tag TEXT` |必填| Docker 镜像的标签 |
+| `-t, --tag TEXT` |必填 | Docker 镜像的标签 |
 | `--platform TEXT` | |要构建的目标平台（例如，`linux/amd64,linux/arm64`）|
 | `--pull / --no-pull` | `--pull` |使用最新的远程 Docker 镜像构建 |
 | `-c, --config FILE` | `langgraph.json` |配置文件路径 |
@@ -84,9 +84,9 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
    - 根据需要进行其他部署设置。
 1. 选择**提交**。
 
-控制平面将与您的 [data plane](/langsmith/data-plane) 监听器协调来部署您的应用程序。
+控制平面将与您的 [data plane](/langsmith/data-plane) 侦听器协调来部署您的应用程序。
 
-创建部署后，基础设施是[provisioned asynchronously](/langsmith/control-plane#asynchronous-deployment)。部署可能需要长达几分钟的时间，由于数据库创建，初始部署需要更长的时间。
+创建部署后，基础架构为[provisioned asynchronously](/langsmith/control-plane#asynchronous-deployment)。部署可能需要长达几分钟的时间，由于数据库创建，初始部署需要更长的时间。
 
 从控制平面 UI 中，您可以查看构建日志、服务器日志和部署指标，包括 CPU/内存使用情况、副本和 API 性能。更多详情请参阅[control plane monitoring documentation](/langsmith/control-plane#monitoring)。
 
@@ -129,7 +129,7 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-with-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

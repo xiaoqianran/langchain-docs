@@ -25,7 +25,7 @@ LangSmith 使用三层架构来实现结构化的人类反馈：1. **反馈配�
 ### 创建反馈配置
 
 反馈配置定义反馈键的架构 - 无论是连续分数、分类选择还是自由格式文本。唯一的密钥标识组织内的每个配置，并指定注释者如何提交该指标的反馈。<Note>
-使用已存在的相同配置调用 [⟦T20⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_config) 将返回现有配置。如果同一密钥已存​​在不同的配置，系统将引发 400 错误。
+使用已存在的相同配置调用[⟦T20⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_config)将返回现有配置。如果同一密钥已存​​在不同的配置，系统将引发 400 错误。
 </Note>
 
 <CodeGroup>
@@ -397,7 +397,7 @@ for (const item of response.items ?? []) {
 
 ### 连续
 
-连续配置定义具有最小值和最大值的数字评级范围。注释者可以选择该范围内的任何值，这使得这非常适合在数字尺度上对准确性、质量或相关性等维度进行评分：
+连续配置定义具有最小值和最大值的数字评级范围。注释者可以选择该范围内的任何值，这使得它非常适合在数字尺度上对准确性、质量或相关性等维度进行评分：
 
 <CodeGroup>
 ```python Python
@@ -530,8 +530,8 @@ await client.createFeedbackConfig({
 
 ## 验证规则
 
-|类型 |最小/最大|类别 |限制条件|
-|------|---------|------------|------------|
+|类型 |最小/最大 |类别 |限制条件|
+|------|---------|------------|-------------|
 | `continuous` |可选|可选（标记刻度点）| `min < max`; [`min`, `max`] 内的类别值 |
 | `categorical` |不得设置 |必需，最少 2 |独特的价值观和标签|
 | `freeform` |不得设置 |不得设置 |不适用 |
@@ -544,9 +544,9 @@ await client.createFeedbackConfig({
 |------|--------|-------------|
 | `continuous` | `min`、`max` |范围内的数值分数 |
 | `categorical` |类别（`{value, label}`列表）|从预定义选项中进行选择 |
-| `freeform` |无 |自由文本输入|
+| `freeform` |无 |自由文本输入 |
 
-### 评分项字段|领域 |类型 |描述 |
+### 评分项字段|领域|类型 |描述 |
 |--------|------|-------------|
 | `feedback_key` | `string` |必需的。必须与现有反馈配置键匹配。 |
 | `description` | `string` |显示此项目的注释者指南。 |
@@ -558,7 +558,7 @@ await client.createFeedbackConfig({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/annotation-queues-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

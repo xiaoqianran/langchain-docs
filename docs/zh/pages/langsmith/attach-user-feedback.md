@@ -17,7 +17,7 @@ LangSmith 可以轻松地将 [feedback](/langsmith/observability-concepts#feedba
 </Info>
 
 <Tip>
-**非阻塞创建（仅限 Python）**
+**非阻塞创建（仅限Python）**
 如果您将 `trace_id=` 传递给 [⟦T5⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback)，Python 客户端将自动在后台创建反馈。
 这对于低延迟环境至关重要，您希望确保应用程序在创建反馈时不会被阻止。
 </Tip>
@@ -91,11 +91,11 @@ await client.createFeedback({
 });
 ```
 
-</CodeGroup>您甚至可以使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T9⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback) 记录正在进行的运行的反馈。 See [Access the current run (span) within a traced function](/langsmith/access-current-span) for how to get the run ID of an in-progress run.
+</CodeGroup>您甚至可以使用 [⟦T8⟧](https://reference.langchain.com/python/langsmith/client/Client/create_feedback) / [⟦T9⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createfeedback) 记录正在进行的运行的反馈。请参阅 [Access the current run (span) within a traced function](/langsmith/access-current-span) 了解如何获取正在进行的运行的运行 ID。
 
 ## 收集客户端应用程序的反馈
 
-如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。 These generate a URL scoped to a specific run and feedback key that clients can call directly.
+如果您需要在不公开 API 密钥的情况下从浏览器或其他客户端环境收集反馈，请使用**预签名反馈令牌**。它们会生成一个范围为特定运行和反馈密钥的 URL，客户端可以直接调用该 URL。
 
 完整指南请参阅[Collect feedback with presigned URLs](/langsmith/presigned-feedback-tokens)。
 
@@ -105,7 +105,7 @@ await client.createFeedback({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/attach-user-feedback.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
