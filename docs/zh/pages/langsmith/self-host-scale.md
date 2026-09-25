@@ -21,10 +21,10 @@
 | **前端副本**<br />（500m CPU，每个副本请求 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
 | **平台后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 |
 | **摄取队列副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
-| **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40| 16 | 16 50 | 50
+| **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
 | **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10个CPU<br />32Gi内存 |每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
-| **ClickHouse 设置** |单实例 |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T69⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T70⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
+| **ClickHouse 设置** |单实例|单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T69⟧.">复制集群</Tooltip> |单实例 | 3 节点<Tooltip tip="Recommended for high read loads to prevent degraded performance. Another option would be ⟦T70⟧.">复制集群</Tooltip> || <Tooltip tip="We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.">Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
 | **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
 
 
@@ -51,7 +51,7 @@ Helm 图表为 LangSmith 应用程序服务提供这些请求和限制。的
 | `ingestQueue` | 1000m / 2Gi | 2000米/4Gi | 3 |
 | `queue` | 1000m / 2Gi | 2000米/4Gi | 1 |
 | `playground` | 500m / 1Gi | 1000m / 8Gi | 1 |
-| `aceBackend` | 1000m / 2000Mi | 2000米/4000米| 1 |
+| `aceBackend` | 1000m / 2000Mi | 2000米/4000米 | 1 |
 | `hostBackend` | 200m / 1000Mi | 1000m / 2Gi | 1 |
 | `listener` | 1000m / 2Gi | 2000米/4Gi | 1 |
 | `operator` | 1000m / 2Gi | 2000米/4Gi | 1 |
@@ -486,7 +486,7 @@ commonEnv:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

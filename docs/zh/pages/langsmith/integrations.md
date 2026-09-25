@@ -59,7 +59,7 @@
 </div>
 
 <Callout icon="arrows-transfer-down" color="#4F46E5" iconType="regular">
-**使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量在模型之间切换。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
+**使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量来切换模型。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
 </Callout>
 
 ## 代理框架
@@ -246,7 +246,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

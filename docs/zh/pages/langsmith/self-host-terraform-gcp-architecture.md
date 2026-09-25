@@ -4,7 +4,7 @@
 
 # GCP Terraform 架构
 
-了解 [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 的配置以及各个部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
+了解 [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 的配置以及各部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
 
 在规划部署或对现有部署进行故障排除时，请使用此页面作为参考。它涵盖：
 
@@ -20,7 +20,7 @@
 
 GCP 上的LangSmith 最多可分为五个阶段进行部署。每个阶段都会在前一个阶段的基础上添加一个功能层。所有层共享相同的 GKE 集群和 `langsmith` 命名空间。
 
-<img src="/images/self-hosted-terraform/gcp-architecture.png" alt="LangSmith on GCP deployment stages and service layout" />|舞台|层|添加了什么 |
+<img src="/images/self-hosted-terraform/gcp-architecture.png" alt="LangSmith on GCP deployment stages and service layout" />|舞台|层 |添加了什么 |
 |---|---|---|
 | 1 | GCP 基础设施 | VPC、GKE、Cloud SQL、Memorystore、GCS、K8s 引导程序、证书管理器、KEDA、Envoy 网关 |
 | 2 | LangSmith底座|前端、后端、平台后端、队列、ace 后端、clickhouse、游乐场 |
@@ -43,7 +43,7 @@ Fleet（图表 v0.15+）是以前称为 Agent Builder 的功能的当前形式�
 | `ingress` | `infra/modules/ingress/` | Envoy Gateway Helm 发布、GatewayClass、HTTPRoute、可选 HTTPS 网关监听器 |
 | `iam` | `infra/modules/iam/` |用于 GCS 访问的 GCP 服务帐户和工作负载身份绑定（默认情况下已连接）|
 | `dns` | `infra/modules/dns/` | Cloud DNS 托管区域和托管证书（可选，通过 `enable_dns_module` 启用）|
-| `secrets` | `infra/modules/secrets/` | Secret Manager 秘密捆绑包（可选，通过 `enable_secret_manager_module` 启用）|
+| `secrets` | `infra/modules/secrets/` | Secret Manager 秘密包（可选，通过 `enable_secret_manager_module` 启用）|
 
 ## 部署层
 
@@ -98,7 +98,7 @@ GCS Bucket (Workload Identity, no static keys)
 
 |服务 |目的|港口|羟丙胺 |工作负载身份 |取决于 |
 |---|---|---|---|---|---|
-| `langsmith-frontend` |反应用户界面 | 3000 | 1 到 10 |没有 | `backend`、`platform-backend` |
+| `langsmith-frontend` |反应用户界面 | 3000 | 3000 1 到 10 |没有 | `backend`、`platform-backend` |
 | `langsmith-backend` |主要 API（跟踪、运行、项目、API 密钥、反馈）| 1984 | 3 至 10 |是（GCS）| Postgres、Redis、ClickHouse、GCS |
 | `langsmith-platform-backend` |组织和用户管理、身份验证、计费、设置 | 1986 | 1 到 10 |是（GCS）| Postgres、Redis、GCS |
 | `langsmith-playground` | LLM提示操场UI | 3001 | 3001 1 到 10 |没有 | `backend` |
@@ -110,7 +110,7 @@ GCS Bucket (Workload Identity, no static keys)
 <Warning>
 集群内 ClickHouse 仅是 dev/POC（单个 pod，无复制，无备份）。对于生产，请使用 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) 或自我管理的外部集群。
 </Warning><Note>
-[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观察性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
+[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
 </Note>
 
 ### 一次性工作
@@ -140,7 +140,7 @@ GCS Bucket (Workload Identity, no static keys)
 - 保存组织、用户、项目、API 密钥、设置。
 - Terraform 将连接 URL 直接写入 `langsmith-postgres-credentials` Kubernetes Secret。
 
-### 内存存储Redis
+### 内存存储 Redis
 
 - 默认 5 GB、STANDARD_HA 层、私有 IP、端口 6379。
 - 跟踪摄取队列、发布/订阅、短期缓存。
@@ -201,9 +201,9 @@ GSA 由`iam` 模块定义并输出为`workload_identity_annotation`。 `init-val
 |子网| `10.0.0.0/20` | GKE 节点 |
 |豆荚 | `10.4.0.0/14` | GKE Pod IP（次要范围）|
 |服务 | `10.8.0.0/20` | GKE ClusterIP 服务（次要范围）|
-|私人服务连接 | `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
+|私人服务连接| `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
 
-Cloud SQL 和 Memorystore 仅通过私有 IP 访问。每当 `postgres_source = "external"` 或 `redis_source = "external"` 时，网络模块都会建立专用服务连接（VPC 对等到 Google 的托管网络）。
+Cloud SQL 和 Memorystore 只能通过私有 IP 访问。每当 `postgres_source = "external"` 或 `redis_source = "external"` 时，网络模块都会建立专用服务连接（VPC 对等到 Google 的托管网络）。
 
 ## 交通流量
 
@@ -226,12 +226,12 @@ Internal traffic (private IPs, never leaving VPC):
   operator      → K8s API           creates and manages deployment pods
 ```## 组件到存储的映射
 
-|组件| PostgreSQL | Redis |点击屋|地面站 |
+|组件| PostgreSQL | Redis |点击屋 |地面站 |
 |---|---|---|---|---|
-| `backend` |组织配置，运行元数据 |摄取队列 | — |跟踪对象|
+| `backend` |组织配置，运行元数据 |摄取队列 | — |跟踪对象 |
 | `platform-backend` | — | — | — | Blob 路由 |
 | `queue` | — |流行音乐职位 | — |写入跟踪 blob |
-| `clickhouse` | — | — |跟踪搜索索引 | — |
+| `clickhouse` | — | — |跟踪搜索索引| — |
 | `host-backend` |部署生命周期状态 | — | — | — |
 
 ## 秘密管理器集成
@@ -311,7 +311,7 @@ kubectl run gcs-test --rm -it --image=google/cloud-sdk -n langsmith -- \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

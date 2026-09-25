@@ -69,7 +69,7 @@ my-agent/
 
     `tools/` 包含普通模块，但有一个例外。 `tools/mcp.py` 是托管声明并导出模块级`mcp`。 `tools/` 下的所有其他模块都是您导入的应用程序代码。
 
-- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+- **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系，这也设置了[deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version)。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 - **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 
 
@@ -90,7 +90,7 @@ my-agent/
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

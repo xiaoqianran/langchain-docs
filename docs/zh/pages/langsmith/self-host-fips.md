@@ -5,7 +5,7 @@
 # 符合 FIPS 的图像
 
 <Note>
-  FIPS 和气隙 LangSmith 部署需要在推出之前与您的 LangChain 客户主管进行对话。在更改安装之前，请先了解范围许可、支持的配置和升级路径。
+  FIPS 和气隙 LangSmith 部署需要在部署前与您的 LangChain 客户主管进行对话。在更改安装之前，请先了解范围许可、支持的配置和升级路径。
 </Note>
 
 从 v15 开始，每个 LangChain 创作的 LangSmith 映像都有一个在 FIPS 140 模式下运行的 `-fips` 对应版本。当您的自托管部署需要符合 FIPS 合规性时（例如在联邦机构、国防承包商和受监管行业中），请使用这些映像。
@@ -24,14 +24,14 @@
 | `langchain/langgraph-operator` | `langchain/langgraph-operator-fips` |<Note>
   **从LangSmith 0.16.21（图表`0.16.0-rc.17`）开始，图像数量减少。** 平台后端、playground、主机后端以及舰队工具和触发器服务器现在都从单个`langsmith-backend`图像运行，因此`langsmith-go-backend-fips`、`langsmith-playground-fips`、`hosted-langserve-backend-fips`、不再需要`agent-builder-tool-server-fips`和`agent-builder-trigger-server-fips`。对应的`values.yaml`键：`platformBackendImage`、`playgroundImage`、`hostBackendImage`、`fleetToolServerImage`和`fleetTriggerServerImage`已从图表中删除；您仍然为它们设置的任何值都将被忽略。
 
-  在 **早期** 版本中，这五个图像也与相同标签下的 `-fips` 对应版本一起发布；将每个密钥也指向其 `-fips` 存储库。
+  在 **早期** 版本中，这五个图像也与 `-fips` 对应项一起发布在同一标签上；将每个密钥也指向其 `-fips` 存储库。
 </Note>
 
 PostgreSQL、Redis 和 ClickHouse 并未由 LangChain 发布为 FIPS 变体。如果您的部署需要这些组件使用 FIPS，请自带 FIPS 模式服务并通过 [external Postgres](/langsmith/self-host-external-postgres)、[external Redis](/langsmith/self-host-external-redis) 或 [external ClickHouse](/langsmith/self-host-external-clickhouse) 连接。
 
 ### ACE 后端 FIPS 边界注释
 
-`langsmith-ace-backend-fips` 与所有其他 `-fips` 镜像构建在相同的 Chainguard FIPS 基础上，但其代码执行运行时（Deno 和 Pyodide/WebAssembly）捆绑了自己的加密库，并且不动态链接系统 FIPS 验证的 OpenSSL，因此执行运行时本身在技术上不属于 FIPS 140 模块边界。我们认为这对于受监管的环境来说是可以接受的：FIPS 管理平台对敏感数据的加密操作，而 ACE 不执行任何操作。它不会向用户代码注入任何秘密，不保留任何数据，也不执行静态数据加密，并且其执行子进程没有网络访问权限。 ACE是由LangSmith后端调用的集群内HTTP服务；当 TLS 由 FIPS 验证的网格或入口终止于上游时，ACE 不执行范围内的加密操作。
+`langsmith-ace-backend-fips` 与所有其他 `-fips` 镜像构建在相同的 Chainguard FIPS 基础之上，但其代码执行运行时（Deno 和 Pyodide/WebAssembly）捆绑了自己的加密库，并且不动态链接系统 FIPS 验证的 OpenSSL，因此执行运行时本身在技术上不属于 FIPS 140 模块边界。我们认为这对于受监管的环境来说是可以接受的：FIPS 管理平台对敏感数据的加密操作，而 ACE 不执行任何操作。它不会向用户代码注入任何秘密，不保留任何数据，也不执行静态数据加密，并且其执行子进程没有网络访问权限。 ACE是由LangSmith后端调用的集群内HTTP服务；当 TLS 由 FIPS 验证的网格或入口终止于上游时，ACE 不执行范围内的加密操作。
 
 ## 使用 FIPS 图像
 
@@ -102,7 +102,7 @@ docker run --rm --entrypoint openssl-fips-test langchain/langsmith-backend-fips:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-fips.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

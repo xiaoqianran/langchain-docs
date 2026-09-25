@@ -9,10 +9,10 @@ LangSmith 通过三个发布阶段提供功能：alpha、beta 和普遍可用 (G
 一项功能会随着其成熟而经历各个阶段，尽管较小的功能可能会跳过 alpha 或 beta 并直接作为 GA 发布。下表总结了每个阶段。
 
 |舞台|可用性 |变化|自托管/BYOC |支持|
-|--------|-------------|------------|------------------------|---------|
+|--------|-------------|------------|----------------------|---------|
 | [Alpha](#alpha) |仅限设计合作伙伴|预期发生重大变化；该功能可能会发生重大变化或永远不会发货 |不保证 |没有正式的 SLA |
-| [Beta](#beta) |公共或私人团体 |界面或行为仍可能发生变化；预计几个月内正式上市 |通常在测试期间添加 |积极维护； SLA 因功能而异 |
-| [GA](#generally-available-ga) |公共|稳定的;重大更改需要弃用期 |支持 |全力支持|
+| [Beta](#beta) |公共或私人团体|界面或行为仍可能发生变化；预计几个月内正式上市 |通常在测试期间添加 |积极维护； SLA 因功能而异 |
+| [GA](#generally-available-ga) |公共|稳定的;重大更改需要弃用期 |支持 |全力支持 |
 
 ## 阿尔法
 
@@ -50,14 +50,14 @@ GA 功能稳定并完全支持生产使用。
 ## 另请参阅
 
 - [Release policy](/langsmith/release-versions) 用于自托管发布通道、节奏和版本支持
-- [API and SDK deprecation policy](/langsmith/endpoint-deprecation) 如何删除已弃用的端点和方法
+- [API and SDK deprecation policy](/langsmith/endpoint-deprecation) 了解如何删除已弃用的端点和方法
 - [Changelog](/langsmith/changelog) 最近的 LangSmith 更新
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-stages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

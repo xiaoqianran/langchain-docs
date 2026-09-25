@@ -50,7 +50,7 @@
         </Callout>
 
         <h2 class="flex whitespace-pre-wrap group font-semibold">比较云、BYOC 和自托管</h2>|特色 | **云** | **自带设备** | **自托管** |
-        |--------|---------|----------|------|
+        |--------|---------|----------|-----------------|
         | **谁运行基础设施** | LangChain | LangChain 运行控制平面，您运行数据平面 |你|
         | **敏感数据所在的地方** | LangChain的云 |您的 VPC |您的 VPC |
         | **升级和补丁** |自动|自动|手册|
@@ -101,7 +101,7 @@
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

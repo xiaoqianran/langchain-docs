@@ -79,6 +79,33 @@ uv run mda deploy --no-wait
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关完整的部署步骤列表，请参阅[CLI reference](/langsmith/python/managed-deep-agents-cli#deploy-projects)。
 
+## 设置Python版本
+
+<Note>
+配置Python版本需要`managed-deepagents>=0.8.0`。
+</Note>
+
+MDA 在 Python 3.11、3.12、3.13 或 3.14 上构建部署映像，并默认选择 `requires-python` 允许的最新版本。要固定版本，请将可选的 `[tool.mda]` 表添加到 `pyproject.toml`：
+
+```toml pyproject.toml
+[project]
+requires-python = ">=3.11"
+
+[tool.mda]
+python-version = "3.14"
+```
+
+设置后，`python-version`采用带引号的`major.minor`字符串，没有补丁版本。 MDA 将解析后的版本写入生成的`langgraph.json` 中的`python_version`，并选择匹配的[Agent Server](/langsmith/agent-server-overview) 图像。 `requires-python` 仍然是项目自身的兼容性要求。
+
+当 MDA 添加对较新 Python 的支持时，将其固定在相同的次要版本上。要在单个构建中覆盖它，请设置 `MDA_PYTHON_VERSION`：
+
+```bash
+MDA_PYTHON_VERSION=3.12 uv run mda deploy
+````requires-python` 排除的目标构建失败。相反，依赖于图像的确切补丁版本的警告会发出警告，因为图像标签不会固定补丁版本。
+
+`python-version` 仅控制部署映像。本地构建、`mda dev`、Harbor 任务镜像和[execution sandboxes](/langsmith/python/managed-deep-agents-sandboxes) 分别选择它们的解释器。
+
+
 ## 秘密和环境文件
 
 `mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
@@ -90,9 +117,9 @@ GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
 DATABASE_URL=<DATABASE_URL>
 ```
 
-`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的秘密转发。
+`LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY`等平台变量被保留。他们可以对部署进行身份验证，但不会作为用户管理的部署机密上传。
 
-保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
+当 `mda deploy` 创建或更新部署时，非保留的 `.env` 条目（例如模型提供程序密钥、MCP 令牌和自定义工具凭证）将作为托管部署机密转发。如果配置的模型需要提供程序密钥，则部署在上传之前会失败，除非该密钥可从 `.env`、shell 环境或 LangSmith 工作区密钥获得。当提供程序密钥仅位于 shell 环境中时，`mda deploy` 将其作为该部署的机密转发。保留的平台变量、空值、`.env`和`.env.*`文件不会复制到已编译的构建存档中。
 
 认证密钥顺序和保留变量请参见[CLI reference](/langsmith/python/managed-deep-agents-cli#authentication)。
 
@@ -102,7 +129,9 @@ DATABASE_URL=<DATABASE_URL>
 
 如果部署达到`BUILD_FAILED`或`DEPLOY_FAILED`，请打开LangSmith中打印的部署URL并检查修订日志。
 
-## 后续步骤<CardGroup cols={2}>
+## 后续步骤
+
+<CardGroup cols={2}>
   <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
     探索托管部署的运行时。
   </Card>
@@ -127,7 +156,7 @@ DATABASE_URL=<DATABASE_URL>
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

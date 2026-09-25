@@ -72,7 +72,7 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
 
 ### Deep Agents 代码 (`dcode`)
 
-将服务器添加到用户级 `~/.deepagents/.mcp.json` 文件，以使其在每个 Deep Agents 代码项目中可用，或将其添加到仅该项目的项目级 `.mcp.json` 文件中。请参阅 [Deep Agents Code MCP tools docs](/oss/deepagents/code/mcp-tools) 了解发现位置和优先规则。
+将服务器添加到您的用户级 `~/.deepagents/.mcp.json` 文件，以使其在每个 Deep Agents 代码项目中可用，或将其添加到仅该项目的项目级 `.mcp.json` 文件中。请参阅 [Deep Agents Code MCP tools docs](/oss/deepagents/code/mcp-tools) 了解发现位置和优先规则。
 
 ```json
 {
@@ -145,7 +145,7 @@ const tools = await client.tools();
 
 通过`tools`直接到达`streamText`或`generateText`。远程 MCP 是无状态的，并通过标准可流式 HTTP 传输以 JSON 进行响应，因此内置传输按原样工作 — 您不需要自定义传输。
 
-### 其他客户任何支持 [Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 的 MCP 客户端都可以仅使用上面的 URL 进行连接 - 使用具有动态客户端注册的 OAuth 2.1，或 `X-Api-Key` 标头中的 LangSmith API 密钥。
+### 其他客户任何支持 [Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 的 MCP 客户端都可以仅使用上述 URL 进行连接 - 使用具有动态客户端注册的 OAuth 2.1，或`X-Api-Key` 标头中的 LangSmith API 密钥。
 
 ## 已知的客户端不兼容性
 
@@ -187,7 +187,7 @@ v0.16 或更高版本上的[Self-hosted LangSmith](/langsmith/self-hosted) 部�
    jq -c '{keys:[.]}' /tmp/jwk.json   # wrap the single key in a JWKS
    ```
 
-2. **将其作为 `config.signingJwks`（存储在图表秘密中）或作为 [existing secret](/langsmith/self-host-using-an-existing-secret) 中的密钥 `langsmith_signing_jwks` 提供给图表**：
+2. **将其作为 `config.signingJwks`（存储在图表秘密中）提供给图表**，或作为 [existing secret](/langsmith/self-host-using-an-existing-secret) 中的密钥 `langsmith_signing_jwks`：
 
    ```yaml
    config:
@@ -210,7 +210,7 @@ curl https://<your-langsmith-host>/api/.well-known/oauth-protected-resource/mcp
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-remote-mcp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -90,7 +90,7 @@ agent = define_deep_agent(
 
 
 <Note>
-网关模型 ID 在提供者和模型之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
+网关模型 ID 在提供者和模型之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供程序的模型字符串使用冒号 (`provider:model-name`)。
 </Note>网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 并向您自己的提供商帐户计费。
 
 有关更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
@@ -105,7 +105,7 @@ mda init my-agent --gateway
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

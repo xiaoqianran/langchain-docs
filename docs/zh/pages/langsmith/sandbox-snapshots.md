@@ -125,7 +125,7 @@ LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不�
 #### 查找存储库和标签
 
 在 LangSmith UI 中，**Container Image URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：|来源 |存储库发现 |标签发现 |
-| --- | --- | --- |
+| ---| ---| ---|
 | Docker Hub，没有保存注册表 |在 Docker 官方镜像中搜索裸镜像名称或指定的 Docker Hub 命名空间 |选择或输入存储库后搜索标签 |
 | Docker 注册表 |当注册表支持时搜索注册表目录 |选择或输入存储库后搜索标签 |
 |港口|搜索可访问的目录 |选择或输入存储库后搜索标签 |
@@ -482,7 +482,7 @@ curl -X POST \
 
 一些沙箱在无法携带内存映像的覆盖文件系统运行时上运行。捕获一个会返回`include_memory is not supported for overlay-rootfs sandboxes`。 LangSmith 分配该运行时，因此它不是您为每个沙箱选择的东西。
 
-create 上的两个字段控制另一半：|领域 |它有什么作用 |
+create 上的两个字段控制另一半：|领域|它有什么作用 |
 |--------|--------------|
 | `restore_memory` |当快照有它时忽略它以从内存中恢复，而在没有它时冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
 | `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙箱在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
@@ -499,7 +499,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
   }'
 ```
 
-仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
+仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **已停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
 
 ## 列出、获取和删除快照
 
@@ -588,7 +588,7 @@ console.log(result.stdout.trim()); // "hello"
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-snapshots.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

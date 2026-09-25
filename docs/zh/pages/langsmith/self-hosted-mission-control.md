@@ -4,7 +4,7 @@
 
 # 安装任务控制
 
-Mission Control 是一个集群内控制台，用于在 Kubernetes 上监视、配置和操作LangSmith。它在集群内部运行，默认使用 `kubectl port-forward` 访问，因此不需要入口。
+Mission Control 是一个集群内控制台，用于在 Kubernetes 上监视、配置和操作 LangSmith。它在集群内部运行，默认使用 `kubectl port-forward` 访问，因此不需要入口。
 
 有两个安装路径：
 
@@ -333,21 +333,21 @@ kubectl delete secret -n langsmith \
 |豆荚停留 `Pending` |使用`kubectl describe pod -n langsmith <pod>`检查命名空间`ResourceQuota`、节点容量和PVC/存储类事件。 |
 |图像拉取错误 |确认集群可以拉取`langchain/mission-control-backend:latest`和`langchain/mission-control-frontend:latest`。 |
 |登录失败 |确认 `mission-control-auth` 存在于同一命名空间中，并且具有 `username` 和 `password` 键。 |
-|浏览器无法连接 |确认 port-forward 命令仍在运行，并且没有其他本地进程正在使用端口 `3000`。 |
+|浏览器无法连接|确认 port-forward 命令仍在运行，并且没有其他本地进程正在使用端口 `3000`。 |
 
 ### 权限参考
 
-Helm 图表创建一个名为 `mission-control` 的 `ServiceAccount`、`ClusterRole` 和 `ClusterRoleBinding`。大多数权限是只读的。写动词是狭窄的并且由特征标志控制。安装或升级需要能够创建集群范围的 RBAC（`ClusterRole` 和 `ClusterRoleBinding`），通常是 `cluster-admin` 或自定义等效项。最广泛的运行时权限集仅在`config.features.deploy: true`时使用；该标志默认启用，将其设置为 `false` 进行只读安装。
+Helm 图表创建一个名为 `mission-control` 的 `ServiceAccount`、`ClusterRole` 和 `ClusterRoleBinding`。大多数权限是只读的。写动词是狭窄的并且由特征标志控制。安装或升级需要能够创建集群范围的 RBAC（`ClusterRole` 和 `ClusterRoleBinding`），通常是 `cluster-admin` 或自定义等效项。最广泛的运行时权限集仅在 `config.features.deploy: true` 时使用；该标志默认启用，将其设置为 `false` 以进行只读安装。
 
 #### 始终存在的只读权限
 
 |资源组|资源 |动词|
-|----------------|---------|--------|
+|----------------|-----------|--------|
 |工作负载 | Pod、Pod/日志、部署、有状态集、副本集、守护进程集、作业、cronjobs |获取、列出、观看 |
 |网络|服务、端点、入口、入口类 |获取、列出、观看 |
 |存储|持久卷声明、存储类 |获取、列出、观看 |
 |集群|节点、命名空间、事件、服务帐户、资源配额 |获取、列出、观看 |
-|配置 |配置映射，秘密|获取、列出 |
+|配置|配置映射，秘密|获取、列出 |
 |指标| |metrics.k8s.io pod/节点 |获取、列出、观看 |
 |角色控制 |角色、角色绑定、集群角色、集群角色绑定 |获取、列出、观看 |
 | CRD 和扩展 |自定义资源定义、租赁、缩放对象、http 路由、虚拟服务、lgps |获取、列出、观看 |
@@ -358,9 +358,9 @@ Helm 图表创建一个名为 `mission-control` 的 `ServiceAccount`、`ClusterR
 | `config.features.alerts` |秘密(`mission-control-alerts-*`) |创建、更新、删除 |
 | `config.features.fixIssue` |豆荚 |删除|
 | `config.features.adopt` |秘密、配置映射、服务帐户、部署、状态集 |补丁|
-| `config.auth.enabled` |秘密（`mission-control-auth`，设置令牌），后端状态集 |创建、更新、删除、修补|
+| `config.auth.enabled` |秘密（`mission-control-auth`，设置令牌），后端状态集 |创建、更新、删除、修补 |
 | `config.features.valuesOverride` |秘密(`mission-control-values-overrides`) |创建、更新、删除 |
-| `config.features.deploy` |工作负载、网络、RBAC、CRD、Helm 发布秘密 |创建、更新、修补、删除 |
+| `config.features.deploy` |工作负载、网络、RBAC、CRD、Helm 发布秘密 |创建、更新、修补、删除|
 
 将`values.yaml`中的功能标志设置为`false`以删除相应的写入动词。禁用所有功能标志后，任务控制实际上是只读的，除了 `config.auth.enabled: true` 时的身份验证设置权限之外。
 
@@ -368,7 +368,7 @@ Helm 图表创建一个名为 `mission-control` 的 `ServiceAccount`、`ClusterR
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-mission-control.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

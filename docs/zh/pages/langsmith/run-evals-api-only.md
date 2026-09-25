@@ -4,7 +4,7 @@
 
 # 如何使用 REST API
 
-推荐使用 [Python](https://reference.langchain.com/python/langsmith/) 和 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html) SDK 在 LangSmith 中运行 [evaluations](/langsmith/evaluation-concepts)。它们包括增强性能和可靠性的优化和功能。
+[Python](https://reference.langchain.com/python/langsmith/) 和 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html) SDK 是在 LangSmith 中运行 [evaluations](/langsmith/evaluation-concepts) 的推荐方法。它们包括增强性能和可靠性的优化和功能。
 
 如果您无法使用 SDK（例如，如果您使用不同的语言或受限环境），则可以直接使用 REST API。本指南演示了如何使用 [REST API](/langsmith/smith-api-ref) 和 Python 的 [⟦T6⟧](https://requests.readthedocs.io/) 库运行评估，但相同的原则适用于任何语言。
 
@@ -66,7 +66,7 @@ client.create_examples(dataset_id=dataset.id, examples=examples)
 要通过 API 运行实验，您需要：
 
 1. 从数据集中获取示例。
-1. 创建实验（在 API 中也称为“会话”）。
+1. 创建一个实验（在 API 中也称为“会话”）。
 1. 对于每个示例，创建引用示例和实验的运行。
 1. 通过设置`end_time` 关闭实验。
 
@@ -354,7 +354,7 @@ for example_id, runs in example_id_to_runs_map.items():
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evals-api-only.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -49,7 +49,7 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
     Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行命令以通过安全隧道访问 Studio。您需要通过单击 Studio UI 中的 **连接到本地服务器** 来手动将隧道 URL 添加到允许的源。步骤请参阅[troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues)。
     </Warning>
 
-    这将在本地启动代理服务器，并在内存中运行。服务器将以监视模式运行，侦听代码更改并自动重新启动。阅读此[reference](/langsmith/cli#dev)，了解启动 API 服务器的所有选项。
+    这将在本地启动代理服务器，并在内存中运行。服务器将以监视模式运行，侦听代码更改并自动重新启动。阅读本文 [reference](/langsmith/cli#dev) 了解启动 API 服务器的所有选项。
 
     您将看到以下日志：
 
@@ -135,7 +135,7 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/quick-start-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

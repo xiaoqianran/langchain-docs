@@ -159,7 +159,7 @@ User billy@company.com signs in via SSO:
 ## 用户访问快速参考
 
 | JIT 已启用 |已启用邀请 |等待邀请 |结果 |
-|----------|------------------|----------------|----------|
+|----------|-----------------|----------------|---------|
 | ✓ | ✓ |是的 |已领取邀请（已使用邀请配置）|
 | ✓ | ✓ |没有 |自动配置（默认 SSO 配置）|
 | ✓ | ✗ |不适用 |自动配置（默认 SSO 配置）|
@@ -213,7 +213,7 @@ SCIM 组成员身份会覆盖手动分配的角色或通过 JIT 配置分配的�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

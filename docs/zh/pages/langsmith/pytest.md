@@ -128,7 +128,7 @@ def test_foo() -> None:
 
 **注意**：如果运行 `log_inputs`、`log_outputs` 或 `log_reference_outputs` 两次，之前的值将被覆盖。
 
-定义示例输入和参考输出的另一种方法是通过 pytest 固定装置/参数化。默认情况下，测试函数的任何参数都将记录为相应示例的输入。如果某些参数旨在表示参考输出，您可以指定应使用 `@pytest.mark.langsmith(output_keys=["name_of_ref_output_arg"])` 来记录它们：
+定义示例输入和参考输出的另一种方法是通过 pytest 固定装置/参数化。默认情况下，测试函数的任何参数都将记录为相应示例的输入。如果某些参数旨在表示参考输出，您可以指定它们应使用 `@pytest.mark.langsmith(output_keys=["name_of_ref_output_arg"])` 进行记录：
 
 ```python
 import pytest
@@ -433,7 +433,7 @@ def test_foo() -> None:
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/pytest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

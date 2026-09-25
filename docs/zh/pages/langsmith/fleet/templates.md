@@ -26,7 +26,7 @@ LangSmith Fleet 包含[starter templates](https://www.langchain.com/templates)�
 
 ### 克隆和定制
 
-模板可作为您克隆以创建您自己的代理的起点。克隆模板时，您将创建一个独立的副本，您可以对其进行自定义，而不会影响原始模板。您可以修改提示、添加或删除工具、附加不同的渠道以及切换模型，以根据您的要求定制代理。
+模板可作为您克隆以创建您自己的代理的起点。克隆模板时，您将创建一个独立的副本，您可以对其进行自定义，而不会影响原始模板。您可以修改提示、添加或删除工具、附加不同的渠道以及切换模型以根据您的要求定制代理。
 
 ## 可用模板
 
@@ -47,7 +47,7 @@ LangSmith Fleet 包含[starter templates](https://www.langchain.com/templates)�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

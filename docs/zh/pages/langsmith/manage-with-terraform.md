@@ -52,7 +52,7 @@ provider "langsmith" {
 * **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。
 
 在 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。<Warning>
-组织范围的操作（例如创建工作区、邀请组织成员和管理访问策略）需要**具有组织管理员权限的组织范围的服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
+组织范围的操作（例如创建工作区、邀请组织成员和管理访问策略）需要具有组织管理员权限的**组织范围的服务密钥。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
 </Warning>
 
 ## 示例
@@ -209,7 +209,7 @@ resource "langsmith_alert_rule" "error_rate" {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

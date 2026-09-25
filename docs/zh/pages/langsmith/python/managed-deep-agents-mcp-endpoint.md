@@ -28,7 +28,7 @@
 
 ## 验证请求MCP 端点使用部署的 [identity](/langsmith/python/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式|标题 |
+|身份模式 |标题 |
 | ---| ---|
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -156,7 +156,7 @@ tools = await client.get_tools()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

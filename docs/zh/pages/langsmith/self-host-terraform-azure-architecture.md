@@ -20,7 +20,7 @@
 
 Azure 上的LangSmith 分阶段部署。每个阶段都会在前一个阶段的基础上添加一个功能层。所有层共享相同的 AKS 集群和 `langsmith` 命名空间。
 
-<img src="/images/self-hosted-terraform/azure-architecture.png" alt="LangSmith on Azure service layout" />|舞台|层|添加了什么 |
+<img src="/images/self-hosted-terraform/azure-architecture.png" alt="LangSmith on Azure service layout" />|舞台|层 |添加了什么 |
 |---|---|---|
 |基础设施| Azure 基础设施 | VNet、AKS、Postgres、Redis、Blob、Key Vault、证书管理器、KEDA、入口控制器 |
 |应用 | LangSmith底座|前端、后端、平台后端、队列、摄取队列、ace 后端、clickhouse、游乐场 |
@@ -105,7 +105,7 @@ langsmith-vnet<identifier>
 
 |服务 |目的|港口|羟丙胺 |工作负载身份 |
 |---|---|---|---|---|
-| `langsmith-frontend` |反应用户界面 | 3000 | 2 至 10 |没有 |
+| `langsmith-frontend` |反应用户界面 | 3000 | 3000 2 至 10 |没有 |
 | `langsmith-backend` |主要 API（跟踪、运行、项目、API 密钥、反馈）| 1984 | 3 至 10 |是的（斑点）|
 | `langsmith-platform-backend` |组织和用户管理、身份验证、计费、设置 | 1986 | 2 至 10 |是的（斑点）|
 | `langsmith-playground` | LLM提示操场UI | 3001 | 3001 1 至 5 |没有 |
@@ -117,7 +117,7 @@ langsmith-vnet<identifier>
 </Warning>
 
 <Note>
-[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
+[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观察性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
 </Note>
 
 ### 一次性工作
@@ -145,7 +145,7 @@ langsmith-vnet<identifier>
 
 ## Insights 和 Polly 附加组件
 
-**见解/Clio：** 无静态 Pod。在第一次 UI 调用时通过操作员延迟部署为动态 LangGraph 部署。从 `langsmith-config-secret` 读取 `insights_encryption_key`。切勿轮换此密钥：它会永久破坏现有的 Insights 数据。
+**见解/Clio：** 无静态 Pod。在第一次 UI 调用时通过操作符延迟部署为动态 LangGraph 部署。从 `langsmith-config-secret` 读取 `insights_encryption_key`。切勿轮换此密钥：它会永久破坏现有的 Insights 数据。
 
 **Polly：** 作为动态 LangGraph 部署运行，由操作员管理。从 `langsmith-config-secret` 读取 `polly_encryption_key`。与 Insights 相同的轮换警告。
 
@@ -215,9 +215,9 @@ AKS OIDC issuer
 | `langsmith-clickhouse` |应用 |没有 |
 | `langsmith-operator` | LangSmith 部署插件 |没有 |
 
-所有联合凭据均在 `service_accounts_for_workload_identity` 下的 `modules/k8s-cluster/main.tf` 中注册。添加访问 Blob 存储的新 Pod 需要将其 ServiceAccount 名称添加到该列表并运行 `terraform apply -target=module.aks`。
+所有联合凭据均在 `modules/k8s-cluster/main.tf` 下的 `service_accounts_for_workload_identity` 下注册。添加访问 Blob 存储的新 Pod 需要将其 ServiceAccount 名称添加到该列表并运行 `terraform apply -target=module.aks`。
 
-如果 Pod 的 ServiceAccount 没有注册联合凭据，Azure AD 会拒绝令牌交换，并且 Pod 在启动时会发生恐慌：
+如果 Pod 的 ServiceAccount 没有注册的联合凭据，Azure AD 会拒绝令牌交换，并且 Pod 在启动时会出现紧急情况：
 
 ```txt
 panic: blob-storage health-check failed: get container properties failed:
@@ -268,7 +268,7 @@ Application stage
 |控制器|变量| DNS 标签支持 |笔记|
 |---|---|---|---|
 | `nginx` _（默认）_ | `ingress_controller = "nginx"` |是的 | NGINX 通过 Helm，标准 Kubernetes Ingress。 |
-| `istio-addon` | `ingress_controller = "istio-addon"` |是的 | AKS 管理的 Istio 服务网格。使用 `istio_addon_revision` 固定修订版。 |
+| `istio-addon` | `ingress_controller = "istio-addon"` |是的 | AKS 管理的 Istio 服务网格。使用 `istio_addon_revision` 固定修订版本。 |
 | `istio` | `ingress_controller = "istio"` |是的 |通过 Helm 自我管理 Istio。完全控制修订和配置。 |
 | `agic` | `ingress_controller = "agic"` |是的 | Azure 应用程序网关 v2 + AKS 管理的 `ingress_application_gateway` 附加组件。原生 L7 WAF。仅 HTTP 或 dns01 + 自定义域。 |
 | `envoy-gateway` | `ingress_controller = "envoy-gateway"` |是的 |本机网关 API。使用`envoyproxy/gateway-helm`。 |
@@ -280,7 +280,7 @@ Azure 公共 IP DNS 标签 (`dns_label`) 适用于所有控制器。 `deploy.sh`
 
 有四种尺寸可供选择。
 
-|简介 |使用案例|通过 | 设置
+|简介 |使用案例 |通过 | 设置
 |---|---|---|
 | `minimum` |停车成本、CI 冒烟测试、单用户演示 | `sizing_profile = "minimum"` 于 `terraform.tfvars` |
 | `dev` |开发人员使用、集成测试、POC | `sizing_profile = "dev"` |
@@ -291,7 +291,7 @@ Azure 公共 IP DNS 标签 (`dns_label`) 适用于所有控制器。 `deploy.sh`
 
 |泳池|虚拟机大小 | vCPU |内存 |最小 |最大|目的|
 |---|---|---|---|---|---|---|
-|默认 | `Standard_D8s_v3` | 8 | 32GB| 1 | 10 | 10核心 LangSmith，系统 Pod（生产时至少设置 3 个）|
+|默认| `Standard_D8s_v3` | 8 | 32GB| 1 | 10 | 10核心LangSmith，系统 Pod（生产时至少设置 3 个）|
 |大| `Standard_D16s_v3` | 16 | 16 64GB| 0 | 2 | ClickHouse（集群内）、LGP 代理 Pod |
 
 <Note>
@@ -300,7 +300,7 @@ ClickHouse（在集群中时）根据配置文件请求 1 到 4 个 CPU 和 2 �
 
 ## 可选模块
 
-每个模块都是计数控制的（`0`禁用，`1`启用）。启用任意组合；核心部署（第 1 到 5 步）无需它们即可工作。|模块|变量|使用案例|
+每个模块都是计数控制的（`0`禁用，`1`启用）。启用任意组合；核心部署（第 1 到 5 步）无需它们即可工作。|模块|变量|使用案例 |
 |---|---|---|
 | `waf` | `create_waf = true` | Azure WAF 策略（OWASP 3.2 + 机器人保护）。连接到应用程序网关。 |
 | `diagnostics` | `create_diagnostics = true` | Log Analytics 工作区 + AKS、Key Vault 和 PostgreSQL 的诊断设置。推荐用于生产可观察性。 |
@@ -311,7 +311,7 @@ ClickHouse（在集群中时）根据配置文件请求 1 到 4 个 CPU 和 2 �
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

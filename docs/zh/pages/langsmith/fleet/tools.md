@@ -14,7 +14,7 @@
   <Tab title="From Fleet > 集成">
   要将工具添加到工作区中的所有代理：
 
-    1. 在[Fleet > Integrations tab](https://smith.langchain.com/agents/tools)上找到您要添加的工具。
+    1. On the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools), find the tool you want to add.
     1. 单击**连接**。
     1. 按照提示将工具连接到您的代理。
 
@@ -43,30 +43,30 @@
 
 ## 内置工具
 
-以下工具是LangSmith Fleet 中可用工具的子集。如需完整的最新列表，请访问 [Fleet > Integrations tab](https://smith.langchain.com/agents/tools)。
+The following tools are a subset of the tools available in LangSmith Fleet. For the full up-to-date list, visit the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools).
 
 <CardGroup cols={3}>
   <Card title="Gmail" icon="brand-google">
-    在 Gmail 收件箱中阅读、撰写和整理电子邮件。
+    Read, compose, and organize emails in your Gmail inbox.
   </Card>
   <Card title="Google BigQuery" icon="brand-google">
-    运行查询并分析存储在 Google BigQuery 中的大型数据集。
+    Run queries and analyze large datasets stored in Google BigQuery.
   </Card>
   <Card title="Google Calendar" icon="brand-google">
-    查看、创建和管理日历事件和会议安排。
+    View, create, and manage calendar events and meeting schedules.
   </Card>
   <Card title="Google Docs" icon="brand-google">
     在 Google 文档中创建、阅读和编辑文档。
   </Card>
   <Card title="Google Sheets" icon="brand-google">
-    读取、更新和分析 Google Sheets 电子表格中的数据。
+    Read, update, and analyze data in Google Sheets spreadsheets.
   </Card>
 </CardGroup><CardGroup cols={3}>
   <Card title="Excel" icon="brand-windows">
     读取、写入和分析 Microsoft Excel 工作簿中的数据。
   </Card>
   <Card title="Outlook" icon="brand-windows">
-    阅读、起草和组织 Outlook 电子邮件、会议和日历活动。
+    Read, draft, and organize Outlook emails, meetings, and calendar events.
   </Card>
   <Card title="PowerPoint" icon="brand-windows">
     搜索、阅读和创建 Microsoft PowerPoint 演示文稿。
@@ -78,7 +78,7 @@
     在 Microsoft Teams 中发送和阅读消息、频道和协作更新。
   </Card>
   <Card title="Word" icon="brand-windows">
-    搜索、阅读和管理 Microsoft Word 文档。
+    Search, read, and manage Microsoft Word documents.
   </Card>
 </CardGroup><CardGroup cols={3}>
   <Card title="Exa" icon="search">
@@ -115,7 +115,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -1,27 +1,78 @@
-<!-- langchain-docs: LangSmith Engine webhook events | https://docs.langchain.com/langsmith/engine-webhooks -->
+<!-- langchain-docs: LangSmith Engine notifications | https://docs.langchain.com/langsmith/engine-notifications -->
 
-# LangSmith Engine webhook events
+# LangSmith Engine notifications
 
-Forward LangSmith-detected agent issues into your incident-management, paging, or chat tools. [LangSmith Engine](/langsmith/engine) sends a webhook event to your endpoint when it opens a new issue, or when it links a new trace to an issue it has already opened.
+[LangSmith Engine](/langsmith/engine) can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
 
-To configure webhook subscriptions, open the **Engine Settings** panel on the **Engine** tab of a tracing project. See [Configure Engine](/langsmith/engine#configure-engine).
+## Add a destination
 
-<Note>
-A destination delivers to either a webhook URL or a **Slack channel**. Both use the same [event types](#event-types) and [minimum-priority filtering](#severity-filtering) described on this page. Slack destinations post through LangSmith's managed Slack app instead of sending the [JSON payload](#event-envelope) below, so the [signing secret](#signing-secret) and [custom headers](#custom-headers) do not apply.
+Notification destinations are configured per tracing project. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **+ Add destination**. For each destination, choose:
 
-To set up Slack delivery, see [Notify a Slack channel](/langsmith/engine#notify-a-slack-channel). The rest of this page documents **webhook URL** destinations.
-</Note>
+- **Deliver to**: **Slack** or **Webhook**. See [Notify a Slack channel](#notify-a-slack-channel) and [Send to a webhook](#send-to-a-webhook).
+- **Notify when**: The [event types](#event-types) that trigger a notification.
+- **Minimum priority**: The lowest issue [severity](#severity-filtering) that triggers a notification.
 
-## Delivery
+To be alerted when a [watched issue](/langsmith/engine#watch-an-issue) recurs, click **Alert me via Slack** on the issue, which opens the same **Notifications** section.
 
-LangSmith sends a `POST` request with a JSON body to your webhook URL. The request uses `Content-Type: application/json` and includes any custom headers you attached to the subscription.
+## Event types
+
+| Event | Sent when |
+| --- | --- |
+| [`issue.created`](#issue-created) | Engine opens a new issue. |
+| [`issue.trace.added`](#issue-trace-added) | Engine links a new trace to an existing issue. |
+| [`issue.agent_run.failed`](#issue-agent_run-failed) | An Engine run fails to complete. |
+
+This is the complete set of event types Engine sends today. New types may be added in the future. A destination created without an explicit list of event types receives only `issue.created`.
+
+## Severity filtering
+
+The **Minimum priority** setting is stored as a `severity_threshold` from `0` to `3`. For issue events, a notification is delivered only when the issue's `severity` is less than or equal to the threshold. Lower numbers are more urgent.
+
+| Severity | Meaning |
+| --- | --- |
+| `0` | Urgent |
+| `1` | High |
+| `2` | Medium |
+| `3` | Low |
+
+For example, a destination with `severity_threshold: 1` receives events for `URGENT` (0) and `HIGH` (1) issues only.
+
+Severity thresholds do not apply to [`issue.agent_run.failed`](#issue-agent_run-failed), because run-failure events are scoped to an Engine session rather than to a specific issue.
+
+## Notify a Slack channel
+
+<Steps>
+  <Step title="Connect a Slack workspace">
+    Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine-notifications), open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the LangSmith app in Slack. You can connect more than one Slack workspace to an organization.
+  </Step>
+  <Step title="Add a Slack destination">
+    On the **Engine** page, click **Configure Engine**, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
+  </Step>
+  <Step title="Choose events and priority">
+    Under **Notify when**, select which [event types](#event-types) post a message to the channel. Under **Minimum priority**, choose the lowest [severity](#severity-filtering) that triggers a notification. Click **Add destination** to save.
+  </Step>
+</Steps>
+
+LangSmith automatically joins the public channel you select. To post to a private channel, invite the LangSmith app to that channel in Slack first.
+
+Each Slack message includes the issue title, description, and severity, a **View issue** link back to LangSmith, and (for issue events) a chart of the issue's recurrence over time. If a workspace's connection becomes invalid, for example, the app is removed from Slack, its destinations stop delivering until you reconnect it from your organization's **General** settings.
+
+Slack destinations post through LangSmith's managed Slack app instead of sending the [webhook payload](#webhook-payload-reference), so signing secrets and custom headers do not apply.
+
+## Send to a webhook
+
+Forward Engine events to your own incident-management, paging, or chat tooling. Add a destination and set the **Deliver to** field to **Webhook**. Enter a URL and, optionally, [custom headers](#custom-headers). Each delivery is [signed](#signing-secret) so you can verify its authenticity.
+
+### Delivery
+
+LangSmith sends a `POST` request with a JSON body to your webhook URL. The request uses `Content-Type: application/json` and includes any custom headers you attached to the destination.
 
 | Property | Value |
 | --- | --- |
 | Method | `POST` |
 | Body | JSON, [common envelope](#event-envelope) below |
 | Scheme | `http://` and `https://` are accepted. `https://` is strongly recommended |
-| Signature | `X-LangSmith-Signature` header, signed with the subscription's signing secret |
+| Signature | `X-LangSmith-Signature` header, signed with the destination's signing secret |
 | Timeout | 20 seconds per attempt |
 | Attempts | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
 | Response | Success is determined from the status code alone. Response bodies are ignored. |
@@ -32,11 +83,11 @@ Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id
 
 ### Custom headers
 
-You can attach arbitrary headers to each subscription (for example, `Authorization: Bearer …`) to authenticate the caller at your endpoint. `Content-Type` is always set by LangSmith and cannot be overridden.
+You can attach arbitrary headers to each destination (for example, `Authorization: Bearer …`) to authenticate the caller at your endpoint. `Content-Type` is always set by LangSmith and cannot be overridden.
 
 ### Signing secret
 
-Each subscription has a signing secret. LangSmith uses this secret to sign the raw webhook request body and sends the result in the `X-LangSmith-Signature` header.
+Each destination has a signing secret. LangSmith uses this secret to sign the raw webhook request body and sends the result in the `X-LangSmith-Signature` header.
 
 The header value has this format:
 
@@ -44,7 +95,7 @@ The header value has this format:
 sha256=<hex-encoded HMAC-SHA256 digest>
 ```
 
-Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the subscription's signing secret. Do not parse and reserialize the JSON body before verification.
+Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
 <CodeGroup>
 
@@ -108,30 +159,45 @@ export function verifyLangSmithSignature({
 
 Roll a signing secret when it may have been exposed, or when your organization's credential rotation policy requires a new secret.
 
-To roll a secret, open the subscription row in **Engine Settings**, click **Roll signing secret**, and confirm. LangSmith generates a new signing secret and uses it for future webhook deliveries immediately. The previous secret stops signing deliveries as soon as the roll completes.
+To roll a secret, open the destination row in **Engine Settings**, click **Roll signing secret**, and confirm. LangSmith generates a new signing secret and uses it for future webhook deliveries immediately. The previous secret stops signing deliveries as soon as the roll completes.
 
 After rolling the secret, update every consumer that verifies `X-LangSmith-Signature` with the new value.
 
-### Severity filtering
+### Test your endpoint
 
-Each subscription has a `severity_threshold` from `0` to `3`. For issue events, an event is delivered only when the issue's `severity` is less than or equal to the threshold. Lower numbers are more urgent.
+Before pointing a real destination at your endpoint, send a sample payload to verify it accepts and acknowledges within the 20-second timeout:
 
-| Severity | Meaning |
-| --- | --- |
-| `0` | Urgent |
-| `1` | High |
-| `2` | Medium |
-| `3` | Low |
+```bash
+curl -X POST https://your-endpoint.example.com/webhook \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $WEBHOOK_SECRET" \
+  -d @sample-issue-created.json
+```
 
-For example, a subscription with `severity_threshold: 1` receives events for `URGENT` (0) and `HIGH` (1) issues only.
+Use the example body from [`issue.created`](#issue-created) as `sample-issue-created.json`. Verify that:
 
-Severity thresholds do not apply to [`issue.agent_run.failed`](#issue-agent_run-failed), because run-failure events are scoped to an Engine session rather than to a specific issue.
+- The custom `Authorization` header arrives and matches the secret you configured on the destination.
+- The handler persists the event keyed by its `id` so retries are deduped.
+- The handler returns `2xx` before kicking off slow downstream work.
 
-### Event-type filtering
+### Security
 
-Each subscription specifies the [event types](#event-types) it wants to receive. Subscriptions created without an explicit list default to `["issue.created"]`.
+- Webhook URLs are validated when the destination is created and again at delivery time. Private and metadata IP ranges are blocked in SaaS. Both `http://` and `https://` are accepted; use `https://` so the payload and any custom headers are not sent in cleartext.
+- LangSmith signs webhook bodies with the destination's signing secret. Verify `X-LangSmith-Signature` before processing the payload.
+- You can also set custom headers on the destination, such as `Authorization: Bearer …`, for routing or additional authentication at your endpoint.
+- Dedupe on the event `id` so that a retried delivery does not cause a duplicate notification.
 
-## Event envelope
+### Best practices
+
+- **Acknowledge fast.** Respond with `2xx` as soon as you have persisted the event. Move slow work (fan-out, paging, downstream API calls) onto a queue so your handler stays within the 20-second timeout.
+- **Tolerate unknown event types.** Ignore `type` values your handler does not recognize. New event types may be added without notice.
+- **Tolerate new fields.** Parse payloads with a permissive schema. New fields may be added to existing event types without notice.
+
+## Webhook payload reference
+
+Webhook destinations receive the JSON payloads below. Slack destinations do not.
+
+### Event envelope
 
 Every event delivered to your endpoint uses the same outer JSON shape.
 
@@ -191,9 +257,6 @@ For [`issue.agent_run.failed`](#issue-agent_run-failed), `data.object` describes
 
 A single upstream action can produce multiple webhook events. When Engine opens a new issue and attaches five traces to it, you receive one [`issue.created`](#issue-created) event and five [`issue.trace.added`](#issue-trace-added) events, all sharing the same `request_id`. Use `request_id` to group these into a single downstream notification.
 
-## Event types
-
-The event types below are the complete set LangSmith Engine sends today. New types may be added in the future, so handlers should ignore unknown `type` values rather than failing.
 
 ### `issue.created`
 
@@ -280,36 +343,6 @@ Sent when LangSmith Engine fails to complete a run. This event is session-scoped
 }
 ```
 
-## Test your endpoint
-
-Before pointing a real subscription at your endpoint, send a sample payload to verify it accepts and acknowledges within the 20-second timeout:
-
-```bash
-curl -X POST https://your-endpoint.example.com/webhook \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $WEBHOOK_SECRET" \
-  -d @sample-issue-created.json
-```
-
-Use the example body from [`issue.created`](#issue-created) as `sample-issue-created.json`. Verify that:
-
-- The custom `Authorization` header arrives and matches the secret you configured on the subscription.
-- The handler persists the event keyed by its `id` so retries are deduped.
-- The handler returns `2xx` before kicking off slow downstream work.
-
-## Security
-
-- Webhook URLs are validated when the subscription is created and again at delivery time. Private and metadata IP ranges are blocked in SaaS. Both `http://` and `https://` are accepted; use `https://` so the payload and any custom headers are not sent in cleartext.
-- LangSmith signs webhook bodies with the subscription's signing secret. Verify `X-LangSmith-Signature` before processing the payload.
-- You can also set custom headers on the subscription, such as `Authorization: Bearer …`, for routing or additional authentication at your endpoint.
-- Dedupe on the event `id` so that a retried delivery does not cause a duplicate notification.
-
-## Best practices
-
-- **Acknowledge fast.** Respond with `2xx` as soon as you have persisted the event. Move slow work (fan-out, paging, downstream API calls) onto a queue so your handler stays within the 20-second timeout.
-- **Tolerate unknown event types.** Ignore `type` values your handler does not recognize. New event types may be added without notice.
-- **Tolerate new fields.** Parse payloads with a permissive schema. New fields may be added to existing event types without notice.
-
 ---
 
 <div className="source-links">
@@ -317,6 +350,6 @@ Use the example body from [`issue.created`](#issue-created) as `sample-issue-cre
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
 </div>

@@ -68,7 +68,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令|使用 |
+## 命令概述|命令 |使用 |
 | ---| ---|
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -136,7 +136,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 脚手架语言来自您运行的包，而不是来自当前目录：npm 包始终编写 TypeScript 项目。从 npm 安装的 CLI 拒绝 Python 项目。
 
 
-脚手架创建：|文件|描述 |
+脚手架创建：|文件 |描述 |
 | ---| ---|
 | `agent.ts` |命名为`agent`从`defineDeepAgent(...)`导出。 |
 | `instructions.md` |托管系统提示。 |
@@ -262,15 +262,15 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 |打字稿 | `npx --yes @langchain/langgraph-cli dev` |
 
 
-配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
+配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
 
 ## 管理连接
 
-连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析调用代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
+连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令|使用 |
+|命令 |使用 |
 | ---| ---|
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -323,15 +323,18 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
 | `--secret-from-file PATH` |从文件中读取固定值或 OAuth 客户端密钥。 |
 | `--oauth SERVICE` |使用 `mda connections catalog` 中服务的预配置设置。 |
+| `--grant-type GRANT` |将 OAuth 授权设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
 | `--client-id CLIENT_ID` |设置 OAuth 客户端 ID。 |
 | `--auth-method METHOD` |将令牌端点方法设置为`client_secret_basic`、`client_secret_post`或`none`。 |
 | `--scope SCOPE` |替换提供者的默认范围。对每个范围重复此操作。 |
 | `--allowed-scope SCOPE` |设置授权流可以请求的最大范围。对每个范围重复此操作。 |
 | `--authorization-param KEY=VALUE` |添加OAuth授权查询参数。对每个参数重复此操作。 |
+| `--token-param KEY=VALUE` |将参数添加到 OAuth 令牌请求。对每个参数重复此操作。 |
 | `--authorize-url URL` |设置自定义 OAuth 授权端点。需要`--token-url`。 |
-| `--token-url URL` |设置自定义 OAuth 令牌端点。需要`--authorize-url`。 |
-| `--mcp URL` |通过从 MCP 服务器 URL 发现 OAuth 来创建 MCP OAuth 连接。 |
-| `--authorize` |登录到已部署代理使用的帐户，存储代理拥有的 OAuth 授权。需要 OAuth 标志和项目目录。 |由于没有值标志且没有 `--oauth` 端点，当该 slug 与项目中的一个用户拥有的 MCP 连接完全匹配时，`mda connections create <slug>` 会推断 MCP OAuth。
+| `--token-url URL` |设置自定义 OAuth 令牌端点。需要 `--authorize-url` 才能获得 `authorization_code` 补助金。 |
+| `--mcp URL` |通过从 MCP 服务器 URL 发现 OAuth 来创建 MCP OAuth 连接。 || `--authorize` |登录到已部署代理使用的帐户，存储代理拥有的 OAuth 授权。需要 OAuth 标志和项目目录。 |
+
+由于没有值标志且没有 `--oauth` 端点，当该 slug 与项目中的一个用户拥有的 MCP 连接完全匹配时，`mda connections create <slug>` 会推断 MCP OAuth。
 
 将 `--json` 与 `catalog`、`list` 或 `get` 一起使用以获得机器可读的输出。将 `--yes` 与 `delete` 一起使用可跳过确认提示。
 
@@ -339,7 +342,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 
 ## 部署项目
 
-使用`mda deploy`编译项目并部署到LangSmith：
+使用`mda deploy`编译并部署项目到LangSmith：
 
 
 
@@ -363,14 +366,13 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 |参数或标志 |使用 |
 | ---| ---|
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
+| `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |
 | `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--context-strategy overwrite\|keep-hub` |解决自上次同步以来 Hub 中的 `instructions.md` 或 `skills/` 发生更改时的 Context Hub 冲突。在非交互式 shell 中需要。参见[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth)。 |
-| `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
+| `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |部署运行以下步骤：
 
-
-部署运行以下步骤：1. 验证项目目录并加载代理条目文件。
+1. 验证项目目录并加载代理条目文件。
 2. 解析LangSmith API 密钥和可选工作区 ID。
 3. 收集非保留的 `.env` 值作为托管部署机密。
 4. 验证模型提供程序 API 密钥可从 `.env`、shell 环境或 LangSmith 工作区机密获取。
@@ -382,7 +384,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 10. 协调计划的托管 LangSmith cron 作业，除非设置了 `--no-wait`。
 11. 配置已声明的 Slack 通道。如果需要 Slack 授权或工作区批准，请显示操作并在完成后继续。
 
-具有 Slack 通道的项目无法使用`--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
+具有 Slack 通道的项目无法使用 `--no-wait`，因为 Slack 配置需要部署的代理服务器 URL。有关完整的工作流程，请参阅[Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关秘密路由和部署技巧，请参阅[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
@@ -441,7 +443,7 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 |参数或标志 |使用 |
 | ---| ---|
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为 `defineDeepAgent` 的代理`name`。 |
+| `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |
 | `--workspace-id WORKSPACE_ID` |部署所在的工作区 ID。覆盖 `LANGSMITH_WORKSPACE_ID`。 |
 | `--yes` |删除时无需询问确认。 |## 故障排除
 
@@ -456,13 +458,13 @@ OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服�
 |部署报告缺少模型提供程序 API 密钥 |将提供程序密钥（例如 `OPENAI_API_KEY`）添加到 `.env`，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。 |
 |部署报告 Context Hub 冲突 |自上次同步以来，Context Hub 中的 `instructions.md` 或 `skills/` 发生了更改，或者存储库在同步期间发生了更改。在交互式终端中，回答覆盖提示。在非交互式 shell 中，使用 `--context-strategy overwrite` 或 `--context-strategy keep-hub` 重新运行。参见[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth)。 |
 |构建超过 200 MB |在部署之前从项目中删除生成的工件或大文件。 |
-|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |在 LangSmith 中打开打印的部署 URL 并检查修订日志。 |
+|部署达到`BUILD_FAILED`或`DEPLOY_FAILED` |打开 LangSmith 中打印的部署 URL 并检查修订日志。 |
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

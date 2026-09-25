@@ -18,14 +18,14 @@
 
 ## 功能访问
 
-**功能访问**表独立控制每个LangSmith功能的提供程序和模型可用性。| **功能** | **选型经验** |
+**功能访问**表独立控制每个LangSmith功能的提供者和模型可用性。| **功能** | **选型经验** |
 |--------|----------------------------|
 |游乐场|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |评估者|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |舰队|默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |聊天 |默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |见解（思考）|用于深度分析的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
-|见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
+|见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商建议的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 
 所有功能都支持自定义工作区配置，因此您可以使用任何提供程序或模型，甚至对于默认显示精选列表的功能也是如此。<Note>
 **见解** 使用两行，一行用于分析，一行用于总结。如果您为任一行选择不兼容的提供程序或不推荐的型号，UI 会显示警告。
@@ -122,7 +122,7 @@
 OAuth 客户端凭据可在运行版本 `0.16.0-rc.6` 或更高版本的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 部署上使用。
 </Note>
 
-当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
+当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的[plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
 
 ### 在模型配置上配置 OAuth
 
@@ -224,7 +224,7 @@ sequenceDiagram
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

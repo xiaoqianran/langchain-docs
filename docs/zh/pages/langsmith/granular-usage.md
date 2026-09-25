@@ -38,7 +38,7 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
 
 ## 在用户界面中查看
 
-您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-granular-usage)中查看精细的使用数据：1. 导航至 **设置** > **计费和使用情况**
+您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-granular-usage)中查看详细的使用数据：1. 导航至 **设置** > **计费和使用情况**
 2. 选择 **粒度使用** 选项卡
 3. 在 **LangSmith Traces** 和 **LangSmith Deployments** 子选项卡之间切换以查看每个域。活动子选项卡反映在 URL（`?tab=traces` 或 `?tab=deployments`）中，因此您可以为页面添加书签以登陆到同一视图上。
 4. 使用控件来：
@@ -46,20 +46,20 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
    - 按工作区、项目、用户或 API 密钥分组
    - 过滤到特定工作区
    - 在 **LangSmith 跟踪** 选项卡上，可以选择按保留层筛选 (`All Retention` / `Long-lived only` / `Short-lived only`)
-5. 单击 **导出 CSV** 以下载活动选项卡的数据。
+5. 单击 **导出 CSV** 下载活动选项卡的数据。
 
-时间范围和工作区过滤器在两个子选项卡之间共享，切换选项卡会保留您选择的内容。 **LangSmith 部署** 选项卡显示三个统计卡（执行的节点总数/代理运行总数/代理运行时间总数（秒））以及垂直堆叠的每个指标一张图表，因为这三个指标使用不同的单位。
+时间范围和工作区过滤器在两个子选项卡之间共享，切换选项卡会保留您选择的内容。 **LangSmith 部署** 选项卡显示三个统计卡（已执行节点总数/代理运行总数/代理运行时间总数（秒））以及垂直堆叠的每个指标一张图表，因为这三个指标使用不同的单位。
 
 ## 查询参数
 
-粒度使用端点接受以下查询参数：|参数|类型 |必填|描述 |
-|------------|------|----------|----------|
+粒度使用端点接受以下查询参数：|参数|类型 |必填 |描述 |
+|------------|------|----------|-------------|
 | `start_time` |日期时间 |是的 |时间范围的开始（ISO 8601 格式）。 |
 | `end_time` |日期时间 |是的 |时间范围结束。必须在`start_time`之后。 |
 | `workspace_ids` | UUID 数组 |是的 |将结果过滤到特定工作区。 |
-| `kind` |字符串|没有 | `traces`（默认）或`langsmith_deployments`。选择计费域。 |
-| `group_by` |字符串|没有 |分组依据的维度。其中之一：`workspace`、`project`、`user`、`api_key`。默认值：`workspace`。 |
-| `trace_tier` |字符串|没有 |仅痕量截留过滤器：`longlived` 或 `shortlived`。省略所有保留。 `kind=langsmith_deployments` 时忽略。 |
+| `kind` |字符串 |没有 | `traces`（默认）或`langsmith_deployments`。选择计费域。 |
+| `group_by` |字符串 |没有 |分组依据的维度。其中之一：`workspace`、`project`、`user`、`api_key`。默认值：`workspace`。 |
+| `trace_tier` |字符串 |没有 |仅痕量截留过滤器：`longlived` 或 `shortlived`。省略所有保留。 `kind=langsmith_deployments` 时忽略。 |
 
 ### 日粒度合约
 
@@ -238,7 +238,7 @@ REMOTE_METRICS_ROLLUP_ENABLED=true
 
 |领域|描述 |
 |--------|-------------|
-| `nodes_executed` |该时间桶内总共执行了LangGraph个节点。 |
+| `nodes_executed` |该时间段内总共执行了LangGraph个节点。 |
 | `agent_runs` |时间段内代理运行总数（图形调用）。 |
 | `agent_uptime_seconds` |总副本正常运行时间（以秒为单位）是跨部署副本的总和。用于开票的去重待机分钟数由计费管道单独计算；该字段是用于细分和分析的原始金额。 |
 
@@ -310,7 +310,7 @@ group_by=workspace" \
 GET /api/v1/orgs/current/billing/granular-usage/export
 ```
 
-与数据端点相同的查询参数，包括`kind`。返回一个 CSV 文件，每个（时间段、维度）元组一行。所有维度列始终存在；仅填充与所选 `group_by` 匹配的列。
+与数据端点相同的查询参数，包括`kind`。返回每个（时间段、维度）元组一行的 CSV 文件。所有维度列始终存在；仅填充与所选 `group_by` 匹配的列。
 
 对于`kind=traces`，值列是`Traces`。对于 `kind=langsmith_deployments`，值列为 `Nodes Executed`、`Agent Runs` 和 `Agent Uptime (seconds)`。|专栏 |出现时间 |
 |--------|--------------|
@@ -323,7 +323,7 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 |痕迹| `kind=traces` |
 |执行的节点/代理运行/代理正常运行时间（秒）| `kind=langsmith_deployments` |
 
-值以 `=`、`+`、`-`、`@`、制表符或回车符开头的单元格带有制表符前缀，以中和 Excel/Google Sheets/LibreOffice 中的电子表格公式计算。
+值以 `=`、`+`、`-`、`@`、制表符或回车符开头的单元格带有制表符前缀，以中和 Excel / Google Sheets / LibreOffice 中的电子表格公式计算。
 
 <CodeGroup>
 ```python Python
@@ -358,11 +358,11 @@ group_by=workspace" \
 
 `group_by` 参数决定如何聚合使用数据：
 
-|价值|描述 |返回尺寸 |可用于 |
-|--------|-------------|---------------------|------------------------|
-| `workspace` |按工作区分组 | `workspace_id`、`workspace_name` |两种 |
-| `project` |按项目分组 | `project_id`、`project_name` |两种 |
-| `user` |按用户分组 | `user_id`、`user_email` |两种 |
+|价值|描述 |返回尺寸 |适用于 |
+|--------|-------------|--------------------------------|----------------|
+| `workspace` |按工作区分组| `workspace_id`、`workspace_name` |两种 |
+| `project` |按项目分组| `project_id`、`project_name` |两种 |
+| `user` |按用户分组| `user_id`、`user_email` |两种 |
 | `api_key` |按 API 密钥分组 | `api_key_short_key` |两种 |对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。
 
 ## 相关资源
@@ -374,7 +374,7 @@ group_by=workspace" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/granular-usage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

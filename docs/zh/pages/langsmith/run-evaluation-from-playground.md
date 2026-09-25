@@ -26,7 +26,7 @@ Playground 中提供 **[Chat](/langsmith/chat)**，可帮助您在运行评估�
    * Playground 中最多允许 15 个输入变量。4. **通过单击 **开始** 或 CMD+Enter 开始实验**。这将对数据集中的所有示例运行提示，并在数据集详细信息页面中为实验创建一个条目。我们建议在开始实验之前将提示提交到提示中心，以便稍后在检查实验时可以轻松引用。
 5. **通过单击“**查看完整实验**”查看完整结果**。这将带您进入实验详细信息页面，您可以在其中查看实验结果。
 
-实验运行时，实验表中的**进度**列和实验视图中的进度条会实时跟踪完成情况，包括已完成和评估的运行次数。有关更多信息，请参阅[Track experiment progress](/langsmith/analyze-an-experiment#track-experiment-progress)。
+实验运行时，实验表中的 **进度** 列和实验视图中的进度栏​​会实时跟踪完成情况，包括已完成和评估的运行次数。有关更多信息，请参阅[Track experiment progress](/langsmith/analyze-an-experiment#track-experiment-progress)。
 
 ## 将评估分数添加到实验中
 
@@ -38,7 +38,7 @@ Playground 中提供 **[Chat](/langsmith/chat)**，可帮助您在运行评估�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evaluation-from-playground.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

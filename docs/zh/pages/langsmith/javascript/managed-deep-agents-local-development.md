@@ -45,7 +45,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 1. 验证项目并编译为`.mda/build`。
 2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
-3. 创建本地 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 模拟以获取指令、技能和记忆。
+3. 创建本地 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 模型以获取指令、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
 5. 在 Studio 中打开代理。
 
@@ -66,6 +66,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 - 如果代理使用身份，Studio 会自动提供本地测试用户。
 - 如果配置的沙箱不可用，代理将使用临时本地文件夹。 CLI 打印文件夹路径。
+- [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 不要运行。 `mda dev` 在启动时列出每个计划，但不配置它，因此不会在本地触发计划运行。
 
 这些默认值与部署的代理不同。在生产中使用代理之前，请在开发部署中测试身份和沙箱行为。
 
@@ -73,7 +74,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-local-development.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

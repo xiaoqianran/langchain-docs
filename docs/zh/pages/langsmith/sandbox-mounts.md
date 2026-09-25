@@ -127,7 +127,7 @@ try {
 此选项需要您的 LangSmith 部署才能启用 AWS 代理角色身份验证。为 ECR 注册表启用 IAM 角色不会为身份验证代理启用它们。如果 AWS 身份验证选项中缺少 **AWS IAM 角色**，请使用静态访问密钥或联系您的 LangSmith 管理员。基于角色的 SDK 示例需要在 Python 中使用 `aws_auth(role_arn=...)` 和 `mount_config(proxy_config=...)` 或在 TypeScript 中使用 `awsAuth({ roleArn })` 和 `mountConfig({ proxyConfig })` 的版本。本页顶部列出的安装版本不支持这些较新的选项。
 </Note>
 
-您需要拥有配置客户 IAM 角色的信任和访问策略的权限。一条 AWS 身份验证规则适用于沙箱的 AWS 请求，包括所有 S3 挂载。选择静态访问密钥或 IAM 角色；请勿同时配置两者。角色身份验证在创建时配置。创建新的沙箱以添加、删除、禁用或更改其角色。LangSmith 委托人还需要获得担任客户角色的权限。对于自托管部署，您的管理员会配置该权限和任何所需的角色标签。跨账户 S3 存储桶可能还需要允许客户角色的存储桶策略。
+您需要拥有配置客户 IAM 角色的信任和访问策略的权限。一条 AWS 身份验证规则适用于沙箱的 AWS 请求，包括所有 S3 挂载。选择静态访问密钥或 IAM 角色；请勿同时配置两者。角色身份验证在创建时配置。创建新的沙箱以添加、删除、禁用或更改其角色。LangSmith 主体还需要获得许可才能承担客户角色。对于自托管部署，您的管理员会配置该权限和任何所需的角色标签。跨账户 S3 存储桶可能还需要允许客户角色的存储桶策略。
 
 配置角色并创建沙箱：
 
@@ -534,7 +534,7 @@ try {
 
 ### 阅读存储库的变化Context Hub 安装是只读的，并且同步是单向的。在沙箱内的挂载路径下写入的文件永远不会被推回存储库，并且下次刷新会覆盖它们。将沙箱输出写入挂载外部的路径，并在其属于存储库时使用 Context Hub SDK 推送它。
 
-LangSmith 在沙盒的生命周期内保持安装同步。新提交会在大约 30 秒内到达正在运行的沙箱。将这种节奏视为尽力而为，而不是新鲜度保证。刷新会立即替换整个树，因此读者会看到之前的提交或新的提交，而不会看到混合。
+LangSmith 在沙箱的生命周期内保持安装同步。新提交会在大约 30 秒内到达正在运行的沙箱。将这种节奏视为尽力而为，而不是新鲜度保证。刷新会立即替换整个树，因此读者会看到之前的提交或新的提交，而不会看到混合。
 
 挂载始终跟踪最新的提交。要读取固定版本，请使用 Context Hub SDK 拉取所需的提交或环境标签，而不是安装存储库。
 
@@ -749,7 +749,7 @@ gcsMount({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-mounts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

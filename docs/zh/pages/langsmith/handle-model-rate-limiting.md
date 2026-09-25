@@ -8,7 +8,7 @@
 
 ## 使用 `langchain` RateLimiters（仅限 Python）
 
-如果您在应用程序或评估器中使用 `langchain` Python 聊天模型，您可以向模型添加速率限制器，这将添加客户端对向模型提供程序 API 发送请求的频率的控制，以避免速率限制错误。
+如果您在应用程序或评估器中使用 `langchain` Python 聊天模型，则可以向模型添加速率限制器，这将添加对向模型提供程序 API 发送请求的频率的客户端控制，以避免速率限制错误。
 
 ```python
 from langchain.chat_models import init_chat_model
@@ -67,7 +67,7 @@ const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
 
 ## 限制`max_concurrency`
 
-限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency` 可直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
+限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency`可以直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate)功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
 
 <CodeGroup>
 
@@ -95,7 +95,7 @@ await evaluate(..., {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

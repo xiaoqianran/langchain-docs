@@ -16,7 +16,7 @@ Claude Code 可以使用标准的 Anthropic 消息格式，而 Codex 和 Deep Ag
 
 - 您的[Organization admin](/langsmith/rbac#organization-admin)已启用网关并完成任何所需的[provider setup](/langsmith/llm-gateway-admin-setup)。
 - 您有一个工作空间范围的 [LangSmith API key](/langsmith/create-account-api-key) 以及 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations)。
-- 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商机密。
+- 对于自带密钥模型，您的工作区具有相应的提供者密钥。 [Gateway Credits models](/langsmith/llm-gateway-credits) 不需要提供商秘密。
 
 在配置客户端之前设置您的 LangSmith API 密钥：
 
@@ -39,7 +39,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：- 
 
 将 `ANTHROPIC_BASE_URL` 设置为 Anthropic 格式的网关端点。网关从端点推断 `anthropic/` 提供商前缀。<Tabs>
   <Tab title="Settings file (recommended)">
-    `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和 API 密钥保证覆盖环境中可能已设置的任何环境 `ANTHROPIC_*` 值（例如，从全局 shell 配置文件或其他工具）。
+    `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和 API 密钥保证覆盖环境中可能已设置的任何环境 `ANTHROPIC_*` 值（例如，来自全局 shell 配置文件或其他工具）。
 
     ```bash
     touch ~/.claude/langsmith_gateway.settings.json
@@ -61,7 +61,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：- 
 
 #### 跨提供商路由模型层
 
-将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到以提供商为前缀的网关模型 ID。
+将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到提供商前缀的网关模型 ID。
 
 <Tabs>
   <Tab title="Settings file (recommended)">
@@ -130,12 +130,12 @@ Claude Code 使用并刷新其保存的登录中的 OAuth 凭据，包括 `anthr
 </Warning>
 
 <Warning>
-配置网关时，Claude Desktop 插件会中断。
+配置网关后，Claude Desktop 插件会中断。
 </Warning>
 
 ## Codex CLI
 
-Codex 使用响应 API。将以下内容添加到`~/.codex/config.toml`，以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
+Codex 使用响应 API。将以下内容添加到 `~/.codex/config.toml` 以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
 
 ```toml
 model = "moonshotai/kimi-k3"
@@ -167,7 +167,7 @@ codex
 gemini
 ```
 
-## Deep Agents Code
+## Deep Agents 代码
 
 将 OpenAI 兼容客户端与标准端点结合使用，然后通过 `openai` 集成传递托管模型 slug：
 
@@ -180,23 +180,23 @@ dcode --model openai:moonshotai/kimi-k3
 
 要使用自带密钥模型，请保留标准基本 URL 并在 `openai:` 之后传递提供者前缀模型，例如 `openai:anthropic/claude-opus-5`。有关提供商本机集成和模型 ID，请参阅 [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents)。
 
-## Company-wide deployment
+## 全公司部署
 
-对于向所有开发人员推出网关的组织，可以通过移动设备管理或共享 shell 配置文件分发配置。 Distribute:
+对于向所有开发人员推出网关的组织，可以通过移动设备管理或共享 shell 配置文件分发配置。分发：
 
 1. 每个客户端的标准网关基本 URL。
 1. 每个用户或团队一个工作区范围的[LangSmith API key](/langsmith/create-account-api-key)，具体取决于您的策略粒度。
-1. The model IDs approved for each coding agent.
+1. 为每个编码代理批准的型号 ID。
 1. Codex `config.toml`（如果您的组织使用 Codex）。
 
 提供商 API 密钥集中在 LangSmith 工作区机密中。 Gateway Credits 模型不需要提供商 API 密钥。
 
-## Verify the setup
+## 验证设置
 
 配置编码代理后，进行测试呼叫并确认：1. 呼叫成功，座席收到响应。
 1. 跟踪出现在您的 LangSmith 工作区的 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 跟踪项目中。
 
-如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并显示 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
+如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并出现 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
 
 ## 后续步骤
 
@@ -209,7 +209,7 @@ dcode --model openai:moonshotai/kimi-k3
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

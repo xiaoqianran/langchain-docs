@@ -148,7 +148,7 @@ prod_runs = list(
 )
 ```### 将运行转换为实验
 
-`convert_runs_to_test` 是一个需要运行几次并执行以下操作的函数：
+`convert_runs_to_test` 是一个需要运行一些函数并执行以下操作的函数：
 
 1. 输入和可选的输出作为示例保存到数据集。
 2. 输入和输出存储为实验，就好像您运行了 `evaluate` 函数并收到了这些输出一样。
@@ -267,9 +267,9 @@ candidate_results = await client.aevaluate(
 1. GPT-4o 在遵循格式规则方面表现出改进的性能，始终包括所需数量的表情符号
 2. 然而，GPT-4o 在提供的搜索结果方面不太可靠
 
-为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abū Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但这些事实未出现在搜索结果中。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。
+为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abu Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但这些事实未出现在搜索结果中。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。
 
-这次回测表明，虽然 GPT-4o 通常被认为是一个功能更强大的模型，但简单地升级到它并不能改善我们的推文撰写者。为了有效地使用 GPT-4o，我们需要：* 完善我们的提示，更加强调仅使用提供的信息
+这次回溯测试表明，虽然 GPT-4o 通常被认为是一个功能更强大的模型，但简单地升级到它并不能改善我们的推文撰写者。为了有效地使用 GPT-4o，我们需要：* 完善我们的提示，更加强调仅使用提供的信息
 * 或者修改我们的系统架构以更好地约束模型的输出
 
 这种见解证明了回溯测试的价值 - 它帮助我们在部署之前识别潜在问题。
@@ -280,7 +280,7 @@ candidate_results = await client.aevaluate(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

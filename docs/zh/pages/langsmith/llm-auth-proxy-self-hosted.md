@@ -376,7 +376,7 @@ authProxy:
 
 通过 `processingMode` 控制将哪些相发送到变压器。仅启用您需要的阶段，因为禁用未使用的阶段会减少延迟。
 
-|领域 |选项|描述 |
+|领域|选项|描述 |
 |--------|---------|-------------|
 | `requestHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发请求头。 |
 | `responseHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发响应头。 |
@@ -800,7 +800,7 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-auth-proxy-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

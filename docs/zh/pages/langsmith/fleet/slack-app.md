@@ -57,7 +57,7 @@ Slack 与 Fleet 的集成没有任何直接定价。但是，代理运行和跟�
 Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可以实现两件事：- **Slack 工具访问**：机器人确定代理需要发布消息、读取频道和线程历史记录以及发送直接消息的范围。
 - **应用程序管理**：允许 Fleet 为代理创建专用 Slack 应用程序并代表您将其安装在您的工作区中的范围，这使得一键部署成为可能。
 
-要连接，请打开[Fleet](https://smith.langchain.com/agents?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-slack-app)中的**集成**页面，搜索**Slack**，然后单击Slack卡上的**连接**。当您第一次将 Slack 应用程序添加到代理时，Fleet 也会内联运行此连接，因此您可以跳至 [Step 2](#step-2-add-a-slack-app-to-an-agent) 并在出现提示时进行授权。
+要连接，请打开[Fleet](https://smith.langchain.com/agents?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-fleet-slack-app)中的**集成**页面，搜索**Slack**，然后单击Slack卡上的**连接**。当您第一次将 Slack 应用程序添加到代理时，Fleet 还会内联运行此连接，因此您可以跳至 [Step 2](#step-2-add-a-slack-app-to-an-agent) 并在出现提示时进行授权。
 
 <Note>
 当您的工作区中的某人第一次连接时，Slack 可能会将请求路由到 Slack 工作区管理员。当管理员审核它时，他们可以：
@@ -83,7 +83,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
 
 ### 添加需要管理员批准的应用程序
 
-如果您的 Slack 工作区需要管理员批准每个应用程序，Fleet 会将新应用程序保存为草稿，而不是安装它。完成设置需要两轮：1. 单击待处理 Slack 行上的 **完成设置**。 Slack 会打开一个窗口，您可以在其中单击“**请求**”将应用程序发送给您的工作区管理员。
+如果您的 Slack 工作区需要管理员批准每个应用程序，Fleet 会将新应用程序保存为草稿，而不是安装它。完成设置需要两轮：1. 单击待处理 Slack 行上的 **完成设置**。 Slack 将打开一个窗口，您可以在其中单击“**请求**”将应用程序发送给您的工作区管理员。
 1. 管理员批准后，返回舰队并再次单击“**完成设置**”。 Fleet 安装应用程序并激活频道。
 
 ## 在自托管上设置 Slack
@@ -110,7 +110,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
 
-    确认舰队 Pod 重新启动。此时提供者 ID 只是一个名称。其余步骤创建它所引用的提供者。
+    确认舰队 Pod 重新启动。此时提供者 ID 只是一个名称。其余步骤创建它引用的提供者。
   </Step>
 
   <Step title="Create a Slack app for the provider">
@@ -198,7 +198,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
     **需要管理员批准的 Slack 应用程序**：如果 Slack 显示 **请求** 而不是 **允许**，则您的工作区需要管理员批准：
 
     1. 在 Slack 窗口中，单击 **请求** 将安装请求发送给您的管理员。这实际上是通知管理员的。
-    1. 返回舰队，单击“**保存并请求批准**”。尽管其名称如此，此按钮仅将应用程序保存为草稿，以便您可以在管理员批准后恢复。参见[Finish a draft Slack app](#finish-a-draft-slack-app)。
+    1. 返回舰队，单击“**保存并请求批准**”。尽管名称如此，此按钮仅将应用程序保存为草稿，以便您可以在管理员批准后恢复。参见[Finish a draft Slack app](#finish-a-draft-slack-app)。
   </Step>
 
   <Step title="Finish setup">
@@ -212,7 +212,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
 
 在您的管理员批准该应用程序后：
 
-1. 在 **集成** 页面上，选择左侧导航中的 **Slack 和 Teams** 以打开 **Slack 应用程序** 部分。
+1. 在 **集成** 页面上，选择左侧导航栏中的 **Slack 和 Teams** 以打开 **Slack 应用程序** 部分。
 1. 单击草稿上的“**恢复设置**”。
 1. 重新输入 **客户端密钥** 和 **签名密钥**。 Fleet 不会将机密存储在草稿中，因此请再次从 Slack 复制它们。
 1. 单击“**保存凭据**”，然后单击“**连接 OAuth**”，然后单击“Slack 中的**允许**”。
@@ -255,7 +255,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
    - **回复消息**：在线程中回复。
    - **写私人消息**：发送直接消息。
    - **读取频道历史记录**：读取最近的频道消息。
-   - **阅读主题消息**：阅读主题中的回复。
+   - **阅读话题消息**：阅读话题中的回复。
 1. 如果出现提示，请授权 Slack 连接。
 
 <Tip>
@@ -277,11 +277,11 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
 
 ### 不允许标记机器人
 
-如果您收到一条私人消息，提示您不允许标记机器人，则表明您的 Slack ID 未获得该代理的授权。代理的所有者需要与您一起[share the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent)，可以通过与整个LangSmith工作区共享运行访问权限，也可以与您单独共享。
+如果您收到一条私人消息，提示您不允许标记机器人，则表明您的 Slack ID 未获得该代理的授权。代理的所有者需要与您[share the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent)，可以通过与整个LangSmith工作区共享运行访问权限，也可以与您单独共享。
 
 ### Slack 应用程序仍等待批准
 
-处于挂起状态的 Slack 行正在等待 Slack 管理员。请求管理员在 Slack 中批准该应用程序，然后再次单击“**完成设置**”。参见[Add an app that needs admin approval](#add-an-app-that-needs-admin-approval)。
+处于挂起状态的 Slack 行正在等待 Slack 管理员。请管理员在 Slack 中批准该应用程序，然后再次单击“**完成设置**”。参见[Add an app that needs admin approval](#add-an-app-that-needs-admin-approval)。
 
 ### 添加 Slack 应用程序已禁用
 
@@ -306,7 +306,7 @@ Fleet Slack 应用程序充当您的工作空间的管理器。单个连接可�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/slack-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

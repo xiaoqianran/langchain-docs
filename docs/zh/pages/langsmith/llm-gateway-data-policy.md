@@ -39,13 +39,13 @@ LLM 网关中的 **数据策略** 选项卡保存数据策略。单个数据策�
 基于规则的类别与正则表达式匹配，检测速度更快：
 
 |类别 |检测到的模式 |
-| --- | --- |
+| ---| ---|
 | **电子邮件** |电子邮件地址模式 |
-| **美国电话号码** |常见的美国格式，例如 `415-555-1234` 和 `+1 (415) 555-1234`。裸露的10位数字不匹配|
+| **美国电话号码** |常见的美国格式，例如 `415-555-1234` 和 `+1 (415) 555-1234`。裸露的10位数字不匹配 |
 | **美国社会安全号码** |美国 SSN 模式，例如 `123-45-6789` |基于模型的类别由 Presidio 匹配，检测速度较慢：
 
 |类别 |示例 |
-| --- | --- |
+| ---| ---|
 | **名字** |自然语言中的人名 |
 | **地点** |地址、城市、国家 |
 | **国籍、宗教和政治团体** |国籍、宗教信仰、政治立场 |
@@ -55,9 +55,9 @@ LLM 网关中的 **数据策略** 选项卡保存数据策略。单个数据策�
 **Secrets** 切换检测常见的 API 密钥、令牌和凭据，并从请求中编辑它们：
 
 |类别 |检测到的模式 |
-| --- | --- |
+| ---| ---|
 | **LangSmith** |个人访问令牌、服务密钥、旧 API 密钥 |
-| **AWS** |访问令牌|
+| **AWS** |访问令牌 |
 | **GitHub** |个人访问令牌、细粒度 PAT、OAuth 令牌、应用程序令牌 |
 | **GitLab** |个人访问令牌 |
 | **人工智能提供商** | OpenAI API 密钥、Anthropic API 密钥 |
@@ -152,7 +152,7 @@ Confirming John Smith's SSN as 123-45-6789. I will process the full refund.
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-data-policy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

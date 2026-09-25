@@ -4,7 +4,7 @@
 
 # AWS Terraform 架构
 
-了解 [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws) 的配置以及各部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
+了解 [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws) 的配置以及各个部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
 
 在规划部署或对现有部署进行故障排除时，请使用此页面作为参考。它涵盖：
 
@@ -20,7 +20,7 @@
 
 AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。基础设施阶段提供云基础。应用程序阶段安装LangSmithHelm图表。 LangSmith 部署附加组件是可选的，并添加主机后端、侦听器和操作员服务，用于从 UI 管理 LangGraph 应用程序。
 
-<img src="/images/self-hosted-terraform/aws-architecture.png" alt="LangSmith on AWS service layout" />|舞台|层|添加了什么 |
+<img src="/images/self-hosted-terraform/aws-architecture.png" alt="LangSmith on AWS service layout" />|舞台|层 |添加了什么 |
 |---|---|---|
 |基础设施| AWS 基础设施 | VPC + 私有/公有子网 + 单个 NAT 网关、EKS 集群 + 托管节点组 + 集群自动缩放程序、RDS PostgreSQL、ElastiCache Redis、S3 存储桶 + VPC 网关端点、ALB 控制器 + EBS CSI 驱动程序 + 指标服务器、k8s-bootstrap（KEDA、ESO、可选 Envoy 网关）。可选：网络防火墙、WAF、CloudTrail、ALB 访问日志。 |
 |应用 | LangSmith申请|后端、前端、playground、队列、ace-backend、clickhouse。存储：RDS PostgreSQL（元数据）+ S3（通过 VPC 端点跟踪 blob）。入口：ALB、NGINX、Envoy Gateway 或 Istio。 |
@@ -38,7 +38,7 @@ AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。
 
 这些 Pod 在每个部署上运行。所有写入日志和指标；较繁忙的组件（后端、队列、摄取队列）水平扩展。|服务 |目的|港口|羟丙胺 |爱尔兰税务局 |取决于 |
 |---|---|---|---|---|---|
-| `langsmith-frontend` |反应用户界面 | 3000 | 1 到 10 |没有 | `backend`、`platform-backend` |
+| `langsmith-frontend` |反应用户界面 | 3000 | 3000 1 到 10 |没有 | `backend`、`platform-backend` |
 | `langsmith-backend` |主要 API（跟踪、运行、项目、API 密钥、反馈）| 1984 | 3 至 10 |是（S3）| Postgres、Redis、ClickHouse、S3 |
 | `langsmith-platform-backend` |组织和用户管理、身份验证、计费、设置 | 1986 | 1 到 10 |是（S3）| Postgres、Redis、S3 |
 | `langsmith-playground` | LLM提示操场UI | 3001 | 3001 1 到 10 |没有 | `backend` |
@@ -50,7 +50,7 @@ AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。
 <Warning>
 集群内 ClickHouse 仅是 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。
 </Warning><Note>
-[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观察性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
+[SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。这些 Terraform 模块提供 ClickHouse，因此前面部分中的指南适用于当前部署。
 </Note>
 
 ### 一次性工作
@@ -247,7 +247,7 @@ ACM 证书不可导出。 AWS 将它们直接附加到 ALB，这使得当 TLS �
 | HashiCorp Vault (`cert-manager-vault`) |自托管 PKI |
 | DigiCert、Sectigo 等 | ACME 或自定义发行者插件 |
 
-Terraform 模块提供 cert-manager IRSA 角色和 Route 53 权限。只有 `ClusterIssuer` 清单在发行人之间发生变化。
+Terraform 模块提供 cert-manager IRSA 角色和 Route 53 权限。仅`ClusterIssuer` 清单在发行人之间发生变化。
 
 ### 自动配置 DNS
 
@@ -286,7 +286,7 @@ vpc ─► firewall (optional, create_firewall = true)
 
 |模块|变量|默认 |目的|
 |---|---|---|---|
-|网络防火墙| `create_firewall` | `false` |基于 FQDN 的出口过滤。仅允许`firewall_allowed_fqdns`（TLS SNI + HTTP 主机）中的域。需要`create_vpc = true`。成本 ≈ `$0.40/hr/endpoint + $0.065/GB processed`。 |
+|网络防火墙| `create_firewall` | `false` |基于 FQDN 的出口过滤。仅允许 `firewall_allowed_fqdns` 中的域（TLS SNI + HTTP 主机）。需要`create_vpc = true`。成本 ≈ `$0.40/hr/endpoint + $0.065/GB processed`。 |
 | ALB 访问日志 | `alb_access_logs_enabled` | `false` |流量分析与合规 |
 |云踪| `create_cloudtrail` | `false` | API 调用记录。如果组织跟踪已存在，则跳过。 |
 | WAF | `create_waf` | `false` | WAFv2 Web ACL：OWASP Top 10、IP 声誉、已知不良输入 |
@@ -311,7 +311,7 @@ vpc ─► firewall (optional, create_firewall = true)
 | 3 | `name_prefix`长度|最多 15 个字符。 `dz-nginx-tst`（12 个字符）之类的名称是有效的。 |
 | 4 | Istio 端口 | Istio 1.23+ ingressgateway 通过 `NET_BIND_SERVICE` 侦听端口 80，而不是端口 8080。ALB TGB 运行状况检查和安全组规则必须以端口 80 为目标。
 | 5 | NGINX TGB 端口 | NGINX ingress-nginx 控制器 Pod 侦听端口 80。TargetGroupBinding 目标类型为 `ip`。 || 6 | Envoy 网关端口 | Envoy Gateway 代理在 Kubernetes 服务的端口 8080 上公开。ALB TargetGroupBinding `servicePort` 必须为 8080，目标类型为 `ip`。 |
-| 7 |销毁订单 |始终首先运行 `terraform destroy` 并让 Terraform 处理命名空间和 Helm 发布生命周期。预删除命名空间会导致 `helm_release` 资源超时，因为 Helm 无法干净地卸载到终止命名空间。 |
+| 7 |销毁订单|始终首先运行 `terraform destroy` 并让 Terraform 处理命名空间和 Helm 发布生命周期。预删除命名空间会导致 `helm_release` 资源超时，因为 Helm 无法干净地卸载到终止命名空间。 |
 | 8 |卡住终止名称空间 | KEDA 的过时`external.metrics.k8s.io/v1beta1` API 组导致`NamespaceDeletionDiscoveryFailure`。修复：重新运行 `terraform destroy` 之前的`kubectl delete apiservice v1beta1.external.metrics.k8s.io`。 |
 
 ## 验证命令
@@ -343,7 +343,7 @@ kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith -- \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -65,7 +65,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
@@ -287,9 +287,9 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
 </Callout>
 </div>

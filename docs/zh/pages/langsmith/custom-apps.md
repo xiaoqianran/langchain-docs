@@ -5,7 +5,7 @@
 # 自定义应用程序
 
 <Note>
-**企业**计划提供自定义应用程序。
+[**Plus** and **Enterprise** plans](https://www.langchain.com/pricing) 上提供自定义应用程序。
 </Note>
 
 自定义应用程序是您构建的 UI，它在 LangSmith 内运行并调用 [LangSmith API](/langsmith/smith-api-ref)。将其用于内置 UI 未涵盖的工作流程，例如专门构建的注释表面、实验比较视图或范围为您自己的跟踪的仪表板。
@@ -16,7 +16,7 @@
 
 ## 构建一个应用程序
 
-通过浏览器中的 [chatting with LangSmith Chat](#build-with-chat) 或 [locally with the CLI](#build-locally-with-the-cli) 和您自己的编码代理构建应用程序。两条路径都会生成相同的应用程序并存储相同的源代码，因此任一路径都可以 [edit](#edit-an-app) 另一个路径构建的内容。
+通过浏览器中的[chatting with LangSmith Chat](#build-with-chat)或[locally with the CLI](#build-locally-with-the-cli)和您自己的编码代理构建应用程序。两条路径都会生成相同的应用程序并存储相同的源代码，因此任何一个都可以[edit](#edit-an-app)另一个构建的内容。
 
 ### 通过聊天进行构建
 
@@ -44,7 +44,7 @@
 
 ### 使用 CLI 本地构建
 
-本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
+本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建了一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
 
 <Steps>
 <Step title="Install the CLI">
@@ -72,7 +72,7 @@ langsmith apps init --name my-annotation-view --template annotation-queue
 ```bash
 cd my-annotation-view
 langsmith apps dev
-```该应用程序在与 LangSmith 内相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
+```该应用程序在与 LangSmith 内部相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
 </Step>
 <Step title="Push it live">
 ```bash

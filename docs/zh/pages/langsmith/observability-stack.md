@@ -12,7 +12,7 @@
 **本节仅适用于 Kubernetes 部署。**
 </Warning>
 
-LangSmith 应用程序公开可发送到您选择的后端的遥测数据。如果您还没有可观察性堆栈，或者更喜欢将 LangSmith 遥测与主应用程序分开，则可以使用 LangSmith 可观察性 Helm 图表来部署基本的可观察性堆栈。
+LangSmith 应用程序公开可以发送到您选择的后端的遥测数据。如果您还没有可观察性堆栈，或者更喜欢将 LangSmith 遥测与主应用程序分开，则可以使用 LangSmith 可观察性 Helm 图表来部署基本的可观察性堆栈。
 
 # 第 1 部分：Prometheus 导出器
 
@@ -157,7 +157,7 @@ kubectl get secret langsmith-observability-grafana -n <langsmith_observability_n
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-stack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,11 +6,11 @@
 
 本指南假设您了解什么是双重短信，您可以在 [double-texting conceptual guide](/langsmith/double-texting) 中了解。
 
-该指南介绍了双文本发送的 `interrupt` 选项，该选项会中断图表的先前运行并使用双文本开始新的运行。此选项不会删除第一次运行，而是将其保留在数据库中，但将其状态设置为`interrupted`。下面是使用 `interrupt` 选项的快速示例。
+该指南介绍了双文本发送的 `interrupt` 选项，该选项会中断图形的先前运行并使用双文本开始新的运行。此选项不会删除第一次运行，而是将其保留在数据库中，但将其状态设置为`interrupted`。下面是使用 `interrupt` 选项的快速示例。
 
 ## 设置
 
-首先，我们将定义一个快速帮助函数，用于打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
+首先，我们将定义一个快速帮助函数来打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
 
 <Tabs>
     <Tab title="Javascript">
@@ -259,7 +259,7 @@ In summary, the search provides a convenient overview of the expected weather co
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/interrupt-concurrent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

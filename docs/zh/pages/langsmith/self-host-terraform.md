@@ -47,7 +47,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 ## 部署层
 
-选择具有单个 Terraform 变量的层。模块相应地调整每个依赖资源的大小。|等级 | PostgreSQL | Redis |点击屋 |使用案例|
+选择具有单个 Terraform 变量的层。模块相应地调整每个依赖资源的大小。|等级 | PostgreSQL | Redis |点击屋 |使用案例 |
 |---|---|---|---|---|
 | `dev` |集群内|集群内|集群内|演示、评估、短暂的 POC |
 | `production` |云管理（RDS、Cloud SQL、Azure 数据库）|云托管（ElastiCache、Memorystore、Azure 缓存）| [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) |持续、可扩展的生产 |
@@ -61,14 +61,14 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 - **计算：** 托管 Kubernetes（EKS、AKS 或 GKE），具有自动缩放每层大小的节点池。
 - **数据平面：** 托管 PostgreSQL、托管 Redis 或缓存以及用于跟踪有效负载的 Blob 存储桶。
 - **秘密：** 云原生秘密存储（AWS SSM 参数存储、Azure Key Vault、GCP Secret Manager）通过 [External Secrets Operator](https://external-secrets.io/) 同步到 Kubernetes。
-- **Ingress：** 默认情况下云原生负载均衡器。 Envoy Gateway（网关 API）可用于多命名空间数据平面部署。
-- **可选强化（目前的 AWS）：** AWS 网络防火墙，具有 FQDN 出口允许列表、WAFv2、CloudTrail 以及具有 SSM 堡垒访问权限的私有 EKS API 端点。
+- **入口：** 默认情况下云原生负载均衡器。 Envoy Gateway（网关 API）可用于多命名空间数据平面部署。
+- **可选强化（今天的 AWS）：** AWS 网络防火墙，具有 FQDN 出口允许列表、WAFv2、CloudTrail 以及具有 SSM 堡垒访问权限的私有 EKS API 端点。
 
 ## 企业功能切换
 
 每个模块都公开可选的 LangSmith 附加组件的标志。在运行 `make apply` 之前切换 `tfvars` 文件中的每个内容。- **[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)** (`enable_deployments`)：代理服务器加上运行和管理已部署代理的主机后端、侦听器和操作员。
 - **[Fleet](/langsmith/fleet)** (`enable_fleet`)：代理构建产品，以前称为 Agent Builder，作为独立服务部署（图表 v0.15+）。
-- **见解** (`enable_insights`)：ClickHouse 支持的分析。
+- **Insights** (`enable_insights`)：ClickHouse 支持的分析。
 - **Polly** (`enable_polly`)：人工智能评估和监控。
 
 ## 后续步骤
@@ -82,7 +82,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

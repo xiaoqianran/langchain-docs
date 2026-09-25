@@ -59,7 +59,7 @@ agent = graph_workflow.compile()
 
 ### 重建
 
-要在每次新运行时重建图形，请提供一个返回（或生成）图形的**工厂函数**。工厂可以选择接受`ServerRuntime`参数或`RunnableConfig`。服务器检查函数的类型注释以确定要注入的参数，因此请确保包含正确的类型提示。服务器的队列工作人员将在需要处理运行时随时调用您的工厂函数。某些其他端点也会调用该函数来更新状态、读取状态或获取辅助模式。 `ServerRuntime` 告诉您哪个上下文触发了调用。
+要在每次新运行时重建图形，请提供一个返回（或生成）图形的**工厂函数**。工厂可以选择接受`ServerRuntime`参数或`RunnableConfig`。服务器检查函数的类型注释以确定要注入哪些参数，因此请确保包含正确的类型提示。服务器的队列工作人员将在需要处理运行时随时调用您的工厂函数。某些其他端点也会调用该函数来更新状态、读取状态或获取辅助模式。 `ServerRuntime` 告诉您哪个上下文触发了调用。
 
 <Note>
 `ServerRuntime` 位于 [beta](/langsmith/release-stages) 中，并且可能在未来版本中发生变化。
@@ -187,7 +187,7 @@ async def make_graph(runtime: ServerRuntime):
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

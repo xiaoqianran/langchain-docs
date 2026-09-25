@@ -12,7 +12,7 @@
 - [Redact secrets from traces](/langsmith/redact-secrets) 使用 SDK 匿名器以及 API 密钥、令牌和凭证的现成正则表达式模式。
 - [Process inputs and outputs for individual functions](#processing-inputs-and-outputs-for-a-single-function) 具有功能级定制。
 - [Use third-party anonymizers](#examples) 类似于 Microsoft Presidio 和 Amazon Comprehend，用于高级 PII 检测。
-- [Batch process run operations](#batch-processing-for-high-throughput-masking) 一次在多个运行中应用昂贵的屏蔽逻辑，减少每次运行的开销。 LangSmith 进程在后台线程中运行，这不会阻塞您的应用程序。
+- [Batch process run operations](#batch-processing-for-high-throughput-masking) 一次在多个运行中应用昂贵的屏蔽逻辑，从而减少每次运行的开销。 LangSmith 进程在后台线程中运行，这不会阻塞您的应用程序。
 - [Redact inputs and outputs per request](/langsmith/conditional-tracing#conditionally-redact-inputs-and-outputs) 使用 `tracing_context` 仅屏蔽特定调用的数据（例如，基于租户或功能标志），同时保持其他跟踪不变。<Note>
 如果您的合规性或隐私要求要求某些操作根本不应该被跟踪（例如，具有零保留策略的客户端），请考虑使用 [conditional tracing](/langsmith/conditional-tracing) 有选择地禁用对特定请求的跟踪，而不是屏蔽数据。
 </Note>
@@ -242,12 +242,12 @@ const main = traceable(async (inputs: any) => {
 </CodeGroup>
 
 请注意，使用匿名器可能会因复杂的正则表达式或大型负载而导致性能下降，因为匿名器在处理之前会将负载序列化为 JSON。<Note>
-提高 `anonymizer` API 的性能已列入我们的路线图！如果您遇到性能问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+提高 `anonymizer` API 的性能已在我们的路线图中！如果您遇到性能问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 </Note>
 
 ![Hide inputs outputs](/langsmith/images/hide-inputs-outputs.png)
 
-旧版本的LangSmith SDK 可以使用 `hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数来更有效地处理输入和输出。
+旧版本的LangSmith SDK 可以使用`hide_inputs` 和 `hide_outputs` 参数来达到相同的效果。您还可以使用这些参数来更有效地处理输入和输出。
 
 <CodeGroup>
 
@@ -381,7 +381,7 @@ def my_function(my_cool_key: str) -> int:
     return len(my_cool_key)
 
 result = my_function("example")
-```在此示例中，`process_inputs` 使用处理后的输入数据创建一个新字典，`process_outputs` 在记录到 LangSmith 之前将输出转换为特定格式。
+```在此示例中，`process_inputs` 使用处理后的输入数据创建一个新字典，`process_outputs` 在记录到LangSmith 之前将输出转换为特定格式。
 
 <Warning>
 建议避免改变处理器函数中的源对象。相反，使用处理后的数据创建并返回新对象。
@@ -396,7 +396,7 @@ async def async_function(key: str) -> int:
     return len(key)
 ```
 
-当定义了[Client](https://reference.langchain.com/python/langsmith/client/Client)级别处理器（`hide_inputs`和`hide_outputs`）时，这些功能级处理器优先于两者。
+当定义了两者时，这些功能级处理器优先于[Client](https://reference.langchain.com/python/langsmith/client/Client)级处理器（`hide_inputs`和`hide_outputs`）。
 
 ## 示例
 
@@ -408,7 +408,7 @@ async def async_function(key: str) -> int:
 下面的实现并不详尽，可能会遗漏一些格式或边缘情况。在生产中使用任何实现之前，请对其进行彻底测试。
 </Info>
 
-您可以使用正则表达式在输入和输出发送到LangSmith之前对其进行屏蔽。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
+您可以在将输入和输出发送到 LangSmith 之前使用正则表达式来屏蔽输入和输出。下面的实现屏蔽了电子邮件地址、电话号码、全名、信用卡号和 SSN。
 
 ```python
 import re
@@ -614,7 +614,7 @@ response_without_anonymization = openai_client.chat.completions.create(
 </Info>Comprehend 是一种自然语言处理服务，可以检测个人身份信息。下面的实现使用 Comprehend 的 [⟦T69⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_DetectPiiEntities.html) API 在输入和输出发送到 LangSmith 之前对其进行匿名化。
 
 <Warning>
-Amazon Comprehend **不**提供批量 PII 终端节点。 `detect_pii_entities` 每次调用处理一份文档，`batch_detect_entities` 检测通用实体（人员、地点、组织）——它不是特定于 PII 的 API。要处理许多文档，可以在循环中调用 `detect_pii_entities`（如下所示），或者对 S3 中的文档使用异步 [⟦T73⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html)。
+Amazon Comprehend **不**提供批量 PII 终端节点。 `detect_pii_entities` 每次调用处理一份文档，`batch_detect_entities` 检测通用实体（人员、地点、组织）——它不是特定于 PII 的 API。要处理许多文档，请在循环中调用 `detect_pii_entities`（如下所示），或者对 S3 中的文档使用异步 [⟦T73⟧](https://docs.aws.amazon.com/comprehend/latest/APIReference/API_StartPiiEntitiesDetectionJob.html)。
 </Warning>
 
 要使用 Comprehend，请安装 [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)：
@@ -873,7 +873,7 @@ finally:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/mask-inputs-outputs.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

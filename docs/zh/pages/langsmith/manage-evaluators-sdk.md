@@ -4,7 +4,7 @@
 
 # 使用 SDK 管理评估器
 
-使用LangSmith SDK 以编程方式创建和管理[evaluators](/langsmith/evaluation-concepts#evaluators)。通过 SDK 创建的评估器是 [workspace-level](/langsmith/administration-overview#workspaces) 资源，出现在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-manage-evaluators-sdk) 的 **Evaluators** 表中，与 [evaluators created in the UI](/langsmith/evaluators#create-an-evaluator-in-the-ui) 相同。您可以将它们附加到数据集以运行[offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)，并将它们附加到跟踪项目以运行[online evaluations](/langsmith/evaluation-concepts#online-evaluations)。使用 SDK 自动化评估者管理并将评估集成到您现有的工作流程中。
+使用 LangSmith SDK 以编程方式创建和管理 [evaluators](/langsmith/evaluation-concepts#evaluators)。通过 SDK 创建的评估器是 [workspace-level](/langsmith/administration-overview#workspaces) 资源，出现在 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-manage-evaluators-sdk) 的 **Evaluators** 表中，与 [evaluators created in the UI](/langsmith/evaluators#create-an-evaluator-in-the-ui) 相同。您可以将它们附加到数据集以运行[offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)，并将它们附加到跟踪项目以运行[online evaluations](/langsmith/evaluation-concepts#online-evaluations)。使用 SDK 自动化评估者管理并将评估集成到您现有的工作流程中。
 
 ## 先决条件
 
@@ -545,7 +545,7 @@ await client.evaluators.delete(evaluatorId, {
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-evaluators-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

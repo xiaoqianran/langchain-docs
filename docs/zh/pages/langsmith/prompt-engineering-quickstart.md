@@ -6,7 +6,7 @@
 
 提示指导大型语言模型 (LLM) 的行为。 [_Prompt engineering_](/langsmith/prompt-engineering-concepts) 是精心设计、测试和完善您向法学硕士提供的说明的过程，以便产生可靠且有用的答复。
 
-LangSmith 提供用于创建、版本化、测试和协作提示的工具。您还将遇到一些常见概念，例如 [_prompt templates_](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates)（它允许您重用结构化提示）和 [_variables_](/langsmith/prompt-engineering-concepts#f-string-vs-mustache)（它允许您动态地将值（例如用户的问题）插入到提示中）。
+LangSmith 提供用于创建、版本化、测试和协作提示的工具。您还会遇到常见概念，例如 [_prompt templates_](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates)（它允许您重用结构化提示）和 [_variables_](/langsmith/prompt-engineering-concepts#f-string-vs-mustache)（它允许您动态地将值（例如用户的问题）插入到提示中）。
 
 在本快速入门中，您将使用 UI 或 SDK 创建、测试和改进提示。本快速入门将使用 OpenAI 作为示例 LLM 提供商，但相同的工作流程适用于其他提供商。
 
@@ -104,7 +104,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
 - 使用提示画布（LangSmith 中的交互式工具）构建和完善您的提示。了解更多信息[Prompt Canvas guide](/langsmith/write-prompt-with-ai)。
 - 标记特定提交以标记提交历史记录中的重要时刻。
     1. 要创建提交，请导航至 **Playground** 并选择 **Commit**。选择要提交更改的提示，然后**提交**。
-    1. 导航至左侧菜单中的**提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加[commit tag](/langsmith/manage-prompts#commit-tags)。</Tab>
+    1. 导航至左侧菜单中的**提示**。选择提示。在提示详情页面，选择右上角的**标签**，添加一个[commit tag](/langsmith/manage-prompts#commit-tags)。</Tab>
 <Tab title="SDK" icon="code">
 
 ## 1. 设置您的环境
@@ -337,7 +337,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-engineering-quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

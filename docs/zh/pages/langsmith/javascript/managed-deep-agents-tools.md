@@ -118,6 +118,8 @@ export const agent = defineDeepAgent({
 
 要恢复暂停的运行，请参阅[Respond to an interrupt](#respond-to-an-interrupt)。
 
+要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
+
   </Step>
 </Steps>
 
@@ -125,20 +127,20 @@ export const agent = defineDeepAgent({
 
 工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 ## 部署
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念 |亲切 |它如何到达代理|
+## 何时使用工具|概念|亲切 |它如何到达代理|
 | ---| ---| ---|
 | **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ## 响应中断
 
@@ -161,11 +163,13 @@ export const agent = defineDeepAgent({
 
 对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
+要从工具读取或写入线程沙箱中的文件，请使用 `runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
+
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,7 +4,7 @@
 
 # Monorepo 支持
 
-LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于位于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
+LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
 
 ## 存储库结构
 
@@ -130,7 +130,7 @@ JavaScript 构建过程：
 
 2. **对Python使用相对路径**：对于Python monorepos，使用相对路径，如`dependencies`数组中的`"../../shared-package"`。
 
-3. **利用 JS 的工作区功能**：对于 JavaScript/TypeScript，使用包管理器的工作区功能来管理包之间的依赖关系。4. **首先在本地测试**：在部署之前始终在本地测试您的构建，以确保正确解决所有依赖项。
+3. **利用 JS 的工作区功能**：对于 JavaScript/TypeScript，使用包管理器的工作区功能来管理包之间的依赖关系。4. **首先在本地测试**：在部署之前始终在本地测试您的构建，以确保所有依赖项都得到正确解决。
 
 5. **环境变量**：将环境文件 (`.env`) 保存在代理目录中，以进行特定于环境的配置。
 
@@ -138,7 +138,7 @@ JavaScript 构建过程：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monorepo-support.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

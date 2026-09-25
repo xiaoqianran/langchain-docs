@@ -77,7 +77,7 @@ service:
       exporters: [otlphttp/langsmith]
 ```
 
-## 使用 LangChain、LangGraph 或 Deep Agents 进行跟踪如果您的应用程序已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
+## 使用 LangChain、LangGraph 或 Deep Agents 进行追踪如果您的应用程序已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
 
 ```python
 from langchain.agents import create_agent
@@ -162,7 +162,7 @@ provider.shutdown()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/otel-gateway-trace-redaction.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

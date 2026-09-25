@@ -6,7 +6,7 @@
 
 下载链接将一个沙箱文件传递给无法携带 LangSmith 凭证的东西：浏览器选项卡、电子邮件中的 `<a href>`、Webhook 使用者或获取您提供的 URL 的第三方服务。
 
-该链接带有自己的令牌。使用 SDK 的 `read()` 读取文件时，每次请求都需要工作区 API 密钥；下载链接除了 URL 本身之外不需要任何其他内容。
+该链接带有自己的令牌。使用 SDK 的 `read()` 读取文件在每次请求时都需要工作区 API 密钥；下载链接除了 URL 本身之外不需要任何其他内容。
 
 ## 快速开始
 
@@ -167,7 +167,7 @@ curl -X POST \
 
 使用下载链接将一个文件交给外部消费者。使用 `read()` 将文件字节拉入您自己的代码中。使用服务 URL 访问沙箱内运行的 HTTP 服务器。
 
-## 故障排除|错误|原因 |修复 |
+## 故障排除|错误|原因 |修复|
 |--------|--------|-----|
 | **`501` 完好** |未为此部署配置下载链接 |自托管部署需要配置沙箱服务域；参见[Sandbox service URLs](/langsmith/sandbox-service-urls) |
 | **`403` 获取** |链接已过期、已更改或出现在错误的主机上 |创建一个新的链接；逐字复制 URL |
@@ -179,7 +179,7 @@ curl -X POST \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-download-links.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

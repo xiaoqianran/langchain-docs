@@ -64,7 +64,7 @@ LangSmith使用ClickHouse作为跟踪和反馈的主要数据存储。默认情�
 为了使用复制的多节点 Clickhouse 设置来设置 LangSmith：* 您需要有一个使用 Keeper 或 Zookeeper 设置的 Clickhouse 集群，用于数据复制和适当的设置。参见[Clickhouse Replication Setup Docs](https://clickhouse.com/docs/architecture/replication)。
 * 您需要在 [LangSmith Configuration](#configuration) 部分中设置集群设置，特别是 `cluster` 设置以匹配您的 Clickhouse 集群名称。这将在运行 Clickhouse 迁移时使用 `Replicated` 表引擎。
 * 如果除了 HA 之外，您还想在 Clickhouse 节点之间进行负载平衡（以分配读取或写入），我们建议使用负载平衡器或 DNS 负载平衡在 Clickhouse 服务器之间进行循环。
-* **注意**：在首次启动 LangSmith 并运行 Clickhouse 迁移之前，您需要启用 `cluster` 设置。这是一个要求，因为表引擎需要创建为`Replicated`表引擎而不是非复制引擎类型。
+* **注意**：在首次启动 LangSmith 并运行 Clickhouse 迁移之前，您需要启用 `cluster` 设置。这是一项要求，因为表引擎需要创建为 `Replicated` 表引擎而不是非复制引擎类型。
 
 在启用 `cluster` 的情况下运行迁移时，迁移将创建 `Replicated` 表引擎风格。这意味着数据将在集群中的服务器之间复制。这是主-主设置，任何服务器都可以处理读取、写入或合并。<Note>
 有关复制 ClickHouse 集群的示例设置，请参阅示例下的 LangSmith Helm 图表存储库中的 [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md)。
@@ -220,7 +220,7 @@ stringData:
 </CodeGroup>
 
 #### 用于迁移的非 TLS 本机端口<Warning>
-将 mTLS 与 ClickHouse 结合使用时，您必须**为我们的迁移作业保持开放的非 TLS 本机 (TCP) 端口**，该作业在 helm 安装和升级时运行。应用程序本身不会通过此端口进行通信，它**仅由迁移作业使用**。
+When using mTLS with ClickHouse, you must **keep a non-TLS native (TCP) port** open for our migrations job, which runs on helm install and upgrade.应用程序本身不会通过此端口进行通信，它**仅由迁移作业使用**。
 </Warning>
 
 默认情况下，迁移作业连接到端口`9000`进行迁移。如果您的 ClickHouse 实例使用不同的非 TLS 本机端口，您可以使用 `CLICKHOUSE_MIGRATE_NATIVE_PORT` 环境变量对其进行配置：
@@ -256,7 +256,7 @@ commonPodSecurityContext:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

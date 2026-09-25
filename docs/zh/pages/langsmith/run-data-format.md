@@ -7,7 +7,7 @@
 LangSmith 将每个 [run](/langsmith/observability-concepts) 存储为结构化记录。了解此格式在导出跟踪、查询 API 或构建集成时非常有用。
 
 |字段名称 |类型 |描述 |
-| -------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| -------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`id`** | UUID |跨度的唯一标识符。                                                                                               |
 | **`name`** |字符串|与运行关联的名称。                                                                                             |
 | **`inputs`** |对象|提供给运行的输入图。对于使用 `run_type='llm'` 运行，这通常包含发送到模型的消息对象的 `messages` 数组。                                                                                   || **`run_type`** |字符串| [Type of run](#run-types)，例如`'llm'`、`'chain'`、`'tool'`。                                                            |
@@ -95,7 +95,7 @@ LangSmith 将每个 [run](/langsmith/observability-concepts) 存储为结构化�
 
 ## 运行类型
 
-`run_type` 字段标识跨度代表的操作类型。 LangSmith 使用它在跟踪 UI 中应用适当的渲染并启用特定于类型的功能。|运行类型 |描述 |
+`run_type` 字段标识跨度代表的操作类型。 LangSmith 使用它在跟踪 UI 中应用适当的渲染并启用特定于类型的功能。|运行类型|描述 |
 |----------|-------------|
 | `chain` |步骤的序列或组合。 |
 | `llm` |对语言模型的调用。 |
@@ -171,7 +171,7 @@ grandchild	run_id=0ec6b845-18b9-4aa1-8f1b-6ba3f9fdefd6	trace_id=0e01bf50-474d-45
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-data-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

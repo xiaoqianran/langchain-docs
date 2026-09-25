@@ -2,14 +2,14 @@
 
 <!-- langchain-docs: Connect to an external Redis or Valkey database | https://docs.langchain.com/langsmith/self-host-external-redis -->
 
-# 连接到外部 Redis 或 Valkey 数据库
+# 连接外部 Redis 或 Valkey 数据库
 
 LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下，LangSmith自托管将使用内部 Redis 实例。但是，您可以配置 LangSmith 使用外部 Redis 实例。通过配置外部 Redis 实例，您可以更轻松地管理 Redis 实例的备份、扩展和其他操作任务。
 
-[Valkey](https://valkey.io/) 也得到官方支持作为 Redis 的直接替代品。此页面在任何涉及 Redis 的地方，您都可以使用兼容的 Valkey 实例。有关支持的版本，请参阅[Requirements](#requirements)。
+[Valkey](https://valkey.io/) 也得到官方支持作为 Redis 的直接替代品。在本页面引用 Redis 的任何地方，您都可以使用兼容的 Valkey 实例。有关支持的版本，请参阅[Requirements](#requirements)。
 
 <Warning>
-每个 LangSmith 安装必须使用自己专用的 Redis 实例。 Redis 无法在单独的 LangSmith 安装之间共享（例如，迁移期间在现有集群和新集群之间）。跨安装共享它会导致部署任务被路由到错误的集群。
+每个 LangSmith 安装必须使用自己的专用 Redis 实例。 Redis 无法在单独的 LangSmith 安装之间共享（例如，迁移期间在现有集群和新集群之间）。跨安装共享它会导致部署任务被路由到错误的集群。
 </Warning>
 
 <Tip>
@@ -88,7 +88,7 @@ redis:
   external:
     enabled: true
     connectionUrl: "Your connection url"
-```您还可以将连接 URL 存储在现有 Kubernetes Secret 中，并在 Helm 值中引用它。
+```您还可以将连接 URL 存储在现有的 Kubernetes Secret 中，并在 Helm 值中引用它。
 
 <CodeGroup>
 
@@ -650,7 +650,7 @@ ingestQueue:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-redis.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

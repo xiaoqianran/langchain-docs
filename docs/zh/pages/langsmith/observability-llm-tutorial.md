@@ -256,7 +256,7 @@ langsmith trace get <trace-id> --full
 
 ### 收集反馈
 
-将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应有帮助或无帮助。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，并在之后附加分数：
+将 [user feedback](/langsmith/attach-user-feedback) 链接到特定跟踪可以让您确定哪些响应是有帮助的或无帮助的。更新上一步中的 `app.py` （或 `app.ts`），为每个调用添加运行 ID，并在之后附加分数：
 
 <CodeGroup>
 
@@ -492,7 +492,7 @@ const supportBot = traceable(
 分组依据功能需要给定元数据键至少有两个不同的值。
 </Note>
 
-由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。从 UI 侧边栏中的 **监控**，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。在 UI 侧边栏中的 **监控** 中，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
 ### 深入分析当监控图表显示意外情况时，单击数据点以冻结工具提示，然后单击指标名称（例如，**输入**）以跳转到该时间窗口的已筛选运行表。有关搜索和过滤运行的更多信息，请参阅[Filter traces](/langsmith/filter-traces)。
 
@@ -522,7 +522,7 @@ const supportBot = traceable(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-llm-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -448,10 +448,10 @@ LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*`
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置|默认|描述 |
+|设置|默认 |描述 |
 |---------|---------|-------------|
 | `max_size` | 100 | 100缓存的最大提示数|
-| `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |
+| `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
 | `refresh_interval_seconds` | 60|多久检查一次过时的提示并在后台刷新它们 |
 
 刷新时，全局缓存将使用最后一个请求给定提示的客户端来获取新数据。
@@ -1005,7 +1005,7 @@ client.repos().delete(
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-prompts-programmatically.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

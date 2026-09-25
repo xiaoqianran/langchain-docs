@@ -32,7 +32,7 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
    * 单击**生成令牌**并**立即复制它**，因为它不会再次显示。
    * 安全地存储令牌并将其作为环境变量提供给您的服务器。
 
-## 了解 LangSmith “提示提交”和 webhook
+## 了解 LangSmith “提示提交”和 webhooks
 
 在 LangSmith 中，当您保存对提示的更改时，您实际上是在创建新版本或“提示提交”。这些提交可以触发 webhook。
 
@@ -395,7 +395,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-commit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

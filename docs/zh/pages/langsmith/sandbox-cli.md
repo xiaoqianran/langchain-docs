@@ -157,7 +157,7 @@ langsmith sandbox exec my-vm -- ls -la /
 langsmith sandbox exec my-vm -- cat /etc/os-release
 ```
 
-`--`之后的所有内容都会作为命令发送到沙箱。 CLI 将 stdout 打印到 stdout，将 stderr 打印到 stderr，并以沙箱命令的退出代码退出。
+`--`之后的所有内容都会作为命令发送到沙箱。 CLI 将 stdout 打印到 stdout，将 stderr 打印到 stderr，并使用沙箱命令的退出代码退出。
 
 ## 打开交互式控制台
 
@@ -184,7 +184,7 @@ langsmith sandbox console my-vm --forward-ssh-agent
 langsmith sandbox generate-download-url my-vm --path /app/report.csv
 ```
 
-如果没有`--expires-in-seconds`，链接永远不会过期。添加 `--content-type` 和 `--content-disposition inline` 让浏览器渲染文件而不是下载文件。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。参见[Sandbox download links](/langsmith/sandbox-download-links)。## 隧道 TCP 端口
+如果没有`--expires-in-seconds`，链接永远不会过期。添加 `--content-type` 和 `--content-disposition inline` 让浏览器呈现文件而不是下载文件。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。参见[Sandbox download links](/langsmith/sandbox-download-links)。## 隧道 TCP 端口
 
 当您需要转发到沙箱内侦听的服务的本地 TCP 端口时，请使用`sandbox tunnel`。这对于需要 `localhost` 的数据库、语言服务器、自定义协议或本地工具非常有用。
 
@@ -245,7 +245,7 @@ ssh sandbox-my-vm
 ## 命令参考
 
 |命令 |描述 |
-| --- | --- |
+| ---| ---|
 | `langsmith sandbox snapshot list` |列出快照。 |
 | `langsmith sandbox snapshot build <name> --docker-image <image>` |从 Docker 镜像构建快照。 |
 | `langsmith sandbox snapshot capture <name> --box <sandbox>` |从正在运行的沙箱捕获快照。 |
@@ -265,7 +265,7 @@ ssh sandbox-my-vm
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

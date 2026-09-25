@@ -51,7 +51,7 @@
 
 - 稳定的图表版本是`0.X.Y`，其中`X`是主要版本，`Y`随着每个补丁版本的发布而递增。
 - 预览图表版本为 `0.X.0-rc.N`，其中 `N` 随着每个候选版本而递增。
-- 两个数字独立前进。图表补丁编号和LangSmith补丁编号预计不会匹配。
+- 两个数字独立前进。图表补丁编号和 LangSmith 补丁编号预计不会匹配。
 
 用于发布列车的`vX`简写（`v15`、`v16`）指的是主要版本，因此`v15`表示图表版本`0.15.Y`。
 
@@ -83,7 +83,7 @@ LangSmith 支持当前稳定主要版本（`N`）和之前的稳定主要版本�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

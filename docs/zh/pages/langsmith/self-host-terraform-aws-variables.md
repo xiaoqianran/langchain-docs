@@ -8,14 +8,14 @@
 
 变量分为两类：
 
-- **不敏感**（区域、大小、功能标志）：在 `infra/terraform.tfvars` 中设置。
+- **非敏感**（区域、大小、功能标志）：在 `infra/terraform.tfvars` 中设置。
 - **敏感**（许可证密钥、密码、加密密钥）：通过 `infra/scripts/setup-env.sh` 获取，将它们写入 AWS SSM Parameter Store；然后，外部 Secrets Operator 将它们同步到集群中。
 
 对于端到端安装，请参阅[deploy guide](/langsmith/self-host-terraform-aws-deploy)。有关模块如何组合在一起的信息，请参阅[architecture reference](/langsmith/self-host-terraform-aws-architecture)。
 
 ## 核心
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `name_prefix` | — |是的 |所有资源名称的前缀。最多 15 个字符：小写字母、数字和连字符，以字母开头。格式：`{prefix}-{environment}-{resource}`。 |
 | `environment` | `dev` |没有|环境标签：`dev`、`staging`、`prod`、`test` 或 `uat`。 |
@@ -24,7 +24,7 @@
 | `cost_center` | `""` |没有|成本中心或计费标签。非空时用作标签。 |
 | `tags` | `{}` |没有|附加标签应用于所有资源。 |## 网络
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `create_vpc` | `true` |没有|创建新的 VPC。设置 `false` 以使用现有的。 |
 | `vpc_id` | `null` |当 `!create_vpc` |现有VPC ID。 |
@@ -34,7 +34,7 @@
 | `vpc_private_subnets` | `[]` |没有|当 `create_vpc = true` 时覆盖私有子网的 CIDR。空使用模块默认值。 |
 | `vpc_public_subnets` | `[]` |没有|当 `create_vpc = true` 时覆盖公共子网的 CIDR。空使用模块默认值。 |
 
-## EKS|变量|默认 |必填|描述 |
+## EKS|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `enable_public_eks_cluster` | `true` |没有|启用公共 EKS API 端点。设置 `false` 为私有集群，并启用 `create_bastion` 通过 SSM 从堡垒运行 Terraform 和 Helm。 |
 | `eks_public_access_cidrs` | `["0.0.0.0/0"]` |没有|允许 CIDR 到达公共 EKS API 端点。限制企业 VPN 出口 CIDR 以锁定访问。 |
@@ -46,7 +46,7 @@
 | `eks_addons` | `{}` |没有| EKS 托管附加配置（`coredns`、`kube-proxy`、`vpc-cni` 等）。 |
 | `create_langsmith_irsa_role` | `true` |没有|为 LangSmith Pod 创建 IRSA 角色（S3 访问）。 |
 
-## PostgreSQL (RDS)|变量|默认 |必填|描述 |
+## PostgreSQL (RDS)|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `postgres_source` | `external` |没有| `external`（具有私有访问权限的 RDS）或 `in-cluster`（通过 Helm 部署）。 |
 | `postgres_instance_type` | `db.t3.large` |没有| RDS实例类。 |
@@ -60,7 +60,7 @@
 | `postgres_deletion_protection` | `true` |没有|防止意外删除 RDS。为开发/测试环境设置`false`。 |
 | `postgres_backup_retention_period` | `7` |没有|保留自动 RDS 备份的天数。 `0` 禁用备份。 |
 
-## Redis（ElastiCache）|变量|默认 |必填|描述 |
+## Redis（ElastiCache）|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `redis_source` | `external` |没有| `external`（具有私有访问权限的 ElastiCache）或 `in-cluster`（通过 Helm 部署）。 |
 | `redis_instance_type` | `cache.m6g.xlarge` |没有| ElastiCache 节点类型。 |
@@ -68,7 +68,7 @@
 
 ## S3
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `s3_ttl_enabled` | `true` |没有|启用 S3 生命周期规则以使跟踪 blob 过期。 |
 | `s3_ttl_short_days` | `14` |没有|短期对象过期前的天数（`ttl_s/` 前缀）。 |
@@ -76,7 +76,7 @@
 | `s3_kms_key_arn` | `""` |没有|用于 S3 加密的 KMS CMK ARN。空使用 SSE-S3 (AES256)。 |
 | `s3_versioning_enabled` | `false` |没有|启用 S3 存储桶版本控制。由于保留以前的版本，因此增加了存储成本。 |
 
-## TLS 和 DNS|变量|默认 |必填|描述 |
+## TLS 和 DNS|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `tls_certificate_source` | `acm` |没有| TLS 源：`acm`、`letsencrypt`（通过 ALB 解决的证书管理器 HTTP-01 ACME）或`none`。对于通过 Route 53（集群内网关）进行的 DNS-01 质询，请改用 `create_cert_manager_irsa`；两者是相互排斥的。 |
 | `acm_certificate_arn` | `""` |当 `acm` |现有 ACM 证书 ARN。 |
@@ -85,7 +85,7 @@
 | `dns_include_wildcard_san` | `false` |没有|将通配符 SAN (`*.<langsmith_domain>`) 添加到 ACM 证书。子域上的 HTTPS 需要。 |
 | `langsmith_namespace` | `langsmith` |没有| LangSmith 的 Kubernetes 命名空间。 |
 
-## 入口|变量|默认 |必填|描述 |
+## 入口|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `alb_scheme` | `internet-facing` |没有| ALB 方案：`internet-facing`（公共子网）或 `internal`（私有子网，可通过 VPN、对等互连或 PrivateLink 访问）。 |
 | `alb_allowed_cidr_blocks` | `["0.0.0.0/0"]` |没有|允许 CIDR 通过 HTTP/HTTPS 到达 ALB。限制 VPN 或办公室 CIDR 以进行受限访问部署。 |
@@ -98,22 +98,22 @@
 
 ## ClickHouse
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `clickhouse_source` | `in-cluster` |没有| `in-cluster`（仅限开发/POC）或`external`（LangChain托管ClickHouse，建议用于生产）。 |
 
 ## 堡垒（私有集群）
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
-| `create_bastion` | `false` |没有|在公有子网中创建 EC2 堡垒，以便通过 SSM 会话管理器或 SSH 进行私有集群访问。 |
+| `create_bastion` | `false` |没有|在公共子网中创建 EC2 堡垒，以便通过 SSM 会话管理器或 SSH 进行私有集群访问。 |
 | `bastion_instance_type` | `t3.micro` |没有|堡垒的 EC2 实例类型。 |
 | `bastion_key_name` | `null` |没有|用于 SSH 的 EC2 密钥对。 Empty 仅使用 SSM 会话管理器。 |
 | `bastion_enable_ssh` | `false` |没有|打开堡垒安全组上的端口 22。 |
 | `bastion_ssh_allowed_cidrs` | `[]` |没有| CIDR 允许通过 SSH 连接到堡垒。仅当`bastion_enable_ssh = true`时使用。 |
 | `bastion_root_volume_size_gb` | `20` |没有|堡垒的根 EBS 卷大小（以 GB 为单位）。 |
 
-## 安全和审计|变量|默认 |必填|描述 |
+## 安全和审计|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `create_cloudtrail` | `false` |没有|创建 CloudTrail 跟踪记录对 S3 的 AWS API 调用。如果账户级或组织级跟踪已存在，则跳过。 |
 | `cloudtrail_multi_region` | `true` |没有|记录所有区域的 API 调用。 |
@@ -125,7 +125,7 @@
 
 ## 尺寸和功能标志`sizing_profile`和大多数`enable_*`标志由`init-values.sh`和`deploy.sh`读取； Terraform 不会直接作用于它们。它们会影响脚本生成的 Helm 覆盖文件。三个独立标志（`enable_fleet`、`enable_standalone_polly`、`enable_standalone_insights`）是例外：Terraform 读取它们以创建数据库初始化作业和 Kubernetes 机密，并对它们所需的外部 Postgres 和 Redis 输入强制执行计划时前提条件。
 
-|变量|默认 |必填|描述 |
+|变量|默认 |必填 |描述 |
 |---|---|---|---|
 | `sizing_profile` | `default` |没有|头盔尺寸：`production`、`production-large`、`dev`、`minimum` 或 `default`。 |
 | `enable_deployments` | `false` |没有|启用LangSmith部署（侦听器、操作员、主机后端）。需要部署许可证权利。 |
@@ -138,7 +138,7 @@
 
 ## 敏感值（用`setup-env.sh`设置）
 
-Sourcing `infra/scripts/setup-env.sh` 将这些写入 AWS SSM Parameter Store。外部 Secrets Operator 将它们作为 Kubernetes 密钥同步到集群中。这些不是声明的 Terraform 变量，并且在 `terraform.tfvars` 中没有位置；只能通过 SSM 设置它们。|变量|描述 |
+Sourcing `infra/scripts/setup-env.sh` 将这些写入 AWS SSM Parameter Store。外部 Secrets Operator 将它们作为 Kubernetes 机密同步到集群中。这些不是声明的 Terraform 变量，并且在 `terraform.tfvars` 中没有位置；只能通过 SSM 设置它们。|变量|描述 |
 |---|---|
 | `langsmith_license_key` | LangSmith 企业许可证密钥。 |
 | `langsmith_admin_password` |初始组织管理员密码。至少 12 个字符，包含小写字母、大写字母和符号。 |
@@ -153,7 +153,7 @@ Sourcing `infra/scripts/setup-env.sh` 将这些写入 AWS SSM Parameter Store。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-variables.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

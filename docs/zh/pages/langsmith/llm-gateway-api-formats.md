@@ -12,8 +12,8 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 比较API格式
 
-| API格式|基本网址 |提示端点 |兼容客户端|
-| --- | --- | --- | --- |
+| API格式 |基本网址 |提示端点 |兼容客户端|
+| ---| ---| ---| ---|
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
 | Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户发消息 |
 | OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
@@ -258,7 +258,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 - 当提供商本身支持所选格式时，网关将保留该格式。
 - 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-- 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
+- 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 
@@ -286,7 +286,7 @@ curl https://gateway.smith.langchain.com/v1/models \
 自带密钥模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
 
 ## 处理错误|状态或症状 |意义|
-| --- | --- |
+| ---| ---|
 | `400 Bad Request` |请求格式错误、模型 ID 不可用或格式不正确，或者请求无法翻译。 |
 | `401 Unauthorized` | LangSmith API 密钥丢失或无效。 |
 | `403 Forbidden` |该密钥没有所需的网关权限。 |
@@ -306,7 +306,7 @@ curl https://gateway.smith.langchain.com/v1/models \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-api-formats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

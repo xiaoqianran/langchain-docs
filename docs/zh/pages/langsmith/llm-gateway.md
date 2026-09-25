@@ -57,8 +57,8 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
 
-| API格式|端点 |
-| --- | --- |
+| API格式 |端点|
+| ---| ---|
 | OpenAI 聊天完成 | `POST /v1/chat/completions` |
 | Anthropic 留言 | `POST /v1/messages` |
 | OpenAI 回应 | `POST /v1/responses` |
@@ -70,7 +70,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 ## 选择凭证的管理方式
 
 |选项 |上游凭证|设置和计费|
-| --- | --- | --- |
+| ---| ---| ---|
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
 
@@ -106,7 +106,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

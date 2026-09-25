@@ -200,7 +200,7 @@ await client.createSandbox({
 
 ## 验证 AWS 请求
 
-当沙箱代码需要使用 AWS 开发工具包或 CLI 调用 AWS 服务时，请使用 AWS 身份验证规则。代理将真实的 AWS 凭证保留在沙箱之外，然后使用 AWS SigV4 将出站 HTTPS 请求签署到 `*.amazonaws.com` 终端节点。当代理代码需要检查 S3 对象、调用 Bedrock 或使用另一个 AWS 终端节点而不暴露沙箱文件、环境变量、shell 历史记录或日志中的长期 AWS 访问密钥时，这非常有用。沙箱接收占位符 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 值（加上 `AWS_EC2_METADATA_DISABLED=true` 和 `AWS_CA_BUNDLE`），因此 SDK 凭证检测可以正常工作，而代理会用真实的 SigV4 签名替换请求携带的任何内容。仅对`service.region.amazonaws.com`主机、S3虚拟托管和路径式主机以及一些全局端点（例如`iam`、`sts`和`s3`）进行签名；发送到匹配的 AWS 主机的纯文本 HTTP 会被拒绝，并显示 `403`。
+当沙盒代码需要使用 AWS 开发工具包或 CLI 调用 AWS 服务时，请使用 AWS 身份验证规则。代理将真实的 AWS 凭证保留在沙箱之外，然后使用 AWS SigV4 将出站 HTTPS 请求签署到 `*.amazonaws.com` 终端节点。当代理代码需要检查 S3 对象、调用 Bedrock 或使用另一个 AWS 终端节点而不暴露沙箱文件、环境变量、shell 历史记录或日志中的长期 AWS 访问密钥时，这非常有用。沙箱接收占位符 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 值（加上 `AWS_EC2_METADATA_DISABLED=true` 和 `AWS_CA_BUNDLE`），因此 SDK 凭证检测可以正常工作，而代理会用真实的 SigV4 签名替换请求携带的任何内容。仅对`service.region.amazonaws.com`主机、S3虚拟托管和路径式主机以及一些全局端点（例如`iam`、`sts`和`s3`）进行签名；发送到匹配的 AWS 主机的纯文本 HTTP 会被拒绝，并显示 `403`。
 
 <Warning>
 不要将真实的 AWS 访问密钥设置为沙箱环境变量。将它们配置为 `workspace_secret` 或 `opaque` 代理值。明文 AWS 凭证值被拒绝。
@@ -366,7 +366,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 将示例 ARN 替换为您配置的客户角色。单一规则限制仍然适用。角色身份验证在创建时配置：更新可以保留现有角色，但不能添加、删除、更改或禁用它。创建一个新的沙箱来更改角色身份验证。该角色的有效 AWS 权限适用于所有支持的请求。 LangSmith 不会将挂载派生的会话策略添加到此规则中。只读 S3 挂载会阻止文件系统写入，而不是 IAM 允许的直接 S3 API 写入。将客户角色限制为沙箱所需的服务、资源和操作。
 
-LangSmith 根据需要更新临时凭证并在停止/启动后重新获取它们。如果续订暂时不可用，则缓存的凭据仅在过期之前保持可用。拒绝授权或过期失败会关闭，而不会退回到静态密钥。
+LangSmith 按需更新临时凭证并在停止/启动后重新获取它们。如果续订暂时不可用，则缓存的凭据仅在过期之前保持可用。拒绝授权或过期失败会关闭，而不会退回到静态密钥。
 
 ## 验证 GCP 请求
 
@@ -555,7 +555,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 配置两条规则：
 
-|主持人|标题|
+|主持人|标题 |
 |------|--------|
 | `api.github.com` | `Authorization: Bearer <github-token>` 用于 `gh` 和 REST API 调用 |
 | `github.com`、`*.github.com` | `Authorization: Basic <base64("x-access-token:<github-token>")>` 用于通过 HTTPS 操作的 Git，例如克隆、获取和推送 |
@@ -836,7 +836,7 @@ await client.createSandbox({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-auth-proxy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

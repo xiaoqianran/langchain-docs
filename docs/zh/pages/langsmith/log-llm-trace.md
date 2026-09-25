@@ -8,7 +8,7 @@
 
 功能齐全的 LLM 跟踪有四个要求：
 
-|要求|该怎么办 |启用|
+|要求 |该怎么办 |启用|
 |---|---|---|
 | 1. 设置[⟦T10⟧](/langsmith/run-data-format#run-types) |通过 `run_type="llm"` 至 `@traceable` | LLM 特定渲染、代币/成本显示 |
 | 2. 格式化输入/输出|使用OpenAI、Anthropic或LangChain消息格式 |结构化消息渲染、Playground 支持 |
@@ -30,7 +30,7 @@
   包含对话内容的消息列表。
 
     <ParamField path="role" type="string" required>
-  标识消息类型。其中之一：<code>系统</code>| <code>推理</code> | <code>用户</code> | <code>助理</code> | <code>工具</code>
+  标识消息类型。其中之一：<code>系统</code> | <code>推理</code> | <code>用户</code> | <code>助理</code> | <code>工具</code>
 </ParamField>
 
     <ParamField path="content" type="array" required>
@@ -155,7 +155,7 @@
             该工具调用的唯一标识符。
           </ParamField>
         <ParamField path="status" type="string" required>
-            服务器端工具的执行状态。其中之一：<code>成功</code>| <code>错误</code>。
+            服务器端工具的执行状态。其中之一：<code>成功</code> | <code>错误</code>。
           </ParamField>
           <ParamField path="output">
             已执行工具的输出。
@@ -520,7 +520,7 @@ LangSmith 需要在 `metadata` 中设置 `ls_model_name` 来识别模型并计�
 
 ### 支持的 `usage_metadata` 字段
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 |---|---|---|
 | `input_tokens` | `int` |输入/提示令牌总数 |
 | `output_tokens` | `int` |总输出/完成代币 |
@@ -592,7 +592,7 @@ await runTree.patchRun();
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-llm-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -50,7 +50,7 @@ sequenceDiagram
 
 <Steps>
   <Step title="Open the Connections drawer">
-    打开您的代理，然后在侧边栏中展开 **连接** 抽屉。
+    打开您的代理，然后在侧栏中展开 **连接** 抽屉。
   </Step>
   <Step title="Add the MCP server">
     1. 单击“**添加连接**”，然后单击“**+ 添加自定义 MCP**”。
@@ -105,10 +105,10 @@ sequenceDiagram
     - **值**：`Bearer API_KEY`
 
     <Info>
-    如果您的 MCP 服务器需要其他身份验证或配置参数，您可以添加多个标头。每个标头键值对都会随每个请求一起发送到服务器。
+    如果您的 MCP 服务器需要其他身份验证或配置参数，您可以添加多个标头。每个标头键值对随每个请求一起发送到服务器。
     </Info>
 
-- **OAuth 2.1（自动）**：为通过动态客户端注册支持 OAuth 的服务器选择此选项。系统会提示您使用该服务的帐户登录。
+- **OAuth 2.1（自动）**：为通过动态客户端注册支持 OAuth 的服务器选择此选项。系统将提示您使用该服务的帐户登录。
 - **OAuth 2.1（手动）**：为支持 OAuth 但需要事先指定客户端 ID/密码的服务器选择此选项。此流程中使用的 OAuth 提供程序必须启用 **PKCE**。
 
 ## 更新您的 MCP 服务器 URL
@@ -133,7 +133,7 @@ Fleet 通过 MCP 服务器 URL 存储工具引用。如果您更新自定义 MCP
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/remote-mcp-servers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

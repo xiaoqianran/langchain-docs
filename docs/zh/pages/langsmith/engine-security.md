@@ -53,7 +53,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 - **逻辑租户隔离**：引擎对数据的访问仅限于您的 LangSmith 租户。应用程序级控制可防止跨租户访问，这与 LangSmith Cloud 的租赁模型一致。每个分析运行都在其自己的隔离沙箱内执行。- **可审核性**：引擎将其工作作为 GitHub Pull 请求进行展示，并在 [Engine tab](/langsmith/engine) 的问题列表中提供支持上下文。代码更改流经您的分支保护、审查和自动构建控制，因此您的软件开发生命周期仍然是发布内容的记录系统。
 - **客户端 PII 清理**：LangSmith 的 [client libraries](/langsmith/mask-inputs-outputs) 可以在将痕迹发送到 LangSmith 之前从痕迹中删除敏感内容。建议处理受监管数据的客户使用。
 - **由LangChain** 管理的模型选择：LangChain 选择用于这些子处理器中每个引擎任务的特定模型，并且可能会更改该集中的选择，而无需单独通知。添加任何新的子处理者都遵循标准的子处理者更改通知流程。
-- **撤销和删除**：您可以随时通过卸载应用程序来撤销 GitHub 访问权限，并通过[Engine settings](/langsmith/engine#configure-engine)中的**删除所有问题**删除引擎的发现结果。跟踪数据遵循您的 LangSmith [retention and purging](/langsmith/data-purging-compliance) 设置。
+- **撤销和删除**：您可以随时通过卸载应用程序来撤销 GitHub 访问权限，并通过[Engine settings](/langsmith/engine#pause-engine-or-delete-its-issues)中的**删除所有问题**删除引擎的发现结果。跟踪数据遵循您的 LangSmith [retention and purging](/langsmith/data-purging-compliance) 设置。
 
 ## 合规姿态Engine 在LangSmith 的控制环境下运行，该环境每年根据 SOC 2 Type II 进行审核并通过 ISO 27001 认证。Engine 的模型子处理器列于[LangChain Trust Center](https://trust.langchain.com/)，这是采购和数据保护影响评估的权威来源。
 
@@ -68,7 +68,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 ## 另请参阅- [Engine](/langsmith/engine-overview)
 - [Configure Engine](/langsmith/engine)
 - [Engine on self-hosted](/langsmith/engine-self-hosted)
-- [Engine webhooks](/langsmith/engine-webhooks)
+- [Engine notifications](/langsmith/engine-notifications)
 - [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)
 - [Data purging for compliance](/langsmith/data-purging-compliance)
 - [Audit logs](/langsmith/audit-logs)

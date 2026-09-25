@@ -14,7 +14,7 @@
 
 ## 1.添加资源授权
 
-回想一下，在上一篇教程中，[⟦T6⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 对象允许您注册一个 [authentication function](/langsmith/auth#authentication)，LangSmith 使用它来验证传入请求中的承载令牌。现在您将使用它来注册一个**授权**处理程序。
+回想一下，在上一个教程中，[⟦T6⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 对象允许您注册一个 [authentication function](/langsmith/auth#authentication)，LangSmith 使用它来验证传入请求中的承载令牌。现在您将使用它来注册一个**授权**处理程序。
 
 授权处理程序是在身份验证成功后运行的函数。这些处理程序可以将 [metadata](/langsmith/auth#filter-operations) 添加到资源（例如谁拥有它们）并过滤每个用户可以看到的内容。
 
@@ -107,7 +107,7 @@ async def add_owner(
     return filters
 ```
 
-处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含有关当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建运行”）
+处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建运行”）
 2. `value` (`dict`)：正在创建或访问的数据。该字典的内容取决于正在访问的资源和操作。有关如何获得更严格范围的访问控制的信息，请参阅下面的[adding scoped authorization handlers](#scoped-authorization)。
 
 请注意，简单处理程序做了两件事：
@@ -321,7 +321,7 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resource-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

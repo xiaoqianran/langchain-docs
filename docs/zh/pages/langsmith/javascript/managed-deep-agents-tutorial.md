@@ -131,9 +131,9 @@ keep notes, and return concise answers with citations.
 
 
 ```ts memory.ts
-import { defineMemory } from "managed-deepagents";
+import { defineMemory, memoryLayer } from "managed-deepagents";
 
-export const memory = defineMemory({ scope: "agent" });
+export const memory = defineMemory({ agent: memoryLayer() });
 ```
 
 
@@ -195,7 +195,7 @@ export const schedule = defineSchedule({
 </CodeGroup>
 
 
-成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
 打开该 URL 并确认：
 
@@ -224,7 +224,7 @@ export const schedule = defineSchedule({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

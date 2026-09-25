@@ -337,7 +337,7 @@ const { thread, submit } = useStream({
     });
   },
 });
-```然后，您可以通过调用与您要更新的 UI 消息相同的 ID 的 `ui.push()` / `push_ui_message()` 将更新推送到 UI 组件。
+```然后，您可以通过使用与您要更新的 UI 消息相同的 ID 调用 `ui.push()` / `push_ui_message()` 将更新推送到 UI 组件。
 
 <Tabs>
     <Tab title="Python">
@@ -528,7 +528,7 @@ const { thread, submit } = useStream({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/generative-ui-react.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

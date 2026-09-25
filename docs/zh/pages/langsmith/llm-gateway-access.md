@@ -36,7 +36,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 对于引擎问题，您可以：
 
 1. **查看违规行为：** 触发了哪些政策，哪些内容被阻止或编辑。
-1. **点击跟踪：** 准确查看策略触发时代理正在执行的操作。
+1. **单击跟踪：** 准确查看策略触发时代理正在执行的操作。
 1. **诊断根本原因：** 是否是重试循环消耗预算、用户将凭据粘贴到提示中或超出其上限的合法工作负载等。
 1. **采取行动：**更新代理配置、调整策略或升级。
 
@@ -45,7 +45,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 网关记录两类事件：
 
 |类别 |记录了什么 |
-| --- | --- |
+| ---| ---|
 | **行政变更** |策略创建、修改和删除。与网关访问相关的角色和权限更改。 |
 | **网关调用** |每个代理呼叫，包括呼叫者身份和匹配的策略 ID。 |
 
@@ -54,7 +54,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 ## 权限
 
 ### 所需权限|行动|需要许可 |谁默认拥有它 |
-| --- | --- | --- |
+| ---| ---| ---|
 |通过网关拨打电话 | `gateway:invoke` + `workspaces:read` |仅限`WORKSPACE_ADMIN` |
 |创建、编辑或删除策略 | `organization:manage` |组织管理员 |
 |查看网关痕迹 | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`、`WORKSPACE_USER`、`WORKSPACE_VIEWER` |
@@ -92,7 +92,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

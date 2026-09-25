@@ -9,7 +9,7 @@
 - [⟦T27⟧](#langgraph-dev)：快速迭代的轻量级开发服务器。
 - [⟦T28⟧](#langgraph-up)：用于验证的类似生产的测试环境。
 
-|特色| `langgraph dev` | `langgraph up` |
+|特色 | `langgraph dev` | `langgraph up` |
 |--------------------|----------------|----------------|
 | **需要 Docker** |没有 |是的 |
 | **安装** | `pip install langgraph-cli[inmem]` | `pip install langgraph-cli` |
@@ -17,12 +17,12 @@
 | **状态持久性** |内存中并腌制到本地目录 | PostgreSQL |
 | **热重载** |是（默认）|可选（`--watch`标志）|
 | **默认端口** | `2024` | `8123` |
-| **资源使用** |轻量化|更重（为服务器、PostgreSQL 和 Redis 构建和运行单独的 docker 容器）|
-| **IDE 调试** |内置[DAP](https://microsoft.github.io/debug-adapter-protocol/)支持 |定期容器调试 |
+| **资源使用** |轻量化|更重（为服务器、PostgreSQL 和 Redis 构建并运行单独的 docker 容器）|
+| **IDE 调试** |内置[DAP](https://microsoft.github.io/debug-adapter-protocol/)支持|定期容器调试|
 | **自定义授权** |是的 |是（带有许可证密钥）|
 
 <Tip>
-有关完整的参考详细信息，请参阅[LangGraph CLI reference](/langsmith/cli)页面。
+有关完整参考详细信息，请参阅[LangGraph CLI reference](/langsmith/cli)页面。
 </Tip>
 
 ## 发展
@@ -71,7 +71,7 @@ flowchart LR
 <Steps>
 <Step title="Create a LangGraph app">
 
-从[⟦T45⟧ template](https://github.com/langchain-ai/new-langgraph-project)或[⟦T46⟧ template](https://github.com/langchain-ai/new-langgraphjs-project)创建一个新应用程序。该模板演示了您可以使用自己的逻辑进行扩展的单节点应用程序。
+从[⟦T45⟧ template](https://github.com/langchain-ai/new-langgraph-project)或[⟦T46⟧ template](https://github.com/langchain-ai/new-langgraphjs-project)创建一个新应用程序。此模板演示了您可以使用自己的逻辑进行扩展的单节点应用程序。
 
 <Tabs>
     <Tab title="Python server">
@@ -283,7 +283,7 @@ docker ps
 langgraph up
 ```
 
-您的服务器从 `http://localhost:8123` 开始，具有完整的持久存储。
+您的服务器从 `http://localhost:8123` 开始，并具有完整的持久存储。
 
 </Accordion>
 
@@ -298,7 +298,7 @@ langgraph up
     ```
     这可以捕获与容器中的依赖关系解析相关的问题以及任何其他构建过程问题。
 
-- **主要功能验证**：实施重大更改后，定期使用完整的生产堆栈进行测试，以确保一切都在容器化环境中运行。
+- **主要功能验证**：实施重大更改后，定期使用完整的生产堆栈进行测试，以确保一切在容器化环境中正常运行。
 - **Docker 故障排除**：调试仅在生产中出现的容器特定问题、网络问题或环境变量配置时。
 
 ## 部署前检查表在部署应用程序之前，请使用 `langgraph up` 验证以下内容：
@@ -393,12 +393,12 @@ langgraph
 
 当您运行 [⟦T69⟧](/langsmith/cli#up) 时，CLI 将按照以下步骤安装应用程序的依赖项：
 
-1. [⟦T70⟧](/langsmith/application-structure#configuration-file) 告诉 CLI **在哪里**查找您的应用程序代码。 `dependencies: ["."]`字段指向当前目录。
+1. [⟦T70⟧](/langsmith/application-structure#configuration-file) 告诉 CLI **在哪里**寻找您的应用程序代码。 `dependencies: ["."]`字段指向当前目录。
 1. **查找包配置**：CLI 在该目录中查找包配置文件（[⟦T72⟧](/langsmith/setup-pyproject)、[⟦T73⟧](/langsmith/setup-app-requirements-txt) 或 [⟦T74⟧](/langsmith/setup-javascript)）。
 1. **读取依赖项列表**：CLI 从配置文件中读取包列表。
 1. **安装软件包**：CLI 使用适合您的语言的软件包管理器安装所有软件包（对于 Python 为`uv` 或 `pip`，对于 JavaScript 为`npm`）。
 
-这种两个文件的方法分离了关注点：`langgraph.json`处理应用程序结构和位置，而包配置文件处理特定于语言的包依赖性。
+这种两个文件方法分离了关注点：`langgraph.json`处理应用程序结构和位置，而包配置文件处理特定于语言的包依赖性。
 
 有关安装程序的更多信息，请参阅[CLI configuration file](/langsmith/cli#configuration-file)。
 
@@ -492,7 +492,7 @@ VPN 连接、防火墙规则或公司代理设置可能会影响本地 Docker �
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local-dev-testing.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -95,7 +95,7 @@ images:
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时映像：
+然后，在 `values.yaml` 中配置沙箱运行时镜像：
 
 ```yaml
 images:
@@ -107,7 +107,7 @@ images:
 
 `sandbox-host` 镜像包含用于生成默认沙箱快照的压缩 ext4 文件系统。请参见[Inspect the default snapshot filesystem](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments)独立提取和扫描。
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙盒运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
 
 - `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
 - `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
@@ -136,7 +136,7 @@ images:
 
 要镜像所需的图像：
 
-1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私人注册表。
+1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私有注册表。
 1. 使用`--include-sandboxes`镜像沙箱运行时镜像，并按照[Additional images for sandboxes](#additional-images-for-sandboxes)中的说明进行配置。
 
 覆盖 `images.engineInsightsAgentImage.repository` 以使用镜像引擎和 Insights 映像：
@@ -334,7 +334,7 @@ cosign verify-attestation \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-mirroring-images.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

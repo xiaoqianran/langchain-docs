@@ -36,7 +36,7 @@ LangSmith 遵守《通用数据保护条例》(GDPR) 以及适用于LangSmith �
 
 根据功能的不同，每个区域的启动之间可能会有轻微的延迟。除此之外，支持的云区域在功能上是等效的。
 
-#### *一个组织可以在不同地区拥有工作空间吗？*
+#### *组织可以在不同地区拥有工作空间吗？*
 
 LangSmith 目前不支持此功能，但如果您有兴趣，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员并分享您的用例。
 
@@ -72,7 +72,7 @@ LangSmith 目前不支持此功能，但如果您有兴趣，请通过 [support.
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/regions-faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

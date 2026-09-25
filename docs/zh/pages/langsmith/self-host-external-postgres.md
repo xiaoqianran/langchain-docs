@@ -27,7 +27,7 @@ LangSmith 使用 PostgreSQL 数据库作为事务工作负载和操作数据（�
 
 * 我们支持密码和[IAM/Workload Identity](#iam-authentication)认证。
 
-* 对 PostgreSQL 数据库具有管理员访问权限的用户。该用户将用于创建必要的表、索引和架构。* 该用户还需要能够在数据库中创建扩展。我们使用/将尝试安装 `btree_gin`、`btree_gist`、`pgcrypto`、`citext`、`ltree` 和 `pg_trgm` 扩展。
+* 具有 PostgreSQL 数据库管理员访问权限的用户。该用户将用于创建必要的表、索引和架构。* 该用户还需要能够在数据库中创建扩展。我们使用/将尝试安装 `btree_gin`、`btree_gist`、`pgcrypto`、`citext`、`ltree` 和 `pg_trgm` 扩展。
 
 * 如果使用公共架构以外的架构，请确保您没有启用扩展的任何其他架构，或者必须将其包含在搜索路径中。
 
@@ -188,7 +188,7 @@ commonPodSecurityContext:
 从 LangSmith helm Chart 版本 **0.12.34** 开始，我们支持 PostgreSQL 的 IAM 身份验证。这允许您使用云提供商工作负载身份而不是静态密码。
 
 <Warning>
-IAM 身份验证仅处理连接身份验证。您可能仍需要在数据库中运行 SQL 命令来创建 IAM 用户/角色并授予其访问 LangSmith 架构所需的权限和特权。
+IAM 身份验证仅处理连接身份验证。 You may still need to run SQL commands in your database to create the IAM user/role and grant it the necessary permissions and privileges to access the LangSmith schema.
 </Warning>
 
 <Tabs>
@@ -198,7 +198,7 @@ IAM 身份验证仅处理连接身份验证。您可能仍需要在数据库中�
 
 ### Amazon RDS IAM 身份验证
 
-Amazon RDS 支持 [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html)，它允许您使用 AWS IAM 凭证而不是数据库密码对 PostgreSQL 实例进行身份验证。
+Amazon RDS supports [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html), which allows you to authenticate to your PostgreSQL instance using AWS IAM credentials instead of database passwords.
 
 #### 先决条件1. 使用 [AWS IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) 或 [EKS Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html) 在 Kubernetes 集群中**配置工作负载身份**
 2. **在您的 RDS PostgreSQL 实例上启用 IAM 身份验证**并授予对您的工作负载身份的访问权限
@@ -472,7 +472,7 @@ ingestQueue:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-postgres.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

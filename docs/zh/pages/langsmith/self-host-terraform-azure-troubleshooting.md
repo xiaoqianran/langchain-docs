@@ -27,7 +27,7 @@ If you intend to onboard to LTS, please ensure the cluster is in Premium tier ..
 
 **原因：** Azure 定期从标准层支持中淘汰次要版本，并将其移至仅限 LTS。截至 2026 年 4 月，1.32 及以下版本仅在 `eastus` 中支持 LTS。标准层集群必须使用 1.33+。
 
-**修复：** 将`kubernetes_version`更新为支持`KubernetesOfficial`的版本：
+**修复：** 将 `kubernetes_version` 更新为支持 `KubernetesOfficial` 的版本：
 
 ```bash
 az aks get-versions --location eastus -o table
@@ -99,7 +99,7 @@ Error: updating Key Vault "langsmith-kv-dz":
 once Purge Protection has been Enabled it's not possible to disable it
 ```
 
-**原因：** 通过 `terraform destroy` 删除 Key Vault 时，Azure 会对其进行软删除 90 天。下一个同名的`terraform apply`会默默地恢复旧的Key Vault，包括其原始的`purge_protection_enabled = true`。清除保护是单向的（启用 → 无法禁用）。**修复（接受净化保护，测试环境）：**
+**原因：** 通过 `terraform destroy` 删除 Key Vault 时，Azure 会对其软删除 90 天。下一个同名的`terraform apply`会默默地恢复旧的Key Vault，包括其原始的`purge_protection_enabled = true`。清除保护是单向的（启用 → 无法禁用）。**修复（接受净化保护，测试环境）：**
 
 ```hcl
 keyvault_purge_protection = true
@@ -149,11 +149,11 @@ terraform apply
 
 ## 申请阶段
 
-### `dns_label` 子域无法解析：TLS 证书卡在待处理状态
+### `dns_label` 子域无法解析：TLS 证书挂起
 
 **症状：** `nslookup langsmith-demo.eastus.cloudapp.azure.com` 返回 NXDOMAIN。证书管理器 ACME 挑战无法完成； TLS 证书仍为 `READY: False`。
 
-**原因：** 必须在 NGINX LoadBalancer 服务上设置 `service.beta.kubernetes.io/azure-dns-label-name` 注释，以便 Azure 将 DNS 标签分配给公共 IP。 `make deploy` 通过`deploy.sh` 自动设置。如果您直接运行 `helm upgrade`，则永远不会设置注释。
+**原因：** 必须在 NGINX LoadBalancer 服务上设置 `service.beta.kubernetes.io/azure-dns-label-name` 注释，以便 Azure 将 DNS 标签分配给公共 IP。 `make deploy` 通过`deploy.sh` 自动设置。如果您直接运行 `helm upgrade`，则注释永远不会设置。
 
 **修复**
 
@@ -183,7 +183,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 
 **症状：** `kubectl describe certificate langsmith-tls -n langsmith` 显示`clusterissuers.cert-manager.io "letsencrypt-prod" not found`。
 
-**原因：** 对于 `tls_certificate_source = "letsencrypt"` (HTTP-01)，`letsencrypt-prod` ClusterIssuer 由 `apply-cluster-issuers.sh` 创建，`make deploy` 通过 `kubectl apply` 运行。 Terraform `k8s-bootstrap` 模块不会创建 HTTP-01 颁发者；它仅为 `dns01` 创建发行人。直接运行 `helm upgrade` 而不是 `make deploy` 会跳过发行者。
+**原因：** 对于`tls_certificate_source = "letsencrypt"` (HTTP-01)，`letsencrypt-prod` ClusterIssuer 由`apply-cluster-issuers.sh` 创建，`make deploy` 通过`kubectl apply` 运行。 Terraform `k8s-bootstrap` 模块不会创建 HTTP-01 颁发者；它仅为 `dns01` 创建发行人。直接运行 `helm upgrade` 而不是 `make deploy` 会跳过发行者。
 
 **手动修复：**
 
@@ -235,7 +235,7 @@ make deploy
 
 **原因：** LangSmith 数据库迁移是仅向前的。降级图表会使数据库处于旧应用程序映像无法找到的修订版本。
 
-**修复：** 前滚到您所在的版本（或更高版本）。将`langsmith_helm_chart_version`设置为`terraform.tfvars`并重新部署。在升级生产之前，始终在单独的环境中测试新的图表版本。
+**修复：** 前滚到您所在的版本（或更新版本）。将`langsmith_helm_chart_version`设置为`terraform.tfvars`并重新部署。在升级生产之前，始终在单独的环境中测试新的图表版本。
 
 ### Helm 安装超时
 
@@ -261,7 +261,7 @@ config:
 
 **症状：** 启用 `enable_insights = true` 后，多个 Pod 失败并显示 `CreateContainerConfigError`。日志：`secret "langsmith-clickhouse" not found`。
 
-**原因：** 示例`langsmith-values-insights.yaml`将`clickhouse.external.enabled: true`设置为`existingSecretName: langsmith-clickhouse`。这会覆盖集群内的 ClickHouse 配置，并需要一个不存在的外部密钥。
+**原因：** 示例 `langsmith-values-insights.yaml` 将 `clickhouse.external.enabled: true` 设置为 `existingSecretName: langsmith-clickhouse`。这会覆盖集群内的 ClickHouse 配置，并需要一个不存在的外部密钥。
 
 **修复：** `init-values.sh` 现在在 `clickhouse_source = "in-cluster"` 时生成最小的见解文件。对于存在此问题的现有部署：
 
@@ -277,7 +277,7 @@ make deploy
 
 **症状：** Polly 聊天小部件显示连接错误。浏览器控制台：`POST http://localhost:8123/threads net::ERR_FAILED` 和 CORS 错误。
 
-**原因 A，前端在创建 `langsmith-polly-config` 之前启动。** 引导作业在 Polly 注册后使用 `VITE_POLLY_DEPLOYMENT_URL` 创建 ConfigMap。 ConfigMap 中的环境变量在 pod 启动时加载，而不是动态加载。
+**原因 A，前端在创建 `langsmith-polly-config` 之前启动。** 注册 Polly 后，引导作业会使用 `VITE_POLLY_DEPLOYMENT_URL` 创建 ConfigMap。 ConfigMap 中的环境变量在 pod 启动时加载，而不是动态加载。
 
 **修复**
 
@@ -291,7 +291,7 @@ kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 
 ### 启用 LangSmith 部署后，`listener` 和 `operator` Pod 永远不会出现
 
-**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会默默地跳过创建 `listener` 和 `operator`。
+**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会自动跳过创建 `listener` 和 `operator`。
 
 **修复：** 在 `deployment` 块内添加 `enabled: true`：
 
@@ -363,7 +363,7 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 
 ### `make clean` 在 `make destroy` 孤儿基础设施之前
 
-**症状：** `make clean` 失败后，`make destroy` 出现 `No state file was found!`。 Azure 资源仍在运行，但 Terraform 失去了跟踪。
+**症状：** `make clean` 失败后，`make destroy` 出现 `No state file was found!`。 Azure 资源仍在运行，但 Terraform 已丢失跟踪。
 
 **原因：** `make clean` 删除了 `terraform.tfvars` 和 `secrets.auto.tfvars`。没有它们，Terraform 无法初始化后端。
 
@@ -380,7 +380,7 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 ```bash
 az group delete --name langsmith-rg<identifier> --yes --no-wait
 az group show --name langsmith-rg<identifier> 2>&1 | grep -E "provisioningState|ResourceGroupNotFound"
-```如果您之后重复使用相同的 `identifier`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，首先清除：`az keyvault purge --name langsmith-kv<identifier> --location <region>`。
+```如果您之后重复使用相同的`identifier`，Azure 可能会在下一个`terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，首先清除：`az keyvault purge --name langsmith-kv<identifier> --location <region>`。
 
 ### `terraform destroy` 在 VNet/子网删除时停止
 
@@ -468,7 +468,7 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 ### 汉德拒绝`ingressClassName: azure/application-gateway`
 
-**原因：** 旧注释 `kubernetes.io/ingress.class: azure/application-gateway`（带斜杠）不是有效的 `ingressClassName`。 AKS 将 `IngressClass` 创建为 `azure-application-gateway`（连字符）。
+**原因：** 旧注释 `kubernetes.io/ingress.class: azure/application-gateway`（带斜线）不是有效的 `ingressClassName`。 AKS 将 `IngressClass` 创建为 `azure-application-gateway`（连字符）。
 
 **修复：** 使用`ingressClassName: azure-application-gateway`。 `make init-values` 自动设置。
 
@@ -579,7 +579,7 @@ make status-quick   # skip Key Vault + K8s secret queries
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

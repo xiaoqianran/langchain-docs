@@ -118,7 +118,7 @@ harbor run \
 
 任务是一个具有固定布局的目录：`task.toml`用于配置，`instruction.md`用于提示，`environment/`用于构建沙箱的Dockerfile，`tests/`用于写入奖励的验证者。数据集是许多这样的任务目录。
 
-任务或数据集可以是本地的或远程的：将 Harbor 指向您自己的任务目录文件夹，或从 Harbor 的注册表中提取一个。
+任务或数据集可以是本地的或远程的：将 Harbor 指向您自己的任务目录文件夹，或者从 Harbor 的注册表中提取一个。
 
 三个输入选择作业运行的任务：- **`-t org/name[@ref]`**：来自注册表的单个任务。远程任务通过注册表查找来获取，然后在固定提交处克隆到`~/.cache/harbor/tasks`。
 - **`-d name@version`**：整个基准数据集，其中有很多任务。每个任务都从注册表中解析并克隆到缓存中。
@@ -278,7 +278,7 @@ harbor run -d "<org/name>" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/harbor-integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

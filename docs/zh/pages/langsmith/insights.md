@@ -100,7 +100,7 @@ report = client.generate_insights(
 
 您的跟踪会自动分组为代表数据中最广泛模式的顶级类别。
 
-分布条显示每种模式发生的频率，从而可以轻松发现多于或少于预期发生的行为。
+分布条显示每种模式发生的频率，从而可以轻松发现发生多于或少于预期的行为。
 
 每个类别都有一个简短的描述，并显示其包含的跟踪的聚合指标，包括：
 
@@ -126,7 +126,7 @@ report = client.generate_insights(
 2. 回答有关代理的目的、您想要了解的内容以及跟踪的结构的自然语言问题。 Insights 会将您的答案转换为配置草案（作业名称、摘要提示、属性和采样默认值）。
 3. 选择一个提供商，然后单击“**生成配置**”进行预览或“**运行作业**”立即启动。
 
-**提供有用的背景**为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文 - 您要学习的内容、哪些信号或字段最重要，以及您已经知道的任何内容都是无用的。您对代理的功能及其跟踪的结构越清楚，Insights 就越能以具体、可操作且与您对数据的推理方式一致的方式对示例进行分组。
+**提供有用的背景**为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文 - 您要学习的内容、哪些信号或字段最重要，以及您已经知道的任何内容都是无用的。您对代理的作用及其跟踪的结构越清楚，Insights 就越能以具体、可操作且与您对数据的推理方式一致的方式对示例进行分组。
 
 **描述你的踪迹**
 
@@ -159,7 +159,7 @@ Insights 使用两种模型：
 
 子类别仍然由预定义顶级类别中的算法自动生成。
 
-当作业完成时，发现的顶级类别会自动保存回配置 - 但前提是配置没有预先定义类别。这意味着后续计划的运行将重用这些类别以保持一致性。
+当作业完成时，发现的顶级类别会自动保存回配置中，但前提是配置没有预先定义类别。这意味着后续计划的运行将重用这些类别以保持一致性。
 
 #### 摘要提示
 
@@ -221,7 +221,7 @@ Insights 使用两种模型：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

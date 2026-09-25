@@ -28,7 +28,7 @@
 
 ## 网络访问
 
-默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。如果您需要不受限制的出口，请在 [file a support ticket](https://support.langchain.com) 中注明您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
+默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。如果您需要不受限制的出口，请使用 [file a support ticket](https://support.langchain.com) 包含您的组织或工作区 ID、区域、所需的目的地和端口以及用例。欲了解更多信息，请参阅[restricted egress and access requests](/langsmith/sandbox-auth-proxy#organization-level-restricted-egress)。
 
 ## 开始吧
 
@@ -83,7 +83,7 @@ await sandbox.delete();
 </CodeGroup>
 
 <Tip>
-  更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令和打开交互式 shell，而无需编写任何代码。
+  更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令以及打开交互式 shell，而无需编写任何代码。
 </Tip>
 
 ### 4. 与代理一起使用沙箱
@@ -138,7 +138,7 @@ await sandbox.delete();
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

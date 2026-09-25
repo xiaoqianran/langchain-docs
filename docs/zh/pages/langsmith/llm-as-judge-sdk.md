@@ -4,7 +4,7 @@
 
 # 如何定义LLM法官评估员
 
-评估法学硕士申请可能具有挑战性，因为它们经常生成没有单一正确答案的对话文本。
+评估法学硕士申请可能具有挑战性，因为它们通常会生成没有单一正确答案的对话文本。
 
 本指南向您展示如何使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk) 为 [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) 定义 [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge)。
 
@@ -22,7 +22,7 @@
 
 1. **评估器函数**：接收示例输入和应用程序输出，然后使用 LLM 对质量进行评分的函数。该函数应返回带有分数信息的布尔值、数字、字符串或字典。
 1. **目标函数**：正在评估的应用程序逻辑（用 [⟦T4⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 包装以提高可观察性）。
-1. **数据集和评估**：测试示例和 `evaluate()` 函数的数据集，该函数在每个示例上运行目标函数并应用评估器。
+1. **数据集和评估**：测试示例的数据集和 `evaluate()` 函数，该函数在每个示例上运行目标函数并应用评估器。
 
 ### 示例
 
@@ -215,7 +215,7 @@ await evaluate(myApp, {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

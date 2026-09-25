@@ -4,7 +4,7 @@
 
 # 使用SDK查询线程
 
-如果您正在构建会话代理或任何多轮应用程序，LangSmith会自动将您的[runs](/langsmith/run-data-format)分组为[_threads_](/langsmith/observability-concepts#threads)。通过查询线程，您可以重播完整对话、审核代理在会话中的行为、构建对话长度和延迟分析，并为下游工作流程（例如微调和评估）提供数据。
+如果您正在构建会话代理或任何多轮应用程序，LangSmith会自动将您的[runs](/langsmith/run-data-format)分组为[_threads_](/langsmith/observability-concepts#threads)。通过查询线程，您可以重播完整对话、审核代理跨会话的行为、构建对话长度和延迟分析，并为下游工作流程（例如 [fine-tuning](/langsmith/smithtune) 和评估）提供数据。
 
 SDK 公开了两种处理线程的方法：
 
@@ -15,7 +15,7 @@ SDK 公开了两种处理线程的方法：
 
 ## 线程如何工作
 
-您创建的每次运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
+您创建的每个运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
 
 <Note>
 我们建议使用 **UUID v7** 线程 ID。 UUIDv7 嵌入了一个时间戳，它可以保留线程的正确时间顺序。 LangSmith SDK 导出 uuid7 帮助程序（Python v0.4.43+、JS v0.3.80+）：
@@ -101,12 +101,12 @@ conv-def456
 ### 参数
 
 |参数|类型 |默认 |描述 |
-|------------|------|---------|------------|
+|------------|------|---------|-------------|
 | `project_name` / `projectName` | `string` | — |项目名称。如果未设置 `project_id`，则为必需。 |
 | `project_id` / `projectId` | `string` | — |项目编号。如果未设置 `project_name`，则为必需。 |
 | `limit` | `int` |全部 |返回的最大线程数。 |
 | `offset` | `int` | `0` |要跳过的线程数（用于分页）。 |
-| `filter` | `string` | — |获取运行时应用的过滤器表达式，使用[LangSmith trace query syntax](/langsmith/trace-query-syntax)。 |
+| `filter` | `string` | — |获取运行时应用的过滤表达式，使用[LangSmith trace query syntax](/langsmith/trace-query-syntax)。 |
 | `start_time` / `startTime` | `datetime` / `Date` | 1 天前 |仅包括在此时间之后开始的运行。扩大此窗口以显示较旧的线程。 |
 
 ### 返回值
@@ -167,7 +167,7 @@ for await (const run of client.readThread({
 ```
 
 ### 参数|参数|类型 |默认 |描述 |
-|------------|------|---------|------------|
+|------------|------|---------|-------------|
 | `thread_id` / `threadId` | `string` | — | **必需。** 要查询的线程。 |
 | `project_name` / `projectName` | `string` | — |项目名称。如果未设置 `project_id`，则为必需。 |
 | `project_id` / `projectId` | `string \| string[]` | — |项目 ID 或 ID 列表。如果未设置 `project_name`，则为必需。 |
@@ -275,7 +275,7 @@ for (const run of runs) {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/query-threads.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -2,25 +2,25 @@
 
 <!-- langchain-docs: Direct model access | https://docs.langchain.com/langsmith/llm-gateway-direct-model-access -->
 
-# Direct model access
+# 直接模型访问
 
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 直接模型访问通过特定于提供商的网关路径公开每个提供商 API。网关仍然处理身份验证、提供商机密、策略和跟踪，但它不会将请求和响应转换为另一个提供商的 API 格式。
 
 对于跨提供商的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
 
-## Choose a provider path
+## 选择提供商路径
 
 将提供商路径附加到您的区域网关基本 URL：
 
-|供应商| Gateway path |秘密名字|
-| --- | --- | --- |
+|供应商|网关路径|秘密名字|
+| ---| ---| ---|
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
-| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`, `AZURE_FOUNDRY_RESOURCE_NAME` |
+| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`、`AZURE_FOUNDRY_RESOURCE_NAME` |
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
@@ -29,7 +29,7 @@ The LLM Gateway is in [beta](/langsmith/release-stages).
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
 
-## Configure provider SDKs将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
+## 配置提供商 SDK将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
 
 ```bash
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
@@ -107,9 +107,11 @@ export LANGSMITH_GATEWAY="true"
 - [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
 - [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
 
----<div className="source-links">
+---
+
+<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

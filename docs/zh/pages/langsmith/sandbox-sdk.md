@@ -458,7 +458,7 @@ const sb = await client.createSandbox({
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
+活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时|
 |--------|------------------|------------------------|
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -582,7 +582,7 @@ try {
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python
 with client.sandbox() as sb:
@@ -777,14 +777,14 @@ try {
 ```
 
 </CodeGroup><Note>
-有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙箱 SDK 参考。
+有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙盒 SDK 参考。
 </Note>
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

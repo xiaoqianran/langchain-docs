@@ -32,7 +32,7 @@ LangSmith使用ClickHouse作为**痕迹**和**反馈**的主要存储引擎。�
 
 ## 要求- **您必须使用受支持的 blob 存储选项。** 请阅读 [blob storage guide](/langsmith/self-host-blob-storage) 了解更多信息。
 - 要使用私有端点，请确保您的 VPC 位于支持的 ClickHouse Cloud [region](https://clickhouse.com/docs/en/cloud/reference/supported-regions) 中。否则，您将需要使用我们将通过防火墙规则保护的公共端点。您的 VPC 需要有 NAT 网关，以便我们将您的流量列入白名单。
-- 您必须有一个可以连接到LangSmith管理的ClickHouse服务的VPC。您需要与我们的团队合作建立必要的网络。
+- 您必须拥有可以连接到LangSmith管理的ClickHouse服务的VPC。您需要与我们的团队合作建立必要的网络。
 - 您必须运行一个 LangSmith 自托管实例。您可以通过 [Kubernetes](/langsmith/kubernetes) 安装使用我们的托管 ClickHouse 服务。
 
 ## 数据存储
@@ -44,7 +44,7 @@ ClickHouse 存储**运行**和**反馈**数据，具体来说：
 
 有关字段列表，请参阅 [Stored run data fields](#stored-run-data-fields) 和 [Stored feedback data fields](#stored-feedback-data-fields)。
 
-LangChain 将敏感申请数据定义为运行的 `inputs`、`outputs`、`errors`、`manifests`、`extras` 和 `events`，因为这些字段可能包含 LLM 提示和完成。通过LangSmith管理的ClickHouse，这些敏感字段存储在云中的云对象存储（S3或GCS）中，而其余运行数据存储在ClickHouse中，确保敏感信息永远不会离开您的VPC。### 存储的反馈数据字段
+LangChain 将敏感应用程序数据定义为运行的 `inputs`、`outputs`、`errors`、`manifests`、`extras` 和 `events`，因为这些字段可能包含 LLM 提示和完成。通过LangSmith管理的ClickHouse，这些敏感字段存储在云中的云对象存储（S3或GCS）中，而其余运行数据存储在ClickHouse中，确保敏感信息永远不会离开您的VPC。### 存储的反馈数据字段
 
 <Note>
 由于所有反馈数据都存储在 ClickHouse 中，因此请勿在反馈（分数和注释/评论）或[Stored run data fields](#stored-run-data-fields)中提到的任何其他运行字段中发送敏感信息。
@@ -53,7 +53,7 @@ LangChain 将敏感申请数据定义为运行的 `inputs`、`outputs`、`errors
 使用 LangSmith 管理的 ClickHouse 设置，**所有反馈数据字段都存储在 ClickHouse 中**：
 
 |字段名称 |类型 |描述 |
-| ---------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
 | `id` | UUID |记录本身的唯一标识符 |
 | `created_at` |日期时间 |创建记录时的时间戳 |
 | `modified_at` |日期时间 |上次修改记录的时间戳 || `session_id` | UUID |运行所属的实验或跟踪项目的唯一标识符。创建运行反馈时需要。 |
@@ -80,44 +80,44 @@ LangChain 将敏感申请数据定义为运行的 `inputs`、`outputs`、`errors
 
 该表详细介绍了每个运行字段及其存储位置：|领域 |储存地点 |
 |----------------------------|------------------|
-| `id` |点击屋|
+| `id` |点击屋 |
 | `name` |点击屋|
 | `inputs` | **对象存储** |
-| `run_type` |点击屋|
-| `start_time` |点击屋 |
+| `run_type` |点击屋 |
+| `start_time` |点击屋|
 | `end_time` |点击屋|
 | `extra` | **对象存储** |
 | `error` | **对象存储** |
 | `outputs` | **对象存储** |
 | `events` | **对象存储** |
 | `tags` |点击屋|
-| `trace_id` |点击屋|
-| `dotted_order` |点击屋|
+| `trace_id` |点击屋 |
+| `dotted_order` |点击屋 |
 | `status` |点击屋|
 | `child_run_ids` |点击屋|
-| `direct_child_run_ids` |点击屋 |
-| `parent_run_ids` |点击屋|
+| `direct_child_run_ids` |点击屋|
+| `parent_run_ids` |点击屋 |
 | `feedback_stats` |点击屋|
-| `reference_example_id` |点击屋|
+| `reference_example_id` |点击屋 |
 | `total_tokens` |点击屋 |
-| `prompt_tokens` |点击屋|
+| `prompt_tokens` |点击屋 |
 | `completion_tokens` |点击屋|
 | `total_cost` |点击屋|
-| `prompt_cost` |点击屋|
-| `completion_cost` |点击屋 || `first_token_time` |点击屋 |
-| `session_id` |点击屋 |
-| `in_dataset` |点击屋 |
-| `parent_run_id` |点击屋 |
+| `prompt_cost` |点击屋 |
+| `completion_cost` |点击屋|| `first_token_time` |点击屋|
+| `session_id` |点击屋|
+| `in_dataset` |点击屋|
+| `parent_run_id` |点击屋|
 | `execution_order`（已弃用）|点击屋 |
-| `serialized` |点击屋 |
-| `manifest_id`（已弃用）|点击屋 |
-| `manifest_s3_id` |点击屋 |
-| `inputs_s3_urls` |点击屋 |
-| `outputs_s3_urls` |点击屋 |
-| `price_model_id` |点击屋 |
-| `app_path` |点击屋 |
-| `last_queued_at` |点击屋 |
-| `share_token` |点击屋 |
+| `serialized` |点击屋|
+| `manifest_id`（已弃用）|点击屋|
+| `manifest_s3_id` |点击屋|
+| `inputs_s3_urls` |点击屋|
+| `outputs_s3_urls` |点击屋|
+| `price_model_id` |点击屋|
+| `app_path` |点击屋|
+| `last_queued_at` |点击屋|
+| `share_token` |点击屋|
 
 这个[reference doc](/langsmith/run-data-format)解释了存储的运行（跨度）的格式，它们是迹线的构建块。
 
@@ -125,7 +125,7 @@ LangChain 将敏感申请数据定义为运行的 `inputs`、`outputs`、`errors
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-managed-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

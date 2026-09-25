@@ -825,6 +825,12 @@
           "rel": "langsmith/engine-github.md"
         }
       ],
+      "engine-notifications": [
+        {
+          "title": "LangSmith Engine notifications",
+          "rel": "langsmith/engine-notifications.md"
+        }
+      ],
       "engine-overview": [
         {
           "title": "LangSmith Engine",
@@ -847,12 +853,6 @@
         {
           "title": "LangSmith Engine on Self-hosted",
           "rel": "langsmith/engine-self-hosted.md"
-        }
-      ],
-      "engine-webhooks": [
-        {
-          "title": "LangSmith Engine webhook events",
-          "rel": "langsmith/engine-webhooks.md"
         }
       ],
       "engine": [
@@ -2967,10 +2967,22 @@
           "rel": "langsmith/javascript/managed-deep-agents-agent-definition.md"
         }
       ],
+      "managed-deep-agents-agent-owned-interrupts": [
+        {
+          "title": "Prompt Slack users with agent-owned interrupts",
+          "rel": "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md"
+        }
+      ],
       "managed-deep-agents-changelog": [
         {
           "title": "Changelog",
           "rel": "langsmith/javascript/managed-deep-agents-changelog.md"
+        }
+      ],
+      "managed-deep-agents-channels-http": [
+        {
+          "title": "Connect a Managed Deep Agent over HTTP",
+          "rel": "langsmith/javascript/managed-deep-agents-channels-http.md"
         }
       ],
       "managed-deep-agents-channels-slack": [
@@ -3087,6 +3099,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-schedules.md"
         }
       ],
+      "managed-deep-agents-search": [
+        {
+          "title": "Built-in search powered by Parallel",
+          "rel": "langsmith/javascript/managed-deep-agents-search.md"
+        }
+      ],
       "managed-deep-agents-skills": [
         {
           "title": "Add skills to Managed Deep Agents",
@@ -3123,10 +3141,22 @@
           "rel": "langsmith/python/managed-deep-agents-agent-definition.md"
         }
       ],
+      "managed-deep-agents-agent-owned-interrupts": [
+        {
+          "title": "Prompt Slack users with agent-owned interrupts",
+          "rel": "langsmith/python/managed-deep-agents-agent-owned-interrupts.md"
+        }
+      ],
       "managed-deep-agents-changelog": [
         {
           "title": "Changelog",
           "rel": "langsmith/python/managed-deep-agents-changelog.md"
+        }
+      ],
+      "managed-deep-agents-channels-http": [
+        {
+          "title": "Connect a Managed Deep Agent over HTTP",
+          "rel": "langsmith/python/managed-deep-agents-channels-http.md"
         }
       ],
       "managed-deep-agents-channels-slack": [
@@ -3241,6 +3271,12 @@
         {
           "title": "Add schedules to Managed Deep Agents",
           "rel": "langsmith/python/managed-deep-agents-schedules.md"
+        }
+      ],
+      "managed-deep-agents-search": [
+        {
+          "title": "Built-in search powered by Parallel",
+          "rel": "langsmith/python/managed-deep-agents-search.md"
         }
       ],
       "managed-deep-agents-skills": [

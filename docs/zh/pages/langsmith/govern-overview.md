@@ -4,7 +4,7 @@
 
 # 治理
 
-Administer your LangSmith organization: manage users and access control, organize workspaces and applications, and configure policies and compliance.
+管理您的 LangSmith 组织：管理用户和访问控制、组织工作区和应用程序以及配置策略和合规性。
 
 治理还扩展到代理在运行时执行的操作：模型调用时的[spend and data-protection policies](/langsmith/llm-gateway-spend-policies)、代理代码的[sandboxed execution](/langsmith/sandboxes)以及敏感操作之前的[human approval](/langsmith/add-human-in-the-loop)。
 
@@ -35,7 +35,7 @@ Administer your LangSmith organization: manage users and access control, organiz
     href="/langsmith/chat"
     icon="tool"
   >
-    Administrative tools and the LangSmith CLI.
+    管理工具和 LangSmith CLI。
   </Card>
 
   <Card
@@ -74,7 +74,7 @@ Administer your LangSmith organization: manage users and access control, organiz
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

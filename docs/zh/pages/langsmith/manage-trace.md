@@ -40,7 +40,7 @@
 服务器日志视图显示来自以下两者的日志：
 
 - **Agent Server自身的操作日志**：内部服务器操作、API调用和系统事件
-- **用户应用程序日志**：在图表中写入的日志包括：
+- **用户应用程序日志**：在图表中写入的日志：
   - Python：使用 `logging` 或 `structlog` 库。
   - JavaScript：使用从`@langchain/langgraph-sdk/logging`重新导出的Winston记录器：
 
@@ -77,7 +77,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

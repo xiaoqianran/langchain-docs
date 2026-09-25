@@ -121,7 +121,7 @@ config:
 
 要使用 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 进行身份验证，您需要使用以下方法之一来授予 LangSmith 工作负载访问您的 [container](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) 的权限（按优先顺序列出）：1.[Storage account and access key](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage)
 2.[Connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)
-3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T40⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure) 支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
+3. [Workload identity](https://azure.github.io/azure-workload-identity/docs/introduction.html)（推荐）、托管身份或[⟦T40⟧](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication?tabs=bash#2-authenticate-with-azure)支持的环境变量。当上述任一选项的配置不存在时，这是默认身份验证方法。
    1. 要使用工作负载身份，请将标签 `azure.workload.identity/use: true` 添加到 `queue`、`backend`、`platform-backend` 和 `ingest-queue` 部署。此外，将 `azure.workload.identity/client-id` 注释添加到相应的服务帐户，该帐户应该是现有 Azure AD 应用程序的客户端 ID 或用户分配的托管标识的客户端 ID。有关更多详细信息，请参阅[Azure's documentation](https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html)。
 
 <Note>
@@ -433,7 +433,7 @@ resource "azurerm_storage_management_policy" "example" {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-blob-storage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

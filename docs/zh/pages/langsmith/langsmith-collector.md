@@ -4,7 +4,7 @@
 
 # 配置您的收集器以进行LangSmith遥测
 
-LangSmith 部署中的各种服务以日志、指标和跟踪的形式发出遥测数据。您可能已经在 Kubernetes 集群中设置了遥测收集器，或者想要部署一个来监控您的应用程序。
+LangSmith 部署中的各种服务以日志、指标和跟踪的形式发出遥测数据。您可能已经在 Kubernetes 集群中设置了遥测收集器，或者想要部署一个来监视您的应用程序。
 
 本页介绍如何配置 [OTel Collector](https://opentelemetry.io/docs/collector/configuration/) 以从 LangSmith 收集遥测数据。请注意，下面讨论的所有概念都可以转换为其他收集器，例如[Fluentd](https://www.fluentd.org/)或[FluentBit](https://fluentbit.io/)。
 
@@ -16,7 +16,7 @@ LangSmith 部署中的各种服务以日志、指标和跟踪的形式发出遥�
 
 ## 日志
 
-这是一个 ***Sidecar*** 收集器从其自己的 Pod 读取日志的示例，不包括来自非特定域容器的日志。 Sidecar 配置在这里很有用，因为我们需要访问每个容器的文件系统。也可以使用 DaemonSet。
+这是 ***Sidecar*** 收集器从其自己的 Pod 读取日志的示例，不包括来自非特定域容器的日志。 Sidecar 配置在这里很有用，因为我们需要访问每个容器的文件系统。也可以使用 DaemonSet。
 
 ```yaml
 filelog:
@@ -264,7 +264,7 @@ config:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

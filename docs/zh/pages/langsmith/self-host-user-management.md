@@ -14,7 +14,7 @@ LangSmith 使用功能标志为用户管理提供额外的自定义功能。
 
 ### 组织的工作区级别邀请
 
-LangSmith 中的默认行为要求用户是组织管理员才能邀请新用户加入组织。对于想要将此职责委托给工作区管理员的自托管客户，可以设置一个功能标志，使工作区管理员能够邀请新用户加入组织及其**工作区级别**的特定工作区。
+LangSmith 中的默认行为要求用户是组织管理员才能邀请新用户加入组织。对于想要将此责任委托给工作区管理员的自托管客户，可以设置一个功能标志，使工作区管理员能够邀请新用户加入组织及其**工作区级别**的特定工作区。
 
 通过下面的配置选项启用此功能后，工作区管理员可以在 `Settings` > `Workspaces` 下的 `Workspace members` 选项卡中添加新用户。在工作区级别邀请时支持以下两种情况，而组织级别邀请功能与以前相同。
 
@@ -102,7 +102,7 @@ commonEnv:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-user-management.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

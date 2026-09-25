@@ -19,9 +19,9 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 ## 政策维度
 
 支出政策的评估从最广泛到最具体。检查所有匹配的策略，如果任何一个返回块，则请求被拒绝。您可以将策略设置为默认策略（对所有工作区、用户或 API 密钥应用一揽子支出上限）或细化策略（单独限制或对一组实体的限制）。|范围 |它的上限是什么？示例|
-| --- | --- | --- |
-| **组织** |组织中所有工作区的总支出| “整个组织每月在 LLM 通话上的花费不能超过 10,000 美元”|
-| **工作区** |单个工作区或工作区组内的总支出 | “与研发相关的工作空间每月的支出不能超过 2,000 美元”|
+| ---| ---| ---|
+| **组织** |组织中所有工作区的总支出| “整个组织每月在 LLM 通话上的花费不能超过 10,000 美元” |
+| **工作区** |单个工作区或工作区组内的总支出| “与研发相关的工作空间每月的支出不能超过 2,000 美元”|
 | **API 密钥** |通过单个 API 密钥或一组 API 密钥（映射到服务或代理）进行支出 | “客户支持代理密钥每月累计花费不能超过 500 美元”|
 | **用户** |单个用户或一组用户的支出（根据 API 密钥的身份解析）| “个人开发者每天的支出不得超过 50 美元”|
 
@@ -37,7 +37,7 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 ## 时间窗口
 
 |窗口|重置 |使用案例 |
-| --- | --- | --- |
+| ---| ---| ---|
 | **每月** |每个月的第一天 |预算调整，总体成本控制 |
 | **每周** |每周一午夜 UTC |每周预算|
 | **每日** | UTC 午夜 |防止单日成本飙升（例如，编码代理在重试循环中过夜）|
@@ -80,7 +80,7 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-spend-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

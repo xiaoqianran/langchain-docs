@@ -9,7 +9,7 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 托管 Deep Agents 创建并配置将 Slack 连接到已部署代理的资源。向代理项目添加通道声明，然后部署。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 项目结构
@@ -91,7 +91,7 @@ export const channel = channels.slack();
 </ParamField>
 
 <ParamField path="icon" type="string">
-  Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，托管Deep Agents将为您生成一个图标。
+  Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，Managed Deep Agents 将为您生成一个图标。
 </ParamField>
 
 
@@ -179,7 +179,34 @@ Slack 中的人机交互请求仅支持 `approve` 和 `reject` [decision types](
 
 在 Slack 通道声明中更改代理的名称、描述、图标或背景颜色后，重新部署代理以在 Slack 中应用更改。
 
-## 另请参阅- [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
+## 与 Slack 交换文件Slack 通道可以双向移动文件。在`/workspace/attachments/`下的代理沙箱中上传土地，代理通过使用`/workspace`下的路径调用`attach_file`发回文件。声明一个 Slack 通道和一个 [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) 就是整个设置。
+
+<Note>
+Slack 文件传输需要 `managed-deepagents>=0.8.0` 和沙箱。如果没有沙箱，则不会保存传入文件，并且不会向模型提供 `attach_file`。
+</Note>
+
+托管 Deep Agents 在运行之前暂存传入消息上的文件，以及之前在同一 Slack 线程中共享的文件。代理读取路径的附件状态消息，然后使用其沙箱工具打开文件。该状态和文件内容被标记为数据，而不是指令。
+
+附件永远不是自动的，因此当文件属于回复时，请在代理的 [instructions](/langsmith/javascript/managed-deep-agents-instructions) 中注明：
+
+```markdown instructions.md
+When someone asks for a report, write the report to a file under `/workspace`,
+then call `attach_file` with that path so the file arrives in Slack.
+```
+
+文件的范围仅限于它们到达的 Slack 线程，因为每个线程都有自己的沙箱。直接消息和频道线程从不共享附件。在一个线程中，任何人都可以访问其他人上传的文件，因为传输使用机器人的 Slack 访问权限而不是调用者的访问权限。
+
+### 查看转账限制- **文件大小**：每个方向 200 MiB。
+- **路径**：`attach_file`仅接受`/workspace`下的路径。
+- **线程历史记录**：扫描涵盖线程中的最新消息。如果达不到要求，附件状态会报告较早的文件可能丢失。
+- **跳过的文件**：存储在 Slack 外部的文件以及从 Slack 中删除的文件。
+- **Slack 范围**：由于缺少 `files:read`、`files:write` 或历史范围报告而阻止的传输，您需要重新连接 Slack。
+
+## 另请参阅
+
+- [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
+- [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
+- [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：为代理提供文件传输读写的文件系统。
 - [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。
 - [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看托管 Deep Agents 命令和标志。
 
@@ -187,7 +214,7 @@ Slack 中的人机交互请求仅支持 `approve` 和 `reject` [decision types](
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-slack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

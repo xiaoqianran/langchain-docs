@@ -122,7 +122,7 @@
 提交标签是人类可读的标签，指向提示历史记录中的特定提交。与提交哈希不同，标签可以移动以指向不同的提交，从而允许您更新代码引用的版本，而无需更改代码本身。
 
 提交标签的用例可以包括：- **环境**：`staging` 和 `production` 标签是为 [Environments](/langsmith/manage-prompts#environments) 功能保留的，它允许您在命名部署目标和切换版本之间提升提交，而无需更改代码。
-- **版本控制**：标记提示的稳定版本，例如`v1`、`v2`，它允许您在代码中引用特定版本并跟踪随时间的变化。
+- **版本控制**：标记提示的稳定版本，例如`v1`、`v2`，它允许您引用代码中的特定版本并跟踪随时间的变化。
 - **协作**：将版本标记为可供审核，这使您能够与协作者共享特定版本并获得反馈。
 
 <Note>
@@ -165,7 +165,7 @@ Playground 提供了一个用于迭代和测试提示的界面。您可以从侧
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-engineering-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

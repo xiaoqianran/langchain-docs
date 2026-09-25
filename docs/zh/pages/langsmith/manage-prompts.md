@@ -80,7 +80,7 @@ prompt = client.pull_prompt("joke-generator:a1b2c3d4")
 
 有关如何在代码中使用提示的更多信息，请参阅[Managing prompts programmatically](/langsmith/manage-prompts-programmatically)。
 
-## 提示业主提示所有者功能使您可以精细控制谁可以标记提交并删除特定提示。这对于您想要通过分配或移动标签来限制哪些团队成员可以提升对环境的提交的生产升级流程非常有用。
+## 提示业主提示所有者功能使您可以精细控制谁可以标记提交并删除特定提示。这对于生产升级流程非常有用，在生产升级流程中，您想要限制哪些团队成员可以通过分配或移动标签来升级对环境的提交。
 
 ### 访问模式
 
@@ -137,7 +137,7 @@ LangSmith 自动将提示创建者添加为所有者。
 
 #### 使用游乐场
 
-如果您在 Playground 中执行此操作，系统会提示您取消选择您想要避免触发的 Webhooks。
+如果您在 Playground 中执行此操作，系统会提示您取消选择您想要避免触发的 Webhook。
 
 ![Commit Playground](/langsmith/images/commit-playground.png)
 
@@ -163,7 +163,7 @@ LangSmith的公共提示中心是由LangChain社区创建的提示集合，您�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-prompts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

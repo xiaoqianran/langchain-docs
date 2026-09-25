@@ -22,7 +22,7 @@ Retry-After: 42
 ## 政策维度
 
 针对每个传入请求评估速率限制策略。您可以将策略设置为默认值（对所有用户应用一揽子速率限制、[workspaces](/langsmith/administration-overview#workspaces) 或 [API keys](/langsmith/create-account-api-key)）或将其设置为细粒度策略（单个限制或对一组主题的限制）。|主题 |它限制了什么 |示例|
-| --- | --- | --- |
+| ---| ---| ---|
 | **用户** |来自单个用户或用户组的请求或令牌（从 API 密钥的身份解析）| “单个开发者每分钟发送的请求数不能超过 100 个”|
 | **工作区** |单个工作区或工作区组中的请求或令牌 | “研发工作区每小时不能超过 1,000,000 代币”|
 | **API 密钥** |来自单个 API 密钥或一组 API 密钥的请求或令牌 | “客户支持代理密钥每分钟共享 200 个请求的限制”|
@@ -43,7 +43,7 @@ Retry-After: 42
 每个限制包含三个字段：
 
 |领域|允许值 |
-| --- | --- |
+| ---| ---|
 | **公制** | `requests` 或 `tokens`（提供商报告的代币总数）|
 | **窗口** | `minute` 或 `hour` |
 | **价值** |正整数（上限）|
@@ -78,7 +78,7 @@ Retry-After: 42
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-rate-limit-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

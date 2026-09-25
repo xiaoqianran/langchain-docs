@@ -48,13 +48,13 @@
     className="hidden dark:block"
     src="/langsmith/images/cloud-arch-dark.png"
     alt="LangSmith architecture showing services and datastores"
-/>要访问 LangSmith UI 并发送 API 请求，您需要公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载平衡器或主机上公开的端口。
+/>要访问 LangSmith UI 并发送 API 请求，您需要公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载均衡器或主机上公开的端口。
 
 ### 服务
 
 |服务 |描述 |
 |---------|-------------|
-| <a id="langsmith-frontend"></a> **LangSmith 前端** |前端使用 Nginx 来服务 LangSmith UI 并将 API 请求路由到其他服务器。它充当应用程序的入口点，并且是唯一必须向用户公开的组件。 |
+| <a id="langsmith-frontend"></a> **LangSmith 前端** |前端使用 Nginx 来服务 LangSmith UI 并将 API 请求路由到其他服务器。它作为应用程序的入口点，并且是唯一必须向用户公开的组件。 |
 | <a id="langsmith-backend"></a> **LangSmith 后端** |后端是 CRUD API 请求的主要入口点，并处理应用程序的大部分业务逻辑。这包括处理来自前端和 SDK 的请求、准备摄取跟踪以及支持集线器 API。 |
 | <a id="langsmith-queue"></a> **LangSmith 队列** |队列处理传入的跟踪和反馈，以确保它们被异步摄取并持久保存到跟踪和反馈数据存储中，处理数据完整性检查并确保成功插入到数据存储中，处理数据库错误或暂时无法连接到数据库等情况下的重试。 || <a id="langsmith-platform-backend"></a> **LangSmith 平台后端** |平台后端是另一个关键服务，主要处理身份验证、运行摄取和其他大容量任务。 |
 | <a id="langsmith-playground"></a> **LangSmith 游乐场** | Playground 是一项处理转发请求到各种 LLM API 以支持 Playground 功能的服务。这也可用于连接到您自己的自定义模型服务器。 |
@@ -82,7 +82,7 @@ LangSmith默认捆绑所有存储服务。您可以将其配置为使用所有�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

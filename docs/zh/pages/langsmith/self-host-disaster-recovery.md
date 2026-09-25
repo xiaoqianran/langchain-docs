@@ -16,11 +16,11 @@
 
 ## 您正在恢复什么
 
-自托管 LangSmith 由四个状态存储支持的无状态服务组成。恢复计划几乎完全是关于国有商店的。您可以随时通过重新应用 Helm 图表来重新创建无状态服务。|层|组件|状态|恢复行动|
-|--------|------------|--------------------|------------------|
+自托管 LangSmith 由四个状态存储支持的无状态服务组成。恢复计划几乎完全是关于国有商店的。您可以随时通过重新应用 Helm 图表来重新创建无状态服务。|层 |组件|状态|恢复行动|
+|--------|------------|--------|--------------------|
 | LangSmith服务 | `langsmith-frontend`、`langsmith-backend`、`langsmith-platform-backend`、`langsmith-queue`、`langsmith-ingest-queue`、`langsmith-playground`、`langsmith-ace-backend` |无国籍|重新安装 Helm 图表 |
-| PostgreSQL |运营数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
-|点击屋|跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
+| PostgreSQL |操作数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
+|点击屋 |跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
 | Blob 存储（S3/GCS/Azure Blob）|运行输入、输出、错误、清单、额外内容、事件、附件（启用时）| **耐用** |从版本化存储桶或副本恢复 |
 | Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复 |
 | Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |<Warning>
@@ -35,7 +35,7 @@
 - **恢复时间目标 (RTO)：** 发生故障后恢复服务所需的最长时间。跨地域温副本可实现分钟级RTO；从快照进行冷恢复可能需要数小时，尤其是对于大型 ClickHouse 数据集。
 
 以下部署模式采用三个目标配置文件之一：|简介 |典型 RPO |典型RTO |方法|
-|--------|-------------|-------------|---------|
+|--------|-------------|-------------|----------|
 |仅快照 | 6 至 24 小时 |营业时间 |每个商店的日常管理备份。成本最低，恢复时间最长。 |
 |多可用区 HA |秒|分钟（区域故障）|在另一个可用区同步备用 Postgres 和 ClickHouse、多可用区 Redis、区域冗余 Blob 存储。标准生产姿势。 |
 |跨区域容灾 |分钟到小时 |营业时间 | Postgres、ClickHouse 和 Blob 存储的备份复制到第二个区域，并按需恢复。可选的 Postgres 跨区域副本，以实现更严格的 Postgres RPO。成本最高，恢复速度比多可用区慢，但可以防止区域中断。 |
@@ -60,7 +60,7 @@ LangSmith 使用 PostgreSQL 作为操作和事务数据的主要存储。 **与 
     在启用 [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) 的情况下运行 [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres)。
 
     - **备份：** 使用 PITR 启用 [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups)。
-    - **HA:** 区域实例同步复制到第二个区域中的备用实例。
+    - **HA：** 区域实例同步复制到第二个区域中的备用实例。
     - **跨区域容灾：** 配置[cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas)，并在区域故障时提升它们。
     - **加密：** 使用[Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek)。
   </Tab>
@@ -91,7 +91,7 @@ ClickHouse 拥有大量跟踪和反馈数据，通常是 LangSmith 部署中最�
 - 通过 [Keeper or ZooKeeper](https://clickhouse.com/docs/architecture/replication) 配置具有复制功能的多节点 ClickHouse 集群。
 - 在 LangSmith 图表中设置 `cluster` 值，以便迁移从一开始就创建 `Replicated` 表引擎。 **必须针对新架构配置集群设置**，您以后无法将独立实例转换为集群实例。
 - 跨可用区传播副本。
-- 按照与您的 RPO 匹配的频率将 [⟦T10⟧ or ⟦T11⟧](https://clickhouse.com/docs/operations/backup) 安排到对象存储。社区 [⟦T12⟧](https://github.com/Altinity/clickhouse-backup) 工具也是一种流行的计划增量备份选项，具有内置 S3、GCS 和 Azure Blob 支持。
+- 按照与 RPO 匹配的频率将 [⟦T10⟧ or ⟦T11⟧](https://clickhouse.com/docs/operations/backup) 安排到对象存储。社区 [⟦T12⟧](https://github.com/Altinity/clickhouse-backup) 工具也是一种流行的计划增量备份选项，具有内置 S3、GCS 和 Azure Blob 支持。
 - 跨地域容灾，将备份桶复制到次要地域。自我管理部署中通常不支持跨区域 ClickHouse 复制，ClickHouse Cloud 也不提供跨区域 ClickHouse 复制，因此请规划备份/恢复故障转移模型而不是热副本。
 
 有关复制配置的示例，请参阅 Helm 存储库中的 [replicated ClickHouse example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md)。<Warning>
@@ -139,8 +139,8 @@ ClickHouse 拥有大量跟踪和反馈数据，通常是 LangSmith 部署中最�
 
 Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要。完整的恢复需要两者。- **Helm 值：** 将 `values.yaml` 存储在源代码管理中。单独跟踪每个环境的覆盖。
 - **图像版本：** 固定LangSmith图表版本和图像标签，以便恢复安装相同的软件版本。参见[Self-host upgrades](/langsmith/self-host-upgrades)和[Dependency versions](/langsmith/self-host-dependency-versions)。
-- **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的机密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
-- **TLS 材料：** 如果您在 LangSmith 入口终止 TLS，请备份证书和密钥，或从 DR 区域中的私有 CA 重新颁发。参见[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)。
+- **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的秘密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
+- **TLS 材料：** 如果您在 LangSmith 入口处终止 TLS，请备份证书和密钥，或者从 DR 区域中的私有 CA 重新颁发。参见[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)。
 - **IRSA / 工作负载身份绑定：** 在 DR 区域中重新创建 IAM 角色和服务帐户绑定；服务帐户 ARN 和注释是区域范围的。
 - **许可证密钥：** 将 LangSmith 许可证密钥与其他恢复密钥一起保存。
 
@@ -157,16 +157,16 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 ### 跨区域主动/被动容灾
 
-这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。- DR 区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
+这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。- 灾难恢复区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
 - Postgres 跨区域副本（RDS 或 Aurora 跨区域副本、Cloud SQL 跨区域副本、Azure 灵活服务器跨区域副本）。促进故障转移。
-- ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自管理集群中。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
+- ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
 - Blob 存储复制到具有版本控制和匹配生命周期规则的 DR 存储桶。
 - 在故障转移期间，Redis 在 DR 区域中进行了全新配置。
-- DNS 由 [Route 53](https://aws.amazon.com/route53/)、[Cloud DNS](https://cloud.google.com/dns) 或 [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) 管理，健康检查和故障转移策略指向每个区域的 LangSmith 前端入口。
+- 由 [Route 53](https://aws.amazon.com/route53/)、[Cloud DNS](https://cloud.google.com/dns) 或 [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) 管理的 DNS，健康检查和故障转移策略指向每个区域的 LangSmith 前端入口。
 
 <Note>
 LangSmith是一个单写平台。跨区域部署应该是**主动/被动**，而不是主动/主动。不支持针对同一逻辑安装同时写入两个区域，这会产生数据不一致。
-</Note>## 恢复程序
+</Note>## 恢复过程
 
 ### 区域故障后恢复
 
@@ -254,7 +254,7 @@ LangSmith是一个单写平台。跨区域部署应该是**主动/被动**，而
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-disaster-recovery.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

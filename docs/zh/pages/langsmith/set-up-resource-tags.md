@@ -128,7 +128,7 @@ tagging_id = response.json()["id"]
 因此编辑者无需使用 `workspaces:manage` 即可完成此操作。分配任何其他标签键需要`workspaces:manage`。
 </Note>
 
-**应用现有标签**：如果键和值已经存在（例如默认的 **Application** 键），请先检索它们的 ID，然后直接进入分配步骤：
+**应用现有标签**：如果键和值已经存在（例如默认的**Application**键），则首先检索它们的ID并直接进入分配步骤：
 
 ```python
 tags = requests.get(
@@ -172,7 +172,7 @@ project = response.json()
 
 相同的 `tag_value_ids` 字段被接受：
 
-|端点 |描述 |
+|端点|描述 |
 |----------|-------------|
 | `POST /api/v1/sessions` |创建跟踪项目 |
 | `POST /api/v1/datasets` |创建数据集（也接受 CSV 上传和实验上传变体）|
@@ -244,7 +244,7 @@ requests.delete(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-resource-tags.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -18,7 +18,7 @@
 
 ## 参数
 
-您将需要创建自己的 Kubernetes 密钥，这些密钥遵循 LangSmith Helm Chart 提供的密钥结构。
+您将需要创建自己的 Kubernetes 机密，这些机密遵循 LangSmith Helm Chart 提供的机密结构。
 
 <Warning>
 这些机密必须与LangSmith Helm Chart 提供的机密具有相同的结构（请参阅上面的链接以查看具体的机密）。如果您错过任何必需的密钥，您的 LangSmith 实例可能无法正常工作。
@@ -106,7 +106,7 @@ CLICKHOUSE_DB:                            <set to the key 'clickhouse_db' in sec
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-using-an-existing-secret.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,7 +4,7 @@
 
 # 可观察性概念
 
-LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页介绍如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
+LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页介绍了如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
 
 ## LangSmith 如何构建和可视化数据
 
@@ -46,14 +46,14 @@ _trajectory_ 是一个平面、有序的消息列表，显示代理从开始到�
 
 [Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-### 比较迹线、线程和轨迹|  |追踪 |主题 |轨迹|
+### 比较迹线、线程和轨迹|  |追踪|主题 |轨迹|
 | ---| ---| ---| ---|
-|形状|运行树 |痕迹序列|扁平化、有序的消息列表 |
+|形状|运行树|痕迹序列|扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
 |当 | 时伸手去拿它您正在调试为什么一项操作失败或运行缓慢 |您正在检查代理在回合中的行为方式，计时和嵌套完好无损 |您正在阅读会话中交换的内容，但没有执行详细信息 |
 
 <Callout type="info" icon="feather">
-使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获得见解，而无需手动挖掘数据。
+使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获取见解，而无需手动挖掘数据。
 </Callout>
 
 ### 项目
@@ -92,7 +92,7 @@ LangSmith _integrations_ 为流行的 LLM 提供商和代理框架提供自动�
 
 ### 手动仪器
 
-_手动检测_允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：- `@traceable` / `traceable`：用于跟踪任何函数的装饰器
+_手动检测_允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：- `@traceable` / `traceable`：用于跟踪任何函数的装饰器
 - `trace` 上下文管理器 (Python)：包装特定的代码块
 - `RunTree` API：低级、显式跟踪构造
 
@@ -112,7 +112,7 @@ LangSmith (SaaS) 将跟踪数据保留 180 天。此后，痕迹将被永久删�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

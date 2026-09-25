@@ -46,7 +46,7 @@ Python 和 TypeScript 预设保留相同的规则，因此其中一个编辑的�
 ### 预设中的规则
 
 提供者规则锚定到已知的密钥前缀。仅当敏感名称与分配配对时，上下文规则才会触发，从而使普通代码、UUID 和内容哈希保持不变。|类别 |检测到的格式 |
-| --- | --- |
+| ---| ---|
 | Anthropic | `sk-ant-` |
 | OpenAI | `sk-proj-`、`sk-svcacct-`、`sk-admin-` 和旧版 `sk-` 键 |
 | LangSmith | `lsv2_pt_`、`lsv2_sk_`、`ls__` |
@@ -67,7 +67,7 @@ Python 和 TypeScript 预设保留相同的规则，因此其中一个编辑的�
 
 名称规则需要组件边界，因此 `TOKEN` 匹配 `api_token` 和 `mytoken`，但不匹配 `tokenizer` 或 `tokens`。标头和 `Bearer` 规则保留标头名称和方案字，并仅编辑后面的凭证。
 
-### 将您自己的规则添加到预设中传递 `extra_rules` 附加预设不知道的凭据模式，例如内部密钥格式。额外规则在内置规则之后运行。
+### 将您自己的规则添加到预设中传递 `extra_rules` 来附加预设不知道的凭据模式，例如内部密钥格式。额外规则在内置规则之后运行。
 
 <CodeGroup>
 
@@ -251,7 +251,7 @@ const client = new Client({ anonymizer });
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/redact-secrets.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -26,10 +26,10 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 模型访问策略的范围仅限于一个主题层：
 
 |等级 |适用于 |
-| --- | --- |
+| ---| ---|
 |组织|组织中的所有用户和工作区 |
-|工作空间 |工作区中的所有用户|
-|用户 |单个用户|
+|工作空间 |工作区中的所有用户 |
+|用户|单个用户|
 | API 密钥 |单个 API 密钥 |
 
 ### 策略覆盖策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。
@@ -60,7 +60,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -52,7 +52,7 @@
 
 <Check>
 如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。
-</Check>您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为示例，运行项添加运行，线程项添加完整对话。
+</Check>您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为一个示例，运行项添加运行，线程项添加完整对话。
 
 您对注释队列中的运行所做的更改（包括其元数据）将复制到数据集。您无法编辑主题项目。它们是在追踪时添加的。
 
@@ -116,7 +116,7 @@
     />
 
 1. 示例将出现在**选择生成的示例**页面上。选择要添加到数据集中的示例，并可以选择在最终确定之前对其进行编辑。单击**保存示例**。
-1. 每个示例都将根据您指定的数据集架构进行验证，并在源元数据中标记为**合成**。
+1. 每个示例都将根据您指定的数据集模式进行验证，并在源元数据中标记为**合成**。
 
     <img
         className="block dark:hidden"
@@ -158,14 +158,14 @@
 
 要将元数据添加到您的示例中：
 
-1. 单击示例，然后单击弹出窗口右上角的“**编辑**”。
+1. 单击一个示例，然后单击弹出窗口右上角的“**编辑**”。
 1. 在此页面中，更新或删除现有元数据，或添加新元数据。
 
 您可以使用它来存储有关示例的信息，例如标签或版本信息，然后您可以在分析实验结果时使用[group by](/langsmith/analyze-an-experiment#group-results-by-metadata)，或者在SDK中调用`list_examples`时使用[filter by](/langsmith/manage-datasets-programmatically#list-examples-by-metadata)。
 
 ### 过滤器示例
 
-您可以按拆分、元数据键/值过滤示例或对示例执行全文搜索。这些过滤选项位于示例表的左上角：
+您可以按拆分、元数据键/值过滤示例，或对示例执行全文搜索。这些过滤选项位于示例表的左上角：
 
 - **按拆分筛选**：选择拆分 > 选择要作为筛选依据的拆分。
 - **按元数据过滤**：过滤器 > 从下拉列表中选择 **元数据** > 选择要过滤的元数据键和值。
@@ -177,7 +177,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets-in-application.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

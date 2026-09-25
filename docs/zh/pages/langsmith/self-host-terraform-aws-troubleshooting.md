@@ -14,7 +14,7 @@
 
 ## 自动诊断
 
-在运行单个命令之前，请尝试捆绑的脚本：
+在运行单独的命令之前，请尝试捆绑的脚本：
 
 ```bash
 # Deployment status across all layers + next-step guidance
@@ -34,7 +34,7 @@ make status
 Error: waiting for EKS Node Group creation: unexpected state 'CREATE_FAILED'
 ```
 
-**原因：** 当节点组创建开始时，EKS 控制平面尚未完全活动。中断应用后常见。
+**原因：** 当节点组创建开始时，EKS 控制平面尚未完全激活。中断应用后常见。
 
 **修复**
 
@@ -252,7 +252,7 @@ RDS master password must not contain '/', '@', '"', single quotes, or spaces.
 
 **原因：** 密码包含 RDS 主密码中不允许的字符。
 
-**修复：**重新生成无限制字符。 `setup-env.sh` 自动生成合规密码；手动更新：
+**修复：**重新生成，不限制字符。 `setup-env.sh` 自动生成合规密码；手动更新：
 
 ```bash
 ./infra/scripts/manage-ssm.sh set postgres-password "$(openssl rand -base64 24 | tr -d '/+= ')"
@@ -430,7 +430,7 @@ echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -11,11 +11,11 @@ LangSmith 现在在 LangSmith 云和 [self-hosted LangSmith](/langsmith/self-hos
 
 <SaasRegionUrls prefix="api.smith" suffix="/mcp" />
 
-BYOC 端点：`https://<data_plane_url>/api/mcp`，其中 `<data_plane_url>` 是[BYOC](/langsmith/byoc) 数据平面的 URL。
+BYOC 端点：`https://<data_plane_url>/api/mcp`，其中 `<data_plane_url>` 是 [BYOC](/langsmith/byoc) 数据平面的 URL。
 
 自托管端点：`https://<your-langsmith-host>/api/mcp`。
 
-它公开与本页上记录的独立服务器相同的工具界面，但通过动态客户端注册的 OAuth 2.1 进行身份验证 - 没有 API 密钥、没有单独的部署、没有标头配置。
+它公开与本页上记录的独立服务器相同的工具界面，但通过动态客户端注册的 OAuth 2.1 进行身份验证 — 无 API 密钥、无需单独部署、无标头配置。
 
 下面记录的独立服务器仍然是 v0.15 之前版本上的自托管部署以及喜欢自行运行服务器的用户的受支持路径。
 </Warning>
@@ -223,8 +223,8 @@ flowchart LR
 
 ## 环境变量
 
-|变量|必填|描述 |
-|----------|----------|------------|
+|变量|必填 |描述 |
+|----------|----------|-------------|
 | `LANGSMITH_API_KEY` |是的 |您的 [LangSmith API key](/langsmith/create-account-api-key) 用于身份验证。 |
 | `LANGSMITH_WORKSPACE_ID` |没有 |当您的 API 密钥有权访问多个工作区时的工作区 ID。 |
 | `LANGSMITH_ENDPOINT` |没有 | API端点URL（对于[self-hosted](/langsmith/self-hosted)或自定义区域）。默认值：`https://api.smith.langchain.com`。 |
@@ -233,7 +233,7 @@ flowchart LR
 
 ## TypeScript 实现
 
-官方 Python 服务器的社区维护的 TypeScript/Node.js 端口可用。运行它：`LANGSMITH_API_KEY=your-key npx langsmith-mcp-server`。
+官方 Python 服务器的社区维护的 TypeScript/Node.js 端口已可用。运行它：`LANGSMITH_API_KEY=your-key npx langsmith-mcp-server`。
 
 源码及封装：[GitHub](https://github.com/amitrechavia/langsmith-mcp-server-js)·[npm](https://www.npmjs.com/package/langsmith-mcp-server)。由[amitrechavia](https://github.com/amitrechavia)维护。
 
@@ -241,7 +241,7 @@ flowchart LR
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-mcp-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

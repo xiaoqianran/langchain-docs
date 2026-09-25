@@ -19,7 +19,7 @@ LangSmith 支持两种提示模板格式，适用于不同的复杂程度：
 
 [F-string syntax](#f-string-syntax) 非常适合简单的提示。 [Mustache](#mustache-syntax)提供了处理复杂数据结构和逻辑的功能，这对于评估者和高级用例很有帮助。
 
-您可以在[UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-prompt-template-format)中切换格式。 LangSmith 将在可能的情况下自动 [convert your template](#conversion-between-formats)，尽管某些 Mustache 功能（如循环和条件）无法转换为 f 字符串格式。
+您可以在[UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-prompt-template-format)中切换格式。 LangSmith 将在可能的情况下自动转换为 [convert your template](#conversion-between-formats)，尽管某些 Mustache 功能（如循环和条件）无法转换为 f 字符串格式。
 
 <Callout icon="test-pipe" color="#4F46E5" iconType="regular">
 使用 [Playground](https://smith.langchain.com/playground) 测试本页上的示例。在 Playground 中的提示设置<Icon icon="settings" color="#4F46E5" iconType="solid" />菜单下切换**提示格式**。
@@ -67,7 +67,7 @@ Hello, Ashley!
 Your topic is: LangSmith
 ```
 
-如果您的输入具有像 `{"user": {"name": "Ashley"}}` 这样的嵌套对象，则您**无法**使用 f 字符串格式的 `{user.name}` 访问嵌套值。该点将被视为变量名称的一部分（字面意思是寻找名为 `"user.name"` 的键），而不是作为路径分隔符。对于嵌套访问，请使用 [mustache format](#mustache-syntax) 代替。
+如果您的输入具有像 `{"user": {"name": "Ashley"}}` 这样的嵌套对象，则您**无法**使用 f 字符串格式的 `{user.name}` 访问嵌套值。该点将被视为变量名称的一部分（字面意思是查找名为 `"user.name"` 的键），而不是路径分隔符。对于嵌套访问，请使用 [mustache format](#mustache-syntax) 代替。
 
 ### 文字大括号有时您需要在输出中包含实际的花括号（例如，在 JSON 示例或代码片段中）。为此，**双括号**：
 
@@ -312,7 +312,7 @@ Last item: Orange
 
 编写模板时必须知道索引。
 
-评估人员通常需要对话线程中的第一条用户消息或最后一次人工智能响应。使用 `{{all_messages.0}}` 作为第一条消息或预先计算数据中的最后一条消息。
+评估人员通常需要对话线程中的第一条用户消息或最后一次人工智能响应。对第一条消息使用 `{{all_messages.0}}` 或预先计算数据中的最后一条消息。
 
 ### 条件您可以使用部分作为条件。它们仅在值存在、非空且不是 `false` 时才渲染：
 
@@ -351,7 +351,7 @@ Welcome back, Ashley!
 
 - `{{#results}}` 迭代每个结果并为每个项目渲染一行。
 - `{{^results}}` 仅当结果数组为空或缺失时才渲染。
-- 当没有结果可显示时，倒置部分提供了清晰的后备。
+- 当没有结果显示时，倒置部分提供了清晰的后备。
 
 ```mustache
 {{!-- Template --}}
@@ -459,13 +459,13 @@ Welcome to our service.
 
 使用注释来解释复杂的部分、记录预期的数据结构或说明为什么存在某些逻辑。这有助于协作者了解您的模板。
 
-## 求值器和线程的特殊变量在构建 [evaluators](/langsmith/evaluation-concepts#evaluators) 或使用对话式 AI 时，LangSmith 自动提供特殊变量，以有用的方式构建对话数据。这些变量**仅在评估器上下文中可用**，而不是在常规 Playground 提示中可用。
+## 求值器和线程的特殊变量当构建 [evaluators](/langsmith/evaluation-concepts#evaluators) 或使用对话式 AI 时，LangSmith 自动提供特殊变量，以有用的方式构建对话数据。这些变量**仅在评估器上下文中可用**，而不是在常规 Playground 提示中可用。
 
 评估者需要全面分析对话——查看多条消息的模式，将第一个问题与最终答案进行比较，或者检查人工智能对后续问题的反应如何。这些变量使得无需手动数据操作即可轻松访问对话结构。
 
 ### 线程消息变量
 
-LangSmith 提供了三种预先结构化的对话视图 [threads](/langsmith/evaluation-concepts#threads)：
+LangSmith 提供对话的四种预结构化视图：三个在[thread](/langsmith/evaluation-concepts#threads) 上，一个在[trajectory](/langsmith/observability-concepts#trajectories) 上。
 
 ```mustache
 {{!-- Access all messages in the thread --}}
@@ -488,13 +488,21 @@ Final answer: {{last_ai}}
 {{!-- Access specific message by index --}}
 First message: {{all_messages.0}}
 Second message: {{all_messages.1}}
-```
 
-- **`all_messages`**：按时间顺序排列的每条消息，带有 `role`（用户/助理/系统）和 `content` 字段。用它来显示完整的对话流程。
+{{!-- Access the trajectory of the session --}}
+{{trajectory}}
+```- **`all_messages`**：按时间顺序排列的每条消息，带有 `role`（用户/助理/系统）和 `content` 字段。用它来显示完整的对话流程。
 - **`human_ai_pairs`**：消息分组为问题-答案对。每对都有`human`（用户消息）和`ai`（助理响应）。在评估响应质量时使用此选项。
 - **`first_human_last_ai`**：只是最初的问题（`first_human`）和最终答案（`last_ai`）。用它来检查人工智能是否最终回答了原来的问题，忽略了中间的对话。
+- **`trajectory`**：会话中的每条消息都是一个平面的、去重复的列表，包括工具调用和工具结果。每条消息都有一个`role`、`human`、`ai`、`system`或`tool`，以及一个`content`字段，其中包含字符串或内容块列表，例如`text`、`reasoning`和`tool_call`。用它来评估代理所采取的路径。
 
-### 线程上下文示例以下示例是使用线程上下文的实用评估器提示：
+<Note>
+`trajectory` 与线程变量互斥。提示使用 `trajectory` 或 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai`。有关如何强制执行该规则以及如何在线程求值器中使用`trajectory`，请参阅[Evaluate trajectories](/langsmith/online-evaluations-multi-turn#evaluate-trajectories)。
+</Note>
+
+### 线程上下文示例
+
+以下示例是使用线程上下文的实用评估器提示：
 
 ```mustache
 {{!-- Template --}}
@@ -525,21 +533,67 @@ user: Can you tell me a joke instead?
 assistant: Why did the chicken cross the road?
 
 Was the AI helpful? Rate from 1-5.
-```
-
-该模板使用 Mustache 部分 `{{#all_messages}}` 来循环对话数组。对于每次迭代，该部分都会将上下文设置为该消息对象，因此 `{{role}}` 和 `{{content}}` 访问当前消息的属性。该循环会自动按顺序遍历所有四个消息，将每个消息显示为 `"role: content"`。这为评估者 LLM 提供了完整的对话历史记录以评估有用性。
+```该模板使用 Mustache 部分 `{{#all_messages}}` 来循环对话数组。对于每次迭代，该部分都会将上下文设置为该消息对象，因此 `{{role}}` 和 `{{content}}` 访问当前消息的属性。该循环会自动按顺序遍历所有四个消息，将每个消息显示为 `"role: content"`。这为评估者 LLM 提供了完整的对话历史记录以评估有用性。
 
 当您在 LangSmith 中创建赋值器时，选择要包含的线程变量。 LangSmith 会自动从正在评估的对话中填充它们。
 
-## 少量示例
+### 轨迹上下文示例
 
-少量提示以实例方式教授法学硕士课程。您提供几个输入-输出对来演示该任务，然后要求它对新输入执行相同的任务。
+以下示例是使用轨迹上下文的实用评估器提示：
+
+```mustache
+{{!-- Template --}}
+Evaluate the path this agent took:
+
+<trajectory>
+{{trajectory}}
+</trajectory>
+
+Did the agent call the right tools to answer the question? Rate from 1-5.
+
+{{!-- Input (provided by LangSmith) --}}
+{
+  "trajectory": [
+    {
+      "content": [{"type": "text", "text": "Is my GitHub CLI authenticated?"}],
+      "role": "human",
+      "id": "01a04b29-ab54-763b-89ba-1f3dd2266c54"
+    },
+    {
+      "content": [
+        {
+          "type": "tool_call",
+          "id": "call_wQO8IHBPu6HyXoZ1Q3UqvxIs",
+          "name": "execute",
+          "args": {"command": "gh auth status", "timeout": 30}
+        }
+      ],
+      "role": "ai"
+    },
+    {
+      "content": "Logged in to github.com account octocat",
+      "role": "tool",
+      "tool_call_id": "call_wQO8IHBPu6HyXoZ1Q3UqvxIs"
+    },
+    {
+      "content": [{"type": "text", "text": "Yes, you are logged in as octocat."}],
+      "role": "ai"
+    }
+  ]
+}
+```
+
+与线程变量不同，`trajectory` 解析为根据每个跟踪内的模型和工具调用构建的轨迹，因此评估器可以更详细地对代理所采取的路径进行评分。直接将变量引用为`{{trajectory}}`，或者使用小胡子部分`{{#trajectory}}{{role}}{{/trajectory}}`循环消息以控制法官接收的内容。
+
+## 少量示例少量提示以实例方式教授法学硕士课程。您提供几个输入-输出对来演示该任务，然后要求它对新输入执行相同的任务。
 
 [Few-shot examples](/langsmith/create-few-shot-evaluators#how-few-shot-examples-work) 帮助LLM理解：
 
 - **格式期望**（例如，“使用 JSON 响应”或“使用此语气”）
 - **边缘情况**（例如，如何处理不明确的输入）
-- **任务细微差别**（例如，“积极”和“非常积极”情绪之间的差异）它对于分类、格式化和文体任务特别有用，在这些任务中，展示比讲述更清晰。
+- **任务细微差别**（例如，“积极”和“非常积极”情绪之间的差异）
+
+它对于分类、格式化和文体任务特别有用，在这些任务中，展示比讲述更清晰。
 
 ### 少镜头占位符
 
@@ -573,15 +627,15 @@ Sentiment: neutral
 Now classify this text:
 Text: This is amazing!
 Sentiment:
-```
-
-在 LangSmith UI 中配置您的少数示例，以匹配您用于实际任务的格式。这种一致性有助于法学硕士正确概括。占位符方法将提示结构与示例数据分开，使两者更易于维护。
+```在 LangSmith UI 中配置您的少数示例，以匹配您用于实际任务的格式。这种一致性有助于法学硕士正确概括。占位符方法将提示结构与示例数据分开，使两者更易于维护。
 
 ## 格式之间的转换
 
-**F 字符串到小胡子** 始终适用于基本变量。格式说明符已转换，但格式已删除。
+**F 字符串到小胡子**始终适用于基本变量。格式说明符已转换，但格式已删除。
 
-**小胡子到 f 字符串**仅适用于基本变量。点表示法、部分、条件和注释等 Mustache 功能在 f 字符串中没有等效项，因此无法转换：- **点符号：** `{{user.name}}` F 字符串会将 `"user.name"` 视为单个变量名称而不是嵌套访问。
+**小胡子到 f 字符串**仅适用于基本变量。点符号、部分、条件和注释等 Mustache 功能在 f 字符串中没有等效项，因此无法转换：
+
+- **点符号：** `{{user.name}}` F 字符串会将 `"user.name"` 视为单个变量名称而不是嵌套访问。
 - **部分/循环：** `{{#items}}...{{/items}}` f 字符串中没有等效项。
 - **条件：** `{{#value}}...{{/value}}` f 字符串中没有等效项。
 - **倒置部分：** `{{^value}}...{{/value}}` f 字符串中没有等效项。
@@ -589,9 +643,7 @@ Sentiment:
 
 如果您尝试使用这些功能转换胡子模板，LangSmith将拒绝转换或仅转换简单部分，从而破坏模板的功能。转换后始终预览。
 
-## 其他资源
-
-- **[LangSmith Prompt Engineering Concepts](https://docs.langchain.com/langsmith/prompt-engineering-concepts)**：关于有效提示策略的更高级别指导。
+## 其他资源- **[LangSmith Prompt Engineering Concepts](https://docs.langchain.com/langsmith/prompt-engineering-concepts)**：关于有效提示策略的更高级别指导。
 - **[Mustache Manual](https://mustache.github.io/mustache.5.html)**：具有所有功能的完整胡须规格。
 - **[Python f-string Documentation](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)**：官方 Python f 字符串语法（注意：LangSmith 使用简化子集）。
 
@@ -599,7 +651,7 @@ Sentiment:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -7,7 +7,7 @@
 托管 Deep Agents 在 [LangSmith Context Hub](/langsmith/use-the-context-hub) 中存储部署拥有的指令和技能以及可选的持久内存。这种拆分使您可以在不重建应用程序代码的情况下更改代理行为，同时项目仍然是持久指导和技能更新的真实来源。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## Context Hub 中包含哪些内容
@@ -16,7 +16,7 @@
 | ---| ---| ---| ---|
 |系统提示| [⟦T3⟧](/langsmith/python/managed-deep-agents-instructions) |是的 |没有 |
 |技能 | [⟦T4⟧](/langsmith/python/managed-deep-agents-skills) |是的 |没有 |
-|持久记忆|可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明|启用树；不覆盖现有内存|是的，在`/memories/agent/` |
+|持久记忆|可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明 |启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
 
 工具、中间件、MCP 连接器、通道、计划、沙箱和代理定义随已编译的部署一起提供。它们未同步到 Context Hub。
 
@@ -32,7 +32,7 @@
 
 `mda deploy` 将部署拥有的上下文同步为部署管道的一部分：- **说明和技能**：每次部署都会从项目文件更新代理的 Context Hub 存储库。稍后再次部署同步项目副本。对于技能，部署还会删除本地不再存在的已部署技能文件。
 - **持久内存**：启用内存后，部署会在 `/memories/agent/` 挂载一棵 Context Hub 树。部署不会覆盖已存储在其中的内容。
-- **冲突**：如果自上次 `mda deploy` 之后 Context Hub 中的 `instructions.md` 或 `skills/` 发生更改，CLI 将在同步前停止并询问是否使用项目副本覆盖 Context Hub 副本。默认答案保留 Context Hub 版本并跳过同步该部分。在非交互式 shell 中没有提示。部署因错误退出，您必须使用 `--context-strategy overwrite` 或 `--context-strategy keep-hub` 重新运行。重新运行 `mda deploy` 再次报告相同的冲突。
+- **冲突**：如果自上次 `mda deploy` 之后 Context Hub 中的 `instructions.md` 或 `skills/` 发生更改，CLI 将在同步前停止并询问是否用项目副本覆盖 Context Hub 副本。默认答案保留 Context Hub 版本并跳过同步该部分。在非交互式 shell 中没有提示。部署因错误退出，您必须使用 `--context-strategy overwrite` 或 `--context-strategy keep-hub` 重新运行。重新运行 `mda deploy` 再次报告相同的冲突。
 - **并发编辑**：如果存储库在同步期间发生更改，则部署会因提交冲突而失败。重新运行`mda deploy`。
 
 互动冲突提示：
@@ -94,7 +94,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

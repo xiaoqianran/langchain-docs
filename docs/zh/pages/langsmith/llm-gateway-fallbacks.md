@@ -82,7 +82,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
       alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name> 输入型号字段。”
     />
 
-1. **保存**提示，然后[pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt)。在Python中，在调用`client.pull_prompt`时设置`include_model=True`，以便包含保存的网关模型配置。使用保存的模型调用拉取的提示，以通过网关发送请求并应用配置的后备链。仅拉取提示模板，不包含模型配置。
+1. **保存**提示，然后[pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt)。在Python中，调用`client.pull_prompt`时设置`include_model=True`，以便包含保存的网关模型配置。使用保存的模型调用拉取的提示，以通过网关发送请求并应用配置的后备链。仅拉取提示模板，不包含模型配置。
 
 后备链属于模型配置，而不是提示本身。引用相同配置的提示共享其后备。为需要不同后备行为的每个提示使用单独的配置。
 
@@ -90,7 +90,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 您可以添加两种类型的后备候选项：
 
-- **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或使用符合条件的托管模型的网关积分。
+- **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或者使用符合条件的托管模型的网关积分。
 - **模型配置**：选择已保存的工作空间[model configuration](/langsmith/model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
 
 模型配置是工作空间范围内的。后备链只能使用其选定工作区中的配置。例如，将 `anthropic/claude-opus-5` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-opus-5`；网关在需要时选择并转换后备调用。
@@ -104,7 +104,7 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

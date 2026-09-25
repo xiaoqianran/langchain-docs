@@ -6,7 +6,7 @@
 
 本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
 
-`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+`mda init` 还可以构建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
 
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
@@ -118,9 +118,9 @@ keep notes, and return concise answers with citations.
 持久内存是可选的。在要求代理记住任何内容之前，请在项目根目录添加内存声明：
 
 ```python memory.py
-from managed_deepagents import define_memory
+from managed_deepagents import MemoryLayer, define_memory
 
-memory = define_memory(scope="agent")
+memory = define_memory(agent=MemoryLayer())
 ```
 
 
@@ -175,7 +175,7 @@ uv run mda deploy
 
 
 
-成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
 打开该 URL 并确认：
 
@@ -204,7 +204,7 @@ uv run mda deploy
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

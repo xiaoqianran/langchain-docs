@@ -4,7 +4,7 @@
 
 # 使用 SDK 管理上下文
 
-使用 LangSmith [Python](/langsmith/smith-python-sdk) 和 [TypeScript](/langsmith/smith-js-ts-sdk) SDK 以编程方式管理 [Context Hub](/langsmith/use-the-context-hub) 中的 **代理存储库** 和 **技能存储库**。 [Push](#push-an-agent) CI 的新版本，[pull](#pull-an-agent) 最新版本或运行时固定的提交，将上下文注入到您的代理中，并使用其他方法来 [check existence](#check-whether-a-repo-exists)、[list and search](#list-agents-and-skills) 存储库和 [delete](#delete-an-agent-or-skill) 您不再需要的内容。
+使用 LangSmith [Python](/langsmith/smith-python-sdk) 和 [TypeScript](/langsmith/smith-js-ts-sdk) SDK 以编程方式管理 [Context Hub](/langsmith/use-the-context-hub) 中的 **代理存储库** 和 **技能存储库**。 [Push](#push-an-agent) CI 的新版本，[pull](#pull-an-agent) 最新版本或运行时固定的提交，将上下文注入到代理中，并使用其他方法来 [check existence](#check-whether-a-repo-exists)、[list and search](#list-agents-and-skills) 存储库和 [delete](#delete-an-agent-or-skill) 您不再需要的内容。
 
 <Note>
 Context Hub 方法需要 `langsmith>=0.7.35` (Python) 和 `langsmith>=0.5.23` (TypeScript)。
@@ -181,10 +181,10 @@ console.log(url);
 ## 推送参数
 
 `push_agent` / `pushAgent` 和 `push_skill` / `pushSkill` 都接受以下参数：|参数|类型 |描述 |
-| ---------------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| ---------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `identifier` | `string` |存储库的标识符。                                                                       |
 | `files` | `dict[str, Entry \| None]` | `Entry` 的文件路径映射。通过 `None` / `null` 删除本次提交中的路径。           |
-| `parent_commit` / `parentCommit` | `string`（可选）|乐观并发的父提交哈希前缀。提供时必须为 8-64 个字符。如果与最新提交不匹配，API 将返回 409 冲突。 |
+| `parent_commit` / `parentCommit` | `string`（可选）|用于乐观并发的父提交哈希前缀。提供时必须为 8-64 个字符。如果与最新提交不匹配，API 将返回 409 冲突。 |
 | `description` | `string`（可选）|回购描述。在创建时设置或在更新时修补。                                      || `readme` | `string`（可选）|回购自述文件内容。                                                                         |
 | `tags` | `string[]`（可选）|回购标签。                                                                                   |
 | `is_public` / `isPublic` | `boolean`（可选）|存储库是否可公开发现。                                                   |
@@ -341,7 +341,7 @@ for await (const skill of client.listSkills({ isPublic: true })) {
 }
 ```
 </CodeGroup>|参数|类型 |描述 |
-| ------------------------ | -------------------- | ------------------------------------------------------------------------ |
+| ------------------------ | -------------------- | ---------------------------------------------------------------------------------- |
 | `limit` | `int`（仅限 Python）|每页返回的最大存储库数量。默认为 100。
 | `offset` | `int`（仅限 Python）|要跳过的存储库数量。默认为 0。
 | `is_public` / `isPublic` | `boolean`（可选）|过滤为仅公共（或仅私人）存储库。               |
@@ -386,7 +386,7 @@ await client.deleteSkill("deep-research");
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-contexts-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

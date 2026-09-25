@@ -206,7 +206,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 1. 选择要添加到数据集的输入/输出的节点。
 1. 对于每个选定的节点，选择要在其中创建示例的目标数据集。默认情况下，将选择特定助手和节点的数据集。如果此数据集尚不存在，则会创建它。
 1. 在将示例添加到数据集之前，根据需要编辑示例的输入/输出。
-1. 选择页面底部的**添加到数据集**，将所有选定的节点添加到各自的数据集中。
+1. 选择页面底部的**添加到数据集**，将所有选定的节点添加到各自的数据集。
 
 更多详情请参考[How to evaluate an application's intermediate steps](/langsmith/evaluate-on-intermediate-steps)。
 
@@ -214,7 +214,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -127,7 +127,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 |命令 |描述 |
 |---|---|
 | `make quickstart` |交互式向导。生成`infra/terraform.tfvars`（区域、节点大小、TLS 方法、附加组件）。 |
-| `make setup-env` |打印准确的 `source` 命令，用于将机密加载到 shell 中。无法直接导出变量。 |
+| `make setup-env` |打印用于将机密加载到 shell 中的确切 `source` 命令。无法直接导出变量。 |
 | `make secrets` |显示每个参数的 SSM 机密状态 (`✓ SET` / `✗ MISSING`)，检查 `TF_VAR_*` 导出，给出后续步骤。 |
 | `make secrets-list` |列出此部署的所有 SSM 参数以及上次修改的时间戳。 |
 | `make ssm` |交互式 SSM 参数管理器。查看、设置、旋转、验证、比较集群 Secret。 |### 飞行前
@@ -169,7 +169,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 |---|---|
 | `make quickdeploy` |通过一个命令进行完整部署。链条 `terraform apply` → `kubeconfig` → `init-values` → `helm deploy` 带门。 |
 | `make quickdeploy-auto` |与`quickdeploy`相同，但非交互式。将 `-auto-approve` 传递给 terraform。 |
-| `make deploy-all` |按顺序`make apply` → `make kubeconfig` → `make init-values` → `make deploy`。 |
+| `make deploy-all` |依次`make apply` → `make kubeconfig` → `make init-values` → `make deploy`。 |
 | `make deploy-all-tf` | `make apply` → `make init-values` → Terraform `app/` 依次规划并应用。 |
 
 ### 实用程序
@@ -300,7 +300,7 @@ terraform destroy
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

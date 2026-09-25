@@ -69,7 +69,7 @@ config:
 在应用程序的 **Overview** 页面中，记录以下值以在 Helm 配置中使用：
 
 - **应用程序（客户端）ID**：用作`oauthClientId`。
-- **目录（租户）ID**：用于构建发行者 URL。
+- **目录（租户）ID**：用于构造发行者 URL。
 - **OIDC 发行人 URL**：`https://login.microsoftonline.com/<tenant-id>/v2.0`，用作 `oauthIssuerUrl`。
 
 #### 步骤 2. 创建客户端密钥
@@ -138,7 +138,7 @@ config:
 
 9. （可选）控制组织内的哪些人有权访问 LangSmith：[https://admin.google.com/ac/owl/list?tab=configuredApps](https://admin.google.com/ac/owl/list?tab=configuredApps)。有关更多详细信息，请参阅[Google's documentation](https://support.google.com/a/answer/7281227?hl=en\&fl=1\&sjid=9554153972856467090-NA)。
 
-10. 配置 LangSmith 使用此 OAuth 应用程序。例如，以下是用于 Kubernetes 配置的 `config` 值：
+10. 配置 LangSmith 使用此 OAuth 应用程序。例如，以下是将用于 Kubernetes 配置的 `config` 值：
 
     1. `oauthClientId`: `Client ID`（以`.apps.googleusercontent.com`结尾）
     2.`oauthClientSecret`：`Client secret`
@@ -212,7 +212,7 @@ SCIM 与此配置方法不兼容。请参阅[**Via Okta Integration Network**](#
 1. 以管理员身份登录 Okta，然后转到 **Okta 管理控制台**。
 1. 在 **应用程序** > **应用程序** 下，单击 **创建应用程序集成**。
 1. 选择 **OIDC - OpenID Connect** 作为登录方法，选择 **Web 应用程序** 作为应用程序类型，然后单击 **下一步**。
-1. 输入 `App integration name`（例如，`LangSmith`）。
+1. 输入 `App integration name`（例如 `LangSmith`）。
 1. 推荐：检查**核心补助>刷新令牌**（参见[session length controls](#session-length-controls)）。
 1. 在 **登录重定向 URI** 中，将 LangSmith 实例的域名后跟 `/api/v1/oauth/custom-oidc/callback`，例如 `https://langsmith.yourdomain.com/api/v1/oauth/custom-oidc/callback`。如果您的安装配置了子域/路径前缀，请将其包含在 URL 中，例如 `https://langsmith.yourdomain.com/prefix/api/v1/oauth/custom-oidc/callback`。
 1. 在 **注销重定向 URI** 下，将值设置为您的 LangSmith URL，例如 `https://langsmith.yourdomain.com`。这可确保当用户注销 LangSmith 时 IdP 会话终止。
@@ -451,7 +451,7 @@ config:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

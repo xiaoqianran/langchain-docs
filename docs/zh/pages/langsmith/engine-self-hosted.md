@@ -339,7 +339,7 @@ kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith中完成设置：
 
 1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎启用**下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
-1. 任何用户都可以从项目的 **Engine** 选项卡为跟踪项目设置 Engine。欲了解更多信息，请参阅[Set up Engine for a tracing project](/langsmith/engine#set-up-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
+1. 任何用户从项目的**引擎**选项卡打开跟踪项目的引擎。欲了解更多信息，请参阅[Turn on Engine for a tracing project](/langsmith/engine#turn-on-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
 
 ### 禁用引擎
 
@@ -358,7 +358,7 @@ engine:
 - [Configure Engine](/langsmith/engine)
 - [Connect Engine to GitHub](/langsmith/engine-github)
 - [Engine security](/langsmith/engine-security)
-- [Engine webhooks](/langsmith/engine-webhooks)
+- [Engine notifications](/langsmith/engine-notifications)
 - [Enable additional LangSmith features](/langsmith/deploy-self-hosted-full-platform)
 
 ---

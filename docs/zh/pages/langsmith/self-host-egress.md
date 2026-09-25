@@ -132,7 +132,7 @@ config:
     traces: false
 ```
 
-您还可以通过仅将特定值设置为 `false` 来禁用各个遥测类型。<Warning>
+您还可以通过仅将特定值设置为 `false` 来禁用单个遥测类型。<Warning>
 禁用操作遥测会停止导出本节中描述的日志、指标和跟踪。它**不会**禁用计费遥测（许可证验证和订阅/使用报告）。
 </Warning>
 
@@ -312,7 +312,7 @@ config:
 
 #### 操作日志消息
 
-我们仅从自托管 LangSmith 实例导出错误日志消息。这使得LangChain团队能够排除应用程序错误，而无需与您的团队来回沟通。
+我们仅从自托管 LangSmith 实例导出错误日志消息。这使得 LangChain 团队能够排除应用程序错误，而无需与您的团队来回沟通。
 
 **端点：** `POST beacon.langchain.com/v1/beacon/v1/logs`
 
@@ -403,7 +403,7 @@ config:
 </Info>
 
 ### 它的作用- 定期捕获聚合使用指标
-- 提供有关功能采用和平台增长的见解
+- 提供对功能采用和平台增长的深入了解
 - 帮助LangChain根据实际使用情况确定改进和新功能的优先级
 
 ### 我们收集什么
@@ -414,7 +414,7 @@ config:
 - **时间戳**：快照的时间范围（从/到 UTC 时间戳）
 
 <Info>
-所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户身份的信息。
+所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
 </Info>
 
 ### 负载示例
@@ -447,7 +447,7 @@ config:
 
 ### 如何禁用
 
-您可以通过在部署配置中设置以下环境变量来禁用使用遥测：
+您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
 
 ```yaml
 PHONE_HOME_USAGE_REPORTING_ENABLED: false
@@ -494,7 +494,7 @@ LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-egress.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

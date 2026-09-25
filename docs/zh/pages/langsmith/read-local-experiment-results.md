@@ -162,7 +162,7 @@ for result in results:
         print(f"  {eval_result.key}: {eval_result.score}")
 ```
 
-使用`blocking=True`，您的处理代码仅在所有评估完成后运行，从而避免与评估日志混合输出。有关在不上传结果的情况下运行评估的更多信息，请参阅[Run an evaluation locally](/langsmith/local)。
+使用`blocking=True`，您的处理代码仅在所有评估完成后运行，避免与评估日志混合输出。有关在不上传结果的情况下运行评估的更多信息，请参阅[Run an evaluation locally](/langsmith/local)。
 
 ## 相关
 
@@ -174,7 +174,7 @@ for result in results:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

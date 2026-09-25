@@ -76,7 +76,7 @@ helm version
 | `Contributor` |创建和管理所有 Azure 资源 |
 | `User Access Administrator` |为 Key Vault、Blob、cert-manager 托管身份创建角色分配 |
 
-`Owner` 包括两者。仅`Contributor`是不够的，因为角色分配需要用户访问管理员。
+`Owner` 包括两者。单独`Contributor` 是不够的，因为角色分配需要用户访问管理员。
 
 ### 验证
 
@@ -138,11 +138,11 @@ Terraform 提供以下 Azure 资源：|资源 |类型 |目的|
 |资源组| `azurerm_resource_group` |所有资源的容器 |
 |虚拟网络| `azurerm_virtual_network` |隔离网络（10.0.0.0/17）|
 | AKS 集群 | `azurerm_kubernetes_cluster` | Kubernetes，所有工作负载都在这里运行 |
-|入口控制器 |头盔|外部负载均衡器 + TLS 终止（默认为 nginx） |
+|入口控制器 |头盔|外部负载均衡器 + TLS 终止（默认为 nginx）|
 | PostgreSQL 灵活服务器 | `azurerm_postgresql_flexible_server` |组织配置，运行元数据（外部层）|
 | Azure 托管 Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) |跟踪摄取队列，发布/订阅（外部层）|
 | Blob 存储 | `azurerm_storage_account` |原始跟踪对象，始终需要 |
-|托管身份| `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
+|托管身份 | `azurerm_user_assigned_identity` |用于 Pod 到 Blob 身份验证的工作负载身份 |
 | Azure 密钥保管库 | `azurerm_key_vault` |存储所有 LangSmith 秘密 |
 |证书经理 |头盔|自动化 TLS 证书管理 |
 |科达|头盔|为工作人员提供事件驱动的自动缩放功能
@@ -286,7 +286,7 @@ terraform -chdir=infra output -raw storage_account_k8s_managed_identity_client_i
 |路径|命令 |何时使用 |
 |---|---|---|
 | Helm 路径_（默认）_ | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
-|地形路径 | `make init-app && make apply-app` | Helm 版本 + Kubernetes Secrets + 在 Terraform 状态下管理的 Workload Identity SA。最适合 GitOps 和 CI/CD 管道。 |
+|地形路径| `make init-app && make apply-app` | Helm 版本 + Kubernetes Secrets + 在 Terraform 状态下管理的 Workload Identity SA。最适合 GitOps 和 CI/CD 管道。 |
 
 ### Helm 路径（推荐）
 
@@ -395,7 +395,7 @@ kubectl get certificate -n langsmith   # READY: True
 helm list -n langsmith
 ```
 
-预期的 pod 状态（大约 5 分钟后全部运行）：
+预期的 Pod 状态（大约 5 分钟后全部运行）：
 
 ```txt
 langsmith-ace-backend-xxxxx              1/1   Running     0   5m
@@ -431,7 +431,7 @@ az keyvault secret show \
 4. (add-on files when enable_* flags are set)
 ```
 
-`helm/values/` 中的所有文件均被 gitignored（生成或包含实时机密）。源模板位于 `helm/values/examples/` 中并由 `make init-values` 复制。
+`helm/values/` 中的所有文件均被 gitignored（生成或包含实时机密）。源模板位于 `helm/values/examples/` 中，并由 `make init-values` 复制。
 
 ### 第 2 天运营
 
@@ -508,7 +508,7 @@ kubectl get crd | grep langchain
 kubectl get lgp -n langsmith
 ```
 
-预计：`langsmith-host-backend`、`langsmith-listener` 和 `langsmith-operator` 全部运行。 Pod 总数：约 20 个正在运行的作业 + 3 个已完成的作业。
+预期：`langsmith-host-backend`、`langsmith-listener` 和 `langsmith-operator` 全部运行。 Pod 总数：约 20 个正在运行的作业 + 3 个已完成的作业。
 
 KEDA 已与基础设施一起安装。使用 `enable_deployments = true`，操作员为每个代理部署的工作队列创建 KEDA `ScaledObject` 资源。 Worker Pod 在空闲时缩小到零，并根据 Redis 队列深度进行扩展。
 
@@ -552,7 +552,7 @@ kubectl get pods -n langsmith | grep agent-builder
 kubectl get lgp -n langsmith
 ```
 
-预期：3 个静态 Pod（工具服务器、触发器服务器、引导作业）+ 4 个动态 Pod。总数：~26 个豆荚。在 `make deploy` 之后，**Agent Builder** 部分会出现在 LangSmith UI 导航中。<Warning>
+预期：3 个静态 Pod（工具服务器、触发器服务器、引导作业）+ 4 个动态 Pod。总数：~26 个豆荚。在 `make deploy` 之后，**Agent Builder** 部分将出现在 LangSmith UI 导航中。<Warning>
 **在 `agentBootstrap` 完成后滚动前端。** `agentBootstrap` 作业创建前端为 Polly UI 读取的 `langsmith-polly-config` ConfigMap。如果引导完成时前端正在运行，Polly 将显示“无法连接到 LangGraph 服务器”。修复：
 
 ```bash
@@ -623,7 +623,7 @@ helm get values langsmith -n langsmith | grep -A3 insights
 </Warning>
 
 <Warning>
-**首次 Polly 启用后滚动前端。** 如果启用后 Polly UI 显示“无法连接到LangGraph 服务器”，则前端在引导 ConfigMap 准备就绪之前启动。修复：
+**首次启用 Polly 后滚动前端。** 如果启用后 Polly UI 显示“无法连接到LangGraph 服务器”，则前端在引导 ConfigMap 准备就绪之前启动。修复：
 
 ```bash
 kubectl rollout restart deployment langsmith-frontend -n langsmith
@@ -655,7 +655,7 @@ kubectl rollout restart deployment langsmith-frontend -n langsmith
 
 `dns_label` 为您提供免费的 Azure 子域 `<label>.<region>.cloudapp.azure.com`，无需域注册或 DNS 区域。 `deploy.sh` 自动标注正确的 LoadBalancer 服务。
 
-**快速入门默认值（HTTP，零设置）：**
+**快速启动默认值（HTTP，零设置）：**
 
 ```hcl
 dns_label              = "langsmith-prod"
@@ -702,7 +702,7 @@ create_dns_zone        = true
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

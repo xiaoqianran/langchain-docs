@@ -4,7 +4,7 @@
 
 # 混合动力
 
-Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在生产中部署和运行代理**。
+Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**在生产中部署和运行代理**。
 
 在混合平台设置中，您在自己的基础设施中自行托管 [Agent Servers](/langsmith/agent-server) 并将其跟踪发送到 LangSmith，其中 LangSmith 可以是 [self-hosted](/langsmith/self-hosted) 实例或 [LangSmith Cloud](/langsmith/cloud)。
 
@@ -18,7 +18,7 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在�
 | LangSmith <br></br>(追踪、评估、提示) |在您的基础设施中自托管，或LangSmith SaaS |您（自托管）或LangSmith (SaaS) |
 
 <Note>
-Hybrid 是用于LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
+Hybrid 是一个用于LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
 </Note>
 
 ## 工作流程
@@ -72,7 +72,7 @@ Hybrid 是用于LangSmith 部署（代理服务）的平台设置。要仅为可
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

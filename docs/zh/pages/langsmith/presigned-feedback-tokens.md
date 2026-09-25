@@ -88,7 +88,7 @@ const token = await client.createPresignedFeedbackToken(runId, "user_score", {
 
 </CodeGroup>
 
-### 约束反馈值通过 `feedback_config` 来限制客户端可以提交的值。这对于执行特定的反馈模式非常有用（例如，赞成/反对、1-5 颗星或分类标签）：
+### 约束反馈值通过 `feedback_config` 来限制客户端可以提交的值。这对于实施特定的反馈模式非常有用（例如，赞成/反对、1-5 颗星或分类标签）：
 
 <CodeGroup>
 
@@ -152,7 +152,7 @@ for token in tokens:
 
 一旦您拥有预签名的 URL，您的前端代码或电子邮件客户端就会通过向其发送 `POST` 或 `GET` 请求来提交反馈。 URL 不需要 API 密钥或身份验证，因为令牌提供授权。
 
-默认情况下，预签名 URL 反馈将基本保留跟踪扩展到扩展保留。预签名 URL 没有选择退出参数。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
+默认情况下，预签名 URL 反馈将基本保留跟踪扩展为延长保留。预签名 URL 没有选择退出参数。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ### POST 请求
 
@@ -247,7 +247,7 @@ for await (const token of client.listPresignedFeedbackTokens(runId)) {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/presigned-feedback-tokens.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -897,16 +897,16 @@
       "translatedAt": "2026-08-22T09:17:16.884Z"
     },
     "langsmith/engine-self-hosted.md": {
-      "hash": "14a3f5ee649a37a875edab29a1e9983b3f377c6d",
-      "translatedAt": "2026-09-24T13:57:11.734Z"
+      "hash": "3718e402f1e29f57743de81c66f754e3dbe46cf4",
+      "translatedAt": "2026-09-25T14:16:31.013Z"
     },
     "langsmith/deploy-self-hosted-full-platform.md": {
       "hash": "1ab203200576bbedb3a1f7dfc46defe7049280fb",
       "translatedAt": "2026-09-24T13:56:46.832Z"
     },
     "langsmith/engine-security.md": {
-      "hash": "4e1a3d38b22289a3afcf2fb013e528d45394e869",
-      "translatedAt": "2026-09-24T13:57:06.171Z"
+      "hash": "c7c8a02e21f84a7be4c53b744fac6252f54b21c3",
+      "translatedAt": "2026-09-25T14:16:28.836Z"
     },
     "langsmith/enqueue-concurrent.md": {
       "hash": "67bbb38efdecc8f94a73b13604011efb7b1a4b6c",
@@ -937,8 +937,8 @@
       "translatedAt": "2026-09-24T13:57:32.591Z"
     },
     "langsmith/engine.md": {
-      "hash": "84810d092d799a3dfbe30311f4489902b3f8e5bd",
-      "translatedAt": "2026-09-24T13:57:29.203Z"
+      "hash": "280249e5c99eafa0d7e58f4b9117456b5b939cf7",
+      "translatedAt": "2026-09-25T14:16:58.062Z"
     },
     "langsmith/evaluate-graph.md": {
       "hash": "ed44a32c08f9cbb57049c783c690e825d2149ccc",
@@ -1089,928 +1089,928 @@
       "translatedAt": "2026-09-24T13:58:24.308Z"
     },
     "langsmith/fleet/remote-mcp-servers.md": {
-      "hash": "d1442037e403d17cdca661ba2825f0dd2a267418",
-      "translatedAt": "2026-08-16T09:21:42.692Z"
+      "hash": "47742be5dc2916a58e922094422b94e2e9c59f9b",
+      "translatedAt": "2026-09-25T14:16:31.939Z"
     },
     "langsmith/fleet/schedules.md": {
       "hash": "4abe9c1a5ca560e2213769af607c99c480f55afc",
       "translatedAt": "2026-09-24T13:58:33.438Z"
     },
     "langsmith/fleet/self-hosted-link.md": {
-      "hash": "053e35fe91612a0f77adee90b5e7ec190474b6d2",
-      "translatedAt": "2026-08-16T09:21:43.063Z"
+      "hash": "228c1b993b4ca98adf4f6929f5bd04d9457aed72",
+      "translatedAt": "2026-09-25T14:16:33.167Z"
     },
     "langsmith/fleet/salesforce.md": {
-      "hash": "b55d3666a588ebb514c9338a24e5a00f910d3fa2",
-      "translatedAt": "2026-08-16T09:21:43.822Z"
+      "hash": "f5403749bc10e78cad4158e1e14c9d104eb2f81f",
+      "translatedAt": "2026-09-25T14:16:34.056Z"
     },
     "langsmith/fleet/templates.md": {
-      "hash": "3efbf29256a1c4004f691116cffaf6618e996c6d",
-      "translatedAt": "2026-08-16T09:21:47.948Z"
+      "hash": "1369fd33bf93028f827176e2e682ac35ac446364",
+      "translatedAt": "2026-09-25T14:16:41.479Z"
     },
     "langsmith/fleet/teams-app.md": {
-      "hash": "f7807da305a68f271d27606aee77d5c9e8a58832",
-      "translatedAt": "2026-08-29T14:04:10.417Z"
+      "hash": "99a284b5b7811513817895957c400088d9493c05",
+      "translatedAt": "2026-09-25T14:16:40.103Z"
     },
     "langsmith/fleet/skills.md": {
-      "hash": "5721af0648492fc6f4a62ee0c947b1b04953fcb8",
-      "translatedAt": "2026-08-16T09:21:46.773Z"
+      "hash": "44750cf88743de438bde911234244e50a66f893b",
+      "translatedAt": "2026-09-25T14:16:36.474Z"
     },
     "langsmith/fleet/tools.md": {
-      "hash": "480e76613f4e548b8adb394e7fa9796192730fef",
-      "translatedAt": "2026-08-16T09:21:49.985Z"
+      "hash": "59a27e9fee65c6f34dcd091ea720eec825d3f8bd",
+      "translatedAt": "2026-09-25T14:16:44.422Z"
     },
     "langsmith/fleet/webhooks.md": {
-      "hash": "6f1b43b20c48f0f0ba3334742f56b55988177331",
-      "translatedAt": "2026-08-16T09:21:49.637Z"
+      "hash": "fbff0b4c0fa940bfafc8eda526c77d74e1041fc4",
+      "translatedAt": "2026-09-25T14:16:44.198Z"
     },
     "langsmith/fleet/workspace-admin.md": {
-      "hash": "9d60f3c8f44d9fb4c2f90d845228f068b5d59f4b",
-      "translatedAt": "2026-08-16T09:21:51.071Z"
+      "hash": "b8c3db6724d5fc4857f56be155bc428966f0f667",
+      "translatedAt": "2026-09-25T14:16:47.148Z"
     },
     "langsmith/gcp-self-hosted.md": {
-      "hash": "d3bd739ae68a047146d12d1c44877c7d813b4567",
-      "translatedAt": "2026-09-05T12:12:35.289Z"
+      "hash": "49912da72d6c2e81a95897d4f1f6ffbc1a1842fd",
+      "translatedAt": "2026-09-25T14:16:48.430Z"
     },
     "langsmith/fleet/slack-app.md": {
-      "hash": "45594c4d3f3828bbce645812fb2ba4dd14420905",
-      "translatedAt": "2026-08-16T09:21:49.654Z"
+      "hash": "8a57f9b62216fd29e73fbd854400d6f8b6135dab",
+      "translatedAt": "2026-09-25T14:16:41.997Z"
     },
     "langsmith/handle-model-rate-limiting.md": {
-      "hash": "0828caaf84c0e2127aa25638d77c8ab46827a6e7",
-      "translatedAt": "2026-08-16T09:21:54.887Z"
+      "hash": "be583eb3ccf626105aedf44f45c233865748ce80",
+      "translatedAt": "2026-09-25T14:16:54.620Z"
     },
     "langsmith/generative-ui-react.md": {
-      "hash": "7279f9243b9d7df80875651a362f3713f1c67fbf",
-      "translatedAt": "2026-09-08T13:09:05.684Z"
+      "hash": "2e1804df527524b69a00101bdf35f4f92020cb7c",
+      "translatedAt": "2026-09-25T14:16:49.249Z"
     },
     "langsmith/human-in-the-loop-time-travel.md": {
-      "hash": "5fcd8710776929c11ffe07db711af3a9c08be535",
-      "translatedAt": "2026-08-29T14:04:11.883Z"
+      "hash": "1123ba41bbdb8ea096fab311f4d370920471db10",
+      "translatedAt": "2026-09-25T14:16:56.118Z"
     },
     "langsmith/graph-rebuild.md": {
-      "hash": "3f2bb451044b4dcd6d3959f23399e0fd96c68767",
-      "translatedAt": "2026-08-16T09:21:55.410Z"
+      "hash": "76ba600fce0a41a099eda7d62d1169d33a093180",
+      "translatedAt": "2026-09-25T14:16:53.226Z"
     },
     "langsmith/hybrid.md": {
-      "hash": "f7e925e5ac1d588c8616b816fea222781817752a",
-      "translatedAt": "2026-08-16T09:21:58.937Z"
+      "hash": "2bda05c11f9642db1d86bf92c8b12faa811d9750",
+      "translatedAt": "2026-09-25T14:16:59.925Z"
     },
     "langsmith/granular-usage.md": {
-      "hash": "b023109b7f37080a77f8d5473c6f64c508728c68",
-      "translatedAt": "2026-08-16T09:21:57.365Z"
+      "hash": "29c7aeb45bfb3850cba7ff07931e63eb745e0e7e",
+      "translatedAt": "2026-09-25T14:16:54.921Z"
     },
     "langsmith/harbor-integrations.md": {
-      "hash": "80ea7c890318180b37f73d84294b3c21c00fb8fc",
-      "translatedAt": "2026-09-16T13:49:42.232Z"
+      "hash": "593c9d8ec1ebdf77f586d3d13ba63d8ef940403b",
+      "translatedAt": "2026-09-25T14:17:02.076Z"
     },
     "langsmith/hybrid-legacy.md": {
-      "hash": "1561cc95a2c078b04f7403840bacb7f0bfbe71d7",
-      "translatedAt": "2026-08-16T09:22:04.050Z"
+      "hash": "7ea17ec8bb1bc2aa861811bb28a858b0c0b81ba3",
+      "translatedAt": "2026-09-25T14:17:04.006Z"
     },
     "langsmith/integrations.md": {
-      "hash": "8d7a9113b7e85f64ef962c50796bf917bd806365",
-      "translatedAt": "2026-08-16T09:22:04.201Z"
+      "hash": "3b0e2e67b8a72438c7ffaed466a01946e44df04e",
+      "translatedAt": "2026-09-25T14:17:06.769Z"
     },
     "langsmith/interrupt-concurrent.md": {
-      "hash": "54b3b595847d9f3627134ccfbb3f6bdd8a836682",
-      "translatedAt": "2026-08-16T09:22:04.702Z"
+      "hash": "2474c680e49c1a848d7851ee393dc39079c47b87",
+      "translatedAt": "2026-09-25T14:17:05.985Z"
     },
     "langsmith/improve-judge-evaluator-feedback.md": {
-      "hash": "50e81d6f67ca7198a08873d18622c670a4106f0e",
-      "translatedAt": "2026-08-16T09:22:04.238Z"
+      "hash": "77f48a945c85abfeb3b85f0bb2efe0d315d01c56",
+      "translatedAt": "2026-09-25T14:17:04.646Z"
     },
     "langsmith/javascript/managed-deep-agents-channels.md": {
-      "hash": "d1b4099e95fb04e05582e39673783869d6e6f10e",
-      "translatedAt": "2026-08-27T19:20:10.998Z"
+      "hash": "c4f204a234a693aea99ca9821f413d67f3de6dbc",
+      "translatedAt": "2026-09-25T14:17:16.447Z"
     },
     "langsmith/javascript/managed-deep-agents-agent-definition.md": {
-      "hash": "11bd1a0d95988c40b63785a516297d3cad282086",
-      "translatedAt": "2026-09-12T12:29:46.853Z"
+      "hash": "9376d9f970f7965842495f7a831717e1d5dd8eb5",
+      "translatedAt": "2026-09-25T14:17:07.666Z"
     },
     "langsmith/insights.md": {
-      "hash": "7e5a3a7252ca8075eb2a42996073671a8b0268e6",
-      "translatedAt": "2026-08-16T09:22:08.000Z"
+      "hash": "eeea3c8b071bd78fd43dc1b3e3aa708f51495309",
+      "translatedAt": "2026-09-25T14:17:11.706Z"
     },
     "langsmith/javascript/managed-deep-agents-deploy.md": {
-      "hash": "8cadeba13e7bb48d35181c206cccf22d3373bd25",
-      "translatedAt": "2026-09-16T13:49:38.830Z"
+      "hash": "31cd162017c41676a3188f29ba48ebffabfac72f",
+      "translatedAt": "2026-09-25T14:17:20.981Z"
     },
     "langsmith/javascript/managed-deep-agents-channels-slack.md": {
-      "hash": "c67df7007c52899252f91c95a06dd63d76aaec0b",
-      "translatedAt": "2026-09-03T13:05:41.960Z"
+      "hash": "a77aaa5b1566c217ed6fdd86b8d2244da6449e71",
+      "translatedAt": "2026-09-25T14:17:14.981Z"
     },
     "langsmith/javascript/managed-deep-agents-identity.md": {
-      "hash": "f105bcb7cff691706b6aaba76eec67d3e38217fe",
-      "translatedAt": "2026-09-12T12:29:49.009Z"
+      "hash": "814903f7e846d78e9a93f18e2c4a830acb678b1f",
+      "translatedAt": "2026-09-25T14:17:25.072Z"
     },
     "langsmith/javascript/managed-deep-agents-evals.md": {
-      "hash": "d91808be4b278ac3dc24a77c6ce2edd3060de9a4",
-      "translatedAt": "2026-09-11T13:06:01.205Z"
+      "hash": "d91f6b8b8928721a555b8fc4b236d6169dfeac68",
+      "translatedAt": "2026-09-25T14:17:23.834Z"
     },
     "langsmith/javascript/managed-deep-agents-instructions.md": {
-      "hash": "37934dbd9551cc5847c7335dee51ffe6571aecd0",
-      "translatedAt": "2026-09-16T13:49:40.392Z"
+      "hash": "3cc3807ff14f9728945bb5d24e317115571a3337",
+      "translatedAt": "2026-09-25T14:17:24.930Z"
     },
     "langsmith/javascript/managed-deep-agents-local-development.md": {
-      "hash": "c59544b624e7d6655d0d2f20f876f335cb4a5258",
-      "translatedAt": "2026-09-16T13:49:41.845Z"
+      "hash": "0eb094cb907430ad57b900fa52a336dc08a33f05",
+      "translatedAt": "2026-09-25T14:17:25.918Z"
     },
     "langsmith/javascript/managed-deep-agents-middleware.md": {
-      "hash": "201ea4f29c16c3c36c6e900dc3ba372b818741b7",
-      "translatedAt": "2026-09-12T12:29:53.510Z"
+      "hash": "403b71d82972477a0139e01435d818e33583db51",
+      "translatedAt": "2026-09-25T14:17:29.595Z"
     },
     "langsmith/javascript/managed-deep-agents-memory.md": {
-      "hash": "62a91f844002065f10269b37bd272a1606320b66",
-      "translatedAt": "2026-09-16T13:49:44.932Z"
+      "hash": "01e19d3a47f7e50411c4d5134a940b318a88b88e",
+      "translatedAt": "2026-09-25T14:17:33.716Z"
     },
     "langsmith/javascript/managed-deep-agents-project-structure.md": {
-      "hash": "906798a3b2a23ae8b50ea52640f60808edc8fdbe",
-      "translatedAt": "2026-09-16T13:49:46.495Z"
+      "hash": "71d8af9f9bdc3cb68f70865d3e33c8806b2971d5",
+      "translatedAt": "2026-09-25T14:17:32.040Z"
     },
     "langsmith/javascript/managed-deep-agents-sandboxes.md": {
-      "hash": "6dced5abe7cd083ff674c731f1684a210fe03d42",
-      "translatedAt": "2026-09-12T12:29:57.992Z"
+      "hash": "930030491d2d05db2260f69e9bbc94b9cf1f758c",
+      "translatedAt": "2026-09-25T14:17:37.657Z"
     },
     "langsmith/javascript/managed-deep-agents-cli.md": {
-      "hash": "c839d12485e66641bda9addaea778a4856ee64f3",
-      "translatedAt": "2026-09-16T13:49:42.833Z"
+      "hash": "c53badc089c617ee1f67fa59e925f9118b869cd7",
+      "translatedAt": "2026-09-25T14:17:23.836Z"
     },
     "langsmith/javascript/managed-deep-agents-skills.md": {
-      "hash": "bd0f7103751550ff49399bdcd4b654d71971d570",
-      "translatedAt": "2026-09-16T13:49:46.440Z"
+      "hash": "abe4186c263356851367b138a71227f302874282",
+      "translatedAt": "2026-09-25T14:17:37.659Z"
     },
     "langsmith/javascript/managed-deep-agents.md": {
-      "hash": "ae4e7f554e66ce84fd008402f6f0b56da1dc781e",
-      "translatedAt": "2026-08-16T09:22:18.212Z"
+      "hash": "f112950ee4080925e7d8441dbd66d300a6d3c0c4",
+      "translatedAt": "2026-09-25T14:17:38.170Z"
     },
     "langsmith/javascript/managed-deep-agents-schedules.md": {
-      "hash": "02efa18e63bf3c9dbaa4797892924663360e4422",
-      "translatedAt": "2026-09-01T13:47:19.512Z"
+      "hash": "83934ade70921abc6dcb5c9e5da3f9c6c0baaf0a",
+      "translatedAt": "2026-09-25T14:17:37.077Z"
     },
     "langsmith/javascript/managed-deep-agents-tools.md": {
-      "hash": "683d01feada840187bd2f2d99d01e339ffc88ed1",
-      "translatedAt": "2026-09-16T13:49:49.705Z"
+      "hash": "59c449e8de3728a208c90e4b34c8762953208e90",
+      "translatedAt": "2026-09-25T14:17:38.963Z"
     },
     "langsmith/javascript/managed-deep-agents-tutorial.md": {
-      "hash": "4942eede3d7cb91f31b2096e9ecbed466d7e18ba",
-      "translatedAt": "2026-09-01T13:47:23.745Z"
+      "hash": "845eb7ddfdc8ac72a22f48d367b6b437eef411a3",
+      "translatedAt": "2026-09-25T14:17:39.514Z"
     },
     "langsmith/langchain-runnable.md": {
-      "hash": "b0735cf2832d7c6417d335c0e803d96413b1e1c6",
-      "translatedAt": "2026-08-16T09:22:20.048Z"
+      "hash": "61c4c579973362646ad287c25bc6a89d9c3489a6",
+      "translatedAt": "2026-09-25T14:17:40.045Z"
     },
     "langsmith/langgraph-js-ts-sdk.md": {
-      "hash": "5f94fc0db43db8585b31823e2d44db1b53c8bd68",
-      "translatedAt": "2026-08-16T09:22:20.381Z"
+      "hash": "93e56177860b271c865ecc4e872eec2753065978",
+      "translatedAt": "2026-09-25T14:17:40.565Z"
     },
     "langsmith/langgraph-python-sdk.md": {
-      "hash": "dc610a651e9a5d1491860e25dc1d2420de1b0454",
-      "translatedAt": "2026-08-16T09:22:20.785Z"
+      "hash": "f4b5476eb45a1bb18586b5821f8f25d21c34852c",
+      "translatedAt": "2026-09-25T14:17:40.719Z"
     },
     "langsmith/langsmith-collector.md": {
-      "hash": "f571d1cd55ede9768e523d4d2c5c7f4bb13e945b",
-      "translatedAt": "2026-08-16T09:22:24.326Z"
+      "hash": "d1febd96043ce5dd68562bbe5e9e06477436c262",
+      "translatedAt": "2026-09-25T14:17:43.560Z"
     },
     "langsmith/jit-invite-sso.md": {
-      "hash": "e1a0e273744d8cd79024d067eb585845b3e19479",
-      "translatedAt": "2026-09-11T13:06:06.811Z"
+      "hash": "c701db044bb66a4661e0fadbb8c05bec5e435fff",
+      "translatedAt": "2026-09-25T14:17:41.742Z"
     },
     "langsmith/kubernetes.md": {
-      "hash": "5fcdc18a90e0246995cbbb2988222e0bf1b74f18",
-      "translatedAt": "2026-09-08T13:09:11.280Z"
+      "hash": "a17c115ec8259dbe8d9f76ae1c349447a4f69720",
+      "translatedAt": "2026-09-25T14:17:44.126Z"
     },
     "langsmith/langsmith-cli.md": {
-      "hash": "1ca66525cd597c91ea3b940c63789f022d12bbd0",
-      "translatedAt": "2026-08-19T09:21:51.946Z"
+      "hash": "a6053f32e6aa47e61393da906825664dcc32332b",
+      "translatedAt": "2026-09-25T14:17:45.151Z"
     },
     "langsmith/llm-as-judge-sdk.md": {
-      "hash": "58155dd2fed490b465f3544d767bf94a6aa768a7",
-      "translatedAt": "2026-08-16T09:22:31.284Z"
+      "hash": "dbf7946bd0ba84df9e4067bcb93f83d8b2f2680d",
+      "translatedAt": "2026-09-25T14:17:50.647Z"
     },
     "langsmith/langsmith-managed-clickhouse.md": {
-      "hash": "ba4813f96b437b63a40de91accf80d0c4aa712a2",
-      "translatedAt": "2026-08-16T09:22:30.434Z"
+      "hash": "5e4bd9b87aac41cb75cbf63cf3828a47350375bb",
+      "translatedAt": "2026-09-25T14:17:50.255Z"
     },
     "langsmith/langsmith-mcp-server.md": {
-      "hash": "2b2fe512243e5bdc55067805142f755dc152d970",
-      "translatedAt": "2026-08-16T09:22:28.533Z"
+      "hash": "15ef8f24f949ff379bac05226f510cb7475753c4",
+      "translatedAt": "2026-09-25T14:17:47.593Z"
     },
     "langsmith/langsmith-remote-mcp.md": {
-      "hash": "9ae6202617a6854a9c541868e83c59253d953e68",
-      "translatedAt": "2026-08-16T09:22:30.495Z"
+      "hash": "312ce11571e7e10cb824d012b1f696650117adab",
+      "translatedAt": "2026-09-25T14:17:51.370Z"
     },
     "langsmith/llm-as-judge.md": {
-      "hash": "56b63e3034008d6f959be3f791432de722ddb097",
-      "translatedAt": "2026-08-22T09:17:24.966Z"
+      "hash": "4aaf49f972676d5d1e5871f71246abcab735c49c",
+      "translatedAt": "2026-09-25T14:17:53.751Z"
     },
     "langsmith/llm-gateway-admin-setup.md": {
-      "hash": "5b47a19fc3b1553dec250a613b955f6128c90934",
-      "translatedAt": "2026-09-22T13:45:04.397Z"
+      "hash": "f5e9ac7f4e1936f5957ab56e29553c054a4e4514",
+      "translatedAt": "2026-09-25T14:17:56.717Z"
     },
     "langsmith/llm-gateway-access.md": {
-      "hash": "8c8f295c3903d06b0d2d85b919c12b276bff568f",
-      "translatedAt": "2026-09-18T13:14:48.938Z"
+      "hash": "33711e153587808afd918578ecdb7fdf25d71db8",
+      "translatedAt": "2026-09-25T14:17:57.107Z"
     },
     "langsmith/llm-gateway-api-formats.md": {
-      "hash": "f2aa61642a173acaefe650a8ade35a6f292c458b",
-      "translatedAt": "2026-09-18T13:14:54.688Z"
+      "hash": "69c572c402242d66be7c09df80398c5c096d5673",
+      "translatedAt": "2026-09-25T14:17:59.545Z"
     },
     "langsmith/llm-gateway-coding-agents.md": {
-      "hash": "5a409f20c89043413428d3cd904cdb0d1862ff2d",
-      "translatedAt": "2026-09-18T13:15:00.913Z"
+      "hash": "ec32011b88de86c8702d4a61ac4306755bf7893d",
+      "translatedAt": "2026-09-25T14:18:02.820Z"
     },
     "langsmith/llm-gateway-credits.md": {
-      "hash": "a599f8fbdc1f170c4857e8ed77792b7a5fbaa550",
-      "translatedAt": "2026-09-21T15:26:35.697Z"
+      "hash": "a7de53665e05a5f649463b5aebe30a073efad1f4",
+      "translatedAt": "2026-09-25T14:18:01.244Z"
     },
     "langsmith/llm-gateway-direct-model-access.md": {
-      "hash": "6904be25ba0ae944905b51ee58d10423c2d09512",
-      "translatedAt": "2026-09-18T13:15:01.367Z"
+      "hash": "08ab5c4ab8e6972cc5f6539e2b7c48ae2f454081",
+      "translatedAt": "2026-09-25T14:18:04.863Z"
     },
     "langsmith/llm-gateway-custom-providers.md": {
       "hash": "5062c9a812de390cb8e6f4a7db01f49cf63da120",
       "translatedAt": "2026-09-11T13:06:08.189Z"
     },
     "langsmith/llm-auth-proxy-self-hosted.md": {
-      "hash": "79b90f52700e014964890e5a379d02f80eb90895",
-      "translatedAt": "2026-09-09T13:14:38.984Z"
+      "hash": "754b6d4b34bd3970e5b317fb29178d7105befdbf",
+      "translatedAt": "2026-09-25T14:18:01.248Z"
     },
     "langsmith/llm-gateway-data-protection.md": {
       "hash": "95693e3fc4cf6160c3e313b34bcc926e1c771c89",
       "translatedAt": "2026-08-16T09:22:41.979Z"
     },
     "langsmith/llm-gateway-monitoring.md": {
-      "hash": "279a4a0009f15e74864999fb1fbb20c0fa54c5d4",
-      "translatedAt": "2026-09-18T13:15:11.698Z"
+      "hash": "a185f0bae6b1bc24f3fd91c9fea9ab8df586445e",
+      "translatedAt": "2026-09-25T14:18:12.398Z"
     },
     "langsmith/llm-gateway-header-policies.md": {
-      "hash": "77ece9c33192b08e3fef736263faf0a1ef4f3258",
-      "translatedAt": "2026-09-18T13:15:09.073Z"
+      "hash": "fa71a999c55a2fee98d94078f36142f7792be266",
+      "translatedAt": "2026-09-25T14:18:09.773Z"
     },
     "langsmith/llm-gateway-fallbacks.md": {
-      "hash": "7383c3da4213c21a36f17f7ac09d7e292588116d",
-      "translatedAt": "2026-09-23T13:56:47.928Z"
+      "hash": "8af0477893e3cb9cba4e5a7d31c07a7846920e8e",
+      "translatedAt": "2026-09-25T14:18:07.903Z"
     },
     "langsmith/llm-gateway-rate-limit-policies.md": {
-      "hash": "97f6d5df58bb6d5cc8fc0c99f402102680fb5530",
-      "translatedAt": "2026-09-18T13:15:16.293Z"
+      "hash": "f7ba37325605be2179028992db6d257ffa95a227",
+      "translatedAt": "2026-09-25T14:18:13.586Z"
     },
     "langsmith/local.md": {
-      "hash": "6bb353648452c68cda9b3c09cc23e806d8f87ac2",
-      "translatedAt": "2026-08-16T09:22:51.648Z"
+      "hash": "c50872d6fc702ab10585908db4f6416fca9f49c6",
+      "translatedAt": "2026-09-25T14:18:15.163Z"
     },
     "langsmith/llm-gateway.md": {
-      "hash": "559a3426afed521287c1ef3f9c2e5822a67ad0a7",
-      "translatedAt": "2026-09-18T13:15:15.260Z"
+      "hash": "30c4138a58fdfa9991a3946511c41a40aae35d5f",
+      "translatedAt": "2026-09-25T14:18:14.002Z"
     },
     "langsmith/log-multimodal-traces.md": {
-      "hash": "4313f9b46bcb25e2cc5b14183d20eaaac64933b8",
-      "translatedAt": "2026-08-16T09:22:52.429Z"
+      "hash": "88dc111283bf3de59c97cf9e20db88244a1bd22e",
+      "translatedAt": "2026-09-25T14:18:15.998Z"
     },
     "langsmith/llm-gateway-spend-policies.md": {
-      "hash": "c25ebb0ef71d4b4b7d07e3f1e41ee02f583f997d",
-      "translatedAt": "2026-09-18T13:15:15.911Z"
+      "hash": "8457f09780b7e3eb7048ce3bedbdb3864ae9b1cd",
+      "translatedAt": "2026-09-25T14:18:14.568Z"
     },
     "langsmith/log-retriever-trace.md": {
-      "hash": "9c1f065e08dd96194d5cf45df4f3325a0a51f8c9",
-      "translatedAt": "2026-08-16T09:22:53.942Z"
+      "hash": "c4f42eaa97d34f0960982b34d368048d01112d1f",
+      "translatedAt": "2026-09-25T14:18:17.861Z"
     },
     "langsmith/local-dev-testing.md": {
-      "hash": "125ff523fd609692d3228552be9f2e9c1838aefb",
-      "translatedAt": "2026-08-16T09:22:54.605Z"
+      "hash": "6b046b8e0cfeb3c06ba88868f6d883afb7b08a74",
+      "translatedAt": "2026-09-25T14:18:21.003Z"
     },
     "langsmith/log-traces-to-project.md": {
-      "hash": "27a91c4c5127bd5813bbd99560e1bfd22b2e360f",
-      "translatedAt": "2026-09-11T13:06:19.544Z"
+      "hash": "b786d57b5752d83962d64d307bc19ea895bb23e9",
+      "translatedAt": "2026-09-25T14:18:24.237Z"
     },
     "langsmith/log-llm-trace.md": {
-      "hash": "0de0007b4a9b1d05e150b8fabc42e5b9440dfbc4",
-      "translatedAt": "2026-09-22T13:45:08.111Z"
+      "hash": "223bf8ed2e645184eb8c3f74a5724db19f0138c4",
+      "translatedAt": "2026-09-25T14:18:20.325Z"
     },
     "langsmith/manage-datasets-programmatically.md": {
-      "hash": "0d92d3e7d16a13feaf438239d7c31399eb345d45",
-      "translatedAt": "2026-08-16T09:23:00.858Z"
+      "hash": "9b485494ce59ad57a6bb5b0ac1bb96787571433e",
+      "translatedAt": "2026-09-25T14:18:29.464Z"
     },
     "langsmith/manage-contexts-sdk.md": {
-      "hash": "88ef5ed7ced88e3947269ee54a3f9d4ffe84666d",
-      "translatedAt": "2026-08-16T09:22:59.053Z"
+      "hash": "8a511a9d50ec17eaf1ea6acf19e86f50462f118b",
+      "translatedAt": "2026-09-25T14:18:26.414Z"
     },
     "langsmith/manage-datasets-in-application.md": {
-      "hash": "a73c18a7dff780a35bdbf26c9695f41987c4336b",
-      "translatedAt": "2026-09-18T13:15:28.644Z"
+      "hash": "5f948d118ad0dc7dae3fde72ee64d5b0e87cde15",
+      "translatedAt": "2026-09-25T14:18:30.073Z"
     },
     "langsmith/ls-metadata-parameters.md": {
-      "hash": "05d8e67f7223d844e3706e9ab31f15b8c5f65d29",
-      "translatedAt": "2026-09-22T13:45:13.560Z"
+      "hash": "c8a23e080254e5b28011ea8e7ddbb566fc9bb8b0",
+      "translatedAt": "2026-09-25T14:18:30.320Z"
     },
     "langsmith/manage-organization-by-api.md": {
-      "hash": "74f4fb73e1ed839b4f8943d299fd9517ea2a4a26",
-      "translatedAt": "2026-08-16T09:23:06.453Z"
+      "hash": "5a778f38680a2f6bb49f3aef849110920024b268",
+      "translatedAt": "2026-09-25T14:18:34.330Z"
     },
     "langsmith/manage-datasets.md": {
-      "hash": "7b6714524bda2d6a56d7c61cc2f9d7b0b239fe71",
-      "translatedAt": "2026-08-16T09:23:04.460Z"
+      "hash": "146ec06a70956d8db43d8546e688a09e964305e2",
+      "translatedAt": "2026-09-25T14:18:33.106Z"
     },
     "langsmith/manage-evaluators-sdk.md": {
-      "hash": "db8d3c8568c147cfe46d2f8d7504376302564160",
-      "translatedAt": "2026-08-16T09:23:04.892Z"
+      "hash": "b1f7f6e533c621f18c9c1a0e25c20dccd2326fd7",
+      "translatedAt": "2026-09-25T14:18:34.056Z"
     },
     "langsmith/manage-with-terraform.md": {
-      "hash": "bccbb8eab371ba39b8854d37cd95270195f44b94",
-      "translatedAt": "2026-08-16T09:23:10.674Z"
+      "hash": "62e592d260edf4bf776a7bd61ecc45aa6a75812c",
+      "translatedAt": "2026-09-25T14:18:38.014Z"
     },
     "langsmith/manage-trace.md": {
-      "hash": "feac7dccb617f103975818e475017b3bf088fee8",
-      "translatedAt": "2026-09-11T13:06:16.952Z"
+      "hash": "70ae6836a26be373b0c93878007be7a9cd39927b",
+      "translatedAt": "2026-09-25T14:18:35.895Z"
     },
     "langsmith/managing-model-configurations.md": {
-      "hash": "f4ae7275ddbfbbb7b04b7e52bffcafbdcfcec4f3",
-      "translatedAt": "2026-08-16T09:23:12.496Z"
+      "hash": "d37676e6e9c1feb6929d2a9e1ee00fd26be4f54c",
+      "translatedAt": "2026-09-25T14:18:40.629Z"
     },
     "langsmith/manage-prompts-programmatically.md": {
-      "hash": "a977cc3945c7336fbb24e024eaa9a425c3f4525d",
-      "translatedAt": "2026-09-18T13:15:31.863Z"
+      "hash": "ad7dcda0fd2321e8867057a8d39257f630f9efcf",
+      "translatedAt": "2026-09-25T14:18:38.061Z"
     },
     "langsmith/metric-type.md": {
-      "hash": "bf402a709044a33ab467b30ecd3fbb294bdcc719",
-      "translatedAt": "2026-08-16T09:23:12.764Z"
+      "hash": "a62ee7f461a10a6f1cbeed93e1c8124f6f2fdf6e",
+      "translatedAt": "2026-09-25T14:18:39.147Z"
     },
     "langsmith/manage-prompts.md": {
-      "hash": "23998aacb8ba641f41be663cdd9af94748245280",
-      "translatedAt": "2026-08-16T09:23:08.692Z"
+      "hash": "25253ea56b70368efd56574985506e740127f285",
+      "translatedAt": "2026-09-25T14:18:38.794Z"
     },
     "langsmith/monorepo-support.md": {
-      "hash": "bd45cc084569b6a6405df1fa7d4268e50b45c779",
-      "translatedAt": "2026-08-16T09:23:17.628Z"
+      "hash": "edb42ab7344a57dae7fe5e412f35298fd6a567fe",
+      "translatedAt": "2026-09-25T14:18:43.965Z"
     },
     "langsmith/messages-view-integrations.md": {
       "hash": "73b9a529a4f552b6045959811a0f35e9dc240f22",
       "translatedAt": "2026-08-16T09:23:15.214Z"
     },
     "langsmith/mask-inputs-outputs.md": {
-      "hash": "fda0697311bc6ae9996951ecab9c483eeb31a210",
-      "translatedAt": "2026-08-27T19:20:27.580Z"
+      "hash": "4de945266e472f2d843bab8b887d88a6181d37d9",
+      "translatedAt": "2026-09-25T14:18:46.695Z"
     },
     "langsmith/multimodal-content.md": {
-      "hash": "a6df2ee13a001c696a17350a7b4735fc68dae0ac",
-      "translatedAt": "2026-08-16T09:23:19.182Z"
+      "hash": "8173e3a817accb526b6dd4bc92c26f42ad775c1b",
+      "translatedAt": "2026-09-25T14:18:48.648Z"
     },
     "langsmith/multiple-messages.md": {
-      "hash": "54f2fda1e178f0727e742cea11f6a9574831da6d",
-      "translatedAt": "2026-08-16T09:23:20.530Z"
+      "hash": "9a798db3dff5f3d3822321bcb0c5f0b13d836b51",
+      "translatedAt": "2026-09-25T14:18:50.722Z"
     },
     "langsmith/multiple-scores.md": {
-      "hash": "c7ba5b112c8cf150717c07755fdb457fce790d54",
-      "translatedAt": "2026-08-16T09:23:21.077Z"
+      "hash": "b3736baafe0938b43fb676358a0afaaaf4fcf969",
+      "translatedAt": "2026-09-25T14:18:49.638Z"
     },
     "langsmith/nest-traces.md": {
-      "hash": "87da3d4116f386df506466d7ee5d980bc1790750",
-      "translatedAt": "2026-08-16T09:23:22.192Z"
+      "hash": "5fa1eeddcab77c0630cb083a5cd6baed797b6e80",
+      "translatedAt": "2026-09-25T14:18:50.724Z"
     },
     "langsmith/multi-turn-simulation.md": {
-      "hash": "7bd7ca530a15c92cee043e18039910c1a471b2f3",
-      "translatedAt": "2026-08-16T09:23:22.200Z"
+      "hash": "320a4c590c9e99d9f0975d71edd26fe741b75451",
+      "translatedAt": "2026-09-25T14:18:48.482Z"
     },
     "langsmith/model-configurations.md": {
-      "hash": "5fd1fd0131a34ddd55760ad44df27345355d8a12",
-      "translatedAt": "2026-09-22T13:45:19.484Z"
+      "hash": "d773917e7bb333664fbe7a0747bd8ee236b1325b",
+      "translatedAt": "2026-09-25T14:18:49.636Z"
     },
     "langsmith/observability-concepts.md": {
-      "hash": "76c88af77f264b316d47d737e0c8532d8c04d8ff",
-      "translatedAt": "2026-09-22T13:45:17.798Z"
+      "hash": "5ceb0aa5dd5600e08a4230904013bdd8737edf52",
+      "translatedAt": "2026-09-25T14:18:53.715Z"
     },
     "langsmith/observability-llm-tutorial.md": {
-      "hash": "d83183cb04a41a1a92662751c7cdab71cb54e280",
-      "translatedAt": "2026-09-18T13:15:36.730Z"
+      "hash": "399b79a576bb3e278f0bd26d852bf797ad39f6b0",
+      "translatedAt": "2026-09-25T14:18:55.545Z"
     },
     "langsmith/observability-stack.md": {
-      "hash": "f3c7d25c77e4d08f3e9feca1b929fb0671e47300",
-      "translatedAt": "2026-08-16T09:23:29.927Z"
+      "hash": "dcdfe9d4063eaa91e62827db73617d790345ac8d",
+      "translatedAt": "2026-09-25T14:18:56.806Z"
     },
     "langsmith/observability.md": {
-      "hash": "d2ba6f658181387734bdacc9abadc86a2f3d8042",
-      "translatedAt": "2026-09-18T13:15:38.177Z"
+      "hash": "3be67f3665369154fed743de0d44d4782de4de64",
+      "translatedAt": "2026-09-25T14:18:56.350Z"
     },
     "langsmith/online-evaluations-composite.md": {
-      "hash": "a0a0cac6becddf8882c0d103c4182ff39e3c3d78",
-      "translatedAt": "2026-09-18T13:15:41.678Z"
+      "hash": "99df0a8c263b33c301d794a8d9639bb7f44a3cff",
+      "translatedAt": "2026-09-25T14:18:59.525Z"
     },
     "langsmith/online-evaluations-code.md": {
-      "hash": "1092f4b0403f6945724f1abdfa8a3a115a7124a7",
-      "translatedAt": "2026-09-18T13:15:44.089Z"
+      "hash": "8873147ce8ac8103e61eec5a22eb933f07834b47",
+      "translatedAt": "2026-09-25T14:19:00.670Z"
     },
     "langsmith/observability-studio.md": {
-      "hash": "d0de6a2babc964bb69280beffd7de4cba744c186",
-      "translatedAt": "2026-09-05T12:12:45.653Z"
+      "hash": "e3be11d0ab17180bc441051a06a823f4444e3690",
+      "translatedAt": "2026-09-25T14:18:59.135Z"
     },
     "langsmith/openapi-security.md": {
-      "hash": "9bd52891712d9a696b15cbe5b428848dabbefbec",
-      "translatedAt": "2026-08-16T09:23:34.374Z"
+      "hash": "47a2a6e28fedb48c87c00b9e7443a004a3e197cb",
+      "translatedAt": "2026-09-25T14:19:02.663Z"
     },
     "langsmith/online-evaluations-llm-as-judge.md": {
-      "hash": "de229c1402c81140007252945129b73586069340",
-      "translatedAt": "2026-09-18T13:15:48.635Z"
+      "hash": "e45c3431cf8e6236a38cfab72b0bd1fc8879064a",
+      "translatedAt": "2026-09-25T14:19:04.394Z"
     },
     "langsmith/openevals.md": {
-      "hash": "c48cae811f9356c65548ccd0d2584d255090b5be",
-      "translatedAt": "2026-08-16T09:23:35.396Z"
+      "hash": "59c61bd8fcc7a3df02ea26465e9656ce883688ba",
+      "translatedAt": "2026-09-25T14:19:04.728Z"
     },
     "langsmith/otel-gateway-trace-redaction.md": {
-      "hash": "b5fb8c62f68fa5c0cc14fac5617e1169e1a0df81",
-      "translatedAt": "2026-08-16T09:23:37.482Z"
+      "hash": "ac4313bfce827948d37befe8b750508602355976",
+      "translatedAt": "2026-09-25T14:19:11.000Z"
     },
     "langsmith/online-evaluations-multi-turn.md": {
-      "hash": "50e5fd245145a19c4f7cbfeed008f954bdd431d7",
-      "translatedAt": "2026-08-20T09:22:57.034Z"
+      "hash": "950fcf62eb5294bd38c48d0721c13770a48c2f2a",
+      "translatedAt": "2026-09-25T14:19:11.275Z"
     },
     "langsmith/optimize-classifier.md": {
-      "hash": "393c8a2adf5fbedf3a879c4dbb96d6f8997aa839",
-      "translatedAt": "2026-08-16T09:23:37.740Z"
+      "hash": "876d1f9f763a5a5dae99dbf167483f2edfdb556a",
+      "translatedAt": "2026-09-25T14:19:08.450Z"
     },
     "langsmith/playground-link.md": {
-      "hash": "310b4d5ff601261eba19bbb61ea48b762523d9ac",
-      "translatedAt": "2026-08-16T09:23:38.251Z"
+      "hash": "da2285185db2ed9367ddc2268b9caa1b78c4c9ce",
+      "translatedAt": "2026-09-25T14:19:11.797Z"
     },
     "langsmith/platform-setup.md": {
-      "hash": "f27ff6605743571d0a8b8dd6c6278099919b1544",
-      "translatedAt": "2026-08-27T19:20:28.609Z"
+      "hash": "7b1beff2dd46181d0658533b38ce6bb4bb373846",
+      "translatedAt": "2026-09-25T14:19:12.762Z"
     },
     "langsmith/presigned-feedback-tokens.md": {
-      "hash": "35376095afb9635ef82bc0d1e5da5d7cdd63dbbf",
-      "translatedAt": "2026-08-16T09:23:41.040Z"
+      "hash": "3f8b6ccb8947b8a08617143a1d19ba8cb667faf4",
+      "translatedAt": "2026-09-25T14:19:14.296Z"
     },
     "langsmith/pricing-plans.md": {
-      "hash": "67a6d568abeb355cc8a64d3dfb7b6990ec58f036",
-      "translatedAt": "2026-08-16T09:23:41.367Z"
+      "hash": "00b22dd0b513891190e09c399b62fd9b61a475bb",
+      "translatedAt": "2026-09-25T14:19:16.753Z"
     },
     "langsmith/prompt-commit.md": {
-      "hash": "f5431f4fea830065296373871f1f23d2f0055512",
-      "translatedAt": "2026-08-16T09:23:46.507Z"
+      "hash": "c10d5f4d9d926ffd185002b6244721b3887939ed",
+      "translatedAt": "2026-09-25T14:19:27.658Z"
     },
     "langsmith/profile-configuration.md": {
-      "hash": "a3e05fda2002d183bb03a3dcaca98c41501145d3",
-      "translatedAt": "2026-08-19T09:21:57.263Z"
+      "hash": "ad4ca4c37e0c740fe62018bba0ce5dc7fc429f73",
+      "translatedAt": "2026-09-25T14:19:20.394Z"
     },
     "langsmith/prompt-context-hub.md": {
-      "hash": "f313ad956313a48d4a20b522e32936c11017da4c",
-      "translatedAt": "2026-08-16T09:23:48.615Z"
+      "hash": "940b1843cf02ac0128ec0dd67b26608a2b0ec360",
+      "translatedAt": "2026-09-25T14:19:24.128Z"
     },
     "langsmith/prompt-engineering-concepts.md": {
-      "hash": "222b8e470863f02fe9f0395ee1241fdd131a7834",
-      "translatedAt": "2026-08-16T09:23:54.160Z"
+      "hash": "31f0d675f072cdf783f24f792fde9985388bc732",
+      "translatedAt": "2026-09-25T14:19:29.112Z"
     },
     "langsmith/playground-model-providers.md": {
-      "hash": "7d7fa3608bf2be5ab6ecedcebabeeec8d61f0a25",
-      "translatedAt": "2026-09-19T12:45:18.058Z"
+      "hash": "4fbebce9f36457a877bda9647a80803ced108472",
+      "translatedAt": "2026-09-25T14:19:22.845Z"
     },
     "langsmith/python/managed-deep-agents-agent-definition.md": {
-      "hash": "02a6629f1303ce39ead6d6ea53fd242eb03c49eb",
-      "translatedAt": "2026-09-12T12:30:01.486Z"
+      "hash": "08f89dfc1d24144d149911a7e553a64634762b53",
+      "translatedAt": "2026-09-25T14:19:33.371Z"
     },
     "langsmith/pytest.md": {
-      "hash": "805d89af345ca65f6f3aed82bc2f329149706012",
-      "translatedAt": "2026-08-16T09:24:00.199Z"
+      "hash": "b29ed0f2d9bd6c73593a4cc6986ca6383cc732c8",
+      "translatedAt": "2026-09-25T14:19:34.552Z"
     },
     "langsmith/prompt-template-format.md": {
-      "hash": "208f208c83703486dea5390be5b9553081d68c0a",
-      "translatedAt": "2026-08-16T09:24:03.316Z"
+      "hash": "8ce4bcf20eda565ca51360be978832c732d193c3",
+      "translatedAt": "2026-09-25T14:19:37.279Z"
     },
     "langsmith/python/managed-deep-agents-channels.md": {
-      "hash": "c76d859ada1325f901c9496240454e6fb82f62b5",
-      "translatedAt": "2026-08-27T19:20:29.041Z"
+      "hash": "e5896d8cf2e48f73dbe2a9bd905bf251fe7442f7",
+      "translatedAt": "2026-09-25T14:19:38.083Z"
     },
     "langsmith/python/managed-deep-agents-deploy.md": {
-      "hash": "cf1f8fc0dc48f2acec804f2b1faa9b88cd6f2154",
-      "translatedAt": "2026-09-16T13:49:54.640Z"
+      "hash": "aead4fee482d93da63cceb4256f354c668f017d7",
+      "translatedAt": "2026-09-25T14:19:40.574Z"
     },
     "langsmith/python/managed-deep-agents-channels-slack.md": {
-      "hash": "ffe4ba4c4bef22d7df47db199088a20abeb49898",
-      "translatedAt": "2026-09-03T13:05:55.042Z"
+      "hash": "371637162bc2c8df73685066fee2c3c3f215b915",
+      "translatedAt": "2026-09-25T14:19:37.271Z"
     },
     "langsmith/python/managed-deep-agents-identity.md": {
-      "hash": "18cb976ed090241ed66449cbae7217dc30422fbd",
-      "translatedAt": "2026-09-12T12:30:01.154Z"
+      "hash": "f8319f76131650d6865857da3bc9efee88f189cb",
+      "translatedAt": "2026-09-25T14:19:43.390Z"
     },
     "langsmith/python/managed-deep-agents-instructions.md": {
-      "hash": "585320bed3ae2df9b202fa545f009d652bd8df1d",
-      "translatedAt": "2026-09-16T13:49:52.396Z"
+      "hash": "0aca992b5abb7eec65b2ea923c6e9782668dbeb9",
+      "translatedAt": "2026-09-25T14:19:43.480Z"
     },
     "langsmith/python/managed-deep-agents-evals.md": {
-      "hash": "cd7f5a9001b4919e872359713ea84bc9df9736a3",
-      "translatedAt": "2026-09-11T13:06:20.927Z"
+      "hash": "a897e46726ad732201b15fc54628ae647141a8c7",
+      "translatedAt": "2026-09-25T14:19:43.250Z"
     },
     "langsmith/python/managed-deep-agents-local-development.md": {
-      "hash": "ec5552574ffa4497c57a20901f0958b92df7b06d",
-      "translatedAt": "2026-09-16T13:49:53.826Z"
+      "hash": "660c8923488b127e9ff90184c93ccaa7a0069bb6",
+      "translatedAt": "2026-09-25T14:19:44.404Z"
     },
     "langsmith/python/managed-deep-agents-middleware.md": {
-      "hash": "4b67b82e9585ea7b2e78304b0b6597446c34c1a2",
-      "translatedAt": "2026-09-12T12:30:04.620Z"
+      "hash": "a6c632fb2008d98cee8d5d32733dab9afab9e8f6",
+      "translatedAt": "2026-09-25T14:19:49.901Z"
     },
     "langsmith/python/managed-deep-agents-memory.md": {
-      "hash": "52d66bb2f97b02781b05c40f0e25a2e3864457ee",
-      "translatedAt": "2026-09-16T13:49:54.870Z"
+      "hash": "f6752cf4f3ed6f3022528c2852b8163c57f8867d",
+      "translatedAt": "2026-09-25T14:19:47.730Z"
     },
     "langsmith/python/managed-deep-agents-cli.md": {
-      "hash": "e9850aa9266ff5b9f8d416b59782f543c8076449",
-      "translatedAt": "2026-09-16T13:50:02.303Z"
+      "hash": "dc6bf6ac586c67c4b9a27bd428455f44b4899e73",
+      "translatedAt": "2026-09-25T14:19:48.682Z"
     },
     "langsmith/python/managed-deep-agents-project-structure.md": {
-      "hash": "1ef2a610da61097dd3e7158a3c6a9c81d688064c",
-      "translatedAt": "2026-09-16T13:49:58.517Z"
+      "hash": "b864e1b7b05f7036b3f5998e62fd44cde9921476",
+      "translatedAt": "2026-09-25T14:19:51.289Z"
     },
     "langsmith/python/managed-deep-agents-sandboxes.md": {
-      "hash": "bde6ab22309ba9e69eb87c591bfbd47866d0acf6",
-      "translatedAt": "2026-09-12T12:30:03.835Z"
+      "hash": "ca331f3e7680b4ce7428c505ad4423df460accd2",
+      "translatedAt": "2026-09-25T14:19:56.582Z"
     },
     "langsmith/python/managed-deep-agents-schedules.md": {
-      "hash": "0154d738511bdbf40a9da899c5409d8705c1aa3f",
-      "translatedAt": "2026-09-01T13:47:52.344Z"
+      "hash": "a9107c201078866bb13d9fa35c61c172e977fe44",
+      "translatedAt": "2026-09-25T14:19:55.017Z"
     },
     "langsmith/organization-workspace-operations.md": {
-      "hash": "81289ad485eebe7d16e3106dd29fe0d949e1a962",
-      "translatedAt": "2026-09-23T13:57:06.716Z"
+      "hash": "912d3849c0a36011f3fae6e5d65ce2c727a1309f",
+      "translatedAt": "2026-09-25T14:19:28.665Z"
     },
     "langsmith/python/managed-deep-agents-skills.md": {
-      "hash": "135d20386e4a42fbabe9523b4bc9335293b67255",
-      "translatedAt": "2026-09-16T13:49:58.634Z"
+      "hash": "b67d672fb97bc3e8239e0994e0637a4fe8b51b43",
+      "translatedAt": "2026-09-25T14:19:54.713Z"
     },
     "langsmith/python/managed-deep-agents.md": {
-      "hash": "4676eee54fdcc679fd68a580922d09919c55bdc6",
-      "translatedAt": "2026-08-16T09:24:05.914Z"
+      "hash": "bdfd8f1c05766b5a5c78b0aaf3e921120723ad1c",
+      "translatedAt": "2026-09-25T14:19:56.623Z"
     },
     "langsmith/python/managed-deep-agents-tools.md": {
-      "hash": "d93171f59c4097b84da0f1928cb37550647cd369",
-      "translatedAt": "2026-09-16T13:50:02.308Z"
+      "hash": "9a55242880ef9398f9cf06c733e89f9ab1db9f79",
+      "translatedAt": "2026-09-25T14:19:57.155Z"
     },
     "langsmith/python/managed-deep-agents-tutorial.md": {
-      "hash": "2d291896573604fe08c653f617b6b3b27ec2c82c",
-      "translatedAt": "2026-09-01T13:47:54.610Z"
+      "hash": "37406c20ce7ff34dc73a11c5259688db442d928c",
+      "translatedAt": "2026-09-25T14:19:56.995Z"
     },
     "langsmith/quick-start-studio.md": {
-      "hash": "151eff36ff87b6bc9dc17c61cb4e42d0758a0ccf",
-      "translatedAt": "2026-09-11T13:06:26.818Z"
+      "hash": "f560cd9fbdb7cbea919426871592bd0740c989e1",
+      "translatedAt": "2026-09-25T14:19:58.931Z"
     },
     "langsmith/redact-secrets.md": {
-      "hash": "932d5d5a6198bd1989a594c3d12ed2950f49f362",
-      "translatedAt": "2026-09-19T12:45:11.190Z"
+      "hash": "a04bcdb0a60623ba22b52f76a139ca06e33e484c",
+      "translatedAt": "2026-09-25T14:20:03.945Z"
     },
     "langsmith/read-local-experiment-results.md": {
-      "hash": "f6a66dcf32be7d15f605291c8ded4bfaec6c6b45",
-      "translatedAt": "2026-08-16T09:24:11.085Z"
+      "hash": "7b97d95cd54c81705686a260c5f79eb73ffd79d6",
+      "translatedAt": "2026-09-25T14:20:01.640Z"
     },
     "langsmith/reference.md": {
-      "hash": "ae018444daef10c377f5feb266326d0940f43acb",
-      "translatedAt": "2026-08-16T09:24:11.443Z"
+      "hash": "f2f521d62218851b33f60aa78e06774089234006",
+      "translatedAt": "2026-09-25T14:20:01.851Z"
     },
     "langsmith/query-threads.md": {
-      "hash": "15a89f02551bb6221fcf6c32dd30b88ab70f103b",
-      "translatedAt": "2026-08-16T09:24:09.734Z"
+      "hash": "037682830187ec70ab5d46bec70467fb36fffc8e",
+      "translatedAt": "2026-09-25T14:20:00.833Z"
     },
     "langsmith/reject-concurrent.md": {
-      "hash": "cbf1273e8d68f9bde1ae07315f2b78d719c3afc2",
-      "translatedAt": "2026-08-16T09:24:12.141Z"
+      "hash": "1c91fda9b5f9a36f2b87eae04039755a9284269d",
+      "translatedAt": "2026-09-25T14:20:03.991Z"
     },
     "langsmith/regions-faq.md": {
-      "hash": "95ddf721e20578124d539b96096c1531467d69c6",
-      "translatedAt": "2026-08-16T09:24:12.743Z"
+      "hash": "376c91f888a390c45642b6e4b40d18c5a270898d",
+      "translatedAt": "2026-09-25T14:20:03.441Z"
     },
     "langsmith/remote-graph.md": {
-      "hash": "00a385780459b16857f9ddb91d507d35d41ae475",
-      "translatedAt": "2026-08-16T09:24:13.141Z"
+      "hash": "bcfee293ce24c85da969d53296b6fbdeaef00118",
+      "translatedAt": "2026-09-25T14:20:05.062Z"
     },
     "langsmith/release-stages.md": {
-      "hash": "e1b8c33dbfafe34f997c41cc5faaab6eea4fb008",
-      "translatedAt": "2026-08-16T09:24:14.289Z"
+      "hash": "57648b6655843ab7ad317844d73aae2b75491dff",
+      "translatedAt": "2026-09-25T14:20:07.559Z"
     },
     "langsmith/repetition.md": {
-      "hash": "9644d5f67b154ba732024ef1ba15d11d3b072fa9",
-      "translatedAt": "2026-08-16T09:24:13.831Z"
+      "hash": "f400ab9a20d87a1200d870e86510accb4fe98a55",
+      "translatedAt": "2026-09-25T14:20:06.411Z"
     },
     "langsmith/rbac.md": {
-      "hash": "9912ab5be0b06d7024a0a8b7db6e31708759be88",
-      "translatedAt": "2026-09-23T13:56:56.097Z"
+      "hash": "75d06473375dfe7c2f6b323b6220f2e6015f2d8a",
+      "translatedAt": "2026-09-25T14:20:04.351Z"
     },
     "langsmith/release-versions.md": {
-      "hash": "ca15496be3438902655563ec9328fbe5afac2e46",
-      "translatedAt": "2026-08-16T09:24:15.279Z"
+      "hash": "f3b9a0e4e87ea6dcad506df419b7931bce7cc2e4",
+      "translatedAt": "2026-09-25T14:20:09.378Z"
     },
     "langsmith/rollback-concurrent.md": {
-      "hash": "b2d78e03a50f0971b60d94888680907512643e92",
-      "translatedAt": "2026-08-16T09:24:15.182Z"
+      "hash": "8540fe1982d886fa3b092dbad44b834e0eadf9af",
+      "translatedAt": "2026-09-25T14:20:09.040Z"
     },
     "langsmith/resource-auth.md": {
-      "hash": "45845ffc39ce1efe4ded93bcd54c3a24fd37bcd6",
-      "translatedAt": "2026-08-16T09:24:15.950Z"
+      "hash": "b8519eb612207fa1c159044d519a53fe0a0b4cbb",
+      "translatedAt": "2026-09-25T14:20:10.291Z"
     },
     "langsmith/run-evals-api-only.md": {
-      "hash": "3a5bfddc4129bdccb048461e146e7f0dbfb27559",
-      "translatedAt": "2026-08-16T09:24:20.253Z"
+      "hash": "f5deea532f23b500605413877a985c5252b2b26f",
+      "translatedAt": "2026-09-25T14:20:15.031Z"
     },
     "langsmith/run-backtests-new-agent.md": {
-      "hash": "74b4dd2e9371d7b058a37c0070dd6cbb45047f5e",
-      "translatedAt": "2026-08-16T09:24:17.640Z"
+      "hash": "35eba1f99f5cf02ed75eac0b0a735fb26de75eb5",
+      "translatedAt": "2026-09-25T14:20:12.674Z"
     },
     "langsmith/rules.md": {
-      "hash": "497a111f309c0fdd5c1e1680708ec34a3350c5e4",
-      "translatedAt": "2026-09-18T13:15:55.365Z"
+      "hash": "445f394dc8014145b0d3b332ecb7e36cf143a9ea",
+      "translatedAt": "2026-09-25T14:20:15.951Z"
     },
     "langsmith/run-evaluation-from-playground.md": {
-      "hash": "706399d45cf6a319a3ff4fece95dd012f675676b",
-      "translatedAt": "2026-08-16T09:24:19.039Z"
+      "hash": "29dba855a264fffc9da52e5fcd10d8dfc01d692a",
+      "translatedAt": "2026-09-25T14:20:16.350Z"
     },
     "langsmith/runs.md": {
-      "hash": "72aad5bd202391df6d82f569f05bed091b1ab71b",
-      "translatedAt": "2026-08-16T09:24:20.642Z"
+      "hash": "df5588cc7f4f78ed9a5920cda9e156218c2a4d76",
+      "translatedAt": "2026-09-25T14:20:18.041Z"
     },
     "langsmith/same-thread.md": {
-      "hash": "8c502f6d26b286e8d41844dc4d95d821435d735d",
-      "translatedAt": "2026-08-16T09:24:22.141Z"
+      "hash": "e8269452df7eaafad8d6a0fe0e081afaa361740c",
+      "translatedAt": "2026-09-25T14:20:17.564Z"
     },
     "langsmith/sample-traces.md": {
-      "hash": "e46f5f960e10571197d24b8a96f4f13ca1da9583",
-      "translatedAt": "2026-08-16T09:24:21.858Z"
+      "hash": "6d9b628a42cc1c50e0366feae0a5623726e2221a",
+      "translatedAt": "2026-09-25T14:20:18.042Z"
     },
     "langsmith/run-data-format.md": {
-      "hash": "eee3bcc419939eed6bbfb825d65da795e9ef4074",
-      "translatedAt": "2026-08-16T09:24:20.511Z"
+      "hash": "528d9c3a0963e5ff560861d94d503120917712d5",
+      "translatedAt": "2026-09-25T14:20:15.949Z"
     },
     "langsmith/sandbox-cli.md": {
-      "hash": "67591c5abf435fe744090bbed647a477e1622e8e",
-      "translatedAt": "2026-09-05T12:12:55.201Z"
+      "hash": "20779d61fa98bb6c957926d50fcf3c552f9c0bd2",
+      "translatedAt": "2026-09-25T14:20:21.934Z"
     },
     "langsmith/sandbox-permissions.md": {
-      "hash": "2116b16c60bf9dcc96feaa1232badc2211b9c32a",
-      "translatedAt": "2026-08-16T09:24:25.666Z"
+      "hash": "29735c083ec741ed6e9a75132616042324911639",
+      "translatedAt": "2026-09-25T14:20:22.938Z"
     },
     "langsmith/sandbox-mounts.md": {
-      "hash": "e50f1a814c4f19af0e46f650083c9f1e3181469d",
-      "translatedAt": "2026-09-18T13:16:10.393Z"
+      "hash": "00e368c61604afb111fe9640d09d33e221df90d3",
+      "translatedAt": "2026-09-25T14:20:31.036Z"
     },
     "langsmith/sandbox-service-urls.md": {
-      "hash": "4cabaa61c3545ddbee63bc9a4e539e7bb3ddf27f",
-      "translatedAt": "2026-09-05T12:13:08.007Z"
+      "hash": "133aa0391b0001cbb45b4e28edef2c0efc41072f",
+      "translatedAt": "2026-09-25T14:20:31.716Z"
     },
     "langsmith/sandbox-sdk.md": {
-      "hash": "55e26f7dbfb6d3221a64a7280c98e8438c1b84b2",
-      "translatedAt": "2026-09-09T13:14:52.895Z"
+      "hash": "60d7f532cf37ff3744326b16793bf9d3e6fa52df",
+      "translatedAt": "2026-09-25T14:20:29.325Z"
     },
     "langsmith/sandbox-auth-proxy.md": {
-      "hash": "710e71f601a755482daa047baeeee377940debe2",
-      "translatedAt": "2026-09-18T13:16:18.405Z"
+      "hash": "3987dc0f1c2445e65667843c6e6a71b440a1603d",
+      "translatedAt": "2026-09-25T14:20:30.879Z"
     },
     "langsmith/sandbox-snapshots.md": {
-      "hash": "5139bfe7b6b252cc61eaf55936948f965f7f4267",
-      "translatedAt": "2026-09-11T13:06:36.438Z"
+      "hash": "bcc63a7d6885d58f54671f44ff444e5f0f571ca4",
+      "translatedAt": "2026-09-25T14:20:42.011Z"
     },
     "langsmith/sandboxes.md": {
-      "hash": "9c997974d3623931d6d38cfc501007ae9e97866c",
-      "translatedAt": "2026-09-18T13:16:08.640Z"
+      "hash": "3bcf516814e9227f29a1a2e5be9f0dd36abdb51c",
+      "translatedAt": "2026-09-25T14:20:33.014Z"
     },
     "langsmith/script-delete-an-organization.md": {
-      "hash": "1200b930a92ec2b879b83ef0d0cb6cb4f0d96598",
-      "translatedAt": "2026-08-16T09:24:33.858Z"
+      "hash": "432d6039976fcd7b8de90a20abb86a1269d354c9",
+      "translatedAt": "2026-09-25T14:20:35.643Z"
     },
     "langsmith/script-delete-a-workspace.md": {
-      "hash": "c0e617ce15c714bbdb7987c586f9691972033235",
-      "translatedAt": "2026-08-16T09:24:33.210Z"
+      "hash": "74ccb1f4068f42da750163b629259ed5922d9701",
+      "translatedAt": "2026-09-25T14:20:34.181Z"
     },
     "langsmith/scalability-and-resilience.md": {
-      "hash": "8c025c4f6c20381051eb04ffa70437a908ba39f7",
-      "translatedAt": "2026-08-16T09:24:32.271Z"
+      "hash": "8b97c907399e685e81bd8e6aa1155c6a82a16ab5",
+      "translatedAt": "2026-09-25T14:20:33.958Z"
     },
     "langsmith/script-generate-clickhouse-stats.md": {
-      "hash": "9bf50e206d702510bb1ef781019781c74937472a",
-      "translatedAt": "2026-08-16T09:24:33.901Z"
+      "hash": "68cddd7c2fa4b99ce561109312fc3beb74dc1490",
+      "translatedAt": "2026-09-25T14:20:36.851Z"
     },
     "langsmith/script-delete-traces.md": {
-      "hash": "204b837ab9bcbc95c6cdbadd2e1fa44c977c3595",
-      "translatedAt": "2026-08-16T09:24:34.517Z"
+      "hash": "a64b2514e7ce3be1941d184f1260c981bd0eea17",
+      "translatedAt": "2026-09-25T14:20:37.041Z"
     },
     "langsmith/script-generate-query-stats.md": {
-      "hash": "1b82c269ab4237d2682ed4aac3b57eeecb032c2e",
-      "translatedAt": "2026-08-16T09:24:34.785Z"
+      "hash": "be74595297c558ae950fa056915dc9ff2ff9903b",
+      "translatedAt": "2026-09-25T14:20:38.123Z"
     },
     "langsmith/script-running-ch-support-queries.md": {
-      "hash": "030c9121b05d6fc736e95a521f146679d82e32ca",
-      "translatedAt": "2026-08-16T09:24:34.946Z"
+      "hash": "7fd2699236e5a1d39aed62d4ca3fef55afa02b35",
+      "translatedAt": "2026-09-25T14:20:38.286Z"
     },
     "langsmith/script-running-pg-support-queries.md": {
-      "hash": "782152ac6f3923faaf69bcd7b311d912b9654abc",
-      "translatedAt": "2026-08-16T09:24:36.459Z"
+      "hash": "6439176fc3988d09a997eae37d25e36e69c70d7a",
+      "translatedAt": "2026-09-25T14:20:41.600Z"
     },
     "langsmith/self-host-basic-auth.md": {
-      "hash": "6d9479d2b8c58f4be45886941291a04b6c67f6b3",
-      "translatedAt": "2026-08-16T09:24:37.188Z"
+      "hash": "cc448d0c974d3f8410ec8f1e046a43370781dc32",
+      "translatedAt": "2026-09-25T14:20:42.311Z"
     },
     "langsmith/self-host-custom-tls-certificates.md": {
-      "hash": "1be05ea2ecbc8b41de134386113e0406c44afb73",
-      "translatedAt": "2026-08-16T09:24:39.199Z"
+      "hash": "8dd8f1aaa2987b7e9510d0d929a22a0ebd9f55f7",
+      "translatedAt": "2026-09-25T14:20:44.941Z"
     },
     "langsmith/self-host-dependency-versions.md": {
-      "hash": "ec88ed0d6dc4e8d82d3ca14eef797a9391661cfb",
-      "translatedAt": "2026-09-11T13:06:36.149Z"
+      "hash": "487fc28ac104cf5f9407c200bb3d8d5de46c97e6",
+      "translatedAt": "2026-09-25T14:20:45.171Z"
     },
     "langsmith/self-host-blob-storage.md": {
-      "hash": "d7122bd84610067af01574371e01bbfdc9bec47f",
-      "translatedAt": "2026-09-08T13:09:17.417Z"
+      "hash": "0db57995c172a0deb6af52e633880dbc8aa11d63",
+      "translatedAt": "2026-09-25T14:20:51.099Z"
     },
     "langsmith/self-host-environment-variables.md": {
-      "hash": "3835eda3f7ff6b752d97c0e5416dcba5f9ad4868",
-      "translatedAt": "2026-08-16T09:24:45.440Z"
+      "hash": "a4181b8cf8f8a34ec47b5f7a080c833e43ebec54",
+      "translatedAt": "2026-09-25T14:20:53.889Z"
     },
     "langsmith/self-host-egress.md": {
-      "hash": "13c58c792cb40a7c7c47e9b1a599ce6ebc47090d",
-      "translatedAt": "2026-09-03T13:06:10.951Z"
+      "hash": "ce0e1a6376c1c92df90b588bf36fc950407c0566",
+      "translatedAt": "2026-09-25T14:20:51.461Z"
     },
     "langsmith/self-host-external-redis.md": {
-      "hash": "f3cc79726ae92fbe8d1da257dba359bab176b09b",
-      "translatedAt": "2026-09-11T13:06:41.019Z"
+      "hash": "3e221f1b3f3d25a0fccb931a2d9f80b841114fe0",
+      "translatedAt": "2026-09-25T14:21:05.407Z"
     },
     "langsmith/self-host-external-postgres.md": {
-      "hash": "547f3a2c4aba7eab3d7071e58cef244e684b9774",
-      "translatedAt": "2026-09-11T13:06:40.327Z"
+      "hash": "e9cddf32fdac2c6a215929f15b07e0d29c19460a",
+      "translatedAt": "2026-09-25T14:21:01.398Z"
     },
     "langsmith/self-host-external-clickhouse.md": {
-      "hash": "efffe352fa703ac2281e6908cb4b0d82b69dbffb",
-      "translatedAt": "2026-09-11T13:06:39.221Z"
+      "hash": "fb821d0a37ef6fd99008e1585d89c597f200c9c4",
+      "translatedAt": "2026-09-25T14:20:57.763Z"
     },
     "langsmith/self-host-ingress.md": {
-      "hash": "4b2ff565d54c62255bd55d9f1479d542f0d6ef63",
-      "translatedAt": "2026-09-08T13:09:14.356Z"
+      "hash": "fab7523ae441e805feda654db72d7f6cd175e547",
+      "translatedAt": "2026-09-25T14:21:05.176Z"
     },
     "langsmith/self-host-fips.md": {
-      "hash": "3049ede0459ed4e681fd7c2ffacb55ee6f3cf687",
-      "translatedAt": "2026-08-16T09:24:53.434Z"
+      "hash": "8c7055041069e5d9d86609f128c644251cdd81f1",
+      "translatedAt": "2026-09-25T14:21:02.165Z"
     },
     "langsmith/self-host-organization-charts.md": {
-      "hash": "2b60cc7855e56adfd4569b3b5477787305bddbf1",
-      "translatedAt": "2026-08-16T09:24:56.896Z"
+      "hash": "b797ec52d350beda525a9f0a6a77880e99183380",
+      "translatedAt": "2026-09-25T14:21:06.485Z"
     },
     "langsmith/self-host-playground-environment-settings.md": {
-      "hash": "1aca379236ecc89ccc7b199b47141bcc7f40b779",
-      "translatedAt": "2026-09-09T13:14:51.182Z"
+      "hash": "365e7da243c3c36889b8bb4c228a11172cddbae6",
+      "translatedAt": "2026-09-25T14:21:07.915Z"
     },
     "langsmith/self-host-mirroring-images.md": {
-      "hash": "1ec373393c541966948457b67843f5d201006830",
-      "translatedAt": "2026-09-03T13:06:11.673Z"
+      "hash": "b338f3405f620190724f68ccb56e32a80ef0e3c2",
+      "translatedAt": "2026-09-25T14:21:07.920Z"
     },
     "langsmith/self-host-disaster-recovery.md": {
-      "hash": "5e033174fa8132908388c396eac867a236b65812",
-      "translatedAt": "2026-08-16T09:24:50.517Z"
+      "hash": "0a36b68deabf7fef3fae71f13f1e4cc268f1a2bd",
+      "translatedAt": "2026-09-25T14:20:59.269Z"
     },
     "langsmith/self-host-scale.md": {
-      "hash": "16c1ab53b75a5823873001bec6fc403298cbfddb",
-      "translatedAt": "2026-09-22T13:45:25.516Z"
+      "hash": "068469484499ac4cd0612ad83842dc20a6115f92",
+      "translatedAt": "2026-09-25T14:21:15.448Z"
     },
     "langsmith/self-host-terraform-aws-quick-reference.md": {
-      "hash": "1f3fa8570c97ad81210771a49ec1973d8c18757e",
-      "translatedAt": "2026-08-16T09:25:12.774Z"
+      "hash": "bae06f9e2973b84d7c30547f0084f074bbb1d55e",
+      "translatedAt": "2026-09-25T14:21:21.223Z"
     },
     "langsmith/self-host-terraform-aws-troubleshooting.md": {
-      "hash": "ba58fa28fcbb2e0286e69edbfcf7d5c1bbed2684",
-      "translatedAt": "2026-08-16T09:25:15.274Z"
+      "hash": "2352204a7ed1f15d5860d1badedc01058277a4ce",
+      "translatedAt": "2026-09-25T14:21:24.439Z"
     },
     "langsmith/self-host-sso.md": {
-      "hash": "a168d12228dfe5508f1d32bfd95266cc8d36f01e",
-      "translatedAt": "2026-09-11T13:06:48.962Z"
+      "hash": "7b65d4d3409b18548a47e153ee4078ff47ccba00",
+      "translatedAt": "2026-09-25T14:21:20.098Z"
     },
     "langsmith/self-host-terraform-aws-deploy.md": {
-      "hash": "688dd07b04c3d8f9fd846ab72dbd0602be2fd21a",
-      "translatedAt": "2026-09-11T13:06:46.741Z"
+      "hash": "0e418c6e9360f0a914f77f7c9e2a9a589c1c16db",
+      "translatedAt": "2026-09-25T14:21:22.967Z"
     },
     "langsmith/self-host-terraform-aws-architecture.md": {
-      "hash": "607433447be88f799d0d15ac456d8f3ff26e6417",
-      "translatedAt": "2026-08-16T09:25:12.262Z"
+      "hash": "7742051dea5cfe3491b47c0c9051feeb344f7af8",
+      "translatedAt": "2026-09-25T14:21:18.926Z"
     },
     "langsmith/self-host-terraform-azure-quick-reference.md": {
-      "hash": "d9dcf17d9162c628725a1b8cfa47617f1acf82e1",
-      "translatedAt": "2026-08-16T09:25:20.237Z"
+      "hash": "eb96d8e5118f1b6db8d67972cdf1134c1ac99fd9",
+      "translatedAt": "2026-09-25T14:21:32.120Z"
     },
     "langsmith/self-host-terraform-azure-architecture.md": {
-      "hash": "3d6425e7ef619cd278c1af3f689cbb6d1c319f3a",
-      "translatedAt": "2026-08-16T09:25:18.298Z"
+      "hash": "5a91b56d2011b96407fc93a05575f97a7b4781cd",
+      "translatedAt": "2026-09-25T14:21:30.580Z"
     },
     "langsmith/self-host-terraform-aws-variables.md": {
-      "hash": "c5150322630778c30a7ab916588987617d7dc8fd",
-      "translatedAt": "2026-08-16T09:25:18.172Z"
+      "hash": "858041555ec0680c74202a82b277ab4e3c9e4fca",
+      "translatedAt": "2026-09-25T14:21:30.698Z"
     },
     "langsmith/self-host-terraform-azure-troubleshooting.md": {
-      "hash": "69d3a2e936cc001b463f7616a3ebb3182240e9fd",
-      "translatedAt": "2026-08-16T09:25:25.318Z"
+      "hash": "58e8d9be2d6f335597436172ce6390e461a2aac6",
+      "translatedAt": "2026-09-25T14:21:40.155Z"
     },
     "langsmith/self-host-terraform-azure-deploy.md": {
-      "hash": "d35d87ecd36265a548d035e327d3282a46efc23b",
-      "translatedAt": "2026-08-27T19:21:00.332Z"
+      "hash": "83fc06bf0a54d23b909bc439f160a93f7da81535",
+      "translatedAt": "2026-09-25T14:21:37.572Z"
     },
     "langsmith/self-host-terraform-gcp-deploy.md": {
-      "hash": "da5ce04ecdab6029fa41d4b439e78f4cf7551221",
-      "translatedAt": "2026-09-11T13:06:47.137Z"
+      "hash": "9341370fc46c11a8db795c397ea9149ba6d8f85e",
+      "translatedAt": "2026-09-25T14:21:48.917Z"
     },
     "langsmith/self-host-terraform-gcp-quick-reference.md": {
-      "hash": "b83676603109e8aab8866f156d8ae9d001d20729",
-      "translatedAt": "2026-08-16T09:25:30.312Z"
+      "hash": "ede9879795f58ac2632ba6e27740a99306f9d4d2",
+      "translatedAt": "2026-09-25T14:21:44.664Z"
     },
     "langsmith/self-host-terraform-azure-variables.md": {
-      "hash": "4134faa612d0065aa52b4977dd4ce1f3f38656a7",
-      "translatedAt": "2026-08-16T09:25:28.565Z"
+      "hash": "260ecd47ebe919b8d1216f3604941ca5dd7dc963",
+      "translatedAt": "2026-09-25T14:21:42.872Z"
     },
     "langsmith/self-host-terraform-gcp-troubleshooting.md": {
-      "hash": "172c4d79c10b4cfd21d90238f77d75bb1c52ec7f",
-      "translatedAt": "2026-08-16T09:25:33.099Z"
+      "hash": "4d9bf86b9250a991d76cbd51035213130e5f8efd",
+      "translatedAt": "2026-09-25T14:21:48.829Z"
     },
     "langsmith/self-host-terraform.md": {
-      "hash": "cfcdca52975f171a8d9832371ae4735a776429d2",
-      "translatedAt": "2026-08-27T19:21:02.460Z"
+      "hash": "9cd44e4e878d4092caca6998ac40faecfac9898a",
+      "translatedAt": "2026-09-25T14:21:52.041Z"
     },
     "langsmith/self-host-ui-customization.md": {
-      "hash": "61ac6d8f6deefa3c4eb95b4c4cc151c9c7100983",
-      "translatedAt": "2026-08-16T09:25:34.744Z"
+      "hash": "6183ed8f39b68cb2751264f89d6fcd88074f390f",
+      "translatedAt": "2026-09-25T14:21:53.003Z"
     },
     "langsmith/self-host-upgrades.md": {
-      "hash": "11387367ff2a05bfa782200d55935beaa671cb49",
-      "translatedAt": "2026-08-16T09:25:35.723Z"
+      "hash": "0c1487e91db3c4757005477ef99b78d509580d6b",
+      "translatedAt": "2026-09-25T14:21:53.202Z"
     },
     "langsmith/self-host-usage.md": {
-      "hash": "3fa62b94b7e258f2fad5e28036bdd0e0ee268de3",
-      "translatedAt": "2026-08-16T09:25:36.739Z"
+      "hash": "18a2014e60532d9b6cc47c2523003b58ff185429",
+      "translatedAt": "2026-09-25T14:21:54.425Z"
     },
     "langsmith/self-host-ttl.md": {
-      "hash": "4b266aaaa64370c2c9dc5519895ffae29f163620",
-      "translatedAt": "2026-09-16T13:50:05.400Z"
+      "hash": "4a78aa287c31d476c6b133834bb7d5d95efa7737",
+      "translatedAt": "2026-09-25T14:21:52.040Z"
     },
     "langsmith/self-host-user-management.md": {
-      "hash": "01770fc89dbb30b93c1ec1aa87065eb8e28176a1",
-      "translatedAt": "2026-08-16T09:25:37.938Z"
+      "hash": "8b5cd3edc77212a8b383a18133b4a2cd6efc6e53",
+      "translatedAt": "2026-09-25T14:21:57.174Z"
     },
     "langsmith/self-host-using-an-existing-secret.md": {
-      "hash": "67d36771d059f1a277b922d9f41cc8715548d3d8",
-      "translatedAt": "2026-08-16T09:25:37.943Z"
+      "hash": "4ce37084977d933778dbd8d23a98ffe4de89e56e",
+      "translatedAt": "2026-09-25T14:21:55.837Z"
     },
     "langsmith/self-host-terraform-gcp-variables.md": {
-      "hash": "722aceda7a0a93602766585229975a494b086ad3",
-      "translatedAt": "2026-08-16T09:25:36.572Z"
+      "hash": "1ba8fb8bce37a099f2b57c9ccc294a4565837c27",
+      "translatedAt": "2026-09-25T14:21:54.128Z"
     },
     "langsmith/self-host-terraform-gcp-architecture.md": {
-      "hash": "b274af8fb2d26cdc353fd5dcab5392138e7845d0",
-      "translatedAt": "2026-08-16T09:25:30.650Z"
+      "hash": "3b7618ac612f6091c6e422edf31e629325e0b78f",
+      "translatedAt": "2026-09-25T14:21:44.519Z"
     },
     "langsmith/self-hosted-platform-features.md": {
-      "hash": "a4fb71cdadbf555025d69ef824b51072f25a1e58",
-      "translatedAt": "2026-08-16T09:25:40.916Z"
+      "hash": "738d35dbe32b7fed8723f7691fc79cdfbcb15bce",
+      "translatedAt": "2026-09-25T14:22:02.203Z"
     },
     "langsmith/self-hosted-agent-server-metrics.md": {
-      "hash": "e89c4b25a5281699180ed2a5393adf1394bcb7fe",
-      "translatedAt": "2026-08-16T09:25:40.847Z"
+      "hash": "272e15bb9493d1ff0d8e0690bfd7320735d27f0c",
+      "translatedAt": "2026-09-25T14:22:00.859Z"
     },
     "langsmith/self-hosted-mission-control.md": {
-      "hash": "50d50465d20dc49133da4b2240df2e58c1c3499c",
-      "translatedAt": "2026-08-16T09:25:41.687Z"
+      "hash": "2af1b3a330e5dcfee99111e2a1ec1aeca6cad14e",
+      "translatedAt": "2026-09-25T14:22:01.349Z"
     },
     "langsmith/semantic-search.md": {
-      "hash": "f3419d12b2ea80a5b464450bf45362644355fab7",
-      "translatedAt": "2026-08-16T09:25:43.796Z"
+      "hash": "5516714e0a01154e44afc65ce8c3332831ff5f97",
+      "translatedAt": "2026-09-25T14:22:04.784Z"
     },
     "langsmith/server-api-ref.md": {
-      "hash": "039ba5baf84c1a98ea975cbbd028d9b3ba848d96",
-      "translatedAt": "2026-08-16T09:25:44.981Z"
+      "hash": "6f802b56b8386871ac7a33cd1b6665f07608aa41",
+      "translatedAt": "2026-09-25T14:22:05.910Z"
     },
     "langsmith/server-a2a.md": {
-      "hash": "41abded3d86b6d9ac279bb55d3781754184cabc7",
-      "translatedAt": "2026-08-29T14:04:31.746Z"
+      "hash": "7b2fa8e04151eabe2cc2cefd7f10b7f1804abdb1",
+      "translatedAt": "2026-09-25T14:22:13.673Z"
     },
     "langsmith/server-mcp.md": {
-      "hash": "ce0306d9716798056332553c7020d59681d309de",
-      "translatedAt": "2026-09-15T13:57:18.331Z"
+      "hash": "e2c52d3096e9c887a9fd5adff04f8540f24d4a3d",
+      "translatedAt": "2026-09-25T14:22:09.538Z"
     },
     "langsmith/serverless-environments.md": {
-      "hash": "54b768a5bd09e54f6ec19b6d1b8f3650d1c75c5e",
-      "translatedAt": "2026-08-16T09:25:47.859Z"
+      "hash": "1b677c07c2a523de3e11064839e54a6d96c07f5e",
+      "translatedAt": "2026-09-25T14:22:10.896Z"
     },
     "langsmith/set-up-feedback-criteria.md": {
-      "hash": "ba32bc263381fa0cfe716f1ca80d18ac3f0971c7",
-      "translatedAt": "2026-08-16T09:25:48.567Z"
+      "hash": "45b822f06d0f4714095f53cbfe35688a0bcfb142",
+      "translatedAt": "2026-09-25T14:22:14.392Z"
     },
     "langsmith/set-up-custom-auth.md": {
-      "hash": "35344441d4cc6e4953cf7e8b06f21b8c528a9a0a",
-      "translatedAt": "2026-08-16T09:25:48.756Z"
+      "hash": "695d1f1eac463db0e62bbd15199398c2a3e70bfc",
+      "translatedAt": "2026-09-25T14:22:13.672Z"
     },
     "langsmith/self-hosted.md": {
-      "hash": "b5bceb5a59b2638fca25226272bb34dd49d72090",
-      "translatedAt": "2026-08-27T19:21:05.465Z"
+      "hash": "a60cc8263b03d13ac88be06375e09292f9ff0881",
+      "translatedAt": "2026-09-25T14:22:05.484Z"
     },
     "langsmith/setup-app-requirements-txt.md": {
       "hash": "b9ea14dc2960e2d0aec8235eab15fa9dfea91000",
       "translatedAt": "2026-08-16T09:25:55.137Z"
     },
     "langsmith/set-up-resource-tags.md": {
-      "hash": "1aef169f90fef7396f1bf93c4d6ff364ec006fac",
-      "translatedAt": "2026-08-16T09:25:51.957Z"
+      "hash": "c4bd992b7d982e1dc752801c482265ceb462606a",
+      "translatedAt": "2026-09-25T14:22:21.001Z"
     },
     "langsmith/setup-javascript.md": {
-      "hash": "3edfbecae17b6182b0862a57e4939b26edb52263",
-      "translatedAt": "2026-08-16T09:25:56.316Z"
+      "hash": "1e74da810914c87bf7fade160c79dccf7cbbb045",
+      "translatedAt": "2026-09-25T14:22:26.070Z"
     },
     "langsmith/setup-pyproject.md": {
       "hash": "a43a6b7faa6d331455bc42bb328ebda539a7ea77",
@@ -6093,8 +6093,8 @@
       "translatedAt": "2026-08-11T09:51:37.829Z"
     },
     "index.md": {
-      "hash": "f8bb54f97de091d67d2313763805cab50e6b2c95",
-      "translatedAt": "2026-09-24T13:53:06.525Z"
+      "hash": "05d86b83862dee1bf344bd169200700c183de12c",
+      "translatedAt": "2026-09-25T14:16:26.388Z"
     },
     "build-overview.md": {
       "hash": "13bd93b78f7512174cae846f2efcfae06504f2a5",
@@ -6125,8 +6125,8 @@
       "translatedAt": "2026-09-24T13:53:29.358Z"
     },
     "langsmith/engine-overview.md": {
-      "hash": "adab9a0c49e3c58978449d59314b34132ace0cf5",
-      "translatedAt": "2026-09-24T13:57:01.907Z"
+      "hash": "6c842f74fb1c6084df999be21462798996c9ba7e",
+      "translatedAt": "2026-09-25T14:16:28.391Z"
     },
     "langsmith/fleet/index.md": {
       "hash": "9c095610d882f45193d24c161b0bf5ab4e9a4238",
@@ -6141,36 +6141,36 @@
       "translatedAt": "2026-09-24T13:58:32.437Z"
     },
     "langsmith/govern-overview.md": {
-      "hash": "602dab8b7a7af9e6fdb0f50c8e3dfbc0472b8829",
-      "translatedAt": "2026-08-27T19:20:03.648Z"
+      "hash": "ad3446db5e2b221080a84f5f61ea42763f366f0c",
+      "translatedAt": "2026-09-25T14:16:49.250Z"
     },
     "langsmith/javascript/managed-deep-agents-overview.md": {
-      "hash": "6dd5a7dc9a4a25f298aba0739d649c4fda70377f",
-      "translatedAt": "2026-09-16T13:49:44.806Z"
+      "hash": "91baa4fbdeb3cd69f18b654c7856692eb7cd24d6",
+      "translatedAt": "2026-09-25T14:17:31.228Z"
     },
     "langsmith/javascript/managed-deep-agents-quickstart.md": {
-      "hash": "b0f8ab5e765b8605153ed9e71672dcae1a72ad26",
-      "translatedAt": "2026-09-16T13:49:48.758Z"
+      "hash": "b79432b26519d023cf2fefce507e7a84e9837f05",
+      "translatedAt": "2026-09-25T14:17:34.630Z"
     },
     "langsmith/llm-gateway-quickstart.md": {
-      "hash": "ad8db44f3eaf4f4187b55dac5de84b6dcc4d124f",
-      "translatedAt": "2026-09-18T13:15:10.366Z"
+      "hash": "d43c296885650eb765b622ac7af7befe17970214",
+      "translatedAt": "2026-09-25T14:18:12.130Z"
     },
     "langsmith/observability-quickstart.md": {
-      "hash": "46515ce1819d6c26248ccce5ebb0b4b3810a9708",
-      "translatedAt": "2026-09-22T13:45:20.045Z"
+      "hash": "cb17a447d7f80f9725a67c64c26ac8ae667f7fc0",
+      "translatedAt": "2026-09-25T14:18:54.245Z"
     },
     "langsmith/python/managed-deep-agents-overview.md": {
-      "hash": "27a14a0314f59f91d081c3e2850b6b0a556c39f9",
-      "translatedAt": "2026-09-16T13:49:57.683Z"
+      "hash": "c6754cab8abbc9a9b597d1d4f137ab22259687eb",
+      "translatedAt": "2026-09-25T14:19:49.918Z"
     },
     "langsmith/python/managed-deep-agents-quickstart.md": {
-      "hash": "33c6b8e8f9437feb6ed1cd15997a09a6c4d16f69",
-      "translatedAt": "2026-09-16T13:50:01.423Z"
+      "hash": "beb775bbfc2771bfd21a49ad2d50f3960594b40f",
+      "translatedAt": "2026-09-25T14:19:54.528Z"
     },
     "langsmith/prompt-engineering-quickstart.md": {
-      "hash": "c36c8fe082fe0301a8bc33d1c7531172d652f5a2",
-      "translatedAt": "2026-08-16T09:23:53.371Z"
+      "hash": "c4b9fa81370e50d32b5522ee834392f8f0ca34a8",
+      "translatedAt": "2026-09-25T14:19:31.335Z"
     },
     "langsmith/smith-api/issues-agent/save-the-agent-overview-for-a-session-beta.md": {
       "hash": "97e4ca088c13cdaa43194c4abf970613454a9641",
@@ -6257,12 +6257,12 @@
       "translatedAt": "2026-08-09T09:09:31.696Z"
     },
     "langsmith/javascript/managed-deep-agents-mcp-connectors.md": {
-      "hash": "51974719af5f43ab8dc81d0e940cffd3f5e13659",
-      "translatedAt": "2026-09-16T13:49:44.721Z"
+      "hash": "93ad720783e3160eae92080953fcf4dc94d49784",
+      "translatedAt": "2026-09-25T14:17:27.525Z"
     },
     "langsmith/python/managed-deep-agents-mcp-connectors.md": {
-      "hash": "c1e813afe4bcb9c040e3d808e313a971351b1ef7",
-      "translatedAt": "2026-09-16T13:49:57.684Z"
+      "hash": "5a8967cd860d9d9f515a7a1023e2098b475ec259",
+      "translatedAt": "2026-09-25T14:19:47.055Z"
     },
     "api-reference/deployments-v2/list-deployment-log-entries.md": {
       "hash": "a212b98a91b3515e4fa364d050865fa035397d27",
@@ -6337,8 +6337,8 @@
       "translatedAt": "2026-09-24T13:54:30.086Z"
     },
     "langsmith/custom-apps.md": {
-      "hash": "4e0d8c5f0a5cfe6a402b7d8c5b772fdabc0f46d3",
-      "translatedAt": "2026-09-24T13:55:44.524Z"
+      "hash": "d5e534f5189ca7e9b5eb945a44ff78fbd0bbe2bd",
+      "translatedAt": "2026-09-25T14:16:28.767Z"
     },
     "langsmith/configure-iam-auth.md": {
       "hash": "e9faf660e7c241e1f70d54986771a8e67a61cacd",
@@ -6389,16 +6389,16 @@
       "translatedAt": "2026-09-24T13:58:02.929Z"
     },
     "langsmith/get-started-integrations.md": {
-      "hash": "7e2d5b12453f30c0254d2f89ef6429e5e0821958",
-      "translatedAt": "2026-08-16T09:21:51.101Z"
+      "hash": "d8814d956c163e2d1ba760b227470295aebffbaa",
+      "translatedAt": "2026-09-25T14:16:48.587Z"
     },
     "langsmith/govern.md": {
-      "hash": "9ac9bbf880c4b8d8bd7901426876de69f7cfc91d",
-      "translatedAt": "2026-08-16T09:21:52.874Z"
+      "hash": "f2944d78a9d9a6dabaa885e50682de418cb3e6b8",
+      "translatedAt": "2026-09-25T14:16:50.259Z"
     },
     "langsmith/legacy-trace-with-vercel-ai-sdk.md": {
-      "hash": "8c7478d27200c82af814b10f4e5ee172404b9293",
-      "translatedAt": "2026-08-16T09:22:30.302Z"
+      "hash": "568817b9113a9fa148cc24a1cbffd156a4a7fe64",
+      "translatedAt": "2026-09-25T14:17:49.852Z"
     },
     "oss/openwiki/visualize.md": {
       "hash": "8ecfc85ab1424f81484ed77081240fe454d2d364",
@@ -6417,16 +6417,16 @@
       "translatedAt": "2026-09-24T13:56:49.644Z"
     },
     "langsmith/manage-deployment.md": {
-      "hash": "1a173696fd7b1e75b89681c9bc3e3b426af43be5",
-      "translatedAt": "2026-08-21T09:25:11.322Z"
+      "hash": "fdff77f932d6009039a2b68402de6c521b202d52",
+      "translatedAt": "2026-09-25T14:18:31.931Z"
     },
     "langsmith/monitor-deployment.md": {
-      "hash": "0ec64956bb3a818de65f5ee6ec7697dd2bd7b8d3",
-      "translatedAt": "2026-08-21T09:25:13.110Z"
+      "hash": "b06e5442b192825b56609312923569c0f84f9cd7",
+      "translatedAt": "2026-09-25T14:18:41.444Z"
     },
     "langsmith/preview-builds.md": {
-      "hash": "53fd0bdad35b85a7fa44d2b092cf70297645592c",
-      "translatedAt": "2026-08-21T09:25:14.352Z"
+      "hash": "3f1b08f34b9eb008519788b7a22e58f3705d0b65",
+      "translatedAt": "2026-09-25T14:19:16.160Z"
     },
     "langsmith/byoc-shared-responsibility.md": {
       "hash": "35759cde4e90b3d70d245398ef05110fb5d5a9a3",
@@ -6449,65 +6449,64 @@
       "translatedAt": "2026-09-24T13:57:02.631Z"
     },
     "langsmith/javascript/managed-deep-agents-changelog.md": {
-      "hash": "b620264d8c60908ebcccffe9c8da9c6a3c972f3e",
-      "translatedAt": "2026-09-03T13:05:41.729Z"
+      "hash": "fff4053716807be05811edfe31f6646219fb1117",
+      "translatedAt": "2026-09-25T14:17:07.712Z"
     },
     "langsmith/python/managed-deep-agents-changelog.md": {
-      "hash": "b28a69864c01452322cd7f50d4c90ef7e3749f0a",
-      "translatedAt": "2026-09-03T13:05:54.815Z"
+      "hash": "d0d9d6c29f9e89aa430dd86bbc690f740511e1ff",
+      "translatedAt": "2026-09-25T14:19:33.869Z"
     },
     "langsmith/sandbox-download-links.md": {
-      "hash": "004bfc80b6f849bada1e7e31d53e1970534ccc26",
-      "translatedAt": "2026-09-05T12:13:01.364Z"
+      "hash": "f02adb3d201ab82f35af1f278af6c237c251ee5e",
+      "translatedAt": "2026-09-25T14:20:21.777Z"
     },
     "langsmith/javascript/managed-deep-agents-connections.md": {
-      "hash": "db03f8f6b09f90bff8862a52dbc043eaabc000db",
-      "translatedAt": "2026-09-12T12:30:01.014Z"
+      "hash": "84c2871315fa8232fd5d38a88e34780d443b4112",
+      "translatedAt": "2026-09-25T14:17:27.391Z"
     },
     "langsmith/python/managed-deep-agents-connections.md": {
-      "hash": "4ca788e17d7334d7e2d1dfad889adaf72e083616",
-      "translatedAt": "2026-09-12T12:30:12.673Z"
+      "hash": "9e975b6cce23d8af083878f6e066378c33b8d155",
+      "translatedAt": "2026-09-25T14:19:51.304Z"
     },
     "langsmith/llm-gateway-model-access-policies.md": {
-      "hash": "b1725af165ffb8266c9d9e449d690ae9a39b3366",
-      "translatedAt": "2026-09-18T13:15:04.998Z"
+      "hash": "cb3713ecb8117a1452d9db37d5baef38ce39835a",
+      "translatedAt": "2026-09-25T14:18:10.774Z"
     },
     "langsmith/filter-traces.md": {
       "hash": "b24309204e7c1cd10ff6555e22967e766137be20",
       "translatedAt": "2026-09-24T13:58:17.853Z"
     },
     "langsmith/llm-gateway-data-policy.md": {
-      "hash": "b7c283d38e231c5311287ab10dc162823cc72d85",
-      "translatedAt": "2026-09-18T13:15:06.908Z"
+      "hash": "85cba6ba37b81e0640834378550e8d68e86defc2",
+      "translatedAt": "2026-09-25T14:18:09.434Z"
     },
     "langsmith/byoc-byovpc.md": {
       "hash": "61561d4357613e98d1724f90db7762e5e2d68c5b",
       "translatedAt": "2026-09-24T13:54:23.824Z"
     },
     "langsmith/javascript/managed-deep-agents-mcp-endpoint.md": {
-      "hash": "76a0c0e5a77fc2fa89d65b6651a61ecc1ee3e50e",
-      "translatedAt": "2026-09-15T13:57:01.008Z"
+      "hash": "cc6188e29e699f2033f20c72aafc55349dac2e75",
+      "translatedAt": "2026-09-25T14:17:28.955Z"
     },
     "langsmith/python/managed-deep-agents-mcp-endpoint.md": {
-      "hash": "cf57cbc1fde8392052d353b3eb217d48d34f0ab5",
-      "translatedAt": "2026-09-15T13:57:10.396Z"
+      "hash": "f8424e8f4d32908088aee23bb541026720b8411b",
+      "translatedAt": "2026-09-25T14:19:47.276Z"
     },
     "langsmith/javascript/managed-deep-agents-context-hub.md": {
-      "hash": "8c6ab3673fa11052f1839a11585292372ac2210e",
-      "translatedAt": "2026-09-16T13:49:35.255Z"
+      "hash": "081f97d634d00c109480557a5889a76c7fd3ac08",
+      "translatedAt": "2026-09-25T14:17:18.531Z"
     },
     "langsmith/python/managed-deep-agents-context-hub.md": {
-      "hash": "3c6f336226b303b8e364d73f05d10bc636b6ab41",
-      "translatedAt": "2026-09-16T13:49:51.296Z"
+      "hash": "d5812769ac0315af501bff61e8b66d00eb01b831",
+      "translatedAt": "2026-09-25T14:19:38.324Z"
     },
     "langsmith/llm-gateway-how-it-works.md": {
-      "hash": "cc89f60e061be2be492a6d8364e3bbbb54ddb62a",
-      "translatedAt": "2026-09-17T13:54:00.397Z",
-      "failed": true
+      "hash": "d05588c053ef4c69ad0d0a9f8ebda24793103848",
+      "translatedAt": "2026-09-25T14:18:10.862Z"
     },
     "langsmith/llm-gateway-decision-models.md": {
-      "hash": "15b958f36838955125c9bf42bcb9cc1155d93aab",
-      "translatedAt": "2026-09-22T13:45:05.043Z"
+      "hash": "2e08367bc17a024a8569c429bf51be3b1a396da2",
+      "translatedAt": "2026-09-25T14:18:02.413Z"
     },
     "langsmith/trajectory-view-integrations.md": {
       "hash": "7b78c08d022823f4c1b54007c16a93286bf10e8e",
@@ -6521,13 +6520,41 @@
       "hash": "36c7c2e093e6c2298bf893e846c1d9dc143af6ae",
       "translatedAt": "2026-09-24T14:07:28.334Z",
       "failed": true
+    },
+    "langsmith/engine-notifications.md": {
+      "hash": "d191504d4c36f9c6184ced45c8bbd74c4d321aca",
+      "translatedAt": "2026-09-25T14:16:32.739Z"
+    },
+    "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md": {
+      "hash": "c77ed9370c8e23f3745510d5c9f23e589ed3ffb3",
+      "translatedAt": "2026-09-25T14:17:15.619Z"
+    },
+    "langsmith/javascript/managed-deep-agents-channels-http.md": {
+      "hash": "5f2688a57c2e410af7367f2d8cee6821081fc7f8",
+      "translatedAt": "2026-09-25T14:17:15.953Z"
+    },
+    "langsmith/javascript/managed-deep-agents-search.md": {
+      "hash": "329e50e90c1fbc91a7e675fb451f781fc58da6fd",
+      "translatedAt": "2026-09-25T14:17:36.227Z"
+    },
+    "langsmith/python/managed-deep-agents-agent-owned-interrupts.md": {
+      "hash": "9f98b167ea38d0adf7082eaaacef2fca6fdd3528",
+      "translatedAt": "2026-09-25T14:19:33.817Z"
+    },
+    "langsmith/python/managed-deep-agents-channels-http.md": {
+      "hash": "04c8b2ff6de53641dd86f4fb434ceb798030d28a",
+      "translatedAt": "2026-09-25T14:19:37.647Z"
+    },
+    "langsmith/python/managed-deep-agents-search.md": {
+      "hash": "741690fbaf517d17827ea9f6ef032ba56878a7c6",
+      "translatedAt": "2026-09-25T14:19:54.614Z"
     }
   },
-  "updatedAt": "2026-09-24T14:10:47.511Z",
+  "updatedAt": "2026-09-25T14:26:22.856Z",
   "stats": {
-    "translated": 190,
-    "skipped": 0,
-    "failed": 378,
-    "total": 568
+    "translated": 268,
+    "skipped": 184,
+    "failed": 122,
+    "total": 574
   }
 }

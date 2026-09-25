@@ -97,7 +97,7 @@ export LANGSMITH_API_KEY="lsv2_..."
 export LANGSMITH_PROJECT="my-default-project"
 ```
 
-如果您使用 LangSmith [self-hosted](/langsmith/self-hosted)，还请设置端点：
+如果您使用 LangSmith [self-hosted](/langsmith/self-hosted)，还需设置端点：
 
 ```bash
 export LANGSMITH_ENDPOINT="https://your-langsmith-instance.com"
@@ -208,7 +208,7 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 
 ## 命令
 
-每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 和一组共享的 [filter flags](#filter-flags)。
+每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 以及一组共享的 [filter flags](#filter-flags)。
 
 ### 列出项目
 
@@ -311,7 +311,13 @@ langsmith experiment get my-experiment-2024-01-15
 
 沙箱命令允许您构建快照、创建沙箱、执行命令、打开交互式控制台以及将 TCP 端口隧道传输到沙箱内运行的服务。
 
-有关完整的沙箱命令参考，请参阅 [Sandbox CLI](/langsmith/sandbox-cli)。
+有关完整的沙箱命令参考，请参阅[Sandbox CLI](/langsmith/sandbox-cli)。
+
+### 管理自定义应用程序
+
+`langsmith apps` 命令脚手架，在本地运行，并发布 [custom apps](/langsmith/custom-apps)，在 LangSmith 内运行的 UI 并调用 LangSmith API。
+
+完整的命令列表请参见[CLI reference](/langsmith/custom-apps#cli-reference)。
 
 ### 直接调用LangSmith API
 
@@ -349,17 +355,17 @@ langsmith api sessions --include
 langsmith api sessions -H "Accept: text/csv"
 ```
 
-关键标志：|旗帜|短|默认|描述 |
+关键标志：|旗帜|短|默认 |描述 |
 |------|--------|---------|-------------|
 | `--method` | `-X` | `GET` | HTTP 方法 |
 | `--field` | `-F` | — |输入 JSON 字段为 `key=value`。可重复。使用 `@<path>` 或 `@-` 作为文件/标准输入值。 |
 | `--raw-field` | `-f` | — |字符串 JSON 字段为 `key=value`。可重复。 |
 | `--input` | — | — |用作请求正文的文件（`-` 对于标准输入）|
 | `--body` | — | — |原始请求正文（JSON 字符串、`@file` 或 `@-` 对于标准输入）|
-| `--header` | `-H` | — |附加标头为 `Key:Value`。可重复。 |
+| `--header` | `-H` | — |附加标头为`Key:Value`。可重复。 |
 | `--include` | `-i` | `false` |在正文之前打印响应状态行和标题 |
 
-`--input` 和 `--body` 是互斥的。子命令 `langsmith api ls` 和 `langsmith api info` 浏览并描述缓存的 OpenAPI 规范中的端点 — 传递 `--refresh` 进行重新获取。
+`--input` 和 `--body` 是互斥的。子命令 `langsmith api ls` 和 `langsmith api info` 浏览并描述缓存的 OpenAPI 规范中的端点 — 传递 `--refresh` 以重新获取。
 
 ## 过滤标志
 
@@ -381,7 +387,7 @@ langsmith api sessions -H "Accept: text/csv"
 
 **详细标志** — 控制响应中包含哪些字段：
 
-|旗帜|添加 |
+|旗帜|添加|
 |------|------|
 | `--include-metadata` |状态、持续时间、代币、成本 |
 | `--include-io` |输入、输出、错误 |
@@ -393,7 +399,7 @@ langsmith api sessions -H "Accept: text/csv"
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -18,7 +18,7 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
 
 <Step title="Send a request" icon="send" id="send-a-request">
 
-网关调用是指向网关基本 URL 的普通模型请求，并使用您的 LangSmith API 密钥进行身份验证。使用聊天完成从您已有的应用程序调用网关，或使用Deep Agents构建通过它进行路由的代理。
+网关调用是指向网关基本 URL 的普通模型请求，并使用您的 LangSmith API 密钥进行身份验证。使用聊天完成从您已有的应用程序调用网关，或使用Deep Agents构建通过它路由的代理。
 
 <Tabs>
 
@@ -131,7 +131,7 @@ console.log(result.messages[result.messages.length - 1].content);
 
 </Steps>
 
-这些示例使用 US 网关。对于欧盟、亚太地区和 AWS 主机名，请参阅 [Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。 For BYOC, see [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane).
+这些示例使用 US 网关。对于欧盟、亚太地区和 AWS 主机名，请参阅 [Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。对于 BYOC，请参阅 [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane)。
 
 ## 后续步骤
 
@@ -145,7 +145,7 @@ console.log(result.messages[result.messages.length - 1].content);
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

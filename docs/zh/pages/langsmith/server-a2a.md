@@ -636,7 +636,7 @@ TCK 通过 `messageId` 前缀驱动一些场景，例如 `tck-input-required`，
 ### 代理服务器当前失败的原因
 
 Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签入列表进行门控
-已知的故障。如果出现新的故障，并且列出的要求开始通过，那么 CI 就会失败，
+已知的故障。如果出现新的故障，并且列出的要求开始通过，则 CI 会失败，
 因此该列表不会偏离服务器实际执行的操作。
 
 在构建功能之前请阅读以下内容：|差距|你观察到什么|
@@ -669,7 +669,7 @@ Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-a2a.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

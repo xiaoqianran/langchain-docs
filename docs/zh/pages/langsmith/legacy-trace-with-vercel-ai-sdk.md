@@ -260,7 +260,7 @@ export async function GET() {
 
 ### 哨兵
 
-如果您使用 Sentry，则可以将 LangSmith 跟踪导出器附加到 Sentry 的默认 OpenTelemetry 工具，如下例所示。<Warning>
+如果您使用 Sentry，则可以将 LangSmith 跟踪导出器附加到 Sentry 的默认 OpenTelemetry 检测，如下例所示。<Warning>
 在撰写本文时，Sentry 仅支持 OTEL v1 软件包。 LangSmith 支持 v1 和 v2，但您**必须**确保安装 OTEL v1 软件包才能使仪器正常工作。
 
 <CodeGroup>
@@ -375,7 +375,7 @@ await generateText({
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/legacy-trace-with-vercel-ai-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

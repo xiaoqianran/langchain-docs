@@ -3,7 +3,7 @@
 # Custom Apps
 
 <Note>
-Custom apps are available on the **Enterprise** plan.
+Custom apps are available on [**Plus** and **Enterprise** plans](https://www.langchain.com/pricing).
 </Note>
 
 A custom app is a UI you build that runs inside LangSmith and calls the [LangSmith API](/langsmith/smith-api-ref). Use one for a workflow the built-in UI does not cover, such as a purpose-built annotation surface, an experiment comparison view, or a dashboard scoped to your own traces.

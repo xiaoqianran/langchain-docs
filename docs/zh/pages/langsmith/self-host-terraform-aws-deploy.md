@@ -60,7 +60,7 @@ graph TB
 |---|---|---|
 | AWS CLI | v2 |身份验证、查询 AWS 资源、管理 EKS kubeconfig |
 |地形 | 1.5 | 1.5运行基础设施模块 |
-| `kubectl` | 1.33 | 1.33检查EKS集群|
+| `kubectl` | 1.33 | 1.33检查EKS集群 |
 |头盔| 3.12 | 3.12安装和管理LangSmith图表|
 | `eksctl` |最新 |可选，方便 kubeconfig 和调试 |
 
@@ -89,7 +89,7 @@ helm version
 | `AmazonEKSClusterPolicy` |创建和管理 EKS 集群 |
 | `AmazonVPCFullAccess` |创建 VPC、子网、路由表和 NAT |
 | `AmazonRDSFullAccess` |创建和管理 RDS PostgreSQL 实例 |
-| `AmazonElastiCacheFullAccess` |创建ElastiCache Redis集群|
+| `AmazonElastiCacheFullAccess` |创建ElastiCache Redis集群 |
 | `AmazonS3FullAccess` |创建 S3 存储桶和 VPC 终端节点 |
 | `IAMFullAccess` |创建 IRSA 角色和策略 |
 
@@ -480,7 +480,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

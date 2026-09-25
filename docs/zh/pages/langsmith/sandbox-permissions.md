@@ -12,7 +12,7 @@
 | ---| ---| ---|
 |沙盒创建者 | ✅ 所有运行时操作 | ✅ 所有运行时操作 |
 |其他工作区成员 | ❌ 拒绝 | ✅ 所有运行时操作 |
-|不同的工作空间| ❌隐藏（视为未找到）| ❌隐藏（视为未找到）|
+|不同的工作空间 | ❌隐藏（视为未找到）| ❌隐藏（视为未找到）|
 
 “运行时操作”涵盖了创建后与正在运行的沙箱交互的四种方式：
 
@@ -23,7 +23,7 @@
 
 生命周期操作（创建、列出、更新、删除沙箱）继续使用现有的 `sandboxes:create` / `sandboxes:read` / `sandboxes:update` / `sandboxes:delete` 权限。这些都没有改变。
 
-## 拒绝请求当请求被拒绝时，沙箱会返回 `HTTP 403` ，其中包含一个命名触发规则的正文：
+## 拒绝请求当请求被拒绝时，沙箱将返回 `HTTP 403` ，其中包含命名触发规则的正文：
 
 ```json
 {
@@ -34,7 +34,7 @@
 }
 ```
 
-对另一个工作区中存在的沙箱的请求返回 `404 Not Found` 而不是 `403`，因此响应不会显示该沙箱是否存在于其他地方。
+对另一个工作区中存在的沙箱的请求会返回 `404 Not Found` 而不是 `403`，因此响应不会显示该沙箱是否存在于其他地方。
 
 ## 共享沙箱
 
@@ -49,7 +49,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-permissions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

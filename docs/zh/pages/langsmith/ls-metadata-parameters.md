@@ -197,7 +197,7 @@ val myConfiguredLlm =
 
 ## 所有参数
 
-### 用户可配置的参数|参数|类型 |必填|描述 |
+### 用户可配置的参数|参数|类型 |必填 |描述 |
 |------------|------|----------|-------------|
 | [⟦T29⟧](#ls_provider) | `string` |是* |用于成本跟踪的 LLM 提供商名称 |
 | [⟦T31⟧](#ls_model_name) | `string` |是* |用于成本跟踪的型号标识符 |
@@ -215,7 +215,7 @@ val myConfiguredLlm =
 
 |参数|类型 |描述 |
 |------------|------|-------------|
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数|参数|类型 |描述 |
@@ -559,7 +559,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 **主要要求：** [⟦T137⟧](#ls_provider) + [⟦T138⟧](#ls_model_name)
 - 两者都应存在以进行自动成本计算。
-- 如果[⟦T139⟧](#ls_model_name)缺失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
+- 如果[⟦T139⟧](#ls_model_name)丢失，系统将回退到检查[⟦T140⟧](#ls_invocation_params)的型号名称。
 - [⟦T141⟧](#ls_provider) 必须与 [pricing database](https://smith.langchain.com/settings/workspaces/models) 中的提供商匹配（或使用自定义定价）。**附加要求：**
 - 运行必须具有`run_type="llm"`（或必须启用[arbitrary cost tracking](/langsmith/cost-tracking#other-runs-send-costs)）。
 - [Token usage data](/langsmith/log-llm-trace#provide-token-and-cost-information) 必须出现在跟踪中（prompt_tokens、completion_tokens）。
@@ -706,7 +706,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/ls-metadata-parameters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

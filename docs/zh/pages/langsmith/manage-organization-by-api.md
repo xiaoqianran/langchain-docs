@@ -18,7 +18,7 @@ LangSmith 的 API 支持通过 API 密钥以编程方式访问 UI 中可用的�
 </Check>
 
 <Note>
-有一些限制很快就会取消：
+有一些限制即将取消：
 
 * LangSmith SDK 尚不支持这些组织管理操作。
 * 具有组织管理员权限的组织范围的[service keys](/langsmith/administration-overview#service-keys)可用于这些操作。
@@ -28,7 +28,7 @@ LangSmith 的 API 支持通过 API 密钥以编程方式访问 UI 中可用的�
 使用 `X-Tenant-Id` 标头指定要定位的工作区。如果标头不存在，则操作将默认为最初创建密钥的工作区（如果它不在组织范围内）。
 
 **如果使用组织范围的服务密钥访问工作区范围的资源时未指定 `X-Tenant-Id`，则请求将失败并显示 `403 Forbidden`。**
-</Warning>下面列出了一些常用的端点和用例。有关可用端点的完整列表，请参阅[API docs](/langsmith/smith-api-ref)。 ** `X-Organization-Id` 标头应出现在所有请求中，而 `X-Tenant-Id` 标头应出现在特定工作区范围内的请求中。**
+</Warning>下面列出了一些常用的端点和用例。有关可用端点的完整列表，请参阅[API docs](/langsmith/smith-api-ref)。 ** `X-Organization-Id` 标头应出现在所有请求中，`X-Tenant-Id` 标头应出现在特定工作区范围内的请求中。**
 
 ## 工作空间
 
@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-organization-by-api.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

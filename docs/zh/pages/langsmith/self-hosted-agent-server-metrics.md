@@ -15,7 +15,7 @@
 - **部署 UI 指标**：默认情况下，出现在 LangSmith 部署 UI 中，并在代理服务器 Prometheus 抓取端点（`GET /metrics`、`format=prometheus`）上公开。
 - **内部指标**：LangChain操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会显示。
 
-|后端|公制集 |启用|
+|后端 |公制集 |启用 |
 |--------|------------|--------|
 | **普罗米修斯**（刮`GET /metrics`）|默认情况下的部署 UI 指标。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 也可以在同一端点上公开内部指标。 |安装 OTel Prometheus 导出器后可用 |
 | **Datadog**（OTLP 推送）|仅内部指标 |设置`LSD_DD_API_KEY`（或`CUSTOM_LSD_DD_API_KEY`）。指标推送到`https://{LSD_DD_ENDPOINT}/v1/metrics`（默认端点：`otlp.us5.datadoghq.com`）。 |Prometheus 和 Datadog 可以同时运行。 Datadog 接收内部补充，因此 UI 指标不会在两个后端中重复。
@@ -125,7 +125,7 @@ Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/met
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-agent-server-metrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

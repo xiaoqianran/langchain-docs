@@ -164,7 +164,7 @@ kubectl get gateway -n langsmith \
 Terraform 提供以下 GCP 资源：|资源 |目的|
 |---|---|
 | VPC+子网+云NAT |集群和托管服务的专用网络|
-|私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
+|私人服务连接 | Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
 |内存存储Redis |队列和缓存、STANDARD_HA 层、私有 IP |
@@ -231,7 +231,7 @@ enable_langsmith_deployment = true
 source infra/scripts/setup-env.sh
 ```
 
-该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值、读取现有的秘密管理器秘密、自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您以交互方式提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
+该脚本读取 `terraform.tfvars`，派生秘密前缀，并且对于每个秘密，可以重用导出的值、读取现有的秘密管理器秘密、自动生成一个秘密（对于盐和 Fernet 密钥），或者提示您。许可证密钥和管理员密码是您交互提供的两个值。必须获取脚本，因为 `make` 无法将环境变量导出回父 shell。
 
 验证秘密是否存在：
 
@@ -292,7 +292,7 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 使用三个受支持的部署路径之一：
 
-|路径|命令|何时使用 |
+|路径|命令 |何时使用 |
 |---|---|---|
 | [Script-driven Helm deploy _(recommended)_](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Terraform-managed Helm release](#terraform-managed-helm-release) | `make init-app && make apply-app` | Helm 版本在 Terraform 状态下与基础设施一起管理。最适合 GitOps 和 CI/CD 管道。 |
@@ -572,7 +572,7 @@ kubectl get pods -n langsmith -w
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

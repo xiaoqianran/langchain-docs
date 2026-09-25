@@ -34,7 +34,7 @@ with client.sandbox() as sb:
 
 ## 用例
 
-|场景 |如何|
+|场景|如何|
 |----------|-----|
 |预览 Web 应用程序（Streamlit、Jupyter 等）| `sb.service(port=<PORT>)` 然后打开`browser_url` |
 |从代码或 CI 调用 API | `svc.get(...)` / `svc.post(...)` 或 `curl` 以及服务令牌 |
@@ -64,7 +64,7 @@ svc = sb.service(port=3000, expires_in_seconds=3600)
 ```
 
 <Note>
-在请求服务 URL 之前，该服务必须正在运行并侦听指定端口。该 URL 仅路由流量，不会为您启动服务。
+在请求服务 URL 之前，该服务必须正在指定端口上运行并侦听。该 URL 仅路由流量，不会为您启动服务。
 </Note>
 
 ### 提出请求
@@ -186,8 +186,8 @@ def create_item(item: dict):
 | **设置** |零——只是一个 URL |需要 SDK 或 CLI |
 | **访问自** |浏览器、脚本、CI，随处可见 |仅限本地机器 |
 | **分享** |复制网址并发送 |不可分享 |
-| **多页网络应用程序** |全面支持（子域路由）|全面支持（本地端口）|
-| **非 HTTP 服务** |不支持 |全力支持|
+| **多页网络应用程序** |全面支持（子域路由） |全面支持（本地端口）|
+| **非 HTTP 服务** |不支持 |全力支持 |
 
 将**服务 URL** 用于您想要从浏览器访问或与其他人共享的 HTTP 服务。对于非 HTTP 协议（​​如 `psql` 或 `redis-cli`）或需要仅本地访问时，请使用 **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)**。
 
@@ -195,7 +195,7 @@ def create_item(item: dict):
 
 ## 故障排除
 
-|错误|原因 |修复 |
+|错误|原因 |修复|
 |--------|--------|-----|
 | **“服务链接已过期”** |超过令牌生命周期 |从 LangSmith 再次打开服务或致电 `sb.service()` 获取新的 URL |
 | **“服务无法访问”** |没有任何东西正在监听该端口 |验证服务器是否在沙箱内运行 |
@@ -203,7 +203,7 @@ def create_item(item: dict):
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-service-urls.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

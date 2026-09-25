@@ -42,7 +42,7 @@ security:
     </Tab>
 </Tabs>
 
-默认情况下，自托管部署没有安全方案。这意味着它们只能部署在安全网络上或通过身份验证。要添加自定义身份验证，请参阅[How to add custom authentication](/langsmith/custom-auth)。## 自定义安全模式
+默认情况下，自托管部署没有安全方案。这意味着它们只能部署在安全网络上或通过身份验证。要添加自定义身份验证，请参阅[How to add custom authentication](/langsmith/custom-auth)。## 自定义安全架构
 
 要在 OpenAPI 文档中自定义安全架构，请将 `openapi` 字段添加到 `langgraph.json` 中的 `auth` 配置中。请记住，这仅更新 API 文档 - 您还必须实现相应的身份验证逻辑，如 [How to add custom authentication](/langsmith/custom-auth) 中所示。
 
@@ -112,7 +112,7 @@ security:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/openapi-security.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

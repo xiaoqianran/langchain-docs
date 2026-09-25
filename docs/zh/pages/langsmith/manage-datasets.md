@@ -123,7 +123,7 @@ var examples = client.examples().list(listParams);
 
 在 [Create and manage datasets programmatically](/langsmith/manage-datasets-programmatically#fetch-datasets) 页面上了解有关如何获取数据集视图的更多信息。
 
-## 评估数据集的分割/过滤视图
+## 对数据集的分割/过滤视图进行评估
 
 <Check>
 在阅读本节之前，您可能会发现参考以下内容会有所帮助：
@@ -176,7 +176,7 @@ var examples = client.examples().list(listParams);
 
 </CodeGroup>
 
-更多过滤功能请参考这篇[how-to guide](/langsmith/manage-datasets-programmatically#list-examples-by-structured-filter)。
+更多过滤功能可以参考这个[how-to guide](/langsmith/manage-datasets-programmatically#list-examples-by-structured-filter)。
 
 ### 评估数据集分割
 
@@ -246,9 +246,9 @@ var examples = client.examples().list(listParams);
 
 ![Unshare Trace List](/langsmith/images/unshare-trace-list.png)
 
-## 导出数据集
+## 导出数据集您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。要在轨迹数据集上微调模型而不导出它，请使用 [Smithtune](/langsmith/smithtune)。
 
-您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。从 **数据集和实验** 选项卡中，选择一个数据集，单击 **⋮**（页面右上角），然后单击 **下载数据集**。
+从 **数据集和实验** 选项卡中，选择一个数据集，单击 **⋮**（页面右上角），然后单击 **下载数据集**。
 
 ![Export Dataset Button](/langsmith/images/export-dataset-button.gif)
 
@@ -276,7 +276,7 @@ var examples = client.examples().list(listParams);
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

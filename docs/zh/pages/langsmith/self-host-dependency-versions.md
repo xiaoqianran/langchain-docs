@@ -25,7 +25,7 @@
 |------------|--------------------|--------|
 | [Kubernetes](/langsmith/kubernetes) | [upstream Kubernetes release cycle](https://kubernetes.io/releases/) 支持的任何版本 | LangSmith 定期在 GKE、EKS、AKS、Minikube 和 Kind 上进行测试。 |
 | [OpenShift](/langsmith/kubernetes) | 4.14 | 4.14作为 LangSmith 的 Kubernetes 发行版受支持。 |
-| [Helm](https://helm.sh/docs/intro/install/) | 3 |用于安装和升级LangSmith Helm 海图。 |
+| [Helm](https://helm.sh/docs/intro/install/) | 3 |用于安装和升级LangSmith Helm图表。 |
 |码头工人 |兼容[Docker Compose v2](https://docs.docker.com/compose/)的版本 |基于 Docker 的独立代理服务器部署所需。 |
 
 ## LangSmith 图表和平台
@@ -40,13 +40,13 @@
 - PostgreSQL 14 或更高版本：参考[Connect to an external PostgreSQL database](/langsmith/self-host-external-postgres#requirements)。
 - Redis 6.2及以上版本和Valkey 8：参考[Connect to an external Redis or Valkey database](/langsmith/self-host-external-redis#requirements)。
 - ClickHouse：使用[LangSmith Helm chart](https://github.com/langchain-ai/helm/releases)中指定的版本或更高版本：参考[Connect to an external ClickHouse database](/langsmith/self-host-external-clickhouse#requirements)。
-- Kubernetes集群必备条件：参考[Self-host LangSmith on Kubernetes](/langsmith/kubernetes#prerequisites)。如果您不确定当前正在运行哪个版本，请联系您的数据库管理员或参考云提供商的控制台。如果您需要在升级 LangSmith 之前升级依赖项，请参阅供应商的文档。
+- Kubernetes集群必备条件：参考[Self-host LangSmith on Kubernetes](/langsmith/kubernetes#prerequisites)。如果您不确定当前运行的是哪个版本，请联系您的数据库管理员或参考云提供商的控制台。如果您需要在升级 LangSmith 之前升级依赖项，请参阅供应商的文档。
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-dependency-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

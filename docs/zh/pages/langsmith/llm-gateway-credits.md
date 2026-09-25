@@ -109,7 +109,7 @@ print(model.invoke("ping").content)
 
 ## 定价
 
-Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限制（包括托管模型调用）。
+Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计划详细信息和当前费率，请参阅[the pricing page](https://www.langchain.com/pricing)。网关积分以 **LangChain 积分单位 (LCU)** 计价；每个调用都会根据令牌使用情况消耗 LCU。标准网关[spend policies](/langsmith/llm-gateway-spend-policies)适用于托管模型流量，因此您配置的任何组织、工作区、API 密钥或用户上限也管理网关积分的使用。您可以使用与自带密钥提供商相同的工具来控制网关信用消耗。例如，将每个提供商的特定 API 密钥上限设置为 200 美元/月，或者设置工作区范围内的每日限额（包括托管模型调用）。
 
 ## 追踪
 
@@ -120,13 +120,13 @@ Gateway Credits 适用于除 Enterprise 之外的所有付费计划。有关计�
 - [Quickstart](/langsmith/llm-gateway-quickstart)：进行第一个网关代理呼叫。
 - [API formats](/langsmith/llm-gateway-api-formats)：通过聊天完成、消息或响应调用模型。
 - [Spend policies](/langsmith/llm-gateway-spend-policies)：为网关信用使用添加成本限制。
-- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商本机 API 和模型 ID。
+- [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商原生 API 和模型 ID。
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

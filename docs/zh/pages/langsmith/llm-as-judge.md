@@ -53,7 +53,7 @@
 
 ### 预览
 
-预览提示将向您展示使用右侧显示的参考运行和数据集示例的格式化提示的外观。
+预览提示将使用右侧显示的参考运行和数据集示例向您展示格式化提示的外观。
 
 ### 通过少量示例改进您的评估器
 
@@ -63,7 +63,7 @@
 
 ### 反馈配置
 
-反馈配置是您的 LLM 法官评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：1. **为反馈键命名**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
+反馈配置是您的 LLM 法官评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：1. **命名反馈键**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
 
 2. **添加描述**：描述反馈代表什么。
 
@@ -83,7 +83,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

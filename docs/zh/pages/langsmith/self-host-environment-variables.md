@@ -10,7 +10,7 @@ LangSmith Helm Chart 提供了两种将环境变量注入到服务中的方法�
 
 `commonEnv` 是 `values.yaml` 中的顶级字段，适用于**所有部署和有状态集，但`playground` 和 `aceBackend` 服务**除外，这些服务是沙盒的，不接收 `commonEnv` 值。
 
-当变量必须同时可供大多数服务使用时，请使用`commonEnv`，例如自定义 CA 证书路径、代理设置或影响整个平台的功能标志。
+当变量必须同时可供大多数服务使用时，例如自定义 CA 证书路径、代理设置或影响整个平台的功能标志，请使用`commonEnv`。
 
 ```yaml
 commonEnv:
@@ -66,7 +66,7 @@ backend:
 
 ## 变量名不能重复
 
-该图表使用 `detectDuplicates` 帮助程序来验证每个服务的环境变量名称。如果相同的变量名称在服务的组合变量列表中出现多次（包括从 `commonEnv`、`extraEnv` 和图表管理变量添加的变量），则 Helm 在模板渲染期间会失败，并显示如下错误：
+该图表使用 `detectDuplicates` 帮助程序来验证每个服务的环境变量名称。如果相同的变量名称在服务的变量组合列表中出现多次（包括从 `commonEnv`、`extraEnv` 和图表管理变量添加的变量），则 Helm 在模板渲染期间会失败，并显示如下错误：
 
 ```
 Duplicate keys detected: [MY_ENV_VAR]
@@ -100,7 +100,7 @@ playground:
 
 ### 减少批量运行持久性日志记录
 
-默认情况下，LangSmith 通过基于 Go 的摄取队列持续记录每批运行的成功消息。在处理大量跟踪的部署中，这可能会产生过多的日志噪音。
+默认情况下，LangSmith 会通过基于 Go 的摄取队列为其保留的每批运行记录一条成功消息。在处理大量跟踪的部署中，这可能会产生过多的日志噪音。
 
 `FF_PERSIST_BATCHED_RUNS_SUCCESS_LOGGING`默认为`true`，当`ingestQueue.enabled`为`true`（默认）时，通过`commonEnv`注入到所有服务中。要禁用这些成功日志消息，请在 `commonEnv` 中覆盖它：
 
@@ -124,7 +124,7 @@ commonEnv:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-environment-variables.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

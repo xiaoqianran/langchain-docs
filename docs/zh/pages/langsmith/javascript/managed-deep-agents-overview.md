@@ -9,7 +9,7 @@
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
 - **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
-- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
+- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -86,7 +86,7 @@ flowchart LR
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

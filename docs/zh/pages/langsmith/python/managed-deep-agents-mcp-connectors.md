@@ -97,7 +97,7 @@ mcp = define_mcp(
 
 每个服务器都支持以下核心选项：
 
-|选项|描述 |
+|选项 |描述 |
 | ---| ---|
 | `transport` |必需的。对可流式 HTTP 使用 `http`，对旧版 SSE 使用 `sse`。 |
 | `url` |必需的。远程 MCP 端点 URL。 |
@@ -110,7 +110,7 @@ mcp = define_mcp(
 
 MCP 定义还接受以下选项：
 
-|选项|默认 |描述 |
+|选项 |默认 |描述 |
 | ---| ---| ---|
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
@@ -119,7 +119,7 @@ MCP 定义还接受以下选项：
 
 `mda dev`和`mda deploy`发现`tools/`下的MCP声明并将其包含在托管配置中。该声明未同步到 Context Hub。
 
-## 何时使用 MCP 连接器|概念 |亲切 |它如何到达代理|
+## 何时使用 MCP 连接器|概念|亲切 |它如何到达代理|
 | ---| ---| ---|
 | **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
@@ -132,7 +132,7 @@ MCP 定义还接受以下选项：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

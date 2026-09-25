@@ -10,7 +10,7 @@
 这些步骤是**可选的**。如果您跳过它们，您的检索器数据仍将被记录，但LangSmith不会以检索器特定的格式呈现它。
 </Note>
 
-要启用特定于检索器的渲染，请完成以下两个步骤。
+要启用检索器特定的渲染，请完成以下两个步骤。
 
 ## 将 `run_type` 设置为检索器
 
@@ -30,8 +30,8 @@ def retrieve_docs(query):
 
 从检索器函数返回字典 (Python) 或对象 (TypeScript) 列表。列表中的每个项目代表一个检索到的文档，并且必须包含以下字段：|领域|类型 |描述 |
 |---|---|---|
-| `page_content` |字符串|检索到的文档的文本内容。 |
-| `type` |字符串|必须始终是`"Document"`。 |
+| `page_content` |字符串 |检索到的文档的文本内容。 |
+| `type` |字符串 |必须始终是`"Document"`。 |
 | `metadata` |对象|包含有关文档的元数据的键值对，例如源 URL、块 ID 或分数。此元数据与跟踪中的文档一起显示。 |
 
 以下示例显示了应用了这两个要求的完整检索器实现：
@@ -104,7 +104,7 @@ await retrieveDocs("User query");
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-retriever-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

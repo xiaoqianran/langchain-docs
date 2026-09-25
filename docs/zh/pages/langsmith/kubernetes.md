@@ -105,7 +105,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    1.安装`helm`请参考[Helm documentation](https://helm.sh/docs/intro/install/)
 
 
-3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到`https://beacon.langchain.com` 进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
+3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到 `https://beacon.langchain.com` 以进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
 
 <Note>
 从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
@@ -280,7 +280,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 要超越可观察性、跟踪和评估，您可以在自托管实例上启用以下功能：
 
 - **[LangSmith Deployment](/langsmith/deployment)**：通过 LangSmith UI 部署、扩展和管理代理。
-- **[Fleet](/langsmith/fleet/index)**：无需编写代码即可创建和管理 AI 代理。
+- **[Fleet](/langsmith/fleet/index)**：无需编写代码即可创建和管理人工智能代理。
 - **[Insights](/langsmith/insights)**：对您的痕迹和应用程序数据进行人工智能分析。
 - **[Chat](/langsmith/chat)**：跨越 LangSmith 的工作区聊天体验，帮助您分析跟踪、线程、提示和实验结果。
 - **[Sandboxes](/langsmith/sandboxes)**：运行代码，公开临时服务，并从LangSmith创建内存快照。
@@ -291,7 +291,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

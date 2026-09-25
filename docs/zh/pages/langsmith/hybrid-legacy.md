@@ -5,7 +5,7 @@
 # 设置指南（旧版）
 
 <Warning>
-本页介绍传统混合部署模型，该模型使用LangChain管理的控制平面来编排云中的代理服务器。对于当前的混合动力型号，请参阅[Hybrid](/langsmith/hybrid)。
+本页介绍了传统的混合部署模型，该模型使用LangChain管理的控制平面来编排云中的代理服务器。对于当前的混合动力型号，请参阅[Hybrid](/langsmith/hybrid)。
 </Warning>
 
 <Info>
@@ -17,7 +17,7 @@
 - **控制平面**（LangSmith UI、API 和编排）在 LangChain 的云中运行，由 LangChain 管理。
 - **数据平面**（您的<Tooltip tip="The server that runs your applications.">代理服务器</Tooltip>和代理工作负载）在您的云中运行，由您管理。
 
-这将托管界面的便利性与在您自己的环境中运行工作负载的灵活性结合在一起。
+这将托管界面的便利性与在您自己的环境中运行工作负载的灵活性结合起来。
 
 <Note>
 了解有关 [control plane](/langsmith/control-plane)、[data plane](/langsmith/data-plane) 和 [Agent Server](/langsmith/agent-server) 架构概念的更多信息。
@@ -82,7 +82,7 @@
 
     <Info>
     `KEDA`用于根据队列大小自动扩展部署系统。
-    </Info>2. 您的集群上安装了有效的 `Ingress` 控制器。有关为部署配置入口的更多信息，请参阅[Create an ingress for installations](/langsmith/self-host-ingress)。我们强烈建议在生产设置中使用现代的[Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api)。
+    </Info>2. 您的集群上安装了有效的`Ingress` 控制器。有关为部署配置入口的更多信息，请参阅[Create an ingress for installations](/langsmith/self-host-ingress)。我们强烈建议在生产设置中使用现代的[Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api)。
 3. 如果您计划让侦听器监视多个命名空间，则**必须**使用 [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) 或 [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway) 而不是 [standard ingress](/langsmith/self-host-ingress#option-1%3A-standard-ingress) 资源。标准入口资源只能将流量路由到同一命名空间中的服务，而网关或 Istio 网关可以将流量路由到跨多个命名空间的服务。
 4. 您的集群中有足够的闲置空间用于多个部署。建议使用`Cluster-Autoscaler`自动配置新节点。
 5. 您需要启用两个控制平面 URL 的出口。侦听器轮询这些端点以进行部署。使用与您的 LangSmith 区域匹配的对。
@@ -153,7 +153,7 @@ LangSmith API：
 2. 从 LangSmith UI 创建监听器。 `Listener` 数据模型是针对实际的["listener" application](/langsmith/data-plane#listener-application) 配置的。
     1. 在左侧导航栏中，选择`Deployments` > `Listeners`。
     2. 在页面右上角，选择`+ Create Listener`。
-    3. 为监听器输入唯一的`Compute ID`。 `Compute ID` 是用户定义的标识符，在当前 LangSmith 工作区中的所有侦听器中应该是唯一的。当最终用户创建新部署时，会向他们显示 `Compute ID`。确保`Compute ID`向最终用户提供有关其代理服务器部署将部署到的位置的上下文。例如，`Compute ID`可以设置为`k8s-cluster-name-dev-01`。在本例中，Kubernetes集群的名称是`k8s-cluster-name`，`dev`表示该集群是为“开发”工作负载保留的，`01`是一个数字后缀，以减少命名冲突。
+    3. 为监听器输入唯一的`Compute ID`。 `Compute ID` 是用户定义的标识符，在当前 LangSmith 工作区中的所有侦听器中应该是唯一的。当最终用户创建新部署时，会向他们显示 `Compute ID`。确保`Compute ID`向最终用户提供有关其代理服务器部署将部署到的位置的上下文。例如，`Compute ID`可以设置为`k8s-cluster-name-dev-01`。在本示例中，Kubernetes 集群的名称为 `k8s-cluster-name`，`dev` 表示该集群保留用于“开发”工作负载，`01` 是一个数字后缀，用于减少命名冲突。
     4. 输入一个或多个 Kubernetes 命名空间。稍后，“侦听器”应用程序将配置为部署到每个命名空间。
     5. 在页面右上角，选择`Submit`。6. 创建监听后，复制监听ID。稍后在 Kubernetes 集群中安装实际的“侦听器”应用程序时您将使用它（步骤 5）。
     <Info>
@@ -183,7 +183,7 @@ LangSmith API：
         enabled: true
         createCRDs: true # set this to `false` if the CRD has been previously installed in the current Kubernetes cluster
     ```
-    - `config.langsmithApiKey`：`langgraph-listener` 部署通过LangChain 的 LangGraph 控制平面 API 和 `langsmithApiKey` 进行身份验证。- `config.langsmithWorkspaceId`：`langgraph-listener` 部署与LangSmith 工作区中的代理服务器部署耦合。换句话说，`langgraph-listener` 部署只能管理指定LangSmith 工作区 ID 中的 Agent Server 部署。
+    - `config.langsmithApiKey`：`langgraph-listener` 部署通过LangChain 的 LangGraph 控制平面 API 和 `langsmithApiKey` 进行身份验证。- `config.langsmithWorkspaceId`：`langgraph-listener` 部署与LangSmith 工作区中的代理服务器部署耦合。换句话说，`langgraph-listener`部署只能管理指定LangSmith工作区ID中的Agent Server部署。
     - `config.langgraphListenerId`：除了与LangSmith工作区耦合之外，`langgraph-listener`部署还与侦听器耦合。创建新的代理服务器部署时，它会自动耦合到`langgraphListenerId`。指定 `langgraphListenerId` 可确保 `langgraph-listener` 部署只能管理与 `langgraphListenerId` 耦合的代理服务器部署。
     - `config.watchNamespaces`：`langgraph-listener` 部署将部署到的 Kubernetes 命名空间的逗号分隔列表。此列表应与步骤 2d 中指定的命名空间列表匹配。
     - `config.enableLGPDeploymentHealthCheck`：要禁用代理服务器运行状况检查，请将其设置为`false`。
@@ -243,7 +243,7 @@ LangSmith API：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid-legacy.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
