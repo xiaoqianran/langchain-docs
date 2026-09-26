@@ -38,18 +38,16 @@
 
 Markdown 文件在 **预览** 中打开，这是只读渲染。要更改文件，请切换到右侧面板右上角的“编辑”选项卡：它显示文件中的确切文本。保存您的更改以创建新的提交。
 
-每个保存的更改都会在 **Commit History** 面板中创建一个新的 **commit**
-左侧，这样您就可以浏览、比较和恢复以前的版本而不会丢失
-工作。
+每次保存都会在左侧的历史记录面板中创建一个新的**提交**。选择一个提交来浏览其文件。目前，Context Hub 不提供文件比较视图或将先前版本恢复为最新提交的操作。
 
 ## 4. 标记并提升提交
 
 一旦提交准备好交付，请将其提升到下游环境
-代理可以拉它。
-
-<Note>
+代理可以拉它。<Note>
 Context Hub 目前支持两种环境标签进行升级：`staging` 和 `production`。
-</Note>1. 选择目标提交后，单击右上角的 **Promote**。
+</Note>
+
+1. 选择目标提交后，单击右上角的 **Promote**。
 1. 选择目标环境：
     - **升级到生产：**生产代理拉动的提交。
     - **升级到暂存：**用于验证的预生产环境。
@@ -62,6 +60,8 @@ Context Hub 目前支持两种环境标签进行升级：`staging` 和 `producti
 
 通过环境标签（例如，`:production`）解析上下文的代理运行时现在会拉取此提升的提交。
 
+要在环境中使用先前版本，请选择该提交并将其升级为 `staging` 或 `production`。这会将环境标记移动到选定的提交。它不会更改最新文件或创建恢复提交。
+
 ## 后续步骤
 
 - [Context engineering concepts](/langsmith/context-engineering-concepts)：了解技能、代理、版本控制和共享。
@@ -69,11 +69,9 @@ Context Hub 目前支持两种环境标签进行升级：`staging` 和 `producti
 - [Configure commit webhooks](/langsmith/context-hub-webhooks)：将工作区 Context Hub 提交发送到外部 HTTPS 端点。
 - [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-mounts#mount-a-context-hub-repo)：为沙箱代码提供对存储库的只读文件系统访问权限，该存储库在更改时保持同步。
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

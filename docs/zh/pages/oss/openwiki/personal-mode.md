@@ -28,7 +28,7 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 
 在 macOS 上，OpenWiki 可以作为用户 LaunchAgents 在 `~/Library/LaunchAgents/` 下安装支持的计划。这些作业运行`openwiki --update --print`并在`~/.openwiki/logs/`下写入日志。
 
-## 连接您的来源在个人模式下，OpenWiki 从您已经使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
+## 连接您的来源在个人模式下，OpenWiki 从您已使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
 
 在摄取运行期间，连接器工具在 `~/.openwiki/connectors/<connector>/raw/` 下写入原始数据和清单，然后特定于源的代理运行从这些本地文件更新 wiki。
 
@@ -39,7 +39,7 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 </Important>
 
 ### 内置源|来源 |证书 |行为 |
-| --- | --- | --- |
+| ---| ---| ---|
 | `custom-mcp` |默认情况下不需要 |连接到任何已配置的 HTTP 或 stdio MCP 服务器，并仅允许显式安全的只读工具 |
 | `git-repo` |本地路径|读取配置的本地存储库路径并写入紧凑的清单 |
 | `x` | OAuth 用户上下文凭据 |通过 X API 的主页时间线、用户帖子、提及、书签和列表帖子 |
@@ -137,7 +137,7 @@ openwiki cron delete <source|all>
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/personal-mode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

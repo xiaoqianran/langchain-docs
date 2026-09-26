@@ -11,9 +11,9 @@
 ## 过滤参数
 
 |按键|描述 |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `project_id` / `project_name` |要获取的项目作为单个项目或项目列表运行。                                                                                                                                                  || `trace_id` |获取属于特定跟踪一部分的运行。                                                                                                                                                                                  |
-| `run_type` |获取[type of run](/langsmith/run-data-format#run-types)，例如`llm`、`chain`、`tool`、`retriever`。                                                                                                                              |
+| `run_type` |获取[type of run](/langsmith/run-data-format#run-types)，例如，`llm`、`chain`、`tool`、`retriever`。                                                                                                                              |
 | `dataset_name` / `dataset_id` |获取与指定数据集中的示例行关联的运行。这对于比较给定数据集上的提示或模型非常有用。                                                                              |
 | `reference_example_id` |获取与特定示例行关联的运行。这对于比较给定输入的提示或模型很有用。                                                                                                   || `parent_run_id` |获取给定运行的子级运行。这对于使用上下文管理器获取分组在一起的运行或获取代理轨迹非常有用。                                                                  |
 | `error` |获取出错或未出错的运行。                                                                                                                                                                                      |
@@ -34,11 +34,11 @@ LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取�
 ### 比较器
 
 过滤语法基于应用于运行对象字段的比较器函数：|比较器|描述 |示例|
-| ---------- | -------------------------------------------------------------------- | -------- |
+| ---------- | -------------------------------------------------------------------------------- | -------- |
 | `eq` |等于 | `eq(run_type, "llm")` |
 | `neq` |不等于 | `neq(status, "error")` |
 | `gt` |大于 | `gt(latency, "5s")` |
-| `gte` |大于或等于| `gte(latency, 1.5)` |
+| `gte` |大于或等于 | `gte(latency, 1.5)` |
 | `lt` |小于| `lt(start_time, "2024-01-01T00:00:00Z")` |
 | `lte` |小于或等于 | `lte(feedback_score, 0.5)` |
 | `has` |检查运行是否包含标签或元数据键值 | `has(tags, "production")` |
@@ -192,7 +192,7 @@ eq(name, "ExpandQuery")
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-query-syntax.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

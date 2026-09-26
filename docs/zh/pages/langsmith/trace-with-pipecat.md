@@ -70,7 +70,7 @@ task = PipelineTask(
 如果您的 LLM 阶段是进程内 [LangGraph or LangChain](/oss/python/langgraph/overview) 代理，则其模型和工具运行应嵌套在 Pipecat 的 `llm` 范围内，而不是形成单独的跟踪。为了实现这一点：
 
 - 通过`configure_pipecat(llm_span_kind="chain")`。这避免了实际不代表推理请求的嵌套 `llm` 跨度。
-- 在环境中设置`LANGSMITH_TRACING_MODE=otel`。如果没有它，这些运行将直接发布到 LangSmith 并形成单独的跟踪而不是嵌套。
+- 在环境中设置`LANGSMITH_TRACING_MODE=otel`。如果没有它，这些运行将直接发布到LangSmith并形成单独的跟踪而不是嵌套。
 
 ### 使用您自己的跟踪器提供程序
 
@@ -84,7 +84,7 @@ provider.add_span_processor(PipecatLangSmithSpanProcessor())
 
 ## 将对话分组为线程
 
-要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id`：
+要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id` ：
 
 ```python
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
@@ -186,7 +186,7 @@ await audiobuffer.start_recording()
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

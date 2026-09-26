@@ -15,8 +15,8 @@
 OpenWiki 在运行期间读取以下文件。自己编辑它们，或者在聊天中要求 OpenWiki 修改摘要（例如，`openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`）。
 
 |模式|路径|目的|
-| --- | --- | --- |
-|代码| `openwiki/INSTRUCTIONS.md` |共享的、用户撰写的存储库文档范围和优先级简介 |
+| ---| ---| ---|
+|代码| `openwiki/INSTRUCTIONS.md` |共享的、用户编写的存储库文档范围和优先级简介 |
 |个人| `~/.openwiki/INSTRUCTIONS.md` |全球个人wiki说明|
 
 正常的 `--init` 和 `--update` 运行不会重写这些文件。
@@ -34,14 +34,14 @@ OpenWiki 在运行期间读取以下文件。自己编辑它们，或者在聊�
 ## 本地配置目录
 
 默认情况下，代码和个人模式都将机器本地状态存储在`~/.openwiki/`下：|路径|模式|目的|
-| --- | --- | --- |
+| ---| ---| ---|
 | `~/.openwiki/.env` |两者 |提供商配置、API 密钥和连接器 OAuth 令牌 |
 | `~/.openwiki/openwiki.sqlite` |两者 |对话检查点数据库 |
 | `~/.openwiki/install-id` |两者 |匿名遥测的随机安装 ID |
 | `~/.openwiki/wiki/` |个人|个人模式 wiki 输出 |
 | `~/.openwiki/INSTRUCTIONS.md` |个人|个人维基简介 |
 | `~/.openwiki/onboarding.json` |个人|个人入职偏好和连接器时间表|
-| `~/.openwiki/connectors/` |主要是个人的|连接器原始数据和配置。个人来源使用此路径；代码模式LangSmith摄取也可以在这里缓存原始数据|
+| `~/.openwiki/connectors/` |主要是个人的|连接器原始数据和配置。个人来源使用此路径；代码模式LangSmith摄取也可以在这里缓存原始数据 |
 
 代码模式存储库工件（例如生成的 wiki、`openwiki/.claims/`、`openwiki/INSTRUCTIONS.md` 和 `openwiki/.last-update.json` 下的声明）存在于项目中，而不是在 `~/.openwiki/` 下。有关更多详细信息，请参阅[Code mode](/oss/openwiki/code-mode)和[Personal mode](/oss/openwiki/personal-mode)。
 
@@ -88,7 +88,7 @@ export DO_NOT_TRACK=1
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/customize.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

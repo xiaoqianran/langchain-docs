@@ -22,15 +22,14 @@
 codex plugin marketplace add langchain-ai/langsmith-codex-plugins
 ```
 
-在 `~/.codex/config.toml` 中全局启用插件挂钩和跟踪插件，或者仅在 `.codex/config.toml` 中为特定项目启用：
+在 `~/.codex/config.toml` 中全局启用跟踪插件，或仅在 `.codex/config.toml` 中为特定项目启用跟踪插件：
 
 ```toml
-[features]
-plugin_hooks = true
-
 [plugins."tracing@langsmith-codex-plugins"]
 enabled = true
 ```
+
+然后使用 `/hooks` 信任该插件的钩子，或者在出现提示时在 Codex 的插件 UI 中信任该插件。单独启用插件并不信任它的钩子。
 
 ## 配置跟踪
 
@@ -38,14 +37,14 @@ enabled = true
 
 ### 环境变量
 
-该插件首先读取 Codex 特定的变量，然后回退到通用 LangSmith SDK 变量。|变量|必填|默认|描述 |
-| --- | --- | --- | --- |
+该插件首先读取 Codex 特定的变量，然后回退到通用 LangSmith SDK 变量。|变量|必填 |默认 |描述 |
+| ---| ---| ---| ---|
 | `TRACE_TO_LANGSMITH` |是的 | - |设置为 `"true"` 以启用跟踪。 |
-| `LANGSMITH_CODEX_API_KEY` |有条件| - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
+| `LANGSMITH_CODEX_API_KEY` |有条件| - | LangSmith API 密钥。回落至`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
 | `LANGSMITH_CODEX_ENDPOINT` |没有 | `https://api.smith.langchain.com` | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
 | `LANGSMITH_CODEX_PROJECT` |没有 | `codex` | LangSmith 项目名称。回落到`LANGSMITH_PROJECT`。 |
 | `LANGSMITH_CODEX_METADATA` |没有 | - | JSON 对象合并到根跟踪元数据中。回落到`LANGSMITH_METADATA`。 |
-| `LANGSMITH_CODEX_RUNS_ENDPOINTS` |没有 | - |副本目标的 JSON 数组。回落到`LANGSMITH_RUNS_ENDPOINTS`。 |
+| `LANGSMITH_CODEX_RUNS_ENDPOINTS` |没有 | - |副本目标的 JSON 数组。回落至`LANGSMITH_RUNS_ENDPOINTS`。 |
 | `LANGSMITH_CODEX_REDACT` |没有 | `true` |设置为假值以禁用秘密编辑。回落到`LANGSMITH_REDACT`。 |
 | `LANGSMITH_CODEX_REDACT_EXTRA` |没有 | - |额外 `{ pattern, replace }` 编辑规则的 JSON 数组。回落到`LANGSMITH_REDACT_EXTRA`。 |
 
@@ -59,7 +58,7 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 ### 配置文件
 
-使用 `<project>/.codex/langsmith.json` 进行项目级别设置，或使用 `~/.codex/langsmith.json` 进行全局默认设置。全局文件首先加载，项目文件覆盖它，并且匹配的环境变量优先于两者。
+使用 `<project>/.codex/langsmith.json` 进行项目级设置，或使用 `~/.codex/langsmith.json` 进行全局默认设置。全局文件首先加载，项目文件覆盖它，并且匹配的环境变量优先于两者。
 
 ```json
 {
@@ -72,8 +71,8 @@ export LANGSMITH_CODEX_PROJECT="codex"
     "environment": "dev"
   }
 }
-```|领域|环境变量|默认|描述 |
-| --- | --- | --- | --- |
+```|领域 |环境变量|默认 |描述 |
+| ---| ---| ---| ---|
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CODEX_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
 | `api_url` | `LANGSMITH_CODEX_ENDPOINT`、`LANGSMITH_ENDPOINT` | LangSmith 默认 | LangSmith API URL。 |
@@ -87,9 +86,9 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 ## 追踪到多个目的地
 
-在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas` 可将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
+在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas`，将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
 
-追踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
+跟踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
 
 - 将跟踪发送到生产和暂存项目。
 - 使用不同的 API 密钥跟踪多个工作区。
@@ -138,8 +137,8 @@ echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
 
 每个副本对象支持以下字段：
 
-|领域|必填|描述 |
-| --- | --- | --- |
+|领域 |必填 |描述 |
+| ---| ---| ---|
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）。 |
 | `apiKey` |是的 |目标工作区的 API 密钥。 |
 | `projectName` |是的 |目标工作区中的项目名称。 |
@@ -149,9 +148,9 @@ echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
 
 该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
 
-上传前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
+上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达LangSmith。副本目标接收相同的编辑有效负载。
 
-检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
+检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表请参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
 
 要关闭密文，请将 `LANGSMITH_CODEX_REDACT` 设置为 `false`、`0`、`no` 或 `off`，或在配置文件中设置 `"redact": false`。值的修剪和比较不区分大小写。
 
@@ -190,17 +189,17 @@ echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
 
 ## 故障排除
 
-如果LangSmith中没有出现痕迹：- 确认`plugin_hooks = true`，并在`config.toml`中启用跟踪插件。
+如果LangSmith中没有出现痕迹：- 确认在 `config.toml` 中启用了跟踪插件并且其挂钩是可信的 (`/hooks`)。 `[features] hooks` 默认情况下处于打开状态，因此仅将其设置为撤消本地覆盖。
 - 确认 `TRACE_TO_LANGSMITH=true` 对 Codex 流程可见。
 - 确认`LANGSMITH_CODEX_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
 - 如果运行在错误的项目中，请设置`LANGSMITH_CODEX_PROJECT`或`project`配置键。
-- 如果未使用自定义端点，请设置 `LANGSMITH_CODEX_ENDPOINT` 或 `api_url` 配置键。
+- 如果未使用自定义端点，请设置`LANGSMITH_CODEX_ENDPOINT`或`api_url`配置键。
 
 ---
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

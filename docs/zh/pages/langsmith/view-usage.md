@@ -31,7 +31,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 | **LangSmith 执行的部署节点** |跨部署代理的单独LangGraph节点执行。已部署代理图中的每个步骤都算作一个节点执行。单独跟踪云托管和自托管部署。 |
 
 有关跟踪保留层的更多详细信息，请参阅[Data retention](/langsmith/usage-and-billing#data-retention)。<Note>
-使用情况图表使用术语 `tenant_id` 与工作区 ID 互换。
+使用图使用术语 `tenant_id` 与工作区 ID 互换。
 </Note>
 
 ## 合约使用
@@ -42,7 +42,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 该视图显示：
 
-- **使用情况摘要**：总使用量、总积分和任何超额部分。当使用量超过您的预付费承诺总额时，就会出现超额。
+- **使用情况摘要**：总使用量、总积分和任何超额。当使用量超过您的预付费承诺总额时，就会出现超额。
 - **承诺进度条**：每个承诺的视觉指示器显示消耗的百分比以及已用与剩余的美元金额。合同可以有多个承诺，适用于不同的时间段（例如，多年期合同的第一年和第二年）或不同的产品。
 - **每月使用量图表**：显示合同期内每个月的使用量的条形图。
 - **产品价格**：您的授权产品及其定价表。
@@ -78,7 +78,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 由于计费基础设施的差异，与 [Cloud](/langsmith/cloud) 相比，[Self-hosted](/langsmith/self-hosted) LangSmith 具有一组不同的可用使用视图。
 
 | **功能** | **自托管可用性** |
-|----------|--------------------------|
+|---------|--------------------------|
 |细化使用（追踪归因）|可用于功能标志或版本 ≥ 0.13.12 |
 |使用图（聚合痕迹）|适用于 Helm Chart 0.9.5 及更高版本 |
 |合约使用 |启用 Beacon 回拨功能后可用 |
@@ -119,7 +119,7 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-usage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

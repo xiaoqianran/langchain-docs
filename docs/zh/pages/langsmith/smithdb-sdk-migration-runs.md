@@ -73,7 +73,7 @@
   <Tab title="TypeScript">
     <Warning>
     `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但不是必需的。
-    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`)|笔记|
+    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`) |笔记|
     |---|---|---|
     | `runId` | `runId` |不变（位置参数）|
     | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs)|
@@ -87,7 +87,7 @@
     </Warning>|之前 (`RunRetrieveParams`) |之后（`RunRetrieveV2Params`）|笔记|
     |---|---|---|
     | `runId()` | `runId()` |不变 |
-    | `sessionId()` | *（已删除）* |替换为`projectId()`|
+    | `sessionId()` | *（已删除）* |替换为`projectId()` |
     | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度|
     | `excludeS3StoredAttributes()` | *（已删除）* |没有同等的 |
     | `excludeSerialized()` | *（已删除）* |没有同等的 |
@@ -98,7 +98,7 @@
   <Tab title="Go">
     <Warning>
     `GetV2()` 需要 `ProjectID`，它取代了已删除的 `SessionID`。 `StartTime` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
-    </Warning>|之前 (`RunGetParams`) |之后（`RunGetV2Params`）|笔记|
+    </Warning>|之前 (`RunGetParams`) |之后(`RunGetV2Params`) |笔记|
     |---|---|---|
     | `runID`（位置）| `runID`（位置）|不变 |
     | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的 |
@@ -171,7 +171,7 @@
     | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|| `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
-    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
   </Tab>
@@ -314,7 +314,7 @@
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
     | `run.CompletionTokens` | `run.CompletionTokens` |不变 |
     | `run.TotalCost` | `run.TotalCost` |不变 |
     | `run.TotalTokens` | `run.TotalTokens` |不变 |
@@ -375,12 +375,12 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
-    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -1245,7 +1245,7 @@ for (const child of children) {
     无需迁移：Java SDK 从未在一次调用中加载子运行，因此请使用 `client.traces().listRuns()` 遍历跟踪的运行。
   </Tab>
   <Tab title="Go">
-    无需迁移：Go SDK 从未在一次调用中加载子运行，因此使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
+    无需迁移：Go SDK 从未在一次调用中加载子运行，因此请使用 `client.Traces.ListRuns()` 遍历跟踪的运行。
   </Tab>
   <Tab title="cURL">
     无需迁移：`GET /api/v1/runs/{run_id}` 从未返回子运行，因此使用 `GET /api/v2/traces/{trace_id}/runs` 遍历跟踪的运行。
@@ -1310,7 +1310,7 @@ for (const child of children) {
   <Tab title="Python">
     <Warning>
     `runs.get_url` 需要直接传递运行的 `project_id` 和 `trace_id`，而不是从 `run` 对象或 `project_name`/`project_id` 后备解析它们。
-    </Warning>|之前 (`get_run_url`) |之后(`runs.get_url`)|笔记|
+    </Warning>|之前 (`get_run_url`) |之后(`runs.get_url`) |笔记|
     |---|---|---|
     | `run` (`RunBase`) | *（已删除）* |不需要完整的运行对象；单独传递其识别字段 |
     | `project_name` | *（已删除）* |没有同等的；如果您只有项目名称，请自行解析项目 UUID |
@@ -1332,7 +1332,7 @@ for (const child of children) {
     | *（不可用）* | `start_time` |选修的; `snake_case`；运行的开始时间（RFC3339）；如果未知则省略 |
   </Tab>
   <Tab title="Java">
-    |之前 |之后(`RunGetUrlParams`) |笔记|
+    |之前 |之后(`RunGetUrlParams`)|笔记|
     |---|---|---|
     | *（无遗留方法）* | `runId` | **必填**（位置）；运行的 ID |
     | *（无遗留方法）* | `projectId()` | **必需的**;项目（会话）UUID |
@@ -1347,7 +1347,7 @@ for (const child of children) {
     | *（无遗留方法）* | `StartTime` |选修的;运行的开始时间（RFC3339）；如果未知则省略 |
   </Tab>
   <Tab title="cURL">
-    |之前 |之后(`GET /api/v2/runs/{run_id}/url`)|笔记|
+    |之前 |之后(`GET /api/v2/runs/{run_id}/url`) |笔记|
     |---|---|---|
     | *（无旧端点）* | `run_id`（路径）| **必填** |
     | *（无旧端点）* | `project_id`（查询）| **必需的**;项目（会话）UUID |
@@ -1360,7 +1360,7 @@ for (const child of children) {
   <Tab title="Python">
     |之前 |之后|笔记|
     |---|---|---|
-    | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性|
+    | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性 |
   </Tab>
   <Tab title="TypeScript">
     |之前 |之后|笔记|
@@ -1548,7 +1548,7 @@ curl "https://api.smith.langchain.com/api/v2/runs/$RUN_ID/url?project_id=$PROJEC
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

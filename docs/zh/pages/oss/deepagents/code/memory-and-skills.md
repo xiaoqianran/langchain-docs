@@ -168,7 +168,7 @@ npx skills ls -a deepagents -g
 
 ### 在会话中调用技能
 
-在交互式会话中，直接使用 `/skill:<name>` 斜杠命令运行技能：
+在交互式会话中，直接使用 `/skill:<name>` 斜线命令运行技能：
 
 ```text
 /skill:code-review
@@ -221,7 +221,7 @@ dcode skills info test-skill --project
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

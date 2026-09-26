@@ -10,7 +10,7 @@
 
 Webhook 支持从 LangSmith 应用程序到外部服务的事件驱动通信。例如，您可能希望在对 LangSmith 的 API 调用完成运行后发布对单独服务的更新。
 
-许多 LangSmith 端点接受 `webhook` 参数。如果该参数由可以接受 POST 请求的端点指定，LangSmith 将在运行完成时发送请求。
+许多 LangSmith 端点接受 `webhook` 参数。如果此参数由可以接受 POST 请求的端点指定，LangSmith 将在运行完成时发送请求。
 
 使用 LangSmith 时，您可能希望使用 Webhook 在 API 调用完成后接收更新。 Webhook 对于在运行完成处理后触发服务中的操作非常有用。为了实现这一点，您需要公开一个可以接受 `POST` 请求的端点，并将该端点作为 API 请求中的 `webhook` 参数传递。
 
@@ -18,8 +18,8 @@ Webhook 支持从 LangSmith 应用程序到外部服务的事件驱动通信。�
 
 ## 支持的端点以下 API 端点接受 `webhook` 参数：
 
-|运营| HTTP 方法 |端点 |
-|----------------------|-------------------------|------------------------------------|
+|运营| HTTP 方法 |端点|
+|----------------------|-------------|------------------------------------|
 |创建运行 | `POST` | `/thread/{thread_id}/runs` |
 |创建线程 Cron | `POST` | `/thread/{thread_id}/runs/crons` |
 |流运行| `POST` | `/thread/{thread_id}/runs/stream` |
@@ -278,7 +278,7 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 
 可用选项：
 
-|选项|描述 |
+|选项 |描述 |
 |--------|-------------|
 | `allowed_domains` |主机名白名单。支持子域的通配符（例如，`*.mycompany.com`）。 |
 | `require_https` |当 `true` 时拒绝 `http://` URL。 |
@@ -313,7 +313,7 @@ https://my-server.app/my-webhook-endpoint?token=YOUR_SECRET_TOKEN
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

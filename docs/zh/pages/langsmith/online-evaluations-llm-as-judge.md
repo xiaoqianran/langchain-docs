@@ -51,7 +51,7 @@
 
 您只能在创建规则时回填。
 
-当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 评估其根运行历史并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
+当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 就会评估其根运行历史记录并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
 
 <Note>
 回填作为后台作业进行处理，因此您不会立即看到结果。
@@ -70,6 +70,10 @@
 ## 配置 LLM-as-a-judge 评估器
 
 查看[LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates)了解更多信息。
+
+## 使用决策模型作为判断
+
+您可以使用决策模型（例如 SemIf 或 Jev）作为法官来代替 LLM。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
 
 ## 将多模式内容映射到评估器
 

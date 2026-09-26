@@ -4,7 +4,7 @@
 
 # 跟踪 Vercel AI SDK 应用程序（仅限 JS/TS）
 
-您可以使用 LangSmith 跟踪 Vercel AI SDK 的运行。本指南向您展示如何为 AI SDK v5、v6 和 v7 设置跟踪。
+您可以使用 LangSmith 跟踪 Vercel AI SDK 的运行。本指南向您介绍如何为 AI SDK v5、v6 和 v7 设置跟踪。
 
 ## 安装
 
@@ -715,7 +715,7 @@ export async function POST(request: Request) {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vercel-ai-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

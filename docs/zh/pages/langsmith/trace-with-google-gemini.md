@@ -4,7 +4,7 @@
 
 # 跟踪 Google Gemini 应用程序
 
-本指南向您展示如何在 LangSmith 中跟踪和记录 [Google's Gemini](https://ai.google.dev/gemini-api/docs) 模型。您将使用最新的 [⟦T5⟧ SDK](https://googleapis.github.io/python-genai/) (Python) 或 [⟦T6⟧ SDK](https://googleapis.github.io/js-genai/release_docs/index.html) (JavaScript) 检测 Gemini 调用，包装 Gemini 客户端以进行跟踪，并尝试包括基本提示、元数据标记和多轮对话在内的示例。
+本指南向您展示如何在 LangSmith 中跟踪和记录 [Google's Gemini](https://ai.google.dev/gemini-api/docs) 模型。您将使用最新的 [⟦T5⟧ SDK](https://googleapis.github.io/python-genai/) (Python) 或 [⟦T6⟧ SDK](https://googleapis.github.io/js-genai/release_docs/index.html) (JavaScript) 来检测 Gemini 调用，包装 Gemini 客户端以进行跟踪，并尝试包括基本提示、元数据标记和多轮对话在内的示例。
 
 <Note>
 LangSmith Gemini 包装纸位于 **[beta](/langsmith/release-stages)**。 API 可能会在未来版本中发生变化。
@@ -107,7 +107,7 @@ console.log(response.text);
 </CodeGroup>
 
 <Tabs>
-<Tab title="Python" icon="brand-python">您可以通过在调用`wrap_gemini()`时传递[⟦T9⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，它允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra` 参数接受：
+<Tab title="Python" icon="brand-python">您可以通过在调用`wrap_gemini()`时传递[⟦T9⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，这允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra` 参数接受：
 
 - `tags`：用于对跟踪进行分类的字符串列表（例如，`["production", "gemini"]`）。
 - `metadata`：用于附加上下文的键值对字典（例如，`{"team": "ml-research", "integration": "google-genai"}`）。
@@ -141,7 +141,7 @@ console.log(response.text);
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-gemini.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

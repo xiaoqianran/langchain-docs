@@ -34,7 +34,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
 1. 单击 **+ Evaluator** 打开新的评估器面板。
 1. 该面板可让您：
-   - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。
+   - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
    - **添加LangChain Tuned Evaluator**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，而无需配置提示、模型或API密钥。
    - **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先显示流行的模板，然后是按以下类别组织的模板：|类别 |描述 |
      |----------|-------------|
@@ -51,6 +51,8 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 ### 使用 SDK 创建评估器
 
 使用 LangSmith SDK 以编程方式创建评估器。该 SDK 适用于 [Python](/langsmith/smith-python-sdk) 和 [TypeScript](/langsmith/smith-js-ts-sdk)。通过 SDK 创建的评估器与在 UI 中创建的评估器一起显示在 **评估器** 表中。
+
+SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)。要创建一个，请使用 UI。
 
 <Note>
 通过 SDK 管理评估器需要 `langsmith>=0.9.8`（Python、PyPI）或 `langsmith>=0.7.16`（TypeScript、npm）。
@@ -111,7 +113,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 由于评估器是共享的，因此更改适用于其附加的所有跟踪项目和数据集。
 
-## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在 [tracing project](/langsmith/observability-concepts#projects) 上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基本保留中。
+## 管理评估者跟踪保留当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在[tracing project](/langsmith/observability-concepts#projects)上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保留在项目的基础保留中。
 
 仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的跟踪将遵循该默认值，并且该选项将被锁定。
 

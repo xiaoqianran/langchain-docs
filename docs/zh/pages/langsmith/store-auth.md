@@ -17,7 +17,7 @@
 3. 服务器使用经过验证或重写的命名空间进行实际的读取或写入。通过自动前缀重写写入逻辑命名空间`("memories",)`的用户实际上将数据存储在`("user-123", "memories")`。其他用户无法读取或覆盖该数据，因为他们的请求范围仅限于 `("user-456", ...)`。
 
 <Note>
-存储授权处理程序接收一个 **可变** `value` 字典。对 `value["namespace"]` 的更改将对操作生效。您不会像为线程那样返回元数据过滤器。
+商店授权处理程序接收一个 **可变** `value` 字典。对 `value["namespace"]` 的更改将对操作生效。您不会像为线程那样返回元数据过滤器。
 </Note>
 
 ## 先决条件
@@ -47,7 +47,7 @@
 
 存储隔离需要一个 `@auth.on.store` 处理程序。两种常见的模式效果很好；根据您希望用户范围界定所在的位置选择一个。|图案|用户范围在哪里设置 |最佳时间 |
 | ---| ---| ---|
-| **显式命名空间 + 拒绝** |应用程序代码将`user_id`放在每个命名空间中 |您已经将用户身份传递到图形代码中，或者您希望命名空间反映完整的存储路径 |
+| **显式命名空间 + 拒绝** |应用程序代码将 `user_id` 放在每个命名空间中 |您已经将用户身份传递到图形代码中，或者您希望命名空间反映完整的存储路径 |
 | **自动前缀重写** |身份验证处理程序将 `ctx.user.identity` 添加到逻辑命名空间 |您想要更简单的代理代码和 API 层的透明隔离 |
 
 两种模式都使用单个 `@auth.on.store` 处理程序，涵盖所有存储操作（`put`、`get`、`search`、`delete` 和 `list_namespaces`）。如果您希望每个操作有不同的规则，则只需要特定于操作的处理程序，例如 `@auth.on.store.put`。
@@ -106,7 +106,7 @@ async def scope_store(
 
 当客户端调用不带前缀的`list_namespaces`时，`value["namespace"]`为空。上面的处理程序将空命名空间视为 `(ctx.user.identity,)`，因此用户只能看到自己的命名空间。
 
-这种模式使代理代码更加简单，因为身份验证层透明地处理用户隔离。权衡是您不能在应用程序代码中也添加命名空间前缀，否则您将双重作用域数据并中断读取。选择一个范围层：身份验证重写**或**应用程序级命名空间，而不是两者兼而有之。
+这种模式使代理代码更加简单，因为身份验证层透明地处理用户隔离。权衡是您不能在应用程序代码中也添加命名空间前缀，否则您将双重作用域数据并中断读取。选择一个作用域层：auth 重写**或**应用程序级命名空间，而不是两者兼而有之。
 
 ## 在代理代码中使用命名空间如果您使用自动前缀重写，您的图形代码将使用不带用户前缀的逻辑命名空间。身份验证层在请求时自动添加用户范围。将以下内容放入图形节点或工具中（例如，`graph.py`）：
 
@@ -160,7 +160,7 @@ StoreBackend(
 
 
 
-或者，如果您在图表内按用户确定范围（例如，使用 `rt.server_info.user.identity`），请确保您的身份验证处理程序不会使用双前缀命名空间。选择一个范围层：身份验证重写**或**应用程序级命名空间，而不是两者兼而有之。
+或者，如果您在图表内按用户确定范围（例如，使用 `rt.server_info.user.identity`），请确保您的身份验证处理程序不会使用双前缀命名空间。选择一个作用域层：auth 重写**或**应用程序级命名空间，而不是两者兼而有之。
 
 有关命名空间设计的更多信息，请参阅[Deep Agents backends](/oss/python/deepagents/backends#namespace-factories)和[user-scoped memory](/oss/python/deepagents/memory#user-scoped-memory)。
 
@@ -237,7 +237,7 @@ if __name__ == "__main__":
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

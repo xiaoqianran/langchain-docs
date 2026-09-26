@@ -13,9 +13,9 @@ LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-bind-evaluator-to-dataset)中，选择一个数据集。
 1. 单击 **评估者** 选项卡。
-1. 单击**+ 评估器** 打开**添加评估器** 面板。
+1. 单击**+ 评估器** 打开**配置评估器** 面板。
 1. 选择以下选项之一：
-   - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Code](/langsmith/online-evaluations-code) 或 [Composite](/langsmith/composite-evaluators-ui) 评估器，或选择 **从标记数据** 创建 LLM 作为法官评估器 [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback)。
+   - **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Code](/langsmith/online-evaluations-code) 或 [Composite](/langsmith/composite-evaluators-ui) 评估器，或选择 **从标记数据** 创建 LLM 作为法官评估器 [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback)。要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
    - **附加现有评估器**：选择工作区中已有的评估器以重用它。
    - **从模板创建**：从现成的评估器开始。<Note>
 为数据集配置评估器时，它只会影响配置评估器后创建的实验运行。它不会影响在配置评估器之前创建的实验运行的评估。
@@ -25,13 +25,17 @@ LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 
 将评估器绑定到数据集的过程与在 Playground 中配置 LLM 作为法官评估器的过程非常相似。查看[configuring an LLM-as-a-judge evaluator in the Playground.](/langsmith/llm-as-judge?mode=ui)的说明
 
+## 决策模型评估器
+
+决策模型评估器使用决策模型（例如 SemIf 或 Jev）作为判断者。在数据集上，您可以将参考输出映射到评估器的状态，并提出将其与运行输出进行比较的问题。有关说明，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
+
 ## 自定义代码评估器
 
 将代码评估器绑定到数据集的过程与在线评估中配置代码评估器的过程非常相似。查看[configuring code evaluators](/langsmith/online-evaluations-code)的说明。
 
-在在线评估中配置代码评估器与将代码评估器绑定到数据集之间的唯一区别在于，自定义代码评估器可以引用属于数据集 `Example` 一部分的输出。
+在在线评估中配置代码评估器与将代码评估器绑定到数据集之间的唯一区别在于，自定义代码评估器可以引用属于数据集 `Example` 一部分的输出。对于绑定到数据集的自定义代码评估器，评估器函数接受两个参数：
 
-对于绑定到数据集的自定义代码评估器，评估器函数接受两个参数：* A `Run` ([reference](/langsmith/run-data-format))。这代表您实验中的新运行。例如，如果您通过 SDK 运行实验，这将包含您正在测试的链或模型的输入/输出。
+* A `Run` ([reference](/langsmith/run-data-format))。这代表您实验中的新运行。例如，如果您通过 SDK 运行实验，这将包含您正在测试的链或模型的输入/输出。
 * `Example` ([reference](/langsmith/example-data-format))。这代表您正在测试的链或模型使用的数据集中的参考示例。运行和示例的 `inputs` 应该相同。如果您的示例有参考 `outputs`，那么您可以使用它来与运行的输出进行比较以进行评分。
 
 下面的代码显示了一个简单的评估器函数的示例，该函数检查输出是否完全等于参考输出。

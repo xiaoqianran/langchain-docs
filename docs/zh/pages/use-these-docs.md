@@ -55,7 +55,7 @@
 
 添加两者可以让您的编码代理了解完整情况：指南中的**原因和方式**，以及参考文档中的**准确的 API 详细信息**。
 
-### 与克劳德代码联系如果您使用的是 Claude Code，请在终端中运行以下命令以将两台服务器添加到当前项目中：
+### 与克劳德代码联系如果您使用的是 Claude Code，请在终端中运行以下命令，将两台服务器添加到当前项目中：
 
 ```bash
 claude mcp add --transport http docs-langchain https://docs.langchain.com/mcp
@@ -65,7 +65,7 @@ claude mcp add --transport http reference-langchain https://reference.langchain.
 <Note>
     **项目（本地）范围**
 
-    上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 添加用户范围：
+    上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 来添加用户范围：
 
     ```bash
     claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp
@@ -92,7 +92,7 @@ codex mcp add langchain-reference --url https://reference.langchain.com/mcp
 
 ### 连接光标
 
-将以下内容添加到您的 MCP 设置配置文件中：
+将以下内容添加到 MCP 设置配置文件中：
 
 ```json
 {
@@ -126,11 +126,11 @@ codex mcp add langchain-reference --url https://reference.langchain.com/mcp
 }
 ```
 
-启动或重新启动`dcode`以加载服务器。在交互式会话中，运行`/mcp`来检查服务器状态和加载的工具。有关发现位置和优先规则，请参阅[MCP tools](/oss/deepagents/code/mcp-tools)。
+启动或重新启动`dcode`以加载服务器。在交互式会话中，运行 `/mcp` 检查服务器状态和加载的工具。有关发现位置和优先规则，请参阅[MCP tools](/oss/deepagents/code/mcp-tools)。
 
 ### 连接 VS Code
 
-将以下内容添加到您的 MCP 设置配置文件中：
+将以下内容添加到 MCP 设置配置文件中：
 
 ```json
 {
@@ -145,7 +145,7 @@ codex mcp add langchain-reference --url https://reference.langchain.com/mcp
 }
 ```### 与反重力联系
 
-将以下内容添加到您的 MCP 设置配置文件中：
+将以下内容添加到 MCP 设置配置文件中：
 
 ```json
 {
@@ -170,7 +170,7 @@ codex mcp add langchain-reference --url https://reference.langchain.com/mcp
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/use-these-docs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

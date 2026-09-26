@@ -51,7 +51,7 @@ openwiki --help
 ### 常用标志
 
 |旗帜|描述 |
-| --- | --- |
+| ---| ---|
 | `--init` |生成初始文档。默认为代码模式。重新运行将从头开始重新生成存储库 wiki，同时保留 `openwiki/INSTRUCTIONS.md`。在没有 `--print` 的 TTY 中，流代理输出并在成功时自动退出。 `--init` 和 `--update` 不能组合。 |
 | `--update` |更新现有文档。默认为代码模式。在没有 `--print` 的 TTY 中，流代理输出并在成功时自动退出。 `--init` 和 `--update` 不能组合。 |
 | `-l`、`--language <locale>` |在给定的 BCP-47 语言环境中生成 wiki 文档，例如 `ko`、`zh-CN` 或 `pt-BR`。无法识别的值将被拒绝。 |
@@ -143,7 +143,7 @@ openwiki cron delete <source|all>
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/cli-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

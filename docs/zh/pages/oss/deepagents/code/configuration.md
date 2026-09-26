@@ -50,7 +50,7 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 `dcode config` 命令显示Deep Agents 代码使用的设置以及每个值的来源，而无需启动会话。使用它们来确认管理员设置、环境变量或 `config.toml` 设置处于活动状态。
 
-|命令 |描述 |
+|命令|描述 |
 |---------|-------------|
 | `dcode config` |显示每个设置、其当前值以及该值的来源 |
 | `dcode config get <key>` |显示一项设置的当前值和来源，例如 `dcode config get interpreter.memory_limit_mb` |
@@ -220,7 +220,7 @@ theme = "langchain-dark"
     #### 常见 `TERM_PROGRAM` 值
 
     |终端| `TERM_PROGRAM` |
-    | --- | --- |
+    | ---| ---|
     |苹果终端| `Apple_Terminal` |
     | iTerm2 | `iTerm.app` |
     | WezTerm | `WezTerm` |
@@ -382,7 +382,7 @@ Deep Agents 代码自动将学习内容保存到内存中。要在停止自动�
 
 您仍然可以使用`/remember`明确保存记忆。环境变量优先于配置文件。
 
-## 对话历史记录保留使用 `/offload` 卸载线程会在 `~/.deepagents/conversation_history/` 下写入 Markdown 存档。启动扫描会删除超过 30 天的存档。扫描仅直接触及存档目录内的常规 `.md` 文件，从不阻止启动，并记录和吞掉文件系统错误。
+## 对话历史记录保留使用 `/offload` 卸载线程会在 `~/.deepagents/conversation_history/` 下写入 markdown 存档。启动扫描会删除超过 30 天的存档。扫描仅直接触及存档目录内的常规 `.md` 文件，从不阻止启动，并记录和吞掉文件系统错误。
 
 更改保留窗口，或使用 `0` 禁用清理：
 
@@ -435,7 +435,7 @@ Deep Agents 代码在每个操作系统上的固定位置查找 `managed_config.
 |------------------|------|
 | macOS | `/Library/Application Support/dcode/managed_config.toml` |
 | Linux | `/etc/dcode/managed_config.toml` |
-|窗户 | `<ProgramData>\dcode\managed_config.toml` |
+|窗户| `<ProgramData>\dcode\managed_config.toml` |
 
 在 Windows 上，Deep Agents 代码通过系统注册表查找 ProgramData，而不是 `%ProgramData%` 环境变量。环境变量无法更改托管配置位置。如果注册表不可用，则Deep Agents代码检查`C:\ProgramData\dcode\managed_config.toml`。如果该文件也丢失，Deep Agents 代码无法确定管理员是否配置了策略，因此使用配置的命令会停止而不是在没有配置的情况下运行。
 
@@ -615,7 +615,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <Note>
-    下面的项目MCP信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。
+    下面的项目 MCP 信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。
 </Note>
 
 <ResponseField name="DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS" type="string" post={["optional"]}>
@@ -657,11 +657,11 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 <ResponseField name="DEEPAGENTS_CODE_NO_UPDATE_CHECK" type="string" post={["optional"]}>
     设置后禁用自动更新检查。这也会阻止启动时自动安装更新。
 </ResponseField><ResponseField name="DEEPAGENTS_HOME" type="string" post={["optional"]}>
-    选择用户配置文件和信任根而不是默认的`~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。参见[Profile location](#profile-location-deepagents_home)。
+    选择用户配置文件和信任根而不是默认的 `~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。参见[Profile location](#profile-location-deepagents_home)。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_ONBOARDING" type="string" post={["optional"]}>
-    覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器有用）。对于默认的首次运行行为，保留未设置。
+    覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器很有用）。对于默认的首次运行行为，保留未设置。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_PRICES_AUTO_UPDATE" type="string" default="true" post={["optional"]}>
@@ -745,7 +745,7 @@ dcode doctor
 
 Deep Agents 代码将数据存储在两个目录层次结构中：
 
-- **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T394⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
+- **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T394⟧](#profile-location-deepagents_home)重新定位；下面的路径将以该目录为根。
 - **`~/.agents/`** — 与工具无关的数据（跨 AI CLI 工具共享的技能）
 
 ### 目录结构
@@ -791,13 +791,13 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 
 #### 什么去哪里|数据|地点 |读/写|笔记|
 |------|----------|------------|--------|
-| **会议** | `~/.deepagents/.state/sessions.db` |读/写 | SQLite 检查点数据库 |
+| **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写 |支持[⟦T399⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T399⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
 | **基本说明** |套餐`default_agent_prompt.md`​​ |右 |不可变，通过 Deep Agents 代码升级进行更新 |
-| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
+| **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写|附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
 | **用户Python扩展** | `~/.deepagents/extensions/` |读/写|实验性；参见[Python extensions](/oss/deepagents/code/extensions)|
@@ -839,7 +839,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 ### `.deepagents` vs `.agents`|目录 |目的|何时使用 |
 |------------|---------|-------------|
 | `.deepagents/` | Deep Agents 代码特定 |使用 Deep Agents 代码特定功能的技能和配置 |
-| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间分享的技能 |
+| `.agents/` |与工具无关 |您希望在不同的 AI CLI 工具之间分享的技能 |
 
 <Tip>
 使用 `.agents/skills/` 获得可与任何 AI 编码助手配合使用的技能。
@@ -880,7 +880,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/configuration.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -35,7 +35,7 @@ frontmatter 需要`name` 和`description`（与[⟦T10⟧ dictionary spec](/oss/
 
 ## 文件格式
 
-子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown 正文：
+子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown body：
 
 ```markdown
 ---
@@ -67,7 +67,7 @@ You are a research assistant with access to web search.
 
 ## 示例：具有成本效益的子代理
 
-使用更便宜、更快的模型来执行简单的委托任务，同时使主代理保持在更强大的模型上：
+使用更便宜、更快的模型来执行简单的委托任务，同时将主代理保持在更强大的模型上：
 
 ```markdown
 ---
@@ -83,7 +83,7 @@ You are a general-purpose assistant. Complete the task efficiently and return a 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

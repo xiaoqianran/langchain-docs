@@ -20,7 +20,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.list_runs(is_root=True)`（通用）| `client.traces.query()` |
 
@@ -31,26 +31,26 @@
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/query)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.listRuns({ isRoot: true })`（通用）| `client.traces.query()` |有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query)。
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.runs().query()`（通用，`isRoot(true)`）| `client.traces().query()` |
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Query()`（通用，`IsRoot: true`）| `client.Traces.Query()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
   </Tab>
@@ -81,7 +81,7 @@
     - `isRoot` 已删除：`traces().query()` 的作用域始终为隐式根运行。
     - 通用的`filter`（针对任何运行进行评估）没有直接等效项；请使用 `traceFilter` 或 `treeFilter` 代替。
     - `traceFilter`和`treeFilter`结转不变；两者都已经存在于`RunQueryParams`上。
-    - `traceIds`是新的：对一组已知的跟踪UUID的快速路径限制，在规模上比等效的`traceFilter`更高效。- `startTime`（无默认）变为`minStartTime`，省略时默认为 24​​ 小时前。
+    - `traceIds`是新的：对一组已知的跟踪UUID的快速路径限制，在规模上比等效的`traceFilter`更有效。- `startTime`（无默认）变为`minStartTime`，省略时默认为 24​​ 小时前。
     - `maxStartTime`新增，默认为请求时间； `RunQueryParams` 的 `endTime` 按运行自己的结束时间戳进行过滤，而不是扫描窗口范围。
     - `select`更名为`selects`；条目路由至`traceAggregates`（`totalTokens`、`totalCost`、`firstTokenTime`）或`rootRun`（其他所有内容）。
   </Tab>
@@ -90,7 +90,7 @@
     - `IsRoot` 已删除：`Traces.Query()` 的作用域始终为隐式根运行。
     - 通用的`Filter`（针对任何运行进行评估）没有直接等效项；请使用 `TraceFilter` 或 `TreeFilter` 代替。
     - `TraceFilter`和`TreeFilter`结转不变；两者都已经存在于`RunQueryParams`上。
-    - `TraceIDs`是新的：对一组已知的跟踪UUID的快速路径限制，在规模上比等效的`TraceFilter`更有效。
+    - `TraceIDs`是新的：对一组已知的跟踪UUID的快速路径限制，在规模上比等效的`TraceFilter`更高效。
     - `StartTime`（无默认）变为`MinStartTime`，省略时默认为 24​​ 小时前。
     - `MaxStartTime`新增，默认为请求时间； `RunQueryParams` 的 `EndTime` 按运行自己的结束时间戳进行过滤，而不是扫描窗口范围。
     - `Select`更名为`Selects`；条目路由至`TraceAggregates`（`TotalTokens`、`TotalCost`、`FirstTokenTime`）或`RootRun`（其他所有内容）。
@@ -113,7 +113,7 @@
   </Tab>
   <Tab title="TypeScript">
     - `root_run` 具有与 Runs 相同的 `Run` 形状：查询（`id`、`name`、`run_type`、`status` 等），由 `selects` 门控。
-    - `total_tokens`/`total_cost` 从 `root_run` 移至`trace_aggregates`，对跟踪中的每个运行进行求和，而不仅仅是根运行。当未选择聚合字段时，响应中完全省略`trace_aggregates`。
+    - `total_tokens`/`total_cost` 从 `root_run` 移至 `trace_aggregates`，对跟踪中的每个运行进行求和，而不仅仅是根运行。当未选择聚合字段时，响应中完全省略`trace_aggregates`。
     - `trace_aggregates.first_token_time`是新的
   </Tab>
   <Tab title="Java">
@@ -122,7 +122,7 @@
     - `traceAggregates().firstTokenTime()`是新的
   </Tab>
   <Tab title="Go">
-    - `RootRun` 具有与 Runs: query 相同的 `Run` 形状，由 `Selects` 门控。- `TotalTokens`/`TotalCost` 从 `RootRun` 移至`TraceAggregates`，对跟踪中的每个运行进行求和，而不仅仅是根运行。通过 `trace.TraceAggregates.JSON.RawJSON() == ""` 检查是否存在 `TraceAggregates`，因为它是值类型，而不是指针。
+    - `RootRun` 具有与 Runs: query 相同的 `Run` 形状，由 `Selects` 门控。- `TotalTokens`/`TotalCost` 从 `RootRun` 移至 `TraceAggregates`，对跟踪中的每个运行进行求和，而不仅仅是根运行。通过 `trace.TraceAggregates.JSON.RawJSON() == ""` 检查是否存在 `TraceAggregates`，因为它是值类型，而不是指针。
     - `TraceAggregates.FirstTokenTime`是新的
   </Tab>
   <Tab title="cURL">
@@ -406,7 +406,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
   </Tab>
 </Tabs>
 
-#### 获取跟踪的总代币和成本从 `trace_aggregates` 而不是 v1 保存它们的根运行中读取跟踪的令牌和成本总计。
+#### 获取跟踪的总代币和成本从 `trace_aggregates` 而不是 v1 保存它们的根运行读取跟踪的令牌和成本总计。
 
 <Tabs>
   <Tab title="Python">
@@ -1075,7 +1075,7 @@ curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.list_runs(trace_id=...)`（通用）| `client.traces.list_runs()` |
 
@@ -1086,26 +1086,26 @@ curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/list_runs)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.listRuns({ traceId })`（通用）| `client.traces.listRuns()` |
 
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/listRuns)。
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.runs().query()`（通用，`.trace(traceId)`）| `client.traces().listRuns()` |完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Runs.Query()`（通用，`Trace: traceID`）| `client.Traces.ListRuns()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.ListRuns)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/runs/query`（`trace`字段）| `GET /api/v2/traces/{trace_id}/runs` |
   </Tab>
@@ -1119,7 +1119,7 @@ curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
     - `project_id` 是新的并且**必需**（SmithDB 分区键）； `list_runs(trace_id=...)`不需要它。
     - `filter` 不变。
     - `min_start_time`/`max_start_time` 是新的。与`traces.query`不同，两者都没有默认值：省略两者并且运行根本不按时间过滤。它们是单独可选的，但如果设置了其中一个，则必须一起传递。
-    - `select` 更名为 `selects`，使用与 `traces.query` 相同的 44 值枚举。
+    - `select` 重命名为 `selects`，使用与 `traces.query` 相同的 44 值枚举。
   </Tab>
   <Tab title="TypeScript">
     - `traceId`/`trace`从查询参数移动到路径参数。
@@ -1159,7 +1159,7 @@ curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
     响应有一个 `items` 字段：按 `start_time` 顺序排列的 `Run` 对象数组，其形状与 [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) 响应相同。
   </Tab>
   <Tab title="Java">
-    响应有一个 `items()` 方法，返回 `Optional<List<Run>>`：跟踪按 `start_time` 顺序运行，与 [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) 响应形状相同。
+    该响应有一个 `items()` 方法，返回 `Optional<List<Run>>`：跟踪按 `start_time` 顺序运行，与 [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) 响应的形状相同。
   </Tab>
   <Tab title="Go">
     响应有一个 `Items` 字段，类型为 `[]Run`：跟踪按 `start_time` 顺序运行，形状与 [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) 响应相同。
@@ -1171,7 +1171,7 @@ curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
 
 #### 列出跟踪中的每个运行
 
-根据给定的跟踪 ID，获取属于一个跟踪的所有运行。
+给定跟踪 ID，获取属于一个跟踪的所有运行。
 
 <Tabs>
   <Tab title="Python">
@@ -1692,7 +1692,7 @@ curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

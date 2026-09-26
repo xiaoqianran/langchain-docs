@@ -40,7 +40,7 @@ openwiki integrations uninstall <codex|claude|opencode|cursor>
 
 将 `--project [path]` 添加到 `list`、`install` 或 `uninstall` 以获取存储库范围内的状态。项目路径解析为 Git 存储库根目录。用户级 OpenCode 集成位于 `~/.config/opencode` 下。
 
-## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，保留[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
+## 主机驱动的运行如何工作主机驱动的运行遵循与本机`openwiki --init`和`openwiki --update`相同的可恢复页面作业生命周期。编码代理驱动存储库研究和页面创作； OpenWiki 验证每个完成情况，持久化[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)，并通过 MCP 最终确定元数据。
 
 ## 另请参阅
 
@@ -52,7 +52,7 @@ openwiki integrations uninstall <codex|claude|opencode|cursor>
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -143,7 +143,7 @@ LangSmith SDK 采取措施，通过将单个会话 ID 中的最多 100 次运行
 此 429 是达到每月最大摄取痕迹的结果，并在 UTC 每个日历月月初开始的固定窗口中进行评估，并在每个新月月初重置。
 
 这是由我们的应用程序抛出的，并且仅适用于当文件中没有付款方式时的开发者计划层。|计划|限制|窗口|
-| ------------------------------------------ | ------------ | -------- |
+| ------------------------------ | ------------ | -------- |
 |开发商（档案中无付款）| 5,000 条痕迹 | 1 个月 |
 
 ### 自行配置每月使用限额
@@ -206,7 +206,7 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/usage-and-billing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

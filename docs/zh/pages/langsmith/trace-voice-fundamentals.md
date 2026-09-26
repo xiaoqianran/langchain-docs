@@ -79,7 +79,7 @@ conversation                      ← root run (whole conversation; combined aud
 
 将**一个**音频文件附加到包含**用户和代理的根运行，记录自**实际播放给客户端的内容**，而不是模型生成的音频。
 
-在客户端记录。一种常见的方法是立体声 WAV，其中一个通道上有用户麦克风，而另一个通道上有扬声器捕获的座席语音。这很重要，因为生成的音频和听到的音频不是一回事：网络延迟、数据包丢失或重新排序以及插入都会改变用户实际体验。打断特工说话的插话应该在录音中被截断，因为这就是发生的事情。记录播放的内容，而不是生成但可能从未听过的内容，使跟踪忠实于真实的交互。
+在客户端记录。一种常见的方法是立体声 WAV，其中一个通道上有用户麦克风，而另一个通道上有扬声器捕获的座席语音。这很重要，因为生成的音频和听到的音频不是一回事：网络延迟、丢弃或重新排序的数据包以及插入都会改变用户实际体验。打断特工说话的插话应该在录音中被截断，因为这就是发生的事情。记录播放的内容，而不是生成但可能从未听过的内容，使跟踪忠实于真实的交互。
 
 使用 [attachments API](/langsmith/upload-files-with-traces) 附加文件：
 
@@ -144,7 +144,7 @@ def run_conversation(session_id: str):
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-voice-fundamentals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

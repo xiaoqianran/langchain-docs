@@ -31,7 +31,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 您还可以设置：
 
 - `requirements.txt`：对于依赖管理，请查看[this how-to guide](/langsmith/setup-app-requirements-txt)，了解如何将`requirements.txt`用于LangSmith。
-- monorepo：要部署位于 monorepo 内的图表，请查看 [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) 了解如何执行此操作的示例。
+- monorepo：要部署位于 monorepo 内的图，请查看 [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) 了解如何执行此操作的示例。
 
 每个步骤之后，都会提供一个示例文件目录来演示如何组织代码。
 
@@ -221,7 +221,7 @@ my-app/
 
 ---<div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-pyproject.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

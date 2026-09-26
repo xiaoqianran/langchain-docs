@@ -30,19 +30,19 @@
     完整参数列表请参见[reference](https://reference.langchain.com/javascript/langsmith/client/Client/addRunsToAnnotationQueue)。
   </Tab>
   <Tab title="Java">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.annotationQueues().runs().create()` | `client.annotationQueues().runs().createByKey()` |完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/annotationqueues/RunService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Runs.NewByKey()` |
 
     完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#AnnotationQueueRunService.NewByKey)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` |
 
@@ -68,7 +68,7 @@
   <Tab title="TypeScript">
     <Warning>
     SmithDB 路径除了 `runId` 之外，还需要每次运行的 `sessionId`（项目 UUID）和 `startTime`。这些已经存在于您获取的运行对象上（例如从`client.listRuns()`）。
-    </Warning>|之前 (`string[]`) |之后(`RunKey[]`) |笔记|
+    </Warning>|之前 (`string[]`) |之后(`RunKey[]`)|笔记|
     |---|---|---|
     | `runs: string[]` | *（已弃用）* |旧路径（运行 ID 字符串数组）。仍然有效并达到`/runs`。将在未来版本中删除 |
     | *（不可用）* | `runs: RunKey[]` | **新首选。** 每个`RunKey`都是`{ runId, sessionId, startTime }`； `startTime` 接受 `Date`、纪元 ms 或 ISO 字符串 |
@@ -76,7 +76,7 @@
     两个形状的第二个参数的位置相同；当您传递`RunKey[]`时，SDK会选择SmithDB路径。
   </Tab>
   <Tab title="Java">
-    |之前 (`RunCreateParams`) |之后(`RunCreateByKeyParams`) |笔记|
+    |之前 (`RunCreateParams`) |之后(`RunCreateByKeyParams`)|笔记|
     |---|---|---|
     | `.bodyOfRunsUuidArray(List<String>)` | *（已删除）* |旧体；仅运行 ID |
     | *（不可用）* | `.addBody(RunCreateByKeyParams.Body)` |每个 `Body` 都有 `runId`、`sessionId` 和 `startTime` |
@@ -160,7 +160,7 @@ client.add_runs_to_annotation_queue(
     </Tabs>
   </Tab>
   <Tab title="TypeScript">
-    传递旧路径的运行 ID 字符串数组，或从已有的运行对象构建的 `RunKey` 对象（`runId`、`sessionId`、`startTime`）数组。
+    传递旧路径的运行 ID 字符串数组，或从已有的运行对象构建的 `RunKey` 对象数组（`runId`、`sessionId`、`startTime`）。
 
     <Tabs sync={false}>
       <Tab title="Before">
@@ -372,7 +372,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |---|---|
     | `client.share_run()` | `client.runs.share.create()` |
     | `client.unshare_run()` | `client.runs.share.delete()` |
@@ -385,7 +385,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID
     </Note>
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |---|---|
     | `client.shareRun()` | `client.runs.share.create()` |
     | `client.unshareRun()` | `client.runs.share.delete()` |
@@ -394,21 +394,21 @@ curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID
     | `client.readRunSharedLink()` | `client.runs.retrieve({ selects: ["SHARE_URL"] })` |TypeScript 没有直接相当于 Python 的 `read_shared_run`。过滤后的`listSharedRuns`调用迁移到点读取方法。
   </Tab>
   <Tab title="Java">
-    Java SDK 没有遗留的方便迁移方法。使用[⟦T179⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/runs/ShareService.html)和公共[⟦T180⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/public_/RunService.html)进行v2访问。 Kotlin 使用 Java SDK；没有单独的 Kotlin 参考站点。
+    Java SDK 没有传统的方便迁移方法。使用[⟦T179⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/runs/ShareService.html)和公共[⟦T180⟧](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/public_/RunService.html)进行v2访问。 Kotlin 使用 Java SDK；没有单独的 Kotlin 参考站点。
   </Tab>
   <Tab title="Go">
     Go SDK 没有传统的便捷迁移方法。使用 [⟦T181⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunShareService) 和 [⟦T182⟧](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#PublicRunService) 进行 v2 访问。
   </Tab>
   <Tab title="cURL">
-    |运营|之前 |之后 |
+    |运营|之前 |之后|
     |---|---|---|
     |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
     |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
-    |查询公开运行 | `POST /api/v1/public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` |
+    |查询公开运行| `POST /api/v1/public/{share_token}/runs/query` | `POST /api/v2/public/{share_token}/runs/query` |
     |检索公开运行 | `GET /api/v1/public/{share_token}/run/{run_id}` | `GET /api/v2/public/{share_token}/run/{run_id}` |
     |阅读分享状态 | `GET /api/v1/runs/{run_id}/share` | `GET /api/v2/runs/{run_id}?selects=SHARE_URL` |
 
-    没有运行 ID 的旧版 `GET /api/v1/public/{share_token}/run` 端点没有直接的 v2 等效项。
+    没有运行 ID 的旧版`GET /api/v1/public/{share_token}/run`端点没有直接的 v2 等效项。
   </Tab>
 </Tabs>
 
@@ -441,11 +441,11 @@ curl -X POST "https://api.smith.langchain.com/api/v1/annotation-queues/$QUEUE_ID
 
 #### 回应
 
-|运营|之前 |之后 |
+|运营|之前 |之后|
 |---|---|---|
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
-|查询公开运行 | `runs` 和 `cursors` | `items` |
+|查询公开运行| `runs` 和 `cursors` | `items` |
 |检索公开运行 |完整的传统运行|选择驱动运行对象|
 |阅读分享状态 |共享状态对象或 `null` |共享时使用 `share_url` 运行对象 |
 
@@ -663,7 +663,7 @@ curl --request DELETE \
   <Tab title="Python">
     <Warning>
     `create_feedback` 现在需要 `session_id`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
-    </Warning>|之前 |之后 |笔记|
+    </Warning>|之前 |之后|笔记|
     |---|---|---|
     | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |
   </Tab>
@@ -672,7 +672,7 @@ curl --request DELETE \
     `client.createFeedback` 现在需要 `sessionId`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
     </Warning>
 
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | `sessionId`（可选）| `sessionId`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.readProject()` 解决它 |
   </Tab>
@@ -681,14 +681,14 @@ curl --request DELETE \
     现在需要`FeedbackCreateSchema.sessionId()`。以前它是可选的。
     </Warning>
 
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | `sessionId()`（可选）| `sessionId()`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.sessions().list()` 解决它 |
   </Tab>
   <Tab title="Go">
     <Warning>
     现在需要`FeedbackCreateSchemaParam.SessionID`。以前它是可选的。
-    </Warning>|之前 |之后 |笔记|
+    </Warning>|之前 |之后|笔记|
     |---|---|---|
     | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |
   </Tab>
@@ -697,7 +697,7 @@ curl --request DELETE \
     `POST /api/v1/feedback` 现在需要请求正文中包含 `session_id` 字段。以前它是可选的。
     </Warning>
 
-    |之前 |之后 |笔记|
+    |之前 |之后|笔记|
     |---|---|---|
     | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
   </Tab>
@@ -911,7 +911,7 @@ curl -X POST "https://api.smith.langchain.com/api/v1/feedback" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-feedback.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

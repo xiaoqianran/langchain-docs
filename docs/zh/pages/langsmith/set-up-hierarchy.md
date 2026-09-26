@@ -36,7 +36,7 @@
 
 在 [Settings page](https://smith.langchain.com/settings) 上的 **成员和角色** 选项卡中管理共享组织中的成员资格。在这里您可以：
 
-- 邀请新用户加入您的组织，选择工作区成员资格和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
+- 邀请新用户加入您的组织，选择工作区成员身份和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
 - 编辑用户的组织角色。
 - 从您的组织中删除用户。
 
@@ -92,7 +92,7 @@
 删除工作区将永久删除该工作区和所有关联数据。此操作无法撤消。
 </Warning>
 
-您可以通过[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-set-up-hierarchy)或[API](/langsmith/smith-api/workspaces/delete-workspace)删除工作空间。您必须是 [workspace admin](/langsmith/rbac#workspace-admin) 才能删除工作区。
+您可以通过[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-set-up-hierarchy)或[API](/langsmith/smith-api/workspaces/delete-workspace)删除工作空间。您必须是[workspace admin](/langsmith/rbac#workspace-admin)才能删除工作区。
 
 在 LangSmith 用户界面中：
 
@@ -108,7 +108,7 @@
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-hierarchy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,7 +6,7 @@
 
 LangSmith 使用分层结构来组织您的工作：[_organizations_](/langsmith/administration-overview#organizations)、[_workspaces_](/langsmith/administration-overview#workspaces)、[_applications_](/langsmith/administration-overview#applications) 和 [_resources_](/langsmith/administration-overview#resources)。此结构可让您平衡协作与访问控制，从而允许您根据团队的需求选择正确的隔离级别。
 
-LangSmith 权限系统建立在这个层次结构之上。使用 [role-based access control (RBAC)](/langsmith/rbac)，用户 [permissions](/langsmith/organization-workspace-operations) 的范围仅限于一个或多个工作区，从而在工作区之间强制隔离。通过更细粒度的[attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签或应用程序等属性进一步限制或授予访问权限（例如，允许用户仅访问开发资源或仅访问与特定应用程序关联的资源）。
+LangSmith 权限系统建立在这个层次结构之上。使用 [role-based access control (RBAC)](/langsmith/rbac)，用户 [permissions](/langsmith/organization-workspace-operations) 的范围仅限于一个或多个工作区，从而强制工作区之间的隔离。通过更细粒度的 [attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签或应用程序等属性进一步限制或授予访问权限（例如，允许用户仅访问开发资源或仅访问与特定应用程序关联的资源）。
 
 本页介绍了根据团队的隔离要求组织工作区的三种常见方法：
 
@@ -66,7 +66,7 @@ graph LR
     class App1A,App1B appStyle
     class DevA,ProdA,DatasetA,DevB,ProdB,DatasetB resourceStyle
 ```- **优点：** 单个工作区允许共享所有团队资源，使团队内的协作和迭代变得简单。它还简化了从开发到生产的推广。例如，可以使用标签对相同的[prompt](/langsmith/prompt-context-hub#prompts)进行版本控制并升级到生产，而无需复制或重复。
-- **缺点：** 主要的权衡是同一团队的环境之间的隔离有限。开发、测试和生产资源共存于同一应用程序中，因此团队必须依靠标记和约定来避免对生产的意外影响。 [RBAC](/langsmith/rbac) 的范围位于工作区级别。 [ABAC](/langsmith/organization-workspace-operations#access-policies) 通过根据资源属性限制访问，例如允许用户仅访问开发资源，在工作空间内提供更细化的权限。
+- **缺点：** 主要的权衡是同一团队的环境之间的隔离有限。开发、测试和生产资源共存于同一个应用程序中，因此团队必须依靠标记和约定来避免对生产的意外影响。 [RBAC](/langsmith/rbac) 的范围位于工作区级别。 [ABAC](/langsmith/organization-workspace-operations#access-policies) 通过根据资源属性限制访问，例如允许用户仅访问开发资源，在工作空间内提供更细化的权限。
 
 ## 协作工作空间
 
@@ -172,7 +172,7 @@ graph LR
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/workload-isolation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

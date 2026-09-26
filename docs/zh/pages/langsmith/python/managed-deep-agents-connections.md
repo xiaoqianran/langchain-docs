@@ -51,7 +51,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 连接是一个容器，它属于工作区而不是所有者。其中的凭证有所有者。没有 `--owner` 标志：您使用的 [create mode](#choose-a-create-mode) 设置所有者。
 
-`connections.get(...)` 选择所有者。它不会创造一个。要求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T39⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T41⟧](/langsmith/python/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要解决第二个部署中的相同 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
+`connections.get(...)` 选择所有者。它不会创造一个。请求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T39⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T41⟧](/langsmith/python/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要解决第二个部署中的相同 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
 
 ### 识别来电者
 
@@ -76,8 +76,8 @@ Slack 和 Studio 为调用者完成授权往返。对自定义渠道的一流支
 |模式|使用时 |使用 | 创建凭证所有者 |
 | ---| ---| ---| ---|
 | **不透明的秘密** |该服务使用固定的 API 密钥或其他静态秘密。 | `--secret-from-env`、`--secret-from-file`、stdin 或交互式提示 |代理|
-| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或具有 [⟦T49⟧](#authorize-an-agent-owned-oauth-account) 或 [client credentials](#create-a-client-credentials-connection) 的座席 |
-| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或带有 [⟦T51⟧](#authorize-an-agent-owned-oauth-account) 的代理 |
+| **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有[⟦T49⟧](#authorize-an-agent-owned-oauth-account)或[client credentials](#create-a-client-credentials-connection)的座席 |
+| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或带有 [⟦T51⟧](#authorize-an-agent-owned-oauth-account) 的座席 |
 
 例如：
 ```bash
@@ -122,7 +122,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 - **stdin**：管道或重定向值，例如 `printf '%s' "$ACME_API_KEY" | mda connections create acme-api`。
 - **交互式提示**：在 TTY 上省略值标志。 CLI 隐藏输入，因此秘密不会出现在屏幕上或 shell 历史记录中。
 
-使用 CLI 创建的不透明机密始终归代理所有。对于每个呼叫者的凭据，请使用 [OAuth connection](#create-a-general-oauth-connection)。
+使用 CLI 创建的不透明机密始终归代理所有。对于每个调用者的凭据，请使用 [OAuth connection](#create-a-general-oauth-connection)。
 
 颁发属于代理的密钥，而不是重复使用个人密钥。可以对专用密钥进行范围界定、轮换和撤销，而不会影响共享它的其他任何内容。
 
@@ -199,10 +199,11 @@ uv run mda connections catalog
 | `salesforce` | [Salesforce](https://login.salesforce.com/) | `api` `refresh_token` |
 | `slack` | [Slack](https://api.slack.com/apps) | `chat:write` |
 | `spotify` | [Spotify](https://developer.spotify.com/dashboard) | `user-read-email` |
+| `stripe-link` | [Stripe Link](https://docs.stripe.com/agentic-commerce/link-cli/oauth) | `payment_methods.agentic` `userinfo:read` |
 | `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
 | `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
-没有默认范围的服务需要`--scope`。
+没有默认范围的服务需要 `--scope`。
 
 <Accordion title="Some services run separate OAuth apps for their API and their MCP server">
 观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。
@@ -223,7 +224,7 @@ uv run mda connections create frontend-github \
 可选标志：
 
 - **`--scope SCOPE`**：替换目录默认值。对每个范围重复此操作。
-- **`--allowed-scope SCOPE`**：限制任何以后可能请求的授权。默认为 `--scope` 值，并且必须覆盖每个 `--scope`。
+- **`--allowed-scope SCOPE`**：取消可能要求的任何后续授权。默认为 `--scope` 值，并且必须覆盖每个 `--scope`。
 - **`--authorization-param KEY=VALUE`**：额外授权查询参数。对每个参数重复此操作。
 - **`--auth-method METHOD`**：客户端如何向令牌端点进行身份验证：对于公共客户端，`client_secret_basic`、`client_secret_post` 或 `none`。默认为目录服务的方法。
 
@@ -270,7 +271,7 @@ CLI 打印 slug、授权类型及其存储的范围。从项目目录运行它�
 可选标志：
 
 - **`--scope SCOPE`**：请求范围。对每个范围重复此操作。
-- **`--auth-method METHOD`**：将客户端密钥发送为 `client_secret_basic` 或 `client_secret_post`。默认为`client_secret_basic`。公共客户端 (`none`) 不能使用此补助金。
+- **`--auth-method METHOD`**：以 `client_secret_basic` 或 `client_secret_post` 形式发送客户端密钥。默认为`client_secret_basic`。公共客户端 (`none`) 不能使用此补助金。
 - **`--token-param KEY=VALUE`**：在token请求中添加参数，如`--token-param audience=https://api.acme.com`。对每个参数重复此操作。该授权设置了 `grant_type`、`client_id`、`client_secret` 和 `scope` 本身，因此这四个密钥被拒绝。
 
 此授权拒绝授权代码标志 `--authorize-url`、`--authorization-param` 和 `--allowed-scope`。
@@ -375,7 +376,7 @@ mcp = define_mcp(
 
 
 
-欲了解更多信息，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
+有关更多信息，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
 ### 从项目声明创建
 
@@ -401,7 +402,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 无方案值（例如 `mcp.notion.com/mcp`）存储为 `https://mcp.notion.com/mcp`。
 
-如果服务器无法自动注册客户端，CLI 会这样提示您并指向一般 OAuth（`--oauth` 或手动端点）。
+如果服务器无法自动注册客户端，CLI 会这样提示您并指示您使用常规 OAuth（`--oauth` 或手动端点）。
 
 `mda deploy` 将相同的推论应用于丢失的用户拥有的 MCP 连接。它保持现有连接不变，通过 OAuth 发现创建每个唯一的缺失 MCP 连接，并在发现或注册不可用时在部署之前失败。## 处理授权中断
 
@@ -413,7 +414,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 ### 中断负载
 
-对于[⟦T176⟧](/oss/python/langchain/frontend/human-in-the-loop#setting-up-usestream) (`@langchain/react`、`@langchain/vue`、`@langchain/svelte`) 或`injectStream` (`@langchain/angular`)，待处理中断位于`stream.interrupt`。凭证门有效负载为`stream.interrupt.value`。
+对于[⟦T179⟧](/oss/python/langchain/frontend/human-in-the-loop#setting-up-usestream) (`@langchain/react`、`@langchain/vue`、`@langchain/svelte`) 或`injectStream` (`@langchain/angular`)，待处理中断位于`stream.interrupt`。凭证门有效负载为`stream.interrupt.value`。
 
 对于缺少的 OAuth 授权，`credentials` 中的每个条目都携带调用者完成同意的 URL：
 
@@ -430,9 +431,9 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
     }
   ]
 }
-```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目表示用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。有关更多信息，请参阅[Review current limitations](#review-current-limitations)。
+```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目代表用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
-|领域|礼物给 |意义|
+|领域 |礼物给 |意义|
 | ---| ---| ---|
 | `type` |永远 |鉴别器。必须是`credential_authorization_required`。 |
 | `message` |永远 |人类可读的摘要显示在待决拨款上方。 |
@@ -446,7 +447,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 呈现此中断的前端是一个 Web 应用程序，因此无论代理是用 Python 还是 TypeScript 编写的，这些示例都是 TypeScript。
 
-检测`stream.interrupt`上的凭证门负载，渲染连接卡，然后在存储每个授权后使用`stream.respond`恢复：
+检测 `stream.interrupt` 上的凭证门负载，渲染连接卡，然后在存储每个授权后使用 `stream.respond` 恢复：
 
 <CodeGroup>
 ```tsx React
@@ -675,7 +676,7 @@ uv run mda connections delete organization-tavily
 连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：- **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
 - **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 - **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
-- **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示了 slug。从项目根目录运行`mda connections create <slug>`来创建一个。
+- **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。
 
 <Accordion title="Store a user-owned API key through Agent Auth">
 带有`"kind": "secret"`的中断入口没有`connect_url`。要在自定义前端中收集一个，请提示输入隐藏输入的值，然后根据现有连接 slug 创建凭据：
@@ -695,7 +696,7 @@ POST /v1/agent-auth/connections
     "value": "<api-key>"
   }
 }
-```代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。欲了解更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
+```代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。有关更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
 </Accordion>
 
 ## 另请参阅

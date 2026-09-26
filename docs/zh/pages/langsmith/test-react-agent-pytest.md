@@ -64,14 +64,14 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 
 ### 定义工具
 
-首先，我们将定义要在代理中使用的工具。将有 3 个工具：* 使用 Tavilly 的搜索工具
+首先，我们将定义将在代理中使用的工具。将有 3 个工具：* 使用 Tavilly 的搜索工具
 * 使用E2B的代码解释器工具
 * 使用Polygon的股票信息工具
 
 <CodeGroup>
 
 <Warning>
-`langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或损坏。谨慎使用。
+`langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
 </Warning>
 
 ```python Python
@@ -279,7 +279,7 @@ ls.describe("Agent Tests", () => {
 
 ### 测试 1：处理离题问题
 
-第一个测试将是简单检查代理是否在不相关的查询上使用工具。
+第一个测试将是一个简单的检查，以确保代理不会在不相关的查询上使用工具。
 
 <CodeGroup>
 
@@ -1219,7 +1219,7 @@ yarn jest --config ls.jest.config.ts
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-react-agent-pytest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

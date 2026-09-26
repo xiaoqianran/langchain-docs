@@ -103,7 +103,7 @@ dcode 通过从函数签名和文档字符串推断其架构，将普通可调�
 
 ### 应用运行时更改
 
-启动后注册的工具将出现在下一个模型请求中。中间件和后端路由改变了代理图的构造并需要`/reload`。运行 `/extensions` 列出注册、其源路径和范围、加载失败以及是否需要重新启动。
+启动后注册的工具将出现在下一个模型请求中。中间件和后端路由改变了代理图构造并需要`/reload`。运行 `/extensions` 列出注册、其源路径和范围、加载失败以及是否需要重新启动。
 
 单独管理的远程代理服务器必须由其操作员重新启动或重新部署。
 
@@ -143,7 +143,7 @@ extra_paths = [
     "extensions/policy.py",
     "~/src/company-extensions",
 ]
-```|设置|默认|描述 |
+```|设置|默认 |描述 |
 |---|---|---|
 | `enabled` | `true` |为每个源启用扩展发现，包括`-e` / `--extension`。仍然需要实验环境变量。 |
 | `trust` | `"ask"` |将项目扩展信任设置为 `ask`、`always` 或 `never`。 |
@@ -184,7 +184,7 @@ extra_paths = [
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

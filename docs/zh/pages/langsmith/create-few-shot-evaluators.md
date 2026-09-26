@@ -20,9 +20,11 @@
 目前，使用提示中心的 LLM-as-a-judge 评估程序不支持少数样本示例，并且仅与使用胡子格式的提示兼容。
 
 Few-shot 示例仅支持运行级别评估器，而不支持线程级别。在 [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator) 中打开 **运行**。
+
+[decision model evaluators](/langsmith/decision-model-evaluator) 没有少数镜头示例。
 </Note>
 
-在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge)中的步骤操作。
+在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge) 中的步骤操作。
 
 ### 1.配置变量映射每个小样本示例均根据配置中指定的变量映射进行格式化。少量示例的变量映射应包含与主提示相同的变量，以及一个 `few_shot_explanation` 和一个 `score` 变量，它们应与您的反馈键具有相同的名称。
 

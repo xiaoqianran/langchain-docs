@@ -40,7 +40,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 </Note>
 
 <Warning>
-`COPILOT_OTEL_CAPTURE_CONTENT=true` 记录完整的提示和响应内容、系统提示、工具架构、工具参数和工具结果。仅在可接受捕获源代码、文件内容和用户提示的受信任环境中启用它。
+`COPILOT_OTEL_CAPTURE_CONTENT=true` 记录完整的提示和响应内容、系统提示、工具模式、工具参数和工具结果。仅在可接受捕获源代码、文件内容和用户提示的受信任环境中启用它。
 </Warning>
 
 ### 替代方案：VS Code 设置
@@ -81,7 +81,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vscode-copilot.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

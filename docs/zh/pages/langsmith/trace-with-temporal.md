@@ -18,7 +18,7 @@ LangSmith 支持 OpenTelemetry (OTEL) 跟踪摄取，它与 Temporal 的本机 O
 
 为所有实现设置以下环境变量：
 
-|变量|必填|描述 |
+|变量|必填 |描述 |
 | ------------------- | -------- | ------------------------------------------------ |
 | `LANGSMITH_API_KEY` |是的 |您在“设置”中的 LangSmith API 密钥。            |
 | `LANGSMITH_PROJECT` |没有 |项目名称（默认为`"default"`）。          |
@@ -750,7 +750,7 @@ finally {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-temporal.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

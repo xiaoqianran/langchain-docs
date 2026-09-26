@@ -73,7 +73,7 @@ Deep Agents 代码按优先顺序加载钩子配置：
 | ---| ---|
 | `${CLAUDE_PLUGIN_ROOT}`、`${PLUGIN_ROOT}` |安装的插件目录 |
 | `${CLAUDE_PLUGIN_DATA}`、`${PLUGIN_DATA}` |插件的可写数据目录 |
-| `${CLAUDE_PROJECT_DIR}` |项目根目录|
+| `${CLAUDE_PROJECT_DIR}` |项目根目录 |
 
 在 `command` 字符串中引用这些变量，因为安装路径可以包含空格：`"command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/format.sh\""`。当您可以时，首选可选的 `argv` 字段： Deep Agents 代码在启动之前解析变量并跳过 shell，因此您不需要引用。
 
@@ -86,7 +86,7 @@ Deep Agents 代码按优先顺序加载钩子配置：
 </ResponseField>
 
 <ResponseField name="command" type="string" required>
-    要运行的 shell 命令。总是需要的。支持管道、重定向、glob 和环境变量扩展。事件负载以 JSON 形式写入标准输入，不会插入到参数中。当`argv`也被设置时，该字符串不会通过shell执行。
+    要运行的 shell 命令。总是需要的。支持管道、重定向、glob 和环境变量扩展。事件有效负载以 JSON 形式写入标准输入，而不会插入到参数中。当`argv`也被设置时，该字符串不会通过shell执行。
 </ResponseField>
 
 <ResponseField name="argv" type="list[string]" post={["optional"]}>
@@ -123,14 +123,14 @@ Deep Agents 代码按优先顺序加载钩子配置：
 |活动 |业主|退出代码2效果|匹配于 |
 | ---| ---| ---| ---|
 | `SessionStart` |客户|诊断| `source` |
-| `UserPromptSubmit` |客户|阻止提示|无 |
+| `UserPromptSubmit` |客户|阻止提示 |无 |
 | `SessionEnd` |客户|诊断| `reason` |
 | `PermissionRequest` |客户|否认| `tool_name` |
 | `Notification` |客户|诊断| `notification_type` |
 | `PreToolUse` |服务器|否认| `tool_name` |
 | `PostToolUse` |服务器|反馈 | `tool_name` |
-| `PreCompact` |服务器|块压缩| `trigger` |
-| `Stop` |服务器|继续转 |无 |
+| `PreCompact` |服务器|块压缩 | `trigger` |
+| `Stop` |服务器|继续转|无 |
 | `SubagentStart` |服务器|诊断| `agent_type` |
 | `SubagentStop` |服务器|添加上下文 | `agent_type` |
 
@@ -159,9 +159,9 @@ flowchart LR
 
 ### 常用字段
 
-|领域|描述 |
+|领域 |描述 |
 | ---| ---|
-| `session_id` |会话标识符|
+| `session_id` |会话标识符 |
 | `transcript_path` |对话记录的路径（如果可用）|
 | `cwd` |调用钩子时的工作目录 |
 | `hook_event_name` |触发的事件的名称 |
@@ -170,7 +170,7 @@ flowchart LR
 | `effort` |对象，例如 `{ "level": "medium" }`，其中级别为 `none`、`low`、`medium`、`high`、`xhigh` 或 `max`（如果可用）|
 | `agent_id`、`agent_type` |子代理身份（如果可用）|
 
-`transcript_path` 指向在 `~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。这两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
+`transcript_path` 指向在`~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
 
 ### 特定于事件的字段|活动 |领域 |
 | ---| ---|
@@ -207,7 +207,7 @@ flowchart LR
 
 挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：
 
-|公共工具名称|值得注意的输入字段 |
+|公共工具名称 |值得注意的输入字段 |
 | ---| ---|
 | `Bash` | `command`，可选`timeout`（以毫秒为单位）|
 | `Write` | `file_path`、`content` |
@@ -224,7 +224,7 @@ flowchart LR
 | ---| ---|
 | `0` |成功。当 stdout 包含 JSON 时，它会被解析并应用。 |
 | `2` |该事件的阻塞或反馈路径。参见[Events](#events)表退出代码2效果栏。 Stdout JSON 被忽略，stderr 是主要反馈通道。 |
-|其他非零 |非阻塞错误。 Deep Agents 代码记录诊断并继续。 |
+|其他非零|非阻塞错误。 Deep Agents 代码记录诊断并继续。 |
 
 JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内容。成功的非 JSON 标准输出成为 `SessionStart` 和 `UserPromptSubmit` 的附加上下文；对于其他事件，它会生成诊断信息。 Stdout 和 stderr 各自保留最多 100,000 字节。
 
@@ -294,7 +294,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 }
 ```
 
-一个区块会继续代理轮流并提供您的反馈。 `Stop.hookSpecificOutput.additionalContext`具有同样的延续效果。为了避免无限循环，请检查有效负载中的`stop_hook_active`，并在满足条件后停止阻塞。 Deep Agents 代码还强制执行八个连续连续的硬上限。### 注入上下文
+一个区块会继续代理轮流并提供您的反馈。 `Stop.hookSpecificOutput.additionalContext`具有同样的延续效果。为了避免无限循环，请检查有效负载中的`stop_hook_active`，并在满足条件后停止阻塞。 Deep Agents 代码还强制执行八个连续延续的硬上限。### 注入上下文
 
 `SessionStart`、`UserPromptSubmit`和`SubagentStart`可以为模型添加上下文：
 
@@ -311,9 +311,9 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 不支持的输出字段
 
-以下兼容性字段被识别但不应用。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。
+可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。
 
-|领域或行为 |结果 |
+|领域或行为|结果 |
 | ---| ---|
 | `SessionStart.initialUserMessage`、`sessionTitle`、`watchPaths`、`reloadSkills` |已解析，未应用 |
 | `UserPromptSubmit.sessionTitle` |已解析，未应用 |
@@ -458,7 +458,7 @@ if __name__ == "__main__":
 
 ## 安全
 
-挂钩遵循与 Git 挂钩或 shell 别名相同的信任模型：任何可以写入 `hooks.json` 的进程都可以使用您的权限运行任意命令。- 有效负载数据以 JSON 形式流向标准输入，从未插入到命令参数中。
+挂钩遵循与 Git 挂钩或 shell 别名相同的信任模型：任何可以写入 `hooks.json` 的进程都可以在您的权限下运行任意命令。- 有效负载数据以 JSON 形式流向标准输入，从未插入到命令参数中。
 - 从处理程序环境中删除了看似凭证的环境变量。
 - 挂钩配置保持固定，直到 `/reload` 或新会话。
 - 优先选择您控制的显式 shell 可执行文件而不是 shell 包装器。
@@ -479,7 +479,7 @@ if __name__ == "__main__":
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/hooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

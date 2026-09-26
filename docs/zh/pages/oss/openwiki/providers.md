@@ -7,7 +7,7 @@
 OpenWiki 支持以下提供商：
 
 |供应商|资质证书 |笔记|
-| --- | --- | --- |
+| ---| ---| ---|
 | `openai` | `OPENAI_API_KEY` |可选的 `OPENAI_BASE_URL` 用于公开响应 API 的 OpenAI 兼容网关 |
 | `openai-chatgpt` | ChatGPT OAuth 令牌 |使用 ChatGPT 登录；使用量取决于 Plus/Pro/Team Codex 津贴 |
 | `copilot` | GitHub CLI 会话或 `COPILOT_API_KEY` |可选`COPILOT_BASE_URL`。 CI 需要 OAuth 令牌，而不是经典的 PAT |
@@ -16,7 +16,7 @@ OpenWiki 支持以下提供商：
 | `gemini` | `GEMINI_API_KEY` |谷歌人工智能工作室 |
 | `gemini-enterprise` |谷歌 ADC + `GOOGLE_CLOUD_PROJECT` |可选`GOOGLE_CLOUD_LOCATION`（默认为`global`）|
 | `bedrock` | AWS 凭证 + 区域 |显式基岩密钥或 AWS 开发工具包默认链 |
-| `baseten` | `BASETEN_API_KEY` |可选`BASETEN_BASE_URL`|
+| `baseten` | `BASETEN_API_KEY` |可选`BASETEN_BASE_URL` |
 | `fireworks` | `FIREWORKS_API_KEY` |可选`FIREWORKS_BASE_URL` |
 | `nebius` | `NEBIUS_API_KEY` | Nebius 代币工厂 |
 | `nvidia` | `NVIDIA_API_KEY` |可选`NVIDIA_BASE_URL` |
@@ -74,7 +74,7 @@ OPENWIKI_REASONING_EFFORT=high
 将其保留为未设置以保留提供程序默认值。无效的提供者、模型或工作组合在发送请求之前失败。当活动提供程序和模型不支持继承值时，继承值也会失败。
 
 |供应商|型号|支持的值 |请求映射 |
-| --- | --- | --- | --- |
+| ---| ---| ---| ---|
 | `openai` | `gpt-5.6-terra`、`gpt-5.6-luna`、`gpt-5.6-sol` | `none`、`low`、`medium`、`high`、`xhigh`、`max` |响应 API `reasoning.effort` |
 | `openai-chatgpt` | `gpt-5.6-terra`、`gpt-5.6-luna`、`gpt-5.6-sol` | `none`、`low`、`medium`、`high`、`xhigh`、`max` |响应 API `reasoning.effort` |
 | `nvidia` | `nvidia/nemotron-3-super-120b-a12b` | `none`、`low`、`high` |聊天完成`reasoning_effort` |
@@ -176,7 +176,7 @@ OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

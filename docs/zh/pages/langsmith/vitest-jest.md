@@ -241,9 +241,9 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-您可以将每个[ls.test](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test)案例视为对应于一个数据集示例，并将[⟦T65⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#describe)视为定义一个LangSmith数据集。如果您在运行测试套件时设置了 LangSmith [tracing environment variables](#setup)，则 SDK 会执行以下操作：* 创建一个与LangSmith中传递给`ls.describe()`同名的[dataset](/langsmith/evaluation-concepts#datasets)（如果不存在）。
+您可以将每个[ls.test](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test)案例视为对应于一个数据集示例，并将[⟦T65⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#describe)视为定义LangSmith数据集。如果您在运行测试套件时设置了 LangSmith [tracing environment variables](#setup)，则 SDK 会执行以下操作：* 创建一个与LangSmith中传递给`ls.describe()`同名的[dataset](/langsmith/evaluation-concepts#datasets)（如果不存在）。
 * 如果尚不存在匹配的输入，则在数据集中为传递到测试用例的每个输入和预期输出创建一个[example](/langsmith/evaluation-concepts#datasets)。
-* 创建一个新的[experiment](/langsmith/evaluation-concepts#experiment)，每个测试用例都有一个结果。
+* 创建一个新的[experiment](/langsmith/evaluation-concepts#experiment)，每个测试用例有一个结果。
 * 收集每个测试用例在`pass`反馈键下的通过/失败率。
 
 当您运行此测试时，它将有一个基于测试用例通过/失败的默认`pass`布尔反馈键。它还将跟踪您使用 [⟦T69⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logOutputs) 记录的任何输出或从测试函数返回的任何输出，作为实验应用程序的“实际”结果值。
@@ -426,7 +426,7 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-如果您启用了跟踪，本地数据集中的每个示例都将同步到 LangSmith 中创建的示例。
+如果您启用了跟踪，则本地数据集中的每个示例都将同步到 LangSmith 中创建的示例。
 
 ## 使用现有数据集（仅限 Vitest）您可以针对 LangSmith 中的现有数据集运行测试，而不是内联定义 [examples](/langsmith/evaluation-concepts#examples)：
 
@@ -537,7 +537,7 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-但请记住，如果您这样做，如果您的测试由于断言失败或其他错误而无法完成，您的输出将不会出现。
+但请记住，如果您这样做，如果您的测试由于失败的断言或其他错误而无法完成，您的输出将不会出现。
 
 ## 跟踪中间调用
 
@@ -616,7 +616,7 @@ ls.describe("test suite name", () => {
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/vitest-jest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

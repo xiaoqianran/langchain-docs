@@ -16,7 +16,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.get_experiment_results()` | `client.datasets.experiment_runs.query()` |
 
@@ -27,7 +27,7 @@
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/datasets/experiment_runs/ExperimentRunsResource/query)。
   </Tab>
   <Tab title="TypeScript">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | *（没有遗留的公共`Client`方法）* | `client.datasets.experimentRuns.query()` |
 
@@ -41,12 +41,12 @@
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/datasets/ExperimentRunService.html)。
   </Tab>
   <Tab title="Go">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `client.Datasets.Runs.Query()` | `client.Datasets.ExperimentRuns.Query()` |完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#DatasetExperimentRunService.Query)。
   </Tab>
   <Tab title="cURL">
-    |之前 |之后 |
+    |之前 |之后|
     |--------|--------|
     | `POST /api/v1/datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` |
 
@@ -62,7 +62,7 @@
     `experiment_ids` 是必需的并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请首先解析它：异步代码中的`client.read_project(project_name="my-experiment").id`或`await client.aread_project(project_name="my-experiment")`。
     </Warning>
 
-    |之前 (`get_experiment_results`) |之后(`datasets.experiment_runs.query`)|笔记|
+    |之前 (`get_experiment_results`) |之后(`datasets.experiment_runs.query`) |笔记|
     |---|---|---|
     | `project_id` | `experiment_ids` | `get_experiment_results` 接受1个项目/实验；新方法接受必需的非空列表 |
     | `limit` | *（已删除）* |使用 `page_size` 作为每个请求的批量大小 |
@@ -70,21 +70,21 @@
     | *（内部处理）* | `cursor` |传递上一页的`next_cursor`来获取下一页 |
     | `preview` | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
     | *（未暴露）* | `sort` |使用`{by, order}`进行反馈分数排序|
-    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤表达式 |
+    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤器表达式 |
     | `comparative_experiment_id` | `comparative_experiment_id` |不变 || *（未暴露）* | `example_ids` |可选示例 UUID 过滤器，最大 1000 |
   </Tab>
   <Tab title="TypeScript">
     <Warning>
-    需要 `experiment_ids` 并替换 `session_ids`。值仍然是实验跟踪项目 UUID — 如果您只知道实验名称，请先解析它：`(await client.readProject({ projectName: "my-experiment" })).id`。
+    需要 `experiment_ids` 并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请先解析它：`(await client.readProject({ projectName: "my-experiment" })).id`。
     </Warning>
 
-    |之前 |之后(`datasets.experimentRuns.query`) |笔记|
+    |之前 |之后（`datasets.experimentRuns.query`）|笔记|
     |---|---|---|
     | *（没有遗留的公共`Client`方法）* | `experiment_ids` |必填且非空 |
     | *（没有遗留的公共`Client`方法）* | `page_size` |默认为 20，最大 100 |
     | *（没有遗留的公共`Client`方法）* | `cursor` |传递上一页的 `next_cursor` 而不是数字偏移量 |
     | *（没有遗留的公共`Client`方法）* | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
-    | *（没有遗留的公共`Client`方法）* | `sort` |使用`{ by, order }`进行反馈分数排序|
+    | *（没有遗留的公共`Client`方法）* | `sort` |使用`{ by, order }`进行反馈分数排序 |
     | *（没有遗留的公共`Client`方法）* | `filters` |将实验 UUID 字符串映射到过滤表达式 |
     | *（没有遗留的公共`Client`方法）* | `comparative_experiment_id` |范围成对注释反馈 |
     | *（没有遗留的公共`Client`方法）* | `example_ids` |可选示例 UUID 过滤器，最大 1000 |
@@ -109,7 +109,7 @@
   </Tab>
   <Tab title="Go">
     <Warning>
-    `ExperimentIDs` 是必需的并取代 `SessionIDs`。值仍然是实验跟踪项目 UUID — 如果您只知道实验名称，请先解析它：列出按 `Name` 过滤的会话，并获取第一个结果的 `ID`。</Warning>
+    `ExperimentIDs` 是必需的并取代 `SessionIDs`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请先解析它：列出按 `Name` 过滤的会话，并获取第一个结果的 `ID`。</Warning>
 
     |之前 (`DatasetRunQueryParams`) |之后（`DatasetExperimentRunQueryParams`）|笔记|
     |---|---|---|
@@ -127,7 +127,7 @@
   </Tab>
   <Tab title="cURL">
     <Warning>
-    需要 `experiment_ids` 并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请先解析它：`GET /api/v1/sessions?name=my-experiment` 并采用 `.[0].id`。
+    需要 `experiment_ids` 并替换 `session_ids`。值仍然是实验跟踪项目 UUID — 如果您只知道实验名称，请先解析它：`GET /api/v1/sessions?name=my-experiment` 并采用 `.[0].id`。
     </Warning>|之前（`POST /api/v1/datasets/{dataset_id}/runs`本体）|之后（`POST /api/v2/datasets/{dataset_id}/experiment-runs`本体）|笔记|
     |---|---|---|
     | `session_ids` | `experiment_ids` |更名；必填且非空 |
@@ -136,7 +136,7 @@
     | `offset` | `cursor` |传递上一页的 `next_cursor` 而不是数字偏移量 |
     | `preview` | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
     | `sort_params` | `sort` |形状从`{sort_by, sort_order}`更改为`{by, order}` |
-    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤表达式 |
+    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤器表达式 |
     | `comparative_experiment_id` | `comparative_experiment_id` |不变 |
     | `example_ids` | `example_ids` |不变，最多 1000 |
     | `format=csv` | *（已删除）* |新端点仅返回 JSON |
@@ -146,15 +146,15 @@
 
 #### 响应字段
 
-每个页面项目都是一个数据集示例，与为其生成的运行配对——而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。<Tabs>
+每个页面项目都是一个数据集示例，与为其生成的运行配对，而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。<Tabs>
   <Tab title="Python">
     `get_experiment_results` 使用`examples_with_runs` 迭代器返回实验结果。 `datasets.experiment_runs.query` 返回分页页面对象（`page.items`、`page.next_cursor`）；每个项目有：
 
-    |领域|笔记|
+    |领域 |笔记|
     |---|---|
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置）|
+    | `name` |示例名称（如果设置） |
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -163,11 +163,11 @@
     | `runs` |此示例的运行 - 请参阅 [Querying runs](#response-fields) |
   </Tab>
   <Tab title="TypeScript">
-    旧数据集运行端点未在公共 TypeScript `Client` 上公开。 `datasets.experimentRuns.query` 返回分页页面（`page.getPaginatedItems()`、`page.next_cursor`）；每个项目有：|领域|笔记|
+    旧数据集运行端点未在公共 TypeScript `Client` 上公开。 `datasets.experimentRuns.query` 返回分页页面（`page.getPaginatedItems()`、`page.next_cursor`）；每个项目有：|领域 |笔记|
     |---|---|
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置）|
+    | `name` |示例名称（如果设置） |
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -178,11 +178,11 @@
   <Tab title="Java">
     `runs().query` 返回一个可选列表。 `experimentRuns().query` 返回页面对象（`items()`，`nextCursor()`）；每个项目有：
 
-    |领域|笔记|
+    |领域 |笔记|
     |---|---|
     | `id()` |数据集示例 UUID |
     | `datasetId()` |父数据集 UUID |
-    | `name()` |示例名称（如果设置）|
+    | `name()` |示例名称（如果设置） |
     | `createdAt()` / `modifiedAt()` |时间戳示例 |
     | `inputs()` / `outputs()` |输入和参考输出有效负载示例 |
     | `metadata()` |元数据示例 |
@@ -191,11 +191,11 @@
     | `runs()` |此示例的运行 - 请参阅 [Querying runs](#response-fields) |
   </Tab>
   <Tab title="Go">
-    `Datasets.Runs.Query` 返回一个切片指针。 `Datasets.ExperimentRuns.Query` 返回`ItemsCursorPostPagination` (`Items`, `NextCursor`)；每个项目有：|领域|笔记|
+    `Datasets.Runs.Query` 返回一个切片指针。 `Datasets.ExperimentRuns.Query` 返回`ItemsCursorPostPagination` (`Items`, `NextCursor`)；每个项目有：|领域 |笔记|
     |---|---|
     | `ID` |数据集示例 UUID |
     | `DatasetID` |父数据集 UUID |
-    | `Name` |示例名称（如果设置）|
+    | `Name` |示例名称（如果设置） |
     | `CreatedAt` / `ModifiedAt` |时间戳示例 |
     | `Inputs` / `Outputs` |输入和参考输出有效负载示例 |
     | `Metadata` |元数据示例 |
@@ -206,11 +206,11 @@
   <Tab title="cURL">
     `POST /api/v1/datasets/{dataset_id}/runs` 返回一个 JSON 数组。 `POST /api/v2/datasets/{dataset_id}/experiment-runs` 返回`{ "items": [...], "next_cursor": "..." }`；每个项目有：
 
-    |领域|笔记|
+    |领域 |笔记|
     |---|---|
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置）|
+    | `name` |示例名称（如果设置） |
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -224,7 +224,7 @@
 
 #### 查询实验运行并请求预览字段<Tabs>
   <Tab title="Python">
-    `preview=True` 自动返回截断的输入/输出。在新 API 中，明确请求：对于相同的截断形状，在 `selects` 中传递 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW`，或者对于未截断的值，传递 `INPUTS`/`OUTPUTS`。省略 `selects` 仅返回 `id`。
+    `preview=True` 自动返回截断的输入/输出。在新 API 中，明确请求：对于相同的截断形状，在 `selects` 中传递 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW`，对于未截断的值，传递 `INPUTS`/`OUTPUTS`。省略 `selects` 仅返回 `id`。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -711,7 +711,7 @@ const page = await client.datasets.experimentRuns.query(datasetId, {
 
   </Tab>
   <Tab title="Java">
-    `sortParams()` 被`sort()` 取代，`sortBy()`/`sortOrder()` 更名为`by()`/`order()`。
+    `sortParams()` 被 `sort()` 取代，`sortBy()`/`sortOrder()` 更名为 `by()`/`order()`。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -761,7 +761,7 @@ val page = client.datasets().experimentRuns().query(
 
   </Tab>
   <Tab title="Go">
-    `SortParams` 被 `Sort` 取代，`SortBy`/`SortOrder` 重命名为 `By`/`Order`。<Tabs sync={false}>
+    `SortParams` 被 `Sort` 取代，`SortBy`/`SortOrder` 更名为 `By`/`Order`。<Tabs sync={false}>
   <Tab title="Before">
     ```go Before
 package main
@@ -851,7 +851,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/datasets/$DATASET_ID/experi
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-experiments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

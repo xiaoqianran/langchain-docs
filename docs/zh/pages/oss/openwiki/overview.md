@@ -6,7 +6,7 @@
 
 OpenWiki 是一个开源 CLI，用于编写和维护有关您的代码库或个人知识的 Markdown wiki。该 wiki 捕获了架构、集成、评估和工作流程等详细信息，因此 [coding agents](/oss/python/deepagents/overview) 可以将其用作持久上下文，而不是在每个任务上重新发现存储库。
 
-这使得代理的工作速度更快，代币成本更低：代理首先阅读精选的 wiki，然后仅在需要更多详细信息的地方检查源。人类可以浏览相同的 Markdown（以及本地[visualizer](/oss/openwiki/visualize)），但主要受众是代理。
+这使得代理工作速度更快、代币成本更低：代理首先阅读精选的 wiki，然后仅在需要更多详细信息的地方检查源。人类可以浏览相同的 Markdown（以及本地的[visualizer](/oss/openwiki/visualize)），但主要受众是代理。
 
 OpenWiki 构建于 [Deep Agents](/oss/python/deepagents/overview) 之上，并支持使用 [LangSmith](/langsmith/observability-quickstart) 进行跟踪。
 
@@ -19,12 +19,12 @@ npm install -g openwiki
 openwiki --init
 ```
 
-请参阅 [Quickstart](/oss/openwiki/quickstart) 选择模型提供者、生成文档并使其保持最新。要在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki，而不是在独立模型会话中运行，请参阅 [Coding-agent integrations](/oss/openwiki/integrations)。
+请参阅 [Quickstart](/oss/openwiki/quickstart) 选择模型提供商、生成文档并使其保持最新。要在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki，而不是在独立模型会话中运行，请参阅 [Coding-agent integrations](/oss/openwiki/integrations)。
 
 ## 模式
 
 OpenWiki 有两种模式：|模式|命令|输出|使用时 |
-| --- | --- | --- | --- |
+| ---| ---| ---| ---|
 | **代码**（默认）| `openwiki` / `openwiki code` |当前存储库中的`openwiki/` |您需要编码代理的存储库上下文和文档 |
 | **个人** | `openwiki personal` | `~/.openwiki/wiki` |您想要来自配置来源的本地个人大脑 |
 
@@ -73,7 +73,7 @@ OpenWiki 有两种模式：|模式|命令|输出|使用时 |
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

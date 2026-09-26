@@ -4,7 +4,7 @@
 
 # 跟踪 Mastra 应用程序
 
-[Mastra](https://mastra.ai/docs) 是一个 TypeScript 框架，用于构建人工智能驱动的应用程序和代理。使用 Mastra 的 [LangSmith exporter](https://mastra.ai/docs/observability/ai-tracing/exporters/langsmith)，您可以将来自 Mastra 代理和工作流程的跟踪发送到 LangSmith 以进行调试、评估和可观察性。
+[Mastra](https://mastra.ai/docs) 是一个 TypeScript 框架，用于构建人工智能驱动的应用程序和代理。使用 Mastra 的 [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith)，您可以将来自 Mastra 代理和工作流程的跟踪发送到 LangSmith 以进行调试、评估和可观察。
 
 本指南向您展示如何使用 Mastra 的 AI 跟踪系统将 Mastra 与 LangSmith 集成。
 
@@ -81,11 +81,11 @@ export const mastra = new Mastra({
     enabled: false,
   },
 });
-```- [Storage is required for tracing](https://mastra.ai/docs/observability/ai-tracing/overview#basic-config)（即使在外部导出跟踪时）。
+```- [Storage is required for tracing](https://mastra.ai/docs/observability/integrations/exporters/mastra-storage)（即使在外部导出跟踪时）。
 - LangSmith 导出器从环境变量中读取凭据。
 - [deprecated telemetry system](https://mastra.ai/docs/observability/overview#otel-tracing-deprecated) 被禁用以避免警告。
 - 在 Mastra 服务器外部运行 Mastra 时，不需要单独的检测文件。
-详情请参阅[Mastra docs](https://mastra.ai/docs/observability/ai-tracing/overview)。
+详情请参阅[Mastra docs](https://mastra.ai/docs/observability/overview)。
 
 ### 定义一个代理
 
@@ -101,7 +101,7 @@ export const echoAgent = new Agent({
 });
 ```
 
-Mastra 将使用您配置的 API 密钥自动路由模型调用，并捕获每次调用的跟踪。
+Mastra 将使用您配置的 API 密钥自动路由模型调用并捕获每次调用的跟踪。
 
 ### 运行代理
 
@@ -143,7 +143,7 @@ Mastra 将使用您配置的 API 密钥自动路由模型调用，并捕获每�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

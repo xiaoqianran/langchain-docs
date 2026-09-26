@@ -19,7 +19,7 @@
 - **存储在文件中的条件**：使用`/rubric file <path>`。
 - **一转质量门**：使用`/rubric next <criteria>`。
 
-## 使用目标当您知道想要的结果，但希望使用 Deep Agents 代码在工作开始之前提出验收标准时，请使用`/goal`。目标对于开放式工作很有用：代理将目标转化为完成的具体定义，然后迭代直到满足这些标准。
+## 使用目标当您知道想要的结果，但希望使用 Deep Agents 代码在工作开始前提出验收标准时，请使用 `/goal`。目标对于开放式工作很有用：代理将目标转化为完成的具体定义，然后迭代直到满足这些标准。
 
 ```text
 /goal add OAuth refresh handling
@@ -123,7 +123,7 @@ check the docs too
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/goals-and-rubrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

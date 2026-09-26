@@ -46,7 +46,7 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 ## 使用实时客户端
 
-当您使用 `client.realtime.connect()` 自行打开 WebSocket 并驱动事件循环时，请使用此选项。
+当您使用 `client.realtime.connect()` 打开 WebSocket 并驱动事件循环时，请使用此选项。
 
 ### 设置跟踪
 
@@ -137,7 +137,7 @@ async with wrap_realtime_session(
         ...  # your handling: play audio, update UI
 ```
 
-对话记录是根据会话的 `history` 快照重建的，因此即使 SDK 将消息作为部分流传输，消息也会出现。
+对话记录是根据会话的 `history` 快照重建的，因此即使 SDK 将它们作为部分流传输，消息也会出现。
 
 <Note>
 每个对话都会被捕获为自己的踪迹。要将其与 LangSmith [thread](/langsmith/threads) 中的相关交互分组，例如继续之前的会话或从文本聊天中接听，请传递 `thread_id`。跨跟踪重复使用相同的 ID 将它们的事件链接在一起。
@@ -179,7 +179,7 @@ async for event in conn:
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-openai-realtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

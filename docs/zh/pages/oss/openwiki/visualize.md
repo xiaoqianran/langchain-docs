@@ -23,7 +23,7 @@ openwiki visualize openwiki --port 4400 --no-open
 ```
 
 |参数/标志 |描述 |
-| --- | --- |
+| ---| ---|
 | `[path]` |提供服务的 Wiki 目录。默认为 `./openwiki` |
 | `--port <port>` |首选端口。默认为`4321`。如果端口已在使用中则增加 |
 | `--no-open` |不自动打开浏览器 |
@@ -58,7 +58,7 @@ openwiki visualize <PATH> --export docs/openwiki-visualizer
 导出包含 `index.html`、`client.js`、`client-lib.js`、`styles.css` 和 `graph.json`。它的客户端读取同级图形文件并且不使用实时重新加载，因此该目录可以由 GitHub Pages、MkDocs 或任何其他静态主机托管。
 
 <Note>
-    该页面从公共 CDN 加载其图表、Markdown 和图表库，因此本地和静态查看器都需要互联网连接。
+    该页面从公共 CDN 加载其图形、Markdown 和图表库，因此本地和静态查看器都需要互联网连接。
 </Note>
 
 ## 另请参阅
@@ -71,7 +71,7 @@ openwiki visualize <PATH> --export docs/openwiki-visualizer
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/visualize.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

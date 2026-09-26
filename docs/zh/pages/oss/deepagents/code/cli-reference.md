@@ -4,7 +4,7 @@
 
 # 命令参考
 
-Deep Agents 代码 (`dcode`) 在启动时接受命令行标志，并公开工具、代理、会话、技能、凭证和配置的管理子命令。当您需要从 shell 覆盖默认值、在脚本中运行非交互式任务或在不打开会话的情况下自动执行管理时，请使用此页面作为参考。安装和日常交互使用请参见[Quickstart](/oss/deepagents/code/quickstart)。有关 CLI 标志如何适应更广泛的配置模型，请参阅[Configuration](/oss/deepagents/code/configuration)。
+Deep Agents 代码 (`dcode`) 在启动时接受命令行标志，并公开工具、代理、会话、技能、凭证和配置的管理子命令。当您需要从 shell 覆盖默认值、在脚本中运行非交互式任务或在不打开会话的情况下自动执行管理时，请使用此页面作为参考。安装和日常交互使用请参见[Quickstart](/oss/deepagents/code/quickstart)。有关 CLI 标志如何适应更广泛的配置模型，请参阅 [Configuration](/oss/deepagents/code/configuration)。
 
 ## 用法示例
 
@@ -38,7 +38,7 @@ dcode --model openai:gpt-5.5
 dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
 ```
 
-当Deep Agents代码在没有`--model`的情况下启动时，它将按以下顺序解析模型：
+当Deep Agents代码在没有`--model`的情况下开始时，它按以下顺序解析模型：
 
 1. **`--model` 标志**（如果提供）。
 2. **`[models].default`** 在`~/.deepagents/config.toml`。
@@ -168,7 +168,7 @@ dcode -n "Generate a .gitignore for Python" -q > .gitignore
 dcode -n "List dependencies" -q --no-stream | sort
 ```
 
-添加 `--show-reasoning` 以显示提供商可见的推理。在交互式会话中，推理流成一个单独的行，该行在阶段结束时折叠；按`Ctrl+O`重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。此设置默认关闭并适用于整个会话。有关持久配置，请参阅[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。Cap 代理以 `--max-turns` 或 `--timeout` 在 CI 中运行。当超出预算时，两者都会以代码 124 退出。需要 `-n` 或管道标准输入：
+添加 `--show-reasoning` 以显示提供商可见的推理。在交互式会话中，推理流入单独的行，该行在阶段结束时折叠；按`Ctrl+O`重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。此设置默认关闭并适用于整个会话。请参阅[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)了解持久配置。Cap 代理以 `--max-turns` 或 `--timeout` 在 CI 中运行。当超出预算时，两者都会以代码 124 退出。需要 `-n` 或管道标准输入：
 
 ```bash
 dcode -n "fix the failing tests" --max-turns 10
@@ -339,7 +339,7 @@ Trim skills or disable an MCP server, then run /context-doctor again.
 `/context-doctor`补充了两个相关命令：
 
 - [⟦T162⟧](/oss/deepagents/code/quickstart#inspect-context-window-usage) 显示上下文窗口现在有多满； `/context-doctor` 通过将令牌归因于每个注入的组件来说明原因。
-- [⟦T164⟧](#run-diagnostics-dcode-doctor) 在不启动会话的情况下检查安装和配置的运行状况； `/context-doctor` 从内部审核实时会话的上下文。
+- [⟦T164⟧](#run-diagnostics-dcode-doctor) 检查安装和配置的运行状况，无需启动会话； `/context-doctor` 从内部审核实时会话的上下文。
 
 ### 跟踪线程成本
 
@@ -361,6 +361,10 @@ By model since this thread was loaded:
 ```
 
 总数包括来自助理、子代理、卸载、自动分类和评分标准的模型调用。当您恢复或切换线程时它仍然存在。估计使用[genai-prices](https://github.com/pydantic/genai-prices)目录；不包括未定价的请求。使用`/tokens`作为估计背后的令牌计数。对于未覆盖的型号，[add a custom pricing override](/oss/deepagents/code/configuration#custom-pricing-overrides)。
+
+### 问一个附带问题
+
+`/btw` 让您可以在客服人员继续工作的同时询问有关对话的问题。输入 `/btw <question>`，或输入 `/btw` 打开问题字段。答案出现在临时对话中，而不是主要对话中。按`Esc`将其关闭。
 
 ## 启动命令和初始提示
 
@@ -387,11 +391,11 @@ dcode --sandbox langsmith
 dcode --sandbox runloop --sandbox-id dbx_abc123
 dcode --sandbox modal --sandbox-setup ./setup.sh
 dcode --sandbox
-```
-
-<Note>
+```<Note>
     由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
-</Note>使用 `dcode --install` 安装沙盒附加功能（例如 `dcode --install daytona` 或 `dcode --install all-sandboxes`）。有关提供程序设置、工作目录和第三方提供程序，请参阅[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)。
+</Note>
+
+使用 `dcode --install` 安装沙盒附加功能（例如，`dcode --install daytona` 或 `dcode --install all-sandboxes`）。有关提供程序设置、工作目录和第三方提供程序，请参阅[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)。
 
 ## MCP 标志
 
@@ -403,7 +407,7 @@ dcode --sandbox
 | `--no-mcp` |完全禁用 MCP |
 | `--trust-project-mcp` |信任项目级服务器，而不提示当前运行。被用户策略拒绝的服务器仍处于禁用状态。 |
 
-`--mcp-config` 和 `--no-mcp` 是互斥的。在非交互模式下，除非通过 `--trust-project-mcp`，否则将静默跳过没有匹配保存或环境批准的项目服务器：
+`--mcp-config` 和 `--no-mcp` 是互斥的。在非交互模式下，除非通过 `--trust-project-mcp`，否则将静默跳过没有匹配的已保存或环境批准的项目服务器：
 
 ```bash
 dcode --trust-project-mcp
@@ -413,7 +417,7 @@ dcode -n "run tests" --trust-project-mcp
 对标记为 `auth: "oauth"` 和 `dcode mcp login <server>` 的 MCP 服务器运行 OAuth 登录。运行不带服务器名称的`dcode mcp login`，列出已配置的需要登录的 OAuth 服务器。参见[MCP tools](/oss/deepagents/code/mcp-tools)。
 
 ## 命令行选项|选项 |描述 |
-|------------------------------------|------------------------------------------------------------------------|
+|------------------------|-------------------------------------------------------------------------------------|
 | `-a`、`--agent NAME` |使用具有独立内存的命名代理。覆盖 `config.toml` 中的 `[agents].recent` 和 `[agents].default`。默认值：`agent`（如果设置了`[agents].recent`，则为最近使用的代理）|
 | `-M`、`--model MODEL` |使用特定型号（`provider:model`）|
 | `--summarization-model MODEL` |用于上下文压缩摘要的模型。覆盖`[models].summarization_default`；默认为主代理模式 |
@@ -425,11 +429,11 @@ dcode -n "run tests" --trust-project-mcp
 | `-m`、`--message TEXT` |会话开始时自动提交的初始提示（交互模式） |
 | `--skill NAME` |在启动时调用技能 || `--startup-cmd CMD` |在启动时、第一个提示符之前运行的 Shell 命令。输出呈现在文字记录中供您参考，但**不**添加到代理的消息历史记录中。要将命令输出传递给代理，请通过标准输入将其输入（例如，`git diff \| dcode -n "Review these changes"`）。非零退出和超时会发出警告但不会中止；非交互模式应用 60 秒超时。 |
 | `--rubric TEXT\|@PATH` |评分细则的接受标准。接受文字文本或 `@path` 来读取文件。需要 `-n` 或管道标准输入 |
-| `--rubric-model MODEL` |对评分者使用的评分标准进行建模。默认为主代理模型。需要 `-n` 或管道标准输入 |
+| `--rubric-model MODEL` |对评分者使用的评分标准进行建模。默认为主代理模型。需要 `-n` 或管​​道标准输入 |
 | `--rubric-max-iterations N` |在停止之前，评分者会根据评分标准进行迭代。需要 `-n` 或管道标准输入 |
 | `-n`、`--non-interactive TEXT` |以非交互方式运行单个任务并退出。除非设置了 `--shell-allow-list`，否则 Shell 将被禁用 |
 | `--recursion-limit N` |设置LangGraph图步骤预算（每轮最大节点调用）。未设置时，LangGraph 服务器默认值适用 |
-| `--max-turns N` | Cap Agentic 转入非交互模式。超出时以代码 124 退出。需要 `-n` 或管道标准输入。参见[Non-interactive mode and piping](#non-interactive-mode-and-piping) || `--timeout SECONDS` |非交互模式的硬挂钟超时。超出时以代码 124 退出。需要 `-n` 或管道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) |
+| `--max-turns N` | Cap Agentic 转入非交互模式。超出时以代码 124 退出。需要 `-n` 或管道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) || `--timeout SECONDS` |非交互模式的硬挂钟超时。超出时以代码 124 退出。需要 `-n` 或管​​道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) |
 | `-q`、`--quiet` |管道的干净输出 - 只有代理的响应才会发送到标准输出。需要 `-n` 或管道标准输入 |
 | `--no-stream` |缓冲完整响应并立即写入标准输出而不是流式传输。需要 `-n` 或管道标准输入 |
 | `--show-reasoning` |在交互式脚本中或非交互式模式下的 stderr 上显示提供者可见的推理。默认关闭 |
@@ -439,16 +443,16 @@ dcode -n "run tests" --trust-project-mcp
 | `--yolo` |一次性本地风险确认后，无需审查即可运行门控操作。仅交互模式 || `-S`、`--shell-allow-list LIST` |用于自动批准的以逗号分隔的 shell 命令，`'recommended'` 用于安全默认值，或 `'all'` 用于允许任何命令。适用于`-n`和交互模式 |
 | `--allow-fs-tools LIST` |要公开的文件系统工具。默认为`all`。请参阅[Restrict filesystem tools](#restrict-filesystem-tools) |
 | `--json` |从支持的管理子命令发出机器可读的 JSON，包括 `tools`、`agents`、`threads`、`skills` 和 `update`。输出包络：`{"schema_version": 1, "command": "...", "data": ...}` |
-| `--sandbox TYPE` |用于代码执行的远程沙箱：`none`（默认）、`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`和第三方提供商。包含LangSmith；其他内置功能需要额外的东西。传递`--sandbox`，但没有值可以从配置中使用`[sandboxes].default` |
+| `--sandbox TYPE` |用于代码执行的远程沙箱：`none`（默认）、`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`和第三方提供商。包含LangSmith；其他内置功能需要额外的东西。传递 `--sandbox`，但没有值可以从配置中使用 `[sandboxes].default` |
 | `--sandbox-id ID` |重用现有沙箱（跳过创建和清理）|
-| `--sandbox-snapshot-name NAME` |要使用或创建的沙箱快照名称（`langsmith`、`runloop`以及宣传快照支持的提供商）|
+| `--sandbox-snapshot-name NAME` |要使用或创建的沙盒快照名称（`langsmith`、`runloop`以及宣传快照支持的提供商）|
 | `--sandbox-setup PATH` |创建后在沙箱中运行的设置脚本的路径 |
 | `--mcp-config PATH` |添加显式 MCP 配置作为最高优先级源（与自动发现的配置合并）|
 | `--no-mcp` |禁用所有 MCP 工具加载 || `--trust-project-mcp` |信任项目级 MCP 服务器，而不提示当前运行。明确否认仍然适用。 |
 | `-e`、`--extension PATH` |为此运行加载 Python 扩展文件或目录。重复添加多个路径。需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1` 并启用扩展发现 (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`)。请参阅[Python extensions](/oss/deepagents/code/extensions) |
 | `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。请参阅[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions) |
 | `--interpreter` |当在配置中禁用 JS 解释器 (`js_eval`) 中间件时，在主代理上启用它。 `js_eval` 默认启用。 |
-| `--interpreter-tools VALUE` | `js_eval` 的 PTC 允许列表：`safe`、`all` 或以逗号分隔的工具名称列表。默认值：`safe`（只读`read_file`/`glob`/`grep`预设）。参见[JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
+| `--interpreter-tools VALUE` | `js_eval` 的 PTC 允许列表：`safe`、`all` 或以逗号分隔的工具名称列表。默认值：`safe`（只读`read_file`/`glob`/`grep`预设）。请参阅[JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
 | `--profile-override JSON` |将模型配置文件字段覆盖为 JSON 字符串（例如，`'{"max_input_tokens": 4096}'`）。合并在配置文件配置文件覆盖之上 |
 | `--acp` |通过 stdio 作为 ACP 服务器运行，而不是启动交互式 UI |
 | `--update` |检查并安装更新，然后退出 |
@@ -475,11 +479,11 @@ dcode auth remove anthropic
 dcode auth path
 ```
 
-`set` 拒绝在交互式终端中运行，除非您通过 stdin 管道传输密钥或使用 `--from-env`。 `dcode auth set` 仅管理 API 密钥； `openai_codex` 提供商改为通过 `/auth` 使用 ChatGPT 浏览器登录。参见[Provider credentials](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth)。
+`set` 拒绝在交互式终端中运行，除非您通过 stdin 管道传输密钥或使用 `--from-env`。 `dcode auth set` 仅管理 API 密钥； `openai_codex` 提供商使用 ChatGPT 浏览器通过 `/auth` 登录。参见[Provider credentials](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth)。
 
-## 检查配置 (`dcode config`)
+## 检查配置（`dcode config`）
 
-`dcode config`命令组报告有效配置而不启动会话。使用它来确认环境变量或`config.toml`设置已被选择，或者在错误报告中共享经过编辑的快照：
+`dcode config`命令组报告有效配置而不启动会话。使用它来确认环境变量或 `config.toml` 设置已被选择，或者在错误报告中共享经过编辑的快照：
 
 ```bash
 dcode config show
@@ -492,10 +496,10 @@ dcode config path
 
 当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它总结了安装方法、依赖项版本、更新状态、跟踪配置和数据目录运行状况，而无需启动会话。
 
-当您既需要高级运行状况检查又需要特定设置的确切来源时，请将 `dcode doctor` 与 `dcode config show` 配对。参见[Run diagnostics with ⟦T344⟧](/oss/deepagents/code/configuration#run-diagnostics-with-dcode-doctor)。
+当您既需要高级运行状况检查又需要特定设置的确切来源时，请将 `dcode doctor` 与 `dcode config show` 配对。参见[Run diagnostics with ⟦T348⟧](/oss/deepagents/code/configuration#run-diagnostics-with-dcode-doctor)。
 
-## CLI 命令|命令|描述 |
-|--------------------------------------------------|----------------------------------------|
+## CLI 命令|命令 |描述 |
+|--------------------------------------------------|----------------------------------------------------|
 | `dcode help` |显示帮助 |
 | `dcode tools list [--json]` |列出已配置代理可用的工具。将顶级工具整形标志，例如 `--allow-fs-tools`、`--no-mcp`、`--mcp-config` 和 `--trust-project-mcp` 放置在 `tools list` 之前 |
 | `dcode agents list` |列出所有代理（别名：`ls`）|
@@ -517,12 +521,12 @@ dcode config path
 | `dcode config path` |显示配置文件位置以及每个文件是否存在 |
 | `dcode auth list` |列出已知的提供商以及每个凭据的解析来源 || `dcode auth status <provider>` |显示一个提供商的凭证来源 |
 | `dcode auth set <provider>` |存储来自 stdin 或 `--from-env` 的提供者凭证
-| `dcode auth remove <provider>` |删除存储的提供商凭据 |
+| `dcode auth remove <provider>`​​ |删除存储的提供商凭据 |
 | `dcode auth path` |显示凭证存储路径 |
 
 所有管理子命令都支持 `--json` 以获得机器可读的输出。请参阅[command-line options](#command-line-options)了解更多信息。
 
-破坏性命令（`agents reset`、`skills delete`​​、`threads delete`）支持`--dry-run`，无需进行更改即可预览会发生的情况。在 JSON 模式下，`--dry-run` 返回带有 `dry_run: true` 字段的相同信封。
+破坏性命令（`agents reset`、`skills delete`、`threads delete`）支持`--dry-run`，无需进行更改即可预览将发生的情况。在 JSON 模式下，`--dry-run` 返回带有 `dry_run: true` 字段的相同信封。
 
 ## 另请参阅
 
@@ -537,7 +541,7 @@ dcode config path
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

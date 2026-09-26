@@ -60,7 +60,7 @@
 
 #### 查询参数<Tabs>
   <Tab title="Python">
-    |之前 (`list_threads`) |之后(`threads.query`) |笔记|
+    |之前 (`list_threads`) |之后(`threads.query`)|笔记|
     |---|---|---|
     | `project_id` 异或 `project_name` | `project_id` |新方法只需要 UUID；首先通过 `aread_project()` 解析名称，与 `Runs: query` 模式相同 |
     | `start_time`（默认为 1 天前）| `min_start_time` + `max_start_time` |选修的;默认为现在结束的 1 天窗口，与 `start_time` |
@@ -68,7 +68,7 @@
     | `filter`（根据运行进行评估）| `filter` |语法相同；现在针对每个线程的根运行进行评估 |
   </Tab>
   <Tab title="TypeScript">
-    |之前 (`listThreads`) |之后(`threads.query`)|笔记|
+    |之前 (`listThreads`) |之后(`threads.query`) |笔记|
     |---|---|---|
     | `projectId` 异或 `projectName` | `project_id` |新方法只需要 UUID；首先通过 `readProject()` 解析名称 |
     | `startTime`（默认为 1 天前）| `min_start_time` + `max_start_time` |选修的;默认为现在结束的 1 天窗口，与 `startTime` |
@@ -1438,7 +1438,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/threads/query" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-threads.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

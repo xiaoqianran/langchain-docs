@@ -28,7 +28,7 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
     | `[missing]` |未存储密钥且未设置环境变量；选择要粘贴的行|
 </Accordion>
 
-`/auth` 提示还有一个可选的 **基本 URL** 字段。将其留空以使用提供程序的默认端点，或设置一个自定义端点以与此密钥一起使用。基本 URL 与密钥一起保存。请参阅[Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways)了解端点如何解析，包括网关。
+`/auth` 提示还有一个可选的 **基本 URL** 字段。将其留空以使用提供程序的默认端点，或设置一个自定义端点以与此密钥一起使用。基本 URL 与密钥一起保存。有关端点如何解析（包括网关）的信息，请参阅[Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways)。
 
 <Warning>
     存储的基本 URL 不是秘密，可以被记录；与之配对的密钥永远不会被记录。
@@ -52,7 +52,7 @@ Deep Agents 代码需要为您使用的每个模型提供程序提供一个 API 
 | `dcode auth status <provider>` |打印一个提供商的解析源 |
 | `dcode auth set <provider>` |存储 API 密钥，默认从 stdin 读取 |
 | `dcode auth remove <provider>`（别名`rm`、`delete`）|删除存储的凭据 |
-| `dcode auth path` |打印凭证存储的解析路径 (`auth.json`) |
+| `dcode auth path` |打印凭证存储的已解析路径 (`auth.json`) |
 
 默认情况下，`set` 从 **stdin** 读取密钥，因此它永远不会出现在 shell 历史记录或 `argv` 中。通过管道输入密钥，或使用 `--from-env VAR` 从进程环境变量中复制它：
 
@@ -160,7 +160,7 @@ DEEPAGENTS_CODE_OPENAI_API_KEY=sk-xxxx dcode -n "..."
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/credentials.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

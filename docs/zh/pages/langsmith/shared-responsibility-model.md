@@ -11,7 +11,7 @@ LangSmith是一款多租户SaaS产品。在共享责任模型下，LangChain 保
 ## 责任矩阵
 
 |域名 | LangChain 责任（提供者）|客户责任（用户）|
-| :----| :----| :----|
+| :---- | :---- | :---- |
 | **基础设施** |我们管理底层云基础设施（通过 AWS 和 GCP），包括服务器、网络、操作系统补丁和容量规划。 AWS 和 GCP 拥有物理数据中心。 |不适用。您无需在 SaaS 环境中配置或维护计算资源。 |
 | **应用** |我们保护LangSmith应用程序代码、API端点和数据库集群，包括代码扫描和渗透测试。 |您对使用我们的 SDK 构建的 AI 链和代理的安全负责。 || **数据** |我们使用 AES-256 强制执行租户隔离并加密静态数据，并使用 TLS 1.2 或更高版本加密传输中的数据。 |您可以控制发送给我们的数据，并且必须在敏感 PII 离开您的环境之前通过 SDK 对其进行过滤。 |
 | **身份** |我们提供护栏，包括 SSO/SCIM、MFA 实施选项和 RBAC 框架。 |您可以管理您的用户名册、分配角色（例如管理员与查看者）并撤销已离职员工的访问权限。 |
@@ -21,7 +21,7 @@ LangSmith是一款多租户SaaS产品。在共享责任模型下，LangChain 保
 - 我们管理 Amazon Web Services (AWS) 和 Google Cloud Platform (GCP) 上的所有底层基础设施，包括网络防火墙、DDoS 防护和容器安全。
 - 我们根据 SLA 维护高可用性，维护每日备份，并处理 LangSmith 服务的灾难恢复。
 - 我们在严格的服务级别协议内修补已确认的平台漏洞，严重程度的问题在不到 2 周的时间内得到修复，高度严重的问题在 30 天内得到修复。
-- 我们使用 AES-256 对所有静态客户数据进行加密，并使用 TLS 1.2 或更高版本对传输中的客户数据进行加密。
+- 我们使用 AES-256 加密所有静态客户数据，并使用 TLS 1.2 或更高版本加密传输中的客户数据。
 
 ## 客户责任（使用）- 您必须强制执行最低权限访问，并立即删除离开组织的员工的访问权限。
 - 您必须确保没有禁止的数据（例如 PCI DSS 持卡人数据）发送到平台，并使用 SDK 中的屏蔽功能从源头编辑 PII。
@@ -39,7 +39,7 @@ LangSmith是一款多租户SaaS产品。在共享责任模型下，LangChain 保
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/shared-responsibility-model.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

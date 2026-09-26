@@ -108,7 +108,7 @@ async with (
 
 ### 将对话分组为线程
 
-每个包装的会话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组到 LangSmith [thread](/langsmith/threads)，请传递 `thread_id`：
+每个包装的会话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组在 LangSmith [thread](/langsmith/threads) 中，请传递 `thread_id`：
 
 ```python
 wrap_gemini_live(
@@ -156,13 +156,13 @@ async with (
         )
 ```在包装器的`sample_rate`处将两个通道录制为PCM16。录制扬声器中的座席音频，以便附件仅反映用户听到的内容。底层附件API请参见[Upload files with traces](/langsmith/upload-files-with-traces)。
 
-## 使用谷歌 ADK
+## 使用谷歌ADK
 
 当 ADK 拥有 Gemini Live 会话和工具循环时，请使用此方法。
 
 ### 设置跟踪
 
-导入`LangSmithGoogleADKLivePlugin`并在您的`Runner`上注册。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
+导入`LangSmithGoogleADKLivePlugin`并将其注册到您的`Runner`上。它与您的 `run_live` 循环一起运行，因此您的循环仅处理音频播放、插入和 UI 更新：
 
 ```python
 from google.adk.agents.run_config import RunConfig, StreamingMode
@@ -242,7 +242,7 @@ plugin.record_agent_audio(played_chunk)  # agent PCM16 as played
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-gemini-live.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

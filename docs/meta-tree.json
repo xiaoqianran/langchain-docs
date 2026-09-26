@@ -663,6 +663,12 @@
           "rel": "langsmith/dataset-transformations.md"
         }
       ],
+      "decision-model-evaluator": [
+        {
+          "title": "How to define a decision model evaluator",
+          "rel": "langsmith/decision-model-evaluator.md"
+        }
+      ],
       "define-target-function": [
         {
           "title": "How to define a target function to evaluate",
@@ -1567,6 +1573,12 @@
         {
           "title": "Set up composite online evaluators",
           "rel": "langsmith/online-evaluations-composite.md"
+        }
+      ],
+      "online-evaluations-decision-models": [
+        {
+          "title": "Set up decision model online evaluators",
+          "rel": "langsmith/online-evaluations-decision-models.md"
         }
       ],
       "online-evaluations-llm-as-judge": [
@@ -2701,6 +2713,12 @@
         {
           "title": "Set up LangChain Tuned Evaluators",
           "rel": "langsmith/tuned-evaluators.md"
+        }
+      ],
+      "typesafe-compatible-model": [
+        {
+          "title": "Connect to a TypeSafe-compatible model provider",
+          "rel": "langsmith/typesafe-compatible-model.md"
         }
       ],
       "upload-existing-experiments": [

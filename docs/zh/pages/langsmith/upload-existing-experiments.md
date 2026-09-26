@@ -243,7 +243,7 @@ print(resp.json())
     "test_run_number": 1
   }
 }
-```请注意，实验结果中的延迟和反馈统计信息为空，因为运行还没有机会持久化，这可能需要几秒钟。如果您保存实验 ID 并在几秒钟内再次查询，您将看到所有统计信息（尽管令牌/成本仍为空，因为我们不会在请求正文中要求此信息）。
+```请注意，实验结果中的延迟和反馈统计信息为空，因为运行还没有机会持久化，这可能需要几秒钟。如果您保存实验 ID 并在几秒钟内再次查询，您将看到所有统计信息（尽管令牌/成本仍为空，因为我们不会在请求正文中询问此信息）。
 
 ## 在 UI 中查看实验
 
@@ -259,7 +259,7 @@ print(resp.json())
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-existing-experiments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

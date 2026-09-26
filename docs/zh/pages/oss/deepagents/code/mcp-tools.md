@@ -119,7 +119,7 @@
 
 |优先|地点 |范围 |
 |----------|----------|--------|
-| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目|
+| 1（最低）| `~/.deepagents/.mcp.json` |用户级—适用于所有项目 |
 | 2 | `<project>/.deepagents/.mcp.json` |项目级—`.deepagents`子目录|
 | 3（最高）| `<project>/.mcp.json` |项目级—root（兼容 Claude 代码）|
 
@@ -431,7 +431,7 @@ dcode mcp login linear --mcp-config ./mcp-config.json
 |--------|---------|
 | `ok` |已连接；工具已加载并可供代理使用 |
 | `unauthenticated` |需要 OAuth 登录或刷新失败 — 运行 `dcode mcp login <server>` |
-| `error` |飞行前、发现或传输设置失败；附有错误消息|单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
+| `error` |飞行前、发现或传输设置失败；附有错误消息 |单个失败的服务器不再中止启动。代理与任何正常运行的服务器一起运行，欢迎横幅会在工具计数旁边显示未经身份验证和错误服务器的计数。在交互式会话中打开`/mcp`，查看每个服务器的状态、传输、工具列表以及非`ok`条目的失败原因。服务器连接时查看器实时更新并支持`tab`/`shift+tab` 导航。
 
 ## 项目级信任
 
@@ -510,7 +510,7 @@ enabled_project_server_approvals = [
     </Accordion>
 
     <Accordion title="Server shows ⟦T185⟧ in /mcp">
-        您尚未运行 `dcode mcp login <server>`，或者持久刷新令牌已过期或在服务器端被撤销。再次运行登录命令 - 您的会话继续运行，一旦刷新令牌，服务器将重新连接。
+        您尚未运行 `dcode mcp login <server>`，或者持久刷新令牌已过期或已在服务器端撤销。再次运行登录命令 - 您的会话继续运行，一旦刷新令牌，服务器将重新连接。
     </Accordion><Accordion title="⟦T187⟧">
         飞行前验证被拒绝 `--mcp-config`（或自动发现的 `.mcp.json`）。常见原因：不支持的服务器名称（必须匹配 `[A-Za-z0-9_-]+`）、stdio 服务器上的 `auth: oauth`、在同一条目上设置的 `command` 和 `url`，或者不是字符串的标头值。修复突出显示的原因并重新启动 - Deep Agents 代码不再转储配置错误的多页面子进程跟踪。
     </Accordion>
@@ -530,7 +530,7 @@ enabled_project_server_approvals = [
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/mcp-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

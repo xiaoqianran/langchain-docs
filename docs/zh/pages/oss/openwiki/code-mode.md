@@ -91,7 +91,7 @@ npm install mermaid jsdom
 
 当解析器存在时，OpenWiki 使用它。当它不存在时，OpenWiki 会退回到轻量级检查。无论哪种方式，图表生成都是有效的。
 
-## 自定义 wiki 简介编辑 `openwiki/INSTRUCTIONS.md` 来引导存储库文档的范围、优先级和首选写作约定（例如语气、术语以及要强调或跳过的内容）。 OpenWiki 在初始化和更新运行时读取此文件。您还可以在聊天中询问 OpenWiki 修改简介：
+## 自定义 wiki 简介编辑 `openwiki/INSTRUCTIONS.md` 来引导存储库文档的范围、优先级和首选写作约定（例如语气、术语以及要强调或跳过的内容）。 OpenWiki 在初始化和更新运行时读取此文件。您还可以在聊天中要求 OpenWiki 修改简介：
 
 ```bash
 openwiki "Update openwiki/INSTRUCTIONS.md to prioritize the public API and skip internal tooling"
@@ -111,7 +111,7 @@ openwiki "Update openwiki/INSTRUCTIONS.md to prioritize the public API and skip 
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

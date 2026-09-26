@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-09-25T14:16:25.816Z",
+  "fetchedAt": "2026-09-26T13:27:41.636Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
-  "tocLinks": 178,
-  "ok": 574,
+  "tocLinks": 177,
+  "ok": 577,
   "failed": 0,
   "tracks": {
     "build-overview": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 462
+      "count": 465
     },
     "fleet": {
       "name": "Fleet",
@@ -396,7 +396,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "bind-evaluator-to-dataset",
-      "bytes": 4618
+      "bytes": 5117
     },
     {
       "rel": "langsmith/byoc-architecture.md",
@@ -585,7 +585,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cli",
-      "bytes": 64323
+      "bytes": 68740
     },
     {
       "rel": "langsmith/cloud-platform-features.md",
@@ -810,7 +810,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "create-few-shot-evaluators",
-      "bytes": 5023
+      "bytes": 5130
     },
     {
       "rel": "langsmith/cron-jobs.md",
@@ -1018,6 +1018,15 @@
       "trackName": "LangSmith",
       "group": "dataset-transformations",
       "bytes": 9597
+    },
+    {
+      "rel": "langsmith/decision-model-evaluator.md",
+      "title": "How to define a decision model evaluator",
+      "url": "https://docs.langchain.com/langsmith/decision-model-evaluator",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "decision-model-evaluator",
+      "bytes": 5961
     },
     {
       "rel": "langsmith/define-target-function.md",
@@ -1476,7 +1485,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-concepts",
-      "bytes": 19547
+      "bytes": 20014
     },
     {
       "rel": "langsmith/evaluation-quickstart.md",
@@ -1494,7 +1503,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-types",
-      "bytes": 10105
+      "bytes": 10673
     },
     {
       "rel": "langsmith/evaluation.md",
@@ -1521,7 +1530,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluators",
-      "bytes": 11931
+      "bytes": 12198
     },
     {
       "rel": "langsmith/event-streaming.md",
@@ -2061,7 +2070,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-connections",
-      "bytes": 39768
+      "bytes": 39903
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-context-hub.md",
@@ -2079,7 +2088,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-deploy",
-      "bytes": 6428
+      "bytes": 6728
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-evals.md",
@@ -2097,7 +2106,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-identity",
-      "bytes": 5204
+      "bytes": 8748
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-instructions.md",
@@ -2349,7 +2358,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-as-judge-sdk",
-      "bytes": 8263
+      "bytes": 8472
     },
     {
       "rel": "langsmith/llm-as-judge.md",
@@ -2358,7 +2367,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-as-judge",
-      "bytes": 5416
+      "bytes": 5563
     },
     {
       "rel": "langsmith/llm-auth-proxy-self-hosted.md",
@@ -2856,13 +2865,22 @@
       "bytes": 3682
     },
     {
+      "rel": "langsmith/online-evaluations-decision-models.md",
+      "title": "Set up decision model online evaluators",
+      "url": "https://docs.langchain.com/langsmith/online-evaluations-decision-models",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "online-evaluations-decision-models",
+      "bytes": 6772
+    },
+    {
       "rel": "langsmith/online-evaluations-llm-as-judge.md",
       "title": "Set up LLM-as-a-judge online evaluators",
       "url": "https://docs.langchain.com/langsmith/online-evaluations-llm-as-judge",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-llm-as-judge",
-      "bytes": 8702
+      "bytes": 9082
     },
     {
       "rel": "langsmith/online-evaluations-multi-turn.md",
@@ -3105,7 +3123,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-connections",
-      "bytes": 34936
+      "bytes": 35071
     },
     {
       "rel": "langsmith/python/managed-deep-agents-context-hub.md",
@@ -3123,7 +3141,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-deploy",
-      "bytes": 7060
+      "bytes": 7356
     },
     {
       "rel": "langsmith/python/managed-deep-agents-evals.md",
@@ -3141,7 +3159,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-identity",
-      "bytes": 5160
+      "bytes": 8693
     },
     {
       "rel": "langsmith/python/managed-deep-agents-instructions.md",
@@ -4608,7 +4626,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-mastra",
-      "bytes": 4416
+      "bytes": 4412
     },
     {
       "rel": "langsmith/trace-with-microsoft-agent-framework.md",
@@ -4807,6 +4825,15 @@
       "trackName": "LangSmith",
       "group": "tuned-evaluators",
       "bytes": 6788
+    },
+    {
+      "rel": "langsmith/typesafe-compatible-model.md",
+      "title": "Connect to a TypeSafe-compatible model provider",
+      "url": "https://docs.langchain.com/langsmith/typesafe-compatible-model",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "typesafe-compatible-model",
+      "bytes": 3549
     },
     {
       "rel": "langsmith/upload-existing-experiments.md",

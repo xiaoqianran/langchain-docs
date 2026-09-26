@@ -12,7 +12,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 1. **安装提供程序包**
 
-    每个模型提供者都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
+    每个模型提供商都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加组件，或者使用 `dcode --install` 从 shell 安装：
 
     <CodeGroup>
         ```txt In session
@@ -45,7 +45,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 ## 提供者参考
 
 使用此处未列出的提供商？请参阅 [Arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)：任何与 LangChain 兼容的提供程序都可以在 Deep Agents 代码中使用，并进行额外设置。|供应商|套餐 |凭证环境变量 |型号简介|
-| --- | --- | --- | --- |
+| ---| ---| ---| ---|
 | OpenAI | [⟦T44⟧](/oss/python/integrations/chat/openai) | `OPENAI_API_KEY` | ✅ |
 | OpenAI（法典）| [⟦T46⟧](/oss/python/integrations/chat/openai) |没有任何; [sign in with ChatGPT](#sign-in-with-chatgpt) | ✅ |
 |天蓝色OpenAI| [⟦T47⟧](/oss/python/integrations/chat/azure_chat_openai) | `AZURE_OPENAI_API_KEY` | ✅ |
@@ -69,7 +69,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |英伟达 | [⟦T86⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
 | xAI | [⟦T88⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
 |困惑| [⟦T90⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
-|开放路由器 | [⟦T93⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
+|开放路由器| [⟦T93⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
 |莱特法学硕士 | [⟦T95⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |<Accordion title="Configure Anthropic models on Gemini Enterprise Agent Platform" icon="brand-google">
     `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的Anthropic 的消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
 
@@ -159,9 +159,9 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 使用这些服务的专用集成包：
 
-|路由器|套餐 |配置 |
-| --- | --- | --- |
-|开放路由器 | [⟦T124⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
+|路由器|套餐 |配置|
+| ---| ---| ---|
+|开放路由器| [⟦T124⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
 |莱特法学硕士 | [⟦T126⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
 
 **OpenRouter** 是一个内置提供程序 - 安装额外的并直接使用它：
@@ -231,7 +231,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
     </Tip>
 </Accordion>
 
-### 开放重量模型
+### 开放式重量模型
 
 如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。
 
@@ -430,7 +430,7 @@ CLI 标志覆盖配置文件 `params` 并且仅适用于会话（会话中的更
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

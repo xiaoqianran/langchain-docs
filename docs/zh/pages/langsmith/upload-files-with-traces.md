@@ -85,7 +85,7 @@ result = trace_with_attachments(
 - `Uint8Array`：用于直接处理二进制数据。
 - `ArrayBuffer`：表示定长二进制数据，您可以根据需要转换为`Uint8Array`。
 
-在 TypeScript SDK 中，`extractAttachments` 函数是`traceable` 配置中的可选参数。当调用可跟踪包装函数时，它会从您的输入中提取二进制数据（例如图像、音频文件），并将它们与其他跟踪数据一起记录，并指定其 MIME 类型。<Note>
+在 TypeScript SDK 中，`extractAttachments` 函数是`traceable` 配置中的可选参数。当调用可追踪包装函数时，它会从您的输入中提取二进制数据（例如图像、音频文件），并将它们与其他跟踪数据一起记录，并指定它们的 MIME 类型。<Note>
 TypeScript SDK 中不能直接传入文件路径，因为并非所有运行时环境都支持访问本地文件。
 </Note>
 
@@ -167,7 +167,7 @@ const result = await traceableWithAttachments(
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-files-with-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

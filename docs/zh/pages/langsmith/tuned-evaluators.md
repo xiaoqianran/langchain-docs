@@ -5,7 +5,7 @@
 # 设置 LangChain 调整评估器
 
 <Note>
-LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。在全面上市之前，它们的界面和行为可能会发生变化。
+LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。它们的界面和行为在全面上市之前可能会发生变化。
 </Note>
 
 LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员都会使用一位针对特定评估任务接受过培训的专业法官。 LangChain 编写、测试、版本和维护提示和判断模型，以便您可以专注于使用反馈来查找和修复代理中的问题。
@@ -97,7 +97,7 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 - 该线程至少包含两条踪迹。
 - 项目的线程空闲时间已过。
 - 线程与评估器的过滤器和采样配置相匹配。
-- 该线程包含采用受支持的消息格式的完整用户与助理交换。要检查评估器活动，请打开跟踪项目的 **Evaluators** 选项卡，然后为评估器选择 **Logs**。
+- 该线程包含采用受支持消息格式的完整用户与助手交换。要检查评估器活动，请打开跟踪项目的 **Evaluators** 选项卡，然后为评估器选择 **Logs**。
 
 ### 启用该功能不会立即生效
 
@@ -113,7 +113,7 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

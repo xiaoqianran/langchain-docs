@@ -14,10 +14,10 @@
 如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不希望依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
 
 <Warning>
-在 [Python SDK](/langsmith/smith-python-sdk) 版本 **0.1.95** 中，`with trace` 遵循 `LANGSMITH_TRACING` 环境变量。详情请参阅[release notes](https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.1.95)。要在不设置环境变量的情况下禁用或启用跟踪，请使用 `with tracing_context` 上下文管理器，如以下示例所示。
+在 [Python SDK](/langsmith/smith-python-sdk) 的 **0.1.95** 版本中，`with trace` 遵循 `LANGSMITH_TRACING` 环境变量。详情请参阅[release notes](https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.1.95)。要在不设置环境变量的情况下禁用或启用跟踪，请使用 `with tracing_context` 上下文管理器，如以下示例所示。
 </Warning>
 
-- Python：在 Python 中执行此操作的推荐方法是使用 [⟦T9⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和 `trace` 上下文管理器中的代码。
+- Python：在 Python 中执行此操作的推荐方法是使用 [⟦T9⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和`trace` 上下文管理器中的代码。
 - TypeScript：您可以将客户端和 `tracingEnabled` 标志传递给 [⟦T13⟧](https://reference.langchain.com/javascript/langsmith/traceable) 装饰器。
 
 <CodeGroup>
@@ -104,7 +104,7 @@ await pipeline("Can you summarize this morning's meetings?");
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-without-env-vars.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

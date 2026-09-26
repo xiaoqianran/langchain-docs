@@ -12,15 +12,17 @@
 如需快速入门，请使用 [openevals](/langsmith/openevals)，它提供了即用型 LLM 法官评估器。
 </Tip>
 
+<Note>
+SDK不支持[decision model evaluators](/langsmith/decision-model-evaluator)。这些评估者使用决策模型（例如 SemIf 或 Jev）作为判断者。要创建一个，请使用 UI。
+</Note>
+
 ## 创建您自己的法学硕士法官评估员
 
 为了完全控制评估器逻辑，请创建您自己的 LLM 作为法官评估器并使用 LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) / [TypeScript](https://docs.smith.langchain.com/reference/js)) 运行它。
 
 需要`langsmith>=0.2.0`
 
-法学硕士法官评估员由三个关键组成部分组成：
-
-1. **评估器函数**：接收示例输入和应用程序输出，然后使用 LLM 对质量进行评分的函数。该函数应返回带有分数信息的布尔值、数字、字符串或字典。
+法学硕士法官评估员由三个关键组成部分组成：1. **评估器函数**：接收示例输入和应用程序输出，然后使用 LLM 对质量进行评分的函数。该函数应返回带有分数信息的布尔值、数字、字符串或字典。
 1. **目标函数**：正在评估的应用程序逻辑（用 [⟦T4⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 包装以提高可观察性）。
 1. **数据集和评估**：测试示例的数据集和 `evaluate()` 函数，该函数在每个示例上运行目标函数并应用评估器。
 
@@ -84,7 +86,9 @@ results = evaluate(
 )
 ```
 
-## 使用参考输出当您的数据集示例包含参考输出（预期答案）时，您可以将 `reference_outputs` 作为参数传递给评估器函数。 LangSmith 自动向声明此参数的任何评估器提供示例的参考输出。
+## 使用参考输出
+
+当您的数据集示例包含参考输出（预期答案）时，您可以将 `reference_outputs` 作为参数传递给评估器函数。 LangSmith 自动向声明此参数的任何评估器提供示例的参考输出。
 
 <CodeGroup>
 

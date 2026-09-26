@@ -97,7 +97,7 @@ cache_prompt = "expiry"
 
 ### 设置发送时间成本阈值
 
-无论估计成本如何，都会出现到期提示。如果无法估计，则会出现提示，而不是假设下一回合是免费的。
+无论估计成本如何，都会出现到期提示。如果无法进行估算，则会出现提示，而不是假设下一回合是免费的。
 
 模型、端点或缓存设置更改仍然可以触发单独的发送时间成本确认。确认过期并不会抑制这些警告。确认还涵盖未知的缓存年龄，例如没有记录请求时间的较旧线程。设置这些发送时间确认的最低估计额外费用（以美元为单位）。默认为`0.50`； `0` 或负值会禁用它们，但不会禁用到期提示。使用 `cache_prompt = "off"` 禁用两者：
 
@@ -109,7 +109,7 @@ cold_cache_min_delta_usd = 1.00
 发送时间成本确认提供以下选择：
 
 - **仍然发送**：发送本回合并为以后的回合启用警告。
-- **发送此会话并且不再发出警告**：静音发送时间成本确认，直到应用程序重新启动。
+- **发送此会话并且不再发出警告**：在应用程序重新启动之前静音发送时间成本确认。
 - **发送并不再警告**：持续抑制发送时间成本确认。从`/notifications`重新启用它们。
 - **不发送（保留草稿）**：将消息恢复到聊天输入而不发送。
 
@@ -117,7 +117,7 @@ cold_cache_min_delta_usd = 1.00
 
 ### 信任缓存策略的网关端点
 
-如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持沉默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
+如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持静默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
 
 ```toml title="~/.deepagents/config.toml"
 [warnings]
@@ -371,7 +371,7 @@ mode = "auto"   # "manual" (default), "auto", or "yolo"
 
 ## 自动分类器超时
 
-当 [Auto mode](/oss/deepagents/code/approval-modes) 处于活动状态时，分类器有时间预算来审查每批门控操作。逾期未审核的批次按`classifier_unavailable`拒绝；重复错过会退回到手动审批 UI。默认值为 20 秒。如果评论超时，首先要尝试的是[selecting a faster classifier model](#default-and-recent-model)（请参阅`[models].auto_classifier`）。如果您已经这样做了，但仍需要更多空间，您可以延长截止日期：
+当 [Auto mode](/oss/deepagents/code/approval-modes) 处于活动状态时，分类器有时间预算来审查每批门控操作。未在期限内审核的批次按`classifier_unavailable`拒绝；重复错过会退回到手动审批 UI。默认值为 20 秒。如果评论超时，首先要尝试的是[selecting a faster classifier model](#default-and-recent-model)（请参阅`[models].auto_classifier`）。如果您已经这样做了，但仍需要更多空间，您可以延长截止日期：
 
 <Tabs>
     <Tab title="Config file">
@@ -410,7 +410,7 @@ max_input_tokens = 4096
 max_input_tokens = 8192
 ```
 
-配置文件覆盖在创建后合并到模型的配置文件中。任何读取配置文件的功能（状态栏中的上下文限制显示、自动汇总阈值、功能检查）都将看到覆盖的值。<Accordion title="CLI profile overrides with --profile-override" icon="terminal">
+创建后，配置文件覆盖将合并到模型的配置文件中。任何读取配置文件的功能（状态栏中的上下文限制显示、自动汇总阈值、功能检查）都将看到覆盖的值。<Accordion title="CLI profile overrides with --profile-override" icon="terminal">
     要在运行时覆盖模型配置文件字段而不编辑配置文件，请通过 `--profile-override` 传递 JSON 对象：
 
     ```bash
@@ -554,11 +554,11 @@ API 密钥与其发送到的端点必须匹配：端点必须接受该密钥，�
 
 ### `base_url` 如何解决
 
-Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获胜）：1. **`base_url` 位于 `config.toml`** 中，供提供商使用。
+Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获胜）：1. **`base_url` 位于 `config.toml`** 对于提供商。
 2. **以 `DEEPAGENTS_CODE_` 为前缀的端点变量。**
 3. **环境中的普通端点变量**（例如，`OPENAI_BASE_URL`）。
 4. **使用`/auth`凭证保存的端点。**此步骤将保存的端点应用于没有端点变量的提供程序，例如您在未声明[⟦T252⟧](#provider-configuration)的情况下添加的提供程序。步骤 2-3 没有可供读取的变量，因此此处直接使用保存的端点。对于确实具有端点变量的提供程序，保存的端点已在步骤 2 或 3 中生效（它被写入该变量），因此此步骤不会更改任何内容。无论哪种方式，在 `/auth` 中输入的端点都适用。
-5. **当以上均未设置时，提供者 SDK 自己的默认端点**。
+5. **当以上均未设置时，提供商 SDK 自己的默认端点**。
 
 <Note>
     解析的端点作为 `base_url` 构造函数参数传递给模型。
@@ -651,7 +651,7 @@ extra_paths = [
     "~/src/company-extensions",
 ]
 ```<ResponseField name="enabled" type="boolean" default="true" post={["optional"]}>
-    为每个源启用 Python 扩展发现，包括 `-e` / `--extension` 路径、用户和项目目录、插件和入口点。设置 `DEEPAGENTS_CODE_EXTENSIONS` 以覆盖该值。两种设置都需要在启动 Deep Agents 代码之前使用 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
+    为每个源启用 Python 扩展发现，包括 `-e` / `--extension` 路径、用户和项目目录、插件和入口点。设置 `DEEPAGENTS_CODE_EXTENSIONS` 以覆盖该值。这两种设置都需要在启动 Deep Agents 代码之前使用 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
 </ResponseField>
 
 <ResponseField name="trust" type="string" default='"ask"' post={["optional"]}>
@@ -717,7 +717,7 @@ recursion_limit = 5000
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/config-file.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

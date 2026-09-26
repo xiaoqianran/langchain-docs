@@ -210,7 +210,7 @@ LangGraph SDK 和代理服务器是[LangSmith](/langsmith/observability) 的一�
 ### 支持的流模式
 
 |模式|描述 | LangGraph 库方法 |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|| [⟦T61⟧](#stream-graph-state) |在每个[super-step](/langsmith/graph-rebuild#define-graphs)之后流式传输完整的图状态。                                                                                            | `.stream()` / `.astream()` 与 [⟦T64⟧](/oss/python/langgraph/streaming#graph-state) |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|| [⟦T61⟧](#stream-graph-state) |在每个[super-step](/langsmith/graph-rebuild#define-graphs)之后流式传输完整的图状态。                                                                                            | `.stream()` / `.astream()` 与 [⟦T64⟧](/oss/python/langgraph/streaming#graph-state) |
 | [⟦T65⟧](#stream-graph-state) |在图表的每个步骤之后将更新流式传输到状态。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 | `.stream()` / `.astream()` 与 [⟦T68⟧](/oss/python/langgraph/streaming#graph-state) |
 | [⟦T69⟧](#messages) |流式传输调用 LLM 的图形节点的 LLM 令牌和元数据（对于聊天应用程序有用）。                                                                                 | `.stream()` / `.astream()` 与 [⟦T72⟧](/oss/python/langgraph/streaming#messages) |
 | [⟦T73⟧](#debug) |在整个图表的执行过程中流式传输尽可能多的信息。                                                                                                      | `.stream()` / `.astream()` 与 [⟦T76⟧](/oss/python/langgraph/streaming#graph-state) |
@@ -268,7 +268,7 @@ LangGraph SDK 和代理服务器是[LangSmith](/langsmith/observability) 的一�
 
 ## 流图状态
 
-使用流模式 `updates` 和 `values` 在图执行时流式传输图的状态。
+使用流模式 `updates` 和 `values` 在图执行时流式传输其状态。
 
 * `updates` 将**更新**流式传输到图的每个步骤之后的状态。
 * `values` 在图表的每个步骤之后流式传输状态的**完整值**。
@@ -680,7 +680,7 @@ async for chunk in client.runs.stream(
             print(message_chunk["content"], end="|", flush=True)
 ```
 
-    1.“messages-tuple”流模式返回元组`(message_chunk, metadata)`的迭代器，其中`message_chunk`是LLM流式传输的令牌，`metadata`是一个字典，其中包含有关调用LLM的图形节点的信息和其他信息。
+    1.“messages-tuple”流模式返回元组`(message_chunk, metadata)`的迭代器，其中`message_chunk`是LLM流式传输的令牌，`metadata`是一个字典，其中包含有关调用LLM的图节点信息和其他信息。
     </Tab>
     <Tab title="JavaScript">
     ```javascript {highlight={6}}
@@ -700,7 +700,7 @@ async for chunk in client.runs.stream(
     }
 ```
 
-    1.“messages-tuple”流模式返回元组`(message_chunk, metadata)`的迭代器，其中`message_chunk`是LLM流式传输的令牌，`metadata`是一个字典，其中包含有关调用LLM的图节点的信息和其他信息。
+    1.“messages-tuple”流模式返回元组`(message_chunk, metadata)`的迭代器，其中`message_chunk`是LLM流式传输的令牌，`metadata`是一个字典，其中包含有关调用LLM的图形节点的信息和其他信息。
     </Tab>
     <Tab title="cURL">
     ```bash
@@ -916,7 +916,7 @@ LangSmith 允许您加入活动的 [background run](/langsmith/background-run) �
 当您使用`.join_stream`时，输出不会被缓冲，因此在加入之前产生的任何输出都不会被接收。
 </Warning>
 
-## 流式传输线程线程流为线程打开一个长期连接，并流式传输该线程上执行的**每次运行**的输出。这使您可以从单个连接监控线程上的所有活动，例如，在聊天 UI 中，随着时间的推移，可能会通过后续消息、[human-in-the-loop](/langsmith/add-human-in-the-loop) 恢复或[background runs](/langsmith/background-run) 触发多个运行。要按 ID 加入特定的现有运行，请参阅[Join and stream](#join-and-stream)。
+## 流式传输线程线程流为线程打开一个长期连接，并流式传输该线程上执行的**每次运行**的输出。这使您可以从单个连接监视线程上的所有活动，例如，在聊天 UI 中，随着时间的推移，可能会通过后续消息、[human-in-the-loop](/langsmith/add-human-in-the-loop) 恢复或[background runs](/langsmith/background-run) 触发多次运行。要按 ID 加入特定的现有运行，请参阅[Join and stream](#join-and-stream)。
 
 ### 比较线程并运行流式传输
 
@@ -1043,7 +1043,7 @@ API的使用和实现请参考[API reference](/langsmith/server-api-ref)。
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

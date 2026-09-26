@@ -147,7 +147,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 ＃＃＃＃ 配置在 **设置** > **成员和角色** > **SSO 配置** 中，滚动到 **SAML 属性映射** 部分，并为每个要转发的非标准属性添加一行：
 
 |专栏 |描述 |
-| --- | --- |
+| ---| ---|
 | **属性名称** |由您的 IdP 发出的 SAML 属性名称。必须与下游的 JWT 声明名称 LangSmith 匹配（对于 SSO 组同步，这与 **组声明字段** 值匹配）。 |
 | **数组** |如果属性是多值的（字符串列表），请选中此项。不选中标量（单值）属性。示例：检查 `groups`；不选中 `full_name`。 |
 
@@ -263,7 +263,7 @@ LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）�
 
       1. 在左侧选择组织单位，然后选择`On`。
       2. 如果服务状态设置为`Inherited`，并且您想要保留更新的设置，即使父设置发生更改，请单击`Override`。
-      3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或者单击 `Save` 保留新设置，即使父级设置发生更改也是如此。3. 要为跨组织部门或组织部门内的一组用户启用服务，请选择访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
+      3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或者单击 `Save` 保留新设置，即使父级设置发生更改也是如此。3. 要为组织部门内或跨组织部门的一组用户启用服务，请选择一个访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
 
 4. 确保您的用户用于登录 LangSmith 的电子邮件地址与他们用于登录您的 Google 域的电子邮件地址匹配。
 
@@ -454,7 +454,7 @@ SCIM 支持仅限 API（请参阅下面的说明）。
   - Microsoft Entra ID 支持将 IP 范围列入白名单或基于代理的解决方案来提供连接。
     （[details](https://learn.microsoft.com/en-us/entra/identity/app-provisioning/use-scim-to-provision-users-and-groups#ip-ranges)）。
   - Okta 支持将 IP 或域列入允许列表 ([details](https://help.okta.com/en-us/content/topics/security/ip-address-allow-listing.htm))
-    或基于代理的解决方案 ([details](https://help.okta.com/en-us/content/topics/provisioning/opp/opp-main.htm)) 来提供连接。
+    或基于代理的解决方案（[details](https://help.okta.com/en-us/content/topics/provisioning/opp/opp-main.htm)）来提供连接。
 
 <Note>
 SCIM 连接通常需要 HTTP/1.1 或更高版本。如果您的客户端使用 HTTP/1.0，您可能会遇到 `426 Upgrade Required` 错误。
@@ -543,7 +543,7 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/info \
 虽然具体说明取决于身份提供商可能会有所不同，但这些映射显示了 LangSmith SCIM 集成支持的内容：
 
 #### 用户属性| **LangSmith 应用程序属性** | **身份提供商属性** | **匹配优先级** |
-| ------------------------------------------ | ---------------------------------------------------------------- | ----------------------- |
+| ------------------------------ | ---------------------------------------------------------------- | ------------------------ |
 | `userName`<sup>1</sup> |电子邮件地址 |                         |
 | `active` | `!deactivated` |                         |
 | `emails[type eq "work"].value` |电子邮件地址<sup>2</sup> |                         |
@@ -558,7 +558,7 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/info \
 #### 组属性
 
 | **LangSmith 应用程序属性** | **身份提供商属性** | **匹配优先级** |
-| ------------------------ | | ------------------------------------------- | ----------------------- |
+| --------------------------------------- | ------------------------------------------- | ------------------------ |
 | `displayName` | `displayName`<sup>1</sup> | 1 |
 | `externalId` | `objectId` |                         |
 | `members` | `members` |                         |
@@ -637,7 +637,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 
 #### Azure entra ID 配置步骤
 
-有关其他信息，请参阅 Microsoft 的 [documentation](https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning)。
+有关更多信息，请参阅 Microsoft 的 [documentation](https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning)。
 
 <Note>
 在自托管安装中，`oid` JWT 声明用作`sub`。
@@ -666,7 +666,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 
 2. 单击“**测试连接**”以验证配置。
 
-3. 单击“**保存**”。
+3. 单击**保存**。
 
 **步骤 3：配置属性映射**
 
@@ -675,7 +675,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 **用户属性**将 **目标对象操作** 设置为 `Create` 和 `Update`（为了安全起见，从禁用 `Delete` 开始）：
 
 | **LangSmith 应用程序属性** | **Microsoft Entra ID 属性** | **匹配优先级** |
-| :--------------------------: | :----------------------------------------------------: | :----------------------: |
+| :-----------------------------------------: | :----------------------------------------------------------------: | :----------------------: |
 | `userName` | `userPrincipalName` |                         |
 | `active` | `Not([IsSoftDeleted])` |                         |
 | `emails[type eq "work"].value` | `mail`1 |                         |
@@ -689,7 +689,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 **组属性**仅将 **目标对象操作** 设置为 `Create` 和 `Update`（为了安全起见，从禁用 `Delete` 开始）：
 
 | **LangSmith 应用程序属性** | **Microsoft Entra ID 属性** | **匹配优先级** |
-| :--------------------------: | :--------------------------------: | :----------------------: |
+| :-------------------------: | :------------------------------------------: | :----------------------: |
 | `displayName` | `displayName`1 | 1 |
 | `externalId` | `objectId` |                         |
 | `members` | `members` |                         |
@@ -798,10 +798,10 @@ SSO 组同步适用于配置了 SAML SSO（云）或 OIDC（自托管）的 [Ent
 SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配置方法标记的身份），但我们建议选择**每个组织一种机制**，而不是同时选择两者，以避免混淆优先行为。
 
 | | SSO 组同步 | SCIM |
-| --- | --- | --- |
+| ---| ---| ---|
 | **同步触发** |每次 SSO 登录时 |来自 IdP 的主动推送（大约 1 小时节奏）|
 | **IdP 管理员参与** |最少，只需在 SSO 令牌中包含组 |必需，配置 SCIM 配置应用程序 |
-| **取消配置** |延迟到下次登录|通过 IdP 推送实现近乎实时 |
+| **取消配置** |延迟到下次登录 |通过 IdP 推送实现近乎实时 |
 | **命名约定** |重复使用[SCIM convention](#group-naming-convention) | [SCIM convention](#group-naming-convention) |
 | **自定义分隔符** |重用组织级别 [⟦T251⟧](#configure-custom-separator) | [⟦T252⟧](#configure-custom-separator) |当 IdP 管理员参与最少且反应性（登录时）同步可接受时，选择 **SSO 组同步**。当需要主动配置/取消配置以及近乎实时的组成员身份更新时，选择 **SCIM**。
 
@@ -811,9 +811,9 @@ SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配�
 2. 在 LangSmith 中：转至 **设置** > **成员和角色** > **SSO 配置** > **SSO 组同步** 并配置以下内容：
 
    |设置|描述 |
-   | --- | --- |
+   | ---| ---|
    | **启用 SSO 组同步** |根据 SSO 令牌中的组成员身份自动分配工作区角色。 |
-   | **群组声明字段**（默认`groups`）|包含组成员资格的 SSO 令牌中的声明名称。 |
+   | **群组声明字段**（默认`groups`）|包含组成员身份的 SSO 令牌中的声明名称。 |
    | **同步工作区/角色分配** |在每次 SSO 登录时根据组名称更新工作区成员身份和角色。 |
    | **需要匹配的组才能登录** |如果 SSO 令牌不包含与命名约定匹配的组，则阻止登录。 |
 
@@ -887,7 +887,7 @@ Google 的 SAML SSO 本身并不将 Google 群组成员资格作为 SAML 属性�
 组名称遵循[SCIM naming convention](#group-naming-convention)。 `<workspace_role>` 段接受内置角色和 [custom workspace roles](/langsmith/rbac#custom-roles) 按名称。
 
 |意向 |群组名称示例 |
-| --- | --- |
+| ---| ---|
 |组织管理员（授予所有工作区中的工作区管理员权限）| `LS:Organization Admins` |
 | `Production` 中的工作区管理员 | `LS:Organization User:Production:Admin` |
 | `Engineering` 中的工作区编辑器 | `LS:Organization User:Engineering:Editor` |
@@ -908,7 +908,7 @@ Google 的 SAML SSO 本身并不将 Google 群组成员资格作为 SAML 属性�
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/user-management.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

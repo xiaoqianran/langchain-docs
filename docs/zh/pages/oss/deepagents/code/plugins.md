@@ -75,7 +75,7 @@ dcode plugin marketplace remove acme-tools
 
 启用的插件还可以贡献 MCP 服务器。 Deep Agents 当插件加载时，代码会将这些服务器与常规 MCP 配置合并。使用 `/mcp` 检查可用的服务器和工具。
 
-插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其钩子的唯一同意门：工作区信任适用于项目钩子，而不是插件钩子。
+插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其挂钩的唯一同意门：工作区信任适用于项目挂钩，而不是插件挂钩。
 
 ## 创建一个插件
 
@@ -111,7 +111,7 @@ my-plugin/
 
 当没有声明自定义路径时，Deep Agents代码发现：
 
-- `skills/`下的技能，或当不存在`skills/`目录时为根`SKILL.md`的技能。
+- `skills/`下的技能，或当不存在`skills/`目录时根`SKILL.md`的技能。
 - MCP 服务器位于根 `.mcp.json` 文件中。
 - `hooks/hooks.json` 中的挂钩。
 
@@ -154,7 +154,7 @@ skills/
 
 ### 添加钩子
 
-将钩子文档放置在 `hooks/hooks.json` 处，声明相对 `hooks` 路径，或在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
+将钩子文档放置在 `hooks/hooks.json` 处，声明相对的 `hooks` 路径，或者在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
 
 ### 添加Python扩展
 
@@ -250,7 +250,7 @@ dcode plugin install code-review@acme-tools
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

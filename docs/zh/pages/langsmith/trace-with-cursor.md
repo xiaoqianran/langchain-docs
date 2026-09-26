@@ -58,8 +58,8 @@ node scripts/install.mjs --print
 
 ### 环境变量
 
-每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*` 优先。|变量|默认|描述 |
-| --- | --- | --- |
+每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*` 优先。|变量|默认 |描述 |
+| ---| ---| ---|
 | `TRACE_TO_LANGSMITH` | `false` |设置为 `"true"` 以启用跟踪。 |
 | `LANGSMITH_CURSOR_API_KEY` | - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。 |
 | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
@@ -99,8 +99,8 @@ tail -f ~/.cursor/langsmith-hook.log
 }
 ```
 
-|领域|环境变量|默认|描述 |
-| --- | --- | --- | --- |
+|领域 |环境变量|默认 |描述 |
+| ---| ---| ---| ---|
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT`、`LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。 |
@@ -108,13 +108,13 @@ tail -f ~/.cursor/langsmith-hook.log
 | `metadata` | `LANGSMITH_CURSOR_METADATA`、`LANGSMITH_METADATA` | - |对象合并到根跟踪元数据中。 |
 | `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`、`LANGSMITH_RUNS_ENDPOINTS` | - |将跟踪复制到的其他 LangSmith 目的地。 |
 | `redact` | `LANGSMITH_CURSOR_REDACT`、`LANGSMITH_REDACT` | `true` |设置为 `false` 以禁用 [secret redaction](#secret-redaction)。 |
-| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`、`LANGSMITH_REDACT_EXTRA` | - |在内置规则之后应用额外的`{ pattern, replace }`规则。 |
+| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`、`LANGSMITH_REDACT_EXTRA` | - |在内置规则之后应用额外的 `{ pattern, replace }` 规则。 |
 | `attachments` | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` |设置为 `false` 以跳过使用 Cursor 本地数据库中的图像和文件附件字节进行丰富的轮次。 |
 | `cursor_db_path` | `LANGSMITH_CURSOR_DB_PATH` |平台默认|覆盖用于附件的光标`state.vscdb`路径。 |
 
 将包含 API 密钥的配置文件置于版本控制之外。
 
-## 秘密编辑该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
+## 秘密编辑该插件会编辑从运行输入、输出、错误和元数据中检测到的机密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
 
 上传前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
 
@@ -159,8 +159,8 @@ tail -f ~/.cursor/langsmith-hook.log
 每次运行都在 `run.extra.metadata` 上承载共享的 `coding-agent-v1` 元数据合约，它可以识别来自任何编码代理（Claude Code、Codex、Cursor）的跟踪，并使用相同的稳定密钥进行分组。
 
 |范围 |按键|
-| --- | --- |
-|永远在场 | `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`或`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、 `ls_agent_runtime` (`"Cursor"`)、`ls_trace_schema_version` (`"coding-agent-v1"`)、`thread_id`（= 光标的`conversation_id`）。 |
+| ---| ---|
+|永远在场| `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`或`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、 `ls_agent_runtime` (`"Cursor"`)、`ls_trace_schema_version` (`"coding-agent-v1"`)、`thread_id`（= 光标的`conversation_id`）。 |
 |在已知的地方出现 | `ls_integration_version`、`ls_agent_runtime_version`（光标的`cursor_version`）、`turn_id`（= 光标的`generation_id`）、`turn_number`、`repository_url`、`repository_provider`、 `repository_name`、`git_branch`、`git_commit_sha`、`cwd`。 |
 |上下文 | `local_username`、`user_email`（暂定）。 |
 |子代理仅运行 | `ls_subagent_id`，`ls_subagent_type`。 |
@@ -199,7 +199,7 @@ Cursor Turn N (chain)
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

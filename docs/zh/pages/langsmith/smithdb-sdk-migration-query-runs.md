@@ -63,7 +63,7 @@
     </Warning>
 
     <Warning>
-    省略时，`min_start_time` 默认为 **1 天前**。没有 `start_time` 的`list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
+    省略时，`min_start_time` 默认为 **1 天前**。没有 `start_time` 的 `list_runs` 返回所有历史运行；没有 `min_start_time` 的 `runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的 `min_start_time`。
     </Warning>|之前 (`list_runs`) |之后（`runs.query`）|笔记|
     |---|---|---|
     | `project_name` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
@@ -71,7 +71,7 @@
     | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
     | `trace_id` | `trace_id` |不变 |
     | `reference_example_id` | `reference_examples` |现在获取 UUID 列表 |
-    | `query` | *（已删除）* |没有同等的 |
+    | `query` | *（已删除）* |没有同等的|
     | `filter` | `filter` |语法不变 |
     | `trace_filter` | `trace_filter` |不变 |
     | `tree_filter` | `tree_filter` |不变 |
@@ -248,7 +248,7 @@
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
     | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
-    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
+    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
   </Tab>
@@ -332,7 +332,7 @@
     | `run.promptTokens()` | `run.promptTokens()` |不变 |
     | `run.completionTokens()` | `run.completionTokens()` |不变 || `run.totalCost()` | `run.totalCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
     | `run.promptCost()` | `run.promptCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
-    | `run.completionCost()` | `run.completionCost()` |返回类型从 `Optional<String>` 更改为 `Optional<Double>` |
+    | `run.completionCost()` | `run.completionCost()` |返回类型从`Optional<String>`更改为`Optional<Double>` |
     | `run.promptTokenDetails()` | `run.promptTokenDetails()` |不变 |
     | `run.completionTokenDetails()` | `run.completionTokenDetails()` |不变 |
     | `run.promptCostDetails()` | `run.promptCostDetails()` |不变 |
@@ -387,7 +387,7 @@
     | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
     | `run.PriceModelID` | `run.PriceModelID` |不变 |
     | `run.PromptCost` | `run.PromptCost` |不变 |
-    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
+    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
@@ -453,12 +453,12 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
-    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串） |
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -758,7 +758,7 @@ asyncio.run(main())
 
   </Tab>
   <Tab title="TypeScript">
-    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id`，请通过 `selects: [...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
+    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id` — 通过 `selects: [...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -957,7 +957,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
 
 <Tabs>
   <Tab title="Python">
-    `start_time` 重命名为 `min_start_time`，`run_type` 值现在为大写 (`"llm"` → `"LLM"`)。
+    `start_time` 已重命名为 `min_start_time`，并且 `run_type` 值现在为大写 (`"llm"` → `"LLM"`)。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -1085,7 +1085,7 @@ val runs = client.runs().queryV2(
 
   </Tab>
   <Tab title="Go">
-    `StartTime` 重命名为 `MinStartTime`，`RunType` 现在采用新的 `RunQueryV2ParamsRunType` 枚举而不是 `RunTypeEnum`。
+    `StartTime` 已重命名为 `MinStartTime`，`RunType` 现在采用新的 `RunQueryV2ParamsRunType` 枚举而不是 `RunTypeEnum`。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -1615,7 +1615,7 @@ asyncio.run(main())
 
   </Tab>
   <Tab title="TypeScript">
-    `listRuns` 透明地自动分页。 `client.runs.query` 返回单个运行的异步迭代 - 一旦你有足够的，就使用 `for await` 和 `break`。
+    `listRuns` 透明地自动分页。 `client.runs.query` 返回单个运行的异步迭代 - 一旦足够，就使用 `for await` 和 `break`。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -2060,7 +2060,7 @@ const runs = client.runs.query({
 
   </Tab>
   <Tab title="Java">
-    `.filter(...)` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+    `.filter(...)` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 组合以匹配特定值。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -2103,7 +2103,7 @@ val runs = client.runs().queryV2(
 
   </Tab>
   <Tab title="Go">
-    `Filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。
+    `Filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 组合以匹配特定值。
 
 <Tabs sync={false}>
   <Tab title="Before">
@@ -2162,7 +2162,7 @@ runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
 
   </Tab>
   <Tab title="cURL">
-    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 组合以匹配特定值。<Tabs sync={false}>
+    `filter` 字符串语法保持不变：`eq(metadata_key, ...)` 检查键是否存在，与 `eq(metadata_value, ...)` 结合以匹配特定值。<Tabs sync={false}>
   <Tab title="Before">
     ```bash
 PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
@@ -2659,7 +2659,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-query-runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

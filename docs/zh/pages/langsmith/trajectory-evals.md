@@ -44,7 +44,7 @@ AgentEvals 在 Python 中提供了 `create_trajectory_match_evaluator` 函数，
 
 您可以使用以下模式：|模式|描述 |使用案例|
 |------|-------------|----------|
-| [⟦T17⟧](#strict-match) |消息和工具调用的顺序完全一致 |测试特定序列（例如，授权前的策略查找）|
+| [⟦T17⟧](#strict-match) |消息和工具调用的顺序完全一致|测试特定序列（例如，授权前的策略查找）|
 | [⟦T18⟧](#unordered-match) |允许以任何顺序调用相同的工具 |当顺序无关紧要时验证信息检索 |
 | [⟦T19⟧](#subset-and-superset-match) |代理仅调用参考工具（无额外功能）|确保代理不超出预期范围 |
 | [⟦T20⟧](#subset-and-superset-match) |代理至少调用参考工具（允许额外）|验证已采取最低限度的必要措施 |
@@ -296,7 +296,7 @@ async function testMultipleToolsAnyOrder() {
 
 `superset` 和 `subset` 模式重点关注调用哪些工具而不是工具调用的顺序，从而允许您控制代理的工具调用必须与参考对齐的严格程度。
 
-- 当您想要验证执行中是否调用了一些关键工具，但您可以接受代理调用其他工具时，请使用`superset`模式。代理的轨迹必须至少包括参考轨迹中的所有工具调用，并且可以包括参考之外的其他工具调用。
+- 当您想要验证执行中是否调用了一些关键工具，但您可以接受代理调用其他工具时，请使用`superset`模式。代理的轨迹必须至少包括参考轨迹中的所有工具调用，并且可能包括参考之外的其他工具调用。
 - 使用`subset`模式通过验证代理没有调用参考中的工具之外的任何不相关或不必要的工具来确保代理效率。代理的轨迹必须仅包括参考轨迹中出现的工具调用。
 
 以下示例演示了`superset`模式，其中参考轨迹仅需要`get_weather`工具，但代理可以调用其他工具：
@@ -590,7 +590,7 @@ async def test_async_evaluation():
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trajectory-evals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

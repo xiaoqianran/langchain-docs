@@ -136,7 +136,7 @@ console.log(answer);
 </Tab><Tab title="TypeScript">
 - AWS SDK v3中的`BedrockRuntimeClient`提供了Bedrock运行时接口。
 - `ConverseCommand` 提供统一的聊天界面，发送用户消息并以结构化格式返回助手的响应（无需手动 JSON 解析）。
-- Bedrock 调用用 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，并将其执行记录到 LangSmith。
+- Bedrock 调用用 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，将其执行记录到 LangSmith。
 - 自定义标签和元数据在可跟踪选项对象中提供并附加到每个跟踪。
 - 当您运行此脚本时（配置了 `LANGSMITH_TRACING=true` 和 API 密钥），请检查 LangSmith 仪表板中的跟踪条目，其中包括输入提示、模型输出、计时信息和指定的标签/元数据。
 </Tab>
@@ -162,7 +162,7 @@ console.log(answer);
 
 <div className="source-links">
 <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
 <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-bedrock.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

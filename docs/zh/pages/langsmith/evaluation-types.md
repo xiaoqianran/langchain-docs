@@ -7,7 +7,7 @@
 本页涵盖LangSmith评估的两个方面：
 
 1. **[Evaluation types](#offline-evaluation-types)**：_何时以及为何_进行评估。用于部署前测试的离线评估类型（基准测试、单元测试、回归测试）和用于生产的在线评估类型（监控、异常检测）。
-1. **[Evaluator implementations](#implement-evaluators)**：_如何_评估。可用的评估器方法（LLM-as-judge、代码、复合、摘要、成对）以及配置它们的位置（UI 或 SDK，离线或在线）。
+1. **[Evaluator implementations](#implement-evaluators)**：_如何_评估。可用的评估器方法（LLM 作为法官、决策模型、代码、复合、摘要、成对）以及配置它们的位置（UI 或 SDK，离线或在线）。
 
 了解这两个方面有助于您构建全面的评估策略，在部署之前验证功能并监控生产质量。
 
@@ -15,7 +15,7 @@
 
 离线评估在部署之前在精选数据集上测试应用程序。通过对具有参考输出的示例进行评估，团队可以在向用户公开更改之前比较版本、验证功能并建立信心。
 
-使用LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/)或[TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过[Playground](/langsmith/prompt-engineering-concepts#playground)或[binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset)在服务器端运行离线评估。
+使用 LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/) 或 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过 [Playground](/langsmith/prompt-engineering-concepts#playground) 或 [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset) 在服务器端运行离线评估。
 
 ![Offline](/langsmith/images/offline.png)
 
@@ -82,11 +82,21 @@ _回测_根据历史生产数据评估新的应用程序版本。生产日志被
 - 数据集离线评估：[In the UI](/langsmith/llm-as-judge)
 - 生产痕迹在线评估：[In the UI](/langsmith/online-evaluations-llm-as-judge)
 
-### 代码评估器
+### 决策模型评估器
 
-编写确定性的、基于规则的函数来检查特定条件。这些评估器执行自定义逻辑来验证结构、检查模式或应用业务规则。
+使用决策模型（例如 SemIf 或 Jev）来回答有关输出的键入问题。每个问题都会返回一个概率、一个选定的选项或一个分数，并成为其自己的反馈键，因此您无需编写提示或输出模式。
 
-代码评估器对于单元测试特别有用 - 验证生成的代码编译、JSON 解析是否正确或是否存在必需的字段。在回归测试中，他们可以跟踪结构化输出的一致性。对于在线监控，他们实时捕获格式违规行为。定义代码评估器：
+配置决策模型评估器：
+- 数据集离线评估：[In the UI](/langsmith/decision-model-evaluator)
+- 生产痕迹在线评估：[In the UI](/langsmith/online-evaluations-decision-models)
+
+SDK 尚不支持决策模型评估器。
+
+### 代码评估器编写确定性的、基于规则的函数来检查特定条件。这些评估器执行自定义逻辑来验证结构、检查模式或应用业务规则。
+
+代码评估器对于单元测试特别有用 - 验证生成的代码编译、JSON 解析是否正确或是否存在必需的字段。在回归测试中，他们可以跟踪结构化输出的一致性。对于在线监控，他们实时捕获格式违规行为。
+
+定义代码评估器：
 - 数据集离线评估：[In the UI](/langsmith/code-evaluator-ui)
 - 程序化离线评估：[With the SDK](/langsmith/code-evaluator-sdk)
 - 生产痕迹在线评估：[In the UI](/langsmith/online-evaluations-code)
@@ -95,16 +105,16 @@ _回测_根据历史生产数据评估新的应用程序版本。生产日志被
 
 使用加权平均值或总和将多个评估者分数合并为一个指标。这将创建同时反映多个评估标准的综合质量分数。
 
-对于基准测试，综合分数有助于在多个维度上比较版本（例如，70% 准确性 + 20% 清晰度 + 10% 简洁性）。在在线监控中，它们为仪表板和警报提供单一指标。例如，通过有用性、正确性和语气分数的加权组合来跟踪聊天机器人的整体质量。
-
-设置复合评估器：
+对于基准测试，综合分数有助于在多个维度上比较版本（例如，70% 准确性 + 20% 清晰度 + 10% 简洁性）。在在线监控中，它们为仪表板和警报提供单一指标。例如，通过有用性、正确性和语气分数的加权组合来跟踪聊天机器人的整体质量。设置复合评估器：
 - 具有预定义聚合的离线评估：[In the UI](/langsmith/composite-evaluators-ui)
 - 使用自定义聚合逻辑进行离线评估：[With the SDK](/langsmith/composite-evaluators-sdk)
 - 生产痕迹在线评估：[In the UI](/langsmith/online-evaluations-composite)
 
 ### 评估者总结
 
-计算整个实验而不是单个示例的指标。这些评估器接收数据集的所有输出，并计算汇总统计数据，例如精度、召回率、F1 分数或分布分析。当您需要数据集级指标时，摘要评估器对于基准测试至关重要 - 比较各个版本的整体性能而不是逐个示例的分数。它们专门用于离线评估，因为它们需要处理完整的数据集。
+计算整个实验而不是单个示例的指标。这些评估器接收数据集的所有输出，并计算汇总统计数据，例如精度、召回率、F1 分数或分布分析。
+
+当您需要数据集级指标时，摘要评估器对于基准测试至关重要 - 比较各个版本的整体性能而不是逐个示例的分数。它们专门用于离线评估，因为它们需要处理完整的数据集。
 
 实施总结评估器：
 - 用于离线评估的自定义聚合函数：[With the SDK](/langsmith/summary)
@@ -116,9 +126,7 @@ _回测_根据历史生产数据评估新的应用程序版本。生产日志被
 运行成对评估：
 - 比较现有实验：[With the SDK](/langsmith/evaluate-pairwise)
 
----
-
-<div className="source-links">
+---<div className="source-links">
 <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 </Callout>
