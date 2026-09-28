@@ -7,7 +7,7 @@
 代理定义选择托管深度代理的模型和核心功能。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+托管 Deep Agents 处于 **公开 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 代理条目位于项目根目录：
@@ -52,7 +52,7 @@ import { defineDeepAgent } from "managed-deepagents";
 
 export const agent = defineDeepAgent({
   name: "research-assistant",
-  model: "google-genai:gemini-3.6-flash",
+  model: "google:gemini-3.6-flash",
 });
 ```
 </CodeGroup>

@@ -1185,8 +1185,8 @@
       "translatedAt": "2026-09-25T14:17:16.447Z"
     },
     "langsmith/javascript/managed-deep-agents-agent-definition.md": {
-      "hash": "9376d9f970f7965842495f7a831717e1d5dd8eb5",
-      "translatedAt": "2026-09-25T14:17:07.666Z"
+      "hash": "5a9f3fa0f8dce9ab1e211e4a97a8fa80e7761306",
+      "translatedAt": "2026-09-28T17:08:25.612Z"
     },
     "langsmith/insights.md": {
       "hash": "eeea3c8b071bd78fd43dc1b3e3aa708f51495309",
@@ -6149,8 +6149,8 @@
       "translatedAt": "2026-09-25T14:17:31.228Z"
     },
     "langsmith/javascript/managed-deep-agents-quickstart.md": {
-      "hash": "b79432b26519d023cf2fefce507e7a84e9837f05",
-      "translatedAt": "2026-09-25T14:17:34.630Z"
+      "hash": "f2cb4a41e4ad890d410cdf7fa8df53d14d8327cf",
+      "translatedAt": "2026-09-28T17:08:25.336Z"
     },
     "langsmith/llm-gateway-quickstart.md": {
       "hash": "d43c296885650eb765b622ac7af7befe17970214",
@@ -6562,10 +6562,10 @@
       "translatedAt": "2026-09-26T13:30:27.965Z"
     }
   },
-  "updatedAt": "2026-09-27T14:23:18.026Z",
+  "updatedAt": "2026-09-28T17:08:25.612Z",
   "stats": {
-    "translated": 0,
-    "skipped": 577,
+    "translated": 2,
+    "skipped": 575,
     "failed": 0,
     "total": 577
   }
