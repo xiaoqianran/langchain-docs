@@ -2,112 +2,81 @@
 
 # Set up LangSmith
 
-<div class="home-page mx-auto max-w-8xl px-0 lg:px-5" style={{ paddingBottom: "8rem" }}>
-    <div class="mdx-content prose prose-gray dark:prose-invert mx-4 pt-10">
-        <h1 class="flex whitespace-pre-wrap group font-semibold text-2xl sm:text-3xl mt-8">Overview</h1>
+Host and manage LangSmith infrastructure for observability, evaluation, and prompt engineering.
 
-        Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers Cloud, Bring Your Own Cloud (BYOC), and Self-hosted options. Choose the option that matches where your data has to live and who runs the infrastructure.
+<div>
+  <div>
+    <h1>Overview</h1>
 
-        <Note>
-        If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
-        </Note>
+    Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers Cloud, Bring Your Own Cloud (BYOC), and Self-hosted options. Choose the option that matches where your data has to live and who runs the infrastructure.
 
-        <CardGroup cols={3}>
+    <Note>
+      If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
+    </Note>
 
-        <Card
-          title="Cloud"
-          cta="Get started"
-          href="/langsmith/cloud"
-          icon="cloud"
-        >
+    <CardGroup>
+      <Card title="Cloud" href="/langsmith/cloud" icon="cloud">
         Fully managed observability, evaluation, and prompt engineering.
-        </Card>
+      </Card>
 
-        <Card
-          title="BYOC"
-          cta="Learn about BYOC"
-          href="/langsmith/byoc"
-          icon="cloud-cog"
-        >
+      <Card title="BYOC" href="/langsmith/byoc" icon="cloud-cog">
         Full control over your data, while LangChain manages the infrastructure.
-        </Card>
+      </Card>
 
-        <Card
-          title="Self-hosted"
-          cta="Run self-hosted"
-          href="/langsmith/self-hosted"
-          icon="server"
-        >
+      <Card title="Self-hosted" href="/langsmith/self-hosted" icon="server">
         Full control with observability, evaluation, and prompt engineering in your infrastructure.
-        </Card>
+      </Card>
+    </CardGroup>
 
-        </CardGroup>
+    <Callout>
+      Self-hosted and BYOC are available on the [Enterprise plan](/langsmith/pricing-plans). [Get a demo](https://www.langchain.com/contact-sales) to learn more.
+    </Callout>
 
-        <Callout>
-        Self-hosted and BYOC are available on the [Enterprise plan](/langsmith/pricing-plans). [Get a demo](https://www.langchain.com/contact-sales) to learn more.
-        </Callout>
+    <h2>Compare Cloud, BYOC, and Self-hosted</h2>
 
-        <h2 class="flex whitespace-pre-wrap group font-semibold">Compare Cloud, BYOC, and Self-hosted</h2>
+    | Feature                         | **Cloud**         | **BYOC**                                                   | **Self-hosted** |
+    | ------------------------------- | ----------------- | ---------------------------------------------------------- | --------------- |
+    | **Who runs the infrastructure** | LangChain         | LangChain runs the control plane, you run your data planes | You             |
+    | **Where sensitive data lives**  | LangChain's cloud | Your VPC                                                   | Your VPC        |
+    | **Upgrades and patches**        | Automatic         | Automatic                                                  | Manual          |
+    | **Scaling**                     | Automatic         | Automatic, managed by LangChain                            | Manual          |
 
-        | Feature | **Cloud** | **BYOC** | **Self-hosted** |
-        |---------|-----------|----------|-----------------|
-        | **Who runs the infrastructure** | LangChain | LangChain runs the control plane, you run your data planes | You |
-        | **Where sensitive data lives** | LangChain's cloud | Your VPC | Your VPC |
-        | **Upgrades and patches** | Automatic | Automatic | Manual |
-        | **Scaling** | Automatic | Automatic, managed by LangChain | Manual |
+    Cloud, BYOC, and Self-hosted support [LangSmith Deployment](/langsmith/deployment) for agent workloads. Refer to the [LangSmith Deployment overview](/langsmith/deployment) to pick a topology (Cloud managed, BYOC, Hybrid, self-hosted with control plane, or standalone).
 
-        Cloud, BYOC, and Self-hosted support [LangSmith Deployment](/langsmith/deployment) for agent workloads. Refer to the [LangSmith Deployment overview](/langsmith/deployment) to pick a topology (Cloud managed, BYOC, Hybrid, self-hosted with control plane, or standalone).
+    <h2>Common setups</h2>
 
-        <h2 class="flex whitespace-pre-wrap group font-semibold">Common setups</h2>
+    * **Fastest to start, managed everything.** [LangSmith Cloud](/langsmith/cloud) paired with [LangSmith Deployment](/langsmith/deployment) on Cloud. LangChain hosts the platform, and, when you use LangSmith Deployment, also hosts your [Agent Servers](/langsmith/agent-server).
+    * **Bring Your Own Cloud.** Data stays in your VPC, and LangChain manages the infrastructure. Refer to the [BYOC overview](/langsmith/byoc).
+    * **Observability data must stay in your infrastructure.** Self-hosted LangSmith, paired with any LangSmith Deployment topology, including [self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane) for agent workloads.
+    * **Managed observability, agents in your VPC.** LangSmith Cloud paired with [Hybrid](/langsmith/hybrid) LangSmith Deployment. Traces and evaluations stay on SaaS while agent workloads stay in your infrastructure.
+    * **Observability only, no agent hosting.** LangSmith Cloud or self-hosted, without LangSmith Deployment. Run your agents wherever you already run apps and send traces to LangSmith.
 
-        - **Fastest to start, managed everything.** [LangSmith Cloud](/langsmith/cloud) paired with [LangSmith Deployment](/langsmith/deployment) on Cloud. LangChain hosts the platform, and, when you use LangSmith Deployment, also hosts your [Agent Servers](/langsmith/agent-server).
-        - **Bring Your Own Cloud.** Data stays in your VPC, and LangChain manages the infrastructure. Refer to the [BYOC overview](/langsmith/byoc).
-        - **Observability data must stay in your infrastructure.** Self-hosted LangSmith, paired with any LangSmith Deployment topology, including [self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane) for agent workloads.
-        - **Managed observability, agents in your VPC.** LangSmith Cloud paired with [Hybrid](/langsmith/hybrid) LangSmith Deployment. Traces and evaluations stay on SaaS while agent workloads stay in your infrastructure.
-        - **Observability only, no agent hosting.** LangSmith Cloud or self-hosted, without LangSmith Deployment. Run your agents wherever you already run apps and send traces to LangSmith.
+    <h2>Related</h2>
 
-        <h2 class="flex whitespace-pre-wrap group font-semibold">Related</h2>
-
-        <CardGroup cols={3}>
-
-        <Card
-          title="Account setup"
-          cta="Set up your account"
-          href="/langsmith/admin"
-          icon="user-cog"
-        >
+    <CardGroup>
+      <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
         Create an account, manage API keys, and choose a pricing tier.
-        </Card>
+      </Card>
 
-        <Card
-          title="Plans and pricing"
-          cta="View pricing"
-          href="https://www.langchain.com/pricing"
-          icon="credit-card"
-        >
+      <Card title="Plans and pricing" href="https://www.langchain.com/pricing" icon="credit-card">
         Compare LangSmith plans and tiers.
-        </Card>
+      </Card>
 
-        <Card
-          title="Observability"
-          cta="Learn more"
-          href="/langsmith/observability"
-          icon="chart-line"
-        >
+      <Card title="Observability" href="/langsmith/observability" icon="chart-line">
         Trace and monitor your LLM applications.
-        </Card>
-
-        </CardGroup>
-    </div>
+      </Card>
+    </CardGroup>
+  </div>
 </div>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -2,24 +2,23 @@
 
 # Add skills to Managed Deep Agents
 
+Add reusable task-specific instructions to a managed deep agent.
+
 Skills package task-specific procedures and supporting files into reusable directories. MDA discovers them automatically. The agent loads a skill's full contents only when the task matches the description in the frontmatter.
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 Put each skill under `skills/` at the project root:
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
   agent.py
   skills/
     research/
       SKILL.md
 ```
-
-
-
 
 For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
@@ -28,47 +27,41 @@ For the full project layout, see [Project structure](/langsmith/python/managed-d
 Use skills for procedures the agent should follow only when a task matches the description in the frontmatter:
 
 <Steps>
-  <Step title="Create a skill directory" id="create-a-skill-directory">
+  <Step title="Create a skill directory">
+    Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
 
-Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
+    ```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ---
+    name: research
+    description: Gather and synthesize context before answering complex questions.
+    ---
 
-```markdown skills/research/SKILL.md
----
-name: research
-description: Gather and synthesize context before answering complex questions.
----
+    # Research
 
-# Research
+    Use this skill when a task needs more than a direct answer.
 
-Use this skill when a task needs more than a direct answer.
+    1. Identify what information is missing.
+    2. Use `query_db` to look up relevant records.
+    3. Summarize findings before responding to the user.
+    ```
 
-1. Identify what information is missing.
-2. Use `query_db` to look up relevant records.
-3. Summarize findings before responding to the user.
-```
+    For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
 
-For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
-
-To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
-
+    To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
   </Step>
-  <Step title="Add supporting files (Optional)" id="add-supporting-files">
 
-A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
+  <Step title="Add supporting files (Optional)">
+    A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
 
-```text
-skills/
-  research/
-    SKILL.md
-    templates/
-      report.md
-    scripts/
-      fetch_sources.py
-```
-
-
-
-
+    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    skills/
+      research/
+        SKILL.md
+        templates/
+          report.md
+        scripts/
+          fetch_sources.py
+    ```
   </Step>
 </Steps>
 
@@ -90,21 +83,22 @@ For what syncs, what does not, and how to open the repo from a deployment, see [
 
 ## When to use skills
 
-| Concept | Role | Loaded when |
-| --- | --- | --- |
-| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Always-on system prompt | Every run |
-| **Skills** | Task-specific procedures | When the agent selects them |
-| **[Memory](/langsmith/python/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
+| Concept                                                                | Role                           | Loaded when                    |
+| ---------------------------------------------------------------------- | ------------------------------ | ------------------------------ |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Always-on system prompt        | Every run                      |
+| **Skills**                                                             | Task-specific procedures       | When the agent selects them    |
+| **[Memory](/langsmith/python/managed-deep-agents-memory)**             | Knowledge the agent can update | When durable memory is enabled |
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

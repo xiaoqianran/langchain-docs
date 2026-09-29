@@ -2,10 +2,12 @@
 
 # Azure Terraform troubleshooting
 
+Common issues, fixes, and diagnostic commands for LangSmith self-hosted on Azure AKS deployed with the LangChain Terraform modules.
+
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure).
 
 <Tip>
-Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `az aks get-credentials --name <cluster> --resource-group <rg>` before running any `kubectl` commands.
+  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `az aks get-credentials --name <cluster> --resource-group <rg>` before running any `kubectl` commands.
 </Tip>
 
 For a copy-paste reference of the `kubectl`, `helm`, and `az` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
@@ -27,7 +29,7 @@ If you intend to onboard to LTS, please ensure the cluster is in Premium tier ..
 
 **Fix:** Update `kubernetes_version` to a version with `KubernetesOfficial` support:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az aks get-versions --location eastus -o table
 # Versions with KubernetesOfficial in SupportPlan column work on Standard tier
 ```
@@ -52,13 +54,13 @@ Error: creating temporary Agent Pool ... "code": "ErrCode_InsufficientVCPUQuota"
 
 **Cause:** Per-region vCPU quotas per VM family. Default for `standardDSv3Family` in `eastus` is often 10 cores. One `Standard_D8s_v3` node uses 8; only 2 remain.
 
-**Why `max_pods = 30` triggers it:** AKS default is 30 pods per node. The base LangSmith install alone deploys ~37 pods. The autoscaler tries to add a second node, hits quota, enters backoff. Fix: `default_node_pool_max_pods = 60` in `terraform.tfvars` so all pods fit on one node.
+**Why `max_pods = 30` triggers it:** AKS default is 30 pods per node. The base LangSmith install alone deploys \~37 pods. The autoscaler tries to add a second node, hits quota, enters backoff. Fix: `default_node_pool_max_pods = 60` in `terraform.tfvars` so all pods fit on one node.
 
 **Recommended quota** for multi-dataplane (3 dataplanes): 32 cores.
 
 **Request a quota increase:**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Azure portal usually auto-approves within minutes:
 # Portal → Subscriptions → <sub> → Usage + Quotas → search "DSv3" → eastus → Request increase → 32
 
@@ -75,7 +77,7 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv3')]" -o t
 **Alternative, switch VM family if DSv3 quota is exhausted:** Use `Standard_DS4_v2` (baseline) + `Standard_DS5_v2` (large). Same vCPU, slightly less RAM. Validated for the full LangSmith install plus all add-ons.
 
 <Note>
-`max_pods` is immutable on an existing node pool. Set it before the first `terraform apply`.
+  `max_pods` is immutable on an existing node pool. Set it before the first `terraform apply`.
 </Note>
 
 ### Istio addon revision not supported
@@ -84,7 +86,7 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv3')]" -o t
 
 **Fix:** Check currently available revisions and update `istio_addon_revision`:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az aks mesh get-revisions --location eastus -o table
 ```
 
@@ -103,13 +105,13 @@ once Purge Protection has been Enabled it's not possible to disable it
 
 **Fix (accept purge protection, test environments):**
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 keyvault_purge_protection = true
 ```
 
 **Fix (`purge_protection = false` required):**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # 1. Remove KV from Terraform state (does not delete from Azure)
 terraform -chdir=infra state rm module.keyvault.azurerm_key_vault.langsmith
 
@@ -133,7 +135,7 @@ already exists - to be managed via Terraform this resource needs to be imported 
 
 **Fix:** Import the conflicting secrets:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform import \
   'module.keyvault.azurerm_key_vault_secret.deployments_encryption_key[0]' \
   "$(az keyvault secret show --vault-name langsmith-kv<id> --name langsmith-deployments-encryption-key --query id -o tsv)"
@@ -159,7 +161,7 @@ terraform apply
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl annotate svc ingress-nginx-controller -n ingress-nginx \
   service.beta.kubernetes.io/azure-dns-label-name=<dns_label> \
   --overwrite
@@ -191,7 +193,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 
 **Manual fix:**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl apply -f - <<EOF
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -220,7 +222,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform apply
 kubectl rollout restart deployment -n langsmith
 ```
@@ -231,7 +233,7 @@ kubectl rollout restart deployment -n langsmith
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl delete secret langsmith-config-secret -n langsmith
 make k8s-secrets   # recreates with correct key names
 make deploy
@@ -257,7 +259,7 @@ make deploy
 
 **Fix:** `init-values.sh` automatically injects `url` and `tlsEnabled` after copying from examples. If deploying manually:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   deployment:
     enabled: true
@@ -273,7 +275,7 @@ config:
 
 **Fix:** `init-values.sh` now generates a minimal Insights file when `clickhouse_source = "in-cluster"`. For an existing deployment with this issue:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cat > helm/values/langsmith-values-insights.yaml << 'EOF'
 insights:
   enabled: true
@@ -289,7 +291,7 @@ make deploy
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout restart deployment langsmith-frontend -n langsmith
 kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 # expect: VITE_POLLY_DEPLOYMENT_URL=https://<hostname>/lgp/smith-polly-<hash>
@@ -305,7 +307,7 @@ kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 
 **Fix:** Add `enabled: true` inside the `deployment` block:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   deployment:
     enabled: true          # required; url alone is not enough
@@ -322,8 +324,8 @@ config:
 
 Changing `deployments_encryption_key`, `agent_builder_encryption_key`, or `insights_encryption_key` after their first use permanently corrupts the data they protect. There is no recovery.
 
-- Do not rotate these keys.
-- Do not set `config.agentBuilder.encryptionKey` or `config.insights.encryptionKey` inline in `values-overrides.yaml`. The chart reads them from `langsmith-config-secret` via `existingSecretName`. Setting inline overrides the secret reference.
+* Do not rotate these keys.
+* Do not set `config.agentBuilder.encryptionKey` or `config.insights.encryptionKey` inline in `values-overrides.yaml`. The chart reads them from `langsmith-config-secret` via `existingSecretName`. Setting inline overrides the secret reference.
 
 ### `agent-builder-tool-server` or `polly` in CrashLoopBackOff
 
@@ -351,7 +353,7 @@ WorkloadIdentityCredential authentication failed.
 
 **Fix:** Add the missing ServiceAccount to `service_accounts_for_workload_identity` in `modules/k8s-cluster/main.tf`:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 service_accounts_for_workload_identity = [
   "${var.langsmith_release_name}-backend",
   "${var.langsmith_release_name}-platform-backend",
@@ -364,7 +366,7 @@ service_accounts_for_workload_identity = [
 ]
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform apply -target=module.aks
 kubectl rollout restart deployment/langsmith-<service> -n langsmith
 ```
@@ -381,7 +383,7 @@ See the [architecture page](/langsmith/self-host-terraform-azure-architecture#wo
 
 **Correct teardown order**
 
-```txt
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 1. make uninstall   ← Helm + namespace
 2. make destroy     ← Azure infra (needs tfstate + tfvars)
 3. make clean       ← local secrets and generated files (LAST)
@@ -389,7 +391,7 @@ See the [architecture page](/langsmith/self-host-terraform-azure-architecture#wo
 
 **Recovery when tfstate is gone**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az group delete --name langsmith-rg<identifier> --yes --no-wait
 az group show --name langsmith-rg<identifier> 2>&1 | grep -E "provisioningState|ResourceGroupNotFound"
 ```
@@ -402,7 +404,7 @@ If you reuse the same `identifier` afterwards, Azure may recover the soft-delete
 
 **Fix:** Run `make uninstall` first.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make uninstall
 kubectl delete namespace langsmith --timeout=60s
 make destroy
@@ -423,7 +425,7 @@ make destroy
 **Fix:** Raise the limit under `listener.deployment.resources` (the key the chart reads), either by moving to a larger sizing profile or by adding the override to a values file that loads after the sizing overlay, then re-run `make init-values` and `make deploy`.
 
 <Note>
-The chart reads `listener.deployment.resources` for container limits, not the flat `listener.resources`. The `langsmith-values-agent-deploys.yaml` example sets `listener.resources`, which the chart silently ignores, so that value does not change the limit.
+  The chart reads `listener.deployment.resources` for container limits, not the flat `listener.resources`. The `langsmith-values-agent-deploys.yaml` example sets `listener.resources`, which the chart silently ignores, so that value does not change the limit.
 </Note>
 
 ### Stale HPA scales `listener` or `host-backend` to max replicas
@@ -432,7 +434,7 @@ The chart reads `listener.deployment.resources` for container limits, not the fl
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl delete hpa langsmith-listener langsmith-host-backend -n langsmith 2>/dev/null || true
 kubectl scale deployment langsmith-listener -n langsmith --replicas=1
 kubectl scale deployment langsmith-host-backend -n langsmith --replicas=1
@@ -445,11 +447,11 @@ make deploy
 
 **Symptom:** `ingress-appgw-deployment` is CrashLoopBackOff. Logs: `ErrorApplicationGatewayForbidden: does not have authorization to perform action Microsoft.Network/applicationGateways/read`.
 
-**Cause:** AKS creates a managed identity for the AGIC add-on (`ingressapplicationgateway-<cluster>` in the `MC_` resource group). The identity is created during cluster provisioning but takes ~5 minutes to register in Azure AD before role assignments take effect.
+**Cause:** AKS creates a managed identity for the AGIC add-on (`ingressapplicationgateway-<cluster>` in the `MC_` resource group). The identity is created during cluster provisioning but takes \~5 minutes to register in Azure AD before role assignments take effect.
 
 **Fix:** The `k8s-cluster` module waits 300s after cluster creation (`time_sleep.agic_identity_propagation`) and creates the three required role assignments automatically. If AGIC is still 403 after `make apply`:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az aks update --name <CLUSTER> --resource-group <RG> --yes
 kubectl delete pod -n kube-system -l app=ingress-azure
 ```
@@ -462,7 +464,7 @@ For manual role assignments (Reader on RG, Contributor on AGW, Network Contribut
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 AGIC_OID=$(az aks show -g <RG> -n <CLUSTER> \
   --query "addonProfiles.ingressApplicationGateway.identity.objectId" -o tsv)
 VNET_ID=$(az network vnet show -g <RG> -n <VNET> --query id -o tsv)
@@ -479,7 +481,7 @@ kubectl rollout restart deployment/ingress-appgw-deployment -n kube-system
 
 **Fix:** Touch the Ingress to trigger re-sync:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get certificate langsmith-tls -n langsmith   # verify cert is ready
 kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --overwrite
 ```
@@ -516,7 +518,7 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get crd | grep "istio.io" | awk '{print $1}' | xargs kubectl delete crd
 terraform apply
 ```
@@ -525,7 +527,7 @@ terraform apply
 
 ### Cluster access
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az aks get-credentials --name <cluster> --resource-group <rg>
 kubectl config current-context
 kubectl get nodes -o wide
@@ -533,7 +535,7 @@ kubectl get nodes -o wide
 
 ### Pods
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
 kubectl describe pod <pod-name> -n langsmith
@@ -543,7 +545,7 @@ kubectl logs <pod-name> -n langsmith --previous --tail=50
 
 ### Ingress and TLS
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get ingress -n langsmith
 kubectl get svc ingress-nginx-controller -n ingress-nginx
 kubectl get certificate -n langsmith
@@ -553,7 +555,7 @@ kubectl get clusterissuer
 
 ### Workload Identity
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get serviceaccount langsmith-ksa -n langsmith \
   -o jsonpath='{.metadata.annotations.azure\.workload\.identity/client-id}'
 
@@ -563,7 +565,7 @@ kubectl get pod <pod> -n langsmith \
 
 ### Helm
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
@@ -571,7 +573,7 @@ helm get values langsmith -n langsmith
 
 ### LangSmith Deployment
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
@@ -579,7 +581,7 @@ kubectl get crd | grep langchain
 
 ### Key Vault and Kubernetes Secrets
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ./infra/scripts/manage-keyvault.sh list
 ./infra/scripts/manage-keyvault.sh validate
 ./infra/scripts/manage-keyvault.sh diff
@@ -590,18 +592,19 @@ kubectl get secret langsmith-config-secret -n langsmith -o jsonpath='{.data}' | 
 
 ### Quick health check
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make status         # 10-section automated check
 make status-quick   # skip Key Vault + K8s secret queries
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

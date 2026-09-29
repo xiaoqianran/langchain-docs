@@ -2,8 +2,10 @@
 
 # Fine-tune models with Smithtune
 
+Use Smithtune to fine-tune models on LangSmith conversations and compare the results in LangSmith.
+
 <Note>
-Smithtune is in [beta](/langsmith/release-stages).
+  Smithtune is in [beta](/langsmith/release-stages).
 </Note>
 
 Smithtune is a command-line tool for fine-tuning models on [trajectories](/langsmith/observability-concepts#trajectories) recorded in LangSmith. It trains a model with [Fireworks](https://fireworks.ai/) or [Baseten](https://www.baseten.co/) and compares the base and tuned models in a LangSmith [experiment](/langsmith/evaluation-concepts#experiment). You can optionally deploy the tuned model as an endpoint for your application.
@@ -14,22 +16,26 @@ Smithtune is a command-line tool for fine-tuning models on [trajectories](/langs
   <Step title="Create a dataset">
     Select trajectories from a tracing project with a [trace query](/langsmith/trace-query-syntax) filter, a model judge, or both.
   </Step>
+
   <Step title="Prepare data">
     Validate the trajectories, then split them into training, validation, and test data. Each trajectory stays in one split.
   </Step>
+
   <Step title="Train a model">
     Preview the run, then fine-tune a supported model with your provider.
   </Step>
+
   <Step title="Compare results">
     Evaluate the base and tuned models on the test data, then [compare the experiments](/langsmith/compare-experiment-results) in LangSmith. Evaluation does not require a deployed endpoint.
   </Step>
+
   <Step title="Deploy an endpoint (optional)">
     Serve the tuned model for your application. To run an agent that uses it in production, see [LangSmith Deployment](/langsmith/deployment).
   </Step>
 </Steps>
 
 <Tip>
-To have your coding agent drive the fine-tuning process end to end, use the [Smithtune skill](https://github.com/langchain-ai/smithtune/blob/main/src/smithtune/skills/smithtune/SKILL.md).
+  To have your coding agent drive the fine-tuning process end to end, use the [Smithtune skill](https://github.com/langchain-ai/smithtune/blob/main/src/smithtune/skills/smithtune/SKILL.md).
 </Tip>
 
 Evaluation scores measure how closely each model matches the recorded behavior, not whether it completes tasks end to end. Smithtune does not execute the tool calls the model generates.
@@ -41,33 +47,35 @@ Smithtune requires trajectories in a tracing project or a LangSmith trajectory d
 To set up Smithtune:
 
 1. Install Smithtune and the [LangSmith CLI](/langsmith/langsmith-cli), and set your API keys. Follow the [Smithtune README](https://github.com/langchain-ai/smithtune#readme) for the install command and the environment variables each provider needs.
-1. Read the [data rights and permitted use terms](https://github.com/langchain-ai/smithtune/blob/main/docs/data-rights-and-permitted-use.md) linked from the [README](https://github.com/langchain-ai/smithtune#readme), then acknowledge them before your first run:
 
-    ```bash
-    smithtune acknowledge-data-rights
-    ```
+2. Read the [data rights and permitted use terms](https://github.com/langchain-ai/smithtune/blob/main/docs/data-rights-and-permitted-use.md) linked from the [README](https://github.com/langchain-ai/smithtune#readme), then acknowledge them before your first run:
 
-1. Check your local setup:
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   smithtune acknowledge-data-rights
+   ```
 
-    ```bash
-    smithtune doctor
-    ```
+3. Check your local setup:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   smithtune doctor
+   ```
 
 For the commands in each step, see the [README](https://github.com/langchain-ai/smithtune#readme) or run `smithtune --help`.
 
 ## See also
 
-- [Trajectory evaluations](/langsmith/trajectory-evals)
-- [Query threads](/langsmith/query-threads)
-- [Manage datasets](/langsmith/manage-datasets)
+* [Trajectory evaluations](/langsmith/trajectory-evals)
+* [Query threads](/langsmith/query-threads)
+* [Manage datasets](/langsmith/manage-datasets)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithtune.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

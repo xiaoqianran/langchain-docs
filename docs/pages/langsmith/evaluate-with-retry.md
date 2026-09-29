@@ -6,11 +6,11 @@ When running [evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) 
 
 This guide shows an approach to build retry logic into your evaluation workflow and to retry only the failed examples. You can use the `error_handling='ignore'` parameter to skip logging errored runs, then automatically identify unsuccessful examples and re-run them in Python.
 
-
 ## Step 1. Run the initial evaluation
+
 Run the initial evaluation, ignoring errors to  prevent errored runs from being logged:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()
@@ -28,7 +28,8 @@ results = await client.aevaluate(
 ## Step 2. Retry on failed examples and log to same experiment
 
 Fetch all the unsuccessful examples:
-```python
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Identify unsuccessful examples
 runs = client.list_runs(project_name=results.experiment_name)
 successful_example_ids = [r.reference_example_id for r in runs]
@@ -36,7 +37,8 @@ unsuccessful_examples = (e for e in client.list_examples(dataset_name="dataset")
 ```
 
 Next, re-run all the failed examples and log them to the same experiment:
-```python
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Retry only the failed examples, log
 results_retry = await client.aevaluate(
     target,
@@ -48,19 +50,21 @@ results_retry = await client.aevaluate(
 ```
 
 ## Related topics
+
 * [Run an evaluation](/langsmith/evaluate-llm-application)
 * [Run an evaluation asynchronously](/langsmith/evaluation-async)
 * [Handle model rate limits](/langsmith/handle-model-rate-limiting)
 * [Experiment configuration](/langsmith/experiment-configuration)
 * [Evaluate existing experiment](/langsmith/evaluate-existing-experiment)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-with-retry.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

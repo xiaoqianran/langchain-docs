@@ -9,16 +9,16 @@ LangSmith uses feedback to continuously improve the implementation of your agent
 ## How it works
 
 1. Create a run and include `feedback_keys` in the request body. For example, when calling `POST /threads/{thread_id}/runs/stream`, set `feedback_keys` in the request body to:
-    ```
-    ["user_liked", "user_disliked"]
-    ```
+   ```
+   ["user_liked", "user_disliked"]
+   ```
 2. The `feedback` object from the response contains a pre-signed URL for each key. For example, the `feedback` object is:
-    ```
-    {
-        "user_liked": "https://api.smith.langchain.com/api/v1/feedback/tokens/ef19fedf-dcac-4cbb-a59c-00661efd6425",
-        "user_disliked": "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5"
-    }
-    ```
+   ```
+   {
+       "user_liked": "https://api.smith.langchain.com/api/v1/feedback/tokens/ef19fedf-dcac-4cbb-a59c-00661efd6425",
+       "user_disliked": "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5"
+   }
+   ```
 3. Request the returned URL (e.g. `POST /api/v1/feedback/tokens/{token_id}`) to associate the feedback key with the trace generated from the Agent Server run. For more details, refer to the [LangSmith API reference](/langsmith/smith-api-ref).
 4. LangSmith associates the submitted feedback with the run using the selected feedback key (e.g. `user_liked` or `user_disliked`).
 
@@ -27,100 +27,96 @@ LangSmith uses feedback to continuously improve the implementation of your agent
 Create a run and parse the `feedback` object from the response.
 
 <Tabs>
-<Tab title="Python SDK">
+  <Tab title="Python SDK">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langgraph_sdk import get_client
 
-```python
-from langgraph_sdk import get_client
+    client = get_client(url="<DEPLOYMENT_URL>", api_key="<API_KEY>")
 
-client = get_client(url="<DEPLOYMENT_URL>", api_key="<API_KEY>")
+    thread = await client.threads.create()
+    thread_id = thread["thread_id"]
 
-thread = await client.threads.create()
-thread_id = thread["thread_id"]
+    feedback_urls = {}
 
-feedback_urls = {}
+    async for event in client.runs.stream(
+        thread_id,
+        "agent",
+        input={
+            "messages": [
+                {"role": "user", "content": "Tell me a joke about databases."}
+            ]
+        },
+        stream_mode="updates",
+        feedback_keys=["user_liked", "user_disliked"],
+    ):
+        if event.event == "feedback":
+            # Example: {"user_liked": ".../feedback/tokens/<id>", "user_disliked": "..."}
+            feedback_urls = event.data
+            print("Feedback URLs:", feedback_urls)
+        elif event.event == "updates":
+            print(event.data)
+    ```
+  </Tab>
 
-async for event in client.runs.stream(
-    thread_id,
-    "agent",
-    input={
-        "messages": [
-            {"role": "user", "content": "Tell me a joke about databases."}
-        ]
-    },
-    stream_mode="updates",
-    feedback_keys=["user_liked", "user_disliked"],
-):
-    if event.event == "feedback":
-        # Example: {"user_liked": ".../feedback/tokens/<id>", "user_disliked": "..."}
-        feedback_urls = event.data
-        print("Feedback URLs:", feedback_urls)
-    elif event.event == "updates":
-        print(event.data)
-```
+  <Tab title="JavaScript SDK">
+    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { Client } from "@langchain/langgraph-sdk";
 
-</Tab>
-<Tab title="JavaScript SDK">
+    const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<API_KEY>" });
 
-```javascript
-import { Client } from "@langchain/langgraph-sdk";
+    const thread = await client.threads.create();
+    const threadId = thread.thread_id;
 
-const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<API_KEY>" });
+    let feedbackUrls = {};
 
-const thread = await client.threads.create();
-const threadId = thread.thread_id;
+    const streamResponse = client.runs.stream(threadId, "agent", {
+      input: {
+        messages: [{ role: "user", content: "Tell me a joke about databases." }],
+      },
+      streamMode: "updates",
+      feedbackKeys: ["user_liked", "user_disliked"],
+    });
 
-let feedbackUrls = {};
+    for await (const event of streamResponse) {
+      if (event.event === "feedback") {
+        // Example: { user_liked: ".../feedback/tokens/<id>", user_disliked: "..." }
+        feedbackUrls = event.data;
+        console.log("Feedback URLs:", feedbackUrls);
+      } else if (event.event === "updates") {
+        console.log(event.data);
+      }
+    }
+    ```
+  </Tab>
 
-const streamResponse = client.runs.stream(threadId, "agent", {
-  input: {
-    messages: [{ role: "user", content: "Tell me a joke about databases." }],
-  },
-  streamMode: "updates",
-  feedbackKeys: ["user_liked", "user_disliked"],
-});
-
-for await (const event of streamResponse) {
-  if (event.event === "feedback") {
-    // Example: { user_liked: ".../feedback/tokens/<id>", user_disliked: "..." }
-    feedbackUrls = event.data;
-    console.log("Feedback URLs:", feedbackUrls);
-  } else if (event.event === "updates") {
-    console.log(event.data);
-  }
-}
-```
-
-</Tab>
-<Tab title="cURL">
-
-```bash
-curl --request POST \
-  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream" \
-  --header "Content-Type: application/json" \
-  --header "x-api-key: <API_KEY>" \
-  --data '{
-    "assistant_id": "agent",
-    "input": {
-      "messages": [
-        {
-          "role": "user",
-          "content": "Tell me a joke about databases."
-        }
-      ]
-    },
-    "stream_mode": "updates",
-    "feedback_keys": ["user_liked", "user_disliked"]
-  }'
-```
-
-</Tab>
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl --request POST \
+      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream" \
+      --header "Content-Type: application/json" \
+      --header "x-api-key: <API_KEY>" \
+      --data '{
+        "assistant_id": "agent",
+        "input": {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Tell me a joke about databases."
+            }
+          ]
+        },
+        "stream_mode": "updates",
+        "feedback_keys": ["user_liked", "user_disliked"]
+      }'
+    ```
+  </Tab>
 </Tabs>
 
 ## Handle the streamed `feedback` event
 
 The stream emits a `feedback` event like the following:
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 event: feedback
 data: {"user_liked":"https://api.smith.langchain.com/api/v1/feedback/tokens/ef19fedf-dcac-4cbb-a59c-00661efd6425", "user_disliked": "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5"}
 ```
@@ -134,27 +130,29 @@ When the user chooses a feedback option, `POST` to the corresponding URL. `GET` 
 For example, if the user clicks a thumbs down button, call the `user_disliked` URL:
 
 <Tabs>
-<Tab title="POST">
-```bash
-curl --request POST \
-  --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5" \
-  --header "Content-Type: application/json" \
-  --data '{
-    "score": 1,
-    "value": 0,
-    "comment": "I didn't like this joke because it didn't make me laugh.",
-    "correction": {},
-    "metadata": {}
-  }'
-```
-</Tab>
-<Tab title="GET">
-`metadata` is not supported with `GET`.
-```bash
-curl --request GET \
-  --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5?score=1&value=0&comment=I%20didn%27t%20like%20this%20joke%20because%20it%20didn%27t%20make%20me%20laugh.&correction=%7B%7D"
-```
-</Tab>
+  <Tab title="POST">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl --request POST \
+      --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5" \
+      --header "Content-Type: application/json" \
+      --data '{
+        "score": 1,
+        "value": 0,
+        "comment": "I didn't like this joke because it didn't make me laugh.",
+        "correction": {},
+        "metadata": {}
+      }'
+    ```
+  </Tab>
+
+  <Tab title="GET">
+    `metadata` is not supported with `GET`.
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl --request GET \
+      --url "https://api.smith.langchain.com/api/v1/feedback/tokens/e952734e-c0a0-417b-a04d-fc2209691ed5?score=1&value=0&comment=I%20didn%27t%20like%20this%20joke%20because%20it%20didn%27t%20make%20me%20laugh.&correction=%7B%7D"
+    ```
+  </Tab>
 </Tabs>
 
 After this request succeeds, LangSmith records feedback on the trace using the key `user_disliked`.
@@ -165,8 +163,8 @@ The `user_liked` and `user_disliked` keys can also be modeled under a single key
 
 For example:
 
-- Use `key="user_score"` with `score=1` for `user_liked`
-- Use `key="user_score"` with `score=-1` for `user_disliked`
+* Use `key="user_score"` with `score=1` for `user_liked`
+* Use `key="user_score"` with `score=-1` for `user_disliked`
 
 This can simplify analysis because all user preference signals are grouped under one feedback key.
 
@@ -184,13 +182,14 @@ Example high-level implementation:
 4. On feedback submission, `POST` or `GET` a feedback URL based on the user's feedback intent.
 5. Optionally disable the feedback controls after submission and show confirmation to the user.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-feedback.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

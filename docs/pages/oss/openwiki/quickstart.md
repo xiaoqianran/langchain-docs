@@ -2,70 +2,72 @@
 
 # Quickstart
 
+Install OpenWiki, configure a model provider, and generate your first wiki.
+
 OpenWiki is a CLI that writes and maintains a Markdown wiki for your codebase or personal knowledge. Coding agents use that wiki as durable context, so they spend less time and fewer tokens rediscovering architecture, integrations, and other repository details. Humans can read the same docs, but agents are the primary audience. This guide covers installation, provider setup, and your first documentation run. For a feature overview, see [OpenWiki overview](/oss/openwiki/overview).
 
 ## Install and generate repository docs
 
 <Steps>
-    <Step title="Install the CLI" icon="package">
-        ```bash
-        npm install -g openwiki
-        ```
+  <Step title="Install the CLI" icon="package">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install -g openwiki
+    ```
 
-        On Windows, prefer `npm` or `pnpm`. Installing with Bun can fall back to compiling the native `better-sqlite3` dependency and may require Visual Studio Build Tools with the Desktop development with C++ workload.
-    </Step>
+    On Windows, prefer `npm` or `pnpm`. Installing with Bun can fall back to compiling the native `better-sqlite3` dependency and may require Visual Studio Build Tools with the Desktop development with C++ workload.
+  </Step>
 
-    <Step title="Initialize in your repository" icon="player-play">
-        From the repository root, run the following command:
+  <Step title="Initialize in your repository" icon="player-play">
+    From the repository root, run the following command:
 
-        ```bash
-        openwiki --init
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki --init
+    ```
 
-        On the first interactive run, OpenWiki prompts for:
+    On the first interactive run, OpenWiki prompts for:
 
-        - An inference provider and model
-        - The provider API key (or equivalent credentials)
-        - An optional LangSmith API key for tracing
-        - LangSmith projects to enrich the wiki from runtime traces
+    * An inference provider and model
+    * The provider API key (or equivalent credentials)
+    * An optional LangSmith API key for tracing
+    * LangSmith projects to enrich the wiki from runtime traces
 
-        OpenWiki saves its configuration and secrets to `~/.openwiki/.env`.
+    OpenWiki saves its configuration and secrets to `~/.openwiki/.env`.
 
-        Running `--init` again regenerates the repository wiki and Claims from scratch while preserving `openwiki/INSTRUCTIONS.md`. Interrupted runs on a persistent checkout resume from `openwiki/.run.json`.
+    Running `--init` again regenerates the repository wiki and Claims from scratch while preserving `openwiki/INSTRUCTIONS.md`. Interrupted runs on a persistent checkout resume from `openwiki/.run.json`.
 
-        To run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations).
-    </Step>
+    To run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations).
+  </Step>
 
-    <Step title="Review the generated wiki" icon="book">
-        OpenWiki writes documentation to `openwiki/` in the repository, including a quickstart entrypoint and topic pages. It also maintains an `AGENTS.md` and `CLAUDE.md` at the repository root, adding a block that instructs coding agents to consult the wiki for codebase context. Factual pages are grounded with Claims under `openwiki/.claims/`.
+  <Step title="Review the generated wiki" icon="book">
+    OpenWiki writes documentation to `openwiki/` in the repository, including a quickstart entrypoint and topic pages. It also maintains an `AGENTS.md` and `CLAUDE.md` at the repository root, adding a block that instructs coding agents to consult the wiki for codebase context. Factual pages are grounded with Claims under `openwiki/.claims/`.
 
-        Repository-specific wiki instructions live in `openwiki/INSTRUCTIONS.md`. OpenWiki reads this file for scope and priorities. To change it, edit the file, or ask OpenWiki in chat to change the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`). Normal `--init` and `--update` runs do not rewrite it.
+    Repository-specific wiki instructions live in `openwiki/INSTRUCTIONS.md`. OpenWiki reads this file for scope and priorities. To change it, edit the file, or ask OpenWiki in chat to change the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`). Normal `--init` and `--update` runs do not rewrite it.
 
-        To explore the wiki in a browser, run:
+    To explore the wiki in a browser, run:
 
-        ```bash
-        openwiki visualize
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki visualize
+    ```
 
-        This opens a local interactive node graph with a side-by-side Markdown reader. See [Visualize your wiki](/oss/openwiki/visualize).
-    </Step>
+    This opens a local interactive node graph with a side-by-side Markdown reader. See [Visualize your wiki](/oss/openwiki/visualize).
+  </Step>
 
-    <Step title="Keep docs up to date" icon="refresh">
-        Refresh documentation after code changes:
+  <Step title="Keep docs up to date" icon="refresh">
+    Refresh documentation after code changes:
 
-        ```bash
-        openwiki --update
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki --update
+    ```
 
-        In code mode, updates also reconcile stale Claims when source evidence changes. For automated updates in CI, see [Automate updates](/oss/openwiki/automate-updates).
-    </Step>
+    In code mode, updates also reconcile stale Claims when source evidence changes. For automated updates in CI, see [Automate updates](/oss/openwiki/automate-updates).
+  </Step>
 </Steps>
 
 ## Personal wiki (optional)
 
 To initialize a local personal brain instead of repository docs:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki personal --init
 ```
 
@@ -75,13 +77,13 @@ Personal mode writes to `~/.openwiki/wiki` and can ingest configured connectors 
 
 Bare `openwiki` opens an interactive session in code mode for the current repository. Pass a message to start with a request:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki "Please generate documentation for this repository"
 ```
 
 Use `-p` / `--print` for a one-shot non-interactive run that prints the final assistant output and exits:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki -p "Summarize what you can do"
 ```
 
@@ -91,7 +93,7 @@ In chat, use `/api-key` to update the current provider API key, `/langsmith-key`
 
 During onboarding, provide a LangSmith API key to trace OpenWiki runs to a LangSmith project named `openwiki`. You can also set these values in `~/.openwiki/.env` or the process environment:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=your-key
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_PROJECT=openwiki
@@ -101,20 +103,21 @@ To enrich the repository wiki from LangSmith traces (separate from tracing OpenW
 
 ## Next steps
 
-- [Code mode](/oss/openwiki/code-mode): repository wikis, Claims, OKF output, and agent instruction files
-- [Coding-agent integrations](/oss/openwiki/integrations): run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor
-- [Personal mode](/oss/openwiki/personal-mode): local brain and connectors
-- [Model providers](/oss/openwiki/providers): supported providers and credentials
-- [Automate updates](/oss/openwiki/automate-updates): GitHub Actions, GitLab CI, and Bitbucket Pipelines
-- [CLI reference](/oss/openwiki/cli-reference): commands and flags
+* [Code mode](/oss/openwiki/code-mode): repository wikis, Claims, OKF output, and agent instruction files
+* [Coding-agent integrations](/oss/openwiki/integrations): run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor
+* [Personal mode](/oss/openwiki/personal-mode): local brain and connectors
+* [Model providers](/oss/openwiki/providers): supported providers and credentials
+* [Automate updates](/oss/openwiki/automate-updates): GitHub Actions, GitLab CI, and Bitbucket Pipelines
+* [CLI reference](/oss/openwiki/cli-reference): commands and flags
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

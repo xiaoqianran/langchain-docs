@@ -4,6 +4,8 @@
 
 # 引入您自己的 IAM 角色 (AWS)
 
+为 LangSmith BYOC 创建客户管理的 IAM 角色，从预配角色中删除 IAM 管理权限，并使用现有角色进行部署。
+
 自带 IAM (BYOIAM) 可让您创建和管理 LangSmith BYOC 数据平面使用的 AWS IAM 资源。您可以控制角色、策略和权限边界，而 LangChain 使用这些资源配置和操作数据平面。
 
 如果您希望LangChain管理IAM资源，请遵循标准[BYOC onboarding guide](/langsmith/byoc-onboarding)。
@@ -24,7 +26,7 @@
 
 以下配置为两个区域创建共享 IAM 资源：
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 module "byoiam" {
   source = "github.com/langchain-ai/terraform//modules/byoc/aws/byoiam?ref=main"
 
@@ -42,8 +44,8 @@ module "byoiam" {
 
 设置 `allow_iam_management_permissions = false` 会更改角色的权限：
 
-- **删除**：IAM 创建、修改和删除权限，包括服务相关角色创建。
-- **保留**：IAM 读取权限，范围为 `iam:PassRole` 和 `iam:SimulatePrincipalPolicy`，以使用和验证您的现有资源。
+* **删除**：IAM 创建、修改和删除权限，包括服务相关角色创建。
+* **保留**：IAM 读取权限，范围为 `iam:PassRole` 和 `iam:SimulatePrincipalPolicy`，以使用和验证您的现有资源。
 
 启用 `allow_delete_permissions` 不会恢复 IAM 管理权限。
 
@@ -52,7 +54,7 @@ module "byoiam" {
 ## 使用现有角色部署数据平面
 
 <Warning>
-您必须使用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) 创建 LangSmith 所需的确切 IAM 角色。 LangSmith 在部署数据平面之前对这些 IAM 资源执行广泛的验证。
+  您必须使用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) 创建 LangSmith 所需的确切 IAM 角色。 LangSmith 在部署数据平面之前对这些 IAM 资源执行广泛的验证。
 </Warning>
 
 **使用现有 IAM 角色** 复选框将数据平面配置为使用您创建的 IAM 资源。
@@ -66,17 +68,18 @@ module "byoiam" {
 
 ## 另请参阅
 
-- [BYOC onboarding](/langsmith/byoc-onboarding)
-- [Bring your own VPC on AWS](/langsmith/byoc-byovpc)
-- [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
+* [BYOC onboarding](/langsmith/byoc-onboarding)
+* [Bring your own VPC on AWS](/langsmith/byoc-byovpc)
+* [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

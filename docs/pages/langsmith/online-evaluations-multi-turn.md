@@ -7,6 +7,7 @@ Multi-turn online evaluators allow you to evaluate entire conversations between 
 <Tip>To use a LangChain-managed, thread-level judge without configuring a model, API key, or prompt, see [LangChain Tuned Evaluators](/langsmith/tuned-evaluators).</Tip>
 
 You can use multi-turn evaluations to measure:
+
 1. Semantic Intent: What the user was trying to do.
 2. Semantic Outcome: What actually happened, did the task succeed.
 3. Trajectory: How the conversation unfolded, including trajectory of tool calls.
@@ -27,75 +28,82 @@ This lifecycle means that multi-turn evaluators run once per completed thread, n
 
 ## Prerequisites
 
-- Your tracing project must be using [threads](/langsmith/threads).
-- The top-level inputs and outputs of each trace in a thread must have a `messages` key that contains a list of messages. We support messages in [LangChain](/langsmith/log-llm-trace#messages-format), [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create), and [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) formats.
-    - If the top-level inputs and outputs of each trace only contain the latest message in the conversation, LangSmith will automatically combine messages across turns into a thread.
-    - If the top-level inputs and outputs of each trace contain the full conversation history, LangSmith will use that directly.
+* Your tracing project must be using [threads](/langsmith/threads).
+* The top-level inputs and outputs of each trace in a thread must have a `messages` key that contains a list of messages. We support messages in [LangChain](/langsmith/log-llm-trace#messages-format), [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create), and [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) formats.
+  * If the top-level inputs and outputs of each trace only contain the latest message in the conversation, LangSmith will automatically combine messages across turns into a thread.
+  * If the top-level inputs and outputs of each trace contain the full conversation history, LangSmith will use that directly.
 
 <Note>
-If your traces don't follow the format above, thread level evaluators won't work. You'll need to update how you trace to LangSmith to ensure each trace's top-level inputs and outputs contain a list of `messages`.
+  If your traces don't follow the format above, thread level evaluators won't work. You'll need to update how you trace to LangSmith to ensure each trace's top-level inputs and outputs contain a list of `messages`.
 
-Please refer to the [troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting) section for more information.
+  Please refer to the [troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting) section for more information.
 </Note>
 
 ## Configuration
 
 1. Navigate to the **Tracing** page and select a tracing project.
+
 2. Click the **Evaluators** tab, then click **+ Evaluator**. Select **LLM-as-a-Judge Evaluator** under **Create from scratch**. Under **Source**, select **Threads**.
+
 3. **Name your evaluator**.
+
 4. Apply **Filters** or a **Sampling Rate**.
 
-    Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
+   Use filters or sampling to control evaluator cost. For example, evaluate only threads under *N* turns or sample 10% of all threads.
+
 5. **Configure an idle time**.
 
-    The first time you configure a thread-level evaluator, you can define the idle time, the amount of time after the last trace in a thread before it is considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. The idle time defaults to 10 minutes and cannot be set below 2 minutes.
-    <Note>
-    The idle time is a project-level setting. It applies to every thread-level evaluator in the project and to every [automation rule](/langsmith/rules#set-the-thread-idle-time) whose item type is **Threads**.
-    </Note>
-    <Tip>
-    When first testing your evaluator, use a short idle time so you can see results quickly, subject to the 2-minute minimum. Once validated, increase it to match the expected length of user interactions.
-    </Tip>
+   The first time you configure a thread-level evaluator, you can define the idle time, the amount of time after the last trace in a thread before it is considered complete and ready for evaluation. This value should reflect the expected length of user interactions in your app. The idle time defaults to 10 minutes and cannot be set below 2 minutes.
+
+   <Note>
+     The idle time is a project-level setting. It applies to every thread-level evaluator in the project and to every [automation rule](/langsmith/rules#set-the-thread-idle-time) whose item type is **Threads**.
+   </Note>
+
+   <Tip>
+     When first testing your evaluator, use a short idle time so you can see results quickly, subject to the 2-minute minimum. Once validated, increase it to match the expected length of user interactions.
+   </Tip>
 
 6. **Configure your model.**
 
-    Select the provider and model you want to use for your evaluator. Threads tend to get long, so you should use a model with a higher context window in order to avoid running into limits. For example, OpenAI's GPT-5.4 mini or Gemini 2.5 Flash are good options as they both have 1M+ token context windows.
+   Select the provider and model you want to use for your evaluator. Threads tend to get long, so you should use a model with a higher context window in order to avoid running into limits. For example, OpenAI's GPT-5.4 mini or Gemini 2.5 Flash are good options as they both have 1M+ token context windows.
 
 7. **Configure your LLM-as-a-judge prompt.**
 
-    Define what you want to evaluate. This prompt will be used to evaluate the thread. You can also configure which parts of the assembled conversation are passed to the evaluator through the `all_messages` variable to control the content it receives:
-        - All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
-        - Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
-        - First human and last AI: Send only the first user message and the last assistant reply.
+   Define what you want to evaluate. This prompt will be used to evaluate the thread. You can also configure which parts of the assembled conversation are passed to the evaluator through the `all_messages` variable to control the content it receives:
+
+   * All messages: Send the full conversation as a list of JSON message objects in OpenAI chat format (`{"role": ..., "content": ...}`), with each message rendered as indented JSON and separated by a blank line.
+   * Human and AI pairs: Send only user and assistant messages, formatted as `<user>...</user>` and `<assistant>...</assistant>` and excluding system messages, tool calls, and other roles.
+   * First human and last AI: Send only the first user message and the last assistant reply.
 
 8. **Set up your feedback configuration**.
 
-    Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
+   Configure a name for the feedback key, the format for the feedback you want to collect and optionally enable reasoning on the feedback.
 
-    <Warning>
-    Using the same feedback key for a thread-level evaluator and a run-level evaluator is **not recommended** as it can be hard to distinguish between the two.
-    </Warning>
+   <Warning>
+     Using the same feedback key for a thread-level evaluator and a run-level evaluator is **not recommended** as it can be hard to distinguish between the two.
+   </Warning>
 
 9. **Save your evaluator.**
 
-    After saving, your evaluator will appear in the **Evaluators** tab. You can test it once the idle time has passed for any new threads created after saving.
+   After saving, your evaluator will appear in the **Evaluators** tab. You can test it once the idle time has passed for any new threads created after saving.
 
 ## Evaluate trajectories
 
 `trajectory` is one of the variables a thread evaluator can use, alongside `all_messages`, `human_ai_pairs`, and `first_human_last_ai`. It resolves to the [trajectory](/langsmith/observability-concepts#trajectories) of the conversation: the flat, ordered list of messages from start to finish, including tool calls and their results. Use it to score the path an agent took, such as whether it picked the right tools, followed its plan, and got there without wasted steps.
 
 <Note>
-The `trajectory` variable is available on [LangSmith Cloud](/langsmith/cloud) in the GCP US region ([smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-online-evaluations-multi-turn)) only. It is not available in the GCP EU, GCP APAC, or AWS US regions, or on [self-hosted](/langsmith/self-hosted) and [BYOC](/langsmith/byoc) deployments. Self-hosted support is not included in the LangSmith v0.16.0 stable release. Support for self-hosted and BYOC deployments becomes available in a future release.
+  The `trajectory` variable is available on [LangSmith Cloud](/langsmith/cloud) in the GCP US region ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) only. It is not available in the GCP EU, GCP APAC, or AWS US regions, or on [self-hosted](/langsmith/self-hosted) and [BYOC](/langsmith/byoc) deployments. Self-hosted support is not included in the LangSmith v0.16.0 stable release. Support for self-hosted and BYOC deployments becomes available in a future release.
 </Note>
 
 The variables differ in what the judge receives:
 
-- **`all_messages`, `human_ai_pairs`, and `first_human_last_ai`** resolve to the conversation assembled from the inputs and outputs of each root run in the thread. Work that happens in child runs, such as intermediate model calls, tool calls, and tool result, is not included unless a root run's own inputs or outputs contain it. human_ai_pairs and first_human_last_ai narrow further to user and assistant messages only.
-- **`trajectory`** resolves to the trajectory built from the model and tool calls inside each trace. The tool calls and tool results the other views omit are preserved.
+* **`all_messages`, `human_ai_pairs`, and `first_human_last_ai`** resolve to the conversation assembled from the inputs and outputs of each root run in the thread. Work that happens in child runs, such as intermediate model calls, tool calls, and tool result, is not included unless a root run's own inputs or outputs contain it. human\_ai\_pairs and first\_human\_last\_ai narrow further to user and assistant messages only.
+* **`trajectory`** resolves to the trajectory built from the model and tool calls inside each trace. The tool calls and tool results the other views omit are preserved.
 
 For the message shape each variable resolves to, see [Thread message variables](/langsmith/prompt-template-format#thread-message-variables).
 
 <Warning>
-A trajectory is typically larger than any of the other views, because it encompasses both root and child runs. Choose a model with a high context window, as described in step 6 of [Configuration](#configuration), and expect higher token usage per evaluation.
+  A trajectory is typically larger than any of the other views, because it encompasses both root and child runs. Choose a model with a high context window, as described in step 6 of [Configuration](#configuration), and expect higher token usage per evaluation.
 </Warning>
 
 ### Use the trajectory variable
@@ -114,24 +122,24 @@ When the evaluator completes, LangSmith writes feedback to the most recent root 
 For a complete prompt you can adapt, see [Example with trajectory context](/langsmith/prompt-template-format#example-with-trajectory-context).
 
 <Warning>
-The choice is fixed when you create the evaluator. To move an existing evaluator between `trajectory` and the other thread variables, delete it and create a new one.
+  The choice is fixed when you create the evaluator. To move an existing evaluator between `trajectory` and the other thread variables, delete it and create a new one.
 </Warning>
 
 ### Settings and constraints
 
 An evaluator that uses `trajectory` supports the following settings:
 
-- **Filters**: Limit which threads the evaluator runs on.
-- **Sampling rate**: Evaluate a percentage of the threads that match your filters.
-- **Idle time**: The project-level thread idle time, which applies to every thread-level evaluator in the project.
+* **Filters**: Limit which threads the evaluator runs on.
+* **Sampling rate**: Evaluate a percentage of the threads that match your filters.
+* **Idle time**: The project-level thread idle time, which applies to every thread-level evaluator in the project.
 
 The following options are not available, and a configuration that includes one is rejected:
 
-- Datasets and experiments as a source.
-- Backfill over existing threads.
-- Trace filters and tree filters.
-- Few-shot examples, extended stats, and dataset corrections.
-- Code evaluators on the same automation rule, and non-evaluator actions such as adding threads to an annotation queue.
+* Datasets and experiments as a source.
+* Backfill over existing threads.
+* Trace filters and tree filters.
+* Few-shot examples, extended stats, and dataset corrections.
+* Code evaluators on the same automation rule, and non-evaluator actions such as adding threads to an annotation queue.
 
 A trajectory is not a run, so any option that reads run-level fields is unavailable.
 
@@ -139,29 +147,30 @@ A trajectory is not a run, so any option that reads run-level fields is unavaila
 
 These are the current limits for thread-level processing (subject to change). They apply to multi-turn online evaluators and to [automation rules](/langsmith/rules#set-the-item-type-to-runs-or-threads) whose item type is **Threads**. Reach out if you are running into any of these limits.
 
-- **Runs must be less than one week old**: When a thread becomes idle, only runs within the past 7 days are eligible for evaluation.
-- **Maximum of 500 threads processed at once**: A single execution processes at most 500 matching threads, ordered by most recent activity.
-- **Maximum of 10 multi-turn online evaluators per workspace**
+* **Runs must be less than one week old**: When a thread becomes idle, only runs within the past 7 days are eligible for evaluation.
+* **Maximum of 500 threads processed at once**: A single execution processes at most 500 matching threads, ordered by most recent activity.
+* **Maximum of 10 multi-turn online evaluators per workspace**
 
 ## Troubleshooting
 
 **Checking the status of your evaluator**
 
-    You can check when your evaluator was last run by heading to the **Evaluators** tab within a tracing project and clicking the **Logs** button for the evaluator you created to view its run history.
+You can check when your evaluator was last run by heading to the **Evaluators** tab within a tracing project and clicking the **Logs** button for the evaluator you created to view its run history.
 
 **Inspect the data sent to the evaluator**
 
-    Inspect the data sent to the evaluator by heading to the **Evaluators** tab within a tracing project, clicking on the evaluator you created and clicking the **Evaluator traces** tab.
+Inspect the data sent to the evaluator by heading to the **Evaluators** tab within a tracing project, clicking on the evaluator you created and clicking the **Evaluator traces** tab.
 
-    In this tab, you can see the inputs passed into the LLM-as-a-judge evaluator. If your messages are not being passed in correctly, you will see blank values in the inputs. This can happen if your messages are not formatted in one of [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites).
+In this tab, you can see the inputs passed into the LLM-as-a-judge evaluator. If your messages are not being passed in correctly, you will see blank values in the inputs. This can happen if your messages are not formatted in one of [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-multi-turn.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

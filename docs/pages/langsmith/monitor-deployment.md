@@ -2,6 +2,8 @@
 
 # Monitor a deployment
 
+View build logs, server logs, and metrics for a LangSmith Cloud deployment.
+
 Monitor a Cloud deployment with build logs, Agent Server logs, and runtime metrics. Use logs to investigate a specific revision and metrics to track deployment performance over time.
 
 ## View deployment logs
@@ -13,39 +15,40 @@ Each revision includes build logs and server logs.
     From the **Deployments** view:
 
     1. Select a deployment.
-    1. In the **Revisions** table, select a revision. The details panel opens with the **Build** tab selected.
-    1. Review the build logs.
-    1. Select the **Server** tab to view server logs. Server logs become available after LangSmith deploys the revision.
-    1. Adjust the date and time range as needed. The default range is **Last 7 days**.
+    2. In the **Revisions** table, select a revision. The details panel opens with the **Build** tab selected.
+    3. Review the build logs.
+    4. Select the **Server** tab to view server logs. Server logs become available after LangSmith deploys the revision.
+    5. Adjust the date and time range as needed. The default range is **Last 7 days**.
   </Tab>
+
   <Tab title="LangGraph CLI">
     To view server logs, run:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy logs
     ```
 
     To view build logs, run:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy logs --type build
     ```
 
     To stream new logs, run:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy logs --follow
     ```
 
     Filter logs by time range, log level, or search string:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
     ```
 
     To select a deployment, pass its name or ID:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy logs --name my-agent
     langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
     ```
@@ -58,8 +61,8 @@ Each revision includes build logs and server logs.
 
 To forward Agent Server logs to Datadog, configure these environment variables or secrets on the deployment:
 
-- **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/).
-- **`DD_LOGS_ENABLED=true`**: Enables log forwarding.
+* **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/).
+* **`DD_LOGS_ENABLED=true`**: Enables log forwarding.
 
 To correlate logs with traces, also set `DD_LOGS_INJECTION=true`. For all supported Datadog variables, see [Supported Datadog environment variables](/langsmith/env-var#dd_api_key).
 
@@ -67,23 +70,24 @@ To correlate logs with traces, also set `DD_LOGS_INJECTION=true`. For all suppor
 
 To view deployment metrics:
 
-1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-monitor-deployment), select **Deployments**.
-1. Select a deployment.
-1. Select the **Monitoring** tab. For metric definitions, see [Control plane monitoring](/langsmith/control-plane#monitoring).
-1. Adjust the date and time range as needed. The default range is **Last 15 minutes**.
+1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-monitor-deployment), select **Deployments**.
+2. Select a deployment.
+3. Select the **Monitoring** tab. For metric definitions, see [Control plane monitoring](/langsmith/control-plane#monitoring).
+4. Adjust the date and time range as needed. The default range is **Last 15 minutes**.
 
 ## See also
 
-- [Revisions](/langsmith/deployment-revisions)
-- [Manage a deployment](/langsmith/manage-deployment)
+* [Revisions](/langsmith/deployment-revisions)
+* [Manage a deployment](/langsmith/manage-deployment)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monitor-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -7,18 +7,19 @@ Safari blocks plain-HTTP traffic on localhost. When running Studio with `langgra
 ### Solution 1: Use Cloudflare Tunnel
 
 <Tabs>
-    <Tab title="Python">
-    ```shell
+  <Tab title="Python">
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U langgraph-cli>=0.2.6
     langgraph dev --tunnel
     ```
-    </Tab>
-    <Tab title="JS">
-    ```shell
+  </Tab>
+
+  <Tab title="JS">
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Requires @langchain/langgraph-cli>=0.0.26
     npx @langchain/langgraph-cli dev --tunnel
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 The command outputs a tunnel URL. To connect Studio:
@@ -32,7 +33,7 @@ The command outputs a tunnel URL. To connect Studio:
 This manual step is required for security - Studio requires explicit user confirmation before connecting to external URLs.
 
 <Note>
-Cloudflare tunnels can be unreliable and may intermittently disconnect.
+  Cloudflare tunnels can be unreliable and may intermittently disconnect.
 </Note>
 
 ### Solution 2: Use Chromium browser
@@ -47,10 +48,10 @@ Starting with Chrome version 142, you may experience "Failed to initialize Studi
 
 ### Symptoms
 
-- Running `langgraph dev` starts the server successfully.
-- Navigating to `http://127.0.0.1:2024/docs` shows the API documentation correctly.
-- LangSmith Studio at `https://smith.langchain.com` shows: "Failed to initialize Studio - Please verify if the API server is running or accessible from the browser. TypeError: Failed to fetch".
-- Browser console shows errors like: `Permission was denied for this request to access the 'unknown' address space`.
+* Running `langgraph dev` starts the server successfully.
+* Navigating to `http://127.0.0.1:2024/docs` shows the API documentation correctly.
+* LangSmith Studio at `https://smith.langchain.com` shows: "Failed to initialize Studio - Please verify if the API server is running or accessible from the browser. TypeError: Failed to fetch".
+* Browser console shows errors like: `Permission was denied for this request to access the 'unknown' address space`.
 
 ### Solution: Allow local network access in Chrome
 
@@ -75,7 +76,7 @@ Browser extensions (especially Ollama Chrome extension or AI model extensions) c
 
 **Verify dependencies are up to date**
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install -U "langgraph-cli[inmem]"
 ```
 
@@ -97,18 +98,19 @@ Disable Brave Shields for LangSmith using the Brave icon in the URL bar.
 ### Solution 2: Use Cloudflare Tunnel
 
 <Tabs>
-    <Tab title="Python">
-    ```shell
+  <Tab title="Python">
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U langgraph-cli>=0.2.6
     langgraph dev --tunnel
     ```
-    </Tab>
-    <Tab title="JS">
-    ```shell
+  </Tab>
+
+  <Tab title="JS">
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Requires @langchain/langgraph-cli>=0.0.26
     npx @langchain/langgraph-cli dev --tunnel
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 The command outputs a tunnel URL. To connect Studio:
@@ -131,24 +133,24 @@ because without proper definition, Studio assumes the conditional edge could acc
 Define a mapping between router outputs and target nodes:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```ts
+  </Tab>
+
+  <Tab title="Javascript">
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
-<a id="python"></a>
 ### Solution 2: Router type definition
 
 Specify possible routing destinations using Python's `Literal` type:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def routing_function(state: GraphState) -> Literal["node_b","node_c"]:
     if state['some_condition'] == True:
         return "node_b"
@@ -162,20 +164,21 @@ def routing_function(state: GraphState) -> Literal["node_b","node_c"]:
 
 Check the following:
 
-- **Deployed application**: If your application is deployed on LangSmith, you may need to create a new revision to enable this feature.
-- **Local development server**: If you are running your application locally, make sure you have upgraded to the latest version of the `langgraph-cli` (`pip install -U langgraph-cli`). Additionally, ensure you have tracing enabled by setting the `LANGSMITH_API_KEY` in your project's `.env` file.
+* **Deployed application**: If your application is deployed on LangSmith, you may need to create a new revision to enable this feature.
+* **Local development server**: If you are running your application locally, make sure you have upgraded to the latest version of the `langgraph-cli` (`pip install -U langgraph-cli`). Additionally, ensure you have tracing enabled by setting the `LANGSMITH_API_KEY` in your project's `.env` file.
 
 ### Evaluator results are missing
 
 When you run an experiment, any attached evaluators are scheduled for execution in a queue. If you don't see results immediately, it likely means they are still pending.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -3,13 +3,13 @@
 # Trace LiveKit applications
 
 <Note>
-This integration is in beta, so its API may change.
+  This integration is in beta, so its API may change.
 </Note>
 
 Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents, including their transcripts and audio recordings. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
 <Note>
-This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
+  This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
 </Note>
 
 Each conversation appears as one LangSmith trace with its pipeline events, latency, and token metrics.
@@ -19,22 +19,20 @@ Each conversation appears as one LangSmith trace with its pipeline events, laten
 Install the integration along with the LiveKit plugins your agent uses:
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+  ```
 
-```bash pip
-pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-```
-
-```bash uv
-uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-```
-
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+  ```
 </CodeGroup>
 
 ## Set environment variables
 
 The integration reads your LangSmith credentials from the environment and exports to LangSmith for you via OpenTelemetry:
 
-```bash .env
+```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=<your-desired-langsmith-project>
@@ -48,7 +46,7 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 Call `configure_livekit` once before creating your `AgentServer`.
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import configure_livekit
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession
@@ -80,7 +78,7 @@ This setup works for both STT/LLM/TTS cascades and speech-to-speech (realtime) m
 
 If your application already manages an OpenTelemetry `TracerProvider`, add the LangSmith processor to that provider and register it with LiveKit:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import LiveKitLangSmithSpanProcessor
 from livekit.agents import telemetry
 from opentelemetry.sdk.trace import TracerProvider
@@ -95,7 +93,7 @@ telemetry.set_tracer_provider(provider)
 
 To group a conversation's runs into a LangSmith [thread](/langsmith/threads), call `set_thread_id` inside the session handler. Use a unique ID for each active session:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import configure_livekit, set_thread_id
 
 configure_livekit()
@@ -111,7 +109,7 @@ async def my_agent(ctx: agents.JobContext):
 
 For a speech-to-speech (realtime) model, call `instrument_session` after creating the `AgentSession` to capture the user's transcript. Pass the same thread ID to `set_thread_id` and `instrument_session`:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import configure_livekit, set_thread_id
 from livekit.plugins import openai as lk_openai
 
@@ -142,7 +140,7 @@ By default, the integration uses LiveKit's session recording. Use Egress mode wh
 
 Turn on LiveKit's session recording.
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import configure_livekit
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession
@@ -164,14 +162,14 @@ async def my_agent(ctx: agents.JobContext):
 By default, the LiveKit integration will capture the recording from LiveKit if present.
 
 <Note>
-In console mode, also pass `--record` on the command line (`python agent.py console --record`). Without it LiveKit creates the recorder but never starts it, so there is no file to attach. The recording reflects what was played to the client, so a barge-in shows up truncated.
+  In console mode, also pass `--record` on the command line (`python agent.py console --record`). Without it LiveKit creates the recorder but never starts it, so there is no file to attach. The recording reflects what was played to the client, so a barge-in shows up truncated.
 </Note>
 
 ### Record with Egress
 
 Use [LiveKit Egress](https://docs.livekit.io/home/egress/overview/) when you want the recording in your own object storage or need video. Egress recording delivery requires a thread ID. Configure the integration for Egress, then call `complete_recording` after the Egress file is available:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 import os
 import time
@@ -262,29 +260,30 @@ async def my_agent(ctx: agents.JobContext):
 
 `download_from_storage` represents your storage client's download operation. The default attachment name and MIME type are `recording.ogg` and `audio/ogg`. Set `name` or `mime_type` in `complete_recording` if your Egress output uses another format.
 
-
 <Note>
-Always call `complete_recording`, including on failure with `data=None`. Otherwise, the integration waits for `recording_timeout_seconds` (30 seconds by default) before exporting the trace without audio. Using `complete_recording` to capture Egress recordings requires setting a `thread_id`.
+  Always call `complete_recording`, including on failure with `data=None`. Otherwise, the integration waits for `recording_timeout_seconds` (30 seconds by default) before exporting the trace without audio. Using `complete_recording` to capture Egress recordings requires setting a `thread_id`.
 </Note>
 
 ## Next steps
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
     Core conventions for tracing voice agents.
   </Card>
+
   <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
     Attach the conversation audio recording to your trace.
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

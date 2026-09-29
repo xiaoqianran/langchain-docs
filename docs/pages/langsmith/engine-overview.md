@@ -2,6 +2,8 @@
 
 # LangSmith Engine
 
+LangSmith Engine is the agent for agent engineering, turning production traces into tracked issues, fixes, and datasets across the development lifecycle.
+
 LangSmith Engine is the LangSmith Agent for agent engineering. It works from your production traces to surface recurring issues, diagnose their root cause, and drive the fix across every stage of the development lifecycle.
 
 Each issue moves through a closed loop: a recurring issue is detected in your traces, the root cause is diagnosed, a fix is proposed, the issue is tracked as new traces matching the same pattern arrive, and if the issue resurfaces after being closed, Engine reopens it automatically.
@@ -10,13 +12,15 @@ Each issue moves through a closed loop: a recurring issue is detected in your tr
 
 For each issue, Engine surfaces the contributing traces, proposes a fix, keeps the issue current by attaching new traces that match the same failure pattern, and creates ground truth dataset examples from the production trace inputs.
 
-<CardGroup cols={3}>
+<CardGroup>
   <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-a-pull-request">
     Apply the proposed fix by opening a pull request in your connected repository. Engine can propose code changes to agents built with Deep Agents, LangChain, and LangGraph.
   </Card>
+
   <Card title="Test: Generate datasets" icon="database" href="/langsmith/engine#add-offline-examples">
     Create ground truth dataset examples from production traces for offline evaluation, so you can verify a fix before it ships.
   </Card>
+
   <Card title="Monitor: Track recurring issues" icon="chart-line" href="/langsmith/engine#filter-and-sort-issues">
     Scan your tracing projects on a schedule to surface, prioritize, and diagnose recurring issues, and add new matching traces to each issue as they appear.
   </Card>
@@ -28,22 +32,24 @@ Engine scans each connected tracing project on a dynamic schedule tuned to balan
 
 ## Get started
 
-<CardGroup cols={3}>
+<CardGroup>
   <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-engine">
     Enable Engine for your organization and configure it for a tracing project.
   </Card>
+
   <Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">
     Send detected issues to Slack or to your incident-management, paging, or chat tools through webhooks.
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -14,7 +14,7 @@ You can set up [custom authentication middleware](/langsmith/custom-auth) to aut
 
 An example architecture for this flow:
 
-```mermaid
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sequenceDiagram
   %% Actors
   participant ClientApp as Client
@@ -58,13 +58,13 @@ To use MCP, ensure you have the following dependencies installed:
 Install them with:
 
 <CodeGroup>
-```bash pip
-pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+  ```
 
-```bash uv
-uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+  ```
 </CodeGroup>
 
 ## Usage overview
@@ -80,15 +80,15 @@ To enable MCP:
 Use an MCP-compliant client to connect to the Agent Server. The following examples show how to connect using different programming languages.
 
 <Tabs>
-    <Tab title="JavaScript/TypeScript">
-    ```bash
+  <Tab title="JavaScript/TypeScript">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     npm install @modelcontextprotocol/sdk
     ```
 
-        > **Note**
-        > Replace `serverUrl` with your Agent Server URL and configure authentication headers as needed.
+    > **Note**
+    > Replace `serverUrl` with your Agent Server URL and configure authentication headers as needed.
 
-    ```js
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@modelcontextprotocol/sdk/client/index.js";
     import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
@@ -118,17 +118,18 @@ Use an MCP-compliant client to connect to the Agent Server. The following exampl
             console.error("Failed to connect client:", error);
         });
     ```
-    </Tab>
-    <Tab title="Python">
+  </Tab>
+
+  <Tab title="Python">
     Install the adapter with:
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install langchain-mcp-adapters
     ```
 
     Here is an example of how to connect to a remote MCP endpoint and use an agent as a tool:
 
-    ```python
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create server parameters for stdio connection
     from mcp import ClientSession
     from mcp.client.streamable_http import streamablehttp_client
@@ -164,7 +165,7 @@ Use an MCP-compliant client to connect to the Agent Server. The following exampl
     if __name__ == "__main__":
         asyncio.run(main())
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## Expose an agent as MCP tool
@@ -180,7 +181,7 @@ with this configuration:
 
 You can set the name and description of your agent in `langgraph.json`:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
     "graphs": {
         "my_agent": {
@@ -204,7 +205,7 @@ Instead, define **custom agents or workflows** that use explicitly typed input a
 
 For example, a workflow answering documentation questions might look like this:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import StateGraph, START, END
 from typing_extensions import TypedDict
 
@@ -241,13 +242,13 @@ For more details, see the [low-level concepts guide](/oss/python/langgraph/graph
 ## Use user-scoped MCP tools in your deployment
 
 <Tip>
-**Prerequisites**
-You have added your own [custom auth middleware](/langsmith/custom-auth) that populates the `langgraph_auth_user` object, making it accessible through configurable context for every node in your graph.
+  **Prerequisites**
+  You have added your own [custom auth middleware](/langsmith/custom-auth) that populates the `langgraph_auth_user` object, making it accessible through configurable context for every node in your graph.
 </Tip>
 
 To make user-scoped tools available to your LangSmith deployment, start with implementing a snippet like the following:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 def mcp_tools_node(state, config):
@@ -275,7 +276,7 @@ def mcp_tools_node(state, config):
 2. Your MCP server URL.
 3. Get available tools from your MCP server.
 
-_This can also be done by [rebuilding your graph at runtime](/langsmith/graph-rebuild) to have a different configuration for a new run_
+*This can also be done by [rebuilding your graph at runtime](/langsmith/graph-rebuild) to have a different configuration for a new run*
 
 ## Session behavior
 
@@ -289,7 +290,7 @@ The `/mcp` endpoint uses the same authentication as the rest of the LangGraph AP
 
 To disable the MCP endpoint, set `disable_mcp` to `true` in your `langgraph.json` configuration file:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "$schema": "https://langgra.ph/schema.json",
   "http": {
@@ -300,13 +301,14 @@ To disable the MCP endpoint, set `disable_mcp` to `true` in your `langgraph.json
 
 This will prevent the server from exposing the `/mcp` endpoint.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

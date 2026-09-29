@@ -2,8 +2,10 @@
 
 # Model access policies
 
+Control which model providers and models are accessible through the LLM Gateway for your organization, workspaces, users, or API keys.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A model access policy defines which providers and models are permitted through the [LLM Gateway](/langsmith/llm-gateway). The gateway blocks requests for providers or models the policy does not include, returning a `403` response. If no policy applies, all providers and models are available.
@@ -12,23 +14,23 @@ A model access policy defines which providers and models are permitted through t
 
 A model access policy lists one or more providers, each with an access mode:
 
-- **All models**: Every model the provider offers is permitted.
-- **Selected models**: Only the models you specify are permitted. At least one model is required.
+* **All models**: Every model the provider offers is permitted.
+* **Selected models**: Only the models you specify are permitted. At least one model is required.
 
 <Note>
-Model access policies do not yet support custom model providers. While a model access policy applies to a request, the gateway blocks the `/providers/{configName}` and `/models/{configName}` routes.
+  Model access policies do not yet support custom model providers. While a model access policy applies to a request, the gateway blocks the `/providers/{configName}` and `/models/{configName}` routes.
 </Note>
 
 ## Scopes and overrides
 
 A model access policy is scoped to one subject tier:
 
-| Tier | Applies to |
-| --- | --- |
+| Tier         | Applies to                                   |
+| ------------ | -------------------------------------------- |
 | Organization | All users and workspaces in the organization |
-| Workspace | All users in a workspace |
-| User | A single user |
-| API key | A single API key |
+| Workspace    | All users in a workspace                     |
+| User         | A single user                                |
+| API key      | A single API key                             |
 
 ### Policy overrides
 
@@ -39,32 +41,33 @@ When a request matches policies at multiple tiers, only the most specific tier a
 ## Create a model access policy
 
 <Warning>
-Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+  Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 </Warning>
 
 1. Go to **LLM Gateway** and select **Model Access**.
-1. Click **Create model access**.
-1. Enter a **Policy name**.
-1. Select the scope under **Applies to** (organization, workspace, user, or API key).
-1. Configure the **Allowed providers and models**.
-1. Save.
+2. Click **Create model access**.
+3. Enter a **Policy name**.
+4. Select the scope under **Applies to** (organization, workspace, user, or API key).
+5. Configure the **Allowed providers and models**.
+6. Save.
 
 Policies take effect immediately.
 
 ## Next steps
 
-- [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps on LLM usage.
-- [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies): limit request or token throughput.
-- [Per-customer policies](/langsmith/llm-gateway-header-policies): split a policy by a custom request header so each end customer gets its own allowance.
-- [Data protection](/langsmith/llm-gateway-data-protection): add data protection policies.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps on LLM usage.
+* [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies): limit request or token throughput.
+* [Per-customer policies](/langsmith/llm-gateway-header-policies): split a policy by a custom request header so each end customer gets its own allowance.
+* [Data protection](/langsmith/llm-gateway-data-protection): add data protection policies.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

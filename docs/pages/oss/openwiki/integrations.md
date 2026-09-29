@@ -2,6 +2,8 @@
 
 # Coding-agent integrations
 
+Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and tools
+
 OpenWiki can run inside an existing coding agent instead of launching its own model. The coding agent investigates the repository, plans the wiki, and writes each assigned page with its native repository tools. OpenWiki owns the durable page-job lifecycle, Claims validation and persistence, source-drift handling, and deterministic finalization.
 
 Host-driven runs support only repository [code mode](/oss/openwiki/code-mode) wikis, not [personal mode](/oss/openwiki/personal-mode). They use the coding agent's authenticated model session, so OpenWiki provider credentials are not required. Connector-sourced context, including LangSmith, is not yet supported on this path.
@@ -10,7 +12,7 @@ Host-driven runs support only repository [code mode](/oss/openwiki/code-mode) wi
 
 Supported hosts are **Codex**, **Claude Code**, **OpenCode**, and **Cursor**. Installations default to user level, so one install works from any Git repository:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations install codex
 openwiki integrations install claude
 openwiki integrations install opencode
@@ -19,19 +21,19 @@ openwiki integrations install cursor
 
 Restart the coding agent after installation. Then open the repository and ask:
 
-```txt
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Initialize this repository's OpenWiki from the current source and tests.
 ```
 
 For an existing wiki, ask:
 
-```txt
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Update this repository's OpenWiki for changes since its last successful run.
 ```
 
 ### Inspect or uninstall
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations list
 openwiki integrations uninstall <codex|claude|opencode|cursor>
 ```
@@ -44,17 +46,18 @@ Host-driven runs follow the same resumable page-job lifecycle as native `openwik
 
 ## See also
 
-- [Code mode](/oss/openwiki/code-mode)
-- [CLI reference](/oss/openwiki/cli-reference)
-- [Quickstart](/oss/openwiki/quickstart)
+* [Code mode](/oss/openwiki/code-mode)
+* [CLI reference](/oss/openwiki/cli-reference)
+* [Quickstart](/oss/openwiki/quickstart)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

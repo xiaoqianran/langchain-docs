@@ -10,8 +10,7 @@ To add evaluators to an existing experiment, pass the experiment name or ID to `
 
 ## Example
 
-
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import evaluate
 
 def always_half(inputs: dict, outputs: dict) -> float:
@@ -28,13 +27,14 @@ evaluate(experiment_name, evaluators=[always_half])
 * [Run an evaluation](/langsmith/evaluate-llm-application)
 * [Run an evaluation asynchronously](/langsmith/evaluation-async)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-existing-experiment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

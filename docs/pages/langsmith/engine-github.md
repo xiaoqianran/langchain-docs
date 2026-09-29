@@ -2,6 +2,8 @@
 
 # Connect LangSmith Engine to GitHub
 
+Connect LangSmith Engine to GitHub in LangSmith Cloud, or create and configure your own GitHub App for a self-hosted deployment.
+
 Connecting a GitHub repository is optional. When connected, LangSmith Engine reads source code to diagnose issues and opens pull requests with proposed fixes. Engine uses a LangChain-managed GitHub App in LangSmith Cloud, while self-hosted operators create and manage their own GitHub App.
 
 ## LangSmith Cloud
@@ -10,7 +12,7 @@ In LangSmith Cloud, Engine connects through a LangChain-managed GitHub App. You 
 
 To connect your repositories:
 
-1. In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine-github), open a tracing project and go to the **Engine** tab.
+1. In the [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-github), open a tracing project and go to the **Engine** tab.
 2. Under **Connect your agent's code repository**, click **Connect GitHub** and authorize the LangChain-managed GitHub App.
 3. Install the app on the repositories Engine should access. Installing the app on a GitHub organization may require approval from a GitHub organization owner. If you are not an owner, GitHub sends the owner an installation request to approve before the app becomes available.
 4. Select the connected repository in the **GitHub Repository** field on the **Engine** tab.
@@ -20,7 +22,7 @@ For the access and retention model of the managed app, see [Engine security](/la
 ## Self-hosted
 
 <Note>
-Engine connects to `github.com` only. GitHub Enterprise Server is not supported: Engine's sandboxes reach `github.com` and `api.github.com`, and the sandbox auth proxy injects repository credentials for those hosts alone. A GitHub App created on a GitHub Enterprise Server instance cannot be used.
+  Engine connects to `github.com` only. GitHub Enterprise Server is not supported: Engine's sandboxes reach `github.com` and `api.github.com`, and the sandbox auth proxy injects repository credentials for those hosts alone. A GitHub App created on a GitHub Enterprise Server instance cannot be used.
 </Note>
 
 To create and configure a GitHub App for a self-hosted deployment:
@@ -31,9 +33,9 @@ To create and configure a GitHub App for a self-hosted deployment:
   <Step title="Create the app">
     Go to [GitHub Settings > Developer settings > GitHub Apps](https://github.com/settings/apps) and click **New GitHub App**.
 
-    - **GitHub App name**: Any unique name, for example `acme-langsmith-engine`.
-    - **Homepage URL**: Your LangSmith deployment URL, for example `https://langsmith.example.com`.
-    - **Where can this GitHub App be installed?**: For most self-hosted deployments, select **Only on this account**. Select **Any account** only if you intend to distribute the app.
+    * **GitHub App name**: Any unique name, for example `acme-langsmith-engine`.
+    * **Homepage URL**: Your LangSmith deployment URL, for example `https://langsmith.example.com`.
+    * **Where can this GitHub App be installed?**: For most self-hosted deployments, select **Only on this account**. Select **Any account** only if you intend to distribute the app.
   </Step>
 
   <Step title="Set the callback URL">
@@ -59,9 +61,9 @@ To create and configure a GitHub App for a self-hosted deployment:
   <Step title="Set repository permissions">
     Under **Permissions > Repository permissions**, grant the following:
 
-    - **Contents**: Read and write.
-    - **Pull requests**: Read and write.
-    - **Metadata**: Read-only (automatically selected).
+    * **Contents**: Read and write.
+    * **Pull requests**: Read and write.
+    * **Metadata**: Read-only (automatically selected).
 
     Under **Subscribe to events**, select no events. Engine does not require any event subscriptions.
   </Step>
@@ -69,13 +71,13 @@ To create and configure a GitHub App for a self-hosted deployment:
   <Step title="Create the app and gather its values">
     Click **Create GitHub App**. GitHub supplies the following values on the app settings page:
 
-    | Value | Where to find it | Environment variable |
-    |-------|------------------|----------------------|
-    | **App ID** | Numeric, at the top of the page | `FORGE_GITHUB_APP_ID` |
-    | **Public link** | For example, `https://github.com/apps/acme-langsmith-engine` | `FORGE_GITHUB_APP_PUBLIC_LINK` |
-    | **Client ID** | Under **About** | `FORGE_GITHUB_CLIENT_ID` |
-    | **Client secret** | Under **Client secrets**, click **Generate a new client secret** (shown once) | `FORGE_GITHUB_CLIENT_SECRET` |
-    | **Private key** | Under **Private keys**, click **Generate a private key** (downloads a `.pem` file) | `FORGE_GITHUB_APP_PEM` |
+    | Value             | Where to find it                                                                   | Environment variable           |
+    | ----------------- | ---------------------------------------------------------------------------------- | ------------------------------ |
+    | **App ID**        | Numeric, at the top of the page                                                    | `FORGE_GITHUB_APP_ID`          |
+    | **Public link**   | For example, `https://github.com/apps/acme-langsmith-engine`                       | `FORGE_GITHUB_APP_PUBLIC_LINK` |
+    | **Client ID**     | Under **About**                                                                    | `FORGE_GITHUB_CLIENT_ID`       |
+    | **Client secret** | Under **Client secrets**, click **Generate a new client secret** (shown once)      | `FORGE_GITHUB_CLIENT_SECRET`   |
+    | **Private key**   | Under **Private keys**, click **Generate a private key** (downloads a `.pem` file) | `FORGE_GITHUB_APP_PEM`         |
   </Step>
 
   <Step title="Generate a state JWT secret">
@@ -86,17 +88,17 @@ To create and configure a GitHub App for a self-hosted deployment:
 
   <Step title="Create a Kubernetes Secret">
     <Warning>
-    The GitHub client secret, private key, state JWT secret, and webhook secret are credentials. Store them only in a Kubernetes Secret, never in Helm values or command-line arguments.
+      The GitHub client secret, private key, state JWT secret, and webhook secret are credentials. Store them only in a Kubernetes Secret, never in Helm values or command-line arguments.
     </Warning>
 
-Using your existing [secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret named `langsmith-forge-github` with these keys:
+    Using your existing [secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret named `langsmith-forge-github` with these keys:
 
-    | Key | Value |
-    |-----|-------|
-    | `forge_github_client_secret` | GitHub client secret |
-    | `forge_github_state_jwt_secret` | Separately generated state JWT secret |
-    | `forge_github_app_pem` | Contents of the GitHub App private-key PEM |
-    | `forge_github_webhook_secret` | Webhook secret also configured in GitHub |
+    | Key                             | Value                                      |
+    | ------------------------------- | ------------------------------------------ |
+    | `forge_github_client_secret`    | GitHub client secret                       |
+    | `forge_github_state_jwt_secret` | Separately generated state JWT secret      |
+    | `forge_github_app_pem`          | Contents of the GitHub App private-key PEM |
+    | `forge_github_webhook_secret`   | Webhook secret also configured in GitHub   |
 
     For production deployments, use your existing secrets workflow, such as [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) or [External Secrets Operator](https://external-secrets.io/).
   </Step>
@@ -104,7 +106,7 @@ Using your existing [secret-management workflow](/langsmith/self-host-using-an-e
   <Step title="Add the configuration to your langsmith_config.yaml">
     Add the following to `hostBackend.deployment.extraEnv` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). The App ID, public link, and client ID use literal `value` entries. Reference the client secret, state JWT secret, private key, and webhook secret with `secretKeyRef`; never set them through `commonEnv` or as inline values:
 
-    ```yaml
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     hostBackend:
       deployment:
         extraEnv:
@@ -138,7 +140,7 @@ Using your existing [secret-management workflow](/langsmith/self-host-using-an-e
 
     Apply the Helm configuration:
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
   </Step>
@@ -150,23 +152,24 @@ Using your existing [secret-management workflow](/langsmith/self-host-using-an-e
     2. Select the repositories Engine should access. If the installation does not grant access to all repositories, explicitly select each private repository Engine needs.
     3. In LangSmith, open a tracing project, go to the **Engine** tab, and select the repository in the **GitHub Repository** field.
 
-      The connected repository lets Engine use your source code for diagnosis and open pull requests with proposed fixes.
+    The connected repository lets Engine use your source code for diagnosis and open pull requests with proposed fixes.
   </Step>
 </Steps>
 
 ## See also
 
-- [Find and fix your agent's issues](/langsmith/engine): Engine setup, costs, and the issue workflow.
-- [Engine on self-hosted](/langsmith/engine-self-hosted): Installation, architecture, and data handling.
-- [Engine security](/langsmith/engine-security): How Engine handles your data and GitHub access.
+* [Find and fix your agent's issues](/langsmith/engine): Engine setup, costs, and the issue workflow.
+* [Engine on self-hosted](/langsmith/engine-self-hosted): Installation, architecture, and data handling.
+* [Engine security](/langsmith/engine-security): How Engine handles your data and GitHub access.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-github.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

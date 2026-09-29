@@ -2,6 +2,8 @@
 
 # Self-hosted platform features
 
+Self-hosted-only platform features for LangSmith Deployment, including custom databases, listeners, and resource customization.
+
 This page describes the platform features that apply only to [self-hosted](/langsmith/self-hosted) deployments.
 
 ## Custom PostgreSQL
@@ -26,13 +28,14 @@ The listener data model only applies to self-hosted deployments. The control pla
 
 Resources for self-hosted deployments can be fully customized. Unlike Cloud, which exposes fixed Serverless and Dedicated [deployment types](/langsmith/cloud-platform-features#deployment-types), self-hosted deployments size CPU, memory, replicas, and storage according to your infrastructure configuration. See [Configure Agent Server for scale](/langsmith/agent-server-scale) for tuning guidance.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-platform-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

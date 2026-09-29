@@ -2,14 +2,16 @@
 
 # Traces and access control
 
+Understand where gateway traces land and who can see and configure what.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.
 
 <Note>
-Gateway traces record metadata (token counts, policy outcomes, caller identity) for every call. Input and output content is **not** logged by default, and traces without content are **not billed** against your LangSmith trace quota. Content logging, and the associated billing, only applies when you explicitly enable it with a [data policy](/langsmith/llm-gateway-data-policy).
+  Gateway traces record metadata (token counts, policy outcomes, caller identity) for every call. Input and output content is **not** logged by default, and traces without content are **not billed** against your LangSmith trace quota. Content logging, and the associated billing, only applies when you explicitly enable it with a [data policy](/langsmith/llm-gateway-data-policy).
 </Note>
 
 ## Where gateway traces appear
@@ -22,10 +24,10 @@ Control access to these tracing projects with [RBAC](/langsmith/rbac) and [ABAC]
 
 Gateway-proxied calls are distinguishable from direct LLM calls by the project they land in and the metadata attached to their spans:
 
-- **Gateway project:** all gateway traffic is written to a project named `gateway` in each workspace, with a per-caller copy for UI isolation. Filter by project (or by the presence of `langsmith.metadata.gateway.*` span attributes) to find gateway-proxied calls.
-- **Policy evaluation results:** every gateway span records which policies were evaluated and their outcome via `langsmith.metadata.gateway.policy.matched_ids/_names`, `passed_ids/_names`, and `violated_ids/_names`, so both passes and blocks are captured.
-- **Guard rule matches:** when redaction policies apply, the guard pipeline emits a `rule_id → count` map stamped onto the span as `policy.matched_rules`, `passed_rules`, and `violated_rules`. These are rule IDs, not PII or secret category labels.
-- **Cost data:** token counts and cost are computed inline and feed the same spend accumulator that spend-cap policies enforce against.
+* **Gateway project:** all gateway traffic is written to a project named `gateway` in each workspace, with a per-caller copy for UI isolation. Filter by project (or by the presence of `langsmith.metadata.gateway.*` span attributes) to find gateway-proxied calls.
+* **Policy evaluation results:** every gateway span records which policies were evaluated and their outcome via `langsmith.metadata.gateway.policy.matched_ids/_names`, `passed_ids/_names`, and `violated_ids/_names`, so both passes and blocks are captured.
+* **Guard rule matches:** when redaction policies apply, the guard pipeline emits a `rule_id → count` map stamped onto the span as `policy.matched_rules`, `passed_rules`, and `violated_rules`. These are rule IDs, not PII or secret category labels.
+* **Cost data:** token counts and cost are computed inline and feed the same spend accumulator that spend-cap policies enforce against.
 
 ### Trace content
 
@@ -38,18 +40,18 @@ When a governance policy fires (such as when a spend limit is hit, PII is detect
 From an Engine issue, you can:
 
 1. **See the violation:** which policy fired, what was blocked or redacted.
-1. **Click through to the trace:** see exactly what the agent was doing when the policy triggered.
-1. **Diagnose the root cause:** was it a retry loop burning budget, a user pasting credentials into a prompt, or a legitimate workload that outgrew its cap, etc.
-1. **Take action:** update the agent's configuration, adjust the policy, or escalate.
+2. **Click through to the trace:** see exactly what the agent was doing when the policy triggered.
+3. **Diagnose the root cause:** was it a retry loop burning budget, a user pasting credentials into a prompt, or a legitimate workload that outgrew its cap, etc.
+4. **Take action:** update the agent's configuration, adjust the policy, or escalate.
 
 ## Audit logging
 
 The gateway logs two categories of events:
 
-| Category | What's logged |
-| --- | --- |
+| Category                   | What's logged                                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
 | **Administrative changes** | Policy creation, modification, and deletion. Role and permission changes related to gateway access. |
-| **Gateway invocations** | Each proxied call, including the caller identity and matched policy IDs. |
+| **Gateway invocations**    | Each proxied call, including the caller identity and matched policy IDs.                            |
 
 [Audit logs](/langsmith/audit-logs) are available to organization admins on the [Enterprise plan](/langsmith/pricing-plans).
 
@@ -57,12 +59,12 @@ The gateway logs two categories of events:
 
 ### Required permissions
 
-| Action | Permission needed | Who has it by default |
-| --- | --- | --- |
-| Make calls through the gateway | `gateway:invoke` + `workspaces:read` | `WORKSPACE_ADMIN` only |
-| Create, edit, or delete policies | `organization:manage` | Org admins |
-| View gateway traces | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`, `WORKSPACE_USER`, `WORKSPACE_VIEWER` |
-| View audit logs | `organization:manage` | Org admins |
+| Action                           | Permission needed                    | Who has it by default                                   |
+| -------------------------------- | ------------------------------------ | ------------------------------------------------------- |
+| Make calls through the gateway   | `gateway:invoke` + `workspaces:read` | `WORKSPACE_ADMIN` only                                  |
+| Create, edit, or delete policies | `organization:manage`                | Org admins                                              |
+| View gateway traces              | `projects:read` + `runs:read`        | `WORKSPACE_ADMIN`, `WORKSPACE_USER`, `WORKSPACE_VIEWER` |
+| View audit logs                  | `organization:manage`                | Org admins                                              |
 
 The built-in `WORKSPACE_USER` and `WORKSPACE_VIEWER` roles do **not** include `gateway:invoke` and cannot be edited. To grant gateway access without full workspace-admin privileges, create a custom workspace role with `gateway:invoke` and `workspaces:read` (requires an RBAC-enabled plan). For instructions, refer to [Admin setup](/langsmith/llm-gateway-admin-setup).
 
@@ -76,8 +78,8 @@ The gateway centralizes provider API keys in LangSmith workspace secrets. Indivi
 
 This means:
 
-- **Credential control:** provider keys live in one place, managed by admins. Revoking access means revoking the LangSmith API key, not finding distributed copies of provider keys.
-- **Policy enforcement:** because all calls flow through the gateway, policies are enforced consistently. There's no way to bypass cost limits by calling the provider directly (as long as developers don't have access to the provider key separately).
+* **Credential control:** provider keys live in one place, managed by admins. Revoking access means revoking the LangSmith API key, not finding distributed copies of provider keys.
+* **Policy enforcement:** because all calls flow through the gateway, policies are enforced consistently. There's no way to bypass cost limits by calling the provider directly (as long as developers don't have access to the provider key separately).
 
 For Claude Code Plus and Max users, Anthropic OAuth pass-through is available to every organization. The caller sends a workspace-scoped LangSmith API key for gateway authentication and an Anthropic OAuth bearer for provider authentication. Gateway permissions, policies, and tracing still apply, while the OAuth bearer is forwarded only to Anthropic and the gateway does not load the workspace's `ANTHROPIC_API_KEY`. Anthropic bills these calls to the user's Claude subscription. See [Set up coding agents](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth) for configuration instructions.
 
@@ -87,22 +89,23 @@ Gateway traces are written as runs into a workspace project and follow LangSmith
 
 If you need to limit who can see gateway traces, you have two options:
 
-- **Separate workspaces** (works on any [plan](/langsmith/pricing-plans)): create one workspace with restricted membership and another for developer coding agents with broader membership. Each workspace has its own provider secrets and trace projects.
-- **Project-level access policies** (requires an [Enterprise plan](/langsmith/pricing-plans)): write an ABAC policy restricting `projects:read` and `runs:read` on the gateway project to specific users or roles.
+* **Separate workspaces** (works on any [plan](/langsmith/pricing-plans)): create one workspace with restricted membership and another for developer coding agents with broader membership. Each workspace has its own provider secrets and trace projects.
+* **Project-level access policies** (requires an [Enterprise plan](/langsmith/pricing-plans)): write an ABAC policy restricting `projects:read` and `runs:read` on the gateway project to specific users or roles.
 
 ## Next steps
 
-- [Admin setup](/langsmith/llm-gateway-admin-setup): the step-by-step guide for configuring all of this.
-- [Spend policies](/langsmith/llm-gateway-spend-policies): attach cost limits to API keys and users.
-- [Data policy](/langsmith/llm-gateway-data-policy): configure data policies.
+* [Admin setup](/langsmith/llm-gateway-admin-setup): the step-by-step guide for configuring all of this.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): attach cost limits to API keys and users.
+* [Data policy](/langsmith/llm-gateway-data-policy): configure data policies.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

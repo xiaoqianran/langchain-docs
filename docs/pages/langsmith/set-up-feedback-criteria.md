@@ -3,23 +3,22 @@
 # Set up feedback criteria
 
 <Tip>
-**Recommended Reading**
+  **Recommended Reading**
 
-Before diving into this content, it might be helpful to read the following:
+  Before diving into this content, it might be helpful to read the following:
 
-- [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
-- [Reference guide on feedback data format](/langsmith/feedback-data-format)
-
+  * [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
+  * [Reference guide on feedback data format](/langsmith/feedback-data-format)
 </Tip>
 
 Feedback criteria are represented in the application as feedback tags. For human feedback, you can set up new feedback criteria as continuous feedback or categorical feedback.
 
 <Info>
-You can also manage feedback configs programmatically with the SDK. Refer to [Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk).
+  You can also manage feedback configs programmatically with the SDK. Refer to [Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk).
 </Info>
 
 <Tip>
-For free-form acceptance criteria a reviewer writes per-run (rather than a fixed set of rubric scores), refer to [Use assertions](/langsmith/assertions).
+  For free-form acceptance criteria a reviewer writes per-run (rather than a fixed set of rubric scores), refer to [Use assertions](/langsmith/assertions).
 </Tip>
 
 To set up a new feedback criteria, follow [this link](https://smith.langchain.com/settings/workspaces/feedbacks) to view all existing tags for your workspace, then click **New Tag**.
@@ -28,22 +27,23 @@ To set up a new feedback criteria, follow [this link](https://smith.langchain.co
 
 For continuous feedback, you can enter a feedback tag name, then select a minimum and maximum value. Every value, including floating-point numbers, within this range will be accepted as feedback scores.
 
-![Cont feedback](/langsmith/images/cont-feedback.png)
+<img alt="Cont feedback" />
 
 ## Categorical feedback
 
 For categorical feedback, you can enter a feedback tag name, then add a list of categories, each category mapping to a score. When you provide feedback, you can select one of these categories as the feedback score.
 Both the category label and the score will be logged as feedback in `value` and `score` fields, respectively.
 
-![Cat feedback](/langsmith/images/cat-feedback.png)
+<img alt="Cat feedback" />
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-feedback-criteria.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

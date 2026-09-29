@@ -2,6 +2,8 @@
 
 # Manage a deployment
 
+Configure branch updates and delete a LangSmith Cloud deployment.
+
 Manage the branch and automatic update settings for a Cloud deployment. You can also delete a deployment when you no longer need it.
 
 ## Configure deployment settings
@@ -9,9 +11,9 @@ Manage the branch and automatic update settings for a Cloud deployment. You can 
 To configure deployment settings:
 
 1. From the **Deployments** view, select a deployment.
-1. In the top-right corner, select the gear icon (**Deployment Settings**).
-1. Update the **Git Branch** as needed.
-1. Enable or disable **Automatically update deployment on push to branch**.
+2. In the top-right corner, select the gear icon (**Deployment Settings**).
+3. Update the **Git Branch** as needed.
+4. Enable or disable **Automatically update deployment on push to branch**.
 
 Branch and tag creation or deletion events do not trigger revisions. Only pushes to an existing branch trigger an update.
 
@@ -23,47 +25,49 @@ When several pushes occur in quick succession, LangSmith queues the updates. Aft
   <Tab title="LangSmith UI">
     To delete a deployment:
 
-    1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-manage-deployment), select **Deployments**.
-    1. Select the menu icon for the deployment, then select **Delete**.
-    1. In the confirmation modal, select **Delete**.
+    1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-deployment), select **Deployments**.
+    2. Select the menu icon for the deployment, then select **Delete**.
+    3. In the confirmation modal, select **Delete**.
   </Tab>
+
   <Tab title="LangGraph CLI">
     To find the deployment ID, run:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy list
     ```
 
     Delete the deployment by ID:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy delete <DEPLOYMENT_ID>
     ```
 
     To skip the confirmation prompt, pass `--force`:
 
-    ```shell
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph deploy delete --force <DEPLOYMENT_ID>
     ```
   </Tab>
 </Tabs>
 
 <Note>
-Deletion is asynchronous. The deployment disappears from the **Deployments** view immediately, but LangSmith removes its infrastructure and metadata in stages. The deployment name might remain unavailable until deletion finishes.
+  Deletion is asynchronous. The deployment disappears from the **Deployments** view immediately, but LangSmith removes its infrastructure and metadata in stages. The deployment name might remain unavailable until deletion finishes.
 </Note>
 
 ## See also
 
-- [Create a deployment](/langsmith/deploy-to-cloud)
-- [Preview builds](/langsmith/preview-builds)
+* [Create a deployment](/langsmith/deploy-to-cloud)
+* [Preview builds](/langsmith/preview-builds)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

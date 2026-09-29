@@ -5,7 +5,7 @@
 You can use the LangSmith Python, TypeScript, and Java SDKs to manage prompts programmatically.
 
 <Note>
-Previously this functionality lived in the `langchainhub` package which is now deprecated. All functionality going forward will live in the `langsmith` package.
+  Previously this functionality lived in the `langchainhub` package which is now deprecated. All functionality going forward will live in the `langsmith` package.
 </Note>
 
 ## Install packages
@@ -15,21 +15,21 @@ In Python, you can directly use the LangSmith SDK (*recommended, full functional
 In TypeScript, you must use the LangChain npm package for pulling prompts (it also allows pushing). For all other functionality, use the LangSmith package.
 
 <CodeGroup>
-```bash pip
-pip install -U langsmith # version >= 0.1.99
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langsmith # version >= 0.1.99
+  ```
 
-```bash uv
-uv add langsmith  # version >= 0.1.99
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langsmith  # version >= 0.1.99
+  ```
 
-```bash TypeScript
-yarn add langsmith langchain # langsmith version >= 0.1.99 and langchain version >= 0.2.14
-```
+  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add langsmith langchain # langsmith version >= 0.1.99 and langchain version >= 0.2.14
+  ```
 
-```kotlin Java/Kotlin (Gradle)
-implementation("com.langchain.smith:langsmith-java:0.1.0-beta.4")
-```
+  ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  implementation("com.langchain.smith:langsmith-java:0.1.0-beta.4")
+  ```
 </CodeGroup>
 
 ## Configure environment variables
@@ -40,12 +40,12 @@ Otherwise, get an API key for your workspace by navigating to `Settings > API Ke
 
 Set your environment variable.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="lsv2_..."
 ```
 
 <Note>
-What we refer to as "prompts" used to be called "repos", so any references to "repo" in the code are referring to a prompt.
+  What we refer to as "prompts" used to be called "repos", so any references to "repo" in the code are referring to a prompt.
 </Note>
 
 ## Push a prompt
@@ -53,122 +53,118 @@ What we refer to as "prompts" used to be called "repos", so any references to "r
 To create a new prompt or update an existing prompt, you can use the `push prompt` method.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langchain_core.prompts import ChatPromptTemplate
 
-```python Python
-from langsmith import Client
-from langchain_core.prompts import ChatPromptTemplate
+  client = Client()
+  prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
+  url = client.push_prompt("joke-generator", object=prompt)
+  # url is a link to the prompt in the UI
+  print(url)
+  ```
 
-client = Client()
-prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
-url = client.push_prompt("joke-generator", object=prompt)
-# url is a link to the prompt in the UI
-print(url)
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain_classic import hub as prompts
+  from langchain_core.prompts import ChatPromptTemplate
 
-```python LangChain (Python)
-from langchain_classic import hub as prompts
-from langchain_core.prompts import ChatPromptTemplate
+  prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
+  url = prompts.push("joke-generator", prompt)
+  # url is a link to the prompt in the UI
+  print(url)
+  ```
 
-prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
-url = prompts.push("joke-generator", prompt)
-# url is a link to the prompt in the UI
-print(url)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+  const prompt = ChatPromptTemplate.fromTemplate("tell me a joke about {topic}");
+  const url = hub.push("joke-generator", {
+    object: prompt,
+  });
+  // url is a link to the prompt in the UI
+  console.log(url);
+  ```
 
-const prompt = ChatPromptTemplate.fromTemplate("tell me a joke about {topic}");
-const url = hub.push("joke-generator", {
-  object: prompt,
-});
-// url is a link to the prompt in the UI
-console.log(url);
-```
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import com.langchain.smith.client.LangsmithClient;
+  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+  import com.langchain.smith.core.JsonValue;
+  import com.langchain.smith.models.commits.CommitCreateParams;
+  import com.langchain.smith.models.repos.RepoCreateParams;
+  import java.util.List;
+  import java.util.Map;
 
-```java Java
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.core.JsonValue;
-import com.langchain.smith.models.commits.CommitCreateParams;
-import com.langchain.smith.models.repos.RepoCreateParams;
-import java.util.List;
-import java.util.Map;
-
-LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
 
 
-client.repos().create(
-    RepoCreateParams.builder()
-        .repoHandle("joke-generator")
-        .isPublic(false)
-        .build()
-);
+  client.repos().create(
+      RepoCreateParams.builder()
+          .repoHandle("joke-generator")
+          .isPublic(false)
+          .build()
+  );
 
-Map<String, Object> manifest = Map.of(
-    "lc", 1,
-    "type", "constructor",
-    "id", List.of("langchain_core", "prompts", "prompt", "PromptTemplate"),
-    "kwargs", Map.of(
-        "template", "tell me a joke about {topic}",
-        "input_variables", List.of("topic")
-    )
-);
+  Map<String, Object> manifest = Map.of(
+      "lc", 1,
+      "type", "constructor",
+      "id", List.of("langchain_core", "prompts", "prompt", "PromptTemplate"),
+      "kwargs", Map.of(
+          "template", "tell me a joke about {topic}",
+          "input_variables", List.of("topic")
+      )
+  );
 
-client.commits().create(
-    CommitCreateParams.builder()
-        .owner("-")
-        .repo("joke-generator")
-        .manifest(JsonValue.from(manifest))
-        .build()
-);
-```
-
+  client.commits().create(
+      CommitCreateParams.builder()
+          .owner("-")
+          .repo("joke-generator")
+          .manifest(JsonValue.from(manifest))
+          .build()
+  );
+  ```
 </CodeGroup>
 
 You can also push a prompt as a RunnableSequence of a prompt and a model. This is useful for storing the model configuration you want to use with this prompt. The provider must be supported by the Playground, see [supported model providers](/langsmith/playground-model-providers).
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langchain_core.prompts import ChatPromptTemplate
+  from langchain_openai import ChatOpenAI
 
-```python Python
-from langsmith import Client
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+  client = Client()
+  model = ChatOpenAI(model="gpt-5.4-mini")
+  prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
+  chain = prompt | model
+  client.push_prompt("joke-generator-with-model", object=chain)
+  ```
 
-client = Client()
-model = ChatOpenAI(model="gpt-5.4-mini")
-prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
-chain = prompt | model
-client.push_prompt("joke-generator-with-model", object=chain)
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain_classic import hub as prompts
+  from langchain_core.prompts import ChatPromptTemplate
+  from langchain_openai import ChatOpenAI
 
-```python LangChain (Python)
-from langchain_classic import hub as prompts
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+  model = ChatOpenAI(model="gpt-5.4-mini")
+  prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
+  chain = prompt | model
+  url = prompts.push("joke-generator-with-model", chain)
+  # url is a link to the prompt in the UI
+  print(url)
+  ```
 
-model = ChatOpenAI(model="gpt-5.4-mini")
-prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
-chain = prompt | model
-url = prompts.push("joke-generator-with-model", chain)
-# url is a link to the prompt in the UI
-print(url)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { ChatPromptTemplate } from "@langchain/core/prompts";
+  import { ChatOpenAI } from "@langchain/openai";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
-const prompt = ChatPromptTemplate.fromTemplate("tell me a joke about {topic}");
-const chain = prompt.pipe(model);
-await hub.push("joke-generator-with-model", {
-  object: chain,
-});
-```
-
+  const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
+  const prompt = ChatPromptTemplate.fromTemplate("tell me a joke about {topic}");
+  const chain = prompt.pipe(model);
+  await hub.push("joke-generator-with-model", {
+    object: chain,
+  });
+  ```
 </CodeGroup>
 
 ## Push a StructuredPrompt
@@ -180,56 +176,54 @@ A `StructuredPrompt` combines a prompt template with an output schema, ensuring 
 Push the structured prompt on its own when you want to store the template and schema independently of any model configuration.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langchain_core.prompts.structured import StructuredPrompt
+  from pydantic import BaseModel, Field
 
-```python Python
-from langsmith import Client
-from langchain_core.prompts.structured import StructuredPrompt
-from pydantic import BaseModel, Field
+  class ResponseSchema(BaseModel):
+      positive_sentiment: bool = Field(description="Was the user sentiment positive?")
 
-class ResponseSchema(BaseModel):
-    positive_sentiment: bool = Field(description="Was the user sentiment positive?")
+  prompt = StructuredPrompt.from_messages_and_schema(
+      [
+          ("system", "Evaluate the sentiment of the following conversation."),
+          ("human", "{conversation}"),
+      ],
+      schema=ResponseSchema.model_json_schema(),
+  )
 
-prompt = StructuredPrompt.from_messages_and_schema(
-    [
-        ("system", "Evaluate the sentiment of the following conversation."),
-        ("human", "{conversation}"),
-    ],
-    schema=ResponseSchema.model_json_schema(),
-)
+  client = Client()
+  url = client.push_prompt("sentiment-evaluator", object=prompt)
+  print(url)
+  ```
 
-client = Client()
-url = client.push_prompt("sentiment-evaluator", object=prompt)
-print(url)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { StructuredPrompt } from "@langchain/core/prompts";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { StructuredPrompt } from "@langchain/core/prompts";
-
-const schema = {
-  title: "ResponseSchema",
-  type: "object",
-  properties: {
-    positive_sentiment: {
-      type: "boolean",
-      description: "Was the user sentiment positive?",
+  const schema = {
+    title: "ResponseSchema",
+    type: "object",
+    properties: {
+      positive_sentiment: {
+        type: "boolean",
+        description: "Was the user sentiment positive?",
+      },
     },
-  },
-  required: ["positive_sentiment"],
-};
+    required: ["positive_sentiment"],
+  };
 
-const prompt = StructuredPrompt.fromMessagesAndSchema(
-  [
-    ["system", "Evaluate the sentiment of the following conversation."],
-    ["human", "{conversation}"],
-  ],
-  schema
-);
+  const prompt = StructuredPrompt.fromMessagesAndSchema(
+    [
+      ["system", "Evaluate the sentiment of the following conversation."],
+      ["human", "{conversation}"],
+    ],
+    schema
+  );
 
-const url = await hub.push("sentiment-evaluator", prompt);
-console.log(url);
-```
-
+  const url = await hub.push("sentiment-evaluator", prompt);
+  console.log(url);
+  ```
 </CodeGroup>
 
 ### With a model
@@ -237,32 +231,30 @@ console.log(url);
 Push the structured prompt as a RunnableSequence with a model to store the full pipeline, including model configuration, in the hub.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langchain_core.prompts.structured import StructuredPrompt
+  from langchain_openai import ChatOpenAI
+  from pydantic import BaseModel, Field
 
-```python Python
-from langsmith import Client
-from langchain_core.prompts.structured import StructuredPrompt
-from langchain_openai import ChatOpenAI
-from pydantic import BaseModel, Field
+  class ResponseSchema(BaseModel):
+      positive_sentiment: bool = Field(description="Was the user sentiment positive?")
 
-class ResponseSchema(BaseModel):
-    positive_sentiment: bool = Field(description="Was the user sentiment positive?")
+  prompt = StructuredPrompt.from_messages_and_schema(
+      [
+          ("system", "Evaluate the sentiment of the following conversation."),
+          ("human", "{conversation}"),
+      ],
+      schema=ResponseSchema.model_json_schema(),
+  )
 
-prompt = StructuredPrompt.from_messages_and_schema(
-    [
-        ("system", "Evaluate the sentiment of the following conversation."),
-        ("human", "{conversation}"),
-    ],
-    schema=ResponseSchema.model_json_schema(),
-)
+  model = ChatOpenAI(model="gpt-4o-mini")
+  chain = prompt | model
 
-model = ChatOpenAI(model="gpt-4o-mini")
-chain = prompt | model
-
-client = Client()
-url = client.push_prompt("sentiment-evaluator-with-model", object=chain)
-print(url)
-```
-
+  client = Client()
+  url = client.push_prompt("sentiment-evaluator-with-model", object=chain)
+  print(url)
+  ```
 </CodeGroup>
 
 ## Pull a prompt
@@ -274,157 +266,149 @@ To pull a **private prompt** you do not need to specify the owner handle (though
 To pull a **public prompt** from the LangChain Hub, you need to specify the handle of the prompt's author.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langchain_openai import ChatOpenAI
 
-```python Python
-from langsmith import Client
-from langchain_openai import ChatOpenAI
+  client = Client()
+  prompt = client.pull_prompt("joke-generator")
+  model = ChatOpenAI(model="gpt-5.4-mini")
+  chain = prompt | model
+  chain.invoke({"topic": "cats"})
+  ```
 
-client = Client()
-prompt = client.pull_prompt("joke-generator")
-model = ChatOpenAI(model="gpt-5.4-mini")
-chain = prompt | model
-chain.invoke({"topic": "cats"})
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain_classic import hub as prompts
+  from langchain_openai import ChatOpenAI
 
-```python LangChain (Python)
-from langchain_classic import hub as prompts
-from langchain_openai import ChatOpenAI
+  prompt = prompts.pull("joke-generator")
+  model = ChatOpenAI(model="gpt-5.4-mini")
+  chain = prompt | model
+  chain.invoke({"topic": "cats"})
+  ```
 
-prompt = prompts.pull("joke-generator")
-model = ChatOpenAI(model="gpt-5.4-mini")
-chain = prompt | model
-chain.invoke({"topic": "cats"})
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { ChatOpenAI } from "@langchain/openai";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { ChatOpenAI } from "@langchain/openai";
+  const prompt = await hub.pull("joke-generator");
+  const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
+  const chain = prompt.pipe(model);
+  await chain.invoke({"topic": "cats"});
+  ```
 
-const prompt = await hub.pull("joke-generator");
-const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
-const chain = prompt.pipe(model);
-await chain.invoke({"topic": "cats"});
-```
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import com.langchain.smith.client.LangsmithClient;
+  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+  import com.langchain.smith.prompts.Prompt;
+  import com.langchain.smith.prompts.PromptClient;
+  import com.langchain.smith.prompts.PromptValue;
+  import java.util.Map;
 
-```java Java
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.prompts.Prompt;
-import com.langchain.smith.prompts.PromptClient;
-import com.langchain.smith.prompts.PromptValue;
-import java.util.Map;
+  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+  PromptClient promptClient = PromptClient.create(client);
 
-LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-PromptClient promptClient = PromptClient.create(client);
-
-Prompt prompt = promptClient.pull("joke-generator");
-PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
-// Use formattedPrompt with your model provider — see "Use a prompt without LangChain" below.
-```
-
+  Prompt prompt = promptClient.pull("joke-generator");
+  PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
+  // Use formattedPrompt with your model provider — see "Use a prompt without LangChain" below.
+  ```
 </CodeGroup>
 
 Similar to pushing a prompt, you can also pull a prompt as a RunnableSequence of a prompt and a model. Just specify include\_model when pulling the prompt. If the stored prompt includes a model, it will be returned as a RunnableSequence. Make sure you have the proper environment variables set for the model you are using.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
 
-```python Python
-from langsmith import Client
+  client = Client()
+  chain = client.pull_prompt("joke-generator-with-model", include_model=True)
+  chain.invoke({"topic": "cats"})
+  ```
 
-client = Client()
-chain = client.pull_prompt("joke-generator-with-model", include_model=True)
-chain.invoke({"topic": "cats"})
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain_classic import hub as prompts
 
-```python LangChain (Python)
-from langchain_classic import hub as prompts
+  chain = prompts.pull("joke-generator-with-model", include_model=True)
+  chain.invoke({"topic": "cats"})
+  ```
 
-chain = prompts.pull("joke-generator-with-model", include_model=True)
-chain.invoke({"topic": "cats"})
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { Runnable } from "@langchain/core/runnables";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { Runnable } from "@langchain/core/runnables";
-
-const chain = await hub.pull<Runnable>("joke-generator-with-model", { includeModel: true });
-await chain.invoke({"topic": "cats"});
-```
-
+  const chain = await hub.pull<Runnable>("joke-generator-with-model", { includeModel: true });
+  await chain.invoke({"topic": "cats"});
+  ```
 </CodeGroup>
 
 When pulling a prompt, you can also specify a specific commit hash or [commit tag](/langsmith/manage-prompts#commit-tags) to pull a specific version of the prompt.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  prompt = client.pull_prompt("joke-generator:12344e88")
+  ```
 
-```python Python
-prompt = client.pull_prompt("joke-generator:12344e88")
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  prompt = prompts.pull("joke-generator:12344e88")
+  ```
 
-```python LangChain (Python)
-prompt = prompts.pull("joke-generator:12344e88")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const prompt = await hub.pull("joke-generator:12344e88")
+  ```
 
-```typescript TypeScript
-const prompt = await hub.pull("joke-generator:12344e88")
-```
-
-```java Java
-String commitHash = "12344e88";
-Prompt promptAtCommit = promptClient.pull("joke-generator:" + commitHash);
-```
-
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  String commitHash = "12344e88";
+  Prompt promptAtCommit = promptClient.pull("joke-generator:" + commitHash);
+  ```
 </CodeGroup>
 
 To pull a public prompt from the LangChain Hub, you need to specify the handle of the prompt's author.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  prompt = client.pull_prompt("efriis/my-first-prompt")
+  ```
 
-```python Python
-prompt = client.pull_prompt("efriis/my-first-prompt")
-```
+  ```python LangChain (Python) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  prompt = prompts.pull("efriis/my-first-prompt")
+  ```
 
-```python LangChain (Python)
-prompt = prompts.pull("efriis/my-first-prompt")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const prompt = await hub.pull("efriis/my-first-prompt")
+  ```
 
-```typescript TypeScript
-const prompt = await hub.pull("efriis/my-first-prompt")
-```
-
-```java Java
-Prompt publicPrompt = promptClient.pull("efriis/my-first-prompt");
-```
-
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  Prompt publicPrompt = promptClient.pull("efriis/my-first-prompt");
+  ```
 </CodeGroup>
 
 <Note>
-For pulling prompts, if you are using Node.js or an environment that supports dynamic imports, we recommend using the `langchain/hub/node` entrypoint, as it handles deserialization of models associated with your prompt configuration automatically.
+  For pulling prompts, if you are using Node.js or an environment that supports dynamic imports, we recommend using the `langchain/hub/node` entrypoint, as it handles deserialization of models associated with your prompt configuration automatically.
 
-If you are in a non-Node environment, "includeModel" is not supported for non-OpenAI models and you should use the base `langchain/hub` entrypoint.
+  If you are in a non-Node environment, "includeModel" is not supported for non-OpenAI models and you should use the base `langchain/hub` entrypoint.
 </Note>
 
 ## Use with the LangSmith Gateway
 
 If your workspace uses the [LangSmith LLM Gateway](/langsmith/llm-gateway), you can route prompt model calls through it by setting an environment variable before pulling and invoking your prompt. No other code changes are required.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_GATEWAY="true"
 ```
 
 This uses your existing `LANGSMITH_API_KEY` for authentication. To use a regional gateway instance instead of the default, set `LANGSMITH_GATEWAY` to the full gateway URL:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
 ```
 
 <Note>
-If you need to use a different API key for gateway calls than your default `LANGSMITH_API_KEY`, set `LANGSMITH_GATEWAY_API_KEY` as an override. It must be a workspace-scoped key with the `gateway:invoke` permission.
+  If you need to use a different API key for gateway calls than your default `LANGSMITH_API_KEY`, set `LANGSMITH_GATEWAY_API_KEY` as an override. It must be a workspace-scoped key with the `gateway:invoke` permission.
 </Note>
 
 Once the environment variables are set, pull and invoke a prompt with a model as normal:
 
-```python Python
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()
@@ -437,7 +421,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 ```
 
 <Note>
-Gateway routing for LangChain chat models requires Python and a supported `langchain-*` integration package at the minimum version listed in the [gateway quickstart](/langsmith/llm-gateway-quickstart). If the integration package is below the minimum version, the call will bypass the gateway and go directly to the provider.
+  Gateway routing for LangChain chat models requires Python and a supported `langchain-*` integration package at the minimum version listed in the [gateway quickstart](/langsmith/llm-gateway-quickstart). If the integration package is below the minimum version, the call will bypass the gateway and go directly to the provider.
 </Note>
 
 For full configuration options, provider support, and regional endpoints, see the [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart).
@@ -447,18 +431,19 @@ For full configuration options, provider support, and regional endpoints, see th
 The LangSmith SDK includes built-in in-memory caching for prompts. When enabled, LangSmith will cache pulled prompts in memory, reducing latency and API calls for frequently used prompts. The cache uses a global singleton instance that is shared across all clients and persists for the lifetime of the process. It implements a stale-while-revalidate pattern, ensuring your application always gets a fast response while keeping prompts up-to-date in the background.
 
 **Requirements:**
-- Python SDK: `langsmith >= 0.7.0`
-- TypeScript SDK: `langsmith >= 0.5.0`
+
+* Python SDK: `langsmith >= 0.7.0`
+* TypeScript SDK: `langsmith >= 0.5.0`
 
 ### Default behavior
 
 Caching is **enabled by default**. When enabled, the default settings are:
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `max_size` | 100 | Maximum number of prompts to cache |
-| `ttl_seconds` | 300 (5 minutes) | Time before a cached prompt is considered stale |
-| `refresh_interval_seconds` | 60 | How often to check for stale prompts and refresh them in the background |
+| Setting                    | Default         | Description                                                             |
+| -------------------------- | --------------- | ----------------------------------------------------------------------- |
+| `max_size`                 | 100             | Maximum number of prompts to cache                                      |
+| `ttl_seconds`              | 300 (5 minutes) | Time before a cached prompt is considered stale                         |
+| `refresh_interval_seconds` | 60              | How often to check for stale prompts and refresh them in the background |
 
 When refreshing, the global cache will use the last client that requested a given prompt to fetch new data.
 
@@ -467,45 +452,43 @@ When refreshing, the global cache will use the last client that requested a give
 By default, all clients use the global prompt cache. No configuration is needed:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  # Obtain a reference to the global cache just for logging metrics
+  from langsmith.prompt_cache import prompt_cache_singleton
 
-```python Python
-from langsmith import Client
-# Obtain a reference to the global cache just for logging metrics
-from langsmith.prompt_cache import prompt_cache_singleton
+  # Caching is enabled by default using the global singleton
+  client = Client()
 
-# Caching is enabled by default using the global singleton
-client = Client()
+  # First pull - fetches from API and caches
+  prompt = client.pull_prompt("joke-generator")
 
-# First pull - fetches from API and caches
-prompt = client.pull_prompt("joke-generator")
+  # Subsequent pulls - returns cached version instantly
+  prompt = client.pull_prompt("joke-generator")
 
-# Subsequent pulls - returns cached version instantly
-prompt = client.pull_prompt("joke-generator")
+  # Check cache metrics
+  print(f"Cache hits: {prompt_cache_singleton.metrics.hits}")
+  print(f"Cache misses: {prompt_cache_singleton.metrics.misses}")
+  print(f"Hit rate: {prompt_cache_singleton.metrics.hit_rate:.1%}")
+  ```
 
-# Check cache metrics
-print(f"Cache hits: {prompt_cache_singleton.metrics.hits}")
-print(f"Cache misses: {prompt_cache_singleton.metrics.misses}")
-print(f"Hit rate: {prompt_cache_singleton.metrics.hit_rate:.1%}")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  // Obtain a reference to the global cache just for logging metrics
+  import { promptCacheSingleton } from "langsmith";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-// Obtain a reference to the global cache just for logging metrics
-import { promptCacheSingleton } from "langsmith";
+  // Caching is enabled by default
+  // First pull - fetches from API and caches
+  const prompt = await hub.pull("joke-generator");
 
-// Caching is enabled by default
-// First pull - fetches from API and caches
-const prompt = await hub.pull("joke-generator");
+  // Subsequent pulls - returns cached version instantly
+  const prompt2 = await hub.pull("joke-generator");
 
-// Subsequent pulls - returns cached version instantly
-const prompt2 = await hub.pull("joke-generator");
-
-// Check cache metrics
-console.log(`Cache hits: ${promptCacheSingleton.metrics.hits}`);
-console.log(`Cache misses: ${promptCacheSingleton.metrics.misses}`);
-console.log(`Hit rate: ${(promptCacheSingleton.hitRate * 100).toFixed(1)}%`);
-```
-
+  // Check cache metrics
+  console.log(`Cache hits: ${promptCacheSingleton.metrics.hits}`);
+  console.log(`Cache misses: ${promptCacheSingleton.metrics.misses}`);
+  console.log(`Hit rate: ${(promptCacheSingleton.hitRate * 100).toFixed(1)}%`);
+  ```
 </CodeGroup>
 
 ### Configuring the global cache
@@ -513,57 +496,55 @@ console.log(`Hit rate: ${(promptCacheSingleton.hitRate * 100).toFixed(1)}%`);
 You can configure the global prompt cache that all clients use by default. This is useful when you want to customize caching behavior across your entire application:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langsmith.prompt_cache import (
+      configure_global_prompt_cache,
+      prompt_cache_singleton,
+  )
 
-```python Python
-from langsmith import Client
-from langsmith.prompt_cache import (
-    configure_global_prompt_cache,
-    prompt_cache_singleton,
-)
+  # Configure global cache before creating any clients
+  configure_global_prompt_cache(
+      max_size=200,  # Cache up to 200 prompts
+      ttl_seconds=7200,  # Consider prompts stale after 2 hours
+      refresh_interval_seconds=600,  # Check for stale prompts every 10 minutes
+  )
 
-# Configure global cache before creating any clients
-configure_global_prompt_cache(
-    max_size=200,  # Cache up to 200 prompts
-    ttl_seconds=7200,  # Consider prompts stale after 2 hours
-    refresh_interval_seconds=600,  # Check for stale prompts every 10 minutes
-)
+  # All clients will use these settings
+  client1 = Client()
+  client2 = Client()
 
-# All clients will use these settings
-client1 = Client()
-client2 = Client()
+  # Both clients share the same global cache with your custom settings
+  prompt1 = client1.pull_prompt("prompt-1")
+  prompt2 = client2.pull_prompt("prompt-2")
 
-# Both clients share the same global cache with your custom settings
-prompt1 = client1.pull_prompt("prompt-1")
-prompt2 = client2.pull_prompt("prompt-2")
+  # Check global cache metrics
+  print(f"Global cache hits: {prompt_cache_singleton.metrics.hits}")
+  print(f"Global cache misses: {prompt_cache_singleton.metrics.misses}")
+  ```
 
-# Check global cache metrics
-print(f"Global cache hits: {prompt_cache_singleton.metrics.hits}")
-print(f"Global cache misses: {prompt_cache_singleton.metrics.misses}")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import {
+    configureGlobalPromptCache,
+    promptCacheSingleton,
+  } from "langsmith";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import {
-  configureGlobalPromptCache,
-  promptCacheSingleton,
-} from "langsmith";
+  // Configure global cache before pulling prompts
+  configureGlobalPromptCache({
+    maxSize: 200,  // Cache up to 200 prompts
+    ttlSeconds: 7200,  // Consider prompts stale after 2 hours
+    refreshIntervalSeconds: 600,  // Check for stale prompts every 10 minutes
+  });
 
-// Configure global cache before pulling prompts
-configureGlobalPromptCache({
-  maxSize: 200,  // Cache up to 200 prompts
-  ttlSeconds: 7200,  // Consider prompts stale after 2 hours
-  refreshIntervalSeconds: 600,  // Check for stale prompts every 10 minutes
-});
+  // All hub.pull calls will use these settings
+  const prompt1 = await hub.pull("prompt-1");
+  const prompt2 = await hub.pull("prompt-2");
 
-// All hub.pull calls will use these settings
-const prompt1 = await hub.pull("prompt-1");
-const prompt2 = await hub.pull("prompt-2");
-
-// Check global cache metrics
-console.log(`Global cache hits: ${promptCacheSingleton.metrics.hits}`);
-console.log(`Global cache misses: ${promptCacheSingleton.metrics.misses}`);
-```
-
+  // Check global cache metrics
+  console.log(`Global cache hits: ${promptCacheSingleton.metrics.hits}`);
+  console.log(`Global cache misses: ${promptCacheSingleton.metrics.misses}`);
+  ```
 </CodeGroup>
 
 ### Disabling the cache
@@ -571,28 +552,26 @@ console.log(`Global cache misses: ${promptCacheSingleton.metrics.misses}`);
 To disable caching for a specific client, pass `disable_prompt_cache=True`. You can also configure a max size of zero globally:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
 
-```python Python
-from langsmith import Client
+  # Disable caching for this client
+  client = Client(disable_prompt_cache=True)
 
-# Disable caching for this client
-client = Client(disable_prompt_cache=True)
+  # Every pull will fetch from the API
+  prompt = client.pull_prompt("joke-generator")
+  ```
 
-# Every pull will fetch from the API
-prompt = client.pull_prompt("joke-generator")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { configureGlobalPromptCache } from "langsmith";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { configureGlobalPromptCache } from "langsmith";
+  // Disable caching globally
+  configureGlobalPromptCache({ maxSize: 0 });
 
-// Disable caching globally
-configureGlobalPromptCache({ maxSize: 0 });
-
-// Every pull will fetch from the API
-const prompt = await hub.pull("joke-generator");
-```
-
+  // Every pull will fetch from the API
+  const prompt = await hub.pull("joke-generator");
+  ```
 </CodeGroup>
 
 ### Skipping the cache
@@ -600,19 +579,17 @@ const prompt = await hub.pull("joke-generator");
 To bypass the cache and fetch a fresh prompt from the API for an individual request, use the `skip_cache` parameter:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Force a fresh fetch, ignoring any cached version
+  prompt = client.pull_prompt("joke-generator", skip_cache=True)
+  ```
 
-```python Python
-# Force a fresh fetch, ignoring any cached version
-prompt = client.pull_prompt("joke-generator", skip_cache=True)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-
-// Force a fresh fetch, ignoring any cached version
-const prompt = await hub.pull("joke-generator", { skipCache: true });
-```
-
+  // Force a fresh fetch, ignoring any cached version
+  const prompt = await hub.pull("joke-generator", { skipCache: true });
+  ```
 </CodeGroup>
 
 This is useful when you need to ensure you have the latest version of a prompt, such as after making changes in the LangSmith UI.
@@ -624,81 +601,77 @@ For environments with limited or no network connectivity, you can pre-populate t
 **Step 1: Export your prompts to a cache file (while online)**
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langsmith.prompt_cache import prompt_cache_singleton
 
-```python Python
-from langsmith import Client
-from langsmith.prompt_cache import prompt_cache_singleton
+  # Create client (caching is enabled by default)
+  client = Client()
 
-# Create client (caching is enabled by default)
-client = Client()
+  # Pull the prompts you need
+  client.pull_prompt("prompt-1")
+  client.pull_prompt("prompt-2")
+  client.pull_prompt("prompt-3")
 
-# Pull the prompts you need
-client.pull_prompt("prompt-1")
-client.pull_prompt("prompt-2")
-client.pull_prompt("prompt-3")
+  # Export cache to a file
+  prompt_cache_singleton.dump("prompts_cache.json")
+  ```
 
-# Export cache to a file
-prompt_cache_singleton.dump("prompts_cache.json")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { promptCacheSingleton } from "langsmith";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { promptCacheSingleton } from "langsmith";
+  // Caching is enabled by default
 
-// Caching is enabled by default
+  // Pull the prompts you need
+  await hub.pull("prompt-1");
+  await hub.pull("prompt-2");
+  await hub.pull("prompt-3");
 
-// Pull the prompts you need
-await hub.pull("prompt-1");
-await hub.pull("prompt-2");
-await hub.pull("prompt-3");
-
-// Export cache to a file
-promptCacheSingleton.dump("prompts_cache.json");
-```
-
+  // Export cache to a file
+  promptCacheSingleton.dump("prompts_cache.json");
+  ```
 </CodeGroup>
 
 **Step 2: Load the cache file in your offline environment**
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langsmith.prompt_cache import (
+      configure_global_prompt_cache,
+      prompt_cache_singleton,
+  )
 
-```python Python
-from langsmith import Client
-from langsmith.prompt_cache import (
-    configure_global_prompt_cache,
-    prompt_cache_singleton,
-)
+  # Configure cache with infinite TTL (never expire, no background refresh)
+  configure_global_prompt_cache(ttl_seconds=None)
 
-# Configure cache with infinite TTL (never expire, no background refresh)
-configure_global_prompt_cache(ttl_seconds=None)
+  # Load the cache file
+  prompt_cache_singleton.load("prompts_cache.json")
 
-# Load the cache file
-prompt_cache_singleton.load("prompts_cache.json")
+  # Create client (uses the loaded cache)
+  client = Client()
 
-# Create client (uses the loaded cache)
-client = Client()
+  # Uses cached version without any API calls
+  prompt = client.pull_prompt("prompt-1")
+  ```
 
-# Uses cached version without any API calls
-prompt = client.pull_prompt("prompt-1")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import {
+    configureGlobalPromptCache,
+    promptCacheSingleton,
+  } from "langsmith";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import {
-  configureGlobalPromptCache,
-  promptCacheSingleton,
-} from "langsmith";
+  // Configure cache with infinite TTL (never expire, no background refresh)
+  configureGlobalPromptCache({ ttlSeconds: null });
 
-// Configure cache with infinite TTL (never expire, no background refresh)
-configureGlobalPromptCache({ ttlSeconds: null });
+  // Load the cache file
+  promptCacheSingleton.load("prompts_cache.json");
 
-// Load the cache file
-promptCacheSingleton.load("prompts_cache.json");
-
-// Uses cached version without any API calls
-const prompt = await hub.pull("prompt-1");
-```
-
+  // Uses cached version without any API calls
+  const prompt = await hub.pull("prompt-1");
+  ```
 </CodeGroup>
 
 ### Cache operations
@@ -706,41 +679,39 @@ const prompt = await hub.pull("prompt-1");
 The cache supports several operations for managing cached prompts:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+  from langsmith.prompt_cache import prompt_cache_singleton
 
-```python Python
-from langsmith import Client
-from langsmith.prompt_cache import prompt_cache_singleton
+  client = Client()
 
-client = Client()
+  # Invalidate a specific prompt from cache
+  prompt_cache_singleton.invalidate("joke-generator:latest")
 
-# Invalidate a specific prompt from cache
-prompt_cache_singleton.invalidate("joke-generator:latest")
+  # Clear all cached prompts
+  prompt_cache_singleton.clear()
 
-# Clear all cached prompts
-prompt_cache_singleton.clear()
+  # Reset metrics
+  prompt_cache_singleton.reset_metrics()
 
-# Reset metrics
-prompt_cache_singleton.reset_metrics()
+  # Check if cache is running background refresh
+  # (only runs if ttl_seconds is not None)
+  if prompt_cache_singleton._refresh_thread is not None:
+      print("Background refresh is active")
+  ```
 
-# Check if cache is running background refresh
-# (only runs if ttl_seconds is not None)
-if prompt_cache_singleton._refresh_thread is not None:
-    print("Background refresh is active")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { promptCacheSingleton } from "langsmith";
 
-```typescript TypeScript
-import { promptCacheSingleton } from "langsmith";
+  // Invalidate a specific prompt from cache
+  promptCacheSingleton.invalidate("joke-generator:latest");
 
-// Invalidate a specific prompt from cache
-promptCacheSingleton.invalidate("joke-generator:latest");
+  // Clear all cached prompts
+  promptCacheSingleton.clear();
 
-// Clear all cached prompts
-promptCacheSingleton.clear();
-
-// Reset metrics
-promptCacheSingleton.resetMetrics();
-```
-
+  // Reset metrics
+  promptCacheSingleton.resetMetrics();
+  ```
 </CodeGroup>
 
 ### Cleanup
@@ -748,19 +719,17 @@ promptCacheSingleton.resetMetrics();
 You can manually call `stop()` to stop the background refresh task:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  prompt_cache_singleton.stop()
+  ```
 
-```python Python
-prompt_cache_singleton.stop()
-```
-
-```typescript TypeScript
-promptCacheSingleton.stop();
-```
-
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  promptCacheSingleton.stop();
+  ```
 </CodeGroup>
 
 <Note>
-The background refresh task is only started when you first set a value in the cache, and only if `ttl_seconds` is not `None`. If `ttl_seconds` is `None` (offline mode), no background task is created.
+  The background refresh task is only started when you first set a value in the cache, and only if `ttl_seconds` is not `None`. If `ttl_seconds` is `None` (offline mode), no background task is created.
 </Note>
 
 ## Use a prompt without LangChain
@@ -772,163 +741,155 @@ These conversion methods rely on logic from within LangChain integration package
 ### OpenAI
 
 <CodeGroup>
+  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langchain_openai
+  ```
 
-```bash Python
-pip install -U langchain_openai
-```
-
-```bash TypeScript
-yarn add @langchain/openai @langchain/core # @langchain/openai version >= 0.3.2
-```
-
+  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add @langchain/openai @langchain/core # @langchain/openai version >= 0.3.2
+  ```
 </CodeGroup>
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from openai import OpenAI
+  from langsmith.client import Client, convert_prompt_to_openai_format
 
-```python Python
-from openai import OpenAI
-from langsmith.client import Client, convert_prompt_to_openai_format
+  # langsmith client
+  client = Client()
+  # openai client
+  oai_client = OpenAI()
 
-# langsmith client
-client = Client()
-# openai client
-oai_client = OpenAI()
+  # pull prompt and invoke to populate the variables
+  prompt = client.pull_prompt("joke-generator")
+  prompt_value = prompt.invoke({"topic": "cats"})
+  openai_payload = convert_prompt_to_openai_format(prompt_value)
+  openai_response = oai_client.chat.completions.create(**openai_payload)
+  ```
 
-# pull prompt and invoke to populate the variables
-prompt = client.pull_prompt("joke-generator")
-prompt_value = prompt.invoke({"topic": "cats"})
-openai_payload = convert_prompt_to_openai_format(prompt_value)
-openai_response = oai_client.chat.completions.create(**openai_payload)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { convertPromptToOpenAI } from "@langchain/openai";
+  import OpenAI from "openai";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { convertPromptToOpenAI } from "@langchain/openai";
-import OpenAI from "openai";
+  const prompt = await hub.pull("jacob/joke-generator");
+  const formattedPrompt = await prompt.invoke({
+    topic: "cats",
+  });
+  const { messages } = convertPromptToOpenAI(formattedPrompt);
 
-const prompt = await hub.pull("jacob/joke-generator");
-const formattedPrompt = await prompt.invoke({
-  topic: "cats",
-});
-const { messages } = convertPromptToOpenAI(formattedPrompt);
+  const openAIClient = new OpenAI();
+  const openAIResponse = await openAIClient.chat.completions.create({
+    model: "gpt-5.4-mini",
+    messages,
+  });
+  ```
 
-const openAIClient = new OpenAI();
-const openAIResponse = await openAIClient.chat.completions.create({
-  model: "gpt-5.4-mini",
-  messages,
-});
-```
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import static com.langchain.smith.prompts.PromptConverters.convertToOpenAIParams;
+  import com.langchain.smith.client.LangsmithClient;
+  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+  import com.langchain.smith.prompts.Prompt;
+  import com.langchain.smith.prompts.PromptClient;
+  import com.langchain.smith.prompts.PromptValue;
+  import com.openai.client.OpenAIClient;
+  import com.openai.client.okhttp.OpenAIOkHttpClient;
+  import com.openai.models.ChatModel;
+  import com.openai.models.chat.completions.ChatCompletion;
+  import java.util.Map;
 
-```java Java
-import static com.langchain.smith.prompts.PromptConverters.convertToOpenAIParams;
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.prompts.Prompt;
-import com.langchain.smith.prompts.PromptClient;
-import com.langchain.smith.prompts.PromptValue;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletion;
-import java.util.Map;
+  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+  PromptClient promptClient = PromptClient.create(client);
+  OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
 
-LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-PromptClient promptClient = PromptClient.create(client);
-OpenAIClient openai = OpenAIOkHttpClient.fromEnv();
+  Prompt prompt = promptClient.pull("jacob/joke-generator");
+  PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
 
-Prompt prompt = promptClient.pull("jacob/joke-generator");
-PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
-
-ChatCompletion completion = openai.chat().completions().create(
-    convertToOpenAIParams(formattedPrompt)
-        .model(ChatModel.GPT_4_1_MINI)
-        .build()
-);
-```
-
+  ChatCompletion completion = openai.chat().completions().create(
+      convertToOpenAIParams(formattedPrompt)
+          .model(ChatModel.GPT_4_1_MINI)
+          .build()
+  );
+  ```
 </CodeGroup>
 
 ### Anthropic
 
 <CodeGroup>
+  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langchain_anthropic
+  ```
 
-```bash Python
-pip install -U langchain_anthropic
-```
-
-```bash TypeScript
-yarn add @langchain/anthropic @langchain/core # @langchain/anthropic version >= 0.3.3
-```
-
+  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add @langchain/anthropic @langchain/core # @langchain/anthropic version >= 0.3.3
+  ```
 </CodeGroup>
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from anthropic import Anthropic
+  from langsmith.client import Client, convert_prompt_to_anthropic_format
 
-```python Python
-from anthropic import Anthropic
-from langsmith.client import Client, convert_prompt_to_anthropic_format
+  # langsmith client
+  client = Client()
+  # anthropic client
+  anthropic_client = Anthropic()
 
-# langsmith client
-client = Client()
-# anthropic client
-anthropic_client = Anthropic()
+  # pull prompt and invoke to populate the variables
+  prompt = client.pull_prompt("joke-generator")
+  prompt_value = prompt.invoke({"topic": "cats"})
+  anthropic_payload = convert_prompt_to_anthropic_format(prompt_value)
+  anthropic_response = anthropic_client.messages.create(**anthropic_payload)
+  ```
 
-# pull prompt and invoke to populate the variables
-prompt = client.pull_prompt("joke-generator")
-prompt_value = prompt.invoke({"topic": "cats"})
-anthropic_payload = convert_prompt_to_anthropic_format(prompt_value)
-anthropic_response = anthropic_client.messages.create(**anthropic_payload)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import * as hub from "langchain/hub";
+  import { convertPromptToAnthropic } from "@langchain/anthropic";
+  import Anthropic from "@anthropic-ai/sdk";
 
-```typescript TypeScript
-import * as hub from "langchain/hub";
-import { convertPromptToAnthropic } from "@langchain/anthropic";
-import Anthropic from "@anthropic-ai/sdk";
+  const prompt = await hub.pull("jacob/joke-generator");
+  const formattedPrompt = await prompt.invoke({
+    topic: "cats",
+  });
+  const { messages, system } = convertPromptToAnthropic(formattedPrompt);
 
-const prompt = await hub.pull("jacob/joke-generator");
-const formattedPrompt = await prompt.invoke({
-  topic: "cats",
-});
-const { messages, system } = convertPromptToAnthropic(formattedPrompt);
+  const anthropicClient = new Anthropic();
+  const anthropicResponse = await anthropicClient.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    system,
+    messages,
+    max_tokens: 1024,
+    stream: false,
+  });
+  ```
 
-const anthropicClient = new Anthropic();
-const anthropicResponse = await anthropicClient.messages.create({
-  model: "claude-haiku-4-5-20251001",
-  system,
-  messages,
-  max_tokens: 1024,
-  stream: false,
-});
-```
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import static com.langchain.smith.prompts.PromptConverters.convertToAnthropicParams;
+  import com.anthropic.client.AnthropicClient;
+  import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+  import com.anthropic.models.messages.Message;
+  import com.anthropic.models.messages.Model;
+  import com.langchain.smith.client.LangsmithClient;
+  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+  import com.langchain.smith.prompts.Prompt;
+  import com.langchain.smith.prompts.PromptClient;
+  import com.langchain.smith.prompts.PromptValue;
+  import java.util.Map;
 
-```java Java
-import static com.langchain.smith.prompts.PromptConverters.convertToAnthropicParams;
-import com.anthropic.client.AnthropicClient;
-import com.anthropic.client.okhttp.AnthropicOkHttpClient;
-import com.anthropic.models.messages.Message;
-import com.anthropic.models.messages.Model;
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.prompts.Prompt;
-import com.langchain.smith.prompts.PromptClient;
-import com.langchain.smith.prompts.PromptValue;
-import java.util.Map;
+  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+  PromptClient promptClient = PromptClient.create(client);
+  AnthropicClient anthropic = AnthropicOkHttpClient.fromEnv();
 
-LangsmithClient client = LangsmithOkHttpClient.fromEnv();
-PromptClient promptClient = PromptClient.create(client);
-AnthropicClient anthropic = AnthropicOkHttpClient.fromEnv();
+  Prompt prompt = promptClient.pull("jacob/joke-generator");
+  PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
 
-Prompt prompt = promptClient.pull("jacob/joke-generator");
-PromptValue formattedPrompt = prompt.invoke(Map.of("topic", "cats"));
-
-Message message = anthropic.messages().create(
-    convertToAnthropicParams(formattedPrompt)
-        .model(Model.CLAUDE_SONNET_4_5)
-        .maxTokens(1024)
-        .build()
-);
-```
-
+  Message message = anthropic.messages().create(
+      convertToAnthropicParams(formattedPrompt)
+          .model(Model.CLAUDE_SONNET_4_5)
+          .maxTokens(1024)
+          .build()
+  );
+  ```
 </CodeGroup>
 
 ## List, delete, and like prompts
@@ -936,90 +897,89 @@ Message message = anthropic.messages().create(
 You can also list, delete, and like/unlike prompts using the `list prompts`, `delete prompt`, `like prompt` and `unlike prompt` methods. See the [LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk) for extensive documentation on these methods.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # List all prompts in my workspace
+  prompts = client.list_prompts()
 
-```python Python
-# List all prompts in my workspace
-prompts = client.list_prompts()
+  # List my private prompts that include "joke"
+  prompts = client.list_prompts(query="joke", is_public=False)
 
-# List my private prompts that include "joke"
-prompts = client.list_prompts(query="joke", is_public=False)
+  # Delete a prompt
+  client.delete_prompt("joke-generator")
 
-# Delete a prompt
-client.delete_prompt("joke-generator")
+  # Like a prompt
+  client.like_prompt("efriis/my-first-prompt")
 
-# Like a prompt
-client.like_prompt("efriis/my-first-prompt")
+  # Unlike a prompt
+  client.unlike_prompt("efriis/my-first-prompt")
+  ```
 
-# Unlike a prompt
-client.unlike_prompt("efriis/my-first-prompt")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // List all prompts in my workspace
+  import Client from "langsmith";
 
-```typescript TypeScript
-// List all prompts in my workspace
-import Client from "langsmith";
+  const client = new Client({ apiKey: "lsv2_..." });
+  const prompts = client.listPrompts();
 
-const client = new Client({ apiKey: "lsv2_..." });
-const prompts = client.listPrompts();
+  for await (const prompt of prompts) {
+    console.log(prompt);
+  }
 
-for await (const prompt of prompts) {
-  console.log(prompt);
-}
+  // List my private prompts that include "joke"
+  const private_joke_prompts = client.listPrompts({ query: "joke", isPublic: false});
 
-// List my private prompts that include "joke"
-const private_joke_prompts = client.listPrompts({ query: "joke", isPublic: false});
+  // Delete a prompt
+  client.deletePrompt("joke-generator");
 
-// Delete a prompt
-client.deletePrompt("joke-generator");
+  // Like a prompt
+  client.likePrompt("efriis/my-first-prompt");
 
-// Like a prompt
-client.likePrompt("efriis/my-first-prompt");
+  // Unlike a prompt
+  client.unlikePrompt("efriis/my-first-prompt");
+  ```
 
-// Unlike a prompt
-client.unlikePrompt("efriis/my-first-prompt");
-```
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import com.langchain.smith.client.LangsmithClient;
+  import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
+  import com.langchain.smith.models.repos.RepoDeleteParams;
+  import com.langchain.smith.models.repos.RepoListPage;
+  import com.langchain.smith.models.repos.RepoListParams;
+  import com.langchain.smith.models.repos.RepoWithLookups;
 
-```java Java
-import com.langchain.smith.client.LangsmithClient;
-import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
-import com.langchain.smith.models.repos.RepoDeleteParams;
-import com.langchain.smith.models.repos.RepoListPage;
-import com.langchain.smith.models.repos.RepoListParams;
-import com.langchain.smith.models.repos.RepoWithLookups;
+  LangsmithClient client = LangsmithOkHttpClient.fromEnv();
 
-LangsmithClient client = LangsmithOkHttpClient.fromEnv();
+  // List all prompts in my workspace
+  RepoListPage prompts = client.repos().list();
+  for (RepoWithLookups prompt : prompts.repos()) {
+      System.out.println(prompt.repoHandle());
+  }
 
-// List all prompts in my workspace
-RepoListPage prompts = client.repos().list();
-for (RepoWithLookups prompt : prompts.repos()) {
-    System.out.println(prompt.repoHandle());
-}
+  // List my private prompts that include "joke"
+  RepoListPage jokePrompts = client.repos().list(
+      RepoListParams.builder()
+          .query("joke")
+          .isPublic(RepoListParams.IsPublic.FALSE)
+          .build()
+  );
 
-// List my private prompts that include "joke"
-RepoListPage jokePrompts = client.repos().list(
-    RepoListParams.builder()
-        .query("joke")
-        .isPublic(RepoListParams.IsPublic.FALSE)
-        .build()
-);
-
-// Delete a prompt
-client.repos().delete(
-    RepoDeleteParams.builder()
-        .owner("-")
-        .repo("joke-generator")
-        .build()
-);
-```
-
+  // Delete a prompt
+  client.repos().delete(
+      RepoDeleteParams.builder()
+          .owner("-")
+          .repo("joke-generator")
+          .build()
+  );
+  ```
 </CodeGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-prompts-programmatically.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

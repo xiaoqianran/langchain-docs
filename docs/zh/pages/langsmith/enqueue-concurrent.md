@@ -15,8 +15,8 @@
 首先，我们将定义一个快速帮助函数来打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
 
 <Tabs>
-    <Tab title="Javascript">
-    ```js
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -28,9 +28,10 @@
       console.log(m.content);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -49,14 +50,14 @@
       echo "$content"
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 然后，让我们导入所需的包并实例化我们的客户端、助手和线程。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import asyncio
 
     import httpx
@@ -68,9 +69,10 @@
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
 
@@ -79,15 +81,16 @@
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 创建运行
@@ -95,8 +98,8 @@
 现在让我们开始两次运行，第二次运行使用“入队”多任务策略中断第一次运行：
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     first_run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -109,9 +112,10 @@
         multitask_strategy="enqueue",
     )
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const firstRun = await client.runs.create(
       thread["thread_id"],
       assistantId,
@@ -125,9 +129,10 @@
       multitask_strategy="enqueue",
     )
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -143,14 +148,16 @@
       \"multitask_strategy\": \"enqueue\"
     }"
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 查看运行结果
 
-验证线程是否具有两次运行的数据：<Tabs>
-    <Tab title="Python">
-    ```python
+验证线程是否具有两次运行的数据：
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # wait until the second run completes
     await client.runs.join(thread["thread_id"], second_run["run_id"])
 
@@ -159,9 +166,10 @@
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     await client.runs.join(thread["thread_id"], secondRun["run_id"]);
 
     const state = await client.threads.getState(thread["thread_id"]);
@@ -170,9 +178,10 @@
       prettyPrint(m);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
     curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -182,10 +191,8 @@
         pretty_print "$type" "$content"
     done
     ```
-    </Tab>
-</Tabs>
-
-输出：
+  </Tab>
+</Tabs>输出：
 
 ```
 ================================ Human Message =================================
@@ -261,13 +268,14 @@ Friday: Partly cloudy, high of 87°F (31°C)
 New York City is experiencing beautiful sunny weather with seasonably warm temperatures in the mid-to-upper 80s Fahrenheit (around 30°C). Humidity is moderate in the 60% range. Overall, ideal late spring/early summer conditions for being outdoors in the city over the next several days.
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enqueue-concurrent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

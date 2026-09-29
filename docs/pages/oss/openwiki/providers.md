@@ -2,29 +2,31 @@
 
 # Model providers
 
+Configure inference providers and credentials for OpenWiki
+
 OpenWiki supports the following providers:
 
-| Provider | Credential | Notes |
-| --- | --- | --- |
-| `openai` | `OPENAI_API_KEY` | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
-| `openai-chatgpt` | ChatGPT OAuth tokens | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance |
-| `copilot` | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT |
-| `openrouter` | `OPENROUTER_API_KEY` | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist |
-| `anthropic` | `ANTHROPIC_API_KEY` | Optional `ANTHROPIC_BASE_URL` |
-| `gemini` | `GEMINI_API_KEY` | Google AI Studio |
-| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT` | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`) |
-| `bedrock` | AWS credentials + region | Explicit Bedrock keys or the AWS SDK default chain |
-| `baseten` | `BASETEN_API_KEY` | Optional `BASETEN_BASE_URL` |
-| `fireworks` | `FIREWORKS_API_KEY` | Optional `FIREWORKS_BASE_URL` |
-| `nebius` | `NEBIUS_API_KEY` | Nebius Token Factory |
-| `nvidia` | `NVIDIA_API_KEY` | Optional `NVIDIA_BASE_URL` |
-| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID |
+| Provider            | Credential                              | Notes                                                                                   |
+| ------------------- | --------------------------------------- | --------------------------------------------------------------------------------------- |
+| `openai`            | `OPENAI_API_KEY`                        | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
+| `openai-chatgpt`    | ChatGPT OAuth tokens                    | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance                      |
+| `copilot`           | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT                 |
+| `openrouter`        | `OPENROUTER_API_KEY`                    | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist                                  |
+| `anthropic`         | `ANTHROPIC_API_KEY`                     | Optional `ANTHROPIC_BASE_URL`                                                           |
+| `gemini`            | `GEMINI_API_KEY`                        | Google AI Studio                                                                        |
+| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT`     | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`)                                 |
+| `bedrock`           | AWS credentials + region                | Explicit Bedrock keys or the AWS SDK default chain                                      |
+| `baseten`           | `BASETEN_API_KEY`                       | Optional `BASETEN_BASE_URL`                                                             |
+| `fireworks`         | `FIREWORKS_API_KEY`                     | Optional `FIREWORKS_BASE_URL`                                                           |
+| `nebius`            | `NEBIUS_API_KEY`                        | Nebius Token Factory                                                                    |
+| `nvidia`            | `NVIDIA_API_KEY`                        | Optional `NVIDIA_BASE_URL`                                                              |
+| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY`             | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID                             |
 
 Credentials and defaults are stored in `~/.openwiki/.env`. Process environment values take priority over file values.
 
 You can set the active provider and model with:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=openai
 OPENWIKI_MODEL_ID=gpt-5.6-terra
 ```
@@ -33,7 +35,7 @@ OPENWIKI_MODEL_ID=gpt-5.6-terra
 
 Override retries after the first provider request:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER_RETRY_ATTEMPTS=3
 ```
 
@@ -43,23 +45,23 @@ The value must be a positive integer. If unset, OpenWiki defaults to 3 retries.
 
 `OPENWIKI_MAX_OUTPUT_TOKENS` is an optional override for the per-request output budget. When set, it must be a positive integer. OpenWiki maps it to the active provider's request shape:
 
-- **`maxOutputTokens`**: `gemini`
-- **`maxTokens`**: `anthropic`, `openai`, `openai-compatible`, `openrouter`, `bedrock`, Gemini Enterprise non-Google surfaces, `openai-chatgpt`, and `copilot`
+* **`maxOutputTokens`**: `gemini`
+* **`maxTokens`**: `anthropic`, `openai`, `openai-compatible`, `openrouter`, `bedrock`, Gemini Enterprise non-Google surfaces, `openai-chatgpt`, and `copilot`
 
 When unset, OpenWiki preserves each provider's SDK default except for these built-in ceilings:
 
-- **Anthropic**: modern Claude 4 and 5 models default to `16384` tokens because older LangChain metadata otherwise caps newer Claude aliases at `4096`
-- **Bedrock**: defaults to `16000` tokens. Override with `OPENWIKI_BEDROCK_MAX_TOKENS` when a model supports a lower ceiling
+* **Anthropic**: modern Claude 4 and 5 models default to `16384` tokens because older LangChain metadata otherwise caps newer Claude aliases at `4096`
+* **Bedrock**: defaults to `16000` tokens. Override with `OPENWIKI_BEDROCK_MAX_TOKENS` when a model supports a lower ceiling
 
 To set one limit across whichever of those providers is active, set:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_MAX_OUTPUT_TOKENS=16384
 ```
 
 By default OpenRouter sends no `max_tokens`, so credit pre-checks budget for the model's full advertised output ceiling and low balances can fail with 402 errors. `OPENWIKI_OPENROUTER_MAX_TOKENS` takes precedence over `OPENWIKI_MAX_OUTPUT_TOKENS` on OpenRouter runs, you can set token limits with:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENROUTER_MAX_TOKENS=8192
 ```
 
@@ -69,17 +71,17 @@ Using a limit means that instead of 402 failures, you get possible truncation on
 
 `OPENWIKI_REASONING_EFFORT` is an optional global setting for models that advertise reasoning support.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_REASONING_EFFORT=high
 ```
 
 Leave it unset to preserve the provider default. Invalid provider, model, or effort combinations fail before a request is sent. An inherited value also fails when the active provider and model do not support it.
 
-| Provider | Model | Supported values | Request mapping |
-| --- | --- | --- | --- |
-| `openai` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
-| `openai-chatgpt` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
-| `nvidia` | `nvidia/nemotron-3-super-120b-a12b` | `none`, `low`, `high` | Chat Completions `reasoning_effort` |
+| Provider         | Model                                          | Supported values                                | Request mapping                     |
+| ---------------- | ---------------------------------------------- | ----------------------------------------------- | ----------------------------------- |
+| `openai`         | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort`    |
+| `openai-chatgpt` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort`    |
+| `nvidia`         | `nvidia/nemotron-3-super-120b-a12b`            | `none`, `low`, `high`                           | Chat Completions `reasoning_effort` |
 
 All other provider and model combinations, including OpenRouter, do not offer reasoning effort selection.
 
@@ -94,7 +96,7 @@ To use GitHub Copilot:
 
 OpenWiki leaves the GitHub CLI token in the GitHub CLI credential store. It does not copy that token into `~/.openwiki/.env`. For CI or headless environments without a GitHub CLI session, set `COPILOT_API_KEY` to a GitHub **OAuth token**. Personal Access Tokens (classic or fine-grained) are rejected by the Copilot API for third-party integrations.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=copilot
 OPENWIKI_MODEL_ID=gpt-5.5
 ```
@@ -103,7 +105,7 @@ OPENWIKI_MODEL_ID=gpt-5.5
 
 The `openai-chatgpt` provider calls OpenAI's Codex backend using your ChatGPT subscription instead of a metered API key:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
 ```
 
@@ -113,7 +115,7 @@ The wizard opens the OpenAI auth page in your browser (and prints the URL for he
 
 The `gemini-enterprise` provider uses Google Application Default Credentials. No API key is required:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=gemini-enterprise
 GOOGLE_CLOUD_PROJECT=your-gcp-project
 GOOGLE_CLOUD_LOCATION=global
@@ -123,7 +125,7 @@ The credentials need Gemini Enterprise Agent Platform access (`roles/aiplatform.
 
 ## AWS Bedrock
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=bedrock
 BEDROCK_AWS_ACCESS_KEY_ID=your-access-key-id
 BEDROCK_AWS_SECRET_ACCESS_KEY=your-secret-access-key
@@ -141,7 +143,7 @@ For Bedrock stream idle timeout, set `OPENWIKI_STREAM_IDLE_TIMEOUT` in milliseco
 
 Use the `openai-compatible` provider for gateways or local servers that expose OpenAI-compatible chat completions:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=openai-compatible
 OPENAI_COMPATIBLE_API_KEY=your-gateway-key
 OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
@@ -154,7 +156,7 @@ OpenWiki sends non-streaming requests internally, even when you are not watching
 
 Enable streaming for the `openai-compatible` provider when your gateway requires it:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_STREAMING=true
 ```
 
@@ -162,7 +164,7 @@ Streaming stays off by default because this provider can point at arbitrary thir
 
 To opt the openai-compatible provider into the Responses API instead of chat completions:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true
 ```
 
@@ -170,7 +172,7 @@ OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true
 
 When OpenRouter serves a model through multiple upstream providers, restrict routing:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_PROVIDER=openrouter
 OPENROUTER_API_KEY=your-key
 OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
@@ -178,17 +180,18 @@ OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 
 ## See also
 
-- [Quickstart](/oss/openwiki/quickstart)
-- [CLI reference](/oss/openwiki/cli-reference)
-- [Customize OpenWiki](/oss/openwiki/customize)
+* [Quickstart](/oss/openwiki/quickstart)
+* [CLI reference](/oss/openwiki/cli-reference)
+* [Customize OpenWiki](/oss/openwiki/customize)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

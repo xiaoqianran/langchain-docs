@@ -2,14 +2,16 @@
 
 # Python extensions
 
+Customize dcode with Python tools, middleware, and storage routes
+
 Python extensions customize the dcode agent server without modifying dcode itself. Use them to register model tools, LangChain middleware, virtual storage routes.
 
 <Note>
-    Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. This experimental API can change or be removed without notice.
+  Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. This experimental API can change or be removed without notice.
 </Note>
 
 <Warning>
-    Extensions run arbitrary Python with your user account's permissions. Load extensions only from sources you trust. Extension tools are not automatically added to the human-approval map, so extensions that perform sensitive work must enforce their own approval or policy through middleware.
+  Extensions run arbitrary Python with your user account's permissions. Load extensions only from sources you trust. Extension tools are not automatically added to the human-approval map, so extensions that perform sensitive work must enforce their own approval or policy through middleware.
 </Warning>
 
 ## Create an extension
@@ -18,7 +20,7 @@ An extension entry file must expose an asynchronous `extension` setup function. 
 
 The following extension makes a LangGraph store available to the agent's file tools under `/memories/`:
 
-```python extension.py
+```python extension.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StoreBackend
 
 from deepagents_code.extensions import ExtensionAPI
@@ -33,7 +35,7 @@ async def extension(d: ExtensionAPI) -> None:
 
 Start dcode with the experimental gate and load the file for one run:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
 ```
 
@@ -43,19 +45,19 @@ Repeat `-e` or `--extension` to load multiple files or directories. A directory 
 
 The extension API supports these methods:
 
-| Method | Signature | Purpose |
-|---|---|---|
-| `register_middleware` | `(class_or_instance)` | Add LangChain `AgentMiddleware`. A middleware class must have a zero-argument constructor; otherwise, pass an instance. |
-| `register_tool` | `(function_or_tool)` | Expose a callable or `BaseTool` to the model. dcode converts plain callables with LangChain tool-schema inference. |
-| `register_backend_route` | `(prefix, backend)` | Make a `BackendProtocol` storage provider available under a virtual path. |
-| `on_shutdown` | `(callback)` | Release session resources when the agent server stops. Synchronous and asynchronous callbacks are supported. |
+| Method                   | Signature             | Purpose                                                                                                                 |
+| ------------------------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `register_middleware`    | `(class_or_instance)` | Add LangChain `AgentMiddleware`. A middleware class must have a zero-argument constructor; otherwise, pass an instance. |
+| `register_tool`          | `(function_or_tool)`  | Expose a callable or `BaseTool` to the model. dcode converts plain callables with LangChain tool-schema inference.      |
+| `register_backend_route` | `(prefix, backend)`   | Make a `BackendProtocol` storage provider available under a virtual path.                                               |
+| `on_shutdown`            | `(callback)`          | Release session resources when the agent server stops. Synchronous and asynchronous callbacks are supported.            |
 
 The registrar also exposes this read-only context:
 
-- `d.cwd`: Working directory for the session.
-- `d.mode`: `interactive` or `headless`.
-- `d.has_ui`: Whether the session has an interactive terminal UI.
-- `d.path`: Entry file for the extension.
+* `d.cwd`: Working directory for the session.
+* `d.mode`: `interactive` or `headless`.
+* `d.has_ui`: Whether the session has an interactive terminal UI.
+* `d.path`: Entry file for the extension.
 
 Do not open long-lived connections or start background tasks during module import. If setup opens a session resource, register an idempotent `on_shutdown` callback to release it.
 
@@ -63,7 +65,7 @@ Do not open long-lived connections or start background tasks during module impor
 
 Register LangChain middleware to add model or tool behavior to the agent. dcode loads middleware when it builds the agent graph.
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import AgentMiddleware
 
 from deepagents_code.extensions import ExtensionAPI
@@ -83,7 +85,7 @@ Use an `AgentMiddleware` instance when construction needs configuration. You can
 
 Register a callable or `BaseTool` to make it available to the model.
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents_code.extensions import ExtensionAPI
 
 
@@ -130,7 +132,7 @@ Project extensions in `<project>/.deepagents/extensions/` execute only after pro
 
 For a headless or CI run, grant trust for that invocation:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 DEEPAGENTS_CODE_EXPERIMENTAL=1 \
   dcode --trust-project-extensions -n "Run the project checks"
 ```
@@ -141,7 +143,7 @@ Set the default project policy to `ask`, `always`, or `never` with `[extensions]
 
 Configure discovery in `~/.deepagents/config.toml`:
 
-```toml title="~/.deepagents/config.toml"
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [extensions]
 enabled = true
 trust = "ask"
@@ -151,11 +153,11 @@ extra_paths = [
 ]
 ```
 
-| Setting | Default | Description |
-|---|---|---|
-| `enabled` | `true` | Enable extension discovery for every source, including `-e` / `--extension`. The experimental environment variable is still required. |
-| `trust` | `"ask"` | Set project extension trust to `ask`, `always`, or `never`. |
-| `extra_paths` | `[]` | Add user-authorized Python files or directories. Relative paths resolve from the dcode profile directory; `~` expands to your home directory. |
+| Setting       | Default | Description                                                                                                                                   |
+| ------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`     | `true`  | Enable extension discovery for every source, including `-e` / `--extension`. The experimental environment variable is still required.         |
+| `trust`       | `"ask"` | Set project extension trust to `ask`, `always`, or `never`.                                                                                   |
+| `extra_paths` | `[]`    | Add user-authorized Python files or directories. Relative paths resolve from the dcode profile directory; `~` expands to your home directory. |
 
 `DEEPAGENTS_CODE_EXTENSIONS` overrides `enabled`, and `DEEPAGENTS_CODE_EXTENSIONS_TRUST` overrides `trust`. Both still require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. When `enabled` is `false`, Deep Agents Code skips every extension source.
 
@@ -163,7 +165,7 @@ extra_paths = [
 
 A versioned [plugin](/oss/deepagents/code/plugins) is the preferred way to distribute an extension. Declare one entry file or a list under the Deep Agents Code namespace in the plugin manifest:
 
-```json title=".claude-plugin/plugin.json"
+```json title=".claude-plugin/plugin.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "name": "shared-memory",
   "version": "1.0.0",
@@ -185,18 +187,19 @@ Each extension setup is transactional. If import or initialization fails, Deep A
 
 ## See also
 
-- [Plugins and marketplaces](/oss/deepagents/code/plugins)
-- [Command reference](/oss/deepagents/code/cli-reference)
-- [Config file](/oss/deepagents/code/config-file)
-- [Approval modes](/oss/deepagents/code/approval-modes)
+* [Plugins and marketplaces](/oss/deepagents/code/plugins)
+* [Command reference](/oss/deepagents/code/cli-reference)
+* [Config file](/oss/deepagents/code/config-file)
+* [Approval modes](/oss/deepagents/code/approval-modes)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

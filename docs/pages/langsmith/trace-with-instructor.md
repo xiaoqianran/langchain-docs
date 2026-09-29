@@ -6,7 +6,7 @@ LangSmith provides a convenient integration with [Instructor](https://python.use
 
 In order to use, you first need to set your LangSmith API key.
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
@@ -15,18 +15,18 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 Next, you will need to install the LangSmith SDK:
 
 <CodeGroup>
-```bash pip
-pip install -U langsmith
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U langsmith
+  ```
 
-```bash uv
-uv add langsmith
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langsmith
+  ```
 </CodeGroup>
 
 Wrap your OpenAI client with `langsmith.wrappers.wrap_openai`
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from openai import OpenAI
 from langsmith import wrappers
 
@@ -35,7 +35,7 @@ client = wrappers.wrap_openai(OpenAI())
 
 After this, you can patch the wrapped OpenAI client using `instructor`:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import instructor
 
 client = instructor.patch(client)
@@ -43,7 +43,7 @@ client = instructor.patch(client)
 
 Now, you can use `instructor` as you normally would, but now everything is logged to LangSmith!
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import BaseModel
 
 
@@ -65,7 +65,7 @@ Oftentimes, you use `instructor` inside of other functions.
 You can get nested traces by using this wrapped client and decorating those functions with `@traceable`.
 Please see [Custom instrumentation](/langsmith/annotate-code) for more information on how to annotate your code for tracing with the `@traceable` decorator.
 
-```python {highlight={2}}
+```python {highlight={2}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # You can customize the run name with the `name` keyword argument
 @traceable(name="Extract User Details")
 def my_function(text: str) -> UserDetail:
@@ -80,13 +80,14 @@ def my_function(text: str) -> UserDetail:
 my_function("Jason is 25 years old")
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-instructor.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

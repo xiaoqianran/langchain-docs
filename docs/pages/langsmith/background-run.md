@@ -10,8 +10,8 @@ This can be useful for long running jobs.
 First let's set up our client and thread:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
@@ -21,9 +21,10 @@ First let's set up our client and thread:
     thread = await client.threads.create()
     print(thread)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -33,15 +34,16 @@ First let's set up our client and thread:
     const thread = await client.threads.create();
     console.log(thread);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -63,24 +65,26 @@ Output:
 If we list the current runs on this thread, we will see that it's empty:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     runs = await client.runs.list(thread["thread_id"])
     print(runs)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     let runs = await client.runs.list(thread['thread_id']);
     console.log(runs);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -94,20 +98,22 @@ Output:
 Now let's kick off a run:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]}
     run = await client.runs.create(thread["thread_id"], assistant_id, input=input)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     let input = {"messages": [{"role": "user", "content": "what's the weather in sf"}]};
     let run = await client.runs.create(thread["thread_id"], assistantID, { input });
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
         --header 'Content-Type: application/json' \
@@ -115,28 +121,30 @@ Now let's kick off a run:
             "assistant_id": <ASSISTANT_ID>
         }'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 The first time we poll it, we can see `status=pending`:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     print(await client.runs.get(thread["thread_id"], run["run_id"]))
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -188,26 +196,28 @@ Output:
 Now we can join the run, wait for it to finish and check that status again:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     await client.runs.join(thread["thread_id"], run["run_id"])
     print(await client.runs.get(thread["thread_id"], run["run_id"]))
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     await client.runs.join(thread["thread_id"], run["run_id"]);
     console.log(await client.runs.get(thread["thread_id"], run["run_id"]));
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -259,24 +269,26 @@ Output:
 Perfect! The run succeeded as we would expect. We can double check that the run worked as expected by printing out the final state:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     final_result = await client.threads.get_state(thread["thread_id"])
     print(final_result)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     let finalResult = await client.threads.getState(thread["thread_id"]);
     console.log(finalResult);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -436,22 +448,24 @@ Output:
 We can also just print the content of the last AIMessage:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     print(final_result['values']['messages'][-1]['content'][0]['text'])
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     console.log(finalResult['values']['messages'][finalResult['values']['messages'].length-1]['content'][0]['text']);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -460,13 +474,14 @@ Output:
 The search results provide the current weather conditions in San Francisco. According to the data, as of 2:00 PM on August 30, 2024, the temperature in San Francisco is 70°F (21.1°C) with partly cloudy skies. The wind is blowing from the west-northwest at around 12 mph (19 km/h). The humidity is 59% and visibility is 9 miles (16 km). Overall, it looks like a nice late summer day in San Francisco with comfortable temperatures and partly sunny conditions.
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/background-run.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

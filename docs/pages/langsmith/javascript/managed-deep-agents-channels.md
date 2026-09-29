@@ -2,39 +2,38 @@
 
 # Connect Managed Deep Agents to channels
 
+Connect Managed Deep Agents to external messaging services that can start runs and receive responses.
+
 A channel makes a managed deep agent available in an external messaging service. Messages from the service can start agent runs, and the agent's final responses return through the same service.
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 ## Project structure
 
 Channel declarations live in the project-level `channels/` directory:
 
-
-
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
   agent.ts
   channels/
     slack.ts
 ```
 
-
 ## Understand channels
 
 A channel combines three parts of an external messaging integration:
 
-- **Inbound events**: Verify and normalize provider events, then start an agent run.
-- **Outbound messaging**: Send the agent's response back to the originating conversation.
-- **Provisioning**: Create and configure the provider resources that connect the service to the deployed agent.
+* **Inbound events**: Verify and normalize provider events, then start an agent run.
+* **Outbound messaging**: Send the agent's response back to the originating conversation.
+* **Provisioning**: Create and configure the provider resources that connect the service to the deployed agent.
 
 In Managed Deep Agents, a channel connects a deployed agent to a messaging provider.
 
 The managed runtime handles the channel lifecycle:
 
-```mermaid
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart LR
     Provider["Messaging provider"] --> Verify["Verify and normalize event"]
     Verify --> Thread["Resolve identity and thread"]
@@ -56,26 +55,17 @@ Provider adapters determine which events are accepted, how provider conversation
 
 Put each channel in a separate module under `channels/`.
 
-
-
 Export a named `channel` from each file.
-
 
 The file name becomes the configured channel name and identifies the channel within the deployment.
 
-
-
 Do not name a declaration `channels/channel.ts`.
-
 
 Channel names must be unique within a project.
 
 The provider factory creates the declaration.
 
-
-
 For example, `channels.slack()` creates a Slack channel.
-
 
 See the provider guide for its declaration, app configuration, and deployment procedure.
 
@@ -85,10 +75,11 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 
 ## Supported channels
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Slack" icon="brand-slack" href="/langsmith/javascript/managed-deep-agents-channels-slack">
     Start runs from Slack mentions, direct messages, and thread replies.
   </Card>
+
   <Card title="HTTP" icon="webhook" href="/langsmith/javascript/managed-deep-agents-channels-http">
     Start runs from any service that can send a JSON webhook.
   </Card>
@@ -96,18 +87,19 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 
 ## See also
 
-- [Identity](/langsmith/javascript/managed-deep-agents-identity): authenticate callers and scope channel runs to the resolved user.
-- [Schedules](/langsmith/javascript/managed-deep-agents-schedules): deliver scheduled results through a configured channel.
-- [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy): deploy project changes and configure secrets.
-- [CLI reference](/langsmith/javascript/managed-deep-agents-cli): review channel project-file conventions.
+* [Identity](/langsmith/javascript/managed-deep-agents-identity): authenticate callers and scope channel runs to the resolved user.
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules): deliver scheduled results through a configured channel.
+* [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy): deploy project changes and configure secrets.
+* [CLI reference](/langsmith/javascript/managed-deep-agents-cli): review channel project-file conventions.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

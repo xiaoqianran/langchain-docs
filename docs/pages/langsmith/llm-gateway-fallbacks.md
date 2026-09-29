@@ -2,8 +2,10 @@
 
 # Model fallbacks
 
+Automatically retry a request against backup models when the primary model rate-limits, errors, or returns another configured status code.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Model fallbacks retry a request against one or more backup models when the primary model returns a configured error, such as a rate limit or provider outage. Define the fallback order once in LangSmith, then continue using the standard LLM Gateway endpoint and model ID in your application.
@@ -12,16 +14,16 @@ Model fallbacks retry a request against one or more backup models when the prima
 
 A fallback chain has:
 
-- **A primary model**: the provider and model that trigger the chain when a request fails.
-- **One to five fallbacks**: an ordered list of direct provider models or saved [model configurations](/langsmith/model-configurations).
-- **Triggers**: the upstream HTTP status codes that move the request to the next model. For example, use `429` for rate limits, or `500`, `502`, `503`, and `504` for provider errors.
+* **A primary model**: the provider and model that trigger the chain when a request fails.
+* **One to five fallbacks**: an ordered list of direct provider models or saved [model configurations](/langsmith/model-configurations).
+* **Triggers**: the upstream HTTP status codes that move the request to the next model. For example, use `429` for rate limits, or `500`, `502`, `503`, and `504` for provider errors.
 
 For each request, the gateway:
 
 1. Calls the primary model selected by the request's provider-prefixed model ID.
-1. If the request fails with a configured trigger status or a transport error, loads the matching fallback chain.
-1. Calls each fallback in order until one succeeds, returns a status that does not trigger another fallback, or the chain is exhausted.
-1. Returns the final response in the API format used by the client.
+2. If the request fails with a configured trigger status or a transport error, loads the matching fallback chain.
+3. Calls each fallback in order until one succeeds, returns a status that does not trigger another fallback, or the chain is exhausted.
+4. Returns the final response in the API format used by the client.
 
 Fallbacks can use a different provider and API format than the primary model. The gateway translates requests and responses between [supported API formats](/langsmith/llm-gateway-api-formats), so an Anthropic primary can fall back to an OpenAI model without client-side changes.
 
@@ -30,18 +32,18 @@ Each attempt is traced and counted against [spend policies](/langsmith/llm-gatew
 ## Create a fallback chain
 
 <Warning>
-Creating and managing fallback chains requires `organization:manage` permission. For the full permissions breakdown, see [Access control](/langsmith/llm-gateway-access).
+  Creating and managing fallback chains requires `organization:manage` permission. For the full permissions breakdown, see [Access control](/langsmith/llm-gateway-access).
 </Warning>
 
 To create a fallback chain:
 
 1. Go to **LLM Gateway** and select the **Model Fallbacks** tab.
-1. Click **Create fallback chain**.
-1. Select the **Workspace** where the chain applies.
-1. Select the primary provider and model. Requests to this provider-prefixed model ID use the chain when the primary attempt fails.
-1. Under **Fallbacks**, add one to five backup models in the order the gateway should try them. Choose a provider and model directly, select an existing model configuration, or create a custom model configuration.
-1. Under **Configure fallback triggers (advanced)**, review the HTTP status codes that should trigger the next fallback. Add or remove status codes as needed.
-1. Click **Create chain**.
+2. Click **Create fallback chain**.
+3. Select the **Workspace** where the chain applies.
+4. Select the primary provider and model. Requests to this provider-prefixed model ID use the chain when the primary attempt fails.
+5. Under **Fallbacks**, add one to five backup models in the order the gateway should try them. Choose a provider and model directly, select an existing model configuration, or create a custom model configuration.
+6. Under **Configure fallback triggers (advanced)**, review the HTTP status codes that should trigger the next fallback. Add or remove status codes as needed.
+7. Click **Create chain**.
 
 A provider and model can have one fallback chain in each workspace. To change its behavior, edit the existing chain.
 
@@ -50,21 +52,19 @@ A provider and model can have one fallback chain in each workspace. To change it
 Call the standard LLM Gateway endpoint with the primary provider-prefixed model ID. You do not need a route-specific URL or additional request fields:
 
 <CodeGroup>
+  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://gateway.smith.langchain.com/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+  ```
 
-```bash Cloud
-curl https://gateway.smith.langchain.com/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
-```bash BYOC
-curl https://<data_plane_host>/gateway/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
+  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://<data_plane_host>/gateway/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+  ```
 </CodeGroup>
 
 The gateway applies the fallback chain configured for `anthropic/claude-opus-5` in the API key's workspace. If no chain matches, the gateway returns the primary model's response without attempting a fallback.
@@ -78,15 +78,14 @@ Creating the configuration requires workspace admin permissions. Creating the fa
 To configure fallbacks for a prompt:
 
 1. [Create a model configuration](/langsmith/model-configurations#create-a-configuration) pointing to the provider and model you want the prompt to use.
-1. [Create a fallback chain](#create-a-fallback-chain) in the same workspace. Select your saved configuration as the primary model, rather than selecting its underlying provider and model directly. Add the backup models, configure the triggers, and save the chain.
-1. [Create a prompt](/langsmith/create-a-prompt) in the Playground. Open **Model Configuration**, select **LangSmith Gateway** as the **Provider**, and enter `custom/<my_config_name>` in the **Model** field. Replace `<my_config_name>` with the saved configuration's name, without angle brackets. You can type the value even if it is not listed. Click **Apply**.
 
-    <img
-      src="/images/llm-gateway-prompt-model-configuration.png"
-      alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name> entered in the Model field."
-    />
+2. [Create a fallback chain](#create-a-fallback-chain) in the same workspace. Select your saved configuration as the primary model, rather than selecting its underlying provider and model directly. Add the backup models, configure the triggers, and save the chain.
 
-1. **Save** the prompt, then [pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt). In Python, set `include_model=True` when calling `client.pull_prompt` so the saved Gateway model configuration is included.
+3. [Create a prompt](/langsmith/create-a-prompt) in the Playground. Open **Model Configuration**, select **LangSmith Gateway** as the **Provider**, and enter `custom/<my_config_name>` in the **Model** field. Replace `<my_config_name>` with the saved configuration's name, without angle brackets. You can type the value even if it is not listed. Click **Apply**.
+
+   <img alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name> entered in the Model field." />
+
+4. **Save** the prompt, then [pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt). In Python, set `include_model=True` when calling `client.pull_prompt` so the saved Gateway model configuration is included.
 
 Invoke the pulled prompt with its saved model to send requests through the gateway and apply the configuration's fallback chain. Pulling only the prompt template does not include the model configuration.
 
@@ -96,8 +95,8 @@ The fallback chain belongs to the model configuration, not the prompt itself. Pr
 
 You can add two types of fallback candidates:
 
-- **Direct provider model**: select a supported gateway provider and model. This option uses the workspace's secret for that provider, or Gateway Credits for eligible hosted models.
-- **Model configuration**: select a saved workspace [model configuration](/langsmith/model-configurations). Use this option for a custom OpenAI-compatible or Anthropic endpoint, a custom model name, or configuration-specific parameters.
+* **Direct provider model**: select a supported gateway provider and model. This option uses the workspace's secret for that provider, or Gateway Credits for eligible hosted models.
+* **Model configuration**: select a saved workspace [model configuration](/langsmith/model-configurations). Use this option for a custom OpenAI-compatible or Anthropic endpoint, a custom model name, or configuration-specific parameters.
 
 Model configurations are workspace-scoped. A fallback chain can only use configurations from its selected workspace.
 
@@ -105,16 +104,17 @@ For example, configure `anthropic/claude-opus-5` as the primary model, `openai/g
 
 ## See also
 
-- [API formats](/langsmith/llm-gateway-api-formats): review supported request formats and translation behavior.
-- [Spend policies](/langsmith/llm-gateway-spend-policies): apply cost limits alongside fallback routing.
+* [API formats](/langsmith/llm-gateway-api-formats): review supported request formats and translation behavior.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): apply cost limits alongside fallback routing.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

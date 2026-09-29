@@ -3,8 +3,9 @@
 # Double texting
 
 <Info>
-**Prerequisites**
-* [Agent Server](/langsmith/agent-server)
+  **Prerequisites**
+
+  * [Agent Server](/langsmith/agent-server)
 </Info>
 
 Many times users might interact with your graph in unintended ways.
@@ -15,10 +16,10 @@ We call this "double texting".
 [Enqueue](#enqueue-default) is the default double texting (multi-tasking) strategy when creating runs in the [Agent Server](/langsmith/agent-server).
 
 <Note>
-Double texting is a feature of LangSmith Deployment. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
+  Double texting is a feature of LangSmith Deployment. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
 </Note>
 
-![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](/langsmith/images/double-texting.png)
+<img alt="Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second." />
 
 ## Enqueue (default)
 
@@ -46,13 +47,14 @@ This option halts the current execution and reverts all progress—including the
 
 For configuring the rollback double text option, refer to the [how-to guide](/langsmith/rollback-concurrent).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -2,24 +2,26 @@
 
 # LangSmith Sandboxes
 
+Use LangSmith managed sandboxes to safely execute code and interact with the filesystem in isolated environments.
+
 Sandboxes are isolated environments that allow agents to safely execute potentially risky operations, like running arbitrary code or interacting with the filesystem, without affecting your main infrastructure.
 
-From the [LangSmith homepage](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-sandboxes), select **Sandboxes** to manage all your sandbox resources.
+From the [LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-sandboxes), select **Sandboxes** to manage all your sandbox resources.
 
-![Sandboxes overview page](/images/langsmith/sandboxes/sb-overview.png)
+<img alt="Sandboxes overview page" />
 
 ## Environment availability
 
-| Environment | Status |
-|-------------|--------|
-| GCP US (`smith.langchain.com`) | Generally available |
-| GCP EU (`eu.smith.langchain.com`) | Generally available |
-| GCP APAC (`apac.smith.langchain.com`) | Generally available |
-| AWS US (`aws.smith.langchain.com`) | Generally available |
+| Environment                                   | Status              |
+| --------------------------------------------- | ------------------- |
+| GCP US (`smith.langchain.com`)                | Generally available |
+| GCP EU (`eu.smith.langchain.com`)             | Generally available |
+| GCP APAC (`apac.smith.langchain.com`)         | Generally available |
+| AWS US (`aws.smith.langchain.com`)            | Generally available |
 | [BYOC](/langsmith/byoc) (your data plane URL) | Generally available |
 
 <Warning>
-On BYOC, use an API key that belongs to a BYOC workspace.
+  On BYOC, use an API key that belongs to a BYOC workspace.
 </Warning>
 
 For self-hosted LangSmith deployments, see [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
@@ -35,51 +37,47 @@ If you need unrestricted egress, [file a support ticket](https://support.langcha
 ### 1. Install the SDK
 
 <CodeGroup>
+  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # uv
+  uv add "langsmith[sandbox]"
 
-```bash Python
-# uv
-uv add "langsmith[sandbox]"
+  # pip
+  pip install "langsmith[sandbox]"
+  ```
 
-# pip
-pip install "langsmith[sandbox]"
-```
-
-```bash TypeScript
-npm install langsmith
-```
-
+  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install langsmith
+  ```
 </CodeGroup>
 
 ### 2. Set your API key
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<your-api-key>"
 ```
 
 ### 3. Create and run a sandbox
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  client = SandboxClient()
 
-client = SandboxClient()
+  with client.sandbox() as sb:
+      result = sb.run("python -c 'print(2 + 2)'")
+      print(result.stdout)  # "4\n"
+  ```
 
-with client.sandbox() as sb:
-    result = sb.run("python -c 'print(2 + 2)'")
-    print(result.stdout)  # "4\n"
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
 
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
-
-const client = new SandboxClient();
-const sandbox = await client.createSandbox();
-const result = await sandbox.run("node -e 'console.log(2 + 2)'");
-console.log(result.stdout); // "4\n"
-await sandbox.delete();
-```
-
+  const client = new SandboxClient();
+  const sandbox = await client.createSandbox();
+  const result = await sandbox.run("node -e 'console.log(2 + 2)'");
+  console.log(result.stdout); // "4\n"
+  await sandbox.delete();
+  ```
 </CodeGroup>
 
 <Tip>
@@ -90,59 +88,58 @@ await sandbox.delete();
 
 To wire sandboxes into agent code, see the Open Source docs:
 
-- **Deep Agents**: [Use `LangSmithSandbox` as a backend](/oss/python/integrations/sandboxes/langsmith), covering installation, backend creation, and cleanup.
-- **Sandboxes as agent backends**: [Configure any sandbox as the execution backend](/oss/python/deepagents/sandboxes) to give your agent `execute` and filesystem tools automatically.
-- **LangChain / LangGraph integrations**: Use LangSmith sandboxes as a first-party option, or [connect third-party providers](/oss/python/integrations/sandboxes) such as AgentCore, Daytona, E2B, Modal, Runloop, and Vercel.
+* **Deep Agents**: [Use `LangSmithSandbox` as a backend](/oss/python/integrations/sandboxes/langsmith), covering installation, backend creation, and cleanup.
+* **Sandboxes as agent backends**: [Configure any sandbox as the execution backend](/oss/python/deepagents/sandboxes) to give your agent `execute` and filesystem tools automatically.
+* **LangChain / LangGraph integrations**: Use LangSmith sandboxes as a first-party option, or [connect third-party providers](/oss/python/integrations/sandboxes) such as AgentCore, Daytona, E2B, Modal, Runloop, and Vercel.
 
 ## Resources
 
-<CardGroup cols={2}>
+<CardGroup>
+  <Card title="Snapshots" icon="camera" href="/langsmith/sandbox-snapshots">
+    Build filesystem images from Docker images or capture a running sandbox, then boot sandboxes from them.
+  </Card>
 
-<Card title="Snapshots" icon="camera" href="/langsmith/sandbox-snapshots">
-  Build filesystem images from Docker images or capture a running sandbox, then boot sandboxes from them.
-</Card>
+  <Card title="Service URLs" icon="globe" href="/langsmith/sandbox-service-urls">
+    Access HTTP services running inside sandboxes via authenticated URLs.
+  </Card>
 
-<Card title="Service URLs" icon="globe" href="/langsmith/sandbox-service-urls">
-  Access HTTP services running inside sandboxes via authenticated URLs.
-</Card>
+  <Card title="Auth proxy" icon="shield-lock" href="/langsmith/sandbox-auth-proxy">
+    Inject credentials into outbound API requests without hardcoding secrets.
+  </Card>
 
-<Card title="Auth proxy" icon="shield-lock" href="/langsmith/sandbox-auth-proxy">
-  Inject credentials into outbound API requests without hardcoding secrets.
-</Card>
+  <Card title="Mounts" icon="folder" href="/langsmith/sandbox-mounts">
+    Attach S3 buckets, GCS buckets, and public Git repositories to a sandbox filesystem.
+  </Card>
 
-<Card title="Mounts" icon="folder" href="/langsmith/sandbox-mounts">
-  Attach S3 buckets, GCS buckets, and public Git repositories to a sandbox filesystem.
-</Card>
+  <Card title="Permissions" icon="user-key" href="/langsmith/sandbox-permissions">
+    Control which workspace members can interact with a sandbox after it is created.
+  </Card>
 
-<Card title="Permissions" icon="user-key" href="/langsmith/sandbox-permissions">
-  Control which workspace members can interact with a sandbox after it is created.
-</Card>
+  <Card title="CLI" icon="terminal-2" href="/langsmith/sandbox-cli">
+    Build snapshots, manage sandboxes, open consoles, and tunnel TCP ports from the command line.
+  </Card>
 
-<Card title="CLI" icon="terminal-2" href="/langsmith/sandbox-cli">
-  Build snapshots, manage sandboxes, open consoles, and tunnel TCP ports from the command line.
-</Card>
+  <Card title="SDK usage" icon="code" href="/langsmith/sandbox-sdk">
+    Create and manage sandboxes programmatically with the Python or TypeScript SDK.
+  </Card>
 
-<Card title="SDK usage" icon="code" href="/langsmith/sandbox-sdk">
-  Create and manage sandboxes programmatically with the Python or TypeScript SDK.
-</Card>
+  <Card title="Self-hosted setup" icon="server" href="/langsmith/deploy-self-hosted-full-platform#enable-sandboxes">
+    Enable Sandboxes on self-hosted LangSmith deployments with Helm or Terraform.
+  </Card>
 
-<Card title="Self-hosted setup" icon="server" href="/langsmith/deploy-self-hosted-full-platform#enable-sandboxes">
-  Enable Sandboxes on self-hosted LangSmith deployments with Helm or Terraform.
-</Card>
-
-<Card title="Harbor" icon="flask" href="/langsmith/harbor-integrations#sandboxes">
-  Run Harbor evaluations and rollouts on LangSmith sandboxes.
-</Card>
-
+  <Card title="Harbor" icon="flask" href="/langsmith/harbor-integrations#sandboxes">
+    Run Harbor evaluations and rollouts on LangSmith sandboxes.
+  </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

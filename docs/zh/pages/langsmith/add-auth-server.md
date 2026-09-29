@@ -22,7 +22,7 @@ OAuth2 涉及三个主要角色：
 
 标准 OAuth2 流程的工作原理如下：
 
-```mermaid
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sequenceDiagram
     participant User
     participant Client
@@ -48,18 +48,17 @@ sequenceDiagram
 安装所需的依赖项。从您的 `custom-auth` 目录开始，并确保您已安装 `langgraph-cli`：
 
 <CodeGroup>
-```bash pip
-cd custom-auth
-pip install -U "langgraph-cli[inmem]"
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  cd custom-auth
+  pip install -U "langgraph-cli[inmem]"
+  ```
 
-```bash uv
-cd custom-auth
-uv add "langgraph-cli[inmem]"
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  cd custom-auth
+  uv add "langgraph-cli[inmem]"
+  ```
 </CodeGroup>
 
-<a id="setup-auth-provider"></a>
 ## 2. 设置身份验证提供程序
 
 接下来，获取身份验证服务器的 URL 和用于身份验证的私钥。
@@ -67,18 +66,23 @@ uv add "langgraph-cli[inmem]"
 
 1. 在左侧边栏中，点击“t️⚙项目设置”，然后点击“API”
 2. 复制您的项目 URL 并将其添加到您的 `.env` 文件中
-  ```shell
-  echo "SUPABASE_URL=your-project-url" >> .env
-  ```
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+echo "SUPABASE_URL=your-project-url" >> .env
+```
+
 3. 复制您的服务角色密钥并将其添加到您的 `.env` 文件中：
-  ```shell
-  echo "SUPABASE_SERVICE_KEY=your-service-role-key" >> .env
-  ```
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+echo "SUPABASE_SERVICE_KEY=your-service-role-key" >> .env
+```
+
 4. 复制您的“匿名公钥”密钥并记下。稍后当您设置我们的客户端代码时将使用它。
-  ```bash
-  SUPABASE_URL=your-project-url
-  SUPABASE_SERVICE_KEY=your-service-role-key
-  ```
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+SUPABASE_URL=your-project-url
+SUPABASE_SERVICE_KEY=your-service-role-key
+```
 
 ## 3. 实施令牌验证
 
@@ -90,7 +94,7 @@ uv add "langgraph-cli[inmem]"
 
 更新`src/security/auth.py`来实现这一点：
 
-```python {highlight={8-9,20-30}} title="src/security/auth.py"
+```python {highlight={8-9,20-30}} title="src/security/auth.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 import httpx
 from langgraph_sdk import Auth
@@ -151,7 +155,7 @@ async def add_owner(ctx, value):
 * Supabase 项目 URL（来自[above](#setup-auth-provider)）
 * 一个 Supabase 匿名 **公钥** （也来自 [above](#setup-auth-provider)）
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 import httpx
 from getpass import getpass
@@ -195,7 +199,7 @@ await sign_up(email2, password)
 
 ⚠️ 继续之前：检查您的电子邮件并单击两个确认链接。在您确认用户的电子邮件之前，Supabase 将拒绝 `/login` 请求。现在测试用户只能看到自己的数据。在继续之前，请确保服务器正在运行（运行`langgraph dev`）。以下代码片段需要您之前在 [setting up the auth provider](#setup-auth-provider) 时从 Supabase 仪表板复制的“匿名公钥”密钥。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async def login(email: str, password: str):
     """Get an access token for an existing user."""
     async with httpx.AsyncClient() as client:
@@ -247,7 +251,7 @@ except Exception as e:
 
 输出应如下所示：
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ✅ User 1 created thread: d6af3754-95df-4176-aa10-dbd8dca40f1a
 ✅ Unauthenticated access blocked: Client error '403 Forbidden' for url 'http://localhost:2024/threads'
 ✅ User 2 blocked from User 1's thread: Client error '404 Not Found' for url 'http://localhost:2024/threads/d6af3754-95df-4176-aa10-dbd8dca40f1a'
@@ -262,7 +266,7 @@ except Exception as e:
 
 ## 后续步骤
 
-您已成功为您的 LangGraph 应用程序构建了生产就绪的身份验证系统！让我们回顾一下您已完成的工作：
+您已经成功为您的 LangGraph 应用程序构建了一个生产就绪的身份验证系统！让我们回顾一下您已完成的工作：
 
 1. 设置身份验证提供程序（本例中为 Supabase）
 2. 新增真实用户账号及邮箱/密码认证
@@ -274,13 +278,14 @@ except Exception as e:
 2. 在[conceptual guide on authentication](/langsmith/auth)中详细了解身份验证和授权的其他方面。
 3. 阅读[reference docs](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)后进一步自定义您的处理程序和设置。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

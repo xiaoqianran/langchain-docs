@@ -2,16 +2,18 @@
 
 # Prompt Slack users with agent-owned interrupts
 
+Post a Slack form from a Managed Deep Agents tool, pause the run, and resume it when the user submits the form.
+
 An agent-owned interrupt is a pause that your own code creates. A tool posts a Slack message or modal that you design in [Block Kit](https://api.slack.com/block-kit), then calls `interrupt()`. When the user presses a button or submits the modal, Managed Deep Agents delivers the answer to the deployment as a `user_prompt_response` channel event and resumes the paused run with it. You can ask a user for structured input mid-run, such as an approval, a choice, or a set of form fields, without building a Slack app or a webhook of your own.
 
 This differs from the platform-owned interrupts that `interrupt_on` creates. Those pause before a tool call, and Slack or Studio renders the approval card for you. With an agent-owned interrupt, you own the blocks, the form state, and what happens after the answer arrives. The platform only carries the answer back. For platform-owned interrupts, see [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 <Note>
-Agent-owned interrupts require `managed-deepagents>=0.8.0` and a [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) on a deployed agent. Forms render only in Slack. LangSmith Studio shows the raw interrupt value.
+  Agent-owned interrupts require `managed-deepagents>=0.8.0` and a [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) on a deployed agent. Forms render only in Slack. LangSmith Studio shows the raw interrupt value.
 </Note>
 
 ## How it works
@@ -27,16 +29,13 @@ A tool that pauses this way runs again from the top when the run resumes, which 
 
 The tool needs three things: the Slack conversation to post into, the bot token, and a correlation ID that ties the form to the interrupt.
 
-- **Conversation**: `runtime.channel.raw_event` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
-- **Bot token**: `connections.get("mda/slack-bot-token", {"type": "agent"})` resolves the token of the Slack app that Managed Deep Agents provisioned for the deployment. The slug is reserved and cannot be created with `mda connections create`.
-- **Correlation ID**: put the same string under `INTERRUPT_CORRELATION_KEY` in each button's `value` (as JSON) and in the value you pass to `interrupt()`.
-
-
-
+* **Conversation**: `runtime.channel.raw_event` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
+* **Bot token**: `connections.get("mda/slack-bot-token", {"type": "agent"})` resolves the token of the Slack app that Managed Deep Agents provisioned for the deployment. The slug is reserved and cannot be created with `mda connections create`.
+* **Correlation ID**: put the same string under `INTERRUPT_CORRELATION_KEY` in each button's `value` (as JSON) and in the value you pass to `interrupt()`.
 
 The built-in Slack channel's `runtime.channel.post` sends text only, so post Block Kit through the Slack Web API directly.
 
-```python tools/approval.py expandable
+```python tools/approval.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
 import uuid
 
@@ -112,9 +111,6 @@ async def post_approval_form(raw_event: dict, amount: str, correlation_id: str) 
             raise RuntimeError(f"Slack rejected the form: {body.get('error')}")
 ```
 
-
-
-
 Register the tool in the agent definition as you would any other [custom tool](/langsmith/python/managed-deep-agents-tools). The interrupt inherits the managed checkpointer, so no extra persistence setup is needed.
 
 Any `action_id` works for a button in a message, except one that starts with `mda_modal::`. That prefix opens a modal instead. See [Open a modal](#open-a-modal).
@@ -123,17 +119,14 @@ Any `action_id` works for a button in a message, except one that starts with `md
 
 `interrupt()` returns the normalized response. It holds only the fields every provider shares:
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `provider` | `"slack"` | The channel provider that delivered the answer. |
-| `action` | `string` | The button's `action_id`, or the modal's `callback_id`. |
-| `value` | JSON, optional | The button's `value` string, or the modal's `state.values` object. Opaque to the platform. |
+| Field            | Type               | Meaning                                                                                                         |
+| ---------------- | ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `provider`       | `"slack"`          | The channel provider that delivered the answer.                                                                 |
+| `action`         | `string`           | The button's `action_id`, or the modal's `callback_id`.                                                         |
+| `value`          | JSON, optional     | The button's `value` string, or the modal's `state.values` object. Opaque to the platform.                      |
 | `correlation_id` | `string`, optional | Present when the button's `value` was JSON with an `mda_correlation_id` key. Modal submissions never carry one. |
 
 The same response is available on run context as `runtime.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.channel.raw_event`. For a form with inputs inside the message, the user's entries are at `raw_event["state"]["values"]`, keyed by block ID and action ID.
-
-
-
 
 Managed Deep Agents reads only the first action in a Slack interaction payload, so one press must mean one event.
 
@@ -141,13 +134,13 @@ Managed Deep Agents reads only the first action in a Slack interaction payload, 
 
 Slack does not know which interrupt a button belongs to, so the SDK reads the interrupts parked on the thread and decides:
 
-| Parked interrupts | `correlation_id` on the response | Result |
-| --- | --- | --- |
-| One | Absent | Resumes that interrupt. |
-| One or more | Present and matches exactly one | Resumes the matching interrupt. |
-| Several | Absent | Nothing runs. The SDK logs the ambiguity and acknowledges the event. |
-| One or more | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints. |
-| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
+| Parked interrupts | `correlation_id` on the response             | Result                                                                                             |
+| ----------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| One               | Absent                                       | Resumes that interrupt.                                                                            |
+| One or more       | Present and matches exactly one              | Resumes the matching interrupt.                                                                    |
+| Several           | Absent                                       | Nothing runs. The SDK logs the ambiguity and acknowledges the event.                               |
+| One or more       | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints.                                |
+| None              | Any                                          | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
 
 Carry a correlation ID whenever an agent might have more than one interrupt parked on a thread. Without one, a thread can only be answered while exactly one interrupt is pending.
 
@@ -159,7 +152,7 @@ Slack issues a single-use `trigger_id` with each click that expires in about thr
 
 To open a modal, post a button whose `action_id` starts with `mda_modal::` and whose `value` is the complete view as JSON:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "type": "button",
   "action_id": "mda_modal::approve_spend",
@@ -172,8 +165,8 @@ When the user presses submit, the deployment receives a `user_prompt_response` w
 
 Two fields on the view belong to the platform:
 
-- **`callback_id`**: Set to the button's `action_id` so the submission is identifiable.
-- **`private_metadata`**: Holds the encrypted channel and thread the modal was opened from. A modal submission carries no channel or thread, so this is the only route back to the conversation. If your view already sets `private_metadata`, the modal does not open.
+* **`callback_id`**: Set to the button's `action_id` so the submission is identifiable.
+* **`private_metadata`**: Holds the encrypted channel and thread the modal was opened from. A modal submission carries no channel or thread, so this is the only route back to the conversation. If your view already sets `private_metadata`, the modal does not open.
 
 Every other field goes to Slack exactly as you wrote it. Managed Deep Agents does not validate the view, so a view that Slack rejects shows the user nothing.
 
@@ -191,48 +184,49 @@ Prefer `interrupt()` when the next thing the user does is expected to be answeri
 
 Names the platform reserves:
 
-| Name | Where | Meaning |
-| --- | --- | --- |
-| `mda_modal::` prefix | Button `action_id` | The click opens a modal and never reaches the agent. |
-| `mda_correlation_id` | Key inside a button `value` | Matches a click to one parked interrupt. Exported as `INTERRUPT_CORRELATION_KEY`. |
-| `callback_id` | App-defined view | Set to the button's `action_id`. |
-| `private_metadata` | App-defined view | Set by the platform. Supplying it prevents the modal from opening. |
-| `mda/slack-bot-token` | Connection slug | The deployment's Slack bot token. Cannot be created or overwritten with the CLI. |
+| Name                  | Where                       | Meaning                                                                           |
+| --------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| `mda_modal::` prefix  | Button `action_id`          | The click opens a modal and never reaches the agent.                              |
+| `mda_correlation_id`  | Key inside a button `value` | Matches a click to one parked interrupt. Exported as `INTERRUPT_CORRELATION_KEY`. |
+| `callback_id`         | App-defined view            | Set to the button's `action_id`.                                                  |
+| `private_metadata`    | App-defined view            | Set by the platform. Supplying it prevents the modal from opening.                |
+| `mda/slack-bot-token` | Connection slug             | The deployment's Slack bot token. Cannot be created or overwritten with the CLI.  |
 
 Slack limits that Managed Deep Agents does not check before forwarding a view:
 
-| Limit | Value |
-| --- | --- |
-| Button `value` | 2000 characters |
-| Modal title | 24 characters |
-| Blocks per view | 100 |
-| `callback_id` | 255 characters |
+| Limit           | Value           |
+| --------------- | --------------- |
+| Button `value`  | 2000 characters |
+| Modal title     | 24 characters   |
+| Blocks per view | 100             |
+| `callback_id`   | 255 characters  |
 
 Exceeding the last three makes the modal fail to open with nothing shown to the user.
 
 ## Understand failure modes
 
-- **The modal does not open.** The view JSON is malformed, exceeds a Slack limit, or the `trigger_id` expired. The button press does nothing visible in Slack. The failure is logged on the platform.
-- **The user dismisses the modal.** The interrupt stays parked. There is no cancel path and no expiry.
-- **The user replies in the thread instead of using the form.** The message takes the ordinary message path, which does not consult interrupt state. The run starts with the new message and the parked checkpoint is abandoned, while the card keeps its live buttons.
-- **Two people press the same button.** Both interactions are forwarded. The first resumes the interrupt and the second starts a fresh turn. Nothing deduplicates them.
-- **Several interrupts are parked and the response has no correlation ID.** Nothing runs. Because modal submissions never carry a correlation ID, a modal cannot answer a thread with two parked interrupts.
-- **A submission cannot return a `response_action`.** There are no per-field validation errors, no chained modals, and no in-place modal update.
+* **The modal does not open.** The view JSON is malformed, exceeds a Slack limit, or the `trigger_id` expired. The button press does nothing visible in Slack. The failure is logged on the platform.
+* **The user dismisses the modal.** The interrupt stays parked. There is no cancel path and no expiry.
+* **The user replies in the thread instead of using the form.** The message takes the ordinary message path, which does not consult interrupt state. The run starts with the new message and the parked checkpoint is abandoned, while the card keeps its live buttons.
+* **Two people press the same button.** Both interactions are forwarded. The first resumes the interrupt and the second starts a fresh turn. Nothing deduplicates them.
+* **Several interrupts are parked and the response has no correlation ID.** Nothing runs. Because modal submissions never carry a correlation ID, a modal cannot answer a thread with two parked interrupts.
+* **A submission cannot return a `response_action`.** There are no per-field validation errors, no chained modals, and no in-place modal update.
 
 ## See also
 
-- [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop): pause before selected tool calls with platform-rendered approval cards.
-- [Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack): add the Slack channel that delivers form responses.
-- [Manage connections](/langsmith/python/managed-deep-agents-connections): how `connections.get(...)` resolves agent-owned credentials.
-- [Add custom tools](/langsmith/python/managed-deep-agents-tools): register the tool that posts the form.
+* [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop): pause before selected tool calls with platform-rendered approval cards.
+* [Connect a Managed Deep Agent to Slack](/langsmith/python/managed-deep-agents-channels-slack): add the Slack channel that delivers form responses.
+* [Manage connections](/langsmith/python/managed-deep-agents-connections): how `connections.get(...)` resolves agent-owned credentials.
+* [Add custom tools](/langsmith/python/managed-deep-agents-tools): register the tool that posts the form.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-owned-interrupts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

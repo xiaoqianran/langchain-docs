@@ -2,6 +2,8 @@
 
 # Bring your own IAM roles (AWS)
 
+Create customer-managed IAM roles for LangSmith BYOC, remove IAM management permissions from the provisioning role, and deploy with existing roles.
+
 Bring your own IAM (BYOIAM) lets you create and manage the AWS IAM resources used by LangSmith BYOC data planes. You control the roles, policies, and permissions boundaries while LangChain provisions and operates the data plane using those resources.
 
 If you want LangChain to manage IAM resources, follow the standard [BYOC onboarding guide](/langsmith/byoc-onboarding).
@@ -24,7 +26,7 @@ To create the IAM resources:
 
 The following configuration creates shared IAM resources for two regions:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 module "byoiam" {
   source = "github.com/langchain-ai/terraform//modules/byoc/aws/byoiam?ref=main"
 
@@ -44,8 +46,8 @@ After creating the IAM resources, configure the provisioning role:
 
 Setting `allow_iam_management_permissions = false` changes the role's permissions:
 
-- **Removed**: IAM creation, modification, and deletion permissions, including service-linked role creation.
-- **Retained**: IAM read permissions, scoped `iam:PassRole`, and `iam:SimulatePrincipalPolicy` to use and validate your existing resources.
+* **Removed**: IAM creation, modification, and deletion permissions, including service-linked role creation.
+* **Retained**: IAM read permissions, scoped `iam:PassRole`, and `iam:SimulatePrincipalPolicy` to use and validate your existing resources.
 
 Enabling `allow_delete_permissions` does not restore IAM management permissions.
 
@@ -54,7 +56,7 @@ If you also want to [bring your own VPC](/langsmith/byoc-byovpc), set `allow_vpc
 ## Deploy the data plane with existing roles
 
 <Warning>
-You must use the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) to create the exact IAM roles required by LangSmith. LangSmith performs extensive validation of these IAM resources before deploying the data plane.
+  You must use the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) to create the exact IAM roles required by LangSmith. LangSmith performs extensive validation of these IAM resources before deploying the data plane.
 </Warning>
 
 The **Use existing IAM roles** checkbox configures the data plane to use the IAM resources you created.
@@ -70,17 +72,18 @@ Continue with provisioning and private connectivity in the onboarding guide.
 
 ## See also
 
-- [BYOC onboarding](/langsmith/byoc-onboarding)
-- [Bring your own VPC on AWS](/langsmith/byoc-byovpc)
-- [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
+* [BYOC onboarding](/langsmith/byoc-onboarding)
+* [Bring your own VPC on AWS](/langsmith/byoc-byovpc)
+* [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

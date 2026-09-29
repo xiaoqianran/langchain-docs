@@ -4,56 +4,58 @@
 
 # 管理批量导出目的地
 
-<Note>
-**对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
+配置和管理 S3 兼容的导出目标以进行 LangSmith 批量导出。
 
-更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
+<Note>
+  **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
+
+  更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
 </Note>
 
 目标是一个命名配置，告诉 LangSmith 将导出的跟踪数据写入何处。你[create a destination](/langsmith/data-export#1-create-a-destination)一次，然后在[creating export jobs](/langsmith/data-export#2-create-an-export-job)时通过ID引用它。 LangSmith 目前支持 S3 和任何与 S3 兼容的存储桶（例如 GCS 或 MinIO）作为目标。导出的数据以 [Parquet](https://parquet.apache.org/docs/overview/) 柱状格式写入，并包含与 [Run data format](/langsmith/run-data-format) 等效的字段。
 
 此页面涵盖：
 
-- [configuration fields](#configuration-fields) 需要设置目的地。
-- AWS S3 和 GCS 所需的存储桶 [permissions](#permissions-required)。
-- 如何通过 API [create a destination](#create-a-destination)，包括特定于提供商的示例和凭证选项。
-- 如何在不重新创建目的地的情况下实现[rotate destination credentials](#rotate-destination-credentials)。
-- 如何在静态凭证和 AWS IAM 角色假设之间实现[switch authentication mode](#switch-authentication-mode)。
-- 如何[debug destination errors](#debug-destination-errors)。
+* [configuration fields](#configuration-fields)需要设定目的地。
+* AWS S3 和 GCS 所需的存储桶 [permissions](#permissions-required)。
+* 如何通过 API [create a destination](#create-a-destination)，包括特定于提供商的示例和凭证选项。
+* 如何在不重新创建目的地的情况下实现[rotate destination credentials](#rotate-destination-credentials)。
+* 如何在静态凭证和 AWS IAM 角色假设之间实现[switch authentication mode](#switch-authentication-mode)。
+* 如何[debug destination errors](#debug-destination-errors)。
 
 ## 配置字段
 
-配置目标需要以下信息：- **存储桶名称**：数据将导出到的 S3 存储桶的名称。
-- **前缀**：数据将导出到的存储桶内的根前缀。
-- **S3 区域**：存储桶的区域 - AWS S3 存储桶必需的。
-- **端点 URL**：S3 存储桶的端点 URL — 对于 S3 API 兼容存储桶是必需的。
-- **访问密钥**：S3 存储桶的访问密钥。
-- **密钥**：S3 存储桶的密钥。
-- **在前缀中包含存储桶**（可选）：是否包含存储桶名称作为路径前缀的一部分。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已存在于端点 URL 中）时，设置为 `false`。
-- **S3 配置选项**（`config_kwargs_s3`，可选）：传递给 botocore 的高级 S3 寻址样式和请求设置。最常见的用途是为需要虚拟托管或路径式请求的 S3 兼容服务设置 `addressing_style`：
-  - `"virtual"`：存储桶名称是主机名的一部分（例如`bucket.endpoint/key`）。对于某些 S3 兼容服务（例如 Volcengine TOS）是必需的。
-  - `"path"`：存储桶名称是 URL 路径的一部分（例如 `endpoint/bucket/key`）。
-  - `"auto"`（默认）：boto3 根据端点决定。我们支持任何 S3 兼容存储桶。对于非 AWS 存储桶（例如 GCS 或 MinIO），您需要提供终端节点 URL。
+配置目标需要以下信息：* **存储桶名称**：数据将导出到的 S3 存储桶的名称。
+* **前缀**：数据将导出到的存储桶内的根前缀。
+* **S3 区域**：存储桶的区域 - AWS S3 存储桶必需的。
+* **端点 URL**：S3 存储桶的端点 URL — 对于 S3 API 兼容存储桶是必需的。
+* **访问密钥**：S3 存储桶的访问密钥。
+* **密钥**：S3 存储桶的密钥。
+* **在前缀中包含存储桶**（可选）：是否将存储桶名称作为路径前缀的一部分包含在内。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已在端点 URL 中）时，设置为 `false`。
+* **S3 配置选项**（`config_kwargs_s3`，可选）：传递给 botocore 的高级 S3 寻址样式和请求设置。最常见的用途是为需要虚拟托管或路径式请求的 S3 兼容服务设置 `addressing_style`：
+  * `"virtual"`：存储桶名称是主机名的一部分（例如`bucket.endpoint/key`）。对于某些 S3 兼容服务（例如 Volcengine TOS）是必需的。
+  * `"path"`：存储桶名称是 URL 路径的一部分（例如 `endpoint/bucket/key`）。
+  * `"auto"`（默认）：boto3 根据端点决定。我们支持任何 S3 兼容存储桶。对于非 AWS 存储桶（例如 GCS 或 MinIO），您需要提供终端节点 URL。
 
 ## 所需权限
 
 `backend`和`queue`服务都需要对目标存储桶的写访问权限：
 
-- 创建导出目标时，`backend` 服务尝试将测试文件写入目标存储桶。如果有权限，它将删除测试文件（删除访问权限是可选的）。
-- `queue`服务负责批量导出执行并将文件上传到存储桶。
+* 创建导出目标时，`backend` 服务会尝试将测试文件写入目标存储桶。如果有权限，它将删除测试文件（删除访问权限是可选的）。
+* `queue`服务负责批量导出执行并将文件上传到存储桶。
 
 ### AWS S3 权限
 
 最低 AWS S3 权限策略依赖于以下权限：
 
-- `s3:PutObject`（必需）：允许将 Parquet 文件写入存储桶。
-- `s3:DeleteObject`（可选）：在目标创建期间清理测试文件。如果不存在此权限，则在创建目标后，该文件将保留在 `/tmp` 目录下。
-- `s3:GetObject`（可选但推荐）：写入后验证文件大小。
-- `s3:AbortMultipartUpload`（可选但推荐）：避免悬空分段上传。
+* `s3:PutObject`（必需）：允许将 Parquet 文件写入存储桶。
+* `s3:DeleteObject`（可选）：在目标创建期间清理测试文件。如果不存在此权限，则在创建目标后，该文件将保留在 `/tmp` 目录下。
+* `s3:GetObject`（可选但推荐）：写入后验证文件大小。
+* `s3:AbortMultipartUpload`（可选但推荐）：避免悬空分段上传。
 
 最小 IAM 策略示例：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -72,7 +74,7 @@
 
 具有附加权限的推荐 IAM 策略示例：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -93,9 +95,9 @@
 
 ### Google 云存储 (GCS) 权限将 GCS 与 S3 兼容的 XML API 结合使用时，需要以下 IAM 权限：
 
-- `storage.objects.create`（必填）：允许将文件写入存储桶。
-- `storage.objects.delete`（可选）：在目标创建期间清理测试文件。如果不存在此权限，则在创建目标后，该文件将保留在 `/tmp` 目录下。
-- `storage.objects.get`（可选但推荐）：写入后验证文件大小。
+* `storage.objects.create`（必填）：允许将文件写入存储桶。
+* `storage.objects.delete`（可选）：在目标创建期间清理测试文件。如果不存在此权限，则在创建目标后，该文件将保留在 `/tmp` 目录下。
+* `storage.objects.get`（可选但推荐）：写入后验证文件大小。
 
 这些权限可以通过“存储对象管理员”预定义角色或自定义角色授予。
 
@@ -104,7 +106,7 @@
 以下示例演示如何使用 cURL 创建目标。将占位符值替换为您的实际配置详细信息。
 请注意，凭据将以加密形式安全地存储在我们的系统中。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -133,11 +135,11 @@ curl --request POST \
 
 ### 凭证配置
 
-<Note>**需要LangSmith Helm 版本`0.10.34` 或更高版本（应用程序版本`0.10.91` 或更高版本）**</Note>
+<Note>**需要 LangSmith Helm 版本 `0.10.34` 或更高版本（应用程序版本 `0.10.91` 或更高版本）**</Note>
 
-除了静态 `access_key_id` 和 `secret_access_key` 之外，我们还支持以下其他凭证格式：- 要使用包含 AWS 会话令牌的[temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html)，
+除了静态 `access_key_id` 和 `secret_access_key` 之外，我们还支持以下其他凭证格式：* 要使用包含 AWS 会话令牌的 [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html)，
   创建批量导出目标时另外提供 `credentials.session_token` 密钥。
--（仅限自托管）：使用基于环境的凭据，例如 [AWS IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) (IRSA)，
+*（仅限自托管）：要使用基于环境的凭据，例如 [AWS IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) (IRSA)，
   创建批量导出目标时，省略请求中的 `credentials` 键。
   在这种情况下，将按照库定义的顺序检查[standard Boto3 credentials locations](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#credentials)。
 
@@ -145,7 +147,7 @@ curl --request POST \
 
 对于 AWS S3，您可以省略 `endpoint_url` 并提供与您的存储桶区域匹配的区域。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -172,7 +174,7 @@ curl --request POST \
 通常为 `https://storage.googleapis.com`。
 以下是使用与 S3 兼容的 GCS XML API 时的 API 请求示例：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -200,7 +202,7 @@ curl --request POST \
 
 某些 S3 兼容服务（例如 Volcengine TOS）需要虚拟托管样式寻址，其中存储桶名称是主机名的一部分，而不是 URL 路径。使用 `config_kwargs_s3` 和 `addressing_style: "virtual"` 来启用此功能：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -226,7 +228,7 @@ curl --request POST \
 
 ### 具有虚拟托管样式端点的 S3 兼容存储桶如果您的终端节点 URL 已包含存储桶名称（虚拟托管样式），请将 `include_bucket_in_prefix` 设置为 `false` 以避免在路径中重复存储桶名称：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations' \
   --header 'Content-Type: application/json' \
@@ -256,15 +258,15 @@ curl --request POST \
 
 转换不是瞬时的：
 
-- **新的批量导出运行** 在 PATCH 完成后立即使用更新的凭据。
-- **已经在运行批量导出运行**继续使用以前的凭据，直到完成。
-- **在过渡期间，两组凭证同时有效**。此窗口持续到单次批量导出运行的最大运行时间。
+* **新的批量导出运行** 在 PATCH 完成后立即使用更新的凭据。
+* **已经在运行批量导出运行** 继续使用以前的凭据，直到完成。
+* **在过渡期间，两组凭证同时有效**。此窗口持续到单次批量导出运行的最大运行时间。
 
 相应地规划您的轮换：旧凭证必须保持有效，直到所有运行中的运行完成。
 
 ### 请求
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request PATCH \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations/{destination_id}' \
   --header 'Content-Type: application/json' \
@@ -286,7 +288,7 @@ curl --request PATCH \
 
 返回更新后的目标对象。凭证值永远不会返回 - 只有凭证字段名称包含在 `credentials_keys` 下的响应中。
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "id": "destination-uuid",
   "tenant_id": "tenant-uuid",
@@ -299,16 +301,16 @@ curl --request PATCH \
 ### 轮换清单
 
 1. 在您的云提供商中配置新凭据，并具有对目标存储桶和前缀的写入权限。
-1. 使用新凭证调用 PATCH 端点。 LangSmith 在保存之前验证它们。
-1. 保持旧凭证处于活动状态，直到所有正在进行的批量导出运行完成（直至[maximum run duration](/langsmith/data-export-monitor#automatic-retry-behavior)）。
-1. 一旦没有运行使用旧凭据，则撤销旧凭据。
+2. 使用新凭证调用 PATCH 端点。 LangSmith 在保存之前验证它们。
+3. 保持旧凭证处于活动状态，直到所有正在进行的批量导出运行完成（直至[maximum run duration](/langsmith/data-export-monitor#automatic-retry-behavior)）。
+4. 一旦没有运行使用旧凭据，则撤销旧凭据。
 
 ## 使用 AWS IAM 角色进行身份验证
 
 AWS IAM 角色假设允许 GCP 托管的 LangSmith SaaS 导出到 S3，而无需存储静态 AWS 凭证。配置信任生产区域的 LangSmith 服务账户的 AWS 角色，然后在创建或更新目标时提供其 ARN。
 
 传递 `aws_role_arn` 而不是 `credentials` 以使用 IAM 角色假设。<Note>
-IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 托管的 SaaS 或自托管部署。
+  IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 托管的 SaaS 或自托管部署。
 </Note>
 
 ### 创建AWS角色
@@ -316,143 +318,141 @@ IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 
 创建一个具有信任策略的 AWS IAM 角色，该策略允许来自您所在区域的三个主体 ID 的 Web 身份联合。授予角色对导出存储桶的访问权限。选择您的LangSmith区域以使用相应的主题 ID。每个 Terraform 示例都使用所需的最低 `s3:PutObject` 权限：
 
 <CodeGroup>
+  ```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  resource "aws_iam_role" "langsmith_bulk_export" {
+    name                 = "langsmith-bulk-export"
+    max_session_duration = 43200
 
-```hcl US
-resource "aws_iam_role" "langsmith_bulk_export" {
-  name                 = "langsmith-bulk-export"
-  max_session_duration = 43200
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Federated = "accounts.google.com" }
-      Action    = "sts:AssumeRoleWithWebIdentity"
-      Condition = {
-        StringEquals = {
-          "accounts.google.com:oaud" = "langsmith-bulk-export"
-          "accounts.google.com:sub" = [
-            "110136955440523778103",
-            "116331607438151298187",
-            "115251468294701876731",
-          ]
-        }
-      }
-    }]
-  })
-
-  inline_policy {
-    name = "langsmith-bulk-export-s3"
-    policy = jsonencode({
+    assume_role_policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect   = "Allow"
-        Action   = "s3:PutObject"
-        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        Effect    = "Allow"
+        Principal = { Federated = "accounts.google.com" }
+        Action    = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "accounts.google.com:oaud" = "langsmith-bulk-export"
+            "accounts.google.com:sub" = [
+              "110136955440523778103",
+              "116331607438151298187",
+              "115251468294701876731",
+            ]
+          }
+        }
       }]
     })
+
+    inline_policy {
+      name = "langsmith-bulk-export-s3"
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [{
+          Effect   = "Allow"
+          Action   = "s3:PutObject"
+          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        }]
+      })
+    }
   }
-}
-```
+  ```
 
-```hcl EU
-resource "aws_iam_role" "langsmith_bulk_export" {
-  name                 = "langsmith-bulk-export"
-  max_session_duration = 43200
+  ```hcl EU theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  resource "aws_iam_role" "langsmith_bulk_export" {
+    name                 = "langsmith-bulk-export"
+    max_session_duration = 43200
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Federated = "accounts.google.com" }
-      Action    = "sts:AssumeRoleWithWebIdentity"
-      Condition = {
-        StringEquals = {
-          "accounts.google.com:oaud" = "langsmith-bulk-export"
-          "accounts.google.com:sub" = [
-            "110207823358662523645",
-            "115689110758588220909",
-            "109691164801275818274",
-          ]
-        }
-      }
-    }]
-  })
-
-  inline_policy {
-    name = "langsmith-bulk-export-s3"
-    policy = jsonencode({
+    assume_role_policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect   = "Allow"
-        Action   = "s3:PutObject"
-        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        Effect    = "Allow"
+        Principal = { Federated = "accounts.google.com" }
+        Action    = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "accounts.google.com:oaud" = "langsmith-bulk-export"
+            "accounts.google.com:sub" = [
+              "110207823358662523645",
+              "115689110758588220909",
+              "109691164801275818274",
+            ]
+          }
+        }
       }]
     })
+
+    inline_policy {
+      name = "langsmith-bulk-export-s3"
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [{
+          Effect   = "Allow"
+          Action   = "s3:PutObject"
+          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        }]
+      })
+    }
   }
-}
-```
+  ```
 
-```hcl APAC
-resource "aws_iam_role" "langsmith_bulk_export" {
-  name                 = "langsmith-bulk-export"
-  max_session_duration = 43200
+  ```hcl APAC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  resource "aws_iam_role" "langsmith_bulk_export" {
+    name                 = "langsmith-bulk-export"
+    max_session_duration = 43200
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Federated = "accounts.google.com" }
-      Action    = "sts:AssumeRoleWithWebIdentity"
-      Condition = {
-        StringEquals = {
-          "accounts.google.com:oaud" = "langsmith-bulk-export"
-          "accounts.google.com:sub" = [
-            "105923862603785245337",
-            "114288557158507552617",
-            "116622461022404604716",
-          ]
-        }
-      }
-    }]
-  })
-
-  inline_policy {
-    name = "langsmith-bulk-export-s3"
-    policy = jsonencode({
+    assume_role_policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect   = "Allow"
-        Action   = "s3:PutObject"
-        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        Effect    = "Allow"
+        Principal = { Federated = "accounts.google.com" }
+        Action    = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "accounts.google.com:oaud" = "langsmith-bulk-export"
+            "accounts.google.com:sub" = [
+              "105923862603785245337",
+              "114288557158507552617",
+              "116622461022404604716",
+            ]
+          }
+        }
       }]
     })
-  }
-}
-```
 
+    inline_policy {
+      name = "langsmith-bulk-export-s3"
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [{
+          Effect   = "Allow"
+          Action   = "s3:PutObject"
+          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+        }]
+      })
+    }
+  }
+  ```
 </CodeGroup>
 
 有关可选权限，请参阅[AWS S3 permissions](#aws-s3-permissions)。
 
 ## 切换认证模式
 
-在静态凭据和 [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) 之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
+在静态凭证和[AWS IAM role assumption](#authenticate-with-an-aws-iam-role)之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports)：`bulk-exports:manage`。
 
 LangSmith 支持两种互斥模式：
 
-- **静态凭证** (`credentials`)：`access_key_id` 和 `secret_access_key`（带有可选的 `session_token` 用于临时凭证）。
-- **IAM 角色假设** (`aws_role_arn`)：LangSmith 假设指定的 AWS IAM 角色，因此不存储静态凭证。
+* **静态凭证** (`credentials`)：`access_key_id` 和 `secret_access_key`（带有可选的 `session_token` 用于临时凭证）。
+* **IAM 角色假设** (`aws_role_arn`)：LangSmith 假设指定的 AWS IAM 角色，因此不存储静态凭证。
 
-要切换到 AWS IAM 角色假设，请在 PATCH 正文中提供 `aws_role_arn`。要切换到静态凭据，请提供 `credentials`。当任一字段存在且非空时，LangSmith 清除另一个字段。在切换之前，请确保新的身份验证配置对目标存储桶具有写权限。 LangSmith 在保存之前通过测试写入来验证配置。
+要切换到 AWS IAM 角色假设，请在 PATCH 正文中提供 `aws_role_arn`。要切换到静态凭据，请提供 `credentials`。当任一字段存在且非空时，LangSmith 清除另一个字段。在切换之前，请确保新的身份验证配置对目标存储桶具有写权限。 LangSmith 在保存之前通过测试写入验证配置。
 
 ### 从静态凭证切换到 AWS IAM 角色
 
 在 PATCH 正文中提供 `aws_role_arn`。这将清除以前存储的所有凭据。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request PATCH \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations/{destination_id}' \
   --header 'Content-Type: application/json' \
@@ -467,7 +467,7 @@ curl --request PATCH \
 
 在 PATCH 主体中提供一个 `credentials` 对象。这会清除存储的角色 ARN。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request PATCH \
   --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations/{destination_id}' \
   --header 'Content-Type: application/json' \
@@ -485,8 +485,8 @@ curl --request PATCH \
 
 切换身份验证模式时，适用[credential rotation](#credential-rotation-behavior)中描述的相同转换行为：
 
-- **新的批量导出运行** 在 PATCH 完成后立即使用新的身份验证模式。
-- **已经运行的批量导出运行**继续使用以前的身份验证模式，直到完成。
+* **新的批量导出运行** 在 PATCH 完成后立即使用新的身份验证模式。
+* **已经运行的批量导出运行** 继续使用以前的身份验证模式，直到完成。
 
 如果由于新配置没有足够的写入权限而导致测试写入失败，则请求返回`400`。
 
@@ -499,7 +499,7 @@ curl --request PATCH \
 
 **AWS S3：**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws configure
 
 # set the same access key credentials and region as you used for the destination
@@ -517,10 +517,10 @@ aws s3 cp ./test.txt s3://<bucket-name>/tmp/test.txt
 
 **GCS 兼容铲斗：**
 
-您需要提供带有 `--endpoint-url` 选项的端点_url。
+您需要提供带有 `--endpoint-url` 选项的端点\_url。
 对于 GCS，`endpoint_url` 通常为 `https://storage.googleapis.com`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws configure
 
 # set the same access key credentials and region as you used for the destination
@@ -540,19 +540,20 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 以下是一些常见错误：
 
-|错误 |描述 |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ||访问被拒绝| Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。                                                                |
-|存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。                                                                                                                                        |
-|您提供的密钥 ID 不存在 |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。                                                                                                                                                                ||无效端点 |提供的端点_url 无效。当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的 `https://storage.googleapis.com`、minio 的 `https://play.min.io` 等。如果使用 AWS，则应省略 endpoint_url。 |
-|无效的BucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。 |
+|错误|描述 |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ||访问被拒绝 | Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。                                                                  |
+|存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。                                                                                                                                          |
+|您提供的密钥 ID 不存在 |提供的 Blob 存储凭据无效。当用于身份验证的访问密钥 ID 不是有效密钥时，会发生此错误。                                                                                                                                                                  ||无效端点 |提供的端点\_url 无效。当指定的端点是无效端点时，会引发此错误。仅支持 S3 兼容端点，例如 GCS 的`https://storage.googleapis.com`、minio 的`https://play.min.io` 等。如果使用 AWS，则应省略端点\_url。 |
+|无效的BucketName |由于寻址风格不匹配，S3 兼容服务拒绝了该请求。某些服务需要虚拟托管式寻址。在目标配置中设置 `config_kwargs_s3: {"addressing_style": "virtual"}` 来解决此问题。                                                              |
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -12,8 +12,7 @@
 
 ## 示例
 
-
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import evaluate
 
 def always_half(inputs: dict, outputs: dict) -> float:
@@ -30,13 +29,14 @@ evaluate(experiment_name, evaluators=[always_half])
 * [Run an evaluation](/langsmith/evaluate-llm-application)
 * [Run an evaluation asynchronously](/langsmith/evaluation-async)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-existing-experiment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

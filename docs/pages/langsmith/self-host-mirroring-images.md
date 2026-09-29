@@ -22,7 +22,7 @@ For your convenience, we have provided a script that will mirror the images for 
 
 To use the script, you will need to run the script with the following command specifying your registry and platform:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh <your-registry> [<platform>]
 ```
 
@@ -30,7 +30,7 @@ Where `<your-registry>` is the URL of your Docker registry (e.g. `myregistry.com
 
 For example, if your registry is `myregistry.com`, your platform is `linux/arm64`, and your LangSmith app version is `0.16.36`, run:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.16.36
 ```
 
@@ -42,7 +42,7 @@ Alternatively, you can pull, mirror, and push the images manually. The images th
 
 Here is an example of how to mirror the images using Docker:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Pull the images from the public registry
 docker pull langchain/langsmith-backend:0.16.36
 docker tag langchain/langsmith-backend:0.16.36 <your-registry>/langsmith-backend:0.16.36
@@ -55,7 +55,7 @@ You will need to repeat this for each image that you want to mirror.
 
 Once the images are mirrored, you will need to configure your LangSmith installation to use the mirrored images. You can do this by modifying the `values.yaml` file for your LangSmith Helm Chart installation. Replace tag with the [LangSmith version](/langsmith/self-hosted-changelog) you want to deploy. The following example uses `0.16.21`.
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   imagePullSecrets: [] # Add your image pull secrets here if needed
   registry: "" # Set this to your registry URL if you mirrored all images to the same registry using our script. Then you can remove the repository prefix from the images below.
@@ -93,13 +93,13 @@ images:
 
 If you enable [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes), also mirror the sandbox runtime image. The sandbox runtime image is published for `linux/amd64`.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
 Then, configure the sandbox runtime image in your `values.yaml`:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   sandboxHostImage:
     repository: "(your-registry)/langchain/sandbox-host"
@@ -113,13 +113,13 @@ If your mirrored registry requires authentication, configure `images.imagePullSe
 
 The `--include-sandboxes` flag mirrors the LangSmith-owned sandbox runtime image. If your cluster cannot pull public images at all, also mirror the JuiceFS images used by the sandbox storage driver:
 
-- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
-- `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
-- `docker.io/juicedata/mount:ce-v1.3.1` for JuiceFS mount pods
+* `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
+* `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
+* `docker.io/juicedata/mount:ce-v1.3.1` for JuiceFS mount pods
 
 Then, configure the corresponding image overrides:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   juicefsCSIImage:
     repository: "(your-registry)/juicedata/juicefs-csi-driver"
@@ -141,11 +141,11 @@ If you mirror images to a private registry, [Engine](/langsmith/engine-self-host
 To mirror the required images:
 
 1. Mirror `langsmith-insights-engine` to your private registry using the [manual mirroring process](#mirroring-the-images).
-1. Mirror the sandbox runtime image with `--include-sandboxes` and configure it as described in [Additional images for sandboxes](#additional-images-for-sandboxes).
+2. Mirror the sandbox runtime image with `--include-sandboxes` and configure it as described in [Additional images for sandboxes](#additional-images-for-sandboxes).
 
 Override `images.engineInsightsAgentImage.repository` to use your mirrored Engine and Insights image:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   engineInsightsAgentImage:
     repository: "(your-registry)/langchain/langsmith-insights-engine"
@@ -154,7 +154,7 @@ images:
 ```
 
 <Note>
-Do not use `langsmith-clio`. If you are upgrading an existing installation that points to this retired Insights-only image, replace the image repository. The repository name must end in `langsmith-insights-engine`; the chart validates this requirement.
+  Do not use `langsmith-clio`. If you are upgrading an existing installation that points to this retired Insights-only image, replace the image repository. The repository name must end in `langsmith-insights-engine`; the chart validates this requirement.
 </Note>
 
 Image mirroring does not remove Engine's LangSmith Intelligence egress requirement, so fully air-gapped installations cannot run Engine. See [LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine).
@@ -164,12 +164,13 @@ Image mirroring does not remove Engine's LangSmith Intelligence egress requireme
 If you are using Fleet, the LangGraph operator dynamically creates Redis and PostgreSQL (pgvector) pods for each deployment. These pods use images defined in operator templates that require separate configuration.
 
 You must mirror these additional images:
-- `docker.io/redis:7`
-- `docker.io/pgvector/pgvector:pg15`
+
+* `docker.io/redis:7`
+* `docker.io/pgvector/pgvector:pg15`
 
 Then override the operator templates in your `values.yaml` to use your mirrored images:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 operator:
   templates:
     redis: |
@@ -259,14 +260,14 @@ Once configured, you will need to update your LangSmith installation. You can fo
 ## Verifying image signatures
 
 <Note>
-Image signatures are available **starting with v15** (LangSmith app version `0.15.x` and later). Earlier releases on the `v14-stable` and older channels are not signed and cannot be verified with the steps below.
+  Image signatures are available **starting with v15** (LangSmith app version `0.15.x` and later). Earlier releases on the `v14-stable` and older channels are not signed and cannot be verified with the steps below.
 </Note>
 
 Stable-channel LangSmith images on `docker.io/langchain/*` are signed at release time using keyless [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) from the release workflow. The signing identity is bound to a specific GitHub Actions workflow, run, and commit, so the signature attests not just that the image is authentic but that it was produced by the stable-branch release pipeline running in `langchain-ai/langchainplus`. You can verify a signature before pulling or mirroring an image, and again after mirroring to confirm the digest you mirrored matches what we signed.
 
 Install `cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/)), then verify any tag:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity-regexp 'https://github\.com/langchain-ai/langchainplus/\.github/workflows/release_self_hosted_on_version_bump\.yaml@refs/heads/v[0-9]+-stable' \
@@ -275,9 +276,9 @@ cosign verify \
 
 A successful verification confirms:
 
-- The cosign claims on the signature are valid.
-- The certificate chains to the Sigstore root and is logged in the [Rekor](https://docs.sigstore.dev/rekor/overview/) transparency log.
-- The signing certificate was issued to the stable-branch release workflow via GitHub Actions OIDC.
+* The cosign claims on the signature are valid.
+* The certificate chains to the Sigstore root and is logged in the [Rekor](https://docs.sigstore.dev/rekor/overview/) transparency log.
+* The signing certificate was issued to the stable-branch release workflow via GitHub Actions OIDC.
 
 The same command works against any of the released images by substituting the repository (`langsmith-frontend`, `langsmith-go-backend`, `agent-builder-deep-agent`, `langsmith-insights-engine`, `langsmith-polly`, `agent-builder-tool-server`, `agent-builder-trigger-server`, `hosted-langserve-backend`, `langsmith-playground`, `langsmith-ace-backend`, plus their `*-fips` variants).
 
@@ -285,7 +286,7 @@ The same command works against any of the released images by substituting the re
 
 For stricter verification — for example, pinning to a single stable branch or a specific commit — drop the regex and supply the exact certificate identity. Each signature's certificate also carries the workflow run ID and commit SHA as Subject Alternative Name extensions, so you can constrain to a specific release:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity 'https://github.com/langchain-ai/langchainplus/.github/workflows/release_self_hosted_on_version_bump.yaml@refs/heads/v15-stable' \
@@ -294,7 +295,7 @@ cosign verify \
 
 To inspect the certificate's claims (workflow run, commit, runner), download the attestation and decode the embedded certificate:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign download attestation docker.io/langchain/langsmith-backend:<tag>
 ```
 
@@ -304,7 +305,7 @@ Released images also carry signed CycloneDX software bill of materials (SBOM) at
 
 The per-architecture SBOMs are also attached to the multi-architecture index digest, so you can verify against a bare tag directly:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify-attestation \
   --type cyclonedx \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
@@ -320,14 +321,14 @@ To feed an SBOM into a vulnerability scanner or SBOM management tool, extract th
 
 List the per-architecture digests for a tag:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker buildx imagetools inspect --raw docker.io/langchain/langsmith-backend:<tag> \
   | jq -r '.manifests[] | select(.platform.os == "linux") | .digest + "  " + .platform.architecture'
 ```
 
 Then verify that digest and save the decoded predicate — a standard CycloneDX document listing every package in the image — to a file:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify-attestation \
   --type cyclonedx \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
@@ -339,16 +340,17 @@ cosign verify-attestation \
 You can pass the resulting `langsmith-backend.cdx.json` directly to scanners such as [Grype](https://github.com/anchore/grype) (`grype sbom:langsmith-backend.cdx.json`) or [Trivy](https://trivy.dev/) (`trivy sbom langsmith-backend.cdx.json`).
 
 <Note>
-Extracting the SBOM through `cosign verify-attestation`, rather than `cosign download attestation`, ensures you only ever consume an SBOM whose signature and signing identity have been verified.
+  Extracting the SBOM through `cosign verify-attestation`, rather than `cosign download attestation`, ensures you only ever consume an SBOM whose signature and signing identity have been verified.
 </Note>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-mirroring-images.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

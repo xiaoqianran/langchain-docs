@@ -5,8 +5,9 @@
 # 双重短信
 
 <Info>
-**先决条件**
-* [Agent Server](/langsmith/agent-server)
+  **先决条件**
+
+  * [Agent Server](/langsmith/agent-server)
 </Info>
 
 很多时候，用户可能会以意想不到的方式与您的图表进行交互。
@@ -17,10 +18,10 @@
 [Enqueue](#enqueue-default) 是在 [Agent Server](/langsmith/agent-server) 中创建运行时的默认双短信（多任务）策略。
 
 <Note>
-双重短信是LangSmith部署的一项功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
+  双重短信是LangSmith部署的一项功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
 </Note>
 
-![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](/langsmith/images/double-texting.png)
+<img alt="Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second." />
 
 ## 入队（默认）
 
@@ -44,15 +45,16 @@
 
 在处理新的用户输入之前，此选项会暂停当前执行并恢复所有进度（包括初始运行输入）。新输入被视为从初始状态开始的全新运行。
 
-关于回滚双文本选项的配置，请参考[how-to guide](/langsmith/rollback-concurrent)。
+有关回滚双文本选项的配置，请参阅[how-to guide](/langsmith/rollback-concurrent)。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

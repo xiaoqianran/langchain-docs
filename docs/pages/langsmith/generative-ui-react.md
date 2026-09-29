@@ -3,15 +3,16 @@
 # How to implement generative user interfaces with LangGraph
 
 <Info>
-**Prerequisites**
-* [LangSmith](/langsmith/observability)
-* [Agent Server](/langsmith/agent-server)
-* [`useStream()` React Hook](/oss/python/langchain/frontend/overview)
+  **Prerequisites**
+
+  * [LangSmith](/langsmith/observability)
+  * [Agent Server](/langsmith/agent-server)
+  * [`useStream()` React Hook](/oss/python/langchain/frontend/overview)
 </Info>
 
 Generative user interfaces (Generative UI) allows agents to go beyond text and generate rich user interfaces. This enables creating more interactive and context-aware applications where the UI adapts based on the conversation flow and AI responses.
 
-![Agent Chat showing a prompt about booking/lodging and a generated set of hotel listing cards (images, titles, prices, locations) rendered inline as UI components.](/langsmith/images/generative-ui-sample.jpg)
+<img alt="Agent Chat showing a prompt about booking/lodging and a generated set of hotel listing cards (images, titles, prices, locations) rendered inline as UI components." />
 
 LangSmith supports colocating your React components with your graph code. This allows you to focus on building specific UI components for your graph while easily plugging into existing chat interfaces such as [Agent Chat](https://agentchat.vercel.app) and loading the code only when actually needed.
 
@@ -21,7 +22,7 @@ LangSmith supports colocating your React components with your graph code. This a
 
 First, create your first UI component. For each component you need to provide an unique identifier that will be used to reference the component in your graph code.
 
-```tsx title="src/agent/ui.tsx"
+```tsx title="src/agent/ui.tsx" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const WeatherComponent = (props: { city: string }) => {
   return <div>Weather for {props.city}</div>;
 };
@@ -33,7 +34,7 @@ export default {
 
 Next, define your UI components in your `langgraph.json` configuration:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "node_version": "20",
   "graphs": {
@@ -52,8 +53,8 @@ LangSmith will automatically bundle your UI components code and styles and serve
 CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tailwind classes as well as `shadcn/ui` in your UI components.
 
 <Tabs>
-    <Tab title="src/agent/ui.tsx">
-    ```tsx
+  <Tab title="src/agent/ui.tsx">
+    ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import "./styles.css";
 
     const WeatherComponent = (props: { city: string }) => {
@@ -64,19 +65,20 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
       weather: WeatherComponent,
     };
     ```
-    </Tab>
-    <Tab title="src/agent/styles.css">
-    ```css
+  </Tab>
+
+  <Tab title="src/agent/styles.css">
+    ```css theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     @import "tailwindcss";
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### 2. Send the UI components in your graph
 
 <Tabs>
-    <Tab title="Python">
-    ```python title="src/agent.py"
+  <Tab title="Python">
+    ```python title="src/agent.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import uuid
     from typing import Annotated, Sequence, TypedDict
 
@@ -119,11 +121,12 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
     workflow.add_edge("__start__", "weather")
     graph = workflow.compile()
     ```
-    </Tab>
-    <Tab title="JS">
+  </Tab>
+
+  <Tab title="JS">
     Use the `typedUi` utility to emit UI elements from your agent nodes:
 
-    ```typescript title="src/agent/index.ts"
+    ```typescript title="src/agent/index.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import {
       typedUi,
       uiMessageReducer,
@@ -172,14 +175,14 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
       .addEdge("__start__", "weather")
       .compile();
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### 3. Handle UI elements in your React application
 
 On the client side, you can use `useStream()` and `LoadExternalComponent` to display the UI elements.
 
-```tsx title="src/app/page.tsx"
+```tsx title="src/app/page.tsx" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 "use client";
 
 import { useStream } from "@langchain/langgraph-sdk/react";
@@ -216,7 +219,7 @@ Behind the scenes, `LoadExternalComponent` will fetch the JS and CSS for the UI 
 
 If you already have the components loaded in your client application, you can provide a map of such components to be rendered directly without fetching the UI code from LangSmith.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const clientComponents = {
   weather: WeatherComponent,
 };
@@ -232,7 +235,7 @@ const clientComponents = {
 
 You can provide a fallback UI to be rendered when the components are loading.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 <LoadExternalComponent
   stream={thread}
   message={ui}
@@ -245,31 +248,32 @@ You can provide a fallback UI to be rendered when the components are loading.
 By default `LoadExternalComponent` will use the `assistantId` from `useStream()` hook to fetch the code for UI components. You can customise this by providing a `namespace` prop to the `LoadExternalComponent` component.
 
 <Tabs>
-    <Tab title="src/app/page.tsx">
-    ```tsx
+  <Tab title="src/app/page.tsx">
+    ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     <LoadExternalComponent
       stream={thread}
       message={ui}
       namespace="custom-namespace"
     />
     ```
-    </Tab>
-    <Tab title="langgraph.json">
-    ```json
+  </Tab>
+
+  <Tab title="langgraph.json">
+    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     {
       "ui": {
         "custom-namespace": "./src/agent/ui.tsx"
       }
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### Access and interact with the thread state from the UI component
 
 You can access the thread state inside the UI component by using the `useStreamContext` hook.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStreamContext } from "@langchain/langgraph-sdk/react-ui";
 
 const WeatherComponent = (props: { city: string }) => {
@@ -299,13 +303,13 @@ const WeatherComponent = (props: { city: string }) => {
 
 You can pass additional context to the client components by providing a `meta` prop to the `LoadExternalComponent` component.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 <LoadExternalComponent stream={thread} message={ui} meta={{ userId: "123" }} />
 ```
 
 Then, you can access the `meta` prop in the UI component by using the `useStreamContext` hook.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStreamContext } from "@langchain/langgraph-sdk/react-ui";
 
 const WeatherComponent = (props: { city: string }) => {
@@ -326,7 +330,7 @@ const WeatherComponent = (props: { city: string }) => {
 
 You can stream UI messages before the node execution is finished by using the `onCustomEvent` callback of the `useStream()` hook. This is especially useful when updating the UI component as the LLM is generating the response.
 
-```tsx
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { uiMessageReducer } from "@langchain/langgraph-sdk/react-ui";
 
 const { thread, submit } = useStream({
@@ -344,8 +348,8 @@ const { thread, submit } = useStream({
 Then you can push updates to the UI component by calling `ui.push()` / `push_ui_message()` with the same ID as the UI message you wish to update.
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from typing import Annotated, Sequence, TypedDict
 
     from langchain_anthropic import ChatAnthropic
@@ -403,9 +407,10 @@ Then you can push updates to the UI component by calling `ui.push()` / `push_ui_
 
         return {"messages": [message]}
     ```
-    </Tab>
-    <Tab title="JS">
-    ```tsx
+  </Tab>
+
+  <Tab title="JS">
+    ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import {
       Annotation,
       MessagesAnnotation,
@@ -478,9 +483,10 @@ Then you can push updates to the UI component by calling `ui.push()` / `push_ui_
       return { messages: [message] };
     }
     ```
-    </Tab>
-    <Tab title="ui.tsx">
-    ```tsx
+  </Tab>
+
+  <Tab title="ui.tsx">
+    ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     function WriterComponent(props: { title: string; content?: string }) {
       return (
         <article>
@@ -494,7 +500,7 @@ Then you can push updates to the UI component by calling `ui.push()` / `push_ui_
       weather: WriterComponent,
     };
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### Remove UI messages from state
@@ -502,8 +508,8 @@ Then you can push updates to the UI component by calling `ui.push()` / `push_ui_
 Similar to how messages can be removed from the state by appending a RemoveMessage you can remove an UI message from the state by calling `remove_ui_message` / `ui.delete` with the ID of the UI message.
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph.graph.ui import push_ui_message, delete_ui_message
 
     # push message
@@ -512,29 +518,31 @@ Similar to how messages can be removed from the state by appending a RemoveMessa
     # remove said message
     delete_ui_message(message["id"])
     ```
-    </Tab>
-    <Tab title="JS">
-    ```tsx
+  </Tab>
+
+  <Tab title="JS">
+    ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // push message
     const message = ui.push({ name: "weather", props: { city: "London" } });
 
     // remove said message
     ui.delete(message.id);
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## Learn more
 
 * [JS/TS SDK Reference](https://reference.langchain.com/javascript/langchain-langgraph-sdk/)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/generative-ui-react.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

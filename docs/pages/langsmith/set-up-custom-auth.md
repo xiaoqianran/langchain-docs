@@ -16,7 +16,7 @@ This guide assumes basic familiarity with the following concepts:
 * [**LangSmith**](/langsmith/observability)
 
 <Note>
-Custom auth is only available for LangSmith SaaS deployments or Enterprise Self-Hosted deployments.
+  Custom auth is only available for LangSmith SaaS deployments or Enterprise Self-Hosted deployments.
 </Note>
 
 ## 1. Create your app
@@ -24,35 +24,35 @@ Custom auth is only available for LangSmith SaaS deployments or Enterprise Self-
 Create a new chatbot using the LangGraph starter template:
 
 <CodeGroup>
-```bash pip
-pip install -U "langgraph-cli[inmem]"
-langgraph new --template=new-langgraph-project-python custom-auth
-cd custom-auth
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U "langgraph-cli[inmem]"
+  langgraph new --template=new-langgraph-project-python custom-auth
+  cd custom-auth
+  ```
 
-```bash uv
-uv add "langgraph-cli[inmem]"
-langgraph new --template=new-langgraph-project-python custom-auth
-cd custom-auth
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add "langgraph-cli[inmem]"
+  langgraph new --template=new-langgraph-project-python custom-auth
+  cd custom-auth
+  ```
 </CodeGroup>
 
 The template gives us a placeholder LangGraph app. Try it out by installing the local dependencies and running the development server:
 
 <CodeGroup>
-```bash pip
-pip install -e .
-langgraph dev
-```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -e .
+  langgraph dev
+  ```
 
-```bash uv
-uv add .
-langgraph dev
-```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add .
+  langgraph dev
+  ```
 
-```bash npm
-npx @langchain/langgraph-cli dev
-```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx @langchain/langgraph-cli dev
+  ```
 </CodeGroup>
 
 The server will start and open [Studio](/langsmith/studio) in your browser:
@@ -68,21 +68,21 @@ The server will start and open [Studio](/langsmith/studio) in your browser:
 
 If you were to self-host this on the public internet, anyone could access it.
 
-![No authentication: the dev server is publicly reachable, anyone can access the bot if exposed to the internet.](/langsmith/images/no-auth.png)
+<img alt="No authentication: the dev server is publicly reachable, anyone can access the bot if exposed to the internet." />
 
 ## 2. Add authentication
 
 Now that you have a base LangGraph app, add authentication to it.
 
 <Note>
-In this tutorial, you will start with a hard-coded token for example purposes. You will get to a "production-ready" authentication scheme in the third tutorial.
+  In this tutorial, you will start with a hard-coded token for example purposes. You will get to a "production-ready" authentication scheme in the third tutorial.
 </Note>
 
 The [Auth](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) object lets you register an authentication function that the LangSmith deployment will run on every request. This function receives each request and decides whether to accept or reject.
 
 Create a new file `src/security/auth.py`. This is where your code will live to check if users are allowed to access your bot:
 
-```python {highlight={10,15-16}} title="src/security/auth.py"
+```python {highlight={10,15-16}} title="src/security/auth.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk import Auth
 
 # This is our toy user database. Do not do this in production
@@ -121,7 +121,7 @@ Notice that your [Auth.authenticate](https://reference.langchain.com/python/lang
 
 Now tell LangGraph to use authentication by adding the following to the [langgraph.json](https://reference.langchain.com/python/cloud/reference/cli/#configuration-file) configuration:
 
-```json {highlight={7-9}} title="langgraph.json"
+```json {highlight={7-9}} title="langgraph.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "dependencies": ["."],
   "graphs": {
@@ -138,13 +138,13 @@ Now tell LangGraph to use authentication by adding the following to the [langgra
 
 Start the server again to test everything out:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev --no-browser
 ```
 
 If you didn't add the `--no-browser`, the Studio UI will open in the browser. By default, we also permit access from Studio, even when using custom auth. This makes it easier to develop and test your bot in Studio. You can remove this alternative authentication option by setting `disable_studio_auth: true` in your auth configuration:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
     "auth": {
         "path": "src/security/auth.py:auth",
@@ -156,18 +156,18 @@ If you didn't add the `--no-browser`, the Studio UI will open in the browser. By
 To accept LangSmith API keys (`x-api-key`) alongside your custom handler outside of Studio, set `allow_langsmith_api_keys: true`. Requests with an `Authorization` header still use custom auth. All other requests use LangSmith auth. Set the `x-auth-scheme: langsmith` header to force LangSmith auth even when `Authorization` is present. LangSmith-authenticated callers expose `ctx.user.identity` as the LangSmith user ID (or missing) and `ctx.permissions` as `["authenticated"]`. Custom `@auth.on` handlers still run, so design them to accept that shape if both paths should share resource rules. This option requires `disable_studio_auth` unset or `false`.
 
 <Note>
-`allow_langsmith_api_keys` requires Agent Server `0.14.0rc2` or later.
+  `allow_langsmith_api_keys` requires Agent Server `0.14.0rc2` or later.
 </Note>
 
 ## 4. Chat with your bot
 
 You should now only be able to access the bot if you provide a valid token in the request header. Users will still, however, be able to access each other's resources until you add [resource authorization handlers](/langsmith/auth#resource-specific-handlers) in the next section of the tutorial.
 
-![Auth gate passes requests with a valid token, but no per-resource filters are applied yet—so users share visibility until authorization handlers are added in the next step.](/langsmith/images/authentication.png)
+<img alt="Auth gate passes requests with a valid token, but no per-resource filters are applied yet—so users share visibility until authorization handlers are added in the next step." />
 
 Run the following code in a file or notebook:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from langgraph_sdk import get_client
@@ -219,13 +219,14 @@ Now that you can control who accesses your bot, you might want to:
 2. Read more about [authentication concepts](/langsmith/auth).
 3. Check out the API reference for [Auth](https://reference.langchain.com/python/langgraph-sdk/auth/Auth), [Auth.authenticate](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate), and [MinimalUserDict](https://reference.langchain.com/python/langgraph-sdk/auth/types/MinimalUserDict) for more authentication details.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-custom-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

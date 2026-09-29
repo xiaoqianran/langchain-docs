@@ -5,7 +5,7 @@
 LangSmith Self-Hosted supports automatic TTL and data retention for traces. Use this to comply with data privacy regulations or to reduce storage by automatically cleaning up old traces. Run rules and other qualifying actions can also extend a trace's retention period automatically.
 
 <Note>
-**Self-hosted [Enterprise](/langsmith/pricing-plans) customers:** You can configure extended data retention at the workspace level through the UI. No environment variable changes are required. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy). The system-wide TTL configuration on this page is still supported.
+  **Self-hosted [Enterprise](/langsmith/pricing-plans) customers:** You can configure extended data retention at the workspace level through the UI. No environment variable changes are required. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy). The system-wide TTL configuration on this page is still supported.
 </Note>
 
 ## TTL configuration precedence
@@ -22,8 +22,8 @@ LangSmith assigns the tier in the following order, highest precedence first:
 
 LangSmith then resolves the retention period for the assigned tier:
 
-- **`longlived`**: The workspace extended retention period (if set through the UI), otherwise the `longlived` value from the [Helm configuration](#requirements).
-- **`shortlived`**: The `shortlived` value from the [Helm configuration](#requirements).
+* **`longlived`**: The workspace extended retention period (if set through the UI), otherwise the `longlived` value from the [Helm configuration](#requirements).
+* **`shortlived`**: The `shortlived` value from the [Helm configuration](#requirements).
 
 The Helm chart defaults to 14 days for `shortlived` and 400 days for `longlived`.
 
@@ -31,10 +31,10 @@ The Helm chart defaults to 14 days for `shortlived` and 400 days for `longlived`
 
 Configure retention through Helm or environment variable settings:
 
-- **Enabled**: Enable or disable automatic data retention. When enabled, set your default organization and project TTL tiers through the UI (see [data retention guide](/langsmith/usage-and-billing#data-retention)).
-- **Retention periods**: Set system-wide retention periods for `shortlived` and `longlived` traces. Once set, manage retention at the project level or set an organization-wide default for new projects.
+* **Enabled**: Enable or disable automatic data retention. When enabled, set your default organization and project TTL tiers through the UI (see [data retention guide](/langsmith/usage-and-billing#data-retention)).
+* **Retention periods**: Set system-wide retention periods for `shortlived` and `longlived` traces. Once set, manage retention at the project level or set an organization-wide default for new projects.
 
-```yaml Helm
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   ttl:
     enabled: true
@@ -49,21 +49,21 @@ config:
 As of version 0.11, a cron job runs on weekends to delete expired data that ClickHouse's built-in TTL mechanism may not have cleaned up.
 
 <Warning>
-This job uses **mutations** (`ALTER TABLE DELETE`), which are expensive operations that can affect ClickHouse performance. Run them only during off-peak hours (nights and weekends). Testing with **1 concurrent active** mutation (the default) did not produce significant CPU, memory, or latency increases.
+  This job uses **mutations** (`ALTER TABLE DELETE`), which are expensive operations that can affect ClickHouse performance. Run them only during off-peak hours (nights and weekends). Testing with **1 concurrent active** mutation (the default) did not produce significant CPU, memory, or latency increases.
 </Warning>
 
 ### Default schedule
 
 By default, the cleanup job runs:
 
-- **Saturday**: 8pm and 10pm UTC.
-- **Sunday**: 12am, 2am, and 4am UTC.
+* **Saturday**: 8pm and 10pm UTC.
+* **Sunday**: 12am, 2am, and 4am UTC.
 
 ### Disabling the job
 
 To disable the cleanup job entirely:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 queue:
   deployment:
     extraEnv:
@@ -75,7 +75,7 @@ queue:
 
 Customize when the cleanup job runs by modifying the cron expressions:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 queue:
   deployment:
     extraEnv:
@@ -88,17 +88,17 @@ queue:
 ```
 
 <Tip>
-To use a single cron schedule, set both `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` and `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` to the same value. Job locking prevents overlapping executions.
+  To use a single cron schedule, set both `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` and `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` to the same value. Job locking prevents overlapping executions.
 </Tip>
 
 ### Configuring minimum expired rows per part
 
 The job works through the tables one at a time. Within each table it scans the parts and deletes data from any part holding at least a minimum number of expired rows. This threshold balances efficiency and thoroughness:
 
-- **Too low**: The job scans entire parts to clear minimal data (inefficient).
-- **Too high**: The job skips parts with significant expired data.
+* **Too low**: The job scans entire parts to clear minimal data (inefficient).
+* **Too high**: The job skips parts with significant expired data.
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 queue:
   deployment:
     extraEnv:
@@ -110,7 +110,7 @@ queue:
 
 Run this query to see expired rows per table part, then tune your minimum value:
 
-```sql
+```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 -- Query for Runs table. For other tables, replace 'ttl_seconds' with 'trace_ttl_seconds'
 SELECT
     _part,
@@ -127,7 +127,7 @@ ORDER BY expired_rows DESC
 
 Delete operations can take around 50 minutes for a 100 GB part. Increase concurrent mutations to speed up cleanup:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 queue:
   deployment:
     extraEnv:
@@ -136,7 +136,7 @@ queue:
 ```
 
 <Warning>
-More concurrent `DELETE` operations can significantly slow inserts and reads. Increase this value only if you can tolerate slower insert and read latencies, and monitor the system after you do.
+  More concurrent `DELETE` operations can significantly slow inserts and reads. Increase this value only if you can tolerate slower insert and read latencies, and monitor the system after you do.
 </Warning>
 
 ### Emergency: Stopping running mutations
@@ -145,7 +145,7 @@ If you see latency spikes and need to stop a running mutation:
 
 1. **Find active mutations**:
 
-   ```sql
+   ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    SELECT * FROM system.mutations WHERE is_done = 0;
    ```
 
@@ -153,7 +153,7 @@ If you see latency spikes and need to stop a running mutation:
 
 2. **Kill the mutation**:
 
-   ```sql
+   ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    KILL MUTATION WHERE mutation_id = '<mutation_id>';
    ```
 
@@ -163,18 +163,19 @@ If disk space does not decrease after the job runs, or keeps growing, backups ma
 
 Check these directories inside your ClickHouse pod:
 
-- `/var/lib/clickhouse/backup`
-- `/var/lib/clickhouse/shadow`
+* `/var/lib/clickhouse/backup`
+* `/var/lib/clickhouse/shadow`
 
 If backups are present, copy them to external storage (for example, S3), then clear the directories. Disk space should start releasing within a few minutes.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ttl.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

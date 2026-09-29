@@ -2,25 +2,27 @@
 
 # LangSmith Engine notifications
 
+Send LangSmith Engine issue and run-failure notifications to Slack channels and webhook endpoints.
+
 [LangSmith Engine](/langsmith/engine) can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
 
 ## Add a destination
 
 Notification destinations are configured per tracing project. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **+ Add destination**. For each destination, choose:
 
-- **Deliver to**: **Slack** or **Webhook**. See [Notify a Slack channel](#notify-a-slack-channel) and [Send to a webhook](#send-to-a-webhook).
-- **Notify when**: The [event types](#event-types) that trigger a notification.
-- **Minimum priority**: The lowest issue [severity](#severity-filtering) that triggers a notification.
+* **Deliver to**: **Slack** or **Webhook**. See [Notify a Slack channel](#notify-a-slack-channel) and [Send to a webhook](#send-to-a-webhook).
+* **Notify when**: The [event types](#event-types) that trigger a notification.
+* **Minimum priority**: The lowest issue [severity](#severity-filtering) that triggers a notification.
 
 To be alerted when a [watched issue](/langsmith/engine#watch-an-issue) recurs, click **Alert me via Slack** on the issue, which opens the same **Notifications** section.
 
 ## Event types
 
-| Event | Sent when |
-| --- | --- |
-| [`issue.created`](#issue-created) | Engine opens a new issue. |
-| [`issue.trace.added`](#issue-trace-added) | Engine links a new trace to an existing issue. |
-| [`issue.agent_run.failed`](#issue-agent_run-failed) | An Engine run fails to complete. |
+| Event                                               | Sent when                                      |
+| --------------------------------------------------- | ---------------------------------------------- |
+| [`issue.created`](#issue-created)                   | Engine opens a new issue.                      |
+| [`issue.trace.added`](#issue-trace-added)           | Engine links a new trace to an existing issue. |
+| [`issue.agent_run.failed`](#issue-agent_run-failed) | An Engine run fails to complete.               |
 
 This is the complete set of event types Engine sends today. New types may be added in the future. A destination created without an explicit list of event types receives only `issue.created`.
 
@@ -29,11 +31,11 @@ This is the complete set of event types Engine sends today. New types may be add
 The **Minimum priority** setting is stored as a `severity_threshold` from `0` to `3`. For issue events, a notification is delivered only when the issue's `severity` is less than or equal to the threshold. Lower numbers are more urgent.
 
 | Severity | Meaning |
-| --- | --- |
-| `0` | Urgent |
-| `1` | High |
-| `2` | Medium |
-| `3` | Low |
+| -------- | ------- |
+| `0`      | Urgent  |
+| `1`      | High    |
+| `2`      | Medium  |
+| `3`      | Low     |
 
 For example, a destination with `severity_threshold: 1` receives events for `URGENT` (0) and `HIGH` (1) issues only.
 
@@ -43,11 +45,13 @@ Severity thresholds do not apply to [`issue.agent_run.failed`](#issue-agent_run-
 
 <Steps>
   <Step title="Connect a Slack workspace">
-    Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In the [LangSmith console](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-engine-notifications), open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the LangSmith app in Slack. You can connect more than one Slack workspace to an organization.
+    Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In the [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-notifications), open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the LangSmith app in Slack. You can connect more than one Slack workspace to an organization.
   </Step>
+
   <Step title="Add a Slack destination">
     On the **Engine** page, click **Configure Engine**, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
   </Step>
+
   <Step title="Choose events and priority">
     Under **Notify when**, select which [event types](#event-types) post a message to the channel. Under **Minimum priority**, choose the lowest [severity](#severity-filtering) that triggers a notification. Click **Add destination** to save.
   </Step>
@@ -67,18 +71,18 @@ Forward Engine events to your own incident-management, paging, or chat tooling. 
 
 LangSmith sends a `POST` request with a JSON body to your webhook URL. The request uses `Content-Type: application/json` and includes any custom headers you attached to the destination.
 
-| Property | Value |
-| --- | --- |
-| Method | `POST` |
-| Body | JSON, [common envelope](#event-envelope) below |
-| Scheme | `http://` and `https://` are accepted. `https://` is strongly recommended |
-| Signature | `X-LangSmith-Signature` header, signed with the destination's signing secret |
-| Timeout | 20 seconds per attempt |
-| Attempts | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
-| Response | Success is determined from the status code alone. Response bodies are ignored. |
+| Property  | Value                                                                                                                                                                                                      |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Method    | `POST`                                                                                                                                                                                                     |
+| Body      | JSON, [common envelope](#event-envelope) below                                                                                                                                                             |
+| Scheme    | `http://` and `https://` are accepted. `https://` is strongly recommended                                                                                                                                  |
+| Signature | `X-LangSmith-Signature` header, signed with the destination's signing secret                                                                                                                               |
+| Timeout   | 20 seconds per attempt                                                                                                                                                                                     |
+| Attempts  | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
+| Response  | Success is determined from the status code alone. Response bodies are ignored.                                                                                                                             |
 
 <Note>
-Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id` so a retried delivery does not produce a duplicate downstream effect.
+  Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id` so a retried delivery does not produce a duplicate downstream effect.
 </Note>
 
 ### Custom headers
@@ -91,68 +95,66 @@ Each destination has a signing secret. LangSmith uses this secret to sign the ra
 
 The header value has this format:
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sha256=<hex-encoded HMAC-SHA256 digest>
 ```
 
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import hashlib
+  import hmac
+  from typing import Optional
 
-```python Python
-import hashlib
-import hmac
-from typing import Optional
 
+  def verify_langsmith_signature(
+      *,
+      body: bytes,
+      signing_secret: str,
+      signature_header: Optional[str],
+  ) -> bool:
+      if not signature_header or not signature_header.startswith("sha256="):
+          return False
 
-def verify_langsmith_signature(
-    *,
-    body: bytes,
-    signing_secret: str,
-    signature_header: Optional[str],
-) -> bool:
-    if not signature_header or not signature_header.startswith("sha256="):
-        return False
+      expected = "sha256=" + hmac.new(
+          signing_secret.encode("utf-8"),
+          body,
+          hashlib.sha256,
+      ).hexdigest()
 
-    expected = "sha256=" + hmac.new(
-        signing_secret.encode("utf-8"),
-        body,
-        hashlib.sha256,
-    ).hexdigest()
+      return hmac.compare_digest(expected, signature_header)
+  ```
 
-    return hmac.compare_digest(expected, signature_header)
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createHmac, timingSafeEqual } from "node:crypto";
 
-```typescript TypeScript
-import { createHmac, timingSafeEqual } from "node:crypto";
+  export function verifyLangSmithSignature({
+    body,
+    signingSecret,
+    signatureHeader,
+  }: {
+    body: Buffer;
+    signingSecret: string;
+    signatureHeader: string | undefined;
+  }) {
+    if (!signatureHeader?.startsWith("sha256=")) {
+      return false;
+    }
 
-export function verifyLangSmithSignature({
-  body,
-  signingSecret,
-  signatureHeader,
-}: {
-  body: Buffer;
-  signingSecret: string;
-  signatureHeader: string | undefined;
-}) {
-  if (!signatureHeader?.startsWith("sha256=")) {
-    return false;
+    const expected = `sha256=${createHmac("sha256", signingSecret)
+      .update(body)
+      .digest("hex")}`;
+
+    const expectedBytes = Buffer.from(expected);
+    const actualBytes = Buffer.from(signatureHeader);
+
+    return (
+      expectedBytes.length === actualBytes.length &&
+      timingSafeEqual(expectedBytes, actualBytes)
+    );
   }
-
-  const expected = `sha256=${createHmac("sha256", signingSecret)
-    .update(body)
-    .digest("hex")}`;
-
-  const expectedBytes = Buffer.from(expected);
-  const actualBytes = Buffer.from(signatureHeader);
-
-  return (
-    expectedBytes.length === actualBytes.length &&
-    timingSafeEqual(expectedBytes, actualBytes)
-  );
-}
-```
-
+  ```
 </CodeGroup>
 
 ### Roll a signing secret
@@ -167,7 +169,7 @@ After rolling the secret, update every consumer that verifies `X-LangSmith-Signa
 
 Before pointing a real destination at your endpoint, send a sample payload to verify it accepts and acknowledges within the 20-second timeout:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST https://your-endpoint.example.com/webhook \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $WEBHOOK_SECRET" \
@@ -176,22 +178,22 @@ curl -X POST https://your-endpoint.example.com/webhook \
 
 Use the example body from [`issue.created`](#issue-created) as `sample-issue-created.json`. Verify that:
 
-- The custom `Authorization` header arrives and matches the secret you configured on the destination.
-- The handler persists the event keyed by its `id` so retries are deduped.
-- The handler returns `2xx` before kicking off slow downstream work.
+* The custom `Authorization` header arrives and matches the secret you configured on the destination.
+* The handler persists the event keyed by its `id` so retries are deduped.
+* The handler returns `2xx` before kicking off slow downstream work.
 
 ### Security
 
-- Webhook URLs are validated when the destination is created and again at delivery time. Private and metadata IP ranges are blocked in SaaS. Both `http://` and `https://` are accepted; use `https://` so the payload and any custom headers are not sent in cleartext.
-- LangSmith signs webhook bodies with the destination's signing secret. Verify `X-LangSmith-Signature` before processing the payload.
-- You can also set custom headers on the destination, such as `Authorization: Bearer …`, for routing or additional authentication at your endpoint.
-- Dedupe on the event `id` so that a retried delivery does not cause a duplicate notification.
+* Webhook URLs are validated when the destination is created and again at delivery time. Private and metadata IP ranges are blocked in SaaS. Both `http://` and `https://` are accepted; use `https://` so the payload and any custom headers are not sent in cleartext.
+* LangSmith signs webhook bodies with the destination's signing secret. Verify `X-LangSmith-Signature` before processing the payload.
+* You can also set custom headers on the destination, such as `Authorization: Bearer …`, for routing or additional authentication at your endpoint.
+* Dedupe on the event `id` so that a retried delivery does not cause a duplicate notification.
 
 ### Best practices
 
-- **Acknowledge fast.** Respond with `2xx` as soon as you have persisted the event. Move slow work (fan-out, paging, downstream API calls) onto a queue so your handler stays within the 20-second timeout.
-- **Tolerate unknown event types.** Ignore `type` values your handler does not recognize. New event types may be added without notice.
-- **Tolerate new fields.** Parse payloads with a permissive schema. New fields may be added to existing event types without notice.
+* **Acknowledge fast.** Respond with `2xx` as soon as you have persisted the event. Move slow work (fan-out, paging, downstream API calls) onto a queue so your handler stays within the 20-second timeout.
+* **Tolerate unknown event types.** Ignore `type` values your handler does not recognize. New event types may be added without notice.
+* **Tolerate new fields.** Parse payloads with a permissive schema. New fields may be added to existing event types without notice.
 
 ## Webhook payload reference
 
@@ -201,68 +203,67 @@ Webhook destinations receive the JSON payloads below. Slack destinations do not.
 
 Every event delivered to your endpoint uses the same outer JSON shape.
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `id` | UUID | Unique identifier for this delivery. Stable across retries. Use it to dedupe. |
-| `type` | string | Event type. One of [`issue.created`](#issue-created), [`issue.trace.added`](#issue-trace-added), or [`issue.agent_run.failed`](#issue-agent_run-failed). |
-| `created` | integer | Unix seconds (UTC) when the event was enqueued. |
-| `request_id` | UUID | Shared by every event fired from the same upstream action. See [Batch coalescing](#batch-coalescing). |
-| `data` | object | Event payload. Always contains `data.object`. Contains [`data.trace`](#data-trace) only on [`issue.trace.added`](#issue-trace-added) events. |
+| Field        | Type    | Description                                                                                                                                              |
+| ------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | UUID    | Unique identifier for this delivery. Stable across retries. Use it to dedupe.                                                                            |
+| `type`       | string  | Event type. One of [`issue.created`](#issue-created), [`issue.trace.added`](#issue-trace-added), or [`issue.agent_run.failed`](#issue-agent_run-failed). |
+| `created`    | integer | Unix seconds (UTC) when the event was enqueued.                                                                                                          |
+| `request_id` | UUID    | Shared by every event fired from the same upstream action. See [Batch coalescing](#batch-coalescing).                                                    |
+| `data`       | object  | Event payload. Always contains `data.object`. Contains [`data.trace`](#data-trace) only on [`issue.trace.added`](#issue-trace-added) events.             |
 
 ### Issue `data.object`
 
 For [`issue.created`](#issue-created) and [`issue.trace.added`](#issue-trace-added), `data.object` is a snapshot of the issue. Treat it as the authoritative state of the issue at the time the event was generated.
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `id` | UUID | Issue ID. |
-| `name` | string | Short title of the issue. |
-| `description` | string | Human-readable description. |
-| `severity` | integer | `0` (urgent) through `3` (low). See [Severity filtering](#severity-filtering). |
-| `tenant_id` | UUID | Workspace the issue belongs to. |
-| `tenant_name` | string | Workspace display name. |
-| `session_id` | UUID | Tracing project the issue belongs to. |
-| `session_name` | string | Tracing project name. |
-| `url` | string | Deep link to the issue in the LangSmith UI. |
+| Field          | Type    | Description                                                                    |
+| -------------- | ------- | ------------------------------------------------------------------------------ |
+| `id`           | UUID    | Issue ID.                                                                      |
+| `name`         | string  | Short title of the issue.                                                      |
+| `description`  | string  | Human-readable description.                                                    |
+| `severity`     | integer | `0` (urgent) through `3` (low). See [Severity filtering](#severity-filtering). |
+| `tenant_id`    | UUID    | Workspace the issue belongs to.                                                |
+| `tenant_name`  | string  | Workspace display name.                                                        |
+| `session_id`   | UUID    | Tracing project the issue belongs to.                                          |
+| `session_name` | string  | Tracing project name.                                                          |
+| `url`          | string  | Deep link to the issue in the LangSmith UI.                                    |
 
 ### Run failure `data.object`
 
 For [`issue.agent_run.failed`](#issue-agent_run-failed), `data.object` describes the Engine run that failed.
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `tenant_id` | UUID | Workspace the run belongs to. |
-| `tenant_name` | string | Workspace display name. |
-| `session_id` | UUID | Tracing project the run belongs to. |
-| `session_name` | string | Tracing project name. |
-| `url` | string | Deep link to the LangSmith project in the UI. |
-| `thread_id` | string | Engine thread ID. |
-| `run_id` | string | Engine run ID. Omitted when unavailable. |
-| `status` | string | Final run status. |
+| Field           | Type   | Description                                               |
+| --------------- | ------ | --------------------------------------------------------- |
+| `tenant_id`     | UUID   | Workspace the run belongs to.                             |
+| `tenant_name`   | string | Workspace display name.                                   |
+| `session_id`    | UUID   | Tracing project the run belongs to.                       |
+| `session_name`  | string | Tracing project name.                                     |
+| `url`           | string | Deep link to the LangSmith project in the UI.             |
+| `thread_id`     | string | Engine thread ID.                                         |
+| `run_id`        | string | Engine run ID. Omitted when unavailable.                  |
+| `status`        | string | Final run status.                                         |
 | `error_message` | string | Error text from the failed run. Omitted when unavailable. |
-| `occurred_at` | string | RFC 3339 timestamp of when the failure occurred. |
+| `occurred_at`   | string | RFC 3339 timestamp of when the failure occurred.          |
 
 ### `data.trace`
 
 `data.trace` is included only on [`issue.trace.added`](#issue-trace-added) events.
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `run_id` | UUID | ID of the run that was linked to the issue. |
-| `trace_id` | UUID | ID of the trace that contains the run. |
-| `start_time` | string | RFC 3339 timestamp of when the run started. |
-| `comment` | string \| null | Optional note recorded when the trace was linked. Omitted when empty. |
+| Field        | Type           | Description                                                           |
+| ------------ | -------------- | --------------------------------------------------------------------- |
+| `run_id`     | UUID           | ID of the run that was linked to the issue.                           |
+| `trace_id`   | UUID           | ID of the trace that contains the run.                                |
+| `start_time` | string         | RFC 3339 timestamp of when the run started.                           |
+| `comment`    | string \| null | Optional note recorded when the trace was linked. Omitted when empty. |
 
 ### Batch coalescing
 
 A single upstream action can produce multiple webhook events. When Engine opens a new issue and attaches five traces to it, you receive one [`issue.created`](#issue-created) event and five [`issue.trace.added`](#issue-trace-added) events, all sharing the same `request_id`. Use `request_id` to group these into a single downstream notification.
 
-
 ### `issue.created`
 
 Sent when LangSmith Engine creates a new issue. `data.trace` is omitted.
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "id": "b91c1f0e-7c4a-4f53-9d3e-9f1c8e7a2b10",
   "type": "issue.created",
@@ -288,7 +289,7 @@ Sent when LangSmith Engine creates a new issue. `data.trace` is omitted.
 
 Sent when a new trace is linked to an existing issue. `data.trace` describes the linked trace.
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "id": "c02e3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b",
   "type": "issue.trace.added",
@@ -320,7 +321,7 @@ Sent when a new trace is linked to an existing issue. `data.trace` describes the
 
 Sent when LangSmith Engine fails to complete a run. This event is session-scoped, so it does not include `data.trace` and does not use severity filtering.
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "id": "4d0e8db2-81e6-4491-b8e5-b13a8f5afc0d",
   "type": "issue.agent_run.failed",
@@ -343,13 +344,14 @@ Sent when LangSmith Engine fails to complete a run. This event is session-scoped
 }
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

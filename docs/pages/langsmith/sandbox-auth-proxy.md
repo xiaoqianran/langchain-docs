@@ -2,10 +2,12 @@
 
 # Sandbox auth proxy
 
+Inject credentials into outbound requests and control which destinations a sandbox can reach.
+
 The auth proxy lets sandbox code call external APIs (OpenAI, Anthropic, GitHub, etc.) without hardcoding credentials. When configured on a sandbox, an egress proxy running outside the sandbox automatically injects authentication headers into matching outbound requests using your workspace secrets or write-only credentials you provide in the proxy config.
 
 <Warning>
-You must configure your secrets (e.g., `OPENAI_API_KEY`) in your LangSmith [workspace](/langsmith/administration-overview#workspaces) settings before creating a sandbox that references them.
+  You must configure your secrets (e.g., `OPENAI_API_KEY`) in your LangSmith [workspace](/langsmith/administration-overview#workspaces) settings before creating a sandbox that references them.
 </Warning>
 
 ## Egress and network access control
@@ -14,10 +16,10 @@ The same `proxy_config` that injects credentials also controls which destination
 
 ### How egress works
 
-- **Access control applies to every outbound TCP connection**, HTTP or not.
-- **HTTPS to a host matched by a rule or callback is decrypted by the proxy** so it can inject headers; sandboxes trust the proxy's CA. HTTPS to unmatched hosts and every non-HTTP connection, including PostgreSQL, SSH, and Redis, passes through unchanged. Ports 80 and 443 are reserved for HTTP and TLS; a non-HTTP protocol on either port does not work.
-- **Address destinations by hostname.** A direct raw TCP connection to a literal IP address on a non-HTTP port is dropped, even when that IP is on an `allow_list`. HTTPS to a literal IP is dropped too, because the proxy needs a hostname in the TLS handshake. Only cleartext HTTP on port 80 works against a literal IP.
-- **Only TCP leaves the sandbox.** UDP (including QUIC) and ICMP are dropped.
+* **Access control applies to every outbound TCP connection**, HTTP or not.
+* **HTTPS to a host matched by a rule or callback is decrypted by the proxy** so it can inject headers; sandboxes trust the proxy's CA. HTTPS to unmatched hosts and every non-HTTP connection, including PostgreSQL, SSH, and Redis, passes through unchanged. Ports 80 and 443 are reserved for HTTP and TLS; a non-HTTP protocol on either port does not work.
+* **Address destinations by hostname.** A direct raw TCP connection to a literal IP address on a non-HTTP port is dropped, even when that IP is on an `allow_list`. HTTPS to a literal IP is dropped too, because the proxy needs a hostname in the TLS handshake. Only cleartext HTTP on port 80 works against a literal IP.
+* **Only TCP leaves the sandbox.** UDP (including QUIC) and ICMP are dropped.
 
 ### Default egress posture
 
@@ -25,7 +27,7 @@ With no `access_control`, **every hostname is reachable on every TCP port**, unl
 
 To allow HTTP and HTTPS to any host while blocking every other port, use a port-qualified allow list. `*` matches every hostname:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "access_control": {
     "allow_list": ["*:80", "*:443"]
@@ -39,29 +41,29 @@ Add `host:PORT` entries to open specific raw TCP destinations on top of that, su
 
 Add an `access_control` object to `proxy_config` with **either** an `allow_list` **or** a `deny_list` (not both—the request is rejected if both are set):
 
-| Mode | Behavior |
-|------|----------|
+| Mode         | Behavior                                                                                                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `allow_list` | **Default-deny.** Only listed destinations are reachable, on any protocol. List every host the sandbox needs, including the HTTP(S) hosts your `rules` and `callbacks` target. |
-| `deny_list` | **Default-allow.** Every destination is reachable, on any protocol, except those listed. |
+| `deny_list`  | **Default-allow.** Every destination is reachable, on any protocol, except those listed.                                                                                       |
 
 Both lists apply to HTTP, HTTPS, and raw TCP alike. Neither mode distinguishes protocols; use a port suffix to restrict an entry to one port.
 
 <Warning>
-A `deny_list` only blocks the hosts you list. `{"deny_list": ["example.com"]}` blocks `example.com` on every port and leaves every other host reachable on every port, including DNS, SSH, and database ports. To turn off raw TCP everywhere, use an `allow_list` such as `["*:80", "*:443"]`.
+  A `deny_list` only blocks the hosts you list. `{"deny_list": ["example.com"]}` blocks `example.com` on every port and leaves every other host reachable on every port, including DNS, SSH, and database ports. To turn off raw TCP everywhere, use an `allow_list` such as `["*:80", "*:443"]`.
 </Warning>
 
 ### Pattern syntax
 
 Each `allow_list`/`deny_list` entry uses the following forms:
 
-| Pattern | Meaning |
-|---------|---------|
-| `host` | Bare host → **every port**. |
-| `host:PORT` | Host on exactly `PORT`. `db.example.com:5432` covers only 5432; add another entry for any other port. |
-| `*.example.com` | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. May carry a port. |
-| `~regex` | Regex matched against the hostname, every port. No port suffix is parsed. |
-| `1.2.3.4` / `[::1]` | Literal IP. May carry a port: `1.2.3.4:443`, `[::1]:22`. |
-| `10.0.0.0/8` | CIDR. Cannot carry a port. |
+| Pattern             | Meaning                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------- |
+| `host`              | Bare host → **every port**.                                                                           |
+| `host:PORT`         | Host on exactly `PORT`. `db.example.com:5432` covers only 5432; add another entry for any other port. |
+| `*.example.com`     | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. May carry a port.                |
+| `~regex`            | Regex matched against the hostname, every port. No port suffix is parsed.                             |
+| `1.2.3.4` / `[::1]` | Literal IP. May carry a port: `1.2.3.4:443`, `[::1]:22`.                                              |
+| `10.0.0.0/8`        | CIDR. Cannot carry a port.                                                                            |
 
 Matching is on the destination exactly as the sandbox addressed it. A hostname entry matches requests made to that hostname; an IP or CIDR entry matches requests made to a literal IP address. Neither is resolved: `deny_list: ["203.0.113.0/24"]` does not block `foo.example.com` even when it resolves into that range, and `allow_list: ["203.0.113.7"]` does not allow it either. Because raw TCP and HTTPS to a literal IP are dropped before access control runs (see [How egress works](#how-egress-works)), IP and CIDR entries only ever affect cleartext HTTP requests on port 80 that name the IP directly.
 
@@ -81,9 +83,9 @@ An organization policy change does not automatically update existing sandboxes. 
 
 If your sandbox needs destinations outside the managed allowlist, [file a support ticket](https://support.langchain.com) to request unrestricted egress for your organization. Include the following details:
 
-- **Organization**: Your organization or workspace ID and deployment region.
-- **Network requirements**: The destination hostnames, ports, and a description of your use case.
-- **Affected sandbox**: For an existing sandbox, its ID and the connection error.
+* **Organization**: Your organization or workspace ID and deployment region.
+* **Network requirements**: The destination hostnames, ports, and a description of your use case.
+* **Affected sandbox**: For an existing sandbox, its ID and the connection error.
 
 An approved exemption removes the organization-managed allowlist requirement. Your sandbox's own access controls and platform protections against access to private or reserved IP addresses still apply. Existing sandbox configurations are not automatically changed by an exemption.
 
@@ -93,7 +95,7 @@ If your organization has restricted egress, [request unrestricted access](#reque
 
 To let sandbox code reach an external PostgreSQL database with `psql`, `dbt`, or any driver, allow-list the host on its port. Because `allow_list` is default-deny, also list any HTTP(S) hosts the sandbox needs. Pin them to `:443` unless you need other ports too:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -113,79 +115,77 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 The connection to `db.example.com:5432` is passed through at the TCP layer with no interception, so the PostgreSQL wire protocol—and TLS, host-key checking, and any other end-to-end protocol on top of it—works unchanged.
 
 <Note>
-Creating a sandbox boots it and returns once it reports `ready`, so there is no wait step to add. `GET /api/v2/sandboxes/boxes/{name}/status` reports the current state if you need to re-check it later.
+  Creating a sandbox boots it and returns once it reports `ready`, so there is no wait step to add. `GET /api/v2/sandboxes/boxes/{name}/status` reports the current state if you need to re-check it later.
 </Note>
 
 ### Configure via SDK
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  client = SandboxClient()
 
-client = SandboxClient()
+  client.create_sandbox(
+      name="db-sandbox",
+      proxy_config={
+          "access_control": {
+              "allow_list": ["db.example.com:5432", "api.openai.com:443"]
+          }
+      },
+  )
+  ```
 
-client.create_sandbox(
-    name="db-sandbox",
-    proxy_config={
-        "access_control": {
-            "allow_list": ["db.example.com:5432", "api.openai.com:443"]
-        }
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
+
+  const client = new SandboxClient();
+
+  await client.createSandbox({
+    name: "db-sandbox",
+    proxyConfig: {
+      access_control: {
+        allow_list: ["db.example.com:5432", "api.openai.com:443"],
+      },
     },
-)
-```
-
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
-
-const client = new SandboxClient();
-
-await client.createSandbox({
-  name: "db-sandbox",
-  proxyConfig: {
-    access_control: {
-      allow_list: ["db.example.com:5432", "api.openai.com:443"],
-    },
-  },
-});
-```
-
+  });
+  ```
 </CodeGroup>
 
 ## Configure auth proxy rules
 
 Add a `proxy_config` when creating a sandbox, or update an existing sandbox by patching its `proxy_config`. A `proxy_config` has:
 
-| Field | Description |
-|-------|-------------|
-| `rules` | Header-injection and provider-auth rules. Enabled header rules are matched first-match-wins in list order; `aws` and `gcp` rules match their providers' hosts regardless of position |
-| `callbacks` | Dynamic credential lookups; see [Callback credential example](#callback-credential-example) |
-| `access_control` | `allow_list` or `deny_list`; see [Allow and deny lists](#allow-and-deny-lists) |
-| `description` | Optional, up to 1024 characters. What this configuration lets the sandbox reach, for handing to an agent |
+| Field            | Description                                                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `rules`          | Header-injection and provider-auth rules. Enabled header rules are matched first-match-wins in list order; `aws` and `gcp` rules match their providers' hosts regardless of position |
+| `callbacks`      | Dynamic credential lookups; see [Callback credential example](#callback-credential-example)                                                                                          |
+| `access_control` | `allow_list` or `deny_list`; see [Allow and deny lists](#allow-and-deny-lists)                                                                                                       |
+| `description`    | Optional, up to 1024 characters. What this configuration lets the sandbox reach, for handing to an agent                                                                             |
 
 Each rule specifies:
 
-| Field | Description |
-|-------|-------------|
-| `name` | Required. Identifier for the rule |
-| `type` | Omit for header injection; `aws` or `gcp` for provider auth |
+| Field         | Description                                                                                                                                                                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | Required. Identifier for the rule                                                                                                                                                                                                                     |
+| `type`        | Omit for header injection; `aws` or `gcp` for provider auth                                                                                                                                                                                           |
 | `match_hosts` | Required for header rules; rejected on `aws` and `gcp` rules. Bare hostnames, or a leading `*.` wildcard in front of a registrable domain (`*.github.com`, not `*.com` or `*`). No scheme, path, or port. The wildcard does not match the apex domain |
-| `match_paths` | Paths to match (empty = all paths). Header rules only |
-| `headers` | Headers to inject, each with a `name`, `type`, and `value`. Header rules only |
-| `aws` / `gcp` | Provider credentials; see [Authenticate AWS requests](#authenticate-aws-requests) and [Authenticate GCP requests](#authenticate-gcp-requests) |
-| `env_vars` | Environment variables to set in the sandbox while the rule is enabled |
-| `enabled` | Defaults to `true` |
-| `description` | Optional, up to 1024 characters. What this rule lets the sandbox reach |
+| `match_paths` | Paths to match (empty = all paths). Header rules only                                                                                                                                                                                                 |
+| `headers`     | Headers to inject, each with a `name`, `type`, and `value`. Header rules only                                                                                                                                                                         |
+| `aws` / `gcp` | Provider credentials; see [Authenticate AWS requests](#authenticate-aws-requests) and [Authenticate GCP requests](#authenticate-gcp-requests)                                                                                                         |
+| `env_vars`    | Environment variables to set in the sandbox while the rule is enabled                                                                                                                                                                                 |
+| `enabled`     | Defaults to `true`                                                                                                                                                                                                                                    |
+| `description` | Optional, up to 1024 characters. What this rule lets the sandbox reach                                                                                                                                                                                |
 
 ### Header types
 
 Each header has a required `type` that controls how its value is stored and displayed:
 
-| Type | Description |
-|------|-------------|
+| Type               | Description                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------- |
 | `workspace_secret` | References a workspace secret using `{KEY}` syntax. Resolved when the proxy configuration is applied. |
-| `plaintext` | Value is stored and returned as-is. Use for non-sensitive headers. |
-| `opaque` | Write-only. Value is encrypted at rest and never returned via the API. |
+| `plaintext`        | Value is stored and returned as-is. Use for non-sensitive headers.                                    |
+| `opaque`           | Write-only. Value is encrypted at rest and never returned via the API.                                |
 
 ### Set environment variables from a rule
 
@@ -203,7 +203,7 @@ Variables managed by an enabled AWS or GCP auth rule (`AWS_ACCESS_KEY_ID`, `AWS_
 
 Every sandbox also has the common CA-bundle environment variables pointed at the system trust store, which includes the proxy's CA, so tools that pin their own bundle still verify proxy-injected hosts. Set any of them yourself to override.
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "name": "github-api",
   "match_hosts": ["api.github.com"],
@@ -221,17 +221,17 @@ Use an AWS auth rule when sandbox code needs to call AWS services with an AWS SD
 This is useful when agent code needs to inspect S3 objects, call Bedrock, or use another AWS endpoint without exposing long-lived AWS access keys in sandbox files, environment variables, shell history, or logs. The sandbox receives placeholder `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` values (plus `AWS_EC2_METADATA_DISABLED=true` and `AWS_CA_BUNDLE`) so SDK credential detection works, while the proxy replaces whatever the request carries with a real SigV4 signature. Only `service.region.amazonaws.com` hosts, S3 virtual-hosted and path-style hosts, and a few global endpoints such as `iam`, `sts`, and `s3` are signed; plaintext HTTP to a matched AWS host is rejected with `403`.
 
 <Warning>
-Do not set real AWS access keys as sandbox environment variables. Configure them as `workspace_secret` or `opaque` proxy values. Plaintext AWS credential values are rejected.
+  Do not set real AWS access keys as sandbox environment variables. Configure them as `workspace_secret` or `opaque` proxy values. Plaintext AWS credential values are rejected.
 </Warning>
 
 AWS auth rules are different from header injection rules:
 
-- Set `type` to `aws`.
-- Put credentials under the `aws` object.
-- Do not set `match_hosts`, `match_paths`, or `headers`; AWS host matching is built into the proxy.
-- Configure at most one AWS auth rule per sandbox. The limit counts every AWS rule, including disabled ones.
+* Set `type` to `aws`.
+* Put credentials under the `aws` object.
+* Do not set `match_hosts`, `match_paths`, or `headers`; AWS host matching is built into the proxy.
+* Configure at most one AWS auth rule per sandbox. The limit counts every AWS rule, including disabled ones.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -262,59 +262,57 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 ### Configure AWS auth via SDK
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import (
+      SandboxClient,
+      aws_auth,
+      proxy_config,
+      workspace_secret,
+  )
 
-```python Python
-from langsmith.sandbox import (
+  client = SandboxClient()
+
+  client.create_sandbox(
+      name="aws-sandbox",
+      proxy_config=proxy_config(
+          rules=[
+              aws_auth(
+                  access_key_id=workspace_secret("AWS_ACCESS_KEY_ID"),
+                  secret_access_key=workspace_secret("AWS_SECRET_ACCESS_KEY"),
+              )
+          ]
+      ),
+  )
+  ```
+
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
     SandboxClient,
-    aws_auth,
-    proxy_config,
-    workspace_secret,
-)
+    awsAuth,
+    proxyConfig,
+    workspaceSecret,
+  } from "langsmith/sandbox";
 
-client = SandboxClient()
+  const client = new SandboxClient();
 
-client.create_sandbox(
-    name="aws-sandbox",
-    proxy_config=proxy_config(
-        rules=[
-            aws_auth(
-                access_key_id=workspace_secret("AWS_ACCESS_KEY_ID"),
-                secret_access_key=workspace_secret("AWS_SECRET_ACCESS_KEY"),
-            )
-        ]
-    ),
-)
-```
-
-```ts TypeScript
-import {
-  SandboxClient,
-  awsAuth,
-  proxyConfig,
-  workspaceSecret,
-} from "langsmith/sandbox";
-
-const client = new SandboxClient();
-
-await client.createSandbox({
-  name: "aws-sandbox",
-  proxyConfig: proxyConfig({
-    rules: [
-      awsAuth({
-        accessKeyId: workspaceSecret("AWS_ACCESS_KEY_ID"),
-        secretAccessKey: workspaceSecret("AWS_SECRET_ACCESS_KEY"),
-      }),
-    ],
-  }),
-});
-```
-
+  await client.createSandbox({
+    name: "aws-sandbox",
+    proxyConfig: proxyConfig({
+      rules: [
+        awsAuth({
+          accessKeyId: workspaceSecret("AWS_ACCESS_KEY_ID"),
+          secretAccessKey: workspaceSecret("AWS_SECRET_ACCESS_KEY"),
+        }),
+      ],
+    }),
+  });
+  ```
 </CodeGroup>
 
 After the sandbox is ready, use AWS SDKs or CLIs normally inside the sandbox. The SDK or CLI discovers the placeholder AWS environment variables, and the proxy applies the real SigV4 signature to outbound AWS requests. The proxy does not set a region: set `AWS_REGION` through the sandbox's `env_vars` or the rule's `env_vars`, or most SDK and CLI calls fail before they reach the proxy.
 
 <Note>
-Static AWS auth accepts an access key ID and secret access key, but not a caller-supplied session token. Deployments with AWS proxy role authentication enabled also support an IAM role as described below.
+  Static AWS auth accepts an access key ID and secret access key, but not a caller-supplied session token. Deployments with AWS proxy role authentication enabled also support an IAM role as described below.
 </Note>
 
 ### Authenticate with an IAM role
@@ -324,48 +322,46 @@ An AWS proxy role lets LangSmith assume a customer IAM role and sign supported A
 This option requires deployment support for AWS proxy role authentication. ECR registry role authentication is a separate feature. In **Create sandbox > Network**, enable AWS authentication and select **AWS IAM role**. The form shows the exact LangSmith principal and workspace External ID that the customer role must trust. Follow the linked setup instructions to configure the trust and permissions policies, then enter the customer role in **AWS role ARN**.
 
 <Note>
-The SDK examples below require a release that supports `aws_auth(role_arn=...)` in Python or `awsAuth({ roleArn })` in TypeScript. Backend support alone does not add these helpers to an older SDK release.
+  The SDK examples below require a release that supports `aws_auth(role_arn=...)` in Python or `awsAuth({ roleArn })` in TypeScript. Backend support alone does not add these helpers to an older SDK release.
 </Note>
 
 To configure a role without mounts, pass it in the proxy configuration:
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
 
-```python Python
-from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
+  client = SandboxClient()
 
-client = SandboxClient()
+  sandbox = client.create_sandbox(
+      name="aws-role-sandbox",
+      proxy_config=proxy_config(
+          rules=[
+              aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")
+          ]
+      ),
+  )
+  ```
 
-sandbox = client.create_sandbox(
-    name="aws-role-sandbox",
-    proxy_config=proxy_config(
-        rules=[
-            aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")
-        ]
-    ),
-)
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient, awsAuth, proxyConfig } from "langsmith/sandbox";
 
-```ts TypeScript
-import { SandboxClient, awsAuth, proxyConfig } from "langsmith/sandbox";
+  const client = new SandboxClient();
 
-const client = new SandboxClient();
-
-const sandbox = await client.createSandbox({
-  name: "aws-role-sandbox",
-  proxyConfig: proxyConfig({
-    rules: [
-      awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
-    ],
-  }),
-});
-```
-
+  const sandbox = await client.createSandbox({
+    name: "aws-role-sandbox",
+    proxyConfig: proxyConfig({
+      rules: [
+        awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
+      ],
+    }),
+  });
+  ```
 </CodeGroup>
 
 For the HTTP API, supply `aws.role_arn` instead of static credential fields:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -399,20 +395,20 @@ Use a GCP auth rule when sandbox code needs to call Google APIs with Google SDKs
 This is useful when agent code needs to inspect GCS objects or call another Google API without exposing service account JSON in sandbox files, environment variables, shell history, or logs. The sandbox receives a placeholder `CLOUDSDK_AUTH_ACCESS_TOKEN` (plus `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`) so `gcloud` runs, while the proxy replaces whatever authorization the request carries with a token minted from the configured service account. Google client libraries that discover credentials through Application Default Credentials do not read these variables and fail to find credentials; only `gcloud` and direct HTTPS calls are supported.
 
 <Warning>
-Do not set real service account JSON as a sandbox environment variable. Configure it as a `workspace_secret` or `opaque` proxy value. Plaintext GCP credential values are rejected.
+  Do not set real service account JSON as a sandbox environment variable. Configure it as a `workspace_secret` or `opaque` proxy value. Plaintext GCP credential values are rejected.
 </Warning>
 
 GCP auth rules are different from header injection rules:
 
-- Set `type` to `gcp`.
-- Put credentials under `gcp.service_account_json`.
-- Set `gcp.scopes` to a non-empty list of OAuth scopes.
-- The proxy matches `googleapis.com` and its subdomains automatically and authenticates those requests with the configured service account. Hosts under `google.com` are not matched. Plaintext HTTP to a matched host is rejected with `403`.
-- Configure at most one GCP auth rule per sandbox. The limit counts every GCP rule, including disabled ones.
+* Set `type` to `gcp`.
+* Put credentials under `gcp.service_account_json`.
+* Set `gcp.scopes` to a non-empty list of OAuth scopes.
+* The proxy matches `googleapis.com` and its subdomains automatically and authenticates those requests with the configured service account. Hosts under `google.com` are not matched. Plaintext HTTP to a matched host is rejected with `403`.
+* Configure at most one GCP auth rule per sandbox. The limit counts every GCP rule, including disabled ones.
 
 The SDK `gcp_auth` and `gcpAuth` helpers build this same rule shape.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -442,53 +438,51 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 ### Configure GCP auth via SDK
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import (
+      SandboxClient,
+      gcp_auth,
+      proxy_config,
+      workspace_secret,
+  )
 
-```python Python
-from langsmith.sandbox import (
+  client = SandboxClient()
+
+  client.create_sandbox(
+      name="gcp-sandbox",
+      proxy_config=proxy_config(
+          rules=[
+              gcp_auth(
+                  service_account_json=workspace_secret("GCP_SERVICE_ACCOUNT_JSON"),
+                  scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+              )
+          ]
+      ),
+  )
+  ```
+
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
     SandboxClient,
-    gcp_auth,
-    proxy_config,
-    workspace_secret,
-)
+    gcpAuth,
+    proxyConfig,
+    workspaceSecret,
+  } from "langsmith/sandbox";
 
-client = SandboxClient()
+  const client = new SandboxClient();
 
-client.create_sandbox(
-    name="gcp-sandbox",
-    proxy_config=proxy_config(
-        rules=[
-            gcp_auth(
-                service_account_json=workspace_secret("GCP_SERVICE_ACCOUNT_JSON"),
-                scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
-            )
-        ]
-    ),
-)
-```
-
-```ts TypeScript
-import {
-  SandboxClient,
-  gcpAuth,
-  proxyConfig,
-  workspaceSecret,
-} from "langsmith/sandbox";
-
-const client = new SandboxClient();
-
-await client.createSandbox({
-  name: "gcp-sandbox",
-  proxyConfig: proxyConfig({
-    rules: [
-      gcpAuth({
-        serviceAccountJson: workspaceSecret("GCP_SERVICE_ACCOUNT_JSON"),
-        scopes: ["https://www.googleapis.com/auth/devstorage.read_only"],
-      }),
-    ],
-  }),
-});
-```
-
+  await client.createSandbox({
+    name: "gcp-sandbox",
+    proxyConfig: proxyConfig({
+      rules: [
+        gcpAuth({
+          serviceAccountJson: workspaceSecret("GCP_SERVICE_ACCOUNT_JSON"),
+          scopes: ["https://www.googleapis.com/auth/devstorage.read_only"],
+        }),
+      ],
+    }),
+  });
+  ```
 </CodeGroup>
 
 After the sandbox is ready, use `gcloud` or direct HTTPS calls to `googleapis.com` hosts normally inside the sandbox. The proxy applies the real GCP authentication without exposing service account JSON inside the sandbox.
@@ -497,7 +491,7 @@ After the sandbox is ready, use `gcloud` or direct HTTPS calls to `googleapis.co
 
 Create a sandbox that automatically injects an OpenAI API key into outbound requests:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -527,7 +521,7 @@ Requests to `api.openai.com` are now authenticated by the proxy; no real key is 
 
 Add multiple rules to authenticate with several services at once:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -585,12 +579,12 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 Configure two rules:
 
-| Host | Header |
-|------|--------|
-| `api.github.com` | `Authorization: Bearer <github-token>` for `gh` and REST API calls |
+| Host                         | Header                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `api.github.com`             | `Authorization: Bearer <github-token>` for `gh` and REST API calls                                                         |
 | `github.com`, `*.github.com` | `Authorization: Basic <base64("x-access-token:<github-token>")>` for Git over HTTPS operations like clone, fetch, and push |
 
-```python Python
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import base64
 import os
 from typing import Any
@@ -646,12 +640,12 @@ def configure_github_proxy(sandbox_name: str, github_token: str) -> None:
 Call `configure_github_proxy` after creating or reattaching to a sandbox. GitHub App installation tokens expire, so refresh the proxy config whenever you reuse a sandbox for a new run.
 
 <Warning>
-`PATCH` replaces the stored `proxy_config` wholesale. If the sandbox also uses `access_control` or `callbacks`, include them in every update or they are dropped. Opaque header values you leave empty are carried over from the current config.
+  `PATCH` replaces the stored `proxy_config` wholesale. If the sandbox also uses `access_control` or `callbacks`, include them in every update or they are dropped. Opaque header values you leave empty are carried over from the current config.
 </Warning>
 
 The `github-api` rule sets `GH_TOKEN` to a non-secret placeholder, which satisfies the `gh` CLI's local credential check. Commands then run without a per-command prefix:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gh repo view langchain-ai/langchain
 gh pr list --repo langchain-ai/langchain
 gh repo clone langchain-ai/langchain
@@ -662,57 +656,55 @@ The placeholder never leaves the sandbox. The proxy injects the real `Authorizat
 ## Configure via SDK
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  client = SandboxClient()
 
-client = SandboxClient()
-
-client.create_sandbox(
-    name="openai-sandbox",
-    proxy_config={
-        "rules": [
-            {
-                "name": "openai-api",
-                "match_hosts": ["api.openai.com"],
-                "headers": [
-                    {
-                        "name": "Authorization",
-                        "type": "workspace_secret",
-                        "value": "Bearer {OPENAI_API_KEY}",
-                    }
-                ],
-            }
-        ]
-    },
-)
-```
-
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
-
-const client = new SandboxClient();
-
-await client.createSandbox({
-  name: "openai-sandbox",
-  proxyConfig: {
-    rules: [
-      {
-        name: "openai-api",
-        match_hosts: ["api.openai.com"],
-        headers: [
-          {
-            name: "Authorization",
-            type: "workspace_secret",
-            value: "Bearer {OPENAI_API_KEY}",
-          },
-        ],
+  client.create_sandbox(
+      name="openai-sandbox",
+      proxy_config={
+          "rules": [
+              {
+                  "name": "openai-api",
+                  "match_hosts": ["api.openai.com"],
+                  "headers": [
+                      {
+                          "name": "Authorization",
+                          "type": "workspace_secret",
+                          "value": "Bearer {OPENAI_API_KEY}",
+                      }
+                  ],
+              }
+          ]
       },
-    ],
-  },
-});
-```
+  )
+  ```
 
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
+
+  const client = new SandboxClient();
+
+  await client.createSandbox({
+    name: "openai-sandbox",
+    proxyConfig: {
+      rules: [
+        {
+          name: "openai-api",
+          match_hosts: ["api.openai.com"],
+          headers: [
+            {
+              name: "Authorization",
+              type: "workspace_secret",
+              value: "Bearer {OPENAI_API_KEY}",
+            },
+          ],
+        },
+      ],
+    },
+  });
+  ```
 </CodeGroup>
 
 ## Callback credential example
@@ -721,13 +713,13 @@ Static `workspace_secret` rules pull credentials from your workspace when the pr
 
 Callbacks are configured alongside rules under `proxy_config`:
 
-| Field | Description |
-|-------|-------------|
-| `match_hosts` | Hosts to intercept (same syntax as rules; supports globs like `*.github.com`). |
-| `url` | Your callback endpoint. Must be an `http://` or `https://` URL that resolves to a public address; private, loopback, Kubernetes-internal, and cloud-metadata targets are rejected. |
-| `request_headers` | Headers attached to the proxy → callback request, e.g., an HMAC or shared secret your endpoint uses to verify the request. Only `plaintext` and `opaque` types are permitted (no `workspace_secret`). |
-| `ttl_seconds` | Required. How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600. |
-| `full_request` | When `true`, every request to a matched host invokes the callback (nothing is cached) and the body includes a `request` snapshot: `method`, `url`, `scheme`, `host`, `path`, `query`, `headers`, and up to 1 MiB of the body as `body_base64` (`body_truncated` marks a cut). |
+| Field             | Description                                                                                                                                                                                                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `match_hosts`     | Hosts to intercept (same syntax as rules; supports globs like `*.github.com`).                                                                                                                                                                                                |
+| `url`             | Your callback endpoint. Must be an `http://` or `https://` URL that resolves to a public address; private, loopback, Kubernetes-internal, and cloud-metadata targets are rejected.                                                                                            |
+| `request_headers` | Headers attached to the proxy → callback request, e.g., an HMAC or shared secret your endpoint uses to verify the request. Only `plaintext` and `opaque` types are permitted (no `workspace_secret`).                                                                         |
+| `ttl_seconds`     | Required. How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600.                                                                                                                                                                  |
+| `full_request`    | When `true`, every request to a matched host invokes the callback (nothing is cached) and the body includes a `request` snapshot: `method`, `url`, `scheme`, `host`, `path`, `query`, `headers`, and up to 1 MiB of the body as `body_base64` (`body_truncated` marks a cut). |
 
 **Static rules win.** If an enabled header-injection rule matches both the host and the path, the callback is skipped for that request. Within rules, first-match-wins; the same applies between callbacks if multiple match.
 
@@ -757,7 +749,7 @@ X-LangSmith-Signature-JWT: <signature>
 
 Your endpoint must respond `2xx` with a JSON body:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "headers": {
     "Authorization": "Bearer <token>",
@@ -772,13 +764,13 @@ The proxy injects every header in the response into the sandbox's outbound reque
 
 `request_headers` let your endpoint check a shared secret you chose. To verify that a request came from LangSmith and was not altered in transit, check the `X-LangSmith-Signature-JWT` header. It is a JWT signed with an Ed25519 key (`alg: EdDSA`) whose public half is published at `<LANGSMITH_ENDPOINT>/.well-known/jwks.json`, selected by the token's `kid`.
 
-| Claim | Expected value |
-|-------|----------------|
-| `iss` | Your LangSmith endpoint origin, e.g. `https://api.smith.langchain.com` |
-| `sub` | `langsmith-sandbox-callback` |
-| `aud` | Your callback URL, exactly as configured |
-| `exp` | Five minutes after issue; reject expired tokens |
-| `body_sha256` | Hex SHA-256 of the raw request body |
+| Claim         | Expected value                                                         |
+| ------------- | ---------------------------------------------------------------------- |
+| `iss`         | Your LangSmith endpoint origin, e.g. `https://api.smith.langchain.com` |
+| `sub`         | `langsmith-sandbox-callback`                                           |
+| `aud`         | Your callback URL, exactly as configured                               |
+| `exp`         | Five minutes after issue; reject expired tokens                        |
+| `body_sha256` | Hex SHA-256 of the raw request body                                    |
 
 Verify the signature against the JWKS, check every claim above, hash the body you received, and compare it to `body_sha256`. Then trust `identity` in the body.
 
@@ -786,7 +778,7 @@ Verify the signature against the JWKS, check every claim above, hash the body yo
 
 Use a callback when your OAuth tokens are minted on demand by your own service:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
   -H "Content-Type: application/json" \
@@ -815,68 +807,67 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 ### Configure via SDK
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  client = SandboxClient()
 
-client = SandboxClient()
-
-client.create_sandbox(
-    name="callback-sandbox",
-    proxy_config={
-        "callbacks": [
-            {
-                "match_hosts": ["api.github.com", "*.githubusercontent.com"],
-                "url": "https://auth.your-app.example.com/sandbox-credentials",
-                "request_headers": [
-                    {
-                        "name": "X-Integrator-Secret",
-                        "type": "opaque",
-                        "value": "<shared-secret-your-endpoint-verifies>",
-                    }
-                ],
-                "ttl_seconds": 300,
-            }
-        ]
-    },
-)
-```
-
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
-
-const client = new SandboxClient();
-
-await client.createSandbox({
-  name: "callback-sandbox",
-  proxyConfig: {
-    callbacks: [
-      {
-        match_hosts: ["api.github.com", "*.githubusercontent.com"],
-        url: "https://auth.your-app.example.com/sandbox-credentials",
-        request_headers: [
-          {
-            name: "X-Integrator-Secret",
-            type: "opaque",
-            value: "<shared-secret-your-endpoint-verifies>",
-          },
-        ],
-        ttl_seconds: 300,
+  client.create_sandbox(
+      name="callback-sandbox",
+      proxy_config={
+          "callbacks": [
+              {
+                  "match_hosts": ["api.github.com", "*.githubusercontent.com"],
+                  "url": "https://auth.your-app.example.com/sandbox-credentials",
+                  "request_headers": [
+                      {
+                          "name": "X-Integrator-Secret",
+                          "type": "opaque",
+                          "value": "<shared-secret-your-endpoint-verifies>",
+                      }
+                  ],
+                  "ttl_seconds": 300,
+              }
+          ]
       },
-    ],
-  },
-});
-```
+  )
+  ```
 
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
+
+  const client = new SandboxClient();
+
+  await client.createSandbox({
+    name: "callback-sandbox",
+    proxyConfig: {
+      callbacks: [
+        {
+          match_hosts: ["api.github.com", "*.githubusercontent.com"],
+          url: "https://auth.your-app.example.com/sandbox-credentials",
+          request_headers: [
+            {
+              name: "X-Integrator-Secret",
+              type: "opaque",
+              value: "<shared-secret-your-endpoint-verifies>",
+            },
+          ],
+          ttl_seconds: 300,
+        },
+      ],
+    },
+  });
+  ```
 </CodeGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-auth-proxy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

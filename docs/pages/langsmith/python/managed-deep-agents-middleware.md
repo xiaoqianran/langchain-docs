@@ -2,23 +2,22 @@
 
 # Add custom middleware to Managed Deep Agents
 
+Add built-in or custom middleware to a managed deep agent.
+
 Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/python/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
   agent.py
   middleware/
     audit.py
 ```
-
-
-
 
 For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
@@ -29,81 +28,66 @@ The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `sk
 Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
 <Steps>
-  <Step title="Use prebuilt middleware" id="use-prebuilt-middleware">
+  <Step title="Use prebuilt middleware">
+    You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition:
 
-You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition:
+    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
+    from managed_deepagents import define_deep_agent
 
-```python agent.py
-from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
-from managed_deepagents import define_deep_agent
-
-agent = define_deep_agent(
-    name="support-agent",
-    model="openai:gpt-5.5",
-    middleware=[
-        PIIMiddleware("email", strategy="redact", apply_to_input=True),
-        ModelCallLimitMiddleware(run_limit=50),
-    ],
-)
-```
-
-
-
-
+    agent = define_deep_agent(
+        name="support-agent",
+        model="openai:gpt-5.5",
+        middleware=[
+            PIIMiddleware("email", strategy="redact", apply_to_input=True),
+            ModelCallLimitMiddleware(run_limit=50),
+        ],
+    )
+    ```
   </Step>
-  <Step title="Define custom middleware (Optional)" id="define-custom-middleware">
 
-For a more advanced option, define [custom middleware](/oss/python/langchain/middleware/custom) in a local module.
+  <Step title="Define custom middleware (Optional)">
+    For a more advanced option, define [custom middleware](/oss/python/langchain/middleware/custom) in a local module.
 
-<Note>
-Middleware is a shared LangChain primitive. Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
-</Note>
+    <Note>
+      Middleware is a shared LangChain primitive. Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
+    </Note>
 
-```python middleware/audit.py
-from collections.abc import Awaitable, Callable
+    ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from collections.abc import Awaitable, Callable
 
-from langchain.agents.middleware import wrap_tool_call
-from langchain.messages import ToolMessage
-from langchain.tools.tool_node import ToolCallRequest
-from langgraph.types import Command
-
-
-@wrap_tool_call
-async def log_tool_calls(
-    request: ToolCallRequest,
-    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
-) -> ToolMessage | Command:
-    print(f"Calling tool: {request.tool_call['name']}")
-    result = await handler(request)
-    print(f"Finished tool: {request.tool_call['name']}")
-    return result
-```
+    from langchain.agents.middleware import wrap_tool_call
+    from langchain.messages import ToolMessage
+    from langchain.tools.tool_node import ToolCallRequest
+    from langgraph.types import Command
 
 
+    @wrap_tool_call
+    async def log_tool_calls(
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
+    ) -> ToolMessage | Command:
+        print(f"Calling tool: {request.tool_call['name']}")
+        result = await handler(request)
+        print(f"Finished tool: {request.tool_call['name']}")
+        return result
+    ```
 
+    Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
-Import the middleware into the project-root agent entry and pass it in the `middleware` list:
+    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from managed_deepagents import define_deep_agent
 
-```python agent.py
-from managed_deepagents import define_deep_agent
+    from middleware.audit import log_tool_calls
 
-from middleware.audit import log_tool_calls
+    agent = define_deep_agent(
+        name="support-agent",
+        model="openai:gpt-5.5",
+        middleware=[log_tool_calls],
+    )
+    ```
 
-agent = define_deep_agent(
-    name="support-agent",
-    model="openai:gpt-5.5",
-    middleware=[log_tool_calls],
-)
-```
-
-
-
-
-Your middleware imports should work the same way they do in a normal local Python project.
-
-
-
-
+    Your middleware imports should work the same way they do in a normal local Python project.
   </Step>
 </Steps>
 
@@ -121,21 +105,22 @@ To read or write files in the thread's sandbox from a middleware hook, use `runt
 
 ## When to use middleware
 
-| Concept | Kind | How it reaches the agent |
-| --- | --- | --- |
-| **Middleware** | Application code | Import and pass in the agent definition |
-| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
-| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
+| Concept                                                                | Kind             | How it reaches the agent                |
+| ---------------------------------------------------------------------- | ---------------- | --------------------------------------- |
+| **Middleware**                                                         | Application code | Import and pass in the agent definition |
+| **[Custom tools](/langsmith/python/managed-deep-agents-tools)**        | Application code | Import and pass in the agent definition |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Managed context  | Always-on system prompt                 |
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

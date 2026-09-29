@@ -1,0 +1,17 @@
+<!-- langchain-docs: Model Context Protocol (MCP) | https://docs.langchain.com/oss/javascript/langchain/mcp/index -->
+
+# Model Context Protocol (MCP)
+
+Connect LangChain agents to MCP servers with the MCPAdapter, built on FastMCP.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>

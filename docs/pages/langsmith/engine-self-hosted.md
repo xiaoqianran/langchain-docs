@@ -2,8 +2,10 @@
 
 # LangSmith Engine on Self-hosted
 
+Install LangSmith Engine on a self-hosted LangSmith instance, and understand what it depends on outside your environment and how it handles your data.
+
 <Info>
-Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
+  Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
 </Info>
 
 LangSmith Engine is an agent within LangSmith that monitors your production traces, clusters them into issues, diagnoses each issue against your source code, proposes a fix as a PR, and identifies ground truth evals to add to your datasets. For a product overview, see [Engine](/langsmith/engine-overview).
@@ -14,18 +16,18 @@ This page covers both halves: what Engine depends on outside your environment, a
 
 Engine works with three kinds of data:
 
-- **Code** (optional)**:** Your agent's source, which Engine reads to diagnose issues and propose fixes.
-- **Traces:** Runtime data from your agents, which can include user messages, tool outputs, and PII.
-- **Model:** The LLM calls Engine makes to run diagnosis, generate fixes, and write evaluators.
+* **Code** (optional)**:** Your agent's source, which Engine reads to diagnose issues and propose fixes.
+* **Traces:** Runtime data from your agents, which can include user messages, tool outputs, and PII.
+* **Model:** The LLM calls Engine makes to run diagnosis, generate fixes, and write evaluators.
 
 ## Availability by cloud and region
 
 Engine is available where LSI is available:
 
-| Cloud | Region | Status |
-| --- | --- | --- |
-| AWS | US | Available |
-| GCP | US | Available |
+| Cloud | Region | Status    |
+| ----- | ------ | --------- |
+| AWS   | US     | Available |
+| GCP   | US     | Available |
 
 For availability in other regions, [contact our sales team](https://www.langchain.com/contact-sales).
 
@@ -35,10 +37,10 @@ LSI is the LangChain-managed service that powers Engine.
 
 The flow:
 
-- Your self-hosted Engine sends an HTTPS request to the LSI gateway for its cloud, listed in the per-cloud sections on this page.
-- Engine authenticates with a short-lived license JWT obtained during LangSmith license verification. You do not provide separate model-provider credentials.
-- LSI validates the JWT and routes the request to the model provider over private networking inside LangChain's environment.
-- LSI returns the response to your self-hosted Engine.
+* Your self-hosted Engine sends an HTTPS request to the LSI gateway for its cloud, listed in the per-cloud sections on this page.
+* Engine authenticates with a short-lived license JWT obtained during LangSmith license verification. You do not provide separate model-provider credentials.
+* LSI validates the JWT and routes the request to the model provider over private networking inside LangChain's environment.
+* LSI returns the response to your self-hosted Engine.
 
 Each request carries the trace content, code, and intermediate outputs Engine needs to do its work. LSI and the model provider process that content to serve the request.
 
@@ -50,8 +52,8 @@ If the connection to LSI is unavailable, Engine stops and returns an error rathe
 
 LSI does not persist the content of prompts or model responses. It retains the following metadata for usage attribution and billing:
 
-- Account, workspace, and project identifiers used to attribute usage.
-- Model and token-usage metadata used for billing.
+* Account, workspace, and project identifiers used to attribute usage.
+* Model and token-usage metadata used for billing.
 
 For model-provider retention and training commitments, see [Engine security](/langsmith/engine-security).
 
@@ -80,10 +82,10 @@ To connect your VPC to LSI:
     Configure the AWS provider for the region that contains your VPC. Keep `service_region` set to `us-east-2`, including when your VPC is in another region. Select one private subnet per availability zone.
 
     <Note>
-    The `service_region` argument requires HashiCorp AWS provider `5.82.0` or later.
+      The `service_region` argument requires HashiCorp AWS provider `5.82.0` or later.
     </Note>
 
-    ```hcl
+    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     resource "aws_vpc_endpoint" "langsmith_intelligence" {
       vpc_id              = var.vpc_id
       service_name        = "com.amazonaws.vpce.us-east-2.vpce-svc-054f37092752bff6b"
@@ -103,7 +105,7 @@ To connect your VPC to LSI:
   <Step title="Route the LSI hostname to the endpoint">
     Enable DNS resolution and DNS hostnames for your VPC. Then, create a Route 53 private hosted zone and alias record so `beacon.aws.langchain.com` resolves to the VPC endpoint inside your VPC. Keep this hostname unchanged so TLS certificate validation succeeds. The private hosted zone also prevents fallback to public DNS when the endpoint is unavailable.
 
-    ```hcl
+    ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     resource "aws_route53_zone" "langsmith_intelligence" {
       name = "beacon.aws.langchain.com"
 
@@ -131,7 +133,7 @@ To connect your VPC to LSI:
   <Step title="Verify private connectivity">
     From a node or container that runs Engine, resolve the gateway hostname:
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     getent ahostsv4 beacon.aws.langchain.com
     ```
 
@@ -139,11 +141,8 @@ To connect your VPC to LSI:
   </Step>
 </Steps>
 
-<Frame caption="AWS: LangSmith and Engine run in your VPC; LSI and Bedrock run in LangChain's AWS environment.">
-  <img
-    src="/langsmith/images/engine-self-hosted-aws.png"
-    alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment."
-  />
+<Frame>
+  <img alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment." />
 </Frame>
 
 ### GCP (available in US)
@@ -151,14 +150,11 @@ To connect your VPC to LSI:
 The gateway host is [`beacon.langchain.com`](#allow-egress-to-langsmith-intelligence). LSI routes requests to Vertex in LangChain's GCP environment.
 
 <Note>
-This is the same host self-hosted LangSmith uses for license verification and billing telemetry, so a GCP deployment adds a path rather than a new egress destination. See [Configure egress](/langsmith/self-host-egress).
+  This is the same host self-hosted LangSmith uses for license verification and billing telemetry, so a GCP deployment adds a path rather than a new egress destination. See [Configure egress](/langsmith/self-host-egress).
 </Note>
 
-<Frame caption="GCP: LangSmith and Engine run in your project; LSI and Vertex run in LangChain's GCP environment.">
-  <img
-    src="/langsmith/images/engine-self-hosted-gcp.png"
-    alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment."
-  />
+<Frame>
+  <img alt="Architecture diagram of self-hosted LangSmith in your GCP project connected to LangSmith Intelligence and Vertex in LangChain's GCP environment." />
 </Frame>
 
 ## Model selection and quality
@@ -173,8 +169,8 @@ Engine uses managed inference, not a bring-your-own-key setup. This keeps Engine
 
 In a self-hosted deployment, Engine separates data handling between your environment and LangChain's:
 
-- **Your environment:** Engine orchestration and LangSmith-stored traces remain in your self-hosted environment.
-- **LangChain's environment:** LSI and the model provider process content that Engine sends. LSI retains the billing metadata described above.
+* **Your environment:** Engine orchestration and LangSmith-stored traces remain in your self-hosted environment.
+* **LangChain's environment:** LSI and the model provider process content that Engine sends. LSI retains the billing metadata described above.
 
 Engine's deployment-independent data handling, including zero data retention with every model provider and no use of customer data to train or fine-tune models, is described in [Engine security](/langsmith/engine-security).
 
@@ -188,10 +184,10 @@ Engine and [Insights](/langsmith/deploy-self-hosted-full-platform#enable-fleet-i
 
 Enabling Engine provisions or reuses:
 
-- `standalone-insights-api-server`: serves both the `engine` and `insights` graphs.
-- `standalone-insights-queue`: background run processing for Engine and Insights.
-- A dedicated PostgreSQL and Redis instance for the shared deployment, each replaceable with an external instance.
-- The sandbox components described under [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
+* `standalone-insights-api-server`: serves both the `engine` and `insights` graphs.
+* `standalone-insights-queue`: background run processing for Engine and Insights.
+* A dedicated PostgreSQL and Redis instance for the shared deployment, each replaceable with an external instance.
+* The sandbox components described under [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
 
 Engine also adds configuration to `platform-backend` and `ingest-queue`, which dispatch and schedule its runs.
 
@@ -204,13 +200,13 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
     Engine's sandboxes are associated with one workspace. An install with Engine must have a [shared organization](/langsmith/administration-overview#organizations). If the shared organization has exactly one workspace, LangSmith uses that workspace. If the shared organization has more than one workspace, LangSmith does not choose one automatically. You must set `engine.sandboxTenantId` to the workspace ID.
 
     <Warning>
-    Use a workspace reserved for Engine:
+      Use a workspace reserved for Engine:
 
-    - Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LCUs.
-    - Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
-    - Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
-    - Each sandbox runs agent-generated code.
-    - Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
+      * Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LCUs.
+      * Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
+      * Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
+      * Each sandbox runs agent-generated code.
+      * Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
     </Warning>
   </Step>
 
@@ -218,37 +214,37 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
     Engine is licensed separately, in the same way as Sandboxes. Your license must carry the Engine entitlement. LangSmith validates your license key against `https://beacon.langchain.com` at startup and periodically thereafter, so the entitlement takes effect without you changing any configuration once it is added to your order.
   </Step>
 
-  <Step title="Allow egress to LangSmith Intelligence" id="allow-egress-to-langsmith-intelligence">
+  <Step title="Allow egress to LangSmith Intelligence">
     Allow outbound HTTPS from the cluster to the LangSmith Intelligence gateway URL for your cloud. Use this URL as the value of `engine.intelligenceBaseUrl`.
 
-    | Cloud | `engine.intelligenceBaseUrl` |
-    | --- | --- |
-    | AWS | `https://beacon.aws.langchain.com/intelligence` |
-    | GCP | `https://beacon.langchain.com/intelligence` |
+    | Cloud | `engine.intelligenceBaseUrl`                    |
+    | ----- | ----------------------------------------------- |
+    | AWS   | `https://beacon.aws.langchain.com/intelligence` |
+    | GCP   | `https://beacon.langchain.com/intelligence`     |
 
     On GCP, this uses the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
 
     <Note>
-    Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](#availability-by-cloud-and-region) and confirm coverage with [our sales team](https://www.langchain.com/contact-sales) before planning a rollout.
+      Engine is available for self-hosted deployments in **AWS US** and **GCP US**. Check [Availability by cloud and region](#availability-by-cloud-and-region) and confirm coverage with [our sales team](https://www.langchain.com/contact-sales) before planning a rollout.
     </Note>
 
     Add the gateway as a specific allowlist entry rather than opening general egress. To keep AWS traffic on private networking, [connect to LangSmith Intelligence with AWS PrivateLink](#connect-with-aws-privatelink). Requests use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
 
     <Note>
-    Offline (air-gapped) installs cannot run Engine. There is no in-cluster model for it to fall back on.
+      Offline (air-gapped) installs cannot run Engine. There is no in-cluster model for it to fall back on.
     </Note>
   </Step>
 
-  <Step title="Verify your hostname is externally reachable" id="verify-your-hostname-is-externally-reachable">
+  <Step title="Verify your hostname is externally reachable">
     Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
 
     Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine does not require you to expose anything beyond the address your own users already reach. Sandbox egress is allowlisted to your LangSmith hostname, `github.com`, `api.github.com`, and the Python package registries. Per-run credentials are injected by a proxy outside the sandbox rather than being readable inside it.
   </Step>
 
-  <Step title="Generate the Engine encryption key" id="generate-the-engine-encryption-key">
+  <Step title="Generate the Engine encryption key">
     Engine uses its own Fernet key to encrypt the run payloads LangSmith passes to it, which carry short-lived credentials. Generate one:
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
     ```
 
@@ -266,7 +262,7 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
   <Tab title="Using Kubernetes secrets (recommended)">
     Reference your existing Secret by name. The chart reads `engine_encryption_key` from it automatically.
 
-    ```yaml
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     config:
       existingSecretName: "<your-secret-name>"
       # Must be reachable from the sandbox network.
@@ -280,14 +276,15 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
       enabled: true
     ```
   </Tab>
+
   <Tab title="Using inline values">
     Set the encryption key directly in your config file.
 
     <Warning>
-    This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret.
+      This puts a live credential in your config file. Do not commit it to version control; prefer the Kubernetes Secret.
     </Warning>
 
-    ```yaml
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     config:
       hostname: "https://langsmith.example.com"
 
@@ -303,21 +300,21 @@ Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#config
 </Tabs>
 
 <Note>
-If your install has a shared organization with more than one workspace, set the workspace that owns Engine's sandboxes:
+  If your install has a shared organization with more than one workspace, set the workspace that owns Engine's sandboxes:
 </Note>
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 engine:
   sandboxTenantId: "<workspace-id>"
 ```
 
 <Warning>
-Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
+  Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
 </Warning>
 
 Validate the updated chart before applying it:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm template langsmith langchain/langsmith \
   --values langsmith_config.yaml \
   --version <version> \
@@ -328,7 +325,7 @@ The chart validates the Engine configuration at render time and fails with a mes
 
 Apply the updated chart:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade -i langsmith langchain/langsmith \
   --values langsmith_config.yaml \
   --version <version> \
@@ -340,13 +337,13 @@ helm upgrade -i langsmith langchain/langsmith \
 
 Confirm the shared Engine and Insights deployment is running:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n <namespace> | grep standalone-insights
 ```
 
 Both the API server and queue pods should be `Running`. Then, confirm `platform-backend` is healthy, since it dispatches Engine runs:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 ```
 
@@ -361,7 +358,7 @@ If the analysis does not complete, check that Engine pods are running, the sandb
 Enabling Engine in Helm makes the feature available; it does not start any scans. After enabling the chart values, finish setup in LangSmith:
 
 1. An [Organization Admin](/langsmith/rbac#organization-admin) turns Engine on for the organization under **Settings > Engine enablement**. For more information, see [Find and fix issues](/langsmith/engine#enable-engine-for-your-organization).
-1. Any user turns on Engine for a tracing project from the project's **Engine** tab. For more information, see [Turn on Engine for a tracing project](/langsmith/engine#turn-on-engine-for-a-tracing-project).
+2. Any user turns on Engine for a tracing project from the project's **Engine** tab. For more information, see [Turn on Engine for a tracing project](/langsmith/engine#turn-on-engine-for-a-tracing-project).
 
 Connecting a GitHub repository is optional and improves Engine's diagnosis and fixes. Without one, Engine cannot read your source code or open pull requests. To create the GitHub App and configure `host-backend`, see [Connect Engine to GitHub](/langsmith/engine-github#self-hosted).
 
@@ -369,7 +366,7 @@ Connecting a GitHub repository is optional and improves Engine's diagnosis and f
 
 Set `engine.enabled` to `false` and re-apply:
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 engine:
   enabled: false
 ```
@@ -378,20 +375,21 @@ Engine stops dispatching runs. Insights shares the same deployment, so the `stan
 
 ## See also
 
-- [Engine](/langsmith/engine-overview)
-- [Configure Engine](/langsmith/engine)
-- [Connect Engine to GitHub](/langsmith/engine-github)
-- [Engine security](/langsmith/engine-security)
-- [Engine notifications](/langsmith/engine-notifications)
-- [Enable additional LangSmith features](/langsmith/deploy-self-hosted-full-platform)
+* [Engine](/langsmith/engine-overview)
+* [Configure Engine](/langsmith/engine)
+* [Connect Engine to GitHub](/langsmith/engine-github)
+* [Engine security](/langsmith/engine-security)
+* [Engine notifications](/langsmith/engine-notifications)
+* [Enable additional LangSmith features](/langsmith/deploy-self-hosted-full-platform)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

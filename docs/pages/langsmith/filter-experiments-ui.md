@@ -4,14 +4,13 @@
 
 LangSmith lets you filter your previous experiments by feedback scores and metadata to make it easy to find only the experiments you care about.
 
-
 ## Background: add metadata to your experiments
 
 When you run an experiment in the SDK, you can attach metadata to make it easier to filter in UI. This is helpful if you know what axes you want to drill down into when running experiments.
 
 In our example, we are going to attach metadata to our experiment around the model used, the model provider, and a known ID of the prompt:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 models = {
     "openai-gpt-5.5": ChatOpenAI(model="gpt-5.5", temperature=0),
     "openai-gpt-5.4-mini": ChatOpenAI(model="gpt-5.4-mini", temperature=0),
@@ -65,27 +64,28 @@ for model_type, model in models.items():
 
 In the UI, we see all experiments that have been run by default.
 
-![Filter all experiments](/langsmith/images/filter-all-experiments.png)
+<img alt="Filter all experiments" />
 
 If we, say, have a preference for openai models, we can easily filter down and see scores within just openai models first:
 
-![Filter openai](/langsmith/images/filter-openai.png)
+<img alt="Filter openai" />
 
 We can stack filters, allowing us to filter out low scores on correctness to make sure we only compare relevant experiments:
 
-![Filter feedback](/langsmith/images/filter-feedback.png)
+<img alt="Filter feedback" />
 
 Finally, we can clear and reset filters. For example, if we see there is clear there's a winner with the `singleminded` prompt, we can change filtering settings to see if any other model providers' models work as well with it:
 
-![Filter singleminded](/langsmith/images/filter-singleminded.png)
+<img alt="Filter singleminded" />
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

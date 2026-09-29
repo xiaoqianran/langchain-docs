@@ -2,18 +2,20 @@
 
 # How the gateway works
 
+Understand what the LLM Gateway does to each request, how upstream credentials are resolved, and where the gateway is available.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 The LLM Gateway sits between your application and the model providers your workspace has configured. It authenticates the caller, selects an upstream route, applies governance policies, translates between API formats, and traces the result.
 
 ## What the gateway provides
 
-- **One key, multiple providers:** Developers authenticate with a LangSmith API key instead of storing provider keys locally.
-- **One request format, multiple models:** Use Chat Completions, Messages, or Responses with models across configured providers.
-- **Built-in observability:** Every gateway call appears in gateway tracing projects, with visibility controlled by [Traces and access control](/langsmith/llm-gateway-access).
-- **Central governance:** Apply [spend limits](/langsmith/llm-gateway-spend-policies), [rate limits](/langsmith/llm-gateway-rate-limit-policies), and [data policies](/langsmith/llm-gateway-data-policy).
+* **One key, multiple providers:** Developers authenticate with a LangSmith API key instead of storing provider keys locally.
+* **One request format, multiple models:** Use Chat Completions, Messages, or Responses with models across configured providers.
+* **Built-in observability:** Every gateway call appears in gateway tracing projects, with visibility controlled by [Traces and access control](/langsmith/llm-gateway-access).
+* **Central governance:** Apply [spend limits](/langsmith/llm-gateway-spend-policies), [rate limits](/langsmith/llm-gateway-rate-limit-policies), and [data policies](/langsmith/llm-gateway-data-policy).
 
 ## Follow a request through the gateway
 
@@ -34,10 +36,10 @@ The gateway performs these steps for each request to the standard endpoint:
 
 The gateway resolves an upstream credential for every call. A workspace can use its own provider accounts, Gateway Credits, or both:
 
-| Option | Upstream credential | Setup and billing |
-| --- | --- | --- |
-| Bring your own provider account | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account. |
-| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential. | No provider secret is required. Invocations are billed to your LangSmith account. |
+| Option                                            | Upstream credential                                                                                                                  | Setup and billing                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Bring your own provider account                   | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account.                                |
+| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential.                                                                                              | No provider secret is required. Invocations are billed to your LangSmith account. |
 
 ## Check availability
 
@@ -47,47 +49,48 @@ The gateway runs on LangSmith Cloud in every LangSmith region, and on [BYOC](/la
 
 Replace `gateway.smith.langchain.com` with the hostname for your LangSmith region, and keep the same path for the API format you use:
 
-| Region | Gateway hostname |
-| --- | --- |
-| GCP US | `gateway.smith.langchain.com` |
-| GCP EU | `eu.gateway.smith.langchain.com` |
+| Region   | Gateway hostname                   |
+| -------- | ---------------------------------- |
+| GCP US   | `gateway.smith.langchain.com`      |
+| GCP EU   | `eu.gateway.smith.langchain.com`   |
 | GCP APAC | `apac.gateway.smith.langchain.com` |
-| AWS US | `aws.gateway.smith.langchain.com` |
+| AWS US   | `aws.gateway.smith.langchain.com`  |
 
 ### Use a BYOC data plane
 
 On BYOC, replace the gateway hostname with your [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) and prefix the path with `/gateway`:
 
-| API format | Base URL | Prompt endpoint |
-| --- | --- | --- |
+| API format              | Base URL                               | Prompt endpoint          |
+| ----------------------- | -------------------------------------- | ------------------------ |
 | OpenAI Chat Completions | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
-| Anthropic Messages | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
-| OpenAI Responses | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
+| Anthropic Messages      | `https://<data_plane_host>/gateway`    | `POST /v1/messages`      |
+| OpenAI Responses        | `https://<data_plane_host>/gateway/v1` | `POST /responses`        |
 
 Authenticate with an API key scoped to a workspace in that data plane, passed either as an `Authorization: Bearer` token or as the provider API key. Provider secrets, model IDs, policies, and tracing behave the same as on Cloud.
 
 <Warning>
-Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
+  Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
 </Warning>
 
 <Note>
-**Self-hosted availability:** LLM Gateway is not included in the LangSmith v0.16.0 self-hosted stable release. It becomes available in a future stable release. To express interest, submit the [LLM Gateway self-hosted access request](https://www.langchain.com/langsmith-llm-gateway-self-hosted-access-request). You can also try the LLM Gateway on v17 RC versions or BYOC ahead of the stable release.
+  **Self-hosted availability:** LLM Gateway is not included in the LangSmith v0.16.0 self-hosted stable release. It becomes available in a future stable release. To express interest, submit the [LLM Gateway self-hosted access request](https://www.langchain.com/langsmith-llm-gateway-self-hosted-access-request). You can also try the LLM Gateway on v17 RC versions or BYOC ahead of the stable release.
 </Note>
 
 ## See also
 
-- [Quickstart](/langsmith/llm-gateway-quickstart): make your first request, view its trace, and set a spend limit.
-- [Admin setup](/langsmith/llm-gateway-admin-setup): enable the gateway, add provider credentials, and grant developer access.
-- [API formats](/langsmith/llm-gateway-api-formats): use Chat Completions, Messages, or Responses through the standard endpoint.
-- [Traces, Engine, and access control](/langsmith/llm-gateway-access): see where gateway traces appear and who can view them.
+* [Quickstart](/langsmith/llm-gateway-quickstart): make your first request, view its trace, and set a spend limit.
+* [Admin setup](/langsmith/llm-gateway-admin-setup): enable the gateway, add provider credentials, and grant developer access.
+* [API formats](/langsmith/llm-gateway-api-formats): use Chat Completions, Messages, or Responses through the standard endpoint.
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access): see where gateway traces appear and who can view them.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-how-it-works.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

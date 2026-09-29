@@ -2,10 +2,12 @@
 
 # AWS Terraform troubleshooting
 
+Common issues, fixes, and diagnostic commands for LangSmith self-hosted on AWS EKS deployed with the LangChain Terraform modules.
+
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws).
 
 <Tip>
-Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `aws eks update-kubeconfig --region <region> --name <cluster-name>` before running any `kubectl` commands.
+  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `aws eks update-kubeconfig --region <region> --name <cluster-name>` before running any `kubectl` commands.
 </Tip>
 
 For a copy-paste reference of the `kubectl`, `helm`, and `aws` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
@@ -14,7 +16,7 @@ For a copy-paste reference of the `kubectl`, `helm`, and `aws` calls used throug
 
 Before running individual commands, try the bundled scripts:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Deployment status across all layers + next-step guidance
 make status
 
@@ -24,7 +26,7 @@ make status
 
 ## Known issues
 
-### EKS node group creation fails: CREATE_FAILED
+### EKS node group creation fails: CREATE\_FAILED
 
 **Symptom**
 
@@ -36,7 +38,7 @@ Error: waiting for EKS Node Group creation: unexpected state 'CREATE_FAILED'
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws eks wait cluster-active --name <cluster-name> --region <region>
 
 aws eks describe-nodegroup \
@@ -56,7 +58,7 @@ terraform apply -var-file=terraform.tfvars
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws eks update-kubeconfig --region <region> --name <cluster-name>
 kubectl cluster-info
 
@@ -65,7 +67,7 @@ aws sts get-caller-identity
 
 If the cluster was created with a different IAM role, grant access via the `aws-auth` ConfigMap:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl edit configmap aws-auth -n kube-system
 # Add your IAM user or role under mapUsers / mapRoles
 ```
@@ -78,7 +80,7 @@ kubectl edit configmap aws-auth -n kube-system
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n kube-system | grep aws-load-balancer
 kubectl logs -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller --tail=50
 kubectl get sa -n kube-system aws-load-balancer-controller -o yaml | grep eks.amazonaws.com
@@ -95,7 +97,7 @@ aws elbv2 describe-load-balancers --query "LoadBalancers[?DNSName=='<alb-dns-nam
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws eks describe-cluster --name <cluster-name> \
   --query "cluster.resourcesVpcConfig.clusterSecurityGroupId"
 
@@ -109,7 +111,7 @@ aws ec2 describe-security-group-rules \
 
 The `postgres` module sets up the security group automatically. If the rule is missing, re-apply:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform apply -var-file=terraform.tfvars -target=module.postgres
 ```
 
@@ -121,7 +123,7 @@ terraform apply -var-file=terraform.tfvars -target=module.postgres
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get sa langsmith -n langsmith -o yaml | grep eks.amazonaws.com
 
 aws ec2 describe-vpc-endpoints \
@@ -142,7 +144,7 @@ If the IRSA annotation is missing, verify `create_langsmith_irsa_role = true` in
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws elasticache describe-cache-clusters \
   --cache-cluster-id <cluster-id> \
   --query "CacheClusters[0].SecurityGroups"
@@ -159,7 +161,7 @@ kubectl run redis-test --rm -it --image=redis:7 -n langsmith -- \
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl logs -n kube-system -l app=cluster-autoscaler --tail=50
 
 aws autoscaling describe-auto-scaling-groups \
@@ -175,7 +177,7 @@ aws autoscaling describe-auto-scaling-groups \
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl describe certificate <cert-name> -n langsmith
 kubectl get challenges -n langsmith
 
@@ -185,7 +187,7 @@ dig +short <your-langsmith-domain>
 # Expected: CNAME to the ALB DNS name
 ```
 
-### postgres_deletion_protection blocks terraform destroy
+### postgres\_deletion\_protection blocks terraform destroy
 
 **Symptom**
 
@@ -196,11 +198,11 @@ Cannot delete, DeletionProtection is enabled.
 
 **Fix:** Disable deletion protection in `terraform.tfvars`, apply, then destroy:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 postgres_deletion_protection = false
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform apply -var-file=terraform.tfvars
 terraform destroy
 ```
@@ -213,7 +215,7 @@ terraform destroy
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get externalsecret langsmith-config -n langsmith
 kubectl describe externalsecret langsmith-config -n langsmith
 
@@ -233,7 +235,7 @@ The `describe` output shows which `remoteRef.key` failed. Match it against the S
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get externalsecret langsmith-config -n langsmith -o yaml | grep 'key:'
 
 ./infra/scripts/manage-ssm.sh list
@@ -242,7 +244,7 @@ kubectl get externalsecret langsmith-config -n langsmith -o yaml | grep 'key:'
 ```
 
 <Warning>
-Never change `name_prefix` or `environment` on an existing deployment.
+  Never change `name_prefix` or `environment` on an existing deployment.
 </Warning>
 
 ### Postgres password rejected by Terraform validation
@@ -258,7 +260,7 @@ RDS master password must not contain '/', '@', '"', single quotes, or spaces.
 
 **Fix:** Re-generate without restricted characters. `setup-env.sh` produces a compliant password automatically; to update manually:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ./infra/scripts/manage-ssm.sh set postgres-password "$(openssl rand -base64 24 | tr -d '/+= ')"
 source ./infra/scripts/setup-env.sh
 terraform apply -var-file=terraform.tfvars
@@ -272,7 +274,7 @@ terraform apply -var-file=terraform.tfvars
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # If the bastion was provisioned (create_bastion = true)
 aws ssm start-session --target <bastion-instance-id>
 
@@ -291,11 +293,11 @@ If no bastion was provisioned, set `create_bastion = true` and re-apply, or temp
 
 **Fix:** Intentional for private deployments. To make the ALB publicly reachable:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 alb_scheme = "internet-facing"
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform apply -var-file=terraform.tfvars
 # Then redeploy Helm to pick up the new ALB
 ```
@@ -310,13 +312,13 @@ This also happens if the ALB controller creates a new ALB instead of reusing the
 
 **Prevention**
 
-- Ensure `group.name` and `load-balancer-arn` annotations are both set. `init-values.sh` does this automatically when a pre-provisioned ALB exists.
-- Do not delete the ingress unless you plan to update all hostname-dependent config.
-- Avoid `helm rollback` without `--server-side=false`. The ingress SSA conflict can trigger a delete/recreate cycle.
+* Ensure `group.name` and `load-balancer-arn` annotations are both set. `init-values.sh` does this automatically when a pre-provisioned ALB exists.
+* Do not delete the ingress unless you plan to update all hostname-dependent config.
+* Avoid `helm rollback` without `--server-side=false`. The ingress SSA conflict can trigger a delete/recreate cycle.
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # 1. Check what hostname the ingress currently has
 kubectl get ingress langsmith-ingress -n langsmith \
   -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
@@ -337,7 +339,7 @@ make deploy
 
 **Fix**
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform refresh
 terraform plan
 
@@ -353,7 +355,7 @@ aws eks update-nodegroup-config \
 
 ### Cluster access
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 aws eks update-kubeconfig --region <region> --name <cluster-name>
 kubectl config current-context
 kubectl get nodes -o wide
@@ -362,7 +364,7 @@ aws sts get-caller-identity
 
 ### Pods
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith
 kubectl get pods -n langsmith -w
 kubectl describe pod <pod-name> -n langsmith
@@ -373,7 +375,7 @@ kubectl logs -n langsmith deploy/langsmith-backend --tail=100 -f
 
 ### ALB and ingress
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get ingress -n langsmith
 kubectl describe ingress -n langsmith
 aws elbv2 describe-load-balancers --query "LoadBalancers[?contains(LoadBalancerName, 'langsmith')]"
@@ -381,7 +383,7 @@ aws elbv2 describe-load-balancers --query "LoadBalancers[?contains(LoadBalancerN
 
 ### TLS and certificates
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get certificate -n langsmith
 kubectl describe certificate <cert-name> -n langsmith
 kubectl get challenges -n langsmith
@@ -390,7 +392,7 @@ kubectl get clusterissuer
 
 ### ESO and secrets
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get externalsecret -n langsmith
 kubectl describe externalsecret langsmith-config -n langsmith
 kubectl get clustersecretstore langsmith-ssm
@@ -401,7 +403,7 @@ kubectl get secret langsmith-config -n langsmith -o jsonpath='{.data}' | jq 'key
 
 ### Helm
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm status langsmith -n langsmith
 helm history langsmith -n langsmith
 helm get values langsmith -n langsmith
@@ -409,7 +411,7 @@ helm get values langsmith -n langsmith
 
 ### IRSA and IAM
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get sa langsmith -n langsmith -o yaml | grep eks.amazonaws.com
 terraform output langsmith_irsa_role_arn
 aws iam get-role --role-name <irsa-role-name>
@@ -417,7 +419,7 @@ aws iam get-role --role-name <irsa-role-name>
 
 ### LangSmith Deployment
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
@@ -426,7 +428,7 @@ kubectl get pods -n keda
 
 ### Quick health check
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 echo "=== Context ===" && kubectl config current-context
 echo "=== Nodes ===" && kubectl get nodes
 echo "=== Pods ===" && kubectl get pods -n langsmith
@@ -434,13 +436,14 @@ echo "=== Ingress ===" && kubectl get ingress -n langsmith
 echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E "STATUS|LAST DEPLOYED"
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

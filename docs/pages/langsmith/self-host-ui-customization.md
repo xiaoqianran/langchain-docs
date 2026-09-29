@@ -2,15 +2,17 @@
 
 # Customize the UI
 
+Customize your LangSmith self-hosted deployment.
+
 Self-hosted LangSmith deployments allow for some UI customization.
- 
+
 ## Set a custom logo
 
 For self-hosted deployments, you can replace the LangSmith logo with your own. The logo appears in the navigation sidebar and on error screens, next to the LangSmith wordmark.
 
 Set `config.customLogo` in your Helm values:
 
-```yaml Helm
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   customLogo:
     enabled: true
@@ -21,7 +23,7 @@ config:
 
 ### Use a different logo for light and dark mode
 
-```yaml Helm
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   customLogo:
     enabled: true
@@ -39,7 +41,7 @@ To mount a logo file:
 
 1. Store the image in a ConfigMap. The filename becomes the last segment of the URL:
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    kubectl create configmap langsmith-custom-logo \
      --from-file=acme.svg=./your-logo.svg \
      -n <your-namespace>
@@ -47,7 +49,7 @@ To mount a logo file:
 
 2. Mount the ConfigMap into the frontend pod and point `logoUrl` at the path:
 
-   ```yaml Helm
+   ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    config:
      customLogo:
        enabled: true
@@ -67,14 +69,14 @@ To mount a logo file:
 
 3. Upgrade the release, then confirm the file is served:
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    curl -sI https://<your-langsmith-host>/logos/acme.svg
    ```
 
    A `content-type` of `image/svg+xml` confirms the logo is in place. A missing file returns HTTP 200 with the application's HTML rather than a 404, so check the content type and not the status code.
 
 <Note>
-When your values already set `frontend.deployment.volumes` or `frontend.deployment.volumeMounts`, append to those lists. Replacing them removes mounts that other settings depend on.
+  When your values already set `frontend.deployment.volumes` or `frontend.deployment.volumeMounts`, append to those lists. Replacing them removes mounts that other settings depend on.
 </Note>
 
 When you serve LangSmith under a base path, include it in the value: `/<base-path>/logos/acme.svg`. For the full list of Helm values, see [Environment variables](/langsmith/self-host-environment-variables).
@@ -86,23 +88,24 @@ By default, error messages in LangSmith direct users to the [Support Portal](htt
 When set, all error and support messages throughout the UI will display your custom text instead of the default LangChain support email.
 
 <Note>
-The custom message is rendered as **plain text** only. HTML tags will not be interpreted and will display as literal text.
+  The custom message is rendered as **plain text** only. HTML tags will not be interpreted and will display as literal text.
 </Note>
 
-```yaml Helm
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   customErrorSupportMessage: "For help, contact your internal IT team at helpdesk@example.com"
 ```
 
 To revert to the default behavior, remove the setting or set it to an empty string.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ui-customization.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

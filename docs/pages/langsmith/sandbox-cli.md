@@ -2,6 +2,8 @@
 
 # Sandbox CLI
 
+Create, inspect, connect to, and tunnel into LangSmith sandboxes from the command line.
+
 The [LangSmith CLI](/langsmith/langsmith-cli) includes sandbox commands for creating snapshots, booting sandboxes, running commands, opening interactive shells, and tunneling TCP connections into a sandbox.
 
 Sandbox CLI commands require LangSmith CLI `v0.2.26` or later.
@@ -10,14 +12,14 @@ Sandbox CLI commands require LangSmith CLI `v0.2.26` or later.
 
 Install or upgrade the LangSmith CLI:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -fsSL https://cli.langsmith.com/install.sh | sh
 langsmith self-update
 ```
 
 Authenticate the CLI with your LangSmith API key, and point it at the environment that key belongs to:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
 export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
@@ -26,7 +28,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 CLI output is human-readable tables by default. Add `--format json` for scriptable output:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith --format json sandbox list
 ```
 
@@ -34,7 +36,7 @@ langsmith --format json sandbox list
 
 Create a sandbox, then run commands inside it:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm
 
 langsmith sandbox exec my-vm -- python --version
@@ -44,7 +46,7 @@ langsmith sandbox exec my-vm -- python --version
 
 When you are done with a sandbox, delete it:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox delete my-vm
 ```
 
@@ -52,7 +54,7 @@ langsmith sandbox delete my-vm
 
 Build snapshots from Docker images:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot build my-snapshot \
   --docker-image ubuntu:24.04 \
   --capacity 8gb
@@ -62,7 +64,7 @@ langsmith sandbox snapshot build my-snapshot \
 
 For private images, create a registry first (see [Private registries](/langsmith/sandbox-snapshots#private-registries)), then pass its id with `--registry-id`:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot build internal-python \
   --docker-image registry.example.com/internal/python:3.12 \
   --registry-id "$REGISTRY_ID"
@@ -70,13 +72,13 @@ langsmith sandbox snapshot build internal-python \
 
 Capture the filesystem from a running sandbox:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot capture ml-ready --box my-vm
 ```
 
 List, inspect, and delete snapshots:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot list
 langsmith sandbox snapshot get <SNAPSHOT_ID>
 langsmith sandbox snapshot delete <SNAPSHOT_ID>
@@ -86,33 +88,33 @@ langsmith sandbox snapshot delete <SNAPSHOT_ID>
 
 Create a sandbox with the default runtime. Add `--snapshot-id` only when you want to boot from a reusable custom snapshot:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm --rootfs-capacity 8gb
 ```
 
 Size the sandbox with `--vcpus` and `--memory`. Memory is tied to CPU at 4 GiB per vCPU and must stay within 50% of that target, so a 2-vCPU sandbox accepts 4 to 12 GiB. Omit `--memory` and it follows the ratio.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm --vcpus 2 --memory 8gb
 ```
 
 List and inspect sandboxes:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox list
 langsmith sandbox get my-vm
 ```
 
 Stop a sandbox to release resources early. Its filesystem is preserved, and the next `exec`, `console`, or service request wakes it automatically, so there is no start step to run:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox stop my-vm
 langsmith sandbox exec my-vm -- echo awake
 ```
 
 Update resources or proxy configuration:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox update my-vm --rootfs-capacity 16gb
 langsmith sandbox update my-vm --proxy-config @proxy.json
 ```
@@ -123,7 +125,7 @@ Resource changes take effect the next time the sandbox boots. Proxy configuratio
 
 Use `--proxy-config @proxy.json` on `create` or `update` to configure the sandbox auth proxy. Prefer workspace secrets for credential injection instead of placing raw secrets in local files.
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "rules": [
     {
@@ -153,7 +155,7 @@ For more on proxy rules, see [Sandbox auth proxy](/langsmith/sandbox-auth-proxy)
 
 Use `sandbox exec` for one-off commands:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox exec my-vm -- uname -a
 langsmith sandbox exec my-vm -- ls -la /
 langsmith sandbox exec my-vm -- cat /etc/os-release
@@ -165,14 +167,14 @@ Everything after `--` is sent to the sandbox as the command. The CLI prints stdo
 
 Use `sandbox console` for a PTY-backed interactive shell:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox console my-vm
 langsmith sandbox console my-vm --shell /bin/sh
 ```
 
 You can forward your local SSH agent into the console session:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox console my-vm --forward-ssh-agent
 ```
 
@@ -182,7 +184,7 @@ langsmith sandbox console my-vm --forward-ssh-agent
 
 Mint a link that downloads a single file from the sandbox with no LangSmith credential, for a browser tab or anything else that cannot send an API key:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox generate-download-url my-vm --path /app/report.csv
 ```
 
@@ -194,20 +196,20 @@ Use `sandbox tunnel` when you need a local TCP port that forwards to a service l
 
 Start a service in the sandbox, then tunnel to it:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox exec my-vm -- sh -c 'cd /tmp && nohup python -m http.server 8000 > /tmp/http.log 2>&1 &'
 langsmith sandbox tunnel my-vm --remote-port 8000 --local-port 18000
 ```
 
 Then connect locally:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl http://127.0.0.1:18000
 ```
 
 If you omit `--local-port`, the CLI uses the same value as `--remote-port`:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox tunnel my-vm --remote-port 5432
 ```
 
@@ -215,21 +217,21 @@ The tunnel process stays in the foreground. Stop it with `Ctrl+C`.
 
 You can also tunnel by sandbox URL instead of name:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox tunnel \
   --url <SANDBOX_URL> \
   --remote-port 5432
 ```
 
 <Tip>
-For HTTP applications you want to open in a browser or share with teammates, use [Sandbox service URLs](/langsmith/sandbox-service-urls). Use tunnels for raw TCP protocols or local development tools.
+  For HTTP applications you want to open in a browser or share with teammates, use [Sandbox service URLs](/langsmith/sandbox-service-urls). Use tunnels for raw TCP protocols or local development tools.
 </Tip>
 
 ## Set up SSH access
 
 Use `sandbox ssh-setup` to configure standard SSH tools such as `ssh`, `scp`, `rsync`, and `sftp` through a sandbox tunnel.
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox ssh-setup my-vm
 langsmith sandbox ssh-setup my-vm --identity ~/.ssh/id_ed25519.pub
 ```
@@ -238,44 +240,45 @@ The command uploads your SSH public key to the sandbox, fetches the sandbox host
 
 After setup, connect with:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ssh sandbox-my-vm
 ```
 
 The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-setup` warns and the SSH connection will not work until you start it inside the sandbox.
 
 <Warning>
-`ssh-setup` modifies local SSH configuration and writes a `ProxyCommand` that calls `langsmith sandbox tunnel`. Depending on how the CLI is authenticated, the generated block may contain credentials or references to credentials. Run it only on trusted machines and do not commit or share the generated SSH config block.
+  `ssh-setup` modifies local SSH configuration and writes a `ProxyCommand` that calls `langsmith sandbox tunnel`. Depending on how the CLI is authenticated, the generated block may contain credentials or references to credentials. Run it only on trusted machines and do not commit or share the generated SSH config block.
 </Warning>
 
 ## Command reference
 
-| Command | Description |
-| --- | --- |
-| `langsmith sandbox snapshot list` | List snapshots. |
-| `langsmith sandbox snapshot build <name> --docker-image <image>` | Build a snapshot from a Docker image. |
-| `langsmith sandbox snapshot capture <name> --box <sandbox>` | Capture a snapshot from a running sandbox. |
-| `langsmith sandbox snapshot get <snapshot-id>` | Inspect a snapshot. |
-| `langsmith sandbox snapshot delete <snapshot-id>` | Delete a snapshot. |
-| `langsmith sandbox create <name>` | Create a sandbox with the default runtime. |
-| `langsmith sandbox list` | List sandboxes. |
-| `langsmith sandbox get <name>` | Inspect a sandbox. |
-| `langsmith sandbox update <name>` | Update sandbox resources or proxy config. |
-| `langsmith sandbox stop <name>` | Stop a running sandbox while preserving filesystem state. A later `exec`, `console`, or service request wakes it again. |
-| `langsmith sandbox delete <name>` | Delete a sandbox. |
-| `langsmith sandbox exec <name> -- <command>` | Run a one-off command inside a sandbox. |
-| `langsmith sandbox console <name>` | Open an interactive shell inside a sandbox. |
-| `langsmith sandbox generate-download-url <name> --path <path>` | Mint a link that downloads one sandbox file with no credential. |
-| `langsmith sandbox tunnel <name> --remote-port <port>` | Forward a local TCP port to a sandbox port. |
-| `langsmith sandbox ssh-setup <name>` | Configure local SSH access through `sandbox tunnel --stdio`. |
+| Command                                                          | Description                                                                                                             |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `langsmith sandbox snapshot list`                                | List snapshots.                                                                                                         |
+| `langsmith sandbox snapshot build <name> --docker-image <image>` | Build a snapshot from a Docker image.                                                                                   |
+| `langsmith sandbox snapshot capture <name> --box <sandbox>`      | Capture a snapshot from a running sandbox.                                                                              |
+| `langsmith sandbox snapshot get <snapshot-id>`                   | Inspect a snapshot.                                                                                                     |
+| `langsmith sandbox snapshot delete <snapshot-id>`                | Delete a snapshot.                                                                                                      |
+| `langsmith sandbox create <name>`                                | Create a sandbox with the default runtime.                                                                              |
+| `langsmith sandbox list`                                         | List sandboxes.                                                                                                         |
+| `langsmith sandbox get <name>`                                   | Inspect a sandbox.                                                                                                      |
+| `langsmith sandbox update <name>`                                | Update sandbox resources or proxy config.                                                                               |
+| `langsmith sandbox stop <name>`                                  | Stop a running sandbox while preserving filesystem state. A later `exec`, `console`, or service request wakes it again. |
+| `langsmith sandbox delete <name>`                                | Delete a sandbox.                                                                                                       |
+| `langsmith sandbox exec <name> -- <command>`                     | Run a one-off command inside a sandbox.                                                                                 |
+| `langsmith sandbox console <name>`                               | Open an interactive shell inside a sandbox.                                                                             |
+| `langsmith sandbox generate-download-url <name> --path <path>`   | Mint a link that downloads one sandbox file with no credential.                                                         |
+| `langsmith sandbox tunnel <name> --remote-port <port>`           | Forward a local TCP port to a sandbox port.                                                                             |
+| `langsmith sandbox ssh-setup <name>`                             | Configure local SSH access through `sandbox tunnel --stdio`.                                                            |
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

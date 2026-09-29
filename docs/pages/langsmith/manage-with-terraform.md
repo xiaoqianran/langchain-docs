@@ -2,24 +2,26 @@
 
 # Manage LangSmith with Terraform
 
+Use the official LangSmith Terraform provider to manage workspaces, access controls, resource tags, evaluators, run rules, and alert rules as code.
+
 The official [LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest) lets you manage LangSmith organization and workspace resources as code: workspaces, custom roles, organization and workspace members, resource tags, access policies, evaluators, run rules, and alert rules. It is the infrastructure-as-code counterpart to [managing your organization using the API](/langsmith/manage-organization-by-api).
 
 <Note>
-Managing resource tags and access policies requires LangSmith Terraform provider v0.0.6 or later.
+  Managing resource tags and access policies requires LangSmith Terraform provider v0.0.6 or later.
 </Note>
 
 <Check>
-Before diving in, it might be helpful to read:
+  Before diving in, it might be helpful to read:
 
-* [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
-* [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
+  * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
+  * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
 </Check>
 
 ## Install and configure
 
 Add the provider to your Terraform configuration and pin a version:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 terraform {
   required_providers {
     langsmith = {
@@ -52,14 +54,14 @@ The provider resolves credentials the same way as the LangSmith SDK and CLI. Pre
 Create an API key or [service key](/langsmith/administration-overview#service-keys) in your LangSmith settings. See [Authentication methods](/langsmith/authentication-methods) for the available key types.
 
 <Warning>
-Organization-scoped operations, like creating workspaces, inviting organization members, and managing access policies, require an **organization-scoped service key with Organization Admin permissions**. Set `workspace_id` (or `LANGSMITH_WORKSPACE_ID`) to target workspace-scoped resources such as workspace memberships, resource tags, evaluators, and run rules.
+  Organization-scoped operations, like creating workspaces, inviting organization members, and managing access policies, require an **organization-scoped service key with Organization Admin permissions**. Set `workspace_id` (or `LANGSMITH_WORKSPACE_ID`) to target workspace-scoped resources such as workspace memberships, resource tags, evaluators, and run rules.
 </Warning>
 
 ## Examples
 
 ### Create a workspace
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "langsmith_workspace" "demo" {
   display_name  = "Demo Workspace"
   tenant_handle = "demo-workspace"
@@ -70,7 +72,7 @@ resource "langsmith_workspace" "demo" {
 
 Look up built-in roles with data sources, then assign them. This invites a user to the organization and grants them admin on the workspace:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 data "langsmith_org_role" "user" {
   name = "ORGANIZATION_USER"
 }
@@ -93,7 +95,7 @@ resource "langsmith_workspace_membership" "alice_demo" {
 
 You can also define a custom workspace role, for example by cloning an existing role's permissions:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "langsmith_workspace_role" "issues_agent" {
   display_name = "Issues Agent"
   description  = data.langsmith_workspace_role.admin.description
@@ -107,7 +109,7 @@ Use [resource tags](/langsmith/set-up-resource-tags) to organize workspace resou
 
 The following configuration creates an `Environment=production` tag, applies it to a tracing project, and limits a workspace role to production projects:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "langsmith_tag" "production" {
   key               = "Environment"
   value             = "production"
@@ -154,7 +156,7 @@ resource "langsmith_access_policy_attachment" "production_reader" {
 
 The provider manages more than accounts. You can codify [online code evaluators](/langsmith/online-evaluations-code), the [run rules](/langsmith/rules) that apply them, and [alerts](/langsmith/alerts) alongside your workspaces:
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 resource "langsmith_evaluator" "tool_calls" {
   workspace_id = langsmith_workspace.demo.id
   name         = "tool call counts"
@@ -207,13 +209,14 @@ The full list of resources and data sourcesâ€”with every argument and attributeâ
   Browse the complete reference for all resources and data sources.
 </Card>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

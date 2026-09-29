@@ -2,23 +2,25 @@
 
 # Automate updates
 
+Schedule OpenWiki documentation updates with GitHub Actions, GitLab CI, or Bitbucket Pipelines
+
 OpenWiki can refresh repository documentation on a schedule and open a pull request or merge request when the wiki changes. Example workflows ship in the [OpenWiki repository](https://github.com/langchain-ai/openwiki/tree/main/examples).
 
 ## Add a workflow
 
 Copy the example for your Git provider:
 
-| Provider | Example | Destination |
-| --- | --- | --- |
-| GitHub Actions | [`openwiki-update.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.yml) | `.github/workflows/openwiki-update.yml` |
-| GitLab CI | [`openwiki-update.gitlab-ci.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.gitlab-ci.yml) | `.gitlab-ci.yml`, or include it from an existing pipeline |
+| Provider            | Example                                                                                                                                          | Destination                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| GitHub Actions      | [`openwiki-update.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.yml)                                         | `.github/workflows/openwiki-update.yml`                                        |
+| GitLab CI           | [`openwiki-update.gitlab-ci.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.gitlab-ci.yml)                     | `.gitlab-ci.yml`, or include it from an existing pipeline                      |
 | Bitbucket Pipelines | [`openwiki-update.bitbucket-pipelines.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.bitbucket-pipelines.yml) | `bitbucket-pipelines.yml`, then schedule the `openwiki-update` custom pipeline |
 
 ## Run update in CI
 
 For repository documentation in CI, use:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki code --update --print
 ```
 
@@ -26,11 +28,11 @@ You do not need to run `--init` in CI. `--update` creates the initial `openwiki/
 
 Provide credentials as repository secrets or CI variables. Typical values include:
 
-- Provider API key (or Copilot OAuth token / cloud credentials for keyless providers)
-- `OPENWIKI_PROVIDER`
-- `OPENWIKI_MODEL_ID`
-- Optional `LANGSMITH_API_KEY` for tracing
-- Optional `OPENWIKI_LANGSMITH_API_KEY` when the repository uses the [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)
+* Provider API key (or Copilot OAuth token / cloud credentials for keyless providers)
+* `OPENWIKI_PROVIDER`
+* `OPENWIKI_MODEL_ID`
+* Optional `LANGSMITH_API_KEY` for tracing
+* Optional `OPENWIKI_LANGSMITH_API_KEY` when the repository uses the [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)
 
 The scheduled workflow includes generated wiki files, Claims under `openwiki/.claims/`, `AGENTS.md`, `CLAUDE.md`, and the workflow itself in the documentation pull request when those files change.
 
@@ -44,7 +46,7 @@ A clean `--update` run skips model work and leaves wiki content untouched while 
 
 Scheduled and CI runs send anonymous reliability telemetry under a shared CI identifier. To disable telemetry in CI, set:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OPENWIKI_TELEMETRY_DISABLED=1
 ```
 
@@ -52,17 +54,18 @@ You can uncomment the corresponding line in the example workflow. To understand 
 
 ## See also
 
-- [Code mode](/oss/openwiki/code-mode)
-- [Model providers](/oss/openwiki/providers)
-- [CLI reference](/oss/openwiki/cli-reference)
+* [Code mode](/oss/openwiki/code-mode)
+* [Model providers](/oss/openwiki/providers)
+* [CLI reference](/oss/openwiki/cli-reference)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/automate-updates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

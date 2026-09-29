@@ -2,8 +2,10 @@
 
 # Set up coding agents
 
+Configure Claude Code, Codex, Gemini CLI, and Deep Agents Code to route LLM calls through the LLM Gateway.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Configure coding agents to use the standard LLM Gateway endpoint for centralized cost controls, observability, and audit trails. The gateway authenticates each caller, routes by model ID, enforces policies, and traces each call.
@@ -12,13 +14,13 @@ Claude Code can use the standard Anthropic Messages format, while Codex and Deep
 
 ## Prerequisites
 
-- Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the gateway and completed any required [provider setup](/langsmith/llm-gateway-admin-setup).
-- You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
-- For bring-your-own-key models, your workspace has the corresponding provider secret. [Gateway Credits models](/langsmith/llm-gateway-credits) do not require a provider secret.
+* Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the gateway and completed any required [provider setup](/langsmith/llm-gateway-admin-setup).
+* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
+* For bring-your-own-key models, your workspace has the corresponding provider secret. [Gateway Credits models](/langsmith/llm-gateway-credits) do not require a provider secret.
 
 Set your LangSmith API key before configuring a client:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 ```
 
@@ -26,8 +28,8 @@ export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 
 Claude Code supports two separate authentication methods. Choose one before configuring:
 
-- **Workspace provider secret**: The organization manages billing and policies through a provider key stored in workspace secrets. Use this method for org-managed usage.
-- **Claude subscription OAuth**: Anthropic bills LLM calls to the user's personal Claude Plus or Max subscription instead of the workspace provider secret, while LangSmith still enforces gateway permissions, policies, and tracing. Use this method when developers have their own subscriptions.
+* **Workspace provider secret**: The organization manages billing and policies through a provider key stored in workspace secrets. Use this method for org-managed usage.
+* **Claude subscription OAuth**: Anthropic bills LLM calls to the user's personal Claude Plus or Max subscription instead of the workspace provider secret, while LangSmith still enforces gateway permissions, policies, and tracing. Use this method when developers have their own subscriptions.
 
 ### Use a workspace provider secret
 
@@ -43,7 +45,7 @@ Set `ANTHROPIC_BASE_URL` to the Anthropic-format gateway endpoint. The gateway i
   <Tab title="Settings file (recommended)">
     Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and API key are guaranteed to override any ambient `ANTHROPIC_*` values that may already be set in your environment (for example, from a global shell profile or another tool).
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     touch ~/.claude/langsmith_gateway.settings.json
     echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic/","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
     claude --settings ~/.claude/langsmith_gateway.settings.json
@@ -51,8 +53,9 @@ Set `ANTHROPIC_BASE_URL` to the Anthropic-format gateway endpoint. The gateway i
 
     Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
   </Tab>
+
   <Tab title="Environment variables">
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
     export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
 
@@ -69,7 +72,7 @@ Set `ANTHROPIC_BASE_URL` to the gateway root, then map each Claude model tier to
   <Tab title="Settings file (recommended)">
     Variables declared in a `--settings` file take precedence over anything already exported in your shell, so gateway URLs, the API key, and model mappings are guaranteed to override any ambient `ANTHROPIC_*` values.
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     touch ~/.claude/langsmith_gateway.settings.json
     echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE","ANTHROPIC_DEFAULT_OPUS_MODEL": "anthropic/claude-opus-5","ANTHROPIC_DEFAULT_SONNET_MODEL": "openai/gpt-5.6-terra","ANTHROPIC_DEFAULT_HAIKU_MODEL": "fireworks/accounts/fireworks/models/glm-5p2"}}' > ~/.claude/langsmith_gateway.settings.json
     claude --settings ~/.claude/langsmith_gateway.settings.json
@@ -77,8 +80,9 @@ Set `ANTHROPIC_BASE_URL` to the gateway root, then map each Claude model tier to
 
     Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
   </Tab>
+
   <Tab title="Environment variables">
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
     export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
     export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
@@ -92,11 +96,10 @@ Set `ANTHROPIC_BASE_URL` to the gateway root, then map each Claude model tier to
 
 The model IDs are examples. Map each tier to any model configured in your workspace secrets or available through [Gateway Credits](/langsmith/llm-gateway-credits); the gateway handles request translation across providers. For details, see [API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior).
 
-<a id="use-claude-subscription-oauth"></a>
 ### Use Claude subscription OAuth
 
 <Note>
-Claude subscription OAuth requires an active Claude Code Plus or Max subscription. If you are using a workspace Anthropic API key, use the [workspace provider secret](#use-a-workspace-provider-secret) method instead.
+  Claude subscription OAuth requires an active Claude Code Plus or Max subscription. If you are using a workspace Anthropic API key, use the [workspace provider secret](#use-a-workspace-provider-secret) method instead.
 </Note>
 
 Claude Code Plus and Max users can send their saved Anthropic OAuth credential through the gateway. This mode does not require an `ANTHROPIC_API_KEY` in workspace provider secrets.
@@ -107,7 +110,7 @@ Log in to Claude Code with your subscription, then configure the gateway.
   <Tab title="Settings file (recommended)">
     Variables declared in a `--settings` file take precedence over anything already exported in your shell, so the gateway URL and custom headers are guaranteed to override any ambient `ANTHROPIC_*` values. The settings file also keeps your LangSmith API key out of your shell history and dotfiles.
 
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     touch ~/.claude/langsmith_gateway.settings.json
     echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic","ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
     claude --settings ~/.claude/langsmith_gateway.settings.json
@@ -115,8 +118,9 @@ Log in to Claude Code with your subscription, then configure the gateway.
 
     Replace `YOUR_LANGSMITH_KEY_HERE` with your LangSmith API key.
   </Tab>
+
   <Tab title="Environment variables">
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic"
     export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
 
@@ -132,18 +136,18 @@ Claude Code uses and refreshes the OAuth credential from its saved login, includ
 The LangSmith API key authenticates the gateway request and remains subject to gateway permissions and policies. The gateway forwards the OAuth bearer to Anthropic, so Anthropic bills the call to the user's Claude subscription instead of the workspace provider secret. To confirm calls route through the gateway, check that traces appear in the `gateway` tracing project as described in [Verify the setup](#verify-the-setup).
 
 <Warning>
-Leave `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_API_KEY` unset for this mode. Either variable takes precedence over the saved subscription login.
+  Leave `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_API_KEY` unset for this mode. Either variable takes precedence over the saved subscription login.
 </Warning>
 
 <Warning>
-Claude Desktop plugins break when the gateway is configured.
+  Claude Desktop plugins break when the gateway is configured.
 </Warning>
 
 ## Codex CLI
 
 Codex uses the Responses API. Add the following to `~/.codex/config.toml` to call the hosted Kimi K3 model with Gateway Credits through the standard endpoint:
 
-```toml
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 model = "moonshotai/kimi-k3"
 model_provider = "langsmith-gateway"
 
@@ -157,21 +161,21 @@ supports_websockets = false
 
 Then run:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 codex
 ```
 
 To use a bring-your-own-key model instead, replace `model` with its provider-prefixed ID, such as `openai/gpt-5.4-mini`.
 
 <Warning>
-Codex Desktop plugins break when the gateway is configured. The TOML configuration forces authentication through the gateway, so OpenAI no longer handles plugin authentication directly.
+  Codex Desktop plugins break when the gateway is configured. The TOML configuration forces authentication through the gateway, so OpenAI no longer handles plugin authentication directly.
 </Warning>
 
 ## Gemini CLI
 
 Gemini CLI sends Google's native Generate Content requests, which the standard endpoint does not expose. Follow [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks) to configure the `/gemini` route, then run:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gemini
 ```
 
@@ -179,7 +183,7 @@ gemini
 
 Use the OpenAI-compatible client with the standard endpoint, then pass the hosted model slug through the `openai` integration:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export OPENAI_BASE_URL="https://gateway.smith.langchain.com/v1"
 export OPENAI_API_KEY="$LANGSMITH_API_KEY"
 
@@ -193,9 +197,9 @@ To use a bring-your-own-key model, keep the standard base URL and pass a provide
 For organizations rolling the gateway out to all developers, distribute the configuration through mobile device management or a shared shell profile. Distribute:
 
 1. The standard gateway base URL for each client.
-1. A workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) per user or team, depending on your policy granularity.
-1. The model IDs approved for each coding agent.
-1. The Codex `config.toml` if your organization uses Codex.
+2. A workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) per user or team, depending on your policy granularity.
+3. The model IDs approved for each coding agent.
+4. The Codex `config.toml` if your organization uses Codex.
 
 Provider API keys stay centralized in LangSmith workspace secrets. Gateway Credits models do not require provider API keys.
 
@@ -204,24 +208,25 @@ Provider API keys stay centralized in LangSmith workspace secrets. Gateway Credi
 After configuring a coding agent, make a test call and confirm that:
 
 1. The call succeeds and the agent receives a response.
-1. A trace appears in the `gateway` or `gateway-<short_api_key>-<api_key_id>` tracing project in your LangSmith workspace.
+2. A trace appears in the `gateway` or `gateway-<short_api_key>-<api_key_id>` tracing project in your LangSmith workspace.
 
 If the call fails with a `403`, check that your API key's role includes `gateway:invoke` and `workspaces:read`. If a bring-your-own-key call fails with a `400` mentioning a missing provider key, ask your organization admin to add the provider's key to workspace secrets.
 
 ## Next steps
 
-- [Gateway Credits](/langsmith/llm-gateway-credits): call hosted models without a provider secret.
-- [Direct model access](/langsmith/llm-gateway-direct-model-access): configure provider-native routes for coding agents that require them.
-- [Spend policies](/langsmith/llm-gateway-spend-policies): set cost limits on developer LLM usage.
-- [Traces, Engine, and access control](/langsmith/llm-gateway-access): understand where gateway traces appear.
+* [Gateway Credits](/langsmith/llm-gateway-credits): call hosted models without a provider secret.
+* [Direct model access](/langsmith/llm-gateway-direct-model-access): configure provider-native routes for coding agents that require them.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): set cost limits on developer LLM usage.
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access): understand where gateway traces appear.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

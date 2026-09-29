@@ -4,6 +4,8 @@
 
 # 如何取消运行
 
+通过 API 取消单次运行或多次运行，并在中断和回滚操作之间进行选择。
+
 本指南介绍了如何通过 [LangSmith Deployment API](/langsmith/server-api-ref) 取消代理的运行。您可以按 ID 取消单次运行，也可以按线程或状态取消多次运行。取消对于停止长时间运行或卡住的运行，或者当用户放弃请求时非常有用。
 
 ## 设置
@@ -11,32 +13,34 @@
 创建客户端和线程：
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
     const assistantID = "agent";
     const thread = await client.threads.create();
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 取消单次运行
@@ -45,15 +49,15 @@
 
 ### 通过中断取消（默认）
 
-**中断** 停止工作线程执行运行并将运行标记为`interrupted`。没有删除任何内容：
+**中断** 停止工作线程执行运行并将运行标记为`interrupted`。没有删除任何内容：* 运行记录保留（状态为`interrupted`）。您可以获取它，检查输入/输出，并查看执行历史记录。
+* 该运行的所有检查点均保持存储。保留最后完成步骤的线程状态。
+* 您稍后可以从检查点恢复（例如，使用 [time travel](/langsmith/human-in-the-loop-time-travel)）或检查部分状态。
 
-- 运行记录保留（状态为`interrupted`）。您可以获取它，检查输入/输出，并查看执行历史记录。
-- 该运行的所有检查点均保持存储。保留最后完成步骤的线程状态。
-- 您稍后可以从检查点恢复（例如，使用 [time travel](/langsmith/human-in-the-loop-time-travel)）或检查部分状态。当您想要停止运行但保留它以进行调试、审核或从检查点恢复时，请使用 **中断**。
+当您想要停止运行但保留它以进行调试、审核或从检查点恢复时，请使用 **中断**。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -64,9 +68,10 @@
     run_after = await client.runs.get(thread["thread_id"], run["run_id"], wait=True)
     print(run_after["status"])   # "interrupted"
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -77,9 +82,10 @@
     const runAfter = await client.runs.get(thread["thread_id"], run["run_id"]);
     console.log(runAfter["status"]);   // "interrupted"
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run (use the run_id and thread_id from the response)
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -94,22 +100,22 @@
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### 取消并回滚
 
 **回滚** 停止运行，然后从存储中删除它及其检查点：
 
-- 运行记录被删除。该运行不再出现在该线程的运行列表或历史记录中。
-- 该运行创建的所有检查点都将被删除。线程的状态将恢复到运行开始之前的状态（就好像运行从未执行过一样）。
-- 回滚后您无法恢复或检查运行。
+* 运行记录被删除。该运行不再出现在该线程的运行列表或历史记录中。
+* 该运行创建的所有检查点都将被删除。线程的状态将恢复到运行开始之前的状态（就好像运行从未执行过一样）。
+* 回滚后您无法恢复或检查运行。
 
 当您想要完全放弃运行及其影响时（例如，在用户放弃请求之后并且您不需要保留部分工作），请使用 **回滚**。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -123,9 +129,10 @@
     except Exception:
         print("Run was correctly deleted")
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -140,9 +147,10 @@
         console.log("Run was correctly deleted");
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run, then cancel with rollback
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -156,14 +164,14 @@
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-    </Tab>
-</Tabs>
+  </Tab>
+</Tabs>### 等待取消
 
-### 等待取消默认情况下，取消请求会在请求取消后返回，并异步取消运行。 `wait=True` 使取消请求阻塞，直到运行完全取消。当您想知道取消运行后的最终状态（例如，创建了哪些检查点、最终输出是什么）时，这非常有用。
+默认情况下，取消请求会在请求取消后返回，并异步取消运行。 `wait=True` 使取消请求阻塞，直到运行完全取消。当您想知道取消运行后的最终状态（例如，创建了哪些检查点、最终输出是什么）时，这非常有用。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -180,9 +188,10 @@
     run_after = await client.runs.get(thread["thread_id"], run["run_id"])
     print(run_after["status"])  # "interrupted"
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const run = await client.runs.create(
         thread["thread_id"],
         assistantID,
@@ -199,9 +208,10 @@
     const runInterrupted = await client.runs.get(thread["thread_id"], run["run_id"])
     console.log(runInterrupted["status"])  // "interrupted"
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -216,7 +226,7 @@
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 取消多次运行
@@ -228,8 +238,8 @@
 通过传递 ID 取消特定运行。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run1 = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -254,14 +264,16 @@
         if run["run_id"] in (run1["run_id"], run2["run_id"]):
             print(run["run_id"], run["status"])  # "interrupted"
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // Bulk delete by run IDs is not supported in the Javascript SDK
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create two runs (capture run_id from each response)
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -283,7 +295,7 @@
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ### 按状态取消
@@ -291,8 +303,8 @@
 取消与部署中所有线程的状态匹配的所有运行。有效状态选项为 `pending`、`running` 或 `all`。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run1 = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -316,14 +328,16 @@
     run_after2 = await client.runs.get(thread2["thread_id"], run2["run_id"])
     print(run_after2["status"])  # runs are cancelled across all threads
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // Bulk delete by status is not supported in the Javascript SDK
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -354,14 +368,14 @@
     curl --request GET \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs/<RUN_ID_2>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 断开连接时取消当开始流式运行或等待运行时，您可以设置`on_disconnect="cancel"`，以便在客户端断开连接时取消运行。这可以避免当用户关闭应用程序或失去连接时使运行继续进行。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # With runs.wait: run is cancelled if the client disconnects
     result = await client.runs.wait(
         thread["thread_id"],
@@ -399,9 +413,10 @@
     ):
         print(chunk)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // With runs.wait: run is cancelled if the client disconnects
     const result = await client.runs.wait(
         thread["thread_id"],
@@ -431,9 +446,10 @@
         console.log(chunk);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # runs.wait: create run and wait for output; cancel if client disconnects
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
@@ -454,21 +470,22 @@
     curl --request GET \
       --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/stream?cancel_on_disconnect=cancel"
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 常见场景
 
-- **人机循环和中断**：代理可以在 [interrupts](/langsmith/add-human-in-the-loop) 暂停以进行人工输入。取消运行会停止执行；它与中断不同，中断中运行被暂停并且可以通过新输入恢复。
-- **时间旅行**：通过操作`interrupt`取消后，跑步和检查点仍然可用。您可以通过[resume from a checkpoint](/langsmith/human-in-the-loop-time-travel)（时间旅行）来重放或分支执行。
-- **双短信**：当用户在运行正在进行时发送新输入时，[multitask strategy](/langsmith/double-texting)（入队、拒绝、中断、回滚）确定是否中断或回滚现有运行以及如何处理新运行。要从您的应用程序显式取消运行，请使用本页描述的取消 API。
-- **Studio**：在[Studio](/langsmith/use-studio)中，使用运行UI中的**取消**按钮取消当前运行。
+* **人机循环和中断**：代理可以在 [interrupts](/langsmith/add-human-in-the-loop) 暂停以进行人工输入。取消运行会停止执行；它与中断不同，中断中运行被暂停并且可以通过新输入恢复。
+* **时间旅行**：通过操作`interrupt`取消后，跑步和检查点仍然可用。您可以通过[resume from a checkpoint](/langsmith/human-in-the-loop-time-travel)（时间旅行）来重放或分支执行。
+* **双短信**：当用户在运行正在进行时发送新输入时，[multitask strategy](/langsmith/double-texting)（入队、拒绝、中断、回滚）确定是否中断或回滚现有运行以及如何处理新运行。要从您的应用程序显式取消运行，请使用本页描述的取消 API。
+* **Studio**：在[Studio](/langsmith/use-studio)中，使用运行UI中的**取消**按钮取消当前运行。
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cancel-run.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

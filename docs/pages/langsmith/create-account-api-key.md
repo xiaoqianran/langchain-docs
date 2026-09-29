@@ -2,14 +2,14 @@
 
 # Create an account and API key
 
-To get started with LangSmith, you need to create an account. You can sign up for a free account in the [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-create-account-api-key). LangSmith supports sign in with Google, GitHub, and email.
+To get started with LangSmith, you need to create an account. You can sign up for a free account in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-create-account-api-key). LangSmith supports sign in with Google, GitHub, and email.
 
 ## API keys
 
 LangSmith supports two types of API keys. You can use both types of token to authenticate requests to the LangSmith API, but they have different use cases:
 
-- [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats) inherit the permissions of the user who created them. Use PATs for personal scripts or tools.
-- [**Service keys**](/langsmith/administration-overview#service-keys) scope to specific [workspaces](/langsmith/administration-overview#workspaces) or the entire [organization](/langsmith/administration-overview#organizations). Use service keys for applications and production services.
+* [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats) inherit the permissions of the user who created them. Use PATs for personal scripts or tools.
+* [**Service keys**](/langsmith/administration-overview#service-keys) scope to specific [workspaces](/langsmith/administration-overview#workspaces) or the entire [organization](/langsmith/administration-overview#organizations). Use service keys for applications and production services.
 
 To log [traces](/langsmith/observability-concepts#traces) and run [evaluations](/langsmith/evaluation) with LangSmith, create an API key to authenticate your requests.
 
@@ -17,14 +17,17 @@ To log [traces](/langsmith/observability-concepts#traces) and run [evaluations](
   <Step title="Open API Keys settings" icon="settings">
     Navigate to the [**Settings** page](https://smith.langchain.com/settings) and select the **API Keys** section.
   </Step>
+
   <Step title="Configure the key type" icon="key">
     For service keys, choose between an organization-scoped and workspace-scoped key. If the key is workspace-scoped, you must specify the workspaces.
 
     [Enterprise](/langsmith/pricing-plans) users can also [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) to service keys, which adjusts their permissions independently of any user.
   </Step>
+
   <Step title="Set expiration" icon="calendar">
     Set the key's expiration. The key becomes unusable after the number of days chosen, or never, if that is selected.
   </Step>
+
   <Step title="Create the key" icon="circle-check">
     Click **Create API Key.** LangSmith will display the API key only once, so make sure to copy it and store it in a safe place.
   </Step>
@@ -40,11 +43,11 @@ Deactivation temporarily stops a PAT from authenticating; deletion permanently r
 
 Members can deactivate, reactivate, and delete their own PATs. [Organization Admins](/langsmith/rbac#organization-admin) and [Organization Operators](/langsmith/rbac#organization-operator) can also manage every member's PATs.
 
-| Action | Effect | Reversible |
-|--------|--------|------------|
+| Action         | Effect                                                                                               | Reversible                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | **Deactivate** | Stops authentication and keeps the record, owner, and last use visible with a **Deactivated** badge. | Yes. Select **Reactivate key** to use the same token again. |
-| **Reactivate** | Allows authentication again with the same token and its original expiration date. | Yes. Deactivate the token again at any time. |
-| **Delete** | Permanently removes the token and its record. | No. Create a new token if you need access again. |
+| **Reactivate** | Allows authentication again with the same token and its original expiration date.                    | Yes. Deactivate the token again at any time.                |
+| **Delete**     | Permanently removes the token and its record.                                                        | No. Create a new token if you need access again.            |
 
 Deactivation does not change a token's expiration date, and **Reactivate key** is unavailable once that date has passed. Create a new token instead.
 
@@ -71,16 +74,18 @@ Install the SDK for your language:
 <Tabs>
   <Tab title="Python">
     <CodeGroup>
-      ```bash pip
+      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langsmith
       ```
-      ```bash uv
+
+      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       uv add langsmith
       ```
     </CodeGroup>
   </Tab>
+
   <Tab title="TypeScript">
-    ```bash
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     npm install langsmith
     ```
   </Tab>
@@ -90,49 +95,44 @@ For full details, refer to the [Python SDK](/langsmith/smith-python-sdk) or [JS/
 
 Then, set your API key and enable tracing:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_TRACING=true
 ```
 
 You may also need the following additional environment variables:
 
-- `LANGSMITH_ENDPOINT` controls which LangSmith server the SDK sends data to. It defaults to `https://api.smith.langchain.com` (GCP US). Set it only if you are on a different deployment. For regional SaaS, set it to the API URL for your region:
+* `LANGSMITH_ENDPOINT` controls which LangSmith server the SDK sends data to. It defaults to `https://api.smith.langchain.com` (GCP US). Set it only if you are on a different deployment. For regional SaaS, set it to the API URL for your region:
 
-    {/* Pass `prefix` to change the hostname before ".langchain.com" (default: "api.smith").
-    Pass `suffix` to append a path (e.g. "/mcp") to each URL.
-    Pass `protocol={false}` to render hostnames without "https://". */}
+  <table>
+    <thead>
+      <tr>
+        <th>Region</th>
+      </tr>
+    </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Region</th>
-      <th>{protocol === false ? "Host" : "URL"}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GCP US</td>
-      <td><code>{`${protocol === false ? "" : "https://"}${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP EU</td>
-      <td><code>{`${protocol === false ? "" : "https://"}eu.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP APAC</td>
-      <td><code>{`${protocol === false ? "" : "https://"}apac.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>AWS US</td>
-      <td><code>{`${protocol === false ? "" : "https://"}aws.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-  </tbody>
-</table>
+    <tbody>
+      <tr>
+        <td>GCP US</td>
+      </tr>
 
-- `LANGSMITH_WORKSPACE_ID` is required only if your API key is scoped to more than one [workspace](/langsmith/administration-overview#workspaces). Find your Workspace ID on the [**Settings** page](https://smith.langchain.com/settings) under **General**:
+      <tr>
+        <td>GCP EU</td>
+      </tr>
 
-    `LANGSMITH_WORKSPACE_ID=<Workspace ID>`
+      <tr>
+        <td>GCP APAC</td>
+      </tr>
+
+      <tr>
+        <td>AWS US</td>
+      </tr>
+    </tbody>
+  </table>
+
+* `LANGSMITH_WORKSPACE_ID` is required only if your API key is scoped to more than one [workspace](/langsmith/administration-overview#workspaces). Find your Workspace ID on the [**Settings** page](https://smith.langchain.com/settings) under **General**:
+
+  `LANGSMITH_WORKSPACE_ID=<Workspace ID>`
 
 To reuse endpoint, API key, and workspace settings across local shells or remote runtimes, refer to [Profile configuration](/langsmith/profile-configuration).
 
@@ -140,13 +140,14 @@ To reuse endpoint, API key, and workspace settings across local shells or remote
 
 See [instructions for managing your organization via API](/langsmith/manage-organization-by-api).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-account-api-key.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

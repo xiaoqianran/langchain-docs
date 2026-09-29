@@ -2,19 +2,21 @@
 
 # Configure checkpointer backend
 
+Configure Agent Server to use PostgreSQL, MongoDB, or a custom implementation for checkpoint storage.
+
 [Agent Server](/langsmith/agent-server) persists graph state using a checkpointer backend. By default, LangSmith stores checkpoints in PostgreSQL alongside other server data. You can switch to MongoDB or provide a custom implementation.
 
 <Note>
-Regardless of the checkpointer backend, LangSmith always requires PostgreSQL for threads, runs, assistants, crons, and the [memory store](/oss/python/langgraph/stores). The checkpointer backend only controls where checkpoint data is stored.
+  Regardless of the checkpointer backend, LangSmith always requires PostgreSQL for threads, runs, assistants, crons, and the [memory store](/oss/python/langgraph/stores). The checkpointer backend only controls where checkpoint data is stored.
 </Note>
 
 ## Available backends
 
-| Backend | Storage | Configuration | Use case |
-|---------|---------|---------------|----------|
-| `default` | PostgreSQL | None (built-in) | Standard deployments |
-| `mongo` | MongoDB | `langgraph.json` or `LS_DEFAULT_CHECKPOINTER_BACKEND` env var | Teams with existing MongoDB infrastructure |
-| `custom` | User-provided | `langgraph.json` | Custom storage backends (see [custom checkpointer](/langsmith/custom-checkpointer)) |
+| Backend   | Storage       | Configuration                                                 | Use case                                                                            |
+| --------- | ------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `default` | PostgreSQL    | None (built-in)                                               | Standard deployments                                                                |
+| `mongo`   | MongoDB       | `langgraph.json` or `LS_DEFAULT_CHECKPOINTER_BACKEND` env var | Teams with existing MongoDB infrastructure                                          |
+| `custom`  | User-provided | `langgraph.json`                                              | Custom storage backends (see [custom checkpointer](/langsmith/custom-checkpointer)) |
 
 ## Default (PostgreSQL)
 
@@ -23,13 +25,13 @@ PostgreSQL is the default checkpointer backend. No configuration is needed. To u
 ## Set up MongoDB checkpointing
 
 <Info>
-Requires Agent Server v0.7.64 or later.
+  Requires Agent Server v0.7.64 or later.
 </Info>
 
 ### Prerequisites
 
-- A MongoDB **replica set** (standalone `mongod` is not supported). This can be a self-managed replica set, a `mongos` router, or a managed service like MongoDB Atlas.
-- A connection URI that includes the database name in the path (e.g., `/langgraph`).
+* A MongoDB **replica set** (standalone `mongod` is not supported). This can be a self-managed replica set, a `mongos` router, or a managed service like MongoDB Atlas.
+* A connection URI that includes the database name in the path (e.g., `/langgraph`).
 
 ### Select the backend
 
@@ -37,7 +39,7 @@ Set the backend to `"mongo"` using one of these methods:
 
 **In `langgraph.json`** (app-level—bundled with your application code):
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "dependencies": ["."],
   "graphs": {
@@ -56,7 +58,7 @@ Set the backend to `"mongo"` using one of these methods:
 
 **Via environment variable** (platform-level—for operators managing standalone deployments):
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LS_DEFAULT_CHECKPOINTER_BACKEND=mongo
 ```
 
@@ -66,7 +68,7 @@ The environment variable sets the default backend for agent servers that don't s
 
 Set the `LS_MONGODB_URI` environment variable at deploy time:
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LS_MONGODB_URI="mongodb://user:password@host:27017/langgraph?replicaSet=rs0"
 ```
 
@@ -74,8 +76,8 @@ LS_MONGODB_URI="mongodb://user:password@host:27017/langgraph?replicaSet=rs0"
 
 The URI must:
 
-- Point to a replica set member or `mongos` router
-- Include the target database name in the path
+* Point to a replica set member or `mongos` router
+* Include the target database name in the path
 
 Valid examples:
 
@@ -89,68 +91,70 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 <Tabs>
   <Tab title="Standalone (Kubernetes)">
-  The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
+    The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
 
-  **Bundled MongoDB** (development and testing):
+    **Bundled MongoDB** (development and testing):
 
-  ```yaml
-  mongo:
-    enabled: true
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-    persistence:
-      size: 8Gi
-  ```
-
-  The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
-
-  **External MongoDB** (production):
-
-  ```yaml
-  mongo:
-    enabled: true
-    external:
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    mongo:
       enabled: true
-      connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
-  ```
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+      persistence:
+        size: 8Gi
+    ```
 
-  Or reference an existing Kubernetes secret:
+    The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
 
-  ```yaml
-  mongo:
-    enabled: true
-    external:
+    **External MongoDB** (production):
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    mongo:
       enabled: true
-      existingSecretName: "my-mongo-secret"
-  ```
+      external:
+        enabled: true
+        connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
+    ```
 
-  The secret must contain a `mongodb_connection_url` key.
+    Or reference an existing Kubernetes secret:
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    mongo:
+      enabled: true
+      external:
+        enabled: true
+        existingSecretName: "my-mongo-secret"
+    ```
+
+    The secret must contain a `mongodb_connection_url` key.
   </Tab>
+
   <Tab title="Standalone (Docker)">
-  If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
+    If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
 
-  ```shell
-  docker run \
-      --env-file .env \
-      -p 8123:8000 \
-      -e REDIS_URI="redis://redis:6379" \
-      -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
-      -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
-      -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
-      -e LANGSMITH_API_KEY="..." \
-      my-image
-  ```
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    docker run \
+        --env-file .env \
+        -p 8123:8000 \
+        -e REDIS_URI="redis://redis:6379" \
+        -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
+        -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
+        -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
+        -e LANGSMITH_API_KEY="..." \
+        my-image
+    ```
 
-  See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
+    See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
   </Tab>
+
   <Tab title="Cloud">
-  Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
+    Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
 
-  Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
+    Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
 
-  PostgreSQL is still auto-provisioned for non-checkpoint data.
+    PostgreSQL is still auto-provisioned for non-checkpoint data.
   </Tab>
 </Tabs>
 
@@ -160,18 +164,19 @@ To use a storage backend other than PostgreSQL or MongoDB, implement a custom [B
 
 ## Related
 
-- [Configure TTLs](/langsmith/configure-ttl) for checkpoint and store item expiration
-- [Persistence concepts](/oss/python/langgraph/persistence) in LangGraph
-- [Data plane](/langsmith/data-plane) architecture
-- [Environment variables](/langsmith/env-var-cloud) reference
+* [Configure TTLs](/langsmith/configure-ttl) for checkpoint and store item expiration
+* [Persistence concepts](/oss/python/langgraph/persistence) in LangGraph
+* [Data plane](/langsmith/data-plane) architecture
+* [Environment variables](/langsmith/env-var-cloud) reference
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

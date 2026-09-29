@@ -14,38 +14,39 @@ The Playground supports two methods for incorporating multimodal content in your
    * Create reusable prompts that work with varying content
 
 <Note>
-Not all models support multimodal content. Before using multimodal features in the Playground, make sure your selected model supports the file types you want to use.
+  Not all models support multimodal content. Before using multimodal features in the Playground, make sure your selected model supports the file types you want to use.
 </Note>
 
 ## Inline content
 
 Click the file icon in the message where you want to add multimodal content. Under the `Upload content` tab, you can upload a file and include it inline in the prompt.
 
-![Upload inline multimodal content](/langsmith/images/upload-inline-multimodal-content.png)
+<img alt="Upload inline multimodal content" />
 
 ## Template variables
 
 Click the file icon in the message where you want to add multimodal content. Under the `Template variables` tab, you can create a template variable for a specific attachment type. Currently, only images, PDFs, and audio files (.wav, .mp3) are supported.
 
-![Template variable multimodal content](/langsmith/images/template-variable-multimodal-content.png)
+<img alt="Template variable multimodal content" />
 
 ## Populate the template variable
 
 Once you've added a template variable, you can provide content for it using the panel on the right side of the screen. Simply click the `+` button to upload or select content that will be used to populate the template variable.
 
-![Manual prompt multimodal](/langsmith/images/manual-prompt-multimodal.png)
+<img alt="Manual prompt multimodal" />
 
 ## Run an evaluation
 
 After testing out your prompt manually, you can [run an evaluation](/langsmith/evaluate-with-attachments?mode=ui) to see how the prompt performs over a golden dataset of examples.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multimodal-content.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

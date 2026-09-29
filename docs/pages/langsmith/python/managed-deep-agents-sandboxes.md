@@ -2,24 +2,23 @@
 
 # Add a sandbox to Managed Deep Agents
 
+Configure an isolated filesystem and shell for a managed deep agent.
+
 A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 Put the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
   agent.py
   sandbox/
     __init__.py
     setup.sh   # optional
 ```
-
-
-
 
 For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
@@ -35,7 +34,7 @@ Managed Deep Agents uses [LangSmith Sandboxes](/langsmith/sandboxes) for this ba
 
 Declare the sandbox with `define_sandbox`:
 
-```python sandbox/__init__.py
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_sandbox
 
 sandbox = define_sandbox(
@@ -44,13 +43,10 @@ sandbox = define_sandbox(
 )
 ```
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `idle_ttl_seconds` | `600` | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
-| `default_timeout` | `600` | Seconds allowed for each command. |
-
-
-
+| Option             | Default | Description                                                                                         |
+| ------------------ | ------- | --------------------------------------------------------------------------------------------------- |
+| `idle_ttl_seconds` | `600`   | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
+| `default_timeout`  | `600`   | Seconds allowed for each command.                                                                   |
 
 ## Configure the sandbox proxy
 
@@ -58,7 +54,7 @@ The sandbox proxy injects headers into matching outbound requests and controls w
 
 For example, to call the OpenAI API from the sandbox, store `OPENAI_API_KEY` in your LangSmith workspace secrets and configure this proxy rule:
 
-```python sandbox/__init__.py
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_sandbox
 
 sandbox = define_sandbox(
@@ -80,9 +76,6 @@ sandbox = define_sandbox(
 )
 ```
 
-
-
-
 For configuration options and network restrictions, see [Sandbox auth proxy](/langsmith/sandbox-auth-proxy).
 
 ### Use connections in proxy headers
@@ -91,7 +84,7 @@ Use [Connections](/langsmith/python/managed-deep-agents-connections) in sandboxe
 
 For example, to call the GitHub API from the sandbox as the current user, create the `github` connection first, then configure the proxy:
 
-```python sandbox/__init__.py
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import bearer, connections, define_sandbox
 
 github = connections.get("github", {"type": "user"})
@@ -110,9 +103,6 @@ sandbox = define_sandbox(
 )
 ```
 
-
-
-
 Use a connection reference as the header value, or format it with `bearer(ref)` or `basic(username, ref)`. Omit the header's `type` for connection values. Managed Deep Agents sets it to `opaque`.
 
 ## Provision a snapshot
@@ -121,7 +111,7 @@ If `sandbox/setup.sh` exists, `mda deploy` and `mda dev` run the script once and
 
 The script runs with `bash -e`. A non-zero exit fails the snapshot and the deploy or `mda dev` session. LangSmith does not update the live deployment to the failed snapshot. Any previously successful snapshot continues to serve.
 
-```bash sandbox/setup.sh
+```bash sandbox/setup.sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -137,13 +127,13 @@ Editing `setup.sh` and redeploying does not wipe `/workspace` on live threads. T
 
 With no bake base, LangSmith's default sandbox template is the starting point. To start from something else, set exactly one of these:
 
-| Option | Use |
-| --- | --- |
+| Option          | Use                                        |
+| --------------- | ------------------------------------------ |
 | `snapshot_name` | LangSmith snapshot name. Tags are allowed. |
-| `snapshot_id` | LangSmith snapshot id. |
-| `docker_image` | Published Docker image. |
+| `snapshot_id`   | LangSmith snapshot id.                     |
+| `docker_image`  | Published Docker image.                    |
 
-```python sandbox/__init__.py
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_sandbox
 
 sandbox = define_sandbox(
@@ -152,14 +142,11 @@ sandbox = define_sandbox(
 )
 ```
 
-
-
-
 For a private image, pass the image and a `registry`. Managed Deep Agents creates or updates a deployment-owned Host registry at bake time. Only the variable name is compiled; the credential value does not enter the build or the snapshot.
 
 Name the password in `password_env`:
 
-```python sandbox/__init__.py
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_sandbox
 
 sandbox = define_sandbox(
@@ -172,9 +159,6 @@ sandbox = define_sandbox(
 )
 ```
 
-
-
-
 Put `GHCR_TOKEN` in the project `.env` or the process environment. After bake, Managed Deep Agents does not forward that value to the running Agent Server.
 
 ## How the agent uses the sandbox
@@ -186,12 +170,12 @@ The agent uses built-in filesystem tools such as [`ls`](/oss/python/deepagents/t
 [Authored tools](/langsmith/python/managed-deep-agents-tools) and [middleware](/langsmith/python/managed-deep-agents-middleware) reach the sandbox filesystem through `runtime.backend`. Use it when your own code needs a file, rather than prompting the agent to fetch one for you.
 
 <Note>
-`runtime.backend` requires `managed-deepagents>=0.8.0`.
+  `runtime.backend` requires `managed-deepagents>=0.8.0`.
 </Note>
 
 Annotate the `runtime` parameter to receive the typed surface:
 
-```python tools/report.py
+```python tools/report.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
 from managed_deepagents import ManagedDeepAgentRuntime
 
@@ -211,30 +195,24 @@ def write_report(summary: str, runtime: ManagedDeepAgentRuntime) -> str:
     return "/workspace/report.txt"
 ```
 
-
-
-
 Each operation binds to the sandbox of the thread handling the current run, so two threads reading `/workspace/report.txt` see their own copy. The backend resolves lazily, and a tool that never touches it never provisions a sandbox.
 
 ### Available operations
 
-| Method | Purpose |
-| --- | --- |
-| `ls(path)` | List a directory. |
-| `read(file_path, offset, limit)` | Read text, 2000 lines by default. |
-| `write(file_path, content)` | Write text, replacing any existing file. |
-| `edit(file_path, old_string, new_string, replace_all)` | Replace a substring in place. |
-| `delete(file_path)` | Remove a file. |
-| `grep(pattern, path, glob, max_count)` | Search file contents. |
-| `glob(pattern, path)` | Match paths. |
-| `execute(command, timeout)` | Run a shell command. |
-| `upload_files(files)` | Write raw bytes from `(path, bytes)` pairs. |
-| `download_files(paths)` | Read raw bytes for the given paths. |
+| Method                                                 | Purpose                                     |
+| ------------------------------------------------------ | ------------------------------------------- |
+| `ls(path)`                                             | List a directory.                           |
+| `read(file_path, offset, limit)`                       | Read text, 2000 lines by default.           |
+| `write(file_path, content)`                            | Write text, replacing any existing file.    |
+| `edit(file_path, old_string, new_string, replace_all)` | Replace a substring in place.               |
+| `delete(file_path)`                                    | Remove a file.                              |
+| `grep(pattern, path, glob, max_count)`                 | Search file contents.                       |
+| `glob(pattern, path)`                                  | Match paths.                                |
+| `execute(command, timeout)`                            | Run a shell command.                        |
+| `upload_files(files)`                                  | Write raw bytes from `(path, bytes)` pairs. |
+| `download_files(paths)`                                | Read raw bytes for the given paths.         |
 
 Every method has an async counterpart prefixed with `a`, such as `aread`, `awrite`, and `adownload_files`.
-
-
-
 
 Arguments and return types come from the Deep Agents backend contract. See [Backends](/oss/python/deepagents/backends).
 
@@ -242,7 +220,7 @@ Arguments and return types come from the Deep Agents backend contract. See [Back
 
 `upload_files` and `download_files` move raw bytes, so they suit images, archives, and any other file that text operations would corrupt. Download returns the bytes for each requested path:
 
-```python tools/checksum.py
+```python tools/checksum.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
 
 from langchain.tools import tool
@@ -264,19 +242,13 @@ def checksum_file(file_path: str, runtime: ManagedDeepAgentRuntime) -> str:
     return hashlib.sha256(result.content).hexdigest()
 ```
 
-
-
-
 Upload takes path and content pairs, one per file:
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uploaded = runtime.backend.upload_files([("/workspace/logo.png", payload)])
 if uploaded[0].error:
     raise RuntimeError(uploaded[0].error)
 ```
-
-
-
 
 Each result carries `path` and `error`, and a download also carries `content`. On failure, `error` is one of `file_not_found`, `permission_denied`, `is_directory`, or `invalid_path`, and the downloaded `content` is empty. Check `error` rather than assuming the transfer succeeded.
 
@@ -286,13 +258,7 @@ Each result carries `path` and `error`, and a download also carries `content`. O
 
 Without a sandbox, `runtime.backend` is `None`. Guard on it before every call, because a project can remove `sandbox/` after the tool ships.
 
-
-
-
 `delete`, `upload_files`, and `download_files` depend on the installed backend and raise when it does not implement them. A root `glob` returns an error instead of provisioning a sandbox.
-
-
-
 
 ## Disable the sandbox
 
@@ -306,21 +272,22 @@ Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and clean
 
 ## When to use a sandbox
 
-| Goal | Use |
-| --- | --- |
-| Write files, run code, or execute shell commands in isolation | Sandbox |
-| Store durable knowledge across threads | [Memory](/langsmith/python/managed-deep-agents-memory) |
-| Always-on behavior without a filesystem | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
+| Goal                                                          | Use                                                                |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Write files, run code, or execute shell commands in isolation | Sandbox                                                            |
+| Store durable knowledge across threads                        | [Memory](/langsmith/python/managed-deep-agents-memory)             |
+| Always-on behavior without a filesystem                       | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

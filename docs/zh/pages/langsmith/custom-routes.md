@@ -14,17 +14,17 @@
 
 ## 创建应用程序
 
-从 **现有** LangSmith 应用程序开始，将以下自定义路由代码添加到您的应用程序文件中。如果您从头开始，则可以使用 CLI 从模板创建新应用程序。
+从 **现有** LangSmith 应用程序开始，将以下自定义路由代码添加到您的应用程序文件中。如果您是从头开始，则可以使用 CLI 从模板创建新应用程序。
 
 <Tabs>
-    <Tab title="Python">
-    ```bash
+  <Tab title="Python">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph new --template=new-langgraph-project-python my_new_project
     ```
 
     一旦您有了 LangGraph 项目，请添加以下应用程序代码：
 
-    ```python {highlight={4}}
+    ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # ./src/agent/webapp.py
     from fastapi import FastAPI
 
@@ -35,16 +35,17 @@
     def read_root():
         return {"Hello": "World"}
     ```
-    </Tab>
-    <Tab title="TypeScript">
-    ```bash
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     yarn create langgraph
     npm install hono
     ```
 
     一旦您有了 LangGraph 项目，请添加以下应用程序代码：
 
-    ```typescript
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // ./src/custom-routes.ts
     import { Hono } from "hono";
 
@@ -59,14 +60,14 @@
     ```
 
     `hono` 包必须在您的项目依赖项中可用。
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 配置`langgraph.json`将以下内容添加到您的 `langgraph.json` 配置文件中。确保路径指向您在 [previous section](#create-app) 中创建的应用程序实例。
 
 <Tabs>
-    <Tab title="Python">
-    ```json
+  <Tab title="Python">
+    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     {
       "dependencies": ["."],
       "graphs": {
@@ -79,9 +80,10 @@
       // Other configuration options like auth, store, etc.
     }
     ```
-    </Tab>
-    <Tab title="TypeScript">
-    ```json
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     {
       "node_version": "20",
       "dependencies": ["."],
@@ -90,7 +92,7 @@
       "env": ".env"
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 启动服务器
@@ -98,16 +100,17 @@
 在本地测试服务器：
 
 <Tabs>
-    <Tab title="Python">
-    ```bash
+  <Tab title="Python">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph dev --no-browser
     ```
-    </Tab>
-    <Tab title="TypeScript">
-    ```bash
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     npx @langchain/langgraph-cli@latest dev --no-browser
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 如果您在浏览器中导航到 `localhost:2024/hello`（`2024` 是默认开发端口），您应该会看到 `/hello` 端点返回 JSON 响应。对于 TypeScript 示例，导航至 `localhost:2024/custom/hello`。
@@ -115,8 +118,8 @@
 TypeScript `http.app` 配置适用于使用 `langgraph dev` 的本地开发和使用 `langgraph up` 的 Docker。
 
 <Note>
-**隐藏默认端点**
-您在应用程序中创建的路由优先于系统默认值，这意味着您可以隐藏和重新定义任何默认端点的行为。
+  **隐藏默认端点**
+  您在应用程序中创建的路由优先于系统默认值，这意味着您可以隐藏和重新定义任何默认端点的行为。
 </Note>
 
 ## 部署
@@ -127,11 +130,12 @@ TypeScript `http.app` 配置适用于使用 `langgraph dev` 的本地开发和�
 
 现在您已经向部署添加了自定义路由，您可以使用相同的技术来进一步自定义服务器的行为方式，例如定义 [custom middleware](/langsmith/custom-middleware) 和 [custom lifespan events](/langsmith/custom-lifespan)。
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-routes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

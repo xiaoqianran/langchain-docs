@@ -19,7 +19,7 @@ Currently, the SDK does not provide built-in support for defining webhook endpoi
 The following API endpoints accept a `webhook` parameter:
 
 | Operation            | HTTP Method | Endpoint                          |
-|----------------------|-------------|-----------------------------------|
+| -------------------- | ----------- | --------------------------------- |
 | Create Run           | `POST`      | `/thread/{thread_id}/runs`        |
 | Create Thread Cron   | `POST`      | `/thread/{thread_id}/runs/crons`  |
 | Stream Run           | `POST`      | `/thread/{thread_id}/runs/stream` |
@@ -35,8 +35,8 @@ In this guide, we’ll show how to trigger a webhook after streaming a run.
 Before making API calls, set up your assistant and thread.
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
@@ -44,9 +44,10 @@ Before making API calls, set up your assistant and thread.
     thread = await client.threads.create()
     print(thread)
     ```
-    </Tab>
-    <Tab title="JavaScript">
-    ```js
+  </Tab>
+
+  <Tab title="JavaScript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -54,9 +55,10 @@ Before making API calls, set up your assistant and thread.
     const thread = await client.threads.create();
     console.log(thread);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
         --header 'Content-Type: application/json' \
@@ -66,12 +68,12 @@ Before making API calls, set up your assistant and thread.
         --header 'Content-Type: application/json' \
         --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Example response:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
     "thread_id": "9dde5490-2b67-47c8-aa14-4bfec88af217",
     "created_at": "2024-08-30T23:07:38.242730+00:00",
@@ -90,8 +92,8 @@ To use a webhook, specify the `webhook` parameter in your API request. When the 
 For example, if your server listens for webhook events at `https://my-server.app/my-webhook-endpoint`, include this in your request:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     input = { "messages": [{ "role": "user", "content": "Hello!" }] }
 
     async for chunk in client.runs.stream(
@@ -103,9 +105,10 @@ For example, if your server listens for webhook events at `https://my-server.app
     ):
         pass
     ```
-    </Tab>
-    <Tab title="JavaScript">
-    ```js
+  </Tab>
+
+  <Tab title="JavaScript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const input = { messages: [{ role: "human", content: "Hello!" }] };
 
     const streamResponse = client.runs.stream(
@@ -121,9 +124,10 @@ For example, if your server listens for webhook events at `https://my-server.app
       // Handle stream output
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
         --header 'Content-Type: application/json' \
@@ -133,7 +137,7 @@ For example, if your server listens for webhook events at `https://my-server.app
             "webhook": "https://my-server.app/my-webhook-endpoint"
         }'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## Webhook payload
@@ -142,26 +146,26 @@ LangSmith sends webhook notifications in the format of a [Run](/langsmith/runs).
 
 The full webhook payload contains the following fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `run_id` | `string` (UUID) | Unique identifier for the run. |
-| `thread_id` | `string` (UUID) | Identifier for the thread the run belongs to. |
-| `assistant_id` | `string` | Identifier for the assistant that executed the run. |
-| `status` | `string` | Final status of the run (e.g., `"success"`, `"error"`). |
-| `created_at` | `string` (datetime) | Timestamp when the run was created. |
-| `updated_at` | `string` (datetime) | Timestamp when the run was last updated. |
-| `run_started_at` | `string` (datetime) | Timestamp when the run began executing. |
-| `run_ended_at` | `string` (datetime) | Timestamp when the run finished. Omitted if the run has not ended. |
-| `webhook_sent_at` | `string` (datetime) | Timestamp when the webhook request was sent. |
-| `metadata` | `JSON object` | Custom metadata associated with the run. |
-| `kwargs` | `JSON object` | Run input, configuration, and other invocation parameters. |
-| `values` | `JSON object` | The state values from the latest checkpoint of the thread. Only present for stateful runs. |
-| `multitask_strategy` | `string` | The multitask strategy used for the run. |
-| `error` | `JSON object \| null` | Present only if the run failed. Contains `error` (error type) and `message` (detail) fields. |
+| Field                | Type                  | Description                                                                                  |
+| -------------------- | --------------------- | -------------------------------------------------------------------------------------------- |
+| `run_id`             | `string` (UUID)       | Unique identifier for the run.                                                               |
+| `thread_id`          | `string` (UUID)       | Identifier for the thread the run belongs to.                                                |
+| `assistant_id`       | `string`              | Identifier for the assistant that executed the run.                                          |
+| `status`             | `string`              | Final status of the run (e.g., `"success"`, `"error"`).                                      |
+| `created_at`         | `string` (datetime)   | Timestamp when the run was created.                                                          |
+| `updated_at`         | `string` (datetime)   | Timestamp when the run was last updated.                                                     |
+| `run_started_at`     | `string` (datetime)   | Timestamp when the run began executing.                                                      |
+| `run_ended_at`       | `string` (datetime)   | Timestamp when the run finished. Omitted if the run has not ended.                           |
+| `webhook_sent_at`    | `string` (datetime)   | Timestamp when the webhook request was sent.                                                 |
+| `metadata`           | `JSON object`         | Custom metadata associated with the run.                                                     |
+| `kwargs`             | `JSON object`         | Run input, configuration, and other invocation parameters.                                   |
+| `values`             | `JSON object`         | The state values from the latest checkpoint of the thread. Only present for stateful runs.   |
+| `multitask_strategy` | `string`              | The multitask strategy used for the run.                                                     |
+| `error`              | `JSON object \| null` | Present only if the run failed. Contains `error` (error type) and `message` (detail) fields. |
 
 Example payload:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "run_id": "1ef6a5b8-4457-6db0-8b15-cffd3797fa04",
   "thread_id": "9dde5490-2b67-47c8-aa14-4bfec88af217",
@@ -191,7 +195,7 @@ Example payload:
 
 When a run fails, the `error` field contains details about the failure:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "error": {
     "error": "TimeoutError",
@@ -213,14 +217,14 @@ Your server should extract and validate this token before processing requests.
 ## Add headers to webhook requests
 
 <Note>
-Available in `langgraph-api>=0.5.36`.
+  Available in `langgraph-api>=0.5.36`.
 </Note>
 
 You can configure static headers to include with all outbound webhook requests. This is useful for authentication, routing, or passing metadata to your webhook endpoint.
 
 Add a `webhooks.headers` configuration to your `langgraph.json` file:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "webhooks": {
     "headers": {
@@ -235,7 +239,7 @@ Add a `webhooks.headers` configuration to your `langgraph.json` file:
 
 To include secrets or environment-specific values without checking them into your configuration file, use the `${{ env.VAR }}` template syntax:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "webhooks": {
     "headers": {
@@ -247,7 +251,7 @@ To include secrets or environment-specific values without checking them into you
 
 For security, only environment variables starting with `LG_WEBHOOK_` can be referenced by default. This prevents accidentally leaking unrelated environment variables. You can customize this prefix using `env_prefix`:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "webhooks": {
     "env_prefix": "MY_APP_",
@@ -259,18 +263,18 @@ For security, only environment variables starting with `LG_WEBHOOK_` can be refe
 ```
 
 <Note>
-Missing required environment variables will block server startup, ensuring you don't deploy with incomplete configuration.
+  Missing required environment variables will block server startup, ensuring you don't deploy with incomplete configuration.
 </Note>
 
 ## Restrict webhook destinations
 
 <Note>
-Available in `langgraph-api>=0.5.36`.
+  Available in `langgraph-api>=0.5.36`.
 </Note>
 
 For security or compliance purposes, you can restrict which URLs are valid webhook destinations using the `webhooks.url` configuration:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "webhooks": {
     "url": {
@@ -283,19 +287,19 @@ For security or compliance purposes, you can restrict which URLs are valid webho
 
 Available options:
 
-| Option | Description |
-|--------|-------------|
-| `allowed_domains` | Hostname allowlist. Supports wildcards for subdomains (e.g., `*.mycompany.com`). |
-| `require_https` | Reject `http://` URLs when `true`. |
-| `allowed_ports` | Explicit port allowlist. Defaults to 443 (https) and 80 (http). |
-| `disable_loopback` | Disallow relative URLs (internal loopback calls) when `true`. |
-| `max_url_length` | Maximum permitted URL length in characters. |
+| Option             | Description                                                                      |
+| ------------------ | -------------------------------------------------------------------------------- |
+| `allowed_domains`  | Hostname allowlist. Supports wildcards for subdomains (e.g., `*.mycompany.com`). |
+| `require_https`    | Reject `http://` URLs when `true`.                                               |
+| `allowed_ports`    | Explicit port allowlist. Defaults to 443 (https) and 80 (http).                  |
+| `disable_loopback` | Disallow relative URLs (internal loopback calls) when `true`.                    |
+| `max_url_length`   | Maximum permitted URL length in characters.                                      |
 
 ## Disable webhooks
 
 As of `langgraph-api>=0.2.78`, developers can disable webhooks in the `langgraph.json` file:
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "http": {
     "disable_webhooks": true
@@ -316,13 +320,14 @@ You can test your webhook using online services like:
 
 These tools help you verify that LangSmith is correctly triggering and sending webhooks to your service.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

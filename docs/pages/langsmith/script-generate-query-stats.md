@@ -38,25 +38,26 @@ Ensure you have the following tools/items ready.
 
 Run the following command to run the stats generation script:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh get_query_stats.sh <clickhouse_url> --output path/to/file.csv
 ```
 
 For example, if you are using the bundled version with port-forwarding, the command would look like:
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh get_query_stats.sh "clickhouse://default:password@localhost:8123/default" --output query_stats.csv
 ```
 
 and after running this command you should see a file, query\_stats.csv, has been created with LangSmith query statistics.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-query-stats.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

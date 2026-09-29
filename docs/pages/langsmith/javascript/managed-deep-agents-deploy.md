@@ -2,10 +2,12 @@
 
 # Deploy a Managed Deep Agent
 
+Test and deploy a Managed Deep Agent with the mda CLI.
+
 Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli).
@@ -14,15 +16,15 @@ This page covers secrets routing and deploy options. To test the agent before de
 
 Before you deploy, make sure you have:
 
-- A workspace with Managed Deep Agents public beta access.
-- A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, either in `.env` or your shell environment.
-- The `mda` CLI installed from `managed-deepagents`.
+* A workspace with Managed Deep Agents public beta access.
 
+* A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, either in `.env` or your shell environment.
 
-- Project dependencies installed with `npm install` for TypeScript projects.
+* The `mda` CLI installed from `managed-deepagents`.
 
+* Project dependencies installed with `npm install` for TypeScript projects.
 
-- Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
+* Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
 
 The CLI targets US LangSmith Cloud by default.
 
@@ -30,102 +32,88 @@ The CLI targets US LangSmith Cloud by default.
 
 Deploy the local project:
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy
+  ```
 
-    ```bash bun
-    bunx mda deploy
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy
+  ```
 </CodeGroup>
 
-
 <Tip>
-`mda deploy` routes local project inputs to different managed surfaces:
+  `mda deploy` routes local project inputs to different managed surfaces:
 
-```text
-instructions.md + skills/**  -> Context Hub deploy-owned context
-.env                         -> deploy auth + non-reserved hosted secrets, not archived
-project source files         -> .mda/build source archive -> hosted deployment
-schedules/**                 -> LangSmith cron jobs after the deployment is live
-```
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  instructions.md + skills/**  -> Context Hub deploy-owned context
+  .env                         -> deploy auth + non-reserved hosted secrets, not archived
+  project source files         -> .mda/build source archive -> hosted deployment
+  schedules/**                 -> LangSmith cron jobs after the deployment is live
+  ```
 </Tip>
 
 Set the deployment name explicitly when the directory name is not the name you want:
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --name research-assistant
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --name research-assistant
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --name research-assistant
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --name research-assistant
+  ```
 
-    ```bash bun
-    bunx mda deploy --name research-assistant
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --name research-assistant
+  ```
 </CodeGroup>
-
 
 Use `--deployment-type prod` when creating a production deployment:
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --deployment-type prod
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --deployment-type prod
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --deployment-type prod
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --deployment-type prod
+  ```
 
-    ```bash bun
-    bunx mda deploy --deployment-type prod
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --deployment-type prod
+  ```
 </CodeGroup>
-
 
 Use `--no-wait` to trigger the build without polling for completion:
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --no-wait
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --no-wait
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --no-wait
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --no-wait
+  ```
 
-    ```bash bun
-    bunx mda deploy --no-wait
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --no-wait
+  ```
 </CodeGroup>
-
 
 When `--no-wait` is set, schedule reconciliation is skipped for that deploy invocation because the CLI exits before the deployment reaches `DEPLOYED`.
 
 On success, the CLI prints the LangSmith deployment dashboard URL. For the full deploy step list, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli#deploy-projects).
 
-
-
 ## Secrets and environment files
 
 `mda deploy` reads project `.env` values before shell environment variables. Use `.env` for the LangSmith API key that authenticates the deploy and for runtime secrets the hosted deployment needs:
 
-```text .env
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
@@ -151,34 +139,40 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 
 ## Next steps
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
     Explore the runtime that hosts the deployment.
   </Card>
+
   <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
     Expose the deployed agent as a tool to MCP clients.
   </Card>
+
   <Card title="Identity" icon="fingerprint" href="/langsmith/javascript/managed-deep-agents-identity">
     Authenticate callers and provide private threads.
   </Card>
+
   <Card title="Schedules" icon="calendar" href="/langsmith/javascript/managed-deep-agents-schedules">
     Run agents on managed cron schedules.
   </Card>
+
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
     Add authored LangChain tools to the agent definition.
   </Card>
+
   <Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
     Look up every `mda` command and flag.
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

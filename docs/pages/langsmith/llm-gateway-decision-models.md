@@ -2,109 +2,107 @@
 
 # Decision models
 
+Use SemIf through the LangSmith LLM Gateway for structured classification and scoring with the System One API.
+
 Decision models classify or score text and return structured answers instead of generated chat messages. Call them through the [LLM Gateway](/langsmith/llm-gateway) with the System One API.
 
 LangSmith provides an open source decision model, SemIf (`semif-qwen3.5-4b`), through the gateway for free through September 28, 2026.
 
 <Note>
-SemIf is enabled for US organizations on Free, Developer, and Plus plans.
+  SemIf is enabled for US organizations on Free, Developer, and Plus plans.
 </Note>
 
 ## Quickstart
 
 Set your [LangSmith API key](/langsmith/create-account-api-key):
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<your-api-key>"
 ```
 
 Then run a request:
 
 <Tabs>
-<Tab title="Python">
+  <Tab title="Python">
+    Install the TypeSafe SDK:
 
-Install the TypeSafe SDK:
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pip install typesafe-sdk
+    ```
 
-```bash
-pip install typesafe-sdk
-```
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import os
 
-```python
-import os
+    from typesafe_sdk import Noul, TypeSafeClient
 
-from typesafe_sdk import Noul, TypeSafeClient
+    client = TypeSafeClient(
+        api_key=os.environ["LANGSMITH_API_KEY"],
+        base_url="https://gateway.smith.langchain.com",
+    )
 
-client = TypeSafeClient(
-    api_key=os.environ["LANGSMITH_API_KEY"],
-    base_url="https://gateway.smith.langchain.com",
-)
+    response = client.system_one(
+        state="Hello!",
+        model="semif-qwen3.5-4b",
+        questions={
+            "is_helpful": Noul(
+                instructions="Does this explain what an LLM gateway does?"
+            ),
+        },
+    )
+    ```
+  </Tab>
 
-response = client.system_one(
-    state="Hello!",
-    model="semif-qwen3.5-4b",
-    questions={
-        "is_helpful": Noul(
-            instructions="Does this explain what an LLM gateway does?"
-        ),
-    },
-)
-```
+  <Tab title="JavaScript">
+    Install the TypeSafe SDK:
 
-</Tab>
-<Tab title="JavaScript">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install @typesafe-ai/sdk
+    ```
 
-Install the TypeSafe SDK:
+    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
 
-```bash
-npm install @typesafe-ai/sdk
-```
+    const client = new TypeSafeClient({
+      apiKey: process.env.LANGSMITH_API_KEY,
+      baseURL: "https://gateway.smith.langchain.com",
+    });
 
-```javascript
-import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+    const response = await client.systemOne({
+      state: "Hello!",
+      model: "semif-qwen3.5-4b",
+      questions: {
+        is_helpful: noul("Does this explain what an LLM gateway does?"),
+      },
+    });
+    ```
+  </Tab>
 
-const client = new TypeSafeClient({
-  apiKey: process.env.LANGSMITH_API_KEY,
-  baseURL: "https://gateway.smith.langchain.com",
-});
-
-const response = await client.systemOne({
-  state: "Hello!",
-  model: "semif-qwen3.5-4b",
-  questions: {
-    is_helpful: noul("Does this explain what an LLM gateway does?"),
-  },
-});
-```
-
-</Tab>
-<Tab title="cURL">
-
-```bash
-curl https://gateway.smith.langchain.com/v1/systemone \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "state": "Hello!",
-      "model": "semif-qwen3.5-4b",
-      "questions": {
-        "is_helpful": {
-          "type": "noul",
-          "instructions": "Does this explain what an LLM gateway does?"
-        }
-      }
-    }'
-```
-
-</Tab>
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl https://gateway.smith.langchain.com/v1/systemone \
+        -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "state": "Hello!",
+          "model": "semif-qwen3.5-4b",
+          "questions": {
+            "is_helpful": {
+              "type": "noul",
+              "instructions": "Does this explain what an LLM gateway does?"
+            }
+          }
+        }'
+    ```
+  </Tab>
 </Tabs>
 
 ## Understand decision models
 
 Pass the text to evaluate in `state` and between 1 and 32 named questions in `questions`. Decision models support three question types:
 
-- **`noul`**: Returns the probability that the answer is true.
-- **`choice`**: Classifies the state into one of the supplied options.
-- **`score`**: Scores the state against a rubric.
+* **`noul`**: Returns the probability that the answer is true.
+* **`choice`**: Classifies the state into one of the supplied options.
+* **`score`**: Scores the state against a rubric.
 
 The response contains `answers` keyed by question name rather than a chat message. Streaming is not supported.
 
@@ -121,95 +119,92 @@ The gateway also supports TypeSafe decision models with bring-your-own-key (BYOK
 Set `LANGSMITH_API_KEY` to your workspace-scoped LangSmith API key. The `typesafe/` prefix routes the request through your workspace's TypeSafe provider secret, not the hosted SemIf model. Do not pass your TypeSafe API key as the SDK's `api_key` or `apiKey` when calling the gateway. Use the gateway base URL without `/v1` for the SDKs:
 
 <Tabs>
-<Tab title="Python">
+  <Tab title="Python">
+    Install the TypeSafe SDK:
 
-Install the TypeSafe SDK:
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pip install typesafe-sdk
+    ```
 
-```bash
-pip install typesafe-sdk
-```
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import os
 
-```python
-import os
+    from typesafe_sdk import Noul, TypeSafeClient
 
-from typesafe_sdk import Noul, TypeSafeClient
+    client = TypeSafeClient(
+        api_key=os.environ["LANGSMITH_API_KEY"],
+        base_url="https://gateway.smith.langchain.com",
+    )
 
-client = TypeSafeClient(
-    api_key=os.environ["LANGSMITH_API_KEY"],
-    base_url="https://gateway.smith.langchain.com",
-)
+    response = client.system_one(
+        state="Hello!",
+        model="typesafe/jev-1.13.0",
+        questions={
+            "is_helpful": Noul(
+                instructions="Does this explain what an LLM gateway does?"
+            ),
+        },
+    )
+    ```
+  </Tab>
 
-response = client.system_one(
-    state="Hello!",
-    model="typesafe/jev-1.13.0",
-    questions={
-        "is_helpful": Noul(
-            instructions="Does this explain what an LLM gateway does?"
-        ),
-    },
-)
-```
+  <Tab title="JavaScript">
+    Install the TypeSafe SDK:
 
-</Tab>
-<Tab title="JavaScript">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install @typesafe-ai/sdk
+    ```
 
-Install the TypeSafe SDK:
+    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
 
-```bash
-npm install @typesafe-ai/sdk
-```
+    const client = new TypeSafeClient({
+      apiKey: process.env.LANGSMITH_API_KEY,
+      baseURL: "https://gateway.smith.langchain.com",
+    });
 
-```javascript
-import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+    const response = await client.systemOne({
+      state: "Hello!",
+      model: "typesafe/jev-1.13.0",
+      questions: {
+        is_helpful: noul("Does this explain what an LLM gateway does?"),
+      },
+    });
+    ```
+  </Tab>
 
-const client = new TypeSafeClient({
-  apiKey: process.env.LANGSMITH_API_KEY,
-  baseURL: "https://gateway.smith.langchain.com",
-});
-
-const response = await client.systemOne({
-  state: "Hello!",
-  model: "typesafe/jev-1.13.0",
-  questions: {
-    is_helpful: noul("Does this explain what an LLM gateway does?"),
-  },
-});
-```
-
-</Tab>
-<Tab title="cURL">
-
-```bash
-curl https://gateway.smith.langchain.com/v1/systemone \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "state": "Hello!",
-      "model": "typesafe/jev-1.13.0",
-      "questions": {
-        "is_helpful": {
-          "type": "noul",
-          "instructions": "Does this explain what an LLM gateway does?"
-        }
-      }
-    }'
-```
-
-</Tab>
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    curl https://gateway.smith.langchain.com/v1/systemone \
+        -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "state": "Hello!",
+          "model": "typesafe/jev-1.13.0",
+          "questions": {
+            "is_helpful": {
+              "type": "noul",
+              "instructions": "Does this explain what an LLM gateway does?"
+            }
+          }
+        }'
+    ```
+  </Tab>
 </Tabs>
 
 ## See also
 
-- [Admin setup](/langsmith/llm-gateway-admin-setup): Grant gateway access without configuring a provider secret for SemIf.
-- [TypeSafe integration](/oss/python/integrations/providers/typesafe): Use TypeSafe decision models through LangChain.
+* [Admin setup](/langsmith/llm-gateway-admin-setup): Grant gateway access without configuring a provider secret for SemIf.
+* [TypeSafe integration](/oss/python/integrations/providers/typesafe): Use TypeSafe decision models through LangChain.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

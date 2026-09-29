@@ -2,8 +2,10 @@
 
 # Spend policies
 
+Set cost limits on LLM usage across your organization and prevent runaway spend before it reaches providers.
+
 <Note>
-The LLM Gateway is in [beta](/langsmith/release-stages).
+  The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A spend policy defines a cost cap for a specific scope (organization, workspace, API key, or user) over a time window (monthly, weekly, daily, or hourly). The [LLM Gateway](/langsmith/llm-gateway) tracks spend in real time and blocks any request that would push spend past the cap, returning a `402` response:
@@ -18,48 +20,48 @@ The blocked request is traced to LangSmith with the policy violation recorded as
 
 Spend policies are evaluated from broadest to most specific. All matching policies are checked, and if any one returns a block, the request is rejected. You can set a policy as a default (applying a blanket spend cap to all workspaces, users, or API keys) or as a granular policy (individual limits or limits on a group of entities).
 
-| Scope | What it caps | Example |
-| --- | --- | --- |
-| **Organization** | Total spend across all workspaces in the org | "The entire org cannot spend more than $10,000/month on LLM calls" |
-| **Workspace** | Total spend within a single workspace or group of workspaces | "The workspaces related to R&D cannot spend more than $2,000/month" |
-| **API key** | Spend by a single API key or group of API keys (maps to a service or agent) | "The customer support agent keys cannot spend more than $500/month cumulatively" |
-| **User** | Spend by a single user or group of users (resolved from the API key's identity) | "No individual developer can spend more than $50/day" |
+| Scope            | What it caps                                                                    | Example                                                                           |
+| ---------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Organization** | Total spend across all workspaces in the org                                    | "The entire org cannot spend more than \$10,000/month on LLM calls"               |
+| **Workspace**    | Total spend within a single workspace or group of workspaces                    | "The workspaces related to R\&D cannot spend more than \$2,000/month"             |
+| **API key**      | Spend by a single API key or group of API keys (maps to a service or agent)     | "The customer support agent keys cannot spend more than \$500/month cumulatively" |
+| **User**         | Spend by a single user or group of users (resolved from the API key's identity) | "No individual developer can spend more than \$50/day"                            |
 
 ### Conflict resolution
 
-By default, LLM Gateway assesses the broadest scope first. If a granular policy applies, the most restrictive policy wins. Narrower scopes can only tighten limits, never loosen them. If an org-level policy caps spend at \$10,000/month and a workspace-level policy caps at \$15,000/month, the $10,000 org cap still applies.
+By default, LLM Gateway assesses the broadest scope first. If a granular policy applies, the most restrictive policy wins. Narrower scopes can only tighten limits, never loosen them. If an org-level policy caps spend at \$10,000/month and a workspace-level policy caps at \$15,000/month, the \$10,000 org cap still applies.
 
 ### Defaults vs. granular policies
 
 Spend policies have two aspects:
 
-1. **Sums across a dimension:** the total cap for that scope. Example: "This workspace's total spend cannot exceed $5,000/month."
-2. **Defaults for each member of a dimension:** a base limit that applies to every API key or user within a scope unless overridden. Example: "Each API key in this workspace gets a $200/month default cap." Individual API keys can receive additional policies that raise their specific limit, but no policy can loosen a cap set at a broader scope.
+1. **Sums across a dimension:** the total cap for that scope. Example: "This workspace's total spend cannot exceed \$5,000/month."
+2. **Defaults for each member of a dimension:** a base limit that applies to every API key or user within a scope unless overridden. Example: "Each API key in this workspace gets a \$200/month default cap." Individual API keys can receive additional policies that raise their specific limit, but no policy can loosen a cap set at a broader scope.
 
 ## Time windows
 
-| Window | Resets | Use case |
-| --- | --- | --- |
-| **Monthly** | First of each month | Budget alignment, overall cost control |
-| **Weekly** | Midnight UTC on the Monday of each week | weekly budgeting |
-| **Daily** | Midnight UTC | Prevent single-day cost spikes (for example, a coding agent in a retry loop overnight) |
-| **Hourly** | Top of each hour | Catch runaway agents quickly |
+| Window      | Resets                                  | Use case                                                                               |
+| ----------- | --------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Monthly** | First of each month                     | Budget alignment, overall cost control                                                 |
+| **Weekly**  | Midnight UTC on the Monday of each week | weekly budgeting                                                                       |
+| **Daily**   | Midnight UTC                            | Prevent single-day cost spikes (for example, a coding agent in a retry loop overnight) |
+| **Hourly**  | Top of each hour                        | Catch runaway agents quickly                                                           |
 
 You can apply multiple time windows to the same scope. For example, a workspace can have both a \$5,000/month cap and a \$500/day cap. Both are enforced independently.
 
 ## Create a spend policy
 
 <Warning>
-Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+  Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 </Warning>
 
 1. Go to **LLM Gateway** and select **Cost Controls**.
-1. Click **Create spend limit**.
-1. Select the scope (organization, workspace, API key, or user).
-1. (Optional) To apply the same default limit independently to every custom header value, apply the limit to every subject of the selected type by default, select **Separate limits by custom header**, and enter the header name.
-1. Set the time window (monthly, weekly, daily, or hourly).
-1. Set the spend cap in USD.
-1. Click **Create spend limit**.
+2. Click **Create spend limit**.
+3. Select the scope (organization, workspace, API key, or user).
+4. (Optional) To apply the same default limit independently to every custom header value, apply the limit to every subject of the selected type by default, select **Separate limits by custom header**, and enter the header name.
+5. Set the time window (monthly, weekly, daily, or hourly).
+6. Set the spend cap in USD.
+7. Click **Create spend limit**.
 
 Policies take effect immediately. The gateway evaluates them on every incoming request with sub-second enforcement latency.
 
@@ -79,16 +81,17 @@ This is useful for diagnosing whether a blocked request represents a genuine cos
 
 ## Next steps
 
-- [Per-customer policies](/langsmith/llm-gateway-header-policies): split a cap by a custom request header so each end customer gets its own limit.
-- [Data policy](/langsmith/llm-gateway-data-policy): add data policies alongside cost controls.
+* [Per-customer policies](/langsmith/llm-gateway-header-policies): split a cap by a custom request header so each end customer gets its own limit.
+* [Data policy](/langsmith/llm-gateway-data-policy): add data policies alongside cost controls.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-spend-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

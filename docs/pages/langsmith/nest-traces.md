@@ -12,7 +12,7 @@ The following outlines common causes for "split" traces when building with pytho
 
 ### Context propagation using asyncio
 
-When using async calls (especially with streaming) in Python versions < 3.11, you may encounter issues with trace nesting. This is because Python's `asyncio` only [added full support for passing context](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) in version 3.11.
+When using async calls (especially with streaming) in Python versions \< 3.11, you may encounter issues with trace nesting. This is because Python's `asyncio` only [added full support for passing context](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) in version 3.11.
 
 #### Why
 
@@ -26,7 +26,7 @@ LangChain and LangSmith SDK use [contextvars](https://docs.python.org/3/library/
 
    a) **Using LangGraph or LangChain** Pass the parent `config` to the child call:
 
-   ```python
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import asyncio
    from langchain_core.runnables import RunnableConfig, RunnableLambda
 
@@ -51,7 +51,7 @@ LangChain and LangSmith SDK use [contextvars](https://docs.python.org/3/library/
 
    b) **Using LangSmith Directly** Pass the run tree directly:
 
-   ```python
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import asyncio
    import langsmith as ls
 
@@ -77,7 +77,7 @@ LangChain and LangSmith SDK use [contextvars](https://docs.python.org/3/library/
 
    c) **Combining Decorated Code with LangGraph/LangChain** Use a combination of techniques for manual handoff:
 
-   ```python
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import asyncio
    import langsmith as ls
    from langchain_core.runnables import RunnableConfig, RunnableLambda
@@ -126,7 +126,7 @@ Python's contextvars start empty within new threads. Here are two approaches to 
 
    LangSmith provides a `ContextThreadPoolExecutor` that automatically handles context propagation:
 
-   ```python
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    from langsmith.utils import ContextThreadPoolExecutor
    from langsmith import traceable
 
@@ -147,7 +147,7 @@ Python's contextvars start empty within new threads. Here are two approaches to 
 
    Alternatively, you can manually pass the parent run tree to the inner function:
 
-   ```python
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    from langsmith import traceable, get_current_run_tree
    from concurrent.futures import ThreadPoolExecutor
 
@@ -172,13 +172,14 @@ In this approach, we use `get_current_run_tree()` to obtain the current run tree
 
 Both methods ensure that the inner function calls are correctly aggregated under the initial trace stack, even when executed in separate threads.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/nest-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

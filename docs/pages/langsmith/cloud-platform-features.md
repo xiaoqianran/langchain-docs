@@ -2,6 +2,8 @@
 
 # Cloud platform features
 
+Cloud-only platform features for LangSmith Deployment, including data regions, static IP addresses, payload limits, and deployment types.
+
 This page describes the platform features that apply only to [Cloud](/langsmith/cloud) deployments. For self-hosted equivalents, see [Deploy to self-hosted](/langsmith/deploy-to-self-hosted-overview).
 
 ## Data region
@@ -22,20 +24,28 @@ Use the following static IP addresses to allowlist traffic for each region:
 | -------------- | -------------- | -------------- | ------------- |
 | 35.197.29.146  | 34.90.213.236  | 34.40.236.16   | 3.13.80.97    |
 | 34.145.102.123 | 34.13.244.114  | 34.40.140.88   | 3.146.216.198 |
-| 34.169.45.153  | 34.32.180.189  | 34.151.88.209 | 16.59.72.244  |
-| 34.82.222.17   | 34.34.69.108   | 35.189.51.120 |               |
-| 35.227.171.135 | 34.32.145.240  | 34.40.172.39  |               |
-| 34.169.88.30   | 34.90.157.44   | 35.189.56.87  |               |
-| 34.19.93.202   | 34.141.242.180 | 35.189.17.201 |               |
-| 34.19.34.50    | 34.32.141.108  | 35.244.99.196 |               |
-| 34.59.244.194  | 34.12.178.175  | 34.40.149.177 |               |
-| 34.9.99.224    | 34.91.192.230  | 34.40.144.104 |               |
+| 34.169.45.153  | 34.32.180.189  | 34.151.88.209  | 16.59.72.244  |
+| 34.82.222.17   | 34.34.69.108   | 35.189.51.120  |               |
+| 35.227.171.135 | 34.32.145.240  | 34.40.172.39   |               |
+| 34.169.88.30   | 34.90.157.44   | 35.189.56.87   |               |
+| 34.19.93.202   | 34.141.242.180 | 35.189.17.201  |               |
+| 34.19.34.50    | 34.32.141.108  | 35.244.99.196  |               |
+| 34.59.244.194  | 34.12.178.175  | 34.40.149.177  |               |
+| 34.9.99.224    | 34.91.192.230  | 34.40.144.104  |               |
 | 34.68.27.146   | 34.32.209.237  | 34.151.130.182 |               |
-| 34.41.178.137  | 34.178.128.69  | 34.116.82.199 |               |
+| 34.41.178.137  | 34.178.128.69  | 34.116.82.199  |               |
 | 34.123.151.210 |                |                |               |
 | 34.135.61.140  |                |                |               |
 | 34.121.166.52  |                |                |               |
 | 34.31.121.70   |                |                |               |
+| 136.107.81.228 |                |                |               |
+| 136.107.155.54 |                |                |               |
+| 8.228.118.112  |                |                |               |
+| 136.70.239.145 |                |                |               |
+| 8.234.246.249  |                |                |               |
+| 35.221.47.168  |                |                |               |
+| 136.90.3.18    |                |                |               |
+| 34.48.88.158   |                |                |               |
 
 ## Payload size
 
@@ -47,14 +57,14 @@ The control plane offers two deployment types: Serverless and Dedicated. Each is
 
 Organizations still on previous pricing continue to create Development and Production deployments until October 1, 2026. Those types do not include scale to zero. To select them with the CLI, pass `--deployment-type dev` or `--deployment-type prod`. For pricing and the transition timeline, see [Manage billing](/langsmith/billing#langsmith-deployment-billing). For the full list of `--deployment-type` values, see [`langgraph deploy`](/langsmith/cli#deploy).
 
-| **Deployment type** | **Scaling** | **Database** | **Best for** |
-|---|---|---|---|
-| Serverless | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant | Background or latency-tolerant agents, and development/testing deployments |
-| Dedicated | Always-on, autoscales across replicas | Dedicated, with automatic backups and high availability | Production workloads in the critical path |
+| **Deployment type** | **Scaling**                                                | **Database**                                            | **Best for**                                                               |
+| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Serverless          | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant                                    | Background or latency-tolerant agents, and development/testing deployments |
+| Dedicated           | Always-on, autoscales across replicas                      | Dedicated, with automatic backups and high availability | Production workloads in the critical path                                  |
 
 <Warning>
-**Immutable deployment type**
-Once a deployment is created, the deployment type cannot be changed. You can still change its [size](#sizes).
+  **Immutable deployment type**
+  Once a deployment is created, the deployment type cannot be changed. You can still change its [size](#sizes).
 </Warning>
 
 ### Serverless
@@ -64,7 +74,7 @@ Serverless deployments are cost-optimized for background and latency-tolerant ag
 For workloads that need consistently low latency or guaranteed uptime, use Dedicated instead. Serverless deployments run on shared, multi-tenant infrastructure.
 
 <Note>
-Scale to zero is in [beta](/langsmith/release-stages) and is initially available only for deployments on the new usage-based pricing. The inactivity window before scale-down may change as the feature rolls out. See [Manage billing](/langsmith/billing#langsmith-deployment-billing) for pricing and the transition timeline.
+  Scale to zero is in [beta](/langsmith/release-stages) and is initially available only for deployments on the new usage-based pricing. The inactivity window before scale-down may change as the feature rolls out. See [Manage billing](/langsmith/billing#langsmith-deployment-billing) for pricing and the transition timeline.
 </Note>
 
 Agent Server is fault-tolerant: it automatically recovers from transient Redis or Postgres interruptions and retries failed background runs.
@@ -79,16 +89,16 @@ Resources for Dedicated deployments can be increased on a case-by-case basis dep
 
 Both Serverless and Dedicated are available in three sizes: Small, Medium, and Large. Each size sets the compute and memory provisioned for a deployment, and larger sizes autoscale to more replicas. The following table shows the resources included with each size:
 
-| Resource | Serverless S | Serverless M | Serverless L | Dedicated S | Dedicated M | Dedicated L |
-|---|---|---|---|---|---|---|
-| Runtime compute (vCPU) | 1 | 2 | 4 | 3 | 5 | 10 |
-| Runtime memory (GiB) | 2 | 5 | 9 | 6 | 12 | 24 |
-| Database compute (vCPU) | — | — | — | 1 | 2 | 4 |
-| Database memory (GiB) | — | — | — | 4 | 8 | 16 |
-| Storage | Shared | Shared | Shared | Auto-scaling | Auto-scaling | Auto-scaling |
+| Resource                | Serverless S | Serverless M | Serverless L | Dedicated S  | Dedicated M  | Dedicated L  |
+| ----------------------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
+| Runtime compute (vCPU)  | 1            | 2            | 4            | 3            | 5            | 10           |
+| Runtime memory (GiB)    | 2            | 5            | 9            | 6            | 12           | 24           |
+| Database compute (vCPU) | —            | —            | —            | 1            | 2            | 4            |
+| Database memory (GiB)   | —            | —            | —            | 4            | 8            | 16           |
+| Storage                 | Shared       | Shared       | Shared       | Auto-scaling | Auto-scaling | Auto-scaling |
 
 <Note>
-Runtime compute and memory are the total vCPU and memory provisioned across a deployment's containers, rounded to the nearest whole unit. Serverless deployments use a shared, multi-tenant database, so they have no dedicated database resources. Dedicated storage is an auto-scaling disk that grows with usage.
+  Runtime compute and memory are the total vCPU and memory provisioned across a deployment's containers, rounded to the nearest whole unit. Serverless deployments use a shared, multi-tenant database, so they have no dedicated database resources. Dedicated storage is an auto-scaling disk that grows with usage.
 </Note>
 
 For the price of each size, see the [pricing page](https://www.langchain.com/pricing), which includes a deployment cost calculator. For how Serverless and Dedicated deployments are billed, see [Manage billing](/langsmith/billing#langsmith-deployment-billing).
@@ -113,13 +123,14 @@ Autoscaling changes the number of replicas, but the CPU and memory available to 
 
 Application-level scaling levers (durability modes, async patterns, avoiding synchronous blocking, using `/join` instead of polling) apply to Cloud the same as to self-hosted. See [Scaling on self-hosted](/langsmith/agent-server-scale) for the underlying concepts; the Helm and resource configurations there do not apply to Cloud.
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

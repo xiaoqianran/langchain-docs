@@ -35,16 +35,17 @@ LangSmith支持多种认证方式，方便注册和登录。
 ### 无
 
 <Warning>
-基本认证上线后，该认证方式将被取消。
+  基本认证上线后，该认证方式将被取消。
 </Warning>如果启用零身份验证方法，则自托管安装不需要任何登录/注册。此配置仅应用于验证基础架构级别的安装，因为此模式中支持的功能集仅限于单个组织和工作区。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/authentication-methods.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -4,7 +4,7 @@
 
 # LangSmith控制平面
 
-_控制平面_是LangSmith管理部署的部分。它包括控制平面 UI（用户在其中创建和更新[Agent Servers](/langsmith/agent-server)）以及控制平面 API（支持 UI 并提供编程访问）。
+*控制平面*是LangSmith管理部署的部分。它包括控制平面 UI（用户在其中创建和更新[Agent Servers](/langsmith/agent-server)）以及控制平面 API（支持 UI 并提供编程访问）。
 
 当您通过控制平面进行更新时，更新将存储在控制平面状态中。 [data plane](/langsmith/data-plane)“监听器”通过调用控制平面 API 轮询这些更新。控制平面从不直接连接到数据平面。
 
@@ -70,13 +70,14 @@ _控制平面_是LangSmith管理部署的部分。它包括控制平面 UI（用
 
 删除部署时，跟踪和跟踪项目不会被删除。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>
