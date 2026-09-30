@@ -12,10 +12,10 @@ Deep Agents build on LangGraph's streaming infrastructure with first-class suppo
 
 What's possible with deep agent streaming:
 
-* <Icon icon="diagram-subtask" /> [**Stream subagent progress**](#subagent-progress)—track each subagent's execution as it runs in parallel.
-* <Icon icon="square-binary" /> [**Stream LLM tokens**](#llm-tokens)—stream tokens from the main agent and each subagent.
-* <Icon icon="screwdriver-wrench" /> [**Stream tool calls**](#tool-calls)—see tool calls and results from within subagent execution.
-* <Icon icon="table" /> [**Stream custom updates**](#custom-updates)—emit user-defined signals from inside subagent nodes.
+* [**Stream subagent progress**](#subagent-progress)—track each subagent's execution as it runs in parallel.
+* [**Stream LLM tokens**](#llm-tokens)—stream tokens from the main agent and each subagent.
+* [**Stream tool calls**](#tool-calls)—see tool calls and results from within subagent execution.
+* [**Stream custom updates**](#custom-updates)—emit user-defined signals from inside subagent nodes.
 
 ## Enable subgraph streaming
 
@@ -230,11 +230,11 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
 
 When `subgraphs` is enabled, each streaming event includes a **namespace** that identifies which agent produced it. The namespace is a path of node names and task IDs that represents the agent hierarchy.
 
-| Namespace                                  | Source                                                           |
-| ------------------------------------------ | ---------------------------------------------------------------- |
-| `()` (empty)                               | Main agent                                                       |
-| `("tools:abc123",)`                        | A subagent spawned by the main agent's `task` tool call `abc123` |
-| `("tools:abc123", "model_request:def456")` | The model request node inside a subagent                         |
+| Namespace | Source |
+| - | - |
+| `()` (empty) | Main agent |
+| `("tools:abc123",)` | A subagent spawned by the main agent's `task` tool call `abc123` |
+| `("tools:abc123", "model_request:def456")` | The model request node inside a subagent |
 
 Use namespaces to route events to the correct UI component:
 
@@ -1289,9 +1289,9 @@ See [Human-in-the-loop: Handle interrupts with streaming](/oss/python/deepagents
 
 With `subgraphs=True`, chunk shape depends on whether you pass one stream mode or several:
 
-| `stream_mode`                                          | Chunk shape               |
-| ------------------------------------------------------ | ------------------------- |
-| Single mode (for example `"updates"`)                  | `(namespace, data)`       |
+| `stream_mode` | Chunk shape |
+| - | - |
+| Single mode (for example `"updates"`) | `(namespace, data)` |
 | Multiple modes (for example `["messages", "updates"]`) | `(namespace, mode, data)` |
 
 Without `subgraphs`, a single mode yields `data` directly, and multiple modes yield `(mode, data)`.

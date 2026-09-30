@@ -42,19 +42,19 @@ result = await swr(
 )
 ```
 
-| Parameter   | Default             | Description                                                                                                         |
-| ----------- | ------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `fresh_for` | `timedelta(0)`      | Duration to treat a cached value as fresh. During this window, `swr` returns the cached value with no revalidation. |
-| `max_age`   | `timedelta(days=1)` | Maximum lifetime of a cached entry. After this, `swr` blocks on the loader before returning. Capped at 1 day.       |
+| Parameter | Default | Description |
+| - | - | - |
+| `fresh_for` | `timedelta(0)` | Duration to treat a cached value as fresh. During this window, `swr` returns the cached value with no revalidation. |
+| `max_age` | `timedelta(days=1)` | Maximum lifetime of a cached entry. After this, `swr` blocks on the loader before returning. Capped at 1 day. |
 
 ### How revalidation works
 
-| Cache state | Condition                    | Behavior                                                       |
-| ----------- | ---------------------------- | -------------------------------------------------------------- |
-| **Miss**    | Key not in cache             | Awaits `loader()`, stores result, returns it.                  |
-| **Fresh**   | `age < fresh_for`            | Returns cached value, no revalidation.                         |
-| **Stale**   | `fresh_for <= age < max_age` | Returns cached value immediately, triggers background refresh. |
-| **Expired** | `age >= max_age`             | Awaits `loader()`, stores result, returns it.                  |
+| Cache state | Condition | Behavior |
+| - | - | - |
+| **Miss** | Key not in cache | Awaits `loader()`, stores result, returns it. |
+| **Fresh** | `age < fresh_for` | Returns cached value, no revalidation. |
+| **Stale** | `fresh_for <= age < max_age` | Returns cached value immediately, triggers background refresh. |
+| **Expired** | `age >= max_age` | Awaits `loader()`, stores result, returns it. |
 
 ## Use with Pydantic models
 
@@ -154,11 +154,11 @@ Return the deserialized value, or `None` if the key does not exist or has expire
 async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> None
 ```
 
-| Parameter | Type                | Default  | Description                                                                   |
-| --------- | ------------------- | -------- | ----------------------------------------------------------------------------- |
-| `key`     | `str`               | required | The cache key                                                                 |
-| `value`   | `Any`               | required | Value to cache. Must be JSON-serializable                                     |
-| `ttl`     | `timedelta \| None` | `None`   | Time-to-live. The server caps this at 1 day. `None` or zero defaults to 1 day |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `key` | `str` | required | The cache key |
+| `value` | `Any` | required | Value to cache. Must be JSON-serializable |
+| `ttl` | `timedelta \| None` | `None` | Time-to-live. The server caps this at 1 day. `None` or zero defaults to 1 day |
 
 ## Next steps
 

@@ -252,24 +252,24 @@ The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-s
 
 ## Command reference
 
-| Command                                                          | Description                                                                                                             |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `langsmith sandbox snapshot list`                                | List snapshots.                                                                                                         |
-| `langsmith sandbox snapshot build <name> --docker-image <image>` | Build a snapshot from a Docker image.                                                                                   |
-| `langsmith sandbox snapshot capture <name> --box <sandbox>`      | Capture a snapshot from a running sandbox.                                                                              |
-| `langsmith sandbox snapshot get <snapshot-id>`                   | Inspect a snapshot.                                                                                                     |
-| `langsmith sandbox snapshot delete <snapshot-id>`                | Delete a snapshot.                                                                                                      |
-| `langsmith sandbox create <name>`                                | Create a sandbox with the default runtime.                                                                              |
-| `langsmith sandbox list`                                         | List sandboxes.                                                                                                         |
-| `langsmith sandbox get <name>`                                   | Inspect a sandbox.                                                                                                      |
-| `langsmith sandbox update <name>`                                | Update sandbox resources or proxy config.                                                                               |
-| `langsmith sandbox stop <name>`                                  | Stop a running sandbox while preserving filesystem state. A later `exec`, `console`, or service request wakes it again. |
-| `langsmith sandbox delete <name>`                                | Delete a sandbox.                                                                                                       |
-| `langsmith sandbox exec <name> -- <command>`                     | Run a one-off command inside a sandbox.                                                                                 |
-| `langsmith sandbox console <name>`                               | Open an interactive shell inside a sandbox.                                                                             |
-| `langsmith sandbox generate-download-url <name> --path <path>`   | Mint a link that downloads one sandbox file with no credential.                                                         |
-| `langsmith sandbox tunnel <name> --remote-port <port>`           | Forward a local TCP port to a sandbox port.                                                                             |
-| `langsmith sandbox ssh-setup <name>`                             | Configure local SSH access through `sandbox tunnel --stdio`.                                                            |
+| Command | Description |
+| - | - |
+| `langsmith sandbox snapshot list` | List snapshots. |
+| `langsmith sandbox snapshot build <name> --docker-image <image>` | Build a snapshot from a Docker image. |
+| `langsmith sandbox snapshot capture <name> --box <sandbox>` | Capture a snapshot from a running sandbox. |
+| `langsmith sandbox snapshot get <snapshot-id>` | Inspect a snapshot. |
+| `langsmith sandbox snapshot delete <snapshot-id>` | Delete a snapshot. |
+| `langsmith sandbox create <name>` | Create a sandbox with the default runtime. |
+| `langsmith sandbox list` | List sandboxes. |
+| `langsmith sandbox get <name>` | Inspect a sandbox. |
+| `langsmith sandbox update <name>` | Update sandbox resources or proxy config. |
+| `langsmith sandbox stop <name>` | Stop a running sandbox while preserving filesystem state. A later `exec`, `console`, or service request wakes it again. |
+| `langsmith sandbox delete <name>` | Delete a sandbox. |
+| `langsmith sandbox exec <name> -- <command>` | Run a one-off command inside a sandbox. |
+| `langsmith sandbox console <name>` | Open an interactive shell inside a sandbox. |
+| `langsmith sandbox generate-download-url <name> --path <path>` | Mint a link that downloads one sandbox file with no credential. |
+| `langsmith sandbox tunnel <name> --remote-port <port>` | Forward a local TCP port to a sandbox port. |
+| `langsmith sandbox ssh-setup <name>` | Configure local SSH access through `sandbox tunnel --stdio`. |
 
 ***
 

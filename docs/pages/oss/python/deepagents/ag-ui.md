@@ -92,15 +92,15 @@ AG-UI is an event stream. As a deep agent runs, the adapter translates its LangG
 
 A deep agent run maps onto many AG-UI event types. The main ones, among others:
 
-| Deep agent activity                          | AG-UI events                                                             |
-| -------------------------------------------- | ------------------------------------------------------------------------ |
-| Run lifecycle                                | `RUN_STARTED`, `RUN_FINISHED`, `RUN_ERROR`                               |
-| Graph node progress                          | `STEP_STARTED`, `STEP_FINISHED`                                          |
-| Assistant text                               | `TEXT_MESSAGE_START`, `TEXT_MESSAGE_CONTENT`, `TEXT_MESSAGE_END`         |
-| Tool calls                                   | `TOOL_CALL_START`, `TOOL_CALL_ARGS`, `TOOL_CALL_END`, `TOOL_CALL_RESULT` |
-| Reasoning                                    | `REASONING_START`, `REASONING_MESSAGE_CONTENT`, `REASONING_END`          |
-| Shared state (todos, subagents, custom keys) | `STATE_SNAPSHOT`, `STATE_DELTA`                                          |
-| Conversation history                         | `MESSAGES_SNAPSHOT`                                                      |
+| Deep agent activity | AG-UI events |
+| - | - |
+| Run lifecycle | `RUN_STARTED`, `RUN_FINISHED`, `RUN_ERROR` |
+| Graph node progress | `STEP_STARTED`, `STEP_FINISHED` |
+| Assistant text | `TEXT_MESSAGE_START`, `TEXT_MESSAGE_CONTENT`, `TEXT_MESSAGE_END` |
+| Tool calls | `TOOL_CALL_START`, `TOOL_CALL_ARGS`, `TOOL_CALL_END`, `TOOL_CALL_RESULT` |
+| Reasoning | `REASONING_START`, `REASONING_MESSAGE_CONTENT`, `REASONING_END` |
+| Shared state (todos, subagents, custom keys) | `STATE_SNAPSHOT`, `STATE_DELTA` |
+| Conversation history | `MESSAGES_SNAPSHOT` |
 
 State updates use `STATE_SNAPSHOT` for a full baseline and `STATE_DELTA` (JSON Patch, RFC 6902) for incremental changes, so a client can keep todos, plans, and subagent status in sync without re-sending the whole state on every step.
 

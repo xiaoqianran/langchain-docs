@@ -6,21 +6,21 @@ Configure inference providers and credentials for OpenWiki
 
 OpenWiki supports the following providers:
 
-| Provider            | Credential                              | Notes                                                                                   |
-| ------------------- | --------------------------------------- | --------------------------------------------------------------------------------------- |
-| `openai`            | `OPENAI_API_KEY`                        | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
-| `openai-chatgpt`    | ChatGPT OAuth tokens                    | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance                      |
-| `copilot`           | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT                 |
-| `openrouter`        | `OPENROUTER_API_KEY`                    | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist                                  |
-| `anthropic`         | `ANTHROPIC_API_KEY`                     | Optional `ANTHROPIC_BASE_URL`                                                           |
-| `gemini`            | `GEMINI_API_KEY`                        | Google AI Studio                                                                        |
-| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT`     | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`)                                 |
-| `bedrock`           | AWS credentials + region                | Explicit Bedrock keys or the AWS SDK default chain                                      |
-| `baseten`           | `BASETEN_API_KEY`                       | Optional `BASETEN_BASE_URL`                                                             |
-| `fireworks`         | `FIREWORKS_API_KEY`                     | Optional `FIREWORKS_BASE_URL`                                                           |
-| `nebius`            | `NEBIUS_API_KEY`                        | Nebius Token Factory                                                                    |
-| `nvidia`            | `NVIDIA_API_KEY`                        | Optional `NVIDIA_BASE_URL`                                                              |
-| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY`             | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID                             |
+| Provider | Credential | Notes |
+| - | - | - |
+| `openai` | `OPENAI_API_KEY` | Optional `OPENAI_BASE_URL` for OpenAI-compatible gateways that expose the Responses API |
+| `openai-chatgpt` | ChatGPT OAuth tokens | Sign in with ChatGPT; usage draws on Plus/Pro/Team Codex allowance |
+| `copilot` | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT |
+| `openrouter` | `OPENROUTER_API_KEY` | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist |
+| `anthropic` | `ANTHROPIC_API_KEY` | Optional `ANTHROPIC_BASE_URL` |
+| `gemini` | `GEMINI_API_KEY` | Google AI Studio |
+| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT` | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`) |
+| `bedrock` | AWS credentials + region | Explicit Bedrock keys or the AWS SDK default chain |
+| `baseten` | `BASETEN_API_KEY` | Optional `BASETEN_BASE_URL` |
+| `fireworks` | `FIREWORKS_API_KEY` | Optional `FIREWORKS_BASE_URL` |
+| `nebius` | `NEBIUS_API_KEY` | Nebius Token Factory |
+| `nvidia` | `NVIDIA_API_KEY` | Optional `NVIDIA_BASE_URL` |
+| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` | Requires `OPENAI_COMPATIBLE_BASE_URL` and a custom model ID |
 
 Credentials and defaults are stored in `~/.openwiki/.env`. Process environment values take priority over file values.
 
@@ -77,11 +77,11 @@ OPENWIKI_REASONING_EFFORT=high
 
 Leave it unset to preserve the provider default. Invalid provider, model, or effort combinations fail before a request is sent. An inherited value also fails when the active provider and model do not support it.
 
-| Provider         | Model                                          | Supported values                                | Request mapping                     |
-| ---------------- | ---------------------------------------------- | ----------------------------------------------- | ----------------------------------- |
-| `openai`         | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort`    |
-| `openai-chatgpt` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort`    |
-| `nvidia`         | `nvidia/nemotron-3-super-120b-a12b`            | `none`, `low`, `high`                           | Chat Completions `reasoning_effort` |
+| Provider | Model | Supported values | Request mapping |
+| - | - | - | - |
+| `openai` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
+| `openai-chatgpt` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
+| `nvidia` | `nvidia/nemotron-3-super-120b-a12b` | `none`, `low`, `high` | Chat Completions `reasoning_effort` |
 
 All other provider and model combinations, including OpenRouter, do not offer reasoning effort selection.
 

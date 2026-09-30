@@ -170,14 +170,14 @@ User billy@company.com signs in via SSO:
 
 ## User access quick reference
 
-| JIT enabled | Invites enabled | Pending invite | Result                                                          |
-| ----------- | --------------- | -------------- | --------------------------------------------------------------- |
-| ✓           | ✓               | Yes            | Invite claimed (invite configuration used)                      |
-| ✓           | ✓               | No             | Auto-provisioned (default SSO configuration)                    |
-| ✓           | ✗               | N/A            | Auto-provisioned (default SSO configuration)                    |
-| ✗           | ✓               | Yes            | Invite claimed                                                  |
-| ✗           | ✓               | No             | **Access denied** - must be invited                             |
-| ✗           | ✗               | N/A            | **Access denied** - must use [SCIM](#scim-integration) or admin |
+| JIT enabled | Invites enabled | Pending invite | Result |
+| - | - | - | - |
+| ✓ | ✓ | Yes | Invite claimed (invite configuration used) |
+| ✓ | ✓ | No | Auto-provisioned (default SSO configuration) |
+| ✓ | ✗ | N/A | Auto-provisioned (default SSO configuration) |
+| ✗ | ✓ | Yes | Invite claimed |
+| ✗ | ✓ | No | **Access denied** - must be invited |
+| ✗ | ✗ | N/A | **Access denied** - must use [SCIM](#scim-integration) or admin |
 
 ## Configure default SSO settings
 

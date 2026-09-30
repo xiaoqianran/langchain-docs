@@ -112,12 +112,12 @@ For per-run values such as request metadata or feature flags, use the normal Lan
 
 ## When to use tools
 
-| Concept                                                                        | Kind                  | How it reaches the agent                                                  |
-| ------------------------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------- |
-| **Tools**                                                                      | Application code      | Import and pass in the agent definition                                   |
+| Concept | Kind | How it reaches the agent |
+| - | - | - |
+| **Tools** | Application code | Import and pass in the agent definition |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** | Managed configuration | Declared in the MCP module under `tools/`; no import into the agent entry |
-| **[Skills](/langsmith/javascript/managed-deep-agents-skills)**                 | Managed context       | Procedures the agent loads when relevant                                  |
-| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)**     | Managed context       | Always-on system prompt                                                   |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** | Managed context | Procedures the agent loads when relevant |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 

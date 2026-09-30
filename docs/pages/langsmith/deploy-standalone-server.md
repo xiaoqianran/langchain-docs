@@ -10,10 +10,10 @@ This guide shows you how to deploy standalone [Agent Servers](/langsmith/agent-s
 
 You manage a simplified <Tooltip>data plane</Tooltip> made up of Agent Servers and their required backing services (PostgreSQL, Redis, etc.):
 
-| Component         | Responsibilities                                              | Where it runs       | Who manages it |
-| ----------------- | ------------------------------------------------------------- | ------------------- | -------------- |
-| **Control plane** | n/a                                                           | n/a                 | n/a            |
-| **Data plane**    | <ul><li>Agent Servers</li><li>Postgres, Redis, etc.</li></ul> | Your infrastructure | You            |
+| Component | Responsibilities | Where it runs | Who manages it |
+| - | - | - | - |
+| **Control plane** | n/a | n/a | n/a |
+| **Data plane** | <ul><li>Agent Servers</li><li>Postgres, Redis, etc.</li></ul> | Your infrastructure | You |
 
 This option gives you full control over scaling, deployment, and CI/CD pipelines, while still allowing optional integration with LangSmith for tracing and evaluation.
 

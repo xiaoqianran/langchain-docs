@@ -44,19 +44,19 @@ To upgrade,
 
 In v1, the react agent prebuilt is now in the langchain package. The table below outlines what functionality has changed:
 
-| Section                                            | What changed                                                                             |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| [Import path](#import-path)                        | Package moved from `@langchain/langgraph/prebuilts` to `langchain`                       |
-| [Prompts](#prompts)                                | Parameter renamed to `systemPrompt`, dynamic prompts use middleware                      |
-| [Pre-model hook](#pre-model-hook)                  | Replaced by middleware with `beforeModel` method                                         |
-| [Post-model hook](#post-model-hook)                | Replaced by middleware with `afterModel` method                                          |
-| [Custom state](#custom-state)                      | Defined in middleware, zod objects only                                                  |
-| [Model](#model)                                    | Dynamic selection via middleware, pre-bound models not supported                         |
-| [Tools](#tools)                                    | Tool error handling moved to middleware with `wrapToolCall`                              |
-| [Structured output](#structured-output)            | prompted output removed, use `toolStrategy`/`providerStrategy`                           |
-| [Streaming node name](#streaming-node-name-rename) | Node name changed from `"agent"` to `"model"`                                            |
-| [Runtime context](#runtime-context)                | `context` property instead of `config.configurable`                                      |
-| [Namespace](#simplified-package)                   | Streamlined to focus on agent building blocks, legacy code moved to `@langchain/classic` |
+| Section | What changed |
+| - | - |
+| [Import path](#import-path) | Package moved from `@langchain/langgraph/prebuilts` to `langchain` |
+| [Prompts](#prompts) | Parameter renamed to `systemPrompt`, dynamic prompts use middleware |
+| [Pre-model hook](#pre-model-hook) | Replaced by middleware with `beforeModel` method |
+| [Post-model hook](#post-model-hook) | Replaced by middleware with `afterModel` method |
+| [Custom state](#custom-state) | Defined in middleware, zod objects only |
+| [Model](#model) | Dynamic selection via middleware, pre-bound models not supported |
+| [Tools](#tools) | Tool error handling moved to middleware with `wrapToolCall` |
+| [Structured output](#structured-output) | prompted output removed, use `toolStrategy`/`providerStrategy` |
+| [Streaming node name](#streaming-node-name-rename) | Node name changed from `"agent"` to `"model"` |
+| [Runtime context](#runtime-context) | `context` property instead of `config.configurable` |
+| [Namespace](#simplified-package) | Streamlined to focus on agent building blocks, legacy code moved to `@langchain/classic` |
 
 ### Import path
 
@@ -701,12 +701,12 @@ The `langchain` package namespace is streamlined to focus on agent building bloc
 
 The v1 package includes:
 
-| Module      | What's available                              | Notes                              |
-| ----------- | --------------------------------------------- | ---------------------------------- |
-| Agents      | `createAgent`, `AgentState`                   | Core agent creation functionality  |
-| Messages    | Message types, content blocks, `trimMessages` | Re-exported from `@langchain/core` |
-| Tools       | `tool`, tool classes                          | Re-exported from `@langchain/core` |
-| Chat models | `initChatModel`, `BaseChatModel`              | Unified model initialization       |
+| Module | What's available | Notes |
+| - | - | - |
+| Agents | `createAgent`, `AgentState` | Core agent creation functionality |
+| Messages | Message types, content blocks, `trimMessages` | Re-exported from `@langchain/core` |
+| Tools | `tool`, tool classes | Re-exported from `@langchain/core` |
+| Chat models | `initChatModel`, `BaseChatModel` | Unified model initialization |
 
 ### `@langchain/classic`
 

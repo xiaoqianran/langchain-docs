@@ -11,7 +11,7 @@
 这将像往常一样运行您的应用程序和评估器并返回相同的输出，但不会将任何内容记录到LangSmith。这不仅包括实验结果，还包括应用和评估者痕迹。
 
 <Note>
-如果您想将结果上传到LangSmith，但还需要在脚本中处理它们（用于质量门、自定义聚合等），请参阅[Read experiment results locally](/langsmith/read-local-experiment-results)。
+  如果您想将结果上传到LangSmith，但还需要在脚本中处理它们（用于质量门、自定义聚合等），请参阅[Read experiment results locally](/langsmith/read-local-experiment-results)。
 </Note>
 
 ## 示例
@@ -20,7 +20,7 @@
 
 需要`langsmith>=0.2.0`。示例还使用了`pandas`。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 # 1. Create and/or select your dataset
@@ -64,23 +64,24 @@ df = experiment.to_pandas()
 df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concise"]]
 ```
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {'question': 'What is the largest mammal?'}
 {'answer': "What is the largest mammal? is a good question. I don't know the answer."}
 {'question': 'What do mammals and birds have in common?'}
 {'answer': "What do mammals and birds have in common? is a good question. I don't know the answer."}
-```|   |输入问题 |输出.answer |参考答案 |反馈是\_简洁的|
-| - | -------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------- | -------------------- |
-| 0 |最大的哺乳动物是什么？               |最大的哺乳动物是什么？这是一个好问题。我不知道答案。               |蓝鲸|假 |
+```| |输入问题 |输出.answer |参考答案 |反馈是\_简洁的|
+| - | - | - | - | - |
+| 0 |最大的哺乳动物是什么？ |最大的哺乳动物是什么？这是一个好问题。我不知道答案。 |蓝鲸|假 |
 | 1 |哺乳动物和鸟类有什么共同点？ |哺乳动物和鸟类有什么共同点？这是一个好问题。我不知道答案。 |他们都是热血人|假 |
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

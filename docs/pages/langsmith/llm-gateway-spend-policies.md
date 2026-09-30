@@ -20,12 +20,12 @@ The blocked request is traced to LangSmith with the policy violation recorded as
 
 Spend policies are evaluated from broadest to most specific. All matching policies are checked, and if any one returns a block, the request is rejected. You can set a policy as a default (applying a blanket spend cap to all workspaces, users, or API keys) or as a granular policy (individual limits or limits on a group of entities).
 
-| Scope            | What it caps                                                                    | Example                                                                           |
-| ---------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Organization** | Total spend across all workspaces in the org                                    | "The entire org cannot spend more than \$10,000/month on LLM calls"               |
-| **Workspace**    | Total spend within a single workspace or group of workspaces                    | "The workspaces related to R\&D cannot spend more than \$2,000/month"             |
-| **API key**      | Spend by a single API key or group of API keys (maps to a service or agent)     | "The customer support agent keys cannot spend more than \$500/month cumulatively" |
-| **User**         | Spend by a single user or group of users (resolved from the API key's identity) | "No individual developer can spend more than \$50/day"                            |
+| Scope | What it caps | Example |
+| - | - | - |
+| **Organization** | Total spend across all workspaces in the org | "The entire org cannot spend more than \$10,000/month on LLM calls" |
+| **Workspace** | Total spend within a single workspace or group of workspaces | "The workspaces related to R\&D cannot spend more than \$2,000/month" |
+| **API key** | Spend by a single API key or group of API keys (maps to a service or agent) | "The customer support agent keys cannot spend more than \$500/month cumulatively" |
+| **User** | Spend by a single user or group of users (resolved from the API key's identity) | "No individual developer can spend more than \$50/day" |
 
 ### Conflict resolution
 
@@ -40,12 +40,12 @@ Spend policies have two aspects:
 
 ## Time windows
 
-| Window      | Resets                                  | Use case                                                                               |
-| ----------- | --------------------------------------- | -------------------------------------------------------------------------------------- |
-| **Monthly** | First of each month                     | Budget alignment, overall cost control                                                 |
-| **Weekly**  | Midnight UTC on the Monday of each week | weekly budgeting                                                                       |
-| **Daily**   | Midnight UTC                            | Prevent single-day cost spikes (for example, a coding agent in a retry loop overnight) |
-| **Hourly**  | Top of each hour                        | Catch runaway agents quickly                                                           |
+| Window | Resets | Use case |
+| - | - | - |
+| **Monthly** | First of each month | Budget alignment, overall cost control |
+| **Weekly** | Midnight UTC on the Monday of each week | weekly budgeting |
+| **Daily** | Midnight UTC | Prevent single-day cost spikes (for example, a coding agent in a retry loop overnight) |
+| **Hourly** | Top of each hour | Catch runaway agents quickly |
 
 You can apply multiple time windows to the same scope. For example, a workspace can have both a \$5,000/month cap and a \$500/day cap. Both are enforced independently.
 

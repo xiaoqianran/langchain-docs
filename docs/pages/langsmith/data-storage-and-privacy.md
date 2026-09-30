@@ -53,11 +53,11 @@ Importantly, no application data or code (or other sensitive configuration detai
 
 In summary, you can opt-out of server-side telemetry by turning off CLI analytics and disabling tracing.
 
-| Variable                       | Purpose                   | Default                |
-| ------------------------------ | ------------------------- | ---------------------- |
-| `LANGGRAPH_CLI_NO_ANALYTICS=1` | Disable CLI analytics     | Analytics enabled      |
-| `LANGSMITH_API_KEY`            | Enable LangSmith tracing  | Tracing disabled       |
-| `LANGSMITH_TRACING=false`      | Disable LangSmith tracing | Depends on environment |
+| Variable | Purpose | Default |
+| - | - | - |
+| `LANGGRAPH_CLI_NO_ANALYTICS=1` | Disable CLI analytics | Analytics enabled |
+| `LANGSMITH_API_KEY` | Enable LangSmith tracing | Tracing disabled |
+| `LANGSMITH_TRACING=false` | Disable LangSmith tracing | Depends on environment |
 
 ***
 

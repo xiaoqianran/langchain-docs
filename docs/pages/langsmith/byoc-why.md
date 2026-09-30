@@ -21,13 +21,13 @@ BYOC is for organizations that want the data ownership and network isolation of 
 
 The table below compares the two deployment models:
 
-| Dimension         | BYOC                                                                                                                   | Self-hosted                                                                                                         |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **Primary value** | Customer-owned data plane with a managed LangSmith operating model                                                     | Maximum control over the full LangSmith deployment                                                                  |
-| **Time to value** | Faster: provision the account and role, then LangChain provisions the supported data plane architecture                | Longer: you design, provision, connect, secure, and operate the full stack                                          |
-| **Operations**    | LangChain owns more of the product operating model, upgrade path, and supportable infrastructure pattern               | You own deployment, upgrades, scaling, monitoring, and incident response for the full stack                         |
-| **Architecture**  | Standardized and close to LangChain SaaS production architecture                                                       | More flexible, but easier to drift from supported patterns                                                          |
-| **Best fit**      | Teams that need data isolation and private networking, but do not want to operate every LangSmith component themselves | Teams that require full-stack ownership, unsupported infrastructure patterns, or cannot use a managed control plane |
+| Dimension | BYOC | Self-hosted |
+| - | - | - |
+| **Primary value** | Customer-owned data plane with a managed LangSmith operating model | Maximum control over the full LangSmith deployment |
+| **Time to value** | Faster: provision the account and role, then LangChain provisions the supported data plane architecture | Longer: you design, provision, connect, secure, and operate the full stack |
+| **Operations** | LangChain owns more of the product operating model, upgrade path, and supportable infrastructure pattern | You own deployment, upgrades, scaling, monitoring, and incident response for the full stack |
+| **Architecture** | Standardized and close to LangChain SaaS production architecture | More flexible, but easier to drift from supported patterns |
+| **Best fit** | Teams that need data isolation and private networking, but do not want to operate every LangSmith component themselves | Teams that require full-stack ownership, unsupported infrastructure patterns, or cannot use a managed control plane |
 
 ## Move from self-hosted to BYOC
 

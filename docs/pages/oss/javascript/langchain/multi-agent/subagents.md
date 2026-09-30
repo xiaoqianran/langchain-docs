@@ -83,22 +83,22 @@ const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callRe
 
 When implementing the subagents pattern, you'll make several key design choices. This table summarizes the options—each is covered in detail in the sections below.
 
-| Decision                                  | Options                                                                                |
-| ----------------------------------------- | -------------------------------------------------------------------------------------- |
-| [**Sync vs. async**](#sync-vs-async)      | Sync (blocking) vs. async (background)                                                 |
-| [**Tool patterns**](#tool-patterns)       | Tool per agent vs. single dispatch tool                                                |
-| [**Subagent specs**](#subagent-specs)     | System prompt vs. enum constraint vs. tool-based discovery (single dispatch tool only) |
-| [**Subagent inputs**](#subagent-inputs)   | Query only vs. full context                                                            |
-| [**Subagent outputs**](#subagent-outputs) | Subagent result vs full conversation history                                           |
+| Decision | Options |
+| - | - |
+| [**Sync vs. async**](#sync-vs-async) | Sync (blocking) vs. async (background) |
+| [**Tool patterns**](#tool-patterns) | Tool per agent vs. single dispatch tool |
+| [**Subagent specs**](#subagent-specs) | System prompt vs. enum constraint vs. tool-based discovery (single dispatch tool only) |
+| [**Subagent inputs**](#subagent-inputs) | Query only vs. full context |
+| [**Subagent outputs**](#subagent-outputs) | Subagent result vs full conversation history |
 
 ## Sync vs. async
 
 Subagent execution can be **synchronous** (blocking) or **asynchronous** (background). Your choice depends on whether the main agent needs the result to continue.
 
-| Mode      | Main agent behavior                         | Best for                               | Tradeoff                            |
-| --------- | ------------------------------------------- | -------------------------------------- | ----------------------------------- |
-| **Sync**  | Waits for subagent to complete              | Main agent needs result to continue    | Simple, but blocks the conversation |
-| **Async** | Continues while subagent runs in background | Independent tasks, user shouldn't wait | Responsive, but more complex        |
+| Mode | Main agent behavior | Best for | Tradeoff |
+| - | - | - | - |
+| **Sync** | Waits for subagent to complete | Main agent needs result to continue | Simple, but blocks the conversation |
+| **Async** | Continues while subagent runs in background | Independent tasks, user shouldn't wait | Responsive, but more complex |
 
 <Tip>
   Not to be confused with Python's `async`/`await`. Here, "async" means the main agent kicks off a background job (typically in a separate process or service) and continues without blocking.
@@ -185,9 +185,9 @@ sequenceDiagram
 
 There are two main ways to expose subagents as tools:
 
-| Pattern                                           | Best for                                                      | Trade-off                                         |
-| ------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------- |
-| [**Tool per agent**](#tool-per-agent)             | Fine-grained control over each subagent's input/output        | More setup, but more customization                |
+| Pattern | Best for | Trade-off |
+| - | - | - |
+| [**Tool per agent**](#tool-per-agent) | Fine-grained control over each subagent's input/output | More setup, but more customization |
 | [**Single dispatch tool**](#single-dispatch-tool) | Many agents, distributed teams, convention over configuration | Simpler composition, less per-agent customization |
 
 ### Tool per agent
@@ -349,11 +349,11 @@ graph LR
 
 Control how context flows between the main agent and its subagents:
 
-| Category                                  | Purpose                                                  | Impacts                      |
-| ----------------------------------------- | -------------------------------------------------------- | ---------------------------- |
-| [**Subagent specs**](#subagent-specs)     | Ensure subagents are invoked when they should be         | Main agent routing decisions |
-| [**Subagent inputs**](#subagent-inputs)   | Ensure subagents can execute well with optimized context | Subagent performance         |
-| [**Subagent outputs**](#subagent-outputs) | Ensure the supervisor can act on subagent results        | Main agent performance       |
+| Category | Purpose | Impacts |
+| - | - | - |
+| [**Subagent specs**](#subagent-specs) | Ensure subagents are invoked when they should be | Main agent routing decisions |
+| [**Subagent inputs**](#subagent-inputs) | Ensure subagents can execute well with optimized context | Subagent performance |
+| [**Subagent outputs**](#subagent-outputs) | Ensure the supervisor can act on subagent results | Main agent performance |
 
 See also our comprehensive guide on [context engineering](/oss/javascript/langchain/context-engineering) for agents.
 
@@ -367,11 +367,11 @@ The **names** and **descriptions** associated with subagents are the primary way
 For the [single dispatch tool](#single-dispatch-tool) design, you must additionally provide the main agent with information about the subagents it can invoke.
 You can provide this information in different ways based on the number of agents and whether your registry is static or dynamic:
 
-| Method                        | Best for                                 | Tradeoff                                                             |
-| ----------------------------- | ---------------------------------------- | -------------------------------------------------------------------- |
-| **System prompt enumeration** | Small, static agent lists (\< 10 agents) | Simple, but requires prompt updates when agents change               |
-| **Enum constraint**           | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
-| **Tool-based discovery**      | Large or dynamic agent registries        | Flexible and scalable, but adds complexity                           |
+| Method | Best for | Tradeoff |
+| - | - | - |
+| **System prompt enumeration** | Small, static agent lists (\< 10 agents) | Simple, but requires prompt updates when agents change |
+| **Enum constraint** | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
+| **Tool-based discovery** | Large or dynamic agent registries | Flexible and scalable, but adds complexity |
 
 #### System prompt enumeration
 
@@ -496,10 +496,10 @@ const callSubagent1 = tool(
 
 [Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) names these patterns `mode: "isolated"` (default) and `mode: "fork"`, and implements forking for you: a forked subagent receives the parent's full message history (including tool calls) and system prompt.
 
-| Mode                   | Subagent receives                                                          | Best for                                     | Tradeoff                                                                     |
-| ---------------------- | -------------------------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- |
-| **Isolated** (default) | Only the task description                                                  | Focused work that needs little prior context | Context isolation, but re-derives everything the parent already did          |
-| **Forked**             | The parent's conversation history (and, in Deep Agents, the system prompt) | Continuing a task the parent already started | Seeded with prior context, at the cost of a larger prompt and less isolation |
+| Mode | Subagent receives | Best for | Tradeoff |
+| - | - | - | - |
+| **Isolated** (default) | Only the task description | Focused work that needs little prior context | Context isolation, but re-derives everything the parent already did |
+| **Forked** | The parent's conversation history (and, in Deep Agents, the system prompt) | Continuing a task the parent already started | Seeded with prior context, at the cost of a larger prompt and less isolation |
 
 ### Subagent outputs
 

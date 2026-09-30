@@ -159,29 +159,29 @@ Finally, specify the path to your factory in `langgraph.json`:
 
 Your factory function receives a `ServerRuntime` instance with the following attributes:
 
-| Attribute        | Type               | Description                                                                                                       |
-| ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `access_context` | `str`              | Why the factory was called: `"threads.create_run"`, `"threads.update"`, `"threads.read"`, or `"assistants.read"`. |
-| `user`           | `BaseUser \| None` | The authenticated user, or `None` if no [custom auth](/langsmith/custom-auth) is configured.                      |
-| `store`          | `BaseStore`        | The store instance for persistence and memory.                                                                    |
+| Attribute | Type | Description |
+| - | - | - |
+| `access_context` | `str` | Why the factory was called: `"threads.create_run"`, `"threads.update"`, `"threads.read"`, or `"assistants.read"`. |
+| `user` | `BaseUser \| None` | The authenticated user, or `None` if no [custom auth](/langsmith/custom-auth) is configured. |
+| `store` | `BaseStore` | The store instance for persistence and memory. |
 
 **Methods:**
 
-| Method              | Description                                                                                                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ensure_user()`     | Returns the authenticated user. Raises `PermissionError` if no user is provided.                                                                                                |
+| Method | Description |
+| - | - |
+| `ensure_user()` | Returns the authenticated user. Raises `PermissionError` if no user is provided. |
 | `execution_runtime` | Returns the execution runtime when `access_context` is `"threads.create_run"`, or `None` otherwise. Use this to conditionally set up expensive resources only during execution. |
 
 ### Access contexts
 
 The server calls your factory in several contexts beyond just executing runs. In all contexts, the returned graph should have the **same topology** (nodes, edges, state schema). A mismatched topology in write contexts (`threads.create_run`, `threads.update`) can cause incorrect state updates. In read contexts (`threads.read`, `assistants.read`), a mismatch affects reported pending tasks, schemas, and visualizations but won't corrupt data. Use `execution_runtime` to conditionally set up expensive resources without changing the graph structure.
 
-| Context              | Description                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------- |
-| `threads.create_run` | Full graph execution. `execution_runtime` is available.                                                 |
-| `threads.update`     | State update via `aupdate_state`. Does not execute node functions, but it can change the pending tasks. |
-| `threads.read`       | State reads via `aget_state` / `aget_state_history`.                                                    |
-| `assistants.read`    | Schema and graph introspection for visualization, MCP, A2A, etc.                                        |
+| Context | Description |
+| - | - |
+| `threads.create_run` | Full graph execution. `execution_runtime` is available. |
+| `threads.update` | State update via `aupdate_state`. Does not execute node functions, but it can change the pending tasks. |
+| `threads.read` | State reads via `aget_state` / `aget_state_history`. |
+| `assistants.read` | Schema and graph introspection for visualization, MCP, A2A, etc. |
 
 ## Customize tracing per graph
 

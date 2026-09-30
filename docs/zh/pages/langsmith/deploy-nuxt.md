@@ -90,7 +90,7 @@
 ### 最低（流媒体聊天）这三个端点足以与 `@langchain/vue` 的 `HttpAgentServerAdapter` 运行单线程流式聊天：
 
 |方法|路径|目的|
-| -------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受协议命令（`run.start`，...）并启动代理运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
 | `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
@@ -99,8 +99,10 @@
 
 ### 可选（线程侧边栏）
 
-此示例还实现了线程历史记录侧边栏的端点。如果您的 UI 不需要多线程管理，请忽略它们：|方法|路径|目的|
-| -------- | -------------------------------- | ------------------------------------------------------------------ |
+此示例还实现了线程历史记录侧边栏的端点。如果您的 UI 不需要多线程管理，请忽略它们：
+
+|方法|路径|目的|
+| - | - | - |
 | `GET` | `/api/threads` |列出检查点已知的线程 |
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录（代理协议）|
@@ -152,12 +154,12 @@ flowchart TB
 4. 子代理 (`task`) 运行时发出命名空间事件，表现为 `stream.subagents`。
 
 ## Nitro 后端设计|关注|实施|
-| -------------- | ------------------------------------------------------------------ |
+| - | - |
 |前端 | `app/` 中的 Vue 组件（针对 SSE 封装在 `<ClientOnly>` 中）|
 | API层| `server/api/threads/` 中的 Nitro 路线处理程序 |
 |运行时 | Node.js（Nitro 预设取决于部署目标）|
 |上交所回放 |进程本地 `LocalThreadSession` (`server/utils/session.ts`) |
-|代理运行|相同的硝基工艺；事件缓冲在 LangGraph `StreamChannel` |
+|代理运行 |相同的硝基工艺；事件缓冲在 LangGraph `StreamChannel` |
 |线程存储 |内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) |
 |秘密 | `.env`本地；生产中的主机环境变量|
 
@@ -165,15 +167,15 @@ flowchart TB
 
 ## 生产坚持
 
-该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/utils/runtime.ts`)。这适用于本地开发和单实例服务器，但在无服务器或多实例主机上，对话状态在冷启动或副本中**不持久**。对于生产，换入[durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
+该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/utils/runtime.ts`)。这适用于本地开发和单实例服务器，但在无服务器或多实例主机上，对话状态在冷启动或副本中**不持久**。
+
+对于生产，换入[durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
 |套餐 |后端 |
-| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| - | - |
 | [⟦T58⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T60⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
-| [⟦T62⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |
-
-替换`server/agent/index.ts`中的`MemorySaver`，并将新的检查指针传递给`createDeepAgent`。 Nitro 路线处理程序和 `server/utils/threads.ts` 助手保持不变。
+| [⟦T62⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |替换`server/agent/index.ts`中的`MemorySaver`，并将新的检查指针传递给`createDeepAgent`。 Nitro 路线处理程序和 `server/utils/threads.ts` 助手保持不变。
 
 您还需要 `server/utils/runtime.ts` 中的共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。
 
@@ -195,22 +197,24 @@ pnpm preview    # preview the production build
 pnpm typecheck  # vue-tsc over the project
 ```
 
-## 项目布局<AccordionGroup>
+## 项目布局
+
+<AccordionGroup>
   <Accordion title="Project structure">
     * `server/agent/` — 深度代理 (`createDeepAgent`)，带有 `researcher` 和 `math-whiz` 子代理、模拟工具和 `stripReasoningReplay` 中间件。
     * `server/utils/` — 协议服务器逻辑：`session.ts`（SSE 运行）、`threads.ts`（检查指针支持的状态）、`serialize.ts`、`runtime.ts`。
     * `server/api/threads/` — 上述协议端点的 Nitro 路由处理程序。
     * `app/components/` — 使用 `@langchain/vue` 的 Vue 聊天 UI（`ChatApp`、`Chat`、`ThreadHistory`、`SubagentList`、`MessageReasoning`、…）。
     * `app/utils/threads.ts` — 服务器驱动的线程助手和 LangGraph SDK 引导程序。
-  </Accordion>
-
-  <Accordion title="Backend details">
+  </Accordion><Accordion title="Backend details">
     * `server/agent/index.ts` — 协调器通过 Responses API 使用推理模型；使用工具的子代理使用聊天完成（以避免通过检查点重放推理项）。
     * `server/agent/middleware.ts` — 重建来自 `content` + `tool_calls` 的先前辅助消息，因此过时的推理 ID 永远不会重播到响应 API。
     * `server/utils/session.ts` — `LocalThreadSession` 缓冲协议事件并通过 `matchesSubscription` 通过 SSE 输出匹配帧。
     * `server/api/threads/index.get.ts` — `GET /api/threads`，检查指针支持的线程列表。
     * `server/api/threads/[threadId]/…` — `commands`、`stream`、`state` (GET/POST)、`history` 和 `DELETE` 的处理程序。
-  </Accordion><Accordion title="Frontend details">
+  </Accordion>
+
+  <Accordion title="Frontend details">
     * `app/components/ChatThread.vue` — 构建 `HttpAgentServerAdapter` 并调用 `provideStream({ transport, threadId })`。
     * `app/components/Chat.vue` — 带有作曲家和每个子代理详细信息视图（带有面包屑）的消息视图。
     * `app/components/SubagentList.vue` / `SubagentDetail.vue` — 内联子代理卡和作用域子代理聊天（`useMessages` 绑定到命名空间）。

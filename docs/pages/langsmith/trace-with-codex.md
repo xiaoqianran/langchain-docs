@@ -39,16 +39,16 @@ Tracing is disabled until either `TRACE_TO_LANGSMITH` is `"true"` or `enabled` i
 
 The plugin reads Codex-specific variables first, then falls back to the generic LangSmith SDK variables.
 
-| Variable                         | Required    | Default                           | Description                                                                                                   |
-| -------------------------------- | ----------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `TRACE_TO_LANGSMITH`             | Yes         | -                                 | Set to `"true"` to enable tracing.                                                                            |
-| `LANGSMITH_CODEX_API_KEY`        | Conditional | -                                 | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
-| `LANGSMITH_CODEX_ENDPOINT`       | No          | `https://api.smith.langchain.com` | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`.                                                        |
-| `LANGSMITH_CODEX_PROJECT`        | No          | `codex`                           | LangSmith project name. Falls back to `LANGSMITH_PROJECT`.                                                    |
-| `LANGSMITH_CODEX_METADATA`       | No          | -                                 | JSON object merged into root trace metadata. Falls back to `LANGSMITH_METADATA`.                              |
-| `LANGSMITH_CODEX_RUNS_ENDPOINTS` | No          | -                                 | JSON array of replica destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`.                                 |
-| `LANGSMITH_CODEX_REDACT`         | No          | `true`                            | Set to a falsy value to disable secret redaction. Falls back to `LANGSMITH_REDACT`.                           |
-| `LANGSMITH_CODEX_REDACT_EXTRA`   | No          | -                                 | JSON array of extra `{ pattern, replace }` redaction rules. Falls back to `LANGSMITH_REDACT_EXTRA`.           |
+| Variable | Required | Default | Description |
+| - | - | - | - |
+| `TRACE_TO_LANGSMITH` | Yes | - | Set to `"true"` to enable tracing. |
+| `LANGSMITH_CODEX_API_KEY` | Conditional | - | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
+| `LANGSMITH_CODEX_ENDPOINT` | No | `https://api.smith.langchain.com` | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`. |
+| `LANGSMITH_CODEX_PROJECT` | No | `codex` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
+| `LANGSMITH_CODEX_METADATA` | No | - | JSON object merged into root trace metadata. Falls back to `LANGSMITH_METADATA`. |
+| `LANGSMITH_CODEX_RUNS_ENDPOINTS` | No | - | JSON array of replica destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`. |
+| `LANGSMITH_CODEX_REDACT` | No | `true` | Set to a falsy value to disable secret redaction. Falls back to `LANGSMITH_REDACT`. |
+| `LANGSMITH_CODEX_REDACT_EXTRA` | No | - | JSON array of extra `{ pattern, replace }` redaction rules. Falls back to `LANGSMITH_REDACT_EXTRA`. |
 
 Add the variables to your shell configuration file (`~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`):
 
@@ -75,16 +75,16 @@ Use `<project>/.codex/langsmith.json` for project-level settings or `~/.codex/la
 }
 ```
 
-| Field                | Environment variable                                         | Default           | Description                                                         |
-| -------------------- | ------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------- |
-| `enabled`            | `TRACE_TO_LANGSMITH`                                         | `false`           | Set to `true` to enable tracing.                                    |
-| `api_key`            | `LANGSMITH_CODEX_API_KEY`, `LANGSMITH_API_KEY`               | -                 | LangSmith API key.                                                  |
-| `api_url`            | `LANGSMITH_CODEX_ENDPOINT`, `LANGSMITH_ENDPOINT`             | LangSmith default | LangSmith API URL.                                                  |
-| `project`            | `LANGSMITH_CODEX_PROJECT`, `LANGSMITH_PROJECT`               | `codex`           | LangSmith project name.                                             |
-| `metadata`           | `LANGSMITH_CODEX_METADATA`, `LANGSMITH_METADATA`             | -                 | Object merged into root trace metadata.                             |
-| `replicas`           | `LANGSMITH_CODEX_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | -                 | Additional LangSmith destinations to replicate traces to.           |
-| `redact`             | `LANGSMITH_CODEX_REDACT`, `LANGSMITH_REDACT`                 | `true`            | Set to `false` to disable [secret redaction](#secret-redaction).    |
-| `redact_extra_rules` | `LANGSMITH_CODEX_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA`     | -                 | Extra `{ pattern, replace }` rules applied after the built-in ones. |
+| Field | Environment variable | Default | Description |
+| - | - | - | - |
+| `enabled` | `TRACE_TO_LANGSMITH` | `false` | Set to `true` to enable tracing. |
+| `api_key` | `LANGSMITH_CODEX_API_KEY`, `LANGSMITH_API_KEY` | - | LangSmith API key. |
+| `api_url` | `LANGSMITH_CODEX_ENDPOINT`, `LANGSMITH_ENDPOINT` | LangSmith default | LangSmith API URL. |
+| `project` | `LANGSMITH_CODEX_PROJECT`, `LANGSMITH_PROJECT` | `codex` | LangSmith project name. |
+| `metadata` | `LANGSMITH_CODEX_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
+| `replicas` | `LANGSMITH_CODEX_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
+| `redact` | `LANGSMITH_CODEX_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
+| `redact_extra_rules` | `LANGSMITH_CODEX_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
 
 Keep config files that include API keys out of version control.
 
@@ -137,12 +137,12 @@ Tracing to multiple [replicas](/langsmith/log-traces-to-project) is useful for:
 
 Each replica object supports the following fields:
 
-| Field         | Required | Description                                                                 |
-| ------------- | -------- | --------------------------------------------------------------------------- |
-| `apiUrl`      | Yes      | LangSmith API URL (typically `https://api.smith.langchain.com`).            |
-| `apiKey`      | Yes      | API key for the destination workspace.                                      |
-| `projectName` | Yes      | Project name in the destination workspace.                                  |
-| `updates`     | No       | Optional run fields to override on replicated runs, such as extra metadata. |
+| Field | Required | Description |
+| - | - | - |
+| `apiUrl` | Yes | LangSmith API URL (typically `https://api.smith.langchain.com`). |
+| `apiKey` | Yes | API key for the destination workspace. |
+| `projectName` | Yes | Project name in the destination workspace. |
+| `updates` | No | Optional run fields to override on replicated runs, such as extra metadata. |
 
 ## Secret redaction
 

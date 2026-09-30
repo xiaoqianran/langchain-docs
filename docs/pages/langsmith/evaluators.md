@@ -16,18 +16,18 @@ In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=ct
 
 The evaluators table shows the following columns:
 
-| Column                            | Description                                                                                                                                                                     |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Name                              | The evaluator name                                                                                                                                                              |
-| Type                              | **LLM as a judge** or **Code**. Composite score evaluators are scoped to individual tracing projects and datasets and do not appear here.                                       |
-| Feedback Key                      | The feedback key the evaluator produces                                                                                                                                         |
-| Projects & Datasets               | Tracing projects and datasets this evaluator is attached to                                                                                                                     |
-| Evaluator Trace Count (this week) | Number of traces this evaluator ran on in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules.             |
-| Spend (this week)                 | Estimated USD spend for this evaluator in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules.             |
-| Spend Status                      | Whether the evaluator is **Under limits**, **Unlimited**, or has hit one or more configured spend limits. Only shown when spend tracking is enabled; **–** for Code evaluators. |
-| Created By                        | The workspace member who created the evaluator                                                                                                                                  |
-| Updated At                        | When the evaluator was last modified                                                                                                                                            |
-| Created At                        | When the evaluator was created                                                                                                                                                  |
+| Column | Description |
+| - | - |
+| Name | The evaluator name |
+| Type | **LLM as a judge** or **Code**. Composite score evaluators are scoped to individual tracing projects and datasets and do not appear here. |
+| Feedback Key | The feedback key the evaluator produces |
+| Projects & Datasets | Tracing projects and datasets this evaluator is attached to |
+| Evaluator Trace Count (this week) | Number of traces this evaluator ran on in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules. |
+| Spend (this week) | Estimated USD spend for this evaluator in the past week. Only shown when spend tracking is enabled; **–** for Code evaluators or evaluators with no attached rules. |
+| Spend Status | Whether the evaluator is **Under limits**, **Unlimited**, or has hit one or more configured spend limits. Only shown when spend tracking is enabled; **–** for Code evaluators. |
+| Created By | The workspace member who created the evaluator |
+| Updated At | When the evaluator was last modified |
+| Created At | When the evaluator was created |
 
 ## Create an evaluator
 
@@ -42,15 +42,15 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
    * **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
    * **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section surfaces popular templates first, followed by templates organized by the following categories:
 
-     | Category          | Description                                          |
-     | ----------------- | ---------------------------------------------------- |
-     | Security          | Detect leaks, injections, and adversarial inputs.    |
-     | Safety            | Evaluate content safety and moderation.              |
-     | Quality           | Measure output quality and accuracy.                 |
-     | Conversation      | Evaluate conversational quality and user experience. |
-     | Trajectory        | Evaluate agent tool use and decision paths.          |
-     | Image Evaluations | Evaluate image content quality and safety.           |
-     | Voice Evaluation  | Evaluate voice and audio interaction quality.        |
+     | Category | Description |
+     | - | - |
+     | Security | Detect leaks, injections, and adversarial inputs. |
+     | Safety | Evaluate content safety and moderation. |
+     | Quality | Measure output quality and accuracy. |
+     | Conversation | Evaluate conversational quality and user experience. |
+     | Trajectory | Evaluate agent tool use and decision paths. |
+     | Image Evaluations | Evaluate image content quality and safety. |
+     | Voice Evaluation | Evaluate voice and audio interaction quality. |
 
 You can also add an evaluator directly from a [tracing project](/langsmith/observability-concepts#projects) or [dataset](/langsmith/evaluation-concepts#datasets). In that flow, you can additionally **attach an existing evaluator** from your workspace, or create a [Composite](/langsmith/composite-evaluators-ui) evaluator. Refer to [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge) and [Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset).
 

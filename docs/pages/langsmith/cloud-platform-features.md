@@ -20,32 +20,36 @@ All traffic from deployments created after January 6, 2025 comes through a NAT g
 
 Use the following static IP addresses to allowlist traffic for each region:
 
-| GCP US         | GCP EU         | GCP APAC       | AWS US        |
-| -------------- | -------------- | -------------- | ------------- |
-| 35.197.29.146  | 34.90.213.236  | 34.40.236.16   | 3.13.80.97    |
-| 34.145.102.123 | 34.13.244.114  | 34.40.140.88   | 3.146.216.198 |
-| 34.169.45.153  | 34.32.180.189  | 34.151.88.209  | 16.59.72.244  |
-| 34.82.222.17   | 34.34.69.108   | 35.189.51.120  |               |
-| 35.227.171.135 | 34.32.145.240  | 34.40.172.39   |               |
-| 34.169.88.30   | 34.90.157.44   | 35.189.56.87   |               |
-| 34.19.93.202   | 34.141.242.180 | 35.189.17.201  |               |
-| 34.19.34.50    | 34.32.141.108  | 35.244.99.196  |               |
-| 34.59.244.194  | 34.12.178.175  | 34.40.149.177  |               |
-| 34.9.99.224    | 34.91.192.230  | 34.40.144.104  |               |
-| 34.68.27.146   | 34.32.209.237  | 34.151.130.182 |               |
-| 34.41.178.137  | 34.178.128.69  | 34.116.82.199  |               |
-| 34.123.151.210 |                |                |               |
-| 34.135.61.140  |                |                |               |
-| 34.121.166.52  |                |                |               |
-| 34.31.121.70   |                |                |               |
-| 136.107.81.228 |                |                |               |
-| 136.107.155.54 |                |                |               |
-| 8.228.118.112  |                |                |               |
-| 136.70.239.145 |                |                |               |
-| 8.234.246.249  |                |                |               |
-| 35.221.47.168  |                |                |               |
-| 136.90.3.18    |                |                |               |
-| 34.48.88.158   |                |                |               |
+<Note>
+  Other LangSmith services egress from a [separate IP list](/langsmith/cloud#egress-from-langchain-saas).
+</Note>
+
+| GCP US | GCP EU | GCP APAC | AWS US |
+| - | - | - | - |
+| 35.197.29.146 | 34.90.213.236 | 34.40.236.16 | 3.13.80.97 |
+| 34.145.102.123 | 34.13.244.114 | 34.40.140.88 | 3.146.216.198 |
+| 34.169.45.153 | 34.32.180.189 | 34.151.88.209 | 16.59.72.244 |
+| 34.82.222.17 | 34.34.69.108 | 35.189.51.120 | |
+| 35.227.171.135 | 34.32.145.240 | 34.40.172.39 | |
+| 34.169.88.30 | 34.90.157.44 | 35.189.56.87 | |
+| 34.19.93.202 | 34.141.242.180 | 35.189.17.201 | |
+| 34.19.34.50 | 34.32.141.108 | 35.244.99.196 | |
+| 34.59.244.194 | 34.12.178.175 | 34.40.149.177 | |
+| 34.9.99.224 | 34.91.192.230 | 34.40.144.104 | |
+| 34.68.27.146 | 34.32.209.237 | 34.151.130.182 | |
+| 34.41.178.137 | 34.178.128.69 | 34.116.82.199 | |
+| 34.123.151.210 | | | |
+| 34.135.61.140 | | | |
+| 34.121.166.52 | | | |
+| 34.31.121.70 | | | |
+| 136.107.81.228 | | | |
+| 136.107.155.54 | | | |
+| 8.228.118.112 | | | |
+| 136.70.239.145 | | | |
+| 8.234.246.249 | | | |
+| 35.221.47.168 | | | |
+| 136.90.3.18 | | | |
+| 34.48.88.158 | | | |
 
 ## Payload size
 
@@ -57,10 +61,10 @@ The control plane offers two deployment types: Serverless and Dedicated. Each is
 
 Organizations still on previous pricing continue to create Development and Production deployments until October 1, 2026. Those types do not include scale to zero. To select them with the CLI, pass `--deployment-type dev` or `--deployment-type prod`. For pricing and the transition timeline, see [Manage billing](/langsmith/billing#langsmith-deployment-billing). For the full list of `--deployment-type` values, see [`langgraph deploy`](/langsmith/cli#deploy).
 
-| **Deployment type** | **Scaling**                                                | **Database**                                            | **Best for**                                                               |
-| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Serverless          | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant                                    | Background or latency-tolerant agents, and development/testing deployments |
-| Dedicated           | Always-on, autoscales across replicas                      | Dedicated, with automatic backups and high availability | Production workloads in the critical path                                  |
+| **Deployment type** | **Scaling** | **Database** | **Best for** |
+| - | - | - | - |
+| Serverless | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant | Background or latency-tolerant agents, and development/testing deployments |
+| Dedicated | Always-on, autoscales across replicas | Dedicated, with automatic backups and high availability | Production workloads in the critical path |
 
 <Warning>
   **Immutable deployment type**
@@ -89,13 +93,13 @@ Resources for Dedicated deployments can be increased on a case-by-case basis dep
 
 Both Serverless and Dedicated are available in three sizes: Small, Medium, and Large. Each size sets the compute and memory provisioned for a deployment, and larger sizes autoscale to more replicas. The following table shows the resources included with each size:
 
-| Resource                | Serverless S | Serverless M | Serverless L | Dedicated S  | Dedicated M  | Dedicated L  |
-| ----------------------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
-| Runtime compute (vCPU)  | 1            | 2            | 4            | 3            | 5            | 10           |
-| Runtime memory (GiB)    | 2            | 5            | 9            | 6            | 12           | 24           |
-| Database compute (vCPU) | —            | —            | —            | 1            | 2            | 4            |
-| Database memory (GiB)   | —            | —            | —            | 4            | 8            | 16           |
-| Storage                 | Shared       | Shared       | Shared       | Auto-scaling | Auto-scaling | Auto-scaling |
+| Resource | Serverless S | Serverless M | Serverless L | Dedicated S | Dedicated M | Dedicated L |
+| - | - | - | - | - | - | - |
+| Runtime compute (vCPU) | 1 | 2 | 4 | 3 | 5 | 10 |
+| Runtime memory (GiB) | 2 | 5 | 9 | 6 | 12 | 24 |
+| Database compute (vCPU) | — | — | — | 1 | 2 | 4 |
+| Database memory (GiB) | — | — | — | 4 | 8 | 16 |
+| Storage | Shared | Shared | Shared | Auto-scaling | Auto-scaling | Auto-scaling |
 
 <Note>
   Runtime compute and memory are the total vCPU and memory provisioned across a deployment's containers, rounded to the nearest whole unit. Serverless deployments use a shared, multi-tenant database, so they have no dedicated database resources. Dedicated storage is an auto-scaling disk that grows with usage.

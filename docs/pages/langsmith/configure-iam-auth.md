@@ -12,11 +12,11 @@ Agent Server can use a cloud workload identity to generate short-lived PostgreSQ
 
 ## Supported services
 
-| Provider value | PostgreSQL                                    | Redis                                                               | Credential source                            |
-| -------------- | --------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------- |
-| `aws`          | Amazon RDS or Aurora PostgreSQL               | Amazon ElastiCache provisioned cache clusters or replication groups | AWS SDK default credential chain             |
-| `azure`        | Azure Database for PostgreSQL Flexible Server | Azure Managed Redis or Azure Cache for Redis                        | Microsoft Entra `DefaultAzureCredential`     |
-| `gcp`          | Cloud SQL for PostgreSQL                      | Memorystore for Redis Cluster                                       | Google Application Default Credentials (ADC) |
+| Provider value | PostgreSQL | Redis | Credential source |
+| - | - | - | - |
+| `aws` | Amazon RDS or Aurora PostgreSQL | Amazon ElastiCache provisioned cache clusters or replication groups | AWS SDK default credential chain |
+| `azure` | Azure Database for PostgreSQL Flexible Server | Azure Managed Redis or Azure Cache for Redis | Microsoft Entra `DefaultAzureCredential` |
+| `gcp` | Cloud SQL for PostgreSQL | Memorystore for Redis Cluster | Google Application Default Credentials (ADC) |
 
 <Warning>
   The GCP PostgreSQL provider supports Cloud SQL. It does not support AlloyDB, which requires a different token scope.
@@ -43,9 +43,9 @@ You can enable IAM authentication for PostgreSQL, Redis, or both. When a selecto
 
 Use these connection URI variables for your deployment type:
 
-| Deployment                                  | PostgreSQL URI        | Redis URI          |
-| ------------------------------------------- | --------------------- | ------------------ |
-| Standalone Agent Server                     | `DATABASE_URI`        | `REDIS_URI`        |
+| Deployment | PostgreSQL URI | Redis URI |
+| - | - | - |
+| Standalone Agent Server | `DATABASE_URI` | `REDIS_URI` |
 | Self-hosted deployment with a control plane | `POSTGRES_URI_CUSTOM` | `REDIS_URI_CUSTOM` |
 
 The connection URIs must meet the following requirements:

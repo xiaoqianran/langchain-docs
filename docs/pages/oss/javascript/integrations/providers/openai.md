@@ -62,8 +62,8 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 
 Middleware specifically designed for OpenAI models. Learn more about [middleware](/oss/javascript/langchain/middleware/overview).
 
-| Middleware                                | Description                                               |
-| ----------------------------------------- | --------------------------------------------------------- |
+| Middleware | Description |
+| - | - |
 | [Content moderation](#content-moderation) | Moderate agent traffic using OpenAI's moderation endpoint |
 
 ### Content moderation

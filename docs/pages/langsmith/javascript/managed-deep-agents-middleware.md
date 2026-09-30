@@ -95,11 +95,11 @@ To read or write files in the thread's sandbox from a middleware hook, use `runt
 
 ## When to use middleware
 
-| Concept                                                                    | Kind             | How it reaches the agent                |
-| -------------------------------------------------------------------------- | ---------------- | --------------------------------------- |
-| **Middleware**                                                             | Application code | Import and pass in the agent definition |
-| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)**        | Application code | Import and pass in the agent definition |
-| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context  | Always-on system prompt                 |
+| Concept | Kind | How it reaches the agent |
+| - | - | - |
+| **Middleware** | Application code | Import and pass in the agent definition |
+| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** | Managed context | Always-on system prompt |
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 

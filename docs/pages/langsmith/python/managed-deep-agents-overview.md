@@ -146,20 +146,20 @@ To get started, see the [Managed Deep Agents quickstart](/langsmith/python/manag
 
 Each part of the agent maps to a file or directory. Add the ones your agent needs:
 
-| Capability                                                                        | Path              | Description                                                                              |
-| --------------------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------- |
-| [Model and configuration](/langsmith/python/managed-deep-agents-agent-definition) | `agent.py`        | The model and core options. Required.                                                    |
-| [Instructions](/langsmith/python/managed-deep-agents-instructions)                | `instructions.md` | The system prompt that defines how the agent behaves.                                    |
-| [Skills](/langsmith/python/managed-deep-agents-skills)                            | `skills/`         | Task-specific playbooks the agent loads when they are relevant.                          |
-| [Tools](/langsmith/python/managed-deep-agents-tools)                              | `tools/`          | Functions the agent calls to run your application logic or reach external services.      |
-| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)            | `tools/mcp.py`    | Remote MCP servers that provide tools to the agent.                                      |
-| [Middleware](/langsmith/python/managed-deep-agents-middleware)                    | `middleware/`     | Custom logic that runs around model and tool calls.                                      |
-| [Sandbox](/langsmith/python/managed-deep-agents-sandboxes)                        | `sandbox/`        | An isolated filesystem and shell for running agent-written code.                         |
-| [Memory](/langsmith/python/managed-deep-agents-memory)                            | `memory.py`       | Preferences and knowledge that persist across threads.                                   |
-| [Identity](/langsmith/python/managed-deep-agents-identity)                        | `identity.py`     | Per-caller private threads, memory, and credentials for multi-user deployments.          |
-| [Channels](/langsmith/python/managed-deep-agents-channels)                        | `channels/`       | Connections to messaging services, such as Slack, that start runs and receive responses. |
-| [Schedules](/langsmith/python/managed-deep-agents-schedules)                      | `schedules/`      | Managed cron schedules that run the agent on a recurring basis.                          |
-| [Evals](/langsmith/python/managed-deep-agents-evals)                              | `evals/`          | Harbor tasks that test the agent.                                                        |
+| Capability | Path | Description |
+| - | - | - |
+| [Model and configuration](/langsmith/python/managed-deep-agents-agent-definition) | `agent.py` | The model and core options. Required. |
+| [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` | The system prompt that defines how the agent behaves. |
+| [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` | Task-specific playbooks the agent loads when they are relevant. |
+| [Tools](/langsmith/python/managed-deep-agents-tools) | `tools/` | Functions the agent calls to run your application logic or reach external services. |
+| [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) | `tools/mcp.py` | Remote MCP servers that provide tools to the agent. |
+| [Middleware](/langsmith/python/managed-deep-agents-middleware) | `middleware/` | Custom logic that runs around model and tool calls. |
+| [Sandbox](/langsmith/python/managed-deep-agents-sandboxes) | `sandbox/` | An isolated filesystem and shell for running agent-written code. |
+| [Memory](/langsmith/python/managed-deep-agents-memory) | `memory.py` | Preferences and knowledge that persist across threads. |
+| [Identity](/langsmith/python/managed-deep-agents-identity) | `identity.py` | Per-caller private threads, memory, and credentials for multi-user deployments. |
+| [Channels](/langsmith/python/managed-deep-agents-channels) | `channels/` | Connections to messaging services, such as Slack, that start runs and receive responses. |
+| [Schedules](/langsmith/python/managed-deep-agents-schedules) | `schedules/` | Managed cron schedules that run the agent on a recurring basis. |
+| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` | Harbor tasks that test the agent. |
 
 For the full layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure). Instructions, skills, and optional durable memory are stored in [Context Hub](/langsmith/python/managed-deep-agents-context-hub).
 

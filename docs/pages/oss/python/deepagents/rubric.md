@@ -158,13 +158,13 @@ Add `RubricMiddleware` to the `middleware` list when you call `create_deep_agent
   ```
 </CodeGroup>
 
-| Argument         | Required | Default                | Description                                                                                                                                                                                                          |
-| ---------------- | -------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`          | Yes      | `None`                 | Chat model used by the LLM-as-a-judge grader sub-agent. Accepts a `"provider:model-id"` string or a `BaseChatModel` instance. Often a smaller or cheaper model than the deep agent's working model.                  |
-| `system_prompt`  | No       | Built-in grader prompt | Custom grading instructions. Falls back to a default system prompt that teaches the grader the verdict format and what tools it has at its disposal.                                                                 |
-| `tools`          | No       | `None`                 | Tools the grader may call to gather evidence (run tests, count tokens, read files) before producing a verdict. With none, the grader reasons from the transcript alone.                                              |
-| `max_iterations` | No       | `3`                    | Maximum grader iterations per rubric attempt; must be a positive integer. When the cap is reached without a `satisfied` verdict, the agent terminates with status `max_iterations_reached`.                          |
-| `on_evaluation`  | No       | `None`                 | Optional callback invoked with each `RubricEvaluation` after every grading iteration, whether you use `invoke()`, `stream()` or `stream_events()`. Useful for logging, custom metrics, eval datasets, or UI updates. |
+| Argument | Required | Default | Description |
+| - | - | - | - |
+| `model` | Yes | `None` | Chat model used by the LLM-as-a-judge grader sub-agent. Accepts a `"provider:model-id"` string or a `BaseChatModel` instance. Often a smaller or cheaper model than the deep agent's working model. |
+| `system_prompt` | No | Built-in grader prompt | Custom grading instructions. Falls back to a default system prompt that teaches the grader the verdict format and what tools it has at its disposal. |
+| `tools` | No | `None` | Tools the grader may call to gather evidence (run tests, count tokens, read files) before producing a verdict. With none, the grader reasons from the transcript alone. |
+| `max_iterations` | No | `3` | Maximum grader iterations per rubric attempt; must be a positive integer. When the cap is reached without a `satisfied` verdict, the agent terminates with status `max_iterations_reached`. |
+| `on_evaluation` | No | `None` | Optional callback invoked with each `RubricEvaluation` after every grading iteration, whether you use `invoke()`, `stream()` or `stream_events()`. Useful for logging, custom metrics, eval datasets, or UI updates. |
 
 ## Pass rubric on invocation
 
@@ -223,10 +223,10 @@ Pass a `rubric` string on invocation state to start the self-evaluation loop. Us
 
     Rubric grading emits the following custom events on `stream.custom`:
 
-    | Event                     | When fired                                            | Payload fields                                                                                                                                                                                                                                                                                                                |
-    | ------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `rubric_evaluation_start` | Before the grader runs.                               | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grading run</li></ul>                                                                                                                                            |
-    | `rubric_evaluation_end`   | After the grader returns or after a grader exception. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grader pass</li><li>`result`: terminal verdict for this pass</li><li>`explanation`: summary from the grader</li><li>`criteria`: per-criterion verdicts</li></ul> |
+    | Event | When fired | Payload fields |
+    | - | - | - |
+    | `rubric_evaluation_start` | Before the grader runs. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grading run</li></ul> |
+    | `rubric_evaluation_end` | After the grader returns or after a grader exception. | <ul><li>`type`: event name</li><li>`grading_run_id`: shared across all events within one rubric attempt</li><li>`iteration`: zero-based index of the current grader pass</li><li>`result`: terminal verdict for this pass</li><li>`explanation`: summary from the grader</li><li>`criteria`: per-criterion verdicts</li></ul> |
   </Tab>
 </Tabs>
 
@@ -234,13 +234,13 @@ Pass a `rubric` string on invocation state to start the self-evaluation loop. Us
 
 When the deep agent finishes reasoning and has an output, the LLM-as-a-judge grader sub-agent reviews the output against the rubric and produces one of the following verdicts:
 
-| Status                   | Meaning                                                                                                                                      | Loops back? |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `satisfied`              | Every criterion in the rubric passes.                                                                                                        | No          |
-| `needs_revision`         | At least one criterion fails; grader feedback is injected and the agent runs again.                                                          | Yes         |
-| `max_iterations_reached` | Grader still wants revisions, but `max_iterations` has been hit.                                                                             | No          |
-| `failed`                 | The grader judged the rubric malformed or impossible to evaluate against the transcript.                                                     | No          |
-| `grader_error`           | The LLM-as-a-judge grader sub-agent itself raised an exception (provider timeout, missing credentials, malformed structured response, etc.). | No          |
+| Status | Meaning | Loops back? |
+| - | - | - |
+| `satisfied` | Every criterion in the rubric passes. | No |
+| `needs_revision` | At least one criterion fails; grader feedback is injected and the agent runs again. | Yes |
+| `max_iterations_reached` | Grader still wants revisions, but `max_iterations` has been hit. | No |
+| `failed` | The grader judged the rubric malformed or impossible to evaluate against the transcript. | No |
+| `grader_error` | The LLM-as-a-judge grader sub-agent itself raised an exception (provider timeout, missing credentials, malformed structured response, etc.). | No |
 
 ## Observe iteration progress
 
@@ -495,21 +495,21 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
 
 The middleware calls your function with a `RubricEvaluation` dictionary after each [grader pass](#grader-pass-events). The `RubricEvaluation` dictionary contains:
 
-| Field            | Type   | Description                                                                                                                                                                                       |
-| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `grading_run_id` | `str`  | Identifier shared by every evaluation in one rubric attempt. A new run starts when the caller supplies a different `rubric`, or when the same `rubric` is invoked again after a terminal verdict. |
-| `iteration`      | `int`  | Zero-based index of the current grader pass within that run.                                                                                                                                      |
-| `result`         | `str`  | The grader verdict for this pass: `satisfied`, `needs_revision`, `failed`, or `grader_error`.                                                                                                     |
-| `explanation`    | `str`  | Free-form summary from the grader. On infrastructure failures, this includes the exception type and message.                                                                                      |
-| `criteria`       | `list` | Per-criterion verdicts. Each entry is either `{name, passed: true}` or `{name, passed: false, gap}` where `gap` is actionable feedback for a failing criterion.                                   |
+| Field | Type | Description |
+| - | - | - |
+| `grading_run_id` | `str` | Identifier shared by every evaluation in one rubric attempt. A new run starts when the caller supplies a different `rubric`, or when the same `rubric` is invoked again after a terminal verdict. |
+| `iteration` | `int` | Zero-based index of the current grader pass within that run. |
+| `result` | `str` | The grader verdict for this pass: `satisfied`, `needs_revision`, `failed`, or `grader_error`. |
+| `explanation` | `str` | Free-form summary from the grader. On infrastructure failures, this includes the exception type and message. |
+| `criteria` | `list` | Per-criterion verdicts. Each entry is either `{name, passed: true}` or `{name, passed: false, gap}` where `gap` is actionable feedback for a failing criterion. |
 
 ### Grader pass events
 
-| Event                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Successful grading**      | Fires once per pass, including intermediate `needs_revision` verdicts and the final `satisfied` or `failed` verdict. <br /><br /> When the grader returns `needs_revision` but `max_iterations` has been reached, the callback still receives `result: "needs_revision"` (the grader's verdict). The run's terminal status is `max_iterations_reached` on private state `_rubric_status`, not on the evaluation record. Inspect `_rubric_status` after `invoke` completes, or read the last entry in `_rubric_evaluations` together with `_rubric_iterations`, to branch on cap exhaustion. |
-| **Grader exceptions**       | Fires with `result: "grader_error"`, an explanation derived from the exception, and an empty `criteria` list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| **Errors in your callback** | Exceptions are logged and suppressed. The grading loop continues. Do not use `on_evaluation` to enforce control flow (for example, raising to stop the agent).                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Event | Description |
+| - | - |
+| **Successful grading** | Fires once per pass, including intermediate `needs_revision` verdicts and the final `satisfied` or `failed` verdict. <br /><br /> When the grader returns `needs_revision` but `max_iterations` has been reached, the callback still receives `result: "needs_revision"` (the grader's verdict). The run's terminal status is `max_iterations_reached` on private state `_rubric_status`, not on the evaluation record. Inspect `_rubric_status` after `invoke` completes, or read the last entry in `_rubric_evaluations` together with `_rubric_iterations`, to branch on cap exhaustion. |
+| **Grader exceptions** | Fires with `result: "grader_error"`, an explanation derived from the exception, and an empty `criteria` list. |
+| **Errors in your callback** | Exceptions are logged and suppressed. The grading loop continues. Do not use `on_evaluation` to enforce control flow (for example, raising to stop the agent). |
 
 ## Persist rubrics across invocations
 

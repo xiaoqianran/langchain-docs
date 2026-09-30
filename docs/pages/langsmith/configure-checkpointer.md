@@ -12,11 +12,11 @@ Configure Agent Server to use PostgreSQL, MongoDB, or a custom implementation fo
 
 ## Available backends
 
-| Backend   | Storage       | Configuration                                                 | Use case                                                                            |
-| --------- | ------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `default` | PostgreSQL    | None (built-in)                                               | Standard deployments                                                                |
-| `mongo`   | MongoDB       | `langgraph.json` or `LS_DEFAULT_CHECKPOINTER_BACKEND` env var | Teams with existing MongoDB infrastructure                                          |
-| `custom`  | User-provided | `langgraph.json`                                              | Custom storage backends (see [custom checkpointer](/langsmith/custom-checkpointer)) |
+| Backend | Storage | Configuration | Use case |
+| - | - | - | - |
+| `default` | PostgreSQL | None (built-in) | Standard deployments |
+| `mongo` | MongoDB | `langgraph.json` or `LS_DEFAULT_CHECKPOINTER_BACKEND` env var | Teams with existing MongoDB infrastructure |
+| `custom` | User-provided | `langgraph.json` | Custom storage backends (see [custom checkpointer](/langsmith/custom-checkpointer)) |
 
 ## Default (PostgreSQL)
 

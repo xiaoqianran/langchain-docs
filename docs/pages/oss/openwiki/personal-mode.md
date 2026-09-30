@@ -42,16 +42,16 @@ Connector secrets are referenced by env var name and stored in `~/.openwiki/.env
 
 ### Built-in sources
 
-| Source       | Credentials                          | Behavior                                                                                              |
-| ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `custom-mcp` | None required by default             | Connects to any configured HTTP or stdio MCP server and permits only explicitly safe, read-only tools |
-| `git-repo`   | Local paths                          | Reads configured local repository paths and writes compact manifests                                  |
-| `x`          | OAuth user-context credentials       | Home timeline, user posts, mentions, bookmarks, and list posts via the X API                          |
-| `notion`     | Notion OAuth (hosted MCP)            | Authenticate through Notion OAuth instead of pasting a Notion token                                   |
-| `google`     | Gmail OAuth                          | Fetches recent mail via the Gmail API after `openwiki auth gmail`                                     |
-| `web-search` | `TAVILY_API_KEY`                     | Uses Tavily through LangChain                                                                         |
-| `hackernews` | None                                 | Public Hacker News feed and search APIs                                                               |
-| `slack`      | Slack app client credentials + OAuth | Requires HTTPS callback setup for OAuth; see [Slack OAuth](#slack-oauth)                              |
+| Source | Credentials | Behavior |
+| - | - | - |
+| `custom-mcp` | None required by default | Connects to any configured HTTP or stdio MCP server and permits only explicitly safe, read-only tools |
+| `git-repo` | Local paths | Reads configured local repository paths and writes compact manifests |
+| `x` | OAuth user-context credentials | Home timeline, user posts, mentions, bookmarks, and list posts via the X API |
+| `notion` | Notion OAuth (hosted MCP) | Authenticate through Notion OAuth instead of pasting a Notion token |
+| `google` | Gmail OAuth | Fetches recent mail via the Gmail API after `openwiki auth gmail` |
+| `web-search` | `TAVILY_API_KEY` | Uses Tavily through LangChain |
+| `hackernews` | None | Public Hacker News feed and search APIs |
+| `slack` | Slack app client credentials + OAuth | Requires HTTPS callback setup for OAuth; see [Slack OAuth](#slack-oauth) |
 
 You can configure the same source more than once. For example, add one web search source for AI research and another for NBA news. OpenWiki stores them as separate instances such as `web-search-1` and `web-search-2`.
 

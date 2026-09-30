@@ -335,15 +335,15 @@ Evaluations can be written using standard testing tools like [pytest](/langsmith
 
 The following table summarizes the key differences between offline and online evaluations:
 
-|                       | **Offline Evaluation**                                      | **Online Evaluation**                                                             |
-| --------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Runs on**           | Dataset (Examples)                                          | Tracing Project (Runs/Threads)                                                    |
-| **Data access**       | Inputs, Outputs, Reference Outputs                          | Inputs, Outputs only                                                              |
-| **When to use**       | Pre-deployment, during development                          | Production, post-deployment                                                       |
-| **Primary use cases** | Benchmarking, unit testing, regression testing, backtesting | Real-time monitoring, production feedback, anomaly detection                      |
-| **Evaluation timing** | Batch processing on curated test sets                       | Real-time or near real-time on live traffic                                       |
-| **Setup location**    | Evaluation tab (SDK, UI, Playground)                        | [Observability tab](/langsmith/online-evaluations-llm-as-judge) (automated rules) |
-| **Data requirements** | Requires dataset curation                                   | No dataset needed, evaluates live traces                                          |
+| | **Offline Evaluation** | **Online Evaluation** |
+| - | - | - |
+| **Runs on** | Dataset (Examples) | Tracing Project (Runs/Threads) |
+| **Data access** | Inputs, Outputs, Reference Outputs | Inputs, Outputs only |
+| **When to use** | Pre-deployment, during development | Production, post-deployment |
+| **Primary use cases** | Benchmarking, unit testing, regression testing, backtesting | Real-time monitoring, production feedback, anomaly detection |
+| **Evaluation timing** | Batch processing on curated test sets | Real-time or near real-time on live traffic |
+| **Setup location** | Evaluation tab (SDK, UI, Playground) | [Observability tab](/langsmith/online-evaluations-llm-as-judge) (automated rules) |
+| **Data requirements** | Requires dataset curation | No dataset needed, evaluates live traces |
 
 ***
 

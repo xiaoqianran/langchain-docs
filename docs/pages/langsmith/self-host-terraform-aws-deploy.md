@@ -56,13 +56,13 @@ graph TB
 
 ### Required tools
 
-| Tool      | Version | Purpose                                                  |
-| --------- | ------- | -------------------------------------------------------- |
-| AWS CLI   | v2      | Authenticate, query AWS resources, manage EKS kubeconfig |
-| Terraform | 1.5     | Run the infrastructure modules                           |
-| `kubectl` | 1.33    | Inspect the EKS cluster                                  |
-| Helm      | 3.12    | Install and manage the LangSmith chart                   |
-| `eksctl`  | latest  | Optional, handy for kubeconfig and debugging             |
+| Tool | Version | Purpose |
+| - | - | - |
+| AWS CLI | v2 | Authenticate, query AWS resources, manage EKS kubeconfig |
+| Terraform | 1.5 | Run the infrastructure modules |
+| `kubectl` | 1.33 | Inspect the EKS cluster |
+| Helm | 3.12 | Install and manage the LangSmith chart |
+| `eksctl` | latest | Optional, handy for kubeconfig and debugging |
 
 Install on macOS:
 
@@ -86,14 +86,14 @@ For Linux, follow the [AWS CLI install guide](https://docs.aws.amazon.com/cli/la
 
 The IAM user or role running Terraform needs permission to create and manage the cloud foundation. The following managed policies cover the full surface area. Use them as a starting point and trim down to least-privilege once the deployment is stable.
 
-| Policy                        | Purpose                                    |
-| ----------------------------- | ------------------------------------------ |
-| `AmazonEKSClusterPolicy`      | Create and manage EKS clusters             |
-| `AmazonVPCFullAccess`         | Create VPC, subnets, route tables, and NAT |
-| `AmazonRDSFullAccess`         | Create and manage RDS PostgreSQL instances |
-| `AmazonElastiCacheFullAccess` | Create ElastiCache Redis clusters          |
-| `AmazonS3FullAccess`          | Create S3 buckets and VPC endpoints        |
-| `IAMFullAccess`               | Create IRSA roles and policies             |
+| Policy | Purpose |
+| - | - |
+| `AmazonEKSClusterPolicy` | Create and manage EKS clusters |
+| `AmazonVPCFullAccess` | Create VPC, subnets, route tables, and NAT |
+| `AmazonRDSFullAccess` | Create and manage RDS PostgreSQL instances |
+| `AmazonElastiCacheFullAccess` | Create ElastiCache Redis clusters |
+| `AmazonS3FullAccess` | Create S3 buckets and VPC endpoints |
+| `IAMFullAccess` | Create IRSA roles and policies |
 
 <Tip>
   Run `make preflight` from `modules/aws/` after authenticating. The preflight script confirms that the active credentials can perform each required action and reports the first missing permission, which is faster than discovering gaps mid-`terraform apply`.
@@ -195,17 +195,17 @@ The following sections cover each phase in detail.
 
 Terraform provisions the following AWS resources:
 
-| Resource                    | Purpose                                                                   |
-| --------------------------- | ------------------------------------------------------------------------- |
-| VPC + subnets + NAT         | Private network for the cluster and managed services                      |
-| EKS cluster + node groups   | Kubernetes compute                                                        |
-| RDS PostgreSQL              | LangSmith operational data                                                |
-| ElastiCache Redis           | Queue and cache                                                           |
-| S3 bucket + VPC endpoint    | Trace payload blob storage                                                |
-| ALB + listeners             | Public ingress with TLS                                                   |
+| Resource | Purpose |
+| - | - |
+| VPC + subnets + NAT | Private network for the cluster and managed services |
+| EKS cluster + node groups | Kubernetes compute |
+| RDS PostgreSQL | LangSmith operational data |
+| ElastiCache Redis | Queue and cache |
+| S3 bucket + VPC endpoint | Trace payload blob storage |
+| ALB + listeners | Public ingress with TLS |
 | SSM Parameter Store entries | Application secrets, synced into the cluster by External Secrets Operator |
-| IRSA roles + IAM policies   | Per-service AWS access                                                    |
-| KEDA, cert-manager, ESO     | Bootstrap workloads installed alongside infrastructure                    |
+| IRSA roles + IAM policies | Per-service AWS access |
+| KEDA, cert-manager, ESO | Bootstrap workloads installed alongside infrastructure |
 
 ### Clone and configure
 
@@ -272,18 +272,18 @@ The script reads `terraform.tfvars`, derives the SSM path `/langsmith/{name_pref
 
 The script manages the following SSM parameters:
 
-| SSM key                        | How it is set                              | Notes                                                          |
-| ------------------------------ | ------------------------------------------ | -------------------------------------------------------------- |
-| `postgres-password`            | Prompt                                     | RDS uses this password                                         |
-| `redis-auth-token`             | Auto-generated (`openssl rand -hex 32`)    | ElastiCache requires hex                                       |
-| `langsmith-api-key-salt`       | Auto-generated (`openssl rand -base64 32`) | Never rotate, breaks all API keys                              |
-| `langsmith-jwt-secret`         | Auto-generated (`openssl rand -base64 32`) | Never rotate, invalidates all sessions                         |
-| `langsmith-license-key`        | Prompt                                     | From [our sales team](https://www.langchain.com/contact-sales) |
-| `langsmith-admin-password`     | Prompt                                     | Must contain a symbol                                          |
-| `deployments-encryption-key`   | Auto-generated Fernet key                  | LangSmith Deployment add-on                                    |
-| `agent-builder-encryption-key` | Auto-generated Fernet key                  | Agent Builder add-on (reused by Fleet)                         |
-| `insights-encryption-key`      | Auto-generated Fernet key                  | Insights add-on                                                |
-| `polly-encryption-key`         | Auto-generated Fernet key                  | Polly add-on                                                   |
+| SSM key | How it is set | Notes |
+| - | - | - |
+| `postgres-password` | Prompt | RDS uses this password |
+| `redis-auth-token` | Auto-generated (`openssl rand -hex 32`) | ElastiCache requires hex |
+| `langsmith-api-key-salt` | Auto-generated (`openssl rand -base64 32`) | Never rotate, breaks all API keys |
+| `langsmith-jwt-secret` | Auto-generated (`openssl rand -base64 32`) | Never rotate, invalidates all sessions |
+| `langsmith-license-key` | Prompt | From [our sales team](https://www.langchain.com/contact-sales) |
+| `langsmith-admin-password` | Prompt | Must contain a symbol |
+| `deployments-encryption-key` | Auto-generated Fernet key | LangSmith Deployment add-on |
+| `agent-builder-encryption-key` | Auto-generated Fernet key | Agent Builder add-on (reused by Fleet) |
+| `insights-encryption-key` | Auto-generated Fernet key | Insights add-on |
+| `polly-encryption-key` | Auto-generated Fernet key | Polly add-on |
 
 Verify the secrets are present and the `TF_VAR_*` environment variables are exported:
 

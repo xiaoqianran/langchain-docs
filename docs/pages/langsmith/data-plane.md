@@ -79,24 +79,24 @@ See [Configure checkpointer backend](/langsmith/configure-checkpointer) for setu
 
 Agent Server is automatically configured to send traces to LangSmith. See the table below for details with respect to each deployment option.
 
-| Cloud                                  | Hybrid                                                    | Self-Hosted                                                                                |
-| -------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Cloud | Hybrid | Self-Hosted |
+| - | - | - |
 | Required<br />Trace to LangSmith SaaS. | Optional<br />Disable tracing or trace to LangSmith SaaS. | Optional<br />Disable tracing, trace to LangSmith SaaS, or trace to Self-Hosted LangSmith. |
 
 ### Telemetry
 
 Agent Server is automatically configured to report telemetry metadata for billing purposes. See the table below for details with respect to each deployment option.
 
-| Cloud                             | Hybrid                            | Self-Hosted                                                                                                              |
-| --------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Cloud | Hybrid | Self-Hosted |
+| - | - | - |
 | Telemetry sent to LangSmith SaaS. | Telemetry sent to LangSmith SaaS. | Self-reported usage (audit) for air-gapped license key.<br />Telemetry sent to LangSmith SaaS for LangSmith License Key. |
 
 ### Licensing
 
 Agent Server is automatically configured to perform license key validation. See the table below for details with respect to each deployment option.
 
-| Cloud                                               | Hybrid                                              | Self-Hosted                                                                      |
-| --------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Cloud | Hybrid | Self-Hosted |
+| - | - | - |
 | LangSmith API Key validated against LangSmith SaaS. | LangSmith API Key validated against LangSmith SaaS. | Air-gapped license key or Platform License Key validated against LangSmith SaaS. |
 
 ***

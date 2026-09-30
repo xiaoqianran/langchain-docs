@@ -20,13 +20,13 @@ Configurations can also carry [OAuth client credentials](#oauth-client-credentia
 
 The **Feature Access** table controls provider and model availability independently for each LangSmith feature.
 
-| **Feature**              | **Model selection experience**                                                                                                                                   |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Playground               | Full model controls—view and adjust all parameters. No built-in models; relies on workspace configurations.                                                      |
-| Evaluators               | Full model controls—view and adjust all parameters. No built-in models; relies on workspace configurations.                                                      |
-| Fleet                    | Choose from a curated list by default. You can also add custom workspace configurations.                                                                         |
-| Chat                     | Choose from a curated list by default. You can also add custom workspace configurations.                                                                         |
-| Insights (Thinking)      | Model used for deep analysis. Choose from a curated list with provider recommendations by default. You can also add custom workspace configurations.             |
+| **Feature** | **Model selection experience** |
+| - | - |
+| Playground | Full model controls—view and adjust all parameters. No built-in models; relies on workspace configurations. |
+| Evaluators | Full model controls—view and adjust all parameters. No built-in models; relies on workspace configurations. |
+| Fleet | Choose from a curated list by default. You can also add custom workspace configurations. |
+| Chat | Choose from a curated list by default. You can also add custom workspace configurations. |
+| Insights (Thinking) | Model used for deep analysis. Choose from a curated list with provider recommendations by default. You can also add custom workspace configurations. |
 | Insights (Summarization) | Model used for lightweight summarization. Choose from a curated list with provider recommendations by default. You can also add custom workspace configurations. |
 
 All features support custom workspace configurations, so you can use any provider or model—even for features that show a curated list by default.

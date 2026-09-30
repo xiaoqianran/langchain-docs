@@ -87,47 +87,47 @@ The MCP client opens a browser window to complete the OAuth flow when you first 
 
 ### Conversation and threads
 
-| Tool                 | Description                                                                                                                                                                                                             |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tool | Description |
+| - | - |
 | `get_thread_history` | Get message history for a conversation thread. Uses character-based pagination: pass `page_number` (1-based) and use the returned `total_pages` to request more pages. Optional: `max_chars_per_page`, `preview_chars`. |
 
 ### Prompt management
 
-| Tool                 | Description                                                                    |
-| -------------------- | ------------------------------------------------------------------------------ |
-| `list_prompts`       | List prompts with optional filtering by visibility (public/private) and limit. |
-| `get_prompt_by_name` | Get a single prompt by exact name (details and template).                      |
-| `push_prompt`        | Documentation-only: how to create and push prompts to LangSmith.               |
+| Tool | Description |
+| - | - |
+| `list_prompts` | List prompts with optional filtering by visibility (public/private) and limit. |
+| `get_prompt_by_name` | Get a single prompt by exact name (details and template). |
+| `push_prompt` | Documentation-only: how to create and push prompts to LangSmith. |
 
 ### Traces and runs
 
-| Tool            | Description                                                                                                                                                                                                                                                                                                                  |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fetch_runs`    | Fetch runs (traces, tools, chains, etc.) from one or more projects. Supports filters (`run_type`, `error`, `is_root`), FQL (`filter`, `trace_filter`, `tree_filter`), and ordering. When `trace_id` is set, results are character-based paginated; otherwise one batch up to `limit`. Always pass `limit` and `page_number`. |
-| `list_projects` | List projects with optional filtering by name, dataset, and detail level.                                                                                                                                                                                                                                                    |
+| Tool | Description |
+| - | - |
+| `fetch_runs` | Fetch runs (traces, tools, chains, etc.) from one or more projects. Supports filters (`run_type`, `error`, `is_root`), FQL (`filter`, `trace_filter`, `tree_filter`), and ordering. When `trace_id` is set, results are character-based paginated; otherwise one batch up to `limit`. Always pass `limit` and `page_number`. |
+| `list_projects` | List projects with optional filtering by name, dataset, and detail level. |
 
 ### Datasets and examples
 
-| Tool              | Description                                                                                                                      |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `list_datasets`   | List datasets with filtering by ID, type, name, or metadata.                                                                     |
-| `list_examples`   | List examples from a dataset by dataset ID/name or example IDs; supports filter, metadata, splits, and optional `as_of` version. |
-| `read_dataset`    | Read one dataset by ID or name.                                                                                                  |
-| `read_example`    | Read one example by ID, with optional `as_of` version.                                                                           |
-| `create_dataset`  | Documentation-only: how to create datasets.                                                                                      |
-| `update_examples` | Documentation-only: how to update dataset examples.                                                                              |
+| Tool | Description |
+| - | - |
+| `list_datasets` | List datasets with filtering by ID, type, name, or metadata. |
+| `list_examples` | List examples from a dataset by dataset ID/name or example IDs; supports filter, metadata, splits, and optional `as_of` version. |
+| `read_dataset` | Read one dataset by ID or name. |
+| `read_example` | Read one example by ID, with optional `as_of` version. |
+| `create_dataset` | Documentation-only: how to create datasets. |
+| `update_examples` | Documentation-only: how to update dataset examples. |
 
 ### Experiments and evaluations
 
-| Tool               | Description                                                                                                                                                 |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tool | Description |
+| - | - |
 | `list_experiments` | List experiment (reference) projects for a dataset. Requires `reference_dataset_id` or `reference_dataset_name`. Returns metrics (latency, cost, feedback). |
-| `run_experiment`   | Documentation-only: how to run experiments and evaluations.                                                                                                 |
+| `run_experiment` | Documentation-only: how to run experiments and evaluations. |
 
 ### Billing
 
-| Tool                | Description                                                                                     |
-| ------------------- | ----------------------------------------------------------------------------------------------- |
+| Tool | Description |
+| - | - |
 | `get_billing_usage` | Get organization billing usage (e.g. trace counts) for a date range. Optional workspace filter. |
 
 ### Pagination (character-based)
@@ -257,11 +257,11 @@ flowchart LR
 
 ## Environment variables
 
-| Variable                 | Required | Description                                                                                                                 |
-| ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `LANGSMITH_API_KEY`      | Yes      | Your [LangSmith API key](/langsmith/create-account-api-key) for authentication.                                             |
-| `LANGSMITH_WORKSPACE_ID` | No       | Workspace ID when your API key has access to multiple workspaces.                                                           |
-| `LANGSMITH_ENDPOINT`     | No       | API endpoint URL (for [self-hosted](/langsmith/self-hosted) or custom regions). Default: `https://api.smith.langchain.com`. |
+| Variable | Required | Description |
+| - | - | - |
+| `LANGSMITH_API_KEY` | Yes | Your [LangSmith API key](/langsmith/create-account-api-key) for authentication. |
+| `LANGSMITH_WORKSPACE_ID` | No | Workspace ID when your API key has access to multiple workspaces. |
+| `LANGSMITH_ENDPOINT` | No | API endpoint URL (for [self-hosted](/langsmith/self-hosted) or custom regions). Default: `https://api.smith.langchain.com`. |
 
 For the **hosted** server, use the same names as **headers**: `LANGSMITH-API-KEY`, `LANGSMITH-WORKSPACE-ID`, `LANGSMITH-ENDPOINT`.
 

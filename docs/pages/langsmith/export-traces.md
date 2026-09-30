@@ -1065,14 +1065,14 @@ The following Python example demonstrates how to export retriever inputs and out
 
 The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint ([`list_runs`](https://reference.langchain.com/python/langsmith/client/Client/list_runs) in Python, [`listRuns`](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) in JavaScript) has per-tenant rate limits that vary based on query parameters:
 
-| **Query type**                                       | **Limit**   | **Window** |
-| ---------------------------------------------------- | ----------- | ---------- |
-| Short time window (≤ 7 days)                         | 10 requests | 10 seconds |
-| Large time window (> 7 days)                         | 3 requests  | 10 seconds |
-| Full-text search, short time window (≤ 7 days)       | 3 requests  | 10 seconds |
-| Full-text search, large time window (> 7 days)       | 1 request   | 10 seconds |
-| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests  | 10 seconds |
-| Select `child_run_ids`, large time window (> 7 days) | 1 request   | 10 seconds |
+| **Query type** | **Limit** | **Window** |
+| - | - | - |
+| Short time window (≤ 7 days) | 10 requests | 10 seconds |
+| Large time window (> 7 days) | 3 requests | 10 seconds |
+| Full-text search, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Full-text search, large time window (> 7 days) | 1 request | 10 seconds |
+| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Select `child_run_ids`, large time window (> 7 days) | 1 request | 10 seconds |
 
 The time window is determined by `end_time - start_time`. If `end_time` is not provided, LangSmith will use the current time. Queries without a `start_time` are treated as large time window queries.
 

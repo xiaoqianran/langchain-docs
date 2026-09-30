@@ -344,13 +344,13 @@ Unlike `ext_authz` (HTTP), `ext_proc` uses a bidirectional gRPC stream. Envoy se
 
 ### When to use `ext_proc` vs `ext_authz`
 
-| Capability              | `ext_authz` | `ext_proc` |
-| ----------------------- | ----------- | ---------- |
-| Modify request headers  | Yes         | Yes        |
-| Modify response headers | No          | Yes        |
-| Modify request body     | No          | Yes        |
-| Modify response body    | No          | Yes        |
-| Protocol                | HTTP        | gRPC       |
+| Capability | `ext_authz` | `ext_proc` |
+| - | - | - |
+| Modify request headers | Yes | Yes |
+| Modify response headers | No | Yes |
+| Modify request body | No | Yes |
+| Modify response body | No | Yes |
+| Protocol | HTTP | gRPC |
 
 Use `ext_authz` if you only need to inject auth headers, for example, for API keys. Use `ext_proc` if you need to rewrite bodies. Both can be enabled simultaneously.
 
@@ -376,14 +376,14 @@ Set `failureModeAllow: true` to allow requests through if the transformer is una
 
 Control which phases are sent to your transformer via `processingMode`. Only enable the phases you need, as disabling unused phases reduces latency.
 
-| Field                 | Options                                            | Description                           |
-| --------------------- | -------------------------------------------------- | ------------------------------------- |
-| `requestHeaderMode`   | `SEND`, `SKIP`, `DEFAULT`                          | Whether to forward request headers.   |
-| `responseHeaderMode`  | `SEND`, `SKIP`, `DEFAULT`                          | Whether to forward response headers.  |
-| `requestBodyMode`     | `NONE`, `BUFFERED`, `STREAMED`, `BUFFERED_PARTIAL` | How to send the request body.         |
-| `responseBodyMode`    | `NONE`, `BUFFERED`, `STREAMED`, `BUFFERED_PARTIAL` | How to send the response body.        |
-| `requestTrailerMode`  | `SEND`, `SKIP`                                     | Whether to forward request trailers.  |
-| `responseTrailerMode` | `SEND`, `SKIP`                                     | Whether to forward response trailers. |
+| Field | Options | Description |
+| - | - | - |
+| `requestHeaderMode` | `SEND`, `SKIP`, `DEFAULT` | Whether to forward request headers. |
+| `responseHeaderMode` | `SEND`, `SKIP`, `DEFAULT` | Whether to forward response headers. |
+| `requestBodyMode` | `NONE`, `BUFFERED`, `STREAMED`, `BUFFERED_PARTIAL` | How to send the request body. |
+| `responseBodyMode` | `NONE`, `BUFFERED`, `STREAMED`, `BUFFERED_PARTIAL` | How to send the response body. |
+| `requestTrailerMode` | `SEND`, `SKIP` | Whether to forward request trailers. |
+| `responseTrailerMode` | `SEND`, `SKIP` | Whether to forward response trailers. |
 
 * Use `BUFFERED` for request body rewriting: buffers the full body before sending, simplest for JSON rewriting.
 * Use `STREAMED` for streaming LLM response body rewriting: sends chunks as they arrive, lower latency but more complex to implement.
@@ -751,19 +751,19 @@ authProxy:
 
 LangSmith signs JWTs using **Ed25519 (EdDSA)**. Public keys are served at `/.well-known/jwks.json` and fetched automatically by the proxy. The auth proxy validates signatures using these public keys.
 
-| Claim                      | Description                                                                                                                                          |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `iat`, `exp`, `jti`, `nbf` | Standard JWT claims (issued-at, expiry, JWT ID, not-before)                                                                                          |
-| `iss`                      | Issuer. `langsmith` for SaaS; set via `LLM_AUTH_PROXY_ISSUER` for self-hosted                                                                        |
-| `aud`                      | Audience. Matches the JWT audience in LangSmith organization settings                                                                                |
-| `sub`                      | Actor identifier (user ID, evaluator ID, assistant ID, or API key ID)                                                                                |
-| `actor_type`               | One of: `user`, `evaluator`, `agent-builder`, `insights`, `polly`, `api_key:pat` (personal access token), or `api_key:service` (service account key) |
-| `workspace_id`             | Workspace ID                                                                                                                                         |
-| `workspace_name`           | Workspace Name                                                                                                                                       |
-| `organization_id`          | Organization ID                                                                                                                                      |
-| `organization_name`        | Organization Name                                                                                                                                    |
-| `request_id`               | Request correlation ID                                                                                                                               |
-| `ls_user_id`               | LangSmith user ID (present whenever the request has an associated user)                                                                              |
+| Claim | Description |
+| - | - |
+| `iat`, `exp`, `jti`, `nbf` | Standard JWT claims (issued-at, expiry, JWT ID, not-before) |
+| `iss` | Issuer. `langsmith` for SaaS; set via `LLM_AUTH_PROXY_ISSUER` for self-hosted |
+| `aud` | Audience. Matches the JWT audience in LangSmith organization settings |
+| `sub` | Actor identifier (user ID, evaluator ID, assistant ID, or API key ID) |
+| `actor_type` | One of: `user`, `evaluator`, `agent-builder`, `insights`, `polly`, `api_key:pat` (personal access token), or `api_key:service` (service account key) |
+| `workspace_id` | Workspace ID |
+| `workspace_name` | Workspace Name |
+| `organization_id` | Organization ID |
+| `organization_name` | Organization Name |
+| `request_id` | Request correlation ID |
+| `ls_user_id` | LangSmith user ID (present whenever the request has an associated user) |
 
 <Warning>
   Use `ls_user_id` to identify the end user. On agent runs, `sub` is the assistant's ID and `actor_type` is `agent-builder`, so neither identifies the person.

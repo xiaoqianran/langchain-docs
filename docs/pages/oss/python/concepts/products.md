@@ -119,14 +119,14 @@ Use the [Deep Agents SDK](/oss/python/deepagents/overview) when:
 
 While you can accomplish similar tasks with LangChain, LangGraph, and Deep Agents, the level at which you integrate them differ:
 
-| Feature           | LangGraph                                                                   | LangChain                                                               | Deep Agents                                                                  |
-| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Short-term memory | [Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/python/langchain/short-term-memory)            | [`StateBackend`](/oss/python/deepagents/backends#statebackend)               |
-| Long-term memory  | [Long-term memory](/oss/python/langgraph/add-memory#add-long-term-memory)   | [Long-term memory](/oss/python/langchain/long-term-memory)              | [Long-term memory](/oss/python/deepagents/memory)                            |
-| Skills            | -                                                                           | [Multi-agent skills](/oss/python/langchain/multi-agent/skills)          | [Skills](/oss/python/deepagents/skills)                                      |
-| Subagents         | [Subgraphs](/oss/python/langgraph/use-subgraphs)                            | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents)    | [Subagents](/oss/python/deepagents/subagents)                                |
-| Human-in-the-loop | [Interrupts](/oss/python/langgraph/interrupts)                              | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [`interrupt_on` parameter](/oss/python/deepagents/harness#human-in-the-loop) |
-| Streaming         | [Streaming](/oss/python/langgraph/streaming)                                | [Agent Streaming](/oss/python/langchain/event-streaming)                | [Streaming](/oss/python/deepagents/event-streaming)                          |
+| Feature | LangGraph | LangChain | Deep Agents |
+| - | - | - | - |
+| Short-term memory | [Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/python/langchain/short-term-memory) | [`StateBackend`](/oss/python/deepagents/backends#statebackend) |
+| Long-term memory | [Long-term memory](/oss/python/langgraph/add-memory#add-long-term-memory) | [Long-term memory](/oss/python/langchain/long-term-memory) | [Long-term memory](/oss/python/deepagents/memory) |
+| Skills | - | [Multi-agent skills](/oss/python/langchain/multi-agent/skills) | [Skills](/oss/python/deepagents/skills) |
+| Subagents | [Subgraphs](/oss/python/langgraph/use-subgraphs) | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents) | [Subagents](/oss/python/deepagents/subagents) |
+| Human-in-the-loop | [Interrupts](/oss/python/langgraph/interrupts) | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [`interrupt_on` parameter](/oss/python/deepagents/harness#human-in-the-loop) |
+| Streaming | [Streaming](/oss/python/langgraph/streaming) | [Agent Streaming](/oss/python/langchain/event-streaming) | [Streaming](/oss/python/deepagents/event-streaming) |
 
 ## Learn more
 

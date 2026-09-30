@@ -5,27 +5,27 @@
 # 在 Kubernetes 上自托管 LangSmith
 
 <Info>
-自托管 LangSmith 是企业计划的附加组件，专为我们最大、最注重安全的客户而设计。请参阅我们的 [pricing page](https://www.langchain.com/pricing) 了解更多详细信息，如果您想获得在您的环境中试用 LangSmith 的许可证密钥，请参阅 [contact our sales team](https://www.langchain.com/contact-sales)。
+  自托管 LangSmith 是企业计划的附加组件，专为我们最大、最注重安全的客户而设计。请参阅我们的 [pricing page](https://www.langchain.com/pricing) 了解更多详细信息，如果您想获得在您的环境中试用 LangSmith 的许可证密钥，请参阅 [contact our sales team](https://www.langchain.com/contact-sales)。
 </Info>
 
 本页面介绍如何在 Kubernetes 集群中设置 **LangSmith**（可观察性、跟踪和评估）。您将使用 Helm 安装 LangSmith 及其依赖项。
 
 完成此页面后，您将拥有：
 
-- **LangSmith UI 和 API**：用于 [observability](/langsmith/observability)、跟踪和 [evaluation](/langsmith/evaluation)。
-- **后端服务**：（队列、游乐场、ACE）。
-- **数据存储**：（PostgreSQL、Redis、ClickHouse、可选的 blob 存储）。
+* **LangSmith UI 和 API**：用于 [observability](/langsmith/observability)、跟踪和 [evaluation](/langsmith/evaluation)。
+* **后端服务**：（队列、游乐场、ACE）。
+* **数据存储**：（PostgreSQL、Redis、ClickHouse、可选的 blob 存储）。
 
 对于[agent deployment](/langsmith/deployment)：要添加部署功能，请先完成本指南，然后按照[Enable LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment)操作。
 
 LangChain 已在以下 Kubernetes 发行版上成功测试 LangSmith：
 
-- 谷歌 Kubernetes 引擎 (GKE)
-- Amazon Elastic Kubernetes Service (EKS)：有关架构模式和最佳实践，请参阅[self-hosting on AWS](/langsmith/aws-self-hosted)。
-- Azure Kubernetes Service (AKS)：有关架构模式和最佳实践，请参阅[self-hosting on AKS](/langsmith/azure-self-hosted)。
-- OpenShift（4.14+）
-- Minikube 和 Kind（用于开发目的）<Tip>
-**更喜欢基础设施即代码？** [Deploy with Terraform](/langsmith/self-host-terraform) 将 AWS、Azure 和 GCP 的集群配置、秘密连接和 Helm 版本捆绑到一个工作流程中。下面的页面介绍了针对您已管理的任何一致性集群的仅 Helm 路径。
+* 谷歌 Kubernetes 引擎 (GKE)
+* Amazon Elastic Kubernetes Service (EKS)：有关架构模式和最佳实践，请参阅[self-hosting on AWS](/langsmith/aws-self-hosted)。
+* Azure Kubernetes Service (AKS)：有关架构模式和最佳实践，请参阅[self-hosting on AKS](/langsmith/azure-self-hosted)。
+* OpenShift (4.14+)
+* Minikube 和 Kind（用于开发目的）<Tip>
+  **更喜欢基础设施即代码？** [Deploy with Terraform](/langsmith/self-host-terraform) 将 AWS、Azure 和 GCP 的集群配置、秘密连接和 Helm 版本捆绑到一个工作流程中。下面的页面介绍了针对您已管理的任何一致性集群的仅 Helm 路径。
 </Tip>
 
 ## 先决条件
@@ -41,7 +41,7 @@ LangChain 已在以下 Kubernetes 发行版上成功测试 LangSmith：
    1. 这是您可以生成的密钥。它应该是一个随机字符串。
    2. 您可以使用以下命令生成它：
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    openssl rand -base64 32
    ```
 
@@ -50,7 +50,7 @@ LangChain 已在以下 Kubernetes 发行版上成功测试 LangSmith：
    1. 这是您可以生成的密钥。它应该是一个随机字符串。
    2. 您可以使用以下命令生成它：
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    openssl rand -base64 32
    ```
 
@@ -58,12 +58,11 @@ LangChain 已在以下 Kubernetes 发行版上成功测试 LangSmith：
 
 LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来存储跟踪。默认情况下，这些服务安装在 Kubernetes 集群内。但是，我们强烈建议使用外部数据库。对于 PostgreSQL 和 Redis，最好的选择是云提供商的托管服务。有关更多信息，请参阅以下外部服务设置指南：
 
-- [PostgreSQL](/langsmith/self-host-external-postgres)
-- [Redis](/langsmith/self-host-external-redis)
-- [ClickHouse](/langsmith/self-host-external-clickhouse)
+* [PostgreSQL](/langsmith/self-host-external-postgres)
+* [Redis](/langsmith/self-host-external-redis)
+* [ClickHouse](/langsmith/self-host-external-clickhouse)
 
 有关每个数据存储支持的最低版本，请参阅[Minimum versions for self-hosting dependencies](/langsmith/self-host-dependency-versions)。
-
 
 ### Kubernetes 集群要求
 
@@ -83,20 +82,20 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
       您可以通过运行以下命令来验证这一点：
 
-      ```bash
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       kubectl get storageclass
       ```
 
       输出应显示至少一种具有支持动态配置的配置程序的存储类。例如：
 
-      ```bash
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       NAME            PROVISIONER                 RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
       gp2 (default)   ebs.csi.eks.amazonaws.com   Delete          WaitForFirstConsumer   true                   161d
       ```
 
-            <Note>
-            我们强烈建议使用支持卷扩展的存储类。这是因为跟踪可能需要大量磁盘空间，并且您的卷可能需要随着时间的推移调整大小。
-            </Note>
+      <Note>
+        我们强烈建议使用支持卷扩展的存储类。这是因为跟踪可能需要大量磁盘空间，并且您的卷可能需要随着时间的推移调整大小。
+      </Note>
 
       有关存储类别的更多信息，请参阅[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
 
@@ -104,11 +103,10 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
    1.安装`helm`请参考[Helm documentation](https://helm.sh/docs/intro/install/)
 
-
-3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到 `https://beacon.langchain.com` 以进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
+3. 出口到`https://beacon.langchain.com`（如果不是在离线模式下运行）1. LangSmith 需要出口到`https://beacon.langchain.com` 进行许可证验证和使用报告。这是LangSmith正常运行所必需的。您可以在 [Egress](/langsmith/self-host-egress) 部分找到有关出口要求的更多信息。
 
 <Note>
-从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
+  从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
 </Note>
 
 ## 配置您的 Helm 图表：
@@ -125,14 +123,13 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
   如果您的集群强制执行非根或只读容器策略，请从 [read-only Helm configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/read_only_config.yaml) 开始。 LangSmith 容器不需要 root 权限。该示例展示了如何为需要临时存储的服务设置 `runAsNonRoot`、服务 UID 和 GID、`fsGroup`、`RuntimeDefault` seccomp 配置文件、删除功能、禁用权限升级以及可写 `emptyDir` 挂载。
 </Tip>
 
-
 2. 您至少需要设置以下配置选项（使用基本身份验证）：
 
    <Warning>
-   设置`apiKeySalt`一次，不要更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它将使您组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
+     设置`apiKeySalt`一次，不要更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它将使您组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
    </Warning>
 
-   ```yaml
+   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    config:
      langsmithLicenseKey: "<your license key>"
      apiKeySalt: "<your api key salt>"
@@ -162,21 +159,21 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
    1.运行`kubectl get pods`输出应该类似于：
 
-      ```bash
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         langsmith-eks-2vauP7wf 21:07:46 No resources found in default namespace.
       ```
 
    <Note>
-   如果您使用的命名空间不是默认命名空间，则需要使用 `-n <namespace>` 标志在 `helm` 和 `kubectl` 命令中指定命名空间。
+     如果您使用的命名空间不是默认命名空间，则需要使用 `-n <namespace>` 标志在 `helm` 和 `kubectl` 命令中指定命名空间。
    </Note>
 
 2. 确保您已添加 LangChain Helm 存储库（如果您使用本地图表，请跳过此步骤）。
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    helm repo add langchain https://langchain-ai.github.io/helm
    ```
 
-3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用版本。
+3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用的版本。
 
    * 我们通常建议使用最新版本。
    * 您还可以运行`helm search repo langchain/langsmith --versions`来查看可用的版本。输出将如下所示：
@@ -195,7 +192,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    * 将 `<version>` 替换为上一步中您要安装的 LangSmith 版本。大多数用户应该安装可用的最新版本。
 
    <Note>
-   在运行此命令之前，使用 `-n <namespace>` 指定的命名空间必须已经存在。如果不存在，您可以先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
+     在运行此命令之前，使用 `-n <namespace>` 指定的命名空间必须已经存在。如果它不存在，您可以先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
    </Note>
 
    一旦 `helm install` 命令运行并成功完成，您应该看到类似以下的输出：
@@ -244,12 +241,13 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 2、curl`langsmith-frontend`服务的外网ip：
 
-   ```bash
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    curl <external ip>/api/tenants
    ```
 
    预期输出：
-   ```json
+
+   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    [{"id":"00000000-0000-0000-0000-000000000000","has_waitlist_access":true,"created_at":"2023-09-13T18:25:10.488407","display_name":"Personal","config":{"is_personal":true,"max_identities":1},"tenant_handle":"default"}]
    ```
 
@@ -257,7 +255,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
    LangSmith UI 应该可见/可操作
 
-   ![Langsmith ui](/langsmith/images/langsmith-ui.png)
+   <img alt="Langsmith ui" />
 
 ## 使用LangSmith
 
@@ -279,21 +277,22 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 要超越可观察性、跟踪和评估，您可以在自托管实例上启用以下功能：
 
-- **[LangSmith Deployment](/langsmith/deployment)**：通过 LangSmith UI 部署、扩展和管理代理。
-- **[Fleet](/langsmith/fleet/index)**：无需编写代码即可创建和管理人工智能代理。
-- **[Insights](/langsmith/insights)**：对您的痕迹和应用程序数据进行人工智能分析。
-- **[Chat](/langsmith/chat)**：跨越 LangSmith 的工作区聊天体验，帮助您分析跟踪、线程、提示和实验结果。
-- **[Sandboxes](/langsmith/sandboxes)**：运行代码，公开临时服务，并从LangSmith创建内存快照。
+* **[LangSmith Deployment](/langsmith/deployment)**：通过 LangSmith UI 部署、扩展和管理代理。
+* **[Fleet](/langsmith/fleet/index)**：无需编写代码即可创建和管理 AI 代理。
+* **[Insights](/langsmith/insights)**：对您的痕迹和应用程序数据进行人工智能分析。
+* **[Chat](/langsmith/chat)**：跨越 LangSmith 的工作区聊天体验，帮助您分析跟踪、线程、提示和实验结果。
+* **[Sandboxes](/langsmith/sandboxes)**：运行代码，公开临时服务，并从LangSmith创建内存快照。
 
-按照 [Enable additional features](/langsmith/deploy-self-hosted-full-platform) 指南设置这些组件。
+请按照 [Enable additional features](/langsmith/deploy-self-hosted-full-platform) 指南设置这些组件。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

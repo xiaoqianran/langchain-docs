@@ -60,13 +60,15 @@ deno task deploy
 ### 最低（流媒体聊天）
 
 |方法|路径|目的|
-| -------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受协议命令（`run.start`，...）并启动代理运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
 | `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
 
-### 可选（侧边栏）|方法|路径|目的|
-| -------- | -------------------------------- | ------------------------------------------------------------------ |
+### 可选（侧边栏）
+
+|方法|路径|目的|
+| - | - | - |
 | `GET` | `/api/threads` |列出检查点已知的线程 |
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录（代理协议）|
@@ -114,20 +116,18 @@ flowchart TB
 
 ## Deno 后端如何工作
 
-此示例作为**单个 Deno 进程**运行：
-
-* **`main.ts`**：`Deno.serve` + Hono 应用程序。挂载`/api`路线并从`dist/`为Vite建造的SPA提供服务。
+此示例作为**单个 Deno 进程**运行：* **`main.ts`**：`Deno.serve` + Hono 应用程序。挂载`/api`路线并从`dist/`为Vite建造的SPA提供服务。
 * **`server/routes.ts`**：代理流协议的 Hono 路由定义。
 * **`server/session.ts`**：`LocalThreadSession`：在 LangGraph `StreamChannel` 中缓冲协议事件，使用 `matchesSubscription` 进行过滤，并通过 SSE `ReadableStream` 扇出匹配帧。
 * **`server/threads.ts`**：LangGraph SDK 有线格式中由检查指针支持的 `getState` / `updateState` / `getHistory` 帮助程序。
 * **`server/registry.ts`**：进程本地单例拥有代理和每个线程 ID 一个会话。
-* **`server/agent/`**：与 Next.js 示例相同的 `createDeepAgent` 编排器（研究员 + math-whiz 子代理、模拟工具）。Deno Deploy 使用自己的内存中 `MemorySaver` 检查指针运行每个隔离。为了跨隔离区实现生产持久性，请交换 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)（Postgres、Redis，...）。路由处理程序和 `server/threads.ts` 帮助程序保持不变。
+* **`server/agent/`**：与 Next.js 示例相同的 `createDeepAgent` 编排器（研究员 + math-whiz 子代理、模拟工具）。
+
+Deno Deploy 使用自己的内存中 `MemorySaver` 检查指针运行每个隔离。为了跨隔离区实现生产持久性，请交换 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)（Postgres、Redis，...）。路由处理程序和 `server/threads.ts` 帮助程序保持不变。
 
 ## 生产坚持
 
-该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/registry.ts`)。这适用于本地开发和单隔离部署，但在 Deno Deploy（多个隔离、冷启动）上，对话状态在实例之间**不持久**。
-
-将`server/agent/index.ts`中的`MemorySaver`替换为持久检查指针，例如`@langchain/langgraph-checkpoint-postgres`或`@langchain/langgraph-checkpoint-redis`。您还需要一个共享会话/重播存储，以便 SSE 重新连接可以跨隔离运行。
+该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/registry.ts`)。这适用于本地开发和单隔离部署，但在 Deno Deploy（多个隔离、冷启动）上，对话状态在实例之间**不持久**。将`server/agent/index.ts`中的`MemorySaver`替换为持久检查指针，例如`@langchain/langgraph-checkpoint-postgres`或`@langchain/langgraph-checkpoint-redis`。您还需要一个共享会话/重播存储，以便 SSE 重新连接可以跨隔离运行。
 
 ## 本地开发
 
@@ -156,7 +156,9 @@ deno task start
 
 打开[http://localhost:8000](http://localhost:8000)。
 
-## 项目布局* `main.ts`：Deno Deploy 入口点（`Deno.serve` + Hono）。
+## 项目布局
+
+* `main.ts`：Deno Deploy 入口点（`Deno.serve` + Hono）。
 * `server/agent/`：带有子代理和模拟工具的深度代理（`createDeepAgent`）。
 * `server/`：协议服务器逻辑：`session.ts`、`threads.ts`、`serialize.ts`、`registry.ts`、`routes.ts`。
 * `client/`：Vite + React SPA（与 Next.js 示例相同的 UI）。

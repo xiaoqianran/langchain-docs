@@ -448,8 +448,8 @@
 
 ## 与抽样比较
 
-条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色 |条件追踪 |取样|
-| ------------------ | ------------------------------------------------- | ------------------------------------------------------------------ |
+条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色|条件追踪 |取样|
+| - | - | - |
 | **控制** |确定性（显式启用/禁用）|概率（随机抽样）|
 | **用例** |业务逻辑、合规性、每个请求的决策 |成本优化、大批量可观测性 |
 | **可预测性** |针对特定请求的保证行为 |流量的统计表示 |
@@ -469,7 +469,9 @@
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/conditional-tracing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -20,13 +20,13 @@ The `langchain-nvidia-ai-endpoints` package provides LangChain integrations for 
 
 Models run on NVIDIA NIM microservices: container images that expose a standard OpenAI-compatible API, optimized with TensorRT-LLM for peak throughput on NVIDIA hardware. They can be accessed via the hosted API Catalog or self-hosted on-premises.
 
-| Component     | Class                                                 | Description                                                     |
-| :------------ | :---------------------------------------------------- | :-------------------------------------------------------------- |
-| Chat          | [`ChatNVIDIA`](#chat-chatnvidia)                      | Chat completions with any NVIDIA-hosted model or local NIM      |
-| Chat (Dynamo) | [`ChatNVIDIADynamo`](#chat-chatnvidiadynamo)          | `ChatNVIDIA` with KV cache routing hints for Dynamo deployments |
-| Embeddings    | [`NVIDIAEmbeddings`](#embeddings-nvidiaembeddings)    | Dense vector embeddings for semantic search and RAG             |
-| Reranking     | [`NVIDIARerank`](#reranking-nvidiarerank)             | Document reranking by query relevance                           |
-| Retrieval     | [`NVIDIARAGRetriever`](#retrieval-nvidiaragretriever) | Retrieval from an NVIDIA RAG Blueprint server                   |
+| Component | Class | Description |
+| :- | :- | :- |
+| Chat | [`ChatNVIDIA`](#chat-chatnvidia) | Chat completions with any NVIDIA-hosted model or local NIM |
+| Chat (Dynamo) | [`ChatNVIDIADynamo`](#chat-chatnvidiadynamo) | `ChatNVIDIA` with KV cache routing hints for Dynamo deployments |
+| Embeddings | [`NVIDIAEmbeddings`](#embeddings-nvidiaembeddings) | Dense vector embeddings for semantic search and RAG |
+| Reranking | [`NVIDIARerank`](#reranking-nvidiarerank) | Document reranking by query relevance |
+| Retrieval | [`NVIDIARAGRetriever`](#retrieval-nvidiaragretriever) | Retrieval from an NVIDIA RAG Blueprint server |
 
 ### Chat: ChatNVIDIA
 

@@ -30,10 +30,11 @@ LangSmith 中的警报是项目范围的，需要为每个受监控的项目单�
 LangSmith 针对以下指标提供基于阈值的警报：
 
 |公制类型 |描述 |使用案例|
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ || **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。                         |监控管道是否按预期产量运行，并在产量意外下降时发出警报。                                                            |
-| **成本** |跟踪一个时间窗口内运行的总成本。                                                                     |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。                            |
-| **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。                                                                |
-| **反馈分数** |衡量平均反馈分数。                                                                                  |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 || **延迟** |测量平均运行执行时间。                                                                                  |跟踪应用程序的延迟，以针对峰值和性能瓶颈发出警报。                                                                               |
+| - | - | - |
+| **运行计数** |跟踪一个时间窗口内[runs](/langsmith/observability-concepts#runs)的总数。 |监控管道是否按预期产量运行，并在产量意外下降时发出警报。 |
+| **成本** |跟踪一个时间窗口内运行的总成本。 |监控 LLM 支出，以便在成本超过预期阈值时发出警报。需要配置[cost tracking](/langsmith/cost-tracking)。 |
+| **错误** |跟踪有错误状态的运行。关于总错误计数或错误百分比（所有运行中错误运行的比率）的警报。 |监视应用程序中的故障，或在错误率超过可接受的阈值时发出警报。 |
+| **反馈分数** |衡量平均反馈分数。 |跟踪 [feedback from end users](/langsmith/attach-user-feedback) 或 [online evaluation results](/langsmith/online-evaluations-llm-as-judge) 以警告回归。 || **延迟** |测量平均运行执行时间。 |跟踪应用程序的延迟，以针对峰值和性能瓶颈发出警报。 |
 
 此外，对于 **错误** 和 **延迟**，您可以使用筛选器构建器来堆叠 **状态**、**运行类型**、**标签** 和 **错误** 等字段上的条件。例如，您可以将错误警报范围限定为 **Status** 为 `error`、**Run Type** 为 `llm`、**Tag** 为 `support_agent`、**Error** 与 `RateLimitExceeded` 匹配的运行。
 
@@ -49,9 +50,9 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 <div>
   <img alt="Alert Condition Configuration" />
-</div>**示例：** 当过去 5 分钟内超过 5% 的运行导致错误时，屏幕截图中的配置将生成警报。
+</div>
 
-您可以预览历史时间窗口内的警报行为，以了解有多少数据点以及哪些数据点会在选定的阈值（以红色表示）下触发警报。例如，为项目设置 60 秒的平均延迟阈值可让您可视化潜在的警报，如以下屏幕截图所示。
+**示例：** 当过去 5 分钟内超过 5% 的运行导致错误时，屏幕截图中的配置将生成警报。您可以预览历史时间窗口内的警报行为，以了解有多少数据点以及哪些数据点会在选定的阈值（以红色表示）下触发警报。例如，为项目设置 60 秒的平均延迟阈值可让您可视化潜在的警报，如以下屏幕截图所示。
 
 <div>
   <img alt="Alert Metrics" />
@@ -545,12 +546,12 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **使用其他电子邮件提供商**
 
-      相同的模式适用于接受静态身份验证标头的其他事务电子邮件 API。更改 **Webhook URL** 和 **标头** 以匹配您的提供商：|供应商|网络钩子 URL | Auth 标头格式 |
-      | -------- | --------------------------------------------------- | ------------------------------------------------------ |
-      |邮枪 | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
-      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |
+      相同的模式适用于接受静态身份验证标头的其他事务电子邮件 API。更改 **Webhook URL** 和 **标头** 以匹配您的提供商：
 
-      调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，带有 HTTP 触发器的 Lambda 函数）进行路由。
+      |供应商|网络钩子 URL | Auth 标头格式 |
+      | - | - | - |
+      |邮枪 | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
+      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，带有 HTTP 触发器的 Lambda 函数）进行路由。
     </Accordion>
 
     <Accordion title="Configure Google Chat notifications via webhook (requires middleware)">
@@ -560,13 +561,13 @@ LangSmith 针对以下指标提供基于阈值的警报：
       Invalid JSON payload received. Unknown name "project_name" at 'message': Cannot find field.
       ```
 
-      没有请求正文模板可以避免这种情况，即使是最小的正文（例如 `{"text": "hello", "project_name": "x"}`）也会失败。 **需要翻译层（中间件）**，类似于 [email recipe](#configure-email-notifications-via-webhook) 中的 Amazon SES 注释。**选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
+      没有请求正文模板可以避免这种情况，即使是最小的正文（例如 `{"text": "hello", "project_name": "x"}`）也会失败。 **需要翻译层（中间件）**，类似于 [email recipe](#configure-email-notifications-via-webhook) 中的 Amazon SES 注释。
+
+      **选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
 
       此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 
-      **先决条件**
-
-      * 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhook**，创建 Webhook，然后复制 URL。
+      **先决条件*** 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhook**，创建 Webhook，然后复制 URL。
       * 启用 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。
 
       **第 1 步：部署处理程序**
@@ -642,9 +643,9 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       {}
-      ```无论您在此处放置什么内容，元数据字段（`alert_rule_name`、`project_name`、`runs_url`等）都会通过LangSmith合并到正文中，因此空正文就足够了。
+      ```
 
-      <Note>
+      无论您在此处放置什么内容，元数据字段（`alert_rule_name`、`project_name`、`runs_url`等）都会通过LangSmith合并到正文中，因此空正文就足够了。<Note>
         不要从处理程序中的警报字段值中删除 `*` 或 `_`。这些字符也用于 Google Chat 的基本文本格式，但它们出现在 LangSmith 标识符中（例如 `run_count`）。剥离它们会损坏消息中的字段名称。
       </Note>
 

@@ -168,13 +168,13 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
 
     The same `tag_value_ids` field is accepted by:
 
-    | Endpoint                                   | Description                                                                   |
-    | ------------------------------------------ | ----------------------------------------------------------------------------- |
-    | `POST /api/v1/sessions`                    | Create a tracing project                                                      |
-    | `POST /api/v1/datasets`                    | Create a dataset (also accepted on CSV upload and experiment upload variants) |
-    | `POST /api/v1/datasets/{dataset_id}/clone` | Clone a dataset                                                               |
-    | `POST /api/v1/repos`                       | Create a prompt                                                               |
-    | `POST /api/v1/repos/{repo_id}/fork`        | Fork a prompt                                                                 |
+    | Endpoint | Description |
+    | - | - |
+    | `POST /api/v1/sessions` | Create a tracing project |
+    | `POST /api/v1/datasets` | Create a dataset (also accepted on CSV upload and experiment upload variants) |
+    | `POST /api/v1/datasets/{dataset_id}/clone` | Clone a dataset |
+    | `POST /api/v1/repos` | Create a prompt |
+    | `POST /api/v1/repos/{repo_id}/fork` | Fork a prompt |
 
     <Note>
       **Permissions**: Applying the **Application** tag at creation time requires only update access to the resource type. Applying any other tag key requires the [`workspaces:manage`](/langsmith/organization-workspace-operations) permission.

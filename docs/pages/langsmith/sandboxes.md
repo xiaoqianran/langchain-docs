@@ -12,12 +12,12 @@ From the [LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_m
 
 ## Environment availability
 
-| Environment                                   | Status              |
-| --------------------------------------------- | ------------------- |
-| GCP US (`smith.langchain.com`)                | Generally available |
-| GCP EU (`eu.smith.langchain.com`)             | Generally available |
-| GCP APAC (`apac.smith.langchain.com`)         | Generally available |
-| AWS US (`aws.smith.langchain.com`)            | Generally available |
+| Environment | Status |
+| - | - |
+| GCP US (`smith.langchain.com`) | Generally available |
+| GCP EU (`eu.smith.langchain.com`) | Generally available |
+| GCP APAC (`apac.smith.langchain.com`) | Generally available |
+| AWS US (`aws.smith.langchain.com`) | Generally available |
 | [BYOC](/langsmith/byoc) (your data plane URL) | Generally available |
 
 <Warning>
@@ -65,7 +65,7 @@ export LANGSMITH_API_KEY="<your-api-key>"
   client = SandboxClient()
 
   with client.sandbox() as sb:
-      result = sb.run("python -c 'print(2 + 2)'")
+      result = sb.run("python3 -c 'print(2 + 2)'")
       print(result.stdout)  # "4\n"
   ```
 

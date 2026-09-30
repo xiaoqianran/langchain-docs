@@ -26,13 +26,13 @@ The `langchain` package namespace has been significantly reduced in v1 to focus 
 
 ### Namespace
 
-| Module                                                                                | What's available                                                                                                                                                                                                            | Notes                             |
-| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| [`langchain.agents`](https://reference.langchain.com/python/langchain/agents)         | [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent), [`AgentState`](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState)                         | Core agent creation functionality |
-| [`langchain.messages`](https://reference.langchain.com/python/langchain/messages)     | Message types, [content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock), [`trim_messages`](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) | Re-exported from `langchain-core` |
-| [`langchain.tools`](https://reference.langchain.com/python/langchain/tools)           | [`@tool`](https://reference.langchain.com/python/langchain-core/tools/convert/tool), [`BaseTool`](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool), injection helpers                             | Re-exported from `langchain-core` |
-| [`langchain.chat_models`](https://reference.langchain.com/python/langchain/models)    | [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model), [`BaseChatModel`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel)  | Unified model initialization      |
-| [`langchain.embeddings`](https://reference.langchain.com/python/langchain/embeddings) | [`init_embeddings`](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings), [`Embeddings`](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)               | Embedding models                  |
+| Module | What's available | Notes |
+| - | - | - |
+| [`langchain.agents`](https://reference.langchain.com/python/langchain/agents) | [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent), [`AgentState`](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) | Core agent creation functionality |
+| [`langchain.messages`](https://reference.langchain.com/python/langchain/messages) | Message types, [content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock), [`trim_messages`](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) | Re-exported from `langchain-core` |
+| [`langchain.tools`](https://reference.langchain.com/python/langchain/tools) | [`@tool`](https://reference.langchain.com/python/langchain-core/tools/convert/tool), [`BaseTool`](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool), injection helpers | Re-exported from `langchain-core` |
+| [`langchain.chat_models`](https://reference.langchain.com/python/langchain/models) | [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model), [`BaseChatModel`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) | Unified model initialization |
+| [`langchain.embeddings`](https://reference.langchain.com/python/langchain/embeddings) | [`init_embeddings`](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings), [`Embeddings`](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) | Embedding models |
 
 ### `langchain-classic`
 
@@ -96,19 +96,19 @@ Prior to v1.0, we recommended using [`langgraph.prebuilt.create_react_agent`](ht
 
 The table below outlines what functionality has changed from [`create_react_agent`](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent):
 
-| Section                                            | TL;DR - What's changed                                                                                                                                                                     |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Import path](#import-path)                        | Package moved from `langgraph.prebuilt` to `langchain.agents`                                                                                                                              |
-| [Prompts](#prompts)                                | Parameter renamed to [`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\)), dynamic prompts use middleware            |
-| [Pre-model hook](#pre-model-hook)                  | Replaced by middleware with `before_model` method                                                                                                                                          |
-| [Post-model hook](#post-model-hook)                | Replaced by middleware with `after_model` method                                                                                                                                           |
-| [Custom state](#custom-state)                      | `TypedDict` only, can be defined via [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) or middleware |
-| [Model](#model)                                    | Dynamic selection via middleware, pre-bound models not supported                                                                                                                           |
-| [Tools](#tools)                                    | Tool error handling moved to middleware with `wrap_tool_call`                                                                                                                              |
-| [Structured output](#structured-output)            | prompted output removed, use `ToolStrategy`/`ProviderStrategy`                                                                                                                             |
-| [Streaming node name](#streaming-node-name-rename) | Node name changed from `"agent"` to `"model"`                                                                                                                                              |
-| [Runtime context](#runtime-context)                | Dependency injection via `context` argument instead of `config["configurable"]`                                                                                                            |
-| [Namespace](#simplified-package)                   | Streamlined to focus on agent building blocks, legacy code moved to `langchain-classic`                                                                                                    |
+| Section | TL;DR - What's changed |
+| - | - |
+| [Import path](#import-path) | Package moved from `langgraph.prebuilt` to `langchain.agents` |
+| [Prompts](#prompts) | Parameter renamed to [`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\)), dynamic prompts use middleware |
+| [Pre-model hook](#pre-model-hook) | Replaced by middleware with `before_model` method |
+| [Post-model hook](#post-model-hook) | Replaced by middleware with `after_model` method |
+| [Custom state](#custom-state) | `TypedDict` only, can be defined via [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) or middleware |
+| [Model](#model) | Dynamic selection via middleware, pre-bound models not supported |
+| [Tools](#tools) | Tool error handling moved to middleware with `wrap_tool_call` |
+| [Structured output](#structured-output) | prompted output removed, use `ToolStrategy`/`ProviderStrategy` |
+| [Streaming node name](#streaming-node-name-rename) | Node name changed from `"agent"` to `"model"` |
+| [Runtime context](#runtime-context) | Dependency injection via `context` argument instead of `config["configurable"]` |
+| [Namespace](#simplified-package) | Streamlined to focus on agent building blocks, legacy code moved to `langchain-classic` |
 
 ### Import path
 

@@ -14,10 +14,10 @@ The **data plane** runs in your AWS account and ingests, stores, and queries all
 
 The table below summarizes the split:
 
-| Plane             | Where it runs                              | What it holds                                                                                                                                          |
-| ----------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Control plane** | LangChain's cloud, `us-east-2`             | Authentication, organization and workspace configuration, billing and usage metadata, LangSmith API keys, and the static frontend assets               |
-| **Data plane**    | Your AWS account, in the region you choose | Traces, prompts, datasets, evaluators, experiments, insights runs, annotation queues, agent deployments, workspace secrets, and other application data |
+| Plane | Where it runs | What it holds |
+| - | - | - |
+| **Control plane** | LangChain's cloud, `us-east-2` | Authentication, organization and workspace configuration, billing and usage metadata, LangSmith API keys, and the static frontend assets |
+| **Data plane** | Your AWS account, in the region you choose | Traces, prompts, datasets, evaluators, experiments, insights runs, annotation queues, agent deployments, workspace secrets, and other application data |
 
 <img alt="BYOC architecture diagram. The LangSmith UI and the client apps in your application VPC both reach the data plane over one private connection, using PrivateLink, VPC peering, or Tailscale, which terminates at a network load balancer. The load balancer feeds an Istio ingress in an EKS cluster in your AWS account, which routes to the LangSmith services that run the backend, SmithDB, and sandboxes, and those services read and write S3, RDS, and ElastiCache. The LangChain cloud control plane holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. It reaches the cluster over PrivateLink for scaling and upgrades, receives auth and telemetry back over a second PrivateLink, and assumes an IAM role in your account to provision resources." />
 

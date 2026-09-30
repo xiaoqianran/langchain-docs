@@ -25,14 +25,14 @@ Single-run queues present one item at a time and let reviewers submit any rubric
 
 Run items and thread items support different capabilities:
 
-| Capability       | Run items | Thread items |
-| ---------------- | --------- | ------------ |
-| Rubric feedback  | Yes       | Yes          |
-| Reviewer notes   | Yes       | No           |
-| Assertions       | Yes       | No           |
-| Add to Dataset   | Yes       | Yes          |
-| Default dataset  | Yes       | No           |
-| Automation rules | Yes       | Yes          |
+| Capability | Run items | Thread items |
+| - | - | - |
+| Rubric feedback | Yes | Yes |
+| Reviewer notes | Yes | No |
+| Assertions | Yes | No |
+| Add to Dataset | Yes | Yes |
+| Default dataset | Yes | No |
+| Automation rules | Yes | Yes |
 
 ### Create a single-run queue
 

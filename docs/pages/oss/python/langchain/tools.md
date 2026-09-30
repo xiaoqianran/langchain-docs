@@ -125,10 +125,10 @@ Define complex inputs with Pydantic models or JSON schemas:
 
 The following parameter names are reserved and cannot be used as tool arguments. Using these names will cause runtime errors.
 
-| Parameter name | Purpose                                                                |
-| -------------- | ---------------------------------------------------------------------- |
-| `config`       | Reserved for passing `RunnableConfig` to tools internally              |
-| `runtime`      | Reserved for `ToolRuntime` parameter (accessing state, context, store) |
+| Parameter name | Purpose |
+| - | - |
+| `config` | Reserved for passing `RunnableConfig` to tools internally |
+| `runtime` | Reserved for `ToolRuntime` parameter (accessing state, context, store) |
 
 To access runtime information, use the [`ToolRuntime`](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) parameter instead of naming your own arguments `config` or `runtime`.
 
@@ -140,16 +140,16 @@ Tools are most powerful when they can access runtime information like conversati
 
 Tools can access runtime information through the [`ToolRuntime`](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) parameter, which provides:
 
-| Component          | Description                                                                                                                 | Use case                                                    |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **State**          | Short-term memory - mutable data that exists for the current conversation (messages, counters, custom fields)               | Access conversation history, track tool call counts         |
-| **Context**        | Immutable configuration passed at invocation time (user IDs, session info)                                                  | Personalize responses based on user identity                |
-| **Store**          | Long-term memory - persistent data that survives across conversations                                                       | Save user preferences, maintain knowledge base              |
-| **Stream Writer**  | Emit real-time updates during tool execution                                                                                | Show progress for long-running operations                   |
-| **Execution Info** | Identity and retry information for the current execution (thread ID, run ID, attempt number)                                | Access thread/run IDs, adjust behavior based on retry state |
-| **Server Info**    | Server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)                      | Access assistant ID, graph ID, or authenticated user info   |
-| **Config**         | [`RunnableConfig`](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) for the execution | Access callbacks, tags, and metadata                        |
-| **Tool Call ID**   | Unique identifier for the current tool invocation                                                                           | Correlate tool calls for logs and model invocations         |
+| Component | Description | Use case |
+| - | - | - |
+| **State** | Short-term memory - mutable data that exists for the current conversation (messages, counters, custom fields) | Access conversation history, track tool call counts |
+| **Context** | Immutable configuration passed at invocation time (user IDs, session info) | Personalize responses based on user identity |
+| **Store** | Long-term memory - persistent data that survives across conversations | Save user preferences, maintain knowledge base |
+| **Stream Writer** | Emit real-time updates during tool execution | Show progress for long-running operations |
+| **Execution Info** | Identity and retry information for the current execution (thread ID, run ID, attempt number) | Access thread/run IDs, adjust behavior based on retry state |
+| **Server Info** | Server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user) | Access assistant ID, graph ID, or authenticated user info |
+| **Config** | [`RunnableConfig`](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) for the execution | Access callbacks, tags, and metadata |
+| **Tool Call ID** | Unique identifier for the current tool invocation | Correlate tool calls for logs and model invocations |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR

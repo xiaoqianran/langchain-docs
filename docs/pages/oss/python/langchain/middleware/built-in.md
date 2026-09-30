@@ -10,27 +10,27 @@ LangChain and [Deep Agents](/oss/python/deepagents/overview) provide prebuilt mi
 
 The following middleware work with any LLM provider:
 
-| Middleware                                    | Description                                                                                   |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [Tool error](#tool-error)                     | Catch tool execution exceptions and convert them to error messages for the model.             |
-| [Tool retry](#tool-retry)                     | Automatically retry failed tool calls with exponential backoff.                               |
-| [Model retry](#model-retry)                   | Automatically retry failed model calls with exponential backoff.                              |
-| [Model fallback](#model-fallback)             | Automatically fallback to alternative models when primary fails.                              |
-| [Summarization](#summarization)               | Automatically summarize conversation history when approaching token limits.                   |
-| [Human-in-the-loop](#human-in-the-loop)       | Pause execution for human approval of tool calls.                                             |
-| [Model call limit](#model-call-limit)         | Limit the number of model calls to prevent excessive costs.                                   |
-| [Tool call limit](#tool-call-limit)           | Control tool execution by limiting call counts.                                               |
-| [PII detection](#pii-detection)               | Detect and handle Personally Identifiable Information (PII).                                  |
-| [To-do list](#to-do-list)                     | Equip agents with task planning and tracking capabilities.                                    |
-| [LLM tool selector](#llm-tool-selector)       | Use an LLM to select relevant tools before calling main model.                                |
-| [Provider tool search](#provider-tool-search) | Defer tools behind providers' server-side tool search, surfacing them on demand.              |
-| [Shell tool](#shell-tool)                     | Expose a persistent shell session to agents for command execution.                            |
-| [Filesystem](#filesystem-middleware)          | Provide agents with a filesystem for storing context and long-term memories.                  |
-| [Subagent](#subagent)                         | Add the ability to spawn subagents.                                                           |
-| [Rubric grading (Beta)](#rubric-grading)      | Apply LLM-as-a-judge grading so agents self-evaluate and iterate until a rubric is satisfied. |
-| [File search](#file-search)                   | Provide Glob and Grep search tools over filesystem files.                                     |
-| [Context editing](#context-editing)           | Manage conversation context by trimming or clearing tool uses.                                |
-| [LLM tool emulator](#llm-tool-emulator)       | Emulate tool execution using an LLM for testing purposes.                                     |
+| Middleware | Description |
+| - | - |
+| [Tool error](#tool-error) | Catch tool execution exceptions and convert them to error messages for the model. |
+| [Tool retry](#tool-retry) | Automatically retry failed tool calls with exponential backoff. |
+| [Model retry](#model-retry) | Automatically retry failed model calls with exponential backoff. |
+| [Model fallback](#model-fallback) | Automatically fallback to alternative models when primary fails. |
+| [Summarization](#summarization) | Automatically summarize conversation history when approaching token limits. |
+| [Human-in-the-loop](#human-in-the-loop) | Pause execution for human approval of tool calls. |
+| [Model call limit](#model-call-limit) | Limit the number of model calls to prevent excessive costs. |
+| [Tool call limit](#tool-call-limit) | Control tool execution by limiting call counts. |
+| [PII detection](#pii-detection) | Detect and handle Personally Identifiable Information (PII). |
+| [To-do list](#to-do-list) | Equip agents with task planning and tracking capabilities. |
+| [LLM tool selector](#llm-tool-selector) | Use an LLM to select relevant tools before calling main model. |
+| [Provider tool search](#provider-tool-search) | Defer tools behind providers' server-side tool search, surfacing them on demand. |
+| [Shell tool](#shell-tool) | Expose a persistent shell session to agents for command execution. |
+| [Filesystem](#filesystem-middleware) | Provide agents with a filesystem for storing context and long-term memories. |
+| [Subagent](#subagent) | Add the ability to spawn subagents. |
+| [Rubric grading (Beta)](#rubric-grading) | Apply LLM-as-a-judge grading so agents self-evaluate and iterate until a rubric is satisfied. |
+| [File search](#file-search) | Provide Glob and Grep search tools over filesystem files. |
+| [Context editing](#context-editing) | Manage conversation context by trimming or clearing tool uses. |
+| [LLM tool emulator](#llm-tool-emulator) | Emulate tool execution using an LLM for testing purposes. |
 
 ### Tool error
 

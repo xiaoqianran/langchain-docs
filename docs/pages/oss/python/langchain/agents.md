@@ -401,8 +401,8 @@ Every agent manages its execution context through [`AgentState`](https://referen
 
 The built-in field is:
 
-| Field      | Type                | Description                                                                                                |
-| ---------- | ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `messages` | `list[BaseMessage]` | The full conversation history for the current thread. Append-only: new messages are added, never replaced. |
 
 `AgentState` is also the type signature for every node-style middleware hook (`before_model`, `after_model`, and similar). Hooks receive the current state and can return a dict of updates to merge back into it.

@@ -30,20 +30,20 @@ The local server started by [`mda dev`](/langsmith/python/managed-deep-agents-lo
 
 The MCP endpoint uses the deployment's [identity](/langsmith/python/managed-deep-agents-identity) configuration, the same as every other route on the deployment. Send the credential that matches the configured mode:
 
-| Identity mode               | Header                                 |
-| --------------------------- | -------------------------------------- |
-| LangSmith API key (default) | `x-api-key: <LANGSMITH_API_KEY>`       |
-| Supabase                    | `Authorization: Bearer <access_token>` |
+| Identity mode | Header |
+| - | - |
+| LangSmith API key (default) | `x-api-key: <LANGSMITH_API_KEY>` |
+| Supabase | `Authorization: Bearer <access_token>` |
 
 For the LangSmith API-key default, the key must belong to the workspace that owns the deployment. A key that is valid for another workspace is rejected.
 
 Authentication failures return one of three responses:
 
-| Status | Body                                   | Cause                                                                       |
-| ------ | -------------------------------------- | --------------------------------------------------------------------------- |
-| 401    | `{"detail":"missing x-api-key"}`       | No credential header on the request.                                        |
-| 403    | `{"detail":"API key is forbidden"}`    | The key is invalid, revoked, or expired.                                    |
-| 403    | `{"detail":"API key tenant mismatch"}` | The key is valid, but belongs to a different workspace than the deployment. |
+| Status | Body | Cause |
+| - | - | - |
+| 401 | `{"detail":"missing x-api-key"}` | No credential header on the request. |
+| 403 | `{"detail":"API key is forbidden"}` | The key is invalid, revoked, or expired. |
+| 403 | `{"detail":"API key tenant mismatch"}` | The key is valid, but belongs to a different workspace than the deployment. |
 
 The local server started by `mda dev` requires no credential. It grants every caller an unscoped local service principal, so any client on the machine can call `/mcp` and every other route. Only a deployment enforces the header.
 
@@ -109,19 +109,19 @@ Load the agent's tool through an MCP client library, then pass the tools to a mo
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 
-from langchain_mcp_adapters.client import MultiServerMCPClient
+from fastmcp.client import Client
+from fastmcp.client.transports import StreamableHttpTransport
+from langchain.mcp import MCPAdapter
 
-client = MultiServerMCPClient(
-    {
-        "research-assistant": {
-            "transport": "streamable_http",
-            "url": "<DEPLOYMENT_API_URL>/mcp",
-            "headers": {"x-api-key": os.environ["LANGSMITH_API_KEY"]},
-        }
-    }
-)
-
-tools = await client.get_tools()
+async with MCPAdapter(
+    Client(
+        StreamableHttpTransport(
+            "<DEPLOYMENT_API_URL>/mcp",
+            headers={"x-api-key": os.environ["LANGSMITH_API_KEY"]},
+        )
+    )
+) as adapter:
+    tools = await adapter.list_tools()
 ```
 
 Read credentials from the environment. Do not hard-code them in client code.
@@ -134,11 +134,11 @@ To retain knowledge across calls, [opt in to durable memory](/langsmith/python/m
 
 ## When to use the MCP endpoint
 
-| Concept                                                                    | Kind                  | How it reaches the agent                                                                        |
-| -------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
-| **MCP endpoint**                                                           | Deployment API        | Exposes the agent as a tool to MCP clients                                                      |
-| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** | Managed configuration | Add tools hosted by remote MCP servers to the agent                                             |
-| **[Channels](/langsmith/python/managed-deep-agents-channels)**             | Managed configuration | Receive messages from an external messaging service that start agent runs and deliver responses |
+| Concept | Kind | How it reaches the agent |
+| - | - | - |
+| **MCP endpoint** | Deployment API | Exposes the agent as a tool to MCP clients |
+| **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** | Managed configuration | Add tools hosted by remote MCP servers to the agent |
+| **[Channels](/langsmith/python/managed-deep-agents-channels)** | Managed configuration | Receive messages from an external messaging service that start agent runs and deliver responses |
 
 ## Next steps
 

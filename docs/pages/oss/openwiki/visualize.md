@@ -22,11 +22,11 @@ This serves `./openwiki` on `127.0.0.1:4321` and opens your browser to the graph
 openwiki visualize openwiki --port 4400 --no-open
 ```
 
-| Argument / flag  | Description                                                                                                               |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `[path]`         | Wiki directory to serve. Defaults to `./openwiki`                                                                         |
-| `--port <port>`  | Preferred port. Defaults to `4321`. Increments if the port is already in use                                              |
-| `--no-open`      | Do not open the browser automatically                                                                                     |
+| Argument / flag | Description |
+| - | - |
+| `[path]` | Wiki directory to serve. Defaults to `./openwiki` |
+| `--port <port>` | Preferred port. Defaults to `4321`. Increments if the port is already in use |
+| `--no-open` | Do not open the browser automatically |
 | `--export <dir>` | Write a static visualizer directory instead of starting the local server. Cannot be combined with `--port` or `--no-open` |
 
 To explore a personal wiki:

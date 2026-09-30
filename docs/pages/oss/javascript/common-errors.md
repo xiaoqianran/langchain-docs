@@ -6,21 +6,21 @@ This page contains guides around resolving common errors you may find while buil
 
 Errors referenced below will have an `lc_error_code` property corresponding to one of the below codes when they are thrown in code.
 
-| Error code                                                                                              |
-| ------------------------------------------------------------------------------------------------------- |
-| [GRAPH\_RECURSION\_LIMIT](/oss/javascript/langgraph/errors/GRAPH_RECURSION_LIMIT)                       |
-| [INVALID\_CHAT\_HISTORY](/oss/javascript/langgraph/errors/INVALID_CHAT_HISTORY)                         |
-| [INVALID\_CONCURRENT\_GRAPH\_UPDATE](/oss/javascript/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE)  |
+| Error code |
+| - |
+| [GRAPH\_RECURSION\_LIMIT](/oss/javascript/langgraph/errors/GRAPH_RECURSION_LIMIT) |
+| [INVALID\_CHAT\_HISTORY](/oss/javascript/langgraph/errors/INVALID_CHAT_HISTORY) |
+| [INVALID\_CONCURRENT\_GRAPH\_UPDATE](/oss/javascript/langgraph/errors/INVALID_CONCURRENT_GRAPH_UPDATE) |
 | [INVALID\_GRAPH\_NODE\_RETURN\_VALUE](/oss/javascript/langgraph/errors/INVALID_GRAPH_NODE_RETURN_VALUE) |
-| [INVALID\_PROMPT\_INPUT](/oss/javascript/langchain/errors/INVALID_PROMPT_INPUT)                         |
-| [INVALID\_TOOL\_RESULTS](/oss/javascript/langchain/errors/INVALID_TOOL_RESULTS)                         |
-| [MESSAGE\_COERCION\_FAILURE](/oss/javascript/langchain/errors/MESSAGE_COERCION_FAILURE)                 |
-| [MISSING\_CHECKPOINTER](/oss/javascript/langgraph/errors/MISSING_CHECKPOINTER)                          |
-| [MODEL\_AUTHENTICATION](/oss/javascript/langchain/errors/MODEL_AUTHENTICATION)                          |
-| [MODEL\_NOT\_FOUND](/oss/javascript/langchain/errors/MODEL_NOT_FOUND)                                   |
-| [MODEL\_RATE\_LIMIT](/oss/javascript/langchain/errors/MODEL_RATE_LIMIT)                                 |
-| [MULTIPLE\_SUBGRAPHS](/oss/javascript/langgraph/errors/MULTIPLE_SUBGRAPHS)                              |
-| [OUTPUT\_PARSING\_FAILURE](/oss/javascript/langchain/errors/OUTPUT_PARSING_FAILURE)                     |
+| [INVALID\_PROMPT\_INPUT](/oss/javascript/langchain/errors/INVALID_PROMPT_INPUT) |
+| [INVALID\_TOOL\_RESULTS](/oss/javascript/langchain/errors/INVALID_TOOL_RESULTS) |
+| [MESSAGE\_COERCION\_FAILURE](/oss/javascript/langchain/errors/MESSAGE_COERCION_FAILURE) |
+| [MISSING\_CHECKPOINTER](/oss/javascript/langgraph/errors/MISSING_CHECKPOINTER) |
+| [MODEL\_AUTHENTICATION](/oss/javascript/langchain/errors/MODEL_AUTHENTICATION) |
+| [MODEL\_NOT\_FOUND](/oss/javascript/langchain/errors/MODEL_NOT_FOUND) |
+| [MODEL\_RATE\_LIMIT](/oss/javascript/langchain/errors/MODEL_RATE_LIMIT) |
+| [MULTIPLE\_SUBGRAPHS](/oss/javascript/langgraph/errors/MULTIPLE_SUBGRAPHS) |
+| [OUTPUT\_PARSING\_FAILURE](/oss/javascript/langchain/errors/OUTPUT_PARSING_FAILURE) |
 
 ***
 

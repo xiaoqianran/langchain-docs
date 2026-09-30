@@ -4,43 +4,44 @@
 
 # 在 UI 中创建和管理数据集
 
-[_Datasets_](/langsmith/evaluation-concepts#datasets) 使您能够使用一致的数据随着时间的推移执行可重复的评估。数据集由[_examples_](/langsmith/evaluation-concepts#examples)组成，它存储输入、输出和可选的参考输出。
+[*Datasets*](/langsmith/evaluation-concepts#datasets) 使您能够使用一致的数据随着时间的推移执行可重复的评估。数据集由[*examples*](/langsmith/evaluation-concepts#examples)组成，它存储输入、输出和可选的参考输出。
 
-本页概述了 [UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-manage-datasets-in-application) 中[creating](#create-a-dataset-and-add-examples) 和 [managing](#manage-a-dataset) 数据集的各种方法。
+本页概述了 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-datasets-in-application) 中[creating](#create-a-dataset-and-add-examples) 和 [managing](#manage-a-dataset) 数据集的各种方法。
 
 ## 创建数据集并添加示例
 
 以下部分介绍了在 LangSmith 中创建数据集并向其添加示例的不同方法。根据您的工作流程，您可以手动整理示例、自动从跟踪中捕获示例、导入文件，甚至生成合成数据：
 
-- [Manually from a tracing project](#manually-from-a-tracing-project)
-- [Automatically from a tracing project](#automatically-from-a-tracing-project)
-- [From examples in an annotation queue](#from-examples-in-an-annotation-queue)
-- [From the Playground](#from-the-playground)
-- [Import a dataset from a CSV or JSONL file](#import-a-dataset-from-a-csv-or-jsonl-file)
-- [Create a new dataset from the dataset page](#create-a-new-dataset-from-the-datasets-%26-experiments-page)
-- [Add synthetic examples created by an LLM via the Datasets UI](#add-synthetic-examples-created-by-an-llm)
+* [Manually from a tracing project](#manually-from-a-tracing-project)
+* [Automatically from a tracing project](#automatically-from-a-tracing-project)
+* [From examples in an annotation queue](#from-examples-in-an-annotation-queue)
+* [From the Playground](#from-the-playground)
+* [Import a dataset from a CSV or JSONL file](#import-a-dataset-from-a-csv-or-jsonl-file)
+* [Create a new dataset from the dataset page](#create-a-new-dataset-from-the-datasets-%26-experiments-page)
+* [Add synthetic examples created by an LLM via the Datasets UI](#add-synthetic-examples-created-by-an-llm)
 
 ### 从跟踪项目手动
 
 构建数据集的常见模式是将应用程序中的显着跟踪转换为数据集示例。这种方法要求你有[configured tracing to LangSmith](/langsmith/observability-concepts)。
 
 <Check>
-构建数据集的技术是过滤最有趣的跟踪，例如标记有不良用户反馈的跟踪，并将它们添加到数据集。有关如何过滤跟踪的提示，请参阅 [Filter traces](/langsmith/filter-traces) 指南。
+  构建数据集的技术是过滤最有趣的跟踪，例如标记有不良用户反馈的跟踪，并将它们添加到数据集。有关如何过滤跟踪的提示，请参阅 [Filter traces](/langsmith/filter-traces) 指南​​。
 </Check>可通过三种方式将数据从跟踪项目手动添加到数据集。导航到 **跟踪项目** 并选择一个项目。
 
 1. 从运行表中选择多项运行。在 **运行** 选项卡上，多选运行。在页面底部，单击<Icon icon="database" /> **添加到数据集**。
-1. 在 **运行** 选项卡上，从表中选择运行。在单个运行详细信息页面上，选择右上角的 **添加到** -> **数据集**。
 
-    当您从运行详细信息页面选择数据集时，将会弹出一个模式，让您知道是否应用了任何 [transformations](/langsmith/dataset-transformations) 或架构验证是否失败。
+2. 在 **运行** 选项卡上，从表中选择运行。在单个运行详细信息页面上，选择右上角的 **添加到** -> **数据集**。
 
-    然后，您可以选择编辑运行，然后再将其添加到数据集。
+   当您从运行详细信息页面选择数据集时，将会弹出一个模式，让您知道是否应用了任何 [transformations](/langsmith/dataset-transformations) 或者架构验证是否失败。
 
-1. 从线程表中多选线程。在 **线程** 选项卡上，多选线程。在页面底部，单击<Icon icon="database" /> **添加到数据集**。您可以在单个操作中最多添加 **100** 个线程。
+   然后，您可以选择编辑运行，然后再将其添加到数据集。
 
-    要将线程发送到新数据集，请单击数据集选择器中的 **新数据集**。此窗格仅从头开始创建数据集，不提供架构编辑器。
+3. 从线程表中多选线程。在 **线程** 选项卡上，多选线程。在页面底部，单击<Icon icon="database" /> **添加到数据集**。您可以在单个操作中最多添加 **100** 个线程。
 
-向数据集添加线程与添加运行不同：- **每个线程一个示例**：每个线程的完整对话都保存为一个示例。当您从线程添加运行时，每次运行都会成为一个单独的示例。
-- **无参考输出**：线程示例仅包含作为输入的对话。它们不包括参考输出。
+   要将线程发送到新数据集，请单击数据集选取器中的 **新数据集**。此窗格仅从头开始创建数据集，不提供架构编辑器。
+
+向数据集添加线程与添加运行不同：* **每个线程一个示例**：每个线程的完整对话都保存为一个示例。当您从线程添加运行时，每次运行都会成为一个单独的示例。
+* **无参考输出**：线程示例仅包含作为输入的对话。它们不包括参考输出。
 
 ### 自动从跟踪项目
 
@@ -51,17 +52,17 @@
 ### 来自注释队列中的示例
 
 <Check>
-如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。
+  如果您依靠主题专家来构建有意义的数据集，请使用 [annotation queues](/langsmith/annotation-queues) 为审阅者提供简化的视图。在将跟踪添加到数据集之前，人工审阅者可以选择修改跟踪的输入/输出/参考输出。
 </Check>您可以为注释队列中的运行项目设置默认数据集。线程项不支持默认数据集。要将运行或线程添加到不同的数据集，请使用数据集切换器。选择数据集后，单击“**添加到数据集**”或按`D`。作为一个示例，运行项添加运行，线程项添加完整对话。
 
 您对注释队列中的运行所做的更改（包括其元数据）将复制到数据集。您无法编辑主题项目。它们是在追踪时添加的。
 
 <Note>
-默认数据集不可用于线程项目。
+  默认数据集不可用于线程项目。
 </Note>
 
 <Tip>
-使用 [automation rules](/langsmith/rules) 将满足特定条件的运行或线程添加到注释队列。
+  使用 [automation rules](/langsmith/rules) 将满足特定条件的运行或线程添加到注释队列。
 </Tip>
 
 ### 来自游乐场
@@ -69,15 +70,16 @@
 在[**Playground**](/langsmith/prompt-engineering-concepts#playground)页面：
 
 1. 选择**设置评估**。
-1. 如果您要启动新数据集或从现有数据集中进行选择，请单击 **+新建**。
 
-    <Note>
-    具有嵌套键的数据集不支持在 Playground 中内联创建数据集。为了添加/编辑带有嵌套键的示例，您必须编辑[from the datasets page](/langsmith/manage-datasets-in-application#create-a-new-dataset-from-the-datasets-%26-experiments-page)。
-    </Note>
+2. 如果您要启动新数据集或从现有数据集中进行选择，请单击 **+新建**。
 
-1. 编辑示例：- 使用 **+Row** 将新示例添加到数据集。
-    - 使用表格右侧的 **⋮** 下拉列表删除示例。
-    - 如果您要创建无参考数据集，请使用列中的 **x** 按钮删除 **参考输出** 列。请注意，此操作不可逆。
+   <Note>
+     具有嵌套键的数据集不支持在 Playground 中内联创建数据集。为了添加/编辑带有嵌套键的示例，您必须编辑[from the datasets page](/langsmith/manage-datasets-in-application#create-a-new-dataset-from-the-datasets-%26-experiments-page)。
+   </Note>
+
+3. 编辑示例：* 使用 **+Row** 将新示例添加到数据集中。
+   * 使用表格右侧的 **⋮** 下拉列表删除示例。
+   * 如果您要创建无参考数据集，请使用列中的 **x** 按钮删除 **参考输出** 列。请注意，此操作不可逆。
 
 ### 从 CSV 或 JSONL 文件导入数据集
 
@@ -86,49 +88,37 @@
 ### 从数据集和实验页面创建一个新数据集
 
 1. 从左侧菜单导航至 **数据集和实验** 页面。
-1. 单击 **+ 新建数据集**。
-1. 在 **新建数据集** 页面上，选择 **从头开始创建** 选项卡。
-1. 添加数据集的名称和描述。
-1. （可选）创建 [dataset schema](#create-a-dataset-schema) 来验证您的数据集。
-1. 单击**创建**，这将创建一个空数据集。
-1. 要添加内联示例，请在数据集页面上转到 **示例** 选项卡。单击 **+ 示例**。
-1. 在 JSON 中定义示例并单击 **提交**。有关数据集分割的更多详细信息，请参阅[Create and manage dataset splits](#create-and-manage-dataset-splits)。
+2. 单击 **+ 新数据集**。
+3. 在 **新建数据集** 页面上，选择 **从头开始创建** 选项卡。
+4. 添加数据集的名称和描述。
+5. （可选）创建 [dataset schema](#create-a-dataset-schema) 来验证您的数据集。
+6. 单击**创建**，这将创建一个空数据集。
+7. 要添加内联示例，请在数据集页面上转到 **示例** 选项卡。单击 **+ 示例**。
+8. 在 JSON 中定义示例并单击 **提交**。有关数据集分割的更多详细信息，请参阅[Create and manage dataset splits](#create-and-manage-dataset-splits)。
 
-### 添加法学硕士创建的综合示例如果您有现有示例并在数据集上定义了 [schema](#create-a-dataset-schema)，则当您单击 **+ 示例** 时，会出现一个选项 <Icon icon="sparkles"/> **添加 AI 生成的示例**。这将使用法学硕士来创建[synthetic](/langsmith/evaluation-concepts#building-datasets)示例。
+### 添加法学硕士创建的综合示例如果您有现有示例并在数据集上定义了 [schema](#create-a-dataset-schema)，则当您单击 **+ 示例** 时，会出现一个选项 <Icon icon="sparkles" /> **添加 AI 生成的示例**。这将使用法学硕士来创建[synthetic](/langsmith/evaluation-concepts#building-datasets)示例。
 
 在**生成示例**中，执行以下操作：
 
 1. 单击窗格右上角的 **API Key**，将您的 OpenAI API 密钥设置为 [workspace secret](/langsmith/administration-overview#workspaces)。如果您的工作区已有 OpenAI API 密钥集，则可以跳过此步骤。
-1. 选择<Tooltip tip="A few sample input–output pairs that guide the model on how to perform a task.">few-shot Examples</Tooltip>：切换**自动**或**手动**参考示例。您可以从数据集中手动选择这些示例，也可以使用自动选择选项。
-1. 输入您要生成的综合示例的数量。
-1. 单击“**生成**”。
 
-    <img
-        className="block dark:hidden"
-        src="/langsmith/images/generate-synthetic-light.png"
-        alt="The AI-Generated Examples configuration window. Selections for manual and automatic and number of examples to generate."
-    />
+2. 选择<Tooltip>few-shot Examples</Tooltip>：切换**自动**或**手动**参考示例。您可以从数据集中手动选择这些示例，也可以使用自动选择选项。
 
-    <img
-        className="hidden dark:block"
-        src="/langsmith/images/generate-synthetic-dark.png"
-        alt="The AI-Generated Examples configuration window. Selections for manual and automatic and number of examples to generate."
-    />
+3. 输入您要生成的综合示例的数量。
 
-1. 示例将出现在**选择生成的示例**页面上。选择要添加到数据集中的示例，并可以选择在最终确定之前对其进行编辑。单击**保存示例**。
-1. 每个示例都将根据您指定的数据集模式进行验证，并在源元数据中标记为**合成**。
+4. 单击**生成**。
 
-    <img
-        className="block dark:hidden"
-        src="/langsmith/images/select-generated-examples-light.png"
-        alt="Select generated examples page with generated examples selected and Save examples button."
-    />
+   <img alt="The AI-Generated Examples configuration window. Selections for manual and automatic and number of examples to generate." />
 
-    <img
-        className="hidden dark:block"
-        src="/langsmith/images/select-generated-examples-dark.png"
-        alt="Select generated examples page with generated examples selected and Save examples button."
-    />
+   <img alt="The AI-Generated Examples configuration window. Selections for manual and automatic and number of examples to generate." />
+
+5. 示例将出现在**选择生成的示例**页面上。选择要添加到数据集中的示例，并可以选择在最终确定之前对其进行编辑。单击**保存示例**。
+
+6. 每个示例都将根据您指定的数据集架构进行验证，并在源元数据中标记为**合成**。
+
+   <img alt="Select generated examples page with generated examples selected and Save examples button." />
+
+   <img alt="Select generated examples page with generated examples selected and Save examples button." />
 
 ## 管理数据集
 
@@ -139,9 +129,9 @@
 有关可用转换的完整列表，请参阅[Dataset transformations reference](/langsmith/dataset-transformations)。
 
 <Note>
-如果您计划从 LangChain [ChatModels](/oss/python/langchain/models) 或使用 [LangSmith OpenAI wrapper](/langsmith/annotate-code) 的 OpenAI 调用收集数据集中的生产跟踪，我们提供了一个预构建的聊天模型架构，可将消息和工具转换为行业标准 openai 格式，可在下游与任何模型一起用于测试。您还可以自定义模板设置以匹配您的用例。
+  如果您计划从 LangChain [ChatModels](/oss/python/langchain/models) 或使用 [LangSmith OpenAI wrapper](/langsmith/annotate-code) 的 OpenAI 调用收集数据集中的生产跟踪，我们提供了一个预构建的聊天模型架构，可将消息和工具转换为行业标准 openai 格式，可在下游与任何模型一起用于测试。您还可以自定义模板设置以匹配您的用例。
 
-请参阅[dataset transformations reference](/langsmith/dataset-transformations)了解更多信息。
+  请参阅[dataset transformations reference](/langsmith/dataset-transformations)了解更多信息。
 </Note>
 
 ### 创建和管理数据集分割
@@ -149,17 +139,17 @@
 有关何时以及为何使用拆分的概述，请参阅[Dataset organization](/langsmith/evaluation-concepts#dataset-organization)。要在 UI 中创建和管理拆分：
 
 1. 在数据集中选择示例。
-1. 单击“**添加到拆分**”。
-1. 从出现的弹出菜单中，您可以选择和取消选择所选示例的拆分，或者创建新的拆分。
+2. 单击“**添加到拆分**”。
+3. 从出现的弹出菜单中，您可以选择和取消选择所选示例的拆分，或者创建新的拆分。
 
-![Add to Split](/langsmith/images/add-to-split2.png)
+<img alt="Add to Split" />
 
 ### 编辑示例元数据
 
 要将元数据添加到您的示例中：
 
 1. 单击一个示例，然后单击弹出窗口右上角的“**编辑**”。
-1. 在此页面中，更新或删除现有元数据，或添加新元数据。
+2. 在此页面中，更新或删除现有元数据，或添加新元数据。
 
 您可以使用它来存储有关示例的信息，例如标签或版本信息，然后您可以在分析实验结果时使用[group by](/langsmith/analyze-an-experiment#group-results-by-metadata)，或者在SDK中调用`list_examples`时使用[filter by](/langsmith/manage-datasets-programmatically#list-examples-by-metadata)。
 
@@ -167,19 +157,20 @@
 
 您可以按拆分、元数据键/值过滤示例，或对示例执行全文搜索。这些过滤选项位于示例表的左上角：
 
-- **按拆分筛选**：选择拆分 > 选择要作为筛选依据的拆分。
-- **按元数据过滤**：过滤器 > 从下拉列表中选择 **元数据** > 选择要过滤的元数据键和值。
-- **全文搜索**：过滤器 > 从下拉列表中选择 **全文** > 输入您的搜索条件。您可以添加多个过滤器，只有满足所有过滤器的示例才会显示在表中。
+* **按拆分筛选**：选择拆分 > 选择要作为筛选依据的拆分。
+* **按元数据过滤**：过滤器 > 从下拉列表中选择 **元数据** > 选择要过滤的元数据键和值。
+* **全文搜索**：过滤器 > 从下拉列表中选择 **全文** > 输入您的搜索条件。您可以添加多个过滤器，只有满足所有过滤器的示例才会显示在表中。
 
-![Filters Applied to Examples](/langsmith/images/filters-applied.png)
+<img alt="Filters Applied to Examples" />
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets-in-application.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

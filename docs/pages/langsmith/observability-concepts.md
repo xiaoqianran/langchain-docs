@@ -44,10 +44,10 @@ In LangSmith, a trajectory is a projection over the traces in a thread. It conta
 
 ### Compare traces, threads, and trajectories
 
-|                   | Trace                                                  | Thread                                                                                | Trajectory                                                                      |
-| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Shape             | Tree of runs                                           | Sequence of traces                                                                    | Flat, ordered list of messages                                                  |
-| Contains          | Every run, with full inputs and outputs                | Every run in every linked trace                                                       | Every message in every linked trace, deduplicated                               |
+| | Trace | Thread | Trajectory |
+| - | - | - | - |
+| Shape | Tree of runs | Sequence of traces | Flat, ordered list of messages |
+| Contains | Every run, with full inputs and outputs | Every run in every linked trace | Every message in every linked trace, deduplicated |
 | Reach for it when | You are debugging why one operation failed or ran slow | You are inspecting how the agent behaved across turns, with timing and nesting intact | You are reading what was exchanged in the session, without the execution detail |
 
 <Callout type="info" icon="feather">

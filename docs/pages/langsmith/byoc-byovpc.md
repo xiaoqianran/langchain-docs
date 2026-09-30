@@ -37,11 +37,11 @@ LangSmith checks the following requirements when you supply a VPC, including one
 * **Subnet ranges**: Every subnet must have a private IPv4 CIDR within the VPC's primary CIDR. Supplied subnet CIDRs must not overlap.
 * **Subnet IDs and tags**: Each subnet ID must be unique across all tiers.
 
-| Subnet tier           | Minimum subnet size | Minimum available IPv4 addresses per subnet |
-| --------------------- | ------------------- | ------------------------------------------- |
-| Private application   | `/20` or larger     | 256                                         |
-| Private database      | `/26` or larger     | 16                                          |
-| Public, when supplied | `/26` or larger     | 16                                          |
+| Subnet tier | Minimum subnet size | Minimum available IPv4 addresses per subnet |
+| - | - | - |
+| Private application | `/20` or larger | 256 |
+| Private database | `/26` or larger | 16 |
+| Public, when supplied | `/26` or larger | 16 |
 
 Larger subnets have smaller prefix lengths. Both subnet size and available address count must meet the requirements.
 
@@ -57,13 +57,13 @@ The VPC must have a main route table. Validation uses each subnet's explicit rou
 
 Each supplied subnet must have an associated network ACL that permits the traffic below. Validation evaluates rules in priority order, including deny rules.
 
-| Subnet tier          | Direction            | Protocol and ports                 | Source or destination |
-| -------------------- | -------------------- | ---------------------------------- | --------------------- |
-| All supplied subnets | Inbound and outbound | TCP and UDP, ports 1–65535         | VPC primary CIDR      |
-| Private application  | Outbound             | TCP 443                            | `0.0.0.0/0`           |
-| Private application  | Inbound              | TCP 1024–65535, for return traffic | `0.0.0.0/0`           |
-| Public               | Inbound              | TCP 443                            | `0.0.0.0/0`           |
-| Public               | Outbound             | TCP 1024–65535, for return traffic | `0.0.0.0/0`           |
+| Subnet tier | Direction | Protocol and ports | Source or destination |
+| - | - | - | - |
+| All supplied subnets | Inbound and outbound | TCP and UDP, ports 1–65535 | VPC primary CIDR |
+| Private application | Outbound | TCP 443 | `0.0.0.0/0` |
+| Private application | Inbound | TCP 1024–65535, for return traffic | `0.0.0.0/0` |
+| Public | Inbound | TCP 443 | `0.0.0.0/0` |
+| Public | Outbound | TCP 1024–65535, for return traffic | `0.0.0.0/0` |
 
 These are network ACL requirements. Workload security groups and your egress controls also govern which connections succeed.
 
@@ -135,12 +135,12 @@ With VPC creation permissions disabled, the role cannot create or manage the bas
 
 When creating the data plane, supply the name, AWS region, and IAM role ARN from [onboarding](/langsmith/byoc-onboarding), together with the following network values:
 
-| Value                                                 | Terraform module output  | Data plane creation field       |
-| ----------------------------------------------------- | ------------------------ | ------------------------------- |
-| VPC ID                                                | `vpc_id`                 | `byovpc_id`                     |
-| Private application subnet IDs                        | `private_app_subnet_ids` | `byovpc_private_app_subnet_ids` |
-| Private database subnet IDs                           | `private_db_subnet_ids`  | `byovpc_private_db_subnet_ids`  |
-| Public subnet IDs, required for public load balancers | `public_subnet_ids`      | `byovpc_public_subnet_ids`      |
+| Value | Terraform module output | Data plane creation field |
+| - | - | - |
+| VPC ID | `vpc_id` | `byovpc_id` |
+| Private application subnet IDs | `private_app_subnet_ids` | `byovpc_private_app_subnet_ids` |
+| Private database subnet IDs | `private_db_subnet_ids` | `byovpc_private_db_subnet_ids` |
+| Public subnet IDs, required for public load balancers | `public_subnet_ids` | `byovpc_public_subnet_ids` |
 
 LangSmith validates the network before provisioning. Correct any reported network or IAM permission errors, then submit the request again. Validation checks the AWS configuration; you remain responsible for working connectivity through any custom routing, DNS, endpoint policies, and egress filters.
 

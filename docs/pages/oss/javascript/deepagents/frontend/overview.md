@@ -93,13 +93,13 @@ function App() {
 Deep agent UIs usually need more than the final answer. The frontend SDK gives
 you structured projections for the parts of the run users care about:
 
-| Projection         | Use it for                                                                                                 |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `stream.messages`  | The coordinator conversation and final synthesis.                                                          |
-| `stream.subagents` | Live discovery of specialist workers, including status and task metadata.                                  |
-| `stream.values`    | Shared state such as todos, plans, report sections, sandbox metadata, or any custom key your agent writes. |
-| Tool-call state    | Rendering filesystem, search, browser, or domain tools as cards with progress and results.                 |
-| Interrupts         | Pausing delegated work for user approval or missing input without losing the run state.                    |
+| Projection | Use it for |
+| - | - |
+| `stream.messages` | The coordinator conversation and final synthesis. |
+| `stream.subagents` | Live discovery of specialist workers, including status and task metadata. |
+| `stream.values` | Shared state such as todos, plans, report sections, sandbox metadata, or any custom key your agent writes. |
+| Tool-call state | Rendering filesystem, search, browser, or domain tools as cards with progress and results. |
+| Interrupts | Pausing delegated work for user approval or missing input without losing the run state. |
 
 This lets you build interfaces that feel closer to an IDE, task board, or
 workflow monitor than a plain chat transcript.

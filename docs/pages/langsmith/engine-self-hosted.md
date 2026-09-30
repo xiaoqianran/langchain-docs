@@ -24,10 +24,10 @@ Engine works with three kinds of data:
 
 Engine is available where LSI is available:
 
-| Cloud | Region | Status    |
-| ----- | ------ | --------- |
-| AWS   | US     | Available |
-| GCP   | US     | Available |
+| Cloud | Region | Status |
+| - | - | - |
+| AWS | US | Available |
+| GCP | US | Available |
 
 For availability in other regions, [contact our sales team](https://www.langchain.com/contact-sales).
 
@@ -217,10 +217,10 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
   <Step title="Allow egress to LangSmith Intelligence">
     Allow outbound HTTPS from the cluster to the LangSmith Intelligence gateway URL for your cloud. Use this URL as the value of `engine.intelligenceBaseUrl`.
 
-    | Cloud | `engine.intelligenceBaseUrl`                    |
-    | ----- | ----------------------------------------------- |
-    | AWS   | `https://beacon.aws.langchain.com/intelligence` |
-    | GCP   | `https://beacon.langchain.com/intelligence`     |
+    | Cloud | `engine.intelligenceBaseUrl` |
+    | - | - |
+    | AWS | `https://beacon.aws.langchain.com/intelligence` |
+    | GCP | `https://beacon.langchain.com/intelligence` |
 
     On GCP, this uses the same host LangSmith already uses for license verification and billing telemetry, so Engine adds a path rather than a new egress destination.
 

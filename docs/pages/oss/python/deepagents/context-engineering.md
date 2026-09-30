@@ -18,13 +18,13 @@ This page provides an overview of the different kinds of context your deep agent
 
 ## Types of context
 
-| Context Type                                               | What You Control                                                                  | Scope                             |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------- |
-| **[Input context](#input-context)**                        | What goes into the agent's prompt at startup (system prompt, memory, skills)      | Static, applied each run          |
-| **[Runtime context](#runtime-context)**                    | Static configuration passed at invoke time (user metadata, API keys, connections) | Per run, propagates to subagents  |
-| **[Context compression](#context-compression)**            | Built-in offloading and summarization to keep context within window limits        | Automatic, when limits approached |
-| **[Context isolation](#context-isolation-with-subagents)** | Use subagents to quarantine heavy work, returning only results to the main agent  | Per subagent, when delegated      |
-| **[Long-term memory](#long-term-memory)**                  | Persistent storage across threads using the virtual filesystem                    | Persistent across conversations   |
+| Context Type | What You Control | Scope |
+| - | - | - |
+| **[Input context](#input-context)** | What goes into the agent's prompt at startup (system prompt, memory, skills) | Static, applied each run |
+| **[Runtime context](#runtime-context)** | Static configuration passed at invoke time (user metadata, API keys, connections) | Per run, propagates to subagents |
+| **[Context compression](#context-compression)** | Built-in offloading and summarization to keep context within window limits | Automatic, when limits approached |
+| **[Context isolation](#context-isolation-with-subagents)** | Use subagents to quarantine heavy work, returning only results to the main agent | Per subagent, when delegated |
+| **[Long-term memory](#long-term-memory)** | Persistent storage across threads using the virtual filesystem | Persistent across conversations |
 
 ## Input context
 
@@ -277,7 +277,7 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 * Human-in-the-loop prompt: Usage for pausing at specified tool calls (when `interrupt_on` is set)
 
-* Local context prompt: Current directory and project info (CLI only)
+* Local context prompt: Current directory and project info (Deep Agents Code only)
 
 **Tools you provide**: Tools passed via the `tools` parameter get their descriptions (from the tool schema) sent to the model. You can also add [custom middleware](/oss/python/langchain/middleware) that adds tools and appends its own system prompt instructions.
 

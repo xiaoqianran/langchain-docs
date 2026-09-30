@@ -138,7 +138,7 @@ langgraph dev --no-browser
 服务器在启动时检查您的检查指针的**基本**（必需）和**扩展**（可选）功能。如果缺少扩展功能，服务器将使用回退或禁用相应的功能。
 
 ### 基本能力（必填）|方法|描述 |
-| ---------------- | -------------------- |
+| - | - |
 | `aput` |存储检查点 |
 | `aput_writes` |存储挂起的写入|
 | `aget_tuple` |检索检查点 |
@@ -147,8 +147,8 @@ langgraph dev --no-browser
 
 ### 扩展功能（可选）
 
-|方法|描述 |如果丢失则后备 |
-| ------------------ | ------------------------------------------------ | ------------------------------------------------- |
+|方法|描述 |如果丢失则后备|
+| - | - | - |
 | `adelete_for_runs` |删除特定运行的检查点 |回滚多任务策略不可用 |
 | `acopy_thread` |复制主题 |缓慢回退（一一重新插入检查点）|
 | `aprune` |修剪线程历史 |线程历史记录修剪不可用 |
@@ -168,7 +168,9 @@ langgraph dev --no-browser
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

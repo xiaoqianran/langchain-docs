@@ -218,18 +218,18 @@ expect(result).toHaveStructuredResponse({ name: "Alice", age: 30 });
 
 ### Matcher reference
 
-| Matcher                               | Description                                                                                      |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `toBeHumanMessage(expected?)`         | Check that the value is a `HumanMessage`. Optionally match content (string) or fields (object).  |
-| `toBeAIMessage(expected?)`            | Check that the value is an `AIMessage`. Optionally match content or fields.                      |
-| `toBeSystemMessage(expected?)`        | Check that the value is a `SystemMessage`. Optionally match content or fields.                   |
-| `toBeToolMessage(expected?)`          | Check that the value is a `ToolMessage`. Optionally match content or fields like `tool_call_id`. |
-| `toHaveToolCalls(expected)`           | Check that an `AIMessage` has exactly the given tool calls (order-independent).                  |
-| `toHaveToolCallCount(n)`              | Check that an `AIMessage` has exactly `n` tool calls.                                            |
-| `toContainToolCall(expected)`         | Check that an `AIMessage` contains at least one matching tool call. Supports `.not`.             |
-| `toHaveToolMessages(expected)`        | Check that a message array contains the given `ToolMessage` instances, in order.                 |
-| `toHaveBeenInterrupted(value?)`       | Check that a result has an `__interrupt__`. Optionally match the interrupt value.                |
-| `toHaveStructuredResponse(expected?)` | Check that a result has a `structuredResponse`. Optionally match specific fields.                |
+| Matcher | Description |
+| - | - |
+| `toBeHumanMessage(expected?)` | Check that the value is a `HumanMessage`. Optionally match content (string) or fields (object). |
+| `toBeAIMessage(expected?)` | Check that the value is an `AIMessage`. Optionally match content or fields. |
+| `toBeSystemMessage(expected?)` | Check that the value is a `SystemMessage`. Optionally match content or fields. |
+| `toBeToolMessage(expected?)` | Check that the value is a `ToolMessage`. Optionally match content or fields like `tool_call_id`. |
+| `toHaveToolCalls(expected)` | Check that an `AIMessage` has exactly the given tool calls (order-independent). |
+| `toHaveToolCallCount(n)` | Check that an `AIMessage` has exactly `n` tool calls. |
+| `toContainToolCall(expected)` | Check that an `AIMessage` contains at least one matching tool call. Supports `.not`. |
+| `toHaveToolMessages(expected)` | Check that a message array contains the given `ToolMessage` instances, in order. |
+| `toHaveBeenInterrupted(value?)` | Check that a result has an `__interrupt__`. Optionally match the interrupt value. |
+| `toHaveStructuredResponse(expected?)` | Check that a result has a `structuredResponse`. Optionally match specific fields. |
 
 ## Reduce cost and latency
 

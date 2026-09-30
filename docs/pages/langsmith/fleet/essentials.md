@@ -124,11 +124,11 @@ Fleet manages models for you. It selects and maintains a strong model for each t
 
 Fleet provides three managed tiers. The model behind each tier may change over time as new models become available, so you can choose based on the work you need done instead of a specific provider or model.
 
-| Tier     | Best for                                                        | <Tooltip>Relative cost</Tooltip> |
-| -------- | --------------------------------------------------------------- | -------------------------------- |
-| **Fast** | Everyday tasks such as research, summaries, and drafting        | Low                              |
-| **Pro**  | More complex tasks that benefit from stronger reasoning         | Medium                           |
-| **Max**  | The most demanding tasks, where maximum capability matters most | High                             |
+| Tier | Best for | <Tooltip>Relative cost</Tooltip> |
+| - | - | - |
+| **Fast** | Everyday tasks such as research, summaries, and drafting | Low |
+| **Pro** | More complex tasks that benefit from stronger reasoning | Medium |
+| **Max** | The most demanding tasks, where maximum capability matters most | High |
 
 ### Custom models
 

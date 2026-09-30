@@ -274,14 +274,14 @@ For full details, see [Rotate destination credentials](/langsmith/data-export-de
 
 ## Troubleshooting
 
-| Symptom                                     | Likely cause                           | Fix                                                                                         |
-| ------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `400 Access denied` on destination creation | HMAC credentials lack write permission | Verify the service account has `storage.objects.create` on the bucket                       |
-| `400 Key ID you provided does not exist`    | HMAC access ID is invalid              | Regenerate HMAC keys in GCP                                                                 |
-| `400 Invalid endpoint`                      | Endpoint URL is malformed              | Use exactly `https://storage.googleapis.com`                                                |
-| BigQuery table shows no rows                | Export not yet complete                | Check export status with `GET /api/v1/bulk-exports/{export_id}`                             |
-| BigQuery partition pruning not working      | Incorrect source URI prefix            | Ensure the source URI prefix ends before the first partition key, e.g. `gs://BUCKET/PREFIX` |
-| BigQuery picks up `tmp/` files              | Broad file path glob                   | Use `export_id=*` in your file path instead of `*`                                          |
+| Symptom | Likely cause | Fix |
+| - | - | - |
+| `400 Access denied` on destination creation | HMAC credentials lack write permission | Verify the service account has `storage.objects.create` on the bucket |
+| `400 Key ID you provided does not exist` | HMAC access ID is invalid | Regenerate HMAC keys in GCP |
+| `400 Invalid endpoint` | Endpoint URL is malformed | Use exactly `https://storage.googleapis.com` |
+| BigQuery table shows no rows | Export not yet complete | Check export status with `GET /api/v1/bulk-exports/{export_id}` |
+| BigQuery partition pruning not working | Incorrect source URI prefix | Ensure the source URI prefix ends before the first partition key, e.g. `gs://BUCKET/PREFIX` |
+| BigQuery picks up `tmp/` files | Broad file path glob | Use `export_id=*` in your file path instead of `*` |
 
 For additional error codes and export status details, see [Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor).
 

@@ -8,20 +8,20 @@
 
 ## 目标
 
-在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接收一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
+在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接受一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
 
 ## 开始使用
 
 首先，我们将首先对其进行设置，以便将所有跟踪发送到特定项目。我们可以通过设置环境变量来做到这一点：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 os.environ["LANGSMITH_PROJECT"] = "classifier"
 ```
 
 然后我们可以创建我们的初始应用程序。这将是一个非常简单的函数，仅接受 GitHub 问题标题并尝试对其进行标记。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
 from langsmith import traceable, Client
 import uuid
@@ -64,7 +64,7 @@ def topic_classifier(
 
 以下是我们调用该应用程序的方法：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import uuid7
 
 run_id = uuid7()
@@ -75,7 +75,7 @@ topic_classifier(
 
 首先，我们可以收集“积极”反馈——这是模型正确的例子。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
@@ -93,7 +93,7 @@ ls_client.create_feedback(
 
 接下来，我们可以集中精力收集对应于一代“修正”的反馈。在此示例中，模型会将其分类为错误，而我确实希望将其分类为文档。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
@@ -111,17 +111,17 @@ ls_client.create_feedback(
 
 我们现在可以设置自动化，将带有某种形式反馈的示例移动到数据集中。我们将设置两种自动化，一种用于积极反馈，另一种用于消极反馈。
 
-第一个将获取所有具有积极反馈的运行，并将它们自动添加到数据集中。这背后的逻辑是，任何具有积极反馈的运行我们都可以在未来的迭代中用作一个很好的例子。让我们创建一个名为 `classifier-github-issues` 的数据集来添加此数据。
+第一个将获取所有具有积极反馈的运行，并将它们自动添加到数据集中。这背后的逻辑是，任何具有积极反馈的运行都可以作为未来迭代的好例子。让我们创建一个名为 `classifier-github-issues` 的数据集来添加此数据。
 
-![Optimization Negative](/langsmith/images/class-optimization-neg.png)第二个将对所有运行进行更正，并使用 Webhook 将它们添加到数据集。创建此 webhook 时，我们将选择“使用更正”选项。此选项将使得当从运行创建数据集时，它将使用校正，而不是使用运行的输出作为数据点的真实输出。
+<img alt="Optimization Negative" />第二个将对所有运行进行更正，并使用 Webhook 将它们添加到数据集。创建此 webhook 时，我们将选择“使用更正”选项。此选项将使得当从运行创建数据集时，它将使用校正，而不是使用运行的输出作为数据点的真实输出。
 
-![Optimization Positive](/langsmith/images/class-optimization-pos.png)
+<img alt="Optimization Positive" />
 
 ## 更新应用程序
 
 我们现在可以更新代码以提取我们要发送运行的数据集。一旦我们将其拉下来，我们就可以创建一个包含示例的字符串。然后我们可以将此字符串作为提示的一部分！
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ### NEW CODE ###
 # Initialize the LangSmith Client so we can use to get the dataset
 ls_client = Client()
@@ -182,7 +182,7 @@ def topic_classifier(
 
 如果现在使用与以前类似的输入运行应用程序，我们可以看到它正确地学习到与文档相关的任何内容（即使是错误）都应分类为 `documentation`
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
@@ -196,7 +196,7 @@ topic_classifier(
 
 为此，我们可以首先定义一个示例来查找 `k` 最相似的示例：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import numpy as np
 
 def find_similar(examples, topic, k=5):
@@ -211,7 +211,7 @@ def find_similar(examples, topic, k=5):
 
 然后我们可以在应用程序中使用它
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ls_client = Client()
 
 def create_example_string(examples):
@@ -264,11 +264,12 @@ def topic_classifier(
     ).choices[0].message.content
 ```
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/optimize-classifier.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

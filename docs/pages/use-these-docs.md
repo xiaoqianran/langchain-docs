@@ -38,10 +38,10 @@ This includes our `llms.txt`, MCP server connection, and other quick access opti
 
 Our documentation exposes two complementary **Model Context Protocol (MCP) servers** that let AI applications query LangChain content in real-time. For the best results, we recommend connecting both:
 
-| Server                | URL                                   | What it covers                                                                                  |
-| --------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `docs-langchain`      | `https://docs.langchain.com/mcp`      | Conceptual guides, how-tos, tutorials, and product docs for LangChain, LangGraph, and LangSmith |
-| `reference-langchain` | `https://reference.langchain.com/mcp` | API reference: classes, methods, parameters, and signatures for all LangChain packages          |
+| Server | URL | What it covers |
+| - | - | - |
+| `docs-langchain` | `https://docs.langchain.com/mcp` | Conceptual guides, how-tos, tutorials, and product docs for LangChain, LangGraph, and LangSmith |
+| `reference-langchain` | `https://reference.langchain.com/mcp` | API reference: classes, methods, parameters, and signatures for all LangChain packages |
 
 Adding both gives your coding agent access to the full picture: the **why and how** from the guides, plus the **exact API details** from the reference docs.
 

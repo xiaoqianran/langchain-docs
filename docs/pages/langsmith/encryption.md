@@ -6,10 +6,10 @@ Agent Server supports encryption at rest for checkpoint data and metadata. You c
 
 ## Choosing an encryption method
 
-| Method                | What's encrypted                                         | Use case                                                                |
-| --------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Basic encryption**  | Checkpoint blobs, optionally JSON fields                 | Single static key, automatic AES encryption, selective field encryption |
-| **Custom encryption** | Checkpoints, threads, runs, assistants, crons and stores | Per-tenant keys, KMS integration                                        |
+| Method | What's encrypted | Use case |
+| - | - | - |
+| **Basic encryption** | Checkpoint blobs, optionally JSON fields | Single static key, automatic AES encryption, selective field encryption |
+| **Custom encryption** | Checkpoints, threads, runs, assistants, crons and stores | Per-tenant keys, KMS integration |
 
 ## Basic encryption
 

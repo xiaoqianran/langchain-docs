@@ -46,10 +46,10 @@ When you select a trace name, LangSmith loads a successful trace example and ren
 
    When you select a checkbox, the path is automatically constructed using the correct syntax (e.g., messages\[-1].content).
 
-| Method         | Best For                                                   | Example                                   |
-| -------------- | ---------------------------------------------------------- | ----------------------------------------- |
+| Method | Best For | Example |
+| - | - | - |
 | Tree selection | Exploring unfamiliar data structures, seeing sample values | Click through: messages → \[-1] → content |
-| Manual typing  | When you know exactly what you want, faster for deep paths | Type: output.data.results\[0].answer      |
+| Manual typing | When you know exactly what you want, faster for deep paths | Type: output.data.results\[0].answer |
 
 Arrays with more than 3 items are automatically condensed to prevent overwhelming views:
 

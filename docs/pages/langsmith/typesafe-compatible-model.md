@@ -37,11 +37,11 @@ The **Base URL** should point to the root of the server's System One API. LangSm
 
 ### Example base URLs
 
-| Provider                             | Model                  | Example Base URL                      |
-| ------------------------------------ | ---------------------- | ------------------------------------- |
-| [TypeSafe](https://docs.typesafe.ai) | `jev-latest`           | `https://api.typesafe.ai`             |
-| [OpenRouter](https://openrouter.ai)  | `~typesafe/jev-latest` | `https://openrouter.ai/api`           |
-| Self-hosted (remote)                 | Your model ID          | `https://my-model-server.example.com` |
+| Provider | Model | Example Base URL |
+| - | - | - |
+| [TypeSafe](https://docs.typesafe.ai) | `jev-latest` | `https://api.typesafe.ai` |
+| [OpenRouter](https://openrouter.ai) | `~typesafe/jev-latest` | `https://openrouter.ai/api` |
+| Self-hosted (remote) | Your model ID | `https://my-model-server.example.com` |
 
 ## See also
 

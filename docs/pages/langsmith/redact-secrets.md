@@ -47,25 +47,25 @@ The Python and TypeScript presets hold the same rules, so a trace redacted by on
 
 Provider rules are anchored to a known key prefix. Contextual rules fire only when a sensitive name is paired with an assignment, which leaves ordinary code, UUIDs, and content hashes intact.
 
-| Category           | Detected formats                                                                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Anthropic          | `sk-ant-`                                                                                                                                                                      |
-| OpenAI             | `sk-proj-`, `sk-svcacct-`, `sk-admin-`, and legacy `sk-` keys                                                                                                                  |
-| LangSmith          | `lsv2_pt_`, `lsv2_sk_`, `ls__`                                                                                                                                                 |
-| GitHub             | `ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_`, and `github_pat_`                                                                                                                      |
-| GitLab             | `glpat-`                                                                                                                                                                       |
-| AWS                | Access key IDs prefixed `AKIA`, `ASIA`, `ABIA`, `ACCA`, or `A3T`                                                                                                               |
-| Google             | `AIza` API keys and `ya29.` OAuth access tokens                                                                                                                                |
-| Slack              | `xoxb-`, `xoxa-`, `xoxp-`, `xoxr-`, `xoxs-`, `xapp-`, and `hooks.slack.com` webhook URLs                                                                                       |
-| Stripe             | `sk_live_`, `sk_test_`, `rk_live_`, `rk_test_`                                                                                                                                 |
-| npm                | `npm_`                                                                                                                                                                         |
-| PyPI               | `pypi-AgEIcHlwaS` upload tokens                                                                                                                                                |
-| SendGrid           | `SG.`                                                                                                                                                                          |
-| JSON Web Tokens    | A `header.payload.signature` triple beginning `eyJ`                                                                                                                            |
-| Private keys       | PEM blocks for RSA, EC, OpenSSH, DSA, and PGP keys                                                                                                                             |
-| Named assignments  | `API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`, `PASSWD`, `PRIVATE_KEY`, `ACCESS_KEY`, `AUTH_TOKEN`, or `CLIENT_SECRET` followed by `=` or `:` and a value of six characters or more |
-| Credential headers | `Authorization`, `X-Api-Key`, and `X-Auth-Token`, and a bare `Bearer <token>`                                                                                                  |
-| URL credentials    | The password in `scheme://user:password@host`                                                                                                                                  |
+| Category | Detected formats |
+| - | - |
+| Anthropic | `sk-ant-` |
+| OpenAI | `sk-proj-`, `sk-svcacct-`, `sk-admin-`, and legacy `sk-` keys |
+| LangSmith | `lsv2_pt_`, `lsv2_sk_`, `ls__` |
+| GitHub | `ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_`, and `github_pat_` |
+| GitLab | `glpat-` |
+| AWS | Access key IDs prefixed `AKIA`, `ASIA`, `ABIA`, `ACCA`, or `A3T` |
+| Google | `AIza` API keys and `ya29.` OAuth access tokens |
+| Slack | `xoxb-`, `xoxa-`, `xoxp-`, `xoxr-`, `xoxs-`, `xapp-`, and `hooks.slack.com` webhook URLs |
+| Stripe | `sk_live_`, `sk_test_`, `rk_live_`, `rk_test_` |
+| npm | `npm_` |
+| PyPI | `pypi-AgEIcHlwaS` upload tokens |
+| SendGrid | `SG.` |
+| JSON Web Tokens | A `header.payload.signature` triple beginning `eyJ` |
+| Private keys | PEM blocks for RSA, EC, OpenSSH, DSA, and PGP keys |
+| Named assignments | `API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`, `PASSWD`, `PRIVATE_KEY`, `ACCESS_KEY`, `AUTH_TOKEN`, or `CLIENT_SECRET` followed by `=` or `:` and a value of six characters or more |
+| Credential headers | `Authorization`, `X-Api-Key`, and `X-Auth-Token`, and a bare `Bearer <token>` |
+| URL credentials | The password in `scheme://user:password@host` |
 
 A name rule requires a component boundary, so `TOKEN` matches `api_token` and `mytoken` but not `tokenizer` or `tokens`. Header and `Bearer` rules keep the header name and the scheme word, and redact only the credential that follows.
 

@@ -43,16 +43,18 @@ result = await swr(
     max_age=timedelta(hours=1),
 )
 ```|参数|默认 |描述 |
-| ----------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| - | - | - |
 | `fresh_for` | `timedelta(0)` |将缓存值视为新鲜值的持续时间。在此窗口期间，`swr` 返回缓存的值，无需重新验证。 |
-| `max_age` | `timedelta(days=1)` |缓存条目的最大生命周期。此后，`swr`在返回之前阻塞加载器。上限为 1 天。       |
+| `max_age` | `timedelta(days=1)` |缓存条目的最大生命周期。此后，`swr`在返回之前阻塞加载器。上限为 1 天。 |
 
-### 重新验证如何运作|缓存状态|状况 |行为 |
-| ----------- | ---------------------------- | ---------------------------------------------------------------------------------- |
-| **小姐** |密钥不在缓存中 |等待`loader()`，存储结果，返回它。                  |
-| **新鲜** | `age < fresh_for` |返回缓存值，无需重新验证。                         |
+### 重新验证如何运作
+
+|缓存状态|状况 |行为 |
+| - | - | - |
+| **小姐** |密钥不在缓存中 |等待`loader()`，存储结果，返回它。 |
+| **新鲜** | `age < fresh_for` |返回缓存值，无需重新验证。 |
 | **陈旧** | `fresh_for <= age < max_age` |立即返回缓存值，触发后台刷新。 |
-| **已过期** | `age >= max_age` |等待`loader()`，存储结果，返回它。                  |
+| **已过期** | `age >= max_age` |等待`loader()`，存储结果，返回它。 |
 
 ## 与 Pydantic 模型一起使用
 
@@ -101,11 +103,11 @@ async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
         max_age=timedelta(hours=1),
     )
     return result.value
-```
+```通过此设置，服务器将返回缓存的用户 5 分钟而不重新验证，然后在后台重新验证长达 1 小时。 1 小时后，下一个请求将被阻塞，直到 `validate_and_fetch_user` 完成。
 
-通过此设置，服务器将返回缓存的用户 5 分钟而不重新验证，然后在后台重新验证长达 1 小时。 1 小时后，下一个请求将被阻塞，直到 `validate_and_fetch_user` 完成。
+## 检查缓存状态
 
-## 检查缓存状态`swr` 返回一个 `SWRResult` 对象，其中包含值和缓存状态：
+`swr` 返回一个 `SWRResult` 对象，其中包含值和缓存状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 result = await swr("my-key", my_loader)
@@ -151,7 +153,7 @@ async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> No
 ```
 
 |参数|类型 |默认 |描述 |
-| --------- | ------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| - | - | - | - |
 | `key` | `str` |必填|缓存键 |
 | `value` | `Any` |必填|要缓存的值。必须是 JSON 可序列化的 |
 | `ttl` | `timedelta \| None` | `None` |生存时间。服务器的上限为 1 天。 `None` 或零默认为 1 天 |
@@ -167,7 +169,9 @@ async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> No
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/caching.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

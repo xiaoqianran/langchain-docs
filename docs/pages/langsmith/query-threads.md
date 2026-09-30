@@ -8,10 +8,10 @@ If you're building a conversational agent or any multi-turn application, LangSmi
 
 The SDK exposes two methods for working with threads:
 
-| Method                                                                                                                                                                                          | Use when                                         |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [`list_threads`](https://reference.langchain.com/python/langsmith/client/Client/list_threads) / [`listThreads`](https://reference.langchain.com/javascript/langsmith/client/Client/listThreads) | You want to browse all threads in a project      |
-| [`read_thread`](https://reference.langchain.com/python/langsmith/client/Client/read_thread) / [`readThread`](https://reference.langchain.com/javascript/langsmith/client/Client/readThread)     | You already know the thread ID and need its runs |
+| Method | Use when |
+| - | - |
+| [`list_threads`](https://reference.langchain.com/python/langsmith/client/Client/list_threads) / [`listThreads`](https://reference.langchain.com/javascript/langsmith/client/Client/listThreads) | You want to browse all threads in a project |
+| [`read_thread`](https://reference.langchain.com/python/langsmith/client/Client/read_thread) / [`readThread`](https://reference.langchain.com/javascript/langsmith/client/Client/readThread) | You already know the thread ID and need its runs |
 
 ## How threads work
 
@@ -98,26 +98,26 @@ conv-def456
 
 ### Parameters
 
-| Parameter                      | Type                | Default   | Description                                                                                                        |
-| ------------------------------ | ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| `project_name` / `projectName` | `string`            | —         | Project name. Required if `project_id` is not set.                                                                 |
-| `project_id` / `projectId`     | `string`            | —         | Project ID. Required if `project_name` is not set.                                                                 |
-| `limit`                        | `int`               | all       | Maximum number of threads to return.                                                                               |
-| `offset`                       | `int`               | `0`       | Number of threads to skip (for pagination).                                                                        |
-| `filter`                       | `string`            | —         | Filter expression applied when fetching runs, using [LangSmith trace query syntax](/langsmith/trace-query-syntax). |
-| `start_time` / `startTime`     | `datetime` / `Date` | 1 day ago | Only include runs started after this time. Widen this window to surface older threads.                             |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `project_name` / `projectName` | `string` | — | Project name. Required if `project_id` is not set. |
+| `project_id` / `projectId` | `string` | — | Project ID. Required if `project_name` is not set. |
+| `limit` | `int` | all | Maximum number of threads to return. |
+| `offset` | `int` | `0` | Number of threads to skip (for pagination). |
+| `filter` | `string` | — | Filter expression applied when fetching runs, using [LangSmith trace query syntax](/langsmith/trace-query-syntax). |
+| `start_time` / `startTime` | `datetime` / `Date` | 1 day ago | Only include runs started after this time. Widen this window to surface older threads. |
 
 ### Return value
 
 A list of thread objects, each containing:
 
-| Field            | Type                                                                    | Description                                                      |
-| ---------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `thread_id`      | `string`                                                                | The thread identifier.                                           |
-| `runs`           | `[Run](https://reference.langchain.com/python/langsmith/schemas/Run)[]` | Root runs in this thread, sorted chronologically (oldest first). |
-| `count`          | `int`                                                                   | Number of runs in this thread.                                   |
-| `min_start_time` | `string \| null`                                                        | ISO timestamp of the earliest run.                               |
-| `max_start_time` | `string \| null`                                                        | ISO timestamp of the most recent run.                            |
+| Field | Type | Description |
+| - | - | - |
+| `thread_id` | `string` | The thread identifier. |
+| `runs` | `[Run](https://reference.langchain.com/python/langsmith/schemas/Run)[]` | Root runs in this thread, sorted chronologically (oldest first). |
+| `count` | `int` | Number of runs in this thread. |
+| `min_start_time` | `string \| null` | ISO timestamp of the earliest run. |
+| `max_start_time` | `string \| null` | ISO timestamp of the most recent run. |
 
 <Note>
   `list_threads` always returns root runs only. If you need child runs (e.g., tool calls, sub-chains), use `read_thread` instead, which accepts an `is_root` / `isRoot` parameter you can set to `false`.
@@ -166,16 +166,16 @@ Unlike `list_threads`, each item here is a `Run` object directly — there is no
 
 ### Parameters
 
-| Parameter                      | Type                 | Default    | Description                                                       |
-| ------------------------------ | -------------------- | ---------- | ----------------------------------------------------------------- |
-| `thread_id` / `threadId`       | `string`             | —          | **Required.** The thread to query.                                |
-| `project_name` / `projectName` | `string`             | —          | Project name. Required if `project_id` is not set.                |
-| `project_id` / `projectId`     | `string \| string[]` | —          | Project ID or list of IDs. Required if `project_name` is not set. |
-| `is_root` / `isRoot`           | `bool`               | `true`     | Return only root runs. Set to `false` to include child runs.      |
-| `limit`                        | `int`                | all        | Maximum number of runs to return.                                 |
-| `filter`                       | `string`             | —          | Additional filter expression (combined with the thread filter).   |
-| `order`                        | `"asc" \| "desc"`    | `"asc"`    | Sort order. `"asc"` returns runs oldest-first (chronological).    |
-| `select`                       | `string[]`           | all fields | Specific run fields to return, to reduce response size.           |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `thread_id` / `threadId` | `string` | — | **Required.** The thread to query. |
+| `project_name` / `projectName` | `string` | — | Project name. Required if `project_id` is not set. |
+| `project_id` / `projectId` | `string \| string[]` | — | Project ID or list of IDs. Required if `project_name` is not set. |
+| `is_root` / `isRoot` | `bool` | `true` | Return only root runs. Set to `false` to include child runs. |
+| `limit` | `int` | all | Maximum number of runs to return. |
+| `filter` | `string` | — | Additional filter expression (combined with the thread filter). |
+| `order` | `"asc" \| "desc"` | `"asc"` | Sort order. `"asc"` returns runs oldest-first (chronological). |
+| `select` | `string[]` | all fields | Specific run fields to return, to reduce response size. |
 
 ### Return value
 

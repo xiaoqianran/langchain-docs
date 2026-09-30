@@ -30,11 +30,11 @@ If you are using the [RunTree API](/langsmith/annotate-code#use-the-runtree-api)
 
 Return a list of dictionaries (Python) or objects (TypeScript) from your retriever function. Each item in the list represents a retrieved document and must contain the following fields:
 
-| Field          | Type   | Description                                                                                                                                               |
-| -------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `page_content` | string | The text content of the retrieved document.                                                                                                               |
-| `type`         | string | Must always be `"Document"`.                                                                                                                              |
-| `metadata`     | object | Key-value pairs with metadata about the document, such as source URL, chunk ID, or score. This metadata is displayed alongside the document in the trace. |
+| Field | Type | Description |
+| - | - | - |
+| `page_content` | string | The text content of the retrieved document. |
+| `type` | string | Must always be `"Document"`. |
+| `metadata` | object | Key-value pairs with metadata about the document, such as source URL, chunk ID, or score. This metadata is displayed alongside the document in the trace. |
 
 The following examples show a complete retriever implementation with both requirements applied:
 

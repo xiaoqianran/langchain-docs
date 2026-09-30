@@ -85,23 +85,23 @@ Use an MCP server when tools already live on a remote MCP server and you want MD
 
 Each server supports the following core options:
 
-| Option                                            | Description                                                                        |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `transport`                                       | Required. Use `http` for Streamable HTTP or `sse` for legacy SSE.                  |
-| `url`                                             | Required. The remote MCP endpoint URL.                                             |
-| `headers`                                         | Static headers to send to the server.                                              |
-| `include_tools` / `includeTools`                  | Raw MCP tool names to expose.                                                      |
-| `exclude_tools` / `excludeTools`                  | Raw MCP tool names to hide.                                                        |
-| `default_tool_timeout` / `defaultToolTimeout`     | Timeout for each tool call, in seconds for Python and milliseconds for TypeScript. |
-| `automatic_sse_fallback` / `automaticSSEFallback` | For HTTP, allow the client to fall back to SSE.                                    |
-| `reconnect`                                       | For SSE, configure reconnection behavior.                                          |
+| Option | Description |
+| - | - |
+| `transport` | Required. Use `http` for Streamable HTTP or `sse` for legacy SSE. |
+| `url` | Required. The remote MCP endpoint URL. |
+| `headers` | Static headers to send to the server. |
+| `include_tools` / `includeTools` | Raw MCP tool names to expose. |
+| `exclude_tools` / `excludeTools` | Raw MCP tool names to hide. |
+| `default_tool_timeout` / `defaultToolTimeout` | Timeout for each tool call, in seconds for Python and milliseconds for TypeScript. |
+| `automatic_sse_fallback` / `automaticSSEFallback` | For HTTP, allow the client to fall back to SSE. |
+| `reconnect` | For SSE, configure reconnection behavior. |
 
 The MCP definition also accepts these options:
 
-| Option                                                               | Default | Description                                               |
-| -------------------------------------------------------------------- | ------- | --------------------------------------------------------- |
-| `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true`  | Prefix each tool with `{server}__`.                       |
-| `throw_on_load_error` / `throwOnLoadError`                           | `true`  | Fail loading instead of starting with a partial tool set. |
+| Option | Default | Description |
+| - | - | - |
+| `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` | Prefix each tool with `{server}__`. |
+| `throw_on_load_error` / `throwOnLoadError` | `true` | Fail loading instead of starting with a partial tool set. |
 
 ## Deployment
 
@@ -109,12 +109,12 @@ The MCP definition also accepts these options:
 
 ## When to use MCP connectors
 
-| Concept                                                                    | Kind                  | How it reaches the agent                                                  |
-| -------------------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------- |
-| **MCP servers**                                                            | Managed configuration | Declared in the MCP module under `tools/`; no import into the agent entry |
-| **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** | Deployment API        | Exposes the agent as a tool to MCP clients                                |
-| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)**      | Application code      | Import and pass in the agent definition                                   |
-| **[Channels](/langsmith/javascript/managed-deep-agents-channels)**         | Managed configuration | Receive external messages that start agent runs and deliver responses     |
+| Concept | Kind | How it reaches the agent |
+| - | - | - |
+| **MCP servers** | Managed configuration | Declared in the MCP module under `tools/`; no import into the agent entry |
+| **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)** | Deployment API | Exposes the agent as a tool to MCP clients |
+| **[Authored tools](/langsmith/javascript/managed-deep-agents-tools)** | Application code | Import and pass in the agent definition |
+| **[Channels](/langsmith/javascript/managed-deep-agents-channels)** | Managed configuration | Receive external messages that start agent runs and deliver responses |
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 

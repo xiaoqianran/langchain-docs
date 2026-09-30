@@ -150,12 +150,12 @@ By default, files are saved to `~/.agents/skills/[skill-name]/` and symlinked in
 langsmith fleet skills pull [skill-name] [flags]
 ```
 
-| Flag              | Description                                                                                     |
-| ----------------- | ----------------------------------------------------------------------------------------------- |
-| `--global=false`  | Install to project-level directories (`.agents/` and `.claude/`) instead of the home directory. |
-| `--agent`         | Target a specific agent (`claude`, `cursor`, `codex`).                                          |
-| `--copy`          | Copy files instead of symlinking.                                                               |
-| `--format pretty` | Display the installed skill's file tree.                                                        |
+| Flag | Description |
+| - | - |
+| `--global=false` | Install to project-level directories (`.agents/` and `.claude/`) instead of the home directory. |
+| `--agent` | Target a specific agent (`claude`, `cursor`, `codex`). |
+| `--copy` | Copy files instead of symlinking. |
+| `--format pretty` | Display the installed skill's file tree. |
 
 For example:
 

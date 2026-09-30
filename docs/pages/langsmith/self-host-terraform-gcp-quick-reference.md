@@ -8,15 +8,15 @@ Command cheat sheet for day-to-day operations against a GCP LangSmith deployment
 
 ## Deployment overview
 
-| Stage                             | What gets deployed                                                                    | Command                                         |
-| --------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Infrastructure                    | VPC + GKE + Cloud SQL + Memorystore + GCS + IAM + cert-manager + KEDA + Envoy Gateway | `make apply`                                    |
-| Cluster credentials               | Kubeconfig wired to the new GKE cluster                                               | `make kubeconfig`                               |
-| LangSmith base                    | Frontend, backend, ingest, queue, ClickHouse                                          | `make init-values && make deploy`               |
-| Fleet add-on (standalone)         | standalone-fleet-\* API server, tool server, trigger server, queue                    | `make apply && make init-values && make deploy` |
-| LangSmith Deployment add-on       | host-backend, listener, operator                                                      | `make apply && make init-values && make deploy` |
-| Agent Builder add-on (deprecated) | tool-server, trigger-server + agent-builder LGP                                       | `make init-values && make deploy`               |
-| Insights + Polly add-on           | Clio analytics, Polly eval agent                                                      | `make init-values && make deploy`               |
+| Stage | What gets deployed | Command |
+| - | - | - |
+| Infrastructure | VPC + GKE + Cloud SQL + Memorystore + GCS + IAM + cert-manager + KEDA + Envoy Gateway | `make apply` |
+| Cluster credentials | Kubeconfig wired to the new GKE cluster | `make kubeconfig` |
+| LangSmith base | Frontend, backend, ingest, queue, ClickHouse | `make init-values && make deploy` |
+| Fleet add-on (standalone) | standalone-fleet-\* API server, tool server, trigger server, queue | `make apply && make init-values && make deploy` |
+| LangSmith Deployment add-on | host-backend, listener, operator | `make apply && make init-values && make deploy` |
+| Agent Builder add-on (deprecated) | tool-server, trigger-server + agent-builder LGP | `make init-values && make deploy` |
+| Insights + Polly add-on | Clio analytics, Polly eval agent | `make init-values && make deploy` |
 
 Each stage builds on the previous. Verify pods are healthy before enabling the next.
 
@@ -112,13 +112,13 @@ Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && mak
 sizing_profile = "production"   # default | minimum | dev | production | production-large
 ```
 
-| Profile            | When to use                                                                  |
-| ------------------ | ---------------------------------------------------------------------------- |
-| `default`          | Chart defaults — quick tests, no overlay applied                             |
-| `minimum`          | Absolute floor; fits `e2-standard-4`; use for cost parking or CI smoke tests |
-| `dev`              | Single replica, minimal resources                                            |
-| `production`       | Multi-replica with HPA; recommended for real workloads                       |
-| `production-large` | High memory and CPU; 50+ users or 1000+ traces/sec                           |
+| Profile | When to use |
+| - | - |
+| `default` | Chart defaults — quick tests, no overlay applied |
+| `minimum` | Absolute floor; fits `e2-standard-4`; use for cost parking or CI smoke tests |
+| `dev` | Single replica, minimal resources |
+| `production` | Multi-replica with HPA; recommended for real workloads |
+| `production-large` | High memory and CPU; 50+ users or 1000+ traces/sec |
 
 ## kubectl
 

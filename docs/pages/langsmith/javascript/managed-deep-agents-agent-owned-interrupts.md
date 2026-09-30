@@ -131,11 +131,11 @@ Any `action_id` works for a button in a message, except one that starts with `md
 
 `interrupt()` returns the normalized response. It holds only the fields every provider shares:
 
-| Field            | Type               | Meaning                                                                                                         |
-| ---------------- | ------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `provider`       | `"slack"`          | The channel provider that delivered the answer.                                                                 |
-| `action`         | `string`           | The button's `action_id`, or the modal's `callback_id`.                                                         |
-| `value`          | JSON, optional     | The button's `value` string, or the modal's `state.values` object. Opaque to the platform.                      |
+| Field | Type | Meaning |
+| - | - | - |
+| `provider` | `"slack"` | The channel provider that delivered the answer. |
+| `action` | `string` | The button's `action_id`, or the modal's `callback_id`. |
+| `value` | JSON, optional | The button's `value` string, or the modal's `state.values` object. Opaque to the platform. |
 | `correlation_id` | `string`, optional | Present when the button's `value` was JSON with an `mda_correlation_id` key. Modal submissions never carry one. |
 
 The same response is available on run context as `runtime.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.channel.rawEvent`. For a form with inputs inside the message, the user's entries are at `rawEvent.state.values`, keyed by block ID and action ID.
@@ -146,13 +146,13 @@ Managed Deep Agents reads only the first action in a Slack interaction payload, 
 
 Slack does not know which interrupt a button belongs to, so the SDK reads the interrupts parked on the thread and decides:
 
-| Parked interrupts | `correlation_id` on the response             | Result                                                                                             |
-| ----------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| One               | Absent                                       | Resumes that interrupt.                                                                            |
-| One or more       | Present and matches exactly one              | Resumes the matching interrupt.                                                                    |
-| Several           | Absent                                       | Nothing runs. The SDK logs the ambiguity and acknowledges the event.                               |
-| One or more       | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints.                                |
-| None              | Any                                          | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
+| Parked interrupts | `correlation_id` on the response | Result |
+| - | - | - |
+| One | Absent | Resumes that interrupt. |
+| One or more | Present and matches exactly one | Resumes the matching interrupt. |
+| Several | Absent | Nothing runs. The SDK logs the ambiguity and acknowledges the event. |
+| One or more | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints. |
+| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
 
 Carry a correlation ID whenever an agent might have more than one interrupt parked on a thread. Without one, a thread can only be answered while exactly one interrupt is pending.
 
@@ -196,22 +196,22 @@ Prefer `interrupt()` when the next thing the user does is expected to be answeri
 
 Names the platform reserves:
 
-| Name                  | Where                       | Meaning                                                                           |
-| --------------------- | --------------------------- | --------------------------------------------------------------------------------- |
-| `mda_modal::` prefix  | Button `action_id`          | The click opens a modal and never reaches the agent.                              |
-| `mda_correlation_id`  | Key inside a button `value` | Matches a click to one parked interrupt. Exported as `INTERRUPT_CORRELATION_KEY`. |
-| `callback_id`         | App-defined view            | Set to the button's `action_id`.                                                  |
-| `private_metadata`    | App-defined view            | Set by the platform. Supplying it prevents the modal from opening.                |
-| `mda/slack-bot-token` | Connection slug             | The deployment's Slack bot token. Cannot be created or overwritten with the CLI.  |
+| Name | Where | Meaning |
+| - | - | - |
+| `mda_modal::` prefix | Button `action_id` | The click opens a modal and never reaches the agent. |
+| `mda_correlation_id` | Key inside a button `value` | Matches a click to one parked interrupt. Exported as `INTERRUPT_CORRELATION_KEY`. |
+| `callback_id` | App-defined view | Set to the button's `action_id`. |
+| `private_metadata` | App-defined view | Set by the platform. Supplying it prevents the modal from opening. |
+| `mda/slack-bot-token` | Connection slug | The deployment's Slack bot token. Cannot be created or overwritten with the CLI. |
 
 Slack limits that Managed Deep Agents does not check before forwarding a view:
 
-| Limit           | Value           |
-| --------------- | --------------- |
-| Button `value`  | 2000 characters |
-| Modal title     | 24 characters   |
-| Blocks per view | 100             |
-| `callback_id`   | 255 characters  |
+| Limit | Value |
+| - | - |
+| Button `value` | 2000 characters |
+| Modal title | 24 characters |
+| Blocks per view | 100 |
+| `callback_id` | 255 characters |
 
 Exceeding the last three makes the modal fail to open with nothing shown to the user.
 

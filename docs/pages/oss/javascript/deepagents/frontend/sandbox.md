@@ -735,12 +735,12 @@ immediately see what the agent modified.
 
 Use a framework-appropriate diff library to render unified diffs:
 
-| Framework | Library                                                                    | Component                                                       |
-| --------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| React     | [`@pierre/diffs`](https://diffs.com)                                       | `<FileDiff>` with `parseDiffFromFile`                           |
-| Vue       | [`@git-diff-view/vue`](https://github.com/MrWangJustToDo/git-diff-view)    | `<DiffView>` with `generateDiffFile` from `@git-diff-view/file` |
-| Svelte    | [`@git-diff-view/svelte`](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` with `generateDiffFile` from `@git-diff-view/file` |
-| Angular   | [`ngx-diff`](https://github.com/rars/ngx-diff)                             | `<ngx-unified-diff>` with `[before]` and `[after]`              |
+| Framework | Library | Component |
+| - | - | - |
+| React | [`@pierre/diffs`](https://diffs.com) | `<FileDiff>` with `parseDiffFromFile` |
+| Vue | [`@git-diff-view/vue`](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` with `generateDiffFile` from `@git-diff-view/file` |
+| Svelte | [`@git-diff-view/svelte`](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` with `generateDiffFile` from `@git-diff-view/file` |
+| Angular | [`ngx-diff`](https://github.com/rars/ngx-diff) | `<ngx-unified-diff>` with `[before]` and `[after]` |
 
 Example with `@pierre/diffs` (React):
 

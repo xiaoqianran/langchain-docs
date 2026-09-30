@@ -12,9 +12,11 @@
   无论检查点后端如何，LangSmith 始终需要 PostgreSQL 来实现线程、运行、助手、cron 和 [memory store](/oss/python/langgraph/stores)。检查点后端仅控制检查点数据的存储位置。
 </Note>
 
-## 可用的后端|后端|存储|配置|使用案例|
-| --------- | ------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `default` | PostgreSQL |无（内置）|标准部署|
+## 可用的后端
+
+|后端 |存储|配置|使用案例 |
+| - | - | - | - |
+| `default` | PostgreSQL |无（内置）|标准部署 |
 | `mongo` | MongoDB | `langgraph.json` 或 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量 |与现有 MongoDB 基础设施的团队 |
 | `custom` |用户提供| `langgraph.json` |自定义存储后端（请参阅[custom checkpointer](/langsmith/custom-checkpointer)）|
 

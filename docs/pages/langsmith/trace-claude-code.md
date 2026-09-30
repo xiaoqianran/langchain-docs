@@ -318,12 +318,12 @@ Tracing to multiple [replicas](/langsmith/log-traces-to-project) is useful for:
 
 Each replica object supports the following fields:
 
-| Field         | Required | Description                                                                            |
-| ------------- | -------- | -------------------------------------------------------------------------------------- |
-| `apiUrl`      | Yes      | LangSmith API URL (typically `https://api.smith.langchain.com`)                        |
-| `apiKey`      | Yes      | API key for the destination [workspace](/langsmith/administration-overview#workspaces) |
-| `projectName` | Yes      | Project name in the destination workspace                                              |
-| `updates`     | No       | Optional metadata/fields to override on the replicated runs                            |
+| Field | Required | Description |
+| - | - | - |
+| `apiUrl` | Yes | LangSmith API URL (typically `https://api.smith.langchain.com`) |
+| `apiKey` | Yes | API key for the destination [workspace](/langsmith/administration-overview#workspaces) |
+| `projectName` | Yes | Project name in the destination workspace |
+| `updates` | No | Optional metadata/fields to override on the replicated runs |
 
 There are two ways to set the `CC_LANGSMITH_RUNS_ENDPOINTS` environment variable:
 

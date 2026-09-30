@@ -36,10 +36,10 @@ The gateway performs these steps for each request to the standard endpoint:
 
 The gateway resolves an upstream credential for every call. A workspace can use its own provider accounts, Gateway Credits, or both:
 
-| Option                                            | Upstream credential                                                                                                                  | Setup and billing                                                                 |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| Bring your own provider account                   | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account.                                |
-| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential.                                                                                              | No provider secret is required. Invocations are billed to your LangSmith account. |
+| Option | Upstream credential | Setup and billing |
+| - | - | - |
+| Bring your own provider account | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account. |
+| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential. | No provider secret is required. Invocations are billed to your LangSmith account. |
 
 ## Check availability
 
@@ -49,22 +49,22 @@ The gateway runs on LangSmith Cloud in every LangSmith region, and on [BYOC](/la
 
 Replace `gateway.smith.langchain.com` with the hostname for your LangSmith region, and keep the same path for the API format you use:
 
-| Region   | Gateway hostname                   |
-| -------- | ---------------------------------- |
-| GCP US   | `gateway.smith.langchain.com`      |
-| GCP EU   | `eu.gateway.smith.langchain.com`   |
+| Region | Gateway hostname |
+| - | - |
+| GCP US | `gateway.smith.langchain.com` |
+| GCP EU | `eu.gateway.smith.langchain.com` |
 | GCP APAC | `apac.gateway.smith.langchain.com` |
-| AWS US   | `aws.gateway.smith.langchain.com`  |
+| AWS US | `aws.gateway.smith.langchain.com` |
 
 ### Use a BYOC data plane
 
 On BYOC, replace the gateway hostname with your [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) and prefix the path with `/gateway`:
 
-| API format              | Base URL                               | Prompt endpoint          |
-| ----------------------- | -------------------------------------- | ------------------------ |
+| API format | Base URL | Prompt endpoint |
+| - | - | - |
 | OpenAI Chat Completions | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
-| Anthropic Messages      | `https://<data_plane_host>/gateway`    | `POST /v1/messages`      |
-| OpenAI Responses        | `https://<data_plane_host>/gateway/v1` | `POST /responses`        |
+| Anthropic Messages | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
+| OpenAI Responses | `https://<data_plane_host>/gateway/v1` | `POST /responses` |
 
 Authenticate with an API key scoped to a workspace in that data plane, passed either as an `Authorization: Bearer` token or as the provider API key. Provider secrets, model IDs, policies, and tracing behave the same as on Cloud.
 

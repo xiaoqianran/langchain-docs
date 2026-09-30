@@ -26,19 +26,19 @@ Choose the hooks your middleware needs. You can choose between node-style hooks 
 
 **Node-style hooks** run at specific execution points:
 
-| Hook           | When it runs                                |
-| -------------- | ------------------------------------------- |
-| `before_agent` | Before agent starts (once per invocation)   |
-| `before_model` | Before each model call                      |
-| `after_model`  | After each model response                   |
-| `after_agent`  | After agent completes (once per invocation) |
+| Hook | When it runs |
+| - | - |
+| `before_agent` | Before agent starts (once per invocation) |
+| `before_model` | Before each model call |
+| `after_model` | After each model response |
+| `after_agent` | After agent completes (once per invocation) |
 
 **Wrap-style hooks** run around each call, giving you control over execution:
 
-| Hook              | When it runs           |
-| ----------------- | ---------------------- |
+| Hook | When it runs |
+| - | - |
 | `wrap_model_call` | Around each model call |
-| `wrap_tool_call`  | Around each tool call  |
+| `wrap_tool_call` | Around each tool call |
 
 **Example:**
 

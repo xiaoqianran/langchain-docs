@@ -16,14 +16,14 @@ This page describes how to plan, configure, and operate disaster recovery (DR) f
 
 Self-hosted LangSmith is composed of stateless services backed by four state stores. Recovery planning is almost entirely about the state stores. You can recreate the stateless services at any time by reapplying the Helm chart.
 
-| Layer                            | Components                                                                                                                                                            | State         | Recovery action                                       |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------------------------------------------------- |
-| LangSmith services               | `langsmith-frontend`, `langsmith-backend`, `langsmith-platform-backend`, `langsmith-queue`, `langsmith-ingest-queue`, `langsmith-playground`, `langsmith-ace-backend` | Stateless     | Reinstall the Helm chart                              |
-| PostgreSQL                       | Operational data: orgs, workspaces, users, API keys, datasets, prompts, projects, deployments metadata                                                                | **Durable**   | Restore from backup or replica                        |
-| ClickHouse                       | Traces and feedback (high volume analytical data)                                                                                                                     | **Durable**   | Restore from backup or replica                        |
-| Blob storage (S3/GCS/Azure Blob) | Run inputs, outputs, errors, manifests, extras, events, attachments (when enabled)                                                                                    | **Durable**   | Restore from versioned bucket or replica              |
-| Redis (or Valkey)                | Ephemeral queue state, pub/sub, cache, run heartbeats                                                                                                                 | Ephemeral     | Reprovision; no restore required                      |
-| Kubernetes objects               | Helm values, `Secret`s, TLS material, IRSA / Workload Identity bindings                                                                                               | Configuration | Re-apply from source control or back up cluster state |
+| Layer | Components | State | Recovery action |
+| - | - | - | - |
+| LangSmith services | `langsmith-frontend`, `langsmith-backend`, `langsmith-platform-backend`, `langsmith-queue`, `langsmith-ingest-queue`, `langsmith-playground`, `langsmith-ace-backend` | Stateless | Reinstall the Helm chart |
+| PostgreSQL | Operational data: orgs, workspaces, users, API keys, datasets, prompts, projects, deployments metadata | **Durable** | Restore from backup or replica |
+| ClickHouse | Traces and feedback (high volume analytical data) | **Durable** | Restore from backup or replica |
+| Blob storage (S3/GCS/Azure Blob) | Run inputs, outputs, errors, manifests, extras, events, attachments (when enabled) | **Durable** | Restore from versioned bucket or replica |
+| Redis (or Valkey) | Ephemeral queue state, pub/sub, cache, run heartbeats | Ephemeral | Reprovision; no restore required |
+| Kubernetes objects | Helm values, `Secret`s, TLS material, IRSA / Workload Identity bindings | Configuration | Re-apply from source control or back up cluster state |
 
 <Warning>
   All durable data stores must be protected together. Postgres, ClickHouse, and blob storage are the three stores that hold durable data; Redis is ephemeral and does not need to be backed up. Restoring Postgres without ClickHouse and blob storage (or vice versa) produces an inconsistent installation. References from Postgres to runs in ClickHouse and to objects in blob storage break across the divergence point. Always take coordinated backups, or use point-in-time recovery (PITR) targets that are close together across stores.
@@ -38,11 +38,11 @@ Before designing your DR architecture, define two targets:
 
 The following deployment patterns assume one of three target profiles:
 
-| Profile         | Typical RPO      | Typical RTO            | Approach                                                                                                                                                                                                                                                     |
-| --------------- | ---------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Snapshot-only   | 6 to 24 hours    | Hours                  | Daily managed backups of each store. Lowest cost, longest restore.                                                                                                                                                                                           |
-| Multi-AZ HA     | Seconds          | Minutes (zone failure) | Synchronous standby in another AZ for Postgres and ClickHouse, Multi-AZ Redis, zone-redundant blob storage. Standard production posture.                                                                                                                     |
-| Cross-region DR | Minutes to hours | Hours                  | Backups of Postgres, ClickHouse, and blob storage copied to a second region, restored on demand. Optionally a Postgres cross-region replica for a tighter Postgres RPO. Highest cost, slower recovery than Multi-AZ, but protects against a regional outage. |
+| Profile | Typical RPO | Typical RTO | Approach |
+| - | - | - | - |
+| Snapshot-only | 6 to 24 hours | Hours | Daily managed backups of each store. Lowest cost, longest restore. |
+| Multi-AZ HA | Seconds | Minutes (zone failure) | Synchronous standby in another AZ for Postgres and ClickHouse, Multi-AZ Redis, zone-redundant blob storage. Standard production posture. |
+| Cross-region DR | Minutes to hours | Hours | Backups of Postgres, ClickHouse, and blob storage copied to a second region, restored on demand. Optionally a Postgres cross-region replica for a tighter Postgres RPO. Highest cost, slower recovery than Multi-AZ, but protects against a regional outage. |
 
 ## Postgres
 

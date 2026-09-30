@@ -365,15 +365,15 @@ langsmith api sessions -H "Accept: text/csv"
 
 Key flags:
 
-| Flag          | Short | Default | Description                                                                               |
-| ------------- | ----- | ------- | ----------------------------------------------------------------------------------------- |
-| `--method`    | `-X`  | `GET`   | HTTP method                                                                               |
-| `--field`     | `-F`  | —       | Typed JSON field as `key=value`. Repeatable. Use `@<path>` or `@-` for file/stdin values. |
-| `--raw-field` | `-f`  | —       | String JSON field as `key=value`. Repeatable.                                             |
-| `--input`     | —     | —       | File to use as the request body (`-` for stdin)                                           |
-| `--body`      | —     | —       | Raw request body (JSON string, `@file`, or `@-` for stdin)                                |
-| `--header`    | `-H`  | —       | Additional headers as `Key:Value`. Repeatable.                                            |
-| `--include`   | `-i`  | `false` | Print response status line and headers before body                                        |
+| Flag | Short | Default | Description |
+| - | - | - | - |
+| `--method` | `-X` | `GET` | HTTP method |
+| `--field` | `-F` | — | Typed JSON field as `key=value`. Repeatable. Use `@<path>` or `@-` for file/stdin values. |
+| `--raw-field` | `-f` | — | String JSON field as `key=value`. Repeatable. |
+| `--input` | — | — | File to use as the request body (`-` for stdin) |
+| `--body` | — | — | Raw request body (JSON string, `@file`, or `@-` for stdin) |
+| `--header` | `-H` | — | Additional headers as `Key:Value`. Repeatable. |
+| `--include` | `-i` | `false` | Print response status line and headers before body |
 
 `--input` and `--body` are mutually exclusive. Subcommands `langsmith api ls` and `langsmith api info` browse and describe endpoints from the cached OpenAPI spec — pass `--refresh` to re-fetch.
 
@@ -381,31 +381,31 @@ Key flags:
 
 Most `trace` and `run` commands share these filters:
 
-| Flag                              | Description                      | Example                          |
-| --------------------------------- | -------------------------------- | -------------------------------- |
-| `--project`                       | Project name                     | `--project my-app`               |
-| `--limit, -n`                     | Max results                      | `-n 10`                          |
-| `--offset`                        | Pagination offset                | `--offset 20`                    |
-| `--last-n-minutes`                | Override the 7-day default       | `--last-n-minutes 60`            |
-| `--since`                         | After ISO timestamp              | `--since 2024-01-15T00:00:00Z`   |
-| `--error` / `--no-error`          | Filter by error status           | `--error`                        |
-| `--name`                          | Name search (case-insensitive)   | `--name ChatOpenAI`              |
-| `--run-type`                      | Run type (`llm` or `tool`)       | `--run-type llm`                 |
-| `--min-latency` / `--max-latency` | Latency range in seconds         | `--min-latency 2.5`              |
-| `--min-tokens`                    | Minimum total tokens             | `--min-tokens 1000`              |
-| `--tags`                          | Tags, comma-separated (OR logic) | `--tags prod,v2`                 |
-| `--filter`                        | Raw LangSmith filter DSL         | `--filter 'eq(status, "error")'` |
-| `--trace-ids`                     | Specific trace IDs               | `--trace-ids abc123,def456`      |
+| Flag | Description | Example |
+| - | - | - |
+| `--project` | Project name | `--project my-app` |
+| `--limit, -n` | Max results | `-n 10` |
+| `--offset` | Pagination offset | `--offset 20` |
+| `--last-n-minutes` | Override the 7-day default | `--last-n-minutes 60` |
+| `--since` | After ISO timestamp | `--since 2024-01-15T00:00:00Z` |
+| `--error` / `--no-error` | Filter by error status | `--error` |
+| `--name` | Name search (case-insensitive) | `--name ChatOpenAI` |
+| `--run-type` | Run type (`llm` or `tool`) | `--run-type llm` |
+| `--min-latency` / `--max-latency` | Latency range in seconds | `--min-latency 2.5` |
+| `--min-tokens` | Minimum total tokens | `--min-tokens 1000` |
+| `--tags` | Tags, comma-separated (OR logic) | `--tags prod,v2` |
+| `--filter` | Raw LangSmith filter DSL | `--filter 'eq(status, "error")'` |
+| `--trace-ids` | Specific trace IDs | `--trace-ids abc123,def456` |
 
 **Detail flags** — control which fields are included in the response:
 
-| Flag                 | Adds                            |
-| -------------------- | ------------------------------- |
+| Flag | Adds |
+| - | - |
 | `--include-metadata` | Status, duration, tokens, costs |
-| `--include-io`       | Inputs, outputs, error          |
-| `--include-feedback` | Feedback stats                  |
-| `--full`             | All of the above                |
-| `--show-hierarchy`   | Full run tree (traces only)     |
+| `--include-io` | Inputs, outputs, error |
+| `--include-feedback` | Feedback stats |
+| `--full` | All of the above |
+| `--show-hierarchy` | Full run tree (traces only) |
 
 ***
 

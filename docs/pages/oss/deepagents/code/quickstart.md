@@ -110,33 +110,33 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
   <Accordion title="Keyboard shortcuts" icon="keyboard">
     **General**
 
-    | Shortcut                                              | Action                                                      |
-    | ----------------------------------------------------- | ----------------------------------------------------------- |
-    | `Enter`                                               | Submit prompt                                               |
-    | `Shift+Enter`, `Ctrl+J`, `Alt+Enter`, or `Ctrl+Enter` | Insert newline                                              |
-    | `@filename`                                           | Auto-complete files and inject content                      |
-    | `@@query`                                             | Search recent threads and insert a thread reference         |
-    | `Shift+Tab`                                           | Cycle [approval modes](/oss/deepagents/code/approval-modes) |
-    | `Ctrl+G`                                              | Open prompt in external editor                              |
-    | `Ctrl+T`                                              | Expand or collapse the subagent panel when one is present   |
-    | `Ctrl+N`                                              | Review pending notifications when the panel is open         |
-    | `Ctrl+O`                                              | Expand/collapse the most recent tool output                 |
-    | `Escape`                                              | Interrupt current operation                                 |
-    | `Ctrl+C`                                              | Interrupt or quit                                           |
-    | `Ctrl+D`                                              | Exit                                                        |
+    | Shortcut | Action |
+    | - | - |
+    | `Enter` | Submit prompt |
+    | `Shift+Enter`, `Ctrl+J`, `Alt+Enter`, or `Ctrl+Enter` | Insert newline |
+    | `@filename` | Auto-complete files and inject content |
+    | `@@query` | Search recent threads and insert a thread reference |
+    | `Shift+Tab` | Cycle [approval modes](/oss/deepagents/code/approval-modes) |
+    | `Ctrl+G` | Open prompt in external editor |
+    | `Ctrl+T` | Expand or collapse the subagent panel when one is present |
+    | `Ctrl+N` | Review pending notifications when the panel is open |
+    | `Ctrl+O` | Expand/collapse the most recent tool output |
+    | `Escape` | Interrupt current operation |
+    | `Ctrl+C` | Interrupt or quit |
+    | `Ctrl+D` | Exit |
 
     **Text editing in the prompt**
 
     The chat input uses standard readline-style bindings:
 
-    | Shortcut                     | Action                              |
-    | ---------------------------- | ----------------------------------- |
-    | `Ctrl+A` or `Home`           | Move cursor to start of line        |
-    | `Ctrl+E` or `End`            | Move cursor to end of line          |
-    | `Ctrl+U`                     | Delete from cursor to start of line |
-    | `Ctrl+K`                     | Delete from cursor to end of line   |
-    | `Ctrl+W` or `Ctrl+Backspace` | Delete word to the left             |
-    | `Ctrl+Left` / `Ctrl+Right`   | Move cursor one word left/right     |
+    | Shortcut | Action |
+    | - | - |
+    | `Ctrl+A` or `Home` | Move cursor to start of line |
+    | `Ctrl+E` or `End` | Move cursor to end of line |
+    | `Ctrl+U` | Delete from cursor to start of line |
+    | `Ctrl+K` | Delete from cursor to end of line |
+    | `Ctrl+W` or `Ctrl+Backspace` | Delete word to the left |
+    | `Ctrl+Left` / `Ctrl+Right` | Move cursor one word left/right |
 
     **Search prompt history**
 

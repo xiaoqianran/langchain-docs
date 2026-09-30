@@ -16,8 +16,8 @@ Query runs from a project with optional filtering and field projection. Returns 
 
 <Tabs>
   <Tab title="Python">
-    | Before               | After                 |
-    | -------------------- | --------------------- |
+    | Before | After |
+    | - | - |
     | `client.list_runs()` | `client.runs.query()` |
 
     <Note>
@@ -28,32 +28,32 @@ Query runs from a project with optional filtering and field projection. Returns 
   </Tab>
 
   <Tab title="TypeScript">
-    | Before              | After                 |
-    | ------------------- | --------------------- |
+    | Before | After |
+    | - | - |
     | `client.listRuns()` | `client.runs.query()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Runs/queryV2) for the full parameter and field list.
   </Tab>
 
   <Tab title="Java">
-    | Before                  | After                     |
-    | ----------------------- | ------------------------- |
+    | Before | After |
+    | - | - |
     | `client.runs().query()` | `client.runs().queryV2()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/RunService.html) for the full parameter list.
   </Tab>
 
   <Tab title="Go">
-    | Before                | After                   |
-    | --------------------- | ----------------------- |
+    | Before | After |
+    | - | - |
     | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#RunService.QueryV2AutoPaging) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                    | After                     |
-    | ------------------------- | ------------------------- |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |
 
     See the [API doc](/langsmith/smith-api/runs/query-runs) for the full parameter and field list.
@@ -72,28 +72,28 @@ Query runs from a project with optional filtering and field projection. Returns 
       `min_start_time` defaults to **1 day ago** when omitted. `list_runs` with no `start_time` returned all historical runs; `runs.query` without `min_start_time` silently scopes the query to the last 24 hours. Pass an explicit `min_start_time` if you need a wider window.
     </Warning>
 
-    | Before (`list_runs`)   | After (`runs.query`)   | Notes                                                                                                            |
-    | ---------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
-    | `project_name`         | *(removed)*            | Use `project_ids` with UUID(s)—see warning above                                                                 |
-    | `project_id`           | `project_ids`          | Now takes a list; mutually exclusive with `reference_dataset_id`                                                 |
-    | `run_type`             | `run_type`             | Values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
-    | `trace_id`             | `trace_id`             | Unchanged                                                                                                        |
-    | `reference_example_id` | `reference_examples`   | Now takes a list of UUIDs                                                                                        |
-    | `query`                | *(removed)*            | No equivalent                                                                                                    |
-    | `filter`               | `filter`               | Syntax unchanged                                                                                                 |
-    | `trace_filter`         | `trace_filter`         | Unchanged                                                                                                        |
-    | `tree_filter`          | `tree_filter`          | Unchanged                                                                                                        |
-    | `is_root`              | `is_root`              | Unchanged                                                                                                        |
-    | `parent_run_id`        | *(removed)*            | No equivalent                                                                                                    |
-    | `start_time`           | `min_start_time`       | Renamed; defaults to 1 day ago—see warning above                                                                 |
-    | `error`                | `has_error`            | Renamed                                                                                                          |
-    | `run_ids`              | `ids`                  | Renamed                                                                                                          |
-    | `select`               | `selects`              | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.)                                                       |
-    | `limit`                | *(removed)*            | Use `page_size` for per-request batch size                                                                       |
-    | *(not available)*      | `max_start_time`       | Upper bound for `start_time`; defaults to now                                                                    |
-    | *(not available)*      | `page_size`            | Per-request result count (default 100, max 1000)                                                                 |
-    | *(not available)*      | `reference_dataset_id` | Alternative to `project_ids`; mutually exclusive                                                                 |
-    | *(not available)*      | `cursor`               | Pass `next_cursor` from previous response to fetch next page                                                     |
+    | Before (`list_runs`) | After (`runs.query`) | Notes |
+    | - | - | - |
+    | `project_name` | *(removed)* | Use `project_ids` with UUID(s)—see warning above |
+    | `project_id` | `project_ids` | Now takes a list; mutually exclusive with `reference_dataset_id` |
+    | `run_type` | `run_type` | Values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
+    | `trace_id` | `trace_id` | Unchanged |
+    | `reference_example_id` | `reference_examples` | Now takes a list of UUIDs |
+    | `query` | *(removed)* | No equivalent |
+    | `filter` | `filter` | Syntax unchanged |
+    | `trace_filter` | `trace_filter` | Unchanged |
+    | `tree_filter` | `tree_filter` | Unchanged |
+    | `is_root` | `is_root` | Unchanged |
+    | `parent_run_id` | *(removed)* | No equivalent |
+    | `start_time` | `min_start_time` | Renamed; defaults to 1 day ago—see warning above |
+    | `error` | `has_error` | Renamed |
+    | `run_ids` | `ids` | Renamed |
+    | `select` | `selects` | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.) |
+    | `limit` | *(removed)* | Use `page_size` for per-request batch size |
+    | *(not available)* | `max_start_time` | Upper bound for `start_time`; defaults to now |
+    | *(not available)* | `page_size` | Per-request result count (default 100, max 1000) |
+    | *(not available)* | `reference_dataset_id` | Alternative to `project_ids`; mutually exclusive |
+    | *(not available)* | `cursor` | Pass `next_cursor` from previous response to fetch next page |
   </Tab>
 
   <Tab title="TypeScript">
@@ -105,30 +105,30 @@ Query runs from a project with optional filtering and field projection. Returns 
       `min_start_time` defaults to **1 day ago** when omitted. `listRuns` with no `startTime` returned all historical runs; `client.runs.query` without `min_start_time` silently scopes the query to the last 24 hours. Pass an explicit `min_start_time` if you need a wider window.
     </Warning>
 
-    | Before (`listRuns`)  | After (`client.runs.query`) | Notes                                                                                                                                     |
-    | -------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-    | `projectName`        | *(removed)*                 | Use `project_ids` with UUID(s)—see warning above                                                                                          |
-    | `projectId`          | `project_ids`               | Renamed to `snake_case`; now takes a list; mutually exclusive with `reference_dataset_id`                                                 |
-    | `runType`            | `run_type`                  | Renamed to `snake_case`; values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
-    | `traceId`            | `trace_id`                  | Renamed to `snake_case`                                                                                                                   |
-    | `referenceExampleId` | `reference_examples`        | Renamed to `snake_case`; now takes a list of UUIDs                                                                                        |
-    | `query`              | *(removed)*                 | No equivalent                                                                                                                             |
-    | `filter`             | `filter`                    | Syntax unchanged                                                                                                                          |
-    | `traceFilter`        | `trace_filter`              | Renamed to `snake_case`                                                                                                                   |
-    | `treeFilter`         | `tree_filter`               | Renamed to `snake_case`                                                                                                                   |
-    | `isRoot`             | `is_root`                   | Renamed to `snake_case`                                                                                                                   |
-    | `parentRunId`        | *(removed)*                 | No equivalent                                                                                                                             |
-    | `startTime`          | `min_start_time`            | Renamed to `snake_case`; defaults to 1 day ago—see warning above                                                                          |
-    | `error`              | `has_error`                 | Renamed                                                                                                                                   |
-    | `id`                 | `ids`                       | Renamed                                                                                                                                   |
-    | `select`             | `selects`                   | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.)                                                                                |
-    | `limit`              | *(removed)*                 | Use `page_size` for per-request batch size                                                                                                |
-    | `order`              | *(removed)*                 | No equivalent                                                                                                                             |
-    | `executionOrder`     | *(removed)*                 | No equivalent                                                                                                                             |
-    | *(not available)*    | `max_start_time`            | Upper bound for `start_time`; defaults to now                                                                                             |
-    | *(not available)*    | `page_size`                 | Per-request result count (default 100, max 1000)                                                                                          |
-    | *(not available)*    | `reference_dataset_id`      | Alternative to `project_ids`; mutually exclusive                                                                                          |
-    | *(not available)*    | `cursor`                    | Pass `next_cursor` from previous response to fetch next page                                                                              |
+    | Before (`listRuns`) | After (`client.runs.query`) | Notes |
+    | - | - | - |
+    | `projectName` | *(removed)* | Use `project_ids` with UUID(s)—see warning above |
+    | `projectId` | `project_ids` | Renamed to `snake_case`; now takes a list; mutually exclusive with `reference_dataset_id` |
+    | `runType` | `run_type` | Renamed to `snake_case`; values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
+    | `traceId` | `trace_id` | Renamed to `snake_case` |
+    | `referenceExampleId` | `reference_examples` | Renamed to `snake_case`; now takes a list of UUIDs |
+    | `query` | *(removed)* | No equivalent |
+    | `filter` | `filter` | Syntax unchanged |
+    | `traceFilter` | `trace_filter` | Renamed to `snake_case` |
+    | `treeFilter` | `tree_filter` | Renamed to `snake_case` |
+    | `isRoot` | `is_root` | Renamed to `snake_case` |
+    | `parentRunId` | *(removed)* | No equivalent |
+    | `startTime` | `min_start_time` | Renamed to `snake_case`; defaults to 1 day ago—see warning above |
+    | `error` | `has_error` | Renamed |
+    | `id` | `ids` | Renamed |
+    | `select` | `selects` | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.) |
+    | `limit` | *(removed)* | Use `page_size` for per-request batch size |
+    | `order` | *(removed)* | No equivalent |
+    | `executionOrder` | *(removed)* | No equivalent |
+    | *(not available)* | `max_start_time` | Upper bound for `start_time`; defaults to now |
+    | *(not available)* | `page_size` | Per-request result count (default 100, max 1000) |
+    | *(not available)* | `reference_dataset_id` | Alternative to `project_ids`; mutually exclusive |
+    | *(not available)* | `cursor` | Pass `next_cursor` from previous response to fetch next page |
   </Tab>
 
   <Tab title="Java">
@@ -136,29 +136,29 @@ Query runs from a project with optional filtering and field projection. Returns 
       `minStartTime()` defaults to **1 day ago** when omitted. `query()` with no `startTime()` returned all historical runs; `queryV2()` without `minStartTime()` silently scopes the query to the last 24 hours. Pass an explicit `minStartTime()` if you need a wider window.
     </Warning>
 
-    | Before (`RunQueryParams`) | After (`RunQueryV2Params`) | Notes                                            |
-    | ------------------------- | -------------------------- | ------------------------------------------------ |
-    | `session()`               | `projectIds()`             | Renamed; now takes explicit project UUIDs        |
-    | `runType()`               | `runType()`                | Values must now be uppercase                     |
-    | `trace()`                 | `traceId()`                | Renamed                                          |
-    | `referenceExample()`      | `referenceExamples()`      | Renamed to plural                                |
-    | `query()`                 | *(removed)*                | No equivalent                                    |
-    | `filter()`                | `filter()`                 | Syntax unchanged                                 |
-    | `traceFilter()`           | `traceFilter()`            | Unchanged                                        |
-    | `treeFilter()`            | `treeFilter()`             | Unchanged                                        |
-    | `isRoot()`                | `isRoot()`                 | Unchanged                                        |
-    | `parentRun()`             | *(removed)*                | No equivalent                                    |
-    | `startTime()`             | `minStartTime()`           | Renamed; defaults to 1 day ago—see warning above |
-    | `error()`                 | `hasError()`               | Renamed                                          |
-    | `id()`                    | `ids()`                    | Renamed                                          |
-    | `select()`                | `selects()`                | Field names are now uppercase                    |
-    | `limit()`                 | *(removed)*                | Use `pageSize()`                                 |
-    | `order()`                 | *(removed)*                | No equivalent                                    |
-    | `executionOrder()`        | *(removed)*                | No equivalent                                    |
-    | `cursor()`                | `cursor()`                 | Unchanged                                        |
-    | *(not available)*         | `maxStartTime()`           | Upper bound for start time; defaults to now      |
-    | *(not available)*         | `pageSize()`               | Per-request result count (default 100, max 1000) |
-    | *(not available)*         | `referenceDatasetId()`     | Alternative to `projectIds()`                    |
+    | Before (`RunQueryParams`) | After (`RunQueryV2Params`) | Notes |
+    | - | - | - |
+    | `session()` | `projectIds()` | Renamed; now takes explicit project UUIDs |
+    | `runType()` | `runType()` | Values must now be uppercase |
+    | `trace()` | `traceId()` | Renamed |
+    | `referenceExample()` | `referenceExamples()` | Renamed to plural |
+    | `query()` | *(removed)* | No equivalent |
+    | `filter()` | `filter()` | Syntax unchanged |
+    | `traceFilter()` | `traceFilter()` | Unchanged |
+    | `treeFilter()` | `treeFilter()` | Unchanged |
+    | `isRoot()` | `isRoot()` | Unchanged |
+    | `parentRun()` | *(removed)* | No equivalent |
+    | `startTime()` | `minStartTime()` | Renamed; defaults to 1 day ago—see warning above |
+    | `error()` | `hasError()` | Renamed |
+    | `id()` | `ids()` | Renamed |
+    | `select()` | `selects()` | Field names are now uppercase |
+    | `limit()` | *(removed)* | Use `pageSize()` |
+    | `order()` | *(removed)* | No equivalent |
+    | `executionOrder()` | *(removed)* | No equivalent |
+    | `cursor()` | `cursor()` | Unchanged |
+    | *(not available)* | `maxStartTime()` | Upper bound for start time; defaults to now |
+    | *(not available)* | `pageSize()` | Per-request result count (default 100, max 1000) |
+    | *(not available)* | `referenceDatasetId()` | Alternative to `projectIds()` |
   </Tab>
 
   <Tab title="Go">
@@ -166,29 +166,29 @@ Query runs from a project with optional filtering and field projection. Returns 
       `MinStartTime` defaults to **1 day ago** when omitted. `Query()` with no `StartTime` returned all historical runs; `QueryV2()` without `MinStartTime` silently scopes the query to the last 24 hours. Pass an explicit `MinStartTime` if you need a wider window.
     </Warning>
 
-    | Before (`RunQueryParams`) | After (`RunQueryV2Params`) | Notes                                                                                            |
-    | ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------ |
-    | `Session`                 | `ProjectIDs`               | Renamed; now takes explicit project UUIDs                                                        |
-    | `RunType`                 | `RunType`                  | Values must now be uppercase: `RunQueryV2ParamsRunTypeLLM`, `RunQueryV2ParamsRunTypeChain`, etc. |
-    | `Trace`                   | `TraceID`                  | Renamed                                                                                          |
-    | `ReferenceExample`        | `ReferenceExamples`        | Renamed to plural                                                                                |
-    | `Query`                   | *(removed)*                | No equivalent                                                                                    |
-    | `Filter`                  | `Filter`                   | Unchanged                                                                                        |
-    | `TraceFilter`             | `TraceFilter`              | Unchanged                                                                                        |
-    | `TreeFilter`              | `TreeFilter`               | Unchanged                                                                                        |
-    | `IsRoot`                  | `IsRoot`                   | Unchanged                                                                                        |
-    | `ParentRun`               | *(removed)*                | No equivalent                                                                                    |
-    | `StartTime`               | `MinStartTime`             | Renamed; defaults to 1 day ago—see warning above                                                 |
-    | `Error`                   | `HasError`                 | Renamed                                                                                          |
-    | `ID`                      | `IDs`                      | Renamed                                                                                          |
-    | `Select`                  | `Selects`                  | Field name constants are now uppercase (e.g., `RunQueryV2ParamsSelectName`)                      |
-    | `Limit`                   | *(removed)*                | Use `PageSize`                                                                                   |
-    | `Order`                   | *(removed)*                | No equivalent                                                                                    |
-    | `ExecutionOrder`          | *(removed)*                | No equivalent                                                                                    |
-    | `Cursor`                  | `Cursor`                   | Unchanged                                                                                        |
-    | *(not available)*         | `MaxStartTime`             | Upper bound for start time; defaults to now                                                      |
-    | *(not available)*         | `PageSize`                 | Per-request result count (default 100, max 1000)                                                 |
-    | *(not available)*         | `ReferenceDatasetID`       | Alternative to `ProjectIDs`                                                                      |
+    | Before (`RunQueryParams`) | After (`RunQueryV2Params`) | Notes |
+    | - | - | - |
+    | `Session` | `ProjectIDs` | Renamed; now takes explicit project UUIDs |
+    | `RunType` | `RunType` | Values must now be uppercase: `RunQueryV2ParamsRunTypeLLM`, `RunQueryV2ParamsRunTypeChain`, etc. |
+    | `Trace` | `TraceID` | Renamed |
+    | `ReferenceExample` | `ReferenceExamples` | Renamed to plural |
+    | `Query` | *(removed)* | No equivalent |
+    | `Filter` | `Filter` | Unchanged |
+    | `TraceFilter` | `TraceFilter` | Unchanged |
+    | `TreeFilter` | `TreeFilter` | Unchanged |
+    | `IsRoot` | `IsRoot` | Unchanged |
+    | `ParentRun` | *(removed)* | No equivalent |
+    | `StartTime` | `MinStartTime` | Renamed; defaults to 1 day ago—see warning above |
+    | `Error` | `HasError` | Renamed |
+    | `ID` | `IDs` | Renamed |
+    | `Select` | `Selects` | Field name constants are now uppercase (e.g., `RunQueryV2ParamsSelectName`) |
+    | `Limit` | *(removed)* | Use `PageSize` |
+    | `Order` | *(removed)* | No equivalent |
+    | `ExecutionOrder` | *(removed)* | No equivalent |
+    | `Cursor` | `Cursor` | Unchanged |
+    | *(not available)* | `MaxStartTime` | Upper bound for start time; defaults to now |
+    | *(not available)* | `PageSize` | Per-request result count (default 100, max 1000) |
+    | *(not available)* | `ReferenceDatasetID` | Alternative to `ProjectIDs` |
   </Tab>
 
   <Tab title="cURL">
@@ -196,27 +196,27 @@ Query runs from a project with optional filtering and field projection. Returns 
       `min_start_time` defaults to **1 day ago** when omitted. `POST /api/v1/runs/query` with no `start_time` returned all historical runs; `POST /api/v2/runs/query` without `min_start_time` silently scopes the query to the last 24 hours. Pass an explicit `min_start_time` if you need a wider window.
     </Warning>
 
-    | Before (v1 `POST /api/v1/runs/query` body field) | After (v2 `POST /api/v2/runs/query` body field) | Notes                                                                                                            |
-    | ------------------------------------------------ | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-    | `session`                                        | `project_ids`                                   | Renamed; both take an array of project UUIDs. `project_ids` is mutually exclusive with `reference_dataset_id`    |
-    | `run_type`                                       | `run_type`                                      | Values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
-    | `trace`                                          | `trace_id`                                      | Renamed                                                                                                          |
-    | `reference_example`                              | `reference_examples`                            | Renamed to plural; now takes an array of UUIDs                                                                   |
-    | `query`                                          | *(removed)*                                     | No equivalent                                                                                                    |
-    | `filter`                                         | `filter`                                        | Syntax unchanged                                                                                                 |
-    | `trace_filter`                                   | `trace_filter`                                  | Unchanged                                                                                                        |
-    | `tree_filter`                                    | `tree_filter`                                   | Unchanged                                                                                                        |
-    | `is_root`                                        | `is_root`                                       | Unchanged                                                                                                        |
-    | `parent_run`                                     | *(removed)*                                     | No equivalent                                                                                                    |
-    | `start_time`                                     | `min_start_time`                                | Renamed; defaults to 1 day ago—see warning above                                                                 |
-    | `error`                                          | `has_error`                                     | Renamed                                                                                                          |
-    | `id`                                             | `ids`                                           | Renamed to plural                                                                                                |
-    | `select`                                         | `selects`                                       | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.)                                                       |
-    | `limit`                                          | *(removed)*                                     | Use `page_size` for per-request batch size                                                                       |
-    | *(not available)*                                | `max_start_time`                                | Upper bound for `start_time`; defaults to now                                                                    |
-    | *(not available)*                                | `page_size`                                     | Per-request result count (default 100, max 1000)                                                                 |
-    | *(not available)*                                | `reference_dataset_id`                          | Alternative to `project_ids`; mutually exclusive                                                                 |
-    | *(not available)*                                | `cursor`                                        | Pass `next_cursor` from previous response to fetch next page                                                     |
+    | Before (v1 `POST /api/v1/runs/query` body field) | After (v2 `POST /api/v2/runs/query` body field) | Notes |
+    | - | - | - |
+    | `session` | `project_ids` | Renamed; both take an array of project UUIDs. `project_ids` is mutually exclusive with `reference_dataset_id` |
+    | `run_type` | `run_type` | Values must now be uppercase: `"LLM"`, `"CHAIN"`, `"TOOL"`, `"RETRIEVER"`, `"EMBEDDING"`, `"PROMPT"`, `"PARSER"` |
+    | `trace` | `trace_id` | Renamed |
+    | `reference_example` | `reference_examples` | Renamed to plural; now takes an array of UUIDs |
+    | `query` | *(removed)* | No equivalent |
+    | `filter` | `filter` | Syntax unchanged |
+    | `trace_filter` | `trace_filter` | Unchanged |
+    | `tree_filter` | `tree_filter` | Unchanged |
+    | `is_root` | `is_root` | Unchanged |
+    | `parent_run` | *(removed)* | No equivalent |
+    | `start_time` | `min_start_time` | Renamed; defaults to 1 day ago—see warning above |
+    | `error` | `has_error` | Renamed |
+    | `id` | `ids` | Renamed to plural |
+    | `select` | `selects` | Field names are now uppercase (`"NAME"`, `"STATUS"`, etc.) |
+    | `limit` | *(removed)* | Use `page_size` for per-request batch size |
+    | *(not available)* | `max_start_time` | Upper bound for `start_time`; defaults to now |
+    | *(not available)* | `page_size` | Per-request result count (default 100, max 1000) |
+    | *(not available)* | `reference_dataset_id` | Alternative to `project_ids`; mutually exclusive |
+    | *(not available)* | `cursor` | Pass `next_cursor` from previous response to fetch next page |
   </Tab>
 </Tabs>
 
@@ -226,246 +226,246 @@ Query runs from a project with optional filtering and field projection. Returns 
   <Tab title="Python">
     Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`; only selected fields are non-`None`. Default `selects` contains only `"ID"`.
 
-    | Before (v1 `Run` attribute)    | After (v2 `Run` attribute)         | Notes                                                                                        |
-    | ------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------- |
-    | `run.id`                       | `run.id`                           | Unchanged; returned by default when `selects` is omitted                                     |
-    | `run.name`                     | `run.name`                         | Unchanged                                                                                    |
-    | `run.run_type`                 | `run.run_type`                     | Values are now uppercase Literals: `"LLM"`, `"CHAIN"`, etc.                                  |
-    | `run.status`                   | `run.status`                       | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"`                                                  |
-    | `run.start_time`               | `run.start_time`                   | Unchanged                                                                                    |
-    | `run.end_time`                 | `run.end_time`                     | Unchanged                                                                                    |
-    | `run.error`                    | `run.error`                        | Unchanged                                                                                    |
-    | `run.inputs`                   | `run.inputs`                       | Unchanged                                                                                    |
-    | `run.outputs`                  | `run.outputs`                      | Unchanged                                                                                    |
-    | `run.tags`                     | `run.tags`                         | Unchanged                                                                                    |
-    | `run.extra`                    | `run.extra`                        | Unchanged                                                                                    |
-    | `run.metadata`                 | `run.metadata`                     | Unchanged                                                                                    |
-    | `run.events`                   | `run.events`                       | Unchanged                                                                                    |
-    | `run.reference_example_id`     | `run.reference_example_id`         | Unchanged                                                                                    |
-    | `run.trace_id`                 | `run.trace_id`                     | Unchanged                                                                                    |
-    | `run.dotted_order`             | `run.dotted_order`                 | Unchanged                                                                                    |
-    | `run.parent_run_id`            | *(removed)*                        | Use `run.parent_run_ids` (list of all ancestor UUIDs, root first)                            |
-    | `run.parent_run_ids`           | `run.parent_run_ids`               | Unchanged                                                                                    |
-    | `run.session_id`               | `run.project_id`                   | Renamed; `session_id` was the project UUID                                                   |
-    | `run.feedback_stats`           | `run.feedback_stats`               | Unchanged                                                                                    |
-    | `run.app_path`                 | `run.app_path`                     | Unchanged                                                                                    |
-    | `run.attachments`              | `run.attachments`                  | v2 returns pre-signed download URLs instead of raw bytes                                     |
-    | `run.total_tokens`             | `run.total_tokens`                 | Unchanged                                                                                    |
-    | `run.prompt_tokens`            | `run.prompt_tokens`                | Unchanged                                                                                    |
-    | `run.completion_tokens`        | `run.completion_tokens`            | Unchanged                                                                                    |
-    | `run.total_cost`               | `run.total_cost`                   | Unchanged                                                                                    |
-    | `run.prompt_cost`              | `run.prompt_cost`                  | Unchanged                                                                                    |
-    | `run.completion_cost`          | `run.completion_cost`              | Unchanged                                                                                    |
-    | `run.first_token_time`         | `run.first_token_time`             | Unchanged                                                                                    |
-    | `run.latency` (property)       | `run.latency_seconds`              | Renamed; was a computed `timedelta` property, now a native `float` field                     |
-    | `run.in_dataset`               | `run.is_in_dataset`                | Renamed                                                                                      |
-    | `run.child_run_ids`            | *(removed)*                        | No equivalent                                                                                |
-    | `run.child_runs`               | *(removed)*                        | No equivalent                                                                                |
-    | `run.serialized`               | *(removed)*                        | Use `run.manifest`                                                                           |
-    | `run.manifest_id`              | *(removed)*                        | Use `run.manifest`                                                                           |
-    | *(not available)*              | `run.is_root`                      | New                                                                                          |
-    | *(not available)*              | `run.manifest`                     | New: full manifest object (replaces `serialized` and `manifest_id`)                          |
-    | *(not available)*              | `run.error_preview`                | New: truncated error snippet                                                                 |
-    | *(not available)*              | `run.inputs_preview`               | New: truncated inputs preview                                                                |
-    | *(not available)*              | `run.outputs_preview`              | New: truncated outputs preview                                                               |
-    | *(not available)*              | `run.thread_id`                    | New: conversation thread UUID                                                                |
-    | *(not available)*              | `run.reference_dataset_id`         | New: dataset UUID for the reference example                                                  |
-    | *(not available)*              | `run.share_url`                    | New: public share URL (only set when the run has been shared)                                |
-    | `run.prompt_token_details`     | `run.prompt_token_details.raw`     | Field now wraps the dict; access `.raw` to get `dict[str, int]` (element type unchanged)     |
-    | `run.completion_token_details` | `run.completion_token_details.raw` | Field now wraps the dict; access `.raw` to get `dict[str, int]` (element type unchanged)     |
-    | `run.prompt_cost_details`      | `run.prompt_cost_details.raw`      | Field now wraps the dict; access `.raw` to get `dict[str, float]` (was `dict[str, Decimal]`) |
-    | `run.completion_cost_details`  | `run.completion_cost_details.raw`  | Field now wraps the dict; access `.raw` to get `dict[str, float]` (was `dict[str, Decimal]`) |
+    | Before (v1 `Run` attribute) | After (v2 `Run` attribute) | Notes |
+    | - | - | - |
+    | `run.id` | `run.id` | Unchanged; returned by default when `selects` is omitted |
+    | `run.name` | `run.name` | Unchanged |
+    | `run.run_type` | `run.run_type` | Values are now uppercase Literals: `"LLM"`, `"CHAIN"`, etc. |
+    | `run.status` | `run.status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `run.start_time` | `run.start_time` | Unchanged |
+    | `run.end_time` | `run.end_time` | Unchanged |
+    | `run.error` | `run.error` | Unchanged |
+    | `run.inputs` | `run.inputs` | Unchanged |
+    | `run.outputs` | `run.outputs` | Unchanged |
+    | `run.tags` | `run.tags` | Unchanged |
+    | `run.extra` | `run.extra` | Unchanged |
+    | `run.metadata` | `run.metadata` | Unchanged |
+    | `run.events` | `run.events` | Unchanged |
+    | `run.reference_example_id` | `run.reference_example_id` | Unchanged |
+    | `run.trace_id` | `run.trace_id` | Unchanged |
+    | `run.dotted_order` | `run.dotted_order` | Unchanged |
+    | `run.parent_run_id` | *(removed)* | Use `run.parent_run_ids` (list of all ancestor UUIDs, root first) |
+    | `run.parent_run_ids` | `run.parent_run_ids` | Unchanged |
+    | `run.session_id` | `run.project_id` | Renamed; `session_id` was the project UUID |
+    | `run.feedback_stats` | `run.feedback_stats` | Unchanged |
+    | `run.app_path` | `run.app_path` | Unchanged |
+    | `run.attachments` | `run.attachments` | v2 returns pre-signed download URLs instead of raw bytes |
+    | `run.total_tokens` | `run.total_tokens` | Unchanged |
+    | `run.prompt_tokens` | `run.prompt_tokens` | Unchanged |
+    | `run.completion_tokens` | `run.completion_tokens` | Unchanged |
+    | `run.total_cost` | `run.total_cost` | Unchanged |
+    | `run.prompt_cost` | `run.prompt_cost` | Unchanged |
+    | `run.completion_cost` | `run.completion_cost` | Unchanged |
+    | `run.first_token_time` | `run.first_token_time` | Unchanged |
+    | `run.latency` (property) | `run.latency_seconds` | Renamed; was a computed `timedelta` property, now a native `float` field |
+    | `run.in_dataset` | `run.is_in_dataset` | Renamed |
+    | `run.child_run_ids` | *(removed)* | No equivalent |
+    | `run.child_runs` | *(removed)* | No equivalent |
+    | `run.serialized` | *(removed)* | Use `run.manifest` |
+    | `run.manifest_id` | *(removed)* | Use `run.manifest` |
+    | *(not available)* | `run.is_root` | New |
+    | *(not available)* | `run.manifest` | New: full manifest object (replaces `serialized` and `manifest_id`) |
+    | *(not available)* | `run.error_preview` | New: truncated error snippet |
+    | *(not available)* | `run.inputs_preview` | New: truncated inputs preview |
+    | *(not available)* | `run.outputs_preview` | New: truncated outputs preview |
+    | *(not available)* | `run.thread_id` | New: conversation thread UUID |
+    | *(not available)* | `run.reference_dataset_id` | New: dataset UUID for the reference example |
+    | *(not available)* | `run.share_url` | New: public share URL (only set when the run has been shared) |
+    | `run.prompt_token_details` | `run.prompt_token_details.raw` | Field now wraps the dict; access `.raw` to get `dict[str, int]` (element type unchanged) |
+    | `run.completion_token_details` | `run.completion_token_details.raw` | Field now wraps the dict; access `.raw` to get `dict[str, int]` (element type unchanged) |
+    | `run.prompt_cost_details` | `run.prompt_cost_details.raw` | Field now wraps the dict; access `.raw` to get `dict[str, float]` (was `dict[str, Decimal]`) |
+    | `run.completion_cost_details` | `run.completion_cost_details.raw` | Field now wraps the dict; access `.raw` to get `dict[str, float]` (was `dict[str, Decimal]`) |
   </Tab>
 
   <Tab title="TypeScript">
     Pass SCREAMING\_SNAKE\_CASE strings to `selects` (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated on each `Run`. Default `selects` contains only `"ID"`.
 
-    | Before (v1 `Run` property) | After (v2 `Run` property)      | Notes                                                                       |
-    | -------------------------- | ------------------------------ | --------------------------------------------------------------------------- |
-    | `run.id`                   | `run.id`                       | Unchanged                                                                   |
-    | `run.name`                 | `run.name`                     | Unchanged                                                                   |
-    | `run.runType`              | `run.run_type`                 | Renamed to `snake_case`; values are now uppercase: `"LLM"`, `"CHAIN"`, etc. |
-    | `run.status`               | `run.status`                   | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"`                                 |
-    | `run.startTime`            | `run.start_time`               | Renamed to `snake_case`                                                     |
-    | `run.endTime`              | `run.end_time`                 | Renamed to `snake_case`                                                     |
-    | `run.error`                | `run.error`                    | Unchanged                                                                   |
-    | `run.inputs`               | `run.inputs`                   | Unchanged                                                                   |
-    | `run.outputs`              | `run.outputs`                  | Unchanged                                                                   |
-    | `run.tags`                 | `run.tags`                     | Unchanged                                                                   |
-    | `run.extra`                | `run.extra`                    | Unchanged                                                                   |
-    | *(not available)*          | `run.metadata`                 | New: previously accessed via `run.extra.metadata`                           |
-    | `run.events`               | `run.events`                   | Unchanged                                                                   |
-    | `run.referenceExampleId`   | `run.reference_example_id`     | Renamed to `snake_case`                                                     |
-    | `run.traceId`              | `run.trace_id`                 | Renamed to `snake_case`                                                     |
-    | `run.dottedOrder`          | `run.dotted_order`             | Renamed to `snake_case`                                                     |
-    | `run.parentRunId`          | *(removed)*                    | Use `run.parent_run_ids` (list of all ancestor UUIDs, root first)           |
-    | `run.parentRunIds`         | `run.parent_run_ids`           | Renamed to `snake_case`                                                     |
-    | `run.sessionId`            | `run.project_id`               | Renamed; `sessionId` was the project UUID                                   |
-    | `run.feedbackStats`        | `run.feedback_stats`           | Renamed to `snake_case`                                                     |
-    | `run.appPath`              | `run.app_path`                 | Renamed to `snake_case`                                                     |
-    | `run.attachments`          | `run.attachments`              | v2 returns pre-signed download URLs instead of raw bytes                    |
-    | `run.totalTokens`          | `run.total_tokens`             | Renamed to `snake_case`                                                     |
-    | `run.promptTokens`         | `run.prompt_tokens`            | Renamed to `snake_case`                                                     |
-    | `run.completionTokens`     | `run.completion_tokens`        | Renamed to `snake_case`                                                     |
-    | `run.totalCost`            | `run.total_cost`               | Renamed to `snake_case`                                                     |
-    | `run.promptCost`           | `run.prompt_cost`              | Renamed to `snake_case`                                                     |
-    | `run.completionCost`       | `run.completion_cost`          | Renamed to `snake_case`                                                     |
-    | `run.firstTokenTime`       | `run.first_token_time`         | Renamed to `snake_case`                                                     |
-    | `run.latency`              | `run.latency_seconds`          | Renamed; was a computed property, now a native `number` field (seconds)     |
-    | `run.inDataset`            | `run.is_in_dataset`            | Renamed                                                                     |
-    | `run.childRunIds`          | *(removed)*                    | No equivalent                                                               |
-    | `run.childRuns`            | *(removed)*                    | No equivalent                                                               |
-    | `run.serialized`           | *(removed)*                    | Use `run.manifest`                                                          |
-    | `run.manifestId`           | *(removed)*                    | Use `run.manifest`                                                          |
-    | `run.shareToken`           | *(removed)*                    | Use `run.share_url` (full URL, only set when the run has been shared)       |
-    | *(not available)*          | `run.is_root`                  | New                                                                         |
-    | *(not available)*          | `run.manifest`                 | New: full manifest object (replaces `serialized` and `manifestId`)          |
-    | *(not available)*          | `run.error_preview`            | New: truncated error snippet                                                |
-    | *(not available)*          | `run.inputs_preview`           | New: truncated inputs preview                                               |
-    | *(not available)*          | `run.outputs_preview`          | New: truncated outputs preview                                              |
-    | *(not available)*          | `run.thread_id`                | New: conversation thread UUID                                               |
-    | *(not available)*          | `run.reference_dataset_id`     | New: dataset UUID for the reference example                                 |
-    | *(not available)*          | `run.share_url`                | New: public share URL (only set when the run has been shared)               |
-    | *(not available)*          | `run.prompt_token_details`     | New: per-category prompt token breakdown                                    |
-    | *(not available)*          | `run.completion_token_details` | New: per-category completion token breakdown                                |
-    | *(not available)*          | `run.prompt_cost_details`      | New: per-category prompt cost breakdown                                     |
-    | *(not available)*          | `run.completion_cost_details`  | New: per-category completion cost breakdown                                 |
+    | Before (v1 `Run` property) | After (v2 `Run` property) | Notes |
+    | - | - | - |
+    | `run.id` | `run.id` | Unchanged |
+    | `run.name` | `run.name` | Unchanged |
+    | `run.runType` | `run.run_type` | Renamed to `snake_case`; values are now uppercase: `"LLM"`, `"CHAIN"`, etc. |
+    | `run.status` | `run.status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `run.startTime` | `run.start_time` | Renamed to `snake_case` |
+    | `run.endTime` | `run.end_time` | Renamed to `snake_case` |
+    | `run.error` | `run.error` | Unchanged |
+    | `run.inputs` | `run.inputs` | Unchanged |
+    | `run.outputs` | `run.outputs` | Unchanged |
+    | `run.tags` | `run.tags` | Unchanged |
+    | `run.extra` | `run.extra` | Unchanged |
+    | *(not available)* | `run.metadata` | New: previously accessed via `run.extra.metadata` |
+    | `run.events` | `run.events` | Unchanged |
+    | `run.referenceExampleId` | `run.reference_example_id` | Renamed to `snake_case` |
+    | `run.traceId` | `run.trace_id` | Renamed to `snake_case` |
+    | `run.dottedOrder` | `run.dotted_order` | Renamed to `snake_case` |
+    | `run.parentRunId` | *(removed)* | Use `run.parent_run_ids` (list of all ancestor UUIDs, root first) |
+    | `run.parentRunIds` | `run.parent_run_ids` | Renamed to `snake_case` |
+    | `run.sessionId` | `run.project_id` | Renamed; `sessionId` was the project UUID |
+    | `run.feedbackStats` | `run.feedback_stats` | Renamed to `snake_case` |
+    | `run.appPath` | `run.app_path` | Renamed to `snake_case` |
+    | `run.attachments` | `run.attachments` | v2 returns pre-signed download URLs instead of raw bytes |
+    | `run.totalTokens` | `run.total_tokens` | Renamed to `snake_case` |
+    | `run.promptTokens` | `run.prompt_tokens` | Renamed to `snake_case` |
+    | `run.completionTokens` | `run.completion_tokens` | Renamed to `snake_case` |
+    | `run.totalCost` | `run.total_cost` | Renamed to `snake_case` |
+    | `run.promptCost` | `run.prompt_cost` | Renamed to `snake_case` |
+    | `run.completionCost` | `run.completion_cost` | Renamed to `snake_case` |
+    | `run.firstTokenTime` | `run.first_token_time` | Renamed to `snake_case` |
+    | `run.latency` | `run.latency_seconds` | Renamed; was a computed property, now a native `number` field (seconds) |
+    | `run.inDataset` | `run.is_in_dataset` | Renamed |
+    | `run.childRunIds` | *(removed)* | No equivalent |
+    | `run.childRuns` | *(removed)* | No equivalent |
+    | `run.serialized` | *(removed)* | Use `run.manifest` |
+    | `run.manifestId` | *(removed)* | Use `run.manifest` |
+    | `run.shareToken` | *(removed)* | Use `run.share_url` (full URL, only set when the run has been shared) |
+    | *(not available)* | `run.is_root` | New |
+    | *(not available)* | `run.manifest` | New: full manifest object (replaces `serialized` and `manifestId`) |
+    | *(not available)* | `run.error_preview` | New: truncated error snippet |
+    | *(not available)* | `run.inputs_preview` | New: truncated inputs preview |
+    | *(not available)* | `run.outputs_preview` | New: truncated outputs preview |
+    | *(not available)* | `run.thread_id` | New: conversation thread UUID |
+    | *(not available)* | `run.reference_dataset_id` | New: dataset UUID for the reference example |
+    | *(not available)* | `run.share_url` | New: public share URL (only set when the run has been shared) |
+    | *(not available)* | `run.prompt_token_details` | New: per-category prompt token breakdown |
+    | *(not available)* | `run.completion_token_details` | New: per-category completion token breakdown |
+    | *(not available)* | `run.prompt_cost_details` | New: per-category prompt cost breakdown |
+    | *(not available)* | `run.completion_cost_details` | New: per-category completion cost breakdown |
   </Tab>
 
   <Tab title="Java">
     Add `RunQueryV2Params.Select` values (eg. `Select.NAME`, `Select.STATUS`) via `.addSelect(...)` to control which fields are populated; unselected fields return empty `Optional` values. `selects()` defaults to `ID` only.
 
-    | Before (`RunSchema` method)    | After (`Run` method)           | Notes                                                                                          |
-    | ------------------------------ | ------------------------------ | ---------------------------------------------------------------------------------------------- |
-    | `run.id()`                     | `run.id()`                     | Unchanged                                                                                      |
-    | `run.name()`                   | `run.name()`                   | Unchanged                                                                                      |
-    | `run.runType()`                | `run.runType()`                | Values are now uppercase: `"LLM"`, `"CHAIN"`, etc.                                             |
-    | `run.status()`                 | `run.status()`                 | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"`                                                    |
-    | `run.startTime()`              | `run.startTime()`              | Unchanged                                                                                      |
-    | `run.endTime()`                | `run.endTime()`                | Unchanged                                                                                      |
-    | `run.error()`                  | `run.error()`                  | Unchanged                                                                                      |
-    | `run.inputs()`                 | `run.inputs()`                 | Unchanged                                                                                      |
-    | `run.outputs()`                | `run.outputs()`                | Unchanged                                                                                      |
-    | `run.tags()`                   | `run.tags()`                   | Unchanged                                                                                      |
-    | `run.extra()`                  | `run.extra()`                  | Unchanged                                                                                      |
-    | `run.events()`                 | `run.events()`                 | Unchanged                                                                                      |
-    | `run.feedbackStats()`          | `run.feedbackStats()`          | Unchanged                                                                                      |
-    | `run.inputsPreview()`          | `run.inputsPreview()`          | Unchanged                                                                                      |
-    | `run.outputsPreview()`         | `run.outputsPreview()`         | Unchanged                                                                                      |
-    | `run.referenceExampleId()`     | `run.referenceExampleId()`     | Unchanged                                                                                      |
-    | `run.traceId()`                | `run.traceId()`                | Unchanged                                                                                      |
-    | `run.dottedOrder()`            | `run.dottedOrder()`            | Unchanged                                                                                      |
-    | `run.parentRunId()`            | *(removed)*                    | Use `run.parentRunIds()` (list of all ancestor UUIDs, root first)                              |
-    | `run.parentRunIds()`           | `run.parentRunIds()`           | Unchanged                                                                                      |
-    | `run.sessionId()`              | `run.projectId()`              | Renamed; `sessionId()` returned the project UUID                                               |
-    | `run.appPath()`                | `run.appPath()`                | Unchanged                                                                                      |
-    | `run.firstTokenTime()`         | `run.firstTokenTime()`         | Unchanged                                                                                      |
-    | `run.totalTokens()`            | `run.totalTokens()`            | Unchanged                                                                                      |
-    | `run.promptTokens()`           | `run.promptTokens()`           | Unchanged                                                                                      |
-    | `run.completionTokens()`       | `run.completionTokens()`       | Unchanged                                                                                      |
-    | `run.totalCost()`              | `run.totalCost()`              | Return type changed from `Optional<String>` to `Optional<Double>`                              |
-    | `run.promptCost()`             | `run.promptCost()`             | Return type changed from `Optional<String>` to `Optional<Double>`                              |
-    | `run.completionCost()`         | `run.completionCost()`         | Return type changed from `Optional<String>` to `Optional<Double>`                              |
-    | `run.promptTokenDetails()`     | `run.promptTokenDetails()`     | Unchanged                                                                                      |
-    | `run.completionTokenDetails()` | `run.completionTokenDetails()` | Unchanged                                                                                      |
-    | `run.promptCostDetails()`      | `run.promptCostDetails()`      | Unchanged                                                                                      |
-    | `run.completionCostDetails()`  | `run.completionCostDetails()`  | Unchanged                                                                                      |
-    | `run.priceModelId()`           | `run.priceModelId()`           | Unchanged                                                                                      |
-    | `run.inDataset()`              | `run.isInDataset()`            | Renamed                                                                                        |
-    | `run.referenceDatasetId()`     | `run.referenceDatasetId()`     | Unchanged                                                                                      |
-    | `run.threadId()`               | `run.threadId()`               | Unchanged                                                                                      |
-    | `run.shareToken()`             | *(removed)*                    | Use `run.shareUrl()` (full URL, only set when the run has been shared)                         |
-    | `run.childRunIds()`            | *(removed)*                    | No equivalent                                                                                  |
-    | `run.directChildRunIds()`      | *(removed)*                    | No equivalent                                                                                  |
-    | `run.serialized()`             | *(removed)*                    | Use `run.manifest()`                                                                           |
-    | `run.manifestId()`             | *(removed)*                    | Use `run.manifest()`                                                                           |
-    | `run.messages()`               | *(removed)*                    | No equivalent                                                                                  |
-    | `run.executionOrder()`         | *(removed)*                    | No equivalent                                                                                  |
-    | `run.lastQueuedAt()`           | *(removed)*                    | No equivalent                                                                                  |
-    | `run.traceFirstReceivedAt()`   | *(removed)*                    | No equivalent                                                                                  |
-    | `run.traceMaxStartTime()`      | *(removed)*                    | No equivalent                                                                                  |
-    | `run.traceMinStartTime()`      | *(removed)*                    | No equivalent                                                                                  |
-    | `run.traceTier()`              | *(removed)*                    | No equivalent                                                                                  |
-    | `run.traceUpgrade()`           | *(removed)*                    | No equivalent                                                                                  |
-    | `run.ttlSeconds()`             | *(removed)*                    | No equivalent                                                                                  |
-    | *(not available)*              | `run.attachments()`            | New: pre-signed download URLs for attachments (replaces S3 URL fields)                         |
-    | *(not available)*              | `run.latencySeconds()`         | New: wall-clock duration in seconds                                                            |
-    | *(not available)*              | `run.isRoot()`                 | New                                                                                            |
-    | *(not available)*              | `run.errorPreview()`           | New: truncated error snippet                                                                   |
-    | *(not available)*              | `run.manifest()`               | New: full manifest, typed as `Optional<Manifest>` (replaces `serialized()` and `manifestId()`) |
-    | *(not available)*              | `run.metadata()`               | New: metadata, typed as `Optional<Metadata>` (was derived from `extra.metadata`)               |
-    | *(not available)*              | `run.shareUrl()`               | New: public share URL (only set when the run has been shared)                                  |
-    | *(not available)*              | `run.threadEvaluationTime()`   | New                                                                                            |
+    | Before (`RunSchema` method) | After (`Run` method) | Notes |
+    | - | - | - |
+    | `run.id()` | `run.id()` | Unchanged |
+    | `run.name()` | `run.name()` | Unchanged |
+    | `run.runType()` | `run.runType()` | Values are now uppercase: `"LLM"`, `"CHAIN"`, etc. |
+    | `run.status()` | `run.status()` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `run.startTime()` | `run.startTime()` | Unchanged |
+    | `run.endTime()` | `run.endTime()` | Unchanged |
+    | `run.error()` | `run.error()` | Unchanged |
+    | `run.inputs()` | `run.inputs()` | Unchanged |
+    | `run.outputs()` | `run.outputs()` | Unchanged |
+    | `run.tags()` | `run.tags()` | Unchanged |
+    | `run.extra()` | `run.extra()` | Unchanged |
+    | `run.events()` | `run.events()` | Unchanged |
+    | `run.feedbackStats()` | `run.feedbackStats()` | Unchanged |
+    | `run.inputsPreview()` | `run.inputsPreview()` | Unchanged |
+    | `run.outputsPreview()` | `run.outputsPreview()` | Unchanged |
+    | `run.referenceExampleId()` | `run.referenceExampleId()` | Unchanged |
+    | `run.traceId()` | `run.traceId()` | Unchanged |
+    | `run.dottedOrder()` | `run.dottedOrder()` | Unchanged |
+    | `run.parentRunId()` | *(removed)* | Use `run.parentRunIds()` (list of all ancestor UUIDs, root first) |
+    | `run.parentRunIds()` | `run.parentRunIds()` | Unchanged |
+    | `run.sessionId()` | `run.projectId()` | Renamed; `sessionId()` returned the project UUID |
+    | `run.appPath()` | `run.appPath()` | Unchanged |
+    | `run.firstTokenTime()` | `run.firstTokenTime()` | Unchanged |
+    | `run.totalTokens()` | `run.totalTokens()` | Unchanged |
+    | `run.promptTokens()` | `run.promptTokens()` | Unchanged |
+    | `run.completionTokens()` | `run.completionTokens()` | Unchanged |
+    | `run.totalCost()` | `run.totalCost()` | Return type changed from `Optional<String>` to `Optional<Double>` |
+    | `run.promptCost()` | `run.promptCost()` | Return type changed from `Optional<String>` to `Optional<Double>` |
+    | `run.completionCost()` | `run.completionCost()` | Return type changed from `Optional<String>` to `Optional<Double>` |
+    | `run.promptTokenDetails()` | `run.promptTokenDetails()` | Unchanged |
+    | `run.completionTokenDetails()` | `run.completionTokenDetails()` | Unchanged |
+    | `run.promptCostDetails()` | `run.promptCostDetails()` | Unchanged |
+    | `run.completionCostDetails()` | `run.completionCostDetails()` | Unchanged |
+    | `run.priceModelId()` | `run.priceModelId()` | Unchanged |
+    | `run.inDataset()` | `run.isInDataset()` | Renamed |
+    | `run.referenceDatasetId()` | `run.referenceDatasetId()` | Unchanged |
+    | `run.threadId()` | `run.threadId()` | Unchanged |
+    | `run.shareToken()` | *(removed)* | Use `run.shareUrl()` (full URL, only set when the run has been shared) |
+    | `run.childRunIds()` | *(removed)* | No equivalent |
+    | `run.directChildRunIds()` | *(removed)* | No equivalent |
+    | `run.serialized()` | *(removed)* | Use `run.manifest()` |
+    | `run.manifestId()` | *(removed)* | Use `run.manifest()` |
+    | `run.messages()` | *(removed)* | No equivalent |
+    | `run.executionOrder()` | *(removed)* | No equivalent |
+    | `run.lastQueuedAt()` | *(removed)* | No equivalent |
+    | `run.traceFirstReceivedAt()` | *(removed)* | No equivalent |
+    | `run.traceMaxStartTime()` | *(removed)* | No equivalent |
+    | `run.traceMinStartTime()` | *(removed)* | No equivalent |
+    | `run.traceTier()` | *(removed)* | No equivalent |
+    | `run.traceUpgrade()` | *(removed)* | No equivalent |
+    | `run.ttlSeconds()` | *(removed)* | No equivalent |
+    | *(not available)* | `run.attachments()` | New: pre-signed download URLs for attachments (replaces S3 URL fields) |
+    | *(not available)* | `run.latencySeconds()` | New: wall-clock duration in seconds |
+    | *(not available)* | `run.isRoot()` | New |
+    | *(not available)* | `run.errorPreview()` | New: truncated error snippet |
+    | *(not available)* | `run.manifest()` | New: full manifest, typed as `Optional<Manifest>` (replaces `serialized()` and `manifestId()`) |
+    | *(not available)* | `run.metadata()` | New: metadata, typed as `Optional<Metadata>` (was derived from `extra.metadata`) |
+    | *(not available)* | `run.shareUrl()` | New: public share URL (only set when the run has been shared) |
+    | *(not available)* | `run.threadEvaluationTime()` | New |
   </Tab>
 
   <Tab title="Go">
     Pass `RunQueryV2ParamsSelect` constants (eg. `RunQueryV2ParamsSelectName`, `RunQueryV2ParamsSelectStatus`) to `Selects` to control which fields are populated; unselected fields are zero-valued on the returned struct. `Selects` defaults to `ID` only.
 
-    | Before (`RunSchema` field)   | After (`Run` field)              | Notes                                                                                        |
-    | ---------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
-    | `run.ID`                     | `run.ID`                         | Unchanged                                                                                    |
-    | `run.Name`                   | `run.Name`                       | Unchanged                                                                                    |
-    | `run.RunType`                | `run.RunType`                    | Values changed to uppercase: `"LLM"`, `"CHAIN"`, etc.                                        |
-    | `run.Status`                 | `run.Status`                     | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"`                                                  |
-    | `run.TraceID`                | `run.TraceID`                    | Unchanged                                                                                    |
-    | `run.DottedOrder`            | `run.DottedOrder`                | Unchanged                                                                                    |
-    | `run.AppPath`                | `run.AppPath`                    | Unchanged                                                                                    |
-    | `run.StartTime`              | `run.StartTime`                  | Unchanged                                                                                    |
-    | `run.EndTime`                | `run.EndTime`                    | Unchanged                                                                                    |
-    | `run.Error`                  | `run.Error`                      | Unchanged                                                                                    |
-    | `run.Events`                 | `run.Events`                     | Unchanged; element type is now `RunEvent` (was `map[string]interface{}`)                     |
-    | `run.Extra`                  | `run.Extra`                      | Unchanged; type is now `interface{}` (was `map[string]interface{}`)                          |
-    | `run.FeedbackStats`          | `run.FeedbackStats`              | Unchanged; element type is now `RunFeedbackStat`                                             |
-    | `run.FirstTokenTime`         | `run.FirstTokenTime`             | Unchanged                                                                                    |
-    | `run.Inputs`                 | `run.Inputs`                     | Unchanged; type is now `interface{}` (was `map[string]interface{}`)                          |
-    | `run.InputsPreview`          | `run.InputsPreview`              | Unchanged                                                                                    |
-    | `run.Outputs`                | `run.Outputs`                    | Unchanged; type is now `interface{}` (was `map[string]interface{}`)                          |
-    | `run.OutputsPreview`         | `run.OutputsPreview`             | Unchanged                                                                                    |
-    | `run.ParentRunIDs`           | `run.ParentRunIDs`               | Unchanged                                                                                    |
-    | `run.PriceModelID`           | `run.PriceModelID`               | Unchanged                                                                                    |
-    | `run.PromptCost`             | `run.PromptCost`                 | Unchanged                                                                                    |
-    | `run.PromptCostDetails`      | `run.PromptCostDetails.Raw`      | Field now wraps the map; access `.Raw` to get `map[string]float64` (was `map[string]string`) |
-    | `run.PromptTokenDetails`     | `run.PromptTokenDetails.Raw`     | Field now wraps the map; access `.Raw` to get `map[string]int64` (element type unchanged)    |
-    | `run.PromptTokens`           | `run.PromptTokens`               | Unchanged                                                                                    |
-    | `run.CompletionCost`         | `run.CompletionCost`             | Unchanged                                                                                    |
-    | `run.CompletionCostDetails`  | `run.CompletionCostDetails.Raw`  | Field now wraps the map; access `.Raw` to get `map[string]float64` (was `map[string]string`) |
-    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` | Field now wraps the map; access `.Raw` to get `map[string]int64` (element type unchanged)    |
-    | `run.CompletionTokens`       | `run.CompletionTokens`           | Unchanged                                                                                    |
-    | `run.TotalCost`              | `run.TotalCost`                  | Unchanged                                                                                    |
-    | `run.TotalTokens`            | `run.TotalTokens`                | Unchanged                                                                                    |
-    | `run.ReferenceDatasetID`     | `run.ReferenceDatasetID`         | Unchanged                                                                                    |
-    | `run.ReferenceExampleID`     | `run.ReferenceExampleID`         | Unchanged                                                                                    |
-    | `run.Tags`                   | `run.Tags`                       | Unchanged                                                                                    |
-    | `run.ThreadID`               | `run.ThreadID`                   | Unchanged                                                                                    |
-    | `run.SessionID`              | `run.ProjectID`                  | Renamed                                                                                      |
-    | `run.InDataset`              | `run.IsInDataset`                | Renamed                                                                                      |
-    | `run.ChildRunIDs`            | *(removed)*                      | No equivalent                                                                                |
-    | `run.DirectChildRunIDs`      | *(removed)*                      | No equivalent                                                                                |
-    | `run.ExecutionOrder`         | *(removed)*                      | No equivalent                                                                                |
-    | `run.InputsS3URLs`           | *(removed)*                      | Internal storage URL; not exposed in v2                                                      |
-    | `run.LastQueuedAt`           | *(removed)*                      | No equivalent                                                                                |
-    | `run.ManifestID`             | *(removed)*                      | Use `run.Manifest`                                                                           |
-    | `run.ManifestS3ID`           | *(removed)*                      | Internal storage URL; not exposed in v2                                                      |
-    | `run.Messages`               | *(removed)*                      | No equivalent                                                                                |
-    | `run.OutputsS3URLs`          | *(removed)*                      | Internal storage URL; not exposed in v2                                                      |
-    | `run.ParentRunID`            | *(removed)*                      | Use `run.ParentRunIDs`                                                                       |
-    | `run.S3URLs`                 | *(removed)*                      | Internal storage URL; not exposed in v2                                                      |
-    | `run.Serialized`             | *(removed)*                      | Use `run.Manifest`                                                                           |
-    | `run.ShareToken`             | *(removed)*                      | Use `run.ShareURL`                                                                           |
-    | `run.TraceFirstReceivedAt`   | *(removed)*                      | No equivalent                                                                                |
-    | `run.TraceMaxStartTime`      | *(removed)*                      | No equivalent                                                                                |
-    | `run.TraceMinStartTime`      | *(removed)*                      | No equivalent                                                                                |
-    | `run.TraceTier`              | *(removed)*                      | No equivalent                                                                                |
-    | `run.TraceUpgrade`           | *(removed)*                      | No equivalent                                                                                |
-    | `run.TtlSeconds`             | *(removed)*                      | No equivalent                                                                                |
-    | *(not available)*            | `run.Attachments`                | New: maps attachment filename to pre-signed download URL                                     |
-    | *(not available)*            | `run.ErrorPreview`               | New: truncated error snippet                                                                 |
-    | *(not available)*            | `run.IsRoot`                     | New                                                                                          |
-    | *(not available)*            | `run.LatencySeconds`             | New: wall-clock duration in seconds                                                          |
-    | *(not available)*            | `run.Manifest`                   | New: full manifest object (replaces `Serialized` and `ManifestID`)                           |
-    | *(not available)*            | `run.Metadata`                   | New: arbitrary user-defined JSON metadata                                                    |
-    | *(not available)*            | `run.ShareURL`                   | New: public share URL (only set when the run has been shared)                                |
-    | *(not available)*            | `run.ThreadEvaluationTime`       | New                                                                                          |
+    | Before (`RunSchema` field) | After (`Run` field) | Notes |
+    | - | - | - |
+    | `run.ID` | `run.ID` | Unchanged |
+    | `run.Name` | `run.Name` | Unchanged |
+    | `run.RunType` | `run.RunType` | Values changed to uppercase: `"LLM"`, `"CHAIN"`, etc. |
+    | `run.Status` | `run.Status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `run.TraceID` | `run.TraceID` | Unchanged |
+    | `run.DottedOrder` | `run.DottedOrder` | Unchanged |
+    | `run.AppPath` | `run.AppPath` | Unchanged |
+    | `run.StartTime` | `run.StartTime` | Unchanged |
+    | `run.EndTime` | `run.EndTime` | Unchanged |
+    | `run.Error` | `run.Error` | Unchanged |
+    | `run.Events` | `run.Events` | Unchanged; element type is now `RunEvent` (was `map[string]interface{}`) |
+    | `run.Extra` | `run.Extra` | Unchanged; type is now `interface{}` (was `map[string]interface{}`) |
+    | `run.FeedbackStats` | `run.FeedbackStats` | Unchanged; element type is now `RunFeedbackStat` |
+    | `run.FirstTokenTime` | `run.FirstTokenTime` | Unchanged |
+    | `run.Inputs` | `run.Inputs` | Unchanged; type is now `interface{}` (was `map[string]interface{}`) |
+    | `run.InputsPreview` | `run.InputsPreview` | Unchanged |
+    | `run.Outputs` | `run.Outputs` | Unchanged; type is now `interface{}` (was `map[string]interface{}`) |
+    | `run.OutputsPreview` | `run.OutputsPreview` | Unchanged |
+    | `run.ParentRunIDs` | `run.ParentRunIDs` | Unchanged |
+    | `run.PriceModelID` | `run.PriceModelID` | Unchanged |
+    | `run.PromptCost` | `run.PromptCost` | Unchanged |
+    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` | Field now wraps the map; access `.Raw` to get `map[string]float64` (was `map[string]string`) |
+    | `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` | Field now wraps the map; access `.Raw` to get `map[string]int64` (element type unchanged) |
+    | `run.PromptTokens` | `run.PromptTokens` | Unchanged |
+    | `run.CompletionCost` | `run.CompletionCost` | Unchanged |
+    | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` | Field now wraps the map; access `.Raw` to get `map[string]float64` (was `map[string]string`) |
+    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` | Field now wraps the map; access `.Raw` to get `map[string]int64` (element type unchanged) |
+    | `run.CompletionTokens` | `run.CompletionTokens` | Unchanged |
+    | `run.TotalCost` | `run.TotalCost` | Unchanged |
+    | `run.TotalTokens` | `run.TotalTokens` | Unchanged |
+    | `run.ReferenceDatasetID` | `run.ReferenceDatasetID` | Unchanged |
+    | `run.ReferenceExampleID` | `run.ReferenceExampleID` | Unchanged |
+    | `run.Tags` | `run.Tags` | Unchanged |
+    | `run.ThreadID` | `run.ThreadID` | Unchanged |
+    | `run.SessionID` | `run.ProjectID` | Renamed |
+    | `run.InDataset` | `run.IsInDataset` | Renamed |
+    | `run.ChildRunIDs` | *(removed)* | No equivalent |
+    | `run.DirectChildRunIDs` | *(removed)* | No equivalent |
+    | `run.ExecutionOrder` | *(removed)* | No equivalent |
+    | `run.InputsS3URLs` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `run.LastQueuedAt` | *(removed)* | No equivalent |
+    | `run.ManifestID` | *(removed)* | Use `run.Manifest` |
+    | `run.ManifestS3ID` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `run.Messages` | *(removed)* | No equivalent |
+    | `run.OutputsS3URLs` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `run.ParentRunID` | *(removed)* | Use `run.ParentRunIDs` |
+    | `run.S3URLs` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `run.Serialized` | *(removed)* | Use `run.Manifest` |
+    | `run.ShareToken` | *(removed)* | Use `run.ShareURL` |
+    | `run.TraceFirstReceivedAt` | *(removed)* | No equivalent |
+    | `run.TraceMaxStartTime` | *(removed)* | No equivalent |
+    | `run.TraceMinStartTime` | *(removed)* | No equivalent |
+    | `run.TraceTier` | *(removed)* | No equivalent |
+    | `run.TraceUpgrade` | *(removed)* | No equivalent |
+    | `run.TtlSeconds` | *(removed)* | No equivalent |
+    | *(not available)* | `run.Attachments` | New: maps attachment filename to pre-signed download URL |
+    | *(not available)* | `run.ErrorPreview` | New: truncated error snippet |
+    | *(not available)* | `run.IsRoot` | New |
+    | *(not available)* | `run.LatencySeconds` | New: wall-clock duration in seconds |
+    | *(not available)* | `run.Manifest` | New: full manifest object (replaces `Serialized` and `ManifestID`) |
+    | *(not available)* | `run.Metadata` | New: arbitrary user-defined JSON metadata |
+    | *(not available)* | `run.ShareURL` | New: public share URL (only set when the run has been shared) |
+    | *(not available)* | `run.ThreadEvaluationTime` | New |
   </Tab>
 
   <Tab title="cURL">
@@ -473,71 +473,71 @@ Query runs from a project with optional filtering and field projection. Returns 
 
     Pass SCREAMING\_SNAKE\_CASE strings in the `selects` JSON array (eg. `"ID"`, `"NAME"`, `"STATUS"`) to control which fields are populated. Default `selects` contains only `"ID"`.
 
-    | Before (v1 response field) | After (v2 response field)      | Notes                                                                                                                  |
-    | -------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-    | `id`                       | `id`                           | Unchanged                                                                                                              |
-    | `name`                     | `name`                         | Unchanged                                                                                                              |
-    | `run_type`                 | `run_type`                     | Values changed to uppercase: `"LLM"`, `"CHAIN"`, etc.                                                                  |
-    | `status`                   | `status`                       | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"`                                                                            |
-    | `trace_id`                 | `trace_id`                     | Unchanged                                                                                                              |
-    | `dotted_order`             | `dotted_order`                 | Unchanged                                                                                                              |
-    | `app_path`                 | `app_path`                     | Unchanged                                                                                                              |
-    | `start_time`               | `start_time`                   | Unchanged                                                                                                              |
-    | `end_time`                 | `end_time`                     | Unchanged                                                                                                              |
-    | `error`                    | `error`                        | Unchanged                                                                                                              |
-    | `events`                   | `events`                       | Unchanged                                                                                                              |
-    | `extra`                    | `extra`                        | Unchanged                                                                                                              |
-    | `feedback_stats`           | `feedback_stats`               | Unchanged                                                                                                              |
-    | `first_token_time`         | `first_token_time`             | Unchanged                                                                                                              |
-    | `inputs`                   | `inputs`                       | Unchanged                                                                                                              |
-    | `inputs_preview`           | `inputs_preview`               | Unchanged                                                                                                              |
-    | `outputs`                  | `outputs`                      | Unchanged                                                                                                              |
-    | `outputs_preview`          | `outputs_preview`              | Unchanged                                                                                                              |
-    | `parent_run_ids`           | `parent_run_ids`               | Unchanged                                                                                                              |
-    | `price_model_id`           | `price_model_id`               | Unchanged                                                                                                              |
-    | `prompt_cost`              | `prompt_cost`                  | Unchanged                                                                                                              |
-    | `prompt_cost_details`      | `prompt_cost_details.raw`      | Field now wraps the object; read `.raw` for the same `{category: cost}` mapping, now with numeric values (was strings) |
-    | `prompt_token_details`     | `prompt_token_details.raw`     | Field now wraps the object; read `.raw` for the same `{category: count}` mapping (values unchanged)                    |
-    | `prompt_tokens`            | `prompt_tokens`                | Unchanged                                                                                                              |
-    | `completion_cost`          | `completion_cost`              | Unchanged                                                                                                              |
-    | `completion_cost_details`  | `completion_cost_details.raw`  | Field now wraps the object; read `.raw` for the same `{category: cost}` mapping, now with numeric values (was strings) |
-    | `completion_token_details` | `completion_token_details.raw` | Field now wraps the object; read `.raw` for the same `{category: count}` mapping (values unchanged)                    |
-    | `completion_tokens`        | `completion_tokens`            | Unchanged                                                                                                              |
-    | `total_cost`               | `total_cost`                   | Unchanged                                                                                                              |
-    | `total_tokens`             | `total_tokens`                 | Unchanged                                                                                                              |
-    | `reference_dataset_id`     | `reference_dataset_id`         | Unchanged                                                                                                              |
-    | `reference_example_id`     | `reference_example_id`         | Unchanged                                                                                                              |
-    | `tags`                     | `tags`                         | Unchanged                                                                                                              |
-    | `thread_id`                | `thread_id`                    | Unchanged                                                                                                              |
-    | `session_id`               | `project_id`                   | Renamed                                                                                                                |
-    | `in_dataset`               | `is_in_dataset`                | Renamed                                                                                                                |
-    | `child_run_ids`            | *(removed)*                    | No equivalent                                                                                                          |
-    | `direct_child_run_ids`     | *(removed)*                    | No equivalent                                                                                                          |
-    | `execution_order`          | *(removed)*                    | No equivalent                                                                                                          |
-    | `inputs_s3_urls`           | *(removed)*                    | Internal storage URL; not exposed in v2                                                                                |
-    | `last_queued_at`           | *(removed)*                    | No equivalent                                                                                                          |
-    | `manifest_id`              | *(removed)*                    | Use `manifest`                                                                                                         |
-    | `manifest_s3_id`           | *(removed)*                    | Internal storage URL; not exposed in v2                                                                                |
-    | `messages`                 | *(removed)*                    | No equivalent                                                                                                          |
-    | `outputs_s3_urls`          | *(removed)*                    | Internal storage URL; not exposed in v2                                                                                |
-    | `parent_run_id`            | *(removed)*                    | Use `parent_run_ids`                                                                                                   |
-    | `s3_urls`                  | *(removed)*                    | Internal storage URL; not exposed in v2                                                                                |
-    | `serialized`               | *(removed)*                    | Use `manifest`                                                                                                         |
-    | `share_token`              | *(removed)*                    | Use `share_url`                                                                                                        |
-    | `trace_first_received_at`  | *(removed)*                    | No equivalent                                                                                                          |
-    | `trace_max_start_time`     | *(removed)*                    | No equivalent                                                                                                          |
-    | `trace_min_start_time`     | *(removed)*                    | No equivalent                                                                                                          |
-    | `trace_tier`               | *(removed)*                    | No equivalent                                                                                                          |
-    | `trace_upgrade`            | *(removed)*                    | No equivalent                                                                                                          |
-    | `ttl_seconds`              | *(removed)*                    | No equivalent                                                                                                          |
-    | *(not available)*          | `attachments`                  | New: maps attachment filename to pre-signed download URL                                                               |
-    | *(not available)*          | `error_preview`                | New: truncated error snippet                                                                                           |
-    | *(not available)*          | `is_root`                      | New                                                                                                                    |
-    | *(not available)*          | `latency_seconds`              | New: wall-clock duration in seconds                                                                                    |
-    | *(not available)*          | `manifest`                     | New: full manifest object (replaces `serialized` and `manifest_id`)                                                    |
-    | *(not available)*          | `metadata`                     | New: previously nested under `extra.metadata`                                                                          |
-    | *(not available)*          | `share_url`                    | New: public share URL (only set when the run has been shared)                                                          |
-    | *(not available)*          | `thread_evaluation_time`       | New                                                                                                                    |
+    | Before (v1 response field) | After (v2 response field) | Notes |
+    | - | - | - |
+    | `id` | `id` | Unchanged |
+    | `name` | `name` | Unchanged |
+    | `run_type` | `run_type` | Values changed to uppercase: `"LLM"`, `"CHAIN"`, etc. |
+    | `status` | `status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `trace_id` | `trace_id` | Unchanged |
+    | `dotted_order` | `dotted_order` | Unchanged |
+    | `app_path` | `app_path` | Unchanged |
+    | `start_time` | `start_time` | Unchanged |
+    | `end_time` | `end_time` | Unchanged |
+    | `error` | `error` | Unchanged |
+    | `events` | `events` | Unchanged |
+    | `extra` | `extra` | Unchanged |
+    | `feedback_stats` | `feedback_stats` | Unchanged |
+    | `first_token_time` | `first_token_time` | Unchanged |
+    | `inputs` | `inputs` | Unchanged |
+    | `inputs_preview` | `inputs_preview` | Unchanged |
+    | `outputs` | `outputs` | Unchanged |
+    | `outputs_preview` | `outputs_preview` | Unchanged |
+    | `parent_run_ids` | `parent_run_ids` | Unchanged |
+    | `price_model_id` | `price_model_id` | Unchanged |
+    | `prompt_cost` | `prompt_cost` | Unchanged |
+    | `prompt_cost_details` | `prompt_cost_details.raw` | Field now wraps the object; read `.raw` for the same `{category: cost}` mapping, now with numeric values (was strings) |
+    | `prompt_token_details` | `prompt_token_details.raw` | Field now wraps the object; read `.raw` for the same `{category: count}` mapping (values unchanged) |
+    | `prompt_tokens` | `prompt_tokens` | Unchanged |
+    | `completion_cost` | `completion_cost` | Unchanged |
+    | `completion_cost_details` | `completion_cost_details.raw` | Field now wraps the object; read `.raw` for the same `{category: cost}` mapping, now with numeric values (was strings) |
+    | `completion_token_details` | `completion_token_details.raw` | Field now wraps the object; read `.raw` for the same `{category: count}` mapping (values unchanged) |
+    | `completion_tokens` | `completion_tokens` | Unchanged |
+    | `total_cost` | `total_cost` | Unchanged |
+    | `total_tokens` | `total_tokens` | Unchanged |
+    | `reference_dataset_id` | `reference_dataset_id` | Unchanged |
+    | `reference_example_id` | `reference_example_id` | Unchanged |
+    | `tags` | `tags` | Unchanged |
+    | `thread_id` | `thread_id` | Unchanged |
+    | `session_id` | `project_id` | Renamed |
+    | `in_dataset` | `is_in_dataset` | Renamed |
+    | `child_run_ids` | *(removed)* | No equivalent |
+    | `direct_child_run_ids` | *(removed)* | No equivalent |
+    | `execution_order` | *(removed)* | No equivalent |
+    | `inputs_s3_urls` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `last_queued_at` | *(removed)* | No equivalent |
+    | `manifest_id` | *(removed)* | Use `manifest` |
+    | `manifest_s3_id` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `messages` | *(removed)* | No equivalent |
+    | `outputs_s3_urls` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `parent_run_id` | *(removed)* | Use `parent_run_ids` |
+    | `s3_urls` | *(removed)* | Internal storage URL; not exposed in v2 |
+    | `serialized` | *(removed)* | Use `manifest` |
+    | `share_token` | *(removed)* | Use `share_url` |
+    | `trace_first_received_at` | *(removed)* | No equivalent |
+    | `trace_max_start_time` | *(removed)* | No equivalent |
+    | `trace_min_start_time` | *(removed)* | No equivalent |
+    | `trace_tier` | *(removed)* | No equivalent |
+    | `trace_upgrade` | *(removed)* | No equivalent |
+    | `ttl_seconds` | *(removed)* | No equivalent |
+    | *(not available)* | `attachments` | New: maps attachment filename to pre-signed download URL |
+    | *(not available)* | `error_preview` | New: truncated error snippet |
+    | *(not available)* | `is_root` | New |
+    | *(not available)* | `latency_seconds` | New: wall-clock duration in seconds |
+    | *(not available)* | `manifest` | New: full manifest object (replaces `serialized` and `manifest_id`) |
+    | *(not available)* | `metadata` | New: previously nested under `extra.metadata` |
+    | *(not available)* | `share_url` | New: public share URL (only set when the run has been shared) |
+    | *(not available)* | `thread_evaluation_time` | New |
   </Tab>
 </Tabs>
 
@@ -547,33 +547,33 @@ The SmithDB-backed method has a dedicated, higher rate limit than the method it 
 
 <Tabs>
   <Tab title="Python">
-    |       | Before (`client.list_runs()`) | After (`client.runs.query()`) |
-    | ----- | ----------------------------- | ----------------------------- |
-    | Limit | 15 requests per 10 seconds    | 300 requests per 10 seconds   |
+    | | Before (`client.list_runs()`) | After (`client.runs.query()`) |
+    | - | - | - |
+    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="TypeScript">
-    |       | Before (`client.listRuns()`) | After (`client.runs.query()`) |
-    | ----- | ---------------------------- | ----------------------------- |
-    | Limit | 15 requests per 10 seconds   | 300 requests per 10 seconds   |
+    | | Before (`client.listRuns()`) | After (`client.runs.query()`) |
+    | - | - | - |
+    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Java">
-    |       | Before (`client.runs().query()`) | After (`client.runs().queryV2()`) |
-    | ----- | -------------------------------- | --------------------------------- |
-    | Limit | 15 requests per 10 seconds       | 300 requests per 10 seconds       |
+    | | Before (`client.runs().query()`) | After (`client.runs().queryV2()`) |
+    | - | - | - |
+    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Go">
-    |       | Before (`client.Runs.Query()`) | After (`client.Runs.QueryV2()`) |
-    | ----- | ------------------------------ | ------------------------------- |
-    | Limit | 15 requests per 10 seconds     | 300 requests per 10 seconds     |
+    | | Before (`client.Runs.Query()`) | After (`client.Runs.QueryV2()`) |
+    | - | - | - |
+    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="cURL">
-    |       | Before (`POST /api/v1/runs/query`) | After (`POST /api/v2/runs/query`) |
-    | ----- | ---------------------------------- | --------------------------------- |
-    | Limit | 15 requests per 10 seconds         | 300 requests per 10 seconds       |
+    | | Before (`POST /api/v1/runs/query`) | After (`POST /api/v2/runs/query`) |
+    | - | - | - |
+    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 </Tabs>
 

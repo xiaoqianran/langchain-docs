@@ -176,15 +176,15 @@ Autoscaling is disabled by default, but should be configured for bursty workload
 
 The following table provides an overview comparing different Agent Server configurations for various load patterns (read requests per second / write requests per second) and standard assistant characteristics (average run execution time of 1 second, moderate CPU and memory usage). The request rates drive the required steady-state run throughput, which is sized through queue workers and `N_JOBS_PER_WORKER`, while API server replicas are sized to serve the request volume itself:
 
-|                                                | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :--------------------------------------------- | :------------------------------------- | :--------------------------------------- | :--------------------------------------- | :--------------------------------------------- | :------------------------------------- |
-| <Tooltip>Write requests per second</Tooltip>   | 5                                      | 5                                        | 500                                      | 50                                             | 500                                    |
-| <Tooltip>Read requests per second</Tooltip>    | 5                                      | 500                                      | 5                                        | 50                                             | 500                                    |
-| **API servers**<br />(1 CPU, 2Gi per server)   | 1 (default)                            | 6                                        | 10                                       | 3                                              | 15                                     |
-| **Queue workers**<br />(1 CPU, 2Gi per worker) | 1 (default)                            | 10                                       | 1 (default)                              | 5                                              | 10                                     |
-| **`N_JOBS_PER_WORKER`**                        | 10 (default)                           | 50                                       | 10                                       | 10                                             | 50                                     |
-| **Redis resources**                            | 2 Gi (default)                         | 2 Gi (default)                           | 2 Gi (default)                           | 2 Gi (default)                                 | 2 Gi (default)                         |
-| **Postgres resources**                         | 2 CPU<br />8 Gi (default)              | 4 CPU<br />16 Gi memory                  | 4 CPU<br />16 Gi                         | 4 CPU<br />16 Gi memory                        | 8 CPU<br />32 Gi memory                |
+| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
+| :- | :- | :- | :- | :- | :- |
+| <Tooltip>Write requests per second</Tooltip> | 5 | 5 | 500 | 50 | 500 |
+| <Tooltip>Read requests per second</Tooltip> | 5 | 500 | 5 | 50 | 500 |
+| **API servers**<br />(1 CPU, 2Gi per server) | 1 (default) | 6 | 10 | 3 | 15 |
+| **Queue workers**<br />(1 CPU, 2Gi per worker) | 1 (default) | 10 | 1 (default) | 5 | 10 |
+| **`N_JOBS_PER_WORKER`** | 10 (default) | 50 | 10 | 10 | 50 |
+| **Redis resources** | 2 Gi (default) | 2 Gi (default) | 2 Gi (default) | 2 Gi (default) | 2 Gi (default) |
+| **Postgres resources** | 2 CPU<br />8 Gi (default) | 4 CPU<br />16 Gi memory | 4 CPU<br />16 Gi | 4 CPU<br />16 Gi memory | 8 CPU<br />32 Gi memory |
 
 Load levels in the examples are defined as:
 

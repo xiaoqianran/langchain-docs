@@ -53,15 +53,15 @@ Most AI UI libraries help you append streamed text to a chat transcript.
 LangChain's SDKs expose the richer runtime semantics that production agents
 need:
 
-| Capability                      | What it enables in your UI                                                                                                       |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **Durable threads**             | Reload a page, switch devices, or rejoin a run without losing the conversation state.                                            |
-| **Typed agent state**           | Render any state key, not just messages: todos, pipeline outputs, citations, sandbox files, metrics, or custom business objects. |
-| **Tool-call lifecycle**         | Show pending, completed, and failed tool calls as purpose-built UI cards instead of raw JSON.                                    |
-| **Interrupts**                  | Pause execution for human approval, edits, or missing information, then resume from the exact point where the agent stopped.     |
-| **Checkpoints**                 | Build edit, retry, branch, audit, and time-travel flows from persisted state snapshots.                                          |
-| **Nested execution**            | Visualize deep agents, subagents, and graph nodes without flattening everything into one unreadable stream.                      |
-| **Framework-native reactivity** | Use the same protocol from React, Vue, Svelte, or Angular while keeping idiomatic hooks, composables, stores, or signals.        |
+| Capability | What it enables in your UI |
+| - | - |
+| **Durable threads** | Reload a page, switch devices, or rejoin a run without losing the conversation state. |
+| **Typed agent state** | Render any state key, not just messages: todos, pipeline outputs, citations, sandbox files, metrics, or custom business objects. |
+| **Tool-call lifecycle** | Show pending, completed, and failed tool calls as purpose-built UI cards instead of raw JSON. |
+| **Interrupts** | Pause execution for human approval, edits, or missing information, then resume from the exact point where the agent stopped. |
+| **Checkpoints** | Build edit, retry, branch, audit, and time-travel flows from persisted state snapshots. |
+| **Nested execution** | Visualize deep agents, subagents, and graph nodes without flattening everything into one unreadable stream. |
+| **Framework-native reactivity** | Use the same protocol from React, Vue, Svelte, or Angular while keeping idiomatic hooks, composables, stores, or signals. |
 
 These primitives let you design UIs where users can inspect, steer, pause,
 resume, and fork agent work while it is happening.
@@ -212,13 +212,13 @@ interface AgentState {
 
 Start from the UX question your application needs to answer:
 
-| If users need to...                        | Start with                                                                                                                                                                                                                   |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Understand what the agent is doing         | [Tool calling](/oss/python/langchain/frontend/tool-calling) and [reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)                                                                                          |
-| Safely approve sensitive actions           | [Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)                                                                                                                                                        |
-| Send work while a run is active            | [Message queues](/oss/python/langchain/frontend/message-queues)                                                                                                                                                              |
-| Leave and come back to long-running work   | [Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)                                                                                                                                                          |
-| Edit or retry from an earlier turn         | [Branching chat](/oss/python/langchain/frontend/branching-chat) and [time travel](/oss/python/langchain/frontend/time-travel)                                                                                                |
+| If users need to... | Start with |
+| - | - |
+| Understand what the agent is doing | [Tool calling](/oss/python/langchain/frontend/tool-calling) and [reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens) |
+| Safely approve sensitive actions | [Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop) |
+| Send work while a run is active | [Message queues](/oss/python/langchain/frontend/message-queues) |
+| Leave and come back to long-running work | [Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin) |
+| Edit or retry from an earlier turn | [Branching chat](/oss/python/langchain/frontend/branching-chat) and [time travel](/oss/python/langchain/frontend/time-travel) |
 | Render state as an application, not a chat | [Structured output](/oss/python/langchain/frontend/structured-output), [generative UI](/oss/python/langchain/frontend/generative-ui-overview), and [Deep Agents frontend patterns](/oss/python/deepagents/frontend/overview) |
 
 ## Integrations

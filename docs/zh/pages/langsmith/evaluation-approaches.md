@@ -8,19 +8,19 @@
 
 ## 代理
 
-[LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/) 结合了三个组件（1）工具调用、（2）内存和（3）规划。代理[use tool calling](https://docs.langchain.com/oss/python/langchain/tools)具有计划（例如，通常通过提示）和记忆（例如，通常是短期消息历史记录）来生成响应。 [Tool calling](https://docs.langchain.com/oss/python/langchain/tools) 允许模型通过生成两件事来响应给定的提示：（1）要调用的工具和（2）所需的输入参数。
+[LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/) 结合了三个组件（1）工具调用，（2）内存，以及（3）规划。代理[use tool calling](https://docs.langchain.com/oss/python/langchain/tools)具有计划（例如，通常通过提示）和记忆（例如，通常是短期消息历史记录）来生成响应。 [Tool calling](https://docs.langchain.com/oss/python/langchain/tools) 允许模型通过生成两件事来响应给定的提示：(1) 要调用的工具和 (2) 所需的输入参数。
 
-![Tool use](/langsmith/images/tool-use.png)
+<img alt="Tool use" />
 
-下面是[LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/)中的工具调用代理。 `assistant node` 是一个 LLM，它根据输入确定是否调用工具。 `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
+下面是[LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/)中的工具调用代理。 The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
 
-![Agent](/langsmith/images/langgraph-agent.png)
+<img alt="Agent" />
 
 这设置了用户经常感兴趣的三种一般类型的代理评估：* `Final Response`：评估代理的最终响应。
 * `Single step`：单独评估任何代理步骤（例如，它是否选择了适当的工具）。
 * `Trajectory`：评估智能体是否采取了预期的路径（例如，工具调用）来得出最终答案。
 
-![Agent-eval](/langsmith/images/agent-eval.png)
+<img alt="Agent-eval" />
 
 以下各节介绍了这些是什么、每个组件所需的组件（输入、输出、评估器）以及何时应考虑这一点。常见用例通常使用多种或所有这些类型的评估；它们并不相互排斥。
 
@@ -64,43 +64,45 @@
 
 当您评估 RAG 应用程序时，首先要确定每个示例是否有参考答案：
 
-- **带有参考答案**：使用它们作为基本事实来对答案的正确性进行评分。
-- **没有参考答案**：使用无参考提示来检查文档相关性、答案的真实性和有用性（请参阅[RAG evaluation summary](#rag-evaluation-summary)）。
+* **带有参考答案**：使用它们作为基本事实来对答案的正确性进行评分。
+* **没有参考答案**：使用无参考提示来检查文档相关性、答案的真实性和有用性（请参阅[RAG evaluation summary](#rag-evaluation-summary)）。
 
 ### 选择评估者法学硕士作为法官评估员非常适合 RAG，因为他们可以对文本之间的事实准确性和一致性进行评分。
 
-![rag-types.png](/langsmith/images/rag-types.png)
+<img alt="rag-types.png" />
 
 您可以使用两种评估器：
 
-- **基于参考**：将生成的答案或检索到的文档与参考答案或参考检索进行比较。
-- **无参考**：运行不需要参考答案的自我一致性检查（上图中的橙色、绿色和红色）。
+* **基于参考**：将生成的答案或检索到的文档与参考答案或参考检索进行比较。
+* **无参考**：运行不需要参考答案的自我一致性检查（上图中的橙色、绿色和红色）。
 
 ### 选择评估模式
 
-- **离线**：当提示需要参考答案时使用，最常见的是为了答案的正确性。
-- **在线**：用于无参考提示，以便您可以对实时流量进行评分。
-- **成对**：根据格式或风格等标准比较不同 RAG 链的答案。请使用自我一致性或参考答案来确保正确性。
+* **离线**：当提示需要参考答案时使用，最常见的是为了答案的正确性。
+* **在线**：用于无参考提示，以便您可以获得实时流量。
+* **成对**：根据格式或风格等标准比较不同 RAG 链的答案。请使用自我一致性或参考答案来确保正确性。
 
-### RAG评测总结|评估者|详情 |需要参考输出 | LLM作为法官？                                                                         |成对相关 |
-| ------------------- | ------------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------- | ----------------- |
-|文档相关性 |文件与问题相关吗？           |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-document-relevance) |没有 |
-|回答忠实 |答案是否以文件为依据？          |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-hallucination) |没有 |
-|回答有用 |答案有助于解决问题吗？        |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-helpfulness) |没有 |
+### RAG评测总结|评估者|详情 |需要参考输出 | LLM作为法官？ |成对相关 |
+| - | - | - | - | - |
+|文档相关性 |文件与问题相关吗？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-document-relevance) |没有 |
+|回答忠实 |答案是否以文件为依据？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-hallucination) |没有 |
+|回答有用 |答案有助于解决问题吗？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-helpfulness) |没有 |
 |答案正确性 |答案与参考答案一致吗？ |是的 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-vs-reference) |没有 |
-|成对比较 |多个答案版本如何比较？          |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-rag) |是的 |
+|成对比较|多个答案版本如何比较？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-rag) |是的 |
 
-## 总结摘要是自由形式写作的一种特殊类型。评估的目的通常是根据一组标准检查写作（摘要）。
+## 总结
 
-要总结的文本的`Developer curated examples`通常用于评估（参见[summarization dataset example](https://smith.langchain.com/public/659b07af-1cab-4e18-b21a-91a69a4c3990/d)）。但是，生产（摘要）应用程序中的 `user logs` 可用于通过以下任何 `Reference-free` 评估提示进行在线评估。
+摘要是自由形式写作的一种特殊类型。评估的目的通常是根据一组标准检查写作（摘要）。
 
-`LLM-as-judge` 通常用于评估摘要（以及其他类型的写作），使用 `Reference-free` 提示，遵循提供的标准对摘要进行评分。提供特定的`Reference`摘要不太常见，因为摘要是一项创造性任务，并且有很多可能的正确答案。
+要总结的文本的`Developer curated examples`通常用于评估（参见[summarization dataset example](https://smith.langchain.com/public/659b07af-1cab-4e18-b21a-91a69a4c3990/d)）。但是，生产（摘要）应用程序中的 `user logs` 可用于通过以下任何 `Reference-free` 评估提示进行在线评估。`LLM-as-judge` 通常用于评估摘要（以及其他类型的写作），使用 `Reference-free` 提示，遵循提供的标准对摘要进行评分。提供特定的`Reference`摘要不太常见，因为摘要是一项创造性任务，并且有很多可能的正确答案。
 
-由于使用了 `Reference-free` 提示，`Online` 或 `Offline` 评估是可行的。 `Pairwise` 评估也是在不同摘要链之间进行比较的有效方法（例如，不同的摘要提示或 LLM）：|使用案例|详情 |需要参考输出 | LLM作为法官？                                                                                |成对相关 |
-| ---------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
-|事实准确性 |摘要相对于源文件是否准确？                  |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-accurancy-evaluator) |是的 |
+由于使用了 `Reference-free` 提示，`Online` 或 `Offline` 评估是可行的。 `Pairwise` 评估也是在不同摘要链之间进行比较的有效方法（例如，不同的摘要提示或 LLM）：
+
+|使用案例|详情 |需要参考输出 | LLM作为法官？ |成对相关 |
+| - | - | - | - | - |
+|事实准确性 |摘要相对于源文件是否准确？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-accurancy-evaluator) |是的 |
 |诚信|摘要是否以源文件为基础（例如，没有幻觉）？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-hallucination-evaluator) |是的 |
-|乐于助人 |摘要相对于用户需求是否有帮助？                                  |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-helpfulness-evaluator) |是的 |
+|乐于助人 |摘要相对于用户需求是否有帮助？ |没有 |是的 - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-helpfulness-evaluator) |是的 |
 
 ## 分类和标记分类和标记将标签应用于给定的输入（例如，用于毒性检测、情感分析等）。分类/标签评估通常采用以下组成部分，我们将在下面详细讨论：
 
@@ -109,18 +111,19 @@
 如果提供了真实参考标签，那么通常只需定义一个[custom heuristic evaluator](/langsmith/code-evaluator-ui)来将真实标签与链输出进行比较。然而，鉴于法学硕士的出现，这种情况越来越普遍，只是使用`LLM-as-judge`根据指定的标准（没有真实参考）对输入进行分类/标记。当使用 `LLM-as-judge` 并使用 `Reference-free` 提示时，`Online` 或 `Offline` 评估是可行的。特别是，当用户想要对应用程序输入进行标记/分类（例如，毒性等）时，这非常适合`Online`评估。
 
 |使用案例|详情 |需要参考输出 | LLM作为法官？ |成对相关 |
-| ---------| ------------------- | ---------------------------------- | ------------- | ----------------- |
+| - | - | - | - | - |
 |准确度|标准清晰度 |是的 |没有 |没有 |
 |精密|标准清晰度 |是的 |没有 |没有 |
-|回忆|标准清晰度|是的 |没有 |没有 |
+|回忆|标准清晰度 |是的 |没有 |没有 |
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-approaches.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

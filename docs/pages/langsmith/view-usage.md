@@ -8,13 +8,13 @@ LangSmith provides several views into your [organization's](/langsmith/administr
 
 ## Usage views
 
-| View                                          | Where to find it                                                                                           | Who can see it                          | Plan availability                                                                            |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [Usage graph](#usage-graph)                   | **Enterprise**: Settings > Usage > Usage graph<br />**Self-serve**: Settings > Billing > Usage graph       | All org members                         | All plans                                                                                    |
-| [Granular usage](#granular-usage)             | **Enterprise**: Settings > Usage > Granular usage<br />**Self-serve**: Settings > Billing > Granular usage | All org members                         | All plans                                                                                    |
-| [Contract usage](#contract-usage)             | **Enterprise**: Settings > Usage > Contract usage<br />**Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only                                                                              |
-| [Invoices](#invoices)                         | Settings > Billing > Invoices                                                                              | All org members                         | Self-serve Cloud only                                                                        |
-| [Evaluator spend](/langsmith/evaluator-spend) | Evaluators page, evaluator detail                                                                          | All workspace members                   | Tracked weekly, resetting at Monday 12AM UTC, separate from the monthly billing period below |
+| View | Where to find it | Who can see it | Plan availability |
+| - | - | - | - |
+| [Usage graph](#usage-graph) | **Enterprise**: Settings > Usage > Usage graph<br />**Self-serve**: Settings > Billing > Usage graph | All org members | All plans |
+| [Granular usage](#granular-usage) | **Enterprise**: Settings > Usage > Granular usage<br />**Self-serve**: Settings > Billing > Granular usage | All org members | All plans |
+| [Contract usage](#contract-usage) | **Enterprise**: Settings > Usage > Contract usage<br />**Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only |
+| [Invoices](#invoices) | Settings > Billing > Invoices | All org members | Self-serve Cloud only |
+| [Evaluator spend](/langsmith/evaluator-spend) | Evaluators page, evaluator detail | All workspace members | Tracked weekly, resetting at Monday 12AM UTC, separate from the monthly billing period below |
 
 ## Usage graph
 
@@ -24,13 +24,13 @@ Navigate to **Settings** > **Billing and Usage** > **Usage Graph**.
 
 ### Billable metrics
 
-| Metric                                                  | What it counts                                                                                                                                                                                                                                           |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **LangSmith Traces (Base Charge)**                      | Every trace sent to LangSmith during the billing period, regardless of data retention tier.                                                                                                                                                              |
+| Metric | What it counts |
+| - | - |
+| **LangSmith Traces (Base Charge)** | Every trace sent to LangSmith during the billing period, regardless of data retention tier. |
 | **LangSmith Traces (Extended Data Retention Upgrades)** | Traces upgraded to extended retention (180 days by default as of September 14, 2026, [customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)). These are charged in addition to the base charge. |
-| **LangSmith Deployment Runs**                           | End-to-end invocations of deployed LangGraph agents. See [LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing) for pricing details.                                                                                            |
-| **LangSmith Fleet Runs**                                | End-to-end invocations of [Fleet](/langsmith/fleet) agents. Tracked separately for Cloud-hosted and Self-hosted deployments.                                                                                                                             |
-| **LangSmith Deployment Nodes Executed**                 | Individual LangGraph node executions across deployed agents. Each step in a deployed agent's graph counts as one node execution. Tracked separately for Cloud-hosted and Self-hosted deployments.                                                        |
+| **LangSmith Deployment Runs** | End-to-end invocations of deployed LangGraph agents. See [LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing) for pricing details. |
+| **LangSmith Fleet Runs** | End-to-end invocations of [Fleet](/langsmith/fleet) agents. Tracked separately for Cloud-hosted and Self-hosted deployments. |
+| **LangSmith Deployment Nodes Executed** | Individual LangGraph node executions across deployed agents. Each step in a deployed agent's graph counts as one node execution. Tracked separately for Cloud-hosted and Self-hosted deployments. |
 
 For more details on trace retention tiers, refer to [Data retention](/langsmith/usage-and-billing#data-retention).
 
@@ -85,12 +85,12 @@ For grouping options, time bucket sizes, and API reference, refer to [Granular b
 
 [Self-hosted](/langsmith/self-hosted) LangSmith have a different set of usage views available compared to [Cloud](/langsmith/cloud), due to differences in billing infrastructure.
 
-| **Feature**                        | **Self-hosted availability**                         |
-| ---------------------------------- | ---------------------------------------------------- |
-| Granular usage (trace attribution) | Available with feature flags or version ≥ 0.13.12    |
-| Usage graph (aggregate traces)     | Available on Helm chart 0.9.5 and later              |
-| Contract usage                     | Available when Beacon phone-home is enabled          |
-| Invoices and payment management    | Not available (billing is handled outside LangSmith) |
+| **Feature** | **Self-hosted availability** |
+| - | - |
+| Granular usage (trace attribution) | Available with feature flags or version ≥ 0.13.12 |
+| Usage graph (aggregate traces) | Available on Helm chart 0.9.5 and later |
+| Contract usage | Available when Beacon phone-home is enabled |
+| Invoices and payment management | Not available (billing is handled outside LangSmith) |
 
 ### Granular usage on self-hosted
 

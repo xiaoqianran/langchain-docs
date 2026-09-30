@@ -356,12 +356,12 @@ Use it for LLM subspans that are not conversational turns, such as classificatio
 
 If you trace without one of the wrappers in [Supported integrations](#supported-integrations) (for example, emitting runs through `RunTree`, the REST API, or a custom wrapper around a provider SDK), set `ls_message_format` on each LLM run's metadata to route the trace to the correct extractor:
 
-| Trace shape                               | Set on metadata                    |
-| ----------------------------------------- | ---------------------------------- |
-| LangChain messages (constructor envelope) | `ls_message_format: "langchain"`   |
-| OpenAI Chat Completions                   | `ls_message_format: "completions"` |
-| OpenAI Responses API                      | `ls_message_format: "responses"`   |
-| Anthropic Messages API                    | `ls_message_format: "anthropic"`   |
+| Trace shape | Set on metadata |
+| - | - |
+| LangChain messages (constructor envelope) | `ls_message_format: "langchain"` |
+| OpenAI Chat Completions | `ls_message_format: "completions"` |
+| OpenAI Responses API | `ls_message_format: "responses"` |
+| Anthropic Messages API | `ls_message_format: "anthropic"` |
 
 ## Related
 

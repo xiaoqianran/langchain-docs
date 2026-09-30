@@ -22,19 +22,19 @@ LangSmith on Azure deploys in stages. Each stage adds a capability layer on top 
 
 <img alt="LangSmith on Azure service layout" />
 
-| Stage                       | Layer                | What it adds                                                                                  |
-| --------------------------- | -------------------- | --------------------------------------------------------------------------------------------- |
-| Infrastructure              | Azure infrastructure | VNet, AKS, Postgres, Redis, Blob, Key Vault, cert-manager, KEDA, ingress controller           |
-| Application                 | LangSmith base       | frontend, backend, platform-backend, queue, ingest-queue, ace-backend, clickhouse, playground |
-| LangSmith Deployment add-on | LangSmith Deployment | host-backend, listener, operator + per-deployment pods                                        |
-| Agent Builder add-on        | Agent Builder        | agent-builder-tool-server, agent-builder-trigger-server + deep-agent LGP                      |
-| Insights + Polly add-on     | Insights + Polly     | Clio analytics (ClickHouse-backed), Polly eval agent (operator-managed, dynamic)              |
+| Stage | Layer | What it adds |
+| - | - | - |
+| Infrastructure | Azure infrastructure | VNet, AKS, Postgres, Redis, Blob, Key Vault, cert-manager, KEDA, ingress controller |
+| Application | LangSmith base | frontend, backend, platform-backend, queue, ingest-queue, ace-backend, clickhouse, playground |
+| LangSmith Deployment add-on | LangSmith Deployment | host-backend, listener, operator + per-deployment pods |
+| Agent Builder add-on | Agent Builder | agent-builder-tool-server, agent-builder-trigger-server + deep-agent LGP |
+| Insights + Polly add-on | Insights + Polly | Clio analytics (ClickHouse-backed), Polly eval agent (operator-managed, dynamic) |
 
 ## Application deployment paths
 
-| Path           | How                               | When to use                                                                                                                  |
-| -------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Helm path      | `make init-values && make deploy` | Default. Shell script, interactive, reads TF outputs dynamically. Best for first deploys and day-2 re-deploys.               |
+| Path | How | When to use |
+| - | - | - |
+| Helm path | `make init-values && make deploy` | Default. Shell script, interactive, reads TF outputs dynamically. Best for first deploys and day-2 re-deploys. |
 | Terraform path | `make init-app && make apply-app` | Declarative. Kubernetes Secrets + `langsmith-ksa` SA + Helm release in Terraform state. Best for GitOps and CI/CD pipelines. |
 
 The Terraform path uses the `app/` module. `make init-app` calls `app/scripts/pull-infra-outputs.sh` to read all infra outputs and write them into `app/infra.auto.tfvars.json`.
@@ -107,16 +107,16 @@ All subnets are private. Postgres and Redis have no public endpoints; both are a
 
 ## Application core services
 
-| Service                      | Purpose                                                    | Port | HPA                                    | Workload Identity |
-| ---------------------------- | ---------------------------------------------------------- | ---- | -------------------------------------- | ----------------- |
-| `langsmith-frontend`         | React UI                                                   | 3000 | 2 to 10                                | No                |
-| `langsmith-backend`          | Main API (traces, runs, projects, API keys, feedback)      | 1984 | 3 to 10                                | Yes (Blob)        |
-| `langsmith-platform-backend` | Org and user management, auth, billing, settings           | 1986 | 2 to 10                                | Yes (Blob)        |
-| `langsmith-playground`       | LLM prompt playground UI                                   | 3001 | 1 to 5                                 | No                |
-| `langsmith-queue`            | Trace ingestion worker (Redis → ClickHouse + Blob)         | —    | 3 to 10 + KEDA                         | Yes               |
-| `langsmith-ingest-queue`     | Dedicated high-throughput ingestion worker                 | —    | 3 to 10 + KEDA                         | Yes               |
-| `langsmith-ace-backend`      | Async compute (dataset runs, evaluations, background jobs) | —    | 1 to 5                                 | No                |
-| `langsmith-clickhouse`       | Columnar store (trace spans, run metadata, eval results)   | —    | StatefulSet, single replica, 500Gi PVC | No                |
+| Service | Purpose | Port | HPA | Workload Identity |
+| - | - | - | - | - |
+| `langsmith-frontend` | React UI | 3000 | 2 to 10 | No |
+| `langsmith-backend` | Main API (traces, runs, projects, API keys, feedback) | 1984 | 3 to 10 | Yes (Blob) |
+| `langsmith-platform-backend` | Org and user management, auth, billing, settings | 1986 | 2 to 10 | Yes (Blob) |
+| `langsmith-playground` | LLM prompt playground UI | 3001 | 1 to 5 | No |
+| `langsmith-queue` | Trace ingestion worker (Redis → ClickHouse + Blob) | — | 3 to 10 + KEDA | Yes |
+| `langsmith-ingest-queue` | Dedicated high-throughput ingestion worker | — | 3 to 10 + KEDA | Yes |
+| `langsmith-ace-backend` | Async compute (dataset runs, evaluations, background jobs) | — | 1 to 5 | No |
+| `langsmith-clickhouse` | Columnar store (trace spans, run metadata, eval results) | — | StatefulSet, single replica, 500Gi PVC | No |
 
 <Warning>
   In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
@@ -128,28 +128,28 @@ All subnets are private. Postgres and Redis have no public endpoints; both are a
 
 ### One-time jobs
 
-| Job                                | Purpose                                                                                                  |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `langsmith-backend-migrations`     | PostgreSQL schema migrations                                                                             |
-| `langsmith-backend-ch-migrations`  | ClickHouse schema migrations                                                                             |
+| Job | Purpose |
+| - | - |
+| `langsmith-backend-migrations` | PostgreSQL schema migrations |
+| `langsmith-backend-ch-migrations` | ClickHouse schema migrations |
 | `langsmith-backend-auth-bootstrap` | Creates the initial org and admin account from `initial_org_admin_password` in `langsmith-config-secret` |
 
 ## LangSmith Deployment add-on
 
-| Service                  | Purpose                                                                                                                                                              | Workload Identity |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `langsmith-host-backend` | LangGraph control plane API. Manages deployment lifecycle, serves deployment metadata.                                                                               | Yes               |
-| `langsmith-listener`     | Watches host-backend for state changes, creates and updates `LangGraphPlatform` CRDs.                                                                                | Yes               |
-| `langsmith-operator`     | Kubernetes operator. Azure-specific: injects `azure.workload.identity/use: "true"` + `langsmith-ksa` so every agent pod accesses Blob Storage via Workload Identity. | No                |
+| Service | Purpose | Workload Identity |
+| - | - | - |
+| `langsmith-host-backend` | LangGraph control plane API. Manages deployment lifecycle, serves deployment metadata. | Yes |
+| `langsmith-listener` | Watches host-backend for state changes, creates and updates `LangGraphPlatform` CRDs. | Yes |
+| `langsmith-operator` | Kubernetes operator. Azure-specific: injects `azure.workload.identity/use: "true"` + `langsmith-ksa` so every agent pod accesses Blob Storage via Workload Identity. | No |
 
 ## Agent Builder add-on
 
-| Pod                                                    | Type    | Role                                          | Workload Identity |
-| ------------------------------------------------------ | ------- | --------------------------------------------- | ----------------- |
-| `langsmith-agent-builder-tool-server`                  | Static  | MCP tool execution server                     | Yes               |
-| `langsmith-agent-builder-trigger-server`               | Static  | Webhook receiver and scheduled trigger engine | Yes               |
-| `langsmith-agent-bootstrap`                            | Job     | Registers the bundled Agent Builder agent     | —                 |
-| `agent-builder-<hash>` + queue + redis + `lg-<hash>-0` | Dynamic | Agent Builder deployment, operator-managed    | Inherited         |
+| Pod | Type | Role | Workload Identity |
+| - | - | - | - |
+| `langsmith-agent-builder-tool-server` | Static | MCP tool execution server | Yes |
+| `langsmith-agent-builder-trigger-server` | Static | Webhook receiver and scheduled trigger engine | Yes |
+| `langsmith-agent-bootstrap` | Job | Registers the bundled Agent Builder agent | — |
+| `agent-builder-<hash>` + queue + redis + `lg-<hash>-0` | Dynamic | Agent Builder deployment, operator-managed | Inherited |
 
 ## Insights and Polly add-on
 
@@ -211,21 +211,21 @@ Every pod that reads blob storage env vars must have:
 2. The `azure.workload.identity/use: "true"` label on the Deployment.
 3. The `azure.workload.identity/client-id` annotation on the ServiceAccount.
 
-| Pod                                      | Stage                       | Needs WI |
-| ---------------------------------------- | --------------------------- | -------- |
-| `langsmith-backend`                      | Application                 | Yes      |
-| `langsmith-platform-backend`             | Application                 | Yes      |
-| `langsmith-queue`                        | Application                 | Yes      |
-| `langsmith-ingest-queue`                 | Application                 | Yes      |
-| `langsmith-host-backend`                 | LangSmith Deployment add-on | Yes      |
-| `langsmith-listener`                     | LangSmith Deployment add-on | Yes      |
-| `langsmith-agent-builder-tool-server`    | Agent Builder add-on        | Yes      |
-| `langsmith-agent-builder-trigger-server` | Agent Builder add-on        | Yes      |
-| `langsmith-frontend`                     | Application                 | No       |
-| `langsmith-playground`                   | Application                 | No       |
-| `langsmith-ace-backend`                  | Application                 | No       |
-| `langsmith-clickhouse`                   | Application                 | No       |
-| `langsmith-operator`                     | LangSmith Deployment add-on | No       |
+| Pod | Stage | Needs WI |
+| - | - | - |
+| `langsmith-backend` | Application | Yes |
+| `langsmith-platform-backend` | Application | Yes |
+| `langsmith-queue` | Application | Yes |
+| `langsmith-ingest-queue` | Application | Yes |
+| `langsmith-host-backend` | LangSmith Deployment add-on | Yes |
+| `langsmith-listener` | LangSmith Deployment add-on | Yes |
+| `langsmith-agent-builder-tool-server` | Agent Builder add-on | Yes |
+| `langsmith-agent-builder-trigger-server` | Agent Builder add-on | Yes |
+| `langsmith-frontend` | Application | No |
+| `langsmith-playground` | Application | No |
+| `langsmith-ace-backend` | Application | No |
+| `langsmith-clickhouse` | Application | No |
+| `langsmith-operator` | LangSmith Deployment add-on | No |
 
 All federated credentials are registered in `modules/k8s-cluster/main.tf` under `service_accounts_for_workload_identity`. Adding a new pod that accesses blob storage requires adding its ServiceAccount name to that list and running `terraform apply -target=module.aks`.
 
@@ -279,14 +279,14 @@ Application stage
 
 ## Ingress options
 
-| Controller          | Variable                               | DNS label support | Notes                                                                                                                               |
-| ------------------- | -------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `nginx` *(default)* | `ingress_controller = "nginx"`         | Yes               | NGINX via Helm, standard Kubernetes Ingress.                                                                                        |
-| `istio-addon`       | `ingress_controller = "istio-addon"`   | Yes               | AKS managed Istio service mesh. Use `istio_addon_revision` to pin revision.                                                         |
-| `istio`             | `ingress_controller = "istio"`         | Yes               | Self-managed Istio via Helm. Full control over revision and config.                                                                 |
-| `agic`              | `ingress_controller = "agic"`          | Yes               | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on. Native L7 WAF. HTTP-only or dns01 + custom domain. |
-| `envoy-gateway`     | `ingress_controller = "envoy-gateway"` | Yes               | Gateway API native. Uses `envoyproxy/gateway-helm`.                                                                                 |
-| `none`              | `ingress_controller = "none"`          | —                 | Bring your own ingress.                                                                                                             |
+| Controller | Variable | DNS label support | Notes |
+| - | - | - | - |
+| `nginx` *(default)* | `ingress_controller = "nginx"` | Yes | NGINX via Helm, standard Kubernetes Ingress. |
+| `istio-addon` | `ingress_controller = "istio-addon"` | Yes | AKS managed Istio service mesh. Use `istio_addon_revision` to pin revision. |
+| `istio` | `ingress_controller = "istio"` | Yes | Self-managed Istio via Helm. Full control over revision and config. |
+| `agic` | `ingress_controller = "agic"` | Yes | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on. Native L7 WAF. HTTP-only or dns01 + custom domain. |
+| `envoy-gateway` | `ingress_controller = "envoy-gateway"` | Yes | Gateway API native. Uses `envoyproxy/gateway-helm`. |
+| `none` | `ingress_controller = "none"` | — | Bring your own ingress. |
 
 Azure Public IP DNS labels (`dns_label`) work with all controllers. `deploy.sh` applies the `service.beta.kubernetes.io/azure-dns-label-name` annotation to the correct LoadBalancer service based on the chosen controller.
 
@@ -296,19 +296,19 @@ For the full TLS compatibility matrix and per-controller setup, see `INGRESS_CON
 
 Four sizing profiles are available.
 
-| Profile            | Use case                                        | Set via                                            |
-| ------------------ | ----------------------------------------------- | -------------------------------------------------- |
-| `minimum`          | Cost parking, CI smoke tests, single-user demos | `sizing_profile = "minimum"` in `terraform.tfvars` |
-| `dev`              | Developer use, integration tests, POCs          | `sizing_profile = "dev"`                           |
-| `production`       | Real traffic, multi-replica + HPA               | `sizing_profile = "production"` *(recommended)*    |
-| `production-large` | \~50 users, \~1000 traces/sec                   | `sizing_profile = "production-large"`              |
+| Profile | Use case | Set via |
+| - | - | - |
+| `minimum` | Cost parking, CI smoke tests, single-user demos | `sizing_profile = "minimum"` in `terraform.tfvars` |
+| `dev` | Developer use, integration tests, POCs | `sizing_profile = "dev"` |
+| `production` | Real traffic, multi-replica + HPA | `sizing_profile = "production"` *(recommended)* |
+| `production-large` | \~50 users, \~1000 traces/sec | `sizing_profile = "production-large"` |
 
 ### AKS node pools
 
-| Pool    | VM Size            | vCPU | RAM   | Min | Max | Purpose                                                |
-| ------- | ------------------ | ---- | ----- | --- | --- | ------------------------------------------------------ |
-| default | `Standard_D8s_v3`  | 8    | 32 GB | 1   | 10  | Core LangSmith, system pods (set min 3 for production) |
-| large   | `Standard_D16s_v3` | 16   | 64 GB | 0   | 2   | ClickHouse (in-cluster), LGP agent pods                |
+| Pool | VM Size | vCPU | RAM | Min | Max | Purpose |
+| - | - | - | - | - | - | - |
+| default | `Standard_D8s_v3` | 8 | 32 GB | 1 | 10 | Core LangSmith, system pods (set min 3 for production) |
+| large | `Standard_D16s_v3` | 16 | 64 GB | 0 | 2 | ClickHouse (in-cluster), LGP agent pods |
 
 <Note>
   ClickHouse (when in-cluster) requests 1 to 4 CPU and 2 to 16 GB RAM depending on profile. With [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse), the `large` pool is only needed for LGP operator-spawned agent pods.
@@ -318,12 +318,12 @@ Four sizing profiles are available.
 
 Each module is count-controlled (`0` disabled, `1` enabled). Enable any combination; the core deployment (Passes 1 to 5) works without them.
 
-| Module        | Variable                    | Use case                                                                                                                    |
-| ------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `waf`         | `create_waf = true`         | Azure WAF policy (OWASP 3.2 + bot protection). Attach to Application Gateway.                                               |
+| Module | Variable | Use case |
+| - | - | - |
+| `waf` | `create_waf = true` | Azure WAF policy (OWASP 3.2 + bot protection). Attach to Application Gateway. |
 | `diagnostics` | `create_diagnostics = true` | Log Analytics workspace + diagnostic settings for AKS, Key Vault, and PostgreSQL. Recommended for production observability. |
-| `bastion`     | `create_bastion = true`     | Jump VM with a static public IP for private AKS access via `az ssh vm` and Entra ID SSH.                                    |
-| `dns`         | `create_dns_zone = true`    | Azure DNS zone + A record. Required for DNS-01 cert issuance with a custom domain.                                          |
+| `bastion` | `create_bastion = true` | Jump VM with a static public IP for private AKS access via `az ssh vm` and Entra ID SSH. |
+| `dns` | `create_dns_zone = true` | Azure DNS zone + A record. Required for DNS-01 cert issuance with a custom domain. |
 
 ***
 

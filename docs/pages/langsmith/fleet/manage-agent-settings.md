@@ -33,11 +33,11 @@ To download the files for your agent, open the agent, expand the **Advanced sett
 
 Agents can be private to the creator, shared with specific people, or shared with your entire LangSmith workspace.
 
-| Feature                  | Private agents                          | [Workspace agents](#workspace-scoped-agent-details)                                                                    |
-| ------------------------ | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Ownership and access** | Only visible to creator                 | Visible to anyone within the same LangSmith workspace                                                                  |
+| Feature | Private agents | [Workspace agents](#workspace-scoped-agent-details) |
+| - | - | - |
+| **Ownership and access** | Only visible to creator | Visible to anyone within the same LangSmith workspace |
 | **OAuth authentication** | OAuth credentials are scoped to creator | OAuth credentials are scoped to each user; new users cloning workspace agents must re-authenticate with selected tools |
-| **Secrets**              | Uses workspace-scoped LangSmith secrets | Uses workspace-scoped LangSmith secrets (same as private agents)                                                       |
+| **Secrets** | Uses workspace-scoped LangSmith secrets | Uses workspace-scoped LangSmith secrets (same as private agents) |
 
 To change the agent visibility, open your agent, expand the **Sharing** drawer in the sidebar, and select **Private** or **Workspace**. To share with specific people, click **+ Add** next to **Specific people**.
 

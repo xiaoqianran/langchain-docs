@@ -48,7 +48,7 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 总之，您可以通过关闭 CLI 分析和禁用跟踪来选择退出服务器端遥测。
 
 |变量|目的|默认 |
-| ------------------------------ | ---------------------------------- | ---------------------------------- |
+| - | - | - |
 | `LANGGRAPH_CLI_NO_ANALYTICS=1` |禁用 CLI 分析 |启用分析 |
 | `LANGSMITH_API_KEY` |启用 LangSmith 跟踪 |跟踪已禁用 |
 | `LANGSMITH_TRACING=false` |禁用 LangSmith 跟踪 |取决于环境|

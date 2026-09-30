@@ -8,8 +8,8 @@
 
 ## 选择加密方法
 
-|方法|什么是加密的 |使用案例|
-| -------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+|方法|什么是加密的 |使用案例 |
+| - | - | - |
 | **基本加密** |检查点 blob，可选 JSON 字段 |单静态密钥、自动 AES 加密、选择性字段加密 |
 | **自定义加密** |检查点、线程、运行、助手、cron 和存储 |每租户密钥、KMS 集成 |
 
@@ -25,7 +25,9 @@
        "agent": "./agent.py:graph"
      }
    }
-   ```2. 将 `LANGGRAPH_AES_KEY` 环境变量设置为 16、24 或 32 字节密钥（分别适用于 AES-128、AES-192 或 AES-256）。
+   ```
+
+2. 将 `LANGGRAPH_AES_KEY` 环境变量设置为 16、24 或 32 字节密钥（分别适用于 AES-128、AES-192 或 AES-256）。
 
 ### 加密 JSON 字段
 
@@ -40,9 +42,7 @@ export LANGGRAPH_AES_JSON_KEYS="api_key,secret_token,user_credentials"
 
 <Warning>
   无法搜索或过滤加密字段。
-</Warning>
-
-系统字段无法加密：`langgraph_version`、`langgraph_api_version`、`langgraph_plan`、`langgraph_host`、`langgraph_api_url`、`langgraph_request_id`、`langgraph_auth_user_id`、`langgraph_auth_permissions`。
+</Warning>系统字段无法加密：`langgraph_version`、`langgraph_api_version`、`langgraph_plan`、`langgraph_host`、`langgraph_api_url`、`langgraph_request_id`、`langgraph_auth_user_id`、`langgraph_auth_permissions`。
 
 ## 自定义加密
 
@@ -58,12 +58,12 @@ export LANGGRAPH_AES_JSON_KEYS="api_key,secret_token,user_credentials"
   仅当基本加密不能满足您的需求时才使用自定义加密。自定义加密要求您实现和维护加密处理程序，并增加了操作复杂性。如果您只需要具有可选选择性字段加密的单个静态密钥，请改用 [basic encryption](#basic-encryption)。
 </Warning>
 
-当您需要时使用自定义加密：* **每租户密钥隔离** — 不同客户使用不同的加密密钥
+当您需要时使用自定义加密：
+
+* **每租户密钥隔离** — 不同客户使用不同的加密密钥
 * **KMS 集成** — AWS KMS、Google Cloud KMS 或 HashiCorp Vault，用于密钥管理、轮换和审核日志记录
 
-### 它是如何工作的
-
-1. [Configure](#configuration)`langgraph.json`中的加密模块路径
+### 它是如何工作的1. [Configure](#configuration)`langgraph.json`中的加密模块路径
 2. [Define your encryption module](#defining-your-encryption-module) 带有 blob 和 JSON 加密处理程序
 3. [Pass encryption context](#passing-encryption-context)（如租户 ID）通过 `X-Encryption-Context` 标头
 4. LangGraph 在存储数据之前和检索数据之后调用您的处理程序
@@ -129,7 +129,9 @@ async def decrypt_blob(ctx: EncryptionContext, data: bytes) -> bytes:
 
 `ctx.metadata` 字典来自 `X-Encryption-Context` 标头，并以明文形式与加密数据一起存储，因此在解密时使用正确的密钥。
 
-#### JSON 加密（元数据）JSON 处理程序对结构化数据进行加密，例如线程元数据、辅助上下文和运行 kwargs。与 Blob 加密不同，您可以选择要加密的字段 - 保留一些未加密的字段以供搜索和过滤。
+#### JSON 加密（元数据）
+
+JSON 处理程序对结构化数据进行加密，例如线程元数据、辅助上下文和运行 kwargs。与 Blob 加密不同，您可以选择要加密的字段 - 保留一些未加密的字段以供搜索和过滤。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -188,9 +190,7 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
         else:
             result[k] = v
     return result
-```
-
-#### JSON 加密注意事项
+```#### JSON 加密注意事项
 
 <Warning>
   **无法搜索或过滤加密字段。** 设计您的元数据架构，以便您需要查询的字段保持未加密状态。
@@ -202,11 +202,11 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 <Note>
   **迁移注意事项：** 在加密值中使用可识别的前缀或格式，以便解密器可以检测并跳过未加密的数据。这允许您将来加密其他字段，而无需重新加密现有记录。上面的示例使用了这种模式。
-</Note><Note>
-  **性能考虑：** 每密钥加密意味着每个字段一次加密调用。如果您的加密涉及到外部服务（例如 KMS）的往返，这可能会显着影响延迟。考虑在本地缓存数据密钥或使用信封加密，其中使用 KMS 加密本地数据密钥并将其用于多个字段。
 </Note>
 
-用于授权的用户定义字段（例如，`tenant_id`、`owner`）通常应保持**未加密**，用于搜索和过滤的字段也应如此。此外，**一些系统管理的字段永远不会被加密**：
+<Note>
+  **性能考虑：** 每密钥加密意味着每个字段一次加密调用。如果您的加密涉及到外部服务（例如 KMS）的往返，这可能会显着影响延迟。考虑在本地缓存数据密钥或使用信封加密，其中使用 KMS 加密本地数据密钥并将其用于多个字段。
+</Note>用于授权的用户定义字段（例如，`tenant_id`、`owner`）通常应保持**未加密**，用于搜索和过滤的字段也应如此。此外，**一些系统管理的字段永远不会被加密**：
 
 * 资源标识符（`thread_id`、`run_id`、`assistant_id`、`graph_id`、`checkpoint_id`、`task_id`）
 * 大多数以`langgraph_`开头的字段（`langgraph_auth_user`除外）
@@ -223,7 +223,9 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 * `assistant.metadata`, `assistant.context`
 * `run.metadata`, `run.kwargs`
 * `cron.metadata`, `cron.payload`
-* `store.value`[Some fields are excluded from encryption.](#what-gets-encrypted) 除非另有说明，这些排除适用于嵌套 JSON 对象的每个级别，而不仅仅是根级别。
+* `store.value`
+
+[Some fields are excluded from encryption.](#what-gets-encrypted) 除非另有说明，这些排除适用于嵌套 JSON 对象的每个级别，而不仅仅是根级别。
 
 **Blob 处理程序** (`@encryption.encrypt.blob` / `@encryption.decrypt.blob`) 应用于检查点 blob（图执行状态）。
 
@@ -243,9 +245,7 @@ async def get_encryption_context(user: BaseUser, ctx: EncryptionContext) -> dict
         **ctx.metadata,
         "tenant_id": user["tenant_id"],
     }
-```
-
-该处理程序在身份验证后针对每个请求运行一次。对于该请求中的所有加密操作，返回的字典变为`ctx.metadata`。
+```该处理程序在身份验证后针对每个请求运行一次。对于该请求中的所有加密操作，返回的字典变为`ctx.metadata`。
 
 ### 传递加密上下文
 
@@ -276,7 +276,9 @@ result = await client.runs.wait(
 
 ### 使用 AWS 加密 SDK 进行信封加密
 
-对于 AWS 上的生产部署，请将 [AWS Encryption SDK](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/python.html) 与 AWS KMS 一起使用，或云提供商内的同等产品。这种方法：* 自动处理信封加密（无需手动密钥打包）
+对于 AWS 上的生产部署，请将 [AWS Encryption SDK](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/python.html) 与 AWS KMS 一起使用，或云提供商内的同等产品。这种方法：
+
+* 自动处理信封加密（无需手动密钥打包）
 * 提供密钥轮换和审计日志记录
 * 将密文绑定到加密上下文（租户隔离）
 * 在本地缓存数据密钥以避免重复的 KMS 调用、延迟和速率限制
@@ -368,9 +370,7 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
         else:
             result[k] = v
     return result
-```
-
-`encryption_context` 通过 KMS 以加密方式绑定到密文 — 如果上下文不匹配，解密就会失败。上下文嵌入在密文中，因此解密处理程序不需要引用`ctx.metadata`。
+````encryption_context` 通过 KMS 以加密方式绑定到密文 — 如果上下文不匹配，解密就会失败。上下文嵌入在密文中，因此解密处理程序不需要引用`ctx.metadata`。
 
 #### 密钥轮换
 

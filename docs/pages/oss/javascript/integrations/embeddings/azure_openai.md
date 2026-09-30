@@ -22,9 +22,9 @@ This will help you get started with AzureOpenAIEmbeddings [embedding models](/os
 
 ### Integration details
 
-| Class                                                                                                        | Package                                                                | Local | [Py support](https://python.langchain.com/docs/integrations/embeddings/azure_openai/) |                                             Downloads                                             |                                             Version                                            |
-| :----------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- | :---: | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
-| [`AzureOpenAIEmbeddings`](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) |   ❌   |                                           ✅                                           | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
+| Class | Package | Local | [Py support](https://python.langchain.com/docs/integrations/embeddings/azure_openai/) | Downloads | Version |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [`AzureOpenAIEmbeddings`](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ## Setup
 

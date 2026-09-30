@@ -17,22 +17,22 @@ LangSmith BYOC can integrate with AWS Marketplace.
 
 The following resources contribute to data plane costs in your account. AWS charges for them at its own rates, independently of your LangSmith contract. With [BYOVPC](/langsmith/byoc-byovpc), networking costs depend on the gateways, endpoints, and logging you configure and manage.
 
-| Service                               | What it covers                                                                                              | Billing basis                                                               |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **Amazon EKS**                        | The Kubernetes control plane for the data plane cluster                                                     | Per cluster-hour                                                            |
-| **Amazon EC2**                        | Nodes running in the EKS cluster                                                                            | Per instance-hour                                                           |
-| **Amazon RDS**                        | Instances for relational workloads                                                                          | Per instance-hour, including Multi-AZ, plus storage, backups, and snapshots |
-| **Amazon ElastiCache**                | Redis instance for caching and queueing workloads                                                           | Per node-hour                                                               |
-| **Amazon S3**                         | Bucket for LangSmith workloads, ClickHouse backups and VPC flow logs                                        | Storage, requests, and data transfer                                        |
-| **Amazon EBS**                        | Node root disks, and the volumes for ClickHouse storage                                                     | Per GB-month, plus provisioned IOPS and throughput above the gp3 baseline   |
-| **Regional NAT gateway**              | Outbound egress from the private subnets                                                                    | Per hour, plus data processed                                               |
-| **Elastic Load Balancing**            | Two network load balancers: one in front of the Istio ingress, and one for the EKS API PrivateLink endpoint | Per NLB-hour, plus NLCUs                                                    |
-| **AWS PrivateLink**                   | The interface VPC endpoints the data plane uses                                                             | Per interface endpoint per availability zone-hour, plus data processed      |
-| **AWS Lambda and Amazon EventBridge** | Reconciliation of the PrivateLink endpoints                                                                 | Per invocation, and per event published                                     |
-| **Amazon CloudWatch Logs**            | EKS control plane logs                                                                                      | Ingestion and storage                                                       |
-| **VPC flow logs**                     | Delivery of flow logs to S3                                                                                 | Per GB delivered                                                            |
-| **Amazon Route 53**                   | Private hosted zone                                                                                         | Per hosted zone-month, plus queries                                         |
-| **AWS Secrets Manager**               | RDS-generated master secrets, and the application secrets LangSmith references                              | Per secret-month, plus API calls                                            |
+| Service | What it covers | Billing basis |
+| - | - | - |
+| **Amazon EKS** | The Kubernetes control plane for the data plane cluster | Per cluster-hour |
+| **Amazon EC2** | Nodes running in the EKS cluster | Per instance-hour |
+| **Amazon RDS** | Instances for relational workloads | Per instance-hour, including Multi-AZ, plus storage, backups, and snapshots |
+| **Amazon ElastiCache** | Redis instance for caching and queueing workloads | Per node-hour |
+| **Amazon S3** | Bucket for LangSmith workloads, ClickHouse backups and VPC flow logs | Storage, requests, and data transfer |
+| **Amazon EBS** | Node root disks, and the volumes for ClickHouse storage | Per GB-month, plus provisioned IOPS and throughput above the gp3 baseline |
+| **Regional NAT gateway** | Outbound egress from the private subnets | Per hour, plus data processed |
+| **Elastic Load Balancing** | Two network load balancers: one in front of the Istio ingress, and one for the EKS API PrivateLink endpoint | Per NLB-hour, plus NLCUs |
+| **AWS PrivateLink** | The interface VPC endpoints the data plane uses | Per interface endpoint per availability zone-hour, plus data processed |
+| **AWS Lambda and Amazon EventBridge** | Reconciliation of the PrivateLink endpoints | Per invocation, and per event published |
+| **Amazon CloudWatch Logs** | EKS control plane logs | Ingestion and storage |
+| **VPC flow logs** | Delivery of flow logs to S3 | Per GB delivered |
+| **Amazon Route 53** | Private hosted zone | Per hosted zone-month, plus queries |
+| **AWS Secrets Manager** | RDS-generated master secrets, and the application secrets LangSmith references | Per secret-month, plus API calls |
 
 ### Data transfer
 

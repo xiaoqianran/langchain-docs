@@ -32,9 +32,9 @@ Paste this prompt into your coding agent to connect the servers, or follow the s
 
 This quickstart adds the LangChain MCP servers to every Deep Agents Code session on your machine. We recommend adding `docs-langchain` for conceptual guides and how-tos, and `reference-langchain` for API reference.
 
-| Server                | URL                                   | What it covers                                            |
-| --------------------- | ------------------------------------- | --------------------------------------------------------- |
-| `docs-langchain`      | `https://docs.langchain.com/mcp`      | Conceptual guides, how-tos, and tutorials                 |
+| Server | URL | What it covers |
+| - | - | - |
+| `docs-langchain` | `https://docs.langchain.com/mcp` | Conceptual guides, how-tos, and tutorials |
 | `reference-langchain` | `https://reference.langchain.com/mcp` | Canonical API reference: classes, methods, and parameters |
 
 <Steps>
@@ -114,11 +114,11 @@ Deep Agents Code automatically searches for `.mcp.json` files in standard locati
 
 Configs are checked in this order (lowest to highest precedence):
 
-| Priority    | Location                          | Scope                                       |
-| ----------- | --------------------------------- | ------------------------------------------- |
-| 1 (lowest)  | `~/.deepagents/.mcp.json`         | User-level—applies to all projects          |
-| 2           | `<project>/.deepagents/.mcp.json` | Project-level—`.deepagents` subdirectory    |
-| 3 (highest) | `<project>/.mcp.json`             | Project-level—root (Claude Code compatible) |
+| Priority | Location | Scope |
+| - | - | - |
+| 1 (lowest) | `~/.deepagents/.mcp.json` | User-level—applies to all projects |
+| 2 | `<project>/.deepagents/.mcp.json` | Project-level—`.deepagents` subdirectory |
+| 3 (highest) | `<project>/.mcp.json` | Project-level—root (Claude Code compatible) |
 
 The project root is the nearest parent directory containing a `.git` folder, falling back to the current working directory.
 
@@ -126,10 +126,10 @@ When multiple config files exist, their `mcpServers` entries are merged by serve
 
 ### Flags
 
-| Flag                | Behavior                                                                                           |
-| ------------------- | -------------------------------------------------------------------------------------------------- |
+| Flag | Behavior |
+| - | - |
 | `--mcp-config PATH` | Add an explicit config as the highest-precedence source (merged on top of auto-discovered configs) |
-| `--no-mcp`          | Disable MCP entirely—no servers are loaded                                                         |
+| `--no-mcp` | Disable MCP entirely—no servers are loaded |
 
 <Note>
   `--mcp-config` and `--no-mcp` are mutually exclusive.
@@ -440,11 +440,11 @@ To re-authenticate an OAuth server without leaving your session, open `/mcp`, se
 
 Each configured server lands in one of three states after startup:
 
-| Status            | Meaning                                                                        |
-| ----------------- | ------------------------------------------------------------------------------ |
-| `ok`              | Connected; tools are loaded and available to the agent                         |
-| `unauthenticated` | OAuth login required or refresh failed — run `dcode mcp login <server>`        |
-| `error`           | Pre-flight, discovery, or transport setup failed; an error message is attached |
+| Status | Meaning |
+| - | - |
+| `ok` | Connected; tools are loaded and available to the agent |
+| `unauthenticated` | OAuth login required or refresh failed — run `dcode mcp login <server>` |
+| `error` | Pre-flight, discovery, or transport setup failed; an error message is attached |
 
 A single failing server no longer aborts startup. The agent runs with whichever servers came up cleanly, and the welcome banner surfaces counts of unauthenticated and errored servers next to the tool count. Open `/mcp` in an interactive session to see per-server status, transport, tool list, and the failure reason for non-`ok` entries. The viewer live-updates as servers connect and supports `tab`/`shift+tab` navigation.
 
@@ -467,8 +467,8 @@ Project-level configs can contain stdio servers that execute local commands and 
 
 ### Flags
 
-| Flag                  | Behavior                                                                                                          |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Flag | Behavior |
+| - | - |
 | `--trust-project-mcp` | Trust project-level servers without prompting for the current run. Servers denied by user policy remain disabled. |
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

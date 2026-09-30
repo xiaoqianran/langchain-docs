@@ -41,10 +41,10 @@ Add `host:PORT` entries to open specific raw TCP destinations on top of that, su
 
 Add an `access_control` object to `proxy_config` with **either** an `allow_list` **or** a `deny_list` (not both—the request is rejected if both are set):
 
-| Mode         | Behavior                                                                                                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Mode | Behavior |
+| - | - |
 | `allow_list` | **Default-deny.** Only listed destinations are reachable, on any protocol. List every host the sandbox needs, including the HTTP(S) hosts your `rules` and `callbacks` target. |
-| `deny_list`  | **Default-allow.** Every destination is reachable, on any protocol, except those listed.                                                                                       |
+| `deny_list` | **Default-allow.** Every destination is reachable, on any protocol, except those listed. |
 
 Both lists apply to HTTP, HTTPS, and raw TCP alike. Neither mode distinguishes protocols; use a port suffix to restrict an entry to one port.
 
@@ -56,14 +56,14 @@ Both lists apply to HTTP, HTTPS, and raw TCP alike. Neither mode distinguishes p
 
 Each `allow_list`/`deny_list` entry uses the following forms:
 
-| Pattern             | Meaning                                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| `host`              | Bare host → **every port**.                                                                           |
-| `host:PORT`         | Host on exactly `PORT`. `db.example.com:5432` covers only 5432; add another entry for any other port. |
-| `*.example.com`     | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. May carry a port.                |
-| `~regex`            | Regex matched against the hostname, every port. No port suffix is parsed.                             |
-| `1.2.3.4` / `[::1]` | Literal IP. May carry a port: `1.2.3.4:443`, `[::1]:22`.                                              |
-| `10.0.0.0/8`        | CIDR. Cannot carry a port.                                                                            |
+| Pattern | Meaning |
+| - | - |
+| `host` | Bare host → **every port**. |
+| `host:PORT` | Host on exactly `PORT`. `db.example.com:5432` covers only 5432; add another entry for any other port. |
+| `*.example.com` | Glob (RFC 1034-style). The apex (`example.com`) is **not** included. May carry a port. |
+| `~regex` | Regex matched against the hostname, every port. No port suffix is parsed. |
+| `1.2.3.4` / `[::1]` | Literal IP. May carry a port: `1.2.3.4:443`, `[::1]:22`. |
+| `10.0.0.0/8` | CIDR. Cannot carry a port. |
 
 Matching is on the destination exactly as the sandbox addressed it. A hostname entry matches requests made to that hostname; an IP or CIDR entry matches requests made to a literal IP address. Neither is resolved: `deny_list: ["203.0.113.0/24"]` does not block `foo.example.com` even when it resolves into that range, and `allow_list: ["203.0.113.7"]` does not allow it either. Because raw TCP and HTTPS to a literal IP are dropped before access control runs (see [How egress works](#how-egress-works)), IP and CIDR entries only ever affect cleartext HTTP requests on port 80 that name the IP directly.
 
@@ -156,36 +156,36 @@ The connection to `db.example.com:5432` is passed through at the TCP layer with 
 
 Add a `proxy_config` when creating a sandbox, or update an existing sandbox by patching its `proxy_config`. A `proxy_config` has:
 
-| Field            | Description                                                                                                                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `rules`          | Header-injection and provider-auth rules. Enabled header rules are matched first-match-wins in list order; `aws` and `gcp` rules match their providers' hosts regardless of position |
-| `callbacks`      | Dynamic credential lookups; see [Callback credential example](#callback-credential-example)                                                                                          |
-| `access_control` | `allow_list` or `deny_list`; see [Allow and deny lists](#allow-and-deny-lists)                                                                                                       |
-| `description`    | Optional, up to 1024 characters. What this configuration lets the sandbox reach, for handing to an agent                                                                             |
+| Field | Description |
+| - | - |
+| `rules` | Header-injection and provider-auth rules. Enabled header rules are matched first-match-wins in list order; `aws` and `gcp` rules match their providers' hosts regardless of position |
+| `callbacks` | Dynamic credential lookups; see [Callback credential example](#callback-credential-example) |
+| `access_control` | `allow_list` or `deny_list`; see [Allow and deny lists](#allow-and-deny-lists) |
+| `description` | Optional, up to 1024 characters. What this configuration lets the sandbox reach, for handing to an agent |
 
 Each rule specifies:
 
-| Field         | Description                                                                                                                                                                                                                                           |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`        | Required. Identifier for the rule                                                                                                                                                                                                                     |
-| `type`        | Omit for header injection; `aws` or `gcp` for provider auth                                                                                                                                                                                           |
+| Field | Description |
+| - | - |
+| `name` | Required. Identifier for the rule |
+| `type` | Omit for header injection; `aws` or `gcp` for provider auth |
 | `match_hosts` | Required for header rules; rejected on `aws` and `gcp` rules. Bare hostnames, or a leading `*.` wildcard in front of a registrable domain (`*.github.com`, not `*.com` or `*`). No scheme, path, or port. The wildcard does not match the apex domain |
-| `match_paths` | Paths to match (empty = all paths). Header rules only                                                                                                                                                                                                 |
-| `headers`     | Headers to inject, each with a `name`, `type`, and `value`. Header rules only                                                                                                                                                                         |
-| `aws` / `gcp` | Provider credentials; see [Authenticate AWS requests](#authenticate-aws-requests) and [Authenticate GCP requests](#authenticate-gcp-requests)                                                                                                         |
-| `env_vars`    | Environment variables to set in the sandbox while the rule is enabled                                                                                                                                                                                 |
-| `enabled`     | Defaults to `true`                                                                                                                                                                                                                                    |
-| `description` | Optional, up to 1024 characters. What this rule lets the sandbox reach                                                                                                                                                                                |
+| `match_paths` | Paths to match (empty = all paths). Header rules only |
+| `headers` | Headers to inject, each with a `name`, `type`, and `value`. Header rules only |
+| `aws` / `gcp` | Provider credentials; see [Authenticate AWS requests](#authenticate-aws-requests) and [Authenticate GCP requests](#authenticate-gcp-requests) |
+| `env_vars` | Environment variables to set in the sandbox while the rule is enabled |
+| `enabled` | Defaults to `true` |
+| `description` | Optional, up to 1024 characters. What this rule lets the sandbox reach |
 
 ### Header types
 
 Each header has a required `type` that controls how its value is stored and displayed:
 
-| Type               | Description                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------------- |
+| Type | Description |
+| - | - |
 | `workspace_secret` | References a workspace secret using `{KEY}` syntax. Resolved when the proxy configuration is applied. |
-| `plaintext`        | Value is stored and returned as-is. Use for non-sensitive headers.                                    |
-| `opaque`           | Write-only. Value is encrypted at rest and never returned via the API.                                |
+| `plaintext` | Value is stored and returned as-is. Use for non-sensitive headers. |
+| `opaque` | Write-only. Value is encrypted at rest and never returned via the API. |
 
 ### Set environment variables from a rule
 
@@ -579,9 +579,9 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 Configure two rules:
 
-| Host                         | Header                                                                                                                     |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `api.github.com`             | `Authorization: Bearer <github-token>` for `gh` and REST API calls                                                         |
+| Host | Header |
+| - | - |
+| `api.github.com` | `Authorization: Bearer <github-token>` for `gh` and REST API calls |
 | `github.com`, `*.github.com` | `Authorization: Basic <base64("x-access-token:<github-token>")>` for Git over HTTPS operations like clone, fetch, and push |
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -713,13 +713,13 @@ Static `workspace_secret` rules pull credentials from your workspace when the pr
 
 Callbacks are configured alongside rules under `proxy_config`:
 
-| Field             | Description                                                                                                                                                                                                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `match_hosts`     | Hosts to intercept (same syntax as rules; supports globs like `*.github.com`).                                                                                                                                                                                                |
-| `url`             | Your callback endpoint. Must be an `http://` or `https://` URL that resolves to a public address; private, loopback, Kubernetes-internal, and cloud-metadata targets are rejected.                                                                                            |
-| `request_headers` | Headers attached to the proxy → callback request, e.g., an HMAC or shared secret your endpoint uses to verify the request. Only `plaintext` and `opaque` types are permitted (no `workspace_secret`).                                                                         |
-| `ttl_seconds`     | Required. How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600.                                                                                                                                                                  |
-| `full_request`    | When `true`, every request to a matched host invokes the callback (nothing is cached) and the body includes a `request` snapshot: `method`, `url`, `scheme`, `host`, `path`, `query`, `headers`, and up to 1 MiB of the body as `body_base64` (`body_truncated` marks a cut). |
+| Field | Description |
+| - | - |
+| `match_hosts` | Hosts to intercept (same syntax as rules; supports globs like `*.github.com`). |
+| `url` | Your callback endpoint. Must be an `http://` or `https://` URL that resolves to a public address; private, loopback, Kubernetes-internal, and cloud-metadata targets are rejected. |
+| `request_headers` | Headers attached to the proxy → callback request, e.g., an HMAC or shared secret your endpoint uses to verify the request. Only `plaintext` and `opaque` types are permitted (no `workspace_secret`). |
+| `ttl_seconds` | Required. How long resolved headers are cached before re-invoking the callback. Must be between 60 and 3600. |
+| `full_request` | When `true`, every request to a matched host invokes the callback (nothing is cached) and the body includes a `request` snapshot: `method`, `url`, `scheme`, `host`, `path`, `query`, `headers`, and up to 1 MiB of the body as `body_base64` (`body_truncated` marks a cut). |
 
 **Static rules win.** If an enabled header-injection rule matches both the host and the path, the callback is skipped for that request. Within rules, first-match-wins; the same applies between callbacks if multiple match.
 
@@ -764,13 +764,13 @@ The proxy injects every header in the response into the sandbox's outbound reque
 
 `request_headers` let your endpoint check a shared secret you chose. To verify that a request came from LangSmith and was not altered in transit, check the `X-LangSmith-Signature-JWT` header. It is a JWT signed with an Ed25519 key (`alg: EdDSA`) whose public half is published at `<LANGSMITH_ENDPOINT>/.well-known/jwks.json`, selected by the token's `kid`.
 
-| Claim         | Expected value                                                         |
-| ------------- | ---------------------------------------------------------------------- |
-| `iss`         | Your LangSmith endpoint origin, e.g. `https://api.smith.langchain.com` |
-| `sub`         | `langsmith-sandbox-callback`                                           |
-| `aud`         | Your callback URL, exactly as configured                               |
-| `exp`         | Five minutes after issue; reject expired tokens                        |
-| `body_sha256` | Hex SHA-256 of the raw request body                                    |
+| Claim | Expected value |
+| - | - |
+| `iss` | Your LangSmith endpoint origin, e.g. `https://api.smith.langchain.com` |
+| `sub` | `langsmith-sandbox-callback` |
+| `aud` | Your callback URL, exactly as configured |
+| `exp` | Five minutes after issue; reject expired tokens |
+| `body_sha256` | Hex SHA-256 of the raw request body |
 
 Verify the signature against the JWKS, check every claim above, hash the body you received, and compare it to `body_sha256`. Then trust `identity` in the body.
 

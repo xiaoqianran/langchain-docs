@@ -53,12 +53,12 @@ langgraph build -t my-image
 
 Build command options include:
 
-| Option               | Default          | Description                                                       |
-| -------------------- | ---------------- | ----------------------------------------------------------------- |
-| `-t, --tag TEXT`     | Required         | Tag for the Docker image                                          |
-| `--platform TEXT`    |                  | Target platform(s) to build for (e.g., `linux/amd64,linux/arm64`) |
-| `--pull / --no-pull` | `--pull`         | Build with latest remote Docker image                             |
-| `-c, --config FILE`  | `langgraph.json` | Path to configuration file                                        |
+| Option | Default | Description |
+| - | - | - |
+| `-t, --tag TEXT` | Required | Tag for the Docker image |
+| `--platform TEXT` | | Target platform(s) to build for (e.g., `linux/amd64,linux/arm64`) |
+| `--pull / --no-pull` | `--pull` | Build with latest remote Docker image |
+| `-c, --config FILE` | `langgraph.json` | Path to configuration file |
 
 Example with platform specification:
 

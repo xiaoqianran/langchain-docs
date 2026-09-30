@@ -50,17 +50,17 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 ## 路由 API 请求
 
-基本 URL 根据路径前缀路由到不同的服务：|服务 |路径前缀 |示例|
-| -------------------- | ----------- | ------------------------------------------------------------------- |
+基本 URL 根据路径前缀路由到不同的服务：
+
+|服务 |路径前缀 |示例|
+| - | - | - |
 | LangSmith | `/api` | `https://<data_plane_host>/api/v1/sessions` |
 | LangSmith 部署| `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
 |法学硕士网关| `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |
 
 ## 跟踪多个端点
 
-使用这些模式可以跟踪云和数据平面，或多个数据平面。
-
-### 双写入两个端点
+使用这些模式可以跟踪云和数据平面，或多个数据平面。### 双写入两个端点
 
 设置 `LANGSMITH_RUNS_ENDPOINTS` 写入多个端点：
 

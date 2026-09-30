@@ -56,13 +56,13 @@ The only required file is `agent.py` at the project root containing the [agent d
 
 * **Managed configuration**: Certain paths enable capabilities when present. For `channels/` and `schedules/`, only direct children are managed declarations; nested modules are not.
 
-  | Path                  | Enables                                                                         |
-  | --------------------- | ------------------------------------------------------------------------------- |
-  | `identity.py`         | [Caller authentication](/langsmith/python/managed-deep-agents-identity)         |
-  | `memory.py`           | [Durable memory](/langsmith/python/managed-deep-agents-memory)                  |
-  | `channels/<name>.py`  | [Messaging channels](/langsmith/python/managed-deep-agents-channels)            |
-  | `tools/mcp.py`        | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)          |
-  | `schedules/<name>.py` | [Cron schedules](/langsmith/python/managed-deep-agents-schedules)               |
+  | Path | Enables |
+  | - | - |
+  | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
+  | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
+  | `channels/<name>.py` | [Messaging channels](/langsmith/python/managed-deep-agents-channels) |
+  | `tools/mcp.py` | [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors) |
+  | `schedules/<name>.py` | [Cron schedules](/langsmith/python/managed-deep-agents-schedules) |
   | `sandbox/__init__.py` | [Sandbox filesystem and shell](/langsmith/python/managed-deep-agents-sandboxes) |
 
   `tools/` holds ordinary modules with one exception. `tools/mcp.py` is a managed declaration and exports a module-level `mcp`. Every other module under `tools/` is application code you import.

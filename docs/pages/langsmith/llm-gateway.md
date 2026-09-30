@@ -57,11 +57,11 @@ A `200` response confirms that the gateway, your LangSmith API key, permissions,
 
 Choose the request format already used by your application. The format does not limit which configured provider you can call.
 
-| API format              | Endpoint                    |
-| ----------------------- | --------------------------- |
+| API format | Endpoint |
+| - | - |
 | OpenAI Chat Completions | `POST /v1/chat/completions` |
-| Anthropic Messages      | `POST /v1/messages`         |
-| OpenAI Responses        | `POST /v1/responses`        |
+| Anthropic Messages | `POST /v1/messages` |
+| OpenAI Responses | `POST /v1/responses` |
 
 Set `model` to a provider-prefixed bring-your-own-key ID such as `openai/gpt-5.4-mini`, `anthropic/claude-opus-5`, or `azure/<deployment-name>`, or use a [Gateway Credits](/langsmith/llm-gateway-credits) model slug such as `moonshotai/kimi-k3`. The model ID determines the upstream route. When the selected provider uses a different native format, the gateway translates the request and response.
 
@@ -71,10 +71,10 @@ For base URLs, examples, translation behavior, regional endpoints, and BYOC data
 
 ## Choose how credentials are managed
 
-| Option                                            | Upstream credential                                                                                                                  | Setup and billing                                                                 |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| Bring your own provider account                   | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account.                                |
-| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential.                                                                                              | No provider secret is required. Invocations are billed to your LangSmith account. |
+| Option | Upstream credential | Setup and billing |
+| - | - | - |
+| Bring your own provider account | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account. |
+| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential. | No provider secret is required. Invocations are billed to your LangSmith account. |
 
 ## Go further
 

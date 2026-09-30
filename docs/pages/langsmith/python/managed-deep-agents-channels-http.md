@@ -202,17 +202,17 @@ Your `parse` callback decodes the request body. It can read JSON, form data, tex
 
 Managed Deep Agents answers with one of these, unless `parse` returned its own `response`:
 
-| Status | Body                                             | Cause                                                                      |
-| ------ | ------------------------------------------------ | -------------------------------------------------------------------------- |
-| `202`  | `{"status": "accepted", "deliveryId": "..."}`    | The run started.                                                           |
-| `202`  | `{"status": "ignored"}`                          | `parse` returned an ignore result.                                         |
-| `400`  | `{"error": "invalid channel payload"}`           | `parse` raised, for example because its decoder rejected the body.         |
-| `400`  | `{"error": "invalid channel parse result"}`      | `parse` returned an unrecognized shape.                                    |
-| `400`  | `{"error": "invalid channel message"}`           | The message has an invalid caller, thread UUID, content, or JSON `target`. |
-| `401`  | `{"error": "invalid channel signature"}`         | `verify` rejected the request.                                             |
-| `500`  | `{"error": "channel verification failed"}`       | `verify` raised.                                                           |
-| `500`  | `{"error": "channel runtime is not configured"}` | The managed runtime is missing required configuration.                     |
-| `500`  | `{"error": "channel run could not be started"}`  | The agent run failed to start.                                             |
+| Status | Body | Cause |
+| - | - | - |
+| `202` | `{"status": "accepted", "deliveryId": "..."}` | The run started. |
+| `202` | `{"status": "ignored"}` | `parse` returned an ignore result. |
+| `400` | `{"error": "invalid channel payload"}` | `parse` raised, for example because its decoder rejected the body. |
+| `400` | `{"error": "invalid channel parse result"}` | `parse` returned an unrecognized shape. |
+| `400` | `{"error": "invalid channel message"}` | The message has an invalid caller, thread UUID, content, or JSON `target`. |
+| `401` | `{"error": "invalid channel signature"}` | `verify` rejected the request. |
+| `500` | `{"error": "channel verification failed"}` | `verify` raised. |
+| `500` | `{"error": "channel runtime is not configured"}` | The managed runtime is missing required configuration. |
+| `500` | `{"error": "channel run could not be started"}` | The agent run failed to start. |
 
 A `202` means the run was accepted, not that it finished. The agent's answer arrives later through `post`, if configured.
 

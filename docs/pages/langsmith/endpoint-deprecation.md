@@ -21,10 +21,10 @@ In Cloud, if active consumers remain close to the removal date, LangSmith may ap
 
 ## Deprecation window by deployment
 
-| Deployment  | Minimum support window                |
-| ----------- | ------------------------------------- |
-| Cloud       | 6 months from announcement to removal |
-| Self-hosted | At least one major release            |
+| Deployment | Minimum support window |
+| - | - |
+| Cloud | 6 months from announcement to removal |
+| Self-hosted | At least one major release |
 
 Self-hosted major releases ship on a roughly six-week cadence. For details, see [Release policy](/langsmith/release-versions).
 

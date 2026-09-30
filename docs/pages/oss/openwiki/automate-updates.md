@@ -10,10 +10,10 @@ OpenWiki can refresh repository documentation on a schedule and open a pull requ
 
 Copy the example for your Git provider:
 
-| Provider            | Example                                                                                                                                          | Destination                                                                    |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| GitHub Actions      | [`openwiki-update.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.yml)                                         | `.github/workflows/openwiki-update.yml`                                        |
-| GitLab CI           | [`openwiki-update.gitlab-ci.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.gitlab-ci.yml)                     | `.gitlab-ci.yml`, or include it from an existing pipeline                      |
+| Provider | Example | Destination |
+| - | - | - |
+| GitHub Actions | [`openwiki-update.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.yml) | `.github/workflows/openwiki-update.yml` |
+| GitLab CI | [`openwiki-update.gitlab-ci.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.gitlab-ci.yml) | `.gitlab-ci.yml`, or include it from an existing pipeline |
 | Bitbucket Pipelines | [`openwiki-update.bitbucket-pipelines.yml`](https://github.com/langchain-ai/openwiki/blob/main/examples/openwiki-update.bitbucket-pipelines.yml) | `bitbucket-pipelines.yml`, then schedule the `openwiki-update` custom pipeline |
 
 ## Run update in CI

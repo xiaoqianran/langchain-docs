@@ -50,16 +50,16 @@ openwiki --help
 
 ### Common flags
 
-| Flag                        | Description                                                                                                                                                                                                                                                                                  |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--init`                    | Generate initial documentation. Defaults to code mode. Re-running regenerates the repository wiki from scratch while preserving `openwiki/INSTRUCTIONS.md`. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
-| `--update`                  | Update existing documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined.                                                                                                       |
-| `-l`, `--language <locale>` | Generate wiki documentation in the given BCP-47 locale, for example `ko`, `zh-CN`, or `pt-BR`. Unrecognized values are rejected.                                                                                                                                                             |
-| `--mode <personal\|code>`   | Choose personal brain or repository docs.                                                                                                                                                                                                                                                    |
-| `-p`, `--print`             | Run once, print the final assistant output, and exit. Provide a message or command. Interactive chat without `--print` stays open for follow-ups.                                                                                                                                            |
-| `--modelId` / `--model-id`  | Choose a model ID for the run.                                                                                                                                                                                                                                                               |
-| `--telemetry-file=<path>`   | Also write the telemetry payload for the run to a local JSON file.                                                                                                                                                                                                                           |
-| `-h`, `--help`              | Print usage.                                                                                                                                                                                                                                                                                 |
+| Flag | Description |
+| - | - |
+| `--init` | Generate initial documentation. Defaults to code mode. Re-running regenerates the repository wiki from scratch while preserving `openwiki/INSTRUCTIONS.md`. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
+| `--update` | Update existing documentation. Defaults to code mode. In a TTY without `--print`, streams agent output and exits automatically on success. `--init` and `--update` cannot be combined. |
+| `-l`, `--language <locale>` | Generate wiki documentation in the given BCP-47 locale, for example `ko`, `zh-CN`, or `pt-BR`. Unrecognized values are rejected. |
+| `--mode <personal\|code>` | Choose personal brain or repository docs. |
+| `-p`, `--print` | Run once, print the final assistant output, and exit. Provide a message or command. Interactive chat without `--print` stays open for follow-ups. |
+| `--modelId` / `--model-id` | Choose a model ID for the run. |
+| `--telemetry-file=<path>` | Also write the telemetry payload for the run to a local JSON file. |
+| `-h`, `--help` | Print usage. |
 
 ## Visualize
 

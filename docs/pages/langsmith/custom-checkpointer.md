@@ -139,21 +139,21 @@ The server checks your checkpointer for **base** (required) and **extended** (op
 
 ### Base capabilities (required)
 
-| Method           | Description           |
-| ---------------- | --------------------- |
-| `aput`           | Store a checkpoint    |
-| `aput_writes`    | Store pending writes  |
-| `aget_tuple`     | Retrieve a checkpoint |
-| `alist`          | List checkpoints      |
-| `adelete_thread` | Delete a thread       |
+| Method | Description |
+| - | - |
+| `aput` | Store a checkpoint |
+| `aput_writes` | Store pending writes |
+| `aget_tuple` | Retrieve a checkpoint |
+| `alist` | List checkpoints |
+| `adelete_thread` | Delete a thread |
 
 ### Extended capabilities (optional)
 
-| Method             | Description                          | Fallback if missing                               |
-| ------------------ | ------------------------------------ | ------------------------------------------------- |
-| `adelete_for_runs` | Delete checkpoints for specific runs | Rollback multitask strategy unavailable           |
-| `acopy_thread`     | Copy a thread                        | Slow fallback (re-inserts checkpoints one by one) |
-| `aprune`           | Prune thread history                 | Thread history pruning unavailable                |
+| Method | Description | Fallback if missing |
+| - | - | - |
+| `adelete_for_runs` | Delete checkpoints for specific runs | Rollback multitask strategy unavailable |
+| `acopy_thread` | Copy a thread | Slow fallback (re-inserts checkpoints one by one) |
+| `aprune` | Prune thread history | Thread history pruning unavailable |
 
 ## Deploying
 

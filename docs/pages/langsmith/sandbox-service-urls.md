@@ -34,11 +34,11 @@ with client.sandbox() as sb:
 
 ## Use cases
 
-| Scenario                                     | How                                                               |
-| -------------------------------------------- | ----------------------------------------------------------------- |
-| Preview a web app (Streamlit, Jupyter, etc.) | `sb.service(port=<PORT>)` then open `browser_url`                 |
-| Call an API from code or CI                  | `svc.get(...)` / `svc.post(...)` or `curl` with the service token |
-| Share a live demo with a teammate            | Click **Share Link** in the UI and send the URL                   |
+| Scenario | How |
+| - | - |
+| Preview a web app (Streamlit, Jupyter, etc.) | `sb.service(port=<PORT>)` then open `browser_url` |
+| Call an API from code or CI | `svc.get(...)` / `svc.post(...)` or `curl` with the service token |
+| Share a live demo with a teammate | Click **Share Link** in the UI and send the URL |
 
 ## Open a service from the UI
 
@@ -184,14 +184,14 @@ def create_item(item: dict):
 
 ## Service URLs vs TCP tunnels
 
-|                         | Service URLs                     | TCP tunnels                           |
-| ----------------------- | -------------------------------- | ------------------------------------- |
-| **Protocol**            | HTTP                             | Any TCP (databases, Redis, SSH, HTTP) |
-| **Setup**               | Zero—just a URL                  | Requires SDK or CLI                   |
-| **Access from**         | Browser, scripts, CI, anywhere   | Local machine only                    |
-| **Sharing**             | Copy the URL and send it         | Not shareable                         |
-| **Multi-page web apps** | Full support (subdomain routing) | Full support (local port)             |
-| **Non-HTTP services**   | Not supported                    | Full support                          |
+| | Service URLs | TCP tunnels |
+| - | - | - |
+| **Protocol** | HTTP | Any TCP (databases, Redis, SSH, HTTP) |
+| **Setup** | Zero—just a URL | Requires SDK or CLI |
+| **Access from** | Browser, scripts, CI, anywhere | Local machine only |
+| **Sharing** | Copy the URL and send it | Not shareable |
+| **Multi-page web apps** | Full support (subdomain routing) | Full support (local port) |
+| **Non-HTTP services** | Not supported | Full support |
 
 Use **service URLs** for HTTP services you want to access from a browser or share with others. Use **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)** for non-HTTP protocols (like `psql` or `redis-cli`) or when you need local-only access.
 
@@ -199,11 +199,11 @@ To share a single file rather than a running service, use a **[download link](/l
 
 ## Troubleshoot
 
-| Error                          | Cause                             | Fix                                                                                        |
-| ------------------------------ | --------------------------------- | ------------------------------------------------------------------------------------------ |
-| **"Service link has expired"** | Token lifetime exceeded           | Open the service again from LangSmith or call `sb.service()` for a fresh URL               |
-| **"Service is not reachable"** | Nothing is listening on that port | Verify the server is running inside the sandbox                                            |
-| **"Authentication required"**  | No token in header or cookie      | Use `browser_url` for browser access or set the `X-Langsmith-Sandbox-Service-Token` header |
+| Error | Cause | Fix |
+| - | - | - |
+| **"Service link has expired"** | Token lifetime exceeded | Open the service again from LangSmith or call `sb.service()` for a fresh URL |
+| **"Service is not reachable"** | Nothing is listening on that port | Verify the server is running inside the sandbox |
+| **"Authentication required"** | No token in header or cookie | Use `browser_url` for browser access or set the `X-Langsmith-Sandbox-Service-Token` header |
 
 ***
 

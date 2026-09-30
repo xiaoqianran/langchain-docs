@@ -5,18 +5,18 @@
 # 如何获取实验的性能指标
 
 <Check>
-跟踪项目和实验在我们的后端使用相同的底层数据结构，称为“会话”。
+  跟踪项目和实验在我们的后端使用相同的底层数据结构，称为“会话”。
 
-您可能会在我们的文档中看到这些术语，但它们都指的是相同的底层数据结构。
+  您可能会在我们的文档中看到这些术语，但它们都指的是相同的底层数据结构。
 
-我们正在努力统一我们的文档和 API 中的术语。
+  我们正在努力统一我们的文档和 API 中的术语。
 </Check>
 
 当您使用 `evaluate` 与 Python 或 TypeScript SDK 运行实验时，您可以使用 `read_project`/`readProject` 方法获取实验的性能指标。
 
 实验详细信息的有效负载包括以下值：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "start_time": "2024-06-06T01:02:51.299960",
   "end_time": "2024-06-06T01:03:04.557530+00:00",
@@ -93,7 +93,7 @@
 
 首先，作为先决条件，我们将创建一个简单的数据集。在这里，我们仅在 Python 中演示这一点，但您可以在 TypeScript 中执行相同的操作。更多详情请查看评测[how-to guide](/langsmith/evaluate-llm-application)。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()
@@ -119,65 +119,64 @@ client.create_examples(dataset_id=dataset.id, examples=examples)
 接下来，我们将创建一个实验，从`evaluate`的结果中检索实验名称，然后获取实验的性能指标。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.schemas import Example, Run
+  dataset_name = "HelloDataset"
 
-```python Python
-from langsmith.schemas import Example, Run
-dataset_name = "HelloDataset"
+  def foo_label(root_run: Run, example: Example) -> dict:
+      return {"score": 1, "key": "foo"}
 
-def foo_label(root_run: Run, example: Example) -> dict:
-    return {"score": 1, "key": "foo"}
+  from langsmith import evaluate
 
-from langsmith import evaluate
+  results = evaluate(
+      lambda inputs: "Hello " + inputs["input"],
+      data=dataset_name,
+      evaluators=[foo_label],
+      experiment_prefix="Hello",
+  )
 
-results = evaluate(
-    lambda inputs: "Hello " + inputs["input"],
-    data=dataset_name,
-    evaluators=[foo_label],
-    experiment_prefix="Hello",
-)
+  resp = client.read_project(project_name=results.experiment_name, include_stats=True)
+  print(resp.model_dump_json(indent=2))
+  ```
 
-resp = client.read_project(project_name=results.experiment_name, include_stats=True)
-print(resp.model_dump_json(indent=2))
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { Client } from "langsmith";
+  import { evaluate } from "langsmith/evaluation";
+  import type { EvaluationResult } from "langsmith/evaluation";
+  import type { Run, Example } from "langsmith/schemas";
 
-```typescript TypeScript
-import { Client } from "langsmith";
-import { evaluate } from "langsmith/evaluation";
-import type { EvaluationResult } from "langsmith/evaluation";
-import type { Run, Example } from "langsmith/schemas";
+  // Row-level evaluator
+  function fooLabel(rootRun: Run, example: Example): EvaluationResult {
+      return {score: 1, key: "foo"};
+  }
 
-// Row-level evaluator
-function fooLabel(rootRun: Run, example: Example): EvaluationResult {
-    return {score: 1, key: "foo"};
-}
+  const client = new Client();
 
-const client = new Client();
+  const results = await evaluate(
+      (inputs) => {
+          return { output: "Hello " + inputs.input };
+      },
+      {
+          data: "HelloDataset",
+          experimentPrefix: "Hello",
+          evaluators: [fooLabel],
+      }
+  );
 
-const results = await evaluate(
-    (inputs) => {
-        return { output: "Hello " + inputs.input };
-    },
-    {
-        data: "HelloDataset",
-        experimentPrefix: "Hello",
-        evaluators: [fooLabel],
-    }
-);
-
-const resp = await client.readProject({
-    projectName: results.experimentName,
-    includeStats: true
-})
-console.log(JSON.stringify(resp, null, 2))
-```
-
+  const resp = await client.readProject({
+      projectName: results.experimentName,
+      includeStats: true
+  })
+  console.log(JSON.stringify(resp, null, 2))
+  ```
 </CodeGroup>
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fetch-perf-metrics-experiment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

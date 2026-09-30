@@ -44,12 +44,12 @@ PII detection middleware is helpful for cases such as health care and financial 
 
 The PII middleware supports multiple strategies for handling detected PII:
 
-| Strategy | Description                             | Example               |
-| -------- | --------------------------------------- | --------------------- |
-| `redact` | Replace with `[REDACTED_{PII_TYPE}]`    | `[REDACTED_EMAIL]`    |
-| `mask`   | Partially obscure (e.g., last 4 digits) | `****-****-****-1234` |
-| `hash`   | Replace with deterministic hash         | `a8f5f167...`         |
-| `block`  | Raise exception when detected           | Error thrown          |
+| Strategy | Description | Example |
+| - | - | - |
+| `redact` | Replace with `[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
+| `mask` | Partially obscure (e.g., last 4 digits) | `****-****-****-1234` |
+| `hash` | Replace with deterministic hash | `a8f5f167...` |
+| `block` | Raise exception when detected | Error thrown |
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, piiRedactionMiddleware } from "langchain";
@@ -100,14 +100,14 @@ const result = await agent.invoke({
 
   **Configuration options:**
 
-  | Parameter            | Description                                                            | Default                     |
-  | -------------------- | ---------------------------------------------------------------------- | --------------------------- |
-  | `piiType`            | Type of PII to detect (built-in or custom)                             | Required                    |
-  | `strategy`           | How to handle detected PII (`"block"`, `"redact"`, `"mask"`, `"hash"`) | `"redact"`                  |
-  | `detector`           | Custom detector regex pattern                                          | `undefined` (uses built-in) |
-  | `applyToInput`       | Check user messages before model call                                  | `true`                      |
-  | `applyToOutput`      | Check AI messages after model call                                     | `false`                     |
-  | `applyToToolResults` | Check tool result messages after execution                             | `false`                     |
+  | Parameter | Description | Default |
+  | - | - | - |
+  | `piiType` | Type of PII to detect (built-in or custom) | Required |
+  | `strategy` | How to handle detected PII (`"block"`, `"redact"`, `"mask"`, `"hash"`) | `"redact"` |
+  | `detector` | Custom detector regex pattern | `undefined` (uses built-in) |
+  | `applyToInput` | Check user messages before model call | `true` |
+  | `applyToOutput` | Check AI messages after model call | `false` |
+  | `applyToToolResults` | Check tool result messages after execution | `false` |
 </Accordion>
 
 See the [middleware documentation](/oss/javascript/langchain/middleware#pii-detection) for complete details on PII detection capabilities.

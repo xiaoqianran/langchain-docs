@@ -96,16 +96,17 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 * **`resource_type`** - 要匹配的资源类型
 * **`conditions`** - 条件数组（在组内使用 **AND 逻辑** 进行评估）
 
-#### 资源类型和权限|资源类型|支持的权限 |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+#### 资源类型和权限
+
+|资源类型|支持的权限 |
+| - | - |
 | `project` | `projects:read`、`projects:update`、`projects:delete`、`runs:read`、`runs:read-inputs`、`runs:read-outputs`、`runs:share`、`runs:delete`、`projects:increase-trace-tier`、`projects:decrease-trace-tier` |
 | `prompt` | `prompts:read`、`prompts:update`、`prompts:delete`、`prompts:share`、`prompts:tag` |
 | `dataset` | `datasets:read`、`datasets:update`、`datasets:delete`、`datasets:share`、`datasets:download`、`datasets:clone` |
 | `deployment` | `deployments:read`、`deployments:update`、`deployments:delete` |
-| `queues` | `annotation-queues:create`、`annotation-queues:delete`、`annotation-queues:read`、`annotation-queues:update` || `mcp_server` | `mcp-servers:read`、`mcp-servers:invoke`、`mcp-servers:update`、`mcp-servers:delete`。参见[Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control)。                        |
-| `fleet_integration` | `mcp-servers:read`、`mcp-servers:invoke`。参见[Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control)。                                                                    |
-
-<Note>
+| `queues` | `annotation-queues:create`、`annotation-queues:delete`、`annotation-queues:read`、`annotation-queues:update` |
+| `mcp_server` | `mcp-servers:read`、`mcp-servers:invoke`、`mcp-servers:update`、`mcp-servers:delete`。参见[Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control)。 |
+| `fleet_integration` | `mcp-servers:read`、`mcp-servers:invoke`。参见[Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control)。 |<Note>
   运行没有自己的标签。运行权限（`runs:read`、`runs:read-inputs`、`runs:read-outputs`、`runs:create`、`runs:share`、`runs:delete`）根据父项目的标签进行评估。输入输出权限如何影响响​​应，请参考[Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs)。
 </Note>
 
@@ -122,8 +123,10 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 * **`operator`** - 比较运算符
 * **`attribute_value`** - 要比较的值
 
-#### 运算符|操作员|描述 |
-| ------------------------ | ------------------------------------------------ |
+#### 运算符
+
+|操作员|描述 |
+| - | - |
 | `equals` |精确匹配（区分大小写）|
 | `not_equals` |值不同（区分大小写）|
 | `equals_ignore_case` |精确匹配（不区分大小写）|
@@ -131,10 +134,10 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 | `matches` |与 `*` 和 `?` 通配符匹配的 Glob 模式 |
 | `not_matches` |当值与全局模式不匹配时匹配 |
 
-#### `_if_exists` 变体
+#### `_if_exists` 变体每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：
 
-每个运算符都有一个 `_if_exists` 变体，当标签键不存在时默认匹配，或者当标签存在时正常评估条件：|操作员|描述 |
-| ---------------------------------- | ------------------------------------------------------------------ |
+|操作员|描述 |
+| - | - |
 | `equals_if_exists` |完全匹配（区分大小写），或者如果标签键不存在 |
 | `not_equals_if_exists` |值不同（区分大小写），或者标签键不存在 |
 | `equals_ignore_case_if_exists` |完全匹配（不区分大小写），或者如果标签键不存在 |
@@ -148,11 +151,11 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 
 ### 角色
 
-`role_ids` 数组指定策略适用于哪些工作区角色。当具有该角色的用户访问资源时，将评估策略条件。创建策略时可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后通过 API 附加。
+`role_ids` 数组指定策略适用于哪些工作区角色。当具有该角色的用户访问资源时，将评估策略条件。
 
-## 管理访问策略
+创建策略时可以将策略附加到 [workspace roles](/langsmith/rbac#workspace-roles)（内置或 [custom](/langsmith/rbac#custom-roles)），或者稍后通过 API 附加。
 
-访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在您的工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
+## 管理访问策略访问策略由 [Organization Admins](/langsmith/rbac#organization-admin) 通过 LangSmith API 进行管理。在创建策略之前，请在您的工作区中[set up resource tags](/langsmith/set-up-resource-tags)。
 
 ## ABAC 如何与 RBAC 配合使用
 
@@ -167,13 +170,15 @@ ABAC 通过添加基于标签的条件来访问决策来补充[Role-Based Access
 **功能组合：**
 
 |启用 RBAC | ABAC 已启用 |行为 |
-| ------------ | ------------ | --------------------------------------------------- |
+| - | - | - |
 | ✗ | ✗ |所有工作区成员都具有管理员级别访问权限 |
 | ✓ | ✗ |标准RBAC——基于角色权限的访问|
 | ✓ | ✓ | RBAC + ABAC - 基于标签的细粒度访问控制|
 
-**同时启用 RBAC 和 ABAC 时：**| RBAC 许可 |允许策略匹配 |拒绝策略匹配 |结果 |
-| ------------ | -------------------- | ------------------- | -------------------------------- |
+**同时启用 RBAC 和 ABAC 时：**
+
+| RBAC 许可 |允许策略匹配 |拒绝策略匹配 |结果 |
+| - | - | - | - |
 | ✓ | ✓ | ✗ | **允许** |
 | ✓ | ✗ | ✗ | **允许**（RBAC 后备）|
 | ✓ | ✓ | ✓ | **被拒绝**（否认获胜）|

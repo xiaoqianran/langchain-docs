@@ -43,14 +43,14 @@ Tracing is disabled by default. With `TRACE_TO_LANGSMITH=true` set, the plugin s
 
 The plugin reads OpenCode-specific variables first, then falls back to the generic LangSmith SDK variables when available.
 
-| Variable                            | Required    | Default               | Description                                                                                                   |
-| ----------------------------------- | ----------- | --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `TRACE_TO_LANGSMITH`                | Yes         | `false`               | Set to `"true"` to enable tracing.                                                                            |
-| `LANGSMITH_OPENCODE_API_KEY`        | Conditional | -                     | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
-| `LANGSMITH_OPENCODE_ENDPOINT`       | No          | LangSmith SDK default | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`.                                                        |
-| `LANGSMITH_OPENCODE_PROJECT`        | No          | `opencode`            | LangSmith project name. Falls back to `LANGSMITH_PROJECT`.                                                    |
-| `LANGSMITH_OPENCODE_METADATA`       | No          | -                     | JSON object merged into root trace metadata.                                                                  |
-| `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` | No          | -                     | JSON array of replica destinations.                                                                           |
+| Variable | Required | Default | Description |
+| - | - | - | - |
+| `TRACE_TO_LANGSMITH` | Yes | `false` | Set to `"true"` to enable tracing. |
+| `LANGSMITH_OPENCODE_API_KEY` | Conditional | - | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. Required unless every replica provides its own API key. |
+| `LANGSMITH_OPENCODE_ENDPOINT` | No | LangSmith SDK default | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`. |
+| `LANGSMITH_OPENCODE_PROJECT` | No | `opencode` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
+| `LANGSMITH_OPENCODE_METADATA` | No | - | JSON object merged into root trace metadata. |
+| `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` | No | - | JSON array of replica destinations. |
 
 For example:
 
@@ -78,14 +78,14 @@ Use `.opencode/langsmith.json` for project-level settings or `~/.config/opencode
 }
 ```
 
-| Field      | Required    | Default               | Description                                                                      |
-| ---------- | ----------- | --------------------- | -------------------------------------------------------------------------------- |
-| `enabled`  | Yes         | `false`               | Set to `true` to enable tracing from the config file.                            |
-| `api_key`  | Conditional | -                     | LangSmith API key. Required unless provided by environment variable or replicas. |
-| `api_url`  | No          | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`.                    |
-| `project`  | No          | `opencode`            | LangSmith project name.                                                          |
-| `metadata` | No          | -                     | Object merged into root trace metadata.                                          |
-| `replicas` | No          | -                     | Additional LangSmith destinations to replicate traces to.                        |
+| Field | Required | Default | Description |
+| - | - | - | - |
+| `enabled` | Yes | `false` | Set to `true` to enable tracing from the config file. |
+| `api_key` | Conditional | - | LangSmith API key. Required unless provided by environment variable or replicas. |
+| `api_url` | No | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`. |
+| `project` | No | `opencode` | LangSmith project name. |
+| `metadata` | No | - | Object merged into root trace metadata. |
+| `replicas` | No | - | Additional LangSmith destinations to replicate traces to. |
 
 Keep config files that include API keys out of version control.
 
@@ -115,12 +115,12 @@ Set `replicas` in `langsmith.json` or `LANGSMITH_OPENCODE_RUNS_ENDPOINTS` to sen
 
 Replica objects support both snake\_case and LangSmith SDK-style camelCase field names. snake\_case is recommended in config files.
 
-| Field                     | Description                                                                 |
-| ------------------------- | --------------------------------------------------------------------------- |
-| `api_url` / `apiUrl`      | LangSmith API URL for the replica destination.                              |
-| `api_key` / `apiKey`      | API key for the destination workspace.                                      |
-| `project` / `projectName` | Project name in the destination workspace.                                  |
-| `updates`                 | Optional run fields to override on replicated runs, such as extra metadata. |
+| Field | Description |
+| - | - |
+| `api_url` / `apiUrl` | LangSmith API URL for the replica destination. |
+| `api_key` / `apiKey` | API key for the destination workspace. |
+| `project` / `projectName` | Project name in the destination workspace. |
+| `updates` | Optional run fields to override on replicated runs, such as extra metadata. |
 
 ## What gets traced
 

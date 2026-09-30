@@ -30,12 +30,12 @@ To learn how to set up RBAC and assign roles to users, refer to the [User Manage
 
 Organization roles are **distinct from the workspace RBAC feature** and are used to manage organization-wide capabilities. The roles are system-defined and cannot be modified or extended. The [Organization User](#organization-user) and [Organization Viewer](#organization-viewer) roles are only available in organizations on [Plus and Enterprise plans](https://langchain.com/pricing). In Developer organizations (single workspace), all users are assigned the [Organization Admin](#organization-admin) role by default.
 
-| Role                                            | Description                                                                                           |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Organization Admin](#organization-admin)       | Full permissions to manage organization configuration, users, billing, and workspaces                 |
+| Role | Description |
+| - | - |
+| [Organization Admin](#organization-admin) | Full permissions to manage organization configuration, users, billing, and workspaces |
 | [Organization Operator](#organization-operator) | Management access to workspaces and users for day-to-day operations, excluding admin-level privileges |
-| [Organization User](#organization-user)         | Read access to organization information and ability to create personal access tokens                  |
-| [Organization Viewer](#organization-viewer)     | Read-only access to organization information                                                          |
+| [Organization User](#organization-user) | Read access to organization information and ability to create personal access tokens |
+| [Organization Viewer](#organization-viewer) | Read-only access to organization information |
 
 #### Organization admin
 
@@ -155,11 +155,11 @@ For a comprehensive list of required permissions along with the operations and r
 
 Workspace roles are part of the **Enterprise RBAC feature** and control what users can do with resources inside a workspace:
 
-| Role                                  | Description                                                                                       |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [Workspace Admin](#workspace-admin)   | Full permissions for all resources, including workspace settings and member management            |
+| Role | Description |
+| - | - |
+| [Workspace Admin](#workspace-admin) | Full permissions for all resources, including workspace settings and member management |
 | [Workspace Editor](#workspace-editor) | Full permissions for most resources, cannot manage workspace settings or delete certain resources |
-| [Workspace Viewer](#workspace-viewer) | Read-only access to all workspace resources                                                       |
+| [Workspace Viewer](#workspace-viewer) | Read-only access to all workspace resources |
 
 <Note>
   RBAC (Role-Based Access Control) is a feature that is only available to [Enterprise](https://langchain.com/pricing) customers. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.

@@ -66,19 +66,19 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 
 ## Command overview
 
-| Command                                    | Use                                                                          |
-| ------------------------------------------ | ---------------------------------------------------------------------------- |
-| `mda --help`                               | Show CLI help.                                                               |
-| `mda --version`                            | Show the installed CLI version.                                              |
-| `mda init <name>`                          | Scaffold a TypeScript Managed Deep Agents project.                           |
-| `mda build [path]`                         | Compile a project into a managed LangGraph app without deploying.            |
-| `mda evals …`                              | Initialize a Harbor workspace and continue eval authoring in a coding agent. |
-| `mda dev [path]`                           | Compile a project and run it on the local LangGraph dev server.              |
-| `mda connections …`                        | Manage authentication for tools and MCP connectors.                          |
-| `mda deploy [path]`                        | Compile, sync Context Hub context, upload, and deploy to LangSmith.          |
-| `mda channels init slack`                  | Add a Slack channel declaration to the current project.                      |
-| `mda logs [path]`                          | Tail Agent Server logs for a deployed agent.                                 |
-| `mda delete [path]` / `mda destroy [path]` | Delete a deployed agent and the LangSmith resources it created.              |
+| Command | Use |
+| - | - |
+| `mda --help` | Show CLI help. |
+| `mda --version` | Show the installed CLI version. |
+| `mda init <name>` | Scaffold a TypeScript Managed Deep Agents project. |
+| `mda build [path]` | Compile a project into a managed LangGraph app without deploying. |
+| `mda evals …` | Initialize a Harbor workspace and continue eval authoring in a coding agent. |
+| `mda dev [path]` | Compile a project and run it on the local LangGraph dev server. |
+| `mda connections …` | Manage authentication for tools and MCP connectors. |
+| `mda deploy [path]` | Compile, sync Context Hub context, upload, and deploy to LangSmith. |
+| `mda channels init slack` | Add a Slack channel declaration to the current project. |
+| `mda logs [path]` | Tail Agent Server logs for a deployed agent. |
+| `mda delete [path]` / `mda destroy [path]` | Delete a deployed agent and the LangSmith resources it created. |
 
 ## Initialize projects
 
@@ -98,16 +98,16 @@ Use `mda init` to create a new project directory:
   ```
 </CodeGroup>
 
-| Argument or flag           | Use                                                                                                          |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `name`                     | Required project directory name. The command fails if the destination already exists.                        |
-| `--instructions TEXT`      | System prompt to write into `instructions.md`.                                                               |
-| `--instructions-file PATH` | Read the system prompt for `instructions.md` from a file, or from stdin when set to `-`.                     |
-| `--identity`               | Add managed authentication with user-owned threads.                                                          |
-| `--memory agent\|none`     | Optionally write a root memory declaration. If omitted, no memory file is created and durable memory is off. |
-| `--model SPEC`             | Model the agent runs on, as `provider:model`.                                                                |
-| `--no-sandbox`             | Leave out the managed sandbox declaration.                                                                   |
-| `--channel slack`          | Initialize the agent with a Slack channel declaration. Repeatable; `--channels` is an alias.                 |
+| Argument or flag | Use |
+| - | - |
+| `name` | Required project directory name. The command fails if the destination already exists. |
+| `--instructions TEXT` | System prompt to write into `instructions.md`. |
+| `--instructions-file PATH` | Read the system prompt for `instructions.md` from a file, or from stdin when set to `-`. |
+| `--identity` | Add managed authentication with user-owned threads. |
+| `--memory agent\|none` | Optionally write a root memory declaration. If omitted, no memory file is created and durable memory is off. |
+| `--model SPEC` | Model the agent runs on, as `provider:model`. |
+| `--no-sandbox` | Leave out the managed sandbox declaration. |
+| `--channel slack` | Initialize the agent with a Slack channel declaration. Repeatable; `--channels` is an alias. |
 
 To include Slack in a new project:
 
@@ -129,14 +129,14 @@ The scaffold language comes from the package you run, not from the current direc
 
 The scaffold creates:
 
-| File              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| `agent.ts`        | Named `agent` export from `defineDeepAgent(...)`.            |
-| `instructions.md` | Managed system prompt.                                       |
-| `package.json`    | Minimal language-specific manifest.                          |
-| `README.md`       | Local project instructions.                                  |
-| `.env`            | Deploy auth and runtime secrets. Do not commit real secrets. |
-| `.gitignore`      | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches.    |
+| File | Description |
+| - | - |
+| `agent.ts` | Named `agent` export from `defineDeepAgent(...)`. |
+| `instructions.md` | Managed system prompt. |
+| `package.json` | Minimal language-specific manifest. |
+| `README.md` | Local project instructions. |
+| `.env` | Deploy auth and runtime secrets. Do not commit real secrets. |
+| `.gitignore` | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches. |
 
 Eval tasks are opt-in and are not created by `mda init`. Run `mda evals init -i` from the project root to initialize the Harbor workspace and continue in a coding agent with the `eval-engineering` skill.
 
@@ -178,10 +178,10 @@ Use `mda build` to compile a project into a managed LangGraph app without deploy
   ```
 </CodeGroup>
 
-| Argument or flag | Use                                                                                                                                                                                     |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`           | Project directory. Defaults to the current directory.                                                                                                                                   |
-| `--out OUT`      | Output directory for the compiled app. Defaults to `<path>/.mda/build`. The directory is emptied before the build, so it must be missing, empty, or a directory a previous build wrote. |
+| Argument or flag | Use |
+| - | - |
+| `path` | Project directory. Defaults to the current directory. |
+| `--out OUT` | Output directory for the compiled app. Defaults to `<path>/.mda/build`. The directory is emptied before the build, so it must be missing, empty, or a directory a previous build wrote. |
 
 ## Evaluate projects
 
@@ -201,10 +201,10 @@ Use `mda evals init` to initialize a Harbor workspace. Use the interactive hando
   ```
 </CodeGroup>
 
-| Command or flag       | Use                                                                                                                                                           |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mda evals init`      | Create `evals/harbor-job.json` when missing and generate the Harbor adapter and runtime settings under `.mda/evals/`. Run this command from the project root. |
-| `-i`, `--interactive` | Start a detected coding agent with the eval-engineering prompt, or copy the prompt for another agent.                                                         |
+| Command or flag | Use |
+| - | - |
+| `mda evals init` | Create `evals/harbor-job.json` when missing and generate the Harbor adapter and runtime settings under `.mda/evals/`. Run this command from the project root. |
+| `-i`, `--interactive` | Start a detected coding agent with the eval-engineering prompt, or copy the prompt for another agent. |
 
 The handoff asks the coding agent to install the `eval-engineering` skill, inspect the managed agent, and write complete Harbor tasks under `evals/<task>/`. It also includes the pinned Harbor command that loads the MDA job plugin and LangSmith plugin.
 
@@ -230,19 +230,19 @@ Use `mda dev` to compile a project and run the local LangGraph dev server:
   ```
 </CodeGroup>
 
-| Argument or flag      | Use                                                                     |
-| --------------------- | ----------------------------------------------------------------------- |
-| `path`                | Project directory. Defaults to the current directory.                   |
-| `--port PORT`         | Forward a port to the LangGraph dev server.                             |
-| `--hostname HOSTNAME` | Forward a host to the LangGraph dev server.                             |
-| `--no-browser`        | Prevent the dev server from opening Studio in a browser when it starts. |
-| `--no-reload`         | Disable the dev server's hot reload.                                    |
+| Argument or flag | Use |
+| - | - |
+| `path` | Project directory. Defaults to the current directory. |
+| `--port PORT` | Forward a port to the LangGraph dev server. |
+| `--hostname HOSTNAME` | Forward a host to the LangGraph dev server. |
+| `--no-browser` | Prevent the dev server from opening Studio in a browser when it starts. |
+| `--no-reload` | Disable the dev server's hot reload. |
 
 `mda dev` compiles into `.mda/build`, then starts the language-specific LangGraph dev server from that directory:
 
-| Project language | Dev server command                       |
-| ---------------- | ---------------------------------------- |
-| TypeScript       | `npx --yes @langchain/langgraph-cli dev` |
+| Project language | Dev server command |
+| - | - |
+| TypeScript | `npx --yes @langchain/langgraph-cli dev` |
 
 When a sandbox is configured, `mda dev` tries the configured provider. If provider credentials are unavailable or provider creation fails, it falls back to a local temp-directory sandbox and prints the chosen path.
 
@@ -254,13 +254,13 @@ A connection links a managed deep agent to an external service. The credential l
 
 Create connections in one of three modes: opaque secret (fixed API key), general OAuth (BYOT app from the catalog or custom endpoints), or MCP OAuth (discover and register from an MCP server URL). Use `mda connections` to manage these credentials in the current workspace.
 
-| Command                         | Use                                                              |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `mda connections catalog`       | List services with preconfigured OAuth settings.                 |
+| Command | Use |
+| - | - |
+| `mda connections catalog` | List services with preconfigured OAuth settings. |
 | `mda connections create <slug>` | Create an opaque secret, general OAuth, or MCP OAuth connection. |
-| `mda connections list`          | List connection metadata for the workspace.                      |
-| `mda connections get <slug>`    | Show metadata for one connection.                                |
-| `mda connections delete <slug>` | Delete a connection and its stored material.                     |
+| `mda connections list` | List connection metadata for the workspace. |
+| `mda connections get <slug>` | Show metadata for one connection. |
+| `mda connections delete <slug>` | Delete a connection and its stored material. |
 
 The first argument to `mda connections create` is a slug, which is your name for the connection and the name code passes to `connections.get(...)`. Provider names go to `--oauth`.
 
@@ -298,24 +298,24 @@ Create an agent-owned API key for a custom Tavily tool:
 
 The following flags control connection creation:
 
-| Flag                              | Use                                                                                                                               |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `--project PATH`                  | Set the project directory. Defaults to the current directory.                                                                     |
-| `--workspace-id WORKSPACE_ID`     | Override `LANGSMITH_WORKSPACE_ID`.                                                                                                |
-| `--secret-from-env VAR`           | Read a fixed value or OAuth client secret from the shell or project `.env`.                                                       |
-| `--secret-from-file PATH`         | Read a fixed value or OAuth client secret from a file.                                                                            |
-| `--oauth SERVICE`                 | Use the preconfigured settings for a service in `mda connections catalog`.                                                        |
-| `--grant-type GRANT`              | Set the OAuth grant to `authorization_code` or `client_credentials`. Defaults to `authorization_code`.                            |
-| `--client-id CLIENT_ID`           | Set the OAuth client ID.                                                                                                          |
-| `--auth-method METHOD`            | Set the token endpoint method to `client_secret_basic`, `client_secret_post`, or `none`.                                          |
-| `--scope SCOPE`                   | Replace the provider's default scopes. Repeat for each scope.                                                                     |
-| `--allowed-scope SCOPE`           | Set the maximum scope that an authorization flow can request. Repeat for each scope.                                              |
-| `--authorization-param KEY=VALUE` | Add an OAuth authorization query parameter. Repeat for each parameter.                                                            |
-| `--token-param KEY=VALUE`         | Add a parameter to the OAuth token request. Repeat for each parameter.                                                            |
-| `--authorize-url URL`             | Set a custom OAuth authorization endpoint. Requires `--token-url`.                                                                |
-| `--token-url URL`                 | Set a custom OAuth token endpoint. Requires `--authorize-url` for the `authorization_code` grant.                                 |
-| `--mcp URL`                       | Create an MCP OAuth connection by discovering OAuth from the MCP server URL.                                                      |
-| `--authorize`                     | Sign in to the account the deployed agent uses, storing an agent-owned OAuth grant. Requires OAuth flags and a project directory. |
+| Flag | Use |
+| - | - |
+| `--project PATH` | Set the project directory. Defaults to the current directory. |
+| `--workspace-id WORKSPACE_ID` | Override `LANGSMITH_WORKSPACE_ID`. |
+| `--secret-from-env VAR` | Read a fixed value or OAuth client secret from the shell or project `.env`. |
+| `--secret-from-file PATH` | Read a fixed value or OAuth client secret from a file. |
+| `--oauth SERVICE` | Use the preconfigured settings for a service in `mda connections catalog`. |
+| `--grant-type GRANT` | Set the OAuth grant to `authorization_code` or `client_credentials`. Defaults to `authorization_code`. |
+| `--client-id CLIENT_ID` | Set the OAuth client ID. |
+| `--auth-method METHOD` | Set the token endpoint method to `client_secret_basic`, `client_secret_post`, or `none`. |
+| `--scope SCOPE` | Replace the provider's default scopes. Repeat for each scope. |
+| `--allowed-scope SCOPE` | Set the maximum scope that an authorization flow can request. Repeat for each scope. |
+| `--authorization-param KEY=VALUE` | Add an OAuth authorization query parameter. Repeat for each parameter. |
+| `--token-param KEY=VALUE` | Add a parameter to the OAuth token request. Repeat for each parameter. |
+| `--authorize-url URL` | Set a custom OAuth authorization endpoint. Requires `--token-url`. |
+| `--token-url URL` | Set a custom OAuth token endpoint. Requires `--authorize-url` for the `authorization_code` grant. |
+| `--mcp URL` | Create an MCP OAuth connection by discovering OAuth from the MCP server URL. |
+| `--authorize` | Sign in to the account the deployed agent uses, storing an agent-owned OAuth grant. Requires OAuth flags and a project directory. |
 
 With no value flags and no `--oauth` endpoints, `mda connections create <slug>` infers MCP OAuth when that slug matches exactly one user-owned MCP connection in the project.
 
@@ -341,14 +341,14 @@ Use `mda deploy` to compile and deploy a project to LangSmith:
   ```
 </CodeGroup>
 
-| Argument or flag                         | Use                                                                                                                                                                                                                                 |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`                                   | Project directory. Defaults to the current directory.                                                                                                                                                                               |
-| `--name NAME`                            | Deployment name. Defaults to the agent `name` from `defineDeepAgent`.                                                                                                                                                               |
-| `--deployment-type dev\|prod`            | Deployment type when creating a deployment. Defaults to `dev`.                                                                                                                                                                      |
-| `--workspace-id WORKSPACE_ID`            | Workspace ID to deploy into. Overrides `LANGSMITH_WORKSPACE_ID`.                                                                                                                                                                    |
+| Argument or flag | Use |
+| - | - |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from `defineDeepAgent`. |
+| `--deployment-type dev\|prod` | Deployment type when creating a deployment. Defaults to `dev`. |
+| `--workspace-id WORKSPACE_ID` | Workspace ID to deploy into. Overrides `LANGSMITH_WORKSPACE_ID`. |
 | `--context-strategy overwrite\|keep-hub` | Resolve Context Hub conflicts when `instructions.md` or `skills/` changed in Hub since the last sync. Required in non-interactive shells. See [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth). |
-| `--no-wait`                              | Trigger the remote build and exit without polling for deployment completion.                                                                                                                                                        |
+| `--no-wait` | Trigger the remote build and exit without polling for deployment completion. |
 
 Deploy runs these steps:
 
@@ -386,15 +386,15 @@ Use `mda logs` to tail Agent Server logs for a deployed agent:
   ```
 </CodeGroup>
 
-| Argument or flag              | Use                                                                                                   |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `path`                        | Project directory. Defaults to the current directory.                                                 |
-| `--name NAME`                 | Deployment name. Defaults to the agent `name` from the project.                                       |
-| `--lines LINES`               | Number of recent log lines to fetch. Defaults to `1000`.                                              |
-| `--level LEVEL`               | Only show entries at or above the given severity: `debug`, `info`, `warning`, `error`, or `critical`. |
-| `--follow`                    | Keep streaming new logs. This is the default in an interactive terminal.                              |
-| `--no-follow`                 | Print recent logs and exit. This is the default when output is piped.                                 |
-| `--workspace-id WORKSPACE_ID` | Workspace ID to read from. Overrides `LANGSMITH_WORKSPACE_ID`.                                        |
+| Argument or flag | Use |
+| - | - |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from the project. |
+| `--lines LINES` | Number of recent log lines to fetch. Defaults to `1000`. |
+| `--level LEVEL` | Only show entries at or above the given severity: `debug`, `info`, `warning`, `error`, or `critical`. |
+| `--follow` | Keep streaming new logs. This is the default in an interactive terminal. |
+| `--no-follow` | Print recent logs and exit. This is the default when output is piped. |
+| `--workspace-id WORKSPACE_ID` | Workspace ID to read from. Overrides `LANGSMITH_WORKSPACE_ID`. |
 
 ## Delete deployments
 
@@ -414,25 +414,25 @@ Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resou
   ```
 </CodeGroup>
 
-| Argument or flag              | Use                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------- |
-| `path`                        | Project directory. Defaults to the current directory.                     |
-| `--name NAME`                 | Deployment name. Defaults to the agent `name` from `defineDeepAgent`.     |
+| Argument or flag | Use |
+| - | - |
+| `path` | Project directory. Defaults to the current directory. |
+| `--name NAME` | Deployment name. Defaults to the agent `name` from `defineDeepAgent`. |
 | `--workspace-id WORKSPACE_ID` | Workspace ID the deployment lives in. Overrides `LANGSMITH_WORKSPACE_ID`. |
-| `--yes`                       | Delete without asking for confirmation.                                   |
+| `--yes` | Delete without asking for confirmation. |
 
 ## Troubleshooting
 
-| Symptom                                              | Cause and fix                                                                                                                                                                                                                                                                                                                                                           |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project root ... is not a directory`                | Pass a directory path to `mda dev` or `mda deploy`.                                                                                                                                                                                                                                                                                                                     |
-| `no agent entry file found`                          | Add `agent.ts` or `agent.tsx` at the project root.                                                                                                                                                                                                                                                                                                                      |
-| `No LangSmith API key found`                         | Set `LANGSMITH_API_KEY` or add it to the project `.env`.                                                                                                                                                                                                                                                                                                                |
-| Deploy fails with 401 or 403                         | Confirm the API key belongs to a workspace with deployments access. See [Pricing plans](/langsmith/pricing-plans).                                                                                                                                                                                                                                                      |
-| Deploy reports a missing model provider API key      | Add the provider key, such as `OPENAI_API_KEY`, to `.env`, export it in your shell, or configure it as a LangSmith workspace secret.                                                                                                                                                                                                                                    |
-| Deploy reports a Context Hub conflict                | `instructions.md` or `skills/` changed in Context Hub since the last sync, or the repo changed during sync. In an interactive terminal, answer the overwrite prompt. In a non-interactive shell, re-run with `--context-strategy overwrite` or `--context-strategy keep-hub`. See [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth). |
-| The build exceeds 200 MB                             | Remove generated artifacts or large files from the project before deploying.                                                                                                                                                                                                                                                                                            |
-| Deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED` | Open the printed deployment URL in LangSmith and inspect the revision logs.                                                                                                                                                                                                                                                                                             |
+| Symptom | Cause and fix |
+| - | - |
+| `project root ... is not a directory` | Pass a directory path to `mda dev` or `mda deploy`. |
+| `no agent entry file found` | Add `agent.ts` or `agent.tsx` at the project root. |
+| `No LangSmith API key found` | Set `LANGSMITH_API_KEY` or add it to the project `.env`. |
+| Deploy fails with 401 or 403 | Confirm the API key belongs to a workspace with deployments access. See [Pricing plans](/langsmith/pricing-plans). |
+| Deploy reports a missing model provider API key | Add the provider key, such as `OPENAI_API_KEY`, to `.env`, export it in your shell, or configure it as a LangSmith workspace secret. |
+| Deploy reports a Context Hub conflict | `instructions.md` or `skills/` changed in Context Hub since the last sync, or the repo changed during sync. In an interactive terminal, answer the overwrite prompt. In a non-interactive shell, re-run with `--context-strategy overwrite` or `--context-strategy keep-hub`. See [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth). |
+| The build exceeds 200 MB | Remove generated artifacts or large files from the project before deploying. |
+| Deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED` | Open the printed deployment URL in LangSmith and inspect the revision logs. |
 
 ***
 

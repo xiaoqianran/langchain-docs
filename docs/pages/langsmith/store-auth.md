@@ -49,10 +49,10 @@ The `auth` object must expose an instance of `langgraph_sdk.Auth` (commonly name
 
 Store isolation requires a `@auth.on.store` handler. Two common patterns work well; pick one based on where you want user scoping to live.
 
-| Pattern                        | Where user scope is set                                         | Best when                                                                                               |
-| ------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Explicit namespace + deny**  | Application code puts `user_id` first in every namespace        | You already pass user identity into graph code, or you want namespaces to reflect the full storage path |
-| **Automatic prefix rewriting** | Auth handler prepends `ctx.user.identity` to logical namespaces | You want simpler agent code and transparent isolation at the API layer                                  |
+| Pattern | Where user scope is set | Best when |
+| - | - | - |
+| **Explicit namespace + deny** | Application code puts `user_id` first in every namespace | You already pass user identity into graph code, or you want namespaces to reflect the full storage path |
+| **Automatic prefix rewriting** | Auth handler prepends `ctx.user.identity` to logical namespaces | You want simpler agent code and transparent isolation at the API layer |
 
 Both patterns use a single `@auth.on.store` handler that covers all store actions (`put`, `get`, `search`, `delete`, and `list_namespaces`). You only need action-specific handlers such as `@auth.on.store.put` if you want different rules per operation.
 
@@ -225,10 +225,10 @@ if __name__ == "__main__":
 
 Store isolation and [thread isolation](/langsmith/resource-auth) solve different problems:
 
-| Concern              | Mechanism                         | Scopes                                            |
-| -------------------- | --------------------------------- | ------------------------------------------------- |
-| Conversation history | Thread metadata filters (`owner`) | Per-thread checkpoints and messages               |
-| Long-term memory     | Store namespace rewriting         | Cross-thread memories, preferences, and documents |
+| Concern | Mechanism | Scopes |
+| - | - | - |
+| Conversation history | Thread metadata filters (`owner`) | Per-thread checkpoints and messages |
+| Long-term memory | Store namespace rewriting | Cross-thread memories, preferences, and documents |
 
 For multi-user agents, configure both. See [Make conversations private](/langsmith/resource-auth) for thread and run scoping.
 

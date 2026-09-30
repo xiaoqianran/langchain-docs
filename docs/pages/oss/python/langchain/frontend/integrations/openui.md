@@ -189,13 +189,13 @@ With hoisting enabled (recommended), the `root` line is written first so the pag
 
 Wiring [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) to `Renderer` directly causes results in re-rendering on every streaming token and produces hundreds of no-op re-parses per response. This causes chart components to crash when their data hasn't arrived yet. The utilities below solve these problems:
 
-| Problem                      | Solution                                                                                                             |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Partial string literals**  | `truncateAtOpenString` / `closeOrTruncateOpenString` — drop or close incomplete strings before parsing               |
-| **Mid-token churn**          | `useStableText` — gate Renderer updates on complete statement boundaries (`name = Expr(…)`) rather than every token  |
-| **Chart null-data crashes**  | `chartDataRefsResolved` — verify a chart's `Series` and label arrays are defined before including it in the snapshot |
+| Problem | Solution |
+| - | - |
+| **Partial string literals** | `truncateAtOpenString` / `closeOrTruncateOpenString` — drop or close incomplete strings before parsing |
+| **Mid-token churn** | `useStableText` — gate Renderer updates on complete statement boundaries (`name = Expr(…)`) rather than every token |
+| **Chart null-data crashes** | `chartDataRefsResolved` — verify a chart's `Series` and label arrays are defined before including it in the snapshot |
 | **No `root` yet / fallback** | `buildProgressiveRoot` — synthesise a `root = Stack([…])` from top-level variables when the model hasn't written one |
-| **Snake\_case identifiers**  | `sanitizeIdentifiers` — the parser only accepts camelCase; convert any `snake_case` names the model emits            |
+| **Snake\_case identifiers** | `sanitizeIdentifiers` — the parser only accepts camelCase; convert any `snake_case` names the model emits |
 
 Copy the full block into your project and pass `stable` to `<Renderer>`:
 

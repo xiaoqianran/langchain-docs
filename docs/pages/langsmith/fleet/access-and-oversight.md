@@ -49,13 +49,13 @@ Role-based access control (RBAC) grants or denies access to all MCP servers and 
 
 The following permissions are available for MCP servers and integrations:
 
-| Permission           | Description                                                                         |
-| -------------------- | ----------------------------------------------------------------------------------- |
-| `mcp-servers:read`   | Discover and list MCP servers and integrations                                      |
+| Permission | Description |
+| - | - |
+| `mcp-servers:read` | Discover and list MCP servers and integrations |
 | `mcp-servers:invoke` | Execute tools from MCP servers and integrations, including OAuth connect/disconnect |
-| `mcp-servers:create` | Create new MCP server configurations                                                |
-| `mcp-servers:update` | Modify MCP server configurations                                                    |
-| `mcp-servers:delete` | Remove MCP server configurations                                                    |
+| `mcp-servers:create` | Create new MCP server configurations |
+| `mcp-servers:update` | Modify MCP server configurations |
+| `mcp-servers:delete` | Remove MCP server configurations |
 
 <Note>
   A role with `mcp-servers:read` and `mcp-servers:invoke` can see and use all MCP servers and integrations in the workspace.
@@ -85,9 +85,9 @@ Attribute-based access control (ABAC) adds resource-level granularity on top of 
 
 ABAC operates on two resource types for tools:
 
-| Resource type       | Applies to                                         |
-| ------------------- | -------------------------------------------------- |
-| `mcp_server`        | Custom MCP servers added to the workspace          |
+| Resource type | Applies to |
+| - | - |
+| `mcp_server` | Custom MCP servers added to the workspace |
 | `fleet_integration` | Built-in integrations (Gmail, Slack, GitHub, etc.) |
 
 <Note>

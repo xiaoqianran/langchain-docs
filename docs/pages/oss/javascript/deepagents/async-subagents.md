@@ -25,14 +25,14 @@ graph TB
 
 ## When to use async subagents
 
-| Dimension            | Sync subagents                                                  | Async subagents                                                   |
-| -------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **Execution model**  | Supervisor blocks until subagent completes                      | Returns job ID immediately; supervisor continues                  |
-| **Concurrency**      | Parallel but blocking                                           | Parallel and non-blocking                                         |
-| **Mid-task updates** | Not possible                                                    | Send follow-up instructions via `update_async_task`               |
-| **Cancellation**     | Not possible                                                    | Cancel running tasks via `cancel_async_task`                      |
-| **Statefulness**     | Stateless -- no persistent state between invocations            | Stateful -- maintains state on its own thread across interactions |
-| **Best for**         | Tasks where the agent should wait for results before continuing | Long-running, complex tasks managed interactively in a chat       |
+| Dimension | Sync subagents | Async subagents |
+| - | - | - |
+| **Execution model** | Supervisor blocks until subagent completes | Returns job ID immediately; supervisor continues |
+| **Concurrency** | Parallel but blocking | Parallel and non-blocking |
+| **Mid-task updates** | Not possible | Send follow-up instructions via `update_async_task` |
+| **Cancellation** | Not possible | Cancel running tasks via `cancel_async_task` |
+| **Statefulness** | Stateless -- no persistent state between invocations | Stateful -- maintains state on its own thread across interactions |
+| **Best for** | Tasks where the agent should wait for results before continuing | Long-running, complex tasks managed interactively in a chat |
 
 ## Configure async subagents
 
@@ -208,13 +208,13 @@ Define async subagents as a list of [`AsyncSubAgent`](https://reference.langchai
   ```
 </CodeGroup>
 
-| Field         | Type                     | Description                                                                                                                                                     |
-| ------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`        | `string`                 | Required. Unique identifier. The supervisor uses this when launching tasks.                                                                                     |
-| `description` | `string`                 | Required. What this subagent does. The supervisor uses this to decide which agent to delegate to.                                                               |
-| `graphId`     | `string`                 | Required. The graph ID (or assistant ID) on the Agent Protocol server. For LangGraph-based deployments, this must match a graph registered in `langgraph.json`. |
-| `url`         | `string`                 | Optional. When omitted, uses ASGI transport (in-process). When set, uses HTTP transport to a remote Agent Protocol server.                                      |
-| `headers`     | `Record<string, string>` | Optional. Additional headers for requests to the remote server. Use for custom authentication with self-hosted Agent Protocol servers.                          |
+| Field | Type | Description |
+| - | - | - |
+| `name` | `string` | Required. Unique identifier. The supervisor uses this when launching tasks. |
+| `description` | `string` | Required. What this subagent does. The supervisor uses this to decide which agent to delegate to. |
+| `graphId` | `string` | Required. The graph ID (or assistant ID) on the Agent Protocol server. For LangGraph-based deployments, this must match a graph registered in `langgraph.json`. |
+| `url` | `string` | Optional. When omitted, uses ASGI transport (in-process). When set, uses HTTP transport to a remote Agent Protocol server. |
+| `headers` | `Record<string, string>` | Optional. Additional headers for requests to the remote server. Use for custom authentication with self-hosted Agent Protocol servers. |
 
 For LangGraph-based deployments, register all graphs in the same `langgraph.json` for co-deployed setups:
 
@@ -232,13 +232,13 @@ For LangGraph-based deployments, register all graphs in the same `langgraph.json
 
 The [`AsyncSubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) which is included in the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) when async subagents are configured, gives the supervisor five tools:
 
-| Tool                | Purpose                                   | Returns                       |
-| ------------------- | ----------------------------------------- | ----------------------------- |
-| `start_async_task`  | Start a new background task               | Task ID (immediately)         |
-| `check_async_task`  | Get current status and result of a task   | Status + result (if complete) |
-| `update_async_task` | Send new instructions to a running task   | Confirmation + updated status |
-| `cancel_async_task` | Stop a running task                       | Confirmation                  |
-| `list_async_tasks`  | List all tracked tasks with live statuses | Summary of all tasks          |
+| Tool | Purpose | Returns |
+| - | - | - |
+| `start_async_task` | Start a new background task | Task ID (immediately) |
+| `check_async_task` | Get current status and result of a task | Status + result (if complete) |
+| `update_async_task` | Send new instructions to a running task | Confirmation + updated status |
+| `cancel_async_task` | Stop a running task | Confirmation |
+| `list_async_tasks` | List all tracked tasks with live statuses | Summary of all tasks |
 
 The supervisor's LLM calls these tools like any other tool. The middleware handles thread creation, run management, and state persistence automatically.
 

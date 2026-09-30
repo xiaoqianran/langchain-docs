@@ -122,21 +122,21 @@ Yes. LangGraph is an MIT-licensed open-source library and is free to use.
 
 LangGraph is a stateful, orchestration framework that brings added control to agent workflows. LangSmith is a service for deploying and scaling agentic applications, with an opinionated API for building agent UXs, plus an integrated developer UI.
 
-| Features            | LangGraph (open source)                                   | LangSmith                                                                                              |
-| ------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Description         | Stateful orchestration framework for agentic applications | Scalable infrastructure for deploying LangGraph applications                                           |
-| SDKs                | Python and JavaScript                                     | Python and JavaScript                                                                                  |
-| HTTP APIs           | None                                                      | Yes - useful for retrieving & updating state or long-term memory, or creating a configurable assistant |
-| Streaming           | Basic                                                     | Dedicated mode for token-by-token messages                                                             |
-| Checkpointer        | Community contributed                                     | Supported out-of-the-box                                                                               |
-| Persistence Layer   | Self-managed                                              | Managed Postgres with efficient storage                                                                |
-| Deployment          | Self-managed                                              | • Cloud <br /> • Free self-hosted <br /> • Enterprise (paid self-hosted)                               |
-| Scalability         | Self-managed                                              | Auto-scaling of task queues and servers                                                                |
-| Fault-tolerance     | Self-managed                                              | Automated retries                                                                                      |
-| Concurrency Control | Simple threading                                          | Supports double-texting                                                                                |
-| Scheduling          | None                                                      | Cron scheduling                                                                                        |
-| Monitoring          | None                                                      | Integrated with LangSmith for observability                                                            |
-| IDE integration     | Studio                                                    | Studio                                                                                                 |
+| Features | LangGraph (open source) | LangSmith |
+| - | - | - |
+| Description | Stateful orchestration framework for agentic applications | Scalable infrastructure for deploying LangGraph applications |
+| SDKs | Python and JavaScript | Python and JavaScript |
+| HTTP APIs | None | Yes - useful for retrieving & updating state or long-term memory, or creating a configurable assistant |
+| Streaming | Basic | Dedicated mode for token-by-token messages |
+| Checkpointer | Community contributed | Supported out-of-the-box |
+| Persistence Layer | Self-managed | Managed Postgres with efficient storage |
+| Deployment | Self-managed | • Cloud <br /> • Free self-hosted <br /> • Enterprise (paid self-hosted) |
+| Scalability | Self-managed | Auto-scaling of task queues and servers |
+| Fault-tolerance | Self-managed | Automated retries |
+| Concurrency Control | Simple threading | Supports double-texting |
+| Scheduling | None | Cron scheduling |
+| Monitoring | None | Integrated with LangSmith for observability |
+| IDE integration | Studio | Studio |
 
 ### Is LangSmith open source?
 

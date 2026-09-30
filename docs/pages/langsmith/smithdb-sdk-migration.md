@@ -14,10 +14,10 @@ New SDK methods are required to query your traces with SmithDB. This guide helps
 
 Each SDK method and its underlying endpoint share the same deprecation date.
 
-| Deployment        | Deprecation      | Removal     |
-| ----------------- | ---------------- | ----------- |
+| Deployment | Deprecation | Removal |
+| - | - | - |
 | All Cloud regions | End of July 2026 | 31 Jan 2027 |
-| Self-Hosted       | `v0.16`          | `v0.18`     |
+| Self-Hosted | `v0.16` | `v0.18` |
 
 For details on how LangSmith deprecates and removes API endpoints and SDK methods, see [API and SDK deprecation policy](/langsmith/endpoint-deprecation).
 
@@ -25,13 +25,13 @@ For details on how LangSmith deprecates and removes API endpoints and SDK method
 
 The new SDK methods are available starting at these SDK versions:
 
-| Language   | Package          | Minimum version |
-| ---------- | ---------------- | --------------- |
-| Python     | `langsmith`      | `>=0.10.15`     |
-| TypeScript | `langsmith`      | `>=0.8.9`       |
-| Java       | `langsmith-java` | `0.1.0-beta.22` |
-| Go         | `langsmith-go`   | `v0.25.4`       |
-| CLI        | `langsmith-cli`  | `v0.2.44`       |
+| Language | Package | Minimum version |
+| - | - | - |
+| Python | `langsmith` | `>=0.10.15` |
+| TypeScript | `langsmith` | `>=0.8.9` |
+| Java | `langsmith-java` | `0.1.0-beta.22` |
+| Go | `langsmith-go` | `v0.25.4` |
+| CLI | `langsmith-cli` | `v0.2.44` |
 
 The [LangSmith CLI](/langsmith/langsmith-cli) queries the same SmithDB-backed endpoints and requires `v0.2.44` or later.
 
@@ -126,44 +126,44 @@ This guide is written to be fetched and applied directly by an AI coding agent. 
   <Tab title="Python">
     The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
 
-    | Before (`langsmith.utils`) | After (`langsmith`)          | Notes                                                                                                                                                                   |
-    | -------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `LangSmithError`           | `LangsmithError`             | Base exception class for the SDK; casing changed                                                                                                                        |
-    | `LangSmithAPIError`        | `InternalServerError`        | 5xx                                                                                                                                                                     |
-    | `LangSmithRequestTimeout`  | `APITimeoutError`            | Raised when a request times out                                                                                                                                         |
-    | `LangSmithUserError`       | *(removed)*                  | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
-    | `LangSmithRateLimitError`  | `RateLimitError`             | 429; unchanged name                                                                                                                                                     |
-    | `LangSmithAuthError`       | `AuthenticationError`        | 401                                                                                                                                                                     |
-    | `LangSmithNotFoundError`   | `NotFoundError`              | 404; unchanged name                                                                                                                                                     |
-    | `LangSmithConflictError`   | `ConflictError`              | 409; unchanged name                                                                                                                                                     |
-    | `LangSmithConnectionError` | `APIConnectionError`         | Raised when the client cannot connect to the API                                                                                                                        |
-    | `LangSmithExceptionGroup`  | *(removed)*                  | No equivalent                                                                                                                                                           |
-    | *(not available)*          | `APIError`                   | New: base class for all API-related errors, with `message`, `request`, and `body` attributes                                                                            |
-    | *(not available)*          | `APIStatusError`             | New: base class for all 4xx/5xx status errors                                                                                                                           |
-    | *(not available)*          | `BadRequestError`            | New: 400                                                                                                                                                                |
-    | *(not available)*          | `PermissionDeniedError`      | New: 403                                                                                                                                                                |
-    | *(not available)*          | `UnprocessableEntityError`   | New: 422                                                                                                                                                                |
-    | *(not available)*          | `APIResponseValidationError` | New: raised when a response does not match the expected schema                                                                                                          |
+    | Before (`langsmith.utils`) | After (`langsmith`) | Notes |
+    | - | - | - |
+    | `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
+    | `LangSmithAPIError` | `InternalServerError` | 5xx |
+    | `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
+    | `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
+    | `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
+    | `LangSmithAuthError` | `AuthenticationError` | 401 |
+    | `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
+    | `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
+    | `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
+    | `LangSmithExceptionGroup` | *(removed)* | No equivalent |
+    | *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
+    | *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
+    | *(not available)* | `BadRequestError` | New: 400 |
+    | *(not available)* | `PermissionDeniedError` | New: 403 |
+    | *(not available)* | `UnprocessableEntityError` | New: 422 |
+    | *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
   </Tab>
 
   <Tab title="TypeScript">
     The SmithDB-backed methods raise new exception classes instead of plain `Error`.
 
-    | Before (plain `Error`) | After (`langsmith`)         | Notes                                                                                   |
-    | ---------------------- | --------------------------- | --------------------------------------------------------------------------------------- |
-    | *(not available)*      | `LangsmithError`            | base class for all SDK errors                                                           |
-    | *(not available)*      | `InternalServerError`       | 5xx                                                                                     |
-    | *(not available)*      | `APIConnectionTimeoutError` | Raised when a request times out                                                         |
-    | *(not available)*      | `RateLimitError`            | 429                                                                                     |
-    | *(not available)*      | `AuthenticationError`       | 401                                                                                     |
-    | *(not available)*      | `NotFoundError`             | 404                                                                                     |
-    | *(not available)*      | `ConflictError`             | 409                                                                                     |
-    | *(not available)*      | `APIConnectionError`        | Raised when the client cannot connect to the API                                        |
-    | *(not available)*      | `APIError`                  | base class for all API-related errors, with `status`, `headers`, and `error` properties |
-    | *(not available)*      | `BadRequestError`           | 400                                                                                     |
-    | *(not available)*      | `PermissionDeniedError`     | 403                                                                                     |
-    | *(not available)*      | `UnprocessableEntityError`  | 422                                                                                     |
-    | *(not available)*      | `APIUserAbortError`         | Raised when a request is aborted via an `AbortController`                               |
+    | Before (plain `Error`) | After (`langsmith`) | Notes |
+    | - | - | - |
+    | *(not available)* | `LangsmithError` | base class for all SDK errors |
+    | *(not available)* | `InternalServerError` | 5xx |
+    | *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
+    | *(not available)* | `RateLimitError` | 429 |
+    | *(not available)* | `AuthenticationError` | 401 |
+    | *(not available)* | `NotFoundError` | 404 |
+    | *(not available)* | `ConflictError` | 409 |
+    | *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
+    | *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
+    | *(not available)* | `BadRequestError` | 400 |
+    | *(not available)* | `PermissionDeniedError` | 403 |
+    | *(not available)* | `UnprocessableEntityError` | 422 |
+    | *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
   </Tab>
 
   <Tab title="Java">
@@ -185,13 +185,13 @@ The following methods are discontinued. They call the retired `/feedback/formula
 
 ### Feedback formula methods
 
-| Python                                                                                                                    | TypeScript |
-| ------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| [`list_feedback_formulas`](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas)         | NA         |
-| [`get_feedback_formula_by_id`](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) | NA         |
-| [`create_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula)       | NA         |
-| [`update_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula)       | NA         |
-| [`delete_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula)       | NA         |
+| Python | TypeScript |
+| - | - |
+| [`list_feedback_formulas`](https://reference.langchain.com/python/langsmith/client/Client/list_feedback_formulas) | NA |
+| [`get_feedback_formula_by_id`](https://reference.langchain.com/python/langsmith/client/Client/get_feedback_formula_by_id) | NA |
+| [`create_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/create_feedback_formula) | NA |
+| [`update_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/update_feedback_formula) | NA |
+| [`delete_feedback_formula`](https://reference.langchain.com/python/langsmith/client/Client/delete_feedback_formula) | NA |
 
 ***
 

@@ -23,13 +23,13 @@ The final stack mirrors what `create_deep_agent` assembles by default.
 
 Each step adds one capability to the same data analysis agent:
 
-| Step                 | Problem without it                     | What you add                                                                                             |
-| -------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Minimal agent        | —                                      | Baseline loop: model + tools, no harness                                                                 |
-| Sandbox + filesystem | Agent cannot read CSVs or run Python   | Isolated [backend](/oss/python/deepagents/backends) + file and execute tools                             |
-| Summarization        | Long sessions hit context limits       | Automatic history compression                                                                            |
-| Skills               | Domain rules bloat the system prompt   | On-demand expertise via [progressive disclosure](/oss/python/langchain/multi-agent/skills-sql-assistant) |
-| Subagent             | Chart iteration crowds the main thread | Isolated worker + parallel delegation                                                                    |
+| Step | Problem without it | What you add |
+| - | - | - |
+| Minimal agent | — | Baseline loop: model + tools, no harness |
+| Sandbox + filesystem | Agent cannot read CSVs or run Python | Isolated [backend](/oss/python/deepagents/backends) + file and execute tools |
+| Summarization | Long sessions hit context limits | Automatic history compression |
+| Skills | Domain rules bloat the system prompt | On-demand expertise via [progressive disclosure](/oss/python/langchain/multi-agent/skills-sql-assistant) |
+| Subagent | Chart iteration crowds the main thread | Isolated worker + parallel delegation |
 
 ## Setup
 
@@ -869,12 +869,12 @@ If you enabled tracing in [Setup](#setup), open the run in [LangSmith](https://s
 
 You've built a customized agent with the following middleware:
 
-| Middleware                                                                                                                                                                                                                             | What it adds                         |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) + `LangSmithSandbox`                                                                                            | Isolated filesystem + `execute` tool |
-| [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)                                                                                                  | Automatic context compression        |
-| [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)                                                                                                                             | Domain knowledge loaded on demand    |
-| [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) + [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) | Parallel visualization subagent      |
+| Middleware | What it adds |
+| - | - |
+| [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) + `LangSmithSandbox` | Isolated filesystem + `execute` tool |
+| [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) | Automatic context compression |
+| [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) | Domain knowledge loaded on demand |
+| [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) + [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) | Parallel visualization subagent |
 
 This is the same foundation as [`create_deep_agent`](https://reference.langchain.com/python/deepagents/graph/create_deep_agent): assembled manually so you control exactly what's included.
 

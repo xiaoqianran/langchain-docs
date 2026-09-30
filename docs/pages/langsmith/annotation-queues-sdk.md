@@ -554,31 +554,31 @@ Freeform feedback is valuable for capturing nuanced insights but is harder to ag
 
 ## Validation rules
 
-| Type          | min/max         | categories                      | Constraints                                         |
-| ------------- | --------------- | ------------------------------- | --------------------------------------------------- |
-| `continuous`  | Optional        | Optional (labeled scale points) | `min < max`; category values within \[`min`, `max`] |
-| `categorical` | Must not be set | Required, min 2                 | Unique values and labels                            |
-| `freeform`    | Must not be set | Must not be set                 | N/A                                                 |
+| Type | min/max | categories | Constraints |
+| - | - | - | - |
+| `continuous` | Optional | Optional (labeled scale points) | `min < max`; category values within \[`min`, `max`] |
+| `categorical` | Must not be set | Required, min 2 | Unique values and labels |
+| `freeform` | Must not be set | Must not be set | N/A |
 
 ## Reference
 
 ### Feedback config types
 
-| Type          | Fields                                | Description                       |
-| ------------- | ------------------------------------- | --------------------------------- |
-| `continuous`  | `min`, `max`                          | Numeric score within a range      |
+| Type | Fields | Description |
+| - | - | - |
+| `continuous` | `min`, `max` | Numeric score within a range |
 | `categorical` | categories (list of `{value, label}`) | Selection from predefined options |
-| `freeform`    | None                                  | Free-text input                   |
+| `freeform` | None | Free-text input |
 
 ### Rubric item fields
 
-| Field                | Type                     | Description                                                                      |
-| -------------------- | ------------------------ | -------------------------------------------------------------------------------- |
-| `feedback_key`       | `string`                 | Required. Must match an existing feedback config key.                            |
-| `description`        | `string`                 | Shows annotators guidance for this item.                                         |
-| `score_descriptions` | `Record<string, string>` | Labels for specific score values (continuous).                                   |
-| `value_descriptions` | `Record<string, string>` | Labels for specific category values (categorical).                               |
-| `is_required`        | `boolean`                | Whether annotators must complete this item before submitting. Defaults to false. |
+| Field | Type | Description |
+| - | - | - |
+| `feedback_key` | `string` | Required. Must match an existing feedback config key. |
+| `description` | `string` | Shows annotators guidance for this item. |
+| `score_descriptions` | `Record<string, string>` | Labels for specific score values (continuous). |
+| `value_descriptions` | `Record<string, string>` | Labels for specific category values (categorical). |
+| `is_required` | `boolean` | Whether annotators must complete this item before submitting. Defaults to false. |
 
 ***
 

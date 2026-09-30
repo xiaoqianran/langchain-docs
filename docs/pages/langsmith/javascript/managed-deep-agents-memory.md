@@ -30,10 +30,10 @@ For the full project layout, see [Project structure](/langsmith/javascript/manag
 
 A layer names whose memory the agent reads and writes. Each enabled layer mounts its own read/write tree in the agent filesystem.
 
-| Layer     | Mount              | Belongs to                                   | Use for                                                                              |
-| --------- | ------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------ |
-| **Agent** | `/memories/agent/` | The deployment, shared by every caller       | Knowledge appropriate for everyone, such as team conventions and reusable procedures |
-| **User**  | `/memories/user/`  | The authenticated person who started the run | Personal preferences and caller-specific context                                     |
+| Layer | Mount | Belongs to | Use for |
+| - | - | - | - |
+| **Agent** | `/memories/agent/` | The deployment, shared by every caller | Knowledge appropriate for everyone, such as team conventions and reusable procedures |
+| **User** | `/memories/user/` | The authenticated person who started the run | Personal preferences and caller-specific context |
 
 Omitting a layer disables it. The runtime never copies content between layers.
 
@@ -101,12 +101,12 @@ Declaring a layer makes it available. Whether the agent actually reaches it on a
 
 Without `allow`, Managed Deep Agents applies these defaults:
 
-| Run source                | Agent memory | User memory                |
-| ------------------------- | ------------ | -------------------------- |
-| Slack one-to-one DM       | Allowed      | Allowed                    |
-| Slack channel or group DM | Allowed      | Denied                     |
-| Direct API run            | Allowed      | Denied                     |
-| Studio, verified user     | Allowed      | Allowed, policy not called |
+| Run source | Agent memory | User memory |
+| - | - | - |
+| Slack one-to-one DM | Allowed | Allowed |
+| Slack channel or group DM | Allowed | Denied |
+| Direct API run | Allowed | Denied |
+| Studio, verified user | Allowed | Allowed, policy not called |
 
 Agent memory is deployment-shared, so it is available by default. User memory is personal, so it mounts by default only where the conversation is already private to one person. A Slack channel, a group DM, and a direct API run all fall outside that, and the runtime cannot tell from the outside whether such a run is private. Denying by default means personal memory never reaches a shared conversation unless you opt in with a policy of your own.
 
@@ -164,12 +164,12 @@ export const memory = defineMemory<Context>({
 
 User memory is keyed on the authenticated principal for the run, not on anything the caller passes in. Where that principal comes from depends on how the run started:
 
-| Run source             | Principal                                                                                                      |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Slack                  | The person in the connected workspace that the event resolves to                                               |
-| Studio on a deployment | The logged-in LangSmith user                                                                                   |
-| `mda dev`              | Your own `langsmith-dev` Agent Auth principal, resolved from your personal LangSmith API key                   |
-| Direct API run         | Whoever your [identity](/langsmith/javascript/managed-deep-agents-identity) provider authenticates as a person |
+| Run source | Principal |
+| - | - |
+| Slack | The person in the connected workspace that the event resolves to |
+| Studio on a deployment | The logged-in LangSmith user |
+| `mda dev` | Your own `langsmith-dev` Agent Auth principal, resolved from your personal LangSmith API key |
+| Direct API run | Whoever your [identity](/langsmith/javascript/managed-deep-agents-identity) provider authenticates as a person |
 
 Each person's memory lives in a separate Context Hub repository derived from the deployment and the principal. Two deployments therefore never share a person's memory, even for the same person in the same Slack workspace. Agent memory is the layer to use for knowledge that should reach everyone on one deployment.
 
@@ -177,10 +177,10 @@ Each person's memory lives in a separate Context Hub repository derived from the
 
 Each mount holds hot memory and cold memory:
 
-| Path                               | Use                                                                                                       |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Path | Use |
+| - | - |
 | `AGENTS.md` at the root of a mount | **Hot memory** for compact, frequently relevant knowledge. Its contents are loaded into every model call. |
-| Other files under a mount          | **Cold memory** for detailed knowledge that the agent reads only when relevant.                           |
+| Other files under a mount | **Cold memory** for detailed knowledge that the agent reads only when relevant. |
 
 Keep hot memory compact because it consumes context on every run. Put detailed material, such as procedures, decision logs, and research notes, in cold files, and link to them from hot memory when useful.
 
@@ -221,12 +221,12 @@ For how memory relates to deploy-owned instructions and skills in Context Hub, s
 
 ## When to use memory
 
-| Concept                                                                                                                                   | Role                                          | Scope                                               |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------------- |
-| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) and [skills](/langsmith/javascript/managed-deep-agents-skills)** | Deploy-owned agent behavior                   | Shared by the deployment and read-only to the agent |
-| **Thread state**                                                                                                                          | Conversation continuity                       | One thread                                          |
-| **Agent memory**                                                                                                                          | Knowledge learned and retained in Context Hub | Shared by the deployment across threads             |
-| **User memory**                                                                                                                           | Personal context retained in Context Hub      | One authenticated person across threads             |
+| Concept | Role | Scope |
+| - | - | - |
+| **[Instructions](/langsmith/javascript/managed-deep-agents-instructions) and [skills](/langsmith/javascript/managed-deep-agents-skills)** | Deploy-owned agent behavior | Shared by the deployment and read-only to the agent |
+| **Thread state** | Conversation continuity | One thread |
+| **Agent memory** | Knowledge learned and retained in Context Hub | Shared by the deployment across threads |
+| **User memory** | Personal context retained in Context Hub | One authenticated person across threads |
 
 ## See also
 

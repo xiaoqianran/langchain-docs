@@ -439,11 +439,11 @@ The LangSmith SDK includes built-in in-memory caching for prompts. When enabled,
 
 Caching is **enabled by default**. When enabled, the default settings are:
 
-| Setting                    | Default         | Description                                                             |
-| -------------------------- | --------------- | ----------------------------------------------------------------------- |
-| `max_size`                 | 100             | Maximum number of prompts to cache                                      |
-| `ttl_seconds`              | 300 (5 minutes) | Time before a cached prompt is considered stale                         |
-| `refresh_interval_seconds` | 60              | How often to check for stale prompts and refresh them in the background |
+| Setting | Default | Description |
+| - | - | - |
+| `max_size` | 100 | Maximum number of prompts to cache |
+| `ttl_seconds` | 300 (5 minutes) | Time before a cached prompt is considered stale |
+| `refresh_interval_seconds` | 60 | How often to check for stale prompts and refresh them in the background |
 
 When refreshing, the global cache will use the last client that requested a given prompt to fetch new data.
 

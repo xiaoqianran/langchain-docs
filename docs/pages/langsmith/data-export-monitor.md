@@ -104,14 +104,14 @@ Export jobs automatically retry transient failures with the following behavior:
 
 ### Failure scenarios
 
-| Failure type                    | Cause                                                                                                                                                                                                                                           | Automatic retry?                                    | Action required                                                                                                              |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Infrastructure interruption** | [Deployments](/langsmith/deployment), server restarts, worker crashes                                                                                                                                                                           | Yes, automatically requeued with remaining retries. | None, jobs resume automatically.                                                                                             |
-| **Run timeout**                 | Single run exceeds 4-hour limit                                                                                                                                                                                                                 | Yes, retried up to 20 times (subject to change).    | If persistent, narrow date range, add filters, or [limit the exported fields](/langsmith/data-export#limit-exported-fields). |
-| **Workflow timeout**            | Entire export exceeds 72 hours                                                                                                                                                                                                                  | No                                                  | Reduce export scope (date range, filters) or break into smaller exports.                                                     |
-| **Storage/destination errors**  | [Invalid credentials](/langsmith/data-export-destinations#credentials-configuration), [missing bucket](/langsmith/data-export-destinations#configuration-fields), [permission issues](/langsmith/data-export-destinations#permissions-required) | No                                                  | Fix destination configuration and create new export.                                                                         |
-| **Destination deleted**         | Bucket removed during export                                                                                                                                                                                                                    | No                                                  | Recreate destination and restart export.                                                                                     |
-| **Terminal processing errors**  | Data serialization issues, resource exhaustion                                                                                                                                                                                                  | Yes, retried up to 20 times (subject to change).    | Check run error details; may require investigation.                                                                          |
+| Failure type | Cause | Automatic retry? | Action required |
+| - | - | - | - |
+| **Infrastructure interruption** | [Deployments](/langsmith/deployment), server restarts, worker crashes | Yes, automatically requeued with remaining retries. | None, jobs resume automatically. |
+| **Run timeout** | Single run exceeds 4-hour limit | Yes, retried up to 20 times (subject to change). | If persistent, narrow date range, add filters, or [limit the exported fields](/langsmith/data-export#limit-exported-fields). |
+| **Workflow timeout** | Entire export exceeds 72 hours | No | Reduce export scope (date range, filters) or break into smaller exports. |
+| **Storage/destination errors** | [Invalid credentials](/langsmith/data-export-destinations#credentials-configuration), [missing bucket](/langsmith/data-export-destinations#configuration-fields), [permission issues](/langsmith/data-export-destinations#permissions-required) | No | Fix destination configuration and create new export. |
+| **Destination deleted** | Bucket removed during export | No | Recreate destination and restart export. |
+| **Terminal processing errors** | Data serialization issues, resource exhaustion | Yes, retried up to 20 times (subject to change). | Check run error details; may require investigation. |
 
 <Note>
   Any single run failure (after all retries are exhausted) causes the entire export to fail.
@@ -121,14 +121,14 @@ Export jobs automatically retry transient failures with the following behavior:
 
 Exports can have the following statuses:
 
-| Status      | Description                                             |
-| ----------- | ------------------------------------------------------- |
-| `CREATED`   | Export has been created but not yet started processing. |
-| `RUNNING`   | Export is actively processing runs.                     |
-| `COMPLETED` | All runs successfully exported.                         |
-| `FAILED`    | One or more runs failed after exhausting retries.       |
-| `CANCELLED` | Export was manually cancelled by user.                  |
-| `TIMEDOUT`  | Export exceeded the 48-hour workflow timeout.           |
+| Status | Description |
+| - | - |
+| `CREATED` | Export has been created but not yet started processing. |
+| `RUNNING` | Export is actively processing runs. |
+| `COMPLETED` | All runs successfully exported. |
+| `FAILED` | One or more runs failed after exhausting retries. |
+| `CANCELLED` | Export was manually cancelled by user. |
+| `TIMEDOUT` | Export exceeded the 48-hour workflow timeout. |
 
 Individual runs can have the same possible statuses: `CREATED`, `RUNNING`, `COMPLETED`, `FAILED`, `CANCELLED`, or `TIMEDOUT`.
 
@@ -145,11 +145,11 @@ If you have multiple exports running, new run jobs will queue until capacity bec
 
 On [LangSmith Self-hosted](/langsmith/self-hosted), the concurrency limits are the defaults. To tune pod memory usage during bulk exports, configure the following environment variables on the `langsmith-backend` service:
 
-| Environment variable                    | Default           | Description                                                                                                                                                           |
-| --------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `BULK_EXPORT_MAX_CONCURRENT_RUNS`       | `5`               | Maximum number of partition runs enqueued in parallel within a single export, per scheduling pass. Reduce to limit peak memory when processing large date partitions. |
-| `DATA_EXPORT_RUN_LIMIT`                 | `500`             | Page size (max rows) fetched from the runs store per query when paging through an export window.                                                                      |
-| `DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB` | `100000` (100 MB) | Maximum accumulated payload size (KB) before a batch is flushed during an export run. Reduce to lower the memory footprint of each batch.                             |
+| Environment variable | Default | Description |
+| - | - | - |
+| `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` | Maximum number of partition runs enqueued in parallel within a single export, per scheduling pass. Reduce to limit peak memory when processing large date partitions. |
+| `DATA_EXPORT_RUN_LIMIT` | `500` | Page size (max rows) fetched from the runs store per query when paging through an export window. |
+| `DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB` | `100000` (100 MB) | Maximum accumulated payload size (KB) before a batch is flushed during an export run. Reduce to lower the memory footprint of each batch. |
 
 **Example: conservative settings for memory-constrained deployments**
 

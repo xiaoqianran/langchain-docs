@@ -43,10 +43,10 @@ sandbox = define_sandbox(
 )
 ```
 
-| Option             | Default | Description                                                                                         |
-| ------------------ | ------- | --------------------------------------------------------------------------------------------------- |
-| `idle_ttl_seconds` | `600`   | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
-| `default_timeout`  | `600`   | Seconds allowed for each command.                                                                   |
+| Option | Default | Description |
+| - | - | - |
+| `idle_ttl_seconds` | `600` | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
+| `default_timeout` | `600` | Seconds allowed for each command. |
 
 ## Configure the sandbox proxy
 
@@ -127,11 +127,11 @@ Editing `setup.sh` and redeploying does not wipe `/workspace` on live threads. T
 
 With no bake base, LangSmith's default sandbox template is the starting point. To start from something else, set exactly one of these:
 
-| Option          | Use                                        |
-| --------------- | ------------------------------------------ |
+| Option | Use |
+| - | - |
 | `snapshot_name` | LangSmith snapshot name. Tags are allowed. |
-| `snapshot_id`   | LangSmith snapshot id.                     |
-| `docker_image`  | Published Docker image.                    |
+| `snapshot_id` | LangSmith snapshot id. |
+| `docker_image` | Published Docker image. |
 
 ```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import define_sandbox
@@ -199,18 +199,18 @@ Each operation binds to the sandbox of the thread handling the current run, so t
 
 ### Available operations
 
-| Method                                                 | Purpose                                     |
-| ------------------------------------------------------ | ------------------------------------------- |
-| `ls(path)`                                             | List a directory.                           |
-| `read(file_path, offset, limit)`                       | Read text, 2000 lines by default.           |
-| `write(file_path, content)`                            | Write text, replacing any existing file.    |
-| `edit(file_path, old_string, new_string, replace_all)` | Replace a substring in place.               |
-| `delete(file_path)`                                    | Remove a file.                              |
-| `grep(pattern, path, glob, max_count)`                 | Search file contents.                       |
-| `glob(pattern, path)`                                  | Match paths.                                |
-| `execute(command, timeout)`                            | Run a shell command.                        |
-| `upload_files(files)`                                  | Write raw bytes from `(path, bytes)` pairs. |
-| `download_files(paths)`                                | Read raw bytes for the given paths.         |
+| Method | Purpose |
+| - | - |
+| `ls(path)` | List a directory. |
+| `read(file_path, offset, limit)` | Read text, 2000 lines by default. |
+| `write(file_path, content)` | Write text, replacing any existing file. |
+| `edit(file_path, old_string, new_string, replace_all)` | Replace a substring in place. |
+| `delete(file_path)` | Remove a file. |
+| `grep(pattern, path, glob, max_count)` | Search file contents. |
+| `glob(pattern, path)` | Match paths. |
+| `execute(command, timeout)` | Run a shell command. |
+| `upload_files(files)` | Write raw bytes from `(path, bytes)` pairs. |
+| `download_files(paths)` | Read raw bytes for the given paths. |
 
 Every method has an async counterpart prefixed with `a`, such as `aread`, `awrite`, and `adownload_files`.
 
@@ -272,11 +272,11 @@ Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and clean
 
 ## When to use a sandbox
 
-| Goal                                                          | Use                                                                |
-| ------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Write files, run code, or execute shell commands in isolation | Sandbox                                                            |
-| Store durable knowledge across threads                        | [Memory](/langsmith/python/managed-deep-agents-memory)             |
-| Always-on behavior without a filesystem                       | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
+| Goal | Use |
+| - | - |
+| Write files, run code, or execute shell commands in isolation | Sandbox |
+| Store durable knowledge across threads | [Memory](/langsmith/python/managed-deep-agents-memory) |
+| Always-on behavior without a filesystem | [Instructions](/langsmith/python/managed-deep-agents-instructions) |
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 

@@ -61,19 +61,19 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. Route han
 
 ### Minimum (streaming chat)
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| - | - | - |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 ### Optional (sidebar)
 
-| Method   | Path                             | Purpose                                       |
-| -------- | -------------------------------- | --------------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer        |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints     |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
+| Method | Path | Purpose |
+| - | - | - |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
 
 ### Request flow
 

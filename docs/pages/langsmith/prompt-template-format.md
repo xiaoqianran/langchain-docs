@@ -10,9 +10,9 @@ This page describes the [prompt template](/langsmith/prompt-engineering-concepts
 
 LangSmith supports two prompt template formats, which work for different levels of complexity:
 
-| Format       | Syntax         | Best for                                                             |
-| ------------ | -------------- | -------------------------------------------------------------------- |
-| **f-string** | `{variable}`   | Simple prompts with basic variable substitution                      |
+| Format | Syntax | Best for |
+| - | - | - |
+| **f-string** | `{variable}` | Simple prompts with basic variable substitution |
 | **mustache** | `{{variable}}` | Complex prompts with loops, conditionals, nested data, or evaluators |
 
 [F-string syntax](#f-string-syntax) is ideal for straightforward prompts. [Mustache](#mustache-syntax) provides features for handling complex data structures and logic, which is helpful for evaluators and advanced use cases.

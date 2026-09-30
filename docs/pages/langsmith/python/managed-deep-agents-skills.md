@@ -83,11 +83,11 @@ For what syncs, what does not, and how to open the repo from a deployment, see [
 
 ## When to use skills
 
-| Concept                                                                | Role                           | Loaded when                    |
-| ---------------------------------------------------------------------- | ------------------------------ | ------------------------------ |
-| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Always-on system prompt        | Every run                      |
-| **Skills**                                                             | Task-specific procedures       | When the agent selects them    |
-| **[Memory](/langsmith/python/managed-deep-agents-memory)**             | Knowledge the agent can update | When durable memory is enabled |
+| Concept | Role | Loaded when |
+| - | - | - |
+| **[Instructions](/langsmith/python/managed-deep-agents-instructions)** | Always-on system prompt | Every run |
+| **Skills** | Task-specific procedures | When the agent selects them |
+| **[Memory](/langsmith/python/managed-deep-agents-memory)** | Knowledge the agent can update | When durable memory is enabled |
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 

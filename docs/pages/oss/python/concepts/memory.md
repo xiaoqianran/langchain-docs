@@ -38,11 +38,11 @@ Long-term memory is a complex challenge without a one-size-fits-all solution. Ho
 
 Different applications require various types of memory. Although the analogy isn't perfect, examining [human memory types](https://www.psychologytoday.com/us/basics/memory/types-of-memory?ref=blog.langchain.dev) can be insightful. Some research (e.g., the [CoALA paper](https://arxiv.org/pdf/2309.02427)) have even mapped these human memory types to those used in AI agents.
 
-| Memory Type                      | What is Stored | Human Example              | Agent Example       |
-| -------------------------------- | -------------- | -------------------------- | ------------------- |
-| [Semantic](#semantic-memory)     | Facts          | Things I learned in school | Facts about a user  |
-| [Episodic](#episodic-memory)     | Experiences    | Things I did               | Past agent actions  |
-| [Procedural](#procedural-memory) | Instructions   | Instincts or motor skills  | Agent system prompt |
+| Memory Type | What is Stored | Human Example | Agent Example |
+| - | - | - | - |
+| [Semantic](#semantic-memory) | Facts | Things I learned in school | Facts about a user |
+| [Episodic](#episodic-memory) | Experiences | Things I did | Past agent actions |
+| [Procedural](#procedural-memory) | Instructions | Instincts or motor skills | Agent system prompt |
 
 ### Semantic memory
 

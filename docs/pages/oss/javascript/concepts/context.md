@@ -22,11 +22,11 @@
 
 LangGraph provides three ways to manage context, which combines the mutability and lifetime dimensions:
 
-| Context type                                                                          | Description                                   | Mutability | Lifetime           |
-| ------------------------------------------------------------------------------------- | --------------------------------------------- | ---------- | ------------------ |
-| [**Config**](#config)                                                                 | data passed at the start of a run             | Static     | Single run         |
-| [**Dynamic runtime context (state)**](#dynamic-runtime-context)                       | Mutable data that evolves during a single run | Dynamic    | Single run         |
-| [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) | Persistent data shared across conversations   | Dynamic    | Cross-conversation |
+| Context type | Description | Mutability | Lifetime |
+| - | - | - | - |
+| [**Config**](#config) | data passed at the start of a run | Static | Single run |
+| [**Dynamic runtime context (state)**](#dynamic-runtime-context) | Mutable data that evolves during a single run | Dynamic | Single run |
+| [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) | Persistent data shared across conversations | Dynamic | Cross-conversation |
 
 ## Config
 

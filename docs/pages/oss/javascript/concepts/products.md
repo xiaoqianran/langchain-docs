@@ -119,14 +119,14 @@ Use the [Deep Agents SDK](/oss/javascript/deepagents/overview) when:
 
 While you can accomplish similar tasks with LangChain, LangGraph, and Deep Agents, the level at which you integrate them differ:
 
-| Feature           | LangGraph                                                                       | LangChain                                                                   | Deep Agents                                                                      |
-| ----------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Short-term memory | [Short-term memory](/oss/javascript/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/javascript/langchain/short-term-memory)            | [`StateBackend`](/oss/javascript/deepagents/backends#statebackend)               |
-| Long-term memory  | [Long-term memory](/oss/javascript/langgraph/add-memory#add-long-term-memory)   | [Long-term memory](/oss/javascript/langchain/long-term-memory)              | [Long-term memory](/oss/javascript/deepagents/memory)                            |
-| Skills            | -                                                                               | [Multi-agent skills](/oss/javascript/langchain/multi-agent/skills)          | [Skills](/oss/javascript/deepagents/skills)                                      |
-| Subagents         | [Subgraphs](/oss/javascript/langgraph/use-subgraphs)                            | [Multi-agent subagents](/oss/javascript/langchain/multi-agent/subagents)    | [Subagents](/oss/javascript/deepagents/subagents)                                |
-| Human-in-the-loop | [Interrupts](/oss/javascript/langgraph/interrupts)                              | [Human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop) | [`interrupt_on` parameter](/oss/javascript/deepagents/harness#human-in-the-loop) |
-| Streaming         | [Streaming](/oss/javascript/langgraph/streaming)                                | [Agent Streaming](/oss/javascript/langchain/event-streaming)                | [Streaming](/oss/javascript/deepagents/event-streaming)                          |
+| Feature | LangGraph | LangChain | Deep Agents |
+| - | - | - | - |
+| Short-term memory | [Short-term memory](/oss/javascript/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/javascript/langchain/short-term-memory) | [`StateBackend`](/oss/javascript/deepagents/backends#statebackend) |
+| Long-term memory | [Long-term memory](/oss/javascript/langgraph/add-memory#add-long-term-memory) | [Long-term memory](/oss/javascript/langchain/long-term-memory) | [Long-term memory](/oss/javascript/deepagents/memory) |
+| Skills | - | [Multi-agent skills](/oss/javascript/langchain/multi-agent/skills) | [Skills](/oss/javascript/deepagents/skills) |
+| Subagents | [Subgraphs](/oss/javascript/langgraph/use-subgraphs) | [Multi-agent subagents](/oss/javascript/langchain/multi-agent/subagents) | [Subagents](/oss/javascript/deepagents/subagents) |
+| Human-in-the-loop | [Interrupts](/oss/javascript/langgraph/interrupts) | [Human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop) | [`interrupt_on` parameter](/oss/javascript/deepagents/harness#human-in-the-loop) |
+| Streaming | [Streaming](/oss/javascript/langgraph/streaming) | [Agent Streaming](/oss/javascript/langchain/event-streaming) | [Streaming](/oss/javascript/deepagents/event-streaming) |
 
 ## Learn more
 

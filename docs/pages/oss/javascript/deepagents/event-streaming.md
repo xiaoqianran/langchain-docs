@@ -39,14 +39,14 @@ Each subagent stream exposes the same kinds of projections as the parent run, su
 
 TypeScript uses camelCase projection names such as `toolCalls` and `taskInput`. Each subagent stream can expose `.messages`, `.toolCalls`, `.values`, `.subagents`, and `.output`.
 
-| Field       | Description                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `name`      | Sub-agent name, taken from the `subagent_type` the coordinator selects in its `task` call. |
-| `messages`  | Messages emitted by the subagent.                                                          |
-| `subagents` | Nested subagent invocations.                                                               |
-| `output`    | Final subagent state, or completion signal for the delegated task.                         |
-| `taskInput` | Promise for the prompt passed to the task tool.                                            |
-| `toolCalls` | Tool calls scoped to the subagent.                                                         |
+| Field | Description |
+| - | - |
+| `name` | Sub-agent name, taken from the `subagent_type` the coordinator selects in its `task` call. |
+| `messages` | Messages emitted by the subagent. |
+| `subagents` | Nested subagent invocations. |
+| `output` | Final subagent state, or completion signal for the delegated task. |
+| `taskInput` | Promise for the prompt passed to the task tool. |
+| `toolCalls` | Tool calls scoped to the subagent. |
 
 ## Track subagent lifecycle
 

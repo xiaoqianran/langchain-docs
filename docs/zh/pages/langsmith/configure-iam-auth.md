@@ -12,17 +12,19 @@
   数据存储 IAM 身份验证需要 `langgraph-api>=0.12.0`。
 </Note>
 
-## 支持的服务|供应商价值 | PostgreSQL | Redis |凭证来源 |
-| -------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+## 支持的服务
+
+|供应商价值 | PostgreSQL | Redis |凭证来源 |
+| - | - | - | - |
 | `aws` | Amazon RDS 或 Aurora PostgreSQL | Amazon ElastiCache 预配置缓存集群或复制组 | AWS SDK默认凭证链|
 | `azure` | Azure Database for PostgreSQL 灵活服务器 | Azure 托管 Redis 或 Azure Redis 缓存 |微软 Entra `DefaultAzureCredential` |
 | `gcp` | PostgreSQL 的云 SQL | Redis 集群的内存存储 | Google 应用程序默认凭据 (ADC) |
 
 <Warning>
   GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不同的令牌范围。
-</Warning>
+</Warning>提供者设置仅控制身份验证。在启动代理服务器之前配置网络访问、TLS、数据库用户、缓存用户和提供程序权限。
 
-提供者设置仅控制身份验证。在启动代理服务器之前配置网络访问、TLS、数据库用户、缓存用户和提供程序权限。## 启用 IAM 身份验证
+## 启用 IAM 身份验证
 
 要启用 IAM 身份验证：
 
@@ -42,7 +44,7 @@
 将这些连接 URI 变量用于您的部署类型：
 
 |部署| PostgreSQL URI | Redis URI |
-| ------------------------------------------------------- | -------------------- | ------------------ |
+| - | - | - |
 |独立代理服务器| `DATABASE_URI` | `REDIS_URI` |
 |带有控制平面的自托管部署 | `POSTGRES_URI_CUSTOM` | `REDIS_URI_CUSTOM` |
 

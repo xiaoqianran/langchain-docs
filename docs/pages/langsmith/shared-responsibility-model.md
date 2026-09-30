@@ -10,13 +10,13 @@ For the Bring Your Own Cloud (BYOC) equivalent, see the [BYOC shared responsibil
 
 ## Responsibility matrix
 
-| Domain             | LangChain responsibility (provider)                                                                                                                                            | Customer responsibility (user)                                                                                   |
-| :----------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| **Infrastructure** | We manage the underlying cloud infrastructure (via AWS and GCP), including servers, networking, OS patching, and capacity planning. AWS and GCP own the physical data centers. | N/A. You do not provision or maintain compute resources in the SaaS environment.                                 |
-| **Application**    | We secure the LangSmith application code, API endpoints, and database clusters, including code scanning and penetration testing.                                               | You are responsible for the security and safety of the AI chains and agents you build using our SDKs.            |
-| **Data**           | We enforce tenant isolation and encrypt data at rest using AES-256 and in transit using TLS 1.2 or higher.                                                                     | You control what data is sent to us and must filter sensitive PII via the SDK before it leaves your environment. |
-| **Identity**       | We provide the guardrails, including SSO/SCIM, MFA enforcement options, and RBAC frameworks.                                                                                   | You manage your user roster, assign roles (e.g., Admin vs. Viewer), and revoke access for terminated employees.  |
-| **Secrets**        | We securely store the secrets you entrust to the platform.                                                                                                                     | You are responsible for rotating your API keys and ensuring they are not hard-coded in your applications.        |
+| Domain | LangChain responsibility (provider) | Customer responsibility (user) |
+| :- | :- | :- |
+| **Infrastructure** | We manage the underlying cloud infrastructure (via AWS and GCP), including servers, networking, OS patching, and capacity planning. AWS and GCP own the physical data centers. | N/A. You do not provision or maintain compute resources in the SaaS environment. |
+| **Application** | We secure the LangSmith application code, API endpoints, and database clusters, including code scanning and penetration testing. | You are responsible for the security and safety of the AI chains and agents you build using our SDKs. |
+| **Data** | We enforce tenant isolation and encrypt data at rest using AES-256 and in transit using TLS 1.2 or higher. | You control what data is sent to us and must filter sensitive PII via the SDK before it leaves your environment. |
+| **Identity** | We provide the guardrails, including SSO/SCIM, MFA enforcement options, and RBAC frameworks. | You manage your user roster, assign roles (e.g., Admin vs. Viewer), and revoke access for terminated employees. |
+| **Secrets** | We securely store the secrets you entrust to the platform. | You are responsible for rotating your API keys and ensuring they are not hard-coded in your applications. |
 
 ## LangChain responsibilities (the platform)
 

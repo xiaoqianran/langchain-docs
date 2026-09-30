@@ -12,11 +12,11 @@ The standard LLM Gateway API supports three request and response formats. Choose
 
 ## Compare API formats
 
-| API format              | Base URL                                 | Prompt endpoint          | Compatible client                          |
-| ----------------------- | ---------------------------------------- | ------------------------ | ------------------------------------------ |
+| API format | Base URL | Prompt endpoint | Compatible client |
+| - | - | - | - |
 | OpenAI Chat Completions | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI-compatible Chat Completions clients |
-| Anthropic Messages      | `https://gateway.smith.langchain.com`    | `POST /v1/messages`      | Anthropic Messages clients                 |
-| OpenAI Responses        | `https://gateway.smith.langchain.com/v1` | `POST /responses`        | OpenAI-compatible Responses clients        |
+| Anthropic Messages | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic Messages clients |
+| OpenAI Responses | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI-compatible Responses clients |
 
 All formats authenticate with a workspace-scoped LangSmith API key. Pass it as the provider API key or as an `Authorization: Bearer` token.
 
@@ -283,13 +283,13 @@ Bring-your-own-key model IDs use the form `<provider>/<model>`. Hosted models us
 
 ## Handle errors
 
-| Status or symptom                                           | Meaning                                                                                                              |
-| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `400 Bad Request`                                           | The request is malformed, the model ID is unavailable or incorrectly formatted, or the request cannot be translated. |
-| `401 Unauthorized`                                          | The LangSmith API key is missing or invalid.                                                                         |
-| `403 Forbidden`                                             | The key does not have the required gateway permissions.                                                              |
-| `429 Too Many Requests`                                     | A gateway rate limit or an upstream provider rate limit was reached.                                                 |
-| No models with a provider prefix appear in `GET /v1/models` | The provider may not be configured or may not have returned a model catalog.                                         |
+| Status or symptom | Meaning |
+| - | - |
+| `400 Bad Request` | The request is malformed, the model ID is unavailable or incorrectly formatted, or the request cannot be translated. |
+| `401 Unauthorized` | The LangSmith API key is missing or invalid. |
+| `403 Forbidden` | The key does not have the required gateway permissions. |
+| `429 Too Many Requests` | A gateway rate limit or an upstream provider rate limit was reached. |
+| No models with a provider prefix appear in `GET /v1/models` | The provider may not be configured or may not have returned a model catalog. |
 
 For setup-specific resolutions, see the [Quickstart](/langsmith/llm-gateway-quickstart).
 

@@ -37,21 +37,21 @@ next queued message is dispatched automatically.
 
 Read queue state with the companion queue helper for your framework:
 
-| Property           | Type                            | Description                              |
-| ------------------ | ------------------------------- | ---------------------------------------- |
-| `queue.entries`    | `SubmissionQueueEntry[]`        | Array of all pending queue entries       |
-| `queue.size`       | `number`                        | Number of entries currently in the queue |
-| `queue.cancel(id)` | `(id: string) => Promise<void>` | Cancel a specific queued entry by ID     |
-| `queue.clear()`    | `() => Promise<void>`           | Cancel all queued entries                |
+| Property | Type | Description |
+| - | - | - |
+| `queue.entries` | `SubmissionQueueEntry[]` | Array of all pending queue entries |
+| `queue.size` | `number` | Number of entries currently in the queue |
+| `queue.cancel(id)` | `(id: string) => Promise<void>` | Cancel a specific queued entry by ID |
+| `queue.clear()` | `() => Promise<void>` | Cancel all queued entries |
 
 Each [SubmissionQueueEntry](https://reference.langchain.com/javascript/langchain-react/SubmissionQueueEntry) object contains:
 
-| Field       | Type     | Description                                               |
-| ----------- | -------- | --------------------------------------------------------- |
-| `id`        | `string` | Unique identifier for this queue entry                    |
-| `values`    | `object` | The input values (including messages) that were submitted |
-| `options`   | `object` | Any additional options passed with the submission         |
-| `createdAt` | `string` | ISO timestamp of when the entry was created               |
+| Field | Type | Description |
+| - | - | - |
+| `id` | `string` | Unique identifier for this queue entry |
+| `values` | `object` | The input values (including messages) that were submitted |
+| `options` | `object` | Any additional options passed with the submission |
+| `createdAt` | `string` | ISO timestamp of when the entry was created |
 
 ## Setting up `useStream`
 

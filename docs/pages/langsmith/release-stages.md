@@ -8,11 +8,11 @@ LangSmith ships features through three release stages: alpha, beta, and generall
 
 A feature advances through the stages as it matures, though smaller features may skip alpha or beta and launch directly as GA. The following table summarizes each stage.
 
-| Stage                         | Availability              | Changes                                                                       | Self-hosted / BYOC          | Support                                    |
-| ----------------------------- | ------------------------- | ----------------------------------------------------------------------------- | --------------------------- | ------------------------------------------ |
-| [Alpha](#alpha)               | Design partners only      | Breaking changes expected; the feature may change significantly or never ship | Not guaranteed              | No formal SLA                              |
-| [Beta](#beta)                 | Public or a private group | Interface or behavior may still change; GA expected within a few months       | Typically added during beta | Actively maintained; SLA varies by feature |
-| [GA](#generally-available-ga) | Public                    | Stable; breaking changes require a deprecation period                         | Supported                   | Fully supported                            |
+| Stage | Availability | Changes | Self-hosted / BYOC | Support |
+| - | - | - | - | - |
+| [Alpha](#alpha) | Design partners only | Breaking changes expected; the feature may change significantly or never ship | Not guaranteed | No formal SLA |
+| [Beta](#beta) | Public or a private group | Interface or behavior may still change; GA expected within a few months | Typically added during beta | Actively maintained; SLA varies by feature |
+| [GA](#generally-available-ga) | Public | Stable; breaking changes require a deprecation period | Supported | Fully supported |
 
 ## Alpha
 

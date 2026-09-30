@@ -264,18 +264,17 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 ## 故障排除
 
 |症状|可能的原因 |修复 |
-| ------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| - | - | - |
 | `400 Access denied` 关于目的地创建 | HMAC 凭证缺乏写入权限 |验证服务帐户在存储桶上有`storage.objects.create` |
-| `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 || `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com` |
+| `400 Key ID you provided does not exist` | HMAC 访问 ID 无效 |在 GCP 中重新生成 HMAC 密钥 |
+| `400 Invalid endpoint` |端点 URL 格式错误 |准确使用`https://storage.googleapis.com` |
 | BigQuery 表不显示任何行 |出口尚未完成 |使用`GET /api/v1/bulk-exports/{export_id}`检查导出状态 |
 | BigQuery 分区修剪不起作用 |源 URI 前缀不正确 |确保源 URI 前缀在第一个分区键之前结束，例如`gs://BUCKET/PREFIX` |
 | BigQuery 拾取 `tmp/` 文件 |广泛的文件路径 glob |在文件路径中使用 `export_id=*` 而不是 `*` |
 
 有关其他错误代码和导出状态详细信息，请参阅[Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor)。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

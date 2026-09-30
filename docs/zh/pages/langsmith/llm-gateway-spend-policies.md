@@ -4,8 +4,10 @@
 
 # 支出政策
 
+对整个组织的 LLM 使用设置成本限制，并防止在费用到达提供商之前失控。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 支出策略定义特定范围（组织、工作区、API 密钥或用户）在时间窗口（每月、每周、每天或每小时）内的成本上限。 [LLM Gateway](/langsmith/llm-gateway) 实时跟踪支出并阻止任何会使支出超过上限的请求，返回 `402` 响应：
@@ -19,10 +21,10 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 ## 政策维度
 
 支出政策的评估从最广泛到最具体。检查所有匹配的策略，如果任何一个返回块，则请求被拒绝。您可以将策略设置为默认策略（对所有工作区、用户或 API 密钥应用一揽子支出上限）或细化策略（单独限制或对一组实体的限制）。|范围 |它的上限是什么？示例|
-| ---| ---| ---|
-| **组织** |组织中所有工作区的总支出| “整个组织每月在 LLM 通话上的花费不能超过 10,000 美元” |
-| **工作区** |单个工作区或工作区组内的总支出| “与研发相关的工作空间每月的支出不能超过 2,000 美元”|
-| **API 密钥** |通过单个 API 密钥或一组 API 密钥（映射到服务或代理）进行支出 | “客户支持代理密钥每月累计花费不能超过 500 美元”|
+| - | - | - |
+| **组织** |组织中所有工作区的总支出| “整个组织每月在 LLM 通话上的花费不能超过 10,000 美元”|
+| **工作区** |单个工作区或工作区组内的总支出 | “与研发相关的工作空间每月的支出不能超过 2,000 美元”|
+| **API 密钥** |通过单个 API 密钥或一组 API 密钥（映射到服务或代理）进行支出 | “客户支持代理密钥累计花费不能超过 500 美元/月”|
 | **用户** |单个用户或一组用户的支出（根据 API 密钥的身份解析）| “个人开发者每天的支出不得超过 50 美元”|
 
 ### 冲突解决
@@ -31,31 +33,31 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 
 ### 默认值与细化策略
 
-支出政策有两个方面：1. **跨维度求和：** 该范围的总上限。示例：“此工作区的总支出不能超过每月 5,000 美元。”
-2. **维度每个成员的默认值：** 适用于某个范围内的每个 API 密钥或用户的基本限制，除非被覆盖。示例：“此工作区中的每个 API 密钥的默认上限为每月 200 美元。”单个 API 密钥可以接收提高其特定限制的额外策略，但没有任何策略可以在更广泛的范围内放宽上限设置。
+支出政策有两个方面：1. **跨维度求和：** 该范围的总上限。示例：“此工作区的总支出不能超过 5,000 美元/月。”
+2. **维度每个成员的默认值：** 适用于某个范围内的每个 API 密钥或用户的基本限制，除非被覆盖。示例：“此工作区中的每个 API 密钥的默认上限为 200 美元/月。”单个 API 密钥可以接收提高其特定限制的额外策略，但没有任何策略可以在更广泛的范围内放宽上限设置。
 
 ## 时间窗口
 
 |窗口|重置 |使用案例 |
-| ---| ---| ---|
+| - | - | - |
 | **每月** |每个月的第一天 |预算调整，总体成本控制 |
 | **每周** |每周一午夜 UTC |每周预算|
 | **每日** | UTC 午夜 |防止单日成本飙升（例如，编码代理在重试循环中过夜）|
 | **每小时** |每小时顶部 |快速抓获逃跑特工 |
 
-您可以将多个时间窗口应用到同一范围。例如，工作区可以同时具有 5,000 美元/月的上限和 500 美元/天的上限。两者都是独立执行的。
+您可以将多个时间窗口应用于同一范围。例如，工作区可以同时具有 5,000 美元/月的上限和 500 美元/天的上限。两者都是独立执行的。
 
 ## 创建支出政策
 
 <Warning>
-创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
+  创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 </Warning>1. 转至 **LLM Gateway** 并选择 **成本控制**。
-1. 单击**创建支出限额**。
-1. 选择范围（组织、工作区、API 密钥或用户）。
-1. （可选）要将相同的默认限制独立应用于每个自定义标头值，请默认将该限制应用于所选类型的每个主题，选择 **按自定义标头分隔限制**，然后输入标头名称。
-1. 设置时间窗口（每月、每周、每天或每小时）。
-1. 设置美元支出上限。
-1. 单击**创建支出限额**。
+2. 单击**创建支出限额**。
+3. 选择范围（组织、工作区、API 密钥或用户）。
+4. （可选）要将相同的默认限制独立应用于每个自定义标头值，请默认将该限制应用于所选类型的每个主题，选择 **按自定义标头分隔限制**，然后输入标头名称。
+5. 设置时间窗口（每月、每周、每天或每小时）。
+6. 设置美元支出上限。
+7. 单击**创建支出限额**。
 
 政策立即生效。网关以亚秒级执行延迟对每个传入请求进行评估。
 
@@ -73,16 +75,17 @@ API Error: 402 request blocked by gateway policies: R&D Spend Cap
 
 ## 后续步骤
 
-- [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头分割上限，以便每个最终客户获得自己的限制。
-- [Data policy](/langsmith/llm-gateway-data-policy)：在成本控制的同时添加数据策略。
+* [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头分割上限，以便每个最终客户获得自己的限制。
+* [Data policy](/langsmith/llm-gateway-data-policy)：在成本控制的同时添加数据策略。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-spend-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

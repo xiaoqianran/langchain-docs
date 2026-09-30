@@ -52,12 +52,12 @@ graph TB
 
 ### Required tools
 
-| Tool             | Version | Purpose                                                     |
-| ---------------- | ------- | ----------------------------------------------------------- |
-| Azure CLI (`az`) | 2.50    | Authenticate, query Azure resources, manage AKS credentials |
-| Terraform        | 1.5     | Run the infrastructure modules                              |
-| `kubectl`        | latest  | Inspect the AKS cluster                                     |
-| Helm             | 3.12    | Install and manage the LangSmith chart                      |
+| Tool | Version | Purpose |
+| - | - | - |
+| Azure CLI (`az`) | 2.50 | Authenticate, query Azure resources, manage AKS credentials |
+| Terraform | 1.5 | Run the infrastructure modules |
+| `kubectl` | latest | Inspect the AKS cluster |
+| Helm | 3.12 | Install and manage the LangSmith chart |
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 brew install azure-cli kubectl helm
@@ -73,9 +73,9 @@ helm version
 
 The identity running Terraform needs the following roles on the subscription:
 
-| Role                        | Purpose                                                                      |
-| --------------------------- | ---------------------------------------------------------------------------- |
-| `Contributor`               | Create and manage all Azure resources                                        |
+| Role | Purpose |
+| - | - |
+| `Contributor` | Create and manage all Azure resources |
 | `User Access Administrator` | Create role assignments for Key Vault, Blob, cert-manager managed identities |
 
 `Owner` includes both. `Contributor` alone is insufficient because role assignments require User Access Administrator.
@@ -137,19 +137,19 @@ The following sections cover each phase in detail.
 
 Terraform provisions the following Azure resources:
 
-| Resource                   | Type                                               | Purpose                                                     |
-| -------------------------- | -------------------------------------------------- | ----------------------------------------------------------- |
-| Resource Group             | `azurerm_resource_group`                           | Container for all resources                                 |
-| Virtual Network            | `azurerm_virtual_network`                          | Isolated network (10.0.0.0/17)                              |
-| AKS Cluster                | `azurerm_kubernetes_cluster`                       | Kubernetes, all workloads run here                          |
-| Ingress Controller         | Helm                                               | External load balancer + TLS termination (nginx by default) |
-| PostgreSQL Flexible Server | `azurerm_postgresql_flexible_server`               | Org config, run metadata (external tier)                    |
-| Azure Managed Redis        | `azapi_resource` (Microsoft.Cache/redisEnterprise) | Trace ingestion queue, pub/sub (external tier)              |
-| Blob Storage               | `azurerm_storage_account`                          | Raw trace objects, always required                          |
-| Managed Identity           | `azurerm_user_assigned_identity`                   | Workload Identity for pod-to-Blob auth                      |
-| Azure Key Vault            | `azurerm_key_vault`                                | Stores all LangSmith secrets                                |
-| cert-manager               | Helm                                               | Automated TLS certificate management                        |
-| KEDA                       | Helm                                               | Event-driven autoscaling for workers                        |
+| Resource | Type | Purpose |
+| - | - | - |
+| Resource Group | `azurerm_resource_group` | Container for all resources |
+| Virtual Network | `azurerm_virtual_network` | Isolated network (10.0.0.0/17) |
+| AKS Cluster | `azurerm_kubernetes_cluster` | Kubernetes, all workloads run here |
+| Ingress Controller | Helm | External load balancer + TLS termination (nginx by default) |
+| PostgreSQL Flexible Server | `azurerm_postgresql_flexible_server` | Org config, run metadata (external tier) |
+| Azure Managed Redis | `azapi_resource` (Microsoft.Cache/redisEnterprise) | Trace ingestion queue, pub/sub (external tier) |
+| Blob Storage | `azurerm_storage_account` | Raw trace objects, always required |
+| Managed Identity | `azurerm_user_assigned_identity` | Workload Identity for pod-to-Blob auth |
+| Azure Key Vault | `azurerm_key_vault` | Stores all LangSmith secrets |
+| cert-manager | Helm | Automated TLS certificate management |
+| KEDA | Helm | Event-driven autoscaling for workers |
 
 ### Clone and configure
 
@@ -293,10 +293,10 @@ terraform -chdir=infra output -raw storage_account_k8s_managed_identity_client_i
 
 Use one of the two supported deployment paths:
 
-| Path                  | Command                           | When to use                                                                                                               |
-| --------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Helm path *(default)* | `make init-values && make deploy` | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys.               |
-| Terraform path        | `make init-app && make apply-app` | Helm release + Kubernetes Secrets + Workload Identity SA managed in Terraform state. Best for GitOps and CI/CD pipelines. |
+| Path | Command | When to use |
+| - | - | - |
+| Helm path *(default)* | `make init-values && make deploy` | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys. |
+| Terraform path | `make init-app && make apply-app` | Helm release + Kubernetes Secrets + Workload Identity SA managed in Terraform state. Best for GitOps and CI/CD pipelines. |
 
 ### Helm path (recommended)
 
@@ -468,11 +468,11 @@ Each add-on is gated by a flag in `infra/terraform.tfvars`. Set the flag, re-run
 
 Enables [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform), which lets you deploy and manage agents as API servers directly from the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy). This adds three new pods.
 
-| Pod                      | Role                                                                                                     | Workload Identity |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- | ----------------- |
-| `langsmith-host-backend` | LangSmith Deployment control plane API. Manages deployment lifecycle, stores state in shared PostgreSQL. | Yes               |
-| `langsmith-listener`     | Watches host-backend, creates and updates `LangGraphPlatform` CRDs in Kubernetes.                        | Yes               |
-| `langsmith-operator`     | Reconciles CRDs. Creates per-deployment Deployments, StatefulSets, and Services.                         | No                |
+| Pod | Role | Workload Identity |
+| - | - | - |
+| `langsmith-host-backend` | LangSmith Deployment control plane API. Manages deployment lifecycle, stores state in shared PostgreSQL. | Yes |
+| `langsmith-listener` | Watches host-backend, creates and updates `LangGraphPlatform` CRDs in Kubernetes. | Yes |
+| `langsmith-operator` | Reconciles CRDs. Creates per-deployment Deployments, StatefulSets, and Services. | No |
 
 #### Scale the node pool first
 
@@ -538,11 +538,11 @@ Provides visual AI-assisted creation and management of LangGraph agents from the
 
 **Prerequisite:** LangSmith Deployment enabled (`enable_deployments = true`). Enabling Agent Builder without it causes a preflight error.
 
-| Pod                                                    | Type                       | Role                                                                          |
-| ------------------------------------------------------ | -------------------------- | ----------------------------------------------------------------------------- |
-| `langsmith-agent-builder-tool-server`                  | Static                     | MCP tool execution server, code/file editing tools for the AI                 |
-| `langsmith-agent-builder-trigger-server`               | Static                     | Webhook receiver and scheduled trigger engine                                 |
-| `langsmith-agent-bootstrap`                            | Job (Completed)            | Registers the bundled Agent Builder agent through the operator, runs once     |
+| Pod | Type | Role |
+| - | - | - |
+| `langsmith-agent-builder-tool-server` | Static | MCP tool execution server, code/file editing tools for the AI |
+| `langsmith-agent-builder-trigger-server` | Static | Webhook receiver and scheduled trigger engine |
+| `langsmith-agent-bootstrap` | Job (Completed) | Registers the bundled Agent Builder agent through the operator, runs once |
 | `agent-builder-<hash>` + queue + redis + `lg-<hash>-0` | Dynamic (operator-managed) | Agent Builder deployment, created by the operator when the bootstrap Job runs |
 
 Enable:
@@ -658,24 +658,24 @@ helm get values langsmith -n langsmith | grep -A3 insights
 
 ### Add-on summary
 
-| Phase                | New pods                                                                        | Total \~running |
-| -------------------- | ------------------------------------------------------------------------------- | --------------- |
-| Base install         | Core LangSmith (backend, frontend, queue, ingest-queue, clickhouse, etc.)       | \~17            |
-| LangSmith Deployment | `host-backend`, `listener`, `operator`                                          | \~20            |
-| Agent Builder        | `tool-server`, `trigger-server`, `bootstrap` Job + 4 dynamic Agent Builder pods | \~26            |
-| Insights and Polly   | No new static pods (Clio + Polly appear dynamically on first use)               | \~22 at rest    |
+| Phase | New pods | Total \~running |
+| - | - | - |
+| Base install | Core LangSmith (backend, frontend, queue, ingest-queue, clickhouse, etc.) | \~17 |
+| LangSmith Deployment | `host-backend`, `listener`, `operator` | \~20 |
+| Agent Builder | `tool-server`, `trigger-server`, `bootstrap` Job + 4 dynamic Agent Builder pods | \~26 |
+| Insights and Polly | No new static pods (Clio + Polly appear dynamically on first use) | \~22 at rest |
 
 ## Ingress controllers
 
 Set `ingress_controller` in `terraform.tfvars` before `make apply`. For the full TLS compatibility matrix, see `INGRESS_CONTROLLERS.md` in the [Azure module repo](https://github.com/langchain-ai/terraform/blob/main/modules/azure/INGRESS_CONTROLLERS.md).
 
-| Value               | What Terraform installs                                                         | Best for                                                             |
-| ------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `nginx` *(default)* | `ingress-nginx` Helm chart with Azure LB                                        | Standard deployments. Simplest setup.                                |
-| `istio-addon`       | AKS Service Mesh add-on (Azure-managed Istio)                                   | Azure-managed Istio mesh, multi-dataplane, mTLS.                     |
-| `istio`             | `istio-base` + `istiod` + `istio-ingressgateway`                                | Self-managed Istio. Full mesh and sidecar injection.                 |
-| `agic`              | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on | Enterprise Azure, native L7 WAF, HTTP-only or dns01 + custom domain. |
-| `envoy-gateway`     | `gateway-helm` OCI chart, Kubernetes Gateway API                                | Gateway API native, modern alternative to Ingress.                   |
+| Value | What Terraform installs | Best for |
+| - | - | - |
+| `nginx` *(default)* | `ingress-nginx` Helm chart with Azure LB | Standard deployments. Simplest setup. |
+| `istio-addon` | AKS Service Mesh add-on (Azure-managed Istio) | Azure-managed Istio mesh, multi-dataplane, mTLS. |
+| `istio` | `istio-base` + `istiod` + `istio-ingressgateway` | Self-managed Istio. Full mesh and sidecar injection. |
+| `agic` | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on | Enterprise Azure, native L7 WAF, HTTP-only or dns01 + custom domain. |
+| `envoy-gateway` | `gateway-helm` OCI chart, Kubernetes Gateway API | Gateway API native, modern alternative to Ingress. |
 
 <Warning>
   `letsencrypt` (HTTP-01) only works with `nginx`, `istio` (self-managed), and `envoy-gateway`. `istio-addon` does not create an IngressClass, so the ACME solver cannot receive traffic. With `agic`, the Application Gateway rewrites the ACME challenge path, so the HTTP-01 solver fails. For both, use `dns01` with a custom domain, or `none` for HTTP-only.

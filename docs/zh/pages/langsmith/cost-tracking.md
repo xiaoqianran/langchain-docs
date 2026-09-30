@@ -53,8 +53,10 @@ UI 将代币使用和成本分为三类：
 1. **自动**：根据 LLM 调用的代币数量和模型价格得出。
 2. **手动**：在任何运行中直接指定，包括非 LLM 类型。
 
-|方法|运行类型：法学硕士|运行类型: 其他|| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------- |
-| **自动** | <ul><li>使用 [LangChain](/oss/python/langchain/overview)</li><li>调用 LLM 跟踪对 OpenAI、Anthropic 或遵循 OpenAI 兼容格式的模型的 LLM 调用`@traceable`</li><li> 使用[OpenAI](/langsmith/trace-openai)或[Anthropic](/langsmith/trace-anthropic)</li><li>使用LangSmith包装器对于其他模型提供程序，请阅读[token and cost information guide](/langsmith/log-llm-trace#provide-token-and-cost-information)</li></ul> |不适用。                                                || **手动** |如果LLM通话成本是非线性的（例如遵循自定义成本函数）|发送任何运行类型的成本，例如工具调用、检索步骤|
+|方法|运行类型：法学硕士|运行类型: 其他|
+| - | - | - |
+| **自动** | <ul><li>使用 [LangChain](/oss/python/langchain/overview)</li><li>调用 LLM 跟踪对 OpenAI、Anthropic 或遵循 OpenAI 兼容格式的模型的 LLM 调用`@traceable`</li><li> 使用[OpenAI](/langsmith/trace-openai)或[Anthropic](/langsmith/trace-anthropic)</li><li>使用LangSmith包装器对于其他模型提供程序，请阅读[token and cost information guide](/langsmith/log-llm-trace#provide-token-and-cost-information)</li></ul> |不适用。 |
+| **手动** |如果LLM通话成本是非线性的（例如遵循自定义成本函数）|发送任何运行类型的成本，例如工具调用、检索步骤|
 
 ### LLM 调用：根据代币计数自动跟踪成本
 
@@ -62,9 +64,9 @@ UI 将代币使用和成本分为三类：
 
 <Note>
   如果您使用 [LangChain](/oss/python/langchain/overview) 调用 LLM，将 `@traceable` 与 OpenAI 或 Anthropic（或 OpenAI 兼容模型）一起使用，或者使用 [OpenAI](/langsmith/trace-openai) 或 [Anthropic](/langsmith/trace-anthropic) 的 LangSmith 包装器，请跳过此部分。
-</Note>
+</Note>1. 发送令牌计数。许多模型都将令牌计数作为响应的一部分。您必须使用以下方法之一提取此信息并将其包含在运行中：
 
-1. 发送令牌计数。许多模型都将令牌计数作为响应的一部分。您必须使用以下方法之一提取此信息并将其包含在运行中：* 在运行的元数据上设置 `usage_metadata` 字段。这种方法的优点是您不需要更改跟踪函数的运行时输出：
+   * 在运行的元数据上设置 `usage_metadata` 字段。这种方法的优点是您不需要更改跟踪函数的运行时输出：
 
      <CodeGroup>
        ```python Python expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -542,11 +544,11 @@ UI 将代币使用和成本分为三类：
 
      <ParamField type="number">
        模型输入中使用的标记数量。所有输入标记类型的总和。
+     </ParamField><ParamField type="number">
+       模型响应中使用的令牌数量。所有输出令牌类型的总和。
      </ParamField>
 
      <ParamField type="number">
-       模型响应中使用的令牌数量。所有输出令牌类型的总和。
-     </ParamField><ParamField type="number">
        输入和输出中使用的令牌数量。可选的，可以推断。输入令牌+输出令牌之和。
      </ParamField>
 
@@ -576,11 +578,11 @@ UI 将代币使用和成本分为三类：
 
      <ParamField type="object">
        输入成本的详细信息。键是令牌类型的字符串，值是成本金额。
+     </ParamField><ParamField type="object">
+       输出成本的详细信息。键是令牌类型的字符串，值是成本金额。
      </ParamField>
 
-     <ParamField type="object">
-       输出成本的详细信息。键是令牌类型的字符串，值是成本金额。
-     </ParamField>**成本计算**
+     **成本计算**
 
      运行的成本是根据特定令牌类型从大到小的贪婪计算的。假设您将每 1M 个输入代币的价格设置为 \$2，每 1M `cache_read` 输入代币的详细价格为 \$1，每 1M 个输出代币的详细价格为 \$3。如果您上传了以下使用情况元数据：
 
@@ -609,11 +611,11 @@ UI 将代币使用和成本分为三类：
    * `ls_provider`：模型的提供者，例如“openai”、“anthropic”
    * `ls_model_name`：型号名称，例如“gpt-5.4-mini”、“claude-opus-4-8”
 
-3.设定型号价格。 LangSmith 使用其 [model pricing table](https://smith.langchain.com/settings/workspaces/models) 将模型名称映射到每个代币价格，以根据代币计数计算成本。
-
-   <Note>
+3.设定型号价格。 LangSmith 使用其 [model pricing table](https://smith.langchain.com/settings/workspaces/models) 将模型名称映射到每个代币价格，以根据代币计数计算成本。<Note>
      该表包含大多数 OpenAI、Anthropic 和 Gemini 型号的定价信息。如果您有自定义定价，您可以创建新的型号价格条目或覆盖默认型号的定价。
-   </Note>对于针对不同令牌类型（例如多模式或缓存令牌）具有不同定价的模型，您可以指定每种令牌类型的价格细目。将鼠标悬停在 **输入价格** 和 **输出价格** 条目旁边的 **...** 上会显示按代币类型划分的价格细分。
+   </Note>
+
+   对于针对不同令牌类型（例如多模式或缓存令牌）具有不同定价的模型，您可以指定每种令牌类型的价格细目。将鼠标悬停在 **输入价格** 和 **输出价格** 条目旁边的 **...** 上会显示按代币类型划分的价格细分。
 
    <Note>
      LangSmith 不会在已记录的跟踪成本中反映模型定价图的更新。不支持回填模型定价更改。

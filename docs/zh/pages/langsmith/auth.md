@@ -4,18 +4,18 @@
 
 # 身份验证和访问控制
 
-LangSmith provides a flexible authentication and authorization system that can integrate with most authentication schemes.
+LangSmith提供灵活的认证和授权系统，可以与大多数认证方案集成。
 
 ## 核心概念
 
 ### 身份验证与授权
 
-While often used interchangeably, these terms represent distinct security concepts:
+虽然经常互换使用，但这些术语代表了不同的安全概念：
 
 * [**Authentication**](#authentication)（“AuthN”）验证您*是谁*。它作为每个请求的中间件运行。
-* [**Authorization**](#authorization) ("AuthZ") determines *what you can do*. This validates the user's privileges and roles on a per-resource basis.
+* [**Authorization**](#authorization)（“AuthZ”）决定*您可以做什么*。这会根据每个资源验证用户的权限和角色。
 
-In LangSmith, authentication is handled by your [⟦T8⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) handler, and authorization is handled by your [⟦T9⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/on) handlers.
+在 LangSmith 中，身份验证由您的 [⟦T8⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序处理，授权由您的 [⟦T9⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/on) 处理程序处理。
 
 ## 默认安全模型
 
@@ -26,36 +26,36 @@ LangSmith 提供不同的安全默认值：
 * 默认使用 LangSmith API 密钥
 * 需要在 `x-api-key` 标头中提供有效的 API 密钥
 * 可以使用您的身份验证处理程序进行定制
-* Can accept LangSmith API keys alongside custom auth when `auth.allow_langsmith_api_keys` is `true` in [⟦T13⟧](/langsmith/cli#configuration-file) (Agent Server v0.14.0rc2+)
+* 当 [⟦T13⟧](/langsmith/cli#configuration-file) 中的 `auth.allow_langsmith_api_keys` 为 `true` 时，可以接受 LangSmith API 密钥以及自定义身份验证（代理服务器 v0.14.0rc2+）
 
 <Note>
   **自定义授权**
-  Custom auth **is supported** for all plans in LangSmith.
+  LangSmith 中的所有计划**支持**自定义身份验证。
 </Note>
 
 ### 自托管
 
 * 无默认身份验证
-* Complete flexibility to implement your security model
-* You control all aspects of authentication and authorization## System architecture
+* 完全灵活地实施您的安全模型
+* 您控制身份验证和授权的各个方面## 系统架构
 
-A typical authentication setup involves three main components:
+典型的身份验证设置涉及三个主要组件：
 
-1. **Authentication Provider** (Identity Provider/IdP)
-   * A dedicated service that manages user identities and credentials
-   * Handles user registration, login, password resets, etc.
-   * Issues tokens (JWT, session tokens, etc.) after successful authentication
-   * Examples: Auth0, Supabase Auth, Okta, or your own auth server
+1. **身份验证提供商**（身份提供商/IdP）
+   * 管理用户身份和凭证的专用服务
+   * 处理用户注册、登录、密码重置等。
+   * 身份验证成功后颁发令牌（JWT、会话令牌等）
+   * 示例：Auth0、Supabase Auth、Okta 或您自己的身份验证服务器
 2. **代理服务器**（资源服务器）
-   * Your agent or LangGraph application, which contains business logic and protected resources
+   * 您的代理或LangGraph应用程序，其中包含业务逻辑和受保护的资源
    * 与身份验证提供者验证令牌
-   * Enforces access control based on user identity and permissions
+   * 基于用户身份和权限实施访问控制
    * 不直接存储用户凭据
 3. **客户端应用程序**（前端）
    * Web 应用程序、移动应用程序或 API 客户端
-   * Collects time-sensitive user credentials and sends to auth provider
+   * 收集对时间敏感的用户凭据并将其发送给身份验证提供商
    * 从身份验证提供者接收令牌
-   * Includes these tokens in requests to the Agent Server
+   * 在对代理服务器的请求中包含这些令牌
 
 以下是这些组件通常如何交互的：
 
@@ -75,9 +75,9 @@ sequenceDiagram
     LG-->>Client: 8. Return resources
 ```
 
-Your [⟦T14⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) handler in LangGraph handles steps 4-6, while your [⟦T15⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/on) handlers implement step 7.
+LangGraph 中的 [⟦T14⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序处理步骤 4-6，而 [⟦T15⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/on) 处理程序则实现步骤 7。
 
-## AuthenticationLangGraph 中的身份验证作为中间件在每个请求上运行。您的 [⟦T16⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序接收请求信息并且应该：
+## 身份验证LangGraph 中的身份验证作为中间件在每个请求上运行。您的 [⟦T16⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序接收请求信息并且应该：
 
 1. 验证凭据
 2. 如果有效，则返回包含用户身份和用户信息的[user info](https://reference.langchain.com/python/langgraph-sdk/auth/types/MinimalUserDict)
@@ -177,13 +177,13 @@ sequenceDiagram
 
 有关如何向 MCP 服务器验证代理的信息，请参阅 [MCP conceptual guide](/oss/python/langchain/mcp)。
 
-## Authorization
+## 授权
 
-身份验证后，LangGraph 调用您的 [⟦T27⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 处理程序来控制对特定资源（例如线程、助手、cron）的访问。 These handlers can:1. 通过直接改变`value["metadata"]`字典来添加创建资源时要保存的元数据。 See the [supported actions table](#supported-actions) for the list of types the value can take for each action.
-2. Filter resources by metadata during search/list or read operations by returning a [filter dictionary](#filter-operations).
+身份验证后，LangGraph 调用您的 [⟦T27⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 处理程序来控制对特定资源（例如线程、助手、cron）的访问。这些处理程序可以：1. 通过直接改变`value["metadata"]`字典来添加创建资源时要保存的元数据。请参阅 [supported actions table](#supported-actions) 了解每个操作的值可以采用的类型列表。
+2. 在搜索/列表或读取操作期间通过返回 [filter dictionary](#filter-operations) 按元数据过滤资源。
 3. 如果访问被拒绝，则引发 HTTP 异常。
 
-If you want to just implement simple user-scoped access control, you can use a single [⟦T29⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) handler for all resources and actions. If you want to have different control depending on the resource and action, you can use [resource-specific handlers](#resource-specific-handlers). See the [Supported Resources](#supported-resources) section for a full list of the resources that support access control.
+如果您只想实现简单的用户范围访问控制，则可以对所有资源和操作使用单个 [⟦T29⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 处理程序。如果您想根据资源和操作进行不同的控制，可以使用[resource-specific handlers](#resource-specific-handlers)。有关支持访问控制的资源的完整列表，请参阅 [Supported Resources](#supported-resources) 部分。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 @auth.on
@@ -227,8 +227,8 @@ async def add_owner(
 
 ### 特定于资源的处理程序
 
-You can register handlers for specific resources and actions by chaining the resource and action names together with the [⟦T30⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) decorator.
-When a request is made, the most specific handler that matches that resource and action is called. Below is an example of how to register handlers for specific resources and actions.对于以下设置：1.经过身份验证的用户能够创建线程、读取线程以及在线程上创建运行
+您可以通过将资源和操作名称与 [⟦T30⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 装饰器链接在一起来注册特定资源和操作的处理程序。
+发出请求时，将调用与该资源和操作匹配的最具体的处理程序。下面是如何注册特定资源和操作的处理程序的示例。对于以下设置：1.经过身份验证的用户能够创建线程、读取线程以及在线程上创建运行
 2、只有拥有“assistants:create”权限的用户才可以创建新的助手
 3. 对所有用户禁用所有其他端点（例如，删除助手、crons、存储）。
 
@@ -437,30 +437,30 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 
 #### 支持的操作和类型
 
-以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型|
-| -------------- | -------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型 |
+| - | - | - | - |
 | **话题** | `@auth.on.threads.create` |线程创建 | [⟦T63⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
-|                | `@auth.on.threads.read` |主题检索 | [⟦T65⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
-|                | `@auth.on.threads.update` |主题更新 | [⟦T67⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate) |
-|                | `@auth.on.threads.delete` |删除主题 | [⟦T69⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete) |
-|                | `@auth.on.threads.search` |列出主题 | [⟦T71⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
-|                | `@auth.on.threads.create_run` |创建或更新运行 | [⟦T73⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
-| **助理** | `@auth.on.assistants.create` |助理创作| [⟦T75⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
-|                | `@auth.on.assistants.read` |助理检索 | [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
-|                | `@auth.on.assistants.update` |助理更新 | [⟦T79⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
-|                | `@auth.on.assistants.delete` |助理删除| [⟦T81⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) ||                | `@auth.on.assistants.search` |上市助理| [⟦T83⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
+| | `@auth.on.threads.read` |主题检索 | [⟦T65⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
+| | `@auth.on.threads.update` |主题更新 | [⟦T67⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate) |
+| | `@auth.on.threads.delete` |删除主题 | [⟦T69⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete) |
+| | `@auth.on.threads.search` |列出主题 | [⟦T71⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
+| | `@auth.on.threads.create_run` |创建或更新运行 | [⟦T73⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
+| **助理** | `@auth.on.assistants.create` |助理创作 | [⟦T75⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
+| | `@auth.on.assistants.read` |助理检索| [⟦T77⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
+| | `@auth.on.assistants.update` |助理更新 | [⟦T79⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
+| | `@auth.on.assistants.delete` |助理删除| [⟦T81⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
+| | `@auth.on.assistants.search` |上市助理| [⟦T83⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
 | **克朗** | `@auth.on.crons.create` | Cron 工作创造 | [⟦T85⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsCreate) |
-|                | `@auth.on.crons.read` | Cron 作业检索 | [⟦T87⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead) |
-|                | `@auth.on.crons.update` | Cron 作业更新 | [⟦T89⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate) |
-|                | `@auth.on.crons.delete` |删除 Cron 作业 | [⟦T91⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete) |
-|                | `@auth.on.crons.search` |列出 cron 作业 | [⟦T93⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch) |
+| | `@auth.on.crons.read` | Cron 作业检索 | [⟦T87⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead) |
+| | `@auth.on.crons.update` | Cron 作业更新 | [⟦T89⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate) |
+| | `@auth.on.crons.delete` | Cron 作业删除 | [⟦T91⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete) |
+| | `@auth.on.crons.search` |列出 cron 作业 | [⟦T93⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch) |
 | **商店** | `@auth.on.store` |所有店铺运营| `Auth.types.on.store.value` |
-|                | `@auth.on.store.put` |储存物品 | `Auth.types.on.store.put.value` |
-|                | `@auth.on.store.get` |检索物品 | `Auth.types.on.store.get.value` |
-|                | `@auth.on.store.search` |搜索项目 | `Auth.types.on.store.search.value` ||                | `@auth.on.store.delete` |删除项目 | `Auth.types.on.store.delete.value` |
-|                | `@auth.on.store.list_namespaces` |列出命名空间 | `Auth.types.on.store.list_namespaces.value` |
-
-存储授权与线程和助手不同。处理程序必须重写 `value` 中的可变 `namespace` 字段以限定每个用户的数据范围，而不是返回元数据过滤器。有关演练，请参阅 [Isolate store per user](/langsmith/store-auth)。
+| | `@auth.on.store.put` |储存物品 | `Auth.types.on.store.put.value` |
+| | `@auth.on.store.get` |检索物品 | `Auth.types.on.store.get.value` |
+| | `@auth.on.store.search` |搜索项目 | `Auth.types.on.store.search.value` |
+| | `@auth.on.store.delete` |删除项目 | `Auth.types.on.store.delete.value` |
+| | `@auth.on.store.list_namespaces` |列出命名空间 | `Auth.types.on.store.list_namespaces.value` |存储授权与线程和助手不同。处理程序必须重写 `value` 中的可变 `namespace` 字段以限定每个用户的数据范围，而不是返回元数据过滤器。有关演练，请参阅 [Isolate store per user](/langsmith/store-auth)。
 
 <Note>
   《关于跑步》

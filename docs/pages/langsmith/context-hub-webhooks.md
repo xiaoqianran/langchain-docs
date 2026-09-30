@@ -37,17 +37,17 @@ Use the controls on a webhook to manage it:
 
 LangSmith sends a JSON `POST` request for each event. Custom headers cannot override `Content-Type` or `X-LangSmith-Signature`, which LangSmith sets after applying custom headers.
 
-| Property            | Value                                                                    |
-| ------------------- | ------------------------------------------------------------------------ |
-| Method              | `POST`                                                                   |
-| URL                 | Publicly reachable HTTPS endpoint                                        |
-| Content type        | `application/json`                                                       |
-| Signature           | `X-LangSmith-Signature` header, signed with the webhook's signing secret |
-| Timeout             | 20 seconds per attempt                                                   |
-| Attempts            | Up to 4 attempts: 1 initial attempt and up to 3 retries                  |
-| Retry conditions    | Transport failures, HTTP `408`, `425`, `429`, and `5xx` responses        |
-| Permanent responses | Other `4xx` responses are not retried                                    |
-| Response handling   | A status below `400` succeeds. Response bodies do not affect success.    |
+| Property | Value |
+| - | - |
+| Method | `POST` |
+| URL | Publicly reachable HTTPS endpoint |
+| Content type | `application/json` |
+| Signature | `X-LangSmith-Signature` header, signed with the webhook's signing secret |
+| Timeout | 20 seconds per attempt |
+| Attempts | Up to 4 attempts: 1 initial attempt and up to 3 retries |
+| Retry conditions | Transport failures, HTTP `408`, `425`, `429`, and `5xx` responses |
+| Permanent responses | Other `4xx` responses are not retried |
+| Response handling | A status below `400` succeeds. Response bodies do not affect success. |
 
 Retries contain the byte-identical request body and retain the event `id`. Deduplicate events by `id` before producing downstream effects.
 
@@ -146,36 +146,36 @@ The outer `id`, `type`, `created`, and `data` envelope is frozen. The `.v1` suff
 }
 ```
 
-| Field     | Type    | Description                                                                               |
-| --------- | ------- | ----------------------------------------------------------------------------------------- |
-| `id`      | UUID    | Unique event identifier that remains stable across retries. Use it to deduplicate events. |
-| `type`    | string  | Exact event type. Currently `context_hub.commit.created.v1`.                              |
-| `created` | integer | Unix seconds in UTC when the event was enqueued.                                          |
-| `data`    | object  | Versioned event data. Contains `data.commit`.                                             |
+| Field | Type | Description |
+| - | - | - |
+| `id` | UUID | Unique event identifier that remains stable across retries. Use it to deduplicate events. |
+| `type` | string | Exact event type. Currently `context_hub.commit.created.v1`. |
+| `created` | integer | Unix seconds in UTC when the event was enqueued. |
+| `data` | object | Versioned event data. Contains `data.commit`. |
 
 ### `data.commit`
 
 The `data.commit` object describes the Context Hub commit that triggered the event.
 
-| Field                | Type   | Description                                                                   |
-| -------------------- | ------ | ----------------------------------------------------------------------------- |
-| `repo_id`            | UUID   | Context Hub repository ID.                                                    |
-| `repo_handle`        | string | Repository handle.                                                            |
-| `repo_type`          | string | Repository type: `agent` or `skill`.                                          |
-| `commit_hash`        | string | Hash of the new commit.                                                       |
+| Field | Type | Description |
+| - | - | - |
+| `repo_id` | UUID | Context Hub repository ID. |
+| `repo_handle` | string | Repository handle. |
+| `repo_type` | string | Repository type: `agent` or `skill`. |
+| `commit_hash` | string | Hash of the new commit. |
 | `parent_commit_hash` | string | Hash of the parent commit. Omitted for an initial commit or when unavailable. |
-| `created_at`         | string | RFC 3339 timestamp when the commit was created.                               |
-| `created_by`         | string | LangSmith user ID that created the commit. Omitted when unavailable.          |
-| `url`                | string | Deep link to the commit in the LangSmith UI.                                  |
-| `files_changed`      | array  | File changes included in the commit. Each entry contains `path` and `action`. |
+| `created_at` | string | RFC 3339 timestamp when the commit was created. |
+| `created_by` | string | LangSmith user ID that created the commit. Omitted when unavailable. |
+| `url` | string | Deep link to the commit in the LangSmith UI. |
+| `files_changed` | array | File changes included in the commit. Each entry contains `path` and `action`. |
 
 ### `data.commit.files_changed`
 
 Each entry summarizes a changed path. It does not contain the file contents.
 
-| Field    | Type   | Description                                     |
-| -------- | ------ | ----------------------------------------------- |
-| `path`   | string | Path changed by the commit.                     |
+| Field | Type | Description |
+| - | - | - |
+| `path` | string | Path changed by the commit. |
 | `action` | string | Change type: `added`, `modified`, or `removed`. |
 
 ## Handle event versions

@@ -12,17 +12,17 @@ This will help you getting started with `ChatAnthropic` [chat models](/oss/javas
 
 ### Integration details
 
-| Class                                                                                           | Package                                                                      | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) |                                               Downloads                                              |                                              Version                                              |
-| :---------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :----------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
-| [`ChatAnthropic`](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [`@langchain/anthropic`](https://www.npmjs.com/package/@langchain/anthropic) |       ✅      |                                       ✅                                      | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
+| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) | Downloads | Version |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [`ChatAnthropic`](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [`@langchain/anthropic`](https://www.npmjs.com/package/@langchain/anthropic) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
 
 ### Model features
 
 See the links in the table headers below for guides on how to use specific features.
 
 | [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) | Audio input | Video input | [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :-----------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------: |
-|                        ✅                        |                                 ✅                                |                               ✅                              |      ❌      |      ❌      |                               ✅                               |                              ✅                              |                                ❌                               |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 
 ## Setup
 
@@ -91,10 +91,10 @@ await model.invoke("Hello!");
 
 Support by model:
 
-| Models                                                                                     | `temperature` / `topP` / `topK`                                                                                |
-| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Models | `temperature` / `topP` / `topK` |
+| - | - |
 | `claude-opus-5`, `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-5` | Non-default values rejected (400). Omit the parameters, or pass defaults only (for example, `temperature: 1`). |
-| `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`, and earlier                    | Accepted                                                                                                       |
+| `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`, and earlier | Accepted |
 
 <Warning>
   **Upgrading the model string?**

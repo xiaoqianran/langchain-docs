@@ -224,14 +224,14 @@ const agent = createDeepAgent({
 
 On top of the basic configuration options for memory paths and scope, you can also configure more advanced parameters for memory:
 
-| Dimension             | Question it answers             | Options                                                                                                                                                                                            |
-| --------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Duration**          | How long does it last?          | [Short-term](/oss/javascript/deepagents/context-engineering) (single conversation) or [long-term](#scoped-memory) (across conversations)                                                           |
-| **Information type**  | What kind of information is it? | [Episodic](#episodic-memory) (past experiences), [procedural](/oss/javascript/deepagents/skills) (instructions and skills), or [semantic](/oss/javascript/concepts/memory#semantic-memory) (facts) |
-| **Scope**             | Who can see and modify it?      | [User](#user-scoped-memory), [agent](#agent-scoped-memory), or [organization](#organization-level-memory)                                                                                          |
-| **Update strategy**   | When are memories written?      | During conversation (default) or [between conversations](#background-consolidation)                                                                                                                |
-| **Retrieval**         | How are memories read?          | Loaded into prompt (default) or on demand (e.g., [skills](/oss/javascript/deepagents/skills))                                                                                                      |
-| **Agent permissions** | Can the agent write to memory?  | [Read-write](#read-only-vs-writable-memory) (default) or [read-only](#read-only-vs-writable-memory) (for shared policies)                                                                          |
+| Dimension | Question it answers | Options |
+| - | - | - |
+| **Duration** | How long does it last? | [Short-term](/oss/javascript/deepagents/context-engineering) (single conversation) or [long-term](#scoped-memory) (across conversations) |
+| **Information type** | What kind of information is it? | [Episodic](#episodic-memory) (past experiences), [procedural](/oss/javascript/deepagents/skills) (instructions and skills), or [semantic](/oss/javascript/concepts/memory#semantic-memory) (facts) |
+| **Scope** | Who can see and modify it? | [User](#user-scoped-memory), [agent](#agent-scoped-memory), or [organization](#organization-level-memory) |
+| **Update strategy** | When are memories written? | During conversation (default) or [between conversations](#background-consolidation) |
+| **Retrieval** | How are memories read? | Loaded into prompt (default) or on demand (e.g., [skills](/oss/javascript/deepagents/skills)) |
+| **Agent permissions** | Can the agent write to memory? | [Read-write](#read-only-vs-writable-memory) (default) or [read-only](#read-only-vs-writable-memory) (for shared policies) |
 
 ### Episodic memory
 
@@ -338,9 +338,9 @@ Use [permissions](/oss/javascript/deepagents/permissions) to enforce that org-le
 
 By default, the agent writes memories during the conversation (hot path). An alternative is to process memories **between conversations** as a background task, sometimes called **sleep time compute**. A separate deep agent reviews recent conversations, extracts key facts, and merges them with existing memories.
 
-| Approach                               | Pros                                                                 | Cons                                                                    |
-| -------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Hot path** (during conversation)     | Memories available immediately, transparent to user                  | Adds latency, agent must multitask                                      |
+| Approach | Pros | Cons |
+| - | - | - |
+| **Hot path** (during conversation) | Memories available immediately, transparent to user | Adds latency, agent must multitask |
 | **Background** (between conversations) | No user-facing latency, can synthesize across multiple conversations | Memories not available until next conversation, requires a second agent |
 
 For most applications, the hot path is sufficient. Add background consolidation when you need to reduce latency or improve memory quality across many conversations.
@@ -454,10 +454,10 @@ For more on deploying agents with background processes, see [going to production
 
 By default, the agent can both read and write memory files. For shared state like organization policies or compliance rules, you may want to make memory **read-only** so the agent can reference it but not modify it. This prevents prompt injection via shared memory and ensures that only your application code controls what's in the file.
 
-| Permission               | Use case                                                                                                                       | How it works                                                                                                                                                                                                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Read-write** (default) | User preferences, agent self-improvement, learned [skills](/oss/javascript/deepagents/skills)                                  | Agent updates files via `edit_file` tool                                                                                                                                                                                                                                    |
-| **Read-only**            | Organization policies, compliance rules, shared knowledge bases, developer-defined [skills](/oss/javascript/deepagents/skills) | Populate via application code or the [Store API](/langsmith/custom-store). Use [permissions](/oss/javascript/deepagents/permissions) to deny writes to specific paths, or [policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) for custom validation logic. |
+| Permission | Use case | How it works |
+| - | - | - |
+| **Read-write** (default) | User preferences, agent self-improvement, learned [skills](/oss/javascript/deepagents/skills) | Agent updates files via `edit_file` tool |
+| **Read-only** | Organization policies, compliance rules, shared knowledge bases, developer-defined [skills](/oss/javascript/deepagents/skills) | Populate via application code or the [Store API](/langsmith/custom-store). Use [permissions](/oss/javascript/deepagents/permissions) to deny writes to specific paths, or [policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) for custom validation logic. |
 
 **Security considerations:** If one user can write to memory that another user reads, a malicious user could inject instructions into shared state. To mitigate this:
 

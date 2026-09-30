@@ -44,12 +44,12 @@ PII detection middleware is helpful for cases such as health care and financial 
 
 The PII middleware supports multiple strategies for handling detected PII:
 
-| Strategy | Description                             | Example               |
-| -------- | --------------------------------------- | --------------------- |
-| `redact` | Replace with `[REDACTED_{PII_TYPE}]`    | `[REDACTED_EMAIL]`    |
-| `mask`   | Partially obscure (e.g., last 4 digits) | `****-****-****-1234` |
-| `hash`   | Replace with deterministic hash         | `a8f5f167...`         |
-| `block`  | Raise exception when detected           | Error thrown          |
+| Strategy | Description | Example |
+| - | - | - |
+| `redact` | Replace with `[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
+| `mask` | Partially obscure (e.g., last 4 digits) | `****-****-****-1234` |
+| `hash` | Replace with deterministic hash | `a8f5f167...` |
+| `block` | Raise exception when detected | Error thrown |
 
 <Note>
   With `apply_to_output=True`, `PIIMiddleware` also redacts streamed wire output—text deltas, tool-call args, tool outputs, and state snapshots—via a registered stream transformer. Requires `langchain>=1.3.2`. See [Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware).
@@ -103,14 +103,14 @@ result = agent.invoke({
 
   **Configuration options:**
 
-  | Parameter               | Description                                                            | Default                |
-  | ----------------------- | ---------------------------------------------------------------------- | ---------------------- |
-  | `pii_type`              | Type of PII to detect (built-in or custom)                             | Required               |
-  | `strategy`              | How to handle detected PII (`"block"`, `"redact"`, `"mask"`, `"hash"`) | `"redact"`             |
-  | `detector`              | Custom detector function or regex pattern                              | `None` (uses built-in) |
-  | `apply_to_input`        | Check user messages before model call                                  | `True`                 |
-  | `apply_to_output`       | Check AI messages after model call                                     | `False`                |
-  | `apply_to_tool_results` | Check tool result messages after execution                             | `False`                |
+  | Parameter | Description | Default |
+  | - | - | - |
+  | `pii_type` | Type of PII to detect (built-in or custom) | Required |
+  | `strategy` | How to handle detected PII (`"block"`, `"redact"`, `"mask"`, `"hash"`) | `"redact"` |
+  | `detector` | Custom detector function or regex pattern | `None` (uses built-in) |
+  | `apply_to_input` | Check user messages before model call | `True` |
+  | `apply_to_output` | Check AI messages after model call | `False` |
+  | `apply_to_tool_results` | Check tool result messages after execution | `False` |
 </Accordion>
 
 See the [middleware documentation](/oss/python/langchain/middleware#pii-detection) for complete details on PII detection capabilities.

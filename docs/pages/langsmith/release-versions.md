@@ -22,22 +22,22 @@ Preview is intended for evaluation in test and staging environments. LangSmith d
 
 ## Release cadence
 
-| Channel                      | Cadence                                                                                                |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Preview                      | Published mirroring the LangSmith SaaS release cadence                                                 |
-| Stable: new major (`v0.X.0`) | Approximately every 6 weeks (two per quarter)                                                          |
-| Stable: patch (`v0.X.Y`)     | Weekly (typically Friday), skipped if no changes. Ad-hoc releases issued for critical customer issues. |
+| Channel | Cadence |
+| - | - |
+| Preview | Published mirroring the LangSmith SaaS release cadence |
+| Stable: new major (`v0.X.0`) | Approximately every 6 weeks (two per quarter) |
+| Stable: patch (`v0.X.Y`) | Weekly (typically Friday), skipped if no changes. Ad-hoc releases issued for critical customer issues. |
 
 ## What ships in each channel
 
-|                               | Preview |  Stable patch | Next major |
-| ----------------------------- | :-----: | :-----------: | :--------: |
-| New features                  |   yes   |       no      |     yes    |
-| Bug fixes                     |   yes   | critical only |     yes    |
-| Security patches              |   yes   |      yes      |     yes    |
-| Data migrations and backfills |   yes   |       no      |     yes    |
-| New or removed services       |    no   |       no      |     yes    |
-| Breaking changes              |    no   |       no      |     yes    |
+| | Preview | Stable patch | Next major |
+| - | :-: | :-: | :-: |
+| New features | yes | no | yes |
+| Bug fixes | yes | critical only | yes |
+| Security patches | yes | yes | yes |
+| Data migrations and backfills | yes | no | yes |
+| New or removed services | no | no | yes |
+| Breaking changes | no | no | yes |
 
 Service additions, service removals, and breaking changes only land in a new major version, so plan upgrades to new majors with this in mind.
 
@@ -48,10 +48,10 @@ Every self-hosted release has two version numbers:
 * The **chart version** is the Helm chart version you install and pin. Releases are named after it, both in the [self-hosted changelog](/langsmith/self-hosted-changelog) and as [Helm repository](https://github.com/langchain-ai/helm/releases) release tags, for example `langsmith-0.15.17`.
 * The **LangSmith version** is the application version the chart deploys, recorded as `appVersion` in the chart.
 
-|                             | Chart version  | LangSmith version |
-| --------------------------- | -------------- | ----------------- |
-| Stable                      | `0.15.17`      | `0.15.24`         |
-| Preview (release candidate) | `0.16.0-rc.15` | `0.16.19rc1`      |
+| | Chart version | LangSmith version |
+| - | - | - |
+| Stable | `0.15.17` | `0.15.24` |
+| Preview (release candidate) | `0.16.0-rc.15` | `0.16.19rc1` |
 
 * Stable chart versions are `0.X.Y`, where `X` is the major version and `Y` increments with each patch release.
 * Preview chart versions are `0.X.0-rc.N`, where `N` increments with each release candidate.

@@ -48,10 +48,10 @@ From an Engine issue, you can:
 
 The gateway logs two categories of events:
 
-| Category                   | What's logged                                                                                       |
-| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| Category | What's logged |
+| - | - |
 | **Administrative changes** | Policy creation, modification, and deletion. Role and permission changes related to gateway access. |
-| **Gateway invocations**    | Each proxied call, including the caller identity and matched policy IDs.                            |
+| **Gateway invocations** | Each proxied call, including the caller identity and matched policy IDs. |
 
 [Audit logs](/langsmith/audit-logs) are available to organization admins on the [Enterprise plan](/langsmith/pricing-plans).
 
@@ -59,12 +59,12 @@ The gateway logs two categories of events:
 
 ### Required permissions
 
-| Action                           | Permission needed                    | Who has it by default                                   |
-| -------------------------------- | ------------------------------------ | ------------------------------------------------------- |
-| Make calls through the gateway   | `gateway:invoke` + `workspaces:read` | `WORKSPACE_ADMIN` only                                  |
-| Create, edit, or delete policies | `organization:manage`                | Org admins                                              |
-| View gateway traces              | `projects:read` + `runs:read`        | `WORKSPACE_ADMIN`, `WORKSPACE_USER`, `WORKSPACE_VIEWER` |
-| View audit logs                  | `organization:manage`                | Org admins                                              |
+| Action | Permission needed | Who has it by default |
+| - | - | - |
+| Make calls through the gateway | `gateway:invoke` + `workspaces:read` | `WORKSPACE_ADMIN` only |
+| Create, edit, or delete policies | `organization:manage` | Org admins |
+| View gateway traces | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`, `WORKSPACE_USER`, `WORKSPACE_VIEWER` |
+| View audit logs | `organization:manage` | Org admins |
 
 The built-in `WORKSPACE_USER` and `WORKSPACE_VIEWER` roles do **not** include `gateway:invoke` and cannot be edited. To grant gateway access without full workspace-admin privileges, create a custom workspace role with `gateway:invoke` and `workspaces:read` (requires an RBAC-enabled plan). For instructions, refer to [Admin setup](/langsmith/llm-gateway-admin-setup).
 

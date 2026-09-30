@@ -193,13 +193,13 @@ interface ReviewConfig {
 }
 ```
 
-| Property                           | Description                                                           |
-| ---------------------------------- | --------------------------------------------------------------------- |
-| `actionRequests`                   | Array of pending actions the agent wants to perform                   |
-| `actionRequests[].name`            | The action name (e.g. `"send_email"`, `"delete_record"`)              |
-| `actionRequests[].args`            | Structured arguments for the action                                   |
-| `actionRequests[].description`     | Optional human-readable description of what the action does           |
-| `reviewConfigs`                    | Per-action configuration controlling which decisions are allowed      |
+| Property | Description |
+| - | - |
+| `actionRequests` | Array of pending actions the agent wants to perform |
+| `actionRequests[].name` | The action name (e.g. `"send_email"`, `"delete_record"`) |
+| `actionRequests[].args` | Structured arguments for the action |
+| `actionRequests[].description` | Optional human-readable description of what the action does |
+| `reviewConfigs` | Per-action configuration controlling which decisions are allowed |
 | `reviewConfigs[].allowedDecisions` | Which buttons to show: `"approve"`, `"reject"`, `"edit"`, `"respond"` |
 
 ## Decision types

@@ -85,11 +85,11 @@ The scope dropdown previews each option against a sample trace, so you can see w
 
 The scopes offered, and the one selected by default, depend on the table selection:
 
-| Table selection | Default scope | Available scopes              |
-| --------------- | ------------- | ----------------------------- |
-| **Threads**     | Any run       | Thread, Root run, Any run     |
-| **Traces**      | Root run      | Root run, Any run             |
-| **Runs**        | Single run    | Single run, Root run, Any run |
+| Table selection | Default scope | Available scopes |
+| - | - | - |
+| **Threads** | Any run | Thread, Root run, Any run |
+| **Traces** | Root run | Root run, Any run |
+| **Runs** | Single run | Single run, Root run, Any run |
 
 ### Combine scopes
 
@@ -99,9 +99,9 @@ Each scope holds at most one row, so the **Threads** and **Runs** selections acc
 
 For example, in the **Threads** view, find threads longer than 20 turns that contain a failed tool call:
 
-| Scope   | Query                            |
-| ------- | -------------------------------- |
-| Thread  | `turn_count:>20`                 |
+| Scope | Query |
+| - | - |
+| Thread | `turn_count:>20` |
 | Any run | `run_type:tool AND status:error` |
 
 <img alt="Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause, and the second is scoped to 'in any run' with run_type tool AND status error" />
@@ -118,19 +118,19 @@ Changing the table selection can leave a row on a scope the new selection does n
 
 The operators a field accepts depend on its type.
 
-| Operator        | Syntax             | Matches                                                                                            |
-| --------------- | ------------------ | -------------------------------------------------------------------------------------------------- |
-| is              | `field:value`      | An exact match on the value.                                                                       |
-| is not          | `-field:value`     | Everything except an exact match.                                                                  |
-| matches         | `field:~value`     | A full-text search of the field. Quote the value to search for a phrase.                           |
-| does not match  | `-field:~value`    | Everything the full-text search does not match.                                                    |
-| wildcard        | `field:value*`     | A pattern, where `*` stands for any sequence of characters.                                        |
-| exists          | `field:*`          | Records where the field is set.                                                                    |
-| does not exist  | `-field:*`         | Records where the field is not set.                                                                |
-| comparison      | `field:>value`     | Values above the given value. Also accepts `>=`, `<`, and `<=`.                                    |
-| inclusive range | `field:[10 TO 20]` | Values from 10 to 20, including both bounds.                                                       |
-| exclusive range | `field:{10 TO 20}` | Values between 10 and 20, excluding both bounds.                                                   |
-| mixed range     | `field:[10 TO 20}` | Values from 10 up to but not including 20. Swap the delimiters to invert which bound is inclusive. |
+| Operator | Syntax | Matches |
+| - | - | - |
+| is | `field:value` | An exact match on the value. |
+| is not | `-field:value` | Everything except an exact match. |
+| matches | `field:~value` | A full-text search of the field. Quote the value to search for a phrase. |
+| does not match | `-field:~value` | Everything the full-text search does not match. |
+| wildcard | `field:value*` | A pattern, where `*` stands for any sequence of characters. |
+| exists | `field:*` | Records where the field is set. |
+| does not exist | `-field:*` | Records where the field is not set. |
+| comparison | `field:>value` | Values above the given value. Also accepts `>=`, `<`, and `<=`. |
+| inclusive range | `field:[10 TO 20]` | Values from 10 to 20, including both bounds. |
+| exclusive range | `field:{10 TO 20}` | Values between 10 and 20, excluding both bounds. |
+| mixed range | `field:[10 TO 20}` | Values from 10 up to but not including 20. Swap the delimiters to invert which bound is inclusive. |
 
 Some fields accept only a subset of these operators:
 
@@ -185,45 +185,45 @@ These fields are available in the **Single run**, **Root run**, and **Any run** 
 
 **Run attributes**
 
-| Field      | Description                                                                                                  |
-| ---------- | ------------------------------------------------------------------------------------------------------------ |
-| `name`     | Run name. Supports wildcards.                                                                                |
-| `status`   | Run status: `pending`, `success`, `error`, or `interrupted`.                                                 |
+| Field | Description |
+| - | - |
+| `name` | Run name. Supports wildcards. |
+| `status` | Run status: `pending`, `success`, `error`, or `interrupted`. |
 | `run_type` | The [type of run](/langsmith/run-data-format#run-types), for example `llm`, `chain`, `tool`, or `retriever`. |
-| `tags`     | Run tags. A clause matches if any tag on the run matches.                                                    |
+| `tags` | Run tags. A clause matches if any tag on the run matches. |
 
 **Content**
 
-| Field         | Description                                                                               |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| `input`       | Run inputs. Use `~` to search the text, or `input.<key>` to match a JSON key.             |
-| `output`      | Run outputs. Use `~` to search the text, or `output.<key>` to match a JSON key.           |
-| `metadata`    | Run metadata. Use `metadata.<key>` to match a JSON key, or `~` to search metadata values. |
-| `error`       | Error text. Use `~` to search the text.                                                   |
-| `attachments` | Attachment names.                                                                         |
+| Field | Description |
+| - | - |
+| `input` | Run inputs. Use `~` to search the text, or `input.<key>` to match a JSON key. |
+| `output` | Run outputs. Use `~` to search the text, or `output.<key>` to match a JSON key. |
+| `metadata` | Run metadata. Use `metadata.<key>` to match a JSON key, or `~` to search metadata values. |
+| `error` | Error text. Use `~` to search the text. |
+| `attachments` | Attachment names. |
 
 **Identity**
 
-| Field                                          | Description                                                   |
-| ---------------------------------------------- | ------------------------------------------------------------- |
+| Field | Description |
+| - | - |
 | `id`, `trace_id`, `thread_id`, `parent_run_id` | Match a specific run, trace, thread, or parent run by its ID. |
-| `ls_user_id`                                   | The LangSmith user the run is attributed to.                  |
+| `ls_user_id` | The LangSmith user the run is attributed to. |
 
 **Performance**
 
-| Field                                                | Description                                                                                                                                     |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `latency`                                            | Run duration in seconds.                                                                                                                        |
-| `first_token_time`                                   | When the first token was produced.                                                                                                              |
-| `prompt_tokens`, `completion_tokens`, `total_tokens` | Token counts for the run.                                                                                                                       |
-| `prompt_cost`, `completion_cost`, `total_cost`       | Costs for the run.                                                                                                                              |
-| `prompt_token_details`, `completion_token_details`   | Token breakdowns. Address a component with dot notation, for example `prompt_token_details.cache_read` or `completion_token_details.reasoning`. |
-| `prompt_cost_details`, `completion_cost_details`     | Cost breakdowns, with the same components as the token breakdowns.                                                                              |
+| Field | Description |
+| - | - |
+| `latency` | Run duration in seconds. |
+| `first_token_time` | When the first token was produced. |
+| `prompt_tokens`, `completion_tokens`, `total_tokens` | Token counts for the run. |
+| `prompt_cost`, `completion_cost`, `total_cost` | Costs for the run. |
+| `prompt_token_details`, `completion_token_details` | Token breakdowns. Address a component with dot notation, for example `prompt_token_details.cache_read` or `completion_token_details.reasoning`. |
+| `prompt_cost_details`, `completion_cost_details` | Cost breakdowns, with the same components as the token breakdowns. |
 
 **Feedback**
 
-| Field      | Description                                                              |
-| ---------- | ------------------------------------------------------------------------ |
+| Field | Description |
+| - | - |
 | `feedback` | Feedback on the run. Refer to [Filter on feedback](#filter-on-feedback). |
 
 Metadata and tags are usually the most productive fields to filter on, because you control what goes in them. See [Add metadata and tags to traces](/langsmith/add-metadata-tags).
@@ -232,16 +232,16 @@ Metadata and tags are usually the most productive fields to filter on, because y
 
 The **Thread** scope filters on attributes of the thread as a whole, so it supports a different set of fields. The suggestion list labels the group **Thread attributes**.
 
-| Field                                                                                                | Description                                  |
-| ---------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `thread_id`                                                                                          | Thread ID.                                   |
-| `turn_count`                                                                                         | Turns in the thread.                         |
-| `num_errored_turns`                                                                                  | Turns that ended in an error.                |
-| `thread_duration`                                                                                    | First turn start to last turn end.           |
-| `trace_latency_p50`                                                                                  | Median turn latency.                         |
-| `trace_latency_p99`                                                                                  | P99 turn latency.                            |
-| `total_tokens`                                                                                       | Tokens across the thread.                    |
-| `total_cost`                                                                                         | Cost across the thread.                      |
+| Field | Description |
+| - | - |
+| `thread_id` | Thread ID. |
+| `turn_count` | Turns in the thread. |
+| `num_errored_turns` | Turns that ended in an error. |
+| `thread_duration` | First turn start to last turn end. |
+| `trace_latency_p50` | Median turn latency. |
+| `trace_latency_p99` | P99 turn latency. |
+| `total_tokens` | Tokens across the thread. |
+| `total_cost` | Cost across the thread. |
 | `prompt_token_details`, `completion_token_details`, `prompt_cost_details`, `completion_cost_details` | Token and cost breakdowns across the thread. |
 
 <Note>

@@ -54,11 +54,11 @@ For a complete, runnable example, follow the [Observability quickstart](/langsmi
 
 The base URL routes to different services depending on the path prefix:
 
-| Service              | Path prefix | Example                                                 |
-| -------------------- | ----------- | ------------------------------------------------------- |
-| LangSmith            | `/api`      | `https://<data_plane_host>/api/v1/sessions`             |
-| LangSmith Deployment | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments`     |
-| LLM Gateway          | `/gateway`  | `https://<data_plane_host>/gateway/v1/chat/completions` |
+| Service | Path prefix | Example |
+| - | - | - |
+| LangSmith | `/api` | `https://<data_plane_host>/api/v1/sessions` |
+| LangSmith Deployment | `/api-host` | `https://<data_plane_host>/api-host/v2/deployments` |
+| LLM Gateway | `/gateway` | `https://<data_plane_host>/gateway/v1/chat/completions` |
 
 ## Trace to multiple endpoints
 

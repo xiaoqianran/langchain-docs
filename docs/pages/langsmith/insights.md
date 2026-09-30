@@ -186,14 +186,14 @@ You can edit the prompt used to generate these summaries. The two things to thin
 
 You must specify what parts of each trace to send to the summarizer using at least one of these template variables:
 
-| Variable              | Description                                                                                          | Example                        |
-| --------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `run.inputs`          | Inputs of the most recent root run                                                                   | `{{run.inputs}}`               |
-| `run.outputs`         | Outputs of the most recent root run                                                                  | `{{run.outputs}}`              |
-| `run.error`           | Error string, if the run failed                                                                      | `{{run.error}}`                |
-| `run.feedback`        | All feedback scores as a JSON blob                                                                   | `{{run.feedback}}`             |
-| `run.feedback.<key>`  | A specific feedback score by key                                                                     | `{{run.feedback.correctness}}` |
-| `all_thread_messages` | Full message history for the thread (only available for projects with [threads](/langsmith/threads)) | `{{all_thread_messages}}`      |
+| Variable | Description | Example |
+| - | - | - |
+| `run.inputs` | Inputs of the most recent root run | `{{run.inputs}}` |
+| `run.outputs` | Outputs of the most recent root run | `{{run.outputs}}` |
+| `run.error` | Error string, if the run failed | `{{run.error}}` |
+| `run.feedback` | All feedback scores as a JSON blob | `{{run.feedback}}` |
+| `run.feedback.<key>` | A specific feedback score by key | `{{run.feedback.correctness}}` |
+| `all_thread_messages` | Full message history for the thread (only available for projects with [threads](/langsmith/threads)) | `{{all_thread_messages}}` |
 
 You can access nested fields using dot notation. For example, `{{run.inputs.foo.bar}}` includes only the `bar` field within `foo` in the last run's inputs.
 

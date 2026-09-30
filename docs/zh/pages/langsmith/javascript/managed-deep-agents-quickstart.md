@@ -4,354 +4,317 @@
 
 # 托管 Deep Agents 快速入门
 
+使用 mda CLI 创建并部署您的第一个托管深度代理。
+
 创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T24⟧ CLI](/langsmith/javascript/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
 
 在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
 <Note>
-托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 ## 先决条件
 
 要继续操作，您需要：
 
+* Node.js 和 npm。
 
-
-- Node.js 和 npm。
-
-
-- 您选择的模型提供商的 API 密钥。
+* 您选择的模型提供商的 API 密钥。
 
 ## 添加`managed-deep-agents`技能
 
 [⟦T26⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```
 
 或者将此提示粘贴到您的编码代理中：
 
-<Prompt
-    description="Build a Managed Deep Agent with the quickstart"
-    icon="sparkles"
-    actions={["copy"]}
->
-按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
+<Prompt description="Build a Managed Deep Agent with the quickstart" icon="sparkles">
+  按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
-## 第 1 步：阅读指南
+  ## 第 1 步：阅读指南
 
-获取并遵循 https://docs.langchain.com/langsmith/driven-deep-agents-quickstart.md 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
+  获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。## 第二步：安装技能
 
-## 第二步：安装技能如果 `managed-deep-agents` 技能尚不可用，请安装它：
+  如果 `managed-deep-agents` 技能尚不可用，请安装它：
 
-```bash
-npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
-```
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
+  ```
 
-当该技能可用时，将其用于工作流程的其余部分。
+  当该技能可用时，将其用于工作流程的其余部分。
 
-## 步骤 3：先决条件和秘密
+  ## 步骤 3：先决条件和秘密
 
-确认用户具有 LangSmith 访问权限以及任何所需的模型或搜索凭据。如果缺少所需的 API 密钥，请要求他们在 shell 或 `.env` 文件中设置它，然后等待。不要发明、硬编码或提交秘密。
+  确认用户具有 LangSmith 访问权限以及任何所需的模型或搜索凭据。如果缺少所需的 API 密钥，请要求他们在 shell 或 `.env` 文件中设置它，然后等待。不要发明、硬编码或提交秘密。
 
-## 步骤 4：搭建、配置、测试和部署
+  ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
+  按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
 
-## 规则
+  ## 规则
 
-- 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
-- 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
-- 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
+  * 关注快速入门。除非指南要求，否则请勿添加不相关的产品或重写生成的项目布局。
+  * 优先使用 `mda` CLI 和 `managed-deep-agents` 技能，而不是发明自定义部署路径。
+  * 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
 </Prompt>
 
-## 创建并部署代理
+## 创建并部署代理<Steps>
+  <Step title="Set up the project">
+    创建一个项目并打开其目录：
 
-<Steps>
-  <Step title="Set up the project" id="set-up-the-project">
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx managed-deepagents init research-assistant
+      cd research-assistant
+      ```
 
-创建一个项目并打开其目录：
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pnpm dlx managed-deepagents init research-assistant
+      cd research-assistant
+      ```
 
+      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      bunx managed-deepagents init research-assistant
+      cd research-assistant
+      ```
+    </CodeGroup>
 
-
-<CodeGroup>
-    ```bash npm
-    npx managed-deepagents init research-assistant
-    cd research-assistant
-    ```
-
-    ```bash pnpm
-    pnpm dlx managed-deepagents init research-assistant
-    cd research-assistant
-    ```
-
-    ```bash bun
-    bunx managed-deepagents init research-assistant
-    cd research-assistant
-    ```
-</CodeGroup>您现在已经为您的代理准备好了所有的脚手架。
-
+    您现在已经为您的代理准备好了所有的脚手架。
   </Step>
 
-  <Step title="Add your keys" id="add-keys">
+  <Step title="Add your keys">
+    将您的模型提供商 API 密钥添加到 `.env`：
 
-将您的模型提供商 API 密钥添加到 `.env`：
+    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    OPENAI_API_KEY=<OPENAI_API_KEY>
+    # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
+    # GOOGLE_API_KEY=<GOOGLE_API_KEY>
+    ```
 
-```text .env
-OPENAI_API_KEY=<OPENAI_API_KEY>
-# ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
-# GOOGLE_API_KEY=<GOOGLE_API_KEY>
-```
+    本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
 
-本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
-
-<Warning>
-不要将 `.env` 文件提交到版本控制中。它包含秘密。
-</Warning>
-
+    <Warning>
+      不要将 `.env` 文件提交到版本控制中。它包含秘密。
+    </Warning>
   </Step>
 
-  <Step title="Set up LangSmith" id="set-up-langsmith">
+  <Step title="Set up LangSmith">
+    托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
 
-托管 Deep Agents 在 LangSmith 上运行。您的 LangSmith API 密钥使用 `mda dev` 验证本地开发，使用 `mda deploy` 部署代理，并在 [LangSmith Studio](/langsmith/studio) 中打开代理，以便您可以与其聊天并检查跟踪。
+    [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
 
-[Sign up for LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-managed-deep-agents-quickstart) 如果您还没有帐户。
+    要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
 
-要创建 LangSmith API 密钥，请打开 [Settings](https://smith.langchain.com/settings)，转到 **API 密钥**，然后单击 **创建 API 密钥**。欲了解更多详情，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+    将您的 LangSmith API 密钥添加到 `.env`：
 
-将您的 LangSmith API 密钥添加到 `.env`：
-
-```text .env
-LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
-```
-
-  </Step>
-  <Step title="Edit the instructions" id="edit-the-instructions">
-
-打开 `instructions.md` 并描述代理应该如何表现：
-
-```markdown instructions.md
-# Research assistant
-
-You are a careful research assistant. Use internet search to find sources,
-keep notes, and return concise answers with citations.
-```
-
-部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
-
+    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
+    ```
   </Step>
 
-  <Step title="Configure your model and search" id="configure-model-and-search">现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
+  <Step title="Edit the instructions">
+    打开 `instructions.md` 并描述代理应该如何表现：
 
+    ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # Research assistant
 
-
-打开`agent.ts`：
-
-<CodeGroup>
-```ts OpenAI
-import { defineDeepAgent } from "managed-deepagents";
-
-// OpenAI's built-in web search — no extra install or API key needed
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "openai:gpt-5.5",
-  tools: [{ type: "web_search_preview" }],
-});
-```
-
-```ts Google
-import { defineDeepAgent } from "managed-deepagents";
-
-// Google's built-in search — no extra install or API key needed
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "google:gemini-3.6-flash",
-  tools: [{ googleSearch: {} }],
-});
-```
-
-```ts Anthropic
-import { defineDeepAgent } from "managed-deepagents";
-
-// Anthropic's built-in web search — no extra install or API key needed
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "anthropic:claude-sonnet-4-6",
-  tools: [{ type: "web_search_20250305", name: "web_search" }],
-});
-```
-</CodeGroup>
-
-
-代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/javascript/langchain/models)。
-
-
-<Accordion title="Using another provider?">
-
-您可以使用 Tavilly 搜索工具。
-将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
-
-```text .env
-TAVILY_API_KEY=<TAVILY_API_KEY>
-```
-
-安装Tavilly客户端：
-
-
-
-<CodeGroup>
-    ```bash npm
-    npm install @langchain/tavily
-    ```
-
-    ```bash pnpm
-    pnpm add @langchain/tavily
-    ```
-
-    ```bash bun
-    bun add @langchain/tavily
-    ```
-</CodeGroup>
-
-
-创建自定义 `internet_search` 工具：
-
-
-
-```ts tools/search.ts
-import { TavilySearch } from "@langchain/tavily";
-import { tool } from "langchain";
-import { z } from "zod";
-
-export const internetSearch = tool(
-  async ({ query, maxResults = 5, topic = "general" }) => {
-    const tavilySearch = new TavilySearch({
-      maxResults,
-      tavilyApiKey: process.env.TAVILY_API_KEY,
-      topic,
-    });
-    return tavilySearch._call({ query });
-  },
-  {
-    name: "internet_search",
-    description: "Search the internet for relevant sources.",
-    schema: z.object({
-      query: z.string().describe("The search query."),
-      maxResults: z.number().optional().default(5),
-      topic: z.enum(["general", "news", "finance"]).optional().default("general"),
-    }),
-  },
-);
-```
-
-
-导入工具并将其添加到代理中：
-
-
-
-```ts agent.ts
-import { defineDeepAgent } from "managed-deepagents";
-
-import { internetSearch } from "./tools/search";
-
-export const agent = defineDeepAgent({
-  name: "research-assistant",
-  model: "openai:gpt-5.5",
-  tools: [internetSearch],
-});
-```
-
-
-有关更多创作工具，请参阅[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。
-
-</Accordion>
-
+    You are a careful research assistant. Use internet search to find sources,
+    keep notes, and return concise answers with citations.
+    ```部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
   </Step>
 
-  <Step title="Run locally" id="run-locally">
+  <Step title="Configure your model and search">
+    现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
-安装项目依赖项并启动代理：
+    打开`agent.ts`：
 
+    <CodeGroup>
+      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import { defineDeepAgent } from "managed-deepagents";
 
+      // OpenAI's built-in web search — no extra install or API key needed
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model: "openai:gpt-5.5",
+        tools: [{ type: "web_search_preview" }],
+      });
+      ```
 
-<CodeGroup>
-    ```bash npm
-    npm install
-    npx mda dev
-    ```
+      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import { defineDeepAgent } from "managed-deepagents";
 
-    ```bash pnpm
-    pnpm install
-    pnpm exec mda dev
-    ```
+      // Google's built-in search — no extra install or API key needed
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model: "google:gemini-3.6-flash",
+        tools: [{ googleSearch: {} }],
+      });
+      ```
 
-    ```bash bun
-    bun install
-    bunx mda dev
-    ```
-</CodeGroup>
+      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import { defineDeepAgent } from "managed-deepagents";
 
+      // Anthropic's built-in web search — no extra install or API key needed
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model: "anthropic:claude-sonnet-4-6",
+        tools: [{ type: "web_search_20250305", name: "web_search" }],
+      });
+      ```
+    </CodeGroup>
 
-`mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
+    代理名称也是默认部署名称。有关模型概念和提供程序选项，请参阅[Models](/oss/javascript/langchain/models)。
 
-在 Studio 中，发送：
+    <Accordion title="Using another provider?">
+      您可以使用 Tavilly 搜索工具。
+      将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
 
-```txt wrap
-What were the main announcements from the latest LangChain release?
-```
+      ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      TAVILY_API_KEY=<TAVILY_API_KEY>
+      ```
 
-您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+      安装Tavilly客户端：
 
-有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+      <CodeGroup>
+        ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        npm install @langchain/tavily
+        ```
+
+        ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        pnpm add @langchain/tavily
+        ```
+
+        ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        bun add @langchain/tavily
+        ```
+      </CodeGroup>
+
+      创建自定义 `internet_search` 工具：
+
+      ```ts tools/search.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import { TavilySearch } from "@langchain/tavily";
+      import { tool } from "langchain";
+      import { z } from "zod";
+
+      export const internetSearch = tool(
+        async ({ query, maxResults = 5, topic = "general" }) => {
+          const tavilySearch = new TavilySearch({
+            maxResults,
+            tavilyApiKey: process.env.TAVILY_API_KEY,
+            topic,
+          });
+          return tavilySearch._call({ query });
+        },
+        {
+          name: "internet_search",
+          description: "Search the internet for relevant sources.",
+          schema: z.object({
+            query: z.string().describe("The search query."),
+            maxResults: z.number().optional().default(5),
+            topic: z.enum(["general", "news", "finance"]).optional().default("general"),
+          }),
+        },
+      );
+      ```
+
+      导入工具并将其添加到代理中：
+
+      ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import { defineDeepAgent } from "managed-deepagents";
+
+      import { internetSearch } from "./tools/search";
+
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model: "openai:gpt-5.5",
+        tools: [internetSearch],
+      });
+      ```
+
+      有关更多创作工具，请参阅[Custom tools](/langsmith/javascript/managed-deep-agents-tools)。
+    </Accordion>
   </Step>
 
-  <Step title="Deploy the agent" id="deploy-the-agent">
+  <Step title="Run locally">
+    安装项目依赖项并启动代理：
 
-通过运行以下命令来部署项目：<CodeGroup>
-    ```bash npm
-    npx mda deploy
-    ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npm install
+      npx mda dev
+      ```
 
-    ```bash pnpm
-    pnpm exec mda deploy
-    ```
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pnpm install
+      pnpm exec mda dev
+      ```
 
-    ```bash bun
-    bunx mda deploy
-    ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      bun install
+      bunx mda dev
+      ```
+    </CodeGroup>
 
+    `mda dev` 从 `.env` 加载 API 密钥，启动本地代理服务器，并在 LangSmith Studio 中打开代理。
 
-托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
+    在 Studio 中，发送：
 
-打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查代理的执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
+    ```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    What were the main announcements from the latest LangChain release?
+    ```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
+    欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+  </Step>
+
+  <Step title="Deploy the agent">
+    通过运行以下命令来部署项目：
+
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx mda deploy
+      ```
+
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pnpm exec mda deploy
+      ```
+
+      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      bunx mda deploy
+      ```
+    </CodeGroup>
+
+    托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
+
+    打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
   </Step>
 </Steps>
 
 ## 后续步骤
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
     添加自定义 Tavilly 搜索工具、持久内存和每日日程安排。
   </Card>
+
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
     从您的项目中添加创作的 LangChain 工具。
   </Card>
+
   <Card title="Connections" icon="key" href="/langsmith/javascript/managed-deep-agents-connections">
     作为代理或调用者通过外部服务进行身份验证。
   </Card>
 </CardGroup>
 
----
-
-<div className="source-links">
-<Callout icon="terminal-2">
+***<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -37,17 +37,17 @@ This page covers all LangChain integrations with [Microsoft Azure](https://porta
 
 Use the following table to pick a starting point:
 
-| Scenario                                                                                                                            | Package              |
-| ----------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| New application centered on a Foundry project                                                                                       | `langchain-azure-ai` |
-| Foundry Agent Service, hosted LangGraph, Toolbox, Content Safety, Azure tools, or Application Insights                              | `langchain-azure-ai` |
-| Embeddings configured from a Foundry project endpoint                                                                               | `langchain-azure-ai` |
-| Direct Azure OpenAI v1 chat call                                                                                                    | `langchain-openai`   |
-| Same code must switch between OpenAI and Azure                                                                                      | `langchain-openai`   |
-| Existing [`AzureChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/azure/AzureChatOpenAI) application | `langchain-openai`   |
-| Traditional dated Azure OpenAI API versions                                                                                         | `langchain-openai`   |
-| Completion LLM interface                                                                                                            | `langchain-openai`   |
-| Minimal dependency and operational surface                                                                                          | `langchain-openai`   |
+| Scenario | Package |
+| - | - |
+| New application centered on a Foundry project | `langchain-azure-ai` |
+| Foundry Agent Service, hosted LangGraph, Toolbox, Content Safety, Azure tools, or Application Insights | `langchain-azure-ai` |
+| Embeddings configured from a Foundry project endpoint | `langchain-azure-ai` |
+| Direct Azure OpenAI v1 chat call | `langchain-openai` |
+| Same code must switch between OpenAI and Azure | `langchain-openai` |
+| Existing [`AzureChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/azure/AzureChatOpenAI) application | `langchain-openai` |
+| Traditional dated Azure OpenAI API versions | `langchain-openai` |
+| Completion LLM interface | `langchain-openai` |
+| Minimal dependency and operational surface | `langchain-openai` |
 
 Moving an existing `langchain-openai` application to `langchain-azure-ai` is not a drop-in import change:
 
@@ -874,10 +874,10 @@ Before you begin, you need an Azure subscription, a Foundry project, a deployed 
 
 Choose a hosting protocol based on how clients interact with the agent:
 
-| Protocol    | Run argument             | SDK host class          | Endpoint       | Use when                                                                                                                            |
-| ----------- | ------------------------ | ----------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Responses   | `--protocol responses`   | `ResponsesHostServer`   | `/responses`   | You need OpenAI-compatible chat, streaming, response history, or conversation threading. Start here for most conversational agents. |
-| Invocations | `--protocol invocations` | `InvocationsHostServer` | `/invocations` | You need a custom JSON shape, a webhook-style endpoint, or non-conversational processing.                                           |
+| Protocol | Run argument | SDK host class | Endpoint | Use when |
+| - | - | - | - | - |
+| Responses | `--protocol responses` | `ResponsesHostServer` | `/responses` | You need OpenAI-compatible chat, streaming, response history, or conversation threading. Start here for most conversational agents. |
+| Invocations | `--protocol invocations` | `InvocationsHostServer` | `/invocations` | You need a custom JSON shape, a webhook-style endpoint, or non-conversational processing. |
 
 <Note>
   For hosted graphs using `BaseChatOpenAI`-based models with the Responses API, use `output_version="responses/v1"`. You can omit this setting in `langchain-openai` 1.0.0 or later, unless overridden by `LC_OUTPUT_VERSION`. This guidance applies to both Responses and Invocations hosting protocols.

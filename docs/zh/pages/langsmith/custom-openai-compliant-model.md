@@ -46,7 +46,7 @@ LangSmith 自动附加 `/chat/completions` — 不要将其包含在基本 URL �
 ### 基本 URL 示例
 
 |供应商|示例基本 URL |
-| ----------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| - | - |
 | [Ollama](https://ollama.com/)（本地）| `http://localhost:11434/v1` |
 | [LiteLLM Proxy](https://github.com/BerriAI/litellm)（本地）| `http://localhost:4000` |
 | [vLLM](https://docs.vllm.ai/)（本地）| `http://localhost:8000/v1` |
@@ -55,7 +55,9 @@ LangSmith 自动附加 `/chat/completions` — 不要将其包含在基本 URL �
 支持自定义路径前缀。如果您的服务器在`/api/v2/chat/completions`公开完成，
 将基本 URL 设置为 `https://my-server.example.com/api/v2`。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

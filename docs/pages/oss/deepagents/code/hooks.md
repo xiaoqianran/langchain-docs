@@ -73,11 +73,11 @@ Server-owned events are fixed when a session starts, so newly enabled plugin hoo
 
 Plugin handlers can reference their own installation paths through these variables:
 
-| Variable                                  | Value                                  |
-| ----------------------------------------- | -------------------------------------- |
-| `${CLAUDE_PLUGIN_ROOT}`, `${PLUGIN_ROOT}` | Installed plugin directory             |
+| Variable | Value |
+| - | - |
+| `${CLAUDE_PLUGIN_ROOT}`, `${PLUGIN_ROOT}` | Installed plugin directory |
 | `${CLAUDE_PLUGIN_DATA}`, `${PLUGIN_DATA}` | Writable data directory for the plugin |
-| `${CLAUDE_PROJECT_DIR}`                   | Project root                           |
+| `${CLAUDE_PROJECT_DIR}` | Project root |
 
 Quote these variables in the `command` string, because installation paths can contain spaces: `"command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/format.sh\""`. Prefer the optional `argv` field when you can: Deep Agents Code resolves the variables before launch and skips the shell, so you do not need quoting.
 
@@ -130,19 +130,19 @@ Compile errors invalidate that group and produce a user-visible configuration di
 
 Deep Agents Code emits the following events. Client-owned events run in the CLI process. Server-owned events originate in the agent execution path and round-trip to the client so command handlers run where your configuration lives.
 
-| Event               | Owner  | Exit code 2 effect | Matches on          |
-| ------------------- | ------ | ------------------ | ------------------- |
-| `SessionStart`      | Client | Diagnostic         | `source`            |
-| `UserPromptSubmit`  | Client | Block prompt       | none                |
-| `SessionEnd`        | Client | Diagnostic         | `reason`            |
-| `PermissionRequest` | Client | Deny               | `tool_name`         |
-| `Notification`      | Client | Diagnostic         | `notification_type` |
-| `PreToolUse`        | Server | Deny               | `tool_name`         |
-| `PostToolUse`       | Server | Feedback           | `tool_name`         |
-| `PreCompact`        | Server | Block compaction   | `trigger`           |
-| `Stop`              | Server | Continue turn      | none                |
-| `SubagentStart`     | Server | Diagnostic         | `agent_type`        |
-| `SubagentStop`      | Server | Add context        | `agent_type`        |
+| Event | Owner | Exit code 2 effect | Matches on |
+| - | - | - | - |
+| `SessionStart` | Client | Diagnostic | `source` |
+| `UserPromptSubmit` | Client | Block prompt | none |
+| `SessionEnd` | Client | Diagnostic | `reason` |
+| `PermissionRequest` | Client | Deny | `tool_name` |
+| `Notification` | Client | Diagnostic | `notification_type` |
+| `PreToolUse` | Server | Deny | `tool_name` |
+| `PostToolUse` | Server | Feedback | `tool_name` |
+| `PreCompact` | Server | Block compaction | `trigger` |
+| `Stop` | Server | Continue turn | none |
+| `SubagentStart` | Server | Diagnostic | `agent_type` |
+| `SubagentStop` | Server | Add context | `agent_type` |
 
 `PreToolUse` runs before the permission prompt and before tool execution, which makes it the primary place to allow or deny tools. `Stop` runs before a terminal model response is committed.
 
@@ -171,34 +171,34 @@ Every handler receives a JSON object on stdin. All events share a common envelop
 
 ### Common fields
 
-| Field                    | Description                                                                                                               |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `session_id`             | Session identifier                                                                                                        |
-| `transcript_path`        | Path to the conversation transcript when available                                                                        |
-| `cwd`                    | Working directory when the hook is invoked                                                                                |
-| `hook_event_name`        | Name of the event that fired                                                                                              |
-| `prompt_id`              | UUID for the current user prompt, when available                                                                          |
-| `permission_mode`        | Permission mode (`default`, `plan`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`), when meaningful               |
-| `effort`                 | Object such as `{ "level": "medium" }`, where level is `none`, `low`, `medium`, `high`, `xhigh`, or `max`, when available |
-| `agent_id`, `agent_type` | Subagent identity, when available                                                                                         |
+| Field | Description |
+| - | - |
+| `session_id` | Session identifier |
+| `transcript_path` | Path to the conversation transcript when available |
+| `cwd` | Working directory when the hook is invoked |
+| `hook_event_name` | Name of the event that fired |
+| `prompt_id` | UUID for the current user prompt, when available |
+| `permission_mode` | Permission mode (`default`, `plan`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`), when meaningful |
+| `effort` | Object such as `{ "level": "medium" }`, where level is `none`, `low`, `medium`, `high`, `xhigh`, or `max`, when available |
+| `agent_id`, `agent_type` | Subagent identity, when available |
 
 `transcript_path` points to a JSONL projection of the conversation written under `~/.deepagents/transcripts`. Subagent events also carry `agent_transcript_path` for the subagent's own transcript. Both files are refreshed before matching handlers run, so a handler can read the conversation up to the current event.
 
 ### Event-specific fields
 
-| Event               | Fields                                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `SessionStart`      | `source` (`startup`, `resume`, `clear`, `compact`) and, when available, `model`                                                      |
-| `UserPromptSubmit`  | `prompt`                                                                                                                             |
-| `SessionEnd`        | `reason` (`clear`, `resume`, `prompt_input_exit`, `other`)                                                                           |
-| `PermissionRequest` | `tool_name`, `tool_input`, `permission_suggestions` (currently empty)                                                                |
-| `Notification`      | `message`, `notification_type`, and when available `title`                                                                           |
-| `PreToolUse`        | `tool_name`, `tool_input`, `tool_use_id`                                                                                             |
-| `PostToolUse`       | `tool_name`, `tool_input`, `tool_response`, `tool_use_id`, and when available `duration_ms`                                          |
-| `PreCompact`        | `trigger` (`manual`, `auto`), `custom_instructions`                                                                                  |
-| `Stop`              | `stop_hook_active`, `last_assistant_message`, `background_tasks`, `session_crons`                                                    |
-| `SubagentStart`     | `agent_id`, `agent_type`                                                                                                             |
-| `SubagentStop`      | `stop_hook_active`, `agent_id`, `agent_type`, `agent_transcript_path`, `last_assistant_message`, `background_tasks`, `session_crons` |
+| Event | Fields |
+| - | - |
+| `SessionStart` | `source` (`startup`, `resume`, `clear`, `compact`) and, when available, `model` |
+| `UserPromptSubmit` | `prompt` |
+| `SessionEnd` | `reason` (`clear`, `resume`, `prompt_input_exit`, `other`) |
+| `PermissionRequest` | `tool_name`, `tool_input`, `permission_suggestions` (currently empty) |
+| `Notification` | `message`, `notification_type`, and when available `title` |
+| `PreToolUse` | `tool_name`, `tool_input`, `tool_use_id` |
+| `PostToolUse` | `tool_name`, `tool_input`, `tool_response`, `tool_use_id`, and when available `duration_ms` |
+| `PreCompact` | `trigger` (`manual`, `auto`), `custom_instructions` |
+| `Stop` | `stop_hook_active`, `last_assistant_message`, `background_tasks`, `session_crons` |
+| `SubagentStart` | `agent_id`, `agent_type` |
+| `SubagentStop` | `stop_hook_active`, `agent_id`, `agent_type`, `agent_transcript_path`, `last_assistant_message`, `background_tasks`, `session_crons` |
 
 Example `PreToolUse` payload:
 
@@ -221,26 +221,26 @@ Example `PreToolUse` payload:
 
 Hook scripts see stable public tool names and argument shapes, not internal Deep Agents Code tool names. Match on and read these names in `PreToolUse`, `PostToolUse`, and `PermissionRequest`:
 
-| Public tool name        | Notable input fields                                   |
-| ----------------------- | ------------------------------------------------------ |
-| `Bash`                  | `command`, optional `timeout` in milliseconds          |
-| `Write`                 | `file_path`, `content`                                 |
-| `Edit`                  | `file_path`, `old_string`, `new_string`, `replace_all` |
-| `Read`                  | `file_path`, `limit`, `offset`                         |
-| `Glob`                  | `pattern`, `path`                                      |
-| `Grep`                  | `pattern`, `path`, `glob`, `output_mode`, `head_limit` |
-| `LS`                    | `path`                                                 |
-| `mcp__<server>__<tool>` | Tool-specific JSON                                     |
+| Public tool name | Notable input fields |
+| - | - |
+| `Bash` | `command`, optional `timeout` in milliseconds |
+| `Write` | `file_path`, `content` |
+| `Edit` | `file_path`, `old_string`, `new_string`, `replace_all` |
+| `Read` | `file_path`, `limit`, `offset` |
+| `Glob` | `pattern`, `path` |
+| `Grep` | `pattern`, `path`, `glob`, `output_mode`, `head_limit` |
+| `LS` | `path` |
+| `mcp__<server>__<tool>` | Tool-specific JSON |
 
 ## Handler output
 
 Command handlers communicate results through their exit code, stdout, and stderr.
 
-| Exit code     | Meaning                                                                                                                                                                  |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `0`           | Success. When stdout contains JSON, it is parsed and applied.                                                                                                            |
-| `2`           | Blocking or feedback path for that event. See the [Events](#events) table Exit code 2 effect column. Stdout JSON is ignored, and stderr is the primary feedback channel. |
-| Other nonzero | Non-blocking error. Deep Agents Code logs a diagnostic and continues.                                                                                                    |
+| Exit code | Meaning |
+| - | - |
+| `0` | Success. When stdout contains JSON, it is parsed and applied. |
+| `2` | Blocking or feedback path for that event. See the [Events](#events) table Exit code 2 effect column. Stdout JSON is ignored, and stderr is the primary feedback channel. |
+| Other nonzero | Non-blocking error. Deep Agents Code logs a diagnostic and continues. |
 
 JSON output is only processed on exit `0` and must be the only content on stdout. Successful non-JSON stdout becomes additional context for `SessionStart` and `UserPromptSubmit`; for other events it produces a diagnostic. Stdout and stderr are each retained up to 100,000 bytes.
 
@@ -333,16 +333,16 @@ A block continues the agent turn with your feedback. `Stop.hookSpecificOutput.ad
 
 The following compatibility fields are recognized but not applied. Deep Agents Code emits a diagnostic and continues with the fallback in the Result column. For tool and permission rows, that means the ordinary [PreToolUse](#control-tool-execution-with-pretooluse) or [PermissionRequest](#allow-or-deny-with-permissionrequest) decision path, without mutating tool input or deferring.
 
-| Field or behavior                                                               | Result                                                                                                              |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `SessionStart.initialUserMessage`, `sessionTitle`, `watchPaths`, `reloadSkills` | Parsed, not applied                                                                                                 |
-| `UserPromptSubmit.sessionTitle`                                                 | Parsed, not applied                                                                                                 |
-| `PreToolUse.updatedInput`                                                       | Mutation ignored; `allow` or `ask` uses the ordinary [PreToolUse](#control-tool-execution-with-pretooluse) decision |
-| `PreToolUse.defer`                                                              | Uses the ordinary [PreToolUse](#control-tool-execution-with-pretooluse) decision; never treated as allow            |
-| `PostToolUse.updatedToolOutput`, `updatedMCPToolOutput`                         | Parsed, not applied                                                                                                 |
-| `PermissionRequest.updatedInput`                                                | Mutation ignored; an `allow` uses the ordinary [PermissionRequest](#allow-or-deny-with-permissionrequest) decision  |
-| `PermissionRequest.updatedPermissions`                                          | Parsed, not applied (no permission-rule store)                                                                      |
-| `SubagentStop` block                                                            | [Context only](#inject-context); a completed subagent cannot be resumed                                             |
+| Field or behavior | Result |
+| - | - |
+| `SessionStart.initialUserMessage`, `sessionTitle`, `watchPaths`, `reloadSkills` | Parsed, not applied |
+| `UserPromptSubmit.sessionTitle` | Parsed, not applied |
+| `PreToolUse.updatedInput` | Mutation ignored; `allow` or `ask` uses the ordinary [PreToolUse](#control-tool-execution-with-pretooluse) decision |
+| `PreToolUse.defer` | Uses the ordinary [PreToolUse](#control-tool-execution-with-pretooluse) decision; never treated as allow |
+| `PostToolUse.updatedToolOutput`, `updatedMCPToolOutput` | Parsed, not applied |
+| `PermissionRequest.updatedInput` | Mutation ignored; an `allow` uses the ordinary [PermissionRequest](#allow-or-deny-with-permissionrequest) decision |
+| `PermissionRequest.updatedPermissions` | Parsed, not applied (no permission-rule store) |
+| `SubagentStop` block | [Context only](#inject-context); a completed subagent cannot be resumed |
 
 ## Examples
 

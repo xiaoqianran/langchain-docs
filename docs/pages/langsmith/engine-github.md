@@ -71,13 +71,13 @@ To create and configure a GitHub App for a self-hosted deployment:
   <Step title="Create the app and gather its values">
     Click **Create GitHub App**. GitHub supplies the following values on the app settings page:
 
-    | Value             | Where to find it                                                                   | Environment variable           |
-    | ----------------- | ---------------------------------------------------------------------------------- | ------------------------------ |
-    | **App ID**        | Numeric, at the top of the page                                                    | `FORGE_GITHUB_APP_ID`          |
-    | **Public link**   | For example, `https://github.com/apps/acme-langsmith-engine`                       | `FORGE_GITHUB_APP_PUBLIC_LINK` |
-    | **Client ID**     | Under **About**                                                                    | `FORGE_GITHUB_CLIENT_ID`       |
-    | **Client secret** | Under **Client secrets**, click **Generate a new client secret** (shown once)      | `FORGE_GITHUB_CLIENT_SECRET`   |
-    | **Private key**   | Under **Private keys**, click **Generate a private key** (downloads a `.pem` file) | `FORGE_GITHUB_APP_PEM`         |
+    | Value | Where to find it | Environment variable |
+    | - | - | - |
+    | **App ID** | Numeric, at the top of the page | `FORGE_GITHUB_APP_ID` |
+    | **Public link** | For example, `https://github.com/apps/acme-langsmith-engine` | `FORGE_GITHUB_APP_PUBLIC_LINK` |
+    | **Client ID** | Under **About** | `FORGE_GITHUB_CLIENT_ID` |
+    | **Client secret** | Under **Client secrets**, click **Generate a new client secret** (shown once) | `FORGE_GITHUB_CLIENT_SECRET` |
+    | **Private key** | Under **Private keys**, click **Generate a private key** (downloads a `.pem` file) | `FORGE_GITHUB_APP_PEM` |
   </Step>
 
   <Step title="Generate a state JWT secret">
@@ -93,12 +93,12 @@ To create and configure a GitHub App for a self-hosted deployment:
 
     Using your existing [secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret named `langsmith-forge-github` with these keys:
 
-    | Key                             | Value                                      |
-    | ------------------------------- | ------------------------------------------ |
-    | `forge_github_client_secret`    | GitHub client secret                       |
-    | `forge_github_state_jwt_secret` | Separately generated state JWT secret      |
-    | `forge_github_app_pem`          | Contents of the GitHub App private-key PEM |
-    | `forge_github_webhook_secret`   | Webhook secret also configured in GitHub   |
+    | Key | Value |
+    | - | - |
+    | `forge_github_client_secret` | GitHub client secret |
+    | `forge_github_state_jwt_secret` | Separately generated state JWT secret |
+    | `forge_github_app_pem` | Contents of the GitHub App private-key PEM |
+    | `forge_github_webhook_secret` | Webhook secret also configured in GitHub |
 
     For production deployments, use your existing secrets workflow, such as [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) or [External Secrets Operator](https://external-secrets.io/).
   </Step>

@@ -51,10 +51,10 @@ langgraph dev
 langgraph build -t my-image
 ```
 
-构建命令选项包括：|选项 |默认|描述 |
-| -------------------- | ---------------- | ------------------------------------------------------------------ |
+构建命令选项包括：|选项|默认 |描述 |
+| - | - | - |
 | `-t, --tag TEXT` |必填| Docker 镜像的标签 |
-| `--platform TEXT` |                  |要构建的目标平台（例如，`linux/amd64,linux/arm64`）|
+| `--platform TEXT` | |要构建的目标平台（例如，`linux/amd64,linux/arm64`）|
 | `--pull / --no-pull` | `--pull` |使用最新的远程 Docker 镜像构建 |
 | `-c, --config FILE` | `langgraph.json` |配置文件路径 |
 

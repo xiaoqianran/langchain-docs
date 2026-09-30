@@ -34,16 +34,16 @@ existing v0.3 clients keep working. The agent card declares one interface:
 
 ## Supported methods
 
-| v1.0 name                     | v0.3 name        | Supported                     |
-| ----------------------------- | ---------------- | ----------------------------- |
-| `SendMessage`                 | `message/send`   | Yes                           |
-| `SendStreamingMessage`        | `message/stream` | Yes — Server-Sent Events      |
-| `GetTask`                     | `tasks/get`      | Yes                           |
-| `CancelTask`                  | `tasks/cancel`   | Yes                           |
-| `ListTasks`                   | —                | Yes                           |
-| `GetExtendedAgentCard`        | —                | Yes, under the v1.0 name only |
-| `SubscribeToTask`             | —                | Not yet — returns `-32601`    |
-| `*TaskPushNotificationConfig` | —                | Not yet — returns `-32601`    |
+| v1.0 name | v0.3 name | Supported |
+| - | - | - |
+| `SendMessage` | `message/send` | Yes |
+| `SendStreamingMessage` | `message/stream` | Yes — Server-Sent Events |
+| `GetTask` | `tasks/get` | Yes |
+| `CancelTask` | `tasks/cancel` | Yes |
+| `ListTasks` | — | Yes |
+| `GetExtendedAgentCard` | — | Yes, under the v1.0 name only |
+| `SubscribeToTask` | — | Not yet — returns `-32601` |
+| `*TaskPushNotificationConfig` | — | Not yet — returns `-32601` |
 
 Exactly four v0.3 names are accepted: `message/send`, `message/stream`, `tasks/get` and
 `tasks/cancel`. Anything else — including `agent/getAuthenticatedExtendedCard` and
@@ -213,15 +213,15 @@ Unset means all tool results are published. The filter applies to both task hist
 
 ## Requirements
 
-| Feature                                      | Minimum version           |
-| -------------------------------------------- | ------------------------- |
-| A2A endpoint                                 | `langgraph-api >= 0.4.21` |
-| Inbound `FilePart`                           | `0.12.0`                  |
-| Tool-result `DataPart`s                      | `0.12.2`                  |
-| `A2A_ALLOWED_TOOL_CALL_RESULTS`              | `0.12.4`                  |
-| Outbound `FilePart`, configurable card modes | `0.13.0`                  |
-| A2UI v0.9                                    | `0.15.0`                  |
-| `historyScope`                               | `0.15.0`                  |
+| Feature | Minimum version |
+| - | - |
+| A2A endpoint | `langgraph-api >= 0.4.21` |
+| Inbound `FilePart` | `0.12.0` |
+| Tool-result `DataPart`s | `0.12.2` |
+| `A2A_ALLOWED_TOOL_CALL_RESULTS` | `0.12.4` |
+| Outbound `FilePart`, configurable card modes | `0.13.0` |
+| A2UI v0.9 | `0.15.0` |
+| `historyScope` | `0.15.0` |
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langgraph-api>=0.13.0"
@@ -663,18 +663,18 @@ so the list cannot drift from what the server actually does.
 
 Read this before you build against a capability:
 
-| Gap                               | What you observe                                                                                     |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Gap | What you observe |
+| - | - |
 | Response wire shape is still v0.3 | Tasks, messages and parts carry `kind` and `mimeType` instead of v1.0 member-presence discrimination |
-| Streaming events are flat         | SSE emits v0.3 objects with `final`, not `statusUpdate` / `artifactUpdate` wrappers                  |
-| `tool_results` is snake\_case     | v1.0 expects `toolResults`. Kept deliberately, because live A2UI clients read this key               |
-| Timestamps                        | Serialized as `+00:00` rather than an ISO 8601 `Z` suffix                                            |
-| `SubscribeToTask`                 | Returns `-32601` where the spec requires `-32001`                                                    |
-| Push notification config          | Returns `-32601` where the spec requires `-32003`                                                    |
-| Errors carry no `data`            | No `google.rpc.ErrorInfo` reason or domain is attached                                               |
-| `A2A-Version` request header      | Not read, so an unsupported version is processed instead of returning `-32009`                       |
-| Agent card caching                | No `Cache-Control`, `ETag` or `Last-Modified` headers                                                |
-| `GetExtendedAgentCard`            | Served, but never advertised via `capabilities.extendedAgentCard`                                    |
+| Streaming events are flat | SSE emits v0.3 objects with `final`, not `statusUpdate` / `artifactUpdate` wrappers |
+| `tool_results` is snake\_case | v1.0 expects `toolResults`. Kept deliberately, because live A2UI clients read this key |
+| Timestamps | Serialized as `+00:00` rather than an ISO 8601 `Z` suffix |
+| `SubscribeToTask` | Returns `-32601` where the spec requires `-32001` |
+| Push notification config | Returns `-32601` where the spec requires `-32003` |
+| Errors carry no `data` | No `google.rpc.ErrorInfo` reason or domain is attached |
+| `A2A-Version` request header | Not read, so an unsupported version is processed instead of returning `-32009` |
+| Agent card caching | No `Cache-Control`, `ETag` or `Last-Modified` headers |
+| `GetExtendedAgentCard` | Served, but never advertised via `capabilities.extendedAgentCard` |
 
 ## Disable A2A
 

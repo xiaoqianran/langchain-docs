@@ -16,8 +16,8 @@ Query dataset examples together with the experiment runs recorded against each e
 
 <Tabs>
   <Tab title="Python">
-    | Before                            | After                                     |
-    | --------------------------------- | ----------------------------------------- |
+    | Before | After |
+    | - | - |
     | `client.get_experiment_results()` | `client.datasets.experiment_runs.query()` |
 
     <Note>
@@ -28,32 +28,32 @@ Query dataset examples together with the experiment runs recorded against each e
   </Tab>
 
   <Tab title="TypeScript">
-    | Before                               | After                                    |
-    | ------------------------------------ | ---------------------------------------- |
+    | Before | After |
+    | - | - |
     | *(no legacy public `Client` method)* | `client.datasets.experimentRuns.query()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/resources/Datasets/ExperimentRuns/query) for the full parameter and field list.
   </Tab>
 
   <Tab title="Java">
-    | Before                             | After                                        |
-    | ---------------------------------- | -------------------------------------------- |
+    | Before | After |
+    | - | - |
     | `client.datasets().runs().query()` | `client.datasets().experimentRuns().query()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/datasets/ExperimentRunService.html) for the full parameter list.
   </Tab>
 
   <Tab title="Go">
-    | Before                         | After                                    |
-    | ------------------------------ | ---------------------------------------- |
+    | Before | After |
+    | - | - |
     | `client.Datasets.Runs.Query()` | `client.Datasets.ExperimentRuns.Query()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#DatasetExperimentRunService.Query) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                                    | After                                                |
-    | ----------------------------------------- | ---------------------------------------------------- |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` |
 
     See the [API doc](/langsmith/smith-api/datasets/fetch-experiment-runs-for-dataset-examples) for the full parameter and field list.
@@ -68,17 +68,17 @@ Query dataset examples together with the experiment runs recorded against each e
       `experiment_ids` is required and replaces `session_ids`. Values are still experiment tracing-project UUIDs—if you only know the experiment's name, resolve it first: `client.read_project(project_name="my-experiment").id`, or `await client.aread_project(project_name="my-experiment")` in async code.
     </Warning>
 
-    | Before (`get_experiment_results`) | After (`datasets.experiment_runs.query`) | Notes                                                                                                                                        |
-    | --------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `project_id`                      | `experiment_ids`                         | `get_experiment_results` accepted one project/experiment; the new method accepts a required non-empty list                                   |
-    | `limit`                           | *(removed)*                              | Use `page_size` for per-request batch size                                                                                                   |
-    | *(not available)*                 | `page_size`                              | Per-request result count (default 20, max 100)                                                                                               |
-    | *(handled internally)*            | `cursor`                                 | Pass the previous page's `next_cursor` to fetch the next page                                                                                |
-    | `preview`                         | `selects`                                | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
-    | *(not exposed)*                   | `sort`                                   | Use `{by, order}` for feedback-score sorting                                                                                                 |
-    | `filters`                         | `filters`                                | Unchanged; maps experiment UUID strings to filter expressions                                                                                |
-    | `comparative_experiment_id`       | `comparative_experiment_id`              | Unchanged                                                                                                                                    |
-    | *(not exposed)*                   | `example_ids`                            | Optional example UUID filter, max 1000                                                                                                       |
+    | Before (`get_experiment_results`) | After (`datasets.experiment_runs.query`) | Notes |
+    | - | - | - |
+    | `project_id` | `experiment_ids` | `get_experiment_results` accepted one project/experiment; the new method accepts a required non-empty list |
+    | `limit` | *(removed)* | Use `page_size` for per-request batch size |
+    | *(not available)* | `page_size` | Per-request result count (default 20, max 100) |
+    | *(handled internally)* | `cursor` | Pass the previous page's `next_cursor` to fetch the next page |
+    | `preview` | `selects` | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
+    | *(not exposed)* | `sort` | Use `{by, order}` for feedback-score sorting |
+    | `filters` | `filters` | Unchanged; maps experiment UUID strings to filter expressions |
+    | `comparative_experiment_id` | `comparative_experiment_id` | Unchanged |
+    | *(not exposed)* | `example_ids` | Optional example UUID filter, max 1000 |
   </Tab>
 
   <Tab title="TypeScript">
@@ -86,16 +86,16 @@ Query dataset examples together with the experiment runs recorded against each e
       `experiment_ids` is required and replaces `session_ids`. Values are still experiment tracing-project UUIDs—if you only know the experiment's name, resolve it first: `(await client.readProject({ projectName: "my-experiment" })).id`.
     </Warning>
 
-    | Before                               | After (`datasets.experimentRuns.query`) | Notes                                                                                                                                        |
-    | ------------------------------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-    | *(no legacy public `Client` method)* | `experiment_ids`                        | Required and non-empty                                                                                                                       |
-    | *(no legacy public `Client` method)* | `page_size`                             | Defaults to 20, max 100                                                                                                                      |
-    | *(no legacy public `Client` method)* | `cursor`                                | Pass the previous page's `next_cursor` instead of a numeric offset                                                                           |
-    | *(no legacy public `Client` method)* | `selects`                               | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
-    | *(no legacy public `Client` method)* | `sort`                                  | Use `{ by, order }` for feedback-score sorting                                                                                               |
-    | *(no legacy public `Client` method)* | `filters`                               | Maps experiment UUID strings to filter expressions                                                                                           |
-    | *(no legacy public `Client` method)* | `comparative_experiment_id`             | Scopes pairwise-annotation feedback                                                                                                          |
-    | *(no legacy public `Client` method)* | `example_ids`                           | Optional example UUID filter, max 1000                                                                                                       |
+    | Before | After (`datasets.experimentRuns.query`) | Notes |
+    | - | - | - |
+    | *(no legacy public `Client` method)* | `experiment_ids` | Required and non-empty |
+    | *(no legacy public `Client` method)* | `page_size` | Defaults to 20, max 100 |
+    | *(no legacy public `Client` method)* | `cursor` | Pass the previous page's `next_cursor` instead of a numeric offset |
+    | *(no legacy public `Client` method)* | `selects` | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
+    | *(no legacy public `Client` method)* | `sort` | Use `{ by, order }` for feedback-score sorting |
+    | *(no legacy public `Client` method)* | `filters` | Maps experiment UUID strings to filter expressions |
+    | *(no legacy public `Client` method)* | `comparative_experiment_id` | Scopes pairwise-annotation feedback |
+    | *(no legacy public `Client` method)* | `example_ids` | Optional example UUID filter, max 1000 |
   </Tab>
 
   <Tab title="Java">
@@ -103,19 +103,19 @@ Query dataset examples together with the experiment runs recorded against each e
       `experimentIds()` is required and replaces `sessionIds()`. Values are still experiment tracing-project UUIDs—if you only know the experiment's name, resolve it first: `client.sessions().list(SessionListParams.builder().name("my-experiment").build()).items().first().id()`.
     </Warning>
 
-    | Before (`RunQueryParams`)   | After (`ExperimentRunQueryParams`) | Notes                                                                                                      |
-    | --------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-    | `sessionIds()`              | `experimentIds()`                  | Renamed; required and non-empty                                                                            |
-    | `limit()`                   | *(removed)*                        | Use `pageSize()` for per-request batch size                                                                |
-    | *(not available)*           | `pageSize()`                       | Per-request result count (default 20, max 100)                                                             |
-    | `offset()`                  | `cursor()`                         | Pass the previous page's `nextCursor()` instead of a numeric offset                                        |
-    | `preview()`                 | `selects()`                        | Omitted selects return only run IDs; add `Select.INPUTS_PREVIEW` and `Select.OUTPUTS_PREVIEW` for previews |
-    | `sortParams()`              | `sort()`                           | Shape changed from `sortBy()` / `sortOrder()` to `by()` / `order()`                                        |
-    | `filters()`                 | `filters()`                        | Unchanged                                                                                                  |
-    | `comparativeExperimentId()` | `comparativeExperimentId()`        | Unchanged                                                                                                  |
-    | `exampleIds()`              | `exampleIds()`                     | Unchanged, max 1000                                                                                        |
-    | `format()`                  | *(removed)*                        | The new endpoint returns JSON only                                                                         |
-    | `includeAnnotatorDetail()`  | *(removed)*                        | No new JSON equivalent                                                                                     |
+    | Before (`RunQueryParams`) | After (`ExperimentRunQueryParams`) | Notes |
+    | - | - | - |
+    | `sessionIds()` | `experimentIds()` | Renamed; required and non-empty |
+    | `limit()` | *(removed)* | Use `pageSize()` for per-request batch size |
+    | *(not available)* | `pageSize()` | Per-request result count (default 20, max 100) |
+    | `offset()` | `cursor()` | Pass the previous page's `nextCursor()` instead of a numeric offset |
+    | `preview()` | `selects()` | Omitted selects return only run IDs; add `Select.INPUTS_PREVIEW` and `Select.OUTPUTS_PREVIEW` for previews |
+    | `sortParams()` | `sort()` | Shape changed from `sortBy()` / `sortOrder()` to `by()` / `order()` |
+    | `filters()` | `filters()` | Unchanged |
+    | `comparativeExperimentId()` | `comparativeExperimentId()` | Unchanged |
+    | `exampleIds()` | `exampleIds()` | Unchanged, max 1000 |
+    | `format()` | *(removed)* | The new endpoint returns JSON only |
+    | `includeAnnotatorDetail()` | *(removed)* | No new JSON equivalent |
   </Tab>
 
   <Tab title="Go">
@@ -123,19 +123,19 @@ Query dataset examples together with the experiment runs recorded against each e
       `ExperimentIDs` is required and replaces `SessionIDs`. Values are still experiment tracing-project UUIDs—if you only know the experiment's name, resolve it first: list sessions filtered by `Name` and take the first result's `ID`.
     </Warning>
 
-    | Before (`DatasetRunQueryParams`) | After (`DatasetExperimentRunQueryParams`) | Notes                                                                                                       |
-    | -------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-    | `SessionIDs`                     | `ExperimentIDs`                           | Renamed; required and non-empty                                                                             |
-    | `Limit`                          | *(removed)*                               | Use `PageSize` for per-request batch size                                                                   |
-    | *(not available)*                | `PageSize`                                | Per-request result count (default 20, max 100)                                                              |
-    | `Offset`                         | `Cursor`                                  | Pass the previous page's `NextCursor` instead of a numeric offset                                           |
-    | `Preview`                        | `Selects`                                 | Omitted selects return only run IDs; use `InputsPreview` and `OutputsPreview` select constants for previews |
-    | `SortParams`                     | `Sort`                                    | Shape changed from `SortBy` / `SortOrder` to `By` / `Order`                                                 |
-    | `Filters`                        | `Filters`                                 | Unchanged                                                                                                   |
-    | `ComparativeExperimentID`        | `ComparativeExperimentID`                 | Unchanged                                                                                                   |
-    | `ExampleIDs`                     | `ExampleIDs`                              | Unchanged, max 1000                                                                                         |
-    | `Format`                         | *(removed)*                               | The new endpoint returns JSON only                                                                          |
-    | `IncludeAnnotatorDetail`         | *(removed)*                               | No new JSON equivalent                                                                                      |
+    | Before (`DatasetRunQueryParams`) | After (`DatasetExperimentRunQueryParams`) | Notes |
+    | - | - | - |
+    | `SessionIDs` | `ExperimentIDs` | Renamed; required and non-empty |
+    | `Limit` | *(removed)* | Use `PageSize` for per-request batch size |
+    | *(not available)* | `PageSize` | Per-request result count (default 20, max 100) |
+    | `Offset` | `Cursor` | Pass the previous page's `NextCursor` instead of a numeric offset |
+    | `Preview` | `Selects` | Omitted selects return only run IDs; use `InputsPreview` and `OutputsPreview` select constants for previews |
+    | `SortParams` | `Sort` | Shape changed from `SortBy` / `SortOrder` to `By` / `Order` |
+    | `Filters` | `Filters` | Unchanged |
+    | `ComparativeExperimentID` | `ComparativeExperimentID` | Unchanged |
+    | `ExampleIDs` | `ExampleIDs` | Unchanged, max 1000 |
+    | `Format` | *(removed)* | The new endpoint returns JSON only |
+    | `IncludeAnnotatorDetail` | *(removed)* | No new JSON equivalent |
   </Tab>
 
   <Tab title="cURL">
@@ -143,19 +143,19 @@ Query dataset examples together with the experiment runs recorded against each e
       `experiment_ids` is required and replaces `session_ids`. Values are still experiment tracing-project UUIDs—if you only know the experiment's name, resolve it first: `GET /api/v1/sessions?name=my-experiment` and take `.[0].id`.
     </Warning>
 
-    | Before (`POST /api/v1/datasets/{dataset_id}/runs` body) | After (`POST /api/v2/datasets/{dataset_id}/experiment-runs` body) | Notes                                                                                                                                        |
-    | ------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `session_ids`                                           | `experiment_ids`                                                  | Renamed; required and non-empty                                                                                                              |
-    | `limit`                                                 | *(removed)*                                                       | Use `page_size` for per-request batch size                                                                                                   |
-    | *(not available)*                                       | `page_size`                                                       | Per-request result count (default 20, max 100)                                                                                               |
-    | `offset`                                                | `cursor`                                                          | Pass the previous page's `next_cursor` instead of a numeric offset                                                                           |
-    | `preview`                                               | `selects`                                                         | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
-    | `sort_params`                                           | `sort`                                                            | Shape changed from `{sort_by, sort_order}` to `{by, order}`                                                                                  |
-    | `filters`                                               | `filters`                                                         | Unchanged; maps experiment UUID strings to filter expressions                                                                                |
-    | `comparative_experiment_id`                             | `comparative_experiment_id`                                       | Unchanged                                                                                                                                    |
-    | `example_ids`                                           | `example_ids`                                                     | Unchanged, max 1000                                                                                                                          |
-    | `format=csv`                                            | *(removed)*                                                       | The new endpoint returns JSON only                                                                                                           |
-    | `include_annotator_detail`                              | *(removed)*                                                       | No new JSON equivalent                                                                                                                       |
+    | Before (`POST /api/v1/datasets/{dataset_id}/runs` body) | After (`POST /api/v2/datasets/{dataset_id}/experiment-runs` body) | Notes |
+    | - | - | - |
+    | `session_ids` | `experiment_ids` | Renamed; required and non-empty |
+    | `limit` | *(removed)* | Use `page_size` for per-request batch size |
+    | *(not available)* | `page_size` | Per-request result count (default 20, max 100) |
+    | `offset` | `cursor` | Pass the previous page's `next_cursor` instead of a numeric offset |
+    | `preview` | `selects` | Omitted `selects` returns only run IDs; use `INPUTS_PREVIEW` and `OUTPUTS_PREVIEW` for previews, or `INPUTS` and `OUTPUTS` for full payloads |
+    | `sort_params` | `sort` | Shape changed from `{sort_by, sort_order}` to `{by, order}` |
+    | `filters` | `filters` | Unchanged; maps experiment UUID strings to filter expressions |
+    | `comparative_experiment_id` | `comparative_experiment_id` | Unchanged |
+    | `example_ids` | `example_ids` | Unchanged, max 1000 |
+    | `format=csv` | *(removed)* | The new endpoint returns JSON only |
+    | `include_annotator_detail` | *(removed)* | No new JSON equivalent |
   </Tab>
 </Tabs>
 
@@ -167,81 +167,81 @@ Each page item is a dataset example paired with the runs produced for it—not a
   <Tab title="Python">
     `get_experiment_results` returned experiment results with an `examples_with_runs` iterator. `datasets.experiment_runs.query` returns a paginated page object (`page.items`, `page.next_cursor`); each item has:
 
-    | Field                        | Notes                                                     |
-    | ---------------------------- | --------------------------------------------------------- |
-    | `id`                         | Dataset example UUID                                      |
-    | `dataset_id`                 | Parent dataset UUID                                       |
-    | `name`                       | Example name, if set                                      |
-    | `created_at` / `modified_at` | Example timestamps                                        |
-    | `inputs` / `outputs`         | Example input and reference-output payloads               |
-    | `metadata`                   | Example metadata                                          |
-    | `source_run_id`              | Run UUID the example was created from, if any             |
-    | `attachment_urls`            | Pre-signed download URL per attachment name               |
-    | `runs`                       | This example's runs—see [Querying runs](#response-fields) |
+    | Field | Notes |
+    | - | - |
+    | `id` | Dataset example UUID |
+    | `dataset_id` | Parent dataset UUID |
+    | `name` | Example name, if set |
+    | `created_at` / `modified_at` | Example timestamps |
+    | `inputs` / `outputs` | Example input and reference-output payloads |
+    | `metadata` | Example metadata |
+    | `source_run_id` | Run UUID the example was created from, if any |
+    | `attachment_urls` | Pre-signed download URL per attachment name |
+    | `runs` | This example's runs—see [Querying runs](#response-fields) |
   </Tab>
 
   <Tab title="TypeScript">
     The legacy dataset runs endpoint was not exposed on the public TypeScript `Client`. `datasets.experimentRuns.query` returns a paginated page (`page.getPaginatedItems()`, `page.next_cursor`); each item has:
 
-    | Field                        | Notes                                                     |
-    | ---------------------------- | --------------------------------------------------------- |
-    | `id`                         | Dataset example UUID                                      |
-    | `dataset_id`                 | Parent dataset UUID                                       |
-    | `name`                       | Example name, if set                                      |
-    | `created_at` / `modified_at` | Example timestamps                                        |
-    | `inputs` / `outputs`         | Example input and reference-output payloads               |
-    | `metadata`                   | Example metadata                                          |
-    | `source_run_id`              | Run UUID the example was created from, if any             |
-    | `attachment_urls`            | Pre-signed download URL per attachment name               |
-    | `runs`                       | This example's runs—see [Querying runs](#response-fields) |
+    | Field | Notes |
+    | - | - |
+    | `id` | Dataset example UUID |
+    | `dataset_id` | Parent dataset UUID |
+    | `name` | Example name, if set |
+    | `created_at` / `modified_at` | Example timestamps |
+    | `inputs` / `outputs` | Example input and reference-output payloads |
+    | `metadata` | Example metadata |
+    | `source_run_id` | Run UUID the example was created from, if any |
+    | `attachment_urls` | Pre-signed download URL per attachment name |
+    | `runs` | This example's runs—see [Querying runs](#response-fields) |
   </Tab>
 
   <Tab title="Java">
     `runs().query` returned an optional list. `experimentRuns().query` returns a page object (`items()`, `nextCursor()`); each item has:
 
-    | Field                          | Notes                                                     |
-    | ------------------------------ | --------------------------------------------------------- |
-    | `id()`                         | Dataset example UUID                                      |
-    | `datasetId()`                  | Parent dataset UUID                                       |
-    | `name()`                       | Example name, if set                                      |
-    | `createdAt()` / `modifiedAt()` | Example timestamps                                        |
-    | `inputs()` / `outputs()`       | Example input and reference-output payloads               |
-    | `metadata()`                   | Example metadata                                          |
-    | `sourceRunId()`                | Run UUID the example was created from, if any             |
-    | `attachmentUrls()`             | Pre-signed download URL per attachment name               |
-    | `runs()`                       | This example's runs—see [Querying runs](#response-fields) |
+    | Field | Notes |
+    | - | - |
+    | `id()` | Dataset example UUID |
+    | `datasetId()` | Parent dataset UUID |
+    | `name()` | Example name, if set |
+    | `createdAt()` / `modifiedAt()` | Example timestamps |
+    | `inputs()` / `outputs()` | Example input and reference-output payloads |
+    | `metadata()` | Example metadata |
+    | `sourceRunId()` | Run UUID the example was created from, if any |
+    | `attachmentUrls()` | Pre-signed download URL per attachment name |
+    | `runs()` | This example's runs—see [Querying runs](#response-fields) |
   </Tab>
 
   <Tab title="Go">
     `Datasets.Runs.Query` returned a slice pointer. `Datasets.ExperimentRuns.Query` returns an `ItemsCursorPostPagination` (`Items`, `NextCursor`); each item has:
 
-    | Field                      | Notes                                                     |
-    | -------------------------- | --------------------------------------------------------- |
-    | `ID`                       | Dataset example UUID                                      |
-    | `DatasetID`                | Parent dataset UUID                                       |
-    | `Name`                     | Example name, if set                                      |
-    | `CreatedAt` / `ModifiedAt` | Example timestamps                                        |
-    | `Inputs` / `Outputs`       | Example input and reference-output payloads               |
-    | `Metadata`                 | Example metadata                                          |
-    | `SourceRunID`              | Run UUID the example was created from, if any             |
-    | `AttachmentURLs`           | Pre-signed download URL per attachment name               |
-    | `Runs`                     | This example's runs—see [Querying runs](#response-fields) |
+    | Field | Notes |
+    | - | - |
+    | `ID` | Dataset example UUID |
+    | `DatasetID` | Parent dataset UUID |
+    | `Name` | Example name, if set |
+    | `CreatedAt` / `ModifiedAt` | Example timestamps |
+    | `Inputs` / `Outputs` | Example input and reference-output payloads |
+    | `Metadata` | Example metadata |
+    | `SourceRunID` | Run UUID the example was created from, if any |
+    | `AttachmentURLs` | Pre-signed download URL per attachment name |
+    | `Runs` | This example's runs—see [Querying runs](#response-fields) |
   </Tab>
 
   <Tab title="cURL">
     `POST /api/v1/datasets/{dataset_id}/runs` returned a JSON array. `POST /api/v2/datasets/{dataset_id}/experiment-runs` returns `{ "items": [...], "next_cursor": "..." }`; each item has:
 
-    | Field                        | Notes                                                     |
-    | ---------------------------- | --------------------------------------------------------- |
-    | `id`                         | Dataset example UUID                                      |
-    | `dataset_id`                 | Parent dataset UUID                                       |
-    | `name`                       | Example name, if set                                      |
-    | `created_at` / `modified_at` | Example timestamps                                        |
-    | `inputs` / `outputs`         | Example input and reference-output payloads               |
-    | `metadata`                   | Example metadata                                          |
-    | `source_run_id`              | Run UUID the example was created from, if any             |
-    | `attachment_urls`            | Pre-signed download URL per attachment name               |
-    | `runs`                       | This example's runs—see [Querying runs](#response-fields) |
+    | Field | Notes |
+    | - | - |
+    | `id` | Dataset example UUID |
+    | `dataset_id` | Parent dataset UUID |
+    | `name` | Example name, if set |
+    | `created_at` / `modified_at` | Example timestamps |
+    | `inputs` / `outputs` | Example input and reference-output payloads |
+    | `metadata` | Example metadata |
+    | `source_run_id` | Run UUID the example was created from, if any |
+    | `attachment_urls` | Pre-signed download URL per attachment name |
+    | `runs` | This example's runs—see [Querying runs](#response-fields) |
   </Tab>
 </Tabs>
 

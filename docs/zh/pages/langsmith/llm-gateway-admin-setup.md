@@ -4,8 +4,10 @@
 
 # 管理员设置
 
+一次性组织设置以启用 LLM 网关并授予用户访问权限。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 一次性设置为您的 LangSmith [organization](/langsmith/administration-overview#organizations) 启用 LLM 网关。 [Organization admins](/langsmith/rbac#organization-admin) 应在个人用户可以通过网关路由呼叫之前完成此操作。
@@ -23,7 +25,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：
 
 |秘密名字|供应商|
-| ---| ---|
+| - | - |
 | `ANTHROPIC_API_KEY` | Anthropic |
 | `AWS_BEARER_TOKEN_BEDROCK` | AWS 基岩 |
 | `AZURE_FOUNDRY_API_KEY` | Azure 铸造厂 |
@@ -32,7 +34,7 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台|仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
 
 ## 2.配置用户的网关访问
 
@@ -43,9 +45,9 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 需要启用 RBAC 的计划。
 
 1. 转至 **设置 > 成员/角色**。
-1. 创建新的工作区角色。
-1. 至少授予`gateway:invoke`和`workspaces:read`。
-1. 将需要网关访问权限的用户分配给此角色。
+2. 创建新的工作区角色。
+3. 至少授予`gateway:invoke`和`workspaces:read`。
+4. 将需要网关访问权限的用户分配给该角色。
 
 当您想要向特定用户授予网关访问权限而不授予他们完整的工作区管理员权限时，请使用此选项。这使您可以最大程度地控制谁可以使用网关。
 
@@ -61,8 +63,8 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 网关策略管理需要`organization:manage`权限。转至 **LLM Gateway** 创建治理策略。您可以配置：
 
-- **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
-- **数据策略：** 在 PII 和机密到达模型之前对其进行检测和编辑，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
+* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
+* **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 
@@ -80,17 +82,18 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 后续步骤
 
-- [Quickstart](/langsmith/llm-gateway-quickstart)：与您的用户分享作为入门指南。
-- [Set up coding agents](/langsmith/llm-gateway-coding-agents)：在组织范围内配置 Claude Code、Codex 和其他代理。
-- [Traces, Engine, and access control](/langsmith/llm-gateway-access)：深入探讨角色、范围键、跟踪路由以及谁可以看到什么。
+* [Quickstart](/langsmith/llm-gateway-quickstart)：与您的用户分享作为入门指南。
+* [Set up coding agents](/langsmith/llm-gateway-coding-agents)：在组织范围内配置 Claude Code、Codex 和其他代理。
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：深入探讨角色、范围键、跟踪路由以及谁可以看到什么。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

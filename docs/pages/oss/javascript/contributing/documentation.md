@@ -336,14 +336,14 @@ Use [Mintlify components](https://mintlify.com/docs/text) to enhance readability
 
 When adding mermaid diagrams, use the LangChain brand color palette for node styling. Copy `classDef` lines from any existing diagram, or use the reference table in [`AGENTS.md`](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling).
 
-| Role     | Fill      | Stroke    | Text      |
-| -------- | --------- | --------- | --------- |
-| process  | `#E5F4FF` | `#006DDD` | `#030710` |
-| trigger  | `#F6FFDB` | `#6E8900` | `#2E3900` |
+| Role | Fill | Stroke | Text |
+| - | - | - | - |
+| process | `#E5F4FF` | `#006DDD` | `#030710` |
+| trigger | `#F6FFDB` | `#6E8900` | `#2E3900` |
 | decision | `#FDF3FF` | `#7E65AE` | `#504B5F` |
-| output   | `#EBD0F0` | `#885270` | `#441E33` |
-| alert    | `#F8E8E6` | `#B27D75` | `#634643` |
-| neutral  | `#F2FAFF` | `#40668D` | `#2F4B68` |
+| output | `#EBD0F0` | `#885270` | `#441E33` |
+| alert | `#F8E8E6` | `#B27D75` | `#634643` |
+| neutral | `#F2FAFF` | `#40668D` | `#2F4B68` |
 
 Do not use Tailwind defaults, Material Design colors, or other off-brand palettes.
 
@@ -429,12 +429,12 @@ The build pipeline transforms these into proper markdown links based on the curr
 
   **Supported formats:**
 
-  | Syntax                   | Result                                                                                     |
-  | ------------------------ | ------------------------------------------------------------------------------------------ |
-  | `@[ChatAnthropic]`       | Link with "ChatAnthropic" as the displayed text                                            |
-  | ``@[`ChatAnthropic`]``   | Link with `` `ChatAnthropic` `` (code formatted) as text                                   |
-  | `@[text][ChatAnthropic]` | Link with "text" as text and `ChatAnthropic` as the key in the link map                    |
-  | `\@[ChatAnthropic]`      | Escaped: renders as literal `@[ChatAnthropic]` (no link – what's being used on this page!) |
+  | Syntax | Result |
+  | - | - |
+  | `@[ChatAnthropic]` | Link with "ChatAnthropic" as the displayed text |
+  | ``@[`ChatAnthropic`]`` | Link with `` `ChatAnthropic` `` (code formatted) as text |
+  | `@[text][ChatAnthropic]` | Link with "text" as text and `ChatAnthropic` as the key in the link map |
+  | `\@[ChatAnthropic]` | Escaped: renders as literal `@[ChatAnthropic]` (no link – what's being used on this page!) |
 
   **Adding new links:**
 

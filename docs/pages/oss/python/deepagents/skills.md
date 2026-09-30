@@ -151,11 +151,11 @@ As agents take on more complex tasks, the context they need grows with them. Loa
 
 Skills load in three levels. Each level adds more detail only when the task needs it:
 
-| Level               | What loads                                                                                                                | When                                                             |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **1. Metadata**     | [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from `SKILL.md` [frontmatter](#frontmatter-fields) | Agent startup, for every configured skill                        |
-| **2. Instructions** | Full `SKILL.md` body                                                                                                      | When the skill is invoked                                        |
-| **3. Resources**    | [Supporting files](#add-supporting-resources) under `scripts/`, `references/`, and `assets/`                              | As needed after invocation, when the instructions reference them |
+| Level | What loads | When |
+| - | - | - |
+| **1. Metadata** | [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from `SKILL.md` [frontmatter](#frontmatter-fields) | Agent startup, for every configured skill |
+| **2. Instructions** | Full `SKILL.md` body | When the skill is invoked |
+| **3. Resources** | [Supporting files](#add-supporting-resources) under `scripts/`, `references/`, and `assets/` | As needed after invocation, when the instructions reference them |
 
 The following diagram shows what appears in agent context at a given moment. At startup, level 1 metadata for every skill is in the system prompt. When a skill is invoked, level 2 instructions join the context. Level 3 files stay on the backend until the agent reads them after invocation.
 
@@ -652,12 +652,12 @@ def create_agent_for_user(user_role: str):
 This pattern keeps one maintained copy of each skill and varies only the paths passed to each agent. In deployments, a graph factory is a natural place to parse user information and construct the agent with the right skill paths.
 
 <Note>
-  The SDK only loads the sources you pass in `skills`. It does not automatically scan CLI directories such as `~/.deepagents/...` or `~/.agents/...`.
+  The SDK only loads the sources you pass in `skills`. It does not automatically scan directories such as `~/.deepagents/...` or `~/.agents/...`.
 
-  For CLI storage conventions, see [App data](/oss/deepagents/code/configuration#data-locations).
+  For Deep Agents Code storage conventions, see [App data](/oss/deepagents/code/configuration#data-locations).
 
-  <Accordion title="Emulating CLI source order in SDK">
-    If you want CLI-style layering in SDK code, pass all desired sources explicitly in lowest-to-highest precedence order:
+  <Accordion title="Emulate Deep Agents Code source order in the SDK">
+    To match Deep Agents Code layering in SDK code, pass all desired sources explicitly in lowest-to-highest precedence order:
 
     ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     [
@@ -1881,13 +1881,13 @@ Use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm
 
 Skills, [memory](/oss/python/deepagents/memory) (`AGENTS.md` files), and tools all provide context or capabilities to the agent. The following table summarizes when to reach for each:
 
-|              | Skills                                                           | Memory                                                        | Tools                                                                             |
-| ------------ | ---------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Purpose**  | On-demand capabilities discovered through progressive disclosure | Persistent context loaded at startup                          | Programmatic actions the agent can call                                           |
-| **Loading**  | Read only when the agent determines relevance                    | Loaded at agent start                                         | Available every turn                                                              |
-| **Format**   | `SKILL.md` in named directories                                  | `AGENTS.md` files                                             | Functions bound to the agent                                                      |
-| **Layering** | User, then project (last wins)                                   | User, then project (combined)                                 | Defined at agent creation                                                         |
-| **Use when** | Instructions are task-specific and potentially large             | Context is always relevant (project conventions, preferences) | The agent needs a programmatic action, or does not have access to the file system |
+| | Skills | Memory | Tools |
+| - | - | - | - |
+| **Purpose** | On-demand capabilities discovered through progressive disclosure | Persistent context loaded at startup | Programmatic actions the agent can call |
+| **Loading** | Read only when the agent determines relevance | Loaded at agent start | Available every turn |
+| **Format** | `SKILL.md` in named directories | `AGENTS.md` files | Functions bound to the agent |
+| **Layering** | User, then project (last wins) | User, then project (combined) | Defined at agent creation |
+| **Use when** | Instructions are task-specific and potentially large | Context is always relevant (project conventions, preferences) | The agent needs a programmatic action, or does not have access to the file system |
 
 These are guidelines, not hard boundaries. In practice, skills and memory sit on a spectrum. An agent can update its own skills as it works, capturing new procedures and refining instructions over time. In this way, skills can function as a form of progressive-disclosure memory: context the agent builds up and retrieves on demand rather than loading on every prompt.
 
@@ -1895,14 +1895,14 @@ These are guidelines, not hard boundaries. In practice, skills and memory sit on
 
 The [Agent Skills specification](https://agentskills.io/specification) defines the following frontmatter fields:
 
-| Field           | Required | Description                                                                                 |
-| --------------- | -------- | ------------------------------------------------------------------------------------------- |
-| `name`          | Yes      | Lowercase alphanumeric with hyphens, 1-64 characters. Must match the parent directory name. |
-| `description`   | Yes      | What the skill does and when to use it. Max 1,024 characters.                               |
-| `license`       | No       | License name or reference to a bundled license file.                                        |
-| `compatibility` | No       | Environment requirements (system packages, network access). Max 500 characters.             |
-| `metadata`      | No       | Arbitrary key-value pairs for additional properties.                                        |
-| `allowed-tools` | No       | Space-separated list of pre-approved tools the skill can use. Experimental.                 |
+| Field | Required | Description |
+| - | - | - |
+| `name` | Yes | Lowercase alphanumeric with hyphens, 1-64 characters. Must match the parent directory name. |
+| `description` | Yes | What the skill does and when to use it. Max 1,024 characters. |
+| `license` | No | License name or reference to a bundled license file. |
+| `compatibility` | No | Environment requirements (system packages, network access). Max 500 characters. |
+| `metadata` | No | Arbitrary key-value pairs for additional properties. |
+| `allowed-tools` | No | Space-separated list of pre-approved tools the skill can use. Experimental. |
 
 ```md expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---

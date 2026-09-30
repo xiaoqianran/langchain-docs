@@ -58,11 +58,11 @@ Use `dcode config` or `dcode config get <key>` to see the current value and wher
 
 The `dcode config` commands show the settings Deep Agents Code uses and where each value comes from, without starting a session. Use them to confirm that an administrator setting, environment variable, or `config.toml` setting is active.
 
-| Command                  | Description                                                                                                                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dcode config`           | Show every setting, its current value, and where that value comes from                                                                                                 |
-| `dcode config get <key>` | Show the current value and source for one setting, for example, `dcode config get interpreter.memory_limit_mb`                                                         |
-| `dcode config path`      | Show the file locations for `managed_config.toml`, `config.toml`, project and global `.env` files, `hooks.json`, and managed state, including whether each file exists |
+| Command | Description |
+| - | - |
+| `dcode config` | Show every setting, its current value, and where that value comes from |
+| `dcode config get <key>` | Show the current value and source for one setting, for example, `dcode config get interpreter.memory_limit_mb` |
+| `dcode config path` | Show the file locations for `managed_config.toml`, `config.toml`, project and global `.env` files, `hooks.json`, and managed state, including whether each file exists |
 
 Add `--verbose` to `dcode config` or `dcode config get` to show descriptions, defaults, and where each setting can be defined. Combine `--verbose` with `--json` to include accepted types and other reference details. All three commands accept `--json` for machine-readable output. For the full list of commands, see [CLI reference](/oss/deepagents/code/cli-reference).
 
@@ -242,13 +242,13 @@ For user-defined themes, built-in overrides, and terminal-specific mappings, see
 
   #### Common `TERM_PROGRAM` values
 
-  | Terminal                    | `TERM_PROGRAM`   |
-  | --------------------------- | ---------------- |
-  | Apple Terminal              | `Apple_Terminal` |
-  | iTerm2                      | `iTerm.app`      |
-  | WezTerm                     | `WezTerm`        |
-  | VS Code integrated terminal | `vscode`         |
-  | Ghostty                     | `ghostty`        |
+  | Terminal | `TERM_PROGRAM` |
+  | - | - |
+  | Apple Terminal | `Apple_Terminal` |
+  | iTerm2 | `iTerm.app` |
+  | WezTerm | `WezTerm` |
+  | VS Code integrated terminal | `vscode` |
+  | Ghostty | `ghostty` |
 
   #### Theme resolution order
 
@@ -469,11 +469,11 @@ Managed configuration lets administrators control Deep Agents Code settings acro
 
 Deep Agents Code looks for `managed_config.toml` in a fixed location on each operating system:
 
-| Operating system | Path                                                     |
-| ---------------- | -------------------------------------------------------- |
-| macOS            | `/Library/Application Support/dcode/managed_config.toml` |
-| Linux            | `/etc/dcode/managed_config.toml`                         |
-| Windows          | `<ProgramData>\dcode\managed_config.toml`                |
+| Operating system | Path |
+| - | - |
+| macOS | `/Library/Application Support/dcode/managed_config.toml` |
+| Linux | `/etc/dcode/managed_config.toml` |
+| Windows | `<ProgramData>\dcode\managed_config.toml` |
 
 On Windows, Deep Agents Code finds ProgramData through the system registry, not the `%ProgramData%` environment variable. Environment variables cannot change the managed config location. If the registry is unavailable, Deep Agents Code checks `C:\ProgramData\dcode\managed_config.toml`. If that file is also missing, Deep Agents Code cannot determine whether an administrator configured a policy, so commands that use configuration stop instead of running without it.
 
@@ -855,21 +855,21 @@ Deep Agents Code stores data in two directory hierarchies:
 
 #### What goes where
 
-| Data                          | Location                                   | Read/Write | Notes                                                                                                                                                                       |
-| ----------------------------- | ------------------------------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Sessions**                  | `~/.deepagents/.state/sessions.db`         | R/W        | SQLite checkpoint database                                                                                                                                                  |
-| **Input history**             | `~/.deepagents/.state/history.jsonl`       | R/W        | JSON-lines, up/down arrow recall                                                                                                                                            |
-| **ChatGPT OAuth token**       | `~/.deepagents/.state/chatgpt-auth.json`   | R/W        | Backs the [`openai_codex`](/oss/deepagents/code/providers) provider; created when you sign in with ChatGPT and refreshed automatically. Readable only by your user account. |
-| **Base instructions**         | Package `default_agent_prompt.md`          | R          | Immutable, updated with Deep Agents Code upgrades                                                                                                                           |
-| **User customizations**       | `~/.deepagents/{agent}/AGENTS.md`          | R/W        | Appended to base instructions                                                                                                                                               |
-| **Project instructions**      | `.deepagents/AGENTS.md` or `AGENTS.md`     | R          | Both loaded if present                                                                                                                                                      |
-| **User skills**               | `~/.deepagents/{agent}/skills/`            | R/W        | Agent-specific skills                                                                                                                                                       |
-| **Shared skills**             | `~/.agents/skills/`                        | R          | Tool-agnostic, cross-CLI                                                                                                                                                    |
-| **Project skills**            | `.deepagents/skills/` or `.agents/skills/` | R          | Project-scoped                                                                                                                                                              |
-| **User Python extensions**    | `~/.deepagents/extensions/`                | R/W        | Experimental; see [Python extensions](/oss/deepagents/code/extensions)                                                                                                      |
-| **Project Python extensions** | `.deepagents/extensions/`                  | R          | Experimental; requires project trust                                                                                                                                        |
-| **Custom subagents**          | `~/.deepagents/{agent}/agents/`            | R/W        | User-defined subagents                                                                                                                                                      |
-| **Project subagents**         | `.deepagents/agents/`                      | R          | Project-defined subagents                                                                                                                                                   |
+| Data | Location | Read/Write | Notes |
+| - | - | - | - |
+| **Sessions** | `~/.deepagents/.state/sessions.db` | R/W | SQLite checkpoint database |
+| **Input history** | `~/.deepagents/.state/history.jsonl` | R/W | JSON-lines, up/down arrow recall |
+| **ChatGPT OAuth token** | `~/.deepagents/.state/chatgpt-auth.json` | R/W | Backs the [`openai_codex`](/oss/deepagents/code/providers) provider; created when you sign in with ChatGPT and refreshed automatically. Readable only by your user account. |
+| **Base instructions** | Package `default_agent_prompt.md` | R | Immutable, updated with Deep Agents Code upgrades |
+| **User customizations** | `~/.deepagents/{agent}/AGENTS.md` | R/W | Appended to base instructions |
+| **Project instructions** | `.deepagents/AGENTS.md` or `AGENTS.md` | R | Both loaded if present |
+| **User skills** | `~/.deepagents/{agent}/skills/` | R/W | Agent-specific skills |
+| **Shared skills** | `~/.agents/skills/` | R | Tool-agnostic, cross-CLI |
+| **Project skills** | `.deepagents/skills/` or `.agents/skills/` | R | Project-scoped |
+| **User Python extensions** | `~/.deepagents/extensions/` | R/W | Experimental; see [Python extensions](/oss/deepagents/code/extensions) |
+| **Project Python extensions** | `.deepagents/extensions/` | R | Experimental; requires project trust |
+| **Custom subagents** | `~/.deepagents/{agent}/agents/` | R/W | User-defined subagents |
+| **Project subagents** | `.deepagents/agents/` | R | Project-defined subagents |
 
 ### Precedence rules
 
@@ -906,10 +906,10 @@ All instruction sources are **combined** (not overridden):
 
 ### `.deepagents` vs `.agents`
 
-| Directory      | Purpose                   | When to use                                                   |
-| -------------- | ------------------------- | ------------------------------------------------------------- |
+| Directory | Purpose | When to use |
+| - | - | - |
 | `.deepagents/` | Deep Agents Code-specific | Skills and config that use Deep Agents Code-specific features |
-| `.agents/`     | Tool-agnostic             | Skills you want to share across different AI CLI tools        |
+| `.agents/` | Tool-agnostic | Skills you want to share across different AI CLI tools |
 
 <Tip>
   Use `.agents/skills/` for skills that work with any AI coding assistant.
@@ -918,17 +918,17 @@ All instruction sources are **combined** (not overridden):
 
 ### Cleaning up
 
-| Need                              | Action                                                                                          |
-| --------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Reset all data                    | `rm -rf ~/.deepagents`                                                                          |
-| Clear sessions only               | `rm ~/.deepagents/.state/sessions.db*`                                                          |
-| Clear input history               | `rm ~/.deepagents/.state/history.jsonl`                                                         |
-| Clear stored API keys             | `rm ~/.deepagents/.state/auth.json`                                                             |
-| Clear MCP OAuth tokens            | `rm -rf ~/.deepagents/.state/mcp-tokens`                                                        |
+| Need | Action |
+| - | - |
+| Reset all data | `rm -rf ~/.deepagents` |
+| Clear sessions only | `rm ~/.deepagents/.state/sessions.db*` |
+| Clear input history | `rm ~/.deepagents/.state/history.jsonl` |
+| Clear stored API keys | `rm ~/.deepagents/.state/auth.json` |
+| Clear MCP OAuth tokens | `rm -rf ~/.deepagents/.state/mcp-tokens` |
 | Clear saved MCP project approvals | Remove `enabled_project_server_approvals` from the `[mcp]` table in `~/.deepagents/config.toml` |
-| Re-run first-run onboarding       | `rm ~/.deepagents/.state/onboarding_complete`                                                   |
-| Reset agent instructions          | `dcode agents reset --agent {name}`                                                             |
-| Remove a skill                    | `rm -rf ~/.deepagents/{agent}/skills/{skill-name}`                                              |
+| Re-run first-run onboarding | `rm ~/.deepagents/.state/onboarding_complete` |
+| Reset agent instructions | `dcode agents reset --agent {name}` |
+| Remove a skill | `rm -rf ~/.deepagents/{agent}/skills/{skill-name}` |
 
 <Warning>
   Deleting `~/.deepagents/.state/sessions.db` will remove all conversation history and checkpoints.

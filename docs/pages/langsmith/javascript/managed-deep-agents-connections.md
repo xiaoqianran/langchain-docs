@@ -33,10 +33,10 @@ The rest of this page covers the two choices around those steps: who owns the cr
 
 Every `connections.get(...)` call names who owns the credential it resolves:
 
-| Owner   | Resolves to                                                                    | Use when                                                                                                                                      |
-| ------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agent` | One credential that belongs to the deployment. Every caller uses it.           | Every caller needs the same capability: web search with Tavily, a shared knowledge base, or posting to one team channel.                      |
-| `user`  | The calling person's own credential. Each person authorizes their own account. | The agent acts as the person who asked: searching Notion pages only they can see, filing an issue under their name, or sending email as them. |
+| Owner | Resolves to | Use when |
+| - | - | - |
+| `agent` | One credential that belongs to the deployment. Every caller uses it. | Every caller needs the same capability: web search with Tavily, a shared knowledge base, or posting to one team channel. |
+| `user` | The calling person's own credential. Each person authorizes their own account. | The agent acts as the person who asked: searching Notion pages only they can see, filing an issue under their name, or sending email as them. |
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const tavilyKey = await connections.get("organization-tavily", { type: "agent" });
@@ -55,11 +55,11 @@ Agent-owned credentials belong to the project's deployment, so create them after
 
 A user-owned connection resolves against the caller identity that Managed Deep Agents attaches to the run. Where that identity comes from depends on how the agent is called:
 
-| Surface                                                                   | Caller identity                                                                                                           |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) | The Slack user who sent the message.                                                                                      |
-| LangSmith Studio                                                          | The signed-in LangSmith user.                                                                                             |
-| SDK client or custom frontend                                             | The identity that the project's [identity declaration](/langsmith/javascript/managed-deep-agents-identity) authenticates. |
+| Surface | Caller identity |
+| - | - |
+| [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) | The Slack user who sent the message. |
+| LangSmith Studio | The signed-in LangSmith user. |
+| SDK client or custom frontend | The identity that the project's [identity declaration](/langsmith/javascript/managed-deep-agents-identity) authenticates. |
 
 The default identity declaration verifies a LangSmith API key. That key authenticates the calling client, not an individual person, so every caller who presents it resolves to the same identity. To give each signed-in person their own credentials, declare [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-supabase).
 
@@ -73,11 +73,11 @@ Code never passes a user ID to `connections.get(...)`. The runtime resolves the 
 
 Ownership decides what the agent does with a credential. The create mode decides how that credential reaches the workspace, and depends on how the external service authenticates:
 
-| Mode              | Use when                                                               | Create with                                                                                        | Credential owner                                                                                                                                         |
-| ----------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Opaque secret** | The service uses a fixed API key or other static secret.               | `--secret-from-env`, `--secret-from-file`, stdin, or an interactive prompt                         | The agent                                                                                                                                                |
+| Mode | Use when | Create with | Credential owner |
+| - | - | - | - |
+| **Opaque secret** | The service uses a fixed API key or other static secret. | `--secret-from-env`, `--secret-from-file`, stdin, or an interactive prompt | The agent |
 | **General OAuth** | You register your own OAuth app (BYOT), such as with GitHub or Google. | `--oauth <service>` from the catalog, or `--authorize-url` and `--token-url` for a custom provider | Each caller, or the agent with [`--authorize`](#authorize-an-agent-owned-oauth-account) or [client credentials](#create-a-client-credentials-connection) |
-| **MCP OAuth**     | An MCP server advertises OAuth and registers a client automatically.   | `--mcp <url>`, or the slug alone when the project already declares that user-owned MCP server      | Each caller, or the agent with [`--authorize`](#authorize-an-agent-owned-oauth-account)                                                                  |
+| **MCP OAuth** | An MCP server advertises OAuth and registers a client automatically. | `--mcp <url>`, or the slug alone when the project already declares that user-owned MCP server | Each caller, or the agent with [`--authorize`](#authorize-an-agent-owned-oauth-account) |
 
 For example:
 
@@ -224,32 +224,32 @@ List the catalog with:
 
 The command prints each service's default scopes and the page where you register an app. It does not call LangSmith, so it needs no workspace ID or API key. Pass a value from the first column to `--oauth`.
 
-| `--oauth` value | Register an app                                                         | Default scopes                                            |
-| --------------- | ----------------------------------------------------------------------- | --------------------------------------------------------- |
-| `atlassian`     | [Atlassian](https://developer.atlassian.com/console/myapps/)            | `read:me` `offline_access`                                |
-| `bitbucket`     | [Bitbucket](https://bitbucket.org/account/settings/app-auth/)           | `account`                                                 |
-| `box`           | [Box](https://app.box.com/developers/console)                           | None                                                      |
-| `click-up`      | [ClickUp](https://app.clickup.com/settings/apps)                        | None                                                      |
-| `discord`       | [Discord](https://discord.com/developers/applications)                  | `identify` `email`                                        |
-| `dropbox`       | [Dropbox](https://www.dropbox.com/developers/apps)                      | `account_info.read`                                       |
-| `facebook`      | [Facebook](https://developers.facebook.com/apps/)                       | `email` `public_profile`                                  |
-| `figma`         | [Figma](https://www.figma.com/developers/apps)                          | `current_user:read`                                       |
-| `github`        | [GitHub](https://github.com/settings/developers)                        | `read:user`                                               |
-| `gitlab`        | [GitLab](https://gitlab.com/-/user_settings/applications)               | `read_user`                                               |
-| `google`        | [Google](https://console.cloud.google.com/apis/credentials)             | `openid` `https://www.googleapis.com/auth/userinfo.email` |
-| `hubspot`       | [HubSpot](https://developers.hubspot.com/)                              | `oauth`                                                   |
-| `huggingface`   | [Hugging Face](https://huggingface.co/settings/applications/new)        | `openid` `profile` `email`                                |
-| `linear`        | [Linear](https://linear.app/settings/api/applications/new)              | `read`                                                    |
-| `linkedin`      | [LinkedIn](https://www.linkedin.com/developers/apps)                    | `openid` `profile` `email`                                |
-| `notion-api`    | [Notion API](https://www.notion.so/my-integrations)                     | None                                                      |
-| `patreon`       | [Patreon](https://www.patreon.com/portal/registration/register-clients) | `identity` `identity[email]`                              |
-| `reddit`        | [Reddit](https://www.reddit.com/prefs/apps)                             | `identity`                                                |
-| `salesforce`    | [Salesforce](https://login.salesforce.com/)                             | `api` `refresh_token`                                     |
-| `slack`         | [Slack](https://api.slack.com/apps)                                     | `chat:write`                                              |
-| `spotify`       | [Spotify](https://developer.spotify.com/dashboard)                      | `user-read-email`                                         |
-| `stripe-link`   | [Stripe Link](https://docs.stripe.com/agentic-commerce/link-cli/oauth)  | `payment_methods.agentic` `userinfo:read`                 |
-| `twitch`        | [Twitch](https://dev.twitch.tv/console/apps)                            | `user:read:email`                                         |
-| `x`             | [X](https://developer.x.com/en/portal/dashboard)                        | `tweet.read` `users.read` `offline.access`                |
+| `--oauth` value | Register an app | Default scopes |
+| - | - | - |
+| `atlassian` | [Atlassian](https://developer.atlassian.com/console/myapps/) | `read:me` `offline_access` |
+| `bitbucket` | [Bitbucket](https://bitbucket.org/account/settings/app-auth/) | `account` |
+| `box` | [Box](https://app.box.com/developers/console) | None |
+| `click-up` | [ClickUp](https://app.clickup.com/settings/apps) | None |
+| `discord` | [Discord](https://discord.com/developers/applications) | `identify` `email` |
+| `dropbox` | [Dropbox](https://www.dropbox.com/developers/apps) | `account_info.read` |
+| `facebook` | [Facebook](https://developers.facebook.com/apps/) | `email` `public_profile` |
+| `figma` | [Figma](https://www.figma.com/developers/apps) | `current_user:read` |
+| `github` | [GitHub](https://github.com/settings/developers) | `read:user` |
+| `gitlab` | [GitLab](https://gitlab.com/-/user_settings/applications) | `read_user` |
+| `google` | [Google](https://console.cloud.google.com/apis/credentials) | `openid` `https://www.googleapis.com/auth/userinfo.email` |
+| `hubspot` | [HubSpot](https://developers.hubspot.com/) | `oauth` |
+| `huggingface` | [Hugging Face](https://huggingface.co/settings/applications/new) | `openid` `profile` `email` |
+| `linear` | [Linear](https://linear.app/settings/api/applications/new) | `read` |
+| `linkedin` | [LinkedIn](https://www.linkedin.com/developers/apps) | `openid` `profile` `email` |
+| `notion-api` | [Notion API](https://www.notion.so/my-integrations) | None |
+| `patreon` | [Patreon](https://www.patreon.com/portal/registration/register-clients) | `identity` `identity[email]` |
+| `reddit` | [Reddit](https://www.reddit.com/prefs/apps) | `identity` |
+| `salesforce` | [Salesforce](https://login.salesforce.com/) | `api` `refresh_token` |
+| `slack` | [Slack](https://api.slack.com/apps) | `chat:write` |
+| `spotify` | [Spotify](https://developer.spotify.com/dashboard) | `user-read-email` |
+| `stripe-link` | [Stripe Link](https://docs.stripe.com/agentic-commerce/link-cli/oauth) | `payment_methods.agentic` `userinfo:read` |
+| `twitch` | [Twitch](https://dev.twitch.tv/console/apps) | `user:read:email` |
+| `x` | [X](https://developer.x.com/en/portal/dashboard) | `tweet.read` `users.read` `offline.access` |
 
 A service with no default scopes requires `--scope`.
 
@@ -571,15 +571,15 @@ For a missing OAuth grant, each entry in `credentials` carries the URL where the
 
 One interrupt lists every missing grant. Handle each entry before resuming. An entry with `"kind": "secret"` represents a user-owned API key rather than an OAuth grant. Slack and Studio do not collect those. For more information, see [Review current limitations](#review-current-limitations).
 
-| Field                       | Present for | Meaning                                                       |
-| --------------------------- | ----------- | ------------------------------------------------------------- |
-| `type`                      | Always      | Discriminator. Must be `credential_authorization_required`.   |
-| `message`                   | Always      | Human-readable summary to show above the pending grants.      |
-| `credentials`               | Always      | One entry per missing grant.                                  |
-| `credentials[].slug`        | Always      | Connection slug to authorize.                                 |
-| `credentials[].kind`        | Always      | `secret` for a password-style API key, or `oauth2` for OAuth. |
-| `credentials[].connect_url` | `oauth2`    | HTTPS URL where the caller completes consent.                 |
-| `credentials[].auth_id`     | `oauth2`    | Authorization session id used to poll status.                 |
+| Field | Present for | Meaning |
+| - | - | - |
+| `type` | Always | Discriminator. Must be `credential_authorization_required`. |
+| `message` | Always | Human-readable summary to show above the pending grants. |
+| `credentials` | Always | One entry per missing grant. |
+| `credentials[].slug` | Always | Connection slug to authorize. |
+| `credentials[].kind` | Always | `secret` for a password-style API key, or `oauth2` for OAuth. |
+| `credentials[].connect_url` | `oauth2` | HTTPS URL where the caller completes consent. |
+| `credentials[].auth_id` | `oauth2` | Authorization session id used to poll status. |
 
 ### Read the interrupt in your UI
 

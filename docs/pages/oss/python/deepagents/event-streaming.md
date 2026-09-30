@@ -40,15 +40,15 @@ Each subagent stream exposes the same kinds of projections as the parent run, su
 
 Python uses snake\_case projection names such as `tool_calls`. Each subagent stream can expose `.messages`, `.tool_calls`, `.values`, `.subagents`, and `.output`.
 
-| Field        | Description                                                                                |
-| ------------ | ------------------------------------------------------------------------------------------ |
-| `name`       | Sub-agent name, taken from the `subagent_type` the coordinator selects in its `task` call. |
-| `messages`   | Messages emitted by the subagent.                                                          |
-| `subagents`  | Nested subagent invocations.                                                               |
-| `output`     | Final subagent state, or completion signal for the delegated task.                         |
-| `path`       | Namespace path for the subagent stream.                                                    |
-| `status`     | Lifecycle status such as `started`, `completed`, `failed`, or `interrupted`.               |
-| `tool_calls` | Tool calls scoped to the subagent.                                                         |
+| Field | Description |
+| - | - |
+| `name` | Sub-agent name, taken from the `subagent_type` the coordinator selects in its `task` call. |
+| `messages` | Messages emitted by the subagent. |
+| `subagents` | Nested subagent invocations. |
+| `output` | Final subagent state, or completion signal for the delegated task. |
+| `path` | Namespace path for the subagent stream. |
+| `status` | Lifecycle status such as `started`, `completed`, `failed`, or `interrupted`. |
+| `tool_calls` | Tool calls scoped to the subagent. |
 
 ## Track subagent lifecycle
 

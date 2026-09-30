@@ -98,11 +98,11 @@ For details, see [Open-ended generative UI](/oss/python/langchain/frontend/open-
 
 Start from how much you need to constrain the interface:
 
-| If you need to...                                                           | Choose                                                                  |
-| --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Guarantee branding, layout, and accessibility for a known set of outputs    | [Controlled](/oss/python/langchain/frontend/controlled-generative-ui)   |
-| Let the agent compose novel layouts using only approved components          | [Declarative](/oss/python/langchain/frontend/declarative-generative-ui) |
-| Surface interfaces authored by third parties without building them yourself | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui)   |
+| If you need to... | Choose |
+| - | - |
+| Guarantee branding, layout, and accessibility for a known set of outputs | [Controlled](/oss/python/langchain/frontend/controlled-generative-ui) |
+| Let the agent compose novel layouts using only approved components | [Declarative](/oss/python/langchain/frontend/declarative-generative-ui) |
+| Surface interfaces authored by third parties without building them yourself | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui) |
 
 Choosing a single approach for an entire product is the most common mistake. Real
 applications mix approaches and match each surface to its purpose: controlled

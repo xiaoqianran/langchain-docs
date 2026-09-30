@@ -31,12 +31,12 @@ For block types, provider-specific requirements, and additional examples (PDF, a
 The harness `read_file` tool returns [standard content blocks](/oss/python/langchain/messages#standard-content-blocks) for supported multimodal files instead of plain text. The agent can inspect images, documents, and media stored in its [filesystem](/oss/python/deepagents/overview#virtual-filesystem-access) when the selected model supports the corresponding modality. Check the provider's documentation for your model's supported MIME types.
 
 <Accordion title="Supported multimodal file extensions">
-  | Type                                               | Extensions                                                                |
-  | -------------------------------------------------- | ------------------------------------------------------------------------- |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif`                |
+  | Type | Extensions |
+  | - | - |
+  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
   | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac`                          |
-  | [File](/oss/python/langchain/messages#multimodal)  | `.pdf`, `.ppt`, `.pptx`                                                   |
+  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 </Accordion>
 
 ## Custom tool outputs

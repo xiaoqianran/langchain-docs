@@ -121,13 +121,13 @@ Agents created afterward with this model exclude both `execute` and `grep` and r
 
 ## Merge semantics
 
-| Field                                    | Merge behavior                                                                       |
-| ---------------------------------------- | ------------------------------------------------------------------------------------ |
-| `baseSystemPrompt`, `systemPromptSuffix` | New value wins when set; otherwise inherits                                          |
-| `toolDescriptionOverrides`               | Mappings merge per key; new value wins on a shared key                               |
-| `excludedTools`, `excludedMiddleware`    | Set union                                                                            |
-| `extraMiddleware`                        | Merged by name: new instance replaces existing at its position, novel entries append |
-| `generalPurposeSubagent`                 | Merged field-wise (unset fields inherit)                                             |
+| Field | Merge behavior |
+| - | - |
+| `baseSystemPrompt`, `systemPromptSuffix` | New value wins when set; otherwise inherits |
+| `toolDescriptionOverrides` | Mappings merge per key; new value wins on a shared key |
+| `excludedTools`, `excludedMiddleware` | Set union |
+| `extraMiddleware` | Merged by name: new instance replaces existing at its position, novel entries append |
+| `generalPurposeSubagent` | Merged field-wise (unset fields inherit) |
 
 ## Provider profiles
 

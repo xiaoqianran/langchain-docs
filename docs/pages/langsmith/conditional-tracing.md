@@ -458,12 +458,12 @@ The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_hel
 
 Conditional tracing and [sampling](/langsmith/sample-traces) serve different purposes:
 
-| Feature            | Conditional tracing                               | Sampling                                     |
-| ------------------ | ------------------------------------------------- | -------------------------------------------- |
-| **Control**        | Deterministic (explicit enable/disable)           | Probabilistic (random sampling)              |
-| **Use case**       | Business logic, compliance, per-request decisions | Cost optimization, high-volume observability |
-| **Predictability** | Guaranteed behavior for specific requests         | Statistical representation of traffic        |
-| **Configuration**  | Runtime code logic                                | Environment variable or client config        |
+| Feature | Conditional tracing | Sampling |
+| - | - | - |
+| **Control** | Deterministic (explicit enable/disable) | Probabilistic (random sampling) |
+| **Use case** | Business logic, compliance, per-request decisions | Cost optimization, high-volume observability |
+| **Predictability** | Guaranteed behavior for specific requests | Statistical representation of traffic |
+| **Configuration** | Runtime code logic | Environment variable or client config |
 
 You can combine both approaches for fine-grained control.
 

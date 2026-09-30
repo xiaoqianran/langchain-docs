@@ -100,15 +100,15 @@ Each condition group specifies:
 
 #### Resource types and permissions
 
-| Resource type       | Supported permissions                                                                                                                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project`           | `projects:read`, `projects:update`, `projects:delete`, `runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:share`, `runs:delete`, `projects:increase-trace-tier`, `projects:decrease-trace-tier` |
-| `prompt`            | `prompts:read`, `prompts:update`, `prompts:delete`, `prompts:share`, `prompts:tag`                                                                                                                       |
-| `dataset`           | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`, `datasets:download`, `datasets:clone`                                                                                           |
-| `deployment`        | `deployments:read`, `deployments:update`, `deployments:delete`                                                                                                                                           |
-| `queues`            | `annotation-queues:create`, `annotation-queues:delete`, `annotation-queues:read`, `annotation-queues:update`                                                                                             |
-| `mcp_server`        | `mcp-servers:read`, `mcp-servers:invoke`, `mcp-servers:update`, `mcp-servers:delete`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control).                        |
-| `fleet_integration` | `mcp-servers:read`, `mcp-servers:invoke`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control).                                                                    |
+| Resource type | Supported permissions |
+| - | - |
+| `project` | `projects:read`, `projects:update`, `projects:delete`, `runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:share`, `runs:delete`, `projects:increase-trace-tier`, `projects:decrease-trace-tier` |
+| `prompt` | `prompts:read`, `prompts:update`, `prompts:delete`, `prompts:share`, `prompts:tag` |
+| `dataset` | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`, `datasets:download`, `datasets:clone` |
+| `deployment` | `deployments:read`, `deployments:update`, `deployments:delete` |
+| `queues` | `annotation-queues:create`, `annotation-queues:delete`, `annotation-queues:read`, `annotation-queues:update` |
+| `mcp_server` | `mcp-servers:read`, `mcp-servers:invoke`, `mcp-servers:update`, `mcp-servers:delete`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
+| `fleet_integration` | `mcp-servers:read`, `mcp-servers:invoke`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
 
 <Note>
   Runs don't have their own tags. Run permissions (`runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags. For how the input and output permissions affect responses, refer to [Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs).
@@ -129,27 +129,27 @@ Each condition in the `conditions` array specifies:
 
 #### Operators
 
-| Operator                 | Description                                      |
-| ------------------------ | ------------------------------------------------ |
-| `equals`                 | Exact match (case sensitive)                     |
-| `not_equals`             | Values differ (case sensitive)                   |
-| `equals_ignore_case`     | Exact match (case insensitive)                   |
-| `not_equals_ignore_case` | Values differ (case insensitive)                 |
-| `matches`                | Glob pattern matching with `*` and `?` wildcards |
-| `not_matches`            | Match when value doesn't match glob pattern      |
+| Operator | Description |
+| - | - |
+| `equals` | Exact match (case sensitive) |
+| `not_equals` | Values differ (case sensitive) |
+| `equals_ignore_case` | Exact match (case insensitive) |
+| `not_equals_ignore_case` | Values differ (case insensitive) |
+| `matches` | Glob pattern matching with `*` and `?` wildcards |
+| `not_matches` | Match when value doesn't match glob pattern |
 
 #### `_if_exists` variants
 
 Each operator has an `_if_exists` variant that matches by default when the tag key is absent, or evaluates the condition normally when the tag exists:
 
-| Operator                           | Description                                                       |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| `equals_if_exists`                 | Exact match (case sensitive), or if tag key absent                |
-| `not_equals_if_exists`             | Values differ (case sensitive), or if tag key absent              |
-| `equals_ignore_case_if_exists`     | Exact match (case insensitive), or if tag key absent              |
-| `not_equals_ignore_case_if_exists` | Values differ (case insensitive), or if tag key absent            |
-| `matches_if_exists`                | Glob pattern match, or if tag key absent                          |
-| `not_matches_if_exists`            | Match when value doesn't match glob pattern, or if tag key absent |
+| Operator | Description |
+| - | - |
+| `equals_if_exists` | Exact match (case sensitive), or if tag key absent |
+| `not_equals_if_exists` | Values differ (case sensitive), or if tag key absent |
+| `equals_ignore_case_if_exists` | Exact match (case insensitive), or if tag key absent |
+| `not_equals_ignore_case_if_exists` | Values differ (case insensitive), or if tag key absent |
+| `matches_if_exists` | Glob pattern match, or if tag key absent |
+| `not_matches_if_exists` | Match when value doesn't match glob pattern, or if tag key absent |
 
 <Tip>
   In an **allow** policy, `_if_exists` variants grant access to resources that either match the condition or don't have the specified tag key. In a **deny** policy, they block resources that either match the condition or don't have the tag key.
@@ -177,23 +177,23 @@ Access policies are managed via the LangSmith API by [Organization Admins](/lang
 
 **Feature combinations:**
 
-| RBAC enabled | ABAC enabled | Behavior                                            |
-| ------------ | ------------ | --------------------------------------------------- |
-| ✗            | ✗            | All workspace members have Admin-level access       |
-| ✓            | ✗            | Standard RBAC - access based on role permissions    |
-| ✓            | ✓            | RBAC + ABAC - fine-grained tag-based access control |
+| RBAC enabled | ABAC enabled | Behavior |
+| - | - | - |
+| ✗ | ✗ | All workspace members have Admin-level access |
+| ✓ | ✗ | Standard RBAC - access based on role permissions |
+| ✓ | ✓ | RBAC + ABAC - fine-grained tag-based access control |
 
 **When both RBAC and ABAC are enabled:**
 
-| RBAC permits | Allow policy matches | Deny policy matches | Result                           |
-| ------------ | -------------------- | ------------------- | -------------------------------- |
-| ✓            | ✓                    | ✗                   | **Allowed**                      |
-| ✓            | ✗                    | ✗                   | **Allowed** (RBAC fallback)      |
-| ✓            | ✓                    | ✓                   | **Denied** (deny wins)           |
-| ✓            | ✗                    | ✓                   | **Denied** (deny wins)           |
-| ✗            | ✓                    | ✗                   | **Allowed** (ABAC grants access) |
-| ✗            | ✗                    | ✗                   | **Denied**                       |
-| ✗            | ✓                    | ✓                   | **Denied** (deny wins)           |
+| RBAC permits | Allow policy matches | Deny policy matches | Result |
+| - | - | - | - |
+| ✓ | ✓ | ✗ | **Allowed** |
+| ✓ | ✗ | ✗ | **Allowed** (RBAC fallback) |
+| ✓ | ✓ | ✓ | **Denied** (deny wins) |
+| ✓ | ✗ | ✓ | **Denied** (deny wins) |
+| ✗ | ✓ | ✗ | **Allowed** (ABAC grants access) |
+| ✗ | ✗ | ✗ | **Denied** |
+| ✗ | ✓ | ✓ | **Denied** (deny wins) |
 
 ## Control access to run inputs and outputs
 

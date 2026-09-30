@@ -18,15 +18,15 @@ Currently, the SDK does not provide built-in support for defining webhook endpoi
 
 The following API endpoints accept a `webhook` parameter:
 
-| Operation            | HTTP Method | Endpoint                          |
-| -------------------- | ----------- | --------------------------------- |
-| Create Run           | `POST`      | `/thread/{thread_id}/runs`        |
-| Create Thread Cron   | `POST`      | `/thread/{thread_id}/runs/crons`  |
-| Stream Run           | `POST`      | `/thread/{thread_id}/runs/stream` |
-| Wait Run             | `POST`      | `/thread/{thread_id}/runs/wait`   |
-| Create Cron          | `POST`      | `/runs/crons`                     |
-| Stream Run Stateless | `POST`      | `/runs/stream`                    |
-| Wait Run Stateless   | `POST`      | `/runs/wait`                      |
+| Operation | HTTP Method | Endpoint |
+| - | - | - |
+| Create Run | `POST` | `/thread/{thread_id}/runs` |
+| Create Thread Cron | `POST` | `/thread/{thread_id}/runs/crons` |
+| Stream Run | `POST` | `/thread/{thread_id}/runs/stream` |
+| Wait Run | `POST` | `/thread/{thread_id}/runs/wait` |
+| Create Cron | `POST` | `/runs/crons` |
+| Stream Run Stateless | `POST` | `/runs/stream` |
+| Wait Run Stateless | `POST` | `/runs/wait` |
 
 In this guide, we’ll show how to trigger a webhook after streaming a run.
 
@@ -146,22 +146,22 @@ LangSmith sends webhook notifications in the format of a [Run](/langsmith/runs).
 
 The full webhook payload contains the following fields:
 
-| Field                | Type                  | Description                                                                                  |
-| -------------------- | --------------------- | -------------------------------------------------------------------------------------------- |
-| `run_id`             | `string` (UUID)       | Unique identifier for the run.                                                               |
-| `thread_id`          | `string` (UUID)       | Identifier for the thread the run belongs to.                                                |
-| `assistant_id`       | `string`              | Identifier for the assistant that executed the run.                                          |
-| `status`             | `string`              | Final status of the run (e.g., `"success"`, `"error"`).                                      |
-| `created_at`         | `string` (datetime)   | Timestamp when the run was created.                                                          |
-| `updated_at`         | `string` (datetime)   | Timestamp when the run was last updated.                                                     |
-| `run_started_at`     | `string` (datetime)   | Timestamp when the run began executing.                                                      |
-| `run_ended_at`       | `string` (datetime)   | Timestamp when the run finished. Omitted if the run has not ended.                           |
-| `webhook_sent_at`    | `string` (datetime)   | Timestamp when the webhook request was sent.                                                 |
-| `metadata`           | `JSON object`         | Custom metadata associated with the run.                                                     |
-| `kwargs`             | `JSON object`         | Run input, configuration, and other invocation parameters.                                   |
-| `values`             | `JSON object`         | The state values from the latest checkpoint of the thread. Only present for stateful runs.   |
-| `multitask_strategy` | `string`              | The multitask strategy used for the run.                                                     |
-| `error`              | `JSON object \| null` | Present only if the run failed. Contains `error` (error type) and `message` (detail) fields. |
+| Field | Type | Description |
+| - | - | - |
+| `run_id` | `string` (UUID) | Unique identifier for the run. |
+| `thread_id` | `string` (UUID) | Identifier for the thread the run belongs to. |
+| `assistant_id` | `string` | Identifier for the assistant that executed the run. |
+| `status` | `string` | Final status of the run (e.g., `"success"`, `"error"`). |
+| `created_at` | `string` (datetime) | Timestamp when the run was created. |
+| `updated_at` | `string` (datetime) | Timestamp when the run was last updated. |
+| `run_started_at` | `string` (datetime) | Timestamp when the run began executing. |
+| `run_ended_at` | `string` (datetime) | Timestamp when the run finished. Omitted if the run has not ended. |
+| `webhook_sent_at` | `string` (datetime) | Timestamp when the webhook request was sent. |
+| `metadata` | `JSON object` | Custom metadata associated with the run. |
+| `kwargs` | `JSON object` | Run input, configuration, and other invocation parameters. |
+| `values` | `JSON object` | The state values from the latest checkpoint of the thread. Only present for stateful runs. |
+| `multitask_strategy` | `string` | The multitask strategy used for the run. |
+| `error` | `JSON object \| null` | Present only if the run failed. Contains `error` (error type) and `message` (detail) fields. |
 
 Example payload:
 
@@ -287,13 +287,13 @@ For security or compliance purposes, you can restrict which URLs are valid webho
 
 Available options:
 
-| Option             | Description                                                                      |
-| ------------------ | -------------------------------------------------------------------------------- |
-| `allowed_domains`  | Hostname allowlist. Supports wildcards for subdomains (e.g., `*.mycompany.com`). |
-| `require_https`    | Reject `http://` URLs when `true`.                                               |
-| `allowed_ports`    | Explicit port allowlist. Defaults to 443 (https) and 80 (http).                  |
-| `disable_loopback` | Disallow relative URLs (internal loopback calls) when `true`.                    |
-| `max_url_length`   | Maximum permitted URL length in characters.                                      |
+| Option | Description |
+| - | - |
+| `allowed_domains` | Hostname allowlist. Supports wildcards for subdomains (e.g., `*.mycompany.com`). |
+| `require_https` | Reject `http://` URLs when `true`. |
+| `allowed_ports` | Explicit port allowlist. Defaults to 443 (https) and 80 (http). |
+| `disable_loopback` | Disallow relative URLs (internal loopback calls) when `true`. |
+| `max_url_length` | Maximum permitted URL length in characters. |
 
 ## Disable webhooks
 

@@ -12,10 +12,10 @@ This setup gives you control over where your agent workloads run while letting y
 
 ## Components
 
-| Component                                                                                | Where it runs                                         | Who manages it                        |
-| ---------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------- |
-| <Tooltip>Agent Servers</Tooltip> <br />for [LangSmith Deployment](/langsmith/deployment) | Your infrastructure                                   | You                                   |
-| LangSmith <br />(tracing, evaluation, prompts)                                           | Self-hosted in your infrastructure, or LangSmith SaaS | You (self-hosted) or LangSmith (SaaS) |
+| Component | Where it runs | Who manages it |
+| - | - | - |
+| <Tooltip>Agent Servers</Tooltip> <br />for [LangSmith Deployment](/langsmith/deployment) | Your infrastructure | You |
+| LangSmith <br />(tracing, evaluation, prompts) | Self-hosted in your infrastructure, or LangSmith SaaS | You (self-hosted) or LangSmith (SaaS) |
 
 <Note>
   Hybrid is a platform setup for LangSmith Deployment (agent serving). To set up LangSmith for observability, evaluation, and prompt engineering only, see [Set up LangSmith](/langsmith/platform-setup).

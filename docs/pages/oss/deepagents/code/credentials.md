@@ -23,11 +23,11 @@ The manager lists installed LLM provider and whether they have an environment ke
 <Accordion title="Provider row labels" icon="list-check">
   Each row shows the provider name followed by where its key comes from:
 
-  | Label            | Meaning                                                                                                                             |
-  | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-  | `[stored]`       | A key saved in this manager via `/auth`                                                                                             |
+  | Label | Meaning |
+  | - | - |
+  | `[stored]` | A key saved in this manager via `/auth` |
   | `[env: VARNAME]` | The key comes from environment variable `VARNAME` (the resolved name, such as `DEEPAGENTS_CODE_OPENAI_API_KEY` or `OPENAI_API_KEY`) |
-  | `[missing]`      | No key is stored and the env var is unset; select the row to paste one                                                              |
+  | `[missing]` | No key is stored and the env var is unset; select the row to paste one |
 </Accordion>
 
 The `/auth` prompt also has an optional **base URL** field. Leave it blank to use the provider's default endpoint, or set a custom one to use with this key. The base URL is saved alongside the key. See [Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways) for how endpoints resolve, including with gateways.
@@ -50,13 +50,13 @@ Selecting the `openai_codex` provider in `/auth` starts a browser sign-in instea
 
 The `dcode auth` command group is the scriptable equivalent of the `/auth` manager: it manages the same stored credentials without launching the TUI, which makes it usable for dotfile bootstrap, CI/CD, and setting a key on a remote box over SSH. The subcommands mirror the modal's verbs:
 
-| Command                                                 | Description                                                   |
-| ------------------------------------------------------- | ------------------------------------------------------------- |
-| `dcode auth list` (alias `ls`)                          | List every known provider and where its key resolves from     |
-| `dcode auth status <provider>`                          | Print the resolution source for one provider                  |
-| `dcode auth set <provider>`                             | Store an API key, read from stdin by default                  |
-| `dcode auth remove <provider>` (aliases `rm`, `delete`) | Delete a stored credential                                    |
-| `dcode auth path`                                       | Print the resolved path to the credential store (`auth.json`) |
+| Command | Description |
+| - | - |
+| `dcode auth list` (alias `ls`) | List every known provider and where its key resolves from |
+| `dcode auth status <provider>` | Print the resolution source for one provider |
+| `dcode auth set <provider>` | Store an API key, read from stdin by default |
+| `dcode auth remove <provider>` (aliases `rm`, `delete`) | Delete a stored credential |
+| `dcode auth path` | Print the resolved path to the credential store (`auth.json`) |
 
 `set` reads the key from **stdin** by default, so it never lands in shell history or `argv`. Pipe the key in, or use `--from-env VAR` to copy it from a process environment variable:
 

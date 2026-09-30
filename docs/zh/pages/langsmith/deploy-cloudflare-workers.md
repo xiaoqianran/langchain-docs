@@ -45,7 +45,7 @@ Wrangler 在一次部署中上传 Vite 构建 (SPA) 和 Worker 脚本。 `nodejs
 该应用程序在 `/api/threads/...` 下公开代理流协议。路由在`worker/index.ts`和[Hono](https://hono.dev)中实现。
 
 ### 最低（流媒体聊天）|方法|路径|目的|
-| -------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受协议命令（`run.start`，...）并启动代理运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
 | `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
@@ -53,7 +53,7 @@ Wrangler 在一次部署中上传 Vite 构建 (SPA) 和 Worker 脚本。 `nodejs
 ### 可选（侧边栏）
 
 |方法|路径|目的|
-| -------- | -------------------------------- | -------------------------------------------------- |
+| - | - | - |
 | `GET` | `/api/threads` |列出检查点已知的线程 |
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录 |
@@ -101,24 +101,26 @@ flowchart TB
   class browser,worker process
   class do trigger
   class agent output
-```1.引导线程状态（`GET`/`POST /state`）。
+```
+
+1.引导线程状态（`GET`/`POST /state`）。
 2. 提交时，SDK 发送`run.start` 到`/commands` 并接收`run_id`。
 3. Worker 启动图形运行并将每个协议事件扇入线程的**持久对象**。
 4. SDK订阅`/stream`（上交所）。 DO 重播缓冲的事件并保持实时帧的连接，即使在工作隔离重新启动时也是如此。
 5. 子代理 (`task`) 运行，发出命名空间事件，表现为 `stream.subagents`。
 
-## Cloudflare 后端设计
-
-|关注|实施 |
-| ------------- | ------------------------------------------------------------------- |
+## Cloudflare 后端设计|关注|实施|
+| - | - |
 |前端 | Vite + React SPA (`src/`) |
 | API层| `worker/index.ts` | 霍诺 (Hono) 路线
-|运行时|工人V8 + `nodejs_compat` |
+|运行时 |工人V8 + `nodejs_compat` |
 |上交所回放 |每线程 **持久对象** (`ThreadSession`) |
 |代理运行 |工人隔离；协议事件发布到 DO |
 |静态资产 |工人资产 (`wrangler.jsonc` → `assets`) |
 |秘密 | `wrangler secret` / `.dev.vars` |
-|本地开发 | `vite`（Cloudflare Vite 插件运行 Worker 运行时）|**Worker**（代理 + 检查点）和 **Durable Object**（SSE 事件日志）之间的划分是 Cloudflare 上的主要设计选择。工作隔离是短暂的，因此重播缓冲区位于持久对象中而不是进程内存中。
+|本地开发| `vite`（Cloudflare Vite 插件运行 Worker 运行时）|
+
+**Worker**（代理 + 检查点）和 **Durable Object**（SSE 事件日志）之间的划分是 Cloudflare 上的主要设计选择。工作隔离是短暂的，因此重播缓冲区位于持久对象中而不是进程内存中。
 
 ## 生产坚持
 
@@ -129,9 +131,7 @@ flowchart TB
 1. 交换[durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)（例如通过 Hyperdrive 的 Postgres，或自定义 DO 支持的存储）。
 2. 保留每个线程的持久对象以进行 SSE 重播（或将事件日志持久保存到 DO 存储/KV 以实现长期重新连接）。
 
-有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。
-
-## 本地开发
+有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。## 本地开发
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cp .env.example .dev.vars   # set OPENAI_API_KEY
@@ -147,7 +147,9 @@ pnpm preview  # preview the production build locally
 pnpm typecheck
 ```
 
-## 项目布局* `src/components/` — 聊天界面（`ChatApp`、`Chat`、`MessageThread`、`Subagents`、`ThreadHistory`、...）。
+## 项目布局
+
+* `src/components/` — 聊天界面（`ChatApp`、`Chat`、`MessageThread`、`Subagents`、`ThreadHistory`、...）。
 * `src/lib/chat/threads-client.ts` — 浏览器线程引导程序和侧边栏帮助程序。
 * `worker/agent/` — 深度代理 (`createDeepAgent`)，带有 `researcher` 和 `math-whiz` 子代理和模拟工具。
 * `worker/server/` — 协议助手：`runs.ts`（在 Worker 上启动运行）、`threads.ts`（检查指针支持的状态）、`serialize.ts`、`registry.ts`。

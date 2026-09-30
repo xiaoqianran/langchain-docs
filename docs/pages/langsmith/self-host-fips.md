@@ -16,12 +16,12 @@ The `-fips` variants are built on top of [Chainguard FIPS container images](http
 
 Every LangChain-authored image has a `-fips` counterpart published at the same tag as the non-FIPS version:
 
-| Non-FIPS image                    | FIPS image                             |
-| --------------------------------- | -------------------------------------- |
+| Non-FIPS image | FIPS image |
+| - | - |
 | `langchain/langsmith-ace-backend` | `langchain/langsmith-ace-backend-fips` |
-| `langchain/langsmith-backend`     | `langchain/langsmith-backend-fips`     |
-| `langchain/langsmith-frontend`    | `langchain/langsmith-frontend-fips`    |
-| `langchain/langgraph-operator`    | `langchain/langgraph-operator-fips`    |
+| `langchain/langsmith-backend` | `langchain/langsmith-backend-fips` |
+| `langchain/langsmith-frontend` | `langchain/langsmith-frontend-fips` |
+| `langchain/langgraph-operator` | `langchain/langgraph-operator-fips` |
 
 <Note>
   **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so `langsmith-go-backend-fips`, `langsmith-playground-fips`, `hosted-langserve-backend-fips`, `agent-builder-tool-server-fips`, and `agent-builder-trigger-server-fips` are no longer needed. The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.

@@ -10,15 +10,15 @@ For the full deployment walkthrough, see the [Azure deployment guide](/langsmith
 
 ## Deployment overview
 
-| Stage                       | What gets deployed                                                              | Command                                         |
-| --------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Infrastructure              | AKS + Postgres + Redis + Blob + Key Vault + cert-manager + KEDA + ingress       | `make apply`                                    |
-| Cluster credentials         | Kubeconfig + Kubernetes Secrets from Key Vault                                  | `make kubeconfig && make k8s-secrets`           |
-| LangSmith (Helm path)       | LangSmith Helm (\~17 pods) via shell scripts                                    | `make init-values && make deploy`               |
-| LangSmith (Terraform path)  | Secrets + SA + Helm release managed in Terraform state                          | `make init-app && make apply-app`               |
+| Stage | What gets deployed | Command |
+| - | - | - |
+| Infrastructure | AKS + Postgres + Redis + Blob + Key Vault + cert-manager + KEDA + ingress | `make apply` |
+| Cluster credentials | Kubeconfig + Kubernetes Secrets from Key Vault | `make kubeconfig && make k8s-secrets` |
+| LangSmith (Helm path) | LangSmith Helm (\~17 pods) via shell scripts | `make init-values && make deploy` |
+| LangSmith (Terraform path) | Secrets + SA + Helm release managed in Terraform state | `make init-app && make apply-app` |
 | LangSmith Deployment add-on | host-backend, listener, operator. Bump `default_node_pool_min_count` to 5 first | `make apply && make init-values && make deploy` |
-| Agent Builder add-on        | tool-server, trigger-server, agent-builder LGP                                  | `make init-values && make deploy`               |
-| Insights + Polly add-on     | Clio analytics, Polly eval agent                                                | `make init-values && make deploy`               |
+| Agent Builder add-on | tool-server, trigger-server, agent-builder LGP | `make init-values && make deploy` |
+| Insights + Polly add-on | Clio analytics, Polly eval agent | `make init-values && make deploy` |
 
 ## First-time setup
 
@@ -101,11 +101,11 @@ enable_polly         = true           # Polly AI eval add-on (requires enable_de
 
 Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && make deploy`.
 
-| Profile            | When to use                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| `minimum`          | Cost parking, CI smoke tests, single-user demos. Expect OOM under real traffic.                 |
-| `dev`              | Light non-production for local dev, CI pipelines, integration tests, short-lived POCs.          |
-| `production`       | *Recommended* for production. Multi-replica with HPA on all stateless components.               |
+| Profile | When to use |
+| - | - |
+| `minimum` | Cost parking, CI smoke tests, single-user demos. Expect OOM under real traffic. |
+| `dev` | Light non-production for local dev, CI pipelines, integration tests, short-lived POCs. |
+| `production` | *Recommended* for production. Multi-replica with HPA on all stateless components. |
 | `production-large` | High-volume starting point based on the scale guide (\~50 concurrent users, \~1000 traces/sec). |
 
 ## kubectl

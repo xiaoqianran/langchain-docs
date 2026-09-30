@@ -2349,6 +2349,54 @@
           "rel": "langsmith/self-host-scale.md"
         }
       ],
+      "self-host-smithdb": [
+        {
+          "title": "Enable SmithDB on self-hosted LangSmith",
+          "rel": "langsmith/self-host-smithdb.md"
+        }
+      ],
+      "self-host-smithdb-infrastructure": [
+        {
+          "title": "Prepare SmithDB supporting infrastructure",
+          "rel": "langsmith/self-host-smithdb-infrastructure.md"
+        }
+      ],
+      "self-host-smithdb-install": [
+        {
+          "title": "Install LangSmith with SmithDB",
+          "rel": "langsmith/self-host-smithdb-install.md"
+        }
+      ],
+      "self-host-smithdb-metrics": [
+        {
+          "title": "SmithDB metrics reference",
+          "rel": "langsmith/self-host-smithdb-metrics.md"
+        }
+      ],
+      "self-host-smithdb-migrate": [
+        {
+          "title": "Migrate ClickHouse history to SmithDB",
+          "rel": "langsmith/self-host-smithdb-migrate.md"
+        }
+      ],
+      "self-host-smithdb-observability": [
+        {
+          "title": "Configure SmithDB observability",
+          "rel": "langsmith/self-host-smithdb-observability.md"
+        }
+      ],
+      "self-host-smithdb-scale": [
+        {
+          "title": "Configure SmithDB for scale",
+          "rel": "langsmith/self-host-smithdb-scale.md"
+        }
+      ],
+      "self-host-smithdb-troubleshooting": [
+        {
+          "title": "Troubleshoot SmithDB",
+          "rel": "langsmith/self-host-smithdb-troubleshooting.md"
+        }
+      ],
       "self-host-sso": [
         {
           "title": "Set up SSO with OAuth2.0 and OIDC",
@@ -6645,14 +6693,6 @@
           "rel": "oss/javascript/integrations/long-term-memory/index.md"
         },
         {
-          "title": "Long-term memory with MongoDB Atlas",
-          "rel": "oss/javascript/integrations/memory/mongodb-long-term-memory.md"
-        },
-        {
-          "title": "Short-term memory with MongoDB Atlas",
-          "rel": "oss/javascript/integrations/memory/mongodb-short-term-memory.md"
-        },
-        {
           "title": "Middleware integrations",
           "rel": "oss/javascript/integrations/middleware/index.md"
         },
@@ -7527,14 +7567,6 @@
         {
           "title": "Store integrations",
           "rel": "oss/python/integrations/long-term-memory/index.md"
-        },
-        {
-          "title": "Long-term memory with MongoDB Atlas",
-          "rel": "oss/python/integrations/memory/mongodb-long-term-memory.md"
-        },
-        {
-          "title": "Short-term memory with MongoDB Atlas",
-          "rel": "oss/python/integrations/memory/mongodb-short-term-memory.md"
         },
         {
           "title": "Middleware integrations",

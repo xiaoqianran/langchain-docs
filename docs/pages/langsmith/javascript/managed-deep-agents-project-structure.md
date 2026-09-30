@@ -58,14 +58,14 @@ The layout above shows the common `.ts` names. TypeScript managed declarations a
 
 * **Managed configuration**: Certain paths enable capabilities when present. For `channels/` and `schedules/`, only direct children are managed declarations; nested modules are not.
 
-  | Path                  | Enables                                                                             |
-  | --------------------- | ----------------------------------------------------------------------------------- |
-  | `identity.ts`         | [Caller authentication](/langsmith/javascript/managed-deep-agents-identity)         |
-  | `memory.ts`           | [Durable memory](/langsmith/javascript/managed-deep-agents-memory)                  |
-  | `channels/<name>.ts`  | [Messaging channels](/langsmith/javascript/managed-deep-agents-channels)            |
-  | `tools/mcp.ts`        | [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)          |
-  | `schedules/<name>.ts` | [Cron schedules](/langsmith/javascript/managed-deep-agents-schedules)               |
-  | `sandbox/index.ts`    | [Sandbox filesystem and shell](/langsmith/javascript/managed-deep-agents-sandboxes) |
+  | Path | Enables |
+  | - | - |
+  | `identity.ts` | [Caller authentication](/langsmith/javascript/managed-deep-agents-identity) |
+  | `memory.ts` | [Durable memory](/langsmith/javascript/managed-deep-agents-memory) |
+  | `channels/<name>.ts` | [Messaging channels](/langsmith/javascript/managed-deep-agents-channels) |
+  | `tools/mcp.ts` | [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) |
+  | `schedules/<name>.ts` | [Cron schedules](/langsmith/javascript/managed-deep-agents-schedules) |
+  | `sandbox/index.ts` | [Sandbox filesystem and shell](/langsmith/javascript/managed-deep-agents-sandboxes) |
 
   `tools/` holds ordinary modules with one exception. `tools/mcp.ts` is a managed declaration and exports a named `mcp`. Every other module under `tools/` is application code you import.
 

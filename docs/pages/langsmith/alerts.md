@@ -29,13 +29,13 @@ In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_cam
 
 LangSmith provides threshold-based alerting on the following metrics:
 
-| Metric Type        | Description                                                                                                           | Use Case                                                                                                                                                             |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Run Count**      | Tracks the total number of [runs](/langsmith/observability-concepts#runs) over a time window.                         | Monitor whether a pipeline is producing runs at the expected volume and alert when it drops unexpectedly.                                                            |
-| **Cost**           | Tracks the total cost of runs over a time window.                                                                     | Monitor LLM spending to alert when costs exceed expected thresholds. Requires [cost tracking](/langsmith/cost-tracking) to be configured.                            |
-| **Errors**         | Tracks runs with an error status. Alert on total error count or error percent (rate of errored runs out of all runs). | Monitor for failures in an application, or alert when the error rate exceeds an acceptable threshold.                                                                |
-| **Feedback Score** | Measures the average feedback score.                                                                                  | Track [feedback from end users](/langsmith/attach-user-feedback) or [online evaluation results](/langsmith/online-evaluations-llm-as-judge) to alert on regressions. |
-| **Latency**        | Measures average run execution time.                                                                                  | Tracks the latency of your application to alert on spikes and performance bottlenecks.                                                                               |
+| Metric Type | Description | Use Case |
+| - | - | - |
+| **Run Count** | Tracks the total number of [runs](/langsmith/observability-concepts#runs) over a time window. | Monitor whether a pipeline is producing runs at the expected volume and alert when it drops unexpectedly. |
+| **Cost** | Tracks the total cost of runs over a time window. | Monitor LLM spending to alert when costs exceed expected thresholds. Requires [cost tracking](/langsmith/cost-tracking) to be configured. |
+| **Errors** | Tracks runs with an error status. Alert on total error count or error percent (rate of errored runs out of all runs). | Monitor for failures in an application, or alert when the error rate exceeds an acceptable threshold. |
+| **Feedback Score** | Measures the average feedback score. | Track [feedback from end users](/langsmith/attach-user-feedback) or [online evaluation results](/langsmith/online-evaluations-llm-as-judge) to alert on regressions. |
+| **Latency** | Measures average run execution time. | Tracks the latency of your application to alert on spikes and performance bottlenecks. |
 
 Additionally, for **Errors** and **Latency**, you can use the filter builder to stack conditions on fields such as **Status**, **Run Type**, **Tag**, and **Error**. For example, you can scope an error alert to runs where **Status** is `error`, **Run Type** is `llm`, **Tag** is `support_agent`, and **Error** matches `RateLimitExceeded`.
 
@@ -588,10 +588,10 @@ You can preview alert behavior over a historical time window to understand how m
 
       The same pattern works with other transactional email APIs that accept static authentication headers. Change the **Webhook URL** and **Headers** to match your provider:
 
-      | Provider | Webhook URL                                         | Auth header format                         |
-      | -------- | --------------------------------------------------- | ------------------------------------------ |
-      | Mailgun  | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
-      | Postmark | `https://api.postmarkapp.com/email`                 | `X-Postmark-Server-Token: <token>`         |
+      | Provider | Webhook URL | Auth header format |
+      | - | - | - |
+      | Mailgun | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
+      | Postmark | `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |
 
       Adjust the **Request Body Template** to match each provider's expected payload format. Amazon SES is not directly compatible because the SES API requires per-request AWS SigV4 signing, which cannot be expressed as a static header. To use SES, route through a middleware (for example, a Lambda function with an HTTP trigger).
     </Accordion>

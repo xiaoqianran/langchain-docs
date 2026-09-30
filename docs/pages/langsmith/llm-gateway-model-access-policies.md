@@ -25,12 +25,12 @@ A model access policy lists one or more providers, each with an access mode:
 
 A model access policy is scoped to one subject tier:
 
-| Tier         | Applies to                                   |
-| ------------ | -------------------------------------------- |
+| Tier | Applies to |
+| - | - |
 | Organization | All users and workspaces in the organization |
-| Workspace    | All users in a workspace                     |
-| User         | A single user                                |
-| API key      | A single API key                             |
+| Workspace | All users in a workspace |
+| User | A single user |
+| API key | A single API key |
 
 ### Policy overrides
 

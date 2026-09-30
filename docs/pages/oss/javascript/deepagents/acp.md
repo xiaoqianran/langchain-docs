@@ -158,26 +158,26 @@ The CLI is the fastest way to start an ACP server. It requires no code—just ru
 npx deepagents-acp [options]
 ```
 
-| Option                 | Short | Description                                         |
-| ---------------------- | ----- | --------------------------------------------------- |
-| `--name <name>`        | `-n`  | Agent name (default: `"deepagents"`)                |
-| `--description <desc>` | `-d`  | Agent description                                   |
-| `--model <model>`      | `-m`  | LLM model (default: `"claude-sonnet-4-5-20250929"`) |
-| `--workspace <path>`   | `-w`  | Workspace root directory (default: cwd)             |
-| `--skills <paths>`     | `-s`  | Comma-separated skill paths                         |
-| `--memory <paths>`     |       | Comma-separated AGENTS.md paths                     |
-| `--debug`              |       | Enable debug logging to stderr                      |
-| `--help`               | `-h`  | Show help message                                   |
-| `--version`            | `-v`  | Show version                                        |
+| Option | Short | Description |
+| - | - | - |
+| `--name <name>` | `-n` | Agent name (default: `"deepagents"`) |
+| `--description <desc>` | `-d` | Agent description |
+| `--model <model>` | `-m` | LLM model (default: `"claude-sonnet-4-5-20250929"`) |
+| `--workspace <path>` | `-w` | Workspace root directory (default: cwd) |
+| `--skills <paths>` | `-s` | Comma-separated skill paths |
+| `--memory <paths>` | | Comma-separated AGENTS.md paths |
+| `--debug` | | Enable debug logging to stderr |
+| `--help` | `-h` | Show help message |
+| `--version` | `-v` | Show version |
 
 ### Environment variables
 
-| Variable            | Description                                    |
-| ------------------- | ---------------------------------------------- |
+| Variable | Description |
+| - | - |
 | `ANTHROPIC_API_KEY` | API key for Anthropic/Claude models (required) |
-| `OPENAI_API_KEY`    | API key for OpenAI models                      |
-| `DEBUG`             | Set to `"true"` to enable debug logging        |
-| `WORKSPACE_ROOT`    | Alternative to `--workspace` flag              |
+| `OPENAI_API_KEY` | API key for OpenAI models |
+| `DEBUG` | Set to `"true"` to enable debug logging |
+| `WORKSPACE_ROOT` | Alternative to `--workspace` flag |
 
 ## Programmatic API
 
@@ -394,29 +394,29 @@ For full control, use the `DeepAgentsServer` class directly:
 
 #### Server options
 
-| Option          | Type                                   | Default            | Description              |
-| --------------- | -------------------------------------- | ------------------ | ------------------------ |
-| `agents`        | `DeepAgentConfig \| DeepAgentConfig[]` | required           | Agent configuration(s)   |
-| `serverName`    | `string`                               | `"deepagents-acp"` | Server name for ACP      |
-| `serverVersion` | `string`                               | `"0.0.1"`          | Server version           |
-| `workspaceRoot` | `string`                               | `process.cwd()`    | Workspace root directory |
-| `debug`         | `boolean`                              | `false`            | Enable debug logging     |
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `agents` | `DeepAgentConfig \| DeepAgentConfig[]` | required | Agent configuration(s) |
+| `serverName` | `string` | `"deepagents-acp"` | Server name for ACP |
+| `serverVersion` | `string` | `"0.0.1"` | Server version |
+| `workspaceRoot` | `string` | `process.cwd()` | Workspace root directory |
+| `debug` | `boolean` | `false` | Enable debug logging |
 
 #### Agent configuration
 
-| Option         | Type                                           | Description                                                                                                       |
-| -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `name`         | `string`                                       | Unique agent name (required)                                                                                      |
-| `description`  | `string`                                       | Agent description                                                                                                 |
-| `model`        | `string`                                       | LLM model (default: `"claude-sonnet-4-5-20250929"`)                                                               |
-| `tools`        | `StructuredTool[]`                             | Custom LangChain tools                                                                                            |
-| `systemPrompt` | `string`                                       | Custom system prompt                                                                                              |
-| `middleware`   | `AgentMiddleware[]`                            | Custom middleware appended to the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) |
-| `backend`      | `AnyBackendProtocol`                           | Filesystem backend                                                                                                |
-| `skills`       | `string[]`                                     | Skill source paths                                                                                                |
-| `memory`       | `string[]`                                     | Memory source paths (AGENTS.md)                                                                                   |
-| `interruptOn`  | `Record<string, boolean \| InterruptOnConfig>` | Tools requiring user approval (HITL)                                                                              |
-| `commands`     | `Array<{ name, description, input? }>`         | Custom slash commands                                                                                             |
+| Option | Type | Description |
+| - | - | - |
+| `name` | `string` | Unique agent name (required) |
+| `description` | `string` | Agent description |
+| `model` | `string` | LLM model (default: `"claude-sonnet-4-5-20250929"`) |
+| `tools` | `StructuredTool[]` | Custom LangChain tools |
+| `systemPrompt` | `string` | Custom system prompt |
+| `middleware` | `AgentMiddleware[]` | Custom middleware appended to the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) |
+| `backend` | `AnyBackendProtocol` | Filesystem backend |
+| `skills` | `string[]` | Skill source paths |
+| `memory` | `string[]` | Memory source paths (AGENTS.md) |
+| `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` | Tools requiring user approval (HITL) |
+| `commands` | `Array<{ name, description, input? }>` | Custom slash commands |
 
 ## Customization
 

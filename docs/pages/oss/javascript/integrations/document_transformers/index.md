@@ -9,8 +9,8 @@ Document transformers take a sequence of documents and transform them—for exam
 ## All document transformers
 
 <div>
-  | Integration                                                                                                       | Downloads                                                                                                      |
-  | :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+  | Integration | Downloads |
+  | :- | :- |
   | [`OpenAI functions metadata tagger -`](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
 </div>
 

@@ -19,14 +19,14 @@ Prebuilt dashboards are created automatically for each project and cover essenti
 
 Prebuilt dashboards are broken down into the following sections:
 
-| Section         | What it shows                                                                                                                                                                                                                                                                                                    |
-| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Traces          | Trace count, latency and error rates. A [trace](/langsmith/observability-concepts#traces) is a collection of [runs](/langsmith/observability-concepts#runs) related to a single operation. For example, if a user request triggers an agent, all runs for that agent invocation would be part of the same trace. |
-| LLM Calls       | LLM call count and latency. Includes all runs where run type is "llm".                                                                                                                                                                                                                                           |
-| Cost & Tokens   | Total and per-trace token counts and costs, broken down by token type. Costs are measured using [LangSmith's cost tracking](/langsmith/log-llm-trace#provide-token-and-cost-information).                                                                                                                        |
-| Tools           | Run counts, error rates, and latency stats for tool runs broken down by tool name. Includes runs where run type is "tool". Limits to top 5 most frequently occurring tools.                                                                                                                                      |
-| Run Types       | Run counts, error rates, and latency stats for runs that are immediate children of the root run. This helps in understanding the high-level execution path of agents. Limits to top 5 most frequently occurring run names.                                                                                       |
-| Feedback Scores | Aggregate stats for the top 5 most frequently occurring types of feedback. Charts show average score for numerical feedback and category counts for categorical feedback.                                                                                                                                        |
+| Section | What it shows |
+| :- | :- |
+| Traces | Trace count, latency and error rates. A [trace](/langsmith/observability-concepts#traces) is a collection of [runs](/langsmith/observability-concepts#runs) related to a single operation. For example, if a user request triggers an agent, all runs for that agent invocation would be part of the same trace. |
+| LLM Calls | LLM call count and latency. Includes all runs where run type is "llm". |
+| Cost & Tokens | Total and per-trace token counts and costs, broken down by token type. Costs are measured using [LangSmith's cost tracking](/langsmith/log-llm-trace#provide-token-and-cost-information). |
+| Tools | Run counts, error rates, and latency stats for tool runs broken down by tool name. Includes runs where run type is "tool". Limits to top 5 most frequently occurring tools. |
+| Run Types | Run counts, error rates, and latency stats for runs that are immediate children of the root run. This helps in understanding the high-level execution path of agents. Limits to top 5 most frequently occurring run names. |
+| Feedback Scores | Aggregate stats for the top 5 most frequently occurring types of feedback. Charts show average score for numerical feedback and category counts for categorical feedback. |
 
 ### Group by
 
@@ -79,15 +79,15 @@ Open **+ Select project or dataset** to find sources. Switch between the two sou
 
 Choose a metric from the dropdown. Options are grouped by what you are measuring:
 
-| Metric              | Description                                                                                                       | Aggregations                     |
-| :------------------ | :---------------------------------------------------------------------------------------------------------------- | :------------------------------- |
-| Count               | Number of runs.                                                                                                   | —                                |
-| Latency             | Aggregates over `latency_seconds`.                                                                                | Average, Percentile (p50 or p99) |
-| Time to first token | Aggregates over `first_token_seconds`.                                                                            | Percentile (p50 or p99), Average |
-| Tokens              | Choose Total, Input, or Output tokens.                                                                            | Sum, Average, Percentile         |
-| Cost                | Choose Total, Input, or Output cost.                                                                              | Sum, Average, Percentile         |
-| Feedback score      | Select a feedback key.                                                                                            | Average, Minimum, Maximum        |
-| Ratio               | Define a numerator and denominator, each a metric with its own filter. Useful for error rate, LLM run share, etc. | —                                |
+| Metric | Description | Aggregations |
+| :- | :- | :- |
+| Count | Number of runs. | — |
+| Latency | Aggregates over `latency_seconds`. | Average, Percentile (p50 or p99) |
+| Time to first token | Aggregates over `first_token_seconds`. | Percentile (p50 or p99), Average |
+| Tokens | Choose Total, Input, or Output tokens. | Sum, Average, Percentile |
+| Cost | Choose Total, Input, or Output cost. | Sum, Average, Percentile |
+| Feedback score | Select a feedback key. | Average, Minimum, Maximum |
+| Ratio | Define a numerator and denominator, each a metric with its own filter. Useful for error rate, LLM run share, etc. | — |
 
 For filtering with multiple metrics, read the following [Filter and group](#filter-and-group) section.
 

@@ -46,13 +46,13 @@ LangSmith supports three self-hosted topologies that trade off setup complexity 
 
 Self-hosted shifts ownership of infrastructure operations from LangChain to your team, which provides flexibility and control over how you configure and operate is layer:
 
-|                                           | **Who manages it** | **Where it runs**   |
-| ----------------------------------------- | ------------------ | ------------------- |
-| LangSmith platform (UI, APIs, datastores) | You                | Your infrastructure |
-| Agent Server runtime                      | You                | Your infrastructure |
-| PostgreSQL and Redis                      | You                | Your infrastructure |
-| CI/CD for your apps                       | You                | Your CI environment |
-| Upgrades, scaling, and backups            | You                | Your infrastructure |
+| | **Who manages it** | **Where it runs** |
+| - | - | - |
+| LangSmith platform (UI, APIs, datastores) | You | Your infrastructure |
+| Agent Server runtime | You | Your infrastructure |
+| PostgreSQL and Redis | You | Your infrastructure |
+| CI/CD for your apps | You | Your CI environment |
+| Upgrades, scaling, and backups | You | Your infrastructure |
 
 In return, you can integrate with your own [Postgres](/langsmith/self-hosted-platform-features#custom-postgresql) and [Redis](/langsmith/self-hosted-platform-features#custom-redis), size [CPU and memory](/langsmith/self-hosted-platform-features#resource-customization) for your workload, and operate inside your existing network and observability stack. For the corresponding Cloud-managed model, see [Deploy to Cloud](/langsmith/deploy-to-cloud-overview).
 

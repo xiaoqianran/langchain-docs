@@ -8,11 +8,11 @@ Each sandbox has a recorded **creator**, the workspace member whose API key or s
 
 ## Who can do what
 
-| Caller                 | Default                         | With `sandboxes:exec`           |
-| ---------------------- | ------------------------------- | ------------------------------- |
-| Sandbox creator        | ✅ All runtime actions           | ✅ All runtime actions           |
-| Other workspace member | ❌ Denied                        | ✅ All runtime actions           |
-| Different workspace    | ❌ Hidden (treated as not found) | ❌ Hidden (treated as not found) |
+| Caller | Default | With `sandboxes:exec` |
+| - | - | - |
+| Sandbox creator | ✅ All runtime actions | ✅ All runtime actions |
+| Other workspace member | ❌ Denied | ✅ All runtime actions |
+| Different workspace | ❌ Hidden (treated as not found) | ❌ Hidden (treated as not found) |
 
 "Runtime actions" covers the four ways you interact with a running sandbox after creation:
 

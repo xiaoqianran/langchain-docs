@@ -179,19 +179,19 @@ With the example, the KV search will map each nested JSON path as a key-value pa
 
 LangSmith will break it into the following set of searchable key-value pairs:
 
-| Key                                                | Value                                                                        |
-| -------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `generations.type`                                 | `ChatGeneration`                                                             |
-| `generations.message.type`                         | `constructor`                                                                |
-| `generations.message.kwargs.type`                  | `ai`                                                                         |
-| `generations.message.kwargs.id`                    | `run-ca7f7531-f4de-4790-9c3e-960be7f8b109`                                   |
-| `generations.message.kwargs.tool_calls.name`       | `Plan`                                                                       |
-| `generations.message.kwargs.tool_calls.args.steps` | `Research LangGraph's node configuration capabilities`                       |
-| `generations.message.kwargs.tool_calls.args.steps` | `Investigate how to add a Python code execution node`                        |
+| Key | Value |
+| - | - |
+| `generations.type` | `ChatGeneration` |
+| `generations.message.type` | `constructor` |
+| `generations.message.kwargs.type` | `ai` |
+| `generations.message.kwargs.id` | `run-ca7f7531-f4de-4790-9c3e-960be7f8b109` |
+| `generations.message.kwargs.tool_calls.name` | `Plan` |
+| `generations.message.kwargs.tool_calls.args.steps` | `Research LangGraph's node configuration capabilities` |
+| `generations.message.kwargs.tool_calls.args.steps` | `Investigate how to add a Python code execution node` |
 | `generations.message.kwargs.tool_calls.args.steps` | `Find an example or create a sample implementation of a code execution node` |
-| `generations.message.kwargs.tool_calls.id`         | `toolu_01XexPzAVknT3gRmUB5PK5BP`                                             |
-| `generations.message.kwargs.tool_calls.type`       | `tool_call`                                                                  |
-| `type`                                             | `LLMResult`                                                                  |
+| `generations.message.kwargs.tool_calls.id` | `toolu_01XexPzAVknT3gRmUB5PK5BP` |
+| `generations.message.kwargs.tool_calls.type` | `tool_call` |
+| `type` | `LLMResult` |
 
 To search for a specific tool call, you can use the following **Output Key** search while removing the root runs filter:
 

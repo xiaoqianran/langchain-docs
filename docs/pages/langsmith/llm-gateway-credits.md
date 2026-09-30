@@ -30,10 +30,10 @@ The gateway routes each request based on its model ID. A hosted model slug such 
 
 Select a hosted model by ID in the request body. Model IDs are case-insensitive.
 
-| Model ID               | Description                                                                               |
-| ---------------------- | ----------------------------------------------------------------------------------------- |
+| Model ID | Description |
+| - | - |
 | `moonshotai/kimi-k2.6` | Kimi K2.6 by Moonshot AI. A strong general-purpose model. Powered by Fireworks Inference. |
-| `moonshotai/kimi-k3`   | Kimi K3 by Moonshot AI. Powered by Fireworks Inference.                                   |
+| `moonshotai/kimi-k3` | Kimi K3 by Moonshot AI. Powered by Fireworks Inference. |
 
 List every model available to your workspace, including configured bring-your-own-key providers and hosted models, with the standard model-list endpoint:
 
@@ -98,12 +98,12 @@ Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`, a
 
 Credit-funded chat models use the same standard API formats as bring-your-own-key models:
 
-| Method and path             | Behavior                                      |
-| --------------------------- | --------------------------------------------- |
+| Method and path | Behavior |
+| - | - |
 | `POST /v1/chat/completions` | OpenAI Chat Completions, including streaming. |
-| `POST /v1/messages`         | Anthropic Messages, including streaming.      |
-| `POST /v1/responses`        | OpenAI Responses.                             |
-| `GET /v1/models`            | Lists models available to the workspace.      |
+| `POST /v1/messages` | Anthropic Messages, including streaming. |
+| `POST /v1/responses` | OpenAI Responses. |
+| `GET /v1/models` | Lists models available to the workspace. |
 
 For request examples and translation behavior, see [API formats](/langsmith/llm-gateway-api-formats).
 

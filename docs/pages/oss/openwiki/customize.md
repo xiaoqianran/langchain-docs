@@ -14,10 +14,10 @@ Create `.openwikiignore` at the repository root to exclude private, generated, o
 
 OpenWiki reads the following files during runs. Edit them yourself, or ask OpenWiki in chat to revise the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`).
 
-| Mode     | Path                          | Purpose                                                                       |
-| -------- | ----------------------------- | ----------------------------------------------------------------------------- |
-| Code     | `openwiki/INSTRUCTIONS.md`    | Shared, user-authored brief for repository documentation scope and priorities |
-| Personal | `~/.openwiki/INSTRUCTIONS.md` | Global personal wiki instructions                                             |
+| Mode | Path | Purpose |
+| - | - | - |
+| Code | `openwiki/INSTRUCTIONS.md` | Shared, user-authored brief for repository documentation scope and priorities |
+| Personal | `~/.openwiki/INSTRUCTIONS.md` | Global personal wiki instructions |
 
 Normal `--init` and `--update` runs do not rewrite these files.
 
@@ -35,15 +35,15 @@ That block instructs coding agents to consult the generated wiki when they need 
 
 Both code and personal mode store machine-local state under `~/.openwiki/` by default:
 
-| Path                          | Mode            | Purpose                                                                                                                   |
-| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `~/.openwiki/.env`            | Both            | Provider config, API keys, and connector OAuth tokens                                                                     |
-| `~/.openwiki/openwiki.sqlite` | Both            | Conversation checkpoint database                                                                                          |
-| `~/.openwiki/install-id`      | Both            | Random install ID for anonymous telemetry                                                                                 |
-| `~/.openwiki/wiki/`           | Personal        | Personal mode wiki output                                                                                                 |
-| `~/.openwiki/INSTRUCTIONS.md` | Personal        | Personal wiki brief                                                                                                       |
-| `~/.openwiki/onboarding.json` | Personal        | Personal onboarding preferences and connector schedules                                                                   |
-| `~/.openwiki/connectors/`     | Mostly personal | Connector raw data and config. Personal sources use this path; code-mode LangSmith ingestion can also cache raw data here |
+| Path | Mode | Purpose |
+| - | - | - |
+| `~/.openwiki/.env` | Both | Provider config, API keys, and connector OAuth tokens |
+| `~/.openwiki/openwiki.sqlite` | Both | Conversation checkpoint database |
+| `~/.openwiki/install-id` | Both | Random install ID for anonymous telemetry |
+| `~/.openwiki/wiki/` | Personal | Personal mode wiki output |
+| `~/.openwiki/INSTRUCTIONS.md` | Personal | Personal wiki brief |
+| `~/.openwiki/onboarding.json` | Personal | Personal onboarding preferences and connector schedules |
+| `~/.openwiki/connectors/` | Mostly personal | Connector raw data and config. Personal sources use this path; code-mode LangSmith ingestion can also cache raw data here |
 
 Code-mode repository artifacts such as the generated wiki, Claims under `openwiki/.claims/`, `openwiki/INSTRUCTIONS.md`, and `openwiki/.last-update.json` live in the project, not under `~/.openwiki/`. For more detail, see [Code mode](/oss/openwiki/code-mode) and [Personal mode](/oss/openwiki/personal-mode).
 

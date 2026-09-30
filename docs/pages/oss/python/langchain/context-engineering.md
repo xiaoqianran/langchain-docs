@@ -36,11 +36,11 @@ This loop continues until the LLM decides to finish.
 
 To build reliable agents, you need to control what happens at each step of the agent loop, as well as what happens between steps.
 
-| Context Type                                  | What You Control                                                                     | Transient or Persistent |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------- |
-| **[Model Context](#model-context)**           | What goes into model calls (instructions, message history, tools, response format)   | Transient               |
-| **[Tool Context](#tool-context)**             | What tools can access and produce (reads/writes to state, store, runtime context)    | Persistent              |
-| **[Life-cycle Context](#life-cycle-context)** | What happens between model and tool calls (summarization, guardrails, logging, etc.) | Persistent              |
+| Context Type | What You Control | Transient or Persistent |
+| - | - | - |
+| **[Model Context](#model-context)** | What goes into model calls (instructions, message history, tools, response format) | Transient |
+| **[Tool Context](#tool-context)** | What tools can access and produce (reads/writes to state, store, runtime context) | Persistent |
+| **[Life-cycle Context](#life-cycle-context)** | What happens between model and tool calls (summarization, guardrails, logging, etc.) | Persistent |
 
 <CardGroup>
   <Card title="Transient context" icon="bolt">
@@ -56,11 +56,11 @@ To build reliable agents, you need to control what happens at each step of the a
 
 Throughout this process, your agent accesses (reads / writes) different sources of data:
 
-| Data Source         | Also Known As        | Scope               | Examples                                                                   |
-| ------------------- | -------------------- | ------------------- | -------------------------------------------------------------------------- |
+| Data Source | Also Known As | Scope | Examples |
+| - | - | - | - |
 | **Runtime Context** | Static configuration | Conversation-scoped | User ID, API keys, database connections, permissions, environment settings |
-| **State**           | Short-term memory    | Conversation-scoped | Current messages, uploaded files, authentication status, tool results      |
-| **Store**           | Long-term memory     | Cross-conversation  | User preferences, extracted insights, memories, historical data            |
+| **State** | Short-term memory | Conversation-scoped | Current messages, uploaded files, authentication status, tool results |
+| **Store** | Long-term memory | Cross-conversation | User preferences, extracted insights, memories, historical data |
 
 ### How it works
 

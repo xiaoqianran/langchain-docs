@@ -16,14 +16,14 @@ Use profiles when you switch between [LangSmith Cloud regions](/langsmith/cloud#
 
 Profile support is available in the following releases:
 
-| Tool or SDK                    | Minimum version |
-| ------------------------------ | --------------- |
-| LangSmith CLI profile commands | `v0.2.26`       |
-| `langsmith auth login`         | `v0.2.30`       |
-| Go SDK                         | `v0.7.0`        |
-| Python SDK                     | `v0.8.1`        |
-| TypeScript SDK                 | `v0.6.1`        |
-| Java SDK                       | `v0.1.0-beta.3` |
+| Tool or SDK | Minimum version |
+| - | - |
+| LangSmith CLI profile commands | `v0.2.26` |
+| `langsmith auth login` | `v0.2.30` |
+| Go SDK | `v0.7.0` |
+| Python SDK | `v0.8.1` |
+| TypeScript SDK | `v0.6.1` |
+| Java SDK | `v0.1.0-beta.3` |
 
 ## Profile file location
 
@@ -45,12 +45,12 @@ The TypeScript SDK only loads profiles in Node.js-like runtimes. Browser and web
 
 Create `~/.langsmith/config.json` with a `profiles` object. Each profile can define:
 
-| Field          | Description                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `api_url`      | LangSmith API endpoint. Use the same value you would use for `LANGSMITH_ENDPOINT`.         |
-| `api_key`      | LangSmith API key. See [Create an account and API key](/langsmith/create-account-api-key). |
-| `workspace_id` | Workspace ID. Required when the API key can access multiple workspaces.                    |
-| `oauth`        | OAuth token metadata created by LangSmith tooling.                                         |
+| Field | Description |
+| - | - |
+| `api_url` | LangSmith API endpoint. Use the same value you would use for `LANGSMITH_ENDPOINT`. |
+| `api_key` | LangSmith API key. See [Create an account and API key](/langsmith/create-account-api-key). |
+| `workspace_id` | Workspace ID. Required when the API key can access multiple workspaces. |
+| `oauth` | OAuth token metadata created by LangSmith tooling. |
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -125,13 +125,13 @@ langsmith profile create eu \
 
 Common profile commands:
 
-| Command                                          | Description                                                 |
-| ------------------------------------------------ | ----------------------------------------------------------- |
-| `langsmith profile list`                         | List saved profiles. Alias: `langsmith profile ls`.         |
-| `langsmith profile show <name>`                  | Show a saved profile. Secret values are redacted in output. |
-| `langsmith profile use <name>`                   | Set `current_profile` in the profile file.                  |
-| `langsmith profile set-workspace <workspace-id>` | Set the default workspace for the selected profile.         |
-| `langsmith profile delete <name>`                | Delete a saved profile.                                     |
+| Command | Description |
+| - | - |
+| `langsmith profile list` | List saved profiles. Alias: `langsmith profile ls`. |
+| `langsmith profile show <name>` | Show a saved profile. Secret values are redacted in output. |
+| `langsmith profile use <name>` | Set `current_profile` in the profile file. |
+| `langsmith profile set-workspace <workspace-id>` | Set the default workspace for the selected profile. |
+| `langsmith profile delete <name>` | Delete a saved profile. |
 
 Output is a human-readable table by default. Use `--format json` for scriptable output:
 
@@ -194,11 +194,11 @@ After login, the CLI and SDKs can use the saved profile. The CLI refreshes OAuth
 
 Explicit client constructor arguments and environment variables take precedence over profile values.
 
-| Setting        | Precedence                                                                                                                       |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Endpoint       | Constructor `api_url` or `apiUrl`, then `LANGSMITH_ENDPOINT`, then profile `api_url`, then the default LangSmith Cloud endpoint. |
-| Authentication | Constructor API key, then `LANGSMITH_API_KEY`, then profile OAuth access token, then profile `api_key`.                          |
-| Workspace      | Constructor `workspace_id` or `workspaceId`, then `LANGSMITH_WORKSPACE_ID`, then profile `workspace_id`.                         |
+| Setting | Precedence |
+| - | - |
+| Endpoint | Constructor `api_url` or `apiUrl`, then `LANGSMITH_ENDPOINT`, then profile `api_url`, then the default LangSmith Cloud endpoint. |
+| Authentication | Constructor API key, then `LANGSMITH_API_KEY`, then profile OAuth access token, then profile `api_key`. |
+| Workspace | Constructor `workspace_id` or `workspaceId`, then `LANGSMITH_WORKSPACE_ID`, then profile `workspace_id`. |
 
 The older `LANGCHAIN_API_KEY`, `LANGCHAIN_ENDPOINT`, and `LANGCHAIN_WORKSPACE_ID` aliases still work, but prefer the `LANGSMITH_*` names for new configuration.
 

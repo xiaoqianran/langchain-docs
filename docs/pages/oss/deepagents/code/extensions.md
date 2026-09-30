@@ -45,12 +45,12 @@ Repeat `-e` or `--extension` to load multiple files or directories. A directory 
 
 The extension API supports these methods:
 
-| Method                   | Signature             | Purpose                                                                                                                 |
-| ------------------------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `register_middleware`    | `(class_or_instance)` | Add LangChain `AgentMiddleware`. A middleware class must have a zero-argument constructor; otherwise, pass an instance. |
-| `register_tool`          | `(function_or_tool)`  | Expose a callable or `BaseTool` to the model. dcode converts plain callables with LangChain tool-schema inference.      |
-| `register_backend_route` | `(prefix, backend)`   | Make a `BackendProtocol` storage provider available under a virtual path.                                               |
-| `on_shutdown`            | `(callback)`          | Release session resources when the agent server stops. Synchronous and asynchronous callbacks are supported.            |
+| Method | Signature | Purpose |
+| - | - | - |
+| `register_middleware` | `(class_or_instance)` | Add LangChain `AgentMiddleware`. A middleware class must have a zero-argument constructor; otherwise, pass an instance. |
+| `register_tool` | `(function_or_tool)` | Expose a callable or `BaseTool` to the model. dcode converts plain callables with LangChain tool-schema inference. |
+| `register_backend_route` | `(prefix, backend)` | Make a `BackendProtocol` storage provider available under a virtual path. |
+| `on_shutdown` | `(callback)` | Release session resources when the agent server stops. Synchronous and asynchronous callbacks are supported. |
 
 The registrar also exposes this read-only context:
 
@@ -153,11 +153,11 @@ extra_paths = [
 ]
 ```
 
-| Setting       | Default | Description                                                                                                                                   |
-| ------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `enabled`     | `true`  | Enable extension discovery for every source, including `-e` / `--extension`. The experimental environment variable is still required.         |
-| `trust`       | `"ask"` | Set project extension trust to `ask`, `always`, or `never`.                                                                                   |
-| `extra_paths` | `[]`    | Add user-authorized Python files or directories. Relative paths resolve from the dcode profile directory; `~` expands to your home directory. |
+| Setting | Default | Description |
+| - | - | - |
+| `enabled` | `true` | Enable extension discovery for every source, including `-e` / `--extension`. The experimental environment variable is still required. |
+| `trust` | `"ask"` | Set project extension trust to `ask`, `always`, or `never`. |
+| `extra_paths` | `[]` | Add user-authorized Python files or directories. Relative paths resolve from the dcode profile directory; `~` expands to your home directory. |
 
 `DEEPAGENTS_CODE_EXTENSIONS` overrides `enabled`, and `DEEPAGENTS_CODE_EXTENSIONS_TRUST` overrides `trust`. Both still require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. When `enabled` is `false`, Deep Agents Code skips every extension source.
 

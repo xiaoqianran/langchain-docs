@@ -89,10 +89,10 @@ We recommend leveraging GCP's managed services to provide a scalable, secure, an
 
 LangSmith supports multiple compute options depending on your requirements:
 
-| Compute option                           | Description                               | Suitable for                         |
-| ---------------------------------------- | ----------------------------------------- | ------------------------------------ |
-| **Google Kubernetes Engine (preferred)** | Advanced scaling and multi-tenant support | Large enterprises                    |
-| **Compute Engine-based**                 | Full control, BYO-infra                   | Regulated or air-gapped environments |
+| Compute option | Description | Suitable for |
+| - | - | - |
+| **Google Kubernetes Engine (preferred)** | Advanced scaling and multi-tenant support | Large enterprises |
+| **Compute Engine-based** | Full control, BYO-infra | Regulated or air-gapped environments |
 
 ## Google cloud Well-Architected best practices
 

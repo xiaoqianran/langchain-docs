@@ -19,10 +19,10 @@
 要在 [watched issue](/langsmith/engine#watch-an-issue) 再次出现时收到警报，请单击该问题上的 **通过 Slack 提醒我**，这会打开相同的 **通知** 部分。
 
 ## 事件类型|活动 |发送时间 |
-| --------------------------------------------------- | ---------------------------------------------------------- |
-| [⟦T7⟧](#issue-created) |引擎打开了一个新问题。                      |
+| - | - |
+| [⟦T7⟧](#issue-created) |引擎打开了一个新问题。 |
 | [⟦T8⟧](#issue-trace-added) |引擎将新跟踪链接到现有问题。 |
-| [⟦T9⟧](#issue-agent_run-failed) |引擎运行无法完成。               |
+| [⟦T9⟧](#issue-agent_run-failed) |引擎运行无法完成。 |
 
 这是引擎今天发送的完整事件类型集。将来可能会添加新类型。在没有显式事件类型列表的情况下创建的目的地仅接收`issue.created`。
 
@@ -31,17 +31,17 @@
 **最低优先级**设置存储为从 `0` 到 `3` 的 `severity_threshold`。对于问题事件，仅当问题的`severity`小于或等于阈值时才会发送通知。数字越低，情况越紧急。
 
 |严重性 |意义|
-| -------- | -------- |
+| - | - |
 | `0` |紧急|
 | `1` |高|
 | `2` |中等|
 | `3` |低|
 
-例如，具有 `severity_threshold: 1` 的目的地仅接收 `URGENT` (0) 和 `HIGH` (1) 问题的事件。严重性阈值不适用于[⟦T22⟧](#issue-agent_run-failed)，因为运行失败事件的范围仅限于引擎会话而不是特定问题。
+例如，具有 `severity_threshold: 1` 的目的地仅接收 `URGENT` (0) 和 `HIGH` (1) 问题的事件。
 
-## 通知 Slack 通道
+严重性阈值不适用于[⟦T22⟧](#issue-agent_run-failed)，因为运行失败事件的范围仅限于引擎会话而不是特定问题。
 
-<Steps>
+## 通知 Slack 通道<Steps>
   <Step title="Connect a Slack workspace">
     连接 Slack 工作区是您执行一次的组织级操作，而不是针对每个项目执行一次。连接或断开工作区需要 `organization:manage` 权限。在 [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-notifications) 中，打开 **设置**，转到组织的 **常规** 设置，然后在 **Slack** 下单击 **连接 Slack**。在 Slack 中授权 LangSmith 应用程序。您可以将多个 Slack 工作区连接到一个组织。
   </Step>
@@ -66,19 +66,22 @@ Slack 目标通过 LangSmith 的托管 Slack 应用程序发布，而不是发�
 ### 送货
 
 LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。该请求使用 `Content-Type: application/json` 并包含您附加到目标的任何自定义标头。|物业 |价值|
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| - | - |
 |方法| `POST` |
 |身体| JSON，下面[common envelope](#event-envelope) |
-|方案|接受`http://`和`https://`。 `https://`强烈推荐||签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
-|超时|每次尝试 20 秒 |
+|方案|接受`http://`和`https://`。 `https://`强烈推荐|
+|签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
+|超时 |每次尝试 20 秒 |
 |尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
-|回应 |成功仅根据状态代码确定。响应主体被忽略。                                                                                                                             |
+|回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
 <Note>
   重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游影响。
 </Note>
 
-### 自定义标头您可以将任意标头附加到每个目标（例如，`Authorization: Bearer …`）以对端点上的调用者进行身份验证。 `Content-Type` 始终由 LangSmith 设置并且不能被覆盖。
+### 自定义标头
+
+您可以将任意标头附加到每个目标（例如，`Authorization: Bearer …`）以对端点上的调用者进行身份验证。 `Content-Type` 始终由 LangSmith 设置并且不能被覆盖。
 
 ### 签名秘密
 
@@ -88,9 +91,7 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sha256=<hex-encoded HMAC-SHA256 digest>
-```
-
-在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
+```在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -156,7 +157,9 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 滚动秘密后，用新值更新每个验证 `X-LangSmith-Signature` 的消费者。
 
-### 测试你的端点在将真实目的地指向端点之前，请发送示例有效负载以验证其在 20 秒超时内接受并确认：
+### 测试你的端点
+
+在将真实目的地指向端点之前，请发送示例有效负载以验证其在 20 秒超时内接受并确认：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST https://your-endpoint.example.com/webhook \
@@ -165,9 +168,7 @@ curl -X POST https://your-endpoint.example.com/webhook \
   -d @sample-issue-created.json
 ```
 
-使用 [⟦T42⟧](#issue-created) 中的示例正文作为 `sample-issue-created.json`。验证：
-
-* 自定义 `Authorization` 标头到达并与您在目标上配置的机密相匹配。
+使用 [⟦T42⟧](#issue-created) 中的示例正文作为 `sample-issue-created.json`。验证：* 自定义 `Authorization` 标头到达并与您在目标上配置的机密相匹配。
 * 处理程序保留由其 `id` 键入的事件，以便重试被重复数据删除。
 * 处理程序在开始缓慢的下游工作之前返回`2xx`。
 
@@ -188,56 +189,57 @@ Webhook 目标接收下面的 JSON 有效负载。 Slack 目的地则不然。
 
 ### 活动信封
 
-传递到端点的每个事件都使用相同的外部 JSON 形状。|领域 |类型 |描述 |
-| ------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。                                                                            |
+传递到端点的每个事件都使用相同的外部 JSON 形状。
+
+|领域 |类型 |描述 |
+| - | - | - |
+| `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。 |
 | `type` |字符串|事件类型。 [⟦T57⟧](#issue-created)、[⟦T58⟧](#issue-trace-added) 或 [⟦T59⟧](#issue-agent_run-failed) 之一。 |
-| `created` |整数 |事件排队时的 Unix 秒 (UTC)。                                                                                                          |
-| `request_id` | UUID |由同一上游操作触发的每个事件共享。参见[Batch coalescing](#batch-coalescing)。                                                    |
-| `data` |对象|事件有效负载。始终包含 `data.object`。仅在 [⟦T65⟧](#issue-trace-added) 事件中包含 [⟦T64⟧](#data-trace)。             |
+| `created` |整数 |事件排队时的 Unix 秒 (UTC)。 |
+| `request_id` | UUID |由同一上游操作触发的每个事件共享。参见[Batch coalescing](#batch-coalescing)。 |
+| `data` |对象|事件有效负载。始终包含 `data.object`。仅在 [⟦T65⟧](#issue-trace-added) 事件中包含 [⟦T64⟧](#data-trace)。 |
 
 ### 问题`data.object`对于 [⟦T67⟧](#issue-created) 和 [⟦T68⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。
 
 |领域 |类型 |描述 |
-| -------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| `id` | UUID |问题 ID。                                                                      |
-| `name` |字符串|问题的简短标题。                                                      |
-| `description` |字符串|人类可读的描述。                                                    |
+| - | - | - |
+| `id` | UUID |问题 ID。 |
+| `name` |字符串|问题的简短标题。 |
+| `description` |字符串|人类可读的描述。 |
 | `severity` |整数 | `0`（紧急）至 `3`（低）。参见[Severity filtering](#severity-filtering)。 |
-| `tenant_id` | UUID |问题所属的工作区。                                                |
-| `tenant_name` |字符串|工作区显示名称。                                                        |
-| `session_id` | UUID |跟踪问题所属的项目。                                          |
-| `session_name` |字符串|跟踪项目名称。                                                          || `url` |字符串| LangSmith UI 中问题的深层链接。                                    |
+| `tenant_id` | UUID |问题所属的工作区。 |
+| `tenant_name` |字符串|工作区显示名称。 |
+| `session_id` | UUID |跟踪问题所属的项目。 |
+| `session_name` |字符串|跟踪项目名称。 |
+| `url` |字符串| LangSmith UI 中问题的深层链接。 |
 
 ### 运行失败`data.object`
 
-对于 [⟦T82⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。
-
-|领域 |类型 |描述 |
-| ---------------- | ------ | ------------------------------------------------------------------ |
-| `tenant_id` | UUID |运行所属的工作空间。                             |
-| `tenant_name` |字符串|工作区显示名称。                                   |
-| `session_id` | UUID |跟踪运行所属的项目。                       |
-| `session_name` |字符串|跟踪项目名称。                                     |
-| `url` |字符串| UI 中LangSmith 项目的深层链接。             |
-| `thread_id` |字符串|引擎线程ID。                                         |
-| `run_id` |字符串|发动机运行 ID。不可用时省略。                  |
-| `status` |字符串|最终运行状态。                                         |
+对于 [⟦T82⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域 |类型 |描述 |
+| - | - | - |
+| `tenant_id` | UUID |运行所属的工作空间。 |
+| `tenant_name` |字符串|工作区显示名称。 |
+| `session_id` | UUID |跟踪运行所属的项目。 |
+| `session_name` |字符串|跟踪项目名称。 |
+| `url` |字符串| UI 中LangSmith 项目的深层链接。 |
+| `thread_id` |字符串|引擎线程ID。 |
+| `run_id` |字符串|发动机运行 ID。不可用时省略。 |
+| `status` |字符串|最终运行状态。 |
 | `error_message` |字符串|运行失败的错误文本。不可用时省略。 |
-| `occurred_at` |字符串|发生故障时的 RFC 3339 时间戳。          |### `data.trace`
+| `occurred_at` |字符串|发生故障时的 RFC 3339 时间戳。 |
+
+### `data.trace`
 
 `data.trace` 仅包含在 [⟦T96⟧](#issue-trace-added) 活动中。
 
 |领域 |类型 |描述 |
-| ------------ | -------------- | ---------------------------------------------------------------------------------- |
-| `run_id` | UUID |与问题关联的运行的 ID。                           |
-| `trace_id` | UUID |包含运行的跟踪的 ID。                                |
-| `start_time` |字符串|运行开始时的 RFC 3339 时间戳。                           |
+| - | - | - |
+| `run_id` | UUID |与问题关联的运行的 ID。 |
+| `trace_id` | UUID |包含运行的跟踪的 ID。 |
+| `start_time` |字符串|运行开始时的 RFC 3339 时间戳。 |
 | `comment` |字符串\|空 |链接跟踪时记录的可选注释。空时省略。 |
 
-### 批量合并
-
-单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T101⟧](#issue-created) 事件和五个 [⟦T102⟧](#issue-trace-added) 事件，所有事件共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
+### 批量合并单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T101⟧](#issue-created) 事件和五个 [⟦T102⟧](#issue-trace-added) 事件，所有事件共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
 
 ### `issue.created`
 
@@ -297,7 +299,9 @@ Webhook 目标接收下面的 JSON 有效负载。 Slack 目的地则不然。
 }
 ```
 
-### `issue.agent_run.failed`当LangSmith引擎无法完成运行时发送。此事件是会话范围的，因此它不包括 `data.trace` 并且不使用严重性过滤。
+### `issue.agent_run.failed`
+
+当LangSmith引擎无法完成运行时发送。此事件是会话范围的，因此它不包括 `data.trace` 并且不使用严重性过滤。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {

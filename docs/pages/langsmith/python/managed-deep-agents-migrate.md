@@ -16,15 +16,15 @@ Managed Deep Agents runs the same harness, so the agent itself behaves the same.
 
 Move an agent when you want that layer without running it. Stay on Deep Agents when you need to own it.
 
-|                                      | Deep Agents                                                                                                                                                       | Managed Deep Agents                                                                                                                                     |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hosting**                          | You run the agent in your own process or container, or deploy it as a [LangSmith deployment](/langsmith/deployment).                                              | LangSmith hosts the agent on [Agent Server](/langsmith/agent-server-overview). `mda deploy` is the whole deployment step.                               |
-| **Filesystem and shell**             | Any [backend](/oss/python/deepagents/backends): agent state, local disk, a store, or a [sandbox](/oss/python/deepagents/sandboxes) you provision with a provider. | One managed [sandbox](/langsmith/python/managed-deep-agents-sandboxes), declared in a file. LangSmith creates it, snapshots it, and stops it when idle. |
-| **Memory across conversations**      | You run the storage and wire it up yourself.                                                                                                                      | One shared [memory](/langsmith/python/managed-deep-agents-memory) tree, enabled by adding a file.                                                       |
-| **Third-party access for end users** | You provision and store credentials for each user.                                                                                                                | [Connections](/langsmith/python/managed-deep-agents-connections) hold workspace secrets and run OAuth, so end users authorize services themselves.      |
-| **Chat surfaces**                    | You write the integration.                                                                                                                                        | [Channels](/langsmith/python/managed-deep-agents-channels) connect Slack and other messaging services.                                                  |
-| **Scheduled runs**                   | You run the scheduler.                                                                                                                                            | [Schedules](/langsmith/python/managed-deep-agents-schedules) run managed cron jobs.                                                                     |
-| **Code around the agent**            | Yours to write, including custom routes and application code.                                                                                                     | The agent only. For custom routes or application code, use a [LangSmith deployment](/langsmith/deployment).                                             |
+| | Deep Agents | Managed Deep Agents |
+| - | - | - |
+| **Hosting** | You run the agent in your own process or container, or deploy it as a [LangSmith deployment](/langsmith/deployment). | LangSmith hosts the agent on [Agent Server](/langsmith/agent-server-overview). `mda deploy` is the whole deployment step. |
+| **Filesystem and shell** | Any [backend](/oss/python/deepagents/backends): agent state, local disk, a store, or a [sandbox](/oss/python/deepagents/sandboxes) you provision with a provider. | One managed [sandbox](/langsmith/python/managed-deep-agents-sandboxes), declared in a file. LangSmith creates it, snapshots it, and stops it when idle. |
+| **Memory across conversations** | You run the storage and wire it up yourself. | One shared [memory](/langsmith/python/managed-deep-agents-memory) tree, enabled by adding a file. |
+| **Third-party access for end users** | You provision and store credentials for each user. | [Connections](/langsmith/python/managed-deep-agents-connections) hold workspace secrets and run OAuth, so end users authorize services themselves. |
+| **Chat surfaces** | You write the integration. | [Channels](/langsmith/python/managed-deep-agents-channels) connect Slack and other messaging services. |
+| **Scheduled runs** | You run the scheduler. | [Schedules](/langsmith/python/managed-deep-agents-schedules) run managed cron jobs. |
+| **Code around the agent** | Yours to write, including custom routes and application code. | The agent only. For custom routes or application code, use a [LangSmith deployment](/langsmith/deployment). |
 
 The harness is the same either way, so building on Deep Agents first and moving when the agent is ready for production is a normal path. See [Going to production](/oss/python/deepagents/going-to-production).
 
@@ -86,15 +86,15 @@ Most of the surface transfers to `define_deep_agent` unchanged, under the same n
 
 The rest move to a project file or become the runtime's job:
 
-| `create_deep_agent`     | Where it goes     | Notes                                                                                                                                   |
-| ----------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `system_prompt`         | `instructions.md` | Move the text into the file, then remove the parameter. See [Instructions](/langsmith/python/managed-deep-agents-instructions).         |
-| `skills`                | `skills/`         | One directory per skill, each with a `SKILL.md`. See [Skills](/langsmith/python/managed-deep-agents-skills).                            |
-| `memory`                | `memory.py`       | Export `define_memory(scope="agent")`. Omit the file for no durable memory. See [Memory](/langsmith/python/managed-deep-agents-memory). |
-| `backend`               | `sandbox/`        | Declare a managed sandbox instead of constructing a backend. See [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes).          |
-| `permissions`           | Stays a parameter | Accepted, and cleared when the project declares a sandbox. See [Permissions](/oss/python/deepagents/permissions).                       |
-| `store`, `checkpointer` | Managed runtime   | Remove both.                                                                                                                            |
-| `state_schema`          | No equivalent     | `define_deep_agent` does not accept it.                                                                                                 |
+| `create_deep_agent` | Where it goes | Notes |
+| - | - | - |
+| `system_prompt` | `instructions.md` | Move the text into the file, then remove the parameter. See [Instructions](/langsmith/python/managed-deep-agents-instructions). |
+| `skills` | `skills/` | One directory per skill, each with a `SKILL.md`. See [Skills](/langsmith/python/managed-deep-agents-skills). |
+| `memory` | `memory.py` | Export `define_memory(scope="agent")`. Omit the file for no durable memory. See [Memory](/langsmith/python/managed-deep-agents-memory). |
+| `backend` | `sandbox/` | Declare a managed sandbox instead of constructing a backend. See [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes). |
+| `permissions` | Stays a parameter | Accepted, and cleared when the project declares a sandbox. See [Permissions](/oss/python/deepagents/permissions). |
+| `store`, `checkpointer` | Managed runtime | Remove both. |
+| `state_schema` | No equivalent | `define_deep_agent` does not accept it. |
 
 Deep Agents backends are pluggable, and the managed runtime supplies its own. A project that declares `sandbox/` gets a managed sandbox for the agent filesystem and shell. A project without one gets thread-scoped agent state, alongside read-only [Context Hub](/langsmith/python/managed-deep-agents-context-hub) mounts for instructions, skills, and memory. There is no other choice of backend, so an agent that depends on a specific one stays on Deep Agents.
 

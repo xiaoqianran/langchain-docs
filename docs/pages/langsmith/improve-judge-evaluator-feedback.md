@@ -40,10 +40,10 @@ You'll need the following before starting this guide for [offline evaluations](#
 
 You can enter the alignment flow for both new and existing evaluators in datasets and tracing projects.
 
-|                                              | Dataset Evaluators                                                                                                                                                                                     | Tracing Project Evaluators                                                                                                                                                                         |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| | Dataset Evaluators | Tracing Project Evaluators |
+| - | - | - |
 | **Create an aligned evaluator from scratch** | 1. **Datasets & Experiments** and select your dataset<br />2. Click **+ Evaluator** > **Create from labeled data**<br />3. Enter a descriptive feedback key name (e.g. `correctness`, `hallucination`) | 1. **Projects** and select your project<br />2. Click **+ New** > **Evaluator** > **Create from labeled data**<br />3. Enter a descriptive feedback‑key name (e.g. `correctness`, `hallucination`) |
-| **Align an existing evaluator**              | 1. **Datasets & Experiments** > select your dataset > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                                     | 1. **Projects** > select your project > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments**                                               |
+| **Align an existing evaluator** | 1. **Datasets & Experiments** > select your dataset > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments** | 1. **Projects** > select your project > **Evaluators** tab<br />2. In the **Align Evaluator with experiment data** box, click **Select Experiments** |
 
 ## 1. Select experiments or runs
 

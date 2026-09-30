@@ -8,9 +8,9 @@ Mission Control is an in-cluster console for monitoring, configuring, and operat
 
 There are two install paths:
 
-| Path                              | Best for                                                                                    |
-| --------------------------------- | ------------------------------------------------------------------------------------------- |
-| [Quick install](#quick-install)   | Customers who can run a reviewed shell installer and want the shortest setup.               |
+| Path | Best for |
+| - | - |
+| [Quick install](#quick-install) | Customers who can run a reviewed shell installer and want the shortest setup. |
 | [Manual install](#manual-install) | Organizations that do not allow installer scripts or need each Kubernetes command reviewed. |
 
 The public install assets are:
@@ -38,11 +38,11 @@ MC_RAW_BASE=https://raw.githubusercontent.com/langchain-ai/helm/main/charts/miss
 
 ## Prerequisites
 
-| Tool      | Minimum version     | Install example        |
-| --------- | ------------------- | ---------------------- |
-| `kubectl` | 1.24+               | `brew install kubectl` |
-| `helm`    | 3.x                 | `brew install helm`    |
-| `curl`    | any current version | Usually preinstalled   |
+| Tool | Minimum version | Install example |
+| - | - | - |
+| `kubectl` | 1.24+ | `brew install kubectl` |
+| `helm` | 3.x | `brew install helm` |
+| `curl` | any current version | Usually preinstalled |
 
 You must run the installer against the Kubernetes cluster where LangSmith is installed or will be installed. Confirm the active context before continuing:
 
@@ -118,14 +118,14 @@ The quick install path also downloads `values.yaml` before running the installer
 
 Common edits:
 
-| Setting                                                        | When to change it                                                                                   |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `namespace`                                                    | Install Mission Control somewhere other than `langsmith`. Also pass `-n <namespace>` to the script. |
-| `resources`                                                    | Your namespace has a `ResourceQuota` or your platform requires specific requests/limits.            |
-| `ingress.enabled` and `ingress.host`                           | You want to expose Mission Control through your ingress controller instead of port-forwarding.      |
-| `config.features.*`                                            | You need to remove specific write permissions or external egress features.                          |
-| `diagnostics.persistence.enabled`                              | You want diagnostic bundles to survive pod restarts and Helm upgrades.                              |
-| `backend.podSecurityContext` and `frontend.podSecurityContext` | Your platform requires containers to run as a specific non-root UID, such as `1001`.                |
+| Setting | When to change it |
+| - | - |
+| `namespace` | Install Mission Control somewhere other than `langsmith`. Also pass `-n <namespace>` to the script. |
+| `resources` | Your namespace has a `ResourceQuota` or your platform requires specific requests/limits. |
+| `ingress.enabled` and `ingress.host` | You want to expose Mission Control through your ingress controller instead of port-forwarding. |
+| `config.features.*` | You need to remove specific write permissions or external egress features. |
+| `diagnostics.persistence.enabled` | You want diagnostic bundles to survive pod restarts and Helm upgrades. |
+| `backend.podSecurityContext` and `frontend.podSecurityContext` | Your platform requires containers to run as a specific non-root UID, such as `1001`. |
 
 Example with a custom namespace:
 
@@ -339,13 +339,13 @@ kubectl delete secret -n langsmith \
 
 ### Troubleshooting
 
-| Symptom                               | What to check                                                                                                                |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `kubectl auth can-i ...` returns `no` | Ask a cluster admin to grant install-time RBAC or run the install for you.                                                   |
-| Pods stay `Pending`                   | Check namespace `ResourceQuota`, node capacity, and PVC/storage class events with `kubectl describe pod -n langsmith <pod>`. |
-| Image pull errors                     | Confirm the cluster can pull `langchain/mission-control-backend:latest` and `langchain/mission-control-frontend:latest`.     |
-| Login fails                           | Confirm `mission-control-auth` exists in the same namespace and has `username` and `password` keys.                          |
-| Browser cannot connect                | Confirm the port-forward command is still running and no other local process is using port `3000`.                           |
+| Symptom | What to check |
+| - | - |
+| `kubectl auth can-i ...` returns `no` | Ask a cluster admin to grant install-time RBAC or run the install for you. |
+| Pods stay `Pending` | Check namespace `ResourceQuota`, node capacity, and PVC/storage class events with `kubectl describe pod -n langsmith <pod>`. |
+| Image pull errors | Confirm the cluster can pull `langchain/mission-control-backend:latest` and `langchain/mission-control-frontend:latest`. |
+| Login fails | Confirm `mission-control-auth` exists in the same namespace and has `username` and `password` keys. |
+| Browser cannot connect | Confirm the port-forward command is still running and no other local process is using port `3000`. |
 
 ### Permissions reference
 
@@ -355,28 +355,28 @@ Install or upgrade requires the ability to create cluster-scoped RBAC (`ClusterR
 
 #### Always-present read-only permissions
 
-| Resource group      | Resources                                                                           | Verbs            |
-| ------------------- | ----------------------------------------------------------------------------------- | ---------------- |
-| Workloads           | pods, pods/log, deployments, statefulsets, replicasets, daemonsets, jobs, cronjobs  | get, list, watch |
-| Networking          | services, endpoints, ingresses, ingressclasses                                      | get, list, watch |
-| Storage             | persistentvolumeclaims, storageclasses                                              | get, list, watch |
-| Cluster             | nodes, namespaces, events, serviceaccounts, resourcequotas                          | get, list, watch |
-| Config              | configmaps, secrets                                                                 | get, list        |
-| Metrics             | metrics.k8s.io pods/nodes                                                           | get, list, watch |
-| RBAC                | roles, rolebindings, clusterroles, clusterrolebindings                              | get, list, watch |
+| Resource group | Resources | Verbs |
+| - | - | - |
+| Workloads | pods, pods/log, deployments, statefulsets, replicasets, daemonsets, jobs, cronjobs | get, list, watch |
+| Networking | services, endpoints, ingresses, ingressclasses | get, list, watch |
+| Storage | persistentvolumeclaims, storageclasses | get, list, watch |
+| Cluster | nodes, namespaces, events, serviceaccounts, resourcequotas | get, list, watch |
+| Config | configmaps, secrets | get, list |
+| Metrics | metrics.k8s.io pods/nodes | get, list, watch |
+| RBAC | roles, rolebindings, clusterroles, clusterrolebindings | get, list, watch |
 | CRDs and extensions | customresourcedefinitions, leases, scaledobjects, httproutes, virtualservices, lgps | get, list, watch |
 
 #### Feature-gated permissions
 
-| Feature flag                     | Resources                                                          | Extra verbs                   |
-| -------------------------------- | ------------------------------------------------------------------ | ----------------------------- |
-| `config.features.configSave`     | secrets (`mission-control-draft`)                                  | create, update, delete        |
-| `config.features.alerts`         | secrets (`mission-control-alerts-*`)                               | create, update, delete        |
-| `config.features.fixIssue`       | pods                                                               | delete                        |
-| `config.features.adopt`          | secrets, configmaps, serviceaccounts, deployments, statefulsets    | patch                         |
-| `config.auth.enabled`            | secrets (`mission-control-auth`, setup-token), backend statefulset | create, update, delete, patch |
-| `config.features.valuesOverride` | secrets (`mission-control-values-overrides`)                       | create, update, delete        |
-| `config.features.deploy`         | workloads, networking, RBAC, CRDs, Helm release secrets            | create, update, patch, delete |
+| Feature flag | Resources | Extra verbs |
+| - | - | - |
+| `config.features.configSave` | secrets (`mission-control-draft`) | create, update, delete |
+| `config.features.alerts` | secrets (`mission-control-alerts-*`) | create, update, delete |
+| `config.features.fixIssue` | pods | delete |
+| `config.features.adopt` | secrets, configmaps, serviceaccounts, deployments, statefulsets | patch |
+| `config.auth.enabled` | secrets (`mission-control-auth`, setup-token), backend statefulset | create, update, delete, patch |
+| `config.features.valuesOverride` | secrets (`mission-control-values-overrides`) | create, update, delete |
+| `config.features.deploy` | workloads, networking, RBAC, CRDs, Helm release secrets | create, update, patch, delete |
 
 Set feature flags to `false` in `values.yaml` to remove the corresponding write verbs. With all feature flags disabled, Mission Control is effectively read-only except for authentication setup permissions when `config.auth.enabled: true`.
 

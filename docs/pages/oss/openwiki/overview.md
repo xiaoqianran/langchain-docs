@@ -25,10 +25,10 @@ See the [Quickstart](/oss/openwiki/quickstart) to choose a model provider, gener
 
 OpenWiki has two modes:
 
-| Mode               | Command                      | Output                                | Use when                                                        |
-| ------------------ | ---------------------------- | ------------------------------------- | --------------------------------------------------------------- |
+| Mode | Command | Output | Use when |
+| - | - | - | - |
 | **Code** (default) | `openwiki` / `openwiki code` | `openwiki/` in the current repository | You want repository context and documentation for coding agents |
-| **Personal**       | `openwiki personal`          | `~/.openwiki/wiki`                    | You want a local personal brain from configured sources         |
+| **Personal** | `openwiki personal` | `~/.openwiki/wiki` | You want a local personal brain from configured sources |
 
 Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki personal --init` or `openwiki personal --update` for the personal wiki.
 

@@ -16,8 +16,8 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
 <Tabs>
   <Tab title="Python">
-    | Before                  | After                    |
-    | ----------------------- | ------------------------ |
+    | Before | After |
+    | - | - |
     | `client.list_threads()` | `client.threads.query()` |
 
     <Note>
@@ -28,8 +28,8 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
   </Tab>
 
   <Tab title="TypeScript">
-    | Before                 | After                    |
-    | ---------------------- | ------------------------ |
+    | Before | After |
+    | - | - |
     | `client.listThreads()` | `client.threads.query()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Threads/query) for the full parameter and field list.
@@ -38,8 +38,8 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
   <Tab title="Java">
     <Note>Java never had a dedicated thread-listing method. The closest legacy equivalent is the generic run query, manually grouped by the `thread_id` metadata convention.</Note>
 
-    | Before                                                 | After                      |
-    | ------------------------------------------------------ | -------------------------- |
+    | Before | After |
+    | - | - |
     | `client.runs().query()` (generic, grouped client-side) | `client.threads().query()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/ThreadService.html) for the full parameter list.
@@ -48,16 +48,16 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
   <Tab title="Go">
     <Note>Go never had a dedicated thread-listing method. The closest legacy equivalent is the generic run query, manually grouped by the `thread_id` metadata convention.</Note>
 
-    | Before                                               | After                    |
-    | ---------------------------------------------------- | ------------------------ |
+    | Before | After |
+    | - | - |
     | `client.Runs.Query()` (generic, grouped client-side) | `client.Threads.Query()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#ThreadService.QueryAutoPaging) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                                                          | After                        |
-    | --------------------------------------------------------------- | ---------------------------- |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/runs/query` (`is_root=true`, grouped client-side) | `POST /api/v2/threads/query` |
 
     See the [API doc](/langsmith/smith-api/threads/query-threads) for the full parameter and field list.
@@ -68,21 +68,21 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
 <Tabs>
   <Tab title="Python">
-    | Before (`list_threads`)              | After (`threads.query`)             | Notes                                                                                                         |
-    | ------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-    | `project_id` XOR `project_name`      | `project_id`                        | the new method takes only the UUID; resolve a name via `aread_project()` first, same pattern as `Runs: query` |
-    | `start_time` (defaults to 1 day ago) | `min_start_time` + `max_start_time` | Optional; default to a 1-day window ending now, same as `start_time`                                          |
-    | `offset` + `limit`                   | `cursor` + `page_size`              | Offset pagination replaced by cursor pagination                                                               |
-    | `filter` (evaluated against runs)    | `filter`                            | Same syntax; now evaluated against each thread's root run                                                     |
+    | Before (`list_threads`) | After (`threads.query`) | Notes |
+    | - | - | - |
+    | `project_id` XOR `project_name` | `project_id` | the new method takes only the UUID; resolve a name via `aread_project()` first, same pattern as `Runs: query` |
+    | `start_time` (defaults to 1 day ago) | `min_start_time` + `max_start_time` | Optional; default to a 1-day window ending now, same as `start_time` |
+    | `offset` + `limit` | `cursor` + `page_size` | Offset pagination replaced by cursor pagination |
+    | `filter` (evaluated against runs) | `filter` | Same syntax; now evaluated against each thread's root run |
   </Tab>
 
   <Tab title="TypeScript">
-    | Before (`listThreads`)              | After (`threads.query`)             | Notes                                                                        |
-    | ----------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------- |
-    | `projectId` XOR `projectName`       | `project_id`                        | the new method takes only the UUID; resolve a name via `readProject()` first |
-    | `startTime` (defaults to 1 day ago) | `min_start_time` + `max_start_time` | Optional; default to a 1-day window ending now, same as `startTime`          |
-    | `offset` + `limit`                  | `cursor` + `page_size`              | Offset pagination replaced by cursor pagination                              |
-    | `filter`                            | `filter`                            | Same syntax; now evaluated against each thread's root run                    |
+    | Before (`listThreads`) | After (`threads.query`) | Notes |
+    | - | - | - |
+    | `projectId` XOR `projectName` | `project_id` | the new method takes only the UUID; resolve a name via `readProject()` first |
+    | `startTime` (defaults to 1 day ago) | `min_start_time` + `max_start_time` | Optional; default to a 1-day window ending now, same as `startTime` |
+    | `offset` + `limit` | `cursor` + `page_size` | Offset pagination replaced by cursor pagination |
+    | `filter` | `filter` | Same syntax; now evaluated against each thread's root run |
   </Tab>
 
   <Tab title="Java">
@@ -106,44 +106,44 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
     The new `Thread` never embeds the full run list (that is what `threads.list_traces` is for) but adds real `feedback_stats`, `latency_p50`/`latency_p99`, cost/token sums with per-category `_details`, `first_trace_id`/`last_trace_id`, `first_inputs`/`last_outputs` previews, `last_error`, `num_errored_turns`.
 
-    | Before (legacy `ListThreadsItem`) | After (new `Thread`)                        | Notes                                                                                 |
-    | --------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------- |
-    | `thread_id`                       | `thread_id`                                 | Unchanged                                                                             |
-    | `runs` (full embedded `Run[]`)    | *(not available)*                           | Use `threads.list_traces` for per-trace detail                                        |
-    | `count`                           | `count`                                     | Unchanged                                                                             |
-    | `min_start_time`                  | `min_start_time`                            | Unchanged                                                                             |
-    | `max_start_time`                  | `max_start_time`                            | Unchanged                                                                             |
-    | *(not available)*                 | `start_time`                                | New: a reference start time for this row, for example for sorting                     |
-    | *(not available)*                 | `trace_id`                                  | New: a representative root trace UUID, for example for deep links                     |
-    | *(not available)*                 | `first_trace_id`, `last_trace_id`           | New: chronologically first/last trace UUID in the query window                        |
-    | *(not available)*                 | `first_inputs`, `last_outputs`              | New: truncated previews from the first/last trace                                     |
-    | *(not available)*                 | `last_error`                                | New                                                                                   |
-    | *(not available)*                 | `num_errored_turns`                         | New                                                                                   |
-    | *(not available)*                 | `latency_p50`, `latency_p99`                | New                                                                                   |
-    | *(not available)*                 | `total_tokens`, `total_cost`                | New                                                                                   |
-    | *(not available)*                 | `total_token_details`, `total_cost_details` | New: per-category dicts, unlike `threads.list_traces` these are not wrapped in `.raw` |
-    | *(not available)*                 | `feedback_stats`                            | New                                                                                   |
+    | Before (legacy `ListThreadsItem`) | After (new `Thread`) | Notes |
+    | - | - | - |
+    | `thread_id` | `thread_id` | Unchanged |
+    | `runs` (full embedded `Run[]`) | *(not available)* | Use `threads.list_traces` for per-trace detail |
+    | `count` | `count` | Unchanged |
+    | `min_start_time` | `min_start_time` | Unchanged |
+    | `max_start_time` | `max_start_time` | Unchanged |
+    | *(not available)* | `start_time` | New: a reference start time for this row, for example for sorting |
+    | *(not available)* | `trace_id` | New: a representative root trace UUID, for example for deep links |
+    | *(not available)* | `first_trace_id`, `last_trace_id` | New: chronologically first/last trace UUID in the query window |
+    | *(not available)* | `first_inputs`, `last_outputs` | New: truncated previews from the first/last trace |
+    | *(not available)* | `last_error` | New |
+    | *(not available)* | `num_errored_turns` | New |
+    | *(not available)* | `latency_p50`, `latency_p99` | New |
+    | *(not available)* | `total_tokens`, `total_cost` | New |
+    | *(not available)* | `total_token_details`, `total_cost_details` | New: per-category dicts, unlike `threads.list_traces` these are not wrapped in `.raw` |
+    | *(not available)* | `feedback_stats` | New |
   </Tab>
 
   <Tab title="TypeScript">
-    | Before (legacy `ListThreadsItem`) | After (new `Thread`)                        | Notes                                                                                |
-    | --------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------ |
-    | `thread_id`                       | `thread_id`                                 | Unchanged                                                                            |
-    | `runs` (full embedded `Run[]`)    | *(not available)*                           | Use `threads.listTraces` for per-trace detail                                        |
-    | `count`                           | `count`                                     | Unchanged                                                                            |
-    | `min_start_time`                  | `min_start_time`                            | Unchanged                                                                            |
-    | `max_start_time`                  | `max_start_time`                            | Unchanged                                                                            |
-    | `total_tokens`                    | `total_tokens`                              | Unchanged                                                                            |
-    | `total_cost`                      | `total_cost`                                | Unchanged                                                                            |
-    | `latency_p50`, `latency_p99`      | `latency_p50`, `latency_p99`                | Unchanged                                                                            |
-    | `feedback_stats`                  | `feedback_stats`                            | Unchanged                                                                            |
-    | `first_inputs`, `last_outputs`    | `first_inputs`, `last_outputs`              | Unchanged                                                                            |
-    | `last_error`                      | `last_error`                                | Unchanged                                                                            |
-    | *(not available)*                 | `start_time`                                | New: a reference start time for this row, for example for sorting                    |
-    | *(not available)*                 | `trace_id`                                  | New: a representative root trace UUID, for example for deep links                    |
-    | *(not available)*                 | `first_trace_id`, `last_trace_id`           | New: chronologically first/last trace UUID in the query window                       |
-    | *(not available)*                 | `num_errored_turns`                         | New                                                                                  |
-    | *(not available)*                 | `total_token_details`, `total_cost_details` | New: per-category dicts, unlike `threads.listTraces` these are not wrapped in `.raw` |
+    | Before (legacy `ListThreadsItem`) | After (new `Thread`) | Notes |
+    | - | - | - |
+    | `thread_id` | `thread_id` | Unchanged |
+    | `runs` (full embedded `Run[]`) | *(not available)* | Use `threads.listTraces` for per-trace detail |
+    | `count` | `count` | Unchanged |
+    | `min_start_time` | `min_start_time` | Unchanged |
+    | `max_start_time` | `max_start_time` | Unchanged |
+    | `total_tokens` | `total_tokens` | Unchanged |
+    | `total_cost` | `total_cost` | Unchanged |
+    | `latency_p50`, `latency_p99` | `latency_p50`, `latency_p99` | Unchanged |
+    | `feedback_stats` | `feedback_stats` | Unchanged |
+    | `first_inputs`, `last_outputs` | `first_inputs`, `last_outputs` | Unchanged |
+    | `last_error` | `last_error` | Unchanged |
+    | *(not available)* | `start_time` | New: a reference start time for this row, for example for sorting |
+    | *(not available)* | `trace_id` | New: a representative root trace UUID, for example for deep links |
+    | *(not available)* | `first_trace_id`, `last_trace_id` | New: chronologically first/last trace UUID in the query window |
+    | *(not available)* | `num_errored_turns` | New |
+    | *(not available)* | `total_token_details`, `total_cost_details` | New: per-category dicts, unlike `threads.listTraces` these are not wrapped in `.raw` |
   </Tab>
 
   <Tab title="Java">
@@ -151,19 +151,19 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
     The legacy SDK never had a typed response for this. Java's closest equivalent grouped raw `runs().query()` results by the `thread_id` metadata client-side. Every field below is new.
 
-    | New `Thread` method                               | Notes                                                                                                                  |
-    | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-    | `threadId()`                                      |                                                                                                                        |
-    | `count()`                                         |                                                                                                                        |
-    | `minStartTime()`, `maxStartTime()`, `startTime()` |                                                                                                                        |
-    | `firstTraceId()`, `lastTraceId()`, `traceId()`    | `traceId()` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
-    | `firstInputs()`, `lastOutputs()`                  | Truncated previews from the first/last trace                                                                           |
-    | `lastError()`                                     |                                                                                                                        |
-    | `numErroredTurns()`                               |                                                                                                                        |
-    | `latencyP50()`, `latencyP99()`                    |                                                                                                                        |
-    | `totalTokens()`, `totalCost()`                    |                                                                                                                        |
-    | `totalTokenDetails()`, `totalCostDetails()`       | Per-category maps                                                                                                      |
-    | `feedbackStats()`                                 |                                                                                                                        |
+    | New `Thread` method | Notes |
+    | - | - |
+    | `threadId()` | |
+    | `count()` | |
+    | `minStartTime()`, `maxStartTime()`, `startTime()` | |
+    | `firstTraceId()`, `lastTraceId()`, `traceId()` | `traceId()` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
+    | `firstInputs()`, `lastOutputs()` | Truncated previews from the first/last trace |
+    | `lastError()` | |
+    | `numErroredTurns()` | |
+    | `latencyP50()`, `latencyP99()` | |
+    | `totalTokens()`, `totalCost()` | |
+    | `totalTokenDetails()`, `totalCostDetails()` | Per-category maps |
+    | `feedbackStats()` | |
   </Tab>
 
   <Tab title="Go">
@@ -171,19 +171,19 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
     The legacy SDK never had a typed response for this. Go's closest equivalent grouped raw `Runs.Query()` results by the `thread_id` metadata client-side. Every field below is new.
 
-    | New `Thread` field                          | Notes                                                                                                                |
-    | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-    | `ThreadID`                                  |                                                                                                                      |
-    | `Count`                                     |                                                                                                                      |
-    | `MinStartTime`, `MaxStartTime`, `StartTime` |                                                                                                                      |
-    | `FirstTraceID`, `LastTraceID`, `TraceID`    | `TraceID` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
-    | `FirstInputs`, `LastOutputs`                | Truncated previews from the first/last trace                                                                         |
-    | `LastError`                                 |                                                                                                                      |
-    | `NumErroredTurns`                           |                                                                                                                      |
-    | `LatencyP50`, `LatencyP99`                  |                                                                                                                      |
-    | `TotalTokens`, `TotalCost`                  |                                                                                                                      |
-    | `TotalTokenDetails`, `TotalCostDetails`     | Per-category maps                                                                                                    |
-    | `FeedbackStats`                             |                                                                                                                      |
+    | New `Thread` field | Notes |
+    | - | - |
+    | `ThreadID` | |
+    | `Count` | |
+    | `MinStartTime`, `MaxStartTime`, `StartTime` | |
+    | `FirstTraceID`, `LastTraceID`, `TraceID` | `TraceID` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
+    | `FirstInputs`, `LastOutputs` | Truncated previews from the first/last trace |
+    | `LastError` | |
+    | `NumErroredTurns` | |
+    | `LatencyP50`, `LatencyP99` | |
+    | `TotalTokens`, `TotalCost` | |
+    | `TotalTokenDetails`, `TotalCostDetails` | Per-category maps |
+    | `FeedbackStats` | |
   </Tab>
 
   <Tab title="cURL">
@@ -191,19 +191,19 @@ Query threads within a project, with cursor-based pagination. Returns threads ma
 
     The legacy API never had a dedicated threads endpoint. The closest equivalent was `POST /api/v1/runs/query`, grouped client-side by the `thread_id` metadata. Every field below is new.
 
-    | New `threads.query` response field               | Notes                                                                                                                 |
-    | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-    | `thread_id`                                      |                                                                                                                       |
-    | `count`                                          |                                                                                                                       |
-    | `min_start_time`, `max_start_time`, `start_time` |                                                                                                                       |
-    | `first_trace_id`, `last_trace_id`, `trace_id`    | `trace_id` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
-    | `first_inputs`, `last_outputs`                   | Truncated previews from the first/last trace                                                                          |
-    | `last_error`                                     |                                                                                                                       |
-    | `num_errored_turns`                              |                                                                                                                       |
-    | `latency_p50`, `latency_p99`                     |                                                                                                                       |
-    | `total_tokens`, `total_cost`                     |                                                                                                                       |
-    | `total_token_details`, `total_cost_details`      | Per-category dicts                                                                                                    |
-    | `feedback_stats`                                 |                                                                                                                       |
+    | New `threads.query` response field | Notes |
+    | - | - |
+    | `thread_id` | |
+    | `count` | |
+    | `min_start_time`, `max_start_time`, `start_time` | |
+    | `first_trace_id`, `last_trace_id`, `trace_id` | `trace_id` is a representative root trace UUID, for example for deep links, in addition to the first/last trace UUIDs |
+    | `first_inputs`, `last_outputs` | Truncated previews from the first/last trace |
+    | `last_error` | |
+    | `num_errored_turns` | |
+    | `latency_p50`, `latency_p99` | |
+    | `total_tokens`, `total_cost` | |
+    | `total_token_details`, `total_cost_details` | Per-category dicts |
+    | `feedback_stats` | |
   </Tab>
 </Tabs>
 
@@ -767,8 +767,8 @@ Retrieve all traces belonging to a specific thread within a project.
 
 <Tabs>
   <Tab title="Python">
-    | Before                 | After                          |
-    | ---------------------- | ------------------------------ |
+    | Before | After |
+    | - | - |
     | `client.read_thread()` | `client.threads.list_traces()` |
 
     <Note>
@@ -779,8 +779,8 @@ Retrieve all traces belonging to a specific thread within a project.
   </Tab>
 
   <Tab title="TypeScript">
-    | Before                | After                         |
-    | --------------------- | ----------------------------- |
+    | Before | After |
+    | - | - |
     | `client.readThread()` | `client.threads.listTraces()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Threads/listTraces) for the full parameter and field list.
@@ -789,8 +789,8 @@ Retrieve all traces belonging to a specific thread within a project.
   <Tab title="Java">
     <Note>Java never had a dedicated per-thread method. The closest legacy equivalent is the generic run query filtered by the `thread_id` metadata convention.</Note>
 
-    | Before                                            | After                           |
-    | ------------------------------------------------- | ------------------------------- |
+    | Before | After |
+    | - | - |
     | `client.runs().query()` (filtered by `thread_id`) | `client.threads().listTraces()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/ThreadService.html) for the full parameter list.
@@ -799,16 +799,16 @@ Retrieve all traces belonging to a specific thread within a project.
   <Tab title="Go">
     <Note>Go never had a dedicated per-thread method. The closest legacy equivalent is the generic run query filtered by the `thread_id` metadata convention.</Note>
 
-    | Before                                          | After                         |
-    | ----------------------------------------------- | ----------------------------- |
+    | Before | After |
+    | - | - |
     | `client.Runs.Query()` (filtered by `thread_id`) | `client.Threads.ListTraces()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#ThreadService.ListTracesAutoPaging) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                                                  | After                                    |
-    | ------------------------------------------------------- | ---------------------------------------- |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/runs/query` (`filter=eq(thread_id, ...)`) | `GET /api/v2/threads/{thread_id}/traces` |
 
     See the [API doc](/langsmith/smith-api/threads/query-thread-traces) for the full parameter and field list.
@@ -821,29 +821,29 @@ Retrieve all traces belonging to a specific thread within a project.
   <Tab title="Python">
     `read_thread`'s `is_root` has no new equivalent. `list_traces` always returns traces (root runs) only, matching its name. `read_thread`'s `order` (asc/desc) also has no new equivalent: results are always sorted by `start_time` ascending, a fixed server-side order.
 
-    | Before (`read_thread`)              | After (`list_traces`)    | Notes                                                                   |
-    | ----------------------------------- | ------------------------ | ----------------------------------------------------------------------- |
-    | `thread_id`                         | `thread_id` (path param) | Unchanged                                                               |
-    | `project_id` XOR `project_name`     | `project_id`             | The new method takes only the UUID                                      |
-    | `is_root`                           | *(not available)*        | The new method always returns traces (root runs) only                   |
-    | `order`                             | *(not available)*        | No sort/order field on the new method                                   |
-    | `filter`                            | `filter`                 | Same syntax, now evaluated against each root trace run                  |
-    | `select` (arbitrary run field list) | `selects`                | The new method uses `ThreadTraceSelectField`, a 24-value uppercase enum |
-    | *(not available)*                   | `page_size` + `cursor`   | The new method adds cursor pagination                                   |
+    | Before (`read_thread`) | After (`list_traces`) | Notes |
+    | - | - | - |
+    | `thread_id` | `thread_id` (path param) | Unchanged |
+    | `project_id` XOR `project_name` | `project_id` | The new method takes only the UUID |
+    | `is_root` | *(not available)* | The new method always returns traces (root runs) only |
+    | `order` | *(not available)* | No sort/order field on the new method |
+    | `filter` | `filter` | Same syntax, now evaluated against each root trace run |
+    | `select` (arbitrary run field list) | `selects` | The new method uses `ThreadTraceSelectField`, a 24-value uppercase enum |
+    | *(not available)* | `page_size` + `cursor` | The new method adds cursor pagination |
   </Tab>
 
   <Tab title="TypeScript">
     `readThread`'s `isRoot` has no new equivalent. `listTraces` always returns traces (root runs) only, matching its name. `readThread`'s `order` (asc/desc) also has no new equivalent: results are always sorted by `start_time` ascending, a fixed server-side order.
 
-    | Before (`readThread`)               | After (`listTraces`)    | Notes                                                  |
-    | ----------------------------------- | ----------------------- | ------------------------------------------------------ |
-    | `threadId`                          | `threadId` (path param) | Unchanged                                              |
-    | `projectId` XOR `projectName`       | `project_id`            | The new method takes only the UUID                     |
-    | `isRoot`                            | *(not available)*       | The new method always returns traces (root runs) only  |
-    | `order`                             | *(not available)*       | No sort/order field on the new method                  |
-    | `filter`                            | `filter`                | Same syntax, now evaluated against each root trace run |
-    | `select` (arbitrary run field list) | `selects`               | The new method uses a 24-value uppercase enum          |
-    | *(not available)*                   | `page_size` + `cursor`  | The new method adds cursor pagination                  |
+    | Before (`readThread`) | After (`listTraces`) | Notes |
+    | - | - | - |
+    | `threadId` | `threadId` (path param) | Unchanged |
+    | `projectId` XOR `projectName` | `project_id` | The new method takes only the UUID |
+    | `isRoot` | *(not available)* | The new method always returns traces (root runs) only |
+    | `order` | *(not available)* | No sort/order field on the new method |
+    | `filter` | `filter` | Same syntax, now evaluated against each root trace run |
+    | `select` (arbitrary run field list) | `selects` | The new method uses a 24-value uppercase enum |
+    | *(not available)* | `page_size` + `cursor` | The new method adds cursor pagination |
   </Tab>
 
   <Tab title="Java">
@@ -865,121 +865,121 @@ Retrieve all traces belonging to a specific thread within a project.
   <Tab title="Python">
     The legacy `read_thread` returns full `Run` objects (a generator). The new `ThreadTrace` is lightweight: preview fields (`inputs_preview`/`outputs_preview`) instead of full `inputs`/`outputs`, no embedded child runs. `selects` controls what's populated, the same as `traces.query`.
 
-    | Before (legacy `Run` field, via `read_thread`)       | After (new `ThreadTrace` field)                             | Notes                                                                                       |
-    | ---------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-    | `id`                                                 | *(not available)*                                           | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
-    | `trace_id`                                           | `trace_id`                                                  | Returned by default when `selects` is omitted                                               |
-    | `name`                                               | `name`                                                      | Omitted unless included in `selects`                                                        |
-    | `start_time`                                         | `start_time`                                                | Omitted unless included in `selects`                                                        |
-    | `end_time`                                           | `end_time`                                                  | Omitted unless included in `selects`                                                        |
-    | `run_type`                                           | `op`                                                        | Renamed; encoded as a number instead of a string                                            |
-    | `inputs`                                             | `inputs_preview`, or `inputs` for the untruncated payload   | Truncated preview by default; select `INPUTS` for the full payload                          |
-    | `outputs`                                            | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload                         |
-    | `error`                                              | `error_preview`, or `error` for the full message            | Truncated summary by default; select `ERROR` for the full error message                     |
-    | `latency` (property)                                 | `latency`                                                   | Native field instead of a computed `timedelta` property                                     |
-    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens`        | Unchanged                                                                                   |
-    | `total_cost`, `prompt_cost`, `completion_cost`       | `total_cost`, `prompt_cost`, `completion_cost`              | Unchanged                                                                                   |
-    | `prompt_token_details`, `completion_token_details`   | `prompt_token_details`, `completion_token_details`          | Field now wraps the dict; access `.raw`                                                     |
-    | `prompt_cost_details`, `completion_cost_details`     | `prompt_cost_details`, `completion_cost_details`            | Field now wraps the dict; access `.raw`                                                     |
-    | `first_token_time`                                   | `first_token_time`                                          | Omitted unless included in `selects`                                                        |
-    | *(not available)*                                    | `thread_id`                                                 | New: the thread UUID this trace belongs to                                                  |
-    | `child_runs`, `child_run_ids`                        | *(not available)*                                           | No embedded child runs; use `traces.list_runs` for descendant runs                          |
+    | Before (legacy `Run` field, via `read_thread`) | After (new `ThreadTrace` field) | Notes |
+    | - | - | - |
+    | `id` | *(not available)* | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
+    | `trace_id` | `trace_id` | Returned by default when `selects` is omitted |
+    | `name` | `name` | Omitted unless included in `selects` |
+    | `start_time` | `start_time` | Omitted unless included in `selects` |
+    | `end_time` | `end_time` | Omitted unless included in `selects` |
+    | `run_type` | `op` | Renamed; encoded as a number instead of a string |
+    | `inputs` | `inputs_preview`, or `inputs` for the untruncated payload | Truncated preview by default; select `INPUTS` for the full payload |
+    | `outputs` | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload |
+    | `error` | `error_preview`, or `error` for the full message | Truncated summary by default; select `ERROR` for the full error message |
+    | `latency` (property) | `latency` | Native field instead of a computed `timedelta` property |
+    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens` | Unchanged |
+    | `total_cost`, `prompt_cost`, `completion_cost` | `total_cost`, `prompt_cost`, `completion_cost` | Unchanged |
+    | `prompt_token_details`, `completion_token_details` | `prompt_token_details`, `completion_token_details` | Field now wraps the dict; access `.raw` |
+    | `prompt_cost_details`, `completion_cost_details` | `prompt_cost_details`, `completion_cost_details` | Field now wraps the dict; access `.raw` |
+    | `first_token_time` | `first_token_time` | Omitted unless included in `selects` |
+    | *(not available)* | `thread_id` | New: the thread UUID this trace belongs to |
+    | `child_runs`, `child_run_ids` | *(not available)* | No embedded child runs; use `traces.list_runs` for descendant runs |
   </Tab>
 
   <Tab title="TypeScript">
     The legacy `readThread` returns full `Run` objects (an async generator). The new `ThreadTrace` is lightweight: preview fields (`inputs_preview`/`outputs_preview`) instead of full `inputs`/`outputs`, no embedded child runs. `selects` controls what is populated, the same as `traces.query`.
 
-    | Before (legacy `Run` field, via `readThread`)        | After (new `ThreadTrace` field)                             | Notes                                                                                       |
-    | ---------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-    | `id`                                                 | *(not available)*                                           | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
-    | `trace_id`                                           | `trace_id`                                                  | Returned by default when `selects` is omitted                                               |
-    | `name`                                               | `name`                                                      | Omitted unless included in `selects`                                                        |
-    | `start_time`                                         | `start_time`                                                | Omitted unless included in `selects`                                                        |
-    | `end_time`                                           | `end_time`                                                  | Omitted unless included in `selects`                                                        |
-    | `run_type`                                           | `op`                                                        | Renamed; encoded as a number instead of a string                                            |
-    | `inputs`                                             | `inputs_preview`, or `inputs` for the untruncated payload   | Truncated preview by default; select `INPUTS` for the full payload                          |
-    | `outputs`                                            | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload                         |
-    | `error`                                              | `error_preview`, or `error` for the full message            | Truncated summary by default; select `ERROR` for the full error message                     |
-    | `latency`                                            | `latency`                                                   | Native field on the new type                                                                |
-    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens`        | Unchanged                                                                                   |
-    | `total_cost`, `prompt_cost`, `completion_cost`       | `total_cost`, `prompt_cost`, `completion_cost`              | Unchanged                                                                                   |
-    | `prompt_token_details`, `completion_token_details`   | `prompt_token_details`, `completion_token_details`          | Unchanged                                                                                   |
-    | `prompt_cost_details`, `completion_cost_details`     | `prompt_cost_details`, `completion_cost_details`            | Unchanged                                                                                   |
-    | `first_token_time`                                   | `first_token_time`                                          | Omitted unless included in `selects`                                                        |
-    | *(not available)*                                    | `thread_id`                                                 | New: the thread UUID this trace belongs to                                                  |
-    | `child_runs`, `child_run_ids`                        | *(not available)*                                           | No embedded child runs; use `traces.listRuns` for descendant runs                           |
+    | Before (legacy `Run` field, via `readThread`) | After (new `ThreadTrace` field) | Notes |
+    | - | - | - |
+    | `id` | *(not available)* | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
+    | `trace_id` | `trace_id` | Returned by default when `selects` is omitted |
+    | `name` | `name` | Omitted unless included in `selects` |
+    | `start_time` | `start_time` | Omitted unless included in `selects` |
+    | `end_time` | `end_time` | Omitted unless included in `selects` |
+    | `run_type` | `op` | Renamed; encoded as a number instead of a string |
+    | `inputs` | `inputs_preview`, or `inputs` for the untruncated payload | Truncated preview by default; select `INPUTS` for the full payload |
+    | `outputs` | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload |
+    | `error` | `error_preview`, or `error` for the full message | Truncated summary by default; select `ERROR` for the full error message |
+    | `latency` | `latency` | Native field on the new type |
+    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens` | Unchanged |
+    | `total_cost`, `prompt_cost`, `completion_cost` | `total_cost`, `prompt_cost`, `completion_cost` | Unchanged |
+    | `prompt_token_details`, `completion_token_details` | `prompt_token_details`, `completion_token_details` | Unchanged |
+    | `prompt_cost_details`, `completion_cost_details` | `prompt_cost_details`, `completion_cost_details` | Unchanged |
+    | `first_token_time` | `first_token_time` | Omitted unless included in `selects` |
+    | *(not available)* | `thread_id` | New: the thread UUID this trace belongs to |
+    | `child_runs`, `child_run_ids` | *(not available)* | No embedded child runs; use `traces.listRuns` for descendant runs |
   </Tab>
 
   <Tab title="Java">
     `ThreadTrace` has 24 `Optional` fields: `traceId`, `threadId`, `name`, `startTime`, `endTime`, `latency`, `op`, token/cost fields with per-category `_details`, `inputsPreview`/`outputsPreview`/`inputs`/`outputs`, `errorPreview`/`error`, `firstTokenTime`.
 
-    | Before (legacy `RunSchema` method)                      | After (new `ThreadTrace` method)                               | Notes                                                                                           |
-    | ------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-    | `id()`                                                  | *(not available)*                                              | the legacy root run `id()` and `traceId()` were identical; the new API exposes only `traceId()` |
-    | `traceId()`                                             | `traceId()`                                                    | Returned by default when `selects` is omitted                                                   |
-    | `name()`                                                | `name()`                                                       | Omitted unless included in `selects`                                                            |
-    | `startTime()`                                           | `startTime()`                                                  | Omitted unless included in `selects`                                                            |
-    | `endTime()`                                             | `endTime()`                                                    | Omitted unless included in `selects`                                                            |
-    | `runType()`                                             | `op()`                                                         | Renamed; encoded as a number instead of a string                                                |
-    | `inputs()`                                              | `inputsPreview()`, or `inputs()` for the untruncated payload   | Truncated preview by default; select `INPUTS` for the full payload                              |
-    | `outputs()`                                             | `outputsPreview()`, or `outputs()` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload                             |
-    | `error()`                                               | `errorPreview()`, or `error()` for the full message            | Truncated summary by default; select `ERROR` for the full error message                         |
-    | `latency()`                                             | `latency()`                                                    | Unchanged                                                                                       |
-    | `totalTokens()`, `promptTokens()`, `completionTokens()` | `totalTokens()`, `promptTokens()`, `completionTokens()`        | Unchanged                                                                                       |
-    | `totalCost()`, `promptCost()`, `completionCost()`       | `totalCost()`, `promptCost()`, `completionCost()`              | Unchanged                                                                                       |
-    | `promptTokenDetails()`, `completionTokenDetails()`      | `promptTokenDetails()`, `completionTokenDetails()`             | Unchanged                                                                                       |
-    | `promptCostDetails()`, `completionCostDetails()`        | `promptCostDetails()`, `completionCostDetails()`               | Unchanged                                                                                       |
-    | `firstTokenTime()`                                      | `firstTokenTime()`                                             | Omitted unless included in `selects`                                                            |
-    | *(not available)*                                       | `threadId()`                                                   | New: the thread UUID this trace belongs to                                                      |
-    | `childRuns()`, `childRunIds()`                          | *(not available)*                                              | No embedded child runs; use `traces().listRuns()` for descendant runs                           |
+    | Before (legacy `RunSchema` method) | After (new `ThreadTrace` method) | Notes |
+    | - | - | - |
+    | `id()` | *(not available)* | the legacy root run `id()` and `traceId()` were identical; the new API exposes only `traceId()` |
+    | `traceId()` | `traceId()` | Returned by default when `selects` is omitted |
+    | `name()` | `name()` | Omitted unless included in `selects` |
+    | `startTime()` | `startTime()` | Omitted unless included in `selects` |
+    | `endTime()` | `endTime()` | Omitted unless included in `selects` |
+    | `runType()` | `op()` | Renamed; encoded as a number instead of a string |
+    | `inputs()` | `inputsPreview()`, or `inputs()` for the untruncated payload | Truncated preview by default; select `INPUTS` for the full payload |
+    | `outputs()` | `outputsPreview()`, or `outputs()` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload |
+    | `error()` | `errorPreview()`, or `error()` for the full message | Truncated summary by default; select `ERROR` for the full error message |
+    | `latency()` | `latency()` | Unchanged |
+    | `totalTokens()`, `promptTokens()`, `completionTokens()` | `totalTokens()`, `promptTokens()`, `completionTokens()` | Unchanged |
+    | `totalCost()`, `promptCost()`, `completionCost()` | `totalCost()`, `promptCost()`, `completionCost()` | Unchanged |
+    | `promptTokenDetails()`, `completionTokenDetails()` | `promptTokenDetails()`, `completionTokenDetails()` | Unchanged |
+    | `promptCostDetails()`, `completionCostDetails()` | `promptCostDetails()`, `completionCostDetails()` | Unchanged |
+    | `firstTokenTime()` | `firstTokenTime()` | Omitted unless included in `selects` |
+    | *(not available)* | `threadId()` | New: the thread UUID this trace belongs to |
+    | `childRuns()`, `childRunIds()` | *(not available)* | No embedded child runs; use `traces().listRuns()` for descendant runs |
   </Tab>
 
   <Tab title="Go">
     `ThreadTrace` has 24 fields, in `PascalCase` Go struct form.
 
-    | Before (legacy root `Run` field)                  | After (new `ThreadTrace` field)                            | Notes                                                                                     |
-    | ------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-    | `ID`                                              | *(not available)*                                          | the legacy root run `ID` and `TraceID` were identical; the new API exposes only `TraceID` |
-    | `TraceID`                                         | `TraceID`                                                  | Returned by default when `Selects` is omitted                                             |
-    | `Name`                                            | `Name`                                                     | Omitted unless included in `Selects`                                                      |
-    | `StartTime`                                       | `StartTime`                                                | Omitted unless included in `Selects`                                                      |
-    | `EndTime`                                         | `EndTime`                                                  | Omitted unless included in `Selects`                                                      |
-    | `RunType`                                         | `Op`                                                       | Renamed; encoded as a number instead of a string                                          |
-    | `Inputs`                                          | `InputsPreview`, or `Inputs` for the untruncated payload   | Truncated preview by default; select `INPUTS` for the full payload                        |
-    | `Outputs`                                         | `OutputsPreview`, or `Outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload                       |
-    | `Error`                                           | `ErrorPreview`, or `Error` for the full message            | Truncated summary by default; select `ERROR` for the full error message                   |
-    | `Latency`                                         | `Latency`                                                  | Unchanged                                                                                 |
-    | `TotalTokens`, `PromptTokens`, `CompletionTokens` | `TotalTokens`, `PromptTokens`, `CompletionTokens`          | Unchanged                                                                                 |
-    | `TotalCost`, `PromptCost`, `CompletionCost`       | `TotalCost`, `PromptCost`, `CompletionCost`                | Unchanged                                                                                 |
-    | `PromptTokenDetails`, `CompletionTokenDetails`    | `PromptTokenDetails`, `CompletionTokenDetails`             | Unchanged                                                                                 |
-    | `PromptCostDetails`, `CompletionCostDetails`      | `PromptCostDetails`, `CompletionCostDetails`               | Unchanged                                                                                 |
-    | `FirstTokenTime`                                  | `FirstTokenTime`                                           | Omitted unless included in `Selects`                                                      |
-    | *(not available)*                                 | `ThreadID`                                                 | New: the thread UUID this trace belongs to                                                |
-    | `ChildRuns`, `ChildRunIDs`                        | *(not available)*                                          | No embedded child runs; use `Traces.ListRuns` for descendant runs                         |
+    | Before (legacy root `Run` field) | After (new `ThreadTrace` field) | Notes |
+    | - | - | - |
+    | `ID` | *(not available)* | the legacy root run `ID` and `TraceID` were identical; the new API exposes only `TraceID` |
+    | `TraceID` | `TraceID` | Returned by default when `Selects` is omitted |
+    | `Name` | `Name` | Omitted unless included in `Selects` |
+    | `StartTime` | `StartTime` | Omitted unless included in `Selects` |
+    | `EndTime` | `EndTime` | Omitted unless included in `Selects` |
+    | `RunType` | `Op` | Renamed; encoded as a number instead of a string |
+    | `Inputs` | `InputsPreview`, or `Inputs` for the untruncated payload | Truncated preview by default; select `INPUTS` for the full payload |
+    | `Outputs` | `OutputsPreview`, or `Outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload |
+    | `Error` | `ErrorPreview`, or `Error` for the full message | Truncated summary by default; select `ERROR` for the full error message |
+    | `Latency` | `Latency` | Unchanged |
+    | `TotalTokens`, `PromptTokens`, `CompletionTokens` | `TotalTokens`, `PromptTokens`, `CompletionTokens` | Unchanged |
+    | `TotalCost`, `PromptCost`, `CompletionCost` | `TotalCost`, `PromptCost`, `CompletionCost` | Unchanged |
+    | `PromptTokenDetails`, `CompletionTokenDetails` | `PromptTokenDetails`, `CompletionTokenDetails` | Unchanged |
+    | `PromptCostDetails`, `CompletionCostDetails` | `PromptCostDetails`, `CompletionCostDetails` | Unchanged |
+    | `FirstTokenTime` | `FirstTokenTime` | Omitted unless included in `Selects` |
+    | *(not available)* | `ThreadID` | New: the thread UUID this trace belongs to |
+    | `ChildRuns`, `ChildRunIDs` | *(not available)* | No embedded child runs; use `Traces.ListRuns` for descendant runs |
   </Tab>
 
   <Tab title="cURL">
     JSON response fields use `snake_case`, matching the table below.
 
-    | Before (legacy root run field)                       | After (new `ThreadTrace` field)                             | Notes                                                                                       |
-    | ---------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-    | `id`                                                 | *(not available)*                                           | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
-    | `trace_id`                                           | `trace_id`                                                  | Returned by default when `selects` is omitted                                               |
-    | `name`                                               | `name`                                                      | Omitted unless included in `selects`                                                        |
-    | `start_time`                                         | `start_time`                                                | Omitted unless included in `selects`                                                        |
-    | `end_time`                                           | `end_time`                                                  | Omitted unless included in `selects`                                                        |
-    | `run_type`                                           | `op`                                                        | Renamed; encoded as a number instead of a string                                            |
-    | `inputs`                                             | `inputs_preview`, or `inputs` for the untruncated payload   | Truncated preview by default; select `INPUTS` for the full payload                          |
-    | `outputs`                                            | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload                         |
-    | `error`                                              | `error_preview`, or `error` for the full message            | Truncated summary by default; select `ERROR` for the full error message                     |
-    | `latency`                                            | `latency`                                                   | Unchanged                                                                                   |
-    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens`        | Unchanged                                                                                   |
-    | `total_cost`, `prompt_cost`, `completion_cost`       | `total_cost`, `prompt_cost`, `completion_cost`              | Unchanged                                                                                   |
-    | `prompt_token_details`, `completion_token_details`   | `prompt_token_details`, `completion_token_details`          | Unchanged                                                                                   |
-    | `prompt_cost_details`, `completion_cost_details`     | `prompt_cost_details`, `completion_cost_details`            | Unchanged                                                                                   |
-    | `first_token_time`                                   | `first_token_time`                                          | Omitted unless included in `selects`                                                        |
-    | *(not available)*                                    | `thread_id`                                                 | New: the thread UUID this trace belongs to                                                  |
-    | `child_runs`, `child_run_ids`                        | *(not available)*                                           | No embedded child runs; use `traces.list_runs` for descendant runs                          |
+    | Before (legacy root run field) | After (new `ThreadTrace` field) | Notes |
+    | - | - | - |
+    | `id` | *(not available)* | the legacy root run `id` and `trace_id` were identical; the new API exposes only `trace_id` |
+    | `trace_id` | `trace_id` | Returned by default when `selects` is omitted |
+    | `name` | `name` | Omitted unless included in `selects` |
+    | `start_time` | `start_time` | Omitted unless included in `selects` |
+    | `end_time` | `end_time` | Omitted unless included in `selects` |
+    | `run_type` | `op` | Renamed; encoded as a number instead of a string |
+    | `inputs` | `inputs_preview`, or `inputs` for the untruncated payload | Truncated preview by default; select `INPUTS` for the full payload |
+    | `outputs` | `outputs_preview`, or `outputs` for the untruncated payload | Truncated preview by default; select `OUTPUTS` for the full payload |
+    | `error` | `error_preview`, or `error` for the full message | Truncated summary by default; select `ERROR` for the full error message |
+    | `latency` | `latency` | Unchanged |
+    | `total_tokens`, `prompt_tokens`, `completion_tokens` | `total_tokens`, `prompt_tokens`, `completion_tokens` | Unchanged |
+    | `total_cost`, `prompt_cost`, `completion_cost` | `total_cost`, `prompt_cost`, `completion_cost` | Unchanged |
+    | `prompt_token_details`, `completion_token_details` | `prompt_token_details`, `completion_token_details` | Unchanged |
+    | `prompt_cost_details`, `completion_cost_details` | `prompt_cost_details`, `completion_cost_details` | Unchanged |
+    | `first_token_time` | `first_token_time` | Omitted unless included in `selects` |
+    | *(not available)* | `thread_id` | New: the thread UUID this trace belongs to |
+    | `child_runs`, `child_run_ids` | *(not available)* | No embedded child runs; use `traces.list_runs` for descendant runs |
   </Tab>
 </Tabs>
 

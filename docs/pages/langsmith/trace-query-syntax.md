@@ -8,22 +8,22 @@ For runnable end-to-end examples that combine these filters with the SDK, refer 
 
 ## Filter arguments
 
-| Keys                          | Description                                                                                                                                                   |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project_id` / `project_name` | The project(s) to fetch runs from, as a single project or a list of projects.                                                                                 |
-| `trace_id`                    | Fetch runs that are part of a specific trace.                                                                                                                 |
-| `run_type`                    | The [type of run](/langsmith/run-data-format#run-types) to get, for example, `llm`, `chain`, `tool`, `retriever`.                                             |
-| `dataset_name` / `dataset_id` | Fetch runs that are associated with an example row in the specified dataset. This is useful for comparing prompts or models over a given dataset.             |
-| `reference_example_id`        | Fetch runs that are associated with a specific example row. This is useful for comparing prompts or models on a given input.                                  |
-| `parent_run_id`               | Fetch runs that are children of a given run. This is useful for fetching runs grouped together using the context manager or for fetching an agent trajectory. |
-| `error`                       | Fetch runs that errored or did not error.                                                                                                                     |
-| `run_ids`                     | Fetch runs with a given list of run ids. Note: **This will ignore all other filtering arguments.**                                                            |
-| `filter`                      | Fetch runs that match a given structured filter statement. For more details, refer to the [filter query language](#filter-query-language) section.            |
-| `trace_filter`                | Filter applied to the root run of the trace. Use with `filter` to narrow by attributes of the root run.                                                       |
-| `tree_filter`                 | Filter applied to any run in the trace tree (root, sibling, or child). Use with `filter` to narrow by attributes of any run within a trace.                   |
-| `is_root`                     | Only return root runs.                                                                                                                                        |
-| `select`                      | Select the fields to return in the response. By default, all fields are returned. See [run data format](/langsmith/run-data-format) for available fields.     |
-| `query` (*experimental*)      | Natural language query, which translates your query into a filter statement.                                                                                  |
+| Keys | Description |
+| - | - |
+| `project_id` / `project_name` | The project(s) to fetch runs from, as a single project or a list of projects. |
+| `trace_id` | Fetch runs that are part of a specific trace. |
+| `run_type` | The [type of run](/langsmith/run-data-format#run-types) to get, for example, `llm`, `chain`, `tool`, `retriever`. |
+| `dataset_name` / `dataset_id` | Fetch runs that are associated with an example row in the specified dataset. This is useful for comparing prompts or models over a given dataset. |
+| `reference_example_id` | Fetch runs that are associated with a specific example row. This is useful for comparing prompts or models on a given input. |
+| `parent_run_id` | Fetch runs that are children of a given run. This is useful for fetching runs grouped together using the context manager or for fetching an agent trajectory. |
+| `error` | Fetch runs that errored or did not error. |
+| `run_ids` | Fetch runs with a given list of run ids. Note: **This will ignore all other filtering arguments.** |
+| `filter` | Fetch runs that match a given structured filter statement. For more details, refer to the [filter query language](#filter-query-language) section. |
+| `trace_filter` | Filter applied to the root run of the trace. Use with `filter` to narrow by attributes of the root run. |
+| `tree_filter` | Filter applied to any run in the trace tree (root, sibling, or child). Use with `filter` to narrow by attributes of any run within a trace. |
+| `is_root` | Only return root runs. |
+| `select` | Select the fields to return in the response. By default, all fields are returned. See [run data format](/langsmith/run-data-format) for available fields. |
+| `query` (*experimental*) | Natural language query, which translates your query into a filter statement. |
 
 <Note>
   **Performance tip**: Passing the `select` parameter and excluding `inputs` and `outputs` from the list can significantly improve query performance and reduce response sizes, especially for large runs.
@@ -37,17 +37,17 @@ LangSmith supports filtering capabilities with a filter query language to permit
 
 The filtering grammar is based on comparator functions applied to fields of the run object:
 
-| Comparator | Description                                           | Example                                         |
-| ---------- | ----------------------------------------------------- | ----------------------------------------------- |
-| `eq`       | Equal to                                              | `eq(run_type, "llm")`                           |
-| `neq`      | Not equal to                                          | `neq(status, "error")`                          |
-| `gt`       | Greater than                                          | `gt(latency, "5s")`                             |
-| `gte`      | Greater than or equal to                              | `gte(latency, 1.5)`                             |
-| `lt`       | Less than                                             | `lt(start_time, "2024-01-01T00:00:00Z")`        |
-| `lte`      | Less than or equal to                                 | `lte(feedback_score, 0.5)`                      |
-| `has`      | Check if the run contains a tag or metadata key-value | `has(tags, "production")`                       |
-| `search`   | Search for a substring across all string fields       | `search("invoice")`                             |
-| `in`       | Check if a field value is in a list                   | `in(metadata_key, ["session_id", "thread_id"])` |
+| Comparator | Description | Example |
+| - | - | - |
+| `eq` | Equal to | `eq(run_type, "llm")` |
+| `neq` | Not equal to | `neq(status, "error")` |
+| `gt` | Greater than | `gt(latency, "5s")` |
+| `gte` | Greater than or equal to | `gte(latency, 1.5)` |
+| `lt` | Less than | `lt(start_time, "2024-01-01T00:00:00Z")` |
+| `lte` | Less than or equal to | `lte(feedback_score, 0.5)` |
+| `has` | Check if the run contains a tag or metadata key-value | `has(tags, "production")` |
+| `search` | Search for a substring across all string fields | `search("invoice")` |
+| `in` | Check if a field value is in a list | `in(metadata_key, ["session_id", "thread_id"])` |
 
 ### Logical operators
 
@@ -60,20 +60,20 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 
 ### Filterable fields
 
-| Field            | Type                      | Notes                                                                                   |
-| ---------------- | ------------------------- | --------------------------------------------------------------------------------------- |
-| `id`             | string (UUID)             | Run ID                                                                                  |
-| `name`           | string                    | Name of the run                                                                         |
-| `run_type`       | string                    | One of `llm`, `chain`, `tool`, `retriever`, `embedding`, `prompt`, `parser`             |
-| `status`         | string                    | `"success"`, `"error"`, or `"pending"`. Use this to filter errored vs. successful runs. |
-| `start_time`     | ISO 8601 string           | e.g. `"2024-01-15T00:00:00Z"`                                                           |
-| `end_time`       | ISO 8601 string           |                                                                                         |
-| `latency`        | duration string or number | Seconds, e.g. `"5s"`, `"1.5s"`, or `1.5`. Only the `s` suffix is supported.             |
-| `tags`           | list of strings           | Use `has(tags, "value")`                                                                |
-| `metadata_key`   | string                    | Key in the run's metadata dict                                                          |
-| `metadata_value` | string                    | Value in the run's metadata dict                                                        |
-| `feedback_key`   | string                    | Name of a feedback score                                                                |
-| `feedback_score` | number                    | Numeric value of a feedback score                                                       |
+| Field | Type | Notes |
+| - | - | - |
+| `id` | string (UUID) | Run ID |
+| `name` | string | Name of the run |
+| `run_type` | string | One of `llm`, `chain`, `tool`, `retriever`, `embedding`, `prompt`, `parser` |
+| `status` | string | `"success"`, `"error"`, or `"pending"`. Use this to filter errored vs. successful runs. |
+| `start_time` | ISO 8601 string | e.g. `"2024-01-15T00:00:00Z"` |
+| `end_time` | ISO 8601 string | |
+| `latency` | duration string or number | Seconds, e.g. `"5s"`, `"1.5s"`, or `1.5`. Only the `s` suffix is supported. |
+| `tags` | list of strings | Use `has(tags, "value")` |
+| `metadata_key` | string | Key in the run's metadata dict |
+| `metadata_value` | string | Value in the run's metadata dict |
+| `feedback_key` | string | Name of a feedback score |
+| `feedback_score` | number | Numeric value of a feedback score |
 
 ### Value formatting
 

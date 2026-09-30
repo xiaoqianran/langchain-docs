@@ -92,13 +92,13 @@ You can use two kinds of evaluators:
 
 ### RAG evaluation summary
 
-| Evaluator           | Detail                                            | Needs reference output | LLM-as-judge?                                                                         | Pairwise relevant |
-| ------------------- | ------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------- | ----------------- |
-| Document relevance  | Are documents relevant to the question?           | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-document-relevance)   | No                |
-| Answer faithfulness | Is the answer grounded in the documents?          | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-hallucination) | No                |
-| Answer helpfulness  | Does the answer help address the question?        | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-helpfulness)   | No                |
-| Answer correctness  | Is the answer consistent with a reference answer? | Yes                    | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-vs-reference)  | No                |
-| Pairwise comparison | How do multiple answer versions compare?          | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-rag)  | Yes               |
+| Evaluator | Detail | Needs reference output | LLM-as-judge? | Pairwise relevant |
+| - | - | - | - | - |
+| Document relevance | Are documents relevant to the question? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-document-relevance) | No |
+| Answer faithfulness | Is the answer grounded in the documents? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-hallucination) | No |
+| Answer helpfulness | Does the answer help address the question? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-helpfulness) | No |
+| Answer correctness | Is the answer consistent with a reference answer? | Yes | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/rag-answer-vs-reference) | No |
+| Pairwise comparison | How do multiple answer versions compare? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-rag) | Yes |
 
 ## Summarization
 
@@ -110,11 +110,11 @@ Summarization is one specific type of free-form writing. The evaluation aim is t
 
 `Online` or `Offline` evaluation are feasible because of the `Reference-free` prompt used. `Pairwise` evaluation is also a powerful way to perform comparisons between different summarization chains (e.g., different summarization prompts or LLMs):
 
-| Use Case         | Detail                                                                     | Needs reference output | LLM-as-judge?                                                                                | Pairwise relevant |
-| ---------------- | -------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------- | ----------------- |
-| Factual accuracy | Is the summary accurate relative to the source documents?                  | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-accurancy-evaluator)     | Yes               |
-| Faithfulness     | Is the summary grounded in the source documents (e.g., no hallucinations)? | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-hallucination-evaluator) | Yes               |
-| Helpfulness      | Is summary helpful relative to user need?                                  | No                     | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-helpfulness-evaluator)   | Yes               |
+| Use Case | Detail | Needs reference output | LLM-as-judge? | Pairwise relevant |
+| - | - | - | - | - |
+| Factual accuracy | Is the summary accurate relative to the source documents? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-accurancy-evaluator) | Yes |
+| Faithfulness | Is the summary grounded in the source documents (e.g., no hallucinations)? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-hallucination-evaluator) | Yes |
+| Helpfulness | Is summary helpful relative to user need? | No | Yes - [prompt](https://smith.langchain.com/hub/langchain-ai/summary-helpfulness-evaluator) | Yes |
 
 ## Classification and tagging
 
@@ -126,11 +126,11 @@ If ground truth reference labels are provided, then it's common to simply define
 
 `Online` or `Offline` evaluation is feasible when using `LLM-as-judge` with the `Reference-free` prompt used. In particular, this is well suited to `Online` evaluation when a user wants to tag / classify application input (e.g., for toxicity, etc).
 
-| Use Case  | Detail              | Needs reference output | LLM-as-judge? | Pairwise relevant |
-| --------- | ------------------- | ---------------------- | ------------- | ----------------- |
-| Accuracy  | Standard definition | Yes                    | No            | No                |
-| Precision | Standard definition | Yes                    | No            | No                |
-| Recall    | Standard definition | Yes                    | No            | No                |
+| Use Case | Detail | Needs reference output | LLM-as-judge? | Pairwise relevant |
+| - | - | - | - | - |
+| Accuracy | Standard definition | Yes | No | No |
+| Precision | Standard definition | Yes | No | No |
+| Recall | Standard definition | Yes | No | No |
 
 ***
 

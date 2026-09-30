@@ -461,15 +461,15 @@ Contributions must adhere to the following quality requirements:
 
     **Guiding principle**: Docstrings describe "what"; docs on this site explain the "how" and "why."
 
-    | Content type                | Location   | Purpose                           |
-    | --------------------------- | ---------- | --------------------------------- |
-    | Parameter types             | Signature  | Auto-generates into API reference |
-    | Parameter descriptions      | Docstrings | Auto-generates into API reference |
-    | Return types and exceptions | Docstrings | API reference                     |
-    | Minimal usage example       | Docstrings | Show basic instantiation pattern  |
-    | Feature tutorials           | This site  | In-depth walkthroughs             |
-    | End-to-end examples         | This site  | Real-world usage patterns         |
-    | Conceptual explanations     | This site  | Understanding and context         |
+    | Content type | Location | Purpose |
+    | - | - | - |
+    | Parameter types | Signature | Auto-generates into API reference |
+    | Parameter descriptions | Docstrings | Auto-generates into API reference |
+    | Return types and exceptions | Docstrings | API reference |
+    | Minimal usage example | Docstrings | Show basic instantiation pattern |
+    | Feature tutorials | This site | In-depth walkthroughs |
+    | End-to-end examples | This site | Real-world usage patterns |
+    | Conceptual explanations | This site | Understanding and context |
 
     **Docstrings should contain:**
 

@@ -89,10 +89,10 @@ We recommend leveraging AWS's managed services to provide a scalable, secure, an
 
 LangSmith supports multiple compute options depending on your requirements:
 
-| Compute option                             | Description                               | Suitable for                         |
-| ------------------------------------------ | ----------------------------------------- | ------------------------------------ |
-| **Elastic Kubernetes Service (preferred)** | Advanced scaling and multi-tenant support | Large enterprises                    |
-| **EC2-based**                              | Full control, BYO-infra                   | Regulated or air-gapped environments |
+| Compute option | Description | Suitable for |
+| - | - | - |
+| **Elastic Kubernetes Service (preferred)** | Advanced scaling and multi-tenant support | Large enterprises |
+| **EC2-based** | Full control, BYO-infra | Regulated or air-gapped environments |
 
 ## AWS Well-Architected best practices
 

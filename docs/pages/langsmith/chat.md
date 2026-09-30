@@ -69,10 +69,10 @@ You can also use any custom model you've configured in [Playground Settings](/la
 
 ### Keyboard shortcuts
 
-| Action                  | Mac           | Windows/Linux  |
-| ----------------------- | ------------- | -------------- |
-| Toggle Chat open/closed | `Cmd+I`       | `Ctrl+I`       |
-| Clear current thread    | `Cmd+Shift+O` | `Ctrl+Shift+O` |
+| Action | Mac | Windows/Linux |
+| - | - | - |
+| Toggle Chat open/closed | `Cmd+I` | `Ctrl+I` |
+| Clear current thread | `Cmd+Shift+O` | `Ctrl+Shift+O` |
 
 ## Observability
 

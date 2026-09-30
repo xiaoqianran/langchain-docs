@@ -25,7 +25,7 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 当 LSI 可用时，引擎可用：
 
 |云|地区 |状态 |
-| -----| ------ | --------- |
+| - | - | - |
 |亚马逊AWS |美国 |可用 |
 | GCP |美国 |可用 |
 
@@ -201,12 +201,12 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
   </Step>
 
   <Step title="Allow egress to LangSmith Intelligence">
-    允许从集群到云的LangSmith Intelligence 网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。|云| `engine.intelligenceBaseUrl` |
-    | -----| ----------------------------------------------------------- |
-    |亚马逊AWS | `https://beacon.aws.langchain.com/intelligence` |
-    | GCP | `https://beacon.langchain.com/intelligence` |
+    允许从集群到云的LangSmith Intelligence 网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。
 
-    在 GCP 上，这使用已用于许可证验证和计费遥测的同一主机LangSmith，因此引擎添加了一条路径而不是新的出口目的地。
+    |云| `engine.intelligenceBaseUrl` |
+    | - | - |
+    |亚马逊AWS | `https://beacon.aws.langchain.com/intelligence` |
+    | GCP | `https://beacon.langchain.com/intelligence` |在 GCP 上，这使用已用于许可证验证和计费遥测的同一主机LangSmith，因此引擎添加了一条路径而不是新的出口目的地。
 
     <Note>
       引擎可用于 **AWS US** 和 **GCP US** 中的自托管部署。在计划推出之前，检查[Availability by cloud and region](#availability-by-cloud-and-region)并确认[our sales team](https://www.langchain.com/contact-sales)的覆盖范围。

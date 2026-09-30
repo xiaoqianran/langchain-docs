@@ -18,18 +18,14 @@ Decision models answer structured questions about text and return typed answers,
 
 LangSmith supports two decision models for evaluators, on both tracing projects and datasets. Both are configured and behave the same way. They differ only in provider and setup. To call a decision model through another provider or on your own server, use a [TypeSafe-compatible endpoint](/langsmith/typesafe-compatible-model).
 
-| Model                                                      | Provider              | Setup                                                                                     |
-| ---------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------- |
-| [SemIf](/langsmith/llm-gateway-decision-models#semif)      | **LangSmith Gateway** | No provider key required. SemIf runs through the [LLM Gateway](/langsmith/llm-gateway).   |
-| [Jev](/langsmith/llm-gateway-decision-models#typesafe-jev) | **TypeSafe**          | Requires a TypeSafe API key stored as a workspace secret. Defaults to `TYPESAFE_API_KEY`. |
+| Model | Provider | Setup |
+| - | - | - |
+| [SemIf](/langsmith/llm-gateway-decision-models#semif) | **LangSmith Gateway** | No provider key required. SemIf runs through the [LLM Gateway](/langsmith/llm-gateway). |
+| [Jev](/langsmith/llm-gateway-decision-models#typesafe-jev) | **TypeSafe** | Requires a TypeSafe API key stored as a workspace secret. Defaults to `TYPESAFE_API_KEY`. |
 
 <Note>
   SemIf is enabled for US organizations on Free, Developer, and Plus plans.
 </Note>
-
-<Warning>
-  TypeSafe does not offer zero data retention. The provider may retain prompts and outputs sent to Jev for evaluation.
-</Warning>
 
 <Note>
   You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model directly from code, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
@@ -45,20 +41,20 @@ Each question you add to a decision model evaluator has one of three types. For 
 
 Each model enforces its own limits on questions. A SemIf evaluator accepts up to 32 questions.
 
-| Limit                       | Jev      | SemIf   |
-| --------------------------- | -------- | ------- |
+| Limit | Jev | SemIf |
+| - | - | - |
 | Options per choice question | 2 to 255 | 2 to 16 |
-| Levels per score question   | 2 to 10  | 2 to 10 |
+| Levels per score question | 2 to 10 | 2 to 10 |
 
 ### Map answers to feedback keys
 
 Each question's name becomes a feedback key on the evaluated run or thread. LangSmith converts each typed answer to feedback as follows:
 
-| Question type | Feedback field | Value                                                                                                                    |
-| ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Noul          | `score`        | A number from 0 to 1                                                                                                     |
-| Choice        | `value`        | The name of the selected option                                                                                          |
-| Score         | `score`        | A number from 0 to the index of the highest level. For example, a question with four levels returns a score from 0 to 3. |
+| Question type | Feedback field | Value |
+| - | - | - |
+| Noul | `score` | A number from 0 to 1 |
+| Choice | `value` | The name of the selected option |
+| Score | `score` | A number from 0 to the index of the highest level. For example, a question with four levels returns a score from 0 to 3. |
 
 LangSmith also stores the model's full answer on each feedback entry, under `typesafe` in the feedback source metadata. For choice and score questions, the answer includes `probabilities` and `confidence`. Because each answer is standard feedback, you can filter, chart, and alert on it, and trigger [automations](/langsmith/rules) from it, as you would with any other evaluator's feedback.
 

@@ -23,11 +23,11 @@ Rate limit policies and [spend cap policies](/langsmith/llm-gateway-spend-polici
 
 Rate limit policies are evaluated for every incoming request. You can set a policy as a default (applying a blanket rate limit to all users, [workspaces](/langsmith/administration-overview#workspaces), or [API keys](/langsmith/create-account-api-key) or as a granular policy (an individual limit or a limit on a group of subjects).
 
-| Subject       | What it limits                                                                                 | Example                                                                    |
-| ------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| **User**      | Requests or tokens from a single user or group of users (resolved from the API key's identity) | "No individual developer can send more than 100 requests per minute"       |
-| **Workspace** | Requests or tokens within a single workspace or group of workspaces                            | "The R\&D workspace cannot exceed 1,000,000 tokens per hour"               |
-| **API key**   | Requests or tokens from a single API key or group of API keys                                  | "The customer support agent keys share a limit of 200 requests per minute" |
+| Subject | What it limits | Example |
+| - | - | - |
+| **User** | Requests or tokens from a single user or group of users (resolved from the API key's identity) | "No individual developer can send more than 100 requests per minute" |
+| **Workspace** | Requests or tokens within a single workspace or group of workspaces | "The R\&D workspace cannot exceed 1,000,000 tokens per hour" |
+| **API key** | Requests or tokens from a single API key or group of API keys | "The customer support agent keys share a limit of 200 requests per minute" |
 
 ### Defaults vs. granular policies
 
@@ -46,11 +46,11 @@ A single rate limit policy can enforce **multiple limits at once**. For example,
 
 Each limit has three fields:
 
-| Field      | Allowed values                                                    |
-| ---------- | ----------------------------------------------------------------- |
+| Field | Allowed values |
+| - | - |
 | **Metric** | `requests` or `tokens` (total tokens as reported by the provider) |
-| **Window** | `minute` or `hour`                                                |
-| **Value**  | A positive integer (the cap)                                      |
+| **Window** | `minute` or `hour` |
+| **Value** | A positive integer (the cap) |
 
 Rules:
 

@@ -42,20 +42,20 @@ const finalState = await stream.output;
 
 ## What you can stream
 
-| Projection            | Use                                                                        |
-| --------------------- | -------------------------------------------------------------------------- |
-| `for event in stream` | Raw protocol events with full envelope and access to every channel.        |
-| `stream.messages`     | Model message streams, one per LLM call.                                   |
-| `message.text`        | Text deltas and final text for a message.                                  |
-| `message.reasoning`   | Reasoning deltas for models that expose reasoning content.                 |
-| `message.toolCalls`   | Tool-call argument chunks and finalized tool calls.                        |
-| `message.output`      | Final message object after the model call completes.                       |
-| `message.usage`       | Token usage metadata when the provider returns it.                         |
-| `stream.values`       | Agent state snapshots.                                                     |
-| `stream.output`       | Final agent state.                                                         |
-| `stream.subgraphs`    | Nested graph runs (sub-agents and plain subgraphs).                        |
-| `stream.extensions`   | Custom transformer projections.                                            |
-| `stream.toolCalls`    | Tool execution lifecycle, inputs, output deltas, final output, and errors. |
+| Projection | Use |
+| - | - |
+| `for event in stream` | Raw protocol events with full envelope and access to every channel. |
+| `stream.messages` | Model message streams, one per LLM call. |
+| `message.text` | Text deltas and final text for a message. |
+| `message.reasoning` | Reasoning deltas for models that expose reasoning content. |
+| `message.toolCalls` | Tool-call argument chunks and finalized tool calls. |
+| `message.output` | Final message object after the model call completes. |
+| `message.usage` | Token usage metadata when the provider returns it. |
+| `stream.values` | Agent state snapshots. |
+| `stream.output` | Final agent state. |
+| `stream.subgraphs` | Nested graph runs (sub-agents and plain subgraphs). |
+| `stream.extensions` | Custom transformer projections. |
+| `stream.toolCalls` | Tool execution lifecycle, inputs, output deltas, final output, and errors. |
 
 `stream.messages` yields message streams. Each message stream exposes `.text`, `.reasoning`, `.toolCalls`, `.output`, and `.usage`. Async projections can be iterated for live deltas or awaited for final values.
 

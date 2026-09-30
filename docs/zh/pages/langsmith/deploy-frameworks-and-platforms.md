@@ -65,26 +65,28 @@ HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protoco
 这三个端点足以使用 `HttpAgentServerAdapter` 运行单线程流式聊天：
 
 |方法|路径|目的|
-| -------------- | --------------------------------- | ----------------------------------------------------------- |
+| - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受命令（`run.start`，...）并开始运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
 | `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
 
 #### 线程侧边栏（所有示例）
 
-每个示例还实现了线程历史记录侧边栏的端点：|方法|路径|目的|
-| -------- | -------------------------------- | -------------------------------------------------- |
+每个示例还实现了线程历史记录侧边栏的端点：
+
+|方法|路径|目的|
+| - | - | - |
 | `GET` | `/api/threads` |列出检查点已知的线程 |
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录 |
 
-### 会话和运行管理
-
-服务器端逻辑跟踪活动运行、将命令桥接到代理并通过 SSE 扇出实时事件。注册表或会话存储允许客户端重新连接到正在进行的流。在无服务器或多实例主机上，该层必须与检查点共享或位于同一位置。
+### 会话和运行管理服务器端逻辑跟踪活动运行、将命令桥接到代理并通过 SSE 扇出实时事件。注册表或会话存储允许客户端重新连接到正在进行的流。在无服务器或多实例主机上，该层必须与检查点共享或位于同一位置。
 
 ### 聊天前端
 
-浏览器 UI 通过 `HttpAgentServerAdapter`、[⟦T27⟧](https://www.npmjs.com/package/@langchain/react)、[⟦T28⟧](https://www.npmjs.com/package/@langchain/vue)、[⟦T29⟧](https://www.npmjs.com/package/@langchain/svelte) 或 [⟦T30⟧](https://www.npmjs.com/package/@langchain/angular) 连接到协议。客户端引导线程状态、提交消息、使用 SSE 流并呈现令牌、工具调用、推理和子代理活动。这些绑定不提供自己的组件。像 `useStream` 这样的钩子返回简单的反应状态（消息、工具调用、加载标志、线程元数据），您可以将其连接到您喜欢的任何可视层。有关适配器模式和权衡，请参阅 [frontend integrations overview](/oss/python/langchain/frontend/integrations/overview)。
+浏览器 UI 通过 `HttpAgentServerAdapter`、[⟦T27⟧](https://www.npmjs.com/package/@langchain/react)、[⟦T28⟧](https://www.npmjs.com/package/@langchain/vue)、[⟦T29⟧](https://www.npmjs.com/package/@langchain/svelte) 或 [⟦T30⟧](https://www.npmjs.com/package/@langchain/angular) 连接到协议。客户端引导线程状态、提交消息、使用 SSE 流并呈现令牌、工具调用、推理和子代理活动。
+
+这些绑定不提供自己的组件。像 `useStream` 这样的钩子返回简单的反应状态（消息、工具调用、加载标志、线程元数据），您可以将其连接到您喜欢的任何可视层。有关适配器模式和权衡，请参阅 [frontend integrations overview](/oss/python/langchain/frontend/integrations/overview)。
 
 ## 另请参阅
 

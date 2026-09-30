@@ -130,15 +130,15 @@ To pull from a private registry, create a registry once with its credentials, th
 
 In the LangSmith UI, the **Container Image URI** field suggests repositories and tags from Docker Hub or the selected private registry. Search behavior depends on the registry provider and authentication method:
 
-| Source                                                              | Repository discovery                                                                                       | Tag discovery                                               |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| Docker Hub, without a saved registry                                | Searches Docker Official Images for a bare image name or a specified Docker Hub namespace                  | Searches tags after you select or enter a repository        |
-| Docker Registry                                                     | Searches the registry catalog when the registry supports it                                                | Searches tags after you select or enter a repository        |
-| Harbor                                                              | Searches the accessible catalog                                                                            | Searches tags after you select or enter a repository        |
-| GitHub Container Registry (GHCR)                                    | Searches within a specified GitHub owner                                                                   | Searches tags after you select or enter a repository        |
-| Google Artifact Registry (GAR)                                      | Searches repositories within a project and location, then searches packages within the selected repository | Searches tags after you select or enter an image repository |
-| Amazon Elastic Container Registry (ECR), with username and password | Requires you to enter a complete repository                                                                | Searches tags after you enter a repository                  |
-| Amazon ECR, with an AWS IAM role                                    | Searches repositories across the configured AWS account                                                    | Searches tags after you select or enter a repository        |
+| Source | Repository discovery | Tag discovery |
+| - | - | - |
+| Docker Hub, without a saved registry | Searches Docker Official Images for a bare image name or a specified Docker Hub namespace | Searches tags after you select or enter a repository |
+| Docker Registry | Searches the registry catalog when the registry supports it | Searches tags after you select or enter a repository |
+| Harbor | Searches the accessible catalog | Searches tags after you select or enter a repository |
+| GitHub Container Registry (GHCR) | Searches within a specified GitHub owner | Searches tags after you select or enter a repository |
+| Google Artifact Registry (GAR) | Searches repositories within a project and location, then searches packages within the selected repository | Searches tags after you select or enter an image repository |
+| Amazon Elastic Container Registry (ECR), with username and password | Requires you to enter a complete repository | Searches tags after you enter a repository |
+| Amazon ECR, with an AWS IAM role | Searches repositories across the configured AWS account | Searches tags after you select or enter a repository |
 
 Repository and tag discovery is advisory and bounded. You can always enter a known repository, tag, or digest manually, including when a provider does not support search or returns no matches. Use a digest-qualified image URI when you need an immutable snapshot source.
 
@@ -486,9 +486,9 @@ Some sandboxes run on an overlay filesystem runtime that cannot carry a memory i
 
 Two fields on create control the other half:
 
-| Field                     | What it does                                                                                                                                                                                                                                                                                      |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `restore_memory`          | Omit it to resume from memory when the snapshot has it and cold-boot when it does not. `true` requires memory and fails the request if the snapshot has none. `false` always cold-boots.                                                                                                          |
+| Field | What it does |
+| - | - |
+| `restore_memory` | Omit it to resume from memory when the snapshot has it and cold-boot when it does not. `true` requires memory and fails the request if the snapshot has none. `false` always cold-boots. |
 | `preserve_memory_on_stop` | `true` suspends RAM on a voluntary stop (idle timeout or explicit stop) so the sandbox resumes where it left off when it next wakes, rather than cold-booting. Defaults to `false`, which keeps only the filesystem. Restarts triggered by infrastructure maintenance preserve memory either way. |
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

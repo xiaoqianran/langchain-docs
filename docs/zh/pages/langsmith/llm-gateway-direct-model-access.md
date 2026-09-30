@@ -4,8 +4,10 @@
 
 # 直接模型访问
 
+直接通过提供商特定的 LLM 网关路径访问提供商 API，无需使用网关标准化层。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 直接模型访问通过特定于提供商的网关路径公开每个提供商 API。网关仍然处理身份验证、提供商机密、策略和跟踪，但它不会将请求和响应转换为另一个提供商的 API 格式。
@@ -17,21 +19,21 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 将提供商路径附加到您的区域网关基本 URL：
 
 |供应商|网关路径|秘密名字|
-| ---| ---| ---|
+| - | - | - |
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
 | Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`、`AZURE_FOUNDRY_RESOURCE_NAME` |
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
-| Gemini企业代理平台| `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
-| OpenAI | `/openai` | `OPENAI_API_KEY` |
+| Gemini企业代理平台 | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
+| OpenAI | `/openai` | `OPENAI_API_KEY` |[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
 
-[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
+## 配置提供商 SDK
 
-## 配置提供商 SDK将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
+将每个提供商 SDK 的基本 URL 设置为其直接网关路径，并使用您的 LangSmith API 密钥作为提供商 API 密钥：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 export BASE_URL="https://gateway.smith.langchain.com"
 
@@ -48,40 +50,38 @@ export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
 网关从工作区的提供者密钥中解析实际的提供者密钥，因此提供者密钥不需要存储在本地。
 
 <CodeGroup>
+  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
 
-```python OpenAI SDK
-import os
+  from openai import OpenAI
 
-from openai import OpenAI
+  client = OpenAI(
+      base_url=os.environ["OPENAI_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  response = client.chat.completions.create(
+      model="gpt-4o-mini",
+      messages=[{"role": "user", "content": "ping"}],
+  )
+  print(response.choices[0].message.content)
+  ```
 
-client = OpenAI(
-    base_url=os.environ["OPENAI_BASE_URL"],
-    api_key=os.environ["LANGSMITH_API_KEY"],
-)
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": "ping"}],
-)
-print(response.choices[0].message.content)
-```
+  ```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
 
-```python Anthropic SDK
-import os
+  import anthropic
 
-import anthropic
-
-client = anthropic.Anthropic(
-    base_url=os.environ["ANTHROPIC_BASE_URL"],
-    api_key=os.environ["LANGSMITH_API_KEY"],
-)
-message = client.messages.create(
-    model="claude-opus-5",
-    max_tokens=1024,
-    messages=[{"role": "user", "content": "ping"}],
-)
-print(message.content[0].text)
-```
-
+  client = anthropic.Anthropic(
+      base_url=os.environ["ANTHROPIC_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  message = client.messages.create(
+      model="claude-opus-5",
+      max_tokens=1024,
+      messages=[{"role": "user", "content": "ping"}],
+  )
+  print(message.content[0].text)
+  ```
 </CodeGroup>
 
 直接路径使用提供程序的本机模型名称，不带提供程序前缀。
@@ -90,7 +90,7 @@ print(message.content[0].text)
 
 [LangChain](/oss/python/langchain/overview)聊天模型和[Deep Agents](/oss/python/deepagents/overview)，包括[Deep Agents Code](/oss/deepagents/code/overview)，通过`LANGSMITH_GATEWAY`环境变量到达这些提供者路径：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="lsv2_..."
 export LANGSMITH_GATEWAY="true"
 ```
@@ -101,19 +101,18 @@ export LANGSMITH_GATEWAY="true"
 
 如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供商路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 进行直接 Anthropic 访问。
 
-## 另请参阅
+## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
+* [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
 
-- [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
-- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
-- [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
+***
 
----
-
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

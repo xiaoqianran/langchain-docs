@@ -21,10 +21,10 @@ This section covers how data retention works and how it's priced in LangSmith.
 
 LangSmith has two tiers of traces based on Data Retention with the following characteristics:
 
-|                      | Base                                                            | Extended                                                        |
-| -------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Price**            | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
-| **Retention Period** | 14 days                                                         | 180 days                                                        |
+| | Base | Extended |
+| - | - | - |
+| **Price** | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
+| **Retention Period** | 14 days | 180 days |
 
 <Warning>
   Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
@@ -116,13 +116,13 @@ After the max events are received we will respond with a 429 until 60 seconds fr
 
 This 429 is thrown by our application load balancer and is a mechanism in place for all LangSmith users independent of plan tier to ensure continuity of service for all users.
 
-| Method            | Endpoints     | Limit | Window   |
-| ----------------- | ------------- | ----- | -------- |
-| `DELETE`          | `/sessions*`  | 30    | 1 minute |
-| `POST` OR `PATCH` | `/runs*`      | 5000  | 1 minute |
-| `GET`             | `/runs/:id`   | 30    | 1 minute |
-| `POST`            | `/feedbacks*` | 5000  | 1 minute |
-| `*`               | `*`           | 2000  | 1 minute |
+| Method | Endpoints | Limit | Window |
+| - | - | - | - |
+| `DELETE` | `/sessions*` | 30 | 1 minute |
+| `POST` OR `PATCH` | `/runs*` | 5000 | 1 minute |
+| `GET` | `/runs/:id` | 30 | 1 minute |
+| `POST` | `/feedbacks*` | 5000 | 1 minute |
+| `*` | `*` | 2000 | 1 minute |
 
 <Note>
   The LangSmith SDK takes steps to minimize the likelihood of reaching these limits on run-related endpoints by batching up to 100 runs from a single session ID into a single API call.
@@ -136,12 +136,12 @@ An event in this context is the creation or update of a run. If a run is created
 
 This is thrown by our application and varies by plan tier, with organizations on our Startup/Plus and Enterprise plan tiers having higher hourly limits than our Free and Developer Plan Tiers which are designed for personal use.
 
-| Plan                             | Limit          | Window |
-| -------------------------------- | -------------- | ------ |
-| Developer (no payment on file)   | 50,000 events  | 1 hour |
+| Plan | Limit | Window |
+| - | - | - |
+| Developer (no payment on file) | 50,000 events | 1 hour |
 | Developer (with payment on file) | 250,000 events | 1 hour |
-| Startup/Plus                     | 500,000 events | 1 hour |
-| Enterprise                       | Custom         | Custom |
+| Startup/Plus | 500,000 events | 1 hour |
+| Enterprise | Custom | Custom |
 
 ### Plan-level hourly trace data ingest limit
 
@@ -151,12 +151,12 @@ Typically, inputs, outputs, and metadata are sent on both run creation and updat
 
 This is thrown by our application and varies by plan tier, with organizations on our Startup/Plus and Enterprise plan tiers having higher hourly limits than our Free and Developer Plan Tiers which are designed for personal use.
 
-| Plan                             | Limit  | Window |
-| -------------------------------- | ------ | ------ |
-| Developer (no payment on file)   | 500MB  | 1 hour |
-| Developer (with payment on file) | 2.5GB  | 1 hour |
-| Startup/Plus                     | 5.0GB  | 1 hour |
-| Enterprise                       | Custom | Custom |
+| Plan | Limit | Window |
+| - | - | - |
+| Developer (no payment on file) | 500MB | 1 hour |
+| Developer (with payment on file) | 2.5GB | 1 hour |
+| Startup/Plus | 5.0GB | 1 hour |
+| Enterprise | Custom | Custom |
 
 ### Plan-level monthly unique traces limit
 
@@ -164,8 +164,8 @@ This 429 is the result of reaching your maximum monthly traces ingested and is e
 
 This is thrown by our application and applies only to the Developer Plan Tier when there is no payment method on file.
 
-| Plan                           | Limit        | Window  |
-| ------------------------------ | ------------ | ------- |
+| Plan | Limit | Window |
+| - | - | - |
 | Developer (no payment on file) | 5,000 traces | 1 month |
 
 ### Self-configured monthly usage limits

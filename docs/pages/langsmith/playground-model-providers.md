@@ -192,11 +192,11 @@ Uses Anthropic configuration (see [Anthropic](#anthropic) section below).
 
 #### For Amazon Titan
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 1.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 1.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 #### AWS-specific settings
 
@@ -227,12 +227,12 @@ For the current list of available models, refer to the [Anthropic documentation]
 
 ### Configuration parameters
 
-| Parameter             | Range     | Default  | Description                                        |
-| --------------------- | --------- | -------- | -------------------------------------------------- |
-| **Temperature**       | 0.0 - 1.0 | Optional | Randomness control (uncheck to use model default)  |
-| **Max Output Tokens** | 1+        | 1024     | Maximum response length                            |
-| **Top P**             | 0.0 - 1.0 | Optional | Nucleus sampling (uncheck for model default)       |
-| **Top K**             | 1+        | Optional | Limits to top K tokens (uncheck for model default) |
+| Parameter | Range | Default | Description |
+| - | - | - | - |
+| **Temperature** | 0.0 - 1.0 | Optional | Randomness control (uncheck to use model default) |
+| **Max Output Tokens** | 1+ | 1024 | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Optional | Nucleus sampling (uncheck for model default) |
+| **Top K** | 1+ | Optional | Limits to top K tokens (uncheck for model default) |
 
 <Note>
   Temperature, Top P, and Top K are optional. When unchecked, Claude uses its internal defaults.
@@ -242,10 +242,10 @@ For the current list of available models, refer to the [Anthropic documentation]
 
 Available on supported Claude models. Enable the model to show reasoning before responding, similar to OpenAI's o-series.
 
-| Parameter                    | Range  | Description                             |
-| ---------------------------- | ------ | --------------------------------------- |
-| **Enable Extended Thinking** | Toggle | Show/hide thinking process              |
-| **Budget Tokens**            | 1+     | Max tokens for thinking (default: 1024) |
+| Parameter | Range | Description |
+| - | - | - |
+| **Enable Extended Thinking** | Toggle | Show/hide thinking process |
+| **Budget Tokens** | 1+ | Max tokens for thinking (default: 1024) |
 
 When enabled, responses include:
 
@@ -321,14 +321,14 @@ Azure OpenAI supports the same parameters as OpenAI:
 
 #### Standard parameters
 
-| Parameter             | Range      | Description                                                        |
-| --------------------- | ---------- | ------------------------------------------------------------------ |
-| **Temperature**       | 0.0 - 2.0  | Controls randomness. Lower = more focused, higher = more creative. |
-| **Max Output Tokens** | 1+         | Maximum length of the response                                     |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling threshold. Alternative to temperature.            |
-| **Presence Penalty**  | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative)        |
-| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative)              |
-| **Seed**              | Integer    | For reproducible outputs                                           |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Controls randomness. Lower = more focused, higher = more creative. |
+| **Max Output Tokens** | 1+ | Maximum length of the response |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling threshold. Alternative to temperature. |
+| **Presence Penalty** | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative) |
+| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative) |
+| **Seed** | Integer | For reproducible outputs |
 
 #### Advanced parameters
 
@@ -366,13 +366,13 @@ For the current list of available models, refer to [DeepSeek's documentation](ht
 
 ### Configuration parameters
 
-| Parameter             | Range      | Description             |
-| --------------------- | ---------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0  | Response randomness     |
-| **Max Tokens**        | 1+         | Maximum response length |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling        |
-| **Presence Penalty**  | -2.0 - 2.0 |                         |
-| **Frequency Penalty** | -2.0 - 2.0 |                         |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Presence Penalty** | -2.0 - 2.0 | |
+| **Frequency Penalty** | -2.0 - 2.0 | |
 
 ## Fireworks
 
@@ -392,11 +392,11 @@ For the current list of available models, refer to [Fireworks' model documentati
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 2.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 ### Tool calling
 
@@ -415,12 +415,12 @@ For the current list of available models, refer to [Google's Gemini documentatio
 
 ### Configuration parameters
 
-| Parameter             | Range     | Description             |
-| --------------------- | --------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness     |
-| **Max Output Tokens** | 1+        | Maximum response length |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling        |
-| **Top K**             | 1+        | Top-k sampling          |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Output Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Top K** | 1+ | Top-k sampling |
 
 ### Tool calling
 
@@ -479,12 +479,12 @@ For the current list of available models, refer to the [Gemini Enterprise Agent 
 
 ### Configuration parameters
 
-| Parameter             | Range     | Description             |
-| --------------------- | --------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness     |
-| **Max Output Tokens** | 1+        | Maximum response length |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling        |
-| **Top K**             | 1+        | Top-k sampling          |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Output Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Top K** | 1+ | Top-k sampling |
 
 #### Advanced options
 
@@ -508,10 +508,10 @@ For the current list of available models, refer to [Groq's model documentation](
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 2.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
 
 ### Tool calling
 
@@ -530,11 +530,11 @@ For the current list of available models, refer to [Mistral's documentation](htt
 
 ### Configuration parameters
 
-| Parameter       | Range     | Description             |
-| --------------- | --------- | ----------------------- |
-| **Temperature** | 0.0 - 1.0 | Response randomness     |
-| **Max Tokens**  | 1+        | Maximum response length |
-| **Top P**       | 0.0 - 1.0 | Nucleus sampling        |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 1.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
 
 ### Tool calling
 
@@ -559,14 +559,14 @@ For the current list of available models, refer to the [OpenAI documentation](ht
 
 Standard:
 
-| Parameter             | Range      | Description                                                        |
-| --------------------- | ---------- | ------------------------------------------------------------------ |
-| **Temperature**       | 0.0 - 2.0  | Controls randomness. Lower = more focused, higher = more creative. |
-| **Max Output Tokens** | 1+         | Maximum length of the response                                     |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling threshold. Alternative to temperature.            |
-| **Presence Penalty**  | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative)        |
-| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative)              |
-| **Seed**              | Integer    | For reproducible outputs                                           |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Controls randomness. Lower = more focused, higher = more creative. |
+| **Max Output Tokens** | 1+ | Maximum length of the response |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling threshold. Alternative to temperature. |
+| **Presence Penalty** | -2.0 - 2.0 | Penalize new topics (positive) or encourage them (negative) |
+| **Frequency Penalty** | -2.0 - 2.0 | Penalize repetition (positive) or allow it (negative) |
+| **Seed** | Integer | For reproducible outputs |
 
 Advanced:
 
@@ -574,14 +574,14 @@ Advanced:
 
 Controls reasoning depth before responding. Higher effort = better quality for complex tasks, longer latency.
 
-| Value     | Description                                  |
-| --------- | -------------------------------------------- |
-| `none`    | Disables reasoning (standard chat behavior)  |
-| `minimal` | Minimal reasoning                            |
-| `low`     | Light reasoning                              |
-| `medium`  | Moderate reasoning (default)                 |
-| `high`    | Deep reasoning                               |
-| `xhigh`   | Extra deep reasoning (if supported by model) |
+| Value | Description |
+| - | - |
+| `none` | Disables reasoning (standard chat behavior) |
+| `minimal` | Minimal reasoning |
+| `low` | Light reasoning |
+| `medium` | Moderate reasoning (default) |
+| `high` | Deep reasoning |
+| `xhigh` | Extra deep reasoning (if supported by model) |
 
 <Note>
   When reasoning\_effort is active (not `none`), temperature, top\_p, and penalties are automatically disabled.
@@ -591,12 +591,12 @@ Controls reasoning depth before responding. Higher effort = better quality for c
 
 Controls request priority and processing allocation.
 
-| Value      | Description                                          |
-| ---------- | ---------------------------------------------------- |
-| `auto`     | System decides based on load (default)               |
-| `default`  | Standard processing queue                            |
-| `flex`     | Lower cost, variable latency (if supported by model) |
-| `priority` | High-priority queue, lower latency, higher cost      |
+| Value | Description |
+| - | - |
+| `auto` | System decides based on load (default) |
+| `default` | Standard processing queue |
+| `flex` | Lower cost, variable latency (if supported by model) |
+| `priority` | High-priority queue, lower latency, higher cost |
 
 **Other parameters:**
 
@@ -634,13 +634,13 @@ Works with any framework or service that implements the OpenAI-compatible API fo
 
 All OpenAI-compatible parameters:
 
-| Parameter             | Range      | Description             |
-| --------------------- | ---------- | ----------------------- |
-| **Temperature**       | 0.0 - 2.0  | Response randomness     |
-| **Max Tokens**        | 1+         | Maximum response length |
-| **Top P**             | 0.0 - 1.0  | Nucleus sampling        |
-| **Frequency Penalty** | -2.0 - 2.0 | Reduce repetition       |
-| **Presence Penalty**  | -2.0 - 2.0 | Encourage new topics    |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Frequency Penalty** | -2.0 - 2.0 | Reduce repetition |
+| **Presence Penalty** | -2.0 - 2.0 | Encourage new topics |
 
 **Advanced:**
 
@@ -690,13 +690,13 @@ For the current list of available models, refer to [xAI's documentation](https:/
 
 Standard OpenAI-compatible parameters:
 
-| Parameter             | Range     | Description                |
-| --------------------- | --------- | -------------------------- |
-| **Temperature**       | 0.0 - 2.0 | Response randomness        |
-| **Max Tokens**        | 1+        | Maximum response length    |
-| **Top P**             | 0.0 - 1.0 | Nucleus sampling           |
-| **Presence Penalty**  | 0 - 2.0   | Hidden on reasoning models |
-| **Frequency Penalty** | 0 - 2.0   | Hidden on reasoning models |
+| Parameter | Range | Description |
+| - | - | - |
+| **Temperature** | 0.0 - 2.0 | Response randomness |
+| **Max Tokens** | 1+ | Maximum response length |
+| **Top P** | 0.0 - 1.0 | Nucleus sampling |
+| **Presence Penalty** | 0 - 2.0 | Hidden on reasoning models |
+| **Frequency Penalty** | 0 - 2.0 | Hidden on reasoning models |
 
 ### Tool calling
 

@@ -9,11 +9,11 @@ Integrate with caches using LangChain JavaScript.
 Below are some integrations that allow you to cache results of individual LLM calls using different caches with different strategies.
 
 <div>
-  | Integration                                                                                       | Downloads                                                                                                              |
-  | :------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------- |
+  | Integration | Downloads |
+  | :- | :- |
   | [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span> |
-  | [`BetterDB Agent Cache`](https://www.betterdb.com/ai)                                             | <span><a href="https://www.npmjs.com/package/@betterdb/agent-cache">  <img alt="Downloads per month" /></a></span>     |
-  | [`BetterDB Semantic Cache`](https://www.betterdb.com/ai)                                          | <span><a href="https://www.npmjs.com/package/@betterdb/semantic-cache">  <img alt="Downloads per month" /></a></span>  |
+  | [`BetterDB Agent Cache`](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/agent-cache">  <img alt="Downloads per month" /></a></span> |
+  | [`BetterDB Semantic Cache`](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/semantic-cache">  <img alt="Downloads per month" /></a></span> |
 </div>
 
 ***

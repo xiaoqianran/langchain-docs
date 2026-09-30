@@ -12,18 +12,18 @@ Run the migration after your data plane is [active and reachable](/langsmith/byo
 
 The tool migrates the following resources between a source instance and a destination data plane:
 
-| Resource             | Details                                                                                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Users and roles      | Custom roles, organization members, and workspace memberships.                                                                                          |
-| Datasets             | Datasets with their examples and file attachments.                                                                                                      |
-| Experiments          | Experiments, experiment runs, and feedback, migrated with their datasets.                                                                               |
-| Annotation queues    | Queue configuration and settings. Migrated queues start empty.                                                                                          |
-| Automation rules     | Project automation rules, mapped onto destination projects.                                                                                             |
-| Prompts              | Prompts with the full commit history.                                                                                                                   |
-| Charts               | Monitoring charts and dashboards.                                                                                                                       |
-| Custom model pricing | Workspace-custom model price entries.                                                                                                                   |
-| Fleet                | Agents, shared skills, MCP servers, integrations, auth providers, schedules, triggers, webhooks, usage limits, sandbox policies, and workspace secrets. |
-| Context Hub          | Context Hub agents and skills, including files, repository metadata, commit history, and commit tags.                                                   |
+| Resource | Details |
+| - | - |
+| Users and roles | Custom roles, organization members, and workspace memberships. |
+| Datasets | Datasets with their examples and file attachments. |
+| Experiments | Experiments, experiment runs, and feedback, migrated with their datasets. |
+| Annotation queues | Queue configuration and settings. Migrated queues start empty. |
+| Automation rules | Project automation rules, mapped onto destination projects. |
+| Prompts | Prompts with the full commit history. |
+| Charts | Monitoring charts and dashboards. |
+| Custom model pricing | Workspace-custom model price entries. |
+| Fleet | Agents, shared skills, MCP servers, integrations, auth providers, schedules, triggers, webhooks, usage limits, sandbox policies, and workspace secrets. |
+| Context Hub | Context Hub agents and skills, including files, repository metadata, commit history, and commit tags. |
 
 Each resource type has its own command, flags, and caveats. For the command reference, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
 
@@ -108,7 +108,7 @@ Each resource type has its own command, flags, and caveats. For the command refe
 * **Re-authenticate OAuth connections**: Per-user agent connections, such as Gmail, Slack, and GitHub, are tied to individual user tokens. Each user must reconnect.
 * **Re-share agents**: Per-user access lists keep only user IDs that exist on the destination. The tool reports which users it removed.
 * **Check agent models**: The tool substitutes a model when the destination catalog does not offer the source model. It logs every substitution.
-* **Configure infrastructure-level settings**: OAuth providers, the GitHub App, and the Slack app are set in the deployment configuration, not through the API. Contact the LangChain team to configure them in your data plane.
+* **Configure infrastructure-level settings**: OAuth providers, the GitHub App, and the Slack app can be recreated in the `Settings > Oauth Providers` and `Fleet > Integrations` UI.
 
 Fleet migrators never overwrite resources that already exist on the destination, so re-running `fleet` is safe.
 

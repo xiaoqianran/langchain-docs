@@ -63,10 +63,10 @@ Before you begin, make sure you have:
 
     3. Add the following examples to the dataset:
 
-       | Inputs                                                   | Reference Outputs                                 |
-       | -------------------------------------------------------- | ------------------------------------------------- |
+       | Inputs | Reference Outputs |
+       | - | - |
        | question: Which country is Mount Kilimanjaro located in? | output: Mount Kilimanjaro is located in Tanzania. |
-       | question: What is Earth's lowest point?                  | output: Earth's lowest point is The Dead Sea.     |
+       | question: What is Earth's lowest point? | output: Earth's lowest point is The Dead Sea. |
 
     4. Click **Save** and enter a name to save your newly created dataset.
 

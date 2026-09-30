@@ -142,16 +142,16 @@ Agents created afterward with this model exclude both `execute` and `grep` and r
 
 ## Merge semantics
 
-| Field                                        | Merge behavior                                                                              |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `base_system_prompt`, `system_prompt_suffix` | New value wins when set; otherwise inherits                                                 |
-| `tool_description_overrides`                 | Mappings merge per key; new value wins on a shared key                                      |
-| `excluded_tools`, `excluded_middleware`      | Set union                                                                                   |
-| `extra_middleware`                           | Merged by concrete type: new instance replaces existing at its position, novel types append |
-| `general_purpose_subagent`                   | Merged field-wise (unset fields inherit)                                                    |
-| `init_kwargs` (provider)                     | Dicts merge key-wise; new value wins on a shared key                                        |
-| `pre_init` (provider)                        | Callables chain: existing runs first, then the new one                                      |
-| `init_kwargs_factory` (provider)             | Factories chain with their outputs merged on every model construction                       |
+| Field | Merge behavior |
+| - | - |
+| `base_system_prompt`, `system_prompt_suffix` | New value wins when set; otherwise inherits |
+| `tool_description_overrides` | Mappings merge per key; new value wins on a shared key |
+| `excluded_tools`, `excluded_middleware` | Set union |
+| `extra_middleware` | Merged by concrete type: new instance replaces existing at its position, novel types append |
+| `general_purpose_subagent` | Merged field-wise (unset fields inherit) |
+| `init_kwargs` (provider) | Dicts merge key-wise; new value wins on a shared key |
+| `pre_init` (provider) | Callables chain: existing runs first, then the new one |
+| `init_kwargs_factory` (provider) | Factories chain with their outputs merged on every model construction |
 
 ## Provider profiles
 

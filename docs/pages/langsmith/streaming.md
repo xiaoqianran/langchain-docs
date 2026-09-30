@@ -213,14 +213,14 @@ Basic usage example:
 
 ### Supported stream modes
 
-| Mode                             | Description                                                                                                                                                                         | LangGraph Library Method                                                                               |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [`values`](#stream-graph-state)  | Stream the full graph state after each [super-step](/langsmith/graph-rebuild#define-graphs).                                                                                        | `.stream()` / `.astream()` with [`stream_mode="values"`](/oss/python/langgraph/streaming#graph-state)  |
+| Mode | Description | LangGraph Library Method |
+| - | - | - |
+| [`values`](#stream-graph-state) | Stream the full graph state after each [super-step](/langsmith/graph-rebuild#define-graphs). | `.stream()` / `.astream()` with [`stream_mode="values"`](/oss/python/langgraph/streaming#graph-state) |
 | [`updates`](#stream-graph-state) | Streams the updates to the state after each step of the graph. If multiple updates are made in the same step (e.g., multiple nodes are run), those updates are streamed separately. | `.stream()` / `.astream()` with [`stream_mode="updates"`](/oss/python/langgraph/streaming#graph-state) |
-| [`messages-tuple`](#messages)    | Streams LLM tokens and metadata for the graph node where the LLM is invoked (useful for chat apps).                                                                                 | `.stream()` / `.astream()` with [`stream_mode="messages"`](/oss/python/langgraph/streaming#messages)   |
-| [`debug`](#debug)                | Streams as much information as possible throughout the execution of the graph.                                                                                                      | `.stream()` / `.astream()` with [`stream_mode="debug"`](/oss/python/langgraph/streaming#graph-state)   |
-| [`custom`](#stream-custom-data)  | Streams custom data from inside your graph                                                                                                                                          | `.stream()` / `.astream()` with [`stream_mode="custom"`](/oss/python/langgraph/streaming#custom-data)  |
-| [`events`](#stream-events)       | Stream all events (including the state of the graph); mainly useful when migrating large LCEL apps.                                                                                 | `.astream_events()`                                                                                    |
+| [`messages-tuple`](#messages) | Streams LLM tokens and metadata for the graph node where the LLM is invoked (useful for chat apps). | `.stream()` / `.astream()` with [`stream_mode="messages"`](/oss/python/langgraph/streaming#messages) |
+| [`debug`](#debug) | Streams as much information as possible throughout the execution of the graph. | `.stream()` / `.astream()` with [`stream_mode="debug"`](/oss/python/langgraph/streaming#graph-state) |
+| [`custom`](#stream-custom-data) | Streams custom data from inside your graph | `.stream()` / `.astream()` with [`stream_mode="custom"`](/oss/python/langgraph/streaming#custom-data) |
+| [`events`](#stream-events) | Stream all events (including the state of the graph); mainly useful when migrating large LCEL apps. | `.astream_events()` |
 
 ### Stream multiple modes
 
@@ -956,14 +956,14 @@ Thread streaming opens a long-lived connection for a thread and streams output f
 
 ### Compare thread and run streaming
 
-|                         | Thread streaming                  | Run streaming                           |
-| ----------------------- | --------------------------------- | --------------------------------------- |
-| **SDK method**          | `client.threads.join_stream()`    | `client.runs.stream()`                  |
-| **REST endpoint**       | `GET /threads/{thread_id}/stream` | `POST /threads/{thread_id}/runs/stream` |
-| **Scope**               | All runs on a thread              | A single run                            |
-| **Connection lifetime** | Open indefinitely                 | Closes when the run completes           |
-| **Creates a run**       | No                                | Yes                                     |
-| **Use case**            | Monitor ongoing thread activity   | Execute and stream a single interaction |
+| | Thread streaming | Run streaming |
+| - | - | - |
+| **SDK method** | `client.threads.join_stream()` | `client.runs.stream()` |
+| **REST endpoint** | `GET /threads/{thread_id}/stream` | `POST /threads/{thread_id}/runs/stream` |
+| **Scope** | All runs on a thread | A single run |
+| **Connection lifetime** | Open indefinitely | Closes when the run completes |
+| **Creates a run** | No | Yes |
+| **Use case** | Monitor ongoing thread activity | Execute and stream a single interaction |
 
 ### Basic usage
 
@@ -1008,11 +1008,11 @@ Thread streaming opens a long-lived connection for a thread and streams output f
 
 Thread streaming supports three stream modes that control which events are returned. Pass one or more modes via the `stream_mode` parameter.
 
-| Mode                  | Description                                                                                                       |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `run_modes` (default) | Streams all run events, equivalent to `client.runs.stream()` output.                                              |
-| `lifecycle`           | Streams only run start and end events. Use this for lightweight monitoring of run status without the full output. |
-| `state_update`        | Streams only state update events, providing the thread state after each run completes.                            |
+| Mode | Description |
+| - | - |
+| `run_modes` (default) | Streams all run events, equivalent to `client.runs.stream()` output. |
+| `lifecycle` | Streams only run start and end events. Use this for lightweight monitoring of run status without the full output. |
+| `state_update` | Streams only state update events, providing the thread state after each run completes. |
 
 <Tabs>
   <Tab title="Python">

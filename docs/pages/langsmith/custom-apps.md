@@ -100,12 +100,12 @@ Building locally uses the [LangSmith CLI](/langsmith/langsmith-cli), which scaff
 
 Pass one of these to `langsmith apps init --template`:
 
-| Template                 | What it scaffolds                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------------- |
-| `annotation-queue`       | A queue-review UI: run and thread items, a type-specific viewer, and a feedback rubric. |
-| `annotation-queue-grid`  | The same review workflow as an editable spreadsheet.                                    |
-| `experiment-comparison`  | A side-by-side comparison of evaluation experiments against a baseline.                 |
-| `coding-agent-dashboard` | Charts over coding-agent runs: usage, cost, errors, and activity over time.             |
+| Template | What it scaffolds |
+| - | - |
+| `annotation-queue` | A queue-review UI: run and thread items, a type-specific viewer, and a feedback rubric. |
+| `annotation-queue-grid` | The same review workflow as an editable spreadsheet. |
+| `experiment-comparison` | A side-by-side comparison of evaluation experiments against a baseline. |
+| `coding-agent-dashboard` | Charts over coding-agent runs: usage, cost, errors, and activity over time. |
 
 ## Edit an app
 
@@ -149,14 +149,14 @@ When the CLI resolves an app by name, a workspace app wins over an organization 
 
 ## CLI reference
 
-| Command                                                 | What it does                                                                                                                      |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `langsmith apps init --name NAME [--template TEMPLATE]` | Scaffold a starter app in a new directory named after the app, and install its dependencies.                                      |
-| `langsmith apps dev`                                    | Run the current directory's app locally in a real sandbox.                                                                        |
-| `langsmith apps push`                                   | Upload the current directory as a custom app, creating it on the first push. Pass `--no-build` to upload the current files as-is. |
-| `langsmith apps pull APP_ID_OR_NAME`                    | Download an app's source into a new directory.                                                                                    |
-| `langsmith apps list`                                   | List custom apps.                                                                                                                 |
-| `langsmith apps delete APP_ID_OR_NAME`                  | Delete an app by ID or name. Pass `--yes` to skip the confirmation.                                                               |
+| Command | What it does |
+| - | - |
+| `langsmith apps init --name NAME [--template TEMPLATE]` | Scaffold a starter app in a new directory named after the app, and install its dependencies. |
+| `langsmith apps dev` | Run the current directory's app locally in a real sandbox. |
+| `langsmith apps push` | Upload the current directory as a custom app, creating it on the first push. Pass `--no-build` to upload the current files as-is. |
+| `langsmith apps pull APP_ID_OR_NAME` | Download an app's source into a new directory. |
+| `langsmith apps list` | List custom apps. |
+| `langsmith apps delete APP_ID_OR_NAME` | Delete an app by ID or name. Pass `--yes` to skip the confirmation. |
 
 `dev` and `push` act on the current directory, so change into the app's directory first.
 

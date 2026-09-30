@@ -213,10 +213,10 @@ The attribute name is preserved end-to-end: the IdP attribute name, the SAML Att
 
 In **Settings** > **Members and roles** > **SSO Configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
 
-| Column             | Description                                                                                                                                                                               |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Attribute name** | The SAML attribute name as emitted by your IdP. Must match the JWT claim name LangSmith expects downstream (for SSO Groups Sync, this matches the **Groups claim field** value).          |
-| **Array**          | Check this if the attribute is multi-valued (a list of strings). Leave unchecked for scalar (single-value) attributes. Example: check this for `groups`; leave unchecked for `full_name`. |
+| Column | Description |
+| - | - |
+| **Attribute name** | The SAML attribute name as emitted by your IdP. Must match the JWT claim name LangSmith expects downstream (for SSO Groups Sync, this matches the **Groups claim field** value). |
+| **Array** | Check this if the attribute is multi-valued (a list of strings). Leave unchecked for scalar (single-value) attributes. Example: check this for `groups`; leave unchecked for `full_name`. |
 
 Click **Add row** for each additional attribute, then **Save**. An empty mapping table means no non-standard attributes flow through to the JWT.
 
@@ -799,15 +799,15 @@ While specific instructions depending on the identity provider may vary, these m
 
 #### User attributes
 
-| **LangSmith App Attribute**    | **Identity Provider Attribute**                       | **Matching Precedence** |
-| ------------------------------ | ----------------------------------------------------- | ----------------------- |
-| `userName`<sup>1</sup>         | email address                                         |                         |
-| `active`                       | `!deactivated`                                        |                         |
-| `emails[type eq "work"].value` | email address<sup>2</sup>                             |                         |
-| `name.formatted`               | `displayName` OR `givenName + familyName`<sup>3</sup> |                         |
-| `givenName`                    | `givenName`                                           |                         |
-| `familyName`                   | `familyName`                                          |                         |
-| `externalId`                   | `sub`<sup>4</sup>                                     | 1                       |
+| **LangSmith App Attribute** | **Identity Provider Attribute** | **Matching Precedence** |
+| - | - | - |
+| `userName`<sup>1</sup> | email address | |
+| `active` | `!deactivated` | |
+| `emails[type eq "work"].value` | email address<sup>2</sup> | |
+| `name.formatted` | `displayName` OR `givenName + familyName`<sup>3</sup> | |
+| `givenName` | `givenName` | |
+| `familyName` | `familyName` | |
+| `externalId` | `sub`<sup>4</sup> | 1 |
 
 1. `userName` is not required by LangSmith
 2. Email address is required
@@ -817,10 +817,10 @@ While specific instructions depending on the identity provider may vary, these m
 #### Group attributes
 
 | **LangSmith App Attribute** | **Identity Provider Attribute** | **Matching Precedence** |
-| --------------------------- | ------------------------------- | ----------------------- |
-| `displayName`               | `displayName`<sup>1</sup>       | 1                       |
-| `externalId`                | `objectId`                      |                         |
-| `members`                   | `members`                       |                         |
+| - | - | - |
+| `displayName` | `displayName`<sup>1</sup> | 1 |
+| `externalId` | `objectId` | |
+| `members` | `members` | |
 
 1. Groups must follow the naming convention described in the [Group Naming Convention](#group-naming-convention) section.
    If your company has a group naming policy, you should instead map from the `description` identity provider attribute and
@@ -965,13 +965,13 @@ Configure the following attribute mappings under `Mappings`:
 
 Set **Target Object Actions** to `Create` and `Update` (start with `Delete` disabled for safety):
 
-|   **LangSmith App Attribute**  |            **Microsoft Entra ID Attribute**           | **Matching Precedence** |
-| :----------------------------: | :---------------------------------------------------: | :---------------------: |
-|           `userName`           |                  `userPrincipalName`                  |                         |
-|            `active`            |                 `Not([IsSoftDeleted])`                |                         |
-| `emails[type eq "work"].value` |                        `mail`1                        |                         |
-|        `name.formatted`        | `displayName` OR `Join(" ", [givenName], [surname])`2 |                         |
-|          `externalId`          |                      `objectId`3                      |            1            |
+| **LangSmith App Attribute** | **Microsoft Entra ID Attribute** | **Matching Precedence** |
+| :-: | :-: | :-: |
+| `userName` | `userPrincipalName` | |
+| `active` | `Not([IsSoftDeleted])` | |
+| `emails[type eq "work"].value` | `mail`1 | |
+| `name.formatted` | `displayName` OR `Join(" ", [givenName], [surname])`2 | |
+| `externalId` | `objectId`3 | 1 |
 
 1. User's email address must be present in Entra ID.
 2. Use the `Join` expression if your `displayName` does not match the format of `Firstname Lastname`.
@@ -982,10 +982,10 @@ Set **Target Object Actions** to `Create` and `Update` (start with `Delete` disa
 Set **Target Object Actions** to `Create` and `Update` only (start with `Delete` disabled for safety):
 
 | **LangSmith App Attribute** | **Microsoft Entra ID Attribute** | **Matching Precedence** |
-| :-------------------------: | :------------------------------: | :---------------------: |
-|        `displayName`        |          `displayName`1          |            1            |
-|         `externalId`        |            `objectId`            |                         |
-|          `members`          |             `members`            |                         |
+| :-: | :-: | :-: |
+| `displayName` | `displayName`1 | 1 |
+| `externalId` | `objectId` | |
+| `members` | `members` | |
 
 1. Groups must follow the naming convention described in the [Group Naming Convention](#group-naming-convention) section.
    If your company has a group naming policy, you should instead map from the `description` Microsoft Entra ID Attribute and
@@ -1125,13 +1125,13 @@ SSO Groups Sync is a simpler alternative to [SCIM](#set-up-scim-for-your-organiz
 
 SSO Groups Sync and SCIM can technically coexist (each only manages identities tagged with its own provisioning method), but we recommend choosing **one mechanism per organization**, not both, to avoid confusing precedence behavior.
 
-|                           | SSO Groups Sync                                                             | SCIM                                                       |
-| ------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Sync trigger**          | At each SSO login                                                           | Proactive push from IdP (\~1 hour cadence)                 |
-| **IdP admin involvement** | Minimal, just include groups in the SSO token                               | Required, configure SCIM provisioning app                  |
-| **Deprovisioning**        | Lags until next login                                                       | Near real-time via IdP push                                |
-| **Naming convention**     | Reuses [SCIM convention](#group-naming-convention)                          | [SCIM convention](#group-naming-convention)                |
-| **Custom separator**      | Reuses org-level [`scim_group_name_separator`](#configure-custom-separator) | [`scim_group_name_separator`](#configure-custom-separator) |
+| | SSO Groups Sync | SCIM |
+| - | - | - |
+| **Sync trigger** | At each SSO login | Proactive push from IdP (\~1 hour cadence) |
+| **IdP admin involvement** | Minimal, just include groups in the SSO token | Required, configure SCIM provisioning app |
+| **Deprovisioning** | Lags until next login | Near real-time via IdP push |
+| **Naming convention** | Reuses [SCIM convention](#group-naming-convention) | [SCIM convention](#group-naming-convention) |
+| **Custom separator** | Reuses org-level [`scim_group_name_separator`](#configure-custom-separator) | [`scim_group_name_separator`](#configure-custom-separator) |
 
 Choose **SSO Groups Sync** when IdP admin involvement is minimal and reactive (login-time) sync is acceptable. Choose **SCIM** when proactive provisioning/deprovisioning and near real-time group membership updates are required.
 
@@ -1140,12 +1140,12 @@ Choose **SSO Groups Sync** when IdP admin involvement is minimal and reactive (l
 1. In your IdP: add the user's group memberships to the SSO token claim (default claim name: `groups`). Group names must follow the [SCIM naming convention](#group-naming-convention).
 2. In LangSmith: go to **Settings** > **Members and roles** > **SSO Configuration** > **SSO Groups Sync** and configure the following:
 
-   | Setting                                   | Description                                                                       |
-   | ----------------------------------------- | --------------------------------------------------------------------------------- |
-   | **Enable SSO Groups Sync**                | Automatically assign workspace roles based on group memberships in the SSO token. |
-   | **Groups claim field** (default `groups`) | The claim name in the SSO token that contains group memberships.                  |
-   | **Sync workspace/role assignments**       | Update workspace memberships and roles from group names on each SSO login.        |
-   | **Require matching group to sign in**     | Block login if the SSO token contains no groups matching the naming convention.   |
+   | Setting | Description |
+   | - | - |
+   | **Enable SSO Groups Sync** | Automatically assign workspace roles based on group memberships in the SSO token. |
+   | **Groups claim field** (default `groups`) | The claim name in the SSO token that contains group memberships. |
+   | **Sync workspace/role assignments** | Update workspace memberships and roles from group names on each SSO login. |
+   | **Require matching group to sign in** | Block login if the SSO token contains no groups matching the naming convention. |
 
 You can also configure these settings via the API by sending a `PATCH` to the SSO settings endpoint:
 
@@ -1218,13 +1218,13 @@ To make a user's group memberships visible to LangSmith at login, you need to do
 
 Group names follow the [SCIM naming convention](#group-naming-convention). The `<workspace_role>` segment accepts both built-in roles and [custom workspace roles](/langsmith/rbac#custom-roles) by name.
 
-| Intent                                               | Example group name                           |
-| ---------------------------------------------------- | -------------------------------------------- |
-| Org admin (grants workspace admin in all workspaces) | `LS:Organization Admins`                     |
-| Workspace admin in `Production`                      | `LS:Organization User:Production:Admin`      |
-| Workspace editor in `Engineering`                    | `LS:Organization User:Engineering:Editor`    |
-| Workspace viewer in `Marketing`                      | `LS:Organization User:Marketing:Viewer`      |
-| Custom role `Annotators` in `Production`             | `LS:Organization User:Production:Annotators` |
+| Intent | Example group name |
+| - | - |
+| Org admin (grants workspace admin in all workspaces) | `LS:Organization Admins` |
+| Workspace admin in `Production` | `LS:Organization User:Production:Admin` |
+| Workspace editor in `Engineering` | `LS:Organization User:Engineering:Editor` |
+| Workspace viewer in `Marketing` | `LS:Organization User:Marketing:Viewer` |
+| Custom role `Annotators` in `Production` | `LS:Organization User:Production:Annotators` |
 
 #### Behavior
 

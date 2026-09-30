@@ -21,17 +21,17 @@ This will help you getting started with `ChatVertexAI` [chat models](/oss/javasc
 
 ### Integration details
 
-| Class                                                                                                     | Package                                                                                  | Serializable | PY support |                                                  Downloads                                                 |                                                 Version                                                 |
-| :-------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :----------: | :--------: | :--------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: |
-| [`ChatVertexAI`](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI) | [`@langchain/google-vertexai`](https://www.npmjs.com/package/@langchain/google-vertexai) |       ✅      |      ✅     | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-vertexai?style=flat-square\&label=%20&) |
+| Class | Package | Serializable | PY support | Downloads | Version |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [`ChatVertexAI`](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI) | [`@langchain/google-vertexai`](https://www.npmjs.com/package/@langchain/google-vertexai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-vertexai?style=flat-square\&label=%20&) |
 
 ### Model features
 
 See the links in the table headers below for guides on how to use specific features.
 
 | [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) | Audio input | Video input | [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :-----------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------: |
-|                        ✅                        |                                 ✅                                |                               ✅                              |      ✅      |      ✅      |                               ✅                               |                              ✅                              |                                ✅                               |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 Note that while logprobs are supported, Gemini has fairly restricted usage of them.
 
@@ -208,13 +208,13 @@ The Boston Celtics won the 2024 NBA Finals, defeating the Dallas Mavericks 4-1 i
 
 First, set up your data store (this is a schema of an example data store):
 
-|  ID  |    Date    |   Team 1  | Score |  Team 2  |
-| :--: | :--------: | :-------: | :---: | :------: |
-| 3001 | 2023-09-07 | Argentina | 1 - 0 |  Ecuador |
+| ID | Date | Team 1 | Score | Team 2 |
+| :-: | :-: | :-: | :-: | :-: |
+| 3001 | 2023-09-07 | Argentina | 1 - 0 | Ecuador |
 | 3002 | 2023-09-12 | Venezuela | 1 - 0 | Paraguay |
-| 3003 | 2023-09-12 |   Chile   | 0 - 0 | Colombia |
-| 3004 | 2023-09-12 |    Peru   | 0 - 1 |  Brazil  |
-| 3005 | 2024-10-15 | Argentina | 6 - 0 |  Bolivia |
+| 3003 | 2023-09-12 | Chile | 0 - 0 | Colombia |
+| 3004 | 2023-09-12 | Peru | 0 - 1 | Brazil |
+| 3005 | 2024-10-15 | Argentina | 6 - 0 | Bolivia |
 
 Then, use this data store in the example provided below:
 

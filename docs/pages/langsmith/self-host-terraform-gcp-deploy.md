@@ -52,12 +52,12 @@ graph TB
 
 ### Required tools
 
-| Tool                        | Version | Purpose                                                   |
-| --------------------------- | ------- | --------------------------------------------------------- |
-| Google Cloud SDK (`gcloud`) | 450     | Authenticate, query GCP resources, manage GKE credentials |
-| Terraform                   | 1.5     | Run the infrastructure modules                            |
-| `kubectl`                   | 1.28    | Inspect the GKE cluster                                   |
-| Helm                        | 3.12    | Install and manage the LangSmith chart                    |
+| Tool | Version | Purpose |
+| - | - | - |
+| Google Cloud SDK (`gcloud`) | 450 | Authenticate, query GCP resources, manage GKE credentials |
+| Terraform | 1.5 | Run the infrastructure modules |
+| `kubectl` | 1.28 | Inspect the GKE cluster |
+| Helm | 3.12 | Install and manage the LangSmith chart |
 
 Install on macOS:
 
@@ -97,15 +97,15 @@ gcloud services enable \
 
 The principal running Terraform needs the following roles on the target project. Trim to least-privilege after the initial deployment is stable.
 
-| Role                                    | Purpose                                                               |
-| --------------------------------------- | --------------------------------------------------------------------- |
-| `roles/container.admin`                 | Create and manage GKE clusters                                        |
-| `roles/compute.networkAdmin`            | Create VPC, subnets, firewall rules                                   |
-| `roles/iam.serviceAccountAdmin`         | Create service accounts for Workload Identity                         |
-| `roles/cloudsql.admin`                  | Create and manage Cloud SQL instances                                 |
-| `roles/redis.admin`                     | Create and manage Memorystore Redis                                   |
-| `roles/storage.admin`                   | Create GCS buckets and lifecycle policies                             |
-| `roles/resourcemanager.projectIamAdmin` | Grant IAM bindings during provisioning                                |
+| Role | Purpose |
+| - | - |
+| `roles/container.admin` | Create and manage GKE clusters |
+| `roles/compute.networkAdmin` | Create VPC, subnets, firewall rules |
+| `roles/iam.serviceAccountAdmin` | Create service accounts for Workload Identity |
+| `roles/cloudsql.admin` | Create and manage Cloud SQL instances |
+| `roles/redis.admin` | Create and manage Memorystore Redis |
+| `roles/storage.admin` | Create GCS buckets and lifecycle policies |
+| `roles/resourcemanager.projectIamAdmin` | Grant IAM bindings during provisioning |
 | `roles/servicenetworking.networksAdmin` | Create private service connections (required for Cloud SQL and Redis) |
 
 ### Authenticate
@@ -165,16 +165,16 @@ The following sections cover each phase in detail.
 
 Terraform provisions the following GCP resources:
 
-| Resource                            | Purpose                                                |
-| ----------------------------------- | ------------------------------------------------------ |
-| VPC + subnet + Cloud NAT            | Private network for the cluster and managed services   |
-| Private service connection          | VPC peering for Cloud SQL and Memorystore private IPs  |
-| GKE cluster (Standard or Autopilot) | Kubernetes compute, Workload Identity enabled          |
-| Cloud SQL PostgreSQL                | LangSmith operational data, HA standby, private IP     |
-| Memorystore Redis                   | Queue and cache, STANDARD\_HA tier, private IP         |
-| GCS bucket                          | Trace payload blob storage, lifecycle rules            |
-| Workload Identity service account   | Per-pod GCP access without static keys                 |
-| cert-manager, KEDA, Envoy Gateway   | Bootstrap workloads installed alongside infrastructure |
+| Resource | Purpose |
+| - | - |
+| VPC + subnet + Cloud NAT | Private network for the cluster and managed services |
+| Private service connection | VPC peering for Cloud SQL and Memorystore private IPs |
+| GKE cluster (Standard or Autopilot) | Kubernetes compute, Workload Identity enabled |
+| Cloud SQL PostgreSQL | LangSmith operational data, HA standby, private IP |
+| Memorystore Redis | Queue and cache, STANDARD\_HA tier, private IP |
+| GCS bucket | Trace payload blob storage, lifecycle rules |
+| Workload Identity service account | Per-pod GCP access without static keys |
+| cert-manager, KEDA, Envoy Gateway | Bootstrap workloads installed alongside infrastructure |
 
 ### Clone and configure
 
@@ -300,11 +300,11 @@ cert-manager, KEDA, and the LangSmith namespace secrets should all be in place.
 
 Use one of the three supported deployment paths:
 
-| Path                                                                                | Command                                                    | When to use                                                                                                 |
-| ----------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy`                          | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys. |
-| [Terraform-managed Helm release](#terraform-managed-helm-release)                   | `make init-app && make apply-app`                          | Helm release managed in Terraform state alongside infrastructure. Best for GitOps and CI/CD pipelines.      |
-| [Manual Helm install](#manual-helm-install)                                         | `helm upgrade --install langsmith langchain/langsmith ...` | Direct `helm` usage without the wrapper scripts. Best for teams with existing Helm tooling.                 |
+| Path | Command | When to use |
+| - | - | - |
+| [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` | Interactive output, kubeconfig refresh, preflight checks. Best for first-time deploys and day-2 re-deploys. |
+| [Terraform-managed Helm release](#terraform-managed-helm-release) | `make init-app && make apply-app` | Helm release managed in Terraform state alongside infrastructure. Best for GitOps and CI/CD pipelines. |
+| [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` | Direct `helm` usage without the wrapper scripts. Best for teams with existing Helm tooling. |
 
 ### Script-driven Helm deploy (recommended)
 
@@ -412,13 +412,13 @@ Set `sizing_profile` in `terraform.tfvars`, then re-run `make init-values && mak
 sizing_profile = "production"   # default | minimum | dev | production | production-large
 ```
 
-| Profile            | When to use                                                          |
-| ------------------ | -------------------------------------------------------------------- |
-| `default`          | Chart defaults, no overlay applied                                   |
-| `minimum`          | Absolute floor, fits `e2-standard-4`. Cost parking or CI smoke tests |
-| `dev`              | Single replica, minimal resources                                    |
-| `production`       | Multi-replica with HPA. Recommended for real workloads               |
-| `production-large` | High memory, high CPU. 50+ users or 1000+ traces/sec                 |
+| Profile | When to use |
+| - | - |
+| `default` | Chart defaults, no overlay applied |
+| `minimum` | Absolute floor, fits `e2-standard-4`. Cost parking or CI smoke tests |
+| `dev` | Single replica, minimal resources |
+| `production` | Multi-replica with HPA. Recommended for real workloads |
+| `production-large` | High memory, high CPU. 50+ users or 1000+ traces/sec |
 
 ### Expected pods
 

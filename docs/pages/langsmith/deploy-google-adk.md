@@ -198,8 +198,8 @@ GOOGLE_API_KEY=your-google-api-key
 
 Wraps a configured `google.adk.runners.Runner` and returns a LangGraph `Pregel` graph that can be exported from your module and served by Agent Server.
 
-| Argument | Type                        | Description                                                                             |
-| -------- | --------------------------- | --------------------------------------------------------------------------------------- |
+| Argument | Type | Description |
+| - | - | - |
 | `runner` | `google.adk.runners.Runner` | A configured ADK Runner. Its `session_service` **must** be a `LangsmithSessionService`. |
 
 **Returns:** A `Pregel` graph whose name is `runner.app_name`.
@@ -224,17 +224,17 @@ You should not need to call its methods directly; `wrap()` drives them through A
 
 The default input schema for a wrapped agent.
 
-| Field         | Type                     | Description                                                                                                           |
-| ------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `messages`    | `list[AnyMessage]`       | (Required) Conversation messages; the wrapper sends `messages[-1].content` to the ADK runner as the new user message. |
-| `state_delta` | `dict[str, Any] \| None` | (Optional) Passed through to `runner.run_async(state_delta=...)` to mutate ADK session state for this turn.           |
+| Field | Type | Description |
+| - | - | - |
+| `messages` | `list[AnyMessage]` | (Required) Conversation messages; the wrapper sends `messages[-1].content` to the ADK runner as the new user message. |
+| `state_delta` | `dict[str, Any] \| None` | (Optional) Passed through to `runner.run_async(state_delta=...)` to mutate ADK session state for this turn. |
 
 ### `ADKOutput`
 
 The default output schema for a wrapped agent.
 
-| Field      | Type               | Description                                                                                   |
-| ---------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `messages` | `list[AnyMessage]` | The agent's response messages, appended to the thread via LangGraph's `add_messages` reducer. |
 
 Exposing `messages` as a typed field (rather than a plain `dict`) is what lets Studio detect the graph as chat-compatible and enable the chat-mode toggle.

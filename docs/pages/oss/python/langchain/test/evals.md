@@ -18,10 +18,10 @@ def evaluator(*, outputs: dict, reference_outputs: dict):
 
 The [`agentevals`](https://github.com/langchain-ai/agentevals) package provides prebuilt evaluators for agent trajectories. You can evaluate by performing a **trajectory match** (deterministic comparison) or by using an **LLM judge** (qualitative assessment):
 
-| Approach                                        | When to use                                                                     |
-| ----------------------------------------------- | ------------------------------------------------------------------------------- |
+| Approach | When to use |
+| - | - |
 | [Trajectory match](#trajectory-match-evaluator) | You know the expected tool calls and want fast, deterministic, cost-free checks |
-| [LLM-as-judge](#llm-as-judge-evaluator)         | You want to assess overall quality and reasoning without strict expectations    |
+| [LLM-as-judge](#llm-as-judge-evaluator) | You want to assess overall quality and reasoning without strict expectations |
 
 ## Install AgentEvals
 
@@ -41,12 +41,12 @@ Or, clone the [AgentEvals repository](https://github.com/langchain-ai/agentevals
 
 AgentEvals offers the `create_trajectory_match_evaluator` function to match your agent's trajectory against a reference. There are four modes:
 
-| Mode        | Description                                                                                    | Use case                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `strict`    | Exact match of message structure and tool calls in the same order (message content can differ) | Testing specific sequences (e.g., policy lookup before authorization) |
-| `unordered` | Same message structure and tool calls as reference, but tool calls can happen in any order     | Verifying information retrieval when order doesn't matter             |
-| `subset`    | Agent calls only tools from reference (no extras)                                              | Ensuring agent doesn't exceed expected scope                          |
-| `superset`  | Agent calls at least the reference tools (extras allowed)                                      | Verifying minimum required actions are taken                          |
+| Mode | Description | Use case |
+| - | - | - |
+| `strict` | Exact match of message structure and tool calls in the same order (message content can differ) | Testing specific sequences (e.g., policy lookup before authorization) |
+| `unordered` | Same message structure and tool calls as reference, but tool calls can happen in any order | Verifying information retrieval when order doesn't matter |
+| `subset` | Agent calls only tools from reference (no extras) | Ensuring agent doesn't exceed expected scope |
+| `superset` | Agent calls at least the reference tools (extras allowed) | Verifying minimum required actions are taken |
 
 The examples below share a common setup, an agent with a `get_weather` tool:
 

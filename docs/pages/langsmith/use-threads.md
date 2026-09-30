@@ -382,12 +382,12 @@ To run your graph with state persistence, you must first create a thread:
 
     Common metadata fields you can filter on include:
 
-    | Metadata key             | Description                                                                                                      |
-    | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-    | `graph_id`               | The graph (deployment) the thread belongs to.                                                                    |
-    | `assistant_id`           | The [assistant](/langsmith/assistants) used to create runs on the thread.                                        |
+    | Metadata key | Description |
+    | - | - |
+    | `graph_id` | The graph (deployment) the thread belongs to. |
+    | `assistant_id` | The [assistant](/langsmith/assistants) used to create runs on the thread. |
     | `langgraph_auth_user_id` | The authenticated user who owns the thread (set automatically when using [custom auth](/langsmith/custom-auth)). |
-    | `cron_id`                | The [cron job](/langsmith/cron-jobs) that created runs on the thread.                                            |
+    | `cron_id` | The [cron job](/langsmith/cron-jobs) that created runs on the thread. |
 
     You can also filter on any custom metadata you attach when creating or updating threads.
 

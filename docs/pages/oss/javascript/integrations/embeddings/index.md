@@ -396,28 +396,28 @@ In production, you would typically use a more robust persistent store, such as a
 ## All integrations
 
 <div>
-  | Integration                                                                                    | Downloads                                                                                                               |
-  | :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-  | [`AzureOpenAIEmbeddings`](/oss/javascript/integrations/embeddings/azure_openai)                | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span>          |
-  | [`OpenAIEmbeddings`](/oss/javascript/integrations/embeddings/openai)                           | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span>          |
-  | [`Bedrock`](/oss/javascript/integrations/embeddings/bedrock)                                   | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span>             |
-  | [`GoogleGenerativeAIEmbeddings`](/oss/javascript/integrations/embeddings/google_generative_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-genai">  <img alt="Downloads per month" /></a></span>    |
-  | [`VertexAIEmbeddings`](/oss/javascript/integrations/embeddings/google_vertex_ai)               | <span><a href="https://www.npmjs.com/package/@langchain/google-vertexai">  <img alt="Downloads per month" /></a></span> |
-  | [`OllamaEmbeddings`](/oss/javascript/integrations/embeddings/ollama)                           | <span><a href="https://www.npmjs.com/package/@langchain/ollama">  <img alt="Downloads per month" /></a></span>          |
-  | [`MistralAIEmbeddings`](/oss/javascript/integrations/embeddings/mistralai)                     | <span><a href="https://www.npmjs.com/package/@langchain/mistralai">  <img alt="Downloads per month" /></a></span>       |
-  | [`PineconeEmbeddings`](/oss/javascript/integrations/embeddings/pinecone)                       | <span><a href="https://www.npmjs.com/package/@langchain/pinecone">  <img alt="Downloads per month" /></a></span>        |
-  | [`VoyageEmbeddings`](/oss/javascript/integrations/embeddings/voyageai)                         | <span><a href="https://www.npmjs.com/package/@langchain/mongodb">  <img alt="Downloads per month" /></a></span>         |
-  | [`CohereEmbeddings`](/oss/javascript/integrations/embeddings/cohere)                           | <span><a href="https://www.npmjs.com/package/@langchain/cohere">  <img alt="Downloads per month" /></a></span>          |
-  | [`Baidu qianfan`](/oss/javascript/integrations/embeddings/baidu_qianfan)                       | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan">  <img alt="Downloads per month" /></a></span>   |
-  | [`Nomic`](/oss/javascript/integrations/embeddings/nomic)                                       | <span><a href="https://www.npmjs.com/package/@langchain/nomic">  <img alt="Downloads per month" /></a></span>           |
-  | [`CloudflareWorkersAIEmbeddings`](/oss/javascript/integrations/embeddings/cloudflare_ai)       | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare">  <img alt="Downloads per month" /></a></span>      |
-  | [`FireworksEmbeddings`](/oss/javascript/integrations/embeddings/fireworks)                     | <span><a href="https://www.npmjs.com/package/@langchain/fireworks">  <img alt="Downloads per month" /></a></span>       |
-  | [`WatsonxEmbeddings`](/oss/javascript/integrations/embeddings/ibm)                             | <span><a href="https://www.npmjs.com/package/@langchain/ibm">  <img alt="Downloads per month" /></a></span>             |
-  | [`TogetherAIEmbeddings`](/oss/javascript/integrations/embeddings/togetherai)                   | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span>     |
-  | [`Mixedbread AI`](/oss/javascript/integrations/embeddings/mixedbread_ai)                       | <span><a href="https://www.npmjs.com/package/@langchain/mixedbread-ai">  <img alt="Downloads per month" /></a></span>   |
-  | [`SCXEmbeddings`](https://scx.ai/)                                                             | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain">  <img alt="Downloads per month" /></a></span>          |
-  | [`Minimax`](/oss/javascript/integrations/embeddings/minimax)                                   | <span>N/A</span>                                                                                                        |
-  | [`OracleEmbeddings`](/oss/javascript/integrations/embeddings/oracleai)                         | <span>N/A</span>                                                                                                        |
+  | Integration | Downloads |
+  | :- | :- |
+  | [`AzureOpenAIEmbeddings`](/oss/javascript/integrations/embeddings/azure_openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
+  | [`OpenAIEmbeddings`](/oss/javascript/integrations/embeddings/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
+  | [`Bedrock`](/oss/javascript/integrations/embeddings/bedrock) | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
+  | [`GoogleGenerativeAIEmbeddings`](/oss/javascript/integrations/embeddings/google_generative_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-genai">  <img alt="Downloads per month" /></a></span> |
+  | [`VertexAIEmbeddings`](/oss/javascript/integrations/embeddings/google_vertex_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-vertexai">  <img alt="Downloads per month" /></a></span> |
+  | [`OllamaEmbeddings`](/oss/javascript/integrations/embeddings/ollama) | <span><a href="https://www.npmjs.com/package/@langchain/ollama">  <img alt="Downloads per month" /></a></span> |
+  | [`MistralAIEmbeddings`](/oss/javascript/integrations/embeddings/mistralai) | <span><a href="https://www.npmjs.com/package/@langchain/mistralai">  <img alt="Downloads per month" /></a></span> |
+  | [`PineconeEmbeddings`](/oss/javascript/integrations/embeddings/pinecone) | <span><a href="https://www.npmjs.com/package/@langchain/pinecone">  <img alt="Downloads per month" /></a></span> |
+  | [`VoyageEmbeddings`](/oss/javascript/integrations/embeddings/voyageai) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb">  <img alt="Downloads per month" /></a></span> |
+  | [`CohereEmbeddings`](/oss/javascript/integrations/embeddings/cohere) | <span><a href="https://www.npmjs.com/package/@langchain/cohere">  <img alt="Downloads per month" /></a></span> |
+  | [`Baidu qianfan`](/oss/javascript/integrations/embeddings/baidu_qianfan) | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan">  <img alt="Downloads per month" /></a></span> |
+  | [`Nomic`](/oss/javascript/integrations/embeddings/nomic) | <span><a href="https://www.npmjs.com/package/@langchain/nomic">  <img alt="Downloads per month" /></a></span> |
+  | [`CloudflareWorkersAIEmbeddings`](/oss/javascript/integrations/embeddings/cloudflare_ai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare">  <img alt="Downloads per month" /></a></span> |
+  | [`FireworksEmbeddings`](/oss/javascript/integrations/embeddings/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks">  <img alt="Downloads per month" /></a></span> |
+  | [`WatsonxEmbeddings`](/oss/javascript/integrations/embeddings/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm">  <img alt="Downloads per month" /></a></span> |
+  | [`TogetherAIEmbeddings`](/oss/javascript/integrations/embeddings/togetherai) | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span> |
+  | [`Mixedbread AI`](/oss/javascript/integrations/embeddings/mixedbread_ai) | <span><a href="https://www.npmjs.com/package/@langchain/mixedbread-ai">  <img alt="Downloads per month" /></a></span> |
+  | [`SCXEmbeddings`](https://scx.ai/) | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`Minimax`](/oss/javascript/integrations/embeddings/minimax) | <span>N/A</span> |
+  | [`OracleEmbeddings`](/oss/javascript/integrations/embeddings/oracleai) | <span>N/A</span> |
 </div>
 
 ***

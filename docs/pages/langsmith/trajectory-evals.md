@@ -42,12 +42,12 @@ AgentEvals offers the `create_trajectory_match_evaluator` function in Python and
 
 You can use the following modes:
 
-| Mode                                     | Description                                               | Use Case                                                              |
-| ---------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------- |
-| [`strict`](#strict-match)                | Exact match of messages and tool calls in the same order  | Testing specific sequences (e.g., policy lookup before authorization) |
-| [`unordered`](#unordered-match)          | Same tool calls allowed in any order                      | Verifying information retrieval when order doesn't matter             |
-| [`subset`](#subset-and-superset-match)   | Agent calls only tools from reference (no extras)         | Ensuring agent doesn't exceed expected scope                          |
-| [`superset`](#subset-and-superset-match) | Agent calls at least the reference tools (extras allowed) | Verifying minimum required actions are taken                          |
+| Mode | Description | Use Case |
+| - | - | - |
+| [`strict`](#strict-match) | Exact match of messages and tool calls in the same order | Testing specific sequences (e.g., policy lookup before authorization) |
+| [`unordered`](#unordered-match) | Same tool calls allowed in any order | Verifying information retrieval when order doesn't matter |
+| [`subset`](#subset-and-superset-match) | Agent calls only tools from reference (no extras) | Ensuring agent doesn't exceed expected scope |
+| [`superset`](#subset-and-superset-match) | Agent calls at least the reference tools (extras allowed) | Verifying minimum required actions are taken |
 
 ### Strict match
 

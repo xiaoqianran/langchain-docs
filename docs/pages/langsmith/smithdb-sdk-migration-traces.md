@@ -20,8 +20,8 @@ Supports filters (`trace_filter`, `tree_filter`) and field projection (`selects`
 
 <Tabs>
   <Tab title="Python">
-    | Before                                     | After                   |
-    | ------------------------------------------ | ----------------------- |
+    | Before | After |
+    | - | - |
     | `client.list_runs(is_root=True)` (generic) | `client.traces.query()` |
 
     <Note>
@@ -32,32 +32,32 @@ Supports filters (`trace_filter`, `tree_filter`) and field projection (`selects`
   </Tab>
 
   <Tab title="TypeScript">
-    | Before                                        | After                   |
-    | --------------------------------------------- | ----------------------- |
+    | Before | After |
+    | - | - |
     | `client.listRuns({ isRoot: true })` (generic) | `client.traces.query()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query) for the full parameter and field list.
   </Tab>
 
   <Tab title="Java">
-    | Before                                            | After                     |
-    | ------------------------------------------------- | ------------------------- |
+    | Before | After |
+    | - | - |
     | `client.runs().query()` (generic, `isRoot(true)`) | `client.traces().query()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
   </Tab>
 
   <Tab title="Go">
-    | Before                                          | After                   |
-    | ----------------------------------------------- | ----------------------- |
+    | Before | After |
+    | - | - |
     | `client.Runs.Query()` (generic, `IsRoot: true`) | `client.Traces.Query()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                                     | After                       |
-    | ------------------------------------------ | --------------------------- |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
   </Tab>
 </Tabs>
@@ -1129,8 +1129,8 @@ Returns runs for a trace ID within min/max start time. Optional `filter`; repeat
 
 <Tabs>
   <Tab title="Python">
-    | Before                                     | After                       |
-    | ------------------------------------------ | --------------------------- |
+    | Before | After |
+    | - | - |
     | `client.list_runs(trace_id=...)` (generic) | `client.traces.list_runs()` |
 
     <Note>
@@ -1141,32 +1141,32 @@ Returns runs for a trace ID within min/max start time. Optional `filter`; repeat
   </Tab>
 
   <Tab title="TypeScript">
-    | Before                                   | After                      |
-    | ---------------------------------------- | -------------------------- |
+    | Before | After |
+    | - | - |
     | `client.listRuns({ traceId })` (generic) | `client.traces.listRuns()` |
 
     See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/listRuns) for the full parameter and field list.
   </Tab>
 
   <Tab title="Java">
-    | Before                                               | After                        |
-    | ---------------------------------------------------- | ---------------------------- |
+    | Before | After |
+    | - | - |
     | `client.runs().query()` (generic, `.trace(traceId)`) | `client.traces().listRuns()` |
 
     See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
   </Tab>
 
   <Tab title="Go">
-    | Before                                            | After                      |
-    | ------------------------------------------------- | -------------------------- |
+    | Before | After |
+    | - | - |
     | `client.Runs.Query()` (generic, `Trace: traceID`) | `client.Traces.ListRuns()` |
 
     See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.ListRuns) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
-    | Before                                    | After                                |
-    | ----------------------------------------- | ------------------------------------ |
+    | Before | After |
+    | - | - |
     | `POST /api/v1/runs/query` (`trace` field) | `GET /api/v2/traces/{trace_id}/runs` |
   </Tab>
 </Tabs>

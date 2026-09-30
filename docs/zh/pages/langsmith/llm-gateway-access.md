@@ -4,14 +4,16 @@
 
 # 跟踪和访问控制
 
+了解网关跟踪的位置以及谁可以查看和配置什么。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
-通过 LLM 网关的每个调用都会追踪到 LangSmith，并且策略违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
+通过 LLM 网关的每个调用都会被追踪到 LangSmith，并且策略违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
 
 <Note>
-网关跟踪记录每个呼叫的元数据（令牌计数、策略结果、呼叫者身份）。默认情况下**不**记录输入和输出内容，并且没有内容的跟踪**不会根据您的 LangSmith 跟踪配额计费**。内容日志记录以及相关的计费仅在您使用 [data policy](/langsmith/llm-gateway-data-policy) 显式启用时才适用。
+  网关跟踪记录每个呼叫的元数据（令牌计数、策略结果、呼叫者身份）。默认情况下**不**记录输入和输出内容，并且没有内容的跟踪**不会根据您的 LangSmith 跟踪配额计费**。内容日志记录以及相关的计费仅在您使用 [data policy](/langsmith/llm-gateway-data-policy) 显式启用时才适用。
 </Note>
 
 ## 网关痕迹出现的位置
@@ -20,32 +22,30 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 使用 [RBAC](/langsmith/rbac) 和 [ABAC](/langsmith/abac) 控制对这些跟踪项目的访问
 
-### 跟踪元数据
+### 跟踪元数据网关代理调用与直接 LLM 调用的区别在于它们所在的项目以及附加到其跨度的元数据：
 
-网关代理调用与直接 LLM 调用的区别在于它们所在的项目以及附加到其跨度的元数据：- **网关项目：** 所有网关流量都写入每个工作区中名为 `gateway` 的项目，并为每个调用者提供一个副本以进行 UI 隔离。按项目（或按`langsmith.metadata.gateway.*`跨度属性的存在）过滤以查找网关代理的调用。
-- **策略评估结果：**每个网关跨度通过`langsmith.metadata.gateway.policy.matched_ids/_names`、`passed_ids/_names`和`violated_ids/_names`记录评估了哪些策略及其结果，因此传递和阻止都会被捕获。
-- **防护规则匹配：** 当应用密文策略时，防护管道会发出一个 `rule_id → count` 映射，标记为 `policy.matched_rules`、`passed_rules` 和 `violated_rules`。这些是规则 ID，而不是 PII 或秘密类别标签。
-- **成本数据：** 代币计数和成本是内联计算的，并提供给支出上限策略所针对的相同支出累加器。
+* **网关项目：** 所有网关流量都写入每个工作区中名为 `gateway` 的项目，并为每个调用者提供一个副本以进行 UI 隔离。按项目（或按`langsmith.metadata.gateway.*`跨度属性的存在）过滤以查找网关代理的调用。
+* **策略评估结果：** 每个网关跨度通过`langsmith.metadata.gateway.policy.matched_ids/_names`、`passed_ids/_names`和`violated_ids/_names`记录评估了哪些策略及其结果，因此传递和阻止都会被捕获。
+* **防护规则匹配：** 当应用密文策略时，防护管道会发出一个 `rule_id → count` 映射，标记为 `policy.matched_rules`、`passed_rules` 和 `violated_rules`。这些是规则 ID，而不是 PII 或秘密类别标签。
+* **成本数据：** 代币计数和成本是内联计算的，并提供给支出上限策略所针对的相同支出累加器。
 
-### 跟踪内容
+### 跟踪内容默认情况下，跟踪内容（请求和响应正文）处于关闭状态。没有内容的跟踪不会根据您的 LangSmith 跟踪配额进行计费。使用 [data policy](/langsmith/llm-gateway-data-policy#data-retention) 打开内容日志记录，这适用于通过网关发出的与策略范围匹配的任何跟踪。与内容记录数据策略匹配的跟踪计入您的计划的跟踪量。
 
-默认情况下，跟踪内容（请求和响应正文）处于关闭状态。没有内容的跟踪不会根据您的 LangSmith 跟踪配额进行计费。使用 [data policy](/langsmith/llm-gateway-data-policy#data-retention) 打开内容日志记录，这适用于通过网关发出的与策略范围匹配的任何跟踪。与内容记录数据策略匹配的跟踪计入您的计划的跟踪量。
+## LangSmith 发动机集成
 
-## LangSmith 发动机集成当治理策略触发时（例如达到支出限制、检测到并编辑 PII 或捕获秘密时），该事件将作为元数据记录在跟踪上。这些违反政策的行为在 LangSmith 引擎中表现为问题。
+当治理策略触发时（例如达到支出限制、检测到并编辑 PII 或捕获秘密时），该事件将作为元数据记录在跟踪上。这些违反政策的行为在 LangSmith 引擎中表现为问题。
 
 对于引擎问题，您可以：
 
 1. **查看违规行为：** 触发了哪些政策，哪些内容被阻止或编辑。
-1. **单击跟踪：** 准确查看策略触发时代理正在执行的操作。
-1. **诊断根本原因：** 是否是重试循环消耗预算、用户将凭据粘贴到提示中或超出其上限的合法工作负载等。
-1. **采取行动：**更新代理配置、调整策略或升级。
+2. **单击跟踪：** 准确查看策略触发时代理正在执行的操作。
+3. **诊断根本原因：** 是否是重试循环消耗预算、用户将凭据粘贴到提示中或超出其上限的合法工作负载等。
+4. **采取行动：** 更新代理配置、调整策略或升级。
 
 ## 审计日志记录
 
-网关记录两类事件：
-
-|类别 |记录了什么 |
-| ---| ---|
+网关记录两类事件：|类别 |记录了什么 |
+| - | - |
 | **行政变更** |策略创建、修改和删除。与网关访问相关的角色和权限更改。 |
 | **网关调用** |每个代理呼叫，包括呼叫者身份和匹配的策略 ID。 |
 
@@ -53,8 +53,10 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 权限
 
-### 所需权限|行动|需要许可 |谁默认拥有它 |
-| ---| ---| ---|
+### 所需权限
+
+|行动|需要许可 |谁默认拥有它 |
+| - | - | - |
 |通过网关拨打电话 | `gateway:invoke` + `workspaces:read` |仅限`WORKSPACE_ADMIN` |
 |创建、编辑或删除策略 | `organization:manage` |组织管理员 |
 |查看网关痕迹 | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`、`WORKSPACE_USER`、`WORKSPACE_VIEWER` |
@@ -66,12 +68,12 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 始终对网关使用工作区范围的 API 密钥。不支持组织范围的密钥调用网关。
 
-### 集中提供者凭证
+### 集中提供者凭证网关将提供商 API 密钥集中在 LangSmith 工作区机密中。个人开发人员和代理使用他们的[LangSmith API key](/langsmith/create-account-api-key)进行身份验证，并且永远不需要直接访问提供商密钥。
 
-网关将提供商 API 密钥集中在 LangSmith 工作区机密中。个人开发人员和代理使用他们的[LangSmith API key](/langsmith/create-account-api-key)进行身份验证，并且永远不需要直接访问提供商密钥。
+这意味着：
 
-这意味着：- **凭证控制：** 提供商密钥位于一处，由管理员管理。撤销访问权限意味着撤销LangSmith API 密钥，而不是查找提供者密钥的分布式副本。
-- **策略执行：** 因为所有呼叫都流经网关，所以策略执行一致。无法通过直接调用提供商来绕过成本限制（只要开发人员无法单独访问提供商密钥）。
+* **凭证控制：** 提供商密钥位于一处，由管理员管理。撤销访问权限意味着撤销LangSmith API 密钥，而不是查找提供者密钥的分布式副本。
+* **策略执行：** 因为所有呼叫都流经网关，所以策略得到一致执行。无法通过直接调用提供商来绕过成本限制（只要开发人员无法单独访问提供商密钥）。
 
 对于 Claude Code Plus 和 Max 用户，每个组织都可以使用 Anthropic OAuth 直通。调用者发送工作区范围的 LangSmith API 密钥以进行网关身份验证，并发送 Anthropic OAuth 承载以进行提供商身份验证。网关权限、策略和跟踪仍然适用，而 OAuth 承载仅转发到Anthropic，并且网关不会加载工作区的`ANTHROPIC_API_KEY`。 Anthropic 将这些呼叫计入用户的 Claude 订阅费用。配置说明请参见[Set up coding agents](/langsmith/llm-gateway-coding-agents#use-claude-subscription-oauth)。
 
@@ -79,22 +81,23 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 如果您需要限制谁可以查看网关跟踪，您有两种选择：
 
-- **单独的工作区**（适用于任何[plan](/langsmith/pricing-plans)）：创建一个具有有限成员资格的工作区，并为具有更广泛成员资格的开发人员编码代理创建另一个工作区。每个工作区都有自己的提供者机密和跟踪项目。
-- **项目级访问策略**（需要[Enterprise plan](/langsmith/pricing-plans)）：编写ABAC策略，将网关项目上的`projects:read`和`runs:read`限制为特定用户或角色。
+* **单独的工作区**（适用于任何[plan](/langsmith/pricing-plans)）：创建一个具有有限成员资格的工作区，并为具有更广泛成员资格的开发人员编码代理创建另一个工作区。每个工作区都有自己的提供者机密和跟踪项目。
+* **项目级访问策略**（需要[Enterprise plan](/langsmith/pricing-plans)）：编写ABAC策略，将网关项目上的`projects:read`和`runs:read`限制为特定用户或角色。
 
 ## 后续步骤
 
-- [Admin setup](/langsmith/llm-gateway-admin-setup)：配置所有这些的分步指南。
-- [Spend policies](/langsmith/llm-gateway-spend-policies)：对 API 密钥和用户附加成本限制。
-- [Data policy](/langsmith/llm-gateway-data-policy)：配置数据策略。
+* [Admin setup](/langsmith/llm-gateway-admin-setup)：配置所有这些的分步指南。
+* [Spend policies](/langsmith/llm-gateway-spend-policies)：对 API 密钥和用户附加成本限制。
+* [Data policy](/langsmith/llm-gateway-data-policy)：配置数据策略。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

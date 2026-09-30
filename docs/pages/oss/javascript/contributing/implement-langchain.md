@@ -45,10 +45,10 @@ Your integration package will typically implement a subclass of at least one of 
 
     Middleware integrations typically fall into two categories:
 
-    | Type                  | Description                                | Examples                                                  |
-    | --------------------- | ------------------------------------------ | --------------------------------------------------------- |
+    | Type | Description | Examples |
+    | - | - | - |
     | **Provider-specific** | Leverages a provider's unique capabilities | Prompt caching, native tool execution, content moderation |
-    | **Cross-provider**    | Works with any model or tool               | Rate limiting, PII detection, logging, guardrails         |
+    | **Cross-provider** | Works with any model or tool | Rate limiting, PII detection, logging, guardrails |
 
     Provider-specific middleware lives in the provider's integration package (for example `langchain-anthropic`). Cross-provider middleware can be published as a standalone package.
 

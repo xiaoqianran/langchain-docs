@@ -10,23 +10,27 @@ A self-hosted LangSmith instance can handle a large number of traces and users. 
 
 For example configurations, refer to [Example LangSmith configurations for scale](#example-langsmith-configurations-for-scale).
 
+<Note>
+  For SmithDB resource sizing, see [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale).
+</Note>
+
 ## Summary
 
 The table below provides an overview comparing different LangSmith configurations for various load patterns (reads / writes):
 
-|                                                                       | **[Low / low](#low-reads-low-writes)**               | **[Low / high](#low-reads-high-writes)**             | **[High / low](#high-reads-low-writes)**             | [Medium / medium](#medium-reads-medium-writes)       | [High / high](#high-reads-high-writes)               |
-| :-------------------------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- |
-| <Tooltip>Concurrent frontend users</Tooltip>                          | 5                                                    | 5                                                    | 50                                                   | 20                                                   | 50                                                   |
-| <Tooltip>Traces submitted per second</Tooltip>                        | 10                                                   | 1000                                                 | 10                                                   | 100                                                  | 1000                                                 |
-| **Frontend replicas**<br />(500m CPU, 1Gi requested per replica)      | 1 (default)                                          | 4                                                    | 2                                                    | 2                                                    | 4                                                    |
-| **Platform backend replicas**<br />(1 CPU, 2Gi requested per replica) | 3 (default)                                          | 20                                                   | 3 (default)                                          | 3 (default)                                          | 20                                                   |
-| **Ingest queue replicas**<br />(1 CPU, 2Gi requested per replica)     | 3 (default)                                          | 24                                                   | 3 (default)                                          | 6                                                    | 24                                                   |
-| **Backend replicas**<br />(1 CPU, 2Gi requested per replica)          | 2 (default)                                          | 5                                                    | 40                                                   | 16                                                   | 50                                                   |
-| **Redis resources**                                                   | 8 Gi (default)                                       | 26 Gi external                                       | 8 Gi (default)                                       | 13Gi external                                        | 26 Gi external                                       |
-| **ClickHouse resources**                                              | 4 CPU<br />16 Gi (default)                           | 10 CPU<br />32Gi memory                              | 8 CPU<br />16 Gi per replica                         | 16 CPU<br />24Gi memory                              | 14 CPU<br />24 Gi per replica                        |
-| **ClickHouse setup**                                                  | Single instance                                      | Single instance                                      | 3-node <Tooltip>replicated cluster</Tooltip>         | Single instance                                      | 3-node <Tooltip>replicated cluster</Tooltip>         |
-| <Tooltip>Postgres resources</Tooltip>                                 | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) |
-| **Blob storage**                                                      | Disabled                                             | Enabled                                              | Enabled                                              | Enabled                                              | Enabled                                              |
+| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
+| :- | :- | :- | :- | :- | :- |
+| <Tooltip>Concurrent frontend users</Tooltip> | 5 | 5 | 50 | 20 | 50 |
+| <Tooltip>Traces submitted per second</Tooltip> | 10 | 1000 | 10 | 100 | 1000 |
+| **Frontend replicas**<br />(500m CPU, 1Gi requested per replica) | 1 (default) | 4 | 2 | 2 | 4 |
+| **Platform backend replicas**<br />(1 CPU, 2Gi requested per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 |
+| **Ingest queue replicas**<br />(1 CPU, 2Gi requested per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 |
+| **Backend replicas**<br />(1 CPU, 2Gi requested per replica) | 2 (default) | 5 | 40 | 16 | 50 |
+| **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13Gi external | 26 Gi external |
+| **ClickHouse resources** | 4 CPU<br />16 Gi (default) | 10 CPU<br />32Gi memory | 8 CPU<br />16 Gi per replica | 16 CPU<br />24Gi memory | 14 CPU<br />24 Gi per replica |
+| **ClickHouse setup** | Single instance | Single instance | 3-node <Tooltip>replicated cluster</Tooltip> | Single instance | 3-node <Tooltip>replicated cluster</Tooltip> |
+| <Tooltip>Postgres resources</Tooltip> | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) |
+| **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
 
 <Note>
   The per-replica figures above are resource requests, what the Kubernetes scheduler reserves.
@@ -46,17 +50,17 @@ The Helm chart ships these requests and limits for the LangSmith application ser
 counts to run for each load pattern.
 
 | `values.yaml` key | Requests (CPU / memory) | Limits (CPU / memory) | Default replicas |
-| :---------------- | :---------------------- | :-------------------- | :--------------- |
-| `frontend`        | 500m / 1Gi              | 1000m / 2Gi           | 1                |
-| `backend`         | 1000m / 2Gi             | 2000m / 4Gi           | 2                |
-| `platformBackend` | 1000m / 2Gi             | 2000m / 4Gi           | 3                |
-| `ingestQueue`     | 1000m / 2Gi             | 2000m / 4Gi           | 3                |
-| `queue`           | 1000m / 2Gi             | 2000m / 4Gi           | 1                |
-| `playground`      | 500m / 1Gi              | 1000m / 8Gi           | 1                |
-| `aceBackend`      | 1000m / 2000Mi          | 2000m / 4000Mi        | 1                |
-| `hostBackend`     | 200m / 1000Mi           | 1000m / 2Gi           | 1                |
-| `listener`        | 1000m / 2Gi             | 2000m / 4Gi           | 1                |
-| `operator`        | 1000m / 2Gi             | 2000m / 4Gi           | 1                |
+| :- | :- | :- | :- |
+| `frontend` | 500m / 1Gi | 1000m / 2Gi | 1 |
+| `backend` | 1000m / 2Gi | 2000m / 4Gi | 2 |
+| `platformBackend` | 1000m / 2Gi | 2000m / 4Gi | 3 |
+| `ingestQueue` | 1000m / 2Gi | 2000m / 4Gi | 3 |
+| `queue` | 1000m / 2Gi | 2000m / 4Gi | 1 |
+| `playground` | 500m / 1Gi | 1000m / 8Gi | 1 |
+| `aceBackend` | 1000m / 2000Mi | 2000m / 4000Mi | 1 |
+| `hostBackend` | 200m / 1000Mi | 1000m / 2Gi | 1 |
+| `listener` | 1000m / 2Gi | 2000m / 4Gi | 1 |
+| `operator` | 1000m / 2Gi | 2000m / 4Gi | 1 |
 
 Each key nests its resources under `deployment`, so the backend's requests are at
 `backend.deployment.resources.requests`. `playground` is the one service whose memory limit
@@ -73,16 +77,16 @@ HorizontalPodAutoscaler (HPA), and `autoscaling.keda`, for
 both.
 
 | `values.yaml` key | Min replicas | Max replicas |
-| :---------------- | :----------- | :----------- |
-| `frontend`        | 1            | 5            |
-| `backend`         | 2            | 6            |
-| `platformBackend` | 3            | 10           |
-| `ingestQueue`     | 3            | 10           |
-| `queue`           | 1            | 10           |
-| `playground`      | 1            | 5            |
-| `aceBackend`      | 1            | 5            |
-| `hostBackend`     | 1            | 5            |
-| `listener`        | 1            | 10           |
+| :- | :- | :- |
+| `frontend` | 1 | 5 |
+| `backend` | 2 | 6 |
+| `platformBackend` | 3 | 10 |
+| `ingestQueue` | 3 | 10 |
+| `queue` | 1 | 10 |
+| `playground` | 1 | 5 |
+| `aceBackend` | 1 | 5 |
+| `hostBackend` | 1 | 5 |
+| `listener` | 1 | 10 |
 
 The HPA keys are `minReplicas` and `maxReplicas`; the KEDA equivalents are `minReplicaCount`
 and `maxReplicaCount`. `operator` has no autoscaling block and always runs at its configured

@@ -4,8 +4,10 @@
 
 # 每个客户的政策
 
+通过自定义请求标头拆分网关支出上限和速率限制，以便每个最终客户在单个 API 密钥下获得自己的限制。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 [spend policy](/langsmith/llm-gateway-spend-policies) 可以通过自定义请求标头分隔默认限制，因此每个标头值都会获得独立的限制。 Spend 和 [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) 也可以匹配一个特定的标头值。使用这些选项来限制您自己的最终客户、租户或团队，而无需为每个人单独发布 [LangSmith API key](/langsmith/create-account-api-key)。
@@ -14,95 +16,93 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 ## 可匹配的标头
 
-网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。
+网关匹配前缀为 `X-Gateway-` 的请求标头以及`X-Gateway-Metadata` JSON 标头内的键。没有其他请求标头可匹配。标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。
 
-标头名称在匹配之前进行规范化：删除 `X-Gateway-` 前缀，其余部分小写，`a-z`、`0-9` 和 `_` 之外的每个字符都替换为 `_`。标头 `X-Gateway-Customer-Id`、`x-gateway-customer_id` 和 `X-Gateway-CUSTOMER.ID` 均解析为匹配器键 `customer_id`。标头值作为精确的、区分大小写的字符串进行比较，没有通配符或模式匹配。网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
+网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
 
 <Warning>
-网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
+  网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
 </Warning>
 
 <Warning>
-创建和管理策略需要`organization:manage`权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
+  创建和管理策略需要`organization:manage`权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 </Warning>
 
-## 按标题分隔默认支出限额
+## 按标题分隔默认支出限额默认支出限额对主题维度的每个成员应用相同的上限。通过标头分隔它，将该上限独立地应用于每个主题和标头值对，而不需要为每个值制定策略。
 
-默认支出限额对主题维度的每个成员应用相同的上限。通过标头分隔它，将该上限独立地应用于每个主题和标头值对，而不需要为每个值制定策略。
+默认支出分桶遵循以下规则：
 
-默认支出分桶遵循以下规则：- **每个默认一个标头**：仅输入标头名称。该请求提供标识存储桶的值。
-- **独立限制**：每个主题和标头值对都会收到配置的支出限制。
-- **回退限制**：没有配置标头的请求共享其主题的回退限制。
+* **每个默认一个标头**：仅输入标头名称。该请求提供标识存储桶的值。
+* **独立限制**：每个主题和标头值对都会收到配置的支出限制。
+* **回退限制**：没有配置标头的请求共享其主题的回退限制。
 
 要按标题分隔默认支出限额：
 
 1. 转至 **LLM Gateway** 并选择 **成本控制**。
-1. 单击**创建支出限额**。
-1. 选择 **工作空间**、**用户** 或 **API 密钥**，然后选择默认情况下将限制应用于该类型的每个主题的选项。
-1. 选择**通过自定义标头单独限制**。
-1. 输入 **标头名称**，不带 `X-Gateway-` 前缀。例如，为 `X-Gateway-Customer-Id` 请求标头输入 `Customer-Id`。
-1. 设置支出限额，然后单击**创建支出限额**。
-
-策略表显示用于分隔默认限制的标头。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
+2. 单击**创建支出限额**。
+3. 选择 **工作空间**、**用户** 或 **API 密钥**，然后选择默认情况下将限制应用于该类型的每个主题的选项。
+4. 选择**通过自定义标头单独限制**。
+5. 输入 **标头名称**，不带 `X-Gateway-` 前缀。例如，为 `X-Gateway-Customer-Id` 请求标头输入 `Customer-Id`。
+6. 设置支出限额，然后单击**创建支出限额**。策略表显示用于分隔默认限制的标头。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
 
 当不同的标头值需要不同的限制时，请使用显式策略。
 
-## 添加显式标头条件明确的支出或速率限制策略可以匹配一个精确的标头值。使用显式策略为不同的标头值分配不同的限制。
+## 添加显式标头条件
+
+明确的支出或速率限制策略可以匹配一个精确的标头值。使用显式策略为不同的标头值分配不同的限制。
 
 显式标头条件遵循以下规则：
 
-- **每个策略一个条件**：策略接受一个标头名称和一个值。
-- **一个主题范围**：将条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。
-- **缺少标头不匹配**：没有配置标头的请求与策略不匹配。
-- **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
-- **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。
+* **每个策略一个条件**：策略接受一个标头名称和一个值。
+* **一个主题范围**：将条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。
+* **缺少标头不匹配**：没有配置标头的请求与策略不匹配。
+* **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
+* **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。1. 转至 **LLM 网关**。
+2. 单击**创建策略**。
+3. 选择策略类型和主题范围，然后设置限制。
+4. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
+5. 保存。
 
-1. 转至 **LLM 网关**。
-1. 单击**创建策略**。
-1. 选择保单类型和主体范围，然后设置限制。
-1. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
-1. 保存。创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。
+创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
 将标头附加到后端代表最终客户发出的每个请求：
 
 <CodeGroup>
+  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -H "X-Gateway-Customer-Id: acme" \
+      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+  ```
 
-```bash curl
-curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Gateway-Customer-Id: acme" \
-    -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
-```
+  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
 
-```python OpenAI SDK
-import os
+  from openai import OpenAI
 
-from openai import OpenAI
-
-client = OpenAI(
-    base_url=os.environ["OPENAI_BASE_URL"],
-    api_key=os.environ["LANGSMITH_API_KEY"],
-)
-customer_id = "acme"
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": "ping"}],
-    extra_headers={"X-Gateway-Customer-Id": customer_id},
-)
-print(response.choices[0].message.content)
-```
-
+  client = OpenAI(
+      base_url=os.environ["OPENAI_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  customer_id = "acme"
+  response = client.chat.completions.create(
+      model="gpt-4o-mini",
+      messages=[{"role": "user", "content": "ping"}],
+      extra_headers={"X-Gateway-Customer-Id": customer_id},
+  )
+  print(response.choices[0].message.content)
+  ```
 </CodeGroup>
 
 <Note>
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
+  如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 </Note>
 
 ### 步骤 2. 为一位客户创建上限
@@ -110,55 +110,53 @@ print(response.choices[0].message.content)
 通过 [LangSmith REST API](/langsmith/smith-api-ref) 为每个最终客户创建一项支出政策：
 
 <CodeGroup>
+  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
+      -H "X-Api-Key: $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+            "name": "customer-acme-monthly-cap",
+            "policy_type": "spend_cap",
+            "action": "block",
+            "subject_matchers": [
+              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+              {"key": "customer_id", "value": "acme"}
+            ],
+            "config": {"window": "monthly", "limit_usd": 250}
+          }'
+  ```
 
-```bash curl
-curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
-    -H "X-Api-Key: $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  import httpx
+
+  response = httpx.post(
+      "https://api.smith.langchain.com/v1/platform/gateway-policies",
+      headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
+      json={
           "name": "customer-acme-monthly-cap",
           "policy_type": "spend_cap",
           "action": "block",
           "subject_matchers": [
-            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-            {"key": "customer_id", "value": "acme"}
+              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+              {"key": "customer_id", "value": "acme"},
           ],
-          "config": {"window": "monthly", "limit_usd": 250}
-        }'
-```
-
-```python Python
-import os
-
-import httpx
-
-response = httpx.post(
-    "https://api.smith.langchain.com/v1/platform/gateway-policies",
-    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
-    json={
-        "name": "customer-acme-monthly-cap",
-        "policy_type": "spend_cap",
-        "action": "block",
-        "subject_matchers": [
-            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-            {"key": "customer_id", "value": "acme"},
-        ],
-        "config": {"window": "monthly", "limit_usd": 250},
-    },
-    timeout=30.0,
-)
-response.raise_for_status()
-```
-
-</CodeGroup>
-
-匹配器键是规范化名称`customer_id`，而不是标头名称`X-Gateway-Customer-Id`。该策略属于拥有 API 密钥的组织。
+          "config": {"window": "monthly", "limit_usd": 250},
+      },
+      timeout=30.0,
+  )
+  response.raise_for_status()
+  ```
+</CodeGroup>匹配器键是规范化名称`customer_id`，而不是标头名称`X-Gateway-Customer-Id`。该策略属于拥有 API 密钥的组织。
 
 发布 `subject_matchers` 已存在的策略会更新该策略，而不是添加重复项，因此可以安全地重复此调用。
 
-### 步骤 3. 将政策与您的客户列表同步由于每个最终客户都需要自己的策略，因此请使策略设置与您的客户列表保持一致。以下脚本为每个当前客户创建或更新上限，然后删除已消失客户的上限：
+### 步骤 3. 将政策与您的客户列表同步
 
-```python
+由于每个最终客户都需要自己的策略，因此请使策略设置与您的客户列表保持一致。以下脚本为每个当前客户创建或更新上限，然后删除已消失客户的上限：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 
 import httpx
@@ -227,7 +225,7 @@ API 返回的每个支出策略都会报告 `current_spend_usd`，即策略的�
 
 仅当该键与值配对时，列表端点才会通过主题匹配器键缩小范围，因此请列出支出上限并在您自己的代码中选择每个客户的支出上限：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 
 import httpx
@@ -251,11 +249,9 @@ for policy in response.json():
     print(customer, policy.get("current_spend_usd"), policy["config"]["limit_usd"])
 ```
 
-## 限制每个最终客户的吞吐量
+## 限制每个最终客户的吞吐量速率限制使用相同的主题匹配器。交换 `policy_type` 和 `config` 为最终客户提供自己的请求和代币限额：
 
-速率限制使用相同的主题匹配器。交换 `policy_type` 和 `config` 为最终客户提供自己的请求和代币限额：
-
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
     -H "X-Api-Key: $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
@@ -277,19 +273,22 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
         }'
 ```
 
-[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。## 后续步骤
+[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。
 
-- [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
-- [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。
-- [Traces and access control](/langsmith/llm-gateway-access)：了解网关追踪到的位置以及谁可以配置策略。
+## 后续步骤
 
----
+* [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
+* [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。
+* [Traces and access control](/langsmith/llm-gateway-access)：了解网关追踪到哪里以及谁可以配置策略。
 
-<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

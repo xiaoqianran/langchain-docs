@@ -11,11 +11,13 @@
 * **从 GitHub 部署代理服务器**：只需单击几下即可连接您的存储库并将 [Agent Servers](/langsmith/deployment) 部署到云。
 * **代理服务器的自动化 CI/CD**：[Agent Servers](/langsmith/deployment) 的构建和部署过程由平台自动处理。
 
-|                                               | **谁管理它** | **它在哪里运行** |
-| ------------------------------------------------------------------ | ------------------ | ------------------------------------------- |
+| | **谁管理它** | **它在哪里运行** |
+| - | - | - |
 | **LangSmith 平台（UI、API、数据存储）** | LangChain | LangChain 的云（AWS 和 GCP）|
 | **您的代理服务器** | LangChain | LangChain 的云（AWS 和 GCP）|
-| **您的应用程序的 CI/CD** | LangChain | LangChain 的云（AWS 和 GCP）|<Callout icon="rocket">
+| **您的应用程序的 CI/CD** | LangChain | LangChain 的云（AWS 和 GCP）|
+
+<Callout icon="rocket">
   如果您准备好将应用程序部署到 LangSmith 云（AWS 或 GCP），请按照 [Cloud deployment quickstart](/langsmith/deployment-quickstart) 或 [full setup guide](/langsmith/deploy-to-cloud) 操作。本页介绍了云托管架构以供参考。
 </Callout>
 
@@ -24,9 +26,7 @@
 ## 云架构和可扩展性
 
 <Note>
-  本部分仅与云管理的 LangSmith（[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com)）相关。
-
-  有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
+  本部分仅与云管理的 LangSmith（[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com)）相关。有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
 </Note>
 
 对于美国、欧盟和亚太地区 SaaS 区域，LangSmith 托管在 Google Cloud Platform (GCP) 上；对于 AWS 托管的美国 SaaS 区域，LangSmith 托管在 Amazon Web Services (AWS) 上。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
@@ -45,13 +45,15 @@
   截至 2026 年 5 月，LangSmith SaaS 在亚太地区的`australia-southeast1`（悉尼）的 GCP 上可用。
 </Note>
 
-### 区域存储此表中的资源和服务存储在与注册发生的 URL 对应的位置（GCP US、GCP EU、GCP APAC 或 AWS US）。云管理的 LangSmith 使用 [Supabase](https://supabase.com) 进行身份验证/授权，使用 [ClickHouse Cloud](https://clickhouse.com/cloud) 进行数据仓库。
+### 区域存储
 
-|                                               |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- ||网址 | [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com) | [https://apac.smith.langchain.com](https://apac.smith.langchain.com) | [https://aws.smith.langchain.com](https://aws.smith.langchain.com) |
+此表中的资源和服务存储在与注册发生的 URL 对应的位置（GCP US、GCP EU、GCP APAC 或 AWS US）。云管理的 LangSmith 使用 [Supabase](https://supabase.com) 进行身份验证/授权，使用 [ClickHouse Cloud](https://clickhouse.com/cloud) 进行数据仓库。| |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+| - | - | - | - | - |
+|网址 | [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com) | [https://apac.smith.langchain.com](https://apac.smith.langchain.com) | [https://aws.smith.langchain.com](https://aws.smith.langchain.com) |
 | API 网址 | [https://api.smith.langchain.com](https://api.smith.langchain.com) | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) |
 |云| GCP us-central1（爱荷华州）| GCP europe-west4（荷兰） | GCP 澳大利亚-southeast1（悉尼）| AWS us-east-2（俄亥俄州）|
-|苏帕巴斯| AWS us-east-1（弗吉尼亚北部）| AWS eu-central-1（德国）| AWS ap-southeast-2（悉尼）| AWS us-east-2（俄亥俄州）|| ClickHouse云 | us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
+|苏帕巴斯| AWS us-east-1（弗吉尼亚北部）| AWS eu-central-1（德国）| AWS ap-southeast-2（悉尼）| AWS us-east-2（俄亥俄州）|
+| ClickHouse云| us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
 | [LangSmith deployment](/langsmith/deployment) | GCP us-central1（爱荷华州）； `*.us.langgraph.app` | GCP europe-west4（荷兰）； `*.eu.langgraph.app` | GCP 澳大利亚-东南部1（悉尼）； `*.apac.langgraph.app` | AWS us-east-2（俄亥俄州）； `*.aws.us.langgraph.app` |
 
 请参阅[Regions FAQ](/langsmith/regions-faq)了解更多信息。
@@ -116,33 +118,33 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 ### 来自 LangChain SaaS 的出站流量
 
-所有离开 LangSmith 服务的流量都将通过 NAT 网关进行路由。所有流量都将显示为源自以下 IP 地址：|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
-| -------------- | -------------- | -------------- | -------------- |
+所有离开 LangSmith 服务的流量都将通过 NAT 网关进行路由。所有流量都将显示为源自以下 IP 地址：
+
+<Note>
+  [LangSmith Deployment](/langsmith/deployment) 上的客服人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
+</Note>|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+| - | - | - | - |
 | 34.59.65.97 | 34.13.192.67 | 34.151.89.217 | 18.188.147.158 |
 | 34.67.51.221 | 34.147.105.64 | 34.116.97.4 | 18.219.86.202 |
 | 34.46.212.37 | 34.90.22.166 | 34.151.162.199 | 34.151.162.199 3.21.57.1​​92 |
-| 34.132.150.88 | 34.147.36.213 | 34.116.66.129 |                |
-| 35.188.222.201 | 34.32.137.113 | 35.189.8.125 |                |
-| 34.58.194.127 | 34.58.194.127 34.91.238.184 | 35.201.9.237 |                |
-| 34.59.97.173 | 35.204.101.241 | 35.204.101.241 35.189.57.29 |                |
-| 104.198.162.55 | 35.204.48.32 | 34.40.198.11 |                |
+| 34.132.150.88 | 34.147.36.213 | 34.116.66.129 | |
+| 35.188.222.201 | 34.32.137.113 | 35.189.8.125 | |
+| 34.58.194.127 | 34.58.194.127 34.91.238.184 | 35.201.9.237 | |
+| 34.59.97.173 | 35.204.101.241 | 35.204.101.241 35.189.57.29 | |
+| 104.198.162.55 | 35.204.48.32 | 34.40.198.11 | |
 
 如果连接到您自己的 AzureOpenAI 服务或 Playground 或在线评估可能需要的其他端点，将这些 IP 地址列入白名单可能会有所帮助。
 
-<Note>
-  来自部署在 [LangSmith Deployment](/langsmith/deployment) 上的代理的流量通过一组单独的 NAT IP 流出。有关该列表，请参阅云平台功能参考中的[Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses)。
-</Note>
+### 进入LangChain SaaS
 
-### 进入LangChain SaaSLangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP 负载均衡器**（美国/欧盟/亚太地区）或 **AWS US** 上终止于 `us-east-2` 中的 **网络负载均衡器** 上终止的流量（API 和网关主机名）：
-
-|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
-| -------------- | ------------ | -------------- | ------------- |
+LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP 负载均衡器**（美国/欧盟/亚太地区）或 **AWS US** 上终止于 `us-east-2` 中的 **网络负载均衡器** 上终止的流量（API 和网关主机名）：|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+| - | - | - | - |
 | 34.8.121.39 | 34.95.92.214 | 34.149.149.213 | 34.149.149.213 3.129.27.169 | 3.129.27.169
-| 34.107.251.234 | 34.107.251.234 34.13.73.122 |                | 13.58.107.119 |
-|                |              |                | 16.59.151.49 |
-|                |              |                | 16.59.98.147 |
-|                |              |                | 3.134.146.243 | 3.134.146.243
-|                |              |                | 3.150.87.246 |
+| 34.107.251.234 | 34.107.251.234 34.13.73.122 | | 13.58.107.119 |
+| | | | 16.59.151.49 |
+| | | | 16.59.98.147 |
+| | | | 3.134.146.243 | 3.134.146.243
+| | | | 3.150.87.246 |
 
 您可能需要将这些列入许可名单，以启用从专用网络到 LangSmith SaaS 端点的流量（`api.smith.langchain.com`、`smith.langchain.com`、`beacon.langchain.com`、`eu.api.smith.langchain.com`、`eu.smith.langchain.com`、`eu.beacon.langchain.com`、`apac.api.smith.langchain.com`、 `apac.smith.langchain.com`、`apac.beacon.langchain.com`、`aws.api.smith.langchain.com`、`aws.smith.langchain.com`）。
 
@@ -150,7 +152,9 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 <Callout icon="lock">
   [**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
-</Callout>企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
+</Callout>
+
+企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
 
 ### AWS PrivateLink
 
@@ -159,12 +163,10 @@ LangSmith 使用以下 AWS 存储和数据服务：
 #### 端点服务名称
 
 |地区 |服务名称 |
-| ---------------- | ------------------------------------------------------------------ |
+| - | - |
 |美国 (`us-east-2`) | `com.amazonaws.vpce.us-east-2.vpce-svc-054f37092752bff6b` |
 
-#### 设置
-
-**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。
+＃＃＃＃ 设置**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。
 
 **2.在您的 AWS 账户中创建接口 VPC 终端节点**。附加一个安全组，允许来自您的 VPC CIDR（或需要到达 LangSmith 的实例）的 **TCP 443 入站**：
 
@@ -192,7 +194,9 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 **3.等待接受。** LangChain 将接受连接。端点状态将从`pendingAcceptance`更改为`available`。接受更改后需要几分钟时间才能完全传播，然后再测试连接。
 
-####配置DNS配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、公司 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
+####配置DNS
+
+配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、公司 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
 
 首先，获取端点的 DNS 名称：
 
@@ -255,24 +259,24 @@ aws ec2 describe-vpc-endpoints \
 curl https://aws.api.smith.langchain.com/ok
 ```
 
-### GCP 专用服务连接
-
-**GCP** 上的企业客户可以通过 [Private Service Connect (PSC)](https://cloud.google.com/vpc/docs/private-service-connect) 连接到 LangSmith，提供私有连接，而无需将流量暴露到公共互联网。
+### GCP 专用服务连接**GCP** 上的企业客户可以通过 [Private Service Connect (PSC)](https://cloud.google.com/vpc/docs/private-service-connect) 连接到 LangSmith，提供私有连接，而无需将流量暴露到公共互联网。
 
 #### 服务附件 URI
 
 使用以下服务附件 URI 在您的 VPC 中创建 PSC 终端节点：
 
 |地区 |服务附件 URI |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| - | - |
 |美国 (`us-central1`) | `projects/langchain-prod/regions/us-central1/serviceAttachments/gateway-psc-publish` |
 |欧盟 (`europe-west4`) | `projects/langchain-prod/regions/europe-west4/serviceAttachments/gateway-psc-publish` |
 |亚太地区 (`australia-southeast1`) | `projects/langchain-apac-prod/regions/australia-southeast1/serviceAttachments/gateway-psc-publish` |
 
-#### PSC 域设置后，使用以下域通过 PSC 连接连接到 LangSmith：
+#### PSC 域
+
+设置后，使用以下域通过 PSC 连接连接到 LangSmith：
 
 |地区 |域名 |
-| ------ | ------------------------------------------------ |
+| - | - |
 |美国 | `us-central1.p.api.smith.langchain.com` |
 |欧盟| `europe-west4.p.api.smith.langchain.com` |
 |亚太地区 | `australia-southeast1.p.api.smith.langchain.com` |
@@ -366,14 +370,14 @@ curl https://aws.api.smith.langchain.com/ok
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://<REGION>.p.api.smith.langchain.com/ok
-```
+```## API 速率限制
 
-## API 速率限制LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。请注意：
+LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。请注意：
 
 * 速率限制表示为 `count / interval`，其中 count 是时间间隔内允许的请求数（以秒为单位）。例如，`2000 / 10`表示每10秒2000个请求。
 * 当端点列中未指定 HTTP 方法时，速率限制适用于该端点的所有 HTTP 方法。
 * 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。|匹配/端点（方法）|身份密钥|美国产品限价|欧盟产品限制|类别 |
-| ------------------------------------------------------- | ---------------- | ------------- | ------------- | ------------------------------------------------------------------ |
+| - | - | - | - | - |
 |选项，`/info`，`*/v1/metadata/submit` |知识产权| 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-user-id`+IP | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
@@ -381,7 +385,8 @@ curl https://<REGION>.p.api.smith.langchain.com/ok
 | `/repos` | `x-api-key` | 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Repository](#rate-limit-categories) |
 | `/repos` | `x-user-id` + IP | 100 / 60 | 100 / 60 100 / 60 | 100 / 60 [Repository](#rate-limit-categories) |
 | `POST /runs/batch` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
-| `POST /otel/v1/traces` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) || `POST` 包含 `/charts` | `x-api-key` | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
+| `POST /otel/v1/traces` | `x-api-key` | 2000 / 10 | 2000 / 10 | [Run ingest](#rate-limit-categories) |
+| `POST` 包含 `/charts` | `x-api-key` | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
 | `POST` 包含 `/charts` | `x-user-id` + IP | 750 / 600 | 750 / 600 | [Charts](#rate-limit-categories) |
 | `POST /runs/multipart` | `x-api-key` | 6000 / 10 | 6000 / 10 | [Multipart ingest](#rate-limit-categories) |
 | `POST /runs/query` | `x-api-key` | 15 / 10 | 15 / 10 | [Run query (API)](#rate-limit-categories) |

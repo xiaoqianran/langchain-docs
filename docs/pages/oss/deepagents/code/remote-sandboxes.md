@@ -199,24 +199,24 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
 ## Sandbox flags and examples
 
-| Flag                           | Description                                                                                                                                                                                                                                                                                                                |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--sandbox TYPE`               | Sandbox provider to use. Built-ins: `langsmith`, `agentcore`, `daytona`, `modal`, `runloop`, `vercel` (default: `none`). [Third-party](#third-party-providers) and [config-declared](#config-declared-providers) providers are also accepted. Pass `--sandbox` with no value to use `[sandboxes].default` from your config |
-| `--sandbox-id ID`              | Reuse an existing sandbox by ID instead of creating a new one. Skips creation and cleanup. Only for providers that support reattaching by ID. Refer to your sandbox documentation for more                                                                                                                                 |
-| `--sandbox-snapshot-name NAME` | Use or create a sandbox snapshot. Supported by `langsmith` and `runloop` (and any third-party provider that advertises snapshot support). Cannot be combined with `--sandbox-id`                                                                                                                                           |
-| `--sandbox-setup PATH`         | Path to a setup script to run inside the sandbox upon creation                                                                                                                                                                                                                                                             |
+| Flag | Description |
+| - | - |
+| `--sandbox TYPE` | Sandbox provider to use. Built-ins: `langsmith`, `agentcore`, `daytona`, `modal`, `runloop`, `vercel` (default: `none`). [Third-party](#third-party-providers) and [config-declared](#config-declared-providers) providers are also accepted. Pass `--sandbox` with no value to use `[sandboxes].default` from your config |
+| `--sandbox-id ID` | Reuse an existing sandbox by ID instead of creating a new one. Skips creation and cleanup. Only for providers that support reattaching by ID. Refer to your sandbox documentation for more |
+| `--sandbox-snapshot-name NAME` | Use or create a sandbox snapshot. Supported by `langsmith` and `runloop` (and any third-party provider that advertises snapshot support). Cannot be combined with `--sandbox-id` |
+| `--sandbox-setup PATH` | Path to a setup script to run inside the sandbox upon creation |
 
 Each provider exposes a default working directory inside the sandbox. Setup scripts and `execute` commands run from this directory unless overridden:
 
-| Provider  | Working directory |
-| --------- | ----------------- |
-| LangSmith | `/root`           |
-| AgentCore | `/tmp`            |
-| Daytona   | `/home/daytona`   |
-| Modal     | `/workspace`      |
-| Runloop   | `/home/user`      |
-| Vercel    | `/vercel/sandbox` |
-| E2B       | `/home/user`      |
+| Provider | Working directory |
+| - | - |
+| LangSmith | `/root` |
+| AgentCore | `/tmp` |
+| Daytona | `/home/daytona` |
+| Modal | `/workspace` |
+| Runloop | `/home/user` |
+| Vercel | `/vercel/sandbox` |
+| E2B | `/home/user` |
 
 Examples:
 

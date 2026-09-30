@@ -38,11 +38,11 @@ You can also implement your own custom store by extending the [`BaseStore`](http
 ## All key-value stores
 
 <div>
-  | Integration                                                                                                   | Downloads                                                                                                    |
-  | :------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------- |
+  | Integration | Downloads |
+  | :- | :- |
   | [`AlBuddyMemoryStore`](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | <span><a href="https://www.npmjs.com/package/al-buddy-memory">  <img alt="Downloads per month" /></a></span> |
-  | [`InMemoryStore`](/oss/javascript/integrations/stores/in_memory)                                              | <span>N/A</span>                                                                                             |
-  | [`LocalFileStore`](/oss/javascript/integrations/stores/file_system)                                           | <span>N/A</span>                                                                                             |
+  | [`InMemoryStore`](/oss/javascript/integrations/stores/in_memory) | <span>N/A</span> |
+  | [`LocalFileStore`](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
 </div>
 
 ***

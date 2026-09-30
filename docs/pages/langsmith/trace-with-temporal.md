@@ -18,10 +18,10 @@ LangSmith supports OpenTelemetry (OTEL) trace ingestion, which integrates seamle
 
 Set the following environment variables for all implementations:
 
-| Variable            | Required | Description                             |
-| ------------------- | -------- | --------------------------------------- |
-| `LANGSMITH_API_KEY` | Yes      | Your LangSmith API key from Settings.   |
-| `LANGSMITH_PROJECT` | No       | Project name (defaults to `"default"`). |
+| Variable | Required | Description |
+| - | - | - |
+| `LANGSMITH_API_KEY` | Yes | Your LangSmith API key from Settings. |
+| `LANGSMITH_PROJECT` | No | Project name (defaults to `"default"`). |
 
 <Note>
   For regional SaaS or self-hosted LangSmith installations, also set `LANGCHAIN_BASE_URL` to your LangSmith instance URL.

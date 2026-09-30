@@ -30,14 +30,14 @@ Connect useStream to any React UI component library or generative UI framework
 
 Each library fits a slightly different integration model. The choice depends on what kind of UI you're building:
 
-|                   | CopilotKit                                                     | AI Elements                          | assistant-ui                          | OpenUI                                             |
-| ----------------- | -------------------------------------------------------------- | ------------------------------------ | ------------------------------------- | -------------------------------------------------- |
-| **Best for**      | Full chat runtime plus structured generative UI                | Chat with rich message types         | Full-featured chat with minimal setup | Generated dashboards and reports                   |
-| **UI style**      | CopilotKit chat shell + custom message renderers               | Composable shadcn/ui components      | Headless slots + default theme        | Prebuilt component library with declarative DSL    |
-| **Customization** | Custom backend endpoint, agent context, and renderers          | Edit source files directly           | Override component slots              | Theme via CSS custom properties                    |
-| **Streaming UX**  | Runtime-managed chat stream with structured assistant payloads | Component-level progressive render   | Built-in thread management            | Hoisting: shell appears immediately, data fills in |
-| **Tool calls**    | Via CopilotKit runtime and custom renderers                    | `Tool` / `ToolHeader` / `ToolOutput` | Custom via message slots              | Inline in the generated UI                         |
-| **Agent format**  | Structured assistant responses plus optional Markdown          | Any `stream.messages`                | Any `stream.messages`                 | Agent outputs openui-lang text                     |
+| | CopilotKit | AI Elements | assistant-ui | OpenUI |
+| - | - | - | - | - |
+| **Best for** | Full chat runtime plus structured generative UI | Chat with rich message types | Full-featured chat with minimal setup | Generated dashboards and reports |
+| **UI style** | CopilotKit chat shell + custom message renderers | Composable shadcn/ui components | Headless slots + default theme | Prebuilt component library with declarative DSL |
+| **Customization** | Custom backend endpoint, agent context, and renderers | Edit source files directly | Override component slots | Theme via CSS custom properties |
+| **Streaming UX** | Runtime-managed chat stream with structured assistant payloads | Component-level progressive render | Built-in thread management | Hoisting: shell appears immediately, data fills in |
+| **Tool calls** | Via CopilotKit runtime and custom renderers | `Tool` / `ToolHeader` / `ToolOutput` | Custom via message slots | Inline in the generated UI |
+| **Agent format** | Structured assistant responses plus optional Markdown | Any `stream.messages` | Any `stream.messages` | Agent outputs openui-lang text |
 
 All four work well with LangChain agents, and the latter three also connect directly to [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream). CopilotKit is especially useful when you want a richer runtime layer and a dedicated endpoint that can sit alongside a [LangGraph](/oss/javascript/langgraph/overview) deployment.
 

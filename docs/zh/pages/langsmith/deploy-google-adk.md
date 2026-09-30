@@ -192,7 +192,7 @@ GOOGLE_API_KEY=your-google-api-key
 包装已配置的 `google.adk.runners.Runner` 并返回 LangGraph `Pregel` 图表，该图表可以从模块导出并由代理服务器提供服务。
 
 |论证|类型 |描述 |
-| -------- | --------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| - | - | - |
 | `runner` | `google.adk.runners.Runner` |配置好的 ADK 运行器。它的 `session_service` **必须** 是 `LangsmithSessionService`。 |
 
 **返回：** 一个名为 `runner.app_name` 的 `Pregel` 图。
@@ -201,11 +201,11 @@ GOOGLE_API_KEY=your-google-api-key
 
 如果 `runner.agent` 定义了 `output_key`，则除了 `messages` 之外，该键的值也会公开在图的输出中。这就是 ADK 结构化输出代理（`output_schema=...`、`output_key=...`）与 Studio 和 `/runs/wait` 响应配合使用的原因。
 
-### `LangsmithSessionService`由代理服务器的检查点存储支持的`google.adk.sessions.BaseSessionService`实现。包装器自动管理会话生命周期。它在线程的第一轮创建一个会话，在后续轮次中从检查点加载它，并在运行完成时写回更新的会话。
+### `LangsmithSessionService`
 
-根据 `Runner` 使用新实例：
+由代理服务器的检查点存储支持的`google.adk.sessions.BaseSessionService`实现。包装器自动管理会话生命周期。它在线程的第一轮创建一个会话，在后续轮次中从检查点加载它，并在运行完成时写回更新的会话。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+根据 `Runner` 使用新实例：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 session_service = LangsmithSessionService()
 ```
 
@@ -215,15 +215,17 @@ session_service = LangsmithSessionService()
 
 包装代理的默认输入架构。
 
-|领域|类型 |描述 |
-| ------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+|领域 |类型 |描述 |
+| - | - | - |
 | `messages` | `list[AnyMessage]` | （必填）对话消息；包装器将 `messages[-1].content` 作为新用户消息发送到 ADK 运行器。 |
-| `state_delta` | `dict[str, Any] \| None` | （可选）传递到 `runner.run_async(state_delta=...)` 以改变本轮的 ADK 会话状态。           |
+| `state_delta` | `dict[str, Any] \| None` | （可选）传递到 `runner.run_async(state_delta=...)` 以改变本轮的 ADK 会话状态。 |
 
 ### `ADKOutput`
 
-包装代理的默认输出架构。|领域 |类型 |描述 |
-| ---------- | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+包装代理的默认输出架构。
+
+|领域 |类型 |描述 |
+| - | - | - |
 | `messages` | `list[AnyMessage]` |代理的响应消息，通过 LangGraph 的 `add_messages` 减速器附加到线程。 |
 
 将 `messages` 公开为键入字段（而不是普通的 `dict`）可以让 Studio 检测图表是否与聊天兼容并启用聊天模式切换。

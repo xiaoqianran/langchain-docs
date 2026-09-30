@@ -112,11 +112,11 @@ All code snippets on this page use the following `langgraph.json` unless otherwi
 
 `langgraph.json` is the configuration file that tells the LangGraph platform how to build and run your application. It lives at the root of your project and is required for both local development (with `langgraph dev`) and production deployment. The key fields are:
 
-| Field          | Description                                                                                                                                                                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dependencies` | Packages to install. `["."]` installs the current directory as a package (reads from `requirements.txt`, `pyproject.toml`, or `package.json`).                                                                                                  |
-| `graphs`       | Maps graph IDs to their code locations. Each entry is `"<id>": "./<file>:<variable>"`, where `<id>` is the name you use to invoke the graph via the API, and `<variable>` is the compiled graph or constructor function exported from `<file>`. |
-| `env`          | Path to a `.env` file with environment variables (API keys, secrets). These are set at build time and available at runtime.                                                                                                                     |
+| Field | Description |
+| - | - |
+| `dependencies` | Packages to install. `["."]` installs the current directory as a package (reads from `requirements.txt`, `pyproject.toml`, or `package.json`). |
+| `graphs` | Maps graph IDs to their code locations. Each entry is `"<id>": "./<file>:<variable>"`, where `<id>` is the name you use to invoke the graph via the API, and `<variable>` is the compiled graph or constructor function exported from `<file>`. |
+| `env` | Path to a `.env` file with environment variables (API keys, secrets). These are set at build time and available at runtime. |
 
 For the full set of configuration options (custom Docker steps, store indexing, auth handlers, and more), see [application structure](/oss/javascript/langgraph/application-structure).
 
@@ -359,11 +359,11 @@ How you [scope memory](#scoping) and [execution environments](#execution-environ
 
 LangSmith's [role-based access control](/langsmith/rbac) governs who on your team can deploy, configure, and monitor agents. This is separate from end-user authorization above.
 
-| Role             | Access                                                                |
-| ---------------- | --------------------------------------------------------------------- |
-| Workspace Admin  | Full permissions including settings and member management             |
+| Role | Access |
+| - | - |
+| Workspace Admin | Full permissions including settings and member management |
 | Workspace Editor | Create and modify resources, but cannot delete runs or manage members |
-| Workspace Viewer | Read-only access                                                      |
+| Workspace Viewer | Read-only access |
 
 Custom roles with granular permissions are available on Enterprise plans. See the [RBAC reference](/langsmith/rbac) for the full permission model.
 
@@ -432,11 +432,11 @@ Without memory, every conversation starts from scratch. Memory lets your agent r
 
 Memory is always persistent across conversations. The main question is how it's scoped across user and assistant boundaries. The right scope depends on who should see and modify the data:
 
-| Scope                          | Namespace        | Use case                                        | Example                           |
-| ------------------------------ | ---------------- | ----------------------------------------------- | --------------------------------- |
-| **User** (recommended default) | `(user_id)`      | Per-user preferences and context                | "I prefer concise responses"      |
-| **Assistant**                  | `(assistant_id)` | Shared instructions for one assistant           | "Cap posts at 280 characters"     |
-| **Global**                     | `(org_id)`       | Read-only policies for all users and assistants | "Never disclose internal pricing" |
+| Scope | Namespace | Use case | Example |
+| - | - | - | - |
+| **User** (recommended default) | `(user_id)` | Per-user preferences and context | "I prefer concise responses" |
+| **Assistant** | `(assistant_id)` | Shared instructions for one assistant | "Cap posts at 280 characters" |
+| **Global** | `(org_id)` | Read-only policies for all users and assistants | "Never disclose internal pricing" |
 
 <Warning>
   Shared memory (assistant, user, or organization scope) is a vector for prompt injection. If one user can write to memory that another user's conversation reads, a malicious user could inject instructions into that shared state. Enforce read-only access where appropriate. For example, make organization-wide policies writable only through application code, not by the agent itself. Use [permissions](/oss/javascript/deepagents/permissions) to declaratively deny writes to shared paths, or [backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) for custom validation logic.
@@ -570,10 +570,10 @@ If your agent needs to run code (not just read and write files), use a [sandbox]
 
 The key decision is how long a sandbox lives. Does each conversation get a fresh one, or do conversations share a persistent environment?
 
-| Scope                | Sandbox ID stored on                      | Lifecycle                                 | Example use case                                                     |
-| -------------------- | ----------------------------------------- | ----------------------------------------- | -------------------------------------------------------------------- |
-| **Thread-scoped**    | [Thread](/langsmith/use-threads) metadata | Fresh per conversation, cleaned up on TTL | A data analysis bot where each conversation starts clean             |
-| **Assistant-scoped** | [Assistant](/langsmith/assistants) config | Shared across all conversations           | A coding assistant that maintains a cloned repo across conversations |
+| Scope | Sandbox ID stored on | Lifecycle | Example use case |
+| - | - | - | - |
+| **Thread-scoped** | [Thread](/langsmith/use-threads) metadata | Fresh per conversation, cleaned up on TTL | A data analysis bot where each conversation starts clean |
+| **Assistant-scoped** | [Assistant](/langsmith/assistants) config | Shared across all conversations | A coding assistant that maintains a cloned repo across conversations |
 
 <Note>
   The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.

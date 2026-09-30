@@ -118,14 +118,14 @@ You can also build custom middleware to fit your specific needs.
 
 Build custom middleware by implementing any of these hooks using the `createMiddleware` function:
 
-| Hook            | When it runs             | Use cases                               |
-| --------------- | ------------------------ | --------------------------------------- |
-| `beforeAgent`   | Before calling the agent | Load memory, validate input             |
-| `beforeModel`   | Before each LLM call     | Update prompts, trim messages           |
-| `wrapModelCall` | Around each LLM call     | Intercept and modify requests/responses |
-| `wrapToolCall`  | Around each tool call    | Intercept and modify tool execution     |
-| `afterModel`    | After each LLM response  | Validate output, apply guardrails       |
-| `afterAgent`    | After agent completes    | Save results, cleanup                   |
+| Hook | When it runs | Use cases |
+| - | - | - |
+| `beforeAgent` | Before calling the agent | Load memory, validate input |
+| `beforeModel` | Before each LLM call | Update prompts, trim messages |
+| `wrapModelCall` | Around each LLM call | Intercept and modify requests/responses |
+| `wrapToolCall` | Around each tool call | Intercept and modify tool execution |
+| `afterModel` | After each LLM response | Validate output, apply guardrails |
+| `afterAgent` | After agent completes | Save results, cleanup |
 
 <div>
   <img alt="Middleware flow diagram" />

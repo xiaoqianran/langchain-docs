@@ -39,11 +39,11 @@ if (!agent) throw new Error("basic: agent not created");
 
 Each `FilesystemPermission` has three fields:
 
-| Field        | Type                    | Description                                                                                                                          |
-| ------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `operations` | `("read" \| "write")[]` | Operations this rule applies to. `"read"` covers `ls`, `read_file`, `glob`, `grep`. `"write"` covers `write_file`, `edit_file`.      |
-| `paths`      | `string[]`              | Glob patterns for matching file paths (e.g., `["/workspace/**"]`). Supports `**` for recursive matching and `{a,b}` for alternation. |
-| `mode`       | `"allow" \| "deny"`     | Whether to allow or deny matching operations. Defaults to `"allow"`.                                                                 |
+| Field | Type | Description |
+| - | - | - |
+| `operations` | `("read" \| "write")[]` | Operations this rule applies to. `"read"` covers `ls`, `read_file`, `glob`, `grep`. `"write"` covers `write_file`, `edit_file`. |
+| `paths` | `string[]` | Glob patterns for matching file paths (e.g., `["/workspace/**"]`). Supports `**` for recursive matching and `{a,b}` for alternation. |
+| `mode` | `"allow" \| "deny"` | Whether to allow or deny matching operations. Defaults to `"allow"`. |
 
 Rules use first-match-wins evaluation: the first rule whose `operations` and `paths` match the current call determines the outcome. If no rule matches, the call is **allowed** (permissive default).
 

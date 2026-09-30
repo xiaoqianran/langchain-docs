@@ -108,11 +108,11 @@ const weatherResponse = await agent.invoke({
 
   The server exposes these tools:
 
-  | Tool                                       | Description                                                                                   |
-  | ------------------------------------------ | --------------------------------------------------------------------------------------------- |
-  | `search_docs_by_lang_chain`                | Search docs for relevant guides, how-tos, and examples.                                       |
+  | Tool | Description |
+  | - | - |
+  | `search_docs_by_lang_chain` | Search docs for relevant guides, how-tos, and examples. |
   | `query_docs_filesystem_docs_by_lang_chain` | Read or search docs through a virtual filesystem (`rg`, `head`, `cat`, and related commands). |
-  | `submit_feedback`                          | Report a problem with a documentation page.                                                   |
+  | `submit_feedback` | Report a problem with a documentation page. |
 </Accordion>
 
 ## Custom servers

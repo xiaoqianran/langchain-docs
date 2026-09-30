@@ -52,7 +52,7 @@ Pass a snapshot ID or name when you want to boot from a reusable custom filesyst
 
   # Create a sandbox with the default runtime and run code
   with client.sandbox() as sb:
-      result = sb.run("python -c 'print(2 + 2)'")
+      result = sb.run("python3 -c 'print(2 + 2)'")
       print(result.stdout)  # "4\n"
       print(result.success)  # True
   ```
@@ -425,11 +425,11 @@ Pass `vcpus`, `mem_bytes`, and `fs_capacity_bytes` (`vCpus`, `memBytes`, `fsCapa
   ```
 </CodeGroup>
 
-| Resource   | Default           | Range                                                                                                                                                                 |
-| ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CPU        | 0.5 vCPU          | 0.05 to 16 vCPU. Use `cpu_millicores` for sub-core requests (`500` is 0.5 vCPU); it takes precedence over `vcpus`.                                                    |
-| Memory     | 4 GiB per vCPU    | Up to 64 GiB. Must stay within 50% of the per-vCPU target, so a 1 vCPU sandbox accepts 2 to 6 GiB. Set memory without CPU and the CPU is derived from the same ratio. |
-| Filesystem | Snapshot capacity | Up to 64 GiB, and never smaller than the snapshot it boots from.                                                                                                      |
+| Resource | Default | Range |
+| - | - | - |
+| CPU | 0.5 vCPU | 0.05 to 16 vCPU. Use `cpu_millicores` for sub-core requests (`500` is 0.5 vCPU); it takes precedence over `vcpus`. |
+| Memory | 4 GiB per vCPU | Up to 64 GiB. Must stay within 50% of the per-vCPU target, so a 1 vCPU sandbox accepts 2 to 6 GiB. Set memory without CPU and the CPU is derived from the same ratio. |
+| Filesystem | Snapshot capacity | Up to 64 GiB, and never smaller than the snapshot it boots from. |
 
 Sandboxes burst to twice their requested CPU when the host has spare capacity. Resizing an existing sandbox with `update_sandbox` / `updateSandbox` takes effect at its next start, and a resize enforces only the 64 GiB ceiling rather than the per-vCPU ratio.
 
@@ -442,9 +442,9 @@ Sandboxes burst to twice their requested CPU when the host has spare capacity. R
 Sandboxes are governed by a two-stage retention model anchored to **idle
 activity** and the **`stopped`** state.
 
-| Field                       | What it controls                                                                                                                                                                                                                    | When it fires                                                           |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `idle_ttl_seconds`          | The launcher stops the sandbox after this many seconds of inactivity. Any command execution or file I/O resets the timer. `0` disables the idle stop.                                                                               | Default `600` (10 minutes) when omitted.                                |
+| Field | What it controls | When it fires |
+| - | - | - |
+| `idle_ttl_seconds` | The launcher stops the sandbox after this many seconds of inactivity. Any command execution or file I/O resets the timer. `0` disables the idle stop. | Default `600` (10 minutes) when omitted. |
 | `delete_after_stop_seconds` | Once the sandbox enters the `stopped` state, this timer starts. After it elapses, the sandbox row + filesystem clone are permanently deleted by a server-side sweep. `0` disables stop-anchored deletion (manual cleanup required). | Server applies its configured default (typically 14 days) when omitted. |
 
 Both values must be multiples of 60 (minute resolution), and `delete_after_stop_seconds` caps at 2592000 (30 days). The full lifecycle is:

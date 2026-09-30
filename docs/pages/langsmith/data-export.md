@@ -182,11 +182,11 @@ curl --request POST \
 
 If a scheduled bulk export is created with `start_time=2025-07-16T00:00:00Z` and `interval_hours=6`:
 
-| Export | Start Time           | End Time             | Runs At              |
-| ------ | -------------------- | -------------------- | -------------------- |
-| 1      | 2025-07-16T00:00:00Z | 2025-07-16T06:00:00Z | 2025-07-16T06:10:00Z |
-| 2      | 2025-07-16T06:00:00Z | 2025-07-16T12:00:00Z | 2025-07-16T12:10:00Z |
-| 3      | 2025-07-16T12:00:00Z | 2025-07-16T18:00:00Z | 2025-07-16T18:10:00Z |
+| Export | Start Time | End Time | Runs At |
+| - | - | - | - |
+| 1 | 2025-07-16T00:00:00Z | 2025-07-16T06:00:00Z | 2025-07-16T06:10:00Z |
+| 2 | 2025-07-16T06:00:00Z | 2025-07-16T12:00:00Z | 2025-07-16T12:10:00Z |
+| 3 | 2025-07-16T12:00:00Z | 2025-07-16T18:00:00Z | 2025-07-16T18:10:00Z |
 
 ### Limit exported fields
 
@@ -234,46 +234,46 @@ By default, bulk exports include the following fields for each run:
 
 **Identifiers & hierarchy:**
 
-| Field                  | Description                               |
-| ---------------------- | ----------------------------------------- |
-| `id`                   | Run ID                                    |
-| `tenant_id`            | Workspace/tenant ID                       |
-| `session_id`           | Project/session ID                        |
-| `trace_id`             | Trace ID                                  |
-| `parent_run_id`        | Parent run ID                             |
-| `parent_run_ids`       | List of all parent run IDs                |
+| Field | Description |
+| - | - |
+| `id` | Run ID |
+| `tenant_id` | Workspace/tenant ID |
+| `session_id` | Project/session ID |
+| `trace_id` | Trace ID |
+| `parent_run_id` | Parent run ID |
+| `parent_run_ids` | List of all parent run IDs |
 | `reference_example_id` | Reference to example if part of a dataset |
 
 **Basic metadata:**
 
-| Field          | Description                                |
-| -------------- | ------------------------------------------ |
-| `name`         | Run name                                   |
-| `run_type`     | Type of run (e.g., "chain", "llm", "tool") |
-| `start_time`   | Start timestamp (UTC)                      |
-| `end_time`     | End timestamp (UTC)                        |
-| `status`       | Run status (e.g., "success", "error")      |
-| `is_root`      | Whether this is a root-level run           |
-| `dotted_order` | Hierarchical ordering string               |
-| `trace_tier`   | Trace tier/retention level                 |
+| Field | Description |
+| - | - |
+| `name` | Run name |
+| `run_type` | Type of run (e.g., "chain", "llm", "tool") |
+| `start_time` | Start timestamp (UTC) |
+| `end_time` | End timestamp (UTC) |
+| `status` | Run status (e.g., "success", "error") |
+| `is_root` | Whether this is a root-level run |
+| `dotted_order` | Hierarchical ordering string |
+| `trace_tier` | Trace tier/retention level |
 
 **Run data:**
 
-| Field     | Description             |
-| --------- | ----------------------- |
-| `inputs`  | Run inputs (JSON)       |
-| `outputs` | Run outputs (JSON)      |
-| `error`   | Error message if failed |
-| `extra`   | Extra metadata (JSON)   |
-| `events`  | Run events (JSON)       |
+| Field | Description |
+| - | - |
+| `inputs` | Run inputs (JSON) |
+| `outputs` | Run outputs (JSON) |
+| `error` | Error message if failed |
+| `extra` | Extra metadata (JSON) |
+| `events` | Run events (JSON) |
 
 **Tags & feedback:**
 
-| Field            | Description                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| `tags`           | List of tags                                                                         |
+| Field | Description |
+| - | - |
+| `tags` | List of tags |
 | `feedback_stats` | Feedback statistics (JSON). Refer to the following note for aggregation limitations. |
-| `feedbacks`      | Feedback comments and keys (JSON)                                                    |
+| `feedbacks` | Feedback comments and keys (JSON) |
 
 <Note>
   **`feedback_stats` aggregation limitation**
@@ -283,15 +283,15 @@ By default, bulk exports include the following fields for each run:
 
 **Token usage & costs:**
 
-| Field               | Description            |
-| ------------------- | ---------------------- |
-| `total_tokens`      | Total token count      |
-| `prompt_tokens`     | Prompt token count     |
+| Field | Description |
+| - | - |
+| `total_tokens` | Total token count |
+| `prompt_tokens` | Prompt token count |
 | `completion_tokens` | Completion token count |
-| `total_cost`        | Total cost             |
-| `prompt_cost`       | Prompt cost            |
-| `completion_cost`   | Completion cost        |
-| `first_token_time`  | Time to first token    |
+| `total_cost` | Total cost |
+| `prompt_cost` | Prompt cost |
+| `completion_cost` | Completion cost |
+| `first_token_time` | Time to first token |
 
 ### Partitioning scheme
 

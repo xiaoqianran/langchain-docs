@@ -115,23 +115,23 @@ The harness provides a configurable virtual filesystem which can be backed by di
 
 The backends support the following file system operations:
 
-| Tool         | Description                                                                                                                                                                                                              |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ls`         | List files in a directory with metadata (size, modified time)                                                                                                                                                            |
-| `read_file`  | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents). See supported extensions below. |
-| `write_file` | Create new files                                                                                                                                                                                                         |
-| `edit_file`  | Perform exact string replacements in files (with global replace mode)                                                                                                                                                    |
-| `glob`       | Find files matching patterns (e.g., `**/*.py`)                                                                                                                                                                           |
-| `grep`       | Search file contents with multiple output modes (files only, content with context, or counts)                                                                                                                            |
-| `execute`    | Run shell commands in the environment (available with [sandbox backends](/oss/javascript/deepagents/sandboxes) only)                                                                                                     |
+| Tool | Description |
+| - | - |
+| `ls` | List files in a directory with metadata (size, modified time) |
+| `read_file` | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents). See supported extensions below. |
+| `write_file` | Create new files |
+| `edit_file` | Perform exact string replacements in files (with global replace mode) |
+| `glob` | Find files matching patterns (e.g., `**/*.py`) |
+| `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
+| `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/javascript/deepagents/sandboxes) only) |
 
 <Accordion title="Supported multimodal file extensions">
-  | Type                                                   | Extensions                                                                |
-  | ------------------------------------------------------ | ------------------------------------------------------------------------- |
-  | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif`                |
+  | Type | Extensions |
+  | - | - |
+  | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
   | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac`                          |
-  | [File](/oss/javascript/langchain/messages#multimodal)  | `.pdf`, `.ppt`, `.pptx`                                                   |
+  | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+  | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 </Accordion>
 
 <Accordion title="Running without the default filesystem tools" icon="ban">

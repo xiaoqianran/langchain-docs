@@ -12,10 +12,10 @@ Managed Deep Agents stores deploy-owned instructions and skills, and optional du
 
 ## What lives in Context Hub
 
-| Content        | Project source                                                                    | Synced on `mda deploy`                               | Writable by the agent         |
-| -------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------- | ----------------------------- |
-| System prompt  | [`instructions.md`](/langsmith/javascript/managed-deep-agents-instructions)       | Yes                                                  | No                            |
-| Skills         | [`skills/`](/langsmith/javascript/managed-deep-agents-skills)                     | Yes                                                  | No                            |
+| Content | Project source | Synced on `mda deploy` | Writable by the agent |
+| - | - | - | - |
+| System prompt | [`instructions.md`](/langsmith/javascript/managed-deep-agents-instructions) | Yes | No |
+| Skills | [`skills/`](/langsmith/javascript/managed-deep-agents-skills) | Yes | No |
 | Durable memory | Optional [`memory`](/langsmith/javascript/managed-deep-agents-memory) declaration | Enables the tree; does not overwrite existing memory | Yes, under `/memories/agent/` |
 
 Tools, middleware, MCP connectors, channels, schedules, sandboxes, and the agent definition ship with the compiled deployment. They are not synced to Context Hub.
@@ -57,10 +57,10 @@ Non-interactive conflict (CI or redirected output):
 └  Context Hub instructions.md and skills/ changed since the last MDA sync. Re-run with --context-strategy overwrite or --context-strategy keep-hub.
 ```
 
-| Strategy    | Effect                                                                                                 |
-| ----------- | ------------------------------------------------------------------------------------------------------ |
+| Strategy | Effect |
+| - | - |
 | `overwrite` | Replace the Hub-edited `instructions.md` or `skills/` with the project copy, then continue the deploy. |
-| `keep-hub`  | Keep the Context Hub version, skip syncing that section, and continue the deploy.                      |
+| `keep-hub` | Keep the Context Hub version, skip syncing that section, and continue the deploy. |
 
 For the full deploy step list and flags, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli#deploy-projects). For secrets routing and deploy options, see [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy).
 
@@ -84,12 +84,12 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/jav
 
 ## Choose where context belongs
 
-| Goal                                                  | Use                                                                                                                                                                                                         |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Always-on system prompt                               | [Instructions](/langsmith/javascript/managed-deep-agents-instructions)                                                                                                                                      |
-| Task-specific procedures                              | [Skills](/langsmith/javascript/managed-deep-agents-skills)                                                                                                                                                  |
-| Knowledge the agent learns and retains across threads | [Memory](/langsmith/javascript/managed-deep-agents-memory)                                                                                                                                                  |
-| Application logic and external calls                  | [Tools](/langsmith/javascript/managed-deep-agents-tools), [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors), or [middleware](/langsmith/javascript/managed-deep-agents-middleware) |
+| Goal | Use |
+| - | - |
+| Always-on system prompt | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
+| Task-specific procedures | [Skills](/langsmith/javascript/managed-deep-agents-skills) |
+| Knowledge the agent learns and retains across threads | [Memory](/langsmith/javascript/managed-deep-agents-memory) |
+| Application logic and external calls | [Tools](/langsmith/javascript/managed-deep-agents-tools), [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors), or [middleware](/langsmith/javascript/managed-deep-agents-middleware) |
 
 ## See also
 

@@ -151,13 +151,13 @@ Add the required span attributes to each application run. These attributes link 
 
 The following attributes are relevant for experiment evaluation:
 
-| Attribute                        | Purpose                                           |
-| -------------------------------- | ------------------------------------------------- |
-| `langsmith.trace.session_id`     | Routes the trace to your experiment session       |
-| `langsmith.reference_example_id` | Links the trace to a specific dataset example     |
-| `langsmith.span.kind`            | Sets the span type (e.g., "llm", "chain", "tool") |
-| `inputs`                         | Records the input to your application             |
-| `outputs`                        | Records the output from your application          |
+| Attribute | Purpose |
+| - | - |
+| `langsmith.trace.session_id` | Routes the trace to your experiment session |
+| `langsmith.reference_example_id` | Links the trace to a specific dataset example |
+| `langsmith.span.kind` | Sets the span type (e.g., "llm", "chain", "tool") |
+| `inputs` | Records the input to your application |
+| `outputs` | Records the output from your application |
 
 For a complete list of supported OpenTelemetry attributes, see [Trace with OpenTelemetry](/langsmith/trace-with-opentelemetry#supported-opentelemetry-attribute-and-event-mapping).
 

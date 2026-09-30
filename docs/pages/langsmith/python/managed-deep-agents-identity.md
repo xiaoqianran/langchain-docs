@@ -24,11 +24,11 @@ For the full project layout, see [Project structure](/langsmith/python/managed-d
 
 By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase instead:
 
-| Goal                                                                          | Use                                                                         |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Lock down the deployment for SDK clients, scripts, and services               | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
-| Signed-in end users with private chats, verified by Managed Deep Agents       | [Supabase](#configure-identity-with-supabase)                               |
-| Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend)               |
+| Goal | Use |
+| - | - |
+| Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
+| Signed-in end users with private chats, verified by Managed Deep Agents | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend) |
 
 Supabase and backend identity both give each end user private threads. The difference is who verifies the user. With Supabase, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
 

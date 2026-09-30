@@ -201,33 +201,33 @@ With this setup, you can later filter traces by temperature, compare runs with d
 
 ### User-configurable parameters
 
-| Parameter                                             | Type       | Required | Description                                                                                      |
-| ----------------------------------------------------- | ---------- | -------- | ------------------------------------------------------------------------------------------------ |
-| [`ls_provider`](#ls_provider)                         | `string`   | Yes\*    | LLM provider name for cost tracking                                                              |
-| [`ls_model_name`](#ls_model_name)                     | `string`   | Yes\*    | Model identifier for cost tracking                                                               |
-| [`ls_temperature`](#ls_temperature)                   | `number`   | No       | Temperature parameter used                                                                       |
-| [`ls_max_tokens`](#ls_max_tokens)                     | `number`   | No       | Maximum tokens parameter used                                                                    |
-| [`ls_stop`](#ls_stop)                                 | `string[]` | No       | Stop sequences used                                                                              |
-| [`ls_invocation_params`](#ls_invocation_params)       | `object`   | No       | Additional invocation parameters                                                                 |
-| [`ls_agent_type`](#ls_agent_type)                     | `string`   | No       | Controls how agent runs appear in the Trajectory view: `"root"`, `"subagent"`, or `"middleware"` |
-| [`ls_message_view_exclude`](#ls_message_view_exclude) | `boolean`  | No       | Hides the run from the Trajectory view                                                           |
-| [`ls_is_error_interrupt`](#ls_is_error_interrupt)     | `boolean`  | No       | Marks an errored run as interrupted when set to `true`                                           |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| [`ls_provider`](#ls_provider) | `string` | Yes\* | LLM provider name for cost tracking |
+| [`ls_model_name`](#ls_model_name) | `string` | Yes\* | Model identifier for cost tracking |
+| [`ls_temperature`](#ls_temperature) | `number` | No | Temperature parameter used |
+| [`ls_max_tokens`](#ls_max_tokens) | `number` | No | Maximum tokens parameter used |
+| [`ls_stop`](#ls_stop) | `string[]` | No | Stop sequences used |
+| [`ls_invocation_params`](#ls_invocation_params) | `object` | No | Additional invocation parameters |
+| [`ls_agent_type`](#ls_agent_type) | `string` | No | Controls how agent runs appear in the Trajectory view: `"root"`, `"subagent"`, or `"middleware"` |
+| [`ls_message_view_exclude`](#ls_message_view_exclude) | `boolean` | No | Hides the run from the Trajectory view |
+| [`ls_is_error_interrupt`](#ls_is_error_interrupt) | `boolean` | No | Marks an errored run as interrupted when set to `true` |
 
 \* `ls_provider` and `ls_model_name` must be provided together for cost tracking
 
 ### System-generated parameters
 
-| Parameter                       | Type      | Description                                                            |
-| ------------------------------- | --------- | ---------------------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | [`ls_run_depth`](#ls_run_depth) | `integer` | Depth in trace tree (0=root, 1=child, etc.) - automatically calculated |
-| [`ls_method`](#ls_method)       | `string`  | Tracing method used (e.g., "traceable") - set by SDK                   |
+| [`ls_method`](#ls_method) | `string` | Tracing method used (e.g., "traceable") - set by SDK |
 
 ### Experiment parameters
 
-| Parameter                               | Type            | Description                                                             |
-| --------------------------------------- | --------------- | ----------------------------------------------------------------------- |
-| [`ls_example_*`](#ls_example_)          | `any`           | Example metadata prefixed with `ls_example_` - added during experiments |
-| [`ls_experiment_id`](#ls_experiment_id) | `string` (UUID) | Unique experiment identifier - added during experiments                 |
+| Parameter | Type | Description |
+| - | - | - |
+| [`ls_example_*`](#ls_example_) | `any` | Example metadata prefixed with `ls_example_` - added during experiments |
+| [`ls_experiment_id`](#ls_experiment_id) | `string` (UUID) | Unique experiment identifier - added during experiments |
 
 ## Parameter details
 

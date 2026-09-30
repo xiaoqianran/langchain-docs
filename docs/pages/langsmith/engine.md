@@ -179,10 +179,10 @@ Engine charges in **LangChain Compute Units (LCUs)**, a normalized unit of work 
 
 Engine runs in two phases:
 
-| Phase               | Trigger                                   | Typical LCU usage |
-| ------------------- | ----------------------------------------- | ----------------- |
-| **Initialization**  | First time you enable Engine on a project | 30-40 LCUs        |
-| **Recurring scans** | Automatically, on a dynamic schedule      | 10-15 LCUs        |
+| Phase | Trigger | Typical LCU usage |
+| - | - | - |
+| **Initialization** | First time you enable Engine on a project | 30-40 LCUs |
+| **Recurring scans** | Automatically, on a dynamic schedule | 10-15 LCUs |
 
 On initialization, Engine audits past traces, clusters and prioritizes issues by severity, and proposes fixes to your prompts or code (if a repository is connected). Recurring scans run on a dynamic schedule tuned to balance cost and performance, whether or not new issues are found, and surface new issues not previously detected.
 
@@ -541,24 +541,24 @@ Each issue reports a baseline result and, once a fix exists, a verification resu
 
 The baseline result answers whether the issue still happens on your deployment:
 
-| Status             | Meaning                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------ |
-| **Awaiting test**  | Engine has not recorded a baseline result yet.                                       |
-| **Reproduced**     | At least one replay showed the reported behavior again.                              |
+| Status | Meaning |
+| - | - |
+| **Awaiting test** | Engine has not recorded a baseline result yet. |
+| **Reproduced** | At least one replay showed the reported behavior again. |
 | **Not reproduced** | Every replay finished without the reported behavior, so Engine closes an open issue. |
-| **Inconclusive**   | Engine could not judge the replays confidently.                                      |
-| **Error**          | Validation could not complete.                                                       |
+| **Inconclusive** | Engine could not judge the replays confidently. |
+| **Error** | Validation could not complete. |
 
 The verification result answers whether Engine's fix resolved it:
 
-| Status                                        | Meaning                                                              |
-| --------------------------------------------- | -------------------------------------------------------------------- |
-| **Not run**                                   | The issue did not reproduce, so there is nothing to verify.          |
-| **Generating fix** or **Awaiting fix**        | Engine is still producing a fix to verify.                           |
-| **Awaiting preview** or **Running**           | A preview deployment is building, or replays are in progress.        |
-| **Verified**                                  | The issue no longer occurred on the fix's preview deployment.        |
-| **Not fixed**                                 | The issue still occurred, so Engine revises the fix and tries again. |
-| **Inconclusive**, **Timed out**, or **Error** | Engine could not establish a verdict for this attempt.               |
+| Status | Meaning |
+| - | - |
+| **Not run** | The issue did not reproduce, so there is nothing to verify. |
+| **Generating fix** or **Awaiting fix** | Engine is still producing a fix to verify. |
+| **Awaiting preview** or **Running** | A preview deployment is building, or replays are in progress. |
+| **Verified** | The issue no longer occurred on the fix's preview deployment. |
+| **Not fixed** | The issue still occurred, so Engine revises the fix and tries again. |
+| **Inconclusive**, **Timed out**, or **Error** | Engine could not establish a verdict for this attempt. |
 
 <Warning>
   **Inconclusive** means Engine could not gather trustworthy evidence, not that the issue is absent or fixed. Treat it as a signal to re-test rather than as a passing result.
@@ -683,12 +683,12 @@ Click the filter icon to show a single status, or the sort icon to sort by **Def
 
 Each hypothesis has one of these statuses:
 
-| Status             | Meaning                                                                                      |
-| ------------------ | -------------------------------------------------------------------------------------------- |
-| **Confirmed**      | A probe reproduced the failure, and Engine judged it a real finding.                         |
-| **Needs Review**   | The evidence was ambiguous or incomplete. Review the probes before acting on the hypothesis. |
-| **No Issue Found** | Probes ran, and the agent behaved correctly.                                                 |
-| **Not Tested**     | No probe exercised the hypothesis. This is missing coverage, not evidence of safe behavior.  |
+| Status | Meaning |
+| - | - |
+| **Confirmed** | A probe reproduced the failure, and Engine judged it a real finding. |
+| **Needs Review** | The evidence was ambiguous or incomplete. Review the probes before acting on the hypothesis. |
+| **No Issue Found** | Probes ran, and the agent behaved correctly. |
+| **Not Tested** | No probe exercised the hypothesis. This is missing coverage, not evidence of safe behavior. |
 
 A confirmed finding also has a severity: **Critical**, **High**, **Medium**, **Low**, or **Info**.
 
@@ -709,18 +709,18 @@ Below the probes, **Why the Judge Decided This** explains how Engine reached the
 
 Every hypothesis belongs to one issue class, chosen by the failure's root cause and the fix it needs. Each report accounts for all 10 classes, and marks each one as tested, untested, or not applicable to the agent.
 
-| Issue class               | What Red Teaming tests                                                                                           |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **Content Policy**        | Violations of explicit product, legal, safety, or business policies, such as a prohibited competitor comparison. |
-| **Instruction Hierarchy** | Direct overrides of the agent's instructions, and conflicting or confusing prompt instructions.                  |
-| **Indirect Injection**    | Retrieved content, tool output, or other untrusted data that tries to control the agent.                         |
-| **Data Exposure**         | Hidden context, such as synthetic canary values planted by a probe, escaping into a response.                    |
-| **Auth Isolation**        | Access or actions beyond the caller's identity or permission boundary.                                           |
-| **Tool Safety**           | Unsafe tool selection, arguments, or approvals, and unsafe consequential workflows.                              |
-| **Workflow Integrity**    | Required steps, such as retrieval, clarification, or truthful completion, that the agent skips or fabricates.    |
-| **Session Integrity**     | Multi-turn state problems, such as memory poisoning, delayed activation, or role confusion.                      |
-| **Input Robustness**      | Confusion caused by structured output, parsing, delimiters, encodings, or message boundaries.                    |
-| **Reliability Safety**    | Behavior around failures, retries, resource limits, loops, duplicate work, and irreversible side effects.        |
+| Issue class | What Red Teaming tests |
+| - | - |
+| **Content Policy** | Violations of explicit product, legal, safety, or business policies, such as a prohibited competitor comparison. |
+| **Instruction Hierarchy** | Direct overrides of the agent's instructions, and conflicting or confusing prompt instructions. |
+| **Indirect Injection** | Retrieved content, tool output, or other untrusted data that tries to control the agent. |
+| **Data Exposure** | Hidden context, such as synthetic canary values planted by a probe, escaping into a response. |
+| **Auth Isolation** | Access or actions beyond the caller's identity or permission boundary. |
+| **Tool Safety** | Unsafe tool selection, arguments, or approvals, and unsafe consequential workflows. |
+| **Workflow Integrity** | Required steps, such as retrieval, clarification, or truthful completion, that the agent skips or fabricates. |
+| **Session Integrity** | Multi-turn state problems, such as memory poisoning, delayed activation, or role confusion. |
+| **Input Robustness** | Confusion caused by structured output, parsing, delimiters, encodings, or message boundaries. |
+| **Reliability Safety** | Behavior around failures, retries, resource limits, loops, duplicate work, and irreversible side effects. |
 
 Two classes have extra requirements:
 
@@ -737,13 +737,13 @@ After you deploy a new revision to the baseline deployment, the next run starts 
 
 Each red-team run is bounded:
 
-| Limit                               | Value per run                                      |
-| ----------------------------------- | -------------------------------------------------- |
-| Traces reviewed                     | 25, selected from up to 100 recent trace summaries |
-| Hypotheses                          | 50                                                 |
-| Probes per hypothesis               | 2                                                  |
-| Requests to the baseline deployment | 100                                                |
-| Recommendations                     | 20                                                 |
+| Limit | Value per run |
+| - | - |
+| Traces reviewed | 25, selected from up to 100 recent trace summaries |
+| Hypotheses | 50 |
+| Probes per hypothesis | 2 |
+| Requests to the baseline deployment | 100 |
+| Recommendations | 20 |
 
 ### How Red Teaming handles your data
 

@@ -22,12 +22,12 @@ Each mount has an `id`, a `type`, and a `mount_path` / `mountPath`. Bucket and G
 
 Use stable paths that describe the mounted source:
 
-| Source            | Example path                |
-| ----------------- | --------------------------- |
-| S3 bucket prefix  | `/mnt/mounts/customer-data` |
+| Source | Example path |
+| - | - |
+| S3 bucket prefix | `/mnt/mounts/customer-data` |
 | GCS bucket prefix | `/mnt/mounts/eval-datasets` |
-| Git repository    | `/mnt/mounts/repo`          |
-| Context Hub repo  | `/memories`                 |
+| Git repository | `/mnt/mounts/repo` |
+| Context Hub repo | `/memories` |
 
 Mount IDs can contain ASCII letters, digits, underscores, and hyphens. Do not reuse an ID or mount path within the same sandbox.
 
@@ -673,9 +673,9 @@ VFS cache used by the bucket mount; the bucket remains the source of truth. Use
 cache settings to control local disk usage and writeback timing, not as a
 separate persistence layer. Cache settings do not apply to Git mounts.
 
-| Field               | Description                                                                                                                                                                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `max_size_bytes`    | Optional maximum size, in bytes, for the local mount cache. Set a positive value to add an explicit cap; omit it to leave the runtime default.                                                                                                |
+| Field | Description |
+| - | - |
+| `max_size_bytes` | Optional maximum size, in bytes, for the local mount cache. Set a positive value to add an explicit cap; omit it to leave the runtime default. |
 | `writeback_seconds` | Optional delay, in seconds, before cached writes are written back to the bucket. The default is `0`. Lower values make writes visible to the bucket sooner; higher values can reduce write traffic for workloads that rewrite the same files. |
 
 For read-only dataset mounts, configure `max_size_bytes` only when you need a

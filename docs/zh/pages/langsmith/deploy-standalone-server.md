@@ -13,9 +13,11 @@
 您管理一个简化的<Tooltip>数据平面</Tooltip>，由代理服务器及其所需的支持服务（PostgreSQL、Redis等）组成：
 
 |组件|职责|它在哪里运行 |谁来管理|
-| ----------------- | ---------------------------------------------------------------------------------- | ------------------- | -------------- |
+| - | - | - | - |
 | **控制平面** |不适用 |不适用 |不适用 |
-| **数据平面** | <ul><li>代理服务器</li><li>Postgres、Redis等</li></ul> |您的基础设施|你|此选项使您可以完全控制扩展、部署和 CI/CD 管道，同时仍然允许与 LangSmith 集成以进行跟踪和评估。
+| **数据平面** | <ul><li>代理服务器</li><li>Postgres、Redis等</li></ul> |您的基础设施|你|
+
+此选项使您可以完全控制扩展、部署和 CI/CD 管道，同时仍然允许与 LangSmith 集成以进行跟踪和评估。
 
 <Warning>
   不要在无服务器环境中运行独立服务器。缩放到零可能会导致任务丢失，并且向上扩展将无法可靠地工作。
@@ -25,9 +27,7 @@
 
 <img alt="Standalone server architecture" />
 
-### 工作流程
-
-1. 使用 `langgraph-cli` 或 [Studio](/langsmith/studio) 在本地定义并测试您的图。
+### 工作流程1. 使用 `langgraph-cli` 或 [Studio](/langsmith/studio) 在本地定义并测试您的图。
 2. 将代理打包为 Docker 映像。
 3. 将代理服务器部署到您选择的计算平台（Kubernetes、Docker、VM）。
 4. （可选）配置 LangSmith API 密钥和端点，以便服务器将跟踪和评估报告回 LangSmith（自托管或 SaaS）。
@@ -35,51 +35,51 @@
 ### 支持的计算平台
 
 * **Kubernetes**：使用 LangSmith Helm 图表在 Kubernetes 集群中运行代理服务器。这是生产级部署的推荐选项。
-* **Docker**：在任何 Docker 支持的计算平台（本地开发机、VM、ECS 等）中运行。这最适合开发或小规模工作负载。<Warning>
+* **Docker**：在任何 Docker 支持的计算平台（本地开发机、VM、ECS 等）中运行。这最适合开发或小规模工作负载。
+
+<Warning>
   对于生产部署，请使用 Kubernetes 和维护的 LangSmith Helm 图表。这是LangChain定期测试的生产路径。 LangChain 不定期测试其他编排器。
 
-  非 Kubernetes 部署存在已知的缺陷，您必须自行实现和维护。随着 Helm 图表的发展，这些部署可能会进一步偏离测试的生产路径：
-
-  * **独立队列自动扩展**：为突发性、写入密集型工作负载配置扩展策略和队列指标。
+  非 Kubernetes 部署存在已知的缺陷，您必须自行实现和维护。随着 Helm 图表的发展，这些部署可能会进一步偏离测试的生产路径：* **独立队列自动扩展**：为突发性、写入密集型工作负载配置扩展策略和队列指标。
   * **优雅的运行耗尽**：配置关闭耗尽和足够的终止窗口，以便在部署和缩减事件期间完成运行中的运行。
   * **分离模式连接**：配置和连接单独的 API 和队列服务。当 `queue.enabled` 为 `true` 时，Helm 图表会处理此问题。
   * **参考扩展配置**：将 [Agent Server scaling](/langsmith/agent-server-scale) 设置（包括 `api.replicas`、`queue.replicas`、`numberOfJobsPerWorker` 和只读副本）转换为 Orchestrator 的任务定义和扩展策略。
   * **版本升级和支持**：维护任务定义并应用版本更新。 LangChain 测试并发布支持的 Helm 图表版本更新。
 </Warning>
 
-## 先决条件1. 使用[LangGraph CLI](/langsmith/cli)至[test your application locally](/langsmith/local-dev-testing)。
+## 先决条件
+
+1. 使用[LangGraph CLI](/langsmith/cli)至[test your application locally](/langsmith/local-dev-testing)。
 2. 使用[LangGraph CLI](/langsmith/cli)构建Docker镜像（即`langgraph build`）。
 3. 数据平面部署需要以下环境变量。
-4. `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
-
-   <Note>
+4. `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。<Note>
      **共享Redis实例**
      多个自托管部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/2`。
 
      `1` 和`2` 是同一实例内的不同数据库编号，但`<hostname_1>` 是共享的。 **相同的数据库编号不能用于单独的部署**。
    </Note>
-5. `DATABASE_URI`：Postgres 连接详细信息。 Postgres 将用于存储助手、线程、运行、持久线程状态和长期内存，并使用“恰好一次”语义管理后台任务队列的状态。 `DATABASE_URI` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。<Note>
+5. `DATABASE_URI`：Postgres 连接详细信息。 Postgres 将用于存储助手、线程、运行、持久线程状态和长期内存，并使用“恰好一次”语义管理后台任务队列的状态。 `DATABASE_URI` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。
+
+   <Note>
      **共享 Postgres 实例**
      多个自托管部署可以共享同一个 Postgres 实例。例如，对于`Deployment A`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。
 
      `<database_name_1>` 和 `database_name_2` 是同一实例中的不同数据库，但 `<hostname_1>` 是共享的。 **同一数据库不能用于单独的部署**。
-   </Note>
-
-   <Tip>
+   </Note><Tip>
      您可以选择将检查点数据存储在 MongoDB 而不是 PostgreSQL 中。所有其他服务器数据仍然需要 PostgreSQL。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
    </Tip>
 6. `LANGSMITH_API_KEY`：LangSmith API 密钥。
 7. `LANGGRAPH_CLOUD_LICENSE_KEY`：LangSmith 许可证密钥。这将用于在服务器启动时进行一次身份验证。
 8. `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
-9. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。<Note>
+9. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。
+
+<Note>
   从 0.14.0 开始，代理服务器服务默认侦听 IPv4 和 IPv6。双栈集群无需额外配置。要侦听单个地址系列，请将 `LANGGRAPH_SERVER_HOST` 设置为 `0.0.0.0`（仅适用于 IPv4）或 `::`（仅适用于 IPv6）。参见[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
 </Note>
 
 ## 库伯内特斯
 
-使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。
-
-Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。
+使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。
 
 ## 码头工人
 
@@ -107,7 +107,9 @@ docker run \
   * 如果您的应用程序需要额外的环境变量，您可以通过类似的方式传递它们。
 </Note>
 
-## Docker 组合<Warning>
+## Docker 组合
+
+<Warning>
   此 Docker Compose 示例旨在用于本地开发和测试。对于生产，请使用 Kubernetes 部署。
 </Warning>
 
@@ -161,9 +163,7 @@ services:
 将此文件放在同一文件夹中运行 `docker compose up`。
 
 <Accordion title="With MongoDB checkpointing">
-  要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
-
-  ```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   volumes:
       langgraph-data:
           driver: local

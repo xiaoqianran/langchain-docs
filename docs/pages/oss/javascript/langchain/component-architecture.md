@@ -75,15 +75,15 @@ Each component layer builds on the previous ones:
 
 LangChain organizes components into these main categories:
 
-| Category                                                                 | Purpose                     | Key Components                      | Use Cases                                          |
-| ------------------------------------------------------------------------ | --------------------------- | ----------------------------------- | -------------------------------------------------- |
-| **[Models](/oss/javascript/langchain/models)**                           | AI reasoning and generation | Chat models, LLMs, Embedding models | Text generation, reasoning, semantic understanding |
-| **[Tools](/oss/javascript/langchain/tools)**                             | External capabilities       | APIs, databases, etc.               | Web search, data access, computations              |
-| **[Agents](/oss/javascript/langchain/agents)**                           | Orchestration and reasoning | ReAct agents, tool calling agents   | Nondeterministic workflows, decision making        |
-| **[Memory](/oss/javascript/langchain/short-term-memory)**                | Context preservation        | Message history, custom state       | Conversations, stateful interactions               |
-| **[Retrievers](/oss/javascript/integrations/retrievers)**                | Information access          | Vector retrievers, web retrievers   | RAG, knowledge base search                         |
-| **[Document processing](/oss/javascript/integrations/document_loaders)** | Data ingestion              | Loaders, splitters, transformers    | PDF processing, web scraping                       |
-| **[Vector Stores](/oss/javascript/integrations/vectorstores)**           | Semantic search             | Chroma, Pinecone, FAISS             | Similarity search, embeddings storage              |
+| Category | Purpose | Key Components | Use Cases |
+| - | - | - | - |
+| **[Models](/oss/javascript/langchain/models)** | AI reasoning and generation | Chat models, LLMs, Embedding models | Text generation, reasoning, semantic understanding |
+| **[Tools](/oss/javascript/langchain/tools)** | External capabilities | APIs, databases, etc. | Web search, data access, computations |
+| **[Agents](/oss/javascript/langchain/agents)** | Orchestration and reasoning | ReAct agents, tool calling agents | Nondeterministic workflows, decision making |
+| **[Memory](/oss/javascript/langchain/short-term-memory)** | Context preservation | Message history, custom state | Conversations, stateful interactions |
+| **[Retrievers](/oss/javascript/integrations/retrievers)** | Information access | Vector retrievers, web retrievers | RAG, knowledge base search |
+| **[Document processing](/oss/javascript/integrations/document_loaders)** | Data ingestion | Loaders, splitters, transformers | PDF processing, web scraping |
+| **[Vector Stores](/oss/javascript/integrations/vectorstores)** | Semantic search | Chroma, Pinecone, FAISS | Similarity search, embeddings storage |
 
 ## Common patterns
 

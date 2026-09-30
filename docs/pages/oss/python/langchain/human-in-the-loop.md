@@ -13,12 +13,12 @@ A human decision then determines what happens next: the action can be approved a
 
 The [middleware](/oss/python/langchain/middleware/built-in#human-in-the-loop) defines four built-in ways a human can respond to an interrupt:
 
-| Decision Type | Description                                                                                                     | Example Use Case                                  |
-| ------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| ✅ `approve`   | Execute the tool with the original arguments as proposed by the agent.                                          | Send an email draft exactly as written            |
-| ✏️ `edit`     | Modify the tool arguments before execution.                                                                     | Change the recipient before sending an email      |
-| ❌ `reject`    | Skip executing this tool call entirely and return rejection feedback to the agent.                              | Deny file deletion and explain why                |
-| 💬 `respond`  | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
+| Decision Type | Description | Example Use Case |
+| - | - | - |
+| ✅ `approve` | Execute the tool with the original arguments as proposed by the agent. | Send an email draft exactly as written |
+| ✏️ `edit` | Modify the tool arguments before execution. | Change the recipient before sending an email |
+| ❌ `reject` | Skip executing this tool call entirely and return rejection feedback to the agent. | Deny file deletion and explain why |
+| 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
 
 The available decision types for each tool depend on the policy you configure in `interrupt_on`.
 When multiple tool calls are paused at the same time, each action requires a separate decision.

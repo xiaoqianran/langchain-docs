@@ -46,31 +46,31 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. SvelteKit
 
 ### Minimum (streaming chat)
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| - | - | - |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 ### Optional (sidebar)
 
-| Method   | Path                             | Purpose                                   |
-| -------- | -------------------------------- | ----------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer    |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history              |
+| Method | Path | Purpose |
+| - | - | - |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history |
 
 ## Cloudflare backend design
 
-| Concern       | Implementation                                          |
-| ------------- | ------------------------------------------------------- |
-| Frontend      | SvelteKit client routes and components                  |
-| API layer     | SvelteKit server endpoints in `src/routes/api/threads/` |
-| Runtime       | Workers V8 + `nodejs_compat`                            |
-| SSE replay    | Per-thread Durable Object (`ThreadSession`)             |
-| Agent runs    | Worker isolate; protocol events POSTed to the DO        |
-| Static assets | Workers Static Assets via `adapter-cloudflare`          |
-| Secrets       | `wrangler secret` / local `.env`                        |
+| Concern | Implementation |
+| - | - |
+| Frontend | SvelteKit client routes and components |
+| API layer | SvelteKit server endpoints in `src/routes/api/threads/` |
+| Runtime | Workers V8 + `nodejs_compat` |
+| SSE replay | Per-thread Durable Object (`ThreadSession`) |
+| Agent runs | Worker isolate; protocol events POSTed to the DO |
+| Static assets | Workers Static Assets via `adapter-cloudflare` |
+| Secrets | `wrangler secret` / local `.env` |
 
 ## Production persistence
 

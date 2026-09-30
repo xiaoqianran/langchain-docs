@@ -66,21 +66,21 @@ HTTP route handlers implement the [Agent Streaming Protocol](https://github.com/
 
 These three endpoints are enough to run a single-threaded streaming chat with `HttpAgentServerAdapter`:
 
-| Method         | Path                              | Purpose                                         |
-| -------------- | --------------------------------- | ----------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept commands (`run.start`, …) and start runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run         |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state    |
+| Method | Path | Purpose |
+| - | - | - |
+| `POST` | `/api/threads/:threadId/commands` | Accept commands (`run.start`, …) and start runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 #### Thread sidebar (all examples)
 
 Every example also implements endpoints for the thread-history sidebar:
 
-| Method   | Path                             | Purpose                                   |
-| -------- | -------------------------------- | ----------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer    |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history              |
+| Method | Path | Purpose |
+| - | - | - |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history |
 
 ### Session and run management
 

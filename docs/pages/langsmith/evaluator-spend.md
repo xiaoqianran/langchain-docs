@@ -28,13 +28,13 @@ The agent and the trace are unaffected. Only the evaluator stops producing score
 
 ## Spend views and controls
 
-| View                                                                               | Where to find it                                    | Who can see or change it                                     |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| [Evaluators page dashboard](#evaluators-page-dashboard)                            | **Evaluators** in the left sidebar                  | All workspace members                                        |
-| [Evaluators table](#evaluators-table) (Spend, Spend Status)                        | **Evaluators** in the left sidebar                  | All workspace members                                        |
-| [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator)              | Open an evaluator, **Projects & Datasets**          | All workspace members                                        |
-| [Organization default spend limit](#set-an-organization-default-spend-limit)       | Organization **Settings** > **Usage Configuration** | `organization:manage` required to view and edit              |
-| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) | Edit evaluator > **Advanced** > **Spend limit**     | All members can view, `organization:manage` required to edit |
+| View | Where to find it | Who can see or change it |
+| - | - | - |
+| [Evaluators page dashboard](#evaluators-page-dashboard) | **Evaluators** in the left sidebar | All workspace members |
+| [Evaluators table](#evaluators-table) (Spend, Spend Status) | **Evaluators** in the left sidebar | All workspace members |
+| [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator) | Open an evaluator, **Projects & Datasets** | All workspace members |
+| [Organization default spend limit](#set-an-organization-default-spend-limit) | Organization **Settings** > **Usage Configuration** | `organization:manage` required to view and edit |
+| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) | Edit evaluator > **Advanced** > **Spend limit** | All members can view, `organization:manage` required to edit |
 
 <CardGroup>
   <Card title="Set your first limit" icon="settings" href="#set-an-organization-default-spend-limit">

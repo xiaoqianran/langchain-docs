@@ -39,7 +39,7 @@
 ### 最低（流媒体聊天）
 
 这三个端点足以与 `@langchain/react` 的 `HttpAgentServerAdapter` 运行单线程流式聊天：|方法|路径|目的|
-| -------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受协议命令（`run.start`，...）并启动代理运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
 | `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
@@ -48,8 +48,10 @@
 
 ### 可选（线程侧边栏）
 
-此示例还实现了线程历史记录侧边栏的端点。如果您的 UI 不需要多线程管理，请忽略它们：|方法|路径|目的|
-| -------- | -------------------------------- | ------------------------------------------------------------------ |
+此示例还实现了线程历史记录侧边栏的端点。如果您的 UI 不需要多线程管理，请忽略它们：
+
+|方法|路径|目的|
+| - | - | - |
 | `GET` | `/api/threads` |列出检查点已知的线程 |
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录（代理协议）|
@@ -100,12 +102,12 @@ flowchart TB
 3. SDK订阅`/stream`（SSE）进行回放+直播协议事件。
 4. 子代理 (`task`) 运行，发出命名空间事件，表现为 `stream.subagents`。
 
-## 生产坚持
+## 生产坚持该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`lib/agent/index.ts`) 和进程本地会话映射 (`lib/server/registry.ts`)。这适用于本地开发和单实例服务器，但在 Vercel（无服务器、多个副本）上，对话状态在冷启动或实例中**不持久**。
 
-该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`lib/agent/index.ts`) 和进程本地会话映射 (`lib/server/registry.ts`)。这适用于本地开发和单实例服务器，但在 Vercel（无服务器、多个副本）上，对话状态在冷启动或实例中**不持久**。
+对于生产，请换入 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
-对于生产，请换入 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：|套餐 |后端 |
-| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+|套餐 |后端 |
+| - | - |
 | [⟦T42⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T44⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
 | [⟦T46⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |
@@ -126,9 +128,9 @@ const checkpointer = await RedisSaver.fromUrl(process.env.REDIS_URL!);
 
 使用 Redis 提供程序公开的连接字符串（Upstash 提供 REST 和 Redis 协议 URL；检查点需要 Redis URL）。
 
-您还需要在 `lib/server/registry.ts` 中有一个共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。检查指针交换是持久线程历史的主要步骤；会话存储是实时运行重播的一个单独关注点。
+您还需要在 `lib/server/registry.ts` 中有一个共享会话/重播存储，以便 SSE 重新连接可以跨无服务器调用工作。检查指针交换是持久线程历史的主要步骤；会话存储是实时运行重播的一个单独关注点。有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。
 
-有关更多信息，请参阅 [checkpointer libraries](/oss/python/langgraph/checkpointers#checkpointer-libraries) 和 [add memory / persistence](/oss/python/langgraph/add-memory)。## 本地开发
+## 本地开发
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cp .env.example .env.local   # set OPENAI_API_KEY

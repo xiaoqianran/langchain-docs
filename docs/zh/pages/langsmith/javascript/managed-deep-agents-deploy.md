@@ -4,10 +4,12 @@
 
 # 部署托管深度代理
 
+使用 mda CLI 测试和部署托管深度代理。
+
 部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 <Note>
-托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/javascript/managed-deep-agents-cli)。
@@ -16,15 +18,15 @@
 
 在部署之前，请确保您拥有：
 
-- 具有托管 Deep Agents 公共测试版访问权限的工作区。
-- 该工作空间的 [LangSmith API key](/langsmith/create-account-api-key)，可以在 `.env` 或您的 shell 环境中。
-- 从 `managed-deepagents` 安装的 `mda` CLI。
+* 具有托管 Deep Agents 公共测试版访问权限的工作区。
 
+* 该工作空间的 [LangSmith API key](/langsmith/create-account-api-key)，可以在 `.env` 或您的 shell 环境中。
 
-- 使用 `npm install` 安装 TypeScript 项目的项目依赖项。
+* 从 `managed-deepagents` 安装的 `mda` CLI。
 
+* 使用 `npm install` 安装 TypeScript 项目的项目依赖项。
 
-- 模型提供者凭据，例如 `.env` 中的 `OPENAI_API_KEY`、您的 shell 环境或 LangSmith 工作区机密。
+* 模型提供者凭据，例如 `.env`、您的 shell 环境中的 `OPENAI_API_KEY` 或 LangSmith 工作区机密。
 
 CLI 默认针对 US LangSmith 云。
 
@@ -32,100 +34,86 @@ CLI 默认针对 US LangSmith 云。
 
 部署本地项目：
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy
+  ```
 
-    ```bash bun
-    bunx mda deploy
-    ```
-</CodeGroup>
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy
+  ```
+</CodeGroup><Tip>
+  `mda deploy` 将本地项目输入路由到不同的托管表面：
 
-
-<Tip>
-`mda deploy` 将本地项目输入路由到不同的托管表面：```text
-instructions.md + skills/**  -> Context Hub deploy-owned context
-.env                         -> deploy auth + non-reserved hosted secrets, not archived
-project source files         -> .mda/build source archive -> hosted deployment
-schedules/**                 -> LangSmith cron jobs after the deployment is live
-```
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  instructions.md + skills/**  -> Context Hub deploy-owned context
+  .env                         -> deploy auth + non-reserved hosted secrets, not archived
+  project source files         -> .mda/build source archive -> hosted deployment
+  schedules/**                 -> LangSmith cron jobs after the deployment is live
+  ```
 </Tip>
 
 当目录名称不是您想要的名称时，显式设置部署名称：
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --name research-assistant
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --name research-assistant
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --name research-assistant
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --name research-assistant
+  ```
 
-    ```bash bun
-    bunx mda deploy --name research-assistant
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --name research-assistant
+  ```
 </CodeGroup>
 
-
-创建生产部署时使用`--deployment-type prod`：
-
-
+创建生产部署时使用 `--deployment-type prod`：
 
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --deployment-type prod
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --deployment-type prod
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --deployment-type prod
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --deployment-type prod
+  ```
 
-    ```bash bun
-    bunx mda deploy --deployment-type prod
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --deployment-type prod
+  ```
 </CodeGroup>
-
 
 使用 `--no-wait` 触发构建而不轮询完成：
 
-
-
 <CodeGroup>
-    ```bash npm
-    npx mda deploy --no-wait
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npx mda deploy --no-wait
+  ```
 
-    ```bash pnpm
-    pnpm exec mda deploy --no-wait
-    ```
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm exec mda deploy --no-wait
+  ```
 
-    ```bash bun
-    bunx mda deploy --no-wait
-    ```
+  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  bunx mda deploy --no-wait
+  ```
 </CodeGroup>
-
 
 设置 `--no-wait` 时，将跳过该部署调用的计划协调，因为 CLI 在部署到达 `DEPLOYED` 之前退出。
 
 成功后，CLI 将打印 LangSmith 部署仪表板 URL。有关完整的部署步骤列表，请参阅[CLI reference](/langsmith/javascript/managed-deep-agents-cli#deploy-projects)。
 
-
-
 ## 秘密和环境文件
 
 `mda deploy` 在 shell 环境变量之前读取项目 `.env` 值。使用 `.env` 作为验证部署的 LangSmith API 密钥以及托管部署所需的运行时机密：
 
-```text .env
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 GITHUB_MCP_TOKEN=<GITHUB_MCP_TOKEN>
@@ -147,34 +135,40 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 如果部署达到`BUILD_FAILED`或`DEPLOY_FAILED`，请打开LangSmith中打印的部署URL并检查修订日志。
 
-## 后续步骤<CardGroup cols={2}>
+## 后续步骤
+
+<CardGroup>
   <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
     探索托管部署的运行时。
   </Card>
+
   <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
     将部署的代理作为工具公开给 MCP 客户端。
   </Card>
+
   <Card title="Identity" icon="fingerprint" href="/langsmith/javascript/managed-deep-agents-identity">
     对调用者进行身份验证并提供私有线程。
   </Card>
+
   <Card title="Schedules" icon="calendar" href="/langsmith/javascript/managed-deep-agents-schedules">
     根据托管 cron 计划运行代理。
   </Card>
+
   <Card title="Custom tools" icon="tool" href="/langsmith/javascript/managed-deep-agents-tools">
-    将创作的 LangChain 工具添加到代理定义中。
-  </Card>
-  <Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
+    将编写的 LangChain 工具添加到代理定义中。
+  </Card><Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
     查找每个`mda`命令和标志。
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

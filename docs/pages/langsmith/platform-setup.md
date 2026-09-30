@@ -34,12 +34,12 @@ Host and manage LangSmith infrastructure for observability, evaluation, and prom
 
     <h2>Compare Cloud, BYOC, and Self-hosted</h2>
 
-    | Feature                         | **Cloud**         | **BYOC**                                                   | **Self-hosted** |
-    | ------------------------------- | ----------------- | ---------------------------------------------------------- | --------------- |
-    | **Who runs the infrastructure** | LangChain         | LangChain runs the control plane, you run your data planes | You             |
-    | **Where sensitive data lives**  | LangChain's cloud | Your VPC                                                   | Your VPC        |
-    | **Upgrades and patches**        | Automatic         | Automatic                                                  | Manual          |
-    | **Scaling**                     | Automatic         | Automatic, managed by LangChain                            | Manual          |
+    | Feature | **Cloud** | **BYOC** | **Self-hosted** |
+    | - | - | - | - |
+    | **Who runs the infrastructure** | LangChain | LangChain runs the control plane, you run your data planes | You |
+    | **Where sensitive data lives** | LangChain's cloud | Your VPC | Your VPC |
+    | **Upgrades and patches** | Automatic | Automatic | Manual |
+    | **Scaling** | Automatic | Automatic, managed by LangChain | Manual |
 
     Cloud, BYOC, and Self-hosted support [LangSmith Deployment](/langsmith/deployment) for agent workloads. Refer to the [LangSmith Deployment overview](/langsmith/deployment) to pick a topology (Cloud managed, BYOC, Hybrid, self-hosted with control plane, or standalone).
 

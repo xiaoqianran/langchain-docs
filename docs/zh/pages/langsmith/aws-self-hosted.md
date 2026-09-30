@@ -85,14 +85,14 @@
 
 ## 计算选项
 
-LangSmith 根据您的要求支持多种计算选项：|计算选项|描述 |适合 |
-| ------------------------------------------------------ | -------------------------------------------------- | ------------------------------------------------ |
+LangSmith 根据您的要求支持多种计算选项：
+
+|计算选项|描述 |适合 |
+| - | - | - |
 | **弹性 Kubernetes 服务（首选）** |高级扩展和多租户支持 |大型企业|
 | **基于 EC2** |完全控制，BYO-infra |受监管或气隙环境 |
 
-## AWS 架构完善的最佳实践
-
-本参考旨在与 AWS 架构完善的框架的六大支柱保持一致：
+## AWS 架构完善的最佳实践本参考旨在与 AWS 架构完善的框架的六大支柱保持一致：
 
 ### 卓越运营
 
@@ -101,7 +101,9 @@ LangSmith 根据您的要求支持多种计算选项：|计算选项|描述 |适
 * 将您的LangSmith实例配置为[export telemetry data](/langsmith/export-backend)并通过[CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)持续监控。
 * 管理[LangSmith deployments](/langsmith/deployment)的首选方法是创建一个CI进程来构建[Agent Server](/langsmith/agent-server)图像并将其推送到[ECR](https://aws.amazon.com/ecr/)。在 PR 合并时将新修订部署到暂存或生产之前，为拉取请求创建测试部署。
 
-＃＃＃ 安全* 使用具有最小权限策略的[IAM](https://aws.amazon.com/iam/)角色。
+### 安全
+
+* 使用具有最小权限策略的[IAM](https://aws.amazon.com/iam/)角色。
 * 启用静态加密（[RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html)、[S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html)、ClickHouse 卷）和传输中加密 (TLS 1.2+)。
 * 与[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)集成以获得凭证。
 * 将 [Amazon Cognito](https://aws.amazon.com/cognito/) 作为 IDP 与 LangSmith 的内置身份验证和授权功能结合使用，以确保对代理及其工具的访问安全。
@@ -112,9 +114,7 @@ LangSmith 根据您的要求支持多种计算选项：|计算选项|描述 |适
 * 为后端工作者实施[auto-scaling](https://aws.amazon.com/autoscaling/)。
 * 使用[Amazon Route 53](https://aws.amazon.com/route53/)健康检查和故障转移策略。
 
-### 性能效率
-
-* 利用 [EC2](https://aws.amazon.com/ec2/) 实例来优化计算。
+### 性能效率* 利用 [EC2](https://aws.amazon.com/ec2/) 实例来优化计算。
 * 对于不经常访问的跟踪数据使用[S3 Intelligent-Tiering](https://aws.amazon.com/s3/storage-classes/intelligent-tiering/)。
 
 ### 成本优化
@@ -130,7 +130,9 @@ LangSmith 根据您的要求支持多种计算选项：|计算选项|描述 |适
 
 ## 安全性和合规性
 
-LangSmith 可配置为：* 仅[PrivateLink](https://aws.amazon.com/privatelink/) 访问（除了计费所需的出口外，没有公共互联网暴露）。
+LangSmith 可配置为：
+
+* 仅[PrivateLink](https://aws.amazon.com/privatelink/) 访问（除了计费所需的出口外，没有公共互联网暴露）。
 * S3、RDS 和 EBS 基于 [KMS](https://aws.amazon.com/kms/) 的加密密钥。
 * 审计日志记录到 [CloudWatch](https://aws.amazon.com/cloudwatch/) 和 [AWS CloudTrail](https://aws.amazon.com/cloudtrail/)。
 

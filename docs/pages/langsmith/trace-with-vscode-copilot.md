@@ -27,13 +27,13 @@ export COPILOT_OTEL_CAPTURE_CONTENT=true
 export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Project=<your_project_name>"
 ```
 
-| Variable                       | Description                                                                                                                                                                                                              |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `COPILOT_OTEL_ENABLED`         | Set to `true` to enable Copilot Chat OTel export.                                                                                                                                                                        |
-| `COPILOT_OTEL_PROTOCOL`        | OTLP protocol. Use `http` to target LangSmith's HTTP OTLP ingestion endpoint.                                                                                                                                            |
-| `COPILOT_OTEL_ENDPOINT`        | LangSmith OTLP endpoint. Takes precedence over `OTEL_EXPORTER_OTLP_ENDPOINT`.                                                                                                                                            |
-| `COPILOT_OTEL_CAPTURE_CONTENT` | Capture full prompts, responses, tool arguments, and tool results on spans. Off by default.                                                                                                                              |
-| `OTEL_EXPORTER_OTLP_HEADERS`   | Authentication headers for the OTLP exporter. Use `x-api-key=<your_langsmith_api_key>` and optionally `Langsmith-Project=<project>` to route traces to a specific [LangSmith project](/langsmith/log-traces-to-project). |
+| Variable | Description |
+| - | - |
+| `COPILOT_OTEL_ENABLED` | Set to `true` to enable Copilot Chat OTel export. |
+| `COPILOT_OTEL_PROTOCOL` | OTLP protocol. Use `http` to target LangSmith's HTTP OTLP ingestion endpoint. |
+| `COPILOT_OTEL_ENDPOINT` | LangSmith OTLP endpoint. Takes precedence over `OTEL_EXPORTER_OTLP_ENDPOINT`. |
+| `COPILOT_OTEL_CAPTURE_CONTENT` | Capture full prompts, responses, tool arguments, and tool results on spans. Off by default. |
+| `OTEL_EXPORTER_OTLP_HEADERS` | Authentication headers for the OTLP exporter. Use `x-api-key=<your_langsmith_api_key>` and optionally `Langsmith-Project=<project>` to route traces to a specific [LangSmith project](/langsmith/log-traces-to-project). |
 
 VS Code must inherit these environment variables, so export them in the shell session that launches VS Code (for example, by adding them to `~/.zshrc`, `~/.bashrc`, or a shell profile) before starting the editor.
 

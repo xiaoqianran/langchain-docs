@@ -184,15 +184,15 @@ If you omit `commit_id`, LangSmith links to the latest commit of that repo when 
 
 Both `push_agent` / `pushAgent` and `push_skill` / `pushSkill` accept the following parameters:
 
-| Parameter                        | Type                       | Description                                                                                                                                                         |
-| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `identifier`                     | `string`                   | The repo's identifier.                                                                                                                                              |
-| `files`                          | `dict[str, Entry \| None]` | Map of file path to `Entry`. Pass `None` / `null` to delete a path in this commit.                                                                                  |
-| `parent_commit` / `parentCommit` | `string` (optional)        | Parent commit hash prefix for optimistic concurrency. Must be 8–64 characters when provided. If it doesn't match the latest commit, the API returns a 409 conflict. |
-| `description`                    | `string` (optional)        | Repo description. Set on creation or patched on update.                                                                                                             |
-| `readme`                         | `string` (optional)        | Repo readme content.                                                                                                                                                |
-| `tags`                           | `string[]` (optional)      | Repo tags.                                                                                                                                                          |
-| `is_public` / `isPublic`         | `boolean` (optional)       | Whether the repo is publicly discoverable.                                                                                                                          |
+| Parameter | Type | Description |
+| - | - | - |
+| `identifier` | `string` | The repo's identifier. |
+| `files` | `dict[str, Entry \| None]` | Map of file path to `Entry`. Pass `None` / `null` to delete a path in this commit. |
+| `parent_commit` / `parentCommit` | `string` (optional) | Parent commit hash prefix for optimistic concurrency. Must be 8–64 characters when provided. If it doesn't match the latest commit, the API returns a 409 conflict. |
+| `description` | `string` (optional) | Repo description. Set on creation or patched on update. |
+| `readme` | `string` (optional) | Repo readme content. |
+| `tags` | `string[]` (optional) | Repo tags. |
+| `is_public` / `isPublic` | `boolean` (optional) | Whether the repo is publicly discoverable. |
 
 ## Pull an agent
 
@@ -276,10 +276,10 @@ Pull a snapshot of a skill repo. Works identically to `pull_agent` but returns a
 
 Both `pull_agent` / `pullAgent` and `pull_skill` / `pullSkill` accept the following parameters:
 
-| Parameter    | Type                | Description                                                                   |
-| ------------ | ------------------- | ----------------------------------------------------------------------------- |
-| `identifier` | `string`            | The repo's identifier. May include an inline version: `owner/name:version`.   |
-| `version`    | `string` (optional) | Commit hash or tag to pull. Overrides any version embedded in the identifier. |
+| Parameter | Type | Description |
+| - | - | - |
+| `identifier` | `string` | The repo's identifier. May include an inline version: `owner/name:version`. |
+| `version` | `string` (optional) | Commit hash or tag to pull. Overrides any version embedded in the identifier. |
 
 `pull_agent` returns an `AgentContext`; `pull_skill` returns a `SkillContext`.
 
@@ -350,13 +350,13 @@ List repos of either type, with optional filters for visibility, archived state,
   ```
 </CodeGroup>
 
-| Parameter                    | Type                 | Description                                                           |
-| ---------------------------- | -------------------- | --------------------------------------------------------------------- |
-| `limit`                      | `int` (Python only)  | Maximum number of repos to return per page. Defaults to 100.          |
-| `offset`                     | `int` (Python only)  | Number of repos to skip. Defaults to 0.                               |
-| `is_public` / `isPublic`     | `boolean` (optional) | Filter to only public (or only private) repos.                        |
-| `is_archived` / `isArchived` | `boolean` (optional) | Filter by archived state. Defaults to `False`.                        |
-| `query`                      | `string` (optional)  | Search query across repo handle, owner handle, description, and tags. |
+| Parameter | Type | Description |
+| - | - | - |
+| `limit` | `int` (Python only) | Maximum number of repos to return per page. Defaults to 100. |
+| `offset` | `int` (Python only) | Number of repos to skip. Defaults to 0. |
+| `is_public` / `isPublic` | `boolean` (optional) | Filter to only public (or only private) repos. |
+| `is_archived` / `isArchived` | `boolean` (optional) | Filter by archived state. Defaults to `False`. |
+| `query` | `string` (optional) | Search query across repo handle, owner handle, description, and tags. |
 
 <Note>
   Python's `list_agents` / `list_skills` return a paginated response object with explicit

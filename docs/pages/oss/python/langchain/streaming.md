@@ -30,11 +30,11 @@ See the [common patterns](#common-patterns) section below for additional end-to-
 
 Pass one or more of the following stream modes as a list to the [`stream`](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) or [`astream`](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) methods:
 
-| Mode       | Description                                                                                                                                                       |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `updates`  | Streams state updates after each agent step. If multiple updates are made in the same step (e.g., multiple nodes are run), those updates are streamed separately. |
-| `messages` | Streams tuples of `(token, metadata)` from any graph nodes where an LLM is invoked.                                                                               |
-| `custom`   | Streams custom data from inside your graph nodes using the stream writer.                                                                                         |
+| Mode | Description |
+| - | - |
+| `updates` | Streams state updates after each agent step. If multiple updates are made in the same step (e.g., multiple nodes are run), those updates are streamed separately. |
+| `messages` | Streams tuples of `(token, metadata)` from any graph nodes where an LLM is invoked. |
+| `custom` | Streams custom data from inside your graph nodes using the stream writer. |
 
 ## Agent progress
 

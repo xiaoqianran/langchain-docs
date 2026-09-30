@@ -43,11 +43,11 @@ Deactivation temporarily stops a PAT from authenticating; deletion permanently r
 
 Members can deactivate, reactivate, and delete their own PATs. [Organization Admins](/langsmith/rbac#organization-admin) and [Organization Operators](/langsmith/rbac#organization-operator) can also manage every member's PATs.
 
-| Action         | Effect                                                                                               | Reversible                                                  |
-| -------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Action | Effect | Reversible |
+| - | - | - |
 | **Deactivate** | Stops authentication and keeps the record, owner, and last use visible with a **Deactivated** badge. | Yes. Select **Reactivate key** to use the same token again. |
-| **Reactivate** | Allows authentication again with the same token and its original expiration date.                    | Yes. Deactivate the token again at any time.                |
-| **Delete**     | Permanently removes the token and its record.                                                        | No. Create a new token if you need access again.            |
+| **Reactivate** | Allows authentication again with the same token and its original expiration date. | Yes. Deactivate the token again at any time. |
+| **Delete** | Permanently removes the token and its record. | No. Create a new token if you need access again. |
 
 Deactivation does not change a token's expiration date, and **Reactivate key** is unavailable once that date has passed. Create a new token instead.
 

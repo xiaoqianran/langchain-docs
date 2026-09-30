@@ -26,12 +26,12 @@ Traditional streaming APIs tightly couple the client and server: if the client d
 
 The join/rejoin pattern involves three key mechanisms:
 
-| Method / Option                  | Purpose                                                                |
-| -------------------------------- | ---------------------------------------------------------------------- |
-| `threadId`                       | Bind the stream to the LangGraph thread you want to observe            |
-| `onThreadId`                     | Persist newly-created thread IDs so a remount can reconnect            |
-| `stream.disconnect()`            | Leave the stream client-side while the agent keeps running server-side |
-| Remount with the same `threadId` | Reattach to in-flight work for that thread                             |
+| Method / Option | Purpose |
+| - | - |
+| `threadId` | Bind the stream to the LangGraph thread you want to observe |
+| `onThreadId` | Persist newly-created thread IDs so a remount can reconnect |
+| `stream.disconnect()` | Leave the stream client-side while the agent keeps running server-side |
+| Remount with the same `threadId` | Reattach to in-flight work for that thread |
 
 <Note>
   **Join/rejoin uses `stream.disconnect()`, not `stream.stop()`.** By default, `stream.stop()` **cancels the active run**: it disconnects the client *and* cancels the run on the server. For join/rejoin, call `stream.disconnect()` (alias for `stop({ cancel: false })`) so the agent continues processing while you are away.

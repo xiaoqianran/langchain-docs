@@ -18,11 +18,11 @@ To be alerted when a [watched issue](/langsmith/engine#watch-an-issue) recurs, c
 
 ## Event types
 
-| Event                                               | Sent when                                      |
-| --------------------------------------------------- | ---------------------------------------------- |
-| [`issue.created`](#issue-created)                   | Engine opens a new issue.                      |
-| [`issue.trace.added`](#issue-trace-added)           | Engine links a new trace to an existing issue. |
-| [`issue.agent_run.failed`](#issue-agent_run-failed) | An Engine run fails to complete.               |
+| Event | Sent when |
+| - | - |
+| [`issue.created`](#issue-created) | Engine opens a new issue. |
+| [`issue.trace.added`](#issue-trace-added) | Engine links a new trace to an existing issue. |
+| [`issue.agent_run.failed`](#issue-agent_run-failed) | An Engine run fails to complete. |
 
 This is the complete set of event types Engine sends today. New types may be added in the future. A destination created without an explicit list of event types receives only `issue.created`.
 
@@ -31,11 +31,11 @@ This is the complete set of event types Engine sends today. New types may be add
 The **Minimum priority** setting is stored as a `severity_threshold` from `0` to `3`. For issue events, a notification is delivered only when the issue's `severity` is less than or equal to the threshold. Lower numbers are more urgent.
 
 | Severity | Meaning |
-| -------- | ------- |
-| `0`      | Urgent  |
-| `1`      | High    |
-| `2`      | Medium  |
-| `3`      | Low     |
+| - | - |
+| `0` | Urgent |
+| `1` | High |
+| `2` | Medium |
+| `3` | Low |
 
 For example, a destination with `severity_threshold: 1` receives events for `URGENT` (0) and `HIGH` (1) issues only.
 
@@ -71,15 +71,15 @@ Forward Engine events to your own incident-management, paging, or chat tooling. 
 
 LangSmith sends a `POST` request with a JSON body to your webhook URL. The request uses `Content-Type: application/json` and includes any custom headers you attached to the destination.
 
-| Property  | Value                                                                                                                                                                                                      |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Method    | `POST`                                                                                                                                                                                                     |
-| Body      | JSON, [common envelope](#event-envelope) below                                                                                                                                                             |
-| Scheme    | `http://` and `https://` are accepted. `https://` is strongly recommended                                                                                                                                  |
-| Signature | `X-LangSmith-Signature` header, signed with the destination's signing secret                                                                                                                               |
-| Timeout   | 20 seconds per attempt                                                                                                                                                                                     |
-| Attempts  | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
-| Response  | Success is determined from the status code alone. Response bodies are ignored.                                                                                                                             |
+| Property | Value |
+| - | - |
+| Method | `POST` |
+| Body | JSON, [common envelope](#event-envelope) below |
+| Scheme | `http://` and `https://` are accepted. `https://` is strongly recommended |
+| Signature | `X-LangSmith-Signature` header, signed with the destination's signing secret |
+| Timeout | 20 seconds per attempt |
+| Attempts | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
+| Response | Success is determined from the status code alone. Response bodies are ignored. |
 
 <Note>
   Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id` so a retried delivery does not produce a duplicate downstream effect.
@@ -203,57 +203,57 @@ Webhook destinations receive the JSON payloads below. Slack destinations do not.
 
 Every event delivered to your endpoint uses the same outer JSON shape.
 
-| Field        | Type    | Description                                                                                                                                              |
-| ------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`         | UUID    | Unique identifier for this delivery. Stable across retries. Use it to dedupe.                                                                            |
-| `type`       | string  | Event type. One of [`issue.created`](#issue-created), [`issue.trace.added`](#issue-trace-added), or [`issue.agent_run.failed`](#issue-agent_run-failed). |
-| `created`    | integer | Unix seconds (UTC) when the event was enqueued.                                                                                                          |
-| `request_id` | UUID    | Shared by every event fired from the same upstream action. See [Batch coalescing](#batch-coalescing).                                                    |
-| `data`       | object  | Event payload. Always contains `data.object`. Contains [`data.trace`](#data-trace) only on [`issue.trace.added`](#issue-trace-added) events.             |
+| Field | Type | Description |
+| - | - | - |
+| `id` | UUID | Unique identifier for this delivery. Stable across retries. Use it to dedupe. |
+| `type` | string | Event type. One of [`issue.created`](#issue-created), [`issue.trace.added`](#issue-trace-added), or [`issue.agent_run.failed`](#issue-agent_run-failed). |
+| `created` | integer | Unix seconds (UTC) when the event was enqueued. |
+| `request_id` | UUID | Shared by every event fired from the same upstream action. See [Batch coalescing](#batch-coalescing). |
+| `data` | object | Event payload. Always contains `data.object`. Contains [`data.trace`](#data-trace) only on [`issue.trace.added`](#issue-trace-added) events. |
 
 ### Issue `data.object`
 
 For [`issue.created`](#issue-created) and [`issue.trace.added`](#issue-trace-added), `data.object` is a snapshot of the issue. Treat it as the authoritative state of the issue at the time the event was generated.
 
-| Field          | Type    | Description                                                                    |
-| -------------- | ------- | ------------------------------------------------------------------------------ |
-| `id`           | UUID    | Issue ID.                                                                      |
-| `name`         | string  | Short title of the issue.                                                      |
-| `description`  | string  | Human-readable description.                                                    |
-| `severity`     | integer | `0` (urgent) through `3` (low). See [Severity filtering](#severity-filtering). |
-| `tenant_id`    | UUID    | Workspace the issue belongs to.                                                |
-| `tenant_name`  | string  | Workspace display name.                                                        |
-| `session_id`   | UUID    | Tracing project the issue belongs to.                                          |
-| `session_name` | string  | Tracing project name.                                                          |
-| `url`          | string  | Deep link to the issue in the LangSmith UI.                                    |
+| Field | Type | Description |
+| - | - | - |
+| `id` | UUID | Issue ID. |
+| `name` | string | Short title of the issue. |
+| `description` | string | Human-readable description. |
+| `severity` | integer | `0` (urgent) through `3` (low). See [Severity filtering](#severity-filtering). |
+| `tenant_id` | UUID | Workspace the issue belongs to. |
+| `tenant_name` | string | Workspace display name. |
+| `session_id` | UUID | Tracing project the issue belongs to. |
+| `session_name` | string | Tracing project name. |
+| `url` | string | Deep link to the issue in the LangSmith UI. |
 
 ### Run failure `data.object`
 
 For [`issue.agent_run.failed`](#issue-agent_run-failed), `data.object` describes the Engine run that failed.
 
-| Field           | Type   | Description                                               |
-| --------------- | ------ | --------------------------------------------------------- |
-| `tenant_id`     | UUID   | Workspace the run belongs to.                             |
-| `tenant_name`   | string | Workspace display name.                                   |
-| `session_id`    | UUID   | Tracing project the run belongs to.                       |
-| `session_name`  | string | Tracing project name.                                     |
-| `url`           | string | Deep link to the LangSmith project in the UI.             |
-| `thread_id`     | string | Engine thread ID.                                         |
-| `run_id`        | string | Engine run ID. Omitted when unavailable.                  |
-| `status`        | string | Final run status.                                         |
+| Field | Type | Description |
+| - | - | - |
+| `tenant_id` | UUID | Workspace the run belongs to. |
+| `tenant_name` | string | Workspace display name. |
+| `session_id` | UUID | Tracing project the run belongs to. |
+| `session_name` | string | Tracing project name. |
+| `url` | string | Deep link to the LangSmith project in the UI. |
+| `thread_id` | string | Engine thread ID. |
+| `run_id` | string | Engine run ID. Omitted when unavailable. |
+| `status` | string | Final run status. |
 | `error_message` | string | Error text from the failed run. Omitted when unavailable. |
-| `occurred_at`   | string | RFC 3339 timestamp of when the failure occurred.          |
+| `occurred_at` | string | RFC 3339 timestamp of when the failure occurred. |
 
 ### `data.trace`
 
 `data.trace` is included only on [`issue.trace.added`](#issue-trace-added) events.
 
-| Field        | Type           | Description                                                           |
-| ------------ | -------------- | --------------------------------------------------------------------- |
-| `run_id`     | UUID           | ID of the run that was linked to the issue.                           |
-| `trace_id`   | UUID           | ID of the trace that contains the run.                                |
-| `start_time` | string         | RFC 3339 timestamp of when the run started.                           |
-| `comment`    | string \| null | Optional note recorded when the trace was linked. Omitted when empty. |
+| Field | Type | Description |
+| - | - | - |
+| `run_id` | UUID | ID of the run that was linked to the issue. |
+| `trace_id` | UUID | ID of the trace that contains the run. |
+| `start_time` | string | RFC 3339 timestamp of when the run started. |
+| `comment` | string \| null | Optional note recorded when the trace was linked. Omitted when empty. |
 
 ### Batch coalescing
 

@@ -22,17 +22,17 @@ BYOC is generally available (GA) on AWS. Support for additional cloud providers 
 
 You can deploy LangSmith BYOC in any of the following AWS regions:
 
-| Area       | AWS regions                                                                                            |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| **US**     | `us-east-1`, `us-east-2`, `us-west-1`, `us-west-2`                                                     |
-| **Canada** | `ca-central-1`                                                                                         |
-| **EU**     | `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`, `eu-north-1`                                    |
-| **APAC**   | `ap-south-1`, `ap-northeast-1`, `ap-northeast-2`, `ap-northeast-3`, `ap-southeast-1`, `ap-southeast-2` |
+| Area | AWS regions |
+| - | - |
+| **US** | `us-east-1`, `us-east-2`, `us-west-1`, `us-west-2` |
+| **Canada** | `ca-central-1` |
+| **EU** | `eu-central-1`, `eu-west-1`, `eu-west-2`, `eu-west-3`, `eu-north-1` |
+| **APAC** | `ap-south-1`, `ap-northeast-1`, `ap-northeast-2`, `ap-northeast-3`, `ap-southeast-1`, `ap-southeast-2` |
 
 The control plane runs in `us-east-2` regardless of where you place your data planes. If you provision a data plane outside the US, your sensitive application data stays in that region while control plane metadata remains in the US:
 
-| Control plane (US)                                                             | Data plane (your region)                                                                                                     |
-| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Control plane (US) | Data plane (your region) |
+| - | - |
 | Users, roles, billing, organization configuration, SSO configuration, API keys | Traces, experiments, datasets, insights runs, annotation queues, workspace secrets, and all other sensitive application data |
 
 ## Available features

@@ -135,12 +135,12 @@ Wire up [`useStream`](https://reference.langchain.com/javascript/langchain-react
 
 Each framework has a natural choice for markdown rendering:
 
-| Framework | Library                         | Output                           | Why                                                                |
-| --------- | ------------------------------- | -------------------------------- | ------------------------------------------------------------------ |
-| React     | `react-markdown` + `remark-gfm` | React elements                   | Component-based, virtual DOM diffing, no `dangerouslySetInnerHTML` |
-| Vue       | `marked` + `dompurify`          | Sanitized HTML via `v-html`      | Lightweight, fast, GFM built-in                                    |
-| Svelte    | `marked` + `dompurify`          | Sanitized HTML via `{@html}`     | Same as Vue, consistent API                                        |
-| Angular   | `marked` + `dompurify`          | Sanitized HTML via `[innerHTML]` | Same as Vue/Svelte                                                 |
+| Framework | Library | Output | Why |
+| - | - | - | - |
+| React | `react-markdown` + `remark-gfm` | React elements | Component-based, virtual DOM diffing, no `dangerouslySetInnerHTML` |
+| Vue | `marked` + `dompurify` | Sanitized HTML via `v-html` | Lightweight, fast, GFM built-in |
+| Svelte | `marked` + `dompurify` | Sanitized HTML via `{@html}` | Same as Vue, consistent API |
+| Angular | `marked` + `dompurify` | Sanitized HTML via `[innerHTML]` | Same as Vue/Svelte |
 
 <Tip>
   React's `react-markdown` converts markdown directly to React elements, so it

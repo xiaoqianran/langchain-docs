@@ -480,14 +480,14 @@ To maintain conversation history across multiple interactions, first create a th
 
 The table below summarizes the key endpoints. Replace `<API_URL>` with your agent's deployment URL.
 
-| Operation                                                                                                                | Method | Endpoint                                    |
-| ------------------------------------------------------------------------------------------------------------------------ | ------ | ------------------------------------------- |
-| [Get agent info](/langsmith/agent-server-api/assistants/get-assistant)                                                   | `GET`  | `<API_URL>/assistants/<AGENT_ID>`           |
-| [Create a thread](/langsmith/agent-server-api/threads/create-thread)                                                     | `POST` | `<API_URL>/threads`                         |
-| [Run (wait for result)](https://docs.langchain.com/langsmith/agent-server-api/stateless-runs/create-run-wait-for-output) | `POST` | `<API_URL>/runs/wait`                       |
-| [Run (streaming)](/langsmith/agent-server-api/stateless-runs/create-run-stream-output)                                   | `POST` | `<API_URL>/runs/stream`                     |
-| [Run on thread (wait)](/langsmith/agent-server-api/thread-runs/create-run-wait-for-output)                               | `POST` | `<API_URL>/threads/<THREAD_ID>/runs/wait`   |
-| /langsmith/agent-server-api/thread-runs/create-run-stream-output                                                         | `POST` | `<API_URL>/threads/<THREAD_ID>/runs/stream` |
+| Operation | Method | Endpoint |
+| - | - | - |
+| [Get agent info](/langsmith/agent-server-api/assistants/get-assistant) | `GET` | `<API_URL>/assistants/<AGENT_ID>` |
+| [Create a thread](/langsmith/agent-server-api/threads/create-thread) | `POST` | `<API_URL>/threads` |
+| [Run (wait for result)](https://docs.langchain.com/langsmith/agent-server-api/stateless-runs/create-run-wait-for-output) | `POST` | `<API_URL>/runs/wait` |
+| [Run (streaming)](/langsmith/agent-server-api/stateless-runs/create-run-stream-output) | `POST` | `<API_URL>/runs/stream` |
+| [Run on thread (wait)](/langsmith/agent-server-api/thread-runs/create-run-wait-for-output) | `POST` | `<API_URL>/threads/<THREAD_ID>/runs/wait` |
+| /langsmith/agent-server-api/thread-runs/create-run-stream-output | `POST` | `<API_URL>/threads/<THREAD_ID>/runs/stream` |
 
 All endpoints require the following headers:
 
@@ -585,14 +585,14 @@ make run    # terminal REPL via cli.py — text-only chat
 
 The starter separates Fleet-owned files from files you own and can freely edit:
 
-| File / Directory       | Owner | Purpose                                                                                   |
-| ---------------------- | ----- | ----------------------------------------------------------------------------------------- |
-| `fleet/`               | Fleet | Drop export contents here. Re-unzip to update; nothing else is touched.                   |
-| `agent.py`             | You   | Graph wiring. Override the model by replacing the `model = components.pop("model")` line. |
-| `custom_tools.py`      | You   | Add code-defined tools; merged with Fleet MCP tools at runtime.                           |
-| `custom_middleware.py` | You   | Add `AgentMiddleware` instances for logging, filters, pre/post hooks, etc.                |
-| `custom_skills/`       | You   | Drop `<skill-name>/SKILL.md` files; layered on top of `fleet/skills/`.                    |
-| `cli.py`               | You   | Terminal REPL; edit freely.                                                               |
+| File / Directory | Owner | Purpose |
+| - | - | - |
+| `fleet/` | Fleet | Drop export contents here. Re-unzip to update; nothing else is touched. |
+| `agent.py` | You | Graph wiring. Override the model by replacing the `model = components.pop("model")` line. |
+| `custom_tools.py` | You | Add code-defined tools; merged with Fleet MCP tools at runtime. |
+| `custom_middleware.py` | You | Add `AgentMiddleware` instances for logging, filters, pre/post hooks, etc. |
+| `custom_skills/` | You | Drop `<skill-name>/SKILL.md` files; layered on top of `fleet/skills/`. |
+| `cli.py` | You | Terminal REPL; edit freely. |
 
 Here is the full `agent.py` from the starter:
 

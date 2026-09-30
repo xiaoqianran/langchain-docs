@@ -15,11 +15,11 @@ Read-only tools such as `ls`, `read_file`, `glob`, and `grep` always run without
 
 ## Choose a mode
 
-| Mode                 | What it does                                                                                                                              |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **Manual** (default) | Asks for approval before every gated action                                                                                               |
-| **Auto**             | Approves routine actions automatically; asks the model to review anything uncertain; falls back to you after repeated denials or failures |
-| **YOLO**             | Runs gated actions with no review at all                                                                                                  |
+| Mode | What it does |
+| - | - |
+| **Manual** (default) | Asks for approval before every gated action |
+| **Auto** | Approves routine actions automatically; asks the model to review anything uncertain; falls back to you after repeated denials or failures |
+| **YOLO** | Runs gated actions with no review at all |
 
 <Warning>
   Auto is an authorization heuristic for a local coding agent. It is **not** sandbox containment, an operating-system boundary, or a guarantee that model-generated actions are safe.
@@ -125,13 +125,13 @@ After repeated denials or classifier failures, Auto stops and shows you the norm
 
 When you do not configure an Auto classifier, Deep Agents Code selects a lower-latency default based on the main model's provider:
 
-| Main model provider | Default classifier                 |
-| ------------------- | ---------------------------------- |
-| Anthropic           | `anthropic:claude-sonnet-5`        |
-| Google AI           | `google_genai:gemini-3.8-flash`    |
-| Google Vertex AI    | `google_vertexai:gemini-3.8-flash` |
-| OpenAI              | `openai:gpt-5.6-luna`              |
-| OpenAI Codex        | `openai_codex:gpt-5.6-luna`        |
+| Main model provider | Default classifier |
+| - | - |
+| Anthropic | `anthropic:claude-sonnet-5` |
+| Google AI | `google_genai:gemini-3.8-flash` |
+| Google Vertex AI | `google_vertexai:gemini-3.8-flash` |
+| OpenAI | `openai:gpt-5.6-luna` |
+| OpenAI Codex | `openai_codex:gpt-5.6-luna` |
 
 For other providers, the classifier uses the main agent model. You can select a different model to control cost and latency during Auto review.
 

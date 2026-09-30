@@ -38,11 +38,11 @@ The app exposes the Agent Streaming Protocol under `/api/threads/...`. Route han
 
 These three endpoints are enough to run a single-threaded streaming chat with `@langchain/react`'s `HttpAgentServerAdapter`:
 
-| Method         | Path                              | Purpose                                                        |
-| -------------- | --------------------------------- | -------------------------------------------------------------- |
-| `POST`         | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
-| `POST`         | `/api/threads/:threadId/stream`   | SSE stream of protocol events for a run                        |
-| `GET` / `POST` | `/api/threads/:threadId/state`    | Read and bootstrap checkpointed thread state                   |
+| Method | Path | Purpose |
+| - | - | - |
+| `POST` | `/api/threads/:threadId/commands` | Accept protocol commands (`run.start`, …) and start agent runs |
+| `POST` | `/api/threads/:threadId/stream` | SSE stream of protocol events for a run |
+| `GET` / `POST` | `/api/threads/:threadId/state` | Read and bootstrap checkpointed thread state |
 
 The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so hydration does not 404 before the first message is sent.
 
@@ -50,11 +50,11 @@ The client bootstraps a thread with `GET /state` (and `POST /state` on 404) so h
 
 This example also implements endpoints for the thread-history sidebar. Omit them if your UI does not need multi-thread management:
 
-| Method   | Path                             | Purpose                                       |
-| -------- | -------------------------------- | --------------------------------------------- |
-| `GET`    | `/api/threads`                   | List threads known to the checkpointer        |
-| `DELETE` | `/api/threads/:threadId`         | Delete a thread's session and checkpoints     |
-| `POST`   | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
+| Method | Path | Purpose |
+| - | - | - |
+| `GET` | `/api/threads` | List threads known to the checkpointer |
+| `DELETE` | `/api/threads/:threadId` | Delete a thread's session and checkpoints |
+| `POST` | `/api/threads/:threadId/history` | Paginated checkpoint history (Agent Protocol) |
 
 ### Request flow
 
@@ -108,11 +108,11 @@ Out of the box, the agent uses an in-memory `MemorySaver` checkpointer (`lib/age
 
 For production, swap in a [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries):
 
-| Package                                                                                                              | Backend                    |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis)       | Redis (`RedisSaver`)       |
+| Package | Backend |
+| - | - |
+| [`@langchain/langgraph-checkpoint-redis`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [`@langchain/langgraph-checkpoint-postgres`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
-| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite)     | SQLite (`SqliteSaver`)     |
+| [`@langchain/langgraph-checkpoint-sqlite`](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite) | SQLite (`SqliteSaver`) |
 
 Replace `MemorySaver` in `lib/agent/index.ts` and pass the new checkpointer to `createDeepAgent`. The route handlers and `lib/server/threads.ts` helpers stay the same.
 

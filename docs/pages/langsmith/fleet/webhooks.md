@@ -50,15 +50,15 @@ When triggered, a webhook sends a complete package of your agent's configuration
 
 The webhook payload is a JSON object with the following fields:
 
-| Field                                               | Description                                                        |
-| --------------------------------------------------- | ------------------------------------------------------------------ |
-| `action`                                            | The name of the webhook.                                           |
-| `input`                                             | Values from custom form fields (empty object if no custom fields). |
-| `publisher`                                         | User ID and email of the person triggering the webhook.            |
-| `agent`                                             | Agent name and description.                                        |
-| [`tool_auth_requirements`](#tool-auth-requirements) | Authentication requirements for each tool the agent uses.          |
-| [`files`](#zip-file-structure)                      | Base64-encoded ZIP containing all agent files.                     |
-| [`fields`](#custom-input-fields)                    | Custom input fields.                                               |
+| Field | Description |
+| - | - |
+| `action` | The name of the webhook. |
+| `input` | Values from custom form fields (empty object if no custom fields). |
+| `publisher` | User ID and email of the person triggering the webhook. |
+| `agent` | Agent name and description. |
+| [`tool_auth_requirements`](#tool-auth-requirements) | Authentication requirements for each tool the agent uses. |
+| [`files`](#zip-file-structure) | Base64-encoded ZIP containing all agent files. |
+| [`fields`](#custom-input-fields) | Custom input fields. |
 
 For example:
 
@@ -110,11 +110,11 @@ For example:
 
 The `tool_auth_requirements` array describes authentication needed for each tool:
 
-| Auth Type | Fields                    | Description                                      |
-| --------- | ------------------------- | ------------------------------------------------ |
-| `none`    | -                         | Tool requires no authentication                  |
-| `api_key` | `required_env_vars`       | Tool needs API key(s) in environment variables   |
-| `oauth`   | `auth_provider`, `scopes` | Tool requires OAuth tokens with specified scopes |
+| Auth Type | Fields | Description |
+| - | - | - |
+| `none` | - | Tool requires no authentication |
+| `api_key` | `required_env_vars` | Tool needs API key(s) in environment variables |
+| `oauth` | `auth_provider`, `scopes` | Tool requires OAuth tokens with specified scopes |
 
 Use this information to configure your deployment environment with the necessary credentials.
 
@@ -173,14 +173,14 @@ The `config.json` file and `tools.json` files are structured as follows:
 
 You can define custom input fields to collect information when the webhook is triggered. Supported field types are as follows:
 
-| Type       | Description                       |
-| ---------- | --------------------------------- |
-| `string`   | Single-line text input (default). |
-| `number`   | Numeric input.                    |
-| `boolean`  | Checkbox (true/false).            |
-| `textarea` | Multi-line text input.            |
-| `json`     | JSON editor.                      |
-| `select`   | Dropdown with predefined options. |
+| Type | Description |
+| - | - |
+| `string` | Single-line text input (default). |
+| `number` | Numeric input. |
+| `boolean` | Checkbox (true/false). |
+| `textarea` | Multi-line text input. |
+| `json` | JSON editor. |
+| `select` | Dropdown with predefined options. |
 
 For example:
 

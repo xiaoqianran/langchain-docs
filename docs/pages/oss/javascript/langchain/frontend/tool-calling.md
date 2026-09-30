@@ -145,17 +145,17 @@ interface AssembledToolCall<
 }
 ```
 
-| Property    | Description                                                                    |
-| ----------- | ------------------------------------------------------------------------------ |
-| `name`      | The name of the tool (e.g. `"get_weather"`)                                    |
-| `callId`    | Unique ID matching the AI message's `tool_calls` entry                         |
-| `id`        | Alias for `callId`, matching message-level tool calls                          |
-| `namespace` | Namespace where the tool call was emitted                                      |
-| `input`     | Structured arguments the agent passed to the tool                              |
-| `args`      | Alias for `input`, matching message-level tool calls                           |
-| `output`    | Tool output after a successful call, or `null` while running or after an error |
-| `status`    | Lifecycle state: `"running"`, `"finished"`, or `"error"`                       |
-| `error`     | Error details when the tool call fails                                         |
+| Property | Description |
+| - | - |
+| `name` | The name of the tool (e.g. `"get_weather"`) |
+| `callId` | Unique ID matching the AI message's `tool_calls` entry |
+| `id` | Alias for `callId`, matching message-level tool calls |
+| `namespace` | Namespace where the tool call was emitted |
+| `input` | Structured arguments the agent passed to the tool |
+| `args` | Alias for `input`, matching message-level tool calls |
+| `output` | Tool output after a successful call, or `null` while running or after an error |
+| `status` | Lifecycle state: `"running"`, `"finished"`, or `"error"` |
+| `error` | Error details when the tool call fails |
 
 ## Filtering tool calls per message
 

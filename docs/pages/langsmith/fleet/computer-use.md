@@ -14,10 +14,10 @@ Computer use gives your Fleet agent access to an isolated virtual computer. The 
 
 Choose how the virtual computer is shared across an agent's conversation threads:
 
-| Mode                    | Description                                                                                                                                                                                                                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Shared computer**     | All threads share a single computer. The filesystem, installed packages, and running processes persist across threads. Choose this mode when you want files, dependencies, or environment setup to accumulate across conversations. Shared computers are not deleted automatically. |
-| **Computer per thread** | Each thread gets its own isolated computer that starts fresh and is archived when it goes idle. Choose this mode for software-engineering agents and other workloads that run many parallel, write-heavy tasks, or for any case where threads should not see each other's state.    |
+| Mode | Description |
+| - | - |
+| **Shared computer** | All threads share a single computer. The filesystem, installed packages, and running processes persist across threads. Choose this mode when you want files, dependencies, or environment setup to accumulate across conversations. Shared computers are not deleted automatically. |
+| **Computer per thread** | Each thread gets its own isolated computer that starts fresh and is archived when it goes idle. Choose this mode for software-engineering agents and other workloads that run many parallel, write-heavy tasks, or for any case where threads should not see each other's state. |
 
 ## Configure computer use
 

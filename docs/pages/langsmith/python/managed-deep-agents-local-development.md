@@ -40,12 +40,12 @@ Local development does not create or update a hosted deployment.
 
 ## Configure the local server
 
-| Flag                  | Use                                                    |
-| --------------------- | ------------------------------------------------------ |
-| `--port PORT`         | Set the local server port.                             |
-| `--hostname HOSTNAME` | Set the hostname on which the server listens.          |
-| `--no-browser`        | Start the server without opening Studio automatically. |
-| `--no-reload`         | Disable the LangGraph development server's hot reload. |
+| Flag | Use |
+| - | - |
+| `--port PORT` | Set the local server port. |
+| `--hostname HOSTNAME` | Set the hostname on which the server listens. |
+| `--no-browser` | Start the server without opening Studio automatically. |
+| `--no-reload` | Disable the LangGraph development server's hot reload. |
 
 For all command details, see the [`mda dev` CLI reference](/langsmith/python/managed-deep-agents-cli#develop-locally).
 

@@ -95,11 +95,11 @@ Call it on the client instead of a sandbox instance to mint a link by sandbox na
 
 ### Options
 
-| Option                | Default                            | Effect                                                              |
-| --------------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| `expires_in_seconds`  | Omitted, so the link never expires | Link lifetime in seconds                                            |
-| `content_type`        | inferred from the file extension   | `Content-Type` the link responds with                               |
-| `content_disposition` | `attachment`                       | `attachment` downloads the file; `inline` renders it in the browser |
+| Option | Default | Effect |
+| - | - | - |
+| `expires_in_seconds` | Omitted, so the link never expires | Link lifetime in seconds |
+| `content_type` | inferred from the file extension | `Content-Type` the link responds with |
+| `content_disposition` | `attachment` | `attachment` downloads the file; `inline` renders it in the browser |
 
 ## Create a link from the CLI
 
@@ -158,25 +158,25 @@ Fetching a link **wakes a stopped sandbox**, so the first request after an idle 
 
 ## Download links vs other file access
 
-|                             | Download links         | `read()`              | [Service URLs](/langsmith/sandbox-service-urls) |
-| --------------------------- | ---------------------- | --------------------- | ----------------------------------------------- |
-| **Credential needed**       | None                   | Workspace API key     | Service token or browser cookie                 |
-| **Scope**                   | One file, one path     | Any file              | Any HTTP service in the sandbox                 |
-| **Sandbox must be running** | No (fetching wakes it) | No (waking on demand) | No (fetching wakes it)                          |
-| **Shareable**               | Yes                    | No                    | Yes                                             |
-| **Revocable before expiry** | No                     | Yes (rotate the key)  | No                                              |
+| | Download links | `read()` | [Service URLs](/langsmith/sandbox-service-urls) |
+| - | - | - | - |
+| **Credential needed** | None | Workspace API key | Service token or browser cookie |
+| **Scope** | One file, one path | Any file | Any HTTP service in the sandbox |
+| **Sandbox must be running** | No (fetching wakes it) | No (waking on demand) | No (fetching wakes it) |
+| **Shareable** | Yes | No | Yes |
+| **Revocable before expiry** | No | Yes (rotate the key) | No |
 
 Use a download link to hand one file to an outside consumer. Use `read()` to pull file bytes into your own code. Use a service URL to reach an HTTP server running inside the sandbox.
 
 ## Troubleshoot
 
-| Error                                      | Cause                                                             | Fix                                                                                                                           |
-| ------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **`501` on mint**                          | Download links are not configured for this deployment             | Self-hosted deployments need a sandbox service domain configured; see [Sandbox service URLs](/langsmith/sandbox-service-urls) |
-| **`403` on fetch**                         | The link expired, was altered, or was presented on the wrong host | Mint a fresh link; copy the URL verbatim                                                                                      |
-| **`404` on fetch**                         | The file no longer exists at that path                            | Links are pinned to a path, not to file contents. Mint a link for a path that exists                                          |
-| **Browser downloads instead of rendering** | Default disposition is `attachment`                               | Mint with `content_disposition="inline"` and an explicit `content_type`                                                       |
-| **Stale or partial contents**              | The file was written or replaced after the link was minted        | Do not modify a file that a link points at. Write a new file and mint a new link                                              |
+| Error | Cause | Fix |
+| - | - | - |
+| **`501` on mint** | Download links are not configured for this deployment | Self-hosted deployments need a sandbox service domain configured; see [Sandbox service URLs](/langsmith/sandbox-service-urls) |
+| **`403` on fetch** | The link expired, was altered, or was presented on the wrong host | Mint a fresh link; copy the URL verbatim |
+| **`404` on fetch** | The file no longer exists at that path | Links are pinned to a path, not to file contents. Mint a link for a path that exists |
+| **Browser downloads instead of rendering** | Default disposition is `attachment` | Mint with `content_disposition="inline"` and an explicit `content_type` |
+| **Stale or partial contents** | The file was written or replaced after the link was minted | Do not modify a file that a link points at. Write a new file and mint a new link |
 
 ***
 

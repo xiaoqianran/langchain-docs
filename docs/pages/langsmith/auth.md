@@ -451,30 +451,30 @@ If a more specific handler is registered, the more general handler will not be c
 
 Here are all the supported action handlers:
 
-| Resource       | Handler                          | Description                | Value Type                                                                                             |
-| -------------- | -------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **Threads**    | `@auth.on.threads.create`        | Thread creation            | [`ThreadsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate)       |
-|                | `@auth.on.threads.read`          | Thread retrieval           | [`ThreadsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead)           |
-|                | `@auth.on.threads.update`        | Thread updates             | [`ThreadsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate)       |
-|                | `@auth.on.threads.delete`        | Thread deletion            | [`ThreadsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete)       |
-|                | `@auth.on.threads.search`        | Listing threads            | [`ThreadsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch)       |
-|                | `@auth.on.threads.create_run`    | Creating or updating a run | [`RunsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate)             |
-| **Assistants** | `@auth.on.assistants.create`     | Assistant creation         | [`AssistantsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
-|                | `@auth.on.assistants.read`       | Assistant retrieval        | [`AssistantsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead)     |
-|                | `@auth.on.assistants.update`     | Assistant updates          | [`AssistantsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
-|                | `@auth.on.assistants.delete`     | Assistant deletion         | [`AssistantsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
-|                | `@auth.on.assistants.search`     | Listing assistants         | [`AssistantsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
-| **Crons**      | `@auth.on.crons.create`          | Cron job creation          | [`CronsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsCreate)           |
-|                | `@auth.on.crons.read`            | Cron job retrieval         | [`CronsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead)               |
-|                | `@auth.on.crons.update`          | Cron job updates           | [`CronsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate)           |
-|                | `@auth.on.crons.delete`          | Cron job deletion          | [`CronsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete)           |
-|                | `@auth.on.crons.search`          | Listing cron jobs          | [`CronsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch)           |
-| **Store**      | `@auth.on.store`                 | All store operations       | `Auth.types.on.store.value`                                                                            |
-|                | `@auth.on.store.put`             | Store an item              | `Auth.types.on.store.put.value`                                                                        |
-|                | `@auth.on.store.get`             | Retrieve an item           | `Auth.types.on.store.get.value`                                                                        |
-|                | `@auth.on.store.search`          | Search items               | `Auth.types.on.store.search.value`                                                                     |
-|                | `@auth.on.store.delete`          | Delete an item             | `Auth.types.on.store.delete.value`                                                                     |
-|                | `@auth.on.store.list_namespaces` | List namespaces            | `Auth.types.on.store.list_namespaces.value`                                                            |
+| Resource | Handler | Description | Value Type |
+| - | - | - | - |
+| **Threads** | `@auth.on.threads.create` | Thread creation | [`ThreadsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
+| | `@auth.on.threads.read` | Thread retrieval | [`ThreadsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
+| | `@auth.on.threads.update` | Thread updates | [`ThreadsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsUpdate) |
+| | `@auth.on.threads.delete` | Thread deletion | [`ThreadsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsDelete) |
+| | `@auth.on.threads.search` | Listing threads | [`ThreadsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsSearch) |
+| | `@auth.on.threads.create_run` | Creating or updating a run | [`RunsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/RunsCreate) |
+| **Assistants** | `@auth.on.assistants.create` | Assistant creation | [`AssistantsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsCreate) |
+| | `@auth.on.assistants.read` | Assistant retrieval | [`AssistantsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsRead) |
+| | `@auth.on.assistants.update` | Assistant updates | [`AssistantsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsUpdate) |
+| | `@auth.on.assistants.delete` | Assistant deletion | [`AssistantsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsDelete) |
+| | `@auth.on.assistants.search` | Listing assistants | [`AssistantsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/AssistantsSearch) |
+| **Crons** | `@auth.on.crons.create` | Cron job creation | [`CronsCreate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsCreate) |
+| | `@auth.on.crons.read` | Cron job retrieval | [`CronsRead`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsRead) |
+| | `@auth.on.crons.update` | Cron job updates | [`CronsUpdate`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsUpdate) |
+| | `@auth.on.crons.delete` | Cron job deletion | [`CronsDelete`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsDelete) |
+| | `@auth.on.crons.search` | Listing cron jobs | [`CronsSearch`](https://reference.langchain.com/python/langgraph-sdk/auth/types/CronsSearch) |
+| **Store** | `@auth.on.store` | All store operations | `Auth.types.on.store.value` |
+| | `@auth.on.store.put` | Store an item | `Auth.types.on.store.put.value` |
+| | `@auth.on.store.get` | Retrieve an item | `Auth.types.on.store.get.value` |
+| | `@auth.on.store.search` | Search items | `Auth.types.on.store.search.value` |
+| | `@auth.on.store.delete` | Delete an item | `Auth.types.on.store.delete.value` |
+| | `@auth.on.store.list_namespaces` | List namespaces | `Auth.types.on.store.list_namespaces.value` |
 
 Store authorization differs from threads and assistants. Handlers must rewrite the mutable `namespace` field in `value` to scope data per user rather than returning metadata filters. For a walkthrough, see [Isolate store per user](/langsmith/store-auth).
 

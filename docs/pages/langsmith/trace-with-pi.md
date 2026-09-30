@@ -51,14 +51,14 @@ Configuration can come from environment variables or JSON config files. Values a
 
 ### Environment variables
 
-| Variable                      | Description                                                                                                         |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `TRACE_TO_LANGSMITH`          | Enables tracing when set to `true`, `1`, `yes`, or `on`. Disables tracing when set to `false`, `0`, `no`, or `off`. |
-| `LANGSMITH_PI_API_KEY`        | LangSmith API key. Falls back to `LANGSMITH_API_KEY`.                                                               |
-| `LANGSMITH_PI_ENDPOINT`       | LangSmith API URL for self-hosted or custom deployments. Falls back to `LANGSMITH_ENDPOINT`.                        |
-| `LANGSMITH_PI_PROJECT`        | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. Defaults to `pi-coding-agent`.                           |
-| `LANGSMITH_PI_METADATA`       | JSON object added to the root run metadata. Falls back to `LANGSMITH_METADATA`.                                     |
-| `LANGSMITH_PI_RUNS_ENDPOINTS` | JSON array of replica run destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`.                                   |
+| Variable | Description |
+| - | - |
+| `TRACE_TO_LANGSMITH` | Enables tracing when set to `true`, `1`, `yes`, or `on`. Disables tracing when set to `false`, `0`, `no`, or `off`. |
+| `LANGSMITH_PI_API_KEY` | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. |
+| `LANGSMITH_PI_ENDPOINT` | LangSmith API URL for self-hosted or custom deployments. Falls back to `LANGSMITH_ENDPOINT`. |
+| `LANGSMITH_PI_PROJECT` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. Defaults to `pi-coding-agent`. |
+| `LANGSMITH_PI_METADATA` | JSON object added to the root run metadata. Falls back to `LANGSMITH_METADATA`. |
+| `LANGSMITH_PI_RUNS_ENDPOINTS` | JSON array of replica run destinations. Falls back to `LANGSMITH_RUNS_ENDPOINTS`. |
 
 Example:
 
@@ -85,14 +85,14 @@ Create `~/.pi/langsmith.json` for global settings or `.pi/langsmith.json` in a p
 
 Config file fields:
 
-| Field      | Required | Default               | Description                                                                      |
-| ---------- | -------- | --------------------- | -------------------------------------------------------------------------------- |
-| `enabled`  | Yes      | `false`               | Set to `true` to enable tracing from the config file.                            |
-| `api_key`  | No\*     | —                     | LangSmith API key. Required unless provided by environment variable or replicas. |
-| `api_url`  | No       | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`.                    |
-| `project`  | No       | `pi-coding-agent`     | LangSmith project name.                                                          |
-| `metadata` | No       | —                     | Object merged into root trace metadata.                                          |
-| `replicas` | No       | —                     | Array of additional LangSmith destinations to replicate traces to.               |
+| Field | Required | Default | Description |
+| - | - | - | - |
+| `enabled` | Yes | `false` | Set to `true` to enable tracing from the config file. |
+| `api_key` | No\* | — | LangSmith API key. Required unless provided by environment variable or replicas. |
+| `api_url` | No | LangSmith SDK default | LangSmith API URL, usually `https://api.smith.langchain.com`. |
+| `project` | No | `pi-coding-agent` | LangSmith project name. |
+| `metadata` | No | — | Object merged into root trace metadata. |
+| `replicas` | No | — | Array of additional LangSmith destinations to replicate traces to. |
 
 ## Replicas
 

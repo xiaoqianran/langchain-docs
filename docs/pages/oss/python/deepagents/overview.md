@@ -247,26 +247,26 @@ The harness provides a configurable virtual filesystem which can be backed by di
 
 The backends support the following file system operations:
 
-| Tool         | Description                                                                                                                                                                                                              |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ls`         | List files in a directory with metadata (size, modified time)                                                                                                                                                            |
-| `read_file`  | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents). See supported extensions below. |
-| `write_file` | Create a new file, or overwrite an existing one                                                                                                                                                                          |
-| `edit_file`  | Perform exact string replacements in files (with global replace mode)                                                                                                                                                    |
-| `delete`     | Delete a file, or a directory and its contents recursively                                                                                                                                                               |
-| `glob`       | Find files matching patterns (e.g., `**/*.py`)                                                                                                                                                                           |
-| `grep`       | Search file contents with multiple output modes (files only, content with context, or counts)                                                                                                                            |
-| `execute`    | Run shell commands in the environment (available with [sandbox backends](/oss/python/deepagents/sandboxes) only)                                                                                                         |
+| Tool | Description |
+| - | - |
+| `ls` | List files in a directory with metadata (size, modified time) |
+| `read_file` | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents). See supported extensions below. |
+| `write_file` | Create a new file, or overwrite an existing one |
+| `edit_file` | Perform exact string replacements in files (with global replace mode) |
+| `delete` | Delete a file, or a directory and its contents recursively |
+| `glob` | Find files matching patterns (e.g., `**/*.py`) |
+| `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
+| `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/python/deepagents/sandboxes) only) |
 
 <Note>The `delete` tool requires `deepagents>=0.7`. Backends that do not support deletion have the tool automatically hidden from the model.</Note>
 
 <Accordion title="Supported multimodal file extensions">
-  | Type                                               | Extensions                                                                |
-  | -------------------------------------------------- | ------------------------------------------------------------------------- |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif`                |
+  | Type | Extensions |
+  | - | - |
+  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
   | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac`                          |
-  | [File](/oss/python/langchain/messages#multimodal)  | `.pdf`, `.ppt`, `.pptx`                                                   |
+  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 </Accordion>
 
 <Accordion title="Running without the default filesystem tools" icon="ban">

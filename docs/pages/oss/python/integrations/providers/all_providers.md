@@ -143,6 +143,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Alibaba's cloud computing and AI services.
   </Card>
 
+  <Card title="AMUVectorStore" href="https://github.com/sangaraju1988/amu-pgvector#readme" icon="link">
+    Vector store backed by PostgreSQL + pgvector where Postgres row-level security gates retrieval on a cached result's derivation lineage, not just its content or access tags.
+  </Card>
+
   <Card title="Ampersend" href="https://docs.ampersend.ai" icon="link">
     Payment infrastructure for AI agent services via x402 protocol.
   </Card>
@@ -935,6 +939,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Real-time graph database platform.
   </Card>
 
+  <Card title="MemoryRouter" href="https://docs.memoryrouter.ai/langchain" icon="link">
+    Persistent, user-scoped memory for LangChain and LangGraph agents: retain and recall tools, recall/retain graph nodes, and a BaseStore backed by MemoryRouter vaults.
+  </Card>
+
   <Card title="Memstate AI" href="https://memstate.ai/docs/integrations/langchain" icon="link">
     Structured, versioned long-term memory for AI agents.
   </Card>
@@ -1285,6 +1293,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Prolog" href="https://langchain-prolog.readthedocs.io" icon="link">
     Logic programming language integration.
+  </Card>
+
+  <Card title="PromptfirewallGuard" href="https://github.com/TimurRakhmatullin86/langchain-promptfirewall#readme" icon="link">
+    Sub-millisecond PII detection and prompt injection firewall for LangChain. Zero network, zero GPU, pure Rust core via PyO3.
   </Card>
 
   <Card title="prompt-shield" href="https://github.com/mthamil107/prompt-shield" icon="link">
@@ -1749,6 +1761,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Upstash Box" href="https://upstash.com/docs/box" icon="link">
     Secure cloud sandboxes with a full Linux shell for agent code execution.
+  </Card>
+
+  <Card title="URLpipe" href="https://urlpipe.dev/integrations/langchain" icon="link">
+    Tools that read web pages after their JavaScript runs, as Markdown, plus page metadata, console errors and Lighthouse audits; and a document loader.
   </Card>
 
   <Card title="Valthera" href="https://github.com/valthera/langchain-valthera" icon="link">

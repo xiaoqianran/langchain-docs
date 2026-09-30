@@ -66,10 +66,10 @@ After completing these initial setup steps, you can review the complete Azure ar
 
 We recommend using Azure's managed services to provide a scalable, secure, and resilient platform. The following architecture applies to both self-hosted and hybrid deployments.
 
-|                            | Components                                                                                                              | How it's installed                                                                                                                   |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| | Components | How it's installed |
+| - | - | - |
 | **LangSmith Helm release** | Frontend, backend, queue, platform backend, Playground, ACE, and optionally the LangSmith Deployment control/data plane | One `helm upgrade --install` from the [`langchain/langsmith`](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) chart |
-| **You provision**          | AKS, PostgreSQL, Managed Redis, Blob Storage, Key Vault, ingress, and ClickHouse                                        | Your IaC tooling (Terraform, ARM templates, or Azure portal) before installing LangSmith                                             |
+| **You provision** | AKS, PostgreSQL, Managed Redis, Blob Storage, Key Vault, ingress, and ClickHouse | Your IaC tooling (Terraform, ARM templates, or Azure portal) before installing LangSmith |
 
 <img alt="Architecture diagram showing Azure relations to LangSmith services" />
 

@@ -4,8 +4,10 @@
 
 # 模型回退
 
+当主模型速率限制、错误或返回另一个配置的状态代码时，自动重试备份模型的请求。
+
 <Note>
-LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
 当主模型返回配置错误（例如速率限制或提供程序中断）时，模型回退会针对一个或多个备份模型重试请求。在 LangSmith 中定义一次后备顺序，然后继续在应用程序中使用标准 LLM 网关端点和模型 ID。
@@ -14,32 +16,32 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 
 后备链具有：
 
-- **主要模型**：请求失败时触发链的提供者和模型。
-- **一到五个后备**：直接提供者模型的有序列表或保存的[model configurations](/langsmith/model-configurations)。
-- **触发器**：将请求移至下一个模型的上游 HTTP 状态代码。例如，使用 `429` 进行速率限制，或使用 `500`、`502`、`503` 和 `504` 进行提供商错误。
+* **主模型**：请求失败时触发链的提供者和模型。
+* **一到五个后备**：直接提供者模型的有序列表或已保存的[model configurations](/langsmith/model-configurations)。
+* **触发器**：将请求移至下一个模型的上游 HTTP 状态代码。例如，使用 `429` 进行速率限制，或使用 `500`、`502`、`503` 和 `504` 进行提供商错误。
 
-对于每个请求，网关：
+对于每个请求，网关：1. 调用由请求的提供者前缀模型 ID 选择的主模型。
+2. 如果请求因配置的触发状态或传输错误而失败，则加载匹配的后备链。
+3. 按顺序调用每个回退，直到一个成功，返回不会触发另一个回退的状态，或者链耗尽。
+4. 以客户端使用的API格式返回最终响应。
 
-1. 调用由请求的提供者前缀模型 ID 选择的主模型。
-1. 如果请求因配置的触发状态或传输错误而失败，则加载匹配的后备链。
-1. 按顺序调用每个回退，直到一个成功，返回不会触发另一个回退的状态，或者链耗尽。
-1. 以客户端使用的API格式返回最终响应。后备模型可以使用与主要模型不同的提供程序和 API 格式。网关在 [supported API formats](/langsmith/llm-gateway-api-formats) 之间转换请求和响应，因此 Anthropic 主节点可以回退到 OpenAI 模型，而无需客户端更改。
+后备模型可以使用与主要模型不同的提供程序和 API 格式。网关在 [supported API formats](/langsmith/llm-gateway-api-formats) 之间转换请求和响应，因此 Anthropic 主节点可以回退到 OpenAI 模型，而无需客户端更改。
 
 每次尝试都会被跟踪并分别针对 [spend policies](/langsmith/llm-gateway-spend-policies) 进行计数。使用两个回退的请求会记录三个模型调用：主要尝试和两次回退尝试。
 
 ## 创建后备链
 
 <Warning>
-创建和管理后备链需要`organization:manage`权限。有关完整权限细分，请参阅[Access control](/langsmith/llm-gateway-access)。
+  创建和管理后备链需要`organization:manage`权限。有关完整权限细分，请参阅[Access control](/langsmith/llm-gateway-access)。
 </Warning>
 
 创建后备链：1. 转到 **LLM Gateway** 并选择 **模型回退** 选项卡。
-1. 单击**创建后备链**。
-1. 选择链适用的**工作区**。
-1. 选择主要提供商和型号。当主要尝试失败时，对此提供者前缀的模型 ID 的请求将使用该链。
-1. 在 **后备** 下，按照网关应尝试的顺序添加一到五个备份模型。直接选择提供商和模型、选择现有模型配置或创建自定义模型配置。
-1. 在 **配置回退触发器（高级）** 下，查看应触发下一个回退的 HTTP 状态代码。根据需要添加或删除状态代码。
-1. 点击**创建链**。
+2. 单击**创建后备链**。
+3. 选择链适用的**工作区**。
+4. 选择主要提供商和型号。当主要尝试失败时，对此提供者前缀的模型 ID 的请求将使用该链。
+5. 在 **后备** 下，按照网关应尝试的顺序添加一到五个备份模型。直接选择提供商和模型、选择现有模型配置或创建自定义模型配置。
+6. 在 **配置回退触发器（高级）** 下，查看应触发下一个回退的 HTTP 状态代码。根据需要添加或删除状态代码。
+7. 单击**创建链**。
 
 提供者和模型可以在每个工作区中拥有一个后备链。要更改其行为，请编辑现有链。
 
@@ -48,21 +50,19 @@ LLM 网关位于[beta](/langsmith/release-stages)。
 使用主提供商前缀的模型 ID 调用标准 LLM 网关端点。您不需要特定于路由的 URL 或其他请求字段：
 
 <CodeGroup>
+  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://gateway.smith.langchain.com/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+  ```
 
-```bash Cloud
-curl https://gateway.smith.langchain.com/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
-```bash BYOC
-curl https://<data_plane_host>/gateway/v1/chat/completions \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
+  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://<data_plane_host>/gateway/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+  ```
 </CodeGroup>
 
 网关应用在 API 密钥工作区中为 `anthropic/claude-opus-5` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。## 设置提示的后备
@@ -74,15 +74,14 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 要配置提示的后备：
 
 1. [Create a model configuration](/langsmith/model-configurations#create-a-configuration) 指向您希望提示使用的提供程序和模型。
-1. [Create a fallback chain](#create-a-fallback-chain) 在同一工作空间中。选择您保存的配置作为主要模型，而不是直接选择其底层提供程序和模型。添加备份模型、配置触发器并保存链。
-1. 操场上的[Create a prompt](/langsmith/create-a-prompt)。打开**模型配置**，选择**LangSmith网关**作为**提供商**，并在**模型**字段中输入`custom/<my_config_name>`。将 `<my_config_name>` 替换为保存的配置名称，不带尖括号。即使该值未列出，您也可以键入该值。单击**应用**。
 
-    <img
-      src="/images/llm-gateway-prompt-model-configuration.png"
-      alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name> 输入型号字段。”
-    />
+2. [Create a fallback chain](#create-a-fallback-chain) 在同一工作空间中。选择您保存的配置作为主要模型，而不是直接选择其底层提供程序和模型。添加备份模型、配置触发器并保存链。
 
-1. **保存**提示，然后[pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt)。在Python中，调用`client.pull_prompt`时设置`include_model=True`，以便包含保存的网关模型配置。使用保存的模型调用拉取的提示，以通过网关发送请求并应用配置的后备链。仅拉取提示模板，不包含模型配置。
+3. 操场上的[Create a prompt](/langsmith/create-a-prompt)。打开**模型配置**，选择**LangSmith网关**作为**提供商**，并在**模型**字段中输入`custom/<my_config_name>`。将 `<my_config_name>` 替换为保存的配置名称，不带尖括号。即使该值未列出，您也可以键入该值。单击**应用**。
+
+   在型号字段中输入<img alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name>。" />
+
+4. **保存**提示，然后[pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt)。在Python中，调用`client.pull_prompt`时设置`include_model=True`，以便包含保存的网关模型配置。使用保存的模型调用拉取的提示，以通过网关发送请求并应用配置的后备链。仅拉取提示模板，不包含模型配置。
 
 后备链属于模型配置，而不是提示本身。引用相同配置的提示共享其后备。为需要不同后备行为的每个提示使用单独的配置。
 
@@ -90,23 +89,24 @@ curl https://<data_plane_host>/gateway/v1/chat/completions \
 
 您可以添加两种类型的后备候选项：
 
-- **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或者使用符合条件的托管模型的网关积分。
-- **模型配置**：选择已保存的工作空间[model configuration](/langsmith/model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
+* **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或使用符合条件的托管模型的网关积分。
+* **模型配置**：选择已保存的[model configuration](/langsmith/model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
 
-模型配置是工作空间范围内的。后备链只能使用其选定工作区中的配置。例如，将 `anthropic/claude-opus-5` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-opus-5`；网关在需要时选择并转换后备调用。
+后备链可以使用其所选工作区或组织中的模型配置。如果两个范围都包含同名的配置，LLM Gateway 将使用工作区范围的配置，包括主模型的配置。例如，将 `anthropic/claude-opus-5` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-opus-5`；网关在需要时选择并转换后备调用。
 
 ## 另请参阅
 
-- [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
-- [Spend policies](/langsmith/llm-gateway-spend-policies)：在后备路由的同时应用成本限制。
+* [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
+* [Spend policies](/langsmith/llm-gateway-spend-policies)：在后备路由的同时应用成本限制。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

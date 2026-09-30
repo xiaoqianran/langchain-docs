@@ -45,12 +45,12 @@ LangSmith appends `/chat/completions` automatically—do not include it in the B
 
 ### Example Base URLs
 
-| Provider                                                    | Example Base URL                         |
-| ----------------------------------------------------------- | ---------------------------------------- |
-| [Ollama](https://ollama.com/) (local)                       | `http://localhost:11434/v1`              |
-| [LiteLLM Proxy](https://github.com/BerriAI/litellm) (local) | `http://localhost:4000`                  |
-| [vLLM](https://docs.vllm.ai/) (local)                       | `http://localhost:8000/v1`               |
-| Self-hosted (remote)                                        | `https://my-model-server.example.com/v1` |
+| Provider | Example Base URL |
+| - | - |
+| [Ollama](https://ollama.com/) (local) | `http://localhost:11434/v1` |
+| [LiteLLM Proxy](https://github.com/BerriAI/litellm) (local) | `http://localhost:4000` |
+| [vLLM](https://docs.vllm.ai/) (local) | `http://localhost:8000/v1` |
+| Self-hosted (remote) | `https://my-model-server.example.com/v1` |
 
 Custom path prefixes are supported. If your server exposes completions at `/api/v2/chat/completions`,
 set the Base URL to `https://my-server.example.com/api/v2`.

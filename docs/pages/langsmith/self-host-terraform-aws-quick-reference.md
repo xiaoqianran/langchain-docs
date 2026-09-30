@@ -124,75 +124,75 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 
 ### Setup and secrets
 
-| Command             | Description                                                                                               |
-| ------------------- | --------------------------------------------------------------------------------------------------------- |
-| `make quickstart`   | Interactive wizard. Generates `infra/terraform.tfvars` (region, node size, TLS method, add-ons).          |
-| `make setup-env`    | Prints the exact `source` command for loading secrets into your shell. Cannot export variables directly.  |
-| `make secrets`      | Show SSM secrets status (`✓ SET` / `✗ MISSING`) per parameter, check `TF_VAR_*` exports, give next steps. |
-| `make secrets-list` | List all SSM parameters for this deployment with last-modified timestamps.                                |
-| `make ssm`          | Interactive SSM parameter manager. View, set, rotate, validate, diff vs the cluster Secret.               |
+| Command | Description |
+| - | - |
+| `make quickstart` | Interactive wizard. Generates `infra/terraform.tfvars` (region, node size, TLS method, add-ons). |
+| `make setup-env` | Prints the exact `source` command for loading secrets into your shell. Cannot export variables directly. |
+| `make secrets` | Show SSM secrets status (`✓ SET` / `✗ MISSING`) per parameter, check `TF_VAR_*` exports, give next steps. |
+| `make secrets-list` | List all SSM parameters for this deployment with last-modified timestamps. |
+| `make ssm` | Interactive SSM parameter manager. View, set, rotate, validate, diff vs the cluster Secret. |
 
 ### Preflight
 
-| Command               | Description                                                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `make preflight`      | Verify AWS credentials, IAM permissions, and required CLI tools before Terraform runs.                                       |
+| Command | Description |
+| - | - |
+| `make preflight` | Verify AWS credentials, IAM permissions, and required CLI tools before Terraform runs. |
 | `make preflight-post` | Run after `make apply`. Checks kubectl context, cluster reachability, SSM params populated, Helm values present, TLS config. |
-| `make preflight-ssm`  | Check SSM params only. Narrower scope than `preflight-post`.                                                                 |
+| `make preflight-ssm` | Check SSM params only. Narrower scope than `preflight-post`. |
 
 ### Infrastructure
 
-| Command        | Description                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `make init`    | `terraform init`. Downloads providers and modules. Safe to re-run.                         |
-| `make plan`    | `terraform plan`. Preview changes. Review before every apply.                              |
-| `make apply`   | `terraform apply`. Provisions VPC, EKS, RDS, ElastiCache, S3, ALB, IRSA. 20 to 25 minutes. |
-| `make destroy` | `terraform destroy`. Tears down all infrastructure. Run `make uninstall` first.            |
+| Command | Description |
+| - | - |
+| `make init` | `terraform init`. Downloads providers and modules. Safe to re-run. |
+| `make plan` | `terraform plan`. Preview changes. Review before every apply. |
+| `make apply` | `terraform apply`. Provisions VPC, EKS, RDS, ElastiCache, S3, ALB, IRSA. 20 to 25 minutes. |
+| `make destroy` | `terraform destroy`. Tears down all infrastructure. Run `make uninstall` first. |
 
 ### Helm deploy
 
-| Command            | Description                                                                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Command | Description |
+| - | - |
 | `make init-values` | Generate `helm/values/langsmith-values-overrides.yaml` from Terraform outputs. Copy add-on values files based on `enable_*` flags. |
-| `make deploy`      | Deploy or upgrade LangSmith via Helm. Runs preflight, ESO sync, layered values build, and core readiness checks.                   |
-| `make apply-eso`   | Re-apply ESO `ClusterSecretStore` and `ExternalSecret` only. Use after rotating secrets without a full Helm redeploy.              |
-| `make uninstall`   | Uninstall the LangSmith Helm release. Terraform infrastructure stays intact.                                                       |
+| `make deploy` | Deploy or upgrade LangSmith via Helm. Runs preflight, ESO sync, layered values build, and core readiness checks. |
+| `make apply-eso` | Re-apply ESO `ClusterSecretStore` and `ExternalSecret` only. Use after rotating secrets without a full Helm redeploy. |
+| `make uninstall` | Uninstall the LangSmith Helm release. Terraform infrastructure stays intact. |
 
 ### Terraform-managed Helm
 
-| Command            | Description                                                          |
-| ------------------ | -------------------------------------------------------------------- |
-| `make init-app`    | Pull live infra Terraform outputs into `app/infra.auto.tfvars.json`. |
-| `make plan-app`    | `terraform plan` for the `app/` module. Auto-runs `init-app` first.  |
-| `make apply-app`   | Deploy LangSmith Helm release via Terraform (`app/` module).         |
+| Command | Description |
+| - | - |
+| `make init-app` | Pull live infra Terraform outputs into `app/infra.auto.tfvars.json`. |
+| `make plan-app` | `terraform plan` for the `app/` module. Auto-runs `init-app` first. |
+| `make apply-app` | Deploy LangSmith Helm release via Terraform (`app/` module). |
 | `make destroy-app` | Destroy the Helm release via Terraform. Infrastructure stays intact. |
 
 ### Fast path
 
-| Command                 | Description                                                                                                     |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `make quickdeploy`      | Full deploy in one command. Chains `terraform apply` → `kubeconfig` → `init-values` → `helm deploy` with gates. |
-| `make quickdeploy-auto` | Same as `quickdeploy` but non-interactive. Passes `-auto-approve` to terraform.                                 |
-| `make deploy-all`       | `make apply` → `make kubeconfig` → `make init-values` → `make deploy` in sequence.                              |
-| `make deploy-all-tf`    | `make apply` → `make init-values` → Terraform `app/` plan and apply in sequence.                                |
+| Command | Description |
+| - | - |
+| `make quickdeploy` | Full deploy in one command. Chains `terraform apply` → `kubeconfig` → `init-values` → `helm deploy` with gates. |
+| `make quickdeploy-auto` | Same as `quickdeploy` but non-interactive. Passes `-auto-approve` to terraform. |
+| `make deploy-all` | `make apply` → `make kubeconfig` → `make init-values` → `make deploy` in sequence. |
+| `make deploy-all-tf` | `make apply` → `make init-values` → Terraform `app/` plan and apply in sequence. |
 
 ### Utilities
 
-| Command             | Description                                                                                                                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `make status`       | Check deployment state across all layers, print what to run next.                                                                                                                         |
-| `make status-quick` | Same as `status` but skips SSM and Kubernetes queries (faster).                                                                                                                           |
-| `make kubeconfig`   | Print a `source infra/scripts/set-kubeconfig.sh` command to run. Sourcing it exports `KUBECONFIG` to a dedicated `~/.kube/langsmith-<cluster>` file rather than editing `~/.kube/config`. |
-| `make tls`          | BYO ACM cert + Route 53 A alias. Use when `langsmith_domain` is set and you need DNS wiring.                                                                                              |
-| `make clean`        | Remove all local generated and sensitive files. Run after `make destroy`.                                                                                                                 |
+| Command | Description |
+| - | - |
+| `make status` | Check deployment state across all layers, print what to run next. |
+| `make status-quick` | Same as `status` but skips SSM and Kubernetes queries (faster). |
+| `make kubeconfig` | Print a `source infra/scripts/set-kubeconfig.sh` command to run. Sourcing it exports `KUBECONFIG` to a dedicated `~/.kube/langsmith-<cluster>` file rather than editing `~/.kube/config`. |
+| `make tls` | BYO ACM cert + Route 53 A alias. Use when `langsmith_domain` is set and you need DNS wiring. |
+| `make clean` | Remove all local generated and sensitive files. Run after `make destroy`. |
 
 ### Testing
 
-| Command                  | Description                                                                             |
-| ------------------------ | --------------------------------------------------------------------------------------- |
-| `make test-e2e`          | End-to-end gateway tests (ALB or Envoy Gateway) against the current cluster.            |
+| Command | Description |
+| - | - |
+| `make test-e2e` | End-to-end gateway tests (ALB or Envoy Gateway) against the current cluster. |
 | `make test-permutations` | Permutation tests sequentially on the current cluster. Use `ARGS="1 2 5"` for a subset. |
-| `make test-parallel`     | Permutation tests in parallel across isolated clusters. Your cluster is untouched.      |
+| `make test-parallel` | Permutation tests in parallel across isolated clusters. Your cluster is untouched. |
 
 ## kubectl
 

@@ -8,29 +8,30 @@
 
 [LangSmith data migration tool](https://github.com/langchain-ai/langsmith-data-migration-tool) 将数据从现有 LangSmith 云组织或 [self-hosted](/langsmith/self-hosted) 实例复制到 BYOC 数据平面。该工具复制数据（而不是移动数据），因此源实例在移动过程中保持不变并保持可用。
 
-在数据平面达到[active and reachable](/langsmith/byoc-onboarding)后运行迁移。跟踪数据不会迁移，因此请与该工具一起规划 [manual steps](#move-data-the-tool-does-not-migrate)。
+在数据平面为 [active and reachable](/langsmith/byoc-onboarding) 后运行迁移。跟踪数据不会迁移，因此请与该工具一起规划 [manual steps](#move-data-the-tool-does-not-migrate)。
 
 ## 支持的资源
 
 该工具在源实例和目标数据平面之间迁移以下资源：|资源 |详情 |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|用户和角色 |自定义角色、组织成员和工作区成员资格。                                                                                          |
-|数据集 |数据集及其示例和文件附件。                                                                                                      |
-|实验|实验、实验运行和反馈随数据集一起迁移。                                                                               |
-|注释队列 |队列配置和设置。迁移的队列开始为空。                                                                                          ||自动化规则 |映射到目标项目的项目自动化规则。                                                                                             |
-|提示|提示完整的提交历史记录。                                                                                                                   |
-|图表|监控图表和仪表板。                                                                                                                       |
-|定制型号定价|工作区-自定义模型价格条目。                                                                                                                   |
+| - | - |
+|用户和角色 |自定义角色、组织成员和工作区成员资格。 |
+|数据集 |数据集及其示例和文件附件。 |
+|实验|实验、实验运行和反馈随数据集一起迁移。 |
+|注释队列 |队列配置和设置。迁移的队列开始为空。 |
+|自动化规则 |映射到目标项目的项目自动化规则。 |
+|提示|提示完整的提交历史记录。 |
+|图表|监控图表和仪表板。 |
+|定制型号定价|工作区-自定义模型价格条目。 |
 |舰队|代理、共享技能、MCP 服务器、集成、身份验证提供程序、计划、触发器、Webhooks、使用限制、沙箱策略和工作区机密。 |
-|上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。                                                   |
+|上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。 |
 
-每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。<Note>
+每种资源类型都有自己的命令、标志和警告。命令参考请参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
+
+<Note>
   属于 BYOC 尚不支持的功能的资源（例如[Engine](/langsmith/engine-overview)）无法迁移。参见[Available features](/langsmith/byoc#available-features)。
 </Note>
 
-## 使用工具迁移
-
-<Steps>
+## 使用工具迁移<Steps>
   <Step title="Install the tool">
     使用 `uv`、`uvx` 或 `pip` 安装最新版本。对于当前的安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
 
@@ -99,7 +100,7 @@
 * **重新验证 OAuth 连接**：每用户代理连接（例如 Gmail、Slack 和 GitHub）与各个用户令牌绑定。每个用户都必须重新连接。
 * **重新共享代理**：每用户访问列表仅保留目标上存在的用户 ID。该工具报告它删除了哪些用户。
 * **检查代理模型**：当目标目录不提供源模型时，该工具会替换模型。它记录每次替换。
-* **配置基础设施级别设置**：OAuth 提供程序、GitHub 应用程序和 Slack 应用程序在部署配置中设置，而不是通过 API。请联系 LangChain 团队在您的数据平面中配置它们。
+* **配置基础设施级别设置**：OAuth 提供程序、GitHub 应用程序和 Slack 应用程序可以在 `Settings > Oauth Providers` 和 `Fleet > Integrations` UI 中重新创建。
 
 队列迁移器绝不会覆盖目的地上已存在的资源，因此重新运行 `fleet` 是安全的。
 
@@ -107,9 +108,9 @@
 
 ### 痕迹
 
-该工具不会迁移痕迹。为了在旧实例的生命周期之外保留历史跟踪，[bulk export](/langsmith/data-export) 将它们保存到与 S3 兼容的存储桶。要移动跟踪应用程序，请创建作用域为数据平面中的工作区的 API 密钥，然后重新指向应用程序：
+该工具不会迁移痕迹。为了将历史跟踪保留在旧实例的生命周期之外，[bulk export](/langsmith/data-export) 将它们保存到与 S3 兼容的存储桶中。
 
-* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，并将 `LANGSMITH_API_KEY` 设置为新密钥。参见[Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane)。
+要移动跟踪应用程序，请创建作用域为数据平面中的工作区的 API 密钥，然后重新指向应用程序：* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，将 `LANGSMITH_API_KEY` 设置为新密钥。参见[Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane)。
 * **双跟踪**：在转换期间写入旧实例和数据平面。参见[Trace to multiple endpoints](/langsmith/byoc-usage#trace-to-multiple-endpoints)。
 
 ### 已部署代理
@@ -133,7 +134,9 @@
 * [BYOC usage](/langsmith/byoc-usage)
 * [Bulk export trace data](/langsmith/data-export)
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

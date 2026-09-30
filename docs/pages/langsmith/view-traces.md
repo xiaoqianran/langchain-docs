@@ -73,9 +73,9 @@ You can control how runs appear in the Trajectory view using metadata keys on in
 
 * `ls_agent_type`: Controls where messages from an agent-like run appear. Accepted values:
 
-  | Value        | Trajectory view behavior                                                       |
-  | ------------ | ------------------------------------------------------------------------------ |
-  | `"root"`     | Messages from this run appear in the main Trajectory view.                     |
+  | Value | Trajectory view behavior |
+  | - | - |
+  | `"root"` | Messages from this run appear in the main Trajectory view. |
   | `"subagent"` | Messages from this run appear as a subagent action in the conversation thread. |
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

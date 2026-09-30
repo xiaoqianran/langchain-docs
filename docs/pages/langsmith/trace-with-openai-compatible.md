@@ -8,12 +8,12 @@ Many LLM providers accept requests in the same format as the OpenAI API. To trac
 
 Use `wrap_openai` / `wrapOpenAI` for direct API calls. Use [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) when you need to trace application logic around the call or set metadata per invocation.
 
-|                | `wrap_openai` / `wrapOpenAI`                                      | `@traceable` / `traceable`                                                                                            |
-| -------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Token tracking | Automatic                                                         | Requires `run_type="llm"`                                                                                             |
-| Run type       | LLM (set automatically)                                           | Chain by default                                                                                                      |
-| Traces         | The API call                                                      | The function wrapping it                                                                                              |
-| Metadata       | Client-level only (Python); client-level or per-call (TypeScript) | Per-call via [`langsmith_extra`](https://reference.langchain.com/python/langsmith/run_helpers/SupportsLangsmithExtra) |
+| | `wrap_openai` / `wrapOpenAI` | `@traceable` / `traceable` |
+| - | - | - |
+| Token tracking | Automatic | Requires `run_type="llm"` |
+| Run type | LLM (set automatically) | Chain by default |
+| Traces | The API call | The function wrapping it |
+| Metadata | Client-level only (Python); client-level or per-call (TypeScript) | Per-call via [`langsmith_extra`](https://reference.langchain.com/python/langsmith/run_helpers/SupportsLangsmithExtra) |
 
 <Note>To trace OpenAI directly, refer to [Trace OpenAI applications](/langsmith/trace-openai).</Note>
 

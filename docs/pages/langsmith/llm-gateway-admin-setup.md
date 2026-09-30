@@ -22,16 +22,16 @@ The gateway resolves provider API keys from your workspace's Provider Secrets—
 
 Go to **Settings > Integrations > Provider Secrets** and add the keys for the providers you want to proxy through the gateway:
 
-| Secret name                   | Provider                         |
-| ----------------------------- | -------------------------------- |
-| `ANTHROPIC_API_KEY`           | Anthropic                        |
-| `AWS_BEARER_TOKEN_BEDROCK`    | AWS Bedrock                      |
-| `AZURE_FOUNDRY_API_KEY`       | Azure Foundry                    |
-| `AZURE_FOUNDRY_RESOURCE_NAME` | Azure Foundry                    |
-| `BASETEN_API_KEY`             | Baseten                          |
-| `FIREWORKS_API_KEY`           | Fireworks                        |
-| `GOOGLE_API_KEY`              | Google Gemini                    |
-| `OPENAI_API_KEY`              | OpenAI                           |
+| Secret name | Provider |
+| - | - |
+| `ANTHROPIC_API_KEY` | Anthropic |
+| `AWS_BEARER_TOKEN_BEDROCK` | AWS Bedrock |
+| `AZURE_FOUNDRY_API_KEY` | Azure Foundry |
+| `AZURE_FOUNDRY_RESOURCE_NAME` | Azure Foundry |
+| `BASETEN_API_KEY` | Baseten |
+| `FIREWORKS_API_KEY` | Fireworks |
+| `GOOGLE_API_KEY` | Google Gemini |
+| `OPENAI_API_KEY` | OpenAI |
 | `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini Enterprise Agent Platform |
 
 Add only the providers your organization uses. The gateway will return an error if a user tries to call a provider whose key hasn't been added.

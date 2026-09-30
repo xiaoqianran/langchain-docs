@@ -387,8 +387,8 @@ Every agent manages its execution context through an `AgentState` object that ho
 
 The built-in field is:
 
-| Field      | Type            | Description                                                                                                |
-| ---------- | --------------- | ---------------------------------------------------------------------------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `messages` | `BaseMessage[]` | The full conversation history for the current thread. Append-only: new messages are added, never replaced. |
 
 `AgentState` is also the type passed to every node-style middleware hook (`beforeModel`, `afterModel`, and similar). Hooks receive the current state and can return an object of updates to merge back into it.

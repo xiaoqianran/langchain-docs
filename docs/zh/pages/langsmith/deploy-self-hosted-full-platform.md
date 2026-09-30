@@ -254,11 +254,12 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 #### 可用的提供商
 
 |供应商|启用工具 |触发器已启用 |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | ---------------- |
+| - | - | - |
 | `googleOAuthProvider`<br />[setup guide](#google-oauth-provider) | Gmail、Google 日历、<br />Google 表格、BigQuery |邮箱 |
 | `linearOAuthProvider`<br />[setup guide](#linear-oauth-provider) |线性| - |
 | `linkedinOAuthProvider`<br />[setup guide](#linkedin-oauth-provider) |领英 | - |
-| `microsoftOAuthProvider`<br />[setup guide](#microsoft-oauth-provider) | Outlook、日历、团队、SharePoint、<br />Word、Excel、PowerPoint |展望 || `salesforceOAuthProvider`<br />[setup guide](#salesforce-oauth-provider) |销售人员 | - |
+| `microsoftOAuthProvider`<br />[setup guide](#microsoft-oauth-provider) | Outlook、日历、团队、SharePoint、<br />Word、Excel、PowerPoint |展望 |
+| `salesforceOAuthProvider`<br />[setup guide](#salesforce-oauth-provider) |销售人员 | - |
 | `slackOAuthProvider`<br />[setup guide](#slack-oauth-provider) |松弛|松弛|
 
 #### 通用配置
@@ -287,9 +288,7 @@ fleet:
 
 <AccordionGroup>
   <Accordion title="Google OAuth provider">
-    要为 Fleet 启用 Google OAuth，请在 GCP 中创建 OAuth 客户端，并使用所需的 URL 和凭据对其进行配置。
-
-    <Steps>
+    要为 Fleet 启用 Google OAuth，请在 GCP 中创建 OAuth 客户端，并使用所需的 URL 和凭据对其进行配置。<Steps>
       <Step title="Create OAuth client in GCP">
         在 [Google Cloud Console](https://console.cloud.google.com/apis/credentials) 中创建一个新的 OAuth 客户端应用程序（Web 应用程序）。
       </Step>
@@ -309,7 +308,9 @@ fleet:
 
       <Step title="Copy credentials">
         从 GCP OAuth 应用复制 **客户端 ID** 和 **客户端密钥**。
-      </Step><Step title="Configure OAuth provider in LangSmith">
+      </Step>
+
+      <Step title="Configure OAuth provider in LangSmith">
         在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：
 
         * **客户端 ID**：来自 GCP
@@ -337,16 +338,16 @@ fleet:
   </Accordion>
 
   <Accordion title="Microsoft OAuth provider">
-    要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。
-
-    <Steps>
+    要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。<Steps>
       <Step title="Create an Azure app registration">
         在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建一个新的注册。
       </Step>
 
       <Step title="Choose supported account types">
         选择与您的部署匹配的帐户类型。如果需要来自多个 Microsoft Entra 租户的用户进行身份验证，请选择多租户选项。如果您的部署仅限于一个租户，您可以使用单租户应用程序注册。
-      </Step><Step title="Add the redirect URI">
+      </Step>
+
+      <Step title="Add the redirect URI">
         添加以下 Web 重定向 URI，将 `<hostname>` 替换为您的 LangSmith 主机名，将 `<provider-id>` 替换为您的提供商 ID：
 
         ```
@@ -373,9 +374,7 @@ fleet:
         * `Chat.ReadWrite`
         * `User.ReadBasic.All`
         * `Files.ReadWrite.All`
-        * `Sites.ReadWrite.All`
-
-        <Note>
+        * `Sites.ReadWrite.All`<Note>
           LangSmith 自动向 Microsoft 提供商请求 `offline_access`，以便用户可以接收刷新令牌。
         </Note>
       </Step>
@@ -385,7 +384,9 @@ fleet:
       </Step>
 
       <Step title="Configure OAuth provider in LangSmith">
-        在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：* **名称**：例如，`Microsoft`
+        在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：
+
+        * **名称**：例如，`Microsoft`
         * **提供商 ID**：唯一字符串，例如：`microsoft-oauth-provider`
         * **客户端 ID**：来自 Azure 的应用程序（客户端）ID
         * **客户端密钥**：来自 Azure 的客户端密钥值
@@ -417,9 +418,7 @@ fleet:
   </Accordion>
 
   <Accordion title="Linear OAuth provider">
-    要为 Fleet 启用 Linear OAuth，请创建 Linear OAuth 应用程序并使用所需的凭据对其进行配置。
-
-    <Steps>
+    要为 Fleet 启用 Linear OAuth，请创建 Linear OAuth 应用程序并使用所需的凭据对其进行配置。<Steps>
       <Step title="Create a Linear OAuth app">
         转到 [Linear Settings > API > Applications](https://linear.app/settings/api/applications/new) 并创建一个新的 OAuth 应用程序。
       </Step>
@@ -434,7 +433,9 @@ fleet:
 
       <Step title="Copy credentials">
         创建应用程序后，复制 **客户端 ID** 和 **客户端密钥**。
-      </Step><Step title="Configure OAuth provider in LangSmith">
+      </Step>
+
+      <Step title="Configure OAuth provider in LangSmith">
         在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：
 
         * **客户端 ID**：来自 Linear 应用程序
@@ -470,9 +471,7 @@ fleet:
       </Step>
 
       <Step title="Add redirect URI">
-        在您的应用程序设置中，转到 **Auth** 选项卡。添加以下重定向 URI，将 `<hostname>` 替换为您的 LangSmith 主机名，将 `<provider-id>` 替换为您的提供商 ID：
-
-        ```
+        在您的应用程序设置中，转到 **Auth** 选项卡。添加以下重定向 URI，将 `<hostname>` 替换为您的 LangSmith 主机名，将 `<provider-id>` 替换为您的提供商 ID：```
         https://<hostname>/host-oauth-callback/<provider-id>
         ```
       </Step>
@@ -482,7 +481,9 @@ fleet:
       </Step>
 
       <Step title="Configure OAuth provider in LangSmith">
-        在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：* **客户 ID**：来自 LinkedIn 应用程序
+        在 LangSmith 中，转到 **设置 > OAuth 提供商** 并添加新的提供商：
+
+        * **客户 ID**：来自 LinkedIn 应用程序
         * **客户秘密**：来自 LinkedIn 应用程序
         * **授权网址**：`https://www.linkedin.com/oauth/v2/authorization`
         * **令牌 URL**：`https://www.linkedin.com/oauth/v2/accessToken`
@@ -674,7 +675,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
 
   <Step title="Create the app">
     单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
-    | ---------------- | ----------------------------------------------------------------------- | ------------------------------ |
+    | - | - | - |
     | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
     | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
     |应用程序块 |公共链接的最后一个路径段 | `FLEET_GITHUB_APP_SLUG` |
@@ -709,7 +710,9 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
       --from-literal=webhook_secret="<webhook-secret>" \
       --from-literal=state_jwt_secret="<state-jwt-secret>" \
       --from-file=private_key=/path/to/fleet-app.private-key.pem
-    ```对于生产部署，通过现有密钥工作流程管理此密钥（例如，[Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) 或 [External Secrets Operator](https://external-secrets.io/)）。更多信息请参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
+    ```
+
+    对于生产部署，通过现有密钥工作流程管理此密钥（例如，[Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) 或 [External Secrets Operator](https://external-secrets.io/)）。更多信息请参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
   </Step>
 
   <Step title="Add the configuration to your langsmith_config.yaml">
@@ -751,9 +754,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
         extraEnv:
           - name: FLEET_GITHUB_APP_ENABLED
             value: "true"
-    ```
-
-    <Note>
+    ```<Note>
       必须在工具服务器上设置`FLEET_GITHUB_APP_ENABLED`，以便注册 GitHub 工具。其余的 `FLEET_GITHUB_APP_*` 变量由平台后端使用并位于 `commonEnv` 下。
     </Note>
   </Step>
@@ -777,7 +778,9 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
   </Step>
 </Steps>
 
-### 禁用功能要禁用舰队、见解和聊天的任意组合，请在 [⟦T204⟧](/langsmith/kubernetes#configure-your-helm-charts) 中将相应的标志设置为 `false`：
+### 禁用功能
+
+要禁用舰队、见解和聊天的任意组合，请在 [⟦T204⟧](/langsmith/kubernetes#configure-your-helm-charts) 中将相应的标志设置为 `false`：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 fleet:
@@ -796,9 +799,7 @@ polly:
   Azure 上的自托管沙盒需要 LangSmith Helm Chart v17 (`0.17.x`)。
 </Note>
 
-默认情况下，沙箱处于禁用状态。安装后，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)了解LangSmith UI 和 API 中的用户工作流程。
-
-### 支持的平台
+默认情况下，沙箱处于禁用状态。安装后，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)了解LangSmith UI 和 API 中的用户工作流程。### 支持的平台
 
 自托管沙箱受以下支持：
 
@@ -824,9 +825,9 @@ polly:
   </Step>
 
   <Step title="Add KVM-capable nodes">
-    您的集群必须包含专用节点，这些节点可以使用 `/dev/kvm` 上提供的 Linux KVM 运行嵌套工作负载。这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86\_64 Linux 实例。
+    您的集群必须包含专用节点，这些节点可以使用 `/dev/kvm` 上提供的 Linux KVM 运行嵌套工作负载。
 
-    <Warning>
+    这些可以是裸机机器或启用了嵌套虚拟化的受支持的云实例。在 AWS 和 GCP 上，使用将 `/dev/kvm` 暴露给沙箱运行时的 x86\_64 Linux 实例。<Warning>
       在 EKS 上，VPC CNI 插件必须是 **v1.21 或更高版本**。 `v1.20.0` 第 8 代崩溃
       Intel实例（例如`m8i`）：`aws-node`进入`CrashLoopBackOff`，节点报告
       `cni plugin not initialized`，受管节点组最终失败并显示
@@ -854,20 +855,22 @@ polly:
     * 对象存储桶或桶根。
     * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
 
-    将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：| **平台** | **存储价值** | **桶格式** |
-    | ------------ | ----------------- | ------------------------------------------------------------------------------------------------------- |
-    |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
-    |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |
+    将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
-    不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
+    | **平台** | **存储价值** | **桶格式** |
+    | - | - | - |
+    |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
+    | GCP | `gs` | GCS URL，例如`gs://bucket-name`|
+    |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>
       对于 Redis 元数据存储，我们建议将 `maxmemory-policy` 设置为 `noeviction`。这可以避免在内存压力下驱逐 JuiceFS 元数据。监控 Redis 容量并在达到内存限制之前对其进行扩展。
 
       使用`noeviction`，当实例达到最大内存时，Redis 写入可能会失败，因此请为沙箱元数据增长保留足够的内存空间。
     </Tip>
-  </Step><Step title="Configure sandbox secrets">
+  </Step>
+
+  <Step title="Configure sandbox secrets">
     沙箱需要额外的秘密材料来进行服务间身份验证和回调签名。
 
     <Tabs>
@@ -892,14 +895,14 @@ polly:
     </Tabs>
 
     回调签名值必须是 Ed25519 私有 JWK。在升级过程中保持稳定。
-  </Step>
-
-  <Step title="Choose a proxy CA mode">
+  </Step><Step title="Choose a proxy CA mode">
     沙箱出口身份验证代理使用此 CA 进行 TLS 拦截和凭证注入。
 
-    该图表支持两种代理 CA 模式：|模式|使用时 |
-    | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | `generatedSecret` |您希望 Helm 创建一个自签名的 CA Secret。这是默认设置。                                                                      |
+    该图表支持两种代理 CA 模式：
+
+    |模式|使用时 |
+    | - | - |
+    | `generatedSecret` |您希望 Helm 创建一个自签名的 CA Secret。这是默认设置。 |
     | `existingSecret` |您可以在 LangSmith 图表之外管理 CA 秘密。秘密可以由证书管理器或其他外部进程手动创建。 |
 
     在无需实时集群访问即可渲染清单的 GitOps 工作流程中，首选 `existingSecret`。 `generatedSecret` 模式使用 Helm 的实时 `lookup` 行为在升级时重用生成的 Secret；纯渲染工作流程无法读取实时 Secret，并且可能会在每次渲染上生成新的证书材料。
@@ -959,7 +962,9 @@ polly:
           annotations:
             iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
     ```
-  </Tab><Tab title="Azure">
+  </Tab>
+
+  <Tab title="Azure">
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     images:
       sandboxHostImage:
@@ -1001,9 +1006,7 @@ helm upgrade -i langsmith langchain/langsmith \
   --wait
 ```
 
-### 使用 Terraform 启用
-
-<div>
+### 使用 Terraform 启用<div>
   LangSmith Terraform 模块可以配置所需的 AWS 和 GCP 基础设施并生成相应的 Helm 值。
 
   <Tabs>
@@ -1040,11 +1043,11 @@ helm upgrade -i langsmith langchain/langsmith \
       enable_sandboxes      = true
       chart_version          = "~0.17.0"
       sandbox_host_image_tag = "<same-release-tag-as-your-langsmith-images>"
-      ```当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
+      ```
 
-      运行正常的 AWS 流程：
+      当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      运行正常的 AWS 流程：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       make apply
       make init-values
       CHART_VERSION="~0.17.0" make deploy
@@ -1092,7 +1095,9 @@ helm upgrade -i langsmith langchain/langsmith \
 
       当`enable_sandboxes = true`时，Terraform应用程序模块需要显式的LangSmithHelm图表v17版本和沙箱运行时图像标签。
 
-      运行正常的 GCP 流程：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      运行正常的 GCP 流程：
+
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       make apply
       make init-values
       CHART_VERSION="~0.17.0" make deploy
@@ -1101,9 +1106,7 @@ helm upgrade -i langsmith langchain/langsmith \
   </Tabs>
 </div>
 
-### 可选：启用服务 URL
-
-当用户需要浏览器或编程访问沙箱内运行的 HTTP 服务时，请设置`sandboxes.serviceUrlBaseUrl`。
+### 可选：启用服务 URL当用户需要浏览器或编程访问沙箱内运行的 HTTP 服务时，请设置`sandboxes.serviceUrlBaseUrl`。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sandboxes:

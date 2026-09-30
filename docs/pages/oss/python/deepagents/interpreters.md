@@ -46,13 +46,13 @@ Use interpreters for code inside the agent loop: composing tools, preserving sta
 
 Use [sandboxes](/oss/python/deepagents/sandboxes) for code against an environment: shell commands, package installs, tests, filesystem edits, and OS-level execution.
 
-| Need                                                                                             | Use                                                                                |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| One or two simple external calls                                                                 | Normal tool calling                                                                |
-| Pure in-memory JavaScript: loops, branches, retries, or data transforms (no external tools)      | Interpreter                                                                        |
+| Need | Use |
+| - | - |
+| One or two simple external calls | Normal tool calling |
+| Pure in-memory JavaScript: loops, branches, retries, or data transforms (no external tools) | Interpreter |
 | Many external tool calls orchestrated from code (requires [PTC](#programmatic-tool-calling-ptc)) | Interpreter with [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) |
-| Many independent units of work, multiple perspectives, or recursive analysis over large inputs   | Interpreter with [dynamic subagents](/oss/python/deepagents/dynamic-subagents)     |
-| Shell commands, package installs, tests, or full OS filesystem access                            | [Sandboxes](/oss/python/deepagents/sandboxes)                                      |
+| Many independent units of work, multiple perspectives, or recursive analysis over large inputs | Interpreter with [dynamic subagents](/oss/python/deepagents/dynamic-subagents) |
+| Shell commands, package installs, tests, or full OS filesystem access | [Sandboxes](/oss/python/deepagents/sandboxes) |
 
 ## Quickstart
 
@@ -527,16 +527,16 @@ Interpreters use QuickJS to run untrusted JavaScript with strict default isolati
 
 Every tool you expose through PTC is an outside capability that interpreter code can use. Treat the PTC allowlist as a permission boundary: expose only the tools the agent needs, and avoid bridging broad tools that can access sensitive systems, spend money, mutate data, or call unrestricted networks unless that behavior is intentional.
 
-| Capability                                                  | Available by default | How to expose it                                                                                                     |
-| ----------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| JavaScript execution                                        | Yes                  | Add interpreter middleware                                                                                           |
-| Top-level `await`                                           | Yes                  | Use promises in interpreter code                                                                                     |
-| `console.log`, `warn`, `error` capture                      | Yes                  | Disable with `capture_console=False`                                                                                 |
-| Agent tools                                                 | No                   | Add a PTC allowlist                                                                                                  |
-| Filesystem access                                           | No                   | Add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
-| Network access                                              | No                   | Expose a specific network tool through PTC                                                                           |
-| Wall-clock or datetime access                               | No                   | Expose an explicit time tool if needed                                                                               |
-| Shell commands, package installs, tests, OS-level execution | No                   | Use a [sandbox backend](/oss/python/deepagents/sandboxes)                                                            |
+| Capability | Available by default | How to expose it |
+| - | - | - |
+| JavaScript execution | Yes | Add interpreter middleware |
+| Top-level `await` | Yes | Use promises in interpreter code |
+| `console.log`, `warn`, `error` capture | Yes | Disable with `capture_console=False` |
+| Agent tools | No | Add a PTC allowlist |
+| Filesystem access | No | Add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
+| Network access | No | Expose a specific network tool through PTC |
+| Wall-clock or datetime access | No | Expose an explicit time tool if needed |
+| Shell commands, package installs, tests, OS-level execution | No | Use a [sandbox backend](/oss/python/deepagents/sandboxes) |
 
 <Note>
   **How code execution works**
@@ -550,18 +550,18 @@ Every tool you expose through PTC is an outside capability that interpreter code
 
 `CodeInterpreterMiddleware` accepts the following options:
 
-| Kwarg                | Default                          | Purpose                                                                                                                                                                                  |
-| -------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `memory_limit`       | `64 * 1024 * 1024` <br />(64 MB) | Cap QuickJS heap memory per thread.                                                                                                                                                      |
-| `timeout`            | `5.0`                            | Timeout limit in seconds for each `eval` call.                                                                                                                                           |
-| `tool_name`          | `"eval"`                         | Name of the interpreter tool exposed to the model.                                                                                                                                       |
-| `capture_console`    | `True`                           | Capture `console.log`, `console.warn`, and `console.error` in the tool response. Set to `False` to discard console output.                                                               |
-| `max_result_chars`   | `4000`                           | Truncate result, error, and stdout text returned to the model to a maximum character count.                                                                                              |
-| `ptc`                | `None`                           | Allowlist of tool names or `BaseTool` instances exposed as `tools.*` inside the interpreter. Omit to disable. See [Enable PTC](#enable-ptc).                                             |
-| `max_ptc_calls`      | `256`                            | Maximum `tools.*` calls allowed per `eval`. Set to `None` only in trusted environments. See [Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) and [Security](#security). |
-| `subagents`          | `True`                           | Expose the built-in `task()` global when the agent has subagents. Set to `False` to require dispatch through the normal `task` tool. See [Dynamic subagents](#dynamic-subagents).        |
-| `mode`               | `"thread"`                       | Control interpreter persistence: `"thread"` (across turns), `"turn"` (within one turn), or `"call"` (fresh REPL per `eval`). See [Persistence](#persistence).                            |
-| `max_snapshot_bytes` | `None`                           | Drop snapshots larger than this byte limit. Defaults to `memory_limit`. See [Persistence](#persistence).                                                                                 |
+| Kwarg | Default | Purpose |
+| - | - | - |
+| `memory_limit` | `64 * 1024 * 1024` <br />(64 MB) | Cap QuickJS heap memory per thread. |
+| `timeout` | `5.0` | Timeout limit in seconds for each `eval` call. |
+| `tool_name` | `"eval"` | Name of the interpreter tool exposed to the model. |
+| `capture_console` | `True` | Capture `console.log`, `console.warn`, and `console.error` in the tool response. Set to `False` to discard console output. |
+| `max_result_chars` | `4000` | Truncate result, error, and stdout text returned to the model to a maximum character count. |
+| `ptc` | `None` | Allowlist of tool names or `BaseTool` instances exposed as `tools.*` inside the interpreter. Omit to disable. See [Enable PTC](#enable-ptc). |
+| `max_ptc_calls` | `256` | Maximum `tools.*` calls allowed per `eval`. Set to `None` only in trusted environments. See [Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) and [Security](#security). |
+| `subagents` | `True` | Expose the built-in `task()` global when the agent has subagents. Set to `False` to require dispatch through the normal `task` tool. See [Dynamic subagents](#dynamic-subagents). |
+| `mode` | `"thread"` | Control interpreter persistence: `"thread"` (across turns), `"turn"` (within one turn), or `"call"` (fresh REPL per `eval`). See [Persistence](#persistence). |
+| `max_snapshot_bytes` | `None` | Drop snapshots larger than this byte limit. Defaults to `memory_limit`. See [Persistence](#persistence). |
 
 ***
 

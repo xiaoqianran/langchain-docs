@@ -289,144 +289,144 @@ When sending traces to LangSmith via OpenTelemetry, the following attributes are
 
 ### Core LangSmith attributes
 
-| OpenTelemetry attribute        | LangSmith field                                  | Notes                                                                                                                                                                      |
-| ------------------------------ | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `langsmith.trace.name`         | Run name                                         | Overrides the span name for the run                                                                                                                                        |
-| `langsmith.span.kind`          | [Run type](/langsmith/run-data-format#run-types) | Values: `llm`, `chain`, `tool`, `retriever`, `embedding`, `prompt`, `parser`                                                                                               |
-| `langsmith.trace.id`           | Trace ID                                         | The trace (root run) the span belongs to; set to attach to an existing trace                                                                                               |
-| `langsmith.span.id`            | Run ID                                           | This span's run ID (a UUID); overrides the ID derived from the OTLP span ID                                                                                                |
-| `langsmith.span.parent_id`     | Parent run ID                                    | Nests the span under an existing run by its run ID                                                                                                                         |
-| `langsmith.span.dotted_order`  | Dotted order                                     | Position in the trace tree: `<parent.dotted_order>.<timestamp><span.id>`. See [`dotted_order`](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order). |
-| `langsmith.trace.session_id`   | Session ID                                       | Session identifier for related traces                                                                                                                                      |
-| `langsmith.trace.session_name` | Session name                                     | Name of the session                                                                                                                                                        |
-| `langsmith.span.tags`          | Tags                                             | Custom tags attached to the span (comma-separated)                                                                                                                         |
-| `langsmith.metadata.{key}`     | `metadata.{key}`                                 | Custom metadata with langsmith prefix                                                                                                                                      |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `langsmith.trace.name` | Run name | Overrides the span name for the run |
+| `langsmith.span.kind` | [Run type](/langsmith/run-data-format#run-types) | Values: `llm`, `chain`, `tool`, `retriever`, `embedding`, `prompt`, `parser` |
+| `langsmith.trace.id` | Trace ID | The trace (root run) the span belongs to; set to attach to an existing trace |
+| `langsmith.span.id` | Run ID | This span's run ID (a UUID); overrides the ID derived from the OTLP span ID |
+| `langsmith.span.parent_id` | Parent run ID | Nests the span under an existing run by its run ID |
+| `langsmith.span.dotted_order` | Dotted order | Position in the trace tree: `<parent.dotted_order>.<timestamp><span.id>`. See [`dotted_order`](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order). |
+| `langsmith.trace.session_id` | Session ID | Session identifier for related traces |
+| `langsmith.trace.session_name` | Session name | Name of the session |
+| `langsmith.span.tags` | Tags | Custom tags attached to the span (comma-separated) |
+| `langsmith.metadata.{key}` | `metadata.{key}` | Custom metadata with langsmith prefix |
 
 ### GenAI standard attributes
 
-| OpenTelemetry attribute                 | LangSmith field               | Notes                                                         |
-| --------------------------------------- | ----------------------------- | ------------------------------------------------------------- |
-| `gen_ai.system`                         | `metadata.ls_provider`        | The GenAI system (e.g., "openai", "anthropic")                |
-| `gen_ai.operation.name`                 | Run type                      | Maps "chat"/"completion" to "llm", "embedding" to "embedding" |
-| `gen_ai.prompt`                         | `inputs`                      | The input prompt sent to the model                            |
-| `gen_ai.completion`                     | `outputs`                     | The output generated by the model                             |
-| `gen_ai.prompt.{n}.role`                | `inputs.messages[n].role`     | Role for the nth input message                                |
-| `gen_ai.prompt.{n}.content`             | `inputs.messages[n].content`  | Content for the nth input message                             |
-| `gen_ai.prompt.{n}.message.role`        | `inputs.messages[n].role`     | Alternative format for role                                   |
-| `gen_ai.prompt.{n}.message.content`     | `inputs.messages[n].content`  | Alternative format for content                                |
-| `gen_ai.completion.{n}.role`            | `outputs.messages[n].role`    | Role for the nth output message                               |
-| `gen_ai.completion.{n}.content`         | `outputs.messages[n].content` | Content for the nth output message                            |
-| `gen_ai.completion.{n}.message.role`    | `outputs.messages[n].role`    | Alternative format for role                                   |
-| `gen_ai.completion.{n}.message.content` | `outputs.messages[n].content` | Alternative format for content                                |
-| `gen_ai.input.messages`                 | `inputs.messages`             | Array of input messages                                       |
-| `gen_ai.output.messages`                | `outputs.messages`            | Array of output messages                                      |
-| `gen_ai.tool.name`                      | `invocation_params.tool_name` | Tool name, also sets run type to "tool"                       |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `gen_ai.system` | `metadata.ls_provider` | The GenAI system (e.g., "openai", "anthropic") |
+| `gen_ai.operation.name` | Run type | Maps "chat"/"completion" to "llm", "embedding" to "embedding" |
+| `gen_ai.prompt` | `inputs` | The input prompt sent to the model |
+| `gen_ai.completion` | `outputs` | The output generated by the model |
+| `gen_ai.prompt.{n}.role` | `inputs.messages[n].role` | Role for the nth input message |
+| `gen_ai.prompt.{n}.content` | `inputs.messages[n].content` | Content for the nth input message |
+| `gen_ai.prompt.{n}.message.role` | `inputs.messages[n].role` | Alternative format for role |
+| `gen_ai.prompt.{n}.message.content` | `inputs.messages[n].content` | Alternative format for content |
+| `gen_ai.completion.{n}.role` | `outputs.messages[n].role` | Role for the nth output message |
+| `gen_ai.completion.{n}.content` | `outputs.messages[n].content` | Content for the nth output message |
+| `gen_ai.completion.{n}.message.role` | `outputs.messages[n].role` | Alternative format for role |
+| `gen_ai.completion.{n}.message.content` | `outputs.messages[n].content` | Alternative format for content |
+| `gen_ai.input.messages` | `inputs.messages` | Array of input messages |
+| `gen_ai.output.messages` | `outputs.messages` | Array of output messages |
+| `gen_ai.tool.name` | `invocation_params.tool_name` | Tool name, also sets run type to "tool" |
 
 ### GenAI request parameters
 
-| OpenTelemetry attribute            | LangSmith field                       | Notes                                   |
-| ---------------------------------- | ------------------------------------- | --------------------------------------- |
-| `gen_ai.request.model`             | `invocation_params.model`             | The model name used for the request     |
-| `gen_ai.response.model`            | `invocation_params.model`             | The model name returned in the response |
-| `gen_ai.request.temperature`       | `invocation_params.temperature`       | Temperature setting                     |
-| `gen_ai.request.top_p`             | `invocation_params.top_p`             | Top-p sampling setting                  |
-| `gen_ai.request.max_tokens`        | `invocation_params.max_tokens`        | Maximum tokens setting                  |
-| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` | Frequency penalty setting               |
-| `gen_ai.request.presence_penalty`  | `invocation_params.presence_penalty`  | Presence penalty setting                |
-| `gen_ai.request.seed`              | `invocation_params.seed`              | Random seed used for generation         |
-| `gen_ai.request.stop_sequences`    | `invocation_params.stop`              | Sequences that stop generation          |
-| `gen_ai.request.top_k`             | `invocation_params.top_k`             | Top-k sampling parameter                |
-| `gen_ai.request.encoding_formats`  | `invocation_params.encoding_formats`  | Output encoding formats                 |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `gen_ai.request.model` | `invocation_params.model` | The model name used for the request |
+| `gen_ai.response.model` | `invocation_params.model` | The model name returned in the response |
+| `gen_ai.request.temperature` | `invocation_params.temperature` | Temperature setting |
+| `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p sampling setting |
+| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` | Maximum tokens setting |
+| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` | Frequency penalty setting |
+| `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` | Presence penalty setting |
+| `gen_ai.request.seed` | `invocation_params.seed` | Random seed used for generation |
+| `gen_ai.request.stop_sequences` | `invocation_params.stop` | Sequences that stop generation |
+| `gen_ai.request.top_k` | `invocation_params.top_k` | Top-k sampling parameter |
+| `gen_ai.request.encoding_formats` | `invocation_params.encoding_formats` | Output encoding formats |
 
 ### GenAI usage metrics
 
-| OpenTelemetry attribute                 | LangSmith field                   | Notes                                     |
-| --------------------------------------- | --------------------------------- | ----------------------------------------- |
-| `gen_ai.usage.input_tokens`             | `usage_metadata.input_tokens`     | Number of input tokens used               |
-| `gen_ai.usage.output_tokens`            | `usage_metadata.output_tokens`    | Number of output tokens used              |
-| `gen_ai.usage.total_tokens`             | `usage_metadata.total_tokens`     | Total number of tokens used               |
-| `gen_ai.usage.prompt_tokens`            | `usage_metadata.input_tokens`     | Number of input tokens used (deprecated)  |
-| `gen_ai.usage.completion_tokens`        | `usage_metadata.output_tokens`    | Number of output tokens used (deprecated) |
-| `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.reasoning_tokens` | Number of reasoning tokens used           |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `gen_ai.usage.input_tokens` | `usage_metadata.input_tokens` | Number of input tokens used |
+| `gen_ai.usage.output_tokens` | `usage_metadata.output_tokens` | Number of output tokens used |
+| `gen_ai.usage.total_tokens` | `usage_metadata.total_tokens` | Total number of tokens used |
+| `gen_ai.usage.prompt_tokens` | `usage_metadata.input_tokens` | Number of input tokens used (deprecated) |
+| `gen_ai.usage.completion_tokens` | `usage_metadata.output_tokens` | Number of output tokens used (deprecated) |
+| `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.reasoning_tokens` | Number of reasoning tokens used |
 
 ### TraceLoop attributes
 
-| OpenTelemetry attribute                  | LangSmith field  | Notes                                            |
-| ---------------------------------------- | ---------------- | ------------------------------------------------ |
-| `traceloop.entity.input`                 | `inputs`         | Full input value from TraceLoop                  |
-| `traceloop.entity.output`                | `outputs`        | Full output value from TraceLoop                 |
-| `traceloop.entity.name`                  | Run name         | Entity name from TraceLoop                       |
-| `traceloop.span.kind`                    | Run type         | Maps to LangSmith run types                      |
-| `traceloop.llm.request.type`             | Run type         | "embedding" maps to "embedding", others to "llm" |
-| `traceloop.association.properties.{key}` | `metadata.{key}` | Custom metadata with traceloop prefix            |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `traceloop.entity.input` | `inputs` | Full input value from TraceLoop |
+| `traceloop.entity.output` | `outputs` | Full output value from TraceLoop |
+| `traceloop.entity.name` | Run name | Entity name from TraceLoop |
+| `traceloop.span.kind` | Run type | Maps to LangSmith run types |
+| `traceloop.llm.request.type` | Run type | "embedding" maps to "embedding", others to "llm" |
+| `traceloop.association.properties.{key}` | `metadata.{key}` | Custom metadata with traceloop prefix |
 
 ### OpenInference attributes
 
-| OpenTelemetry attribute   | LangSmith field          | Notes                                     |
-| ------------------------- | ------------------------ | ----------------------------------------- |
-| `input.value`             | `inputs`                 | Full input value, can be string or JSON   |
-| `output.value`            | `outputs`                | Full output value, can be string or JSON  |
-| `openinference.span.kind` | Run type                 | Maps various kinds to LangSmith run types |
-| `llm.system`              | `metadata.ls_provider`   | LLM system provider                       |
-| `llm.model_name`          | `metadata.ls_model_name` | Model name from OpenInference             |
-| `tool.name`               | Run name                 | Tool name when span kind is "TOOL"        |
-| `metadata`                | `metadata.*`             | JSON string of metadata to be merged      |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `input.value` | `inputs` | Full input value, can be string or JSON |
+| `output.value` | `outputs` | Full output value, can be string or JSON |
+| `openinference.span.kind` | Run type | Maps various kinds to LangSmith run types |
+| `llm.system` | `metadata.ls_provider` | LLM system provider |
+| `llm.model_name` | `metadata.ls_model_name` | Model name from OpenInference |
+| `tool.name` | Run name | Tool name when span kind is "TOOL" |
+| `metadata` | `metadata.*` | JSON string of metadata to be merged |
 
 ### LLM attributes
 
-| OpenTelemetry attribute      | LangSmith field                       | Notes                                |
-| ---------------------------- | ------------------------------------- | ------------------------------------ |
-| `llm.input_messages`         | `inputs.messages`                     | Input messages                       |
-| `llm.output_messages`        | `outputs.messages`                    | Output messages                      |
-| `llm.token_count.prompt`     | `usage_metadata.input_tokens`         | Prompt token count                   |
-| `llm.token_count.completion` | `usage_metadata.output_tokens`        | Completion token count               |
-| `llm.token_count.total`      | `usage_metadata.total_tokens`         | Total token count                    |
-| `llm.usage.total_tokens`     | `usage_metadata.total_tokens`         | Alternative total token count        |
-| `llm.invocation_parameters`  | `invocation_params.*`                 | JSON string of invocation parameters |
-| `llm.presence_penalty`       | `invocation_params.presence_penalty`  | Presence penalty                     |
-| `llm.frequency_penalty`      | `invocation_params.frequency_penalty` | Frequency penalty                    |
-| `llm.request.functions`      | `invocation_params.functions`         | Function definitions                 |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `llm.input_messages` | `inputs.messages` | Input messages |
+| `llm.output_messages` | `outputs.messages` | Output messages |
+| `llm.token_count.prompt` | `usage_metadata.input_tokens` | Prompt token count |
+| `llm.token_count.completion` | `usage_metadata.output_tokens` | Completion token count |
+| `llm.token_count.total` | `usage_metadata.total_tokens` | Total token count |
+| `llm.usage.total_tokens` | `usage_metadata.total_tokens` | Alternative total token count |
+| `llm.invocation_parameters` | `invocation_params.*` | JSON string of invocation parameters |
+| `llm.presence_penalty` | `invocation_params.presence_penalty` | Presence penalty |
+| `llm.frequency_penalty` | `invocation_params.frequency_penalty` | Frequency penalty |
+| `llm.request.functions` | `invocation_params.functions` | Function definitions |
 
 ### Prompt template attributes
 
-| OpenTelemetry attribute         | LangSmith field | Notes                                            |
-| ------------------------------- | --------------- | ------------------------------------------------ |
-| `llm.prompt_template.variables` | Run type        | Sets run type to "prompt", used with input.value |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `llm.prompt_template.variables` | Run type | Sets run type to "prompt", used with input.value |
 
 ### Retriever attributes
 
-| OpenTelemetry attribute                     | LangSmith field                     | Notes                                         |
-| ------------------------------------------- | ----------------------------------- | --------------------------------------------- |
-| `retrieval.documents.{n}.document.content`  | `outputs.documents[n].page_content` | Content of the nth retrieved document         |
-| `retrieval.documents.{n}.document.metadata` | `outputs.documents[n].metadata`     | Metadata of the nth retrieved document (JSON) |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `retrieval.documents.{n}.document.content` | `outputs.documents[n].page_content` | Content of the nth retrieved document |
+| `retrieval.documents.{n}.document.metadata` | `outputs.documents[n].metadata` | Metadata of the nth retrieved document (JSON) |
 
 ### Tool attributes
 
-| OpenTelemetry attribute | LangSmith field                    | Notes                                     |
-| ----------------------- | ---------------------------------- | ----------------------------------------- |
-| `tools`                 | `invocation_params.tools`          | Array of tool definitions                 |
-| `tool_arguments`        | `invocation_params.tool_arguments` | Tool arguments as JSON or key-value pairs |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `tools` | `invocation_params.tools` | Array of tool definitions |
+| `tool_arguments` | `invocation_params.tool_arguments` | Tool arguments as JSON or key-value pairs |
 
 ### Logfire attributes
 
-| OpenTelemetry attribute | LangSmith field    | Notes                                            |
-| ----------------------- | ------------------ | ------------------------------------------------ |
-| `prompt`                | `inputs`           | Logfire prompt input                             |
-| `all_messages_events`   | `outputs`          | Logfire message events output                    |
-| `events`                | `inputs`/`outputs` | Logfire events array, splits input/choice events |
+| OpenTelemetry attribute | LangSmith field | Notes |
+| - | - | - |
+| `prompt` | `inputs` | Logfire prompt input |
+| `all_messages_events` | `outputs` | Logfire message events output |
+| `events` | `inputs`/`outputs` | Logfire events array, splits input/choice events |
 
 ### OpenTelemetry event mapping
 
-| Event name                  | LangSmith field      | Notes                                                            |
-| --------------------------- | -------------------- | ---------------------------------------------------------------- |
-| `gen_ai.content.prompt`     | `inputs`             | Extracts prompt content from event attributes                    |
-| `gen_ai.content.completion` | `outputs`            | Extracts completion content from event attributes                |
-| `gen_ai.system.message`     | `inputs.messages[]`  | System message in conversation                                   |
-| `gen_ai.user.message`       | `inputs.messages[]`  | User message in conversation                                     |
-| `gen_ai.assistant.message`  | `outputs.messages[]` | Assistant message in conversation                                |
-| `gen_ai.tool.message`       | `outputs.messages[]` | Tool response message                                            |
-| `gen_ai.choice`             | `outputs`            | Model choice/response with finish reason                         |
-| `exception`                 | `status`, `error`    | Sets status to "error" and extracts exception message/stacktrace |
+| Event name | LangSmith field | Notes |
+| - | - | - |
+| `gen_ai.content.prompt` | `inputs` | Extracts prompt content from event attributes |
+| `gen_ai.content.completion` | `outputs` | Extracts completion content from event attributes |
+| `gen_ai.system.message` | `inputs.messages[]` | System message in conversation |
+| `gen_ai.user.message` | `inputs.messages[]` | User message in conversation |
+| `gen_ai.assistant.message` | `outputs.messages[]` | Assistant message in conversation |
+| `gen_ai.tool.message` | `outputs.messages[]` | Tool response message |
+| `gen_ai.choice` | `outputs` | Model choice/response with finish reason |
+| `exception` | `status`, `error` | Sets status to "error" and extracts exception message/stacktrace |
 
 #### Event attribute extraction
 
