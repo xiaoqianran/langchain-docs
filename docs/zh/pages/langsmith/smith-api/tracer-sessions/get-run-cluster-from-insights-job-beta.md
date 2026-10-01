@@ -5,4 +5,4 @@
 # 从见解作业中获取运行集群（Beta）
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/sessions/{session_id}/insights/{job_id}/clusters/{cluster_id}
-获取会话的特定集群。
+从 Insights 作业生成的报告中获取集群。

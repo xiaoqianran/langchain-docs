@@ -5,4 +5,4 @@
 # 获取洞察工作（测试版）
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/sessions/{session_id}/insights
-获取会话的所有集群。
+列出项目的 Insights 作业。

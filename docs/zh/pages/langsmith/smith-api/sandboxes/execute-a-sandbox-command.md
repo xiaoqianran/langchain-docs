@@ -5,4 +5,4 @@
 # 执行沙箱命令
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v2/sandboxes/{sandbox_id}/execute
-在沙箱内执行命令并返回 stdout、stderr 和退出代码。
+在沙箱内执行命令并返回 stdout、stderr 和退出代码。将流执行端点用于可能超过同步请求截止时间的长时间运行的命令。

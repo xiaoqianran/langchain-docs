@@ -22,7 +22,7 @@
 
 要使用该脚本，您需要使用以下命令运行该脚本并指定您的注册表和平台：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh <your-registry> [<platform>]
 ```
 
@@ -30,7 +30,7 @@ bash mirror_langsmith_images.sh <your-registry> [<platform>]
 
 例如，如果您的注册表是 `myregistry.com`，您的平台是 `linux/arm64`，并且您的 LangSmith 应用程序版本是 `0.16.36`，请运行：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --version 0.16.36
 ```
 
@@ -40,7 +40,7 @@ bash mirror_langsmith_images.sh --registry myregistry --platform linux/arm64 --v
 
 以下是如何使用 Docker 镜像镜像的示例：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Pull the images from the public registry
 docker pull langchain/langsmith-backend:0.16.36
 docker tag langchain/langsmith-backend:0.16.36 <your-registry>/langsmith-backend:0.16.36
@@ -53,7 +53,7 @@ docker push <your-registry>/langsmith-backend:0.16.36
 
 镜像镜像后，您将需要配置 LangSmith 安装以使用镜像镜像。您可以通过修改 LangSmith Helm Chart 安装的 `values.yaml` 文件来完成此操作。将标签替换为您要部署的[LangSmith version](/langsmith/self-hosted-changelog)。以下示例使用 `0.16.21`。
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   imagePullSecrets: [] # Add your image pull secrets here if needed
   registry: "" # Set this to your registry URL if you mirrored all images to the same registry using our script. Then you can remove the repository prefix from the images below.
@@ -91,13 +91,13 @@ images:
 
 如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。沙箱运行时镜像已发布为`linux/amd64`。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时镜像：
+然后，在 `values.yaml` 中配置沙箱运行时映像：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   sandboxHostImage:
     repository: "(your-registry)/langchain/sandbox-host"
@@ -107,15 +107,15 @@ images:
 
 `sandbox-host` 镜像包含用于生成默认沙箱快照的压缩 ext4 文件系统。请参见[Inspect the default snapshot filesystem](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments)独立提取和扫描。
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙盒运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
 
-- `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
-- `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
-- `docker.io/juicedata/mount:ce-v1.3.1` 适用于 JuiceFS 安装盒
+* `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
+* `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
+* `docker.io/juicedata/mount:ce-v1.3.1` 适用于 JuiceFS 安装盒
 
 然后，配置相应的图像覆盖：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   juicefsCSIImage:
     repository: "(your-registry)/juicedata/juicefs-csi-driver"
@@ -137,18 +137,18 @@ images:
 要镜像所需的图像：
 
 1. 使用 [manual mirroring process](#mirroring-the-images) 将 `langsmith-insights-engine` 镜像到您的私有注册表。
-1. 使用`--include-sandboxes`镜像沙箱运行时镜像，并按照[Additional images for sandboxes](#additional-images-for-sandboxes)中的说明进行配置。
+2. 使用`--include-sandboxes`镜像沙箱运行时镜像，并按照[Additional images for sandboxes](#additional-images-for-sandboxes)中的说明进行配置。
 
 覆盖 `images.engineInsightsAgentImage.repository` 以使用镜像引擎和 Insights 映像：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   engineInsightsAgentImage:
     repository: "(your-registry)/langchain/langsmith-insights-engine"
     pullPolicy: IfNotPresent
     tag: "0.16.0"
 ```<Note>
-请勿使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。存储库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
+  请勿使用`langsmith-clio`。如果您要升级指向此已停用的仅 Insights 映像的现有安装，请替换映像存储库。存储库名称必须以`langsmith-insights-engine`结尾；该图表验证了这一要求。
 </Note>
 
 镜像镜像不会消除 Engine 的 LangSmith 智能出口要求，因此完全气隙安装无法运行 Engine。参见[LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine)。
@@ -158,12 +158,13 @@ images:
 如果您使用 Fleet，LangGraph 运算符会为每个部署动态创建 Redis 和 PostgreSQL (pgvector) Pod。这些 Pod 使用在需要单独配置的操作员模板中定义的映像。
 
 您必须镜像这些附加图像：
-- `docker.io/redis:7`
-- `docker.io/pgvector/pgvector:pg15`
+
+* `docker.io/redis:7`
+* `docker.io/pgvector/pgvector:pg15`
 
 然后覆盖 `values.yaml` 中的操作员模板以使用镜像：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 operator:
   templates:
     redis: |
@@ -251,14 +252,14 @@ operator:
 配置完成后，您将需要更新您的 LangSmith 安装。您可以在这里关注我们的升级指南：[Upgrading LangSmith](/langsmith/self-host-upgrades)。如果升级成功，您的 LangSmith 实例现在应该使用 Docker 注册表中的镜像。
 
 ## 验证图像签名<Note>
-**从 v15 开始** 提供图像签名（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
+  **从 v15 开始** 提供图像签名（LangSmith 应用程序版本 `0.15.x` 及更高版本）。 `v14-stable` 和旧频道上的早期版本未签名，无法通过以下步骤进行验证。
 </Note>
 
 `docker.io/langchain/*` 上的稳定通道LangSmith 图像在发布时使用发布工作流程中的无密钥 [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) 进行签名。签名身份绑定到特定的 GitHub Actions 工作流程、运行和提交，因此签名不仅证明图像是真实的，而且证明它是由在 `langchain-ai/langchainplus` 中运行的稳定分支发布管道生成的。您可以在拉取或镜像映像之前验证签名，并在镜像之后再次验证签名，以确认您镜像的摘要与我们签名的内容匹配。
 
 安装`cosign` ([installation guide](https://docs.sigstore.dev/cosign/system_config/installation/))，然后验证任何标签：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity-regexp 'https://github\.com/langchain-ai/langchainplus/\.github/workflows/release_self_hosted_on_version_bump\.yaml@refs/heads/v[0-9]+-stable' \
@@ -267,15 +268,15 @@ cosign verify \
 
 成功的验证确认：
 
-- 签名上的联署声明有效。
-- 证书链接到 Sigstore 根并记录在 [Rekor](https://docs.sigstore.dev/rekor/overview/) 透明度日志中。
-- 签名证书通过 GitHub Actions OIDC 颁发给稳定分支发布工作流程。相同的命令通过替换存储库（`langsmith-frontend`，`langsmith-go-backend`，`agent-builder-deep-agent`，`langsmith-insights-engine`，`langsmith-polly`，`agent-builder-tool-server`，`agent-builder-trigger-server`，`hosted-langserve-backend`，`langsmith-playground`，对任何已发布的图像起作用） `langsmith-ace-backend`，以及它们的 `*-fips` 变体）。
+* 签名上的联署声明有效。
+* 证书链接到 Sigstore 根并记录在 [Rekor](https://docs.sigstore.dev/rekor/overview/) 透明度日志中。
+* 签名证书通过 GitHub Actions OIDC 颁发给稳定分支发布工作流程。相同的命令通过替换存储库（`langsmith-frontend`，`langsmith-go-backend`，`agent-builder-deep-agent`，`langsmith-insights-engine`，`langsmith-polly`，`agent-builder-tool-server`，`agent-builder-trigger-server`，`hosted-langserve-backend`，`langsmith-playground`，对任何已发布的图像起作用） `langsmith-ace-backend`，以及它们的 `*-fips` 变体）。
 
 ### 固定到特定版本
 
 对于更严格的验证（例如，固定到单个稳定分支或特定提交），请删除正则表达式并提供准确的证书身份。每个签名的证书还带有工作流运行 ID 和提交 SHA 作为主题备用名称扩展，因此您可以限制到特定版本：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity 'https://github.com/langchain-ai/langchainplus/.github/workflows/release_self_hosted_on_version_bump.yaml@refs/heads/v15-stable' \
@@ -284,7 +285,7 @@ cosign verify \
 
 要检查证书的声明（工作流运行、提交、运行程序），请下载证明并解码嵌入的证书：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign download attestation docker.io/langchain/langsmith-backend:<tag>
 ```
 
@@ -294,7 +295,7 @@ cosign download attestation docker.io/langchain/langsmith-backend:<tag>
 
 每个架构的 SBOM 也附加到多架构索引摘要中，因此您可以直接针对裸标签进行验证：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify-attestation \
   --type cyclonedx \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
@@ -308,14 +309,14 @@ cosign verify-attestation \
 
 列出标签的每个架构摘要：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker buildx imagetools inspect --raw docker.io/langchain/langsmith-backend:<tag> \
   | jq -r '.manifests[] | select(.platform.os == "linux") | .digest + "  " + .platform.architecture'
 ```
 
 然后验证该摘要并将解码后的谓词（列出映像中每个包的标准 CycloneDX 文档）保存到文件中：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cosign verify-attestation \
   --type cyclonedx \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
@@ -327,16 +328,17 @@ cosign verify-attestation \
 您可以将生成的`langsmith-backend.cdx.json`直接传递给扫描仪，例如[Grype](https://github.com/anchore/grype)（`grype sbom:langsmith-backend.cdx.json`）或[Trivy](https://trivy.dev/)（`trivy sbom langsmith-backend.cdx.json`）。
 
 <Note>
-通过`cosign verify-attestation`而不是`cosign download attestation`提取SBOM，可确保您只使用签名和签名身份已验证的SBOM。
+  通过`cosign verify-attestation`而不是`cosign download attestation`提取SBOM，可确保您只使用签名和签名身份已验证的SBOM。
 </Note>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-mirroring-images.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

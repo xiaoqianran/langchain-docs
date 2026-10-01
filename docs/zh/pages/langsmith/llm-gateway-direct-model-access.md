@@ -27,7 +27,8 @@
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
 | Gemini企业代理平台 | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
-| OpenAI | `/openai` | `OPENAI_API_KEY` |[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
+| OpenAI | `/openai` | `OPENAI_API_KEY` |
+| xAI | `/xai` | `XAI_API_KEY` |[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
 
 ## 配置提供商 SDK
 
@@ -99,7 +100,7 @@ export LANGSMITH_GATEWAY="true"
 
 ## 使用区域网关
 
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供商路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 进行直接 Anthropic 访问。
+如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供商路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
 
 ## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
 * [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。

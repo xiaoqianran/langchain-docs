@@ -6,15 +6,15 @@
 
 本指南假设您了解什么是双重短信，您可以在 [double-texting conceptual guide](/langsmith/double-texting) 中了解。
 
-该指南介绍了双文本发送的 `rollback` 选项，该选项会中断图形的先前运行并使用双文本开始新的运行。该选项与`interrupt`选项非常相似，但在这种情况下，第一次运行会从数据库中完全删除，并且无法重新启动。下面是使用 `rollback` 选项的快速示例。
+该指南介绍了双文本发送的 `rollback` 选项，该选项会中断图表的先前运行并使用双文本开始新的运行。该选项与`interrupt`选项非常相似，但在这种情况下，第一次运行会从数据库中完全删除，并且无法重新启动。下面是使用 `rollback` 选项的快速示例。
 
 ## 设置
 
 首先，我们将定义一个快速帮助函数来打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
 
 <Tabs>
-    <Tab title="Javascript">
-    ```js
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -26,9 +26,10 @@
       console.log(m.content);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -47,14 +48,14 @@
       echo "$content"
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 现在，让我们导入所需的包并实例化我们的客户端、助手和线程。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import asyncio
 
     import httpx
@@ -66,9 +67,10 @@
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -76,15 +78,16 @@
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 创建运行
@@ -92,8 +95,8 @@
 现在让我们运行一个多任务参数设置为“rollback”的线程：
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # the first run will be rolled back
     rolled_back_run = await client.runs.create(
         thread["thread_id"],
@@ -109,9 +112,10 @@
     # wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"])
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // the first run will be interrupted
     let rolledBackRun = await client.runs.create(
       thread["thread_id"],
@@ -131,9 +135,10 @@
     // wait until the second run completes
     await client.runs.join(thread["thread_id"], run["run_id"]);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -150,31 +155,35 @@
     }" && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 查看运行结果
 
-我们可以看到该线程仅具有第二次运行的数据<Tabs>
-    <Tab title="Python">
-    ```python
+我们可以看到该线程仅具有第二次运行的数据
+
+<Tabs>
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     state = await client.threads.get_state(thread["thread_id"])
 
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const state = await client.threads.getState(thread["thread_id"]);
 
     for (const m of state['values']['messages']) {
       prettyPrint(m);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
     jq -c '.values.messages[]' | while read -r element; do
@@ -183,10 +192,8 @@
         pretty_print "$type" "$content"
     done
     ```
-    </Tab>
-</Tabs>
-
-输出：
+  </Tab>
+</Tabs>输出：
 
 ```
 ================================ Human Message =================================
@@ -212,23 +219,24 @@ The weather API results show that the current weather in New York City is sunny 
 验证原始的回滚运行是否已删除
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     try:
         await client.runs.get(thread["thread_id"], rolled_back_run["run_id"])
     except httpx.HTTPStatusError as _:
         print("Original run was correctly deleted")
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     try {
       await client.runs.get(thread["thread_id"], rolledBackRun["run_id"]);
     } catch (e) {
       console.log("Original run was correctly deleted");
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 输出：
@@ -237,13 +245,14 @@ The weather API results show that the current weather in New York City is sunny 
 Original run was correctly deleted
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rollback-concurrent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -5,4 +5,4 @@
 # 创建快照
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v2/sandboxes/snapshots
-从 Docker 映像创建快照（异步构建）。
+从 Docker 映像创建快照（异步构建）。名称使用小写注册表样式组件，以斜杠分隔，最多 255 个字符。 system/ 命名空间是只读的。

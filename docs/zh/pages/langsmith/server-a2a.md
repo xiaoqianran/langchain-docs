@@ -4,7 +4,9 @@
 
 # 代理服务器中的 A2A 端点
 
-[Agent2Agent (A2A)](https://a2a-protocol.org/latest/) 是 Google 的协议，用于实现对话式 AI 代理之间的通信。 [LangSmith implements A2A support](https://docs.langchain.com/langsmith/server-api-ref#tag/a2a/post/a2a/{assistant_id})，允许您的代理通过标准化协议与其他 A2A 兼容代理进行通信。
+使用 A2A 协议通过 LangSmith 中的分布式跟踪启用代理间通信。
+
+[Agent2Agent (A2A)](https://a2a-protocol.org/latest/) 是 Google 的协议，用于实现对话式 AI 代理之间的通信。 [LangSmith implements A2A support](https://docs.langchain.com/langsmith/server-api-ref#tag/a2a/post/a2a/\{assistant_id})，允许您的代理通过标准化协议与其他 A2A 兼容代理进行通信。
 
 A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 中可用。
 
@@ -13,7 +15,7 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 代理服务器使用 A2A **v1.0** JSON-RPC 绑定，并且还接受 v0.3 方法名称，因此
 现有的 v0.3 客户端继续工作。代理卡声明一个接口：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 "supportedInterfaces": [
   {
     "url": "https://your-deployment/a2a/{assistant_id}",
@@ -24,16 +26,16 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 ```
 
 <Warning>
-您发送的方法名称还会选择响应中的枚举大小写。 v1.0 名称返回
-SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小写
-（`working`，`agent`）。为每个客户选择一个家庭并坚持下去。
+  您发送的方法名称还会选择响应中的枚举大小写。 v1.0 名称返回
+  尖叫蛇案 (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小写
+  （`working`，`agent`）。为每个客户选择一个家庭并坚持下去。
 
-信封因方法而异，而不是因系列而异：`SendMessage`将任务包装在`result.task`中，而
-`GetTask` 和所有 v0.3 方法都直接在 `result` 返回它。 `ListTasks` 返回`result.tasks`。
+  信封因方法而异，而不是因系列而异：`SendMessage`将任务包装在`result.task`中，而
+  `GetTask` 和所有 v0.3 方法直接在 `result` 返回它。 `ListTasks` 返回`result.tasks`。
 </Warning>
 
 ## 支持的方法| v1.0 名称 | v0.3 名称 |支持 |
-|---|---|---|
+| - | - | - |
 | `SendMessage` | `message/send` |是的 |
 | `SendStreamingMessage` | `message/stream` |是 - 服务器发送的事件 |
 | `GetTask` | `tasks/get` |是的 |
@@ -61,7 +63,7 @@ SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小�
 
 选项的去向取决于方法。 `SendMessage`从`configuration`读取：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "jsonrpc": "2.0",
   "id": "1",
@@ -80,7 +82,7 @@ SCREAMING_SNAKE_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); v0.3 名称返回小�
 
 `GetTask`和`ListTasks`直接从`params`读取：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {"jsonrpc": "2.0", "id": "2", "method": "GetTask",
  "params": {"id": "<taskId>", "historyScope": "task"}}
 ```如果您的客户端无法将字段添加到请求正文，请改为发送标头。中的显式值
@@ -93,7 +95,7 @@ LangGraph-A2A-History-Scope: task
 代理卡在`capabilities.extensions`下宣传这一点，因此您可以检测支持而不是
 比假设它：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "uri": "https://langchain.com/a2a/extensions/history-scope/v1",
   "description": "Choose task-only or full-context response history",
@@ -109,18 +111,18 @@ LangGraph-A2A-History-Scope: task
 
 值得了解的三个限制：
 
-- 流媒体忽略两个历史选项。 `SendStreamingMessage` 既不读取 `historyScope` 也不读取 `historyLength`，并且如果您发送它们，也不会返回任何错误 - 因此不要通过 SSE 依赖任何一个。
-- `historyLength` 上限为 10。较大的值会返回 `-32602` 和 `historyLength cannot exceed 10`。
-- 范围在 `historyLength` 之前应用，因此您可以获得*该任务*的最后 N 条消息。
+* 流媒体忽略两个历史选项。 `SendStreamingMessage` 既不读取 `historyScope` 也不读取 `historyLength`，并且如果您发送它们，也不会返回任何错误 - 因此不要通过 SSE 依赖任何一个。
+* `historyLength` 上限为 10。较大的值将返回 `-32602` 和 `historyLength cannot exceed 10`。
+* 范围在 `historyLength` 之前应用，因此您可以获得*该任务*的最后 N 条消息。
 
 无法识别的值会返回 `-32602` 和 `historyScope must be 'context' or 'task'`。一个误判的
 诸如 `historyscope` 这样的键不是错误 - 它会被忽略，并且您会默默地获得完整的上下文
 历史记录，因此如果过滤似乎不起作用，请检查拼写。
 
 <Warning>
-不要重新发送已完成任务的`taskId`。每个新回合都会在同一个回合中开始一个新任务
-上下文 — 单独发送 `contextId`。命名终端任务的消息被拒绝并显示 `-32004`，
-由另一个代理铸造的 `taskId` 被拒绝为 `-32001`。
+  不要重新发送已完成任务的`taskId`。每个新回合都会在同一个回合中开始一个新任务
+  上下文 — 单独发送 `contextId`。命名终端任务的消息被拒绝并显示 `-32004`，
+  由另一个代理铸造的 `taskId` 被拒绝为 `-32001`。
 </Warning>
 
 ## 代理卡发现每个助手都会自动公开一个 A2A 代理卡，该卡描述其功能并提供其他代理连接所需的信息。您可以使用以下方式检索任何助理的代理卡：
@@ -138,7 +140,7 @@ GET /.well-known/agent-card.json?assistant_id={assistant_id}
 
 ### 声明输入和输出模式
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "metadata": {
     "a2a": {
@@ -164,11 +166,11 @@ GET /.well-known/agent-card.json?assistant_id={assistant_id}
 
 选择每个助理：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "metadata": { "a2a": { "a2ui": true } } }
 ```然后，该卡会通告扩展名并将规范的 MIME 类型附加到两个模式列表中：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 "capabilities": {
   "extensions": [
     {
@@ -197,7 +199,7 @@ GET /.well-known/agent-card.json?assistant_id={assistant_id}
 默认情况下，每个相关工具结果都会发布为 `DataPart`。要仅发布部分内容，请设置
 部署上的工具名称白名单：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
 ```
 
@@ -206,7 +208,7 @@ A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
 ## 要求
 
 |特色 |最低版本 |
-|---|---|
+| - | - |
 | A2A 端点 | `langgraph-api >= 0.4.21` |
 |入境`FilePart` | `0.12.0` |
 |工具结果`DataPart`s | `0.12.2` |
@@ -215,7 +217,7 @@ A2A_ALLOWED_TOOL_CALL_RESULTS=generative_ui_tool,another_tool
 | A2UI v0.9 | `0.15.0` |
 | `historyScope` | `0.15.0` |
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langgraph-api>=0.13.0"
 ```
 
@@ -231,6 +233,7 @@ A2UI v0.9 和 `historyScope` 在 `0.14.0` 发布候选版本被削减后登陆�
 为了与 [A2A "text" parts](https://a2a-protocol.org/dev/specification/#651-textpart-object) 兼容，代理必须具有处于状态的 `messages` 密钥。
 
 A2A 协议使用两个标识符来保持会话的连续性：
+
 * `contextId`：将消息分组到对话线程中（如会话 ID）
 * `taskId`：识别该对话中的每个单独请求
 
@@ -238,7 +241,7 @@ A2A 协议使用两个标识符来保持会话的连续性：
 
 例如：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 """LangGraph A2A conversational agent.
 
 Supports the A2A protocol with messages input for conversational interactions.
@@ -330,7 +333,7 @@ graph = (
 
 此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env python3
 """Agent-to-Agent conversation simulation using the LangGraph A2A endpoint."""
 
@@ -423,36 +426,37 @@ if __name__ == "__main__":
 ```
 
 有关完整的工作示例，请参阅：
-- [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - 使用 A2A 协议的两个 LangGraph 代理示例
-- [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Google ADK 代理使用 A2A 协议与 LangChain 代理交互的示例
+
+* [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - 使用 A2A 协议的两个 LangGraph 代理示例
+* [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Google ADK 代理使用 A2A 协议与 LangChain 代理交互的示例
 
 ## 分布式追踪
 
-当多个座席通过 A2A 进行通信时，LangSmith 可以将所有[traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，从而为您提供整个多座席对话的统一视图。
+当多个座席通过 A2A 进行通信时，LangSmith 可以将所有 [traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，这为您提供了整个多座席对话的统一视图。
 
-### contextId 如何映射到 thread_id代理服务器 A2A 端点自动将 A2A `contextId` 转换为 `thread_id` 以进行 LangSmith 跟踪。这意味着对话中所有参与代理的每条消息都被分组在 LangSmith 中的同一线程下，而无需您进行任何额外配置。
+### contextId 如何映射到 thread\_id代理服务器 A2A 端点自动将 A2A `contextId` 转换为 `thread_id` 以进行 LangSmith 跟踪。这意味着对话中所有参与代理的每条消息都被分组在 LangSmith 中的同一线程下，而无需您进行任何额外配置。
 
 该流程的工作原理如下：
 
 1. 在第一条消息中，客户端省略`contextId`。服务器生成一个并在响应中返回它。
-1. 客户端在所有后续消息中传递`contextId`，以保持会话的连续性。
-1. Agent Server 将LangSmith [metadata](/langsmith/add-metadata-tags) 中的`contextId` 映射到`thread_id`，因此所有回合都出现在同一个线程中。
+2. 客户端在所有后续消息中传递`contextId`，以保持会话的连续性。
+3. Agent Server 将LangSmith [metadata](/langsmith/add-metadata-tags) 中的`contextId` 映射到`thread_id`，因此所有回合都出现在同一个线程中。
 
 <Warning>
-`contextId`直接用作LangGraph`thread_id`，因此它必须是UUID。回显
-服务器返回的一个标识符，而不是创建您自己的标识符。 A `contextId` 例如
-`session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。
+  `contextId`直接用作LangGraph`thread_id`，因此它必须是UUID。回显
+  服务器返回的一个标识符，而不是创建您自己的标识符。 A `contextId` 例如
+  `session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。
 </Warning>
 
 ### 跨多个代理进行跟踪
 
 当来自不同框架的代理通过 A2A 进行通信时，`contextId` 可以统一它们的踪迹。将第一个代理在以后的每个请求中返回的`contextId`重复使用给该代理和其他代理。<Warning>
-代理服务器不会读取 JSON-RPC 负载上的顶级 `metadata` 字段。客户端无法直接设置 LangGraph `thread_id` — 它始终是 `contextId`。将 `metadata.thread_id` 发送到代理服务器部署没有任何效果。
+  代理服务器不会读取 JSON-RPC 负载上的顶级 `metadata` 字段。客户端无法直接设置 LangGraph `thread_id` — 它始终是 `contextId`。将 `metadata.thread_id` 发送到代理服务器部署没有任何效果。
 </Warning>
 
 以下代码片段演示了关键概念。有关两个代理的完整可运行实现，请参阅[Google ADK + LangChain example](https://github.com/langchain-samples/A2A-google-adk/blob/main/test_agent_conversation.py)。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 import aiohttp
 import uuid
@@ -535,9 +539,9 @@ asyncio.run(run_conversation(
 
 **3.跨代理共享上下文**：让第一个代理创建`contextId`，然后将相同的值传递给对话其余部分的每个代理。这就是将他们的踪迹分组到一个线程中的原因。
 
-### 在非LangGraph代理中接收thread_id[previous section](#tracing-across-multiple-agents)覆盖客户端——发送消息时传播`contextId`。如果您的代理之一不是基于 LangGraph 构建的，它还需要在接收端读取 `contextId` 并将其附加为线程标识符，以便其跟踪落在同一个 LangSmith 线程中。使用`langsmith.integrations.otel.configure()`设置自动跟踪，并从传入的A2A请求中读取`params.message.contextId`。
+### 在非LangGraph代理中接收线程\_id[previous section](#tracing-across-multiple-agents)覆盖客户端——发送消息时传播`contextId`。如果您的代理之一不是基于 LangGraph 构建的，它还需要在接收端读取 `contextId` 并将其附加为线程标识符，以便其跟踪落在同一个 LangSmith 线程中。使用`langsmith.integrations.otel.configure()`设置自动跟踪，并从传入的A2A请求中读取`params.message.contextId`。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastapi import FastAPI, Request
 from langsmith.integrations.otel import configure as configure_otel
 from opentelemetry import trace
@@ -578,12 +582,12 @@ async def set_thread_id_middleware(request: Request, call_next):
 在此中间件之后，在`app`上注册您的代理路由。
 
 <Note>
-在您的环境中设置 `LANGSMITH_API_KEY` 和可选的 `LANGSMITH_PROJECT` 以启用跟踪。对话中的所有代理应使用同一项目，以便他们的痕迹一起可见。
+  在您的环境中设置 `LANGSMITH_API_KEY` 和可选的 `LANGSMITH_PROJECT` 以启用跟踪。对话中的所有代理应使用同一项目，以便他们的痕迹一起可见。
 </Note>
 
-### 在LangSmith查看踪迹
+### 查看LangSmith中的踪迹
 
-运行多代理对话后，打开[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-server-a2a)并导航到**线程**。所有参与代理的所有回合都将出现在一个线程下，由共享的`thread_id`标识。
+运行多代理对话后，打开[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-server-a2a)并导航到**线程**。所有参与代理的所有回合都将出现在一个线程下，由共享的`thread_id`标识。
 
 ## 测试您的集成
 
@@ -591,11 +595,11 @@ async def set_thread_id_middleware(request: Request, call_next):
 
 获取卡，然后发送消息：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl "https://your-deployment/a2a/{assistant_id}/.well-known/agent-card.json"
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://your-deployment/a2a/{assistant_id}" \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
@@ -623,27 +627,27 @@ A2A 发布了技术兼容性工具包：
 [a2aproject/a2a-tck](https://github.com/a2aproject/a2a-tck)。它通过以下方式对实施进行评分
 RFC 2119 级别，适用于任何 A2A 端点，包括您的端点。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ./run_tck.py --sut-host https://your-deployment/a2a/{assistant_id} --transport jsonrpc
 ```
 
 <Note>
-TCK 通过 `messageId` 前缀驱动一些场景，例如 `tck-input-required`，描述
-在其`docs/SUT_REQUIREMENTS.md`中。未实现这些前缀的图表将报告这些
-要求被跳过而不是失败。
+  TCK 通过 `messageId` 前缀驱动一些场景，例如 `tck-input-required`，描述
+  在其`docs/SUT_REQUIREMENTS.md`中。未实现这些前缀的图表将报告这些
+  要求被跳过而不是失败。
 </Note>
 
 ### 代理服务器当前失败的原因
 
 Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签入列表进行门控
-已知的故障。如果出现新的故障，并且列出的要求开始通过，则 CI 会失败，
+已知的故障。如果出现新的故障，并且列出的要求开始通过，那么 CI 就会失败，
 因此该列表不会偏离服务器实际执行的操作。
 
-在构建功能之前请阅读以下内容：|差距|你观察到什么|
-|---|---|
+在构建功能之前请阅读以下内容：|差距|你观察到什么 |
+| - | - |
 |响应线形状仍为v0.3 |任务、消息和部件带有 `kind` 和 `mimeType`，而不是 v1.0 成员存在歧视 |
 |流媒体事件表现平平 | SSE 发出带有 `final` 的 v0.3 对象，而不是 `statusUpdate` / `artifactUpdate` 包装器 |
-| `tool_results`是snake_case | v1.0 预计为 `toolResults`。故意保留，因为实时 A2UI 客户端会读取此密钥 |
+| `tool_results` 是蛇\_case | v1.0 预计为 `toolResults`。故意保留，因为实时 A2UI 客户端会读取此密钥 |
 |时间戳 |序列化为 `+00:00` 而不是 ISO 8601 `Z` 后缀 |
 | `SubscribeToTask` |在规范要求 `-32001` 的情况下返回 `-32601` |
 |推送通知配置 |在规范要求 `-32003` 的情况下返回 `-32601` |
@@ -656,7 +660,7 @@ Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签�
 
 要禁用 A2A 端点，请在 `langgraph.json` 配置文件中将 `disable_a2a` 设置为 `true`：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "$schema": "https://langgra.ph/schema.json",
   "http": {
@@ -665,13 +669,14 @@ Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签�
 }
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-a2a.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

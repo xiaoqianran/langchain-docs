@@ -7,7 +7,7 @@
 本指南将引导您完成使用自托管实例 LangSmith 的过程。
 
 <Info>
-本指南假设您已经部署了自托管 LangSmith 实例。如果还没有，请参阅[kubernetes deployment guide](/langsmith/kubernetes)。
+  本指南假设您已经部署了自托管 LangSmith 实例。如果还没有，请参阅[kubernetes deployment guide](/langsmith/kubernetes)。
 </Info>
 
 ### 配置您想要与 LangSmith 一起使用的应用程序
@@ -20,14 +20,14 @@ LangSmith 有一个 API 可与集线器和 LangSmith 后端进行交互。
 
 要使用实例的 API，您需要在应用程序中设置以下环境变量：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_ENDPOINT=http://<host>/api/v1
 LANGSMITH_API_KEY=foo # Set to a legitimate API key if using OAuth
 ```
 
 您也可以直接在LangSmith SDK客户端中配置这些变量：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import langsmith
 langsmith_client = langsmith.Client(
     api_key='<api_key>',
@@ -45,7 +45,7 @@ langsmith_client = langsmith.Client(
 
 然后使用以下代码加载系统证书：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import truststore
 truststore.inject_into_ssl()
 # The rest of your code
@@ -56,19 +56,20 @@ langsmith_client = langsmith.Client(
 )
 ```
 
----
+***
 
 ## API 参考
 
 要访问 API 参考，请在浏览器中导航至 `http://<host>/api/docs`。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-usage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

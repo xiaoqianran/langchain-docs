@@ -5,4 +5,4 @@
 # 创建见解作业配置（测试版）
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/sessions/{session_id}/insights/configs
-保存见解作业配置。
+为项目创建 Insights 作业配置。

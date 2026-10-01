@@ -5,4 +5,4 @@
 # 删除见解作业配置（测试版）
 
 /langsmith/langsmith-platform-openapi.json 删除 /api/v1/sessions/{session_id}/insights/configs/{config_id}
-删除见解作业配置。
+删除项目的 Insights 作业配置。

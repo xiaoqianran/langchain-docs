@@ -267,6 +267,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`Cloudflare workers AI`](https://developers.cloudflare.com/ai/models/#text-embeddings) | <span><a href="https://pypi.org/project/langchain-cloudflare/">  <img alt="Downloads per month" /></a></span> |
   | [`Nebius`](https://docs.tokenfactory.nebius.com/quickstart) | <span><a href="https://pypi.org/project/langchain-nebius/">  <img alt="Downloads per month" /></a></span> |
   | [`AimlapiEmbeddings`](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span> |
+  | [`SingleStoreEmbeddings`](https://docs.singlestore.com/cloud/ai/ai-ml-functions/ai-functions/#embed-text) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`PolarDBPGEmbeddings`](https://github.com/polardb/langchain-polardb-pg) | <span><a href="https://pypi.org/project/langchain-polardb-pg/">  <img alt="Downloads per month" /></a></span> |
   | [`Localai`](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/">  <img alt="Downloads per month" /></a></span> |
   | [`PredictionGuardEmbeddings`](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span> |

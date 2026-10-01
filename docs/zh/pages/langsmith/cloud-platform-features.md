@@ -71,7 +71,7 @@
 
 ### 无服务器无服务器部署针对后台和延迟容忍代理以及开发、测试和预览分支进行了成本优化。无服务器部署在一段时间不活动后会扩展到零，并在下一个请求时唤醒。在配置资源时对计算进行计费，包括在部署缩减之前的空闲时间。这使得它非常适合间歇性运行或可以容忍短暂启动延迟的代理，因为在部署开始时，缩减后的第一个请求需要更长的时间来响应。
 
-对于需要持续低延迟或保证正常运行时间的工作负载，请改用专用。无服务器部署在共享的多租户基础设施上运行。
+对于需要持续低延迟或保证正常运行时间的工作负载，请改用专用。无服务器部署在共享的多租户基础架构上运行。
 
 <Note>
   扩展到零是在 [beta](/langsmith/release-stages) 中，最初仅适用于基于新的基于使用的定价的部署。随着功能的推出，缩小之前的不活动窗口可能会发生变化。有关定价和过渡时间表，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
@@ -99,9 +99,13 @@ Serverless 和 Dedicated 均提供三种大小：小型、中型和大型。每�
 
 有关每种尺寸的价格，请参阅[pricing page](https://www.langchain.com/pricing)，其中包含部署成本计算器。有关无服务器和专用部署的计费方式，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
 
-## 数据库配置
+#### 在一个部署上运行多个代理
 
-控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
+部署是[billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing)，而不是他们服务的代理数量。要在一个部署的资源上运行多个代理，[define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment) 在一个 `langgraph.json` 中。这对于专用来说效果很好：一个拥有自己数据库的始终在线实例可以托管多个生产代理。
+
+部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
+
+## 数据库配置控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
 
 实现LangGraph应用时，无需配置[checkpointer](/oss/python/langgraph/persistence#checkpointer-libraries)。会自动为图表配置检查点。为图表配置的任何检查点都将替换为自动配置的检查点。
 

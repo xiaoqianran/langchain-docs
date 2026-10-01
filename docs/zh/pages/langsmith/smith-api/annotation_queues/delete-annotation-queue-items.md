@@ -5,4 +5,4 @@
 # 删除注释队列项
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/platform/annotation-queues/{queue_id}/items/delete
-按项目 ID 从单个注释队列中删除 RUN 或 THREAD 项目。
+按项目 ID 从单个注释队列中删除 RUN 或 THREAD 项目。活动的和已完成的项目都可以删除。

@@ -18,19 +18,19 @@
 
 ## 参数
 
-您将需要创建自己的 Kubernetes 机密，这些机密遵循 LangSmith Helm Chart 提供的机密结构。
+您将需要创建自己的 Kubernetes 密钥，这些密钥遵循 LangSmith Helm Chart 提供的密钥结构。
 
 <Warning>
-这些机密必须与LangSmith Helm Chart 提供的机密具有相同的结构（请参阅上面的链接以查看具体的机密）。如果您错过任何必需的密钥，您的 LangSmith 实例可能无法正常工作。
+  这些机密必须与LangSmith Helm Chart 提供的机密具有相同的结构（请参阅上面的链接以查看具体的机密）。如果您错过任何必需的密钥，您的 LangSmith 实例可能无法正常工作。
 </Warning>
 
 一个秘密示例可能如下所示：
 
 <Warning>
-设置`api_key_salt`一次，不要更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它将使您组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
+  设置`api_key_salt`一次，不要更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它将使您组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
 </Warning>
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -74,7 +74,7 @@ stringData:
 
 预配这些机密后，您可以将 LangSmith 实例配置为直接使用这些机密，以避免通过明文传递机密值。您可以通过修改 LangSmith Helm Chart 安装的 `langsmith_config.yaml` 文件来完成此操作。
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   existingSecretName: "langsmith-secrets" # The name of the secret that contains the license key and other basic configuration parameters
 redis:
@@ -91,24 +91,25 @@ clickhouse:
     existingSecretName: "langsmith-clickhouse" # The name of the secret that contains the ClickHouse connection string and password
 ```配置完成后，您将需要更新 LangSmith 安装。您可以按照[upgrade guide](/langsmith/self-host-upgrades)。如果一切配置正确，您的 LangSmith 实例现在应该可以通过 Ingress 访问。您可以运行以下命令来检查您的机密是否被正确使用：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl describe deployment langsmith-backend | grep -i <secret-name>
 ```
 
 您应该在输出中看到类似这样的内容：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 POSTGRES_DATABASE_URI:                    <set to the key 'connection_url' in secret <your-secret-name>  Optional: false
 CLICKHOUSE_DB:                            <set to the key 'clickhouse_db' in secret <your-secret-name>   Optional: false
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-using-an-existing-secret.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

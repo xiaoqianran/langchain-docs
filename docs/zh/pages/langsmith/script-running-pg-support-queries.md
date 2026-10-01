@@ -42,13 +42,13 @@
 
 运行以下命令来运行所需的查询：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh <postgres_url> --input path/to/query.sql
 ```
 
 例如，如果您使用带有端口转发的捆绑版本，则命令可能如下所示：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres" --input support_queries/postgres/pg_get_historic_trace_counts_daily.sql
 ```
 
@@ -59,15 +59,15 @@ sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres
 所有导出方法都会生成相同的数据：LangSmith 跟踪计数、LangSmith 部署节点使用情况以及所有工作区和组织中的队列运行计数。
 
 <Note>
-UI 和 API 导出需要以下两项：
+  UI 和 API 导出需要以下两项：
 
-- `organization:manage` 许可。
-- 呼叫者的电子邮件必须在`USAGE_EXPORT_ADMIN_EMAILS`中列出，或者`ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED`必须设置为`true`。
+  * `organization:manage` 许可。
+  * 来电者的电子邮件必须在`USAGE_EXPORT_ADMIN_EMAILS`中列出，或者`ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED`必须设置为`true`。
 
-```env
-USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
-ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
-```
+  ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
+  ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
+  ```
 </Note>
 
 ### 从 UI 导出（推荐）
@@ -80,7 +80,7 @@ ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
 
 如果您更喜欢以编程方式导出使用情况数据，可以直接调用导出 API 端点。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -OJ \
   -H "X-API-Key: <your_api_key>" \
   https://<langsmith_url>/api/v1/orgs/current/usage/backfill-export
@@ -90,7 +90,7 @@ curl -OJ \
 
 导出跟踪使用情况（需要 Helm 图表版本 0.11.4 或更高版本）：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_traces_full_export.sql \
   --output ls_export.csv
@@ -98,7 +98,7 @@ sh run_support_query_pg.sh <postgres_url> \
 
 导出节点使用情况（需要 Helm 图表版本 0.11.4 或更高版本）：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_nodes_full_export.sql \
   --output lgp_export.csv
@@ -106,7 +106,7 @@ sh run_support_query_pg.sh <postgres_url> \
 
 要导出队列运行计数（需要 Helm 图表版本 0.13.25 或更高版本）：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_agent_builder_full_export.sql \
   --output ab_export.csv
@@ -114,19 +114,20 @@ sh run_support_query_pg.sh <postgres_url> \
 
 导出使用情况快照（每日实体计数，例如工作区、项目、数据集、提示和活动用户）：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_pg.sh <postgres_url> \
   --input support_queries/postgres/pg_usage_snapshots_full_export.sql \
   --output usage_snapshots_export.csv
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-pg-support-queries.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

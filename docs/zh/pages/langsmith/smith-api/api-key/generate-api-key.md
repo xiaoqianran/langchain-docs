@@ -5,4 +5,4 @@
 # 生成API密钥
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/api-key
-为用户生成 api 密钥
+为用户生成 api 密钥。

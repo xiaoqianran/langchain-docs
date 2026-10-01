@@ -4,6 +4,8 @@
 
 # 沙箱 CLI
 
+从命令行创建、检查、连接并通过隧道进入 LangSmith 沙箱。
+
 [LangSmith CLI](/langsmith/langsmith-cli) 包括用于创建快照、启动沙箱、运行命令、打开交互式 shell 以及将 TCP 连接隧道传输到沙箱的沙箱命令。
 
 沙箱 CLI 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
@@ -12,14 +14,14 @@
 
 安装或升级LangSmith CLI：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -fsSL https://cli.langsmith.com/install.sh | sh
 langsmith self-update
 ```
 
 使用您的 LangSmith API 密钥对 CLI 进行身份验证，并将其指向该密钥所属的环境：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
 export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
@@ -28,7 +30,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 默认情况下，CLI 输出是人类可读的表格。添加 `--format json` 以实现可编写脚本的输出：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith --format json sandbox list
 ```
 
@@ -36,7 +38,7 @@ langsmith --format json sandbox list
 
 创建一个沙箱，然后在其中运行命令：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm
 
 langsmith sandbox exec my-vm -- python --version
@@ -46,7 +48,7 @@ langsmith sandbox exec my-vm -- python --version
 
 使用完沙箱后，将其删除：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox delete my-vm
 ```
 
@@ -54,7 +56,7 @@ langsmith sandbox delete my-vm
 
 从 Docker 镜像构建快照：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot build my-snapshot \
   --docker-image ubuntu:24.04 \
   --capacity 8gb
@@ -62,7 +64,7 @@ langsmith sandbox snapshot build my-snapshot \
 
 对于私有镜像，首先创建一个registry（参见[Private registries](/langsmith/sandbox-snapshots#private-registries)），然后用`--registry-id`传递它的id：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot build internal-python \
   --docker-image registry.example.com/internal/python:3.12 \
   --registry-id "$REGISTRY_ID"
@@ -70,13 +72,13 @@ langsmith sandbox snapshot build internal-python \
 
 从正在运行的沙箱捕获文件系统：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot capture ml-ready --box my-vm
 ```
 
 列出、检查和删除快照：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox snapshot list
 langsmith sandbox snapshot get <SNAPSHOT_ID>
 langsmith sandbox snapshot delete <SNAPSHOT_ID>
@@ -86,33 +88,33 @@ langsmith sandbox snapshot delete <SNAPSHOT_ID>
 
 使用默认运行时创建沙箱。仅当您想从可重用的自定义快照启动时添加 `--snapshot-id`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm --rootfs-capacity 8gb
 ```
 
 使用 `--vcpus` 和 `--memory` 调整沙箱大小。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 沙箱可接受 4 到 12 GiB。省略`--memory`，则遵循比例。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm --vcpus 2 --memory 8gb
 ```
 
 列出并检查沙箱：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox list
 langsmith sandbox get my-vm
 ```
 
 停止沙箱以尽早释放资源。它的文件系统被保留，下一个`exec`、`console`或服务请求会自动唤醒它，因此不需要运行启动步骤：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox stop my-vm
 langsmith sandbox exec my-vm -- echo awake
 ```
 
 更新资源或代理配置：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox update my-vm --rootfs-capacity 16gb
 langsmith sandbox update my-vm --proxy-config @proxy.json
 ```
@@ -121,7 +123,7 @@ langsmith sandbox update my-vm --proxy-config @proxy.json
 
 ### 代理配置在 `create` 或 `update` 上使用 `--proxy-config @proxy.json` 配置沙盒身份验证代理。更喜欢使用工作区机密进行凭据注入，而不是将原始机密放置在本地文件中。
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "rules": [
     {
@@ -151,7 +153,7 @@ langsmith sandbox update my-vm --proxy-config @proxy.json
 
 使用 `sandbox exec` 来执行一次性命令：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox exec my-vm -- uname -a
 langsmith sandbox exec my-vm -- ls -la /
 langsmith sandbox exec my-vm -- cat /etc/os-release
@@ -163,14 +165,14 @@ langsmith sandbox exec my-vm -- cat /etc/os-release
 
 使用 `sandbox console` 作为 PTY 支持的交互式 shell：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox console my-vm
 langsmith sandbox console my-vm --shell /bin/sh
 ```
 
 您可以将本地 SSH 代理转发到控制台会话：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox console my-vm --forward-ssh-agent
 ```
 
@@ -180,7 +182,7 @@ langsmith sandbox console my-vm --forward-ssh-agent
 
 为浏览器选项卡或无法发送 API 密钥的任何其他内容创建一个链接，用于从没有 LangSmith 凭证的沙箱下载单个文件：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox generate-download-url my-vm --path /app/report.csv
 ```
 
@@ -190,20 +192,20 @@ langsmith sandbox generate-download-url my-vm --path /app/report.csv
 
 在沙箱中启动一个服务，然后通过隧道连接到它：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox exec my-vm -- sh -c 'cd /tmp && nohup python -m http.server 8000 > /tmp/http.log 2>&1 &'
 langsmith sandbox tunnel my-vm --remote-port 8000 --local-port 18000
 ```
 
 然后本地连接：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl http://127.0.0.1:18000
 ```
 
 如果省略 `--local-port`，CLI 将使用与 `--remote-port` 相同的值：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox tunnel my-vm --remote-port 5432
 ```
 
@@ -211,21 +213,21 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 
 您还可以通过沙箱 URL 而不是名称进行隧道：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox tunnel \
   --url <SANDBOX_URL> \
   --remote-port 5432
 ```
 
 <Tip>
-对于您想要在浏览器中打开或与团队成员共享的 HTTP 应用程序，请使用 [Sandbox service URLs](/langsmith/sandbox-service-urls)。使用原始 TCP 协议或本地开发工具的隧道。
+  对于您想要在浏览器中打开或与团队成员共享的 HTTP 应用程序，请使用 [Sandbox service URLs](/langsmith/sandbox-service-urls)。使用原始 TCP 协议或本地开发工具的隧道。
 </Tip>
 
 ## 设置 SSH 访问
 
 使用`sandbox ssh-setup`通过沙盒隧道配置`ssh`、`scp`、`rsync`、`sftp`等标准SSH工具。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox ssh-setup my-vm
 langsmith sandbox ssh-setup my-vm --identity ~/.ssh/id_ed25519.pub
 ```
@@ -234,18 +236,18 @@ langsmith sandbox ssh-setup my-vm --identity ~/.ssh/id_ed25519.pub
 
 设置完成后，连接：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ssh sandbox-my-vm
 ```
 
 沙盒映像必须在端口 `22` 上运行 `sshd`。如果 `sshd` 未运行，`ssh-setup` 会发出警告，并且 SSH 连接将无法工作，直到您在沙箱内启动它。<Warning>
-`ssh-setup`修改本地SSH配置并编写调用`langsmith sandbox tunnel`的`ProxyCommand`。根据 CLI 的身份验证方式，生成的块可能包含凭据或对凭据的引用。仅在受信任的计算机上运行它，并且不要提交或共享生成的 SSH 配置块。
+  `ssh-setup`修改本地SSH配置并编写调用`langsmith sandbox tunnel`的`ProxyCommand`。根据 CLI 的身份验证方式，生成的块可能包含凭据或对凭据的引用。仅在受信任的计算机上运行它，并且不要提交或共享生成的 SSH 配置块。
 </Warning>
 
 ## 命令参考
 
 |命令 |描述 |
-| ---| ---|
+| - | - |
 | `langsmith sandbox snapshot list` |列出快照。 |
 | `langsmith sandbox snapshot build <name> --docker-image <image>` |从 Docker 镜像构建快照。 |
 | `langsmith sandbox snapshot capture <name> --box <sandbox>` |从正在运行的沙箱捕获快照。 |
@@ -263,11 +265,12 @@ ssh sandbox-my-vm
 | `langsmith sandbox tunnel <name> --remote-port <port>` |将本地 TCP 端口转发到沙箱端口。 |
 | `langsmith sandbox ssh-setup <name>` |通过`sandbox tunnel --stdio`配置本地SSH访问。 |
 
----<div className="source-links">
-<Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+***<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

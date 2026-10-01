@@ -9,18 +9,18 @@
 本指南向您展示如何使用 `LANGSMITH_TRACING_SAMPLING_RATE` 环境变量设置全局采样率，以及如何对每个 `Client` 实例应用不同的采样率，以更细粒度地控制跟踪哪些操作。
 
 <Tip>
-要根据运行时条件（例如数据敏感性、租户或功能标志）启用或禁用对特定请求的跟踪，请参阅[Conditional tracing](/langsmith/conditional-tracing)。
+  要根据运行时条件（例如数据敏感性、租户或功能标志）启用或禁用对特定请求的跟踪，请参阅[Conditional tracing](/langsmith/conditional-tracing)。
 </Tip>
 
 ## 设置全局采样率
 
 <Note>
-本节与使用 [LangSmith SDK](/langsmith/reference) 或 [LangChain](/oss/python/langchain/overview) 的用户相关，不适用于直接使用 LangSmith API 进行日志记录的用户。
+  本节与使用 [LangSmith SDK](/langsmith/reference) 或 [LangChain](/oss/python/langchain/overview) 的用户相关，不适用于直接使用 LangSmith API 进行日志记录的用户。
 </Note>
 
 默认情况下，所有跟踪都会记录到LangSmith。要对记录到 LangSmith 的跟踪数量进行下采样，请将 `LANGSMITH_TRACING_SAMPLING_RATE` 环境变量设置为 `0`（无跟踪）和 `1`（所有跟踪）之间的任意浮点数。例如，设置以下环境变量将记录 75% 的跟踪。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING_SAMPLING_RATE=0.75
 ```
 
@@ -28,7 +28,7 @@ export LANGSMITH_TRACING_SAMPLING_RATE=0.75
 
 ##为每个客户端设置不同的采样率您还可以在特定的`Client`实例上设置采样率并使用[⟦T10⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only)上下文管理器：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client, tracing_context
 
 # Create clients with different sampling rates
@@ -60,19 +60,20 @@ with tracing_context(client=client_no_trace):
 
 当您需要保证特定请求的跟踪行为时，请使用[conditional tracing](/langsmith/conditional-tracing)，例如：
 
-- 禁用对具有零保留策略的客户端的跟踪。
-- 根据租户将跟踪路由到不同的项目。
-- 处理永远不应被追踪的敏感数据。
+* 禁用对具有零保留策略的客户端的跟踪。
+* 根据租户将跟踪路由到不同的项目。
+* 处理永远不应该被追踪的敏感数据。
 
 您可以结合使用这两种方法来对可观察性策略进行细粒度控制。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sample-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

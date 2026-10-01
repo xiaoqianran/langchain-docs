@@ -4,15 +4,17 @@
 
 # 沙盒服务 URL
 
+通过经过身份验证的 URL，从浏览器或以编程方式访问沙箱内运行的 HTTP 服务。
+
 服务 URL 允许您访问沙箱内运行的 HTTP 服务（REST API、Streamlit 应用程序、Jupyter 笔记本、API 文档），无需隧道、端口转发或 CLI 工具。每个沙箱 + 端口组合都有自己的 URL，您可以在浏览器中打开该 URL、从代码中调用或与团队成员共享。
 
-![Service URLs view](/images/langsmith/sandboxes/sb-service-feature.png)
+<img alt="Service URLs view" />
 
 ## 快速开始
 
 在沙箱内启动 HTTP 服务器，然后获取 URL 来访问它：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.sandbox import SandboxClient
 
 client = SandboxClient()
@@ -34,8 +36,8 @@ with client.sandbox() as sb:
 
 ## 用例
 
-|场景|如何|
-|----------|-----|
+|场景 |如何|
+| - | - |
 |预览 Web 应用程序（Streamlit、Jupyter 等）| `sb.service(port=<PORT>)` 然后打开`browser_url` |
 |从代码或 CI 调用 API | `svc.get(...)` / `svc.post(...)` 或 `curl` 以及服务令牌 |
 |与队友分享现场演示 |单击 UI 中的 **共享链接** 并发送 URL |
@@ -45,15 +47,15 @@ with client.sandbox() as sb:
 1. 打开沙箱详情页面。
 2. 找到**开放服务**小部件。
 3. 输入端口号（例如 `3000`）。
-4. 单击“**打开**”在新选项卡中启动，或“**共享链接**”复制可发送给团队成员的 URL。
-
-任何知道该链接的人都可以访问该服务，即使没有 LangSmith 帐户。令牌过期后，从 UI 生成新链接。
+4. 单击“**打开**”在新选项卡中启动，或“**共享链接**”复制可发送给团队成员的 URL。任何知道该链接的人都可以访问该服务，即使没有 LangSmith 帐户。令牌过期后，从 UI 生成新链接。
 
 ## 从 SDK 中打开服务
 
-### 获取服务 URL在沙箱实例上或直接在客户端上调用`service()`：
+### 获取服务 URL
 
-```python
+在沙箱实例上或直接在客户端上调用`service()`：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 svc = sb.service(port=3000)
 
 # Or from the client, by sandbox name
@@ -64,7 +66,7 @@ svc = sb.service(port=3000, expires_in_seconds=3600)
 ```
 
 <Note>
-在请求服务 URL 之前，该服务必须正在指定端口上运行并侦听。该 URL 仅路由流量，不会为您启动服务。
+  在请求服务 URL 之前，该服务必须正在运行并侦听指定端口。该 URL 仅路由流量，不会为您启动服务。
 </Note>
 
 ### 提出请求
@@ -73,7 +75,7 @@ svc = sb.service(port=3000, expires_in_seconds=3600)
 
 令牌的寿命很短（默认 10 分钟，最长 24 小时），并且没有服务器端刷新机制。当令牌过期时，请再次调用`sb.service(port=...)`请求新的令牌。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 svc = sb.service(port=8000)
 
 resp = svc.get("/api/items")
@@ -87,7 +89,7 @@ resp = svc.delete("/api/items/1")
 
 如果您更喜欢不同的 HTTP 客户端，请使用原始 URL 和令牌：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import httpx
 
 svc = sb.service(port=8000)
@@ -102,7 +104,7 @@ resp = httpx.get(
 
 使用`browser_url`在浏览器中打开服务。它会自动设置身份验证 cookie，因此所有后续页面加载、图像和 API 调用都将在 URL 中无需令牌的情况下进行身份验证。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 svc = sb.service(port=8000)
 print(svc.browser_url)
 ```
@@ -111,7 +113,7 @@ print(svc.browser_url)
 
 ### 通过 REST API 生成 URL
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST \
   "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes/{sandbox_name}/service-url" \
   -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -121,18 +123,16 @@ curl -X POST \
 
 回应：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "browser_url": "https://{sandbox-id}--3000.smithbox.dev/_svc/auth?token=ey...",
   "service_url": "https://{sandbox-id}--3000.smithbox.dev/",
   "token": "ey...",
   "expires_at": "2026-04-08T15:30:00Z"
 }
-```
+```## 示例：提供 FastAPI 应用程序
 
-## 示例：提供 FastAPI 应用程序
-
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.sandbox import SandboxClient
 
 client = SandboxClient()
@@ -180,32 +180,35 @@ def create_item(item: dict):
     handle.kill()
 ```
 
-## 服务 URL 与 TCP 隧道| |服务网址 | TCP 隧道 |
-|---|---|---|
+## 服务 URL 与 TCP 隧道
+
+| |服务网址 | TCP 隧道 |
+| - | - | - |
 | **协议** | HTTP |任何 TCP（数据库、Redis、SSH、HTTP）|
 | **设置** |零——只是一个 URL |需要 SDK 或 CLI |
 | **访问自** |浏览器、脚本、CI，随处可见 |仅限本地机器 |
 | **分享** |复制网址并发送 |不可分享 |
 | **多页网络应用程序** |全面支持（子域路由） |全面支持（本地端口）|
-| **非 HTTP 服务** |不支持 |全力支持 |
+| **非 HTTP 服务** |不支持 |全力支持|
 
 将**服务 URL** 用于您想要从浏览器访问或与其他人共享的 HTTP 服务。对于非 HTTP 协议（​​如 `psql` 或 `redis-cli`）或需要仅本地访问时，请使用 **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)**。
 
 要共享单个文件而不是正在运行的服务，请使用 **[download link](/langsmith/sandbox-download-links)**。
 
-## 故障排除
-
-|错误|原因 |修复|
-|--------|--------|-----|
+## 故障排除|错误|原因 |修复 |
+| - | - | - |
 | **“服务链接已过期”** |超过令牌生命周期 |从 LangSmith 再次打开服务或致电 `sb.service()` 获取新的 URL |
 | **“服务无法访问”** |没有任何东西正在监听该端口 |验证服务器是否在沙箱内运行 |
 | **“需要身份验证”** |标头或 cookie 中没有令牌 |使用`browser_url`进行浏览器访问或设置`X-Langsmith-Sandbox-Service-Token`标头 |
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-service-urls.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

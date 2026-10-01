@@ -12,19 +12,20 @@ LangSmith REST API 提供对 LangSmith 平台功能的编程访问，包括跟�
 
 在每个请求中传递 `X-Api-Key` 标头。该值应该是有效的[LangSmith API key](/langsmith/create-account-api-key)。
 
-```shell
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request GET \
   --url https://api.smith.langchain.com/api/v1/workspaces \
   --header 'X-Api-Key: LANGSMITH_API_KEY'
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-</Callout>
-<Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smith-api-ref.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -5,7 +5,7 @@
 # 地区常见问题解答
 
 <Note>
-有关更多详细信息，请参阅[cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability)。
+  有关更多详细信息，请参阅[cloud architecture reference](/langsmith/cloud#cloud-architecture-and-scalability)。
 </Note>
 
 ## 法律与合规
@@ -50,7 +50,7 @@ LangSmith 目前不支持此功能，但如果您有兴趣，请通过 [support.
 
 #### *我如何查看我的组织的区域？*
 
-检查您的 URL - [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-regions-faq) 上的组织位于 GCP US，[https://eu.smith.langchain.com](https://eu.smith.langchain.com) 上的组织位于 GCP EU，[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 上的组织位于 GCP APAC，[https://aws.smith.langchain.com](https://aws.smith.langchain.com) 上的组织位于 AWS US。
+检查您的 URL - [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-regions-faq) 上的组织位于 GCP US，[https://eu.smith.langchain.com](https://eu.smith.langchain.com) 上的组织位于 GCP EU，[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 上的组织位于 GCP APAC，[https://aws.smith.langchain.com](https://aws.smith.langchain.com) 上的组织位于 AWS US。
 
 #### *我可以在区域之间切换我的组织吗？*目前我们不支持跨区域迁移，但如果您对此功能感兴趣，请通过[support.langchain.com](https://support.langchain.com)联系支持。
 
@@ -68,13 +68,14 @@ LangSmith 目前不支持此功能，但如果您有兴趣，请通过 [support.
 
 所有LangSmith计划均以美元支付。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/regions-faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

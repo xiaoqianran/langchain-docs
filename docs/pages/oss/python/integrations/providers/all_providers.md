@@ -35,6 +35,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     AI gateway for cost control, BYOK routing, and multi-provider model access.
   </Card>
 
+  <Card title="AlexEvidenceVerifier" href="https://pypi.org/project/langchain-alex/" icon="link">
+    Verify signed ALEX Evidence Packages inside LangChain and LangGraph workflows against an external trust anchor. The integration exposes a structured LangChain tool and a LangGraph node that fail closed on unsupported schemas, signature failures, incomplete evidence, or inconsistent outcomes.
+  </Card>
+
   <Card title="Algenta" href="https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme" icon="link">
     Governed tool execution for LangChain agents: `create_algenta_tools` exposes a self-hosted Algenta decision engine's MCP tool surface as `BaseTool`s with profile-based filtering (`observe`/`govern`/`execute`/`full`), typed execution receipts, and synchronous policy-gate denials on real-world execution.
   </Card>
@@ -181,6 +185,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Apertis" href="https://docs.apertis.ai" icon="link">
     OpenAI-compatible API providing access to multiple LLMs.
+  </Card>
+
+  <Card title="API-Route" href="https://www.api-route.com/docs/overview" icon="link">
+    OpenAI-compatible API gateway for models from multiple providers.
   </Card>
 
   <Card title="Apify" href="https://docs.apify.com/integrations/langchain" icon="https://mintcdn.com/langchain-5e9cc07a/73YwmKRoBU5I7vFN/images/providers/apify-icon.svg?fit=max&auto=format&n=73YwmKRoBU5I7vFN&q=85&s=0612593ec7e58dbef3d23a040d374dd0">
@@ -587,6 +595,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Financial market data and analytics API.
   </Card>
 
+  <Card title="Foliant" href="https://github.com/gazoy/langchain-foliant#readme" icon="link">
+    Payment tool and budget middleware for agents that pay x402 endpoints through Foliant payment channels and pools, with one on-chain settlement per session and a delegated spending budget per agent and per crew.
+  </Card>
+
   <Card title="Football Charts" href="https://www.football-charts.com/developers" icon="link">
     Football statistics, model probabilities, and Monte Carlo season projections for 90+ leagues.
   </Card>
@@ -757,6 +769,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="iGPT" href="https://docs.igpt.ai" icon="link">
     Personal data retrieval tools and retriever for emails, messages, and files.
+  </Card>
+
+  <Card title="Inferrail" href="https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain" icon="link">
+    Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
   </Card>
 
   <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
@@ -933,6 +949,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MaskFlow" href="https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain" icon="link">
     Reversible PII anonymizer / deanonymizer for LangChain, a drop-in for the Presidio anonymizer. Indian identifiers included.
+  </Card>
+
+  <Card title="MartToolkit" href="https://github.com/Mart-API/langchain-mart#readme" icon="link">
+    Mart provides public LinkedIn profile and company enrichment, contact refresh snapshots, posts and optional work-email lookup through a JSON API.
   </Card>
 
   <Card title="Memgraph" href="/oss/python/integrations/providers/memgraph" icon="link">
@@ -1753,6 +1773,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Unstructured" href="/oss/python/integrations/providers/unstructured" icon="link">
     Document processing and data extraction.
+  </Card>
+
+  <Card title="UploadPostToolkit" href="https://docs.upload-post.com/guides/langchain" icon="link">
+    Tools to publish, schedule and track social media posts on TikTok, Instagram, YouTube, LinkedIn, X, Facebook and other platforms through the Upload-Post API.
   </Card>
 
   <Card title="Upstage" href="/oss/python/integrations/providers/upstage" icon="link">

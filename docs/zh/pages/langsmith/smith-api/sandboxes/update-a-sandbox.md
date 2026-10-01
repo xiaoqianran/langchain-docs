@@ -5,4 +5,4 @@
 # 更新沙箱
 
 /langsmith/langsmith-platform-openapi.json 补丁 /api/v2/sandboxes/boxes/{name}
-更新沙箱的显示名称。该名称在租户内必须是唯一的。
+更新沙箱的显示名称、保留、资源、标签或代理配置。该名称在租户内必须是唯一的。发送到未运行的沙箱的代理配置将被存储并在下次启动时应用。

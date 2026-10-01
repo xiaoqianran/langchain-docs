@@ -4,8 +4,10 @@
 
 # 符合 FIPS 的图像
 
+在符合 FIPS 140 的容器映像上运行自托管 LangSmith 安装
+
 <Note>
-  FIPS 和气隙 LangSmith 部署需要在部署前与您的 LangChain 客户主管进行对话。在更改安装之前，请先了解范围许可、支持的配置和升级路径。
+  FIPS 和气隙 LangSmith 部署需要在推出之前与您的 LangChain 客户主管进行对话。在更改安装之前，请先了解范围许可、支持的配置和升级路径。
 </Note>
 
 从 v15 开始，每个 LangChain 创作的 LangSmith 映像都有一个在 FIPS 140 模式下运行的 `-fips` 对应版本。当您的自托管部署需要符合 FIPS 合规性时（例如在联邦机构、国防承包商和受监管行业中），请使用这些映像。
@@ -17,7 +19,7 @@
 每个 LangChain 创作的图像都有一个 `-fips` 对应版本发布在与非 FIPS 版本相同的标签上：
 
 |非 FIPS 图像 | FIPS 图像 |
-| ---| ---|
+| - | - |
 | `langchain/langsmith-ace-backend` | `langchain/langsmith-ace-backend-fips` |
 | `langchain/langsmith-backend` | `langchain/langsmith-backend-fips` |
 | `langchain/langsmith-frontend` | `langchain/langsmith-frontend-fips` |
@@ -37,7 +39,7 @@ PostgreSQL、Redis 和 ClickHouse 并未由 LangChain 发布为 FIPS 变体。�
 
 更新 LangSmith Helm 安装中的 `values.yaml`，将每个 LangChain 镜像存储库指向其对应的 `-fips` 镜像存储库，同时保留现有标签。将 `0.16.21` 替换为您要部署的 [LangSmith version](/langsmith/self-hosted-changelog)：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   aceBackendImage:
     repository: "langchain/langsmith-ace-backend-fips"
@@ -65,13 +67,13 @@ Chainguard 在每个 FIPS 映像中都附带了 `openssl-fips-test` 工具。针
 
 检查正在运行的 Pod：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl exec <pod-name> -- openssl-fips-test
 ```
 
 预期产出（删节）：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Checking OpenSSL lifecycle assurance.
 	✓ Self-test KAT_Integrity HMAC ... passed.
 	✓ Self-test Module_Integrity HMAC ... passed.
@@ -90,7 +92,7 @@ Locate applicable CMVP certificate(s) at: CMVP #4985
 
 您还可以验证 Kubernetes 外部的镜像：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker run --rm --entrypoint openssl-fips-test langchain/langsmith-backend-fips:0.16.21
 ```
 
@@ -98,13 +100,14 @@ docker run --rm --entrypoint openssl-fips-test langchain/langsmith-backend-fips:
 
 ## 用于气隙部署的镜像将镜像镜像到私有注册表时，`-fips` 命名约定同样适用。遵循 [image mirroring guide](/langsmith/self-host-mirroring-images) 并将每个存储库替换为其对应的 `-fips` 版本。无论是否有 FIPS，气隙部署都需要在开始之前与您的 LangChain 客户经理确定范围。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-fips.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

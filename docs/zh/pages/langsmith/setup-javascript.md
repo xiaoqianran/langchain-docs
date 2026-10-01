@@ -10,7 +10,7 @@
 
 最终的存储库结构将如下所示：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── src # all project code lies within here
 │   ├── utils # optional utilities for your graph
@@ -24,7 +24,7 @@ my-app/
 ```
 
 <Tip>
-LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。然而，图的节点的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 </Tip>
 
 每个步骤之后，都会提供一个示例文件目录来演示如何组织代码。
@@ -35,7 +35,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 
 示例 `package.json` 文件：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "name": "langgraphjs-studio-starter",
   "packageManager": "yarn@1.22.22",
@@ -56,7 +56,7 @@ LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 └── package.json # package dependencies
 ```
@@ -76,7 +76,7 @@ TAVILY_API_KEY=key_2
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── package.json
 └── .env # environment variables
@@ -88,7 +88,7 @@ my-app/
 
 这是一个例子`agent.ts`：
 
-```ts
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { AIMessage } from "@langchain/core/messages";
 import { TavilySearch } from "@langchain/tavily";
 import { ChatOpenAI } from "@langchain/openai";
@@ -163,7 +163,7 @@ export const graph = workflow.compile();
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── src # all project code lies within here
 │   ├── utils # optional utilities for your graph
@@ -182,7 +182,7 @@ my-app/
 
 示例 `langgraph.json` 文件：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "node_version": "20",
   "dockerfile_lines": [],
@@ -195,21 +195,22 @@ my-app/
 ```
 
 请注意，`CompiledGraph`的变量名称出现在顶级`graphs`键中每个子键值的末尾（即`:<variable_name>`）。<Info>
-    **配置位置**
-    配置文件必须放置在与包含编译图和关联依赖项的 TypeScript 文件同一级别或更高级别的目录中。
+  **配置位置**
+  配置文件必须放置在与包含编译图和关联依赖项的 TypeScript 文件同一级别或更高级别的目录中。
 </Info>
 
 ## 下一步
 
 设置项目并将其放入 GitHub 存储库后，就可以[deploy your app](/langsmith/deployment-quickstart) 了。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-javascript.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

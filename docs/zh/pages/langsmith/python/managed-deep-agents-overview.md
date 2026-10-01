@@ -4,14 +4,16 @@
 
 # 托管Deep Agents
 
+将代理构建为文件目录，同时 LangSmith 运行工具和运行时。
+
 托管 Deep Agents (MDA) 是构建和部署生产代理的最简单方法。您专注于您的代理人所做的事情。 MDA 运行它。无需运行服务器，也无需连接基础设施。
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
-- **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
-- **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
+* **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/python/deepagents/overview)。
+* **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
-```mermaid actions={false}
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
 flowchart LR
     subgraph you["<b>You provide</b>"]
@@ -42,106 +44,110 @@ flowchart LR
 
 <Tabs>
   <Tab title="Model & configuration">
-```python agent.py
-from managed_deepagents import define_deep_agent
+    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from managed_deepagents import define_deep_agent
 
-from middleware.audit import log_tool_calls
-from tools.search import internet_search
+    from middleware.audit import log_tool_calls
+    from tools.search import internet_search
 
-agent = define_deep_agent(
-    name="research-assistant",
-    model="openai:gpt-5.5",
-    tools=[internet_search],
-    middleware=[log_tool_calls],
-)
-```
+    agent = define_deep_agent(
+        name="research-assistant",
+        model="openai:gpt-5.5",
+        tools=[internet_search],
+        middleware=[log_tool_calls],
+    )
+    ```
   </Tab>
+
   <Tab title="Instructions">
-```markdown instructions.md
-# Assistant
+    ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # Assistant
 
-You are a helpful assistant.
-```
+    You are a helpful assistant.
+    ```
   </Tab>
+
   <Tab title="Skills">
-```markdown skills/research/SKILL.md
----
-name: research
-description: Gather and synthesize context before answering complex questions.
----
+    ```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ---
+    name: research
+    description: Gather and synthesize context before answering complex questions.
+    ---
 
-# Research
+    # Research
 
-Use this skill when a task needs more than a direct answer.
+    Use this skill when a task needs more than a direct answer.
 
-1. Identify what information is missing.
-2. Search LangChain docs when the question is about LangChain, LangGraph, or LangSmith.
-3. Summarize findings before responding to the user.
-```
+    1. Identify what information is missing.
+    2. Search LangChain docs when the question is about LangChain, LangGraph, or LangSmith.
+    3. Summarize findings before responding to the user.
+    ```
   </Tab>
+
   <Tab title="Tools">
-```python tools/search.py
-from langchain.tools import tool
+    ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.tools import tool
 
 
-@tool(parse_docstring=True)
-def internet_search(query: str) -> str:
-    """Search the internet for relevant sources.
+    @tool(parse_docstring=True)
+    def internet_search(query: str) -> str:
+        """Search the internet for relevant sources.
 
-    Args:
-        query: The search query.
-    """
-    return f"Results for: {query}"
-```
+        Args:
+            query: The search query.
+        """
+        return f"Results for: {query}"
+    ```
   </Tab>
+
   <Tab title="Middleware">
-```python middleware/audit.py
-from collections.abc import Awaitable, Callable
+    ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from collections.abc import Awaitable, Callable
 
-from langchain.agents.middleware import wrap_tool_call
-from langchain.messages import ToolMessage
-from langchain.tools.tool_node import ToolCallRequest
-from langgraph.types import Command
+    from langchain.agents.middleware import wrap_tool_call
+    from langchain.messages import ToolMessage
+    from langchain.tools.tool_node import ToolCallRequest
+    from langgraph.types import Command
 
 
-@wrap_tool_call
-async def log_tool_calls(
-    request: ToolCallRequest,
-    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
-) -> ToolMessage | Command:
-    print(f"Calling tool: {request.tool_call['name']}")
-    result = await handler(request)
-    print(f"Finished tool: {request.tool_call['name']}")
-    return result
-```
+    @wrap_tool_call
+    async def log_tool_calls(
+        request: ToolCallRequest,
+        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
+    ) -> ToolMessage | Command:
+        print(f"Calling tool: {request.tool_call['name']}")
+        result = await handler(request)
+        print(f"Finished tool: {request.tool_call['name']}")
+        return result
+    ```
   </Tab>
+
   <Tab title="MCP Connectors">
-```python tools/mcp.py
-from managed_deepagents import define_mcp
+    ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from managed_deepagents import define_mcp
 
-mcp = define_mcp(
-    servers={
-        "langchainDocs": {
-            "transport": "http",
-            "url": "https://docs.langchain.com/mcp",
-            "include_tools": ["search_docs_by_lang_chain"],
+    mcp = define_mcp(
+        servers={
+            "langchainDocs": {
+                "transport": "http",
+                "url": "https://docs.langchain.com/mcp",
+                "include_tools": ["search_docs_by_lang_chain"],
+            },
         },
-    },
-)
-```
+    )
+    ```
   </Tab>
-</Tabs>
+</Tabs>当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
+您提供业务逻辑，托管Deep Agents提供代理工具和生产基础设施。
 
-
-当您使用 `mda` CLI 上传此文件夹时，它将自动在托管 LangSmith 基础设施上运行。
-您提供业务逻辑，托管 Deep Agents 提供代理工具和生产基础设施。要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+要开始使用，请参阅[Managed Deep Agents quickstart](/langsmith/python/managed-deep-agents-quickstart)。
 
 ## 核心能力
 
 代理的每个部分都映射到一个文件或目录。添加您的代理需要的：
 
 |能力|路径|描述 |
-| ---| ---| ---|
+| - | - | - |
 | [Model and configuration](/langsmith/python/managed-deep-agents-agent-definition) | `agent.py` |模型和核心选项。必需的。 |
 | [Instructions](/langsmith/python/managed-deep-agents-instructions) | `instructions.md` |定义代理行为方式的系统提示。 |
 | [Skills](/langsmith/python/managed-deep-agents-skills) | `skills/` |代理在相关时加载特定于任务的剧本。 |
@@ -150,35 +156,49 @@ mcp = define_mcp(
 | [Middleware](/langsmith/python/managed-deep-agents-middleware) | `middleware/` |围绕模型和工具调用运行的自定义逻辑。 |
 | [Sandbox](/langsmith/python/managed-deep-agents-sandboxes) | `sandbox/` |用于运行代理编写的代码的隔离文件系统和 shell。 |
 | [Memory](/langsmith/python/managed-deep-agents-memory) | `memory.py` |跨线程持续存在的偏好和知识。 |
-| [Identity](/langsmith/python/managed-deep-agents-identity) | `identity.py` |用于多用户部署的每个调用者专用线程、内存和凭据。 |
-| [Channels](/langsmith/python/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
+| [Identity](/langsmith/python/managed-deep-agents-identity) | `identity.py` |用于多用户部署的每个调用者专用线程、内存和凭据。 || [Channels](/langsmith/python/managed-deep-agents-channels) | `channels/` |与消息服务（例如 Slack）的连接开始运行并接收响应。 |
 | [Schedules](/langsmith/python/managed-deep-agents-schedules) | `schedules/` |定期运行代理的托管 cron 计划。 |
-| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
+| [Evals](/langsmith/python/managed-deep-agents-evals) | `evals/` |港口测试代理的任务。 |
+
+完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
+
+## 与Deep Agents的关系
+
+托管 Deep Agents 运行开源 [Deep Agents](/oss/python/deepagents/overview) 工具，而不是第二个框架。代理循环、文件系统工具、子代理和技能是相同的，因此无需学习第二个 API，并且您已经构建的代理可以继续工作。
+
+托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/python/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
+* `define_deep_agent` 返回定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 编译代理。
+
+因此，`define_deep_agent`采用相同的参数减去托管参数，再加上所需的静态`name`。每个`define_*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
+
+当您自己运行代理或需要自己的 [backend](/oss/python/deepagents/backends)、商店或检查点时，请留在 Deep Agents。有关两者的并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)。
 
 ## 后续步骤
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
     使用 `mda` CLI 创建并部署您的第一个托管深度代理。
   </Card>
+
   <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
     添加自定义搜索工具、持久内存和每日日程安排。
   </Card>
+
   <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
     探索托管托管 Deep Agents 部署的运行时。
   </Card>
+
   <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
     从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

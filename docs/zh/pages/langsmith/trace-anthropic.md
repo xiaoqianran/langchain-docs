@@ -9,78 +9,76 @@ Python ([⟦T3⟧](https://reference.langchain.com/python/langsmith/wrappers/_an
 该包装器还支持 [Claude managed agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents)（仅限 TypeScript）。请参阅[Trace Claude managed agents](#trace-claude-managed-agents)。
 
 <Note>
-    `LANGSMITH_TRACING` 环境变量必须设置为 `'true'`，以便将跟踪记录到 LangSmith，即使在使用 `wrap_anthropic` 或 `wrapAnthropic` 时也是如此。这允许您在不更改代码的情况下打开和关闭跟踪。
+  `LANGSMITH_TRACING` 环境变量必须设置为 `'true'`，以便将跟踪记录到 LangSmith，即使在使用 `wrap_anthropic` 或 `wrapAnthropic` 时也是如此。这允许您在不更改代码的情况下打开和关闭跟踪。
 
-    此外，您需要将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥（有关更多信息，请参阅 [Setup](/)）。
+  此外，您需要将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥（有关更多信息，请参阅 [Setup](/)）。
 
-    如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。
+  如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。
 
-    默认情况下，跟踪记录将记录到名为 `default` 的项目中。要将跟踪记录到不同的项目，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。
+  默认情况下，跟踪记录将记录到名为 `default` 的项目中。要将跟踪记录到不同的项目，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。
 </Note>
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import anthropic
+  from langsmith import traceable
+  from langsmith.wrappers import wrap_anthropic
 
-```python Python
-import anthropic
-from langsmith import traceable
-from langsmith.wrappers import wrap_anthropic
+  client = wrap_anthropic(anthropic.Anthropic())
 
-client = wrap_anthropic(anthropic.Anthropic())
+  @traceable(run_type="tool", name="Retrieve Context")
+  def my_tool(question: str) -> str:
+    return "During this morning's meeting, we solved all world conflict."
 
-@traceable(run_type="tool", name="Retrieve Context")
-def my_tool(question: str) -> str:
-  return "During this morning's meeting, we solved all world conflict."
+  @traceable(name="Chat Pipeline")
+  def chat_pipeline(question: str):
+    context = my_tool(question)
+    messages = [
+        { "role": "user", "content": f"Question: {question}\nContext: {context}"}
+    ]
+    message = client.messages.create(
+        model="claude-sonnet-4-6",
+        messages=messages,
+        max_tokens=1024,
+        system="You are a helpful assistant. Please respond to the user's request only based on the given context."
+    )
+    return message
 
-@traceable(name="Chat Pipeline")
-def chat_pipeline(question: str):
-  context = my_tool(question)
-  messages = [
-      { "role": "user", "content": f"Question: {question}\nContext: {context}"}
-  ]
-  message = client.messages.create(
-      model="claude-sonnet-4-6",
-      messages=messages,
-      max_tokens=1024,
-      system="You are a helpful assistant. Please respond to the user's request only based on the given context."
-  )
-  return message
+  chat_pipeline("Can you summarize this morning's meetings?")
+  ```
 
-chat_pipeline("Can you summarize this morning's meetings?")
-```
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import Anthropic from "@anthropic-ai/sdk";
+  import { traceable } from "langsmith/traceable";
+  import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 
-```typescript TypeScript
-import Anthropic from "@anthropic-ai/sdk";
-import { traceable } from "langsmith/traceable";
-import { wrapAnthropic } from "langsmith/wrappers/anthropic";
+  const client = wrapAnthropic(new Anthropic());
 
-const client = wrapAnthropic(new Anthropic());
+  const myTool = traceable(async (question: string) => {
+    return "During this morning's meeting, we solved all world conflict.";
+  }, { name: "Retrieve Context", run_type: "tool" });
 
-const myTool = traceable(async (question: string) => {
-  return "During this morning's meeting, we solved all world conflict.";
-}, { name: "Retrieve Context", run_type: "tool" });
+  const chatPipeline = traceable(async (question: string) => {
+    const context = await myTool(question);
+    const messages = [
+        { role: "user", content: `Question: ${question}\nContext: ${context}` }
+    ];
+    const message = await client.messages.create({
+        model: "claude-sonnet-4-6",
+        messages: messages,
+        max_tokens: 1024,
+        system: "You are a helpful assistant. Please respond to the user's request only based on the given context."
+    });
+    return message;
+  }, { name: "Chat Pipeline" });
 
-const chatPipeline = traceable(async (question: string) => {
-  const context = await myTool(question);
-  const messages = [
-      { role: "user", content: `Question: ${question}\nContext: ${context}` }
-  ];
-  const message = await client.messages.create({
-      model: "claude-sonnet-4-6",
-      messages: messages,
-      max_tokens: 1024,
-      system: "You are a helpful assistant. Please respond to the user's request only based on the given context."
-  });
-  return message;
-}, { name: "Chat Pipeline" });
-
-await chatPipeline("Can you summarize this morning's meetings?");
-```</CodeGroup>
-
-## Trace Claude 管理的代理
+  await chatPipeline("Can you summarize this morning's meetings?");
+  ```
+</CodeGroup>## Trace Claude 管理的代理
 
 `wrapAnthropic` 包装器还支持 [Claude managed agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents)（仅限 TypeScript）。用 `wrapAnthropic` 包装 Anthropic 客户端。包装器将自动跟踪代理创建、会话创建以及流经会话的所有事件。
 
-```typescript TypeScript
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import Anthropic from "@anthropic-ai/sdk";
 import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 
@@ -144,13 +142,14 @@ for await (const event of stream) {
   跟踪会话事件。
 </Note>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

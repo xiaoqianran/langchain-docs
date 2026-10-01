@@ -4,7 +4,9 @@
 
 # 使用 Terraform 在 GCP 上部署 LangSmith
 
-与公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 一起将 LangSmith 部署到 GCP。通过将部署管理为代码，您可以跨项目版本控制、检查和重现 LangSmith 环境，而无需点击 Google Cloud 控制台。
+使用 LangChain Terraform 模块在 GCP GKE 上配置自托管 LangSmith 的端到端演练。
+
+与公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 一起将 LangSmith 部署到 GCP。通过将部署管理为代码，您可以跨项目版本控制、检查和重现 LangSmith 环境，而无需通过 Google Cloud 控制台进行点击。
 
 安装分两个阶段运行：
 
@@ -13,7 +15,7 @@
 
 基本安装后，通过设置标志和重新部署来启用可选附加组件。
 
-```mermaid actions={false}
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 25, 'rankSpacing': 30}}}%%
 graph TB
     subgraph stage1["Set up infrastructure"]
@@ -53,7 +55,7 @@ graph TB
 ### 所需工具
 
 |工具|版本 |目的|
-|---|---|---|
+| - | - | - |
 |谷歌云 SDK (`gcloud`) | 450 | 450身份验证、查询 GCP 资源、管理 GKE 凭据 |
 |地形 | 1.5 | 1.5运行基础设施模块 |
 | `kubectl` | 1.28 | 1.28检查 GKE 集群 |
@@ -61,7 +63,7 @@ graph TB
 
 在 macOS 上安装：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 brew install --cask google-cloud-sdk
 brew install kubectl helm
 brew tap hashicorp/tap && brew install hashicorp/tap/terraform
@@ -72,11 +74,9 @@ kubectl version --client
 helm version
 ```
 
-### 所需的 GCP API
+### 所需的 GCP APITerraform 在首次应用时自动启用这些功能，但必须首先启用 `cloudresourcemanager.googleapis.com`，以便 Terraform 可以启用其余功能。手动启用所有内容以实现快速首次运行：
 
-Terraform 在首次应用时自动启用这些功能，但必须首先启用 `cloudresourcemanager.googleapis.com`，以便 Terraform 可以启用其余功能。手动启用所有内容以实现快速首次运行：
-
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gcloud services enable \
   container.googleapis.com \
   compute.googleapis.com \
@@ -93,10 +93,12 @@ gcloud services enable \
   --project <your-project-id>
 ```
 
-### 所需的 IAM 角色运行 Terraform 的主体需要在目标项目上具有以下角色。初始部署稳定后，修剪到最低权限。
+### 所需的 IAM 角色
+
+运行 Terraform 的主体需要在目标项目上具有以下角色。初始部署稳定后，修剪到最低权限。
 
 |角色 |目的|
-|---|---|
+| - | - |
 | `roles/container.admin` |创建和管理 GKE 集群 |
 | `roles/compute.networkAdmin` |创建VPC、子网、防火墙规则 |
 | `roles/iam.serviceAccountAdmin` |为 Workload Identity 创建服务帐户 |
@@ -108,7 +110,7 @@ gcloud services enable \
 
 ### 验证
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gcloud auth login
 gcloud config set project <your-project-id>
 gcloud auth application-default login
@@ -119,12 +121,12 @@ gcloud auth application-default login
 ## 快速入门
 
 <Tip>
-有关 `make` 目标、所需变量和常见约束的简明备忘单，请参阅 [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
+  有关 `make` 目标、所需变量和常见约束的简明备忘单，请参阅 [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
 </Tip>
 
 要获得从零到正在运行的 LangSmith 实例的最快路径，请按顺序运行以下命令：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # 1. Clone the public modules
 git clone https://github.com/langchain-ai/terraform.git
 cd terraform/modules/gcp
@@ -155,26 +157,26 @@ make deploy
 # 8. Get the Gateway IP for DNS
 kubectl get gateway -n langsmith \
   -o jsonpath='{.items[0].status.addresses[0].value}'
-```
-
-以下部分详细介绍了每个阶段。
+```以下部分详细介绍了每个阶段。
 
 ## 提供基础设施
 
-Terraform 提供以下 GCP 资源：|资源 |目的|
-|---|---|
+Terraform 提供以下 GCP 资源：
+
+|资源 |目的|
+| - | - |
 | VPC+子网+云NAT |集群和托管服务的专用网络|
-|私人服务连接 | Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
+|私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
-|内存存储Redis |队列和缓存、STANDARD_HA 层、私有 IP |
+|内存存储Redis |队列和缓存、STANDARD\_HA 层、私有 IP |
 | GCS铲斗|跟踪有效负载 blob 存储、生命周期规则 |
 | Workload Identity 服务帐户 |无需静态密钥的每个 Pod GCP 访问 |
 |证书管理器、KEDA、Envoy Gateway |与基础设施一起安装的 Bootstrap 工作负载 |
 
 ### 克隆并配置
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 git clone https://github.com/langchain-ai/terraform.git
 cd terraform/modules/gcp
 ```
@@ -183,22 +185,20 @@ cd terraform/modules/gcp
 
 使用交互式向导生成 `terraform.tfvars`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make quickstart
-```
-
-该向导会提示输入项目 ID、命名前缀、区域、GKE 大小、TLS 源、外部与集群内服务以及可选的附加标志。上面写着`infra/terraform.tfvars`。重新运行预选现有值；在每次提示时按 Enter 键以保留当前配置。
+```该向导会提示输入项目 ID、命名前缀、区域、GKE 大小、TLS 源、外部与集群内服务以及可选的附加标志。上面写着`infra/terraform.tfvars`。重新运行预选现有值；在每次提示时按 Enter 键以保留当前配置。
 
 更喜欢手动编辑：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cp infra/terraform.tfvars.example infra/terraform.tfvars
 vi infra/terraform.tfvars
 ```
 
 所需的最少变量：
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 project_id            = "<your-gcp-project-id>"
 name_prefix           = "ls"
 environment           = "prod"
@@ -219,15 +219,17 @@ tls_certificate_source = "letsencrypt"
 letsencrypt_email      = "ops@example.com"
 
 enable_langsmith_deployment = true
-```请参阅 [GCP variables reference](/langsmith/self-host-terraform-gcp-variables) 了解每个输入变量。
+```
+
+请参阅 [GCP variables reference](/langsmith/self-host-terraform-gcp-variables) 了解每个输入变量。
 
 <Tip>
-在应用之前配置远程状态后端。将`infra/backend.tf.example`复制到`infra/backend.tf`并将其指向您控制的GCS存储桶。本地状态很脆弱，在目录重组期间可能会丢失。
+  在应用之前配置远程状态后端。将`infra/backend.tf.example`复制到`infra/backend.tf`并将其指向您控制的GCS存储桶。本地状态很脆弱，在目录重组期间可能会丢失。
 </Tip>
 
 ### 将机密加载到机密管理器中
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 source infra/scripts/setup-env.sh
 ```
 
@@ -235,33 +237,33 @@ source infra/scripts/setup-env.sh
 
 验证秘密是否存在：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make secrets
 ```
 
 ### 飞行前检查
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make preflight
-```
-
-`make preflight` 验证活动的 `gcloud` 凭证是否可以执行每个所需的操作、所需的 GCP API 是否已启用以及目标区域是否具有模块请求的 SKU。在这里发现差距比`terraform apply`中期发现差距更快。
+````make preflight` 验证活动的 `gcloud` 凭证是否可以执行每个所需的操作、所需的 GCP API 是否已启用以及目标区域是否具有模块请求的 SKU。在这里发现差距比`terraform apply`中期发现差距更快。
 
 ### 申请
 
 <Note>
-在干净的项目上配置 GCP 云基础需要 25 到 35 分钟。不要中断应用。
+  在干净的项目上配置 GCP 云基础需要 25 到 35 分钟。不要中断应用。
 </Note>
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init
 make plan
 make apply
-````make plan` 显示了建议的差异。在应用之前检查输出。 `make apply` 按依赖顺序进行配置：VPC 和网络，然后是 GKE（大约 10 到 15 分钟）、私有服务连接、Cloud SQL（使用 HA 大约 10 分钟）、Memorystore、GCS 和引导工作负载。
+```
+
+`make plan` 显示了建议的差异。在应用之前检查输出。 `make apply` 按依赖顺序进行配置：VPC 和网络，然后是 GKE（大约 10 到 15 分钟）、私有服务连接、Cloud SQL（使用 HA 大约 10 分钟）、Memorystore、GCS 和引导工作负载。
 
 等效直接 Terraform 流：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd modules/gcp/infra
 
 terraform init
@@ -271,7 +273,7 @@ terraform apply -var-file=terraform.tfvars
 
 ### 配置 kubectl
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make kubeconfig
 kubectl get nodes
 ```
@@ -280,7 +282,7 @@ kubectl get nodes
 
 ### 验证引导组件
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n cert-manager
 kubectl get pods -n keda
 kubectl get secrets -n langsmith
@@ -290,11 +292,9 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 ## 部署LangSmith
 
-使用三个受支持的部署路径之一：
-
-|路径|命令 |何时使用 |
-|---|---|---|
-| [Script-driven Helm deploy _(recommended)_](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
+使用三个受支持的部署路径之一：|路径|命令 |何时使用 |
+| - | - | - |
+| [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Terraform-managed Helm release](#terraform-managed-helm-release) | `make init-app && make apply-app` | Helm 版本在 Terraform 状态下与基础设施一起管理。最适合 GitOps 和 CI/CD 管道。 |
 | [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` |直接使用`helm`，无需包装脚本。最适合拥有现有 Helm 工具的团队。 |
 
@@ -302,12 +302,14 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 两个命令安装 LangSmith 图表，并使用从 Terraform 输出连接的合理默认值：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd modules/gcp
 
 make init-values
 make deploy
-````init-values.sh` 提示输入管理员电子邮件，然后从 `terraform.tfvars` 读取 `sizing_profile` 和 `enable_*` 标志，并将匹配值文件从 `helm/values/examples/` 复制到 `helm/values/`。它还会使用您的主机名、工作负载身份注释和 GCS 存储桶名称生成 `values-overrides.yaml`。
+```
+
+`init-values.sh` 提示输入管理员电子邮件，然后从 `terraform.tfvars` 读取 `sizing_profile` 和 `enable_*` 标志，并将匹配值文件从 `helm/values/examples/` 复制到 `helm/values/`。它还会使用您的主机名、工作负载身份注释和 GCS 存储桶名称生成 `values-overrides.yaml`。
 
 `make deploy` 运行 `helm/scripts/deploy.sh`，它会刷新 kubeconfig、运行预检检查、应用分层值文件并运行 `helm upgrade --install`。
 
@@ -315,11 +317,9 @@ make deploy
 
 如果您完成了脚本驱动的部署，请跳至[Verify and configure DNS](#verify-and-configure-dns)。以下两个路径是脚本驱动部署的替代路径。
 
-### Terraform 管理的 Helm 版本
+### Terraform 管理的 Helm 版本将整个部署保留在 Terraform 下。 `app` 层包装与部署脚本相同的图表和分层值文件，作为 `helm_release` 资源进行管理。
 
-将整个部署保留在 Terraform 下。 `app` 层包装与部署脚本相同的图表和分层值文件，作为 `helm_release` 资源进行管理。
-
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd modules/gcp
 
 make init-values  # generate the layered values files
@@ -327,7 +327,9 @@ make init-app     # pull infra outputs into app/infra.auto.tfvars.json
 make apply-app    # terraform apply the Helm release
 ```
 
-在`app/terraform.tfvars`中设置应用层输入（`admin_email`是必需的；`hostname`、`chart_version`、`sizing`和`enable_*`标志是可选的）。 `app`层使用自己的变量名称：`sizing`（不是`sizing_profile`）和`enable_agent_deploys`（不是`enable_deployments`）。 `make init-app` 将基础设施派生的输​​入（集群、存储桶、工作负载身份注释）填充到`app/infra.auto.tfvars.json`。该版本与`wait = false`一起应用，因为操作员生成的代理在冷集群上可能需要 10 分钟以上；传递的 `terraform apply` 意味着版本已被接受，而不是每个 Pod 都已准备就绪。
+在`app/terraform.tfvars`中设置应用层输入（`admin_email`是必需的；`hostname`、`chart_version`、`sizing`和`enable_*`标志是可选的）。 `app`层使用自己的变量名称：`sizing`（不是`sizing_profile`）和`enable_agent_deploys`（不是`enable_deployments`）。 `make init-app` 将基础设施派生的输​​入（集群、存储桶、工作负载身份注释）填充到`app/infra.auto.tfvars.json`。
+
+该版本与`wait = false`一起应用，因为操作员生成的代理在冷集群上可能需要 10 分钟以上；传递的 `terraform apply` 意味着版本已被接受，而不是每个 Pod 都已准备就绪。
 
 如果您完成了 Terraform 管理的 Helm 版本，请跳至 [Verify and configure DNS](#verify-and-configure-dns)。以下路径是替代路径。
 
@@ -335,7 +337,7 @@ make apply-app    # terraform apply the Helm release
 
 最适合直接运行`helm`而无需脚本的团队。首先生成所需的秘密：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export API_KEY_SALT=$(openssl rand -base64 32)
 export JWT_SECRET=$(openssl rand -base64 32)
 export AGENT_BUILDER_ENCRYPTION_KEY=$(python3 -c \
@@ -348,7 +350,7 @@ export ADMIN_PASSWORD="<strong-password>"
 
 附带的 `helm/values/values.yaml` 设置 `config.blobStorage.engine: GCS`（本机 GCS 模式），因此 Blob 存储通过 Workload Identity 进行身份验证，无需 HMAC 密钥。每个组件的 Workload Identity 注释位于 `values-overrides.yaml`；使用`make init-values`生成它，或者手动添加每个组件的`serviceAccount.annotations."iam.gke.io/gcp-service-account"`。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm repo add langchain https://langchain-ai.github.io/helm
 helm repo update
 
@@ -370,15 +372,13 @@ helm upgrade --install langsmith langchain/langsmith \
   --set gateway.enabled=true \
   --set ingress.enabled=false \
   --wait --timeout 15m
-```
-
-<Note>
-要使用 S3 兼容的 Blob 存储而不是 Workload Identity，请添加 `--set config.blobStorage.engine=S3` 并使用 `--set config.blobStorage.accessKey=<key>` 和 `--set config.blobStorage.accessKeySecret=<secret>` 传递 HMAC 密钥。在“云存储”→“设置”→“互操作性”下创建 HMAC 密钥。
+```<Note>
+  要使用 S3 兼容的 Blob 存储而不是 Workload Identity，请添加 `--set config.blobStorage.engine=S3` 并使用 `--set config.blobStorage.accessKey=<key>` 和 `--set config.blobStorage.accessKeySecret=<secret>` 传递 HMAC 密钥。在“云存储”→“设置”→“互操作性”下创建 HMAC 密钥。
 </Note>
 
 ### 验证并配置 DNS
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith
 
 EXTERNAL_IP=$(kubectl get svc -n envoy-gateway-system \
@@ -396,10 +396,12 @@ kubectl get certificate -n langsmith
 
 在`terraform.tfvars`中设置`sizing_profile`，然后重新运行`make init-values && make deploy`。
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sizing_profile = "production"   # default | minimum | dev | production | production-large
-```|简介 |何时使用 |
-|---|---|
+```
+
+|简介 |何时使用 |
+| - | - |
 | `default` |图表默认值，未应用叠加 |
 | `minimum` |绝对地板，适合`e2-standard-4`。停车成本或 CI 烟雾测试 |
 | `dev` |单一副本，最少的资源 |
@@ -408,7 +410,7 @@ sizing_profile = "production"   # default | minimum | dev | production | product
 
 ### 预期的 Pod
 
-```txt
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith-ace-backend-xxx          1/1  Running    0
 langsmith-backend-xxx              1/1  Running    0
 langsmith-backend-auth-bootstrap   0/1  Completed  0
@@ -429,12 +431,12 @@ langsmith-queue-xxx                1/1  Running    0
 
 添加 `host-backend`、`listener` 和 `operator`。在启用 Agent Builder 或 Insights 之前需要。 KEDA 在`enable_langsmith_deployment = true` 时自动安装。
 
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
 enable_deployments = true
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd modules/gcp
 
 make apply        # push the enable_deployments flag
@@ -444,33 +446,33 @@ make deploy       # roll out host-backend + listener + operator
 
 验证：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 kubectl get pods -n keda
-```
-
-<Warning>
-`config.deployment.url` 必须包含 `https://`。如果没有协议，操作员生成的代理将无限期地陷入`DEPLOYING`。
+```<Warning>
+  `config.deployment.url` 必须包含 `https://`。如果没有协议，操作员生成的代理将无限期地陷入`DEPLOYING`。
 </Warning>
 
 ### 舰队
 
 <Note>
-Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服务部署（图表 v0.15+）。
-</Note>您可以通过`enable_fleet`启用舰队。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署。 Terraform 在 Cloud SQL 上配置专用的 `fleet` 数据库，并将 `langsmith-fleet-postgres` 和 `langsmith-fleet-redis` 密钥连接到现有的 Cloud SQL 和 Memorystore 实例。队列重用`langsmith_agent_builder_encryption_key`，因此从`enable_agent_builder` 迁移会保留相同的密钥和数据。
-
-<Note>
-Fleet 需要 LangSmith Helm Chart 0.15.0 或更高版本以及许可证中的 Agent Builder 或 Fleet 权利。
+  Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服务部署（图表 v0.15+）。
 </Note>
 
-```hcl
+您可以通过`enable_fleet`启用舰队。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署。 Terraform 在 Cloud SQL 上配置专用的 `fleet` 数据库，并将 `langsmith-fleet-postgres` 和 `langsmith-fleet-redis` 密钥连接到现有的 Cloud SQL 和 Memorystore 实例。队列重用`langsmith_agent_builder_encryption_key`，因此从`enable_agent_builder` 迁移会保留相同的密钥和数据。
+
+<Note>
+  Fleet 需要 LangSmith Helm Chart 0.15.0 或更高版本以及许可证中的 Agent Builder 或 Fleet 权利。
+</Note>
+
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
 enable_fleet = true
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd modules/gcp
 
 make apply        # provision the fleet Cloud SQL database + secrets
@@ -480,70 +482,70 @@ make deploy       # roll out the standalone-fleet-* services
 
 验证：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep standalone-fleet
 ```
 
 <Warning>
-请勿同时启用 `enable_fleet` 和 `enable_agent_builder`。舰队值文件设置 `config.agentBuilder.enabled: false`，因此这两个附加组件是互斥的。
+  请勿同时启用 `enable_fleet` 和 `enable_agent_builder`。舰队值文件设置 `config.agentBuilder.enabled: false`，因此这两个附加组件是互斥的。
 </Warning>
 
 ### 代理生成器（已弃用）
 
 <Note>
-在 GCP 上，`enable_agent_builder` 已弃用，取而代之的是 [Fleet](#fleet)（`enable_fleet`，图表 v0.15+）。使用 Fleet 进行新部署。本节记录了现有安装的旧路径。
-</Note>
+  在 GCP 上，`enable_agent_builder` 已弃用，取而代之的是 [Fleet](#fleet)（`enable_fleet`，图表 v0.15+）。使用 Fleet 进行新部署。本节记录了现有安装的旧路径。
+</Note>先决条件：LangSmith 部署正常。添加 `agent-builder-tool-server`、`agent-builder-trigger-server` 和用于注册 Polly 代理 URL 的 `agentBootstrap` 作业。
 
-先决条件：LangSmith 部署正常。添加 `agent-builder-tool-server`、`agent-builder-trigger-server` 和用于注册 Polly 代理 URL 的 `agentBootstrap` 作业。
-
-```hcl
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
 enable_agent_builder = true
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init-values
 make deploy
 ```
 
 验证：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "tool-server|trigger-server|bootstrap"
 ```
 
 在 `agentBootstrap` 完成后滚动前端，以便它拾取 `langsmith-polly-config` ConfigMap：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout restart deployment langsmith-frontend -n langsmith
 ```
 
 <Warning>
-跳过前端重启会使 Polly 显示“无法连接到 LangGraph 服务器”。
+  跳过前端重启会使 Polly 显示“无法连接到 LangGraph 服务器”。
 </Warning>
 
-### 见解和波莉先决条件：Agent Builder 健康。 Insights 支持 ClickHouse 支持的跟踪分析。 Polly 是人工智能评估和监控代理。同时启用两者。
+### 见解和波莉
 
-```hcl
+先决条件：Agent Builder 健康。 Insights 支持 ClickHouse 支持的跟踪分析。 Polly 是人工智能评估和监控代理。同时启用两者。
+
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
 enable_insights = true
 enable_polly    = true
 ```
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init-values
 make deploy
 ```
 
 验证：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n langsmith | grep -E "clio|polly"
 kubectl get pods -n langsmith -w
 ```
 
 <Warning>
-首次启用后，`insights_encryption_key` 和 `polly_encryption_key` 不得更改。旋转将永久破坏现有的加密数据。
+  首次启用后，`insights_encryption_key` 和 `polly_encryption_key` 不得更改。旋转将永久破坏现有的加密数据。
 </Warning>
 
 ### 附加组件预期的 pod
@@ -556,25 +558,26 @@ kubectl get pods -n langsmith -w
 
 **Insights 和 Polly 添加：** `clio-<hash>`（Insights 分析）、`smith-polly-<hash>`（Polly 代理）、`lg-<hash>-0` (LangGraph StatefulSet)。
 
-## 关键注意事项- `config.deployment.url` 必须包含 `https://`。如果没有它，操作员产生的代理就会陷入`DEPLOYING`。
-- LangSmith 部署需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会导致图表静默跳过 `listener` 和 `operator`。
-- 加密密钥在首次启用后不得更改。旋转`insights_encryption_key`或`polly_encryption_key`会永久破坏现有的加密数据。
-- 首次启用 Polly 后滚动前端。 `agentBootstrap` 注册后创建`langsmith-polly-config` ConfigMap。在引导程序完成之前启动的前端 Pod 不会自动拾取它。
-- Envoy 网关 IP 在拆卸时发生变化。删除网关后，GCP 会释放外部 IP。重新申请后，会发出新的IP，因此请更新您的DNS A记录。
-- `langsmith-ksa`注释不是永久的。运算符在运行时创建`langsmith-ksa`；它无法在名称空间删除后幸存。 `deploy.sh` 幂等地重新注释它。如果操作员 Pod 在集群重建后失去 GCS 访问权限，请重新运行 `make deploy`。
+## 关键注意事项* `config.deployment.url` 必须包含 `https://`。如果没有它，操作员产生的代理就会陷入`DEPLOYING`。
+* LangSmith 部署需要`config.deployment.enabled: true`。仅设置不带 `enabled: true` 的 URL 会导致图表静默跳过 `listener` 和 `operator`。
+* 首次启用后加密密钥不得更改。旋转`insights_encryption_key`或`polly_encryption_key`会永久破坏现有的加密数据。
+* 首次启用 Polly 后滚动前端。 `agentBootstrap` 注册后创建`langsmith-polly-config` ConfigMap。在引导程序完成之前启动的前端 Pod 不会自动拾取它。
+* Envoy 网关 IP 在拆卸时发生变化。删除网关后，GCP 会释放外部 IP。重新申请后，会发出新的IP，因此请更新您的DNS A记录。
+* `langsmith-ksa` 注释不是永久的。运算符在运行时创建`langsmith-ksa`；它无法在名称空间删除后幸存。 `deploy.sh` 幂等地重新注释它。如果操作员 Pod 在集群重建后失去 GCS 访问权限，请重新运行 `make deploy`。
 
 ## 后续步骤
 
-- 参考[GCP variables](/langsmith/self-host-terraform-gcp-variables)和[quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
-- 查看[GCP architecture](/langsmith/self-host-terraform-gcp-architecture)的模块结构、流量和工作负载身份。
-- 当出现故障时，检查[GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting)。
-- 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
+* 参考[GCP variables](/langsmith/self-host-terraform-gcp-variables)和[quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
+* 查看 [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) 的模块结构、流量和工作负载身份。
+* 当出现故障时，请检查[GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting)。
+* 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

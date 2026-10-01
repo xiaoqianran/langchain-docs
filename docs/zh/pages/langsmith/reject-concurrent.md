@@ -13,8 +13,8 @@
 首先，我们将定义一个快速帮助函数来打印 JS 和 cURL 模型输出（如果使用 Python，则可以跳过此部分）：
 
 <Tabs>
-    <Tab title="Javascript">
-    ```js
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     function prettyPrint(m) {
       const padded = " " + m['type'] + " ";
       const sepLen = Math.floor((80 - padded.length) / 2);
@@ -26,9 +26,10 @@
       console.log(m.content);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
       local type="$1"
@@ -47,14 +48,14 @@
       echo "$content"
     }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 现在，让我们导入所需的包并实例化我们的客户端、助手和线程。
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import httpx
     from langchain_core.messages import convert_to_messages
     from langgraph_sdk import get_client
@@ -64,9 +65,10 @@
     assistant_id = "agent"
     thread = await client.threads.create()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -74,15 +76,16 @@
     const assistantId = "agent";
     const thread = await client.threads.create();
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
       --header 'Content-Type: application/json' \
       --data '{}'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 ## 创建运行
@@ -90,8 +93,8 @@
 现在我们可以运行一个线程并尝试使用“拒绝”选项运行第二个线程，这应该会失败，因为我们已经开始运行：
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     run = await client.runs.create(
         thread["thread_id"],
         assistant_id,
@@ -109,9 +112,10 @@
     except httpx.HTTPStatusError as e:
         print("Failed to start concurrent run", e)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const run = await client.runs.create(
       thread["thread_id"],
       assistantId,
@@ -131,9 +135,10 @@
       console.error("Failed to start concurrent run", e);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
     --header 'Content-Type: application/json' \
@@ -149,7 +154,7 @@
       \"multitask_strategy\": \"reject\"
     }" || { echo "Failed to start concurrent run"; echo "Error: $?" >&2; }
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 输出：
@@ -164,8 +169,8 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 我们可以验证原始线程是否已完成执行：
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # wait until the original run completes
     await client.runs.join(thread["thread_id"], run["run_id"])
 
@@ -174,9 +179,10 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
     for m in convert_to_messages(state["values"]["messages"]):
         m.pretty_print()
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     await client.runs.join(thread["thread_id"], run["run_id"]);
 
     const state = await client.threads.getState(thread["thread_id"]);
@@ -185,9 +191,10 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
       prettyPrint(m);
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
     curl --request GET --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -197,8 +204,10 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
         pretty_print "$type" "$content"
     done
     ```
-    </Tab>
-</Tabs>输出：
+  </Tab>
+</Tabs>
+
+输出：
 
 ```
 ================================ Human Message =================================
@@ -233,13 +242,12 @@ Some key points about the typical June weather in San Francisco:
 In summary, you can expect mild, foggy mornings giving way to sunny but cool afternoons in San Francisco this time of year. The marine layer keeps temperatures moderate compared to other parts of California in June.
 ```
 
----
-
-<div className="source-links">
-<Callout icon="terminal-2">
+***<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/reject-concurrent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

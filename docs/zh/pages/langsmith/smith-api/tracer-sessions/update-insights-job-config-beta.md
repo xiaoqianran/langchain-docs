@@ -5,4 +5,4 @@
 # 更新见解作业配置（测试版）
 
 /langsmith/langsmith-platform-openapi.json 补丁 /api/v1/sessions/{session_id}/insights/configs/{config_id}
-更新见解作业配置。
+更新项目的 Insights 作业配置。

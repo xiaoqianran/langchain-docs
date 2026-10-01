@@ -4,31 +4,31 @@
 
 # 沙盒SDK使用
 
+使用 Python 或 TypeScript SDK 以编程方式创建和管理沙箱。
+
 [LangSmith SDK](/langsmith/reference) 提供了一个编程接口来创建沙箱并与沙箱交互。
 
 ## 安装
 
 <CodeGroup>
+  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # uv
+  uv add "langsmith[sandbox]"
 
-```bash Python
-# uv
-uv add "langsmith[sandbox]"
+  # pip
+  pip install "langsmith[sandbox]"
+  ```
 
-# pip
-pip install "langsmith[sandbox]"
-```
-
-```bash TypeScript
-npm install langsmith
-# or
-yarn add langsmith
-```
-
+  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install langsmith
+  # or
+  yarn add langsmith
+  ```
 </CodeGroup>
 
 Python 的 `[sandbox]` 额外安装了 `websockets`，可实现实时流式传输和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install ws
 ```
 
@@ -36,7 +36,7 @@ npm install ws
 
 客户端从环境中读取 `LANGSMITH_API_KEY` 和 `LANGSMITH_ENDPOINT`，因此在创建沙箱之前将两者导出：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
 export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 ```
@@ -46,35 +46,33 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 当您想要从可重用的自定义文件系统映像启动时，传递快照 ID 或名称；有关该流程，请参阅[Snapshots](/langsmith/sandbox-snapshots)。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  # Client uses LANGSMITH_ENDPOINT and LANGSMITH_API_KEY from environment
+  client = SandboxClient()
 
-# Client uses LANGSMITH_ENDPOINT and LANGSMITH_API_KEY from environment
-client = SandboxClient()
+  # Create a sandbox with the default runtime and run code
+  with client.sandbox() as sb:
+      result = sb.run("python3 -c 'print(2 + 2)'")
+      print(result.stdout)  # "4\n"
+      print(result.success)  # True
+  ```
 
-# Create a sandbox with the default runtime and run code
-with client.sandbox() as sb:
-    result = sb.run("python -c 'print(2 + 2)'")
-    print(result.stdout)  # "4\n"
-    print(result.success)  # True
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
 
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
+  // Client uses LANGSMITH_ENDPOINT and LANGSMITH_API_KEY from environment
+  const client = new SandboxClient();
 
-// Client uses LANGSMITH_ENDPOINT and LANGSMITH_API_KEY from environment
-const client = new SandboxClient();
+  // Create a sandbox with the default runtime and run code
+  const sandbox = await client.createSandbox();
+  const result = await sandbox.run("node -e 'console.log(2 + 2)'");
+  console.log(result.stdout); // "4\n"
 
-// Create a sandbox with the default runtime and run code
-const sandbox = await client.createSandbox();
-const result = await sandbox.run("node -e 'console.log(2 + 2)'");
-console.log(result.stdout); // "4\n"
-
-// Don't forget to clean up
-await sandbox.delete();
-```
-
+  // Don't forget to clean up
+  await sandbox.delete();
+  ```
 </CodeGroup>
 
 ## 运行命令
@@ -82,41 +80,39 @@ await sandbox.delete();
 每个 `run()` 调用都会返回一个 `ExecutionResult` 以及 `stdout`、`stderr`、`exit_code` 和 `success`。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      result = sb.run("echo 'Hello, World!'")
 
-```python Python
-with client.sandbox() as sb:
-    result = sb.run("echo 'Hello, World!'")
+      print(result.stdout)     # "Hello, World!\n"
+      print(result.stderr)     # ""
+      print(result.exit_code)  # 0
+      print(result.success)    # True
 
-    print(result.stdout)     # "Hello, World!\n"
-    print(result.stderr)     # ""
-    print(result.exit_code)  # 0
-    print(result.success)    # True
+      # Commands that fail return non-zero exit codes
+      result = sb.run("exit 1")
+      print(result.success)    # False
+      print(result.exit_code)  # 1
+  ```
 
-    # Commands that fail return non-zero exit codes
-    result = sb.run("exit 1")
-    print(result.success)    # False
-    print(result.exit_code)  # 1
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const sandbox = await client.createSandbox();
+  try {
+    const result = await sandbox.run("echo 'Hello, World!'");
 
-```ts TypeScript
-const sandbox = await client.createSandbox();
-try {
-  const result = await sandbox.run("echo 'Hello, World!'");
+    console.log(result.stdout);     // "Hello, World!\n"
+    console.log(result.stderr);     // ""
+    console.log(result.exit_code);  // 0
 
-  console.log(result.stdout);     // "Hello, World!\n"
-  console.log(result.stderr);     // ""
-  console.log(result.exit_code);  // 0
-
-  // Pass environment variables and working directory
-  const envResult = await sandbox.run("echo $MY_VAR", {
-    env: { MY_VAR: "test-value" },
-    cwd: "/tmp",
-  });
-} finally {
-  await sandbox.delete();
-}
-```
-
+    // Pass environment variables and working directory
+    const envResult = await sandbox.run("echo $MY_VAR", {
+      env: { MY_VAR: "test-value" },
+      cwd: "/tmp",
+    });
+  } finally {
+    await sandbox.delete();
+  }
+  ```
 </CodeGroup>
 
 ## 流输出
@@ -126,130 +122,122 @@ try {
 ### 带有回调的流
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import sys
 
-```python Python
-import sys
+  with client.sandbox() as sb:
+      result = sb.run(
+          "make build",
+          timeout=600,
+          on_stdout=lambda s: print(s, end=""),
+          on_stderr=lambda s: print(s, end="", file=sys.stderr),
+      )
+      print(f"\nBuild {'succeeded' if result.success else 'failed'}")
+  ```
 
-with client.sandbox() as sb:
-    result = sb.run(
-        "make build",
-        timeout=600,
-        on_stdout=lambda s: print(s, end=""),
-        on_stderr=lambda s: print(s, end="", file=sys.stderr),
-    )
-    print(f"\nBuild {'succeeded' if result.success else 'failed'}")
-```
-
-```ts TypeScript
-const result = await sandbox.run("make build", {
-  timeout: 600,
-  onStdout: (data) => process.stdout.write(data),
-  onStderr: (data) => process.stderr.write(data),
-});
-console.log(`Exit code: ${result.exit_code}`);
-```
-
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const result = await sandbox.run("make build", {
+    timeout: 600,
+    onStdout: (data) => process.stdout.write(data),
+    onStderr: (data) => process.stderr.write(data),
+  });
+  console.log(`Exit code: ${result.exit_code}`);
+  ```
 </CodeGroup>
 
-### 使用 CommandHandle 进行流式传输
-
-设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。
+### 使用 CommandHandle 进行流式传输设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      handle = sb.run("make build", timeout=600, wait=False)
 
-```python Python
-with client.sandbox() as sb:
-    handle = sb.run("make build", timeout=600, wait=False)
+      print(f"Command ID: {handle.command_id}")
 
-    print(f"Command ID: {handle.command_id}")
+      for chunk in handle:
+          prefix = "OUT" if chunk.stream == "stdout" else "ERR"
+          print(f"[{prefix}] {chunk.data}", end="")
 
-    for chunk in handle:
-        prefix = "OUT" if chunk.stream == "stdout" else "ERR"
-        print(f"[{prefix}] {chunk.data}", end="")
+      result = handle.result
+      print(f"\nExit code: {result.exit_code}")
+  ```
 
-    result = handle.result
-    print(f"\nExit code: {result.exit_code}")
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const handle = await sandbox.run("python train.py", {
+    wait: false,
+    timeout: 600,
+  });
 
-```ts TypeScript
-const handle = await sandbox.run("python train.py", {
-  wait: false,
-  timeout: 600,
-});
+  console.log(`Command ID: ${handle.commandId}`);
+  console.log(`PID: ${handle.pid}`);
 
-console.log(`Command ID: ${handle.commandId}`);
-console.log(`PID: ${handle.pid}`);
-
-for await (const chunk of handle) {
-  if (chunk.stream === "stdout") {
-    process.stdout.write(chunk.data);
-  } else {
-    process.stderr.write(chunk.data);
+  for await (const chunk of handle) {
+    if (chunk.stream === "stdout") {
+      process.stdout.write(chunk.data);
+    } else {
+      process.stderr.write(chunk.data);
+    }
   }
-}
 
-const result = await handle.result;
-console.log(`Exit code: ${result.exit_code}`);
-```
+  const result = await handle.result;
+  console.log(`Exit code: ${result.exit_code}`);
+  ```
+</CodeGroup>
 
-</CodeGroup>### 发送 stdin 和终止命令
+### 发送 stdin 和终止命令
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      handle = sb.run(
+          "python -c 'name = input(\"Name: \"); print(f\"Hello {name}\")'",
+          timeout=30,
+          wait=False,
+      )
 
-```python Python
-with client.sandbox() as sb:
-    handle = sb.run(
-        "python -c 'name = input(\"Name: \"); print(f\"Hello {name}\")'",
-        timeout=30,
-        wait=False,
-    )
+      for chunk in handle:
+          if "Name:" in chunk.data:
+              handle.send_input("World\n")
+          print(chunk.data, end="")
 
-    for chunk in handle:
-        if "Name:" in chunk.data:
-            handle.send_input("World\n")
-        print(chunk.data, end="")
+      result = handle.result
+  ```
 
-    result = handle.result
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const handle = await sandbox.run("python -i", { wait: false });
 
-```ts TypeScript
-const handle = await sandbox.run("python -i", { wait: false });
+  // Send input to stdin
+  handle.sendInput("print(2 + 2)\n");
+  handle.sendInput("exit()\n");
 
-// Send input to stdin
-handle.sendInput("print(2 + 2)\n");
-handle.sendInput("exit()\n");
-
-for await (const chunk of handle) {
-  process.stdout.write(chunk.data);
-}
-```
-
+  for await (const chunk of handle) {
+    process.stdout.write(chunk.data);
+  }
+  ```
 </CodeGroup>
 
 终止正在运行的命令：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      handle = sb.run("python server.py", timeout=0, wait=False)
 
-```python Python
-with client.sandbox() as sb:
-    handle = sb.run("python server.py", timeout=0, wait=False)
+      for chunk in handle:
+          print(chunk.data, end="")
+          if "Ready" in chunk.data:
+              break
 
-    for chunk in handle:
-        print(chunk.data, end="")
-        if "Ready" in chunk.data:
-            break
+      handle.kill()
+  ```
 
-    handle.kill()
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const handle = await sandbox.run("sleep 300", { wait: false });
+  handle.kill();
 
-```ts TypeScript
-const handle = await sandbox.run("sleep 300", { wait: false });
-handle.kill();
-
-const result = await handle.result;
-console.log(result.exit_code); // non-zero
-```
-
+  const result = await handle.result;
+  console.log(result.exit_code); // non-zero
+  ```
 </CodeGroup>
 
 ### 重新连接到正在运行的命令
@@ -257,30 +245,28 @@ console.log(result.exit_code); // non-zero
 如果客户端断开连接，请使用命令 ID 重新连接：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      handle = sb.run("make build", timeout=600, wait=False)
+      command_id = handle.command_id
 
-```python Python
-with client.sandbox() as sb:
-    handle = sb.run("make build", timeout=600, wait=False)
-    command_id = handle.command_id
+      # Later, possibly in a different process
+      handle = sb.reconnect(command_id)
+      for chunk in handle:
+          print(chunk.data, end="")
+      result = handle.result
+  ```
 
-    # Later, possibly in a different process
-    handle = sb.reconnect(command_id)
-    for chunk in handle:
-        print(chunk.data, end="")
-    result = handle.result
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const handle = await sandbox.run("long-task", { wait: false });
+  const commandId = handle.commandId;
 
-```ts TypeScript
-const handle = await sandbox.run("long-task", { wait: false });
-const commandId = handle.commandId;
-
-// Later, or from a different client
-const newHandle = await sandbox.reconnect(commandId);
-for await (const chunk of newHandle) {
-  process.stdout.write(chunk.data);
-}
-```
-
+  // Later, or from a different client
+  const newHandle = await sandbox.reconnect(commandId);
+  for await (const chunk of newHandle) {
+    process.stdout.write(chunk.data);
+  }
+  ```
 </CodeGroup>
 
 ## 文件操作
@@ -288,45 +274,43 @@ for await (const chunk of newHandle) {
 在沙箱中读写文件：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      # Write a file
+      sb.write("/app/script.py", "print('Hello from file!')")
 
-```python Python
-with client.sandbox() as sb:
-    # Write a file
-    sb.write("/app/script.py", "print('Hello from file!')")
+      # Run the script
+      result = sb.run("python /app/script.py")
+      print(result.stdout)  # "Hello from file!\n"
 
-    # Run the script
-    result = sb.run("python /app/script.py")
-    print(result.stdout)  # "Hello from file!\n"
+      # Read a file (returns bytes)
+      content = sb.read("/app/script.py")
+      print(content.decode())  # "print('Hello from file!')"
 
-    # Read a file (returns bytes)
-    content = sb.read("/app/script.py")
-    print(content.decode())  # "print('Hello from file!')"
+      # Write binary files
+      sb.write("/app/data.bin", b"\x00\x01\x02\x03")
+  ```
 
-    # Write binary files
-    sb.write("/app/data.bin", b"\x00\x01\x02\x03")
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const sandbox = await client.createSandbox();
+  try {
+    // Write a file (string content)
+    await sandbox.write("/app/script.py", "print('Hello from file!')");
 
-```ts TypeScript
-const sandbox = await client.createSandbox();
-try {
-  // Write a file (string content)
-  await sandbox.write("/app/script.py", "print('Hello from file!')");
+    // Run the script
+    const result = await sandbox.run("python /app/script.py");
+    console.log(result.stdout);  // "Hello from file!\n"
 
-  // Run the script
-  const result = await sandbox.run("python /app/script.py");
-  console.log(result.stdout);  // "Hello from file!\n"
+    // Read a file (returns Uint8Array)
+    const content = await sandbox.read("/app/script.py");
+    console.log(new TextDecoder().decode(content));
 
-  // Read a file (returns Uint8Array)
-  const content = await sandbox.read("/app/script.py");
-  console.log(new TextDecoder().decode(content));
-
-  // Write binary files
-  await sandbox.write("/app/data.bin", new Uint8Array([0x00, 0x01, 0x02, 0x03]));
-} finally {
-  await sandbox.delete();
-}
-```
-
+    // Write binary files
+    await sandbox.write("/app/data.bin", new Uint8Array([0x00, 0x01, 0x02, 0x03]));
+  } finally {
+    await sandbox.delete();
+  }
+  ```
 </CodeGroup>
 
 ### 将文件共享为链接
@@ -334,117 +318,111 @@ try {
 要将一个文件交给无法发送 API 密钥的设备（例如浏览器选项卡、`<a href>` 或 Webhook 使用者），请创建一个下载链接，而不是自己读取字节：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
+  print(link.download_url)
+  ```
 
-```python Python
-link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
-print(link.download_url)
-```
-
-```ts TypeScript
-const link = await sandbox.generateDownloadURL("/app/report.csv", {
-  expiresInSeconds: 3600,
-});
-console.log(link.download_url);
-```
-
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const link = await sandbox.generateDownloadURL("/app/report.csv", {
+    expiresInSeconds: 3600,
+  });
+  console.log(link.download_url);
+  ```
 </CodeGroup>
 
 忽略永不过期的链接的过期时间。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。有关选项和安全注意事项，请参阅[Sandbox download links](/langsmith/sandbox-download-links)。
 
-## 安装 Context Hub 存储库
+## 安装 Context Hub 存储库安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。<Warning>
-Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
+<Warning>
+  Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 </Warning>
 
 将安装座穿过`mount_config`。创建沙箱的 API 密钥必须有权访问存储库，否则创建会失败并显示 `403`。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import AsyncSandboxClient, context_hub_mount, mount_config
 
-```python Python
-from langsmith.sandbox import AsyncSandboxClient, context_hub_mount, mount_config
 
+  async def main():
+      async with AsyncSandboxClient() as client:
+          async with await client.sandbox(
+              name="context-hub-mount-sandbox",
+              mount_config=mount_config(
+                  mounts=[
+                      context_hub_mount(
+                          id="memories",
+                          mount_path="/memories",
+                          repo="-/my-agent",
+                      )
+                  ],
+              ),
+          ) as sb:
+              result = await sb.run("ls /memories")
+              print(result.stdout)
+  ```
 
-async def main():
-    async with AsyncSandboxClient() as client:
-        async with await client.sandbox(
-            name="context-hub-mount-sandbox",
-            mount_config=mount_config(
-                mounts=[
-                    context_hub_mount(
-                        id="memories",
-                        mount_path="/memories",
-                        repo="-/my-agent",
-                    )
-                ],
-            ),
-        ) as sb:
-            result = await sb.run("ls /memories")
-            print(result.stdout)
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    SandboxClient,
+    contextHubMount,
+    mountConfig,
+  } from "langsmith/sandbox";
 
-```ts TypeScript
-import {
-  SandboxClient,
-  contextHubMount,
-  mountConfig,
-} from "langsmith/sandbox";
+  const client = new SandboxClient();
 
-const client = new SandboxClient();
+  const sandbox = await client.createSandbox({
+    name: "context-hub-mount-sandbox",
+    mountConfig: mountConfig({
+      mounts: [
+        contextHubMount({
+          id: "memories",
+          mountPath: "/memories",
+          repo: "-/my-agent",
+        }),
+      ],
+    }),
+  });
 
-const sandbox = await client.createSandbox({
-  name: "context-hub-mount-sandbox",
-  mountConfig: mountConfig({
-    mounts: [
-      contextHubMount({
-        id: "memories",
-        mountPath: "/memories",
-        repo: "-/my-agent",
-      }),
-    ],
-  }),
-});
-
-try {
-  const result = await sandbox.run("ls /memories");
-  console.log(result.stdout);
-} finally {
-  await sandbox.delete();
-}
-```
-
+  try {
+    const result = await sandbox.run("ls /memories");
+    console.log(result.stdout);
+  } finally {
+    await sandbox.delete();
+  }
+  ```
 </CodeGroup>
 
 `repo` 是存储库句柄，可以选择限定为 `owner/repo`，其中 `-` 是当前工作区。 `mount_path` 必须是系统目录之外的绝对、干净路径，并且与存储桶和 Git 挂载不同，它不限于 `/mnt/mounts`。
 
 有关同步行为、同步限制以及将存储桶和 Git 存储库与存储库一起安装的信息，请参阅 [Sandbox mounts](/langsmith/sandbox-mounts#mount-a-context-hub-repo)。
 
-## 调整沙箱大小
-
-在创建时传递 `vcpus`、`mem_bytes` 和 `fs_capacity_bytes`（在 TypeScript 中为 `vCpus`、`memBytes`、`fsCapacityBytes`）以调整沙箱的大小。省略它们，沙箱将获得以下默认值。
+## 调整沙箱大小在创建时传递 `vcpus`、`mem_bytes` 和 `fs_capacity_bytes`（在 TypeScript 中为 `vCpus`、`memBytes`、`fsCapacityBytes`）以调整沙箱的大小。省略它们，沙箱将获得以下默认值。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  sb = client.create_sandbox(
+      name="big-vm",
+      vcpus=4,
+      mem_bytes=16 * 1024**3,        # 16 GiB
+      fs_capacity_bytes=32 * 1024**3, # 32 GiB
+  )
+  ```
 
-```python Python
-sb = client.create_sandbox(
-    name="big-vm",
-    vcpus=4,
-    mem_bytes=16 * 1024**3,        # 16 GiB
-    fs_capacity_bytes=32 * 1024**3, # 32 GiB
-)
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const sb = await client.createSandbox({
+    name: "big-vm",
+    vCpus: 4,
+    memBytes: 17_179_869_184,        // 16 GiB
+    fsCapacityBytes: 34_359_738_368, // 32 GiB
+  });
+  ```
+</CodeGroup>
 
-```ts TypeScript
-const sb = await client.createSandbox({
-  name: "big-vm",
-  vCpus: 4,
-  memBytes: 17_179_869_184,        // 16 GiB
-  fsCapacityBytes: 34_359_738_368, // 32 GiB
-});
-```
-
-</CodeGroup>|资源 |默认 |范围 |
-|----------|---------|--------|
+|资源 |默认 |范围 |
+| - | - | - |
 |中央处理器 | 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
 |文件系统 |快照容量|高达 64 GiB，并且永远不会小于其启动的快照。 |
@@ -452,14 +430,14 @@ const sb = await client.createSandbox({
 当主机有空闲容量时，沙箱会爆发到其请求的 CPU 的两倍。使用 `update_sandbox` / `updateSandbox` 调整现有沙箱的大小会在下次启动时生效，并且调整大小仅强制执行 64 GiB 上限，而不是每个 vCPU 的比率。
 
 <Note>
-可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
+  可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
 </Note>
 
-## 沙盒寿命和保留
+## 沙盒寿命和保留沙箱由固定于**空闲的两阶段保留模型控制
+活动**和**`stopped`**状态。
 
-沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时|
-|--------|------------------|------------------------|
+|领域 |它控制什么 |当它发生时 |
+| - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
 
@@ -472,119 +450,115 @@ running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_s
 您还可以显式调用 `stop_sandbox` / `stopSandbox` 在空闲超时触发之前释放资源；它还会填充`stopped_at`并启动删除计时器。之后您无需再次启动它：停止的沙箱会在下一个命令、文件操作或服务 URL 请求时唤醒。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Default retention (server defaults: 10-min idle stop, 14-day delete)
+  with client.sandbox() as sb:
+      sb.run("echo hello")
 
-```python Python
-# Default retention (server defaults: 10-min idle stop, 14-day delete)
-with client.sandbox() as sb:
-    sb.run("echo hello")
+  # Aggressive: stop after 5 min idle, delete 1 hour after stop
+  sb = client.create_sandbox(
+      idle_ttl_seconds=300,
+      delete_after_stop_seconds=3600,
+  )
 
-# Aggressive: stop after 5 min idle, delete 1 hour after stop
-sb = client.create_sandbox(
-    idle_ttl_seconds=300,
-    delete_after_stop_seconds=3600,
-)
+  # Long-running: never auto-stop, delete 7 days after manual stop
+  sb = client.create_sandbox(
+      idle_ttl_seconds=0,
+      delete_after_stop_seconds=604800,
+  )
 
-# Long-running: never auto-stop, delete 7 days after manual stop
-sb = client.create_sandbox(
-    idle_ttl_seconds=0,
-    delete_after_stop_seconds=604800,
-)
+  # Update retention on an existing sandbox
+  sb = client.update_sandbox(
+      sb.name,
+      idle_ttl_seconds=1800,
+      delete_after_stop_seconds=2592000,  # 30 days
+  )
+  ```
 
-# Update retention on an existing sandbox
-sb = client.update_sandbox(
-    sb.name,
-    idle_ttl_seconds=1800,
-    delete_after_stop_seconds=2592000,  # 30 days
-)
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // Default retention (server defaults applied)
+  const sandbox = await client.createSandbox();
 
-```ts TypeScript
-// Default retention (server defaults applied)
-const sandbox = await client.createSandbox();
+  // Aggressive: stop after 5 min idle, delete 1 hour after stop
+  const sb = await client.createSandbox({
+    idleTtlSeconds: 300,
+    deleteAfterStopSeconds: 3600,
+  });
 
-// Aggressive: stop after 5 min idle, delete 1 hour after stop
-const sb = await client.createSandbox({
-  idleTtlSeconds: 300,
-  deleteAfterStopSeconds: 3600,
-});
+  // Long-running: never auto-stop, delete 7 days after manual stop
+  const longRunning = await client.createSandbox({
+    idleTtlSeconds: 0,
+    deleteAfterStopSeconds: 604800,
+  });
 
-// Long-running: never auto-stop, delete 7 days after manual stop
-const longRunning = await client.createSandbox({
-  idleTtlSeconds: 0,
-  deleteAfterStopSeconds: 604800,
-});
-
-// Update retention on an existing sandbox
-await client.updateSandbox(sb.name, {
-  idleTtlSeconds: 1800,
-  deleteAfterStopSeconds: 2592000, // 30 days
-});
-```
-
+  // Update retention on an existing sandbox
+  await client.updateSandbox(sb.name, {
+    idleTtlSeconds: 1800,
+    deleteAfterStopSeconds: 2592000, // 30 days
+  });
+  ```
 </CodeGroup>
 
-## 命令生命周期和 TTL
+## 命令生命周期和 TTL沙箱守护进程使用两种超时机制来管理命令会话生命周期：
 
-沙箱守护进程使用两种超时机制来管理命令会话生命周期：- **会话 TTL（已完成的命令）**：命令完成后，其会话将在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
-- **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
+* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
+* **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
 
 ### 组合生命周期选项
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  with client.sandbox() as sb:
+      # Long-running task: 30-min idle timeout, 1-hour session TTL
+      handle = sb.run(
+          "python train.py",
+          timeout=0,              # No command timeout
+          idle_timeout=1800,      # Kill after 30min with no clients
+          ttl_seconds=3600,       # Keep session for 1 hour after exit
+          wait=False,
+      )
 
-```python Python
-with client.sandbox() as sb:
-    # Long-running task: 30-min idle timeout, 1-hour session TTL
-    handle = sb.run(
-        "python train.py",
-        timeout=0,              # No command timeout
-        idle_timeout=1800,      # Kill after 30min with no clients
-        ttl_seconds=3600,       # Keep session for 1 hour after exit
-        wait=False,
-    )
+      # Fire-and-forget: no idle timeout, infinite TTL
+      handle = sb.run(
+          "python background_job.py",
+          timeout=0,
+          idle_timeout=-1,        # Never kill due to idle
+          ttl_seconds=-1,         # Keep session forever
+          wait=False,
+      )
+  ```
 
-    # Fire-and-forget: no idle timeout, infinite TTL
-    handle = sb.run(
-        "python background_job.py",
-        timeout=0,
-        idle_timeout=-1,        # Never kill due to idle
-        ttl_seconds=-1,         # Keep session forever
-        wait=False,
-    )
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const sandbox = await client.createSandbox();
+  try {
+    // Long-running task: 30-min idle timeout, 1-hour session TTL
+    const handle = await sandbox.run("python train.py", {
+      timeout: 0,              // No command timeout
+      idleTimeout: 1800,       // Kill after 30min with no clients
+      ttlSeconds: 3600,        // Keep session for 1 hour after exit
+      wait: false,
+    });
 
-```ts TypeScript
-const sandbox = await client.createSandbox();
-try {
-  // Long-running task: 30-min idle timeout, 1-hour session TTL
-  const handle = await sandbox.run("python train.py", {
-    timeout: 0,              // No command timeout
-    idleTimeout: 1800,       // Kill after 30min with no clients
-    ttlSeconds: 3600,        // Keep session for 1 hour after exit
-    wait: false,
-  });
-
-  // Fire-and-forget: no idle timeout, infinite TTL
-  const bg = await sandbox.run("python background_job.py", {
-    timeout: 0,
-    idleTimeout: -1,         // Never kill due to idle
-    ttlSeconds: -1,          // Keep session forever
-    wait: false,
-  });
-} finally {
-  await sandbox.delete();
-}
-```
-
+    // Fire-and-forget: no idle timeout, infinite TTL
+    const bg = await sandbox.run("python background_job.py", {
+      timeout: 0,
+      idleTimeout: -1,         // Never kill due to idle
+      ttlSeconds: -1,          // Keep session forever
+      wait: false,
+    });
+  } finally {
+    await sandbox.delete();
+  }
+  ```
 </CodeGroup>
 
 设置 `kill_on_disconnect=True` (Python) 或 `killOnDisconnect: true` (TypeScript) 以在最后一个客户端断开连接时立即终止该命令，而不是等待空闲超时。
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
     sb.run("python -m http.server 8000", timeout=0, wait=False)
 
@@ -602,7 +576,7 @@ with client.sandbox() as sb:
 
 ## TCP 隧道 (Python)访问沙箱内运行的任何 TCP 服务，就好像它是本地服务一样。隧道打开本地 TCP 端口，并通过 WebSocket 将连接转发到沙箱内的目标端口。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import psycopg2
 
 # Snapshot built from the official postgres:16 image
@@ -632,7 +606,7 @@ finally:
 
 隧道可与任何 TCP 服务（Redis、HTTP 服务器等）配合使用，并且您可以同时打开多个隧道：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with sb.tunnel(remote_port=5432, local_port=25432) as t1, \
      sb.tunnel(remote_port=6379, local_port=26379) as t2:
     # Use both Postgres and Redis simultaneously
@@ -643,7 +617,7 @@ with sb.tunnel(remote_port=5432, local_port=25432) as t1, \
 
 Python SDK 提供了完整的异步客户端：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.sandbox import AsyncSandboxClient
 
 async def main():
@@ -674,53 +648,51 @@ async def main():
 通过 `run()` 上的 `env` 参数传递 LangSmith 跟踪环境变量，以发送沙箱内运行的代码的跟踪。在进程退出之前调用`flush()`以确保所有跟踪都已传递。
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import SandboxClient
 
-```python Python
-from langsmith.sandbox import SandboxClient
+  client = SandboxClient()
 
-client = SandboxClient()
+  tracing_env = {
+      "LANGSMITH_API_KEY": "lsv2_pt_...",
+      "LANGSMITH_ENDPOINT": "https://api.smith.langchain.com",
+      "LANGSMITH_TRACING": "true",
+      "LANGSMITH_PROJECT": "my-sandbox-traces",
+  }
 
-tracing_env = {
-    "LANGSMITH_API_KEY": "lsv2_pt_...",
-    "LANGSMITH_ENDPOINT": "https://api.smith.langchain.com",
-    "LANGSMITH_TRACING": "true",
-    "LANGSMITH_PROJECT": "my-sandbox-traces",
-}
+  with client.sandbox() as sandbox:
+      sandbox.run("pip install langsmith", timeout=120, env=tracing_env)
+      result = sandbox.run("python3 my_agent.py", env=tracing_env)
+      print(result.stdout)
+  ```
 
-with client.sandbox() as sandbox:
-    sandbox.run("pip install langsmith", timeout=120, env=tracing_env)
-    result = sandbox.run("python3 my_agent.py", env=tracing_env)
-    print(result.stdout)
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { SandboxClient } from "langsmith/sandbox";
 
-```ts TypeScript
-import { SandboxClient } from "langsmith/sandbox";
+  const client = new SandboxClient();
 
-const client = new SandboxClient();
+  const tracingEnv = {
+    LANGSMITH_API_KEY: "lsv2_pt_...",
+    LANGSMITH_ENDPOINT: "https://api.smith.langchain.com",
+    LANGSMITH_TRACING: "true",
+    LANGSMITH_PROJECT: "my-sandbox-traces",
+  };
 
-const tracingEnv = {
-  LANGSMITH_API_KEY: "lsv2_pt_...",
-  LANGSMITH_ENDPOINT: "https://api.smith.langchain.com",
-  LANGSMITH_TRACING: "true",
-  LANGSMITH_PROJECT: "my-sandbox-traces",
-};
-
-const sandbox = await client.createSandbox();
-try {
-  await sandbox.run("pip install langsmith", { timeout: 120, env: tracingEnv });
-  const result = await sandbox.run("python3 my_agent.py", { env: tracingEnv });
-  console.log(result.stdout);
-} finally {
-  await sandbox.delete();
-}
-```
-
+  const sandbox = await client.createSandbox();
+  try {
+    await sandbox.run("pip install langsmith", { timeout: 120, env: tracingEnv });
+    const result = await sandbox.run("python3 my_agent.py", { env: tracingEnv });
+    console.log(result.stdout);
+  } finally {
+    await sandbox.delete();
+  }
+  ```
 </CodeGroup>
 
 在沙箱内，任何 LangSmith 检测代码（`@traceable`、LangChain、LangGraph）都会自动从注入的环境变量中获取跟踪配置。
 
 <Warning>
-始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
+  始终在沙箱进程退出之前调用 `flush()` — Python 中的 `langsmith.Client().flush()` 或 TypeScript 中的 `await new Client().flush()`。如果没有它，跟踪可能会丢失，因为命令完成时容器会被破坏。
 </Warning>
 
 ## 错误处理
@@ -728,65 +700,64 @@ try {
 这两个 SDK 都提供了用于特定错误处理的类型化异常：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith.sandbox import (
+      SandboxClientError,       # Base exception
+      ResourceCreationError,    # Provisioning failed
+      ResourceNotFoundError,    # Resource doesn't exist
+      ResourceTimeoutError,     # Operation timed out
+      SandboxNotReadyError,     # Sandbox not ready yet
+      SandboxConnectionError,   # Network/WebSocket error
+      CommandTimeoutError,      # Command exceeded timeout
+      QuotaExceededError,       # Quota limit reached
+  )
 
-```python Python
-from langsmith.sandbox import (
-    SandboxClientError,       # Base exception
-    ResourceCreationError,    # Provisioning failed
-    ResourceNotFoundError,    # Resource doesn't exist
-    ResourceTimeoutError,     # Operation timed out
-    SandboxNotReadyError,     # Sandbox not ready yet
-    SandboxConnectionError,   # Network/WebSocket error
-    CommandTimeoutError,      # Command exceeded timeout
-    QuotaExceededError,       # Quota limit reached
-)
+  try:
+      with client.sandbox() as sb:
+          result = sb.run("sleep 999", timeout=10)
+  except CommandTimeoutError as e:
+      print(f"Command timed out: {e}")
+  except ResourceNotFoundError as e:
+      print(f"{e.resource_type} not found: {e}")
+  except SandboxClientError as e:
+      print(f"Error: {e}")
+  ```
 
-try:
-    with client.sandbox() as sb:
-        result = sb.run("sleep 999", timeout=10)
-except CommandTimeoutError as e:
-    print(f"Command timed out: {e}")
-except ResourceNotFoundError as e:
-    print(f"{e.resource_type} not found: {e}")
-except SandboxClientError as e:
-    print(f"Error: {e}")
-```
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    LangSmithSandboxError,
+    LangSmithResourceNotFoundError,
+    LangSmithResourceTimeoutError,
+    LangSmithSandboxConnectionError,
+    LangSmithCommandTimeoutError,
+    LangSmithQuotaExceededError,
+  } from "langsmith/sandbox";
 
-```ts TypeScript
-import {
-  LangSmithSandboxError,
-  LangSmithResourceNotFoundError,
-  LangSmithResourceTimeoutError,
-  LangSmithSandboxConnectionError,
-  LangSmithCommandTimeoutError,
-  LangSmithQuotaExceededError,
-} from "langsmith/sandbox";
-
-try {
-  const sandbox = await client.createSandbox("not-a-real-snapshot");
-  await sandbox.delete();
-} catch (e) {
-  if (e instanceof LangSmithResourceNotFoundError) {
-    console.log(`${e.resourceType} not found: ${e.message}`);
-  } else if (e instanceof LangSmithResourceTimeoutError) {
-    console.log(`Timeout waiting for ${e.resourceType}: ${e.message}`);
-  } else if (e instanceof LangSmithSandboxError) {
-    console.log(`Error: ${e.message}`);
+  try {
+    const sandbox = await client.createSandbox("not-a-real-snapshot");
+    await sandbox.delete();
+  } catch (e) {
+    if (e instanceof LangSmithResourceNotFoundError) {
+      console.log(`${e.resourceType} not found: ${e.message}`);
+    } else if (e instanceof LangSmithResourceTimeoutError) {
+      console.log(`Timeout waiting for ${e.resourceType}: ${e.message}`);
+    } else if (e instanceof LangSmithSandboxError) {
+      console.log(`Error: ${e.message}`);
+    }
   }
-}
-```
-
+  ```
 </CodeGroup><Note>
-有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙盒 SDK 参考。
+  有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙箱 SDK 参考。
 </Note>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -5,4 +5,4 @@
 # 创建见解作业（测试版）
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/sessions/{session_id}/insights
-创建洞察工作。
+为项目创建 Insights 作业。

@@ -5,4 +5,4 @@
 # 创建目录提交
 
 /langsmith/langsmith-platform-openapi.json 发布 /api/v1/platform/hub/repos/{owner}/{repo}/directories/commits
-通过应用文件/链接创建、更新和删除操作，为代理或技能存储库创建新的目录提交。
+通过应用文件/链接创建、更新和删除操作，为代理或技能存储库创建新的目录提交。链接目录默认为 LATEST 选择器；使用 COMMIT 来固定一次提交。旧版 commit_id 写入字段已弃用并解析为 LATEST。

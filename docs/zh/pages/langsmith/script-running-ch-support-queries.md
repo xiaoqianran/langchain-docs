@@ -38,25 +38,26 @@
 
 运行以下命令来运行所需的查询：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_ch.sh <clickhouse_url> --input path/to/query.sql
 ```
 
 例如，如果您使用带有端口转发的捆绑版本，则命令可能如下所示：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sh run_support_query_ch.sh "clickhouse://default:password@localhost:8123/default" --input support_queries/clickhouse/ch_get_query_exceptions.sql
 ```
 
 它将输出过去 7 天内在 Clickhouse 中抛出异常的所有查询的查询日志。要将其提取到文件中，请添加标志 `--output path/to/file.csv`
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-ch-support-queries.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -10,7 +10,7 @@
 
 最终的存储库结构将如下所示：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -24,14 +24,15 @@ my-app/
 ├── langgraph.json  # configuration file for LangGraph
 └── pyproject.toml # dependencies for your project
 ```
+
 <Tip>
-LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)_graph_。然而，图的节点的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。详情请参阅[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。详情请参阅[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 </Tip>
 
 您还可以设置：
 
-- `requirements.txt`：对于依赖管理，请查看[this how-to guide](/langsmith/setup-app-requirements-txt)，了解如何将`requirements.txt`用于LangSmith。
-- monorepo：要部署位于 monorepo 内的图，请查看 [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) 了解如何执行此操作的示例。
+* `requirements.txt`：对于依赖管理，请查看[this how-to guide](/langsmith/setup-app-requirements-txt)，了解如何将`requirements.txt`用于LangSmith。
+* monorepo：要部署位于 monorepo 内的图，请查看 [this repository](https://github.com/langchain-ai/langgraph-example-monorepo) 了解如何执行此操作的示例。
 
 每个步骤之后，都会提供一个示例文件目录来演示如何组织代码。
 
@@ -67,7 +68,7 @@ opentelemetry-exporter-otlp-proto-http>=0.0.1
 
 示例 `pyproject.toml` 文件：
 
-```toml
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -93,7 +94,7 @@ packages = ["my_agent"]
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 └── pyproject.toml   # Python packages required for your graph
 ```
@@ -112,24 +113,24 @@ FIREWORKS_API_KEY=key
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── .env # file with environment variables
 └── pyproject.toml
 ```
 
 <Tip>
-默认情况下，LangSmith遵循`uv`/`pip`的行为，除非明确允许，否则**不**安装预发布版本。如果想使用预发行版，您有以下选择：
+  默认情况下，LangSmith遵循`uv`/`pip`的行为，除非明确允许，否则**不**安装预发布版本。如果想使用预发行版，您有以下选择：
 
-- 使用`pyproject.toml`：将`allow-prereleases = true`添加到您的`[tool.uv]`部分。
-- 使用`requirements.txt`或`setup.py`：您必须显式指定每个预发布依赖项，包括传递依赖项。例如，如果您声明 `a==0.0.1a1` 和 `a` 依赖于 `b==0.0.1a1`，那么您还必须在依赖项中显式包含 `b==0.0.1a1`。
+  * 对于 `pyproject.toml`：将 `allow-prereleases = true` 添加到您的 `[tool.uv]` 部分。
+  * 使用 `requirements.txt` 或 `setup.py`：您必须显式指定每个预发布依赖项，包括传递依赖项。例如，如果您声明 `a==0.0.1a1` 和 `a` 依赖于 `b==0.0.1a1`，那么您还必须在依赖项中显式包含 `b==0.0.1a1`。
 </Tip>
 
 ## 定义图实现你的图表。图形可以在单个文件或多个文件中定义。记下要包含在应用程序中的每个 [CompiledStateGraph](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph) 的变量名称。稍后创建 [configuration file](/langsmith/cli#configuration-file) 时将使用变量名称。
 
 示例`agent.py`文件，显示如何从您定义的其他模块导入（此处未显示模块的代码，请参阅[this repository](https://github.com/langchain-ai/langgraph-example-pyproject)查看其实现）：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # my_agent/agent.py
 from typing import Literal
 from typing_extensions import TypedDict
@@ -161,7 +162,7 @@ graph = workflow.compile()
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -181,7 +182,7 @@ my-app/
 
 示例 `langgraph.json` 文件：
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "dependencies": ["."],
   "graphs": {
@@ -194,13 +195,13 @@ my-app/
 请注意，`CompiledGraph`的变量名称出现在顶级`graphs`键中每个子键值的末尾（即`:<variable_name>`）。
 
 <Warning>
-    **配置文件位置**
-    配置文件必须放置在与包含编译图和关联依赖项的 Python 文件同一级别或更高级别的目录中。
+  **配置文件位置**
+  配置文件必须放置在与包含编译图和关联依赖项的 Python 文件同一级别或更高级别的目录中。
 </Warning>
 
 示例文件目录：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-app/
 ├── my_agent # all project code lies within here
 │   ├── utils # utilities for your graph
@@ -219,11 +220,12 @@ my-app/
 
 设置项目并将其放入 GitHub 存储库后，就可以[deploy your app](/langsmith/deployment-quickstart) 了。
 
----<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-pyproject.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

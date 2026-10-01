@@ -5,10 +5,11 @@
 #LangSmith工作室
 
 <Info>
-**先决条件**
-* [LangSmith](/langsmith/observability)
-* [Agent Server](/langsmith/agent-server)
-* [LangGraph CLI](/langsmith/cli)
+  **先决条件**
+
+  * [LangSmith](/langsmith/observability)
+  * [Agent Server](/langsmith/agent-server)
+  * [LangGraph CLI](/langsmith/cli)
 </Info>
 
 Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的代理系统的可视化、交互和调试。 Studio 还与 [tracing](/langsmith/observability-concepts)、[evaluation](/langsmith/evaluation) 和 [prompt engineering](/langsmith/prompt-context-hub#prompts) 集成。
@@ -27,7 +28,7 @@ Studio 是一款专用代理 IDE，可实现实现代理服务器 API 协议的�
 * 通过[time travel](/oss/python/langgraph/use-time-travel)调试代理状态
 * 1 点击部署到LangSmith云。
 
-```mermaid actions={false}
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart
     subgraph LangSmith Deployment
         A[LangGraph CLI] -->|creates| B(Agent Server deployment)
@@ -47,7 +48,7 @@ Studio 支持两种模式：
 
 ### 图表模式
 
-图形模式公开了完整的功能集，并且当您需要有关代理执行的尽可能多的详细信息时非常有用，包括遍历的节点、中间状态和LangSmith集成（例如添加到数据集和游乐场）。
+图形模式公开了完整的功能集，当您需要有关代理执行的尽可能多的详细信息时非常有用，包括遍历的节点、中间状态和LangSmith集成（例如添加到数据集和游乐场）。
 
 ### 聊天模式
 
@@ -60,22 +61,17 @@ Studio 支持两种模式：
 * 请参阅本指南，了解如何使用 Studio [get started](/langsmith/quick-start-studio)。
 
 ## 视频指南
-<iframe
-  className="w-full aspect-video rounded-xl"
-  src="https://www.youtube.com/embed/Mi1gSlHwZLM?si=oWCeHQ640zPHoLwn"
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
 
----
+<iframe title="YouTube video player" />
 
-<div className="source-links">
-<Callout icon="terminal-2">
+***
+
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

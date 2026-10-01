@@ -8,40 +8,37 @@
 
 本指南向您展示如何为 Deep Agents 启用 LangSmith 跟踪、在 LangSmith UI 中查看跟踪，以及（可选）为更高级的用例自定义跟踪配置。
 
-
 ## 安装
 
 在 Python 环境中安装 `deepagents`：
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install deepagents
+  ```
 
-```bash pip
-pip install deepagents
-```
-
-```bash uv
-uv add deepagents
-```
-
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add deepagents
+  ```
 </CodeGroup>
 
 `deepagents` 要求：
 
--Python 3.11+。
-- 支持工具调用的LLM（例如OpenAI或Anthropic模型）。
-- 用于追踪，[LangSmith account and API key](/langsmith/create-account-api-key)（免费注册）。
+* Python 3.11+。
+* 支持工具调用的LLM（例如OpenAI或Anthropic模型）。
+* 用于追踪，[LangSmith account and API key](/langsmith/create-account-api-key)（免费注册）。
 
 <Note>
-    您不需要安装`langsmith` Python 包来跟踪Deep Agents。 `deepagents` 构建于 LangGraph 之上，其中包括本机 LangSmith 跟踪支持。只要设置了 LangSmith 环境变量，就会自动发送跟踪。
+  您不需要安装`langsmith` Python 包来跟踪Deep Agents。 `deepagents` 构建于 LangGraph 之上，其中包括本机 LangSmith 跟踪支持。只要设置了 LangSmith 环境变量，就会自动发送跟踪。
 
-    仅当您需要 [programmatic control over tracing](#customize-langsmith-tracing) 时才需要 `langsmith` 包（例如，使用 `tracing_context`、添加自定义元数据或从 Python 查询运行）。
+  仅当您需要 [programmatic control over tracing](#customize-langsmith-tracing) 时才需要 `langsmith` 包（例如，使用 `tracing_context`、添加自定义元数据或从 Python 查询运行）。
 </Note>
 
 ## 设置
 
-您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents) 中找到您的 LangSmith API 密钥和项目名称：
+您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents) 中找到您的 LangSmith API 密钥和项目名称：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export LANGSMITH_TRACING=true
 export LANGSMITH_PROJECT=<your-project-name>
@@ -49,7 +46,7 @@ export LANGSMITH_PROJECT=<your-project-name>
 
 ## 创建跟踪一旦通过环境变量启用跟踪，Deep Agents将自动向LangSmith发出跟踪。例如：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Dict, Any, List
 
 from deepagents import create_deep_agent
@@ -135,18 +132,18 @@ print(result)
 
 ### 详情查看
 
-单击跟踪，然后切换到右上角的 **详细信息** 视图。 [LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents) 中的跟踪树将类似于 [this](https://smith.langchain.com/public/ec82be64-b158-425e-a959-924be16b8588/r)，具有以下结构：
+单击跟踪，然后切换到右上角的 **详细信息** 视图。 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents) 中的跟踪树将类似于 [this](https://smith.langchain.com/public/ec82be64-b158-425e-a959-924be16b8588/r)，具有以下结构：
 
-- 代理运行（顶层）代表完整的Deep Agents调用。
-- LLM 调用，代理分析用户请求并决定使用哪些工具。
-- 工具运行：`compute_compound_interest`：
-    - 显示工具输入（例如，本金、annual_rate、years 和compounds_per_year）。
-    - 显示结构化输出，包括期末余额和赚取的总利息。
-- LLM 调用解释计算结果并确定下一步。
-- 工具运行：`yearly_balance_schedule`：
-    - 显示用于生成计划的输入。
-    - 返回期末余额和利息收入的逐年细目。
-- 最终的法学硕士回复，为用户总结了结果。
+* 代理运行（顶层）代表完整的 Deep Agents 调用。
+* LLM 调用，代理分析用户请求并决定使用哪些工具。
+* 工具运行：`compute_compound_interest`：
+  * 显示工具输入（例如，本金、年率、年数和每年的化合物）。
+  * 显示结构化输出，包括期末余额和赚取的总利息。
+* LLM 调用解释计算结果并确定下一步。
+* 工具运行：`yearly_balance_schedule`：
+  * 显示用于生成计划的输入。
+  * 返回期末余额和利息收入的逐年细目。
+* 最终 LLM 回复为用户总结了结果。
 
 生成的跟踪包含多个嵌套跨度，使您可以在 LangSmith UI 中遵循代理的规划、计算步骤和解释流程。
 
@@ -158,18 +155,18 @@ print(result)
 
 **在LangSmith UI 中过滤：**
 
-1. 在[LangSmith](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents)中打开您的跟踪项目。
+1. 在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中打开您的跟踪项目。
 2. 将视图切换到 **Runs** 以查看各个跨度。
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
 
-![LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator](/langsmith/images/deepagents-lc-agent-name-filter.png)
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
 **使用 SDK 以编程方式过滤：**
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()
@@ -190,30 +187,28 @@ for run in runs:
 
 如果您想执行以下操作，请安装并使用 `langsmith`：
 
-- 仅跟踪特定代理调用。
-- 添加自定义标签或元数据以在用户界面中进行过滤。
-- 在运行时覆盖项目名称。
+* 仅跟踪特定代理调用。
+* 添加自定义标签或元数据以在用户界面中进行过滤。
+* 在运行时覆盖项目名称。
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install langsmith
+  ```
 
-```bash pip
-pip install langsmith
-```
-
-```bash uv
-uv add langsmith
-```
-
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langsmith
+  ```
 </CodeGroup>
 
 此示例调用同一深度代理两次：
 
-- 第一次调用是未被跟踪的，因为它在 `tracing_context` 之外运行。
-- 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内运行。
+* 第一次调用是未被跟踪的，因为它在 `tracing_context` 之外运行。
+* 第二次调用被跟踪，因为它在`tracing_context(enabled=True, ...)`内部运行。
 
-您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 对整个流程启用全局跟踪：
+您可以有选择地仅跟踪工作流程的一部分，而无需使用 `LANGSMITH_TRACING=true` 启用整个流程的全局跟踪：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Dict, Any, List
 
 import langsmith as ls
@@ -321,20 +316,21 @@ with ls.tracing_context(
     )
 ```
 
-`tracing_context` 块启用跟踪，并配置如何在 LangSmith 中记录和组织跟踪：- `enabled=True` 明确启用块持续时间内的跟踪，即使 `LANGSMITH_TRACING` 未设置或设置为 `false`。
-- `project_name="deepagents-demo"` 将跟踪从此块路由到指定的[LangSmith project](/langsmith/log-traces-to-project)。这会覆盖上下文中创建的运行的`LANGSMITH_PROJECT`。
-- `tags=[...]` 将标签附加到跟踪的运行。 [Tags](/langsmith/add-metadata-tags)出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs&utm_medium=cta&utm_campaign=langsmith-signup&utm_content=langsmith-trace-deep-agents)中，您可以使用它来过滤和分组轨迹。
-- `metadata={...}` 附加任意结构化元数据（例如，环境、实验名称或功能标志）。
+`tracing_context` 块启用跟踪，并配置如何在 LangSmith 中记录和组织跟踪：* `enabled=True` 明确启用块持续时间内的跟踪，即使 `LANGSMITH_TRACING` 未设置或设置为 `false`。
+* `project_name="deepagents-demo"` 将跟踪从此块路由到指定的 [LangSmith project](/langsmith/log-traces-to-project)。这会覆盖上下文中创建的运行的`LANGSMITH_PROJECT`。
+* `tags=[...]` 将标签附加到跟踪的运行。 [Tags](/langsmith/add-metadata-tags)出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中，您可以使用它来过滤和分组轨迹。
+* `metadata={...}` 附加任意结构化元数据（例如，环境、实验名称或功能标志）。
 
 在这个例子中，代理被调用了两次，但只记录了`tracing_context`内的调用。这演示了如何有选择地跟踪 Deep Agents 工作流程的特定部分，而无需启用整个流程的全局跟踪。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-deep-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -262,6 +262,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | <span><a href="https://pypi.org/project/langgraph-agentram/">  <img alt="Downloads per month" /></a></span> |
   | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | <span><a href="https://pypi.org/project/langchain-salesforce/">  <img alt="Downloads per month" /></a></span> |
   | [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | <span><a href="https://pypi.org/project/langchain-robocorp/">  <img alt="Downloads per month" /></a></span> |
+  | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | <span><a href="https://pypi.org/project/langchain-foliant/">  <img alt="Downloads per month" /></a></span> |
   | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | <span><a href="https://pypi.org/project/hindsight-langgraph/">  <img alt="Downloads per month" /></a></span> |
   | [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | <span><a href="https://pypi.org/project/langchain-webz/">  <img alt="Downloads per month" /></a></span> |
   | [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | <span><a href="https://pypi.org/project/langchain-erc8004/">  <img alt="Downloads per month" /></a></span> |
@@ -367,6 +368,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span> |
   | [`Valthera`](https://github.com/valthera/langchain-valthera) | <span><a href="https://pypi.org/project/langchain-valthera/">  <img alt="Downloads per month" /></a></span> |
   | [`ProxyHatFetchTool`](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span> |
+  | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | <span><a href="https://pypi.org/project/langchain-alex/">  <img alt="Downloads per month" /></a></span> |
   | [`AxioraToolkit`](https://axiora.dev/docs) | <span><a href="https://pypi.org/project/langchain-axiora/">  <img alt="Downloads per month" /></a></span> |
   | [`Vectara`](https://github.com/vectara/langchain-vectara) | <span><a href="https://pypi.org/project/langchain-vectara/">  <img alt="Downloads per month" /></a></span> |
   | [`X402PaymentTool`](https://www.agentrails.io/docs) | <span><a href="https://pypi.org/project/langchain-x402/">  <img alt="Downloads per month" /></a></span> |
@@ -452,6 +454,8 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SnapRender`](https://snap-render.com) | <span><a href="https://pypi.org/project/langchain-snaprender/">  <img alt="Downloads per month" /></a></span> |
   | [`TempGuru`](https://tempguru.co/ai-agents) | <span><a href="https://pypi.org/project/tempguru/">  <img alt="Downloads per month" /></a></span> |
   | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/">  <img alt="Downloads per month" /></a></span> |
+  | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/">  <img alt="Downloads per month" /></a></span> |
+  | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |

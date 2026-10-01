@@ -15,7 +15,7 @@
 活动窗口。
 
 **过滤器**（全部可选）：
-- `policy_type` — `spend_cap`、`default_spend_cap`、`guard`、`route_config`、`rate_limit` 或 `default_rate_limit`
+- `policy_type` — `spend_cap`、`default_spend_cap`、`guard`、`route_config`、`model_fallback`、`rate_limit` 或 `default_rate_limit`
 - `subject_matcher_key` + `subject_matcher_value` — 缩小到
 subject_matchers 包含 `{key, value}` 的策略
 

@@ -4,12 +4,14 @@
 
 # 语音追踪基础知识
 
+在 LangSmith 中跟踪语音和音频代理的最佳实践，包括对话音频、单跟踪对话和音频模态标志。
+
 [Tracing](/langsmith/observability-concepts#traces) 语音代理与跟踪文本代理不同。对话是连续的、双向的且可中断的：用户通过代理进行交谈，在句子中间改变主题，并期望亚秒级响应。为了调试和评估这些系统，您的跟踪需要将对话捕获为单个音频感知单元，而不是一系列断开连接的文本交换。
 
 本页介绍了 LangSmith 中跟踪语音应用程序的核心约定。无论您使用哪个框架或模型提供程序（[OpenAI Realtime](/langsmith/trace-openai-realtime)、[Gemini Live](/langsmith/trace-gemini-live)、[LiveKit](/langsmith/trace-with-livekit)、[Pipecat](/langsmith/trace-with-pipecat) 或您自己的），请遵循这些模式。
 
 <Note>
-这些约定假设您通过受支持的 [tracing setups](/langsmith/observability) 之一将跟踪导出到 LangSmith。关于UI中的音频渲染和播放，请参阅[Log multimodal traces](/langsmith/log-multimodal-traces)和[Upload files with traces](/langsmith/upload-files-with-traces)。
+  这些约定假设您通过受支持的 [tracing setups](/langsmith/observability) 之一将跟踪导出到 LangSmith。关于UI中的音频渲染和播放，请参阅[Log multimodal traces](/langsmith/log-multimodal-traces)和[Upload files with traces](/langsmith/upload-files-with-traces)。
 </Note>
 
 ## 两种架构，两种走线形状
@@ -42,14 +44,14 @@
 
 不要将对话分成多个跟踪。如果您为每个交换启动新的跟踪，您将丢失**之间**交换中存在的信息：
 
-- **中断**：当用户与座席交谈并且座席停止（打断）时。
-- **时间和延迟**：发言者之间的间隙，以及客服人员响应所需的时间。
-- **上下文**：引用对话的早期部分。
-- **对话级结果**：用户的目标是否最终得到解决。
+* **中断**：当用户与座席交谈并且座席停止（打断）时。
+* **时间和延迟**：发言者之间的间隙，以及客服人员响应所需的时间。
+* **上下文**：引用对话的早期部分。
+* **对话级结果**：用户的目标是否最终得到解决。
 
 根运行下挂起的内容取决于您的 [architecture](#two-architectures-two-trace-shapes)。对于 [cascade](#cascade)，子级是模型调用和中间件：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 conversation                      ← root run (whole conversation; combined audio; ls_modality="audio")
 │
 ├─ stt                            ← a transcription call
@@ -60,7 +62,7 @@ conversation                      ← root run (whole conversation; combined aud
 
 对于 [speech-to-speech](#speech-to-speech-s2s) 代理，子级是穿过套接字的 **事件**：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 conversation                      ← root run (whole conversation; combined audio; ls_modality="audio")
 │
 ├─ input_transcription            ← a fragment of the user's speech transcript
@@ -72,18 +74,18 @@ conversation                      ← root run (whole conversation; combined aud
 ```
 
 <Note>
-语音代理没有可靠的“转弯”概念。扬声器重叠、中断和减弱。不要将跑步分组为合成回合。相反，跟踪实际单元：级联中的模型调用，或语音到语音流中的事件负载。
+  语音代理没有可靠的“转弯”概念。扬声器重叠、中断和减弱。不要将跑步分组为合成回合。相反，跟踪实际单元：级联中的模型调用，或语音到语音流中的事件负载。
 </Note>有关分组相关运行的背景信息，请参阅[Nest traces](/langsmith/nest-traces)。要为一个用户分组多个单独的会话，请使用 [Threads](/langsmith/threads)。
 
 ### 录制单个组合音频文件
 
 将**一个**音频文件附加到包含**用户和代理的根运行，记录自**实际播放给客户端的内容**，而不是模型生成的音频。
 
-在客户端记录。一种常见的方法是立体声 WAV，其中一个通道上有用户麦克风，而另一个通道上有扬声器捕获的座席语音。这很重要，因为生成的音频和听到的音频不是一回事：网络延迟、丢弃或重新排序的数据包以及插入都会改变用户实际体验。打断特工说话的插话应该在录音中被截断，因为这就是发生的事情。记录播放的内容，而不是生成但可能从未听过的内容，使跟踪忠实于真实的交互。
+在客户端记录。一种常见的方法是立体声 WAV，其中一个通道上有用户麦克风，而另一个通道上有扬声器捕获的座席语音。这很重要，因为生成的音频和听到的音频不是一回事：网络延迟、数据包丢失或重新排序以及插入都会改变用户实际体验。打断特工说话的插话应该在录音中被截断，因为这就是发生的事情。记录播放的内容，而不是生成但可能从未听过的内容，使跟踪忠实于真实的交互。
 
 使用 [attachments API](/langsmith/upload-files-with-traces) 附加文件：
 
-```python Python
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable
 from langsmith.schemas import Attachment
 
@@ -96,12 +98,12 @@ def run_conversation(session_id: str, conversation_audio: bytes):
 ```
 
 <Tip>
-音频文件可能很大。对于大批量生产工作负载，请考虑使用压缩格式（例如 MP3 或 Opus）进行下采样，或对完整录制的对话进行采样。
+  音频文件可能很大。对于大批量生产工作负载，请考虑使用压缩格式（例如 MP3 或 Opus）进行下采样，或对完整录制的对话进行采样。
 </Tip>### 将轨迹标记为音频
 
 在根运行上将 `ls_modality` 元数据字段设置为 `"audio"`。这会将跟踪标记为语音跟踪，以便 LangSmith 可以适当地渲染它，这样您就可以在项目中使用 [filter](/langsmith/filter-traces) 来处理语音跟踪。
 
-```python Python
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable
 
 @traceable(
@@ -113,40 +115,45 @@ def run_conversation(session_id: str):
 ```
 
 <Note>
-其他`ls_`元数据字段，请参阅[Metadata parameters reference](/langsmith/ls-metadata-parameters)。
+  其他`ls_`元数据字段，请参阅[Metadata parameters reference](/langsmith/ls-metadata-parameters)。
 </Note>
-
 
 ## 后续步骤
 
-<CardGroup cols={2}>
+<CardGroup>
   <Card title="Trace OpenAI Realtime" icon="microphone" href="/langsmith/trace-openai-realtime">
     跟踪基于 OpenAI 实时 API 构建的语音代理。
   </Card>
+
   <Card title="Trace Gemini Live" icon="microphone" href="/langsmith/trace-gemini-live">
     跟踪基于 Gemini Live API 构建的语音代理。
   </Card>
+
   <Card title="Trace LiveKit" icon="microphone" href="/langsmith/trace-with-livekit">
     跟踪使用 LiveKit Agents 构建的语音代理。
   </Card>
+
   <Card title="Trace Pipecat" icon="microphone" href="/langsmith/trace-with-pipecat">
     使用 Pipecat 构建的跟踪语音代理。
   </Card>
+
   <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
     将对话录音附加到您的跟踪中。
   </Card>
+
   <Card title="Log multimodal traces" icon="photo" href="/langsmith/log-multimodal-traces">
     在 LangSmith UI 中渲染音频和其他媒体。
   </Card>
 </CardGroup>
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-voice-fundamentals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

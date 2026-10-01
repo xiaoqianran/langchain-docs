@@ -32,13 +32,14 @@ LangSmith 旨在随着您的工作负载水平扩展。该服务的每个实例�
 
 所有需要持久存储的数据都存储在 Postgres 中，而不是 Redis 中。 Redis 仅用于临时元数据以及实例之间的通信。因此我们对 Redis 没有持久性要求。所有与 Redis 的通信都会针对可重试的错误实现重试。如果 Redis 暂时不可用（例如在数据库重新启动期间），则大多数/所有流量应继续成功。 Redis 长时间故障将导致 Agent Server 不可用。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-</Callout>
-<Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/scalability-and-resilience.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

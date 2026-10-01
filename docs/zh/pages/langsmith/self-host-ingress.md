@@ -26,7 +26,7 @@
 
   例如，您可以使用 AWS ALB Ingress Controller 添加以下注释，以将 ACM 证书附加到 Ingress：
 
-  ```yaml
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   annotations:
     alb.ingress.kubernetes.io/certificate-arn: "<your-certificate-arn>"
   ```
@@ -50,7 +50,7 @@
 
 有了这些参数，您就可以配置 LangSmith 实例以使用 Ingress。您可以通过修改 LangSmith Helm Chart 安装的 `config.yaml` 文件来完成此操作。
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   hostname: "" # Main domain for LangSmith
   basePath: "" # If you want to serve langsmith under a URL base path (e.g., /langsmith)
@@ -67,9 +67,9 @@ frontend:
     type: ClusterIP
 ```
 
-配置完成后，您将需要更新 LangSmith 安装。如果一切配置正确，您的 LangSmith 实例现在应该可以通过 Ingress 访问。您可以运行以下命令来检查 Ingress 的状态：
+配置完成后，您将需要更新您的 LangSmith 安装。如果一切配置正确，您的 LangSmith 实例现在应该可以通过 Ingress 访问。您可以运行以下命令来检查 Ingress 的状态：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get ingress
 ```
 
@@ -81,18 +81,18 @@ langsmith-ingress            nginx   <host>   35.227.243.203   80, 443   95d
 ```
 
 <Warning>
-如果您没有自动 DNS 设置，则需要手动将 IP 地址添加到 DNS 提供商。
+  如果您没有自动 DNS 设置，则需要手动将 IP 地址添加到 DNS 提供商。
 </Warning>
 
 ### 选项 2：网关 API
 
 <Note>
-自 LangSmith v0.12.0 起提供网关 API 支持
+  自 LangSmith v0.12.0 起提供网关 API 支持
 </Note>如果您的集群使用[Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/)，您可以配置LangSmith来发放HTTPRoute资源。这将为LangSmith创建一个HTTPRoute，并为每个[agent deployment](/langsmith/deployment)创建一个HTTPRoute。
 
 #### 参数
 
-* *名称（必填）*：要引用的网关资源的名称
+* *名称（必需）*：要引用的网关资源的名称
 * *namespace（必填）*：网关资源所在的命名空间
 * *主机名（可选）*：您希望用于 LangSmith 安装的主机名。例如`"langsmith.example.com"`
 * *basePath（可选）*：如果您想在基本路径下提供LangSmith，您可以在此处指定。例如“example.com/langsmith”
@@ -102,7 +102,7 @@ langsmith-ingress            nginx   <host>   35.227.243.203   80, 443   95d
 
 #### 配置
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   hostname: "" # Main domain for LangSmith
   basePath: "" # If you want to serve langsmith under a base path. E.g "example.com/langsmith"
@@ -120,28 +120,28 @@ frontend:
 
 配置完成后，您可以检查 HTTPRoutes 的状态：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get httproute
 ```
 
 ### 选项 3：Istio 网关
 
 <Note>
-Istio 网关支持从 LangSmith v0.12.0 开始提供
+  Istio 网关支持从 LangSmith v0.12.0 开始提供
 </Note>
 
 如果您的集群使用[Istio](https://istio.io/)，您可以配置LangSmith来配置VirtualService资源。这将为LangSmith创建一个VirtualService，并为每个[agent deployment](/langsmith/deployment)创建一个VirtualService。
 
 ＃＃＃＃ 参数* *名称（可选）*：要引用的 Istio 网关资源的名称。默认为 `"istio-gateway"`
 * *命名空间（可选）*：Istio 网关资源所在的命名空间。默认为 `"istio-system"`
-* *主机名（可选）*：您想要用于 LangSmith 安装的主机名。例如`"langsmith.example.com"`
+* *主机名（可选）*：您希望用于 LangSmith 安装的主机名。例如`"langsmith.example.com"`
 * *basePath（可选）*：如果您想在基本路径下提供LangSmith，您可以在此处指定。例如“example.com/langsmith”
 * *注释（可选）*：添加到 VirtualService 资源的附加注释
 * *标签（可选）*：添加到 VirtualService 资源的其他标签
 
 #### 配置
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   hostname: "" # Main domain for LangSmith
   basePath: "" # If you want to serve langsmith on a separate basePath. E.g "example.com/langsmith"
@@ -158,17 +158,18 @@ frontend:
 
 配置完成后，您可以检查 VirtualServices 的状态：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get virtualservice
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ingress.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>
