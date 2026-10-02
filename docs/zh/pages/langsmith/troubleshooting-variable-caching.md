@@ -10,7 +10,7 @@
 
 首先，通过运行以下命令检查环境变量是否设置正确：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 print(os.getenv("LANGSMITH_PROJECT"))
 print(os.getenv("LANGSMITH_TRACING"))
@@ -24,7 +24,7 @@ print(os.getenv("LANGSMITH_API_KEY"))
 
 使用以下命令清除缓存的环境变量：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 utils.get_env_var.cache_clear()
 ```
 
@@ -32,7 +32,7 @@ utils.get_env_var.cache_clear()
 
 通过执行以下命令从 .env 文件重新加载环境变量：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dotenv import load_dotenv
 import os
 load_dotenv(<path to .env file>, override=True)
@@ -42,13 +42,14 @@ load_dotenv(<path to .env file>, override=True)
 
 如果您仍然遇到问题，请通过共享 Slack 渠道或电子邮件支持（适用于 Plus 和 Enterprise 计划）或通过 [LangChain Forum](https://forum.langchain.com/) 与我们联系。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-variable-caching.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

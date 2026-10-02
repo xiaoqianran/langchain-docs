@@ -4,7 +4,7 @@
 
 # 权限
 
-使用深度代理的声明性权限规则控制文件系统访问
+使用 Deep Agents 的声明性权限规则控制文件系统访问
 
 使用声明性权限规则控制代理可以读取或写入哪些文件和目录。将规则列表传递给`permissions=`，代理的内置文件系统工具会尊重它们。
 
@@ -40,10 +40,10 @@ if (!agent) throw new Error("basic: agent not created");
 ## 规则结构
 
 每个`FilesystemPermission`有三个字段：|领域 |类型 |描述 |
-| ------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `operations` | `("read" \| "write")[]` |此规则适用于操作。 `"read"` 涵盖`ls`、`read_file`、`glob`、`grep`。 `"write"` 涵盖`write_file`、`edit_file`。      |
+| - | - | - |
+| `operations` | `("read" \| "write")[]` |此规则适用于操作。 `"read"` 涵盖`ls`、`read_file`、`glob`、`grep`。 `"write"` 涵盖`write_file`、`edit_file`。 |
 | `paths` | `string[]` |用于匹配文件路径的全局模式（例如，`["/workspace/**"]`）。支持`**`递归匹配和`{a,b}`交替。 |
-| `mode` | `"allow" \| "deny"` |是否允许或拒绝匹配操作。默认为`"allow"`。                                                                 |
+| `mode` | `"allow" \| "deny"` |是否允许或拒绝匹配操作。默认为`"allow"`。 |
 
 规则使用first-match-wins评估：`operations`和`paths`与当前调用匹配的第一条规则决定结果。如果没有规则匹配，则**允许**（允许的默认值）。
 
@@ -51,7 +51,9 @@ if (!agent) throw new Error("basic: agent not created");
 
 ## 示例
 
-### 隔离到工作区目录仅允许在 `/workspace/` 下读取和写入，并拒绝其他所有内容：
+### 隔离到工作区目录
+
+仅允许在 `/workspace/` 下读写并拒绝其他所有内容：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createDeepAgent({
@@ -128,9 +130,7 @@ const agent = createDeepAgent({
 if (!agent) throw new Error("read-only-memory: agent not created");
 ```
 
-### 拒绝所有访问
-
-阻止所有读取和写入。这是一个限制性基线，您可以在其上分层更具体的允许规则：
+### 拒绝所有访问阻止所有读取和写入。这是一个限制性基线，您可以在其上分层更具体的允许规则：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createDeepAgent({
@@ -179,7 +179,7 @@ const incorrectPermissions: FilesystemPermission[] = [
 
 ## 子代理权限
 
-[Subagents](/oss/javascript/deepagents/subagents)默认继承父代理的权限。要为子代理提供不同的权限，请在其规范中设置 `permissions` 字段。这完全取代了父母的规则。
+[Subagents](/oss/javascript/deepagents/subagents)默认继承父代理的权限。要赋予子代理不同的权限，请在其规范中设置 `permissions` 字段。这完全取代了父母的规则。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = createDeepAgent({
@@ -211,7 +211,9 @@ if (!agent) throw new Error("subagent: agent not created");
 
 要显式授予子代理不受限制的访问权限，请设置 `permissions: []`。空数组会无限制地覆盖父规则。省略 `permissions` 从父级继承。
 
-## 复合后端当使用具有沙箱默认值的 `CompositeBackend` 时，每个权限路径的范围必须位于已知的路由前缀下。沙箱支持任意命令执行，因此仅基于路径的限制无法阻止通过 shell 命令访问文件系统。将权限范围限定为特定于路由的[backends](/oss/javascript/deepagents/backends)可以避免这种冲突。
+## 复合后端
+
+当使用具有沙箱默认值的 `CompositeBackend` 时，每个权限路径的范围必须位于已知的路由前缀下。沙箱支持任意命令执行，因此仅基于路径的限制无法阻止通过 shell 命令访问文件系统。将权限范围限定为特定于路由的[backends](/oss/javascript/deepagents/backends)可以避免这种冲突。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const sandbox = new StateBackend();
@@ -257,7 +259,7 @@ createDeepAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

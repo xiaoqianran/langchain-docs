@@ -340,7 +340,7 @@ fleet:
   <Accordion title="Microsoft OAuth provider">
     要为 Fleet 启用 Microsoft OAuth，请创建 Azure 应用程序注册，添加所需的 Microsoft Graph 委派权限，并在 LangSmith 中配置 Microsoft OAuth 提供程序。<Steps>
       <Step title="Create an Azure app registration">
-        在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建一个新的注册。
+        在 [Microsoft Entra admin center](https://entra.microsoft.com/) 中，转到 **应用程序 > 应用程序注册** 并创建新的注册。
       </Step>
 
       <Step title="Choose supported account types">
@@ -508,7 +508,7 @@ fleet:
   </Accordion>
 
   <Accordion title="Salesforce OAuth provider">
-    要为 Fleet 启用 Salesforce OAuth，请创建 Salesforce 外部客户端应用程序，配置其 OAuth 设置和策略，检索其凭据，然后在 LangSmith 中配置 Salesforce OAuth 提供程序。
+    To enable Salesforce OAuth for Fleet, create a Salesforce External Client App, configure its OAuth settings and policies, retrieve its credentials, then configure a Salesforce OAuth provider in LangSmith.
 
     <Steps>
       <Step title="Create an External Client App">
@@ -674,7 +674,7 @@ Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 
   </Step>
 
   <Step title="Create the app">
-    单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量 |
+    单击“**创建 GitHub 应用程序**”。在应用程序设置页面上，记下以下值：|价值|在哪里可以找到它 |环境变量|
     | - | - | - |
     | **应用程序ID** |数字，位于页面顶部 | `FLEET_GITHUB_APP_ID` |
     | **公共链接** |例如，`https://github.com/apps/acme-langsmith-fleet` | `FLEET_GITHUB_APP_PUBLIC_LINK` |
@@ -853,14 +853,14 @@ polly:
 
     * 与 Redis 兼容的元数据存储。
     * 对象存储桶或桶根。
-    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
+    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建一个。
 
     将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
     | **平台** | **存储价值** | **桶格式** |
     | - | - | - |
     |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP | `gs` | GCS URL，例如`gs://bucket-name`|
+    | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
     |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>
@@ -875,7 +875,7 @@ polly:
 
     <Tabs>
       <Tab title="Using Kubernetes secrets (recommended)">
-        如果您使用 `config.existingSecretName`，请将沙盒密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
+        如果您使用 `config.existingSecretName`，请将沙箱密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
 
         ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         stringData:
@@ -1031,7 +1031,7 @@ helm upgrade -i langsmith langchain/langsmith \
 
       * 为 JuiceFS 沙箱元数据创建专用的 ElastiCache Redis 实例。
       * 使用推荐的 `noeviction` 策略配置该专用实例。
-      * 重复使用 LangSmith S3 存储桶进行沙箱对象存储。
+      * 重复使用LangSmith S3 存储桶进行沙箱对象存储。
       * 创建 JuiceFS 配置 Secret。
       * 添加预期的节点标签和污点。
 
@@ -1136,12 +1136,12 @@ kubectl get pods,pvc -n <namespace>
 
 沙盒运行时映像更改通过 `sandbox-host` Kubernetes 部署推出。该图表默认使用无浪涌滚动更新策略，因此一次更换一台主机。在正常的 Helm 升级期间，终止主机停止接受新的 Sandbox，尝试将每个正在运行的 Sandbox 的 VM 内存保存到 JuiceFS，然后在 pod 退出之前停止这些 VM。此关闭受 `sandbox-host` Pod 终止宽限期限制，默认为 300 秒。这不是实时迁移：该主机上的沙箱在重新启动期间会中断。
 
-沙箱不会主动重新启动。当用户或 API 操作启动沙箱或请求路径唤醒沙箱时，它们会再次启动。然后，LangSmith 将沙盒放置在可用主机上，并在关闭捕获完成时从保存的内存映像中恢复。如果内存映像不存在或不完整，沙盒将从保存的根文件系统启动。
+沙箱不会主动重新启动。当用户或 API 操作启动沙箱或请求路径唤醒沙箱时，它们会再次启动。然后，LangSmith 将沙箱放置在可用主机上，并在关闭捕获完成时从保存的内存映像中恢复。如果内存映像不存在或不完整，沙盒将从保存的根文件系统启动。
 
 ## 启用引擎
 
 <Info>
-  自托管部署需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。引擎单独获得许可并计量其在 LCU 中的使用情况。 [Contact our sales team](https://www.langchain.com/contact-sales) 将其添加到您的订单中。
+  自托管部署需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。引擎单独获得许可并计量其在 LSU 中的使用情况。 [Contact our sales team](https://www.langchain.com/contact-sales) 将其添加到您的订单中。
 </Info>
 
 [Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障聚类为问题，诊断每个问题并提出修复建议。默认情况下禁用引擎。引擎需要[Sandboxes](#enable-sandboxes)，并且在启用时与[Insights](#enable-fleet-insights-and-chat)共享部署。与本页上的其他功能不同，Engine 无法完全在集群内运行：它使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来进行支持诊断和修复的模型工作。

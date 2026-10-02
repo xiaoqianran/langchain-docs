@@ -4,9 +4,9 @@
 
 # 实现LangChain集成
 
-集成包是用户可以安装以在其项目中使用的 Python 包。他们实现了一个或多个符合 LangChain 接口标准的组件。
+集成包是用户可以安装以在其项目中使用的 Python 包。他们实现一个或多个遵守 LangChain 接口标准的组件。
 
-LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core)中基类的子类。示例包括 [chat models](/oss/javascript/integrations/chat)、[tools](/oss/javascript/integrations/tools)、[retrievers](/oss/javascript/integrations/retrievers) 等。
+LangChain 组件是 [⟦T0⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core) 中基类的子类。示例包括 [chat models](/oss/javascript/integrations/chat)、[tools](/oss/javascript/integrations/tools)、[retrievers](/oss/javascript/integrations/retrievers) 等。
 
 您的集成包通常会实现至少其中一个组件的子类。展开下面的选项卡可查看每个选项卡的详细信息。
 
@@ -15,15 +15,15 @@ LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/mast
     聊天模型是 [⟦T1⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel) 类的子类。它们实现了生成聊天完成、处理消息格式和管理模型参数的方法。
 
     <Warning>
-      聊天模型集成指南目前正在开发中。同时，请阅读[chat model conceptual guide](/oss/javascript/langchain/models)了解LangChain聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers)中的现有集成
+      聊天模型集成指南目前正在开发中。同时，请阅读 [chat model conceptual guide](/oss/javascript/langchain/models) 了解有关 LangChain 聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers)中的现有集成
     </Warning>
   </Tab>
 
   <Tab title="Embeddings">
-    嵌入模型是 [⟦T2⟧](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings) 类的子类。
+    嵌入模型是[⟦T2⟧](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings)类的子类。
 
     <Warning>
-      嵌入模型集成指南目前正在开发中。同时，请阅读[embedding model conceptual guide](/oss/javascript/integrations/embeddings)了解LangChain嵌入模型如何运作的详细信息。
+      嵌入模型集成指南目前正在开发中。同时，请阅读 [embedding model conceptual guide](/oss/javascript/integrations/embeddings) 了解有关 LangChain 嵌入模型如何发挥作用的详细信息。
     </Warning>
   </Tab>
 
@@ -34,7 +34,7 @@ LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/mast
     Tools 类必须继承自 [⟦T3⟧](https://reference.langchain.com/javascript/classes/_langchain_core.tools.StructuredTool.html) 基类。该接口有 3 个属性和 2 个方法，应在子类中实现。
 
     <Warning>
-      工具集成指南目前正在开发中。同时，请阅读[tools conceptual guide](/oss/javascript/langchain/tools)详细了解LangChain工具的功能。
+      工具集成指南目前正在开发中。同时，请阅读 [tools conceptual guide](/oss/javascript/langchain/tools) 了解有关 LangChain 工具如何工作的详细信息。
     </Warning>
   </Tab>
 
@@ -44,7 +44,7 @@ LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/mast
     在构建集成之前，请阅读 [custom middleware guide](/oss/javascript/langchain/middleware/custom) 了解挂钩、状态更新和中间件模式。
 
     中间件集成通常分为两类：|类型 |描述 |示例 |
-    | -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
+    | - | - | - |
     | **特定于提供商** |利用提供商的独特能力 |提示缓存、本机工具执行、内容审核 |
     | **跨提供商** |适用于任何模型或工具 |速率限制、PII 检测、日志记录、护栏 |
 
@@ -64,7 +64,9 @@ LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/mast
   </Tab>
 
   <Tab title="Checkpointers">
-    检查点在 LangGraph 中启用[persistence](/oss/javascript/langgraph/persistence)，允许代理在交互过程中保存和恢复状态。请参阅 [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) 中现有的检查点集成以获取实施示例。
+    检查点在LangGraph中启用[persistence](/oss/javascript/langgraph/persistence)，允许代理在交互中保存和恢复状态。
+
+    请参阅 [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) 中现有的检查点集成以获取实施示例。
   </Tab>
 
   <Tab title="Sandboxes">
@@ -76,10 +78,8 @@ LangChain组件是[⟦T0⟧](https://github.com/langchain-ai/langchain/tree/mast
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/implement-langchain.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

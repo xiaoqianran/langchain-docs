@@ -14,9 +14,9 @@
 
 一般来说，您想要分析的主要服务是：
 
-- `langsmith-backend`：处理 CRUD API 请求、业务逻辑、来自前端和 SDK 的请求、摄取的跟踪准备以及中心 API。
-- `langsmith-platform-backend`：处理身份验证、运行摄取和其他大容量任务。
-- `langsmith-queue`：处理传入跟踪和反馈、异步摄取和持久化到数据存储中、数据完整性检查以及数据库错误或连接问题期间的重试。
+* `langsmith-backend`：处理 CRUD API 请求、业务逻辑、来自前端和 SDK 的请求、摄取的跟踪准备以及集线器 API。
+* `langsmith-platform-backend`：处理身份验证、运行摄取和其他大容量任务。
+* `langsmith-queue`：处理传入跟踪和反馈、异步摄取和持久化到数据存储中、数据完整性检查以及数据库错误或连接问题期间的重试。
 
 有关这些服务的更多详细信息，请参阅[self-hosted overview](/langsmith/self-hosted)。
 
@@ -24,7 +24,7 @@
 
 您可以运行我们的[k8s troubleshooting script](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/get_k8s_debugging_info.sh)，它将提取所有相关的 kubernetes 信息并将其输出到文件夹以进行调查。该脚本还会将此文件夹压缩为 zip 文件以供共享。以下是如何运行此脚本的示例，假设您的 langsmith 部署是在 `langsmith` 命名空间中启动的：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash get_k8s_debugging_info.sh --namespace langsmith
 ```
 
@@ -34,7 +34,7 @@ bash get_k8s_debugging_info.sh --namespace langsmith
 
 如果在 Docker 上运行，您可以通过运行以下命令来检查部署日志：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker compose logs >> logs.txt
 ```
 
@@ -84,7 +84,7 @@ docker compose logs >> logs.txt
 
 1. 强制迁移到早期版本，其中 version = dirty version - 1。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl exec -it deployments/langsmith-backend -- bash -c 'migrate -source "file://clickhouse/migrations" -database "clickhouse://$CLICKHOUSE_HOST:$CLICKHOUSE_NATIVE_PORT?username=$CLICKHOUSE_USER&password=$CLICKHOUSE_PASSWORD&database=$CLICKHOUSE_DB&x-multi-statement=true&x-migrations-table-engine=MergeTree&secure=$CLICKHOUSE_TLS" force <version>'
 ```
 
@@ -94,7 +94,7 @@ kubectl exec -it deployments/langsmith-backend -- bash -c 'migrate -source "file
 
 1. 强制迁移到早期版本，其中 version = dirty version - 1。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker compose exec langchain-backend migrate -source "file://clickhouse/migrations" -database "clickhouse://$CLICKHOUSE_HOST:$CLICKHOUSE_NATIVE_PORT?username=$CLICKHOUSE_USER&password=$CLICKHOUSE_PASSWORD&database=$CLICKHOUSE_DB&x-multi-statement=true&x-migrations-table-engine=MergeTree&secure=$CLICKHOUSE_TLS" force <version>
 ```
 
@@ -108,7 +108,7 @@ docker compose exec langchain-backend migrate -source "file://clickhouse/migrati
 
 1.编辑您的`langsmith_config.yaml`并增加`frontend.maxBodySize`[value](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L519)。这可能看起来像这样：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 frontend:
   maxBodySize: "100M"
 ```2. 将更改应用到集群。
@@ -117,7 +117,7 @@ frontend:
 
 当您的用户没有在 Clickhouse 中创建行策略的必要权限时，会出现此错误。在部署 Docker 部署时，还需要从 github 存储库复制 `users.xml` 文件。这会将 `<access_management>` 标签添加到 `users.xml` 文件中，从而允许用户创建行策略。下面是我们期望使用的默认 `users.xml` 文件。
 
-```xml
+```xml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 <clickhouse>
     <users>
         <default>
@@ -145,7 +145,7 @@ frontend:
 
 示例`Dockerfile`：
 
-```dockerfile
+```dockerfile theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 FROM clickhouse/clickhouse-server:24.8
 COPY ./users.xml /etc/clickhouse-server/users.d/users.xml
 ```
@@ -154,20 +154,20 @@ COPY ./users.xml /etc/clickhouse-server/users.d/users.xml
 
 1. 构建您的自定义镜像。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker build -t <image-name> .
 ```
 
 2. 更新您的`docker-compose.yaml`以使用自定义镜像。确保删除 users.xml 安装点。
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langchain-clickhouse:
   image: <image-name>
 ```
 
 3. 重新启动 LangSmith 实例。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 docker compose down --volumes
 docker compose up
 ```
@@ -179,7 +179,7 @@ docker compose up
 
 编辑 `langsmith_config.yaml` （或相应的配置文件）并设置 `AQUA_SKIP_LD_PRELOAD` 环境变量：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 clickhouse:
   statefulSet:
     extraEnv:
@@ -191,19 +191,20 @@ clickhouse:
 
 编辑 `docker-compose.yaml` 并设置 `AQUA_SKIP_LD_PRELOAD` 环境变量：
 
-```yaml
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langchain-clickhouse:
   environment:
     - AQUA_SKIP_LD_PRELOAD=true
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

@@ -6,7 +6,7 @@
 
 ClickHouse是一个高性能、面向列的数据库系统。它允许快速摄取数据并针对分析查询进行了优化。
 
-LangSmith使用ClickHouse作为跟踪和反馈的主要数据存储。默认情况下，自托管 LangSmith 将使用与 LangSmith 实例捆绑的内部 ClickHouse 数据库。它作为有状态集在与 LangSmith 应用程序相同的 Kubernetes 集群中运行。
+LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认情况下，自托管 LangSmith 将使用与 LangSmith 实例捆绑的内部 ClickHouse 数据库。它作为有状态集在与 LangSmith 应用程序相同的 Kubernetes 集群中运行。
 
 但是，您可以将 LangSmith 配置为使用外部 ClickHouse 数据库，以便于管理和扩展。通过配置外部 ClickHouse 数据库，您可以管理数据库的备份、扩展和其他操作任务。虽然 ClickHouse 还不是 Azure、AWS 或 Google Cloud 中的原生服务，但您可以通过以下方式使用外部 ClickHouse 数据库运行 LangSmith：
 
@@ -65,7 +65,7 @@ LangSmith使用ClickHouse作为跟踪和反馈的主要数据存储。默认情�
 为了使用复制的多节点 Clickhouse 设置来设置 LangSmith：* 您需要有一个使用 Keeper 或 Zookeeper 设置的 Clickhouse 集群，用于数据复制和适当的设置。参见[Clickhouse Replication Setup Docs](https://clickhouse.com/docs/architecture/replication)。
 * 您需要在 [LangSmith Configuration](#configuration) 部分中设置集群设置，特别是 `cluster` 设置以匹配您的 Clickhouse 集群名称。这将在运行 Clickhouse 迁移时使用 `Replicated` 表引擎。
 * 如果除了 HA 之外，您还想在 Clickhouse 节点之间进行负载平衡（以分配读取或写入），我们建议使用负载平衡器或 DNS 负载平衡在 Clickhouse 服务器之间进行循环。
-* **注意**：在首次启动 LangSmith 并运行 Clickhouse 迁移之前，您需要启用 `cluster` 设置。这是一个要求，因为表引擎需要创建为`Replicated`表引擎而不是非复制引擎类型。
+* **注意**：在首次启动 LangSmith 并运行 Clickhouse 迁移之前，您需要启用 `cluster` 设置。这是一项要求，因为表引擎需要创建为 `Replicated` 表引擎而不是非复制引擎类型。
 
 在启用 `cluster` 的情况下运行迁移时，迁移将创建 `Replicated` 表引擎风格。这意味着数据将在集群中的服务器之间复制。这是主-主设置，任何服务器都可以处理读取、写入或合并。<Note>
   有关复制 ClickHouse 集群的示例设置，请参阅示例下的 LangSmith Helm 图表存储库中的 [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md)。
@@ -99,15 +99,15 @@ LangSmith使用ClickHouse作为跟踪和反馈的主要数据存储。默认情�
 
   * 仅外部管理的 ClickHouse 部署支持集群。它与捆绑的 ClickHouse 安装不兼容，因为这些安装不包括所需的 ZooKeeper 配置。
 
-  * 当使用集群部署时，LangSmith会自动：* Run database migrations across all nodes in the cluster
-    * Configure tables for data replication across the cluster
+  * 当使用集群部署时，LangSmith会自动：* 在集群中的所有节点上运行数据库迁移
+    * 配置表以进行跨集群的数据复制
 
-  请注意，虽然数据跨节点复制，但LangSmith不配置分布式表或处理查询路由 - 查询将定向到指定主机。 You will need to handle any load balancing or query distribution at the infrastructure level if desired.
+  请注意，虽然数据跨节点复制，但LangSmith不配置分布式表或处理查询路由 - 查询将定向到指定主机。如果需要，您将需要在基础设施级别处理任何负载平衡或查询分配。
 </Warning>
 
 ## 配置
 
-With these parameters in hand, you can configure your LangSmith instance to use the provisioned ClickHouse database. You can do this by modifying the `config.yaml` file for your LangSmith Helm Chart installation.
+有了这些参数，您就可以配置 LangSmith 实例以使用预配的 ClickHouse 数据库。您可以通过修改 LangSmith Helm Chart 安装的 `config.yaml` 文件来完成此操作。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 clickhouse:
@@ -123,16 +123,16 @@ clickhouse:
     cluster: "my_cluster_name"  # Optional: Set this if using an external Clickhouse cluster
 ```
 
-Once configured, you should be able to reinstall your LangSmith instance. If everything is configured correctly, your LangSmith instance should now be using your external ClickHouse database.
+配置完成后，您应该能够重新安装 LangSmith 实例。如果一切配置正确，您的 LangSmith 实例现在应该使用外部 ClickHouse 数据库。
 
 ## TLS 与 ClickHouse
 
-Use this section to configure TLS for ClickHouse connections. For mounting internal/public CAs so LangSmith trusts your ClickHouse server certificate, see [Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls).
+使用此部分为 ClickHouse 连接配置 TLS。要安装内部/公共 CA，以便 LangSmith 信任您的 ClickHouse 服务器证书，请参阅 [Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
 
 ### 服务器 TLS（单向）
 
 要为 ClickHouse 连接启用 TLS：* 在您的配置中设置`tls: true`（或将`tlsSecretKey`与外部秘密一起使用）。
-* Use the appropriate TLS ports (typically `8443` for HTTP and `9440` for native TCP connections).
+* 使用适当的 TLS 端口（通常为 HTTP 连接使用 `8443`，为本机 TCP 连接使用 `9440`）。
 * 如果使用内部 CA，请使用 `config.customCa.secretName` 和 `config.customCa.secretKey` 提供 CA 捆绑包。
 
 <Warning>
@@ -216,29 +216,21 @@ Use this section to configure TLS for ClickHouse connections. For mounting inter
   ```
 </CodeGroup>
 
-#### 用于迁移的非 TLS 本机端口<Warning>
-  将 mTLS 与 ClickHouse 结合使用时，您必须**为我们的迁移作业保持开放的非 TLS 本机 (TCP) 端口**，该作业在 helm 安装和升级时运行。应用程序本身不会通过此端口进行通信，它**仅由迁移作业使用**。
+#### 使用 TLS 迁移迁移作业使用与应用程序相同的 TLS 和客户端证书配置，并通过 `clickhouse.external.nativePort` 上的本机协议进行连接。启用 TLS 后，将 `nativePort` 设置为 ClickHouse 原生 TLS 端口（默认为`9440`）。不需要单独的非 TLS 本机端口。
+
+<Warning>
+  将 `nativePort` 保留在 `9000` 和 `tls: true` 会导致迁移作业失败，因为它会尝试针对明文端口进行 TLS 握手。
 </Warning>
 
-By default, the migration job connects to port `9000` for migrations.如果您的 ClickHouse 实例使用不同的非 TLS 本机端口，您可以使用 `CLICKHOUSE_MIGRATE_NATIVE_PORT` 环境变量对其进行配置：
+#### 证书卷的 Pod 安全上下文
 
-```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-backend:
-  clickhouseMigrations:
-    extraEnv:
-      - name: CLICKHOUSE_MIGRATE_NATIVE_PORT
-        value: "9000"  # Change to your non-TLS native port
-```
-
-#### Pod security context for certificate volumes
-
-为 mTLS 安装的证书卷受文件访问限制的保护。 To ensure all LangSmith pods can read the certificate files, you must set `fsGroup: 1000` in the pod security context.
+为 mTLS 安装的证书卷受文件访问限制的保护。为了确保所有LangSmith Pod 都可以读取证书文件，您必须在 Pod 安全上下文中设置`fsGroup: 1000`。
 
 您可以通过以下两种方式之一进行配置：
 
 **选项 1：使用 `commonPodSecurityContext`**
 
-Set the `fsGroup` at the top level to apply it to all pods:
+将 `fsGroup` 设置在顶层以将其应用于所有 pod：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 commonPodSecurityContext:
@@ -247,7 +239,7 @@ commonPodSecurityContext:
 
 **选项 2：添加到单个 pod 安全上下文**
 
-If you need more granular control, add the `fsGroup` to each pod's security context individually.请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
+如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
 
 ***
 

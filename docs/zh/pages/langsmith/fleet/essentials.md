@@ -31,7 +31,7 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 
 <Anchor />
 
-通道定义您的代理应开始运行的时间。您可以将代理连接到外部工具或基于时间的计划，让它自动响应消息、电子邮件或重复事件。
+通道定义代理应何时开始运行。您可以将代理连接到外部工具或基于时间的计划，让它自动响应消息、电子邮件或重复事件。
 
 有关设置说明和支持的通道类型，请参阅[Channels](/langsmith/fleet/channels)。
 
@@ -78,20 +78,20 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
   您还可以通过直接在聊天中提示客服人员来更新说明。例如：“更新您的说明，以便始终以要点进行回应。”
 </Tip>
 
-## LangChain 计算单元 (LCU)
+## LangChain 标准单位 (LSU)
 
-队列使用情况以 LangChain 计算单元 (LCU) 来衡量。 LCU 使用情况基于代理执行的[model](#models) 工作，包括所选层及其处理和生成的内容量。<Note>
-  新的 [model tiers](#models) 和 LCU 定价适用于自 **2026 年 7 月 15 日**起的新机队使用情况。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
+车队使用情况以 LangChain 标准单位 (LSU) 衡量。 LSU 使用情况基于代理执行的 [model](#models) 工作，包括所选层及其处理和生成的内容量。<Note>
+  自 **2026 年 10 月 1 日**起，新的 [model tiers](#models) 和 LSU 定价适用于车队使用。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
 </Note>
 
-配额在您的组织内共享并每月重置：
+配额在整个组织内共享并每月重置：
 
-* **免费计划**：每个组织每月 5 个 LCU。当配额用完时，Fleet 会暂停新的运行，直到配额重置或组织升级到 Plus。
-* **Plus 计划**：每个组织每月 25 个 LCU。额外使用需付费。有关当前费率，请参阅[LangSmith pricing page](https://www.langchain.com/pricing)。
+* **免费计划**：每个组织每月 7 个 LSU。当配额用完时，Fleet 会暂停新的运行，直到配额重置或组织升级到 Plus。
+* **Plus 计划**：每个组织每月 37 个 LSU。额外使用需付费。有关当前费率，请参阅[LangSmith pricing page](https://www.langchain.com/pricing)。
 
-运行成本各不相同。舰队运行可以进行多个模型调用，任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LCU。
+运行成本各不相同。舰队运行可以进行多个模型调用，并且任务的长度和复杂性各不相同。较长的任务、较大量的上下文或较高的层可能比快速层中的短任务消耗更多的 LSU。
 
-如果您的组织采用了祖父级 Plus 席位或跟踪定价，则当机队转向 LCU 定价时，这些费率不会发生变化。 [Contact our sales team](https://www.langchain.com/contact-sales) 确认您组织的定价。
+如果您的组织采用了祖父的 Plus 席位或跟踪定价，则当车队转向 LSU 定价时，这些费率不会发生变化。 [Contact our sales team](https://www.langchain.com/contact-sales) 确认您组织的定价。
 
 ## 内存
 
@@ -108,10 +108,10 @@ LangSmith 舰队要素是构成代理基础的核心功能。它们包括工具�
 
 有关更多信息，请参阅[How we built the memory system for Fleet (formerly known as Agent Builder)](https://www.langchain.com/conceptual-guides/how-we-built-agent-builders-memory)。
 
-## 型号Fleet 为您管理模型。它为每个任务选择并维护一个强大的模型，因此您无需选择提供者、配置模型或提供 API 密钥即可获得良好的结果。使用量按[LangChain Compute Units (LCUs)](#langchain-compute-units-lcus)计费。
+## 型号Fleet 为您管理模型。它为每个任务选择并维护一个强大的模型，因此您无需选择提供者、配置模型或提供 API 密钥即可获得良好的结果。使用量按[LangChain Standard Units (LSUs)](#langchain-standard-units-lsus)计费。
 
 <Note>
-  自 **2026 年 7 月 15 日**起，新车型等级和 [LCU](#langchain-compute-units-lcus) 定价适用于新车队使用。在此日期之前已经使用 Fleet 的组织将保留其当前设置，并于 **2026 年 10 月 1 日**过渡到新模型。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
+  自 **2026 年 10 月 1 日**起，新型号等级和 [LSU](#langchain-standard-units-lsus) 定价适用于车队使用。如果您使用自定义模型，请[contact our sales team](https://www.langchain.com/contact-sales)了解您的转换。
 </Note>
 
 Fleet 提供三个托管层。随着新模型的推出，每层背后的模型可能会随着时间的推移而发生变化，因此您可以根据需要完成的工作而不是特定的提供商或模型进行选择。
@@ -122,9 +122,9 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 | **专业版** |更复杂的任务受益于更强的推理 |中等|
 | **最大** |最苛刻的任务，最大能力最重要 |高|
 
-### 定制模型在托管舰队模型选择器中，自定义模型不与 Fast、Pro 和 Max 一起使用。 LangChain 管理托管层的模型提供程序访问，因此您不需要自己的模型提供程序 API 密钥。如果企业部署需要自定义模型，[contact our sales team](https://www.langchain.com/contact-sales)。
+### 定制模型
 
-## 自我更新
+在托管舰队模型选择器中，自定义模型不与 Fast、Pro 和 Max 一起使用。 LangChain 管理托管层的模型提供程序访问，因此您不需要自己的模型提供程序 API 密钥。如果企业部署需要自定义模型，[contact our sales team](https://www.langchain.com/contact-sales)。## 自我更新
 
 代理可以自我更新：他们可以添加新工具、删除不需要的工具或调整指令。但是，代理无法更改其名称、描述或启动它们的频道。
 
@@ -141,13 +141,13 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 
 有关更多信息，请参阅[Skills](/langsmith/fleet/skills)。
 
-## 子代理通过将大任务分解为更小的、专门的助手来构建复杂的代理。将次级代理视为一个专家团队，每个专家在与您的主要代理合作时处理工作的特定部分。
+## 子代理
+
+通过将大任务分解为更小的、专门的助手来构建复杂的代理。将次级代理视为一个专家团队，每个专家在与您的主要代理合作时处理工作的特定部分。
 
 这种方法可以更轻松地构建复杂的系统。您可以拥有专门的助手，每个人都擅长完成自己的任务，而不是由一个代理尝试完成所有事情。
 
-以下是您可以使用子代理的一些方法：
-
-* 分成子任务：让一个代理获取数据，另一个代理汇总数据，第三个代理格式化结果。
+以下是您可以使用子代理的一些方法：* 分成子任务：让一个代理获取数据，另一个代理汇总数据，第三个代理格式化结果。
 * 专用工具：根据不同的代理需要执行的操作，为他们提供不同的工具。
 * 独立工作：让子代理独立工作，然后将结果返回给主代理。
 
@@ -157,7 +157,9 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 
 话题是您和您的代理之间的对话。每个线程都包含消息、代理响应以及代理采取的任何操作。
 
-要查看线程，请导航到 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-essentials) 中的代理。收件箱显示该代理的所有线程。单击某个线程即可查看对话。### 已读和未读状态
+要查看线程，请导航到 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-essentials) 中的代理。收件箱显示该代理的所有线程。单击某个线程即可查看对话。
+
+### 已读和未读状态
 
 线程的标记方式取决于代理是否使用通道：
 
@@ -166,9 +168,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 
 您可以随时手动将任何线程标记为已读或未读。
 
-## 工具
-
-工具可让您的代理与您的应用程序和服务进行交互。您的代理可以发送电子邮件、创建日历事件、发布消息、搜索网络等等。从 Gmail、Slack、Google Calendar、GitHub 等内置工具中进行选择。
+＃＃ 工具工具可让您的代理与您的应用程序和服务进行交互。您的代理可以发送电子邮件、创建日历事件、发布消息、搜索网络等等。从 Gmail、Slack、Google Calendar、GitHub 等内置工具中进行选择。
 
 无论代理是如何触发的，工具都可以工作。例如，您可以在队列聊天 UI 中启动任务，并让客服人员在完成后向您发送 [Slack message](/langsmith/fleet/slack-app#add-slack-tools)。
 
@@ -184,7 +184,9 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
 2. 在边栏中，展开**高级设置**抽屉。
 3. 在“**诊断**”下，单击“**查看代理跟踪**”。
 
-要查看特定线程的跟踪：1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-essentials) 中，导航至代理的收件箱。
+要查看特定线程的跟踪：
+
+1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-essentials) 中，导航至代理的收件箱。
 2. 右键单击​​要跟踪的线程，然后选择“**查看跟踪**”。
 
 有关更多信息，请参阅[LangSmith Observability](/langsmith/observability)。
@@ -193,9 +195,7 @@ Fleet 提供三个托管层。随着新模型的推出，每层背后的模型�
   Fleet 跟踪所有代理运行并将其存储在 LangSmith 中。 LLM 提供商不会保留您的数据。在LangSmith云上，跟踪数据默认保存14天。
 </Note>
 
-## 后续步骤
-
-* [Set up your workspace](/langsmith/fleet/workspace-admin)
+## 后续步骤* [Set up your workspace](/langsmith/fleet/workspace-admin)
 * [Connect apps and services](/langsmith/fleet/tools)
 * [Use remote servers for tools](/langsmith/fleet/remote-mcp-servers)
 * [Choose between workspace and private agents](/langsmith/fleet/manage-agent-settings)

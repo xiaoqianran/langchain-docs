@@ -18,6 +18,12 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
   HTTP 通道需要 `managed-deepagents>=0.8.0`。
 </Note>
 
+`verify`、`parse` 和可选的 `post` 位于外部服务和代理运行之间：
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+
 ## 项目结构
 
 HTTP 通道声明位于 `channels/` 下，与任何其他通道一样：
@@ -27,9 +33,7 @@ my-agent/
   agent.ts
   channels/
     orders.ts
-```
-
-文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ## 添加 HTTP 通道
 
@@ -45,7 +49,9 @@ my-agent/
       verify,
       parse,
     });
-    ````provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/javascript/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
+    ```
+
+    `provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/javascript/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
 
     跨提供相同服务的渠道共享一个提供商。两个 Shopify 渠道（`channels/orders` 和 `channels/refunds`）均声明 `provider: "shopify"`，将同一 Shopify 用户解析为一个委托人。即使呼叫者 ID 相同，声明 `provider: "slack"` 的通道也会解析为不同的主体。
 
@@ -73,7 +79,7 @@ my-agent/
       );
     }
     ```<Warning>
-      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得`verify`成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
+      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得`verify`成为公共互联网和代理运行之间唯一的东西。始终检查签名或共享秘密，切勿无条件接受请求。
     </Warning>
 
     使用 [deployment secret](/langsmith/javascript/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
@@ -82,7 +88,7 @@ my-agent/
   </Step>
 
   <Step title="Parse the request into a message">
-    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且可能是异步的。返回两个形状之一：
+    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
 
     * `{ type: "message", message: {...} }` 开始跑步。
     * `{ type: "ignore" }` 跳过该事件。
@@ -92,7 +98,7 @@ my-agent/
     该消息携带四个必填字段：* **`userId`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `String()` 转换数字提供商 ID。
     * **`threadId`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
     * **`target`**：一个 JSON 值，用于标识提供程序中的回复目标。这与代理线程 UUID 是分开的。即使通道仅开始运行，也应包含它。
-    * **`content`**：消息文本，或LangChain内容块的数组。
+    * **`content`**：消息文本，或LangChain内容块数组。
 
     <Warning>
       `threadId` 必须是 UUID。托管 Deep Agents 拒绝使用 `400` 的任何其他值，因此在返回之前将外部会话 ID 映射到 UUID。
@@ -158,7 +164,7 @@ my-agent/
   <Step title="Send replies with post">
     添加异步 `post` 回调以将代理的最终响应传递给外部服务。对于仅开始运行的通道，请忽略它。
 
-    `post` 接收一个带有已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
+    `post` 接收一个包含已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
 
     这些示例支持内容消息并拒绝本机消息。 `target`是`parse`返回的订单ID。
 
@@ -190,7 +196,7 @@ my-agent/
     });
     ```
 
-    托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `onError(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
+    托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `onError(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
   </Step>
 </Steps>
 
@@ -216,7 +222,7 @@ POST https://<deployment-url>/channels/<name>/events
 | `400` | `{"error": "invalid channel parse result"}` | `parse` 返回了无法识别的形状。 |
 | `400` | `{"error": "invalid channel message"}` |该消息具有无效的调用者、线程 UUID、内容或 JSON `target`。 |
 | `401` | `{"error": "invalid channel signature"}` | `verify` 拒绝了请求。 |
-| `500` | `{"error": "channel verification failed"}` | `verify` 提高。 |
+| `500` | `{"error": "channel verification failed"}` | `verify` 升高。 |
 | `500` | `{"error": "channel runtime is not configured"}` |托管运行时缺少所需的配置。 |
 | `500` | `{"error": "channel run could not be started"}` |代理运行无法启动。 |`202` 表示运行已被接受，而不是已完成。如果已配置，代理的答复稍后会通过 `post` 到达。
 

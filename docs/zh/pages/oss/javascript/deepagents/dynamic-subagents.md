@@ -28,7 +28,7 @@
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -58,7 +58,7 @@
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -73,7 +73,7 @@
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -144,7 +144,7 @@ const result = await agent.invoke({
 </Tip>
 
 <Note>
-  使用LangChain终端编码代理`dcode`的动态子代理？ `dcode` 附带启用的代码解释器，因此动态子代理可以开箱即用。有关设置和使用详细信息，请参阅[dcode subagents page](/oss/deepagents/code/subagents)。
+  将动态子代理与 `dcode`、LangChain 终端编码代理一起使用？ `dcode` 附带启用的代码解释器，因此动态子代理可以开箱即用。有关设置和使用详细信息，请参阅[dcode subagents page](/oss/deepagents/code/subagents)。
 </Note>
 
 ## 它是如何工作的当代理具有 [subagents](/oss/javascript/deepagents/subagents) 和解释器中间件时，解释器会公开一个内置的 `task()` 全局变量，用于从代码中分派子代理。跨越许多独立单元的任务（检查目录中的每个文件，对一批票进行分类）成为一个循环，使工作分散，因此它确定性地运行，而不是一次调用一个模型选择的工具。
@@ -209,7 +209,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [
         {
           name: "bug-fixer",
@@ -263,7 +263,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [
         {
           name: "bug-fixer",
@@ -290,7 +290,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [
         {
           name: "bug-fixer",
@@ -440,7 +440,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [{
         name: "reviewer",
         description: "Reviews code for security issues, citing lines and severity",
@@ -470,7 +470,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [{
         name: "reviewer",
         description: "Reviews code for security issues, citing lines and severity",
@@ -485,7 +485,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [{
         name: "reviewer",
         description: "Reviews code for security issues, citing lines and severity",
@@ -593,7 +593,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [
         {
           name: "reviewer",
@@ -637,7 +637,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [
         {
           name: "reviewer",
@@ -659,7 +659,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [
         {
           name: "reviewer",
@@ -793,7 +793,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [{
         name: "architect",
         description: "Proposes a database schema design with tradeoff analysis",
@@ -823,7 +823,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [{
         name: "architect",
         description: "Proposes a database schema design with tradeoff analysis",
@@ -838,7 +838,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [{
         name: "architect",
         description: "Proposes a database schema design with tradeoff analysis",
@@ -940,7 +940,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [
         {
           name: "writer",
@@ -984,7 +984,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [
         {
           name: "writer",
@@ -1006,7 +1006,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [
         {
           name: "writer",
@@ -1137,7 +1137,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       subagents: [{
         name: "analyzer",
         description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1167,7 +1167,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       subagents: [{
         name: "analyzer",
         description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1182,7 +1182,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       subagents: [{
         name: "analyzer",
         description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1273,7 +1273,7 @@ graph LR
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
     middleware: [createCodeInterpreterMiddleware({ subagents: false })],
   });
@@ -1295,7 +1295,7 @@ graph LR
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
     middleware: [createCodeInterpreterMiddleware({ subagents: false })],
   });
@@ -1306,7 +1306,7 @@ graph LR
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
     middleware: [createCodeInterpreterMiddleware({ subagents: false })],
   });
@@ -1354,7 +1354,7 @@ graph LR
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

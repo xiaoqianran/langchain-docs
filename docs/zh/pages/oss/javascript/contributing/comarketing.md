@@ -4,7 +4,7 @@
 
 # 联合营销
 
-LangChain 每月下载量超过 6000 万次，拥有大量构建 LLM 应用程序的开发人员。除了列出集成之外，我们的目标还在于突出高质量的教育示例，以激励开发人员并推进生态系统。
+LangChain 每月下载量超过 6000 万次，拥有大量构建 LLM 应用程序的开发人员。除了列出集成之外，我们的目标是突出高质量的教育示例，以激励开发人员并推进生态系统。
 
 <Note>
   虽然我们偶尔会分享集成，但我们会优先考虑提供以下内容的内容：
@@ -34,7 +34,7 @@ LangChain 每月下载量超过 6000 万次，拥有大量构建 LLM 应用程�
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

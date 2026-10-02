@@ -1,38 +1,36 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Prepare SmithDB supporting infrastructure | https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure -->
 
-# Prepare SmithDB supporting infrastructure
+# 准备SmithDB支持基础设施
 
-Provide a dedicated PostgreSQL metastore, object storage, and cache storage before enabling SmithDB.
+在启用 SmithDB 之前，提供专用的 PostgreSQL 元存储、对象存储和缓存存储。
 
 <Note>
-  For failures such as pods stuck `Pending`, object-store access denied, or metastore connection errors, see [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure).
+  对于 Pod 卡住`Pending`、对象存储访问被拒绝或元存储连接错误等故障，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 </Note>
 
-SmithDB adds three infrastructure dependencies to a self-hosted LangSmith deployment: a PostgreSQL metastore, object storage, and cache storage for query, ingestion, and compaction worker.
+SmithDB 向自托管 LangSmith 部署添加了三个基础设施依赖项：PostgreSQL 元存储、对象存储以及用于查询、摄取和压缩工作线程的缓存存储。
 
-These are integration requirements and practical recommendations, not a prescribed cloud architecture. For AWS (EKS), GCP (GKE), and Azure (AKS) setup, see [Provider setup](#provider-setup). The minimum LangSmith version depends on your cloud. See [Cloud support](/langsmith/self-host-smithdb#cloud-support).
+这些是集成要求和实用建议，而不是规定的云架构。有关 AWS (EKS)、GCP (GKE) 和 Azure (AKS) 设置，请参阅 [Provider setup](#provider-setup)。最低 LangSmith 版本取决于您的云。参见[Cloud support](/langsmith/self-host-smithdb#cloud-support)。
 
-## Requirements
+## 要求
 
-Before enabling SmithDB, provide:
+在启用 SmithDB 之前，请提供：* 用于 SmithDB 元存储的**专用的空 PostgreSQL 数据库**。不要使用存储其余LangSmith操作数据的PostgreSQL数据库。
+* 用于 SmithDB 持久数据的**专用对象存储桶**。
+* **用于查询、摄取和压缩工作的缓存存储**：网络连接磁盘或本地 SSD，以获得最佳缓存性能。
+* 与数据库和对象存储的专用网络连接，以及两者的凭据或工作负载身份。
+* 如果 LangSmith 使用 HTTP 代理，`NO_PROXY` 的 IP 范围条目会分配给 SmithDB Pod 和集群的内部服务域。
 
-* A **dedicated, empty PostgreSQL database** for the SmithDB metastore. Do not use the PostgreSQL database that stores the rest of LangSmith operational data.
-* A **dedicated object-storage bucket** for SmithDB durable data.
-* **Cache storage** for query, ingestion, and compaction worker: network-attached disks, or local SSD for the best cache performance.
-* Private network connectivity to the database and object store, plus credentials or workload identity for both.
-* If LangSmith uses an HTTP proxy, `NO_PROXY` entries for the IP range assigned to SmithDB pods and the cluster's internal service domain.
+## PostgreSQL 元存储
 
-## PostgreSQL metastore
+元存储保存 SmithDB 目录和协调数据。为元存储创建一个空数据库。 SmithDB 在安装期间初始化架构。
 
-The metastore holds SmithDB catalog and coordination data. Create an empty database for the metastore. SmithDB initializes the schema during installation.
+使用 PostgreSQL 18 或更高版本并允许来自 Kubernetes 集群的数据库连接。有关数据库选项和连接，请参阅[Provider setup](#provider-setup)。
 
-Use PostgreSQL 18 or later and allow database connections from the Kubernetes cluster. For database options and connectivity, see [Provider setup](#provider-setup).
+### 元存储秘密
 
-### Metastore Secret
-
-Create a Kubernetes Secret in the LangSmith release namespace containing the database host, name, username, and password. Map its keys through `smithdb.config.metastore`.
+在 LangSmith 发布命名空间中创建一个 Kubernetes Secret，其中包含数据库主机、名称、用户名和密码。通过`smithdb.config.metastore`映射其键。
 
 <Accordion title="Metastore Secret and Helm values">
   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -49,7 +47,7 @@ Create a Kubernetes Secret in the LangSmith release namespace containing the dat
     smithdb_metastore_db_password: DB_PASSWORD
   ```
 
-  Configure the chart to use the corresponding keys:
+  配置图表以使用相应的键：
 
   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   smithdb:
@@ -62,63 +60,57 @@ Create a Kubernetes Secret in the LangSmith release namespace containing the dat
         passwordSecretKey: smithdb_metastore_db_password
         port: "5432"
         useSsl: true
-  ```
-
-  `DB_NAME` can be any name for the dedicated, empty database, such as `smithdb`. The chart does not require these exact Secret key names; the Helm values map whatever names you choose.
+  ````DB_NAME` 可以是专用空数据库的任何名称，例如 `smithdb`。该图表不需要这些确切的密钥名称； Helm 值映射您选择的任何名称。
 </Accordion>
 
-## Object storage
+## 对象存储
 
-Object storage is SmithDB's durable data layer. Use a bucket reserved for SmithDB data, in the same region as the Kubernetes cluster, to minimize latency and transfer costs.
+对象存储是 SmithDB 的持久数据层。使用与 Kubernetes 集群位于同一区域的为 SmithDB 数据保留的存储桶，以最大程度地减少延迟和传输成本。
 
-This bucket is separate from optional [LangSmith blob storage](/langsmith/self-host-blob-storage), which stores payloads and attachments for the broader LangSmith deployment.
+该存储桶与可选的 [LangSmith blob storage](/langsmith/self-host-blob-storage) 分开，后者存储更广泛的 LangSmith 部署的有效负载和附件。
 
-Do not add bucket lifecycle rules that expire objects on their own schedule. Deleting live objects can make data unavailable.
+不要添加使对象按自己的计划过期的存储桶生命周期规则。删除活动对象可能会导致数据不可用。
 
-### Use private object-storage connectivity
+### 使用私有对象存储连接
 
-Use private connectivity to avoid unnecessary data-transfer and NAT gateway costs. Configure the endpoint for your cloud under [Provider setup](#provider-setup).
+使用专用连接以避免不必要的数据传输和 NAT 网关成本。在 [Provider setup](#provider-setup) 下配置云的端点。
 
-Configure access so SmithDB components can list the bucket and read, write, and delete objects.
+配置访问权限，以便 SmithDB 组件可以列出存储桶并读取、写入和删除对象。
 
-### Select a ServiceAccount
+### 选择一个服务帐户
 
-SmithDB workloads share `smithdb.serviceAccount`.
+SmithDB 工作负载共享 `smithdb.serviceAccount`。
 
-* **Default**: The chart creates `<HELM_RELEASE>-smithdb`.
-* **Custom**: Set `name` to create a differently named account.
-* **Existing**: Set `create: false` and `name`, then configure workload identity externally.
+* **默认**：图表创建 `<HELM_RELEASE>-smithdb`。
+* **自定义**：设置 `name` 创建一个不同名称的帐户。
+* **现有**：设置`create: false`和`name`，然后在外部配置工作负载身份。工作负载标识必须针对选定的命名空间和名称。对于`create: false`，需要`name`。否则，pod 使用 `default` ServiceAccount。
 
-Workload identity must target the selected namespace and name. With `create: false`, `name` is required. Otherwise pods use the `default` ServiceAccount.
+### 迁移源桶访问
 
-### Migration source-bucket access
+如果您的安装使用 LangSmith blob 存储，请在迁移历史数据之前授予 `smithdb.serviceAccount` 对该存储桶的读取权限。
 
-If your installation uses LangSmith blob storage, grant `smithdb.serviceAccount` read access to that bucket before migrating historical data.
+## 缓存存储
 
-## Cache storage
-
-Query, ingestion, and compaction worker cache trace data on a volume mounted at `/data`. Object storage retains the durable copy; replacing a pod discards its cache.
+查询、摄取和压缩工作线程将跟踪数据缓存在安装在 `/data` 的卷上。对象存储保留持久副本；替换 Pod 会丢弃其缓存。
 
 <Note>
-  `smithdb.cache` requires Helm chart `0.17.0` or later. The LangSmith 0.16 tabs show the equivalent configuration for earlier charts.
+  `smithdb.cache` 需要 Helm 图表 `0.17.0` 或更高版本。 LangSmith 0.16 选项卡显示早期图表的等效配置。
 </Note>
 
-* **Network-attached disk**: The default on LangSmith 0.17. Kubernetes provisions a volume per pod from a StorageClass, so no dedicated node pool is needed.
-* **Local SSD**: The default on LangSmith 0.16 and an explicit override on 0.17. Recommended for production, where it gives the best cache performance. Requires a node pool whose local disks back Kubernetes ephemeral storage.
+* **网络连接磁盘**：LangSmith 0.17 上的默认值。 Kubernetes 从 StorageClass 为每个 Pod 提供一个卷，因此不需要专用的节点池。
+* **本地 SSD**：LangSmith 0.16 上的默认值和 0.17 上的显式覆盖。推荐用于生产，它可以提供最佳的缓存性能。需要一个节点池，其本地磁盘支持 Kubernetes 临时存储。升级到 0.17 将默认缓存从 `emptyDir` 移动到每个 Pod 的 PersistentVolumeClaim。要保留本地 SSD，请将 [0.17 local SSD values](#local-ssd) 添加到同一升级中。如果您向前传输自定义缓存卷，请将它们从 `local-ssd-storage` 重命名为 `cache`。
 
-Upgrading to 0.17 moves the default cache from `emptyDir` to a per-pod PersistentVolumeClaim. To stay on local SSD, add the [0.17 local SSD values](#local-ssd) to the same upgrade. If you carry custom cache volumes forward, rename them from `local-ssd-storage` to `cache`.
+### 网络附加磁盘
 
-### Network-attached disk
+该图表为每个 Pod 请求一个 [generic ephemeral volume](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes)。 Kubernetes 使用 pod 创建 PersistentVolumeClaim，并使用 pod 删除它。指定 StorageClass `reclaimPolicy: Delete`，以便备份磁盘随之而来。
 
-The chart requests a [generic ephemeral volume](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes) for each pod. Kubernetes creates the PersistentVolumeClaim with the pod and deletes it with the pod. Give the StorageClass `reclaimPolicy: Delete` so the backing disk goes with it.
+集群默认的 StorageClass 对于缓存来说通常太慢。使用 [Provider setup](#provider-setup) 下为您的提供商提供的 StorageClass，为每个卷配置至少 7000 IOPS 和 1000 MiB/s。
 
-Cluster default StorageClasses are usually too slow for the cache. Provision at least 7000 IOPS and 1000 MiB/s per volume, using the StorageClass for your provider under [Provider setup](#provider-setup).
-
-The examples below use the `small` tier. Substitute the sizes for your tier.
+以下示例使用 `small` 层。将尺寸替换为您的等级。
 
 <Tabs>
   <Tab title="LangSmith 0.17">
-    Set `storageClassName`, or leave it empty to use the cluster default. The tier sets the volume size, CPU, and memory. The chart sets `fsGroup: 1001` and the query disk cache limit.
+    设置`storageClassName`，或将其留空以使用集群默认值。该层设置卷大小、CPU 和内存。该图表设置了 `fsGroup: 1001` 和查询磁盘缓存限制。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     smithdb:
@@ -127,11 +119,9 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
         storageClassName: smithdb-cache
     ```
 
-    To give one component a different StorageClass or size, set its `deployment.volumes` to a generic ephemeral volume named `cache` with the class and size you want. Repeat for each component you change. Do not point `volumes` at an existing claim through `persistentVolumeClaim.claimName`; each replica needs its own volume.
-  </Tab>
-
-  <Tab title="LangSmith 0.16">
-    On 0.16, replace the volume and resources on each component and set `fsGroup: 1001`. The chart derives the query disk cache limit from the `ephemeral-storage` limit, which this configuration omits, so set the limit in `extraEnv` as shown.
+    要为一个组件提供不同的 StorageClass 或大小，请将其 `deployment.volumes` 设置为名为 `cache` 的通用临时卷，并具有所需的类和大小。对您更改的每个组件重复此操作。不要通过 `persistentVolumeClaim.claimName` 将 `volumes` 指向现有索赔；每个副本都需要自己的卷。
+  </Tab><Tab title="LangSmith 0.16">
+    在 0.16 上，替换每个组件上的卷和资源并设置 `fsGroup: 1001`。该图表从 `ephemeral-storage` 限制派生查询磁盘缓存限制，此配置忽略了该限制，因此在 `extraEnv` 中设置限制，如图所示。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     smithdb:
@@ -207,28 +197,26 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
   </Tab>
 </Tabs>
 
-No node selectors or tolerations are needed; SmithDB runs on your general node pool. The migration Job is the exception. It does not use the cache volume and still requests 100 GiB of node `ephemeral-storage` by default, so schedule it on nodes with that much allocatable.
+不需要节点选择器或容忍； SmithDB 在您的通用节点池上运行。迁移作业是个例外。它不使用缓存卷，默认情况下仍请求 100 GiB 节点 `ephemeral-storage`，因此将其安排在具有这么多可分配空间的节点上。
 
-Confirm each pod has a bound claim and that `/data` uses it:
+确认每个 pod 都有一个绑定声明并且 `/data` 使用它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pvc -n NAMESPACE
 kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 ```
 
-### Local SSD
+### 本地SSD
 
-Configure the node's local SSDs to back Kubernetes ephemeral storage, with usable capacity reported as allocatable `ephemeral-storage`. SmithDB uses this storage for its `emptyDir` cache volumes.
+配置节点的本地 SSD 以支持 Kubernetes 临时存储，并将可用容量报告为可分配 `ephemeral-storage`。 SmithDB 使用此存储作为其 `emptyDir` 缓存卷。
 
-Use scheduling controls to keep SmithDB cache workloads on SSD-backed nodes. Size nodes with headroom above pod requests, images, logs, and Kubernetes reservations.
+使用调度控制将 SmithDB 缓存工作负载保留在 SSD 支持的节点上。调整节点大小，使其具有高于 Pod 请求、图像、日志和 Kubernetes 预留的空间。
 
-The examples below use the `small` tier. Substitute the sizes for your tier.
+以下示例使用 `small` 层。将尺寸替换为您的等级。
 
 <Tabs>
   <Tab title="LangSmith 0.17">
-    On each disk-using component, set an `emptyDir` named `cache` and matching `ephemeral-storage` requests and limits. The chart derives the query disk cache limit from that limit.
-
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    在每个使用磁盘的组件上，设置一个名为 `cache` 的 `emptyDir` 以及匹配的 `ephemeral-storage` 请求和限制。该图表根据该限制得出查询磁盘缓存限制。```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     smithdb:
       resourceTier: small
       query:
@@ -262,7 +250,7 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
   </Tab>
 
   <Tab title="LangSmith 0.16">
-    On 0.16 the tier already sets `ephemeral-storage` requests and limits and an `emptyDir` named `local-ssd-storage`, so selecting a tier is enough.
+    在 0.16 上，层已经设置了 `ephemeral-storage` 请求和限制以及名为 `local-ssd-storage` 的 `emptyDir`，因此选择一个层就足够了。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     smithdb:
@@ -271,11 +259,11 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
   </Tab>
 </Tabs>
 
-#### Schedule SmithDB workloads
+#### 安排 SmithDB 工作负载
 
-Place query, ingestion, compaction worker, and migration on the local SSD pool. Place compaction and cluster manager on the general compute pool. Node-pool labels and taints must match the Helm selectors and tolerations. `metastoreMigration` can run on any node and does not need a selector.
+将查询、摄取、压缩工作线程和迁移放在本地 SSD 池上。将压缩和集群管理器放在通用计算池上。节点池标签和污点必须与 Helm 选择器和容忍相匹配。 `metastoreMigration`可以在任何节点上运行，并且不需要选择器。
 
-The label and taint values in these examples match the provider samples on this page. SmithDB does not require these exact values; any labels and taints that keep cache workloads on SSD-backed nodes work.
+这些示例中的标签和污点值与本页上的提供程序示例相匹配。 SmithDB 不需要这些精确值；任何使 SSD 支持的节点上的缓存工作负载保持正常工作的标签和污点。
 
 <Accordion title="Helm scheduling values">
   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -342,12 +330,12 @@ The label and taint values in these examples match the provider samples on this 
   ```
 
   <Note>
-    On LangSmith 0.16, the migration Job's pod settings live under `smithdb.migration.deployment` rather than `smithdb.migration.job`. All other keys are the same.
+    在 LangSmith 0.16 上，迁移作业的 pod 设置位于 `smithdb.migration.deployment` 而不是 `smithdb.migration.job` 下。所有其他键都相同。
   </Note>
 </Accordion>
 
 <Accordion title="Verify local SSD capacity">
-  Confirm the intended labels, taints, scheduler-visible capacity, pod placement, and cache filesystem:
+  确认预期的标签、污点、调度程序可见容量、pod 放置和缓存文件系统：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   kubectl get nodes --show-labels
@@ -358,26 +346,24 @@ The label and taint values in these examples match the provider samples on this 
   kubectl exec -n NAMESPACE POD_NAME -- df -h /data
   ```
 
-  For pods stuck `Pending`, slow cache I/O, or evictions, see [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure).
+  对于 Pod 卡住`Pending`、缓存 I/O 缓慢或驱逐，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 </Accordion>
 
-## Provider setup
+## 提供商设置
 
 <Tabs>
   <Tab title="AWS">
-    A common AWS mapping is EKS, RDS for PostgreSQL, S3, IRSA, and EC2 instance store or EBS gp3 for the cache.
+    常见的 AWS 映射是 EKS、用于 PostgreSQL 的 RDS、S3、IRSA 和 EC2 实例存储或用于缓存的 EBS gp3。### 配置元存储
 
-    ### Configure the metastore
+    使用满足 [metastore requirements](#postgresql-metastore) 的 RDS for PostgreSQL 或 Aurora PostgreSQL。
 
-    Use RDS for PostgreSQL or Aurora PostgreSQL that meets the [metastore requirements](#postgresql-metastore).
+    ### 配置S3访问
 
-    ### Configure S3 access
+    将 S3 网关 VPC 终端节点添加到集群的私有路由表中，以便存储桶流量远离公共 Internet。
 
-    Add an S3 Gateway VPC endpoint to the cluster's private route tables so bucket traffic stays off the public internet.
+    选择 IRSA 或 EKS Pod 身份。 IRSA 需要`system:serviceaccount:<NAMESPACE>:<HELM_RELEASE>-smithdb` 的角色注释和信任。 Pod Identity 使用外部关联且不使用注释。
 
-    Choose IRSA or EKS Pod Identity. IRSA requires the role annotation and trust for `system:serviceaccount:<NAMESPACE>:<HELM_RELEASE>-smithdb`. Pod Identity uses an external association and no annotation.
-
-    Scope the role's S3 access to listing the bucket and reading its location, plus object read, write, delete, and multipart operations. For migration source reads, also grant `s3:ListBucket` and `s3:GetObject` on the LangSmith blob-storage bucket.
+    将角色的 S3 访问范围限定为列出存储桶并读取其位置，以及对象读取、写入、删除和多部分操作。对于迁移源读取，还要在 LangSmith blob 存储桶上授予 `s3:ListBucket` 和 `s3:GetObject`。
 
     <Accordion title="IRSA Helm values">
       ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -396,9 +382,9 @@ The label and taint values in these examples match the provider samples on this 
       ```
     </Accordion>
 
-    ### Create a cache StorageClass
+    ### 创建缓存StorageClass
 
-    For the [network-attached disk](#network-attached-disk) option, create a gp3 StorageClass with provisioned IOPS and throughput. The [EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) must be installed.
+    对于 [network-attached disk](#network-attached-disk) 选项，创建一个具有预配置 IOPS 和吞吐量的 gp3 StorageClass。必须安装[EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     apiVersion: storage.k8s.io/v1
@@ -414,18 +400,16 @@ The label and taint values in these examples match the provider samples on this 
     reclaimPolicy: Delete
     ```
 
-    ### Provision EKS nodes with Karpenter
+    ### 使用 Karpenter 配置 EKS 节点
 
-    The node examples that follow apply to the [local SSD](#local-ssd) option. Karpenter is the recommended way to provision SmithDB capacity on EKS, but it is not required. Other node provisioners must produce the same labels, taints, and Kubernetes-visible ephemeral-storage capacity.
+    以下节点示例适用于 [local SSD](#local-ssd) 选项。 Karpenter 是在 EKS 上配置 SmithDB 容量的推荐方法，但这不是必需的。其他节点配置者必须生成相同的标签、污点和 Kubernetes 可见的临时存储容量。按照 [Karpenter EKS guide](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/) 安装 Karpenter v1 及其 CRD。在应用下面的示例之前：
 
-    Install Karpenter v1 and its CRDs by following the [Karpenter EKS guide](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/). Before applying the example below:
-
-    * Replace `CLUSTER_NAME` and `KarpenterNodeRole-CLUSTER_NAME`.
-    * Tag the selected subnets and security group with `karpenter.sh/discovery: CLUSTER_NAME`, or replace the selectors with tags or IDs used by your environment.
-    * Confirm the node IAM role and EKS access entry are configured for Karpenter-provisioned nodes.
+    * 替换`CLUSTER_NAME`和`KarpenterNodeRole-CLUSTER_NAME`。
+    * 使用 `karpenter.sh/discovery: CLUSTER_NAME` 标记选定的子网和安全组，或将选择器替换为您的环境使用的标签或 ID。
+    * 确认为 Karpenter 配置的节点配置了节点 IAM 角色和 EKS 访问条目。
 
     <Note>
-      Applying these manifests creates provisioning configuration. EC2 nodes launch when matching SmithDB pods require capacity.
+      应用这些清单会创建供应配置。当匹配的 SmithDB Pod 需要容量时，EC2 节点启动。
     </Note>
 
     <Accordion title="Karpenter EC2NodeClass and NodePool example">
@@ -564,23 +548,21 @@ The label and taint values in these examples match the provider samples on this 
           consolidateAfter: 2m
       ```
 
-      In this example, `instanceStorePolicy: RAID0` makes local NVMe available as node ephemeral storage. The `smithdb-instance-store` NodePool requires at least 800 GiB and consolidates only when empty, avoiding unnecessary churn of nodes with warm caches.
+      在此示例中，`instanceStorePolicy: RAID0`使本地 NVMe 可用作节点临时存储。 `smithdb-instance-store` NodePool 需要至少 800 GiB，并且仅在空时进行整合，避免使用热缓存对节点进行不必要的改动。
 
-      That 800 GiB floor suits the `medium` tier. Size the requirement against the largest per-replica ephemeral-storage request in your chosen tier, plus node headroom. See [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale).
+      800 GiB 楼层适合 `medium` 层。根据您选择的层中最大的每个副本临时存储请求以及节点余量来确定需求大小。参见[Configure SmithDB for scale](/langsmith/self-host-smithdb-scale)。
     </Accordion>
 
-    With custom AMIs, bootstrap must format and mount instance-store devices for kubelet and container-runtime storage.
+    对于自定义 AMI，Bootstrap 必须格式化并挂载 kubelet 和容器运行时存储的实例存储设备。
 
-    ### Provision EKS managed node groups
-
-    If Karpenter is unavailable, use EKS Managed Node Groups instead. These examples configure instance-store NVMe as RAID0 and apply the label and taint used by the Helm scheduling values.
+    ### 配置 EKS 受管节点组如果 Karpenter 不可用，请改用 EKS 托管节点组。这些示例将实例存储 NVMe 配置为 RAID0 并应用 Helm 调度值使用的标签和污点。
 
     <Warning>
-      Replace the uppercase placeholders. Choose the instance type and capacity from your sizing baseline and regional availability. Match `AMI_TYPE` to the instance architecture. For example, `i8g.4xlarge` uses `AL2023_ARM_64_STANDARD`.
+      替换大写占位符。根据您的规模调整基准和区域可用性选择实例类型和容量。将`AMI_TYPE`与实例架构相匹配。例如，`i8g.4xlarge` 使用`AL2023_ARM_64_STANDARD`。
     </Warning>
 
     <Accordion title="AWS CLI">
-      AWS CLI requires an EC2 launch template for the `nodeadm` configuration.
+      AWS CLI 需要 EC2 启动模板来进行 `nodeadm` 配置。
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       USER_DATA="$(
@@ -718,18 +700,16 @@ The label and taint values in these examples match the provider samples on this 
   </Tab>
 
   <Tab title="GCP">
-    A common GCP mapping is GKE Standard, AlloyDB or another compatible PostgreSQL service, Cloud Storage, Workload Identity, and Local SSD or Hyperdisk Balanced for the cache.
+    常见的 GCP 映射是 GKE 标准、AlloyDB 或其他兼容的 PostgreSQL 服务、云存储、工作负载身份以及用于缓存的本地 SSD 或 Hyperdisk 平衡。
 
-    ### Configure the metastore
+    ### 配置元存储
 
-    Use AlloyDB or Cloud SQL for PostgreSQL that meets the [metastore requirements](#postgresql-metastore).
+    使用满足 [metastore requirements](#postgresql-metastore) 的 AlloyDB 或 Cloud SQL for PostgreSQL。<Accordion title="Connect through the AlloyDB Auth Proxy">
+      SmithDB 可以通过在每个 SmithDB pod 中作为 sidecar 运行的 [AlloyDB Auth Proxy](https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview) 访问 AlloyDB。 SmithDB 通过环回连接到代理；代理向 Google Cloud 进行身份验证并加密上游连接。代理不会创建网络连接，因此 GKE 仍然需要通过私有 IP、Private Service Connect 或公共 IP 到 AlloyDB 的路由。
 
-    <Accordion title="Connect through the AlloyDB Auth Proxy">
-      SmithDB can reach AlloyDB through the [AlloyDB Auth Proxy](https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview) running as a sidecar in every SmithDB pod. SmithDB connects to the proxy on loopback; the proxy authenticates to Google Cloud and encrypts the upstream connection. The proxy does not create network connectivity, so GKE still needs a route to AlloyDB through private IP, Private Service Connect, or public IP.
+      将 `roles/alloydb.client` 和 `roles/serviceusage.serviceUsageConsumer` 授予与 SmithDB ServiceAccount 绑定的 Google 服务帐户。将 Metastore Secret 的主机密钥指向 `127.0.0.1` 并设置 `useSsl: false`。 SmithDB 无法验证 AlloyDB 直接提供的证书，加密从代理开始。
 
-      Grant `roles/alloydb.client` and `roles/serviceusage.serviceUsageConsumer` to the Google service account bound to the SmithDB ServiceAccount. Point the metastore Secret's host key at `127.0.0.1` and set `useSsl: false`. SmithDB cannot validate the certificate AlloyDB presents directly, and encryption begins at the proxy.
-
-      `smithdb.commonInitContainers` applies to every SmithDB Deployment and Job. Set `restartPolicy: Always` so Kubernetes runs the proxy as a sidecar and lets migration Jobs complete.
+      `smithdb.commonInitContainers` 适用于每个 SmithDB 部署和作业。设置`restartPolicy: Always`，以便 Kubernetes 将代理作为 sidecar 运行并让迁移作业完成。
 
       ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       smithdb:
@@ -765,18 +745,16 @@ The label and taint values in these examples match the provider samples on this 
             useSsl: false
       ```
 
-      Add `--psc` for Private Service Connect, `--public-ip` for public IP, or `--auto-iam-authn` for IAM database authentication, which also needs `roles/alloydb.databaseUser` and a matching IAM database user. If a migration Job never finishes, confirm `restartPolicy: Always`. If the loopback connection fails with a TLS error, confirm `useSsl` is `false`.
+      添加`--psc`用于私有服务连接，`--public-ip`用于公共IP，或`--auto-iam-authn`用于IAM数据库身份验证，这还需要`roles/alloydb.databaseUser`和匹配的IAM数据库用户。如果迁移作业从未完成，请确认`restartPolicy: Always`。如果环回连接因 TLS 错误而失败，请确认 `useSsl` 是 `false`。
     </Accordion>
 
-    ### Configure Cloud Storage access
-
-    Use Private Google Access with private Google APIs DNS to reach Cloud Storage.
+    ### 配置云存储访问使用私有 Google 访问权限和私有 Google API DNS 来访问 Cloud Storage。
 
     <Note>
-      Use a single-region bucket to avoid data replication costs and provide predictable tail latencies.
+      使用单区域存储桶可以避免数据复制成本并提供可预测的尾部延迟。
     </Note>
 
-    Grant a Google service account `roles/storage.objectAdmin`, or an equivalent custom role, on the SmithDB bucket, then allow `serviceAccount:<PROJECT_ID>.svc.id.goog[<NAMESPACE>/<HELM_RELEASE>-smithdb]` to impersonate it. For migration source reads, also grant `roles/storage.objectViewer` on the LangSmith blob-storage bucket.
+    在 SmithDB 存储桶上授予 Google 服务帐户 `roles/storage.objectAdmin` 或等效的自定义角色，然后允许 `serviceAccount:<PROJECT_ID>.svc.id.goog[<NAMESPACE>/<HELM_RELEASE>-smithdb]` 模拟它。对于迁移源读取，还要在 LangSmith blob 存储桶上授予 `roles/storage.objectViewer`。
 
     <Accordion title="GKE Workload Identity Helm values">
       ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -792,7 +770,7 @@ The label and taint values in these examples match the provider samples on this 
     </Accordion>
 
     <Accordion title="GCS HMAC migration configuration">
-      Prefer Workload Identity for GCS blob access. If LangSmith must use GCS HMAC keys, set `smithdb.migration.job.extraEnv` (`smithdb.migration.deployment.extraEnv` on LangSmith 0.16) to force the S3-compatible source and reference the existing LangSmith secret (`blob_storage_access_key` / `blob_storage_access_key_secret`):
+      优先选择工作负载身份来进行 GCS blob 访问。如果 LangSmith 必须使用 GCS HMAC 密钥，请设置 `smithdb.migration.job.extraEnv`（LangSmith 0.16 上的`smithdb.migration.deployment.extraEnv`）以强制使用 S3 兼容源并引用现有的 LangSmith 密钥 (`blob_storage_access_key` / `blob_storage_access_key_secret`)：
 
       <CodeGroup>
         ```yaml LangSmith 0.17 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -847,9 +825,9 @@ The label and taint values in these examples match the provider samples on this 
       </CodeGroup>
     </Accordion>
 
-    ### Create a cache StorageClass
+    ### 创建缓存StorageClass
 
-    For the [network-attached disk](#network-attached-disk) option, create a Hyperdisk Balanced StorageClass with provisioned IOPS and throughput. Hyperdisk availability depends on the node machine type; see [Hyperdisk on GKE](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/hyperdisk).
+    对于 [network-attached disk](#network-attached-disk) 选项，创建一个具有预配置 IOPS 和吞吐量的 Hyperdisk Balanced StorageClass。超级磁盘可用性取决于节点机器类型；参见[Hyperdisk on GKE](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/hyperdisk)。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     apiVersion: storage.k8s.io/v1
@@ -865,9 +843,7 @@ The label and taint values in these examples match the provider samples on this 
     reclaimPolicy: Delete
     ```
 
-    ### Provision GKE Local SSD nodes
-
-    This applies to the [local SSD](#local-ssd) option. Use [Local SSD-backed ephemeral storage](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd), created with `--ephemeral-storage-local-ssd`, which backs `emptyDir`, container layers, and scheduler capacity. The raw block option, `--local-nvme-ssd-block`, does not back `emptyDir` and leaves SmithDB with no cache capacity.
+    ### 配置 GKE 本地 SSD 节点这适用于 [local SSD](#local-ssd) 选项。使用由`--ephemeral-storage-local-ssd`创建的[Local SSD-backed ephemeral storage](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/local-ssd)，它支持`emptyDir`、容器层和调度程序容量。原始块选项`--local-nvme-ssd-block`不支持`emptyDir`，并且使SmithDB没有缓存容量。
 
     <Accordion title="GKE Local SSD node-pool example">
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -883,7 +859,7 @@ The label and taint values in these examples match the provider samples on this 
 
     <Accordion title="Terraform GKE Local SSD node-pool example">
       <Warning>
-        This example only configures Local SSD and workload scheduling. Configure node IAM, networking, security settings, and scaling separately. Values are illustrative.
+        本示例仅配置本地SSD和工作负载调度。单独配置节点 IAM、网络、安全设置和扩展。数值具有说明性。
       </Warning>
 
       ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -913,23 +889,21 @@ The label and taint values in these examples match the provider samples on this 
       ```
     </Accordion>
 
-    Supported disk counts and machine types vary by zone and machine generation. Verify availability in every zone used by the node pool.
+    支持的磁盘数量和机器类型因区域和机器代数而异。验证节点池使用的每个区域的可用性。
   </Tab>
 
   <Tab title="Azure">
-    A common Azure mapping is AKS, Azure Database for PostgreSQL, Azure Blob Storage, Workload Identity, and the VM temporary disk or Premium SSD v2 for the cache.
+    常见的 Azure 映射是 AKS、Azure Database for PostgreSQL、Azure Blob 存储、工作负载身份和高级 SSD v2 或通过用于缓存的 Azure 容器存储的本地 NVMe。
 
-    ### Configure the metastore
+    ### 配置元存储
 
-    Use Azure Database for PostgreSQL that meets the [metastore requirements](#postgresql-metastore).
+    使用满足 [metastore requirements](#postgresql-metastore) 的 Azure Database for PostgreSQL。
 
-    ### Configure Blob Storage access
+    ### 配置 Blob 存储访问
 
-    Use a private endpoint for Blob Storage.
+    使用 Blob 存储的专用终结点。
 
-    `smithdb.config.objectStore.bucket` is the Blob container name. `azure.accountName` is required. Leave `accessKeySecretKey` empty when using Workload Identity.
-
-    Grant the user-assigned managed identity `Storage Blob Data Contributor` on the SmithDB storage account, and `Storage Blob Data Reader` on the LangSmith blob-storage account for migration source reads. Annotate the SmithDB ServiceAccount with the identity's client ID, and add the `azure.workload.identity/use: "true"` label to every SmithDB workload.
+    `smithdb.config.objectStore.bucket` 是 Blob 容器名称。需要`azure.accountName`。使用 Workload Identity 时，将 `accessKeySecretKey` 留空。在 SmithDB 存储帐户上授予用户分配的托管标识 `Storage Blob Data Contributor`，并在 LangSmith blob 存储帐户上授予用户分配的托管标识 `Storage Blob Data Reader`，以进行迁移源读取。使用身份的客户端 ID 注释 SmithDB ServiceAccount，并将 `azure.workload.identity/use: "true"` 标签添加到每个 SmithDB 工作负载。
 
     <Accordion title="AKS Workload Identity Helm values">
       ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -975,9 +949,9 @@ The label and taint values in these examples match the provider samples on this 
       ```
     </Accordion>
 
-    ### Create a cache StorageClass
+    ### 创建缓存StorageClass
 
-    For the [network-attached disk](#network-attached-disk) option, create a Premium SSD v2 StorageClass with provisioned IOPS and throughput. Premium SSD v2 disks are zonal and available in a subset of regions, so deploy the node pool across availability zones in a supported region. See [Premium SSD v2 on AKS](https://learn.microsoft.com/en-us/azure/aks/use-premium-v2-disks).
+    对于 [network-attached disk](#network-attached-disk) 选项，创建具有预配置 IOPS 和吞吐量的 Premium SSD v2 StorageClass。高级 SSD v2 磁盘是分区的，并且在部分区域中可用，因此请在受支持的区域中跨可用区部署节点池。参见[Premium SSD v2 on AKS](https://learn.microsoft.com/en-us/azure/aks/use-premium-v2-disks)。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     apiVersion: storage.k8s.io/v1
@@ -994,13 +968,11 @@ The label and taint values in these examples match the provider samples on this 
     reclaimPolicy: Delete
     ```
 
-    ### Provision AKS nodes with a temporary disk
+    ### 使用本地 NVMe 配置 AKS 节点
 
-    This applies to the [local SSD](#local-ssd) option. AKS does not attach a separate Local SSD volume for `emptyDir`. Set `kubelet-disk-type` to `Temporary` so kubelet, container images, logs, and `emptyDir` use the VM temporary disk. That disk is local SSD or NVMe and is wiped when the VM is deallocated or moved to another host.
+    这适用于 [local SSD](#local-ssd) 选项。使用具有本地 NVMe 磁盘的节点池并通过 [Azure Container Storage](https://learn.microsoft.com/en-us/azure/storage/container-storage/container-storage-introduction) 公开它们。
 
-    Use a VM size with enough temporary-disk capacity for SmithDB cache requests. `Standard_L16s_v3` is an L-series size with a large local NVMe temporary disk. A SKU without a suitable temporary disk leaves `emptyDir` too small even if AKS accepts the node pool. Confirm allocatable `ephemeral-storage` after the pool is ready.
-
-    AKS limits node pool names to 12 lowercase alphanumeric characters, so these examples name the pool `smithcache` rather than `smithdb-instance-store`.
+    调整节点上每个缓存卷的 NVMe 大小。这些示例使用`Standard_L16s_v4`。
 
     <Accordion title="Azure CLI node-pool example">
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1008,8 +980,7 @@ The label and taint values in these examples match the provider samples on this 
         --resource-group RESOURCE_GROUP \
         --cluster-name CLUSTER_NAME \
         --name smithcache \
-        --node-vm-size Standard_L16s_v3 \
-        --kubelet-disk-type Temporary \
+        --node-vm-size Standard_L16s_v4 \
         --labels smithdb-local/instance-store=true \
         --node-taints smithdb-local/instance-store=true:NoSchedule
       ```
@@ -1017,15 +988,14 @@ The label and taint values in these examples match the provider samples on this 
 
     <Accordion title="Terraform AKS node-pool example">
       <Warning>
-        This example only configures the temporary-disk cache pool and workload scheduling. Configure node IAM, networking, security settings, and scaling separately. Values are illustrative. Confirm that `Standard_L16s_v3`, or an equivalent SKU with enough temporary-disk capacity, is available in the target region.
+        本例仅配置缓存池。单独配置节点 IAM、网络、安全设置和扩展，并确认您的 VM 大小在您所在的区域可用。
       </Warning>
 
       ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       resource "azurerm_kubernetes_cluster_node_pool" "smithdb_cache" {
         name                  = "smithcache"
         kubernetes_cluster_id = azurerm_kubernetes_cluster.primary.id
-        vm_size               = "Standard_L16s_v3"
-        kubelet_disk_type     = "Temporary"
+        vm_size               = "Standard_L16s_v4"
         node_count            = NODE_COUNT
 
         node_labels = {
@@ -1037,6 +1007,60 @@ The label and taint values in these examples match the provider samples on this 
         ]
       }
       ```
+    </Accordion>在池上启用 Azure 容器存储。这需要`k8s-extension` Azure CLI 扩展并创建`local-csi` StorageClass。
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    az aks update \
+      --resource-group RESOURCE_GROUP \
+      --name CLUSTER_NAME \
+      --enable-azure-container-storage ephemeralDisk \
+      --container-storage-version 2 \
+      --azure-container-storage-nodepools smithcache
+    ```
+
+    将每个缓存作为临时 PVC 安装在 `local-csi` 而不是`emptyDir` 上。该图表根据 PVC 调整查询磁盘缓存的大小，因此请跳过 `ephemeral-storage` 设置。还要添加[scheduling controls](#schedule-smithdb-workloads)。
+
+    <Accordion title="Azure Container Storage cache Helm values">
+      ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      smithdb:
+        resourceTier: small
+        query:
+          deployment:
+            volumes:
+              - name: cache
+                ephemeral:
+                  volumeClaimTemplate:
+                    spec:
+                      accessModes: ["ReadWriteOnce"]
+                      storageClassName: local-csi
+                      resources:
+                        requests:
+                          storage: 200Gi
+        ingestion:
+          deployment:
+            volumes:
+              - name: cache
+                ephemeral:
+                  volumeClaimTemplate:
+                    spec:
+                      accessModes: ["ReadWriteOnce"]
+                      storageClassName: local-csi
+                      resources:
+                        requests:
+                          storage: 100Gi
+        compactionWorker:
+          deployment:
+            volumes:
+              - name: cache
+                ephemeral:
+                  volumeClaimTemplate:
+                    spec:
+                      accessModes: ["ReadWriteOnce"]
+                      storageClassName: local-csi
+                      resources:
+                        requests:
+                          storage: 100Gi
+      ```
     </Accordion>
   </Tab>
 </Tabs>
@@ -1045,10 +1069,10 @@ The label and taint values in these examples match the provider samples on this 
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-infrastructure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-infrastructure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

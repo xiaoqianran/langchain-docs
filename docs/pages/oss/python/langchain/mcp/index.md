@@ -2,7 +2,7 @@
 
 # Model Context Protocol (MCP)
 
-Connect LangChain agents to MCP servers with the MCPAdapter, built on FastMCP.
+Connect LangChain agents to MCP servers with MCPAdapter.
 
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open protocol that standardizes how applications provide tools and context to language models. LangChain agents call tools defined on MCP servers through [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter), which discovers a server's tools and adapts them into LangChain tools you can pass straight to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent).
 
@@ -44,8 +44,10 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-<Accordion title="Example: Query LangChain docs">
-  The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`. Connect an agent to it to search and read documentation without writing custom tools:
+<Accordion title="LangChain docs MCP server">
+  The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
+
+  Connect an agent to it to search and read documentation without writing custom tools:
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
@@ -83,7 +85,7 @@ async def main():
 
 ## Transports
 
-[`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) infers the transport from the target you hand it, so the only thing that changes between an in-process server, a local script over stdio, and a remote URL is the target itself:
+[`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) infers the transport from the target you provide. The target is the only difference between an in-process server, a local script over stdio, and a remote URL:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pathlib import Path
@@ -102,30 +104,30 @@ http = MCPAdapter("https://example.com/mcp")
 
 A target can be any of the following:
 
-* **An `http`/`https` URL** (`str`): reached over streamable HTTP.
+* **An `http`/`https` URL** (`str`): reached over Streamable HTTP.
 * **A script path** (`Path`): launched as a subprocess over stdio.
-* **A transport object** (`StreamableTransport`): a pre-configured transport object. See [Client Transports](https://gofastmcp.com/clients/transports).
-* **An in-process `FastMCP` server**: connected in-memory, with no subprocess or socket.
+* **A transport object** (`StreamableTransport`): a preconfigured transport object. See [Client Transports](https://gofastmcp.com/clients/transports).
+* **An in-process `FastMCP` server**: connected in memory, without a subprocess or socket.
 * **An `MCPConfig` dict** (`{"mcpServers": {...}}`): several servers behind one adapter. See [Connections](/oss/python/langchain/mcp/connections#multiple-servers).
 * **A prebuilt `fastmcp.Client`**: for full control over transport, [caching](https://gofastmcp.com/clients/client#response-caching), and [protocol negotiation](https://gofastmcp.com/clients/client#protocol-negotiation).
 
 <Warning>
-  A `str` target must be an `http` or `https` URL. FastMCP resolves a string by testing it as a filesystem path before testing it as a URL, so a string naming an existing `.py` or `.js` file would launch that file as a subprocess. Because strings are the form a target most often arrives in from configuration or from a model, [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) rejects strings that don't match the shape of a URL.
+  A `str` target must be an `http` or `https` URL. FastMCP resolves a string by testing it as a filesystem path before testing it as a URL, so a string naming an existing `.py` or `.js` file would launch that file as a subprocess. Because strings are the form a target most often arrives in from configuration or from a model, [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) rejects strings that do not match the shape of a URL.
 </Warning>
 
 ## Next steps
 
 <CardGroup>
+  <Card title="Tools" icon="tool" href="/oss/python/langchain/mcp/tools">
+    Load MCP tools into agents, control their execution, and handle their outputs.
+  </Card>
+
   <Card title="Connections" icon="plug" href="/oss/python/langchain/mcp/connections">
     Connection lifecycle, multiple servers, protocol eras, and caching.
   </Card>
 
   <Card title="Authentication" icon="lock" href="/oss/python/langchain/mcp/auth">
     Bearer tokens, OAuth 2.1, and per-user server auth.
-  </Card>
-
-  <Card title="Tools" icon="tool" href="/oss/python/langchain/mcp/tools">
-    Load MCP tools into agents, control their execution, and handle their outputs.
   </Card>
 </CardGroup>
 

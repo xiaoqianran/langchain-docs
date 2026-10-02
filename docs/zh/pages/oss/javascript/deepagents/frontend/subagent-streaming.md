@@ -10,13 +10,13 @@
 分析师、作家），您需要单独渲染协调器的消息
 来自每个子代理的流输出。 v1 SDK 保持协调器消息开启
 根流并将子代理公开为发现快照。将快照传递给
-选择器挂钩或可组合项（例如用于渲染的 `useMessages(stream, subagent)`）
+选择器挂钩或可组合项，例如用于渲染的`useMessages(stream, subagent)`
 专家的范围流。
 
 这就是 LangChain 前端 SDK 超越平面聊天记录的地方：
 子代理是一流的流实体，具有自己的状态、消息、
 工具调用元数据和结果。您的 UI 可以显示委托、进度、错误、
-和最终综合，而不要求用户从每个中读取交错的标记
+和最终综合，而不要求用户从每个中读取交错的令牌
 工人。
 
 <PatternEmbed />
@@ -319,7 +319,7 @@ function SubagentProgress({
 ## 使用子代理卡渲染消息
 
 关键的布局模式是从根流渲染协调器消息
-并将子代理卡附加到其工具调用生成它们的 AI 消息中：
+并将子代理卡附加到工具调用生成它们的 AI 消息中：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function DeepAgentLayout({ stream }: { stream: AnyStream }) {
@@ -364,18 +364,40 @@ function DeepAgentLayout({ stream }: { stream: AnyStream }) {
 * **显示专家姓名**。 `subagent.name` 告诉用户哪个工作线程处于活动状态。
 * **使用可折叠卡片**。在具有 5 个以上子代理的工作流程中，自动折叠
   完成卡片，以便用户可以专注于积极的工作。
-* **仅在需要时覆盖递归**。 Deep Agents 设置了较高的默认值
+* **仅在需要时覆盖递归**。 Deep Agents设置较高的默认值
   递归限制；通过`config.recursion_limit`仅适用于异常深度的定制
   工作流程。
 * **处理每个子代理的错误**。一个子代理失败不应导致系统崩溃
   整个用户界面。在其他子代理的卡中显示错误，而其他代理继续
   运行。
 
+## 相关LangChain指南
+
+这些 LangChain 前端模式与子代理卡的工作方式相同
+使用单代理流。 Deep Agents 是在相同的 `useStream` 基础上构建的
+API，因此这些指南直接适用：<CardGroup>
+  <Card title="Tool calling" icon="hammer" href="/oss/javascript/langchain/frontend/tool-calling">
+    将每个子代理的工具调用呈现为丰富的、类型安全的 UI 卡，具有待处理、已完成和失败状态。
+  </Card>
+
+  <Card title="Markdown messages" icon="markdown" href="/oss/javascript/langchain/frontend/markdown-messages">
+    将协调器和子代理消息显示为格式化的降价，并具有适当的流支持。
+  </Card>
+
+  <Card title="Human-in-the-Loop" icon="hand" href="/oss/javascript/langchain/frontend/human-in-the-loop">
+    使用相同的中断 API 暂停委托子代理以供用户批准或输入。
+  </Card>
+
+  <Card title="Reasoning tokens" icon="brain" href="/oss/javascript/langchain/frontend/reasoning-tokens">
+    使用可折叠推理块在子代理卡内进行表面模型思考。
+  </Card>
+</CardGroup>
+
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

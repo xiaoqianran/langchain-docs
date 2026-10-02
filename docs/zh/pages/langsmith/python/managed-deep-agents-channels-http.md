@@ -15,8 +15,14 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 </Note>
 
 <Note>
-  HTTP channels require `managed-deepagents>=0.8.0`.
+  HTTP 通道需要 `managed-deepagents>=0.8.0`。
 </Note>
+
+`verify`、`parse` 和可选的 `post` 位于外部服务和代理运行之间：
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
 
 ## 项目结构
 
@@ -27,9 +33,7 @@ my-agent/
   agent.py
   channels/
     orders.py
-```
-
-文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。 For the full project layout, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ## 添加 HTTP 通道
 
@@ -45,7 +49,9 @@ my-agent/
         verify=verify,
         parse=parse,
     )
-    ````provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/python/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
+    ```
+
+    `provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/python/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
 
     跨提供相同服务的渠道共享一个提供商。两个 Shopify 渠道（`channels/orders` 和 `channels/refunds`）均声明 `provider: "shopify"`，将同一 Shopify 用户解析为一个委托人。即使呼叫者 ID 相同，声明 `provider: "slack"` 的通道也会解析为不同的主体。
 
@@ -71,7 +77,7 @@ my-agent/
         received = context.request.headers.get("x-orders-signature", "")
         return hmac.compare_digest(f"sha256={digest}", received)
     ```<Warning>
-      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得`verify`成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
+      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得 `verify` 成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
     </Warning>
 
     使用 [deployment secret](/langsmith/python/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
@@ -80,7 +86,7 @@ my-agent/
   </Step>
 
   <Step title="Parse the request into a message">
-    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
+    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且可能是异步的。返回两个形状之一：
 
     * `{"type": "message", "message": {...}}` 开始跑步。
     * `{"type": "ignore"}` 跳过该事件。
@@ -142,7 +148,7 @@ my-agent/
   <Step title="Send replies with post">
     添加异步 `post` 回调以将代理的最终响应传递给外部服务。对于仅开始运行的通道，请忽略它。
 
-    `post` 接收一个带有已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
+    `post` 接收一个包含已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
 
     这些示例支持内容消息并拒绝本机消息。 `target`是`parse`返回的订单ID。
 
@@ -202,7 +208,7 @@ POST https://<deployment-url>/channels/<name>/events
 | `400` | `{"error": "invalid channel parse result"}` | `parse` 返回了无法识别的形状。 |
 | `400` | `{"error": "invalid channel message"}` |该消息具有无效的调用者、线程 UUID、内容或 JSON `target`。 |
 | `401` | `{"error": "invalid channel signature"}` | `verify` 拒绝了请求。 |
-| `500` | `{"error": "channel verification failed"}` | `verify` 提高。 |
+| `500` | `{"error": "channel verification failed"}` | `verify` 升高。 |
 | `500` | `{"error": "channel runtime is not configured"}` |托管运行时缺少所需的配置。 |
 | `500` | `{"error": "channel run could not be started"}` |代理运行无法启动。 |`202` 表示运行已被接受，而不是已完成。如果已配置，代理的答复稍后会通过 `post` 到达。
 
@@ -232,7 +238,7 @@ HTTP 通道不需要提供商授权，因此部署是标准命令。 Managed Dee
 uv run mda deploy
 ```
 
-将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后向外部服务注册 `https://<deployment-url>/channels/<name>/events` 作为其 webhook 目标。
+将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后将 `https://<deployment-url>/channels/<name>/events` 注册到外部服务作为其 webhook 目标。
 
 ## 另请参阅* [Channels overview](/langsmith/python/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Slack](/langsmith/python/managed-deep-agents-channels-slack)：改用提供商管理的 Slack 通道。
@@ -243,7 +249,7 @@ uv run mda deploy
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

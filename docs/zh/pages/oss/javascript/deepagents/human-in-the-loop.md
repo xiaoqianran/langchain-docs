@@ -6,7 +6,7 @@
 
 了解如何为敏感工具操作配置人工审批
 
-某些工具操作可能很敏感，需要人工批准才能执行。深度代理通过 LangGraph 的中断功能支持人机交互工作流程。您可以使用 `interrupt_on` 参数配置哪些工具需要批准。当设置`interrupt_on`时，`HumanInTheLoopMiddleware`将添加到[Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack)。如果在工具返回结果之前运行被取消或中断，同一堆栈中的 ⟦​​T39⟧ 会自动修复消息历史记录。
+某些工具操作可能很敏感，需要人工批准才能执行。 Deep Agents 通过LangGraph 的中断功能支持人机交互工作流程。您可以使用 `interrupt_on` 参数配置哪些工具需要批准。当设置`interrupt_on`时，`HumanInTheLoopMiddleware`将添加到[Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack)。如果在工具返回结果之前运行被取消或中断，同一堆栈中的[⟦T14⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)会自动修复消息历史记录。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -17,7 +17,6 @@ graph LR
     Human --> |approve| Execute
     Human --> |edit| Execute
     Human --> |reject| ToolMessage[ToolMessage]
-    Human --> |respond| ToolMessage
 
     Execute --> Agent
     ToolMessage --> Agent
@@ -37,8 +36,12 @@ graph LR
 
 `interrupt_on`参数接受字典映射工具名称以中断配置。每个工具都可以配置：
 
-* **`True`**：以默认行为启用中断（允许批准、编辑、拒绝、响应）
+* **`True`**：以默认行为启用中断
+
+  （允许批准、编辑和拒绝）
+
 * **`False`**：禁用该工具的中断
+
 * **`InterruptOnConfig`**：自定义配置。设置`allowed_decisions`来控制审阅选项。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -100,7 +103,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google_genai:gemini-3.6-flash",
+  model: "google:gemini-3.6-flash",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -114,11 +117,12 @@ const agent = createDeepAgent({
 ## 决策类型
 
 `allowed_decisions` 列表控制人们在查看工具调用时可以采取的操作：|决策类型|描述 |示例用例 |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| ✅ `approve` |使用代理建议的原始参数执行该工具。                                          |发送与书面内容完全一致的电子邮件草稿 |
-| ✏️ `edit` |执行前修改工具参数。                                                                     |发送电子邮件之前更改收件人 |
-| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。                              |拒绝文件删除并解释原因 |
-| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |当人类拒绝提议的行动时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息可能会被模型视为成功的工具结果。
+| - | - | - |
+| ✅ `approve` |使用代理建议的原始参数执行该工具。 |发送与书面内容完全一致的电子邮件草稿 |
+| ✏️ `edit` |执行前修改工具参数。 |发送电子邮件之前更改收件人 |
+| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。 |拒绝文件删除并解释原因 |
+
+当人类拒绝提议的行动时使用`reject`。
 
 <Tip>
   **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
@@ -141,7 +145,7 @@ const interruptOn = {
 
 ## 处理中断
 
-当中断被触发时，代理暂停执行并返回控制权。检查结果中是否存在中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
+当中断被触发时，代理暂停执行并返回控制权。检查结果中是否有中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -194,6 +198,75 @@ if (result.__interrupt__) {
 console.log(result.messages[result.messages.length - 1].content);
 ```
 
+## 使用流处理中断对于实时 UI，请使用 `.stream()` 而不是 `.invoke()` 在处理 HITL 中断时显示令牌和工具调用进度。中断在 `updates` 流中显示为 `__interrupt__` 条目。流完成后，收集人工决策并通过使用 `Command(resume=...)` 再次流式传输来恢复。
+
+<Note>
+  对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/javascript/langgraph/interrupts#handling-multiple-interrupts)。
+</Note>
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { v7 as uuid7 } from "uuid";
+import { Command } from "@langchain/langgraph";
+
+const config = { configurable: { thread_id: uuid7() } };
+let streamInput: Record<string, any> | Command = {
+  messages: [{ role: "user", content: "Delete the file temp.txt" }],
+};
+
+while (true) {
+  let pendingInterrupt: { value: any } | undefined;
+
+  for await (const chunk of await agent.stream(  // [!code highlight]
+    streamInput,
+    {
+      streamMode: ["messages", "updates"],  // [!code highlight]
+      ...config,
+    }
+  )) {
+    const [mode, data] = chunk;
+
+    if (mode === "messages") {
+      const [token] = data;
+      // Display tokens in real time
+      if (token.text) {
+        process.stdout.write(token.text);
+      }
+    }
+
+    if (mode === "updates" && data?.__interrupt__) {  // [!code highlight]
+      pendingInterrupt = data.__interrupt__[0];  // [!code highlight]
+    }
+  }
+
+  // If no interrupt occurred, the agent finished
+  if (!pendingInterrupt) break;
+
+  const interruptValue = pendingInterrupt.value;
+  const actionRequests = interruptValue.actionRequests;
+  const reviewConfigs = interruptValue.reviewConfigs;
+  const configMap = Object.fromEntries(
+    reviewConfigs.map((cfg: any) => [cfg.actionName, cfg])
+  );
+
+  for (const action of actionRequests) {
+    const review = configMap[action.name];
+    console.log(`\nTool: ${action.name}`);
+    console.log(`Arguments: ${JSON.stringify(action.args)}`);
+    console.log(`Allowed: ${review.allowedDecisions}`);
+  }
+
+  // Collect one decision per actionRequest, in order
+  const decisions = actionRequests.map(() => ({ type: "approve" }));
+  streamInput = new Command({ resume: { decisions } });  // [!code highlight]
+}
+
+process.stdout.write("\n");
+```
+
+<Tip>
+  结合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍然捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
+</Tip>
+
 ## 多个工具调用
 
 当代理调用需要批准的多个工具时，所有中断都会在单个中断中批量处理。您必须按顺序为每一项做出决定。
@@ -231,7 +304,7 @@ if (result.__interrupt__) {
 }
 ```
 
-## 拒绝消息当审阅者返回`reject`决策时，深度代理会跳过工具调用并将拒绝反馈发送回代理。如果省略 `message`，默认反馈会告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。
+## 拒绝消息当审核者返回 `reject` 决策时，Deep Agents 跳过工具调用并将拒绝反馈发送回代理。如果省略 `message`，默认反馈会告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。
 
 对于敏感或副作用工具，请通过决策传递特定于域的`message`。明确客服人员是否应该放弃该操作、提出后续问题或尝试更安全的替代方案。
 
@@ -302,9 +375,9 @@ const agent = createDeepAgent({
 });
 ```
 
-当子代理触发中断时，处理是相同的 - 检查结果中的 `interrupts` 并使用 `Command` 恢复。
+当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。
 
-### 工具调用中的中断
+流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传送。如果您还想流式传输子代理令牌和进度事件，请启用 `subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
 
 子代理工具可以直接调用`interrupt()`暂停执行并等待批准：
 
@@ -439,9 +512,11 @@ Execution completed!
   Tool result: Approval for "deploying to production" has been granted. You can proceed with the deployment.
 ```
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

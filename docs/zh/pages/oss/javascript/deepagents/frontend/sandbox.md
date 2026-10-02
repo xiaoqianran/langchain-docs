@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Sandbox | https://docs.langchain.com/oss/javascript/deepagents/frontend/sandbox -->
 
-# 沙盒
+# 沙箱
 
-为沙箱环境支持的编码代理构建类似 IDE 的 UI
+为沙盒环境支持的编码代理构建类似 IDE 的 UI
 
 编码代理需要的不仅仅是聊天窗口。他们需要一个文件浏览器、一个代码
 查看器、差异面板、IDE 体验。这种模式连接了很深的
@@ -64,7 +64,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -114,7 +114,7 @@ API 网址。会话 ID 不会在浏览器会话中持续存在。
 需要工具配置。构建此 UI 在生产设置之上添加了一项要求：
 **自定义 API 服务器** 在代理图之外运行，因此代理
 后端和您的文件浏览路由必须解析**相同的沙箱**
-每个线程。将沙箱 ID 存储在线程元数据上并共享一个
+每个线程。将沙箱 ID 存储在线程元数据上并共享单个
 它们之间的查找功能。
 
 ### 从线程元数据解析沙箱
@@ -165,7 +165,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
     const backend = await getOrCreateSandboxForThread(threadId);
 
     return createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       backend,
       systemPrompt: "You are an expert developer working on a project in /app.",
     });
@@ -205,7 +205,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
     const backend = await getOrCreateSandboxForThread(threadId);
 
     return createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       backend,
       systemPrompt: "You are an expert developer working on a project in /app.",
     });
@@ -225,7 +225,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
     const backend = await getOrCreateSandboxForThread(threadId);
 
     return createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       backend,
       systemPrompt: "You are an expert developer working on a project in /app.",
     });
@@ -294,7 +294,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
 </CodeGroup>
 
 <Note>
-  与[Going to production](/oss/javascript/deepagents/going-to-production#lifecycle)中的例子类似，
+  与[Going to production](/oss/javascript/deepagents/going-to-production#lifecycle)中的示例类似，
   代理是每次运行时调用的异步图工厂。将沙箱 ID 存储在
   线程元数据，因此自定义`http.app`路由可以调用相同的
   `getOrCreateSandboxForThread` 帮手。进入生产使用提供商标签
@@ -305,7 +305,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
 `upload_files`。参见[File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
 用于播种模式、提供程序示例和同步
 [memories](/oss/javascript/deepagents/memory) 或 [skills](/oss/javascript/deepagents/skills) 进入
-沙箱。对于 LangSmith 沙箱，从 a 传递 `templateName`
+沙箱。对于LangSmith沙箱，从a传递`templateName`
 [sandbox snapshot](/langsmith/sandbox-snapshots) 创建容器时。
 
 <Tip>
@@ -406,7 +406,7 @@ LangGraph 平台可与默认路线一起为您的自定义路线提供服务。
 使用`langgraph dev`进行本地开发，即`http://localhost:2024`。
 
 <Note>
-  `http.app` 中定义的自定义路由优先于默认 LangGraph 路由。这意味着你
+  `http.app` 中定义的自定义路由优先于默认的 LangGraph 路由。这意味着你
   如果需要，可以隐藏内置端点，但要小心不要意外覆盖路由，例如
   `/threads` 或 `/runs`。
 </Note>
@@ -427,7 +427,7 @@ LangGraph 平台可与默认路线一起为您的自定义路线提供服务。
 
 ### 线程创建
 
-页面加载时创建一个 LangGraph 线程并将其 ID 保存在
+页面加载时创建一个LangGraph线程，并将其ID持久化在
 `sessionStorage` 因此页面重新加载重新连接到同一个沙箱：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -464,15 +464,15 @@ function IDEPreview() {
 ```
 
 “新线程”按钮会清除存储的 ID，以便下一次安装创建一个
-新线程（和沙箱）：```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+新线程（和沙箱）：
+
+```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function handleNewThread() {
   updateThreadId(null);
 }
-```
+```### 文件状态管理
 
-### 文件状态管理
-
-跟踪沙箱文件系统的两个快照：原始状态（在
+跟踪沙盒文件系统的两个快照：原始状态（在
 代理运行）和当前状态（实时更新）。线程ID是
 包含在 API URL 中，以便请求始终到达正确的沙箱：
 
@@ -726,7 +726,7 @@ function detectChanges(
 ### 显示差异
 
 使用适合框架的 diff 库来呈现统一的 diff：|框架|图书馆 |组件|
-| ---------| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| - | - | - |
 |反应 | [⟦T62⟧](https://diffs.com) | `<FileDiff>` 与 `parseDiffFromFile` |
 |视图 | [⟦T65⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
 |苗条| [⟦T69⟧](https://github.com/MrWangJustToDo/git-diff-view) | `<DiffView>` 与 `generateDiffFile` 来自 `@git-diff-view/file` |
@@ -756,7 +756,7 @@ function DiffPanel({ original, current, fileName }) {
 ### 更改文件摘要
 
 显示所有修改文件的摘要以及行级添加/删除计数。
-这使用户可以快速了解代理的影响 - 类似于“git”
+这使用户可以快速了解代理的影响，类似于“git”
 状态`：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -785,7 +785,9 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 ## 用例
 
-在以下情况下，沙箱是正确的选择：* **创建、修改和运行代码的编码代理**需要一个可视化界面
+在以下情况下，沙箱是正确的选择：
+
+* **创建、修改和运行代码的编码代理**需要一个可视化界面
   超越聊天
 * **代码审查工作流程**，其中代理建议更改并由用户提出建议
   在接受之前审查差异
@@ -799,22 +801,20 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 前端特定：
 
 * **将 `threadId` 保留在 `sessionStorage`** 中，以便页面重新加载并重新连接到
-  相同的线程和沙箱，而不是创建新的。
-
-* **在每个相关工具调用时同步文件**，而不仅仅是在运行完成时同步。留意 `write_file`、`edit_file` 和 `execute`
+  相同的线程和沙箱，而不是创建新的。* **在每个相关工具调用时同步文件**，而不仅仅是在运行完成时同步。留意 `write_file`、`edit_file` 和 `execute`
   工具消息并立即刷新。
 
 * **默认为已更改文件的差异视图**。当用户单击一个文件时
-  被代理修改了，首先显示差异 - 这就是他们关心的。
+  被代理修改了，首先显示差异——这就是他们关心的。
 
 * **显示只读操作的紧凑工具结果**。而不是倾销
   聊天中`read_file`的完整输出，显示一行字
-  `Read router.js L1-42`。为变异工具保留完整的输出显示。* **从文件树中过滤`node_modules`**。没有人愿意浏览
+  `Read router.js L1-42`。为变异工具保留完整的输出显示。
+
+* **从文件树中过滤`node_modules`**。没有人愿意浏览
   数千个依赖文件。获取树时将它们过滤掉。
 
-对于后端和沙箱：
-
-* **对生产应用程序使用线程范围的沙箱**。参见
+对于后端和沙箱：* **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
 * **通过代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
@@ -849,9 +849,32 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
   </Card>
 </CardGroup>
 
-***<div>
+## 相关LangChain指南
+
+沙盒 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
+本页使用相同的 `useStream` 原语：
+
+<CardGroup>
+  <Card title="Tool calling" icon="hammer" href="/oss/javascript/langchain/frontend/tool-calling">
+    将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。
+  </Card><Card title="Headless tools" icon="cpu" href="/oss/javascript/langchain/frontend/headless-tools">
+    在客户端运行浏览器和设备 API — 对于在 IDE 面板中嵌入实时预览或终端输出非常有用。
+  </Card>
+
+  <Card title="Open-ended generative UI" icon="layout-grid" href="/oss/javascript/langchain/frontend/open-ended-generative-ui">
+    在生成 UI 范围的开放端渲染沙盒应用程序预览和 MCP 生成的界面。
+  </Card>
+
+  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/javascript/langchain/frontend/join-rejoin">
+    页面重新加载后重新连接到正在运行的编码会话，而不会丢失沙箱状态。
+  </Card>
+</CardGroup>
+
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

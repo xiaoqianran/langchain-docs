@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Customize Deep Agents | https://docs.langchain.com/oss/javascript/deepagents/customization -->
 
-# 自定义深度代理
+# 自定义Deep Agents
 
-了解如何使用系统提示、工具、子代理等自定义深度代理
+了解如何使用系统提示、工具、子代理等自定义 Deep Agents
 
 围绕您的目标构建安全带。 `create_deep_agent` 为您提供生产就绪的基础：将其连接到您的数据，塑造其行为，并添加您的用例所需的功能。
 
@@ -15,7 +15,7 @@
   import { createDeepAgent } from "deepagents";
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt: "You are a helpful assistant.",
     tools: [search, fetchUrl],
     memory: ["./AGENTS.md"],
@@ -39,7 +39,7 @@
   import { createDeepAgent } from "deepagents";
 
   const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt: "You are a helpful assistant.",
     tools: [search, fetchUrl],
     memory: ["./AGENTS.md"],
@@ -51,7 +51,7 @@
   import { createDeepAgent } from "deepagents";
 
   const agent = await createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt: "You are a helpful assistant.",
     tools: [search, fetchUrl],
     memory: ["./AGENTS.md"],
@@ -95,12 +95,13 @@
   });
   ```
 </CodeGroup>|参数|它有什么作用 |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| - | - |
 | `model` |使用哪种型号 |
 | `systemPrompt` |代理定制说明 |
 | `tools` |代理可以调用​​的领域工具 |
 | `memory` |启动时加载的 AGENTS.md 文件 |
-| `skills` |按需知识的技能目录 || `backend` |文件系统后端（默认为 StateBackend）|
+| `skills` |按需知识的技能目录 |
+| `backend` |文件系统后端（默认为 StateBackend） |
 | `permissions` |文件系统的路径级访问控制|
 | `subagents` |用于委派任务的自定义子代理 |
 | `middleware` |附加到 [Deep Agents stack](#deep-agents-stack) | 的额外中间件
@@ -108,15 +109,15 @@
 | `responseFormat` |结构化输出模式|
 | [⟦T158⟧](/oss/javascript/deepagents/context-engineering#runtime-context) |每次运行的运行时上下文架构（用户 ID、API 密钥、功能标志）|
 
-有关完整参数列表，请参阅 [⟦T159⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。要从头开始构建完全自定义的线束，请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。<Tip>
+有关完整参数列表，请参阅 [⟦T159⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。要从头开始构建完全自定义的线束，请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
+
+<Tip>
   当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置，并参阅[Going to production](/oss/javascript/deepagents/going-to-production)在LangSmith上进行部署。
 
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 型号
-
-传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
+## 型号传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
 
 <Tip>
   使用`provider:model`格式（例如`openai:gpt-5.5`）可以在模型之间快速切换。
@@ -310,31 +311,33 @@
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai deepagents
+      npm install @langchain/google deepagents
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai deepagents
+      pnpm install @langchain/google deepagents
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai deepagents
+      yarn add @langchain/google deepagents
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai deepagents
+      bun add @langchain/google deepagents
       ```
-    </CodeGroup><CodeGroup>
+    </CodeGroup>
+
+    <CodeGroup>
       ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const agent = createDeepAgent({ model: "google-genai:gemini-3.1-pro-preview" });
+      const agent = createDeepAgent({ model: "google:gemini-3.1-pro-preview" });
       // this calls initChatModel for the specified model with default parameters
       // to use specific model parameters, use initChatModel directly
       ```
@@ -345,7 +348,7 @@
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-3.1-pro-preview");
+      const model = await initChatModel("google:gemini-3.1-pro-preview");
       const agent = createDeepAgent({
         model,
         temperature: 0,
@@ -353,11 +356,11 @@
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
       import { createDeepAgent } from "deepagents";
 
       const agent = createDeepAgent({
-        model: new ChatGoogleGenerativeAI({
+        model: new ChatGoogle({
           model: "gemini-3.1-pro-preview",
           apiKey: "your-api-key",
           temperature: 0,
@@ -433,9 +436,7 @@
   </Tab>
 
   <Tab title="Other">
-    传递任何[supported model string](/oss/javascript/deepagents/models#supported-models)，或初始化的模型实例：
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    传递任何[supported model string](/oss/javascript/deepagents/models#supported-models)，或初始化的模型实例：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { initChatModel } from "langchain";
     import { createDeepAgent } from "deepagents";
 
@@ -446,7 +447,7 @@
 </Tabs>
 
 <Tip>
-  聊天模型会自动重试短暂的 API 失败（使用指数退避）。有关调整`max_retries` / `timeout`的默认值、限制和代码示例，请参见 LangChain [Models](/oss/javascript/langchain/models#connection-resilience) 页面。
+  聊天模型会自动重试短暂的 API 失败（使用指数退避）。有关调整 `max_retries` / `timeout` 的默认值、限制和代码示例，请参见 LangChain [Models](/oss/javascript/langchain/models#connection-resilience) 页面。
 </Tip>
 
 ## 工具
@@ -496,7 +497,7 @@
   );
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [internetSearch],
   });
   ```
@@ -590,7 +591,7 @@
   );
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [internetSearch],
   });
   ```
@@ -637,7 +638,7 @@
   );
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [internetSearch],
   });
   ```
@@ -787,7 +788,7 @@
 ### MCP 工具
 
 <Tip>
-  Deep Agents 完全支持 [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp) 工具。您可以从任何 MCP 服务器（数据库、API、文件系统等）加载工具，并将它们直接传递到 `create_deep_agent`。
+  Deep Agents完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)工具。您可以从任何 MCP 服务器（数据库、API、文件系统等）加载工具，并将它们直接传递到 `create_deep_agent`。
 </Tip>
 
 安装`@langchain/mcp-adapters`以连接到MCP服务器：
@@ -812,7 +813,7 @@ npm install @langchain/mcp-adapters
   const tools = await client.getTools();
 
   const agent = await createDeepAgent({
-      model: "google-genai:gemini-3.6-flash",
+      model: "google:gemini-3.6-flash",
       tools,
   });
 
@@ -860,7 +861,7 @@ npm install @langchain/mcp-adapters
   const tools = await client.getTools();
 
   const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
+      model: "anthropic:claude-sonnet-5",
       tools,
   });
 
@@ -884,7 +885,7 @@ npm install @langchain/mcp-adapters
   const tools = await client.getTools();
 
   const agent = await createDeepAgent({
-      model: "openrouter:openrouter:z-ai/glm-5.2",
+      model: "openrouter:z-ai/glm-5.2",
       tools,
   });
 
@@ -966,9 +967,11 @@ npm install @langchain/mcp-adapters
   ```
 </CodeGroup>
 
-有关详细配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
+有关详细的配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
 
-## 系统提示通过`system_prompt=`给代理您自己的指示：
+## 系统提示
+
+通过`system_prompt=`给代理您自己的指示：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -980,7 +983,7 @@ npm install @langchain/mcp-adapters
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt: researchInstructions,
   });
   ```
@@ -1008,7 +1011,7 @@ npm install @langchain/mcp-adapters
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt: researchInstructions,
   });
   ```
@@ -1022,7 +1025,7 @@ npm install @langchain/mcp-adapters
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt: researchInstructions,
   });
   ```
@@ -1071,16 +1074,14 @@ npm install @langchain/mcp-adapters
 </CodeGroup>
 
 <Note>
-  除了字符串之外，主代理还接受具有结构化[content blocks](/oss/javascript/langchain/messages#standard-content-blocks)的[⟦T169⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)；深度代理保留这些块（[subagent](/oss/javascript/deepagents/subagents)字典规范保留字符串）。
-</Note>
-
-<AccordionGroup>
+  除了字符串之外，主代理还接受具有结构化[content blocks](/oss/javascript/langchain/messages#standard-content-blocks)的[⟦T169⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)； Deep Agents 保留这些块（[subagent](/oss/javascript/deepagents/subagents) 字典规范保留字符串）。
+</Note><AccordionGroup>
   <Accordion title="Subagent prompts">
-    声明式 [subagents](/oss/javascript/deepagents/subagents) 根据自己的模型解析配置文件覆盖，然后将解析的配置文件的 `base_system_prompt` / `system_prompt_suffix` 应用到子代理编写的 `system_prompt`。仅附带 `system_prompt_suffix`（内置 Anthropic / OpenAI 配置文件的常见情况）的配置文件会附加到编写的提示中。设置 `base_system_prompt` 的配置文件会完全取代它。
+    声明式 [subagents](/oss/javascript/deepagents/subagents) 根据自己的模型解析配置文件覆盖，然后将解析的配置文件的 `base_system_prompt` / `system_prompt_suffix` 应用到子代理编写的 `system_prompt`。仅附带 `system_prompt_suffix`（内置 Anthropic / OpenAI 配置文件的常见情况）的配置文件会附加到编写的提示中。设置 `base_system_prompt` 的配置文件会直接替换它。
   </Accordion>
 
   <Accordion title="General-purpose subagent prompt">
-    自动添加的 [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖默默地被丢弃：
+    自动添加的 [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖被默默地丢弃：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import (
@@ -1099,8 +1100,10 @@ npm install @langchain/mcp-adapters
             system_prompt_suffix="Always think step by step.",
         ),
     )
-    ```|堆栈|最终系统提示|
-    | ----------- | ------------------------------------------------------- |
+    ```
+
+    |堆栈|最终系统提示|
+    | - | - |
     |主代理| `"You are ACME's support orchestrator." + SUFFIX` |
     | GP 子代理 | `"You are a research subagent. Cite sources." + SUFFIX` |
   </Accordion>
@@ -1108,17 +1111,17 @@ npm install @langchain/mcp-adapters
 
 ## 中间件
 
-Deep Agent支持任何[middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、LangChain的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。
+Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。
 
 将中间件传递给 `createDeepAgent` 的 `middleware` 参数。自定义中间件附加在[Deep Agents stack](#deep-agents-stack)中的[⟦T181⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
 
-### 深层代理堆栈
-
-`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 贡献它们时才出现的槽。
+### Deep Agents 堆栈`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 贡献它们时才出现的槽。
 
 #### 裸栈
 
-只有一个`model`（没有其他可选参数），主代理通常包括：1.[⟦T184⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)
+只有一个`model`（没有其他可选参数），主代理通常包括：
+
+1.[⟦T184⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)
 2. [⟦T185⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（因为 [general-purpose subagent](/oss/javascript/deepagents/subagents#default-subagent) 是自动添加的，除非线束配置文件禁用它）
 3.[⟦T186⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)
 4.[⟦T187⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)
@@ -1131,33 +1134,31 @@ Deep Agent支持任何[middleware](/oss/javascript/langchain/middleware/overview
 
 1. [⟦T188⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您通过`skills`时。 **在**文件系统中间件之前注入，因此技能元数据在文件工具运行之前可用。
 
-2. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。
+2. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。3. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
-3. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
+4. [⟦T194⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。
 
-4. [⟦T194⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。5. [⟦T195⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示缓存和下面的尾堆栈之前运行。
+5. [⟦T195⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
 
 6. [⟦T196⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)：仅当您配置异步子代理时。
 
-7. **您的中间件参数**：您作为 `middleware` 参数传递的可选中间件附加在此处（Patch 之后，尾堆栈之前）。
+7. **您的中间件参数**：您作为 `middleware` 参数传递的可选中间件附加在此处（Patch 之后，尾部堆栈之前）。
 
 8. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
 
-9. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
-
-10. **提示缓存**（[⟦T198⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T199⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 模型和 Amazon Bedrock Converse 模型自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
+9. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。10. **提示缓存**（[⟦T198⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T199⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 型号和 Amazon Bedrock Converse 型号自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
 
 11. [⟦T200⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)：仅当您通过`memory`时。
 
     <Note>
       `MemoryMiddleware` 放置在配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `createDeepAgent` 实现注释中也提出了相同的排序问题。
-    </Note>12. `HumanInTheLoopMiddleware`：仅当您通过`interruptOn`时。在配置的工具调用时暂停以供人工批准或输入。
+    </Note>
+
+12. `HumanInTheLoopMiddleware`：仅当您通过`interruptOn`时。在配置的工具调用时暂停以供人工批准或输入。
 
 ### 同步子代理堆栈
 
-内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与主要代理的广泛形状（文件系统、摘要、补丁、配置文件附加、人类和基岩缓存、可选权限）匹配，但有两点不同：
-
-* **技能在这些内部代理上** [⟦T208⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) 运行（在主代理上，当设置 `skills` 时，技能在**文件系统中间件之前运行）。
+内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与主要代理在广泛的形状上匹配（文件系统、摘要、补丁、配置文件附加、Anthropic和基岩缓存、可选权限），但有两点不同：* **技能在这些内部代理上** [⟦T208⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) 运行（在主代理上，当设置 `skills` 时，技能在**文件系统中间件之前运行）。
 * 子代理图中**没有** [⟦T210⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开了`task` 工具）。
 
 当声明性子代理设置 `interruptOn` 时，该值将转发到子代理的 `createAgent`，从而为已配置的工具调用连接人机交互处理。
@@ -1168,7 +1169,9 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
 `deepagents` 包还为相同的工作流程公开了 [⟦T215⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)。欲了解更多详情，请参阅[Summarization](/oss/javascript/deepagents/context-engineering#summarization)。
 
-### 特定于提供商的中间件对于针对特定 LLM 提供商进行优化的提供商特定中间件，请参阅 [Middleware integrations](/oss/javascript/integrations/middleware)。
+### 特定于提供商的中间件
+
+对于针对特定 LLM 提供商进行优化的提供商特定中间件，请参阅 [Middleware integrations](/oss/javascript/integrations/middleware)。
 
 ### 自定义中间件
 
@@ -1218,7 +1221,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   });
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -1316,7 +1319,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   });
 
   const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -1365,7 +1368,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   });
 
   const agent = await createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -1520,9 +1523,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 </CodeGroup>
 
 <Warning>
-  **初始化后不要改变属性**
-
-  如果您需要跟踪挂钩调用之间的值（例如计数器或累积数据），请使用图形状态。
+  **初始化后不要改变属性**如果您需要跟踪挂钩调用之间的值（例如计数器或累积数据），请使用图形状态。
   图状态的设计范围仅限于线程，因此更新在并发情况下是安全的。
 
   **这样做：**
@@ -1556,7 +1557,9 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
 ### 覆盖默认中间件实例
 
-### 口译员使用 [interpreters](/oss/javascript/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
+### 口译员
+
+使用 [interpreters](/oss/javascript/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1564,7 +1567,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -1584,7 +1587,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -1594,7 +1597,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -1628,9 +1631,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
-</CodeGroup>
-
-有关设置、编程工具调用、子代理编排和限制，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+</CodeGroup>有关设置、编程工具调用、子代理编排和限制，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 ## 子代理
 
@@ -1683,12 +1684,12 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "google-genai:gemini-3.6-flash", // Optional override, defaults to main agent model
+    model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1744,7 +1745,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1795,12 +1796,12 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "anthropic:claude-sonnet-4-6", // Optional override, defaults to main agent model
+    model: "anthropic:claude-sonnet-5", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1851,12 +1852,12 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "openrouter:openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
+    model: "openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1912,7 +1913,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1968,7 +1969,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -2024,7 +2025,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -2058,7 +2059,9 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   </Tab>
 
   <Tab title="FilesystemBackend">
-    本地计算机的文件系统。<Warning>
+    本地计算机的文件系统。
+
+    <Warning>
       该后端授予代理直接文件系统读/写访问权限。
       请谨慎使用，并且仅在适当的环境中使用。
       欲了解更多信息，请参阅[⟦T222⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
@@ -2069,7 +2072,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -2087,7 +2090,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -2096,7 +2099,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -2127,9 +2130,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
-    </CodeGroup>
-
-    <Tip>
+    </CodeGroup><Tip>
       将 `FilesystemBackend` 包装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
     </Tip>
   </Tab>
@@ -2139,7 +2140,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
     <Warning>
       该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-      请极其谨慎地使用，并且仅在适当的环境中使用。
+      请务必谨慎使用，并且仅在适当的环境中使用。
       有关更多信息，请参阅[⟦T226⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
     </Warning>
 
@@ -2150,7 +2151,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend,
       });
       ```
@@ -2172,7 +2173,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend,
       });
       ```
@@ -2183,7 +2184,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend,
       });
       ```
@@ -2234,7 +2235,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
@@ -2264,7 +2265,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
@@ -2279,13 +2280,15 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
         store,
       });
-      ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```
+
+      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent, StoreBackend } from "deepagents";
       import { InMemoryStore } from "@langchain/langgraph";
 
@@ -2333,9 +2336,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
     <Note>
       部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
-    </Note>
-
-    <Tip>
+    </Note><Tip>
       `namespace`参数控制数据隔离。对于多用户部署，请始终设置 [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) 来隔离每个用户或租户的数据。
     </Tip>
   </Tab>
@@ -2362,7 +2363,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -2406,7 +2407,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -2428,7 +2429,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -2542,7 +2543,9 @@ try {
 } finally {
   await client.deleteSandbox(lsSandbox.name);
 }
-```欲了解更多信息，请参阅[Sandboxes](/oss/javascript/deepagents/sandboxes)。
+```
+
+欲了解更多信息，请参阅[Sandboxes](/oss/javascript/deepagents/sandboxes)。
 
 ## 人机交互
 
@@ -2608,7 +2611,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google_genai:gemini-3.6-flash",
+  model: "google:gemini-3.6-flash",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -2617,9 +2620,7 @@ const agent = createDeepAgent({
   },
   checkpointer, // Required!
 });
-```
-
-您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
+```您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
 欲了解更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能
@@ -2660,7 +2661,7 @@ const agent = createDeepAgent({
     skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
 
     const agent = await createDeepAgent({
-      model: "google-genai:gemini-3.1-pro-preview",
+      model: "anthropic:claude-sonnet-4-6",
       backend,
       checkpointer, // Required !
       // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
@@ -2680,35 +2681,28 @@ const agent = createDeepAgent({
 
   <Tab title="StoreBackend">
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+    import { createDeepAgent, StoreBackend } from "deepagents";
     import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 
     const checkpointer = new MemorySaver();
     const store = new InMemoryStore();
     const backend = new StoreBackend({
       namespace: () => ["filesystem"],
+      store,
     });
-
-    function createFileData(content: string): FileData {
-      const now = new Date().toISOString();
-      return {
-        content: content.split("\n"),
-        created_at: now,
-        modified_at: now,
-      };
-    }
 
     const skillUrl =
       "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
 
     const response = await fetch(skillUrl);
     const skillContent = await response.text();
-    const fileData = createFileData(skillContent);
 
-    await store.put(["filesystem"], "/skills/langgraph-docs/SKILL.md", fileData);
+    await backend.uploadFiles([
+      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+    ]);
 
     const agent = await createDeepAgent({
-      model: "google-genai:gemini-3.1-pro-preview",
+      model: "anthropic:claude-sonnet-4-6",
       backend,
       store,
       checkpointer,
@@ -2733,18 +2727,31 @@ const agent = createDeepAgent({
     import { MemorySaver } from "@langchain/langgraph";
 
     const checkpointer = new MemorySaver();
-    const backend = new FilesystemBackend({ rootDir: process.cwd() });
+
+    const skillUrl =
+      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+    const response = await fetch(skillUrl);
+    const skillContent = await response.text();
+
+    let backend = new FilesystemBackend({
+      rootDir: process.cwd(),
+      virtualMode: true,
+    });
+    await backend.uploadFiles([
+      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+    ]);
 
     const agent = await createDeepAgent({
-      model: "google-genai:gemini-3.1-pro-preview",
+      model: "anthropic:claude-sonnet-4-6",
       backend,
-      skills: ["./examples/skills/"],
+      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+      skills: ["/skills/"],
       interruptOn: {
         read_file: true,
         write_file: true,
         delete_file: true,
       },
-      checkpointer, // Required!
+      checkpointer, // Required for filesystem operations!
     });
 
     const config = { configurable: { thread_id: `thread-${Date.now()}` } };
@@ -2758,7 +2765,9 @@ const agent = createDeepAgent({
 
 ## 内存
 
-使用 [⟦T233⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。<Tip>
+使用 [⟦T233⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
+
+<Tip>
   要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 </Tip>
 
@@ -2796,7 +2805,7 @@ const agent = createDeepAgent({
       }
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -2863,9 +2872,7 @@ const agent = createDeepAgent({
         },
         { configurable: { thread_id: "12345" } },
       );
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ``````ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent, type FileData } from "deepagents";
       import { MemorySaver } from "@langchain/langgraph";
 
@@ -2894,7 +2901,7 @@ const agent = createDeepAgent({
       }
 
       const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -2943,7 +2950,7 @@ const agent = createDeepAgent({
       }
 
       const agent = await createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -3110,6 +3117,10 @@ const agent = createDeepAgent({
       );
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c07e925-9d8f-4792-b73c-9dbee94890cd/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="StoreBackend">
@@ -3148,7 +3159,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -3260,7 +3271,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -3316,7 +3327,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -3506,6 +3517,10 @@ const agent = createDeepAgent({
       );
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ff0f387f-c0c3-4456-8081-d6fc23504942/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="Filesystem">
@@ -3518,7 +3533,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {
@@ -3558,7 +3573,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {
@@ -3578,7 +3593,7 @@ const agent = createDeepAgent({
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {
@@ -3655,7 +3670,7 @@ const agent = createDeepAgent({
 
 ## 结构化输出
 
-深度代理支持[structured output](/oss/javascript/langchain/structured-output)。
+Deep Agents 支持[structured output](/oss/javascript/langchain/structured-output)。
 
 您可以通过将其作为`responseFormat`参数传递给`createDeepAgent()`调用来设置所需的结构化输出模式。
 当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
@@ -3737,18 +3752,22 @@ console.log(result.structuredResponse);
 // }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4587886-ebb6-4fbc-8b57-d41b27180770/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 有关更多信息和示例，请参阅[response format](/oss/javascript/langchain/structured-output#response-format)。
 
 ## 高级
 
 `createDeepAgent` 在`createAgent` 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
 
-***<div>
-  <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
+***
 
-  <Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

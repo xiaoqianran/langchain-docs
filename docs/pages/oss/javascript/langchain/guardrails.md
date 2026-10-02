@@ -52,27 +52,24 @@ The PII middleware supports multiple strategies for handling detected PII:
 | `block` | Raise exception when detected | Error thrown |
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, piiRedactionMiddleware } from "langchain";
+import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
   model: "gpt-5.5",
   tools: [customerServiceTool, emailTool],
   middleware: [
     // Redact emails in user input before sending to model
-    piiRedactionMiddleware({
-      piiType: "email",
+    piiMiddleware("email", {
       strategy: "redact",
       applyToInput: true,
     }),
     // Mask credit cards in user input
-    piiRedactionMiddleware({
-      piiType: "credit_card",
+    piiMiddleware("credit_card", {
       strategy: "mask",
       applyToInput: true,
     }),
     // Block API keys - raise error if detected
-    piiRedactionMiddleware({
-      piiType: "api_key",
+    piiMiddleware("api_key", {
       detector: /sk-[a-zA-Z0-9]{32}/,
       strategy: "block",
       applyToInput: true,
@@ -298,7 +295,7 @@ const result = await agent.invoke({
 You can stack multiple guardrails by adding them to the middleware array. They execute in order, allowing you to build layered protection:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, piiRedactionMiddleware, humanInTheLoopMiddleware } from "langchain";
+import { createAgent, piiMiddleware, humanInTheLoopMiddleware } from "langchain";
 
 const agent = createAgent({
   model: "gpt-5.5",
@@ -308,13 +305,11 @@ const agent = createAgent({
     contentFilterMiddleware(["hack", "exploit"]),
 
     // Layer 2: PII protection (before and after model)
-    piiRedactionMiddleware({
-      piiType: "email",
+    piiMiddleware("email", {
       strategy: "redact",
       applyToInput: true,
     }),
-    piiRedactionMiddleware({
-      piiType: "email",
+    piiMiddleware("email", {
       strategy: "redact",
       applyToOutput: true,
     }),

@@ -10,25 +10,25 @@
   对于新应用程序，我们推荐[event streaming](/oss/javascript/deepagents/event-streaming)——Deep Agents v0.6 中引入的类型化投影 API。事件流为每个投影提供单独的迭代器（子代理、消息、工具调用、值），因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
 </Tip>
 
-Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
+Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
 
 深度代理流可以实现什么：
 
-* <Icon icon="diagram-subtask" /> [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
-* <Icon icon="square-binary" /> [**Stream LLM tokens**](#llm-tokens)——来自主代理和每个子代理的流令牌。
-* <Icon icon="screwdriver-wrench" /> [**Stream tool calls**](#tool-calls) — 查看子代理执行中的工具调用和结果。
-* <Icon icon="table" /> [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
+* [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
+* [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
+* [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
+* [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
 ## 启用子图流
 
-深度代理使用 LangGraph 的子图流来显示子代理执行中的事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt: "You are a helpful research assistant",
     subagents: [
       {
@@ -102,7 +102,7 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt: "You are a helpful research assistant",
     subagents: [
       {
@@ -139,7 +139,7 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt: "You are a helpful research assistant",
     subagents: [
       {
@@ -207,7 +207,9 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
     }
     console.log(chunk);
   }
-  ``````ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -280,14 +282,16 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
     console.log(chunk);
   }
   ```
-</CodeGroup>
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c168526d-4120-4f09-8714-4a45a6446598/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 命名空间
 
 当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
 
-|命名空间|来源 |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
+|命名空间 |来源 |
+| - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
 | `("tools:abc123", "model_request:def456")` |子代理内的模型请求节点 |
@@ -316,6 +320,10 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29fabe2e-590d-45a1-bb2e-6d7491103625/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 子代理进度
 
 使用 `stream_mode="updates"` 跟踪每个步骤完成时的子代理进度。这对于显示哪些子代理处于活动状态以及它们已完成哪些工作非常有用。
@@ -325,7 +333,7 @@ for await (const [namespace, chunk] of await agent.stream(
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -433,7 +441,7 @@ for await (const [namespace, chunk] of await agent.stream(
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -487,7 +495,7 @@ for await (const [namespace, chunk] of await agent.stream(
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -700,6 +708,10 @@ for await (const [namespace, chunk] of await agent.stream(
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6892dbbe-d797-44da-974f-d78cd433299e/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Main agent step: model_request
   [tools:call_abc123] step: model_request
@@ -715,7 +727,9 @@ Result: # Comprehensive Report on AI Safety...
 Main agent step: model_request
 ```
 
-## LLM 代币使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
+## LLM 代币
+
+使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 let currentSource = "";
@@ -761,9 +775,11 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-## 工具调用
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eae65ae1-ab35-412c-8769-465a7ee1ac0e/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
+## 工具调用当子代理使用工具时，您可以流式传输工具调用事件以显示每个子代理正在执行的操作。工具调用块以`messages`流模式出现。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk, ToolMessage } from "langchain";
@@ -820,6 +836,10 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b691dfbe-3eea-472b-92a3-7200ce7fd48d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 自定义更新
 
 在子代理工具中使用 `config.writer` 来发出自定义进度事件：
@@ -860,7 +880,7 @@ process.stdout.write("\n");
   );
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt:
       "You are a coordinator. For any analysis request, you MUST delegate " +
       "to the analyst subagent using the task tool. Never try to answer directly. " +
@@ -1008,7 +1028,7 @@ process.stdout.write("\n");
   );
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt:
       "You are a coordinator. For any analysis request, you MUST delegate " +
       "to the analyst subagent using the task tool. Never try to answer directly. " +
@@ -1082,7 +1102,7 @@ process.stdout.write("\n");
   );
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt:
       "You are a coordinator. For any analysis request, you MUST delegate " +
       "to the analyst subagent using the task tool. Never try to answer directly. " +
@@ -1343,6 +1363,10 @@ process.stdout.write("\n");
   }
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8b328f38-ab1e-42f3-be42-4364118ec3f1/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [tools:call_abc123] { status: 'fetching', progress: 0 }
@@ -1410,6 +1434,10 @@ for await (const [namespace, mode, data] of await agent.stream(
 
 process.stdout.write("\n");
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/abec3125-178c-474a-b0c4-9e4cb553eb63/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 常见模式
 
@@ -1531,17 +1559,75 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c7546e0-f99a-4655-bf0c-550f94ebdff3/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+### 处理人机交互中断
+
+配置 [⟦T42⟧](/oss/javascript/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { v7 as uuid7 } from "uuid";
+
+const config = { configurable: { thread_id: uuid7() } };
+
+for await (const [mode, data] of await agent.stream(
+  { messages: [{ role: "user", content: "Delete temp.txt" }] },
+  { streamMode: ["messages", "updates"], ...config }
+)) {
+  if (mode === "updates" && data?.__interrupt__) {  // [!code highlight]
+    for (const interruptObj of data.__interrupt__) {
+      console.log("Approval needed:", interruptObj.value);
+    }
+  }
+}
+```
+
+有关完整的流恢复循环模式，请参阅[Human-in-the-loop: Handle interrupts with streaming](/oss/javascript/deepagents/human-in-the-loop#handle-interrupts-with-streaming)。
+
+## 流块形状对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
+
+| `stream_mode` |块状 |
+| - | - |
+|单模式（例如`"updates"`）| `(namespace, data)` |
+|多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
+
+如果没有`subgraphs`，单模直接产生`data`，多模产生`(mode, data)`。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Single mode + subgraphs
+for namespace, data in agent.stream(
+    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
+    stream_mode="updates",
+    subgraphs=True,
+):
+    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
+    print(data)
+
+# Multiple modes + subgraphs
+for namespace, mode, data in agent.stream(
+    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
+    stream_mode=["updates", "messages", "custom"],
+    subgraphs=True,
+):
+    print(mode)       # "updates", "messages", or "custom"
+    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
+    print(data)
+```
+
 ## 相关
 
-* [Subagents](/oss/javascript/deepagents/subagents)—配置子代理并将其与深度代理一起使用
-* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T40⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为深度代理构建 React UI
-* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming)—LangChain 代理的一般流媒体概念
+* [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
+* [Subagents](/oss/javascript/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
+* [Frontend streaming](/oss/javascript/deepagents/frontend/overview)—使用 [⟦T57⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

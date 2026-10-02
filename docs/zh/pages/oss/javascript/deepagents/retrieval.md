@@ -15,7 +15,7 @@
 
 **知识库**是检索过程中使用的文档或结构化数据的存储库。
 
-如果您需要一个自定义知识库，您可以使用 LangChain 的文档加载器和矢量存储来根据您自己的数据构建一个知识库。
+如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和矢量存储从您自己的数据构建一个知识库。
 
 <Note>
   如果您已经拥有知识库（例如 SQL 数据库、文档数据库、CRM 或内部文档系统），则**不需要**需要重建它。您可以：
@@ -89,8 +89,10 @@ flowchart TB
 
 ## RAG 架构
 
-RAG 可以通过多种方式实施，具体取决于系统的需求。我们在下面的部分中概述了每种类型。|建筑|描述 |控制|灵活性 |延迟|示例用例 |
-| ---------------- | -------------------------------------------------------------------------------------- | ---------| ----------- | ---------- | ------------------------------------------------- |
+RAG 可以通过多种方式实施，具体取决于您的系统需求。我们在下面的部分中概述了每种类型。
+
+|建筑|描述 |控制|灵活性 |延迟|示例用例 |
+| - | - | - | - | - | - |
 | **2 步 RAG** |检索总是发生在生成之前。简单且可预测 | ✅ 高 | ❌低| ⚡ 快|常见问题解答、文档机器人 |
 | **代理RAG** |由 LLM 支持的代理决定在推理过程中“何时”和“如何”检索 | ❌低| ✅ 高 | ⏳ 变量 |可以使用多种工具的研究助理 |
 | **混合** |将两种方法的特点与验证步骤结合起来 | ⚖️ 中等 | ⚖️ 中等 | ⏳ 变量 |具有质量验证的特定领域问答 |<Info>
@@ -131,7 +133,7 @@ graph TB
 ### 代理 RAG**代理检索增强生成 (RAG)** 结合了检索增强生成与基于代理的推理的优势。代理（由法学硕士提供支持）不是在回答之前检索文档，而是逐步推理并决定在交互过程中**何时**和**如何**检索信息。
 
 <Tip>
-  代理启用 RAG 行为所需的唯一一件事是访问一个或多个可以获取外部知识的**工具**，例如文档加载器、Web API 或数据库查询。
+  代理启用 RAG 行为所需的唯一一件事就是访问一个或多个可以获取外部知识的**工具**，例如文档加载器、Web API 或数据库查询。
 </Tip>
 
 ```mermaid actions={true} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -174,7 +176,7 @@ const agent = createAgent({
 ```
 
 <Expandable title="Extended example: Agentic RAG for LangGraph's llms.txt">
-  本示例实现了**Agentic RAG系统**来帮助用户查询LangGraph文档。代理首先加载 [llms.txt](https://llmstxt.org/)，其中列出了可用的文档 URL，然后可以动态地使用 `fetch_documentation` 工具根据用户的问题检索和处理相关内容。
+  本示例实现了**Agentic RAG系统**来帮助用户查询LangGraph文档。代理首先加载 [llms.txt](https://llmstxt.org/)，其中列出了可用的文档 URL，然后可以动态使用 `fetch_documentation` 工具根据用户的问题检索和处理相关内容。
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool, createAgent, HumanMessage } from "langchain";
@@ -302,7 +304,7 @@ graph TB
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

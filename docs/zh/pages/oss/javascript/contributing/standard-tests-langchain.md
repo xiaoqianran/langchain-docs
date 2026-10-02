@@ -6,18 +6,18 @@
 
 **标准测试确保您的集成按预期工作。**
 
-当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供了针对每种集成类型的全面的[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将LangChain的标准测试套件添加到每种集成类型中。
+当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供针对每种集成类型的全面[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将 LangChain 的标准测试套件添加到每种集成类型。
 
 ## 设置
 
 首先，安装所需的依赖项：
 
 <CardGroup>
-  <Card title="langchain-core" icon="cube" href="https://github.com/langchain-ai/langchainjs/tree/main/langchain-core#readme">
+  <Card title="langchain-core" icon="cube" href="https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme">
     定义我们想要导入的接口来定义我们的自定义组件
   </Card>
 
-  <Card title="langchain-tests" icon="flask" href="https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-standard-tests#readme">
+  <Card title="langchain-tests" icon="flask" href="https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme">
     提供运行它们所需的标准测试和插件
   </Card>
 </CardGroup>
@@ -52,7 +52,7 @@
 
     旨在隔离测试组件，无需访问外部服务
 
-    [View API reference](https://reference.langchain.com/python/langchain_tests/unit_tests)
+    [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
   </Accordion>
 
   <Accordion title="Integration tests" icon="network">
@@ -60,7 +60,7 @@
 
     旨在测试可访问外部服务的组件（特别是组件设计用于交互的外部服务）
 
-    [View API reference](https://reference.langchain.com/python/langchain_tests/integration_tests)
+    [View API reference](https://reference.langchain.com/python/langchain-tests/integration_tests)
   </Accordion>
 </AccordionGroup>
 
@@ -68,7 +68,7 @@
 
 通过对集成类型的标准测试套件进行子类化，您可以获得该类型的标准测试的完整集合。为了使测试运行成功，只有当模型支持正在测试的功能时，给定的测试才应该通过。否则，应跳过测试。
 
-由于不同的集成提供独特的功能集，因此 LangChain 提供的大多数标准测试都是**默认选择**以防止误报。因此，您需要重写属性来指示您的集成支持哪些功能 - 请参阅下面的示例以获取说明。
+由于不同的集成提供独特的功能集，因此LangChain提供的大多数标准测试都是**默认选择**以防止误报。因此，您需要重写属性来指示您的集成支持哪些功能 - 请参阅下面的示例以获取说明。
 
 ```javascript tests/chat_models.standard.int.test.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Indicate that a chat model supports parallel tool calls
@@ -104,15 +104,15 @@ Deep Agents 沙箱集成使用 `@langchain/sandbox-standard-tests` 中的 `sandb
 使用 [Daytona integration tests](https://github.com/langchain-ai/deepagentsjs/blob/main/libs/providers/daytona/src/sandbox.int.test.ts) 作为参考实现。
 请参阅[Contributing a sandbox integration](/oss/javascript/contributing/integrations-langchain)了解发布指南。
 
-***## 故障排除
+***
 
-有关可用标准测试套件的完整列表，以及有关包含哪些测试以及如何解决常见问题的信息，请参阅[contributing README](https://github.com/langchain-ai/langchainjs/blob/main/CONTRIBUTING.md)。
+## 故障排除有关可用标准测试套件的完整列表，以及有关包含哪些测试以及如何解决常见问题的信息，请参阅[contributing README](https://github.com/langchain-ai/langchainjs/blob/main/CONTRIBUTING.md)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

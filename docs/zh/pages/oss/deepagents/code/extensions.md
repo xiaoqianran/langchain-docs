@@ -4,14 +4,16 @@
 
 # Python 扩展
 
+使用 Python 工具、中间件和存储路由自定义 dcode
+
 Python 扩展可自定义 dcode 代理服务器，而无需修改 dcode 本身。用它们来注册模型工具、LangChain中间件、虚拟存储路由。
 
 <Note>
-    Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。此实验性 API 可能会更改或删除，恕不另行通知。
+  Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。此实验性 API 可能会更改或删除，恕不另行通知。
 </Note>
 
 <Warning>
-    扩展程序可以使用您的用户帐户的权限运行任意Python。仅从您信任的来源加载扩展。扩展工具不会自动添加到人工批准图中，因此执行敏感工作的扩展必须通过中间件强制执行自己的批准或策略。
+  扩展程序可以使用您的用户帐户的权限运行任意Python。仅从您信任的来源加载扩展。扩展工具不会自动添加到人工批准图中，因此执行敏感工作的扩展必须通过中间件强制执行自己的批准或策略。
 </Warning>
 
 ## 创建扩展
@@ -20,7 +22,7 @@ Python 扩展可自定义 dcode 代理服务器，而无需修改 dcode 本身�
 
 以下扩展使 LangGraph 存储可用于 `/memories/` 下的代理文件工具：
 
-```python extension.py
+```python extension.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StoreBackend
 
 from deepagents_code.extensions import ExtensionAPI
@@ -35,7 +37,7 @@ async def extension(d: ExtensionAPI) -> None:
 
 使用实验门启动 dcode 并加载文件进行一次运行：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
 ```重复`-e`或`--extension`加载多个文件或目录。目录扫描包括直接 `*.py` 文件以及包含 `__init__.py` 或 `extension.py` 的直接子目录。加载还需要扩展发现保持启用状态（`[extensions].enabled`或`DEEPAGENTS_CODE_EXTENSIONS`）；禁用发现时，Deep Agents 代码会跳过每个源，包括 CLI 路径。
 
@@ -44,7 +46,7 @@ DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
 扩展 API 支持以下方法：
 
 |方法|签名|目的|
-|---|---|---|
+| - | - | - |
 | `register_middleware` | `(class_or_instance)` |添加LangChain`AgentMiddleware`。中间件类必须有一个零参数构造函数；否则，传递一个实例。 |
 | `register_tool` | `(function_or_tool)` |向模型公开可调用或 `BaseTool`。 dcode 使用 LangChain 工具模式推理转换普通可调用对象。 |
 | `register_backend_route` | `(prefix, backend)` |使 `BackendProtocol` 存储提供程序在虚拟路径下可用。 |
@@ -52,16 +54,16 @@ DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
 
 注册商还公开此只读上下文：
 
-- `d.cwd`：会话的工作目录。
-- `d.mode`：`interactive` 或 `headless`。
-- `d.has_ui`：会话是否有交互式终端UI。
-- `d.path`：扩展的入口文件。在模块导入期间不要打开长期连接或启动后台任务。如果安装程序打开会话资源，请注册幂等`on_shutdown`回调以释放它。
+* `d.cwd`：会话的工作目录。
+* `d.mode`：`interactive` 或 `headless`。
+* `d.has_ui`：会话是否有交互式终端UI。
+* `d.path`：扩展的入口文件。在模块导入期间不要打开长期连接或启动后台任务。如果安装程序打开会话资源，请注册幂等`on_shutdown`回调以释放它。
 
 ### 注册中间件
 
 注册LangChain中间件以向代理添加模型或工具行为。 dcode 在构建代理图时加载中间件。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import AgentMiddleware
 
 from deepagents_code.extensions import ExtensionAPI
@@ -81,7 +83,7 @@ async def extension(d: ExtensionAPI) -> None:
 
 注册一个可调用的或 `BaseTool` 以使其可供模型使用。
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents_code.extensions import ExtensionAPI
 
 
@@ -103,7 +105,7 @@ dcode 通过从函数签名和文档字符串推断其架构，将普通可调�
 
 ### 应用运行时更改
 
-启动后注册的工具将出现在下一个模型请求中。中间件和后端路由改变了代理图构造并需要`/reload`。运行 `/extensions` 列出注册、其源路径和范围、加载失败以及是否需要重新启动。
+启动后注册的工具将出现在下一个模型请求中。中间件和后端路由改变了代理图的构造并需要`/reload`。运行 `/extensions` 列出注册、其源路径和范围、加载失败以及是否需要重新启动。
 
 单独管理的远程代理服务器必须由其操作员重新启动或重新部署。
 
@@ -124,7 +126,7 @@ dcode 按此顺序加载授权的扩展源并忽略后面的重复条目路径�
 
 对于无头或 CI 运行，请授予该调用信任：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 DEEPAGENTS_CODE_EXPERIMENTAL=1 \
   dcode --trust-project-extensions -n "Run the project checks"
 ```
@@ -135,7 +137,7 @@ DEEPAGENTS_CODE_EXPERIMENTAL=1 \
 
 在`~/.deepagents/config.toml`中配置发现：
 
-```toml title="~/.deepagents/config.toml"
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [extensions]
 enabled = true
 trust = "ask"
@@ -143,8 +145,8 @@ extra_paths = [
     "extensions/policy.py",
     "~/src/company-extensions",
 ]
-```|设置|默认 |描述 |
-|---|---|---|
+```|设置|默认|描述 |
+| - | - | - |
 | `enabled` | `true` |为每个源启用扩展发现，包括`-e` / `--extension`。仍然需要实验环境变量。 |
 | `trust` | `"ask"` |将项目扩展信任设置为 `ask`、`always` 或 `never`。 |
 | `extra_paths` | `[]` |添加用户授权的Python文件或目录。相对路径从 dcode 配置文件目录解析； `~` 扩展到您的主目录。 |
@@ -155,7 +157,7 @@ extra_paths = [
 
 版本化的[plugin](/oss/deepagents/code/plugins)是分发扩展的首选方式。在插件清单中的Deep AgentsCode命名空间下声明一个入口文件或一个列表：
 
-```json title=".claude-plugin/plugin.json"
+```json title=".claude-plugin/plugin.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "name": "shared-memory",
   "version": "1.0.0",
@@ -175,18 +177,19 @@ extra_paths = [
 
 ## 另请参阅
 
-- [Plugins and marketplaces](/oss/deepagents/code/plugins)
-- [Command reference](/oss/deepagents/code/cli-reference)
-- [Config file](/oss/deepagents/code/config-file)
-- [Approval modes](/oss/deepagents/code/approval-modes)
+* [Plugins and marketplaces](/oss/deepagents/code/plugins)
+* [Command reference](/oss/deepagents/code/cli-reference)
+* [Config file](/oss/deepagents/code/config-file)
+* [Approval modes](/oss/deepagents/code/approval-modes)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

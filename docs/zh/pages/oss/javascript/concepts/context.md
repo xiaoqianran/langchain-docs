@@ -20,8 +20,10 @@
   * “上下文窗口”，即可以传递给LLM的最大令牌数。运行时上下文是您通过代理线程化数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。例如，您可以在运行时上下文中使用用户元数据来获取用户首选项并将其输入到上下文窗口中。
 </Tip>
 
-LangGraph提供了三种管理上下文的方法，结合了可变性和生命周期维度：|上下文类型 |描述 |可变性 |终身|
-| ---------------------------------------------------------------------------------------- | -------------------------------------------------------- | ---------- | ------------------ |
+LangGraph提供了三种管理上下文的方式，结合了可变性和生命周期维度：
+
+|上下文类型 |描述 |可变性 |终身|
+| - | - | - | - |
 | [**Config**](#config) |运行开始时传递的数据 |静态|单跑 |
 | [**Dynamic runtime context (state)**](#dynamic-runtime-context) |在单次运行期间演变的可变数据 |动态 |单跑 |
 | [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) |跨对话共享持久数据|动态 |交叉对话 |
@@ -39,7 +41,7 @@ await graph.invoke(
 );
 ```
 
-## 动态运行时上下文**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在 LangGraph 中，状态对象在运行期间充当[short-term memory](/oss/javascript/concepts/memory)。
+## 动态运行时上下文**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在LangGraph中，状态对象在运行期间充当[short-term memory](/oss/javascript/concepts/memory)。
 
 <Tabs>
   <Tab title="In an agent">
@@ -109,7 +111,7 @@ await graph.invoke(
   有关如何启用内存的更多详细信息，请参阅[memory guide](/oss/javascript/langgraph/add-memory)。这是一个强大的功能，允许您在多次调用中保留代理的状态。否则，状态的范围仅限于单次运行。
 </Tip>
 
-## 动态交叉对话上下文**动态交叉对话上下文**表示跨越多个对话或会话的持久、可变数据，并通过 LangGraph 存储进行管理。这包括用户个人资料、偏好和历史交互。 LangGraph 存储在多次运行中充当[long-term memory](/oss/javascript/concepts/memory#long-term-memory)。这可用于读取或更新持久事实（例如，用户配置文件、偏好、先前的交互）。
+## 动态交叉对话上下文**动态交叉对话上下文**表示跨越多个对话或会话的持久、可变数据，并通过 LangGraph 存储进行管理。这包括用户个人资料、偏好和历史交互。 LangGraph 存储在多次运行中充当 [long-term memory](/oss/javascript/concepts/memory#long-term-memory)。这可用于读取或更新持久事实（例如，用户配置文件、偏好、先前的交互）。
 
 ## 了解更多
 
@@ -121,7 +123,7 @@ await graph.invoke(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

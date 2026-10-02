@@ -128,7 +128,7 @@ Node.js 18 或更高版本。
     4. Find concrete examples or case studies to illustrate concepts
     ```
 
-    为了使这个代理符合您自己的语气、支柱和格式规则，请更新`AGENTS.md`中的文本。
+    为了使该代理符合您自己的语气、支柱和格式规则，请更新`AGENTS.md`中的文本。
   </Step>
 
   <Step title="Add skills">
@@ -596,7 +596,7 @@ Node.js 18 或更高版本。
         };
 
         return createDeepAgent({
-          model: "google-genai:gemini-3.6-flash",
+          model: "google:gemini-3.6-flash",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],
@@ -644,7 +644,7 @@ Node.js 18 或更高版本。
         };
 
         return createDeepAgent({
-          model: "anthropic:claude-sonnet-4-6",
+          model: "anthropic:claude-sonnet-5",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],
@@ -668,7 +668,7 @@ Node.js 18 或更高版本。
         };
 
         return createDeepAgent({
-          model: "openrouter:openrouter:z-ai/glm-5.2",
+          model: "openrouter:z-ai/glm-5.2",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],
@@ -820,7 +820,7 @@ research/
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -226,7 +226,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
     Inject uploaded file context from State when relevant to current query:
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const injectFileContext = createMiddleware({
       name: "InjectFileContext",
@@ -248,9 +248,9 @@ It's critical to manage the content of messages to ensure that the LLM has the r
           // Inject file context before recent messages
           const messages = [  // [!code highlight]
             ...request.messages,  // Rest of conversation
-            { role: "user", content: fileContext }
+            new HumanMessage(fileContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);
@@ -270,7 +270,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const contextSchema = z.object({
       userId: z.string(),
@@ -299,9 +299,9 @@ It's critical to manage the content of messages to ensure that the LLM has the r
           // Append at end - models pay more attention to final messages
           const messages = [
             ...request.messages,
-            { role: "user", content: styleContext }
+            new HumanMessage(styleContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);
@@ -315,7 +315,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const contextSchema = z.object({
       userJurisdiction: z.string(),
@@ -353,9 +353,9 @@ It's critical to manage the content of messages to ensure that the LLM has the r
           // Append at end - models pay more attention to final messages
           const messages = [
             ...request.messages,
-            { role: "user", content: complianceContext }
+            new HumanMessage(complianceContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);

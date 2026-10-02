@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Retrieval Augmented Generation (RAG) with Deep Agents | https://docs.langchain.com/oss/javascript/deepagents/rag -->
 
-# 使用深度代理进行检索增强生成 (RAG)
+# 使用 Deep Agents 检索增强生成 (RAG)
 
-深度代理的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -12,9 +12,9 @@
 
 [Deep Agents](/oss/javascript/deepagents/overview) 为您提供 RAG 的原语：自定义检索工具、[filesystem backend](/oss/javascript/deepagents/backends)、[subagents](/oss/javascript/deepagents/subagents)、[skills](/oss/javascript/deepagents/skills) 和 [grading rubrics](/oss/javascript/deepagents/rubric)。您可以根据您的语料库大小、延迟要求以及答案必须以源数据为基础的严格程度，以不同的方式组合它们。
 
-本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。## RAG 图案
+本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。
 
-Deep Agents 允许您以多种方式协调检索、分析和综合：
+## RAG 图案Deep Agents 允许您以多种方式协调检索、分析和综合：
 
 * **技能引导检索**：用户提出问题。代理加载相关技能，描述如何搜索语料库（使用哪个索引、查询公式、引文格式）。代理按照该指导调用您的检索工具，然后综合答案。
 * **Rubric-checked grounding**：用户提出问题。特工检索证据并起草答复。配置有`RubricMiddleware`的评分器子代理评估响应是否基于检索到的源材料。代理会进行修改，直到标题通过或达到迭代上限。
@@ -43,7 +43,7 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
     "How do I stream intermediate tool results from a subagent?";
 
   const baselineAgent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [],
     systemPrompt:
       "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -89,7 +89,7 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
     "How do I stream intermediate tool results from a subagent?";
 
   const baselineAgent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [],
     systemPrompt:
       "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -112,7 +112,7 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
     "How do I stream intermediate tool results from a subagent?";
 
   const baselineAgent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [],
     systemPrompt:
       "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -195,9 +195,13 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55e6f247-1ae3-4542-bd54-75734ebeb6a0/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 如果没有检索，代理就无法查找当前的 LangChain 文档。回复往往很笼统，可能会省略[subagent streaming](/oss/javascript/deepagents/frontend/subagent-streaming)等指导，或包含过时的信息。
 
-本教程中的示例对 LangChain 文档进行索引，使用向量搜索工具检索证据，分析并行子代理中的每个块，并通过引用文档回答问题。
+本教程中的示例索引 LangChain 文档，使用向量搜索工具检索证据，分析并行子代理中的每个块，并通过引用文档回答问题。
 
 ### 你将构建什么
 
@@ -208,10 +212,10 @@ Deep Agents 允许您以多种方式协调检索、分析和综合：
 
 ## 先决条件
 
-API 密钥用于：
+API 密钥用于：* 代理[chat model integration](/oss/javascript/integrations/chat)
+* OpenAI（或另一个[embeddings integration](/oss/javascript/integrations/embeddings)）用于索引
 
-* 代理[chat model integration](/oss/javascript/integrations/chat)
-* OpenAI（或另一个[embeddings integration](/oss/javascript/integrations/embeddings)）用于索引## 设置
+## 设置
 
 <Steps>
   <Step title="Create project directory">
@@ -230,10 +234,10 @@ API 密钥用于：
 
   <Step title="Install dependencies">
     ```bash npm wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install deepagents langchain @langchain/core @langchain/openai @langchain/anthropic @langchain/google-genai @langchain/textsplitters @langchain/classic dotenv zod tsx
+    npm install deepagents langchain @langchain/core @langchain/openai @langchain/anthropic @langchain/google @langchain/textsplitters @langchain/classic dotenv zod tsx
     ```
 
-    为您在下面的代码示例中选择的模型安装匹配的 `@langchain/<provider>` 包（上面包括 Google、OpenAI 和 Anthropic）。
+    为您在下面的代码示例中选择的型号安装匹配的 `@langchain/<provider>` 软件包（上面包括 Google、OpenAI 和 Anthropic）。
   </Step>
 
   <Step title="Set API keys">
@@ -282,7 +286,7 @@ API 密钥用于：
 
 <img alt="index_diagram" />在索引步骤中，获取文档页面，将它们分成块，嵌入块，并将它们存储在`VectorStore`中。代理在运行时搜索该索引；它不会重新获取每个问题的完整站点。
 
-LangChain在`https://docs.langchain.com/{path}.md`发布markdown。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
+LangChain 在 `https://docs.langchain.com/{path}.md` 发布降价。本教程对开源文档路径的精选列表进行索引。您可以扩展 `DOC_PATHS` 或解析 [llms.txt](https://docs.langchain.com/llms.txt) 中的 URL 以覆盖更多页面。
 
 创建`agent.ts`：
 
@@ -488,7 +492,7 @@ Split documentation into 722 chunks.
     ```
   </Tab>
 
-  <Tab title="VertexAI">
+  <Tab title="Gemini Enterprise Agent Platform">
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/google-vertexai
@@ -573,7 +577,7 @@ Split documentation into 722 chunks.
 
 ### 在 VectorStore 中存储块和嵌入
 
-[⟦T114⟧](/oss/javascript/integrations/vectorstores) 保留文档块及其嵌入，使得相似性搜索能够在用户提出问题时检索相关部分。
+[⟦T114⟧](/oss/javascript/integrations/vectorstores) 保留文档块及其嵌入，使相似性搜索能够在用户提出问题时检索相关部分。
 您可以从许多不同的[vector store integrations](/oss/javascript/integrations/vectorstores/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore)。
 使用您在上一步中选择的嵌入模型来配置您的 `VectorStore`：
 
@@ -863,7 +867,7 @@ Indexed 722 chunks.
       };
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [searchDocumentation],
         backend,
         systemPrompt: instructions,
@@ -925,7 +929,7 @@ Indexed 722 chunks.
       };
 
       const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [searchDocumentation],
         backend,
         systemPrompt: instructions,
@@ -956,7 +960,7 @@ Indexed 722 chunks.
       };
 
       const agent = createDeepAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [searchDocumentation],
         backend,
         systemPrompt: instructions,
@@ -1094,7 +1098,7 @@ if (import.meta.main) {
 1. 调用 `search_documentation` 查询子代理流。
 2. 接收`/retrieved/a1b2c3d4/chunk_1.md`等文件路径。
 3. 启动对 `chunk-analyst` 的一个或多个 `task()` 调用，每个调用的作用域为单个块文件。
-4. 综合最终答案以及相关文档页面的链接。如果您在 [Setup](#setup) 中启用了 LangSmith，请打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-rag) 并检查跟踪以查看搜索调用、文件系统写入、子代理委托和最终响应。
+4. 综合最终答案以及相关文档页面的链接。如果您在 [Setup](#setup) 中启用了 LangSmith，请打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-rag) 并检查跟踪以查看搜索调用、文件系统写入、子代理委派和最终响应。
 
 ## 安全考虑
 
@@ -1108,9 +1112,9 @@ if (import.meta.main) {
 
 有关此主题的更多信息，请参阅 [prompt injection](https://simonwillison.net/series/prompt-injection/) 的研究。
 
-## 完整代码
+## 完整代码以下是使用一组示例模型的代理的完整脚本。对于其他型号，请参阅分步方法以了解有何变化：
 
-以下是代理的完整脚本：另存为 `agent.ts` 并使用 `npx tsx agent.ts` 运行：
+另存为 `agent.ts` 并使用 `npx tsx agent.ts` 运行：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1177,7 +1181,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "google-genai:gemini-3.6-flash" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -1274,7 +1278,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1361,7 +1365,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "openai:gpt-5.5" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -1458,7 +1462,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "openai:gpt-5.5",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1545,7 +1549,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "anthropic:claude-sonnet-4-6" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -1642,7 +1646,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "anthropic:claude-sonnet-5",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1729,7 +1733,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "openrouter:openrouter:z-ai/glm-5.2" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -1826,7 +1830,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1913,7 +1917,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/glm-5p2" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -2010,7 +2014,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2097,7 +2101,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "baseten:zai-org/GLM-5.2" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -2194,7 +2198,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "baseten:zai-org/GLM-5.2",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2281,7 +2285,7 @@ if (import.meta.main) {
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "ollama:north-mini-code-1.0" });
+  const embeddings = new OpenAIEmbeddings({ model: "text-embedding-3-small" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -2378,7 +2382,7 @@ if (import.meta.main) {
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "ollama:north-mini-code-1.0",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2404,11 +2408,11 @@ if (import.meta.main) {
 
 ## 后续步骤
 
-您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他深度代理功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
+您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
 
 * 将 [Skills](/oss/javascript/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * 使用 [Grading rubrics](/oss/javascript/deepagents/rubric) 验证答案是否基于检索到的源材料
-* [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 使用 LangSmith 数据集和评估器
+* [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/javascript/deepagents/context-engineering) 了解卸载和子代理隔离策略
 * 使用[LangSmith Deployment](/langsmith/deployment)部署您的应用程序
 
@@ -2416,7 +2420,7 @@ if (import.meta.main) {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

@@ -18,17 +18,17 @@ LangSmith Engine 是用于代理工程的LangSmith Agent。它从生产跟踪到
   <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine#open-a-pull-request">
     通过在连接的存储库中打开拉取请求来应用建议的修复。引擎可以对使用Deep Agents、LangChain和LangGraph构建的代理提出代码更改建议。
   </Card><Card title="Test: Generate datasets" icon="database" href="/langsmith/engine#add-offline-examples">
-    从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在发布之前验证修复。
+    从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在修复发布之前对其进行验证。
   </Card>
 
   <Card title="Monitor: Track recurring issues" icon="chart-line" href="/langsmith/engine#filter-and-sort-issues">
-    Scan your tracing projects on a schedule to surface, prioritize, and diagnose recurring issues, and add new matching traces to each issue as they appear.
+    按计划扫描您的跟踪项目，以显示、确定优先级并诊断重复出现的问题，并在每个问题出现时向其添加新的匹配跟踪。
   </Card>
 </CardGroup>
 
 ## 引擎如何运行
 
-Engine scans each connected tracing project on a dynamic schedule tuned to balance cost and performance, clustering and prioritizing issues by severity.它使用 LangChain 托管推理并按 LangChain 计算单元 (LCU) 收费。有关设置、成本和完整的问题工作流程，请参阅[Find and fix your agent's issues](/langsmith/engine)。有关 Engine 如何处理您的数据、其 GitHub 和模型子处理器控制及其合规性状况，请参阅[Engine security](/langsmith/engine-security)。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。要在故障影响生产之前使用合成请求测试部署，请参阅[Proactively detect issues with Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming)。
+引擎按照动态计划扫描每个连接的跟踪项目，以平衡成本和性能，按严重性对问题进行集群和优先级排序。它使用 LangChain 托管推理并以 LangChain 标准单位 (LSU) 收费。有关设置、成本和完整的问题工作流程，请参阅[Find and fix your agent's issues](/langsmith/engine)。有关 Engine 如何处理您的数据、其 GitHub 和模型子处理器控制及其合规性状况，请参阅[Engine security](/langsmith/engine-security)。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。要在故障影响生产之前使用合成请求测试部署，请参阅[Proactively detect issues with Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming)。
 
 ## 开始吧
 

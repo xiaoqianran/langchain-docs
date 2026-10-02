@@ -4,6 +4,8 @@
 
 # 目标和准则
 
+定义Deep Agents代码会议的目标和接受标准
+
 目标和规则有助于 Deep Agents 代码检查其工作是否满足您关心的标准。使用目标驱动的工作，代理应帮助定义验收标准，并在您已经知道标准时使用标题。
 
 ## 选择一个目标或标题
@@ -14,14 +16,14 @@
 
 常见模式：
 
-- **一个目标，特工起草标准**：使用`/goal <objective>`。
-- **每回合的持续标准**：使用`/rubric set <criteria>`。
-- **存储在文件中的条件**：使用`/rubric file <path>`。
-- **一转质量门**：使用`/rubric next <criteria>`。
+* **一个目标，特工起草标准**：使用`/goal <objective>`。
+* **每回合的持续标准**：使用`/rubric set <criteria>`。
+* **存储在文件中的条件**：使用`/rubric file <path>`。
+* **一转质量门**：使用`/rubric next <criteria>`。
 
 ## 使用目标当您知道想要的结果，但希望使用 Deep Agents 代码在工作开始前提出验收标准时，请使用 `/goal`。目标对于开放式工作很有用：代理将目标转化为完成的具体定义，然后迭代直到满足这些标准。
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /goal add OAuth refresh handling
 ```
 
@@ -30,16 +32,16 @@ Deep Agents 代码在开始任务之前起草验收标准以供审查。
 如何处理草案标准取决于您的 [approval mode](/oss/deepagents/code/approval-modes)：
 
 <Accordion title="Review behavior by approval mode">
-    - **手动**：始终打开内联审核。
-    - **自动**：默认打开评论。在`~/.deepagents/config.toml`中设置`goals.auto_accept_criteria = true`以自动应用生成的条件。
-    - **YOLO**：应用生成的标准，无需审核。
+  * **手动**：始终打开内联审核。
+  * **自动**：默认打开审阅。在`~/.deepagents/config.toml`中设置`goals.auto_accept_criteria = true`以自动应用生成的条件。
+  * **YOLO**：应用生成的标准，无需审核。
 </Accordion>
 
 接受标准后，目标在各个回合中保持活动状态，直到暂停、完成、阻止或清除。
 
 这种方法可以让你在多个回合中朝着更大的目标努力：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /goal migrate auth callbacks to the new API
 start with the OAuth callback
 now update the tests
@@ -50,10 +52,10 @@ check the docs too
 
 ### 修改、暂停和恢复目标
 
-在不取消当前任务和重播工作的情况下引导持续的目标：- `/goal amend <feedback>` 建议对目标和标准进行协调更新。修正案在最终确定之前会经过相同的内联审核（接受、编辑、修改或取消）。
-- `/goal pause` 保存目标而不让它驱动工作或评分，因此干预提示会在没有目标的情况下运行。 `/goal resume` 重新激活保存的目标并从现有对话继续。
+在不取消当前任务和重播工作的情况下引导持续的目标：* `/goal amend <feedback>` 建议对目标和标准进行协调更新。修正案在最终确定之前会经过相同的内联审核（接受、编辑、修改或取消）。
+* `/goal pause` 保存目标而不让它驱动工作或评分，因此干预提示会在没有目标的情况下运行。 `/goal resume` 重新激活保存的目标并从现有对话继续。
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /goal amend remove JSON export, add streaming CSV support, keep the CSV tests
 /goal pause
 /goal resume
@@ -63,24 +65,24 @@ check the docs too
 
 每个后续回合都会根据目标的验收标准进行评分，直到工作完成。
 
-- 当目标完成被批准时，Deep Agents代码清除目标
+* 当目标完成被批准时，Deep Agents代码清除目标
 
 <AccordionGroup>
-    <Accordion title="Goal command reference">
-        - `/goal <objective>`：根据简单语言的目标起草验收标准，并在工作开始前对其进行审查。
-        - `/goal amend <feedback>`：建议对目标和审查标准进行协调更新。
-        - `/goal pause`：保存目标，不要让它驱动工作或评分。
-        - `/goal resume`：重新激活暂停的目标并从现有对话继续。
-        - `/goal show`：检查当前目标、其状态及其标准。
-        - `/goal clear`：删除活动目标。
-        - `/goal model [provider:model|clear]`：设置或清除对目标进行评分的模型。
-        - `/goal max-iterations <N|clear>`：设置或清除目标的最大评分迭代次数。
-    </Accordion>
-</AccordionGroup>## 使用标题
+  <Accordion title="Goal command reference">
+    - `/goal <objective>`：根据简单语言的目标起草验收标准，并在工作开始前对其进行审查。
+    - `/goal amend <feedback>`：建议对目标和审查标准进行协调更新。
+    - `/goal pause`：保存目标，不要让它驱动工作或评分。
+    - `/goal resume`：重新激活暂停的目标并从现有对话继续。
+    - `/goal show`：检查当前目标、其状态及其标准。
+    - `/goal clear`：删除活动目标。
+    - `/goal model [provider:model|clear]`：设置或清除对目标进行评分的模型。
+    - `/goal max-iterations <N|clear>`：设置或清除目标的最大评分迭代次数。
+  </Accordion>
+</AccordionGroup>
 
-当您已经知道验收标准并希望它们充当代理工作的质量门时，请使用`/rubric`。
+## 使用标题当您已经知道验收标准并希望它们充当代理工作的质量门时，请使用`/rubric`。
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /rubric set tests pass; no unrelated files changed; help text is updated
 /rubric next only change the auth callback; do not refactor unrelated code
 /rubric file acceptance.md
@@ -89,43 +91,44 @@ check the docs too
 粘性标题适用于未来的回合，直到清除为止。下一回合标题仅适用于下一个提交的任务。
 
 <AccordionGroup>
-    <Accordion title="Rubric command reference">
-        - `/rubric show`：检查活动标题。
-        - `/rubric clear`：删除活动标题。
-        - `/rubric model <provider:model>`：设置评分细则结果的模型。
-    </Accordion>
+  <Accordion title="Rubric command reference">
+    * `/rubric show`：检查活动标题。
+    * `/rubric clear`：删除活动标题。
+    * `/rubric model <provider:model>`：设置评分细则结果的模型。
+  </Accordion>
 
-    <Accordion title="Use rubrics in non-interactive mode">
-        非交互式运行无法暂停以进行目标审核。对于已知条件的任务使用 `--rubric`：
+  <Accordion title="Use rubrics in non-interactive mode">
+    非交互式运行无法暂停以进行目标审核。对于已知条件的任务使用 `--rubric`：
 
-        ```bash
-        dcode -n "implement OAuth refresh handling" --rubric "tests pass; no unrelated files changed"
-        dcode -n "implement OAuth refresh handling" --rubric @acceptance.md
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode -n "implement OAuth refresh handling" --rubric "tests pass; no unrelated files changed"
+    dcode -n "implement OAuth refresh handling" --rubric @acceptance.md
+    ```
 
-        您还可以设置评分器模型和最大评分迭代：
+    您还可以设置评分器模型和最大评分迭代：
 
-        ```bash
-        dcode -n "implement OAuth refresh handling" \
-          --rubric "tests pass; no unrelated files changed" \
-          --rubric-model openai:gpt-5.5 \
-          --rubric-max-iterations 3
-        ```
-    </Accordion>
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode -n "implement OAuth refresh handling" \
+      --rubric "tests pass; no unrelated files changed" \
+      --rubric-model openai:gpt-5.5 \
+      --rubric-max-iterations 3
+    ```
+  </Accordion>
 </AccordionGroup>
 
 ## 另请参阅
 
-- [Deep Agents Code overview](/oss/deepagents/code/overview)
-- [Quickstart](/oss/deepagents/code/quickstart)
+* [Deep Agents Code overview](/oss/deepagents/code/overview)
+* [Quickstart](/oss/deepagents/code/quickstart)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/goals-and-rubrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

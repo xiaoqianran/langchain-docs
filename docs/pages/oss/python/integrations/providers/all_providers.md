@@ -395,6 +395,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Language AI platform for enterprise applications.
   </Card>
 
+  <Card title="Confident AI" href="https://www.confident-ai.com/docs/integrations/third-party/langchain" icon="link">
+    Confident AI is an LLM observability platform. `confident-trace` traces LangChain runs through the callback system and exports them over OpenTelemetry.
+  </Card>
+
   <Card title="Context" href="/oss/python/integrations/providers/context" icon="link">
     Context management for AI applications.
   </Card>
@@ -633,6 +637,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Google" href="/oss/python/integrations/providers/google" icon="brand-google">
     Google's AI services and cloud platform.
+  </Card>
+
+  <Card title="GPTZZZ" href="https://gptzzz.ai/docs/" icon="link">
+    OpenAI-compatible API gateway for models from multiple providers, with Chinese-language docs.
   </Card>
 
   <Card title="DigitalOcean Gradient AI Platform" href="https://docs.digitalocean.com/products/gradientai-platform/" icon="link">
@@ -1449,6 +1457,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Scavio" href="https://scavio.dev/docs/langchain" icon="link">
     Real-time search API for AI agents across the web, commerce, video, social, jobs, real estate, travel, app stores, ad libraries, and public filings, plus clean text extraction from any URL.
+  </Card>
+
+  <Card title="SchemagateRetriever" href="https://ashishsinha1602.github.io/schemagate/langchain/" icon="link">
+    Retriever that selects schema objects for a SQL agent and returns only the tables the calling principal is permitted to read, for Postgres, Oracle, MySQL and SQL Server
   </Card>
 
   <Card title="ScrapeGraph" href="https://github.com/ScrapeGraphAI/langchain-scrapegraph" icon="link">

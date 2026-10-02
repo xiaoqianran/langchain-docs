@@ -6,29 +6,31 @@
 
 使用 LangChain JavaScript 与 AzureOpenAIEmbeddings 嵌入模型集成。
 
-[Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用 OpenAI、Meta 等多种预构建和策划的模型快速开发生成式 AI 体验。
+[Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用来自 OpenAI、Meta 等的各种预构建和策划模型快速开发生成式 AI 体验。
 
 LangChain.js 支持使用 [OpenAI SDK](https://github.com/openai/openai-node) 中新的 Azure 集成与 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 集成。
 
-您可以在[this page](https://learn.microsoft.com/azure/ai-services/openai/overview)上了解更多有关Azure OpenAI及其与OpenAI API的区别。如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。
+您可以详细了解 Azure OpenAI 及其与 [this page](https://learn.microsoft.com/azure/ai-services/openai/overview) 上的 OpenAI API 的区别。如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。
 
-这将帮助您开始使用 LangChain 来使用 AzureOpenAIEmbeddings [embedding models](/oss/javascript/integrations/embeddings)。有关`AzureOpenAIEmbeddings`功能和配置选项的详细文档，请参阅[API reference](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings)。
+这将帮助您开始使用 LangChain 使用 AzureOpenAIEmbeddings [embedding models](/oss/javascript/integrations/embeddings)。有关`AzureOpenAIEmbeddings`功能和配置选项的详细文档，请参阅[API reference](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings)。
 
 <Info>
-  **此前，LangChain.js 支持使用专用的[Azure OpenAI SDK](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai) 与 Azure OpenAI 集成。该 SDK 现已弃用，取而代之的是 OpenAI SDK 中的新 Azure 集成，它允许在最新的 OpenAI 模型和功能发布当天访问它们，并允许 OpenAI API 和 Azure OpenAI 之间的无缝过渡。**
+  **以前，LangChain.js 支持使用专用的 [Azure OpenAI SDK](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai) 与 Azure OpenAI 集成。该 SDK 现已弃用，取而代之的是OpenAI SDK 中的新 Azure 集成，它允许在发布当天访问最新的 OpenAI 模型和功能，并允许在 OpenAI API 和 Azure OpenAI 之间无缝转换。**
 
-  如果您将 Azure OpenAI 与已弃用的 SDK 结合使用，请参阅 [migration guide](#migration-from-azure-openai-sdk) 更新到新的 API。
+  如果您将 Azure OpenAI 与已弃用的 SDK 结合使用，请参阅 [migration guide](#migration-from-azure-openai-sdk) 以更新到新 API。
 </Info>
 
-## 概述### 集成细节
+## 概述
 
-|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/azure_openai/) |                                             下载 |                                             版本 |
-| :------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------- | :---: | :------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [⟦T19⟧](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings) | [⟦T20⟧](https://www.npmjs.com/package/@langchain/openai) |   ❌ |                                           ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
+### 集成细节|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/azure_openai/) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T19⟧](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings) | [⟦T20⟧](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ## 设置
 
-要访问 Azure OpenAI 嵌入模型，您需要创建 Azure 帐户、获取 API 密钥并安装 `@langchain/openai` 集成包。### 凭证
+要访问 Azure OpenAI 嵌入模型，您需要创建 Azure 帐户、获取 API 密钥并安装 `@langchain/openai` 集成包。
+
+### 凭证
 
 您需要部署一个 Azure OpenAI 实例。您可以在 Azure 门户上部署以下[this guide](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource?pivots=web-portal) 的版本。
 
@@ -70,10 +72,8 @@ LangChain AzureOpenAIEmbeddings 集成位于 `@langchain/openai` 包中：
 
 <Info>
   **您可以在[Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/reference)中找到支持的API版本列表。**
-</Info>
-
-<Tip>
-  **如果未定义 `AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME`，它将回退到部署名称的 `AZURE_OPENAI_API_DEPLOYMENT_NAME` 值。这同样适用于 `AzureOpenAIEmbeddings` 构造函数中的 `azureOpenAIApiEmbeddingsDeploymentName` 参数，如果未定义，它将回退到 `azureOpenAIApiDeploymentName` 的值。**
+</Info><Tip>
+  **如果未定义 `AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME`，它将回退到部署名称的 `AZURE_OPENAI_API_DEPLOYMENT_NAME` 值。这同样适用于`AzureOpenAIEmbeddings`构造函数中的`azureOpenAIApiEmbeddingsDeploymentName`参数，如果未定义，它将回退到`azureOpenAIApiDeploymentName`的值。**
 </Tip>
 
 ## 实例化
@@ -92,7 +92,9 @@ const embeddings = new AzureOpenAIEmbeddings({
 });
 ```
 
-## 索引和检索嵌入模型通常用于检索增强生成（RAG）流程，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
+## 索引和检索
+
+嵌入模型通常用于检索增强生成（RAG）流，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
 
 下面，看看如何使用我们上面初始化的 `embeddings` 对象来索引和检索数据。在此示例中，我们将使用演示 [⟦T29⟧](/oss/javascript/integrations/vectorstores/memory) 索引和检索示例文档。
 
@@ -159,9 +161,7 @@ console.log(singleVector.slice(0, 100));
     0.004969236,    0.03707063,   0.015396165,   -0.02055427,    0.01988997,
     0.030219207,  -0.021257648,    0.01340326,   0.003692735,   0.012595678
 ]
-```
-
-### 嵌入多个文本
+```### 嵌入多个文本
 
 您可以使用 `embedDocuments` 嵌入多个文本进行索引。此方法使用的内部结构可能（但不一定）与嵌入查询不同：
 
@@ -247,7 +247,9 @@ const modelWithManagedIdentity = new AzureOpenAIEmbeddings({
 
 ```
 
-## 使用不同的域如果您的实例托管在默认 `openai.azure.com` 以外的域下，则需要使用备用 `AZURE_OPENAI_BASE_PATH` 环境变量。
+## 使用不同的域
+
+如果您的实例托管在默认 `openai.azure.com` 以外的域下，则需要使用备用 `AZURE_OPENAI_BASE_PATH` 环境变量。
 例如，以下是连接到域 `https://westeurope.api.microsoft.com/openai/deployments/{DEPLOYMENT_NAME}` 的方法：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -298,9 +300,7 @@ const embeddingsWithCustomHeaders = new AzureOpenAIEmbeddings({
    npm uninstall @langchain/azure-openai
    ```
 
-2. 更新您的导入以使用 `@langchain/openai` 包中的新 `AzureOpenAIEmbeddings` 类：
-
-   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+2. 更新您的导入以使用 `@langchain/openai` 包中的新 `AzureOpenAIEmbeddings` 类：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { AzureOpenAIEmbeddings } from "@langchain/openai";
    ```
 
@@ -316,7 +316,9 @@ const embeddingsWithCustomHeaders = new AzureOpenAIEmbeddings({
    });
    ```
 
-   请注意，构造函数现在需要 `azureOpenAIApiInstanceName` 参数而不是 `azureOpenAIEndpoint` 参数，并添加 `azureOpenAIApiVersion` 参数来指定 API 版本。* 如果您使用的是 Azure 托管身份，现在需要在构造函数中使用 `azureADTokenProvider` 参数，而不是 `credentials`，请参阅 [Azure Managed Identity](#using-azure-managed-identity) 部分了解更多详细信息。
+   请注意，构造函数现在需要 `azureOpenAIApiInstanceName` 参数而不是 `azureOpenAIEndpoint` 参数，并添加 `azureOpenAIApiVersion` 参数来指定 API 版本。
+
+   * 如果您使用的是 Azure 托管身份，现在需要在构造函数中使用 `azureADTokenProvider` 参数，而不是 `credentials`，请参阅 [Azure Managed Identity](#using-azure-managed-identity) 部分了解更多详细信息。
 
    * 如果您之前使用环境变量，现在必须设置 `AZURE_OPENAI_API_INSTANCE_NAME` 环境变量而不是 `AZURE_OPENAI_API_ENDPOINT`，并添加 `AZURE_OPENAI_API_VERSION` 环境变量来指定 API 版本。
 
@@ -330,7 +332,7 @@ const embeddingsWithCustomHeaders = new AzureOpenAIEmbeddings({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

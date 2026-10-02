@@ -30,7 +30,7 @@
   </Step>
 
   <Step title="Fork the repository">
-    将 [LangChain](https://github.com/langchain-ai/langchainjs)、[LangGraph](https://github.com/langchain-ai/langgraphjs) 或 [Deep Agents](https://github.com/langchain-ai/deepagentsjs) 存储库分叉到您的 <Tooltip>个人 GitHub 帐户</Tooltip>
+    将 [LangChain](https://github.com/langchain-ai/langchainjs)、[LangGraph](https://github.com/langchain-ai/langgraphjs) 或 [Deep Agents](https://github.com/langchain-ai/deepagentsjs) 存储库分叉到您的<Tooltip>个人 GitHub 帐户</Tooltip>
   </Step>
 
   <Step title="Clone and setup">
@@ -63,7 +63,7 @@
   </Step>
 
   <Step title="Make your changes">
-    遵循我们的[code quality standards](#code-quality-standards)修复错误。进行**最少的必要更改**来解决问题。我们强烈鼓励贡献者在开始编码之前对该问题发表评论。例如：
+    按照我们的[code quality standards](#code-quality-standards)修复错误。进行**最少的必要更改**来解决问题。我们强烈鼓励贡献者在开始编码之前对该问题发表评论。例如：
 
     > *“我想解决这个问题。我的预期方法是\[...简要描述...]。这符合维护者的期望吗？”*
 
@@ -225,14 +225,49 @@
 ***
 
 ## 开发环境<Tip>
-  **使用AI编码代理？** 安装[LangChain Skills](https://github.com/langchain-ai/langchain-skills)以提高代理在LangChain生态系统任务上的性能，然后单击此页面右上角的“复制页面”按钮，将原始内容粘贴到您的代理中以使其自动设置您的环境。
+  **使用人工智能编码代理？**
+
+  * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
+
+    <Prompt description="Connect LangChain docs MCP servers" icon="plug">
+      将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+
+      要添加的服务器：
+
+      * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+      * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
+
+      检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
+
+      * Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
+      * Codex CLI：`codex mcp add` 以及每个服务器 URL。
+      * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+      * Claude Desktop：在“设置”>“连接器”下添加两个 URL。不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
+    </Prompt>
+  * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能，然后单击此页面右上角的 **复制页面** 按钮，并将原始内容粘贴到您的代理中，以使其自动设置您的环境。
+
+    <Prompt description="Install LangChain Skills" icon="puzzle">
+      为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
+
+      使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的代理技能安装程序：
+
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx skills add langchain-ai/langchain-skills --skill '*' --yes
+      ```
+
+      如果我要求全局安装，请使用：
+
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+      ```
+
+      检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add` 然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
+    </Prompt>
 </Tip>
 
 <Warning>
-  我们的 JS/TS 项目使用 [⟦T16⟧](https://pnpm.io/) 进行依赖管理。确保您安装了最新版本，或运行 `corepack enable`（在 Node 24+ 上）来设置所需的 pnpm 版本。
-</Warning>
-
-<Info>
+  我们的 JS/TS 项目使用 [⟦T25⟧](https://pnpm.io/) 进行依赖管理。确保您安装了最新版本，或运行 `corepack enable`（在 Node 24+ 上）来设置所需的 pnpm 版本。
+</Warning><Info>
   我们努力保持所有 JS/TS 包的设置一致。从存储库根目录运行：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -253,56 +288,57 @@
 
     <AccordionGroup>
       <Accordion title="Core packages">
-        * **[⟦T18⟧](https://github.com/langchain-ai/langchainjs/tree/main/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
-        * **[⟦T20⟧](https://github.com/langchain-ai/langchainjs/tree/main/langchain-core#readme)**（位于`libs/langchain-core/`）：基础接口和核心抽象
+        * **[⟦T27⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain#readme)**（位于`libs/langchain/`）：包含链、代理和检索逻辑的主包
+        * **[⟦T29⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**（位于`libs/langchain-core/`）：基础接口和核心抽象
       </Accordion>
 
       <Accordion title="Partner packages">
-        这些位于 `libs/providers/` 中，是用于特定集成的独立版本控制包。例如：* **[⟦T23⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-openai#readme)**：[OpenAI](/oss/javascript/integrations/providers/openai)集成
-        * **[⟦T24⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-anthropic#readme)**：[Anthropic](/oss/javascript/integrations/providers/anthropic)集成
-        * **[⟦T25⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**：[Google](/oss/javascript/integrations/providers/google)集成
+        这些位于 `libs/providers/` 中，是用于特定集成的独立版本控制包。例如：
+
+        * **[⟦T32⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-openai#readme)**：[OpenAI](/oss/javascript/integrations/providers/openai)集成
+        * **[⟦T33⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-anthropic#readme)**：[Anthropic](/oss/javascript/integrations/providers/anthropic)集成
+        * **[⟦T34⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google#readme)**：[Google](/oss/javascript/integrations/providers/google)集成
       </Accordion>
 
       <Accordion title="Supporting packages">
-        * **[⟦T26⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**：文本分割实用程序
-        * **[⟦T27⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-standard-tests#readme)**：用于集成的标准测试套件
+        * **[⟦T35⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-textsplitters#readme)**：文本分割实用程序
+        * **[⟦T36⟧](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**：用于集成的标准测试套件
+        * **[⟦T37⟧](https://github.com/langchain-ai/langchainjs-community/tree/main/libs/community)**：社区维护的集成（单独的存储库）
       </Accordion>
     </AccordionGroup>
   </Tab>
 
   <Tab title="LangGraph" icon="topology-ring">
-    LangGraph 被组织为具有多个 Python 包的单一存储库：
-
-    <AccordionGroup>
+    LangGraph 被组织为具有多个 Python 包的 monorepo：<AccordionGroup>
       <Accordion title="Core packages">
-        * **[⟦T28⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
-        * **[⟦T30⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API
+        * **[⟦T38⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/langgraph#readme)**（位于`libs/langgraph/`）：用于构建有状态、多参与者代理的核心框架
+        * **[⟦T40⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/prebuilt#readme)**（位于`libs/prebuilt/`）：用于创建和运行代理和工具的高级 API
       </Accordion>
 
       <Accordion title="Checkpoint packages">
-        * **[⟦T32⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
-        * **[⟦T34⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
-        * **[⟦T36⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite 实现
+        * **[⟦T42⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint#readme)**（位于`libs/checkpoint/`）：检查点保存程序的基础接口
+        * **[⟦T44⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres#readme)**（位于`libs/checkpoint-postgres/`）：Postgres 实现
+        * **[⟦T46⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite#readme)**（位于`libs/checkpoint-sqlite/`）：SQLite实现
       </Accordion>
 
       <Accordion title="SDK and CLI">
-        * **[⟦T38⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
-        * **[⟦T40⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面
+        * **[⟦T48⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/sdk-py#readme)**（位于`libs/sdk-py/`）：用于代理服务器 API 的 Python SDK
+        * **[⟦T50⟧](https://github.com/langchain-ai/langgraph/tree/main/libs/cli#readme)**（位于`libs/cli/`）：官方命令行界面
       </Accordion>
     </AccordionGroup>
   </Tab>
 
   <Tab title="Deep Agents" icon="robot">
-    Deep Agents 被组织为具有多个 Python 包的单一存储库：<AccordionGroup>
-      <Accordion title="Core packages">
-        * **[⟦T42⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
-        * **[⟦T44⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：深层代理代码 — 具有对话恢复、网络搜索和沙箱的交互式终端界面
-        * **[⟦T46⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/cli#readme)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）到 LangSmith 部署
-      </Accordion>
+    Deep Agents 被组织为具有多个 Python 包的 monorepo：
 
-      <Accordion title="Integration packages">
-        * **[⟦T51⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/harbor#readme)**（位于`libs/harbor/`）：Harbor 与 LangSmith 跟踪集成
-        * **[⟦T53⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
+    <AccordionGroup>
+      <Accordion title="Core packages">
+        * **[⟦T52⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)**（位于`libs/deepagents/`）：用于构建具有规划、文件系统和子代理功能的深度代理的核心框架
+        * **[⟦T54⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)**（位于`libs/code/`）：Deep Agents代码——具有对话简历、网络搜索和沙箱的交互式终端界面
+        * **[⟦T56⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/cli#readme)**（位于`libs/cli/`）：将运输代理部署工具（`deepagents deploy`、`deepagents init`、`deepagents dev`）部署到LangSmith部署
+      </Accordion><Accordion title="Integration packages">
+        * **[⟦T61⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)**（位于`libs/evals/`）：评估套件和Harbor与LangSmith跟踪的集成
+        * **[⟦T63⟧](https://github.com/langchain-ai/deepagents/tree/main/libs/acp#readme)**（位于`libs/acp/`）：代理客户端协议集成
       </Accordion>
     </AccordionGroup>
   </Tab>
@@ -324,7 +360,9 @@
 
 #### 单元测试
 
-**地点**：`src/tests/FILENAME_BEING_TESTED.test.ts`单元测试涵盖不需要调用外部 API 的模块化逻辑。如果添加新逻辑，则应该添加单元测试。在单元测试中，检查前/后处理并模拟外部依赖项。
+**地点**：`src/tests/FILENAME_BEING_TESTED.test.ts`
+
+单元测试涵盖不需要调用外部 API 的模块化逻辑。如果添加新逻辑，则应该添加单元测试。在单元测试中，检查前/后处理并模拟外部依赖项。
 
 **要求**：
 
@@ -347,9 +385,7 @@ pnpm test -t "the test that should be run"
 
 #### 集成测试
 
-**地点**：`src/tests/FILENAME_BEING_TESTED.int.test.ts`
-
-集成测试涵盖需要调用外部 API（通常与其他服务集成）的逻辑。
+**地点**：`src/tests/FILENAME_BEING_TESTED.int.test.ts`集成测试涵盖需要调用外部 API（通常与其他服务集成）的逻辑。
 
 集成测试需要访问外部服务/提供商 API（这可能需要花钱），因此默认情况下不会运行。
 
@@ -384,7 +420,9 @@ pnpm test:int
         // ...
     }
     ```
-  </Tab><Tab title="Documentation">
+  </Tab>
+
+  <Tab title="Documentation">
     **必需**：[JSDocs](https://jsdoc.app/about-getting-started) 对于所有导出的函数和接口
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -437,9 +475,7 @@ pnpm test:int
 
 ***
 
-### 测试写作指南
-
-为了编写有效的测试，需要遵循一些好的实践：
+### 测试写作指南为了编写有效的测试，需要遵循一些好的实践：
 
 * 将测试封装在描述被测试组件的`describe`块中
 * 使用自然语言描述测试名称
@@ -497,23 +533,23 @@ pnpm test:int
 
 <Note>
   如果您的 PR 包含人工智能生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。看似省力、由人工智能生成的垃圾邮件的 PR 将被关闭而不发表评论。
-</Note><Warning>
+</Note>
+
+<Warning>
   及时解决 CI 故障。维护者可以在合理的时间内关闭未通过 CI 的 PR。
 </Warning>
 
 ## 获取帮助
 
-我们的目标是尽可能提供最方便的开发人员设置。如果您在设置时遇到任何困难，请在[community slack](https://www.langchain.com/join-community)中询问或打开[forum post](https://forum.langchain.com/)。
-
-<Check>
-  现在您已经准备好向LangChain贡献高质量的代码了！
+我们的目标是尽可能提供最方便的开发人员设置。如果您在设置时遇到任何困难，请在[community slack](https://www.langchain.com/join-community)中询问或打开[forum post](https://forum.langchain.com/)。<Check>
+  您现在已经准备好向LangChain贡献高质量的代码了！
 </Check>
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

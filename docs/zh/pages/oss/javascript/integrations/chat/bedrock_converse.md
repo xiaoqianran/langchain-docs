@@ -12,21 +12,25 @@
 
 ## 概述
 
-### 集成细节|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/bedrock/#beta-bedrock-converse-api) |                                            下载 |                                           版本 |
-| :-------------------------------------------------------------------------------------------------------- | ：---------------------------------------------------------------- | :----------: | :--------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
-| [⟦T12⟧](https://reference.langchain.com/javascript/langchain-aws/ChatBedrockConverse) | [⟦T13⟧](https://npmjs.com/@langchain/aws) |       ✅ |                                                   ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
+### 集成细节
+
+|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/bedrock/#beta-bedrock-converse-api) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T12⟧](https://reference.langchain.com/javascript/langchain-aws/ChatBedrockConverse) | [⟦T13⟧](https://npmjs.com/@langchain/aws) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
-有关如何使用特定功能的指南，请参阅下面表标题中的链接。| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :------------------------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------------------: |
-|                        ✅ |                                 ✅ |                               ✅ |      ❌ |      ❌ |                               ✅ |                              ✅ |                                ❌ |
+有关如何使用特定功能的指南，请参阅下面表标题中的链接。
+
+| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 
 ## 设置
 
-要访问 Bedrock 模型，您需要创建一个 AWS 账户、设置 Bedrock API 服务、获取访问密钥 ID 和密钥，并安装 `@langchain/aws` 集成包。
+要访问 Bedrock 模型，您需要创建一个 AWS 账户、设置 Bedrock API 服务、获取访问密钥 ID 和密钥，并安装 `@langchain/aws` 集成包。### 凭证
 
-＃＃＃ 证书前往 [AWS docs](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html) 注册 AWS 并设置您的凭证。您还需要为您的帐户打开模型访问权限，可以通过 [following these instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) 来完成。
+前往 [AWS docs](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html) 注册 AWS 并设置您的凭证。您还需要为您的帐户打开模型访问权限，可以通过 [following these instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) 来完成。
 
 在环境中设置您的 Bedrock 凭据：
 
@@ -147,7 +151,7 @@ J'adore la programmation.
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

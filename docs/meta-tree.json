@@ -2349,6 +2349,12 @@
           "rel": "langsmith/self-host-scale.md"
         }
       ],
+      "self-host-slack": [
+        {
+          "title": "Connect self-hosted LangSmith to Slack",
+          "rel": "langsmith/self-host-slack.md"
+        }
+      ],
       "self-host-smithdb": [
         {
           "title": "Enable SmithDB on self-hosted LangSmith",
@@ -4637,6 +4643,10 @@
           "rel": "langsmith/smith-api/examples/create-examples.md"
         },
         {
+          "title": "Delete an example",
+          "rel": "langsmith/smith-api/examples/delete-an-example.md"
+        },
+        {
           "title": "Delete example",
           "rel": "langsmith/smith-api/examples/delete-example.md"
         },
@@ -6895,12 +6905,20 @@
           "rel": "oss/javascript/langchain/long-term-memory.md"
         },
         {
-          "title": "Model Context Protocol (MCP)",
-          "rel": "oss/javascript/langchain/mcp.md"
+          "title": "Authentication",
+          "rel": "oss/javascript/langchain/mcp/auth.md"
+        },
+        {
+          "title": "Connections",
+          "rel": "oss/javascript/langchain/mcp/connections.md"
         },
         {
           "title": "Model Context Protocol (MCP)",
           "rel": "oss/javascript/langchain/mcp/index.md"
+        },
+        {
+          "title": "Tools",
+          "rel": "oss/javascript/langchain/mcp/tools.md"
         },
         {
           "title": "Messages",
@@ -7180,6 +7198,10 @@
         }
       ],
       "migrate": [
+        {
+          "title": "Migrate to @langchain/mcp-adapters 2.0",
+          "rel": "oss/javascript/migrate/langchain-mcp-adapters.md"
+        },
         {
           "title": "LangChain v1 migration guide",
           "rel": "oss/javascript/migrate/langchain-v1.md"

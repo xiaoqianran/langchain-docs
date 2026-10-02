@@ -18,25 +18,26 @@
 
 <div>
   |整合 |下载 |
-  | :------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------- |
+  | :- | :- |
   | [⟦T0⟧](/oss/javascript/integrations/llms/azure) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span> |
   | [⟦T1⟧](/oss/javascript/integrations/llms/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span> |
   | [⟦T2⟧](/oss/javascript/integrations/llms/google_vertex_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-vertexai"><img alt="Downloads per month" /></a></span> |
-  | [⟦T3⟧](/oss/javascript/integrations/llms/ollama) | <span><a href="https://www.npmjs.com/package/@langchain/ollama"><img alt="Downloads per month" /></a></span> || [⟦T4⟧](/oss/javascript/integrations/llms/mistral) | <span><a href="https://www.npmjs.com/package/@langchain/mistralai"><img alt="Downloads per month" /></a></span> |
+  | [⟦T3⟧](/oss/javascript/integrations/llms/ollama) | <span><a href="https://www.npmjs.com/package/@langchain/ollama"><img alt="Downloads per month" /></a></span> |
+  | [⟦T4⟧](/oss/javascript/integrations/llms/mistral) | <span><a href="https://www.npmjs.com/package/@langchain/mistralai"><img alt="Downloads per month" /></a></span> |
   | [⟦T5⟧](/oss/javascript/integrations/llms/cohere) | <span><a href="https://www.npmjs.com/package/@langchain/cohere"><img alt="Downloads per month" /></a></span> |
   | [⟦T6⟧](/oss/javascript/integrations/llms/cloudflare_workersai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span> |
-  | [⟦T7⟧](/oss/javascript/integrations/llms/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"><img alt="Downloads per month" /></a></span> |
-  | [⟦T8⟧](/oss/javascript/integrations/llms/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"><img alt="Downloads per month" /></a></span> |
-  | [⟦T9⟧](/oss/javascript/integrations/llms/yandex) | <span><a href="https://www.npmjs.com/package/@langchain/yandex"><img alt="Downloads per month" /></a></span> |
+  | [⟦T7⟧](/oss/javascript/integrations/llms/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"><img alt="Downloads per month" /></a></span> |
+  | [⟦T8⟧](/oss/javascript/integrations/llms/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"><img alt="Downloads per month" /></a></span> |
+  | [⟦T9⟧](/oss/javascript/integrations/llms/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack"><img alt="Downloads per month" /></a></span> |
   | [⟦T10⟧](/oss/javascript/integrations/llms/together) | <span><a href="https://www.npmjs.com/package/@langchain/together-ai"><img alt="Downloads per month" /></a></span> |
-  | [⟦T11⟧](/oss/javascript/integrations/llms/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack"><img alt="Downloads per month" /></a></span> |
+  | [⟦T11⟧](/oss/javascript/integrations/llms/yandex) | <span><a href="https://www.npmjs.com/package/@langchain/yandex"><img alt="Downloads per month" /></a></span> |
 </div>
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -18,14 +18,14 @@
 
 ### 它是如何工作的
 
-1. **矢量化** — 该模型将每个输入字符串编码为高维向量。
-2. **相似性评分** — 使用数学指标对向量进行比较，以衡量底层文本的相关程度。
+1. **向量化**：模型将每个输入字符串编码为高维向量。
+2. **相似性评分**：使用数学指标对向量进行比较，以衡量底层文本的相关程度。
 
 ### 相似度指标
 
-通常使用几个指标来比较嵌入：* **余弦相似度** — 测量两个向量之间的角度。
-* **欧几里德距离** — 测量点之间的直线距离。
-* **点积** — 测量一个向量投射到另一个向量上的程度。
+通常使用几个指标来比较嵌入：* **余弦相似度**：测量两个向量之间的角度。
+* **欧氏距离**：测量点之间的直线距离。
+* **点积**：测量一个向量投射到另一个向量上的程度。
 
 ## 接口
 
@@ -179,7 +179,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
     ```
   </Accordion>
 
-  <Accordion title="Google Vertex">
+  <Accordion title="Gemini Enterprise Agent Platform">
     安装依赖项：
 
     <CodeGroup>
@@ -391,24 +391,25 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 
 ## 所有集成<div>
   |整合 |下载 |
-  | :-------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+  | :- | :- |
   | [⟦T55⟧](/oss/javascript/integrations/embeddings/azure_openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T57⟧](/oss/javascript/integrations/embeddings/google_generative_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-genai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T58⟧](/oss/javascript/integrations/embeddings/bedrock) | <span><a href="https://www.npmjs.com/package/@langchain/aws"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span>|
+  | [⟦T57⟧](/oss/javascript/integrations/embeddings/bedrock) | <span><a href="https://www.npmjs.com/package/@langchain/aws"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T58⟧](/oss/javascript/integrations/embeddings/google_generative_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-genai"> <img alt="Downloads per month" /></a></span> |
   | [⟦T59⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) | <span><a href="https://www.npmjs.com/package/@langchain/google-vertexai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T60⟧](/oss/javascript/integrations/embeddings/ollama) | <span><a href="https://www.npmjs.com/package/@langchain/ollama"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T60⟧](/oss/javascript/integrations/embeddings/ollama) | <span><a href="https://www.npmjs.com/package/@langchain/ollama"><img alt="Downloads per month" /></a></span>|
   | [⟦T61⟧](/oss/javascript/integrations/embeddings/mistralai) | <span><a href="https://www.npmjs.com/package/@langchain/mistralai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T62⟧](/oss/javascript/integrations/embeddings/pinecone) | <span><a href="https://www.npmjs.com/package/@langchain/pinecone"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T63⟧](/oss/javascript/integrations/embeddings/cohere) | <span><a href="https://www.npmjs.com/package/@langchain/cohere"> <img alt="Downloads per month" /></a></span> || [⟦T64⟧](/oss/javascript/integrations/embeddings/voyageai) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb"><img alt="Downloads per month" /></a></span>|
+  | [⟦T62⟧](/oss/javascript/integrations/embeddings/pinecone) | <span><a href="https://www.npmjs.com/package/@langchain/pinecone"><img alt="Downloads per month" /></a></span>|
+  | [⟦T63⟧](/oss/javascript/integrations/embeddings/voyageai) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T64⟧](/oss/javascript/integrations/embeddings/cohere) | <span><a href="https://www.npmjs.com/package/@langchain/cohere"><img alt="Downloads per month" /></a></span>|
   | [⟦T65⟧](/oss/javascript/integrations/embeddings/baidu_qianfan) | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T66⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
-  | [⟦T67⟧](/oss/javascript/integrations/embeddings/nomic) | <span><a href="https://www.npmjs.com/package/@langchain/nomic"><img alt="Downloads per month" /></a></span>|
-  | [⟦T68⟧](/oss/javascript/integrations/embeddings/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"><img alt="Downloads per month" /></a></span>|
-  | [⟦T69⟧](/oss/javascript/integrations/embeddings/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T66⟧](/oss/javascript/integrations/embeddings/nomic) | <span><a href="https://www.npmjs.com/package/@langchain/nomic"><img alt="Downloads per month" /></a></span>|
+  | [⟦T67⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
+  | [⟦T68⟧](/oss/javascript/integrations/embeddings/fireworks) | <span><a href="https://www.npmjs.com/package/@langchain/fireworks"><img alt="Downloads per month" /></a></span>|
+  | [⟦T69⟧](/oss/javascript/integrations/embeddings/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"> <img alt="Downloads per month" /></a></span> |
   | [⟦T70⟧](/oss/javascript/integrations/embeddings/togetherai) | <span><a href="https://www.npmjs.com/package/@langchain/together-ai"> <img alt="Downloads per month" /></a></span> |
   | [⟦T71⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | <span><a href="https://www.npmjs.com/package/@langchain/mixedbread-ai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T72⟧](https://scx.ai/) | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T72⟧](https://scx.ai/) | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain"><img alt="Downloads per month" /></a></span>|
   | [⟦T73⟧](/oss/javascript/integrations/embeddings/minimax) | <span>不适用</span> |
   | [⟦T74⟧](/oss/javascript/integrations/embeddings/oracleai) | <span>不适用</span> |
 </div>
@@ -417,7 +418,7 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

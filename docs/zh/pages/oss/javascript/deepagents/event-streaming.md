@@ -4,13 +4,13 @@
 
 # 事件流
 
-流式传输子代理、消息、工具调用和深度代理的最终输出。
+从 Deep Agents 传输子代理、消息、工具调用和最终输出。
 
-本页涵盖了特定于深度代理的流式传输问题 - 最重要的是，通过 `stream.subagents` 从委托子代理进行流式传输。对于一般代理流（`stream.messages`、`stream.values`、工具调用、自定义更新），请参阅[LangChain Event Streaming](/oss/javascript/langchain/event-streaming)。
+本页面涵盖特定于 Deep Agents 的流式传输问题 — 最重要的是，通过 `stream.subagents` 从委托子代理进行流式传输。对于一般代理流（`stream.messages`、`stream.values`、工具调用、自定义更新），请参阅[LangChain Event Streaming](/oss/javascript/langchain/event-streaming)。
 
 ## 流子代理
 
-深度代理在 LangGraph 流之上添加了子代理投影。当您希望每个委托的 `task` 调用有一个流句柄时，请使用 `stream.subagents`。投影是轻量级的：它首先发现子代理任务，并且仅当您在子代理句柄上访问消息、工具调用和价值流时才会打开它们。
+Deep Agents 在 LangGraph 流之上添加子代理投影。当您希望每个委托的 `task` 调用有一个流句柄时，请使用 `stream.subagents`。投影是轻量级的：它首先发现子代理任务，并且仅当您在子代理句柄上访问消息、工具调用和价值流时才会打开它们。
 
 每个句柄的`name`是子代理的配置名称：协调器在调用`task`工具时传递的`subagent_type`。 Deep Agents 将该名称绑定到委托运行，因此您在子代理规范中定义的相同标签就是您在流中过滤和路由的标签。
 
@@ -31,6 +31,8 @@ for await (const subagent of stream.subagents) {
 
   subagentNames.push(subagent.name);
 }
+
+await stream.output;
 ```
 
 ## 子代理流字段
@@ -38,17 +40,19 @@ for await (const subagent of stream.subagents) {
 每个子代理流都公开与父运行相同类型的投影，例如消息、工具调用、嵌套子代理和最终输出。对于一般的父运行流模型，请参见[LangChain Event Streaming](/oss/javascript/langchain/event-streaming)。TypeScript 使用驼峰命名法投影名称，例如 `toolCalls` 和 `taskInput`。每个子代理流可以公开 `.messages`、`.toolCalls`、`.values`、`.subagents` 和 `.output`。
 
 |领域 |描述 |
-| ----------- | ------------------------------------------------------------------------------------------ |
+| - | - |
 | `name` |子代理名称，取自协调器在其 `task` 调用中选择的 `subagent_type`。 |
-| `messages` |子代理发出的消息。                                                          |
-| `subagents` |嵌套子代理调用。                                                               |
-| `output` |最终子代理状态，或委派任务的完成信号。                         |
-| `taskInput` | Promise 将提示传递给任务工具。                                            |
-| `toolCalls` |工具调用范围为子代理。                                                         |
+| `messages` |子代理发出的消息。 |
+| `subagents` |嵌套子代理调用。 |
+| `output` |最终子代理状态，或委派任务的完成信号。 |
+| `taskInput` | Promise 将提示传递给任务工具。 |
+| `toolCalls` |工具调用范围为子代理。 |
 
 ## 跟踪子代理生命周期
 
-当您只需要显示哪些子代理启动和完成时，请使用`stream.subagents`。您不需要订阅消息或价值流，除非您访问单个子代理上的这些预测。```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+当您只需要显示哪些子代理启动和完成时，请使用`stream.subagents`。您不需要订阅消息或价值流，除非您访问单个子代理上的这些预测。
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
 let running = 0;
@@ -80,17 +84,22 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1d3f1455-4a9c-4607-aa1d-115948f2e1fa/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 流消息
 
-深度代理可以从协调器代理和委派的子代理发出消息。对顶级消息使用 `stream.messages`，对每个委派的子代理使用 `subagent.messages`。
+Deep Agents 可以从协调器代理和委托子代理发出消息。对顶级消息使用 `stream.messages`，对每个委派的子代理使用 `subagent.messages`。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
 const coordinatorMessages: string[] = [];
 for await (const message of stream.messages) {
-  console.log("[coordinator]", await message.text);
-  coordinatorMessages.push(await message.text);
+  const text = await message.text;
+  console.log("[coordinator]", text);
+  coordinatorMessages.push(text);
 }
 
 for await (const subagent of stream.subagents) {
@@ -98,11 +107,13 @@ for await (const subagent of stream.subagents) {
     console.log(`[${subagent.name}]`, await message.text);
   }
 }
+
+await stream.output;
 ```
 
 ## 流工具调用
 
-深层代理在代理树的每个级别公开工具调用。将顶级 `stream.tool_calls` 用于协调器工具，将每个 `subagent.tool_calls` 用于委派工作。
+Deep Agents 在代理树的每个级别公开工具调用。将顶级 `stream.tool_calls` 用于协调器工具，将每个 `subagent.tool_calls` 用于委派工作。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
@@ -126,7 +137,9 @@ for await (const subagent of stream.subagents) {
     }
   }
 }
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fdda16a-c42c-4931-81f5-36e4a4ecfc5c/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 流式嵌套工作
 
@@ -158,6 +171,10 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0b947581-de0c-491e-96c1-ba37cc862b0e/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 并发消费
 
 协调器和子代理的输出经常交错。当您需要实时 UI 更新时，同时使用投影。
@@ -185,6 +202,10 @@ await Promise.all([
 ]);
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/467e4c96-80a0-42ba-9f5f-d869b74e5899/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 当您需要协调器和所有子代理之间的准确到达顺序时，请迭代原始协议事件并使用 `namespace` 来识别源：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -209,19 +230,23 @@ for await (const event of stream) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4113a4d2-b6d8-4f2a-ad1d-2ab9e29859e6/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 子代理与子图
 
-`stream.subgraphs`展示了图的执行结构。 `stream.subagents` 显示产品级深度代理任务委派。将 `stream.subagents` 用于面向用户的 UI，因为它隐藏内部图节点并直接公开子代理概念。
+`stream.subgraphs`展示了图的执行结构。 `stream.subagents` 显示产品级别的Deep Agents 任务委派。将 `stream.subagents` 用于面向用户的 UI，因为它隐藏内部图节点并直接公开子代理概念。
 
-＃＃ 有关的* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming) 涵盖一般代理消息和工具调用流概念。
+## 相关
+
+* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming) 涵盖一般代理消息和工具调用流概念。
 * [Subagent frontend streaming](/oss/javascript/deepagents/frontend/subagent-streaming) 显示将协调器消息与子代理卡分开的 UI 模式。
 * [LangGraph Event Streaming](/oss/javascript/langgraph/event-streaming)涵盖了底层的图流模型。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

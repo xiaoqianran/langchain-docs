@@ -143,6 +143,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
   | [`API-Route`](https://www.api-route.com/docs/overview) | <span /> | <span /> | <span /> | <span /> | <span>N/A</span> |
   | [`DaoXE`](https://daoxe.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
   | [`FuturMix`](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
+  | [`GPTZZZ`](https://gptzzz.ai/docs/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
   | [`Snowflake Cortex REST API`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
   | [`Synthorai`](https://synthorai.io/docs/) | <span /> | <span /> | <span /> | <span /> | <span>N/A</span> |
   | [`TokenMix`](https://tokenmix.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |

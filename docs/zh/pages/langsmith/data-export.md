@@ -7,7 +7,7 @@
 以 Parquet 格式将 LangSmith 跟踪数据导出到 S3 兼容存储桶。
 
 <Info>
-  **适用计划限制**
+  **计划限制适用**
 
   对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 </Info>
@@ -55,7 +55,7 @@ curl --request POST \
 
 保存响应中的`id`；创建导出作业时您将需要它。
 
-请参阅[Manage bulk export destinations](/langsmith/data-export-destinations)了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
+请参阅 [Manage bulk export destinations](/langsmith/data-export-destinations) 了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
 
 ## 2. 创建导出作业
 
@@ -98,7 +98,7 @@ curl --request POST \
 
 <Note>
   [Self-hosted](/langsmith/self-hosted)：目前仅适用于`v0.16.1rc1` [preview release](/langsmith/release-versions#preview)。在生产环境中运行之前，请等待 `v0.16.1` 稳定版本。
-</Note>要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。
+</Note>要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您针对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。
 
 `all_experiments` 和 `session_id` 互斥 — 设置为 1。
 
@@ -117,7 +117,7 @@ curl --request POST \
   }'
 ```
 
-LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交作业后但在协调器开始处理之前创建的任何实验。
+LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交作业后但编排器开始处理之前创建的任何实验。
 
 相同的 `all_experiments` 标志适用于 [scheduled exports](#schedule-recurring-exports) — 包括 `interval_hours` 并省略 `end_time`，而不是提供 `end_time`。
 
@@ -202,10 +202,13 @@ curl --request POST \
     "start_time": "2024-01-01T00:00:00Z",
     "end_time": "2024-01-03T00:00:00Z",
     "export_fields": ["id", "name", "run_type", "start_time", "end_time", "status", "total_tokens", "total_cost"],
+    "is_rollup_disabled": true,
     "format_version": "v2_beta"
   }'
 ```<Tip>
   排除 `inputs` 和 `outputs` 可以显着提高导出性能并减小文件大小，特别是对于大型运行。仅当您需要进行分析时才包含这些字段。
+
+  如果您的导出包含令牌或成本字段（默认情况下），则将 `is_rollup_disabled` 设置为 `true` 也可以加快速度，因为 LangSmith 会跳过计算跟踪级别汇总。然后，根运行携带自己的令牌和成本值，而不是整个跟踪的总计。 `is_rollup_disabled` 默认为 `false` 并且仅适用于从 SmithDB 读取的导出。
 </Tip>
 
 ### 压缩
@@ -222,9 +225,7 @@ curl --request POST \
 
 默认情况下，批量导出包含每次运行的以下字段：
 
-**标识符和层次结构：**
-
-|领域 |描述 |
+**标识符和层次结构：**|领域 |描述 |
 | - | - |
 | `id` |运行 ID |
 | `tenant_id` |工作区/租户 ID |
@@ -234,7 +235,9 @@ curl --request POST \
 | `parent_run_ids` |所有父运行 ID 的列表 |
 | `reference_example_id` |如果数据集的一部分，请参考示例 |
 
-**基本元数据：**|领域 |描述 |
+**基本元数据：**
+
+|领域 |描述 |
 | - | - |
 | `name` |运行名称|
 | `run_type` |运行类型（例如“链”、“llm”、“工具”）|
@@ -264,12 +267,12 @@ curl --request POST \
 | `feedbacks` |反馈意见和键 (JSON) |
 
 <Note>
-  **`feedback_stats`聚合限制**
-
-  `feedback_stats` 字段仅包含字符串类型反馈的值细分。非字符串值（数字、布尔值、复杂类型）的反馈不包括在这些细分中。要分析非字符串反馈值，请单独导出原始反馈数据。
+  **`feedback_stats`聚合限制**`feedback_stats` 字段仅包含字符串类型反馈的值细分。非字符串值（数字、布尔值、复杂类型）的反馈不包括在这些细分中。要分析非字符串反馈值，请单独导出原始反馈数据。
 </Note>
 
-**代币使用和成本：**|领域 |描述 |
+**代币使用和成本：**
+
+|领域 |描述 |
 | - | - |
 | `total_tokens` |代币总数 |
 | `prompt_tokens` |提示令牌计数 |

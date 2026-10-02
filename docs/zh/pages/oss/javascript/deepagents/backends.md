@@ -6,7 +6,7 @@
 
 为 Deep Agents 选择并配置文件系统后端。您可以指定到不同后端的路由、实施虚拟文件系统并实施策略。
 
-Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `grep` 等工具向代理公开文件系统表面。这些工具通过可插入后端运行。 `read_file` 工具本身支持跨所有后端的二进制文件（图像、PDF、音频、视频），返回带有类型 `content` 和 `mimeType` 的 `ReadResult`。
+Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `grep` 等工具向代理公开文件系统表面。这些工具通过可插入后端运行。 `read_file` 工具本身支持所有后端的二进制文件（图像、PDF、音频、视频），返回带有类型 `content` 和 `mimeType` 的 `ReadResult`。
 
 沙箱和 [⟦T52⟧](https://reference.langchain.com/javascript/deepagents/backends/LocalShellBackend) 还提供了 `execute` 工具。
 本页说明如何：
@@ -30,7 +30,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 <Tip>
   当您在 [LangSmith Deployment](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
 
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+  我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 <Tip>
@@ -40,10 +40,13 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 ## 快速入门
 
 以下是一些预构建的文件系统后端，您可以将它们快速与深度代理一起使用：|内置后端|描述 |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。                                                                                                                                                                                                                                          |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 || [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />这使代理可以访问*跨线程持久化*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。                                                                                                                                                                                                     |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。                                                                                                                                                                                                                                                                                                      || [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。                                                                                                                                                                         |
-| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。                                                                                                                                                                            || [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。                                                                                                                                                                                                                                                     |
+| - | - |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在[CompositeBackend](#compositebackend-router)中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />这使代理能够访问*跨线程持久化*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
+| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
+| [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -135,7 +138,7 @@ const agent2 = createDeepAgent({
   **建议的保障措施：**1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)审核敏感操作。
   2. 从可访问的文件系统路径中排除机密（尤其是在 CI/CD 中）。
   3. 对于需要文件系统交互的生产环境，使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
-  4. **始终** 将 `virtual_mode=True` 与 `root_dir` 一起使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
+  4. **始终**将 `virtual_mode=True` 与 `root_dir` 结合使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
 
      请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
 </Warning>
@@ -145,7 +148,7 @@ const agent2 = createDeepAgent({
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -163,7 +166,7 @@ const agent2 = createDeepAgent({
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -172,7 +175,7 @@ const agent2 = createDeepAgent({
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -242,7 +245,7 @@ const agent2 = createDeepAgent({
 
 <Warning>
   该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-  请极其谨慎地使用，并且仅在适当的环境中使用。
+  请务必谨慎使用，并且仅在适当的环境中使用。
 
   **适当的用例：**
 
@@ -264,9 +267,9 @@ const agent2 = createDeepAgent({
 
   **建议的保障措施：**
 
-  1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)在执行前审核并批准操作。这是**强烈推荐**。
+  1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)以在执行前审核并批准操作。这是**强烈推荐**。
   2. 仅在专用开发环境中运行。切勿在共享或生产系统上使用。
-  3. 对于需要 shell 执行的生产环境，使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
+  3. 对于需要 shell 执行的生产环境，请使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
 
   **注意：** `virtual_mode=True` 在启用 shell 访问的情况下不提供安全性，因为命令可以访问系统上的任何路径。
 </Warning>
@@ -278,7 +281,7 @@ const agent2 = createDeepAgent({
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     backend,
   });
   ```
@@ -300,7 +303,7 @@ const agent2 = createDeepAgent({
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     backend,
   });
   ```
@@ -311,7 +314,7 @@ const agent2 = createDeepAgent({
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     backend,
   });
   ```
@@ -370,7 +373,7 @@ const agent2 = createDeepAgent({
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -400,7 +403,7 @@ const agent2 = createDeepAgent({
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -415,7 +418,7 @@ const agent2 = createDeepAgent({
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -482,11 +485,11 @@ const agent2 = createDeepAgent({
 * [⟦T103⟧](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) 将文件存储在运行时提供的LangGraph [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 中，从而实现跨线程持久存储。
 
 **最适合：*** 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 背后的云实现）。
-* 当您通过 [LangSmith Deployment](/langsmith/deployment) 部署代理时（会自动为您的代理配置商店）。
+* 当您通过[LangSmith Deployment](/langsmith/deployment)部署代理时（会自动为您的代理配置商店）。
 
 #### 命名空间工厂
 
-命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
+命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
@@ -496,14 +499,14 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 
 `Runtime` 提供：
 
-* `rt.context` — 通过 LangGraph 的 [context schema](https://langchain-ai.github.io/langgraph/concepts/runtime/) 传递的用户提供的上下文（例如，`user_id`）
+* `rt.context` - 通过 LangGraph 的 [context schema](/oss/javascript/langgraph/graph-api#runtime-context) 传递的用户提供的上下文（例如，`user_id`）
 
-* `rt.serverInfo` — 在 LangGraph 服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
+* `rt.serverInfo`—在 LangGraph 服务器上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
 
-* `rt.executionInfo` — 执行身份信息（线程ID、运行ID、检查点ID）
+* `rt.executionInfo`—执行身份信息（线程ID、运行ID、检查点ID）
 
 <Note>
-  `Runtime` 参数在 `deepagents>=1.9.1` 中可用。早期的 1.9.x 版本通过了 `BackendContext` - 请参阅下面的 [migrating from ⟦T118⟧](#migrating-from-backendcontext)。 `rt.serverInfo` 和 `rt.executionInfo` 需要 `deepagents>=1.9.0`。
+  `Runtime` 参数在 `deepagents>=1.9.1` 中可用。早期的 1.9.x 版本通过了`BackendContext`，请参阅下面的[migrating from ⟦T118⟧](#migrating-from-backendcontext)。 `rt.serverInfo` 和 `rt.executionInfo` 需要 `deepagents>=1.9.0`。
 </Note>
 
 **常见的命名空间模式：**
@@ -525,7 +528,7 @@ const backend = new StoreBackend({
 const backend = new StoreBackend({
   namespace: (rt) => [rt.executionInfo.threadId],  // [!code highlight]
 });
-```您可以组合多个组件来创建更具体的范围 - 例如，`(user_id, thread_id)` 用于每个用户每个会话隔离，或者附加一个后缀（如 `"filesystem"`）以在同一范围使用多个存储命名空间时消除歧义。
+```您可以组合多个组件来创建更具体的范围，例如，`(user_id, thread_id)`用于每个用户每个会话隔离，或者附加一个后缀（如`"filesystem"`）以在同一范围使用多个存储命名空间时消除歧义。
 
 命名空间组件必须仅包含字母数字字符、连字符、下划线、点、`@`、`+`、冒号和波形符。拒绝通配符（`*`、`?`）以防止全局注入。
 
@@ -545,7 +548,7 @@ const backend = new StoreBackend({
 
 `ContextHubBackend` 将代理的文件系统存储在 LangSmith Context Hub 存储库中。它可以使用独立存储库或链接到技能存储库的代理存储库。**存储库结构：** 在 Context Hub 中，*代理存储库* 保存代理的顶级指令和配置（例如，`AGENTS.md`、`tools.json`）。它可以链接到一个或多个“技能库”，每个库都打包为可重用功能（例如，带有电子邮件格式或代码审查说明的`SKILL.md`）。当您通过`ContextHubBackend("my-agent")`时，后端将代理存储库挂载到文件系统根目录；链接的技能存储库显示为`/skills/`下的子目录。
 
-这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅[Linked repos](/langsmith/context-engineering-concepts#linked-repos)了解其基本原理。
+这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅[Linked repos](/langsmith/context-engineering-concepts#linked-repos)了解其原理。
 
 使用 `owner/name` 或 `name` 格式的存储库标识符构建它。
 
@@ -565,7 +568,7 @@ const backend = new StoreBackend({
 
 **最适合：**
 
-* LangSmith-本机持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
+* LangSmith-原生持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
 * 受益于文件系统更改的集线器提交历史记录的工作流程。
 
 ### CompositeBackend（路由器）
@@ -583,7 +586,7 @@ const backend = new StoreBackend({
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],
@@ -627,7 +630,7 @@ const backend = new StoreBackend({
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],
@@ -649,7 +652,7 @@ const backend = new StoreBackend({
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],
@@ -738,16 +741,16 @@ const backend = new StoreBackend({
   * 例如您在一个商店的`/memories/`下存储了长期记忆，并且您还有一个自定义后端，可以在/docs/访问文档。## 指定后端
 
 * 将后端实例传递给`createDeepAgent({ backend: ... })`。文件系统中间件将其用于所有工具。
-* 后端必须实现`AnyBackendProtocol`（`BackendProtocolV1`或`BackendProtocolV2`）——例如，`new StateBackend()`、`new FilesystemBackend({ rootDir: "." })`、`new StoreBackend()`。
+* 后端必须实现`AnyBackendProtocol`（`BackendProtocolV1`或`BackendProtocolV2`），例如`new StateBackend()`、`new FilesystemBackend({ rootDir: "." })`、`new StoreBackend()`。
 * 如果省略，则默认为`new StateBackend()`。
 
 <Note>
-  在1.9.0版本之前，仅支持`BackendProtocol`，现在是`BackendProtocolV1`。 V1 后端在运行时通过 `adaptBackendProtocol()` 自动适应 V2。无需更改代码即可继续使用现有的 V1 后端。要更新到 v2，请参阅[update existing backends to v2](#update-existing-backends-to-v2)。
+  在1.9.0版本之前，仅支持`BackendProtocol`，现在是`BackendProtocolV1`。 V1 后端在运行时通过 `adaptBackendProtocol()` 自动适应 V2。无需更改代码即可继续使用现有的 V1 后端。要更新到 v2，请参阅 [update existing backends to v2](#update-existing-backends-to-v2)。
 </Note>
 
 ## 路由到不同的后端
 
-将命名空间的部分路由到不同的后端。通常用于跨线程持久化 `/memories/*` 并保持其他所有内容都在线程范围内。
+将命名空间的部分路由到不同的后端。通常用于跨线程持久保存 `/memories/*` 并保持其他所有内容都在线程范围内。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
@@ -769,8 +772,22 @@ const agent = createDeepAgent({
 * `ls`、`glob`、`grep`聚合结果并显示原始路径前缀。
 
 笔记：* 较长的前缀获胜（例如，路由 `"/memories/projects/"` 可以覆盖 `"/memories/"`）。
-* 对于 StoreBackend 路由，请确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
+* 对于 StoreBackend 路由，确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
 * Deep Agents 将内部数据（卸载工具结果、对话历史记录）写入默认后端。使用 `StateBackend` 作为默认值可以保持这些工件短暂并避免将它们写入磁盘或持久存储。有关完整示例，请参阅[FilesystemBackend tip](#filesystembackend-local-disk)。
+
+## 卸载二进制内容
+
+二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中的内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
+
+在`createFilesystemMiddleware`中设置`offloadBinaryContent: true`，并将`middleware`数组中的中间件传递给`createDeepAgent`。代理和中间件使用相同的后端。
+
+有效负载存储在`/blobs/<sha256>`下。
+
+消息历史记录保留内容寻址引用。在每次模型调用之前，中间件都会从其缓存或后端恢复原始媒体。重新读取未更改的内容会重用相同的 blob；更改的内容会创建一个新的 blob。使用在图状态之外存储 blob 的后端，例如沙箱或 `FilesystemBackend`。当 blob 路径路由到`StateBackend`（包括通过`CompositeBackend`）时，卸载不起作用。如果保留 `StateBackend` 作为默认后端，请将 blob 目录路由到外部存储。
+
+<Note>
+  用户消息中的内联媒体将在下一次模型调用时替换。原始输入负载仍然出现在早期的检查点中。恢复线程时保持 blob 存储可用，以便中间件可以恢复其媒体。
+</Note>
 
 ## 自定义后端
 
@@ -778,18 +795,19 @@ const agent = createDeepAgent({
 
 ### 实现后端协议
 
-实现[⟦T174⟧](https://reference.langchain.com/javascript/deepagents/backends/BackendProtocol)（`BackendProtocolV2`）并提供以下方法：|方法|签名|它有什么作用 |
-| ---------| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `ls` | `(path: string) => Promise<LsResult>` |列出给定路径中的文件和目录。                                                           |
-| `read` | `(filePath: string, offset?, limit?) => Promise<ReadResult>` |返回文件内容，可以选择分页。二进制文件返回 `Uint8Array` 内容以及 `mimeType`。 |
-| `readRaw` | `(filePath: string) => Promise<ReadRawResult>` |返回原始`FileData`（由框架内部使用）。                                               |
-| `write` | `(filePath: string, content: string) => Promise<WriteResult>` |创建或覆盖文件。                                                                             || `edit` | `(filePath: string, oldString: string, newString: string, replaceAll?: boolean) => Promise<EditResult>` |在现有文件中查找并替换。                                                               |
-| `glob` | `(pattern: string, path?: string) => Promise<GlobResult>` |返回与全局模式匹配的路径。                                                                   |
-| `grep` | `(pattern: string, path?, glob?) => Promise<GrepResult>` |在文件内容中搜索文字字符串。                                                              |
+实现[⟦T183⟧](https://reference.langchain.com/javascript/deepagents/backends/BackendProtocol)（`BackendProtocolV2`）并提供以下方法：|方法|签名|它有什么作用 |
+| - | - | - |
+| `ls` | `(path: string) => Promise<LsResult>` |列出给定路径中的文件和目录。 |
+| `read` | `(filePath: string, offset?, limit?) => Promise<ReadResult>` |返回文件内容，可以选择分页。二进制文件返回带有 `mimeType` 的 `Uint8Array` 内容。 |
+| `readRaw` | `(filePath: string) => Promise<ReadRawResult>` |返回原始`FileData`（由框架内部使用）。 |
+| `write` | `(filePath: string, content: string) => Promise<WriteResult>` |创建或覆盖文件。 |
+| `edit` | `(filePath: string, oldString: string, newString: string, replaceAll?: boolean) => Promise<EditResult>` |在现有文件中查找并替换。 |
+| `glob` | `(pattern: string, path?: string) => Promise<GlobResult>` |返回与全局模式匹配的路径。 |
+| `grep` | `(pattern: string, path?, glob?) => Promise<GrepResult>` |在文件内容中搜索文字字符串。 |
 
-要还支持 `execute` 工具（运行 shell 命令），请改为实现 [⟦T194⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocolV2`。
+要同时支持 `execute` 工具（运行 shell 命令），请实现 [⟦T203⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocolV2`。
 
-所有方法都必须返回带有可选 `error` 字段的结构化结果对象 - 不要抛出丢失文件或无效模式。
+所有方法都必须返回带有可选 `error` 字段的结构化 Result 对象，不要抛出丢失文件或无效模式。
 
 <Accordion title="Example: S3-style backend skeleton">
   该骨架将文件系统路径映射到对象键。使用存储客户端的列表、读取、搜索、上传和读取-修改-写入操作填写每个方法。
@@ -846,9 +864,9 @@ const agent = createDeepAgent({
   ```
 </Accordion>
 
-## 权限
+## 权限使用 [permissions](/oss/javascript/deepagents/permissions) 以声明方式控制代理可以读取或写入哪些文件和目录。权限适用于内置文件系统工具，并在调用后端之前进行评估。
 
-使用 [permissions](/oss/javascript/deepagents/permissions) 以声明方式控制代理可以读取或写入哪些文件和目录。权限适用于内置文件系统工具，并在调用后端之前进行评估。有关包括规则排序、子代理权限和复合后端交互在内的完整选项集，请参阅[permissions guide](/oss/javascript/deepagents/permissions)。
+有关包括规则排序、子代理权限和复合后端交互在内的完整选项集，请参阅[permissions guide](/oss/javascript/deepagents/permissions)。
 
 ## 添加策略挂钩
 
@@ -935,11 +953,12 @@ class PolicyWrapper implements BackendProtocolV2 {
 V2 后端原生支持二进制文件。当`read()`遇到二进制文件（由文件扩展名的MIME类型确定）时，它返回一个带有`Uint8Array`内容和相应的`mimeType`的`ReadResult`。文本文件返回`string`内容。
 
 ### 支持的 MIME 类型|类别 |扩展 | MIME 类型 |
-| ---------| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| - | - | - |
 |图片 | `.png`、`.jpg`/`.jpeg`、`.gif`、`.webp`、`.svg`、`.heic`、`.heif` | `image/png`、`image/jpeg`、`image/gif`、`image/webp`、`image/svg+xml`、`image/heic`、`image/heif` |
 |音频| `.mp3`、`.wav`、`.aiff`、`.aac`、`.ogg`、`.flac` | `audio/mpeg`、`audio/wav`、`audio/aiff`、`audio/aac`、`audio/ogg`、`audio/flac` |
 |视频 | `.mp4`、`.webm`、`.mpeg`/`.mpg`、`.mov`、`.avi`、`.flv`、`.wmv`、`.3gpp` | `video/mp4`、`video/webm`、`video/mpeg`、`video/quicktime`、`video/x-msvideo`、`video/x-flv`、`video/x-ms-wmv`、`video/3gpp` |
-|文件 | `.pdf`、`.ppt`、`.pptx` | `application/pdf`、`application/vnd.ms-powerpoint`、`application/vnd.openxmlformats-officedocument.presentationml.presentation` ||文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等 |
+|文件 | `.pdf`、`.ppt`、`.pptx` | `application/pdf`、`application/vnd.ms-powerpoint`、`application/vnd.openxmlformats-officedocument.presentationml.presentation` |
+|文字| `.txt`、`.html`、`.json`、`.js`、`.ts`、`.py`等 | `text/plain`、`text/html`、`application/json`等 |
 
 ### 读取二进制文件
 
@@ -978,28 +997,30 @@ type FileData =
     };
 ```
 
-从状态或存储读取时，后端可能会遇到任一格式。框架透明地处理这两者。新写入默认为 v2 格式。在旧读者需要旧格式的滚动部署期间，将 `fileFormat: "v1"` 传递给后端构造函数（例如，`new StoreBackend({ fileFormat: "v1" })`）。
+从状态或存储读取时，后端可能会遇到任一格式。框架透明地处理这两者。新写入默认为 v2 格式。在旧读者需要旧格式的滚动部署期间，将 `fileFormat: "v1"` 传递给后端构造函数（例如 `new StoreBackend({ fileFormat: "v1" })`）。
 
-## 从后端工厂迁移
-
-<Warning>
-  自 `deepagents` 1.9.0 起，后端工厂模式已被**弃用**。直接传递预先构造的后端实例而不是工厂函数。
+## 从后端工厂迁移<Warning>
+  自 `deepagents` 1.9.0 起，后端工厂模式已被 **弃用**。直接传递预先构造的后端实例而不是工厂函数。
 </Warning>
 
 以前，像`StateBackend`和`StoreBackend`这样的后端需要一个接收运行时对象的工厂函数，因为它们需要运行时上下文（状态、存储）来操作。后端现在通过 LangGraph 的 `get_config()`、`get_store()` 和 `get_runtime()` 帮助程序在内部解析此上下文，因此您可以直接传递实例。
 
-### 发生了什么变化|之前（已弃用）|之后 |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------- |
+### 发生了什么变化
+
+|之前（已弃用）|之后 |
+| - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
 | `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend()` |
 | `backend=lambda rt: CompositeBackend(default=StateBackend(rt), ...)` | `backend=CompositeBackend(default=StateBackend(), ...)` |
 | `backend: (config) => new StateBackend(config)` | `backend: new StateBackend()` |
 | `backend: (config) => new StoreBackend(config)` | `backend: new StoreBackend()` |
 
-### 已弃用的 API|已弃用 |更换|
-| ------------------------------------------------------------------------ | ------------------------------------------------------ |
+### 已弃用的 API
+
+|已弃用 |更换|
+| - | - |
 | `BackendFactory`型 |直接传递后端实例 |
-| `BackendRuntime`接口|后端在内部解析上下文 |
+| `BackendRuntime`接口 |后端在内部解析上下文 |
 | `StateBackend(runtime, options?)` 构造函数重载 | `new StateBackend(options?)` |
 | `StoreBackend(stateAndStore, options?)` 构造函数重载 | `new StoreBackend(options?)` |
 | `WriteResult` 和 `EditResult` 上的`filesUpdate` 字段 |状态写入现在由后端在内部处理 |
@@ -1034,13 +1055,13 @@ const agent = createDeepAgent({
 });
 ```
 
-### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T294⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)，而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
+### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T303⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)，而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
 
 **改变了什么：**
 
 * 工厂参数现在是`Runtime`，而不是`BackendContext`。
-* 删除 `.runtime` 访问器 — 例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
-* `ctx.state` 没有直接替代品。命名空间信息应该是只读的并且在运行的生命周期内保持稳定，而状态是可变的并且会逐步更改 - 从它派生命名空间可能会导致数据最终处于不一致的键下。如果您有需要读取代理状态的用例，请[open an issue](https://github.com/langchain-ai/deepagents/issues)。
+* 删除 `.runtime` 访问器，例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
+* `ctx.state` 没有直接替代品。命名空间信息应该是只读的，并且在运行的生命周期内保持稳定，而状态是可变的，并且会逐步更改——从中派生命名空间可能会导致数据最终处于不一致的键下。如果您有需要读取代理状态的用例，请[open an issue](https://github.com/langchain-ai/deepagents/issues)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Before (deprecated, removed in v0.7)
@@ -1056,10 +1077,10 @@ new StoreBackend({
 
 ## 协议参考
 
-后端必须实现[⟦T306⟧](https://reference.langchain.com/javascript/deepagents/backends/BackendProtocol)。
+后端必须实现[⟦T315⟧](https://reference.langchain.com/javascript/deepagents/backends/BackendProtocol)。
 
 所需方法：* `ls(path: str) -> LsResult`
-  * 返回至少包含 `path` 的条目。如果有，请包括 `is_dir`、`size`、`modified_at`。按 `path` 排序以获得确定性输出。
+  * 返回至少包含 `path` 的条目。如果可用，请包括 `is_dir`、`size`、`modified_at`。按 `path` 排序以获得确定性输出。
 * `read(file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult`
   * 成功时返回文件数据。如果文件丢失，则返回`ReadResult(error="Error: File '/x' not found")`。
 * `grep(pattern: str, path: Optional[str] = None, glob: Optional[str] = None) -> GrepResult`
@@ -1067,16 +1088,16 @@ new StoreBackend({
 * `glob(pattern: str, path: Optional[str] = None) -> GlobResult`
   * 将匹配的文件作为 `FileInfo` 条目返回（如果没有则为空列表）。
 * `write(file_path: str, content: str) -> WriteResult`
-  * 仅限创建。发生冲突时，返回`WriteResult(error=...)`。成功后，设置`path`，对于状态后端设置`files_update={...}`；外部后端应使用`files_update=None`。
+  * 仅限创建。如果发生冲突，则返回`WriteResult(error=...)`。成功后，设置`path`，对于状态后端设置`files_update={...}`；外部后端应使用`files_update=None`。
 * `edit(file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> EditResult`
   * 强制`old_string`的唯一性，除非`replace_all=True`。如果没有找到，则返回错误。成功时包含`occurrences`。
 
 配套类型：
 
-* `LsResult(error, entries)` — `entries` 是成功时的 `list[FileInfo]`，失败时的 `None`。
-* `ReadResult(error, file_data)` — `file_data` 是关于成功的 `FileData` 指令，`None` 关于失败的指令。
-* `GrepResult(error, matches)` — `matches` 是成功时的 `list[GrepMatch]`，失败时的 `None`。
-* `GlobResult(error, matches)` — `matches` 成功时为 `list[FileInfo]`，失败时为 `None`。
+* `LsResult(error, entries)`—`entries` 成功时为`list[FileInfo]`，失败时为`None`。
+* `ReadResult(error, file_data)`—`file_data` `FileData` 表示成功，`None` 表示失败。
+* `GrepResult(error, matches)`—`matches` 成功时为`list[GrepMatch]`，失败时为`None`。
+* `GlobResult(error, matches)`—`matches` 成功时为`list[FileInfo]`，失败时为`None`。
 * `WriteResult(error, path, files_update)`
 * `EditResult(error, path, files_update, occurrences)`
 * `FileInfo` 包含字段：`path`（必填），可选 `is_dir`、`size`、`modified_at`。
@@ -1087,10 +1108,10 @@ new StoreBackend({
 ### 必需的方法
 
 * **`ls(path: string) → LsResult`**
-  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。包括 `is_dir`、`size`、`modified_at`（如果有）。
+  * 列出指定目录中的文件和目录（非递归）。目录的路径中有一个尾随的 `/` 和 `is_dir=true`。如果可用，请包括 `is_dir`、`size`、`modified_at`。
 
 * **`read(filePath: string, offset?: number, limit?: number) → ReadResult`**
-  * 读取文件内容。对于文本文件，内容按行偏移量/限制（默认偏移量 0，限制 500）分页。对于二进制文件，将返回完整的原始 `Uint8Array` 内容以及 `mimeType` 字段集。如果文件丢失，请返回`{ error: "File '/x' not found" }`。
+  * 读取文件内容。对于文本文件，内容按行偏移量/限制（默认偏移量 0，限制 500）分页。对于二进制文件，将返回完整的原始 `Uint8Array` 内容以及 `mimeType` 字段集。如果文件丢失，则返回`{ error: "File '/x' not found" }`。
 
 * **`readRaw(filePath: string) → ReadRawResult`**
   * 将文件内容读取为原始`FileData`。返回包含时间戳的完整文件数据。
@@ -1107,16 +1128,16 @@ new StoreBackend({
 * **`edit(filePath: string, oldString: string, newString: string, replaceAll?: boolean) → EditResult`**
   * 强制`oldString`的唯一性，除非`replaceAll=true`。如果没有找到，则返回错误。成功时包含`occurrences`。
 
-### 可选方法* **`uploadFiles(files: Array<[string, Uint8Array]>) → FileUploadResponse[]`** — 上传多个文件（用于沙箱后端）。
-* **`downloadFiles(paths: string[]) → FileDownloadResponse[]`** — 下载多个文件（用于沙箱后端）。
+### 可选方法* **`uploadFiles(files: Array<[string, Uint8Array]>) → FileUploadResponse[]`** - 上传多个文件（用于沙箱后端）。
+* **`downloadFiles(paths: string[]) → FileDownloadResponse[]`** - 下载多个文件（用于沙箱后端）。
 
 ### 结果类型
 
 |类型 |成功领域 |错误字段 |
-| ---------------- | ---------------------------------------------------------------- | ----------- |
-| `ReadResult` | `content?: string \| Uint8Array`、`mimeType?: string` | `error` |
+| - | - | - |
+| `ReadResult`​​ | `content?: string \| Uint8Array`、`mimeType?: string` | `error` |
 | `ReadRawResult` | `data?: FileData` | `error` |
-| `LsResult` | `files?: FileInfo[]` | `error`​​ |
+| `LsResult` | `files?: FileInfo[]` | `error` |
 | `GlobResult` | `files?: FileInfo[]` | `error` |
 | `GrepResult` | `matches?: GrepMatch[]` | `error` |
 | `WriteResult` | `path?: string` | `error` |
@@ -1124,34 +1145,34 @@ new StoreBackend({
 
 ### 支持类型
 
-* **`FileInfo`** — `path`（必填），可选 `is_dir`、`size`、`modified_at`。
-* **`GrepMatch`** — `path`、`line`（1 索引）、`text`。
-* **`FileData`** — 带时间戳的文件内容。参见[FileData format](#filedata-format)。
+* **`FileInfo`**—`path`（必填），可选 `is_dir`、`size`、`modified_at`。
+* **`GrepMatch`**—`path`、`line`（1 索引）、`text`。
+* **`FileData`**—带时间戳的文件内容。参见[FileData format](#filedata-format)。
 
 ### 沙箱扩展
 
 `SandboxBackendProtocolV2` 扩展 `BackendProtocolV2`：
 
-* **`execute(command: string) → ExecuteResponse`** — 在沙箱中运行 shell 命令。
-* **`readonly id: string`** — 沙箱实例的唯一标识符。
+* **`execute(command: string) → ExecuteResponse`**—在沙箱中运行 shell 命令。
+* **`readonly id: string`** - 沙箱实例的唯一标识符。
 
-## 将现有后端更新到 V2<Accordion title="Migration guide">
+## 将现有后端更新到 V2
+
+<Accordion title="Migration guide">
   ### 方法重命名
 
   | V1方法| V2方法|返回类型更改 |
-  | ------------------------------------------- | ------------------------------------------- | -------------------------------------- |
+  | - | - | - |
   | `lsInfo(path)` | `ls(path)` | `FileInfo[]` → `LsResult` |
   | `read(filePath, offset, limit)` | `read(filePath, offset, limit)` | `string` → `ReadResult` |
   | `readRaw(filePath)` | `readRaw(filePath)` | `FileData` → `ReadRawResult` |
   | `grepRaw(pattern, path, glob)` | `grep(pattern, path, glob)` | `GrepMatch[] \| string` → `GrepResult` |
   | `globInfo(pattern, path)` | `glob(pattern, path)` | `FileInfo[]` → `GlobResult` |
-  | `write(...)` | `write(...)` |不变（`WriteResult`）|
-  | `edit(...)` | `edit(...)` |不变 (`EditResult`) |
-
-  ### 类型重命名
+  | `write(...)` | `write(...)` |不变 (`WriteResult`) |
+  | `edit(...)` | `edit(...)` |不变（`EditResult`）|### 类型重命名
 
   | V1型| V2型|
-  | ------------------------ | -------------------------- |
+  | - | - |
   | `BackendProtocol` | `BackendProtocolV2` |
   | `SandboxBackendProtocol` | `SandboxBackendProtocolV2` |
 
@@ -1167,7 +1188,9 @@ new StoreBackend({
 
   // Adapt a V1 sandbox to V2
   const v2Sandbox = adaptSandboxProtocol(v1Sandbox);
-  ```<Note>
+  ```
+
+  <Note>
     该框架自动适应传递到 `createDeepAgent()` 的 V1 后端。只有直接调用协议方法时才需要手动适配。
   </Note>
 </Accordion>
@@ -1182,7 +1205,7 @@ new StoreBackend({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

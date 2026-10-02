@@ -4,6 +4,8 @@
 
 # 跟踪光标会话
 
+在LangSmith中捕获光标代理转动、工具调用、模型元数据、令牌使用、附件和子代理。
+
 使用 [Cursor hooks](https://cursor.com/docs/agent/hooks) 跟踪 LangSmith 中的 [Cursor](https://cursor.com/) 代理会话。每个回合都成为一个跟踪，每个光标对话分组为一个线程，它捕获提示、模型响应、工具调用、令牌使用和子代理活动。使用跟踪来调试代理行为、审核工具调用、跟踪每轮令牌花费以及比较游标运行。
 
 插件源可在[⟦T8⟧](https://github.com/langchain-ai/langsmith-cursor-plugins)获得。
@@ -12,9 +14,9 @@
 
 在设置跟踪之前，请确保您拥有：
 
-- [Cursor](https://cursor.com/)已安装。
-- [Node.js](https://nodejs.org/) 22.13 或更高版本。这些挂钩使用内置的 `node:sqlite` 模块从 Cursor 的本地数据库恢复附件。
-- [LangSmith API key](/langsmith/create-account-api-key)。
+* 已安装[Cursor](https://cursor.com/)。
+* [Node.js](https://nodejs.org/) 22.13 或更高版本。这些钩子使用内置的 `node:sqlite` 模块从 Cursor 的本地数据库恢复附件。
+* A [LangSmith API key](/langsmith/create-account-api-key)。
 
 ## 安装并启用插件
 
@@ -27,24 +29,24 @@
 这是推荐的路径：它安装钩子而无需克隆或构建步骤，因为存储库附带了预编译的包。
 
 <Warning>
-安装后完全重新启动 Cursor，以便重新加载 `hooks.json`。
-</Warning>
+  安装后完全重新启动 Cursor，以便重新加载 `hooks.json`。
+</Warning>### 替代方案：从本地克隆安装
 
-### 替代方案：从本地克隆安装从 [⟦T12⟧](https://github.com/langchain-ai/langsmith-cursor-plugins) 的本地克隆安装挂钩。这为所有 Cursor 项目写入 `~/.cursor/hooks.json`：
+从 [⟦T12⟧](https://github.com/langchain-ai/langsmith-cursor-plugins) 的本地克隆安装挂钩。这为所有 Cursor 项目写入 `~/.cursor/hooks.json`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 node scripts/install.mjs
 ```
 
 要将挂钩范围改为单个项目，请从项目目录运行安装程序：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 node scripts/install.mjs --project
 ```
 
 要预览挂钩配置而不写入它，请运行：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 node scripts/install.mjs --print
 ```
 
@@ -58,8 +60,8 @@ node scripts/install.mjs --print
 
 ### 环境变量
 
-每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*` 优先。|变量|默认 |描述 |
-| ---| ---| ---|
+每个 `LANGSMITH_CURSOR_*` 变量还接受较短的 `LANGSMITH_*` 形式。当两者都设置时，`LANGSMITH_CURSOR_*` 优先。|变量|默认|描述 |
+| - | - | - |
 | `TRACE_TO_LANGSMITH` | `false` |设置为 `"true"` 以启用跟踪。 |
 | `LANGSMITH_CURSOR_API_KEY` | - | LangSmith API 密钥。回落到`LANGSMITH_API_KEY`。 |
 | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
@@ -76,7 +78,7 @@ node scripts/install.mjs --print
 
 将变量添加到 shell 配置文件（`~/.zshrc`、`~/.bashrc` 或 `~/.bash_profile`）：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH="true"
 export LANGSMITH_CURSOR_API_KEY="<your-langsmith-api-key>"
 export LANGSMITH_CURSOR_PROJECT="cursor"
@@ -84,13 +86,13 @@ export LANGSMITH_CURSOR_PROJECT="cursor"
 
 要验证挂钩活动，请查看日志文件：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tail -f ~/.cursor/langsmith-hook.log
 ```
 
-### 配置文件使用 `~/.cursor/langsmith.json` 进行全局默认设置，或使用 `./.cursor/langsmith.json` 进行项目级设置。设置按此顺序解析，后面的源覆盖前面的源：默认值、全局配置、项目配置、环境变量。
+### 配置文件
 
-```json
+使用 `~/.cursor/langsmith.json` 进行全局默认设置，或使用 `./.cursor/langsmith.json` 进行项目级设置。设置按此顺序解析，后面的源覆盖前面的源：默认值、全局配置、项目配置、环境变量。```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
@@ -99,8 +101,8 @@ tail -f ~/.cursor/langsmith-hook.log
 }
 ```
 
-|领域 |环境变量|默认 |描述 |
-| ---| ---| ---| ---|
+|领域 |环境变量|默认|描述 |
+| - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT`、`LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL。 |
@@ -114,19 +116,19 @@ tail -f ~/.cursor/langsmith-hook.log
 
 将包含 API 密钥的配置文件置于版本控制之外。
 
-## 秘密编辑该插件会编辑从运行输入、输出、错误和元数据中检测到的机密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
+## 秘密编辑
 
-上传前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
+该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
 
 检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
 
 密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
 
-附件完全绕过密文。该插件从 Cursor 的本地数据库中恢复图像和文件附件并发送它们的字节，匿名程序永远不会检查这些字节。将 `LANGSMITH_CURSOR_ATTACHMENTS` 设置为 `"false"` 以停止发送。要关闭密文，请将 `LANGSMITH_CURSOR_REDACT` 设置为 `false`、`0`、`no` 或 `off`，或在配置文件中设置 `"redact": false`。
+附件完全绕过密文。该插件从 Cursor 的本地数据库中恢复图像和文件附件并发送它们的字节，匿名程序永远不会检查这些字节。将 `LANGSMITH_CURSOR_ATTACHMENTS` 设置为 `"false"` 以停止发送。
 
-要编辑其他模式，请将 `LANGSMITH_CURSOR_REDACT_EXTRA` 设置为 `{ "pattern": ..., "replace": ... }` 规则的 JSON 数组，或在配置文件中设置 `redact_extra_rules`。每个`pattern`都是一个正则表达式字符串，全局应用且区分大小写。 `replace` 是可选的，并回退到 `[redacted]`。额外规则在内置规则之后运行。
+要关闭密文，请将 `LANGSMITH_CURSOR_REDACT` 设置为 `false`、`0`、`no` 或 `off`，或在配置文件中设置 `"redact": false`。要编辑其他模式，请将 `LANGSMITH_CURSOR_REDACT_EXTRA` 设置为 `{ "pattern": ..., "replace": ... }` 规则的 JSON 数组，或在配置文件中设置 `redact_extra_rules`。每个`pattern`都是一个正则表达式字符串，全局应用且区分大小写。 `replace` 是可选的，并回退到 `[redacted]`。额外规则在内置规则之后运行。
 
-```json
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
   "project": "cursor",
@@ -141,17 +143,17 @@ tail -f ~/.cursor/langsmith-hook.log
 
 ## 追踪什么
 
-该插件监听 Cursor hooks 并在每个代理轮次中组装一个跟踪：- **转弯**：每个转弯都成为自己的轨迹，使用 `thread_id` = 光标的 `conversation_id` 分组为一个线程。跟踪嵌套模型运行，并且任何工具或子代理在转弯下方运行。
-- **令牌使用**：模型运行时每回合 `usage_metadata`。
-- **模型和提供者**：`ls_model_name`和`ls_provider`，从光标的模型标签标准化为规范提供者ID（例如，`claude-4.6-sonnet`变为`claude-sonnet-4-6`）。自动模式向提供商`cursor`报告`default`。
-- **工具调用**：工具针对成功调用和失败调用运行，并带有输入和输出。
-- **附件**：从 Cursor 的本地数据库恢复并内联呈现在用户消息上的图像和文件附件。将 `attachments` 设置为 `false` 可跳过此步骤。
-- **子代理**：每个子代理显示为嵌套链运行，其下方有自己的工具调用，链接到父回合。
+该插件监听 Cursor hooks 并在每个代理轮次中组装一个跟踪：* **转弯**：每个转弯都成为自己的轨迹，使用 `thread_id` = 光标的 `conversation_id` 分组为一个线程。跟踪嵌套模型运行，并且任何工具或子代理在转弯下方运行。
+* **令牌使用**：模型运行时每回合 `usage_metadata`。
+* **模型和提供商**：`ls_model_name` 和 `ls_provider`，从 Cursor 的模型标签标准化为规范的提供商 ID（例如，`claude-4.6-sonnet` 变为 `claude-sonnet-4-6`）。自动模式向提供商`cursor`报告`default`。
+* **工具调用**：工具针对成功调用和失败调用运行，并带有输入和输出。
+* **附件**：从 Cursor 的本地数据库恢复并内联呈现在用户消息上的图像和文件附件。将 `attachments` 设置为 `false` 可跳过此步骤。
+* **子代理**：每个子代理显示为嵌套链运行，其下方有自己的工具调用，链接到父回合。
 
 <Note>
-该插件不会在本地计算成本。由于 `ls_model_name` 已标准化为规范 ID，并且 `usage_metadata` 包含代币细分，因此 LangSmith 的服务器端模型价格表会在 UI 中呈现成本。自动模式报告`default`，LangSmith无法定价。
+  该插件不会在本地计算成本。由于 `ls_model_name` 已标准化为规范 ID，并且 `usage_metadata` 包含代币细分，因此 LangSmith 的服务器端模型价格表会在 UI 中呈现成本。自动模式报告`default`，LangSmith无法定价。
 </Note><Warning>
-该插件上传 Cursor 对话数据，包括提示、模型响应、工具输入和输出以及恢复的附件。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
+  该插件上传 Cursor 对话数据，包括提示、模型响应、工具输入和输出以及恢复的附件。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
 </Warning>
 
 ### 跟踪元数据
@@ -159,8 +161,8 @@ tail -f ~/.cursor/langsmith-hook.log
 每次运行都在 `run.extra.metadata` 上承载共享的 `coding-agent-v1` 元数据合约，它可以识别来自任何编码代理（Claude Code、Codex、Cursor）的跟踪，并使用相同的稳定密钥进行分组。
 
 |范围 |按键|
-| ---| ---|
-|永远在场| `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`或`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、 `ls_agent_runtime` (`"Cursor"`)、`ls_trace_schema_version` (`"coding-agent-v1"`)、`thread_id`（= 光标的`conversation_id`）。 |
+| - | - |
+|永远在场 | `ls_agent_type`（`"root"`、`"subagent"`、`"middleware"`或`"compaction"`）、`ls_agent_purpose`（`"coding"`）、`ls_integration`（`"cursor"`）、 `ls_agent_runtime` (`"Cursor"`)、`ls_trace_schema_version` (`"coding-agent-v1"`)、`thread_id`（= 光标的`conversation_id`）。 |
 |在已知的地方出现 | `ls_integration_version`、`ls_agent_runtime_version`（光标的`cursor_version`）、`turn_id`（= 光标的`generation_id`）、`turn_number`、`repository_url`、`repository_provider`、 `repository_name`、`git_branch`、`git_commit_sha`、`cwd`。 |
 |上下文 | `local_username`、`user_email`（暂定）。 |
 |子代理仅运行 | `ls_subagent_id`，`ls_subagent_type`。 |
@@ -182,26 +184,27 @@ Cursor Turn N (chain)
 
 ## 已知限制
 
-- **子代理令牌使用**：光标不会通过挂钩或其本地数据库公开每个子代理的使用情况细分，因此子代理的`Task`运行携带其工具调用，但没有令牌计数。
+* **子代理令牌使用情况**：光标不会通过挂钩或其本地数据库公开每个子代理使用情况细分，因此子代理的 `Task` 运行携带其工具调用，但没有令牌计数。
 
 ## 故障排除
 
 如果LangSmith中没有出现痕迹：
 
-- 确认在游标进程可以看到的配置文件中设置了`TRACE_TO_LANGSMITH=true`或`"enabled": true`。
-- 确认`LANGSMITH_CURSOR_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
-- 确认安装挂钩后光标已完全重新启动。
-- 跟踪钩子日志以查找错误：`tail -f ~/.cursor/langsmith-hook.log`。
-- 使用 `LANGSMITH_CURSOR_DEBUG=true` 启用详细日志记录并重新检查日志。
-- 如果运行在错误的项目中，请设置`LANGSMITH_CURSOR_PROJECT`或`project`配置键。
+* 确认 `TRACE_TO_LANGSMITH=true` 或 `"enabled": true` 在 Cursor 进程可以看到的配置文件中设置。
+* 确认`LANGSMITH_CURSOR_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
+* 确认安装钩子后光标已完全重新启动。
+* 跟踪钩子日志以查找错误：`tail -f ~/.cursor/langsmith-hook.log`。
+* 使用 `LANGSMITH_CURSOR_DEBUG=true` 启用详细日志记录并重新检查日志。
+* 如果运行在错误的项目中，请设置`LANGSMITH_CURSOR_PROJECT`或`project`配置键。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

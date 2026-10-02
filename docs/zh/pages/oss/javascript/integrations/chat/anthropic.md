@@ -8,20 +8,23 @@
 
 [Anthropic](https://www.anthropic.com/)是一家人工智能安全与研究公司。他们是克劳德的创造者。
 
-这将帮助您开始使用 `ChatAnthropic` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatAnthropic` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
+这将帮助您开始使用 `ChatAnthropic` [chat models](/oss/javascript/langchain/models)。有关所有`ChatAnthropic`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
 
 ## 概述
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) |                                               下载 |                                              版本 || :---------------------------------------------------------------------------------------------- | ：---------------------------------------------------------------------------------------- | :----------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
-| [⟦T31⟧](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [⟦T32⟧](https://www.npmjs.com/package/@langchain/anthropic) |       ✅ |                                       ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
+|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T36⟧](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [⟦T37⟧](https://www.npmjs.com/package/@langchain/anthropic) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
-有关如何使用特定功能的指南，请参阅下面表标题中的链接。| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :------------------------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------------------: |
-|                        ✅ |                                 ✅ |                               ✅ |      ❌ |      ❌ |                               ✅ |                              ✅ |                                ❌ |
+有关如何使用特定功能的指南，请参阅下面表标题中的链接。
+
+| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 
 ## 设置
 
@@ -33,16 +36,16 @@
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export ANTHROPIC_API_KEY="your-api-key"
-```如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
+```
+
+如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # export LANGSMITH_TRACING="true"
 # export LANGSMITH_API_KEY="your-api-key"
 ```
 
-### 安装
-
-LangChain `ChatAnthropic` 集成位于 `@langchain/anthropic` 包中：
+### 安装LangChain `ChatAnthropic` 集成位于 `@langchain/anthropic` 包中：
 
 <CodeGroup>
   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -67,12 +70,37 @@ import { ChatAnthropic } from "@langchain/anthropic"
 
 const llm = new ChatAnthropic({
     model: "claude-haiku-4-5-20251001",
-    temperature: 0,
+    // temperature: 0, // Non-default values are rejected on newer Claude models; see Sampling parameters
     maxTokens: undefined,
     maxRetries: 2,
     // other params...
 });
 ```
+
+## 采样参数
+
+较新的克劳德模型拒绝非默认采样参数。将 `temperature`、`topP` 或 `topK` 设置为 `claude-opus-5`、`claude-fable-5`、`claude-opus-4-8`、`claude-opus-4-7` 或 `claude-sonnet-5` 上的非默认值会返回 400 错误：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const model = new ChatAnthropic({ model: "claude-opus-5", temperature: 0 });
+await model.invoke("Hello!");
+// BadRequestError: 400
+// {"type":"error","error":{"type":"invalid_request_error",
+//  "message":"`temperature` is deprecated for this model."}}
+```
+
+支持型号：
+
+|型号| `temperature` / `topP` / `topK` |
+| - | - |
+| `claude-opus-5`、`claude-fable-5`、`claude-opus-4-8`、`claude-opus-4-7`、`claude-sonnet-5` |拒绝非默认值 (400)。省略参数，或仅传递默认值（例如，`temperature: 1`）。 |
+| `claude-opus-4-6`、`claude-sonnet-4-6`、`claude-haiku-4-5` 及更早版本 |已接受 |
+
+<Warning>
+  **升级模型字符串？**
+
+  当您将模型升级到上述较新模型之一时，编写为 `new ChatAnthropic({ model, temperature: 0 })` 的代码会中断。删除采样参数而不是调整它们的值。在这些模型上，通过提示来控制输出样式。详情请参阅[Anthropic migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide)。
+</Warning>
 
 ## 调用
 
@@ -135,9 +163,7 @@ Voici la traduction en français :
 J'adore la programmation.
 ```
 
-## 内容块
-
-Anthropic 模型与大多数其他模型之间需要注意的一个关键区别是，单个 Anthropic [⟦T37⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 的内容可以是单个字符串或**内容块列表**。例如，当 Anthropic 模型 [calls a tool](/oss/javascript/langchain/tools) 时，工具调用是消息内容的一部分（并且在标准化 `AIMessage.tool_calls` 字段中公开）：
+## 内容块Anthropic 模型与大多数其他模型之间需要注意的一个关键区别是，单个 Anthropic [⟦T63⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 的内容可以是单个字符串或**内容块列表**。例如，当Anthropic模型[calls a tool](/oss/javascript/langchain/tools)时，工具调用是消息内容的一部分（并且在标准化的`AIMessage.tool_calls`字段中公开）：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -303,17 +329,17 @@ AIMessage {
 
 ## 提示缓存
 
-Anthropic 支持[caching parts of your prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)，以降低需要长上下文的用例的成本。您可以缓存工具以及整个消息和单个块。包含一个或多个带有 `"cache_control": { "type": "ephemeral" }` 字段的块或工具定义的初始请求将自动缓存提示的该部分。此初始缓存步骤将产生额外费用，但后续请求将以较低的费率计费。缓存的生命周期为 5 分钟，但每次命中缓存时都会刷新。对于更长的缓存，请在 `cache_control` 字段中指定 `"ttl": "1h"`。
+Anthropic 支持[caching parts of your prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)，以降低需要长上下文的用例的成本。您可以缓存工具以及整个消息和单个块。
+
+包含一个或多个带有 `"cache_control": { "type": "ephemeral" }` 字段的块或工具定义的初始请求将自动缓存提示的该部分。此初始缓存步骤将产生额外费用，但后续请求将以较低的费率计费。缓存的生命周期为 5 分钟，但每次命中缓存时都会刷新。对于更长的缓存，请在 `cache_control` 字段中指定 `"ttl": "1h"`。
 
 有一个最小可缓存提示长度，该长度因型号而异。欲了解更多信息，请参阅[prompt caching details](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#cache-limitations)。
 
-下面是缓存包含 LangChain [conceptual docs](/oss/javascript/concepts/) 的部分系统消息的示例：
+以下是缓存包含 LangChain [conceptual docs](/oss/javascript/concepts/) 的系统消息部分的示例：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 let CACHED_TEXT = "...";
-```
-
-```typescript expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+``````typescript expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // @lc-docs-hide-cell
 
 CACHED_TEXT = `## Components
@@ -631,7 +657,7 @@ USAGE: {
 }
 ```
 
-我们可以看到，从 Anthropic 返回的原始使用字段中有一个名为 `cache_creation_input_tokens` 的新字段。
+我们可以看到，从Anthropic返回的原始使用字段中有一个名为`cache_creation_input_tokens`的新字段。
 
 如果我们再次使用相同的消息，我们可以看到长文本的输入标记是从缓存中读取的：
 
@@ -655,7 +681,7 @@ USAGE: {
 
 ### 工具缓存
 
-您还可以通过在工具定义中设置相同的 `"cache_control": { "type": "ephemeral" }` 来缓存工具。目前需要您在[Anthropic's raw tool format](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)中绑定一个工具，这是一个示例：
+您还可以通过在工具定义中设置相同的 `"cache_control": { "type": "ephemeral" }` 来缓存工具。目前，这需要您在[Anthropic's raw tool format](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)中绑定一个工具，这是一个示例：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const SOME_LONG_DESCRIPTION = "...";
@@ -687,9 +713,11 @@ const modelWithCachedTools = modelWithCaching.bindTools(anthropicTools);
 await modelWithCachedTools.invoke("what is the weather in SF?");
 ```
 
-有关提示缓存如何工作的更多信息，请参阅 [Anthropic's docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#how-prompt-caching-works)。
+有关提示缓存如何工作的更多信息，请参阅[Anthropic's docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#how-prompt-caching-works)。
 
-## 自定义客户端Anthropic 模型[may be hosted on cloud services such as Google Vertex](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai) 依赖于与主要 Anthropic 客户端具有相同接口的不同底层客户端。您可以通过提供返回 Anthropic 客户端的初始化实例的 `createClient` 方法来访问这些服务。这是一个例子：
+## 自定义客户端
+
+Anthropic 模型 [may be hosted on cloud services such as Gemini Enterprise Agent Platform](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai) 依赖于与主 Anthropic 客户端具有相同接口的不同底层客户端。您可以通过提供返回Anthropic客户端的初始化实例的`createClient`方法来访问这些服务。这是一个例子：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
@@ -707,11 +735,9 @@ await modelWithCustomClient.invoke([{ role: "user", content: "Hello!" }]);
 
 ## 引文
 
-Anthropic 支持 [citations](https://platform.claude.com/docs/en/build-with-claude/citations) 功能，让 Claude 根据用户提供的源材料将上下文附加到其答案中。该源材料可以以 [document content blocks](https://platform.claude.com/docs/en/build-with-claude/citations#document-types) 的形式提供，它描述完整的文档，也可以以 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 的形式提供，它描述从检索系统返回的相关段落或片段。当查询中包含 `"citations": { "enabled": true }` 时，Claude 可能会在其响应中生成对所提供材料的直接引用。
+Anthropic 支持 [citations](https://platform.claude.com/docs/en/build-with-claude/citations) 功能，让 Claude 根据用户提供的源材料将上下文附加到其答案中。该源材料可以以 [document content blocks](https://platform.claude.com/docs/en/build-with-claude/citations#document-types) 的形式提供，它描述完整的文档，也可以以 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 的形式提供，它描述从检索系统返回的相关段落或片段。当查询中包含`"citations": { "enabled": true }`时，Claude 可能会在其响应中生成对所提供材料的直接引用。
 
-### 文档示例
-
-在这个例子中，我们传递一个[plain text document](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents)。在后台，Claude [automatically chunks](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents) 将输入文本转换成句子，在生成引文时使用。
+### 文档示例在这个例子中，我们传递了一个[plain text document](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents)。在后台，Claude [automatically chunks](https://platform.claude.com/docs/en/build-with-claude/citations#plain-text-documents) 将输入文本转换成句子，在生成引文时使用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -793,7 +819,9 @@ console.log(JSON.stringify(responseWithCitations.content, null, 2));
 
 ### 搜索结果示例
 
-在此示例中，我们传入 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 作为消息内容的一部分。这使得克劳德可以在回复中引用您自己的检索系统中的特定段落或片段。当您希望 Claude 引用特定知识集中的信息，但您希望直接引入自己的预取/缓存内容而不是让模型自动搜索或检索它们时，此方法非常有用。
+在此示例中，我们传入 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 作为消息内容的一部分。这使得克劳德可以在回复中引用您自己的检索系统中的特定段落或片段。
+
+当您希望 Claude 引用特定知识集中的信息，但您希望直接引入自己的预取/缓存内容而不是让模型自动搜索或检索它们时，此方法非常有用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -839,7 +867,7 @@ console.log(JSON.stringify(responseWithCitations.content, null, 2));
 
 您还可以使用工具来提供模型可以在其响应中引用的搜索结果。这非常适合 RAG（或[Retrieval-Augmented Generation](https://en.wikipedia.org/wiki/Retrieval-augmented_generation)）工作流程，Claude 可以决定何时何地检索信息。当将此信息作为 [search results](https://platform.claude.com/docs/en/build-with-claude/search-results) 返回时，Claude 能够从工具返回的材料中创建引用。
 
-以下是您如何创建一个工具，以 Anthropic 的引文 API 预期的格式返回搜索结果：
+以下是您如何创建一个工具，以 Anthropic 的引文 API 所需的格式返回搜索结果：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -906,13 +934,11 @@ console.log(JSON.stringify(result.content, null, 2));
 
 ```
 
-了解更多[how RAG works in LangChain](https://js.langchain.com/docs/concepts/rag/)
+了解更多关于[how RAG works in LangChain](https://js.langchain.com/docs/concepts/rag/)
 
 [Learn more about tool calling](/oss/javascript/langchain/tools)
 
-### 与文本分割器一起使用
-
-Anthropic 还允许您使用 [custom document](https://platform.claude.com/docs/en/build-with-claude/citations#custom-content-documents) 类型指定自己的分割。 LangChain 文本分割器可用于为此目的生成有意义的分割。请参阅下面的示例，其中我们拆分了 LangChain.js README（一个 Markdown 文档）并将其作为上下文传递给 Claude：
+### 与文本分割器一起使用Anthropic 还允许您使用 [custom document](https://platform.claude.com/docs/en/build-with-claude/citations#custom-content-documents) 类型指定自己的分割。 LangChain 文本分割器可用于为此目的生成有意义的分割。请参阅下面的示例，其中我们拆分了 LangChain.js README（一个 Markdown 文档）并将其作为上下文传递给 Claude：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -984,11 +1010,136 @@ console.log(JSON.stringify(resWithSplits.content, null, 2));
 ]
 ```
 
-## 上下文管理Anthropic 支持上下文编辑功能，该功能将自动管理模型的上下文窗口（例如，通过清除工具结果）。
+## 对话中系统消息
 
-有关详细信息和配置选项，请参阅[Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing)。
+<Note>
+  对话中系统消息需要`@langchain/anthropic>=1.5.11`。
+</Note>
 
-<Info>
+支持的 Claude 型号接受 [system message partway through a conversation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)。其指示从那时起适用。添加 1 会使前面的回合保持不变，因此不会使它们的 [prompt cache](#prompt-caching) 失效。
+
+`ChatAnthropic` 在顶级 `system` 字段中发送引导系统消息，并且以后的 [⟦T75⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 在对话中自己的位置发送。稍后的 `SystemMessage` 必须遵循人类或工具消息，并且必须是最后一条消息或后跟人工智能消息。
+
+并非每个 Claude 模型都支持对话中系统消息。 [Claude documentation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages) 列出了哪些可以。 `ChatAnthropic` 不会检查模型或消息的位置，因此当其中任何一个无效时，API 都会返回 400 错误。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { AIMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
+
+const llm = new ChatAnthropic({ model: "claude-opus-5-5" });
+
+const response = await llm.invoke([
+  new SystemMessage("You are a travel assistant."),
+  new HumanMessage("Suggest a day trip from Lisbon."),
+  new AIMessage("Sintra is a good choice: palaces, gardens, and a short train ride."),
+  new HumanMessage("How do I get there?"),
+  new SystemMessage("The user has switched to the mobile app. Keep answers under 50 words."), // [!code highlight]
+]);
+```
+
+有关措辞指导和完整的放置规则，请参阅[Claude documentation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)。
+
+### 在对话中更改工具
+
+<Note>
+  对话过程中更换工具需要`@langchain/anthropic>=1.5.12`。
+</Note>对话中`SystemMessage`还可以使用Anthropic的[⟦T80⟧ and ⟦T81⟧](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#mid-conversation-tool-changes)内容块添加或删除工具。在请求上编辑 `tools` 会使整个对话的提示缓存无效。这些块使`tools`保持不变，因此缓存的前缀仍然匹配。
+
+上述[placement and model rules](#mid-conversation-system-messages)适用。
+
+`ChatAnthropic` 添加了所需的 beta 标头，因此您无需设置 `betas`。
+
+要中途添加工具，请将其与 `extras: { defer_loading: true }` 绑定，这样克劳德一开始就看不到它。然后在 `tool_addition` 块中按名称引用它：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
+
+const getTime = tool(async () => "12:00", {
+  name: "get_time",
+  description: "Get the current time.",
+  schema: z.object({}),
+});
+
+const getWeather = tool(async ({ location }) => `It is sunny in ${location}.`, {
+  name: "get_weather",
+  description: "Get the current weather for a location.",
+  schema: z.object({ location: z.string() }),
+  extras: { defer_loading: true }, // [!code highlight]
+});
+
+const llm = new ChatAnthropic({ model: "claude-opus-5-5" });
+const llmWithTools = llm.bindTools([getTime, getWeather]);
+
+const response = await llmWithTools.invoke([
+  new HumanMessage("What's the weather in San Francisco?"),
+  new SystemMessage({
+    content: [
+      {
+        type: "tool_addition", // [!code highlight]
+        tool: { type: "tool_reference", name: "get_weather" }, // [!code highlight]
+      },
+    ],
+  }),
+]);
+```
+
+API 会拒绝每个工具都被延迟的请求，因此至少要绑定一个不带 `defer_loading` 的工具。
+
+要撤回工具，请在 `tool_removal` 块中引用它。稍后的`tool_addition`可以再次提供。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new SystemMessage({
+  content: [
+    {
+      type: "tool_removal",
+      tool: { type: "tool_reference", name: "get_weather" },
+    },
+  ],
+});
+```
+
+要添加您未预先绑定的工具，请使用 [define it inline](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#define-tools-in-a-message-beta) 和 `tool_definition`。内联定义处于测试阶段，仅在 Claude API 上可用。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+
+const llm = new ChatAnthropic({ model: "claude-opus-5-5" });
+
+const response = await llm.invoke([
+  new HumanMessage("How many orders did we get yesterday?"),
+  new SystemMessage({
+    content: [
+      {
+        type: "tool_addition",
+        tool: {
+          type: "tool_definition", // [!code highlight]
+          definition: { // [!code highlight]
+            name: "db_query",
+            description: "Run a read-only SQL query against the analytics database.",
+            input_schema: {
+              type: "object",
+              properties: { sql: { type: "string" } },
+              required: ["sql"],
+            },
+          },
+        },
+      },
+    ],
+  }),
+]);
+```
+
+您还可以将这些块编写在 `non_standard` 块、`content` 或 `contentBlocks` 中。 `ChatAnthropic` 为任一表单发送相同的请求。
+
+## 上下文管理
+
+Anthropic 支持上下文编辑功能，该功能将自动管理模型的上下文窗口（例如，通过清除工具结果）。
+
+有关详细信息和配置选项，请参阅[Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing)。<Info>
   **自 `@langchain/anthropic@0.3.29`** 起支持上下文管理
 </Info>
 
@@ -1012,13 +1163,13 @@ const response = await llmWithTools.invoke("Search for recent developments in AI
 
 ## API 参考
 
-有关所有 `ChatAnthropic` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
+有关所有`ChatAnthropic`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

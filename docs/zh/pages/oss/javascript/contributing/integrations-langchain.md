@@ -6,22 +6,22 @@
 
 **集成是LangChain的核心组件。**
 
-LangChain为几种不同的组件（语言模型、向量存储等）提供了标准接口，这些组件在构建LLM应用程序时至关重要。实施新的集成有助于扩展LangChain的生态系统，并使您的服务可以被数百万开发者发现。
+LangChain 为多个不同组件（语言模型、向量存储等）提供标准接口，这些组件在构建 LLM 应用程序时至关重要。实施新的集成有助于扩展 LangChain 的生态系统，并使您的服务可供数百万开发人员发现。
 
 <Warning>
-  新集成**不被接受为任何 `langchain-ai` 存储库的 PR**。所有新集成都必须作为独立包发布到 PyPI（例如，`langchain-yourprovider`）。您应该向 `langchain-ai` 存储库开放的唯一 PR 是在文档中列出您已发布的包：下载表的 YAML 行，或者如果您满足 [eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides)，则为托管指南。
+  新集成**不被接受为任何 `langchain-ai` 存储库的 PR**。所有新集成都必须作为独立包发布到 PyPI（例如，`langchain-yourprovider`）。您应该向 `langchain-ai` 存储库开放的唯一 PR 是在文档中列出您发布的包：下载表的 YAML 行，或者如果您满足 [eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides)，则为托管指南。
 </Warning>
 
-## 为什么要集成LangChain？
+## 为什么要实施 LangChain 集成？
 
 <Card title="Discoverability" icon="search">
   LangChain 是构建 LLM 应用程序最常用的框架，每月下载量超过 2 亿次。
 </Card>
 
 <Card title="Interoperability" icon="refresh">
-  LangChain组件公开了标准接口，允许开发人员轻松地相互替换。如果您实现 LangChain 集成，任何使用不同组件的开发人员都可以轻松地替换您的组件。
+  LangChain 组件公开标准接口，允许开发人员轻松地相互交换。如果您实现了LangChain集成，任何使用不同组件的开发人员都可以轻松地替换您的组件。
 </Card><Card title="Best Practices" icon="star">
-  通过其标准接口，LangChain 组件鼓励并促进最佳实践（流、异步等），从而改善开发人员体验和应用程序性能。
+  通过其标准接口，LangChain组件鼓励并促进最佳实践（流、异步等），从而改善开发人员体验和应用程序性能。
 </Card>
 
 ## 要集成的组件
@@ -36,7 +36,7 @@ LangChain为几种不同的组件（语言模型、向量存储等）提供了�
 * [**Embedding Models**](/oss/javascript/integrations/embeddings)：向量运算的基础
 * [**Vector Stores**](/oss/javascript/integrations/vectorstores)：语义搜索必备
 * [**Middleware**](/oss/javascript/integrations/middleware)：用钩子扩展代理行为
-* [**Sandboxes**](/oss/javascript/deepagents/sandboxes)：使用 Deep Agent 安全运行代码
+* [**Sandboxes**](/oss/javascript/deepagents/sandboxes)：使用Deep Agents安全地运行代码
 
 **不是这些❌**：
 
@@ -57,7 +57,7 @@ LangChain为几种不同的组件（语言模型、向量存储等）提供了�
   <Step title="Implement your package">
     <Card title="How to implement a LangChain integration" icon="link" href="/oss/javascript/contributing/implement-langchain" />
   </Step><Step title="Pass standard tests">
-    如果适用，请为您的集成实现对 LangChain [standard test](/oss/javascript/contributing/standard-tests-langchain) 套件的支持并成功运行它们。
+    如果适用，请为您的集成实现对 LangChain 的 [standard test](/oss/javascript/contributing/standard-tests-langchain) 套件的支持并成功运行它们。
   </Step>
 
   <Step title="Publish integration">
@@ -68,7 +68,7 @@ LangChain为几种不同的组件（语言模型、向量存储等）提供了�
     在 LangChain [docs repo](https://github.com/langchain-ai/docs) 中打开 PR，以便用户可以找到您的包。托管导游数量有限；大多数集成都是通过 YAML 列出的。
 
     <Accordion title="How listing works" icon="book">
-      **默认（每月下载量低于 50,000 次，不推荐）：** 在 [⟦T3⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 添加一行。名称列链接到您的`docs_url`（首选合作伙伴文档，然后是 GitHub，然后是 PyPI 或 npm）。不要添加新的 MDX 页面。
+      **默认（每月下载量低于 50,000 次，不推荐）：** 提交 [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)。维护者应用 `integration-run` 后，自动化会打开一个 PR，向 [⟦T4⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 添加一行。名称列链接到您的`docs_url`（首选合作伙伴文档，然后是 GitHub，然后是 PyPI 或 npm）。不要添加新的 MDX 页面。
 
       **托管指南（每月下载量超过 50,000 次，或由维护人员推荐）：** 从模板在 `src/oss/python/integrations/<component_type>/` 下创建页面：
 
@@ -82,7 +82,7 @@ LangChain为几种不同的组件（语言模型、向量存储等）提供了�
   </Step>
 
   <Step title="Co-marketing" icon="speakerphone">
-    （可选）与LangChain团队共同参与[co-marketing](/oss/javascript/contributing/comarketing)。
+    （可选）与LangChain团队合作进行联合[co-marketing](/oss/javascript/contributing/comarketing)。
   </Step>
 </Steps>
 
@@ -90,7 +90,7 @@ LangChain为几种不同的组件（语言模型、向量存储等）提供了�
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

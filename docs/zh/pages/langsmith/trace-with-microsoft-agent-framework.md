@@ -11,15 +11,13 @@ LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 [Microsoft Agent F
 安装所需的软件包：
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install agent-framework opentelemetry-exporter-otlp-proto-http
+  ```
 
-```bash pip
-pip install agent-framework opentelemetry-exporter-otlp-proto-http
-```
-
-```bash uv
-uv add agent-framework opentelemetry-exporter-otlp-proto-http
-```
-
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add agent-framework opentelemetry-exporter-otlp-proto-http
+  ```
 </CodeGroup>
 
 ## 设置
@@ -28,7 +26,7 @@ uv add agent-framework opentelemetry-exporter-otlp-proto-http
 
 启用代理的 OpenTelemetry 检测并将 OpenTelemetry 环境变量设置为指向 LangSmith OTEL 端点：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export ENABLE_INSTRUMENTATION=true
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
@@ -39,7 +37,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 
 在您的 Microsoft Agent Framework 应用程序中，使用内置 `configure_otel_providers` 函数启用 OpenTelemetry 跟踪：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from agent_framework.observability import configure_otel_providers
 
 # Enable OpenTelemetry tracing
@@ -47,14 +45,14 @@ configure_otel_providers(enable_sensitive_data=True)
 ```
 
 <Note>
-设置 `enable_sensitive_data=True` 允许捕获跟踪中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
+  设置 `enable_sensitive_data=True` 允许捕获跟踪中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
 </Note>
 
 ### 3. 创建并运行您的代理
 
 配置完成后，您的 Microsoft Agent Framework 代理将自动将跟踪发送到 LangSmith：
 
-```python
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from agent_framework import ChatAgent
 from agent_framework.observability import configure_otel_providers
 from agent_framework.openai import OpenAIChatClient
@@ -71,13 +69,14 @@ result = await agent.run("What's the capital of Bavaria?")
 print(result.text)
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-microsoft-agent-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

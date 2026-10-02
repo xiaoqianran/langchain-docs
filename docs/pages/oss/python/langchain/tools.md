@@ -284,10 +284,10 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
 Context provides immutable configuration data that is passed at invocation time. Use it for user IDs, session details, or application-specific settings that shouldn't change during a conversation.
 
 <Note>
-  While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. In production you typically pass both together: a stable `thread_id` per conversation, and a `context` object on every invoke.
+  While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. Persistence requires a [checkpointer](/oss/python/langchain/short-term-memory). In production you typically pass both a stable `thread_id` per conversation and a `context` object on every invoke.
 </Note>
 
-Access context through `runtime.context`. Pass it alongside a `thread_id` so the conversation is persisted across turns:
+Access context through `runtime.context`. Configure a [checkpointer](/oss/python/langchain/short-term-memory) and pass `context` with a stable `thread_id` so the conversation persists across invocations:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
@@ -296,6 +296,7 @@ from langchain.agents import create_agent
 from langchain.tools import tool, ToolRuntime
 from langchain_core.utils.uuid import uuid7
 from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import InMemorySaver
 
 
 USER_DATABASE = {
@@ -339,19 +340,28 @@ agent = create_agent(
     model,
     tools=[get_account_info],
     context_schema=UserContext,
+    checkpointer=InMemorySaver(),
     system_prompt="You are a financial assistant.",
 )
 
+thread_id = str(uuid7())
+config = {"configurable": {"thread_id": thread_id}}
+context = UserContext(user_id="user123")
+
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-    config={"configurable": {"thread_id": str(uuid7())}},
-    context=UserContext(user_id="user123"),
+    config=config,
+    context=context,
 )
-```
+print(result["messages"][-1].content_blocks)
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9fcdc511-876a-4675-890e-7a607980df3b/r">
-  Open a public LangSmith run for this example.
-</Card>
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What was my balance again?"}]},
+    config=config,
+    context=context,
+)
+print(result["messages"][-1].content_blocks)
+```
 
 ### Long-term memory (Store)
 

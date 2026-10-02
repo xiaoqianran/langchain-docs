@@ -6,18 +6,19 @@
 
 使用 LangChain JavaScript 与 OpenAIEmbeddings 嵌入模型集成。
 
-这将帮助您开始使用 LangChain 来使用 OpenAIEmbeddings [embedding models](/oss/javascript/integrations/embeddings)。有关`OpenAIEmbeddings`功能和配置选项的详细文档，请参阅[API reference](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings)。
+这将帮助您使用 LangChain 开始使用 OpenAIEmbeddings [embedding models](/oss/javascript/integrations/embeddings)。有关`OpenAIEmbeddings`功能和配置选项的详细文档，请参阅[API reference](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings)。
 
 ## 概述
 
 ### 集成细节
 
-|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/openai/) |                                             下载 |                                             版本 |
-| :---------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- | :---: | :-----------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: || [⟦T18⟧](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings) | [⟦T19⟧](https://www.npmjs.com/package/@langchain/openai) |   ❌ |                                        ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
+|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/openai/) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T18⟧](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings) | [⟦T19⟧](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ## 设置
 
-要访问 OpenAIEmbeddings 嵌入模型，您需要创建 OpenAI 帐户、获取 API 密钥并安装 `@langchain/openai` 集成包。
+要访问 OpenAIEmbeddings 嵌入模型，您需要创建一个 OpenAI 帐户，获取 API 密钥，并安装 `@langchain/openai` 集成包。
 
 ### 凭证
 
@@ -64,14 +65,14 @@ const embeddings = new OpenAIEmbeddings({
   batchSize: 512, // Default value if omitted is 512. Max is 2048
   model: "text-embedding-3-large",
 });
-```
-
-如果您是某个组织的成员，则可以将 `process.env.OPENAI_ORGANIZATION` 设置为您的 OpenAI 组织 ID，或者在以下情况下将其作为 `organization` 传递：
+```如果您是某个组织的成员，则可以将 `process.env.OPENAI_ORGANIZATION` 设置为您的 OpenAI 组织 ID，或者在以下情况下将其作为 `organization` 传入
 初始化模型。
 
 ## 索引和检索
 
-嵌入模型通常用于检索增强生成（RAG）流程，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。下面，看看如何使用我们上面初始化的 `embeddings` 对象来索引和检索数据。在此示例中，我们将使用演示 [⟦T26⟧](/oss/javascript/integrations/vectorstores/memory) 索引和检索示例文档。
+嵌入模型通常用于检索增强生成（RAG）流，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
+
+下面，看看如何使用我们上面初始化的 `embeddings` 对象来索引和检索数据。在此示例中，我们将使用演示 [⟦T26⟧](/oss/javascript/integrations/vectorstores/memory) 索引和检索示例文档。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Create a vector store with a sample text
@@ -196,9 +197,7 @@ console.log(vectors[1].slice(0, 100));
     0.027696826, -0.0021070621,  -0.024485396, -0.0042141243,   -0.02801937,
    -0.019605145,   0.016281527,  -0.035143413,    0.01640774,   0.042323552
 ]
-```
-
-## 指定尺寸
+```## 指定尺寸
 
 使用 `text-embedding-3` 类模型，您可以指定要返回的嵌入的大小。例如，默认情况下 `text-embedding-3-large` 返回维度 3072 的嵌入：
 
@@ -235,7 +234,9 @@ console.log(vectors1024[0].length);
 1024
 ```
 
-## 自定义 URL您可以通过传递 `configuration` 参数来自定义 SDK 发送请求的基本 URL，如下所示：
+## 自定义 URL
+
+您可以通过传递 `configuration` 参数来自定义 SDK 发送请求的基本 URL，如下所示：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { OpenAIEmbeddings } from "@langchain/openai";
@@ -261,7 +262,7 @@ const model = new OpenAIEmbeddings({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

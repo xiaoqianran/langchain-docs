@@ -14,33 +14,31 @@ LangSmith 与 LangGraph（Python 和 JS）顺利集成，以帮助您跟踪代�
 
 ### 1.安装
 
-安装适用于 Python 和 JS 的 LangGraph 库和 OpenAI 集成（我们在下面的代码片段中使用 OpenAI 集成）。
+安装LangGraph库以及Python和JS的OpenAI集成（我们在下面的代码片段中使用OpenAI集成）。
 
 有关可用软件包的完整列表，请参阅 [LangChain Python docs](https://docs.langchain.com/oss/python/integrations/providers/overview) 和 [LangChain JS docs](https://docs.langchain.com/oss/javascript/integrations/providers/overview)。
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install langchain_openai langgraph
+  ```
 
-```bash pip
-pip install langchain_openai langgraph
-```
+  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add @langchain/openai @langchain/langgraph
+  ```
 
-```bash yarn
-yarn add @langchain/openai @langchain/langgraph
-```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install @langchain/openai @langchain/langgraph
+  ```
 
-```bash npm
-npm install @langchain/openai @langchain/langgraph
-```
-
-```bash pnpm
-pnpm add @langchain/openai @langchain/langgraph
-```
-
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm add @langchain/openai @langchain/langgraph
+  ```
 </CodeGroup>
 
 ### 2. 配置您的环境
 
-```bash wrap
+```bash wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 # This example uses OpenAI, but you can use any LLM provider of choice
@@ -50,50 +48,45 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 ```
 
 <Note>
-如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
+  如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
 
-{/* 通过 `prefix` 更改“.langchain.com”之前的主机名（默认：“api.smith”）。
-    传递 `suffix` 将路径（例如“/mcp”）附加到每个 URL。
-    传递 `protocol={false}` 来渲染不带“https://”的主机名。 */}<table>
-  <thead>
-    <tr>
-      <th>地区</th>
-      <th>{协议===假？ "主机" : "URL"}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GCP 美国</td>
-      <td><code>{`${protocol === false ? "" : "https://"}${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP 欧盟</td>
-      <td><code>{`${protocol === false ? "" : "https://"}eu.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP 亚太地区</td>
-      <td><code>{`${protocol === false ? "" : "https://"}apac.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>AWS 美国</td>
-      <td><code>{`${protocol === false ? "" : "https://"}aws.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>地区</th>
+      </tr>
+    </thead>
 
-例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
+    <tbody>
+      <tr>
+        <td>GCP 美国</td>
+      </tr>
+
+      <tr>
+        <td>GCP 欧盟</td>
+      </tr>
+
+      <tr>
+        <td>GCP 亚太地区</td>
+      </tr><tr>
+        <td>AWS 美国</td>
+      </tr>
+    </tbody>
+  </table>
+
+  例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
 </Note>
 
 <Info>
-    如果您将 LangChain.js 与 LangSmith 一起使用并且不在无服务器环境中，我们还建议显式设置以下内容以减少延迟：
+  如果您将 LangChain.js 与 LangSmith 一起使用并且不在无服务器环境中，我们还建议显式设置以下内容以减少延迟：
 
-    `export LANGCHAIN_CALLBACKS_BACKGROUND=true`
+  `export LANGCHAIN_CALLBACKS_BACKGROUND=true`
 
-    如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
+  如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
 
-    `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
+  `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 
-    请参阅[this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless)了解更多信息。
+  请参阅[this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless)了解更多信息。
 </Info>
 
 ### 3. 记录跟踪
@@ -101,146 +94,144 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 设置环境后，您可以像平常一样调用 LangChain runnables。 LangSmith 将推断正确的跟踪配置：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from typing import Literal
+  from langchain.messages import HumanMessage
+  from langchain_openai import ChatOpenAI
+  from langchain.tools import tool
+  from langgraph.prebuilt import ToolNode
+  from langgraph.graph import StateGraph, MessagesState
 
-```python Python
-from typing import Literal
-from langchain.messages import HumanMessage
-from langchain_openai import ChatOpenAI
-from langchain.tools import tool
-from langgraph.prebuilt import ToolNode
-from langgraph.graph import StateGraph, MessagesState
+  @tool
+  def search(query: str):
+      """Call to surf the web."""
+      if "sf" in query.lower() or "san francisco" in query.lower():
+          return "It's 60 degrees and foggy."
+      return "It's 90 degrees and sunny."
 
-@tool
-def search(query: str):
-    """Call to surf the web."""
-    if "sf" in query.lower() or "san francisco" in query.lower():
-        return "It's 60 degrees and foggy."
+  tools = [search]
+  tool_node = ToolNode(tools)
+
+  model = ChatOpenAI(model="gpt-5.5", temperature=0).bind_tools(tools)
+
+  def should_continue(state: MessagesState) -> Literal["tools", "__end__"]:
+      messages = state['messages']
+      last_message = messages[-1]
+      if last_message.tool_calls:
+          return "tools"
+      return "__end__"
+
+  def call_model(state: MessagesState):
+      messages = state['messages']
+      # Invoking `model` will automatically infer the correct tracing context
+      response = model.invoke(messages)
+      return {"messages": [response]}
+
+  workflow = StateGraph(MessagesState)
+  workflow.add_node("agent", call_model)
+  workflow.add_node("tools", tool_node)
+  workflow.add_edge("__start__", "agent")
+  workflow.add_conditional_edges(
+      "agent",
+      should_continue,
+  )
+  workflow.add_edge("tools", 'agent')
+
+  app = workflow.compile()
+
+  final_state = app.invoke(
+      {"messages": [HumanMessage(content="what is the weather in sf")]},
+      config={"configurable": {"thread_id": 42}}
+  )
+
+  final_state["messages"][-1].content
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { HumanMessage, AIMessage } from "@langchain/core/messages";
+  import { tool } from "@langchain/core/tools";
+  import { z } from "zod";
+  import { ChatOpenAI } from "@langchain/openai";
+  import { StateGraph, StateGraphArgs } from "@langchain/langgraph";
+  import { ToolNode } from "@langchain/langgraph/prebuilt";
+
+  interface AgentState {
+    messages: HumanMessage[];
+  }
+
+  const graphState: StateGraphArgs<AgentState>["channels"] = {
+    messages: {
+      reducer: (x: HumanMessage[], y: HumanMessage[]) => x.concat(y),
+    },
+  };
+
+  const searchTool = tool(async ({ query }: { query: string }) => {
+    if (query.toLowerCase().includes("sf") || query.toLowerCase().includes("san francisco")) {
+      return "It's 60 degrees and foggy."
+    }
     return "It's 90 degrees and sunny."
+  }, {
+    name: "search",
+    description:
+      "Call to surf the web.",
+    schema: z.object({
+      query: z.string().describe("The query to use in your search."),
+    }),
+  });
 
-tools = [search]
-tool_node = ToolNode(tools)
+  const tools = [searchTool];
+  const toolNode = new ToolNode<AgentState>(tools);
 
-model = ChatOpenAI(model="gpt-5.5", temperature=0).bind_tools(tools)
+  const model = new ChatOpenAI({
+    model: "gpt-5.5",
+    temperature: 0,
+  }).bindTools(tools);
 
-def should_continue(state: MessagesState) -> Literal["tools", "__end__"]:
-    messages = state['messages']
-    last_message = messages[-1]
-    if last_message.tool_calls:
-        return "tools"
-    return "__end__"
-
-def call_model(state: MessagesState):
-    messages = state['messages']
-    # Invoking `model` will automatically infer the correct tracing context
-    response = model.invoke(messages)
-    return {"messages": [response]}
-
-workflow = StateGraph(MessagesState)
-workflow.add_node("agent", call_model)
-workflow.add_node("tools", tool_node)
-workflow.add_edge("__start__", "agent")
-workflow.add_conditional_edges(
-    "agent",
-    should_continue,
-)
-workflow.add_edge("tools", 'agent')
-
-app = workflow.compile()
-
-final_state = app.invoke(
-    {"messages": [HumanMessage(content="what is the weather in sf")]},
-    config={"configurable": {"thread_id": 42}}
-)
-
-final_state["messages"][-1].content
-```
-
-```typescript TypeScript
-import { HumanMessage, AIMessage } from "@langchain/core/messages";
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
-import { ChatOpenAI } from "@langchain/openai";
-import { StateGraph, StateGraphArgs } from "@langchain/langgraph";
-import { ToolNode } from "@langchain/langgraph/prebuilt";
-
-interface AgentState {
-  messages: HumanMessage[];
-}
-
-const graphState: StateGraphArgs<AgentState>["channels"] = {
-  messages: {
-    reducer: (x: HumanMessage[], y: HumanMessage[]) => x.concat(y),
-  },
-};
-
-const searchTool = tool(async ({ query }: { query: string }) => {
-  if (query.toLowerCase().includes("sf") || query.toLowerCase().includes("san francisco")) {
-    return "It's 60 degrees and foggy."
+  function shouldContinue(state: AgentState) {
+    const messages = state.messages;
+    const lastMessage = messages[messages.length - 1] as AIMessage;
+    if (lastMessage.tool_calls?.length) {
+      return "tools";
+    }
+    return "__end__";
   }
-  return "It's 90 degrees and sunny."
-}, {
-  name: "search",
-  description:
-    "Call to surf the web.",
-  schema: z.object({
-    query: z.string().describe("The query to use in your search."),
-  }),
-});
 
-const tools = [searchTool];
-const toolNode = new ToolNode<AgentState>(tools);
-
-const model = new ChatOpenAI({
-  model: "gpt-5.5",
-  temperature: 0,
-}).bindTools(tools);
-
-function shouldContinue(state: AgentState) {
-  const messages = state.messages;
-  const lastMessage = messages[messages.length - 1] as AIMessage;
-  if (lastMessage.tool_calls?.length) {
-    return "tools";
+  async function callModel(state: AgentState) {
+    const messages = state.messages;
+    // Invoking `model` will automatically infer the correct tracing context
+    const response = await model.invoke(messages);
+    return { messages: [response] };
   }
-  return "__end__";
-}
 
-async function callModel(state: AgentState) {
-  const messages = state.messages;
-  // Invoking `model` will automatically infer the correct tracing context
-  const response = await model.invoke(messages);
-  return { messages: [response] };
-}
+  const workflow = new StateGraph<AgentState>({ channels: graphState })
+    .addNode("agent", callModel)
+    .addNode("tools", toolNode)
+    .addEdge("__start__", "agent")
+    .addConditionalEdges("agent", shouldContinue)
+    .addEdge("tools", "agent");
 
-const workflow = new StateGraph<AgentState>({ channels: graphState })
-  .addNode("agent", callModel)
-  .addNode("tools", toolNode)
-  .addEdge("__start__", "agent")
-  .addConditionalEdges("agent", shouldContinue)
-  .addEdge("tools", "agent");
+  const app = workflow.compile();
 
-const app = workflow.compile();
+  const finalState = await app.invoke(
+    { messages: [new HumanMessage("what is the weather in sf")] },
+    { configurable: { thread_id: "42" } }
+  );
 
-const finalState = await app.invoke(
-  { messages: [new HumanMessage("what is the weather in sf")] },
-  { configurable: { thread_id: "42" } }
-);
-
-finalState.messages[finalState.messages.length - 1].content;
-```
-
+  finalState.messages[finalState.messages.length - 1].content;
+  ```
 </CodeGroup>
 
 ### 查看跟踪
 
-**详情查看**单击跟踪，然后切换到右上角的 **详细信息** 视图。您在 LangSmith 中的踪迹应该是 [look like this](https://smith.langchain.com/public/79061a0f-c602-4012-b022-03fd46bce89e/r)。
+**详情查看**
+
+单击跟踪，然后切换到右上角的 **详细信息** 视图。您在 LangSmith 中的踪迹应该是 [look like this](https://smith.langchain.com/public/79061a0f-c602-4012-b022-03fd46bce89e/r)。
 
 **轨迹视图**
 
 LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
-## 没有LangChain
-
-如果您在 LangGraph 中使用其他 SDK 或自定义函数，则需要 [wrap or decorate them appropriately](/langsmith/annotate-code#use-%40traceable-%2F-traceable) （使用 Python 中的 `@traceable` 装饰器或 JS 中的 `traceable` 函数，或者类似 SDK 的 `wrap_openai` ）。如果这样做，LangSmith将自动从这些包装的方法中嵌套跟踪。
+## 没有LangChain如果您在 LangGraph 中使用其他 SDK 或自定义函数，则需要 [wrap or decorate them appropriately](/langsmith/annotate-code#use-%40traceable-%2F-traceable) （使用 Python 中的 `@traceable` 装饰器或 JS 中的 `traceable` 函数，或者类似 SDK 的 `wrap_openai` ）。如果这样做，LangSmith将自动从这些包装的方法中嵌套跟踪。
 
 这是一个例子。您还可以查看此页面以获取更多信息。
 
@@ -249,293 +240,286 @@ LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对
 安装适用于 Python 和 JS 的 LangGraph 库和 OpenAI SDK（我们在下面的代码片段中使用 OpenAI 集成）。
 
 <CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install openai langsmith langgraph
+  ```
 
-```bash pip
-pip install openai langsmith langgraph
-```
+  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  yarn add openai langsmith @langchain/langgraph
+  ```
 
-```bash yarn
-yarn add openai langsmith @langchain/langgraph
-```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install openai langsmith @langchain/langgraph
+  ```
 
-```bash npm
-npm install openai langsmith @langchain/langgraph
-```
-
-```bash pnpm
-pnpm add openai langsmith @langchain/langgraph
-```
-
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm add openai langsmith @langchain/langgraph
+  ```
 </CodeGroup>
 
 ### 2. 配置您的环境
 
-```bash wrap
+```bash wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
-```<Note>
-如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
+```
 
-{/* 通过 `prefix` 更改“.langchain.com”之前的主机名（默认：“api.smith”）。
-    传递 `suffix` 将路径（例如“/mcp”）附加到每个 URL。
-    传递 `protocol={false}` 来渲染不带“https://”的主机名。 */}
+<Note>
+  如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
 
-<table>
-  <thead>
-    <tr>
-      <th>地区</th>
-      <th>{协议===假？ “主机”：“URL”}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GCP 美国</td>
-      <td><code>{`${protocol === false ? "" : "https://"}${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP 欧盟</td>
-      <td><code>{`${protocol === false ? "" : "https://"}eu.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>GCP 亚太地区</td>
-      <td><code>{`${protocol === false ? "" : "https://"}apac.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-    <tr>
-      <td>AWS 美国</td>
-      <td><code>{`${protocol === false ? "" : "https://"}aws.${prefix || "api.smith"}.langchain.com${suffix || ""}`}</code></td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>地区</th>
+      </tr>
+    </thead>
 
-例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
+    <tbody>
+      <tr>
+        <td>GCP 美国</td>
+      </tr>
+
+      <tr>
+        <td>GCP 欧盟</td>
+      </tr>
+
+      <tr>
+        <td>GCP 亚太地区</td>
+      </tr>
+
+      <tr>
+        <td>AWS 美国</td>
+      </tr>
+    </tbody>
+  </table>例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
 </Note>
 
 <Info>
-    如果您将 LangChain.js 与 LangSmith 一起使用并且不在无服务器环境中，我们还建议显式设置以下内容以减少延迟：
+  如果您将 LangChain.js 与 LangSmith 一起使用并且不在无服务器环境中，我们还建议显式设置以下内容以减少延迟：
 
-    `export LANGCHAIN_CALLBACKS_BACKGROUND=true`如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
+  `export LANGCHAIN_CALLBACKS_BACKGROUND=true`
 
-    `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
+  如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
 
-    请参阅[this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless)了解更多信息。
+  `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
+
+  请参阅[this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless)了解更多信息。
 </Info>
 
 ### 3. 记录跟踪
 
-设置环境后，您想要跟踪[wrap or decorate the custom functions/SDKs](/langsmith/annotate-code#use-%40traceable-%2F-traceable)。然后LangSmith将推断出正确的跟踪配置：
+设置好环境后，您想要跟踪 [wrap or decorate the custom functions/SDKs](/langsmith/annotate-code#use-%40traceable-%2F-traceable)。然后LangSmith将推断出正确的跟踪配置：
 
 <CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import json
+  import openai
+  import operator
+  from langsmith import traceable
+  from langsmith.wrappers import wrap_openai
+  from typing import Annotated, Literal, TypedDict
+  from langgraph.graph import StateGraph
 
-```python Python
-import json
-import openai
-import operator
-from langsmith import traceable
-from langsmith.wrappers import wrap_openai
-from typing import Annotated, Literal, TypedDict
-from langgraph.graph import StateGraph
+  class State(TypedDict):
+      messages: Annotated[list, operator.add]
 
-class State(TypedDict):
-    messages: Annotated[list, operator.add]
-
-tool_schema = {
-    "type": "function",
-    "function": {
-        "name": "search",
-        "description": "Call to surf the web.",
-        "parameters": {
-            "type": "object",
-            "properties": {"query": {"type": "string"}},
-            "required": ["query"],
-        },
-    },
-}
-
-# Decorating the tool function will automatically trace it with the correct context
-@traceable(run_type="tool", name="Search Tool")
-def search(query: str):
-    """Call to surf the web."""
-    if "sf" in query.lower() or "san francisco" in query.lower():
-        return "It's 60 degrees and foggy."
-    return "It's 90 degrees and sunny."
-
-tools = [search]
-
-def call_tools(state):
-    function_name_to_function = {"search": search}
-    messages = state["messages"]
-    tool_call = messages[-1]["tool_calls"][0]
-    function_name = tool_call["function"]["name"]
-    function_arguments = tool_call["function"]["arguments"]
-    arguments = json.loads(function_arguments)
-    function_response = function_name_to_function[function_name](**arguments)
-    tool_message = {
-        "tool_call_id": tool_call["id"],
-        "role": "tool",
-        "name": function_name,
-        "content": function_response,
-    }
-    return {"messages": [tool_message]}
-
-wrapped_client = wrap_openai(openai.Client())
-
-def should_continue(state: State) -> Literal["tools", "__end__"]:
-    messages = state["messages"]
-    last_message = messages[-1]
-    if last_message["tool_calls"]:
-        return "tools"
-    return "__end__"
-
-def call_model(state: State):
-    messages = state["messages"]
-    # Calling the wrapped client will automatically infer the correct tracing context
-    response = wrapped_client.chat.completions.create(
-        messages=messages, model="gpt-5.4-mini", tools=[tool_schema]
-    )
-    raw_tool_calls = response.choices[0].message.tool_calls
-    tool_calls = [tool_call.to_dict() for tool_call in raw_tool_calls] if raw_tool_calls else []
-    response_message = {
-        "role": "assistant",
-        "content": response.choices[0].message.content,
-        "tool_calls": tool_calls,
-    }
-    return {"messages": [response_message]}
-
-workflow = StateGraph(State)
-workflow.add_node("agent", call_model)
-workflow.add_node("tools", call_tools)
-workflow.add_edge("__start__", "agent")
-workflow.add_conditional_edges(
-    "agent",
-    should_continue,
-)
-workflow.add_edge("tools", 'agent')
-
-app = workflow.compile()
-
-final_state = app.invoke(
-    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-)
-
-final_state["messages"][-1]["content"]
-```
-
-```typescript TypeScript
-**Note:** The below example requires `langsmith>=0.1.39` and `@langchain/langgraph>=0.0.31`
-
-import OpenAI from "openai";
-import { StateGraph } from "@langchain/langgraph";
-import { wrapOpenAI } from "langsmith/wrappers/openai";
-import { traceable } from "langsmith/traceable";
-
-type GraphState = {
-  messages: OpenAI.ChatCompletionMessageParam[];
-};
-
-const wrappedClient = wrapOpenAI(new OpenAI({}));
-
-const toolSchema: OpenAI.ChatCompletionTool = {
-  type: "function",
-  function: {
-    name: "search",
-    description: "Use this tool to query the web.",
-    parameters: {
-      type: "object",
-      properties: {
-        query: {
-          type: "string",
-        },
+  tool_schema = {
+      "type": "function",
+      "function": {
+          "name": "search",
+          "description": "Call to surf the web.",
+          "parameters": {
+              "type": "object",
+              "properties": {"query": {"type": "string"}},
+              "required": ["query"],
+          },
       },
-      required: ["query"],
-    }
   }
-};
 
-// Wrapping the tool function will automatically trace it with the correct context
-const search = traceable(async ({ query }: { query: string }) => {
-  if (
-    query.toLowerCase().includes("sf") ||
-    query.toLowerCase().includes("san francisco")
-  ) {
-    return "It's 60 degrees and foggy.";
-  }
-  return "It's 90 degrees and sunny.";
-}, { run_type: "tool", name: "Search Tool" });
+  # Decorating the tool function will automatically trace it with the correct context
+  @traceable(run_type="tool", name="Search Tool")
+  def search(query: str):
+      """Call to surf the web."""
+      if "sf" in query.lower() or "san francisco" in query.lower():
+          return "It's 60 degrees and foggy."
+      return "It's 90 degrees and sunny."
 
-const callTools = async ({ messages }: GraphState) => {
-  const mostRecentMessage = messages[messages.length - 1];
-  const toolCalls = (mostRecentMessage as OpenAI.ChatCompletionAssistantMessageParam).tool_calls;
-  if (toolCalls === undefined || toolCalls.length === 0) {
-    throw new Error("No tool calls passed to node.");
-  }
-  const toolNameMap = {
-    search,
+  tools = [search]
+
+  def call_tools(state):
+      function_name_to_function = {"search": search}
+      messages = state["messages"]
+      tool_call = messages[-1]["tool_calls"][0]
+      function_name = tool_call["function"]["name"]
+      function_arguments = tool_call["function"]["arguments"]
+      arguments = json.loads(function_arguments)
+      function_response = function_name_to_function[function_name](**arguments)
+      tool_message = {
+          "tool_call_id": tool_call["id"],
+          "role": "tool",
+          "name": function_name,
+          "content": function_response,
+      }
+      return {"messages": [tool_message]}
+
+  wrapped_client = wrap_openai(openai.Client())
+
+  def should_continue(state: State) -> Literal["tools", "__end__"]:
+      messages = state["messages"]
+      last_message = messages[-1]
+      if last_message["tool_calls"]:
+          return "tools"
+      return "__end__"
+
+  def call_model(state: State):
+      messages = state["messages"]
+      # Calling the wrapped client will automatically infer the correct tracing context
+      response = wrapped_client.chat.completions.create(
+          messages=messages, model="gpt-5.4-mini", tools=[tool_schema]
+      )
+      raw_tool_calls = response.choices[0].message.tool_calls
+      tool_calls = [tool_call.to_dict() for tool_call in raw_tool_calls] if raw_tool_calls else []
+      response_message = {
+          "role": "assistant",
+          "content": response.choices[0].message.content,
+          "tool_calls": tool_calls,
+      }
+      return {"messages": [response_message]}
+
+  workflow = StateGraph(State)
+  workflow.add_node("agent", call_model)
+  workflow.add_node("tools", call_tools)
+  workflow.add_edge("__start__", "agent")
+  workflow.add_conditional_edges(
+      "agent",
+      should_continue,
+  )
+  workflow.add_edge("tools", 'agent')
+
+  app = workflow.compile()
+
+  final_state = app.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+
+  final_state["messages"][-1]["content"]
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  **Note:** The below example requires `langsmith>=0.1.39` and `@langchain/langgraph>=0.0.31`
+
+  import OpenAI from "openai";
+  import { StateGraph } from "@langchain/langgraph";
+  import { wrapOpenAI } from "langsmith/wrappers/openai";
+  import { traceable } from "langsmith/traceable";
+
+  type GraphState = {
+    messages: OpenAI.ChatCompletionMessageParam[];
   };
-  const functionName = toolCalls[0].function.name;
-  const functionArguments = JSON.parse(toolCalls[0].function.arguments);
-  const response = await toolNameMap[functionName](functionArguments);
-  const toolMessage = {
-    tool_call_id: toolCalls[0].id,
-    role: "tool",
-    name: functionName,
-    content: response,
-  }
-  return { messages: [toolMessage] };
-};
 
-const callModel = async ({ messages }: GraphState) => {
-  // Calling the wrapped client will automatically infer the correct tracing context
-  const response = await wrappedClient.chat.completions.create({
-    messages,
-    model: "gpt-5.4-mini",
-    tools: [toolSchema],
+  const wrappedClient = wrapOpenAI(new OpenAI({}));
+
+  const toolSchema: OpenAI.ChatCompletionTool = {
+    type: "function",
+    function: {
+      name: "search",
+      description: "Use this tool to query the web.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+          },
+        },
+        required: ["query"],
+      }
+    }
+  };
+
+  // Wrapping the tool function will automatically trace it with the correct context
+  const search = traceable(async ({ query }: { query: string }) => {
+    if (
+      query.toLowerCase().includes("sf") ||
+      query.toLowerCase().includes("san francisco")
+    ) {
+      return "It's 60 degrees and foggy.";
+    }
+    return "It's 90 degrees and sunny.";
+  }, { run_type: "tool", name: "Search Tool" });
+
+  const callTools = async ({ messages }: GraphState) => {
+    const mostRecentMessage = messages[messages.length - 1];
+    const toolCalls = (mostRecentMessage as OpenAI.ChatCompletionAssistantMessageParam).tool_calls;
+    if (toolCalls === undefined || toolCalls.length === 0) {
+      throw new Error("No tool calls passed to node.");
+    }
+    const toolNameMap = {
+      search,
+    };
+    const functionName = toolCalls[0].function.name;
+    const functionArguments = JSON.parse(toolCalls[0].function.arguments);
+    const response = await toolNameMap[functionName](functionArguments);
+    const toolMessage = {
+      tool_call_id: toolCalls[0].id,
+      role: "tool",
+      name: functionName,
+      content: response,
+    }
+    return { messages: [toolMessage] };
+  };
+
+  const callModel = async ({ messages }: GraphState) => {
+    // Calling the wrapped client will automatically infer the correct tracing context
+    const response = await wrappedClient.chat.completions.create({
+      messages,
+      model: "gpt-5.4-mini",
+      tools: [toolSchema],
+    });
+    const responseMessage = {
+      role: "assistant",
+      content: response.choices[0].message.content,
+      tool_calls: response.choices[0].message.tool_calls ?? [],
+    };
+    return { messages: [responseMessage] };
+  };
+
+  const shouldContinue = ({ messages }: GraphState) => {
+    const lastMessage =
+      messages[messages.length - 1] as OpenAI.ChatCompletionAssistantMessageParam;
+    if (
+      lastMessage?.tool_calls !== undefined &&
+      lastMessage?.tool_calls.length > 0
+    ) {
+      return "tools";
+    }
+    return "__end__";
+  }
+
+  const workflow = new StateGraph<GraphState>({
+    channels: {
+      messages: {
+        reducer: (a: any, b: any) => a.concat(b),
+      }
+    }
   });
-  const responseMessage = {
-    role: "assistant",
-    content: response.choices[0].message.content,
-    tool_calls: response.choices[0].message.tool_calls ?? [],
-  };
-  return { messages: [responseMessage] };
-};
 
-const shouldContinue = ({ messages }: GraphState) => {
-  const lastMessage =
-    messages[messages.length - 1] as OpenAI.ChatCompletionAssistantMessageParam;
-  if (
-    lastMessage?.tool_calls !== undefined &&
-    lastMessage?.tool_calls.length > 0
-  ) {
-    return "tools";
-  }
-  return "__end__";
-}
+  const graph = workflow
+    .addNode("model", callModel)
+    .addNode("tools", callTools)
+    .addEdge("__start__", "model")
+    .addConditionalEdges("model", shouldContinue, {
+      tools: "tools",
+      __end__: "__end__",
+    })
+    .addEdge("tools", "model")
+    .compile();
 
-const workflow = new StateGraph<GraphState>({
-  channels: {
-    messages: {
-      reducer: (a: any, b: any) => a.concat(b),
-    }
-  }
-});
-
-const graph = workflow
-  .addNode("model", callModel)
-  .addNode("tools", callTools)
-  .addEdge("__start__", "model")
-  .addConditionalEdges("model", shouldContinue, {
-    tools: "tools",
-    __end__: "__end__",
-  })
-  .addEdge("tools", "model")
-  .compile();
-
-await graph.invoke({
-  messages: [{ role: "user", content: "what is the weather in sf" }]
-});
-```
-
+  await graph.invoke({
+    messages: [{ role: "user", content: "what is the weather in sf" }]
+  });
+  ```
 </CodeGroup>
 
 ### 查看跟踪
@@ -548,13 +532,12 @@ await graph.invoke({
 
 LangSmith UI 中的 **Trajectory** 视图显示用户和代理之间的简化对话历史记录。该视图从顶级跟踪中提取消息（包括用户的初始请求、工具调用和代理的最终响应），并以类似聊天的格式表示它们。
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-langgraph.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

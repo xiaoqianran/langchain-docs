@@ -18,7 +18,7 @@ LangSmith引擎是LangSmith中的一个代理，它监视您的生产跟踪，�
 
 * **代码**（可选）**：** 您的代理的来源，引擎读取该来源以诊断问题并提出修复建议。
 * **跟踪：** 来自代理的运行时数据，其中可以包括用户消息、工具输出和 PII。
-* **模型：** LLM 调用引擎来运行诊断、生成修复程序和编写评估器。
+* **模型：** LLM 调用引擎来运行诊断、生成修复程序和编写评估程序。
 
 ## 按云和区域划分的可用性
 
@@ -153,7 +153,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和 GCP 上的 Vertex AI。
 
-引擎使用不同的模型，每个模型都针对其角色进行了调整，以集群问题、根据代码诊断根本原因、生成修复程序并编写验证它们的评估程序。 LangChain 调整这些模型的质量和代币效率，并随着更好的模型可用而更新它们。
+引擎使用不同的模型，每个模型都针对其角色进行了调整，以集群问题、根据代码诊断根本原因、生成修复程序并编写验证它们的评估器。 LangChain 调整这些模型的质量和代币效率，并在更好的模型可用时更新它们。
 
 引擎使用托管推理，而不是自带密钥设置。这可以保持引擎行为的一致性，并随着 LangChain 更新模型而改进。通过自带密钥设置，模型选择、调整和令牌效率可能会因请求而异。
 
@@ -164,6 +164,8 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
 
 [Engine security](/langsmith/engine-security) 中描述了引擎独立于部署的数据处理，包括每个模型提供商的零数据保留以及不使用客户数据来训练或微调模型。
 
+如果您启用外部通知，引擎还会将通知内容发送到您配置的 Slack 通道或 Webhook 端点。有关 Slack 应用程序设置和发送到 Slack 的内容，请参阅 [Connect self-hosted LangSmith to Slack](/langsmith/self-host-slack)。
+
 ## 安装引擎
 
 默认情况下禁用引擎。它需要[Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)、到[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接、外部可访问的[⟦T25⟧](#verify-your-hostname-is-externally-reachable)和[Engine encryption key](#generate-the-engine-encryption-key)。在启用引擎之前完成先决条件。
@@ -172,12 +174,12 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
 
 ### 组件
 
-启用引擎配置或重用：
-
-* `standalone-insights-api-server`：同时服务于`engine`和`insights`图表。
+启用引擎配置或重用：* `standalone-insights-api-server`：同时服务于`engine`和`insights`图表。
 * `standalone-insights-queue`：Engine 和 Insights 的后台运行处理。
 * 用于共享部署的专用 PostgreSQL 和 Redis 实例，每个实例都可以替换为外部实例。
-* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)下描述的沙箱组件。引擎还向`platform-backend`和`ingest-queue`添加了配置，用于调度和安排其运行。
+* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)下描述的沙箱组件。
+
+引擎还向`platform-backend`和`ingest-queue`添加了配置，用于调度和安排其运行。
 
 ### 先决条件
 
@@ -188,7 +190,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
     引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。如果共享组织只有一个工作区，则 LangSmith 使用该工作区。如果共享组织有多个工作区，LangSmith 不会自动选择一个。您必须将 `engine.sandboxTenantId` 设置为工作区 ID。
 
     <Warning>
-      使用为引擎保留的工作空间：* Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LCU 中的使用情况。
+      使用为引擎保留的工作区：* Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LSU 中的使用情况。
       * 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
       * 引擎的沙箱列在该工作区中，任何有权访问它的人都可以停止。
       * 每个沙箱都运行代理生成的代码。
@@ -201,7 +203,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
   </Step>
 
   <Step title="Allow egress to LangSmith Intelligence">
-    允许从集群到云的LangSmith Intelligence 网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。
+    允许从集群到云的 LangSmith 智能网关 URL 的出站 HTTPS。使用此 URL 作为 `engine.intelligenceBaseUrl` 的值。
 
     |云| `engine.intelligenceBaseUrl` |
     | - | - |
@@ -224,7 +226,7 @@ Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和
   </Step>
 
   <Step title="Generate the Engine encryption key">
-    引擎使用自己的 Fernet 密钥来加密传递给它的运行负载LangSmith，这些负载携带短期凭证。生成一个：
+    引擎使用自己的 Fernet 密钥来加密传递给它的运行有效负载LangSmith，这些负载携带短期凭证。生成一个：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -289,7 +291,7 @@ engine:
 ```
 
 <Warning>
-  从旧版 Insights 图像 pin 升级需要一项额外检查：如果您的值 pin `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该 pin。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。欲了解更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
+  从旧版 Insights 图像 pin 升级需要一项额外检查：如果您的值 pin `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该 pin。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。有关更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
 </Warning>
 
 在应用更新的图表之前验证它：
@@ -325,15 +327,15 @@ API 服务器和队列 Pod 都应该是`Running`。然后，确认`platform-back
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
-```如果在此之后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
+```如果此后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
 
-在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith)之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
+在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith) 之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
 
 如果分析未完成，请检查 Engine Pod 是否正在运行、沙箱工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
 
 ### 在LangSmith中打开引擎
 
-在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith完成设置：
+在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith中完成设置：
 
 1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎启用**下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
 2. 任何用户从项目的**引擎**选项卡打开跟踪项目的引擎。欲了解更多信息，请参阅[Turn on Engine for a tracing project](/langsmith/engine#turn-on-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
@@ -356,6 +358,7 @@ engine:
 * [Connect Engine to GitHub](/langsmith/engine-github)
 * [Engine security](/langsmith/engine-security)
 * [Engine notifications](/langsmith/engine-notifications)
+* [Connect self-hosted LangSmith to Slack](/langsmith/self-host-slack)
 * [Enable additional LangSmith features](/langsmith/deploy-self-hosted-full-platform)
 
 ***

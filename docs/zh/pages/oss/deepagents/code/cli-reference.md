@@ -4,11 +4,13 @@
 
 # 命令参考
 
+Deep Agents 编码命令行标志和管理子命令
+
 Deep Agents 代码 (`dcode`) 在启动时接受命令行标志，并公开工具、代理、会话、技能、凭证和配置的管理子命令。当您需要从 shell 覆盖默认值、在脚本中运行非交互式任务或在不打开会话的情况下自动执行管理时，请使用此页面作为参考。安装和日常交互使用请参见[Quickstart](/oss/deepagents/code/quickstart)。有关 CLI 标志如何适应更广泛的配置模型，请参阅 [Configuration](/oss/deepagents/code/configuration)。
 
 ## 用法示例
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Use a specific agent configuration
 dcode --agent mybot
 
@@ -32,7 +34,7 @@ dcode --startup-cmd "git diff --stat" -n "Review these changes"
 
 使用 `--model` (`-M`) 启动，将模型固定在一个会话中。使用 `provider:model` 格式（例如，`openai:gpt-5.5`）或在提供者明确时传递裸模型名称：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --model anthropic:claude-opus-4-8
 dcode --model openai:gpt-5.5
 dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
@@ -49,7 +51,7 @@ dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
 
 为所有未来的发布保留默认模型：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set the default
 dcode --default-model anthropic:claude-opus-4-8
 
@@ -66,14 +68,14 @@ dcode --clear-default-model
 
 使用单独的模型进行自动上下文压缩，`/offload`和`/compact`，无需更改主代理模型：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set the summarization model for this launch
 dcode --summarization-model openai:gpt-5.6-sol
 ```
 
 在交互式会话中，运行 `/summarization-model` 打开模型选择器，传递模型规范以直接切换，或传递 `clear` 重用主代理模型：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /summarization-model
 /summarization-model openai:gpt-5.6-sol
 /summarization-model clear
@@ -85,14 +87,14 @@ dcode --summarization-model openai:gpt-5.6-sol
 
 使用 `--model-params` 作为 JSON 字符串将额外的构造函数 kwargs 传递给模型。这些仅适用于当前会话并覆盖 `config.toml` 提供者参数：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --model openai:gpt-5.5 --model-params '{"reasoning": {"effort": "high"}}'
 dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "enabled", "budget_tokens": 10000}, "max_tokens": 16000}'
 ```
 
 使用 `--profile-override` 覆盖 [model profile](/oss/python/langchain/models#model-profiles) 字段（例如，`max_input_tokens`）。值在配置文件覆盖之上合并并在会话中`/model`热交换中持续存在：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --profile-override '{"max_input_tokens": 4096}'
 dcode --model google_genai:gemini-3.6-flash --profile-override '{"max_input_tokens": 4096}'
 ```对于暂时性错误的重试计数，请使用 `--max-retries` 或 `config.toml` 中的 `[retries]` 部分。参见[Model parameters](/oss/deepagents/code/providers#model-parameters)和[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
@@ -101,7 +103,7 @@ dcode --model google_genai:gemini-3.6-flash --profile-override '{"max_input_toke
 
 可选的提供程序和沙箱包作为额外内容提供。从 shell 安装而不启动会话：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --install groq
 dcode --install fireworks
 dcode --install ollama
@@ -114,14 +116,14 @@ dcode --install ollama
 删除一个额外安装的内容，同时保留其余的 Deep Agents 代码安装：
 
 <CodeGroup>
-    ```bash Shell
-    dcode uninstall groq
-    dcode --uninstall groq
-    ```
+  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  dcode uninstall groq
+  dcode --uninstall groq
+  ```
 
-    ```text In session
-    /uninstall groq
-    ```
+  ```text In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  /uninstall groq
+  ```
 </CodeGroup>
 
 删除会重建 uv 工具安装，而无需选择额外的内容，同时保留解释器、发布通道、其他额外内容以及随 `--package` 安装的软件包。
@@ -130,13 +132,13 @@ dcode --install ollama
 
 使用 `-a`/`--agent` 启动具有自己记忆、技能的指定代理，以及 `~/.deepagents/<agent_name>/` 下的 `AGENTS.md`。该标志覆盖 `config.toml` 中的 `[agents].default` 和 `[agents].recent`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --agent backend-dev
 ```
 
 恢复之前与`-r`/`--resume`的对话。不传递 ID 以打开最近的线程，或传递线程 ID 以恢复特定会话。恢复绕过代理选择标志并恢复线程的原始代理：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -r
 dcode -r abc123-thread-id
 ```列出和删除带有 `dcode threads list` 和 `dcode threads delete` 的会话。请参阅 [Memory and skills](/oss/deepagents/code/memory-and-skills) 了解每个代理内存的工作原理。
@@ -145,13 +147,13 @@ dcode -r abc123-thread-id
 
 使用 `-n`/`--non-interactive` 在没有交互式 UI 的情况下运行单个任务。每个非交互式运行都会启动一个新线程；基于文件的状态（内存、技能、配置）在调用中持续存在：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "Write a Python script that prints hello world"
 ```
 
 当 stdin 通过管道传输时，Deep Agents 代码会自动以非交互方式运行：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 echo "Explain this code" | dcode
 cat error.log | dcode -n "What's causing this error?"
 git diff | dcode -n "Review these changes"
@@ -163,28 +165,28 @@ git diff | dcode -n "Review these changes"
 
 使用 `-q`/`--quiet` 仅在 stdout 上发出代理的响应（用于通过管道传输到其他命令）。添加 `--no-stream` 以在写入之前缓冲完整响应：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "Generate a .gitignore for Python" -q > .gitignore
 dcode -n "List dependencies" -q --no-stream | sort
 ```
 
 添加 `--show-reasoning` 以显示提供商可见的推理。在交互式会话中，推理流入单独的行，该行在阶段结束时折叠；按`Ctrl+O`重新打开它。在非交互模式下，推理将转到 stderr，因此 stdout 上的最终答案仍然可以通过管道传输。此设置默认关闭并适用于整个会话。请参阅[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)了解持久配置。Cap 代理以 `--max-turns` 或 `--timeout` 在 CI 中运行。当超出预算时，两者都会以代码 124 退出。需要 `-n` 或管道标准输入：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "fix the failing tests" --max-turns 10
 dcode -n "run the test suite and summarise failures" --timeout 120
 ```
 
 默认情况下，在非交互模式下禁用 Shell 执行。使用`-S`/`--shell-allow-list`启用它：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "Run the tests and fix failures" -S "pytest,git,make"
 dcode -n "Build the project" -S recommended
 dcode -n "Fix the build" -S all
 ```
 
 <Warning>
-    `-S all` 让代理执行任意 shell 命令，无需人工确认。
+  `-S all` 让代理执行任意 shell 命令，无需人工确认。
 </Warning>
 
 有关更多示例和跟踪设置，请参阅[Non-interactive mode and piping](/oss/deepagents/code/quickstart#non-interactive-mode-and-piping)。
@@ -193,7 +195,7 @@ dcode -n "Fix the build" -S all
 
 `--skill` 标志在交互式或非交互式模式下启动时立即调用技能：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --skill code-review
 dcode --skill code-review -m 'review the auth module'
 cat diff.txt | dcode --skill code-review -n 'review this patch'
@@ -206,14 +208,14 @@ dcode --skill code-review -n 'review this patch' -q
 
 非交互式运行无法暂停以进行交互式目标审核。当标准已知时，通过`--rubric`通过验收标准：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "implement OAuth refresh handling" --rubric "tests pass; no unrelated files changed"
 dcode -n "implement OAuth refresh handling" --rubric @acceptance.md
 ```
 
 分别设置分级机模型和迭代限制：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "implement OAuth refresh handling" \
   --rubric "tests pass; no unrelated files changed" \
   --rubric-model openai:gpt-5.5 \
@@ -224,7 +226,7 @@ dcode -n "implement OAuth refresh handling" \
 
 ## 人机交互和 shell 访问默认情况下，具有潜在破坏性的工具调用需要获得批准。有三种[approval modes](/oss/deepagents/code/approval-modes)可供选择：默认的手动模式需要在所有检查点进行确认，自动模式（`-y`/`--auto-approve`）使用LLM分类器，YOLO（`--yolo`）运行门控操作而无需审核。在与 `Shift+Tab` 的交互会话期间在手动和自动之间切换：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -y
 dcode --yolo
 ```
@@ -235,33 +237,33 @@ dcode --yolo
 
 默认情况下，Deep Agents代码公开所有文件系统工具。要仅公开子集，请传递逗号分隔的列表：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode -n "Audit this repository" --allow-fs-tools ls,read_file,glob,grep
 ```
 
 有效名称为 `ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`、`grep` 和 `execute`。显式列表必须包含`read_file`。允许列表适用于每个会话模式下的主代理和同步子代理，但不适用于异步子代理或非文件系统工具。
 
 <Note>
-    `--allow-fs-tools` 和 `-S`/`--shell-allow-list` 控制不同层的 shell 访问：- **`--allow-fs-tools`** 控制哪些文件系统工具可用。 Shell 访问需要`execute`。
-    - **`-S`/`--shell-allow-list`** 控制通过 `execute` 允许哪些 shell 命令。它不会影响其他文件系统工具。
+  `--allow-fs-tools` 和 `-S`/`--shell-allow-list` 控制不同层的 shell 访问：* **`--allow-fs-tools`** 控制哪些文件系统工具可用。 Shell 访问需要`execute`。
+  * **`-S`/`--shell-allow-list`** 通过`execute` 控制允许哪些 shell 命令。它不会影响其他文件系统工具。
 
-    | `--allow-fs-tools` 包括`execute`？ | `-S` 设置了吗？ |外壳访问 |
-    |---|---|---|
-    |是的 |是的 |允许的命令运行（交互式确认；非交互式自动批准）|
-    |是的 |没有 |工具存在，但没有预先批准命令 |
-    |没有 |是的 |没有 shell 访问权限 — `execute` 不存在，因此 `-S` 没有什么可门控的 |
-    |没有 |没有 |没有 shell 访问权限 |
+  | `--allow-fs-tools` 包括`execute`？ | `-S` 设置了吗？ |外壳访问 |
+  | - | - | - |
+  |是的 |是的 |允许的命令运行（交互式确认；非交互式自动批准）|
+  |是的 |没有 |工具存在，但没有预先批准命令 |
+  |没有 |是的 |没有 shell 访问权限 — `execute` 不存在，因此 `-S` 没有什么可门控的 |
+  |没有 |没有 |没有 shell 访问权限 |
 
-    在非交互模式下，传递两者以启用命令，无需人工批准：
+  在非交互模式下，传递两者以启用命令，无需人工批准：
 
-    ```bash
-    dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
-    ```
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
+  ```
 </Note>
 
 在会话中运行 [⟦T146⟧](#diagnose-and-audit-a-session) 以检查活动工具集。在 shell 中，将工具调整标志放在子命令之前：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode tools list
 dcode --allow-fs-tools ls,read_file tools list
 dcode --allow-fs-tools ls,read_file tools list --json
@@ -277,11 +279,11 @@ dcode --allow-fs-tools ls,read_file tools list --json
 
 在会话中运行`/tools`，列出当前代理可以调用的工具，分为内置工具和来自每个 MCP 服务器的工具：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /tools
 ```
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 **7 tools available**
 
 ### Built-in
@@ -312,11 +314,11 @@ MCP tool descriptions are available in /mcp.
 
 ### 审核注入的上下文在会话中运行`/context-doctor`，以审核会话向每个模型请求注入的内容及其估计的令牌成本。该报告将注入的上下文分解为基本系统提示符、`AGENTS.md`内存文件、技能索引、内置工具模式以及每个 MCP 服务器的工具模式，然后汇总代理在对话开始之前携带的内容：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /context-doctor
 ```
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Fresh-session context audit (estimated tokens)
 
 System prompt (base)                      ~6
@@ -338,18 +340,18 @@ Trim skills or disable an MCP server, then run /context-doctor again.
 
 `/context-doctor`补充了两个相关命令：
 
-- [⟦T162⟧](/oss/deepagents/code/quickstart#inspect-context-window-usage) 显示上下文窗口现在有多满； `/context-doctor` 通过将令牌归因于每个注入的组件来说明原因。
-- [⟦T164⟧](#run-diagnostics-dcode-doctor) 检查安装和配置的运行状况，无需启动会话； `/context-doctor` 从内部审核实时会话的上下文。
+* [⟦T162⟧](/oss/deepagents/code/quickstart#inspect-context-window-usage) 显示上下文窗口现在有多满； `/context-doctor` 通过将令牌归因于每个注入的组件来说明原因。
+* [⟦T164⟧](#run-diagnostics-dcode-doctor) 在不启动会话的情况下检查安装和配置的运行状况； `/context-doctor` 从内部审核实时会话的上下文。
 
 ### 跟踪线程成本
 
 在会话中运行 `/cost` 以显示线程的估计成本（以美元为单位）：
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /cost
 ```
 
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Estimated thread cost: $1.03
 
 By type since this thread was loaded:
@@ -370,13 +372,13 @@ By model since this thread was loaded:
 
 使用 `-m`/`--message` 在交互式会话开始时自动提交初始提示。结合 `--startup-cmd` 首先运行 shell 命令：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --startup-cmd "git diff --stat" -m "Summarize these changes"
 ```
 
 `--startup-cmd` 输出呈现在文字记录中供您参考，但**不会**添加到代理的消息历史记录中。要将命令输出传递给代理，请通过 stdin 进行管道传输：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 git diff | dcode -n "Review these changes"
 ```
 
@@ -386,13 +388,13 @@ git diff | dcode -n "Review these changes"
 
 使用 `--sandbox` 将代码执行路由到远程沙箱。内置提供程序包括 `langsmith`、`agentcore`、`daytona`、`modal`、`runloop` 和 `vercel`。还接受第三方和配置声明的提供程序。传递 `--sandbox`，但没有值使用 `config.toml` 中的 `[sandboxes].default`：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --sandbox langsmith
 dcode --sandbox runloop --sandbox-id dbx_abc123
 dcode --sandbox modal --sandbox-setup ./setup.sh
 dcode --sandbox
 ```<Note>
-    由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
+  由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
 </Note>
 
 使用 `dcode --install` 安装沙盒附加功能（例如，`dcode --install daytona` 或 `dcode --install all-sandboxes`）。有关提供程序设置、工作目录和第三方提供程序，请参阅[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)。
@@ -402,14 +404,14 @@ dcode --sandbox
 控制 MCP 服务器启动时加载：
 
 |旗帜|行为 |
-|------|----------|
+| - | - |
 | `--mcp-config PATH` |添加显式配置作为最高优先级源（合并在自动发现的配置之上）|
 | `--no-mcp` |完全禁用 MCP |
 | `--trust-project-mcp` |信任项目级服务器，而不提示当前运行。被用户策略拒绝的服务器仍处于禁用状态。 |
 
 `--mcp-config` 和 `--no-mcp` 是互斥的。在非交互模式下，除非通过 `--trust-project-mcp`，否则将静默跳过没有匹配的已保存或环境批准的项目服务器：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --trust-project-mcp
 dcode -n "run tests" --trust-project-mcp
 ```
@@ -417,7 +419,7 @@ dcode -n "run tests" --trust-project-mcp
 对标记为 `auth: "oauth"` 和 `dcode mcp login <server>` 的 MCP 服务器运行 OAuth 登录。运行不带服务器名称的`dcode mcp login`，列出已配置的需要登录的 OAuth 服务器。参见[MCP tools](/oss/deepagents/code/mcp-tools)。
 
 ## 命令行选项|选项 |描述 |
-|------------------------|-------------------------------------------------------------------------------------|
+| - | - |
 | `-a`、`--agent NAME` |使用具有独立内存的命名代理。覆盖 `config.toml` 中的 `[agents].recent` 和 `[agents].default`。默认值：`agent`（如果设置了`[agents].recent`，则为最近使用的代理）|
 | `-M`、`--model MODEL` |使用特定型号（`provider:model`）|
 | `--summarization-model MODEL` |用于上下文压缩摘要的模型。覆盖`[models].summarization_default`；默认为主代理模式 |
@@ -448,16 +450,16 @@ dcode -n "run tests" --trust-project-mcp
 | `--sandbox-snapshot-name NAME` |要使用或创建的沙盒快照名称（`langsmith`、`runloop`以及宣传快照支持的提供商）|
 | `--sandbox-setup PATH` |创建后在沙箱中运行的设置脚本的路径 |
 | `--mcp-config PATH` |添加显式 MCP 配置作为最高优先级源（与自动发现的配置合并）|
-| `--no-mcp` |禁用所有 MCP 工具加载 || `--trust-project-mcp` |信任项目级 MCP 服务器，而不提示当前运行。明确否认仍然适用。 |
-| `-e`、`--extension PATH` |为此运行加载 Python 扩展文件或目录。重复添加多个路径。需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1` 并启用扩展发现 (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`)。请参阅[Python extensions](/oss/deepagents/code/extensions) |
+| `--no-mcp` |禁用所有 MCP 工具加载 |
+| `--trust-project-mcp` |信任项目级 MCP 服务器，而不提示当前运行。明确否认仍然适用。 || `-e`、`--extension PATH` |为此运行加载 Python 扩展文件或目录。重复添加多个路径。需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1` 并启用扩展发现 (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`)。请参阅[Python extensions](/oss/deepagents/code/extensions) |
 | `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。请参阅[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions) |
 | `--interpreter` |当在配置中禁用 JS 解释器 (`js_eval`) 中间件时，在主代理上启用它。 `js_eval` 默认启用。 |
 | `--interpreter-tools VALUE` | `js_eval` 的 PTC 允许列表：`safe`、`all` 或以逗号分隔的工具名称列表。默认值：`safe`（只读`read_file`/`glob`/`grep`预设）。请参阅[JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
 | `--profile-override JSON` |将模型配置文件字段覆盖为 JSON 字符串（例如，`'{"max_input_tokens": 4096}'`）。合并在配置文件配置文件覆盖之上 |
 | `--acp` |通过 stdio 作为 ACP 服务器运行，而不是启动交互式 UI |
 | `--update` |检查并安装更新，然后退出 |
-| `--auto-update` |打开或关闭自动更新，然后退出 || `--install NAME` |安装可选的附加组件（例如，`quickjs`、`daytona`、`fireworks`），然后退出。添加 `--package` 将 `NAME` 视为通过 `uv --with` 安装的自定义提供程序包，而不是额外的（请参阅 [arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)），并添加 `--yes` 跳过确认提示 |
-| `--uninstall NAME` |删除已安装的可选附加组件并退出。 `dcode uninstall NAME` 的别名 |
+| `--auto-update` |打开或关闭自动更新，然后退出 |
+| `--install NAME` |安装可选的附加组件（例如，`quickjs`、`daytona`、`fireworks`），然后退出。添加 `--package` 将 `NAME` 视为通过 `uv --with` 安装的自定义提供程序包，而不是额外的（请参阅 [arbitrary providers](/oss/deepagents/code/config-file#arbitrary-providers)），并添加 `--yes` 跳过确认提示 || `--uninstall NAME` |删除已安装的可选附加组件并退出。 `dcode uninstall NAME` 的别名 |
 | `-v`、`--version` |显示版本 |
 | `-h`、`--help` |显示帮助 |
 
@@ -465,7 +467,7 @@ dcode -n "run tests" --trust-project-mcp
 
 `dcode auth` 命令组是相当于 `/auth` 凭证管理器的可编写脚本。它在不启动 TUI 的情况下读取和写入相同的 `auth.json` 存储：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Pipe the key in (stdin)—never lands in shell history
 echo "$ANTHROPIC_API_KEY" | dcode auth set anthropic
 
@@ -485,21 +487,23 @@ dcode auth path
 
 `dcode config`命令组报告有效配置而不启动会话。使用它来确认环境变量或 `config.toml` 设置已被选择，或者在错误报告中共享经过编辑的快照：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode config show
 dcode config get interpreter.memory_limit_mb
 dcode config list
 dcode config path
-```提供者凭据仅报告为已配置或未配置；不打印值。所有四个命令都接受`--json`。参见[Inspect configuration](/oss/deepagents/code/configuration#inspect-configuration)。
+```
 
-## 运行诊断 (`dcode doctor`)
+提供者凭据仅报告为已配置或未配置；不打印值。所有四个命令都接受`--json`。参见[Inspect configuration](/oss/deepagents/code/configuration#inspect-configuration)。
 
-当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它总结了安装方法、依赖项版本、更新状态、跟踪配置和数据目录运行状况，而无需启动会话。
+## 运行诊断 (`dcode doctor`)当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它总结了安装方法、依赖项版本、更新状态、跟踪配置和数据目录运行状况，而无需启动会话。
 
 当您既需要高级运行状况检查又需要特定设置的确切来源时，请将 `dcode doctor` 与 `dcode config show` 配对。参见[Run diagnostics with ⟦T348⟧](/oss/deepagents/code/configuration#run-diagnostics-with-dcode-doctor)。
 
-## CLI 命令|命令 |描述 |
-|--------------------------------------------------|----------------------------------------------------|
+## CLI 命令
+
+|命令|描述 |
+| - | - |
 | `dcode help` |显示帮助 |
 | `dcode tools list [--json]` |列出已配置代理可用的工具。将顶级工具整形标志，例如 `--allow-fs-tools`、`--no-mcp`、`--mcp-config` 和 `--trust-project-mcp` 放置在 `tools list` 之前 |
 | `dcode agents list` |列出所有代理（别名：`ls`）|
@@ -508,18 +512,18 @@ dcode config path
 | `dcode uninstall NAME` |删除一个已安装的可选附加组件，同时保留工具环境的其余部分 |
 | `dcode update` |检查并安装 Deep Agents 代码更新 |
 | `dcode doctor` |运行诊断而不启动会话。请参阅[Run diagnostics](#run-diagnostics-dcode-doctor) |
-| `dcode skills list [--project]` |列出所有技能（别名：`ls`）|
-| `dcode skills create NAME [--project]` |使用模板`SKILL.md`创建新技能。幂等 - 重新创建现有技能会打印信息性消息而不是错误 |
+| `dcode skills list [--project]` |列出所有技能（别名：`ls`）|| `dcode skills create NAME [--project]` |使用模板`SKILL.md`创建新技能。幂等 - 重新创建现有技能会打印信息性消息而不是错误 |
 | `dcode skills info NAME [--project]` |显示有关技能的详细信息 |
-| `dcode skills delete NAME [--project] [-f]` |删除技能及其内容。支持`--dry-run` || `dcode threads list [--agent NAME] [--limit N]` |列出会话（别名：`ls`）。默认限制：20。设置 `DEEPAGENTS_CODE_RECENT_THREADS` 更改默认值，或使用 `-n` 作为 `--limit` 的短标志。其他标志：`--sort {created,updated}`、`--branch TEXT`（按 git 分支过滤）、`--cwd [PATH]`（按工作目录过滤；裸标志使用当前目录）、`-v`/`--verbose`（显示所有列，包括分支、创建时间和初始提示）， `-r`/`--relative`（相对时间戳）|
+| `dcode skills delete NAME [--project] [-f]` |删除技能及其内容。支持`--dry-run` |
+| `dcode threads list [--agent NAME] [--limit N]` |列出会话（别名：`ls`）。默认限制：20。设置 `DEEPAGENTS_CODE_RECENT_THREADS` 更改默认值，或使用 `-n` 作为 `--limit` 的短标志。其他标志：`--sort {created,updated}`、`--branch TEXT`（按 git 分支过滤）、`--cwd [PATH]`（按工作目录过滤；裸标志使用当前目录）、`-v`/`--verbose`（显示所有列，包括分支、创建时间和初始提示）， `-r`/`--relative`（相对时间戳）|
 | `dcode threads delete ID` |删除会话。支持`--dry-run` |
 | `dcode mcp login [NAME] [--mcp-config PATH]` |使用 `NAME`，为标记为 `auth: "oauth"` 的服务器运行 OAuth 登录流程。省略 `NAME` 以列出已配置的需要登录的 OAuth 服务器。请参阅[MCP tools](/oss/deepagents/code/mcp-tools#oauth-login) |
 | `dcode mcp config` |显示 MCP 配置发现路径 |
 | `dcode config show` |显示每个配置选项的有效值及其解析来源。请参阅[Inspect configuration](#inspect-configuration-dcode-config) |
 | `dcode config list` |列出所有可用的配置选项及其类型、默认值以及每个选项的设置位置（别名：`ls`）|
-| `dcode config get KEY` |显示一个选项的有效值和来源（例如`interpreter.memory_limit_mb`）|
-| `dcode config path` |显示配置文件位置以及每个文件是否存在 |
-| `dcode auth list` |列出已知的提供商以及每个凭据的解析来源 || `dcode auth status <provider>` |显示一个提供商的凭证来源 |
+| `dcode config get KEY` |显示一个选项的有效值和来源（例如`interpreter.memory_limit_mb`）|| `dcode config path` |显示配置文件位置以及每个文件是否存在 |
+| `dcode auth list` |列出已知的提供商以及每个凭据的解析来源 |
+| `dcode auth status <provider>` |显示一个提供商的凭证来源 |
 | `dcode auth set <provider>` |存储来自 stdin 或 `--from-env` 的提供者凭证
 | `dcode auth remove <provider>`​​ |删除存储的提供商凭据 |
 | `dcode auth path` |显示凭证存储路径 |
@@ -530,20 +534,21 @@ dcode config path
 
 ## 另请参阅
 
-- [Quickstart](/oss/deepagents/code/quickstart)
-- [Configuration](/oss/deepagents/code/configuration)
-- [Config file](/oss/deepagents/code/config-file)
-- [Provider credentials](/oss/deepagents/code/credentials)
-- [MCP tools](/oss/deepagents/code/mcp-tools)
-- [Python extensions](/oss/deepagents/code/extensions)
+* [Quickstart](/oss/deepagents/code/quickstart)
+* [Configuration](/oss/deepagents/code/configuration)
+* [Config file](/oss/deepagents/code/config-file)
+* [Provider credentials](/oss/deepagents/code/credentials)
+* [MCP tools](/oss/deepagents/code/mcp-tools)
+* [Python extensions](/oss/deepagents/code/extensions)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

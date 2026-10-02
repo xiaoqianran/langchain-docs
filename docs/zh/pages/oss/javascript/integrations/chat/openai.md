@@ -8,35 +8,37 @@
 
 [OpenAI](https://en.wikipedia.org/wiki/OpenAI)是一个人工智能（AI）研究实验室。
 
-本指南将帮助您开始使用 OpenAI [chat models](/oss/javascript/langchain/models)。有关所有`ChatOpenAI`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)。
+本指南将帮助您开始使用 OpenAI [chat models](/oss/javascript/langchain/models)。有关所有 `ChatOpenAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)。
 
 <Note>
   **聊天完成 API 兼容性**
 
-  `ChatOpenAI` 与 OpenAI 的（旧版）[Chat Completions API](https://platform.openai.com/docs/guides/completions) 完全兼容。如果您希望连接到支持聊天完成 API 的其他模型提供者，您可以这样做 – 请参阅[instructions](/oss/javascript/integrations/chat#chat-completions-api)。
+  `ChatOpenAI` 与OpenAI（旧版）[Chat Completions API](https://platform.openai.com/docs/guides/completions) 完全兼容。如果您希望连接到支持聊天完成 API 的其他模型提供者，您可以这样做 – 请参阅[instructions](/oss/javascript/integrations/chat#chat-completions-api)。
 </Note>
 
 <Info>
-  **托管在 Azure 上的 OpenAI 模型**
+  **OpenAI 托管在 Azure 上的模型**
 
-  请注意，某些 OpenAI 模型也可以通过 [Microsoft Azure platform](https://azure.microsoft.com/en-us/products/ai-foundry/models/openai/) 访问。
+  请注意，某些OpenAI型号也可以通过[Microsoft Azure platform](https://azure.microsoft.com/en-us/products/ai-foundry/models/openai/)访问。
 </Info>
 
 ## 概述
 
-### 集成细节|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/openai) |                                             下载 |                                             版本 |
-| :---------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- | :----------: | :--------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [⟦T53⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) | [⟦T54⟧](https://www.npmjs.com/package/@langchain/openai) |       ✅ |                                     ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
+### 集成细节
+
+|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/openai) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T54⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) | [⟦T55⟧](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
-有关如何使用特定功能的指南，请参阅下面表标题中的链接。| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :------------------------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------------------: |
-|                        ✅ |                                 ✅ |                               ✅ |      ❌ |      ❌ |                               ✅ |                              ✅ |                                ✅ |
+有关如何使用特定功能的指南，请参阅下面表标题中的链接。
 
-## 设置
+| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
 
-要访问 OpenAI 聊天模型，您需要创建 OpenAI 帐户、获取 API 密钥并安装 `@langchain/openai` 集成包。
+＃＃ 设置要访问 OpenAI 聊天模型，您需要创建 OpenAI 帐户，获取 API 密钥，并安装 `@langchain/openai` 集成包。
 
 ### 凭证
 
@@ -44,7 +46,9 @@
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export OPENAI_API_KEY="your-api-key"
-```如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
+```
+
+如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # export LANGSMITH_TRACING="true"
@@ -53,7 +57,7 @@ export OPENAI_API_KEY="your-api-key"
 
 ### 安装
 
-LangChain [⟦T57⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 集成位于 `@langchain/openai` 包中：
+LangChain [⟦T58⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 集成位于 `@langchain/openai` 包中：
 
 <CodeGroup>
   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -173,9 +177,7 @@ const llmWithCustomHeaders = new ChatOpenAI({
 await llmWithCustomHeaders.invoke("Hi there!");
 ```
 
-## 禁用流使用元数据
-
-一些代理或第三方提供商提供与 OpenAI 大致相同的 API 接口，但不支持最近添加的 `stream_options` 参数来返回流使用情况。您可以使用 [⟦T64⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 通过禁用流使用来访问这些提供程序，如下所示：
+## 禁用流使用元数据一些代理或第三方提供商提供与OpenAI基本相同的API接口，但不支持最近添加的`stream_options`参数来返回流使用情况。您可以使用 [⟦T65⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 通过禁用流使用来访问这些提供程序，如下所示：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -196,7 +198,9 @@ await llmWithoutStreamUsage.invoke("Hi there!");
 
 您可以通过传入相应的`modelName`参数来调用微调后的OpenAI模型。
 
-这通常采用`ft:{OPENAI_MODEL_NAME}:{ORG_NAME}::{MODEL_ID}`的形式。例如：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+这通常采用`ft:{OPENAI_MODEL_NAME}:{ORG_NAME}::{MODEL_ID}`的形式。例如：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
 
 const fineTunedLlm = new ChatOpenAI({
@@ -212,7 +216,7 @@ await fineTunedLlm.invoke("Hi there!");
 如果您需要 logprobs 或令牌使用情况等其他信息，这些信息将直接在消息的 `response_metadata` 字段内的 `invoke` 响应中返回。
 
 <Info>
-  **需要 `@langchain/core` 版本 >=0.1.48。**
+  **需要`@langchain/core>=0.1.48`。**
 </Info>
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -299,7 +303,7 @@ console.dir(responseMessageWithLogprobs.response_metadata.logprobs, { depth: nul
 
 [Custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools) 支持任意字符串输入的工具。当您预计字符串参数很长或很复杂时，它们会特别有用。
 
-如果您使用支持自定义工具的模型，则可以使用 [⟦T70⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 类和 `customTool` 函数来创建自定义工具。
+如果您使用支持自定义工具的模型，则可以使用 [⟦T71⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 类和 `customTool` 函数来创建自定义工具。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, customTool } from "@langchain/openai";
@@ -331,9 +335,7 @@ console.log(result);
 ```
 
 <details>
-  <summary>上下文无关语法</summary>
-
-  OpenAI 支持 [context-free grammar](https://platform.openai.com/docs/guides/function-calling#context-free-grammars) 规范，用于 `lark` 或 `regex` 格式的自定义工具输入。详情请参阅[OpenAI docs](https://platform.openai.com/docs/guides/function-calling#context-free-grammars)。 `format`参数可以传入`customTool`，如下所示：
+  <summary>上下文无关语法</summary>OpenAI 支持 [context-free grammar](https://platform.openai.com/docs/guides/function-calling#context-free-grammars) 规范，用于 `lark` 或 `regex` 格式的自定义工具输入。详情请参阅[OpenAI docs](https://platform.openai.com/docs/guides/function-calling#context-free-grammars)。 `format`参数可以传入`customTool`，如下所示：
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatOpenAI, customTool } from "@langchain/openai";
@@ -384,8 +386,10 @@ console.log(result);
 
 <Info>
   需要`@langchain/openai >= 0.2.6`
-</Info><Warning>
-  如果`strict: true`，工具定义也将被验证，并且 JSON 模式的子集被接受。至关重要的是，模式不能有可选参数（具有默认值的参数）。请阅读 [the full docs](https://platform.openai.com/docs/guides/structured-outputs/supported-schemas) 了解支持哪些类型的模式。
+</Info>
+
+<Warning>
+  如果`strict: true`，工具定义也将被验证，并且 JSON 模式的子集被接受。至关重要的是，模式不能有可选参数（具有默认值的参数）。请阅读 [the full docs](https://platform.openai.com/docs/guides/structured-outputs) 了解支持哪些类型的模式。
 </Warning>
 
 这是一个工具调用的示例。将额外的 `strict: true` 参数传递给 `.bindTools` 会将参数传递给所有工具定义：
@@ -428,7 +432,7 @@ console.dir(strictTrueResult.tool_calls, { depth: null });
 ]
 ```
 
-如果您只想将此参数应用于选定数量的工具，您还可以直接传递 OpenAI 格式化的工具架构：
+如果您只想将此参数应用于选定数量的工具，您还可以直接传递 OpenAI 格式化的工具模式：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -474,7 +478,7 @@ weatherToolResult.tool_calls;
 
 ## 结构化输出
 
-我们还可以将`strict: true`传递给[⟦T83⟧](https://js.langchain.com/docs/how_to/structured_output/#the-.withstructuredoutput-method)。这是一个例子：
+我们还可以将`strict: true`传递给[⟦T84⟧](https://js.langchain.com/docs/how_to/structured_output/#the-.withstructuredoutput-method)。这是一个例子：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -506,13 +510,13 @@ await structuredLlm.invoke([{
   **兼容性**
 
   以下几点适用于`@langchain/openai>=0.4.5-rc.0`。
-</Warning>
-
-OpenAI 支持面向构建 [agentic](/oss/javascript/langchain/agents) 应用程序的 [Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions) API。它包括一套[built-in tools](https://platform.openai.com/docs/guides/tools?api-mode=responses)，包括网络和文件搜索。它还支持[conversation state](https://platform.openai.com/docs/guides/conversation-state?api-mode=responses)的管理，允许您继续会话线程而无需显式传递以前的消息。
+</Warning>OpenAI 支持面向构建 [agentic](/oss/javascript/langchain/agents) 应用程序的 [Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions) API。它包括一套[built-in tools](https://platform.openai.com/docs/guides/tools?api-mode=responses)，包括网络和文件搜索。它还支持[conversation state](https://platform.openai.com/docs/guides/conversation-state?api-mode=responses)的管理，允许您继续对话线程而无需显式传递以前的消息。
 
 如果使用这些功能之一，`ChatOpenAI` 将路由到响应 API。您还可以在实例化 `ChatOpenAI` 时指定 `useResponsesApi: true`。
 
-### 内置工具为[⟦T88⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)配备内置工具将使其响应基于外部信息，例如通过文件或网络中的上下文。从模型生成的[AIMessage](/oss/javascript/langchain/messages#ai-message)将包含有关内置工具调用的信息。
+### 内置工具
+
+为 [⟦T89⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) 配备内置工具将使其响应基于外部信息，例如通过文件或网络中的上下文。从模型生成的[AIMessage](/oss/javascript/langchain/messages#ai-message)将包含有关内置工具调用的信息。
 
 #### 网络搜索
 
@@ -537,11 +541,9 @@ await llm.invoke("What was a positive news story from today?");
 
 ```
 
-请注意，响应包括结构化的 [content blocks](/oss/javascript/langchain/messages/#message-content)，其中包括响应文本和 OpenAI [annotations](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses#output-and-citations) 引用其来源。输出消息还将包含来自任何工具调用的信息。
+请注意，响应包括结构化的[content blocks](/oss/javascript/langchain/messages/#message-content)，其中包括响应文本和引用其来源的OpenAI[annotations](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses#output-and-citations)。输出消息还将包含来自任何工具调用的信息。
 
-#### 文件搜索
-
-要触发文件搜索，请将 [file search tool](https://platform.openai.com/docs/guides/tools-file-search) 传递给模型，就像使用其他工具一样。您将需要填充 OpenAI 管理的矢量存储并在工具定义中包含矢量存储 ID。更多详情请参阅[OpenAI documentation](https://platform.openai.com/docs/guides/tools-file-search)。
+#### 文件搜索要触发文件搜索，请将 [file search tool](https://platform.openai.com/docs/guides/tools-file-search) 传递给模型，就像使用其他工具一样。您将需要填充 OpenAI 管理的矢量存储并在工具定义中包含矢量存储 ID。更多详情请参阅[OpenAI documentation](https://platform.openai.com/docs/guides/tools-file-search)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -558,7 +560,9 @@ await llm.invoke("Is deep research by OpenAI?");
 
 #### 电脑使用
 
-ChatOpenAI支持`computer-use-preview`模型，这是内置计算机使用工具的专用模型。要启用，请像传递另一个工具一样传递 [computer use tool](https://platform.openai.com/docs/guides/tools-computer-use)。目前，供计算机使用的工具输出存在于`AIMessage.additional_kwargs.tool_outputs`中。要回复计算机使用工具调用，需要在创建对应的`ToolMessage`时设置`additional_kwargs.type: "computer_call_output"`。
+ChatOpenAI支持`computer-use-preview`模型，这是内置计算机使用工具的专用模型。要启用，请像传递另一个工具一样传递 [computer use tool](https://platform.openai.com/docs/guides/tools-computer-use)。
+
+目前供计算机使用的工具输出存在于`AIMessage.additional_kwargs.tool_outputs`中。要回复计算机使用工具调用，需要在创建对应的`ToolMessage`时设置`additional_kwargs.type: "computer_call_output"`。
 
 更多详情请参见[OpenAI documentation](https://platform.openai.com/docs/guides/tools-computer-use)。
 
@@ -639,7 +643,7 @@ const response = await llmWithTools.invoke(
 );
 ```
 
-请注意，上面的命令创建了一个新的[container](https://platform.openai.com/docs/guides/tools-code-interpreter#containers)。我们可以通过指定现有容器 ID 在调用之间重用容器。
+请注意，上述命令创建了一个新的[container](https://platform.openai.com/docs/guides/tools-code-interpreter#containers)。我们可以通过指定现有容器 ID 在调用之间重用容器。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const tool_outputs: Record<string, any>[] = response.additional_kwargs.tool_outputs
@@ -656,7 +660,7 @@ const llmWithTools = llm.bindTools([
 
 #### 远程 MCP
 
-ChatOpenAI 支持内置的[remote MCP tool](https://platform.openai.com/docs/guides/tools-remote-mcp)，允许在 OpenAI 服务器上进行模型生成的对 MCP 服务器的调用。
+ChatOpenAI 支持内置 [remote MCP tool](https://platform.openai.com/docs/guides/tools-remote-mcp)，允许在 OpenAI 服务器上发生模型生成的对 MCP 服务器的调用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -678,9 +682,7 @@ const llmWithMcp = llm.bindTools([
 const response = await llmWithMcp.invoke(
     "What transport protocols does the 2025-03-26 version of the MCP spec (modelcontextprotocol/modelcontextprotocol) support?"
 );
-```
-
-<Note>
+```<Note>
   **MCP 批准**
 
   收到指示后，OpenAI 将在调用远程 MCP 服务器之前请求批准。
@@ -731,7 +733,9 @@ const response = await llmWithMcp.invoke(
   ```
 </Note>
 
-#### 图像生成ChatOpenAI 允许您使用内置的 [image generation tool](https://platform.openai.com/docs/guides/tools-image-generation) 通过响应 API 创建图像作为多轮对话的一部分。
+#### 图像生成
+
+ChatOpenAI 允许您使用内置的 [image generation tool](https://platform.openai.com/docs/guides/tools-image-generation) 通过响应 API 创建图像作为多轮对话的一部分。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -759,7 +763,7 @@ const response = await llmWithImageGeneration.invoke(
   **兼容性**：以下几点适用于`@langchain/openai>=0.4.0`。
 </Warning>
 
-当使用`o1`这样的推理模型时，`withStructuredOutput`的默认方法是OpenAI内置的结构化输出方法（相当于将`method: "jsonSchema"`作为选项传递给`withStructuredOutput`）。 JSON 模式的工作方式大多与其他模型相同，但有一个重要的警告：定义模式时，不考虑`z.optional()`，您应该使用`z.nullable()`。
+当使用像`o1`这样的推理模型时，`withStructuredOutput`的默认方法是OpenAI用于结构化输出的内置方法（相当于将`method: "jsonSchema"`作为选项传递给`withStructuredOutput`）。 JSON 模式的工作方式大多与其他模型相同，但有一个重要的警告：定义模式时，不考虑`z.optional()`，您应该使用`z.nullable()`。
 
 这是一个例子：
 
@@ -813,11 +817,46 @@ await reasoningModelNullableSchema.invoke([{
 
 ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { color: null }
+```### 在对话中添加工具
+
+<Note>
+  `additional_tools` 需要 `@langchain/openai>=1.6.2`。
+</Note>
+
+使用 [⟦T106⟧](https://developers.openai.com/api/docs/guides/tools-tool-search#add-tools-at-a-specific-point-in-the-input) 内容块使工具从对话中的某个点开始可用。当您的应用程序加载 OpenAI 的 [tool search](https://developers.openai.com/api/docs/guides/tools-tool-search) 流程之外的工具时，这非常有用。将块放入[⟦T107⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { ChatOpenAI } from "@langchain/openai";
+
+const llm = new ChatOpenAI({ model: "gpt-6-astra", useResponsesApi: true });
+
+const response = await llm.invoke([
+  new HumanMessage("What time is it?"),
+  new SystemMessage({
+    content: [
+      {
+        type: "additional_tools", // [!code highlight]
+        role: "developer", // [!code highlight]
+        tools: [
+          {
+            type: "function",
+            name: "get_time",
+            description: "Get the current time.",
+            parameters: { type: "object", properties: {} },
+          },
+        ],
+      },
+    ],
+  }),
+]);
 ```
+
+该块需要 Responses API，因此设置 `useResponsesApi: true`。在聊天完成时，或在 `SystemMessage` 以外的消息上，`ChatOpenAI` 会引发错误。您还可以将块编写为 `non_standard` 块、`content` 或 `contentBlocks` 中。
 
 ## 提示缓存
 
-如果您的输入超过一定大小（撰写本文时为 1024 个令牌），较新的 OpenAI 模型将自动[cache parts of your prompt](https://openai.com/index/api-prompt-caching/)，以降低需要长上下文的用例的成本。
+如果您的输入超过一定大小（撰写本文时为 1024 个令牌），较新的 OpenAI 模型将自动 [cache parts of your prompt](https://openai.com/index/api-prompt-caching/) ，以降低需要长上下文的用例的成本。
 
 **注意：** 为给定查询缓存的令牌数量尚未在 `AIMessage.usage_metadata` 中标准化，而是包含在 `AIMessage.response_metadata` 字段中。
 
@@ -1149,7 +1188,7 @@ USAGE: {
 }
 ```
 
-## 预测输出一些 OpenAI 模型（例如其 `gpt-4o` 和 `gpt-4o-mini` 系列）支持 [Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)，这允许您提前传递 LLM 预期输出的已知部分以减少延迟。这对于编辑文本或代码等情况非常有用，在这种情况下，只有一小部分模型的输出会发生变化。
+## 预测输出一些OpenAI型号（例如`gpt-4o`和`gpt-4o-mini`系列）支持[Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)，这允许您提前传递LLM预期输出的已知部分以减少延迟。这对于编辑文本或代码等情况非常有用，在这种情况下，只有一小部分模型的输出会发生变化。
 
 这是一个例子：
 
@@ -1253,7 +1292,7 @@ AIMessage {
 
 ## 音频输出
 
-一些 OpenAI 模型（例如`gpt-4o-audio-preview`）支持生成音频输出。此示例展示了如何使用该功能：
+部分OpenAI型号（例如`gpt-4o-audio-preview`）支持生成音频输出。此示例展示了如何使用该功能：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -1290,7 +1329,7 @@ console.log({
 
 ### 流式音频输出
 
-OpenAI 还支持流式音频输出。这是一个例子：
+OpenAI还支持流式音频输出。这是一个例子：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk } from "@langchain/core/messages";
@@ -1364,7 +1403,7 @@ That's a great joke! It's always fun to imagine why cats do the funny things the
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

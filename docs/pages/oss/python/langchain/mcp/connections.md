@@ -188,7 +188,7 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
 
 Because every client borrows from `_POOL`, the deployment opens one set of HTTP connections for the whole fleet rather than one per server.
 
-### Caching
+## Caching
 
 FastMCP can cache the result of `list_tools` so repeated discovery avoids a network round trip. Caching is opt-in and honors the server's own cache hints, so it only takes effect against modern-era servers that advertise them.
 
@@ -235,9 +235,12 @@ For the full negotiation rules, see [Protocol negotiation](https://gofastmcp.com
 
 ## See also
 
-* [Authentication](/oss/python/langchain/mcp/auth) — bearer, OAuth, and per-user credentials
-* [Deploy a LangGraph server](/oss/python/langgraph/local-server) — graph factories for long-lived deployments
+* [Authentication](/oss/python/langchain/mcp/auth): Bearer, OAuth, and per-user credentials.
+
+* [Deploy a LangGraph server](/oss/python/langgraph/local-server): Graph factories for long-lived deployments.
+
 * [FastMCP connection lifecycle](https://gofastmcp.com/clients/client#connection-lifecycle)
+
 * [MCP configuration format](https://gofastmcp.com/integrations/mcp-json-configuration)
 
 ***

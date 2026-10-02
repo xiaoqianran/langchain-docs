@@ -14,24 +14,27 @@ Azure OpenAI 是一项 Microsoft Azure 服务，提供来自 OpenAI 的强大语
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/azure_chat_openai) |                                             下载 |                                             版本 || :------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------- | :----------: | :---------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [⟦T21⟧](https://reference.langchain.com/javascript/langchain-openai/AzureChatOpenAI) | [⟦T22⟧](https://www.npmjs.com/package/@langchain/openai) |       ✅ |                                          ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
+|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/azure_chat_openai) |下载 |版本 |
+| :- | :- | :-: | :-: | :-: | :-: |
+| [⟦T21⟧](https://reference.langchain.com/javascript/langchain-openai/AzureChatOpenAI) | [⟦T22⟧](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ### 模型特点
 
-有关如何使用特定功能的指南，请参阅下面表标题中的链接。| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
-| :---------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------: | :---------: | :---------: | :------------------------------------------------------------------------: | :---------------------------------------------------------: | :------------------------------------------------------------------------: |
-|                        ✅ |                                 ✅ |                               ✅ |      ❌ |      ❌ |                               ✅ |                              ✅ |                                ✅ |
+有关如何使用特定功能的指南，请参阅下面表标题中的链接。
+
+| [Tool calling](/oss/javascript/langchain/tools) | [Structured output](/oss/javascript/langchain/structured-output) | [Image input](/oss/javascript/langchain/messages#multimodal) |音频输入|视频输入| [Token-level streaming](/oss/javascript/langchain/streaming/) | [Token usage](/oss/javascript/langchain/models#token-usage) | [Logprobs](/oss/javascript/langchain/models#log-probabilities) |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
 
 ## 设置
 
-[Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用 OpenAI、Meta 等多种预构建和策划的模型快速开发生成式 AI 体验。
+[Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用来自 OpenAI、Meta 等的各种预构建和策划模型快速开发生成式 AI 体验。
 
-LangChain.js 支持使用 [OpenAI SDK](https://github.com/openai/openai-node) 中新的 Azure 集成与 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 集成。您可以在[this page](https://learn.microsoft.com/azure/ai-services/openai/overview)上了解更多有关Azure OpenAI及其与OpenAI API的区别。
+LangChain.js 支持使用 [OpenAI SDK](https://github.com/openai/openai-node) 中新的 Azure 集成与 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 集成。
 
-### 凭证
+您可以详细了解 Azure OpenAI 及其与 [this page](https://learn.microsoft.com/azure/ai-services/openai/overview) 上的 OpenAI API 的区别。
 
-如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。
+＃＃＃ 证书如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。
 
 您还需要部署一个 Azure OpenAI 实例。您可以在 Azure 门户上部署以下[this guide](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource?pivots=web-portal) 的版本。
 
@@ -157,7 +160,9 @@ const llmWithManagedIdentity = new AzureChatOpenAI({
 });
 ```
 
-## 使用不同的域如果您的实例托管在默认 `openai.azure.com` 以外的域下，则需要使用备用 `AZURE_OPENAI_BASE_PATH` 环境变量。
+## 使用不同的域
+
+如果您的实例托管在默认 `openai.azure.com` 以外的域下，则需要使用备用 `AZURE_OPENAI_BASE_PATH` 环境变量。
 例如，以下是连接到域 `https://westeurope.api.microsoft.com/openai/deployments/{DEPLOYMENT_NAME}` 的方法：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -172,9 +177,7 @@ const llmWithDifferentDomain = new AzureChatOpenAI({
     "https://westeurope.api.microsoft.com/openai/deployments", // In Node.js defaults to process.env.AZURE_OPENAI_BASE_PATH
 });
 
-```
-
-## 自定义标头
+```## 自定义标头
 
 您可以通过传入 `configuration` 字段来指定自定义标头：
 
@@ -241,9 +244,9 @@ npm uninstall @langchain/azure-openai
    });
    ```
 
-   请注意，构造函数现在需要 `azureOpenAIApiInstanceName` 参数而不是 `azureOpenAIEndpoint` 参数，并添加 `azureOpenAIApiVersion` 参数来指定 API 版本。* 如果您使用的是 Azure 托管身份，现在需要在构造函数中使用 `azureADTokenProvider` 参数，而不是 `credentials`，请参阅 [Azure Managed Identity](#using-azure-managed-identity) 部分了解更多详细信息。
+   请注意，构造函数现在需要 `azureOpenAIApiInstanceName` 参数而不是 `azureOpenAIEndpoint` 参数，并添加 `azureOpenAIApiVersion` 参数来指定 API 版本。
 
-   * 如果您之前使用环境变量，现在必须设置 `AZURE_OPENAI_API_INSTANCE_NAME` 环境变量而不是 `AZURE_OPENAI_API_ENDPOINT`，并添加 `AZURE_OPENAI_API_VERSION` 环境变量来指定 API 版本。
+   * 如果您使用的是 Azure 托管身份，现在需要在构造函数中使用 `azureADTokenProvider` 参数，而不是 `credentials`，请参阅 [Azure Managed Identity](#using-azure-managed-identity) 部分了解更多详细信息。* 如果您之前使用环境变量，现在必须设置 `AZURE_OPENAI_API_INSTANCE_NAME` 环境变量而不是 `AZURE_OPENAI_API_ENDPOINT`，并添加 `AZURE_OPENAI_API_VERSION` 环境变量来指定 API 版本。
 
 ***
 
@@ -255,7 +258,7 @@ npm uninstall @langchain/azure-openai
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

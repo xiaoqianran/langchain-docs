@@ -11,8 +11,8 @@
 ## 所有文档转换器
 
 <div>
-  |整合|下载 |
-  | :-------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+  |整合 |下载 |
+  | :- | :- |
   | [⟦T0⟧](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span> |
 </div>
 
@@ -20,7 +20,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

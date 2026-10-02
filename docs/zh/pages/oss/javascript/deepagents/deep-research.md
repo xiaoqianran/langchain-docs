@@ -31,7 +31,7 @@
 
 API 密钥用于：
 
-* 人类（克劳德）或谷歌（双子座）
+* Anthropic (克劳德) 或谷歌 (双子座)
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选 - 免费套餐足够）
 * [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于追踪（可选）
 
@@ -53,7 +53,7 @@ API 密钥用于：
         ```
       </Tab><Tab title="Gemini">
         ```bash npm wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        npm install deepagents @langchain/google-genai @langchain/core
+        npm install deepagents @langchain/google @langchain/core
         ```
       </Tab>
     </Tabs>
@@ -479,7 +479,7 @@ npx tsx agent.ts
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

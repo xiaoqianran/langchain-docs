@@ -4,45 +4,46 @@
 
 # 审批模式
 
+选择Deep Agents代码如何使用手动、自动和 YOLO 模式审查门控工具调用
+
 默认情况下，Deep Agents 代码在运行可能产生后果的操作之前会请求您的批准。这些称为**门控操作**，包括以下内容：
 
-- 编辑或删除文件（`write_file`、`edit_file`、`delete`）
-- 运行 shell 命令 (`execute`)
-- 发出网络请求（`web_search`、`fetch_url`）
-- 将工作委派给子代理 (`task`)
+* 编辑或删除文件（`write_file`、`edit_file`、`delete`）
+* 运行shell命令(`execute`)
+* 发出网络请求（`web_search`、`fetch_url`）
+* 将工作委派给子代理 (`task`)
 
 只读工具（例如 `ls`、`read_file`、`glob` 和 `grep`）始终运行而不提示。批准模式允许您选择每个会话需要对门控操作进行多少监督。
 
 ## 选择一种模式
 
 |模式|它有什么作用 |
-|---|---|
+| - | - |
 | **手动**（默认）|每次门控操作前均需获得批准 |
 | **自动** |自动批准日常行动；要求模型审查任何不确定的事情；在多次否认或失败后，又回到你身边|
 | **YOLO** |运行门控操作，根本无需审查 |
 
 <Warning>
-    Auto 是本地编码代理的授权启发式方法。它不是沙箱遏制、操作系统边界或模型生成的操作安全的保证。
+  Auto 是本地编码代理的授权启发式方法。它不是沙箱遏制、操作系统边界或模型生成的操作安全的保证。
 </Warning>
 
-## 启用自动
-
-自动仅适用于交互式、非沙盒会话。
+## 启用自动自动仅适用于交互式、非沙盒会话。
 
 <Steps>
+  <Step title="Launch with Auto" icon="terminal">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode -y
+    ```
 
-    <Step title="Launch with Auto" icon="terminal">
-        ```bash
-        dcode -y
-        ```或者在`~/.deepagents/config.toml`中将其设置为默认值：
+    或者在`~/.deepagents/config.toml`中将其设置为默认值：
 
-        ```toml
-        [startup]
-        mode = "auto"
-        ```
+    ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    [startup]
+    mode = "auto"
+    ```
 
-        您还可以使用 `Shift+Tab` 循环至自动中途。
-    </Step>
+    您还可以使用 `Shift+Tab` 循环至自动中途。
+  </Step>
 </Steps>
 
 ## 启用 YOLO
@@ -50,21 +51,20 @@
 YOLO 运行门控操作，无需任何审查。仅当您接受代理无需询问即可采取任何操作时才使用它。
 
 <Steps>
+  <Step title="Launch with YOLO" icon="terminal">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode --yolo
+    ```
 
-    <Step title="Launch with YOLO" icon="terminal">
-        ```bash
-        dcode --yolo
-        ```
+    出现提示时接受一次性风险确认。该确认信息存储在本地，因此您在以后启动时不会再次看到它。
 
-        出现提示时接受一次性风险确认。该确认信息存储在本地，因此您在以后启动时不会再次看到它。
+    或者在`~/.deepagents/config.toml`中将其设置为默认值：
 
-        或者在`~/.deepagents/config.toml`中将其设置为默认值：
-
-        ```toml
-        [startup]
-        mode = "yolo"
-        ```
-    </Step>
+    ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    [startup]
+    mode = "yolo"
+    ```
+  </Step>
 </Steps>
 
 按`Shift+Tab`循环YOLO→手动→自动→YOLO。设置[⟦T24⟧](/oss/deepagents/code/config-file#startup-approval-mode)以从循环中省略YOLO。
@@ -77,47 +77,46 @@ YOLO 运行门控操作，无需任何审查。仅当您接受代理无需询问
 重复拒绝或分类器失败后，自动停止并向您显示下一批的正常批准提示，然后在自动模式下继续。
 
 <Accordion title="Auto decision flow" icon="flow">
+  ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  flowchart TD
+      A[Model proposes tool calls] --> B{Covered by the approval policy?}
+      B -->|No| X[Existing tool behavior is unchanged]
+      B -->|Yes| S{Still in Auto, with readable history?}
+      S -->|No| J[Open the approval UI]
+      S -->|Yes| C{Narrow deterministic allow?}
+      C -->|Yes| R[Execute without a classifier call]
+      C -->|No| D[Build one structured decision batch]
+      D --> H{Already reviewed, or earlier denials or failures require human review?}
+      H -->|Yes| J
+      H -->|No| E[Active model reviews effects against the user request]
+      E -->|Allow| R
+      E -->|Deny| Q{Total-denial threshold reached?}
+      Q -->|No| F[Return a sanitized error result]
+      Q -->|Yes| J
+      E -->|Unavailable or invalid| G[Return a compact unavailable result]
+      F --> I[Agent can revise its plan]
+      G --> I
+      J -->|Approve| R
+      J -->|Reject| K[Return a rejection result]
+      J -->|Switch to Manual| L[Persist Manual, then review the full gated batch]
+      R --> M[Reconcile the result and continue]
+      K --> M
+      I --> M
+      L --> M
 
-```mermaid
-flowchart TD
-    A[Model proposes tool calls] --> B{Covered by the approval policy?}
-    B -->|No| X[Existing tool behavior is unchanged]
-    B -->|Yes| S{Still in Auto, with readable history?}
-    S -->|No| J[Open the approval UI]
-    S -->|Yes| C{Narrow deterministic allow?}
-    C -->|Yes| R[Execute without a classifier call]
-    C -->|No| D[Build one structured decision batch]
-    D --> H{Already reviewed, or earlier denials or failures require human review?}
-    H -->|Yes| J
-    H -->|No| E[Active model reviews effects against the user request]
-    E -->|Allow| R
-    E -->|Deny| Q{Total-denial threshold reached?}
-    Q -->|No| F[Return a sanitized error result]
-    Q -->|Yes| J
-    E -->|Unavailable or invalid| G[Return a compact unavailable result]
-    F --> I[Agent can revise its plan]
-    G --> I
-    J -->|Approve| R
-    J -->|Reject| K[Return a rejection result]
-    J -->|Switch to Manual| L[Persist Manual, then review the full gated batch]
-    R --> M[Reconcile the result and continue]
-    K --> M
-    I --> M
-    L --> M
+      classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+      classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+      classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
+      classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+      classDef alert fill:#F8E8E6,stroke:#B27D75,stroke-width:2px,color:#634643
 
-    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
-    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
-    classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
-    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
-    classDef alert fill:#F8E8E6,stroke:#B27D75,stroke-width:2px,color:#634643
-
-    class A trigger
-    class B,S,C,H,Q decision
-    class J output
-    class X,R,M process
-    class D,E,I,L process
-    class F,G,K alert
-```
+      class A trigger
+      class B,S,C,H,Q decision
+      class J output
+      class X,R,M process
+      class D,E,I,L process
+      class F,G,K alert
+  ```
 </Accordion>
 
 ### 选择分类器模型
@@ -125,7 +124,7 @@ flowchart TD
 当您不配置自动分类器时，Deep Agents代码会根据主模型的提供程序选择较低延迟的默认值：
 
 |主要型号提供商 |默认分类器 |
-|---|---|
+| - | - |
 | Anthropic | `anthropic:claude-sonnet-5` |
 |谷歌人工智能 | `google_genai:gemini-3.8-flash` |
 |谷歌顶点人工智能 | `google_vertexai:gemini-3.8-flash` |
@@ -135,82 +134,88 @@ flowchart TD
 通过以下任意来源设置分类器模型：
 
 <Tabs>
-    <Tab title="TUI command">
-        运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
+  <Tab title="TUI command">
+    运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
 
-        ```txt
-        /auto model openai:gpt-5.6-luna
-        /auto model clear
-        ```
+    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    /auto model openai:gpt-5.6-luna
+    /auto model clear
+    ```
 
-        使用`/auto model clear`返回继承主模型。
-    </Tab>
-    <Tab title="CLI flag">
-        ```bash
-        dcode -y --auto-classifier-model openai:gpt-5.6-luna
-        ```
+    使用`/auto model clear`返回继承主模型。
+  </Tab>
 
-        `--auto-classifier-model` 仅在交互式 TUI 会话中接受。
-    </Tab>
-    <Tab title="Environment variable">
-        ```bash
-        export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
-        ```<Warning>
-            **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
-        </Warning>
-    </Tab>
-    <Tab title="config.toml">
-        ```toml title="~/.deepagents/config.toml"
-        [models]
-        auto_classifier = "openai:gpt-5.6-luna"
-        ```
-    </Tab>
+  <Tab title="CLI flag">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode -y --auto-classifier-model openai:gpt-5.6-luna
+    ```
+
+    `--auto-classifier-model` 仅在交互式 TUI 会话中接受。
+  </Tab>
+
+  <Tab title="Environment variable">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
+    ```
+
+    <Warning>
+      **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
+    </Warning>
+  </Tab>
+
+  <Tab title="config.toml">
+    ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    [models]
+    auto_classifier = "openai:gpt-5.6-luna"
+    ```
+  </Tab>
 </Tabs>
-<br />
-<Accordion title="Precedence order">
-    1. **`/auto model` TUI命令**：对当前会话立即生效。
-    2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
-    3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
-    4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
-    5. **提供程序默认值**：当主模型使用受支持的提供程序时，使用上面列出的较低延迟模型。
-    6. **继承**：对没有内置默认值的提供者使用主代理模型。
 
-    未设置的值会传递到下一个源。使用 `/auto model clear` 或空 CLI 标志显式清除分类器会选择主代理模型而不是提供程序默认模型。
+<br />
+
+<Accordion title="Precedence order">
+  1. **`/auto model` TUI 命令**：对当前会话立即生效。
+  2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
+  3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
+  4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
+  5. **提供程序默认值**：当主模型使用受支持的提供程序时，使用上面列出的较低延迟模型。
+  6. **继承**：对没有内置默认值的提供者使用主代理模型。未设置的值会传递到下一个源。使用 `/auto model clear` 或空 CLI 标志显式清除分类器会选择主代理模型而不是提供程序默认模型。
 </Accordion>
 
 当自动打开并在 `/auto model` 输出中时，TUI 会显示正在检查的模型。
 
-### 在出现副作用之前重新验证决策计划与线程、模式、批处理和精确门控调用绑定。丢失或无效的状态、模式竞赛或重播将退回到人工审核。例如，如果您在分类器审查正在进行时切换到手动，则之前的自动决策无法静默执行；而是打开正常的审批 UI。
+### 在出现副作用之前重新验证
 
-### 了解范围和限制
+决策计划与线程、模式、批处理和精确门控调用绑定。缺失或无效的状态、模式竞赛或重播将退回到人工审核。例如，如果您在分类器审查正在进行时切换到手动，则之前的自动决策无法静默执行；而是打开正常的审批 UI。
 
-- 手动批准菜单可以为当前线程启用自动。阈值回退可以永久切换到手动或在启用自动的情况下执行一次性审核。
-- 活动模型不是独立的安全机构。 [MCP read-only annotations](/oss/deepagents/code/mcp-tools#read-only-tool-annotations-in-auto-mode) 被认为是经过深思熟虑的 beta 权衡。
-- 父级自动审查不涵盖在委派子代理或更广泛的显式配置 `js_eval` 扇出内执行的操作。即使 TUI 隐藏了分类器输入和输出，模型提供者和跟踪后端仍可能观察到它们。
+### 了解范围和限制* 手动审批菜单可以为当前线程启用自动。阈值回退可以永久切换为手动或在启用自动的情况下执行一次性审核。
+* 活动模型不是独立的安全机构。 [MCP read-only annotations](/oss/deepagents/code/mcp-tools#read-only-tool-annotations-in-auto-mode) 被认为是经过深思熟虑的 beta 权衡。
+* 父级自动审查不涵盖在委派子代理或更广泛的显式配置 `js_eval` 扇出内执行的操作。即使 TUI 隐藏了分类器输入和输出，模型提供者和跟踪后端仍可能观察到它们。
 
-## Auto 和 YOLO 可用的地方Auto 和 YOLO 是交互模式功能。自动仅适用于交互式、非沙盒会话；遥控器 `--sandbox` 强制其设为手动。 YOLO 也是纯交互式的，并且无论沙箱如何，都需要风险确认。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
+## Auto 和 YOLO 可用的地方
+
+Auto 和 YOLO 是交互模式功能。自动仅适用于交互式、非沙盒会话；遥控器 `--sandbox` 强制其设为手动。 YOLO 也是纯交互式的，并且无论沙箱如何，都需要风险确认。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
 
 在非交互模式下（`-n`或管道标准输入），`-y`/`--auto-approve`和`--yolo`被忽略。无头运行使用故障关闭 MCP 路由和 `--shell-allow-list` 进行 shell 访问。
 
-### 记住跨会话的最后一个模式
-
-当没有标志或配置的模式适用时，Deep Agents代码恢复最后选择的手动或自动模式。 YOLO 必须明确选择。参见[Startup approval mode](/oss/deepagents/code/config-file#startup-approval-mode)。
+### 记住跨会话的最后一个模式当没有标志或配置的模式适用时，Deep Agents代码恢复最后选择的手动或自动模式。 YOLO 必须明确选择。参见[Startup approval mode](/oss/deepagents/code/config-file#startup-approval-mode)。
 
 有关标志和配置优先级，请参阅[Startup approval mode](/oss/deepagents/code/config-file#startup-approval-mode)。
 
 ## 另请参阅
 
-- [CLI reference](/oss/deepagents/code/cli-reference)
-- [Configuration](/oss/deepagents/code/configuration)
-- [Remote sandboxes](/oss/deepagents/code/remote-sandboxes)
+* [CLI reference](/oss/deepagents/code/cli-reference)
+* [Configuration](/oss/deepagents/code/configuration)
+* [Remote sandboxes](/oss/deepagents/code/remote-sandboxes)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/approval-modes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

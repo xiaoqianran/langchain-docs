@@ -22,20 +22,24 @@
   </Card>
 </CardGroup>
 
-## 官方集成<div>
+## 官方集成
+
+<div>
   |供应商|可用的中间件 |来源 |下载 |
-  | :---------------------------------------------------------------------------- | :-------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+  | :- | :- | :- | :- |
   | [⟦T0⟧](/oss/javascript/integrations/middleware/aws) |提示缓存 | [⟦T1⟧](https://github.com/langchain-ai/langchain-aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws"><img alt="Downloads per month" /></a></span> |
-  | [⟦T2⟧](/oss/javascript/integrations/middleware/anthropic) |提示缓存 | [⟦T3⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain/src/agents/middleware/provider/anthropic) | <span>N/A</span> |
+  | [⟦T2⟧](https://github.com/contactkontey-dotcom/langchain-brydge#readme) |监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。 | [⟦T3⟧](https://github.com/contactkontey-dotcom/langchain-brydge) | <span><a href="https://www.npmjs.com/package/brydge-langchain"><img alt="Downloads per month" /></a></span>|
+  | [⟦T4⟧](/oss/javascript/integrations/middleware/anthropic) |提示缓存 | [⟦T5⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain/src/agents/middleware/provider/anthropic) | <span>N/A</span> |
 </div>
 
-## 社区整合
-
-<Note>
+## 社区整合<Note>
   社区维护这些中间件集成。它们是在开源基础上贡献的，不由 LangChain 管理或维护。
-</Note>|中间件|描述 |来源 |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [langchain-task-steering](https://github.com/edvinhallvaxhiu/langchain-task-steering) |用于有序任务管道的隐式状态机中间件，具有每个任务工具范围、动态提示注入和可组合完成验证。                                                           | [⟦T4⟧](https://github.com/edvinhallvaxhiu/langchain-task-steering) || [Nuggets Authority](https://nuggets.life) |工具调用的预执行权限强制执行。在每个工具运行之前验证范围内的、签名的委托，拒绝时失败，并为每个决定发出独立可验证的加密证明。 | [⟦T5⟧](https://github.com/NuggetsLtd/langchain-nuggets) |
+</Note>
+
+|中间件|描述 |来源 |
+| - | - | - |
+| [langchain-task-steering](https://github.com/edvinhallvaxhiu/langchain-task-steering) |用于有序任务管道的隐式状态机中间件，具有每个任务工具范围、动态提示注入和可组合完成验证。 | [⟦T6⟧](https://github.com/edvinhallvaxhiu/langchain-task-steering) |
+| [Nuggets Authority](https://nuggets.life) |工具调用的预执行权限强制执行。在每个工具运行之前验证范围内的、签名的委托，拒绝失败时关闭，并为每个决定发出独立可验证的加密证明。 | [⟦T7⟧](https://github.com/NuggetsLtd/langchain-nuggets) |
 
 有中间件可以分享吗？ [Open a PR](https://github.com/langchain-ai/docs) 将其添加到此处。
 
@@ -43,7 +47,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

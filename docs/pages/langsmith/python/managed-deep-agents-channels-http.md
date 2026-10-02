@@ -16,6 +16,12 @@ You supply two callbacks: one that authenticates the request, and one that conve
   HTTP channels require `managed-deepagents>=0.8.0`.
 </Note>
 
+`verify`, `parse`, and the optional `post` sit between the external service and the agent run:
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+
+<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+
 ## Project structure
 
 An HTTP channel declaration lives under `channels/`, like any other channel:
