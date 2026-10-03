@@ -4,6 +4,8 @@
 
 # LangSmith API 参考
 
+LangSmith REST API 提供对跟踪、数据集、实验、注释和其他 LangSmith 平台功能的编程访问。
+
 LangSmith REST API 提供对 LangSmith 平台功能的编程访问，包括跟踪、数据集、实验、注释等。
 
 在侧边栏的 **LangSmith REST API** 部分浏览完整的 API 参考。

@@ -525,8 +525,8 @@
       "translatedAt": "2026-09-30T15:27:13.425Z"
     },
     "langsmith/api-ref-control-plane.md": {
-      "hash": "21cc6b09a49b329fe8cb6a115e47ce512fb066dd",
-      "translatedAt": "2026-09-29T15:13:04.673Z"
+      "hash": "9d9113cdfc55dc968e1044bdbaf4645d2ae2b127",
+      "translatedAt": "2026-10-03T14:02:40.415Z"
     },
     "langsmith/application-structure.md": {
       "hash": "990aaf936bc14b8e32a0677d58c8621de57cd251",
@@ -1249,8 +1249,8 @@
       "translatedAt": "2026-09-30T15:29:58.091Z"
     },
     "langsmith/javascript/managed-deep-agents-tools.md": {
-      "hash": "2cf28ee90b2778a87f4042b6ccf41c44ca73f92a",
-      "translatedAt": "2026-09-30T15:29:59.388Z"
+      "hash": "2ba8a721d920a6765c4d5fd783024c42b73a677d",
+      "translatedAt": "2026-10-03T14:02:43.305Z"
     },
     "langsmith/javascript/managed-deep-agents-tutorial.md": {
       "hash": "4bb9d417d44c4fb44576bd25c52aa0510a2c3d42",
@@ -1309,16 +1309,16 @@
       "translatedAt": "2026-09-30T15:30:17.363Z"
     },
     "langsmith/llm-gateway-access.md": {
-      "hash": "194524386170c8e52d47939f0025ce86c7e654b1",
-      "translatedAt": "2026-09-30T15:30:18.778Z"
+      "hash": "f79d6b26a6b39f096703a6fc69a2f583ad27dcf8",
+      "translatedAt": "2026-10-03T14:02:47.715Z"
     },
     "langsmith/llm-gateway-api-formats.md": {
       "hash": "f7c021bb788faed0fd49f20b2aa2d300fb653a9e",
       "translatedAt": "2026-09-30T15:30:20.678Z"
     },
     "langsmith/llm-gateway-coding-agents.md": {
-      "hash": "551367aa37913d4cbdfc1216ee5ca67fb6d3cf9d",
-      "translatedAt": "2026-09-30T15:30:24.416Z"
+      "hash": "23662ef0053c539ee29a9111abdbe0b4128af929",
+      "translatedAt": "2026-10-03T14:02:52.188Z"
     },
     "langsmith/llm-gateway-credits.md": {
       "hash": "7078b2ac6715aabdca26ae24e48f683b0ba57654",
@@ -1641,8 +1641,8 @@
       "translatedAt": "2026-10-01T15:48:25.828Z"
     },
     "langsmith/python/managed-deep-agents-tools.md": {
-      "hash": "ba6ae3caaea602cc9c68cc2336d9d3a724d0e6c0",
-      "translatedAt": "2026-10-01T15:48:27.466Z"
+      "hash": "c9029db64f2ed93971f5582a9bb52191c42af5c7",
+      "translatedAt": "2026-10-03T14:02:58.329Z"
     },
     "langsmith/python/managed-deep-agents-tutorial.md": {
       "hash": "3d499fe505dfbb99e2e3836af0d0acb9e32068bd",
@@ -1973,8 +1973,8 @@
       "translatedAt": "2026-10-01T15:51:41.705Z"
     },
     "langsmith/server-api-ref.md": {
-      "hash": "e9ea4f2661a63495fe1d462e36ddb899394b6261",
-      "translatedAt": "2026-10-01T15:51:45.827Z"
+      "hash": "08954abbfa3ece61529e346e822289b44df648d0",
+      "translatedAt": "2026-10-03T14:02:58.608Z"
     },
     "langsmith/server-a2a.md": {
       "hash": "4594c53348d698233da094a1bd7dde4fd31e1ed4",
@@ -2025,8 +2025,8 @@
       "translatedAt": "2026-10-01T15:52:11.784Z"
     },
     "langsmith/smith-api-ref.md": {
-      "hash": "2e94b1e6e7ff1f556ddc503ddcda39c46f72f274",
-      "translatedAt": "2026-10-01T15:52:13.247Z"
+      "hash": "c180d34f20b66f80ad8b773a5c9b5ce5d177827c",
+      "translatedAt": "2026-10-03T14:02:59.836Z"
     },
     "langsmith/smith-api/access_policies/attach-access-policies-to-a-role-1.md": {
       "hash": "b106299addf732e47f984a3a62004eff9fb36d2f",
@@ -2757,8 +2757,8 @@
       "translatedAt": "2026-08-09T09:03:14.304Z"
     },
     "langsmith/smith-api/feedback/create-feedback.md": {
-      "hash": "dfc943f2b739bbd72be93308cfa6f359ee44401f",
-      "translatedAt": "2026-10-01T15:52:18.408Z"
+      "hash": "1d633eee567c0883b32306411a2cf02e3113f688",
+      "translatedAt": "2026-10-03T14:03:00.565Z"
     },
     "langsmith/smith-api/feedback/delete-feedback.md": {
       "hash": "11d5f5dc8e290d653a623585be062b7534c9d1e8",
@@ -2973,8 +2973,8 @@
       "translatedAt": "2026-08-09T09:03:14.813Z"
     },
     "langsmith/smith-api/me/update-onboarding-state-field.md": {
-      "hash": "d0e380c0dfc7f02c792f445eac2d7fb48d70b51c",
-      "translatedAt": "2026-08-09T09:03:14.826Z"
+      "hash": "fd2c8120a1fa0e0fd14693c958f355e778d7e05c",
+      "translatedAt": "2026-10-03T14:03:00.584Z"
     },
     "langsmith/smith-api/model-price-map/create-new-model-price.md": {
       "hash": "656d3d64a966859f118180a67ea36c49f774dfad",
@@ -3713,8 +3713,8 @@
       "translatedAt": "2026-08-09T09:03:16.493Z"
     },
     "langsmith/self-hosted-changelog.md": {
-      "hash": "7c891e9ff2a1079b2668312f1d8e0cbb4f62901c",
-      "translatedAt": "2026-10-02T15:13:12.994Z"
+      "hash": "2bba48fc7978c0ae96387a813effd534bdc838b6",
+      "translatedAt": "2026-10-03T14:06:44.529Z"
     },
     "langsmith/smith-api/sandboxes/list-registries.md": {
       "hash": "68633a2e2205f85429ec436f460c44cd8016c44d",
@@ -4569,8 +4569,8 @@
       "translatedAt": "2026-10-02T15:13:20.323Z"
     },
     "oss/javascript/contributing/integrations-langchain.md": {
-      "hash": "cd75c02b2f7a771abd1bf56d908d37775d5fc244",
-      "translatedAt": "2026-10-02T15:13:22.397Z"
+      "hash": "cdc01bf6f67a64b1459e694266b6b2100d6c902d",
+      "translatedAt": "2026-10-03T14:03:05.644Z"
     },
     "oss/javascript/contributing/documentation.md": {
       "hash": "7ad410c3c6cdca362664834bf7fd4fab654641db",
@@ -4585,8 +4585,8 @@
       "translatedAt": "2026-10-02T15:13:27.110Z"
     },
     "oss/javascript/contributing/publish-langchain.md": {
-      "hash": "24cdea68b74fee2fb2190d35ecc25df6c200c862",
-      "translatedAt": "2026-10-02T15:13:26.802Z"
+      "hash": "90555cc7807d2f53b256da1cc6faa66793185f30",
+      "translatedAt": "2026-10-03T14:03:08.377Z"
     },
     "oss/javascript/deepagents/acp.md": {
       "hash": "af97d9fe99439244e7a31e0cdd4fce59ef948eb4",
@@ -4773,624 +4773,624 @@
       "translatedAt": "2026-10-02T15:15:08.724Z"
     },
     "oss/javascript/integrations/providers/google.md": {
-      "hash": "33dd3aeb60f5f9fe9cb9ceab8cb8a5cf4e28070c",
-      "translatedAt": "2026-08-09T09:05:12.414Z"
+      "hash": "f1e2d644eb94e294128e851554d3e889dc9e1f01",
+      "translatedAt": "2026-10-03T14:03:13.703Z"
     },
     "oss/javascript/integrations/providers/microsoft.md": {
-      "hash": "142a8505fb2667f39215a83d19cc395f5555231e",
-      "translatedAt": "2026-08-09T09:05:12.463Z"
+      "hash": "c52a3b9ef26a095db203fa3539252c92989e0e13",
+      "translatedAt": "2026-10-03T14:03:18.995Z"
     },
     "oss/javascript/integrations/providers/openai.md": {
-      "hash": "4158b3bea0b35bec30b126b27b029892a6ae6d18",
-      "translatedAt": "2026-08-09T09:05:12.743Z"
+      "hash": "bded13463985d464ddc156eb36121002c0084a98",
+      "translatedAt": "2026-10-03T14:03:19.685Z"
     },
     "oss/javascript/integrations/providers/all_providers.md": {
-      "hash": "6229838e11fff746f4c9d36c58cb7763515c0b4b",
-      "translatedAt": "2026-08-12T09:53:11.229Z"
+      "hash": "817a702e397e1cb14a353cb54f44e02184282805",
+      "translatedAt": "2026-10-03T14:03:17.298Z"
     },
     "oss/javascript/integrations/tools/google.md": {
-      "hash": "64186ae3b16ffed3c61609a8623d5744d142d10a",
-      "translatedAt": "2026-08-09T09:05:15.728Z"
+      "hash": "701a4023b04516279ef75ce76350461cc8dd7771",
+      "translatedAt": "2026-10-03T14:03:28.849Z"
     },
     "oss/javascript/integrations/tools/index.md": {
-      "hash": "a93923c04b20a4124f5246320bb92c1b4c69800e",
-      "translatedAt": "2026-08-12T09:53:12.352Z"
+      "hash": "5332e0336e6068b9aca0c9df00856ca63ca139cc",
+      "translatedAt": "2026-10-03T14:03:33.235Z"
     },
     "oss/javascript/integrations/tools/anthropic.md": {
-      "hash": "8c05b2af534ba398de235444c3a4abc733460b87",
-      "translatedAt": "2026-08-09T09:05:17.179Z"
+      "hash": "ca4b9fce76ee2ebc88b9e6b5a2f288a356001e0f",
+      "translatedAt": "2026-10-03T14:03:30.868Z"
     },
     "oss/javascript/langchain/academy.md": {
-      "hash": "7f5919977ac44f61fb81861f04d7066bda1a3208",
-      "translatedAt": "2026-08-09T09:05:17.431Z"
+      "hash": "b41ceb62a565de7addb46257e2a9be9d585db74c",
+      "translatedAt": "2026-10-03T14:03:39.069Z"
     },
     "oss/javascript/langchain/changelog-js.md": {
-      "hash": "e90ef04f60e3e5d4b83e255352c6d9b3464bbef6",
-      "translatedAt": "2026-08-09T09:05:17.456Z"
+      "hash": "547ff10ca5686e5d1d8f53c1eca84d0bd083b5dc",
+      "translatedAt": "2026-10-03T14:03:41.103Z"
     },
     "oss/javascript/integrations/tools/openai.md": {
-      "hash": "7c7b92c67cee5198dbbea8eaeaa2e79dc255db15",
-      "translatedAt": "2026-08-09T09:05:18.127Z"
+      "hash": "0d1719f7ef27435721fd8877cde049b8b64d02a7",
+      "translatedAt": "2026-10-03T14:03:40.069Z"
     },
     "oss/javascript/integrations/vectorstores/index.md": {
-      "hash": "447eb9943a361eaf65daca47082b840ef8cf5b9d",
-      "translatedAt": "2026-08-12T09:53:13.357Z"
+      "hash": "18d8532257da76a730bef82c67af83353fee5cb4",
+      "translatedAt": "2026-10-03T14:03:38.041Z"
     },
     "oss/javascript/langchain/component-architecture.md": {
-      "hash": "bc4eeee18ed78e4cf63bc714d8dbf453e309e845",
-      "translatedAt": "2026-08-09T09:05:18.933Z"
+      "hash": "b7ec1ed976ee11e3fa22ba4274422e6baf8365bd",
+      "translatedAt": "2026-10-03T14:03:43.743Z"
     },
     "oss/javascript/langchain/deploy.md": {
-      "hash": "7b1ad3988a8be9a194a244f7f4eb80e1543e4238",
-      "translatedAt": "2026-08-09T09:05:19.339Z"
+      "hash": "deb7bf82561c0f51dcbcd8bc8c0ca0049c52831a",
+      "translatedAt": "2026-10-03T14:03:53.483Z"
     },
     "oss/javascript/langchain/frontend/branching-chat.md": {
-      "hash": "e7605577ebe6ed2ba198b6dd86602c96fa0dbb2f",
-      "translatedAt": "2026-08-09T09:05:20.816Z"
+      "hash": "bf40f8ba298ea386af641fb035232e7187fde86c",
+      "translatedAt": "2026-10-03T14:04:02.236Z"
     },
     "oss/javascript/langchain/event-streaming.md": {
-      "hash": "045e7f1123e0261ddb22613a097611647950aef8",
-      "translatedAt": "2026-08-09T09:05:20.827Z"
+      "hash": "97491209c7d5166e16f47f68f0eec222540ea58d",
+      "translatedAt": "2026-10-03T14:03:58.186Z"
     },
     "oss/javascript/langchain/agents.md": {
-      "hash": "b482ee59503009e215a7577b9519d4d47fbe0f52",
-      "translatedAt": "2026-08-15T09:16:22.427Z"
+      "hash": "e8b0576c96a4fa12062b0acca06474b95dbb402e",
+      "translatedAt": "2026-10-03T14:03:50.360Z"
     },
     "oss/javascript/langchain/frontend/controlled-generative-ui.md": {
-      "hash": "8b7cdffb7f51fa788a875d81a1a267d97dbb5008",
-      "translatedAt": "2026-08-09T09:05:22.329Z"
+      "hash": "1ce641872df554c7b3506ed88f437f2fced4366e",
+      "translatedAt": "2026-10-03T14:04:03.048Z"
     },
     "oss/javascript/langchain/context-engineering.md": {
-      "hash": "088e50a1b5d095ebf0c72020320e18651d4071b9",
-      "translatedAt": "2026-08-09T09:05:23.010Z"
+      "hash": "cd7ee502657ada34c50068a01a40439c6e212e53",
+      "translatedAt": "2026-10-03T14:03:57.503Z"
     },
     "oss/javascript/langchain/frontend/declarative-generative-ui.md": {
-      "hash": "e7ba577a0028862d8552ae1ea32122b55e239bac",
-      "translatedAt": "2026-08-09T09:05:23.221Z"
+      "hash": "344431cda6d655cc1722283591f2e559aae6497f",
+      "translatedAt": "2026-10-03T14:04:12.620Z"
     },
     "oss/javascript/langchain/frontend/generative-ui-overview.md": {
-      "hash": "4c85939440896054ebd13091f6c2930177aa626a",
-      "translatedAt": "2026-08-09T09:05:23.766Z"
+      "hash": "ef969b4b954dbe8089595532a7489d290e8e4274",
+      "translatedAt": "2026-10-03T14:04:11.843Z"
     },
     "oss/javascript/langchain/frontend/integrations/ai-elements.md": {
-      "hash": "1de7d17e49863b72f64b4eee4992aa0947872992",
-      "translatedAt": "2026-08-09T09:05:24.139Z"
+      "hash": "c8836440a84c0bd46ba07f14a7b8c87b63c62c05",
+      "translatedAt": "2026-10-03T14:04:19.365Z"
     },
     "oss/javascript/langchain/frontend/headless-tools.md": {
-      "hash": "40f9d339816afbbce48c7ce98ef5c62658e849a7",
-      "translatedAt": "2026-08-09T09:05:24.184Z"
+      "hash": "125edfc28189bfb0d2145dba44fd7a4ac36b31ec",
+      "translatedAt": "2026-10-03T14:04:16.768Z"
     },
     "oss/javascript/langchain/frontend/integrations/assistant-ui.md": {
-      "hash": "bb7159b3bb9bee10c83c757dd3605565ebae1b5f",
-      "translatedAt": "2026-08-09T09:05:25.091Z"
+      "hash": "d0f45e3f873a63a9b55e5d5ce0f2b633d9816202",
+      "translatedAt": "2026-10-03T14:04:21.165Z"
     },
     "oss/javascript/langchain/frontend/integrations/overview.md": {
-      "hash": "ec35b8d19a3d4d7771501d066992faeef845eee9",
-      "translatedAt": "2026-08-09T09:05:26.833Z"
+      "hash": "dd226d03e8ce22d07925d1bfc386782062d1e101",
+      "translatedAt": "2026-10-03T14:04:34.350Z"
     },
     "oss/javascript/langchain/frontend/integrations/copilotkit.md": {
-      "hash": "d5597217e1940dde3046a58e3b3595e1ea674b60",
-      "translatedAt": "2026-08-09T09:05:27.199Z"
+      "hash": "2328495c9aeb44f9acb33c07aa340dd41b87638a",
+      "translatedAt": "2026-10-03T14:04:30.539Z"
     },
     "oss/javascript/langchain/frontend/human-in-the-loop.md": {
-      "hash": "69973755229cd23e1a59b04b16ca0378fe269288",
-      "translatedAt": "2026-08-09T09:05:27.240Z"
+      "hash": "0213dc97a462597b858c129dd418bb10b2a1aa9e",
+      "translatedAt": "2026-10-03T14:04:24.469Z"
     },
     "oss/javascript/langchain/frontend/integrations/openui.md": {
-      "hash": "b9c33f7de9be84723915dffcc793e9e77b35f177",
-      "translatedAt": "2026-08-09T09:05:27.699Z"
+      "hash": "6221318c413f95e0d11a7108cf44f87e65a66cb8",
+      "translatedAt": "2026-10-03T14:04:35.126Z"
     },
     "oss/javascript/langchain/frontend/markdown-messages.md": {
-      "hash": "3502b99aaf24170e006408f97d1e42327a5b3b74",
-      "translatedAt": "2026-08-09T09:05:28.808Z"
+      "hash": "c5c6286c4bdc2a4e12f371d53a9bf2a21a50d2af",
+      "translatedAt": "2026-10-03T14:04:41.993Z"
     },
     "oss/javascript/langchain/frontend/open-ended-generative-ui.md": {
-      "hash": "43509867ccb5e1046f1a29448ec0df3be4d6f58b",
-      "translatedAt": "2026-08-09T09:05:28.813Z"
+      "hash": "c4d69d00f63ffe0d6555571e13836d08d7bdf2cb",
+      "translatedAt": "2026-10-03T14:04:46.513Z"
     },
     "oss/javascript/langchain/frontend/join-rejoin.md": {
-      "hash": "0bee51d166f3c53748bd875cd0ae7d4fc9a9bbbe",
-      "translatedAt": "2026-08-09T09:05:28.840Z"
+      "hash": "3e6e6774972ffeebb5a4c46acfcd6c09007c61f1",
+      "translatedAt": "2026-10-03T14:04:43.345Z"
     },
     "oss/javascript/langchain/frontend/message-queues.md": {
-      "hash": "80ef5a4687b6c824a4fc2856579fa399715e7ecd",
-      "translatedAt": "2026-08-09T09:05:29.695Z"
+      "hash": "30039174a04d45cdec8016f16626a0c4969434b2",
+      "translatedAt": "2026-10-03T14:04:47.514Z"
     },
     "oss/javascript/langchain/frontend/reasoning-tokens.md": {
-      "hash": "80d10e27740fa576e6edf6a276673c122761faf6",
-      "translatedAt": "2026-08-09T09:05:30.223Z"
+      "hash": "3168321d32beb0f689d632a96afa80c495c749b6",
+      "translatedAt": "2026-10-03T14:04:52.033Z"
     },
     "oss/javascript/langchain/frontend/structured-output.md": {
-      "hash": "714578b353dd435c26f4c8b90c51e7742916d1fb",
-      "translatedAt": "2026-08-09T09:05:30.689Z"
+      "hash": "233ca2d77fac57360f93b05ba937d61a699887e7",
+      "translatedAt": "2026-10-03T14:04:57.591Z"
     },
     "oss/javascript/langchain/get-help.md": {
-      "hash": "0830ed2c9f89b52606e16ed57227b60118a4d28c",
-      "translatedAt": "2026-08-09T09:05:31.335Z"
+      "hash": "c9d6c2a94ef33d9d689b443e8bc7a6358c8ce2bf",
+      "translatedAt": "2026-10-03T14:04:58.801Z"
     },
     "oss/javascript/langchain/frontend/time-travel.md": {
-      "hash": "2f342a3648b1df4bd32b6b1b803a6a3ba263a103",
-      "translatedAt": "2026-08-09T09:05:31.690Z"
+      "hash": "11398073518e84305610aa1185d15f86ddbed034",
+      "translatedAt": "2026-10-03T14:04:56.340Z"
     },
     "oss/javascript/langchain/frontend/overview.md": {
-      "hash": "be5794ba411aabc773a0fb12d6db9a5119370377",
-      "translatedAt": "2026-08-09T09:05:32.112Z"
+      "hash": "ac7af35f0c3c26933861b25247c539bb1bba0687",
+      "translatedAt": "2026-10-03T14:04:52.773Z"
     },
     "oss/javascript/langchain/frontend/tool-calling.md": {
-      "hash": "02b7c06a49dcb3137f384c69485fa4b3ebf83b04",
-      "translatedAt": "2026-08-09T09:05:32.485Z"
+      "hash": "af6008a33d7b1229f635d0abb6fb53dd74fe9978",
+      "translatedAt": "2026-10-03T14:05:00.113Z"
     },
     "oss/javascript/langchain/install.md": {
-      "hash": "697a26fe8439f4fb11aa9b9e9929321a3d4e396b",
-      "translatedAt": "2026-08-09T09:05:32.629Z"
+      "hash": "9066cdbccf22c2ebf5e8f6ad8564393c2e749918",
+      "translatedAt": "2026-10-03T14:05:05.450Z"
     },
     "oss/javascript/langchain/long-term-memory.md": {
-      "hash": "36d3f2dbbc6e64170dfec516a76a233472a7fe6f",
-      "translatedAt": "2026-08-09T09:05:33.385Z"
+      "hash": "0c357bf95311fd7b9c443823b8ad8d7b5e0ed07c",
+      "translatedAt": "2026-10-03T14:05:07.494Z"
     },
     "oss/javascript/langchain/guardrails.md": {
-      "hash": "752ab66c89bf467cb7f6f2efa445000f21afa1b8",
-      "translatedAt": "2026-08-09T09:05:33.948Z"
+      "hash": "c30cb6cd858ce6de105b3e36375f03802efaa767",
+      "translatedAt": "2026-10-03T14:05:03.800Z"
     },
     "oss/javascript/langchain/mcp.md": {
       "hash": "9cf64cb49e914ccc8d5251a73d22afeaec40b53c",
       "translatedAt": "2026-08-09T09:05:34.473Z"
     },
     "oss/javascript/langchain/human-in-the-loop.md": {
-      "hash": "46cf75677143bb491a12af0d678b925d1fd2caa7",
-      "translatedAt": "2026-08-09T09:05:34.828Z"
+      "hash": "d21cd53c4d2c26c10ca89ac6da792a362303925d",
+      "translatedAt": "2026-10-03T14:05:05.448Z"
     },
     "oss/javascript/langchain/knowledge-base.md": {
-      "hash": "ef4d6be1d94ab122d120108b9a8694d52adb5544",
-      "translatedAt": "2026-08-09T09:05:35.012Z"
+      "hash": "c778d34ce5486cfc6fe81a9245431c17bb5b48b5",
+      "translatedAt": "2026-10-03T14:05:11.414Z"
     },
     "oss/javascript/langchain/middleware/overview.md": {
-      "hash": "ddcf37e72687cb9b67a3c3d1257413f649ea9e0a",
-      "translatedAt": "2026-08-09T09:05:35.834Z"
+      "hash": "18111e648c9da017bbf4a12236c5cb98c40aef2d",
+      "translatedAt": "2026-10-03T14:05:38.061Z"
     },
     "oss/javascript/langchain/middleware/custom.md": {
-      "hash": "892862e35427f0aebd5600d0b9e5221167410260",
-      "translatedAt": "2026-08-09T09:05:39.290Z"
+      "hash": "68bb1c7246aa68a21f44077f181662bf9ba56080",
+      "translatedAt": "2026-10-03T14:05:35.878Z"
     },
     "oss/javascript/langchain/messages.md": {
-      "hash": "3389d13a8d5a211492cdb38529772ff9cb6cf4e0",
-      "translatedAt": "2026-08-13T09:53:33.121Z"
+      "hash": "9e8aa47d3ed7cd7020bea85f67b157483f84e85a",
+      "translatedAt": "2026-10-03T14:05:23.420Z"
     },
     "oss/javascript/langchain/multi-agent/custom-workflow.md": {
-      "hash": "5ad28af2f953182027f06ccf2c1f51a14b5673b9",
-      "translatedAt": "2026-08-09T09:05:40.608Z"
+      "hash": "34fda952a207e8105bb66687d6d7ddb831371cfb",
+      "translatedAt": "2026-10-03T14:05:41.021Z"
     },
     "oss/javascript/langchain/multi-agent/handoffs-customer-support.md": {
-      "hash": "f206cc7b05cf4528197f0038bdfd5c73798d2371",
-      "translatedAt": "2026-08-09T09:05:42.537Z"
+      "hash": "3f14fcb6238d5af09ad4236adc422149a893cf32",
+      "translatedAt": "2026-10-03T14:05:48.898Z"
     },
     "oss/javascript/langchain/middleware/built-in.md": {
-      "hash": "cc7cf765db569d829971b7ccc28cd480d37df3d2",
-      "translatedAt": "2026-08-15T09:16:28.180Z"
+      "hash": "0eae899a35713ca0e924739a5ff13442cfac78fe",
+      "translatedAt": "2026-10-03T14:05:35.521Z"
     },
     "oss/javascript/langchain/multi-agent/handoffs.md": {
-      "hash": "7b572891be974267dd532a32850306a715cb5584",
-      "translatedAt": "2026-08-12T09:53:13.569Z"
+      "hash": "af8c5a8b4aedbd3cd8f55f87db7675cb970252da",
+      "translatedAt": "2026-10-03T14:05:53.812Z"
     },
     "oss/javascript/langchain/models.md": {
-      "hash": "74ab1e2ce97582a23ea966dc8d9a823533926b1c",
-      "translatedAt": "2026-08-09T09:05:45.263Z"
+      "hash": "320e007bbbb04616e047eed370e82944bd3a03dd",
+      "translatedAt": "2026-10-03T14:06:00.325Z"
     },
     "oss/javascript/langchain/multi-agent/router.md": {
-      "hash": "bc7ff23035731549ce638c92d72031cb401f31b4",
-      "translatedAt": "2026-08-09T09:05:45.675Z"
+      "hash": "84840047bcb328278cd8c11b5f959dd97099c182",
+      "translatedAt": "2026-10-03T14:06:11.727Z"
     },
     "oss/javascript/langchain/multi-agent/router-knowledge-base.md": {
-      "hash": "e67c7e34d1c59858c4d3a4a9b7087aae24c9cf06",
-      "translatedAt": "2026-08-09T09:05:46.907Z"
+      "hash": "50047e1b0d3ba75b45509c5ae32bc44186fb6ca7",
+      "translatedAt": "2026-10-03T14:06:09.808Z"
     },
     "oss/javascript/langchain/multi-agent/skills.md": {
-      "hash": "9a5cf6ec47048f94234b7877791ec767a3bc67d9",
-      "translatedAt": "2026-08-09T09:05:46.924Z"
+      "hash": "976a9a1cbf8807903024fde3147953c954118bbb",
+      "translatedAt": "2026-10-03T14:06:15.630Z"
     },
     "oss/javascript/langchain/multi-agent/index.md": {
-      "hash": "92a8607eff556b0600a4b3f2f87272fa4e062a06",
-      "translatedAt": "2026-08-09T09:05:48.388Z"
+      "hash": "e1169490403c33d3fe9ab200a32814c35c90697b",
+      "translatedAt": "2026-10-03T14:06:06.619Z"
     },
     "oss/javascript/langchain/observability.md": {
-      "hash": "e5d38106a6ddbcd3fe2010f6a8486944fe3c2787",
-      "translatedAt": "2026-08-09T09:05:49.265Z"
+      "hash": "bc8df5c342712ea8d4b4ef8537204fa2fa4dbdb7",
+      "translatedAt": "2026-10-03T14:06:30.938Z"
     },
     "oss/javascript/langchain/overview.md": {
-      "hash": "4e1304567d48f5fb330507e719aa6fd67ce62c80",
-      "translatedAt": "2026-08-09T09:05:50.392Z"
+      "hash": "5582c18fca0c4a6147ec8ce3431163097deaa480",
+      "translatedAt": "2026-10-03T14:06:34.172Z"
     },
     "oss/javascript/langchain/multi-agent/skills-sql-assistant.md": {
-      "hash": "df601edb5a053c78fa67ecb465df24898d2c4beb",
-      "translatedAt": "2026-08-09T09:05:51.011Z"
+      "hash": "cbd4b9be9deeac13fae3691c3c748c5ea4142a15",
+      "translatedAt": "2026-10-03T14:06:25.807Z"
     },
     "oss/javascript/langchain/multi-agent/subagents-personal-assistant.md": {
-      "hash": "0ff91f6af2e858407c0bfd0f184df3f3ecede40c",
-      "translatedAt": "2026-08-09T09:05:51.886Z"
+      "hash": "03f5a66294d847483921ddbac81d12c7e83552aa",
+      "translatedAt": "2026-10-03T14:06:28.846Z"
     },
     "oss/javascript/langchain/retrieval.md": {
       "hash": "404d49ef2fdff4b425889dc854cfe88c755c1447",
       "translatedAt": "2026-08-09T09:05:51.916Z"
     },
     "oss/javascript/langchain/multi-agent/subagents.md": {
-      "hash": "4d6a0642121cd292c9dc5b897d3b62c44db1e341",
-      "translatedAt": "2026-08-09T09:05:52.273Z"
+      "hash": "d94127b4c24182276411b5f9cf58f854c863f527",
+      "translatedAt": "2026-10-03T14:06:38.458Z"
     },
     "oss/javascript/langchain/runtime.md": {
-      "hash": "9026a7151cb8e537e3880cff4f1fc12497e5d916",
-      "translatedAt": "2026-08-09T09:05:52.996Z"
+      "hash": "cce3e2c2c4904683c881796883b154c556c363c5",
+      "translatedAt": "2026-10-03T14:06:43.361Z"
     },
     "oss/javascript/langchain/quickstart.md": {
-      "hash": "124982138507844f12396bdc40891bd264083f05",
-      "translatedAt": "2026-08-12T09:53:15.555Z"
+      "hash": "3a870bf5c99e681bd9a261c7d109de390d1d896d",
+      "translatedAt": "2026-10-03T14:06:50.552Z"
     },
     "oss/javascript/langchain/philosophy.md": {
-      "hash": "fdf75b4efb5afcce6c654436c3ab78157569e4c0",
-      "translatedAt": "2026-08-09T09:05:53.766Z"
+      "hash": "b8a601f3e94178bc3d9d1438c05fd50329859174",
+      "translatedAt": "2026-10-03T14:06:41.701Z"
     },
     "oss/javascript/langchain/short-term-memory.md": {
-      "hash": "62d2c8dec873a9ca2eb75342be33abc1247cd18f",
-      "translatedAt": "2026-08-09T09:05:54.415Z"
+      "hash": "a915f51ea30d05a53ef5bfe1b41b82785cdafd8b",
+      "translatedAt": "2026-10-03T14:06:49.924Z"
     },
     "oss/javascript/langchain/studio.md": {
-      "hash": "b928845fe5f8fe221407fae8accf9714db2205a6",
-      "translatedAt": "2026-08-09T09:05:54.922Z"
+      "hash": "22caf7895e0ac9003463f52d1d4c8646c595aea1",
+      "translatedAt": "2026-10-03T14:06:53.358Z"
     },
     "oss/javascript/langchain/sql-agent.md": {
-      "hash": "072173b0e0f999de3fa4919cf49af049de4f33de",
-      "translatedAt": "2026-08-09T09:05:55.540Z"
+      "hash": "a41fbc0869050b21a6c733d58001b9da1587394b",
+      "translatedAt": "2026-10-03T14:06:49.785Z"
     },
     "oss/javascript/langchain/structured-output.md": {
-      "hash": "34b88bb07fae249461a48aad8c848bc7fb31153e",
-      "translatedAt": "2026-08-09T09:05:56.175Z"
+      "hash": "c61d6d267d37ad05efa86e1762ba0ac118a02959",
+      "translatedAt": "2026-10-03T14:06:54.889Z"
     },
     "oss/javascript/langchain/streaming.md": {
-      "hash": "473d41b60392ac9f8e5e94d4a1f9636d6aaddd84",
-      "translatedAt": "2026-08-09T09:05:56.176Z"
+      "hash": "d134c18ee3c319d1553c6ff4198cba5d0dcb69a8",
+      "translatedAt": "2026-10-03T14:06:56.095Z"
     },
     "oss/javascript/langchain/test/index.md": {
-      "hash": "a14f60be932c77db609c0d944f850bc5586f229b",
-      "translatedAt": "2026-08-09T09:05:56.548Z"
+      "hash": "71704af8135a99803aacd02ceeff751a176cbabf",
+      "translatedAt": "2026-10-03T14:06:56.096Z"
     },
     "oss/javascript/langchain/test/evals.md": {
-      "hash": "d780309f80d02030e5eab2765bf13bb3f124411e",
-      "translatedAt": "2026-08-09T09:05:57.181Z"
+      "hash": "2f40f144b7ed72a1ce022a488460d40f7a27107c",
+      "translatedAt": "2026-10-03T14:07:00.097Z"
     },
     "oss/javascript/langchain/ui.md": {
-      "hash": "811173a1acf117dcdb0ea8187489e1b37cab0637",
-      "translatedAt": "2026-08-09T09:05:57.237Z"
+      "hash": "51f249ecd06359f89d2a3c6102b23994d6a7269b",
+      "translatedAt": "2026-10-03T14:07:02.163Z"
     },
     "oss/javascript/langchain/test/unit-testing.md": {
-      "hash": "a061fd6a3812985ee758d6bd4feeed03316a378b",
-      "translatedAt": "2026-08-09T09:05:57.813Z"
+      "hash": "ea561ad994f07137fd2bfd27eb36dd040fdc62bf",
+      "translatedAt": "2026-10-03T14:06:59.274Z"
     },
     "oss/javascript/langgraph/add-memory.md": {
-      "hash": "0152dc86b37e1d33386b90817a406dec95d714ef",
-      "translatedAt": "2026-08-12T09:53:15.616Z"
+      "hash": "7cab8b36f62ca0ec1185f8db05d8fc814e0001b5",
+      "translatedAt": "2026-10-03T14:07:08.076Z"
     },
     "oss/javascript/langchain/test/integration-testing.md": {
-      "hash": "a8b84cb3849b8b764219065818030fa51c6191f4",
-      "translatedAt": "2026-08-09T09:05:58.253Z"
+      "hash": "67b270dcc5b0408d4e780617cc3c86bcd66eb65e",
+      "translatedAt": "2026-10-03T14:07:01.345Z"
     },
     "oss/javascript/langgraph/agentic-rag.md": {
-      "hash": "b71fccf5fe952db464c81fc38270cbad8c9c4d26",
-      "translatedAt": "2026-08-09T09:05:58.254Z"
+      "hash": "a9384628a21a6b7d6f04f4c32361879f25e56cb4",
+      "translatedAt": "2026-10-03T14:07:15.188Z"
     },
     "oss/javascript/langgraph/application-structure.md": {
-      "hash": "587f44dae63653bfbbc58dd57fbb12a5e76fb048",
-      "translatedAt": "2026-08-09T09:05:58.355Z"
+      "hash": "699795699ac6d667c17f553e9fa660f82fc76cf4",
+      "translatedAt": "2026-10-03T14:07:14.363Z"
     },
     "oss/javascript/langgraph/backward-compatibility.md": {
-      "hash": "7acf270e4f14066cf081a8f526420649db022389",
-      "translatedAt": "2026-08-09T09:05:58.514Z"
+      "hash": "71a4ca923ee2302ee542704b9795e34266686f38",
+      "translatedAt": "2026-10-03T14:07:21.866Z"
     },
     "oss/javascript/langgraph/changelog-js.md": {
-      "hash": "56ea90e0e72bf58234a9e9687d852c12cc2b072c",
-      "translatedAt": "2026-08-09T09:05:58.541Z"
+      "hash": "bfc397d480b0f1279fb74d60c6f658af0768bdec",
+      "translatedAt": "2026-10-03T14:07:15.448Z"
     },
     "oss/javascript/langgraph/checkpointers.md": {
-      "hash": "357b3131c7959cf93e07ec6ac9415d9ee6912395",
-      "translatedAt": "2026-08-09T09:05:58.967Z"
+      "hash": "033293f9b6617cb5f6caadabc06af06ece65ec15",
+      "translatedAt": "2026-10-03T14:07:28.078Z"
     },
     "oss/javascript/langgraph/case-studies.md": {
-      "hash": "ad424b4b8b12ba5131410bff7dcbe00839e24b4b",
-      "translatedAt": "2026-08-15T09:16:29.270Z"
+      "hash": "5b8eb1c48af922fb688e9aa55d2beded97c5cb8f",
+      "translatedAt": "2026-10-03T14:07:19.635Z"
     },
     "oss/javascript/langgraph/choosing-apis.md": {
-      "hash": "1dbe68a633a2965c4c8c81bed44c71d6ffeb8184",
-      "translatedAt": "2026-08-09T09:05:59.099Z"
+      "hash": "d51ad6032d138a93af87ee38c99f143d5c8a4bf5",
+      "translatedAt": "2026-10-03T14:07:25.197Z"
     },
     "oss/javascript/langgraph/deploy.md": {
-      "hash": "3a36368b40a3f0594a1974e63a4be3adca4f13cf",
-      "translatedAt": "2026-08-09T09:05:59.103Z"
+      "hash": "e04b2022c169efd23dae9fd9a79a0098cb66950a",
+      "translatedAt": "2026-10-03T14:07:23.914Z"
     },
     "oss/javascript/langgraph/event-streaming.md": {
-      "hash": "982584e95b9329b4fb40295ef6b992ef5ef95597",
-      "translatedAt": "2026-08-09T09:05:59.530Z"
+      "hash": "c66c1c752dc4005df1ec25664febffa95cd9ef05",
+      "translatedAt": "2026-10-03T14:07:38.943Z"
     },
     "oss/javascript/langgraph/fault-tolerance.md": {
-      "hash": "884b43c158f0f9bd6a7cc78bff392f918a93aa04",
-      "translatedAt": "2026-08-09T09:05:59.624Z"
+      "hash": "6f2a90196b25055e037ec232e5991913dd0dc69f",
+      "translatedAt": "2026-10-03T14:07:36.536Z"
     },
     "oss/javascript/langgraph/frontend/custom-stream-channels.md": {
-      "hash": "528a8cbf90fae973d723fb2ae6ecf2196c47b7cf",
-      "translatedAt": "2026-08-09T09:05:59.734Z"
+      "hash": "a05507a849212f06b83f07548ef50a57686fda84",
+      "translatedAt": "2026-10-03T14:07:33.441Z"
     },
     "oss/javascript/langgraph/frontend/overview.md": {
-      "hash": "d049b85572a68f9e43d86c0f86d04fdc1f3055c2",
-      "translatedAt": "2026-08-09T09:05:59.860Z"
+      "hash": "523eaed0b50e3d005101d848dc1cc88f7ccfb775",
+      "translatedAt": "2026-10-03T14:07:38.867Z"
     },
     "oss/javascript/langgraph/frontend/graph-execution.md": {
-      "hash": "4aa4961412dd9d67ae611a6db6540937c3f111a6",
-      "translatedAt": "2026-08-09T09:05:59.873Z"
+      "hash": "c09344ca4bceeafe845493a22046173f247c8ea9",
+      "translatedAt": "2026-10-03T14:07:39.651Z"
     },
     "oss/javascript/langgraph/functional-api.md": {
-      "hash": "0afaca42bb979700a09f3a366b1be3898478d905",
-      "translatedAt": "2026-08-09T09:06:00.271Z"
+      "hash": "6eebe34f13c45095c7e1df64412d26a57ea82590",
+      "translatedAt": "2026-10-03T14:07:53.036Z"
     },
     "oss/javascript/langgraph/install.md": {
-      "hash": "0e1dcf70c93459ed8dfb5560e48a64395216de59",
-      "translatedAt": "2026-08-09T09:06:00.301Z"
+      "hash": "e548cd4fda4b04849da431ed3f21306d8b1ebe18",
+      "translatedAt": "2026-10-03T14:07:40.625Z"
     },
     "oss/javascript/langgraph/graph-api.md": {
-      "hash": "63e30574786e2be09f2637f092e13b94d8c01872",
-      "translatedAt": "2026-08-12T09:53:24.140Z"
+      "hash": "8246f2c0a9201c86fa1f025998343615a357a25c",
+      "translatedAt": "2026-10-03T14:08:10.032Z"
     },
     "oss/javascript/langgraph/interrupts.md": {
-      "hash": "d3f3439d014a92494fd214338adf05596176460d",
-      "translatedAt": "2026-08-09T09:06:00.754Z"
+      "hash": "4669a54ba3d4924be46d07967e89cee45b8896ab",
+      "translatedAt": "2026-10-03T14:07:42.070Z"
     },
     "oss/javascript/langgraph/observability.md": {
-      "hash": "6d3589a674702bae173ef95c97be7e90993756d0",
-      "translatedAt": "2026-08-09T09:06:00.820Z"
+      "hash": "32f6ba3aee5523a199c66d02f3cc22c1c5eadfea",
+      "translatedAt": "2026-10-03T14:07:47.091Z"
     },
     "oss/javascript/langgraph/local-server.md": {
-      "hash": "7f17fa95d328566fa3b283672a6f070d54396a9f",
-      "translatedAt": "2026-08-09T09:06:01.010Z"
+      "hash": "98f097fc133a95dde2a1b260d0086f856a584106",
+      "translatedAt": "2026-10-03T14:07:43.537Z"
     },
     "oss/javascript/langgraph/overview.md": {
-      "hash": "caf6d1a8a47c8c423e3e5bdeaa8796a2be7064f7",
-      "translatedAt": "2026-08-09T09:06:01.012Z"
+      "hash": "1f1e99e9793dc1034475469a0e290e72fcba6417",
+      "translatedAt": "2026-10-03T14:07:52.807Z"
     },
     "oss/javascript/langgraph/persistence.md": {
-      "hash": "497100d3ac3f18f3ac510bf550e3938998ef2f09",
-      "translatedAt": "2026-08-09T09:06:01.167Z"
+      "hash": "8c0a3e216eaaf15d4afb7efb485fc5b09db77d04",
+      "translatedAt": "2026-10-03T14:07:56.124Z"
     },
     "oss/javascript/langgraph/pregel.md": {
-      "hash": "9feb91d37af45cdf60578854d3c65edbdd2c64ae",
-      "translatedAt": "2026-08-09T09:06:01.175Z"
+      "hash": "ea40fc79f662dce537ff1503ffd34966b3bb7312",
+      "translatedAt": "2026-10-03T14:07:58.599Z"
     },
     "oss/javascript/langgraph/quickstart.md": {
-      "hash": "fb7a219fe84dab17d2f8f85e359ac512d768c5be",
-      "translatedAt": "2026-08-12T09:53:16.715Z"
+      "hash": "9ccb6f02bb09037b1b1d2a096fa95b9ed8c5153d",
+      "translatedAt": "2026-10-03T14:08:02.161Z"
     },
     "oss/javascript/langgraph/stores.md": {
-      "hash": "9a338264e7400f125b374d5f2397fc623e9b447f",
-      "translatedAt": "2026-08-09T09:06:01.344Z"
+      "hash": "82ec39e82fe07da73ecb7a0b140eb9937d6a4889",
+      "translatedAt": "2026-10-03T14:08:06.010Z"
     },
     "oss/javascript/langgraph/studio.md": {
-      "hash": "baa0833398bd6b6824ea50412f2063e07a00e5e6",
-      "translatedAt": "2026-08-09T09:06:01.479Z"
+      "hash": "dcabf01bb8c0bf1c33b4155a757b90ae768fba4b",
+      "translatedAt": "2026-10-03T14:08:11.500Z"
     },
     "oss/javascript/langgraph/test.md": {
-      "hash": "69d58c35385cc3fc2b0ee99131846118d154b5ac",
-      "translatedAt": "2026-08-09T09:06:01.546Z"
+      "hash": "afc6e77180ff5e4719f2fccf858f012357d17107",
+      "translatedAt": "2026-10-03T14:08:10.115Z"
     },
     "oss/javascript/langgraph/streaming.md": {
-      "hash": "755692958b6bb179e52d8f7cb9f911dfd2e2eb3f",
-      "translatedAt": "2026-08-09T09:06:01.594Z"
+      "hash": "13df035136e0ee5e4c559733f568c19dcd7ac7e3",
+      "translatedAt": "2026-10-03T14:08:11.462Z"
     },
     "oss/javascript/langgraph/ui.md": {
-      "hash": "dcb638f8e19e157b85370cabcdea5450004e9355",
-      "translatedAt": "2026-08-09T09:06:01.657Z"
+      "hash": "127149cca00cc0b3d5b563db66da17749e1f47f8",
+      "translatedAt": "2026-10-03T14:08:11.542Z"
     },
     "oss/javascript/langgraph/use-functional-api.md": {
-      "hash": "ac21595a1983b86f9b133d77e30908c90aa52f78",
-      "translatedAt": "2026-08-09T09:06:01.822Z"
+      "hash": "b4bdb3da4cf65981b53478a8525370c685bfc294",
+      "translatedAt": "2026-10-03T14:08:15.950Z"
     },
     "oss/javascript/langchain/voice-agent.md": {
-      "hash": "b31961e800cb997d74f7ea3160bee173409a81da",
-      "translatedAt": "2026-08-09T09:06:01.841Z"
+      "hash": "566ce6064ea29fa840b93182b5c3ce5fda6258f3",
+      "translatedAt": "2026-10-03T14:07:10.337Z"
     },
     "oss/javascript/langgraph/thinking-in-langgraph.md": {
-      "hash": "684e4db4f1dbcf2a0ac376cb6432837f55a76760",
-      "translatedAt": "2026-08-09T09:06:01.977Z"
+      "hash": "de7540d1c8167bd6207ce853606ff988d8208528",
+      "translatedAt": "2026-10-03T14:08:21.686Z"
     },
     "oss/javascript/langgraph/use-subgraphs.md": {
-      "hash": "01d5e95364878f0730c4146426c3c081ac9d2226",
-      "translatedAt": "2026-08-09T09:06:02.262Z"
+      "hash": "2ecd7c9e0655109b36c587bab0dad526a79bfaea",
+      "translatedAt": "2026-10-03T14:08:20.484Z"
     },
     "oss/javascript/langgraph/workflows-agents.md": {
-      "hash": "de64c135aaf3b70b8aa6d4d32724aa3181170970",
-      "translatedAt": "2026-08-12T09:53:18.892Z"
+      "hash": "31fc6271fb8f29b56f15db76432a03a2cc05cd0f",
+      "translatedAt": "2026-10-03T14:08:26.140Z"
     },
     "oss/javascript/langgraph/use-time-travel.md": {
-      "hash": "ac55808ca92c53908714bddbe4f3d13b4e9fe006",
-      "translatedAt": "2026-08-09T09:06:02.505Z"
+      "hash": "5200f16b978ba9ad040b025a6d9d6a7fc18bd492",
+      "translatedAt": "2026-10-03T14:08:19.433Z"
     },
     "oss/javascript/langgraph/use-graph-api.md": {
-      "hash": "2a569e4e71063c61d9ad2b22998f1538b4935769",
-      "translatedAt": "2026-08-12T09:53:23.647Z"
+      "hash": "0632edbfec283915db48308f17919ffa11028ab9",
+      "translatedAt": "2026-10-03T14:08:16.442Z"
     },
     "oss/javascript/migrate/langgraph-v1.md": {
-      "hash": "6b61435926761031fa2d2ebb8381143a2b9d3d9d",
-      "translatedAt": "2026-08-09T09:06:02.619Z"
+      "hash": "6937b0a7ad2500d7b9b7b562961b890e8e58fb18",
+      "translatedAt": "2026-10-03T14:08:24.756Z"
     },
     "oss/javascript/reference/deepagents-javascript.md": {
-      "hash": "29164f54fd86b5d8a1b7751254b9243ad6877ac9",
-      "translatedAt": "2026-08-09T09:06:02.896Z"
+      "hash": "e56ff7d9c9feb2dba3c93cf82d951dab34dcd6c3",
+      "translatedAt": "2026-10-03T14:08:25.077Z"
     },
     "oss/javascript/reference/integrations-javascript.md": {
-      "hash": "a0c7ecfabd9b1228529c7f0bd1d7b97b18d71a5c",
-      "translatedAt": "2026-08-09T09:06:02.924Z"
+      "hash": "73cff69e0508a1db4cb18ec731c747cff7eec896",
+      "translatedAt": "2026-10-03T14:08:26.742Z"
     },
     "oss/javascript/langchain/tools.md": {
-      "hash": "bea39acb38bba82c99bd428b9e68eb22751c0092",
-      "translatedAt": "2026-08-09T09:06:03.107Z"
+      "hash": "1f99d92d2fcd1669c9c56b44df2303b1fe0692e5",
+      "translatedAt": "2026-10-03T14:07:15.397Z"
     },
     "oss/javascript/reference/langgraph-javascript.md": {
-      "hash": "7b282a94e827bf90afb468ae3ebb6e37c3d36156",
-      "translatedAt": "2026-08-09T09:06:03.135Z"
+      "hash": "7e7464c57dd7be6ba4c0cb19a3c10f39b81b63c0",
+      "translatedAt": "2026-10-03T14:08:27.066Z"
     },
     "oss/javascript/reference/langchain-javascript.md": {
-      "hash": "7d3ba19bb71a0a1f3319e6a1c1e45552b9a7f439",
-      "translatedAt": "2026-08-09T09:06:03.308Z"
+      "hash": "a88f41d0f2ff2a9ffbdd10cbedb713941077adfa",
+      "translatedAt": "2026-10-03T14:08:27.811Z"
     },
     "oss/javascript/reference/overview.md": {
-      "hash": "debb7c6f94347e7b6867f83a7dbe78ef15ca012c",
-      "translatedAt": "2026-08-09T09:06:03.563Z"
+      "hash": "9f181188ca06ceac055d4d7da9a7704f2a2a98b7",
+      "translatedAt": "2026-10-03T14:08:28.778Z"
     },
     "oss/javascript/learn.md": {
-      "hash": "6257de09a67797d5088a33315e39b0cccc7eb7a3",
-      "translatedAt": "2026-08-09T09:06:03.695Z"
+      "hash": "33b2c5fd384fdb2a73031899b5d300b41bf4ac8e",
+      "translatedAt": "2026-10-03T14:08:21.685Z"
     },
     "oss/javascript/releases/langchain-v1.md": {
-      "hash": "d64eaff4052711962da2af69be28d0016c77c271",
-      "translatedAt": "2026-08-09T09:06:06.224Z"
+      "hash": "0429a8a9cf18f466cf80aa4e1320f7d2861d5f1b",
+      "translatedAt": "2026-10-03T14:08:41.757Z"
     },
     "oss/javascript/release-policy.md": {
-      "hash": "0468b5cde5442bd4f9a10da6b8836738524082c7",
-      "translatedAt": "2026-08-09T09:06:06.252Z"
+      "hash": "688c4d444fcb17381cfaaabf3c1fdfed522ef2fc",
+      "translatedAt": "2026-10-03T14:08:36.371Z"
     },
     "oss/javascript/releases/langgraph-v1.md": {
-      "hash": "1ac3d869eef9f3e008673ada3f187e1e80afa2bd",
-      "translatedAt": "2026-08-09T09:06:06.315Z"
+      "hash": "2e8bf33469617e24a68dcce69a9615cfa6f2fb1d",
+      "translatedAt": "2026-10-03T14:08:39.989Z"
     },
     "oss/javascript/studio.md": {
-      "hash": "95a0b83f4071569acdf31bd7d751d19deb944924",
-      "translatedAt": "2026-08-09T09:06:06.526Z"
+      "hash": "7a2845e3982def7130ce25c5813c594f4669de72",
+      "translatedAt": "2026-10-03T14:08:40.503Z"
     },
     "oss/javascript/releases/changelog.md": {
-      "hash": "504b5d6a0b3357d8fc4547f133ec48d674689562",
-      "translatedAt": "2026-08-09T09:06:06.626Z"
+      "hash": "16a3259c3578d4c0971125c769703f8dbf4ba0ce",
+      "translatedAt": "2026-10-03T14:08:36.471Z"
     },
     "oss/javascript/migrate/langchain-v1.md": {
-      "hash": "36860feb3a8eb80e7b5c900bc5df9192f595ff81",
-      "translatedAt": "2026-08-09T09:06:06.627Z"
+      "hash": "a7af863e5508c8f652f3323e001b34d825db8057",
+      "translatedAt": "2026-10-03T14:08:32.191Z"
     },
     "oss/openwiki/changelog.md": {
-      "hash": "b7b337062a7a8c7ba29a2b7ee6333cf0eab6c4c7",
-      "translatedAt": "2026-09-26T13:31:40.419Z"
+      "hash": "2e9ad8cd06456bb6b00d0797ed04ebe99c8dd2f7",
+      "translatedAt": "2026-10-03T14:08:42.900Z"
     },
     "oss/openwiki/automate-updates.md": {
-      "hash": "1222dfc4a048949abe1e2f97399c23f16de4ed48",
-      "translatedAt": "2026-09-26T13:31:40.362Z"
+      "hash": "87af1fd08a24127eaf2b0c690bae1f4ad6677795",
+      "translatedAt": "2026-10-03T14:08:42.865Z"
     },
     "oss/openwiki/cli-reference.md": {
-      "hash": "c3d01e6e59d5333ac1408fd550abdd5dc182f8d3",
-      "translatedAt": "2026-09-26T13:31:42.120Z"
+      "hash": "be2664e644e33df837c2b16c763ac5b17a07818c",
+      "translatedAt": "2026-10-03T14:08:45.397Z"
     },
     "oss/javascript/versioning.md": {
-      "hash": "cb9cd73ecd1534385860a78f020ed3ad394a9bd4",
-      "translatedAt": "2026-08-09T09:06:08.034Z"
+      "hash": "c6688ee186e585d8d6eef7141e9c03fa7a4e5a03",
+      "translatedAt": "2026-10-03T14:08:44.183Z"
     },
     "oss/javascript/security-policy.md": {
-      "hash": "a3086d20e0769a414c1a0ce56216b67eba90e64e",
-      "translatedAt": "2026-08-09T09:06:08.363Z"
+      "hash": "f8c596abfb5abc60e977909a7f62f3dfb5401e60",
+      "translatedAt": "2026-10-03T14:08:43.027Z"
     },
     "oss/openwiki/overview.md": {
-      "hash": "59c9c123b0852dd9dd5c73008d4ec2cf3320a3fa",
-      "translatedAt": "2026-09-26T13:31:44.844Z"
+      "hash": "e8bec68c3386c619befd616ea6b3ed18af8447f7",
+      "translatedAt": "2026-10-03T14:08:50.045Z"
     },
     "oss/openwiki/code-mode.md": {
-      "hash": "33f5a94193e94df7f42a502468536a6b9c37e619",
-      "translatedAt": "2026-09-26T13:31:45.320Z"
+      "hash": "75dee6110194e09fec22e78f3a603736bd341d9c",
+      "translatedAt": "2026-10-03T14:08:50.043Z"
     },
     "oss/openwiki/customize.md": {
-      "hash": "070f9cc5929cd75dd6c365a86f72b931e174a269",
-      "translatedAt": "2026-09-26T13:31:43.965Z"
+      "hash": "9c7ea09bb7420859d43175975aba60f9dc608d41",
+      "translatedAt": "2026-10-03T14:08:48.760Z"
     },
     "oss/python/common-errors.md": {
-      "hash": "590848884f7fd19e602a55690a85fd1736ebe057",
-      "translatedAt": "2026-08-09T09:06:09.414Z"
+      "hash": "933d5abff685312105e96368cdf6077004fc8149",
+      "translatedAt": "2026-10-03T14:08:55.307Z"
     },
     "oss/openwiki/quickstart.md": {
-      "hash": "00b31998dc8eb9db80781ae37c86abc0671ff66c",
-      "translatedAt": "2026-09-26T13:31:47.126Z"
+      "hash": "306287f09eea474ff54285255d9934a53eb281ac",
+      "translatedAt": "2026-10-03T14:08:53.093Z"
     },
     "oss/openwiki/personal-mode.md": {
-      "hash": "5d00de1365b7f6c364e6fd65fa051aded5e047f7",
-      "translatedAt": "2026-09-26T13:31:47.128Z"
+      "hash": "3ce8357b964fd0202bd460dfebcc2a01e27cfa2f",
+      "translatedAt": "2026-10-03T14:08:54.124Z"
     },
     "oss/openwiki/providers.md": {
-      "hash": "da9a52e18701d5222135598055f99db97b1528b1",
-      "translatedAt": "2026-09-26T13:31:48.587Z"
+      "hash": "72b26f296cc90e66d2a6e2ec80fac5bcf7477209",
+      "translatedAt": "2026-10-03T14:08:57.177Z"
     },
     "oss/python/concepts/context.md": {
-      "hash": "276645a01567a3b0d985ae66d30a20fc4ec463d6",
-      "translatedAt": "2026-08-09T09:06:11.226Z"
+      "hash": "f1de61e383053bfc2d51026b405b8c468ba190e8",
+      "translatedAt": "2026-10-03T14:08:59.755Z"
     },
     "oss/python/concepts/products.md": {
-      "hash": "d8d2e1ae8dbbed385a5af7da274ed77903f7e5cd",
-      "translatedAt": "2026-08-09T09:06:11.467Z"
+      "hash": "2fea11feabb3223f3aab3590d88a9fe6d10f18c4",
+      "translatedAt": "2026-10-03T14:09:02.948Z"
     },
     "oss/python/contributing/comarketing.md": {
-      "hash": "6bf23342126f631ffb6bf099741bbd005e46234b",
-      "translatedAt": "2026-08-09T09:06:11.592Z"
+      "hash": "2e9568bb27f2dbfaada71c1b2580a16037f9fc63",
+      "translatedAt": "2026-10-03T14:09:05.725Z"
     },
     "oss/python/contributing/documentation.md": {
-      "hash": "c7b1b7adb7b261467780f7da06d9474d44b17caa",
-      "translatedAt": "2026-08-09T09:06:12.586Z"
+      "hash": "efa3e0c1f42d5b2d4c91309800ddb51605dba933",
+      "translatedAt": "2026-10-03T14:09:17.547Z"
     },
     "oss/python/concepts/memory.md": {
-      "hash": "c99f7620cd390c05bbab528bef00e4fbba889640",
-      "translatedAt": "2026-08-09T09:06:12.909Z"
+      "hash": "e5b9e28d1d09462be22af01c2afe227388911190",
+      "translatedAt": "2026-10-03T14:09:10.691Z"
     },
     "oss/python/concepts/providers-and-models.md": {
-      "hash": "e2b128d548ff2b6b7dc0e607482faf04969c67d0",
-      "translatedAt": "2026-08-09T09:06:12.929Z"
+      "hash": "92de37d0c44c5c6c2b5d84649bc00d6611351b03",
+      "translatedAt": "2026-10-03T14:09:03.797Z"
     },
     "oss/python/contributing/integrations-langchain.md": {
-      "hash": "6249349bea213d2d620669b97562f0bc4af182cb",
-      "translatedAt": "2026-08-09T09:06:13.019Z"
+      "hash": "f4bd31e8e5938bcc76a0c5cf57860a2a1e22b8c9",
+      "translatedAt": "2026-10-03T14:09:15.221Z"
     },
     "oss/python/contributing/overview.md": {
-      "hash": "67d287b1dd275f0de8a6b276d07f48312ecb9c0d",
-      "translatedAt": "2026-08-09T09:06:13.123Z"
+      "hash": "5b53fa9e03a0c7b5c7ef72007aaeabd94bd7e9b1",
+      "translatedAt": "2026-10-03T14:09:20.968Z"
     },
     "oss/python/contributing/implement-langchain.md": {
-      "hash": "c61f3c36b5ee944bc95267303228059d989403cf",
-      "translatedAt": "2026-08-09T09:06:14.766Z"
+      "hash": "50e55c898c74fc62c03e7a635bb5a6300877d05f",
+      "translatedAt": "2026-10-03T14:09:15.090Z"
     },
     "oss/python/deepagents/a2a.md": {
-      "hash": "1e30846e163fa17b08b1294bd7bf5c04e414e638",
-      "translatedAt": "2026-08-09T09:06:14.796Z"
+      "hash": "eb73cce9901157ad1c7d029ebbee22c17063623e",
+      "translatedAt": "2026-10-03T14:09:21.061Z"
     },
     "oss/python/contributing/standard-tests-langchain.md": {
-      "hash": "7913a88975ce716854c224e84c350694c8a48c39",
-      "translatedAt": "2026-08-09T09:06:15.016Z"
+      "hash": "93718d798bafd3337c78b4baae64ef240a9f7c56",
+      "translatedAt": "2026-10-03T14:09:20.635Z"
     },
     "oss/python/deepagents/acp.md": {
-      "hash": "f345e1a24369c3c0bd683d308e62bbc08b27a571",
-      "translatedAt": "2026-08-09T09:06:15.845Z"
+      "hash": "5d1fa7310a4430e0548de8f10d551467edda1a04",
+      "translatedAt": "2026-10-03T14:09:22.932Z"
     },
     "oss/python/contributing/publish-langchain.md": {
-      "hash": "34e7ca642cf22b312d7b0d670c440dccd8d1c6d7",
-      "translatedAt": "2026-08-09T09:06:15.847Z"
+      "hash": "eeed57c1903a94da262c7472b7ad3d3c90c1bed7",
+      "translatedAt": "2026-10-03T14:09:23.024Z"
     },
     "oss/python/deepagents/changelog-py.md": {
-      "hash": "f1bc786c73d518fa22721fc9ed5d5b91a5ef994f",
-      "translatedAt": "2026-08-09T09:06:15.873Z"
+      "hash": "b0b5e266fd20382227d0f0195c45f889c29f25a2",
+      "translatedAt": "2026-10-03T14:09:26.774Z"
     },
     "oss/python/deepagents/code-link.md": {
       "hash": "b0f8d1c7700c8faed2ecb5af32364c47cb1155d0",
       "translatedAt": "2026-08-09T09:06:15.901Z"
     },
     "oss/python/deepagents/comparison.md": {
-      "hash": "b1ecdcf17cd7352350c81f8ecb834112c2c5af34",
-      "translatedAt": "2026-08-09T09:06:17.366Z"
+      "hash": "97181f3b82533ee233fa66bbafed1158b32a8a15",
+      "translatedAt": "2026-10-03T14:09:31.073Z"
     },
     "oss/python/contributing/code.md": {
-      "hash": "087b8dc14ef67fd0fbdbdfa193c462cacc554807",
-      "translatedAt": "2026-08-09T09:06:18.005Z"
+      "hash": "fe70c68ebdb7224ddd1036fe95ae92179a1dcd8c",
+      "translatedAt": "2026-10-03T14:09:18.323Z"
     },
     "oss/python/deepagents/async-subagents.md": {
-      "hash": "b6b8c5fc76ab40abcd70276187bbd0b8e7261071",
-      "translatedAt": "2026-08-09T09:06:18.325Z"
+      "hash": "1a82ff502cf3f2b333d45246d6ac0b11235ae253",
+      "translatedAt": "2026-10-03T14:09:32.224Z"
     },
     "oss/python/deepagents/content-builder.md": {
-      "hash": "25493ee8bbb3ff01f8968ab643792f33272bc484",
-      "translatedAt": "2026-08-09T09:06:21.483Z"
+      "hash": "01080d81fe1e9b7115d72ee8724f48413ad03463",
+      "translatedAt": "2026-10-03T14:09:41.094Z"
     },
     "oss/python/deepagents/data-analysis.md": {
       "hash": "1dd8e84ed0ca58e49e4398653f9efe0164be2ab7",
@@ -6153,8 +6153,8 @@
       "translatedAt": "2026-09-30T15:29:54.092Z"
     },
     "langsmith/llm-gateway-quickstart.md": {
-      "hash": "29f240d1265b8222744fddcbfc8947fd31512521",
-      "translatedAt": "2026-09-30T15:30:32.126Z"
+      "hash": "1ed44c5b28525c5862eae87f25e56389ccdfe065",
+      "translatedAt": "2026-10-03T14:02:54.604Z"
     },
     "langsmith/observability-quickstart.md": {
       "hash": "3803ee8309d95f66966a203fd1beaef4b3c494ce",
@@ -6233,24 +6233,24 @@
       "translatedAt": "2026-10-02T15:15:08.066Z"
     },
     "oss/javascript/integrations/providers/overview.md": {
-      "hash": "818eb5ad1cb138cd47d0d9a7ca235915defbbfb2",
-      "translatedAt": "2026-08-12T09:53:10.866Z"
+      "hash": "51d3769194bb6a18a9b9cd8a8bf5ccbe50c84a9f",
+      "translatedAt": "2026-10-03T14:03:21.028Z"
     },
     "oss/javascript/integrations/sandboxes/index.md": {
-      "hash": "3f9bc905c81f97a58d8c4c5473a15339fb73da17",
-      "translatedAt": "2026-08-12T09:53:09.630Z"
+      "hash": "b85c3297942a70c11c85cf27cbe2a4a0e9136856",
+      "translatedAt": "2026-10-03T14:03:21.751Z"
     },
     "oss/javascript/integrations/retrievers/index.md": {
-      "hash": "cca9ea7dcd4d97e74d5e1e95c846f5a5fd2ced77",
-      "translatedAt": "2026-08-09T09:09:30.560Z"
+      "hash": "5ef25e6540e509b6debd9f0bfb358d34ec630fbd",
+      "translatedAt": "2026-10-03T14:03:21.131Z"
     },
     "oss/javascript/integrations/stores/index.md": {
-      "hash": "c5386825dab33e32b90a2607c38c037942170444",
-      "translatedAt": "2026-08-09T09:09:30.998Z"
+      "hash": "62ee8540e195978a5b40563794d9a51834afe9ec",
+      "translatedAt": "2026-10-03T14:03:24.957Z"
     },
     "oss/javascript/integrations/splitters/index.md": {
-      "hash": "ef990bb67e2a09bc93f870466444c423bee42f01",
-      "translatedAt": "2026-08-09T09:09:31.195Z"
+      "hash": "52faa275a9b042da4cb5f1ffc5b030b9c92551c7",
+      "translatedAt": "2026-10-03T14:03:24.938Z"
     },
     "oss/python/langchain/overview.md": {
       "hash": "a130c6e933a438bdf9ca3279eaf6679107ddad03",
@@ -6401,8 +6401,8 @@
       "translatedAt": "2026-09-25T14:17:49.852Z"
     },
     "oss/openwiki/visualize.md": {
-      "hash": "14e7604dc8298db4353294a0cf2fe614010e8593",
-      "translatedAt": "2026-09-26T13:31:48.588Z"
+      "hash": "ecd8a5e55df1c69ab6a7868a3f7512e71ddbb151",
+      "translatedAt": "2026-10-03T14:08:56.301Z"
     },
     "use-these-docs.md": {
       "hash": "4e442bd7ad0036b7b51940bd939ada8329c1edc8",
@@ -6441,8 +6441,8 @@
       "translatedAt": "2026-10-02T15:12:32.217Z"
     },
     "oss/openwiki/integrations.md": {
-      "hash": "266d20ab62b7d6d6a18b0d90a9696b3dec733dd4",
-      "translatedAt": "2026-09-26T13:31:43.054Z"
+      "hash": "d1ab62e60361728a70050c95891eee4bc901a3ed",
+      "translatedAt": "2026-10-03T14:08:47.825Z"
     },
     "langsmith/engine-self-hosted-link.md": {
       "hash": "7469ac1683221374df254e1e0698012276e0aa1f",
@@ -6477,8 +6477,8 @@
       "translatedAt": "2026-09-30T15:28:35.570Z"
     },
     "langsmith/llm-gateway-data-policy.md": {
-      "hash": "e9336546119fc54d16ae398a77a51b8a4d053bac",
-      "translatedAt": "2026-09-30T15:30:29.688Z"
+      "hash": "6f3809e149742c90fa06f095cbdcd4bef9c4dc2b",
+      "translatedAt": "2026-10-03T14:02:59.846Z"
     },
     "langsmith/byoc-byovpc.md": {
       "hash": "ba6fced1a64f4ca5d64f7a4c1b0742834499831f",
@@ -6521,8 +6521,8 @@
       "translatedAt": "2026-10-01T15:53:50.634Z"
     },
     "langsmith/engine-notifications.md": {
-      "hash": "edd664ebb0b74753a3ffc442e10a99cf94a6afbd",
-      "translatedAt": "2026-10-02T15:09:27.195Z"
+      "hash": "4c6b350fa1a6256068c8b62e6117a2e9a3c03e23",
+      "translatedAt": "2026-10-03T14:02:54.808Z"
     },
     "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md": {
       "hash": "63d67204989950ffd1ce057e049a7a6d99615b52",
@@ -6700,14 +6700,12 @@
       "failed": true
     },
     "oss/javascript/langchain/mcp/index.md": {
-      "hash": "9a9840363ac1951e01fca1719cdac1b13e2c2cf0",
-      "translatedAt": "2026-09-29T15:39:08.567Z",
-      "failed": true
+      "hash": "96d77a9909413d0be6912a73bd4f3ead1216db4b",
+      "translatedAt": "2026-10-03T14:05:10.319Z"
     },
     "oss/python/deepagents/ag-ui.md": {
-      "hash": "50154e294fc4a56a7413812cc69a0d41bd540175",
-      "translatedAt": "2026-09-29T15:42:43.714Z",
-      "failed": true
+      "hash": "af9fe53b39ec6dc60f9188256419b0f89fd40079",
+      "translatedAt": "2026-10-03T14:09:25.816Z"
     },
     "oss/python/integrations/memory/mongodb-long-term-memory.md": {
       "hash": "4879abc3b3dc7c069e2ff4487e41863fd5a37183",
@@ -6810,11 +6808,11 @@
       "failed": true
     }
   },
-  "updatedAt": "2026-10-02T15:26:22.654Z",
+  "updatedAt": "2026-10-03T14:15:38.555Z",
   "stats": {
-    "translated": 155,
-    "skipped": 1167,
-    "failed": 344,
+    "translated": 176,
+    "skipped": 1311,
+    "failed": 179,
     "total": 1666
   }
 }

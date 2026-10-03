@@ -18,7 +18,7 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
 
 <Steps>
   <Step title="Send a request" icon="send">
-    网关调用是指向网关基本 URL 的普通模型请求，并使用您的 LangSmith API 密钥进行身份验证。使用聊天完成从您已有的应用程序调用网关，或使用Deep Agents构建通过它进行路由的代理。
+    网关调用是指向网关基本 URL 的普通模型请求，并使用您的 LangSmith API 密钥进行身份验证。使用聊天完成从您已有的应用程序调用网关，或使用Deep Agents构建通过它路由的代理。
 
     <Tabs>
       <Tab title="Chat completions">
@@ -101,7 +101,7 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
   </Step>
 
   <Step title="View the trace" icon="activity">
-    打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) 并转到工作区中名为 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 的跟踪项目。您的请求及其令牌计数、成本和延迟会显示在那里。
+    打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) 并转到工作区中名为 `gateway` 的跟踪项目。您的请求及其令牌计数、成本和延迟会显示在那里。
   </Step>
 
   <Step title="Set a spend limit" icon="shield">
@@ -111,7 +111,7 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
     {"error": "Request blocked by gateway policies: R&D Spend Cap"}
     ```
 
-    有关完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
+    如需完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
   </Step>
 </Steps>
 

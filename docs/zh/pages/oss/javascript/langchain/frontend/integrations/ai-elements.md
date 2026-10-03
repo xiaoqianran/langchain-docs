@@ -31,7 +31,7 @@ npx ai-elements@latest add conversation message prompt-input tool reasoning sugg
 
 ## 接线 useStream
 
-直接从 `stream.messages` 渲染 AI Elements 组件。每个LangChain`BaseMessage`映射到一个组件：
+直接从 `stream.messages` 渲染 AI Elements 组件。每个 LangChain `BaseMessage` 映射到一个组件：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";
@@ -166,7 +166,7 @@ export function Chat() {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

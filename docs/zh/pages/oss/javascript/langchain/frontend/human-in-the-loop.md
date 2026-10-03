@@ -12,7 +12,7 @@
 人在环 (HITL) 模式可让您的代理暂停执行、呈现
 用户的待处理操作，只有在明确批准后才能恢复。
 
-因为 HITL 是建立在 LangGraph 中断和检查点之上的，所以暂停是
+因为 HITL 是建立在LangGraph中断和检查点之上的，所以暂停是
 耐用。用户可以刷新页面，审阅者可以从不同的位置回答
 组件，代理仍然从执行的确切位置恢复
 停止而不是重播整个运行。
@@ -21,7 +21,7 @@
 
 ## 中断如何工作
 
-LangGraph 代理支持**中断**、代理在其中的显式暂停点
+LangGraph 代理支持**中断**，代理在其中明确的暂停点
 将控制权交还给客户端。当代理遇到中断时：1. 代理停止执行并发出中断负载
 2. [⟦T15⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子通过`stream.interrupt`表面中断
 3. 您的 UI 呈现带有批准/拒绝/编辑选项的审核卡
@@ -192,8 +192,8 @@ interface ReviewConfig {
   allowedDecisions: ("approve" | "reject" | "edit" | "respond")[];
 }
 ```|物业 |描述 |
-| ---------------------------------- | ---------------------------------------------------------------------------------- |
-| `actionRequests` |代理想要执行的一系列待处理操作 |
+| - | - |
+| `actionRequests` |代理想要执行的待处理操作数组 |
 | `actionRequests[].name` |操作名称（例如 `"send_email"`、`"delete_record"`）|
 | `actionRequests[].args` |行动的结构化参数 |
 | `actionRequests[].description` |该操作的作用的可选人类可读描述 |
@@ -231,7 +231,9 @@ const response: HITLResponse = {
 };
 
 stream.submit(null, { command: { resume: response } });
-```<Note>
+```
+
+<Note>
   当操作被拒绝时，代理会收到拒绝原因并可以
   决定如何进行。如果省略 `message`，则后端使用默认值
   消息告诉模型该工具尚未执行并且不要重试
@@ -264,9 +266,7 @@ const response: HITLResponse = {
 stream.submit(null, { command: { resume: response } });
 ```
 
-### 回应
-
-用户为“询问用户”风格的工具提供直接回复。 `message` 成为工具结果，工具本身不被执行：
+### 回应用户为“询问用户”风格的工具提供直接回复。 `message` 成为工具结果，工具本身不被执行：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response: HITLResponse = {
@@ -277,7 +277,7 @@ stream.submit(null, { command: { resume: response } });
 ```
 
 <Note>
-  当该工具有意充当人工输入的占位符时，请使用`respond`，例如提示代理从用户收集信息的`ask_user`工具。不要使用 `respond` 拒绝建议的操作，因为它会作为成功的工具结果返回到模型。
+  当该工具有意用作人工输入的占位符时，请使用`respond`，例如提示代理从用户收集信息的`ask_user`工具。不要使用 `respond` 拒绝建议的操作，因为它会作为成功的工具结果返回到模型。
 </Note>
 
 ## 构建批准卡
@@ -321,9 +321,9 @@ async function editOne(index: number, editedArgs: Record<string, unknown>) {
 }
 ```
 
-## 恢复流程用户做出决定后，完整的周期如下所示：
+## 恢复流程
 
-1.拨打`stream.submit(null, { command: { resume: hitlResponse } })`
+用户做出决定后，完整的周期如下所示：1.拨打`stream.submit(null, { command: { resume: hitlResponse } })`
 2. [⟦T43⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子向LangGraph后端发送resume命令
 3. Agent收到`HITLResponse`并继续执行。每个条目在
    `decisions` 可能是以下之一：
@@ -334,7 +334,7 @@ async function editOne(index: number, editedArgs: Record<string, unknown>) {
 4. 当代理恢复流式传输时，`interrupt` 属性重置为 `null`
 
 <Tip>
-  您可以在单个代理运行中链接多个 HITL 检查点。例如，一个
+  您可以在一次代理运行中链接多个 HITL 检查点。例如，一个
   代理可能会请求批准搜索，然后在发送电子邮件之前再次询问
   与结果。每个中断都是独立处理的。
 </Tip>
@@ -584,7 +584,7 @@ function handleResolve(decision: ReviewDecision) {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

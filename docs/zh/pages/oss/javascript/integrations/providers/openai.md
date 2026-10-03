@@ -6,12 +6,12 @@
 
 使用 LangChain JavaScript 与 OpenAI 集成。
 
-LangChain通过`@langchain/openai`包与OpenAI和Azure OpenAI集成。
+LangChain 通过 `@langchain/openai` 包与 OpenAI 和 Azure OpenAI 集成。
 
 > [OpenAI](https://en.wikipedia.org/wiki/OpenAI)是美国人工智能（AI）研究实验室
 > 由非营利组织 `OpenAI Incorporated` 组成
 > 及其营利性子公司`OpenAI Limited Partnership`。
-> OpenAI 开展人工智能研究，其目的是促进和开发友好的人工智能。
+> OpenAI 开展人工智能研究，其宣称的目的是促进和开发友好的人工智能。
 > OpenAI 系统在`Microsoft` 基于`Azure` 的超级计算平台上运行。
 
 > [OpenAI API](https://platform.openai.com/docs/models) 由具有不同功能和价位的多种型号提供动力。
@@ -62,13 +62,13 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 
 ## 中间件
 
-专为 OpenAI 模型设计的中间件。了解更多关于[middleware](/oss/javascript/langchain/middleware/overview)的信息。|中间件|描述 |
-| ---------------------------------------------------- | -------------------------------------------------------------------- |
-| [Content moderation](#content-moderation) |使用 OpenAI 的审核端点来审核代理流量 |
+专为OpenAI型号设计的中间件。了解更多关于[middleware](/oss/javascript/langchain/middleware/overview)的信息。
 
-### 内容审核
+|中间件|描述 |
+| - | - |
+| [Content moderation](#content-moderation) |使用 OpenAI 的审核端点审核代理流量 |
 
-使用 OpenAI 的审核端点来审核代理流量（用户输入、模型输出和工具结果），以检测和处理不安全内容。内容审核对于以下用途很有用：
+### 内容审核使用 OpenAI 的审核端点来审核代理流量（用户输入、模型输出和工具结果），以检测和处理不安全内容。内容审核对于以下用途很有用：
 
 * 需要内容安全性和合规性的应用程序
 * 过滤有害、仇恨或不当内容
@@ -101,16 +101,18 @@ const agent = createAgent({
 
 <Accordion title="Configuration options">
   <ParamField type="string | BaseChatModel">
-    用于审核的 OpenAI 模型。可以是模型名称字符串（例如，`"openai:gpt-5.5"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
+    OpenAI 用于审核的模型。可以是模型名称字符串（例如，`"openai:gpt-5.5"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
   </ParamField>
 
   <ParamField type="ModerationModel">
-    要使用的 OpenAI 审核模型。选项：`'omni-moderation-latest'`、`'omni-moderation-2024-09-26'`、`'text-moderation-latest'`、`'text-moderation-stable'`
+    OpenAI 使用的审核模型。选项：`'omni-moderation-latest'`、`'omni-moderation-2024-09-26'`、`'text-moderation-latest'`、`'text-moderation-stable'`
   </ParamField>
 
   <ParamField type="boolean">
     模型调用前是否检查用户输入消息
-  </ParamField><ParamField type="boolean">
+  </ParamField>
+
+  <ParamField type="boolean">
     模型调用后是否检查模型输出消息
   </ParamField>
 
@@ -119,9 +121,7 @@ const agent = createAgent({
   </ParamField>
 
   <ParamField type="'error' | 'end' | 'replace'">
-    当内容被标记时如何处理违规行为。选项：
-
-    * `'end'` - 立即结束代理执行并显示违规消息
+    当内容被标记时如何处理违规行为。选项：* `'end'` - 立即结束代理执行并显示违规消息
     * `'error'` - 抛出`OpenAIModerationError`异常
     * `'replace'` - 用违规消息替换标记的内容并继续
   </ParamField>
@@ -138,7 +138,7 @@ const agent = createAgent({
 </Accordion>
 
 <Accordion title="Full example">
-  该中间件集成了 OpenAI 的审核端点来检查不同阶段的内容：
+  中间件集成了OpenAI的审核端点来检查不同阶段的内容：
 
   **审核阶段：**
 
@@ -204,9 +204,11 @@ const agent = createAgent({
   ```
 </Accordion>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -4,9 +4,11 @@
 
 # 个人模式
 
+使用 OpenWiki 从配置的源构建本地个人大脑 wiki。
+
 个人模式从本地存储库、自定义 MCP、Gmail、Notion、网络搜索、黑客新闻、Slack 和 X/Twitter 等配置源在 `~/.openwiki/wiki` 中构建本地个人大脑 wiki。
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki personal
 openwiki personal --init
 openwiki personal --update
@@ -19,27 +21,27 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 
 首次设置时，您可以：
 
-- 配置推理提供程序、API 密钥和模型
-- 设置LangSmith API密钥
-- 为支持的源设置连接器
-- 选择一个 wiki 模板，自定义其范围，并保存每个源的摄取注释和时间表
+* 配置推理提供者、API 密钥和模型
+* 设置LangSmith API密钥
+* 为支持的源设置连接器
+* 选择一个 wiki 模板，自定义其范围，并保存每个源的摄取注释和时间表
 
 **计划**是连接器源的可选 cron，例如定期刷新 Gmail 或网络搜索。 OpenWiki 将这些 cron 表达式和相关设置详细信息以及其余的入门首选项（选定的模板、连接的源和每个源的摄取注释）存储在 `~/.openwiki/onboarding.json` 中。全球个人wiki指令单独保存在`~/.openwiki/INSTRUCTIONS.md`中。
 
 在 macOS 上，OpenWiki 可以作为用户 LaunchAgents 在 `~/Library/LaunchAgents/` 下安装支持的计划。这些作业运行`openwiki --update --print`并在`~/.openwiki/logs/`下写入日志。
 
-## 连接您的来源在个人模式下，OpenWiki 从您已使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
+## 连接您的来源在个人模式下，OpenWiki 从您已经使用的工具中获取知识，并将其合成到您本地的 wiki 下的`~/.openwiki/wiki/` 中。首次运行入门可以设置自定义 MCP、本地 git 存储库、Notion、Gmail、X/Twitter、网络搜索、黑客新闻和 Slack。
 
 在摄取运行期间，连接器工具在 `~/.openwiki/connectors/<connector>/raw/` 下写入原始数据和清单，然后特定于源的代理运行从这些本地文件更新 wiki。
 
 连接器机密由环境变量名称引用并存储在 `~/.openwiki/.env` 中。
 
 <Important>
-    连接器配置文件不应包含原始秘密值。
+  连接器配置文件不应包含原始秘密值。
 </Important>
 
 ### 内置源|来源 |证书 |行为 |
-| ---| ---| ---|
+| - | - | - |
 | `custom-mcp` |默认情况下不需要 |连接到任何已配置的 HTTP 或 stdio MCP 服务器，并仅允许显式安全的只读工具 |
 | `git-repo` |本地路径|读取配置的本地存储库路径并写入紧凑的清单 |
 | `x` | OAuth 用户上下文凭据 |通过 X API 的主页时间线、用户帖子、提及、书签和列表帖子 |
@@ -54,47 +56,47 @@ openwiki personal --update "Refresh the wiki from configured connectors"
 ### 连接源
 
 对于需要凭据的源，请先进行身份验证，然后摄取。 Hacker News、Custom MCP 等来源默认不需要授权；网络搜索需要 `~/.openwiki/.env` 中的 `TAVILY_API_KEY`。<Steps>
-    <Step title="Authenticate the provider" icon="key">
-        为需要的提供商运行本地浏览器 OAuth 流程。 OpenWiki 将返回的令牌保存到`~/.openwiki/.env`，在可能的情况下创建连接器配置，并为 MCP 支持的提供商发现 MCP 工具：
+  <Step title="Authenticate the provider" icon="key">
+    为需要的提供商运行本地浏览器 OAuth 流程。 OpenWiki 将返回的令牌保存到`~/.openwiki/.env`，在可能的情况下创建连接器配置，并为 MCP 支持的提供商发现 MCP 工具：
 
-        ```bash
-        openwiki auth notion
-        openwiki auth gmail
-        openwiki auth x
-        openwiki auth slack
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki auth notion
+    openwiki auth gmail
+    openwiki auth x
+    openwiki auth slack
+    ```
 
-        - Slack 和 Gmail 要求已在 `~/.openwiki/.env` 中设置应用程序客户端凭据
-        - Notion 使用动态客户端注册来托管 MCP
-        - X 使用带有 PKCE 的 OAuth 2.0
-        - 在`openwiki auth gmail`之后，Google 连接器可以直接接收 Gmail，无需 MCP 传输设置
+    * Slack 和 Gmail 要求已在 `~/.openwiki/.env` 中设置应用程序客户端凭据
+    * Notion 使用动态客户端注册来托管 MCP
+    * X 使用带有 PKCE 的 OAuth 2.0
+    * 在`openwiki auth gmail`之后，Google 连接器可以直接接收 Gmail，无需 MCP 传输设置
 
-        高级重试助手：
+    高级重试助手：
 
-        ```bash
-        openwiki auth configure <provider>
-        openwiki auth tools <provider>
-        ```
-    </Step>
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki auth configure <provider>
+    openwiki auth tools <provider>
+    ```
+  </Step>
 
-    <Step title="Ingest the source" icon="download">
-        将原始数据拉入`~/.openwiki/connectors/`并将更新综合到个人wiki中：
+  <Step title="Ingest the source" icon="download">
+    将原始数据拉入`~/.openwiki/connectors/`并将更新综合到个人wiki中：
 
-        ```bash
-        openwiki ingest all
-        openwiki ingest web-search
-        openwiki ingest web-search-2
-        ```
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    openwiki ingest all
+    openwiki ingest web-search
+    openwiki ingest web-search-2
+    ```
 
-        配置源后，您还可以通过聊天或使用 `openwiki personal --update` 进行刷新。
-    </Step>
+    配置源后，您还可以通过聊天或使用 `openwiki personal --update` 进行刷新。
+  </Step>
 </Steps>
 
 ### Slack OAuth
 
 Slack OAuth 可能需要 HTTPS 重定向 URL：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki ngrok start
 # or with a fixed domain:
 openwiki ngrok start https://your-domain.ngrok.app
@@ -106,11 +108,11 @@ OpenWiki 保存 `OPENWIKI_HTTPS_OAUTH_REDIRECT_URI` 并打印回调 URL 以在 S
 
 OpenWiki 将秘密存储在：
 
-- 目录：`~/.openwiki`（模式`0o700`）
-- 文件：`~/.openwiki/.env`（模式`0o600`）常见的连接器相关密钥包括 Gmail、Notion、Slack 和 X OAuth 令牌，以及用于网络搜索的 `TAVILY_API_KEY`。可选的 OAuth 回调设置：
+*目录：`~/.openwiki`（模式`0o700`）
+* 文件：`~/.openwiki/.env`（模式`0o600`）常见的连接器相关密钥包括 Gmail、Notion、Slack 和 X OAuth 令牌，以及用于网络搜索的 `TAVILY_API_KEY`。可选的 OAuth 回调设置：
 
-- `OPENWIKI_OAUTH_CALLBACK_PORT`：本地回调端口
-- `OPENWIKI_HTTPS_OAUTH_REDIRECT_URI`：Slack HTTPS 回调 URL
+* `OPENWIKI_OAUTH_CALLBACK_PORT`：本地回调端口
+* `OPENWIKI_HTTPS_OAUTH_REDIRECT_URI`：Slack HTTPS 回调 URL
 
 有关模型提供者凭据，请参阅[Model providers](/oss/openwiki/providers)。
 
@@ -118,7 +120,7 @@ OpenWiki 将秘密存储在：
 
 在 macOS 上，通过以下方式管理连接器计划：
 
-```bash
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki cron list
 openwiki cron pause <source|all>
 openwiki cron resume <source|all>
@@ -129,17 +131,18 @@ openwiki cron delete <source|all>
 
 ## 另请参阅
 
-- [Code mode](/oss/openwiki/code-mode)
-- [CLI reference](/oss/openwiki/cli-reference)
-- [Customize OpenWiki](/oss/openwiki/customize)
+* [Code mode](/oss/openwiki/code-mode)
+* [CLI reference](/oss/openwiki/cli-reference)
+* [Customize OpenWiki](/oss/openwiki/customize)
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/personal-mode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-</Callout>
+  </Callout>
 </div>

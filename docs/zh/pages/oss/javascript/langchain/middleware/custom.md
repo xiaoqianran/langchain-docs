@@ -29,16 +29,18 @@
 **节点式挂钩**在特定执行点运行：
 
 |钩|当它运行时 |
-| ------------- | ------------------------------------------- |
+| - | - |
 | `beforeAgent` |代理启动之前（每次调用一次）|
 | `beforeModel` |每次模型调用之前 |
-| `afterModel` |每次模型响应后 |
+| `afterModel` |每次模型响应后|
 | `afterAgent` |代理完成后（每次调用一次）|
 
-**环绕式钩子**围绕每个调用运行，让您可以控制执行：|钩|当它运行时 |
-| ---------------- | ---------------------- |
+**环绕式钩子**围绕每个调用运行，让您可以控制执行：
+
+|钩|当它运行时 |
+| - | - |
 | `wrapModelCall` |各地型号调用|
-| `wrapToolCall` |围绕每个工具调用|
+| `wrapToolCall` |围绕每个工具调用 |
 
 **示例：**
 
@@ -71,9 +73,7 @@ const createMessageLimitMiddleware = (maxMessages: number = 50) => {
 
 ### 缠绕式挂钩
 
-调用处理程序时拦截执行和控制。用于重试、缓存和转换。
-
-您可以决定处理程序是否被调用零次（短路）、一次（正常流程）或多次（重试逻辑）。
+调用处理程序时拦截执行和控制。用于重试、缓存和转换。您可以决定处理程序是否被调用零次（短路）、一次（正常流程）或多次（重试逻辑）。
 
 **可用的挂钩：**
 
@@ -110,7 +110,9 @@ const createRetryMiddleware = (maxRetries: number = 3) => {
 节点式和包裹式钩子都可以更新代理状态。机制不同：
 
 * **Node-style hooks** (`beforeAgent`, `beforeModel`, `afterModel`, `afterAgent`): 直接返回一个dict。使用图的化简器将字典应用于代理状态。
-* **Wrap-style hooks** (`wrapModelCall`, `wrapToolCall`)：对于模型调用，直接返回 [⟦T42⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以在模型响应旁边注入状态更新。对于工具调用，直接返回[⟦T43⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。当您需要根据模型或工具调用期间运行的逻辑（例如汇总触发点、使用元数据或根据请求或响应计算的自定义字段）跟踪或更新状态时，请使用这些。### 节点式挂钩
+* **Wrap-style hooks** (`wrapModelCall`, `wrapToolCall`)：对于模型调用，直接返回 [⟦T42⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 以在模型响应旁边注入状态更新。对于工具调用，直接返回[⟦T43⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。当您需要根据模型或工具调用期间运行的逻辑（例如汇总触发点、使用元数据或根据请求或响应计算的自定义字段）跟踪或更新状态时，请使用这些。
+
+### 节点式挂钩
 
 从节点式挂钩返回一个字典，将更新合并到代理状态中。字典键映射到状态字段。
 
@@ -152,13 +154,13 @@ const trackUsage = createMiddleware({
     return new Command({ update: { lastModelCallTokens: 150 } });
   },
 });
-```
-
-[⟦T46⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 流经图的化简器，因此可以正确应用更新，并且消息是附加的，而不是替换现有状态。
+```[⟦T46⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command) 流经图的化简器，因此可以正确应用更新，并且消息是附加的而不是替换现有状态。
 
 #### 多个中间件的组合
 
-当多个中间件层返回响应时，框架会传递最后生成的 `AIMessage`：* **AIMessage流经：** 每个中间件的`handler()`接收来自上一层的`AIMessage`。当中间件返回 `AIMessage` 时，它将成为下一个中间件处理程序的输入。
+当多个中间件层返回响应时，框架会传递最后生成的 `AIMessage`：
+
+* **AIMessage流经：** 每个中间件的`handler()`接收来自上一层的`AIMessage`。当中间件返回 `AIMessage` 时，它将成为下一个中间件处理程序的输入。
 * **没有消息更新的命令是传递的：** 如果中间件返回一个 `Command`，其状态更新不触及 `messages`，则框架将其视为消息流的无操作。下一个中间件的处理程序从返回命令的中间件*之前*接收到 `AIMessage`。
 * **Reducer 行为和重试安全性：** 命令仍然通过Reducer 应用（消息附加，冲突时外部获胜）。重试逻辑会丢弃先前调用的命令。
 
@@ -208,14 +210,14 @@ const innerMiddleware = createMiddleware({
 ## 创建中间件
 
 蟒蛇
-`AgentMiddleware` 子类可以声明代理工厂在编译时获取的三个类属性：
-
-* `state_schema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
+`AgentMiddleware` 子类可以声明代理工厂在编译时获取的三个类属性：* `state_schema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
 * `tools` — 注册中间件附带的其他工具（例如，待办事项列表中间件上的 `write_todos`）。
 * `transformers` — 注册作用域感知的流转换器工厂。参见[Custom stream transformers](#custom-stream-transformers)。
   :::
 
-`createMiddleware` 接受代理工厂在编译时选取的三个配置字段：* `stateSchema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
+`createMiddleware` 接受代理工厂在编译时选取的三个配置字段：
+
+* `stateSchema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
 * `tools` — 注册中间件附带的附加工具。
 * `streamTransformers` — 注册作用域感知的流转换器工厂。参见[Custom stream transformers](#custom-stream-transformers)。
 
@@ -291,13 +293,13 @@ const loggingMiddleware = createMiddleware({
 
 ## 自定义状态模式
 
-如果您的中间件需要跨钩子跟踪状态，中间件可以使用自定义属性扩展代理的状态。这使得中间件能够：
-
-* **跟踪执行过程中的状态**：维护在代理执行生命周期中持续存在的计数器、标志或其他值
+如果您的中间件需要跨钩子跟踪状态，中间件可以使用自定义属性扩展代理的状态。这使得中间件能够：* **跟踪执行过程中的状态**：维护在代理执行生命周期中持续存在的计数器、标志或其他值
 
 * **在钩子之间共享数据**：从`beforeModel`到`afterModel`或不同中间件实例之间传递信息
 
-* **实现横切关注点**：添加速率限制、使用跟踪、用户上下文或审核日志记录等功能，而无需修改核心代理逻辑* **做出条件决策**：使用累积状态来确定是否继续执行、跳转到不同节点或动态修改行为
+* **实现横切关注点**：添加速率限制、使用跟踪、用户上下文或审核日志记录等功能，而无需修改核心代理逻辑
+
+* **做出条件决策**：使用累积状态来确定是否继续执行、跳转到不同节点或动态修改行为
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, createAgent, HumanMessage } from "langchain";
@@ -379,11 +381,11 @@ console.log(result._internalFlag); // undefined
 
 ## 自定义流转换器
 
-<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>
+<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
 
-中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
+在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目放在最后。
 
-在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目最后落地。将 `streamTransformers` 作为工厂元组传递给 `createMiddleware`。每个工厂的形状为`() => StreamTransformer<any>`（零参数），并且每个作用域被调用一次；每次调用返回一个新的变压器使每个子图保持隔离。
+将 `streamTransformers` 作为工厂元组传递给 `createMiddleware`。每个工厂的形状为`() => StreamTransformer<any>`（零参数），并且每个作用域被调用一次；每次调用返回一个新的变压器使每个子图保持隔离。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, createMiddleware } from "langchain";
@@ -404,9 +406,7 @@ const agent = createAgent({
 
 ## 自定义上下文
 
-中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：
-
-* **用户信息**：传递在执行过程中不会改变的用户ID、角色或偏好
+中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：* **用户信息**：传递在执行过程中不会改变的用户ID、角色或偏好
 * **配置覆盖**：提供每次调用设置，例如速率限制或功能标志
 * **租户/工作空间上下文**：包括多租户应用程序的组织特定数据
 * **请求元数据**：传递请求 ID、API 密钥或中间件所需的其他元数据
@@ -458,7 +458,9 @@ const result = await agent.invoke(
     },
   }
 );
-```**必需的上下文字段**：当您在 `contextSchema` 中定义必需字段（没有 `.optional()` 或 `.default()` 的字段）时，TypeScript 将强制要求在 `agent.invoke()` 调用期间必须提供这些字段。这确保了类型安全并防止运行时错误缺少所需的上下文。
+```
+
+**必需的上下文字段**：当您在 `contextSchema` 中定义必需字段（没有 `.optional()` 或 `.default()` 的字段）时，TypeScript 将强制要求在 `agent.invoke()` 调用期间必须提供这些字段。这确保了类型安全并防止运行时错误缺少所需的上下文。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // This will cause a TypeScript error if userId or tenantId are missing
@@ -495,9 +497,7 @@ const agent = createAgent({
 
   **像函数调用一样包裹钩子嵌套：**
 
-  7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号
-
-  **挂钩以相反顺序运行后：**
+  7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号**挂钩以相反顺序运行后：**
 
   8.`middleware3.after_model()`
   9.`middleware2.after_model()`
@@ -561,10 +561,12 @@ const result = await agent.invoke({
 console.log(result.messages.at(-1)?.content);
 ```
 
-## 最佳实践1. 集中中间件——每个中间件都应该做好一件事
+## 最佳实践
+
+1. 集中中间件——每个中间件都应该做好一件事
 2. 优雅地处理错误——不要让中间件错误导致代理崩溃
 3. **使用适当的钩子类型**：
-   * 用于顺序逻辑的节点样式（日志记录、验证）
+   * 顺序逻辑的节点样式（日志记录、验证）
    * 控制流的环绕式（重试、回退、缓存）
 4. 清楚地记录任何自定义状态属性
 5. 集成前独立对中间件进行单元测试
@@ -573,9 +575,7 @@ console.log(result.messages.at(-1)?.content);
 
 ## 示例
 
-###动态提示
-
-在运行时动态修改系统提示符，以在每次模型调用之前注入上下文、用户特定的指令或其他信息。这是最常见的中间件用例之一。
+###动态提示在运行时动态修改系统提示符，以在每次模型调用之前注入上下文、用户特定的指令或其他信息。这是最常见的中间件用例之一。
 
 使用`ModelRequest`中的`systemMessage`字段读取和修改系统提示符。它包含一个 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T105⟧](https://reference.langchain.com/javascript/types/langchain.index.CreateAgentParams.html#systemprompt) 创建的）。
 
@@ -594,7 +594,7 @@ console.log(result.messages.at(-1)?.content);
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });
@@ -634,7 +634,7 @@ console.log(result.messages.at(-1)?.content);
   });
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });
@@ -654,7 +654,7 @@ console.log(result.messages.at(-1)?.content);
   });
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });
@@ -721,7 +721,11 @@ console.log(result.messages.at(-1)?.content);
   ```
 </CodeGroup>
 
-使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保留由其他中间件创建的缓存控制元数据或结构化内容块。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4eaefcd5-90ad-4349-bb51-2cfc660e8af3/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保存由其他中间件创建的缓存控制元数据或结构化内容块。
 
 ### 动态模型选择
 
@@ -747,7 +751,13 @@ const dynamicModelMiddleware = createMiddleware({
 });
 ```
 
-### 动态选择工具在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/javascript/langchain/tools#dynamic-tool-selection)。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dc39d44b-bef7-49cf-bef8-45e5f4881bf8/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+### 动态选择工具
+
+在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/javascript/langchain/tools#dynamic-tool-selection)。
 
 **好处：**
 
@@ -775,9 +785,7 @@ const agent = createAgent({
 });
 ```
 
-### 工具调用监控
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+### 工具调用监控```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware } from "langchain";
 
 const toolMonitoringMiddleware = createMiddleware({
@@ -797,7 +805,7 @@ const toolMonitoringMiddleware = createMiddleware({
 });
 ```
 
-### 提示缓存（人为）
+### 提示缓存 (Anthropic)
 
 使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
 
@@ -864,7 +872,9 @@ const toolMonitoringMiddleware = createMiddleware({
 * 修改系统消息时，使用`content_blocks`并附加新块以保留现有结构
 * 您可以将 [⟦T112⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象直接传递给 `create_agent` 的 `system_prompt` 参数，以实现缓存控制等高级用例
 
-:::使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T118⟧](https://reference.langchain.com/javascript/types/langchain.index.CreateAgentParams.html#systemprompt) 创建的）。
+:::
+
+使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T118⟧](https://reference.langchain.com/javascript/types/langchain.index.CreateAgentParams.html#systemprompt) 创建的）。
 
 **示例：链接中间件** - 不同的中间件可以使用不同的方法：
 
@@ -904,7 +914,7 @@ const myOtherMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google_genai:gemini-3.6-flash",
+  model: "google:gemini-3.6-flash",
   systemPrompt: "You are a helpful assistant.",
   middleware: [myMiddleware, myOtherMiddleware],
 });
@@ -934,11 +944,9 @@ new SystemMessage({
 * [Built-in middleware](/oss/javascript/langchain/middleware/built-in)
 * [Testing agents](/oss/javascript/langchain/test/)
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

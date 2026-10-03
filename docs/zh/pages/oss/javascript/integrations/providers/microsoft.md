@@ -10,7 +10,7 @@
 
 ## 聊天模型
 
-### Azure OpenAI
+### 天蓝色OpenAI
 
 查看[usage example](/oss/javascript/integrations/chat/azure)
 
@@ -28,15 +28,15 @@ const model = new AzureChatOpenAI({
 
 ## 法学硕士
 
-### Azure OpenAI
+### 天蓝色OpenAI
 
 > [Microsoft Azure](https://en.wikipedia.org/wiki/Microsoft_Azure)，通常简称为`Azure`，是`Microsoft`运行的云计算平台，通过全球数据中心提供应用程序和服务的访问、管理和开发。它提供了一系列功能，包括软件即服务 (SaaS)、平台即服务 (PaaS) 和基础设施即服务 (IaaS)。 `Microsoft Azure` 支持多种编程语言、工具和框架，包括 Microsoft 特定和第三方软件和系统。
 
-> [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用 OpenAI、Meta 等多种预构建和策划的模型快速开发生成式 AI 体验。
+> [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 是一项云服务，可帮助您使用来自 OpenAI、Meta 等的各种预构建和策划模型快速开发生成式 AI 体验。
 
 LangChain.js 支持使用 [OpenAI SDK](https://github.com/openai/openai-node) 中新的 Azure 集成与 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service/) 集成。
 
-您可以在[this page](https://learn.microsoft.com/azure/ai-services/openai/overview)了解更多有关Azure OpenAI及其与OpenAI API的区别。如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。您需要部署一个 Azure OpenAI 实例。您可以按照[this guide](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource?pivots=web-portal)在Azure门户上部署版本。
+您可以在 [this page](https://learn.microsoft.com/azure/ai-services/openai/overview) 上详细了解 Azure OpenAI 及其与 OpenAI API 的区别。如果您没有 Azure 帐户，可以[create a free account](https://azure.microsoft.com/free/) 开始。您需要部署一个 Azure OpenAI 实例。您可以按照[this guide](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource?pivots=web-portal)在Azure门户上部署版本。
 
 实例运行后，请确保您拥有实例的名称和密钥。您可以在 Azure 门户中实例的“密钥和端点”部分下找到密钥。
 
@@ -77,7 +77,7 @@ const model = new AzureOpenAI({
 
 ## 文本嵌入模型
 
-### Azure OpenAI
+### 天蓝色OpenAI
 
 查看[usage example](/oss/javascript/integrations/embeddings/azure_openai)
 
@@ -140,7 +140,7 @@ import { AzureCosmosDBNoSQLSemanticCache } from "@langchain/azure-cosmosdb";
 
 ### Azure 容器应用程序动态会话
 
-> [Azure Container Apps dynamic sessions](https://learn.microsoft.com/azure/container-apps/sessions) 提供对安全沙盒环境的快速访问，该环境非常适合运行需要与其他工作负载强隔离的代码或应用程序。
+> [Azure Container Apps dynamic sessions](https://learn.microsoft.com/azure/container-apps/sessions) 提供对安全沙盒环境的快速访问，这些环境非常适合运行需要与其他工作负载强隔离的代码或应用程序。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/azure-dynamic-sessions @langchain/core
@@ -154,7 +154,7 @@ import { SessionsPythonREPLTool } from "@langchain/azure-dynamic-sessions";
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

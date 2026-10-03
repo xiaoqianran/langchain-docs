@@ -6,7 +6,7 @@
 
 在可折叠块中显示模型思维和推理过程
 
-推理代币通过扩展思维揭示了 OpenAI 的 GPT-5 和 Anthropic 的 Claude 等高级模型的内部思维过程。这些模型生成结构化内容块，将推理与最终答案分开，让您构建显示模型“如何”得出响应的 UI。
+推理代币揭示了OpenAI的GPT-5和Anthropic的Claude等高级模型的内部思维过程，具有扩展思维。这些模型生成结构化内容块，将推理与最终答案分开，让您构建显示模型“如何”得出响应的 UI。
 
 <PatternEmbed />
 
@@ -17,7 +17,7 @@
 1. **推理块**：模型内部思路、问题分解、逐步分析
 2. **文本块**：呈现给用户的最终、完善的响应
 
-这些内容作为 `AIMessage` 中的类型化内容块进行交付，可通过 `contentBlocks` 属性进行访问：
+这些内容作为 `AIMessage` 中的类型化内容块提供，可通过 `contentBlocks` 属性访问：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Reasoning block
@@ -333,7 +333,7 @@ message.contentBlocks.forEach((block) => {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

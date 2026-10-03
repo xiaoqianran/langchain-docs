@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与 Google 集成。
 
-LangChain通过`@langchain/google`包提供与[Google AI Studio](https://aistudio.google.com/)和[Google Cloud Vertex AI](https://cloud.google.com/vertex-ai)的集成。
+LangChain 通过 `@langchain/google` 软件包提供与 [Google AI Studio](https://aistudio.google.com/) 和 [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 的集成。
 
 <Info>
   正在寻找旧版 `@langchain/google-genai` 或 `@langchain/google-vertexai` 套件？它们在[long-term support](#legacy-packages)下维护，但不再推荐用于新项目。
@@ -14,7 +14,7 @@ LangChain通过`@langchain/google`包提供与[Google AI Studio](https://aistudi
 
 ## 聊天模型
 
-[⟦T12⟧](/oss/javascript/integrations/chat/google) 类是访问 Gemini 模型（例如 `gemini-2.5-pro`、`gemini-2.5-flash` 和 `gemini-3.1-pro-preview`）以及像 Gemma 这样的开放模型的推荐方式。它在单一界面中支持 Google AI Studio 和 Vertex AI
+[⟦T12⟧](/oss/javascript/integrations/chat/google) 类是访问 Gemini 模型（例如 `gemini-2.5-pro`、`gemini-2.5-flash` 和 `gemini-3.1-pro-preview`）和开放模型（如 Gemma）的推荐方式。它在单一界面中支持 Google AI Studio 和 Gemini Enterprise Agent Platform
 
 <Tip>
   参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
@@ -62,9 +62,9 @@ const res = await model.invoke([
   </Card>
 </CardGroup>
 
-### Vertex AI 上的第三方模型[Anthropic](/oss/javascript/integrations/chat/anthropic) 克劳德型号也可通过
-[Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude)
-平台。参见[using Claude on Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude)
+### Gemini企业代理平台上的第三方模型[Anthropic](/oss/javascript/integrations/chat/anthropic) 克劳德型号也可通过
+[Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)
+平台。参见[using Claude on Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)
 有关启用模型访问和要使用的模型名称的更多信息。
 
 ### Postgres 矢量存储 (Cloud SQL)
@@ -91,7 +91,7 @@ npm install @langchain/google-genai @langchain/core
 
 ### `@langchain/google-vertexai`
 
-`@langchain/google-vertexai` 软件包为 Node.js 上的 Vertex AI 提供 [⟦T25⟧](/oss/javascript/integrations/chat/google_vertex_ai)、[⟦T26⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) 和 [⟦T27⟧](/oss/javascript/integrations/llms/google_vertex_ai)。它依赖于[⟦T28⟧](#%40langchain%2Fgoogle-gauth)进行身份验证。该软件包已被 `@langchain/google` 内置的用于聊天的 Vertex AI 支持取代。
+`@langchain/google-vertexai` 软件包为 Node.js 上的 Gemini Enterprise Agent Platform 提供了 [⟦T25⟧](/oss/javascript/integrations/chat/google_vertex_ai)、[⟦T26⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) 和 [⟦T27⟧](/oss/javascript/integrations/llms/google_vertex_ai)。它依赖于[⟦T28⟧](#%40langchain%2Fgoogle-gauth)进行身份验证。该软件包已被 `@langchain/google` 内置的用于聊天的 Gemini Enterprise Agent Platform 支持取代。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/google-vertexai @langchain/core
@@ -99,15 +99,15 @@ npm install @langchain/google-vertexai @langchain/core
 
 ### `@langchain/google-vertexai-web`
 
-`@langchain/google-vertexai-web` 包为浏览器和 Edge 运行时提供相同的 Vertex AI 聊天、嵌入和 LLM 类。在 Web 环境中运行时安装此软件包（不是 `@langchain/google-vertexai`）。这取决于[⟦T33⟧](#%40langchain%2Fgoogle-webauth)。
+`@langchain/google-vertexai-web` 包为浏览器和 Edge 运行时提供相同的 Gemini Enterprise Agent Platform 聊天、嵌入和 LLM 类。在 Web 环境中运行时安装此软件包（不是 `@langchain/google-vertexai`）。这取决于[⟦T33⟧](#%40langchain%2Fgoogle-webauth)。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/google-vertexai-web @langchain/core
-```
+```请参阅 [Gemini Enterprise Agent Platform chat](/oss/javascript/integrations/chat/google_vertex_ai) 页面了解 `GOOGLE_WEB_CREDENTIALS` 和 Web 导入路径。
 
-请参阅 [Vertex AI chat](/oss/javascript/integrations/chat/google_vertex_ai) 页面了解 `GOOGLE_WEB_CREDENTIALS` 和 Web 导入路径。
+### `@langchain/google-webauth`
 
-### `@langchain/google-webauth`[⟦T36⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-webauth) 软件包为旧版 Vertex AI 集成提供浏览器和 Edge 身份验证。它会与 `@langchain/google-vertexai-web` 一起自动安装 — 不要将其与 `@langchain/google-gauth` 一起安装。
+[⟦T36⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-webauth) 软件包为旧版 Gemini Enterprise Agent Platform 集成提供浏览器和 Edge 身份验证。它会与 `@langchain/google-vertexai-web` 一起自动安装 — 不要将其与 `@langchain/google-gauth` 一起安装。
 
 在`GOOGLE_WEB_CREDENTIALS`（或已弃用的`GOOGLE_VERTEX_AI_WEB_CREDENTIALS`）中设置服务帐户JSON。您还可以将 `apiKey` 或 `authOptions` 传递给模型构造函数，或设置 `API_KEY` 环境变量。
 
@@ -129,19 +129,19 @@ npm install @langchain/google-vertexai-web @langchain/core
 
 ### `@langchain/google-cloud-sql-pg`
 
-[⟦T61⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) 软件包为 Cloud SQL for PostgreSQL 提供 [⟦T62⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) 和 [⟦T63⟧](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg)。它与上面的 Gemini 聊天包是分开的。
+[⟦T61⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) 软件包为 Cloud SQL for PostgreSQL 提供 [⟦T62⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) 和 [⟦T63⟧](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg)。它与上面的 Gemini 聊天包是分开的。### `@langchain/google-common`
 
-### `@langchain/google-common`[⟦T65⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-common) 包为[⟦T66⟧](/oss/javascript/integrations/chat/google_vertex_ai) 等遗留集成提供共享的 Gemini 客户端抽象。它不包含授权代码，并且**不是**独立的软件包 - 不要直接安装或导入它。
+[⟦T65⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-common) 包为[⟦T66⟧](/oss/javascript/integrations/chat/google_vertex_ai) 等遗留集成提供共享的 Gemini 客户端抽象。它不包含授权代码，并且**不是**独立的软件包 - 不要直接安装或导入它。
 
 <Tip>
-  要从 `@langchain/google-genai` 或 `@langchain/google-vertexai` 迁移到 `@langchain/google`，请参阅 [ChatGoogle](/oss/javascript/integrations/chat/google) 页面了解设置说明。 `ChatGoogle` 类提供等效功能，可统一访问 Google AI Studio 和 Vertex AI。
+  要从 `@langchain/google-genai` 或 `@langchain/google-vertexai` 迁移到 `@langchain/google`，请参阅 [ChatGoogle](/oss/javascript/integrations/chat/google) 页面了解设置说明。 `ChatGoogle` 类提供等效功能，可统一访问 Google AI Studio 和 Gemini Enterprise Agent Platform。
 </Tip>
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

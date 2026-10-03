@@ -68,7 +68,7 @@ LangChain 为多个不同组件（语言模型、向量存储等）提供标准�
     在 LangChain [docs repo](https://github.com/langchain-ai/docs) 中打开 PR，以便用户可以找到您的包。托管导游数量有限；大多数集成都是通过 YAML 列出的。
 
     <Accordion title="How listing works" icon="book">
-      **默认（每月下载量低于 50,000 次，不推荐）：** 提交 [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)。维护者应用 `integration-run` 后，自动化会打开一个 PR，向 [⟦T4⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 添加一行。名称列链接到您的`docs_url`（首选合作伙伴文档，然后是 GitHub，然后是 PyPI 或 npm）。不要添加新的 MDX 页面。
+      **默认（每月下载量低于 50,000 次，不推荐）：** 提交 [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)。维护者应用 `integration-run` 后，自动化会打开一个 PR，向 [⟦T4⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 添加一行。名称列链接到您的`docs_url`（首选合作伙伴文档，然后是 GitHub，然后是 PyPI 或 npm）。不要打开手动列表 PR 或添加新的 MDX 页面；自动化会关闭这些 PR 并重定向到问题表单。
 
       **托管指南（每月下载量超过 50,000 次，或由维护人员推荐）：** 从模板在 `src/oss/python/integrations/<component_type>/` 下创建页面：
 

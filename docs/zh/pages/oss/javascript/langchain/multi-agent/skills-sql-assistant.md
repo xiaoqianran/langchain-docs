@@ -13,7 +13,7 @@
 </Note>
 
 <Tip>
-  渐进式披露被 Anthropic 推广为一种构建可扩展代理技能系统的技术。这种方法使用三级架构（元数据→核心内容→详细资源），其中代理仅根据需要加载信息。有关此技术的更多信息，请参阅[Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)。
+  渐进式披露由Anthropic作为一种构建可扩展代理技能系统的技术而普及。这种方法使用三级架构（元数据→核心内容→详细资源），其中代理仅根据需要加载信息。有关此技术的更多信息，请参阅[Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)。
 </Tip>
 
 ## 它是如何工作的
@@ -52,10 +52,10 @@ flowchart TD
 * **有效扩展** - 添加数十或数百项技能，而无需压倒上下文
 * **简化对话历史记录** - 单个代理具有一个对话线程
 
-**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用情况的信息或包括供编码代理执行的示例代码。
+**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用的信息或包括供编码代理执行的示例代码。
 
 <Tip>
-  渐进式披露的技能可以被视为[RAG (Retrieval-Augmented Generation)](/oss/javascript/deepagents/rag)的一种形式，其中每个技能都是一个检索单元——尽管不一定由嵌入或关键字搜索支持，但由浏览内容的工具（如文件操作或本教程中的直接查找）支持。
+  渐进式披露的技能可以被视为[RAG (Retrieval-Augmented Generation)](/oss/javascript/deepagents/rag)的一种形式，其中每个技能都是一个检索单元——尽管不一定由嵌入或关键字搜索支持，但由浏览内容的工具（如文件操作或在本教程中的直接查找）支持。
 </Tip>
 
 **权衡：*** **延迟**：按需加载技能需要额外的工具调用，这会增加需要每种技能的第一个请求的延迟
@@ -94,7 +94,7 @@ flowchart TD
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/javascript/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-skills-sql-assistant) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -243,23 +243,23 @@ flowchart TD
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai
+      npm install @langchain/google
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai
+      pnpm install @langchain/google
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai
+      yarn add @langchain/google
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai
+      bun add @langchain/google
       ```
     </CodeGroup>
 
@@ -269,14 +269,14 @@ flowchart TD
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+      const model = await initChatModel("google:gemini-3.7-flash");
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
 
-      const model = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash-lite",
+      const model = new ChatGoogle({
+        model: "gemini-3.7-flash",
         apiKey: "your-api-key"
       });
       ```
@@ -329,7 +329,7 @@ flowchart TD
   </Tab>
 </Tabs>
 
-## 1. 定义技能首先，定义技能的结构。每个技能都有名称、简要描述（在系统提示中显示）和完整内容（按需加载）：
+## 1. 定义技能首先，定义技能的结构。每个技能都有名称、简要描述（在系统提示符中显示）和完整内容（按需加载）：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { z } from "zod";
@@ -1145,7 +1145,7 @@ This query:
      * 查询连接客户表和订单表
   4. 代理使用模式知识和示例模式编写查询
 
-  渐进式披露（按需加载模式）和动态几次提示（加载相关示例）的结合创建了强大的上下文工程模式，可扩展到大型知识库，同时提供高质量、扎实的输出。
+  渐进式披露（按需加载模式）和动态几次提示（加载相关示例）的结合创建了强大的上下文工程模式，可以扩展到大型知识库，同时提供高质量、扎实的输出。
 </Accordion>
 
 ## 后续步骤
@@ -1161,7 +1161,7 @@ This query:
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

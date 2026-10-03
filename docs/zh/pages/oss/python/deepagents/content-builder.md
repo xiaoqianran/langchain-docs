@@ -686,7 +686,7 @@ Python 3.11 或更高版本。
       def create_content_writer():
           """Create a content writer agent configured by filesystem files."""
           return create_deep_agent(
-              model="anthropic:claude-sonnet-4-6",
+              model="anthropic:claude-sonnet-5",
               memory=["./AGENTS.md"],
               skills=["./skills/"],
               tools=[generate_cover, generate_social_image],
@@ -841,7 +841,7 @@ research/
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

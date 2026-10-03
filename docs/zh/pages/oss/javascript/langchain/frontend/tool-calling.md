@@ -16,10 +16,10 @@
 
 ## 工具调用如何工作
 
-当 LangGraph 代理决定需要外部数据时，它会发出一个或多个
+当LangGraph代理决定需要外部数据时，它会发出一个或多个
 **工具调用**作为 AI 消息的一部分。每个工具调用包括：
 
-* **名称**：被调用的工具（例如`"get_weather"`、`"calculator"`）
+* **名称**：正在调用的工具（例如`"get_weather"`、`"calculator"`）
 * **args**：传递给工具的结构化参数
 * **id**：将调用链接到其结果的唯一标识符
 
@@ -30,7 +30,7 @@
 ## 设置`useStream`
 
 第一步是将 [⟦T17⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接到您的代理后端。钩子返回
-反应状态包括一个实时更新的`toolCalls`数组
+反应状态，包括实时更新的`toolCalls`数组
 代理流。
 
 <Info>
@@ -57,7 +57,9 @@
       </div>
     );
   }
-  ``````vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   <script setup lang="ts">
   import { useStream } from "@langchain/vue";
 
@@ -79,9 +81,7 @@
       />
     </div>
   </template>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   <script lang="ts">
     import { useStream } from "@langchain/svelte";
 
@@ -146,7 +146,7 @@ interface AssembledToolCall<
 ```
 
 |物业 |描述 |
-| ----------- | ------------------------------------------------------------------------------------------ |
+| - | - |
 | `name` |工具的名称（例如`"get_weather"`）|
 | `callId` |与 AI 消息的 `tool_calls` 条目匹配的唯一 ID |
 | `id` | `callId`的别名，匹配消息级工具调用 |
@@ -157,7 +157,9 @@ interface AssembledToolCall<
 | `status` |生命周期状态：`"running"`、`"finished"` 或 `"error"` |
 | `error` |工具调用失败时的错误详细信息 |
 
-## 每条消息的过滤工具调用一条AI消息可能会触发多个工具调用，你的聊天中可能会包含很多AI
+## 每条消息的过滤工具调用
+
+一条AI消息可能会触发多个工具调用，你的聊天中可能会包含很多AI
 消息。要在每条消息下呈现正确的工具卡，请通过匹配进行过滤
 `callId` 与消息的 `tool_calls` 数组：
 
@@ -237,9 +239,7 @@ function WeatherCard({
 }
 ```
 
-### 加载和错误状态
-
-始终处理待处理和错误状态，以便为用户提供清晰的反馈：
+### 加载和错误状态始终处理待处理和错误状态，以便为用户提供清晰的反馈：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function LoadingCard({ name }: { name: string }) {
@@ -295,7 +295,9 @@ type WeatherToolCall = ToolCallFromTool<typeof getWeather>;
 保持 `toolCalls` 与流同步，因此待处理的卡片一旦出现
 代理在工具完成执行之前发出调用。
 
-这意味着用户会看到：1. AI 传入的文本
+这意味着用户会看到：
+
+1. AI 传入的文本
 2. 发出工具调用时的加载卡
 3. 工具完成后，卡片会更新以显示结果
 
@@ -305,9 +307,7 @@ type WeatherToolCall = ToolCallFromTool<typeof getWeather>;
   与新状态。
 </Note>
 
-## 处理多个并发工具调用
-
-代理可以并行调用多个工具。 `toolCalls` 数组将包含
+## 处理多个并发工具调用代理可以并行调用多个工具。 `toolCalls` 数组将包含
 同时使用`status: "running"`进行多个条目。每一个解决
 独立地，所以你的 UI 应该优雅地处理部分完成：
 
@@ -331,14 +331,16 @@ function ToolCallList({ toolCalls }: { toolCalls: AssembledToolCall[] }) {
 
 ## 最佳实践
 
-构建工具调用 UI 时请遵循以下准则：* **始终处理所有三种状态**：`running`、`finished` 和 `error`。
+构建工具调用 UI 时请遵循以下准则：
+
+* **始终处理所有三种状态**：`running`、`finished` 和 `error`。
   用户永远不应该看到空白卡。
 * **安全地验证结果**。工具输出的类型为 `unknown`，直到您
   将它们缩小到特定的卡。
 * **提供通用后备**。并非每个工具都需要定制卡。渲染
   未知工具名称的可折叠 JSON 视图。
 * **加载期间显示工具名称和参数**。用户想知道*什么*
-  甚至在结果到达之前，代理就正在做。
+  代理正在做，甚至在结果到达之前。
 * **保持卡片紧凑**。工具卡与聊天消息内嵌。避免
   用超大的小部件压倒对话。
 
@@ -346,7 +348,7 @@ function ToolCallList({ toolCalls }: { toolCalls: AssembledToolCall[] }) {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

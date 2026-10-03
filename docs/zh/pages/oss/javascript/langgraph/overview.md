@@ -4,18 +4,18 @@
 
 # LangGraph 概述
 
-使用 LangGraph 获得控制，设计能够可靠处理复杂任务的代理
+使用 LangGraph 获得控制权，设计能够可靠处理复杂任务的代理
 
-LangGraph 受到塑造代理未来的公司（包括 Klarna、Uber、J.P. Morgan 等）的信赖，是一个低级编排框架和运行时，用于构建、管理和部署长期运行的有状态代理。 LangGraph 为您提供了细粒度的控制，可以在同一图表中将确定性的手动编码步骤与 LLM 驱动的代理步骤混合在一起，这样您就可以构建完全按照应用程序所需的方式运行的定制代理。
+受到塑造代理未来的公司（包括 Klarna、Uber、J.P. Morgan 等）的信赖，LangGraph 是一个低级编排框架和运行时，用于构建、管理和部署长期运行的有状态代理。 LangGraph 为您提供细粒度的控制，将确定性的手动编码步骤与 LLM 驱动的代理步骤混合在同一个图中，因此您可以构建完全按照应用程序所需的方式运行的定制代理。
 
-LangGraph 的级别非常低，完全专注于代理**编排**。在使用 LangGraph 之前，我们建议您熟悉一些用于构建代理的组件，从[models](/oss/javascript/langchain/models)和[tools](/oss/javascript/langchain/tools)开始。
+LangGraph 级别非常低，完全专注于代理**编排**。在使用LangGraph之前，我们建议您先熟悉一些用于构建代理的组件，从[models](/oss/javascript/langchain/models)和[tools](/oss/javascript/langchain/tools)开始。
 
-我们将在整个文档中通常使用[LangChain](/oss/javascript/langchain/overview)组件来集成模型和工具，但您不需要使用LangChain来使用LangGraph。如果您刚刚开始使用代理或想要更高级别的抽象，我们建议您使用 LangChain 的[agents](/oss/javascript/langchain/agents)，它为常见的 LLM 和工具调用循环提供预构建的架构。LangGraph 专注于对代理编排非常重要的底层功能：持久执行、流式传输、人机交互等。
+我们将在整个文档中通常使用[LangChain](/oss/javascript/langchain/overview)组件来集成模型和工具，但您不需要使用LangChain来使用LangGraph。如果您刚刚开始使用代理或想要更高级别的抽象，我们建议您使用LangChain的[agents](/oss/javascript/langchain/agents)，它为常见的LLM和工具调用循环提供预构建的架构。LangGraph 专注于对代理编排非常重要的底层功能：持久执行、流式传输、人机交互等。
 
 LangGraph 的核心优势之一是能够在单个图中将确定性步骤与 LLM 驱动的代理步骤混合在一起。这使您可以构建定制的工作流程，其中部分逻辑完全可预测和可审计，而其他部分则灵活且由模型驱动，从而使您能够精确控制人工智能的应用位置和方式。
 
 <Expandable title="how LangChain products fit together">
-  * [Deep Agents](/oss/javascript/deepagents/overview) 是[agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk)：LangGraph 之上的规划、子代理、文件系统工具和上下文管理。
+  * [Deep Agents](/oss/javascript/deepagents/overview) 是 [agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk)：在 LangGraph 之上的规划、子代理、文件系统工具和上下文管理。
   * [LangChain](/oss/javascript/langchain/overview) 是代理框架：模型、工具和代理循环的抽象和集成。
   * [LangGraph](/oss/javascript/langgraph/overview) 是编排运行时：持久执行、流式传输、人机交互和持久性。
   * [LangSmith](/langsmith/observability)是跨框架追踪、评估、提示、部署的平台。
@@ -71,18 +71,18 @@ await graph.invoke({ messages: [{ role: "user", content: "hi!" }] });
 
 ## 核心优势
 
-LangGraph 为“任何”长期运行、有状态的工作流程或代理提供低级支持基础设施。 LangGraph 不抽象提示或架构，并提供以下核心优势：* **混合确定性和代理步骤**：将手动编码的确定性逻辑与 LLM 驱动的决策结合在单个图中。在需要可靠性和可预测性的地方使用确定性步骤，在需要灵活性的地方使用代理步骤，让您能够精确控制代理行为的每个部分。
+LangGraph 为*任何*长期运行、有状态的工作流程或代理提供低级支持基础设施。 LangGraph 不抽象提示或架构，并提供以下核心优势：* **混合确定性和代理步骤**：将手动编码的确定性逻辑与 LLM 驱动的决策结合在单个图中。在需要可靠性和可预测性的地方使用确定性步骤，在需要灵活性的地方使用代理步骤，让您能够精确控制代理行为的每个部分。
 * [Persistence](/oss/javascript/langgraph/persistence)：构建能够在故障中持续存在并可以长时间运行并从中断位置恢复的代理。
 * [Human-in-the-loop](/oss/javascript/langgraph/interrupts)：通过随时检查和修改代理状态来纳入人工监督。
 * [Comprehensive memory](/oss/javascript/concepts/memory)：创建具有用于持续推理的短期工作记忆和跨会话的长期记忆的有状态代理。
 * [Debugging with LangSmith](/langsmith/observability)：通过可视化工具跟踪执行路径、捕获状态转换并提供详细的运行时指标，深入了解复杂的代理行为。
 * [Production-ready deployment](/langsmith/deployment)：通过可扩展的基础设施自信地部署复杂的代理系统，该基础设施旨在应对有状态、长时间运行的工作流程的独特挑战。
 
-## LangGraph 生态系统虽然 LangGraph 可以独立使用，但它也可以与任何 LangChain 产品无缝集成，为开发人员提供了一整套用于构建代理的工具。为了改进您的 LLM 应用程序开发，请将 LangGraph 与：
+## LangGraph 生态系统虽然LangGraph可以独立使用，但它也可以与任何LangChain产品无缝集成，为开发人员提供了一整套用于构建代理的工具。为了改进您的 LLM 申请开发，请将 LangGraph 与：
 
 <Columns>
   <Card title="LangSmith Observability" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/observability-icon-dark.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=ccbc183bca2a5e4ca78d30149e3836cc" href="/langsmith/observability">
-    在一处跟踪请求、评估输出并监控部署。使用 LangGraph 在本地进行原型设计，然后通过集成的可观察性和评估转移到生产环境，以构建更可靠的代理系统。
+    在一处跟踪请求、评估输出并监控部署。使用LangGraph在本地进行原型设计，然后通过集成的可观察性和评估进行生产，以构建更可靠的代理系统。
   </Card>
 
   <Card title="LangSmith Deployment" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/deployment-icon-dark.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=024e3712d388bfa55f4f160cc9d6a85b" href="/langsmith/deployment">
@@ -90,20 +90,20 @@ LangGraph 为“任何”长期运行、有状态的工作流程或代理提供�
   </Card>
 
   <Card title="LangChain" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langchain-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=663b30f85baf99ad708b97e05da2a5a4" href="/oss/javascript/langchain/overview">
-    提供集成和可组合组件以简化 LLM 应用程序开发。包含构建在 LangGraph 之上的代理抽象。
+    提供集成和可组合组件以简化法学硕士应用程序开发。包含构建在 LangGraph 之上的代理抽象。
   </Card>
 </Columns>
 
 ## 致谢
 
-LangGraph 的灵感来自于 [Pregel](https://research.google/pubs/pub37252/) 和 [Apache Beam](https://beam.apache.org/)。公共界面的灵感来自于[NetworkX](https://networkx.org/documentation/latest/)。 LangGraph由LangChain的创建者LangChain Inc构建，但可以在没有LangChain的情况下使用。
+LangGraph的灵感来自于[Pregel](https://research.google/pubs/pub37252/)和[Apache Beam](https://beam.apache.org/)。公共界面的灵感来自于[NetworkX](https://networkx.org/documentation/latest/)。 LangGraph 由 LangChain 的创建者 LangChain Inc 构建，但可以在没有 LangChain 的情况下使用。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

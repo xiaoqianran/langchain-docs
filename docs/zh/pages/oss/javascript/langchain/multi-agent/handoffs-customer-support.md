@@ -72,7 +72,7 @@ flowchart TD
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/javascript/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-handoffs-customer-support) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -221,23 +221,23 @@ flowchart TD
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai
+      npm install @langchain/google
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai
+      pnpm install @langchain/google
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai
+      yarn add @langchain/google
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai
+      bun add @langchain/google
       ```
     </CodeGroup>
 
@@ -247,14 +247,14 @@ flowchart TD
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+      const model = await initChatModel("google:gemini-3.7-flash");
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
 
-      const model = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash-lite",
+      const model = new ChatGoogle({
+        model: "gemini-3.7-flash",
         apiKey: "your-api-key"
       });
       ```
@@ -280,7 +280,9 @@ flowchart TD
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       bun add @langchain/aws
       ```
-    </CodeGroup><CodeGroup>
+    </CodeGroup>
+
+    <CodeGroup>
       ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { initChatModel } from "langchain";
 
@@ -288,9 +290,7 @@ flowchart TD
       // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       const model = await initChatModel("bedrock:gpt-5.5");
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ``````typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { ChatBedrockConverse } from "@langchain/aws";
 
       // Follow the steps here to configure your credentials:
@@ -1072,7 +1072,7 @@ const result = await agent.invoke(
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

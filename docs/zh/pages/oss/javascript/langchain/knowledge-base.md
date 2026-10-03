@@ -18,7 +18,7 @@
 
 ### 概念
 
-本教程重点关注文本检索并涵盖以下概念：
+本教程重点介绍文本检索并涵盖以下概念：
 
 * [⟦T70⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document)
 * [Text splitters](/oss/javascript/integrations/splitters)
@@ -47,9 +47,9 @@
 
 欲了解更多详情，请参阅[Installation guide](/oss/javascript/langchain/install)。
 
-### 配置 LangSmith
+### 配置LangSmith
 
-您使用 LangChain 构建的许多应用程序将包含多个步骤以及多次调用 LLM 调用。
+您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
 最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
@@ -60,7 +60,7 @@ export LANGSMITH_API_KEY="..."
 
 ## 创建文档
 
-LangChain 为文本单元和相关元数据实现了[⟦T72⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 抽象。它具有三个属性：
+LangChain 实现了文本单元和相关元数据的 [⟦T72⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 抽象。它具有三个属性：
 
 * `pageContent`：表示内容的字符串。
 * `metadata`：包含任意元数据的字典。
@@ -90,7 +90,7 @@ const documents = [
 
 矢量搜索存储与文本关联的数字向量。将查询嵌入为相同维度的向量，然后使用相似性度量（例如余弦相似性）来查找相关文本。
 
-LangChain支持[many providers](/oss/javascript/integrations/embeddings/)的嵌入。选择一个模型来指定如何将文本转换为数字向量：
+LangChain 支持[many providers](/oss/javascript/integrations/embeddings/) 的嵌入。选择一个模型来指定如何将文本转换为数字向量：
 
 <Tabs>
   <Tab title="OpenAI">
@@ -173,7 +173,7 @@ LangChain支持[many providers](/oss/javascript/integrations/embeddings/)的嵌�
     ```
   </Tab>
 
-  <Tab title="VertexAI">
+  <Tab title="Gemini Enterprise Agent Platform">
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/google-vertexai
@@ -277,9 +277,9 @@ Generated vectors of length 1536
 
 ## 选择一个向量存储
 
-LangChain [⟦T78⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象将文本和 [⟦T79⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象添加到存储中，并使用相似性指标查询它们。它们通常使用 [embedding](/oss/javascript/integrations/embeddings) 模型进行初始化，将文本转换为数字向量。
+LangChain [⟦T78⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象将文本和 [⟦T79⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象添加到存储中并使用相似性指标查询它们。它们通常使用 [embedding](/oss/javascript/integrations/embeddings) 模型进行初始化，将文本转换为数字向量。
 
-LangChain包含[integrations](/oss/javascript/integrations/vectorstores)以及多种向量存储技术。有些是托管的并且需要凭据，有些在单独的基础设施（本地或第三方）中运行，而另一些则在内存中运行以实现轻量级工作负载。选择矢量存储：
+LangChain 包括[integrations](/oss/javascript/integrations/vectorstores) 以及许多矢量存储技术。有些是托管的并且需要凭据，有些在单独的基础设施（本地或第三方）中运行，而另一些则在内存中运行以实现轻量级工作负载。选择矢量存储：
 
 <Tabs>
   <Tab title="Memory">
@@ -598,7 +598,7 @@ await retriever.batch([
         pageContent: 'Table of Contents...',
     }],
 ]
-```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它在 LLM 提示中将问题与检索到的上下文结合起来。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
+```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它将问题与检索到的上下文结合在 LLM 提示中。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
 
 ## 后续步骤
 
@@ -619,7 +619,7 @@ await retriever.batch([
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -827,6 +827,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Outcome-aware execution routing for AI agents across models, tools, and parameters.
   </Card>
 
+  <Card title="Kavel" href="https://github.com/hanshs474/langchain-kavel#readme" icon="link">
+    AI image generation and editing. The `KavelImageGenerator` tool returns a URL to the finished image and runs on Kavel's free tier with no API key, or on a kavel.ai account with one.
+  </Card>
+
   <Card title="Keenable" href="https://docs.keenable.ai" icon="link">
     Web search and page-fetch API built for AI agents, with a keyless free tier.
   </Card>

@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: Anthropic integration | https://docs.langchain.com/oss/javascript/integrations/tools/anthropic -->
 
-# 人择整合
+# Anthropic 整合
 
 使用 LangChain JavaScript 与 Anthropic 工具集成。
 
-`@langchain/anthropic`包为Anthropic的内置工具提供了与LangChain兼容的包装器。这些工具可以使用`bindTools()`或[⟦T22⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatAnthropic`。
+`@langchain/anthropic` 软件包为 Anthropic 的内置工具提供与 LangChain 兼容的包装器。这些工具可以使用`bindTools()`或[⟦T22⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatAnthropic`。
 
 ### 记忆工具
 
@@ -165,7 +165,7 @@ const response = await llm.invoke(
 );
 ```
 
-有关更多信息，请参阅[Anthropic's Web Fetch Tool documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/web-fetch-tool)。
+有关更多信息，请参阅[Anthropic's Web Fetch Tool documentation](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-fetch-tool)。
 
 ### 工具搜索工具
 
@@ -228,7 +228,7 @@ const response = await llm.invoke("What is the weather in San Francisco?", {
 });
 ```
 
-欲了解更多信息，请参阅[Anthropic's Tool Search documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/tool-search-tool)。
+欲了解更多信息，请参阅[Anthropic's Tool Search documentation](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/tool-search-tool)。
 
 ### 文本编辑器工具
 
@@ -363,7 +363,7 @@ const computer = tools.computer_20251124({
 });
 ```
 
-欲了解更多信息，请参阅[Anthropic's Computer Use documentation](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use)。
+欲了解更多信息，请参阅[Anthropic's Computer Use documentation](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool)。
 
 ### 代码执行工具
 
@@ -611,7 +611,7 @@ const response = await llm.invoke("Find and use the right tool", {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

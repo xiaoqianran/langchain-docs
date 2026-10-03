@@ -11,14 +11,14 @@ Headless React AI 聊天框架，具有完整的运行时层，桥接到 useStre
 <ExampleEmbed />
 
 <Tip>
-  克隆并运行[full assistant-ui example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/assistant-ui-claude)，查看使用`useExternalStoreRuntime`连接到 LangChain 代理的 Claude 风格的聊天界面。
+  克隆并运行 [full assistant-ui example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/assistant-ui-claude) 以查看使用 `useExternalStoreRuntime` 连接到 LangChain 代理的 Claude 风格的聊天界面。
 </Tip>
 
 ## 它是如何工作的
 
-1. **使用 [⟦T7⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)** 进行流式传输 — 连接到您的代理并获取反应消息、加载状态和提交/取消回调
-2. **适配`useExternalStoreRuntime`** — 通过将`BaseMessage[]`转换为`ThreadMessageLike[]`，将`stream.messages`桥接到assistant-ui的运行时格式
-3. **提供运行时** — 将您的 UI 包装在 `AssistantRuntimeProvider` 中并渲染任何 Assistant-ui 线程组件
+1. **使用[⟦T7⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)**进行流式传输：连接到您的代理并获取反应消息、加载状态和提交/取消回调
+2. **适配`useExternalStoreRuntime`**：通过将`BaseMessage[]`转换为`ThreadMessageLike[]`，将`stream.messages`桥接到assistant-ui的运行时格式
+3. **提供运行时**：将您的UI包装在`AssistantRuntimeProvider`中并渲染任何assistant-ui线程组件
 
 ## 安装
 
@@ -81,7 +81,7 @@ export function Chat() {
 
 ### 转换消息
 
-`toThreadMessages`将LangChain`BaseMessage[]`映射为assistant-ui期望的`ThreadMessageLike[]`格式。处理每种消息类型——人类、人工智能和工具——并转换内容块、工具调用和推理令牌：
+`toThreadMessages` 将 LangChain `BaseMessage[]` 映射到 Assistant-ui 期望的 `ThreadMessageLike[]` 格式。处理每种消息类型——人类、人工智能和工具——并转换内容块、工具调用和推理令牌：
 
 ```tsx expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage, HumanMessage, ToolMessage, type BaseMessage } from "langchain";
@@ -170,7 +170,7 @@ function CustomThread() {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

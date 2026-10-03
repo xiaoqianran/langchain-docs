@@ -1,6 +1,6 @@
-<!-- langchain-docs: Overview | https://docs.langchain.com/oss/javascript/langchain/middleware/overview -->
+<!-- langchain-docs: Middleware overview | https://docs.langchain.com/oss/javascript/langchain/middleware/overview -->
 
-# Overview
+# Middleware overview
 
 Control and customize agent execution at every step
 

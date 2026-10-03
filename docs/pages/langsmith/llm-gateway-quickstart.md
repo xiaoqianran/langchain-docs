@@ -101,7 +101,7 @@ The LLM Gateway calls models across configured providers through one endpoint wi
   </Step>
 
   <Step title="View the trace" icon="activity">
-    Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and go to the tracing project named `gateway` or `gateway-<short_api_key>-<api_key_id>` in your workspace. Your request appears there with its token counts, cost, and latency.
+    Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and go to the tracing project named `gateway` in your workspace. Your request appears there with its token counts, cost, and latency.
   </Step>
 
   <Step title="Set a spend limit" icon="shield">

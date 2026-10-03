@@ -6933,7 +6933,7 @@
           "rel": "oss/javascript/langchain/middleware/custom.md"
         },
         {
-          "title": "Overview",
+          "title": "Middleware overview",
           "rel": "oss/javascript/langchain/middleware/overview.md"
         },
         {
@@ -7829,7 +7829,7 @@
           "rel": "oss/python/langchain/middleware/custom.md"
         },
         {
-          "title": "Overview",
+          "title": "Middleware overview",
           "rel": "oss/python/langchain/middleware/overview.md"
         },
         {

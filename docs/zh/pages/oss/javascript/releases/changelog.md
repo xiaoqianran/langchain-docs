@@ -15,7 +15,7 @@
 
   `deepagents` v1.9.0 的 Alpha 版本。
 
-  * **[Async subagents](/oss/javascript/deepagents/async-subagents)**：深度代理可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
+  * **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
     * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如 `ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
     * **多模式文件支持**：`read()`返回带有`.content`字段的`ReadResult`而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够在本地处理多模式文件。
     * **简化方法名称**：`lsInfo` -> `ls`、`grepRaw` -> `grep`、`globInfo` -> `glob`。
@@ -62,8 +62,8 @@
   ### 新状态值原语
 
   * **ReducedValue**：使用自定义缩减器定义字段以累积值。支持类型安全减速器输入的单独输入和输出模式。
-  * **UntrackedValue**：定义执行期间存在但从未设置检查点的瞬态 - 对于数据库连接、缓存或仅运行时配置有用。
-  * **MessagesValue**：使用标准消息缩减器预构建的 `ReducedValue` 用于聊天消息。
+  * **UntrackedValue**：定义执行期间存在但从未设置检查点的瞬态状态 - 对于数据库连接、缓存或仅运行时配置有用。
+  * **MessagesValue**：使用标准消息缩减器预先构建的 `ReducedValue` 用于聊天消息。
 
   ### 类型助手导出
 
@@ -110,7 +110,7 @@
 
   ### `@langchain/anthropic`
 
-  * **新的提供商内置工具：** 支持由提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
+  * **新的提供商内置工具：** 支持提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
   * 外露式 `ChatAnthropicInput` 型，提高型式安全性。
 
   ## v1.1.0
@@ -145,7 +145,7 @@
   * [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)：更新为支持使用模型配置文件进行上下文感知摘要的灵活触发点。
   * [Structured output](/oss/javascript/langchain/structured-output)：现在可以从模型配置文件推断`ProviderStrategy` 支持（本机结构化输出）。
   * [⟦T51⟧ for ⟦T52⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
-  * [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回 [⟦T58⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 或 `string` 时，它们会与现有系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
+  * [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T58⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
 </Update>
 
 <Update label="Oct 20, 2025">
@@ -170,7 +170,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

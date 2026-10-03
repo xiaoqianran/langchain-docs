@@ -82,7 +82,7 @@ const texts = splitter.splitText(document)
 * [Split by tokens](/oss/javascript/integrations/splitters/split_by_token)
 * [Split by characters](/oss/javascript/integrations/splitters/character_text_splitter)
 
-## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
+## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构分割文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
 
 * 保留文档的逻辑组织
 * 维护每个块内的上下文
@@ -96,7 +96,7 @@ const texts = splitter.splitText(document)
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

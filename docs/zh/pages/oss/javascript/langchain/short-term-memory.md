@@ -14,7 +14,7 @@
 
 对话历史是短期记忆最常见的形式。长时间的对话对当今的法学硕士提出了挑战；完整的历史记录可能不适合法学硕士的上下文窗口，从而导致上下文丢失或错误。
 
-即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口有限，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
+即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/javascript/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口是有限的，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
 
 <Tip>
   需要记住**跨**对话的信息？使用[long-term memory](/oss/javascript/langchain/long-term-memory)跨不同线程和会话存储和调用用户特定或应用程序级数据。
@@ -47,7 +47,7 @@
   const checkpointer = new MemorySaver(); // [!code highlight]
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [getUserInfo],
     checkpointer,
   });
@@ -117,7 +117,7 @@
   const checkpointer = new MemorySaver(); // [!code highlight]
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [getUserInfo],
     checkpointer,
   });
@@ -152,7 +152,7 @@
   const checkpointer = new MemorySaver(); // [!code highlight]
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [getUserInfo],
     checkpointer,
   });
@@ -279,6 +279,10 @@
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eaa48cfd-c3f0-4951-a496-f448a8dd7a04/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 生产中
 
 在生产中，使用由数据库支持的检查指针：
@@ -339,23 +343,23 @@ const result = await agent.invoke({
   </Card>
 
   <Card title="Delete messages" icon="trash" href="#delete-messages">
-    永久删除 LangGraph 状态中的消息
+    永久删除LangGraph状态的消息
   </Card>
 
   <Card title="Summarize messages" icon="stack-2" href="#summarize-messages">
     总结历史记录中较早的消息并将其替换为摘要
-  </Card>
-
-  <Card title="Custom strategies" icon="adjustments">
+  </Card><Card title="Custom strategies" icon="adjustments">
     自定义策略（例如消息过滤等）
   </Card>
-</CardGroup>这允许代理在不超出 LLM 上下文窗口的情况下跟踪对话。
+</CardGroup>
+
+这允许代理在不超出 LLM 上下文窗口的情况下跟踪对话。
 
 ### 修剪消息
 
 大多数法学硕士都有最大支持的上下文窗口（以令牌计价）。
 
-决定何时截断消息的一种方法是计算消息历史记录中的标记，并在接近该限制时进行截断。如果您使用 LangChain，则可以使用修剪消息实用程序并指定要从列表中保留的令牌数量，以及用于处理边界的`strategy`（例如，保留最后一个`maxTokens`）。
+决定何时截断消息的一种方法是计算消息历史记录中的标记，并在接近该限制时进行截断。如果您使用 LangChain，则可以使用修剪消息实用程序并指定要从列表中保留的标记数量，以及用于处理边界的 `strategy`（例如，保留最后一个 `maxTokens`）。
 
 要修剪代理中的消息历史记录，请使用 [⟦T26⟧](https://reference.langchain.com/javascript/langchain/index/createMiddleware) 和 `beforeModel` 挂钩：
 
@@ -402,7 +406,7 @@ const agent = createAgent({
 
 当您想要删除特定消息或清除整个消息历史记录时，这非常有用。
 
-要从图状态中删除消息，可以使用`RemoveMessage`。为了使 `RemoveMessage` 工作，您需要使用带有 [⟦T30⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/messagesStateReducer) [reducer](/oss/javascript/langgraph/graph-api#reducers) 的状态密钥，如 `MessagesValue`。
+要从图状态中删除消息，您可以使用`RemoveMessage`。为了使 `RemoveMessage` 工作，您需要使用带有 [⟦T30⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/messagesStateReducer) [reducer](/oss/javascript/langgraph/graph-api#reducers) 的状态密钥，如 `MessagesValue`。
 
 要删除特定消息：
 
@@ -420,10 +424,10 @@ const deleteMessages = (state) => {
         };
     }
 };
-```
+```<Warning>
+  删除消息时，**确保**生成的消息历史记录有效。检查您正在使用的 LLM 提供商的限制。例如：
 
-<Warning>
-  删除消息时，**确保**生成的消息历史记录有效。检查您正在使用的 LLM 提供商的限制。例如：* 一些提供商希望消息历史记录以 `user` 消息开始
+  * 一些提供商希望消息历史记录以 `user` 消息开始
   * 大多数提供商要求带有工具调用的 `assistant` 消息后跟相应的 `tool` 结果消息。
 </Warning>
 
@@ -597,11 +601,11 @@ const result = await agent.invoke(
 
 console.log(result.messages.at(-1)?.content);
 // Outputs: "Your name is John Doe."
-```
+```#### 从工具中写入短期记忆
 
-#### 从工具中写入短期记忆
+要在执行期间修改代理的短期记忆（状态），您可以直接从工具返回状态更新。
 
-要在执行期间修改代理的短期记忆（状态），您可以直接从工具返回状态更新。这对于保留中间结果或使后续工具或提示可以访问信息非常有用。
+这对于保留中间结果或使后续工具或提示可以访问信息非常有用。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent, ToolMessage, type ToolRuntime } from "langchain";
@@ -758,11 +762,11 @@ for (const message of result.messages) {
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`\_\_start\_\_`"])
     PRE(before_model)
     MODEL(model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`\_\_end\_\_`"])
     S --> PRE
     PRE --> MODEL
     MODEL -.-> TOOLS
@@ -871,7 +875,7 @@ const agent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

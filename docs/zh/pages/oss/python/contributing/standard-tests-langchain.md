@@ -6,7 +6,7 @@
 
 **标准测试确保您的集成按预期工作。**
 
-当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供了针对每种集成类型的全面的[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将LangChain的标准测试套件添加到每种集成类型中。
+当为自己创建自定义类或在 LangChain 集成中发布时，有必要添加测试以确保其按预期工作。 LangChain为您提供针对每种集成类型的全面[set of tests](https://pypi.org/project/langchain-tests/)。本指南将向您展示如何将 LangChain 的标准测试套件添加到每种集成类型。
 
 ## 设置
 
@@ -46,13 +46,13 @@
 
     旨在隔离测试组件，无需访问外部服务
 
-    [View API reference](https://reference.langchain.com/python/langchain_tests/unit_tests)
+    [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
   </Accordion>
 
   <Accordion title="Integration tests" icon="network">
     **地点**：`langchain_tests.integration_tests`旨在测试可访问外部服务的组件（特别是组件设计用于交互的外部服务）
 
-    [View API reference](https://reference.langchain.com/python/langchain_tests/integration_tests)
+    [View API reference](https://reference.langchain.com/python/langchain-tests/integration_tests)
   </Accordion>
 </AccordionGroup>
 
@@ -64,7 +64,7 @@
 
 通过对集成类型的标准测试套件进行子类化，您可以获得该类型的标准测试的完整集合。为了使测试运行成功，只有当模型支持正在测试的功能时，给定的测试才应该通过。否则，应跳过测试。
 
-由于不同的集成提供独特的功能集，因此 LangChain 提供的大多数标准测试都是**默认选择**以防止误报。因此，您需要重写属性来指示您的集成支持哪些功能 - 请参阅下面的示例以获取说明。
+由于不同的集成提供独特的功能集，因此LangChain提供的大多数标准测试都是**默认选择加入**以防止误报。因此，您需要重写属性来指示您的集成支持哪些功能 - 请参阅下面的示例以获取说明。
 
 ```python tests/integration_tests/test_standard.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Indicate that a chat model supports image inputs
@@ -82,7 +82,7 @@ class TestChatParrotLinkStandard(ChatModelIntegrationTests):
 
   * `tests/unit_tests` 用于单元测试
   * `tests/integration_tests` 用于集成测试
-</Note>要查看可配置功能及其默认值的完整列表，请访问 [API reference](https://reference.langchain.com/python/langchain_tests) 进行标准测试。
+</Note>要查看可配置功能及其默认值的完整列表，请访问 [API reference](https://reference.langchain.com/python/langchain-tests) 进行标准测试。
 
 以下是来自流行集成的标准测试的一些示例实现：
 
@@ -149,13 +149,13 @@ uv run --group test pytest tests/integration_tests/test_chat_models.py::test_cha
 uv run --group test pytest tests/integration_tests/test_chat_models.py::TestChatParrotLinkIntegration::test_chat_completions
 ```
 
-## 故障排除有关可用标准测试套件的完整列表，以及有关包含哪些测试以及如何解决常见问题的信息，请参阅[Standard Tests API Reference](https://reference.langchain.com/python/langchain_tests)。
+## 故障排除有关可用标准测试套件的完整列表，以及有关包含哪些测试以及如何解决常见问题的信息，请参阅[Standard Tests API Reference](https://reference.langchain.com/python/langchain-tests)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

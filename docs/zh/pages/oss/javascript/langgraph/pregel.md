@@ -4,7 +4,7 @@
 
 # LangGraph 运行时
 
-[⟦T19⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Pregel) 实现 LangGraph 的运行时，管理 LangGraph 应用程序的执行。
+[⟦T19⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Pregel) 实现LangGraph 的运行时，管理LangGraph 应用程序的执行。
 
 编译 [StateGraph](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) 或创建 [entrypoint](https://reference.langchain.com/javascript/langchain-langgraph/index/entrypoint) 会生成可通过输入调用的 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Pregel) 实例。
 
@@ -24,7 +24,7 @@
 
 ## 演员
 
-**演员**是一个`PregelNode`。它订阅通道、从中读取数据并向其中写入数据。它可以被认为是 Pregel 算法中的**演员**。 `PregelNodes` 实现LangChain的Runnable接口。
+**演员**是一个`PregelNode`。它订阅通道、从中读取数据并向其中写入数据。它可以被认为是 Pregel 算法中的**演员**。 `PregelNodes` 实现LangChain 的 Runnable 接口。
 
 ## 频道通道用于在参与者（PregelNode）之间进行通信。每个通道都有一个值类型、一个更新类型和一个更新函数，该函数采用一系列更新并修改存储的值。通道可用于将数据从一个链发送到另一个链，或者在未来的步骤中将数据从一个链发送到自身。
 
@@ -202,8 +202,8 @@ const total = new BinaryOperatorAggregate<number>({ operator: (a, b) => a + b })
   </Tab>
 
   <Tab title="Cycle">
-    此示例演示了如何在图中引入循环，方法是：
-    链写入其订阅的频道。执行将继续
+    此示例演示了如何在图中引入循环，方法是
+    链写入其订阅的通道。执行将继续
     直到`null`值写入通道。
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -365,7 +365,7 @@ LangGraph 提供了两个用于创建 Pregel 应用程序的高级 API：[StateG
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

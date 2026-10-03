@@ -38,17 +38,18 @@ LangChain 提供键值存储接口，用于通过键存储和检索数据。 Lan
 ## 所有键值存储
 
 <div>
-  |整合|下载 |
-  | :------------------------------------------------------------------ | ：-------------- |
-  | [⟦T11⟧](/oss/javascript/integrations/stores/in_memory) | <span>N/A</span> |
-  | [⟦T12⟧](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
+  |整合 |下载 |
+  | :- | :- |
+  | [⟦T11⟧](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | <span><a href="https://www.npmjs.com/package/al-buddy-memory"><img alt="Downloads per month" /></a></span> |
+  | [⟦T12⟧](/oss/javascript/integrations/stores/in_memory) | <span>N/A</span> |
+  | [⟦T13⟧](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
 </div>
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

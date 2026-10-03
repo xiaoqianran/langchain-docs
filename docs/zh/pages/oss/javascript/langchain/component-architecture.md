@@ -4,7 +4,7 @@
 
 # 组件架构
 
-LangChain 的力量来自于其组件如何协同工作来创建复杂的人工智能应用程序。此页面提供的图表显示了不同组件之间的关系。
+LangChain 的强大之处在于其组件如何协同工作来创建复杂的人工智能应用程序。此页面提供的图表显示了不同组件之间的关系。
 
 ## 核心组件生态系统
 
@@ -76,12 +76,13 @@ graph TD
 ## 组件类别
 
 LangChain 将组件分为以下主要类别：|类别 |目的|关键部件|使用案例 |
-| ------------------------------------------------------------------------------------ | ------------------------ | | ----------------------------------- | -------------------------------------------------- |
-| **[Models](/oss/javascript/langchain/models)** | AI推理与生成|聊天模型、法学硕士、嵌入模型 |文本生成、推理、语义理解 |
+| - | - | - | - |
+| **[Models](/oss/javascript/langchain/models)** | AI推理与生成 |聊天模型、法学硕士、嵌入模型 |文本生成、推理、语义理解 |
 | **[Tools](/oss/javascript/langchain/tools)** |外部能力 | API、数据库等 |网络搜索、数据访问、计算 |
-| **[Agents](/oss/javascript/langchain/agents)** |编排与推理 | ReAct 代理、工具调用代理 |不确定性工作流程、决策 |
+| **[Agents](/oss/javascript/langchain/agents)** |编排与推理| ReAct 代理、工具调用代理 |不确定性工作流程、决策 |
 | **[Memory](/oss/javascript/langchain/short-term-memory)** |上下文保存 |消息历史记录、自定义状态 |对话、状态交互 |
-| **[Retrievers](/oss/javascript/integrations/retrievers)** |信息获取|矢量检索器、网络检索器| RAG，知识库搜索|| **[Document processing](/oss/javascript/integrations/document_loaders)** |数据摄取|装载机、分离器、变压器| PDF 处理、网页抓取 |
+| **[Retrievers](/oss/javascript/integrations/retrievers)** |信息获取|矢量检索器、网络检索器| RAG，知识库搜索|
+| **[Document processing](/oss/javascript/integrations/document_loaders)** |数据摄取|装载机、分离器、变压器| PDF 处理、网页抓取 |
 | **[Vector Stores](/oss/javascript/integrations/vectorstores)** |语义搜索| Chroma、松果、FAISS |相似性搜索、嵌入存储 |
 
 ## 常见模式
@@ -158,7 +159,7 @@ graph LR
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

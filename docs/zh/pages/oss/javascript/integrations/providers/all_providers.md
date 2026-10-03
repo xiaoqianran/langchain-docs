@@ -18,7 +18,7 @@
   </Card>
 
   <Card title="Google" href="/oss/javascript/integrations/providers/google" icon="brand-google">
-    与 Google 的 AI 服务集成，包括 Gemini 和 Vertex AI。
+    与 Google 的 AI 服务集成，包括 Gemini 和 Gemini Enterprise Agent Platform。
   </Card>
 
   <Card title="Microsoft" href="/oss/javascript/integrations/providers/microsoft" icon="brand-windows">
@@ -32,7 +32,7 @@
 
 ## LangGraph 集成
 
-将LangGraph代理连接到前端和可观察平台。
+将 LangGraph 代理连接到前端和可观察平台。
 
 <Columns>
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
@@ -47,6 +47,14 @@
     使用 OpenUI 从 LangGraph 和 Deep Agents 渲染自适应、代理生成的界面。
   </Card><Card title="The Context Company" href="https://docs.thecontextcompany.com/frameworks/langchain-langgraph" icon="link">
     生产型人工智能代理的可观察性和客户分析。
+  </Card>
+</Columns>
+
+## 分类模型
+
+<Columns>
+  <Card title="TypeSafe" href="/oss/javascript/integrations/providers/typesafe" icon="route">
+    使用 Jev 将状态分类为类型化决策和校准概率。
   </Card>
 </Columns>
 
@@ -95,15 +103,15 @@
 
   <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
     适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API。
-  </Card>
-
-  <Card title="Google Gemini" href="/oss/javascript/integrations/chat/google" icon="brand-google">
-    Google 通过 AI Studio 和 Vertex AI 建立 Gemini 模型。
+  </Card><Card title="Google Gemini" href="/oss/javascript/integrations/chat/google" icon="brand-google">
+    Google 通过 AI Studio 和 Gemini Enterprise Agent Platform 构建 Gemini 模型。
   </Card>
 
   <Card title="Groq" href="/oss/javascript/integrations/chat/groq" icon="https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/groq-icon.svg?fit=max&auto=format&n=ZPKed1feKJ8F6LVo&q=85&s=3bb8cb006c20e1eb8cdbd51c8cdbb3ca">
     使用 Groq 的专用硬件进行超快速推理。
-  </Card><Card title="Interfaze" href="https://interfaze.ai/docs" icon="link">
+  </Card>
+
+  <Card title="Interfaze" href="https://interfaze.ai/docs" icon="link">
     通过OpenAI兼容的 API 提供结构化输出的多模式聊天模型。
   </Card>
 
@@ -127,6 +135,10 @@
     开放式聊天和多模式模型，通过 SCX 的 OpenAI 兼容 API 输入图像和视频。
   </Card>
 
+  <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
+    用于模型访问、策略检查和使用情况统计的受控OpenAI兼容端点。
+  </Card>
+
   <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
     xAI 的 Grok 对话式 AI 模型。
   </Card>
@@ -145,13 +157,11 @@
 
   <Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/llms/cloudflare_workersai">
     Cloudflare 边缘计算平台上的 AI 模型。
-  </Card>
-
-  <Card title="Cohere" href="/oss/javascript/integrations/llms/cohere">
+  </Card><Card title="Cohere" href="/oss/javascript/integrations/llms/cohere">
     Cohere 用于各种 NLP 任务的语言模型。
   </Card>
 
-  <Card title="Google Vertex AI" href="/oss/javascript/integrations/llms/google_vertex_ai" icon="brand-google">
+  <Card title="Gemini Enterprise Agent Platform" href="/oss/javascript/integrations/llms/google_vertex_ai" icon="brand-google">
     Google Cloud 的企业 AI 和 ML 平台。
   </Card>
 
@@ -161,7 +171,9 @@
 
   <Card title="Mistral" href="/oss/javascript/integrations/llms/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
     Mistral 的开源和商业语言模型。
-  </Card><Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
+  </Card>
+
+  <Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
     本地模型使用 Ollama 的简单界面进行服务。
   </Card>
 
@@ -201,8 +213,8 @@
     Google 用于文本表示的嵌入模型。
   </Card>
 
-  <Card title="Google Vertex AI" href="/oss/javascript/integrations/embeddings/google_vertex_ai" icon="brand-google">
-    通过 Vertex AI 的企业嵌入模型。
+  <Card title="Gemini Enterprise Agent Platform" href="/oss/javascript/integrations/embeddings/google_vertex_ai" icon="brand-google">
+    通过 Gemini 企业代理平台的企业嵌入模型。
   </Card>
 
   <Card title="Minimax" href="/oss/javascript/integrations/embeddings/minimax">
@@ -211,9 +223,7 @@
 
   <Card title="Mistral" href="/oss/javascript/integrations/embeddings/mistralai" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
     Mistral 的高效嵌入模型。
-  </Card>
-
-  <Card title="MixedBread AI" href="/oss/javascript/integrations/embeddings/mixedbread_ai">
+  </Card><Card title="MixedBread AI" href="/oss/javascript/integrations/embeddings/mixedbread_ai">
     高质量的多语言嵌入模型。
   </Card>
 
@@ -227,7 +237,9 @@
 
   <Card title="OpenAI" href="/oss/javascript/integrations/embeddings/openai" icon="brand-openai">
     OpenAI 用于语义搜索的文本嵌入模型。
-  </Card><Card title="Oracle AI Database" href="/oss/javascript/integrations/embeddings/oracleai">
+  </Card>
+
+  <Card title="Oracle AI Database" href="/oss/javascript/integrations/embeddings/oracleai">
     Oracle 针对 AI 应用程序的嵌入模型。
   </Card>
 
@@ -273,9 +285,7 @@
 
   <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
     用于开发和测试的内存向量存储。
-  </Card>
-
-  <Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
+  </Card><Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
     MongoDB Atlas 云数据库中的矢量搜索。
   </Card>
 
@@ -285,7 +295,9 @@
 
   <Card title="Pinecone" href="/oss/javascript/integrations/vectorstores/pinecone">
     用于机器学习应用程序的托管矢量数据库。
-  </Card><Card title="Qdrant" href="/oss/javascript/integrations/vectorstores/qdrant">
+  </Card>
+
+  <Card title="Qdrant" href="/oss/javascript/integrations/vectorstores/qdrant">
     开源矢量相似性搜索引擎。
   </Card>
 
@@ -341,15 +353,15 @@
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
     用于具有快速冷启动功能的 AI 代理的云沙箱。
-  </Card>
-
-  <Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
+  </Card><Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
     高精度多语言语音转文本 API。
   </Card>
 
   <Card title="Sourcey" href="/oss/javascript/integrations/providers/sourcey">
     使用 Sourcey 已经发出的构建工件从已发布的 Sourcey 文档站点检索。
-  </Card><Card title="Supadata" href="/oss/javascript/integrations/providers/supadata">
+  </Card>
+
+  <Card title="Supadata" href="/oss/javascript/integrations/providers/supadata">
     从 YouTube、TikTok 等加载文字记录和元数据。
   </Card>
 </Columns>
@@ -358,7 +370,7 @@
 
 <Columns>
   <Card title="OpenAI Metadata Tagger" href="/oss/javascript/integrations/document_transformers/openai_metadata_tagger" icon="brand-openai">
-    使用OpenAI为文档生成元数据标签。
+    使用 OpenAI 为文档生成元数据标签。
   </Card>
 </Columns>
 
@@ -377,8 +389,22 @@
 ## 工具
 
 <Columns>
+  <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
+    根据 aiworker 的实时 OpenAPI 目录构建的付费数据工具（DeFi 收益率、页面到 Markdown、基础代币和钱包检查、Polymarket 赔率、历史和回溯测试、事实检查、标题搜索）；每次调用都通过代理钱包中的 x402 协议以 USDC 进行支付，无需 API 密钥。
+  </Card>
+
+  <Card title="Atomic Mail" href="https://docs.atomicmail.ai/langchain" icon="link">
+    电子邮件工具包，通过工作证明提供代理拥有的收件箱，并通过 JMAP 发送和接收。
+  </Card>
+
   <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
     在 Azure 动态会话中安全执行代码。
+  </Card><Card title="Continuity tools" href="https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools" icon="link">
+    LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
+  </Card>
+
+  <Card title="Corsair" href="https://docs.corsair.dev/mcp-adapters/langchain" icon="link">
+    将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为工具向 LangChain 代理公开。 OAuth 在服务器端运行，凭据保留在开发人员自己的数据库中。
   </Card>
 
   <Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
@@ -405,6 +431,10 @@
     在 AWS Lambda 函数中执行代码。
   </Card>
 
+  <Card title="Magic Hour" href="https://docs.magichour.ai" icon="link">
+    一个 API 密钥背后的 AI 文本转视频、图像转视频和图像生成工具。
+  </Card>
+
   <Card title="MCP Toolbox" href="/oss/javascript/integrations/tools/mcp_toolbox">
     模型上下文协议工具和实用程序。
   </Card>
@@ -423,8 +453,20 @@
     来自 Perplexity Search API 的 Web 搜索结果。
   </Card>
 
+  <Card title="Pushary" href="https://github.com/Pushary/pushary-langgraph" icon="link">
+    客户通过注册的 Pushary 移动应用程序进行确认、选择和文本输入，该应用程序作为 LangChain 结构化工具公开。
+  </Card>
+
   <Card title="Serpex" href="https://serpex.dev/docs" icon="link">
     用于人工智能应用和数据聚合的多引擎网络搜索 API。
+  </Card>
+
+  <Card title="SIGNA" href="https://github.com/codexvritra/signa/tree/main/sdk/langchain" icon="link">
+    将钱包签名的消息传递工具添加到LangChain代理。
+  </Card>
+
+  <Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
+    Sato Hub 每日重建的链上代理构建块索引上的四个无密钥工具：搜索列表，对存储库、程序包、MCP 端点或代币运行预检查找，获取带有规定费用的交换地点建议，并将目标转变为列出项目的构建计划。
   </Card>
 
   <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
@@ -449,9 +491,7 @@
 
   <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
     与 Tavily 一起对给定主题进行综合研究。
-  </Card>
-
-  <Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
+  </Card><Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
     使用其请求 ID 检索研究任务的状态和结果。
   </Card>
 
@@ -475,6 +515,10 @@
     人工智能驱动的网络搜索和检索。
   </Card>
 
+  <Card title="FoxNose" href="https://github.com/FoxNoseTech/langchain-foxnose-js#readme" icon="link">
+    用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
+  </Card>
+
   <Card title="HyDE" href="/oss/javascript/integrations/retrievers/hyde">
     用于更好检索的假设文档嵌入。
   </Card>
@@ -485,7 +529,9 @@
 
   <Card title="Perplexity Search" href="/oss/javascript/integrations/retrievers/perplexity_search">
     从 Perplexity Search API 返回文档的检索器。
-  </Card><Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
+  </Card>
+
+  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
     通过 SAP HANA Cloud Vector Engine 的自查询检索器。
   </Card>
 
@@ -494,9 +540,11 @@
   </Card>
 </Columns>
 
-## 商店
+## 商店<Columns>
+  <Card title="AlBuddyMemoryStore" href="https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md" icon="link">
+    用于本地 SQLite 文件上的长期内存的 LangGraph `BaseStore`，无 API 密钥。每个 put 都会记录哪个代理写了它；再次输入密钥会废弃旧值而不是覆盖它，删除会关闭一个事实而不是删除它，因此保留了所相信的历史。
+  </Card>
 
-<Columns>
   <Card title="File System" href="/oss/javascript/integrations/stores/file_system">
     用于开发的本地文件系统存储。
   </Card>
@@ -518,9 +566,21 @@
   </Card>
 </Columns>
 
+## 中间件
+
+<Columns>
+  <Card title="BRYDGE" href="https://github.com/contactkontey-dotcom/langchain-brydge#readme" icon="link">
+    监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
+  </Card>
+</Columns>
+
 ## 回调
 
 <Columns>
+  <Card title="OpenInference" href="https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing" icon="link">
+    使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作的 OpenTelemetry 工具。
+  </Card>
+
   <Card title="Respan" href="https://www.respan.ai/docs" icon="link">
     Trace LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
   </Card>
@@ -530,11 +590,9 @@
   </Card>
 </Columns>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

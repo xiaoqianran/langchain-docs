@@ -29,7 +29,7 @@ LangGraph 检查点作为分叉点：每次编辑或重新生成都会提交一�
 
 * **编辑任何用户消息：** 重写之前的提示并从该点重新运行代理
 * **重新生成任何 AI 响应：** 要求代理针对相同的输入生成不同的答案
-* **检查历史记录：** 当需要分支时间线时，使用 LangGraph 客户端加载检查点
+* **检查历史记录：** 当需要分支时间线时，使用LangGraph客户端加载检查点
 
 ## 设置流元数据使用消息的根流，然后读取每个消息的检查点元数据
 呈现每条消息的组件。元数据包括父级
@@ -295,7 +295,7 @@ User: "Tell me about JSX" (edited from branch A)
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

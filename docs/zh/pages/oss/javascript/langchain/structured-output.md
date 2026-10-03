@@ -10,7 +10,7 @@
   本页介绍了使用 `createAgent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/javascript/langchain/models#structured-output)。
 </Tip>
 
-LangChain的预构建ReAct代理`createAgent`自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `structuredResponse` 键返回。
+LangChain 的预构建 ReAct 代理 `createAgent` 自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `structuredResponse` 键返回。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 type ResponseFormat = (
@@ -58,7 +58,7 @@ const agent = createAgent({
 
 ## 提供商策略
 
-一些模型提供商通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
+一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
 
 要使用此策略，请配置 `ProviderStrategy`：
 
@@ -76,7 +76,7 @@ function providerStrategy<StructuredResponseT>(
   * **JSON Schema**：JSON 模式对象
 </ParamField>
 
-当您将模式类型直接传递给`createAgent.responseFormat`并且模型支持原生结构化输出时，LangChain会自动使用`ProviderStrategy`：
+当您将模式类型直接传递给`createAgent.responseFormat`并且模型支持本机结构化输出时，LangChain会自动使用`ProviderStrategy`：
 
 <CodeGroup>
   ```ts Zod Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -167,7 +167,7 @@ function providerStrategy<StructuredResponseT>(
 
 ## 工具调用策略
 
-对于不支持原生结构化输出的模型，LangChain 使用工具调用来达到相同的结果。这适用于所有支持工具调用的模型（大多数现代模型）。
+对于不支持原生结构化输出的模型，LangChain使用工具调用来达到相同的结果。这适用于支持工具调用的所有模型（大多数现代模型）。
 
 要使用此策略，请配置 `ToolStrategy`：
 
@@ -381,7 +381,7 @@ console.log(result);
 
 ### 错误处理
 
-通过工具调用生成结构化输出时，模型可能会出错。 LangChain提供了智能重试机制来自动处理这些错误。
+通过工具调用生成结构化输出时，模型可能会出错。 LangChain提供智能重试机制来自动处理这些错误。
 
 #### 多个结构化输出错误
 
@@ -480,7 +480,7 @@ console.log(result);
 
 #### 错误处理策略
 
-您可以使用 `handleErrors` 参数自定义错误处理方式：
+您可以使用 `handleErrors` 参数自定义如何处理错误：
 
 **自定义错误消息：**
 
@@ -537,7 +537,7 @@ const responseFormat = toolStrategy(ProductRating, {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

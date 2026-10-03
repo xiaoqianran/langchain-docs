@@ -44,7 +44,7 @@
 
 * 一些文档引用了内部结构并这样提及它们。如果文档表明某些内容是内部的，则它可能会发生变化。
 * 函数、方法和其他对象以前导下划线为前缀 (**`_`**)。这是 Python 的标准约定，表示某些内容是私有的；如果任何方法以单个 **`_`** 开头，则它是内部 API。
-  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法一般是LangChain的**公共API**的一部分。
+  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法通常是LangChain的**公共API**的一部分。
 
 ## 发布周期
 
@@ -88,10 +88,10 @@
 
 ### 长期支持 (LTS) 版本
 
-LangChain和LangGraph 1.0都被指定为LTS版本：* 1.0 版将保持 ACTIVE 状态，直至 2.0 版发布
+LangChain 和 LangGraph 1.0 都被指定为 LTS 版本：* 1.0 版将保持 ACTIVE 状态，直至 2.0 版发布
 * 2.0版本发布后，1.0版本将进入MAINTENANCE模式至少1年
 * LTS 版本遵循语义版本控制 (semver)，允许在次要版本之间安全升级
-* 旧版本（LangChain 0.3 和 LangGraph 0.4）处于维护模式直至 2026 年 12 月
+* 旧版本（LangChain 0.3 和 LangGraph 0.4）在 2026 年 12 月之前处于维护模式
 
 ### 1.0 之前的包
 
@@ -149,7 +149,7 @@ LangChain和LangGraph 1.0都被指定为LTS版本：* 1.0 版将保持 ACTIVE �
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

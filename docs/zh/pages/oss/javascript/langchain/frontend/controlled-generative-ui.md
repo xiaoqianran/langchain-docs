@@ -19,7 +19,7 @@
 可访问性和行为准确，并且您可以保证无论代理
 Surfaces 已通过您的审核。权衡是工程成本：每一个新的
 能力需要您提前编写的组件。您的组件库是
-边界：代理只能呈现您所运送的内容。
+边界：代理只能呈现您运送的内容。
 
 ## 何时使用此方法在流量最高、品牌关键的表面上实现受控的生成 UI，
 其中输出集是提前已知的，并且正确性比
@@ -79,7 +79,7 @@ CopilotKit 将此模式记录为 [components as tools](https://docs.copilotkit.a
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

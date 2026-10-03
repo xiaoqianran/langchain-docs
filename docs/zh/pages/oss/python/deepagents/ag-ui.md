@@ -1,30 +1,28 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Agent User Interaction Protocol (AG-UI) | https://docs.langchain.com/oss/python/deepagents/ag-ui -->
 
-# Agent User Interaction Protocol (AG-UI)
+# 代理用户交互协议 (AG-UI)
 
-Expose deep agents over the Agent User Interaction Protocol (AG-UI) to stream events to any AG-UI client or frontend.
+通过代理用户交互协议 (AG-UI) 公开深度代理，以将事件流式传输到任何 AG-UI 客户端或前端。
 
-[Agent User Interaction Protocol (AG-UI)](https://docs.ag-ui.com) is an open, lightweight, event-based protocol that standardizes how AI agents connect to user-facing applications.
-Exposing a deep agent over AG-UI turns its run into a typed event stream (messages, tool calls, reasoning, state, and lifecycle) that any AG-UI client can consume, so you can drive a frontend without coupling it to LangGraph internals.
+[Agent User Interaction Protocol (AG-UI)](https://docs.ag-ui.com) 是一种开放、轻量级、基于事件的协议，它标准化了 AI 代理连接到面向用户的应用程序的方式。
+通过 AG-UI 公开深度代理会将其运行转换为任何 AG-UI 客户端都可以使用的类型化事件流（消息、工具调用、推理、状态和生命周期），因此您可以驱动前端，而无需将其耦合到 LangGraph 内部。
 
 <Note>
-  AG-UI is designed for agent-to-user interaction: the connection between an agentic backend and a user-facing frontend. It is distinct from the other Deep Agents protocols:
+  AG-UI 专为代理与用户交互而设计：代理后端和面向用户的前端之间的连接。它与其他Deep Agents协议不同：
 
-  * **AG-UI** connects a deep agent to a frontend application (this page).
-  * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) connects a deep agent to code editors and IDEs.
-  * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) lets a deep agent call tools hosted by external servers.
-  * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) connects a deep agent to other agents.
+  * **AG-UI** 将深度代理连接到前端应用程序（本页）。
+  * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) 将深度代理连接到代码编辑器和 IDE。
+  * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) 让深度代理调用由外部服务器托管的工具。
+  * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) 将深度代理连接到其他代理。
 </Note>
 
-## Quickstart
+## 快速入门
 
-Serve a deep agent as a LangGraph graph, then connect the TypeScript `@ag-ui/langgraph` adapter so AG-UI clients can drive it.
+将深度代理作为 LangGraph 图提供服务，然后连接 TypeScript `@ag-ui/langgraph` 适配器，以便 AG-UI 客户端可以驱动它。
 
-### Install dependencies
-
-Install Deep Agents and the LangGraph CLI to serve the graph. The AG-UI adapter used in later steps is TypeScript (`@ag-ui/langgraph`). For a Python CopilotKit or AG-UI FastAPI bridge, see [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit).
+### 安装依赖项安装 Deep Agents 和 LangGraph CLI 来提供图形服务。后续步骤中使用的 AG-UI 适配器是 TypeScript (`@ag-ui/langgraph`)。有关 Python CopilotKit 或 AG-UI FastAPI 桥接器，请参阅 [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)。
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -36,11 +34,11 @@ Install Deep Agents and the LangGraph CLI to serve the graph. The AG-UI adapter 
   ```
 </CodeGroup>
 
-A deep agent created with `createDeepAgent` (`create_deep_agent` in Python) is a LangGraph graph. Expose it to AG-UI clients by serving it as a LangGraph server, then point the AG-UI adapter at that server.
+使用`createDeepAgent`（Python 中的`create_deep_agent`）创建的深度代理是一个LangGraph 图。通过将其作为 LangGraph 服务器将其公开给 AG-UI 客户端，然后将 AG-UI 适配器指向该服务器。
 
-### Create a deep agent
+### 创建深度代理
 
-Define the agent and export the graph so a LangGraph server can load it.
+定义代理并导出图表，以便 LangGraph 服务器可以加载它。
 
 ```python icon="robot" title="agent.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -51,9 +49,9 @@ agent = create_deep_agent(
 )
 ```
 
-### Serve the agent
+### 为代理服务
 
-Register the graph in a `langgraph.json` file at your project root.
+将图形注册到项目根目录下的 `langgraph.json` 文件中。
 
 ```json icon="file-code" title="langgraph.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -65,15 +63,15 @@ Register the graph in a `langgraph.json` file at your project root.
 }
 ```
 
-Start the LangGraph development server. It exposes the graph over HTTP at `http://localhost:2024`.
+启动LangGraph开发服务器。它通过 HTTP 在 `http://localhost:2024` 公开该图。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev
 ```
 
-### Connect the AG-UI adapter
+### 连接 AG-UI 适配器
 
-The TypeScript `@ag-ui/langgraph` adapter wraps the running graph as an AG-UI agent that any client can drive. Point it at the LangGraph server and name the graph to load. This works whether the graph was authored in Python or TypeScript.
+TypeScript `@ag-ui/langgraph` 适配器将运行图包装为任何客户端都可以驱动的 AG-UI 代理。将其指向 LangGraph 服务器并命名要加载的图表。无论图表是用 Python 还是 TypeScript 编写的，这都有效。
 
 ```ts icon="plug" title="ag-ui agent" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@ag-ui/langgraph";
@@ -85,28 +83,26 @@ const agent = new LangGraphAgent({
 ```
 
 <Card title="AG-UI LangGraph adapter on npm" icon="brand-npm" href="https://www.npmjs.com/package/@ag-ui/langgraph">
-  The `@ag-ui/langgraph` package implements the AG-UI protocol for LangGraph graphs, including deep agents.
+  `@ag-ui/langgraph`包实现了LangGraph图的AG-UI协议，包括深度代理。
 </Card>
 
-## Stream events
+## 流媒体事件AG-UI 是一个事件流。当深度代理运行时，适配器将其 LangGraph 执行转换为类型化的 AG-UI 事件。客户端订阅这些事件并在事件到达时进行更新，而不是等待最终答案。
 
-AG-UI is an event stream. As a deep agent runs, the adapter translates its LangGraph execution into typed AG-UI events. A client subscribes to those events and updates as they arrive, rather than waiting for the final answer.
+深度代理运行映射到许多 AG-UI 事件类型。主要包括：
 
-A deep agent run maps onto many AG-UI event types. The main ones, among others:
+|深度代理活动| AG-UI 活动 |
+| - | - |
+|运行生命周期 | `RUN_STARTED`、`RUN_FINISHED`、`RUN_ERROR` |
+|图节点进度 | `STEP_STARTED`、`STEP_FINISHED` |
+|助理文字 | `TEXT_MESSAGE_START`、`TEXT_MESSAGE_CONTENT`、`TEXT_MESSAGE_END` |
+|工具调用| `TOOL_CALL_START`、`TOOL_CALL_ARGS`、`TOOL_CALL_END`、`TOOL_CALL_RESULT` |
+|推理| `REASONING_START`、`REASONING_MESSAGE_CONTENT`、`REASONING_END` |
+|共享状态（todos、子代理、自定义键）| `STATE_SNAPSHOT`、`STATE_DELTA` |
+|对话历史 | `MESSAGES_SNAPSHOT` |
 
-| Deep agent activity                          | AG-UI events                                                             |
-| -------------------------------------------- | ------------------------------------------------------------------------ |
-| Run lifecycle                                | `RUN_STARTED`, `RUN_FINISHED`, `RUN_ERROR`                               |
-| Graph node progress                          | `STEP_STARTED`, `STEP_FINISHED`                                          |
-| Assistant text                               | `TEXT_MESSAGE_START`, `TEXT_MESSAGE_CONTENT`, `TEXT_MESSAGE_END`         |
-| Tool calls                                   | `TOOL_CALL_START`, `TOOL_CALL_ARGS`, `TOOL_CALL_END`, `TOOL_CALL_RESULT` |
-| Reasoning                                    | `REASONING_START`, `REASONING_MESSAGE_CONTENT`, `REASONING_END`          |
-| Shared state (todos, subagents, custom keys) | `STATE_SNAPSHOT`, `STATE_DELTA`                                          |
-| Conversation history                         | `MESSAGES_SNAPSHOT`                                                      |
+状态更新使用 `STATE_SNAPSHOT` 进行完整基线，使用 `STATE_DELTA`（JSON 补丁，RFC 6902）进行增量更改，因此客户端可以保持待办事项、计划和子代理状态同步，而无需在每个步骤中重新发送整个状态。
 
-State updates use `STATE_SNAPSHOT` for a full baseline and `STATE_DELTA` (JSON Patch, RFC 6902) for incremental changes, so a client can keep todos, plans, and subagent status in sync without re-sending the whole state on every step.
-
-To watch the stream directly, run the agent with a subscriber. Each event has a matching `on…Event` callback:
+要直接观看流，请使用订阅者运行代理。每个事件都有一个匹配的 `on…Event` 回调：
 
 ```ts icon="activity" title="observe.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@ag-ui/langgraph";
@@ -136,9 +132,7 @@ await agent.runAgent(
     },
   },
 );
-```
-
-When a deep agent pauses for human input, the run finishes with an interrupt. By default, `@ag-ui/langgraph` emits a legacy `on_interrupt` custom event alongside `RUN_FINISHED`. To receive the structured AG-UI interrupt outcome on `RUN_FINISHED` (`outcome.type === "interrupt"`), set `emitInterruptOutcome: true` when you construct the agent:
+```当深度代理暂停以等待人工输入时，运行会以中断结束。默认情况下，`@ag-ui/langgraph` 会与 `RUN_FINISHED` 一起发出旧版 `on_interrupt` 自定义事件。要在 `RUN_FINISHED` (`outcome.type === "interrupt"`) 上接收结构化 AG-UI 中断结果，请在构造代理时设置 `emitInterruptOutcome: true`：
 
 ```ts icon="hand-stop" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const agent = new LangGraphAgent({
@@ -148,7 +142,7 @@ const agent = new LangGraphAgent({
 });
 ```
 
-Resume the run by sending the standard AG-UI `resume` field on the next input:
+通过在下一个输入上发送标准 AG-UI `resume` 字段来恢复运行：
 
 ```ts icon="hand-stop" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const input = {
@@ -161,33 +155,31 @@ const input = {
 };
 ```
 
-For the interrupt model itself, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
+对于中断模型本身，请参见[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
 <Info>
-  For the complete event schema, see the [AG-UI events reference](https://docs.ag-ui.com/concepts/events).
+  有关完整的事件架构，请参阅[AG-UI events reference](https://docs.ag-ui.com/concepts/events)。
 </Info>
 
-## Connect a frontend
+## 连接前端
 
-Any AG-UI client can drive a deep agent exposed over the protocol, so you do not have to build message rendering, streaming, or state sync yourself. Point the client at the adapter (or a runtime that wraps it) and select the agent by its `graphId`.
+任何 AG-UI 客户端都可以驱动通过协议公开的深度代理，因此您不必自己构建消息渲染、流式传输或状态同步。将客户端指向适配器（或包装它的运行时）并通过其 `graphId` 选择代理。
 
 <CardGroup>
   <Card title="CopilotKit" icon="brand-react" href="/oss/python/langchain/frontend/integrations/copilotkit">
-    React chat runtime with AG-UI support for LangGraph and Deep Agents, including the Python FastAPI bridge.
+    React 聊天运行时具有对 LangGraph 和 Deep Agents 的 AG-UI 支持，包括 Python FastAPI 桥。
   </Card>
 
   <Card title="AG-UI clients" icon="apps" href="https://docs.ag-ui.com/integrations">
-    The full list of AG-UI clients and SDKs, including terminal and mobile clients.
+    AG-UI 客户端和 SDK 的完整列表，包括终端和移动客户端。
   </Card>
 
   <Card title="Build a custom client" icon="code" href="https://docs.ag-ui.com/quickstart/clients">
-    Consume the event stream directly with the AG-UI SDK to build your own interface.
+    直接使用 AG-UI SDK 使用事件流来构建您自己的界面。
   </Card>
 </CardGroup>
 
-## Programmatic API
-
-`LangGraphAgent` connects to a deep agent on a LangGraph server and exposes it as an AG-UI agent. Construct it with the graph to load, then drive it with a few methods.
+## 编程 API`LangGraphAgent` 连接到 LangGraph 服务器上的深度代理并将其公开为 AG-UI 代理。使用要加载的图形构建它，然后使用几种方法驱动它。
 
 ```ts icon="plug" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangGraphAgent } from "@ag-ui/langgraph";
@@ -198,28 +190,28 @@ const agent = new LangGraphAgent({
 });
 ```
 
-* **`runAgent(parameters?, subscriber?)`**: Run the agent and stream AG-UI events to the subscriber's `on…Event` callbacks (see [Stream events](#stream-events)). Resolves when the run finishes.
-* **`subscribe(subscriber)`**: Attach a persistent subscriber that receives events across every run, rather than for a single call.
-* **`abortRun()`**: Cancel the run in progress.
+* **`runAgent(parameters?, subscriber?)`**：运行代理并将 AG-UI 事件流式传输到订阅者的 `on…Event` 回调（请参阅 [Stream events](#stream-events)）。运行完成时解决。
+* **`subscribe(subscriber)`**：附加一个持久订阅者，该订阅者在每次运行中接收事件，而不是单次调用。
+* **`abortRun()`**：取消正在进行的运行。
 
-To seed input, pass `initialMessages` to the constructor, or call `addMessage` or `setMessages` before running.
+要为输入提供种子，请将 `initialMessages` 传递给构造函数，或者在运行之前调用 `addMessage` 或 `setMessages`。
 
-## See also
+## 另请参阅
 
-* [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit): Python and TypeScript CopilotKit runtime patterns for Deep Agents over AG-UI
-* [Frontend overview](/oss/python/deepagents/frontend/overview): Build UIs that stream deep agent progress with the LangChain frontend SDKs
-* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop): Interrupt and resume model for deep agents
-* [Agent Client Protocol (ACP)](/oss/python/deepagents/acp): Connect deep agents to code editors and IDEs
-* [AG-UI documentation](https://docs.ag-ui.com): Protocol concepts, events, and client SDKs
+* [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)：通过 AG-UI 实现 Deep Agents 的 Python 和 TypeScript CopilotKit 运行时模式
+* [Frontend overview](/oss/python/deepagents/frontend/overview)：使用 LangChain 前端 SDK 构建可传输深度代理进度的 UI
+* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)：深度代理的中断和恢复模型
+* [Agent Client Protocol (ACP)](/oss/python/deepagents/acp)：将深度代理连接到代码编辑器和 IDE
+* [AG-UI documentation](https://docs.ag-ui.com)：协议概念、事件和客户端 SDK
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -6,13 +6,13 @@
 
 LangChain 的 `createAgent` 在 LangGraph 的运行时上运行。
 
-LangGraph 公开了一个 [⟦T6⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 对象，其中包含以下信息：
+LangGraph 公开一个 [⟦T6⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 对象，其中包含以下信息：
 
 1. **上下文**：静态信息，例如用户 ID、数据库连接或代理调用的其他依赖项
 2. **Store**：用于[long-term memory](/oss/javascript/langchain/long-term-memory)的[BaseStore](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore)实例
 3. **Stream writer**：用于通过`"custom"`流模式传输信息的对象
 4. **执行信息**：当前执行的身份和重试信息（线程ID、运行ID、尝试次数）
-5. **服务器信息**：在 LangGraph Server 上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
+5. **服务器信息**：在LangGraph服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
 
 <Tip>
   运行时上下文是您通过代理线程化数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。
@@ -91,7 +91,7 @@ const fetchUserEmailPreferences = tool(
 
 ### 工具内的执行信息和服务器信息
 
-在 LangGraph Server 上运行时，通过 `runtime.executionInfo` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.serverInfo` 访问服务器特定的元数据（助手 ID、经过身份验证的用户）：
+在 LangGraph 服务器上运行时，通过 `runtime.executionInfo` 访问执行身份（线程 ID、运行 ID），并通过 `runtime.serverInfo` 访问服务器特定的元数据（助理 ID、经过身份验证的用户）：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -122,7 +122,7 @@ const contextAwareTool = tool(
 );
 ```
 
-当不在 LangGraph Server 上运行时（例如，在本地开发期间），`serverInfo` 是 `null`。
+当不在 LangGraph 服务器上运行时（例如，在本地开发期间），`serverInfo` 是 `null`。
 
 <Note>
   `runtime.executionInfo` 和 `runtime.serverInfo` 需要 `deepagents>=1.9.0`（或 `@langchain/langgraph>=1.2.8`）。
@@ -215,7 +215,7 @@ const authGate = createMiddleware({
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

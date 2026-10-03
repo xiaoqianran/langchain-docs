@@ -10,10 +10,6 @@
 
 它建立在 [subagents](/oss/python/deepagents/subagents) 的基础上，它同步运行并阻止主管直到完成。当任务长时间运行、可并行或需要中途引导时，请使用异步子代理。
 
-<Note>
-  异步子代理是 `deepagents` 0.5.0 中提供的预览功能。预览功能正在积极开发中，API 可能会发生变化。
-</Note>
-
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
     User([User]) --> Supervisor[Supervisor Agent]
@@ -30,16 +26,17 @@ graph TB
 </Note>
 
 ## 何时使用异步子代理|尺寸|同步子代理 |异步子代理 |
-| -------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| - | - | - |
 | **执行模型** |主管阻塞直到子代理完成 |立即返回作业ID；主管继续|
 | **并发** |并行但阻塞 |并行和非阻塞|
 | **任务中期更新** |不可能|通过`update_async_task`发送后续指令 |
 | **取消** |不可能|通过`cancel_async_task`取消正在运行的任务 |
-| **有状态** |无状态——调用之间没有持久状态|有状态——跨交互在自己的线程上维护状态| **最适合** |代理在继续之前应等待结果的任务 |在聊天中以交互方式管理长时间运行的复杂任务 |
+| **有状态** |无状态——调用之间没有持久状态|有状态——跨交互在自己的线程上维护状态
+| **最适合** |代理在继续之前应等待结果的任务 |在聊天中以交互方式管理长时间运行的复杂任务 |
 
 ## 配置异步子代理
 
-将异步子代理定义为 [⟦T13⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范列表，每个都指向一个代理协议服务器：
+将异步子代理定义为[⟦T12⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent)规范列表，每个都指向一个代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent, create_deep_agent
@@ -63,14 +60,13 @@ agent = create_deep_agent(
     model="google_genai:gemini-3.6-flash",
     subagents=async_subagents,
 )
-```
-
-|领域 |类型 |描述 |
-| ------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `name` | `str` |必需的。唯一标识符。主管在启动任务时使用它。                                                                                     |
-| `description` | `str` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。                                                               || `graph_id` | `str` |必需的。代理协议服务器上的图形 ID（或助理 ID）。对于基于 LangGraph 的部署，这必须与 `langgraph.json` 中注册的图匹配。 |
-| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程中）。设置后，使用 HTTP 传输到远程代理协议服务器。                                      |
-| `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。                          |
+```|领域 |类型 |描述 |
+| - | - | - |
+| `name` | `str` |必需的。唯一标识符。主管在启动任务时使用它。 |
+| `description` | `str` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。 |
+| `graph_id` | `str` |必需的。代理协议服务器上的图形 ID（或助理 ID）。对于基于 LangGraph 的部署，这必须与在 `langgraph.json` 中注册的图表匹配。 |
+| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程内）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
+| `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。 |
 
 对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图以进行共同部署设置：
 
@@ -86,8 +82,8 @@ agent = create_deep_agent(
 
 ## 使用异步子代理工具
 
-当配置异步子代理时，[⟦T26⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)包含在[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中，为主管提供了五个工具：|工具|目的|返回|
-| ------------------- | ---------------------------------------------------- | -------------------------------------- |
+当配置异步子代理时，[⟦T25⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)包含在[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中，为主管提供了五个工具：|工具|目的|返回|
+| - | - | - |
 | `start_async_task` |启动新的后台任务 |任务 ID（立即）|
 | `check_async_task` |获取任务的当前状态和结果 |状态+结果（如果完成）|
 | `update_async_task` |向正在运行的任务发送新指令 |确认+更新状态|
@@ -140,7 +136,7 @@ ASGI 传输消除了网络延迟，并且不需要额外的身份验证配置。
 
 ### HTTP 传输（远程）
 
-添加一个 `url` 字段以切换到 HTTP 传输，其中 SDK 调用通过网络传输到远程代理协议服务器：
+添加 `url` 字段以切换到 HTTP 传输，其中 SDK 调用通过网络传输到远程代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent
@@ -151,7 +147,7 @@ AsyncSubAgent(
     graph_id="researcher",
     url="https://my-research-deployment.langsmith.dev",
 )
-```对于 LangGraph 部署，身份验证由 LangGraph SDK 使用环境变量中的`LANGSMITH_API_KEY`（或`LANGGRAPH_API_KEY`）进行处理。自承载代理协议服务器可能使用不同的身份验证机制。
+```对于 LangGraph 部署，身份验证由 LangGraph SDK 使用环境变量中的 `LANGSMITH_API_KEY`（或 `LANGGRAPH_API_KEY`）进行处理。自承载代理协议服务器可能使用不同的身份验证机制。
 
 当子代理需要独立扩展、不同的资源配置文件或由不同的团队维护时，请使用 HTTP 传输。
 
@@ -159,7 +155,7 @@ AsyncSubAgent(
 
 ### 单一部署
 
-单一部署意味着所有代理都使用 ASGI 传输共同部署在同一台服务器上。对于基于 LangGraph 的部署，将所有图注册在一个 `langgraph.json` 中。这是推荐的起点——管理一台服务器，代理之间的网络延迟为零。
+单一部署意味着所有代理都使用 ASGI 传输共同部署在同一服务器上。对于基于LangGraph的部署，将所有图表注册在一个`langgraph.json`中。这是推荐的起点——管理一台服务器，代理之间的网络延迟为零。
 
 ### 拆分部署
 
@@ -191,7 +187,7 @@ async_subagents = [
 
 ## 最佳实践
 
-### 调整工人池规模以适应本地发展使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
+### 调整工人池规模以适应当地发展当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev --n-jobs-per-worker 10
@@ -233,7 +229,9 @@ langgraph dev --n-jobs-per-worker 10
 
 **问题**：主管在启动后立即循环调用`check`，将异步执行变成阻塞。
 
-**解决方案**：中间件注入系统提示规则来防止这种情况。如果轮询持续存在，请强化主管系统提示中的行为：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+**解决方案**：中间件注入系统提示规则来防止这种情况。如果轮询持续存在，请强化主管系统提示中的行为：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
@@ -244,9 +242,7 @@ agent = create_deep_agent(
     Never call check_async_task immediately after launch.""",
     subagents=async_subagents,
 )
-```
-
-### 主管报告过时状态
+```### 主管报告过时状态
 
 **问题**：主管引用对话历史记录中较早的任务状态，而不是进行新的 `check` 呼叫。
 
@@ -256,7 +252,7 @@ agent = create_deep_agent(
 
 **问题**：主管截断或重新格式化任务ID，导致`check`或`cancel`失败。
 
-**解决方案**：中间件提示指示模型始终使用完整的任务 ID。如果截断仍然存在，这通常是特定于模型的问题 - 尝试不同的模型或将“始终显示完整的任务\_id，从不截断或缩写它”添加到系统提示符中。
+**解决方案**：中间件提示指示模型始终使用完整的任务 ID。如果截断仍然存在，这通常是特定于模型的问题 - 尝试不同的模型或将“始终显示完整任务\_id，从不截断或缩写它”添加到系统提示符中。
 
 ### 子代理启动队列而不是运行
 
@@ -270,7 +266,7 @@ agent = create_deep_agent(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

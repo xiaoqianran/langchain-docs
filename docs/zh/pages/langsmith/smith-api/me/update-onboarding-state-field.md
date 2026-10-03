@@ -13,3 +13,4 @@
 - 游乐场完成时间
 - 评估完成时间
 - 成功浏览次数
+-agent_platform_welcome_viewed_at

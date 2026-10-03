@@ -74,7 +74,7 @@ graph LR
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/javascript/langchain/install)。
 
-### 朗史密斯设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) 来检查代理内部发生的情况。然后设置以下环境变量：
+### LangSmith设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) 来检查代理内部发生的情况。然后设置以下环境变量：
 
 <CodeGroup>
   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -221,23 +221,23 @@ graph LR
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai
+      npm install @langchain/google
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai
+      pnpm install @langchain/google
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai
+      yarn add @langchain/google
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai
+      bun add @langchain/google
       ```
     </CodeGroup>
 
@@ -247,14 +247,14 @@ graph LR
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+      const model = await initChatModel("google:gemini-3.7-flash");
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
 
-      const model = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash-lite",
+      const model = new ChatGoogle({
+        model: "gemini-3.7-flash",
         apiKey: "your-api-key"
       });
       ```
@@ -670,7 +670,7 @@ OAuth scope updates.
 
 * 使用 Pydantic 模型 (Python) 或 Zod schema (JS) 确保有效输出
 * 返回`Classification`对象的列表，每个对象都有一个`source`和目标`query`
-* 仅包含相关来源——不相关的被简单地省略
+* 只包含相关来源——不相关的被简单地省略
 
 这种结构化方法比自由格式的 JSON 解析更可靠，并且使路由逻辑更明确。
 
@@ -1100,7 +1100,7 @@ console.log(conversationalAgentResult.messages.at(-1)?.content);
 ## 后续步骤
 
 * 了解用于座席间对话的[handoffs](/oss/javascript/langchain/multi-agent/handoffs)
-* 探索[subagents pattern](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)进行集中编排
+* 探索用于集中编排的[subagents pattern](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)
 * 阅读[multi-agent overview](/oss/javascript/langchain/multi-agent)来比较不同的模式
 * 使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base)调试和监控您的路由器
 
@@ -1108,7 +1108,7 @@ console.log(conversationalAgentResult.messages.at(-1)?.content);
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

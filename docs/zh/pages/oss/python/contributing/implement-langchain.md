@@ -4,9 +4,9 @@
 
 # 实现LangChain集成
 
-集成包是用户可以安装以在其项目中使用的 Python 包。他们实现了一个或多个符合 LangChain 接口标准的组件。
+集成包是用户可以安装以在其项目中使用的 Python 包。他们实现一个或多个遵守LangChain接口标准的组件。
 
-LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core)中基类的子类。示例包括 [chat models](/oss/python/integrations/chat)、[tools](/oss/python/integrations/tools)、[retrievers](/oss/python/integrations/retrievers) 等。
+LangChain 组件是 [⟦T2⟧](https://github.com/langchain-ai/langchain/tree/master/libs/core) 中基类的子类。示例包括 [chat models](/oss/python/integrations/chat)、[tools](/oss/python/integrations/tools)、[retrievers](/oss/python/integrations/retrievers) 等。
 
 您的集成包通常会实现至少其中一个组件的子类。展开下面的选项卡可查看每个选项卡的详细信息。
 
@@ -15,7 +15,7 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
     聊天模型是 [⟦T3⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) 类的子类。它们实现了生成聊天完成、处理消息格式和管理模型参数的方法。
 
     <Warning>
-      聊天模型集成指南目前正在开发中。同时，请阅读[chat model conceptual guide](/oss/python/langchain/models)了解LangChain聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchain/tree/master/libs/partners)中的现有集成
+      聊天模型集成指南目前正在开发中。同时，请阅读 [chat model conceptual guide](/oss/python/langchain/models) 了解有关 LangChain 聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchain/tree/master/libs/partners)中的现有集成
     </Warning>
   </Tab>
 
@@ -23,7 +23,7 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
     嵌入模型是 [⟦T4⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) 类的子类。
 
     <Warning>
-      嵌入模型集成指南目前正在开发中。同时，请阅读[embedding model conceptual guide](/oss/python/integrations/embeddings)了解LangChain嵌入模型如何运作的详细信息。
+      嵌入模型集成指南目前正在开发中。同时，请阅读 [embedding model conceptual guide](/oss/python/integrations/embeddings) 了解有关 LangChain 嵌入模型如何发挥作用的详细信息。
     </Warning>
   </Tab>
 
@@ -34,7 +34,7 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
     Tools 类必须继承自 [⟦T5⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool) 基类。该接口有 3 个属性和 2 个方法，应在子类中实现。
 
     <Warning>
-      工具集成指南目前正在开发中。同时，请阅读[tools conceptual guide](/oss/python/langchain/tools)详细了解LangChain工具的功能。
+      工具集成指南目前正在开发中。同时，请阅读 [tools conceptual guide](/oss/python/langchain/tools) 了解有关 LangChain 工具如何工作的详细信息。
     </Warning>
   </Tab>
 
@@ -44,7 +44,7 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
     在构建集成之前，请阅读 [custom middleware guide](/oss/python/langchain/middleware/custom) 了解挂钩、状态更新和中间件模式。
 
     中间件集成通常分为两类：|类型 |描述 |示例 |
-    | -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
+    | - | - | - |
     | **特定于提供商** |利用提供商的独特能力 |提示缓存、本机工具执行、内容审核 |
     | **跨提供商** |适用于任何模型或工具 |速率限制、PII 检测、日志记录、护栏 |
 
@@ -63,22 +63,22 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
 
       <Card title="AWS prompt caching" icon="cloud" href="/oss/python/integrations/middleware/aws">
         具有模型行为表的特定于提供者的提示缓存。
-      </Card><Card title="Custom middleware guide" icon="code" href="/oss/python/langchain/middleware/custom">
+      </Card>
+
+      <Card title="Custom middleware guide" icon="code" href="/oss/python/langchain/middleware/custom">
         有关挂钩、状态更新和模式的完整参考。
       </Card>
     </CardGroup>
   </Tab>
 
   <Tab title="Checkpointers">
-    检查点在 LangGraph 中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互中保存和恢复状态。
+    检查点在LangGraph中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互中保存和恢复状态。
 
     请参阅 [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) 中现有的检查点集成以获取实施示例。
-  </Tab>
-
-  <Tab title="Sandboxes">
+  </Tab><Tab title="Sandboxes">
     沙盒集成使 [Deep Agents](/oss/python/deepagents/overview) 能够在隔离环境中运行代码。
 
-    实施 Deep Agents 的[⟦T8⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)。该协议包括`execute()`、异步变体以及`ls`、`read`、`write`、`edit`、`glob`和`grep`等文件系统工具方法。
+    从Deep Agents实施[⟦T8⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)。该协议包括`execute()`、异步变体以及`ls`、`read`、`write`、`edit`、`glob`和`grep`等文件系统工具方法。
 
     实际上，如果您的沙箱环境可以运行 shell 命令并且有 `python3` 可用，则通常应该子类化 [⟦T17⟧](https://reference.langchain.com/python/deepagents/backends/sandbox/BaseSandbox)。 `BaseSandbox`通过`python3`提供文件系统操作，因此主要需要实现`execute()`、`upload_files()`、`download_files()`、`id`。
 
@@ -186,7 +186,9 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
                 client.delete_sandbox(backend.id)
     ```
 
-    将其放入诸如 `tests/integration_tests/test_sandbox.py` 之类的文件中。标准套件将为您处理实际的文件系统和命令执行断言。**参考实现：**参见[Daytona partner integration](https://github.com/langchain-ai/deepagents/tree/main/libs/partners/daytona)，它是`BaseSandbox`的子类并实现`execute()`、`upload_files()`、`download_files()`和`id`。
+    将其放入诸如 `tests/integration_tests/test_sandbox.py` 之类的文件中。标准套件将为您处理实际的文件系统和命令执行断言。
+
+    **参考实现：**参见[Daytona partner integration](https://github.com/langchain-ai/deepagents/tree/main/libs/partners/daytona)，它是`BaseSandbox`的子类并实现`execute()`、`upload_files()`、`download_files()`和`id`。
   </Tab>
 </Tabs>
 
@@ -194,7 +196,7 @@ LangChain组件是[⟦T2⟧](https://github.com/langchain-ai/langchain/tree/mast
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -4,6 +4,8 @@
 
 # LangSmith 部署的控制平面 API 参考
 
+使用控制平面 API 以编程方式创建、管理和自动化 LangSmith 部署中的代理服务器部署。
+
 控制平面 API 是 [LangSmith Deployment](/langsmith/deployment) 的一部分。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
 
 浏览侧边栏 **控制平面 API** 部分中的完整 API 参考，或参阅端点组：
@@ -41,11 +43,11 @@
       <td>AWS 美国</td>
     </tr>
   </tbody>
-</table>
+</table>**注意**：LangSmith 的自托管部署将为控制平面提供一个自定义主机。控制平面API可以通过路径`/api-host`访问。例如，`http(s)://<host>/api-host/v2/deployments`。更多详情请参见[the self-host usage guide](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)。
 
-**注意**：LangSmith 的自托管部署将为控制平面提供一个自定义主机。控制平面API可以通过路径`/api-host`访问。例如，`http(s)://<host>/api-host/v2/deployments`。更多详情请参见[the self-host usage guide](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)。
+## 身份验证
 
-＃＃ 验证要使用控制平面 API 进行身份验证，请将 `X-Api-Key` 标头设置为有效的 LangSmith API 密钥，并将 `X-Tenant-Id` 标头设置为要定位的有效工作区 ID。
+要使用控制平面 API 进行身份验证，请将 `X-Api-Key` 标头设置为有效的 LangSmith API 密钥，并将 `X-Tenant-Id` 标头设置为要定位的有效工作区 ID。
 
 `curl` 命令示例：
 

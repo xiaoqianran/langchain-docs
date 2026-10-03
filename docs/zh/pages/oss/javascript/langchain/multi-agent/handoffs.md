@@ -322,14 +322,14 @@ const transferToSales = tool(
 
   // 3. Create agents with handoff tools
   const salesAgent = createAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [transferToSupport],
     systemPrompt:
       "You are a sales agent. Help with sales inquiries. If asked about technical issues or support, transfer to the support agent.",
   });
 
   const supportAgent = createAgent({
-    model: "google_genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [transferToSales],
     systemPrompt:
       "You are a support agent. Help with technical issues. If asked about pricing or purchasing, transfer to the sales agent.",
@@ -453,7 +453,7 @@ const transferToSales = tool(
   }
 );
 ```<Note>
-  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以使父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
+  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以将父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
 </Note>
 
 **将控制权返回给用户**
@@ -470,7 +470,7 @@ const transferToSales = tool(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

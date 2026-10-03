@@ -12,7 +12,7 @@
 * <Icon icon="folder" /> [**Content**](#message-content) - 表示消息的实际内容（如文本、图像、音频、文档等）
 * <Icon icon="tag" /> [**Metadata**](#message-metadata) - 可选字段，例如响应信息、消息 ID 和令牌使用情况
 
-LangChain 提供了适用于所有模型提供者的标准消息类型，确保无论调用哪个模型，行为都保持一致。
+LangChain 提供了适用于所有模型提供程序的标准消息类型，确保无论调用哪个模型，行为都保持一致。
 
 ## 基本用法
 
@@ -331,7 +331,7 @@ const response = await model.invoke(messages);  // Model processes the result
 
 <Note>
   `artifact` 字段存储不会发送到模型但可以通过编程方式访问的补充数据。这对于存储原始结果、调试信息或下游处理数据非常有用，而不会扰乱模型的上下文。<Accordion title="Example: Using artifact for retrieval metadata">
-    例如，[retrieval](/oss/javascript/deepagents/retrieval)工具可以从文档中检索段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于渲染页面）。请参阅下面的示例：
+    例如，[retrieval](/oss/javascript/deepagents/retrieval)工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { ToolMessage } from "langchain";
@@ -347,7 +347,7 @@ const response = await model.invoke(messages);  // Model processes the result
     });
     ```
 
-    请参阅 [RAG tutorial](/oss/javascript/deepagents/rag)，了解使用 LangChain 构建检索 [agents](/oss/javascript/langchain/agents) 的端到端示例。
+    有关使用 LangChain 构建检索 [agents](/oss/javascript/langchain/agents) 的端到端示例，请参阅 [RAG tutorial](/oss/javascript/deepagents/rag)。
   </Accordion>
 </Note>
 
@@ -395,7 +395,7 @@ const humanMessage = new HumanMessage({
 });
 ```### 标准内容块
 
-LangChain 为跨提供商的消息内容提供标准表示。
+LangChain 提供跨提供商工作的消息内容的标准表示形式。
 
 消息对象实现一个 `contentBlocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T53⟧](/oss/javascript/integrations/chat/anthropic)或[⟦T54⟧](/oss/javascript/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T57⟧](#content-block-reference)表示：
 
@@ -673,7 +673,7 @@ LangChain 为跨提供商的消息内容提供标准表示。
         </ParamField>
 
         <ParamField type="string">
-          引用外部文件存储系统中的图像（例如OpenAI或Anthropic的文件API）。
+          引用外部文件存储系统中的图像（例如，OpenAI或Anthropic的文件API）。
         </ParamField>
 
         <ParamField type="string">
@@ -743,7 +743,7 @@ LangChain 为跨提供商的消息内容提供标准表示。
         </ParamField>
 
         <ParamField type="string">
-          引用外部文件存储系统中的文件（例如，OpenAI或Anthropic的文件API）。
+          引用外部文件存储系统中的文件（例如OpenAI或Anthropic的文件API）。
         </ParamField>
 
         <ParamField type="string">
@@ -989,7 +989,7 @@ const restored = await load<HumanMessage>(JSON.stringify(serialized));
 
 ## 与聊天模型一起使用
 
-[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入，并返回 [⟦T94⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
+[Chat models](/oss/javascript/langchain/models) 接受一系列消息对象作为输入并返回 [⟦T94⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 作为输出。交互通常是无状态的，因此简单的对话循环涉及调用具有不断增长的消息列表的模型。
 
 请参阅以下指南以了解更多信息：
 
@@ -1000,7 +1000,7 @@ const restored = await load<HumanMessage>(JSON.stringify(serialized));
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

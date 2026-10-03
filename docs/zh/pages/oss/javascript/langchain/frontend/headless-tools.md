@@ -12,14 +12,14 @@
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
 当数据应保留在设备本地时，此模式特别有用。
-本页上的 Playground 示例使用一个小型浏览器内存工具包支持
+本页上的游乐场示例使用支持的小型浏览器内存工具包
 由 IndexedDB 加上完全在客户端运行的地理定位工具。
 
 <PatternEmbed />
 
 ## 无头工具如何工作
 
-在较高层面上，无头工具将工具架构与仅浏览器实现分开。
+在较高层面上，无头工具将工具模式与仅浏览器实现分开。
 
 1. 在代理上注册仅架构工具定义。
 2. 通过`.implement(...)`在前端实现匹配工具。
@@ -243,7 +243,7 @@ export type AgentState = typeof myAgent;
   ```
 </CodeGroup>
 
-## 内联渲染工具活动游乐场将每个内存或地理定位操作呈现为自己的卡，并且
+## 内联渲染工具活动Playground 将每个内存或地理定位操作呈现为自己的卡，并且
 在输入附近保留一个小的内存统计面板。关键的一步是匹配每个
 `stream.toolCalls`中的条目返回到触发它的AI消息：
 
@@ -299,7 +299,7 @@ function Message({ message, toolCalls }: {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

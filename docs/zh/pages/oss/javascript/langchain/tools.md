@@ -4,6 +4,8 @@
 
 # 工具
 
+定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
+
 工具扩展了[agents](/oss/javascript/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/javascript/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
@@ -40,7 +42,7 @@ const searchDatabase = tool(
 <Note>
   **服务器端工具的使用：** 一些聊天模型具有在服务器端执行的内置工具（网络搜索、代码解释器）。详情请参阅[Server-side tool use](#server-side-tool-use)。
 </Note><Warning>
-  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。一些模型提供者对包含空格或特殊字符的名称存在问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
+  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。某些模型提供者对包含空格或特殊字符的名称存在问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
 </Warning>
 
 ## 访问上下文
@@ -52,275 +54,69 @@ const searchDatabase = tool(
 上下文提供在调用时传递的不可变配置数据。将其用于在对话期间不应更改的用户 ID、会话详细信息或特定于应用程序的设置。
 
 <Note>
-  虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）范围是*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。在生产中，您通常将两者一起传递：每个会话一个稳定的`thread_id`，以及每次调用时一个`context`对象。
-</Note>
+  虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）范围是*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。持久性需要[checkpointer](/oss/javascript/langchain/short-term-memory)。在生产中，您通常会在每个对话中传递一个稳定的 `thread_id` ，并在每次调用时传递一个 `context` 对象。
+</Note>工具可以通过 `config` 参数访问代理的运行时上下文。配置 [checkpointer](/oss/javascript/langchain/short-term-memory) 并通过稳定的 `thread_id` 传递 `context`，以便对话在调用中持续存在：
 
-工具可以通过 `config` 参数访问代理的运行时上下文。将 `context` 与 `thread_id` 一起传递，以便对话在轮流中持续存在：<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { ChatOpenAI } from "@langchain/openai";
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, tool } from "langchain";
 
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
+const getUserName = tool(
+  (_, config) => {
+    return config.context.user_name;
+  },
+  {
+    name: "get_user_name",
+    description: "Get the user's name.",
+    schema: z.object({}),
+  },
+);
 
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
+const contextSchema = z.object({
+  user_name: z.string(),
+});
 
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "google-genai:gemini-3.6-flash" }),
-    tools: [getUserName],
-    contextSchema,
-  });
+const agent = createAgent({
+  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  tools: [getUserName],
+  checkpointer: new MemorySaver(),
+  contextSchema,
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
+const threadId = crypto.randomUUID();
+const threadConfig = {
+  configurable: { thread_id: threadId },
+  context: { user_name: "John Smith" },
+};
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
+let result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "What is my name?" }],
+  },
+  threadConfig,
+);
+console.log(result.messages.at(-1)?.content);
 
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "openai:gpt-5.5" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "anthropic:claude-sonnet-4-6" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "openrouter:openrouter:z-ai/glm-5.2" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "baseten:zai-org/GLM-5.2" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-
-  const getUserName = tool(
-    (_, config) => {
-      return config.context.user_name;
-    },
-    {
-      name: "get_user_name",
-      description: "Get the user's name.",
-      schema: z.object({}),
-    },
-  );
-
-  const contextSchema = z.object({
-    user_name: z.string(),
-  });
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "ollama:north-mini-code-1.0" }),
-    tools: [getUserName],
-    contextSchema,
-  });
-
-  const result = await agent.invoke(
-    {
-      messages: [{ role: "user", content: "What is my name?" }],
-    },
-    {
-      configurable: { thread_id: crypto.randomUUID() },
-      context: { user_name: "John Smith" },
-    },
-  );
-  ```
-</CodeGroup>
+result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "What was my name again?" }],
+  },
+  threadConfig,
+);
+console.log(result.messages.at(-1)?.content);
+```
 
 ### 长期记忆（存储）
 
-[⟦T47⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 提供跨对话持续存在的持久存储。与状态（短期记忆）不同，保存到存储的数据在未来的会话中仍然可用。
+[⟦T35⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 提供跨对话持续存在的持久存储。与状态（短期记忆）不同，保存到存储中的数据在未来的会话中仍然可用。
 
-通过`config.store`进入商店。存储使用命名空间/键模式来组织数据：
+通过`config.store`进入商店。存储使用名称空间/键模式来组织数据：
+
+<Tip>
+  对于生产部署，请使用持久存储实现，例如 [⟦T37⟧](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/store/PostgresStore)、`MongoDBStore` 或 `RedisStore`，而不是 `InMemoryStore`。有关设置详细信息，请参阅[memory documentation](/oss/javascript/langgraph/add-memory)。
+</Tip>
 
 ```ts expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -456,7 +252,7 @@ const logExecutionContext = tool(
 
 ### 服务器信息
 
-当您的工具在 LangGraph Server 上运行时，通过 `runtime.server_info` 访问助手 ID、图形 ID 和经过身份验证的用户：
+当您的工具运行在LangGraph服务器上时，通过`runtime.server_info`访问助手ID、图形ID和经过身份验证的用户：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -481,15 +277,15 @@ const getAssistantScopedData = tool(
 );
 ```
 
-当该工具未在 LangGraph Server 上运行时，`serverInfo` 为 `null`。
-
-<Note>
+当该工具未在 LangGraph 服务器上运行时，`serverInfo` 为 `null`。<Note>
   需要`deepagents>=1.9.0`（或`@langchain/langgraph>=1.2.8`）。
 </Note>
 
 ## 工具执行
 
-在LangChain中，工具由代理使用（例如通过[⟦T58⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。对于 LangGraph 工作流程，工具执行由 [⟦T59⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
+在LangChain中，工具由代理使用（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。
+
+对于LangGraph工作流程，工具执行由[⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode)处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
 
 ### 工具返回值
 
@@ -544,11 +340,11 @@ const getWeatherData = tool(
 );
 ```
 
-行为：
-
-* 对象被序列化并作为工具输出发回。
+行为：* 对象被序列化并作为工具输出发回。
 * 模型可以读取特定字段并对其进行推理。
-* 与字符串返回一样，这不会直接更新图状态。当下游推理受益于显式字段而不是自由格式文本时，请使用此选项。
+* 与字符串返回一样，这不会直接更新图状态。
+
+当下游推理受益于显式字段而不是自由格式文本时，请使用此选项。
 
 #### 返回多模式内容
 
@@ -573,17 +369,19 @@ const captureScreenshot = tool(
 
 行为：
 
-* 返回值转换为具有多模式 `content` 的 `ToolMessage`。
+* 返回值转换为具有多模式`content`的`ToolMessage`。
 * 工具运行后使用`message.content_blocks`读取标准化块列表。
 * 该模型必须支持您返回的模式。在返回图像、音频或视频之前检查您的[model's capabilities](/oss/javascript/integrations/chat)。
 
-有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/javascript/langchain/messages#multimodal)。返回图像或混合内容的 MCP 工具以相同的方式进行转换；参见[Multimodal tool content](/oss/javascript/langchain/mcp#multimodal-tool-content)。
+有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/javascript/langchain/messages#multimodal)。
 
 #### 返回命令
 
-当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T68⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
-您可以退回包含或不包含 `ToolMessage` 的 `Command`。
-如果模型需要查看工具是否成功（例如，确认首选项更改），请在更新中包含 `ToolMessage`，并使用 `runtime.tool_call_id` 作为 `tool_call_id` 参数。
+当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T60⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
+当`Command`以当前图为目标时，请在更新中包含工具调用ID与当前工具调用匹配的`ToolMessage`。
+消息历史记录中的每个工具调用都必须有对应的`ToolMessage`。
+
+使用 `runtime.toolCallId` 作为 `tool_call_id` 参数。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, ToolMessage, type ToolRuntime } from "langchain";
@@ -610,9 +408,9 @@ const setLanguage = tool(
     schema: z.object({ language: z.string() }),
   },
 );
-```
+```行为：
 
-行为：* 该命令使用`update`更新状态。
+* 该命令使用`update`更新状态。
 * 更新后的状态可用于同一运行中的后续步骤。
 * 对可能通过并行工具调用更新的字段使用缩减器。
 
@@ -622,242 +420,62 @@ const setLanguage = tool(
 
 在工具上设置 return direct 以短路代理循环：代理立即将工具的输出返回给调用者，而不通过模型将其发送回以进行进一步处理。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
+import { createAgent, tool } from "langchain";
+import * as z from "zod";
 
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
+const fetchOrderStatus = tool(
+  ({ order_id }) => {
+    return `Order ${order_id} is shipped and will arrive in 2 days.`;
+  },
+  {
+    name: "fetch_order_status",
+    description: "Fetch the current status of a customer order.",
+    schema: z.object({ order_id: z.string() }),
+    returnDirect: true,
+  },
+);
 
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "google-genai:gemini-3.6-flash" }),
-    tools: [fetchOrderStatus],
-  });
+const agent = createAgent({
+  model: new ChatOpenAI({ model: "gpt-4o-mini" }),
+  tools: [fetchOrderStatus],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "What is the status of order #12345?" },
+  ],
+});
+// The agent returns the tool output directly without another LLM call:
+// "Order 12345 is shipped and will arrive in 2 days."
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "openai:gpt-5.5" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "anthropic:claude-sonnet-4-6" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "openrouter:openrouter:z-ai/glm-5.2" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "baseten:zai-org/GLM-5.2" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
-  import { createAgent, tool } from "langchain";
-  import * as z from "zod";
-
-  const fetchOrderStatus = tool(
-    ({ order_id }) => {
-      return `Order ${order_id} is shipped and will arrive in 2 days.`;
-    },
-    {
-      name: "fetch_order_status",
-      description: "Fetch the current status of a customer order.",
-      schema: z.object({ order_id: z.string() }),
-      returnDirect: true,
-    },
-  );
-
-  const agent = createAgent({
-    model: new ChatOpenAI({ model: "ollama:north-mini-code-1.0" }),
-    tools: [fetchOrderStatus],
-  });
-
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "What is the status of order #12345?" },
-    ],
-  });
-  // The agent returns the tool output directly without another LLM call:
-  // "Order 12345 is shipped and will arrive in 2 days."
-  ```
-</CodeGroup>
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8f9bb682-fa0b-4264-8495-246703f0624b/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 行为：
 
-* 该工具正常执行，其输出包装在 `ToolMessage` 中。
+* 该工具正常执行，其输出封装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
-* 如果模型单回合调用多个工具，只有当**所有**调用的工具都有`return_direct=True`时，`return_direct`才生效。
+* **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
 在以下情况下使用此功能：* 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
 * 当不需要额外的推理时，您希望避免额外的模型调用。
-* 您需要确定性的、未经修改的输出 - 模型无法重新表述、总结或对工具结果采取行动。
+* 您需要确定性的、未经修改的输出：模型无法重新表述、总结或对工具结果采取行动。
 
 <Warning>
   由于模型不处理工具的输出，`return_direct=True` 不适合其结果需要进一步推理、汇总或与其他工具调用链接的工具。
 </Warning>
 
+<Warning>
+  **混合并行调用：** 如果模型调用 `return_direct=True` 工具以及没有 `return_direct=True` 的工具，则代理在该步骤后 **不会** 退出。它会将批次中的每个`ToolMessage`路由回模型，因此模型可以推理所有结果。仅当步骤中的每个工具调用都有 `return_direct=True` 时，`return_direct` 才会短路循环。
+</Warning>
+
 ### 错误处理
 
-使用 LangChain 代理[middleware](/oss/javascript/langchain/middleware)处理工具错误，重试失败的工具调用或返回自定义错误消息：
+使用 LangChain 代理 [middleware](/oss/javascript/langchain/middleware) 处理工具错误，以重试失败的工具调用或返回自定义错误消息：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -878,7 +496,7 @@ const setLanguage = tool(
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [],
     middleware: [handleToolErrors],
   });
@@ -926,7 +544,7 @@ const setLanguage = tool(
   });
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [],
     middleware: [handleToolErrors],
   });
@@ -950,7 +568,7 @@ const setLanguage = tool(
   });
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [],
     middleware: [handleToolErrors],
   });
@@ -1031,17 +649,17 @@ const setLanguage = tool(
 
 ### 状态注入
 
-工具通过[⟦T79⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)访问图状态。有关状态、上下文、存储和流 API，请参阅[Access context](#access-context)。
+工具通过[⟦T77⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
 
-有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
+## 动态工具选择
 
-## 动态工具选择使用动态工具，代理可用的工具集可以在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
+使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
 根据工具是否提前已知，有两种方法：
 
 <Tabs>
   <Tab title="Filtering pre-registered tools">
-    当所有可能的工具在代理创建时已知时，您可以预先注册它们，并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
+    当所有可能的工具在代理创建时已知时，您可以预先注册它们并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
 
     <Tabs>
       <Tab title="State">
@@ -1183,9 +801,9 @@ const setLanguage = tool(
         });
         ```
       </Tab>
-    </Tabs>
+    </Tabs>这种方法在以下情况下效果最佳：
 
-    这种方法在以下情况下效果最佳：* 所有可能的工具在编译/启动时都是已知的
+    * 所有可能的工具在编译/启动时都是已知的
     * 您想要根据权限、功能标志或对话状态进行过滤
     * 工具是静态的，但其可用性是动态的
 
@@ -1278,7 +896,7 @@ const setLanguage = tool(
 
 ### 该模式如何运作在这两个运行时中，模型都会看到它可以调用的普通工具，但实际执行发生在服务器进程之外。
 
-1. **定义**使用`langchain`中的`tool({ name, description, schema })`的工具，仅元数据和验证，无服务器端运行器。
+1. **定义**带有来自 `langchain` 的 `tool({ name, description, schema })` 的工具，仅元数据和验证，无服务器端运行器。
 2. **使用`.implement(async (args) => { ... })`附加**真实行为，它返回一个**无头工具实现**（定义+`execute`函数）。
 3. **使用 `createAgent` 或您的图形**注册**步骤 1 中的定义，以便模型在其通常的工具调用循环中看到该工具。
 4. **将**第 2 步的实现传递给流式挂钩的 `tools` 选项。
@@ -1299,7 +917,15 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 请参阅 [tools and toolkits](/oss/javascript/integrations/tools) 集成页面，获取按类别组织的可用工具的完整列表。
 
-## 服务器端工具使用某些聊天模型具有由模型提供者在服务器端执行的内置工具。其中包括网络搜索和代码解释器等功能，不需要您定义或托管工具逻辑。
+## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一种开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为 LangChain 工具，准备好像任何其他工具一样传递给代理。
+
+LangChain代理通过[⟦T95⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-mcp-adapters)库调用MCP服务器上定义的工具，该库发现服务器的工具并将其改编为LangChain工具。
+
+有关设置、传输和身份验证，请参阅[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)。
+
+## 服务器端工具使用
+
+某些聊天模型具有由模型提供者在服务器端执行的内置工具。其中包括网络搜索和代码解释器等功能，不需要您定义或托管工具逻辑。
 
 有关启用和使用这些内置工具的详细信息，请参阅单独的 [chat model integration pages](/oss/javascript/integrations/providers) 和 [tool calling documentation](/oss/javascript/langchain/models#server-side-tool-use)。
 
@@ -1307,7 +933,7 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

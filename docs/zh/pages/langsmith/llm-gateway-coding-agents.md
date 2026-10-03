@@ -29,7 +29,7 @@ export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 ## 克劳德代码 CLI
 
 Claude Code 支持两种独立的身份验证方法。配置前选择一项：* **工作区提供者秘密**：组织通过存储在工作区秘密中的提供者密钥来管理计费和策略。将此方法用于组织管理的使用。
-* **Claude 订阅 OAuth**：Anthropic 对用户的个人 Claude Plus 或 Max 订阅而不是工作区提供者密钥的 LLM 调用进行计费，而 LangSmith 仍然强制执行网关权限、策略和跟踪。当开发人员拥有自己的订阅时，请使用此方法。
+* **Claude 订阅 OAuth**：Anthropic 对用户的个人 Claude Plus 或 Max 订阅（而不是工作区提供者密钥）的 LLM 调用进行计费，而 LangSmith 仍然强制执行网关权限、策略和跟踪。当开发人员拥有自己的订阅时，请使用此方法。
 
 ### 使用工作区提供者机密
 
@@ -134,12 +134,12 @@ Claude Code 使用并刷新其保存的登录中的 OAuth 凭据，包括 `anthr
 </Warning>
 
 <Warning>
-  配置网关后，Claude Desktop 插件会中断。
+  配置网关时，Claude Desktop 插件会中断。
 </Warning>
 
 ## Codex CLI
 
-Codex 使用响应 API。将以下内容添加到 `~/.codex/config.toml` 以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
+Codex 使用响应 API。将以下内容添加到`~/.codex/config.toml`，以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 model = "moonshotai/kimi-k3"
@@ -198,7 +198,7 @@ dcode --model openai:moonshotai/kimi-k3
 ## 验证设置
 
 配置编码代理后，进行测试呼叫并确认：1. 呼叫成功，座席收到响应。
-2. 跟踪将出现在 LangSmith 工作区的 `gateway` 或 `gateway-<short_api_key>-<api_key_id>` 跟踪项目中。
+2. LangSmith 工作区的`gateway` 跟踪项目中会出现一条跟踪。
 
 如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并出现 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
 

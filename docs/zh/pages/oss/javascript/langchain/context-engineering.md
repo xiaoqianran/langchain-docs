@@ -15,7 +15,7 @@
 
 通常情况下，这实际上是导致代理商不可靠的第二个原因。
 
-**背景工程**是以正确的格式提供正确的信息和工具，以便法学硕士能够完成任务。这是人工智能工程师的首要工作。缺乏“正确”的上下文是更可靠代理的首要障碍，而 LangChain 的代理抽象经过独特设计，可以促进上下文工程。
+**背景工程**是以正确的格式提供正确的信息和工具，以便法学硕士能够完成任务。这是人工智能工程师的首要工作。缺乏“正确”上下文是更可靠代理的首要障碍，LangChain 的代理抽象经过独特设计，旨在促进上下文工程。
 
 <Tip>
   环境工程新手？从 [conceptual overview](/oss/javascript/concepts/context) 开始了解不同类型的上下文以及何时使用它们。
@@ -37,10 +37,12 @@
 要构建可靠的代理，您需要控制代理循环的每个步骤以及步骤之间发生的情况。
 
 |上下文类型 |你控制什么 |短暂或持续|
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------- |
+| - | - | - |
 | **[Model Context](#model-context)** |模型调用的内容（说明、消息历史记录、工具、响应格式）|瞬态|
 | **[Tool Context](#tool-context)** |哪些工具可以访问和生成（读/写状态、存储、运行时上下文）|坚持不懈|
-| **[Life-cycle Context](#life-cycle-context)** |模型和工具调用之间会发生什么（摘要、护栏、日志记录等）|坚持不懈|<CardGroup>
+| **[Life-cycle Context](#life-cycle-context)** |模型和工具调用之间会发生什么（摘要、护栏、日志记录等）|坚持不懈|
+
+<CardGroup>
   <Card title="Transient context" icon="bolt">
     法学硕士在一次通话中看到了什么。您可以修改消息、工具或提示，而无需更改状态中保存的内容。
   </Card>
@@ -50,17 +52,17 @@
   </Card>
 </CardGroup>
 
-### 数据来源
-
-在整个过程中，您的代理访问（读取/写入）不同的数据源：
+### 数据来源在整个过程中，您的代理访问（读取/写入）不同的数据源：
 
 |数据来源|也称为|范围 |示例 |
-| ------------------- | -------------------- | ------------------- | -------------------------------------------------------------------------------------- |
+| - | - | - | - |
 | **运行时上下文** |静态配置|对话范围 |用户 ID、API 密钥、数据库连接、权限、环境设置 |
 | **状态** |短期记忆 |对话范围 |当前消息、上传的文件、身份验证状态、工具结果 |
 | **商店** |长期记忆 |交叉对话 |用户偏好、提取的见解、记忆、历史数据 |
 
-### 它是如何工作的LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工程对于使用 LangChain 的开发人员变得实用的底层机制。
+### 它是如何工作的
+
+LangChain [middleware](/oss/javascript/langchain/middleware) 是使上下文工程对于使用 LangChain 的开发人员变得实用的底层机制。
 
 中间件允许您连接到代理生命周期中的任何步骤，并且：
 
@@ -71,9 +73,7 @@
 
 ## 模型上下文
 
-控制每个模型调用的内容 - 指令、可用工具、使用哪个模型以及输出格式。这些决策直接影响可靠性和成本。
-
-<CardGroup>
+控制每个模型调用的内容 - 指令、可用工具、使用哪个模型以及输出格式。这些决策直接影响可靠性和成本。<CardGroup>
   <Card title="System Prompt" icon="message-2" href="#system-prompt">
     开发人员向法学硕士发出的基本指示。
   </Card>
@@ -97,7 +97,9 @@
 
 所有这些类型的模型上下文都可以从**状态**（短期记忆）、**存储**（长期记忆）或**运行时上下文**（静态配置）中获取。
 
-###系统提示系统提示设置 LLM 的行为和能力。不同的用户、上下文或对话阶段需要不同的指令。成功的代理利用记忆、偏好和配置为当前对话状态提供正确的指令。
+###系统提示
+
+系统提示设置 LLM 的行为和能力。不同的用户、上下文或对话阶段需要不同的指令。成功的代理利用记忆、偏好和配置来为当前对话状态提供正确的指令。
 
 <Tabs>
   <Tab title="State">
@@ -210,9 +212,7 @@
   </Tab>
 </Tabs>
 
-### 消息
-
-消息组成了发送给 LLM 的提示。
+### 消息消息构成发送给 LLM 的提示。
 管理消息内容至关重要，以确保法学硕士拥有正确的信息来做出良好的回应。
 
 <Tabs>
@@ -220,7 +220,7 @@
     当与当前查询相关时，从 State 注入上传的文件上下文：
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const injectFileContext = createMiddleware({
       name: "InjectFileContext",
@@ -242,9 +242,9 @@
           // Inject file context before recent messages
           const messages = [  // [!code highlight]
             ...request.messages,  // Rest of conversation
-            { role: "user", content: fileContext }
+            new HumanMessage(fileContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);
@@ -264,7 +264,7 @@
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const contextSchema = z.object({
       userId: z.string(),
@@ -293,9 +293,9 @@
           // Append at end - models pay more attention to final messages
           const messages = [
             ...request.messages,
-            { role: "user", content: styleContext }
+            new HumanMessage(styleContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);
@@ -305,11 +305,11 @@
   </Tab>
 
   <Tab title="Runtime Context">
-    根据用户的权限从运行时上下文注入合规性规则：
+    根据用户的管辖范围从运行时上下文注入合规性规则：
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
-    import { createMiddleware } from "langchain";
+    import { createMiddleware, HumanMessage } from "langchain";
 
     const contextSchema = z.object({
       userJurisdiction: z.string(),
@@ -347,9 +347,9 @@
           // Append at end - models pay more attention to final messages
           const messages = [
             ...request.messages,
-            { role: "user", content: complianceContext }
+            new HumanMessage(complianceContext)
           ];
-          request = request.override({ messages });  // [!code highlight]
+          request = { ...request, messages };  // [!code highlight]
         }
 
         return handler(request);
@@ -360,7 +360,9 @@
 </Tabs>
 
 <Note>
-  **瞬时消息更新与持久消息更新：**上面的示例使用 `wrap_model_call` 进行**瞬时**更新 - 修改单个调用发送到模型的消息，而不更改状态中保存的内容。
+  **瞬时消息更新与持久消息更新：**
+
+  上面的示例使用 `wrap_model_call` 进行**瞬时**更新 - 修改单个调用发送到模型的消息，而不更改状态中保存的内容。
 
   对于修改状态的**持久**更新，您可以：
 
@@ -370,9 +372,7 @@
   请参阅[State updates](/oss/javascript/langchain/middleware/custom#state-updates)了解更多信息。
 </Note>
 
-### 工具
-
-工具允许模型与数据库、API 和外部系统交互。如何定义和选择工具直接影响模型能否有效完成任务。
+### 工具工具允许模型与数据库、API 和外部系统交互。如何定义和选择工具直接影响模型能否有效完成任务。
 
 #### 定义工具
 
@@ -401,7 +401,9 @@ const searchOrders = tool(
 );
 ```
 
-#### 选择工具并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
+#### 选择工具
+
+并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
 <Tabs>
   <Tab title="State">
@@ -504,9 +506,7 @@ const searchOrders = tool(
 
 有关过滤预注册工具和在运行时注册工具（例如，从 MCP 服务器）的信息，请参阅[Dynamic tools](/oss/javascript/langchain/tools#dynamic-tool-selection)。
 
-### 型号
-
-不同的模型有不同的优势、成本和上下文窗口。为手头的任务选择正确的模型，
+＃＃＃ 模型不同的模型有不同的优势、成本和上下文窗口。为手头的任务选择正确的模型，
 在代理运行期间可能会发生变化。
 
 <Tabs>
@@ -627,7 +627,9 @@ const searchOrders = tool(
   </Tab>
 </Tabs>
 
-更多示例请参见[Dynamic model](/oss/javascript/langchain/models#dynamic-model-selection)。### 响应格式
+更多示例请参见[Dynamic model](/oss/javascript/langchain/models#dynamic-model-selection)。
+
+### 响应格式
 
 结构化输出将非结构化文本转换为经过验证的结构化数据。当提取特定字段或为下游系统返回数据时，自由格式文本是不够的。
 
@@ -656,9 +658,7 @@ const customerSupportTicket = z.object({
 }).describe("Structured ticket information extracted from customer message");
 ```
 
-#### 选择格式
-
-动态响应格式选择根据用户偏好、对话阶段或角色来调整模式——尽早返回简单格式，并随着复杂性的增加而返回详细格式。
+#### 选择格式动态响应格式选择根据用户偏好、对话阶段或角色来调整模式——尽早返回简单格式，并随着复杂性的增加而返回详细格式。
 
 <Tabs>
   <Tab title="State">
@@ -784,7 +784,9 @@ const customerSupportTicket = z.object({
   </Tab>
 </Tabs>
 
-## 工具上下文工具的特殊之处在于它们可以读取和写入上下文。
+## 工具上下文
+
+工具的特殊之处在于它们可以读取和写入上下文。
 
 在最基本的情况下，当工具执行时，它会接收LLM的请求参数并返回工具消息。该工具完成其工作并产生结果。
 
@@ -796,9 +798,7 @@ const customerSupportTicket = z.object({
 
 <Tabs>
   <Tab title="State">
-    读取State来检查当前会话信息：
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    从State中读取当前会话信息：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
     import { createAgent, tool, type ToolRuntime } from "langchain";
 
@@ -905,7 +905,9 @@ const customerSupportTicket = z.object({
 ### 写
 
 工具结果可用于帮助代理完成给定的任务。工具都可以将结果直接返回给模型
-并更新代理的内存，以便为未来的步骤提供重要的上下文。<Tabs>
+并更新代理的记忆，以便为未来的步骤提供重要的上下文。
+
+<Tabs>
   <Tab title="State">
     使用命令写入状态以跟踪特定于会话的信息：
 
@@ -981,16 +983,16 @@ const customerSupportTicket = z.object({
 
 控制核心代理步骤**之间**发生的情况 - 拦截数据流以实现横切关注点，例如汇总、护栏和日志记录。
 
-正如您在 [Model Context](#model-context) 和 [Tool Context](#tool-context) 中看到的，[middleware](/oss/javascript/langchain/middleware) 是使上下文工程变得实用的机制。中间件允许您连接到代理生命周期中的任何步骤，并且：
-
-1. **更新上下文** - 修改状态和存储以保存更改、更新对话历史记录或保存见解
+正如您在 [Model Context](#model-context) 和 [Tool Context](#tool-context) 中看到的，[middleware](/oss/javascript/langchain/middleware) 是使上下文工程变得实用的机制。中间件允许您连接到代理生命周期中的任何步骤，并且：1. **更新上下文** - 修改状态和存储以保存更改、更新对话历史记录或保存见解
 2. **生命周期跳转** - 根据上下文移动到代理周期中的不同步骤（例如，如果满足条件则跳过工具执行，使用修改后的上下文重复模型调用）
 
 <div>
   <img alt="Middleware hooks in the agent loop" />
 </div>
 
-### 示例：总结最常见的生命周期模式之一是当对话历史记录太长时自动压缩。与 [Model Context](#messages) 中显示的瞬时消息修剪不同，摘要**持续更新状态** - 用为未来所有轮次保存的摘要永久替换旧消息。
+### 示例：总结
+
+最常见的生命周期模式之一是当对话历史记录太长时自动压缩。与 [Model Context](#messages) 中显示的瞬时消息修剪不同，摘要**持续更新状态** - 使用为未来所有轮次保存的摘要永久替换旧消息。
 
 LangChain为此提供了内置中间件：
 
@@ -1020,9 +1022,9 @@ const agent = createAgent({
 
 <Note>
   有关内置中间件、可用挂钩以及如何创建自定义中间件的完整列表，请参阅 [Middleware documentation](/oss/javascript/langchain/middleware)。
-</Note>
+</Note>## 最佳实践
 
-## 最佳实践1. **从简单开始** - 从静态提示和工具开始，仅在需要时添加动态
+1. **从简单开始** - 从静态提示和工具开始，仅在需要时添加动态
 2. **增量测试** - 一次添加一项上下文工程功能
 3. **监控性能** - 跟踪模型调用、令牌使用情况和延迟
 4. **使用内置中间件** - 利用[⟦T30⟧](/oss/javascript/langchain/middleware#summarization)、[⟦T31⟧](/oss/javascript/langchain/middleware#llm-tool-selector)等。
@@ -1041,7 +1043,7 @@ const agent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -7,16 +7,16 @@
 从代理运行流式传输实时更新
 
 <Tip>
-  对于新应用，我们推荐[event streaming](/oss/javascript/langchain/event-streaming)——LangChain v1.3中引入的类型化投影API。事件流为每个投影（消息、值、工具调用、子图）提供单独的迭代器，因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
+  对于新应用程序，我们推荐[event streaming](/oss/javascript/langchain/event-streaming)——LangChain v1.3 中引入的类型化投影 API。事件流为每个投影（消息、值、工具调用、子图）提供单独的迭代器，因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
 </Tip>
 
-LangChain实现了一个流系统来显示实时更新。
+LangChain 实现了一个流系统来显示实时更新。
 
-流媒体对于增强基于 LLM 构建的应用程序的响应能力至关重要。通过逐步显示输出，甚至在完整响应准备好之前，流式传输显着改善了用户体验 (UX)，特别是在处理 LLM 的延迟时。
+流媒体对于增强基于 LLM 构建的应用程序的响应能力至关重要。通过逐步显示输出，甚至在完整响应准备好之前，流式传输可以显着改善用户体验 (UX)，特别是在处理 LLM 的延迟时。
 
 ## 概述
 
-LangChain 的流媒体系统可让您将代理运行的实时反馈显示到您的应用程序。
+LangChain 的流系统可让您将代理运行的实时反馈显示到您的应用程序。
 
 LangChain 流媒体可以实现什么：
 
@@ -31,14 +31,16 @@ LangChain 流媒体可以实现什么：
 将以下一种或多种流模式作为列表传递给 [⟦T19⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.CompiledStateGraph.html#stream) 方法：
 
 |模式|描述 |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独流式传输。 |
-| `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。                                                                               |
-| `custom` |使用流编写器从图形节点内部流式传输自定义数据。                                                                                         |
+| - | - |
+| `updates` |每个代理步骤后流状态更新。如果在同一步骤中进行多个更新（例如，运行多个节点），则这些更新将单独进行流式传输。 |
+| `messages` |从调用 LLM 的任何图形节点流式传输 `(token, metadata)` 的元组。 |
+| `custom` |使用流编写器从图形节点内部流式传输自定义数据。 |
 
 ## 代理进度
 
-要流式传输代理进度，请使用 [⟦T24⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.CompiledStateGraph.html#stream) 方法和 `streamMode: "updates"`。这会在每个代理步骤之后发出一个事件。例如，如果您有一个代理调用一次工具，您应该会看到以下更新：
+要流式传输代理进度，请使用 [⟦T24⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.CompiledStateGraph.html#stream) 方法和 `streamMode: "updates"`。这会在每个代理步骤之后发出一个事件。
+
+例如，如果您有一个代理调用一次工具，您应该会看到以下更新：
 
 * **LLM 节点**：[⟦T26⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 带有工具调用请求
 * **工具节点**：[⟦T27⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)及执行结果
@@ -66,7 +68,7 @@ LangChain 流媒体可以实现什么：
   );
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });
@@ -170,7 +172,7 @@ LangChain 流媒体可以实现什么：
   );
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });
@@ -222,7 +224,7 @@ LangChain 流媒体可以实现什么：
   );
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });
@@ -410,7 +412,9 @@ LangChain 流媒体可以实现什么：
   // Tool result: [object ToolMessage]
   // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
   ```
-</CodeGroup>
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/20bac62c-c7af-4ee2-9dd3-129e24ce6834/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Note>
   保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `createAgent({ ..., checkpointer: new MemorySaver() })`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
@@ -452,10 +456,12 @@ for await (const [token, metadata] of await agent.stream(
 ```
 
 <Note>
-  **将代理包装为父级`StateGraph`中的节点？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)返回一个`ReactAgent`包装器；添加为节点时传递`agent.graph`。使用`subgraphs: true`，因此消息块包含子图名称空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
+  **将代理包装为父节点 `StateGraph`？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 返回一个 `ReactAgent` 包装器；添加为节点时传递`agent.graph`。使用 `subgraphs: true` 以便消息块包含子图命名空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
 </Note>
 
-## 自定义更新要在工具执行时流式传输更新，您可以使用配置中的 `writer` 参数。
+## 自定义更新
+
+要在执行工具时流式传输更新，您可以使用配置中的 `writer` 参数。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import z from "zod";
@@ -503,9 +509,7 @@ Acquired data for city: San Francisco
 
 ## 多种流模式
 
-您可以通过将streamMode作为数组传递来指定多种流模式：`streamMode: ["updates", "messages", "custom"]`。
-
-流式输出将是 `[mode, chunk]` 的元组，其中 `mode` 是流模式的名称，`chunk` 是该模式流式传输的数据。
+您可以通过将streamMode作为数组传递来指定多种流模式：`streamMode: ["updates", "messages", "custom"]`。流式输出将是 `[mode, chunk]` 的元组，其中 `mode` 是流模式的名称，`chunk` 是该模式流式传输的数据。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import z from "zod";
@@ -556,7 +560,9 @@ for await (const [streamMode, chunk] of await agent.stream(
   请参阅 [reasoning section](/oss/javascript/langchain/models#reasoning) 和您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解配置详细信息。
 
   要快速检查模型的推理支持，请参阅[models.dev](https://models.dev)。
-</Note>要从代理流式传输思考令牌，请使用 `streamMode: "messages"` 并过滤推理内容块。当模型支持时，使用启用扩展思维的模型实例（例如`ChatAnthropic`）：
+</Note>
+
+要从代理流式传输思考令牌，请使用 `streamMode: "messages"` 并过滤推理内容块。当模型支持时，使用启用扩展思维的模型实例（例如`ChatAnthropic`）：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import z from "zod";
@@ -596,6 +602,10 @@ for await (const message of stream.messages) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a8cf65f3-e85e-448c-844e-67019558ddbc/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [thinking] The user is asking about the weather in San Francisco. I have a tool
 [thinking]  available to get this information. Let me call the get_weather tool
@@ -603,11 +613,9 @@ for await (const message of stream.messages) {
 The weather in San Francisco is: It's always sunny in San Francisco!
 ```
 
-无论模型提供者如何，它的工作方式都是相同的 - LangChain 通过 [⟦T56⟧](/oss/javascript/langchain/messages#standard-content-blocks) 属性将特定于提供者的格式（Anthropic `thinking` 块、OpenAI `reasoning` 摘要等）标准化为标准 `"reasoning"` 内容块类型。
+无论模型提供者如何，这都以相同的方式工作 - LangChain 通过 [⟦T56⟧](/oss/javascript/langchain/messages#standard-content-blocks) 属性将特定于提供者的格式（Anthropic `thinking` 块、OpenAI `reasoning` 摘要等）标准化为标准 `"reasoning"` 内容块类型。
 
-要直接从聊天模型流式传输推理令牌（无需代理），请参阅[streaming with chat models](/oss/javascript/langchain/models#reasoning)。
-
-## 禁用流媒体
+要直接从聊天模型流式传输推理令牌（无需代理），请参阅[streaming with chat models](/oss/javascript/langchain/models#reasoning)。## 禁用流媒体
 
 在某些应用程序中，您可能需要禁用给定模型的单个令牌的流式传输。这在以下情况下很有用：
 
@@ -627,16 +635,16 @@ const model = new ChatOpenAI({
 ```
 
 <Tip>
-  部署到 LangSmith 时，在您不希望将其输出流式传输到客户端的任何模型上设置 `streaming=False`。这是在部署之前在图形代码中配置的。
-</Tip><Note>
+  部署到 LangSmith 时，请在您不希望其输出流式传输到客户端的任何模型上设置 `streaming=False`。这是在部署之前在图形代码中配置的。
+</Tip>
+
+<Note>
   并非所有聊天模型集成都支持 `streaming` 参数。如果您的型号不支持，请改用`disableStreaming: true`。此参数可通过基类在所有聊天模型上使用。
 </Note>
 
 更多详情请参阅[LangGraph streaming guide](/oss/javascript/langgraph/streaming#disable-streaming-for-specific-chat-models)。
 
-## 相关
-
-* [Frontend streaming](/oss/javascript/langchain/frontend/overview)—使用 [⟦T61⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 构建 React UI 以实现实时代理交互
+＃＃ 有关的* [Frontend streaming](/oss/javascript/langchain/frontend/overview)—使用 [⟦T61⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 构建 React UI 以实现实时代理交互
 * [Streaming with chat models](/oss/javascript/langchain/models#stream)—直接从聊天模型流式传输令牌，无需使用代理或图
 * [Reasoning with chat models](/oss/javascript/langchain/models#reasoning)—配置和访问聊天模型的推理输出
 * [Standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)—了解用于推理、文本和其他内容类型的标准化内容块格式
@@ -647,7 +655,7 @@ const model = new ChatOpenAI({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

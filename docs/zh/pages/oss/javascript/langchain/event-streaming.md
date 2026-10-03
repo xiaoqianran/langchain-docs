@@ -4,7 +4,7 @@
 
 # 事件流
 
-从 LangChain 代理运行中获取实时更新
+从 LangChain 代理运行流式传输实时更新
 
 LangChain 代理基于 LangGraph 构建，因此它们支持相同的流堆栈以及以代理为中心的消息、工具调用、状态和自定义更新的投影。
 
@@ -42,18 +42,19 @@ for await (const message of stream.messages) {
 const finalState = await stream.output;
 ```
 
-## 您可以流式传输的内容|投影|使用 |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。        |
-| `stream.messages` |模型消息流，每个 LLM 调用一个。                                   |
-| `message.text` |消息的文本增量和最终文本。                                  |
-| `message.reasoning` |公开推理内容的模型的推理增量。                 |
-| `message.toolCalls` |工具调用参数块和最终的工具调用。                        |
-| `message.output` |模型调用完成后的最终消息对象。                       |
-| `message.usage` |提供商返回令牌时的令牌使用元数据。                         |
-| `stream.values` |代理状态快照。                                                     |
-| `stream.output` |最终代理状态。                                                         |
-| `stream.subgraphs` |嵌套图运行（子代理和普通子图）。                        || `stream.extensions` |定制变压器投影。                                            |
+## 您可以流式传输的内容|投影|使用|
+| - | - |
+| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。 |
+| `stream.messages` |模型消息流，每个 LLM 调用一个。 |
+| `message.text` |消息的文本增量和最终文本。 |
+| `message.reasoning` |公开推理内容的模型的推理增量。 |
+| `message.toolCalls` |工具调用参数块和最终的工具调用。 |
+| `message.output` |模型调用完成后的最终消息对象。 |
+| `message.usage` |提供商返回令牌时的令牌使用元数据。 |
+| `stream.values` |代理状态快照。 |
+| `stream.output` |最终代理状态。 |
+| `stream.subgraphs` |嵌套图运行（子代理和普通子图）。 |
+| `stream.extensions` |定制变压器投影。 |
 | `stream.toolCalls` |工具执行生命周期、输入、输出增量、最终输出和错误。 |
 
 `stream.messages` 产生消息流。每个消息流都公开 `.text`、`.reasoning`、`.toolCalls`、`.output` 和 `.usage`。异步投影可以迭代实时增量或等待最终值。
@@ -79,9 +80,7 @@ for await (const message of stream.messages) {
     console.log(usage);
   }
 }
-```
-
-`message.output` 为您提供最终确定的 AI 消息，包括特定于提供商的内容块。在 TypeScript 中，当您只需要令牌计数或其他使用元数据时，请使用`message.usage`；在 Python 中，请从 `message.output.usage_metadata` 读取用法。
+````message.output` 为您提供最终确定的 AI 消息，包括特定于提供商的内容块。在 TypeScript 中，当您只需要令牌计数或其他使用元数据时，请使用`message.usage`；在 Python 中，请从 `message.output.usage_metadata` 读取用法。
 
 ## 推理内容
 
@@ -130,9 +129,9 @@ await Promise.all([
 ]);
 ```
 
-## 流式子代理当 `createAgent` 调用调用另一个名为 `createAgent`（通常通过包装工具）时，内部代理的事件在嵌套命名空间中流动。您传递给 `createAgent` 的 `name` 标识流中的内部代理，因此您可以对每个代理进行过滤和标记。
+## 流式子代理
 
-指定的子代理表面位于专用的 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的`.messages`、`.toolCalls`和`.output`，以及`.name`（您传递的`name=`）、`.cause`（调度子代理的工具调用）和嵌套的`.subagents`。因为这里只出现命名的 `createAgent` 运行，所以您不需要过滤掉普通子图。
+当 `createAgent` 调用调用另一个名为 `createAgent`（通常通过包装工具）时，内部代理的事件在嵌套命名空间中流动。您传递给 `createAgent` 的 `name` 标识流中的内部代理，因此您可以对每个代理进行过滤和标记。指定的子代理表面位于专用的 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的`.messages`、`.toolCalls`和`.output`，以及`.name`（您传递的`name=`）、`.cause`（调度子代理的工具调用）和嵌套的`.subagents`。因为这里只出现命名的 `createAgent` 运行，所以您不需要过滤掉普通子图。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, tool } from "langchain";
@@ -229,7 +228,9 @@ for await (const event of stream) {
 }
 ```
 
-## 自定义更新当您的应用程序需要非内置的投影（例如检索进度、工件或特定于域的事件）时，请使用自定义流转换器。
+## 自定义更新
+
+当您的应用程序需要非内置的投影（例如检索进度、工件或特定于域的事件）时，请使用自定义流转换器。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, {
@@ -242,9 +243,7 @@ for await (const activity of stream.extensions.toolActivity) {
 }
 ```
 
-### 在中间件上注册变压器
-
-<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>
+### 在中间件上注册变压器<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>
 
 中间件可以声明流转换器工厂及其挂钩和工具。工厂形状因语言而异：
 
@@ -275,7 +274,9 @@ const agent = createAgent({
 
 变压器合同见[Build your own projection](/oss/javascript/langgraph/event-streaming#build-your-own-projection)。
 
-＃＃ 有关的* [Streaming](/oss/javascript/langchain/streaming) 涵盖低级 Pregel 流模式。
+## 相关
+
+* [Streaming](/oss/javascript/langchain/streaming) 涵盖低级 Pregel 流模式。
 * [Build your own projection](/oss/javascript/langgraph/event-streaming#build-your-own-projection) 涵盖编写特定于应用程序的投影。
 * [Frontend streaming patterns](/oss/javascript/langchain/frontend/overview) 显示基于流状态构建的 UI 用例。
 
@@ -283,7 +284,7 @@ const agent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

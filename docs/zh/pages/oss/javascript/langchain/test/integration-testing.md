@@ -8,7 +8,7 @@
 
 集成测试验证您的代理是否可以与模型 API 和外部服务正常工作。与使用伪造和模拟的[unit tests](/oss/javascript/langchain/test/unit-testing)不同，集成测试进行实际的网络调用，以确认组件可以协同工作、凭证有效并且延迟是可以接受的。
 
-由于 LLM 响应是不确定的，因此集成测试需要与传统软件测试不同的策略。本指南介绍了如何为代理组织、编写和运行集成测试。对于LangChain本身贡献时的一般测试基础设施，请参阅[Contributing to code](/oss/javascript/contributing/code#running-tests)。
+由于 LLM 响应是不确定的，因此集成测试需要与传统软件测试不同的策略。本指南介绍了如何为代理组织、编写和运行集成测试。对于为LangChain本身做出贡献时的一般测试基础设施，请参阅[Contributing to code](/oss/javascript/contributing/code#running-tests)。
 
 ## 单独的单元测试和集成测试
 
@@ -118,7 +118,7 @@ test("agent calls weather tool", async () => {
 
 `langchain` 附带 [custom vitest matchers](https://vitest.dev/guide/extending-matchers.html)，使结构断言更具可读性，并在失败时生成清晰的错误消息。在设置文件中注册一次它们，每次 `expect()` 调用时它们就可用。
 
-＃＃＃ 设置添加一个 vitest 安装文件，使用 LangChain 匹配器扩展 `expect`：
+＃＃＃ 设置添加一个 vitest 设置文件，使用 LangChain 匹配器扩展 `expect`：
 
 ```ts vitest.setup.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { langchainMatchers } from "@langchain/core/testing";
@@ -140,7 +140,7 @@ TypeScript 类型会自动包含在内，因此自动完成不需要额外的配
 
 ### 检查消息类型
 
-每个消息类别都有一个相应的匹配器：`toBeHumanMessage()`、`toBeAIMessage()`、`toBeSystemMessage()` 和 `toBeToolMessage()`。不带参数调用仅检查类型，或传递字符串以匹配内容：
+每个消息类别都有一个相应的匹配器：`toBeHumanMessage()`、`toBeAIMessage()`、`toBeSystemMessage()` 和 `toBeToolMessage()`。不带参数调用仅检查类型，或传递字符串也匹配内容：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await agent.invoke({
@@ -215,22 +215,21 @@ expect(result).toHaveStructuredResponse({ name: "Alice", age: 30 });
 ```
 
 ### 匹配器参考|匹配器|描述 |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `toBeHumanMessage(expected?)` |检查该值是否为`HumanMessage`。可选择匹配内容（字符串）或字段（对象）。  |
-| `toBeAIMessage(expected?)` |检查该值是否为`AIMessage`。可选择匹配内容或字段。                      |
-| `toBeSystemMessage(expected?)` |检查该值是否为`SystemMessage`。可选择匹配内容或字段。                   |
+| - | - |
+| `toBeHumanMessage(expected?)` |检查该值是否为`HumanMessage`。可选择匹配内容（字符串）或字段（对象）。 |
+| `toBeAIMessage(expected?)` |检查该值是否为`AIMessage`。可选择匹配内容或字段。 |
+| `toBeSystemMessage(expected?)` |检查该值是否为`SystemMessage`。可选择匹配内容或字段。 |
 | `toBeToolMessage(expected?)` |检查该值是否为 `ToolMessage`。可选择匹配内容或字段，例如 `tool_call_id`。 |
-| `toHaveToolCalls(expected)` |检查 `AIMessage` 是否完全具有给定的工具调用（与顺序无关）。                  |
-| `toHaveToolCallCount(n)` |检查 `AIMessage` 是否恰好有 `n` 工具调用。                                            |
-| `toContainToolCall(expected)` |检查`AIMessage`是否至少包含一个匹配的工具调用。支持`.not`。             |
-| `toHaveToolMessages(expected)` |检查消息数组是否按顺序包含给定的 `ToolMessage` 实例。                 || `toHaveBeenInterrupted(value?)` |检查结果是否具有 `__interrupt__`。可以选择匹配中断值。                |
-| `toHaveStructuredResponse(expected?)` |检查结果是否具有 `structuredResponse`。可选择匹配特定字段。                |
+| `toHaveToolCalls(expected)` |检查 `AIMessage` 是否完全具有给定的工具调用（与顺序无关）。 |
+| `toHaveToolCallCount(n)` |检查 `AIMessage` 是否恰好有 `n` 工具调用。 |
+| `toContainToolCall(expected)` |检查`AIMessage`是否至少包含一个匹配的工具调用。支持`.not`。 |
+| `toHaveToolMessages(expected)` |检查消息数组是否按顺序包含给定的 `ToolMessage` 实例。 |
+| `toHaveBeenInterrupted(value?)` |检查结果是否具有 `__interrupt__`。可以选择匹配中断值。 |
+| `toHaveStructuredResponse(expected?)` |检查结果是否具有 `structuredResponse`。可选择匹配特定字段。 |
 
 ## 降低成本和延迟
 
-调用 LLM API 的集成测试会产生实际成本。一些做法有助于保持测试套件快速且经济实惠：
-
-* **使用较小的模型**：`gemini-3.1-flash-lite`或等效模型，用于仅需要验证工具调用和响应结构的测试。
+调用 LLM API 的集成测试会产生实际成本。一些做法有助于保持测试套件快速且经济实惠：* **使用较小的模型**：`gemini-3.1-flash-lite`或等效模型，用于仅需要验证工具调用和响应结构的测试。
 * **设置`maxTokens`**：限制响应长度以避免长时间、昂贵的完成。
 * **限制测试范围**：每个测试测试一种行为。当单轮测试就足够时，避免链接许多 LLM 调用的端到端场景。
 * **选择性运行**：使用[above](#separate-unit-and-integration-tests)的测试分离仅在 CI 中或部署之前运行集成测试，而不是在每个文件保存时运行。
@@ -251,7 +250,7 @@ const agent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

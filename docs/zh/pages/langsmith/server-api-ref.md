@@ -4,6 +4,8 @@
 
 # LangSmith 部署的代理服务器 API 参考
 
+浏览 LangSmith 部署的代理服务器 API 参考，该参考在 /docs 端点的每个部署中可用。
+
 代理服务器 API 参考可在 `/docs` 端点的每个 [deployment](/langsmith/deployment) 内使用（例如 `http://localhost:8124/docs`）。
 
 在侧边栏的 **代理服务器 API** 部分中浏览完整的 API 参考，或查看下面的端点组：
@@ -41,9 +43,7 @@ curl --request POST \
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-api-ref.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -81,7 +81,7 @@ const agent = createAgent({
 });
 ```
 
-有效负载类型是变压器推送的任何类型。下面的客户端示例
+有效负载类型是变压器推送的任何内容。下面的客户端示例
 读这个形状：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -280,9 +280,9 @@ const rawEvents = useChannel(
   undefined, // target namespace
   { bufferSize: 200, replay: true },
 );
-```|选项 |默认 |效果|
-| ------------ | ----------- | ------------------------------------------------------------------------------------------------ |
-| `bufferSize` | `"default"` |缓冲事件的最大数量。一旦达到上限，较旧的事件就会消失。                    |
+```|选项|默认 |效果|
+| - | - | - |
+| `bufferSize` | `"default"` |缓冲事件的最大数量。一旦达到上限，较旧的事件就会消失。 |
 | `replay` | `true` |安装选择器时重播通道上已经看到的事件，而不仅仅是实时事件。 |
 
 <Note>
@@ -294,8 +294,10 @@ const rawEvents = useChannel(
 
 ## 在`useExtension`和`useChannel`之间选择
 
-两者读取相同的自定义通道，但返回的内容不同：|                  | `useExtension` | `useChannel` |
-| ---------------- | ---------------------------------- | -------------------------------------------------------------------- |
+两者读取相同的自定义通道，但返回的内容不同：
+
+| | `useExtension` | `useChannel` |
+| - | - | - |
 | **退货** |最新有效负载（`T \| undefined`）|原始事件的有界缓冲区 (`Event[]`) |
 | **形状** |解开的、输入的有效负载 |原始协议事件；自己拆开`event.params.data` |
 | **订阅者** |频道名称 (`"redaction-stats"`) |完整频道 ID (`["custom:redaction-stats"]`) |
@@ -306,10 +308,10 @@ const rawEvents = useChannel(
 实时摘要（当前总数），而 `useChannel` 支持滚动事件日志
 线程中的每次更新。
 
-## 用例
+## 用例自定义通道适合任何未完全映射到的服务器端信号
+消息、工具调用或图形状态：
 
-自定义通道适合任何未完全映射到的服务器端信号
-消息、工具调用或图形状态：* **合规性和修订统计数据**：已清除 PII 的计数、被阻止的内容、
+* **合规性和修订统计数据**：已清除 PII 的计数、被阻止的内容、
   或政策打击，如上例所示。
 * **进度报告**：完成百分比或由某个进程发出的步骤标签
   长期运行的工具。
@@ -330,7 +332,7 @@ const rawEvents = useChannel(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

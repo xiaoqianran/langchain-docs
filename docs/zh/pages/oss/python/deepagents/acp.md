@@ -4,7 +4,7 @@
 
 # 代理客户端协议 (ACP)
 
-通过代理客户端协议 (ACP) 公开深度代理，以与代码编辑器和 IDE 集成。
+通过代理客户端协议 (ACP) 公开 Deep Agents 以与代码编辑器和 IDE 集成。
 
 [Agent Client Protocol (ACP)](https://agentclientprotocol.com/get-started/introduction) 标准化编码代理和代码编辑器或 IDE 之间的通信。
 通过 ACP 协议，您可以将自定义深度代理与任何 ACP 兼容的客户端结合使用，从而允许您的代码编辑器提供项目上下文并接收丰富的更新。
@@ -96,7 +96,7 @@
 
   async def main() -> None:
       agent = create_deep_agent(
-          model="anthropic:claude-sonnet-4-6",
+          model="anthropic:claude-sonnet-5",
           # You can customize your deep agent here: set a custom prompt,
           # add your own tools, attach middleware, or compose subagents.
           system_prompt="You are a helpful coding assistant",
@@ -219,9 +219,9 @@
   `deepagents-acp` 包包含一个带有文件系统和 shell 的示例编码代理，您可以开箱即用。
 </Card>
 
-## 客户深度代理可以在任何可以运行 ACP 代理服务器的地方工作。一些著名的 ACP 客户包括：
+## 客户
 
-* [Zed](https://zed.dev/docs/ai/external-agents)
+深度代理可以在任何可以运行 ACP 代理服务器的地方工作。一些著名的 ACP 客户包括：* [Zed](https://zed.dev/docs/ai/external-agents)
 * [JetBrains IDEs](https://www.jetbrains.com/help/ai-assistant/acp.html)
 * Visual Studio Code（通过[vscode-acp](https://github.com/formulahendry/vscode-acp)）
 * Neovim（通过 ACP 兼容插件）
@@ -260,7 +260,7 @@ cp .env.example .env
 }
 ```
 
-4. 打开 Zed 的 Agents 面板并启动 Deep Agents 线程。
+4. 打开 Zed 的 Agents 面板并启动一个 Deep Agents 线程。
 
 ### 蟾蜍
 
@@ -285,7 +285,7 @@ toad acp "uv run python path/to/your_server.py" .
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

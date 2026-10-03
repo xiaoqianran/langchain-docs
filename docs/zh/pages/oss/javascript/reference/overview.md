@@ -10,7 +10,7 @@ LangChain 和 LangGraph Python 和 TypeScript 库的综合 API 参考文档。
 
 <CardGroup>
   <Card title="LangChain" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langchain-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=663b30f85baf99ad708b97e05da2a5a4" href="https://reference.langchain.com/javascript/langchain">
-    完整的 LangChain JavaScript/TypeScript API 参考，包括聊天模型、工具、代理等。
+    LangChain JavaScript/TypeScript 的完整 API 参考，包括聊天模型、工具、代理等。
   </Card>
 
   <Card title="LangGraph" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langgraph-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=b997e1a7487d507a36556eedbfd99f81" href="https://reference.langchain.com/javascript/langchain-langgraph">
@@ -34,7 +34,7 @@ LangChain 和 LangGraph Python 和 TypeScript 库的综合 API 参考文档。
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

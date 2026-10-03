@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与检索器集成。
 
-[retriever](/oss/javascript/deepagents/retrieval) 是一个根据非结构化查询返回文档的接口。
+[retriever](/oss/javascript/deepagents/retrieval) 是一个接口，它根据非结构化查询返回文档。
 它比矢量存储更通用。
 检索器不需要能够存储文档，只需返回（或检索）它们即可。
 
@@ -19,14 +19,17 @@
 
 ## 所有猎犬<div>
   |猎犬 |自托管 |云产品|套餐 |下载 |
-  | :---------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------- | :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+  | :- | :- | :- | :- | :- |
   | [⟦T1⟧](/oss/javascript/integrations/retrievers/kendra-retriever) | <span /> | <span /> | [⟦T2⟧](https://www.npmjs.com/package/@langchain/aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws"><img alt="Downloads per month" /></a></span> |
   | [⟦T3⟧](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | <span /> | <span /> | [⟦T4⟧](https://www.npmjs.com/package/@langchain/aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws"><img alt="Downloads per month" /></a></span> |
-  | [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | <span /> | <span /> | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | <span><a href="https://www.npmjs.com/package/@langchain/exa"><img alt="Downloads per month" /></a></span> || [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | <span /> | <span /> | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"><img alt="Downloads per month" /></a></span> |
+  | [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | <span /> | <span /> | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | <span><a href="https://www.npmjs.com/package/@langchain/exa"><img alt="Downloads per month" /></a></span> |
+  | [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | <span /> | <span /> | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"><img alt="Downloads per month" /></a></span> |
   | [⟦T9⟧](https://getalchemystai.com/docs) | <span /> | <span /> | [⟦T10⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | <span><a href="https://www.npmjs.com/package/@alchemystai/langchain-js"><img alt="Downloads per month" /></a></span> |
-  | [⟦T11⟧](/oss/javascript/integrations/retrievers/sourcey) | <span /> | <span /> | [⟦T12⟧](https://www.npmjs.com/package/langchain-sourcey) | <span><a href="https://www.npmjs.com/package/langchain-sourcey"><img alt="Downloads per month" /></a></span> |
-  | [⟦T13⟧](/oss/javascript/integrations/retrievers/hyde) | <span /> | <span /> |                                                                                        | <span>N/A</span> |
-  | [⟦T14⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span /> | <span /> |                                                                                        | <span>N/A</span> || [⟦T15⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | <span /> | <span /> |                                                                                        | <span>N/A</span> |
+  | [⟦T11⟧](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | <span>❌</span> | <span>✅</span> | [⟦T12⟧](https://www.npmjs.com/package/@foxnose/langchain) | <span><a href="https://www.npmjs.com/package/@foxnose/langchain"><img alt="Downloads per month" /></a></span> |
+  | [⟦T13⟧](/oss/javascript/integrations/retrievers/sourcey) | <span /> | <span /> | [⟦T14⟧](https://www.npmjs.com/package/langchain-sourcey) | <span><a href="https://www.npmjs.com/package/langchain-sourcey"><img alt="Downloads per month" /></a></span> |
+  | [⟦T15⟧](/oss/javascript/integrations/retrievers/hyde) | <span /> | <span /> | | <span>N/A</span> |
+  | [⟦T16⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span /> | <span /> | | <span>不适用</span> |
+  | [⟦T17⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | <span /> | <span /> | | <span>不适用</span> |
 </div>
 
 <Info>
@@ -37,7 +40,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

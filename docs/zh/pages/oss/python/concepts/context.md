@@ -20,11 +20,13 @@
   * “上下文窗口”，即可以传递给LLM的最大令牌数。运行时上下文是依赖注入的一种形式，可用于优化 LLM 上下文。它允许您在运行时向工具和节点提供依赖项（例如数据库连接、用户 ID 或 API 客户端），而不是对它们进行硬编码。例如，您可以在运行时上下文中使用用户元数据来获取用户首选项并将其输入到上下文窗口中。
 </Tip>
 
-LangGraph提供了三种管理上下文的方法，结合了可变性和生命周期维度：|上下文类型 |描述 |可变性 |终身|访问方式|
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------ | ---------- | ------------------ | --------------------------------------- |
+LangGraph提供了三种管理上下文的方式，结合了可变性和生命周期维度：
+
+|上下文类型 |描述 |可变性 |终身|访问方式 |
+| - | - | - | - | - |
 | [**Static runtime context**](#static-runtime-context) |启动时传递的用户元数据、工具、数据库连接 |静态|单跑 | `context` `invoke`/`stream` 的参数 |
 | [**Dynamic runtime context (state)**](#dynamic-runtime-context) |在单次运行期间演变的可变数据 |动态 |单跑 | LangGraph 状态对象 |
-| [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) |跨对话共享持久数据|动态 |交叉对话 | LangGraph 商店 |
+| [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) |跨对话共享持久数据|动态 |交叉对话 | LangGraph店 |
 
 ## 静态运行时上下文
 
@@ -39,7 +41,9 @@ graph.invoke(
     {"messages": [{"role": "user", "content": "hi!"}]},
     context={"user_name": "John Smith"}  # [!code highlight]
 )
-```<Tabs>
+```
+
+<Tabs>
   <Tab title="Agent prompt">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from dataclasses import dataclass
@@ -67,9 +71,7 @@ graph.invoke(
         {"messages": [{"role": "user", "content": "what is the weather in sf"}]},
         context=ContextSchema(user_name="John Smith")  # [!code highlight]
     )
-    ```
-
-    详情请参阅[Agents](/oss/python/langchain/agents)。
+    ```详情请参阅[Agents](/oss/python/langchain/agents)。
   </Tab>
 
   <Tab title="Workflow node">
@@ -107,7 +109,7 @@ graph.invoke(
 
 ## 动态运行时上下文
 
-**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在 LangGraph 中，状态对象在运行期间充当[short-term memory](/oss/python/concepts/memory)。
+**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在LangGraph中，状态对象在运行期间充当[short-term memory](/oss/python/concepts/memory)。
 
 <Tabs>
   <Tab title="In an agent">
@@ -166,14 +168,14 @@ graph.invoke(
     graph = builder.compile()
     ```
   </Tab>
-</Tabs><Tip>
+</Tabs>
+
+<Tip>
   **打开内存**
   有关如何启用内存的更多详细信息，请参阅[memory guide](/oss/python/langgraph/add-memory)。这是一个强大的功能，允许您在多次调用中保留代理的状态。否则，状态的范围仅限于单次运行。
-</Tip>
+</Tip>## 动态交叉对话上下文
 
-## 动态交叉对话上下文
-
-**动态交叉对话上下文**表示跨越多个对话或会话的持久、可变数据，并通过 LangGraph 存储进行管理。这包括用户个人资料、偏好和历史交互。 LangGraph 存储在多次运行中充当[long-term memory](/oss/python/concepts/memory#long-term-memory)。这可用于读取或更新持久事实（例如，用户配置文件、偏好、先前的交互）。
+**动态交叉对话上下文**表示跨越多个对话或会话的持久、可变数据，并通过 LangGraph 存储进行管理。这包括用户个人资料、偏好和历史交互。 LangGraph 存储在多次运行中充当 [long-term memory](/oss/python/concepts/memory#long-term-memory)。这可用于读取或更新持久事实（例如，用户配置文件、偏好、先前的交互）。
 
 ## 了解更多
 
@@ -185,7 +187,7 @@ graph.invoke(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

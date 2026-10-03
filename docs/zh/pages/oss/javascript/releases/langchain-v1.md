@@ -2,13 +2,13 @@
 
 <!-- langchain-docs: What's new in LangChain v1 | https://docs.langchain.com/oss/javascript/releases/langchain-v1 -->
 
-# LangChain v1 的新功能
+# LangChain v1 中的新功能
 
-**LangChain v1 是一个专注于构建代理的生产就绪基础。**我们围绕三个核心改进简化了框架：
+**LangChain v1 是一个专注于、可用于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
 <CardGroup>
   <Card title="createAgent" icon="robot" href="#createagent">
-    在 LangChain 中构建代理的新标准方法，用更干净、更强大的 API 取代 LangGraph 中的`createReactAgent`。
+    在 LangChain 中构建代理的新标准方法，用更干净、更强大的 API 替换 LangGraph 中的 `createReactAgent`。
   </Card>
 
   <Card title="Standard content blocks" icon="cube" href="#standard-content-blocks">
@@ -44,7 +44,7 @@
 
 ## `createAgent`
 
-`createAgent`是LangChain1.0中构建代理的标准方式。它提供了比从 LangGraph 导出的预构建 `createReactAgent` 更简单的界面，同时通过使用中间件提供了更大的定制潜力。
+`createAgent` 是LangChain 1.0 中构建代理的标准方法。它提供了比从 LangGraph 导出的预构建 `createReactAgent` 更简单的界面，同时通过使用中间件提供了更大的定制潜力。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent } from "langchain";
@@ -78,7 +78,7 @@ console.log(result.content);
 
 #### 预构建中间件
 
-LangChain为常见模式提供了一些[prebuilt middlewares](/oss/javascript/langchain/middleware#built-in-middleware)，包括：
+LangChain提供了一些[prebuilt middlewares](/oss/javascript/langchain/middleware#built-in-middleware)常见模式，包括：
 
 * `summarizationMiddleware`：当对话历史记录太长时压缩它
 * `humanInTheLoopMiddleware`：敏感工具调用需要批准
@@ -117,11 +117,11 @@ const agent = createAgent({
 您还可以构建自定义中间件来满足您的特定需求。
 
 通过使用 `createMiddleware` 函数实现这些钩子来构建自定义中间件：|钩|当它运行时 |使用案例 |
-| ---------------- | ------------------------ | --------------------------------------- |
+| - | - | - |
 | `beforeAgent` |致电代理之前 |加载内存，验证输入 |
 | `beforeModel` |在每次LLM通话之前|更新提示、修剪消息 |
 | `wrapModelCall` |围绕每个法学硕士通话|拦截并修改请求/响应 |
-| `wrapToolCall` |围绕每个工具调用|拦截并修改工具执行 |
+| `wrapToolCall` |围绕每个工具调用 |拦截并修改工具执行 |
 | `afterModel` |每次LLM回复后|验证输出，应用护栏 |
 | `afterAgent` |代理完成后 |保存结果，清理|
 
@@ -164,9 +164,9 @@ const agent = createAgent({
 
 欲了解更多信息，请参阅[the complete middleware guide](/oss/javascript/langchain/middleware)。
 
-### 建立在 LangGraph 上
+### 构建于 LangGraph
 
-由于 `createAgent` 是基于 LangGraph 构建的，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
+由于 `createAgent` 构建于 LangGraph 之上，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
 
 <CardGroup>
   <Card title="Persistence" icon="database">
@@ -179,16 +179,16 @@ const agent = createAgent({
 
   <Card title="Human-in-the-loop" icon="hand-stop">
     在敏感操作之前暂停代理执行以供人工批准
-  </Card><Card title="Time travel" icon="history">
+  </Card>
+
+  <Card title="Time travel" icon="history">
     将对话倒回到任意点并探索替代路径和提示
   </Card>
 </CardGroup>
 
-您无需学习 LangGraph 即可使用这些功能——它们开箱即用。
+您无需学习 LangGraph 即可使用这些功能 — 它们开箱即用。
 
-### 结构化输出
-
-`createAgent` 改进了结构化输出生成：
+### 结构化输出`createAgent` 改进了结构化输出生成：
 
 * **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
 * **结构化输出策略**：模型可以选择调用工具或使用提供者端结构化输出生成
@@ -248,7 +248,7 @@ console.log(result.structuredResponse);
 
 ## 简化包
 
-LangChain v1 简化了`langchain`包命名空间，以专注于代理的基本构建块。该包仅公开最有用和最相关的功能：
+LangChain v1 简化了 `langchain` 包命名空间，以专注于代理的基本构建块。该包仅公开最有用和最相关的功能：
 
 为了方便起见，其中大部分都是从 `@langchain/core` 重新导出的，这为您提供了一个用于构建代理的集中 API 界面。
 
@@ -333,7 +333,7 @@ import { ... } from "@langchain/classic/chains"; // [!code ++]
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -2,9 +2,23 @@
 
 <!-- langchain-docs: LangChain v1 migration guide | https://docs.langchain.com/oss/javascript/migrate/langchain-v1 -->
 
-# LangChain v1迁移指南
+# LangChain v1 迁移指南
 
-本迁移指南概述了 LangChain v1 的主要变化。要了解有关 v1 的新功能的更多信息，请参阅[introductory post](/oss/javascript/releases/langchain-v1)。
+<Prompt description="Migrate a codebase to LangChain v1." icon="arrow-right">
+  将此代码库迁移到 LangChain v1（需要 v1 的 `langchain` 和 `@langchain/core`，以及 Node.js 22+）。
+
+  主要变化：
+
+  1. **`createReactAgent`→`createAgent`**：将`import { createReactAgent } from "@langchain/langgraph/prebuilts"`替换为`import { createAgent } from "langchain"`。将 `prompt` 重命名为 `systemPrompt`。
+  2. **Hooks 成为中间件**：使用`beforeModel`、`afterModel`、`wrapToolCall` 将`preModelHook` / `postModelHook` 自定义替换为中间件。对于人机交互工具审批，请使用 `langchain` 中的 `humanInTheLoopMiddleware({ interruptOn: {...} })`。
+  3. **结构化输出**：保留`responseFormat`，但使用`toolStrategy` / `providerStrategy`。提示输出被删除。
+  4. **流媒体节点名称**：按节点名称过滤或匹配流媒体事件时，将`"agent"`重命名为`"model"`。
+  5. **运行时上下文**：通过`context`属性传递静态上下文，而不是仅通过`config.configurable`。
+  6. **包命名空间**：遗留链、索引和社区重新导出移至`@langchain/classic`。安装 `@langchain/classic` 并更新这些导入。
+  7. **标准内容块**：对于与提供商无关的内容，更喜欢 `message.contentBlocks`。现有`message.content`仍然有效。
+
+  在代码库中搜索 `createReactAgent`、`@langchain/langgraph/prebuilts`、`preModelHook`、`postModelHook`，以及应移至 `@langchain/classic` 的旧版导入，并应用必要的更改。标记任何无法自动迁移的内容。
+</Prompt>本迁移指南概述了 LangChain v1 中的主要变化。要了解有关 v1 新功能的更多信息，请参阅[introductory post](/oss/javascript/releases/langchain-v1)。
 
 要升级，
 
@@ -31,17 +45,18 @@
 在 v1 中，预构建的 React Agent 现在位于 langchain 包中。下表概述了已更改的功能：
 
 |部分|发生了什么变化|
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| - | - |
 | [Import path](#import-path) |包裹从`@langchain/langgraph/prebuilts`移至`langchain` |
 | [Prompts](#prompts) |参数重命名为`systemPrompt`，动态提示使用中间件 |
 | [Pre-model hook](#pre-model-hook) |被中间件替换为`beforeModel`方法 |
-| [Post-model hook](#post-model-hook) |被中间件替换为`afterModel`方法 || [Custom state](#custom-state) |中间件中定义，仅限 zod 对象 |
+| [Post-model hook](#post-model-hook) |被中间件替换为`afterModel`方法 |
+| [Custom state](#custom-state) |中间件中定义，仅限 zod 对象 |
 | [Model](#model) |通过中间件动态选择，不支持预绑定模型 |
 | [Tools](#tools) |工具错误处理已通过 `wrapToolCall` 转移到中间件 |
-| [Structured output](#structured-output) |提示输出已删除，请使用`toolStrategy`/​​`providerStrategy` |
+| [Structured output](#structured-output) |提示输出已删除，请使用 `toolStrategy`/`providerStrategy` |
 | [Streaming node name](#streaming-node-name-rename) |节点名称由`"agent"`更改为`"model"` |
 | [Runtime context](#runtime-context) | `context` 属性代替 `config.configurable` |
-| [Namespace](#simplified-package) |简化以专注于代理构建块，遗留代码移至`@langchain/classic` |
+| [Namespace](#simplified-package) |精简以专注于代理构建块，遗留代码移至`@langchain/classic` |
 
 ### 导入路径
 
@@ -52,9 +67,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilts"; // [!code --]
 import { createAgent } from "langchain"; // [!code ++]
 ```
 
-### 提示
-
-#### 静态提示重命名
+### 提示#### 静态提示重命名
 
 `prompt`参数已重命名为`systemPrompt`：
 
@@ -104,7 +117,9 @@ import { createAgent } from "langchain"; // [!code ++]
     prompt: new SystemMessage(content: "You are a helpful assistant."), // [!code highlight]
   });
   ```
-</CodeGroup>####动态提示
+</CodeGroup>
+
+####动态提示
 
 动态提示是一种核心上下文工程模式——它们根据当前对话状态调整您告诉模型的内容。为此，请使用 `dynamicSystemPromptMiddleware`：
 
@@ -272,9 +287,7 @@ v1 包含一个内置的人机交互中间件：
     postModelHook: customHumanInTheLoopHook,
   });
   ```
-</CodeGroup>
-
-### 自定义状态
+</CodeGroup>### 自定义状态
 
 现在使用 `stateSchema` 属性在中间件中定义自定义状态。使用 Zod 声明通过代理运行携带的其他状态字段。
 
@@ -347,7 +360,9 @@ v1 包含一个内置的人机交互中间件：
   ```
 </CodeGroup>
 
-### 型号动态模型选择现在通过中间件进行。使用 `wrapModelCall` 根据状态或运行时上下文交换模型（和工具）。在 `createReactAgent` 中，这是通过传递给 `model` 参数的函数完成的。
+### 型号
+
+动态模型选择现在通过中间件进行。使用 `wrapModelCall` 根据状态或运行时上下文交换模型（和工具）。在 `createReactAgent` 中，这是通过传递给 `model` 参数的函数完成的。
 
 此功能已在 v1 中移植到中间件接口。
 
@@ -460,14 +475,14 @@ const agent = createAgent({ model: "gpt-5.4-mini", tools: [someTool] });
 
 ### 结构化输出
 
-#### 节点变化
-
-结构化输出过去是在与主代理不同的节点中生成的。现在情况已不再如此。结构化输出在主循环中生成（无需额外的 LLM 调用），从而降低成本和延迟。
+#### 节点变化结构化输出过去是在与主代理不同的节点中生成的。现在情况已不再如此。结构化输出在主循环中生成（无需额外的 LLM 调用），从而降低成本和延迟。
 
 #### 工具和提供商策略
 
-在v1中，有两种策略：* `toolStrategy`使用人工工具调用来生成结构化输出
-* `providerStrategy` 使用提供者本地结构化输出生成
+在v1中，有两种策略：
+
+* `toolStrategy`使用人工工具调用生成结构化输出
+* `providerStrategy` 使用提供商原生结构化输出生成
 
 <CodeGroup>
   ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -557,11 +572,11 @@ const agent = createAgent({ model: "gpt-5.4-mini", tools: [someTool] });
 
 ***
 
-## 标准内容
+## 标准内容在 v1 中，消息获得与提供商无关的标准内容块。通过 `message.contentBlocks` 访问它们，以获得跨提供商的一致的类型化视图。对于字符串或提供者本机结构，现有的 `message.content` 字段保持不变。
 
-在 v1 中，消息获得与提供商无关的标准内容块。通过 `message.contentBlocks` 访问它们，以获得跨提供商的一致的类型化视图。对于字符串或提供者本机结构，现有的 `message.content` 字段保持不变。
+### 发生了什么变化
 
-### 发生了什么变化* 规范化内容消息的新 `contentBlocks` 属性。
+* 规范化内容消息上的新 `contentBlocks` 属性。
 * `ContentBlock` 下的新 TypeScript 类型用于强类型。
 * 通过 `LC_OUTPUT_VERSION=v1` 或 `outputVersion: "v1"` 将标准块可选序列化为 `content`。
 
@@ -665,22 +680,22 @@ const imageBlock: ContentBlock.Multimodal.Image = {
 </CodeGroup>
 
 <Note>
-  了解更多：[Messages](/oss/javascript/langchain/messages#message-content) 和 [Standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)。有关输入示例，请参阅[Multimodal](/oss/javascript/langchain/messages#multimodal)。
+  了解更多：[Messages](/oss/javascript/langchain/messages#message-content) 和 [Standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)。输入示例请参见[Multimodal](/oss/javascript/langchain/messages#multimodal)。
 </Note>
 
 ***
 
-## 简化包
-
-`langchain` 包命名空间经过简化，专注于代理构建块。旧功能已移至`@langchain/classic`。新包仅公开最有用和最相关的功能。
+## 简化包`langchain` 包命名空间经过简化，专注于代理构建块。旧功能已移至`@langchain/classic`。新包仅公开最有用和最相关的功能。
 
 ### 出口
 
-v1 包包括：|模块|有什么可用的 |笔记|
-| ----------- | -------------------------------------------------------- | ---------------------------------- |
+v1 包包括：
+
+|模块|有什么可用的 |笔记|
+| - | - | - |
 |代理| `createAgent`、`AgentState` |核心代理创建功能 |
 |留言 |消息类型、内容块、`trimMessages` |从`@langchain/core`转口|
-|工具| `tool`，工具类 |从`@langchain/core`转口|
+|工具| `tool`，工具类 |从`@langchain/core`复出口 |
 |聊天模特| `initChatModel`、`BaseChatModel` |统一模型初始化 |
 
 ### `@langchain/classic`
@@ -721,13 +736,13 @@ import { ... } from "langchain/chains";
 
 ### 删除了 Node 18 支持
 
-所有 LangChain 软件包现在都需要 **Node.js 22 或更高版本**。 Node.js 18 于 2025 年 3 月达到[end of life](https://nodejs.org/en/about/releases/)。
+所有 LangChain 包现在都需要 **Node.js 22 或更高版本**。 Node.js 18 于 2025 年 3 月达到[end of life](https://nodejs.org/en/about/releases/)。
 
 ### 新构建输出
 
 所有 langchain 包的构建现在使用基于捆绑器的方法，而不是使用原始打字稿输出。如果您从 `dist/` 目录导入文件（不推荐），则需要更新导入以使用新的模块系统。### 旧代码移至`@langchain/classic`
 
-标准接口和代理焦点之外的旧功能已移至 [⟦T107⟧](https://www.npmjs.com/package/@langchain/classic) 包。请参阅 [Simplified package](#simplified-package) 部分，了解有关核心 `langchain` 包中可用内容以及移至 `@langchain/classic` 的内容的详细信息。
+标准接口和代理之外的旧功能已移至[⟦T138⟧](https://www.npmjs.com/package/@langchain/classic) 包。请参阅 [Simplified package](#simplified-package) 部分，了解有关核心 `langchain` 包中可用内容以及移至 `@langchain/classic` 的内容的详细信息。
 
 ### 删除已弃用的 API
 
@@ -738,7 +753,7 @@ import { ... } from "langchain/chains";
 
   #### 核心功能
 
-  * `TraceGroup` - 使用 LangSmith 追踪代替
+  * `TraceGroup` - 使用LangSmith 跟踪代替
   * `BaseDocumentLoader.loadAndSplit` - 使用 `.load()` 后跟文本分割器
   * `RemoteRunnable` - 不再支持
 
@@ -749,7 +764,7 @@ import { ... } from "langchain/chains";
 
   #### 猎犬
 
-  * `BaseRetrieverInterface.getRelevantDocuments` - 使用 `.invoke()` 代替
+  * `BaseRetrieverInterface.getRelevantDocuments` - 使用`.invoke()` 代替
 
   #### 可运行程序
 
@@ -760,7 +775,7 @@ import { ... } from "langchain/chains";
   #### 聊天模型
 
   * `BaseChatModel.predictMessages` - 使用`.invoke()` 代替
-  * `BaseChatModel.predict` - 使用 `.invoke()` 代替
+  * `BaseChatModel.predict` - 使用`.invoke()` 代替
   * `BaseChatModel.serialize` - 直接使用JSON序列化
   * `BaseChatModel.callPrompt` - 使用`.invoke()` 代替
   * `BaseChatModel.call` - 使用`.invoke()` 代替
@@ -778,9 +793,9 @@ import { ... } from "langchain/chains";
   #### 追踪
 
   * `BaseTracer.runMap` - 使用 LangSmith 跟踪 API
-  * `getTracingCallbackHandler` - 使用 LangSmith 追踪
-  * `getTracingV2CallbackHandler` - 使用 LangSmith 追踪
-  * `LangChainTracerV1` - 使用 LangSmith 追踪
+  * `getTracingCallbackHandler` - 使用LangSmith 追踪
+  * `getTracingV2CallbackHandler` - 使用LangSmith 跟踪
+  * `LangChainTracerV1` - 使用LangSmith 跟踪
 
   #### 内存和存储
 
@@ -796,7 +811,7 @@ import { ... } from "langchain/chains";
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

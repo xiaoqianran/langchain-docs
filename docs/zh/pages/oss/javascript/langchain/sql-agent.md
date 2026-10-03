@@ -4,7 +4,7 @@
 
 ## 概述
 
-在本教程中，您将学习如何使用 LangChain [agents](/oss/javascript/langchain/agents) 构建一个可以回答有关 SQL 数据库问题的代理。
+在本教程中，您将学习如何构建一个代理，该代理可以使用 LangChain [agents](/oss/javascript/langchain/agents) 回答有关 SQL 数据库的问题。
 
 在较高层面上，代理人将：
 
@@ -26,7 +26,7 @@
 以下教程涵盖以下概念：
 
 * [Tools](/oss/javascript/langchain/tools) 用于从 SQL 数据库读取
-* LangChain[agents](/oss/javascript/langchain/agents)
+*LangChain[agents](/oss/javascript/langchain/agents)
 * [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)流程
 
 ## 设置
@@ -191,23 +191,23 @@
       </Tab>
 
       <Tab title="Google Gemini">
-        👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+        👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
         <CodeGroup>
           ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/google-genai
+          npm install @langchain/google
           ```
 
           ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/google-genai
+          pnpm install @langchain/google
           ```
 
           ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/google-genai
+          yarn add @langchain/google
           ```
 
           ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          bun add @langchain/google-genai
+          bun add @langchain/google
           ```
         </CodeGroup>
 
@@ -217,14 +217,14 @@
 
           process.env.GOOGLE_API_KEY = "your-api-key";
 
-          const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+          const model = await initChatModel("google:gemini-3.7-flash");
           ```
 
           ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+          import { ChatGoogle } from "@langchain/google/node";
 
-          const model = new ChatGoogleGenerativeAI({
-            model: "gemini-2.5-flash-lite",
+          const model = new ChatGoogle({
+            model: "gemini-3.7-flash",
             apiKey: "your-api-key"
           });
           ```
@@ -275,7 +275,7 @@
       </Tab>
     </Tabs>
 
-    以下示例中显示的输出使用 OpenAI。
+    以下示例中显示的输出使用OpenAI。
   </Step>
 
   <Step title="Configure the database">
@@ -431,7 +431,7 @@
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -451,7 +451,7 @@
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -461,7 +461,7 @@
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -676,7 +676,7 @@
         `);
 
         export const agent = createAgent({
-          model: "google-genai:gemini-3.6-flash",
+          model: "google:gemini-3.6-flash",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -908,7 +908,7 @@
         `);
 
         export const agent = createAgent({
-          model: "anthropic:claude-sonnet-4-6",
+          model: "anthropic:claude-sonnet-5",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -1024,7 +1024,7 @@
         `);
 
         export const agent = createAgent({
-          model: "openrouter:openrouter:z-ai/glm-5.2",
+          model: "openrouter:z-ai/glm-5.2",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -1382,7 +1382,7 @@
   </Step>
 
   <Step title="Implement human-in-the-loop review">
-    在执行代理的 SQL 查询之前检查是否存在任何意外操作或效率低下，这可能是谨慎的做法。LangChain代理支持内置[human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop)，以增加对代理工具调用的监督。让我们将代理配置为在调用 `execute_sql` 工具时暂停以供人工审核：
+    在执行代理的 SQL 查询之前检查是否存在任何意外操作或效率低下，这可能是谨慎的做法。LangChain 代理支持内置 [human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop)，以添加对代理工具调用的监督。让我们将代理配置为在调用 `execute_sql` 工具时暂停以供人工审核：
 
     <CodeGroup>
       ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1390,7 +1390,7 @@
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [
@@ -1434,7 +1434,7 @@
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [
@@ -1456,7 +1456,7 @@
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [
@@ -1591,7 +1591,7 @@
     Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
     ```
 
-    我们可以使用 [Command](/oss/javascript/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 恢复执行，在本例中接受查询：
+    我们可以恢复执行，在本例中使用 [Command](/oss/javascript/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 接受查询：
 
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Command } from "@langchain/langgraph"; // [!code highlight]
@@ -1646,13 +1646,13 @@
 
 ## 后续步骤
 
-如需更深入的定制，请查看 [this tutorial](/oss/javascript/langgraph/sql-agent) 直接使用 LangGraph 原语实现 SQL 代理。
+如需更深入的自定义，请查看 [this tutorial](/oss/javascript/langgraph/sql-agent) 以直接使用 LangGraph 原语实现 SQL 代理。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

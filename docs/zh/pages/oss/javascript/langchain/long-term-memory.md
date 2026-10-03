@@ -4,7 +4,7 @@
 
 # 长期记忆
 
-为 LangChain 代理添加长期记忆，以存储和调用跨对话和会话的数据
+为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
 
 长期记忆可让您的客服人员存储和回忆不同对话和会话中的信息。
 与仅限于单个线程的[short-term memory](/oss/javascript/langchain/short-term-memory)不同，长期记忆跨线程持续存在并且可以随时调用。
@@ -26,7 +26,7 @@
       const store = new InMemoryStore();
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [],
         store,
       });
@@ -54,7 +54,7 @@
       const store = new InMemoryStore();
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [],
         store,
       });
@@ -68,7 +68,7 @@
       const store = new InMemoryStore();
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [],
         store,
       });
@@ -135,7 +135,7 @@
       await store.setup();
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [],
         store,
       });
@@ -169,7 +169,7 @@
       await store.setup();
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [],
         store,
       });
@@ -186,7 +186,7 @@
       await store.setup();
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [],
         store,
       });
@@ -246,15 +246,19 @@
   </Tab>
 </Tabs>
 
+<Note>
+  对于其他存储后端，包括 Redis 和 MongoDB，请参阅 [store integrations](/oss/javascript/integrations/long-term-memory) 列表。有关 MongoDB 演练，请参阅 [long-term memory with MongoDB](/oss/javascript/integrations/memory/mongodb-long-term-memory)。
+</Note>
+
 然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。
 
 <Tip>
   要更深入地了解记忆类型（语义、情景、程序）和写入记忆的策略，请参阅 [Memory conceptual guide](/oss/javascript/concepts/memory#long-term-memory)。
-</Tip>
+</Tip>## 内存存储
 
-## 内存存储
+LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/langgraph/stores) 中。
 
-LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/langgraph/stores) 中。每个内存都按照自定义的 `namespace`（类似于文件夹）和独特的 `key`（类似于文件名）进行组织。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
+每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
 
 这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
 
@@ -378,7 +382,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [getUserInfo],
         contextSchema,
         // Pass store to agent - enables agent to access store when running tools
@@ -506,7 +510,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [getUserInfo],
         contextSchema,
         // Pass store to agent - enables agent to access store when running tools
@@ -570,7 +574,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [getUserInfo],
         contextSchema,
         // Pass store to agent - enables agent to access store when running tools
@@ -785,6 +789,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
        */
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e103a798-8829-42a4-9a1a-9e0f8fc04c62/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -822,7 +830,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [getUserInfo],
         contextSchema,
         store,
@@ -912,7 +920,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [getUserInfo],
         contextSchema,
         store,
@@ -957,7 +965,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [getUserInfo],
         contextSchema,
         store,
@@ -1104,10 +1112,12 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e0440c39-4561-4c13-90b3-5b2ff18037ef/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
-
-<a />
 
 ## 通过工具写入长期记忆
 
@@ -1153,7 +1163,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1267,7 +1277,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1324,7 +1334,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1512,7 +1522,9 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       const result = await store.get(["users"], "user_123");
       console.log(result?.value); // Output: { name: "John Smith" }
       ```
-    </CodeGroup>
+    </CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b97eea49-0f7a-439c-b94d-2e5224c2fab4/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -1546,7 +1558,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.6-flash",
+        model: "google:gemini-3.6-flash",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1634,7 +1646,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "anthropic:claude-sonnet-4-6",
+        model: "anthropic:claude-sonnet-5",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1678,7 +1690,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       );
 
       const agent = createAgent({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
+        model: "openrouter:z-ai/glm-5.2",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1825,6 +1837,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       console.log(result?.value);
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/564f79cc-a377-4016-a8d3-9f5752eab516/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
@@ -1832,8 +1848,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/long-term-memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -73,14 +73,14 @@ graph LR
 从您提前注册的组件目录中。该目录充当
 护栏和边界：代理可以自由地安排和组合你的组件，但是
 不能超出您批准的范围。这就是长尾存在的地方。它
-以像素完美换取宽度，适合二次交互、内部交互
+以像素完美换取广度，适合二次交互、内部交互
 工具和仪表板，其中显示有用的内容比精确更重要
 控制。 [Declarative generative UI](/oss/javascript/langchain/frontend/declarative-generative-ui)
 用 [json-render](https://json-render.dev) 涵盖这一点； Google 的 A2UI，通过集成
 CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ### 开放式代理人拥有画布。该接口是在您的应用程序外部创建的，用于
-由 MCP 服务器提供的示例，并在沙箱中呈现。这给出了最宽的
+由 MCP 服务器提供的示例，并在沙箱中渲染。这给出了最宽的
 表现力范围广泛，无需前端代码即可添加新的界面功能
 您的一侧，适合一次性可视化和定制答案，其中结果
 这是令人惊讶的，而且比可预测的还要好。这也是最
@@ -92,13 +92,13 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ## 选择一种方法
 
-从您需要约束接口的程度开始：|如果您需要... |选择|
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+从您需要约束接口的程度开始：
+
+|如果您需要... |选择|
+| - | - |
 |保证一组已知输出的品牌、布局和可访问性 | [Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui) |
 |让代理仅使用经过批准的组件来构建新颖的布局 | [Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui) |
-|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui) |
-
-为整个产品选择单一方法是最常见的错误。真实
+|由第三方编写的 Surface 界面，无需您自己构建 | [Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui) |为整个产品选择单一方法是最常见的错误。真实
 应用程序混合方法并将每个表面与其目的相匹配：受控
 组件用于高流量、品牌关键的核心，声明性组合用于
 二次交互的长尾以及第三方的开放式嵌入
@@ -108,7 +108,9 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 移动设备以及 Slack 或电子邮件等表面上的界面，而不仅仅是聊天中
 成绩单。
 
-## 探索频谱<CardGroup>
+## 探索频谱
+
+<CardGroup>
   <Card title="Controlled" icon="components" href="/oss/javascript/langchain/frontend/controlled-generative-ui">
     编写组件；代理选择要渲染的内容以及要传递的数据。
   </Card>
@@ -126,7 +128,7 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

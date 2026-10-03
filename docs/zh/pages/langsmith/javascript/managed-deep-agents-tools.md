@@ -110,9 +110,9 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为�
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念|亲切 |它如何到达代理|
+## 何时使用工具|概念 |亲切 |它如何到达代理|
 | - | - | - |
-| **工具** |申请代码|导入并传入代理定义 |
+| **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |托管上下文 |代理在相关时加载的程序 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
@@ -127,17 +127,13 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为�
 
 * **在已部署的代理上**，通过 LangGraph 服务器 API 使用恢复负载恢复暂停的运行。参见[Human-in-the-loop using server API](/langsmith/add-human-in-the-loop)。
 
-<Note>
-  在公开测试期间，托管 Deep Agents 是 CLI 优先，并且尚未记录编程调用。要从您自己的应用程序以编程方式恢复运行，请联系您的 LangChain 团队。
-</Note>
-
 人机交互需要持久的线程状态来暂停和恢复。托管运行时拥有检查指针，因此不需要额外的设置。
 
-## 使用需要身份验证的工具如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+## 使用需要身份验证的工具
 
-## 访问运行时上下文
+如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+## 访问运行时上下文对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 要从工具读取或写入线程沙箱中的文件，请使用 `runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 

@@ -2,6 +2,8 @@
 
 # LangSmith API reference
 
+The LangSmith REST API provides programmatic access to tracing, datasets, experiments, annotations, and other LangSmith platform features.
+
 The LangSmith REST API provides programmatic access to LangSmith platform features including tracing, datasets, experiments, annotations, and more.
 
 Browse the full API reference in the **LangSmith REST API** section in the sidebar.

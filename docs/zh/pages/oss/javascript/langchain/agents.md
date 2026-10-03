@@ -4,25 +4,27 @@
 
 # 代理
 
-代理是一个循环调用工具的模型，直到给定的任务完成。
+构建一个LangChain代理：一个循环调用工具的模型，直到任务完成，由提示、工具和中间件组成。
+
+An agent is a model calling tools in a loop until a given task is complete.
 
 <img alt="Core agent loop diagram" />
 
 线束是围绕该循环的一切：提示、工具以及塑造模型行为的任何中间件。
 
 <Note>
-  **特工=模特+线束**
+  **Agent = Model + Harness**
 
   线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 </Note>
 
-[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的线束。最简单的是，您可以使用以下命令创建一个：
+[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) is a highly configurable harness. At its simplest, you can create one with:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools });
+  var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -34,13 +36,13 @@
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools });
+  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools });
+  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -72,15 +74,13 @@
 
 <img alt="Agent model and harness components diagram" />
 
-### 型号
-
-传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为您的代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/javascript/langchain/models)。
+### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为您的代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/javascript/langchain/models)。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools });
+  var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -92,13 +92,13 @@
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools });
+  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools });
+  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -111,7 +111,9 @@
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
-  ``````ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
   var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
@@ -133,7 +135,7 @@
     schema: z.object({ query: z.string() }),
   });
 
-  var agent = createAgent({ model: "google-genai:gemini-3.6-flash", tools: [search] });
+  var agent = createAgent({ model: "google:gemini-3.6-flash", tools: [search] });
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -159,7 +161,7 @@
     schema: z.object({ query: z.string() }),
   });
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools: [search] });
+  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools: [search] });
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -172,7 +174,7 @@
     schema: z.object({ query: z.string() }),
   });
 
-  var agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools: [search] });
+  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools: [search] });
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -217,12 +219,12 @@
 
 ###系统提示
 
-塑造代理处理任务的方式。系统提示参数接受字符串或`SystemMessage`。对于运行时的动态提示，请使用[middleware](/oss/javascript/langchain/middleware)。
+Shape how the agent approaches tasks.系统提示参数接受字符串或`SystemMessage`。 For dynamic prompts at runtime, use [middleware](/oss/javascript/langchain/middleware).
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools,
     systemPrompt: "You are a helpful assistant. Be concise and accurate.",
   });
@@ -238,7 +240,7 @@
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools,
     systemPrompt: "You are a helpful assistant. Be concise and accurate.",
   });
@@ -246,7 +248,7 @@
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools,
     systemPrompt: "You are a helpful assistant. Be concise and accurate.",
   });
@@ -279,14 +281,14 @@
 
 ### 结构化输出
 
-使用 `response_format=` 从代理返回经过验证的架构。有关策略和示例，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
+使用 `response_format=` 从代理返回经过验证的架构。 See [Structured output](/oss/javascript/langchain/structured-output) for strategies and examples.
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools,
     responseFormat: Answer,
   });
@@ -314,7 +316,7 @@
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools,
     responseFormat: Answer,
   });
@@ -328,7 +330,7 @@
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools,
     responseFormat: Answer,
   });
@@ -383,11 +385,11 @@
 
 ### 代理状态
 
-每个代理都通过一个 `AgentState` 对象管理其执行上下文，该对象保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
+每个代理都通过一个 `AgentState` 对象来管理其执行上下文，该对象保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
 
 内置字段是：|领域 |类型 |描述 |
-| ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `messages` | `BaseMessage[]` |当前线程的完整对话历史记录。仅追加：添加新消息，从不替换。 |
+| - | - | - |
+| `messages` | `BaseMessage[]` |当前线程的完整对话历史记录。仅附加：添加新消息，从不替换。 |
 
 `AgentState` 也是传递给每个节点样式中间件挂钩的类型（`beforeModel`、`afterModel` 等）。钩子接收当前状态并可以返回更新对象以合并回其中。
 
@@ -410,7 +412,7 @@
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [],
     middleware: [stateMiddleware],
   });
@@ -454,7 +456,7 @@
   });
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [],
     middleware: [stateMiddleware],
   });
@@ -476,7 +478,7 @@
   });
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [],
     middleware: [stateMiddleware],
   });
@@ -555,7 +557,9 @@
 
 <Tip>
   跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
-</Tip>您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+</Tip>
+
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -564,7 +568,7 @@
   import { MemorySaver } from "@langchain/langgraph";
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [],
     checkpointer: new MemorySaver(),
   });
@@ -622,7 +626,7 @@
   import { MemorySaver } from "@langchain/langgraph";
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [],
     checkpointer: new MemorySaver(),
   });
@@ -651,7 +655,7 @@
   import { MemorySaver } from "@langchain/langgraph";
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [],
     checkpointer: new MemorySaver(),
   });
@@ -672,9 +676,7 @@
     { messages: [{ role: "user", content: "What about tomorrow?" }] },
     config,
   );
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -761,6 +763,10 @@
   );
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e5926b4-3156-477c-83e5-969404aeb92e/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Note>
   保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
@@ -780,7 +786,7 @@
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [],
     contextSchema,
     checkpointer: new MemorySaver(),
@@ -840,7 +846,7 @@
   });
 
   const agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [],
     contextSchema,
     checkpointer: new MemorySaver(),
@@ -870,7 +876,7 @@
   });
 
   const agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [],
     contextSchema,
     checkpointer: new MemorySaver(),
@@ -980,9 +986,15 @@
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8b453131-3d7f-4218-a407-f724b96fb4e7/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 `thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
 
-## 流媒体`invoke` 返回运行结束时的最终响应。如果代理执行多个工具调用，用户通常需要在完成之前更新进度。使用流式传输来显示发生的中间消息和工具活动。
+## 流媒体
+
+`invoke` 返回运行结束时的最终响应。如果代理执行多个工具调用，用户通常需要在完成之前更新进度。使用流式传输来显示发生的中间消息和工具活动。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(
@@ -1011,7 +1023,9 @@ for await (const snapshot of stream.values) {
     console.log(`Calling tools: ${toolCallNames.join(", ")}`);
   }
 }
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/311f121f-4400-4709-a202-2f11e972669d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Tip>
   有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/javascript/langchain/streaming)。
@@ -1046,12 +1060,12 @@ for await (const snapshot of stream.values) {
 
   <Card title="Guardrails" icon="lock" href="#guardrails">
     PII 检测和内容控制
-  </Card><Card title="Steering" icon="user" href="#steering">
+  </Card>
+
+  <Card title="Steering" icon="user" href="#steering">
     在采取高影响力行动之前进行人机交互批准
   </Card>
-</CardGroup>
-
-<Tip>
+</CardGroup><Tip>
   `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
 </Tip>
 
@@ -1065,7 +1079,7 @@ for await (const snapshot of stream.values) {
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [search],
     middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
   });
@@ -1087,7 +1101,7 @@ for await (const snapshot of stream.values) {
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [search],
     middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
   });
@@ -1098,7 +1112,7 @@ for await (const snapshot of stream.values) {
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [search],
     middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
   });
@@ -1158,7 +1172,9 @@ for await (const snapshot of stream.values) {
   </CodeGroup>
 </Note>
 
-### 上下文管理每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。汇总会在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
+### 上下文管理
+
+每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。摘要在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1171,7 +1187,7 @@ for await (const snapshot of stream.values) {
   } from "deepagents";
 
   var backend = new StateBackend();
-  const model = "google-genai:gemini-3.6-flash";
+  const model = "google:gemini-3.6-flash";
 
   var agent = createAgent({
     model,
@@ -1217,7 +1233,7 @@ for await (const snapshot of stream.values) {
   } from "deepagents";
 
   var backend = new StateBackend();
-  const model = "anthropic:claude-sonnet-4-6";
+  const model = "anthropic:claude-sonnet-5";
 
   var agent = createAgent({
     model,
@@ -1240,7 +1256,7 @@ for await (const snapshot of stream.values) {
   } from "deepagents";
 
   var backend = new StateBackend();
-  const model = "openrouter:openrouter:z-ai/glm-5.2";
+  const model = "openrouter:z-ai/glm-5.2";
 
   var agent = createAgent({
     model,
@@ -1251,9 +1267,7 @@ for await (const snapshot of stream.values) {
       createSkillsMiddleware({ backend, sources: ["./skills/"] }),
     ],
   });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import {
     StateBackend,
@@ -1366,7 +1380,7 @@ for await (const snapshot of stream.values) {
   var backend = new StateBackend();
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [search],
     middleware: [
       createFilesystemMiddleware({ backend }),
@@ -1381,7 +1395,7 @@ for await (const snapshot of stream.values) {
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "google-genai:gemini-3.6-flash",
+            model: "google:gemini-3.6-flash",
             middleware: [],
           },
         ],
@@ -1450,7 +1464,7 @@ for await (const snapshot of stream.values) {
   var backend = new StateBackend();
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [search],
     middleware: [
       createFilesystemMiddleware({ backend }),
@@ -1465,7 +1479,7 @@ for await (const snapshot of stream.values) {
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "anthropic:claude-sonnet-4-6",
+            model: "anthropic:claude-sonnet-5",
             middleware: [],
           },
         ],
@@ -1492,7 +1506,7 @@ for await (const snapshot of stream.values) {
   var backend = new StateBackend();
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [search],
     middleware: [
       createFilesystemMiddleware({ backend }),
@@ -1507,7 +1521,7 @@ for await (const snapshot of stream.values) {
             systemPrompt:
               "Use the search tool to research the question and summarize key points.",
             tools: [search],
-            model: "openrouter:openrouter:z-ai/glm-5.2",
+            model: "openrouter:z-ai/glm-5.2",
             middleware: [],
           },
         ],
@@ -1663,12 +1677,14 @@ for await (const snapshot of stream.values) {
   </CodeGroup>
 </Note>
 
-### 命名您的代理人可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
+### 命名您的代理人
+
+可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools,
     name: "research_assistant",
   });
@@ -1684,7 +1700,7 @@ for await (const snapshot of stream.values) {
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools,
     name: "research_assistant",
   });
@@ -1692,7 +1708,7 @@ for await (const snapshot of stream.values) {
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools,
     name: "research_assistant",
   });
@@ -1723,9 +1739,7 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-### 容错
-
-生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
+### 容错生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1744,7 +1758,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [search],
     middleware: [
       modelRetryMiddleware({ maxRetries: 3 }),
@@ -1794,7 +1808,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [search],
     middleware: [
       modelRetryMiddleware({ maxRetries: 3 }),
@@ -1819,7 +1833,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [search],
     middleware: [
       modelRetryMiddleware({ maxRetries: 3 }),
@@ -1922,7 +1936,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [search],
     middleware: [piiMiddleware("email")],
   });
@@ -1956,7 +1970,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [search],
     middleware: [piiMiddleware("email")],
   });
@@ -1973,7 +1987,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [search],
     middleware: [piiMiddleware("email")],
   });
@@ -2033,7 +2047,9 @@ for await (const snapshot of stream.values) {
 
 参见[⟦T152⟧](https://reference.langchain.com/javascript/langchain/index/piiMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-### 转向完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
+### 转向
+
+完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2047,7 +2063,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "google-genai:gemini-3.6-flash",
+    model: "google:gemini-3.6-flash",
     tools: [search],
     middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
   });
@@ -2081,7 +2097,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "anthropic:claude-sonnet-4-6",
+    model: "anthropic:claude-sonnet-5",
     tools: [search],
     middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
   });
@@ -2098,7 +2114,7 @@ for await (const snapshot of stream.values) {
   });
 
   var agent = createAgent({
-    model: "openrouter:openrouter:z-ai/glm-5.2",
+    model: "openrouter:z-ai/glm-5.2",
     tools: [search],
     middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
   });
@@ -2156,9 +2172,7 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
-
-### 中间件资源
+参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。### 中间件资源
 
 <CardGroup>
   <Card title="Middleware overview" icon="route" href="/oss/javascript/langchain/middleware/overview">
@@ -2178,7 +2192,7 @@ for await (const snapshot of stream.values) {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

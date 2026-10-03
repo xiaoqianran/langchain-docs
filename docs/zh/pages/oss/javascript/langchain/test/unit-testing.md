@@ -6,7 +6,7 @@
 
 使用假聊天模型和内存持久性测试代理逻辑，无需 API 调用。
 
-单元测试单独测试代理的小型确定性部分。通过用内存中的伪造（又名固定装置）替换真正的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
+单元测试单独测试代理的小型确定性部分。通过用内存中的假数据（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
 
 ## 使用`fakeModel`模拟聊天模型
 
@@ -238,7 +238,7 @@ console.log(model.calls[0].messages[0].content); // "will fail"
 
 ### 与 `bindTools` 一起使用
 
-LangChain代理和LangGraph等代理框架内部调用`model.bindTools(tools)`。 `fakeModel` 自动处理此问题。绑定模型与原始模型共享相同的响应队列和通话录音，因此不需要特殊设置：
+LangChain代理和LangGraph等代理框架在内部调用`model.bindTools(tools)`。 `fakeModel` 自动处理此问题。绑定模型与原始模型共享相同的响应队列和通话录音，因此不需要特殊设置：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { fakeModel } from "langchain";
@@ -350,7 +350,7 @@ console.log(model.callCount); // 2
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

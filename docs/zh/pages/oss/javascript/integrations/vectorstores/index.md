@@ -254,7 +254,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
     ```
   </Accordion>
 
-  <Accordion title="Google Vertex">
+  <Accordion title="Gemini Enterprise Agent Platform">
     安装依赖项：
 
     <CodeGroup>
@@ -657,31 +657,33 @@ LangChain.js 与各种矢量商店集成。您可以查看下面的完整列表�
 
 ## 所有向量存储<div>
   |矢量商店 |下载 |
-  | :-------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | [⟦T90⟧](/oss/javascript/integrations/vectorstores/weaviate) | <span><a href="https://www.npmjs.com/package/@langchain/weaviate"><img alt="Downloads per month" /></a></span>|
+  | :- | :- |
+  | [⟦T90⟧](/oss/javascript/integrations/vectorstores/weaviate) | <span><a href="https://www.npmjs.com/package/@langchain/weaviate"> <img alt="Downloads per month" /></a></span> |
   | [⟦T91⟧](/oss/javascript/integrations/vectorstores/pinecone) | <span><a href="https://www.npmjs.com/package/@langchain/pinecone"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T92⟧](/oss/javascript/integrations/vectorstores/mongodb_atlas) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T93⟧](/oss/javascript/integrations/vectorstores/qdrant) | <span><a href="https://www.npmjs.com/package/@langchain/qdrant"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T92⟧](/oss/javascript/integrations/vectorstores/qdrant) | <span><a href="https://www.npmjs.com/package/@langchain/qdrant"><img alt="Downloads per month" /></a></span>|
+  | [⟦T93⟧](/oss/javascript/integrations/vectorstores/mongodb_atlas) | <span><a href="https://www.npmjs.com/package/@langchain/mongodb"> <img alt="Downloads per month" /></a></span> |
   | [⟦T94⟧](/oss/javascript/integrations/vectorstores/redis) | <span><a href="https://www.npmjs.com/package/@langchain/redis"><img alt="Downloads per month" /></a></span>|
-  | [⟦T95⟧](/oss/javascript/integrations/vectorstores/oracleai) | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb"> <img alt="Downloads per month" /></a></span> || [⟦T96⟧](/oss/javascript/integrations/vectorstores/pgvector) | <span><a href="https://www.npmjs.com/package/@langchain/pgvector"><img alt="Downloads per month" /></a></span>|
+  | [⟦T95⟧](/oss/javascript/integrations/vectorstores/oracleai) | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T96⟧](/oss/javascript/integrations/vectorstores/pgvector) | <span><a href="https://www.npmjs.com/package/@langchain/pgvector"><img alt="Downloads per month" /></a></span>|
   | [⟦T97⟧](/oss/javascript/integrations/vectorstores/cloudflare_vectorize) | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare"><img alt="Downloads per month" /></a></span>|
   | [⟦T98⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_mongodb) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span>|
   | [⟦T99⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span>|
-  | [⟦T100⟧](/oss/javascript/integrations/vectorstores/azure_documentdb) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span>|
-  | [⟦T101⟧](/oss/javascript/integrations/vectorstores/turbopuffer) | <span><a href="https://www.npmjs.com/package/@langchain/turbopuffer"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T102⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T103⟧](/oss/javascript/integrations/vectorstores/sap_hanavector) | <span><a href="https://www.npmjs.com/package/@sap/hana-langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T104⟧](/oss/javascript/integrations/vectorstores/neo4jvector) | <span><a href="https://www.npmjs.com/package/@langchain/neo4j"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T100⟧](/oss/javascript/integrations/vectorstores/azure_documentdb) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb"><img alt="Downloads per month" /></a></span> |
+  | [⟦T101⟧](/oss/javascript/integrations/vectorstores/turbopuffer) | <span><a href="https://www.npmjs.com/package/@langchain/turbopuffer"><img alt="Downloads per month" /></a></span>|
+  | [⟦T102⟧](/oss/javascript/integrations/vectorstores/neo4jvector) | <span><a href="https://www.npmjs.com/package/@langchain/neo4j"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T103⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T104⟧](/oss/javascript/integrations/vectorstores/sap_hanavector) | <span><a href="https://www.npmjs.com/package/@sap/hana-langchain"> <img alt="Downloads per month" /></a></span> |
   | [⟦T105⟧](https://docs.lambdadb.ai/guides/get-started/quickstart) | <span><a href="https://www.npmjs.com/package/@functional-systems/langchain-lambdadb"><img alt="Downloads per month" /></a></span>|
-  | [⟦T106⟧](https://infino.ai/docs) | <span><a href="https://www.npmjs.com/package/@infino-ai/langchain-infino"><img alt="Downloads per month" /></a></span>|
-  | [⟦T107⟧](/oss/javascript/integrations/vectorstores/ydb) | <span><a href="https://www.npmjs.com/package/@ydbjs/langchain"><img alt="Downloads per month" /></a></span>|| [⟦T108⟧](/oss/javascript/integrations/vectorstores/memory) | <span>不适用</span> |
+  | [⟦T106⟧](/oss/javascript/integrations/vectorstores/ydb) | <span><a href="https://www.npmjs.com/package/@ydbjs/langchain"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T107⟧](https://infino.ai/docs) | <span><a href="https://www.npmjs.com/package/@infino-ai/langchain-infino"><img alt="Downloads per month" /></a></span>|
+  | [⟦T108⟧](/oss/javascript/integrations/vectorstores/memory) | <span>N/A</span> |
 </div>
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -2,13 +2,13 @@
 
 <!-- langchain-docs: LangChain SDK | https://docs.langchain.com/oss/javascript/reference/langchain-javascript -->
 
-#LangChainSDK
+# LangChain SDK
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

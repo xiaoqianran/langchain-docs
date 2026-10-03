@@ -1,10 +1,10 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Overview | https://docs.langchain.com/oss/javascript/langchain/middleware/overview -->
+<!-- langchain-docs: Middleware overview | https://docs.langchain.com/oss/javascript/langchain/middleware/overview -->
 
-# 概述
+# 中间件概述
 
-控制和定制代理执行的每一步
+在每一步控制和自定义代理执行
 
 中间件提供了一种更严格地控制代理内部发生的事情的方法。中间件可用于以下用途：
 
@@ -31,7 +31,7 @@ const agent = createAgent({
 
 ## 代理循环
 
-核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时完成：
+核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时结束：
 
 <img alt="Core agent loop diagram" />
 
@@ -85,7 +85,7 @@ HITL 中断、摘要、PII 编辑、重试和任何自定义挂钩都与代理�
   </Card>
 
   <Card title="Middleware integrations" icon="plug" href="/oss/javascript/integrations/middleware/">
-    适用于 Anthropic、AWS、OpenAI 等的特定于提供商的中间件。
+    适用于 Anthropic、AWS、OpenAI 等的提供商特定中间件。
   </Card>
 
   <Card title="Testing agents" icon="scale" href="/oss/javascript/langchain/test/">
@@ -97,7 +97,7 @@ HITL 中断、摘要、PII 编辑、重试和任何自定义挂钩都与代理�
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

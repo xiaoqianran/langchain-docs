@@ -6,7 +6,7 @@
 
 聊天界面主导了我们与人工智能的交互方式，但多模式人工智能的最新突破正在开辟令人兴奋的新可能性。现在，高质量的生成模型和富有表现力的文本转语音 (TTS) 系统使得构建感觉不像工具而更像对话伙伴的代理成为可能。
 
-语音代理就是这样的一个例子。您可以使用口语与其进行交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
+语音代理就是这样的一个例子。您可以使用口语与其交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
 
 ### 什么是语音代理？
 
@@ -231,11 +231,11 @@ async function* sttStream(
   ```
 </Accordion>
 
-## 2.LangChain代理代理阶段通过 LangChain [agent](/oss/javascript/langchain/agents) 处理文本转录并流式传输响应令牌。在这种情况下，我们流式传输由代理生成的所有[text content blocks](/oss/javascript/langchain/messages#content-block-reference)。
+## 2. LangChain代理代理阶段通过 LangChain [agent](/oss/javascript/langchain/agents) 处理文本转录并流式传输响应令牌。在这种情况下，我们流式传输由代理生成的所有[text content blocks](/oss/javascript/langchain/messages#content-block-reference)。
 
 ### 关键概念
 
-**流式响应**：代理使用 [⟦T11⟧](/oss/javascript/langchain/streaming) 和 `stream.messages` 在生成响应令牌时发出响应令牌，而不是等待完整响应。这使得 TTS 阶段能够立即开始合成。
+**流式响应**：代理使用 [⟦T11⟧](/oss/javascript/langchain/streaming) 和 `stream.messages` 在生成响应令牌时发出响应令牌，而不是等待完整的响应。这使得 TTS 阶段能够立即开始合成。
 
 **对话内存**：[checkpointer](/oss/javascript/langchain/short-term-memory) 使用唯一的线程 ID 维护各个轮次的对话状态。这允许代理参考对话中之前的交换。
 
@@ -433,7 +433,7 @@ async function* ttsStream(
   ```
 </Accordion>
 
-### 朗史密斯
+### LangSmith
 
 您使用 LangChain 构建的许多应用程序将包含多个步骤以及多次调用 LLM 调用。随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-voice-agent)。
 
@@ -483,13 +483,13 @@ app.get("/ws", upgradeWebSocket(async () => {
 }));
 ```每个阶段独立且并发地处理事件：音频到达后就开始音频转录，一旦转录本可用，代理就开始推理，一旦生成代理文本，语音合成就开始。该架构可以实现低于 700 毫秒的延迟，以支持自然对话。
 
-有关使用 LangChain 构建代理的更多信息，请参阅[Agents guide](/oss/javascript/langchain/agents)。
+有关使用LangChain构建代理的更多信息，请参阅[Agents guide](/oss/javascript/langchain/agents)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

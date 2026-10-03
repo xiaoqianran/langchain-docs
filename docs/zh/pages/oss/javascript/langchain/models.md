@@ -4,6 +4,8 @@
 
 # 型号
 
+初始化和配置聊天模型，即LangChain代理的推理引擎，支持工具调用、结构化输出和多模态输入。
+
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) 是强大的人工智能工具，可以像人类一样解释和生成文本。他们用途广泛，足以编写内容、翻译语言、总结和回答问题，而无需针对每项任务进行专门培训。
 
 除了文本生成之外，许多模型还支持：
@@ -13,16 +15,16 @@
 * <Icon icon="photo" /> [Multimodality](#multimodal) - 处理并返回除文本之外的数据，例如图像、音频和视频。
 * <Icon icon="brain" /> [Reasoning](#reasoning) - 模型执行多步骤推理以得出结论。
 
-模型是[agents](/oss/javascript/langchain/agents)的推理引擎。它们驱动代理的决策过程，确定调用哪些工具、如何解释结果以及何时提供最终答案。
+模型是[agents](/oss/javascript/langchain/agents)的推理引擎。它们驱动代理的决策过程，确定调用哪些工具、如何解释结果以及何时提供最终答案。您选择的模型的质量和功能直接影响代理的基线可靠性和性能。不同的模型擅长不同的任务——一些模型更擅长遵循复杂的指令，另一些模型更擅长结构化推理，还有一些模型支持更大的上下文窗口来处理更多信息。
 
-您选择的模型的质量和功能直接影响代理的基线可靠性和性能。不同的模型擅长不同的任务——一些模型更擅长遵循复杂的指令，另一些模型更擅长结构化推理，还有一些模型支持更大的上下文窗口来处理更多信息。LangChain 的标准模型接口使您可以访问许多不同的提供商集成，这使得您可以轻松地在模型之间进行试验和切换，以找到最适合您的用例的模型。
+LangChain 的标准模型接口使您可以访问许多不同的提供商集成，这使得您可以轻松地试验模型并在模型之间切换，以找到最适合您的用例的模型。
 
 有关特定于提供商的集成信息和功能，请参阅提供商的 [chat model page](/oss/javascript/integrations/chat)。
 
 <Tip>
   [LangSmith](/langsmith/observability) 跟踪每个模型调用，以便您可以比较提供程序、检查工具路由和调试故障。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
 
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 基本用法
@@ -30,13 +32,13 @@
 模型可以通过两种方式使用：
 
 1. **使用代理** - 创建[agent](/oss/javascript/langchain/agents#model)时可以动态指定模型。
-2. **独立** - 可以直接调用模型（在代理循环之外）执行文本生成、分类或提取等任务，无需代理框架。
-
-相同的模型界面适用于两种上下文，这使您可以灵活地从简单开始并根据需要扩展到更复杂的基于代理的工作流程。
+2. **独立** - 可以直接调用模型（在代理循环之外）来执行文本生成、分类或提取等任务，无需代理框架。相同的模型界面适用于两种上下文，这使您可以灵活地从简单开始并根据需要扩展到更复杂的基于代理的工作流程。
 
 ### 初始化模型
 
-在 LangChain 中开始使用独立模型的最简单方法是使用 `initChatModel` 从您选择的 [chat model provider](/oss/javascript/integrations/chat) 中初始化一个模型（示例如下）：<Tabs>
+在 LangChain 中开始使用独立模型的最简单方法是使用 `initChatModel` 从您选择的 [chat model provider](/oss/javascript/integrations/chat) 中初始化一个模型（示例如下）：
+
+<Tabs>
   <Tab title="OpenAI">
     👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
@@ -165,23 +167,23 @@
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai
+      npm install @langchain/google
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai
+      pnpm install @langchain/google
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai
+      yarn add @langchain/google
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai
+      bun add @langchain/google
       ```
     </CodeGroup>
 
@@ -191,14 +193,14 @@
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+      const model = await initChatModel("google:gemini-3.7-flash");
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
 
-      const model = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash-lite",
+      const model = new ChatGoogle({
+        model: "gemini-3.7-flash",
         apiKey: "your-api-key"
       });
       ```
@@ -253,13 +255,13 @@
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const response = await model.invoke("Why do parrots talk?");
-```
+```有关更多详细信息，请参阅[⟦T68⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)，包括有关如何传递模型[parameters](#parameters)的信息。
 
-有关更多详细信息，请参阅[⟦T68⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)，包括有关如何传递模型[parameters](#parameters)的信息。
+### 支持的提供商和模型
 
-### 支持的提供商和模型LangChain通过专用集成包支持所有主要模型提供商。每个提供程序包都实现相同的标准接口，因此您可以交换提供程序而无需重写应用程序逻辑。新模型名称立即生效——无需更新 LangChain——因为提供商包将模型名称直接传递到提供商的 API。
+LangChain 通过专用集成包支持所有主要模型提供商。每个提供程序包都实现相同的标准接口，因此您可以交换提供程序而无需重写应用程序逻辑。新模型名称立即生效 - 无需 LangChain 更新 - 因为提供程序包将模型名称直接传递到提供程序的 API。
 
-浏览[full list of supported providers](/oss/javascript/integrations/providers/overview)，或参阅[Providers and models](/oss/javascript/concepts/providers-and-models)，了解提供者、包和模型名称如何在 LangChain 中协同工作的概念概述。
+浏览 [full list of supported providers](/oss/javascript/integrations/providers/overview)，或参阅 [Providers and models](/oss/javascript/concepts/providers-and-models) 了解提供程序、包和模型名称如何在 LangChain 中协同工作的概念概述。
 
 ### 关键方法
 
@@ -279,9 +281,9 @@ const response = await model.invoke("Why do parrots talk?");
   除了聊天模型之外，LangChain还提供对其他相邻技术的支持，例如嵌入模型和向量存储。详情请参阅[integrations page](/oss/javascript/integrations/providers/overview)。
 </Info>
 
-## 参数
+## 参数聊天模型采用可用于配置其行为的参数。支持的全套参数因型号和提供商而异，但标准参数包括：
 
-聊天模型采用可用于配置其行为的参数。支持的全套参数因型号和提供商而异，但标准参数包括：<ParamField type="string">
+<ParamField type="string">
   您想要与提供商一起使用的特定模型的名称或标识符。您还可以使用“:”格式在单个参数中指定模型及其提供者，例如“openai:o1”。
 </ParamField>
 
@@ -301,6 +303,8 @@ const response = await model.invoke("Why do parrots talk?");
   取消请求之前等待模型响应的最长时间（以秒为单位）。
 </ParamField><ParamField type="number">
   如果由于网络超时或速率限制等问题导致请求失败，系统将尝试重新发送请求的最大次数。重试使用带有抖动的指数退避。网络错误、速率限制 (429) 和服务器错误 (5xx) 会自动重试。不会重试 401（未经授权）或 404 等客户端错误。对于不可靠网络上长时间运行的 [agent](/oss/javascript/deepagents/overview) 任务，请考虑将其增加到 10-15。
+
+  在支持它的提供程序上，[model retry middleware](/oss/javascript/langchain/middleware/built-in#model-retry) 接管对其包装的调用的重试，并且此值不适用于它们。
 </ParamField>
 
 使用 `initChatModel`，将这些参数作为内联参数传递：
@@ -314,26 +318,25 @@ const model = await initChatModel(
 
 ### 连接弹性
 
-LangChain聊天模型通过指数退避自动重试失败的API请求。默认情况下，模型针对网络错误、速率限制 (429) 和服务器错误 (5xx) 最多重试 **6 次**。不会重试 401（未经授权）或 404 等客户端错误。
+LangChain 聊天模型会通过指数退避自动重试失败的 API 请求。默认情况下，模型针对网络错误、速率限制 (429) 和服务器错误 (5xx) 最多重试 **6 次**。不会重试 401（未经授权）或 404 等客户端错误。
 
 您可以在创建模型时调整 `maxRetries` 和 `timeout`，然后将该实例传递给 `createAgent`、`createDeepAgent`，或将其独立调用：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { ChatAnthropic } from "@langchain/anthropic";
+import { initChatModel } from "langchain";
 
-const model = new ChatAnthropic({
-  model: "google_genai:gemini-3.6-flash",
+const model = await initChatModel("google:gemini-3.6-flash", {
   maxRetries: 10, // Increase for unreliable networks (default: 6)
   timeout: 120_000, // Milliseconds; increase for slow connections
 });
-```
-
-<Tip>
+```<Tip>
   对于不可靠网络上长时间运行的代理图，请考虑更高的 `max_retries`（例如 10-15）和 [checkpointer](/oss/javascript/langgraph/persistence)，以便在发生故障时保留进度。
-</Tip><Info>
+</Tip>
+
+<Info>
   每个聊天模型集成可能具有用于控制特定于提供者的功能的附加参数。
 
-  例如，[⟦T75⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)有`use_responses_api`来指示是否使用OpenAI Responses或Completions API。
+  例如，[⟦T75⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)有`use_responses_api`来指示是否使用OpenAI响应或完成API。
 
   要查找给定聊天模型支持的所有参数，请前往 [chat model integrations](/oss/javascript/integrations/chat) 页面。
 </Info>
@@ -355,7 +358,7 @@ console.log(response);
 
 可以向聊天模型提供消息列表来表示对话历史记录。每条消息都有一个角色，模型使用该角色来指示对话中消息的发送者。
 
-有关角色、类型和内容的更多详细信息，请参阅 [messages](/oss/javascript/langchain/messages) 指南。
+有关角色、类型和内容的更多详细信息，请参阅 [messages](/oss/javascript/langchain/messages) 指南​​。
 
 ```typescript Object format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const conversation = [
@@ -381,13 +384,13 @@ const conversation = [
 
 const response = await model.invoke(conversation);
 console.log(response);  // AIMessage("J'adore créer des applications.")
-```
-
-<Info>
-  如果您的调用的返回类型是字符串，请确保您使用的是聊天模型而不是 LLM。传统的文本完成法学硕士直接返回字符串。 LangChain聊天模型以“Chat”为前缀，例如[⟦T78⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)(/oss/integrations/chat/openai)。
+```<Info>
+  如果您的调用的返回类型是字符串，请确保您使用的是聊天模型而不是 LLM。传统的文本完成法学硕士直接返回字符串。 LangChain 聊天模型以“Chat”为前缀，例如 [⟦T78⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)(/oss/integrations/chat/openai)。
 </Info>
 
-### 流大多数模型可以在生成输出内容时流式传输。通过逐步显示输出，流式传输显着改善了用户体验，特别是对于较长的响应。
+### 流
+
+大多数模型可以在生成输出内容时流式传输。通过逐步显示输出，流式传输显着改善了用户体验，特别是对于较长的响应。
 
 调用 [⟦T79⟧](https://reference.langchain.com/javascript/classes/_langchain_core.language_models_chat_models.BaseChatModel.html#stream) 返回一个 <Tooltip>iterator</Tooltip>，它在生成输出块时生成它们。您可以使用循环来实时处理每个块：
 
@@ -437,13 +440,13 @@ console.log(full.contentBlocks);
 // [{"type": "text", "text": "The sky is typically blue..."}]
 ```
 
-生成的消息可以被视为与使用[⟦T84⟧](#invoke)生成的消息相同，例如，它可以聚合到消息历史记录中并作为会话上下文传递回模型。
+生成的消息可以被视为与使用[⟦T84⟧](#invoke)生成的消息相同，例如，它可以聚合到消息历史记录中并作为会话上下文传递回模型。<Warning>
+  仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流处理的应用程序需要将整个输出存储在内存中才能进行处理。
+</Warning>
 
-<Warning>
-  仅当程序中的所有步骤都知道如何处理块流时，流式处理才有效。例如，不支持流式传输的应用程序需要将整个输出存储在内存中才能进行处理。
-</Warning><Accordion title="Advanced streaming topics">
+<Accordion title="Advanced streaming topics">
   <Accordion title="Streaming events">
-    LangChain 聊天模型还可以使用流语义事件
+    LangChain 聊天模型还可以使用流式传输语义事件
     \[`streamEvents()`]\[BaseChatModel.streamEvents]。
 
     这简化了基于事件类型和其他元数据的过滤，并将在后台聚合完整消息。请参阅下面的示例。
@@ -479,11 +482,11 @@ console.log(full.contentBlocks);
   </Accordion>
 
   <Accordion title="&#x22;Auto-streaming&#x22; chat models">
-    LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
+    LangChain 通过在某些情况下自动启用流模式来简化聊天模型的流，即使您没有显式调用流方法也是如此。当您使用非流式调用方法但仍希望流式传输整个应用程序（包括聊天模型的中间结果）时，这特别有用。
 
-    例如，在[LangGraph agents](/oss/javascript/langchain/agents)中，您可以在节点内调用`model.invoke()`，但如果运行在流模式下，LangChain会自动委托给流。
+    例如，在[LangGraph agents](/oss/javascript/langchain/agents)中，您可以在节点内调用`model.invoke()`，但如果在流模式下运行，LangChain将自动委托给流。
 
-    #### 它是如何工作的当您使用`invoke()`聊天模式时，如果LangChain检测到您正在尝试对整个应用程序进行流式传输，则会自动切换到内部流式传输模式。就使用 invoke 的代码而言，调用的结果将是相同的；然而，当聊天模型被流式传输时，LangChain将负责调用LangChain回调系统中的[⟦T89⟧](https://reference.langchain.com/javascript/interfaces/_langchain_core.callbacks_base.BaseCallbackHandlerMethods.html#onLlmNewToken)事件。
+    #### 它是如何工作的当您`invoke()`聊天模型时，如果LangChain检测到您正在尝试流式传输整个应用程序，它将自动切换到内部流式传输模式。就使用 invoke 的代码而言，调用的结果将是相同的；但是，当聊天模型进行流式传输时，LangChain 将负责在 LangChain 的回调系统中调用 [⟦T89⟧](https://reference.langchain.com/javascript/interfaces/_langchain_core.callbacks_base.BaseCallbackHandlerMethods.html#onLlmNewToken) 事件。
 
     回调事件允许 LangGraph `stream()` 和 `streamEvents()` 实时显示聊天模型的输出。
   </Accordion>
@@ -596,17 +599,19 @@ for (const tool_call of toolCalls) {
 }
 ```
 
-绑定用户定义的工具时，模型的响应包括执行工具的**请求**。当与[agent](/oss/javascript/langchain/agents)分开使用模型时，您可以执行请求的工具并将结果返回给模型以供后续推理使用。使用[agent](/oss/javascript/langchain/agents)时，代理循环将为您处理工具执行循环。
+绑定用户定义的工具时，模型的响应包括执行工具的**请求**。当与 [agent](/oss/javascript/langchain/agents) 分开使用模型时，您可以执行请求的工具并将结果返回到模型以供后续推理使用。使用[agent](/oss/javascript/langchain/agents)时，代理循环将为您处理工具执行循环。
 
 下面，我们展示了一些使用工具调用的常见方法。<AccordionGroup>
   <Accordion title="Tool execution loop" icon="refresh">
-    当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包含为您处理此编排的[agent](/oss/javascript/langchain/agents) 抽象。
+    当模型返回工具调用时，您需要执行工具并将结果传递回模型。这会创建一个对话循环，模型可以在其中使用工具结果生成最终响应。 LangChain 包括 [agent](/oss/javascript/langchain/agents) 为您处理此编排的抽象。
 
     以下是如何执行此操作的简单示例：
 
     ```typescript Tool execution loop theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     // Bind (potentially multiple) tools to the model
-    const modelWithTools = model.bindTools([get_weather])
+    const tools = [getWeather]
+    const toolsByName = Object.fromEntries(tools.map((tool) => [tool.name, tool]))
+    const modelWithTools = model.bindTools(tools)
 
     // Step 1: Model generates tool calls
     const messages = [{"role": "user", "content": "What's the weather in Boston?"}]
@@ -616,7 +621,8 @@ for (const tool_call of toolCalls) {
     // Step 2: Execute tools and collect results
     for (const tool_call of ai_msg.tool_calls) {
         // Execute the tool with the generated arguments
-        const tool_result = await get_weather.invoke(tool_call)
+        const tool = toolsByName[tool_call.name]
+        const tool_result = await tool.invoke(tool_call)
         messages.push(tool_result)
     }
 
@@ -647,7 +653,9 @@ for (const tool_call of toolCalls) {
     许多模型支持在适当的时候并行调用多个工具。这允许模型同时从不同来源收集信息。
 
     ```typescript Parallel tool calls theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const modelWithTools = model.bind_tools([get_weather])
+    const tools = [getWeather]
+    const toolsByName = Object.fromEntries(tools.map((tool) => [tool.name, tool]))
+    const modelWithTools = model.bindTools(tools)
 
     const response = await modelWithTools.invoke(
         "What's the weather in Boston and Tokyo?"
@@ -658,17 +666,16 @@ for (const tool_call of toolCalls) {
     console.log(response.tool_calls)
     // [
     //   { name: 'get_weather', args: { location: 'Boston' }, id: 'call_1' },
-    //   { name: 'get_time', args: { location: 'Tokyo' }, id: 'call_2' }
+    //   { name: 'get_weather', args: { location: 'Tokyo' }, id: 'call_2' }
     // ]
 
 
     // Execute all tools (can be done in parallel with async)
     const results = []
     for (const tool_call of response.tool_calls || []) {
-        if (tool_call.name === 'get_weather') {
-            const result = await get_weather.invoke(tool_call)
-            results.push(result)
-        }
+        const tool = toolsByName[tool_call.name]
+        const result = await tool.invoke(tool_call)
+        results.push(result)
     }
     ```
 
@@ -834,7 +841,7 @@ for (const tool_call of toolCalls) {
   * **方法参数**：一些提供商支持不同的方法（`'jsonSchema'`、`'functionCalling'`、`'jsonMode'`）
   * **包含原始数据**：使用 [⟦T107⟧](https://reference.langchain.com/javascript/classes/_langchain_core.language_models_chat_models.BaseChatModel.html#withStructuredOutput) 获取解析输出和原始数据 [⟦T108⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage)
   * **验证**：Zod 和 Standard Schema 对象提供自动验证，而 JSON Schema 需要手动验证
-  * **标准模式**：支持任何实现 [Standard Schema](https://standardschema.dev/) 规范的模式库，并在运行时进行验证
+  * **标准模式**：支持并在运行时验证任何实现 [Standard Schema](https://standardschema.dev/) 规范的模式库
 
   请参阅您的 [provider's integration page](/oss/javascript/integrations/providers/overview) 了解支持的方法和配置选项。
 </Note>
@@ -898,7 +905,7 @@ for (const tool_call of toolCalls) {
 
 <Info>
   模型配置文件需要`langchain>=1.1`。
-</Info>LangChain聊天模型可以通过`profile`属性公开支持的特性和功能的字典：
+</Info>LangChain 聊天模型可以通过 `profile` 属性公开支持的特性和功能的字典：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 model.profile;
@@ -913,14 +920,14 @@ model.profile;
 
 请参阅[API reference](https://reference.langchain.com/javascript/langchain-core/language_models/profile/ModelProfile) 中的完整字段集。
 
-大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行扩充，以便与 LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
+大部分模型配置文件数据均由 [models.dev](https://github.com/sst/models.dev) 项目提供支持，这是一个提供模型功能数据的开源计划。该数据通过附加字段进行扩充，以便与LangChain 一起使用。随着上游项目的发展，这些增强功能与上游项目保持一致。
 
 模型配置文件数据允许应用程序动态地处理模型功能。例如：
 
 1. [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)可以根据模型的上下文窗口大小触发摘要。
 2. `createAgent`中的[Structured output](/oss/javascript/langchain/structured-output)策略可以自动推断（例如，通过检查对本机结构化输出功能的支持）。
 3. 模型输入可以根据支持的[modalities](#multimodal)和最大输入令牌进行门控。
-4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。
+4. [Deep Agents Code](/oss/deepagents/code) 将 [interactive model switcher](/oss/deepagents/code/providers#which-models-appear-in-the-switcher) 过滤到其配置文件报告 `tool_calling` 支持和文本 I/O 的模型，并在选择器详细视图中显示上下文窗口大小和功能标志。
 
 <Accordion title="Modify profile data">
   如果模型配置文件数据丢失、过时或不正确，则可以更改。
@@ -939,7 +946,7 @@ model.profile;
   const model = initChatModel("...", { profile: customProfile });
   ```**选项 2（修复上游数据）**
 
-  数据的主要来源是[models.dev](https://models.dev/)项目。这些数据与 LangChain [integration packages](/oss/javascript/integrations/providers/overview) 中的附加字段和覆盖合并，并随这些包一起提供。
+  数据的主要来源是[models.dev](https://models.dev/)项目。这些数据与 LangChain [integration packages](/oss/javascript/integrations/providers/overview) 中的其他字段和覆盖合并，并随这些包一起提供。
 
   模型配置文件数据可以通过以下过程更新：
 
@@ -956,11 +963,11 @@ model.profile;
 某些模型可以处理和返回非文本数据，例如图像、音频和视频。您可以通过提供 [content blocks](/oss/javascript/langchain/messages#message-content) 将非文本数据传递给模型。
 
 <Tip>
-  所有具有底层多模态能力的LangChain聊天模型都支持：
+  所有具有底层多模式功能的LangChain聊天模型都支持：
 
   1. 跨提供商标准格式的数据（参见[our messages guide](/oss/javascript/langchain/messages)）
-  2.OpenAI[chat completions](https://platform.openai.com/docs/api-reference/chat)格式
-  3. 该特定提供者原生的任何格式（例如，Anthropic 模型接受 Anthropic 原生格式）
+  2. OpenAI [chat completions](https://platform.openai.com/docs/api-reference/chat) 格式
+  3. 该特定提供商原生的任何格式（例如，Anthropic 模型接受 Anthropic 原生格式）
 </Tip>
 
 详情请参阅消息指南[multimodal section](/oss/javascript/langchain/messages#multimodal)。<Tooltip href="https://models.dev/">某些模型</Tooltip>可以返回多模式数据作为其响应的一部分。如果调用这样做，生成的 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 将具有多模式类型的内容块。
@@ -1002,7 +1009,7 @@ console.log(response.contentBlocks);
 
 有关详细信息，请参阅相应聊天模型的[integrations page](/oss/javascript/integrations/providers/overview)或[reference](https://reference.langchain.com/python/integrations/)。
 
-### 本地模特LangChain支持在您自己的硬件上本地运行模型。这对于以下场景非常有用：数据隐私至关重要、您想要调用自定义模型，或者您想要避免使用基于云的模型时产生的成本。
+### 本地模特LangChain 支持在您自己的硬件上本地运行模型。这对于以下场景很有用：数据隐私至关重要、您想要调用自定义模型，或者您想要避免使用基于云的模型时产生的成本。
 
 [Ollama](/oss/javascript/integrations/chat/ollama) 是在本地运行聊天和嵌入模型的最简单方法之一。
 
@@ -1013,8 +1020,8 @@ console.log(response.contentBlocks);
 * **隐式提供程序缓存：** 如果请求命中缓存，提供程序会自动传递成本节省，无需配置。示例：[OpenAI](/oss/javascript/integrations/chat/openai) 和 [Gemini](/oss/javascript/integrations/chat/google_generative_ai)。
 * **提供程序级显式控制：** 提供程序允许您手动指示缓存点，以实现更好的控制或保证节省成本。这些反映了底层提供者/API 行为。示例：
   * [⟦T120⟧](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)（通过`prompt_cache_key`）
-  *人为内容块[⟦T122⟧](/oss/javascript/integrations/chat/anthropic#prompt-caching)
-  * [Gemini](https://reference.langchain.com/python/integrations/langchain_google_genai/)。
+  * Anthropic 内容块 [⟦T122⟧](/oss/javascript/integrations/chat/anthropic#prompt-caching)
+  * [Gemini](https://reference.langchain.com/python/langchain-google-genai)。
 
 <Warning>
   通常仅在高于最小输入令牌阈值时才进行提示缓存。详情请参阅[provider pages](/oss/javascript/integrations/chat)。
@@ -1042,17 +1049,17 @@ console.log(message.contentBlocks);
 
 ### 基本 URL 和代理设置
 
-您可以为实施 OpenAI Chat Completions API 的提供商配置自定义基本 URL。
+您可以为实现 OpenAI 聊天完成 API 的提供商配置自定义基本 URL。
 
 <Warning>
-  `model_provider="openai"`（或直接使用`ChatOpenAI`）以官方 OpenAI API 规范为目标。可能无法提取或保留来自路由器和代理的提供商特定字段。
+  `model_provider="openai"`（或直接使用`ChatOpenAI`）以官方OpenAI API 规范为目标。可能无法提取或保留来自路由器和代理的提供商特定字段。
 
   对于 OpenRouter 和 LiteLLM，更喜欢专用集成：
 
   * [OpenRouter via ⟦T125⟧](/oss/javascript/integrations/chat/openrouter) (`langchain-openrouter`)
   * [LiteLLM via ⟦T127⟧ / ⟦T128⟧](/oss/javascript/integrations/chat) (`langchain-litellm`)
 </Warning><Accordion title="Custom base URL" icon="link">
-  许多模型提供商提供与 OpenAI 兼容的 API（例如，[Together AI](https://www.together.ai/)、[vLLM](https://github.com/vllm-project/vllm)）。您可以通过指定适当的 `base_url` 参数来将 `initChatModel` 与这些提供程序一起使用：
+  许多模型提供商提供OpenAI兼容的API（例如[Together AI](https://www.together.ai/)、[vLLM](https://github.com/vllm-project/vllm)）。您可以通过指定适当的 `base_url` 参数来将 `initChatModel` 与这些提供程序一起使用：
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   model = initChatModel(
@@ -1091,7 +1098,7 @@ responseMessage.response_metadata.logprobs.content.slice(0, 5);
 
 ### 调用配置
 
-调用模型时，您可以使用 [⟦T135⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递附加配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
+调用模型时，您可以使用 [⟦T135⟧](https://reference.langchain.com/javascript/langchain-core/runnables/RunnableConfig) 对象通过 `config` 参数传递其他配置。这提供了对执行行为、回调和元数据跟踪的运行时控制。
 
 常见的配置选项包括：
 
@@ -1122,7 +1129,7 @@ const response = await model.invoke(
   </ParamField>
 
   <ParamField type="object">
-    用于跟踪其他上下文的自定义键值对，由所有子调用继承。
+    用于跟踪附加上下文的自定义键值对，由所有子调用继承。
   </ParamField>
 
   <ParamField type="number">
@@ -1144,7 +1151,7 @@ const response = await model.invoke(
 
 ### 动态模型选择
 
-根据当前 <Tooltip>state</Tooltip> 和上下文，在 <Tooltip>runtime</Tooltip> 选择动态模型。这可以实现复杂的路由逻辑和成本优化。
+根据当前的 <Tooltip>state</Tooltip> 和上下文，在 <Tooltip>runtime</Tooltip> 选择动态模型。这可以实现复杂的路由逻辑和成本优化。
 
 要使用动态模型，请使用 `wrapModelCall` 创建中间件来修改请求中的模型：
 
@@ -1170,7 +1177,7 @@ const dynamicModelSelection = createMiddleware({
 
 const agent = createAgent({
   model: "gpt-5.4-mini", // Base model (used when messageCount ≤ 10)
-  tools,
+  tools: [],
   middleware: [dynamicModelSelection],
 });
 ```有关中间件和高级模式的更多详细信息，请参阅[middleware documentation](/oss/javascript/langchain/middleware)。
@@ -1183,7 +1190,7 @@ const agent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

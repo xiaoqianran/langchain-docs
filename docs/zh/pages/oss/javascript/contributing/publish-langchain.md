@@ -22,11 +22,11 @@
 
 维护者审查该问题并应用 `integration-run` 标签。这将启动自动化，它读取表单字段，应用下面的资格规则，并打开一个拉取请求，标记维护者和您以供审核。首选表单中的合作伙伴文档 URL。
 
-除非维护人员要求，否则不要**为新列表打开手动文档 PR。
+除非维护人员要求，否则不要**为新列表打开手动文档 PR。自动化关闭来自外部贡献者的手动列出 PR 并将其指向问题表单。
 
-### 托管指南的资格
+### 托管指南的资格仅当 **任一** 时，LangChain 才会在此文档存储库中托管完整的集成指南：
 
-仅当 **任一** 时，LangChain 才会在此文档存储库中托管完整的集成指南：* 该软件包在 PyPI（或 TypeScript 的 npm）上每月至少有 **50,000 次下载**，**或**
+* 该软件包在 PyPI（或 TypeScript 的 npm）上每月至少有 **50,000 次下载**，**或**
 * 维护者将集成标记为**特色**
 
 如果您不满足任一条件，自动化会添加一个链接到您自己的文档的**外部列表**（YAML + 下载表 + 提供商卡）。它**不**添加托管 MDX 页面。
@@ -45,9 +45,9 @@
 * **`pypi`** 或 **`npm`**：用于下载徽章的注册表包名称。
 * **`docs_url`**：名称栏的链接。首选合作伙伴文档，然后是 GitHub 存储库，然后是 PyPI 或 npm 页面。
 
-可以选择在问题表单中包含特定于组件的功能标志（例如，聊天 `stream` 和 `tool_calling`），以便表列保持准确。
+可以选择在问题表单中包含特定于组件的功能标志（例如，聊天 `stream` 和 `tool_calling`），以便表列保持准确。合并后，刷新作业会重新生成组件表片段，以便您的行与托管集成一起显示。
 
-合并后，刷新作业会重新生成组件表片段，以便您的行与托管集成一起显示。<Info>
+<Info>
   此流程仅用于**仅列出元数据**。在您的网站或 GitHub README 上托管您的使用文档。您的集成包本身应该位于您的 GitHub 组织或帐户下自己的存储库中，并作为独立包发布。
 </Info>
 
@@ -65,9 +65,9 @@
   要参考现有文档，您可以查看 [list of integrations](/oss/javascript/integrations/providers/overview) 并找到与您的类似的文档。
 
   要以原始 Markdown 格式查看给定文档页面，请使用页面右上角“复制页面”旁边的下拉按钮，然后选择“以 Markdown 形式查看”。
-</Tip>
+</Tip>如果要求您手动编辑托管页面，请分叉 [LangChain docs repository](https://github.com/langchain-ai/docs)（不是主 `langchain` 存储库），遵循匹配的模板，然后遵循 [documentation guide](/oss/javascript/contributing/documentation)。
 
-如果要求您手动编辑托管页面，请分叉 [LangChain docs repository](https://github.com/langchain-ai/docs)（不是主 `langchain` 存储库），遵循匹配的模板，然后遵循 [documentation guide](/oss/javascript/contributing/documentation)。如果您的包之前已在 [⟦T12⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 中列出，请删除同一 PR 中的该 YAML 条目，以便表不会显示重复的行。
+如果您的包之前已在 [⟦T12⟧](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) 中列出，请删除同一 PR 中的该 YAML 条目，以便表不会显示重复的行。
 
 除非维护者要求，否则不要在 frontmatter 中设置 `featured: true`。特色状态是维护者的决定。
 
@@ -88,15 +88,15 @@
   * 不满足[Quality standards](/oss/javascript/contributing/documentation#quality-standards)
 </Warning>
 
-由于我们处理大量提交，请耐心等待。打开自动 PR 后查看它。 **不要重复标记维护者关于您的问题或 PR。**
-
-<Note>
+由于我们处理大量提交，请耐心等待。打开自动 PR 后查看它。 **不要重复标记维护者关于您的问题或 PR。**<Note>
   如果 PR 包含 AI 生成的内容，您必须遵守我们的 [acceptable uses of LLMs](/oss/javascript/contributing/overview#acceptable-uses-of-llms) 政策。
 </Note>
 
 ## 后续步骤
 
-**恭喜！** 您的集成已发布并在 LangChain 社区列出。<Card title="Co-marketing" icon="speakerphone" href="/oss/javascript/contributing/comarketing">
+**恭喜！** 您的集成已发布并在 LangChain 社区列出。
+
+<Card title="Co-marketing" icon="speakerphone" href="/oss/javascript/contributing/comarketing">
   与LangChain营销团队联系，探索联合营销机会。
 </Card>
 

@@ -459,6 +459,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
+  | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |
 </div>
 

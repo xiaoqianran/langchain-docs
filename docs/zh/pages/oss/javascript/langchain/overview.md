@@ -4,23 +4,23 @@
 
 # LangChain 概述
 
-LangChain 提供了 create_agent：一个最小的、高度可配置的代理工具。从模型、工具、提示和中间件中准确构建您的用例所需的代理。
+LangChain 提供 create_agent：一个最小的、高度可配置的代理工具。从模型、工具、提示和中间件中准确构建您的用例所需的代理。
 
-**Agent = Model + Harness。** LangChain 提供`create_agent`：一个最小的、高度可配置的harness。线束是模型循环周围的一切：提示、工具和任何塑造行为的中间件。从原语开始，准确地组合您的用例所需的内容。支持[OpenAI, Anthropic, Google, and more](/oss/javascript/integrations/providers/overview)。
+**Agent = 模型 + 线束。** LangChain 提供 `create_agent`：最小的、高度可配置的线束。线束是模型循环周围的一切：提示、工具和任何塑造行为的中间件。从原语开始，准确地组合您的用例所需的内容。支持[OpenAI, Anthropic, Google, and more](/oss/javascript/integrations/providers/overview)。
 
 <Tip>
-  **LangChain 与 LangGraph 与深度代理**
+  **LangChain vs. LangGraph vs. Deep Agents**
 
-  从 [Deep Agents](/oss/javascript/deepagents/overview/) 开始，获得“包含电池”的代理，具有自动上下文压缩、虚拟文件系统和子代理生成等功能。 Deep Agents基于LangChain[agents](/oss/javascript/langchain/agents/)构建，您也可以直接使用。
+  从 [Deep Agents](/oss/javascript/deepagents/overview/) 开始，获得“包含电池”的代理，具有自动上下文压缩、虚拟文件系统和子代理生成等功能。 Deep Agents 构建于 LangChain [agents](/oss/javascript/langchain/agents/) 之上，您也可以直接使用。
 
   使用 [LangChain](/oss/javascript/langchain/agents) (`create_agent`) 打造高度可定制的线束，轻松根据您的用例和数据进行定制。
 
-  使用我们的低级编排框架[LangGraph](/oss/javascript/langgraph/overview)来满足结合确定性和代理工作流程的高级需求。使用 [LangSmith](/langsmith/observability) 跟踪、调试和评估使用任何这些框架构建的代理。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+  使用我们的低级编排框架[LangGraph](/oss/javascript/langgraph/overview)来满足结合确定性和代理工作流程的高级需求。
+
+  使用 [LangSmith](/langsmith/observability) 跟踪、调试和评估使用任何这些框架构建的代理。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## <Icon icon="wand" /> 创建代理
-
-此示例演示如何使用自定义工具创建简单的 LangChain 代理：
+## <Icon icon="wand" /> 创建代理此示例演示如何使用自定义工具创建简单的 LangChain 代理：
 
 <CodeGroup>
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -52,7 +52,7 @@ LangChain 提供了 create_agent：一个最小的、高度可配置的代理工
   ```
 
   ```ts Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // First install: npm install langchain zod @langchain/google-genai
+  // First install: npm install langchain zod @langchain/google
   import { createAgent, tool } from "langchain";
   import * as z from "zod";
 
@@ -68,7 +68,7 @@ LangChain 提供了 create_agent：一个最小的、高度可配置的代理工
   );
 
   const agent = createAgent({
-    model: "google-genai:gemini-2.5-flash-lite",
+    model: "google:gemini-2.5-flash-lite",
     tools: [getWeather],
   });
 
@@ -276,7 +276,7 @@ LangChain 提供了 create_agent：一个最小的、高度可配置的代理工
   ```
 </CodeGroup>
 
-请参阅[Installation instructions](/oss/javascript/langchain/install)和[Quickstart guide](/oss/javascript/langchain/quickstart)开始使用LangChain构建您自己的代理和应用程序。
+请参阅 [Installation instructions](/oss/javascript/langchain/install) 和 [Quickstart guide](/oss/javascript/langchain/quickstart) 开始使用 LangChain 构建您自己的代理和应用程序。
 
 <Tip>
   使用 [LangSmith](/langsmith/observability) 跟踪请求、调试代理行为并评估输出。设置 `LANGSMITH_TRACING=true` 和您的 API 密钥即可开始。
@@ -291,8 +291,10 @@ LangChain 提供了 create_agent：一个最小的、高度可配置的代理工
 
   <Card title="Highly configurable harness" icon="wand" href="/oss/javascript/langchain/agents">
     从 `create_agent` 作为最小的工具开始，并通过中间件逐步添加功能。仅编写您的用例所需的内容，从护栏和重试到路由和自定义工具策略。
-  </Card><Card title="Built on top of LangGraph" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langgraph-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=b997e1a7487d507a36556eedbfd99f81" href="/oss/javascript/langgraph/overview">
-    LangChain的代理是建立在LangGraph之上的。这使我们能够利用 LangGraph 的持久执行、人机交互支持、持久性等。
+  </Card>
+
+  <Card title="Built on top of LangGraph" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/langgraph-icon.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=b997e1a7487d507a36556eedbfd99f81" href="/oss/javascript/langgraph/overview">
+    LangChain 的代理构建在 LangGraph 之上。这使我们能够利用 LangGraph 的持久执行、人机交互支持、持久性等。
   </Card>
 
   <Card title="Debug with LangSmith" icon="https://mintcdn.com/langchain-5e9cc07a/nQm-sjd_MByLhgeW/images/brand/observability-icon-dark.png?fit=max&auto=format&n=nQm-sjd_MByLhgeW&q=85&s=ccbc183bca2a5e4ca78d30149e3836cc" href="/langsmith/observability">
@@ -300,11 +302,9 @@ LangChain 提供了 create_agent：一个最小的、高度可配置的代理工
   </Card>
 </Columns>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

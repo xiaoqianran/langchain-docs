@@ -27,7 +27,7 @@ graph LR
 ## 主要特征
 
 * 路由器分解查询
-* 并行调用零个或多个专门代理
+* 并行调用零个或多个专用代理
 * 结果被综合成一致的响应
 
 ## 何时使用
@@ -159,7 +159,7 @@ const conversationalAgent = createAgent({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

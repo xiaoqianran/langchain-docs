@@ -4,7 +4,9 @@
 
 # 子代理
 
-在**子代理**架构中，中央主[agent](/oss/javascript/langchain/agents)（通常称为**主管**）通过将子代理称为[tools](/oss/javascript/langchain/tools)来协调子代理。主代理决定调用哪个子代理、提供什么输入以及如何组合结果。子代理是无状态的——它们不记得过去的交互，所有对话记忆都由主代理维护。这提供了[context](/oss/javascript/langchain/context-engineering)隔离：每个子代理调用都在一个干净的上下文窗口中工作，防止主对话中的上下文膨胀。
+在**子代理**架构中，中央主[agent](/oss/javascript/langchain/agents)（通常称为**主管**）通过将子代理称为[tools](/oss/javascript/langchain/tools)来协调子代理。主代理决定调用哪个子代理、提供什么输入以及如何组合结果。默认情况下，子代理是无状态的——它们不记得过去的交互，所有对话记忆都由主代理维护。这提供了[context](/oss/javascript/langchain/context-engineering)隔离：每个子代理调用都在一个干净的上下文窗口中工作，防止主对话中的上下文膨胀。
+
+当子代理需要上下文时，您还可以将主代理的对话历史记录传递给子代理。参见[Subagent inputs](#subagent-inputs)。
 
 有关内置子代理支持，请参阅[Deep Agents](/oss/javascript/deepagents/subagents)。
 
@@ -52,7 +54,7 @@ import { createAgent, tool } from "langchain";
 import { z } from "zod";
 
 // Create a subagent
-const subagent = createAgent({ model: "google_genai:gemini-3.6-flash", tools: [...] });
+const subagent = createAgent({ model: "google:gemini-3.6-flash", tools: [...] });
 
 // Wrap it as a tool
 const callResearchAgent = tool(
@@ -70,7 +72,7 @@ const callResearchAgent = tool(
 );
 
 // Main agent with subagent as a tool
-const mainAgent = createAgent({ model: "google_genai:gemini-3.6-flash", tools: [callResearchAgent] });
+const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
 ```<Card title="Tutorial: Build a personal assistant with subagents" icon="sitemap" href="/oss/javascript/langchain/multi-agent/subagents-personal-assistant">
   了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 </Card>
@@ -80,21 +82,21 @@ const mainAgent = createAgent({ model: "google_genai:gemini-3.6-flash", tools: [
 实现子代理模式时，您将做出几个关键的设计选择。该表总结了这些选项 - 每个选项都在下面的部分中详细介绍。
 
 |决定|选项|
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| - | - |
 | [**Sync vs. async**](#sync-vs-async) |同步（阻塞）与异步（后台）|
 | [**Tool patterns**](#tool-patterns) |每个代理使用的工具与单个调度工具|
 | [**Subagent specs**](#subagent-specs) |系统提示与枚举约束与基于工具的发现（仅限单个调度工具）|
 | [**Subagent inputs**](#subagent-inputs) |仅查询与完整上下文 |
 | [**Subagent outputs**](#subagent-outputs) |子代理结果与完整对话历史记录 |
 
-## 同步与异步子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
+## 同步与异步
 
-|模式|主要代理行为|最适合 |权衡 |
-| ---------| ------------------------------------------- | -------------------------------------- | ----------------------------------- |
+子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
+
+|模式|主要代理行为|最适合 |权衡|
+| - | - | - | - |
 | **同步** |等待子代理完成 |主代理需要结果才能继续 |简单，但阻碍对话 |
-| **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |
-
-<Tip>
+| **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |<Tip>
   不要与 Python 的 `async`/`await` 混淆。这里，“异步”意味着主代理启动后台作业（通常在单独的进程或服务中）并继续而不阻塞。
 </Tip>
 
@@ -115,7 +117,9 @@ sequenceDiagram
     Main Agent-->>User: "It's 72°F and sunny in Tokyo"
 ```
 
-**何时使用同步：*** 主代理需要子代理的结果来制定其响应
+**何时使用同步：**
+
+* 主代理需要子代理的结果来制定其响应
 * 任务具有顺序依赖性（例如，获取数据→分析→响应）
 * 子代理故障应阻止主代理的响应
 
@@ -159,9 +163,7 @@ sequenceDiagram
     Main Agent-->>User: "Review complete: [findings]"
 ```
 
-**何时使用异步：**
-
-* 子代理的工作独立于主对话流程
+**何时使用异步：*** 子代理的工作独立于主对话流程
 * 用户应该能够在工作时继续聊天
 * 你想要并行运行多个独立的任务
 
@@ -169,14 +171,16 @@ sequenceDiagram
 
 1. **启动作业**：启动后台任务，返回作业ID
 2. **检查状态**：返回当前状态（待处理、正在运行、已完成、失败）
-3. **获取结果**：检索完成的结果**处理作业完成：** 当作业完成时，您的应用程序需要通知用户。一种方法：显示一条通知，单击该通知后，会发送一个 `HumanMessage`，例如“检查作业\_123 并总结结果”。
+3. **获取结果**：检索完成的结果
+
+**处理作业完成：** 当作业完成时，您的应用程序需要通知用户。一种方法：显示一条通知，单击该通知后，会发送一个 `HumanMessage`，例如“检查作业\_123 并总结结果”。
 
 ## 工具模式
 
 将子代理公开为工具有两种主要方法：
 
 |图案|最适合 |权衡|
-| ------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------- |
+| - | - | - |
 | [**Tool per agent**](#tool-per-agent) |对每个子代理的输入/输出的细粒度控制更多设置，更多定制 |
 | [**Single dispatch tool**](#single-dispatch-tool) |多个代理、分布式团队、约定优于配置 |更简单的组合，更少的每个代理定制 |
 
@@ -228,9 +232,9 @@ const callSubagent = tool(  // [!code highlight]
 
 // Main agent with subagent as a tool  // [!code highlight]
 const mainAgent = createAgent({ model, tools: [callSubagent] });  // [!code highlight]
-```
+```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。细粒度控制请参见[Context engineering](#context-engineering)。
 
-当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。有关细粒度控制，请参阅[Context engineering](#context-engineering)。### 单一调度工具
+### 单一调度工具
 
 另一种方法使用单个参数化工具来调用临时子代理来执行独立任务。与每个子代理包装为单独工具的 [tool per agent](#tool-per-agent) 方法不同，该方法使用基于约定的方法和单个 `task` 工具：任务描述作为人工消息传递给子代理，子代理的最终消息作为工具结果返回。
 
@@ -334,7 +338,7 @@ graph LR
 ## 上下文工程
 
 控制上下文在主代理与其子代理之间的流动方式：|类别 |目的|影响 |
-| ---------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------- |
+| - | - | - |
 | [**Subagent specs**](#subagent-specs) |确保子代理在应该的时候被调用 |主代理路由决策|
 | [**Subagent inputs**](#subagent-inputs) |确保子代理可以在优化的上下文中良好执行 |分代理业绩|
 | [**Subagent outputs**](#subagent-outputs) |确保主管可以根据子代理结果采取行动 |主要代理业绩 |
@@ -346,14 +350,14 @@ graph LR
 与子代理关联的**名称**和**描述**是主代理了解要调用哪些子代理的主要方式。这些都是激励杠杆——仔细选择它们。
 
 * **名称**：主代理如何称呼子代理。保持清晰且以行动为导向（例如，`research_agent`、`code_reviewer`）。
-* **描述**：主代理对子代理功能的了解。具体说明它处理什么任务以及何时使用它。对于 [single dispatch tool](#single-dispatch-tool) 设计，您还必须向主代理提供有关它可以调用的子代理的信息。
-您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：
+* **描述**：主代理对子代理功能的了解。具体说明它处理什么任务以及何时使用它。
 
-|方法|最适合 |权衡 |
-| -------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------- |
-| **系统提示枚举** |小型静态代理列表 (\< 10 agents) | Simple, but requires prompt updates when agents change               |
-| **Enum constraint**           | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
-| **Tool-based discovery**      | Large or dynamic agent registries        | Flexible and scalable, but adds complexity                           |
+对于 [single dispatch tool](#single-dispatch-tool) 设计，您还必须向主代理提供有关它可以调用的子代理的信息。
+您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡|
+| - | - | - |
+| **系统提示枚举** |小型静态代理列表 (\< 10 agents) | Simple, but requires prompt updates when agents change |
+| **Enum constraint** | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
+| **Tool-based discovery** | Large or dynamic agent registries | Flexible and scalable, but adds complexity |
 
 #### System prompt enumeration
 
@@ -446,10 +450,19 @@ const callSubagent1 = tool(
 );
 ```
 
+`some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作时很有帮助，例如恢复 PR 审查或修复错误。
+
+[Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡|
+| - | - | - | - |
+| **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
+| **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
+
 ### 子代理输出
 
-自定义主代理收到的返回内容，以便它可以做出正确的决策。两种策略：1. **提示子代理**：准确指定应返回的内容。一种常见的失败模式是子代理执行工具调用或推理，但在其最终消息中不包含结果 - 提醒它主管只能看到最终输出。
-2. **代码格式**：在返回响应之前调整或丰富响应。例如，使用 [⟦T22⟧](/oss/javascript/langgraph/graph-api#command) 除了最终文本之外还传递回特定状态键。
+自定义主代理收到的返回内容，以便它可以做出正确的决策。两种策略：
+
+1. **提示子代理**：准确指定应返回的内容。一种常见的失败模式是子代理执行工具调用或推理，但在其最终消息中不包含结果 - 提醒它主管只能看到最终输出。
+2. **代码格式**：在返回响应之前调整或丰富响应。例如，使用 [⟦T27⟧](/oss/javascript/langgraph/graph-api#command) 除了最终文本之外还传递回特定状态键。
 
 ```typescript Subagent outputs example expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, ToolMessage } from "langchain";
@@ -486,15 +499,15 @@ const callSubagent1 = tool(
 );
 ```
 
-## 检查点和状态检查
+## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每次调用都以新鲜状态开始，支持[interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
-默认情况下，子代理使用 **继承的检查点** 模式 - 每个调用都以新鲜状态开始，支持[interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt)，并且安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
+因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在[interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt)期间），请从自定义图中的[node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node)调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
-因为子代理是在工具函数内部调用的，所以 LangGraph 无法[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state) 它们。这意味着[⟦T24⟧ with ⟦T25⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在 [interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 期间），请从自定义图中的 [node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node) 调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
+***
 
-***<div>
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

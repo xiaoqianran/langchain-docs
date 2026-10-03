@@ -4,14 +4,14 @@
 
 # 概述
 
-利用 LangChain 代理的实时流构建生成式 UI
+通过来自 LangChain 代理的实时流构建生成式 UI
 
 为使用 `createAgent` 创建的代理构建丰富的交互式前端。这些
 模式涵盖从基本消息渲染到高级工作流程的所有内容
 例如人机交互批准、排队提交、持久流重新加入以及
 时间旅行调试。
 
-LangChain前端SDK是为**代理应用程序**而构建的，不仅是
+LangChain 前端 SDK 不仅是为 **代理应用程序** 构建的
 令牌流聊天机器人。呈现消息的同一个钩子也暴露了
 代理的持久线程状态、工具调用生命周期、中断、检查点
 历史记录和自定义状态值，因此您的 UI 可以成为控制平面
@@ -47,20 +47,20 @@ graph LR
   class BACKEND greenHighlight;
 ```在后端，`createAgent` 生成一个已编译的 LangGraph 图，该图公开了流 API。在前端，流句柄连接到该 API 并提供反应状态（消息、工具调用、中断、值和线程元数据），您可以使用任何框架呈现这些状态。
 
-## 为什么要使用LangChain前端SDK？
+## 为什么使用LangChain前端SDK？
 
 大多数 AI UI 库可帮助您将流式文本附加到聊天记录中。
 LangChain 的 SDK 公开了比生产代理更丰富的运行时语义
 需要：
 
 |能力|它在您的 UI 中启用什么 |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **耐用的螺纹** |重新加载页面、切换设备或重新加入跑步，而不会丢失对话状态。                                            |
-| **键入代理状态** |渲染任何状态键，而不仅仅是消息：待办事项、管道输出、引文、沙箱文件、指标或自定义业务对象。 || **工具调用生命周期** |将待处理、已完成和失败的工具调用显示为专用 UI​​ 卡而不是原始 JSON。                                    |
-| **中断** |由于人工批准、编辑或丢失信息而暂停执行，然后从代理停止的确切位置恢复。     |
-| **检查点** |从持久状态快照构建编辑、重试、分支、审核和时间旅行流程。                                          |
-| **嵌套执行** |可视化深层代理、子代理和图形节点，而无需将所有内容扁平化为一个不可读的流。                      |
-| **框架原生反应性** |使用 React、Vue、Svelte 或 Angular 中的相同协议，同时保留惯用的钩子、可组合项、存储或信号。        |
+| - | - |
+| **耐用的螺纹** |重新加载页面、切换设备或重新加入跑步，而不会丢失对话状态。 |
+| **键入代理状态** |渲染任何状态键，而不仅仅是消息：待办事项、管道输出、引文、沙箱文件、指标或自定义业务对象。 |
+| **工具调用生命周期** |将待处理、已完成和失败的工具调用显示为专用 UI​​ 卡而不是原始 JSON。 |
+| **中断** |由于人工批准、编辑或丢失信息而暂停执行，然后从代理停止的确切位置恢复。 |
+| **检查点** |从持久状态快照构建编辑、重试、分支、审核和时间旅行流程。 || **嵌套执行** |可视化深层代理、子代理和图形节点，而无需将所有内容扁平化为一个不可读的流。 |
+| **框架原生反应性** |使用 React、Vue、Svelte 或 Angular 中的相同协议，同时保留惯用的钩子、可组合项、存储或信号。 |
 
 这些原语可让您设计用户可以在其中检查、驾驶、暂停、
 恢复和分叉代理在其发生时工作。
@@ -109,7 +109,9 @@ import { injectStream } from "@langchain/angular"; // Angular
 
 ## 类型推断
 
-将类型参数传递给 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)（或 Angular 中的 [⟦T11⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream)），以便对 `stream.messages`、`stream.toolCalls`、`stream.interrupt`、`stream.values` 和其他反应状态进行类型安全访问。导入您的代理并传递 `typeof myAgent` 作为类型参数。 TypeScript 从编译的图中推断出状态模式：
+将类型参数传递给 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)（或 Angular 中的 [⟦T11⟧](https://reference.langchain.com/javascript/langchain-angular/injectStream)），以便对 `stream.messages`、`stream.toolCalls`、`stream.interrupt`、`stream.values` 和其他反应状态进行类型安全访问。
+
+导入您的代理并传递 `typeof myAgent` 作为类型参数。 TypeScript 从编译的图中推断出状态模式：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { myAgent } from "./agent";
@@ -137,9 +139,7 @@ const stream = useStream<typeof myAgent>({
 
   <Card title="Reasoning tokens" icon="brain" href="/oss/javascript/langchain/frontend/reasoning-tokens">
     在可折叠块中显示模型思维过程。
-  </Card>
-
-  <Card title="Generative UI" icon="wand" href="/oss/javascript/langchain/frontend/generative-ui-overview">
+  </Card><Card title="Generative UI" icon="wand" href="/oss/javascript/langchain/frontend/generative-ui-overview">
     呈现代理生成的界面，范围涵盖从受控到声明到开放式。
   </Card>
 </CardGroup>
@@ -165,7 +165,9 @@ const stream = useStream<typeof myAgent>({
 <CardGroup>
   <Card title="Branching chat" icon="git-branch" href="/oss/javascript/langchain/frontend/branching-chat">
     编辑消息、重新生成响应以及导航对话分支。
-  </Card><Card title="Message queues" icon="list-check" href="/oss/javascript/langchain/frontend/message-queues">
+  </Card>
+
+  <Card title="Message queues" icon="list-check" href="/oss/javascript/langchain/frontend/message-queues">
     将多个消息排队，同时代理按顺序处理它们。
   </Card>
 </CardGroup>
@@ -184,11 +186,10 @@ const stream = useStream<typeof myAgent>({
 
 ## 选择前端模式
 
-从您的应用程序需要回答的用户体验问题开始：
-
-|如果用户需要... |以 | 开头
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|了解代理在做什么 | [Tool calling](/oss/javascript/langchain/frontend/tool-calling) 和 [reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens) ||安全批准敏感操作 | [Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop) |
+从您的应用程序需要回答的用户体验问题开始：|如果用户需要... |以 | 开头
+| - | - |
+|了解代理在做什么 | [Tool calling](/oss/javascript/langchain/frontend/tool-calling) 和 [reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens) |
+|安全批准敏感操作 | [Human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop) |
 |在运行期间发送作业 | [Message queues](/oss/javascript/langchain/frontend/message-queues) |
 |离开并返回长时间运行的工作 | [Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin) |
 |编辑或从较早的回合重试 | [Branching chat](/oss/javascript/langchain/frontend/branching-chat) 和 [time travel](/oss/javascript/langchain/frontend/time-travel) |
@@ -197,9 +198,11 @@ const stream = useStream<typeof myAgent>({
 ## 集成
 
 流 API 与 UI 无关。将其与任何组件库或生成式 UI 一起使用
-框架。组件库可以拥有表现层，而LangChain的
+框架。组件库可以拥有表示层，而LangChain的
 SDK 拥有代理运行时状态、可恢复性、中断和检查点
-下面的语义。<CardGroup>
+下面的语义。
+
+<CardGroup>
   <Card title="AI Elements" icon="package" href="/oss/javascript/langchain/frontend/integrations/ai-elements">
     用于 AI 聊天的可组合 shadcn/ui 组件：`Conversation`、`Message`、`Tool`、`Reasoning`。
   </Card>
@@ -217,7 +220,7 @@ SDK 拥有代理运行时状态、可恢复性、中断和检查点
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -44,7 +44,7 @@
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/javascript/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -120,12 +120,12 @@
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/anthropic
-      ``````bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```
+
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/anthropic
       ```
-    </CodeGroup>
-
-    <CodeGroup>
+    </CodeGroup><CodeGroup>
       ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { initChatModel } from "langchain";
 
@@ -191,23 +191,23 @@
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/javascript/integrations/chat/google_generative_ai/)
+    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google-genai
+      npm install @langchain/google
       ```
 
       ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google-genai
+      pnpm install @langchain/google
       ```
 
       ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-genai
+      yarn add @langchain/google
       ```
 
       ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google-genai
+      bun add @langchain/google
       ```
     </CodeGroup>
 
@@ -217,14 +217,14 @@
 
       process.env.GOOGLE_API_KEY = "your-api-key";
 
-      const model = await initChatModel("google-genai:gemini-2.5-flash-lite");
+      const model = await initChatModel("google:gemini-3.7-flash");
       ```
 
       ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+      import { ChatGoogle } from "@langchain/google/node";
 
-      const model = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash-lite",
+      const model = new ChatGoogle({
+        model: "gemini-3.7-flash",
         apiKey: "your-api-key"
       });
       ```
@@ -371,7 +371,9 @@ const calendarAgent = createAgent({
   tools: [createCalendarEvent, getAvailableTimeSlots],
   systemPrompt: CALENDAR_AGENT_PROMPT,
 });
-```测试日历代理以查看它如何处理自然语言调度：
+```
+
+测试日历代理以查看它如何处理自然语言调度：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const query = "Schedule a team meeting next Tuesday at 2pm for 1 hour";
@@ -396,9 +398,7 @@ await Promise.all([
     }
   })(),
 ]);
-```
-
-```
+``````
 ================================== Ai Message ==================================
 Tool Calls:
   get_available_time_slots (call_EIeoeIi1hE2VmwZSfHStGmXp)
@@ -922,7 +922,7 @@ Let me know if you'd like to add more details to the meeting or include addition
 
 ## 6. 添加人工参与审核
 
-谨慎地纳入敏感操作的[human-in-the-loop review](/oss/javascript/langchain/human-in-the-loop)。 LangChain 包含[built-in middleware](/oss/javascript/langchain/human-in-the-loop#configuring-interrupts)来审查工具调用，在本例中是子代理调用的工具。
+谨慎地纳入敏感操作的[human-in-the-loop review](/oss/javascript/langchain/human-in-the-loop)。 LangChain 包括 [built-in middleware](/oss/javascript/langchain/human-in-the-loop#configuring-interrupts) 用于审查工具调用，在本例中为子代理调用的工具。
 
 让我们为两个子代理添加人机交互审核：
 
@@ -1190,12 +1190,12 @@ const scheduleEvent = tool(
 ```**重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
 
 <Tip>
-  有关演示具有人机循环审核和高级信息流控制的完整监管模式的完整工作示例，请查看 LangChain.js 示例中的[⟦T73⟧](https://github.com/langchain-ai/langchainjs/blob/main/examples/src/createAgent/supervisor.ts)。
+  有关演示具有人机循环审核和高级信息流控制的完整主管模式的完整工作示例，请查看 LangChain.js 示例中的 [⟦T73⟧](https://github.com/langchain-ai/langchainjs/blob/main/examples/src/createAgent/supervisor.ts)。
 </Tip>
 
 ## 8. 要点
 
-主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的特定需求控制信息流。
+主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从清晰的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
 
 <Tip>
   **何时使用主管模式**
@@ -1211,7 +1211,7 @@ const scheduleEvent = tool(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
