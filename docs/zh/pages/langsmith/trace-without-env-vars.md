@@ -11,13 +11,13 @@
 * `LANGSMITH_ENDPOINT`
 * `LANGSMITH_PROJECT`
 
+在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。已存在的项目名称会不断向该项目发送跟踪。要直接与代理人联系，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+
 如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不希望依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
 
 <Warning>
   在 [Python SDK](/langsmith/smith-python-sdk) 的 **0.1.95** 版本中，`with trace` 遵循 `LANGSMITH_TRACING` 环境变量。详情请参阅[release notes](https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.1.95)。要在不设置环境变量的情况下禁用或启用跟踪，请使用 `with tracing_context` 上下文管理器，如以下示例所示。
-</Warning>
-
-* Python：在 Python 中执行此操作的推荐方法是使用 [⟦T9⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和`trace` 上下文管理器中的代码。
+</Warning>* Python：在 Python 中执行此操作的推荐方法是使用 [⟦T9⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 上下文管理器。这适用于用 `traceable` 注释的代码和`trace` 上下文管理器中的代码。
 * TypeScript：您可以将客户端和 `tracingEnabled` 标志传递给 [⟦T13⟧](https://reference.langchain.com/javascript/langsmith/traceable) 装饰器。
 
 <CodeGroup>
@@ -96,7 +96,9 @@
 
 如果您更喜欢视频教程，请查看 LangSmith 课程简介中的 [Alternative Ways to Trace video](https://academy.langchain.com/pages/intro-to-langsmith-preview)。
 
-＃＃ 有关的如果您需要根据运行时条件（例如客户端要求、数据敏感性或合规性策略）动态启用或禁用跟踪，请参阅[Conditional tracing](/langsmith/conditional-tracing)获取示例。
+## 相关
+
+如果您需要根据运行时条件（例如客户端要求、数据敏感性或合规性策略）动态启用或禁用跟踪，请参阅[Conditional tracing](/langsmith/conditional-tracing)获取示例。
 
 ***
 

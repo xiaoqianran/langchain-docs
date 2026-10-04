@@ -40,7 +40,7 @@ LangSmith 提供精细的计费使用 API，可让您检索按工作区、项目
 
 ## 在用户界面中查看
 
-您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-granular-usage)中查看详细的使用数据：1. 导航至 **设置** > **计费和使用情况**
+您还可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-granular-usage)中查看详细的使用情况数据：1. 导航至 **设置** > **计费和使用情况**
 2. 选择 **粒度使用** 选项卡
 3. 在 **LangSmith Traces** 和 **LangSmith Deployments** 子选项卡之间切换以查看每个域。活动子选项卡反映在 URL（`?tab=traces` 或 `?tab=deployments`）中，因此您可以为页面添加书签以登陆到同一视图上。
 4. 使用控件来：
@@ -367,14 +367,16 @@ GET /api/v1/orgs/current/billing/granular-usage/export
 | `user` |按用户分组 | `user_id`、`user_email` |两种 |
 | `api_key` |按 API 密钥分组 | `api_key_short_key` |两种 |
 
-对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。
+对于跟踪使用，“项目”指的是[LangSmith tracer session](/langsmith/observability-concepts)。对于部署使用，“项目”指的是 LangSmith 部署项目（已部署的代理）。在 [agent-based workspace](/langsmith/agents) 中，按项目分组是导出最接近代理的方式，因为没有代理或环境维度。每个跟踪使用情况行覆盖一个代理的一个 [environment](/langsmith/agent-environments)，因此合计代理的使用情况意味着对其环境行进行求和。 LangSmith 将其为环境创建的跟踪项目命名为 `<agent>-<environment>`，例如 `support-triage-production`，而早于代理的项目则保留其已有的名称。
 
 ## 相关资源
 
 * [Manage billing in your account](/langsmith/billing)
 * [Organization and workspace operations](/langsmith/organization-workspace-operations)
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

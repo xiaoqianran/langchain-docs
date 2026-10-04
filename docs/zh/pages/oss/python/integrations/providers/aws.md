@@ -6,64 +6,48 @@
 
 使用 LangChain Python 与 AWS (Amazon) 集成。
 
-本页面涵盖了 LangChain 与[Amazon Web Services (AWS)](https://aws.amazon.com/)平台的所有集成。
+本页面涵盖了 LangChain 与 [Amazon Web Services (AWS)](https://aws.amazon.com/) 平台的所有集成。
 
 ## 聊天模型
 
-### 基岩聊天
+### 基岩地幔
 
-> [Amazon Bedrock](https://aws.amazon.com/bedrock/) 是一项完全托管的服务，提供多种选择
+[AWS Bedrock Mantle API](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)通过OpenAI和Anthropic消息协议公开模型。 `ChatOpenAIMantle` 和 `ChatAnthropicMantle` 是访问这些模型的推荐接口。
+
+这两个类都通过 `bedrock_api_key` 参数或 `AWS_BEARER_TOKEN_BEDROCK` 环境变量接受 Bedrock API 密钥。当两者都不可用时，两者都会从标准 AWS 凭证派生短期 API 密钥并透明地刷新它们。
+
+`ChatOpenAIMantle`继承自`BaseChatOpenAI`。有关使用示例和功能，请参阅相应的[Responses API docs](/oss/python/integrations/chat/openai#responses-api)。支持的型号请参阅[AWS Mantle OpenAI-compatible API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)。
+
+`ChatAnthropicMantle`继承自`ChatAnthropic`，并以Mantle上的Anthropic消息端点为目标。有关使用示例和功能，请参阅 [⟦T40⟧](/oss/python/integrations/chat/anthropic) 文档。支持的型号请参阅[AWS Mantle Anthropic API docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import ChatOpenAIMantle, ChatAnthropicMantle
+
+openai_model = ChatOpenAIMantle(
+    model="openai.gpt-5.6-luna",
+    region_name="us-east-1",
+)
+
+anthropic_model = ChatAnthropicMantle(
+    model="anthropic.claude-opus-5-5",
+    region_name="us-east-1",
+)
+```
+
+###基岩匡威> [Amazon Bedrock](https://aws.amazon.com/bedrock/) 是一项完全托管的服务，提供多种选择
 > 来自领先人工智能公司的高性能基础模型 (FM)，如`AI21 Labs`、`Anthropic`、`Cohere`、
-> 通过单个 API 实现 `Meta`、`Stability AI` 和 `Amazon`，以及您需要的广泛功能
-> 构建具有安全性、隐私性和负责任的人工智能的生成式人工智能应用程序。使用`Amazon Bedrock`，
-> 您可以轻松地试验和评估适合您的用例的顶级 FM，并通过以下方式私下定制它们
-> 使用微调和 `Retrieval Augmented Generation` (`RAG`) 等技术来调整数据，并构建
-> 使用您的企业系统和数据源执行任务的代理。由于 `Amazon Bedrock` 是
+> 通过单个 API 实现`Meta`、`OpenAI`、`Stability AI` 和 `Amazon`。由于 `Amazon Bedrock` 是
 > 无服务器，您无需管理任何基础设施，即可安全地集成和部署
 > 使用您已经熟悉的 AWS 服务将生成式 AI 功能集成到您的应用程序中。
 
-请参阅[usage example](/oss/python/integrations/chat/bedrock)。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_aws import ChatBedrock
-```
-
-### 基岩匡威AWS Bedrock 维护 [Converse API](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html)
-为基岩模型提供统一的对话界面。该 API 不
-但支持自定义模型。你可以看到所有的列表
+AWS Bedrock 维护 [Converse API](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html)
+为基岩模型提供统一的对话界面。你可以看到所有的列表
 [models that are supported here](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html)。
-
-<Info>
-  **我们建议不需要使用自定义模型的用户使用 Converse API。可以使用[ChatBedrockConverse](https://reference.langchain.com/python/langchain-aws/chat_models/bedrock_converse/ChatBedrockConverse)访问它。**
-</Info>
 
 请参阅[usage example](/oss/python/integrations/chat/bedrock)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws import ChatBedrockConverse
-```
-
-## 法学硕士
-
-### 基岩
-
-请参阅[usage example](/oss/python/integrations/llms/bedrock)。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_aws import BedrockLLM
-```
-
-### SageMaker 端点
-
-> [Amazon SageMaker](https://aws.amazon.com/sagemaker/)是一个可以构建、训练和部署的系统
-> 具有完全托管基础设施、工具和工作流程的机器学习 (ML) 模型。
-
-我们使用 `SageMaker` 来托管我们的模型并将其公开为 `SageMaker Endpoint`。
-
-请参阅[usage example](/oss/python/integrations/llms/sagemaker)。
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_aws import SagemakerEndpoint
 ```
 
 ## 嵌入模型
@@ -99,7 +83,7 @@ vds = InMemoryVectorStore.from_documents(
 
 请参阅[usage example](/oss/python/integrations/vectorstores/memorydb)。
 
-### 瓦尔基[Valkey](https://valkey.io/)是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用 ValkeyVectorStore 与 [Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/valkey/) 或 [Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/) 连接。
+### 瓦尔基[Valkey](https://valkey.io/)是一个开源的高性能键/值数据存储，支持缓存、消息队列等工作负载，并且可以充当主数据库。使用 ValkeyVectorStore 与 [Amazon ElastiCache for Valkey](https://aws.amazon.com/elasticache/) 或 [Amazon MemoryDB for Valkey](https://aws.amazon.com/memorydb/) 连接。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws.vectorstores import ValkeyVectorStore
@@ -127,7 +111,7 @@ from langchain_aws.vectorstores import ValkeyVectorStore
   ```
 </CodeGroup>
 
-请参阅[usage example](/oss/python/integrations/retrievers/bedrock)。
+参见[usage example](/oss/python/integrations/retrievers/bedrock)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws import AmazonKnowledgeBasesRetriever
@@ -150,16 +134,17 @@ from langchain_aws import AmazonKnowledgeBasesRetriever
   ```
 </CodeGroup>
 
-请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_browser)。
+参见[usage example](/oss/python/integrations/tools/bedrock_agentcore_browser)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 from langchain_aws.tools import create_browser_toolkit
 
 # Create toolkit
 toolkit, browser_tools = create_browser_toolkit(region="us-west-2")
 
 # Use with an agent
-agent = create_react_agent(model=llm, tools=browser_tools)
+agent = create_agent(model=llm, tools=browser_tools)
 result = await agent.ainvoke(
     {"messages": [{"role": "user", "content": "Go to example.com and get the heading"}]},
     config={"configurable": {"thread_id": "session-1"}}
@@ -187,13 +172,14 @@ await toolkit.cleanup()
 请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 from langchain_aws.tools import create_code_interpreter_toolkit
 
 # Create toolkit (async)
 toolkit, code_tools = await create_code_interpreter_toolkit(region="us-west-2")
 
 # Use with an agent
-agent = create_react_agent(model=llm, tools=code_tools)
+agent = create_agent(model=llm, tools=code_tools)
 result = await agent.ainvoke(
     {"messages": [{"role": "user", "content": "Calculate factorial of 10"}]},
     config={"configurable": {"thread_id": "session-1"}}
@@ -201,6 +187,39 @@ result = await agent.ainvoke(
 
 # Cleanup when done
 await toolkit.cleanup()
+```
+
+### Amazon Bedrock AgentCore 网络搜索[Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-target-connector-web-search-tool.html) 为代理提供来自网络的最新信息，以及每个结果的源 URL，并使用您的 AWS 凭证而不是搜索 API 密钥进行身份验证。
+
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install langchain-aws bedrock-agentcore
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add langchain-aws bedrock-agentcore
+  ```
+</CodeGroup>
+
+请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search)。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_aws.tools import create_web_search_toolkit
+
+# Needs a gateway with a web search connector target. The factory is synchronous.
+toolkit, tools = create_web_search_toolkit(
+    region="us-east-1",
+    gateway_id="my-web-search-gateway-abc123",
+)
+
+try:
+    agent = create_agent(model=llm, tools=tools)
+    result = agent.invoke(
+        {"messages": [{"role": "user", "content": "What changed in the most recent boto3 release?"}]}
+    )
+finally:
+    toolkit.close()
 ```
 
 ## 沙箱
@@ -213,7 +232,9 @@ await toolkit.cleanup()
 
 ## 图表
 
-### 亚马逊海王星> [Amazon Neptune](https://aws.amazon.com/neptune/)
+### 亚马逊海王星
+
+> [Amazon Neptune](https://aws.amazon.com/neptune/)
 > 是一个高性能图形分析和无服务器数据库，具有卓越的可扩展性和可用性。
 
 对于下面的 Cypher 和 SPARQL 集成，我们需要安装 `langchain-aws` 库。
@@ -230,7 +251,7 @@ await toolkit.cleanup()
 
 ### 亚马逊海王星与密码
 
-参见[usage example](/oss/python/integrations/graphs/amazon_neptune_open_cypher)。
+请参阅[usage example](/oss/python/integrations/graphs/amazon_neptune_open_cypher)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_aws.graphs import NeptuneGraph
@@ -291,10 +312,8 @@ result = graph.invoke({"messages": []}, config)
 * 通过`actor_id`隔离支持多代理
 * 静态和传输中加密
 
-### Amazon Bedrock AgentCore 内存存储
-
-> [Amazon Bedrock AgentCore Memory Store](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
-> 具有 LangGraph 代理语义搜索功能的长期记忆，支持跨会话存储和检索用户偏好、事实和提取的记忆。
+### Amazon Bedrock AgentCore 内存存储> [Amazon Bedrock AgentCore Memory Store](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
+> 具有LangGraph代理语义搜索功能的长期记忆，能够跨会话存储和检索用户偏好、事实和提取的记忆。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_checkpoint_aws import AgentCoreMemoryStore
@@ -318,7 +337,9 @@ def pre_model_hook(state, config, *, store):
 
 ## 链条
 
-### Amazon Comprehend 审核链> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
+### Amazon Comprehend 审核链
+
+> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
 > 使用机器学习来发现文本中有价值的见解和联系。
 
 我们需要安装`boto3`和`nltk`库。
@@ -333,7 +354,7 @@ def pre_model_hook(state, config, *, store):
   ```
 </CodeGroup>
 
-请参阅[usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/)。
+参见[usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/)。
 
 <Warning>
   `langchain-experimental` 包不再维护。从 `langchain_experimental` 导入的示例可能已过时或已损坏。谨慎使用。
@@ -387,7 +408,7 @@ agentcore launch -e your_agent.py
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -4,9 +4,11 @@
 
 # 查看痕迹
 
-使用轨迹视图或详细信息视图检查 LangSmith 中的代理线程。
+使用“轨迹”视图或“详细信息”视图检查 LangSmith 中的代理线程。
 
 在跟踪项目中，使用 **Threads**、**Traces** 或 **Runs** 选项卡来更改表中显示的内容。要将其缩小到特定行，[apply a filter](/langsmith/filter-traces)。单击任意行以打开侧面板。
+
+在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是一个代理的一个 [environment](/langsmith/agent-environments)。选择代理，然后选择环境，以到达同一个表。
 
 侧面板围绕 [threads](/langsmith/observability-concepts#threads) 组织，作为主要导航单元。 UI 没有将每个 [run](/langsmith/observability-concepts#runs) 视为孤立的对象，而是使周围的对话保持可见，以便您可以了解运行在代理更广泛的执行中的位置。
 
@@ -14,7 +16,7 @@
   “线程”选项卡和“转弯”视图仅适用于使用 `thread_id` 元数据字段进行检测的运行。如果没有线程检测，您将看到单独运行的跟踪，并且无法访问 Turns 视图。
 </Note>
 
-侧面板顶部提供三个视图：* [**Trajectory**](#trajectory-view)：会话层。将 [trajectory](/langsmith/observability-concepts#trajectories) 扫描为输入、输出、推理、工具调用和子代理活动。使用它来查找要查找的位置。按`T`切换到该视图。
+侧面板顶部提供三个视图：* [**Trajectory**](#trajectory-view)：会话层。将[trajectory](/langsmith/observability-concepts#trajectories)扫描为输入、输出、推理、工具调用和子代理活动。使用它来查找要查找的位置。按`T`切换到该视图。
 * [**Turns**](#turns-view)：每回合摘要。将线程中的每一圈视为显示其输入和输出的卡片，并可展开/折叠。当您想要结构概览而不需要完整的对话渲染时，请使用此选项。
 * [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行过程中特定点发生的情况。按`D`切换到该视图。
 
@@ -112,16 +114,16 @@
 
 当运行的 `run_type` 为 `tool` 时，工具消息会自动展开。
 
-在运行时设置 `run_type="retriever"` 会导致详细信息视图呈现每个检索到的文档及其内联内容和元数据。所需的返回格式请参见[Log retriever traces](/langsmith/log-retriever-trace)。
+在运行时设置 `run_type="retriever"` 会导致详细信息视图呈现每个检索到的文档及其内联内容和元数据。所需的返回格式请参考[Log retriever traces](/langsmith/log-retriever-trace)。
 
 ### 行动
 
 从详细信息视图中，您还可以：
 
 * **共享跟踪：** 生成跟踪的公共链接。参见[Manage a trace](/langsmith/manage-trace#share-a-trace)。
-* **查看服务器日志：** 访问与 LangSmith 部署生成的跟踪关联的服务器日志。参见[Manage a trace](/langsmith/manage-trace#view-server-logs)。
+* **查看服务器日志：** 访问与 LangSmith 部署生成的跟踪关联的服务器日志。请参阅[Manage a trace](/langsmith/manage-trace#view-server-logs)。
 * **添加到数据集：** 将运行保存为数据集中的示例，以供评估使用。参见[Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
-* **添加到注释队列：** 将运行或其整个[thread](/langsmith/observability-concepts#threads)发送到队列以供人工审核和反馈。参见[Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
+* **添加到注释队列：** 将运行或其整个[thread](/langsmith/observability-concepts#threads)发送到队列以供人工审核和反馈。请参阅[Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
 
 ***<div>
   <Callout icon="terminal-2">

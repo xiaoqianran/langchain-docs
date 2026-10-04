@@ -64,7 +64,7 @@ todo 的状态从 `"pending"` 到 `"in_progress"` 到 `"completed"`。的
   from langchain.agents.middleware import TodoListMiddleware
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       middleware=[TodoListMiddleware()],
   )
   ```
@@ -446,11 +446,33 @@ function TodoList({ todos, isLoading }: { todos: Todo[]; isLoading: boolean }) {
   待办事项列表自动保持最新状态。不要添加手动轮询或
   刷新逻辑。
 
+## 相关LangChain指南待办事项列表模式是更广泛的 LangChain 方法的专业化
+渲染结构化代理状态。这些指南涵盖了相关技术
+与基于计划的代理良好配合：
+
+<CardGroup>
+  <Card title="Structured output" icon="table" href="/oss/python/langchain/frontend/structured-output">
+    使用自定义 UI 组件而不是纯文本呈现任何结构化代理状态（而不仅仅是待办事项）。
+  </Card>
+
+  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/python/langchain/frontend/join-rejoin">
+    页面重新加载或选项卡切换后重新连接到正在运行的计划，而不会丢失进度。
+  </Card>
+
+  <Card title="Message queues" icon="list" href="/oss/python/langchain/frontend/message-queues">
+    在代理仍在执行当前计划的同时对后续任务进行排队。
+  </Card>
+
+  <Card title="Human-in-the-Loop" icon="hand" href="/oss/python/langchain/frontend/human-in-the-loop">
+    当代理需要用户批准或输入时暂停和恢复计划执行。
+  </Card>
+</CardGroup>
+
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -6,6 +6,8 @@ Filter threads, traces, and runs in a LangSmith tracing project backed by ClickH
 
 Tracing projects can accumulate large amounts of data across [threads](/langsmith/observability-concepts#threads), [traces](/langsmith/observability-concepts#traces), and [runs](/langsmith/observability-concepts#runs). LangSmith's filtering tools let you navigate and analyze that data precisely.
 
+In an [agent-based workspace](/langsmith/agents), a tracing project is one [environment](/langsmith/agent-environments) of one agent, so a filter applies to the environment you have open rather than to the agent as a whole. To filter across an agent's environments, filter each one in turn.
+
 <Note>
   Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
 
@@ -222,7 +224,7 @@ Finally, you can also filter for runs that do not have a specific key but have a
 
 ## Save a filter
 
-Saving filters allows you to store and reuse frequently used filter configurations. Saved filters are specific to a tracing project.
+Saving filters allows you to store and reuse frequently used filter configurations. Saved filters are specific to a tracing project, which in an agent-based workspace means one [environment](/langsmith/agent-environments) of one agent. A filter saved in **Production** is not offered in **Staging**.
 
 After you have constructed your filter, click the **Save as** button to save it. This will bring up a dialog to specify the name and a description of the filter.
 

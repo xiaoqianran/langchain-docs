@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: Hugging Face integrations | https://docs.langchain.com/oss/python/integrations/providers/huggingface -->
 
-# 拥抱脸部集成
+# Hugging Face 集成
 
 使用 LangChain Python 与 Hugging Face 集成。
 
-本页面涵盖了 LangChain 与[Hugging Face Hub](https://huggingface.co/)以及[transformers](https://huggingface.co/docs/transformers/index)、[sentence transformers](https://sbert.net/)和[datasets](https://huggingface.co/docs/datasets/index)等库的所有集成。
+本页面涵盖了所有 LangChain 与 [Hugging Face Hub](https://huggingface.co/) 以及 [transformers](https://huggingface.co/docs/transformers/index)、[sentence transformers](https://sbert.net/) 和 [datasets](https://huggingface.co/docs/datasets/index) 等库的集成。
 
 ## 聊天模型
 
@@ -66,7 +66,7 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 ### 文本嵌入推理 (TEI)
 
-对于 Sentence Transformers 模型的自托管生产服务，Hugging Face 发布了[Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference)，这是一款具有批处理和 GPU 支持的专用推理服务器。 TEI公开了兼容OpenAI的API，因此LangChain通过`OpenAIEmbeddings`指向TEI部署。参见专用[TEI integration guide](/oss/python/integrations/embeddings/text_embeddings_inference)。
+对于 Sentence Transformers 模型的自托管生产服务，Hugging Face 发布了[Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference)，这是一款具有批处理和 GPU 支持的专用推理服务器。 TEI 公开了OpenAI 兼容的 API，因此通过 `OpenAIEmbeddings` 将 LangChain 指向 TEI 部署。参见专用[TEI integration guide](/oss/python/integrations/embeddings/text_embeddings_inference)。
 
 ### BGE 嵌入模型> [BGE models on Hugging Face](https://huggingface.co/BAAI) 是来自 [Beijing Academy of Artificial Intelligence (BAAI)](https://en.wikipedia.org/wiki/Beijing_Academy_of_Artificial_Intelligence) 的强大开源嵌入系列。
 
@@ -76,7 +76,7 @@ BGE 模型是 Sentence Transformers 模型，因此将 `HuggingFaceEmbeddings` �
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

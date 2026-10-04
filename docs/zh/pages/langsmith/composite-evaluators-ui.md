@@ -14,7 +14,7 @@
 
 ## 创建一个复合评估器
 
-您可以在[tracing project](/langsmith/observability-concepts#projects)（对于[online evaluations](/langsmith/evaluation-concepts#online-evaluations)）或[dataset](/langsmith/evaluation-concepts#datasets)（对于[offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)）创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。
+您可以在[tracing project](/langsmith/observability-concepts#tracing-projects)（对于[online evaluations](/langsmith/evaluation-concepts#online-evaluations)）或[dataset](/langsmith/evaluation-concepts#datasets)（对于[offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)）创建复合赋值器。通过 UI 中的复合评估器，您可以计算多个评估器分数的加权平均值或加权总和，并具有可配置的权重。
 
 <div>
   <img alt="LangSmith UI showing an LLM call trace called ChatOpenAI with a system and human input followed by an AI Output." />
@@ -24,13 +24,13 @@
 
 ### 1. 导航到跟踪项目或数据集
 
-要开始配置复合评估器，请导航到 **跟踪项目** 或 **数据集和实验** 选项卡，然后选择一个项目或数据集。
+要开始配置复合评估器，请导航到 **跟踪** 或 **数据集和实验** 选项卡，然后选择跟踪项目、代理环境或数据集。
 
-* 从跟踪项目中：**+ 新建** > **评估器** > **综合分数**
+* 从跟踪项目或代理环境中：**+ 新建** > **评估器** > **综合分数**
 * 从数据集中：**+ 评估器** > **综合得分**
 
 ### 2. 配置复合求值器1. 指定您的评估员。
-2. 选择聚合方法：**平均** 或 **总和**。
+2. 选择一种聚合方法，**平均** 或 **求和**。
    * **平均**： Σ(体重\*分数) / Σ(体重)。
    * **总和**：Σ(体重\*分数)。
 3. 添加您想要包含在综合乐谱中的反馈键。
@@ -41,9 +41,9 @@
 
 ### 3. 查看综合评估器结果
 
-综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。如何查看它们取决于运行评估的位置：
+综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。如何查看它们取决于评估的运行位置：
 
-**关于追踪项目**：
+**在跟踪项目或代理环境上**：
 
 * 综合分数显示为跑步反馈。
 * [Filter for runs](/langsmith/filter-traces) 具有综合分数，或综合分数满足特定阈值。

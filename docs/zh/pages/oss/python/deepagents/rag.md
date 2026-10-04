@@ -4,7 +4,7 @@
 
 # 带有 Deep Agents 的检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -14,7 +14,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
 
 本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。
 
-## RAG 图案Deep Agents 允许您以多种方式协调检索、分析和综合：
+## RAG patternsDeep Agents 允许您以多种方式协调检索、分析和综合：
 
 * **技能引导检索**：用户提出问题。代理加载相关技能，描述如何搜索语料库（使用哪个索引、查询公式、引文格式）。代理按照该指导调用您的检索工具，然后综合答案。
 * **Rubric-checked grounding**：用户提出问题。特工检索证据并起草答复。配置有`RubricMiddleware`的评分器子代理评估响应是否基于检索到的源材料。代理会进行修改，直到标题通过或达到迭代上限。
@@ -88,7 +88,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
   EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
   baseline_agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[],
       system_prompt=(
           "You are a helpful LangChain documentation assistant. "
@@ -192,6 +192,10 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc30c5b2-c787-41ea-800c-a0f835bdcce5/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 如果没有检索，代理就无法查找当前的 LangChain 文档。回复往往很笼统，可能会省略[subagent streaming](/oss/python/deepagents/frontend/subagent-streaming)等指导，或包含过时的信息。
 
 本教程中的示例索引 LangChain 文档，使用向量搜索工具检索证据，分析并行子代理中的每个块，并通过引用文档回答问题。
@@ -267,7 +271,7 @@ API 密钥用于：
 
 ## 索引 LangChain 文档
 
-在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了该块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
+在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
 
 索引通常分四个步骤进行：1. **[Load](#load-documents)**：将数据源加载到[⟦T88⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document)对象中。
 2. **[Split](#split-documents)**：使用[text splitters](/oss/python/integrations/splitters)将大的`Document`分解成更小的块。这对于索引数据并将其传递给模型都很有用，因为大块更难搜索，并且要么不适合模型的有限上下文窗口，要么使用比必要的更多的标记。
@@ -370,7 +374,7 @@ Total characters: 589579
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
 即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。
 
-为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
@@ -450,7 +454,7 @@ Split documentation into 782 chunks.
     ```
   </Tab>
 
-  <Tab title="Google Vertex">
+  <Tab title="Gemini Enterprise Agent Platform">
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-google-vertexai
     ```
@@ -1065,7 +1069,7 @@ Indexed 782 chunks.
           "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
       }
 
-      model = init_chat_model(model="anthropic:claude-sonnet-4-6")
+      model = init_chat_model(model="anthropic:claude-sonnet-5")
 
       agent = create_deep_agent(
           model=model,
@@ -1265,7 +1269,7 @@ if __name__ == "__main__":
 
 ## 完整代码
 
-以下是代理的完整脚本：
+以下是使用一组示例模型的代理的完整脚本。对于其他型号，请参阅分步方法以了解有何变化：
 
 另存为 `agent.py` 并使用 `python agent.py` 运行：
 
@@ -1280,7 +1284,7 @@ from langchain.messages import HumanMessage
 from langchain.tools import tool
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 DOCS_BASE = "https://docs.langchain.com"
@@ -1328,7 +1332,7 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20
 all_splits = text_splitter.split_documents(docs)
 print(f"Split documentation into {len(all_splits)} chunks.")
 
-embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 vector_store = InMemoryVectorStore(embedding=embeddings)
 vector_store.add_documents(documents=all_splits)
 print(f"Indexed {len(all_splits)} chunks.")
@@ -1430,7 +1434,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="google_genai:gemini-3.6-flash")
+model = init_chat_model(model="anthropic:claude-sonnet-4-6")
 
 agent = create_deep_agent(
     model=model,
@@ -1454,17 +1458,17 @@ if __name__ == "__main__":
 
 ## 后续步骤
 
-您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
-
-* 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
+您使用 [⟦T123⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：* 将 [Skills](/oss/python/deepagents/skills) 添加到包检索工作流程和特定领域的搜索指南
 * 使用 [Grading rubrics](/oss/python/deepagents/rubric) 验证答案是否基于检索到的源材料
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) 与 LangSmith 数据集和评估器
 * 阅读 [Context engineering](/oss/python/deepagents/context-engineering) 了解卸载和子代理隔离策略
 * 使用[LangSmith Deployment](/langsmith/deployment)部署您的应用程序
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

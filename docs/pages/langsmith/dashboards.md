@@ -6,7 +6,7 @@ Dashboards give you high-level insights into your [trace](/langsmith/observabili
 
 LangSmith offers two dashboard types:
 
-* **Prebuilt dashboards**: Automatically generated for every tracing project.
+* **Prebuilt dashboards**: Automatically generated for every tracing project, which in an agent-based workspace means one per [environment](/langsmith/agent-environments) of an [agent](/langsmith/agents).
 * **Custom dashboards**: Collections of charts you can configure to your needs. Two experiences are available depending on your [platform setup](/langsmith/platform-setup):
   * [**Custom dashboards**](#custom-dashboards): Available for LangSmith Cloud US.
   * [**Custom dashboards (legacy)**](#custom-dashboards-legacy): Available for LangSmith Self-hosted and LangSmith Cloud EU/APAC.
@@ -14,6 +14,10 @@ LangSmith offers two dashboard types:
 ## Prebuilt dashboards
 
 Prebuilt dashboards are created automatically for each project and cover essential metrics, such as trace count, error rates, token usage, and more. By default, you can access the prebuilt dashboard for your tracing project using the **Dashboard** button on the top right of the tracing project page.
+
+In an agent-based workspace a prebuilt dashboard covers one environment of one agent rather than a project you named.
+
+In an agent-based workspace, **Monitoring** requires an agent, and its dashboard selector splits the two types into tabs: **Environments** lists the prebuilt dashboard for each of the agent's environments, and **Custom** lists the custom dashboards tagged with that agent's [resource tag](/langsmith/set-up-resource-tags). A custom dashboard without that tag does not appear in the agent's selector.
 
 ### Dashboard sections
 
@@ -67,6 +71,22 @@ To start from a template, select one of the templates, which include some common
 Alternatively, use **Search templates** to find another template.
 
 #### Choose a tracing project or dataset
+
+What a chart draws from depends on which information architecture your workspace uses, and the control at the top left tells you which one you are on.
+
+**Agent-based workspaces.**
+
+<Note>
+  **Agent-based workspaces ([beta](/langsmith/release-stages)).** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, see [Tracing projects](/langsmith/observability-concepts#tracing-projects).
+</Note>
+
+Sources are agents and their environments, chosen with the [environment picker](/langsmith/agent-environments#select-an-environment). Everything below about pooling, grouping, and datasets applies unchanged.
+
+**Project-based workspaces.**
+
+<Note>
+  **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based, which is in [beta](/langsmith/release-stages). Skip this section and read [Agents](/langsmith/agents).
+</Note>
 
 Open **+ Select project or dataset** to find sources. Switch between the two source types with the tabs at the top of the popover.
 
@@ -191,7 +211,7 @@ There are two ways to create multiple series in a chart (i.e., create multiple l
 
 ## Link to a dashboard from a tracing project
 
-You can link to any dashboard directly from a tracing project. By default, the prebuilt dashboard for your tracing project is selected. If you have a custom dashboard that you would like to link instead:
+You can link to any dashboard directly from a tracing project, or from an environment in an agent-based workspace. By default, the prebuilt dashboard for that project or environment is selected. If you have a custom dashboard that you would like to link instead:
 
 1. In your tracing project, click the three dots next to the **Dashboard** button.
 2. Choose a dashboard to set as the new default.

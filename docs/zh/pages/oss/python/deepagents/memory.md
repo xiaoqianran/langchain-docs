@@ -4,9 +4,9 @@
 
 # 内存
 
-为使用深度代理构建的代理添加持久记忆，以便他们在对话中学习和改进
+为使用Deep Agents构建的代理添加持久记忆，以便他们在对话中学习和改进
 
-记忆可以让您的代理在对话中学习和改进。 Deep Agents 通过文件系统支持的内存使内存成为一流的：代理将内存作为文件读取和写入，并且您可以使用 [backends](/oss/python/deepagents/backends) 控制这些文件的存储位置。
+记忆可以让您的代理在对话中学习和改进。 Deep Agents 使用文件系统支持的内存使内存成为一流的：代理将内存作为文件读取和写入，并且您可以使用 [backends](/oss/python/deepagents/backends) 控制这些文件的存储位置。
 
 <Tip>
   要生成编码代理通过[⟦T13⟧](https://agents.md/)发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
@@ -242,18 +242,17 @@ agent = create_deep_agent(
 ## 高级用法
 
 除了内存路径和范围的基本配置选项之外，您还可以配置更高级的内存参数：|尺寸|提问即回答 |选项|
-| -------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **持续时间** |持续多久？          | [Short-term](/oss/python/deepagents/context-engineering)（单个对话）或[long-term](#scoped-memory)（跨对话）|
+| - | - | - |
+| **持续时间** |持续多久？ | [Short-term](/oss/python/deepagents/context-engineering)（单个对话）或[long-term](#scoped-memory)（跨对话）|
 | **信息类型** |这是什么样的信息？ | [Episodic](#episodic-memory)（过去的经验）、[procedural](/oss/python/deepagents/skills)（说明和技能）或[semantic](/oss/python/concepts/memory#semantic-memory)（事实）|
-| **范围** |谁可以查看和修改它？      | [User](#user-scoped-memory)、[agent](#agent-scoped-memory) 或 [organization](#organization-level-memory) |
-| **更新策略** |记忆是什么时候写的？      |对话期间（默认）或 [between conversations](#background-consolidation) || **检索** |记忆是如何被读取的？          |加载到提示（默认）或按需（例如，[skills](/oss/python/deepagents/skills)）|
-| **代理权限** |代理可以写入内存吗？  | [Read-write](#read-only-vs-writable-memory)（默认）或 [read-only](#read-only-vs-writable-memory)（对于共享策略）|
+| **范围** |谁可以查看和修改它？ | [User](#user-scoped-memory)、[agent](#agent-scoped-memory) 或 [organization](#organization-level-memory) |
+| **更新策略** |记忆是什么时候写的？ |对话期间（默认）或 [between conversations](#background-consolidation) |
+| **检索** |记忆是如何被读取的？ |加载到提示（默认）或按需（例如，[skills](/oss/python/deepagents/skills)）|
+| **代理权限** |代理可以写入内存吗？ | [Read-write](#read-only-vs-writable-memory)（默认）或 [read-only](#read-only-vs-writable-memory)（对于共享策略）|
 
 ### 情景记忆
 
-情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此代理可以回忆“如何”解决问题，而不仅仅是从中“学到什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
-
-深度代理已经使用[checkpointers](/oss/python/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程保存。
+情景记忆存储过去经历的记录：发生了什么、发生的顺序以及结果是什么。与语义记忆（存储在`AGENTS.md`等文件中的事实和偏好）不同，情景记忆保留了完整的对话上下文，因此智能体可以回忆“如何”解决问题，而不仅仅是“从中学到了什么”。要为编码代理生成和维护存储库级 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。Deep Agents 已经使用了[checkpointers](/oss/python/langgraph/checkpointers#checkpoints)，这是支持情景记忆的机制：每个对话都作为检查点线程保存。
 
 要使过去的对话可搜索，请将线程搜索包装在工具中。 `user_id`是从运行时上下文中提取的，而不是作为参数传递：
 
@@ -277,7 +276,9 @@ async def search_past_conversations(query: str, runtime: ToolRuntime) -> str:
         history = await client.threads.get_history(thread_id=thread["thread_id"])
         results.append(history)
     return str(results)
-```您可以通过调整元数据过滤器按用户或组织确定主题搜索范围：
+```
+
+您可以通过调整元数据过滤器按用户或组织确定主题搜索范围：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Search conversations for a specific user
@@ -299,7 +300,7 @@ threads = await client.threads.search(
 
 组织级内存遵循与用户范围内存相同的模式，但具有组织范围的命名空间，而不是每个用户的命名空间。将其用于应适用于组织中所有用户和代理的策略或知识。
 
-组织内存通常是**只读**，以防止通过共享状态进行提示注入。详情请参阅[read-only vs writable memory](#read-only-vs-writable-memory)。
+组织内存通常是**只读**，以防止通过共享状态进行提示注入。详情请参见[read-only vs writable memory](#read-only-vs-writable-memory)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -345,14 +346,14 @@ await client.store.put_item(
 
 使用 [permissions](/oss/python/deepagents/permissions) 强制组织级内存为只读，或使用 [policy hooks](/oss/python/deepagents/backends#add-policy-hooks) 自定义验证逻辑。
 
-### 后台整合
+### 后台整合默认情况下，代理在对话期间写入内存（热路径）。另一种方法是将对话之间的记忆处理作为后台任务，有时称为“睡眠时间计算”。一个单独的深度代理会审查最近的对话，提取关键事实，并将其与现有记忆合并。
 
-默认情况下，代理在对话期间写入内存（热路径）。另一种方法是将对话之间的记忆处理作为后台任务，有时称为“睡眠时间计算”。一个单独的深度代理会审查最近的对话，提取关键事实，并将其与现有记忆合并。|方法|优点 |缺点 |
-| -------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+|方法|优点 |缺点 |
+| - | - | - |
 | **热路径**（对话期间）|记忆立即可用，对用户透明 |增加延迟，代理必须执行多任务 |
 | **背景**（对话之间）|无面向用户的延迟，可以跨多个对话进行综合 |记忆在下次对话之前不可用，需要第二个特工 |
 
-对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理**——一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中——并在[cron schedule](#cron)上触发它。选择一个能够反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
+对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理**——一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中——并在[cron schedule](#cron)上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
 
 #### 集运代理
 
@@ -446,26 +447,27 @@ cron_job = await client.crons.create(
 <Note>
   所有 cron 计划均以 **UTC** 解释。有关管理和删除 cron 作业的详细信息，请参阅[cron jobs](/langsmith/cron-jobs)。
 </Note><Warning>
-  cron 间隔必须与整合代理内的回顾窗口相匹配。上面的示例每 6 小时运行一次 (`0 */6 * * *`)，代理的 `search_recent_conversations` 工具会回顾 `timedelta(hours=6)` — 保持这些同步。如果 cron 运行的次数比回溯的次数多，您将重新处理相同的对话；如果它运行得较少，你就会丢弃那些落在窗外的记忆。
+  cron 间隔必须与整合代理内的回顾窗口相匹配。上面的示例每 6 小时运行一次 (`0 */6 * * *`)，代理的 `search_recent_conversations` 工具会回顾 `timedelta(hours=6)` — 保持这些同步。如果 cron 运行的次数比回溯的次数多，您将重新处理相同的对话；如果它运行的频率较低，你就会丢弃掉在窗外的记忆。
 </Warning>
 
 有关使用后台进程部署代理的更多信息，请参阅[going to production](/oss/python/deepagents/going-to-production)。
 
 ### 只读内存与可写内存
 
-默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可|使用案例|它是如何运作的 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- || **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件|
+默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可|使用案例 |它是如何运作的 |
+| - | - | - |
+| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/python/deepagents/skills) |代理通过`edit_file`工具更新文件 |
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/python/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/python/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/python/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
 
 **安全注意事项：** 如果一个用户可以写入另一用户读取的内存，则恶意用户可以将指令注入共享状态。为了缓解这种情况：
 
 * **默认为用户范围** `(user_id)` 除非您有特定的理由要分享
 * 将**只读内存**用于共享策略（通过应用程序代码填充，而不是代理）
-* 在代理写入共享内存之前添加**人机交互**验证。使用 [interrupt](/oss/python/langgraph/interrupts) 要求人工批准才能写入敏感路径。要强制执行只读内存，请使用 [permissions](/oss/python/deepagents/permissions) 以声明方式拒绝对特定路径的写入。对于自定义验证逻辑（速率限制、审核日志记录、内容检查），请使用 [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
+* 在代理写入共享内存之前添加**人机交互**验证。使用 [interrupt](/oss/python/langgraph/interrupts) 要求人工批准才能写入敏感路径。
 
-### 并发写入
+要强制执行只读内存，请使用 [permissions](/oss/python/deepagents/permissions) 以声明方式拒绝对特定路径的写入。对于自定义验证逻辑（速率限制、审核日志记录、内容检查），请使用 [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
 
-多个线程可以并行写入内存，但并发写入**同一文件**可能会导致最后写入获胜冲突。对于用户范围的内存来说，这种情况很少见，因为用户通常一次只有一个活动对话。对于代理范围或组织范围的内存，请考虑使用[background consolidation](#background-consolidation)来序列化写入，或将内存构造为每个主题的单独文件以减少争用。
+### 并发写入多个线程可以并行写入内存，但并发写入**同一文件**可能会导致最后写入获胜冲突。对于用户范围的内存来说，这种情况很少见，因为用户通常一次只有一个活动对话。对于代理范围或组织范围的内存，请考虑使用[background consolidation](#background-consolidation)来序列化写入，或将内存构造为每个主题的单独文件以减少争用。
 
 在实践中，如果写入由于冲突而失败，LLM 通常足够聪明，可以重试或正常恢复，因此单个丢失的写入并不是灾难性的。
 
@@ -488,16 +490,16 @@ StoreBackend(
   使用 [LangSmith tracing](/langsmith/trace-with-langgraph) 审核代理写入内存的内容。每个文件写入在跟踪中都显示为工具调用。
 </Tip>
 
-## 另请参阅* [OpenWiki](/oss/openwiki/overview)：生成并维护编码代理通过`AGENTS.md`找到的存储库wiki
+## 另请参阅
+
+* [OpenWiki](/oss/openwiki/overview)：生成和维护编码代理通过`AGENTS.md`找到的存储库wiki
 * [Backends](/oss/python/deepagents/backends)：选择内存文件的存储位置
 * [Context engineering](/oss/python/deepagents/context-engineering)：短期记忆、卸载和总结
 * [Skills](/oss/python/deepagents/skills)：按需程序内存
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

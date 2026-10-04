@@ -135,7 +135,7 @@
 
     ## 使用自动跟踪
 
-    [⟦T21⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以全局设置 `LANGSMITH_TRACING=true` 并使用 `tracing_context` 覆盖特定请求的设置：
+    [⟦T21⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 上下文管理器支持自动跟踪。您可以保持 `LANGSMITH_TRACING=true` 全局设置，并使用 `tracing_context` 覆盖特定请求的设置：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import os
@@ -215,13 +215,13 @@
             return my_agent(user_input)
     ```
 
-    您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 来保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地——每个副本可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas)。
+    您可以使用 `updates` 中运行字段的任何子集（例如，`{"inputs": {"redacted": True}}` 来保留标记，或 `{"outputs": {}}` 仅编辑输出）。相同的模式适用于将不同的编辑策略路由到不同的目的地：每个副本可以指定自己的`project_name`、`api_key`和`updates`。有关完整副本参考，请参阅[Write traces to multiple destinations with replicas](/langsmith/trace-replicas)。
 
     <Note>
       使用 `updates` 编辑输入或输出时，请始终在副本上设置 `project_name`。如果副本的 `project_name` 与活动会话的项目匹配，则可能会删除 `updates` 并发送未编辑的输入/输出。
     </Note>## 在已部署的代理中自定义跟踪
 
-    默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或根据经过身份验证的用户自定义跟踪非常有用。
+    默认情况下，在 LangSmith 部署的 [Agent Server](/langsmith/agent-server) 中启用跟踪。当使用[factory function](/langsmith/graph-rebuild)时，您可以用`tracing_context`包装生成的图来控制每次执行的跟踪。这对于添加自定义元数据、完全禁用跟踪或基于经过身份验证的用户自定义跟踪非常有用。
 
     ### 禁用图表跟踪
 
@@ -448,7 +448,7 @@
 
 ## 与抽样比较
 
-条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色|条件追踪 |取样|
+条件跟踪和[sampling](/langsmith/sample-traces)有不同的用途：|特色 |条件追踪 |取样|
 | - | - | - |
 | **控制** |确定性（显式启用/禁用）|概率（随机抽样）|
 | **用例** |业务逻辑、合规性、每个请求的决策 |成本优化、大批量可观测性 |

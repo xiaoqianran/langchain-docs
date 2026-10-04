@@ -4,14 +4,14 @@
 
 # 概述
 
-构建显示实时子代理流、任务进度和深度代理沙箱的 UI
+为 Deep Agents 构建显示实时子代理流、任务进度和沙箱的 UI
 
 构建实时可视化深层代理工作流程的前端。这些图案
 展示如何呈现子代理进度、任务规划、流内容以及
-使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙箱体验。
+使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙盒体验。
 
-当 UI 使委托可见时，深度代理最为有用。而不是
-显示一个不透明的助手气泡，LangChain SDK 暴露了
+当 UI 使委派可见时，深度代理最为有用。而不是
+显示单个不透明的助手气泡，LangChain SDK 公开了
 协调器、子代理发现、自定义状态和沙箱支持的工件，以便
 用户可以检查长时间运行的任务是如何分解和完成的。
 
@@ -21,7 +21,7 @@
 
 ## 架构
 
-深度代理使用协调器-工作者架构。主代理计划任务并将其委托给专门的子代理，每个子代理独立运行。在前端，v1 流句柄在根流上显示协调器消息，并公开作用域子代理视图的子代理发现快照。
+Deep Agents 使用协调者-工作者架构。主代理计划任务并将其委托给专门的子代理，每个子代理独立运行。在前端，v1 流句柄在根流上显示协调器消息，并公开作用域子代理视图的子代理发现快照。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{
@@ -95,11 +95,12 @@ function App() {
 您对跑步用户关心的部分进行了结构化预测：
 
 |投影|用它来 |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `stream.messages` |协调员对话和最终综合。                                                          |
-| `stream.subagents` |实时发现专业工作人员，包括状态和任务元数据。                                  |
+| - | - |
+| `stream.messages` |协调员对话和最终综合。 |
+| `stream.subagents` |实时发现专业工作人员，包括状态和任务元数据。 |
 | `stream.values` |共享状态，例如待办事项、计划、报告部分、沙箱元数据或代理编写的任何自定义密钥。 |
-|工具调用状态 |将文件系统、搜索、浏览器或域工具呈现为带有进度和结果的卡片。                 ||中断 |暂停委派的工作以供用户批准或丢失输入，而不会丢失运行状态。                    |
+|工具调用状态|将文件系统、搜索、浏览器或域工具呈现为带有进度和结果的卡片。 |
+|中断 |暂停委派的工作以供用户批准或丢失输入，而不会丢失运行状态。 |
 
 这使您可以构建感觉更接近 IDE、任务板或
 工作流程监视器而不是简单的聊天记录。
@@ -108,10 +109,8 @@ function App() {
 
 <CardGroup>
   <Card title="Subagent streaming" icon="arrows-split" href="/oss/python/deepagents/frontend/subagent-streaming">
-    显示带有流媒体内容、进度跟踪和可折叠卡片的专业子代理。
-  </Card>
-
-  <Card title="Todo list" icon="list-check" href="/oss/python/deepagents/frontend/todo-list">
+    显示具有流媒体内容、进度跟踪和可折叠卡片的专家子代理。
+  </Card><Card title="Todo list" icon="list-check" href="/oss/python/deepagents/frontend/todo-list">
     当客服人员选择任务计划时，通过实时待办事项列表跟踪进度。
   </Card>
 
@@ -124,7 +123,7 @@ function App() {
 
 [LangChain frontend patterns](/oss/python/langchain/frontend/overview)，包括
 markdown 消息、工具调用和人机交互，都与深度协同工作
-代理也。深度代理构建在相同的 LangGraph 运行时上，因此
+代理也。 Deep Agents 构建在相同的 LangGraph 运行时上，因此
 `useStream`提供相同的核心API。
 
 对于较低级别的图形可视化，请参阅
@@ -135,7 +134,7 @@ markdown 消息、工具调用和人机交互，都与深度协同工作
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

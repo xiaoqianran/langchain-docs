@@ -8,6 +8,8 @@
 
 过滤将跟踪项目中的[runs](/langsmith/observability-concepts#runs)缩小到需要注意的范围，例如出错的对话、工具调用缓慢或反馈分数低的运行。在搜索栏中编写查询，然后选择与查询匹配的 [trace](/langsmith/observability-concepts#traces) 或 [thread](/langsmith/observability-concepts#threads) 层次结构中运行的查询。
 
+在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是一个代理的 [environment](/langsmith/agent-environments) 之一，因此过滤器适用于您打开的环境，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
+
 <Note>
   追踪项目有两种过滤体验。检查项目的顶部，看看哪一个适合您：
 
@@ -25,9 +27,7 @@
 * [Saving a filter](#save-a-filter) 作为视图
 * [Filtering the runs inside a trace](#filter-the-runs-in-a-trace)
 * [What full-text search indexes](#full-text-search-indexing)
-* [Troubleshooting a query](#troubleshoot-a-query)
-
-要以编程方式查询运行，请参阅[Query traces using the SDK](/langsmith/export-traces)。 SDK 和 REST API 使用单独的结构化查询语言，记录在 [Trace query syntax](/langsmith/trace-query-syntax) 中。
+* [Troubleshooting a query](#troubleshoot-a-query)要以编程方式查询运行，请参阅[Query traces using the SDK](/langsmith/export-traces)。 SDK 和 REST API 使用单独的结构化查询语言，记录在 [Trace query syntax](/langsmith/trace-query-syntax) 中。
 
 ## 构建查询
 
@@ -35,7 +35,9 @@
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 status:error
-```<img alt="The filter toolbar of a tracing project, with a scope selector reading 'in any run' beside an empty search field, a Filter button on the right, and a second row holding the time range control, the Threads, Traces, and Runs selection, Reset, Save View, and Views" />
+```
+
+<img alt="The filter toolbar of a tracing project, with a scope selector reading 'in any run' beside an empty search field, a Filter button on the right, and a second row holding the time range control, the Threads, Traces, and Runs selection, Reset, Save View, and Views" />
 
 <img alt="The filter toolbar of a tracing project, with a scope selector reading 'in any run' beside an empty search field, a Filter button on the right, and a second row holding the time range control, the Threads, Traces, and Runs selection, Reset, Save View, and Views" />
 
@@ -57,10 +59,10 @@ status:error
 
 每个完成的条款都成为酒吧中的一个筹码。单击芯片进行编辑，或单击其删除图标将其删除。继续在一个芯片后输入以添加另一个子句。
 
-搜索栏外部的两个控件也会影响结果：
+搜索栏外部的两个控件也会影响结果：* **时间范围控制**与查询一起应用。结果必须在时间范围内并且与查询匹配。
+* **线程、跟踪和运行选择** 设置表中每一行代表的内容，并且还确定查询可以使用哪个 [scopes](#choose-what-a-filter-matches)。
 
-* **时间范围控制**与查询一起应用。结果必须在时间范围内并且与查询匹配。
-* **线程、跟踪和运行选择** 设置表中每一行代表的内容，并且还确定查询可以使用哪个 [scopes](#choose-what-a-filter-matches)。<Note>
+<Note>
   搜索栏使用本页描述的语法，这不是 SDK 和 REST API 接受的结构化查询语言。有关该语言，请参阅[Trace query syntax](/langsmith/trace-query-syntax)。
 </Note>
 
@@ -79,15 +81,15 @@ status:error
 
 <img alt="The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, beside a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn" />
 
-<img alt="The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, beside a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn" />
+<img alt="The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, beside a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn" />提供的范围以及默认选择的范围取决于表选择：
 
-提供的范围以及默认选择的范围取决于表选择：
-
-|餐桌选择|默认范围|可用范围 |
+|餐桌选择|默认范围 |可用范围 |
 | - | - | - |
 | **话题** |任意运行 |线程、根运行、任意运行 |
 | **痕迹** |根运行|根运行，任意运行 |
-| **运行** |单跑 |单次运行、根运行、任意运行|### 合并范围
+| **运行** |单跑 |单次运行、根运行、任意运行 |
+
+### 合并范围
 
 要一次过滤多个范围，请单击“**过滤器**”。这将添加一行及其自己的范围选择器和搜索栏。行与 `AND` 组合，因此线程、跟踪或运行必须满足表中出现的每一行。
 
@@ -98,38 +100,39 @@ status:error
 |范围 |查询 |
 | - | - |
 |主题 | `turn_count:>20` |
-|任意运行 | `run_type:tool AND status:error` |
+|任意运行| `run_type:tool AND status:error` |
 
 <img alt="Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause, and the second is scoped to 'in any run' with run_type tool AND status error" />
 
 <img alt="Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause, and the second is scoped to 'in any run' with run_type tool AND status error" />
 
-### 表选择不能使用的范围
-
-更改表选择可能会在新选择不支持的范围内留下一行，例如从 **Runs** 切换到 **Threads** 后出现 **Single run** 行。该行保持可见，并带有 **未应用** 标记，并且其查询被保留但不应用。更改行的范围或返回兼容的表选择以再次应用它。
+### 表选择不能使用的范围更改表选择可能会在新选择不支持的范围内留下一行，例如从 **Runs** 切换到 **Threads** 后出现 **Single run** 行。该行保持可见，并带有 **未应用** 标记，并且其查询被保留但不应用。更改行的范围或返回兼容的表选择以再次应用它。
 
 ## 查询语法
 
 ### 运算符
 
-字段接受的运算符取决于其类型。|操作员|语法 |比赛|
+字段接受的运算符取决于其类型。
+
+|操作员|语法 |比赛|
 | - | - | - |
 |是 | `field:value` |值的精确匹配。 |
-|不是| `-field:value` |除了完全匹配之外的一切。 |
+|不是 | `-field:value` |除了完全匹配之外的一切。 |
 |比赛| `field:~value` |该领域的全文搜索。引用该值以搜索短语。 |
 |不匹配 | `-field:~value` |全文搜索不匹配的所有内容。 |
-|通配符 | `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
+|通配符| `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
 |存在 | `field:*` |记录设置字段的位置。 |
 |不存在 | `-field:*` |记录未设置该字段的情况。 |
 |比较| `field:>value` |高于给定值的值。还接受 `>=`、`<` 和 `<=`。 |
-|包含范围 | `field:[10 TO 20]` |值从 10 到 20，包括两个界限。 |
-|独家系列| `field:{10 TO 20}` | 10 到 20 之间的值，不包括两个界限。 |
+|包含范围 | `field:[10 TO 20]` |值从 10 到 20，包括两个界限。 ||独家系列| `field:{10 TO 20}` | 10 到 20 之间的值，不包括两个界限。 |
 |混合系列| `field:[10 TO 20}` |值从 10 到 20（但不包括 20）。交换分隔符以反转包含的边界。 |
 
 某些字段仅接受这些运算符的子集：
 
 * **全文字段**：`input`、`output`、`metadata` 和 `error` 仅接受 `~`。
-* **比较和范围运算符**：这些适用于数字字段（例如 `latency` 和 `total_tokens`）、时间戳字段（例如 `first_token_time`）以及数字 [⟦T42⟧ paths](#match-a-json-key)。要匹配多个值中的任何一个，请将子句与 `OR` 组合，例如 `status:error OR status:interrupted`。不支持在一个子句中列出多个值。
+* **比较和范围运算符**：这些适用于数字字段（例如 `latency` 和 `total_tokens`）、时间戳字段（例如 `first_token_time`）以及数字 [⟦T42⟧ paths](#match-a-json-key)。
+
+要匹配多个值中的任何一个，请将子句与 `OR` 组合，例如 `status:error OR status:interrupted`。不支持在一个子句中列出多个值。
 
 ### 合并子句
 
@@ -144,9 +147,7 @@ status:error
 
 关键字不区分大小写。
 
-### 引用值
-
-用双引号包含空格、冒号或包含字面匹配字符的值：
+### 引用值用双引号包含空格、冒号或包含字面匹配字符的值：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 name:"docs agent"
@@ -157,7 +158,9 @@ tags:"env:prod"
 
 在运行范围中，包含空格的不带引号的值分为两个子句，因此 `name:docs agent` 匹配名称为 `docs` 且索引内容包含 `agent` 的运行。
 
-### 不命名字段的搜索在 **单次运行**、**根运行** 和 **任何运行** 范围中，裸术语搜索每个 [indexed field](#full-text-search-indexing)：
+### 不命名字段的搜索
+
+在 **单次运行**、**根运行** 和 **任何运行** 范围中，裸术语搜索每个 [indexed field](#full-text-search-indexing)：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 "capital of France"
@@ -182,9 +185,7 @@ tags:"env:prod"
 | `run_type` | [type of run](/langsmith/run-data-format#run-types)，例如 `llm`、`chain`、`tool` 或 `retriever`。 |
 | `tags` |运行标签。如果运行中的任何标记匹配，则子句匹配。 |
 
-**内容**
-
-|领域 |描述 |
+**内容**|领域 |描述 |
 | - | - |
 | `input` |运行输入。使用 `~` 搜索文本，或使用 `input.<key>` 匹配 JSON 键。 |
 | `output` |运行输出。使用 `~` 搜索文本，或使用 `output.<key>` 匹配 JSON 键。 |
@@ -192,7 +193,9 @@ tags:"env:prod"
 | `error` |错误文本。使用`~`搜索文本。 |
 | `attachments` |附件名称。 |
 
-**身份**|领域 |描述 |
+**身份**
+
+|领域 |描述 |
 | - | - |
 | `id`、`trace_id`、`thread_id`、`parent_run_id` |按 ID 匹配特定运行、跟踪、线程或父运行。 |
 | `ls_user_id` |运行归属于 LangSmith 用户。 |
@@ -212,13 +215,13 @@ tags:"env:prod"
 
 |领域 |描述 |
 | - | - |
-| `feedback` |跑步反馈。请参阅[Filter on feedback](#filter-on-feedback)。 |
-
-元数据和标签通常是最高效的过滤字段，因为您可以控制其中的内容。参见[Add metadata and tags to traces](/langsmith/add-metadata-tags)。
+| `feedback` |跑步反馈。请参阅[Filter on feedback](#filter-on-feedback)。 |元数据和标签通常是最高效的过滤字段，因为您可以控制其中的内容。参见[Add metadata and tags to traces](/langsmith/add-metadata-tags)。
 
 ### 线程字段
 
-**Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。|领域 |描述 |
+**Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。
+
+|领域 |描述 |
 | - | - |
 | `thread_id` |线程 ID。 |
 | `turn_count` |旋入螺纹。 |
@@ -244,9 +247,7 @@ input.user_id:abc123
 output.status:success
 ```
 
-嵌套路径的工作方式相同，例如 `metadata.config.temperature:0.7`。引用包含点的键，如 `metadata."my.key":production` 中。
-
-只有 `metadata` 路径支持比较和范围运算符，并且仅当值为数字时：
+嵌套路径的工作方式相同，例如 `metadata.config.temperature:0.7`。引用包含点的键，如 `metadata."my.key":production` 中。只有 `metadata` 路径支持比较和范围运算符，并且仅当值为数字时：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata.retries:>=3
@@ -260,7 +261,9 @@ metadata.retries:>=3
 feedback.correctness.score:>=0.5
 feedback.relevance.value:pass
 feedback.quality.comment:~helpful
-```可用的子字段为 `key`、`score`、`value`、`comment`、`source` 和 `error`。在 **Thread** 范围内，仅 `key`、`score` 和 `value` 可用。
+```
+
+可用的子字段为 `key`、`score`、`value`、`comment`、`source` 和 `error`。在 **Thread** 范围内，仅 `key`、`score` 和 `value` 可用。
 
 要匹配包含任何反馈的记录，请使用`feedback:*`。要匹配带有特定反馈键（无论其值如何）的记录，请使用 `feedback.<key>:*`。比较值需要命名子字段，因此 `feedback.correctness:0.5` 无效。
 
@@ -296,9 +299,7 @@ metadata.env:production AND -status:success
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 input:~"refund" AND status:error
-```
-
-**调用特定工具的跟踪。** 将 **Traces** 选择与 **Any run** 范围结合使用，因此该子句会与跟踪中的每个运行而不是条目运行相匹配：
+```**调用特定工具的跟踪。** 将 **Traces** 选择与 **Any run** 范围结合使用，因此该子句会与跟踪中的每个运行而不是条目运行相匹配：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 run_type:tool AND name:search_documents
@@ -310,7 +311,9 @@ run_type:tool AND name:search_documents
 total_cost:>0.5
 ```
 
-## 使用快捷方式过滤表左侧的“快捷方式”面板列出了项目中最常见的值，按“状态”、“运行名称”、“运行类型”、“标签”、“元数据”和“反馈”分组。这些组对应于 `status`、`name`、`run_type`、`tags`、`metadata` 和 `feedback` 字段。选择一个值会将匹配子句添加到搜索栏，因此最常见的过滤器只需单击一下即可，而不是键入查询。
+## 使用快捷方式过滤
+
+表左侧的“快捷方式”面板列出了项目中最常见的值，按“状态”、“运行名称”、“运行类型”、“标签”、“元数据”和“反馈”分组。这些组对应于 `status`、`name`、`run_type`、`tags`、`metadata` 和 `feedback` 字段。选择一个值会将匹配子句添加到搜索栏，因此最常见的过滤器只需单击一下即可，而不是键入查询。
 
 每个组标题显示其有多少值处于活动状态。使用 **反馈** 组中的搜索框查找反馈键。
 
@@ -320,15 +323,15 @@ total_cost:>0.5
 
 要为表格提供更多空间，请单击“**隐藏快捷方式**”，然后单击“**显示快捷方式**”以恢复面板。右侧的**统计**面板以同样的方式折叠，带有**隐藏统计信息**和**显示统计信息**。
 
-## 保存过滤器
-
-保存的视图存储一个过滤器以供重复使用。视图属于跟踪项目而不是创建它的人，因此有权访问该项目的任何人都可以选择它。
+## 保存过滤器保存的视图存储一个过滤器以供重复使用。视图属于跟踪项目而不是创建它的人，因此有权访问该项目的任何人都可以选择它。在基于代理的工作区中，这意味着视图属于一个[environment](/langsmith/agent-environments)：在**生产**中保存的视图在**暂存**中不提供，并且必须在每个环境中保存您想要在每个环境中使用的过滤器。
 
 保存当前过滤器：
 
 1. [Build the query](#build-a-query)。
 2. 单击**保存视图**。
-3. 输入名称和描述，然后保存。然后，该视图将显示在 **视图** 下拉列表中与 **默认视图** 一起。每个条目都会列出其过滤器使用的范围，一目了然地显示它是否适用于当前的表选择。
+3. 输入名称和描述，然后保存。
+
+然后，该视图将显示在 **视图** 下拉列表中与 **默认视图** 一起。每个条目都会列出其过滤器使用的范围，一目了然地显示它是否适用于当前的表选择。
 
 要更新已保存的视图，请选择它，更改查询，然后单击“**保存视图**”。要重命名或删除视图，请在 **视图** 下拉列表中单击该视图旁边的 <Icon icon="dots-vertical" /> 图标。
 
@@ -336,11 +339,11 @@ total_cost:>0.5
 
 ### 使用先前语法保存的视图
 
-在此过滤体验发布之前保存的视图将继续有效。选择一个会将其过滤器转换为本页面上的语法，并且LangSmith提示您保存翻译后的视图。
+在此过滤体验发布之前保存的视图将继续有效。选择一个会将其过滤器转换为本页面上的语法，并且LangSmith会提示您保存翻译后的视图。
 
-## 过滤跟踪中的运行
+## 过滤跟踪中的运行在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。
 
-在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
+匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
 
 <img alt="The Details view of a thread. The Turns pane on the left holds a filter reading input contains list, and the runs matching it are highlighted within the surrounding trace tree, which stays fully visible. The selected run is shown on the right" />
 
@@ -350,25 +353,23 @@ total_cost:>0.5
 
 应用过滤器时，运行列表上方<Icon icon="settings" />图标后面的**可见性**选项、**最相关**和**显示全部**将被禁用。
 
-## 全文搜索索引
+## 全文搜索索引`~` 运算符和 [bare-term searches](#search-without-naming-a-field) 与派生搜索索引匹配，而不是与存储的运行数据匹配。 LangSmith 通过从运行输入、输出和错误中的字符串值递归地提取搜索标记来构建该索引。对象键没有索引，并且值既不会因其长度而被拒绝或截断。
 
-`~` 运算符和 [bare-term searches](#search-without-naming-a-field) 与派生搜索索引匹配，而不是与存储的运行数据匹配。 LangSmith 通过从运行输入、输出和错误中的字符串值递归提取搜索标记来构建该索引。对象键没有索引，并且值既不会因其长度而被拒绝或截断。
+以下限制适用于该索引：
 
-以下限制适用于该索引：* **每个字段的标记**：LangSmith 为每个索引字段保留最多 2,000 个不同的搜索标记，从最多 200,000 个不同的候选者中选择。
+* **每个字段的标记**：LangSmith 为每个索引字段保留最多 2,000 个不同的搜索标记，从最多 200,000 个不同的候选者中选择。
 * **嵌套深度**：LangSmith 处理嵌套数据的最大深度为 30。
 * **令牌长度**：搜索令牌的长度为 2 到 44 个 ASCII 文本字符。超出该范围的字符串不会被索引，并且非 ASCII 文本是按其占用的空间而不是字符数来衡量的。
 * **排除的内容**：URL、图像数据 URL、纯数字标记以及常见停用词（例如“the”和“of”）不会被索引。
 
-这些限制仅管理搜索索引。运行数据被完整存储，因此索引遗漏的值在跟踪本身中仍然可见。
+这些限制仅管理搜索索引。运行数据被完整存储，因此索引遗漏的值在跟踪本身中仍然可见。元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。请参阅[Match a JSON key](#match-a-json-key)。
 
-元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。参见[Match a JSON key](#match-a-json-key)。
+## 查询故障排除
 
-## 查询故障排除**搜索栏将查询标记为无效。** 搜索栏会在您键入时进行验证，并内联命名问题，包括未知的字段名称、不平衡的引号或括号以及用空格与其冒号分隔的运算符。修正它指向的子句。
+**搜索栏将查询标记为无效。** 搜索栏会在您键入时进行验证，并内联命名问题，包括未知的字段名称、不平衡的引号或括号以及用空格与其冒号分隔的运算符。修正它指向的子句。
 
-**查询有效，但没有匹配任何内容。** 按顺序完成这些操作：
-
-1. **检查时间范围。** 它与查询一起应用，因此如果匹配运行落在窗口之外，正确的过滤器仍然不会返回任何内容。
-2. **检查范围。** 针对错误的层次结构级别测试的子句是最常见的原因。在 **Root run** 范围内过滤 `run_type:llm` 上的跟踪仅匹配其条目运行是 LLM 调用的跟踪，这很少是您想要的。将该行切换到 **任意运行**。
+**查询有效，但没有匹配任何内容。** 按顺序完成这些操作：1. **检查时间范围。** 它与查询一起应用，因此如果匹配运行落在窗口之外，正确的过滤器仍然不会返回任何内容。
+2. **检查范围。** 针对错误的层次结构级别进行测试的子句是最常见的原因。在 **Root run** 范围内过滤 `run_type:llm` 上的跟踪仅匹配其条目运行是 LLM 调用的跟踪，这很少是您想要的。将该行切换到 **任意运行**。
 3. **检查“未应用”标志。** 当前表选择不支持的范围内的行将被保留，但不会应用。
 4. **检查该值是否已编入索引。** 全文搜索会跳过 URL、停用词、纯数字标记以及非常短或非常长的标记。相反，过滤[JSON key](#match-a-json-key)，不受这些限制。
 
@@ -380,7 +381,9 @@ total_cost:>0.5
 * [Trace query syntax](/langsmith/trace-query-syntax) 用于 SDK 和 REST API 查询语言
 * [Query traces using the SDK](/langsmith/export-traces)
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

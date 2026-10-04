@@ -39,7 +39,7 @@ You can manage resource tags through the [LangSmith UI](https://smith.langchain.
     Within the same side panel for creating a new tag, you can also assign resources to tags. Search for corresponding resources in the **Assign resources** section and select the resources you want to tag.
 
     <Note>
-      You can only tag workspace-scoped resources with resource tags. This includes Tracing Projects, Annotation Queues, Deployments, Experiments, Datasets, and Prompts.
+      You can only tag workspace-scoped resources with resource tags. This includes Tracing Projects, Annotation Queues, Deployments, Experiments, Datasets, and Prompts. In an [agent-based workspace](/langsmith/agents), a tracing project is one [environment](/langsmith/agent-environments) of an agent, so tagging one tags a single environment rather than the agent.
     </Note>
 
     To un-assign a tag from a resource, click the <Icon icon="trash" /> trash icon next to the tag, both in the tag panel and the resource tag panel.

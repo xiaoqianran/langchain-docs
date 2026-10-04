@@ -22,7 +22,7 @@
   用户界面将本周至今的窗口标记为**本周**。
 </Note>
 
-## 执法如何运作LangSmith 记录每次评估器运行完成后的支出，然后对从周一上午 12 点（世界标准时间）到当前时刻的支出进行求和。当总数达到有效限制时，LangSmith 暂停附加项目或数据集上的评估器。在最终确定之前，运行中的运行可能会使总数略高于上限，因此支出可能会短暂超出一小部分。
+## 执法如何运作LangSmith 记录每次评估器运行完成后的支出，然后汇总从世界标准时间周一上午 12 点到当前时刻的支出。当总数达到有效限制时，LangSmith 暂停附加项目或数据集上的评估器。在最终确定之前，运行中的运行可能会使总数略高于上限，因此支出可能会短暂超出一小部分。
 
 代理和跟踪不受影响。只有评估者才会停止生成分数，直到支出限额重置或限额为[manually increased](#override-the-default-for-an-attached-project-or-dataset)。
 
@@ -32,9 +32,9 @@
 | - | - | - |
 | [Evaluators page dashboard](#evaluators-page-dashboard) | **左侧边栏中的评估者** |所有工作区成员 |
 | [Evaluators table](#evaluators-table)（消费、消费状态）| **左侧边栏中的评估者** |所有工作区成员 |
-| [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator) |打开评估器，**项目和数据集** |所有工作区成员 |
-| [Organization default spend limit](#set-an-organization-default-spend-limit) |组织 **设置** > **使用配置** |需要`organization:manage`查看和编辑 |
-| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) |编辑评估器 > **高级** > **支出限额** |所有会员均可查看，需要`organization:manage`编辑 |<CardGroup>
+| [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator) |打开评估器，**项目和数据集**（基于代理的工作区中的**环境和数据集**）|所有工作区成员 |
+| [Organization default spend limit](#set-an-organization-default-spend-limit) |组织 **设置** > **使用配置** |需要`organization:manage`查看和编辑|
+| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) |编辑评估器 > **高级** > **支出限额** |所有会员均可查看，需要`organization:manage`编辑|<CardGroup>
   <Card title="Set your first limit" icon="settings" href="#set-an-organization-default-spend-limit">
     打开组织**设置**并定义一个每周上限，该上限适用于组织中所有工作区中每个项目和数据集的所有评估器附件。
   </Card>
@@ -54,10 +54,10 @@
 
 * **每日评估支出**：每天支出的堆积条形图。在 **评估器** 和 **项目/数据集** 细分之间切换。
 * **本周评估者支出**：所有评估者的美元支出总额，与上周相比有所变化。
-* **本周评估者跟踪**：所有评估者的总跟踪计数，与上周相比有所变化。
+* **本周评估者跟踪**：所有评估者的总跟踪计数，与前一周相比有所变化。
 * **每周评估者支出限制监控**：根据 `$ spent / $ limit` 按项目或数据集进度条排序最高支出者列表。标题显示已达到限制（**限制达到**）或**即将达到限制**的项目或数据集的数量。使用页眉中的 **上一周** 和 **下周** 控件来移动每周视图。
 
-跟踪项目或数据集视图有一个 **Evaluators** 选项卡，该选项卡反映了适用于该项目或数据集的这些小部件，例如，**此跟踪项目的每日评估者支出**。
+跟踪项目、代理环境或数据集视图有一个 **Evaluators** 选项卡，该选项卡反映了范围内的这些小部件，例如，**此跟踪项目的每日评估者支出**。
 
 ### 评估者表
 
@@ -70,7 +70,7 @@
   * **无限制**：未设置限制。
   * 对于不调用 LLM 的评估者（例如，代码评估者）和没有附加项目或数据集的评估者，不会显示任何值。
 
-### 评估器上的“项目和数据集”选项卡打开评估器并选择 **项目和数据集** 选项卡以查看每个项目或数据集的支出和限制：
+### 评估器上的“项目和数据集”选项卡打开评估器并选择 **项目和数据集** 选项卡以查看每个项目或数据集的支出和限制。在基于代理的工作区中，选项卡是 **环境和数据集**：
 
 * **支出（本周）**：自世界标准时间周一 12 点以来评估者在该项目或数据集上的 LLM 总成本。
 * **支出限额百分比**：进度条显示自世界标准时间周一 12 点以来的支出限额。

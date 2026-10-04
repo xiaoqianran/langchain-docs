@@ -7,7 +7,7 @@
 *注释队列*为人类审阅者提供了一个集中的工作流程，用于将反馈附加到特定的[runs](/langsmith/observability-concepts#runs)或[threads](/langsmith/observability-concepts#threads)。虽然您始终可以内联注释 [traces](/langsmith/observability-concepts#traces)，但注释队列可让您将运行和线程分组在一起、规定细则并跟踪审阅者进度。通过查看整个线程，您可以评估完整的多轮对话，捕获单次运行无法捕获的质量信号。
 
 <Info>
-  您还可以使用 SDK 以编程方式管理注释队列和反馈配置。参考[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
+  您还可以使用 SDK 以编程方式管理注释队列和反馈配置。请参阅[Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk)。
 </Info>
 
 要自定义运行输出在审核期间的显示方式，[configure custom output rendering for annotation queues](/langsmith/custom-output-rendering#for-annotation-queues)。
@@ -28,9 +28,9 @@ LangSmith支持两种队列样式：
 |能力|运行项目 |主题项目 |
 | - | - | - |
 |评分标准反馈 |是的 |是的 |
-|审稿人笔记 |是的 |没有 |
+|审稿人笔记|是的 |没有 |
 |断言|是的 |没有 |
-|添加到数据集 |是的 |是的 |
+|添加到数据集|是的 |是的 |
 |默认数据集 |是的 |没有 |
 |自动化规则 |是的 |是的 |
 
@@ -63,7 +63,7 @@ LangSmith支持两种队列样式：
     点击项目注释的**重新排队**只会将当前项目移动到当前用户队列的末尾；它不会影响任何其他用户的队列顺序。它还将释放当前用户对该项目的预订。
   </Note>
 
-* **每次运行的审阅者数量**：这确定必须将项目标记为 **完成** 才能将其从队列中删除的审阅者数量。
+* **每次运行的审阅者数量**：这决定了必须将项目标记为 **完成** 才能从队列中删除的审阅者数量。
 
   * 审稿人无法查看其他审稿人留下的反馈。
   * 所有评论者都可以看到对项目的评论。
@@ -94,7 +94,7 @@ LangSmith支持两种队列样式：
 
 有多种方法可以用项目填充单次运行队列：
 
-* **从详细信息视图**：在 [tracing project](/langsmith/observability-concepts#projects) 中，单击任意行以打开 [Details view](/langsmith/view-traces#details-view) 中的侧面板。该面板提供两个操作，每个操作都有固定的范围：
+* **从详细信息视图**：在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境中，单击任意行以打开 [Details view](/langsmith/view-traces#details-view) 中的侧面板。该面板提供两个操作，每个操作都有固定的范围：
 
   * **添加到** <Icon icon="plus" />：在运行标题中，打开此菜单并选择 **添加到注释队列**。这会将您选择的运行添加为运行项目。
   * **将线程添加到注释队列** <Icon icon="pencil" />：在“轨迹”、“转弯”和“详细信息”选项卡旁边，单击 图标。这会将整个线程添加为线程项。
@@ -107,23 +107,23 @@ LangSmith支持两种队列样式：
     线程操作仅在使用 `thread_id` / `session_id` 元数据检测的运行中出现。如果没有该元数据，面板将自行打开运行，并且只有运行操作可用。
   </Note>
 
-* **从“跟踪”或“运行”选项卡**：在跟踪项目中，选择“**跟踪**”或“**运行**”选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
+* **从跟踪或运行选项卡**：在跟踪项目或代理环境中，选择 **跟踪** 或 **运行** 选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。使用 **添加内容** 将每个选择作为 **选定的运行** 或作为其 **整个线程** 排队。
 
   <img alt="View of the runs table with runs selected. Add to Annotation Queue button at the bottom of the page." />
 
   <img alt="View of the runs table with runs selected. Add to Annotation Queue button at the bottom of the page." />
 
-* **从“线程”选项卡**：在跟踪项目中，选择“**线程**”选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。选定的线程将添加为线程项目。
+* **从“线程”选项卡**：在跟踪项目或代理环境中，选择“**线程**”选项卡。使用行复选框选择一项或多项。单击页面底部的 **添加到注释队列**。选定的线程将添加为线程项目。
 
   <img alt="Threads tab with selected threads and the Add to Annotation Queue bulk action." />
 
   <img alt="Threads tab with selected threads and the Add to Annotation Queue bulk action." />
 
-* **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。
-
-  <Note>
+* **自动化规则**：[Set up a rule](/langsmith/rules)自动将与过滤器（例如错误或低用户分数）匹配的**运行**或**线程**分配到队列中。<Note>
     规则入队的内容取决于其[item type](/langsmith/rules#set-the-item-type-to-runs-or-threads)。项目类型为 **Runs** 的规则将运行项目排入队列。一旦线程空闲，项目类型为 **Threads** 的规则会将整个对话作为线程项目排队。
-  </Note>* **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击 **<Icon icon="pencil" /> 注释**。选择 **添加到注释队列**，然后选择现有队列或创建一个新队列。实验注释流程添加运行项目。
+  </Note>
+
+* **数据集和实验**：在数据集中选择一个或多个[experiments](/langsmith/evaluation-concepts#experiment)，然后单击 **<Icon icon="pencil" /> 注释**。选择 **添加到注释队列**，然后选择现有队列或创建一个新队列。实验注释流程添加运行项目。
 
   <img alt="Selected experiments with the Annotate button at the bottom of the page." />
 
@@ -133,11 +133,11 @@ LangSmith支持两种队列样式：
   您可以在单个操作中最多将 **100** 运行或线程添加到注释队列。要排队更多，请以 100 或更少的批次重复添加流程。
 
   默认情况下，手动将运行或线程添加到注释队列不会更改跟踪保留。跟踪会保留为其项目配置的保留，除非另一个操作显式延长保留。由 [automation rule](/langsmith/rules) 执行的添加有所不同：默认情况下，为注释队列操作启用规则的 **扩展数据保留** 切换。运行规则升级包含每个匹配运行的整个跟踪，线程规则升级匹配线程中的每个跟踪。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
-</Note>
+</Note>### 查看单次运行队列
 
-### 查看单次运行队列
+1. 通过左侧导航栏导航至 **注释队列** 部分。
 
-1. 通过左侧导航栏导航至 **注释队列** 部分。队列列表包括“分配的审阅者”列，显示分配给每个队列的审阅者。要仅查看分配给您的队列，请单击列表顶部的“**分配给我**”过滤器。
+   队列列表包括“分配的审阅者”列，显示分配给每个队列的审阅者。要仅查看分配给您的队列，请单击列表顶部的“**分配给我**”过滤器。
 
 2. 单击您要查看的队列。这将带您集中、循环地查看队列中需要审核的项目。左侧面板列出了队列项目（运行和线程）并显示每个项目的状态（**需要审核**、**需要其他人审核**、**已完成**）。使用 **查看所有项目** 打开完整队列列表。
 

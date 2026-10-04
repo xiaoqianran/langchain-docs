@@ -68,7 +68,7 @@ Click any row in the experiment view to open the details panel, which shows the 
 
 <img alt="View trace" />
 
-To view the entire tracing project, click on the **View Project** icon at the top right of the experiment view.
+To view the traces behind an experiment, click on the icon at the top right of the experiment view.
 
 #### View evaluator runs
 

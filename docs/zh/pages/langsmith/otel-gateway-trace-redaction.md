@@ -4,7 +4,7 @@
 
 # 使用 OpenTelemetry Gateway 架构编辑敏感数据
 
-使用 OpenTelemetry 收集器在痕迹中的敏感数据到达 LangSmith 之前对其进行编辑。
+使用 OpenTelemetry 收集器在痕迹中的敏感数据进入 LangSmith 之前对其进行编辑。
 
 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 和 [Deep Agents](/langsmith/trace-deep-agents) 应用程序支持 [OpenTelemetry-based tracing](/langsmith/trace-with-opentelemetry)。您可以通过您控制的 OpenTelemetry 收集器路由它们，应用编辑规则来剥离敏感字段，并将清理后的跟踪转发到 LangSmith，而不是直接将跟踪发送到 LangSmith。
 
@@ -40,6 +40,10 @@ OTEL_EXPORTER_OTLP_ENDPOINT="http://<my-otel-collector-endpoint>:4318"
 ```
 
 有关`LANGSMITH_PROJECT`的更多信息，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。
+
+<Note>
+  **基于代理的工作区。** 代理寻址在 OTLP 路径上尚不可用，该路径不会从请求或跨度中读取代理地址。使用 `Langsmith-Project` 标头来命名跟踪项目，无论您的工作区的组织方式如何。寻址模型参见[Log traces to an agent](/langsmith/log-traces-to-agent)。
+</Note>
 
 ## 配置收集器这两种方法还需要一个 OpenTelemetry 收集器作为应用程序和 LangSmith 之间的中介运行。以下配置在端口 `4318` 上设置一个 OTLP 接收器、一个编辑 `gen_ai.prompt` 和 `gen_ai.completion` span 属性的转换处理器，以及一个将清理后的跟踪转发到 LangSmith API 的导出器：
 

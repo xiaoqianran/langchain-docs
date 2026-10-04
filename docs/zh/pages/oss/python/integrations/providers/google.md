@@ -6,14 +6,14 @@
 
 使用 LangChain Python 与 Google 集成。
 
-本页面涵盖了 LangChain 与[Google Gemini](https://ai.google.dev/gemini-api/docs)、[Google Cloud](https://cloud.google.com/)以及其他 Google 产品（例如 Google 地图、YouTube 和[more](#other-google-products)）的所有集成。
+本页面涵盖 LangChain 与 [Google Gemini](https://ai.google.dev/gemini-api/docs)、[Google Cloud](https://cloud.google.com/) 以及其他 Google 产品（例如 Google 地图、YouTube 和 [more](#other-google-products)）的集成。
 
 <Note>
   **统一 SDK 和软件包整合**
 
-  从 `langchain-google-genai` 4.0.0 开始，此软件包使用整合的 [⟦T23⟧](https://googleapis.github.io/python-genai/) SDK，现在支持 **Gemini Developer API 和 Vertex AI** 后端。
+  从 `langchain-google-genai` 4.0.0 开始，此软件包使用整合的 [⟦T23⟧](https://googleapis.github.io/python-genai/) SDK，现在支持 **Gemini Developer API 和 Gemini Enterprise Agent Platform** 后端。
 
-  `langchain-google-vertexai` 包仍然支持 Vertex AI 平台特定功能（模型花园、矢量搜索、评估服务等）。
+  `langchain-google-vertexai` 软件包仍然支持 Gemini Enterprise Agent Platform 特定功能（模型花园、矢量搜索、评估服务等）。
 
   阅读[full announcement and migration guide](https://github.com/langchain-ai/langchain-google/discussions/1422)。
 </Note>
@@ -21,17 +21,17 @@
 不确定使用哪个包？
 
 <AccordionGroup>
-  <Accordion title="Google Generative AI (Gemini API & Vertex AI)">
-    通过 **[Gemini Developer API](https://ai.google.dev/)** 或 **[Vertex AI](https://cloud.google.com/vertex-ai)** 访问 Google Gemini 模型。根据您的配置自动选择后端。
+  <Accordion title="Google Generative AI (Gemini API & Gemini Enterprise Agent Platform)">
+    通过 **[Gemini Developer API](https://ai.google.dev/)** 或 **[Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform)** 访问 Google Gemini 模型。根据您的配置自动选择后端。
 
     * **Gemini Developer API**：使用 API 密钥快速设置，非常适合个人开发人员和快速原型设计
-    * **Vertex AI**：与 Google Cloud 集成的企业功能（需要 GCP 项目）
+    * **Gemini Enterprise Agent Platform**：与 Google Cloud 集成的企业功能（需要 GCP 项目）
 
     使用 `langchain-google-genai` 包进行聊天模型、LLM 和嵌入。
 
     [See integrations.](#google-generative-ai)
-  </Accordion><Accordion title="Google Cloud (Vertex AI Platform Services)">
-    访问 Gemini 模型之外的 Vertex AI 平台特定服务：Model Garden（Llama、Mistral、Anthropic）、评估服务和专业视觉模型。
+  </Accordion><Accordion title="Google Cloud (Gemini Enterprise Agent Platform Services)">
+    访问 Gemini 模型之外的 Gemini 企业代理平台特定服务：Model Garden（Llama、Mistral、Anthropic）、评估服务和专业视觉模型。
 
     将 `langchain-google-vertexai` 包用于平台服务，将特定包（例如 `langchain-google-community`、`langchain-google-cloud-sql-pg`）用于其他云服务（例如数据库和存储）。
 
@@ -39,19 +39,19 @@
   </Accordion>
 </AccordionGroup>
 
-有关差异的更多详细信息，请参阅 Google 关于 [migrating from the Gemini API to Vertex AI](https://ai.google.dev/gemini-api/docs/migrate-to-cloud) 的指南。
+有关差异的更多详细信息，请参阅 Google 关于 [migrating from the Gemini API to Gemini Enterprise Agent Platform](https://ai.google.dev/gemini-api/docs/migrate-to-cloud) 的指南。
 
 ***
 
 ## 谷歌生成人工智能
 
-使用统一的 `langchain-google-genai` 包通过 [Gemini Developer API](https://ai.google.dev/gemini-api/docs) 或 [Vertex AI](https://cloud.google.com/vertex-ai) 访问 Google Gemini 模型。
+使用统一的 `langchain-google-genai` 包通过 [Gemini Developer API](https://ai.google.dev/gemini-api/docs) 或 [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 访问 Google Gemini 模型。
 
 ### 聊天模型
 
 <Columns>
   <Card title="ChatGoogleGenerativeAI" href="/oss/python/integrations/chat/google_generative_ai" icon="message">
-    通过 **Gemini Developer API** 或 **Vertex AI** 的 Google Gemini 聊天模型。
+    Google Gemini 聊天模型通过 **Gemini Developer API** 或 **Gemini Enterprise Agent Platform**。
   </Card>
 </Columns>
 
@@ -67,7 +67,7 @@
 
 <Columns>
   <Card title="GoogleGenerativeAIEmbeddings" href="/oss/python/integrations/embeddings/google_generative_ai" icon="stack-2">
-    通过 **Gemini Developer API** 或 **Vertex AI** 嵌入模型。
+    通过 **Gemini Developer API** 或 **Gemini Enterprise Agent Platform** 嵌入模型。
   </Card>
 </Columns>
 
@@ -75,15 +75,15 @@
 
 ## 谷歌云
 
-访问 Vertex AI 平台特定服务，包括 Model Garden（Llama、Mistral、Anthropic）、矢量搜索、评估服务和专业视觉模型。<Note>
-  **对于 Gemini 型号**，使用 `langchain-google-genai` 中的 [⟦T30⟧](/oss/python/integrations/chat/google_generative_ai)。以下课程重点介绍整合 SDK 中不提供的 **Vertex AI 平台服务**。
+访问 Gemini 企业代理平台特定服务，包括 Model Garden（Llama、Mistral、Anthropic）、矢量搜索、评估服务和专业视觉模型。<Note>
+  **对于 Gemini 型号**，使用 `langchain-google-genai` 中的 [⟦T30⟧](/oss/python/integrations/chat/google_generative_ai)。以下课程重点关注整合 SDK 中不提供的 **Gemini Enterprise Agent Platform 服务**。
 </Note>
 
 ### 聊天模型
 
 <Columns>
   <Card title="ChatAnthropicVertex" icon="messages" href="/oss/python/integrations/chat/google_anthropic_vertex">
-    Anthropic on Vertex AI 模型花园
+    Gemini企业代理平台模型园上的Anthropic
   </Card>
 </Columns>
 
@@ -97,7 +97,7 @@
   </Accordion>
 
   <Accordion title="VertexModelGardenLlama">
-    Vertex AI 模型花园上的 Llama
+    Gemini企业代理平台模型园上的Llama
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.model_garden_maas.llama import VertexModelGardenLlama
@@ -105,7 +105,7 @@
   </Accordion>
 
   <Accordion title="VertexModelGardenMistral">
-    Mistral 上的 Vertex AI 模型花园
+    Mistral 在 Gemini 企业代理平台模型花园上的应用
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.model_garden_maas.mistral import VertexModelGardenMistral
@@ -129,7 +129,7 @@
   </Accordion>
 
   <Accordion title="GemmaChatVertexAIModelGarden">
-    Gemma 谈 Vertex AI 模型花园
+    Gemma谈Gemini企业代理平台模型园
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.gemma import GemmaChatVertexAIModelGarden
@@ -171,13 +171,13 @@
 
 ### 法学硕士
 
-（旧版）字符串输入、字符串输出 LLM 接口。
-
-<Columns>
+（旧版）字符串输入、字符串输出 LLM 接口。<Columns>
   <Card title="VertexAIModelGarden" icon="cursor-text" href="/oss/python/integrations/llms/google_vertex_ai#vertex-model-garden">
-    通过 Vertex AI Model Garden 提供数百个 OSS 模型。
+    通过 Gemini Enterprise Agent Platform Model Garden 提供数百个 OSS 模型。
   </Card>
-</Columns><AccordionGroup>
+</Columns>
+
+<AccordionGroup>
   <Accordion title="VertexAI (deprecated)">
     **已弃用**—对 Gemini 型号使用 [⟦T33⟧](/oss/python/integrations/llms/google_generative_ai)。
 
@@ -202,13 +202,13 @@
     ```
   </Accordion>
 
-  <Accordion title="Gemma on Vertex AI Model Garden">
+  <Accordion title="Gemma on Gemini Enterprise Agent Platform Model Garden">
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.gemma import GemmaVertexAIModelGarden
     ```
   </Accordion>
 
-  <Accordion title="Vertex AI image captioning">
+  <Accordion title="Gemini Enterprise Agent Platform image captioning">
     作为 LLM 接口的图像字幕模型。
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -266,9 +266,7 @@
 
   <Card title="El Carro for Oracle Workloads" href="https://github.com/googleapis/langchain-google-el-carro-python/">
     通过 El Carro 运行的 Kubernetes 上的 Oracle 数据库。
-  </Card>
-
-  <Card title="Firestore (Native Mode)" href="/oss/python/integrations/document_loaders/google_firestore">
+  </Card><Card title="Firestore (Native Mode)" href="/oss/python/integrations/document_loaders/google_firestore">
     NoSQL 文档数据库。
   </Card>
 
@@ -278,7 +276,9 @@
 
   <Card title="Memorystore for Redis" href="/oss/python/integrations/document_loaders/google_memorystore_redis">
     托管 Redis 服务。
-  </Card><Card title="Spanner" href="/oss/python/integrations/document_loaders/google_spanner">
+  </Card>
+
+  <Card title="Spanner" href="/oss/python/integrations/document_loaders/google_spanner">
     全球分布式关系数据库。
   </Card>
 
@@ -309,7 +309,7 @@
 
 ### 矢量商店
 
-使用 Google Cloud 数据库和 Vertex AI 矢量搜索存储和搜索矢量。
+使用 Google Cloud 数据库和 Gemini Enterprise Agent Platform 上的矢量搜索来存储和搜索矢量。
 
 <Columns>
   <Card title="AlloyDB for PostgreSQL" href="/oss/python/integrations/vectorstores/google_alloydb">
@@ -337,16 +337,16 @@
   </Card>
 
   <Card title="Cloud SQL for MySQL" href="/oss/python/integrations/vectorstores/google_cloud_sql_mysql">
-    Cloud SQL for MySQL 上的向量存储。
+    Cloud SQL for MySQL 上的矢量存储。
   </Card>
 
   <Card title="Cloud SQL for PostgreSQL" href="/oss/python/integrations/vectorstores/google_cloud_sql_pg">
     Cloud SQL for PostgreSQL 上的向量存储。
-  </Card><Card title="Vertex AI Vector Search" href="/oss/python/integrations/vectorstores/google_vertex_ai_vector_search">
+  </Card><Card title="Vector Search on Gemini Enterprise Agent Platform" href="/oss/python/integrations/vectorstores/google_vertex_ai_vector_search">
     以前称为 Vertex AI 匹配引擎，提供低延迟矢量数据库。这些矢量数据库通常称为矢量相似性匹配或近似最近邻 (ANN) 服务。
   </Card>
 
-  <Card title="Vertex AI Vector Search + Datastore" href="/oss/python/integrations/vectorstores/google_vertex_ai_vector_search#optional--you-can-also-create-vector-and-store-chunks-in-a-datastore">
+  <Card title="Vector Search on Gemini Enterprise Agent Platform + Datastore" href="/oss/python/integrations/vectorstores/google_vertex_ai_vector_search#optional--you-can-also-create-vector-and-store-chunks-in-a-datastore">
     使用数据存储进行矢量搜索以进行文档存储。
   </Card>
 </Columns>
@@ -354,8 +354,8 @@
 ### 猎犬
 
 <Columns>
-  <Card title="Vertex AI Search" icon="search" href="/oss/python/integrations/retrievers/google_vertex_ai_search">
-    通过 Vertex AI Search 进行生成式 AI 支持的搜索。
+  <Card title="Agent Search on Gemini Enterprise Agent Platform" icon="search" href="/oss/python/integrations/retrievers/google_vertex_ai_search">
+    通过 Gemini Enterprise Agent Platform 上的 Agent Search 进行生成式 AI 支持的搜索。
   </Card>
 
   <Card title="Document AI Warehouse" icon="building-warehouse" href="https://cloud.google.com/document-ai-warehouse">
@@ -384,7 +384,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 跟踪 LLM/Chat 模型的使用情况。
 
 <AccordionGroup>
-  <Accordion title="Vertex AI callback handler">
+  <Accordion title="Gemini Enterprise Agent Platform callback handler">
     跟踪`VertexAI`使用信息。
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -403,11 +403,11 @@ from langchain_google_community import VertexAISearchSummaryTool
 
 ### 评估者
 
-使用 Vertex AI 评估模型输出。
+使用 Gemini Enterprise Agent Platform 评估模型输出。
 
 <AccordionGroup>
   <Accordion title="VertexPairWiseStringEvaluator">
-    使用 Vertex AI 模型进行配对评估。
+    使用 Gemini Enterprise Agent Platform 模型进行配对评估。
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.evaluators.evaluation import VertexPairWiseStringEvaluator
@@ -415,7 +415,7 @@ from langchain_google_community import VertexAISearchSummaryTool
   </Accordion>
 
   <Accordion title="VertexStringEvaluator">
-    使用 Vertex AI 模型进行单一预测评估。
+    使用 Gemini Enterprise Agent Platform 模型进行单一预测评估。
 
     ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai.evaluators.evaluation import VertexStringEvaluator
@@ -423,11 +423,11 @@ from langchain_google_community import VertexAISearchSummaryTool
   </Accordion>
 </AccordionGroup>
 
-***
+***## 其他 Google 产品
 
-## 其他 Google 产品
+与核心云平台之外的各种 Google 服务集成。
 
-与核心云平台之外的各种 Google 服务集成。### 文档加载器
+### 文档加载器
 
 <Columns>
   <Card title="Google Drive" href="/oss/python/integrations/document_loaders/google_drive">
@@ -480,7 +480,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 ### 搜索
 
 <Columns>
-  <Card title="cloro" icon="search" href="https://docs.cloro.dev">
+  <Card title="cloro" icon="search" href="https://cloro.dev/docs">
     具有 AI 概述支持的 Google 搜索结果。
   </Card>
 </Columns>
@@ -489,7 +489,7 @@ from langchain_google_community import VertexAISearchSummaryTool
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

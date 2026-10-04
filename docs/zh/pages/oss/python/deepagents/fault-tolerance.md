@@ -11,11 +11,13 @@
 ## 错误处理策略
 
 不同的错误需要不同的处理策略：|错误类型 |谁修的|战略|中间件或功能 |
-| --------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) || LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整 | [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
+| - | - | - | - |
+|瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) |
+| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整| [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
 |用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
 |供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
-|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) ||意外错误 |开发商 |让它们冒泡|没有中间件——让异常传播 |
+|过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
+|意外错误 |开发商 |让它们冒泡|无中间件；让异常传播 |
 
 以下部分通过代码示例介绍了每种策略。
 
@@ -66,9 +68,7 @@
         middleware=[ToolErrorMiddleware(on_error)],
     )
     ```
-  </Tab>
-
-  <Tab title="User-fixable" icon="user">
+  </Tab><Tab title="User-fixable" icon="user">
     需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -85,7 +85,9 @@
     ```
 
     有关完整的人机交互指南，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
-  </Tab><Tab title="Provider outage" icon="arrows-exchange">
+  </Tab>
+
+  <Tab title="Provider outage" icon="arrows-exchange">
     如果您的主要模型提供商完全崩溃，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 切换到替代模型：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -135,11 +137,9 @@
 
 ## 速率限制
 
-有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，以及限制每次运行的调用总数。
+有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。
 
-### 提供商速率限制
-
-聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
+### 提供商速率限制聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.rate_limiters import InMemoryRateLimiter
@@ -161,7 +161,9 @@ agent = create_deep_agent(model=model, tools=[search_tool])
 
 完整配置请参见[Rate limiting](/oss/python/langchain/models#rate-limiting)。
 
-### 通话限制如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
+### 通话限制
+
+如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -201,7 +203,9 @@ agent = create_deep_agent(
 )
 ```
 
-将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围限定于特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。
+将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。<Note>
+  主要集成包提出了标准异常类型（[ModelAuthenticationError](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError)、[ModelRateLimitError](https://reference.langchain.com/python/langchain-core/exceptions/ModelRateLimitError)、[ModelTimeoutError](https://reference.langchain.com/python/langchain-core/exceptions/ModelTimeoutError) 等），这些异常类型带有重试中间件默认遵循的 `is_retryable` 标志。完整列表请参见[Model exceptions](/oss/python/langchain/models#model-exceptions)。
+</Note>
 
 ## 后备方案
 
@@ -222,7 +226,9 @@ agent = create_deep_agent(
 
 完整配置请参见[ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)。
 
-## 错误处理当工具在执行期间引发异常时，代理运行默认停止。使用 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 捕获特定异常并将其转换为模型可以看到并从中恢复的错误 ToolMessage，而不是导致运行崩溃。
+## 错误处理
+
+当工具在执行期间引发异常时，代理运行默认停止。使用 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 捕获特定异常并将其转换为模型可以看到并从中恢复的错误 ToolMessage，而不是导致运行崩溃。
 
 <Note>
   `ToolErrorMiddleware` 需要 `langchain>=1.3.14`。
@@ -251,7 +257,7 @@ agent = create_deep_agent(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -129,6 +129,10 @@ For non-LangChain applications or custom instrumentation, you can trace your app
      ```
    </CodeGroup>
 
+   <Note>
+     **Agent-based workspaces.** Agent addressing is not yet available on the OTLP path, which reads no agent address from a request or a span. Use the `Langsmith-Project` header to name the tracing project, whichever way your workspace is organized. For the addressing model, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+   </Note>
+
 3. Log a trace.
 
    This code sets up an OTEL tracer and exporter that will send traces to LangSmith. It then calls OpenAI and sends the required OpenTelemetry attributes.

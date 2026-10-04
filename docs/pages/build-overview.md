@@ -185,8 +185,8 @@ Source: https://docs.langchain.com/index
     <h2>Setup and governance</h2>
 
     <CardGroup>
-      <Card title="LangSmith setup" icon="server" href="/langsmith/platform-setup">
-        Set up LangSmith on Cloud, BYOC, or Self-hosted.
+      <Card title="LangSmith setup" icon="server" href="/langsmith/langsmith-setup-overview">
+        Hosting on Cloud, BYOC, or Self-hosted, account setup, and governance.
       </Card>
 
       <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">

@@ -17,7 +17,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`
 
 * [Implement a custom backend](#custom-backends)
 
-* [Set permissions](#permissions) 关于文件系统访问
+* [Set permissions](#permissions) 文件系统访问
 
 * [Comply with the backend protocol](#protocol-reference)
 
@@ -34,10 +34,13 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`
 ## 快速入门
 
 以下是一些预构建的文件系统后端，您可以将它们快速与深度代理一起使用：|内置后端|描述 |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。                                                                                                                                                                                                                                          |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 || [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />这使代理可以访问*跨线程保存*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。                                                                                                                                                                                                     |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。                                                                                                                                                                                                                                                                                                      || [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/python/integrations/sandboxes) 中进行选择。                                                                                                                                                                             |
-| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。                                                                                                                                                                            || [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。                                                                                                                                                                                                                                                     |
+| - | - |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在 [CompositeBackend](#compositebackend-router) 中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />这使代理能够访问*跨线程*保存的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
+| [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/python/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
+| [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -110,11 +113,11 @@ graph TB
   from deepagents.backends import StateBackend
 
   # By default we provide a StateBackend
-  agent = create_deep_agent(model="anthropic:claude-sonnet-4-6")
+  agent = create_deep_agent(model="anthropic:claude-sonnet-5")
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=StateBackend(),
   )
   ```
@@ -216,8 +219,8 @@ graph TB
 
   **建议的保障措施：**1. 启用[Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop)审核敏感操作。
   2. 从可访问的文件系统路径中排除机密（尤其是在 CI/CD 中）。
-  3. 对于需要文件系统交互的生产环境，使用[sandbox backend](/oss/python/deepagents/sandboxes)。
-  4. **始终**将 `virtual_mode=True` 与 `root_dir` 结合使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
+  3. 对于需要文件系统交互的生产环境使用[sandbox backend](/oss/python/deepagents/sandboxes)。
+  4. **始终** 将 `virtual_mode=True` 与 `root_dir` 结合使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
 
      请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
 </Warning>
@@ -248,7 +251,7 @@ graph TB
   from deepagents.backends import FilesystemBackend
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=FilesystemBackend(root_dir=".", virtual_mode=True),
   )
   ```
@@ -387,7 +390,7 @@ graph TB
   from deepagents.backends import LocalShellBackend
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
   )
   ```
@@ -480,7 +483,7 @@ graph TB
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=StoreBackend(
           namespace=lambda rt: (rt.server_info.user.identity,),
       ),
@@ -572,12 +575,12 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 
 `Runtime` 提供：
 
-* `rt.context` — 通过 LangGraph 的 [context schema](https://langchain-ai.github.io/langgraph/concepts/runtime/) 传递的用户提供的上下文（例如，`user_id`）
-* `rt.server_info` — 在 LangGraph 服务器上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
-* `rt.execution_info` — 执行身份信息（线程ID、运行ID、检查点ID）
+* `rt.context` - 通过 LangGraph 的 [context schema](/oss/python/langgraph/graph-api#runtime-context) 传递的用户提供的上下文（例如，`user_id`）
+* `rt.server_info`—在 LangGraph 服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
+* `rt.execution_info`—执行身份信息（线程ID、运行ID、检查点ID）
 
 <Note>
-  `Runtime` 参数在 `deepagents>=0.5.2` 中可用。早期的 0.5.x 版本通过了 `BackendContext` - 请参阅下面的 [migrating from ⟦T132⟧](#migrating-from-backendcontext)。 `rt.server_info` 和 `rt.execution_info` 需要 `deepagents>=0.5.0`。
+  `Runtime` 参数在 `deepagents>=0.5.2` 中可用。早期的 0.5.x 版本通过了`BackendContext`，请参阅下面的[migrating from ⟦T132⟧](#migrating-from-backendcontext)。 `rt.server_info` 和 `rt.execution_info` 需要 `deepagents>=0.5.0`。
 </Note>
 
 **常见的命名空间模式：**
@@ -603,7 +606,7 @@ backend = StoreBackend(
         rt.execution_info.thread_id,  # [!code highlight]
     ),
 )
-```您可以组合多个组件来创建更具体的范围 - 例如，`(user_id, thread_id)` 用于每个用户每个会话隔离，或者附加一个后缀（如 `"filesystem"`）以在同一范围使用多个存储命名空间时消除歧义。
+```您可以组合多个组件来创建更具体的范围，例如，`(user_id, thread_id)`用于每个用户每个会话隔离，或者附加一个后缀（如`"filesystem"`）以在同一范围使用多个存储命名空间时消除歧义。
 
 命名空间组件必须仅包含字母数字字符、连字符、下划线、点、`@`、`+`、冒号和波形符。拒绝通配符（`*`、`?`）以防止全局注入。
 
@@ -623,7 +626,7 @@ backend = StoreBackend(
 
 `ContextHubBackend` 将代理的文件系统存储在 LangSmith Context Hub 存储库中。它可以使用独立存储库或链接到技能存储库的代理存储库。**存储库结构：** 在 Context Hub 中，*代理存储库* 保存代理的顶级指令和配置（例如，`AGENTS.md`、`tools.json`）。它可以链接到一个或多个“技能库”，每个库都打包为可重用功能（例如，带有电子邮件格式或代码审查说明的`SKILL.md`）。当您通过`ContextHubBackend("my-agent")`时，后端将代理存储库挂载到文件系统根目录；链接的技能存储库显示为`/skills/`下的子目录。
 
-这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅[Linked repos](/langsmith/context-engineering-concepts#linked-repos)了解其原理。
+这意味着您的代理的上下文有意分布在存储库中：每个代理一个存储库，每个技能单独的存储库。这种分离使得技能可以在多个代理之间独立地进行版本控制、共享和重用。如果感觉这很支离破碎，请参阅[Linked repos](/langsmith/context-engineering-concepts#linked-repos)了解其基本原理。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -651,7 +654,7 @@ backend = StoreBackend(
   from deepagents.backends import ContextHubBackend
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=ContextHubBackend("my-agent"),
   )
   ```
@@ -705,7 +708,7 @@ backend = StoreBackend(
 
 **它是如何工作的：*** 首次使用时延迟拉动 Hub 存储库树，然后从内存缓存中读取数据。
 * 在 Hub 提交时保留写入和编辑，并在成功提交后更新缓存。
-* 使用乐观的父提交写入 (`parent_commit`)：每次推送都以最新的已知提交哈希为目标。
+* 使用乐观的父提交写入（`parent_commit`）：每次推送都针对最新的已知提交哈希。
 
 **行为和限制：**
 
@@ -715,7 +718,7 @@ backend = StoreBackend(
 
 **最适合：**
 
-* LangSmith-本机持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
+* LangSmith-原生持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
 * 受益于文件系统更改的集线器提交历史记录的工作流程。
 
 ### CompositeBackend（路由器）
@@ -761,7 +764,7 @@ backend = StoreBackend(
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={
@@ -885,21 +888,41 @@ agent = create_deep_agent(
 * 对于 StoreBackend 路由，请确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
 * Deep Agents 将内部数据（卸载工具结果、对话历史记录）写入默认后端。使用 `StateBackend` 作为默认值可以保持这些工件短暂并避免将它们写入磁盘或持久存储。有关完整示例，请参阅[FilesystemBackend tip](#filesystembackend-local-disk)。
 
+## 卸载二进制内容
+
+二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中的内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
+
+<Note>
+  二进制内容卸载需要`deepagents>=0.7.21`。
+</Note>
+
+在`FilesystemMiddleware`上设置`offload_binary_content=True`，并将其在`middleware`列表中传递给`create_deep_agent`。代理和中间件使用相同的后端。
+
+默认情况下，有效负载存储在`/blobs/<sha256>`下。如果您在中间件上设置 `artifacts_root`，则 blob 将存储在该根目录下。消息历史记录保留内容寻址引用。在每次模型调用之前，中间件都会从其缓存或后端恢复原始媒体。重新读取未更改的内容会重用相同的 blob；更改的内容会创建一个新的 blob。
+
+使用在图状态之外存储 blob 的后端，例如沙箱或 `FilesystemBackend`。当 blob 路径路由到`StateBackend`（包括通过`CompositeBackend`）时，卸载不起作用。如果保留 `StateBackend` 作为默认后端，请将 blob 目录路由到外部存储。
+
+<Note>
+  用户消息中的内联媒体将在下一次模型调用时替换。原始输入负载仍然出现在早期的检查点中。恢复线程时保持 blob 存储可用，以便中间件可以恢复其媒体。
+</Note>
+
 ## 自定义后端
 
-实现自定义后端以将Deep Agents连接到存储系统，例如数据库、对象存储和远程文件系统。示例请参见[community-built backends](/oss/python/integrations/backends)。
+实现自定义后端以将Deep Agents连接到存储系统，例如数据库、对象存储和远程文件系统。有关示例，请参阅[community-built backends](/oss/python/integrations/backends)。
 
 ### 实现后端协议
 
-子类[⟦T184⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)并实现以下方法：|方法|签名|它有什么作用 |                                       |                                            |
-| -------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
-| `ls` | `(path: str) -> LsResult` |列出给定路径中的文件和目录。                                                                                                                    |                                       |                                            || `read` | `(file_path: str, offset: int, limit: int) -> ReadResult` |返回文件内容，可以选择分页。                                                                                                                      |                                       |                                            |
-| `write` | `(file_path: str, content: str) -> WriteResult` |创建或覆盖文件。                                                                                                                                      |                                       |                                            |
-| `edit` | `(file_path: str, old_string: str, new_string: str, replace_all: bool) -> EditResult` |在现有文件中查找并替换。                                                                                                                        |                                       |                                            |
-| `glob` | \`(pattern: str, path: str                                                            | None) -> GlobResult\` |返回与全局模式匹配的路径。 |                                            || `grep` | \`(pattern: str, path: str                                                            | None, glob: str                                                                                                                                                  | None) -> GrepResult\` |在文件内容中搜索文字字符串。 |
-| `delete` | `(file_path: str) -> DeleteResult` |选修的。删除一个文件，或者递归地删除一个目录。如果后端不支持删除，则该工具会在请求时自动从模型中隐藏。 |                                       |                                            |
+子类[⟦T195⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)并实现以下方法：|方法|签名|它有什么作用 | | |
+| - | - | - | - | - |
+| `ls` | `(path: str) -> LsResult` |列出给定路径中的文件和目录。 | | |
+| `read` | `(file_path: str, offset: int, limit: int) -> ReadResult` |返回文件内容，可以选择分页。 | | |
+| `write` | `(file_path: str, content: str) -> WriteResult` |创建或覆盖文件。 | | |
+| `edit` | `(file_path: str, old_string: str, new_string: str, replace_all: bool) -> EditResult` |在现有文件中查找并替换。 | | |
+| `glob` | \`(pattern: str, path: str | None) -> GlobResult\` |返回与全局模式匹配的路径。 | |
+| `grep` | \`(pattern: str, path: str | None, glob: str | None) -> GrepResult\` |在文件内容中搜索文字字符串。 |
+| `delete` | `(file_path: str) -> DeleteResult` |选修的。删除一个文件，或者递归地删除一个目录。如果后端不支持删除，则该工具会在请求时自动从模型中隐藏。 | | |
 
-要同时支持 `execute` 工具（运行 shell 命令），请实现 [⟦T200⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocol`。
+要同时支持 `execute` 工具（运行 shell 命令），请实现 [⟦T211⟧](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol)，它使用 `execute` 方法扩展 `BackendProtocol`。
 
 对于失败情况，始终返回带有 `error` 字段的结构化结果类型。不要提出异常。
 
@@ -945,9 +968,7 @@ agent = create_deep_agent(
   ```
 </Accordion>
 
-## 权限
-
-使用 [permissions](/oss/python/deepagents/permissions) 以声明方式控制代理可以读取或写入哪些文件和目录。权限适用于内置文件系统工具，并在调用后端之前进行评估。
+## 权限使用 [permissions](/oss/python/deepagents/permissions) 以声明方式控制代理可以读取或写入哪些文件和目录。权限适用于内置文件系统工具，并在调用后端之前进行评估。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent, FilesystemPermission
@@ -977,7 +998,9 @@ agent = create_deep_agent(
 
 有关包括规则排序、子代理权限和复合后端交互在内的完整选项集，请参阅[permissions guide](/oss/python/deepagents/permissions)。
 
-## 添加策略挂钩对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制实施企业规则。
+## 添加策略挂钩
+
+对于超出基于路径的允许/拒绝规则（速率限制、审核日志记录、内容检查）的自定义验证逻辑，通过子类化或包装后端来强制执行企业规则。
 
 阻止在选定前缀（子类）下写入/编辑：
 
@@ -1038,23 +1061,25 @@ class PolicyWrapper(BackendProtocol):
 ## 从后端工厂迁移
 
 <Warning>
-  自 `deepagents` 0.5.0 起，后端工厂模式已被**弃用**。直接传递预先构造的后端实例而不是工厂函数。
+  自 `deepagents` 0.5.0 起，后端工厂模式已被 **弃用**。直接传递预先构造的后端实例而不是工厂函数。
 </Warning>
 
 以前，像`StateBackend`和`StoreBackend`这样的后端需要一个接收运行时对象的工厂函数，因为它们需要运行时上下文（状态、存储）来操作。后端现在通过 LangGraph 的 `get_config()`、`get_store()` 和 `get_runtime()` 帮助程序在内部解析此上下文，因此您可以直接传递实例。
 
-### 发生了什么变化|之前（已弃用）|之后 |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------- |
+### 发生了什么变化|之前（已弃用）|之后|
+| - | - |
 | `backend=lambda rt: StateBackend(rt)` | `backend=StateBackend()` |
 | `backend=lambda rt: StoreBackend(rt)` | `backend=StoreBackend()` |
 | `backend=lambda rt: CompositeBackend(default=StateBackend(rt), ...)` | `backend=CompositeBackend(default=StateBackend(), ...)` |
 | `backend: (config) => new StateBackend(config)` | `backend: new StateBackend()` |
 | `backend: (config) => new StoreBackend(config)` | `backend: new StoreBackend()` |
 
-### 已弃用的 API|已弃用 |更换|
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-|在 `create_deep_agent` 中将可调用对象传递给 `backend=` |直接传递后端实例 |
-| `runtime` `StateBackend(runtime)` 的构造函数参数 | `StateBackend()`（无需参数）|
+### 已弃用的 API
+
+|已弃用 |更换|
+| - | - |
+|将可调用对象传递给 `create_deep_agent` 中的 `backend=` |直接传递后端实例 |
+| `StateBackend(runtime)` 上的`runtime` 构造函数参数 | `StateBackend()`（无需参数）|
 | `runtime` `StoreBackend(runtime)` 的构造函数参数 | `StoreBackend()` 或 `StoreBackend(namespace=..., store=...)` |
 | `WriteResult` 和 `EditResult` 上的`files_update` 字段 |状态写入现在由后端在内部处理 |
 | `Command` 封装在中间件编写/编辑工具中 |工具返回纯字符串；无需`Command(update=...)` |
@@ -1088,13 +1113,13 @@ agent = create_deep_agent(
 )
 ```
 
-### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T237⟧](https://reference.langchain.com/python/langgraph/runtime/Runtime)，而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
+### 从 `BackendContext` 迁移
 
-**改变了什么：**
+在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T248⟧](https://reference.langchain.com/python/langgraph/runtime/Runtime) 而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
 
-* 工厂参数现在是 `Runtime`，而不是 `BackendContext`。
-* 删除 `.runtime` 访问器 — 例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
-* `ctx.state` 没有直接替代品。命名空间信息应该是只读的并且在运行的生命周期内保持稳定，而状态是可变的并且会逐步更改 - 从它派生命名空间可能会导致数据最终处于不一致的键下。如果您有需要读取代理状态的用例，请[open an issue](https://github.com/langchain-ai/deepagents/issues)。
+**改变了什么：*** 工厂参数现在是`Runtime`，而不是`BackendContext`。
+* 删除 `.runtime` 访问器 - 例如，`ctx.runtime.context.user_id` 变为 `rt.server_info.user.identity`。
+* `ctx.state` 没有直接替代品。命名空间信息应该是只读的，并且在运行的生命周期内保持稳定，而状态是可变的，并且会逐步更改——从中派生命名空间可能会导致数据最终处于不一致的键下。如果您有需要读取代理状态的用例，请[open an issue](https://github.com/langchain-ai/deepagents/issues)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Before (deprecated, removed in v0.7)
@@ -1110,12 +1135,14 @@ StoreBackend(
 
 ## 协议参考
 
-后端必须实现[⟦T249⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)。
+后端必须实现[⟦T260⟧](https://reference.langchain.com/python/deepagents/backends/protocol/BackendProtocol)。
 
-所需方法：* `ls(path: str) -> LsResult`
+所需方法：
+
+* `ls(path: str) -> LsResult`
   * 返回至少包含 `path` 的条目。如果可用，请包括 `is_dir`、`size`、`modified_at`。按 `path` 排序以获得确定性输出。
 * `read(file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult`
-  * 成功时返回文件数据。如果文件丢失，请返回`ReadResult(error="Error: File '/x' not found")`。
+  * 成功时返回文件数据。如果文件丢失，则返回`ReadResult(error="Error: File '/x' not found")`。
 * `grep(pattern: str, path: Optional[str] = None, glob: Optional[str] = None) -> GrepResult`
   * 返回结构化匹配。出错时，返回`GrepResult(error="...")`（不引发）。
 * `glob(pattern: str, path: Optional[str] = None) -> GlobResult`
@@ -1125,12 +1152,10 @@ StoreBackend(
 * `edit(file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> EditResult`
   * 强制`old_string`的唯一性，除非`replace_all=True`。如果没有找到，则返回错误。成功时包含`occurrences`。
 
-配套类型：
-
-* `LsResult(error, entries)` — `entries` 成功时为 `list[FileInfo]`，失败时为 `None`。
-* `ReadResult(error, file_data)` — `file_data` 是关于成功的 `FileData` 指令，`None` 关于失败的指令。
-* `GrepResult(error, matches)` — `matches` 是成功时的 `list[GrepMatch]`，失败时的 `None`。
-* `GlobResult(error, matches)` — `matches` 成功时为 `list[FileInfo]`，失败时为 `None`。
+配套类型：* `LsResult(error, entries)`—`entries` 成功时为`list[FileInfo]`，失败时为`None`。
+* `ReadResult(error, file_data)`—`file_data` 是关于成功的 `FileData` 指令，`None` 关于失败的指令。
+* `GrepResult(error, matches)`—`matches` 成功时为`list[GrepMatch]`，失败时为`None`。
+* `GlobResult(error, matches)`—`matches` 成功时为`list[FileInfo]`，失败时为`None`。
 * `WriteResult(error, path, files_update)`
 * `EditResult(error, path, files_update, occurrences)`
 * `FileInfo` 包含字段：`path`（必填），可选 `is_dir`、`size`、`modified_at`。
@@ -1138,15 +1163,17 @@ StoreBackend(
 * `FileData` 包含字段：`content` (str)、`encoding`（`"utf-8"` 或 `"base64"`）、`created_at`、`modified_at`。
   :::
 
-## 另请参阅* [OpenWiki](/oss/openwiki/overview)：生成持久存储库 Markdown，代理通过文件系统工具读取
-* [Memory](/oss/python/deepagents/memory)：文件系统支持的长期内存
+## 另请参阅
+
+* [OpenWiki](/oss/openwiki/overview)：生成持久存储库 Markdown，代理通过文件系统工具读取
+* [Memory](/oss/python/deepagents/memory)：文件系统支持的长期存储器
 * [Sandboxes](/oss/python/deepagents/sandboxes)：隔离文件系统和 shell 执行
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

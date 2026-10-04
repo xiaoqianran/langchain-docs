@@ -14,7 +14,7 @@
 
 要连接您的存储库：
 
-1. 在[LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-github)中，打开跟踪项目并进入**引擎**选项卡。
+1. 在[LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-github)中，打开跟踪项目或代理环境，然后转到**引擎**选项卡。
 2. 在 **连接代理的代码存储库** 下，单击 **连接 GitHub** 并授权 LangChain 管理的 GitHub 应用程序。
 3. 在引擎应访问的存储库上安装应用程序。在 GitHub 组织上安装应用程序可能需要 GitHub 组织所有者的批准。如果您不是所有者，GitHub 会在应用程序可用之前向所有者发送安装请求以供批准。
 4. 在 **Engine** 选项卡上的 **GitHub Repository** 字段中选择连接的存储库。有关托管应用程序的访问和保留模型，请参阅[Engine security](/langsmith/engine-security#github-integration)。
@@ -72,7 +72,7 @@
     |价值|在哪里可以找到它 |环境变量 |
     | - | - | - |
     | **应用程序ID** |数字，位于页面顶部 | `FORGE_GITHUB_APP_ID` |
-    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-engine`| `FORGE_GITHUB_APP_PUBLIC_LINK` |
+    | **公共链接** |例如，`https://github.com/apps/acme-langsmith-engine` | `FORGE_GITHUB_APP_PUBLIC_LINK` |
     | **客户端ID** |在 **关于** |下`FORGE_GITHUB_CLIENT_ID` |
     | **客户秘密** |在 **客户端密钥** 下，单击 **生成新的客户端密钥**（显示一次）| `FORGE_GITHUB_CLIENT_SECRET` |
     | **私钥** |在 **私钥** 下，单击 **生成私钥**（下载 `.pem` 文件）| `FORGE_GITHUB_APP_PEM` |
@@ -84,7 +84,7 @@
 
   <Step title="Create a Kubernetes Secret">
     <Warning>
-      GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭据。仅将它们存储在 Kubernetes Secret 中，切勿存储在 Helm 值或命令行参数中。
+      GitHub 客户端密钥、私钥、状态 JWT 密钥和 Webhook 密钥都是凭证。仅将它们存储在 Kubernetes Secret 中，切勿存储在 Helm 值或命令行参数中。
     </Warning>
 
     使用现有的 [secret-management workflow](/langsmith/self-host-using-an-existing-secret)，使用以下密钥创建一个名为 `langsmith-forge-github` 的 Kubernetes Secret：
@@ -144,19 +144,19 @@
 
     1. 打开应用程序的公共链接 (`FORGE_GITHUB_APP_PUBLIC_LINK`) 并单击 **安装**，或在 GitHub 组织中打开 **设置 > 应用程序 > GitHub 应用程序**。
     2. 选择引擎应访问的存储库。如果安装未授予对所有存储库的访问权限，请显式选择引擎需要的每个私有存储库。
-    3. 在LangSmith中，打开跟踪项目，进入**Engine**选项卡，然后在**GitHub Repository**字段中选择存储库。
+    3. 在 LangSmith 中，打开跟踪项目或代理环境，转到 **Engine** 选项卡，然后在 **GitHub Repository** 字段中选择存储库。
 
     连接的存储库允许引擎使用您的源代码进行诊断并打开拉取请求以及建议的修复。
   </Step>
 </Steps>
 
-## 另请参阅
-
-* [Find and fix your agent's issues](/langsmith/engine)：引擎设置、成本和问题工作流程。
+## 另请参阅* [Find and fix your agent's issues](/langsmith/engine)：引擎设置、成本和问题工作流程。
 * [Engine on self-hosted](/langsmith/engine-self-hosted)：安装、架构和数据处理。
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据和 GitHub 访问。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

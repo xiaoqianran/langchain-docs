@@ -219,7 +219,7 @@ The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_hel
             return my_agent(user_input)
     ```
 
-    You can use any subset of run fields in `updates` (for example, `{"inputs": {"redacted": True}}` to keep a marker, or `{"outputs": {}}` to redact only outputs). The same pattern works for routing different redaction policies to different destinations—each replica can specify its own `project_name`, `api_key`, and `updates`. See [Write traces to multiple destinations with replicas](/langsmith/log-traces-to-project#write-traces-to-multiple-destinations-with-replicas) for the full replica reference.
+    You can use any subset of run fields in `updates` (for example, `{"inputs": {"redacted": True}}` to keep a marker, or `{"outputs": {}}` to redact only outputs). The same pattern works for routing different redaction policies to different destinations: each replica can specify its own `project_name`, `api_key`, and `updates`. See [Write traces to multiple destinations with replicas](/langsmith/trace-replicas) for the full replica reference.
 
     <Note>
       Always set `project_name` on the replica when using `updates` to redact inputs or outputs. If the replica's `project_name` matches the active session's project, the `updates` may be dropped and the unredacted inputs/outputs will be sent.

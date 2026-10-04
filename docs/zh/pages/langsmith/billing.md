@@ -4,7 +4,7 @@
 
 # 管理您帐户中的账单
 
-本页面介绍如何管理您的 LangSmith 组织的账单：
+本页介绍如何管理 LangSmith 组织的账单：
 
 * [Set up billing for your account](#set-up-billing-for-your-account)：完成 Developer 和 Plus 计划的计费设置流程，包括旧帐户的特殊说明。
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
@@ -72,7 +72,7 @@
 </Note>
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
-2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
+2. 在发票电子邮件部分下方，您将找到一个标记为 **Business** 的复选框。
 3. 如果您的组织属于企业，请选中 **企业** 复选框。
 4. 将出现一个业务信息部分，允许您输入或更新以下详细信息：
    * 公司名称
@@ -113,7 +113,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
   对于具有**仅多个工作区**的组织：为简单起见，LangSmith将免费跟踪纳入**仅第一个工作区**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 </Note>
 
-#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
+#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
 <Warning>
   从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期将更改为 180 天。企业客户仍然可以自定义每个工作区的延长保留期，直至达到新的最大值。更改仅适用于新跟踪，现有跟踪不受影响。
@@ -133,6 +133,8 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 #### 更改项目级默认保留每个跟踪项目的数据保留设置均可调整。在项目级别，您可以在两个级别之间进行选择：基础（14 天）或扩展（180 天）。要自定义最长 180 天的延长持续时间，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
 
+在 [agent-based workspace](/langsmith/agents) 中，每个代理的 [environments](/langsmith/agent-environments) 都是其自己的跟踪项目，因此保留是按环境而不是按代理设置的，并且您可以通过代理而不是 **项目** 列表来访问设置。
+
 导航到 **项目** > ***您的项目名称*** > 选择 **保留** 并选择所需的默认保留。这只会影响**未来跟踪**的保留（和定价）。
 
 <img alt="P1projectretention" />
@@ -143,16 +145,16 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 * 所有痕迹的 10%：用于一般分析或分析长期趋势。
 * 错误跟踪：彻底调查和调试问题。
-* 具有特定元数据的跟踪：用于特定功能或用户流程的长期检查。
+* 具有特定元数据的跟踪：用于特定功能或用户流的长期检查。
 
-要配置此：1. 导航到 **项目** > ***您的项目名称*** > 选择 **+ 新建** > 选择 **新建自动化**。
+要配置此：1. 导航到 **项目** > ***您的项目名称*** > 选择 **+ 新建** > 选择 **新建自动化**。在基于代理的工作区中，从代理的环境开始。
 2. 命名您的规则并可选择应用过滤器或采样率。有关配置过滤器的更多信息，请参阅[filtering techniques](/langsmith/filter-traces-in-application#filter-operators)。
 
 <Note>
   当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 </Note>
 
-例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
 
 <img alt="P2sampletraces" />
 
@@ -160,13 +162,13 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 ### LangSmith 部署计费
 
-除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：配置资源时部署使用的 vCPU 和内存，以 LangChain 标准单位 (LSU) 衡量。 [Serverless](/langsmith/cloud-platform-features#serverless) 部署在一段时间不活动后可以 [scale to zero (beta)](/langsmith/cloud-platform-features#serverless)，因此计算费用仅在规模缩小后停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署始终在线并持续消耗计算。
+除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：配置资源时部署使用的 vCPU 和内存，以 LangChain 标准单位 (LSU) 计量。 [Serverless](/langsmith/cloud-platform-features#serverless) 部署在一段时间不活动后可以 [scale to zero (beta)](/langsmith/cloud-platform-features#serverless)，因此计算费用仅在缩减后停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署始终在线并持续消耗计算。
 * **存储**：部署用于持久状态的数据库存储，以 LangChain 标准单位 (LSU) 衡量。
 
-有关当前 LSU 费率以及估计部署成本的信息，请参阅 [pricing page](https://www.langchain.com/pricing)，其中包括部署成本计算器。
+有关当前 LSU 费率以及估计部署成本的信息，请参阅[pricing page](https://www.langchain.com/pricing)，其中包括部署成本计算器。
 
 <Note>
-  这种基于使用情况的模型取代了以前的按运行和正常运行时间定价。现有客户在 2026 年 10 月 1 日之前将保持当前定价，然后转向新型号。缩放至零仅适用于按照新定价进行的部署。随着功能的推出，无服务器部署扩展到零之前的不活动窗口可能会发生变化。有关转换的问题，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
+  这种基于使用情况的模型取代了之前的按运行和正常运行时间定价。现有客户在 2026 年 10 月 1 日之前仍保持当前定价，然后转向新型号。缩放至零仅适用于按新定价进行的部署。随着功能的推出，无服务器部署扩展到零之前的不活动窗口可能会发生变化。有关转换的问题，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
 </Note>
 
 对于大批量部署使用，[contact our sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。

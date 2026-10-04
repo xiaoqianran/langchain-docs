@@ -12,7 +12,7 @@ This guide shows you how to define a [composite evaluator](/langsmith/evaluation
 
 ## Create a composite evaluator
 
-You can create composite evaluators on a [tracing project](/langsmith/observability-concepts#projects) (for [online evaluations](/langsmith/evaluation-concepts#online-evaluations)) or a [dataset](/langsmith/evaluation-concepts#datasets) (for [offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)). With composite evaluators in the UI, you can compute a weighted average or weighted sum of multiple evaluator scores, with configurable weights.
+You can create composite evaluators on a [tracing project](/langsmith/observability-concepts#tracing-projects) (for [online evaluations](/langsmith/evaluation-concepts#online-evaluations)) or a [dataset](/langsmith/evaluation-concepts#datasets) (for [offline evaluations](/langsmith/evaluation-concepts#offline-evaluations)). With composite evaluators in the UI, you can compute a weighted average or weighted sum of multiple evaluator scores, with configurable weights.
 
 <div>
   <img alt="LangSmith UI showing an LLM call trace called ChatOpenAI with a system and human input followed by an AI Output." />
@@ -22,9 +22,9 @@ You can create composite evaluators on a [tracing project](/langsmith/observabil
 
 ### 1. Navigate to the tracing project or dataset
 
-To start configuring a composite evaluator, navigate to the **Tracing Projects** or **Dataset & Experiments** tab and select a project or dataset.
+To start configuring a composite evaluator, navigate to the **Tracing** or **Dataset & Experiments** tab and select a tracing project, an agent environment, or a dataset.
 
-* From within a tracing project: **+ New** > **Evaluator** > **Composite score**
+* From within a tracing project or agent environment: **+ New** > **Evaluator** > **Composite score**
 * From within a dataset: **+ Evaluator** > **Composite score**
 
 ### 2. Configure the composite evaluator
@@ -43,7 +43,7 @@ To start configuring a composite evaluator, navigate to the **Tracing Projects**
 
 Composite scores are attached to a run as **feedback**, similarly to feedback from a single evaluator. How you can view them depends on where the evaluation was run:
 
-**On a tracing project**:
+**On a tracing project or agent environment**:
 
 * Composite scores appear as feedback on runs.
 * [Filter for runs](/langsmith/filter-traces) with a composite score, or where the composite score meets a certain threshold.

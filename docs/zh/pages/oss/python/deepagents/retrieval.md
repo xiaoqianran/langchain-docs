@@ -15,7 +15,7 @@
 
 **知识库**是检索过程中使用的文档或结构化数据的存储库。
 
-如果您需要一个自定义知识库，您可以使用 LangChain 的文档加载器和矢量存储来根据您自己的数据构建一个知识库。
+如果您需要自定义知识库，您可以使用 LangChain 的文档加载器和矢量存储从您自己的数据构建一个知识库。
 
 <Note>
   如果您已经拥有知识库（例如 SQL 数据库、文档数据库、CRM 或内部文档系统），则**不需要**需要重建它。您可以：
@@ -93,17 +93,17 @@ flowchart TB
 
 ## RAG 架构
 
-RAG 可以通过多种方式实施，具体取决于系统的需求。我们在下面的部分中概述了每种类型。|建筑|描述 |控制|灵活性 |延迟|示例用例 |
-| ---------------- | -------------------------------------------------------------------------------------- | ---------| ----------- | ---------- | ------------------------------------------------- |
+RAG 可以通过多种方式实施，具体取决于您的系统需求。我们在下面的部分中概述了每种类型。|建筑|描述 |控制|灵活性 |延迟 |示例用例 |
+| - | - | - | - | - | - |
 | **2 步 RAG** |检索总是发生在生成之前。简单且可预测 | ✅ 高 | ❌低| ⚡ 快|常见问题解答、文档机器人 |
 | **代理RAG** |由 LLM 支持的代理决定在推理过程中“何时”和“如何”检索 | ❌低| ✅ 高 | ⏳ 变量 |可以使用多种工具的研究助理 |
-| **混合** |将两种方法的特点与验证步骤结合起来 | ⚖️ 中等 | ⚖️ 中等 | ⏳ 变量 |具有质量验证的特定领域问答 |<Info>
+| **混合** |将两种方法的特点与验证步骤结合起来 | ⚖️ 中等 | ⚖️ 中等 | ⏳ 变量 |具有质量验证的特定领域问答 |
+
+<Info>
   **延迟**：在 **2 步 RAG** 中，延迟通常更容易**预测**，因为 LLM 调用的最大数量是已知的且有上限。这种可预测性假设 LLM 推理时间是主导因素。然而，现实世界的延迟也可能受到检索步骤性能的影响，例如 API 响应时间、网络延迟或数据库查询，这些性能可能会根据所使用的工具和基础设施而有所不同。
 </Info>
 
-### 2 步 RAG
-
-在 **2-Step RAG** 中，检索步骤始终在生成步骤之前执行。这种架构简单且可预测，使其适用于许多应用程序，在这些应用程序中，检索相关文档是生成答案的明确先决条件。
+### 2 步 RAG在 **2-Step RAG** 中，检索步骤始终在生成步骤之前执行。这种架构简单且可预测，使其适用于许多应用程序，在这些应用程序中，检索相关文档是生成答案的明确先决条件。
 
 ```mermaid actions={true} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 12, 'rankSpacing': 18, 'padding': 4}, 'themeVariables': {'fontSize': '12px'}}}%%
@@ -132,10 +132,12 @@ graph TB
   </Card>
 </CardGroup>
 
-### 代理 RAG**代理检索增强生成 (RAG)** 结合了检索增强生成与基于代理的推理的优势。代理（由法学硕士提供支持）不是在回答之前检索文档，而是逐步推理并决定在交互过程中**何时**和**如何**检索信息。
+### 代理 RAG
+
+**代理检索增强生成 (RAG)** 结合了检索增强生成与基于代理的推理的优势。代理（由法学硕士提供支持）不是在回答之前检索文档，而是逐步推理并决定在交互过程中**何时**和**如何**检索信息。
 
 <Tip>
-  代理启用 RAG 行为所需的唯一一件事是访问一个或多个可以获取外部知识的**工具**，例如文档加载器、Web API 或数据库查询。
+  代理启用 RAG 行为所需的唯一一件事就是访问一个或多个可以获取外部知识的**工具**，例如文档加载器、Web API 或数据库查询。
 </Tip>
 
 ```mermaid actions={true} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -183,10 +185,8 @@ agent = create_agent(
     tools=[fetch_url], # A tool for retrieval [!code highlight]
     system_prompt=system_prompt,
 )
-```
-
-<Expandable title="Extended example: Agentic RAG for LangGraph's llms.txt">
-  本示例实现了**Agentic RAG系统**来帮助用户查询LangGraph文档。代理首先加载 [llms.txt](https://llmstxt.org/)，其中列出了可用的文档 URL，然后可以动态地使用 `fetch_documentation` 工具根据用户的问题检索和处理相关内容。
+```<Expandable title="Extended example: Agentic RAG for LangGraph's llms.txt">
+  本示例实现了**Agentic RAG系统**来帮助用户查询LangGraph文档。代理首先加载 [llms.txt](https://llmstxt.org/)，其中列出了可用的文档 URL，然后可以动态使用 `fetch_documentation` 工具根据用户的问题检索和处理相关内容。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import requests
@@ -269,11 +269,11 @@ agent = create_agent(
   构建一个文档问答代理，该代理在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理。
 </Card>
 
-### 混合 RAG混合 RAG 结合了 2-Step 和 Agentic RAG 的特性。它引入了查询预处理、检索验证和生成后检查等中间步骤。这些系统比固定管道提供更大的灵活性，同时保持对执行的一定控制。
+### 混合 RAG
 
-典型组件包括：
+混合 RAG 结合了 2-Step 和 Agentic RAG 的特性。它引入了查询预处理、检索验证和生成后检查等中间步骤。这些系统比固定管道提供更大的灵活性，同时保持对执行的一定控制。
 
-* **查询增强**：修改输入问题，提高检索质量。这可能涉及重写不明确的查询、生成多个变体或使用附加上下文扩展查询。
+典型组件包括：* **查询增强**：修改输入问题，提高检索质量。这可能涉及重写不明确的查询、生成多个变体或使用附加上下文扩展查询。
 * **检索验证**：评估检索到的文档是否相关且充分。如果没有，系统可以细化查询并再次检索。
 * **答案验证**：检查生成的答案的准确性、完整性以及与源内容的一致性。如果需要，系统可以重新生成或修改答案。
 
@@ -308,7 +308,9 @@ graph TB
 
 * 具有不明确或未指定查询的应用程序
 * 需要验证或质量控制步骤的系统
-* 涉及多个来源或迭代细化的工作流程<Card title="Tutorial: Agentic RAG with Self-Correction" icon="robot" href="/oss/python/langgraph/agentic-rag">
+* 涉及多个来源或迭代细化的工作流程
+
+<Card title="Tutorial: Agentic RAG with Self-Correction" icon="robot" href="/oss/python/langgraph/agentic-rag">
   **混合 RAG** 的示例，将代理推理与检索和自我纠正相结合。
 </Card>
 
@@ -316,7 +318,7 @@ graph TB
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

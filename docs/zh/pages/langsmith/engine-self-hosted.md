@@ -139,7 +139,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
   <img alt="Architecture diagram of self-hosted LangSmith in your VPC connected by AWS PrivateLink to LangSmith Intelligence and Bedrock in LangChain's AWS environment." />
 </Frame>### GCP（在美国提供）
 
-网关主机是[⟦T24⟧](#allow-egress-to-langsmith-intelligence)。 LSI 将请求路由到 LangChain 的 GCP 环境中的 Vertex。
+网关主机是[⟦T24⟧](#allow-egress-to-langsmith-intelligence)。 LSI 将请求路由到LangChain 的 GCP 环境中的 Vertex。
 
 <Note>
   这与自托管 LangSmith 用于许可证验证和计费遥测的主机相同，因此 GCP 部署添加了一条路径，而不是新的出口目的地。参见[Configure egress](/langsmith/self-host-egress)。
@@ -153,13 +153,13 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 Engine 通过 LSI 使用云的模型提供程序：AWS 上的 Amazon Bedrock 和 GCP 上的 Vertex AI。
 
-引擎使用不同的模型，每个模型都针对其角色进行了调整，以集群问题、根据代码诊断根本原因、生成修复程序并编写验证它们的评估器。 LangChain 调整这些模型的质量和代币效率，并在更好的模型可用时更新它们。
+引擎使用不同的模型，每个模型都针对其角色进行了调整，以集群问题、根据代码诊断根本原因、生成修复程序并编写验证它们的评估器。 LangChain 调整这些模型的质量和代币效率，并随着更好的模型可用而更新它们。
 
-引擎使用托管推理，而不是自带密钥设置。这可以保持引擎行为的一致性，并随着 LangChain 更新模型而改进。通过自带密钥设置，模型选择、调整和令牌效率可能会因请求而异。
+引擎使用托管推理，而不是自带密钥设置。这使引擎行为保持一致，并随着 LangChain 更新模型而改进。通过自带密钥设置，模型选择、调整和令牌效率可能会因请求而异。
 
 ## 引擎处理数据的地方
 
-在自托管部署中，引擎将您的环境和LangChain之间的数据处理分开：* **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
+在自托管部署中，引擎将您的环境和 LangChain 之间的数据处理分开：* **您的环境：** 引擎编排和LangSmith存储的跟踪保留在您的自托管环境中。
 * **LangChain的环境：** LSI和模型提供者处理Engine发送的内容。 LSI 保留上述计费元数据。
 
 [Engine security](/langsmith/engine-security) 中描述了引擎独立于部署的数据处理，包括每个模型提供商的零数据保留以及不使用客户数据来训练或微调模型。
@@ -327,18 +327,18 @@ API 服务器和队列 Pod 都应该是`Running`。然后，确认`platform-back
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
-```如果此后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
+```如果在此之后引擎未出现在 LangSmith UI 中，最常见的原因是许可证没有引擎权利以及[Turn on Engine in LangSmith](#turn-on-engine-in-langsmith) 中所述的组织级别切换。
 
-在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith) 之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
+在LangSmith UI 中的[enabling and configuring Engine](#turn-on-engine-in-langsmith)之后，启动引擎分析并确认显示跟踪项目的结果。这将验证通过引擎、沙箱和LangSmith智能的完整路径。单独运行 pod 不会验证该路径。
 
-如果分析未完成，请检查 Engine Pod 是否正在运行、沙箱工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
+如果分析未完成，请检查 Engine Pod 是否正在运行、沙盒工作区是否有可用配额，以及集群是否可以访问`engine.intelligenceBaseUrl` 中配置的LangSmith 智能网关 URL。
 
 ### 在LangSmith中打开引擎
 
 在 Helm 中启用 Engine 即可使用该功能；它不会启动任何扫描。启用图表值后，在LangSmith中完成设置：
 
-1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎启用**下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
-2. 任何用户从项目的**引擎**选项卡打开跟踪项目的引擎。欲了解更多信息，请参阅[Turn on Engine for a tracing project](/langsmith/engine#turn-on-engine-for-a-tracing-project)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
+1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎** 下为组织打开引擎。欲了解更多信息，请参阅[Find and fix issues](/langsmith/engine#enable-engine-for-your-organization)。
+2. [role](/langsmith/rbac) 可以更新跟踪项目的用户从其**引擎**选项卡打开跟踪项目的引擎。有关更多信息，请参阅[Set up Engine](/langsmith/engine#set-up-engine)。连接 GitHub 存储库是可选的，它可以改进引擎的诊断和修复。如果没有，引擎将无法读取您的源代码或打开拉取请求。要创建 GitHub 应用程序并配置`host-backend`，请参阅[Connect Engine to GitHub](/langsmith/engine-github#self-hosted)。
 
 ### 禁用引擎
 

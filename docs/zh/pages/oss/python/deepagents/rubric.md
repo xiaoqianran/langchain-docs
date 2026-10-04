@@ -4,7 +4,7 @@
 
 # 评分标准
 
-法学硕士作为法官对代理人进行评分，迭代一个标题直到完成
+法学硕士作为法官对代理人进行评分，不断迭代直至完成
 
 <Note>
   `RubricMiddleware` 需要 `deepagents>=0.6.5`。位于[**beta**](/oss/python/versioning)； API 将来可能会发生变化。
@@ -82,7 +82,7 @@ graph LR
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",
@@ -158,11 +158,12 @@ graph LR
   ```
 </CodeGroup>
 
-|论证|必填 |默认 |描述 |
-| ---------------- | -------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- || `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。                  |
-| `system_prompt` |没有 |内置评分器提示 |自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。                                                                 |
-| `tools` |没有 | `None` |评分者在做出结论之前可以调用工具来收集证据（运行测试、计数标记、读取文件）。如果没有，评分者只能根据成绩单进行推理。                                              |
-| `max_iterations` |没有 | `3` |每个评分标准尝试的最大评分者迭代次数；必须是正整数。当达到上限但没有 `satisfied` 判决时，代理将以状态 `max_iterations_reached` 终止。                          || `on_evaluation` |没有 | `None` |每次评分迭代后，无论您使用 `invoke()`、`stream()` 还是 `stream_events()`，都会调用每个 `RubricEvaluation` 的可选回调。对于日志记录、自定义指标、评估数据集或 UI 更新很有用。 |
+|论证|必填|默认 |描述 |
+| - | - | - | - |
+| `model` |是的 | `None` | LLM 作为评委评分员子代理使用的聊天模型。接受 `"provider:model-id"` 字符串或 `BaseChatModel` 实例。通常是比深度代理的工作模型更小或更便宜的模型。 |
+| `system_prompt` |没有 |内置评分器提示|自定义分级说明。退回到默认系统提示，向评分者传授判决格式以及可以使用的工具。 |
+| `tools` |没有 | `None` |评分者在做出结论之前可以调用工具来收集证据（运行测试、计数标记、读取文件）。如果没有，评分者仅根据成绩单进行推理。 || `max_iterations` |没有 | `3` |每个评分标准尝试的最大评分者迭代次数；必须是正整数。当达到上限但没有 `satisfied` 判决时，代理将以状态 `max_iterations_reached` 终止。 |
+| `on_evaluation` |没有 | `None` |每次评分迭代后，无论您使用 `invoke()`、`stream()` 还是 `stream_events()`，都会调用每个 `RubricEvaluation` 的可选回调。对于日志记录、自定义指标、评估数据集或 UI 更新很有用。 |
 
 ## 在调用时传递标题
 
@@ -220,7 +221,8 @@ graph LR
     ```
 
     Rubric 评分在 `stream.custom` 上发出以下自定义事件：|活动 |被解雇时 |有效负载字段 |
-    | ---------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- || `rubric_evaluation_start` |在评分机运行之前。                               | <ul><li>`type`：活动名称</li><li>`grading_run_id`：在一次评分标准尝试中的所有活动之间共享</li><li>`iteration`：当前评分的从零开始的索引运行</li></ul> |
+    | - | - | - |
+    | `rubric_evaluation_start` |在评分机运行之前。 | <ul><li>`type`：活动名称</li><li>`grading_run_id`：在一次评分标准尝试中的所有活动之间共享</li><li>`iteration`：当前评分的从零开始的索引运行</li></ul> |
     | `rubric_evaluation_end` |评分员返回后或评分员异常后。 | <ul><li>`type`：事件名称</li><li>`grading_run_id`：在一次评分规则尝试中的所有事件之间共享</li><li>`iteration`：当前评分者的从零开始的索引pass</li><li>`result`：此pass的最终判决</li><li>`explanation`：评分者的摘要</li><li>`criteria`：每个标准判决</li></ul> |
   </Tab>
 </Tabs>
@@ -228,11 +230,12 @@ graph LR
 ### 评分标准判决
 
 当深度代理完成推理并产生输出时，LLM 作为法官评分者子代理会根据评分标准审查输出并产生以下判决之一：|状态 |意义|循环回来？ |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `satisfied` |标题中的每一个标准都通过了。                                                                                                        |没有 |
-| `needs_revision` |至少有一项标准不合格；评分者反馈被注入，代理再次运行。                                                          |是的 |
-| `max_iterations_reached` | Grader仍然想要修改，但是`max_iterations`已经被击中了。                                                                             |没有 |
-| `failed` |评分者判断标题格式错误或无法根据成绩单进行评估。                                                     |没有 || `grader_error` |法学硕士作为法官评分者子代理本身提出了一个例外（提供者超时、缺少凭据、格式错误的结构化响应等）。 |没有 |
+| - | - | - |
+| `satisfied` |标题中的每一个标准都通过了。 |没有 |
+| `needs_revision` |至少有一项标准不合格；评分者反馈被注入，代理再次运行。 |是的 |
+| `max_iterations_reached` | Grader仍然想要修改，但是`max_iterations`已经被击中了。 |没有 |
+| `failed` |评分者判断标题格式错误或无法根据成绩单进行评估。 |没有 |
+| `grader_error` |法学硕士作为法官评分者子代理本身提出了一个例外（提供者超时、缺少凭据、格式错误的结构化响应等）。 |没有 |
 
 ## 观察迭代进度
 
@@ -321,10 +324,10 @@ graph LR
 
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       middleware=[
           RubricMiddleware(
-              model="anthropic:claude-sonnet-4-6",
+              model="anthropic:claude-sonnet-5",
               on_evaluation=log_evaluation,
           ),
       ],
@@ -485,22 +488,23 @@ graph LR
   ```
 </CodeGroup>
 
-中间件在每个 [grader pass](#grader-pass-events) 之后使用 `RubricEvaluation` 字典调用您的函数。 `RubricEvaluation`字典包含：|领域|类型 |描述 |
-| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+中间件在每个 [grader pass](#grader-pass-events) 之后使用 `RubricEvaluation` 字典调用您的函数。 `RubricEvaluation`字典包含：|领域 |类型 |描述 |
+| - | - | - |
 | `grading_run_id` | `str` |一次评估尝试中的每个评估共享的标识符。当调用者提供不同的`rubric`，或者在最终判决后再次调用相同的`rubric`时，新的运行开始。 |
-| `iteration` | `int` |当前评分者在该运行中通过的从零开始的索引。                                                                                                                                      |
-| `result` | `str` |本次通过的评分者判定：`satisfied`、`needs_revision`、`failed` 或 `grader_error`。                                                                                                     || `explanation` | `str` |评分者的自由形式摘要。对于基础设施故障，这包括异常类型和消息。                                                                                      |
-| `criteria` | `list` |按标准做出的判决。每个条目都是`{name, passed: true}` 或`{name, passed: false, gap}`，其中`gap` 是失败标准的可操作反馈。                                   |
+| `iteration` | `int` |当前评分者在该运行中通过的从零开始的索引。 |
+| `result` | `str` |本次通过的评分者判定：`satisfied`、`needs_revision`、`failed` 或 `grader_error`。 |
+| `explanation` | `str` |评分者的自由形式摘要。对于基础设施故障，这包括异常类型和消息。 |
+| `criteria` | `list` |按标准做出的判决。每个条目都是`{name, passed: true}` 或`{name, passed: false, gap}`，其中`gap` 是失败标准的可操作反馈。 |
 
-### 分级师通行证事件
+### 分级师通行证事件|活动 |描述 |
+| - | - |
+| **成功评分** |每次传递触发一次，包括中间 `needs_revision` 判决和最终 `satisfied` 或 `failed` 判决。 <br /><br /> 当评分者返回`needs_revision`但已达到`max_iterations`时，回调仍会收到`result: "needs_revision"`（评分者的结论）。运行的终端状态是私有状态 `_rubric_status` 上的 `max_iterations_reached`，而不是在评估记录中。在 `invoke` 完成后检查 `_rubric_status`，或与 `_rubric_iterations` 一起读取 `_rubric_evaluations` 中的最后一个条目，以在上限耗尽时进行分支。 |
+| **评分者例外** |触发 `result: "grader_error"`、从异常派生的解释以及空的 `criteria` 列表。 |
+| **您的回调中出现错误** |异常情况会被记录并抑制。评分循环继续进行。不要使用 `on_evaluation` 来强制控制流（例如，引发以停止代理）。 |
 
-|活动 |描述 || ------------------------ | | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **成功评分** |每次传递触发一次，包括中间 `needs_revision` 判决和最终 `satisfied` 或 `failed` 判决。 <br /><br /> 当评分者返回`needs_revision`但已达到`max_iterations`时，回调仍会收到`result: "needs_revision"`（评分者的结论）。运行的终端状态是私有状态 `_rubric_status` 上的 `max_iterations_reached`，而不是评估记录中。在 `invoke` 完成后检查 `_rubric_status`，或与 `_rubric_iterations` 一起读取 `_rubric_evaluations` 中的最后一个条目，以在上限耗尽时进行分支。 || **评分者例外** |触发 `result: "grader_error"`、从异常派生的解释以及空的 `criteria` 列表。                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| **您的回调中出现错误** |异常情况会被记录并抑制。评分循环继续进行。不要使用 `on_evaluation` 来强制控制流（例如，引发以停止代理）。                                                                                                                                                                                                                                                                                                                                                                                                                              |## 在调用中保留规则
+## 在调用中保留规则
 
-单个 `agent.invoke()` 或 `agent.stream_events()` 调用将运行标题循环直至完成，并以最终结论结束：`satisfied`、`failed` 或 `max_iterations_reached`。
-
-要携带标题以进行后续调用，请附加 [checkpointer](/oss/python/langgraph/checkpointers#checkpoints) 并在调用旁边传递相同的 `thread_id`。在这些情况下，相同的 `rubric` 会在未来的 `invoke()` 或 `stream_events()` 调用中持续存在，直到您传入一个新的调用。
+单个 `agent.invoke()` 或 `agent.stream_events()` 调用将运行标题循环直至完成，并以最终结论结束：`satisfied`、`failed` 或 `max_iterations_reached`。要携带标题以进行后续调用，请附加 [checkpointer](/oss/python/langgraph/checkpointers#checkpoints) 并在调用旁边传递相同的 `thread_id`。在这些情况下，相同的 `rubric` 会在未来的 `invoke()` 或 `stream_events()` 调用中持续存在，直到您传入一个新的调用。
 
 中断（`KeyboardInterrupt`、`asyncio.CancelledError`）从 `agent.invoke()` 和 `agent.stream_events()` 传播出去，未捕获。在检查点线程上，具有相同评分标准的下一个调用将恢复正在进行的评分运行。
 
@@ -508,9 +512,11 @@ graph LR
 
 以下示例构建了一个编写 `find_duplicates` 函数的深度代理。它定义一次`RubricMiddleware`，将其附加到代理，然后在调用时传递一个`rubric`字符串。
 
-该示例没有要求评分者抽象地推理正确性，而是为其提供了一个`run_test_suite` 工具来直接验证行为。评分者在做出结论之前调用此工具获取更多信息，并在没有提供工具时从成绩单中进行推理。<Steps>
+该示例没有要求评分者抽象地推理正确性，而是为其提供了一个 `run_test_suite` 工具来直接验证行为。评分者在做出结论之前调用此工具获取更多信息，并在没有提供工具时从成绩单中进行推理。
+
+<Steps>
   <Step title="Define RubricMiddleware">
-    该中间件在基本代理之上添加了一个 LLM-as-a-judge 评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
+    该中间件在基本代理之上添加了一个 LLM 作为法官评分器循环。配置评分器模型、可选的自定义提示、证据收集工具和最大迭代上限。
 
     <CodeGroup>
       ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -638,7 +644,7 @@ graph LR
 
 
       rubric_middleware = RubricMiddleware(
-          model="anthropic:claude-sonnet-4-6",
+          model="anthropic:claude-sonnet-5",
           system_prompt="You are a code reviewer grading generated code against a rubric.",
           tools=[run_test_suite],
           max_iterations=5,
@@ -775,9 +781,7 @@ graph LR
           tools=[run_test_suite],
           max_iterations=5,
       )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import RubricMiddleware
       from langchain.tools import tool
 
@@ -862,7 +866,7 @@ graph LR
       from langgraph.checkpoint.memory import InMemorySaver
 
       agent = create_deep_agent(
-          model="anthropic:claude-sonnet-4-6",
+          model="anthropic:claude-sonnet-5",
           system_prompt=(
               "You are a careful Python engineer. Write correct, readable code. "
               "Follow the user's instructions exactly."
@@ -965,9 +969,11 @@ graph LR
 
 代理生成输出后，分级器接管并检查每个标准的输出：例如，当输入包含不可散列的类型时，`test_unhashable` 会失败，并显示 `TypeError`。如果存在任何问题，评分者会提供此反馈，然后代理会修改其实施并将其返回给评分者。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

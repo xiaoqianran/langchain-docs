@@ -34,7 +34,7 @@ Engine scans each connected tracing project on a dynamic schedule tuned to balan
 
 <CardGroup>
   <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-engine">
-    Enable Engine for your organization and configure it for a tracing project.
+    Enable Engine for your organization and configure it for a tracing project or agent environment.
   </Card>
 
   <Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">

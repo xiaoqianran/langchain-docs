@@ -8,7 +8,7 @@ Send LangSmith Engine notifications to Slack, Jira Automation, and webhook endpo
 
 ## Add a destination
 
-Notification destinations are configured per tracing project. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **Add**. If no destination exists, the editor opens automatically. For each destination, choose:
+Notification destinations are configured per tracing project or agent environment. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **Add**. If no destination exists, the editor opens automatically. For each destination, choose:
 
 * **Destination type**: Select the **Slack**, **Jira**, or **Webhook** tab. See [Notify a Slack channel](#notify-a-slack-channel), [Create Jira work items](#create-jira-work-items), and [Send to a webhook](#send-to-a-webhook).
 * **Notify when**: The [event types](#event-types) that trigger a notification.
@@ -163,7 +163,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import hashlib
   import hmac
   from typing import Optional
@@ -187,7 +187,7 @@ Verify the signature before parsing or acting on the payload. The HMAC input is 
       return hmac.compare_digest(expected, signature_header)
   ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createHmac, timingSafeEqual } from "node:crypto";
 
   export function verifyLangSmithSignature({
@@ -222,7 +222,7 @@ Verify the signature before parsing or acting on the payload. The HMAC input is 
 
 Roll a signing secret when it may have been exposed, or when your organization's credential rotation policy requires a new secret.
 
-To roll a secret, open the destination row in **Engine Settings**, click **Roll signing secret**, and confirm. LangSmith generates a new signing secret and uses it for future webhook deliveries immediately. The previous secret stops signing deliveries as soon as the roll completes.
+To roll a secret, open the destination row in the **Engine settings** panel, click **Roll signing secret**, and confirm. LangSmith generates a new signing secret and uses it for future webhook deliveries immediately. The previous secret stops signing deliveries as soon as the roll completes.
 
 After rolling the secret, update every consumer that verifies `X-LangSmith-Signature` with the new value.
 

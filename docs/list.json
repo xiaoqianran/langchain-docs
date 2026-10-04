@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-03T14:02:36.937Z",
+  "fetchedAt": "2026-10-04T14:29:15.256Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1665,
+  "ok": 1675,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 467
+      "count": 477
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -619,7 +619,7 @@
       "track": "build-overview",
       "trackName": "build-overview",
       "group": "pages",
-      "bytes": 10580
+      "bytes": 10612
     },
     {
       "rel": "langsmith/abac.md",
@@ -682,7 +682,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "administration-overview",
-      "bytes": 32929
+      "bytes": 34486
     },
     {
       "rel": "langsmith/agent-auth.md",
@@ -692,6 +692,15 @@
       "trackName": "LangSmith",
       "group": "agent-auth",
       "bytes": 8525
+    },
+    {
+      "rel": "langsmith/agent-environments.md",
+      "title": "Agent environments",
+      "url": "https://docs.langchain.com/langsmith/agent-environments",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "agent-environments",
+      "bytes": 3527
     },
     {
       "rel": "langsmith/agent-server.md",
@@ -1333,13 +1342,22 @@
       "bytes": 16451
     },
     {
+      "rel": "langsmith/agents.md",
+      "title": "Agents",
+      "url": "https://docs.langchain.com/langsmith/agents",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "agents",
+      "bytes": 5140
+    },
+    {
       "rel": "langsmith/alerts.md",
       "title": "Alerts in LangSmith",
       "url": "https://docs.langchain.com/langsmith/alerts",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "alerts",
-      "bytes": 38127
+      "bytes": 39835
     },
     {
       "rel": "langsmith/analyze-an-experiment.md",
@@ -1348,7 +1366,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "analyze-an-experiment",
-      "bytes": 11581
+      "bytes": 11569
     },
     {
       "rel": "langsmith/annotate-code.md",
@@ -1357,7 +1375,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "annotate-code",
-      "bytes": 31228
+      "bytes": 31707
     },
     {
       "rel": "langsmith/annotate-traces-inline.md",
@@ -1375,7 +1393,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "annotation-queues",
-      "bytes": 18187
+      "bytes": 18258
     },
     {
       "rel": "langsmith/annotation-queues-sdk.md",
@@ -1384,7 +1402,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "annotation-queues-sdk",
-      "bytes": 24281
+      "bytes": 24289
     },
     {
       "rel": "langsmith/api-ref-control-plane.md",
@@ -1447,7 +1465,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "audit-logs",
-      "bytes": 25376
+      "bytes": 25574
     },
     {
       "rel": "langsmith/auth.md",
@@ -1510,7 +1528,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "billing",
-      "bytes": 13899
+      "bytes": 14244
     },
     {
       "rel": "langsmith/bind-evaluator-to-dataset.md",
@@ -1529,6 +1547,15 @@
       "trackName": "LangSmith",
       "group": "bind-evaluator-to-dataset-link",
       "bytes": 446
+    },
+    {
+      "rel": "langsmith/build-an-agent.md",
+      "title": "Build an agent in the UI",
+      "url": "https://docs.langchain.com/langsmith/build-an-agent",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "build-an-agent",
+      "bytes": 5950
     },
     {
       "rel": "langsmith/byoc.md",
@@ -1717,7 +1744,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cli",
-      "bytes": 54953
+      "bytes": 55604
     },
     {
       "rel": "langsmith/cloud.md",
@@ -1798,7 +1825,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "composite-evaluators-ui",
-      "bytes": 3897
+      "bytes": 3971
     },
     {
       "rel": "langsmith/conditional-tracing.md",
@@ -1807,7 +1834,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "conditional-tracing",
-      "bytes": 20761
+      "bytes": 20701
     },
     {
       "rel": "langsmith/configurable-headers.md",
@@ -1925,6 +1952,15 @@
       "trackName": "LangSmith",
       "group": "create-account-api-key",
       "bytes": 7590
+    },
+    {
+      "rel": "langsmith/create-an-agent.md",
+      "title": "Create an agent",
+      "url": "https://docs.langchain.com/langsmith/create-an-agent",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "create-an-agent",
+      "bytes": 6346
     },
     {
       "rel": "langsmith/create-few-shot-evaluators.md",
@@ -2050,7 +2086,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "dashboards",
-      "bytes": 13288
+      "bytes": 15406
     },
     {
       "rel": "langsmith/data-export.md",
@@ -2251,13 +2287,22 @@
       "bytes": 7018
     },
     {
+      "rel": "langsmith/deploy-to-agent-environment.md",
+      "title": "Deploy to an agent environment",
+      "url": "https://docs.langchain.com/langsmith/deploy-to-agent-environment",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "deploy-to-agent-environment",
+      "bytes": 7118
+    },
+    {
       "rel": "langsmith/deploy-to-cloud.md",
       "title": "Create a deployment",
       "url": "https://docs.langchain.com/langsmith/deploy-to-cloud",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-to-cloud",
-      "bytes": 5549
+      "bytes": 5809
     },
     {
       "rel": "langsmith/deploy-to-cloud-overview.md",
@@ -2311,7 +2356,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deployment-quickstart",
-      "bytes": 10160
+      "bytes": 10220
     },
     {
       "rel": "langsmith/deployment-revisions.md",
@@ -2374,7 +2419,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine",
-      "bytes": 55743
+      "bytes": 56001
     },
     {
       "rel": "langsmith/engine-github.md",
@@ -2383,7 +2428,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-github",
-      "bytes": 9056
+      "bytes": 9103
     },
     {
       "rel": "langsmith/engine-notifications.md",
@@ -2392,7 +2437,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-notifications",
-      "bytes": 22889
+      "bytes": 22778
     },
     {
       "rel": "langsmith/engine-overview.md",
@@ -2401,7 +2446,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-overview",
-      "bytes": 3436
+      "bytes": 3457
     },
     {
       "rel": "langsmith/engine-security.md",
@@ -2419,7 +2464,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-self-hosted",
-      "bytes": 22699
+      "bytes": 22688
     },
     {
       "rel": "langsmith/engine-self-hosted-link.md",
@@ -2599,7 +2644,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-concepts",
-      "bytes": 19681
+      "bytes": 19789
     },
     {
       "rel": "langsmith/evaluation-quickstart.md",
@@ -2626,7 +2671,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluator-spend",
-      "bytes": 10250
+      "bytes": 10382
     },
     {
       "rel": "langsmith/evaluators.md",
@@ -2635,7 +2680,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluators",
-      "bytes": 12433
+      "bytes": 14172
     },
     {
       "rel": "langsmith/example-data-format.md",
@@ -2716,7 +2761,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "filter-traces",
-      "bytes": 23399
+      "bytes": 23930
     },
     {
       "rel": "langsmith/filter-traces-in-application.md",
@@ -2725,7 +2770,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "filter-traces-in-application",
-      "bytes": 16416
+      "bytes": 16875
     },
     {
       "rel": "langsmith/fleet/access-and-oversight.md",
@@ -2986,7 +3031,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "granular-usage",
-      "bytes": 15567
+      "bytes": 16093
     },
     {
       "rel": "langsmith/graph-rebuild.md",
@@ -3058,7 +3103,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "insights",
-      "bytes": 13424
+      "bytes": 13816
     },
     {
       "rel": "langsmith/integrations.md",
@@ -3430,6 +3475,15 @@
       "bytes": 11910
     },
     {
+      "rel": "langsmith/langsmith-setup-overview.md",
+      "title": "LangSmith setup",
+      "url": "https://docs.langchain.com/langsmith/langsmith-setup-overview",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "langsmith-setup-overview",
+      "bytes": 2050
+    },
+    {
       "rel": "langsmith/llm-as-judge.md",
       "title": "How to define an LLM-as-a-judge evaluator",
       "url": "https://docs.langchain.com/langsmith/llm-as-judge",
@@ -3655,13 +3709,22 @@
       "bytes": 4565
     },
     {
+      "rel": "langsmith/log-traces-to-agent.md",
+      "title": "Log traces to an agent",
+      "url": "https://docs.langchain.com/langsmith/log-traces-to-agent",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "log-traces-to-agent",
+      "bytes": 9689
+    },
+    {
       "rel": "langsmith/log-traces-to-project.md",
       "title": "Log traces to a specific project",
       "url": "https://docs.langchain.com/langsmith/log-traces-to-project",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "log-traces-to-project",
-      "bytes": 36392
+      "bytes": 21223
     },
     {
       "rel": "langsmith/ls-metadata-parameters.md",
@@ -3697,7 +3760,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "manage-datasets-in-application",
-      "bytes": 12193
+      "bytes": 12217
     },
     {
       "rel": "langsmith/manage-datasets-programmatically.md",
@@ -3724,7 +3787,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "manage-evaluators-sdk",
-      "bytes": 19931
+      "bytes": 19956
     },
     {
       "rel": "langsmith/manage-organization-by-api.md",
@@ -3799,6 +3862,15 @@
       "bytes": 2294
     },
     {
+      "rel": "langsmith/migrate-to-agent-based-workspaces.md",
+      "title": "How agent-based workspaces differ",
+      "url": "https://docs.langchain.com/langsmith/migrate-to-agent-based-workspaces",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "migrate-to-agent-based-workspaces",
+      "bytes": 4789
+    },
+    {
       "rel": "langsmith/model-configurations.md",
       "title": "Manage model configurations",
       "url": "https://docs.langchain.com/langsmith/model-configurations",
@@ -3862,6 +3934,15 @@
       "bytes": 2812
     },
     {
+      "rel": "langsmith/navigate-agents.md",
+      "title": "Navigate agents",
+      "url": "https://docs.langchain.com/langsmith/navigate-agents",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "navigate-agents",
+      "bytes": 7573
+    },
+    {
       "rel": "langsmith/nest-traces.md",
       "title": "Troubleshoot trace nesting",
       "url": "https://docs.langchain.com/langsmith/nest-traces",
@@ -3886,7 +3967,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "observability-concepts",
-      "bytes": 6775
+      "bytes": 8407
     },
     {
       "rel": "langsmith/observability-llm-tutorial.md",
@@ -3895,7 +3976,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "observability-llm-tutorial",
-      "bytes": 22799
+      "bytes": 23510
     },
     {
       "rel": "langsmith/observability-quickstart.md",
@@ -3904,7 +3985,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "observability-quickstart",
-      "bytes": 15244
+      "bytes": 16631
     },
     {
       "rel": "langsmith/observability-stack.md",
@@ -3931,7 +4012,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-code",
-      "bytes": 7847
+      "bytes": 7918
     },
     {
       "rel": "langsmith/online-evaluations-composite.md",
@@ -3940,7 +4021,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-composite",
-      "bytes": 3667
+      "bytes": 3758
     },
     {
       "rel": "langsmith/online-evaluations-decision-models.md",
@@ -3958,7 +4039,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-llm-as-judge",
-      "bytes": 8839
+      "bytes": 8901
     },
     {
       "rel": "langsmith/online-evaluations-multi-turn.md",
@@ -3967,7 +4048,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-multi-turn",
-      "bytes": 13606
+      "bytes": 13696
     },
     {
       "rel": "langsmith/openapi-security.md",
@@ -4012,7 +4093,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "otel-gateway-trace-redaction",
-      "bytes": 6369
+      "bytes": 6721
     },
     {
       "rel": "langsmith/platform-setup.md",
@@ -4021,7 +4102,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "platform-setup",
-      "bytes": 4167
+      "bytes": 3920
     },
     {
       "rel": "langsmith/playground-link.md",
@@ -4525,7 +4606,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "rules",
-      "bytes": 11569
+      "bytes": 11648
     },
     {
       "rel": "langsmith/run-backtests-new-agent.md",
@@ -5200,7 +5281,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 286228
+      "bytes": 290549
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -5290,7 +5371,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "set-up-hierarchy",
-      "bytes": 8279
+      "bytes": 8861
     },
     {
       "rel": "langsmith/set-up-resource-tags.md",
@@ -5299,7 +5380,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "set-up-resource-tags",
-      "bytes": 11344
+      "bytes": 11541
     },
     {
       "rel": "langsmith/setup-app-requirements-txt.md",
@@ -10675,6 +10756,15 @@
       "bytes": 9659
     },
     {
+      "rel": "langsmith/trace-replicas.md",
+      "title": "Write traces to multiple destinations with replicas",
+      "url": "https://docs.langchain.com/langsmith/trace-replicas",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "trace-replicas",
+      "bytes": 16566
+    },
+    {
       "rel": "langsmith/trace-voice-fundamentals.md",
       "title": "Voice tracing fundamentals",
       "url": "https://docs.langchain.com/langsmith/trace-voice-fundamentals",
@@ -10861,7 +10951,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-opentelemetry",
-      "bytes": 38863
+      "bytes": 39224
     },
     {
       "rel": "langsmith/trace-with-pi.md",
@@ -10942,7 +11032,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-without-env-vars",
-      "bytes": 5257
+      "bytes": 5787
     },
     {
       "rel": "langsmith/trajectory-evals.md",
@@ -11032,7 +11122,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "usage-and-billing",
-      "bytes": 15448
+      "bytes": 15972
     },
     {
       "rel": "langsmith/use-remote-graph.md",
@@ -11104,7 +11194,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "view-traces",
-      "bytes": 9411
+      "bytes": 9611
     },
     {
       "rel": "langsmith/view-usage.md",
@@ -11131,7 +11221,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "webhooks",
-      "bytes": 14168
+      "bytes": 14189
     },
     {
       "rel": "langsmith/workload-isolation.md",
@@ -11140,7 +11230,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "workload-isolation",
-      "bytes": 9678
+      "bytes": 7959
     },
     {
       "rel": "langsmith/write-prompt-with-ai.md",

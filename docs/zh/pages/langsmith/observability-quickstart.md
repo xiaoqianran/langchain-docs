@@ -10,6 +10,8 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 在本快速入门中，您将向 AI 助手添加跟踪并在 LangSmith 中查看结果。
 
+每个跟踪都位于一个容器中，具体使用哪个容器取决于您的工作区的组织方式。基于代理的工作区按 [agent and environment](/langsmith/agents) 对跟踪进行分组。基于项目的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 对它们进行分组。左上角的控件告诉您您所在的工作区：在基于代理的工作区中，它为您的工作区命名，在基于项目的工作区中，它显示 LangSmith 徽标。本快速入门配置了一个跟踪项目，下面的步骤说明了两者的不同之处。
+
 <Tip>
   如果您使用 [LangChain](https://docs.langchain.com/oss/python/langchain/overview) 或 [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) 进行构建，则可以使用单个环境变量启用 LangSmith 跟踪。请参阅[trace with LangChain](/langsmith/trace-with-langchain)或[trace with LangGraph](/langsmith/trace-with-langgraph)。
 </Tip>
@@ -20,9 +22,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 * **LangSmith帐户**：在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)注册或登录。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南。
-* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成。
-
-此示例使用 OpenAI 作为 LLM 提供商。您可以根据自己的提供商进行调整。
+* **OpenAI API 密钥**：从 [OpenAI dashboard](https://platform.openai.com/account/api-keys) 生成。此示例使用 OpenAI 作为 LLM 提供商。您可以根据自己的提供商进行调整。
 
 ## 1. 设置您的环境
 
@@ -53,7 +53,9 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
    export LANGSMITH_TRACING=true
    export LANGSMITH_API_KEY="<your-langsmith-api-key>"
    export OPENAI_API_KEY="<your-openai-api-key>"
-   ```要将跟踪发送到特定项目，请使用[⟦T11⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。
+   ```
+
+   要将跟踪发送到特定项目，请使用[⟦T11⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
    <Note>
      如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
@@ -63,9 +65,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
          <tr>
            <th>地区</th>
          </tr>
-       </thead>
-
-       <tbody>
+       </thead><tbody>
          <tr>
            <td>GCP 美国</td>
          </tr>
@@ -91,12 +91,12 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 ## 2. 构建应用程序
 
-以下应用程序使用两个LangSmith工具来添加跟踪：* **OpenAI 包装器**：包装 OpenAI 客户端，因此每个 LLM 调用都会自动记录为嵌套范围。
-* **可跟踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
+以下应用程序使用两个LangSmith工具来添加跟踪：
 
-`assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。
+* **OpenAI 包装器**：包装 OpenAI 客户端，因此每个 LLM 调用都会自动记录为嵌套范围。
+* **可追踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
 
-使用以下代码创建名为 `app.py`、`index.ts`、`App.java` 或 `App.kt` 的文件：
+`assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。使用以下代码创建名为 `app.py`、`index.ts`、`App.java` 或 `App.kt` 的文件：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -305,7 +305,11 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   ```
 </CodeGroup>
 
-## 4. 查看您的踪迹在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。单击 `assistant` 行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
+## 4. 查看您的踪迹
+
+在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart)中，转到**跟踪**并选择您的**默认**项目。在基于代理的工作区中，首先在顶部栏中选择您的代理，然后转到 **跟踪**。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
+
+单击 `assistant` 行打开跟踪。 **轨迹**选项卡显示发送到模型的对话。选择 **详细信息** 选项卡可查看完整的运行树，包括带有 `get_context` 工具调用的 `assistant` 函数以及嵌套在其中的 OpenAI 调用。
 
 <img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
 
@@ -317,12 +321,11 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   您还可以使用[LangSmith CLI](/langsmith/langsmith-cli)从终端检查痕迹。
 </Tip>
 
-## 后续步骤
-
-* [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。
+## 后续步骤* [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。
 * [Trace an LLM application](/langsmith/observability-llm-tutorial)：完整的生命周期教程，从原型设计到生产。
 * [Filter traces](/langsmith/filter-traces)：搜索和导航大型跟踪项目。
 * [Log to a specific project](/langsmith/log-traces-to-project)：将跟踪发送到指定项目而不是**默认**。
+* [Agents](/langsmith/agents)：代理如何对一个应用程序的跟踪、数据集和监视器进行分组，以及其环境如何划分它们。
 
 <Callout type="info" icon="feather">
   记录跟踪后，使用 **[Chat](/langsmith/chat)** 对其进行分析，并获得 AI 支持的应用程序性能洞察。

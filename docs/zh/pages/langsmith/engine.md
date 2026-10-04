@@ -46,7 +46,7 @@ flowchart LR
 
 ## 设置引擎
 
-设置引擎分为两步：[Organization Admin](/langsmith/rbac#organization-admin)首先为[workspace](/langsmith/administration-overview#workspaces)启用引擎，然后任何用户都可以为每个跟踪项目打开引擎。<Note>
+设置引擎分为两步：[Organization Admin](/langsmith/rbac#organization-admin)首先为[workspace](/langsmith/administration-overview#workspaces)启用引擎，然后任何其[role](/langsmith/rbac)可以更新跟踪项目的用户都可以为每个跟踪项目或代理环境启用引擎。<Note>
   在自托管 LangSmith 上，操作员必须在 LangSmith Helm 图表中启用引擎，然后任一步骤可用。参见[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 </Note>
 
@@ -55,8 +55,8 @@ flowchart LR
 <Note>您必须是[**Organization Admin**](/langsmith/rbac#organization-admin)才能启用引擎。要查找您的管理员，请打开 **设置**，选择 **访问和安全** 下的 **成员**，然后查找具有 **组织管理员** 角色的成员。</Note>
 
 <Steps>
-  <Step title="Open Engine enablement">
-    在[LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine)中，点击左下角的**设置**，然后选择**引擎**下的**引擎启用**。
+  <Step title="Open Engine settings">
+    在[LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine)中，点击左下角的**设置**，然后选择**引擎**下的**引擎**。
   </Step>
 
   <Step title="Toggle Enable Engine">
@@ -64,9 +64,9 @@ flowchart LR
 
     > LangSmith AI 功能由 LangChain 托管推理提供支持，为您的可观察性工作流程带来智能。启用LangSmith人工智能后，您的团队可以更快地发现问题、运行更智能的评估并构建更可靠的法学硕士申请。通过启用此功能，您组织的跟踪数据将使用 LangChain 管理的 LLM 密钥进行处理。遵守我们的服务条款。
   </Step>
-</Steps>
+</Steps>启用引擎后，其角色可以更新跟踪项目的任何用户都可以针对跟踪项目或代理环境进行设置。对项目具有只读访问权限的角色则不能。
 
-启用引擎后，组织中的任何团队成员都可以为其跟踪项目进行设置。<Tip>
+<Tip>
   如果您想关闭引擎，请将相同的设置切换为关闭。这将停止引擎的所有自动运行并停止您帐户中的未来计费。
 </Tip>
 
@@ -75,25 +75,25 @@ flowchart LR
 <Steps>
   <Step title="Open Engine and select a project">
     在 [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine) 中，选择 UI 侧栏中的 **Engine**。项目选择器列出了已配置的项目。要设置未列出的项目，请单击 **+ 设置另一个项目**，然后在 **选择要分析的项目** 下选择它。跟踪项目中的 **Engine** 选项卡也可用。
+  </Step><Step title="Connect a code repository (optional)">
+    尽管可选，但建议连接代码存储库。引擎读取您的源代码以找到失败跟踪背后的代码路径，在实际实现中落实其建议的修复，并直接从问题中打开拉取请求。在 **连接代理的代码存储库** 下，在 **GitHub 存储库** 字段中选择一个存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to GitHub](/langsmith/engine-github)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
   </Step>
 
-  <Step title="Connect a code repository (optional)">
-    尽管可选，但建议连接代码存储库。引擎读取您的源代码以找到失败跟踪背后的代码路径，在实际实现中落实其建议的修复，并直接从问题中打开拉取请求。在 **连接代理的代码存储库** 下，在 **GitHub 存储库** 字段中选择一个存储库。仅显示 GitHub 应用程序可以访问的存储库。单击 **管理应用程序访问 →** 以更新权限。有关 GitHub 应用程序设置和组织批准，请参阅[Connect Engine to GitHub](/langsmith/engine-github)。要为引擎提供额外的项目上下文，请在 **Context Hub 存储库** 字段中选择一个存储库。
-  </Step><Step title="Select preference categories (optional)">
+  <Step title="Select preference categories (optional)">
     在**什么对您最重要？**下，选择要优先审核的类别（例如，**工具调用失败**或**延迟**）。单击 **+ 添加特定内容** 来描述自定义问题。参见[Tell Engine what kinds of issues to focus on](#tell-engine-what-kinds-of-issues-to-focus-on)。
   </Step>
 
   <Step title="Choose an analysis level">
     在**分析级别**下，选择**缩减**、**标准**（默认）或**扩展**。级别越高，分析的痕迹越多，成本也越高。参见[Set the analysis level](#set-the-analysis-level)。
-  </Step>
-
-  <Step title="Focus on specific traces (optional)">
+  </Step><Step title="Focus on specific traces (optional)">
     在 **关注特定跟踪** 下，按运行名称或元数据将引擎的注意力缩小到运行的子集。将其留空以分析所有痕迹。参见[Tell Engine which traces to focus on](#tell-engine-which-traces-to-focus-on)。
   </Step>
 
   <Step title="Start analyzing">
     单击**开始分析**。该对话框可能会根据您的项目使用情况显示估计的每月成本范围。引擎可能需要长达 20 分钟的时间来分析项目的跟踪并开始提出建议。在等待期间，当发现不同优先级的问题时，您可以[set up notifications](/langsmith/engine-notifications)在 Slack 中或通过 Webhook 收到警报。
-  </Step><Step title="Review the agent overview document">
+  </Step>
+
+  <Step title="Review the agent overview document">
     在出现问题之前，引擎会根据您的跟踪生成一个代理概述文档，描述项目的目的、架构和关键指标。查看并编辑文档，然后单击“**接受并继续**”继续。如果概述不准确，请在继续之前对其进行编辑，因为引擎将其用作所有分析的上下文，因此此处的准确性会影响检测到的问题的质量。
   </Step>
 </Steps>
@@ -106,50 +106,50 @@ flowchart LR
 
 您可以稍后在 [Configure Engine](#configure-engine) 中更改任何这些选择。要连接 GitHub，请参阅[Connect Engine to GitHub](/langsmith/engine-github)。要在 Engine 发现问题时在 Slack 中或通过 Webhook 收到警报，请参阅 [Engine notifications](/langsmith/engine-notifications)。
 
-### 暂停引擎或删除其问题
-
-引擎按照动态计划扫描您的痕迹，以平衡成本和性能。要停止扫描项目而不删除其现有问题，请单击 [**Engine Settings**](#configure-engine) 面板中的 **暂停**。单击 **恢复** 再次开始扫描。
+### 暂停引擎或删除其问题引擎按照动态计划扫描您的痕迹，以平衡成本和性能。要停止扫描项目而不删除其现有问题，请单击 [**Engine settings**](#configure-engine) 面板中的 **暂停**。单击 **恢复** 再次开始扫描。
 
 单击同一面板中的 **删除所有问题** 以永久删除项目的问题和引擎设置。此操作无法撤消。
 
 要关闭整个组织的引擎，请参阅[Enable Engine for your organization](#enable-engine-for-your-organization)。
 
-## 配置引擎在 **引擎** 页面上，单击问题列表顶部的 **配置引擎** <Icon icon="settings" />（齿轮）图标，打开 **引擎设置** 面板。使用它为引擎提供代理的上下文，告诉它要关注什么，然后连接 Linear。该面板还包含其他地方介绍的设置：
+## 配置引擎
 
-* **代码存储库**和**上下文存储库**：连接或更新诊断问题时读取的 GitHub 存储库引擎，可以选择使用 **子文件夹** 和 **分支**（默认为存储库默认值）。 Context Hub 存储库可让引擎针对说明、文档和链接技能提出修复建议。参见[Connect Engine to GitHub](/langsmith/engine-github)。
+在 **引擎** 页面上，单击问题列表顶部的 **配置引擎** <Icon icon="settings" />（齿轮）图标，打开 **引擎设置** 面板。使用它为引擎提供代理的上下文，告诉它要关注什么，然后连接 Linear。该面板还包含其他地方介绍的设置：* **代码存储库**和**上下文存储库**：连接或更新诊断问题时读取的 GitHub 存储库引擎，可以选择使用 **子文件夹** 和 **分支**（默认为存储库默认值）。 Context Hub 存储库可让引擎针对说明、文档和链接技能提出修复建议。参见[Connect Engine to GitHub](/langsmith/engine-github)。
 * **通知**：请参阅[Engine notifications](/langsmith/engine-notifications)。
 * **预览部署**：设置基线部署引擎重放问题跟踪，并通过预览部署打开修复验证。参见[Validate fixes by running your agent](#beta-validate-fixes-by-running-your-agent)。
 * **分析级别**：参见[Set the analysis level](#set-the-analysis-level)。
-* **引擎花费**：参见[Set spend limits and monitor usage](#set-spend-limits-and-monitor-usage)。
+* **支出限额**：参见[Set spend limits and monitor usage](#set-spend-limits-and-monitor-usage)。
 * **暂停**和**删除所有问题**：请参阅[Pause Engine or delete its issues](#pause-engine-or-delete-its-issues)。
 
-### 提供有关您的代理的背景信息在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的 **用户首选项** 部分还收集了引擎具有 [learned from your actions on issues](#investigate-and-fix-an-issue) 的内容，因此您可以在此处查看并更正这些校准。
+### 提供有关您的代理的背景信息
 
-### 告诉引擎要关注哪些类型的问题
+在设置过程中，引擎会生成一个代理概述文档，描述项目的目的、架构和关键指标。引擎将其用作所有分析的上下文，因此其准确性会影响检测到的问题的质量。在 **代理概述** 下，编辑文档以添加引擎无法从您的跟踪中推断出的任何相关上下文，并确保其准确。该文档的 **用户首选项** 部分还收集了引擎具有 [learned from your actions on issues](#investigate-and-fix-an-issue) 的内容，因此您可以在此处查看并更正这些校准。### 告诉引擎要关注哪些类型的问题
 
 在**首选项**下，列出引擎应关注、优先考虑或忽略的区域。选择类别芯片，例如 **成本和令牌**、**延迟** 或 **工具调用失败**，或单击 **+ 添加特定内容** 来描述自定义问题。引擎将首选项视为权威并将其折叠到代理概述文档中。更改将在下次扫描时生效。
 
-### 告诉引擎要关注哪些跟踪将引擎聚焦于重要的跟踪，以保持分析精确并减少浪费的 LSU 支出。当项目混合多个代理或工作负载并且您希望引擎仅分析其中的某些代理或工作负载时，请使用跟踪范围（**关注特定跟踪**控件）。例如，如果一个项目同时运行生产聊天机器人和夜间批处理作业，则范围为`Run Name is chatbot`，以便引擎忽略批处理运行。默认情况下，引擎会分析项目的所有跟踪。
+### 告诉引擎要关注哪些跟踪
+
+将引擎聚焦于重要的跟踪，以保持分析精确并减少浪费的 LSU 支出。当项目混合多个代理或工作负载并且您希望引擎仅分析其中的某些代理或工作负载时，请使用跟踪范围（**关注特定跟踪**控件）。例如，如果一个项目同时运行生产聊天机器人和夜间批处理作业，则范围为`Run Name is chatbot`，以便引擎忽略批处理运行。默认情况下，引擎会分析项目的所有跟踪。
 
 使用相同的控件在两个位置之一设置范围：
 
 * **引擎设置**：在**查找并修复代理的问题**面板中，**关注特定跟踪**下。
-* **引擎设置**：在[**Engine Settings**](#configure-engine)面板的**关注特定痕迹**部分。此处的编辑会自动保存。
-
-使用过滤器编辑器添加范围条件。您可以添加每种条件一个，**最多两个**：
+* **引擎设置**：在[**Engine settings**](#configure-engine)面板的**跟踪过滤器**部分。此处的编辑会自动保存。使用过滤器编辑器添加范围条件。您可以添加每种条件一个，**最多两个**：
 
 * **运行名称**：选择运行或代理名称。值字段根据项目最近跟踪中的运行名称自动完成。
-* **元数据**：选择一个元数据键，然后选择一个值。两者都根据项目最近运行中存在的元数据自动完成。要添加条件，请从字段选择器中选择其类型，填写值，然后单击“**添加**”。每个条件都显示为一个筹码，例如 `Run Name is chatbot` 或 `env is prod`。单击芯片上的 ****** 可消除该情况。
+* **元数据**：选择一个元数据键，然后选择一个值。两者都根据项目最近运行中存在的元数据自动完成。
+
+要添加条件，请从字段选择器中选择其类型，填写值，然后单击“**添加**”。每个条件都显示为一个筹码，例如 `Run Name is chatbot` 或 `env is prod`。单击芯片上的 ****** 可消除该情况。
 
 <Note>
   **范围限制：** 范围过滤器仅接受运行名称和元数据条件。您无法通过反馈键、评估者姓名或分数阈值来确定引擎的扫描范围。要将引擎集中在具有特定评估者低分的跟踪上，请在您的 [preferences](#tell-engine-what-kinds-of-issues-to-focus-on) 或 [agent overview](#give-context-on-your-agent) 中进行描述。引擎已经自动考虑所有反馈信号。参见[How Engine selects traces](#how-engine-selects-traces)。
 </Note>
 
-范围确定引擎分析哪些跟踪来检测问题并构建代理概述文档。初始设置期间设置的范围适用于引擎的第一次扫描。稍后在[**Engine Settings**](#configure-engine)面板中更改范围不会立即重新运行引擎；它适用于下一次扫描。
+范围确定引擎分析哪些跟踪来检测问题并构建代理概述文档。初始设置期间设置的范围适用于引擎的第一次扫描。稍后在[**Engine settings**](#configure-engine)面板中更改范围不会立即重新运行引擎。它适用于下一次扫描。### 连接到线性
 
-### 连接到线性
+在“线性”下，单击“连接”，选择一个团队，还可以选择新问题的项目，然后单击“保存更改”。 Engine 保留与其创建的问题的持久链接，但不会同步 Linear 的后续编辑。删除所有引擎问题不会删除现有的线性票证。参见[Create a Linear issue](#create-a-linear-issue)。
 
-在“线性”下，单击“连接”，选择一个团队，还可以选择新问题的项目，然后单击“保存更改”。 Engine 保留与其创建的问题的持久链接，但不会同步 Linear 的后续编辑。删除所有引擎问题不会删除现有的线性票证。参见[Create a Linear issue](#create-a-linear-issue)。## 管理引擎成本
+## 管理引擎成本
 
 ### 了解路易斯安那州立大学的费用
 
@@ -164,11 +164,11 @@ flowchart LR
 |相|触发|典型的 LSU 用法 |
 | - | - | - |
 | **初始化** |第一次在项目上启用引擎 | 45-60 个路易斯安那州立大学 |
-| **重复扫描** |按照动态时间表自动进行 | 15-22.5 LSU |
+| **重复扫描** |按照动态时间表自动进行 | 15-22.5 LSU |在初始化时，引擎会审核过去的跟踪、集群并按严重性对问题进行优先级排序，并对提示或代码提出修复建议（如果连接了存储库）。定期扫描按照动态计划运行，以平衡成本和性能，无论是否发现新问题，并发现以前未检测到的新问题。
 
-在初始化时，引擎会审核过去的跟踪、集群并按严重性对问题进行优先级排序，并对提示或代码提出修复建议（如果连接了存储库）。定期扫描按照动态计划运行，以平衡成本和性能，无论是否发现新问题，并发现以前未检测到的新问题。### 设置分析级别
+### 设置分析级别
 
-分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine Settings**](#configure-engine)面板中的**分析级别**下更改：
+分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine settings**](#configure-engine)面板中的**分析级别**下更改：
 
 * **减少**：以更低的成本监控更少的跟踪。
 * **标准**（默认）：分析更多符合条件的轨迹以获得更全面的覆盖范围。
@@ -178,23 +178,21 @@ flowchart LR
 
 ### 设置支出限额并监控使用情况
 
-组织管理员可以在两个级别设置支出限制：
-
-* **组织范围限制**：打开**设置**，选择 **引擎** 下的 **引擎启用**，然后在 **每月 LSU 支出限制** 下输入一个值。
-* **每个项目限制**：打开跟踪项目中的 **引擎** 选项卡，单击 **引擎设置** <Icon icon="settings" /> 图标，然后在 **每月 LSU 支出限制** 下设置限制。
+组织管理员可以在两个级别设置支出限制：* **组织范围限制**：打开**设置**并选择**引擎**下的**引擎**。在本月至今的支出卡上，单击限制芯片并在弹出窗口中设置限制。
+* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** <Icon icon="settings" /> 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。
 
 您可以输入 LSU 或 USD 的限额 (1 LSU = \$1)。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
 
-这两个级别的默认值不同：* **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎启用**页面列出了强制限制及其来源。
-* **每个项目限制**：将该字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
+这两个级别的默认值不同：
 
-要完全停止引擎，请使用 **设置 > 引擎启用** 中的 **启用引擎** 开关。
+* **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
+* **项目或环境限制**：将该字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
 
-要监控使用情况，您可以在 **设置** 中的 **引擎启用** 页面上查看组织的每月 LSU 支出，或在每个跟踪项目的 [**Engine Settings**](#configure-engine) 面板中查看每个项目的支出。
+要完全停止引擎，请使用 **设置 > 引擎** 中的 **启用引擎** 开关。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](#configure-engine) 面板中查看跟踪项目或代理环境的支出。
 
 ## 调查并解决问题
 
-设置完成后，**引擎**页面会列出引擎检测到的问题。单击任何问题以打开其详细信息面板。顶部的诊断描述了问题及其影响。每个问题都有一个工具栏，用于设置其优先级、关闭或重新打开它、打开拉取请求、创建线性问题并观看它。引擎从您处理问题的方式中学习。在每次计划的扫描中，它都会检查自上次扫描以来您采取的操作，例如关闭问题、将其标记为错误标记、更改其优先级或打开拉取请求，并将它们折叠到 [agent overview](#give-context-on-your-agent) 的 **用户首选项** 部分。您在更改优先级或关闭问题时给出的原因是该反馈的一部分。例如，如果您重复地将某一类别中的问题标记为错误标记，则引擎会在以后的扫描中将该类别评为较低优先级。来自自动化的更改（例如拉取请求合并）以及通过 [LangSmith Chat](/langsmith/chat#engine) 采取的操作不算作反馈。
+设置完成后，**引擎**页面会列出引擎检测到的问题。单击任何问题以打开其详细信息面板。顶部的诊断描述了问题及其影响。每个问题都有一个工具栏，用于设置其优先级、关闭或重新打开它、打开拉取请求、创建线性问题并观看它。引擎从您处理问题的方式中学习。在每次计划的扫描中，它都会检查自上次扫描以来您采取的操作，例如关闭问题、将其标记为错误标记、更改其优先级或打开拉取请求，并将它们折叠到 [agent overview](#give-context-on-your-agent) 的 **用户首选项** 部分。您在更改优先级或关闭问题时给出的原因是该反馈的一部分。例如，如果您重复将某一类别中的问题标记为错误标记，则引擎会在以后的扫描中将该类别评为较低优先级。来自自动化的更改（例如拉取请求合并）以及通过 [LangSmith Chat](/langsmith/chat#engine) 采取的操作不算作反馈。
 
 ### 审查证据
 
@@ -213,7 +211,7 @@ flowchart LR
 从优先级下拉列表中选择 **低**、**中** 或 **高** 以更新问题的优先级。您可以选择提供一个原因，即稍后扫描时引擎[learns from](#investigate-and-fix-an-issue)。
 
 结束记录您的审核结果。点击：* **关闭** 将问题标记为已解决。
-* **错误标记** 将问题视为不真实或不值得修复而忽略。
+* **错误标记** 将问题视为不真实或不值得修复而予以驳回。
 
 对于任一结果，您都可以选择提供一个原因，引擎 [learns from](#investigate-and-fix-an-issue) 在以后的扫描中。
 
@@ -238,9 +236,9 @@ flowchart LR
 
 ### 观看一个问题
 
-观看使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine Settings](#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
+观看使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这将打开 [Engine settings](#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
 
-当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数量，以便您可以选择修复或继续关注。
+当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数，以便您可以选择修复或继续关注。
 
 <Note>
   观看仅适用于没有正在进行的拉取请求的开放问题：放弃修复以再次观看问题。解决关注的问题，或将其标记为错误标记，会自动停止关注。
@@ -256,7 +254,7 @@ flowchart LR
 
 * **过滤问题**图标可按**优先级**、**状态**和**标签**进行过滤。
 * **对问题进行排序** 图标可按 **严重性**、**上次更新** 和 **创建** 进行排序。
-* **配置引擎** <Icon icon="settings" />（齿轮）图标到[configure Engine](#configure-engine)。打开[LangSmith Chat](/langsmith/chat#engine)针对您的问题提出问题，例如哪些问题最需要关注或有多少新问题尚未解决。
+* **配置引擎** <Icon icon="settings" />（齿轮）图标至[configure Engine](#configure-engine)。打开[LangSmith Chat](/langsmith/chat#engine)针对您的问题提出问题，例如哪些问题最需要关注或有多少新问题尚未解决。
 
 如果设置完成后没有出现问题，则引擎在分析的跟踪中没有发现重复出现的模式。尝试在收集更多痕迹后回来查看。
 
@@ -273,21 +271,21 @@ langsmith project issues list --project <project-name> --status open --priority 
 
 <Note>
   修复验证是私人的[beta](/langsmith/release-stages#beta)。它仅适用于已启用它的组织的LangSmith 云。仅支持在[LangSmith Cloud deployments](/langsmith/deploy-to-cloud)上运行的代理；不支持外部托管代理。要请求访问，[join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access)。
-</Note>引擎通过运行代理来验证修复。它会根据代理的部署重播链接到 [issue](#investigate-and-fix-an-issue) 的跟踪，以确认问题是否重现。然后，它针对 Engine 修复的预览部署重播相同的跟踪，以确认修复是否解决了问题。引擎将每个验证记录为从问题跟踪构建的数据集上的[experiment](/langsmith/evaluation-concepts#experiment)，因此您可以逐个跟踪比较基线和修复跟踪。
+</Note>引擎通过运行代理来验证修复。它会根据代理的部署重播链接到 [issue](#investigate-and-fix-an-issue) 的跟踪，以确认问题是否重现。然后，它针对 Engine 修复的预览部署重放相同的跟踪，以确认修复是否解决了问题。引擎将每个验证记录为从问题跟踪构建的数据集上的[experiment](/langsmith/evaluation-concepts#experiment)，因此您可以逐个跟踪比较基线和修复跟踪。
 
 ### 设置验证
 
 验证需要基线部署：在同一工作区中准备好代理的非预览[LangSmith Cloud deployment](/langsmith/deploy-to-cloud)。选择它需要在该部署上使用`deployments:update`。
 
 设置验证：1. 在**引擎**页面，单击**配置引擎**。
-2. （可选）[Connect the GitHub repository](/langsmith/engine-github) 引擎应修改。在存储库设置中，选择引擎修复的基本分支，或将其留空以使用存储库的默认分支。
+2.（可选）[Connect the GitHub repository](/langsmith/engine-github) 引擎应修改。在存储库设置中，选择引擎修复的基本分支，或将其留空以使用存储库的默认分支。
 3. 在 **预览部署** 部分中，找到 **基准部署** 字段。搜索部署，或粘贴其 LangSmith URL 或部署 ID。无法从列表中选择预览部署和未准备就绪的部署。基线可以是生产或暂存部署，但应尽可能使用暂存，以便验证不会执行生产凭证和服务。
 4. 选择**通过预览部署验证修复**。
 5. 单击**保存**。
 
 修复验证还需要：* **连接的存储库**：引擎在[Connect Engine to GitHub](/langsmith/engine-github)中连接的存储库中将其修复作为拉取请求打开。
 * **标签触发的预览版本**：基准部署上的[Enable preview builds](/langsmith/preview-builds#enable-preview-builds)。使用以下启动配置：
-  * 将 **预览基础分支** 设置为为引擎配置的同一分支。
+  * 将 **预览基础分支** 设置为为引擎配置的相同分支。
   * 选择**仅标签**并将**触发标签**设置为`preview`。引擎将此标签应用于其修复拉取请求。
   * 将**空闲 TTL** 设置为 6 小时。
   * 将 **最大并发预览** 设置为 20。
@@ -311,12 +309,12 @@ langsmith project issues list --project <project-name> --status open --priority 
 标头值已加密且只写：LangSmith 仅显示它们的名称，因此替换它们意味着再次输入每个值。 LangSmith 自行管理的标头无法被覆盖。要恢复默认设置，请单击“**使用平台身份验证**”。
 
 <Note>
-  自定义标头仅决定您的部署是否接受请求。他们不会告诉您的代理运行是一次验证重播，这是[Make replayed runs side-effect free](#make-replayed-runs-side-effect-free)中描述的单独信号。
+  自定义标头仅决定您的部署是否接受请求。他们不会告诉您的代理运行是验证重播，这是[Make replayed runs side-effect free](#make-replayed-runs-side-effect-free)中描述的单独信号。
 </Note>
 
 ### 准备一个部署来测试引擎通过运行代理来确认问题，因此您选择的部署必须是可以重复执行而不会产生任何后果的部署。
 
-#### 使用可以安全使用的部署
+#### 使用可以安全执行的部署
 
 选择一种部署来镜像您要测试的代理的配置，但该部署不是为您的用户提供服务的部署。将其指向代理写入的任何服务的测试凭据、测试帐户和非生产数据存储。
 
@@ -456,7 +454,7 @@ if is_trusted_engine_validation(
 
 #### 预计流量激增
 
-引擎会同时重播问题的跟踪，因此验证一次最多可以启动五次运行，并且每一次运行直至完成。修复验证针对预览部署重复相同的设置。确认部署的速率限制、配额及其调用的任何下游服务能够容忍该突发。
+引擎会同时重播问题的跟踪，因此验证一次最多可以启动五次运行，并且每一次都运行完成。修复验证针对预览部署重复相同的设置。确认部署的速率限制、配额及其调用的任何下游服务能够容忍该突发。
 
 #### 保持部署可用
 
@@ -516,13 +514,13 @@ if is_trusted_engine_validation(
 * **基线实验**：针对基线部署的重播。
 * **修复实验**：针对修复的预览部署进行重播，每次验证尝试进行一个实验。引擎将其对每个结论性重播的判决记录为密钥`engine_issue_validation`的反馈。值为`reproduced`或`not_reproduced`，反馈评论解释了判决结果。
 
-当引擎根据预览部署验证修复时，问题的 **证据** 部分显示总体结论和每条跟踪一行：
+当引擎根据预览部署验证修复时，问题的 **证据** 部分显示总体结论和每个跟踪一行：
 
 * **标记的跟踪**：引擎在原始跟踪中看到的内容。单击“**原始轨迹**”将其打开。
 * **在产品上复制**：基线结果，**复制**，**未复制**，或**不确定**。单击 **Repro Trace** 打开重播。
 * **PR #\<number>** 之后：修复预览的结果，**修复已验证**、**重复发生**或 **不确定**。单击跟踪链接可打开重播。
 
-每个列标题都会计算在基线上重现的跟踪数或通过修复解决的跟踪数。单击 **查看实验** 以打开基线并在数据集的比较视图中并排修复实验。有关更多信息，请参阅[Compare experiment results](/langsmith/compare-experiment-results)。
+每个列标题都会计算在基线上重现的跟踪数或通过修复解决的跟踪数。单击 **查看实验** 以打开基线并在数据集的比较视图中并排修复实验。欲了解更多信息，请参阅[Compare experiment results](/langsmith/compare-experiment-results)。
 
 在修复验证运行之前，问题会显示验证摘要：基线结果、修复的验证状态以及每个重播示例的链接。
 
@@ -547,7 +545,7 @@ if is_trusted_engine_validation(
 ### 红队如何运作
 
 Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-baseline-deployment)。每次运行：1. **映射应用程序。** 引擎会检查来自跟踪项目的最多 25 个最近跟踪，以及您的代码存储库（如果已连接）。它从它们那里学习代理的提示、工具、护栏和请求格式。如果引擎已经扫描了项目，则运行从项目的代理概述开始，并运行较短的确认扫描。
-2. **形成假设。** 每个假设都描述了代理可能失败的一种特定方式。引擎为其分配了一个[issue class](#red-teaming-issue-classes)和一个场景类型，该场景类型记录了普通用户是否可以触发故障或者是否受到故意攻击。
+2. **形成假设。** 每个假设都描述了代理可能失败的一种特定方式。引擎给它分配一个[issue class](#red-teaming-issue-classes)和一个场景类型，记录普通用户是否可以触发故障或者是否受到故意攻击。
 3. **探测部署。** 引擎针对每个假设向部署发送最多两个合成请求。探测器重用真实跟踪的请求格式，但用新的合成输入替换其内容。
 4. **判断结果。** 引擎检查每个探测的响应和跟踪，然后为假设分配状态和严重性。对于不明确的结果，引擎可以发送一个后续探测。
 
@@ -560,7 +558,7 @@ Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-
 * **跟踪项目上的引擎**：[Set up Engine](#set-up-engine) 用于接收代理跟踪的项目。
 * **基线部署**：同一工作区中准备好的、非预览的[LangSmith Cloud deployment](/langsmith/deploy-to-cloud)，设置为项目的基线。参见[Set the baseline deployment](#set-the-baseline-deployment)。
 * **权限**：`runs:read` 在跟踪项目上查看红队报告。要开始运行，您还需要项目上的 `runs:create` 和基线部署上的 `deployments:update`。
-* **连接的存储库（推荐）**：使用 [connected GitHub repository](/langsmith/engine-github)，引擎从源读取代理的提示、工具和护栏。如果没有，调查结果仅依赖于跟踪，并且报告显示**存储库上下文不可用**。
+* **连接的存储库（推荐）**：使用[connected GitHub repository](/langsmith/engine-github)，引擎从源读取代理的提示、工具和护栏。如果没有，调查结果仅依赖于跟踪，并且报告显示**存储库上下文不可用**。
 
 <Warning>
   探测是真实的请求。每个探针都会在基线部署上创建一个线程和运行，并且您的代理可以在响应时调用其工具。选择综合测试流量和工具副作用可接受的部署，例如暂存部署。
@@ -579,7 +577,7 @@ Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-
 
 开始跑步：
 
-1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine)中，选择侧边栏中的**Engine**，然后选择跟踪项目。
+1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine)中，选择侧栏中的**Engine**，然后选择跟踪项目。
 2. 在左侧面板顶部，选择 **红队**。
 3. 单击**运行红队**。
 
@@ -587,7 +585,7 @@ Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-
 
 如果运行未完成，报告选择器将显示其最终状态：**失败**、**超时**、**中断**、**已取消**或**无法启动**。没有针对该运行的报告。
 
-### 阅读红队报告使用左侧面板顶部的报告选择器选择运行日期。选择**加载较旧的报告**可向后翻阅较早的运行。
+### 阅读红队报告使用左侧面板顶部的报告选择器选择按日期运行。选择**加载较旧的报告**可向后翻阅较早的运行。
 
 #### 查看概述
 
@@ -652,7 +650,7 @@ Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-
 
 ### 再次运行红队
 
-红队在同一部署修订版的运行之间延续判决。新的运行会收到针对相同基线部署和活动修订的最多五次早期成功运行的结论。引擎会跳过先前运行已确认或发现安全的假设，除非新运行表明行为发生了变化，并优先考虑需要审查的假设。将新修订版部署到基准部署后，下一次运行将开始，而无需事先判断。使用 **Findings Over Runs** 来比较各运行中已确认的结果。
+红队在同一部署修订版的运行之间延续判决。新的运行会收到针对相同基线部署和活动修订的最多五次早期成功运行的结论。引擎会跳过先前运行已确认或发现安全的假设，除非新运行表明行为发生了变化，并优先考虑需要审查的假设。将新修订版部署到基线部署后，下一次运行将开始，而无需事先判断。使用 **Findings Over Runs** 来比较各运行中已确认的结果。
 
 ### 红队限制
 
@@ -662,7 +660,7 @@ Red Teaming 将部署集探测为跟踪项目的 [baseline deployment](#set-the-
 | - | - |
 |痕迹审查 | 25、从最多 100 个最近的跟踪摘要中选择 |
 |假设| 50 | 50
-|每个假设的探索 | 2 |
+|每个假设的探索| 2 |
 |对基线部署的请求 | 100 | 100
 |推荐 | 20 |
 

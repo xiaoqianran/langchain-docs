@@ -292,7 +292,7 @@ Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释�
 * **`run_id`**：查询使用 `client.runs.query()` 运行。每次运行都会公开 `id`、`project_id` 和 `start_time`，这是 RUN 项所需的字段。
 * **`thread_id`**：使用`client.threads.query()`查询线程。每个结果都会暴露其`thread_id`。
 
-您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：* **`project_id`**：在[tracing project](/langsmith/observability-concepts#projects)中，单击项目名称旁边的**ID**徽章以复制项目UUID。
+您还可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues-sdk) 中找到这些 ID：* **`project_id`**：在[tracing project](/langsmith/observability-concepts#tracing-projects)中，单击项目名称旁边的**ID**徽章以复制项目UUID。
 * **`run_id`**：在 [Details view](/langsmith/view-traces#details-view) 中打开运行，然后单击运行名称旁边的 **ID** 徽章以复制运行 ID。
 * **`thread_id`**：在跟踪项目的 **Threads** 视图中，复制 **Thread ID** 列中的值。
 
@@ -542,7 +542,7 @@ Rubric 项目将反馈配置分配给特定的注释队列。它们控制注释�
 
 |类型 |最小/最大|类别 |限制条件|
 | - | - | - | - |
-| `continuous` |可选|可选（标记刻度点）| `min < max`； \[`min`, `max`] | 内的类别值
+| `continuous` |可选|可选（标记刻度点）| `min < max`; \[`min`, `max`] | 内的类别值
 | `categorical` |不得设置 |必需，最少 2 |独特的价值观和标签|
 | `freeform` |不得设置 |不得设置 |不适用 |
 

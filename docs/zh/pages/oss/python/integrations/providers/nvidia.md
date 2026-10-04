@@ -18,19 +18,19 @@ LangChain 和 NVIDIA 在代理堆栈上进行了合作：
 
 ## 组件
 
-`langchain-nvidia-ai-endpoints` 软件包提供了由 NVIDIA AI 支持的用于聊天、嵌入、重新排名和检索的 LangChain 集成，其中包括 [Nemotron](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/)（专为代理 AI 构建的 NVIDIA 开放模型系列）以及[NVIDIA API Catalog](https://build.nvidia.com/) 上的数百个社区模型。
+`langchain-nvidia-ai-endpoints` 软件包提供LangChain 集成，用于由 NVIDIA AI 提供支持的聊天、嵌入、重新排名和检索，其中包括 [Nemotron](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/)（专为代理 AI 构建的 NVIDIA 开放模型系列）以及 [NVIDIA API Catalog](https://build.nvidia.com/) 上的数百个社区模型。
 
-模型在 NVIDIA NIM 微服务上运行：公开标准 OpenAI 兼容 API 的容器映像，并使用 TensorRT-LLM 进行优化，以实现 NVIDIA 硬件上的峰值吞吐量。可以通过托管 API 目录或本地自托管来访问它们。|组件|班级 |描述 |
-| :------------ | :---------------------------------------------------- | :------------------------------------------------------------------------ |
+模型在 NVIDIA NIM 微服务上运行：公开标准OpenAI兼容 API 的容器映像，并使用 TensorRT-LLM 进行优化，以实现 NVIDIA 硬件上的峰值吞吐量。可以通过托管 API 目录或本地自托管来访问它们。
+
+|组件|班级 |描述 |
+| :- | :- | :- |
 |聊天 | [⟦T17⟧](#chat-chatnvidia) |与任何 NVIDIA 托管模型或本地 NIM 聊天完成 |
 |聊天（Dynamo）| [⟦T18⟧](#chat-chatnvidiadynamo) | `ChatNVIDIA` 带有用于 Dynamo 部署的 KV 缓存路由提示 |
 |嵌入 | [⟦T20⟧](#embeddings-nvidiaembeddings) |用于语义搜索和 RAG 的密集向量嵌入 |
 |重新排名 | [⟦T21⟧](#reranking-nvidiarerank) |按查询相关性对文档重新排序 |
 |检索| [⟦T22⟧](#retrieval-nvidiaragretriever) |从 NVIDIA RAG 蓝图服务器检索 |
 
-### 聊天：聊天NVIDIA
-
-`ChatNVIDIA` 通过 NVIDIA 托管的模型和本地 NIM 部署提供聊天完成功能。它支持工具调用、结构化输出、图像输入和流式传输。
+### 聊天：聊天NVIDIA`ChatNVIDIA` 通过 NVIDIA 托管的模型和本地 NIM 部署提供聊天完成功能。它支持工具调用、结构化输出、图像输入和流式传输。
 
 ####安装
 
@@ -56,7 +56,9 @@ else:
         "nvapi-"
     ), f"{nvapi_key[:5]}... is not a valid key"
     os.environ["NVIDIA_API_KEY"] = nvapi_key
-```#### Nemotron：代理 AI 的特色模型
+```
+
+#### Nemotron：代理 AI 的特色模型
 
 [Nemotron](https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/) 是 NVIDIA 专为代理 AI 设计的开放模型系列。这些模型使用混合 Mamba-Transformer 专家混合架构，可提供领先的基准性能和高吞吐量，并支持高达 1M 的令牌上下文窗口。 Nemotron 模型权重、训练数据和实施方法均根据 NVIDIA 开放模型许可证公开发布。
 
@@ -88,9 +90,7 @@ llm = ChatNVIDIADynamo(
 )
 result = llm.invoke("Summarize KV cache routing in one sentence.")
 print(result.content)
-```
-
-请参阅 [⟦T28⟧ integration page](/oss/python/integrations/chat/nvidia_ai_endpoints#use-with-nvidia-dynamo) 了解完整的 `ChatNVIDIADynamo` 参考，包括每次调用覆盖和流式传输。
+```请参阅 [⟦T28⟧ integration page](/oss/python/integrations/chat/nvidia_ai_endpoints#use-with-nvidia-dynamo) 了解完整的 `ChatNVIDIADynamo` 参考，包括每次调用覆盖和流式传输。
 
 ### 嵌入：NVIDIAEmbeddings
 
@@ -107,7 +107,9 @@ embedder.embed_query("What's the temperature today?")
 
 ### 重新排名：NVIDIARerank
 
-`NVIDIARerank` 使用 NeMo Retriever 重新排序 NIM 根据与查询的相关性对文档列表进行重新排序。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+`NVIDIARerank` 使用 NeMo Retriever 重新排序 NIM 根据与查询的相关性对文档列表进行重新排序。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.documents import Document
 from langchain_nvidia_ai_endpoints import NVIDIARerank
 
@@ -150,13 +152,13 @@ ranker = NVIDIARerank(base_url="http://localhost:2016/v1")
 
 ## 使用 OpenShell 沙盒代理
 
-[OpenShell](https://github.com/NVIDIA/OpenShell)为LangChain代理提供了一个受策略管理的Linux沙箱，用于代码执行、文件访问、进程权限和网络出口。这对于需要检查数据、编写代码、运行命令或针对本地资源使用工具同时保持执行环境与主机隔离的深度代理非常有用。
+[OpenShell](https://github.com/NVIDIA/OpenShell) 为 LangChain 代理提供了一个受策略管理的 Linux 沙箱，用于代码执行、文件访问、进程权限和网络出口。这对于需要检查数据、编写代码、运行命令或针对本地资源使用工具同时保持执行环境与主机隔离的深度代理非常有用。对于 LangChain 应用程序，[⟦T36⟧](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) 软件包使 OpenShell 适应 Deep Agents 沙箱接口。代理可以在具有`ChatNVIDIA`的主机上运行，​​而工具执行则通过`OpenShellSandbox`后端分派到OpenShell沙箱中。
 
-对于LangChain应用程序，[⟦T36⟧](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell)包使OpenShell适应Deep Agents沙箱接口。代理可以在具有`ChatNVIDIA`的主机上运行，​​而工具执行则通过`OpenShellSandbox`后端分派到OpenShell沙箱中。
+资源：
 
-资源：* [LangChain NVIDIA samples](https://github.com/langchain-samples/langchain-nvidia-samples) 包括可运行的 NVIDIA 示例，其中包括 OpenShell 事件分析代理。
-* [OpenShell Deep Agent](https://github.com/langchain-ai/openshell-deepagent) 是一个在 OpenShell 沙箱内运行的参考编码代理，由 Deep Agents 精心编排并由 NVIDIA Nemotron 提供支持。
-* [⟦T39⟧](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) 为沙盒深度代理提供 Python 适配器、设置说明、策略指南和笔记本演练。
+* [LangChain NVIDIA samples](https://github.com/langchain-samples/langchain-nvidia-samples) 包括可运行的 NVIDIA 示例，其中包括 OpenShell 事件分析代理。
+* [OpenShell Deep Agent](https://github.com/langchain-ai/openshell-deepagent) 是一个在 OpenShell 沙箱内运行的参考编码代理，由 Deep Agents 编排并由 NVIDIA Nemotron 提供支持。
+* [⟦T39⟧](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) 为沙盒Deep Agents 提供 Python 适配器、设置说明、策略指南和笔记本演练。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openshell
@@ -173,7 +175,7 @@ with openshell.Sandbox() as sandbox:
     )
 ```
 
-## 使用 NVIDIA 加速 LangGraph
+## 与 NVIDIA 一起加速 LangGraph
 
 `langchain-nvidia-langgraph` 软件包为 LangGraph 图提供了 NVIDIA 优化的执行策略。它提供了两种在编译时应用的互补优化：
 
@@ -188,9 +190,7 @@ with openshell.Sandbox() as sandbox:
 pip install -qU langchain-nvidia-langgraph
 ```
 
-### 并行执行
-
-将 LangGraph 中的 `StateGraph` 替换为 `langchain_nvidia_langgraph.graph` 中的 `StateGraph`。图形定义的其余部分保持不变。
+### 并行执行将 LangGraph 中的 `StateGraph` 替换为 `langchain_nvidia_langgraph.graph` 中的 `StateGraph`。图形定义的其余部分保持不变。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_nvidia_langgraph.graph import StateGraph, OptimizationConfig
@@ -226,7 +226,9 @@ def write_to_db(state):
 @depends_on("write_to_db")
 def next_action(state):
     ...
-```### 推测执行
+```
+
+### 推测执行
 
 在编译时通过`OptimizationConfig`启用推测。执行器并行运行条件分支并保留与路由决策匹配的结果。
 
@@ -236,7 +238,7 @@ app = graph.compile(optimization=OptimizationConfig(enable_speculation=True))
 
 ## NeMo Agent 工具包通过 LangSmith 遥测进行优化
 
-NVIDIA NeMo Agent Toolkit 是一个开源 AI 工具包，用于构建、分析和优化代理。开发人员可以将 LangChain 与 NeMo Agent Toolkit 结合使用，只需进行最少的代码更改即可实现分析、评估、GPU 容量规划和自动优化。 NeMo Agent Toolkit 可与 LangSmith 互操作。
+NVIDIA NeMo Agent Toolkit 是一个开源 AI 工具包，用于构建、分析和优化代理。开发人员可以将 LangChain 与 NeMo Agent Toolkit 结合使用，只需进行最少的代码更改即可实现分析、评估、GPU 容量计划和自动优化。 NeMo Agent Toolkit 可与 LangSmith 互操作。
 
 * [Get Started with NeMo Agent Toolkit and LangChain](https://github.com/NVIDIA/NeMo-Agent-Toolkit/blob/develop/examples/frameworks/auto_wrapper/langchain_deep_research/langgraph_deep_research.ipynb)
 
@@ -246,9 +248,9 @@ NVIDIA NeMo Agent Toolkit 是一个开源 AI 工具包，用于构建、分析�
 
 NVIDIA NeMo Gym 为代理系统提供训练后工作流程，包括将 LangGraph 代理与 Responses API 式训练数据和评估循环配对的示例。当您想要在初始提示和线束调整后改进代理行为时，尤其是对于工具使用和多步骤推理任务，请使用这些工作流。
 
-* [NeMo Gym LangGraph agent example](https://github.com/NVIDIA-NeMo/Gym/tree/main/responses_api_agents/langgraph_agent)
+* [NeMo Gym LangGraph agent example](https://github.com/NVIDIA-NeMo/Gym/tree/main/responses_api_agents/langgraph_agent)## 使用 NeMo Switchyard 进行模型路由
 
-## 使用 NeMo Switchyard 进行模型路由实验性的[⟦T46⟧](/oss/python/integrations/middleware/nvidia#model-routing-with-nemo-switchyard)包让深度代理可以使用[NeMo Switchyard](https://github.com/NVIDIA-NeMo/Switchyard)算法在现有的LangChain聊天模型上路由每个模型调用。使用它来组合一个代理背后的高效且强大的模型，同时深度代理继续管理代理循环、工具、状态和中间件。
+实验性的 [⟦T46⟧](/oss/python/integrations/middleware/nvidia#model-routing-with-nemo-switchyard) 包允许深度代理使用 [NeMo Switchyard](https://github.com/NVIDIA-NeMo/Switchyard) 算法在现有的 LangChain 聊天模型上路由每个模型调用。使用它来组合一个代理背后的高效且强大的模型，同时 Deep Agents 继续管理代理循环、工具、状态和中间件。
 
 该集成提供：
 
@@ -308,9 +310,9 @@ result = await agent.ainvoke({
 
 ## 全栈蓝图
 
-NVIDIA 和 LangChain 合作开发了[full stack examples](https://github.com/langchain-ai/deepagents/tree/main/examples)，展示了如何将所有这些组件组合用于两个企业用例，重点关注生产准备情况：
+NVIDIA 和 LangChain 合作开发了 [full stack examples](https://github.com/langchain-ai/deepagents/tree/main/examples)，展示了如何将所有这些组件组合用于两个企业用例，重点关注生产准备情况：
 
-* [NVIDIA AI-Q](https://github.com/NVIDIA-AI-Blueprints/aiq/tree/develop)是使用LangChain Deep Agents跨企业数据源进行深度研究的蓝图
+* [NVIDIA AI-Q](https://github.com/NVIDIA-AI-Blueprints/aiq/tree/develop) 是使用 LangChain Deep Agents 跨企业数据源进行深入研究的蓝图
 * [NVIDIA VSS](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization)是使用LangChain和LangGraph进行视频搜索和摘要的蓝图
 
 ## 其他资源
@@ -335,7 +337,7 @@ NVIDIA 和 LangChain 合作开发了[full stack examples](https://github.com/lan
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

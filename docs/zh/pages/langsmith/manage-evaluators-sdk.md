@@ -518,7 +518,7 @@ LLM 作为法官评估器接受控制其评分方式的附加设置：
 
 ## 删除评估器
 
-当评估器附加到跟踪项目或数据集时，您无法将其删除。将 `delete_run_rules` 设置为 `true` 以在删除评估器之前删除引用评估器的运行规则。
+当评估器附加到跟踪项目、代理环境或数据集时，您无法将其删除。将 `delete_run_rules` 设置为 `true` 以在删除评估器之前删除引用评估器的运行规则。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -549,13 +549,13 @@ LLM 作为法官评估器接受控制其评分方式的附加设置：
   ```
 </CodeGroup>
 
-## 相关
-
-* [Manage evaluators](/langsmith/evaluators)：在LangSmith UI 中查看和管理评估器。
+## 相关* [Manage evaluators](/langsmith/evaluators)：在LangSmith UI 中查看和管理评估器。
 * [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)：在LangSmith UI 中配置 LLM 作为法官在线评估器。
 * [Set up online code evaluators](/langsmith/online-evaluations-code)：在LangSmith UI 中配置在线代码评估器。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

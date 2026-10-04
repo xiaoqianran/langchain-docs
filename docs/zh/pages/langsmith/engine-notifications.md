@@ -10,15 +10,15 @@
 
 ## 添加目的地
 
-通知目标是根据跟踪项目配置的。在 **引擎** 页面上，单击 **配置引擎**，然后在 **通知** 下单击 **添加**。如果不存在目标，编辑器会自动打开。对于每个目的地，选择：
+通知目标是根据跟踪项目或代理环境配置的。在 **引擎** 页面上，单击 **配置引擎**，然后在 **通知** 下单击 **添加**。如果不存在目标，编辑器会自动打开。对于每个目的地，选择：
 
 * **目标类型**：选择 **Slack**、**Jira** 或 **Webhook** 选项卡。请参阅 [Notify a Slack channel](#notify-a-slack-channel)、[Create Jira work items](#create-jira-work-items) 和 [Send to a webhook](#send-to-a-webhook)。
 * **通知时间**：触发通知的[event types](#event-types)。
-* **最低问题严重性**：确定发送哪些通知的问题 [severity filter](#severity-filtering)。
+* **最低问题严重性**：确定发送哪些通知的问题 [severity filter](#severity-filtering)。要在 [watched issue](/langsmith/engine#watch-an-issue) 再次出现时收到警报，请单击该问题上的 **通过 Slack 提醒我**，这将打开相同的 **通知** 部分。
 
-要在 [watched issue](/langsmith/engine#watch-an-issue) 再次出现时收到警报，请单击该问题上的 **通过 Slack 提醒我**，这将打开相同的 **通知** 部分。
+## 事件类型
 
-## 事件类型|活动 |发送时间 |
+|活动 |发送时间 |
 | - | - |
 | [⟦T8⟧](#issue-created) |引擎打开了一个新问题。 |
 | [⟦T9⟧](#issue-trace-added) |引擎将新跟踪链接到现有问题。 |
@@ -37,11 +37,11 @@
 | `2` |中等|
 | `3` |低|
 
-选择器提供 **仅高严重性** (`1`)、**中和高严重性** (`2`) 和 **所有严重性** (`3`)。例如，具有 `severity_threshold: 1` 的目标仅接收 `URGENT` (0) 和 `HIGH` (1) 问题的事件。
+选择器提供 **仅高严重性** (`1`)、**中和高严重性** (`2`) 和 **所有严重性** (`3`)。例如，具有 `severity_threshold: 1` 的目标仅接收 `URGENT` (0) 和 `HIGH` (1) 问题的事件。严重性阈值不适用于[⟦T29⟧](#issue-agent_run-failed)，因为运行失败事件的范围仅限于引擎会话而不是特定问题。
 
-严重性阈值不适用于[⟦T29⟧](#issue-agent_run-failed)，因为运行失败事件的范围仅限于引擎会话而不是特定问题。
+## 通知 Slack 通道
 
-## 通知 Slack 通道如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。接线员[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。然后，您可以通过 Slack 授权连接工作区。
+如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。接线员[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。然后，您可以通过 Slack 授权连接工作区。
 
 添加 Slack 目标：
 
@@ -147,7 +147,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 正文。
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import hashlib
   import hmac
   from typing import Optional
@@ -171,7 +171,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
       return hmac.compare_digest(expected, signature_header)
   ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createHmac, timingSafeEqual } from "node:crypto";
 
   export function verifyLangSmithSignature({
@@ -206,7 +206,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 当签名密钥可能已暴露时，或者当您的组织的凭据轮换策略需要新密钥时，滚动签名密钥。
 
-要滚动密钥，请在 **引擎设置** 中打开目标行，单击 **滚动签名密钥**，然后确认。 LangSmith 生成新的签名密钥并立即将其用于未来的 Webhook 交付。一旦滚动完成，先前的秘密就会停止签署交付。
+要滚动密钥，请在 **引擎设置** 面板中打开目标行，单击 **滚动签名密钥**，然后确认。 LangSmith 生成新的签名密钥并立即将其用于未来的 Webhook 交付。一旦滚动完成，先前的秘密就会停止签署交付。
 
 滚动秘密后，用新值更新每个验证 `X-LangSmith-Signature` 的消费者。
 

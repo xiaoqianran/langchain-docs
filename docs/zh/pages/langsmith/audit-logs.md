@@ -14,14 +14,14 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
 
 * **谁**删除了 API 密钥、数据集或部署？
 * **什么时候**邀请新成员、修改角色或更新示例？
-* **什么**计费、SSO 或数据保留配置发生了变化？
-* **哪些**数据集、跟踪项目或提示 Webhooks 被修改？
+* **什么**计费、SSO 或数据保留配置发生了更改？
+* **哪些**数据集、跟踪项目或提示 Webhooks 被修改？在 [agent-based workspace](/langsmith/agents) 中，代理也会接受审核。
 
 审核日志对于安全审查、合规性要求和一般操作可见性非常有用。
 
 ## 先决条件
 
-* 您的组织必须使用[**Enterprise** plan](/langsmith/pricing-plans)。
+* 您的组织必须使用 [**Enterprise** plan](/langsmith/pricing-plans)。
 * 您必须具有 **组织管理员** 或 **组织操作员** 角色 ([⟦T3⟧ permission](/langsmith/rbac#organization-admin)) 才能查看审核日志。
 
 ## 记录什么审核日志记录对组织设置、成员资格、凭据、工作区和其他资源的更改。每个事件包括时间戳、参与者、操作名称、受影响的资源以及是否成功。有关操作名称的完整列表，请参阅[tracked operations reference](#tracked-operations-reference)。
@@ -40,7 +40,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
 * **参与者** - 特定用户、API 密钥或服务密钥
 * **资源ID**
 
-审核日志也可通过 [API](#query-audit-logs-via-api) 获得。
+还可以通过[API](#query-audit-logs-via-api)获取审核日志。
 
 ## 保留
 
@@ -66,7 +66,7 @@ LangSmith 审核日志提供组织内所采取的管理和配置操作的防篡�
     此环境变量对个人组织没有影响。
   </Note>
 
-有关自托管版本的更多详细信息，请参阅[self-hosted changelog](/langsmith/self-hosted-changelog)。
+有关自托管版本的更多详细信息，请参阅 [self-hosted changelog](/langsmith/self-hosted-changelog)。
 
 ## 通过API查询审计日志
 
@@ -97,7 +97,7 @@ curl -G \
 | `status` | `Success`、`Failure` 或 `Unknown`。 |
 | `resources` |受操作影响的资源的 UUID 列表（例如，更新的角色、创建的工作区）。 |
 | `metadata.uid` |此审核日志事件的唯一标识符。 |
-| `unmapped.original_audit_log` |完整的LangSmith原生审计日志记录，包括`organization_id`和`workspace_id`。 |
+| `unmapped.original_audit_log` |完整的LangSmith本机审计日志记录，包括`organization_id`和`workspace_id`。 |
 | `unmapped.original_audit_log.enrichments.resource_owner_ls_user_id` |拥有操作所操作资源的成员的 UUID，用于记录该资源的操作，例如停用或删除个人访问令牌。与`actor.user.uid`不同的值表示管理员对另一个成员的资源进行了操作。 |
 
 ## 转发到外部系统
@@ -116,8 +116,9 @@ curl -G \
 | **工作空间** | `create_workspace`、`update_workspace`、`delete_workspace`、`add_member_to_workspace`、`add_members_to_workspace_batch`、`delete_workspace_member`、`update_workspace_member`、`delete_workspace_pending_member`、`claim_pending_workspace_invite`、`delete_pending_workspace_invite`、 `update_workspace_secrets`、`unshare_entities`、`set_tenant_handle` |
 | **数据保留和使用限制** | `update_ttl_settings`、`update_usage_limit`、`delete_usage_limit` |
 | **追踪项目** | `update_tracer_session`、`delete_tracer_session`、`delete_tracer_sessions` |
-| **运行和跟踪** | `query_run`、`query_runs`、`query_trace`、`query_trace_messages`、`batch_query_trace_messages`、`query_threads`、`query_thread_traces`、`read_run`、`read_runs`、 `delete_runs`、`get_run_cluster`、`generate_runs_query` |
-| **数据集** | `create_dataset`、`create_csv_dataset`、`update_dataset`、`delete_dataset`、`delete_datasets`、`update_dataset_version`、`update_dataset_splits`、`share_dataset`、`unshare_dataset`、 `clone_dataset`、`download_dataset`、`generate_dataset`、`generate_shared_dataset_query`、`get_dataset_comparison_view`、`stream_dataset_comparison_view`、`read_dataset_delta`、`read_shared_delta`、`read_shared_delta_stream`、 `create_experiment_via_upload`、`create_playground_experiment`、`create_comparative_experiment`、`delete_comparative_experiment` || **示例** | `create_example`、`create_examples`、`update_example`、`update_examples`、`delete_example`、`delete_examples`、`read_example`、`read_examples`、`get_example`、 `list_examples`、`sync_examples`、`validate_example`、`validate_examples` |
+| **代理** | `create_agent`、`create_agent_environment`、`update_agent`、`delete_agent`、`create_agent_runtime_binding` |
+| **运行和跟踪** | `query_run`、`query_runs`、`query_trace`、`query_trace_messages`、`batch_query_trace_messages`、`query_threads`、`query_thread_traces`、`read_run`、`read_runs`、 `delete_runs`、`get_run_cluster`、`generate_runs_query` || **数据集** | `create_dataset`、`create_csv_dataset`、`update_dataset`、`delete_dataset`、`delete_datasets`、`update_dataset_version`、`update_dataset_splits`、`share_dataset`、`unshare_dataset`、 `clone_dataset`、`download_dataset`、`generate_dataset`、`generate_shared_dataset_query`、`get_dataset_comparison_view`、`stream_dataset_comparison_view`、`read_dataset_delta`、`read_shared_delta`、`read_shared_delta_stream`、 `create_experiment_via_upload`、`create_playground_experiment`、`create_comparative_experiment`、`delete_comparative_experiment` |
+| **示例** | `create_example`、`create_examples`、`update_example`、`update_examples`、`delete_example`、`delete_examples`、`read_example`、`read_examples`、`get_example`、 `list_examples`、`sync_examples`、`validate_example`、`validate_examples` |
 | **实验** | `create_experiment_view_override`、`update_experiment_view_override`、`delete_experiment_view_override`、`get_experiment_view_override`、`get_experiment_view_overrides`、`evaluate_experiment` |
 | **评估者** | `create_evaluator`、`update_evaluator`、`delete_evaluator`、`bulk_delete_evaluators`、`execute_custom_code` |
 | **反馈** | `create_feedback_config`、`update_feedback_config`、`delete_feedback_config`、`create_feedback_formula`、`update_feedback_formula`、`delete_feedback_formula`、`read_feedback`、`read_feedbacks`、`stream_feedback_delta` |
@@ -126,11 +127,11 @@ curl -G \
 | **过滤视图** | `create_filter_view`、`update_filter_view`、`delete_filter_view`、`rename_filter_view` |
 | **提示提交和中心** | `create_commit`、`create_directory_commit`、`delete_directory`、`create_hub_environment`、`update_hub_environment`、`delete_hub_environment` |
 | **提示画布快速操作** | `create_prompt_canvas_quick_action`、`update_prompt_canvas_quick_action`、`delete_prompt_canvas_quick_action` |
-| **提示 webhook** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
+| **提示 webhooks** | `create_prompt_webhook`、`update_prompt_webhook`、`delete_prompt_webhook`、`test_prompt_webhook` |
 | **部署** | `create_deployment`、`update_deployment`、`delete_deployment` |
-| **批量出口** | `create_bulk_export`、`cancel_bulk_export`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`list_bulk_exports`、`create_bulk_export_destination`、`update_bulk_export_destination`、 `read_bulk_export_destination`、`list_bulk_export_destinations` |
-| **资源标签** | `create_tag_key`、`update_tag_key`、`delete_tag_key`、`create_tag_value`、`update_tag_value`、`delete_tag_value`、`create_tagging`、`delete_tagging` |
-| **访问政策** | `create_access_policy`、`delete_access_policy`、`list_access_policies`、`read_access_policy`、`attach_access_policies`、`read_role_access_policies` || **自定义图表** | `create_chart`、`update_chart`、`delete_chart`、`read_chart`、`read_charts`、`read_chart_preview`、`create_chart_section`、`update_chart_section`、`delete_chart_section`、 `clone_chart_section`、`read_chart_section`、`create_org_chart`、`update_org_chart`、`delete_org_chart`、`create_org_chart_section`、`update_org_chart_section`、`delete_org_chart_section`、`read_tracing_dashboard` |
+| **批量出口** | `create_bulk_export`、`cancel_bulk_export`、`get_bulk_export`、`get_bulk_export_run`、`get_bulk_export_runs`、`get_bulk_export_runs_filtered`、`list_bulk_exports`、`create_bulk_export_destination`、`update_bulk_export_destination`、 `read_bulk_export_destination`、`list_bulk_export_destinations` || **资源标签** | `create_tag_key`、`update_tag_key`、`delete_tag_key`、`create_tag_value`、`update_tag_value`、`delete_tag_value`、`create_tagging`、`delete_tagging` |
+| **访问政策** | `create_access_policy`、`delete_access_policy`、`list_access_policies`、`read_access_policy`、`attach_access_policies`、`read_role_access_policies` |
+| **自定义图表** | `create_chart`、`update_chart`、`delete_chart`、`read_chart`、`read_charts`、`read_chart_preview`、`create_chart_section`、`update_chart_section`、`delete_chart_section`、 `clone_chart_section`、`read_chart_section`、`create_org_chart`、`update_org_chart`、`delete_org_chart`、`create_org_chart_section`、`update_org_chart_section`、`delete_org_chart_section`、`read_tracing_dashboard` |
 | **型号定价** | `create_model_price_map`、`update_model_price_map`、`delete_model_price_map` |
 | **MCP 服务器和工具** | `create_mcp_server`、`update_mcp_server`、`delete_mcp_server`、`register_mcp_server_oauth`、`mcp_proxy`、`create_mcp_vendor_settings`、`update_mcp_vendor_settings`、`delete_mcp_vendor_settings`、`invalidate_mcp_tools_cache`、 `create_tool`、`update_tool`、`delete_tool` |
 | **网关政策** | `create_gateway_policy`、`update_gateway_policy`、`delete_gateway_policy` |
@@ -147,7 +148,7 @@ curl -G \
 ## 自托管版本可用性以下列表提供了介绍每个操作的 [self-hosted](/langsmith/self-hosted) Helm 图表版本。所有后续版本都可以进行操作。本节仅适用于[self-hosted](/langsmith/self-hosted)部署；在 LangSmith [cloud](/langsmith/cloud) 上，所有列出的操作都可用。
 
 <Note>
-  版本 `0.14.x` 及更早版本是稳定版本。 `0.15.0-rc.*` 中引入的操作在预览通道中发布，并将在 `0.15.0` 稳定版本中普遍提供。频道详情请参阅[Release policy](/langsmith/release-versions)。
+  版本 `0.14.x` 及更早版本是稳定版本。 `0.15.0-rc.*` 中引入的操作在预览通道中发布，并将在 `0.15.0` 稳定版本中普遍提供。频道详情请参考[Release policy](/langsmith/release-versions)。
 </Note>
 
 <AccordionGroup>
@@ -178,13 +179,13 @@ curl -G \
 
 <AccordionGroup>
   <Accordion title="Who can view audit logs?">
-    具有[**Organization Admin**](/langsmith/rbac#organization-admin)或[**Organization Operator**](/langsmith/rbac#organization-operator)角色（授予`organization:manage`权限）的用户可以访问审核日志。工作区级别角色不提供审核日志访问权限。
+    具有 [**Organization Admin**](/langsmith/rbac#organization-admin) 或 [**Organization Operator**](/langsmith/rbac#organization-operator) 角色（授予 `organization:manage` 权限）的用户可以访问审核日志。工作区级别角色不提供审核日志访问权限。
   </Accordion>
 
   <Accordion title="Are audit logs available on the Plus or Developer plan?">
     不会。审核日志是一项企业功能。计划详情请参阅[pricing](https://www.langchain.com/pricing-langsmith)。
   </Accordion><Accordion title="Is there a UI for viewing audit logs?">
-    是的。参见[View audit logs in the UI](#view-audit-logs-in-the-ui)。审核日志也可通过 [API](#query-audit-logs-via-api) 获得。
+    是的。参见[View audit logs in the UI](#view-audit-logs-in-the-ui)。还可以通过 [API](#query-audit-logs-via-api) 获取审核日志。
   </Accordion>
 
   <Accordion title="Are read operations logged?">

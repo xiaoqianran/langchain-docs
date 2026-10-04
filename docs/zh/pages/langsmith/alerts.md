@@ -15,7 +15,17 @@ LLM 应用程序中的有效可观察性需要主动检测故障、性能下降�
 * 影响反映最终用户体验的反馈分数的应用程序更改。
 * 法学硕士的使用导致成本意外飙升。
 
-LangSmith 中的警报是项目范围的，需要为每个受监控的项目单独配置。
+LangSmith 中的警报仅限于一个跟踪容器，需要为您监控的每个容器进行单独配置。哪个容器取决于您的工作区的组织方式，左上角的控件会告诉您您所在的容器。
+
+<Note>
+  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，请参阅 [Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+</Note>警报的范围为 1 个 [agent](/langsmith/agents) 中的 1 个 [environment](/langsmith/agent-environments#select-an-environment)。因此，对生产行为发出警报不需要排除测试流量的过滤器，因为环境已经排除了它。
+
+<Note>
+  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
+</Note>
+
+警报的范围仅限于一个跟踪项目。
 
 <Tip>
   警报可以通过 webhook [route](#step-4-configure-notification-channel) 发送到 Slack、PagerDuty、Dynatrace 或任何 HTTP 端点。 **Webhook** 选项卡包括用于 Microsoft Teams、电子邮件、自托管部署上的 Slack 和 Google Chat（需要中间件）的[example recipes](#example-recipes)。
@@ -23,7 +33,7 @@ LangSmith 中的警报是项目范围的，需要为每个受监控的项目单�
 
 请按照以下步骤配置警报。
 
-## 第 1 步：导航以创建警报在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts) 中，导航到您要为其配置警报的跟踪项目。单击页面右上角的 **警报** 图标可查看该项目的现有警报并设置新警报。
+## 第 1 步：导航以创建警报在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts) 中，导航到您要为其配置警报的跟踪项目，或基于代理的工作区中的代理环境。单击页面右上角的 **警报** 图标可查看其现有警报并设置新警报。
 
 ## 步骤 2：选择指标类型
 
@@ -70,18 +80,18 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     **先决条件**
 
-    * 连接到您的 LangSmith 组织的 Slack 工作区。如果您尚未连接，当您配置此通知类型时，LangSmith 会提示您内联连接。
+    * 连接到您的 LangSmith 组织的 Slack 工作区。如果您尚未连接，当您配置此通知类型时，LangSmith 将提示您内联连接。
 
     ### 1.配置Slack通知1. 在警报设置的 **通知设置** 部分中，选择 **Slack**。
     2. 单击通道选择器。如果尚未链接 Slack 工作区，请单击 **连接 Slack** 并完成 OAuth 流程以授权配置的 Slack 应用程序。
     3. 从下拉列表中选择工作区和通道。如果频道没有立即出现，请单击刷新图标。
     4. 单击“**保存**”保存通知配置。
 
-    如果需要，LangSmith 在首次传递消息时加入所选公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序到 Slack 中的该频道。
+    如果需要，LangSmith 在首次传递消息时加入选定的公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序到 Slack 中的该频道。
 
     ### 2. 测试集成
 
-    点击**发送测试通知**，验证LangSmith是否可以到达通道。检查测试消息的通道。
+    点击**发送测试通知**，验证LangSmith是否可以到达该通道。检查测试消息的通道。
 
     ### 通知格式
 
@@ -104,7 +114,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     2. 导航至 **服务 > 服务目录**
     3. 点击**+新服务**
     4. 填写以下字段：
-       * **名称**：提供描述性名称（例如，“LangSmith 监控”）
+       * **名称**：提供描述性名称（例如“LangSmith 监控”）
        * **描述**：添加有关受监控应用程序的详细信息
        * **升级策略**：选择适当的团队升级策略
        * **集成类型**：选择“Events API V2”
@@ -156,7 +166,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     * 活跃的 Dynatrace 环境（SaaS 或托管）。
     * 具有 `events.ingest` 范围的 Dynatrace API 访问令牌。
 
-    如果您使用 LangSmith 的自定义 [deployment](/langsmith/self-hosted) 进行工作，请确保没有防火墙设置阻止来自 LangSmith 服务的出站流量。
+    如果您使用的是 LangSmith 的自定义 [deployment](/langsmith/self-hosted)，请确保没有防火墙设置阻止来自 LangSmith 服务的出站流量。
 
     ### 1. 在 Dynatrace 中创建 API 令牌1. 登录您的 Dynatrace 环境。
     2. 导航至**访问令牌**。
@@ -168,7 +178,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2. 获取您的 Dynatrace 环境 URL
 
-    您的 Dynatrace 环境 URL 遵循以下格式：
+    您的 Dynatrace 环境 URL 采用以下格式：
 
     ```
     https://{your-environment-id}.live.dynatrace.com
@@ -219,7 +229,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2.配置webhook参数
 
-    在 **Alerts** 选项卡下[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
+    在 **Alerts** 选项卡下的[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
 
     在 **通知设置** 部分中，使用以下参数完成 Webhook 配置：
 
@@ -266,7 +276,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     * 验证您的自定义负载模板是否为有效的 JSON 格式
 
     <Warning>
-      **发送测试警报不会验证下游响应。** UI 报告 **您的配置工作正常并且测试通知已发送**，即使接收端点返回错误（例如，400 或 422 拒绝）。始终在接收方验证收据，检查端点的日志或目标平台的消息历史记录，而不是仅仅依赖LangSmith成功消息。
+      **发送测试警报不会验证下游响应。** UI 报告 **您的配置工作正常并且测试通知已发送**，即使接收端点返回错误（例如，400 或 422 拒绝）。始终在接收方验证接收，检查端点的日志或目标平台的消息历史记录，而不是仅仅依赖LangSmith成功消息。
     </Warning>
 
     ### 安全考虑
@@ -276,13 +286,13 @@ LangSmith 针对以下指标提供基于阈值的警报：
     * 考虑在标头中添加共享密钥来验证 Webhook 源
     * 在处理传入的 webhook 请求之前验证它们
 
-    ### Example recipes
+    ### 食谱示例
 
     <Accordion title="Configure Slack notifications via webhook">
       以下是配置 LangSmith 警报以使用 [⟦T55⟧](https://api.slack.com/methods/chat.postMessage) API 向 Slack 通道发送通知的示例。**先决条件**
 
       * 访问 Slack 工作区。
-      * 用于设置警报的LangSmith 项目。
+      * LangSmith 跟踪项目或代理环境，用于设置警报。
       * 创建 Slack 应用程序的权限。
 
       **第 1 步：创建 Slack 应用程序**
@@ -290,7 +300,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       1. 参观[Slack API Applications page](https://api.slack.com/apps)。
       2. 单击“**创建新应用程序**”。
       3. 选择**从头开始**。
-      4. 提供**应用程序名称**（例如“LangSmith警报”）。
+      4. 提供 **应用程序名称**（例如“LangSmith 警报”）。
       5. 选择要安装应用程序的工作区。
       6. 单击**创建应用程序**。
 
@@ -310,25 +320,25 @@ LangSmith 针对以下指标提供基于阈值的警报：
       3. 检查权限并单击“**允许**”。
       4. 复制出现的 **机器人用户 OAuth 令牌**（以 `xoxb-` 开头）。**第 4 步：将机器人添加到 Slack 频道**
 
-      Add the bot to the specific channel you want to receive alerts in. You can add a bot to a Slack channel by mentioning it in the message field (e.g., `@botname`).
+      将机器人添加到您想要接收警报的特定频道。您可以通过在消息字段中提及机器人将其添加到 Slack 频道（例如，`@botname`）。
 
       您还需要通道 ID 来在 LangSmith 中配置 Webhook 警报。您可以通过打开频道详细信息 > 关于来找到频道 ID。
 
       **第5步：在LangSmith中配置webhook警报**
 
-      1. 在 LangSmith 中，导航到您的项目。
+      1. 在 LangSmith 中，导航到您的跟踪项目或您的代理环境。
       2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
       5. 使用以下设置配置 Webhook：
 
-      **Webhook URL**
+      **网络钩子 URL**
 
       ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       https://slack.com/api/chat.postMessage
       ```
 
-      **Headers**
+      **标题**
       <Note>将 `xoxb-your-token-here` 替换为您的机器人的用户 OAuth 令牌</Note>
 
       ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -373,7 +383,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **第 6 步：测试集成**
 
-      1. 在LangSmith警报配置中，单击**测试警报**。
+      1. 在LangSmith警报配置中，点击**测试警报**。
       2. 检查您指定的 Slack 通道是否有测试通知。
       3. 验证消息是否包含预期的警报信息。
 
@@ -385,22 +395,22 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       要配置此：
 
-      1. Save your alert.
+      1. 保存您的警报。
       2. 在警报表中找到您保存的警报并单击它。
       3. 复制显示的 URL。
-      4. Click "Edit Alert".
+      4. 单击“编辑警报”。
       5. 将现有项目 URL 替换为复制的警报预览 URL。
     </Accordion>
 
     <Accordion title="Configure Microsoft Teams notifications via webhook">
-      以下是配置 LangSmith 警报以使用 [Workflows app](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498) (Power Automate) 向 Microsoft Teams 渠道发送通知的示例。 This approach is recommended because it extracts fields from the incoming JSON within the flow, so the auto-populated LangSmith alert fields render correctly in the Teams message.<Note>
+      以下是配置 LangSmith 警报以使用 [Workflows app](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498) (Power Automate) 向 Microsoft Teams 渠道发送通知的示例。建议使用此方法，因为它从流中传入的 JSON 中提取字段，以便自动填充的 LangSmith 警报字段在 Teams 消息中正确呈现。<Note>
         Microsoft 的旧版 Office 365 传入 Webhook 连接器即将停用。使用工作流程应用程序进行新集成。
       </Note>
 
       **先决条件**
 
       * 访问 Microsoft Teams 工作区并有权添加工作流程。
-      * 用于设置警报的LangSmith 项目。
+      * LangSmith 跟踪项目或代理环境，用于设置警报。
 
       **第 1 步：在 Teams 中创建工作流程**
 
@@ -409,7 +419,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       3. 选择**工作流程**。
       4. 搜索并选择 **收到 Webhook 请求时发布到频道** 模板。
       5. 登录以确认连接，然后单击 **下一步**。
-      6. Confirm the team and channel where alerts should be posted, then click **Add workflow**.
+      6. 确认应发布警报的团队和渠道，然后单击“**添加工作流程**”。
       7. 复制生成的 **HTTP POST URL** - 在 LangSmith 中使用它。
 
       **步骤 2：在 Power Automate 中自定义消息（可选）**
@@ -421,7 +431,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **步骤3：在LangSmith中配置webhook警报**
 
-      1. 在 LangSmith 中，导航到您的项目。
+      1. 在 LangSmith 中，导航到您的跟踪项目或您的代理环境。
       2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
@@ -469,7 +479,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       * 具有经过验证的发件人身份的 SendGrid 帐户。
       * 具有 **邮件发送** 权限的 SendGrid API 密钥。
-      * 用于设置警报的LangSmith 项目。
+      * LangSmith 跟踪项目或代理环境，用于设置警报。
 
       **步骤 1：创建 SendGrid API 密钥**1. 登录您的[SendGrid dashboard](https://app.sendgrid.com)。
       2. 导航到 **设置 > API 密钥**。
@@ -484,7 +494,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **步骤3：在LangSmith中配置webhook警报**
 
-      1. 在 LangSmith 中，导航到您的项目。
+      1. 在 LangSmith 中，导航到您的跟踪项目或您的代理环境。
       2. 选择 **警报 > 创建警报**。
       3. 定义您的警报指标和条件。
       4. 在通知部分中，选择 **Webhook**。
@@ -551,7 +561,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       |供应商|网络钩子 URL | Auth 标头格式 |
       | - | - | - |
       |邮枪 | `https://api.mailgun.net/v3/{your-domain}/messages` | `Authorization: Basic <base64(api:<key>)>` |
-      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，带有 HTTP 触发器的 Lambda 函数）进行路由。
+      |邮戳| `https://api.postmarkapp.com/email` | `X-Postmark-Server-Token: <token>` |调整 **请求正文模板** 以匹配每个提供商的预期负载格式。 Amazon SES 不直接兼容，因为 SES API 需要每个请求 AWS SigV4 签名，而该签名无法表示为静态标头。要使用 SES，请通过中间件（例如，具有 HTTP 触发器的 Lambda 函数）进行路由。
     </Accordion>
 
     <Accordion title="Configure Google Chat notifications via webhook (requires middleware)">
@@ -565,7 +575,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
 
-      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook，提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
+      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook、提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
 
       **先决条件*** 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhooks**，创建 Webhook，然后复制 URL。
       * 启用 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。
@@ -706,7 +716,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

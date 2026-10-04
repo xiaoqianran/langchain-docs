@@ -8,6 +8,8 @@
 
 跟踪项目可以跨[threads](/langsmith/observability-concepts#threads)、[traces](/langsmith/observability-concepts#traces)和[runs](/langsmith/observability-concepts#runs)积累大量数据。 LangSmith 的过滤工具可让您精确导航和分析数据。
 
+在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是一个代理的 [environment](/langsmith/agent-environments) 之一，因此过滤器适用于您打开的环境，而不是整个代理。要过滤代理的环境，请依次过滤每个环境。
+
 <Note>
   追踪项目有两种过滤体验。检查项目的顶部，看看哪一个适合您：
 
@@ -23,7 +25,7 @@
 * [Filtering within the Details view](#filter-runs-in-the-details-view)
 * [Advanced filters](#advanced-filters) 用于过滤根或子运行属性
 
-如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 以编程方式导出数据进行分析，请改为参阅 [exporting traces guide](/langsmith/export-traces)。
+如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 以编程方式导出数据进行分析，请改为参考 [exporting traces guide](/langsmith/export-traces)。
 
 ## 创建并应用过滤器
 
@@ -68,7 +70,7 @@
 您还可以指定多个以匹配提供的所有术语，方法是：* 通过 **全文搜索** 包括由空格分隔的多个术语。
 * 添加第一个过滤器后，使用 <Icon icon="plus" /> 按钮添加多个过滤器。
 
-LangSmith 分割文本并以任意顺序匹配任何部分关键字匹配。 LangSmith 从搜索中排除常见停用词（从 nltk 停用词列表以及其他一些常见 JSON 关键字）。
+LangSmith 分割文本并以任何顺序匹配任何部分关键字匹配。 LangSmith 从搜索中排除常见停用词（从 nltk 停用词列表以及其他一些常见 JSON 关键字）。
 
 <Note>
   令牌的长度必须至少为 2 个字符才能编制索引。单字符标记（例如，`a`、`x`）从搜索中排除。
@@ -189,7 +191,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 `generations.message.kwargs.tool_calls.name` = `Plan`
 
-这将匹配根运行和非根运行，其中 `tool_calls` 名称为 `Plan`。
+这将匹配根和非根运行，其中 `tool_calls` 名称为 `Plan`。
 
 ### 对键值对进行负向过滤不同类型的否定过滤可以应用于 **\{x} 元数据**、**<Icon icon="arrow-down-right" /> 输入** 和 **<Icon icon="arrow-up-left" /> 输出** 字段，以从结果中排除特定运行。
 
@@ -210,7 +212,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 ## 保存过滤器
 
-保存过滤器允许您存储和重复使用常用的过滤器配置。保存的过滤器特定于跟踪项目。
+保存过滤器允许您存储和重复使用常用的过滤器配置。保存的过滤器特定于跟踪项目，在基于代理的工作区中意味着一个代理的一个[environment](/langsmith/agent-environments)。 **生产**中保存的过滤器在**暂存**中不提供。
 
 构建过滤器后，单击 **另存为** 按钮进行保存。这将弹出一个对话框来指定过滤器的名称和描述。
 
@@ -220,11 +222,11 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 在下拉列表中选择过滤器后，您可以对过滤器参数进行任何更改。然后，单击 **保存** 以更新过滤器。
 
-### 删除已保存的过滤器
+### 删除已保存的过滤器单击下拉列表中已保存过滤器旁边的 <Icon icon="dots-vertical" /> 图标，然后使用垃圾桶 <Icon icon="trash" /> 图标删除过滤器。
 
-单击下拉列表中已保存过滤器旁边的 <Icon icon="dots-vertical" /> 图标，然后使用垃圾桶 <Icon icon="trash" /> 图标删除过滤器。
+## 复制过滤器
 
-## 复制过滤器您可以复制构建的过滤器以与同事共享，稍后重复使用，或者在[API](/langsmith/smith-api/run/query-runs)或[SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs)中以编程方式运行查询。
+您可以复制构建的过滤器以与同事共享，稍后重复使用，或者在[API](/langsmith/smith-api/run/query-runs)或[SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs)中以编程方式运行查询。
 
 复制过滤器：
 
@@ -244,9 +246,9 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 <img alt="LangSmith trace view showing filter options with 'Filtered Only', 'Show All', and 'Most relevant' view modes" />
 
-## 使用LangSmith查询语言手动指定原始查询
+## 使用LangSmith查询语言手动指定原始查询如果您有 [copied a previously constructed filter](#copy-a-filter)，您可能需要在将来的会话中手动应用此原始查询。
 
-如果您有 [copied a previously constructed filter](#copy-a-filter)，您可能需要在将来的会话中手动应用此原始查询。为此，您可以单击“详细信息”视图中过滤器弹出窗口底部的“**切换到原始查询**”。您可以从那里将原始查询粘贴到文本框中。
+为此，您可以单击“详细信息”视图中过滤器弹出窗口底部的“**切换到原始查询**”。您可以从那里将原始查询粘贴到文本框中。
 
 <Note>
   这会将该查询添加到现有查询中，而不是覆盖它。

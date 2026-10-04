@@ -37,7 +37,7 @@
     ## 为资源分配标签
 
     在用于创建新标签的同一侧面板中，您还可以将资源分配给标签。在**分配资源**部分中搜索相应的资源，然后选择要标记的资源。<Note>
-      您只能使用资源标签来标记工作区范围的资源。这包括跟踪项目、注释队列、部署、实验、数据集和提示。
+      您只能使用资源标签来标记工作区范围的资源。这包括跟踪项目、注释队列、部署、实验、数据集和提示。在 [agent-based workspace](/langsmith/agents) 中，跟踪项目是代理的 [environment](/langsmith/agent-environments) 之一，因此标记一个标记是单个环境而不是代理。
     </Note>
 
     要从资源取消分配标签，请在标签面板和资源标签面板中单击标签旁边的 <Icon icon="trash" /> 垃圾桶图标。
@@ -65,9 +65,9 @@
     LANGSMITH_API_URL = "https://api.smith.langchain.com"
     LANGSMITH_API_KEY = os.environ["LANGSMITH_API_KEY"]
     headers = {"x-api-key": LANGSMITH_API_KEY, "Content-Type": "application/json"}
-    ```
+    ```### 创建标签键
 
-    ### 创建标签键<Note>
+    <Note>
       创建标签键需要[⟦T14⟧](/langsmith/organization-workspace-operations)权限。
       如果您想应用默认的 **Application** 密钥，请跳过此步骤并列出现有密钥。
     </Note>
@@ -134,9 +134,7 @@
 
     您可以在创建项目、数据集或提示（包括分叉和克隆操作）时提供`tag_value_ids`。标签在与资源创建相同的事务中以原子方式应用，因此资源永远不会短暂地取消标记——这在强制执行 [ABAC policies](/langsmith/abac) 时很重要。
 
-    标签值必须已经存在。将其 UUID 作为列表传递（最多 100 个）：
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    标签值必须已经存在。将其 UUID 作为列表传递（最多 100 个）：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Look up the tag value IDs you want to apply
     tags = requests.get(
         f"{LANGSMITH_API_URL}/api/v1/workspaces/current/tags",
@@ -160,7 +158,9 @@
     )
     response.raise_for_status()
     project = response.json()
-    ```相同的 `tag_value_ids` 字段被接受：
+    ```
+
+    相同的 `tag_value_ids` 字段被接受：
 
     |端点 |描述 |
     | - | - |

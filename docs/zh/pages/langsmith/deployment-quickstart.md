@@ -4,16 +4,16 @@
 
 # 将您的应用程序部署到云端
 
-使用 LangGraph CLI 将您的第一个应用程序部署到 LangSmith 云（AWS 和 GCP）。
+使用 LangGraph CLI 将您的第一个应用程序部署到 GCP 中的 LangSmith 云。
 
-本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 LangSmith 云（AWS 和 GCP）。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都会以相同的方式部署，无论您使用哪个框架来编写代理。
+本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 GCP 中的 LangSmith 云。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都会以相同的方式部署，无论您使用哪个框架来编写代理。
 
 <Tip>
   有关全面的云部署指南（包括基于 GitHub 的部署和所有配置选项），请参阅[Cloud deployment setup guide](/langsmith/deploy-to-cloud)。
 </Tip>
 
 <Note>
-  `langgraph deploy` 命令位于 **[beta](/langsmith/release-stages)** 中。
+  `langgraph deploy` 命令位于 **[beta](/langsmith/release-stages)** 中。 AWS 中的 LangSmith 云 (SaaS) 尚不支持 `langgraph deploy`。
 </Note>
 
 ## 先决条件
@@ -35,13 +35,13 @@
 
 <Tabs>
   <Tab title="LangGraph template">
-    从 [⟦T20⟧ template](https://github.com/langchain-ai/new-langgraph-project) 创建一个新应用程序：
-
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    从 [⟦T21⟧ template](https://github.com/langchain-ai/new-langgraph-project) 创建一个新应用程序：```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph new path/to/your/app --template new-langgraph-project-python
     cd path/to/your/app
-    ```<Tip>
-      在不运行 `--template` 的情况下运行 `langgraph new` 即可获得可用模板的交互式菜单。
+    ```
+
+    <Tip>
+      运行 `langgraph new`（不带 `--template`）以获得可用模板的交互式菜单。
     </Tip>
   </Tab>
 
@@ -79,7 +79,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
     默认情况下，这将创建一个以您的项目目录命名的无服务器部署。使用 `--name` 或 `--deployment-type dedicated` 覆盖。
 
     <Note>
-      在 2026 年 10 月 1 日之前仍采用之前定价的组织可使用 `--deployment-type prod` 或 `--deployment-type dev`。详情请参见[⟦T30⟧](/langsmith/cli#deploy)和[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
+      在 2026 年 10 月 1 日之前仍采用之前定价的组织可使用 `--deployment-type prod` 或 `--deployment-type dev`。详情请参见[⟦T31⟧](/langsmith/cli#deploy)和[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
     </Note>
 
     <Tip>

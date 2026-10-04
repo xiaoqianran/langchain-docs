@@ -6,7 +6,7 @@
 
 LangSmith 如何将可观测性数据构建为运行、轨迹、线程和轨迹，以及如何发送轨迹。
 
-LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页介绍了如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
+LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每一步。本页解释了如何在 LangSmith 中构建和可视化数据，以及如何开始发送​​跟踪。
 
 ## LangSmith 如何构建和可视化数据
 
@@ -20,7 +20,7 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 ### 运行
 
-*运行* 表示由代理执行的单个工作单元，例如调用 LLM、格式化提示或检索文档。如果您熟悉[OpenTelemetry](https://opentelemetry.io/)，您可以将运行视为一个跨度。
+*运行* 表示代理执行的单个工作单元，例如调用 LLM、格式化提示或检索文档。如果您熟悉[OpenTelemetry](https://opentelemetry.io/)，您可以将运行视为一个跨度。
 
 ### 痕迹*trace* 是单个操作的运行集合。例如，如果用户请求触发调用模型的代理，运行工具，然后再次调用模型，则所有这些运行都属于同一跟踪。运行通过唯一的跟踪 ID 绑定到跟踪。
 
@@ -52,9 +52,23 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
   使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获取见解，而无需手动挖掘数据。
 </Callout>
 
-### 项目
+### 跟踪容器
 
-*项目*是与单个应用程序或服务相关的所有跟踪的容器。
+LangSmith 如何对跟踪进行分组取决于您的工作区使用的信息架构。左上角的控件会告诉您您所在的位置。
+
+#### 代理和环境<Note>
+  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，请参阅 [Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+</Note>
+
+*代理*收集单个应用程序的痕迹，它是组织其他所有内容的单元LangSmith。代理的踪迹划分为四个固定的“环境”：生产、登台、开发和本地。跟踪落在一个代理的一个环境中，因此有关生产行为的查询永远不必手动排除测试流量。
+
+[Log traces to an agent](/langsmith/log-traces-to-agent)。
+
+#### 跟踪项目
+
+<Note>
+  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
+</Note>*项目*是与单个应用程序或服务相关的所有跟踪的容器。
 
 [Log traces to a project](/langsmith/log-traces-to-project)。
 
@@ -62,7 +76,9 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 ### 反馈
 
-*反馈*允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
+*反馈*允许您根据特定标准对个人跑步进行评分。每个反馈条目由标签和分数组成，并通过唯一的运行 ID 与运行绑定。反馈可以是连续的或离散的（分类的），标签可以在组织内的运行中重复使用。
+
+有关如何存储反馈的更多信息，请参阅[Feedback data format guide](/langsmith/feedback-data-format)。
 
 ### 标签
 
@@ -80,15 +96,15 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 有两种方法可以将跟踪数据发送到LangSmith。
 
-### 集成
-
-LangSmith *集成*为流行的LLM提供商和代理框架提供自动跟踪（相当于一般可观察性中的自动检测）。当您使用受支持的框架（例如 LangChain、LangGraph、OpenAI、Anthropic 或 CrewAI）时，集成将捕获输入、输出和元数据，而无需手动更改代码。
+### 集成LangSmith *集成*为流行的LLM提供商和代理框架提供自动跟踪（相当于一般可观察性中的自动检测）。当您使用受支持的框架（例如 LangChain、LangGraph、OpenAI、Anthropic 或 CrewAI）时，集成将捕获输入、输出和元数据，而无需手动更改代码。
 
 [Browse all integrations](/langsmith/integrations)。
 
 ### 手动仪器
 
-*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
+*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
+
+* `@traceable` / `traceable`：用于跟踪任何函数的装饰器
 * `trace` 上下文管理器（Python）：包装特定的代码块
 * `RunTree` API：低级、显式跟踪构造
 
@@ -100,9 +116,7 @@ LangSmith (SaaS) 将跟踪数据保留 180 天。此后，痕迹将被永久删�
 
 <Note>
   要使数据超出保留期限，请将其添加到[dataset](/langsmith/manage-datasets)。即使源跟踪被删除，数据集也会无限期地保留。
-</Note>
-
-要在过期日期之前删除跟踪，请参阅[Manage a trace](/langsmith/manage-trace#delete-a-trace)。
+</Note>要在过期日期之前删除跟踪，请参阅[Manage a trace](/langsmith/manage-trace#delete-a-trace)。
 
 ***
 

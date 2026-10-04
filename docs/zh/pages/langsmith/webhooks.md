@@ -164,7 +164,7 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 
 ### Webhook 自定义 HTTP 标头
 
-如果您想使用 Webhook 发送任何特定标头，可以根据 URL 进行配置。要进行设置，请单击 URL 字段旁边的 `Headers` 选项并添加标头。
+如果您想使用 Webhook 发送任何特定标头，可以针对每个 URL 进行配置。要进行设置，请单击 URL 字段旁边的 `Headers` 选项并添加标头。
 
 <Note>
   标头以加密格式存储。
@@ -188,7 +188,7 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 
 例如，您有一个生成 `answer_usefulness` 分数的在线评估器，以及一个仅在该分数出现后才触发的 Webhook 规则。
 
-1. 在跟踪项目的 **Automations** 选项卡中打开 Webhook 自动化规则。
+1. 在跟踪项目或代理环境的 **自动化** 选项卡中打开 Webhook 自动化规则。
 
 2. 编辑规则的过滤器以需要反馈密钥。在过滤器构建器中，添加条件：
 

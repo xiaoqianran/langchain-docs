@@ -435,6 +435,12 @@
           "rel": "langsmith/agent-auth.md"
         }
       ],
+      "agent-environments": [
+        {
+          "title": "Agent environments",
+          "rel": "langsmith/agent-environments.md"
+        }
+      ],
       "agent-server": [
         {
           "title": "Agent Server",
@@ -475,6 +481,12 @@
         {
           "title": "Configure Agent Server for scale",
           "rel": "langsmith/agent-server-scale.md"
+        }
+      ],
+      "agents": [
+        {
+          "title": "Agents",
+          "rel": "langsmith/agents.md"
         }
       ],
       "alerts": [
@@ -607,6 +619,12 @@
         {
           "title": "Automatically run evaluators on experiments",
           "rel": "langsmith/bind-evaluator-to-dataset-link.md"
+        }
+      ],
+      "build-an-agent": [
+        {
+          "title": "Build an agent in the UI",
+          "rel": "langsmith/build-an-agent.md"
         }
       ],
       "byoc": [
@@ -873,6 +891,12 @@
           "rel": "langsmith/create-account-api-key.md"
         }
       ],
+      "create-an-agent": [
+        {
+          "title": "Create an agent",
+          "rel": "langsmith/create-an-agent.md"
+        }
+      ],
       "create-few-shot-evaluators": [
         {
           "title": "How to improve your evaluator with few-shot examples",
@@ -1087,6 +1111,12 @@
         {
           "title": "Deploy with SvelteKit",
           "rel": "langsmith/deploy-sveltekit.md"
+        }
+      ],
+      "deploy-to-agent-environment": [
+        {
+          "title": "Deploy to an agent environment",
+          "rel": "langsmith/deploy-to-agent-environment.md"
         }
       ],
       "deploy-to-cloud": [
@@ -1551,6 +1581,12 @@
           "rel": "langsmith/langsmith-remote-mcp.md"
         }
       ],
+      "langsmith-setup-overview": [
+        {
+          "title": "LangSmith setup",
+          "rel": "langsmith/langsmith-setup-overview.md"
+        }
+      ],
       "llm-as-judge": [
         {
           "title": "How to define an LLM-as-a-judge evaluator",
@@ -1701,6 +1737,12 @@
           "rel": "langsmith/log-retriever-trace.md"
         }
       ],
+      "log-traces-to-agent": [
+        {
+          "title": "Log traces to an agent",
+          "rel": "langsmith/log-traces-to-agent.md"
+        }
+      ],
       "log-traces-to-project": [
         {
           "title": "Log traces to a specific project",
@@ -1797,6 +1839,12 @@
           "rel": "langsmith/metric-type.md"
         }
       ],
+      "migrate-to-agent-based-workspaces": [
+        {
+          "title": "How agent-based workspaces differ",
+          "rel": "langsmith/migrate-to-agent-based-workspaces.md"
+        }
+      ],
       "model-configurations": [
         {
           "title": "Manage model configurations",
@@ -1837,6 +1885,12 @@
         {
           "title": "How to return multiple scores in one evaluator",
           "rel": "langsmith/multiple-scores.md"
+        }
+      ],
+      "navigate-agents": [
+        {
+          "title": "Navigate agents",
+          "rel": "langsmith/navigate-agents.md"
         }
       ],
       "nest-traces": [
@@ -2869,6 +2923,12 @@
         {
           "title": "Trace query syntax",
           "rel": "langsmith/trace-query-syntax.md"
+        }
+      ],
+      "trace-replicas": [
+        {
+          "title": "Write traces to multiple destinations with replicas",
+          "rel": "langsmith/trace-replicas.md"
         }
       ],
       "trace-voice-fundamentals": [

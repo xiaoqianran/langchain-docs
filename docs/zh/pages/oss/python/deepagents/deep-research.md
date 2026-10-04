@@ -31,7 +31,7 @@
 
 API 密钥用于：
 
-* 人类（克劳德）或谷歌（双子座）
+* Anthropic (克劳德) 或谷歌 (双子座)
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选 - 免费套餐足够）
 * [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于追踪（可选）
 
@@ -494,11 +494,11 @@ python agent.py
 * [Subagents](/oss/python/deepagents/subagents)：了解如何使用不同的工具和提示配置子代理
 * [Customization](/oss/python/deepagents/customization)：自定义模型、工具、系统提示，可选[task planning](/oss/python/deepagents/overview#task-planning)
 * [LangSmith](/langsmith/observability)：跟踪研究运行并调试多步骤行为
-* [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：LangGraph深度研究完整课程
+* [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：与LangGraph深度研究的完整课程
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

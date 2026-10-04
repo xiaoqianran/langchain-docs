@@ -8,6 +8,8 @@ LangSmith gives you end-to-end visibility into your LLM application by capturing
 
 In this quickstart, you will add tracing to an AI assistant and view the results in LangSmith.
 
+Every trace lands in a container, and which one depends on how your workspace is organized. An agent-based workspace groups traces by [agent and environment](/langsmith/agents). A project-based workspace groups them by [tracing project](/langsmith/observability-concepts#tracing-projects). The control at the top left tells you which one you are on: in an agent-based workspace it names your workspace, and in a project-based workspace it shows the LangSmith logo. This quickstart configures a tracing project, and the steps below note where the two differ.
+
 <Tip>
   If you're building with [LangChain](https://docs.langchain.com/oss/python/langchain/overview) or [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview), you can enable LangSmith tracing with a single environment variable. Refer to [trace with LangChain](/langsmith/trace-with-langchain) or [trace with LangGraph](/langsmith/trace-with-langgraph).
 </Tip>
@@ -53,7 +55,7 @@ This example uses OpenAI as the LLM provider. You can adapt it for your own prov
    export OPENAI_API_KEY="<your-openai-api-key>"
    ```
 
-   To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion.
+   To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion. In an [agent-based workspace](/langsmith/agents), the first trace to a new project name, including the default project, creates an agent named after the project, with the project as its **Production** [environment](/langsmith/agent-environments). The agent's identifier is derived from the project name, so it can differ from the name, and creating the agent requires permission to create projects. To name the agent and the environment directly instead, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
    <Note>
      If your account is in a region other than US (the default), also set `LANGSMITH_ENDPOINT` to the API URL for your region. Without this, your API key won't be recognized and requests will fail to authenticate.
@@ -309,7 +311,9 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
 
 ## 4. View your trace
 
-In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart), go to **Tracing** and select your **default** project. Click the `assistant` row to open the trace. The **Trajectory** tab shows the conversation as it was sent to the model. Select the **Details** tab to see the full run tree, including the `assistant` function with the `get_context` tool call and the OpenAI call nested inside it.
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-observability-quickstart), go to **Tracing** and select your **default** project. In an agent-based workspace, select your agent in the top bar first, then go to **Tracing**. For more information, see [Navigate agents](/langsmith/navigate-agents).
+
+Click the `assistant` row to open the trace. The **Trajectory** tab shows the conversation as it was sent to the model. Select the **Details** tab to see the full run tree, including the `assistant` function with the `get_context` tool call and the OpenAI call nested inside it.
 
 <img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
 
@@ -327,6 +331,7 @@ The outer span captures your `assistant` function's inputs and outputs. The nest
 * [Trace an LLM application](/langsmith/observability-llm-tutorial): a full lifecycle tutorial, from prototyping through production.
 * [Filter traces](/langsmith/filter-traces): search and navigate large tracing projects.
 * [Log to a specific project](/langsmith/log-traces-to-project): send traces to a named project instead of **default**.
+* [Agents](/langsmith/agents): how an agent groups the traces, datasets, and monitors of one application, and how its environments divide them.
 
 <Callout type="info" icon="feather">
   After logging traces, use **[Chat](/langsmith/chat)** to analyze them and get AI-powered insights into your application's performance.

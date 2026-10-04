@@ -8,7 +8,7 @@
 
 * [Set up an organization](#set-up-an-organization)：创建和管理团队协作的组织，包括用户管理和角色分配。
 * [Set up a workspace](#set-up-a-workspace)：设置和配置工作区以组织您的 LangSmith 资源、管理工作区成员以及配置团队协作设置。
-* [Set up applications](#set-up-applications)：在工作区中设置应用程序以进一步组织LangSmith资源，并利用ABAC许可。
+* [Set up agents and applications](#set-up-agents-and-applications)：对工作区中的资源进行分组以进一步组织它们，并利用 ABAC 许可。
 
 <Check>
   在阅读此设置页面之前，您可能会发现参考[overview on LangSmith resource hierarchy](/langsmith/administration-overview)很有帮助。
@@ -30,13 +30,13 @@
 
 ### 管理和导航工作区
 
-一旦您订阅了允许每个组织使用多个用户的 [plan](/langsmith/pricing-plans)，您就可以设置 [workspaces](/langsmith/administration-overview#workspaces) 以更有效地协作并隔离不同用户组之间的 LangSmith 资源。要在工作区之间导航并访问每个工作区中的资源（跟踪项目、注释队列等），请从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy) 左下角的选择器中选择所需的工作区。
+一旦您订阅了允许每个组织使用多个用户的[plan](/langsmith/pricing-plans)，您就可以设置[workspaces](/langsmith/administration-overview#workspaces)以更有效地协作并隔离不同用户组之间的LangSmith资源。要在工作区之间导航并访问每个工作区中的资源（跟踪项目、注释队列等），请从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy) 左下角的选择器中选择所需的工作区。
 
 ### 管理用户
 
 在 [Settings page](https://smith.langchain.com/settings) 上的 **成员和角色** 选项卡中管理共享组织中的成员资格。在这里您可以：
 
-* 邀请新用户加入您的组织，选择工作区成员资格和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
+* 邀请新用户加入您的组织，选择工作区成员身份和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
 * 编辑用户的组织角色。
 * 从您的组织中删除用户。
 
@@ -54,20 +54,21 @@
 有关与每个角色关联的权限的完整列表，请参阅 [Administration overview](/langsmith/administration-overview#organization-roles) 页面。
 
 ## 设置工作空间当您第一次登录时，LangSmith会在您的个人组织中为您创建一个默认的[workspace](/langsmith/administration-overview#workspaces)。您可以使用工作区来分隔不同团队或业务部门之间的资源，以在它们之间建立清晰的信任边界。在每个工作区中，[Role-Based Access Control (RBAC)](/langsmith/rbac) 管理权限和访问级别，这确保用户只能访问其角色所需的资源和设置。大多数 LangSmith 活动发生在工作空间的上下文中，每个工作空间都有自己的设置和访问控制。
+有关为您的团队选择正确的工作区组织模型（每个团队一个工作区或每个工作区多个团队）的指南，请参阅[Workload isolation](/langsmith/workload-isolation)。
 
-有关为您的团队选择正确的工作区组织模型（每个团队单个工作区、每个工作区多个团队或每个团队多个工作区）的指南，请参阅[Workload isolation](/langsmith/workload-isolation)。
+有关工作区从跟踪项目转移到代理和环境时发生的变化，请参阅[How agent-based workspaces differ](/langsmith/migrate-to-agent-based-workspaces)。
 
 ### 创建工作区
 
 要创建新工作区，请导航至共享组织中的 [**Settings** page](https://smith.langchain.com/settings) **工作区** 选项卡，然后单击 **添加工作区**。
 
-创建工作区后，您可以通过在 **设置** 页面上选择工作区来管理其成员和其他配置。
-
-<Note>
+创建工作区后，您可以通过在 **设置** 页面上选择工作区来管理其成员和其他配置。<Note>
   不同的计划对组织中可以使用的工作空间数量有不同的限制。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing-langsmith)。
 </Note>
 
-### 管理用户<Info>
+### 管理用户
+
+<Info>
   只有 [workspace admins](/langsmith/rbac#workspace-admin) 可以管理工作区成员资格，并且如果启用 RBAC，则可以更改用户的工作区角色。
 </Info>
 
@@ -92,17 +93,19 @@
   删除工作区将永久删除该工作区和所有关联数据。此操作无法撤消。
 </Warning>
 
-您可以通过[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy)或[API](/langsmith/smith-api/workspaces/delete-workspace)删除工作空间。您必须是 [workspace admin](/langsmith/rbac#workspace-admin) 才能删除工作区。
+您可以通过[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy)或[API](/langsmith/smith-api/workspaces/delete-workspace)删除工作空间。您必须是[workspace admin](/langsmith/rbac#workspace-admin)才能删除工作区。
 
-在 LangSmith 用户界面中：
-
-1. 导航至**设置**。
+在 LangSmith 用户界面中：1. 导航至**设置**。
 2. 选择要删除的工作区。
 3. 单击屏幕右上角的删除图标<Icon icon="trash" />。
 
-## 设置应用程序您可以在工作区中创建应用程序以进一步组织资源，例如跟踪项目和数据集。一个工作区可能有零个或多个应用程序。
+## 设置代理和应用程序
 
-您可以通过从 LangSmith UI 主页中选择“**所有应用程序**”来查看工作区中的所有资源。您可以通过将资源添加到 **设置** 页面上 **资源标签** 下的 `Application` 标签来将资源标记到多个应用程序。
+在工作区中，您可以将资源（例如跟踪项目和数据集）进一步分组。工作空间可以有零个或多个这样的组。
+
+该组的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的组。基于代理的工作区将其称为[agent](/langsmith/agents)，并从顶部栏中的代理选择器中选择它。基于项目的工作区将其称为应用程序，并从侧边栏中的 **应用程序** 选择器中选择它。
+
+要查看工作区中的每个资源而不是一组资源，请在代理选择器中选择“**所有代理**”，或在应用程序选择器中选择“**所有应用程序**”。您可以通过将资源添加到 **设置** 页面上 **资源标签** 下的 `Application` 标签来将资源标记到多个应用程序。
 
 ***
 

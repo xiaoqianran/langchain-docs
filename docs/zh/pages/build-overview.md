@@ -10,7 +10,7 @@
   <div>
     <h1>构建</h1>
 
-    LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都由您来配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
+    LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块。每一层都可以由您配置：模型、工具、代理工作的上下文和内存，以及围绕模型循环的线束。
 
     <h2>选择起点</h2>
 
@@ -118,7 +118,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
@@ -168,7 +168,7 @@
       </Card>
 
       <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
-        使用 LangSmith Engine 自动查找并修复重复出现的代理问题。
+        使用 LangSmith 引擎自动查找并修复重复出现的代理问题。
       </Card>
 
       <Card title="Deep Agents Code" icon="code" href="/oss/deepagents/code/overview">
@@ -179,8 +179,8 @@
     <h2>设置和治理</h2>
 
     <CardGroup>
-      <Card title="LangSmith setup" icon="server" href="/langsmith/platform-setup">
-        在云、BYOC 或自托管上设置 LangSmith。
+      <Card title="LangSmith setup" icon="server" href="/langsmith/langsmith-setup-overview">
+        在云上托管、BYOC 或自托管、帐户设置和治理。
       </Card>
 
       <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">
@@ -192,7 +192,7 @@
 
     <CardGroup>
       <Card title="LangChain Academy" icon="school" href="https://academy.langchain.com/">
-        参加有关使用 LangSmith 和我们的开源框架构建和改进代理的免费课程。
+        学习有关使用 LangSmith 和我们的开源框架构建和改进代理的免费课程。
       </Card>
 
       <Card title="Community forum" icon="messages" href="https://forum.langchain.com/">
@@ -201,11 +201,11 @@
 
       <Card title="Support portal" icon="message-circle-question" href="https://support.langchain.com/">
         提交票证并跟踪支持请求。
+      </Card><Card title="Sign up for LangSmith" icon="tools" href="https://smith.langchain.com/">
+        免费从LangSmith开始。
       </Card>
 
-      <Card title="Sign up for LangSmith" icon="tools" href="https://smith.langchain.com/">
-        免费从LangSmith开始。
-      </Card><Card title="LangSmith status" icon="activity-heartbeat" href="https://status.smith.langchain.com/">
+      <Card title="LangSmith status" icon="activity-heartbeat" href="https://status.smith.langchain.com/">
         LangSmith服务和API的实时状态。
       </Card>
 

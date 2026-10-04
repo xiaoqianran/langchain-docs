@@ -52,9 +52,9 @@ pip install "langsmith[sandbox]" slack-sdk
   这些服务是可选的，但强烈建议将沙盒环境用于任何生产用途。您也可以使用本地 shell 后端（具有重要的[security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)）或直接从后端下载工件。
 </Note>
 
-### 朗史密斯
+### LangSmith
 
-您使用 LangChain 构建的许多应用程序将包含多个步骤以及多次调用 LLM 调用。随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-data-analysis)。
+您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-data-analysis)。
 
 在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
@@ -75,7 +75,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 
 ## 设置后端
 
-深度代理使用[backends](/oss/python/deepagents/backends)在沙盒环境中执行代码。
+Deep Agents 使用[backends](/oss/python/deepagents/backends) 在沙盒环境中执行代码。
 
 下面的示例使用 [LangSmith sandbox](/langsmith/sandboxes)。对于其他提供商，请参阅[available providers](/oss/python/deepagents/sandboxes#available-providers)。
 
@@ -126,7 +126,9 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       uv add langchain-agentcore-codeinterpreter
       ```
-    </CodeGroup>```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    </CodeGroup>
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
     from langchain_agentcore_codeinterpreter import AgentCoreSandbox
 
@@ -134,9 +136,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
     interpreter.start()
     backend = AgentCoreSandbox(interpreter=interpreter)
     ```
-  </Tab>
-
-  <Tab title="Daytona">
+  </Tab><Tab title="Daytona">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langchain-daytona
@@ -728,10 +728,10 @@ The analysis reveals that Widget A is the top performer, while Widget C shows ro
 
 ## 后续步骤
 
-现在您已经构建了数据分析代理，请探索以下资源来扩展其功能：* [Backends](/oss/python/deepagents/backends)：了解 Deep Agents 后端系统
+现在您已经构建了数据分析代理，请探索以下资源来扩展其功能：* [Backends](/oss/python/deepagents/backends)：了解Deep Agents后端系统
 * [Sandboxes](/oss/python/deepagents/sandboxes)：审查沙盒代码执行的后端，包括安全注意事项和高级配置
 * [Customization](/oss/python/deepagents/customization)：了解如何使用不同的模型、工具、提示和可选的 [task planning](/oss/python/deepagents/overview#task-planning) 自定义您的代理
-* [Code](/oss/deepagents/code/overview)：尝试 Deep Agents Code 作为终端编码代理，协助本地进行数据分析和其他代理任务
+* [Code](/oss/deepagents/code/overview)：尝试使用Deep Agents编码作为终端编码代理，协助本地进行数据分析和其他代理任务
 * [Skills](/oss/python/deepagents/skills)：为您的代理配备可重复使用的常见工作流程技能
 * [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)：为数据分析工作流程中的关键操作添加交互式审批步骤
 
@@ -739,7 +739,7 @@ The analysis reveals that Widget A is the top performer, while Widget C shows ro
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -6,7 +6,7 @@
 
 了解如何为敏感工具操作配置人工审批
 
-某些工具操作可能很敏感，需要人工批准才能执行。深度代理通过 LangGraph 的中断功能支持人机交互工作流程。您可以使用 `interrupt_on` 参数配置哪些工具需要批准。当设置`interrupt_on`时，`HumanInTheLoopMiddleware`将添加到[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)。如果在工具返回结果之前运行被取消或中断，同一堆栈中的 ⟦​​T79⟧ 会自动修复消息历史记录。
+某些工具操作可能很敏感，需要人工批准才能执行。 Deep Agents 通过LangGraph 的中断功能支持人机交互工作流程。您可以使用 `interrupt_on` 参数配置哪些工具需要批准。当设置`interrupt_on`时，`HumanInTheLoopMiddleware`将添加到[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)。如果在工具返回结果之前运行被取消或中断，同一堆栈中的[⟦T33⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)会自动修复消息历史记录。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -37,9 +37,12 @@ graph LR
 
 `interrupt_on`参数接受字典映射工具名称以中断配置。每个工具都可以配置：
 
-* **`True`**：以默认行为启用中断（允许批准、编辑、拒绝、响应）
+* **`True`**：以默认行为启用中断
+  （允许批准、编辑、拒绝和回复）
+
 * **`False`**：禁用该工具的中断
-* **`InterruptOnConfig`**：自定义配置。设置`allowed_decisions`来控制审阅选项。
+
+* **`InterruptOnConfig`**：自定义配置。设置 `allowed_decisions` 来控制审阅选项。
   在 Python 中，添加可选的 `when` 谓词以仅中断特定调用（请参阅 [Conditional interrupts](#conditional-interrupts)）。
 
 <CodeGroup>
@@ -149,7 +152,7 @@ graph LR
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -320,11 +323,13 @@ graph LR
 ## 决策类型
 
 `allowed_decisions` 列表控制人们在查看工具调用时可以采取的操作：|决策类型|描述 |示例用例 |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| ✅ `approve` |使用代理建议的原始参数执行该工具。                                          |发送与书面内容完全一致的电子邮件草稿 |
-| ✏️ `edit` |执行前修改工具参数。                                                                     |发送电子邮件之前更改收件人 |
-| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。                              |拒绝文件删除并解释原因 |
-| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |当人类拒绝提议的行动时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息可能会被模型视为成功的工具结果。
+| - | - | - |
+| ✅ `approve` |使用代理建议的原始参数执行该工具。 |发送与书面内容完全一致的电子邮件草稿 |
+| ✏️ `edit` |执行前修改工具参数。 |发送电子邮件之前更改收件人 |
+| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。 |拒绝文件删除并解释原因 |
+| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |
+
+当人类拒绝提议的行动时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息可能会被模型视为成功的工具结果。
 
 <Tip>
   **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
@@ -343,14 +348,12 @@ interrupt_on = {
     # Must approve (no rejection allowed)
     "critical_operation": {"allowed_decisions": ["approve"]},
 }
-```
-
-## 条件中断
+```## 条件中断
 
 默认情况下，`interrupt_on` 中列出的每个工具调用都会暂停以供审核。要仅暂停某些调用，请将 `when` 谓词添加到工具的 `InterruptOnConfig`。该谓词接收 [ToolCallRequest](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) 并返回 `True` 以中断或返回 `False` 以自动批准，因此您可以控制工具的参数。
 
 <Note>
-  条件中断需要`langchain>=1.3.3`。
+  Conditional interrupts require `langchain>=1.3.3`.
 </Note>
 
 <CodeGroup>
@@ -415,7 +418,7 @@ interrupt_on = {
 
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       interrupt_on={
           "write_file": {
               "allowed_decisions": ["approve", "edit", "reject"],
@@ -521,7 +524,9 @@ interrupt_on = {
       checkpointer=MemorySaver(),
   )
   ```
-</CodeGroup>当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会添加到中断批次中，因此审核者只能看到需要决策的操作。
+</CodeGroup>
+
+当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会添加到中断批次中，因此审核者只能看到需要决策的操作。
 
 有关其他配置选项和示例，请参阅[LangChain human-in-the-loop documentation](/oss/python/langchain/human-in-the-loop#conditional-interrupts)。
 
@@ -539,14 +544,13 @@ config = {"configurable": {"thread_id": str(uuid7())}}
 # Invoke the agent
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "Delete the file temp.txt"}]},
-    config=config,
-    version="v2",  # [!code highlight]
+    config=config
 )
 
 # Check if execution was interrupted
-if result.interrupts:  # [!code highlight]
+if result.get("__interrupt__"):  # [!code highlight]
     # Extract interrupt information
-    interrupt_value = result.interrupts[0].value  # [!code highlight]
+    interrupt_value = result["__interrupt__"][0].value  # [!code highlight]
     action_requests = interrupt_value["action_requests"]
     review_configs = interrupt_value["review_configs"]
 
@@ -571,17 +575,73 @@ if result.interrupts:  # [!code highlight]
     # Resume execution with decisions
     result = agent.invoke(
         Command(resume={"decisions": decisions}),
-        config=config,  # Must use the same config!
-        version="v2",
+        config=config  # Must use the same config!
     )
 
 # Process final result
-print(result.value["messages"][-1].content)  # [!code highlight]
+print(result["messages"][-1].content)  # [!code highlight]
 ```
+
+## Handle interrupts with streaming对于实时 UI，请使用 `.stream()` 而不是 `.invoke()` 在处理 HITL 中断时显示令牌和工具调用进度。中断在 `updates` 流中显示为 `__interrupt__` 条目。流完成后，收集人工决策并通过使用 `Command(resume=...)` 再次流式传输来恢复。
+
+<Note>
+  对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/python/langgraph/interrupts#handling-multiple-interrupts)。
+</Note>
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.utils.uuid import uuid7
+from langgraph.types import Command
+
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream_input = {"messages": [{"role": "user", "content": "Delete the file temp.txt"}]}
+
+while True:
+    pending_interrupt = None
+
+    for mode, data in agent.stream(  # [!code highlight]
+        stream_input,
+        stream_mode=["messages", "updates"],  # [!code highlight]
+        config=config,
+    ):
+        if mode == "messages":
+            token, metadata = data
+            # Display tokens in real time
+            if token.content:
+                print(token.content, end="", flush=True)
+
+        elif mode == "updates" and isinstance(data, dict):
+            if "__interrupt__" in data:  # [!code highlight]
+                pending_interrupt = data["__interrupt__"][0]  # [!code highlight]
+
+    # If no interrupt occurred, the agent finished
+    if pending_interrupt is None:
+        break
+
+    interrupt_value = pending_interrupt.value
+    action_requests = interrupt_value["action_requests"]
+    review_configs = interrupt_value["review_configs"]
+    config_map = {cfg["action_name"]: cfg for cfg in review_configs}
+
+    for action in action_requests:
+        review = config_map[action["name"]]
+        print(f"\nTool: {action['name']}")
+        print(f"Arguments: {action['args']}")
+        print(f"Allowed: {review['allowed_decisions']}")
+
+    # Collect one decision per action_request, in order
+    decisions = [{"type": "approve"} for _ in action_requests]
+    stream_input = Command(resume={"decisions": decisions})  # [!code highlight]
+
+print()
+```
+
+<Tip>
+  结合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍然捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
+</Tip>
 
 ## 多个工具调用
 
-当代理调用需要批准的多个工具时，所有中断都会在单个中断中批量处理。您必须按顺序为每一项做出决定。
+当代理调用需要批准的多个工具时，所有中断都会在一个中断中批量处理。您必须按顺序为每一项做出决定。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
@@ -591,12 +651,11 @@ result = agent.invoke(
         "role": "user",
         "content": "Delete temp.txt and send an email to admin@example.com"
     }]},
-    config=config,
-    version="v2",  # [!code highlight]
+    config=config
 )
 
-if result.interrupts:  # [!code highlight]
-    interrupt_value = result.interrupts[0].value  # [!code highlight]
+if result.get("__interrupt__"):  # [!code highlight]
+    interrupt_value = result["__interrupt__"][0].value  # [!code highlight]
     action_requests = interrupt_value["action_requests"]
 
     # Two tools need approval
@@ -613,14 +672,13 @@ if result.interrupts:  # [!code highlight]
 
     result = agent.invoke(
         Command(resume={"decisions": decisions}),
-        config=config,
-        version="v2",
+        config=config
     )
 ```
 
-## 拒绝消息
+## 拒绝消息当审核者返回 `reject` 决策时，Deep Agents 跳过工具调用并将拒绝反馈发送回代理。如果省略 `message`，默认反馈会告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。
 
-当审核者返回`reject`决策时，深度代理会跳过工具调用并将拒绝反馈发送回代理。如果省略 `message`，默认反馈会告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于敏感或副作用工具，请通过决策传递特定于域的`message`。明确客服人员是否应该放弃该操作、提出后续问题或尝试更安全的替代方案。
+对于敏感或副作用工具，请通过决策传递特定于域的`message`。明确客服人员是否应该放弃该操作、提出后续问题或尝试更安全的替代方案。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 decisions = [
@@ -636,8 +694,8 @@ decisions = [
 当`"edit"`在允许的决策范围内时，您可以在执行前修改工具参数：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-if result.interrupts:  # [!code highlight]
-    interrupt_value = result.interrupts[0].value  # [!code highlight]
+if result.get("__interrupt__"):  # [!code highlight]
+    interrupt_value = result["__interrupt__"][0].value  # [!code highlight]
     action_request = interrupt_value["action_requests"][0]
 
     # Original args from the agent
@@ -654,8 +712,7 @@ if result.interrupts:  # [!code highlight]
 
     result = agent.invoke(
         Command(resume={"decisions": decisions}),
-        config=config,
-        version="v2",
+        config=config
     )
 ```
 
@@ -690,9 +747,9 @@ agent = create_deep_agent(
 )
 ```
 
-当子代理触发中断时，处理是相同的 - 检查结果中的 `interrupts` 并使用 `Command` 恢复。
+当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。
 
-### 工具调用中的中断
+流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用`subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
 
 子代理工具可以直接调用`interrupt()`暂停执行并等待批准：
 
@@ -763,13 +820,12 @@ def main():
                 )
             ]
         },
-        config=config,
-        version="v2",  # [!code highlight]
+        config=config
     )
 
     # Check for interrupt
-    if result.interrupts:  # [!code highlight]
-        interrupt_value = result.interrupts[0].value  # [!code highlight]
+    if result.get("__interrupt__"):  # [!code highlight]
+        interrupt_value = result["__interrupt__"][0].value  # [!code highlight]
         print(f"\nInterrupt received!")
         print(f"  Type: {interrupt_value.get('type')}")
         print(f"  Action: {interrupt_value.get('action')}")
@@ -778,14 +834,13 @@ def main():
         print("\nResuming with Command(resume={'approved': True})...")
         result2 = parent_agent.invoke(
             Command(resume={"approved": True}),
-            config=config,
-            version="v2",  # [!code highlight]
+            config=config
         )
 
-        if not result2.interrupts:  # [!code highlight]
+        if "__interrupt__" not in result2:  # [!code highlight]
             print("\nExecution completed!")
             # Find the tool response
-            tool_msgs = [m for m in result2.value.get("messages", []) if m.type == "tool"]  # [!code highlight]
+            tool_msgs = [m for m in result2.get("messages", []) if m.type == "tool"]  # [!code highlight]
             if tool_msgs:
                 print(f"  Tool result: {tool_msgs[-1].content}")
         else:
@@ -818,7 +873,9 @@ Execution completed!
 
 <Note>
   文件系统权限中断需要`deepagents>=0.6.8`。
-</Note>除了`interrupt_on`之外，您可以通过用`mode="interrupt"`标记[permission rule](/oss/python/deepagents/permissions)来暂停内置文件系统工具。当代理在与中断模式规则匹配的路径上调用 `write_file` 或 `edit_file` 时，`create_deep_agent` 会引发与配置工具相同的人机循环中断，并使用文件系统工具的名称作为操作名称。
+</Note>
+
+除了`interrupt_on`之外，您还可以通过用`mode="interrupt"`标记[permission rule](/oss/python/deepagents/permissions)来暂停内置文件系统工具。当代理在与中断模式规则匹配的路径上调用 `write_file` 或 `edit_file` 时，`create_deep_agent` 会引发与配置工具相同的人机循环中断，并使用文件系统工具的名称作为操作名称。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import FilesystemPermission, create_deep_agent
@@ -848,18 +905,16 @@ config = {"configurable": {"thread_id": "fs-thread-1"}}
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "Save the API key to /secrets/key.txt"}]},
     config=config,
-    version="v2",
 )
 
-if result.interrupts:
-    action = result.interrupts[0].value["action_requests"][0]
+if result.get("__interrupt__"):
+    action = result["__interrupt__"][0].value["action_requests"][0]
     print(f"Approve {action['name']} on {action['args']}?")
 
     # Resume with the human decision (approve, edit, or reject).
     result = agent.invoke(
         Command(resume={"decisions": [{"type": "approve"}]}),
         config=config,  # Same thread ID
-        version="v2",
     )
 ```
 
@@ -890,19 +945,17 @@ agent = create_deep_agent(
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # First call
 config = {"configurable": {"thread_id": "my-thread"}}
-result = agent.invoke(input, config=config, version="v2")
+result = agent.invoke(input, config=config)
 
 # Resume (use same config)
-result = agent.invoke(Command(resume={...}), config=config, version="v2")
+result = agent.invoke(Command(resume={...}), config=config)
 ```
 
-### 将决策顺序与操作相匹配
-
-决策列表必须符合`action_requests`的顺序：
+### 将决策顺序与操作相匹配决策列表必须符合`action_requests`的顺序：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-if result.interrupts:  # [!code highlight]
-    interrupt_value = result.interrupts[0].value  # [!code highlight]
+if result.get("__interrupt__"):  # [!code highlight]
+    interrupt_value = result["__interrupt__"][0].value  # [!code highlight]
     action_requests = interrupt_value["action_requests"]
 
     # Create one decision per action, in order
@@ -913,8 +966,7 @@ if result.interrupts:  # [!code highlight]
 
     result = agent.invoke(
         Command(resume={"decisions": decisions}),
-        config=config,
-        version="v2",
+        config=config
     )
 ```
 
@@ -941,7 +993,7 @@ interrupt_on = {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

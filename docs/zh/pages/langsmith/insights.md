@@ -8,6 +8,8 @@
 
 Insights 会自动分析您的跟踪，以检测使用模式、常见代理行为和故障模式，因此您无需手动查看数千条跟踪。
 
+在基于代理的工作区中，针对单个 [environment](/langsmith/agent-environments) 运行报告是在不分析本地运行的情况下分析生产流量的方法。
+
 Insights 使用分层分类来理解您的数据并突出显示可操作的趋势。
 
 <Note>
@@ -22,8 +24,8 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
 ## 生成您的第一份见解报告<Tabs>
   <Tab title="UI" icon="layout-dashboard">
-    1. 导航至左侧菜单中的**跟踪项目**，然后选择一个跟踪项目。
-    2. 单击右上角的 **+New**，然后单击 **New Insights Report** 以生成有关项目的新见解。
+    1. 导航至左侧菜单中的**跟踪项目**，然后选择一个跟踪项目。在基于代理的工作区中，选择代理，然后选择要分析的[environment](/langsmith/agent-environments#the-four-environments)，因为报告针对一个环境而不是整个代理运行。
+    2. 单击右上角的 **+New**，然后单击 **New Insights Report** 以生成新的见解。
     3. 输入您的作业名称。
     4. 如果您还没有，请在工作区设置中为 Insights [configure a model](/langsmith/model-configurations) 进行操作。
     5. 回答引导性问题，将见解报告重点关注您想要了解的有关代理的信息，然后单击 **运行作业**。
@@ -40,9 +42,7 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
     1. 将您的聊天记录作为痕迹上传到新的LangSmith项目。
     2. 针对这些上传的跟踪生成洞察报告。
-    3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。
-
-    <CodeGroup>
+    3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。<CodeGroup>
       ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langsmith import Client
@@ -71,7 +71,9 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
       ```
     </CodeGroup>
   </Tab>
-</Tabs><Note>
+</Tabs>
+
+<Note>
   对于 OpenAI 模型，生成超过 1,000 个线程的见解通常需要 1.00-\2.00 美元，对于当前 Anthropic 模型，通常需要 3.00-4.00 美元。成本随着采样线程的数量和每个线程的大小而变化。
 </Note>
 
@@ -100,7 +102,7 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
 ### 顶级类别您的跟踪会自动分组为代表数据中最广泛模式的顶级类别。
 
-分布条显示每种模式发生的频率，从而可以轻松发现发生多于或少于预期的行为。
+分布条显示每种模式发生的频率，从而可以轻松发现多于或少于预期发生的行为。
 
 每个类别都有一个简短的描述，并显示其包含的跟踪的聚合指标，包括：
 
@@ -128,7 +130,7 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
 **提供有用的背景**
 
-为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文 - 您要学习的内容、哪些信号或字段最重要以及您已经知道的任何内容都是无用的。您对代理的作用及其跟踪的结构越清楚，Insights 就越能以具体、可操作且与您对数据的推理方式一致的方式对示例进行分组。
+为了获得最佳结果，请为每个提示写一两句话，为 Insights 提供所需的上下文 - 您要学习的内容、哪些信号或字段最重要，以及您已经知道的任何内容都是无用的。您对代理的作用及其跟踪的结构越清楚，Insights 就越能以具体、可操作且与您对数据的推理方式一致的方式对示例进行分组。
 
 **描述你的踪迹**
 

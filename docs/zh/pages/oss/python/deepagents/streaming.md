@@ -10,18 +10,18 @@
   对于新应用程序，我们推荐[event streaming](/oss/python/deepagents/event-streaming)——Deep Agents v0.6 中引入的类型化投影 API。事件流为每个投影提供单独的迭代器（子代理、消息、工具调用、值），因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
 </Tip>
 
-Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
+Deep Agents 构建于 LangGraph 的流基础架构之上，为子代理流提供一流的支持。当深度代理将工作委托给子代理时，您可以独立地传输来自每个子代理的更新 - 实时跟踪进度、LLM 令牌和工具调用。
 
 深度代理流可以实现什么：
 
-* <Icon icon="diagram-subtask" /> [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
-* <Icon icon="square-binary" /> [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
-* <Icon icon="screwdriver-wrench" /> [**Stream tool calls**](#tool-calls) — 查看子代理执行中的工具调用和结果。
-* <Icon icon="table" /> [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
+* [**Stream subagent progress**](#subagent-progress)—跟踪每个子代理并行运行时的执行情况。
+* [**Stream LLM tokens**](#llm-tokens)—来自主代理和每个子代理的流令牌。
+* [**Stream tool calls**](#tool-calls)—查看子代理执行中的工具调用和结果。
+* [**Stream custom updates**](#custom-updates)—从内部子代理节点发出用户定义的信号。
 
 ## 启用子图流
 
-深度代理使用 LangGraph 的子图流来显示子代理执行中的事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
+Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事件。要接收子代理事件，请在流式传输时启用 `stream_subgraphs`。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -39,20 +39,18 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -70,27 +68,25 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       system_prompt="You are a helpful research assistant",
       subagents=[
           {
@@ -101,20 +97,18 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -132,20 +126,18 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -163,21 +155,21 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
-  ``````python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
 
   agent = create_deep_agent(
@@ -192,20 +184,18 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -223,29 +213,25 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
-      version="v2",  # [!code highlight]
   ):
-      if chunk["type"] == "updates":
-          if chunk["ns"]:
-              # Subagent event - namespace identifies the source
-              print(f"[subagent: {chunk['ns']}]")
-          else:
-              # Main agent event
-              print("[main agent]")
-          print(chunk["data"])
+      if namespace:
+          # Subagent event - namespace identifies the source
+          print(f"[subagent: {namespace}]")
+      else:
+          # Main agent event
+          print("[main agent]")
+      print(data)
   ```
 </CodeGroup>
 
-## 命名空间
-
-当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
+## 命名空间当启用`subgraphs`时，每个流事件都包含一个**命名空间**，用于标识哪个代理生成了它。命名空间是代表代理层次结构的节点名称和任务 ID 的路径。
 
 |命名空间|来源 |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
+| - | - |
 | `()`（空）|主代理|
 | `("tools:abc123",)` |由主代理的 `task` 工具调用 `abc123` 生成的子代理 |
 | `("tools:abc123", "model_request:def456")` |子代理内的模型请求节点 |
@@ -253,26 +239,24 @@ Deep Agents 构建在 LangGraph 的流基础设施之上，为子代理流提供
 使用命名空间将事件路由到正确的 UI 组件：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for chunk in agent.stream(
+for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Plan my vacation"}]},
     stream_mode="updates",
     subgraphs=True,
-    version="v2",
 ):
-    if chunk["type"] == "updates":
-        # Check if this event came from a subagent
-        is_subagent = any(
-            segment.startswith("tools:") for segment in chunk["ns"]
-        )
+    # Check if this event came from a subagent
+    is_subagent = any(
+        segment.startswith("tools:") for segment in namespace
+    )
 
-        if is_subagent:
-            # Extract the tool call ID from the namespace
-            tool_call_id = next(
-                s.split(":")[1] for s in chunk["ns"] if s.startswith("tools:")
-            )
-            print(f"Subagent {tool_call_id}: {chunk['data']}")
-        else:
-            print(f"Main agent: {chunk['data']}")
+    if is_subagent:
+        # Extract the tool call ID from the namespace
+        tool_call_id = next(
+            s.split(":")[1] for s in namespace if s.startswith("tools:")
+        )
+        print(f"Subagent {tool_call_id}: {data}")
+    else:
+        print(f"Main agent: {data}")
 ```
 
 ## 子代理进度
@@ -303,29 +287,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -351,36 +333,34 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       system_prompt=(
           "You are a project coordinator with no research knowledge. "
           "For every user request, you must call the task() tool with "
@@ -399,29 +379,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -447,29 +425,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -495,29 +471,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -543,29 +517,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -591,29 +563,27 @@ for chunk in agent.stream(
       ],
   )
 
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "updates":
-          # Main agent updates (empty namespace)
-          if not chunk["ns"]:
-              for node_name, data in chunk["data"].items():
-                  if node_name == "tools":
-                      # Subagent results returned to main agent
-                      for msg in data.get("messages", []):
-                          if msg.type == "tool":
-                              print(f"\nSubagent complete: {msg.name}")
-                              print(f"  Result: {str(msg.content)[:200]}...")
-                  else:
-                      print(f"[main agent] step: {node_name}")
+      # Main agent updates (empty namespace)
+      if not namespace:
+          for node_name, data in data.items():
+              if node_name == "tools":
+                  # Subagent results returned to main agent
+                  for msg in data.get("messages", []):
+                      if msg.type == "tool":
+                          print(f"\nSubagent complete: {msg.name}")
+                          print(f"  Result: {str(msg.content)[:200]}...")
+              else:
+                  print(f"[main agent] step: {node_name}")
 
-          # Subagent updates (non-empty namespace)
-          else:
-              for node_name, data in chunk["data"].items():
-                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+      # Subagent updates (non-empty namespace)
+      else:
+          for node_name, data in data.items():
+              print(f"  [{namespace[0]}] step: {node_name}")
   ```
 </CodeGroup>
 
@@ -628,38 +598,38 @@ Subagent complete: task
 [main agent] step: model_request
 ```
 
-## LLM 代币使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
+## LLM 代币
+
+使用 `stream_mode="messages"` 从主代理和子代理流式传输各个令牌。每个消息事件都包含标识源代理的元数据。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 current_source = ""
 
-for chunk in agent.stream(
+for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
     stream_mode="messages",
     subgraphs=True,
-    version="v2",
 ):
-    if chunk["type"] == "messages":
-        token, metadata = chunk["data"]
+    token, metadata = data
 
-        # Check if this event came from a subagent (namespace contains "tools:")
-        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+    # Check if this event came from a subagent (namespace contains "tools:")
+    is_subagent = any(s.startswith("tools:") for s in namespace)
 
-        if is_subagent:
-            # Token from a subagent
-            subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-            if subagent_ns != current_source:
-                print(f"\n\n--- [subagent: {subagent_ns}] ---")
-                current_source = subagent_ns
-            if token.content:
-                print(token.content, end="", flush=True)
-        else:
-            # Token from the main agent
-            if "main" != current_source:
-                print("\n\n--- [main agent] ---")
-                current_source = "main"
-            if token.content:
-                print(token.content, end="", flush=True)
+    if is_subagent:
+        # Token from a subagent
+        subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+        if subagent_ns != current_source:
+            print(f"\n\n--- [subagent: {subagent_ns}] ---")
+            current_source = subagent_ns
+        if token.content:
+            print(token.content, end="", flush=True)
+    else:
+        # Token from the main agent
+        if "main" != current_source:
+            print("\n\n--- [main agent] ---")
+            current_source = "main"
+        if token.content:
+            print(token.content, end="", flush=True)
 
 print()
 ```
@@ -671,39 +641,37 @@ print()
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessageChunk, ToolMessage
 
-for chunk in agent.stream(
+for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Research recent quantum computing advances"}]},
     stream_mode="messages",
     subgraphs=True,
-    version="v2",
 ):
-    if chunk["type"] == "messages":
-        token, metadata = chunk["data"]
+    token, metadata = data
 
-        # Identify source: "main" or the subagent namespace segment
-        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-        source = next((s for s in chunk["ns"] if s.startswith("tools:")), "main") if is_subagent else "main"
+    # Identify source: "main" or the subagent namespace segment
+    is_subagent = any(s.startswith("tools:") for s in namespace)
+    source = next((s for s in namespace if s.startswith("tools:")), "main") if is_subagent else "main"
 
-        # Tool call chunks (streaming tool invocations)
-        if isinstance(token, AIMessageChunk) and token.tool_call_chunks:
-            for tc in token.tool_call_chunks:
-                if tc.get("name"):
-                    print(f"\n[{source}] Tool call: {tc['name']}")
-                # Args stream in chunks - write them incrementally
-                if tc.get("args"):
-                    print(tc["args"], end="", flush=True)
+    # Tool call chunks (streaming tool invocations)
+    if isinstance(token, AIMessageChunk) and token.tool_call_chunks:
+        for tc in token.tool_call_chunks:
+            if tc.get("name"):
+                print(f"\n[{source}] Tool call: {tc['name']}")
+            # Args stream in chunks - write them incrementally
+            if tc.get("args"):
+                print(tc["args"], end="", flush=True)
 
-        # Tool results
-        if isinstance(token, ToolMessage):
-            print(f"\n[{source}] Tool result [{token.name}]: {str(token.content)[:150]}")
+    # Tool results
+    if isinstance(token, ToolMessage):
+        print(f"\n[{source}] Tool result [{token.name}]: {str(token.content)[:150]}")
 
-        # Regular AI content (skip tool call messages)
-        if (
-            isinstance(token, AIMessageChunk)
-            and token.content
-            and not token.tool_call_chunks
-        ):
-            print(token.content, end="", flush=True)
+    # Regular AI content (skip tool call messages)
+    if (
+        isinstance(token, AIMessageChunk)
+        and token.content
+        and not token.tool_call_chunks
+    ):
+        print(token.content, end="", flush=True)
 
 print()
 ```
@@ -764,20 +732,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -831,20 +797,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -877,7 +841,7 @@ print()
 
 
   agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       system_prompt=(
           "You are a coordinator. For any analysis request, you MUST delegate "
           "to the analyst subagent using the task tool. Never try to answer directly. "
@@ -898,20 +862,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -965,20 +927,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1032,20 +992,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1099,23 +1057,19 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
+  ``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import time
   from langchain.tools import tool
   from langgraph.config import get_stream_writer
@@ -1166,20 +1120,18 @@ print()
   )
 
   custom_event_count = 0
-  for chunk in agent.stream(
+  for namespace, data in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
-      version="v2",
   ):
-      if chunk["type"] == "custom":
-          custom_event_count += 1
-          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-          if is_subagent:
-              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-              print(f"[{subagent_ns}]", chunk["data"])
-          else:
-              print("[main]", chunk["data"])
+      custom_event_count += 1
+      is_subagent = any(s.startswith("tools:") for s in namespace)
+      if is_subagent:
+          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
+          print(f"[{subagent_ns}]", data)
+      else:
+          print("[main]", data)
   ```
 </CodeGroup>
 
@@ -1200,17 +1152,16 @@ INTERESTING_NODES = {"model", "tools"}
 last_source = ""
 mid_line = False  # True when we've written tokens without a trailing newline
 
-for chunk in agent.stream(
+for namespace, mode, data in agent.stream(
     {"messages": [{"role": "user", "content": "Analyze the impact of remote work on team productivity"}]},
     stream_mode=["updates", "messages", "custom"],
     subgraphs=True,
-    version="v2",
 ):
-    is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+    is_subagent = any(s.startswith("tools:") for s in namespace)
     source = "subagent" if is_subagent else "main"
 
-    if chunk["type"] == "updates":
-        for node_name in chunk["data"]:
+    if mode == "updates":
+        for node_name in data:
             if node_name not in INTERESTING_NODES:
                 continue
             if mid_line:
@@ -1218,8 +1169,8 @@ for chunk in agent.stream(
                 mid_line = False
             print(f"[{source}] step: {node_name}")
 
-    elif chunk["type"] == "messages":
-        token, metadata = chunk["data"]
+    elif mode == "messages":
+        token, metadata = data
         if token.content:
             # Print a header when the source changes
             if source != last_source:
@@ -1231,11 +1182,11 @@ for chunk in agent.stream(
             print(token.content, end="", flush=True)
             mid_line = True
 
-    elif chunk["type"] == "custom":
+    elif mode == "custom":
         if mid_line:
             print()
             mid_line = False
-        print(f"[{source}] custom event:", chunk["data"])
+        print(f"[{source}] custom event:", data)
 
 print()
 ```
@@ -1249,62 +1200,60 @@ print()
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 active_subagents = {}
 
-for chunk in agent.stream(
+for namespace, data in agent.stream(
     {"messages": [{"role": "user", "content": "Research the latest AI safety developments"}]},
     stream_mode="updates",
     subgraphs=True,
-    version="v2",
 ):
-    if chunk["type"] == "updates":
-        for node_name, data in chunk["data"].items():
-            # ─── Phase 1: Detect subagent starting ────────────────────────
-            # When the main agent's model node contains task tool calls,
-            # a subagent has been spawned.
-            if not chunk["ns"] and node_name == "model":
-                for msg in data.get("messages", []):
-                    for tc in getattr(msg, "tool_calls", []):
-                        if tc["name"] == "task":
-                            active_subagents[tc["id"]] = {
-                                "type": tc["args"].get("subagent_type"),
-                                "description": tc["args"].get("description", "")[:80],
-                                "status": "pending",
-                            }
-                            print(
-                                f'[lifecycle] PENDING  → subagent "{tc["args"].get("subagent_type")}" '
-                                f'({tc["id"]})'
-                            )
-
-            # ─── Phase 2: Detect subagent running ─────────────────────────
-            # When we receive events from a tools:UUID namespace, that
-            # subagent is actively executing.
-            if chunk["ns"] and chunk["ns"][0].startswith("tools:"):
-                pregel_id = chunk["ns"][0].split(":")[1]
-                # Check if any pending subagent needs to be marked running.
-                # Note: the pregel task ID differs from the tool_call_id,
-                # so we mark any pending subagent as running on first subagent event.
-                for sub_id, sub in active_subagents.items():
-                    if sub["status"] == "pending":
-                        sub["status"] = "running"
+    for node_name, data in data.items():
+        # ─── Phase 1: Detect subagent starting ────────────────────────
+        # When the main agent's model node contains task tool calls,
+        # a subagent has been spawned.
+        if not namespace and node_name == "model":
+            for msg in data.get("messages", []):
+                for tc in getattr(msg, "tool_calls", []):
+                    if tc["name"] == "task":
+                        active_subagents[tc["id"]] = {
+                            "type": tc["args"].get("subagent_type"),
+                            "description": tc["args"].get("description", "")[:80],
+                            "status": "pending",
+                        }
                         print(
-                            f'[lifecycle] RUNNING  → subagent "{sub["type"]}" '
-                            f"(pregel: {pregel_id})"
+                            f'[lifecycle] PENDING  → subagent "{tc["args"].get("subagent_type")}" '
+                            f'({tc["id"]})'
                         )
-                        break
 
-            # ─── Phase 3: Detect subagent completing ──────────────────────
-            # When the main agent's tools node returns a tool message,
-            # the subagent has completed and returned its result.
-            if not chunk["ns"] and node_name == "tools":
-                for msg in data.get("messages", []):
-                    if msg.type == "tool":
-                        sub = active_subagents.get(msg.tool_call_id)
-                        if sub:
-                            sub["status"] = "complete"
-                            print(
-                                f'[lifecycle] COMPLETE → subagent "{sub["type"]}" '
-                                f"({msg.tool_call_id})"
-                            )
-                            print(f"  Result preview: {str(msg.content)[:120]}...")
+        # ─── Phase 2: Detect subagent running ─────────────────────────
+        # When we receive events from a tools:UUID namespace, that
+        # subagent is actively executing.
+        if namespace and namespace[0].startswith("tools:"):
+            pregel_id = namespace[0].split(":")[1]
+            # Check if any pending subagent needs to be marked running.
+            # Note: the pregel task ID differs from the tool_call_id,
+            # so we mark any pending subagent as running on first subagent event.
+            for sub_id, sub in active_subagents.items():
+                if sub["status"] == "pending":
+                    sub["status"] = "running"
+                    print(
+                        f'[lifecycle] RUNNING  → subagent "{sub["type"]}" '
+                        f"(pregel: {pregel_id})"
+                    )
+                    break
+
+        # ─── Phase 3: Detect subagent completing ──────────────────────
+        # When the main agent's tools node returns a tool message,
+        # the subagent has completed and returned its result.
+        if not namespace and node_name == "tools":
+            for msg in data.get("messages", []):
+                if msg.type == "tool":
+                    sub = active_subagents.get(msg.tool_call_id)
+                    if sub:
+                        sub["status"] = "complete"
+                        print(
+                            f'[lifecycle] COMPLETE → subagent "{sub["type"]}" '
+                            f"({msg.tool_call_id})"
+                        )
+                        print(f"  Result preview: {str(msg.content)[:120]}...")
 
 # Print final state
 print("\n--- Final subagent states ---")
@@ -1312,55 +1261,72 @@ for sub_id, sub in active_subagents.items():
     print(f"  {sub['type']}: {sub['status']}")
 ```
 
-## v2 流媒体格式
+### 处理人机交互中断
 
-<Note>
-  需要 LangGraph >= 1.1。
-</Note>
+配置 [⟦T42⟧](/oss/python/deepagents/human-in-the-loop) 时，`updates` 流可能包含暂停执行以供人工批准的 `__interrupt__` 条目。通过检查更新块中的 `__interrupt__` 键来检测它们。使用与 `.invoke()` 使用的相同平面 `{"decisions": [...]}` 有效负载继续：
 
-本页上的所有示例均使用 v2 流格式 (`version="v2"`)，这是推荐的方法。每个块都是一个带有 `type`、`ns` 和 `data` 键的 `StreamPart` 字典 - 无论流模式、模式数量或子图设置如何，形状都相同。
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.utils.uuid import uuid7
 
-v2 格式消除了嵌套元组解包，从而可以直接处理深度代理中的子图流。比较两种格式：
+config = {"configurable": {"thread_id": str(uuid7())}}
 
-<CodeGroup>
-  ```python v2 (recommended) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Unified format — no nested tuple unpacking
-  for chunk in agent.stream(
-      {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-      stream_mode=["updates", "messages", "custom"],
-      subgraphs=True,
-      version="v2",
-  ):
-      print(chunk["type"])  # "updates", "messages", or "custom"
-      print(chunk["ns"])    # () for main agent, ("tools:<id>",) for subagent
-      print(chunk["data"])  # payload
-  ``````python v1 (legacy) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Must handle (namespace, (mode, data)) nested tuples
-  for namespace, chunk in agent.stream(
-      {"messages": [{"role": "user", "content": "Research quantum computing"}]},
-      stream_mode=["updates", "messages", "custom"],
-      subgraphs=True,
-  ):
-      mode, data = chunk[0], chunk[1]
-      print(mode)       # "updates", "messages", or "custom"
-      print(namespace)  # () for main agent, ("tools:<id>",) for subagent
-      print(data)       # payload
-  ```
-</CodeGroup>
+for mode, data in agent.stream(
+    {"messages": [{"role": "user", "content": "Delete temp.txt"}]},
+    stream_mode=["messages", "updates"],
+    config=config,
+):
+    if mode == "updates" and isinstance(data, dict):
+        if "__interrupt__" in data:  # [!code highlight]
+            for interrupt_obj in data["__interrupt__"]:
+                print(f"Approval needed: {interrupt_obj.value}")
+```
 
-有关 v2 格式的更多详细信息，请参阅 [LangGraph streaming docs](/oss/python/langgraph/streaming#stream-output-format-v2)，包括类型缩小和 Pydantic/dataclass 强制。
+有关完整的流恢复循环模式，请参阅[Human-in-the-loop: Handle interrupts with streaming](/oss/python/deepagents/human-in-the-loop#handle-interrupts-with-streaming)。
 
-## 相关
+## 流块形状
 
-* [Subagents](/oss/python/deepagents/subagents)—配置子代理并将其与深度代理一起使用
-* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T47⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为深度代理构建 React UI
-* [LangChain Event Streaming](/oss/python/langchain/event-streaming)—LangChain 代理的一般流媒体概念
+对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
+
+| `stream_mode` |块状|
+| - | - |
+|单模式（例如`"updates"`）| `(namespace, data)` |
+|多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |
+
+如果没有`subgraphs`，单模直接产生`data`，多模产生`(mode, data)`。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Single mode + subgraphs
+for namespace, data in agent.stream(
+    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
+    stream_mode="updates",
+    subgraphs=True,
+):
+    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
+    print(data)
+
+# Multiple modes + subgraphs
+for namespace, mode, data in agent.stream(
+    {"messages": [{"role": "user", "content": "Research quantum computing"}]},
+    stream_mode=["updates", "messages", "custom"],
+    subgraphs=True,
+):
+    print(mode)       # "updates", "messages", or "custom"
+    print(namespace)  # () for main agent, ("tools:<id>",) for subagent
+    print(data)
+```
+
+LangGraph 1.1 及更高版本还支持统一的 `version="v2"` `StreamPart` dict 格式。参见[Stream output format (v2)](/oss/python/langgraph/streaming#stream-output-format-v2)。本页的Deep Agents示例使用元组格式，与LangGraph当前依赖的LangGraph版本相匹配。
+
+＃＃ 有关的* [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)—为敏感工具操作配置审批工作流程
+* [Subagents](/oss/python/deepagents/subagents)—通过 Deep Agents 配置和使用子代理
+* [Frontend streaming](/oss/python/deepagents/frontend/overview)—使用 [⟦T59⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 为 Deep Agents 构建 React UI
+* [LangChain Event Streaming](/oss/python/langchain/event-streaming)—使用 LangChain 代理的一般流概念
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

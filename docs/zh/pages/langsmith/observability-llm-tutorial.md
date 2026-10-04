@@ -51,15 +51,13 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-要将跟踪发送到特定项目，请使用[⟦T13⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。
+要将跟踪发送到特定项目，请使用[⟦T13⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
 <Note>
   您可能会在其他地方看到这些变量被引用为 `LANGCHAIN_*`。两者都可以，但推荐名称为 `LANGSMITH_TRACING` 和 `LANGSMITH_API_KEY`。
 </Note>
 
-### 跟踪 LLM 通话
-
-首先跟踪实际调用模型的 OpenAI 调用。这使您可以立即查看应用程序发送的提示和模型返回的响应。
+### 跟踪 LLM 通话首先跟踪实际调用模型的 OpenAI 调用。这使您可以立即查看应用程序发送的提示和模型返回的响应。
 
 使用 [⟦T17⟧](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) (Python) 或 [⟦T18⟧](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) (TypeScript) 包装 OpenAI 客户端。使用以下代码创建一个名为 `app.py` （或 `app.ts`）的文件：
 
@@ -139,7 +137,9 @@ export OPENAI_API_KEY="<your-openai-api-key>"
 
 调用 `support_bot("How many users can I have on the Starter plan?")` 会产生 OpenAI 调用的跟踪。
 
-### 跟踪整个管道跟踪 LLM 调用很有用，但跟踪完整的管道（包括检索）可以让您全面了解应用程序的行为。将 [⟦T22⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 或 [⟦T23⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) 添加到 main 函数中：
+### 跟踪整个管道
+
+跟踪 LLM 调用很有用，但跟踪完整的管道（包括检索）可以让您全面了解应用程序的行为。将 [⟦T22⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 或 [⟦T23⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) 添加到 main 函数中：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -218,7 +218,7 @@ export OPENAI_API_KEY="<your-openai-api-key>"
   ```
 </CodeGroup>
 
-现在调用 `support_bot("How many users can I have on the Starter plan?")` 会生成完整 RAG 管道的跟踪。
+调用 `support_bot("How many users can I have on the Starter plan?")` 现在会生成完整 RAG 管道的跟踪。
 
 <img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
 
@@ -238,9 +238,7 @@ langsmith trace list --project <your-project> --limit 5
 langsmith trace get <trace-id> --full
 ```
 
-## Beta 测试
-
-一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
+## Beta 测试一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不确切地知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
 
 ### 收集反馈
 
@@ -354,15 +352,15 @@ langsmith trace get <trace-id> --full
       await lsClient.flush(); // [!code highlight]
   })();
   ```
-</CodeGroup><Note>
+</CodeGroup>
+
+<Note>
   在生产中，这两个部分将位于不同的位置：`support_bot` 与 `run_id` 的调用保留在您的应用程序中，`create_feedback` 移动到接收用户反馈的端点（例如，`/feedback` API 路由）。 `run_id` 从一个传递到另一个，以便反馈可以链接到正确的跟踪。由于反馈还需要项目 UUID，因此将 `session_id` 与 `run_id` 一起传递。
 </Note>
 
 当您在 UI 中检查运行时，反馈将显示在 **反馈** 选项卡中。然后，您可以使用 **运行** 表中的过滤控件按反馈分数过滤运行。
 
-### 记录元数据
-
-[Metadata](/langsmith/add-metadata-tags) 允许您使用对过滤和比较有用的属性来标记运行。例如，使用了哪个型号版本或哪个用户提出了请求。
+### 记录元数据[Metadata](/langsmith/add-metadata-tags) 允许您使用对过滤和比较有用的属性来标记运行。例如，使用了哪个型号版本或哪个用户提出了请求。
 
 以下示例跟踪检索器（使用 `run_type="retriever"`）和主函数（使用模型名称的 `metadata` 属性）：
 
@@ -452,25 +450,27 @@ langsmith trace get <trace-id> --full
 
 两个元数据值都出现在跟踪上。您可以使用 **运行** 表中的过滤控件按元数据过滤运行。
 
-＃＃ 生产凭借强大的可观察性，您可以放心地交付生产。在生产中，您的流量明显增加，并且无法单独检查每个跟踪。 LangSmith 提供监控工具来帮助您了解聚合行为并在出现问题时进行深入分析。
+## 生产
+
+凭借强大的可观察性，您可以放心地交付生产。在生产中，您的流量明显增加，并且无法单独检查每个跟踪。 LangSmith 提供监控工具来帮助您了解聚合行为并在出现问题时进行深入分析。
 
 ### 监控
 
-在 UI 侧栏中，选择 **监控**，然后从左上角的下拉列表中选择一个跟踪项目。图表显示项目随时间变化的关键指标，包括跟踪计数、延迟、错误率、反馈分数和成本。有关可用指标和图表配置的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+在 UI 侧栏中，选择 **监控**，然后从左上角的下拉列表中选择一个跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，**监控** 需要代理，并且下拉列表在 **环境** 下为每个 [environment](/langsmith/agent-environments) 列出一个仪表板。图表显示项目随时间变化的关键指标，包括跟踪计数、延迟、错误率、反馈分数和成本。有关可用指标和图表配置的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
 <img alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs." />
 
-<img alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs." />
-
-### A/B 测试
+<img alt="LangSmith UI showing the monitoring page with the trace count chart and available tabs." />### A/B 测试
 
 <Note>
   分组依据功能需要给定元数据键至少有两个不同的值。
 </Note>
 
-由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。从 UI 侧边栏中的 **监控**，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。在 UI 侧边栏中的 **监控** 中，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
-### 深入分析当监控图表显示意外情况时，单击数据点以冻结工具提示，然后单击指标名称（例如，**输入**）以跳转到该时间窗口的已筛选运行表。有关搜索和过滤运行的更多信息，请参阅[Filter traces](/langsmith/filter-traces)。
+### 深入分析
+
+当监控图表显示意外情况时，单击数据点以冻结工具提示，然后单击指标名称（例如，**输入**）以跳转到该时间窗口的已筛选运行表。有关搜索和过滤运行的更多信息，请参阅[Filter traces](/langsmith/filter-traces)。
 
 <img alt="LangSmith UI showing the monitoring page with a specific point on the Input Tokens chart highlighted." />
 
@@ -478,11 +478,9 @@ langsmith trace get <trace-id> --full
 
 ## 结论
 
-在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以看到各个跟踪和聚合性能趋势。
+在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以了解各个跟踪和聚合性能趋势。
 
-有关更多信息，请参阅：
-
-* [Observability concepts](/langsmith/observability-concepts)：术语和核心思想。
+有关更多信息，请参阅：* [Observability concepts](/langsmith/observability-concepts)：术语和核心思想。
 * [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。
 * [Automations](/langsmith/rules)：在您的轨迹上自动运行的规则和在线评估。
 

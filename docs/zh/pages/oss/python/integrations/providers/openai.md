@@ -6,7 +6,7 @@
 
 使用 LangChain Python 与 OpenAI 集成。
 
-本页面涵盖了 LangChain 与 [OpenAI](https://en.wikipedia.org/wiki/OpenAI) 的所有集成
+本页面涵盖了所有 LangChain 与 [OpenAI](https://en.wikipedia.org/wiki/OpenAI) 的集成
 
 ## 模型接口
 
@@ -24,7 +24,7 @@
   </Card>
 
   <Card title="AzureOpenAIEmbeddings" href="/oss/python/integrations/embeddings/azure_openai" icon="brand-windows">
-    具有企业功能的 Azure OpenAI 嵌入模型。
+    Azure OpenAI 嵌入具有企业功能的模型。
   </Card>
 </Columns>
 
@@ -48,7 +48,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

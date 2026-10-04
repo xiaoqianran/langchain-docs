@@ -6,7 +6,7 @@
 
 使用 LangChain Python 与 Fireworks AI 集成。
 
-[Fireworks AI](https://fireworks.ai/) 托管具有快速推理功能的开放和专有语言模型。 `langchain-fireworks`包实现了LangChain聊天和Fireworks API的嵌入接口。
+[Fireworks AI](https://fireworks.ai/) 托管具有快速推理功能的开放和专有语言模型。 `langchain-fireworks` 包实现了 Fireworks API 的 LangChain 聊天和嵌入接口。
 
 ## 安装和设置
 
@@ -38,7 +38,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
