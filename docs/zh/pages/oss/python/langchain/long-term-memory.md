@@ -4,7 +4,7 @@
 
 # 长期记忆
 
-为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
+为LangChain代理添加长期记忆，以存储和调用跨对话和会话的数据
 
 长期记忆让您的座席能够存储和回忆不同对话和会话中的信息。
 与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在，并且可以随时调用。
@@ -66,15 +66,19 @@
   </Tab>
 </Tabs>
 
-然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。
+<Note>
+  对于其他存储后端，包括 Redis 和 MongoDB，请参阅 [store integrations](/oss/python/integrations/long-term-memory) 列表。有关 MongoDB 演练，请参阅 [long-term memory with MongoDB](/oss/python/integrations/memory/mongodb-long-term-memory)。
+</Note>
 
-<Tip>
+然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。<Tip>
   要更深入地了解记忆类型（语义、情景、程序）和写入记忆的策略，请参阅 [Memory conceptual guide](/oss/python/concepts/memory#long-term-memory)。
 </Tip>
 
 ## 内存存储
 
-LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgraph/stores) 中。每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
+LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgraph/stores) 中。
+
+每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
 
 这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
 
@@ -320,7 +324,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
 
 
       agent: Runnable = create_agent(
-          model="anthropic:claude-sonnet-4-6",
+          model="anthropic:claude-sonnet-5",
           tools=[get_user_info],
           # Pass store to agent - enables agent to access store when running tools
           store=store,
@@ -558,6 +562,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
       )
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bce035a2-e2ac-4bd3-9ab3-53d88b16cc43/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -602,8 +610,6 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
     ```
   </Tab>
 </Tabs>
-
-<a />
 
 ## 通过工具写入长期记忆
 
@@ -755,7 +761,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
 
 
       agent: Runnable = create_agent(
-          model="anthropic:claude-sonnet-4-6",
+          model="anthropic:claude-sonnet-5",
           tools=[save_user_info],
           store=store,
           context_schema=Context,
@@ -988,9 +994,11 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
       item = store.get(("users",), "user_123")
       ```
     </CodeGroup>
-  </Tab>
 
-  <Tab title="PostgreSQL">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/477f5212-de64-4076-87d7-c4653d5c3c15/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
+  </Tab><Tab title="PostgreSQL">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from dataclasses import dataclass
 
@@ -1041,7 +1049,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

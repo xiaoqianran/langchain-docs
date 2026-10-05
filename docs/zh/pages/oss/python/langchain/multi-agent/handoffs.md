@@ -112,6 +112,7 @@ def record_warranty_status(
   from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
   from langchain.tools import tool, ToolRuntime
   from langchain.messages import ToolMessage
+  from langgraph.checkpoint.memory import InMemorySaver
   from langgraph.types import Command
   from typing import Callable
 
@@ -402,7 +403,7 @@ def transfer_to_sales(runtime: ToolRuntime) -> Command:
         graph=Command.PARENT,
     )
 ```<Note>
-  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以将父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
+  **为什么不传递所有子代理消息？** 虽然您可以在切换中包含完整的子代理对话，但这通常会产生问题。接收代理可能会因不相关的内部推理而感到困惑，并且令牌成本不必要地增加。通过仅传递切换对，您可以使父图的上下文集中于高级协调。如果接收代理需要其他上下文，请考虑在 ToolMessage 内容中总结子代理的工作，而不是传递原始消息历史记录。
 </Note>
 
 **将控制权返回给用户**
@@ -419,7 +420,7 @@ def transfer_to_sales(runtime: ToolRuntime) -> Command:
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

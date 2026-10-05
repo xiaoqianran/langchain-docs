@@ -6,14 +6,14 @@
 
 本教程展示如何使用**渐进式披露**（一种上下文管理技术，其中代理按需加载信息而不是预先加载信息）来实现**技能**（基于提示的专门指令）。代理通过工具调用加载技能，而不是动态更改系统提示，仅发现并加载每个任务所需的技能。
 
-**用例：** 想象一下构建一个代理来帮助在大型企业中跨不同业务垂直领域编写 SQL 查询。您的组织可能为每个垂直行业拥有单独的数据存储，或者具有数千个表的单个整体数据库。无论哪种方式，预先加载所有模式都会淹没上下文窗口。渐进式公开通过在需要时仅加载相关模式来解决这个问题。该架构还使不同的产品所有者和利益相关者能够独立贡献和维护其特定业务垂直领域的技能。**您将构建什么：** 具有两项技能（销售分析和库存管理）的 SQL 查询助手。代理在其系统提示中看到轻量级技能描述，然后仅在与用户查询相关时通过工具调用加载完整的数据库模式和业务逻辑。
+**用例：**想象一下构建一个代理来帮助在大型企业中跨不同业务垂直领域编写 SQL 查询。您的组织可能为每个垂直行业拥有单独的数据存储，或者具有数千个表的单个整体数据库。无论哪种方式，预先加载所有模式都会淹没上下文窗口。渐进式公开通过在需要时仅加载相关模式来解决这个问题。该架构还使不同的产品所有者和利益相关者能够独立贡献和维护其特定业务垂直领域的技能。**您将构建什么：** 具有两项技能（销售分析和库存管理）的 SQL 查询助手。代理在其系统提示中看到轻量级技能描述，然后仅在与用户查询相关时通过工具调用加载完整的数据库模式和业务逻辑。
 
 <Note>
   有关具有查询执行、纠错和验证功能的 SQL 代理的完整示例，请参阅我们的 [SQL Agent tutorial](/oss/python/langchain/sql-agent)。本教程重点介绍可应用于任何领域的渐进式披露模式。
 </Note>
 
 <Tip>
-  渐进式披露被 Anthropic 推广为一种构建可扩展代理技能系统的技术。这种方法使用三级架构（元数据→核心内容→详细资源），其中代理仅根据需要加载信息。有关此技术的更多信息，请参阅[Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)。
+  渐进式披露由Anthropic作为一种构建可扩展代理技能系统的技术而普及。这种方法使用三级架构（元数据→核心内容→详细资源），其中代理仅根据需要加载信息。有关此技术的更多信息，请参阅[Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)。
 </Tip>
 
 ## 它是如何工作的
@@ -55,7 +55,7 @@ flowchart TD
 **什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用情况的信息或包括供编码代理执行的示例代码。
 
 <Tip>
-  渐进式披露的技能可以被视为[RAG (Retrieval-Augmented Generation)](/oss/python/deepagents/rag)的一种形式，其中每个技能都是一个检索单元——尽管不一定由嵌入或关键字搜索支持，但由浏览内容的工具（如文件操作或在本教程中的直接查找）支持。
+  渐进式披露的技能可以被视为[RAG (Retrieval-Augmented Generation)](/oss/python/deepagents/rag)的一种形式，其中每个技能都是一个检索单元——尽管不一定由嵌入或关键字搜索支持，但由浏览内容的工具（如文件操作或本教程中的直接查找）支持。
 </Tip>
 
 **权衡：*** **延迟**：按需加载技能需要额外的工具调用，这会增加需要每种技能的第一个请求的延迟
@@ -69,7 +69,7 @@ flowchart TD
   * **存储**：数据库、S3、内存数据结构或任何后端
   * **发现**：直接查找（本教程）、大型技能集合的 RAG、文件系统扫描或 API 调用
   * **加载逻辑**：自定义延迟特征并添加逻辑以搜索技能内容或排名相关性
-  * **副作用**：定义加载技能时会发生什么，例如暴露与该技能相关的工具（第 8 节中介绍）
+  * **副作用**：定义加载技能时会发生什么，例如公开与该技能相关的工具（第 8 节中介绍）
 
   这种灵活性使您可以针对性能、存储和工作流程控制方面的特定要求进行优化。
 </Tip>
@@ -94,7 +94,7 @@ flowchart TD
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-skills-sql-assistant) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -250,7 +250,7 @@ flowchart TD
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+      model = init_chat_model("google_genai:gemini-3.7-flash")
       ```
 
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -259,7 +259,7 @@ flowchart TD
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
       ```
     </CodeGroup>
   </Tab>
@@ -340,10 +340,10 @@ flowchart TD
       model = ChatHuggingFace(llm=llm)
       ```
     </CodeGroup>
-  </Tab><Tab title="OpenRouter">
-    👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+  </Tab>
 
-    <CodeGroup>
+  <Tab title="OpenRouter">
+    👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)<CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install -U "langchain-openrouter"
       ```
@@ -380,7 +380,7 @@ flowchart TD
 
 ## 1. 定义技能
 
-首先，定义技能的结构。每个技能都有名称、简要描述（在系统提示中显示）和完整内容（按需加载）：
+首先，定义技能的结构。每个技能都有名称、简要描述（在系统提示符中显示）和完整内容（按需加载）：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
@@ -1191,7 +1191,7 @@ This query:
      * 查询连接客户表和订单表
   4. 代理使用模式知识和示例模式编写查询
 
-  渐进式披露（按需加载模式）和动态几次提示（加载相关示例）的结合创建了强大的上下文工程模式，可扩展到大型知识库，同时提供高质量、扎实的输出。
+  渐进式披露（按需加载模式）和动态几次提示（加载相关示例）的结合创建了强大的上下文工程模式，可以扩展到大型知识库，同时提供高质量、扎实的输出。
 </Accordion>
 
 ## 后续步骤
@@ -1207,7 +1207,7 @@ This query:
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

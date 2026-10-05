@@ -6,7 +6,7 @@
 
 **路由器模式**是一种[multi-agent](/oss/python/langchain/multi-agent)架构，其中路由步骤对输入进行分类并将其定向到专门的代理，并将结果合成为组合响应。当您的组织的知识分布在不同的**垂直领域**（独立的知识领域，每个知识领域都需要自己的代理以及专门的工具和提示）时，此模式非常有用。
 
-在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景展示这些优势。该系统将协调三名专家：
+在本教程中，您将构建一个多源知识库路由器，通过实际的企业场景演示这些优势。该系统将协调三名专家：
 
 * 一个 **GitHub 代理**，用于搜索代码、问题和拉取请求。
 * 一个 **Notion 代理**，用于搜索内部文档和 wiki。
@@ -74,7 +74,7 @@ graph LR
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
-### 朗史密斯设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) 来检查代理内部发生的情况。然后设置以下环境变量：
+### LangSmith设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) 来检查代理内部发生的情况。然后设置以下环境变量：
 
 <CodeGroup>
   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -228,7 +228,7 @@ graph LR
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+      model = init_chat_model("google_genai:gemini-3.7-flash")
       ```
 
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -237,7 +237,7 @@ graph LR
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
       ```
     </CodeGroup>
   </Tab>
@@ -674,9 +674,9 @@ OAuth scope updates.
 
 ### 分类阶段`classify_query` 函数使用**结构化输出**来分析用户的查询并确定要调用哪些代理。这就是路由智能所在的地方：
 
-* 使用 Pydantic 模型 (Python) 或 Zod schema (JS) 确保有效输出
+* 使用 Pydantic 模型 (Python) 或 Zod 模式 (JS) 确保有效输出
 * 返回`Classification`对象的列表，每个对象都有一个`source`和目标`query`
-* 仅包含相关来源——不相关的被简单地省略
+* 只包含相关来源——不相关的被简单地省略
 
 这种结构化方法比自由格式的 JSON 解析更可靠，并且使路由逻辑更明确。
 
@@ -1031,7 +1031,7 @@ print(result["messages"][-1].content)
 当您满足以下条件时，路由器模式会表现出色：
 
 * **不同的垂直领域**：独立的知识领域，每个领域都需要专门的工具和提示
-* **并行查询需求**：从同时查询多个源中受益的问题
+* **并行查询需求**：受益于同时查询多个源的问题
 * **综合要求**：来自多个来源的结果需要组合成一致的响应该模式分为三个阶段：**分解**（分析查询并生成目标子问题）、**路由**（并行执行查询）和**合成**（组合结果）。
 
 <Tip>
@@ -1045,7 +1045,7 @@ print(result["messages"][-1].content)
 ## 后续步骤
 
 * 了解用于座席间对话的[handoffs](/oss/python/langchain/multi-agent/handoffs)
-* 探索[subagents pattern](/oss/python/langchain/multi-agent/subagents-personal-assistant)进行集中编排
+* 探索用于集中编排的[subagents pattern](/oss/python/langchain/multi-agent/subagents-personal-assistant)
 * 阅读[multi-agent overview](/oss/python/langchain/multi-agent)来比较不同的模式
 * 使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base)调试和监控您的路由器
 
@@ -1053,7 +1053,7 @@ print(result["messages"][-1].content)
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -8,7 +8,7 @@
 
 集成测试验证您的代理是否可以与模型 API 和外部服务正常工作。与使用伪造和模拟的[unit tests](/oss/python/langchain/test/unit-testing)不同，集成测试会进行实际的网络调用，以确认组件可以协同工作、凭证有效并且延迟是可以接受的。
 
-由于 LLM 响应是不确定的，因此集成测试需要与传统软件测试不同的策略。本指南介绍了如何为代理组织、编写和运行集成测试。对于LangChain本身贡献时的一般测试基础设施，请参阅[Contributing to code](/oss/python/contributing/code#running-tests)。
+由于 LLM 响应是不确定的，因此集成测试需要与传统软件测试不同的策略。本指南介绍了如何为代理组织、编写和运行集成测试。对于贡献LangChain本身的一般测试基础设施，请参阅[Contributing to code](/oss/python/contributing/code#running-tests)。
 
 ## 单独的单元测试和集成测试
 
@@ -18,6 +18,8 @@
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import pytest
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
 
 @pytest.mark.integration
 def test_agent_with_real_model():
@@ -88,6 +90,9 @@ load_dotenv()
 LLM 的反应因运行而异。不要对确切的输出字符串进行断言，而是验证响应的结构属性：消息类型、工具调用名称、参数形状和消息计数。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.messages import AIMessage, HumanMessage
+
 def test_agent_calls_weather_tool():
     agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
     result = agent.invoke({
@@ -108,7 +113,7 @@ def test_agent_calls_weather_tool():
 ```
 
 <Tip>
-  对于更严格的轨迹断言，请使用支持模糊匹配模式的[AgentEvals](/oss/python/langchain/test/evals)评估器，例如`unordered`和`superset`。
+  对于更严格的轨迹断言，请使用[AgentEvals](/oss/python/langchain/test/evals)评估器，它支持模糊匹配模式，例如`unordered`和`superset`。
 </Tip>
 
 ## 降低成本和延迟
@@ -119,6 +124,8 @@ def test_agent_calls_weather_tool():
 * **选择性运行**：使用[above](#separate-unit-and-integration-tests)的测试分离仅在 CI 中或部署之前运行集成测试，而不是在每个文件保存时运行。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+
 agent = create_agent(
     "gemini-3.1-flash-lite",
     tools=[get_weather],
@@ -177,6 +184,10 @@ def vcr_config():
 使用 `vcr` 标记装饰您的测试：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import pytest
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+
 @pytest.mark.vcr()
 def test_agent_trajectory():
     agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
@@ -203,7 +214,7 @@ def test_agent_trajectory():
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

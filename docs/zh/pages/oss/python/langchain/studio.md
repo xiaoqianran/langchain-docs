@@ -61,7 +61,7 @@ agent = create_agent(
 
 ### 3.环境变量
 
-Studio 需要 LangSmith API 密钥来连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
+Studio 需要 LangSmith API 密钥才能连接您的本地代理。在项目的根目录中创建一个 `.env` 文件，并从 [LangSmith](https://smith.langchain.com/settings) 添加 API 密钥。
 
 <Warning>
   确保您的 `.env` 文件未提交给版本控制，例如 Git。
@@ -88,7 +88,7 @@ LangGraph CLI 使用配置文件来查找代理并管理依赖项。在应用程
 [⟦T14⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 函数自动返回编译后的 LangGraph 图，这正是 `graphs` 键在配置文件中所期望的。
 
 <Info>
-  配置文件JSON对象中各个key的详细解释，请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
+  配置文件JSON对象中各个key的详细解释请参考[LangGraph configuration file reference](/langsmith/cli#configuration-file)。
 </Info>
 
 此时，项目结构将如下所示：
@@ -156,7 +156,7 @@ langgraph dev
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

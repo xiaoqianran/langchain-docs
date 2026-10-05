@@ -6,7 +6,7 @@
 
 从对话历史记录中的任何检查点检查、导航和恢复
 
-LangGraph 代理中的每个状态更改都会创建一个**检查点**，一个完整的检查点
+LangGraph 代理中的每个状态更改都会创建一个 **检查点**，一个完整的
 代理当时状态的快照。时间旅行可以让你检查任何
 检查点，查看代理所持有的确切状态，并从**恢复执行
 到那时**探索替代路径。它是一个调试器、一个撤消按钮，以及
@@ -20,7 +20,7 @@ LangGraph 代理中的每个状态更改都会创建一个**检查点**，一个
 
 ## 检查点如何工作
 
-LangGraph 在每次节点执行后都会保留代理状态。每个持久状态
+LangGraph 在每个节点执行后保留代理状态。每个持久状态
 是一个 [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) 对象，它捕获：
 
 * **检查点**：标识此特定快照的元数据（ID、时间戳）
@@ -33,7 +33,7 @@ LangGraph 在每次节点执行后都会保留代理状态。每个持久状态
 用户跳转到任意点。
 
 ## 设置`useStream`为您的代理创建流，然后显式从中获取检查点历史记录
-活动线程的 LangGraph 客户端。从检查点恢复使用
+活动线程的LangGraph客户端。从检查点恢复使用
 `forkFrom: { checkpointId }`。
 
 <Info>
@@ -325,7 +325,7 @@ stream.submit({}, {
 });
 ```
 
-这告诉 LangGraph：1. 回滚到所选检查点的状态
+这告诉LangGraph：1. 回滚到所选检查点的状态
 2. 从该点开始重新执行图表
 3. 将新结果传输给客户端
 
@@ -436,7 +436,7 @@ function formatCheckpoints(history: ThreadState[]) {
 
 <Info>
   与时间旅行相结合时，时间旅行尤其强大
-  [human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop) 图案。如果人类审阅者
+  [human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop) 模式。如果人类审阅者
   在中断时拒绝代理的操作，他们可以从检查点恢复
   在采取行动之前并提供纠正意见。
 </Info>
@@ -503,7 +503,7 @@ function TimelineEntry({
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

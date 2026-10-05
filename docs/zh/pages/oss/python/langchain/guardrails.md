@@ -32,24 +32,24 @@ Guardrails 通过在代理执行的关键点验证和过滤内容，帮助您构
   </Card>
 </CardGroup>
 
-LangChain 提供内置护栏（例如[PII detection](#pii-detection)、[human-in-the-loop](#human-in-the-loop)）和灵活的中间件系统，用于使用任一方法构建自定义护栏。
+LangChain 提供内置护栏（例如 [PII detection](#pii-detection)、[human-in-the-loop](#human-in-the-loop)）和灵活的中间件系统，用于使用任一方法构建自定义护栏。
 
 ## 内置护栏
 
 ### PII 检测
 
-LangChain提供内置中间件来检测和处理对话中的个人身份信息（PII）。该中间件可以检测常见的 PII 类型，例如电子邮件、信用卡、IP 地址等。
+LangChain 提供内置中间件，用于检测和处理对话中的个人身份信息 (PII)。该中间件可以检测常见的 PII 类型，例如电子邮件、信用卡、IP 地址等。
 
 PII 检测中间件对于具有合规性要求的医疗保健和金融应用程序、需要清理日志的客户服务代理以及通常处理敏感用户数据的任何应用程序等情况很有帮助。
 
-PII 中间件支持多种处理检测到的 PII 的策略：|战略|描述 |示例|
-| -------- | --------------------------------------- | -------------------- |
-| `redact` |替换为`[REDACTED_{PII_TYPE}]`| `[REDACTED_EMAIL]` |
+PII 中间件支持多种处理检测到的 PII 的策略：
+
+|策略|描述 |示例|
+| - | - | - |
+| `redact` |替换为`[REDACTED_{PII_TYPE}]` | `[REDACTED_EMAIL]` |
 | `mask` |部分模糊（例如最后 4 位数字）| `****-****-****-1234` |
 | `hash` |替换为确定性哈希 | `a8f5f167...` |
-| `block` |检测到时引发异常 |抛出错误 |
-
-<Note>
+| `block` |检测到时引发异常 |抛出错误 |<Note>
   借助 `apply_to_output=True`，`PIIMiddleware` 还可以通过注册的流转换器编辑流式传输输出（文本增量、工具调用参数、工具输出和状态快照）。需要`langchain>=1.3.2`。参见[Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware)。
 </Note>
 
@@ -99,8 +99,10 @@ result = agent.invoke({
   * `mac_address` - MAC 地址
   * `url` - URL
 
-  **配置选项：**|参数|描述 |默认|
-  | ----------------------- | ---------------------------------------------------------------------------------- | ---------------------- |
+  **配置选项：**
+
+  |参数|描述 |默认 |
+  | - | - | - |
   | `pii_type` |要检测的 PII 类型（内置或自定义）|必填|
   | `strategy` |如何处理检测到的 PII（`"block"`、`"redact"`、`"mask"`、`"hash"`）| `"redact"` |
   | `detector` |自定义检测器函数或正则表达式模式 | `None`（使用内置）|
@@ -111,9 +113,9 @@ result = agent.invoke({
 
 有关 PII 检测功能的完整详细信息，请参阅[middleware documentation](/oss/python/langchain/middleware#pii-detection)。
 
-### 人机交互LangChain提供内置中间件，在执行敏感操作之前需要人工批准。这是高风险决策最有效的护栏之一。
+### 人机交互
 
-人机交互中间件对于金融交易和转账、删除或修改生产数据、向外部各方发送通信以及任何具有重大业务影响的操作等情况很有帮助。
+LangChain 提供内置中间件，在执行敏感操作之前需要人工批准。这是高风险决策最有效的护栏之一。人机交互中间件对于金融交易和转账、删除或修改生产数据、向外部各方发送通信以及任何具有重大业务影响的操作等情况很有帮助。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -277,7 +279,9 @@ result = agent.invoke(
   ```
 </CodeGroup>
 
-### 特工护栏后在返回给用户之前，使用“after agent”挂钩验证最终输出一次。这对于基于模型的安全检查、质量验证或对完整代理响应的最终合规性扫描非常有用。
+### 特工护栏后
+
+在返回给用户之前，使用“after agent”挂钩验证最终输出一次。这对于基于模型的安全检查、质量验证或对完整代理响应的最终合规性扫描非常有用。
 
 <CodeGroup>
   ```python title="Class syntax" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -379,9 +383,7 @@ result = agent.invoke(
   ```
 </CodeGroup>
 
-### 组合多个护栏
-
-您可以通过将多个护栏添加到中间件数组来堆叠它们。它们按顺序执行，允许您构建分层保护：
+### 组合多个护栏您可以通过将多个护栏添加到中间件数组来堆叠它们。它们按顺序执行，允许您构建分层保护：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -418,7 +420,7 @@ agent = create_agent(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

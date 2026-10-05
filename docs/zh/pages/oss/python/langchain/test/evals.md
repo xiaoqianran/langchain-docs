@@ -18,8 +18,10 @@ def evaluator(*, outputs: dict, reference_outputs: dict):
     return {"key": "evaluator_score", "score": score}
 ```
 
-[⟦T14⟧](https://github.com/langchain-ai/agentevals) 包提供了针对代理轨迹的预构建评估器。您可以通过执行**轨迹匹配**（确定性比较）或使用**LLM法官**（定性评估）来进行评估：|方法|何时使用 |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+[⟦T14⟧](https://github.com/langchain-ai/agentevals) 包提供了针对代理轨迹的预构建评估器。您可以通过执行**轨迹匹配**（确定性比较）或使用**LLM法官**（定性评估）来进行评估：
+
+|方法|何时使用 |
+| - | - |
 | [Trajectory match](#trajectory-match-evaluator) |您知道预期的工具调用并希望进行快速、确定性、免费的检查 |
 | [LLM-as-judge](#llm-as-judge-evaluator) |您想要在没有严格期望的情况下评估整体质量和推理 |
 
@@ -37,10 +39,10 @@ def evaluator(*, outputs: dict, reference_outputs: dict):
 
 或者，直接克隆[AgentEvals repository](https://github.com/langchain-ai/agentevals)。
 
-## 轨迹匹配评估器
+## 轨迹匹配评估器AgentEvals 提供 `create_trajectory_match_evaluator` 函数来将代理的轨迹与参考进行匹配。有四种模式：
 
-AgentEvals 提供 `create_trajectory_match_evaluator` 函数来将代理的轨迹与参考进行匹配。有四种模式：|模式|描述 |使用案例 |
-| ----------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+|模式|描述 |使用案例 |
+| - | - | - |
 | `strict` |消息结构和工具调用以相同顺序精确匹配（消息内容可以不同）|测试特定序列（例如，授权前的策略查找）|
 | `unordered` |与参考相同的消息结构和工具调用，但工具调用可以按任何顺序发生 |当顺序无关紧要时验证信息检索 |
 | `subset` |代理仅调用参考工具（无额外功能）|确保代理不超出预期范围 |
@@ -61,7 +63,9 @@ def get_weather(city: str):
     return f"It's 75 degrees and sunny in {city}."
 
 agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
-```<Accordion title="Strict match">
+```
+
+<Accordion title="Strict match">
   `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -94,9 +98,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
       # }
       assert evaluation["score"] is True
   ```
-</Accordion>
-
-<Accordion title="Unordered match">
+</Accordion><Accordion title="Unordered match">
   `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -171,7 +173,9 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
       )
       assert evaluation["score"] is True
   ```
-</Accordion><Info>
+</Accordion>
+
+<Info>
   您还可以设置 `tool_args_match_mode` 属性和/或 `tool_args_match_overrides` 来自定义评估器如何考虑实际轨迹与参考中的工具调用之间的相等性。默认情况下，只有对同一工具具有相同参数的工具调用才被视为相等。请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes)了解更多详情。
 </Info>
 
@@ -198,9 +202,7 @@ agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
       )
       assert evaluation["score"] is True
   ```
-</Accordion>
-
-<Accordion title="With reference trajectory">
+</Accordion><Accordion title="With reference trajectory">
   如果您有参考轨迹，请使用预先构建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -294,7 +296,9 @@ LangSmith 提供两种主要的运行评估方法：[pytest](/langsmith/pytest) 
           outputs=result["messages"],
           reference_outputs=reference_trajectory
       )
-  ```使用 pytest 运行评估：
+  ```
+
+  使用 pytest 运行评估：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   pytest test_trajectory.py --langsmith-output
@@ -337,7 +341,7 @@ LangSmith 提供两种主要的运行评估方法：[pytest](/langsmith/pytest) 
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

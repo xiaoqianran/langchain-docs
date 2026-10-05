@@ -4,13 +4,13 @@
 
 # 结构化输出
 
-结构化输出允许代理以特定的、可预测的格式返回数据。您无需解析自然语言响应，而是获得 JSON 对象、[Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) 或应用程序可以直接使用的数据类形式的结构化数据。
+结构化输出允许代理以特定的、可预测的格式返回数据。您无需解析自然语言响应，而是以 JSON 对象、[Pydantic models](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage) 或应用程序可以直接使用的数据类的形式获取结构化数据。
 
 <Tip>
   本页介绍了使用 `create_agent` 的代理的结构化输出。要直接在模型上（在代理之外）使用结构化输出，请参阅[Models - Structured output](/oss/python/langchain/models#structured-output)。
 </Tip>
 
-LangChain的[⟦T30⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `'structured_response'` 键返回。
+LangChain 的 [⟦T30⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，它会被捕获、验证并以代理状态的 `'structured_response'` 键返回。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def create_agent(
@@ -33,7 +33,7 @@ def create_agent(
 * **`type[StructuredResponseT]`**：模式类型 - 根据模型能力自动选择最佳策略
 * **`None`**：未明确请求结构化输出
 
-当直接提供模式类型时，LangChain会自动选择：* `ProviderStrategy` 如果选择的模型和提供程序支持本机结构化输出（例如 [OpenAI](/oss/python/integrations/providers/openai)、[Anthropic (Claude)](/oss/python/integrations/providers/anthropic) 或 [xAI (Grok)](/oss/python/integrations/providers/xai)）。
+当直接提供模式类型时，LangChain自动选择：* `ProviderStrategy` 如果选择的模型和提供程序支持本机结构化输出（例如 [OpenAI](/oss/python/integrations/providers/openai)、[Anthropic (Claude)](/oss/python/integrations/providers/anthropic) 或 [xAI (Grok)](/oss/python/integrations/providers/xai)）。
 * `ToolStrategy` 适用于所有其他型号。
 
 <Warning>
@@ -58,7 +58,7 @@ def create_agent(
 
 ## 提供商策略
 
-一些模型提供商通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
+一些模型提供者通过其 API 原生支持结构化输出（例如 OpenAI、xAI (Grok)、Gemini、Anthropic (Claude)）。这是可用时最可靠的方法。
 
 要使用此策略，请配置 `ProviderStrategy`：
 
@@ -80,10 +80,10 @@ class ProviderStrategy(Generic[SchemaT]):
 </ParamField>
 
 <ParamField>
-  可选的布尔参数，用于启用严格的模式遵守。受某些提供商支持（例如，[OpenAI](/oss/python/integrations/chat/openai) 和 [xAI](/oss/python/integrations/chat/xai)）。默认为 `None`（禁用）。
+  可选的布尔参数，以启用严格的模式遵守。受某些提供商支持（例如，[OpenAI](/oss/python/integrations/chat/openai) 和 [xAI](/oss/python/integrations/chat/xai)）。默认为 `None`（禁用）。
 </ParamField>
 
-当您将模式类型直接传递给[⟦T52⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)并且模型支持原生结构化输出时，LangChain会自动使用`ProviderStrategy`：
+当您将模式类型直接传递给 [⟦T52⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 并且模型支持本机结构化输出时，LangChain 自动使用 `ProviderStrategy`：
 
 <CodeGroup>
   ```python Pydantic Model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -124,7 +124,7 @@ class ProviderStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ContactInfo  # Auto-selects ProviderStrategy
   )
 
@@ -149,7 +149,7 @@ class ProviderStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ContactInfo  # Auto-selects ProviderStrategy
   )
 
@@ -180,7 +180,7 @@ class ProviderStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ProviderStrategy(contact_info_schema)
   )
 
@@ -201,7 +201,7 @@ class ProviderStrategy(Generic[SchemaT]):
   在任何一种情况下，如果不支持结构化输出，代理将回退到工具调用策略。
 </Note>
 
-## 工具调用策略对于不支持原生结构化输出的模型，LangChain 使用工具调用来达到相同的结果。这适用于所有支持工具调用的模型（大多数现代模型）。
+## 工具调用策略对于不支持原生结构化输出的模型，LangChain使用工具调用来达到相同的结果。这适用于支持工具调用的所有模型（大多数现代模型）。
 
 要使用此策略，请配置 `ToolStrategy`：
 
@@ -225,7 +225,7 @@ class ToolStrategy(Generic[SchemaT]):
   * **数据类**：带有类型注释的Python数据类。返回字典。
   * **TypedDict**：类型化字典类。返回字典。
   * **JSON Schema**：具有 JSON 模式规范的字典。必须包含顶级 `title` 和 `description` 键。返回字典。
-  * **联合类型**：多个架构选项。该模型将根据上下文选择最合适的模式。
+  * **联合类型**：多个架构选项。模型将根据上下文选择最合适的模式。
 </ParamField>
 
 <ParamField>
@@ -258,7 +258,7 @@ class ToolStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ToolStrategy(ProductReview)
   )
 
@@ -285,7 +285,7 @@ class ToolStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ToolStrategy(ProductReview)
   )
 
@@ -311,7 +311,7 @@ class ToolStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ToolStrategy(ProductReview)
   )
 
@@ -354,7 +354,7 @@ class ToolStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ToolStrategy(product_review_schema)
   )
 
@@ -386,7 +386,7 @@ class ToolStrategy(Generic[SchemaT]):
 
   agent = create_agent(
       model="gpt-5.5",
-      tools=tools,
+      tools=[],
       response_format=ToolStrategy(Union[ProductReview, CustomerComplaint])
   )
 
@@ -458,7 +458,7 @@ Returning structured response: {'task': 'update the project timeline', 'assignee
 
 ### 错误处理
 
-通过工具调用生成结构化输出时，模型可能会出错。 LangChain提供了智能重试机制来自动处理这些错误。
+通过工具调用生成结构化输出时，模型可能会出错。 LangChain提供智能重试机制来自动处理这些错误。
 
 #### 多个结构化输出错误
 
@@ -707,7 +707,7 @@ response_format = ToolStrategy(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

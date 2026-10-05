@@ -7,24 +7,24 @@
 人在环 (HITL) [middleware](/oss/python/langchain/middleware/built-in#human-in-the-loop) 允许您为代理工具调用添加人工监督。
 当模型提出可能需要审查的操作（例如写入文件或执行 SQL）时，中间件可以暂停执行并等待决策。
 
-它通过根据可配置策略检查每个工具调用来实现此目的。如果需要干预，中间件会发出 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt) 来停止执行。图状态是使用 LangGraph 的 [persistence layer](/oss/python/langgraph/persistence) 保存的，因此执行可以安全地暂停并稍后恢复。
+它通过根据可配置策略检查每个工具调用来实现此目的。如果需要干预，中间件会发出 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt) 来停止执行。图状态使用LangGraph的[persistence layer](/oss/python/langgraph/persistence)保存，因此执行可以安全地暂停并稍后恢复。
 
 然后，人类的决定决定接下来会发生什么：该操作可以按原样批准（`approve`），在运行前修改（`edit`），拒绝反馈（`reject`），或者直接响应（`respond`）“询问用户”风格的工具。
 
 ## 中断决策类型
 
 [middleware](/oss/python/langchain/middleware/built-in#human-in-the-loop) 定义了人类响应中断的四种内置方式：|决策类型|描述 |示例用例 |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| ✅ `approve` |使用代理建议的原始参数执行该工具。                                          |发送与书面内容完全一致的电子邮件草稿 |
-| ✏️ `edit` |执行前修改工具参数。                                                                     |发送电子邮件之前更改收件人 |
-| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。                              |拒绝文件删除并解释原因 |
-| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |每个工具的可用决策类型取决于您在 `interrupt_on` 中配置的策略。
+| - | - | - |
+| ✅ `approve` |使用代理建议的原始参数执行该工具。 |发送与书面内容完全一致的电子邮件草稿 |
+| ✏️ `edit` |执行前修改工具参数。 |发送电子邮件之前更改收件人 |
+| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。 |拒绝文件删除并解释原因 |
+| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |
+
+每个工具的可用决策类型取决于您在 `interrupt_on` 中配置的策略。
 当多个工具调用同时暂停时，每个操作都需要单独的决策。
-必须按照中断请求中出现的操作的顺序提供决策。
+决策的提供顺序必须与中断请求中出现的操作的顺序相同。
 
-当人类拒绝请求的操作时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息被视为成功的工具结果。
-
-<Tip>
+当人类拒绝请求的操作时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息被视为成功的工具结果。<Tip>
   **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 </Tip>
 
@@ -60,7 +60,9 @@ agent = create_agent(
     # In production, use a persistent checkpointer like AsyncPostgresSaver or MongoDBSaver.
     checkpointer=InMemorySaver(),  # [!code highlight]
 )
-```<Info>
+```
+
+<Info>
   您必须配置检查指针以跨中断保持图形状态。
   在生产中，使用持久检查指针，例如 [⟦T24⟧](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.postgres.aio.AsyncPostgresSaver) 或 [⟦T25⟧](https://pypi.org/project/langgraph-checkpoint-mongodb/)。对于测试或原型设计，请使用[⟦T26⟧](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.memory.InMemorySaver)。
 
@@ -77,9 +79,7 @@ agent = create_agent(
     操作请求描述的前缀
   </ParamField>
 
-  **`InterruptOnConfig`选项：**
-
-  <ParamField type="list[string]">
+  **`InterruptOnConfig`选项：**<ParamField type="list[string]">
     允许的决策列表：`'approve'`、`'edit'`、`'reject'` 或 `'respond'`
   </ParamField>
 
@@ -92,7 +92,9 @@ agent = create_agent(
   </ParamField>
 </Accordion>
 
-## 条件中断默认情况下，`interrupt_on` 中列出的每个工具调用都会暂停以供审核。要仅暂停某些调用，请将 `when` 谓词添加到工具的 `InterruptOnConfig`。该谓词接收 `ToolCallRequest` 并返回 `True` 以中断或返回 `False` 以自动批准，因此您可以控制工具的参数。
+## 条件中断
+
+默认情况下，`interrupt_on` 中列出的每个工具调用都会暂停以供审核。要仅暂停某些调用，请将 `when` 谓词添加到工具的 `InterruptOnConfig`。该谓词接收 `ToolCallRequest` 并返回 `True` 以中断或返回 `False` 以自动批准，因此您可以控制工具的参数。
 
 <Note>
   条件中断需要`langchain>=1.3.3`。
@@ -139,9 +141,7 @@ agent = create_agent(
 
 当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会添加到中断批次中，因此审核者只能看到需要决策的操作。
 
-## 响应中断
-
-当您调用代理时，它会一直运行，直到完成或引发中断。当工具调用与您在`interrupt_on`中配置的策略匹配时，会触发中断。使用 `version="v2"`，结果是 `GraphOutput`，其 `interrupts` 属性包含需要审核的操作。然后，您可以将这些操作呈现给审阅者，并在做出决定后恢复执行。
+## 响应中断当您调用代理时，它会一直运行，直到完成或引发中断。当工具调用与您在`interrupt_on`中配置的策略匹配时，会触发中断。使用 `version="v2"`，结果是 `GraphOutput`，其 `interrupts` 属性包含需要审核的操作。然后，您可以将这些操作呈现给审阅者，并在做出决定后恢复执行。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
@@ -201,7 +201,7 @@ agent.invoke(
 
 <Tabs>
   <Tab title="✅ approve">
-    使用 `approve` 按原样批准工具调用并在不进行更改的情况下执行它。
+    使用 `approve` 按原样批准工具调用并在不进行任何更改的情况下执行它。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     agent.invoke(
@@ -221,7 +221,9 @@ agent.invoke(
         version="v2",
     )
     ```
-  </Tab><Tab title="✏️ edit">
+  </Tab>
+
+  <Tab title="✏️ edit">
     在执行之前使用`edit`修改工具调用。
     为编辑后的操作提供新的工具名称和参数。
 
@@ -280,10 +282,10 @@ agent.invoke(
         config=config,  # Same thread ID to resume the paused conversation
         version="v2",
     )
-    ```
+    ````message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。
+  </Tab>
 
-    `message` 作为反馈添加到对话中，以帮助代理了解操作被拒绝的原因以及应该做什么。当您省略 `message` 时，中间件将使用默认拒绝消息，告诉模型该工具尚未执行，并且除非用户要求，否则不要重试相同的工具调用。对于副作用工具，提供特定于域的消息，明确说明代理是否应该放弃操作、提出后续问题或尝试更安全的替代方案。
-  </Tab><Tab title="💬 respond">
+  <Tab title="💬 respond">
     使用 `respond` 作为“询问用户”风格的工具，该工具的真正实现是人类的回复。 `message`内容直接作为工具结果返回；该工具本身不被执行。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -315,9 +317,7 @@ agent.invoke(
 
 ### 多项决定
 
-当审查多个操作时，请按照中断中出现的顺序为每个操作提供决策：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+当审查多个操作时，请按照中断中出现的顺序为每个操作提供决策：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
     "decisions": [
         {"type": "approve"},
@@ -374,9 +374,11 @@ for message in stream.messages:  # [!code highlight]
 
 ## 执行生命周期
 
-中间件定义了一个 `after_model` 钩子，该钩子在模型生成响应之后但在执行任何工具调用之前运行：1. 代理调用模型来生成响应。
+中间件定义了一个 `after_model` 钩子，该钩子在模型生成响应之后但在执行任何工具调用之前运行：
+
+1. 代理调用模型来生成响应。
 2. 中间件检查工具调用的响应。
-3. 如果任何调用需要人工输入，中间件将使用 `action_requests` 和 `review_configs` 构建 `HITLRequest` 并调用 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt)。
+3. 如果任何调用需要人工输入，中间件会使用 `action_requests` 和 `review_configs` 构建 [HITLRequest](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HITLRequest) 并调用 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt)。
 4. 代理等待人类的决定。
 5. 根据`HITLResponse`决策，中间件执行批准或编辑的调用，综合[ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)的拒绝调用，直接返回人工回复作为[ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)的`respond`决策，并恢复执行。
 
@@ -386,11 +388,9 @@ for message in stream.messages:  # [!code highlight]
 
 查看上面的[execution lifecycle](#execution-lifecycle)，了解如何将中断集成到代理的操作中。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

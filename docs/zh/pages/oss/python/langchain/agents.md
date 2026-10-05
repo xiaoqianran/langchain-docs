@@ -4,6 +4,8 @@
 
 # 代理
 
+构建一个LangChain代理：一个循环调用工具的模型，直到任务完成，由提示、工具和中间件组成。
+
 代理是一个循环调用工具的模型，直到给定的任务完成。
 
 <img alt="Core agent loop diagram" />
@@ -34,7 +36,7 @@
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="anthropic:claude-sonnet-4-6", tools=tools)
+  agent = create_agent(model="anthropic:claude-sonnet-5", tools=tools)
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -72,9 +74,7 @@
 
 <img alt="Agent model and harness components diagram" />
 
-### 型号
-
-传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
+### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/python/langchain/models)。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -92,7 +92,7 @@
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="anthropic:claude-sonnet-4-6", tools=tools)
+  agent = create_agent(model="anthropic:claude-sonnet-5", tools=tools)
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -111,7 +111,9 @@
   from langchain.agents import create_agent
 
   agent = create_agent(model="baseten:zai-org/GLM-5.2", tools=tools)
-  ``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
   agent = create_agent(model="ollama:north-mini-code-1.0", tools=tools)
@@ -162,7 +164,7 @@
       return f"Results for: {query}"
 
 
-  agent = create_agent(model="anthropic:claude-sonnet-4-6", tools=[search])
+  agent = create_agent(model="anthropic:claude-sonnet-5", tools=[search])
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -245,7 +247,7 @@
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=tools,
       system_prompt="You are a helpful assistant. Be concise and accurate.",
   )
@@ -329,7 +331,7 @@
       confidence: float
 
 
-  agent = create_agent(model="anthropic:claude-sonnet-4-6", tools=tools, response_format=Answer)
+  agent = create_agent(model="anthropic:claude-sonnet-5", tools=tools, response_format=Answer)
   result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
   result["structured_response"]  # Answer(summary=..., confidence=...)
   ```
@@ -397,11 +399,11 @@
 
 ### 代理状态
 
-每个代理都通过[⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState)管理其执行上下文，这是一个类型化字典，其中保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
+每个代理都通过 [⟦T121⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) 管理其执行上下文，这是一个类型化字典，其中保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
 
 内置字段是：|领域 |类型 |描述 |
-| ---------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `messages` | `list[BaseMessage]` |当前线程的完整对话历史记录。仅追加：添加新消息，从不替换。 |
+| - | - | - |
+| `messages` | `list[BaseMessage]` |当前线程的完整对话历史记录。仅追加：添加新消息，永不替换。 |
 
 `AgentState` 也是每个节点样式中间件挂钩的类型签名（`before_model`、`after_model` 等）。钩子接收当前状态并可以返回更新字典以合并回其中。
 
@@ -450,7 +452,7 @@
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[],
       state_schema=MyState,  # [!code highlight]
   )
@@ -527,7 +529,9 @@
 
 <Tip>
   跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
-</Tip>您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/use-graph-api#messagesstate)；要调用代理，请传递新消息以及`thread_id`，以便代理可以保留并恢复对话历史记录：
+</Tip>
+
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/use-graph-api#messagesstate)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -578,15 +582,13 @@
       {"messages": [{"role": "user", "content": "What about tomorrow?"}]},
       config=config,
   )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
   from langchain_core.utils.uuid import uuid7
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[],
       checkpointer=InMemorySaver(),
   )
@@ -705,6 +707,10 @@
   )
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b220516f-9133-4c86-bc5a-073ef63e3f7f/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Note>
   保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
@@ -781,7 +787,7 @@
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[],
       context_schema=Context,
       checkpointer=InMemorySaver(),
@@ -903,9 +909,15 @@
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fb33392a-cf5d-4673-a9b2-c58a5abeffd0/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 `thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/python/langchain/tools#context) 和 [Runtime](/oss/python/langchain/runtime)。
 
-## 流媒体`invoke` 返回运行结束时的最终响应。如果代理执行多个工具调用，用户通常需要在完成之前更新进度。使用流式传输来显示发生的中间消息和工具活动。
+## 流媒体
+
+`invoke` 返回运行结束时的最终响应。如果代理执行多个工具调用，用户通常需要在完成之前更新进度。使用流式传输来显示发生的中间消息和工具活动。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage, HumanMessage
@@ -925,10 +937,12 @@ for snapshot in stream.values:
             print(f"Agent: {latest_message.content}")
     elif latest_message.tool_calls:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/502a2e8a-a9aa-412a-b2e0-ef2ab0290175/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Tip>
-  有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/python/langchain/streaming)。
+  有关流模式、事件类型和 UI 模式，请参阅[Streaming](/oss/python/langchain/streaming)。
 </Tip>
 
 ## 配置线束
@@ -960,12 +974,12 @@ for snapshot in stream.values:
 
   <Card title="Guardrails" icon="lock" href="#guardrails">
     PII 检测和内容控制
-  </Card><Card title="Steering" icon="user" href="#steering">
+  </Card>
+
+  <Card title="Steering" icon="user" href="#steering">
     在采取高影响力行动之前进行人机交互批准
   </Card>
-</CardGroup>
-
-<Tip>
+</CardGroup><Tip>
   `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅 [Deep Agents](/oss/python/deepagents/harness) 了解完整的预制线束。
 </Tip>
 
@@ -1004,7 +1018,7 @@ for snapshot in stream.values:
   from deepagents.middleware import FilesystemMiddleware
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[search],
       middleware=[FilesystemMiddleware(backend=StateBackend())],
   )
@@ -1075,7 +1089,9 @@ for snapshot in stream.values:
   </CodeGroup>
 </Note>
 
-### 上下文管理每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。汇总会在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
+### 上下文管理
+
+每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。摘要在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1121,7 +1137,7 @@ for snapshot in stream.values:
   from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
   backend = StateBackend()
-  model = "anthropic:claude-sonnet-4-6"
+  model = "anthropic:claude-sonnet-5"
 
   agent = create_agent(
       model=model,
@@ -1190,9 +1206,7 @@ for snapshot in stream.values:
           SkillsMiddleware(backend=backend, sources=["./skills/"]),
       ],
   )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents.backends import StateBackend
   from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
@@ -1331,7 +1345,7 @@ for snapshot in stream.values:
   backend = StateBackend()
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[search],
       middleware=[
           FilesystemMiddleware(backend=backend),
@@ -1530,7 +1544,9 @@ for snapshot in stream.values:
   </CodeGroup>
 </Note>
 
-### 命名您的代理人可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/python/langchain/multi-agent) 系统中时，这特别有用。
+### 命名您的代理人
+
+可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/python/langchain/multi-agent) 系统中时，这特别有用。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1542,7 +1558,7 @@ for snapshot in stream.values:
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  agent = create_agent(model="anthropic:claude-sonnet-4-6", tools=tools, name="research_assistant")
+  agent = create_agent(model="anthropic:claude-sonnet-5", tools=tools, name="research_assistant")
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1562,9 +1578,7 @@ for snapshot in stream.values:
   ```
 </CodeGroup>
 
-### 容错
-
-生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
+### 容错生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1624,7 +1638,7 @@ for snapshot in stream.values:
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[search],
       middleware=[
           ModelRetryMiddleware(max_retries=3),
@@ -1780,7 +1794,7 @@ for snapshot in stream.values:
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[search],
       middleware=[PIIMiddleware("email")],
   )
@@ -1865,7 +1879,9 @@ for snapshot in stream.values:
 
 参见[⟦T152⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)、[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
 
-### 转向完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
+### 转向
+
+完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1919,7 +1935,7 @@ for snapshot in stream.values:
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[search],
       middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
   )
@@ -2002,9 +2018,7 @@ for snapshot in stream.values:
   ```
 </CodeGroup>
 
-参见[⟦T153⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)、[Human-in-the-loop](/oss/python/langchain/human-in-the-loop)。
-
-### 中间件资源
+参见[⟦T153⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)、[Human-in-the-loop](/oss/python/langchain/human-in-the-loop)。### 中间件资源
 
 <CardGroup>
   <Card title="Middleware overview" icon="route" href="/oss/python/langchain/middleware/overview">
@@ -2024,7 +2038,7 @@ for snapshot in stream.values:
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

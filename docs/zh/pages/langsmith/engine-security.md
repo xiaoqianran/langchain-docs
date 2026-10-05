@@ -8,7 +8,7 @@ LangSmith 引擎如何处理您的数据、管理其访问及其合规性状态�
 
 LangSmith引擎是内置于LangSmith中的AI代理，可改进您构建的代理。引擎会审查 LangSmith 中已有的跟踪数据，显示问题并确定其优先级，并打开拉取请求并提供修复建议、建议的即时更改和评估。有关产品概述，请参阅[Engine](/langsmith/engine-overview)。
 
-引擎是选择加入、建议性的，并且从不训练您的数据，并且它在 LangSmith 的 SOC 2 Type II 和 ISO 27001 控制下运行。本页面介绍了 Engine 如何处理您的数据、管理其 GitHub 和模型访问的控件以及 LangSmith 云中 Engine 的合规性状况。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。
+引擎是选择加入、建议性的，并且从不训练您的数据，并且它在 LangSmith 的 SOC 2 Type II 和 ISO 27001 控制下运行。本页面介绍了 Engine 如何处理您的数据、管理其 GitHub 和模型访问的控件以及 LangSmith 云中 Engine 的合规状况。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。
 
 引擎作为 LangSmith 的一部分交付，并继承了 LangSmith 的安全性和合规性态势，并具有涵盖以下部分中描述的 AI 推理层的附加控制。对于任何计划的组织，默认情况下引擎永远不会打开，只能由[Organization Admin](/langsmith/rbac#organization-admin)启用。对于LangSmith的平台级控制，包括数据加密和区域处理，请参见[Regions FAQ](/langsmith/regions-faq)和[LangChain Trust Center](https://trust.langchain.com/)。## 数据引擎使用什么
 
@@ -42,9 +42,12 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 
 ## 模型子处理器在LangSmith Cloud中，Engine的模型子处理器（目前为OpenAI、Anthropic、Fireworks和Baseten）被配置为零数据保留，并且根据与LangChain的协议，禁止使用客户数据来训练或微调其模型。 [LangChain Trust Center](https://trust.langchain.com/)公布权威分处理商名单。
 
-在自托管部署中，引擎通过 LangSmith Intelligence (LSI) 使用云的模型提供程序。它使用 AWS 上的 Amazon Bedrock 和 GCP 上的 Vertex AI。
+在自托管部署中，每个组织选择 Engine 运行其模型的方式：
 
-引擎不支持自带密钥 (BYOK)。
+* **LangSmith 智能 (LSI)：** 引擎根据本页上的承诺通过 LSI 使用 Amazon Bedrock。
+* **您自己的模型提供商：** 引擎使用您的凭据调用 Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 或 Azure AI Foundry。这些提供商根据您与他们达成的协议处理引擎的请求，并且 LangChain 仅接收使用元数据。
+
+参见[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。
 
 ## 关键安全控制
 
@@ -54,7 +57,7 @@ Access 使用 GitHub 的标准应用程序模型：每个操作都通过一个�
 * **不使用客户数据来训练或微调任何模型**：每个提供商均受协议约束，不得使用客户内容进行培训。
 * **逻辑租户隔离**：引擎对数据的访问仅限于您的 LangSmith 租户。应用程序级控制可防止跨租户访问，这与 LangSmith Cloud 的租赁模型一致。每个分析运行都在其自己的隔离沙箱内执行。* **可审核性**：引擎将其工作作为 GitHub Pull 请求进行展示，并在 [Engine tab](/langsmith/engine) 的问题列表中提供支持上下文。代码更改流经您的分支保护、审查和自动构建控制，因此您的软件开发生命周期仍然是发布内容的记录系统。
 * **客户端 PII 清理**：LangSmith 的 [client libraries](/langsmith/mask-inputs-outputs) 可以在将痕迹发送到 LangSmith 之前从痕迹中删除敏感内容。建议处理受监管数据的客户使用。
-* **由LangChain** 管理的模型选择：LangChain 选择用于这些子处理器中每个引擎任务的特定模型，并且可能会更改该集中的选择，而无需单独通知。添加任何新的子处理者都遵循标准的子处理者更改通知流程。
+* **由 LangChain** 管理的模型选择：LangChain 选择用于这些子处理器中每个引擎任务的特定模型，并且可能会更改该集合中的选择，而无需单独通知。添加任何新的子处理者都遵循标准的子处理者更改通知流程。
 * **撤销和删除**：您可以随时通过卸载应用程序来撤销 GitHub 访问权限，并通过[Engine settings](/langsmith/engine#pause-engine-or-delete-its-issues)中的**删除所有问题**删除引擎的发现结果。跟踪数据遵循您的 LangSmith [retention and purging](/langsmith/data-purging-compliance) 设置。
 
 ## 合规姿态Engine 在LangSmith 的控制环境下运行，该环境每年根据 SOC 2 Type II 进行审核并通过 ISO 27001 认证。Engine 的模型子处理器列在[LangChain Trust Center](https://trust.langchain.com/) 上，这是采购和数据保护影响评估的权威来源。

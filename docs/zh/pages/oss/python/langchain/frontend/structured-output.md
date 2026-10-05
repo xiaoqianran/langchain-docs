@@ -308,12 +308,12 @@ function ProgressiveSolutionCard({ messages }: { messages: any[] }) {
 * **使用通用提取函数**：使用类型和必填字段参数化您的提取逻辑，以便它可以跨不同模式工作
 * **渐进式渲染**：在字段到达时显示字段，而不是等待完整的对象，以便用户看到即时反馈
 * **提供后备表示**：如果字段支持丰富的渲染（LaTeX、Markdown、图表），还可以在架构中包含等效的纯文本作为后备
-* **尽可能保持架构平坦**：深度嵌套的架构更难逐步渲染，并且在部分流式传输期间更有可能中断
+* **尽可能保持架构平坦**：深度嵌套的架构更难逐步渲染，并且在部分流式传输期间更容易中断
 * **将 UI 与数据匹配**：选择最能代表每种字段类型的渲染策略（数组的表格、嵌套对象的卡片、状态字段的徽章）
 
 ***<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

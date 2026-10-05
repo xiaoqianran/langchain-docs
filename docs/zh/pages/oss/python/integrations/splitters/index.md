@@ -26,7 +26,7 @@
 
 ## 基于文本结构
 
-文本自然地组织成层次单元，例如段落、句子和单词。我们可以利用这种固有的结构来告知我们的分割策略，创建保持自然语言流的分割，保持分割内的语义连贯性，并适应不同级别的文本粒度。LangChain的`RecursiveCharacterTextSplitter`就实现了这个理念：* [⟦T6⟧](/oss/python/integrations/splitters/recursive_text_splitter) 试图保持较大的单元（例如段落）完整。
+文本自然地组织成层次单元，例如段落、句子和单词。我们可以利用这种固有的结构来告知我们的分割策略，创建保持自然语言流的分割，保持分割内的语义连贯性，并适应不同级别的文本粒度。 LangChain的`RecursiveCharacterTextSplitter`实现了这个概念：* [⟦T6⟧](/oss/python/integrations/splitters/recursive_text_splitter) 试图保持较大的单元（例如段落）完整。
 * 如果一个单元超过了块大小，它就会移动到下一个级别（例如，句子）。
 * 如有必要，此过程会继续到单词级别。
 
@@ -56,7 +56,7 @@ texts = text_splitter.split_text(document)
 * 基于标记：根据标记数量分割文本，这在使用语言模型时非常有用。
 * 基于字符：根据字符数分割文本，这样在不同类型的文本之间可以更加一致。
 
-使用 LangChain 的 `CharacterTextSplitter` 进行基于代币的拆分的示例实现：
+使用 LangChain 的 `CharacterTextSplitter` 进行基于令牌的拆分的示例实现：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_text_splitters import CharacterTextSplitter
@@ -72,7 +72,7 @@ texts = text_splitter.split_text(document)
 * [Split by tokens](/oss/python/integrations/splitters/split_by_token)
 * [Split by characters](/oss/python/integrations/splitters/character_text_splitter)
 
-## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
+## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构分割文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
 
 * 保留文档的逻辑组织
 * 维护每个块内的上下文
@@ -96,7 +96,7 @@ texts = text_splitter.split_text(document)
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

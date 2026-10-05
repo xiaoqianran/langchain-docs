@@ -44,7 +44,7 @@
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -123,7 +123,9 @@
       os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
       model = init_chat_model("claude-sonnet-4-6")
-      ``````python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```
+
+      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langchain_anthropic import ChatAnthropic
 
@@ -132,9 +134,7 @@
       model = ChatAnthropic(model="claude-sonnet-4-6")
       ```
     </CodeGroup>
-  </Tab>
-
-  <Tab title="Azure">
+  </Tab><Tab title="Azure">
     👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
     <CodeGroup>
@@ -198,7 +198,7 @@
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+      model = init_chat_model("google_genai:gemini-3.7-flash")
       ```
 
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -207,7 +207,7 @@
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
       ```
     </CodeGroup>
   </Tab>
@@ -852,12 +852,12 @@ Let me know if you'd like to add more details to the meeting or include addition
 
 ## 6. 添加人工参与审核
 
-谨慎的做法是纳入 [human-in-the-loop review](/oss/python/langchain/human-in-the-loop) 敏感操作。 LangChain 包含 [built-in middleware](/oss/python/langchain/human-in-the-loop#configuring-interrupts) 来审查工具调用，在本例中是子代理调用的工具。
+谨慎的做法是纳入 [human-in-the-loop review](/oss/python/langchain/human-in-the-loop) 敏感操作。 LangChain 包括 [built-in middleware](/oss/python/langchain/human-in-the-loop#configuring-interrupts) 用于审查工具调用，在本例中为子代理调用的工具。
 
 让我们为两个子代理添加人机交互审核：
 
 * 我们将`create_calendar_event`和`send_email`工具配置为中断，允许所有[response types](/oss/python/langchain/human-in-the-loop)（`approve`、`edit`、`reject`）
-* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅适用于顶级代理**。这是暂停和恢复执行所必需的。
+* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅针对顶级代理**。这是暂停和恢复执行所必需的。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -1088,7 +1088,7 @@ def schedule_event(request: str) -> str:
 
 ## 8. 要点
 
-主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的特定需求控制信息流。
+主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
 
 <Tip>
   **何时使用主管模式**
@@ -1104,7 +1104,7 @@ def schedule_event(request: str) -> str:
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

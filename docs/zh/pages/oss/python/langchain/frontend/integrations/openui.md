@@ -16,7 +16,7 @@
 
 1. **生成系统提示：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
 2. **在第一条消息上注入：** 在新对话开始时发送系统提示作为打开系统消息
-3. **模型编写 openui-lang:** 模型用类似 `root = Stack([header, kpis, chart])` 的程序而不是散文进行响应
+3. **模型编写 openui-lang:** 模型以类似 `root = Stack([header, kpis, chart])` 的程序响应，而不是散文
 4. **使用`Renderer`渲染：**将文本传递给OpenUI的`Renderer`和组件库；它解析并渲染树
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -58,7 +58,7 @@ npm install @langchain/react @openuidev/react-ui @openuidev/react-headless @open
 
 ## 生成系统提示符
 
-OpenUI 提供了一个 `openuiLibrary.prompt()` 函数，可以生成完整的 openui-lang 参考，其中包含所有组件签名、语法规则、流提示和示例。在模块加载时调用一次：
+OpenUI 提供了一个 `openuiLibrary.prompt()` 函数，可生成完整的 openui-lang 参考，其中包含所有组件签名、语法规则、流提示和示例。在模块加载时调用一次：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { openuiLibrary, openuiPromptOptions } from "@openuidev/react-ui/genui-lib";
@@ -159,7 +159,7 @@ function MessageList({ messages, isLoading }) {
 }
 ```
 
-在活动流期间传递`isStreaming={true}`，以便渲染器在定义到达时优雅地处理未解析的引用。
+在活动流期间传递 `isStreaming={true}`，以便渲染器在定义到达时优雅地处理未解析的引用。
 
 ## openui-lang 格式该模型编写的是程序而不是 JSON 规范。每个语句都是一个赋值； `root`是入口点。官方提示教模型这种格式，包括提升 - 首先写入 `root`，以便 UI shell 立即出现：
 
@@ -186,7 +186,7 @@ marketSection = Card([CardHeader("Market Breakdown"), tbl, ch1])
 ## 渐进式渲染实用程序
 
 将 [⟦T33⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接到 `Renderer` 直接导致每个流令牌重新渲染，并为每个响应生成数百个无操作重新解析。这会导致图表组件在数据尚未到达时崩溃。以下实用程序可以解决这些问题：|问题 |解决方案 |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| - | - |
 | **部分字符串文字** | `truncateAtOpenString` / `closeOrTruncateOpenString` — 在解析之前删除或关闭不完整的字符串 |
 | **中期代币流失** | `useStableText` — 门渲染器更新完整语句边界 (`name = Expr(…)`)，而不是每个标记 |
 | **图表空数据崩溃** | `chartDataRefsResolved` — 在将图表包含在快照中之前验证图表的 `Series` 和标签数组是否已定义 |
@@ -478,7 +478,9 @@ export function MessageList({ messages, isLoading, onSubmit }) {
 }
 ````
 
-## 后续查询OpenUI 的 `Button` 组件支持 `continue_conversation` 操作类型。当用户单击后续按钮时，`Renderer` 会触发 `onAction`，上面的 `AIMessageView` 会提交按钮的标签作为下一条用户消息，与在输入中键入的代码路径完全相同。
+## 后续查询
+
+OpenUI 的 `Button` 组件支持 `continue_conversation` 操作类型。当用户单击后续按钮时，`Renderer` 会触发 `onAction`，上面的 `AIMessageView` 会提交按钮的标签作为下一条用户消息，与在输入中键入的代码路径完全相同。
 
 通过系统提示中的`additionalRules`为每个报告添加“进一步探索”部分：
 
@@ -490,9 +492,7 @@ followUpCard  = Card([CardHeader("Explore Further"), followUpBtns], "sunk")
 root = Stack([..., followUpCard])
 ```
 
-## 使用 Deep Agents 构建并行仪表板
-
-上面的流程将一个 OpenUI 程序渲染到一个表面上。对于更丰富的应用程序，[Deep Agents](/oss/python/deepagents/overview) 协调器可以委托给多个专业代理，每个代理都通过一个 [⟦T54⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接同时传输自己的 OpenUI 面板。 [OpenUI parallel dashboard example](https://github.com/langchain-ai/streaming-cookbook/tree/main/typescript/openui) 将一个仪表板简介转变为独立的流式 Stripe、PostHog、GitHub 和日历面板，无需自定义图形或流解复用代码。
+## 使用 Deep Agents 构建并行仪表板上面的流程将一个 OpenUI 程序渲染到一个表面上。对于更丰富的应用程序，[Deep Agents](/oss/python/deepagents/overview) 协调器可以委托给多个专业代理，每个代理都通过一个 [⟦T54⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接同时传输自己的 OpenUI 面板。 [OpenUI parallel dashboard example](https://github.com/langchain-ai/streaming-cookbook/tree/main/typescript/openui) 将一个仪表板简介转变为独立的流式 Stripe、PostHog、GitHub 和日历面板，无需自定义图形或流解复用代码。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{
@@ -527,7 +527,9 @@ export const library = openuiChatLibrary;
 export const promptOptions = openuiChatPromptOptions;
 ```
 
-### 定义协调员和面板代理[⟦T56⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 构建了一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
+### 定义协调员和面板代理
+
+[⟦T56⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 构建了一个协调器，其唯一的工作是路由：它选择专家的简要需求，并在一条消息中发出他们所有的 `task()` 调用，以便面板同时运行。每个面板子代理共享一个预生成的 OpenUI 系统提示符，并且仅接收其数据域的工具。
 
 ```ts expandable agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, type SubAgent } from "deepagents";
@@ -581,9 +583,7 @@ export const dashboard = createDeepAgent({
 });
 ```
 
-协调员从不写openui-lang。每个面板代理调用其工具，然后返回一个以`root`开头的完整程序，以便其渲染器可以在模型完成剩余语句之前进行绘制。
-
-### 注册图表
+协调员从不写openui-lang。每个面板代理调用其工具，然后返回一个以 `root` 开头的完整程序，以便其渲染器可以在模型完成剩余语句之前进行绘制。### 注册图表
 
 将`langgraph.json`指向导出的协调器：
 
@@ -674,7 +674,7 @@ export function Dashboard() {
 ## 最佳实践* **在模块加载时生成系统提示：**不在 React 组件内；提示符为几千字节，应计算一次
 * **仅在新线程上注入系统提示符：** 检查 `stream.messages.length === 0` 并在后续回合中跳过注入，以避免在线程历史记录中重复提示符
 * **使用提升顺序：**先写`root = Stack([...])`； UI shell 立即出现，并且随着模型定义每个部分，各部分逐渐填充
-* **完整语句的门控：** 避免在每个标记上重新渲染渲染器；仅当完整报表 (`name = ComponentCall(...)`) 到达时更新
+* **完整语句的门控：** 避免在每个标记上重新渲染渲染器；仅在完整报表 (`name = ComponentCall(...)`) 到达时更新
 * **在渲染之前验证图表数据：** 图表组件需要在包含在稳定快照中之前定义其 `Series` 和标签数组
 * **保留驼峰命名法变量名：** openui-lang 解析器仅接受驼峰命名法标识符；在系统提示的`additionalRules`中强化这一点
 * **在一条消息中委派面板：** 当分散到 Deep Agents 专家时，在单个协调器消息中发出所有 `task()` 调用，以便面板同时流式传输，而不是一次一个* **将每个面板的范围限制到其子代理：** 从 `stream.subagents` 发现面板并将每个快照传递到 `useMessages(stream, snapshot)`，以便面板仅渲染其自己的子代理的输出
@@ -683,7 +683,7 @@ export function Dashboard() {
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

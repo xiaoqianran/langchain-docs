@@ -4,6 +4,8 @@
 
 # 工具
 
+定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
+
 工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/python/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
@@ -11,14 +13,14 @@
 <Tip>
   有关模型如何处理工具调用的详细信息，请参阅[Tool calling](/oss/python/langchain/models#tool-calling)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools) 跟踪工具调用和调试错误。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
 
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 创建工具
 
 ### 基本工具定义
 
-创建工具最简单的方法是使用 [⟦T44⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 装饰器。默认情况下，函数的文档字符串成为工具的描述，帮助模型理解何时使用它：
+创建工具最简单的方法是使用 [⟦T34⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 装饰器。默认情况下，函数的文档字符串成为工具的描述，帮助模型理解何时使用它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
@@ -39,7 +41,7 @@ def search_database(query: str, limit: int = 10) -> str:
 </Note>
 
 <Warning>
-  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。一些模型提供者对包含空格或特殊字符的名称存在问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
+  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。一些模型提供者对包含空格或特殊字符的名称有问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
 </Warning>
 
 ### 自定义工具属性
@@ -70,7 +72,7 @@ def calc(expression: str) -> str:
 
 ### 高级模式定义
 
-使用 Pydantic 模型或 JSON 模式定义复杂输入：
+使用 Pydantic 模型或 JSON 模式定义复杂的输入：
 
 <CodeGroup>
   ```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -123,12 +125,12 @@ def calc(expression: str) -> str:
 
 ### 保留参数名称
 
-以下参数名称是保留的，不能用作工具参数。使用这些名称将导致运行时错误。|参数名称|目的|
-| -------------- | ---------------------------------------------------------------------------------- |
-| `config` |保留用于将 `RunnableConfig` 传递给内部工具 |
-| `runtime` |为`ToolRuntime`参数保留（访问状态、上下文、存储）|
+以下参数名称是保留的，不能用作工具参数。使用这些名称将导致运行时错误。
 
-要访问运行时信息，请使用 [⟦T52⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 参数，而不是命名您自己的参数 `config` 或 `runtime`。
+|参数名称 |目的|
+| - | - |
+| `config` |保留用于将 `RunnableConfig` 传递给内部工具 |
+| `runtime` |为`ToolRuntime`参数保留（访问状态、上下文、存储）|要访问运行时信息，请使用 [⟦T42⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 参数，而不是命名您自己的参数 `config` 或 `runtime`。
 
 如果您使用 `InjectedState`、`InjectedStore`、`get_runtime()` 或 `InjectedToolCallId`，请参阅 [Migrate from older injection patterns](#migrate-from-older-injection-patterns)。
 
@@ -136,14 +138,15 @@ def calc(expression: str) -> str:
 
 当工具可以访问运行时信息（例如对话历史记录、用户数据和持久内存）时，它们是最强大的。本节介绍如何从您的工具中访问和更新此信息。
 
-工具可以通过[⟦T59⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例 |
+| - | - | - |
 | **状态** |短期记忆 - 当前对话中存在的可变数据（消息、计数器、自定义字段）|访问对话历史记录、跟踪工具调用计数 |
 | **背景** |调用时传递的不可变配置（用户 ID、会话信息）|根据用户身份个性化响应 |
-| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库 || **流作家** |在工具执行期间发出实时更新 |显示长时间运行的操作的进度 |
+| **商店** |长期记忆 - 在对话中保存的持久数据 |保存用户偏好，维护知识库|
+| **流作家** |在工具执行期间发出实时更新 |显示长时间运行的操作的进度 |
 | **执行信息** |当前执行的标识和重试信息（线程 ID、运行 ID、尝试次数）|访问线程/运行 ID，根据重试状态调整行为 |
-| **服务器信息** |在 LangGraph Server 上运行时的服务器特定元数据（助手 ID、图形 ID、经过身份验证的用户）|访问助手 ID、图形 ID 或经过身份验证的用户信息 |
-| **配置** | [⟦T60⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 执行 |访问回调、标签和元数据 |
+| **服务器信息** |在 LangGraph 服务器上运行时的服务器特定元数据（助手 ID、图形 ID、经过身份验证的用户）|访问助手 ID、图形 ID 或经过身份验证的用户信息 |
+| **配置** | [⟦T50⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 执行 |访问回调、标签和元数据 |
 | **工具调用 ID** |当前工具调用的唯一标识符 |将日志和模型调用的工具调用关联起来
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -193,17 +196,13 @@ graph LR
     class B,C,D,E,F process
     class G,H,I,J,K,L neutral
     class M,N,O,P output
-```
+```### 短期记忆（状态）
 
-### 短期记忆（状态）
-
-状态代表对话期间存在的短期记忆。它包括消息历史记录和您在 [graph state](/oss/python/langgraph/graph-api#state) 中定义的任何自定义字段。<Info>
-  将 `runtime: ToolRuntime` 添加到您的工具签名中以访问状态。此参数会自动注入并在 LLM 中隐藏 - 它不会出现在工具的架构中。
-</Info>
+状态代表对话期间存在的短期记忆。它包括消息历史记录和您在 [graph state](/oss/python/langgraph/graph-api#state) 中定义的任何自定义字段。
 
 #### 访问状态
 
-工具可以使用`runtime.state`访问当前对话状态：
+将 `runtime: ToolRuntime` 添加到您的工具签名中以访问状态。调用时，[⟦T52⟧](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode)自动注入值；该参数不包含在发送到模型的工具架构中。使用`runtime.state`读取当前对话状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -238,7 +237,7 @@ def get_user_preference(
 
 #### 更新状态
 
-使用[⟦T65⟧](https://reference.langchain.com/python/langgraph/types/Command)更新代理的状态。这对于需要更新自定义状态字段的工具非常有用。
+使用[⟦T56⟧](https://reference.langchain.com/python/langgraph/types/Command)更新代理的状态。这对于需要更新自定义状态字段的工具非常有用。
 在更新中包含 `ToolMessage`，以便模型可以看到工具调用的结果：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -268,452 +267,107 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c1516e64-17dc-42c3-a4ef-8aa02c439527/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 <Tip>
-  当工具更新状态变量时，请考虑为这些字段定义 [reducer](/oss/python/langgraph/graph-api#reducers)。由于 LLM 可以并行调用多个工具，因此当并发工具调用更新同一状态字段时，reducer 决定如何解决冲突。
+  当工具更新状态变量时，请考虑为这些字段定义 [reducer](/oss/python/langgraph/graph-api#reducers)。由于 LLM 可以并行调用多个工具，因此当并发工具调用更新同一状态字段时，reducer 确定如何解决冲突。
 </Tip>
 
-### 上下文
+### 上下文上下文提供在调用时传递的不可变配置数据。将其用于在对话期间不应更改的用户 ID、会话详细信息或特定于应用程序的设置。
 
-上下文提供在调用时传递的不可变配置数据。将其用于在对话期间不应更改的用户 ID、会话详细信息或特定于应用程序的设置。<Note>
-  虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）范围是*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。在生产中，您通常将两者一起传递：每个会话一个稳定的`thread_id`，以及每次调用时一个`context`对象。
+<Note>
+  虽然`thread_id`（通过`config={"configurable": {"thread_id": ...}}`传递）范围是*对话*：消息历史记录和检查点，`context`携带您的工具和中间件在调用时读取的*每次运行*数据。持久性需要[checkpointer](/oss/python/langchain/short-term-memory)。在生产中，您通常会在每个对话中传递一个稳定的 `thread_id` ，并在每次调用时传递一个 `context` 对象。
 </Note>
 
-通过`runtime.context`访问上下文。将其与 `thread_id` 一起传递，以便对话在轮流中持续进行：
-
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="google_genai:gemini-3.6-flash")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="openai:gpt-5.5")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="anthropic:claude-sonnet-4-6")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="openrouter:z-ai/glm-5.2")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="baseten:zai-org/GLM-5.2")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from langchain.agents import create_agent
-  from langchain.tools import tool, ToolRuntime
-  from langchain_core.utils.uuid import uuid7
-  from langchain_openai import ChatOpenAI
-
-
-  USER_DATABASE = {
-      "user123": {
-          "name": "Alice Johnson",
-          "account_type": "Premium",
-          "balance": 5000,
-          "email": "alice@example.com",
-      },
-      "user456": {
-          "name": "Bob Smith",
-          "account_type": "Standard",
-          "balance": 1200,
-          "email": "bob@example.com",
-      },
-  }
-
-
-  @dataclass
-  class UserContext:
-      user_id: str
-
-
-  @tool
-  def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
-      """Get the current user's account information."""
-      user_id = runtime.context.user_id
-
-      if user_id in USER_DATABASE:
-          user = USER_DATABASE[user_id]
-          return (
-              f"Account holder: {user['name']}\n"
-              f"Type: {user['account_type']}\n"
-              f"Balance: ${user['balance']}"
-          )
-      return "User not found"
-
-
-  model = ChatOpenAI(model="ollama:north-mini-code-1.0")
-  agent = create_agent(
-      model,
-      tools=[get_account_info],
-      context_schema=UserContext,
-      system_prompt="You are a financial assistant.",
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "What's my current balance?"}]},
-      config={"configurable": {"thread_id": str(uuid7())}},
-      context=UserContext(user_id="user123"),
-  )
-  ```
-</CodeGroup>
+通过`runtime.context`访问上下文。配置 [checkpointer](/oss/python/langchain/short-term-memory) 并通过稳定的 `thread_id` 传递 `context`，以便对话在调用中持续存在：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from langchain.agents import create_agent
+from langchain.tools import tool, ToolRuntime
+from langchain_core.utils.uuid import uuid7
+from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import InMemorySaver
+
+
+USER_DATABASE = {
+    "user123": {
+        "name": "Alice Johnson",
+        "account_type": "Premium",
+        "balance": 5000,
+        "email": "alice@example.com",
+    },
+    "user456": {
+        "name": "Bob Smith",
+        "account_type": "Standard",
+        "balance": 1200,
+        "email": "bob@example.com",
+    },
+}
+
+
+@dataclass
+class UserContext:
+    user_id: str
+
+
+@tool
+def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
+    """Get the current user's account information."""
+    user_id = runtime.context.user_id
+
+    if user_id in USER_DATABASE:
+        user = USER_DATABASE[user_id]
+        return (
+            f"Account holder: {user['name']}\n"
+            f"Type: {user['account_type']}\n"
+            f"Balance: ${user['balance']}"
+        )
+    return "User not found"
+
+
+model = ChatOpenAI(model="gpt-5.5")
+agent = create_agent(
+    model,
+    tools=[get_account_info],
+    context_schema=UserContext,
+    checkpointer=InMemorySaver(),
+    system_prompt="You are a financial assistant.",
+)
+
+thread_id = str(uuid7())
+config = {"configurable": {"thread_id": thread_id}}
+context = UserContext(user_id="user123")
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What's my current balance?"}]},
+    config=config,
+    context=context,
+)
+print(result["messages"][-1].content_blocks)
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What was my balance again?"}]},
+    config=config,
+    context=context,
+)
+print(result["messages"][-1].content_blocks)
+```
 
 ### 长期记忆（存储）
 
-[⟦T74⟧](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 提供跨对话持续存在的持久存储。与状态（短期记忆）不同，保存到存储的数据在未来的会话中仍然可用。
+[⟦T66⟧](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 提供可在对话中保存的持久存储。与状态（短期记忆）不同，保存到存储中的数据在未来的会话中仍然可用。
 
-通过`runtime.store`进入商店。存储使用命名空间/键模式来组织数据：
+通过`runtime.store`进入商店。存储使用名称空间/键模式来组织数据：
 
 <Tip>
-  对于生产部署，请使用持久存储实现，例如 [⟦T76⟧](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore)、`MongoDBStore` 或 `RedisStore`，而不是 `InMemoryStore`。有关设置详细信息，请参阅[memory documentation](/oss/python/langgraph/add-memory)。
+  对于生产部署，请使用持久存储实现，例如 [⟦T68⟧](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore)、`MongoDBStore` 或 `RedisStore`，而不是 `InMemoryStore`。有关设置详细信息，请参阅[memory documentation](/oss/python/langgraph/add-memory)。
 </Tip>
 
 ```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import Any
 from langgraph.store.memory import InMemoryStore
 from langchain.agents import create_agent
 from langchain.tools import tool, ToolRuntime
@@ -729,10 +383,10 @@ def get_user_info(user_id: str, runtime: ToolRuntime) -> str:
 
 # Update memory
 @tool
-def save_user_info(user_id: str, user_info: dict[str, Any], runtime: ToolRuntime) -> str:
+def save_user_info(user_id: str, name: str, age: int, email: str, runtime: ToolRuntime) -> str:
     """Save user info."""
     store = runtime.store
-    store.put(("users",), user_id, user_info)
+    store.put(("users",), user_id, {"name": name, "age": age, "email": email})
     return "Successfully saved user info."
 
 model = ChatOpenAI(model="gpt-5.5")
@@ -759,9 +413,7 @@ agent.invoke({
 # - Email: foo@langchain.dev
 ```
 
-### 流作者
-
-在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
+### 流作者在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
 
 使用 `runtime.stream_writer` 发出自定义更新：
 
@@ -778,8 +430,10 @@ def get_weather(city: str, runtime: ToolRuntime) -> str:
     writer(f"Acquired data for city: {city}")
 
     return f"It's always sunny in {city}!"
-```<Note>
-  如果您在工具中使用`runtime.stream_writer`，则必须在 LangGraph 执行上下文中调用该工具。更多详情请参阅[Streaming](/oss/python/langchain/streaming)。
+```
+
+<Note>
+  如果您在工具中使用 `runtime.stream_writer`，则必须在 LangGraph 执行上下文中调用该工具。更多详情请参阅[Streaming](/oss/python/langchain/streaming)。
 </Note>
 
 ### 执行信息
@@ -804,7 +458,7 @@ def log_execution_context(runtime: ToolRuntime) -> str:
 
 ### 服务器信息
 
-当您的工具在 LangGraph Server 上运行时，通过 `runtime.server_info` 访问助手 ID、图形 ID 和经过身份验证的用户：
+当您的工具运行在LangGraph服务器上时，通过`runtime.server_info`访问助手ID、图形ID和经过身份验证的用户：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -820,14 +474,14 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-当该工具未在 LangGraph Server 上运行时（例如，在本地开发或测试期间），`server_info` 为 `None`。
+当工具未在 LangGraph 服务器上运行时（例如，在本地开发或测试期间），`server_info` 为 `None`。
 
 <Note>
   需要`deepagents>=0.5.0`（或`langgraph>=1.1.5`）。
 </Note>
 
 <Accordion title="Migrate from older injection patterns">
-  较旧的示例使用 `InjectedState`、`InjectedStore`、`get_runtime()` 或 `InjectedToolCallId`。使用 [⟦T94⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 来代替一个用于状态、上下文、存储和执行元数据的显式接口。
+  较旧的示例使用 `InjectedState`、`InjectedStore`、`get_runtime()` 或 `InjectedToolCallId`。使用 [⟦T86⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) 来代替一个用于状态、上下文、存储和执行元数据的显式接口。
 
   #### 之前的模式
 
@@ -856,16 +510,16 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
   对于代理级别的迁移（例如 `create_react_agent` 和自定义状态），请参阅 [LangChain v1 migration guide](/oss/python/migrate/langchain-v1)。
 </Accordion>
 
-## 工具执行
+## 工具执行在LangChain中，工具由代理使用（例如通过[⟦T88⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)），工具错误处理通过[middleware](/oss/python/langchain/middleware)配置。
 
-在LangChain中，工具由代理使用（例如通过[⟦T96⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)），工具错误处理通过[middleware](/oss/python/langchain/middleware)配置。对于 LangGraph 工作流程，工具执行由 [⟦T97⟧](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode) 处理。请参阅[ToolNode](/oss/python/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
+对于LangGraph工作流程，工具执行由[⟦T89⟧](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode)处理。请参阅[ToolNode](/oss/python/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
 
 ### 工具返回值
 
 您可以为您的工具选择不同的返回值：
 
 * 返回 `string` 以获得人类可读的结果。
-* 返回 `object` 以获得模型应解析的结构化结果。
+* 返回模型应解析的结构化结果的`object`。
 * 当您需要写入状态时，返回带有可选消息的`Command`。
 
 #### 返回一个字符串
@@ -881,6 +535,10 @@ def get_weather(city: str) -> str:
     """Get weather for a city."""
     return f"It is currently sunny in {city}."
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f72020-12be-4cfc-8cc4-e9d8bdfae60b/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 行为：
 
@@ -908,11 +566,11 @@ def get_weather_data(city: str) -> dict:
     }
 ```
 
-行为：
-
-* 对象被序列化并作为工具输出发回。
+行为：* 对象被序列化并作为工具输出发回。
 * 模型可以读取特定字段并对其进行推理。
-* 与字符串返回一样，这不会直接更新图状态。当下游推理受益于显式字段而不是自由格式文本时，请使用此选项。
+* 与字符串返回一样，这不会直接更新图状态。
+
+当下游推理受益于显式字段而不是自由格式文本时，请使用此选项。
 
 #### 返回多模式内容
 
@@ -937,13 +595,15 @@ def capture_screenshot() -> list[dict]:
 * 工具运行后使用`message.content_blocks`读取标准化块列表。
 * 该模型必须支持您返回的模式。在返回图像、音频或视频之前检查您的[model's capabilities](/oss/python/integrations/chat)。
 
-有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/python/langchain/messages#multimodal)。返回图像或混合内容的 MCP 工具以相同的方式进行转换；参见[Multimodal tool content](/oss/python/langchain/mcp#multimodal-tool-content)。
+有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/python/langchain/messages#multimodal)。
 
-#### 返回命令
+返回图像或混合内容的 MCP 工具以相同的方式进行转换。参见[Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content)。
 
-当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T106⟧](https://reference.langchain.com/python/langgraph/types/Command)。
-您可以退回包含或不包含 `ToolMessage` 的 `Command`。
-如果模型需要查看工具是否成功（例如，确认首选项更改），请在更新中包含 `ToolMessage`，并使用 `runtime.tool_call_id` 作为 `tool_call_id` 参数。
+#### 返回命令当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T98⟧](https://reference.langchain.com/python/langgraph/types/Command)。
+当 `Command` 定位当前图形时，请在更新中包含一个 `ToolMessage`，其工具调用 ID 与当前工具调用匹配。
+消息历史记录中的每个工具调用都必须有一个对应的`ToolMessage`。
+
+使用 `runtime.tool_call_id` 作为 `tool_call_id` 参数。 `ToolNode` 强制执行此要求：如果更新没有 `ToolMessage` 与工具调用匹配，则会引发 `ValueError`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import ToolMessage
@@ -967,8 +627,10 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
-行为：* 该命令使用`update`更新状态。
-* 更新后的状态可用于同一运行中的后续步骤。
+行为：
+
+* 该命令使用`update`更新状态。
+* 更新的状态可用于同一运行中的后续步骤。
 * 对可能通过并行工具调用更新的字段使用缩减器。
 
 当工具不仅返回数据，而且还改变代理状态时，请使用此选项。
@@ -977,200 +639,84 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
 
 在工具上设置 return direct 以短路代理循环：代理立即将工具的输出返回给调用者，而不通过模型将其发送回以进行进一步处理。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.tools import tool
+from langchain_openai import ChatOpenAI
 
 
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
+@tool(return_direct=True)
+def fetch_order_status(order_id: str) -> str:
+    """Fetch the current status of a customer order."""
+    # In production, query your order management system here
+    return f"Order {order_id} is shipped and will arrive in 2 days."
 
 
-  agent = create_agent(
-      ChatOpenAI(model="google_genai:gemini-3.6-flash"),
-      tools=[fetch_order_status],
-  )
+agent = create_agent(
+    ChatOpenAI(model="gpt-4o-mini"),
+    tools=[fetch_order_status],
+)
 
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
+result = agent.invoke({
+    "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
+})
+# The agent returns the tool output directly without another LLM call:
+# "Order 12345 is shipped and will arrive in 2 days."
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/12de6f5b-a35b-46a9-a66e-36ed1e373d84/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="openai:gpt-5.5"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
-
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="anthropic:claude-sonnet-4-6"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
-
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="openrouter:z-ai/glm-5.2"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
-
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
-
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="baseten:zai-org/GLM-5.2"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.tools import tool
-  from langchain_openai import ChatOpenAI
-
-
-  @tool(return_direct=True)
-  def fetch_order_status(order_id: str) -> str:
-      """Fetch the current status of a customer order."""
-      # In production, query your order management system here
-      return f"Order {order_id} is shipped and will arrive in 2 days."
-
-
-  agent = create_agent(
-      ChatOpenAI(model="ollama:north-mini-code-1.0"),
-      tools=[fetch_order_status],
-  )
-
-  result = agent.invoke({
-      "messages": [{"role": "user", "content": "What is the status of order #12345?"}]
-  })
-  # The agent returns the tool output directly without another LLM call:
-  # "Order 12345 is shipped and will arrive in 2 days."
-  ```
-</CodeGroup>
-
-行为：
-
-* 该工具正常执行，其输出包装在 `ToolMessage` 中。
+行为：* 该工具正常执行，其输出包装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
-* 如果模型单次调用多个工具，只有当**所有**调用的工具都有`return_direct=True`时，`return_direct`才生效。
+* **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
-在以下情况下使用此功能：* 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
+在以下情况下使用此功能：
+
+* 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
 * 当不需要额外的推理时，您希望避免额外的模型调用。
-* 您需要确定性的、未经修改的输出 - 模型无法重新表述、总结或对工具结果采取行动。
+* 您需要确定性的、未经修改的输出：模型无法重新表述、总结或对工具结果采取行动。
 
 <Warning>
-  由于模型不处理工具的输出，`return_direct=True` 不适合其结果需要进一步推理、汇总或与其他工具调用链接的工具。
+  由于模型不处理工具的输出，因此 `return_direct=True` 不适合其结果需要进一步推理、汇总或与其他工具调用链接的工具。
+</Warning><Warning>
+  **混合并行调用：** 如果模型调用 `return_direct=True` 工具以及没有 `return_direct=True` 的工具，则代理在该步骤后 **不会** 退出。它会将批次中的每个`ToolMessage`路由回模型，因此模型可以对所有结果进行推理。仅当步骤中的每个工具调用都有 `return_direct=True` 时，`return_direct` 才会短路循环。
 </Warning>
+
+#### 使用 return\_direct 返回命令
+
+具有 `return_direct=True` 的工具还可以返回 [⟦T119⟧](https://reference.langchain.com/python/langgraph/types/Command) 以在代理退出之前更新图形状态。与普通返回值不同，`Command`不会自动转换为`ToolMessage`。当 `Command` 以当前图形为目标时（`graph` 未设置或为 `None`），请在 `Command.update` 中包含与工具调用的 `tool_call_id` 匹配的 `ToolMessage`。省略它会导致`ToolNode`引发`ValueError`，因为每个`AIMessage`工具调用都必须在消息历史记录中具有相应的`ToolMessage`。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import ToolMessage
+from langchain.tools import ToolRuntime, tool
+from langgraph.types import Command
+
+
+@tool(return_direct=True)
+def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
+    """Fetch order status and store it in state."""
+    status = f"Order {order_id} is shipped and will arrive in 2 days."
+    return Command(
+        update={
+            "last_order_status": status,
+            # Must include a ToolMessage so the message history stays valid
+            "messages": [
+                ToolMessage(
+                    content=status,
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+        }
+    )
+```
+
+要写入父图，请设置 `graph=Command.PARENT`。在这种情况下，`ToolMessage`要求被取消，因为执行完全离开当前图。
 
 ### 错误处理
 
-使用 LangChain 代理[middleware](/oss/python/langchain/middleware)处理工具错误，重试失败的工具调用或返回自定义错误消息：
+使用 LangChain 代理 [middleware](/oss/python/langchain/middleware) 处理工具错误，以重试失败的工具调用或返回自定义错误消息：
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1260,7 +806,7 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[],
       middleware=[handle_tool_errors],
   )
@@ -1389,11 +935,9 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
       middleware=[handle_tool_errors],
   )
   ```
-</CodeGroup>
+</CodeGroup>### 状态注入
 
-### 状态注入
-
-工具通过[⟦T117⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。
+工具通过[⟦T134⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -1407,13 +951,15 @@ def get_message_count(runtime: ToolRuntime) -> str:
 
 有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
 
-## 动态工具选择使用动态工具，代理可用的工具集可以在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
+## 动态工具选择
+
+使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
 根据工具是否提前已知，有两种方法：
 
 <Tabs>
   <Tab title="Filtering pre-registered tools">
-    当所有可能的工具在代理创建时已知时，您可以预先注册它们，并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
+    当所有可能的工具在代理创建时已知时，您可以预先注册它们并根据状态、权限或上下文动态过滤哪些工具暴露给模型。
 
     <Tabs>
       <Tab title="State">
@@ -1496,9 +1042,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
             store=InMemoryStore()
         )
         ```
-      </Tab>
-
-      <Tab title="Runtime Context">
+      </Tab><Tab title="Runtime Context">
         根据运行时上下文中的用户权限过滤工具：
 
         ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1548,7 +1092,9 @@ def get_message_count(runtime: ToolRuntime) -> str:
       </Tab>
     </Tabs>
 
-    这种方法在以下情况下效果最佳：* 所有可能的工具在编译/启动时都是已知的
+    这种方法在以下情况下效果最佳：
+
+    * 所有可能的工具在编译/启动时都是已知的
     * 您想要根据权限、功能标志或对话状态进行过滤
     * 工具是静态的，但其可用性是动态的
 
@@ -1606,37 +1152,37 @@ def get_message_count(runtime: ToolRuntime) -> str:
 
     * 工具在运行时发现（例如，从 MCP 服务器）
     * 工具根据用户数据或配置动态生成
-    * 您正在与外部工具注册表集成
-
-    <Note>
+    * 您正在与外部工具注册表集成<Note>
       运行时注册的工具需要 `wrap_tool_call` 钩子，因为代理需要知道如何执行原始工具列表中没有的工具。如果没有它，代理将不知道如何调用动态添加的工具。
     </Note>
   </Tab>
 </Tabs>
 
-## 无头工具某些工具应该在**用户应用程序运行的地方**（通常是浏览器）运行，而不是在进程内部运行。 **无头工具**是工具定义，其中包括您在代理的**服务器**上注册的名称、描述和参数架构。 **实现**仅在**客户端**上注册，并在短暂的中断/恢复握手后执行。
+## 无头工具
+
+某些工具应该在**用户应用程序运行的地方**（通常是浏览器）运行，而不是在进程内部运行。 **无头工具**是工具定义，其中包括您在代理的**服务器**上注册的名称、描述和参数架构。 **实现**仅在**客户端**上注册，并在短暂的中断/恢复握手后执行。
 
 这与函数体运行在服务器上的普通工具不同，也与模型提供者远程执行内置工具的[server-side tool use](#server-side-tool-use)不同。
 
 ### 何时使用无头工具
 
-当工作依赖于仅存在于客户端的**环境、设备或 UI** 时，请使用它们。例如：
-
-* **浏览器 API：** 地理定位、IndexedDB、剪贴板、Canvas 2D、文件选择器、电池 API 等。
+当工作依赖于仅存在于客户端的**环境、设备或 UI** 时，请使用它们。例如：* **浏览器 API：** 地理定位、IndexedDB、剪贴板、Canvas 2D、文件选择器、电池 API 等。
 * **隐私和局部性：** 数据保留在设备上（例如，IndexedDB 中的本地“内存”）。
 * **延迟：** 纯本地操作无需额外的服务器往返。
 * **结构化、安全的效果：** 更喜欢许多小型的类型化工具（例如每个画布图元一个工具），而不是向 `eval` 发送任意代码。
 
-### 该模式如何运作在这两个运行时中，模型都会看到它可以调用的普通工具，但实际执行发生在服务器进程之外。
+### 该模式如何运作
+
+在这两个运行时中，模型都会看到它可以调用的普通工具，但实际执行发生在服务器进程之外。
 
 1. **定义**一个带有 `tool(name=..., description=..., args_schema=...)` 和 `langchain.tools` 的无头工具。无头工具仅具有模式，没有进程内实现。
-2. **使用 `create_agent` 或您的 LangGraph 图表注册**该工具，以便模型可以正常调用它。
+2. **使用`create_agent`或您的LangGraph图注册**该工具，以便模型可以正常调用它。
 3. 调用该工具时**处理**中断负载。该图不是在本地运行，而是以形状类似 `{"type": "tool", "tool_call": {"id", "name", "args"}}` 的有效负载暂停。
-4. **在您的应用程序、其他服务或人工步骤执行操作后恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。
+4. 在您​​的应用程序、其他服务或人工步骤执行操作后，**恢复**图表。对于基于浏览器的流程，您可以在前端镜像架构并在那里附加 `.implement(...)`。<Info>
+  如果您在 Python 中仅使用 `name`、`description` 和 `args_schema` 调用 `tool(...)`，则LangChain 返回`HeadlessTool`。 Python 端没有`.implement()` API。
+</Info>
 
-<Info>
-  如果您在Python中仅使用`name`、`description`和`args_schema`调用`tool(...)`，LangChain将返回`HeadlessTool`。 Python 端没有`.implement()` API。
-</Info>当模型发出对这些工具之一的工具调用时，运行**中断**，而不是在本地执行该工具。您的应用程序可以检查有效负载，在正确的环境（例如浏览器、其他服务或人工审核步骤）中执行操作，然后使用工具结果**恢复**图表。当您使用受支持的 JS SDK 挂钩时，它们可以检测无头工具中断，运行匹配的客户端实现，并为您提交恢复命令。
+当模型发出对这些工具之一的工具调用时，运行**中断**，而不是在本地执行该工具。您的应用程序可以检查有效负载，在正确的环境（例如浏览器、其他服务或人工审核步骤）中执行操作，然后使用工具结果**恢复**图表。当您使用受支持的 JS SDK 挂钩时，它们可以检测无头工具中断，运行匹配的客户端实现，并为您提交恢复命令。
 
 使用可选的 **`onTool`** 回调来观察生命周期事件（`start`、`success`、`error`）以获取 UI 反馈，例如旋转器或 toast。
 
@@ -1646,11 +1192,32 @@ def get_message_count(runtime: ToolRuntime) -> str:
 
 ## 预构建工具
 
-LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索、代码解释、数据库访问等常见任务。这些即用型工具可以直接集成到您的代理中，无需编写自定义代码。
+LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索、代码解释、数据库访问等常见任务。这些即用型工具可以直接集成到您的代理中，无需编写自定义代码。请参阅 [tools and toolkits](/oss/python/integrations/tools) 集成页面，了解按类别组织的可用工具的完整列表。
 
-请参阅 [tools and toolkits](/oss/python/integrations/tools) 集成页面，获取按类别组织的可用工具的完整列表。
+## 来自 MCP 服务器的工具
 
-## 服务器端工具使用某些聊天模型具有由模型提供者在服务器端执行的内置工具。其中包括网络搜索和代码解释器等功能，不需要您定义或托管工具逻辑。
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为 LangChain 工具，准备好像任何其他工具一样传递给代理。
+
+[⟦T155⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 发现服务器的工具并将其转换为LangChain 工具。打开适配器，调用`list_tools()`，并将结果交给[⟦T157⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.mcp import MCPAdapter
+
+async with MCPAdapter("https://example.com/mcp") as adapter:
+    tools = await adapter.list_tools()
+    agent = create_agent("claude-sonnet-4-6", tools)
+```
+
+<Note>
+  `langchain.mcp`命名空间需要`langchain[mcp]>=1.4.0`并且处于测试阶段。 API 可能会更改。
+</Note>
+
+有关传输、身份验证、多个服务器和处理工具结果，请参阅[Model Context Protocol (MCP)](/oss/python/langchain/mcp)。
+
+## 服务器端工具使用
+
+某些聊天模型具有由模型提供者在服务器端执行的内置工具。其中包括网络搜索和代码解释器等功能，不需要您定义或托管工具逻辑。
 
 有关启用和使用这些内置工具的详细信息，请参阅单独的 [chat model integration pages](/oss/python/integrations/providers) 和 [tool calling documentation](/oss/python/langchain/models#server-side-tool-use)。
 
@@ -1658,7 +1225,7 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

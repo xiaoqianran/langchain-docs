@@ -4,11 +4,11 @@
 
 # 事件流
 
-从 LangChain 代理运行中获取实时更新
+从 LangChain 代理运行流式传输实时更新
 
 LangChain 代理基于 LangGraph 构建，因此它们支持相同的流堆栈以及以代理为中心的消息、工具调用、状态和自定义更新的投影。
 
-对于大多数应用程序和前端用例，通过 `stream_events(..., version="v3")` 使用**事件流**。事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
+对于大多数应用程序和前端用例，通过 `stream_events(..., version="v3")` 使用 **事件流**。事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -35,20 +35,21 @@ for message in stream.messages:
 final_state = stream.output
 ```
 
-## 您可以流式传输的内容|投影|使用 |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。        |
-| `stream.messages` |模型消息流，每个 LLM 调用一个。                                   |
-| `message.text` |消息的文本增量和最终文本。                                  |
-| `message.reasoning` |公开推理内容的模型的推理增量。                 |
-| `message.tool_calls` |工具调用参数块和最终的工具调用。                        |
-| `message.output` |模型调用完成后的最终消息对象。                       |
-| `stream.values` |代理状态快照。                                                     |
-| `stream.output` |最终代理状态。                                                         |
-| `stream.subgraphs` |嵌套图运行（子代理和普通子图）。                        |
-| `stream.extensions` |定制变压器投影。                                            || `stream.tool_calls` |工具执行生命周期、输入、输出增量、最终输出和错误。 |
+## 您可以流式传输的内容
 
-`stream.messages` 产生 `ChatModelStream` 对象。每个消息流都公开 `.text`、`.reasoning`、`.tool_calls` 和 `.output`。同步投影对于实时增量是可迭代的，对于最终值是可排出的：使用`str(message.text)`作为最终文本，使用`message.tool_calls.get()`作为最终的工具调用。
+|投影|使用 |
+| - | - |
+| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。 |
+| `stream.messages` |模型消息流，每个 LLM 调用一个。 |
+| `message.text` |消息的文本增量和最终文本。 |
+| `message.reasoning` |公开推理内容的模型的推理增量。 |
+| `message.tool_calls` |工具调用参数块和最终的工具调用。 |
+| `message.output` |模型调用完成后的最终消息对象。 |
+| `stream.values` |代理状态快照。 |
+| `stream.output` |最终代理状态。 |
+| `stream.subgraphs` |嵌套图运行（子代理和普通子图）。 |
+| `stream.extensions` |定制变压器投影。 |
+| `stream.tool_calls` |工具执行生命周期、输入、输出增量、最终输出和错误。 |`stream.messages` 产生 `ChatModelStream` 对象。每个消息流都公开 `.text`、`.reasoning`、`.tool_calls` 和 `.output`。同步投影对于实时增量是可迭代的，对于最终值是可排出的：使用`str(message.text)`作为最终文本，使用`message.tool_calls.get()`作为最终的工具调用。
 
 ## 代理消息
 
@@ -114,7 +115,7 @@ for call in stream.tool_calls:
 
 ## 流式子代理当 `create_agent` 调用调用另一个名为 `create_agent`（通常通过包装工具）时，内部代理的事件在嵌套命名空间中流动。您传递给 `create_agent` 的 `name=` 标识流中的内部代理，因此您可以对每个代理进行过滤和标记。
 
-指定的子代理表面位于专用的 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的 `.messages`、`.values`、`.tool_calls` 和 `.output`，以及 `.name`（您传递的 `name=`）和 `.cause`（调度子代理的工具调用）。因为这里只出现命名的 `create_agent` 运行，所以您不需要过滤掉普通子图。
+指定的子代理表面位于专用 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的 `.messages`、`.values`、`.tool_calls` 和 `.output`，以及 `.name`（您传递的 `name=`）和 `.cause`（调度子代理的工具调用）。因为这里只出现命名的 `create_agent` 运行，所以您不需要过滤掉普通子图。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -288,7 +289,7 @@ agent = create_agent(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

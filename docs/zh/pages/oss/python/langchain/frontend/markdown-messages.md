@@ -136,7 +136,7 @@ Wire up ⟦T52⟧ with your agent URL and assistant ID.
 ## 选择 Markdown 库
 
 每个框架对于 Markdown 渲染都有一个自然的选择：|框架|图书馆 |输出|为什么 |
-| ---------| ------------------------------------------- | -------------------------------- | ------------------------------------------------------------------ |
+| - | - | - | - |
 |反应 | `react-markdown` + `remark-gfm` |反应元素 |基于组件的虚拟 DOM 比较，无 `dangerouslySetInnerHTML` |
 |视图 | `marked` + `dompurify` |通过 `v-html` 净化 HTML |轻量级、快速、内置 GFM |
 |苗条| `marked` + `dompurify` |通过 `{@html}` 净化 HTML |和Vue一样，API一致 |
@@ -241,7 +241,9 @@ Wire up ⟦T52⟧ with your agent URL and assistant ID.
   ```
 </CodeGroup>
 
-## 清理 HTML 输出将解析后的 Markdown 渲染为原始 HTML 时（`v-html`、`{@html}`、`[innerHTML]`），
+## 清理 HTML 输出
+
+将解析后的 Markdown 渲染为原始 HTML 时（`v-html`、`{@html}`、`[innerHTML]`），
 您必须清理输出以防止跨站点脚本攻击 (XSS)。法学硕士
 响应可能包含任意文本，包括 Markdown 解析器的标记
 可以变成可执行的 HTML。
@@ -252,9 +254,7 @@ Wire up ⟦T52⟧ with your agent URL and assistant ID.
 import DOMPurify from "dompurify";
 
 const safeHtml = DOMPurify.sanitize(rawHtml);
-```
-
-DOMPurify 删除 `<script>` 标签、`onclick` 属性、`javascript:` URL、
+```DOMPurify 删除 `<script>` 标签、`onclick` 属性、`javascript:` URL、
 和其他 XSS 向量，同时保留安全的降价输出，如标题，
 列表、代码块、表格和链接。
 
@@ -278,15 +278,15 @@ For very long responses (> 50 KB），请考虑以下优化：
 * **节流渲染：** 使用 `requestAnimationFrame` 以 60fps 批量更新
   而不是在每个令牌上重新渲染
 * **增量解析：**仅解析新内容并附加到渲染的内容
-  缓冲区（高级，聊天 UI 通常不需要）<Info>
+  缓冲区（高级，聊天 UI 通常不需要）
+
+<Info>
   对于大多数聊天应用程序，重新解析完整消息的简单方法
   每个令牌就足够了。仅当您观察到卡顿滚动或
   消息很长时丢帧。
 </Info>
 
-## 最佳实践
-
-* **始终消毒：** 使用 `v-html`、`{@html}` 或 `[innerHTML]` 时，
+## 最佳实践* **始终消毒：** 使用 `v-html`、`{@html}` 或 `[innerHTML]` 时，
   始终通过 `dompurify` 运行解析的输出。永远不要相信来自
   Markdown 解析器提供 LLM 输出。
 * **启用 GFM：** GitHub Flavored Markdown 添加表格、删除线、任务
@@ -302,9 +302,11 @@ For very long responses (> 50 KB），请考虑以下优化：
   具有长行、宽表和块引用的代码块以捕获溢出
   或布局问题。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

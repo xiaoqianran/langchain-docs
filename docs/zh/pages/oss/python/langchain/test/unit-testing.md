@@ -6,14 +6,15 @@
 
 使用假聊天模型和内存持久性测试代理逻辑，无需 API 调用。
 
-单元测试单独测试代理的小型确定性部分。通过用内存中的伪造（又名固定装置）替换真正的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
+单元测试单独测试代理的小型确定性部分。通过用内存中的假数据（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
 
 ## 模拟聊天模型
 
-LangChain提供了[⟦T3⟧](https://reference.langchain.com/python/langchain-core/language_models/fake_chat_models/GenericFakeChatModel)来模拟文本回复。它接受响应的迭代器（[⟦T4⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)对象或字符串）并每次调用返回一个。它支持常规和流式使用。
+LangChain 提供 [⟦T3⟧](https://reference.langchain.com/python/langchain-core/language_models/fake_chat_models/GenericFakeChatModel) 用于模拟文本响应。它接受响应的迭代器（[⟦T4⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)对象或字符串）并每次调用返回一个。它支持常规和流式使用。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
+from langchain.messages import AIMessage, ToolCall
 
 model = GenericFakeChatModel(messages=iter([
     AIMessage(content="", tool_calls=[ToolCall(name="foo", args={"bar": "baz"}, id="call_1")]),
@@ -37,6 +38,8 @@ model.invoke("hello, again!")
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.checkpoint.memory import InMemorySaver
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
 
 agent = create_agent(
     model,
@@ -65,7 +68,7 @@ agent.invoke(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

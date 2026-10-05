@@ -47,7 +47,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 * **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 * **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
-* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。* **[Engine](/langsmith/engine-overview)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。引擎使用LangSmith智能服务进行模型工作。详情请参阅[self-hosted Engine architecture](/langsmith/engine-self-hosted#how-it-works)。
+* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。* **[Engine](/langsmith/engine-overview)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。引擎在LangSmith情报服务或您自己的模型提供商上运行其模型。详情请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。
 
 以下功能已计划但尚未支持：
 

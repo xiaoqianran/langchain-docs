@@ -44,7 +44,7 @@
 
 * 一些文档引用了内部结构并这样提及它们。如果文档表明某些内容是内部的，则它可能会发生变化。
 * 函数、方法和其他对象以前导下划线为前缀 (**`_`**)。这是 Python 的标准约定，表示某些内容是私有的；如果任何方法以单个 **`_`** 开头，则它是内部 API。
-  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法一般是LangChain的**公共API**的一部分。
+  * **例外：** 某些方法以 `_` 为前缀，但不包含实现。这些方法*意味着*会被提供实现的子类覆盖。此类方法通常是LangChain的**公共API**的一部分。
 
 ## 发布周期
 
@@ -62,7 +62,7 @@
   </Accordion>
 
   <Accordion title="Minor releases">
-    次要版本（例如，`1.0.0` → `1.1.0`）包括：
+    次要版本（例如 `1.0.0` → `1.1.0`）包括：
 
     * 新特性和功能
     * 性能改进
@@ -88,14 +88,14 @@
 
 ### 长期支持 (LTS) 版本
 
-LangChain和LangGraph 1.0都被指定为LTS版本：* 1.0 版将保持 ACTIVE 状态，直至 2.0 版发布
+LangChain 和 LangGraph 1.0 都被指定为 LTS 版本：* 1.0 版将保持 ACTIVE 状态，直至 2.0 版发布
 * 2.0版本发布后，1.0版本将进入MAINTENANCE模式至少1年
 * LTS 版本遵循语义版本控制 (semver)，允许在次要版本之间安全升级
 * 旧版本（LangChain 0.3 和 LangGraph 0.4）处于维护模式直至 2026 年 12 月
 
 ### 1.0 之前的包
 
-**Deep Agents** (`deepagents`) 是一个正在积极开发的 1.0 版本之前的软件包。作为一个快速发展的软件包，API 可能会在次要版本之间发生变化，尽管我们会尽可能减少重大更改。 Deep Agents在达到1.0版本后将采用与LangChain和LangGraph相同的LTS策略。
+**Deep Agents** (`deepagents`) 是一个正在积极开发的 1.0 之前的软件包。作为一个快速发展的软件包，API 可能会在次要版本之间发生变化，尽管我们会尽可能减少重大更改。 Deep Agents在达到1.0版本后将采用与LangChain和LangGraph相同的LTS策略。
 
 有关发布状态和支持时间表的详细信息，请参阅[Release policy](/oss/python/release-policy)。
 
@@ -145,19 +145,19 @@ LangChain和LangGraph 1.0都被指定为LTS版本：* 1.0 版将保持 ACTIVE �
 
 ## 预发布版本
 
-我们偶尔会发布 alpha 和 beta 版本以进行早期测试：* **Alpha**（例如，`1.0.0a1`）：早期预览，预计会有重大变化
+我们偶尔会发布 alpha 和 beta 版本以进行早期测试：
+
+* **Alpha**（例如，`1.0.0a1`）：早期预览，预计会有重大变化
 * **Beta**（例如，`1.0.0b1`）：功能完整，可能进行细微更改
 * **候选版本**（例如，`1.0.0rc1`）：稳定版本之前的最终测试
 
-## 另请参阅
-
-* [Release policy](/oss/python/release-policy) - 详细的发布和弃用政策
+## 另请参阅* [Release policy](/oss/python/release-policy) - 详细的发布和弃用政策
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

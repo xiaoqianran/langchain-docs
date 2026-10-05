@@ -1,24 +1,24 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Model Context Protocol (MCP) | https://docs.langchain.com/oss/python/langchain/mcp/index -->
 
-# Model Context Protocol (MCP)
+# 模型上下文协议 (MCP)
 
-Connect LangChain agents to MCP servers with the MCPAdapter, built on FastMCP.
+使用 MCPAdapter 将 LangChain 代理连接到 MCP 服务器。
 
-[Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open protocol that standardizes how applications provide tools and context to language models. LangChain agents call tools defined on MCP servers through [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter), which discovers a server's tools and adapts them into LangChain tools you can pass straight to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent).
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何为语言模型提供工具和上下文。 LangChain代理通过[⟦T5⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)调用MCP服务器上定义的工具，它会发现服务器的工具并将其改编为LangChain工具，您可以直接传递给[⟦T6⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)。
 
-[`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) is built on [FastMCP](https://gofastmcp.com), which handles transport inference, protocol negotiation, connection management, and authentication. This section covers the LangChain-specific layer and links out to the FastMCP client documentation for the connection details underneath.
+[⟦T7⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 构建于 [FastMCP](https://gofastmcp.com) 之上，处理传输推断、协议协商、连接管理和身份验证。本节介绍 LangChain 特定层，并链接到 FastMCP 客户端文档以了解下面的连接详细信息。
 
 <Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. Importing from it raises a `LangChainBetaWarning` once per process. The API may change.
+  `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。从它导入每个进程都会产生一次`LangChainBetaWarning`。 API 可能会更改。
 
-  If you used MCP before v1.4.0, see [Migrate from `langchain-mcp-adapters`](/oss/python/migrate/langchain-mcp-adapters).
+  如果您在 v1.4.0 之前使用过 MCP，请参阅[Migrate from ⟦T11⟧](/oss/python/migrate/langchain-mcp-adapters)。
 </Note>
 
-## Install
+## 安装
 
-Install LangChain with the `mcp` extra, which pulls in FastMCP:
+安装 LangChain 和 `mcp` extra，这会引入 FastMCP：
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -30,9 +30,9 @@ Install LangChain with the `mcp` extra, which pulls in FastMCP:
   ```
 </CodeGroup>
 
-## Quickstart
+## 快速入门
 
-Open an [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter), discover the server's tools with `list_tools()`, and build the agent inside the context. The tools hold the client, so the agent stays usable after the context exits:
+打开[⟦T13⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)，使用`list_tools()`发现服务器的工具，并在上下文中构建代理。这些工具保留客户端，因此代理在上下文退出后仍然可用：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -46,8 +46,8 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-<Accordion title="Example: Query LangChain docs">
-  The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`. Connect an agent to it to search and read documentation without writing custom tools:
+<Accordion title="LangChain docs MCP server">
+  [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。将代理连接到它以搜索和阅读文档，而无需编写自定义工具：
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
@@ -71,21 +71,21 @@ async def main():
   ```
 
   <Note>
-    The docs MCP server is public and does not require an API key. For IDE and coding-agent setup (Claude Code, Cursor, and others), see [Use docs programmatically](/use-these-docs).
+    文档 MCP 服务器是公共的，不需要 API 密钥。有关 IDE 和编码代理设置（Claude Code、Cursor 等），请参阅 [Use docs programmatically](/use-these-docs)。
   </Note>
 
-  The server exposes these tools:
+  服务器公开这些工具：
 
-  | Tool                                       | Description                                                                                   |
-  | ------------------------------------------ | --------------------------------------------------------------------------------------------- |
-  | `search_docs_by_lang_chain`                | Search docs for relevant guides, how-tos, and examples.                                       |
-  | `query_docs_filesystem_docs_by_lang_chain` | Read or search docs through a virtual filesystem (`rg`, `head`, `cat`, and related commands). |
-  | `submit_feedback`                          | Report a problem with a documentation page.                                                   |
+  |工具|描述 |
+  | - | - |
+  | `search_docs_by_lang_chain` |搜索文档以获取相关指南、操作方法和示例。 |
+  | `query_docs_filesystem_docs_by_lang_chain` |通过虚拟文件系统（`rg`、`head`、`cat`以及相关命令）读取或搜索文档。 |
+  | `submit_feedback` |报告文档页面的问题。 |
 </Accordion>
 
-## Transports
+## 交通
 
-[`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) infers the transport from the target you hand it, so the only thing that changes between an in-process server, a local script over stdio, and a remote URL is the target itself:
+[⟦T22⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 推断来自您提供的目标的传输。目标是进程内服务器、stdio 上的本地脚本和远程 URL 之间的唯一区别：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pathlib import Path
@@ -102,43 +102,39 @@ stdio = MCPAdapter(Path("weather_server.py"))
 http = MCPAdapter("https://example.com/mcp")
 ```
 
-A target can be any of the following:
-
-* **An `http`/`https` URL** (`str`): reached over streamable HTTP.
-* **A script path** (`Path`): launched as a subprocess over stdio.
-* **A transport object** (`StreamableTransport`): a pre-configured transport object. See [Client Transports](https://gofastmcp.com/clients/transports).
-* **An in-process `FastMCP` server**: connected in-memory, with no subprocess or socket.
-* **An `MCPConfig` dict** (`{"mcpServers": {...}}`): several servers behind one adapter. See [Connections](/oss/python/langchain/mcp/connections#multiple-servers).
-* **A prebuilt `fastmcp.Client`**: for full control over transport, [caching](https://gofastmcp.com/clients/client#response-caching), and [protocol negotiation](https://gofastmcp.com/clients/client#protocol-negotiation).
+目标可以是以下任意一个：* **`http`/`https` URL** (`str`)：通过 Streamable HTTP 到达。
+* **脚本路径** (`Path`)：通过 stdio 作为子进程启动。
+* **传输对象** (`StreamableTransport`)：预配置的传输对象。参见[Client Transports](https://gofastmcp.com/clients/transports)。
+* **进程内 `FastMCP` 服务器**：在内存中连接，没有子进程或套接字。
+* **一个`MCPConfig` dict** (`{"mcpServers": {...}}`)：一个适配器后面有多个服务器。参见[Connections](/oss/python/langchain/mcp/connections#multiple-servers)。
+* **预建的`fastmcp.Client`**：用于完全控制传输、[caching](https://gofastmcp.com/clients/client#response-caching)和[protocol negotiation](https://gofastmcp.com/clients/client#protocol-negotiation)。
 
 <Warning>
-  A `str` target must be an `http` or `https` URL. FastMCP resolves a string by testing it as a filesystem path before testing it as a URL, so a string naming an existing `.py` or `.js` file would launch that file as a subprocess. Because strings are the form a target most often arrives in from configuration or from a model, [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) rejects strings that don't match the shape of a URL.
+  `str` 目标必须是 `http` 或 `https` URL。 FastMCP 通过在将字符串测试为 URL 之前将其测试为文件系统路径来解析字符串，因此命名现有 `.py` 或 `.js` 文件的字符串会将该文件作为子进程启动。由于字符串是目标最常从配置或模型到达的形式，因此 [⟦T37⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 会拒绝与 URL 形状不匹配的字符串。
 </Warning>
 
-## Next steps
+## 后续步骤
 
 <CardGroup>
+  <Card title="Tools" icon="tool" href="/oss/python/langchain/mcp/tools">
+    将 MCP 工具加载到代理中，控制其执行并处理其输出。
+  </Card>
+
   <Card title="Connections" icon="plug" href="/oss/python/langchain/mcp/connections">
-    Connection lifecycle, multiple servers, protocol eras, and caching.
+    连接生命周期、多个服务器、协议时代和缓存。
   </Card>
 
   <Card title="Authentication" icon="lock" href="/oss/python/langchain/mcp/auth">
-    Bearer tokens, OAuth 2.1, and per-user server auth.
-  </Card>
-
-  <Card title="Tools" icon="tool" href="/oss/python/langchain/mcp/tools">
-    Load MCP tools into agents, control their execution, and handle their outputs.
+    不记名令牌、OAuth 2.1 和每用户服务器身份验证。
   </Card>
 </CardGroup>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

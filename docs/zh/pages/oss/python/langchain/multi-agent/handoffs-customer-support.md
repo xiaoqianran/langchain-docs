@@ -72,7 +72,7 @@ flowchart TD
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
-### 朗史密斯
+### LangSmith
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-handoffs-customer-support) 来检查代理内部发生的情况。然后设置以下环境变量：
 
@@ -228,7 +228,7 @@ flowchart TD
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+      model = init_chat_model("google_genai:gemini-3.7-flash")
       ```
 
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -237,7 +237,7 @@ flowchart TD
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
       ```
     </CodeGroup>
   </Tab>
@@ -441,7 +441,7 @@ def provide_solution(solution: str) -> str:
     return f"Solution provided: {solution}"
 ```
 
-请注意`record_warranty_status`和`record_issue_type`如何返回更新数据（`warranty_status`，`issue_type`）和`current_step`的`Command`对象。这就是状态机的工作原理 - 工具控制工作流程的进展。
+请注意`record_warranty_status`和`record_issue_type`如何返回更新数据（`warranty_status`、`issue_type`）和`current_step`的`Command`对象。这就是状态机的工作原理 - 工具控制工作流程的进展。
 
 ## 3. 定义步骤配置
 
@@ -518,7 +518,7 @@ STEP_CONFIG = {
 
 ## 4. 创建基于步骤的中间件
 
-创建从状态读取`current_step`并应用适当配置的中间件。我们将使用 `@wrap_model_call` 装饰器来实现干净的实现：
+创建从状态读取 `current_step` 并应用适当配置的中间件。我们将使用 `@wrap_model_call` 装饰器来实现干净的实现：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
@@ -728,7 +728,7 @@ agent = create_agent(
 
 ## 9. 增加灵活性：返回
 
-某些工作流程需要允许用户返回到之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
+某些工作流程需要允许用户返回之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
 
 <Tip>
   如果您的工作流程需要在大多数步骤之间进行任意转换，请考虑您是否需要结构化工作流程。当步骤遵循清晰的顺序进展并偶尔向后过渡以进行修正时，此模式效果最佳。
@@ -1035,7 +1035,7 @@ result = agent.invoke(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

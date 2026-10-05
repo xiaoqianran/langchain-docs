@@ -108,7 +108,7 @@
 
 
   agent = create_agent(
-      model="anthropic:claude-sonnet-4-6",
+      model="anthropic:claude-sonnet-5",
       tools=[get_user_info],
       checkpointer=InMemorySaver(),  # [!code highlight]
   )
@@ -258,6 +258,10 @@
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/958890cd-88c9-4f06-a277-de708a44ee55/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 生产中
 
 在生产中，使用由数据库支持的检查指针：
@@ -337,11 +341,11 @@ result = agent.invoke(
 <CardGroup>
   <Card title="Trim messages" icon="scissors" href="#trim-messages">
     删除前 N 条或后 N 条消息（在调用 LLM 之前）
+  </Card><Card title="Delete messages" icon="trash" href="#delete-messages">
+    永久删除LangGraph状态的消息
   </Card>
 
-  <Card title="Delete messages" icon="trash" href="#delete-messages">
-    永久删除 LangGraph 状态中的消息
-  </Card><Card title="Summarize messages" icon="stack-2" href="#summarize-messages">
+  <Card title="Summarize messages" icon="stack-2" href="#summarize-messages">
     总结历史记录中较早的消息并将其替换为摘要
   </Card>
 
@@ -356,7 +360,7 @@ result = agent.invoke(
 
 大多数法学硕士都有最大支持的上下文窗口（以令牌计价）。
 
-决定何时截断消息的一种方法是计算消息历史记录中的标记，并在接近该限制时进行截断。如果您使用 LangChain，则可以使用修剪消息实用程序并指定要从列表中保留的令牌数量，以及用于处理边界的`strategy`（例如，保留最后一个`max_tokens`）。
+决定何时截断消息的一种方法是计算消息历史记录中的标记，并在接近该限制时进行截断。如果您使用 LangChain，则可以使用修剪消息实用程序并指定要从列表中保留的标记数量，以及用于处理边界的 `strategy`（例如，保留最后一个 `max_tokens`）。
 
 要修剪代理中的消息历史记录，请使用 [⟦T36⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/before_model) 中间件装饰器：
 
@@ -421,9 +425,7 @@ If you'd like me to call you a nickname or use a different name, just say the wo
 
 要从图形状态中删除消息，您可以使用`RemoveMessage`。
 
-为了使 `RemoveMessage` 工作，您需要将状态密钥与 [⟦T39⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) [reducer](/oss/python/langgraph/graph-api#reducers) 一起使用。
-
-默认的 [⟦T40⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) 提供了这一点。
+要使 `RemoveMessage` 工作，您需要将状态密钥与 [⟦T39⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) [reducer](/oss/python/langgraph/graph-api#reducers) 一起使用。默认的 [⟦T40⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) 提供了这一点。
 
 要删除特定消息：
 
@@ -435,7 +437,9 @@ def delete_messages(state):
     if len(messages) > 2:
         # remove the earliest two messages
         return {"messages": [RemoveMessage(id=m.id) for m in messages[:2]]}  # [!code highlight]
-```要删除**所有**消息：
+```
+
+要删除**所有**消息：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph.message import REMOVE_ALL_MESSAGES  # [!code highlight]
@@ -571,9 +575,7 @@ Your name is Bob!
 
 #### 在工具中读取短期记忆
 
-使用 `runtime` 参数（键入为 `ToolRuntime`）访问工具中的短期内存（状态）。
-
-`runtime` 参数在工具签名中隐藏（因此模型看不到它），但工具可以通过它访问状态。
+使用 `runtime` 参数（键入为 `ToolRuntime`）访问工具中的短期内存（状态）。`runtime` 参数在工具签名中隐藏（因此模型看不到它），但工具可以通过它访问状态。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent, AgentState
@@ -603,7 +605,9 @@ result = agent.invoke({
 })
 print(result["messages"][-1].content)
 # > User is John Smith.
-```#### 从工具中写入短期记忆
+```
+
+#### 从工具中写入短期记忆
 
 要在执行期间修改代理的短期记忆（状态），您可以直接从工具返回状态更新。
 
@@ -747,11 +751,11 @@ Hi John Smith, the weather in San Francisco is always sunny!
     }
 }%%
 graph TD
-    S(["\_\_start\_\_"])
+    S(["`\_\_start\_\_`"])
     PRE(before_model)
     MODEL(model)
     TOOLS(tools)
-    END(["\_\_end\_\_"])
+    END(["`\_\_end\_\_`"])
     S --> PRE
     PRE --> MODEL
     MODEL -.-> TOOLS
@@ -880,7 +884,7 @@ agent = create_agent(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

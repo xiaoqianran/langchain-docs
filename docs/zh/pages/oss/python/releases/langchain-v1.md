@@ -2,13 +2,13 @@
 
 <!-- langchain-docs: What's new in LangChain v1 | https://docs.langchain.com/oss/python/releases/langchain-v1 -->
 
-# LangChain v1 的新功能
+# LangChain v1 中的新功能
 
-**LangChain v1 是一个专注于构建代理的生产就绪基础。**我们围绕三个核心改进简化了框架：
+**LangChain v1 是一个专注于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
 <CardGroup>
   <Card title="create_agent" icon="robot" href="#create_agent">
-    LangChain构建代理新标准，取代`langgraph.prebuilt.create_react_agent`。
+    LangChain中建筑剂的新标准，取代`langgraph.prebuilt.create_react_agent`。
   </Card>
 
   <Card title="Standard content blocks" icon="cube" href="#standard-content-blocks">
@@ -36,7 +36,7 @@
 
 ## `create_agent`
 
-[⟦T16⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)是LangChain1.0中构建代理的标准方式。它提供了比 [⟦T17⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 更简单的界面，同时通过使用 [middleware](#middleware) 提供了更大的定制潜力。
+[⟦T16⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 是LangChain 1.0 中构建代理的标准方法。它提供了比 [⟦T17⟧](https://reference.langchain.com/python/langchain-classic/agents/react/agent/create_react_agent) 更简单的界面，同时通过使用 [middleware](#middleware) 提供了更大的定制潜力。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -68,7 +68,7 @@ result = agent.invoke({
 
 #### 预构建中间件
 
-LangChain为常见模式提供了一些[prebuilt middlewares](/oss/python/langchain/middleware#built-in-middleware)，包括：
+LangChain 为常见模式提供了一些[prebuilt middlewares](/oss/python/langchain/middleware#built-in-middleware)，包括：
 
 * [⟦T20⟧](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)：在发送给模型之前编辑敏感信息
 * [⟦T21⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话历史记录太长时压缩它
@@ -120,8 +120,8 @@ agent = create_agent(
   <img alt="Middleware flow diagram" />
 </div>
 
-通过在 [⟦T23⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentMiddleware) 类的子类上实现任何这些钩子来构建自定义中间件：|钩|当它运行时 |使用案例 |
-| ----------------- | ------------------------ | --------------------------------------- |
+通过在 [⟦T23⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentMiddleware) 类的子类上实现这些钩子来构建自定义中间件：|钩|当它运行时 |使用案例 |
+| - | - | - |
 | `before_agent` |致电代理之前 |加载内存，验证输入 |
 | `before_model` |在每次LLM通话之前|更新提示、修剪消息 |
 | `wrap_model_call` |围绕每个法学硕士通话|拦截并修改请求/响应 |
@@ -181,7 +181,7 @@ agent = create_agent(
 
 欲了解更多信息，请参阅[the complete middleware guide](/oss/python/langchain/middleware)。
 
-### 建立在 LangGraph 上
+### 基于 LangGraph 构建
 
 由于 [⟦T30⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 构建于 [LangGraph](/oss/python/langgraph) 之上，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
 
@@ -196,16 +196,16 @@ agent = create_agent(
 
   <Card title="Human-in-the-loop" icon="hand-stop">
     在敏感操作之前暂停代理执行以供人工批准
-  </Card><Card title="Time travel" icon="history">
+  </Card>
+
+  <Card title="Time travel" icon="history">
     将对话倒回到任意点并探索替代路径和提示
   </Card>
 </CardGroup>
 
-您无需学习 LangGraph 即可使用这些功能——它们开箱即用。
+您无需学习 LangGraph 即可使用这些功能 — 它们开箱即用。
 
-### 结构化输出
-
-[⟦T31⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 改进了结构化输出生成：
+### 结构化输出[⟦T31⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 改进了结构化输出生成：
 
 * **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
 * **结构化输出策略**：模型可以选择调用工具或使用提供者端结构化输出生成
@@ -258,7 +258,9 @@ print(repr(result["structured_response"]))
   * [⟦T38⟧](https://pypi.org/project/langchain-ollama/)
 
   更多提供商将逐步推出对内容块的更广泛支持。
-</Note>新的 [⟦T39⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性引入了跨提供商工作的消息内容的标准表示形式：
+</Note>
+
+新的 [⟦T39⟧](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) 属性引入了跨提供商工作的消息内容的标准表示形式：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_anthropic import ChatAnthropic
@@ -276,9 +278,7 @@ for block in response.content_blocks:
         print(f"Tool call: {block['name']}({block['args']})")
 ```
 
-### 好处
-
-* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
+### 好处* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
 * **类型安全**：所有内容块类型的完整类型提示
 * **向后兼容**：标准内容可以是[loaded lazily](/oss/python/langchain/messages#standard-content-blocks)，因此没有相关的重大更改
 
@@ -288,13 +288,16 @@ for block in response.content_blocks:
 
 ## 简化包
 
-LangChain v1 简化了[⟦T40⟧](https://pypi.org/project/langchain/)包命名空间，以专注于代理的基本构建块。精炼的命名空间公开了最有用和最相关的功能：
+LangChain v1 简化了 [⟦T40⟧](https://pypi.org/project/langchain/) 包命名空间，以专注于代理的基本构建块。精炼的命名空间公开了最有用和最相关的功能：
 
-### 命名空间|模块|有什么可用的 |笔记|
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+### 命名空间
+
+|模块|有什么可用的 |笔记|
+| - | - | - |
 | [⟦T41⟧](https://reference.langchain.com/python/langchain/agents) | [⟦T42⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)、[⟦T43⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentState) |核心代理创建功能 |
 | [⟦T44⟧](https://reference.langchain.com/python/langchain/messages) |消息类型，[content blocks](https://reference.langchain.com/python/langchain-core/messages/content/ContentBlock)，[⟦T45⟧](https://reference.langchain.com/python/langchain-core/messages/utils/trim_messages) |从[⟦T46⟧](https://reference.langchain.com/python/langchain-core/)转口|
-| [⟦T47⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T48⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T49⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手|从[⟦T50⟧](https://reference.langchain.com/python/langchain-core/)转口|| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化 |
+| [⟦T47⟧](https://reference.langchain.com/python/langchain/tools) | [⟦T48⟧](https://reference.langchain.com/python/langchain-core/tools/convert/tool)、[⟦T49⟧](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool)、注射助手|从[⟦T50⟧](https://reference.langchain.com/python/langchain-core/)转口|
+| [⟦T51⟧](https://reference.langchain.com/python/langchain/models) | [⟦T52⟧](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model)、[⟦T53⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) |统一模型初始化|
 | [⟦T54⟧](https://reference.langchain.com/python/langchain/embeddings) | [⟦T55⟧](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings)、[⟦T56⟧](https://reference.langchain.com/python/langchain/embeddings/base/init_embeddings) |嵌入模型|
 
 为了方便起见，其中大部分都是从 `langchain-core` 重新导出的，这为您提供了一个用于构建代理的集中 API 界面。
@@ -316,9 +319,7 @@ from langchain.embeddings import init_embeddings
 
 ### `langchain-classic`
 
-旧功能已转移到[⟦T59⟧](https://pypi.org/project/langchain-classic)，以保持核心包的精简和集中。
-
-**`langchain-classic`中有什么：**
+旧功能已转移到[⟦T59⟧](https://pypi.org/project/langchain-classic)，以保持核心包的精简和集中。**`langchain-classic`中有什么：**
 
 * 遗留链和链实现
 * 检索器（例如 `MultiQueryRetriever` 或之前的 `langchain.retrievers` 模块中的任何内容）
@@ -357,7 +358,7 @@ from langchain_classic import hub  # [!code ++]
 
 ## 迁移指南
 
-请参阅我们的[migration guide](/oss/python/migrate/langchain-v1)以获取将代码更新到 LangChain v1 的帮助。
+请参阅我们的 [migration guide](/oss/python/migrate/langchain-v1) 获取将代码更新到 LangChain v1 的帮助。
 
 ## 报告问题
 
@@ -372,7 +373,9 @@ from langchain_classic import hub  # [!code ++]
 
   <Card title="Middleware guide" icon="puzzle" href="https://blog.langchain.com/agent-middleware/">
     深入研究中间件
-  </Card><Card title="Agents Documentation" icon="book" href="/oss/python/langchain/agents">
+  </Card>
+
+  <Card title="Agents Documentation" icon="book" href="/oss/python/langchain/agents">
     完整的代理文档
   </Card>
 
@@ -398,7 +401,7 @@ from langchain_classic import hub  # [!code ++]
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

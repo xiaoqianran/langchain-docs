@@ -23,10 +23,10 @@
 UI 是最难保持一致、可访问和安全的，因此必须隔离
 从你的申请的其余部分。
 
-## 何时使用此方法当您想要展示功能和功能时，可以使用开放式生成式 UI
+## 何时使用此方法当您想要展示功能和内容时，可以使用开放式生成式 UI
 存在于应用程序外部并独立于应用程序发展的接口，例如
 作为 MCP 服务器生态系统发布的工具。当你需要保证时
-品牌、可访问性或布局，沿着范围向后移动
+品牌、可访问性或布局，沿着频谱向后移动
 [declarative](/oss/python/langchain/frontend/declarative-generative-ui) 或
 [controlled](/oss/python/langchain/frontend/controlled-generative-ui) 生成式 UI，其中
 您的应用程序拥有这些组件。
@@ -34,7 +34,7 @@ UI 是最难保持一致、可访问和安全的，因此必须隔离
 ## MCP 应用程序
 
 [Model Context Protocol](https://modelcontextprotocol.io) 让代理连接
-到提供工具和资源的外部服务器。 MCP Apps 将这一想法扩展到
+提供工具和资源的外部服务器。 MCP Apps 将这一想法扩展到
 界面：MCP 服务器提供交互式 UI，前端通常呈现它
 在 iframe 中，直接在对话中。服务器拥有组件，
 数据和交互，而您的应用程序提供框架和
@@ -58,7 +58,7 @@ CopilotKit 将此模式记录为 [MCP Apps](https://docs.copilotkit.ai/generativ
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

@@ -24,24 +24,26 @@
 
 ## 核心概念
 
-加入/重新加入模式涉及三个关键机制：|方法/选项|目的|
-| -------------------------------- | ---------------------------------------------------------------------------------- |
-| `threadId` |将流绑定到您想要观察的 LangGraph 线程 |
+加入/重新加入模式涉及三个关键机制：
+
+|方法/选项|目的|
+| - | - |
+| `threadId` |将流绑定到您想要观察的LangGraph线程 |
 | `onThreadId` |保留新创建的线程 ID，以便重新挂载可以重新连接 |
 | `stream.disconnect()` |保留流客户端，而代理继续在服务器端运行 |
-|使用相同的`threadId`重新安装 |重新附加到该线程的正在进行的工作 |
-
-<Note>
+|使用相同的`threadId`重新安装 |重新附加到该线程的正在进行的工作 |<Note>
   **加入/重新加入使用 `stream.disconnect()`，而不是 `stream.stop()`。** 默认情况下，`stream.stop()` **取消活动运行**：它断开客户端连接*并*取消服务器上的运行。对于加入/重新加入，请致电 `stream.disconnect()`（`stop({ cancel: false })` 的别名），以便客服人员在您离开时继续处理。
 
-  要从应用程序代码中显式取消执行，请使用 `stream.stop()` 或 [⟦T18⟧](https://reference.langchain.com/javascript/langchain-langgraph-sdk/client/RunsClient/cancel)。
+  要从应用程序代码中显式取消执行，请使用 `stream.stop()` 或 [⟦T18⟧](https://reference.langchain.com/python/langgraph-sdk/_async/runs/RunsClient/cancel)。
 </Note>
 
 ## 设置`useStream`
 
 关键的设置步骤是坚持`threadId`。当组件重新安装时
 相同的线程 ID，流附加到线程的当前状态和任何
-飞行中运行。<Info>
+飞行中运行。
+
+<Info>
   代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 </Info>
 
@@ -245,11 +247,9 @@ await stream.disconnect();
 
 不要在这里使用`stream.stop()`——默认情况下它会取消服务器上的运行。
 
-拨打`disconnect()`后：
-
-* `stream.isLoading` 变为 `false`
+拨打`disconnect()`后：* `stream.isLoading` 变为 `false`
 * 你自己的`connected`标志也应该变成`false`
-* 消息列表保留直到断开连接点为止收到的所有消息
+* 消息列表保留直到断开点为止收到的所有消息
 * 代理继续在服务器上运行
 * 在您重新加入之前不会收到新消息
 
@@ -264,15 +264,15 @@ setMountKey((key) => key + 1);
 setConnected(true);
 ```
 
-重新加入后：* `connected` 变为 `true`
+重新加入后：
+
+* `connected` 变为 `true`
 * 断开连接时生成的任何消息都会被传递
 * 新的流媒体消息实时恢复
 * 如果代理仍在运行，则`stream.isLoading`变为`true`；如果有
   已经完成，您立即收到最终状态
 
-## 最佳实践
-
-* **使用 `disconnect()` 加入/重新加入，`stop()` 取消**：导航离开或后台应用程序应调用 `stream.disconnect()`。面向用户的“停止”或“取消”按钮应调用`stream.stop()`（或[⟦T38⟧](https://reference.langchain.com/javascript/langchain-langgraph-sdk/client/RunsClient/cancel)）。
+## 最佳实践* **使用 `disconnect()` 加入/重新加入，`stop()` 取消**：导航离开或后台应用程序应调用 `stream.disconnect()`。面向用户的“停止”或“取消”按钮应调用`stream.stop()`（或[⟦T38⟧](https://reference.langchain.com/python/langgraph-sdk/_async/runs/RunsClient/cancel)）。
 * **始终保存线程ID**：没有它，重新加入是不可能的。使用组件状态和持久存储来实现弹性。
 * **显示清晰的连接状态**：用户应该始终知道他们是否正在接收实时更新或查看快照。
 * **可见性更改时自动重新加入**：使用页面可见性 API 在用户返回选项卡时自动重新加入。
@@ -283,8 +283,10 @@ setConnected(true);
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout><Callout icon="edit">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/join-rejoin.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

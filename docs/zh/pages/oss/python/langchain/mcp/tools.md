@@ -1,22 +1,22 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Tools | https://docs.langchain.com/oss/python/langchain/mcp/tools -->
 
-# Tools
+# 工具
 
-Load MCP tools into LangChain agents, control their execution, and handle server results and requests.
+将MCP工具加载到LangChain代理中，控制其执行，并处理服务器结果和请求。
 
 <Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
+  `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
 </Note>
 
-[`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) bridges MCP servers and LangChain agents: it discovers the tools a server advertises and adapts them into standard LangChain tools. Pass the tools from `list_tools()` to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent) as you would any other LangChain tool.
+[⟦T11⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)桥接MCP服务器和LangChain代理：它发现服务器通告的工具并将其改编为标准LangChain工具。将工具从 `list_tools()` 传递到 [⟦T13⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)，就像传递任何其他 LangChain 工具一样。
 
-This page covers what is specific to that bridge: identifying MCP tools, controlling their execution, handling their outputs, and responding when a server needs input during a call. For the runnable discovery-and-agent example, see the [MCP quickstart](/oss/python/langchain/mcp).
+本页介绍了该桥的具体内容：识别 MCP 工具、控制其执行、处理其输出以及在调用期间服务器需要输入时进行响应。有关可运行的发现和代理示例，请参阅[MCP quickstart](/oss/python/langchain/mcp)。
 
-## Use MCP tools in an agent
+## 在代理中使用 MCP 工具
 
-Discover the server's catalog with [`MCPAdapter.list_tools`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter/list_tools), then give the returned tools to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent). From the agent's perspective, they behave like LangChain tools: the model chooses a tool, LangChain invokes it, and the resulting [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) returns to the model.
+使用[⟦T14⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter/list_tools)发现服务器的目录，然后将返回的工具交给[⟦T15⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)。从代理的角度来看，它们的行为类似于 LangChain 工具：模型选择一个工具，LangChain 调用它，并将生成的 [⟦T16⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 返回给模型。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -40,18 +40,16 @@ async def run_agent(server) -> dict:
 ```
 
 <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/025418ad-e7bc-43a3-b700-d1a78b3a4856/r">
-  Open a public LangSmith run for this example.
+  为此示例打开公共 LangSmith 运行。
 </Card>
 
-For general guidance on defining, binding, and using LangChain tools, see [Tools](/oss/python/langchain/tools). For several MCP servers and their namespaced tool catalogs, see [Connections](/oss/python/langchain/mcp/connections#multiple-servers).
+有关定义、绑定和使用 LangChain 工具的一般指南，请参阅 [Tools](/oss/python/langchain/tools)。有关多个 MCP 服务器及其命名空间工具目录，请参阅[Connections](/oss/python/langchain/mcp/connections#multiple-servers)。
 
-## Handle tool outputs
+## 处理工具输出MCP 工具结果成为[⟦T17⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 对象，其中包含模型可以读取的内容、应用程序数据的工件以及指示成功或失败的状态。
 
-MCP tool results become LangChain-native values: content the model can read, an artifact for structured output, and a [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) status that distinguishes a server-reported error from a transport failure.
+### 多模式内容
 
-### Multimodal content
-
-An MCP tool result arrives as LangChain [content blocks](/oss/python/langchain/messages#standard-content-blocks). Image and file content convert into standardized `image` and `file` blocks alongside `text`, so a tool that returns a screenshot reaches the model as an image block:
+该适配器将模型可见的 MCP 内容转换为 LangChain [content blocks](/oss/python/langchain/messages#standard-content-blocks)。例如，返回带有屏幕截图的 MCP 图像块的工具以 `image` 块的形式到达模型。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -83,9 +81,9 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-### Structured content
+### 结构化内容
 
-When a tool returns structured content, the adapter attaches it to the [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) as an artifact rather than folding it into the model-visible text. Run the agent, then read the `artifact` off the [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)s in the result:
+当工具返回结构化内容时，适配器将其作为工件附加到 [⟦T19⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T21⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 实例中读取 `artifact`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -111,11 +109,11 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-The artifact is an `MCPToolArtifact`, whose `structured_content` field holds the tool result's `structuredContent`. A tool that returns no structured content leaves `artifact` as `None`.
+该工件是一个 `MCPToolArtifact`，其 `structured_content` 字段保存工具结果的 `structuredContent`。不返回结构化内容的工具会将 `artifact` 保留为 `None`。
 
-### Errors
+### 错误
 
-An MCP tool result carries an `isError` flag. When a server reports `isError=True`, the adapter converts it into a [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) with `status="error"` carrying the server's own message, so the agent can read it and correct itself:
+MCP 工具结果带有 `isError` 标志。当服务器报告`isError=True`时，适配器将其转换为[⟦T29⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)，其中`status="error"`携带服务器自己的消息，因此代理可以读取它并自行更正：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -148,11 +146,9 @@ async def divide_by_zero(server) -> dict:
     return result
 ```
 
-A server-reported error reaches the model as a failed tool message, but a transport or session failure raises instead, because a model cannot act on a dropped connection.
+服务器报告的错误作为失败的工具消息到达模型，但会引发传输或会话失败。
 
-## Tool metadata
-
-Each adapted tool may carry its MCP provenance under an `mcp` namespace on the LangChain tool's metadata:
+## 工具元数据每个改编工具都可以在 LangChain 工具元数据上的 `mcp` 命名空间下携带其 MCP 出处：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tool.metadata
@@ -173,9 +169,9 @@ tool.metadata
 # }
 ```
 
-Every nested field is optional: a server may provide tool annotations, `_meta`, server identity, any combination of those, or none. `annotations` contains MCP hints such as `read_only_hint` and `destructive_hint`; `_meta` is opaque metadata supplied by the server; and `server` identifies the MCP implementation that advertised the tool.
+每个嵌套字段都是可选的：服务器可以提供工具注释、`_meta`、服务器身份、这些的任意组合，或者不提供。 `annotations`包含`read_only_hint`、`destructive_hint`等MCP提示； `_meta`是服务器提供的不透明元数据； `server` 标识宣传该工具的 MCP 实现。
 
-Read optional metadata defensively, so a missing field returns a default rather than raising:
+防御性地读取可选元数据，因此缺失的字段会返回默认值而不是失败：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import BaseTool
@@ -191,21 +187,24 @@ def is_destructive(tool: BaseTool) -> bool:
     return annotations.get("destructive_hint", False)
 ```
 
-## Human-in-the-loop
+## 人机交互
 
-Reading annotations lets you gate a tool based on what the server declares about it, rather than hardcoding tool names. An MCP server can flag a tool as destructive with the `destructiveHint` annotation, which [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) surfaces under `metadata["mcp"]["tool"]["annotations"]["destructive_hint"]`.
+阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机交互中间件强制执行审批策略。
 
-Give an [`InterruptOnConfig`](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/InterruptOnConfig) a `when` predicate: a callable that receives the pending [`ToolCallRequest`](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) and returns whether that call needs approval. Read the destructive hint from metadata once at load time, then let the callable decide per call, so one config covers whatever destructive tools a server exposes without hardcoding tool names:
+在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.agents.middleware.human_in_the_loop import InterruptOnConfig
+from langchain.mcp import MCPAdapter
 from langchain.tools import BaseTool
 from langchain.tools.tool_node import ToolCallRequest
+from langgraph.checkpoint.memory import InMemorySaver
 
 
 def is_destructive(tool: BaseTool) -> bool:
-    """Read the MCP destructive hint off the adapter's tool metadata."""
+    """Read the MCP destructive hint from the adapter's tool metadata."""
     annotations = (
         (tool.metadata or {}).get("mcp", {}).get("tool", {}).get("annotations", {})
     )
@@ -216,14 +215,12 @@ async def gate_destructive_tools(server):
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # Read the destructive hint from metadata once, then let a callable
-        # decide per call. One config covers whatever destructive tools a
-        # server exposes, without hardcoding tool names.
+        # Read the hint once, then apply the same predicate to every tool call.
         destructive = {tool.name for tool in tools if is_destructive(tool)}
-
+    
         def needs_approval(request: ToolCallRequest) -> bool:
             return request.tool_call["name"] in destructive
-
+    
         gate = InterruptOnConfig(
             allowed_decisions=["approve", "reject"], when=needs_approval
         )
@@ -238,26 +235,32 @@ async def gate_destructive_tools(server):
         )
 ```
 
-When the agent calls a tool the predicate gates, the run pauses. Approve it to let the tool run, or reject it to skip the tool and tell the model:
+当代理调用谓词门控的工具时，运行会暂停。批准调用以运行它，或拒绝它以跳过该工具并告诉模型：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
 
 # Approve the pending destructive call and resume.
-resumed = await agent.ainvoke(Command(resume={"decisions": [{"type": "approve"}]}), config)
-```
+resumed = await agent.ainvoke(
+    Command(resume={"decisions": [{"type": "approve"}]}), config
+)
+```谓词还可以检查调用的参数。这使得工具可以自由运行以实现安全输入，并仅在有风险的情况下暂停，例如针对受保护路径的 `delete_file` 调用。
 
-The predicate also sees the call's arguments through `request.tool_call["args"]`, so a tool can run freely for safe inputs and pause only for risky ones, such as a `delete_file` call targeting a protected path. Combine both to gate a tool only when its type and its arguments warrant it.
+通过`request.tool_call["args"]`访问参数。
 
-For the full approval workflow, see [Human-in-the-loop](/oss/python/langchain/human-in-the-loop).
+仅当工具的类型和输入值得批准时，才将元数据分类和参数检查相结合来控制工具。有关完整的审批工作流程，请参阅[Human-in-the-loop](/oss/python/langchain/human-in-the-loop)。
 
-## Server requests during tool execution
+## 工具执行期间的服务器请求
 
-Most tools finish without asking the client for anything mid-call. When a server does need input, [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) answers [elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) automatically through a LangGraph [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt).
+大多数工具在通话过程中无需向客户询问任何信息即可完成。当服务器需要输入时，[⟦T41⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)将[elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation)表面为LangGraph[⟦T42⟧](https://reference.langchain.com/python/langgraph/types/interrupt)。
 
-### Elicitation
+### 引出
 
-[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) is the MCP mechanism for a server to request input in the middle of a tool call. When a server needs input, the request surfaces as a LangGraph interrupt so the person already reviewing the agent's work answers it and the run resumes:
+[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。
+
+将 [checkpointer](/oss/python/langchain/short-term-memory) 附加到代理，并在调用和恢复它时使用相同的 `thread_id`。
+
+此示例假设预订工具询问一个日期并暂停一次。将示例日期替换为用户的答案。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
@@ -269,14 +272,12 @@ from langgraph.types import Command
 
 
 async def book_with_elicitation(server) -> dict:
-    # Elicitation is handled automatically: when a server needs input mid-call,
-    # the adapter surfaces the question as a LangGraph `interrupt()`, so the
-    # person already reviewing the agent's work answers it and the run resumes.
+    # When a server needs input mid-call, the adapter surfaces the question
+    # as a LangGraph interrupt.
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # Resuming a paused run needs persistence, so the interrupted run has
-        # somewhere to wait.
+        # A checkpointer saves the interrupted run so it can resume.
         agent = create_agent("claude-sonnet-5", tools, checkpointer=InMemorySaver())
         config: Any = {"configurable": {"thread_id": "booking-1"}}
 
@@ -286,47 +287,58 @@ async def book_with_elicitation(server) -> dict:
         [interrupt] = paused["__interrupt__"]
         [question] = interrupt.value["requests"]
 
-        # Answers are keyed by the server's own request key, so nothing has to
-        # be tracked across the pause. `decline` or `cancel` would refuse.
+        # Answers are keyed by the server's own request key.
+        # Use `decline` or `cancel` to refuse the request.
         answer = {"action": "accept", "content": {"date": "2026-09-14"}}
         return await agent.ainvoke(
             Command(resume={"responses": {question["key"]: answer}}), config
         )
 ```
 
-A few things to note:
-
-* **Elicitation is on by default.** The adapter arms every client it builds to advertise the capability and drives the interrupt loop. A prebuilt client that already carries its own elicitation handler is honored instead of overridden.
-* **Resuming needs persistence.** Attach a [checkpointer](/oss/python/langchain/short-term-memory) so the interrupted run has somewhere to wait.
-* **Answers are keyed by the server's request key.** Resume with `Command(resume={"responses": {key: answer}})`. Each answer's `action` is `accept` (with `content` matching the request's schema), `decline` (answer refused, call continues), or `cancel` (the whole call is abandoned).
-
-The interrupt payload and answer types live in `langchain.mcp.elicitation`.
-
-Only elicitation is answered this way. A server that instead asks for [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) (running an LLM completion) or [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) (reachable local paths) raises `NotImplementedError`, because the modern, sessionless protocol has no live back-channel for those requests. See [Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots).
+默认情况下，诱导处于启用状态。适配器通告该功能并驱动中断循环。已经带有自己的启发处理程序的预构建客户端将受到尊重，而不是被覆盖。使用 `Command(resume={"responses": {key: answer}})` 继续。中断负载和应答类型位于`langchain.mcp.elicitation`。
 
 <Note>
-  Interrupt-driven elicitation answers a server that returns its request as an `InputRequiredResult` (the modern protocol's input-required round). A server that only pushes elicitation over a legacy handshake session cannot be answered this way.
+  恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
 </Note>
 
-## See also
+每个答案都使用以下操作之一：
+
+* **`accept`**：提供与请求架构匹配的表单`content`，或在没有`content`的情况下确认 URL 交互的完成。
+* **`decline`**：拒绝提供所要求的信息。
+* **`cancel`**：表示用户取消了交互。
+
+适配器将答案转发给服务器，服务器决定工具调用如何完成。
+
+只有启发式才是这样回答的。相反，请求 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的服务器会引发错误，因为现代的无会话协议没有用于这些请求的实时反向通道。参见[Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots)。
+
+<Note>
+  中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
+</Note>
+
+## 另请参阅
 
 * [Content blocks](/oss/python/langchain/messages#standard-content-blocks)
+
 * [Tools](/oss/python/langchain/tools)
+
 * [Human-in-the-loop](/oss/python/langchain/human-in-the-loop)
+
 * [FastMCP calling tools](https://gofastmcp.com/clients/tools)
+
 * [FastMCP client elicitation](https://gofastmcp.com/clients/elicitation)
+
 * [FastMCP server elicitation](https://gofastmcp.com/servers/elicitation)
+
 * [MCP elicitation specification](https://modelcontextprotocol.io/specification/draft/client/elicitation)
+
 * [MCP tool annotations](https://modelcontextprotocol.io/specification/draft/server/tools)
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

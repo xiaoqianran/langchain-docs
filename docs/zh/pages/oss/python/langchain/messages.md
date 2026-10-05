@@ -12,7 +12,7 @@
 * <Icon icon="folder" /> [**Content**](#message-content) - 表示消息的实际内容（如文本、图像、音频、文档等）
 * <Icon icon="tag" /> [**Metadata**](#message-metadata) - 可选字段，例如响应信息、消息 ID 和令牌使用情况
 
-LangChain 提供了适用于所有模型提供者的标准消息类型，确保无论调用哪个模型，行为都保持一致。
+LangChain 提供了适用于所有模型提供程序的标准消息类型，确保无论调用哪个模型，行为都保持一致。
 
 ## 基本用法
 
@@ -342,7 +342,7 @@ response = model.invoke(messages)  # Model processes the result
   `artifact` 字段存储不会发送到模型但可以通过编程方式访问的补充数据。这对于存储原始结果、调试信息或下游处理数据非常有用，而不会扰乱模型的上下文。
 
   <Accordion title="Example: Using artifact for retrieval metadata">
-    例如，[retrieval](/oss/python/deepagents/retrieval)工具可以从文档中检索段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于渲染页面）。请参阅下面的示例：
+    例如，[retrieval](/oss/python/deepagents/retrieval)工具可以从文档中检索一段段落以供模型参考。当消息`content`包含模型将引用的文本时，`artifact`可以包含应用程序可以使用的文档标识符或其他元数据（例如，用于呈现页面）。请参阅下面的示例：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain.messages import ToolMessage
@@ -407,7 +407,7 @@ human_message = HumanMessage(content_blocks=[
 
 ### 标准内容块
 
-LangChain 为跨提供商的消息内容提供标准表示。消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T55⟧](/oss/python/integrations/chat/anthropic)或[⟦T56⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T59⟧](#content-block-reference)表示：
+LangChain 提供跨提供商工作的消息内容的标准表示形式。消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T55⟧](/oss/python/integrations/chat/anthropic)或[⟦T56⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T59⟧](#content-block-reference)表示：
 
 <Tabs>
   <Tab title="Anthropic">
@@ -998,7 +998,7 @@ restored = load(serialized)
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

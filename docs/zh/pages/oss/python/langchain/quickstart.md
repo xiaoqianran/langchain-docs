@@ -8,11 +8,74 @@
 
 本快速入门向您展示如何在短短几分钟内创建功能齐全的 AI 代理。
 
+<Prompt description="Build the LangChain quickstart agent" icon="sparkles">
+  按照 LangChain 快速入门，在此工作目录中构建基本的 LangChain 代理。
+
+  ## 第 1 步：阅读指南
+
+  检测该项目是否使用Python或TypeScript/JavaScript。获取并关注匹配的页面；将其视为包名称、模型字符串和代码的真实来源：
+
+  * Python：[https://docs.langchain.com/oss/python/langchain/quickstart.md](https://docs.langchain.com/oss/python/langchain/quickstart.md)
+  * 打字稿：[https://docs.langchain.com/oss/javascript/langchain/quickstart.md](https://docs.langchain.com/oss/javascript/langchain/quickstart.md)
+
+  ## 第二步：安装依赖项
+
+  使用本项目中已使用的包管理器安装指南中的包（`uv`、`pip`、`npm`、`pnpm`、`yarn` 或 `bun`）。当项目已经固定版本时，优先固定当前稳定版本而不是浮动 `latest` 标签。
+
+  ## 步骤 3：配置模型凭据
+
+  检查是否已设置受支持的提供商 API 密钥（例如 `OPENAI_API_KEY`、`GOOGLE_API_KEY` 或 `ANTHROPIC_API_KEY`）。如果未设置，请询问用户要使用哪个提供程序，然后停止并等待他们创建密钥并将其设置在 shell 或 `.env` 文件中。请勿发明、硬编码或提交 API 密钥。
+
+  ## 第四步：实现基本代理根据指南创建“构建基本代理”示例：`create_agent`、一个简单的工具（如`get_weather`）、一个简短的系统提示符和一个`invoke` 调用。使用用户选择的提供程序的型号字符串。打印最终消息内容（Python：`.content_blocks`），以便用户可以验证运行。
+
+  ## 步骤 5：可选 LangSmith 追踪
+
+  询问用户是否想要跟踪。如果是，请他们自行设置`LANGSMITH_TRACING=true`和`LANGSMITH_API_KEY`，然后重新运行。不要发明 LangSmith 密钥。
+
+  ## 规则
+
+  * 请关注本快速入门。不要添加不相关的框架、评估或生产部署。
+  * 如指南所示，从 `langchain.agents` / `langchain` 更喜欢 `create_agent`。
+  * 当秘密、提供商选择或项目约定不清楚时，询问而不是猜测。
+</Prompt>
+
 <Tip>
   **使用人工智能编码助手？**
 
-  * 安装 [LangChain Docs MCP server](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
+  * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
+
+    <Prompt description="Connect LangChain docs MCP servers" icon="plug">
+      将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+
+      要添加的服务器：
+
+      * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+      * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
+
+      * Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
+      * Codex CLI：`codex mcp add` 以及每个服务器 URL。
+      * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+      * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
+
+      不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
+    </Prompt>
   * 安装[LangChain Skills](https://github.com/langchain-ai/langchain-skills)以提高代理在LangChain生态系统任务上的性能。
+
+    <Prompt description="Install LangChain Skills" icon="puzzle">
+      为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
+
+      使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的代理技能安装程序：
+
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx skills add langchain-ai/langchain-skills --skill '*' --yes
+      ```
+
+      如果我要求全局安装，请使用：
+
+      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+      ```检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add`，然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
+    </Prompt>
 </Tip>
 
 ## 安装依赖项
@@ -21,17 +84,20 @@
 
 <CodeGroup>
   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv python pin 3.11
   uv init
   uv add langchain
   uv sync
   ```
 
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Install Python 3.11+ separately if needed.
   pip install -U langchain
   ```
 
   ```bash venv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  python3 -m venv .venv
+  # Install Python 3.11+ separately if needed.
+  python3.11 -m venv .venv
   source .venv/bin/activate
   # Windows: .venv\Scripts\activate
   pip install -U langchain
@@ -42,87 +108,155 @@
 
 从 [any supported model provider](/oss/python/integrations/providers/overview) 获取 API 密钥（例如 Google Gemini 或 OpenAI）。
 
-设置API密钥，例如：
+在 shell 或 `.env` 文件中设置 API 密钥，例如：
 
 <Tabs>
   <Tab title="OpenAI">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export OPENAI_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export OPENAI_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      OPENAI_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Google Gemini">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export GOOGLE_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export GOOGLE_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      GOOGLE_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Claude (Anthropic)">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export ANTHROPIC_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export ANTHROPIC_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ANTHROPIC_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="OpenRouter">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export OPENROUTER_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export OPENROUTER_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      OPENROUTER_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Fireworks">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export FIREWORKS_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export FIREWORKS_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      FIREWORKS_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Baseten">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export BASETEN_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export BASETEN_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      BASETEN_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Ollama">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Local: Ollama must be running (https://ollama.com)
-    # Cloud: Set your Ollama API key for hosted inference
-    export OLLAMA_API_KEY="your-api-key"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # Local: Ollama must be running (https://ollama.com)
+      # Cloud: Set your Ollama API key for hosted inference
+      export OLLAMA_API_KEY="your-api-key"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # Local: Ollama must be running (https://ollama.com)
+      # Cloud: Set your Ollama API key for hosted inference
+      OLLAMA_API_KEY=your-api-key
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Azure">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export AZURE_OPENAI_API_KEY="your-api-key"
-    export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
-    export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
-    ```
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export AZURE_OPENAI_API_KEY="your-api-key"
+      export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+      export AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment"
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      AZURE_OPENAI_API_KEY=your-api-key
+      AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+      AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="AWS Bedrock">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export AWS_ACCESS_KEY_ID="your-access-key"
-    export AWS_SECRET_ACCESS_KEY="your-secret-key"
-    export AWS_REGION="us-east-1"
-    ```
-  </Tab>
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export AWS_ACCESS_KEY_ID="your-access-key"
+      export AWS_SECRET_ACCESS_KEY="your-secret-key"
+      export AWS_REGION="us-east-1"
+      ```
 
-  <Tab title="HuggingFace">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export HUGGINGFACEHUB_API_TOKEN="hf_..."
-    ```
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      AWS_ACCESS_KEY_ID=your-access-key
+      AWS_SECRET_ACCESS_KEY=your-secret-key
+      AWS_REGION=us-east-1
+      ```
+    </CodeGroup>
+  </Tab><Tab title="HuggingFace">
+    <CodeGroup>
+      ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      export HUGGINGFACEHUB_API_TOKEN="hf_..."
+      ```
+
+      ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      HUGGINGFACEHUB_API_TOKEN=hf_...
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Other">
-    查看支持的 [chat model integrations](/oss/python/integrations/chat) 的完整列表。
+    查看受支持的 [chat model integrations](/oss/python/integrations/chat) 的完整列表。
   </Tab>
 </Tabs>
+
+要加载 `.env` 文件，请使用 [⟦T84⟧](https://pypi.org/project/python-dotenv/) (`load_dotenv()`)。
 
 <Tip>
   **使用LangSmith网关**
 
-  [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供者密钥的情况下访问模型。
+  [LangSmith Gateway](/langsmith/llm-gateway) 通过 LangSmith 路由大多数主要提供商。您可以使用 [bring your own provider keys](/langsmith/llm-gateway-quickstart#send-a-request) 或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 在没有提供程序密钥的情况下访问模型。
 </Tip>
 
-## 构建一个基本代理首先创建一个可以回答问题和调用工具的简单代理。本示例中的代理使用所选的语言模型、基本天气函数作为工具，以及指导其行为的简单提示：
+## 构建一个基本代理
+
+首先创建一个可以回答问题和调用工具的简单代理。本示例中的代理使用所选的语言模型、基本天气函数作为工具，以及指导其行为的简单提示：
 
 <CodeGroup>
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -326,15 +460,15 @@
 代理了解您正在询问旧金山市的天气，因此会使用提供的城市名称调用天气工具。
 
 <Tip>
-  您可以通过更改模型名称并设置适当的 API 密钥来使用[any supported model](/oss/python/integrations/providers/overview)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 跟踪代理内部发生的情况。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
-
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+  您可以通过更改模型名称并设置适当的 API 密钥来使用[any supported model](/oss/python/integrations/providers/overview)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 跟踪代理内部发生的情况。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 构建一个真实世界的代理
 
 在以下示例中，您将构建一个可以回答有关文本文件的问题的研究代理。
-在此过程中，您将探索以下概念：1. **详细的系统提示**，更好的座席行为
+在此过程中，您将探索以下概念：
+
+1. **详细的系统提示**，更好的座席行为
 2. **创建与外部数据集成的工具**
 3.**模型配置**以实现一致的响应
 4.**对话记忆**用于类似聊天的交互
@@ -383,11 +517,9 @@
             return f"Fetch failed: {e}"
         text = raw.decode("utf-8", errors="replace")
         return text
-    ```
-
-    <Tip>
+    ```<Tip>
       工具应该有详细的文档记录：它们的名称、描述和参数名称成为模型提示的一部分。
-      LangChain 的 [⟦T43⟧ decorator](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 添加元数据并使用 `ToolRuntime` 参数启用运行时注入。
+      LangChain 的 [⟦T86⟧ decorator](https://reference.langchain.com/python/langchain-core/tools/convert/tool) 添加元数据并使用 `ToolRuntime` 参数启用运行时注入。
       了解更多信息[tools guide](/oss/python/langchain/tools)。
     </Tip>
   </Step>
@@ -512,7 +644,9 @@
           max_tokens=25000,
       )
       ```
-    </CodeGroup>根据选择的模型和提供程序，初始化参数可能会有所不同；有关详细信息，请参阅其参考页。
+    </CodeGroup>
+
+    根据选择的模型和提供程序，初始化参数可能会有所不同；有关详细信息，请参阅其参考页。
   </Step>
 
   <Step title="Add memory">
@@ -532,9 +666,7 @@
   </Step>
 
   <Step title="Create and run the agent">
-    现在将您的代理与所有组件组装起来并运行它。
-
-    有两种不同的框架用于创建代理：LangChain代理和深度代理。
+    现在将您的代理与所有组件组装起来并运行它。有两种不同的框架用于创建代理：LangChain代理和深度代理。
     LangChain 和深度代理都可以为您提供对工具、内存等的细粒度控制。
     两者之间的主要区别在于，深度代理已经内置了一系列常用的有用功能，例如规划、文件系统工具和子代理。
 
@@ -550,10 +682,10 @@
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install -U deepagents
       ```
-    </CodeGroup><Warning>
-      由于代码使用《了不起的盖茨比》的整个文本调用模型，因此它使用了大量的标记。
+    </CodeGroup>
 
-      您可以在下一步中查看示例输出。
+    <Warning>
+      此示例将《了不起的盖茨比》的整个文本发送给模型，可能需要一两分钟的时间来响应。您可以在下一步中查看示例输出。
     </Warning>
 
     让我们尝试一下：
@@ -589,18 +721,23 @@
     your available tools and reasoning, do not fabricate numbers: use `null` for that field and spell out
     the limitation in `how_you_computed_counts`. If you encounter any errors please report what the error was and what the error message was."""
 
+    print("Running create_agent...", flush=True)
     agent_result = agent.invoke(
         {"messages": [{"role": "user", "content": content}]},
         config={"configurable": {"thread_id": "great-gatsby-lc"}},
     )
+    print("Running create_deep_agent...", flush=True)
     deep_agent_result = deep_agent.invoke(
         {"messages": [{"role": "user", "content": content}]},
         config={"configurable": {"thread_id": "great-gatsby-da"}},
     )
+    print("\ncreate_agent:")
     print(agent_result["messages"][-1].content_blocks)
-    print("\n")
+    print("\ncreate_deep_agent:")
     print(deep_agent_result["messages"][-1].content_blocks)
     ```
+
+    以下扩展器将所有内容都集中在一个可运行脚本中：
 
     <Expandable title="Full example code">
       ```python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -676,16 +813,19 @@
       your available tools and reasoning, do not fabricate numbers: use `null` for that field and spell out
       the limitation in `how_you_computed_counts`. If you encounter any errors please report what the error was and what the error message was."""
 
+      print("Running create_agent...", flush=True)
       agent_result = agent.invoke(
           {"messages": [{"role": "user", "content": content}]},
           config={"configurable": {"thread_id": "great-gatsby-lc"}},
       )
+      print("Running create_deep_agent...", flush=True)
       deep_agent_result = deep_agent.invoke(
           {"messages": [{"role": "user", "content": content}]},
           config={"configurable": {"thread_id": "great-gatsby-da"}},
       )
+      print("\ncreate_agent:")
       print(agent_result["messages"][-1].content_blocks)
-      print("\n")
+      print("\ncreate_deep_agent:")
       print(deep_agent_result["messages"][-1].content_blocks)
       ```
     </Expandable>
@@ -729,16 +869,16 @@
         When fetching the document from the URL, the file was too large for the standard output and was automatically saved to the local filesystem by the system (`/large_tool_results/x246ax2x`). I then used the `grep` tool to search the saved file for the exact literal substrings `Gatsby` and `Daisy`. The `grep` tool returned every matching line along with its 1-based line number. I manually counted the exact number of lines returned for `Gatsby` (which totaled 258) and identified the first line number returned for `Daisy` (which was 181). I also verified there were no uppercase variations (`GATSBY` or `DAISY`) that would have been missed. No errors were encountered during this process.
         ```
       </Tab>
-    </Tabs>
-
-    如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
+    </Tabs>如果您查看两个选项卡上的输出，您会注意到 LangChain 代理提供了答案，但它们是估计值。代理缺乏回答这个问题的工具。您还可能会收到提示太长的错误。
 
     另一方面，深度代理可以：
 
-    1. **规划其方法**，使用内置的[⟦T46⟧](/oss/python/deepagents/harness#task-planning)工具来分解研究任务。
+    1. **规划其方法**，使用内置的[⟦T89⟧](/oss/python/deepagents/harness#task-planning)工具来分解研究任务。
     2. **通过调用`fetch_text_from_url`工具收集信息来加载文件**。
-    3. **使用文件系统工具（[⟦T48⟧](/oss/python/deepagents/harness#virtual-filesystem-access) 和 [⟦T49⟧](/oss/python/deepagents/harness#virtual-filesystem-access)）管理上下文**。
-    4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。对于LangChain代理，您必须实现更多功能才能获得类似的服务级别，并且可以根据需要自定义它们。
+    3. **使用文件系统工具（[⟦T91⟧](/oss/python/deepagents/harness#virtual-filesystem-access) 和 [⟦T92⟧](/oss/python/deepagents/harness#virtual-filesystem-access)）管理上下文**。
+    4. **根据需要生成子代理**，将复杂的子任务委托给专门的子代理。
+
+    对于 LangChain 代理，您必须实现更多功能才能获得类似的服务级别，并且可以根据需要自定义它们。
   </Step>
 </Steps>
 
@@ -751,14 +891,12 @@
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
-```
-
-设置完成后，再次运行脚本，然后检查代理调用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 期间发生的情况。
+```设置完成后，再次运行脚本，然后检查代理调用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-quickstart) 期间发生的情况。
 
 <Tip>
   要了解有关使用 LangSmith 跟踪代理的更多信息，请参阅 [LangSmith documentation](/langsmith/trace-with-langchain)。
 
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 后续步骤
@@ -772,14 +910,16 @@ export LANGSMITH_API_KEY="..."
 * **在交互过程中保持对话状态**
 * **计划、研究和综合**（仅限深度代理）
 
-继续：* **LangChain代理商**：[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)、[deploy to production](/oss/python/langgraph/deploy)
+继续：
+
+* **LangChain代理**：[Add and manage memory](/oss/python/langgraph/add-memory#manage-short-term-memory)、[deploy to production](/oss/python/langgraph/deploy)
 * **Deep Agents**：[Customization options](/oss/python/deepagents/customization)、[persistent memory](/oss/python/deepagents/memory)、[deploy to production](/oss/python/langgraph/deploy)
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

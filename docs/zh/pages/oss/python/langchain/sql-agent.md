@@ -4,7 +4,7 @@
 
 ## 概述
 
-在本教程中，您将学习如何使用 LangChain [agents](/oss/python/langchain/agents) 构建一个可以回答有关 SQL 数据库问题的代理。
+在本教程中，您将学习如何构建一个代理，该代理可以使用 LangChain [agents](/oss/python/langchain/agents) 回答有关 SQL 数据库的问题。
 
 在较高层面上，代理人将：
 
@@ -26,7 +26,7 @@
 以下教程涵盖以下概念：
 
 * [Tools](/oss/python/langchain/tools) 用于从 SQL 数据库读取
-* LangChain[agents](/oss/python/langchain/agents)
+*LangChain[agents](/oss/python/langchain/agents)
 * [Human-in-the-loop](/oss/python/langchain/human-in-the-loop)工艺
 
 ## 设置
@@ -187,7 +187,7 @@
 
           os.environ["GOOGLE_API_KEY"] = "..."
 
-          model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+          model = init_chat_model("google_genai:gemini-3.7-flash")
           ```
 
           ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -196,7 +196,7 @@
 
           os.environ["GOOGLE_API_KEY"] = "..."
 
-          model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+          model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
           ```
         </CodeGroup>
       </Tab>
@@ -315,7 +315,7 @@
       </Tab>
     </Tabs>
 
-    以下示例中显示的输出使用 OpenAI。
+    以下示例中显示的输出使用OpenAI。
   </Step>
 
   <Step title="Configure the database">
@@ -847,7 +847,7 @@
   <Step title="Implement human-in-the-loop review">
     在执行代理的 SQL 查询之前检查是否存在任何意外操作或效率低下，这可能是谨慎的做法。
 
-    LangChain代理支持内置[human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop)，以增加对代理工具调用的监督。让我们将代理配置为在调用 `sql_db_query` 工具时暂停以供人工审核：
+    LangChain 代理支持内置 [human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop)，以添加对代理工具调用的监督。让我们将代理配置为在调用 `sql_db_query` 工具时暂停以供人工审核：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain.agents import create_agent
@@ -905,7 +905,7 @@
     Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
     ```
 
-    我们可以使用 [Command](/oss/python/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 恢复执行，在本例中接受查询：
+    我们可以恢复执行，在本例中使用 [Command](/oss/python/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 接受查询：
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph.types import Command # [!code highlight]
@@ -956,7 +956,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

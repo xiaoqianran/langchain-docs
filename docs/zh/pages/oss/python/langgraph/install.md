@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Install LangGraph | https://docs.langchain.com/oss/python/langgraph/install -->
 
-# 安装 LangGraph
+# 安装LangGraph
 
-要安装基础 LangGraph 包：
+要安装基本 LangGraph 包：
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -16,12 +16,12 @@
   ```
 </CodeGroup>
 
-要使用 LangGraph，您通常需要访问 LLM 并定义工具。
+要使用LangGraph，您通常需要访问法学硕士并定义工具。
 您可以按照您认为合适的方式执行此操作。
 
 实现此目的的一种方法（我们将在文档中使用）是使用 [LangChain](/oss/python/langchain/overview)。
 
-安装 LangChain：
+安装LangChain：
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -43,7 +43,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

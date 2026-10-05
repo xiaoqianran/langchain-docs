@@ -38,14 +38,14 @@
 使用框架的配套队列助手读取队列状态：
 
 |物业 |类型 |描述 |
-| ------------------ | ------------------------------------------- | ---------------------------------------------------- |
+| - | - | - |
 | `queue.entries` | `SubmissionQueueEntry[]` |所有待处理队列条目的数组 |
 | `queue.size` | `number` |当前队列中的条目数 |
 | `queue.cancel(id)` | `(id: string) => Promise<void>` |按 ID 取消特定排队条目 |
-| `queue.clear()` | `() => Promise<void>` |取消所有排队条目 |每个[SubmissionQueueEntry](https://reference.langchain.com/javascript/langchain-react/SubmissionQueueEntry)对象包含：
+| `queue.clear()` | `() => Promise<void>` |取消所有排队条目 |
 
-|领域 |类型 |描述 |
-| ----------- | -------- | -------------------------------------------------------------------- |
+每个[SubmissionQueueEntry](https://reference.langchain.com/javascript/langchain-react/SubmissionQueueEntry)对象包含：|领域 |类型 |描述 |
+| - | - | - |
 | `id` | `string` |此队列条目的唯一标识符 |
 | `values` | `object` |提交的输入值（包括消息）|
 | `options` | `object` |提交时通过的任何其他选项 |
@@ -180,7 +180,9 @@
   ```
 </CodeGroup>
 
-## 显示队列构建一个 `QueueList` 组件，用取消按钮显示每条待处理消息。这使用户可以了解正在等待的内容，并能够删除不再需要的项目。
+## 显示队列
+
+构建一个 `QueueList` 组件，用取消按钮显示每条待处理消息。这使用户可以了解正在等待的内容，并能够删除不再需要的项目。
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function QueueList({ entries, queue }) {
@@ -212,9 +214,7 @@ function QueueList({ entries, queue }) {
     </div>
   );
 }
-```
-
-<Tip>
+```<Tip>
   将每条排队消息的前几个字符显示为预览，以便用户可以快速识别要取消的项目，而无需阅读完整消息。
 </Tip>
 
@@ -244,7 +244,9 @@ await queue.clear();
   队列没有任何影响。使用`stream.stop()`中断当前运行。
 </Note>
 
-## 使用 `onCreated` 链接后续提交创建新运行时会触发 `onCreated` 回调，为您提供一个以编程方式提交后续消息的钩子。这对于构建多步骤工作流程非常有用，其中下一个问题取决于之前提交的内容是否被接受。
+## 使用 `onCreated` 链接后续提交
+
+创建新运行时会触发 `onCreated` 回调，为您提供一个以编程方式提交后续消息的钩子。这对于构建多步骤工作流程非常有用，其中下一个问题取决于之前提交的内容是否被接受。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream.submit(
@@ -264,9 +266,7 @@ stream.submit(
 这种模式自然会排满队列。第一条消息开始处理
 立即，后续的在其后面排队。
 
-## 启动一个新线程
-
-当用户想要开始新的对话时，更新反应式 `threadId`
+## 启动一个新线程当用户想要开始新的对话时，更新反应式 `threadId`
 您传递到流中。传递`null`清除当前线程绑定；
 下一次提交将创建一个新线程。
 
@@ -322,7 +322,9 @@ stream.submit(
   ```
 </CodeGroup>
 
-## 最佳实践* **限制队列大小**：虽然客户端对队列大小没有硬性限制，
+## 最佳实践
+
+* **限制队列大小**：虽然客户端对队列大小没有硬性限制，
   请注意，过大的队列会降低用户体验。考虑
   当队列超过合理阈值（例如 10
   项）。
@@ -330,16 +332,14 @@ stream.submit(
 * **保留输入焦点**：提交后保持输入字段焦点，以便用户可以立即键入下一条消息。
 * **动画过渡**：当项目开始处理时，将项目从队列面板平滑地移动到消息列表中。
 * **优雅地处理错误**：如果排队的消息失败，则在不阻止后续队列条目的情况下显示错误。
-* **消除快速提交**：对于自动或编程提交，请在消息之间添加一个小的延迟，以避免服务器不堪重负。
+* **消除快速提交**：对于自动或编程提交，请在消息之间添加一点延迟，以避免服务器不堪重负。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
-  </Callout>
-
-  <Callout icon="edit">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/message-queues.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

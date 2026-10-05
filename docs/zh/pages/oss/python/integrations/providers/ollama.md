@@ -6,7 +6,7 @@
 
 使用 LangChain Python 与 Ollama 集成。
 
-本页面涵盖了 LangChain 与 [Ollama](https://ollama.com/) 的所有集成。
+本页面涵盖了所有 LangChain 与 [Ollama](https://ollama.com/) 的集成。
 
 Ollama 允许您在本地运行开源模型（如[⟦T0⟧](https://ollama.com/library/gpt-oss)）。
 
@@ -36,7 +36,7 @@ Ollama 允许您在本地运行开源模型（如[⟦T0⟧](https://ollama.com/l
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

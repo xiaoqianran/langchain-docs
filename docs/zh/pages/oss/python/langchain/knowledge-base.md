@@ -4,7 +4,7 @@
 
 ## 概述
 
-使用 LangChain [embeddings](/oss/python/integrations/embeddings) 和 [vector stores](/oss/python/integrations/vectorstores) 在 PDF 上构建语义搜索引擎。使用它来检索类似于查询的段落，然后将检索器插入[retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)或其他LLM工作流程。
+使用 LangChain [embeddings](/oss/python/integrations/embeddings) 和 [vector stores](/oss/python/integrations/vectorstores) 在 PDF 上构建语义搜索引擎。使用它检索类似于查询的段落，然后将检索器插入[retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)或其他LLM工作流程。
 
 本教程涵盖：
 
@@ -14,7 +14,7 @@
 4. 对向量存储中的块进行索引并通过相似性进行查询。
 5. 将商店包裹成猎犬。
 
-该指南还包括在搜索引擎之上的最小 RAG 实现。
+该指南还包括搜索引擎之上的最小 RAG 实现。
 
 ### 概念
 
@@ -47,9 +47,9 @@
 
 欲了解更多详情，请参阅[Installation guide](/oss/python/langchain/install)。
 
-### 配置 LangSmith
+### 配置LangSmith
 
-您使用 LangChain 构建的许多应用程序将包含多个步骤以及多次调用 LLM 调用。
+您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
 最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
@@ -70,7 +70,7 @@ os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
 
 ## 创建文档
 
-LangChain 为文本单元和相关元数据实现了[⟦T78⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 抽象。它具有三个属性：
+LangChain 实现了文本单元和相关元数据的 [⟦T78⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 抽象。它具有三个属性：
 
 * `page_content`：代表内容的字符串。
 * `metadata`：包含任意元数据的字典。
@@ -99,7 +99,7 @@ documents = [
 
 矢量搜索存储与文本关联的数字向量。将查询嵌入为相同维度的向量，然后使用相似性度量（例如余弦相似性）来查找相关文本。
 
-LangChain支持[many providers](/oss/python/integrations/embeddings/)的嵌入。选择一个模型来指定如何将文本转换为数字向量：
+LangChain 支持[many providers](/oss/python/integrations/embeddings/) 的嵌入。选择一个模型来指定如何将文本转换为数字向量：
 
 <Tabs>
   <Tab title="OpenAI">
@@ -160,7 +160,7 @@ LangChain支持[many providers](/oss/python/integrations/embeddings/)的嵌入�
     ```
   </Tab>
 
-  <Tab title="Google Vertex">
+  <Tab title="Gemini Enterprise Agent Platform">
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-google-vertexai
     ```
@@ -175,14 +175,14 @@ LangChain支持[many providers](/oss/python/integrations/embeddings/)的嵌入�
   <Tab title="AWS">
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-aws
-    ``````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_aws import BedrockEmbeddings
 
     embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
     ```
-  </Tab>
-
-  <Tab title="HuggingFace">
+  </Tab><Tab title="HuggingFace">
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-huggingface
     ```
@@ -371,9 +371,9 @@ Generated vectors of length 1536
 
 ## 选择一个向量存储
 
-LangChain [⟦T84⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象将文本和 [⟦T85⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象添加到存储中，并使用相似性度量来查询它们。它们通常使用 [embedding](/oss/python/integrations/embeddings) 模型进行初始化，将文本转换为数字向量。
+LangChain [⟦T84⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象将文本和 [⟦T85⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象添加到存储中并使用相似性指标查询它们。它们通常使用 [embedding](/oss/python/integrations/embeddings) 模型进行初始化，将文本转换为数字向量。
 
-LangChain包含[integrations](/oss/python/integrations/vectorstores)以及多种向量存储技术。有些是托管的并且需要凭据，有些在单独的基础设施（本地或第三方）中运行，而另一些则在内存中运行以实现轻量级工作负载。选择矢量存储：
+LangChain 包括[integrations](/oss/python/integrations/vectorstores) 以及许多矢量存储技术。有些是托管的并且需要凭据，有些在单独的基础设施（本地或第三方）中运行，而另一些则在内存中运行以实现轻量级工作负载。选择矢量存储：
 
 <Tabs>
   <Tab title="In-memory">
@@ -467,12 +467,12 @@ LangChain包含[integrations](/oss/python/integrations/vectorstores)以及多种
         index_params={"index_type": "FLAT", "metric_type": "L2"},
     )
     ```
-  </Tab><Tab title="MongoDB">
+  </Tab>
+
+  <Tab title="MongoDB">
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-mongodb
-    ```
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ``````python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_mongodb import MongoDBAtlasVectorSearch
 
     vector_store = MongoDBAtlasVectorSearch(
@@ -568,6 +568,8 @@ LangChain包含[integrations](/oss/python/integrations/vectorstores)以及多种
 
 从 PDF 加载内容，然后在建立索引之前将其分割成更小的块。此示例使用[a sample Nike 10-K filing from 2023](https://github.com/langchain-ai/langchain/blob/v0.3/docs/docs/example_data/nke-10k-2023.pdf)。
 
+对于专用 PDF 文档加载器（包括 `PyPDFLoader` 和合作伙伴包），请参阅 [PDF document loaders](/oss/python/integrations/document_loaders#pdfs)。
+
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import pypdf
 from langchain_core.documents import Document
@@ -594,7 +596,7 @@ print(len(docs))
 107
 ```
 
-页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T86⟧](https://reference.langchain.com/python/langchain-text-splitters/character/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
+页面通常过于粗糙而无法检索。进一步拆分页面，以便相关段落不会被周围的文本冲淡。 [⟦T87⟧](https://reference.langchain.com/python/langchain-text-splitters/character/RecursiveCharacterTextSplitter) 在公共分隔符（例如换行符）上递归分割，直到每个块达到目标大小。这是针对一般文本用例推荐的文本分割器。
 
 设置 `add_start_index=True` ，以便每个拆分都为其在原始文档中的字符偏移量保留一个 `start_index` 元数据字段。
 
@@ -625,12 +627,12 @@ ids = vector_store.add_documents(documents=all_splits)
 
 ## 查询向量存储
 
-将文档添加到[⟦T89⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)后，即可查询：* 同步和异步
+将文档添加到[⟦T90⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)后，即可查询：* 同步和异步
 * 按字符串查询和按向量查询
 * 有和没有相似度分数
 * 通过相似性和[maximum marginal relevance](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore/max_marginal_relevance_search)（平衡相似性和多样性）
 
-这些方法通常返回 [⟦T90⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象的列表。
+这些方法通常返回 [⟦T91⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象的列表。
 
 ### 按字符串搜索
 
@@ -739,7 +741,7 @@ This was partially offset by:' metadata={'page': 36, 'source': '../example_data/
 
 ## 使用检索器
 
-LangChain [⟦T91⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象不会子类[⟦T92⟧](https://reference.langchain.com/python/langchain-core/runnables/base/Runnable)。 [Retrievers](https://reference.langchain.com/python/langchain-core/retrievers/BaseRetriever) 是 Runnables，因此它们支持同步和异步 `invoke` 和 `batch` 等标准方法。
+LangChain [⟦T92⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore) 对象不会子类化 [⟦T93⟧](https://reference.langchain.com/python/langchain-core/runnables/base/Runnable)。 [Retrievers](https://reference.langchain.com/python/langchain-core/retrievers/BaseRetriever) 是 Runnables，因此它们支持同步和异步 `invoke` 和 `batch` 等标准方法。
 
 您还可以从向量存储构建检索器，并且检索器还可以包装非向量源（例如外部 API）。
 
@@ -768,7 +770,7 @@ retriever.batch(
 ```text wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [[Document(metadata={'page': 4, 'source': '../example_data/nke-10k-2023.pdf', 'start_index': 3125}, page_content='direct to consumer operations sell products through the following number of retail stores in the United States:\nU.S. RETAIL STORES NUMBER\nNIKE Brand factory stores 213 \nNIKE Brand in-line stores (including employee-only stores) 74 \nConverse stores (including factory stores) 82 \nTOTAL 369 \nIn the United States, NIKE has eight significant distribution centers. Refer to Item 2. Properties for further information.\n2023 FORM 10-K 2')],
  [Document(metadata={'page': 3, 'source': '../example_data/nke-10k-2023.pdf', 'start_index': 0}, page_content='Table of Contents\nPART I\nITEM 1. BUSINESS\nGENERAL\nNIKE, Inc. was incorporated in 1967 under the laws of the State of Oregon. As used in this Annual Report on Form 10-K (this "Annual Report"), the terms "we," "us," "our,"\n"NIKE" and the "Company" refer to NIKE, Inc. and its predecessors, subsidiaries and affiliates, collectively, unless the context indicates otherwise.\nOur principal business activity is the design, development and worldwide marketing and selling of athletic footwear, apparel, equipment, accessories and services. NIKE is\nthe largest seller of athletic footwear and apparel in the world. We sell our products through NIKE Direct operations, which are comprised of both NIKE-owned retail stores\nand sales through our digital platforms (also referred to as "NIKE Brand Digital"), to retail accounts and to a mix of independent distributors, licensees and sales')]]
-```向量存储实现了返回 [⟦T98⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
+```向量存储实现了返回 [⟦T99⟧](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStoreRetriever) 的 `as_retriever` 方法。这些检索器公开 `search_type` 和 `search_kwargs` 来选择和参数化底层存储方法。复制上面的例子：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 retriever = vector_store.as_retriever(
@@ -791,7 +793,7 @@ retriever.batch(
 
 `VectorStoreRetriever` 支持`"similarity"`（默认）、`"mmr"`（最大边缘相关性）和`"similarity_score_threshold"` 的搜索类型。使用最后一个选项按相似度分数过滤文档。
 
-您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)，它在 LLM 提示中将问题与检索到的上下文结合起来。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/python/deepagents/rag) 教程。
+您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)，它将问题与检索到的上下文结合到 LLM 提示中。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/python/deepagents/rag) 教程。
 
 ## 后续步骤
 
@@ -812,10 +814,10 @@ retriever.batch(
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

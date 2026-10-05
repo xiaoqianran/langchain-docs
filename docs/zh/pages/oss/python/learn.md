@@ -12,7 +12,7 @@
 
 以下是按框架组织的常见用例教程。
 
-### 深层特工
+### Deep Agents
 
 [Deep Agents](/oss/python/deepagents/overview) 包括用于管理上下文、虚拟文件系统和其他常见代理要求的内置功能。
 
@@ -24,7 +24,7 @@
   构建具有子代理委托和战略反思的多步骤网络研究代理。
 </Card>
 
-###LangChain
+### LangChain
 
 [LangChain](/oss/python/langchain/overview) [agent](/oss/python/langchain/agents) 实现使简单用例变得容易上手。
 
@@ -44,10 +44,10 @@
   建立一个你能说、能听的代理。
 </Card>
 
-### 郎图LangChain的[agent](/oss/python/langchain/agents)实现使用[LangGraph](/oss/python/langgraph/overview)原语。
-如果需要更深入的定制，可以直接在 LangGraph 中实现代理。
+### LangGraph
 
-<Card title="Custom RAG Agent" icon="user-search" href="/oss/python/langgraph/agentic-rag">
+LangChain 的 [agent](/oss/python/langchain/agents) 实现使用 [LangGraph](/oss/python/langgraph/overview) 原语。
+如果需要更深入的定制，可以直接在LangGraph中实现代理。<Card title="Custom RAG Agent" icon="user-search" href="/oss/python/langgraph/agentic-rag">
   使用 LangGraph 原语构建 RAG 代理以进行细粒度控制。
 </Card>
 
@@ -57,7 +57,7 @@
 
 ### 多代理
 
-这些教程演示了[multi-agent patterns](/oss/python/langchain/multi-agent)，将 LangChain 代理与 LangGraph 工作流程混合在一起。
+这些教程演示了 [multi-agent patterns](/oss/python/langchain/multi-agent)，将 LangChain 代理与 LangGraph 工作流程混合。
 
 <Card title="Subagents: Personal assistant" icon="sitemap" href="/oss/python/langchain/multi-agent/subagents-personal-assistant">
   建立一个私人助理，将权力委托给子代理。
@@ -77,7 +77,7 @@
 
 ## 概念概述
 
-这些指南解释了 LangChain 和 LangGraph 的核心概念和 API。
+这些指南解释了LangChain和LangGraph的核心概念和API。
 
 <Card title="Memory" icon="brain" href="/oss/python/concepts/memory">
   了解线程内和线程间交互的持久性。
@@ -89,7 +89,9 @@
 
 <Card title="Graph API" icon="topology-star" href="/oss/python/langgraph/graph-api">
   探索 LangGraph 的声明式图形构建 API。
-</Card><Card title="Functional API" icon="code" href="/oss/python/langgraph/functional-api">
+</Card>
+
+<Card title="Functional API" icon="code" href="/oss/python/langgraph/functional-api">
   将代理构建为单一功能。
 </Card>
 
@@ -97,9 +99,7 @@
 
 <Card title="LangChain Academy" icon="school" href="https://academy.langchain.com/">
   提升您的 LangChain 技能的课程和练习。
-</Card>
-
-<Card title="Case Studies" icon="presentation" href="/oss/python/langgraph/case-studies">
+</Card><Card title="Case Studies" icon="presentation" href="/oss/python/langgraph/case-studies">
   了解团队如何在生产中使用 LangChain 和 LangGraph。
 </Card>
 
@@ -107,7 +107,7 @@
 
 <div>
   <Callout icon="terminal-2">
-    通过 MCP 向 Claude、VSCode 等发送[Connect these docs](/use-these-docs) 以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
