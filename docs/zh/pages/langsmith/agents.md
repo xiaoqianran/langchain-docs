@@ -9,7 +9,7 @@ LangSmith 中的代理是什么，工作区如何组织其代理，环境如何�
 *代理*是一种人工智能系统，它使用工具、技能和子代理来端到端地完成任务。在LangSmith中，代理也是工作空间组织的单位。命名一次，LangSmith 会记录该代理在该名称下执行的操作，分为四个[environments](/langsmith/agent-environments)：生产、暂存、开发和本地。跟踪、警报、评估器和预构建的仪表板均属于一个代理的一个环境。 [dataset](/langsmith/evaluation-concepts#datasets) 和自定义仪表板是例外。数据集附加到一个或多个代理，但不附加到任何环境，而自定义仪表板附加到代理而不是环境。
 
 每个跟踪都携带其代理和该代理的环境之一，因此生成跟踪的内容及其运行位置会在到达时记录下来。然后，LangSmith 可以根据该上下文采取行动：警报监视生产并保持本地运行的安静状态，每个环境都有自己的预构建仪表板，[Insights](/langsmith/insights) 报告涵盖您运行它的环境的流量。<Note>
-  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 支持组织进行更改，并且适用于此后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 为组织启用基于代理的工作区，并且更改适用于之后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 </Note>
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -70,7 +70,7 @@ flowchart LR
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

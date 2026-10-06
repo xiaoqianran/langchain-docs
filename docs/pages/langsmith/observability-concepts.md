@@ -56,12 +56,12 @@ In LangSmith, a trajectory is a projection over the traces in a thread. It conta
 
 ### Trace containers
 
-How LangSmith groups traces depends on which information architecture your workspace uses. The control at the top left tells you which one you are on.
+How LangSmith groups traces depends on which information architecture your workspace uses.
 
 #### Agents and environments
 
 <Note>
-  **Agent-based workspaces ([beta](/langsmith/release-stages)).** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, see [Tracing projects](/langsmith/observability-concepts#tracing-projects).
+  **Agent-based workspaces ([beta](/langsmith/release-stages)).** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, your workspace is project-based. Skip this section and read [Tracing projects](/langsmith/observability-concepts#tracing-projects).
 </Note>
 
 An *agent* collects the traces of a single application, and it is the unit LangSmith organizes everything else around. An agent's traces divide across *environments* drawn from a fixed set of four: Production, Staging, Development, and Local. Traces land in one environment of one agent, so a query about production behavior never has to exclude test traffic by hand.

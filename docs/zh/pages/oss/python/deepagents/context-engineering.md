@@ -20,7 +20,7 @@
 
 ## 上下文类型|上下文类型 |你控制什么 |范围 |
 | - | - | - |
-| **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能） |静态，每次运行均应用 |
+| **[Input context](#input-context)** |代理启动时的提示包含哪些内容（系统提示、内存、技能）|静态，每次运行均应用 |
 | **[Runtime context](#runtime-context)** |调用时传递的静态配置（用户元数据、API 密钥、连接）|每次运行，传播到子代理 |
 | **[Context compression](#context-compression)** |内置卸载和摘要，可将上下文保持在窗口限制内 |当接近极限时自动 |
 | **[Context isolation](#context-isolation-with-subagents)** |使用子代理隔离繁重的工作，仅将结果返回给主代理 |每个子代理，当被委托时 |
@@ -265,7 +265,7 @@
 
 **内置工具**：添加利用功能（文件系统、子代理和可选规划）的中间件会自动将特定于工具的指令附加到系统提示符中，从而创建解释如何有效使用这些工具的工具提示。完整列表请参见[Customization](/oss/python/deepagents/customization#middleware)：
 
-* 文件系统提示：`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`、`grep`（以及使用沙箱后端时的`execute`）的文档* 子代理提示：使用`task`工具委派工作的指南
+* 文件系统提示：`ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`、`grep`（以及使用沙箱后端时的`execute`）的文档* 子代理提示：使用 `task` 工具委派工作的指南
 
 * 人机交互提示：用于在指定工具调用时暂停（当设置`interrupt_on`时）
 
@@ -304,8 +304,10 @@ def search_orders(
 
   未使用的内置工具仍然每次都会发送其完整模式。使用 `excluded_tools` 删除代理不应调用的工具（例如只读代理上的 `write_file` 或 `execute`）。这会缩小整个运行的基线提示大小。这是配置，而不是[Context compression](#context-compression)中的自动卸载或汇总。
 
-  参见[Harness profiles](/oss/python/deepagents/profiles#harness-profiles)和[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
-</Tip>有关内置功能，请参阅[Overview](/oss/python/deepagents/overview#execution-environment)；有关直接传递工具的信息，请参阅[Customization](/oss/python/deepagents/customization#tools)。
+  参见[Harness profiles](/oss/python/deepagents/profiles#harness-profiles)和[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。如果工具与技能相关，您可以将该工具的架构保留在提示之外，直到技能需要为止。有关更多信息，请参阅[Add tools to skills](/oss/python/deepagents/skills#add-tools-to-skills)。
+</Tip>
+
+有关内置功能，请参阅[Overview](/oss/python/deepagents/overview#execution-environment)；有关直接传递工具的信息，请参阅[Customization](/oss/python/deepagents/customization#tools)。
 
 ### 完成系统提示
 
@@ -320,9 +322,9 @@ def search_orders(
 7、用户提供的中间件提示（如果提供了自定义中间件）
 8. 人机交互提示（设置`interrupt_on`时）
 
-## 运行时上下文
+## 运行时上下文运行时上下文是您调用代理时传递的每次运行配置。它不会自动包含在模型提示中；仅当工具、中间件或其他逻辑读取它并将其添加到消息或系统提示中时，模型才会看到它。使用用户元数据（ID、首选项、角色）、API 密钥、数据库连接、功能标志或工具和工具所需的其他值的运行时上下文。
 
-运行时上下文是您调用代理时传递的每次运行配置。它不会自动包含在模型提示中；仅当工具、中间件或其他逻辑读取它并将其添加到消息或系统提示中时，模型才会看到它。使用用户元数据（ID、首选项、角色）、API 密钥、数据库连接、功能标志或工具和工具所需的其他值的运行时上下文。使用 `context_schema` 定义该数据的形状：使用 `dataclasses.dataclass` 或 `typing.TypedDict` 类。将带有 **`context`** 参数的值传递给 `invoke` / `ainvoke`。请参阅 [Runtime](/oss/python/langchain/runtime) 和 [LangGraph runtime context](/oss/python/langgraph/graph-api#runtime-context) 了解完整详细信息。
+使用 `context_schema` 定义该数据的形状：使用 `dataclasses.dataclass` 或 `typing.TypedDict` 类。将带有 **`context`** 参数的值传递给 `invoke` / `ainvoke`。请参阅 [Runtime](/oss/python/langchain/runtime) 和 [LangGraph runtime context](/oss/python/langgraph/graph-api#runtime-context) 了解完整详细信息。
 
 在工具内部，从注入的[ToolRuntime](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)读取上下文：
 
@@ -989,7 +991,7 @@ Deep Agents 使用 [built-in filesystem tools](/oss/python/deepagents/overview#v
 * 主代理有一个`task`工具来委派工作
 * 子代理以自己的新上下文运行
 * 子代理自主执行直至完成
-* 子代理向主代理返回一份最终报告
+* 子代理返回一份最终报告给主代理
 * 主要代理的上下文保持干净
 
 **最佳实践：**
@@ -1178,7 +1180,7 @@ Deep Agents 使用 [built-in filesystem tools](/oss/python/deepagents/overview#v
 ## 最佳实践1. **从正确的输入上下文开始**：为始终相关的约定保持最小的内存；使用专注技能来实现特定任务的能力。
 2. **利用子代理完成繁重的工作**：委派多步骤、输出繁重的任务，以保持主代理的上下文干净。
 3. **在配置中调整子代理输出**：如果您在调试时注意到子代理生成长输出，您可以向子代理的 `system_prompt` 添加指导以创建摘要和综合结果。
-4. **使用文件系统**：将大量输出持久保存到文件中（例如子代理写入或[automatic offloading](#offloading)），以便活动上下文保持较小；当模型需要细节时，可以使用`read_file`和`grep`拉取片段。
+4. **使用文件系统**：将大量输出保留到文件（例如子代理写入或[automatic offloading](#offloading)），以便活动上下文保持较小；当模型需要细节时，可以使用`read_file`和`grep`拉取片段。
 5. **记录长期记忆结构**：告诉代理`/memories/`里有什么以及如何使用它。
 6. **传递工具的运行时上下文**：使用 `context` 来获取用户元数据、API 密钥和工具所需的其他静态配置。
 

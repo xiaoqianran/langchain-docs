@@ -9,7 +9,7 @@ An *agent* is an AI system that completes tasks end to end using tools, skills, 
 Every trace carries its agent and one of that agent's environments, so what produced a trace and where it ran are recorded as it arrives. LangSmith can then act on that context: an alert watches production and stays quiet about local runs, each environment gets its own prebuilt dashboard, and an [Insights](/langsmith/insights) report covers the traffic of the environment you run it on.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables the change for an organization, and it applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

@@ -9,7 +9,7 @@ The **Build** tab creates an agent inside LangSmith instead of in code. You fill
 Use it when you want a working agent without a local project or a deployment. Everything it produces is an [agent](/langsmith/agents) like any other, so its traces, dashboards, and evaluators behave the same as one you instrumented yourself.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables the change for an organization, and it applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 <Note>
@@ -22,7 +22,7 @@ The **Build** tab appears only in an agent-based workspace. To build an agent fr
 
 To create an agent:
 
-1. In the left navigation, click **Build**. With no agent selected, Build asks you to pick one and offers **New agent** below the list. That list holds only agents built here, so an agent you traced from code does not appear in it.
+1. In the left navigation, click **Build**. With no agent selected, Build asks you to pick one and offers **+ New agent** below the list. That list holds only agents built here, so an agent you traced from code does not appear in it.
 2. Fill in the [configuration sections](#configure-the-agent). A line under the form's title reads **Nothing is created until you click Create Agent.**
 3. Click **Create Agent**.
 

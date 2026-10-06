@@ -11,7 +11,7 @@
 * `LANGSMITH_ENDPOINT`
 * `LANGSMITH_PROJECT`
 
-在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。已存在的项目名称会不断向该项目发送跟踪。要直接与代理人联系，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。已存在的项目名称会不断向该项目发送跟踪。要直接与代理人联系，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
 如果您需要使用自定义配置跟踪运行，在不支持典型环境变量（例如 Cloudflare Workers）的环境中工作，或者不希望依赖环境变量，LangSmith 允许您以编程方式配置跟踪。
 

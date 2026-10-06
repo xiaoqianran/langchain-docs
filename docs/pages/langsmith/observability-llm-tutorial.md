@@ -51,7 +51,7 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion. In an [agent-based workspace](/langsmith/agents), the first trace to a new project name, including the default project, creates an agent named after the project, with the project as its **Production** [environment](/langsmith/agent-environments). The agent's identifier is derived from the project name, so it can differ from the name, and creating the agent requires permission to create projects. To name the agent and the environment directly instead, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion. In an [agent-based workspace](/langsmith/agents), the first trace to a new project name, including the default project, creates an agent named after the project, with the project as its **Production** [environment](/langsmith/agent-environments). The agent's identifier is derived from the project name, so it can differ from the project name, and creating the agent requires permission to create projects. To name the agent and the environment directly instead, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 <Note>
   You may see these variables referenced as `LANGCHAIN_*` in other places. Both work, but `LANGSMITH_TRACING` and `LANGSMITH_API_KEY` are the recommended names.

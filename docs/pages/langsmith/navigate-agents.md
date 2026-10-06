@@ -7,7 +7,7 @@ How the agent switcher moves between the agent list and a single agent, which se
 To move between the [agents](/langsmith/agents) in your workspace, use the agent switcher in the top bar. Select an agent to see counts, charts, and trace lists for that agent only.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables the change for an organization, and it applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 <img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
@@ -24,7 +24,7 @@ The agent switcher sits at the left of the top bar, after the workspace switcher
 
 The address behind it is `/o/<workspaceId>/a/<agentIdentifier>/...`. The workspace slot takes a UUID, and the agent slot takes the agent's [identifier](/langsmith/agents#identifiers-and-display-names). A hyphen in the agent slot means all agents, so `/a/-` is the **All agents** view and `/a/<agentIdentifier>` is a single agent. Either state can be set from the address bar, which is how to link directly to one of the two views.
 
-## The two views
+## All agents and single-agent views
 
 The switcher moves between two views:
 
@@ -54,9 +54,9 @@ Settings opens in its own layout: the agent switcher is gone, the navigation spl
 
 When you select an agent, LangSmith opens its Overview.
 
-The switcher shows the agent's display name. A field labeled **ID**, with a copy button beside it, holds the identifier, which is also the value the address bar carries. The **ID** field shortens a long identifier in the middle. The display name and the identifier are not interchangeable.
+The switcher shows the agent's display name. A field labeled **ID**, with a copy button beside it, holds the identifier, which is also the value the address bar carries. The **ID** field shortens a long identifier in the middle.
 
-Use the copy button beside **ID** when you need the value for tracing. [Agent addressing](/langsmith/log-traces-to-agent) takes the identifier, which does not have to match the display name and may not match what the name suggests. For which value is which, see [Identifiers and display names](/langsmith/agents#identifiers-and-display-names).
+Use the copy button beside **ID** when you need the value for tracing. [Agent addressing](/langsmith/log-traces-to-agent) takes the identifier, not the display name. For which value is which, see [Identifiers and display names](/langsmith/agents#identifiers-and-display-names).
 
 Below the **ID** field, the Overview shows the following, in order:
 

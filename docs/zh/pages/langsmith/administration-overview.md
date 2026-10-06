@@ -28,7 +28,7 @@
 
 ### 代理和应用程序
 
-工作区中资源的逻辑分组，位于工作区本身的下一层。分组通过仅显示与当前上下文中的资源关联的资源来保持 UI 的组织性。
+代理和应用程序是工作区中资源的逻辑分组，位于工作区本身的下一级。分组通过仅显示与当前上下文中的代理或应用程序关联的资源来保持 UI 的组织。
 
 该分组的名称以及选择它的控件取决于您的工作区使用的信息体系结构。左上角的控件会告诉您您所在的位置：* **基于代理的工作空间**，位于 [beta](/langsmith/release-stages) 中，将其称为 [agent](/langsmith/agents)，代理的踪迹进一步分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。从顶部栏中的代理选择器中选择一个，或选择“**所有代理**”以查看工作区中的每个资源。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
 * **基于项目的工作空间** 将其称为应用程序，它可以将团队中的任何项目分组，而不仅仅是代理。从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-administration-overview) 侧边栏顶部的 **应用程序** 下拉列表中选择一个，或选择 **所有应用程序** 以查看工作区中的每个资源。
@@ -50,7 +50,7 @@
 |追踪项目 |工作空间或应用程序 |
 |注释队列 |工作空间或应用程序 |
 |部署|工作空间或应用程序 |
-|数据集和实验|工作空间或应用程序 |
+|数据集和实验 |工作空间或应用程序 |
 |提示|工作空间或应用程序 |
 |资源标签 |工作空间 |
 | API 密钥 |工作空间 |
@@ -123,7 +123,7 @@ PAT 前缀为 `lsv2_pt_`
 
 组织角色与[Enterprise feature workspace RBAC](#workspace-roles-rbac)不同，并且在多个[workspaces](#workspaces)的上下文中使用。您的组织角色决定了您的工作区成员特征和您的[organization-level permissions](/langsmith/organization-workspace-operations)。
 
-选择的组织角色还会影响工作区成员资格，如下所述：* [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
+选择的组织角色还会影响工作区成员身份，如下所述：* [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
   * 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 可以读取组织信息，但不能在组织级别执行任何写操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
   * 可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用 RBAC），这些角色指定工作区级别的权限。
@@ -162,7 +162,7 @@ PAT 前缀为 `lsv2_pt_`
 
 <Note>
   RBAC（基于角色的访问控制）是一项仅适用于企业客户的功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。其他计划默认为所有用户使用管理员角色。
-</Note>角色用于定义用户在工作区中拥有的一组权限。共有三个无法编辑的内置系统角色：
+</Note>角色用于定义用户在工作区中拥有的一组权限。共有三种内置系统角色无法编辑：
 
 * [Workspace Admin](/langsmith/rbac#workspace-admin) 拥有工作空间内所有资源的完全访问权限。
 * [Workspace Editor](/langsmith/rbac#workspace-editor) 拥有除工作区管理（添加/删除用户、更改角色、配置服务密钥）之外的所有权限。
@@ -230,7 +230,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。
 
-当您将某些功能与 `base` 层跟踪一起使用时，其数据保留可能会自动升级到 `extended` 层。这会增加跟踪的保留期限和成本。
+当您将某些功能与`base`层跟踪一起使用时，其数据保留可能会自动升级到`extended`层。这会增加跟踪的保留期限和成本。
 
 按操作保留行为：* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为`extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。

@@ -13,10 +13,10 @@ Effective observability in LLM applications requires proactive detection of fail
 * Application changes that affect feedback scores reflecting end-user experience.
 * Unexpected cost spikes from LLM usage.
 
-Alerts in LangSmith are scoped to one trace container, requiring separate configuration for each one you monitor. Which container that is depends on how your workspace is organized, and the control at the top left tells you which one you are on.
+Alerts in LangSmith are scoped to one [trace container](/langsmith/observability-concepts#trace-containers), requiring separate configuration for each one you monitor. Which container that is depends on how your workspace is organized.
 
 <Note>
-  **Agent-based workspaces ([beta](/langsmith/release-stages)).** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, see [Tracing projects](/langsmith/observability-concepts#tracing-projects).
+  **Agent-based workspaces ([beta](/langsmith/release-stages)).** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, your workspace is project-based. Skip this section and read [Tracing projects](/langsmith/observability-concepts#tracing-projects).
 </Note>
 
 An alert is scoped to one [environment](/langsmith/agent-environments#select-an-environment) of one [agent](/langsmith/agents). Alerting on production behavior therefore does not require a filter that excludes test traffic, because the environment already excludes it.

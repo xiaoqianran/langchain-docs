@@ -46,7 +46,7 @@ summarization_default = "openai:gpt-5.6-sol"
 2.`[models].summarization_default`。
 3.主要代理模式。
 
-在交互式会话中，运行 `/summarization-model` 打开模型选择器，运行 `/summarization-model <provider:model>` 直接切换，或运行 `/summarization-model clear` 再次遵循主代理模型。更改汇总模型不会更改主代理模型。
+在交互式会话中，运行 `/offload model` 打开模型选择器，运行 `/offload model <provider:model>` 直接切换，或运行 `/offload model clear` 再次遵循主代理模型。更改汇总模型不会更改主代理模型。
 
 ## 默认和最近的代理
 
@@ -97,7 +97,7 @@ cache_prompt = "expiry"
 
 这些设置适用于交互式聊天，不适用于无头模式。旧的 `warnings.cache_expiry_prompt = false` 首选项映射到 `"send"`，除非您显式设置 `warnings.cache_prompt`。
 
-### 设置发送时间成本阈值无论估计成本如何，都会出现到期提示。如果无法估计，则会出现提示，而不是假设下一回合是免费的。
+### 设置发送时间成本阈值无论估计成本如何，都会出现到期提示。如果无法进行估算，则会出现提示，而不是假设下一回合是免费的。
 
 模型、端点或缓存设置更改仍然可以触发单独的发送时间成本确认。确认过期并不会抑制这些警告。确认还涵盖未知的缓存年龄，例如没有记录请求时间的较旧线程。
 
@@ -117,14 +117,14 @@ cold_cache_min_delta_usd = 1.00
 
 这些通知选项不会禁用到期提示。使用 `warnings.cache_prompt` 控制该工作流程。### 信任缓存策略的网关端点
 
-如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持静默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
+如果请求通过网关或代理而不是官方 API 到达提供商，则冷缓存警告将保持沉默。声明端点受信任，断言它会原封不动地转发缓存设置并尊重提供者记录的保留：
 
 ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [warnings]
 trusted_cache_endpoints = ["smith.langchain.com"]
 ```
 
-条目是完全匹配的主机名 - 信任`example.com` 不信任`gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 LangSmith 网关的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假设的缓存设置。
+条目是完全匹配的主机名 - 信任`example.com` 不信任`gw.example.com`。一个条目涵盖通过该端点路由的每个提供商。即使受信任，通过 LangSmith 网关的跨格式路由（例如，路由到 Anthropic 模型的 OpenAI 格式请求）也会保持沉默，因为转换会重写估计假定的缓存设置。
 
 ## 显示提供者可见的推理
 
@@ -372,7 +372,7 @@ mode = "auto"   # "manual" (default), "auto", or "yolo"
 
 ## 自动分类器超时
 
-当 [Auto mode](/oss/deepagents/code/approval-modes) 处于活动状态时，分类器有时间预算来审查每批门控操作。未在期限内审核的批次按`classifier_unavailable`拒绝；重复错过会退回到手动审批 UI。默认值为 20 秒。
+当 [Auto mode](/oss/deepagents/code/approval-modes) 处于活动状态时，分类器有时间预算来审查每批门控操作。逾期未审核的批次按`classifier_unavailable`拒绝；重复错过会退回到手动审批 UI。默认值为 20 秒。
 
 如果评论超时，首先要尝试的是[selecting a faster classifier model](#default-and-recent-model)（请参阅`[models].auto_classifier`）。如果您已经这样做了，但仍需要更多空间，您可以延长截止日期：
 
@@ -558,7 +558,7 @@ API 密钥与其发送到的端点必须匹配：端点必须接受该密钥，�
 
 ### `base_url` 如何解决
 
-Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获胜）：1. **`base_url` 位于 `config.toml`** 中，供提供商使用。
+Deep Agents 代码按以下顺序解析提供者的端点（第一个匹配获胜）：1. **`base_url` 位于 `config.toml`** 对于提供商。
 2. **以 `DEEPAGENTS_CODE_` 为前缀的端点变量。**
 3. **环境中的普通端点变量**（例如，`OPENAI_BASE_URL`）。
 4. **使用`/auth`凭证保存的端点。**此步骤将保存的端点应用于没有端点变量的提供程序，例如您在未声明[⟦T252⟧](#provider-configuration)的情况下添加的提供程序。步骤 2-3 没有可供读取的变量，因此此处直接使用保存的端点。对于确实具有端点变量的提供程序，保存的端点已在步骤 2 或 3 中生效（它被写入该变量），因此此步骤不会更改任何内容。无论哪种方式，在 `/auth` 中输入的端点都适用。
@@ -655,7 +655,7 @@ extra_paths = [
     "~/src/company-extensions",
 ]
 ```<ResponseField name="enabled" type="boolean">
-  为每个源启用 Python 扩展发现，包括 `-e` / `--extension` 路径、用户和项目目录、插件和入口点。设置 `DEEPAGENTS_CODE_EXTENSIONS` 以覆盖该值。两种设置都需要在启动 Deep Agents 代码之前使用 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
+  为每个源启用 Python 扩展发现，包括 `-e` / `--extension` 路径、用户和项目目录、插件和入口点。设置 `DEEPAGENTS_CODE_EXTENSIONS` 以覆盖该值。这两种设置都需要在启动 Deep Agents 代码之前使用 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
 </ResponseField>
 
 <ResponseField name="trust" type="string">
@@ -673,7 +673,7 @@ LangGraph图步预算是`dcode`代理图在单轮中可以执行的最大节点�
 ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [runtime]
 recursion_limit = 5000
-```Deep Agents 代码未设置默认值。当没有源设置有效值时，LangGraph 服务器默认值适用。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
+```Deep Agents 代码未设置默认值。当没有源设置有效值时，将应用 LangGraph 服务器默认值。托管配置、环境和 `config.toml` 的值必须是从 `25` 到 `100000`（含）的整数。无效值会记录警告，并继续解决下一个来源。 `--recursion-limit` 标志接受任何大于或等于 `1` 的整数。
 
 优先级（从最高到最低）：
 

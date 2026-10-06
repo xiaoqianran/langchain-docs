@@ -24,7 +24,7 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
 ## 生成您的第一份见解报告<Tabs>
   <Tab title="UI" icon="layout-dashboard">
-    1. 导航至左侧菜单中的**跟踪项目**，然后选择一个跟踪项目。在基于代理的工作区中，选择代理，然后选择要分析的[environment](/langsmith/agent-environments#the-four-environments)，因为报告针对一个环境而不是整个代理运行。
+    1. 导航到左侧菜单中的**跟踪**，然后选择跟踪项目或代理和环境。在基于代理的工作区中，报表针对一个环境而不是整个代理运行。
     2. 单击右上角的 **+New**，然后单击 **New Insights Report** 以生成新的见解。
     3. 输入您的作业名称。
     4. 如果您还没有，请在工作区设置中为 Insights [configure a model](/langsmith/model-configurations) 进行操作。
@@ -42,7 +42,9 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
     1. 将您的聊天记录作为痕迹上传到新的LangSmith项目。
     2. 针对这些上传的跟踪生成洞察报告。
-    3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。<CodeGroup>
+    3. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights) 中返回结果的链接。
+
+    <CodeGroup>
       ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import os
       from langsmith import Client
@@ -71,10 +73,8 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
       ```
     </CodeGroup>
   </Tab>
-</Tabs>
-
-<Note>
-  对于 OpenAI 模型，生成超过 1,000 个线程的见解通常需要 1.00-\2.00 美元，对于当前 Anthropic 模型，通常需要 3.00-4.00 美元。成本随着采样线程的数量和每个线程的大小而变化。
+</Tabs><Note>
+  使用 OpenAI 模型生成超过 1,000 个线程的见解通常需要花费 1.00-\$2.00 美元，对于当前的 Anthropic 模型则需要花费 3.00-\$4.00 美元。成本随着采样线程的数量和每个线程的大小而变化。
 </Note>
 
 ## 理解结果
@@ -102,7 +102,7 @@ Insights 使用分层分类来理解您的数据并突出显示可操作的趋�
 
 ### 顶级类别您的跟踪会自动分组为代表数据中最广泛模式的顶级类别。
 
-分布条显示每种模式发生的频率，从而可以轻松发现多于或少于预期发生的行为。
+分布条显示每种模式发生的频率，从而可以轻松发现发生多于或少于预期的行为。
 
 每个类别都有一个简短的描述，并显示其包含的跟踪的聚合指标，包括：
 

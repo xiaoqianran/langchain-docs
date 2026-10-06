@@ -15,14 +15,14 @@ LLM 应用程序中的有效可观察性需要主动检测故障、性能下降�
 * 影响反映最终用户体验的反馈分数的应用程序更改。
 * 法学硕士的使用导致成本意外飙升。
 
-LangSmith 中的警报仅限于一个跟踪容器，需要为您监控的每个容器进行单独配置。哪个容器取决于您的工作区的组织方式，左上角的控件会告诉您您所在的容器。
+LangSmith 中的警报范围仅限于一个 [trace container](/langsmith/observability-concepts#trace-containers)，需要为您监控的每个警报进行单独配置。哪个容器取决于您的工作区的组织方式。
 
 <Note>
-  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，请参阅 [Tracing projects](/langsmith/observability-concepts#tracing-projects)。
-</Note>警报的范围为 1 个 [agent](/langsmith/agents) 中的 1 个 [environment](/langsmith/agent-environments#select-an-environment)。因此，对生产行为发出警报不需要排除测试流量的过滤器，因为环境已经排除了它。
+  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+</Note>警报的范围为 1 个 [environment](/langsmith/agent-environments#select-an-environment) 或 1 个 [agent](/langsmith/agents)。因此，对生产行为发出警报不需要排除测试流量的过滤器，因为环境已经排除了它。
 
 <Note>
-  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
+  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于[beta](/langsmith/release-stages)。跳过本节并阅读[Agents](/langsmith/agents)。
 </Note>
 
 警报的范围仅限于一个跟踪项目。
@@ -209,7 +209,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     * [Dynatrace Events API v2 Documentation](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/events-v2/post-event)
     * [Dynatrace Access Tokens](https://docs.dynatrace.com/docs/manage/access-control/access-tokens)
   </Tab><Tab title="Webhook">
-    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhooks 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
+    Webhooks 通过在触发警报条件时发送 HTTP POST 请求来实现与自定义服务和第三方平台的集成。使用 Webhook 将警报数据转发到票务系统、聊天应用程序或自定义监控解决方案。
 
     **先决条件**
 
@@ -229,7 +229,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
     ### 2.配置webhook参数
 
-    在 **Alerts** 选项卡下的[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
+    在 **Alerts** 选项卡下[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-alerts)的 **Monitoring** 部分中，单击 **+ Alert** 创建一个。新警报。
 
     在 **通知设置** 部分中，使用以下参数完成 Webhook 配置：
 
@@ -248,7 +248,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     * **请求正文模板**：自定义发送到端点的 JSON 有效负载
       * 默认值：LangSmith 发送定义的有效负载以及附加到有效负载的以下附加键值对：
         * `project_name`：警报范围内的 LangSmith 项目的名称。
-        * `workspace_name`：LangSmith工作空间的名称。
+        * `workspace_name`：LangSmith 工作空间的名称。
         * `alert_rule_id`：用于识别 LangSmith 警报的 UUID。这可以用作 webhook 服务中的重复数据删除密钥。
         * `alert_rule_name`：报警规则名称。
         * `alert_rule_description`：警报规则的描述（如果没有设置则为空字符串）。
@@ -307,7 +307,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       **步骤 2：配置机器人权限**
 
       1. 在 Slack 应用程序配置的左侧边栏中，单击 **OAuth 和权限**。
-      2. 向下滚动到“范围”下的“机器人令牌范围”，然后单击“添加 OAuth 范围”。
+      2. 向下滚动到“范围**”下的“机器人令牌范围”，然后单击“添加 OAuth 范围”。
       3. 添加以下范围：
          * `chat:write`（作为应用程序发送消息）。
          * `chat:write.public`（向应用程序不在的频道发送消息）。
@@ -349,7 +349,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       ```
 
       **请求正文模板**
-      <Note>需要填写步骤 4 中找到的值中的`{channel_id}`。 <br /><br />其余字段：`alert_name`、`project_name` 和 `project_url` 可以选择向警报消息添加其他上下文。您可以在浏览器的地址栏中找到您的`project_url`。复制该部分，但不包括任何查询参数。</Note>
+      <Note>需要填写步骤 4 中找到的值中的`{channel_id}`。 <br /><br />剩余字段：`alert_name`、`project_name` 和 `project_url` 可以选择向警报消息添加其他上下文。您可以在浏览器的地址栏中找到您的`project_url`。复制该部分，但不包括任何查询参数。</Note>
 
       ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       {
@@ -383,7 +383,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **第 6 步：测试集成**
 
-      1. 在LangSmith警报配置中，点击**测试警报**。
+      1. 在LangSmith警报配置中，单击**测试警报**。
       2. 检查您指定的 Slack 通道是否有测试通知。
       3. 验证消息是否包含预期的警报信息。
 
@@ -565,7 +565,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
     </Accordion>
 
     <Accordion title="Configure Google Chat notifications via webhook (requires middleware)">
-      Google Chat 的传入 Webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键作为顶级字段合并到请求正文中，因此 Google Chat 会拒绝每个请求并显示 400 错误：
+      Google Chat 的传入 Webhook API (`spaces.messages.create`) 仅接受顶层的 `text` 字段。由于 LangSmith 将所有 12 个警报元数据键合并到请求正文中作为顶级字段，因此 Google Chat 会拒绝每个请求并显示 400 错误：
 
       ```
       Invalid JSON payload received. Unknown name "project_name" at 'message': Cannot find field.
@@ -575,7 +575,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
       **选项 A：Cloud Run 或 Cloud Functions 中间件（推荐）**
 
-      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook、提取相关字段，并将干净的 `{"text": "..."}` 有效负载转发到 Google Chat 空间 webhook URL。
+      此方法使用一个小型 HTTP 处理程序，该处理程序接收 LangSmith webhook、提取相关字段，并将干净的 `{"text": "..."}` 负载转发到 Google Chat 空间 webhook URL。
 
       **先决条件*** 配置了传入网络钩子的 Google 聊天空间。在 Google Chat 中，打开空间，然后转到 **应用和集成** > **添加 Webhooks**，创建 Webhook，然后复制 URL。
       * 启用 Cloud Run 或 Cloud Functions 或同等托管的 Google Cloud 项目。
@@ -660,7 +660,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
       </Note>
 
       <Note>
-        Google Chat 强制执行 **每个空间每秒 1 条消息** 的写入速率限制，在写入该空间的所有 Webhook 之间共享。如果您有多个 LangSmith 警报路由到同一空间并且它们同时触发，则某些消息可能会被丢弃。
+        Google Chat 强制执行 **每个空间每秒 1 条消息** 的写入速率限制，并在写入该空间的所有 Webhook 之间共享。如果您有多个 LangSmith 警报路由到同一空间并且它们同时触发，则某些消息可能会被丢弃。
       </Note>
 
       **选项 B：Google Apps 脚本（无需基础设施）**
@@ -716,7 +716,7 @@ LangSmith 针对以下指标提供基于阈值的警报：
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

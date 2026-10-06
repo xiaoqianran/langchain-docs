@@ -9,10 +9,10 @@ An *environment* records where an agent was running when it produced a trace. Ev
 Because the environment travels with the trace, where the agent was running is a property of the trace itself.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables the change for an organization, and it applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
-## The four environments
+## Environment names
 
 The four environments are fixed, and custom names are not supported. The environment switcher lists them most production-like first:
 
@@ -27,7 +27,7 @@ LangSmith attaches no behavior to the choice beyond keeping each environment's t
 
 ## Select an environment
 
-Wherever LangSmith needs one environment instead of all of them, it uses the same control: a button showing the current environment, which opens the list. It lists the agent's environments in the order above, most production-like first.
+Wherever LangSmith needs one environment instead of all of them, it uses the same control: a button showing the current environment, which opens the list. It lists the agent's environments in the order above.
 
 The environment selected when you arrive depends on the section:
 
@@ -37,7 +37,7 @@ The environment selected when you arrive depends on the section:
 
 On Deployments, **Local** does not display, and the list adds a **Preview** entry when preview builds are turned on and the agent has previews.
 
-The list holds the environments that exist for the agent, so an agent created in the UI shows **Production** alone until something reports elsewhere.
+The list holds only the environments that exist for the agent.
 
 This control drives environment selection on Tracing, Monitoring, alerts, [Engine](/langsmith/engine-overview), Studio, and Deployments. [Evaluators](/langsmith/evaluators) and [Insights](/langsmith/insights) also scope to a single environment, but they do it without this dropdown.
 

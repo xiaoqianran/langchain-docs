@@ -6,11 +6,11 @@
 
 LangSmith 使用分层结构来组织您的工作：[*organizations*](/langsmith/administration-overview#organizations)、[*workspaces*](/langsmith/administration-overview#workspaces)、[*agents or applications*](/langsmith/administration-overview#agents-and-applications) 和 [*resources*](/langsmith/administration-overview#resources)。此结构可让您平衡协作与访问控制，从而使您能够根据团队的需求选择正确的隔离级别。
 
-分组级别的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的信息架构。基于代理的工作区按 [agent](/langsmith/agents) 对资源进行分组，每个代理的踪迹划分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。基于项目的工作区按应用程序对它们进行分组，没有环境层，因此环境近似于单独的跟踪项目。基于代理的组织位于[beta](/langsmith/release-stages)。下面的模型适用于两者，并且在重要的地方指出了差异。
+分组级别的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的信息架构。基于代理的工作区按 [agent](/langsmith/agents) 对资源进行分组，每个代理的踪迹划分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。基于项目的工作区按应用程序对它们进行分组，没有环境层，因此环境近似于单独的跟踪项目。基于代理的组织位于[beta](/langsmith/release-stages)。下面的模型适用于两者，并且在重要的地方指出了差异。LangSmith 权限系统建立在这个层次结构之上。使用 [role-based access control (RBAC)](/langsmith/rbac)，用户 [permissions](/langsmith/organization-workspace-operations) 的范围仅限于一个或多个工作区，从而强制工作区之间的隔离。通过更细粒度的 [attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签、代理或应用程序等属性进一步限制或授予访问权限，从而允许用户仅访问开发资源或仅访问与特定代理或应用程序关联的资源。
 
-LangSmith 权限系统建立在这个层次结构之上。使用 [role-based access control (RBAC)](/langsmith/rbac)，用户 [permissions](/langsmith/organization-workspace-operations) 的范围仅限于一个或多个工作区，从而强制工作区之间的隔离。通过更细粒度的 [attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签、代理或应用程序等属性进一步限制或授予访问权限。本页介绍了根据团队的隔离要求组织工作区的两种常见方法：
+本页介绍了根据团队的隔离要求组织工作区的两种常见方法：
 
-* [Team-centric workspaces](#team-centric-workspaces)：每个团队单个工作空间（推荐大多数客户）
+* [Team-centric workspaces](#team-centric-workspaces)：每个团队单个工作空间（推荐大多数客户使用）
 * [Collaborative workspaces](#collaborative-workspaces)：每个工作区有多个团队
 
 <Tip>
@@ -21,9 +21,7 @@ LangSmith 权限系统建立在这个层次结构之上。使用 [role-based acc
 
 <Warning>
   这是默认型号，也是大多数客户的推荐选择。
-</Warning>
-
-此模型（每个团队单个工作区）使用单个组织作为顶级边界。在组织内，多个工作空间用于隔离不同的团队或业务部门。每个工作区代表特定团队的逻辑边界，并控制该团队可以访问哪些数据和资源。在工作区中，团队根据工作区使用多个组、代理或应用程序来收集支持同一应用程序的资源。
+</Warning>此模型（每个团队单个工作区）使用单个组织作为顶级边界。在组织内，多个工作空间用于隔离不同的团队或业务部门。每个工作区代表特定团队的逻辑边界，并控制该团队可以访问哪些数据和资源。在工作区中，团队根据工作区按代理或应用程序对支持同一应用程序的资源进行分组。
 
 在下图中，生产和登台是基于代理的工作区中的代理环境，以及基于项目的工作区中的独立跟踪项目。
 
@@ -69,9 +67,7 @@ graph LR
     class AgentA,AgentB appStyle
     class ProdA,StagingA,DatasetA,ProdB,StagingB,DatasetB resourceStyle
 ```* **优点：** 单个工作区允许共享所有团队资源，使团队内的协作和迭代变得简单。它还简化了从开发到生产的推广。例如，可以使用标签对相同的[prompt](/langsmith/prompt-context-hub#prompts)进行版本控制并升级到生产，而无需复制或重复。
-* **缺点：** 开发、测试和生产工作共存于一个工作区中，因此工作区范围的 [RBAC](/langsmith/rbac) 本身并不能将它们分开。在基于代理的工作区中，环境划分代理的跟踪，无需维护任何约定。在基于项目的工作空间中，分离取决于标记规则。 [ABAC](/langsmith/organization-workspace-operations#access-policies) 通过根据资源属性限制访问，在工作空间内提供更细化的权限。
-
-在基于项目的工作空间中，团队通常使用命名约定来近似环境，运行配对项目，例如 `checkout-production` 和 `checkout-staging`。代理环境取代了该约定，因此代理路径上的工作区不需要它。
+* **缺点：** 开发、测试和生产工作共存于一个工作区中，因此工作区范围的 [RBAC](/langsmith/rbac) 本身并不能将它们分开。在基于代理的工作区中，环境划分代理的跟踪，无需维护任何约定。在基于项目的工作空间中，分隔取决于命名约定，例如配对项目`checkout-production`和`checkout-staging`。 [ABAC](/langsmith/organization-workspace-operations#access-policies) 通过根据资源属性限制访问，例如允许用户仅访问开发资源，在工作空间内提供更细化的权限。
 
 ## 协作工作空间在此模型中（每个工作区有多个团队），多个团队在组织内共享一个工作区，并使用代理或应用程序以及[ABAC](/langsmith/organization-workspace-operations#access-policies)来分离资源并管理访问。因此，[prompts](/langsmith/prompt-context-hub#prompts)和[deployments](/langsmith/deployment)等共享资源可以跨团队重用，而对[traces](/langsmith/observability-concepts#traces)和[datasets](/langsmith/evaluation-concepts#datasets)等敏感资源的访问仅限于所属团队。
 

@@ -6,7 +6,7 @@
 
 使用通过环境变量配置或在运行时配置的副本将每个跟踪同时发送到多个项目或工作区。
 
-副本允许您将每个跟踪同时发送到多个项目或工作区。动态路由模式将每条跟踪发送到一个目标，而副本会将跟踪并行复制到所有已配置的目标。
+副本允许您同时将每个跟踪发送到多个项目或工作区。其中 [dynamic routing](/langsmith/log-traces-to-project#set-the-destination-project-dynamically) 将每条跟踪发送到一个目标，副本会将跟踪并行复制到所有配置的目标。
 
 使用副本可以：
 
@@ -293,15 +293,15 @@
 
 使用 `tracing_mode` 构造函数参数或 `LANGSMITH_TRACING_MODE` 环境变量设置跟踪模式。两者都接受相同的价值观；显式 `tracing_mode` 参数始终优先于环境变量：
 
-* **`"langsmith"`（默认）**：将跟踪本机发送到LangSmith。
+* **`"langsmith"`（默认）**：将跟踪本机发送到 LangSmith。
 * **`"otel"`**：将跟踪作为 OpenTelemetry 跨度导出到配置的 OTel 后端。
 * **`"hybrid"`（仅限 Python）**：从单个副本发送到 LangSmith 和 OTel 后端。
 
 <Note>
-  如果您在 `Client`（仅限 Python）上使用已弃用的 `otel_enabled` 参数，请迁移到 `tracing_mode`：`Client(otel_enabled=True)` → `Client(tracing_mode="hybrid")`。 `otel_enabled` 参数在下一个小版本中被删除。
+  如果您在 `Client`（仅限 Python）上使用已弃用的 `otel_enabled` 参数，请迁移到 `tracing_mode`：`Client(otel_enabled=True)` → `Client(tracing_mode="hybrid")`。传递 `otel_enabled` 仍然有效，但会发出 `FutureWarning`。
 </Note>
 
-将配置好的`Client`直接传递到副本中以在运行时应用所需的模式：
+将配置好的 `Client` 直接传递到副本中以在运行时应用所需的模式：
 
 <CodeGroup>
   ```python Python expandable wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -397,7 +397,7 @@
   });
   await jokeDynamic();
   ```
-</CodeGroup>每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目标。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
+</CodeGroup>每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目的地。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
 
 ***
 

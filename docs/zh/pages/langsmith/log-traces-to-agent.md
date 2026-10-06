@@ -94,7 +94,7 @@ const handleOrder = traceable(
   </Step>
 
   <Step title="Choose an identifier">
-    从现有代理概览上的 **ID** 字段复制标识符，或选择一个新标识符。如果工作区中没有代理使用您选择的标识符，则LangSmith会在您第一次向其发送跟踪时创建该代理。您不必提前创建代理。有关标识符必须遵循的规则，请参阅[Addressing an agent that does not exist](#addressing-an-agent-that-does-not-exist)。
+    从现有代理概览上的 **ID** 字段复制标识符，或选择一个新标识符。如果工作区中没有代理使用您选择的标识符，则LangSmith会在您第一次向其发送跟踪时创建该代理。您不必提前创建代理。有关标识符必须遵循的规则，请参阅[Identifier rules](/langsmith/create-an-agent#identifier-rules)。
   </Step>
 
   <Step title="Configure the addressing">
@@ -119,10 +119,10 @@ const handleOrder = traceable(
   </Step>
 </Steps>
 
-## 寻址模式是互斥的将代理寻址和项目寻址组合在一个地方是一种错误，而不是后备规则：
+## 寻址模式是互斥的代理寻址和项目寻址不结合。发生的情况取决于每个设置的位置：
 
-* **不允许代理和项目一起**。如果您设置代理变量以及 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 或 `LANGCHAIN_SESSION`，则跟踪有两个目的地，并且 SDK 不会选择其中之一。它会在客户端启动时记录警告，并且不会跟踪调用，除非代码指定了目的地。如果您在一次调用中同时将 `address` 和 `project_name` 传递给 `@traceable` 或 `tracing_context()`，则 SDK 会引发 `LangSmithUserError` 并且不发送任何内容。如果同时包含地址和项目的运行达到 LangSmith，LangSmith 会拒绝它。
-* **以代码命名的项目**会覆盖代理变量。将 `project_name` 传递给 `@traceable` 或 `tracing_context()` 会跟踪该项目的运行并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 设置自己的项目，同时代理变量在流程的其余部分保持设置状态。
+* **代理和项目在一起**：不允许。如果您设置代理变量以及 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 或 `LANGCHAIN_SESSION`，则跟踪有两个目的地，并且 SDK 不会选择其中之一。它会在客户端启动时记录警告，并且不会跟踪调用，除非代码指定了目的地。如果您在一次调用中同时将 `address` 和 `project_name` 传递给 `@traceable` 或 `tracing_context()`，则 SDK 会引发 `LangSmithUserError` 并且不发送任何内容。如果同时包含地址和项目的运行达到 LangSmith，LangSmith 会拒绝它。
+* **以代码命名的项目**：覆盖代理变量。将 `project_name` 传递给 `@traceable` 或 `tracing_context()` 会跟踪该项目的运行并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 设置自己的项目，同时代理变量在流程的其余部分保持设置状态。
 
 ## 寻址不存在的代理
 
@@ -132,7 +132,7 @@ const handleOrder = traceable(
 
 以这种方式创建的代理在其[Overview](/langsmith/navigate-agents#read-the-agent-overview)上不显示部署部分。
 
-## 当运行停止被接受时接受代理寻址运行的工作区可以停止接受它们。首先检查您的 API 密钥是否仍然属于基于代理的工作区，因为使用来自基于项目的工作区的密钥发送的代理寻址运行会被拒绝。如果密钥不是问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+## 当运行停止被接受时接受代理寻址运行的工作区可以停止接受它们。首先检查您的 API 密钥是否仍然属于基于代理的工作区，因为 LangSmith 拒绝使用来自基于项目的工作区的密钥发送的代理寻址运行。如果密钥不是问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 ## 另请参阅
 

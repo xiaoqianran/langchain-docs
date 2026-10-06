@@ -49,7 +49,7 @@
     深厚的代理技能遵循[Agent Skills specification](https://agentskills.io/specification)。
   </Step>
 
-  <Step title="Add a ⟦T45⟧ file with YAML frontmatter and instructions.">
+  <Step title="Add a ⟦T53⟧ file with YAML frontmatter and instructions.">
     `SKILL.md` 以 YAML [frontmatter](#frontmatter-fields) 开头，后跟 markdown 指令：
 
     ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -88,7 +88,7 @@
     ```
 
     <Note>
-      参考 `SKILL.md` 中的任何 [supporting resources](#add-supporting-resources)，并说明每个文件包含的内容以及何时使用它。代理通过技能说明中的引用发现这些文件。
+      引用 `SKILL.md` 中的任何 [supporting resources](#add-supporting-resources)，并说明每个文件包含的内容以及何时使用它。代理通过技能说明中的引用发现这些文件。
     </Note>
   </Step>
 
@@ -117,7 +117,7 @@
 
       * 如果省略，则不加载任何技能。
       * 使用`StateBackend`（默认）时，提供带有`invoke(files={...})`的技能文件。使用`deepagents.backends.utils`中的`create_file_data()`来格式化文件内容；不支持原始字符串。
-      * 使用`FilesystemBackend`和`StoreBackend`，创建后端，调用`backend.upload_files()`添加技能文件，然后将后端传递给`create_deep_agent`。对于 `FilesystemBackend`，使用 `virtual_mode=True` 将 `root_dir` 下的路径沙箱化。技能已在`root_dir`下加载到磁盘上，无需上传。
+      * 使用`FilesystemBackend`和`StoreBackend`，创建后端，调用`backend.upload_files()`添加技能文件，然后将后端传递给`create_deep_agent`。对于 `FilesystemBackend`，使用 `virtual_mode=True` 将 `root_dir` 下的路径沙箱化。技能已在`root_dir`加载下磁盘上，无需上传。
 
       对于具有相同名称的技能，较晚的来源会覆盖较早的来源（最后一个获胜）。
 
@@ -128,7 +128,7 @@
   </Step>
 
   <Step title="Invoke the agent">
-    使用`invoke()`向代理发送任务。启动时，代理将每个技能的 [⟦T65⟧](#frontmatter-fields) 和 [⟦T66⟧](#frontmatter-fields) 从 [frontmatter](#frontmatter-fields) 加载到系统提示符中。当您的任务与技能的描述相匹配时，代理会读取该技能的 `SKILL.md` 并遵循其说明。
+    使用`invoke()`向代理发送任务。启动时，代理将每个技能的 [⟦T73⟧](#frontmatter-fields) 和 [⟦T74⟧](#frontmatter-fields) 从 [frontmatter](#frontmatter-fields) 加载到系统提示符中。当您的任务与技能的描述相匹配时，代理会读取该技能的 `SKILL.md` 并遵循其说明。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     result = agent.invoke(
@@ -149,9 +149,9 @@
 
 |水平|加载什么 |当 |
 | - | - | - |
-| **1.元数据** | [⟦T69⟧](#frontmatter-fields) 和 [⟦T70⟧](#frontmatter-fields) 来自 `SKILL.md` [frontmatter](#frontmatter-fields) |代理启动，针对每个配置的技能 |
-| **2.说明** | `SKILL.md`全身|当技能被调用时|
-| **3.资源** | [Supporting files](#add-supporting-resources) 下`scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
+| **1.元数据** | [⟦T77⟧](#frontmatter-fields) 和 [⟦T78⟧](#frontmatter-fields) 来自 `SKILL.md` [frontmatter](#frontmatter-fields) |代理启动，针对每个配置的技能 |
+| **2.说明** |全`SKILL.md`机身|当技能被调用时 |
+| **3.资源** | `scripts/`、`references/` 和 `assets/` | [Supporting files](#add-supporting-resources) |调用后根据需要，当指令引用它们时 |下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
 
 <div>
   <img alt="How skill components map into agent context at startup and activation" />
@@ -163,9 +163,9 @@
   <img alt="How skills load in layers from metadata to instructions to resources" />
 </div>
 
-在Deep Agents中，[⟦T76⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：
+在Deep Agents中，[⟦T84⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：
 
-1. **发现**（级别1）：在代理启动时，中间件扫描配置的技能路径，解析每个`SKILL.md`[frontmatter](#frontmatter-fields)，并将[⟦T79⟧](#frontmatter-fields)和[⟦T80⟧](#frontmatter-fields)字段注入系统提示符中。
+1. **发现**（级别1）：在代理启动时，中间件扫描配置的技能路径，解析每个`SKILL.md`[frontmatter](#frontmatter-fields)，并将[⟦T87⟧](#frontmatter-fields)和[⟦T88⟧](#frontmatter-fields)字段注入系统提示符中。
 2. **读取**（2级）：当代理调用技能时，它会通过`read_file`读取完整的`SKILL.md`内容。
 3. **执行**（级别 3）：调用后，代理遵循技能的指示，仅根据指示要求读取支持文件（脚本、参考、资产）。
 
@@ -182,11 +182,11 @@
 * **带有可执行代码的指令**：将程序与代理可以运行的脚本或模块捆绑在一起，因此它遵循经过测试的逻辑，而不是每次都从指令重新生成它。参见[Execute code with skills](#execute-code-with-skills)。
 * **指南**：向代理提供有关要遵守的护栏的支持说明。例如，遵循特定的格式或风格指南，或者指定始终将测试作为工作流程的一部分运行。
 
-## 写出有效的技巧[Agent Skills specification](https://agentskills.io/specification) 包括有关构建可靠发现和激活技能的指导。以下建议建立在该基础上，并提供了适用于 Deep Agents 的实用模式。
+## 写出有效的技巧[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。
 
-**保持[frontmatter](#frontmatter-fields)简洁**和`SKILL.md`正文保持在5,000个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
+**保持 [frontmatter](#frontmatter-fields) 简洁**，并将 `SKILL.md` 正文保持在 5,000 个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
 
-**编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T84⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
+**编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T92⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Good: specific about what and when
@@ -199,7 +199,7 @@ description: >-
 description: Helps with PDFs.
 ```
 
-当您在相关领域拥有多种技能时，请清楚地区分它们的描述。重叠的描述会导致代理激活错误的技能或在选项之间犹豫不决。如果两项技能具有相似的用途，请将它们合并为一项。**保持指令集中。** 代理技能规范建议将 `SKILL.md` 保持在 500 行以下。当指令变长时，将详细参考资料移至[supporting resource files](#add-supporting-resources)，并从主`SKILL.md`引用：
+当您在相关领域拥有多种技能时，请清楚地区分它们的描述。重叠的描述会导致代理激活错误的技能或在选项之间犹豫不决。如果两项技能具有相似的用途，请将它们合并为一项。**保持指令集中。** 代理技能规范建议将 `SKILL.md` 保持在 500 行以下。当指令变长时，将详细参考资料移至[supporting resource files](#add-supporting-resources)并从主`SKILL.md`中引用：
 
 <Tree>
   <Tree.Folder name="skills">
@@ -215,7 +215,7 @@ description: Helps with PDFs.
   </Tree.Folder>
 </Tree>
 
-代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。将文件引用保持在`SKILL.md`深一层，并避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
+代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。将文件引用保持在距`SKILL.md`深一层的位置，并避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
 
 **代理的结构说明。** 将您的 `SKILL.md` 正文写为代理可以遵循的清晰说明：
 
@@ -228,7 +228,7 @@ description: Helps with PDFs.
 * 使用参考文件保持主要`SKILL.md`简洁，同时涵盖多个子任务
 
 <Tip>
-  使用 [⟦T90⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) 检查您的 `SKILL.md` [frontmatter](#frontmatter-fields) 是否遵循代理技能规范命名和格式约定。
+  使用 [⟦T98⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) 检查您的 `SKILL.md` [frontmatter](#frontmatter-fields) 是否遵循代理技能规范命名和格式约定。
 </Tip>
 
 ## 添加支持资源
@@ -255,7 +255,7 @@ description: Helps with PDFs.
 
 ### `assets/`
 
-`assets/`目录保存代理使用的静态资源，但不需要作为指令读取，例如：
+`assets/`目录保存代理使用但不需要读取指令的静态资源，例如：
 
 * 文档或配置模板
 * 图片（图表、示例）
@@ -263,7 +263,7 @@ description: Helps with PDFs.
 
 在`SKILL.md`中描述代理应何时打开或复制每个资产。
 
-###来自`SKILL.md`的参考文件
+### 来自`SKILL.md`的参考文件
 
 当您引用支持文件时，请使用相对于技能根的路径：
 
@@ -273,6 +273,208 @@ For API details, see the [reference guide](references/api-patterns.md).
 To extract tables from a PDF, run:
 scripts/extract.py
 ```对于您引用的每个文件，请说明其包含的内容以及代理应何时使用它。将参考文献保留在`SKILL.md`深一层。避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
+
+## 将工具添加到技能中
+
+技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。
+
+技能工具是Deep Agents功能，而不是[Agent Skills specification](https://agentskills.io/specification)的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
+
+<Note>技能工具需要`deepagents>=0.7.22`.</Note>
+
+在技能的 frontmatter 中列出`metadata.include_tools`下的工具，用空格分隔。 YAML 列表与任何工具都不匹配。
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+name: linear
+description: Triage and file Linear issues. Use when the user reports a bug or asks about the Linear backlog.
+metadata:
+  include_tools: list_issues create_issue
+```
+
+将 `skills` 传递给 `create_deep_agent` 会为您创建一个 `SkillsMiddleware`。要添加工具，请自行创建中间件并将其传递到 `middleware` 中。将您的技能路径指定为 `sources`，并将您的工具指定为中间件而不是代理上的 `tools`：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.filesystem import FilesystemBackend
+from deepagents.middleware import SkillsMiddleware
+from langchain.tools import tool
+
+
+@tool
+def list_issues(team: str) -> str:
+    """List open issues for a Linear team."""
+    return f"{team}-101: Login page times out"
+
+
+@tool
+def create_issue(team: str, title: str) -> str:
+    """Create a Linear issue and return its ID."""
+    return f"{team}-102: {title}"
+
+
+backend = FilesystemBackend(root_dir="./my-project", virtual_mode=True)
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-6",
+    backend=backend,
+    middleware=[
+        SkillsMiddleware(
+            backend=backend,
+            sources=["/skills/"],
+            tools=[list_issues, create_issue],
+        ),
+    ],
+)
+```
+
+技能工具遵循以下规则：* 技能工具是有门控的。在代理读取技能的 `SKILL.md` 之前，即使模型猜测其名称和参数，对技能的调用也会作为未知工具而失败。
+* 当[summarization](/oss/python/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到座席再次读取该技能。
+
+<Note>
+  在对话中接受新工具的模型上，Deep Agents在读取后添加了一个技能工具，这使提示缓存保持有效。在其他模型上，它会将该工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
+</Note>
+
+### 在运行时解析工具
+
+`include_tools` 中的名称不必与工具自己的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
+
+要将技能列表的名称映射到工具，请将解析器函数作为中间件的 `tools` 传递。解析器接收每个 `include_tools` 名称和图表的 `Runtime`，并返回该名称的工具。
+
+该技能列出了可读的名称：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+metadata:
+  include_tools: list_issues create_issue
+```
+
+解析器将每一个映射到其真正的工具：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.middleware import SkillsMiddleware
+from langchain.tools import BaseTool
+from langgraph.runtime import Runtime
+
+# Real names like "mcp_linear_list_issues_ab12"
+tools_by_name = {"list_issues": list_issues, "create_issue": create_issue}
+
+
+def resolve_skill_tools(name: str, runtime: Runtime) -> list[BaseTool]:
+    return [tools_by_name[name]] if name in tools_by_name else []
+
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-6",
+    backend=backend,
+    middleware=[
+        SkillsMiddleware(
+            backend=backend,
+            sources=["/skills/"],
+            tools=resolve_skill_tools,
+        ),
+    ],
+)
+```
+
+一个名称还可以代表多种工具，例如 Linear MCP 服务器中的每一种工具。列出技能中的一个名字：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+metadata:
+  include_tools: linear
+```
+
+然后从解析器返回所有服务器工具：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Every tool from the Linear MCP server
+tools_by_integration = {"linear": linear_tools}
+
+
+def resolve_skill_tools(name: str, runtime: Runtime) -> list[BaseTool]:
+    return tools_by_integration.get(name, [])
+```
+
+解析器还接收图的`Runtime`，因此它可以根据[runtime context](/oss/python/deepagents/context-engineering#runtime-context)为每次运行返回不同的工具。例如，按用户查找工具：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from deepagents.middleware import SkillsMiddleware
+from langchain.tools import BaseTool
+from langgraph.runtime import Runtime
+
+
+@dataclass
+class Context:
+    user_id: str
+
+
+def resolve_skill_tools(name: str, runtime: Runtime[Context]) -> list[BaseTool]:
+    if name != "linear":
+        return []
+    return linear_tools_for_user(runtime.context.user_id)
+
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-6",
+    backend=backend,
+    context_schema=Context,
+    middleware=[
+        SkillsMiddleware(
+            backend=backend,
+            sources=["/skills/"],
+            tools=resolve_skill_tools,
+        ),
+    ],
+)
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "File a bug: checkout button does nothing."}]},
+    context=Context(user_id="user-123"),
+)
+```
+
+当您编写解析器时：
+
+* 保持快速。它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
+* 解析器可以是异步的。如果是，请通过其异步方法运行代理，例如`ainvoke`。
+
+### 保持工具可搜索
+
+技能工具，即你传递给`SkillsMiddleware`的那些，只能通过他们的技能来获得。对于[⟦T136⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)，模型通过搜索找到标记为`extras={"defer_loading": True}`的[deferred tools](/oss/python/langchain/middleware/built-in#provider-tool-search)。要使工具可以通过搜索或阅读技能来访问，请将其传递给代理的 `tools` 并推迟它。阅读该技能后无需搜索即可显示它：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.middleware import SkillsMiddleware
+from langchain.agents.middleware import ProviderToolSearchMiddleware
+from langchain.tools import tool
+
+
+@tool(extras={"defer_loading": True})
+def create_issue(team: str, title: str) -> str:
+    """Create a Linear issue and return its ID."""
+    return f"{team}-102: {title}"
+
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-6",
+    backend=backend,
+    tools=[create_issue],
+    middleware=[
+        ProviderToolSearchMiddleware(),
+        SkillsMiddleware(backend=backend, sources=["/skills/"]),
+    ],
+)
+```
+
+与技能工具不同，延迟工具没有门控。在代理读取技能之前，模型可以通过搜索找到并调用它。
+
+代理如何到达工具取决于您将其传递到的位置：|将工具传递给 |特工读取技能前|特工读取技能后|
+| - | - | - |
+| `SkillsMiddleware(tools=...)` |隐藏，调用失败|可见|
+|代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
+|代理的`tools` |可见，所以`include_tools`没有效果 |可见|
+
+当技能列出客服人员已有的工具时，包括`edit_file`、Deep Agents等内置工具，使用客服人员的工具，而不是`SkillsMiddleware`中的同名工具。
 
 ## 后端和远程技能加载
 
@@ -606,11 +808,11 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
   </Tab>
 </Tabs>
 
-## 技能可用性
+## 技能可用性并非每次跑步都需要所有技能。通过选择传递到`skills`的路径、根据上下文特定的存储解析这些路径或组合多个技能源来控制代理可以看到哪些技能。上下文可以来自请求处理程序、身份验证声明、图工厂、部署配置或任何其他应用程序逻辑。
 
-并非每次跑步都需要所有技能。通过选择传递到`skills`的路径、根据上下文特定的存储解析这些路径或组合多个技能源来控制代理可以看到哪些技能。上下文可以来自请求处理程序、身份验证声明、图工厂、部署配置或任何其他应用程序逻辑。
+### 根据上下文选择技能
 
-### 根据上下文选择技能在创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
+在创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -646,15 +848,15 @@ def create_agent_for_user(user_role: str):
     "<project-root>/.deepagents/skills/",
     "<project-root>/.agents/skills/",
     ]
-    ```
-
-    然后在创建代理时将该有序列表作为 `skills` 传递。
+    ```然后在创建代理时将该有序列表作为 `skills` 传递。
   </Accordion>
 </Note>
 
 ### 隔离技能库
 
-当相同的技能路径应解析为不同用户、角色、租户、工作区或环境的不同文件时，请使用隔离库。例如，每个代理都可以接收`skills=["/skills/"]`，而后端则根据当前身份或部署上下文范围内的存储解析`/skills/`。以下示例使用 [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend)，但相同的模式适用于任何可以根据运行时上下文解析文件的后端：
+当相同的技能路径应解析为不同用户、角色、租户、工作区或环境的不同文件时，请使用隔离库。例如，每个代理都可以接收`skills=["/skills/"]`，而后端则根据当前身份或部署上下文范围内的存储解析`/skills/`。
+
+以下示例使用 [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend)，但相同的模式适用于任何可以根据运行时上下文解析文件的后端：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -682,13 +884,13 @@ agent = create_deep_agent(
 要填充共享库，请从应用程序代码或管理工作流程中为商店播种：
 
 * 按组织 ID 命名空间，以获取工作区范围的技能。当代理应该使用库但不修改它时，将其与 [read-only skills](#read-only-skills) 配对。
-* 当每个用户需要独立的库时，按用户ID命名空间，如上例。
-
-使用 `/company-policies/SKILL.md` 等键以及包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
+* 当每个用户需要独立的库时，按用户ID命名空间，如上例。使用 `/company-policies/SKILL.md` 等键和包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
 
 您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
 
-### 组合多个源当代理应该看到多个图书馆时，通过多个技能路径。例如，您可以结合批准的组织技能、特定于团队的工作流程和特定于请求的说明：
+### 组合多个源
+
+当代理应该看到多个图书馆时，通过多个技能路径。例如，您可以结合批准的组织技能、特定于团队的工作流程和特定于请求的说明：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -703,15 +905,15 @@ agent = create_deep_agent(
 
 ## 重装技能
 
-每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。
-
-重置存储的元数据以在下次运行开始时再次加载每个源。
+每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。重置存储的元数据以在下次运行开始时再次加载每个源。
 
 <Note>
   本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Deployments](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/python/deepagents/going-to-production)。
 </Note>
 
-<Note>重装技能需要`deepagents>=0.7.16`。</Note>将重置作为运行输入传递以在单个调用中重新加载和运行：
+<Note>重装技能需要`deepagents>=0.7.16`.</Note>
+
+将重置作为运行输入传递以在单个调用中重新加载和运行：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": "1"}}
@@ -731,15 +933,13 @@ result = agent.invoke(
 agent.update_state(config, {"skills_metadata": None})
 ```
 
-使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
+使用`None`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
 
 <Note>
   发现一组不同技能的重新加载会更改系统提示并使该线程的提示缓存无效。发现相同技能的重新加载会产生相同的提示，并且无需任何费用。
 </Note>
 
-中间件也可以重置该值，这让您的应用程序可以决定线程何时过时。
-
-加载发生在每次运行开始时，因此钩子的重置由下一次运行提供，而不是在当前运行的中途进行。从 `after_agent` 而不是 `after_model` 重置：运行中存储的值会留下提示，且不会为该运行中的剩余模型调用列出任何技能。
+中间件也可以重置该值，这让您的应用程序可以决定线程何时过时。加载发生在每次运行开始时，因此钩子的重置由下一次运行提供，而不是在当前运行的中途进行。从 `after_agent` 而不是 `after_model` 重置：运行中存储的值会留下提示，且不会为该运行中的剩余模型调用列出任何技能。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
@@ -761,7 +961,9 @@ class ReloadEditedSkills(AgentMiddleware[SkillsState]):
 
 ## 下级代理的技能
 
-当您使用[subagents](/oss/python/deepagents/subagents)时，您可以配置每种类型可以访问哪些技能：* **通用子代理**：当您将`skills`传递给`create_deep_agent`时，自动继承主代理的技能。无需额外配置。
+当您使用[subagents](/oss/python/deepagents/subagents)时，您可以配置每种类型可以访问哪些技能：
+
+* **通用子代理**：当您将`skills`传递到`create_deep_agent`时，自动继承主代理的技能。无需额外配置。
 * **自定义子代理**：不继承主代理的技能。将 `skills` 参数添加到每个子代理定义以及该子代理的技能源路径。
 
 技能状态完全隔离：主代理的技能对子代理不可见，子代理的技能对主代理不可见。
@@ -786,13 +988,13 @@ agent = create_deep_agent(
 
 有关子代理配置和技能继承的更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。
 
-## 技能权限
-
-技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/python/deepagents/permissions)，当写入需要批准时使用[⟦T135⟧](/oss/python/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
+## 技能权限技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/python/deepagents/permissions)，当写入需要批准时使用[⟦T172⟧](/oss/python/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
 
 ### 只读技能
 
-要让客服人员使用精选的技能库而不对其进行修改，请将技能路径路由到包含批准的库的后端，并拒绝该路径下的写入操作。代理可以发现和读取技能；只有您的应用程序代码或管理工作流程会更新后端。<CodeGroup>
+要让客服人员使用精选的技能库而不对其进行修改，请将技能路径路由到包含批准的库的后端，并拒绝该路径下的写入操作。代理可以发现和读取技能；只有您的应用程序代码或管理工作流程会更新后端。
+
+<CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import FilesystemPermission, create_deep_agent
   from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
@@ -1001,9 +1203,7 @@ agent = create_deep_agent(
 
 ### 写作技巧
 
-默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：
-
-1. 将可写路径路由到可以保留代理编辑的后端。
+默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：1. 将可写路径路由到可以保留代理编辑的后端。
 2. 通过`skills`中的这些路径。
 3. 为任何应保持只读的路径添加 `deny` 规则。如果路径重叠 ([rule ordering](/oss/python/deepagents/permissions#rule-ordering))，则将更具体的规则放在更广泛的拒绝规则之前。
 
@@ -1046,7 +1246,9 @@ agent = create_deep_agent(
 
 ### 写批准
 
-如果代理可以写入技能文件，但您希望首先有人参与循环，请使用 [⟦T143⟧](/oss/python/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+如果客服人员可以写入技能文件，但您希望首先有人参与循环，请使用 [⟦T180⟧](/oss/python/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import FilesystemPermission, create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -1070,15 +1272,15 @@ agent = create_deep_agent(
   文件系统权限中断需要`deepagents>=0.6.8`。
 </Note>
 
-## 有技巧地执行代码
-
-如果没有代码执行，技能就是被动的：代理读取指令并使用可用的工具遵循它们。代码执行将技能转化为主动能力。技能可以发送经过测试的脚本，该脚本调用 API、转换数据、验证输出或运行管道，并且代理确定性地执行它，而不是每次都根据指令重新生成逻辑。这对于需要精确行为（数据转换、API 集成、合规性检查）或依赖于代理无法单独通过工具调用使用的库的工作流程尤其有价值。
+## 有技巧地执行代码如果没有代码执行，技能就是被动的：代理读取指令并使用可用的工具遵循它们。代码执行将技能转化为主动能力。技能可以发送经过测试的脚本，该脚本调用 API、转换数据、验证输出或运行管道，并且代理确定性地执行它，而不是每次都根据指令重新生成逻辑。这对于需要精确行为（数据转换、API 集成、合规性检查）或依赖于代理无法单独通过工具调用使用的库的工作流程尤其有价值。
 
 技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
 
-### 沙盒脚本
+### 沙箱脚本
 
-技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：<Tree>
+技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：
+
+<Tree>
   <Tree.Folder name="skills">
     <Tree.Folder name="arxiv-search">
       <Tree.File name="SKILL.md" />
@@ -1107,9 +1309,7 @@ Search arXiv for papers matching the user's query.
 3. If the user asks for more detail on a specific paper, fetch the full abstract.
 ```
 
-代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。
-
-[Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/python/langchain/middleware/custom)来处理此传输：
+代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。[Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/python/langchain/middleware/custom)来处理此传输：
 
 * **`before_agent`**：从后端读取技能文件并将其上传到沙箱中，以便代理可以从头开始执行脚本。
 * **`after_agent`**：从沙箱下载任何更新或新创建的技能文件并将它们写回后端，以便更改在运行中持续存在。
@@ -1769,15 +1969,15 @@ Search arXiv for papers matching the user's query.
 
 有关在执行前播种技能和记忆并在执行后同步回来的完整示例，请参阅[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
 
-## 故障排除使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-skills)跟踪调试技能发现，`read_file`调用`SKILL.md`，并支持资源访问。按照[tracing quickstart](/langsmith/observability-quickstart)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+## 故障排除
+
+使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-skills)跟踪调试技能发现，`read_file`调用`SKILL.md`，并支持资源访问。按照[tracing quickstart](/langsmith/observability-quickstart)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 
 ### 技能未激活
 
 **问题**：代理在没有读取技能的`SKILL.md`的情况下处理任务。
 
-**解决方案**：
-
-1. **让描述更具体。** 代理在[discovery](#how-skills-work)单独从[⟦T156⟧](#frontmatter-fields)字段中选择技能。包括技能的用途、何时使用它以及代理可以匹配的关键字：
+**解决方案**：1. **让描述更具体。** 代理在[discovery](#how-skills-work)单独从[⟦T193⟧](#frontmatter-fields)字段中选择技能。包括该技能的用途、何时使用它以及代理可以匹配的关键字：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # Good
@@ -1797,11 +1997,11 @@ Search arXiv for papers matching the user's query.
 
 **问题**：代理未在其系统提示中列出技能，或`SKILL.md`上的`read_file`失败。
 
-**解决方案**：1. **检查技能路径。** 路径必须使用正斜杠且相对于后端根目录。对于`FilesystemBackend`，路径是相对于`root_dir`的。使用`StateBackend`，使用`create_file_data()`传递`invoke(files={...})`中的技能文件。
+**解决方案**：
 
-2. **检查路径级别。** `skills` 中的每个条目都是包含技能目录的源目录。通过技能目录本身不会发现任何内容，也不会引发任何错误，因为源目录存在，并且仅在其子目录中搜索`SKILL.md`。
+1. **检查技能路径。** 路径必须使用正斜杠且相对于后端根目录。对于`FilesystemBackend`，路径是相对于`root_dir`的。使用`StateBackend`，使用`create_file_data()`传递`invoke(files={...})`中的技能文件。
 
-3. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T169⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T170⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。
+2. **检查路径级别。** `skills` 中的每个条目都是包含技能目录的源目录。通过技能目录本身不会发现任何内容，也不会引发任何错误，因为源目录存在，并且仅在其子目录中搜索`SKILL.md`。3. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T206⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T207⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。
 
 4. **检查文件大小。** Deep Agents 在发现过程中跳过超过 10 MB 的 `SKILL.md` 文件。
 
@@ -1813,15 +2013,27 @@ Search arXiv for papers matching the user's query.
 
 **解决方案**：技能每个线程加载一次，因此已经运行的线程看不到变化。重置存储的元数据。参见[Reload skills](#reload-skills)。
 
-### 未找到支持文件**问题**：代理读取 `SKILL.md` 但无法访问脚本、引用或资产。
+### 未找到支持文件
+
+**问题**：代理读取 `SKILL.md` 但无法访问脚本、引用或资产。
 
 **解决方案**：
 
 1. **来自`SKILL.md`的参考文件。** 代理不会自动发现支持文件。说明每个文件包含的内容以及何时使用它。从技能根使用[relative paths](#reference-files-from-skill-md)。
 
-2. **将路径保留在技能目录内。** 文件路径根据后端进行解析。确认支持文件存在于您的说明引用的路径中。
+2. **将路径保留在技能目录内。** 文件路径根据后端进行解析。确认支持文件存在于您的说明引用的路径中。3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/python/deepagents/sandboxes)，容器外的技能文件将无法使用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
 
-3. **将技能同步到沙箱中。** 如果您使用[sandbox backends](/oss/python/deepagents/sandboxes)，容器外部的技能文件将不可用，直到您将其复制进去。参见[Sandbox scripts](#sandbox-scripts)和[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
+### 技能工具不可用
+
+**问题**：代理无法调用`include_tools`中列出的技能工具。
+
+**解决方案**：
+
+1. **检查座席是否读取了技能。** 技能工具仅在座席读取`SKILL.md`后出现，并在摘要掉落时消失。参见[Add tools to skills](#add-tools-to-skills)。
+
+2. **将`include_tools`写为字符串。**用空格分隔名称。 YAML 列表永远不会与工具匹配。
+
+3. **检查名称。** 每个名称必须与传递给代理或`SkillsMiddleware`的工具或您的解析器处理的名称匹配。 Deep Agents 仅在 `DEBUG` 级别记录不匹配的名称，因此请为 `deepagents` 记录器启用调试日志记录以查看它们。
 
 ### 脚本无法运行
 
@@ -1831,13 +2043,13 @@ Search arXiv for papers matching the user's query.
 
 ### 子代理无法访问技能
 
-**问题**：自定义子代理看不到主代理使用的技能。
-
-**解决方案**：自定义子代理不会继承主代理的技能。使用该子代理的技能源路径将 `skills` 参数添加到每个 [subagent definition](#skills-for-subagents)。通用子代理自动继承`create_deep_agent`的技能。
+**问题**：自定义子代理看不到主代理使用的技能。**解决方案**：自定义子代理不会继承主代理的技能。使用该子代理的技能源路径将 `skills` 参数添加到每个 [subagent definition](#skills-for-subagents)。通用子代理自动继承`create_deep_agent`的技能。
 
 ## 参考
 
-### 技能、记忆力和工具技能、[memory](/oss/python/deepagents/memory)（`AGENTS.md` 文件）和工具都为代理提供上下文或功能。下表总结了何时达到每个目标：
+### 技能、记忆力和工具
+
+技能、[memory](/oss/python/deepagents/memory)（`AGENTS.md` 文件）和工具都为代理提供上下文或功能。下表总结了何时达到每个目标：
 
 | |技能 |内存|工具|
 | - | - | - | - |
@@ -1879,7 +2091,7 @@ Instructions for the agent go here. See [Usage](#usage) for a complete example o
   有关详细约束和验证规则，请参阅完整的[Agent Skills specification](https://agentskills.io/specification)。在 Deep Agents 中，`SKILL.md` 文件必须小于 10 MB。超过此限制的文件在技能加载期间将被跳过。
 </Warning>
 
-有关更多示例技能，请参阅[Deep Agents example skills](https://github.com/langchain-ai/deepagents/tree/main/libs/code/examples/skills)。
+For more example skills, see [Deep Agents example skills](https://github.com/langchain-ai/deepagents/tree/main/libs/code/examples/skills).
 
 ***
 
@@ -1889,6 +2101,6 @@ Instructions for the agent go here. See [Usage](#usage) for a complete example o
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>

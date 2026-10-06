@@ -73,12 +73,12 @@ dcode --clear-default-model
 dcode --summarization-model openai:gpt-5.6-sol
 ```
 
-在交互式会话中，运行 `/summarization-model` 打开模型选择器，传递模型规范以直接切换，或传递 `clear` 重用主代理模型：
+在交互式会话中，运行 `/offload model` 打开模型选择器，传递模型规范以直接切换，或传递 `clear` 重用主代理模型：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-/summarization-model
-/summarization-model openai:gpt-5.6-sol
-/summarization-model clear
+/offload model
+/offload model openai:gpt-5.6-sol
+/offload model clear
 ```
 
 汇总模型从`--summarization-model`解析，然后解析`config.toml`中的`[models].summarization_default`，然后是主代理模型。参见[Set a summarization model](/oss/deepagents/code/config-file#set-a-summarization-model)。
@@ -409,7 +409,7 @@ dcode --sandbox
 | `--no-mcp` |完全禁用 MCP |
 | `--trust-project-mcp` |信任项目级服务器，而不提示当前运行。被用户策略拒绝的服务器仍处于禁用状态。 |
 
-`--mcp-config` 和 `--no-mcp` 是互斥的。在非交互模式下，除非通过 `--trust-project-mcp`，否则将静默跳过没有匹配的已保存或环境批准的项目服务器：
+`--mcp-config` 和 `--no-mcp` 是互斥的。在非交互模式下，除非通过 `--trust-project-mcp`，否则将静默跳过没有匹配保存或环境批准的项目服务器：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --trust-project-mcp
@@ -435,7 +435,7 @@ dcode -n "run tests" --trust-project-mcp
 | `--rubric-max-iterations N` |在停止之前，评分者会根据评分标准进行迭代。需要 `-n` 或管道标准输入 |
 | `-n`、`--non-interactive TEXT` |以非交互方式运行单个任务并退出。除非设置了 `--shell-allow-list`，否则 Shell 将被禁用 |
 | `--recursion-limit N` |设置LangGraph图步骤预算（每轮最大节点调用）。未设置时，LangGraph 服务器默认值适用 |
-| `--max-turns N` | Cap Agentic 转入非交互模式。超出时以代码 124 退出。需要 `-n` 或管道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) || `--timeout SECONDS` |非交互模式的硬挂钟超时。超出时以代码 124 退出。需要 `-n` 或管​​道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) |
+| `--max-turns N` | Cap Agentic 转入非交互模式。超出时以代码 124 退出。需要 `-n` 或管道标准输入。请参阅[Non-interactive mode and piping](#non-interactive-mode-and-piping) || `--timeout SECONDS` |非交互模式的硬挂钟超时。超出时以代码 124 退出。需要 `-n` 或管​​道标准输入。参见[Non-interactive mode and piping](#non-interactive-mode-and-piping) |
 | `-q`、`--quiet` |管道的干净输出 - 只有代理的响应才会发送到标准输出。需要 `-n` 或管道标准输入 |
 | `--no-stream` |缓冲完整响应并立即写入标准输出而不是流式传输。需要 `-n` 或管道标准输入 |
 | `--show-reasoning` |在交互式脚本中或非交互式模式下的 stderr 上显示提供者可见的推理。默认关闭 |
@@ -502,7 +502,7 @@ dcode config path
 
 ## CLI 命令
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `dcode help` |显示帮助 |
 | `dcode tools list [--json]` |列出已配置代理可用的工具。将顶级工具整形标志，例如 `--allow-fs-tools`、`--no-mcp`、`--mcp-config` 和 `--trust-project-mcp` 放置在 `tools list` 之前 |

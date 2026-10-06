@@ -6,15 +6,15 @@
 
 在 LangSmith 的工作区级别查看和管理评估器。
 
-LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个跟踪容器和[datasets](/langsmith/evaluation-concepts#datasets)，因此您可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
+LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[workspace-level](/langsmith/administration-overview#workspaces)资源。您可以将单个评估器附加到多个[trace containers](/langsmith/observability-concepts#trace-containers)和[datasets](/langsmith/evaluation-concepts#datasets)，因此您可以在整个工作中应用一致的评估逻辑，而无需每次都重新创建它。
 
-评估器所附加的内容取决于您的工作区的组织方式，左上角的控件会告诉您您所在的工作区。
+评估者所关注的内容取决于您的工作空间的组织方式。
 
 <Note>
-  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，请参阅 [Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 </Note>
 
-评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#the-four-environments)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。<Note>
+评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。<Note>
   **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
 </Note>
 
@@ -61,7 +61,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
      |图像评估|评估图像内容质量和安全性。 |
      |语音评估|评估语音和音频交互质量。 |
 
-您还可以直接从 [tracing project](/langsmith/observability-concepts#tracing-projects)、代理环境或 [dataset](/langsmith/evaluation-concepts#datasets) 添加评估器。在此流程中，您还可以从工作区**附加现有评估器**，或创建一个 [Composite](/langsmith/composite-evaluators-ui) 评估器。请参阅[Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)和[Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset)。
+您还可以直接从[tracing project](/langsmith/observability-concepts#tracing-projects)、代理环境或[dataset](/langsmith/evaluation-concepts#datasets) 添加评估器。在此流程中，您还可以从工作区**附加现有评估器**，或创建一个 [Composite](/langsmith/composite-evaluators-ui) 评估器。请参阅[Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge)和[Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset)。
 
 ### 使用 SDK 创建评估器
 
@@ -120,7 +120,7 @@ SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)�
 
 * **概述**：评估者的反馈配置和提示或代码定义。
 * **跟踪**：此评估器在所有附加资源上处理的跟踪。
-* **日志**：该评估器在所有附加资源上的执行日志。
+* **日志**：此评估器在所有附加资源上的执行日志。
 * **项目和数据集**（基于代理的工作区中的**环境和数据集**）：此评估器附加到的跟踪项目、代理环境和数据集，每个附件的 [weekly spend and limit](/langsmith/evaluator-spend)。
 
 ## 编辑评估器
@@ -139,11 +139,11 @@ SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)�
 2. 展开评估器配置面板中的**高级**部分。
 3. 清除**延长迹线保留**。
 
-该更改适用于保存评估器后评分的轨迹。现有评分跟踪保留其当前保留级别。
+该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
 
-上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。## 包括扩展统计数据
+上面描述的 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。## 包括扩展统计数据
 
-使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计数据（反馈、成本、令牌）** 来评估运行中的反馈统计数据、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
+使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计信息（反馈、成本、令牌）** 来评估运行中的反馈统计信息、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
 
 LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估逻辑或提示需要这些字段时才启用它。
 

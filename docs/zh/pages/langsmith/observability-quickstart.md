@@ -55,7 +55,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
    export OPENAI_API_KEY="<your-openai-api-key>"
    ```
 
-   要将跟踪发送到特定项目，请使用[⟦T11⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+   要将跟踪发送到特定项目，请使用[⟦T11⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
    <Note>
      如果您的帐户位于美国以外的区域（默认），还需将 `LANGSMITH_ENDPOINT` 设置为您所在区域的 API URL。如果没有这个，您的 API 密钥将不会被识别，并且请求将无法通过身份验证。
@@ -318,7 +318,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 外部跨度捕获 `assistant` 函数的输入和输出。嵌套的 **get\_context** 范围记录工具调用，而 **ChatOpenAI** 范围记录发送到模型的确切提示和返回的响应。
 
 <Tip>
-  您还可以使用[LangSmith CLI](/langsmith/langsmith-cli)从终端检查痕迹。
+  您还可以使用 [LangSmith CLI](/langsmith/langsmith-cli) 从终端检查痕迹。
 </Tip>
 
 ## 后续步骤* [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。

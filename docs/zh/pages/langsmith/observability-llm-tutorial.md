@@ -4,7 +4,7 @@
 
 #追踪LLM申请教程
 
-在原型设计、Beta 测试和生产过程中为 LLM 应用程序添加 LangSmith 可观察性。
+为 LLM 应用程序在原型设计、Beta 测试和生产过程中添加LangSmith 可观察性。
 
 在本教程中，您将使用检索增强生成 (RAG) 构建一个客户支持聊天机器人，并在从早期原型设计到生产的每个开发阶段添加 LangSmith 可观察性。
 
@@ -51,7 +51,7 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-要将跟踪发送到特定项目，请使用[⟦T13⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符是从项目名称派生的，因此它可以与名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+要将跟踪发送到特定项目，请使用[⟦T13⟧ environment variable](/langsmith/log-traces-to-project)。如果未设置，LangSmith 将在跟踪摄取时自动创建默认跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，第一次跟踪新项目名称（包括默认项目）会创建一个以该项目命名的代理，该项目作为其 **Production** [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。要直接命名代理和环境，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
 <Note>
   您可能会在其他地方看到这些变量被引用为 `LANGCHAIN_*`。两者都可以，但推荐名称为 `LANGSMITH_TRACING` 和 `LANGSMITH_API_KEY`。
@@ -218,7 +218,7 @@ export OPENAI_API_KEY="<your-openai-api-key>"
   ```
 </CodeGroup>
 
-调用 `support_bot("How many users can I have on the Starter plan?")` 现在会生成完整 RAG 管道的跟踪。
+现在调用 `support_bot("How many users can I have on the Starter plan?")` 会生成完整 RAG 管道的跟踪。
 
 <img alt="LangSmith UI showing a trace with an outer application span and a nested LLM call span." />
 
@@ -238,7 +238,7 @@ langsmith trace list --project <your-project> --limit 5
 langsmith trace get <trace-id> --full
 ```
 
-## Beta 测试一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不确切地知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
+## Beta 测试一旦您的应用程序在原型设计中运行良好，您就可以将其发布给一小群真实用户。在这个阶段，您通常不知道用户将如何与您的应用程序交互，因此您需要更丰富的可观察性。您不仅想了解应用程序做了什么，还想了解用户对其的反应。
 
 ### 收集反馈
 
@@ -466,7 +466,7 @@ langsmith trace get <trace-id> --full
   分组依据功能需要给定元数据键至少有两个不同的值。
 </Note>
 
-由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。在 UI 侧边栏中的 **监控** 中，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
+由于您一直在记录 `llm` 元数据属性，因此您可以按该属性对监控图表进行分组，以比较模型随时间的变化情况。从 UI 侧边栏中的 **监控**，单击左上角的 **分组依据**，从下拉列表中选择 **元数据**，然后选择 `llm`。图表会更新以显示按该属性分组的结果。有关分组和自定义图表的更多信息，请参阅[Dashboards](/langsmith/dashboards)。
 
 ### 深入分析
 
@@ -478,7 +478,7 @@ langsmith trace get <trace-id> --full
 
 ## 结论
 
-在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以了解各个跟踪和聚合性能趋势。
+在本教程中，您在应用程序的整个开发生命周期中添加了 LangSmith 可观察性。帮助您在原型设计过程中快速迭代的相同跟踪设置将继续在生产中提供价值。您将可以看到各个跟踪和聚合性能趋势。
 
 有关更多信息，请参阅：* [Observability concepts](/langsmith/observability-concepts)：术语和核心思想。
 * [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。

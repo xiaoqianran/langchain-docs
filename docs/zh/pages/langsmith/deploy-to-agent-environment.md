@@ -11,7 +11,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 使用它可以将同一代理的暂存构建和生产构建分开，以便每个代理都报告到自己的环境中。
 
 <Note>
-  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 支持组织进行更改，并且适用于此后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 为组织启用基于代理的工作区，并且更改适用于之后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 </Note>
 
 ## 先决条件
@@ -29,7 +29,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 * **`--agent-id`**：要部署到的代理。该值是代理的标识符，而不是其显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
 * **`--agent-environment`**：部署报告到的环境，以及`development`、`staging` 或`production` 之一。部署不能占用`local`。那个环境[does not display on deployments](/langsmith/agent-environments#select-an-environment)根本就是这个集合与[agent addressing](/langsmith/log-traces-to-agent#addressing-variables)接受的四个值不同的一种方式。
 
-这些标志与 [agent addressing](/langsmith/log-traces-to-agent) 在跟踪端命名的名称相同。 LangGraph CLI 还从相同的两个变量`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 读取标志。 `mda` CLI 不会读取这些变量，因此直接将标志传递给它。
+这些标志与跟踪端的代理寻址名称相同。 LangGraph CLI 还从相同的两个变量`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 读取标志。 `mda` CLI 不会读取这些变量，因此直接将标志传递给它。
 
 ## 使用 LangGraph CLI 进行部署这些标志在 Python 中需要 `langgraph-cli` v0.4.32 或更高版本，在 TypeScript 中需要 `@langchain/langgraph-cli` 1.5.2-dev.0。 TypeScript 版本是预发行版本。准确安装它，因为当前的稳定版本 1.5.1 不接受这些标志。部署：
 
@@ -57,7 +57,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
      ```
    </CodeGroup>
 
-传递两个标志或都不传递，因为其中任何一个标志都会被拒绝。不要将它们与 `--name` 或 `--deployment-id` 结合使用，它们直接命名部署并与代理一起被拒绝。
+传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。不要将它们与 `--name` 或 `--deployment-id` 结合使用，它们直接命名部署，并且 CLI 会拒绝与代理一起使用。
 
 `--remote` 强制远程构建。如果没有它，只要 Docker 可用，CLI 就会在本地构建。对于其余标志，请参阅[⟦T31⟧](/langsmith/cli#deploy)。
 

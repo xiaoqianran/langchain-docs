@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Customize Deep Agents | https://docs.langchain.com/oss/python/deepagents/customization -->
 
-# 定制Deep Agents
+# 自定义Deep Agents
 
 了解如何使用系统提示、工具、子代理等自定义 Deep Agents
 
@@ -139,14 +139,14 @@
 有关完整参数列表，请参阅 [⟦T203⟧](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) API 参考。要从头开始构建完全自定义的线束，请参阅 [Configure the harness](/oss/python/langchain/agents#configure-the-harness) 或按照分步 [Build a deep agent from scratch](/oss/python/langchain/deep-agent-from-scratch) 指南进行操作。
 
 <Tip>
-  当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置，并参阅[Going to production](/oss/python/deepagents/going-to-production)在LangSmith上进行部署。
+  当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置，在LangSmith上部署请参见[Going to production](/oss/python/deepagents/going-to-production)。
 
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 型号
 
-传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅 [supported models](/oss/python/deepagents/models#supported-models) 了解所有提供商，并参阅 [suggested models](/oss/python/deepagents/models#suggested-models) 了解经过测试的建议。
+传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/python/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/python/deepagents/models#suggested-models)了解经过测试的建议。
 
 <Tip>
   使用`provider:model`格式（例如`openai:gpt-5.5`）可以在模型之间快速切换。
@@ -154,7 +154,7 @@
 
 <Tabs>
   <Tab title="OpenAI">
-    👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+    👉阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -311,7 +311,7 @@
   </Tab>
 
   <Tab title="Google Gemini">
-    👉阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+    👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -415,7 +415,7 @@
   </Tab>
 
   <Tab title="HuggingFace">
-    👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+    👉阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -527,7 +527,7 @@
 
 ## 工具
 
-除了用于文件管理和子代理生成的 [built-in tools](/oss/python/deepagents/overview#execution-environment) 之外，您还可以提供自定义工具：
+除了用于文件管理和子代理生成的[built-in tools](/oss/python/deepagents/overview#execution-environment)之外，您还可以提供自定义工具：
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -928,7 +928,7 @@ pip install "langchain[mcp]"
   ```
 </CodeGroup>
 
-有关详细配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
+有关详细的配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
 
 ## 系统提示
 
@@ -1076,9 +1076,9 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 将中间件传递给 `create_deep_agent` 的 `middleware` 参数。每个实例都会通过将其 `.name` 与堆栈中已有的内置条目进行匹配来合并到 [Deep Agents stack](#deep-agents-stack) 中：匹配会替换该实例，任何不匹配的内容都会插入到 [⟦T226⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware) 之后。参见[Override a default middleware instance](#override-a-default-middleware-instance)。
 
-### Deep Agents堆栈
+### Deep Agents 堆栈
 
-`create_deep_agent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 贡献它们时才出现的槽。#### 裸栈
+`create_deep_agent` 以固定的顺序构建中间件。 [bare stack](#bare-stack) 只需一个型号即可获得。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/python/deepagents/profiles) 提供它们时才出现的槽。#### 裸栈
 
 只有一个`model`（没有其他可选参数），主代理通常包括：
 
@@ -1093,34 +1093,31 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 从第一个到最后一个：
 
-1. [⟦T233⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)：仅当您通过`skills`时。 **在**文件系统中间件之前注入，因此技能元数据在文件工具运行之前可用。
+1. [⟦T233⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。
 
-2. [⟦T235⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。
+2. [⟦T235⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
 
-3. [⟦T237⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。4. [⟦T239⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[create\_summarization\_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。
+3. [⟦T237⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[create\_summarization\_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)）。4. [⟦T238⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示缓存和下面的尾堆栈之前运行。
 
-5. [⟦T240⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
+5. [⟦T239⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
 
-6. [⟦T241⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
+6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例将替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。
 
-7. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后但在堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例将替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。
+7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
 
-8. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
+8. [⟦T242⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)：仅当您通过`skills`时。在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。传递名为 `SkillsMiddleware` 的中间件就地替换它。9. **提示缓存**（[⟦T245⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware)和[⟦T246⟧](https://reference.langchain.com/python/langchain-aws/middleware/prompt_caching/BedrockPromptCachingMiddleware)）：两者始终在**补丁之后和中间件之后注册并运行，以便缓存的前缀与实际发送到模型的内容相匹配。它不支持的模型上的每个无操作 (`unsupported_model_behavior="ignore"`)，因此 Anthropic 中间件适用于 Anthropic 模型，而 Bedrock 中间件适用于具有缓存支持的 AWS Bedrock 模型。
 
-9. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。10. **提示缓存**（[⟦T244⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware)和[⟦T245⟧](https://reference.langchain.com/python/langchain-aws/middleware/prompt_caching/BedrockPromptCachingMiddleware)​​）：两者始终在**补丁之后和中间件之后注册并运行，以便缓存的前缀与实际发送到模型的内容相匹配。它不支持的模型上的每个无操作 (`unsupported_model_behavior="ignore"`)，因此 Anthropic 中间件适用于 Anthropic 模型，而 Bedrock 中间件适用于具有缓存支持的 AWS Bedrock 模型。
-
-11. [⟦T247⟧](https://reference.langchain.com/python/deepagents/middleware/memory/MemoryMiddleware)：仅当您通过`memory`时。
+10. [⟦T248⟧](https://reference.langchain.com/python/deepagents/middleware/memory/MemoryMiddleware)​​：仅当您通过`memory`时。
 
     <Note>
       `MemoryMiddleware` 放置在配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `create_deep_agent` 实现注释中也提出了相同的排序问题。
     </Note>
 
-12. `HumanInTheLoopMiddleware`：仅当您通过`interrupt_on`时。在配置的工具调用时暂停以供人工批准或输入。
+11. `HumanInTheLoopMiddleware`：仅当您通过`interrupt_on`时。在配置的工具调用时暂停以供人工批准或输入。
 
-### 同步子代理堆栈
+12. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
 
-内置的**通用**子代理和每个声明性同步`SubAgent`图使用`create_deep_agent`在代码中构建的堆栈。它在广义上与主要代理匹配（文件系统、摘要、补丁、配置文件附加、Anthropic和基岩缓存、可选权限），但有两点不同：* **技能在这些内部代理上** [⟦T255⟧](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware) 运行（在主代理上，当设置 `skills` 时，技能在**文件系统中间件之前运行）。
-* 子代理图中**没有** [⟦T257⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（只有父代理公开了`task` 工具）。
+### 同步子代理堆栈内置的**通用**子代理和每个声明性同步`SubAgent`图使用`create_deep_agent`在代码中构建的堆栈。它与大体上的主代理匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T256⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)（只有父代理公开`task`工具）。
 
 当声明性子代理设置 `interrupt_on` 时，该值将转发到子代理的 `create_agent`，从而为已配置的工具调用连接人机交互处理。
 
@@ -1128,7 +1125,7 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/python/langchain/middleware/built-in)。
 
-`deepagents`库还公开了[⟦T262⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)，使代理能够在适当的时间（例如在任务之间）触发汇总，而不是按固定的令牌间隔。欲了解更多详情，请参阅[Summarization](/oss/python/deepagents/context-engineering#summarization)。
+`deepagents` 库还公开了 [⟦T261⟧](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware)，使代理能够在适当的时间（例如在任务之间）触发汇总，而不是按固定的令牌间隔触发汇总。欲了解更多详情，请参阅[Summarization](/oss/python/deepagents/context-engineering#summarization)。
 
 ### 特定于提供商的中间件
 
@@ -1217,9 +1214,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
       tools=[get_weather],
       middleware=[log_tool_calls],
   )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents.middleware import wrap_tool_call
   from langchain.tools import tool
   from deepagents import create_deep_agent
@@ -1421,7 +1416,9 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 </CodeGroup>
 
 <Warning>
-  **初始化后不要改变属性**如果您需要跟踪挂钩调用之间的值（例如计数器或累积数据），请使用图形状态。
+  **初始化后不要改变属性**
+
+  如果您需要跟踪挂钩调用之间的值（例如计数器或累积数据），请使用图形状态。
   图状态的设计范围仅限于线程，因此更新在并发情况下是安全的。
 
   **这样做：**
@@ -1459,8 +1456,8 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 ### 覆盖默认中间件实例
 
 <Note>
-  通过匹配 `.name` 来覆盖默认中间件需要 `deepagents>=0.7`。
-</Note>传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T268⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以就地替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
+  通过匹配 `.name` 覆盖默认中间件需要 `deepagents>=0.7`。
+</Note>传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T267⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -1483,16 +1480,16 @@ agent = create_deep_agent(
 ```
 
 <Note>
-  覆盖**替换**默认的中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递到您的自定义实例，因为它不会继承传递给`create_deep_agent()`的`backend=`和`permissions=`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T277⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例；请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)“限制文件系统工具”示例。
+  覆盖**替换**默认的中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给您的自定义实例，因为它不会继承传递给`create_deep_agent()`的`backend=`和`permissions=`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T276⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例；请参阅[Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access)“限制文件系统工具”示例。
 </Note>
 
-Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。通过`subagents=`定义的声明性子代理不会继承主代理的中间件定制。直接在该子代理自己的 [⟦T279⟧](/oss/python/deepagents/subagents#subagent-dictionary-based) 字段中传递覆盖以将其应用到那里；该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，与 `middleware=` 与主代理的匹配方式相同。
+Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。通过`subagents=`定义的声明性子代理不会继承主代理的中间件定制。直接在该子代理自己的 [⟦T278⟧](/oss/python/deepagents/subagents#subagent-dictionary-based) 字段中传递覆盖以将其应用到那里；该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，就像 `middleware=` 与主要代理的匹配一样。
 
 #### 示例
 
 <AccordionGroup>
   <Accordion title="Adjust when summarization triggers" icon="adjustments">
-    使用自定义 `trigger` 和 `keep` 阈值覆盖 [⟦T281⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以早于或晚于默认值压缩对话历史记录，并控制每次压缩后有多少条最新消息。
+    使用自定义 `trigger` 和 `keep` 阈值覆盖 [⟦T280⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以早于或晚于默认值压缩对话历史记录，并控制每次压缩后有多少条最新消息。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import create_deep_agent
@@ -1515,11 +1512,11 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
     )
     ```
 
-    `trigger` 还接受 `("fraction", ...)` 作为模型上下文窗口的百分比，并且阈值列表将它们与 OR 语义结合起来。有关全套选项，请参阅[⟦T286⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) 参考。
+    `trigger` 还接受 `("fraction", ...)` 作为模型上下文窗口的百分比，并且阈值列表将它们与 OR 语义结合起来。有关全套选项，请参阅[⟦T285⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)参考。
   </Accordion>
 
   <Accordion title="Update the prompt cache TTL" icon="clock">
-    覆盖 [⟦T287⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) 将缓存生命周期延长到默认的 `5m` TTL 之外，这对于轮次间隔较长的代理很有用。请参阅 [Prompt caching](/oss/python/deepagents/overview#prompt-caching) 了解默认情况下如何应用缓存。
+    覆盖 [⟦T286⟧](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) 将缓存生命周期延长到默认的 `5m` TTL 之外，这对于轮次间隔较长的代理很有用。请参阅 [Prompt caching](/oss/python/deepagents/overview#prompt-caching) 了解默认情况下如何应用缓存。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import create_deep_agent
@@ -1539,7 +1536,7 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
       `FilesystemMiddleware` 上的 `tools` 允许列表需要 `deepagents>=0.7`。
     </Note>
 
-    使用 `tools` 允许列表覆盖 [⟦T292⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)，以仅向模型公开文件系统工具的子集，而不是完整的默认集。
+    使用 `tools` 允许列表覆盖 [⟦T291⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)，以仅向模型公开文件系统工具的子集，而不是完整的默认集。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import create_deep_agent
@@ -1560,11 +1557,11 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
   </Accordion>
 
   <Accordion title="Customize how the skill catalog appears in the system prompt" icon="template">
-    使用自定义 `system_prompt=` 模板覆盖 [⟦T294⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来控制如何
+    使用自定义 `system_prompt=` 模板覆盖 [⟦T293⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 来控制如何
     自动生成的技能目录被框架起来——例如，添加周围的上下文，
     对部分重新排序，或将路由提示（优先级、类别偏差）放置在同一部分中
     块作为目录。模板必须包含`{skills_locations}`，
-    中间件替代的`{skills_list}`和`{skills_load_warnings}`插槽
+    中间件替换的`{skills_list}`和`{skills_load_warnings}`插槽
     每次转动 - 因此随着技能的添加，目录会自动保持同步，
     重命名或删除。
 
@@ -1605,12 +1602,12 @@ Deep Agents 自动添加的通用子代理从主代理继承其默认中间件�
 
     在这种情况下，不要将 `skills=` 传递给 `create_deep_agent`：覆盖实例
     已经拥有`backend`和`sources`。任何缺失的插槽（`{skills_locations}`，
-    `{skills_list}`、`{skills_load_warnings}`) 在施工时提高`ValueError`。
+    `{skills_list}`、`{skills_load_warnings}`）在施工时提高`ValueError`。
   </Accordion><Accordion title="Suppress the auto-generated skill catalog" icon="eye-off">
-    使用 `system_prompt=None` 覆盖 [⟦T307⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 即可加载技能，无需
+    使用 `system_prompt=None` 覆盖 [⟦T306⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) 以加载技能，无需
     在系统提示中添加技能部分。技能保留在
     `state["skills_metadata"]` 和技能文件通过文件系统保持可访问
-    工具，因此喜欢编写自己的描述块（例如，
+    工具，因此喜欢编写自己的描述块的调用者（例如，
     紧凑的手写路由总结）在`create_deep_agent(system_prompt=...)`可以
     准确添加他们需要的指导，而无需内置指导。
 
@@ -1769,13 +1766,13 @@ agent = create_deep_agent(
 
 有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。
 
-## 后端深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T314⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)。
+## 后端深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T313⟧](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)。
 
 如果您使用[skills](#skills)或[memory](#memory)，则必须在创建代理之前将所需的技能或内存文件添加到后端。
 
 <Tabs>
   <Tab title="StateBackend">
-    存储在 `langgraph` 状态的线程范围文件系统后端。
+    存储在`langgraph`状态的线程范围文件系统后端。
 
     文件在线程内持续存在（通过检查点），并且不会跨线程共享。
 
@@ -1886,7 +1883,7 @@ agent = create_deep_agent(
     <Warning>
       该后端授予代理直接文件系统读/写访问权限。
       请谨慎使用，并且仅在适当的环境中使用。
-      欲了解更多信息，请参阅[⟦T316⟧](/oss/python/deepagents/backends#filesystembackend-local-disk)。
+      有关更多信息，请参阅[⟦T315⟧](/oss/python/deepagents/backends#filesystembackend-local-disk)。
     </Warning>
 
     <CodeGroup>
@@ -1970,7 +1967,7 @@ agent = create_deep_agent(
     <Warning>
       该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
       请极其谨慎地使用，并且仅在适当的环境中使用。
-      有关更多信息，请参阅[⟦T320⟧](/oss/python/deepagents/backends#localshellbackend-local-shell)。
+      欲了解更多信息，请参阅[⟦T319⟧](/oss/python/deepagents/backends#localshellbackend-local-shell)。
     </Warning>
 
     <CodeGroup>
@@ -2231,7 +2228,7 @@ agent = create_deep_agent(
       ```
     </CodeGroup>
 
-    欲了解更多详情，请参阅[⟦T323⟧](/oss/python/deepagents/backends#contexthubbackend)。
+    欲了解更多详情，请参阅[⟦T322⟧](/oss/python/deepagents/backends#contexthubbackend)。
   </Tab>
 
   <Tab title="CompositeBackend">
@@ -2362,7 +2359,7 @@ agent = create_deep_agent(
 
 有关更多信息，请参阅[Backends](/oss/python/deepagents/backends)。
 
-### 沙盒
+### 沙箱
 
 沙箱是专门的 [backends](/oss/python/deepagents/backends)，它在具有自己的文件系统和用于 shell 命令的 `execute` 工具的隔离环境中运行代理代码。
 当您希望深度代理写入文件、安装依赖项并运行命令而不更改本地计算机上的任何内容时，请使用沙箱后端。
@@ -2625,7 +2622,7 @@ agent = create_deep_agent(
   </Tab>
 </Tabs>
 
-欲了解更多信息，请参阅[Sandboxes](/oss/python/deepagents/sandboxes)。
+有关更多信息，请参阅[Sandboxes](/oss/python/deepagents/sandboxes)。
 
 ## 人机交互
 
@@ -3245,7 +3242,7 @@ agent = create_deep_agent(
 
 ## 内存
 
-使用 [⟦T327⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
+使用 [⟦T326⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
 
 <Tip>
   要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
@@ -4065,7 +4062,7 @@ agent = create_deep_agent(
   </Tab>
 </Tabs>
 
-## 个人资料[harness profile](/oss/python/deepagents/profiles#harness-profiles) 是每个模型配置的可重用包，当选择匹配模型时，`create_deep_agent` 会自动应用。当您想要遵循模型（而不是调用站点）的行为时，配置文件是正确的工具，例如针对 Claude 指令风格调整的系统提示后缀、为 GPT 重写的工具描述或仅对特定提供商有意义的额外中间件。
+## 个人资料[harness profile](/oss/python/deepagents/profiles#harness-profiles) 是每个模型配置的可重用包，当选择匹配模型时，`create_deep_agent` 自动应用。当您想要遵循模型（而不是调用站点）的行为时，配置文件是正确的工具，例如针对 Claude 指令风格调整的系统提示后缀、为 GPT 重写的工具描述或仅对特定提供商有意义的额外中间件。
 
 单个配置文件可以包含：自定义基本系统提示符 (`base_system_prompt`)、附加后缀 (`system_prompt_suffix`)、工具描述覆盖、要排除的工具或中间件、要注入的其他中间件以及对自动添加的通用子代理的编辑。
 
@@ -4079,7 +4076,7 @@ register_harness_profile(
 )
 ```
 
-请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。更窄的配套 API [provider profiles](/oss/python/deepagents/profiles#provider-profiles) 为提供者打包了模型构造参数（API 密钥、超时、重试设置）。
+请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。一个更窄的配套 API [provider profiles](/oss/python/deepagents/profiles#provider-profiles)，为提供者打包模型构造参数（API 密钥、超时、重试设置）。
 
 ## 结构化输出
 
@@ -4153,7 +4150,7 @@ print(result["structured_response"])
 
 ## 高级
 
-`create_deep_agent` 在[⟦T336⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/python/langchain/agents#configure-the-harness)。
+`create_deep_agent` 在[⟦T335⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/python/langchain/agents#configure-the-harness)。
 
 ***
 
@@ -4163,6 +4160,6 @@ print(result["structured_response"])
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

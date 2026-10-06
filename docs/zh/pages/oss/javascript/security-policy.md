@@ -27,39 +27,15 @@ LangChain 拥有一个与各种外部资源（如本地和远程文件系统、A
 或数据库，请考虑与您公司的安全团队交谈以确定如何最好地
 设计并保护您的应用程序。
 
-## 报告OSS漏洞请使用以下流程报告与LangChain开源项目相关的安全漏洞：
-
-1. **在存在漏洞的 GitHub 存储库的安全选项卡上提交安全公告**。
-2. **发送电子邮件**至`security@langchain.dev`，通知我们您已提交安全问题以及该问题提交到哪个存储库。
-
-在报告漏洞之前，请查看上面的[Best Practices](#best-practices)，了解我们认为的安全漏洞与开发人员责任。
-
-### 错误赏金资格
-
-我们欢迎所有LangChain库的安全漏洞报告。但是，我们可能仅针对以下软件包中的漏洞提供临时错误赏金：
-
-* 由 LangChain 团队拥有和维护的核心库：`langchain-core`、`langchain` (v1)、`langgraph` 以及相关的检查点包（或其 JavaScript 等效项）
-* 由LangChain团队维护的流行集成（例如，`langchain-openai`、`langchain-anthropic`等，或它们的JavaScript等效项）
-
-该漏洞必须存在于库代码本身中，而不是存在于示例代码或示例应用程序中。我们欢迎所有其他 LangChain 软件包的报告，并将解决有效的安全问题，但对于此范围之外的软件包，不会授予错误赏金。这包括存档的`langchain-community`，由于其社区驱动的性质，它没有资格获得错误赏金，但我们将接受并处理报告。
-
-### 超出范围的目标
-
-以下内容超出了安全漏洞报告的范围：
-
-* **langchain-experimental**：此存档存储库用于实验代码，不在安全报告范围内（请参阅[package warning](https://pypi.org/project/langchain-experimental/)）。
-* **示例和示例应用程序**：示例代码和演示应用程序不在安全报告的范围内。
-* **记录有安全声明的代码**：这将根据具体情况决定，但可能不在范围内，因为代码已经记录了开发人员应遵循的指南，以确保其应用程序安全。
-* **LangSmith相关存储库或API**：请参阅下面的[Reporting LangSmith Vulnerabilities](#reporting-langsmith-vulnerabilities)。
+## 报告OSS漏洞通过 Intigriti 上的 [LangChain Open Source VDP](https://app.intigriti.com/researcher/programs/langchain/langchain-open-source-vdp) 错误赏金计划报告 LangChain 开源项目中的安全漏洞。
 
 ## 报告LangSmith漏洞
 
-请通过电子邮件向`security@langchain.dev`报告与LangSmith相关的安全漏洞。
+通过 Intigriti 上的 [LangChain VDP](https://app.intigriti.com/researcher/programs/langchain/langchain-vdp) 错误赏金计划报告与 LangSmith 相关的安全漏洞。
 
-* LangSmith 站点：[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-security-policy)
-* SDK客户端：[https://github.com/langchain-ai/langsmith-sdk](https://github.com/langchain-ai/langsmith-sdk)
+### 其他安全问题
 
-### 其他安全问题如有任何其他安全问题，请通过`security@langchain.dev`联系我们。
+如有任何其他安全问题，请通过`security@langchain.dev`联系我们。
 
 ***
 

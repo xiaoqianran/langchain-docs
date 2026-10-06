@@ -42,22 +42,22 @@ LangSmith 可观察性可让您记录、检查和分析 AI 代理所采取的每
 
 [Learn how trajectories render in the Trajectory view](/langsmith/trajectory-view-integrations)。
 
-### 比较迹线、线程和轨迹| |追踪|主题 |轨迹 |
+### 比较迹线、线程和轨迹| |追踪 |主题 |轨迹 |
 | - | - | - | - |
-|形状|运行树|痕迹序列 |扁平化、有序的消息列表 |
+|形状|运行树 |痕迹序列 |扁平化、有序的消息列表 |
 |包含 |每次运行，都有完整的输入和输出|每个链接跟踪中的每次运行 |每个链接跟踪中的每条消息均经过重复数据删除 |
 |当 | 时伸手去拿它您正在调试为什么一项操作失败或运行缓慢 |您正在检查代理在回合中的行为方式，计时和嵌套完好无损 |您正在阅读会话中交换的内容，但没有执行详细信息 |
 
 <Callout type="info" icon="feather">
-  使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获取见解，而无需手动挖掘数据。
+  使用 **[Chat](/langsmith/chat)** 分析跟踪、运行和线程。聊天可帮助您了解代理性能、调试问题并从对话线程中获得见解，而无需手动挖掘数据。
 </Callout>
 
 ### 跟踪容器
 
-LangSmith 如何对跟踪进行分组取决于您的工作区使用的信息架构。左上角的控件会告诉您您所在的位置。
+LangSmith 如何对跟踪进行分组取决于您的工作区使用的信息架构。
 
 #### 代理和环境<Note>
-  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，请参阅 [Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 </Note>
 
 *代理*收集单个应用程序的痕迹，它是组织其他所有内容的单元LangSmith。代理的踪迹划分为四个固定的“环境”：生产、登台、开发和本地。跟踪落在一个代理的一个环境中，因此有关生产行为的查询永远不必手动排除测试流量。
@@ -102,7 +102,7 @@ LangSmith 如何对跟踪进行分组取决于您的工作区使用的信息架�
 
 ### 手动仪器
 
-*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您不使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
+*手动检测*允许您向任何代码添加跟踪，无论框架如何。当您未使用受支持的集成或需要对跟踪内容进行精细控制时，请使用它。 LangSmith提供了三种机制：
 
 * `@traceable` / `traceable`：用于跟踪任何函数的装饰器
 * `trace` 上下文管理器（Python）：包装特定的代码块

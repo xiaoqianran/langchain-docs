@@ -12,7 +12,7 @@
 
 直接模型访问通过特定于提供商的网关路径公开每个提供商 API。网关仍然处理身份验证、提供商机密、策略和跟踪，但它不会将请求和响应转换为另一个提供商的 API 格式。
 
-对于跨提供商的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
+对于跨提供者的模型调用，首选 [standard model access](/langsmith/llm-gateway-quickstart)。当您想要直接访问提供商的 API、保留其本机请求和响应行为并避免网关的标准化层时，请使用直接模型访问。
 
 ## 选择提供商路径
 
@@ -28,6 +28,8 @@
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
 | Gemini企业代理平台 | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
 | OpenAI | `/openai` | `OPENAI_API_KEY` |
+|缩小| `/scaledown` | `SCALEDOWN_API_KEY` |
+|类型安全 | `/typesafe` | `TYPESAFE_API_KEY` |
 | xAI | `/xai` | `XAI_API_KEY` |[Gateway Credits models](/langsmith/llm-gateway-credits) 使用标准端点而不是特定于提供者的路径。这些托管模型不需要您自己的提供商秘密。
 
 ## 配置提供商 SDK
@@ -100,7 +102,7 @@ export LANGSMITH_GATEWAY="true"
 
 ## 使用区域网关
 
-如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供商路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
+如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 并附加提供程序路径。例如，在 GCP EU 中使用 `https://eu.gateway.smith.langchain.com/anthropic` 直接访问 Anthropic。
 
 ## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
 * [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。

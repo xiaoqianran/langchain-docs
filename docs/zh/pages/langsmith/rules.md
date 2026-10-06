@@ -35,15 +35,15 @@
 
 如果您的工作流程要求一条规则生成的数据在另一条规则触发时出现（例如，您希望 Webhook 包含评估分数），请使用下游规则上的过滤器来显式创建该依赖项。例如，请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
 
-## 将项目类型设置为运行或线程**项目类型**控件确定规则匹配的内容。将其设置为 **Runs**，规则会在每个匹配运行到达时对其进行评估。将其设置为**线程**，规则将等待对话完成，然后将其操作一次应用于整个线程。当您要查看或导出的单元是完整对话而不是单个回合时，请选择 **话题**。
+## 将项目类型设置为运行或线程**项目类型**控件确定规则匹配的内容。将其设置为 **Runs**，规则会在每个匹配运行到达时对其进行评估。将其设置为**线程**，规则将等待对话完成，然后将其操作应用于整个线程一次。当您要查看或导出的单元是完整对话而不是单个回合时，请选择 **话题**。
 
-线程规则需要一个跟踪项目或代理环境，将跟踪分组为线程。欲了解更多信息，请参阅[Configure threads](/langsmith/threads)。
+线程规则需要一个跟踪项目或代理环境，将跟踪分组到线程中。欲了解更多信息，请参阅[Configure threads](/langsmith/threads)。
 
 ### 配置线程规则
 
 选择 **Threads** 会更改规则形式的三个部分：
 
-* **线程过滤器**：过滤器构建器将 **跟踪计数** 和 **线程 ID** 添加到可用字段。根据 **跟踪计数** 进行过滤，将规则范围限定为给定长度的对话。其他字段评估线程中的每个跟踪而不是整个线程，因此当任何跟踪匹配时，线程就匹配。例如，**状态** 上的筛选器会选择包含错误跟踪的每个线程，而不仅仅是上次跟踪出错的线程。
+* **线程过滤器**：过滤器构建器将 **跟踪计数** 和 **线程 ID** 添加到可用字段。根据 **跟踪计数** 进行过滤，将规则范围限定为给定长度的对话。其他字段评估线程中的每个跟踪而不是整个线程，因此当任何跟踪匹配时，线程就匹配。例如，**Status** 上的筛选器会选择包含错误跟踪的每个线程，而不仅仅是上次跟踪出错的线程。
 * **操作**：表单提供**添加到注释队列**、**添加到数据集**或**触发 Webhooks**。
 
 三个线程操作的行为如下：* **添加到注释队列**：将线程作为线程项添加到队列中。主题项目显示对话记录并仅支持标题反馈。关于运行项和线程项的区别，请参阅[annotation queue capability table](/langsmith/annotation-queues#single-run-annotation-queues)。
@@ -52,7 +52,7 @@
 
 ### 设置线程空闲时间
 
-线程规则仅在线程空闲后起作用。一旦提取了线程中的最后一个跟踪，LangSmith 就会等待配置的空闲时间过去，这表示会话已完成。空闲时间默认为 10 分钟，且不能设置低于 2 分钟。
+线程规则仅在线程空闲后起作用。一旦提取了线程中的最后一个跟踪，LangSmith 就会等待在跟踪项目或代理环境上配置的空闲时间过去，这表示会话已完成。空闲时间默认为 10 分钟，且不能设置低于 2 分钟。
 
 空闲时间是与[multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)共享的项目级设置。在项目上创建第一个线程规则会应用默认值，而不会覆盖已为该项目设置的值，并且更改该值会影响其中的每个线程计算器和线程规则。
 
@@ -71,7 +71,7 @@
 
 ## 创建规则
 
-1. 在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rules) 中，导航至侧边栏中的 **跟踪**，然后选择跟踪项目或代理环境。单击跟踪项目页面右上角的 **+ New**，然后单击 **New Automation**。
+1. 在[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rules)中，导航至侧边栏中的**跟踪**，然后选择跟踪项目或代理环境。单击跟踪项目页面右上角的 **+ New**，然后单击 **New Automation**。
 
 2. 命名您的规则。3. 选择**项目类型**，**运行**或**线程**。项目类型决定哪些过滤器字段和操作可用，因此请在配置之前进行设置。欲了解更多信息，请参阅[Set the item type to runs or threads](#set-the-item-type-to-runs-or-threads)。
 
@@ -85,7 +85,7 @@
      回填作为后台作业进行处理，因此您不会立即看到结果。为了跟踪回填进度，您可以[view logs for your automations](#view-logs-for-your-automations)。
    </Note>
 
-7. 选择规则执行的操作。 **运行** 项目类型的规则支持以下每个操作。具有**线程**项目类型的规则仅支持**添加到注释队列**、**添加到数据集**和**触发 Webhooks**。* **添加到注释队列**：将匹配的运行或跟踪添加到 [annotation queue](/langsmith/annotation-queues) 作为运行项。相反，话题规则将整个对话添加为话题项。如需手动添加螺纹，请参阅[Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
+7. 选择规则执行的操作。 **运行** 项目类型的规则支持下面的每个操作。具有**线程**项目类型的规则仅支持**添加到注释队列**、**添加到数据集**和**触发 Webhooks**。* **添加到注释队列**：将匹配的运行或跟踪添加到 [annotation queue](/langsmith/annotation-queues) 作为运行项。相反，话题规则将整个对话添加为话题项。如需手动添加螺纹，请参阅[Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
    * **添加到数据集**：运行规则将跟踪的输入和输出添加到[dataset](/langsmith/evaluation-concepts#datasets)。线程规则为每个匹配线程创建一个示例。每个示例都包含该线程的完整对话。
    * **触发 Webhooks**：将匹配的项目发布到规则上配置的每个 [webhook](/langsmith/webhooks) URL。
    * **延长数据保留**：延长使用基本保留 [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention) 的匹配跟踪的数据保留期限。

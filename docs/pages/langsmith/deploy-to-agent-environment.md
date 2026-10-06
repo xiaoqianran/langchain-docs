@@ -9,7 +9,7 @@ Deploying to an agent environment binds a [deployment](/langsmith/deployment) to
 Use it to keep a staging build and a production build of the same agent apart, so each one reports into its own environment.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables the change for an organization, and it applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 ## Prerequisites
@@ -29,7 +29,7 @@ Both CLIs take the same two flags:
 * **`--agent-id`**: The agent to deploy to. The value is the agent's identifier, not its display name. For which value is which, see [Identifiers and display names](/langsmith/agents#identifiers-and-display-names).
 * **`--agent-environment`**: The environment the deployment reports into, and one of `development`, `staging`, or `production`. A deployment cannot take `local`. That environment [does not display on deployments](/langsmith/agent-environments#select-an-environment) at all, which is the one way this set differs from the four values [agent addressing](/langsmith/log-traces-to-agent#addressing-variables) accepts.
 
-The flags name the same pair that [agent addressing](/langsmith/log-traces-to-agent) names on the tracing side. The LangGraph CLI also reads the flags from the same two variables, `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT`. The `mda` CLI does not read those variables, so pass the flags to it directly.
+The flags name the same pair that agent addressing names on the tracing side. The LangGraph CLI also reads the flags from the same two variables, `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT`. The `mda` CLI does not read those variables, so pass the flags to it directly.
 
 ## Deploy with the LangGraph CLI
 
@@ -59,7 +59,7 @@ These flags require `langgraph-cli` v0.4.32 or later in Python, and `@langchain/
      ```
    </CodeGroup>
 
-Pass both flags or neither, because either one on its own is rejected. Do not combine them with `--name` or `--deployment-id`, which name a deployment directly and are rejected alongside an agent.
+Pass both flags or neither, because the CLI rejects either one on its own. Do not combine them with `--name` or `--deployment-id`, which name a deployment directly and which the CLI rejects alongside an agent.
 
 `--remote` forces a remote build. Without it, the CLI builds locally whenever Docker is available. For the rest of the flags, see [`langgraph deploy`](/langsmith/cli#deploy).
 
