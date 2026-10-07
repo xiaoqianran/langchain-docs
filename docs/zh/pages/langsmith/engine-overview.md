@@ -28,7 +28,11 @@ LangSmith Engine 是用于代理工程的LangSmith Agent。它从生产跟踪到
 
 ## 引擎如何运行
 
-引擎按照动态计划扫描每个连接的跟踪项目，以平衡成本和性能，按严重性对问题进行集群和优先级排序。它使用 LangChain 托管推理并以 LangChain 标准单位 (LSU) 收费。有关设置、成本和完整的问题工作流程，请参阅[Find and fix your agent's issues](/langsmith/engine)。有关 Engine 如何处理您的数据、其 GitHub 和模型子处理器控制及其合规性状况，请参阅[Engine security](/langsmith/engine-security)。有关引擎如何在自托管部署中运行的信息，请参阅[Engine on self-hosted](/langsmith/engine-self-hosted)。要在故障影响生产之前使用合成请求测试部署，请参阅[Proactively detect issues with Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming)。
+引擎按照动态计划扫描每个连接的跟踪项目，以平衡成本和性能。它按严重性和LangChain标准单位 (LSU) 中的费用对问题进行聚类和优先级排序。
+
+LangSmith 云使用 LangChain 托管推理。自托管部署可以使用 LangSmith Intelligence 或他们自己的模型提供商。 See [Engine on self-hosted](/langsmith/engine-self-hosted) for installation and model-provider options, and [Engine security](/langsmith/engine-security) for data handling and access controls.
+
+有关设置、成本和问题工作流程，请参阅[Find and fix your agent's issues](/langsmith/engine)。在 LangSmith 云上，[Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming) 还可以在故障到达生产之前使用合成请求测试部署。
 
 ## 开始吧
 
@@ -38,11 +42,11 @@ LangSmith Engine 是用于代理工程的LangSmith Agent。它从生产跟踪到
   </Card>
 
   <Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">
-    通过 Webhook 将检测到的问题发送到 Slack 或事件管理、寻呼或聊天工具。
+    Send detected issues to Slack or to your incident-management, paging, or chat tools through webhooks.
   </Card>
-</CardGroup>
+</CardGroup>***
 
-***<div>
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

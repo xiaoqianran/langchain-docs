@@ -112,7 +112,7 @@ await main();
   | `query_docs_filesystem_docs_by_lang_chain` |通过虚拟文件系统（`rg`、`head`、`cat`以及相关命令）读取或搜索文档。 |
   | `submit_feedback` |报告文档页面的问题。 |
 
-  `MCPAdapter` 使用服务器名称前缀公开这些工具，例如 `docs__search_docs_by_lang_chain`。
+  `MCPAdapter` 使用服务器名称前缀公开这些工具，例如 `docs_search_docs_by_lang_chain`。
 </Accordion>
 
 ## 交通

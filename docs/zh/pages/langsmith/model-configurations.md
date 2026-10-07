@@ -35,7 +35,7 @@
 
 ### 配置功能访问
 
-要配置 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations) 中的功能访问：
+要在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations) 中配置功能访问：
 
 1. 导航到 **设置** > **模型配置**。
 2. 在 **功能访问** 表中，找到您要配置的功能。
@@ -49,7 +49,7 @@
 
 ## 组织范围内的提供商控制
 
-提供商的可用性在两个层面上进行控制：* **组织**（组织管理员）：为**整个组织**打开或关闭提供程序 - 每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能。在 **设置** > **模型提供商** 中管理。
+提供商的可用性在两个层面上进行控制：* **组织**（组织管理员）：为**整个组织**（每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能）打开或关闭提供程序。在 **设置** > **模型提供商** 中管理。
 * **工作区**（工作区管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作区中**每个功能**的提供者和模型可用性。
 
 组织级别优先。为组织禁用的提供程序在每个工作区和每个功能中都不可用，并且在每个工作区的功能访问表中显示为**锁定** - 工作区管理员可以看到它，但无法重新启用它。工作空间仅在组织允许的提供商中进行选择。
@@ -64,8 +64,10 @@
 ## 组织范围的模型配置
 
 <Note>
-  组织范围的模型配置仅适用于 LangSmith [Self-hosted](/langsmith/self-hosted) 和 [Cloud Enterprise](/langsmith/pricing-plans)。
-</Note>[Organization admins](/langsmith/rbac#organization-admin) 可以在组织级别创建模型配置，因此组织中的每个 [workspace](/langsmith/administration-overview#workspaces) 都可以使用单个配置，而无需在每个工作区重复它。
+  组织范围的模型配置仅适用于 LangSmith [Self-hosted](/langsmith/self-hosted) 和 [Cloud Enterprise](/langsmith/pricing-plans)。在自托管安装中，组织范围的模型配置需要 Helm 图表版本 `0.17.0-rc.42` 或更高版本以及应用程序版本 `0.17.28rc1` 或更高版本。
+</Note>
+
+[Organization admins](/langsmith/rbac#organization-admin) 可以在组织级别创建模型配置，因此组织中的每个 [workspace](/langsmith/administration-overview#workspaces) 都可以使用单个配置，而无需在每个工作区重复它。
 
 组织范围的配置与工作区范围的配置一起显示在每个工作区的 **设置** > **模型配置** 页面上的 **配置** 表中。要使组织范围的配置在 Fleet、Playground、Evaluators 或其他功能中可用，[workspace admin](/langsmith/rbac#workspace-admin) 必须在该工作区的 [Feature Access](#feature-access) 表中启用它。
 
@@ -78,9 +80,9 @@
 3. 选择**提供商**和**型号**，并填写其余字段。
 4. 单击“**保存**”。
 
-### 在工作区中启用组织范围的配置
+### 在工作区中启用组织范围的配置创建组织范围的配置后，工作区管理员必须在其出现在工作区功能中之前启用它：
 
-创建组织范围的配置后，工作区管理员必须在其出现在工作区功能中之前启用它：1. 在工作区中，导航到 **设置** > **模型配置**。
+1. 在工作区中，导航到 **设置** > **模型配置**。
 2. 在 **配置** 表中找到组织范围的配置。
 3. 在 **功能访问** 表中，启用应显示的每个功能的配置。
 
@@ -107,7 +109,7 @@
    * **提供商配置**：提供商 API、基本 URL
    * **选项**：停止序列、种子、JSON 模式、额外标头、每秒请求数、额外参数
 
-   可用参数因提供商而异 - 有关详细信息，请参阅提供商的文档。
+   可用参数因提供商而异——有关详细信息，请参阅提供商的文档。
 6. 单击“**保存**”。
 
 ### 编辑配置
@@ -177,7 +179,7 @@ sequenceDiagram
     Broker-->>Caller: access_token
     Caller->>LLM: Request with Authorization: Bearer <token>
     LLM-->>Caller: Response
-```OAuth 和 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 之间的路由是按配置进行的，而不是按组织进行的。每个请求都会根据配置的 OAuth 状态解析为 OAuth 或 LLM 身份验证代理。单个多模型作业（例如，具有单独的思考和总结模型的[Insights](/langsmith/insights)）可以混合两个流程，因为每个模型都是独立解析的。
+```OAuth 和 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 之间的路由是按配置进行的，而不是按组织进行的。每个请求都会根据配置的 OAuth 状态解析为 OAuth 或 LLM 身份验证代理。单个多模型作业（例如，具有单独的思考模型和总结模型的[Insights](/langsmith/insights)）可以混合两个流程，因为每个模型都是独立解析的。
 
 ### 后备行为
 
@@ -188,8 +190,8 @@ sequenceDiagram
 ### 表面覆盖
 
 无论何时使用模型配置，都会遵循启用 OAuth 的配置：* [**Playground**](/langsmith/prompt-engineering-concepts)：聊天运行和实验运行。
-* [**Evaluators**](/langsmith/evaluation)：LLM-as-judge 配置、重用、预览测试和评估器详细信息 当每个提示解析为启用 OAuth 的配置时，测试全部跳过工作区秘密提示。
-* [**Insights**](/langsmith/insights)：思考和总结配置独立解决。
+* [**Evaluators**](/langsmith/evaluation)：LLM 作为法官配置、重用、预览测试和评估器详细信息 当每个提示解析为支持 OAuth 的配置时，测试全部跳过工作区秘密提示。
+* [**Insights**](/langsmith/insights)：思考和总结配置独立解析。
 * [**Chat**](/langsmith/chat)
 * [**Fleet**](/langsmith/fleet/index)
 

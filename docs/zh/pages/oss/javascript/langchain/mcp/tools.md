@@ -1,18 +1,18 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Tools | https://docs.langchain.com/oss/javascript/langchain/mcp/tools -->
 
-# Tools
+# 工具
 
-Load MCP tools into LangChain agents, control their execution, and handle server results and requests.
+将MCP工具加载到LangChain代理中，控制其执行，并处理服务器结果和请求。
 
-[`MCPAdapter`](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter) bridges MCP servers and LangChain agents: it discovers the tools a server advertises and adapts them into standard LangChain tools. Pass the tools from `listTools()` to [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) as you would any other LangChain tool.
+[⟦T9⟧](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter)桥接MCP服务器和LangChain代理：它发现服务器通告的工具并将其改编为标准LangChain工具。将工具从 `listTools()` 传递到 [⟦T11⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)，就像传递任何其他 LangChain 工具一样。
 
-This page covers what is specific to that bridge: identifying MCP tools, controlling their execution, handling their outputs, and responding when a server needs input during a call. For the runnable discovery-and-agent example, see the [MCP quickstart](/oss/javascript/langchain/mcp).
+本页介绍了该桥的具体内容：识别 MCP 工具、控制其执行、处理其输出以及在调用期间服务器需要输入时进行响应。有关可运行的发现和代理示例，请参阅 [MCP quickstart](/oss/javascript/langchain/mcp)。
 
-## Use MCP tools in an agent
+## 在代理中使用 MCP 工具
 
-Discover the server's catalog with [`MCPAdapter.listTools`](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter/listTools), then give the returned tools to [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent). From the agent's perspective, they behave like LangChain tools: the model chooses a tool, LangChain invokes it, and the resulting [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) returns to the model.
+使用[⟦T12⟧](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter/listTools)发现服务器的目录，然后将返回的工具交给[⟦T13⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)。从代理的角度来看，它们的行为类似于 LangChain 工具：模型选择一个工具，LangChain 调用它，并将生成的 [⟦T14⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 返回给模型。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -38,17 +38,15 @@ async function main(server: string) {
 }
 ```
 
-Keep the adapter open while the agent can call its tools, including when resuming an interrupted run. Call `await adapter.close()` when you finish using the agent.
+当代理可以调用其工具时（包括恢复中断的运行时），请保持适配器打开。当您使用完代理后，请致电`await adapter.close()`。
 
-For general guidance on defining, binding, and using LangChain tools, see [Tools](/oss/javascript/langchain/tools). For several MCP servers and their namespaced tool catalogs, see [Connections](/oss/javascript/langchain/mcp/connections#multiple-servers).
+有关定义、绑定和使用 LangChain 工具的一般指南，请参阅 [Tools](/oss/javascript/langchain/tools)。有关多个 MCP 服务器及其命名空间工具目录，请参阅[Connections](/oss/javascript/langchain/mcp/connections#multiple-servers)。
 
-## Handle tool outputs
+## 处理工具输出MCP 工具结果成为[⟦T16⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 对象，其中包含模型可以读取的内容、应用程序数据的工件以及指示成功或失败的状态。
 
-MCP tool results become [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) objects with content the model can read, an artifact for application data, and a status indicating success or failure.
+### 多模式内容
 
-### Multimodal content
-
-The adapter converts model-visible MCP content into LangChain [content blocks](/oss/javascript/langchain/messages#standard-content-blocks). For example, a tool that returns an MCP image block with a screenshot reaches the model as an `image` block.
+该适配器将模型可见的 MCP 内容转换为 LangChain [content blocks](/oss/javascript/langchain/messages#standard-content-blocks)。例如，返回带有屏幕截图的 MCP 图像块的工具以 `image` 块的形式到达模型。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -80,8 +78,8 @@ async function accessMultimodalToolContent(serverUrl: string) {
           } else if (block.type === "image") { // [!code highlight]
             console.log(`Image MIME type: ${block.mimeType}`); // [!code highlight]
             console.log(`Image data: ${String(block.data).slice(0, 50)}...`); // [!code highlight]
-          }
-        }
+          } // [!code highlight]
+        } // [!code highlight]
       }
     }
   } finally {
@@ -90,9 +88,9 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
-### Structured content
+### 结构化内容
 
-When a tool returns structured content, the adapter attaches it to the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) as an artifact rather than folding it into the model-visible text. Run the agent, then read the `artifact` from the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) instances in the result:
+当工具返回结构化内容时，适配器将其作为工件附加到[⟦T18⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 实例中读取 `artifact`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -128,13 +126,13 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-The `artifact` is an array of MCP result entries. Structured content appears in the entry with `type: "mcp_structured_content"`, and its `data` field holds the tool result's `structuredContent`.
+`artifact` 是 MCP 结果条目的数组。结构化内容出现在带有`type: "mcp_structured_content"`的条目中，其`data`字段保存工具结果的`structuredContent`。
 
-### Errors
+### 错误
 
-When a server returns `isError: true` during an agent tool call, the adapter returns a [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) with `status: "error"` and the server's message. The model can read the error and try again.
+当服务器在代理工具调用期间返回 `isError: true` 时，适配器将返回带有 `status: "error"` 和服务器消息的 [⟦T26⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)。该模型可以读取错误并重试。
 
-The adapter throws transport failures. When a tool runs inside `createAgent`, the agent's default error handling turns those failures into error tool messages too. The message's `status` alone does not distinguish the cause:
+适配器抛出传输故障。当工具在 `createAgent` 内运行时，代理的默认错误处理也会将这些故障转换为错误工具消息。消息的`status`本身并不能区分原因：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -165,13 +163,11 @@ async function divideByZero(serverUrl: string) {
     await adapter.close();
   }
 }
-```
+```如果您直接使用普通参数调用适配工具，则带有 `isError: true` 的服务器结果会抛出 `ToolException`，而 MCP 结果为 `error.result`。
 
-If you invoke an adapted tool directly with plain arguments, a server result with `isError: true` throws a `ToolException` instead, with the MCP result in `error.result`.
+## 工具元数据
 
-## Tool metadata
-
-The adapter stores MCP tool annotations in `tool.metadata.annotations`:
+适配器将 MCP 工具注释存储在 `tool.metadata.annotations` 中：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tool.metadata;
@@ -183,11 +179,11 @@ tool.metadata;
 // }
 ```
 
-`annotations` holds the server's MCP tool annotations, such as `readOnlyHint` and `destructiveHint`. A server may omit them, so the field can be `undefined`.
+`annotations`保存服务器的MCP工具注释，例如`readOnlyHint`和`destructiveHint`。服务器可能会省略它们，因此该字段可以是`undefined`。
 
-Read optional metadata defensively, so a missing field returns a default rather than failing:
+防御性地读取可选元数据，因此缺失的字段会返回默认值而不是失败：
 
-This example and the [human-in-the-loop example](#human-in-the-loop) import types from `@modelcontextprotocol/client`; add it as a direct dependency.
+此示例以及来自 `@modelcontextprotocol/client` 的 [human-in-the-loop example](#human-in-the-loop) 导入类型；将其添加为直接依赖项。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { DynamicStructuredTool } from "@langchain/core/tools";
@@ -202,11 +198,11 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
 }
 ```
 
-## Human-in-the-loop
+## 人机交互
 
-Reading annotations lets you gate a tool based on what the server declares about it, rather than hardcoding tool names. The MCP annotation classifies the tool and LangChain's human-in-the-loop middleware enforces the approval policy.
+阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机交互中间件强制执行审批策略。
 
-Read the destructive hint from metadata once during tool discovery. Then give the human-in-the-loop configuration a `when` predicate that receives each pending tool call and returns whether the call needs approval:
+在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { DynamicStructuredTool } from "@langchain/core/tools";
@@ -258,10 +254,8 @@ async function gateDestructiveTools(serverUrl: string) {
 ```
 
 <Warning>
-  `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm__delete_file`). An unprefixed key never matches, so the tool runs without approval.
-</Warning>
-
-When the agent calls a tool that the predicate gates, the run pauses. Approve the call to run it, or reject it to skip the tool and tell the model:
+  `interruptOn` 键必须是适配器的工具名称，其中包括服务器前缀 (`crm_delete_file`)。无前缀的密钥永远不会匹配，因此该工具无需批准即可运行。
+</Warning>当代理调用谓词门控的工具时，运行会暂停。批准调用以运行它，或拒绝它以跳过该工具并告诉模型：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
@@ -273,25 +267,23 @@ const resumed = await agent.invoke(
 );
 ```
 
-The predicate can also inspect the call's arguments. This lets a tool run freely for safe inputs and pause only for risky ones, such as a `delete_file` call targeting a protected path.
+谓词还可以检查调用的参数。这使得工具可以自由运行以实现安全输入，并仅在有风险的情况下暂停，例如针对受保护路径的 `delete_file` 调用。
 
-Access the arguments through `request.toolCall.args`.
+通过`request.toolCall.args`访问参数。
 
-Combine the metadata classification and argument check to gate a tool only when its type and inputs warrant approval. For the full approval workflow, see [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop).
+仅当工具的类型和输入值得批准时，才将元数据分类和参数检查相结合来控制工具。有关完整的审批工作流程，请参阅[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
 
-## Server requests during tool execution
+## 工具执行期间的服务器请求
 
-Most tools finish without asking the client for anything mid-call. When a server needs input, [`MCPAdapter`](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter) surfaces [elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) as a LangGraph [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt).
+大多数工具在通话过程中无需向客户询问任何信息即可完成。当服务器需要输入时，[⟦T44⟧](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter)将[elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation)显示为LangGraph[⟦T45⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt)。
 
-### Elicitation
+### 引出
 
-[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) lets an MCP server request input during a tool call. The adapter pauses the run with a LangGraph interrupt. Your application presents the request to the user and resumes the run with their answer.
+[Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) 让 MCP 服务器在工具调用期间请求输入。适配器通过 LangGraph 中断暂停运行。您的应用程序向用户提出请求，并根据用户的回答继续运行。
 
-Attach a [checkpointer](/oss/javascript/langchain/short-term-memory) to the agent and use the same `thread_id` when invoking and resuming it.
+将 [checkpointer](/oss/javascript/langchain/short-term-memory) 附加到代理，并在调用和恢复它时使用相同的 `thread_id`。
 
-This example assumes the booking tool asks for one date and pauses once. Replace the sample date with the user's answer.
-
-Interrupt-driven elicitation requires a modern MCP server and is enabled by default. Set `elicitation: false` on the server to opt out. For a legacy server, configure an `onElicitation` handler with `mode: "legacy"` instead. Without a checkpointer, a tool that asks for input fails with an error `ToolMessage` instead of pausing.
+此示例假设预订工具询问一个日期并暂停一次。将示例日期替换为用户的答案。中断驱动的诱导需要现代 MCP 服务器，并且默认启用。在服务器上设置`elicitation: false`以选择退出。对于旧服务器，请使用 `mode: "legacy"` 配置 `onElicitation` 处理程序。如果没有检查点，要求输入的工具会失败并出现错误 `ToolMessage`，而不是暂停。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command, MemorySaver } from "@langchain/langgraph";
@@ -342,31 +334,29 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-`createMCPElicitationResume` addresses the answer to the interrupt that requested it. The response uses the server's request key. Build every resume value with `createMCPElicitationResume` rather than a bare `{ responses }` object, which does not say which interrupt it answers.
+`createMCPElicitationResume` 寻址请求它的中断的答案。响应使用服务器的请求密钥。使用 `createMCPElicitationResume` 而不是裸露的 `{ responses }` 对象构建每个恢复值，这并没有说明它会响应哪个中断。
 
-Each interrupt's `value` is an `MCPElicitationInterrupt`: `type: "mcp_elicitation"`, `server`, `tool` (the server's own tool name, without the prefix), `arguments` (the effective tool arguments), and `requests`. Check `type` when the same agent can also raise human-in-the-loop interrupts.
+每个中断的`value`都是一个`MCPElicitationInterrupt`：`type: "mcp_elicitation"`、`server`、`tool`（服务器自己的工具名称，不带前缀）、`arguments`（有效工具参数）和`requests`。当同一代理也可以引发人机循环中断时，请检查`type`。
 
-When several calls pause at once, answer every interrupt. Merge the objects that `createMCPElicitationResume` returns into one `Command({ resume })`, for example `Object.assign({}, ...paused.__interrupt__!.map((q) => createMCPElicitationResume(q, answers)))`, or resume until `__interrupt__` is empty. A resume that answers only the first interrupt leaves the others paused.
-
-<Note>
-  Resuming reruns the tool from the beginning. Any work performed before the server asks for input can repeat. Make that work safe to repeat without duplicating side effects.
-</Note>
-
-Each answer uses one of these actions:
-
-* **`accept`**: Provide form `content` matching the request's schema, or confirm completion of a URL interaction without `content`.
-* **`decline`**: Refuse to provide the requested information.
-* **`cancel`**: Indicate that the user canceled the interaction.
-
-The adapter forwards the answer to the server, which decides how the tool call finishes.
-
-Only elicitation is answered this way. The adapter declares only the elicitation capability on each call, so a tool that needs [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) or [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) fails with a `ToolException`, which `createAgent` returns to the model as an error `ToolMessage`. See [Sampling and roots](/oss/javascript/migrate/langchain-mcp-adapters#sampling-and-roots).
+当多个呼叫同时暂停时，应答每个中断。将`createMCPElicitationResume`返回的对象合并为一个`Command({ resume })`，例如`Object.assign({}, ...paused.__interrupt__!.map((q) => createMCPElicitationResume(q, answers)))`，或者继续直到`__interrupt__`为空。仅响应第一个中断的简历会使其他中断暂停。
 
 <Note>
-  Interrupt-driven elicitation answers a server that returns its request as an `InputRequiredResult`. A server that only pushes elicitation over a legacy handshake session cannot be answered this way.
+  恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
+</Note>每个答案都使用以下操作之一：
+
+* **`accept`**：提供与请求架构匹配的表单`content`，或在没有`content`的情况下确认 URL 交互的完成。
+* **`decline`**：拒绝提供所要求的信息。
+* **`cancel`**：表示用户取消了交互。
+
+适配器将答案转发给服务器，服务器决定工具调用如何完成。
+
+只有启发式才是这样回答的。适配器仅在每次调用时声明启发功能，因此需要 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的工具会失败并返回 `ToolException`，其中 `createAgent` 将作为错误 `ToolMessage` 返回到模型。参见[Sampling and roots](/oss/javascript/migrate/langchain-mcp-adapters#sampling-and-roots)。
+
+<Note>
+  中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
 </Note>
 
-## See also
+## 另请参阅
 
 * [Content blocks](/oss/javascript/langchain/messages#standard-content-blocks)
 
@@ -382,10 +372,10 @@ Only elicitation is answered this way. The adapter declares only the elicitation
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

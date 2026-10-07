@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-06T15:31:55.742Z",
+  "fetchedAt": "2026-10-07T15:53:06.826Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1675,
+  "ok": 1676,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 477
+      "count": 478
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -1582,7 +1582,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-billing",
-      "bytes": 5053
+      "bytes": 5234
     },
     {
       "rel": "langsmith/byoc-byoiam.md",
@@ -1601,6 +1601,15 @@
       "trackName": "LangSmith",
       "group": "byoc-byovpc",
       "bytes": 9389
+    },
+    {
+      "rel": "langsmith/byoc-data-plane-cost.md",
+      "title": "AWS data plane cost estimate",
+      "url": "https://docs.langchain.com/langsmith/byoc-data-plane-cost",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "byoc-data-plane-cost",
+      "bytes": 4771
     },
     {
       "rel": "langsmith/byoc-faq.md",
@@ -1924,7 +1933,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "control-plane",
-      "bytes": 4781
+      "bytes": 4771
     },
     {
       "rel": "langsmith/cost-tracking.md",
@@ -2131,7 +2140,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "data-plane",
-      "bytes": 7764
+      "bytes": 7756
     },
     {
       "rel": "langsmith/data-purging-compliance.md",
@@ -2302,7 +2311,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-to-cloud",
-      "bytes": 5809
+      "bytes": 5963
     },
     {
       "rel": "langsmith/deploy-to-cloud-overview.md",
@@ -2419,7 +2428,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine",
-      "bytes": 55841
+      "bytes": 56077
     },
     {
       "rel": "langsmith/engine-github.md",
@@ -2428,7 +2437,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-github",
-      "bytes": 9103
+      "bytes": 31155
     },
     {
       "rel": "langsmith/engine-notifications.md",
@@ -2446,7 +2455,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-overview",
-      "bytes": 3457
+      "bytes": 3469
     },
     {
       "rel": "langsmith/engine-security.md",
@@ -2455,7 +2464,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-security",
-      "bytes": 10388
+      "bytes": 10548
     },
     {
       "rel": "langsmith/engine-self-hosted.md",
@@ -2464,7 +2473,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-self-hosted",
-      "bytes": 38874
+      "bytes": 39063
     },
     {
       "rel": "langsmith/engine-self-hosted-link.md",
@@ -3085,7 +3094,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "hybrid-legacy",
-      "bytes": 15498
+      "bytes": 15486
     },
     {
       "rel": "langsmith/improve-judge-evaluator-feedback.md",
@@ -3454,7 +3463,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "langsmith-managed-clickhouse",
-      "bytes": 7668
+      "bytes": 8521
     },
     {
       "rel": "langsmith/langsmith-mcp-server.md",
@@ -3778,7 +3787,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "manage-deployment",
-      "bytes": 2585
+      "bytes": 3607
     },
     {
       "rel": "langsmith/manage-evaluators-sdk.md",
@@ -3877,7 +3886,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "model-configurations",
-      "bytes": 17505
+      "bytes": 17677
     },
     {
       "rel": "langsmith/monitor-deployment.md",
@@ -4678,7 +4687,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "sandbox-auth-proxy",
-      "bytes": 37967
+      "bytes": 38312
     },
     {
       "rel": "langsmith/sandbox-cli.md",
@@ -4849,7 +4858,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-custom-tls-certificates",
-      "bytes": 5060
+      "bytes": 5439
     },
     {
       "rel": "langsmith/self-host-dependency-versions.md",
@@ -4876,7 +4885,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-egress",
-      "bytes": 18718
+      "bytes": 18993
     },
     {
       "rel": "langsmith/self-host-environment-variables.md",
@@ -4894,7 +4903,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-external-clickhouse",
-      "bytes": 14627
+      "bytes": 15270
     },
     {
       "rel": "langsmith/self-host-external-postgres.md",
@@ -7072,7 +7081,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "feedback",
-      "bytes": 354
+      "bytes": 313
     },
     {
       "rel": "langsmith/smith-api/feedback/create-feedback-formula-ep.md",
@@ -10519,7 +10528,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "smithdb-sdk-migration-query-runs",
-      "bytes": 113252
+      "bytes": 112618
     },
     {
       "rel": "langsmith/smithdb-sdk-migration-runs.md",
@@ -12022,7 +12031,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 25599
+      "bytes": 25857
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -12139,7 +12148,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 11779
+      "bytes": 11872
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -12472,7 +12481,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 9603
+      "bytes": 9601
     },
     {
       "rel": "oss/javascript/langchain/mcp/index.md",
@@ -12481,7 +12490,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 7332
+      "bytes": 7331
     },
     {
       "rel": "oss/javascript/langchain/mcp/tools.md",
@@ -12490,7 +12499,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 18283
+      "bytes": 18324
     },
     {
       "rel": "oss/javascript/langchain/messages.md",
@@ -13111,7 +13120,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "migrate",
-      "bytes": 19528
+      "bytes": 19525
     },
     {
       "rel": "oss/javascript/migrate/langchain-v1.md",
@@ -13786,7 +13795,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 49131
+      "bytes": 52164
     },
     {
       "rel": "oss/python/deepagents/subagents.md",
@@ -13822,7 +13831,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 28052
+      "bytes": 28310
     },
     {
       "rel": "oss/python/integrations/checkpointers/index.md",
@@ -13876,7 +13885,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 87606
+      "bytes": 88685
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -13984,7 +13993,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 30138
+      "bytes": 30498
     },
     {
       "rel": "oss/python/integrations/sandboxes/index.md",
@@ -14011,7 +14020,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 66859
+      "bytes": 67065
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14362,7 +14371,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 16956
+      "bytes": 17142
     },
     {
       "rel": "oss/python/langchain/messages.md",

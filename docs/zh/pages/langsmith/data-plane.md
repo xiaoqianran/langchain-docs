@@ -4,7 +4,7 @@
 
 # LangSmith数据平面
 
-*数据平面* 由您的 [Agent Servers](/langsmith/agent-server)（部署）、其支持基础设施以及不断轮询来自 [LangSmith control plane](/langsmith/control-plane) 的更新的“侦听器”应用程序组成。
+*数据平面* 由您的 [Agent Servers](/langsmith/agent-server)（部署）、其支持基础设施以及持续轮询来自 [LangSmith control plane](/langsmith/control-plane) 的更新的侦听器应用程序组成。
 
 ## 服务器基础设施
 
@@ -15,15 +15,15 @@
 * **秘密存储**：环境秘密的安全管理。
 * **自动缩放器**：根据负载缩放服务器容器。
 
-## “监听器”应用程序
+## 监听器应用程序
 
-数据平面“监听器”应用程序定期调用 [control plane APIs](/langsmith/control-plane#control-plane-api) 来：
+数据平面侦听器应用程序定期调用 [control plane APIs](/langsmith/control-plane#control-plane-api) 来：
 
-* 确定是否应创建新部署。
+* 确定是否应创建新的部署。
 * 确定是否应更新现有部署（即新修订版）。
 * 确定是否应删除现有部署。
 
-换句话说，数据平面“侦听器”读取控制平面的最新状态（所需状态），并采取措施协调未完成的部署（当前状态）以匹配最新状态。
+换句话说，数据平面侦听器读取控制平面的最新状态（所需状态），并采取措施协调未完成的部署（当前状态）以匹配最新状态。
 
 ## PostgreSQLPostgreSQL 存储服务器资源（线程、运行、助手、cron）和保存在 [long-term memory store](/oss/python/langgraph/persistence#memory-store) 中的项目。它也是[checkpoints](/oss/python/langgraph/persistence)（图执行状态）的默认后端。您可以选择将检查点存储在 MongoDB 中 - 请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。无论检查点后端如何，PostgreSQL 始终是必需的。
 
@@ -51,7 +51,7 @@
 2. 内存利用率
 3.待处理（进行中）数量[runs](/langsmith/runs)
 
-对于 CPU 利用率，自动缩放程序的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
+对于 CPU 利用率，自动缩放器的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
 
 对于挂起运行的数量，自动缩放器的目标是 10 个挂起运行。例如，如果当前容器数量为 1，但挂起运行的数量为 20，则自动缩放程序会将部署扩展到 2 个容器（20 个挂起运行 / 2 个容器 = 每个容器 10 个挂起运行）。
 

@@ -441,6 +441,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`GoodMemToolkit`](https://docs.goodmem.ai) | <span><a href="https://pypi.org/project/langchain-goodmem/">  <img alt="Downloads per month" /></a></span> |
   | [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | <span><a href="https://pypi.org/project/langchain-thordata/">  <img alt="Downloads per month" /></a></span> |
   | [`Tilores`](https://github.com/tilotech/tilores-langchain) | <span><a href="https://pypi.org/project/tilores-langchain/">  <img alt="Downloads per month" /></a></span> |
+  | [`Arcmira`](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | <span><a href="https://pypi.org/project/langchain-arcmira/">  <img alt="Downloads per month" /></a></span> |
   | [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/">  <img alt="Downloads per month" /></a></span> |
   | [`UniRate`](https://unirateapi.com) | <span><a href="https://pypi.org/project/langchain-unirate/">  <img alt="Downloads per month" /></a></span> |
   | [`CambToolkit`](https://docs.camb.ai/introduction) | <span><a href="https://pypi.org/project/langchain-camb/">  <img alt="Downloads per month" /></a></span> |

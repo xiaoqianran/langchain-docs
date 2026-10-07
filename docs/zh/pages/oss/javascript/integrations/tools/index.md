@@ -61,7 +61,7 @@
   | [⟦T19⟧](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack"><img alt="Downloads per month" /></a></span>|
   | [⟦T20⟧](https://atomic-mail.github.io/atomic-mail-agentic/langchain) | <span><a href="https://www.npmjs.com/package/@atomicmail/langchain"> <img alt="Downloads per month" /></a></span> |
   | [⟦T21⟧](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T22⟧](https://github.com/Pushary/pushary-langgraph) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph"><img alt="Downloads per month" /></a></span>|
+  | [⟦T22⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph"><img alt="Downloads per month" /></a></span>|
   | [⟦T23⟧](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools"> <img alt="Downloads per month" /></a></span> |
   | [⟦T24⟧](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain"><img alt="Downloads per month" /></a></span>|| [⟦T25⟧](/oss/javascript/integrations/tools/falkordb) | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts"> <img alt="Downloads per month" /></a></span> |
   | [⟦T26⟧](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions"><img alt="Downloads per month" /></a></span>|

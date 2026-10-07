@@ -91,6 +91,8 @@
 
 **创建新部署**面板中的存储库列表反映了更新的访问权限。
 
+如果您重命名或转移部署使用的存储库，[change the deployment's repository](/langsmith/manage-deployment#change-the-repository)。
+
 ## 另请参阅
 
 * [Revisions](/langsmith/deployment-revisions)

@@ -1,27 +1,27 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Connections | https://docs.langchain.com/oss/javascript/langchain/mcp/connections -->
 
-# Connections
+# 连接数
 
-Connection lifecycle, multiple servers, deployment scaling, protocol eras, and caching for MCP in LangChain.
+LangChain 中的连接生命周期、多服务器、部署扩展、协议时代和 MCP 缓存。
 
-[`MCPAdapter`](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter) discovers MCP tools and keeps their connections open so your agent can reuse them across calls. Discover tools with `listTools()` or `listToolsets()`, and close the adapter when your application finishes using them.
+[⟦T5⟧](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter) 发现 MCP 工具并保持其连接打开，以便您的代理可以在呼叫中重复使用它们。使用 `listTools()` 或 `listToolsets()` 发现工具，并在应用程序使用完它们后关闭适配器。
 
-Choose how long to keep the adapter open:
+选择适配器保持打开状态的时间：
 
-| Situation | Pattern | Go to |
+|情况|图案|前往|
 | - | - | - |
-| Script or agent invocation | Create the adapter, run the agent, then close in `finally` | [Connection lifecycle](#connection-lifecycle) |
-| Long-lived worker | Reuse one adapter and close it during shutdown | [Scale a deployment](#scale-a-deployment) |
+|脚本或代理调用 |创建适配器，运行代理，然后在 `finally` | 中关闭[Connection lifecycle](#connection-lifecycle) |
+|长寿工人|重复使用一个适配器并在关机期间将其关闭 | [Scale a deployment](#scale-a-deployment) |
 
-See [Transports](/oss/javascript/langchain/mcp#transports) for each server's connection options.
+有关每个服务器的连接选项，请参阅[Transports](/oss/javascript/langchain/mcp#transports)。
 
-## Connection lifecycle
+## 连接生命周期
 
-Constructing an adapter validates its configuration without opening connections. `listTools()`, `listToolsets()`, `getClient()`, and the resource methods connect when they run discovery. Keep the adapter open while your agent uses those tools.
+构建适配器可在不打开连接的情况下验证其配置。 `listTools()`、`listToolsets()`、`getClient()` 以及资源方法在运行发现时进行连接。当您的代理使用这些工具时，请保持适配器打开。
 
-To discover tools, run an agent, and release the connections, pass your MCP server's HTTP URL to `runAgent`:
+要发现工具、运行代理并释放连接，请将 MCP 服务器的 HTTP URL 传递到 `runAgent`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -46,15 +46,13 @@ async function runAgent(serverUrl: string) {
     await adapter.close();
   }
 }
-```
+````close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
 
-`close()` aborts in-flight adapter work, closes its connections, and clears its caches. You can call `listTools()` again to open fresh connections, but use the newly returned tools. Previously returned tools retain their closed clients.
+## 多个服务器
 
-## Multiple servers
+`servers` 中的每个命名条目都有自己的连接、身份验证和[protocol mode](#protocol-eras)。一个适配器可以连接到 HTTP 和 stdio 服务器。
 
-Each named entry in `servers` gets its own connection, authentication, and [protocol mode](#protocol-eras). One adapter can connect to both HTTP and stdio servers.
-
-To discover tools from both transports, pass a calendar server's HTTP URL and a files server's script path to `listServerTools`:
+要从两种传输方式发现工具，请将日历服务器的 HTTP URL 和文件服务器的脚本路径传递给 `listServerTools`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -79,17 +77,15 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-`listToolsets()` groups tools by server name. `listTools()` returns one array; pass a server name or an array of names to select which tools it returns. Selection filters the result, but discovery still contacts every configured server. A failure on an unselected server can fail the call.
+`listToolsets()` 按服务器名称对工具进行分组。 `listTools()` 返回一个数组；传递服务器名称或名称数组来选择它返回的工具。选择会过滤结果，但发现仍然会联系每个已配置的服务器。未选择的服务器出现故障可能会使呼叫失败。
 
-The adapter prefixes tool names with their server name by default, such as `calendar__search` and `files__search`. Set `prefixToolNameWithServerName: false` to keep raw names. `listTools()` throws if its selected tools contain duplicate names.
+默认情况下，适配器会为其工具名称添加服务器名称前缀，例如 `calendar_search` 和 `files_search`。设置 `prefixToolNameWithServerName: false` 以保留原始名称。如果所选工具包含重复名称，则`listTools()`抛出异常。OpenAI 和 Anthropic 工具名称 (`^[a-zA-Z0-9_-]+$`) 中仅接受字母、数字、`_` 和 `-`，OpenAI 最多 64 个字符，Anthropic 最多 128 个字符。适配器不会重命名违反这些限制的前缀名称，因此请保持服务器名称简短且不含点和空格。
 
-OpenAI and Anthropic accept only letters, digits, `_`, and `-` in tool names (`^[a-zA-Z0-9_-]+$`), up to 64 characters for OpenAI and 128 for Anthropic. The adapter does not rename a prefixed name that breaks these limits, so keep server names short and free of dots and spaces.
+在顶层设置`defaultToolTimeout`（以毫秒为单位），将其应用于每个服务器的工具；它战胜了服务器自己的`defaultToolTimeout`。
 
-Set `defaultToolTimeout` (in milliseconds) at the top level to apply it to every server's tools; it wins over a server's own `defaultToolTimeout`.
+## 扩展部署
 
-## Scale a deployment
-
-Create the adapter at module scope, outside the graph factory. Each factory call can discover the current tool catalog and build an agent using the shared connections:
+在图工厂之外的模块范围内创建适配器。每个工厂调用都可以发现当前的工具目录并使用共享连接构建代理：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -109,37 +105,33 @@ export async function makeGraph() {
 }
 ```
 
-Keep the adapter open across runs. Close it during application shutdown, after active runs finish. For runs with different user credentials, see [Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication).
+在运行过程中保持适配器打开。在活动运行完成后，在应用程序关闭期间关闭它。对于使用不同用户凭据的运行，请参阅[Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication)。
 
-Discovery throws on connection failures by default. Set `onConnectionError: "ignore"`, or provide a callback that returns normally, to continue with the remaining servers. Non-authentication failures keep that connection skipped on later discoveries, even with `cacheMode: "refresh"`. Close the adapter to clear skipped connections before discovering again. Authentication failures are retried on the next discovery.
+默认情况下，发现会引发连接失败。设置`onConnectionError: "ignore"`，或提供正常返回的回调，以继续其余服务器。即使使用`cacheMode: "refresh"`，非身份验证失败也会在以后的发现中跳过该连接。关闭适配器以清除跳过的连接，然后再次发现。身份验证失败将在下次发现时重试。Stdio 服务器支持 `restart` 设置，HTTP 和 SSE 服务器在配置 `mode: "legacy"` 时支持 `reconnect` 设置。重启后，再次调用`listTools()`，使用返回的工具；重新启动之前返回的工具保持关闭的连接。
 
-Stdio servers support `restart` settings, and HTTP and SSE servers support `reconnect` settings when configured with `mode: "legacy"`. After a restart, call `listTools()` again and use the returned tools; tools returned before the restart keep the closed connection.
+现代 MCP 服务器不保留会话，因此它们的副本可以在任何负载均衡器后面运行。会话遗留服务器仍然需要到一个副本的粘性路由。运行多个副本的现代服务器必须在它们之间共享一个`requestState`签名密钥，否则到达不同副本的引出答案将被拒绝。请参阅 MCP TypeScript SDK 文档中的 [Protect ⟦T35⟧ with the codec](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/servers/input-required.md#protect-requeststate-with-the-codec)。
 
-Modern MCP servers keep no session, so their replicas can run behind any load balancer. A sessionful legacy server still needs sticky routing to one replica. A modern server that runs several replicas must share one `requestState` signing key across them, or an elicitation answer that reaches a different replica is rejected. See [Protect `requestState` with the codec](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/servers/input-required.md#protect-requeststate-with-the-codec) in the MCP TypeScript SDK documentation.
+## 缓存
 
-## Caching
+MCP SDK 为工具列表提供内存缓存。重复发现可以避免网络请求，同时服务器的 `ttlMs` 提示仍然有效。如果没有肯定的`ttlMs`，发现会再次获取列表。
 
-The MCP SDK provides an in-memory cache for tool lists. Repeated discovery avoids a network request while the server's `ttlMs` hint remains valid. Without a positive `ttlMs`, discovery fetches the list again.
+使用`cacheMode`控制`listTools()`和`listToolsets()`如何读取响应缓存：
 
-Use `cacheMode` to control how `listTools()` and `listToolsets()` read the response cache:
-
-* **`"use"`** (the default): Serve a valid cached tool list when one is available, otherwise fetch and store it.
-* **`"refresh"`**: Fetch a fresh tool list and update the cache.
-* **`"bypass"`**: Fetch a fresh tool list without reading or updating the response cache.
-
-To refresh tools from all configured servers, pass an empty server-selection array and the discovery options:
+* **`"use"`**（默认）：当可用时提供有效的缓存工具列表，否则获取并存储它。
+* **`"refresh"`**：获取新的工具列表并更新缓存。
+* **`"bypass"`**：获取新的工具列表，而不读取或更新响应缓存。要从所有已配置的服务器刷新工具，请传递空的服务器选择数组和发现选项：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const tools = await adapter.listTools([], { cacheMode: "refresh" });
 ```
 
-The adapter also reuses converted LangChain tool wrappers when the server descriptors have not changed. Rediscovery returns the current tools; it does not update an existing agent's tool list. Build the next agent with the returned tools.
+当服务器描述符未更改时，适配器还会重用转换后的LangChain工具包装器。重新发现返回当前工具；它不会更新现有代理的工具列表。使用返回的工具构建下一个代理。
 
-## Protocol eras
+## 协议时代
 
-The adapter negotiates the MCP protocol separately for each server. The default `mode: "auto"` supports modern and legacy servers in the same adapter.
+适配器为每个服务器单独协商 MCP 协议。默认的 `mode: "auto"` 支持同一适配器中的现代和传统服务器。
 
-The legacy era starts with an `initialize` handshake. The modern era uses `server/discover` to discover server capabilities. Override `mode` when you need to require a specific era:
+传统时代从`initialize`握手开始。现代时代使用`server/discover`来发现服务器功能。当您需要特定时代时覆盖`mode`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -161,21 +153,19 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
 }
 ```
 
-Each server's `mode` controls its negotiation independently:
+每个服务器的`mode`独立控制其协商：
 
-* **`"auto"`** (the default): Try the current protocol and fall back for a legacy-only server.
-* **`"modern"`**: Require protocol version `2026-07-28` and fail instead of using legacy MCP.
-* **`"legacy"`**: Skip modern probing and use the legacy client interface.
+* **`"auto"`**（默认）：尝试当前协议并回退到仅旧服务器。
+* **`"modern"`**：需要协议版本 `2026-07-28` 并失败，而不是使用旧版 MCP。
+* **`"legacy"`**：跳过现代探测并使用旧版客户端界面。在 `"auto"` 模式下，通过 SSE 在相同的 URL 上重试使用 404 或 405 应答 Streamable HTTP 请求的 URL 服务器，然后将尾随的 `/mcp` 替换为 `/sse`。在 `"legacy"` 模式下，任何 4xx 都会回退，除非 `automaticSSEFallback: false`。
 
-In `"auto"` mode, a URL server that answers the Streamable HTTP request with 404 or 405 is retried over SSE, at the same URL and then with a trailing `/mcp` replaced by `/sse`. In `"legacy"` mode, any 4xx falls back unless `automaticSSEFallback: false`.
+`setLoggingLevel()` 是遗留的，当连接的服务器协商现代协议时抛出；在每个现代服务器上设置`logLevel`。
 
-`setLoggingLevel()` is legacy-only and throws when a connected server negotiated the modern protocol; set `logLevel` on each modern server instead.
+## 另请参阅
 
-## See also
+* [Authentication](/oss/javascript/langchain/mcp/auth)：承载、OAuth 和每用户凭据。
 
-* [Authentication](/oss/javascript/langchain/mcp/auth): Bearer, OAuth, and per-user credentials.
-
-* [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop): Pause and resume tool calls.
+* [Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)：暂停和恢复工具调用。
 
 * [MCP specification](https://modelcontextprotocol.io/specification/latest)
 
@@ -183,10 +173,10 @@ In `"auto"` mode, a URL server that answers the Streamable HTTP request with 404
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

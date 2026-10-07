@@ -549,31 +549,31 @@ The SmithDB-backed method has a dedicated, higher rate limit than the method it 
   <Tab title="Python">
     | | Before (`client.list_runs()`) | After (`client.runs.query()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="TypeScript">
     | | Before (`client.listRuns()`) | After (`client.runs.query()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Java">
     | | Before (`client.runs().query()`) | After (`client.runs().queryV2()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Go">
     | | Before (`client.Runs.Query()`) | After (`client.Runs.QueryV2()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="cURL">
     | | Before (`POST /api/v1/runs/query`) | After (`POST /api/v2/runs/query`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 </Tabs>
 
@@ -2295,10 +2295,10 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
 #### Complex boolean filters
 
+Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on the same field kind: SmithDB rejects OR across run fields and feedback fields in one expression (for example mixing `status` with `feedback_key`).
+
 <Tabs>
   <Tab title="Python">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2307,8 +2307,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         client = Client()
         filter_str = (
             'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-            ' or(neq(status, "error"),'
-            '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+            ' or(eq(status, "error"), eq(run_type, "llm")))'
         )
         runs = client.list_runs(project_name="default", filter=filter_str)
         ```
@@ -2325,8 +2324,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             client = Client()
             filter_str = (
                 'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-                ' or(neq(status, "error"),'
-                '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+                ' or(eq(status, "error"), eq(run_type, "llm")))'
             )
             project = await client.aread_project(project_name="default")
             runs = client.runs.query(project_ids=[str(project.id)], filter=filter_str)
@@ -2339,8 +2337,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="TypeScript">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2349,8 +2345,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const runs = client.listRuns({ projectName: "default", filter: filterStr });
         ```
       </Tab>
@@ -2362,8 +2357,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const project = await client.readProject({ projectName: "default" });
         const runs = client.runs.query({
           project_ids: [project.id],
@@ -2375,8 +2369,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="Java">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2391,8 +2383,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().query(
             RunQueryParams.builder().addSession(project.id()).filter(filterStr).build()
         ).items()
@@ -2412,8 +2403,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().queryV2(
             RunQueryV2Params.builder().addProjectId(project.id()).filter(filterStr).build()
         ).items()
@@ -2423,8 +2413,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="Go">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2445,7 +2433,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
         	Session: langsmith.F([]string{project.ID}),
         	Filter:  langsmith.F(filterStr),
@@ -2472,7 +2460,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
         	ProjectIDs: langsmith.F([]string{project.ID}),
         	Filter:     langsmith.F(filterStr),
@@ -2483,15 +2471,13 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="cURL">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -2505,7 +2491,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \

@@ -142,17 +142,17 @@ LangSmith API：<table>
 ### 设置
 
 1. 向我们提供您的LangSmith组织ID。您的 LangSmith 组织将配置为在云中部署数据平面。
-2. 从LangSmith UI 创建监听器。 `Listener` 数据模型是为实际的["listener" application](/langsmith/data-plane#listener-application) 配置的。
+2. 从LangSmith UI 创建监听器。 `Listener` 数据模型是为实际的[listener application](/langsmith/data-plane#listener-application) 配置的。
    1. 在左侧导航栏中，选择`Deployments` > `Listeners`。
    2. 在页面右上角，选择`+ Create Listener`。3. 为监听者输入唯一的`Compute ID`。 `Compute ID` 是用户定义的标识符，在当前 LangSmith 工作区中的所有侦听器中应该是唯一的。当最终用户创建新部署时，会向他们显示 `Compute ID`。确保 `Compute ID` 向最终用户提供有关其代理服务器部署将部署到的位置的上下文。例如，`Compute ID`可以设置为`k8s-cluster-name-dev-01`。在本示例中，Kubernetes 集群的名称为 `k8s-cluster-name`，`dev` 表示该集群保留用于“开发”工作负载，`01` 是一个数字后缀，用于减少命名冲突。
-   4. 输入一个或多个 Kubernetes 命名空间。稍后，“侦听器”应用程序将配置为部署到每个命名空间。
+   4. 输入一个或多个 Kubernetes 命名空间。稍后，侦听器应用程序将配置为部署到每个命名空间。
    5. 在页面右上角，选择`Submit`。
-   6. 创建监听后，复制监听ID。稍后在 Kubernetes 集群中安装实际的“侦听器”应用程序时（步骤 5），您将使用它。
+   6. 创建监听后，复制监听ID。稍后在 Kubernetes 集群中安装实际侦听器应用程序时您将使用它（步骤 5）。
    <Info>
      **重要**
-     从 LangSmith UI 创建侦听器不会在 Kubernetes 集群中安装“侦听器”应用程序。
+     从 LangSmith UI 创建侦听器不会在 Kubernetes 集群中安装侦听器应用程序。
    </Info>
-3. 提供[Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langgraph-dataplane)用于在 Kubernetes 集群中安装必要的组件。* `langgraph-dataplane-listener`：这是一项监听 LangChain 的 [control plane](/langsmith/control-plane) 以了解部署更改并创建/更新下游 CRD 的服务。这是["listener" application](/langsmith/data-plane#listener-application)。
+3. 提供[Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langgraph-dataplane)用于在 Kubernetes 集群中安装必要的组件。* `langgraph-dataplane-listener`：这是一项监听 LangChain 的 [control plane](/langsmith/control-plane) 以了解部署更改并创建/更新下游 CRD 的服务。这是[listener application](/langsmith/data-plane#listener-application)。
    * `LangGraphPlatform CRD`：LangSmith 部署的 CRD。这包含用于管理 LangSmith 部署实例的规范。
    * `langgraph-dataplane-operator`：此运算符处理对您的 LangSmith CRD 的更改。
    * `langgraph-dataplane-redis`：`langgraph-dataplane-listener`使用Redis实例来管理各种任务（主要是创建和删除部署）。
@@ -206,7 +206,7 @@ LangSmith API：<table>
 
 ## 听众
 
-在混合选项中，一个或多个 ["listener" applications](/langsmith/data-plane#listener-application) 可以运行，具体取决于您的 LangSmith 工作区和 Kubernetes 集群的组织方式。
+在混合选项中，一个或多个 [listener applications](/langsmith/data-plane#listener-application) 可以运行，具体取决于您的 LangSmith 工作区和 Kubernetes 集群的组织方式。
 
 ### Kubernetes集群组织* 一个或多个监听器可以在 Kubernetes 集群中运行。
 * 侦听器可以部署到该集群中的一个或多个命名空间中。

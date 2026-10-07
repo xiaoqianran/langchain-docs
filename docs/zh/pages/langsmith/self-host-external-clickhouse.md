@@ -137,6 +137,8 @@ clickhouse:
 
 <Warning>
   仅当您的 ClickHouse 服务器使用内部或私有 CA 时才挂载自定义 CA。公众信任的 CA 不需要此配置。
+
+  如果您确实设置了 `config.customCa`，则该捆绑包将成为 ClickHouse 迁移作业的唯一信任存储。该作业使用`curl`检查ClickHouse，它读取`SSL_CERT_FILE`并忽略系统CA存储。后端 Pod 使用 Python，两者都信任。因此，缺少根的捆绑包可以使应用程序正常运行，而每次升级都会失败并显示 `Timeout reached. ClickHouse is not ready.` 并且没有更多详细信息。包括 ClickHouse 服务器链接到的每个根，而不仅仅是内部根。对于LangSmith管理的ClickHouse，这意味着ISRG Root X1（参见[TLS certificates](/langsmith/langsmith-managed-clickhouse#tls-certificates)）。
 </Warning>
 
 <CodeGroup>
@@ -173,9 +175,7 @@ clickhouse:
 
 ### 具有客户端身份验证的双向 TLS (mTLS)
 
-从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 ClickHouse 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。
-
-如果您的 ClickHouse 服务器需要客户端证书身份验证：
+从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 ClickHouse 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。如果您的 ClickHouse 服务器需要客户端证书身份验证：
 
 * 提供包含您的客户端证书和密钥的 Secret。
 * 通过`clickhouse.external.clientCert.secretName`引用它，并用`certSecretKey`和`keySecretKey`指定键。
@@ -216,7 +216,9 @@ clickhouse:
   ```
 </CodeGroup>
 
-#### 使用 TLS 迁移迁移作业使用与应用程序相同的 TLS 和客户端证书配置，并通过 `clickhouse.external.nativePort` 上的本机协议进行连接。启用 TLS 后，将 `nativePort` 设置为 ClickHouse 原生 TLS 端口（默认为`9440`）。不需要单独的非 TLS 本机端口。
+#### 使用 TLS 迁移
+
+迁移作业使用与应用程序相同的 TLS 和客户端证书配置，并通过 `clickhouse.external.nativePort` 上的本机协议进行连接。启用 TLS 后，将 `nativePort` 设置为 ClickHouse 原生 TLS 端口（默认为`9440`）。不需要单独的非 TLS 本机端口。
 
 <Warning>
   将 `nativePort` 保留在 `9000` 和 `tls: true` 会导致迁移作业失败，因为它会尝试针对明文端口进行 TLS 握手。
@@ -237,9 +239,7 @@ commonPodSecurityContext:
   fsGroup: 1000
 ```
 
-**选项 2：添加到单个 pod 安全上下文**
-
-如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
+**选项 2：添加到单个 pod 安全上下文**如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
 
 ***
 

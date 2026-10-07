@@ -78,8 +78,8 @@ async function accessMultimodalToolContent(serverUrl: string) {
           } else if (block.type === "image") { // [!code highlight]
             console.log(`Image MIME type: ${block.mimeType}`); // [!code highlight]
             console.log(`Image data: ${String(block.data).slice(0, 50)}...`); // [!code highlight]
-          }
-        }
+          } // [!code highlight]
+        } // [!code highlight]
       }
     }
   } finally {
@@ -256,7 +256,7 @@ async function gateDestructiveTools(serverUrl: string) {
 ```
 
 <Warning>
-  `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm__delete_file`). An unprefixed key never matches, so the tool runs without approval.
+  `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm_delete_file`). An unprefixed key never matches, so the tool runs without approval.
 </Warning>
 
 When the agent calls a tool that the predicate gates, the run pauses. Approve the call to run it, or reject it to skip the tool and tell the model:

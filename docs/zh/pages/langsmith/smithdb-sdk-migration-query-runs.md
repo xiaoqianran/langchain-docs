@@ -18,7 +18,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.list_runs()` | `client.runs.query()` |
 
@@ -30,7 +30,7 @@
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.listRuns()` | `client.runs.query()` |
 
@@ -38,7 +38,7 @@
   </Tab>
 
   <Tab title="Java">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.runs().query()` | `client.runs().queryV2()` |
 
@@ -46,7 +46,7 @@
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.Runs.Query()` | `client.Runs.QueryV2()` |
 
@@ -54,7 +54,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `POST /api/v1/runs/query` | `POST /api/v2/runs/query` |有关完整参数和字段列表，请参阅[API doc](/langsmith/smith-api/runs/query-runs)。
   </Tab>
@@ -77,7 +77,7 @@
     | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
     | `trace_id` | `trace_id` |不变 |
     | `reference_example_id` | `reference_examples` |现在获取 UUID 列表 |
-    | `query` | *（已删除）* |没有同等的 |
+    | `query` | *（已删除）* |没有同等的|
     | `filter` | `filter` |语法不变 |
     | `trace_filter` | `trace_filter` |不变 |
     | `tree_filter` | `tree_filter` |不变 |
@@ -255,8 +255,8 @@
     | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-    | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
-    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
+    | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
   </Tab>
@@ -292,7 +292,7 @@
     | `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
     | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
     | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
     | `run.inDataset` | `run.is_in_dataset` |更名|
     | `run.childRunIds` | *（已删除）* |没有同等的 |
     | `run.childRuns` | *（已删除）* |没有同等的 |
@@ -402,7 +402,7 @@
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
+    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
     | `run.CompletionTokens` | `run.CompletionTokens` |不变 |
     | `run.TotalCost` | `run.TotalCost` |不变 |
     | `run.TotalTokens` | `run.TotalTokens` |不变 |
@@ -465,12 +465,12 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field now wraps the object;阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
-    | `prompt_token_details` | `prompt_token_details.raw` | Field now wraps the object;读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+    | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field now wraps the object;阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数值（是字符串）|
-    | `completion_token_details` | `completion_token_details.raw` | Field now wraps the object;读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -516,31 +516,31 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="Python">
     | |之前 (`client.list_runs()`) |之后（`client.runs.query()`）|
     | - | - | - |
-    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+    |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="TypeScript">
     | |之前 (`client.listRuns()`) |之后（`client.runs.query()`）|
     | - | - | - |
-    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+    |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="Java">
     | |之前 (`client.runs().query()`) |之后（`client.runs().queryV2()`）|
     | - | - | - |
-    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+    |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="Go">
     | |之前 (`client.Runs.Query()`) |之后（`client.Runs.QueryV2()`）|
     | - | - | - |
-    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+    |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="cURL">
     | |之前 (`POST /api/v1/runs/query`) |之后（`POST /api/v2/runs/query`）|
     | - | - | - |
-    |限制|每 10 秒 15 个请求 |每 10 秒 300 个请求 |
+    |限制|每 10 秒 10 个请求 |每 10 秒 300 个请求 |
   </Tab>
 </Tabs>
 
@@ -1396,7 +1396,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 </Tabs>
 
-<Note>要具体枚举跟踪，请使用`traces.query`而不是`is_root=True`。请参阅[Traces: query](/langsmith/smithdb-sdk-migration-traces)：它还通过`trace_aggregates`公开跟踪范围的`total_tokens`/`total_cost`。</Note>
+<Note>要具体枚举跟踪，请使用`traces.query`而不是`is_root=True`。请参阅 [Traces: query](/langsmith/smithdb-sdk-migration-traces)：它还通过 `trace_aggregates`.</Note> 公开跟踪范围的 `total_tokens`/`total_cost`。
 
 #### 通过 ID 列表获取运行
 
@@ -2242,10 +2242,10 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 #### 复杂布尔过滤器
 
+嵌套 `and()` / `or()` 过滤表达式仍然有效。将 `or()` 操作数保留在同一字段类型上：SmithDB 拒绝在一个表达式中跨运行字段和反馈字段进行 OR 运算（例如将 `status` 与 `feedback_key` 混合）。
+
 <Tabs>
   <Tab title="Python">
-    嵌套 `and()` / `or()` 过滤器表达式未更改。
-
     <Tabs>
       <Tab title="Before">
         ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2254,8 +2254,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         client = Client()
         filter_str = (
             'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-            ' or(neq(status, "error"),'
-            '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+            ' or(eq(status, "error"), eq(run_type, "llm")))'
         )
         runs = client.list_runs(project_name="default", filter=filter_str)
         ```
@@ -2272,8 +2271,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
             client = Client()
             filter_str = (
                 'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-                ' or(neq(status, "error"),'
-                '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+                ' or(eq(status, "error"), eq(run_type, "llm")))'
             )
             project = await client.aread_project(project_name="default")
             runs = client.runs.query(project_ids=[str(project.id)], filter=filter_str)
@@ -2286,8 +2284,6 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="TypeScript">
-    嵌套 `and()` / `or()` 过滤器表达式未更改。
-
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2296,8 +2292,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const runs = client.listRuns({ projectName: "default", filter: filterStr });
         ```
       </Tab>
@@ -2309,8 +2304,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const project = await client.readProject({ projectName: "default" });
         const runs = client.runs.query({
           project_ids: [project.id],
@@ -2322,8 +2316,6 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="Java">
-    嵌套 `and()` / `or()` 过滤器表达式未更改。
-
     <Tabs>
       <Tab title="Before">
         ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2338,8 +2330,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().query(
             RunQueryParams.builder().addSession(project.id()).filter(filterStr).build()
         ).items()
@@ -2359,8 +2350,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().queryV2(
             RunQueryV2Params.builder().addProjectId(project.id()).filter(filterStr).build()
         ).items()
@@ -2370,8 +2360,6 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="Go">
-    嵌套 `and()` / `or()` 过滤器表达式未更改。
-
     <Tabs>
       <Tab title="Before">
         ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2392,7 +2380,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
         	Session: langsmith.F([]string{project.ID}),
         	Filter:  langsmith.F(filterStr),
@@ -2419,7 +2407,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
         	ProjectIDs: langsmith.F([]string{project.ID}),
         	Filter:     langsmith.F(filterStr),
@@ -2430,13 +2418,13 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="cURL">
-    嵌套 `and()` / `or()` 过滤器表达式未更改。<Tabs>
+    <Tabs>
       <Tab title="Before">
         ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -2450,7 +2438,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -2460,9 +2448,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
       </Tab>
     </Tabs>
   </Tab>
-</Tabs>
-
-#### 作用域过滤器：filter、trace\_filter、tree\_filter
+</Tabs>#### 作用域过滤器：filter、trace\_filter、tree\_filter
 
 <Tabs>
   <Tab title="Python">
@@ -2593,7 +2579,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
       </Tab>
     </Tabs>
   </Tab><Tab title="Go">
-    `Filter`、`TraceFilter` 和 `TreeFilter` 不变。 `Filter` 适用于匹配的运行，`TraceFilter` 应用于其跟踪的根，`TreeFilter` 应用于跟踪树中的其他运行（同级和子级）。
+    `Filter`、`TraceFilter` 和 `TreeFilter` 保持不变。 `Filter` 适用于匹配的运行，`TraceFilter` 应用于其跟踪的根，`TreeFilter` 应用于跟踪树中的其他运行（同级和子级）。
 
     <Tabs>
       <Tab title="Before">

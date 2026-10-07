@@ -6,7 +6,7 @@
 
 *控制平面*是LangSmith管理部署的部分。它包括控制平面 UI（用户在其中创建和更新[Agent Servers](/langsmith/agent-server)）以及控制平面 API（支持 UI 并提供编程访问）。
 
-当您通过控制平面进行更新时，更新将存储在控制平面状态中。 [data plane](/langsmith/data-plane)“监听器”通过调用控制平面 API 轮询这些更新。控制平面从不直接连接到数据平面。
+当您通过控制平面进行更新时，更新将存储在控制平面状态中。 [data plane](/langsmith/data-plane) 侦听器通过调用控制平面 API 轮询这些更新。控制平面从不直接连接到数据平面。
 
 ## 控制平面 UI
 
@@ -39,7 +39,7 @@
 
 ### 听众
 
-监听器是["listener" application](/langsmith/data-plane#listener-application)的一个实例。侦听器包含有关应用程序的元数据（例如版本）以及有关应用程序可以部署到的计算基础设施的元数据（例如 Kubernetes 命名空间）。
+监听器是[listener application](/langsmith/data-plane#listener-application)的一个实例。侦听器包含有关应用程序的元数据（例如版本）以及有关应用程序可以部署到的计算基础设施的元数据（例如 Kubernetes 命名空间）。
 
 ## 控制平面特性
 
@@ -51,7 +51,7 @@
 * 为部署创建后续修订版时，没有数据库创建步骤。与初始修订版的部署时间相比，后续修订版的部署时间要快得多。
 * 每个修订版的部署过程都包含一个构建步骤，该步骤可能需要几分钟的时间。
 
-控制平面和[data plane](/langsmith/data-plane)“监听器”应用程序协调以实现异步部署。
+控制平面和[data plane](/langsmith/data-plane)监听器应用程序协调以实现异步部署。
 
 ### 监控
 

@@ -453,8 +453,8 @@
     来自 Perplexity Search API 的 Web 搜索结果。
   </Card>
 
-  <Card title="Pushary" href="https://github.com/Pushary/pushary-langgraph" icon="link">
-    客户通过注册的 Pushary 移动应用程序进行确认、选择和文本输入，该应用程序作为 LangChain 结构化工具公开。
+  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
+    LangGraph.js 代理的电话批准。基于 PusharyInterrupt() 构建的批准节点会在手机上询问您的用户，并且图表仅在批准时路由到受保护的节点；如果没有答案，它将返回 null，因此该操作不会运行。 createAskHumanTool() 添加了一个可选的ask\_ human 工具。
   </Card>
 
   <Card title="Serpex" href="https://serpex.dev/docs" icon="link">
@@ -487,11 +487,11 @@
 
   <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
     针对检索应用程序的人工智能优化搜索。
+  </Card><Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+    与 Tavily 一起对给定主题进行综合研究。
   </Card>
 
-  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
-    与 Tavily 一起对给定主题进行综合研究。
-  </Card><Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
+  <Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
     使用其请求 ID 检索研究任务的状态和结果。
   </Card>
 

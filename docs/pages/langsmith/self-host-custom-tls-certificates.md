@@ -18,6 +18,9 @@ This page covers:
 Use this approach to make internal/public CAs trusted system‑wide by LangSmith (Playground model calls and [database/external service connections](/langsmith/self-hosted#storage-services)).
 
 1. Create a file containing all CAs required for TLS with databases and external services. If your deployment is communicating directly to `beacon.langchain.com` without a proxy, make sure to include a public trusted CA. All certs should be concatenated in this file with an empty line in between.
+
+   Include every root your databases chain to, public ones as well. Once this bundle is mounted, the database migration jobs trust only this file and not the system CA store, so a missing public root fails upgrades even though the application keeps running. If you use [LangSmith-managed ClickHouse](/langsmith/langsmith-managed-clickhouse#tls-certificates), add ISRG Root X1.
+
    ```
    -----BEGIN CERTIFICATE-----
    <PUBLIC_CA>

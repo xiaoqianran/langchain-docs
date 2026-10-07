@@ -17,7 +17,10 @@
   您必须使用 Helm Chart 0.11.9 或更高版本来使用以下配置挂载内部 CA。
 </Note>
 
-使用此方法通过LangSmith（Playground 模型调用和[database/external service connections](/langsmith/self-hosted#storage-services)）使内部/公共 CA 在系统范围内受信任。1. 创建一个文件，其中包含 TLS 与数据库和外部服务所需的所有 CA。如果您的部署在没有代理的情况下直接与 `beacon.langchain.com` 通信，请确保包含公共信任的 CA。所有证书都应在此文件中连接起来，中间有一个空行。
+使用此方法通过LangSmith（Playground 模型调用和[database/external service connections](/langsmith/self-hosted#storage-services)）使内部/公共 CA 在系统范围内受信任。
+
+1. 创建一个文件，其中包含 TLS 与数据库和外部服务所需的所有 CA。如果您的部署在没有代理的情况下直接与 `beacon.langchain.com` 通信，请确保包含公共信任的 CA。所有证书都应在此文件中连接起来，中间有一个空行。包括数据库链接到的每个根，以及公共根。安装此捆绑包后，数据库迁移作业仅信任此文件，而不信任系统 CA 存储，因此即使应用程序继续运行，丢失的公共根也会导致升级失败。如果您使用[LangSmith-managed ClickHouse](/langsmith/langsmith-managed-clickhouse#tls-certificates)，请添加 ISRG Root X1。
+
    ```
    -----BEGIN CERTIFICATE-----
    <PUBLIC_CA>
@@ -58,7 +61,7 @@
 
   * 天蓝色OpenAI
   * OpenAI
-  * 自定义（我们的自定义模型服务器）。请参阅[custom model server documentation](/langsmith/custom-endpoint)了解更多信息。这些 TLS 设置适用于所选模型提供程序的所有调用（包括在线评估）。当提供程序需要相互 TLS（客户端证书/密钥）或当您必须覆盖对提供程序调用的特定 CA 的信任时，请使用它们。它们补充了上面配置的内部 CA 捆绑包。
+  * 自定义（我们的自定义模型服务器）。更多信息请参阅[custom model server documentation](/langsmith/custom-endpoint)。这些 TLS 设置适用于所选模型提供程序的所有调用（包括在线评估）。当提供程序需要相互 TLS（客户端证书/密钥）或当您必须覆盖对提供程序调用的特定 CA 的信任时，请使用它们。它们补充了上面配置的内部 CA 捆绑包。
 </Note>
 
 您可以使用自定义 TLS 证书连接到 Playground 中的模型提供程序。如果您使用自签名证书、来自自定义证书颁发机构的证书或相互 TLS 身份验证，这非常有用。

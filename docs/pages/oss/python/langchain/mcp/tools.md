@@ -196,17 +196,14 @@ Reading annotations lets you gate a tool based on what the server declares about
 Read the destructive hint from metadata once during tool discovery. Then give the human-in-the-loop configuration a `when` predicate that receives each pending tool call and returns whether the call needs approval:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.agents.middleware.human_in_the_loop import InterruptOnConfig
-from langchain.mcp import MCPAdapter
 from langchain.tools import BaseTool
 from langchain.tools.tool_node import ToolCallRequest
-from langgraph.checkpoint.memory import InMemorySaver
 
 
 def is_destructive(tool: BaseTool) -> bool:
-    """Read the MCP destructive hint from the adapter's tool metadata."""
+    """Read the MCP destructive hint off the adapter's tool metadata."""
     annotations = (
         (tool.metadata or {}).get("mcp", {}).get("tool", {}).get("annotations", {})
     )
@@ -217,12 +214,14 @@ async def gate_destructive_tools(server):
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # Read the hint once, then apply the same predicate to every tool call.
+        # Read the destructive hint from metadata once, then let a callable
+        # decide per call. One config covers whatever destructive tools a
+        # server exposes, without hardcoding tool names.
         destructive = {tool.name for tool in tools if is_destructive(tool)}
-    
+
         def needs_approval(request: ToolCallRequest) -> bool:
             return request.tool_call["name"] in destructive
-    
+
         gate = InterruptOnConfig(
             allowed_decisions=["approve", "reject"], when=needs_approval
         )
@@ -276,12 +275,14 @@ from langgraph.types import Command
 
 
 async def book_with_elicitation(server) -> dict:
-    # When a server needs input mid-call, the adapter surfaces the question
-    # as a LangGraph interrupt.
+    # Elicitation is handled automatically: when a server needs input mid-call,
+    # the adapter surfaces the question as a LangGraph `interrupt()`, so the
+    # person already reviewing the agent's work answers it and the run resumes.
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # A checkpointer saves the interrupted run so it can resume.
+        # Resuming a paused run needs persistence, so the interrupted run has
+        # somewhere to wait.
         agent = create_agent("claude-sonnet-5", tools, checkpointer=InMemorySaver())
         config: Any = {"configurable": {"thread_id": "booking-1"}}
 
@@ -291,8 +292,8 @@ async def book_with_elicitation(server) -> dict:
         [interrupt] = paused["__interrupt__"]
         [question] = interrupt.value["requests"]
 
-        # Answers are keyed by the server's own request key.
-        # Use `decline` or `cancel` to refuse the request.
+        # Answers are keyed by the server's own request key, so nothing has to
+        # be tracked across the pause. `decline` or `cancel` would refuse.
         answer = {"action": "accept", "content": {"date": "2026-09-14"}}
         return await agent.ainvoke(
             Command(resume={"responses": {question["key"]: answer}}), config

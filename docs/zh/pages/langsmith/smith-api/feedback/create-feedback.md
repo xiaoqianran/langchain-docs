@@ -8,6 +8,5 @@
 创建新的反馈。
 
 `session_id` 标识反馈所属的跟踪项目。它是
-除非反馈是由`address`或`agent_id`解决的，并且
-`agent_environment`，通过Agent环境命名该项目
-那已经存在了。
+除非反馈是由`address`解决的，它指出了这一点
+通过已存在的代理环境进行项目。
