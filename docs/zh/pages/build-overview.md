@@ -167,7 +167,7 @@
         使用 LangSmith Fleet 构建并运行代理，无需代码。
       </Card>
 
-      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
         使用 LangSmith 引擎自动查找并修复重复出现的代理问题。
       </Card>
 
@@ -180,7 +180,7 @@
 
     <CardGroup>
       <Card title="LangSmith setup" icon="server" href="/langsmith/langsmith-setup-overview">
-        在云上托管、BYOC 或自托管、帐户设置和治理。
+        在云上托管、BYOC 或自托管、帐户设置和管理。
       </Card>
 
       <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">

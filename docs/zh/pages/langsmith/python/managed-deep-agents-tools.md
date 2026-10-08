@@ -106,7 +106,7 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.py` 文件名是为�
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念 |亲切 |它如何到达代理|
+## 何时使用工具|概念|亲切 |它如何到达代理|
 | - | - | - |
 | **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
@@ -128,7 +128,9 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.py` 文件名是为�
 
 如果工具需要 API 密钥或 OAuth 令牌，请使用连接在运行时解析凭据。参见[Manage connections](/langsmith/python/managed-deep-agents-connections)。
 
-## 访问运行时上下文对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+## 访问运行时上下文对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/python/langchain/tools#access-context)。
+
+Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
 
 要从工具读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 

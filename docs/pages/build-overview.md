@@ -173,7 +173,7 @@ Source: https://docs.langchain.com/index
         Build and run agents without code using LangSmith Fleet.
       </Card>
 
-      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
         Find and fix recurring agent issues automatically with LangSmith Engine.
       </Card>
 

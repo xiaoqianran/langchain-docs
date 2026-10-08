@@ -80,7 +80,7 @@ Once deployed, agents work with [Agent Server](/langsmith/assistants)'s executio
 </CardGroup>
 
 <CardGroup>
-  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
+  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine-overview">
     Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
   </Card>
 </CardGroup>

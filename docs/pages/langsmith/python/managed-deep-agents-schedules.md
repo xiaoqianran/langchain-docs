@@ -2,7 +2,7 @@
 
 # Add schedules to Managed Deep Agents
 
-Declare managed cron schedules for Managed Deep Agents deployments.
+Declare managed cron schedules for Managed Deep Agents deployments, or create them at runtime.
 
 Managed Deep Agents can run agents on a cron schedule. When you deploy the project, `mda deploy` provisions each schedule as a LangSmith cron after the deployment is live.
 
@@ -143,11 +143,125 @@ To test the agent behavior a schedule triggers, send the schedule's `prompt` or 
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that earlier `schedules/` declarations created and creates cron jobs for the current declarations. Removing a local schedule file and redeploying removes the corresponding managed cron. Schedules created at runtime are unaffected.
 
 <Warning>
   If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
+
+## Create schedules at runtime
+
+<Note>
+  Runtime schedules require `managed-deepagents` 0.9.0 or later.
+</Note>
+
+Declarations in `schedules/` are fixed when you deploy. The `schedules` API creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. Call it from a tool or from [middleware](/langsmith/python/managed-deep-agents-middleware). Each schedule belongs to the current user or to the agent.
+
+The agent reaches this API only through tools that you write. Expose the calls the agent needs, and leave out the ones it should not reach.
+
+When a tool creates a schedule during a [channel](/langsmith/python/managed-deep-agents-channels) run, such as a Slack conversation, the schedule inherits that channel. Each run posts its final answer back to it. A new thread posts a new Slack message, and the current thread replies in the existing Slack thread.
+
+`new_thread` decides which of the two a schedule uses.
+
+### Create a recurring schedule
+
+`remind_me` gives the agent a way to set up a recurring reminder for the person it is talking to. The agent calls it with the prompt to run and a cron expression for how often to run it. Each time the cron fires, a new run starts with that prompt as its user message. The agent decides what each scheduled run is asked to do.
+
+```python tools/schedules.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from managed_deepagents import schedules
+
+
+@tool
+async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
+    """Run a prompt for the current user on a cron schedule."""
+    item = await schedules.create(
+        owner={"type": "user"},
+        cron=cron,
+        timezone=timezone,
+        prompt=prompt,
+    )
+    return f"Created schedule {item['id']}."
+```
+
+Asked in Slack to send a standup reminder every weekday, the agent calls `remind_me`. It passes a prompt of its own wording and the cron `0 9 * * 1-5`. Each weekday run posts its answer to that Slack conversation as a new message, because `cron` schedules default to a new thread.
+
+### Create a one-time schedule
+
+Pass `at` in place of `cron` for work that runs once. `follow_up_later` gives the agent a way to set a single follow-up, such as checking a deploy after it finishes.
+
+```python tools/follow_up.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from langchain.tools import tool
+from managed_deepagents import schedules
+
+
+@tool
+async def follow_up_later(prompt: str, hours: int) -> str:
+    """Run a prompt once, a number of hours from now."""
+    item = await schedules.create(
+        owner={"type": "user"},
+        at=datetime.now(timezone.utc) + timedelta(hours=hours),
+        prompt=prompt,
+    )
+    return f"Scheduled a one-time follow-up: {item['id']}."
+```
+
+A one-time schedule defaults to the current thread, so its run continues the conversation that created it and replies in the same Slack thread.
+
+### Create options
+
+<ParamField type="object">
+  `{ type: "user" }` selects the authenticated person of the current run, and the schedule runs as that person. An optional `id` must match that person. `{ type: "agent" }` selects the schedules the agent owns, which run as the agent's service identity.
+</ParamField>
+
+<ParamField type="string">
+  A five-field cron expression for a recurring schedule. Give exactly one of `cron` and `at`.
+</ParamField>
+
+<ParamField type="datetime | str">
+  A `datetime` with a time zone, or an ISO 8601 timestamp that ends with `Z` or a UTC offset. The schedule runs once. The runtime rounds it up to the next whole minute. It must be at least one minute and at most 365 days in the future.
+</ParamField>
+
+<ParamField type="string">
+  An IANA time zone for `cron`, such as `America/Los_Angeles`. Do not pass it with `at`.
+</ParamField>
+
+<ParamField type="string">
+  A prompt that each run receives as a user message. Give exactly one of `prompt` and `input`.
+</ParamField>
+
+<ParamField type="object | object[]">
+  A structured LangGraph input for each run.
+</ParamField>
+
+<ParamField type="bool">
+  `True` starts each run on a new thread. `False` continues the current thread. Defaults to `True` with `cron` and `False` with `at`.
+</ParamField>
+
+<ParamField type="boolean">
+  Create the schedule without running it.
+</ParamField>
+
+<ParamField type="object">
+  JSON metadata for your own use. Keys that start with `mda_` are reserved.
+</ParamField>
+
+### Manage schedules
+
+`list`, `get`, `update`, and `delete` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+owner = {"type": "user"}
+
+page = await schedules.list(owner=owner, limit=20)
+item = await schedules.get(page["items"][0]["id"], owner=owner)
+await schedules.update(item["id"], {"paused": True}, owner=owner)
+await schedules.delete(item["id"], owner=owner)
+```
+
+`update` accepts `cron`, `at`, `timezone`, `prompt`, `input`, `paused`, and `metadata`. The channel and the thread choice are fixed at creation. `list` hides expired one-time schedules unless you pass `include_expired=True`. For the agent owner, `list` and `get` also return the schedules in `schedules/`, which you change in code.
 
 ## Troubleshoot schedules
 

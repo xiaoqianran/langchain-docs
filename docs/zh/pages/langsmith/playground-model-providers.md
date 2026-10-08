@@ -122,7 +122,7 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 要进行此设置：
 
-1. 在您的 AWS 账户中创建一个 IAM 角色，该角色具有调用 Bedrock 模型的权限（例如 `bedrock:InvokeModel`）。
+1. 在您的 AWS 账户中创建一个 IAM 角色，该角色具有调用 Bedrock 模型的权限（例如，`bedrock:InvokeModel`）。
 2. 添加信任策略，允许 LangSmith 的 AWS 账户 (`808407022534`) 代入该角色，并使用您的 LangSmith 工作区 ID 作为外部 ID：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -147,7 +147,7 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 <Tip>
   您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
-</Tip>3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM Trusted Entity** 部分并输入您创建的角色的 ARN。
+</Tip>3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
 
    <img alt="Bedrock secrets and API keys configuration with the IAM Trusted Entity section" />
 
@@ -192,7 +192,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：* **Anthrop
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 #### AWS 特定设置
 
@@ -263,7 +263,7 @@ Anthropic 在 Claude 一代中提供了三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载身份
+#### 自托管 LangSmith 的工作负载标识
 
 <Note>
   Azure OpenAI 工作负载标识需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
@@ -316,7 +316,7 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 #### 高级参数
 
@@ -356,7 +356,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **在场处罚** | -2.0 - 2.0 | |
 | **频率惩罚** | -2.0 - 2.0 | |
 
@@ -380,7 +380,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 ### 工具调用
 
@@ -401,7 +401,7 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **前 K** | 1+ | Top-k 采样 |
 
 ### 工具调用
@@ -415,20 +415,22 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 
 ### 身份验证
 
-Gemini 企业代理平台使用**服务帐户 JSON 密钥**在 LangSmith Playground 中进行身份验证。这是您从 Google Cloud Console 下载的 JSON 文件，其中包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐号的凭据。
+#### 服务帐户 JSON 密钥
 
-#### 第 1 步：创建服务帐户
+您可以通过在 LangSmith 中存储服务帐户 JSON 密钥来进行身份验证。此 JSON 文件包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐户的凭据。
+
+**第 1 步：创建服务帐户**
 
 1. 前往[Google Cloud Console > IAM & Admin > Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)。
 2. 选择您的项目并单击“**创建服务帐户**”。
 3. 为其命名（例如，`langsmith-vertex-ai`），然后单击“**创建并继续**”。
 4. 分配角色 **Vertex AI User** (`roles/aiplatform.user`) 并单击 **完成**。
 
-#### 第 2 步：下载 JSON 密钥1. 单击您刚刚创建的服务帐户。
-2. 转至 **密钥** 选项卡，然后单击 **添加密钥 > 创建新密钥**。
-3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。
+**第 2 步：下载 JSON 密钥**
 
-下载的文件如下所示：
+1. 单击您刚刚创建的服务帐户。
+2. 转至 **密钥** 选项卡，然后单击 **添加密钥 > 创建新密钥**。
+3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。下载的文件如下所示：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -443,13 +445,17 @@ Gemini 企业代理平台使用**服务帐户 JSON 密钥**在 LangSmith Playgro
 }
 ```
 
-#### 步骤 3：在 LangSmith Playground 中配置
+**第3步：在LangSmith Playground中配置**
 
 在 LangSmith Playground 中，打开 Gemini Enterprise Agent Platform 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
 
 <Warning>
   将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
 </Warning>
+
+#### 自托管 LangSmith 的工作负载身份
+
+GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应用程序默认凭证 (ADC)，而不是 JSON 密钥。这种无钥匙替代方案支持 Playground、Chat（Helm 中的`polly`）和 Insights。请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)来配置每个工作负载身份。
 
 ### 可用型号
 
@@ -461,7 +467,7 @@ Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **前 K** | 1+ | Top-k 采样 |
 
 #### 高级选项
@@ -510,7 +516,7 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 
 ### 工具调用
 
@@ -540,7 +546,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数 |对于可重复的输出 |
+| **种子** |整数|对于可重复的输出 |
 
 高级：
 
@@ -608,8 +614,8 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
-| **频率惩罚** | -2.0 - 2.0 |减少重复|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
+| **频率惩罚** | -2.0 - 2.0 |减少重复 |
 | **在场处罚** | -2.0 - 2.0 |鼓励新话题|
 
 **高级：**
@@ -662,7 +668,7 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样|
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
 | **在场处罚** | 0 - 2.0 |隐藏在推理模型中 |
 | **频率惩罚** | 0 - 2.0 |隐藏在推理模型中 |
 

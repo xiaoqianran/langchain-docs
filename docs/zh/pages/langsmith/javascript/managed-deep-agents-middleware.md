@@ -87,6 +87,8 @@ my-agent/
 
 例如，请参阅[Custom middleware](/oss/javascript/langchain/middleware/custom)。
 
+Managed Deep Agents 添加的调用方、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
+
 要从中间件挂钩读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ## 部署
@@ -97,20 +99,18 @@ my-agent/
 
 |概念|亲切 |它如何到达代理|
 | - | - | - |
-| **中间件** |申请代码|导入并传入代理定义 |
-| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
+| **中间件** |申请代码 |导入并传入代理定义 |
+| **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

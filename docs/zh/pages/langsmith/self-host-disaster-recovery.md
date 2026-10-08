@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Disaster recovery for self-hosted LangSmith | https://docs.langchain.com/langsmith/self-host-disaster-recovery -->
 
-# 自托管灾难恢复LangSmith
+# 自托管LangSmith的灾难恢复
 
-本页面介绍如何规划、配置和操作自托管 LangSmith 可观察性和评估的灾难恢复 (DR)。它涵盖了必须保护哪些数据、数据存放在哪里、如何备份以及如何在区域或分区故障后恢复平台。
+本页介绍如何规划、配置和操作自托管 LangSmith 可观察性和评估的灾难恢复 (DR)。它涵盖了必须保护哪些数据、数据存放在哪里、如何备份以及如何在区域或分区故障后恢复平台。
 
 <Note>
   **共同责任。** 对于自托管部署，您负责每个组件的备份、复制、恢复测试和恢复过程，包括 LangSmith Pod 和所有后备数据存储。 LangChain 仅对LangSmith 软件本身负责。有关等效的 SaaS 职责，请参阅[Shared responsibility model](/langsmith/shared-responsibility-model)。
@@ -20,18 +20,20 @@
 | - | - | - | - |
 | LangSmith服务 | `langsmith-frontend`、`langsmith-backend`、`langsmith-platform-backend`、`langsmith-queue`、`langsmith-ingest-queue`、`langsmith-playground`、`langsmith-ace-backend` |无国籍|重新安装 Helm 图表 |
 | PostgreSQL |操作数据：组织、工作区、用户、API 密钥、数据集、提示、项目、部署元数据 | **耐用** |从备份或副本恢复 |
-|点击屋 |跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
+|点击屋|跟踪和反馈（大量分析数据）| **耐用** |从备份或副本恢复 |
 | Blob 存储（S3/GCS/Azure Blob）|运行输入、输出、错误、清单、额外内容、事件、附件（启用时）| **耐用** |从版本化存储桶或副本恢复 |
-| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复|
+| Redis（或 Valkey）|临时队列状态、发布/订阅、缓存、运行心跳 |短暂的|重新配置；无需恢复 |
 | Kubernetes 对象 | Helm 值、`Secret`s、TLS 材料、IRSA / 工作负载身份绑定 |配置|从源代码管理重新应用或备份集群状态 |<Warning>
   所有持久数据存储必须一起受到保护。 Postgres、ClickHouse 和 Blob 存储是保存持久数据的三种存储； Redis 是短暂的，不需要备份。在没有 ClickHouse 和 blob 存储的情况下恢复 Postgres（反之亦然）会产生不一致的安装。从 Postgres 到 ClickHouse 中的运行以及 Blob 存储中的对象的引用突破了分歧点。始终采取协调备份，或使用跨存储区靠近的时间点恢复 (PITR) 目标。
 </Warning>
 
+<Warning>
+  上述 Redis 指南适用于平台的缓存和队列，而不是 Sandbox 使用的 JuiceFS 元数据存储。 JuiceFS Redis 保存持久的文件系统元数据，需要持久性和备份以及对象存储。参见[Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage)。
+</Warning>
+
 ## 规划您的 RPO 和 RTO
 
-在设计 DR 架构之前，定义两个目标：
-
-* **恢复点目标 (RPO)：** 您的组织可以容忍的最大数据丢失量（按时间衡量）。通过托管 Postgres PITR，RPO 通常不到 5 分钟。仅使用夜间快照，RPO 可达 24 小时。
+在设计 DR 架构之前，定义两个目标：* **恢复点目标 (RPO)：** 您的组织可以容忍的最大数据丢失量（按时间衡量）。通过托管 Postgres PITR，RPO 通常不到 5 分钟。仅使用夜间快照，RPO 可达 24 小时。
 * **恢复时间目标 (RTO)：** 发生故障后恢复服务所需的最长时间。跨地域温副本可实现分钟级RTO；从快照进行冷恢复可能需要数小时，尤其是对于大型 ClickHouse 数据集。
 
 以下部署模式采用三个目标配置文件之一：|简介 |典型 RPO |典型RTO |方法|
@@ -79,7 +81,7 @@ LangSmith 使用 PostgreSQL 作为操作和事务数据的主要存储。 **与 
 
 ## ClickHouse
 
-ClickHouse 拥有大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间的影响来规划备份和复制。
+ClickHouse 保存大量跟踪和反馈数据，通常是 LangSmith 部署中最大的数据存储。需要针对成本和恢复时间影响来规划备份和复制。
 
 ### 托管 ClickHouse
 
@@ -108,7 +110,7 @@ ClickHouse 拥有大量跟踪和反馈数据，通常是 LangSmith 部署中最�
   <Tab title="AWS">
     * 启用[S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)以防止意外删除和覆盖。
     * 为高安全性存储桶启用[MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html)。
-    * 对于跨区域容灾，请将[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html)配置为您的容灾区域中的存储桶。
+    * 对于跨区域容灾，将[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html)配置为您的容灾区域中的存储桶。
     * 使用 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 进行一次写入多次读取 (WORM) 保留。
     * 使用[SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html)加密。 LangSmith 支持传递特定的 KMS 密钥 ARN，请参阅[KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support)。
   </Tab>
@@ -136,14 +138,14 @@ Redis 存储临时元数据、队列状态和跨实例发布/订阅。 **Redis �
 * 使用适用于您的云的托管服务：[Amazon ElastiCache](https://aws.amazon.com/elasticache/redis/)、[Google Cloud Memorystore](https://cloud.google.com/memorystore) 或 [Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache)。
 * 启用多可用区故障转移。
 * 对于跨区域灾难恢复，在故障转移期间在灾难恢复区域中配置一个新的Redis实例； **不要**在新集群中重用活动区域的 Redis URI。<Warning>
-  每个 LangSmith 安装必须使用自己专用的 Redis 实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。
+  每个 LangSmith 安装必须使用自己的专用 Redis 实例。 **不要在两个安装之间共享 Redis 实例**，包括可能在任何时候都处于活动状态的主实例和 DR 副本。共享 Redis 会导致部署任务路由到错误的集群。参见[Connect external Redis](/langsmith/self-host-external-redis)。
 </Warning>
 
 ## Kubernetes 配置和秘密
 
 Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要。完整的恢复需要两者。* **Helm 值：** 将 `values.yaml` 存储在源代码管理中。单独跟踪每个环境的覆盖。
 * **图像版本：** 固定 LangSmith 图表版本和图像标签，以便恢复安装相同的软件版本。参见[Self-host upgrades](/langsmith/self-host-upgrades)和[Dependency versions](/langsmith/self-host-dependency-versions)。
-* **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的秘密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
+* **秘密：** LangSmith 从 Kubernetes `Secret` 读取数据库、blob 和许可凭证。将这些镜像到 DR 集群的机密管理器（[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)、[GCP Secret Manager](https://cloud.google.com/secret-manager) 或 [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/)）。参见[Use an existing secret](/langsmith/self-host-using-an-existing-secret)。
 * **TLS 材料：** 如果您在 LangSmith 入口处终止 TLS，请备份证书和密钥，或从 DR 区域中的私有 CA 重新颁发。参见[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)。
 * **IRSA / 工作负载身份绑定：** 在 DR 区域中重新创建 IAM 角色和服务帐户绑定；服务帐户 ARN 和注释是区域范围的。
 * **许可证密钥：** 将 LangSmith 许可证密钥与其他恢复密钥一起保存。
@@ -161,7 +163,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
 
 ### 跨区域主动/被动容灾
 
-这可以防止区域性停电。 It is significantly more expensive but is the right pattern for tier-1 deployments.* 灾难恢复区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
+这可以防止区域性停电。它的成本要高得多，但对于一级部署来说是正确的模式。* 灾难恢复区域中的第二个 Kubernetes 集群安装了 LangSmith Helm 图表，但扩展到低副本数（热）或零（冷）。
 * Postgres 跨区域副本（RDS 或 Aurora 跨区域副本、Cloud SQL 跨区域副本、Azure 灵活服务器跨区域副本）。促进故障转移。
 * ClickHouse Cloud 或 LangSmith 具有区域故障转移计划的托管 ClickHouse，**或** ClickHouse 备份复制到 DR 区域并在故障转移时恢复到新的自管理集群。通常不支持跨区域 ClickHouse 复制（ClickHouse Cloud 也不提供），因此请规划备份/恢复而不是热灾难恢复副本。
 * Blob 存储复制到具有版本控制和匹配生命周期规则的 DR 存储桶。
@@ -170,7 +172,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
   LangSmith是一个单写平台。跨区域部署应该是**主动/被动**，而不是主动/主动。不支持针对同一逻辑安装同时写入两个区域，这会产生数据不一致。
 </Note>
 
-## 恢复过程
+## 恢复程序
 
 ### 区域故障后恢复
 
@@ -211,7 +213,7 @@ Helm 图表值、Kubernetes `Secret`s 和身份绑定与数据备份一样重要
   <Step title="Cut DNS over">
     更新 DNS 以将流量路由到 DR 入口。向利益相关者传达切换情况。
   </Step><Step title="Plan failback">
-    一旦主要区域正常，就计划受控故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
+    一旦主要区域正常，就计划受控的故障恢复。这通常被安排在维护窗口中，并涉及在再次交换之前将主数据库重建为新的 DR 副本。
   </Step>
 </Steps>
 

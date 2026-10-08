@@ -16,25 +16,33 @@
 
 应用程序在沙箱中运行，没有自己的网络访问权限。主机将其 LangSmith API 请求与查看者的凭据一起转发，因此每个人只能看到其 [permissions](/langsmith/organization-workspace-operations) 允许的数据。主机不转发任何其他内容，并且它会阻止 API 密钥、成员、用户、身份、角色、权限、SCIM 和服务帐户的端点。
 
+## 配置自托管聊天
+
+<Warning>
+  在自托管部署中，使用聊天功能构建和编辑应用程序需要 [sandbox service URLs](/langsmith/deploy-self-hosted-full-platform#optional-enable-service-urls)。仅启用沙箱是不够的。
+</Warning><Note>
+  从 Helm Chart 版本 0.17.3（适用于 v0.17）和 0.18.0-rc.13（适用于 v0.18 预览）开始，可以使用聊天功能构建和编辑应用程序。
+</Note>
+
 ## 构建一个应用程序
 
 通过浏览器中的[chatting with LangSmith Chat](#build-with-chat)或[locally with the CLI](#build-locally-with-the-cli)和您自己的编码代理构建应用程序。两条路径都会生成相同的应用程序并存储相同的源代码，因此任何一个都可以[edit](#edit-an-app)另一个构建的内容。
 
-### 通过聊天进行构建在浏览器中构建有两个要求：
+### 通过聊天进行构建
 
-* **沙箱**：每个会话都在 [sandbox](/langsmith/sandboxes) 中运行。在自托管部署中，首先是[enable sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
+在浏览器中构建有两个要求：
+
+* **沙箱**：每个会话都在 [sandbox](/langsmith/sandboxes) 中运行。在自托管部署中，首先完成[self-hosted chat setup](#configure-self-hosted-chat)。
 * **权限**：`custom-apps:create`、`custom-apps:update`、`custom-apps:delete` 和 `custom-apps:download` 权限，加上 [sandbox permissions](#permissions)。
 
-如果没有两者，**App** 操作将打开 CLI 指令。 Chat 还需要 [model API key set for the workspace](/langsmith/chat#get-started) 才能发送消息。
+如果没有两者，**App** 操作将打开 CLI 指令。 Chat 还需要[model API key set for the workspace](/langsmith/chat#get-started) 才能发送消息。
 
 要构建带有聊天功能的应用程序：
 
 <Steps>
   <Step title="Start a new app">
     转到 **自定义应用程序** 并选择 **应用程序** 以打开聊天。在还没有应用程序的工作区中，页面直接打开聊天。
-  </Step>
-
-  <Step title="Describe what you want to build">
+  </Step><Step title="Describe what you want to build">
     在 Composer 中输入应用程序应执行的操作，然后从 Composer 的模型菜单中选择要构建的模型。作曲家在其背后的沙箱仍在启动时接受提示。当聊天开始写入文件时，LangSmith 保存草稿并打开聊天旁边的 **预览** 和 **代码** 选项卡。
   </Step>
 
@@ -43,13 +51,15 @@
   </Step>
 
   <Step title="Deploy the app">
-    选择**部署**。第一次部署要求输入名称、构建应用程序并将其发布到工作区。如果您在首次部署之前离开页面，LangSmith 会丢弃该应用程序。一旦 Chat 开始编辑，LangSmith 会在丢弃之前询问。
+    选择**部署**。第一次部署要求输入名称、构建应用程序并将其发布到工作区。
+
+    如果您在首次部署之前离开该页面，LangSmith 会丢弃该应用程序。一旦 Chat 开始编辑，LangSmith 会在丢弃之前询问。
   </Step>
 </Steps>
 
 ### 使用 CLI 本地构建
 
-本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建了一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
+本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
 
 <Steps>
   <Step title="Install the CLI">
@@ -63,9 +73,7 @@
   <Step title="Authenticate">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langsmith auth login
-    ```
-
-    要改用 API 密钥，请为自托管实例设置 `LANGSMITH_API_KEY`，再加上 `LANGSMITH_ENDPOINT`。有关配置文件和其他选项，请参阅[Authenticate](/langsmith/langsmith-cli#authenticate)。
+    ```要改用 API 密钥，请为自托管实例设置 `LANGSMITH_API_KEY`，再加上 `LANGSMITH_ENDPOINT`。有关配置文件和其他选项，请参阅[Authenticate](/langsmith/langsmith-cli#authenticate)。
   </Step>
 
   <Step title="Scaffold an app">
@@ -80,7 +88,9 @@
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     cd my-annotation-view
     langsmith apps dev
-    ```该应用程序在与 LangSmith 内相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
+    ```
+
+    该应用程序在与 LangSmith 内相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
   </Step>
 
   <Step title="Push it live">
@@ -94,29 +104,27 @@
 
 #### 入门模板
 
-将其中之一传递给`langsmith apps init --template`：
-
-|模板|它的脚手架是什么？
+将其中之一传递给`langsmith apps init --template`：| Template | What it scaffolds |
 | - | - |
-| `annotation-queue` |队列审核 UI：运行和线程项目、特定于类型的查看器和反馈规则。 |
+| `annotation-queue` |队列审查 UI：运行和线程项目、特定于类型的查看器和反馈规则。 |
 | `annotation-queue-grid` |与可编辑电子表格相同的审核工作流程。 |
 | `experiment-comparison` |评估实验与基线的并排比较。 |
 | `coding-agent-dashboard` |编码代理运行的图表：随时间变化的使用情况、成本、错误和活动。 |
 
-## 编辑应用程序
+## Edit an app
 
 通过聊天在浏览器中编辑应用程序，或提取其源代码并在本地进行编辑。
 
-### 通过聊天编辑从 **自定义应用程序** 打开应用程序并选择 **编辑**。已发布的应用程序被编辑工作区取代：左侧聊天，右侧相同的**预览**和**代码**选项卡。
+### Edit with chat
+
+从 **自定义应用程序** 打开应用程序并选择 **编辑**。已发布的应用程序被编辑工作区取代：左侧聊天，右侧相同的**预览**和**代码**选项卡。
 
 在聊天中请求更改，或直接在 **Code** 中编辑文件并使用 `Cmd+S`（在 Windows 和 Linux 上为`Ctrl+S`）保存。无论哪种方式，预览都会重建，并且标题中的徽章会更新其已更改文件的计数。
 
-两个操作结束会话：
+Two actions end the session:
 
 * **部署**：构建应用程序并将其发布为工作区的新版本。
-* **取消**：离开而不部署。未部署的更改保留在编辑沙箱中。
-
-编辑在沙箱中运行，在一段时间不活动后会停止。重新打开应用程序会唤醒沙箱，并保持未部署的更改完好无损。如果沙箱已被删除，请选择 **从保存的源重新创建** 以从上次部署的源重建会话。未部署的更改将会丢失。
+* **Cancel**: Leaves without deploying.未部署的更改保留在编辑沙箱中。编辑在沙箱中运行，在一段时间不活动后会停止。重新打开应用程序会唤醒沙箱，并保持未部署的更改完好无损。如果沙箱已被删除，请选择 **从保存的源重新创建** 以从上次部署的源重建会话。未部署的更改将会丢失。
 
 要重命名应用程序、复制其 ID 或更改共享对象，请从应用程序列表的行菜单中选择“**编辑**”。
 
@@ -127,19 +135,21 @@
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith apps pull my-app
 npm install --prefix my-app
-```使用您自己的编码代理编辑源代码，然后运行 ​​`langsmith apps push` 进行发布。
+```
+
+使用您自己的编码代理编辑源代码，然后运行 `langsmith apps push` 进行发布。
 
 脚手架 `AGENTS.md` 要求代理在应用程序根目录中保存 `context.md` 作为应用程序的内存：应用程序做什么、哪些文件重要以及它们背后的决策。任何根文件都会随源一起传输，因此拉取应用程序的团队成员会从您学到的内容开始，而不是从头开始。
 
-## 与您的组织共享应用程序
-
-自定义应用程序属于创建它的工作区。要与组织共享自定义应用程序，请打开应用程序列表中的行菜单，选择“**编辑**”，然后选择“**与组织共享**”。组织中的每个工作区都可以查看、更新和删除它。
+## 与您的组织共享应用程序自定义应用程序属于创建它的工作区。要与组织共享自定义应用程序，请打开应用程序列表中的行菜单，选择“**编辑**”，然后选择“**与组织共享**”。组织中的每个工作区都可以查看、更新和删除它。
 
 要将共享应用程序移回单个工作区，请从该工作区选择“**拉入此工作区**”。如果工作区已有同名应用程序，LangSmith 会要求您重命名它。
 
 当 CLI 按名称解析应用程序时，工作区应用程序会胜过同名的组织应用程序。
 
-## CLI 参考|命令 |它有什么作用 |
+## CLI 参考
+
+|命令 |它有什么作用 |
 | - | - |
 | `langsmith apps init --name NAME [--template TEMPLATE]` |在以应用程序命名的新目录中搭建一个入门应用程序，并安装其依赖项。 |
 | `langsmith apps dev` |在真实沙箱中本地运行当前目录的应用程序。 |
@@ -150,9 +160,7 @@ npm install --prefix my-app
 
 `dev`和`push`作用于当前目录，所以先切换到应用程序的目录。
 
-## 权限
-
-`custom-apps:*` 权限控制对自定义应用程序的访问。完整表格请参见[Custom apps](/langsmith/organization-workspace-operations#custom-apps)。
+## 权限`custom-apps:*` 权限控制对自定义应用程序的访问。完整表格请参见[Custom apps](/langsmith/organization-workspace-operations#custom-apps)。
 
 在浏览器中进行编辑还需要 `sandboxes:create`、`sandboxes:read`、`sandboxes:update`、`sandboxes:delete` 和 `sandboxes:exec` 权限，因为每个会话都在沙箱中运行。 **编辑** 操作仅对具有 `custom-apps:update`、`custom-apps:download` 和沙箱权限的用户显示。
 

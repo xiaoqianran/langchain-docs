@@ -6,7 +6,7 @@
 
 在自托管 LangSmith 实例上启用 LangSmith 部署、队列、见解、聊天、沙盒和引擎。
 
-除了基本 [LangSmith](/langsmith/self-hosted) 平台之外，您还可以在 LangSmith 自托管上启用以下功能：
+除了基础 [LangSmith](/langsmith/self-hosted) 平台之外，您还可以在 LangSmith 自托管上启用以下功能：
 
 * **[LangSmith Deployment](/langsmith/deployment)** 添加了 [control plane](/langsmith/control-plane) 和 [data plane](/langsmith/data-plane)，让您可以直接通过 LangSmith UI 部署、扩展和管理代理和应用程序。如果您不需要完整的基于 UI 的设置，请参阅 [standalone servers](/langsmith/deploy-standalone-server) 以获得轻量级替代方案。
 * **[Fleet](/langsmith/fleet/index)** 允许您直接在 LangSmith 中创建、部署和管理 AI 代理，无需任何代码。
@@ -65,7 +65,7 @@
 ### 组件
 
 启用 LangSmith 部署会在集群中配置以下资源：* `listener`：监听 [control plane](/langsmith/control-plane) 对部署的更改并创建或更新下游 CRD。
-* `LangGraphPlatform CRD`：管理LangSmith部署实例。
+* `LangGraphPlatform CRD`：管理LangSmith部署的实例。
 * `operator`：处理对 LangSmith CRD 的更改。
 * `host-backend`：[control plane](/langsmith/control-plane)。
 
@@ -127,6 +127,8 @@
 </Info>
 
 每个功能都需要 Fernet 加密密钥。您可以在单个 Helm 配置中启用所有三个功能。
+
+如果 Chat 或 Insights 在 GKE 上使用 Vertex AI，则使用 [configure GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 进行无密钥身份验证。同一份指南涵盖了 Playground。
 
 ### 组件
 
@@ -508,7 +510,7 @@ fleet:
   </Accordion>
 
   <Accordion title="Salesforce OAuth provider">
-    To enable Salesforce OAuth for Fleet, create a Salesforce External Client App, configure its OAuth settings and policies, retrieve its credentials, then configure a Salesforce OAuth provider in LangSmith.
+    要为 Fleet 启用 Salesforce OAuth，请创建 Salesforce 外部客户端应用程序，配置其 OAuth 设置和策略，检索其凭据，然后在 LangSmith 中配置 Salesforce OAuth 提供程序。
 
     <Steps>
       <Step title="Create an External Client App">
@@ -601,7 +603,7 @@ fleet:
 
 ### （可选）为队列启用 GitHub 应用程序
 
-Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置过程包括创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T186⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
+Fleet 通过专用的 **GitHub 应用程序**（不是 OAuth 应用程序）与 GitHub 集成。 GitHub 应用程序为 Fleet 的 GitHub 工具提供存储库访问，并支持私有存储库访问所需的用户授权流程。设置涉及创建 GitHub 应用程序、收集其凭据、将其存储为 Kubernetes 机密，以及从您的 [⟦T186⟧](/langsmith/kubernetes#configure-your-helm-charts) 引用它们。
 
 <Steps>
   <Step title="Create a GitHub App">
@@ -796,10 +798,12 @@ polly:
 ## 启用沙箱
 
 <Note>
-  Azure 上的自托管沙盒需要 LangSmith Helm Chart v17 (`0.17.x`)。
+  Azure 上的自托管沙箱需要 LangSmith Helm Chart v17 (`0.17.x`)。
 </Note>
 
-默认情况下，沙箱处于禁用状态。安装后，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)了解LangSmith UI 和 API 中的用户工作流程。### 支持的平台
+默认情况下，沙箱处于禁用状态。安装后，请参阅 [LangSmith Sandboxes](/langsmith/sandboxes) 了解 LangSmith UI 和 API 中的用户工作流程。基础设施模型和生产规划参见[Sandbox architecture](/langsmith/self-host-sandbox-architecture)、[scaling and capacity](/langsmith/self-host-sandbox-scaling)、[upgrades and operations](/langsmith/self-host-sandbox-operations)。
+
+### 支持的平台
 
 自托管沙箱受以下支持：
 
@@ -821,7 +825,7 @@ polly:
   <Step title="Install the base LangSmith platform">
     在启用沙箱之前，在 Kubernetes 上安装LangSmith。参见[Self-host LangSmith on Kubernetes](/langsmith/kubernetes)。
 
-    沙箱在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
+    沙盒在与 LangSmith 版本相同的 Kubernetes 集群和命名空间中运行。
   </Step>
 
   <Step title="Add KVM-capable nodes">
@@ -853,14 +857,14 @@ polly:
 
     * 与 Redis 兼容的元数据存储。
     * 对象存储桶或桶根。
-    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建一个。
+    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
 
     将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
     | **平台** | **存储价值** | **桶格式** |
     | - | - | - |
     |亚马逊AWS | `s3` |区域显式 HTTPS S3 端点，例如 `https://bucket-name.s3.us-west-2.amazonaws.com` |
-    | GCP | `gs` | GCS URL，例如`gs://bucket-name` |
+    | GCP | `gs` | GCS URL，例如`gs://bucket-name`|
     |天蓝色| `wasb` | Azure Blob 存储 URL，例如 `https://container-name.core.windows.net` |不要在 `sandboxes.juicefs.name` 中使用对象存储子路径。使用简单的名称，例如 `sandbox-juicefs`。 JuiceFS 在配置的存储桶中以该名称存储对象。
 
     <Tip>
@@ -875,7 +879,7 @@ polly:
 
     <Tabs>
       <Tab title="Using Kubernetes secrets (recommended)">
-        如果您使用 `config.existingSecretName`，请将沙箱密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
+        如果您使用 `config.existingSecretName`，请将沙盒密钥添加到相同的 LangSmith 应用程序 Secret。不要直接在 Helm 中设置秘密值。
 
         ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         stringData:
@@ -1031,7 +1035,7 @@ helm upgrade -i langsmith langchain/langsmith \
 
       * 为 JuiceFS 沙箱元数据创建专用的 ElastiCache Redis 实例。
       * 使用推荐的 `noeviction` 策略配置该专用实例。
-      * 重复使用LangSmith S3 存储桶进行沙箱对象存储。
+      * 重用LangSmith S3 存储桶进行沙箱对象存储。
       * 创建 JuiceFS 配置 Secret。
       * 添加预期的节点标签和污点。
 
@@ -1115,6 +1119,10 @@ sandboxes:
 
 这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。
 
+服务 URL 还需要 Ed25519 私有 JWKS，其第一个密钥上具有非空 `kid`。设置`config.signingJwks`，或将`langsmith_signing_jwks`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret)。这与 `sandboxes.callbackSigningJwk` 是分开的。密钥生成说明请参见[Configure a signing JWKS](/langsmith/langsmith-remote-mcp#enabling-remote-mcp)。
+
+服务 URL 是 [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat) 所必需的，尽管它们对于其他沙箱工作流程是可选的。
+
 ### 验证安装
 
 升级完成后，验证沙箱运行时 Pod 和 JuiceFS 卷是否已准备就绪：
@@ -1132,9 +1140,9 @@ kubectl get pods,pvc -n <namespace>
 4. 从快照创建一个新的沙箱。
 5. 验证 HTTP 服务器是否仍在恢复的沙箱中运行。
 
-### 升级注意事项
+### 升级注意事项沙盒运行时映像更改通过 `sandbox-host` Kubernetes 部署推出。该图表默认使用无浪涌滚动更新策略，因此一次更换一台主机。
 
-沙盒运行时映像更改通过 `sandbox-host` Kubernetes 部署推出。该图表默认使用无浪涌滚动更新策略，因此一次更换一台主机。在正常的 Helm 升级期间，终止主机停止接受新的 Sandbox，尝试将每个正在运行的 Sandbox 的 VM 内存保存到 JuiceFS，然后在 pod 退出之前停止这些 VM。此关闭受 `sandbox-host` Pod 终止宽限期限制，默认为 300 秒。这不是实时迁移：该主机上的沙箱在重新启动期间会中断。
+在正常的 Helm 升级期间，终止主机停止接受新的 Sandbox，尝试将每个正在运行的 Sandbox 的 VM 内存保存到 JuiceFS，然后在 pod 退出之前停止这些 VM。此关闭受 `sandbox-host` Pod 终止宽限期限制，默认为 300 秒。这不是实时迁移：该主机上的沙箱在重新启动期间会中断。
 
 沙箱不会主动重新启动。当用户或 API 操作启动沙箱或请求路径唤醒沙箱时，它们会再次启动。然后，LangSmith 将沙箱放置在可用主机上，并在关闭捕获完成时从保存的内存映像中恢复。如果内存映像不存在或不完整，沙盒将从保存的根文件系统启动。
 
@@ -1142,9 +1150,9 @@ kubectl get pods,pvc -n <namespace>
 
 <Info>
   自托管部署需要 LangSmith Helm 图表 `0.16.0` 或更高版本以及包含引擎权利的许可证。引擎单独获得许可并计量其在 LSU 中的使用情况。 [Contact our sales team](https://www.langchain.com/contact-sales) 将其添加到您的订单中。
-</Info>
+</Info>[Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障集中到问题中，诊断每个问题并提出修复建议。默认情况下禁用引擎。
 
-[Engine](/langsmith/engine-overview) 监视生产跟踪，将重复出现的故障聚类为问题，诊断每个问题并提出修复建议。默认情况下禁用引擎。引擎需要[Sandboxes](#enable-sandboxes)，并且在启用时与[Insights](#enable-fleet-insights-and-chat)共享部署。与本页上的其他功能不同，Engine 无法完全在集群内运行：它使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来进行支持诊断和修复的模型工作。
+引擎需要[Sandboxes](#enable-sandboxes)，并且在启用时与[Insights](#enable-fleet-insights-and-chat)共享部署。与本页上的其他功能不同，Engine 无法完全在集群内运行：它使用 LangSmith Intelligence（一种由 LangChain 管理的零数据保留服务）来进行支持诊断和修复的模型工作。
 
 因此，引擎的安装、出口和数据处理都记录在一页上。请参阅 [Engine on Self-hosted](/langsmith/engine-self-hosted) 了解区域可用性、先决条件、Helm 值和验证步骤。
 
@@ -1154,17 +1162,17 @@ kubectl get pods,pvc -n <namespace>
 
 <Warning>
   **不推荐；已计划弃用。** 不推荐通过控制平面配置其他数据平面，并且将在未来版本中弃用。相反，部署 [standalone Agent Servers](/langsmith/deploy-standalone-server) 并将其配置为跟踪您的自托管 LangSmith 实例。
-</Warning>
+</Warning>除了上面创建的数据平面之外，您还可以在不同的 Kubernetes 集群或不同命名空间下的同一集群中创建更多数据平面。有多种方法可以实现此目的，因此请实施最适合您的用例的解决方案。
 
-除了上面创建的数据平面之外，您还可以在不同的 Kubernetes 集群或不同命名空间下的同一集群中创建更多数据平面。有多种方法可以实现此目的，因此请实施最适合您的用例的解决方案。
+#### 先决条件
 
-#### 先决条件<Steps>
+<Steps>
   <Step title="Review cluster organization">
     通读 [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) 中的集群组织指南，了解如何针对您的用例进行组织。
   </Step>
 
   <Step title="Verify hybrid prerequisites">
-    验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，配置到[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)的出口，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
+    验证新集群的 [hybrid section](/langsmith/hybrid-legacy#prerequisites) 中的先决条件。在[prerequisites](/langsmith/hybrid-legacy#prerequisites)的步骤5中，将出口配置为[self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)，而不是`https://api.host.langchain.com`和`https://api.smith.langchain.com`。
   </Step>
 
   <Step title="Enable the feature in Postgres">
@@ -1193,9 +1201,7 @@ kubectl get pods,pvc -n <namespace>
 
 <Steps>
   <Step title="Update your config">
-    在您的[⟦T256⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：
-
-    * 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例运行所在的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
+    在您的[⟦T260⟧](/langsmith/kubernetes#configure-your-helm-charts)中，进行以下修改：* 将 `operator.watchNamespaces` 设置为您的自托管 LangSmith 实例运行所在的当前命名空间。这可以防止与新数据平面添加的运算符发生冲突。
     * 使用 [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) 或 [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway)。相应地调整您的`langsmith_config.yaml`。
   </Step>
 
@@ -1203,7 +1209,9 @@ kubectl get pods,pvc -n <namespace>
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
     ```
-  </Step><Step title="Follow the hybrid setup guide">
+  </Step>
+
+  <Step title="Follow the hybrid setup guide">
     按照 [hybrid setup guide](/langsmith/hybrid-legacy#setup) 中的步骤 2 至 6 进行操作。将 `config.langsmithWorkspaceId` 设置为上一步中的工作区 ID。将 `config.watchNamespaces` 设置为与现有数据平面使用的名称空间不同的名称空间。
   </Step>
 
@@ -1227,9 +1235,7 @@ kubectl get pods,pvc -n <namespace>
         -n langsmith
     ```
 
-    将这些值替换为您的注册表凭据：
-
-    * `myregistry.com`：您的注册表 URL
+    将这些值替换为您的注册表凭据：* `myregistry.com`：您的注册表 URL
     * `your-username`：您的注册表用户名
     * `your-password`：您的注册表密码或访问令牌
     * `langsmith`：安装LangSmith的 Kubernetes 命名空间
@@ -1288,7 +1294,9 @@ kubectl get pods,pvc -n <namespace>
   <Step title="Apply the changes">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```通过LangSmith UI 创建的所有用户部署都将继承这些注册表凭据。
+    ```
+
+    通过LangSmith UI 创建的所有用户部署都将继承这些注册表凭据。
   </Step>
 </Steps>
 
@@ -1298,13 +1306,11 @@ kubectl get pods,pvc -n <namespace>
 
 <Warning>
   对于控制平面 (`host-backend`) 和数据平面 (`listener`) 部署在不同 Kubernetes 集群中的自托管部署，不支持检索服务器日志。
-</Warning>
-
-对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets`、`replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
+</Warning>对于控制平面和数据平面位于同一集群的部署，请确保控制平面 Kubernetes 部署（`host-backend`）具有 `get`、`list`、`watch` Kubernetes `deployments`、`pods`、`replicasets` 和 `replicasets` 的权限`logs` 来自代理服务器部署所在的命名空间。有不同的方法可以实现这一目标。以下示例使用 Kubernetes RBAC，但请使用最适合您的用例的方法：
 
 <Steps>
   <Step title="Create a Role with the required permissions">
-    在代理服务器命名空间中创建一个`Role`。替换`<data_plane_namespace>`：
+    在代理服务器命名空间中创建`Role`。替换`<data_plane_namespace>`：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     kubectl apply -n <data_plane_namespace> -f - <<EOF
@@ -1357,7 +1363,9 @@ kubectl get pods,pvc -n <namespace>
     EOF
     ```
   </Step>
-</Steps><Note>
+</Steps>
+
+<Note>
   在此示例中，Role 和 RoleBinding 在与代理服务器部署相同的 Kubernetes 命名空间中定义。您可以为 Role 和 RoleBinding 分配任何名称，并根据需要自定义它们。
 </Note>
 

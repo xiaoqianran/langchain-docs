@@ -15,7 +15,7 @@
 * 运行 `playground` 服务的自托管 LangSmith 实例。
 * 您要配置的provider必须支持配置环境变量。检查提供商的聊天模型[documentation](https://docs.langchain.com/oss/python/integrations/providers/overview)以获取更多信息。
 * 您可能想要附加到 `playground` 服务的秘密/角色。
-  * 请注意，对于 [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)，您可能需要授予 `langsmith-playground` 服务帐户必要的权限来访问云提供商中的机密或角色。
+  * 请注意，对于 [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)，您可能需要向 `langsmith-playground` 服务帐户授予必要的权限来访问云提供商中的机密或角色。
 
 ＃＃ 配置使用上面的参数，您可以配置 LangSmith 实例以使用模型提供程序的环境变量。您可以通过修改 LangSmith Helm Chart 安装的 `langsmith_config.yaml` 文件来完成此操作。
 
@@ -76,37 +76,11 @@ playground:
 
 ### 使用工作负载身份
 
-您可以将 Playground 服务帐户配置为使用 GCP Workload Identity 来承担 GCP 服务帐户角色，而无需存储凭据。这是 GKE 集群的推荐方法。
+在 GKE 上运行的自托管 LangSmith 上，Playground 可以使用工作负载联合身份验证和 ADC，而不是服务帐户 JSON 密钥。请参阅 [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) 配置 Playground 以及 Chat 和 Insights。
 
-#### GCP 工作负载身份 (GKE)
+## AWS IRSA (EKS)
 
-对于 GKE 集群，请使用 GCP Workload Identity：
-
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    deployment:
-      extraEnv:
-        # Optional: Set project/location if not in model config
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_PROJECT_ID
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_LOCATION
-          value: "us-central1"
-      # No credentials needed - pod assumes GCP SA role via annotation
-    serviceAccount:
-      create: true  # Enable if not exists
-      annotations:
-        iam.gke.io/gcp-service-account: "vertexai-sa@your-gcp-project.iam.gserviceaccount.com"
-  ```
-</CodeGroup>
-
-<Note>
-  使用 GCP Workload Identity 时，请确保 GCP 服务帐户具有所需的 Gemini Enterprise Agent Platform 权限（例如 `roles/aiplatform.user`）。
-</Note>
-
-## AWS IRSA (EKS)对于 EKS 集群，您可以使用 AWS IRSA（服务账户的 IAM 角色）授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
+对于 EKS 集群，您可以使用 AWS IRSA（服务账户的 IAM 角色）授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
 
 <CodeGroup>
   ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -122,9 +96,7 @@ playground:
   确保您的 AWS IAM 角色拥有游乐场服务需要访问的 AWS 资源的必要权限。
 </Note>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

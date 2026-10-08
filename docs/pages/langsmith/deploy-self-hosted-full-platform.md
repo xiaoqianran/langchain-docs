@@ -132,6 +132,8 @@ To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith
 
 Each feature requires a Fernet encryption key. You can enable all three features in a single Helm configuration.
 
+If Chat or Insights uses Vertex AI on GKE, [configure GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) for keyless authentication. The same guide covers Playground.
+
 ### Components
 
 Enabling these features provisions the following components in your cluster for each feature (Fleet, Insights, Chat):
@@ -837,6 +839,8 @@ polly:
 
 Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes](/langsmith/sandboxes) for user workflows in the LangSmith UI and APIs.
 
+For the infrastructure model and production planning, see [Sandbox architecture](/langsmith/self-host-sandbox-architecture), [scaling and capacity](/langsmith/self-host-sandbox-scaling), and [upgrades and operations](/langsmith/self-host-sandbox-operations).
+
 ### Supported platforms
 
 Self-hosted Sandboxes are supported on:
@@ -1164,6 +1168,10 @@ sandboxes:
 ```
 
 This requires wildcard DNS and TLS for `*.sandbox-services.example.com`. When `ingress.enabled` is `true`, the chart also adds a wildcard ingress rule that routes these service URLs to the LangSmith platform backend.
+
+Service URLs also require an Ed25519 private JWKS with a nonempty `kid` on its first key. Set `config.signingJwks`, or add `langsmith_signing_jwks` to your [existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret). This is separate from `sandboxes.callbackSigningJwk`. For key generation instructions, see [Configure a signing JWKS](/langsmith/langsmith-remote-mcp#enabling-remote-mcp).
+
+Service URLs are required to [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat), even though they are optional for other sandbox workflows.
 
 ### Verify the installation
 

@@ -73,7 +73,7 @@ my-agent/
         return result
     ```
 
-    将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
+    将中间件导入项目根代理条目并将其传递到`middleware`列表中：
 
     ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from managed_deepagents import define_deep_agent
@@ -97,6 +97,8 @@ my-agent/
 
 例如，请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
 
+Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
+
 要从中间件挂钩读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ## 部署
@@ -105,11 +107,11 @@ my-agent/
 
 ## 何时使用中间件|概念|亲切 |它如何到达代理|
 | - | - | - |
-| **中间件** |申请代码|导入并传入代理定义 |
-| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
+| **中间件** |申请代码 |导入并传入代理定义 |
+| **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |托管上下文 |永远在线的系统提示 |
 
-有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+欲了解更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ***
 

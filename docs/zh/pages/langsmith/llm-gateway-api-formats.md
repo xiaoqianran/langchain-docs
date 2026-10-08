@@ -14,7 +14,7 @@
 
 ## 比较API格式
 
-| API格式|基本网址 |提示端点|兼容客户端|
+| API格式 |基本网址 |提示端点 |兼容客户端|
 | - | - | - | - |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
 | Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户发消息 |
@@ -22,7 +22,7 @@
 
 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。
 
-这些基本 URL 适用于 LangSmith 云上的美国网关。对于其他区域和 BYOC 数据平面，请参阅[Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。
+这些基本 URL 适用于 LangSmith 云上的美国网关。对于其他区域、BYOC 数据平面和自托管安装，请参阅[Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。
 
 对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-opus-5`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
 
@@ -151,7 +151,7 @@
 
 ## 启用提示缓存
 
-OpenAI 模型（聊天完成和响应）自动支持隐式提示缓存，不需要额外的参数。
+OpenAI 模型（聊天完成和响应）自动支持隐式提示缓存，无需额外参数。
 
 Anthropic 型号和一些较旧的 OpenAI 型号需要显式选择加入以提示缓存。通过任何标准网关端点调用这些模型时，在请求正文中传递特定于提供商的字段。
 
@@ -252,7 +252,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 * 当提供商本身支持所选格式时，网关将保留该格式。
 * 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
+* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 

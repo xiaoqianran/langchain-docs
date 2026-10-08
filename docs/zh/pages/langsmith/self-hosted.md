@@ -34,13 +34,14 @@
 **存储服务：**
 
 * ClickHouse（痕迹和反馈数据）
+* SmithDB（用于代理跟踪数据的可选列式数据存储）
 * PostgreSQL（运行数据）
 * Redis（队列和缓存）
 * Blob 存储（可选，但建议用于生产）
 
 <img alt="LangSmith architecture showing services and datastores" />
 
-<img alt="LangSmith architecture showing services and datastores" />要访问 LangSmith UI 并发送 API 请求，您需要公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载均衡器或主机上公开的端口。
+<img alt="LangSmith architecture showing services and datastores" />要访问 LangSmith UI 并发送 API 请求，您需要公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载平衡器或主机上公开的端口。
 
 ### 服务
 
@@ -58,9 +59,10 @@
   LangSmith默认捆绑所有存储服务。您可以将其配置为使用所有存储服务的外部版本。在生产环境中，我们**强烈建议使用外部存储服务**。
 </Note>|服务 |描述 |
 | - | - |
-|  **点击屋** | [ClickHouse](https://clickhouse.com/docs/en/intro)是一个高性能、面向列的SQL数据库管理系统（DBMS），用于在线分析处理（OLAP）。<br /><br />LangSmith使用ClickHouse作为跟踪和反馈（大容量数据）的主要数据存储。<br /><br />💡[Connect to external ClickHouse](/langsmith/self-host-external-clickhouse) |
-|  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) 是一个功能强大的开源对象关系数据库系统，它使用和扩展了 SQL 语言，并结合了许多功能，可以安全地存储和扩展最复杂的数据工作负载。<br /><br />LangSmith 使用 PostgreSQL 作为事务工作负载和操作数据的主要数据存储（除了跟踪和操作之外的几乎所有内容）反馈）。<br /><br />💡[Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS、GCP Cloud SQL、Azure 数据库 |
-|  **Redis / Valkey** | [Redis](https://github.com/redis/redis) 是一个强大的内存键值数据库，可持久保存在磁盘上。通过将数据保存在内存中，Redis 为缓存等操作提供了高性能。<br /><br />LangSmith 使用 Redis 来支持队列和缓存操作。 [Valkey](https://valkey.io/) 也得到官方支持，可作为 Redis 的直接替代品。<br /><br />💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache、GCP Memorystore、Azure Cache ||  **Blob 存储** | LangSmith 支持多个 Blob 存储提供程序，包括 [AWS S3](https://aws.amazon.com/s3/)、[Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/) 和 [Google Cloud Storage](https://cloud.google.com/storage)。<br /><br />LangSmith 使用 Blob 存储来存储大型文件，例如跟踪工件、反馈附件和其他大型数据对象。 Blob 存储是可选的，但强烈建议用于生产部署。<br /><br />💡[Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3、GCP GCS、Azure Blob |
+|  **点击屋** | [ClickHouse](https://clickhouse.com/docs/en/intro) 是一个高性能、面向列的 SQL 数据库管理系统 (DBMS)，用于在线分析处理 (OLAP)。<br /><br />LangSmith 使用 ClickHouse 作为跟踪和反馈（大容量数据）的主要数据存储。<br /><br />💡 [Connect to external ClickHouse](/langsmith/self-host-external-clickhouse) |
+|  **史密斯数据库** | SmithDB 是为代理跟踪数据构建的可选列式数据存储：深度嵌套的跨度、多模式内容以及保持打开状态数小时的跨度。<br /><br />SmithDB 在 LangSmith 0.17 及更高版本上可用。<br /><br />💡 [Enable SmithDB](/langsmith/self-host-smithdb) |
+|  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) 是一个功能强大的开源对象关系数据库系统，它使用和扩展了 SQL 语言，并结合了许多功能，可以安全地存储和扩展最复杂的数据工作负载。<br /><br />LangSmith 使用 PostgreSQL 作为事务工作负载和操作数据的主要数据存储（几乎除了跟踪和数据）反馈）。<br /><br />💡[Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS、GCP Cloud SQL、Azure 数据库 ||  **Redis / Valkey** | [Redis](https://github.com/redis/redis) 是一个强大的内存键值数据库，可持久保存在磁盘上。通过将数据保存在内存中，Redis 为缓存等操作提供了高性能。<br /><br />LangSmith 使用 Redis 来支持队列和缓存操作。 [Valkey](https://valkey.io/) 也得到官方支持，可作为 Redis 的直接替代品。<br /><br />💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache、GCP Memorystore、Azure 缓存 |
+|  **Blob 存储** | LangSmith 支持多个 Blob 存储提供程序，包括 [AWS S3](https://aws.amazon.com/s3/)、[Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/) 和 [Google Cloud Storage](https://cloud.google.com/storage)。<br /><br />LangSmith 使用 Blob 存储来存储大型文件，例如跟踪工件、反馈附件和其他大型数据对象。 Blob 存储是可选的，但强烈建议用于生产部署。<br /><br />💡[Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3、GCP GCS、Azure Blob |
 
 要安装，请遵循[Kubernetes setup guide](/langsmith/kubernetes)。
 
@@ -75,9 +77,7 @@
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

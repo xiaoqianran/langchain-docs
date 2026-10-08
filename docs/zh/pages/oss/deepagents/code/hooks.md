@@ -105,11 +105,11 @@ Deep Agents 代码按优先顺序加载钩子配置：
 
 配置不受支持的处理程序类型或`"async": true`会产生可见的配置错误。
 
-### 处理程序环境处理程序在有效负载中报告为 `cwd` 的工作目录中启动，并继承会话环境，并删除了看似凭证的变量：任何包含 `KEY`、`TOKEN`、`SECRET`、`PASSWORD` 或 `APIKEY` 的名称在启动前都会被删除。需要凭证的处理程序必须从文件或秘密管理器而不是继承的环境中读取它。插件处理程序还会收到自己的[plugin path variables](#plugin-hooks)。
+### 处理程序环境A handler starts in the working directory reported as `cwd` in the payload and inherits the session environment with credential-looking variables removed: any name containing `KEY`, `TOKEN`, `SECRET`, `PASSWORD`, or `APIKEY` is stripped before launch.需要凭证的处理程序必须从文件或秘密管理器而不是继承的环境中读取它。插件处理程序还会收到自己的[plugin path variables](#plugin-hooks)。
 
 ### 匹配器
 
-匹配器过滤处理程序组是否针对给定事件运行。每个赛事都与一个字段匹配（参见[Events](#events)）：
+匹配器过滤处理程序组是否针对给定事件运行。每个赛事对应一个场（参见[Events](#events)）：
 
 * 省略、为空或 `*` 匹配该事件的所有值。
 * 一个简单的名字完全匹配（`Bash`）。
@@ -120,19 +120,19 @@ Deep Agents 代码按优先顺序加载钩子配置：
 
 编译错误使该组无效，并在会话运行之前生成用户可见的配置诊断。
 
-## 活动Deep Agents 代码发出以下事件。客户端拥有的事件在 CLI 进程中运行。服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
+## 活动Deep Agents Code emits the following events. Client-owned events run in the CLI process.服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
 
 |活动 |业主|退出代码2效果|匹配于 |
 | - | - | - | - |
 | `SessionStart` |客户|诊断| `source` |
-| `UserPromptSubmit` |客户|阻止提示 |无 |
+| `UserPromptSubmit` |客户|阻止提示|无 |
 | `SessionEnd` |客户|诊断| `reason` |
 | `PermissionRequest` |客户|否认| `tool_name` |
 | `Notification` |客户|诊断| `notification_type` |
 | `PreToolUse` |服务器|否认| `tool_name` |
 | `PostToolUse` |服务器|反馈 | `tool_name` |
-| `PreCompact` |服务器|块压缩| `trigger` |
-| `Stop` |服务器|继续转 |无 |
+| `PreCompact` |服务器|块压缩 | `trigger` |
+| `Stop` |服务器|继续转|无 |
 | `SubagentStart` |服务器|诊断| `agent_type` |
 | `SubagentStop` |服务器|添加上下文 | `agent_type` |
 
@@ -155,26 +155,32 @@ flowchart LR
     class X alert
 ```
 
-该图仅涵盖工具调用路径。当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
+The diagram covers the tool-call path only.当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
+
+### Notify before the prompt cache expires`cache_expiring` 通知会在跟踪的提示缓存保留窗口结束之前发出警告。在下一个回合出现缓存未命中风险之前，使用它来触发您自己的提醒。
+
+在`hooks.json`中，在`Notification`下添加处理程序组，并将`matcher`设置为`cache_expiring`。 Deep Agents 代码在最后 60 秒内每个线程和缓存窗口发出一次。有效负载包括`notification_type`、`message`和`title`。
 
 ## 输入负载
 
-每个处理程序都会在 stdin 上接收一个 JSON 对象。所有事件共享一个公共信封，以及特定于事件的字段。### 常用字段
+每个处理程序都会在 stdin 上接收一个 JSON 对象。所有事件共享一个公共信封，以及特定于事件的字段。
 
-|领域 |描述 |
+### 常用字段
+
+|领域|描述 |
 | - | - |
-| `session_id` |会话标识符 |
+| `session_id` | Session identifier |
 | `transcript_path` |对话记录的路径（如果可用）|
 | `cwd` |调用钩子时的工作目录 |
 | `hook_event_name` |触发的事件的名称 |
 | `prompt_id` |当前用户提示的 UUID（如果可用） |
 | `permission_mode` |权限模式（`default`、`plan`、`acceptEdits`、`auto`、`dontAsk`、`bypassPermissions`），当有意义时 |
-| `effort` |对象，例如 `{ "level": "medium" }`，其中级别为 `none`、`low`、`medium`、`high`、`xhigh` 或 `max`（如果可用）|
-| `agent_id`、`agent_type` |子代理身份（如果可用）|
+| `effort` |诸如 `{ "level": "medium" }` 之类的对象，其中级别为 `none`、`low`、`medium`、`high`、`xhigh` 或 `max`（如果可用）|
+| `agent_id`、`agent_type` |子代理身份（如果可用）|`transcript_path` 指向在 `~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
 
-`transcript_path` 指向在`~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
+### 特定于事件的字段
 
-### 特定于事件的字段|活动 |领域 |
+|活动 |领域 |
 | - | - |
 | `SessionStart` | `source`（`startup`、`resume`、`clear`、`compact`）以及`model`（如果有）|
 | `UserPromptSubmit` | `prompt` |
@@ -207,11 +213,9 @@ flowchart LR
 
 ### 工具名称
 
-挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：
-
-|公共工具名称 |值得注意的输入字段 |
+挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：|公共工具名称|值得注意的输入字段 |
 | - | - |
-| `Bash` | `command`，可选`timeout`（以毫秒为单位）|
+| `Bash` | `command`，可选 `timeout` 以毫秒为单位 |
 | `Write` | `file_path`、`content` |
 | `Edit` | `file_path`、`old_string`、`new_string`、`replace_all` |
 | `Read` | `file_path`、`limit`、`offset` |
@@ -220,7 +224,9 @@ flowchart LR
 | `LS` | `path` |
 | `mcp__<server>__<tool>` |特定于工具的 JSON |
 
-## 处理程序输出命令处理程序通过其退出代码、stdout 和 stderr 传达结果。
+## 处理程序输出
+
+命令处理程序通过其退出代码、stdout 和 stderr 传达结果。
 
 |退出代码 |意义|
 | - | - |
@@ -245,11 +251,11 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
     "hookEventName": "PreToolUse"
   }
 }
-```
+```所有匹配的处理程序在其结果合并之前完成。返回 `"continue": false` 将减少的决策标记为已停止，但不会阻止其他匹配处理程序运行。按照配置顺序，第一个`stopReason`获胜。 `suppressOutput` 仅抑制该处理程序的 `systemMessage`。
 
-所有匹配的处理程序在其结果合并之前完成。返回 `"continue": false` 将减少的决策标记为已停止，但不会阻止其他匹配处理程序运行。按照配置顺序，第一个`stopReason`获胜。 `suppressOutput` 仅抑制该处理程序的 `systemMessage`。
+特定于事件的控件位于`hookSpecificOutput`（对于工具和权限事件）或顶级`decision`和`reason`（对于`Stop`）。
 
-特定于事件的控件位于`hookSpecificOutput`（对于工具和权限事件）或顶级`decision`和`reason`（对于`Stop`）。### 使用`PreToolUse`控制工具执行
+### 使用`PreToolUse`控制工具执行
 
 返回权限决定以在工具运行之前允许、拒绝或强制提示：
 
@@ -283,9 +289,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 }
 ```
 
-任何否认都会获胜。如果没有钩子拒绝并且至少有一个钩子允许，则允许该操作。如果没有钩子决定，则会显示正常的权限提示。
-
-### 用`Stop`继续转弯
+任何否认都会获胜。如果没有钩子拒绝并且至少有一个钩子允许，则允许该操作。如果没有钩子决定，则显示正常的权限提示。### 用`Stop`继续转弯
 
 返回一个块决策以保持代理继续工作而不是结束回合：
 
@@ -296,7 +300,9 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 }
 ```
 
-一个区块会继续代理轮流并提供您的反馈。 `Stop.hookSpecificOutput.additionalContext`具有同样的延续效果。为了避免无限循环，请检查有效负载中的`stop_hook_active`，并在满足条件后停止阻塞。 Deep Agents 代码还强制执行八个连续连续的硬上限。### 注入上下文
+一个区块会继续代理轮流并提供您的反馈。 `Stop.hookSpecificOutput.additionalContext`具有同样的延续效果。为了避免无限循环，请检查有效负载中的`stop_hook_active`，并在满足条件后停止阻塞。 Deep Agents 代码还强制执行八个连续连续的硬上限。
+
+### 注入上下文
 
 `SessionStart`、`UserPromptSubmit`和`SubagentStart`可以为模型添加上下文：
 
@@ -313,9 +319,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 不支持的输出字段
 
-可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。
-
-|领域或行为|结果 |
+可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。|领域或行为|结果 |
 | - | - |
 | `SessionStart.initialUserMessage`、`sessionTitle`、`watchPaths`、`reloadSkills` |已解析，未应用 |
 | `UserPromptSubmit.sessionTitle` |已解析，未应用 |
@@ -446,9 +450,9 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
   ```
 </Accordion>
 
-## 钩子故障排除挂钩活动在会话中可见，而不仅仅是在日志中：
+## 钩子故障排除
 
-* 正在运行的处理程序显示其 `statusMessage`，或在未设置任何值时显示 `Running <event> hook`。并发处理程序共享一个状态槽，因此会显示最新的状态槽，直至其完成。
+挂钩活动在会话中可见，而不仅仅是在日志中：* 正在运行的处理程序显示其 `statusMessage`，或在未设置任何值时显示 `Running <event> hook`。并发处理程序共享一个状态槽，因此会显示最新的状态槽，直至其完成。
 * 处理程序的 `systemMessage` 显示为信息通知。
 * 配置错误、非零退出、超时和不支持的输出字段显示为 `Hook warning` 或 `Hook error` 通知，每次调用一次。
 * 来自钩子的权限答案归因于该钩子，例如`PermissionRequest hook denied Bash`。
@@ -481,7 +485,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

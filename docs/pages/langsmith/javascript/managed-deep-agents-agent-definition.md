@@ -52,7 +52,7 @@ To define the agent, use `defineDeepAgent`:
   ```
 </CodeGroup>
 
-Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).
 
 `defineDeepAgent` does not compile an agent. It returns a definition, and the managed runtime compiles it with [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) at deploy time. The options below are the [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) surface without the ones the runtime owns. See [Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents).
 
@@ -68,6 +68,109 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 | `permissions` | Control path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. Cleared when the project declares a [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes), because a permission rule disables the sandbox `execute` tool. See [Permissions](/oss/javascript/deepagents/permissions). |
 | `interruptOn` | Pause before selected tool calls for human approval. Set `interruptOn` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop). |
 | `responseFormat` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/javascript/langchain/structured-output). |
+
+## Select configuration per run
+
+To select the agent's configuration for each run, export a function as `agent` instead of a definition. One deployment can then adapt to different users, tasks, or repositories. The function is a graph factory, the same pattern LangGraph uses to [rebuild a graph at runtime](/langsmith/graph-rebuild): it receives the runtime and returns a definition.
+
+This example selects instructions and skills for the repository a run works on. It assumes the project has `skills/python-service/` and `skills/typescript-web/`, each with a [`SKILL.md`](/langsmith/javascript/managed-deep-agents-skills).
+
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent, type ManagedServerRuntime } from "managed-deepagents";
+import { z } from "zod";
+
+const contextSchema = z.object({ repository: z.string().optional() });
+
+export function agent(
+  runtime: ManagedServerRuntime<z.infer<typeof contextSchema>>
+) {
+  const context = runtime.executionRuntime?.context;
+  const pythonService = context?.repository === "payments-service";
+
+  return defineDeepAgent({
+    name: "open-swe",
+    model: "openai:gpt-5.5",
+    instructions: pythonService
+      ? "Follow the payments service's API and reliability conventions."
+      : "Follow the storefront's frontend and accessibility conventions.",
+    skills: [pythonService ? "./skills/python-service" : "./skills/typescript-web"],
+    contextSchema,
+  });
+}
+```
+
+The factory can be sync or async. It receives a `ManagedServerRuntime`, which extends the native LangGraph `ServerRuntime`. Read run context from `executionRuntime.context`. It is `undefined` on channel runs, and `executionRuntime` is `null` when Agent Server loads the agent for inspection.
+
+Callers choose the configuration through the run's `context`:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await client.runs.create(threadId, "open-swe", {
+  input: { messages: [{ role: "user", content: "Run the service test suite." }] },
+  context: { repository: "payments-service" },
+});
+```
+
+Run context is application data, not verified identity. Check authorization in [tools](/langsmith/javascript/managed-deep-agents-tools) against the verified caller on the runtime.
+
+### Select managed resources
+
+A factory can also select the resources that a static agent reads from project files. Omitting a field keeps the project's configuration. Providing a value replaces it for that run:
+
+| Field | Omitted | Selected | Cleared |
+| - | - | - | - |
+| `instructions` | Uses `instructions.md`. | Uses the supplied prompt. | `""` removes authored instructions. |
+| `skills` | Exposes all project skills. | Exposes only the selected skills. | `[]` exposes no skills. |
+| `mcp` | Uses the `mcp` declaration. | Uses only the selected MCP definitions. | `[]` exposes no MCP tools. |
+| `sandbox` | Uses the `sandbox` declaration. | Uses the supplied sandbox. | `null` disables the sandbox. |
+
+Static definitions cannot set these fields. A skill path must end in `skills/<name>` and point to a skill in the project. A factory can also return generated skill definitions, whose names must not duplicate project skill names.
+
+This example enables the docs MCP server on request and gives one repository a longer sandbox timeout. It imports the declarations from [`tools/mcp`](/langsmith/javascript/managed-deep-agents-mcp-connectors) and [`sandbox/`](/langsmith/javascript/managed-deep-agents-sandboxes):
+
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  defineDeepAgent,
+  defineSandbox,
+  type ManagedServerRuntime,
+} from "managed-deepagents";
+import { z } from "zod";
+
+import { sandbox } from "./sandbox/index";
+import { mcp } from "./tools/mcp";
+
+const contextSchema = z.object({
+  repository: z.string().optional(),
+  needsDocs: z.boolean().optional(),
+});
+
+export function agent(
+  runtime: ManagedServerRuntime<z.infer<typeof contextSchema>>
+) {
+  const context = runtime.executionRuntime?.context;
+  const pythonService = context?.repository === "payments-service";
+
+  return defineDeepAgent({
+    name: "open-swe",
+    model: "openai:gpt-5.5",
+    mcp: context?.needsDocs ? [mcp] : [],
+    sandbox: pythonService ? defineSandbox({ defaultTimeout: 600 }) : sandbox,
+    contextSchema,
+  });
+}
+```
+
+Memory is not selected per run. Declare it in the project's memory file, and control access for each run with an `allow` policy. See [Control access to a layer](/langsmith/javascript/managed-deep-agents-memory#control-access-to-a-layer).
+
+### Keep the factory repeatable
+
+Managed Deep Agents calls the factory at the start of each run, and again when a run resumes or retries. Agent Server also calls it to read schemas and state. Follow these rules:
+
+* **No side effects**: Return the same definition for the same context. Do not create records, call external APIs, or change shared state in the factory.
+* **Stable interrupts**: Keep middleware that can interrupt a run in every configuration. When a run resumes, the middleware that raised the interrupt must still be present.
+* **Inline name**: Set `name` as an inline string. `mda build` reads it without calling the factory and uses it as the graph ID and default deployment name.
+* **Model dependencies**: Install the integration package for every model the factory can return. The build does not detect them.
+
+To change behavior between model calls within a run, use [custom middleware](/langsmith/javascript/managed-deep-agents-middleware).
 
 ## Use LLM Gateway
 

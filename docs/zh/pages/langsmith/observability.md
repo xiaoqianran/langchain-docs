@@ -8,7 +8,7 @@
 
 <div>
   <div>
-    <h1>LangSmith 可观察性</h1>
+    <h1>LangSmith 可观测性</h1>
 
     LangSmith 可观察性为您的 LLM 申请提供全面的可见性：从单个跟踪到整个生产范围的性能指标。痕迹是您的代理在生产中所做的事情的记录。使用它们来调试故障、监控质量并构建您评估的数据集。
 
@@ -60,7 +60,7 @@
       </Card>
     </CardGroup>
 
-    <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+    <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
       自动检测跟踪中重复出现的问题，诊断其根本原因，并使用LangSmith引擎解决它们。
     </Card>
 

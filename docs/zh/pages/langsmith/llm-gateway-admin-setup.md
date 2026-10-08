@@ -14,7 +14,9 @@
 
 ## 先决条件
 
-您需要LangSmith中的[⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+
+在完成这些步骤之前，请在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。
 
 ## 1. 添加提供商机密
 
@@ -22,9 +24,7 @@
 
 网关从工作区的提供者密钥中解析提供者 API 密钥 - 这就是它代理对上游提供者的调用的方式，而无需单个用户需要提供者密钥的本地副本。
 
-转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：
-
-|秘密名字|供应商|
+转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：|秘密名字|供应商|
 | - | - |
 | `ANTHROPIC_API_KEY` | Anthropic |
 | `AWS_BEARER_TOKEN_BEDROCK` | AWS 基岩 |
@@ -34,7 +34,9 @@
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |
+
+仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
 
 ## 2.配置用户的网关访问
 
@@ -53,18 +55,18 @@
 
 ### 选项 B：使用工作区管理员角色
 
-无计划要求。
-
-默认情况下，`WORKSPACE_ADMIN`角色已包含`gateway:invoke`和`workspaces:read`。将需要网关访问权限的用户分配给此角色。
+无计划要求。默认情况下，`WORKSPACE_ADMIN`角色已包含`gateway:invoke`和`workspaces:read`。将需要网关访问权限的用户分配给此角色。
 
 如果您不需要细粒度的访问控制，或者没有启用 RBAC，请使用此选项。
 
 ## 3.配置策略（可选）
 
-网关策略管理需要`organization:manage`权限。转至 **LLM Gateway** 创建治理策略。您可以配置：
+网关策略管理需要`organization:manage`权限。
 
-* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
-* **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
+转至 **LLM Gateway** 创建治理策略。您可以配置：
+
+* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
+* **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。参见[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 
@@ -72,13 +74,13 @@
 
 为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。
 
-使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
-
-与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
+使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
 
 ## 验证
 
-对于 SemIf，要求用户运行 [SemIf request example](/langsmith/llm-gateway-decision-models#quickstart)。 `200` 响应确认模型访问、API 密钥和角色权限。对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
+对于 SemIf，要求用户运行 [SemIf request example](/langsmith/llm-gateway-decision-models#quickstart)。 `200` 响应确认模型访问、API 密钥和角色权限。
+
+对于自带密钥提供商，请要求用户运行 [verification cURL from the quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。 `200` 响应确认网关、API 密钥、提供商机密和角色权限均已正确配置。该调用将在工作区的 **gateway** 跟踪项目中显示为跟踪。
 
 ## 后续步骤
 

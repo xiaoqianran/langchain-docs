@@ -15,7 +15,7 @@
 ## 交互式管理插件
 
 要在 `dcode` 会话中浏览市场并管理插件：1.运行`/plugins`打开插件管理器。
-2. Add a marketplace from its **Marketplaces** tab.支持的来源包括：
+2. 从 **Marketplaces** 选项卡添加市场。支持的来源包括：
    * `owner/repo` 格式的 GitHub 存储库，可选后跟 `@branch-or-tag`。
    * HTTPS Git 存储库 URL，可选地后跟 `#branch-or-tag`。
    * 提供市场 JSON 文件的 HTTPS URL。
@@ -23,11 +23,17 @@
 3. 从市场安装插件。
 4. 运行 `/reload` 激活新安装的插件技能、MCP 服务器和挂钩，而无需重新启动会话。具有 [Python extensions](/oss/deepagents/code/extensions) 的插件需要 `/restart` 来重建代理图。
 
-The plugin manager also lets you enable, disable, and uninstall installed plugins.禁用插件会保留其安装状态，但在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。 Python extensions stay loaded in the current graph until you run `/restart` or start a new session.
+插件管理器还允许您启用、禁用和卸载已安装的插件。禁用插件会保留其安装状态，但在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。 Python 扩展在当前图表中保持加载状态，直到您运行 `/restart` 或启动新会话。
 
-Removing a marketplace uninstalls its plugins and removes managed cache data.当市场来自本地目录或文件时，Deep Agents 代码会保留原始来源。 Run `/reload` or start a new session to apply the removal to an active session.
+删除市场会卸载其插件并删除托管缓存数据。当市场来自本地目录或文件时，Deep Agents 代码会保留原始来源。运行 `/reload` 或启动新会话以将删除应用到活动会话。
 
-## 自动更新插件Deep Agents 代码可以在第一次提示后在后台更新已安装的插件。更新仅适用于通过自己的清单选择加入的已启用插件。插件作者通过将此块添加到该插件的 `plugin.json` 来选择每个插件：
+## 使用代理发现插件代理可以搜索您配置的市场目录以查找缺少的功能并报告可用的插件。
+
+向代理询问可用、已禁用或尚未安装的插件。它使用当前配置文件通过 `dcode plugin list --json` 和 `dcode plugin marketplace list --json` 读取本地目录。它不会搜索互联网上未连接的市场。
+
+## 自动更新插件
+
+Deep Agents 代码可以在第一次提示后在后台更新已安装的插件。更新仅适用于通过自己的清单选择加入的已启用插件。插件作者通过将此块添加到该插件的 `plugin.json` 来选择每个插件：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -65,21 +71,21 @@ dcode plugin marketplace remove acme-tools
 
 `plugin list` 和 `plugin marketplace list` 接受 `--json`。安装插件后，在活动的交互式会话中运行 `/reload` 或启动新会话。
 
-## 使用插件技能、MCP 服务器和挂钩
-
-插件技能采用命名空间，以防止与项目、用户和其他插件技能发生冲突。使用插件 ID 和技能路径调用技能：
+## 使用插件技能、MCP 服务器和挂钩插件技能采用命名空间，以防止与项目、用户和其他插件技能发生冲突。使用插件 ID 和技能路径调用技能：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /skill:plugin-name@marketplace-name:skill-name optional arguments
 ```
 
-在交互模式下，自动完成还匹配较短的 `/plugin-name:skill-name` 形式，并将其扩展为规范的 `/skill:` 命令。嵌套技能目录将每个目录添加到命名空间。例如，`skills/review/security/SKILL.md`从`quality@acme-tools`变成`/skill:quality@acme-tools:review:security`。An enabled plugin can also contribute MCP servers. Deep Agents Code merges these servers with your regular MCP configuration when plugins load.使用 `/mcp` 检查可用的服务器和工具。
+在交互模式下，自动完成还匹配较短的 `/plugin-name:skill-name` 形式，并将其扩展为规范的 `/skill:` 命令。嵌套技能目录将每个目录添加到命名空间。例如，`skills/review/security/SKILL.md`从`quality@acme-tools`变成`/skill:quality@acme-tools:review:security`。
 
-插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。 The plugin manager lists the events each plugin declares. Enabling the plugin is the only consent gate for its hooks: workspace trust applies to project hooks, not plugin hooks.
+启用的插件还可以贡献 MCP 服务器。 Deep Agents 当插件加载时，代码会将这些服务器与常规 MCP 配置合并。使用 `/mcp` 检查可用的服务器和工具。
+
+插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其钩子的唯一同意门：工作区信任适用于项目钩子，而不是插件钩子。
 
 ## 创建一个插件
 
-A Deep Agents Code plugin is a directory containing any of the supported components:
+Deep Agents 代码插件是包含任何受支持组件的目录：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-plugin/
@@ -93,11 +99,9 @@ my-plugin/
 └── .mcp.json
 ```
 
-Deep Agents 代码还可以识别`.codex-plugin/plugin.json`。 The manifest is optional when components use their default locations.如果插件仅包含一项技能，您可以将`SKILL.md`放置在插件根目录中，而不是创建`skills/`。
+Deep Agents 代码还可以识别`.codex-plugin/plugin.json`。当组件使用其默认位置时，清单是可选的。如果插件仅包含一项技能，您可以将`SKILL.md`放置在插件根目录中，而不是创建`skills/`。
 
-### 定义插件清单
-
-When present, `.claude-plugin/plugin.json` or `.codex-plugin/plugin.json` must contain a `name`.您还可以声明版本和自定义组件路径：
+### 定义插件清单如果存在，`.claude-plugin/plugin.json` 或`.codex-plugin/plugin.json` 必须包含`name`。您还可以声明版本和自定义组件路径：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -109,7 +113,9 @@ When present, `.claude-plugin/plugin.json` or `.codex-plugin/plugin.json` must c
 }
 ```
 
-The `skills`, `mcpServers`, and `hooks` fields accept a path string or an array of paths. `mcpServers` 和 `hooks` 还可以包含内联配置对象。 Every component path must start with `./`, remain inside the plugin root, and not contain `..`.当没有声明自定义路径时，Deep Agents代码发现：
+`skills`、`mcpServers` 和 `hooks` 字段接受路径字符串或路径数组。 `mcpServers` 和 `hooks` 还可以包含内联配置对象。每个组件路径必须以`./`开头，保留在插件根目录内，并且不包含`..`。
+
+当没有声明自定义路径时，Deep Agents代码发现：
 
 * `skills/`下的技能，或者当不存在`skills/`目录时为根`SKILL.md`。
 * MCP 服务器位于根 `.mcp.json` 文件中。
@@ -154,15 +160,15 @@ skills/
 
 有关支持的 MCP 传输和字段，请参阅[MCP tools](/oss/deepagents/code/mcp-tools)。
 
-### 添加钩子
-
-将钩子文档放置在 `hooks/hooks.json` 处，声明相对的 `hooks` 路径，或者在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
+### 添加钩子将钩子文档放置在 `hooks/hooks.json` 处，声明相对的 `hooks` 路径，或者在插件清单中内联定义钩子。 Hook 命令接收上面的路径变量。配置和事件参考参见[Hooks](/oss/deepagents/code/hooks)。
 
 ### 添加Python扩展
 
 <Note>
   Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
-</Note>在插件清单中的Deep Agents代码命名空间下声明一个Python入口文件或一个列表：
+</Note>
+
+在插件清单中的Deep Agents代码命名空间下声明一个Python入口文件或一个列表：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -186,7 +192,7 @@ skills/
 * `.agents/plugins/marketplace.json`
 * `.agents/plugins/api_marketplace.json`
 
-The following marketplace contains one plugin stored in the same repository:
+以下市场包含一个存储在同一存储库中的插件：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -201,9 +207,7 @@ The following marketplace contains one plugin stored in the same repository:
 }
 ```
 
-Each plugin entry requires a `name` and `source`.它还可以包括 `description` 和 `author`。本地源路径必须以 `./` 开头，并位于市场根目录内。 Set `metadata.pluginRoot` when all local plugins share a different base directory.
-
-Marketplace entries can also use external Git sources:
+每个插件条目都需要一个`name`和`source`。它还可以包括 `description` 和 `author`。本地源路径必须以 `./` 开头，并位于市场根目录内。当所有本地插件共享不同的基目录时，设置`metadata.pluginRoot`。市场条目还可以使用外部 Git 源：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -228,7 +232,9 @@ Marketplace entries can also use external Git sources:
     }
   ]
 }
-```支持的外部插件源类型为 `github`、`url` 和 `git-subdir`。远程 URL 必须使用 HTTPS。作为直接 JSON URL 添加的市场无法包含本地相关插件源，因为仅下载目录文件。当目录引用同一源树中的插件目录时，使用 Git 存储库或本地目录。
+```
+
+支持的外部插件源类型为 `github`、`url` 和 `git-subdir`。远程 URL 必须使用 HTTPS。作为直接 JSON URL 添加的市场无法包含本地相关插件源，因为仅下载目录文件。当目录引用同一源树中的插件目录时，使用 Git 存储库或本地目录。
 
 通过添加目录、安装插件、启动新会话或运行 `/reload` 来测试本地市场：
 

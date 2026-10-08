@@ -58,7 +58,7 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 `dcode config` 命令显示Deep Agents 代码使用的设置以及每个值的来源，而无需启动会话。使用它们来确认管理员设置、环境变量或 `config.toml` 设置处于活动状态。
 
-|命令|描述 |
+|命令 |描述 |
 | - | - |
 | `dcode config` |显示每个设置、其当前值以及该值的来源 |
 | `dcode config get <key>` |显示一项设置的当前值和来源，例如 `dcode config get interpreter.memory_limit_mb` |
@@ -70,18 +70,18 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 
 ## 环境变量
 
-除了 shell 导出之外，Deep Agents 代码还从 dotenv 文件中读取环境变量，因此您可以将 API 密钥保留在 shell 配置文件之外，并避免跨项目重复 `.env` 文件。
+除了 shell 导出之外，Deep Agents 代码还从 dotenv 文件读取环境变量，因此您可以将 API 密钥保留在 shell 配置文件之外，并避免跨项目重复 `.env` 文件。
 
 ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ANTHROPIC_API_KEY=sk-ant-...
 OPENAI_API_KEY=sk-...
 ```
 
-对于具体的提供者密钥，请参阅[Provider credentials](/oss/deepagents/code/credentials)。
+对于具体的提供商密钥，请参阅[Provider credentials](/oss/deepagents/code/credentials)。
 
 ### 加载顺序和优先级
 
-启动时，Deep Agents代码会读取最近的项目`.env`，通过搜索您启动的目录并向上遍历其父项找到该项目（找到的第一个`.env`获胜），然后读取`~/.deepagents/.env`作为所有项目的全局后备。项目 `.env` 胜过全局项目，并且两者都不会覆盖 shell 中已设置的值。
+启动时，Deep Agents代码读取最近的项目`.env`，通过搜索您启动的目录并向上遍历其父项找到（第一个找到的`.env`获胜），然后将`~/.deepagents/.env`作为所有项目的全局后备。项目 `.env` 胜过全局项目，并且两者都不会覆盖 shell 中已设置的值。
 
 要完全跳过项目`.env`（全局`~/.deepagents/.env`仍然加载），请设置`startup.read_project_dotenv`。
 
@@ -134,7 +134,7 @@ DEEPAGENTS_CODE_ANTHROPIC_API_KEY=
 
 ## 技能目录白名单
 
-默认情况下，当Deep Agents代码加载技能时，它会验证解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
+默认情况下，当Deep Agents代码加载技能时，它会验证已解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
 
 <ResponseField name="extra_allowed_dirs" type="string[]">
   添加到技能限制允许列表的路径。支持`~`扩展。
@@ -288,7 +288,7 @@ Deep Agents 代码默认自动检查并安装更新。
 
 ### 自定义定价覆盖
 
-对于目录未涵盖的型号，请将费率添加到`~/.deepagents/prices.json`。该文件使用 [genai-prices](https://github.com/pydantic/genai-prices) 提供者数组架构。例如：
+对于目录中未涵盖的型号，请将费率添加到`~/.deepagents/prices.json`。该文件使用 [genai-prices](https://github.com/pydantic/genai-prices) 提供者数组架构。例如：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [
@@ -445,13 +445,13 @@ rm -rf ~/.deepagents
 
 ### 找到托管配置文件
 
-Deep Agents 代码在每个操作系统的固定位置查找 `managed_config.toml`：
+Deep Agents 代码在每个操作系统上的固定位置查找 `managed_config.toml`：
 
 |操作系统 |路径|
 | - | - |
 | macOS | `/Library/Application Support/dcode/managed_config.toml` |
 | Linux | `/etc/dcode/managed_config.toml` |
-|窗户 | `<ProgramData>\dcode\managed_config.toml` |
+|窗户| `<ProgramData>\dcode\managed_config.toml` |
 
 在 Windows 上，Deep Agents 代码通过系统注册表查找 ProgramData，而不是 `%ProgramData%` 环境变量。环境变量无法更改托管配置位置。如果注册表不可用，则Deep Agents代码检查`C:\ProgramData\dcode\managed_config.toml`。如果该文件也丢失，Deep Agents 代码无法确定管理员是否配置了策略，因此使用配置的命令会停止而不是在没有配置的情况下运行。
 
@@ -491,7 +491,7 @@ allowed = [
 ]
 default = "acme:production"
 auto_classifier = "openai:gpt-5.5"
-```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
+```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户的列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
 
 在`[models.providers.<name>].models`下添加模型使其可供选择，但不会自动允许。将确切的型号或提供商通配符添加到允许列表中。通配符仅涵盖该提供商可用的模型。如果没有可用型号，Deep Agents代码无法选择默认值。当Deep Agents代码可以识别界面中输入的裸模型名称的提供者时，它会在检查白名单之前将该名称转换为`provider:model`。
 
@@ -533,7 +533,7 @@ dcode doctor
 
 Deep Agents 当代码无法读取或解析托管文件、无法下载完整的远程策略或无法安全地应用策略时，如果没有所需的管理员设置，代码将停止而不是运行。使用配置退出的命令带有代码`78`。您仍然可以运行`dcode config`、`dcode doctor`、`dcode auth path`和帮助命令来解决问题。
 
-如果在运行会话期间更新失败，Deep Agents代码将继续使用以前的有效策略并报告失败。新进程在加载有效策略之前无法启动。
+如果在运行会话期间更新失败，Deep Agents 代码将继续使用之前的有效策略并报告失败。新进程在加载有效策略之前无法启动。
 
 <Accordion title="View settings that fail closed">
   以下任何设置的无效值都会停止启动，因为回退到用户值可能会删除所需的限制：* `interpreter.enable_interpreter`
@@ -598,7 +598,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
   uv 二进制文件的路径。如果未设置则自动检测。
 </ResponseField>
 
-默认情况下，托管安装启用自动更新。要控制每个用户的更新，请在[⟦T304⟧](#managed-configuration)中设置`[update] auto_update = false`或`[update] check = false`。对于其他安装，请使用`DEEPAGENTS_CODE_AUTO_UPDATE=0`、`DEEPAGENTS_CODE_NO_UPDATE_CHECK=1`或`~/.deepagents/config.toml`中的相应设置。要通过托管网关路由每个用户的模型流量（在整个队列范围内配置网关密钥和基本 URL），请参阅[Managed gateways](/oss/deepagents/code/config-file#managed-gateways)。
+默认情况下，托管安装启用自动更新。要控制每个用户的更新，请在[⟦T304⟧](#managed-configuration)中设置`[update] auto_update = false`或`[update] check = false`。对于其他安装，请使用`DEEPAGENTS_CODE_AUTO_UPDATE=0`、`DEEPAGENTS_CODE_NO_UPDATE_CHECK=1`或`~/.deepagents/config.toml`中的相应设置。要通过托管网关路由每个用户的模型流量（在整个队列范围内配置网关密钥和基本 URL），请参阅 [Managed gateways](/oss/deepagents/code/config-file#managed-gateways)。
 
 ## 环境变量引用
 
@@ -631,7 +631,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <Note>
-  下面的项目MCP信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。
+  下面的项目 MCP 信任变量需要`deepagents-code>=0.1.40`。该版本忽略了之前的`DEEPAGENTS_CODE_ENABLED_PROJECT_MCP_SERVERS`变量；使用 `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` 来实现相同的基于名称的行为。
 </Note>
 
 <ResponseField name="DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS" type="string">
@@ -641,7 +641,7 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_COLLAPSE_PASTES" type="string">
-  将大型聊天输入粘贴折叠到紧凑的占位符中。设置为假值（或空）以保持完整粘贴的文本可见。覆盖`[ui].collapse_pastes`。参见[Collapse large pastes](#collapse-large-pastes)。
+  将大型聊天输入粘贴折叠到紧凑的占位符中。设置为假值（或空）以保持完整粘贴的文本可见。 Overrides `[ui].collapse_pastes`. See [Collapse large pastes](#collapse-large-pastes).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_EXTRA_SKILLS_DIRS" type="string">
@@ -649,11 +649,11 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_FORKED_SUBAGENTS" type="string">
-  让内置`general-purpose`子代理继承父对话和系统提示。设置为 `0`、`false`、`no` 或 `off`（或空值）以使用隔离模式。在 shell 或全局 `~/.deepagents/.env` 中设置此变量； Deep Agents 代码在项目 `.env` 文件中忽略它，因为继承可以包含私有父状态。参见[Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation)。
+  让内置`general-purpose`子代理继承父对话和系统提示。设置为 `0`、`false`、`no` 或 `off`（或空值）以使用隔离模式。在 shell 或全局 `~/.deepagents/.env` 中设置此变量； Deep Agents 代码在项目 `.env` 文件中忽略它，因为继承可以包含私有父状态。 See [Continue the parent conversation](/oss/deepagents/code/subagents#continue-the-parent-conversation).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_HISTORY_RETENTION_DAYS" type="integer">
-  在启动扫描将其删除之前，已卸载的对话历史记录存档的保留天数； `0` 禁用清理。覆盖`[history].retention_days`。参见[Conversation history retention](#conversation-history-retention)。
+  在启动扫描将其删除之前，已卸载的对话历史记录存档的保留天数； `0` 禁用清理。 Overrides `[history].retention_days`. See [Conversation history retention](#conversation-history-retention).
 </ResponseField><ResponseField name="DEEPAGENTS_CODE_LANGSMITH_PROJECT" type="string">
   覆盖 Deep Agents 代码自己的代理跟踪的 LangSmith 项目名称。 Shell 命令仍然使用用户的原始 `LANGSMITH_PROJECT` 运行，因此应用程序、测试或脚本跟踪可以出现在单独的项目中。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 </ResponseField>
@@ -666,44 +666,50 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
   第二个LangSmith项目*也*写入代理跟踪。当设置和跟踪处于活动状态时，每个代理运行都会双重写入主项目（默认情况下来自`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和此项目。默认关闭。参见[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith)。
 </ResponseField>
 
-<ResponseField name="DEEPAGENTS_CODE_MEMORY_AUTO_SAVE" type="string">
-  让代理主动将学习内容保存到内存中。设置为假值（或空）以继续加载内存，同时停止无提示的自动保存；显式保存仍然有效。覆盖`[memory].auto_save`。参见[Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory)。
+<ResponseField name="DEEPAGENTS_CODE_LANGSMITH_TRACING" type="string">
+  设置为 `false` 以禁用 LangSmith 代理跟踪。显式的 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。 `--no-tracing` 标志为一次启动设置此覆盖。本地历史记录和模型提供商的请求保持不变。参见[Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)。
+</ResponseField><ResponseField name="DEEPAGENTS_CODE_MEMORY_AUTO_SAVE" type="string">
+  让代理主动将学习内容保存到内存中。设置为假值（或空）以继续加载内存，同时停止无提示的自动保存；显式保存仍然有效。 Overrides `[memory].auto_save`. See [Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory).
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT" type="number">
+  MCP 工具调用的最大持续时间（以秒为单位）。接受从 `1` 到 `900` 的值并覆盖用户配置中的 `[mcp].tool_timeout`。无效值将传递到下一个配置源。超时并不能保证服务器端取消，因此重试可能会重复工作。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_NO_UPDATE_CHECK" type="string">
   设置后禁用自动更新检查。这也会阻止启动时自动安装更新。
-</ResponseField><ResponseField name="DEEPAGENTS_HOME" type="string">
-  选择用户配置文件和信任根而不是默认的`~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。参见[Profile location](#profile-location-deepagents_home)。
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_HOME" type="string">
+  选择用户配置文件和信任根而不是默认的 `~/.deepagents`。接受绝对路径或以`~/`开头的路径； `~user` 表单和相对路径被拒绝。必须在继承的 shell 环境中设置 — 没有 `.env` 文件可以设置它。 See [Profile location](#profile-location-deepagents_home).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_ONBOARDING" type="string">
   覆盖首次运行的入门流程。设置为真实值以强制其在每次启动时打开；设置为虚假值以完全抑制它（对于 CI 和配置的机器有用）。对于默认的首次运行行为，保留未设置。
-</ResponseField>
-
-<ResponseField name="DEEPAGENTS_CODE_PRICES_AUTO_UPDATE" type="string">
+</ResponseField><ResponseField name="DEEPAGENTS_CODE_PRICES_AUTO_UPDATE" type="string">
   每小时在后台从上游刷新模型定价目录。设置为假值（或空）以选择退出。覆盖`[update].prices_auto_update`。参见[Pricing catalog auto-update](#pricing-catalog-auto-update)。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_READ_PROJECT_DOTENV" type="string">
-  将项目`.env`（从工作目录向上找到）加载到流程环境中。设置为假值以跳过不受信任的存储库的文件；全局 `~/.deepagents/.env` 仍在加载。覆盖`[startup].read_project_dotenv`。参见[Loading order and precedence](#loading-order-and-precedence)。
+  将项目`.env`（从工作目录向上找到）加载到流程环境中。设置为假值以跳过不受信任的存储库的文件；全局`~/.deepagents/.env`仍在加载。覆盖`[startup].read_project_dotenv`。参见[Loading order and precedence](#loading-order-and-precedence)。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_RECENT_THREADS" type="integer">
   在线程列表和选择器中加载和显示的最近线程的最大数量。低于 `1` 的值被限制为 `1`，非整数值使用默认值。 `-n` 或 `--limit` 会覆盖 `dcode threads list` 的此值。
-</ResponseField><ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer">
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer">
   LangGraph图步预算，这是`dcode`代理图每回合可以执行的最大节点调用数。无效值会记录警告，并继续解决下一个来源。未设置时，Deep Agents代码继承`LANGGRAPH_DEFAULT_RECURSION_LIMIT`或将限制留给LangGraph服务器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
 </ResponseField>
 
 <ResponseField name="LANGGRAPH_DEFAULT_RECURSION_LIMIT" type="integer">
   当没有 Deep Agents 递归限制源获胜时，上游 LangGraph 图步骤预算继承。将其设置在您的 shell 或全局 `~/.deepagents/.env` 中。 Deep Agents 代码在项目 `.env` 中忽略它，因为它绕过了有界的 `runtime.recursion_limit` 解析器。参见[Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits)。
-</ResponseField>
-
-<ResponseField name="DEEPAGENTS_CODE_SHELL_ALLOW_LIST" type="string">
+</ResponseField><ResponseField name="DEEPAGENTS_CODE_SHELL_ALLOW_LIST" type="string">
   允许使用逗号分隔的 shell 命令（或 `recommended` / `all`）。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHOW_REASONING" type="string">
-  在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。覆盖`[ui].show_reasoning`；单次启动时`--show-reasoning`优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
+  在交互式脚本中和非交互式模式下的 stderr 上显示提供者可见的推理。覆盖`[ui].show_reasoning`； `--show-reasoning` 对于单次启动优先。参见[Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning)。
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHOW_USAGE_STATS" type="string">
@@ -714,7 +720,9 @@ curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_VERSION="0.1.16" bash
   将用户标识符附加到 LangSmith 跟踪元数据。
 </ResponseField>
 
-## 使用 `dcode doctor` 运行诊断当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它在不启动会话的情况下运行诊断并总结当前运行时状态。
+## 使用 `dcode doctor` 运行诊断
+
+当 Deep Agents 代码未正确启动、提供商或 MCP 服务器未连接、跟踪配置错误或者安装或更新看起来错误时，请使用 `dcode doctor`。它在不启动会话的情况下运行诊断并总结当前运行时状态。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Show diagnostics in the terminal
@@ -761,10 +769,8 @@ dcode doctor
 
 Deep Agents 代码将数据存储在两个目录层次结构中：
 
-* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T394⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
-* **`~/.agents/`** - 与工具无关的数据（跨 AI CLI 工具共享的技能）
-
-### 目录结构
+* **`~/.deepagents/`** — Deep Agents特定数据（座席记忆、技能、会话）。可通过[⟦T401⟧](#profile-location-deepagents_home)重新定位；然后，下面的路径将以该目录为根。
+* **`~/.agents/`** - 与工具无关的数据（跨 AI CLI 工具共享的技能）### 目录结构
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ~/.deepagents/
@@ -805,20 +811,22 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
             └── SKILL.md
 ```
 
-#### 什么去哪里|数据|地点 |读/写 |笔记|
+#### 什么去哪里
+
+|数据|地点 |读/写 |笔记|
 | - | - | - | - |
-| **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
-| **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写| JSON 行，向上/向下箭头调用 |
-| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T399⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
-| **基本说明** |套餐`default_agent_prompt.md`​​ |右 |不可变，通过 Deep Agents 代码升级进行更新 |
+| **会议** | `~/.deepagents/.state/sessions.db` |读/写 | SQLite 检查点数据库 |
+| **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
+| **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写|支持[⟦T406⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
+| **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
 | **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
-| **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见[Python extensions](/oss/deepagents/code/extensions)|
+| **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见 [Python extensions](/oss/deepagents/code/extensions) |
 | **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
-| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写 |用户定义的子代理 |
+| **自定义子代理** | `~/.deepagents/{agent}/agents/` |读/写|用户定义的子代理 |
 | **项目分代理** | `.deepagents/agents/` |右 |项目定义的子代理 |
 
 ### 优先规则当同一项目存在于多个位置时，**较高的优先级完全获胜**（不合并）。
@@ -832,7 +840,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 3. `.deepagents/skills/` — 项目Deep Agents代码
 4. `.agents/skills/` — 项目工具无关*（最高）*
 
-加载技能时，Deep Agents代码会验证解析的文件路径是否位于这些目录之一中。在所有技能根之外解析的符号链接将被拒绝。要允许其他目录中的符号链接目标，请参阅[⟦T416⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)。
+加载技能时，Deep Agents代码会验证解析的文件路径是否位于这些目录之一中。在所有技能根之外解析的符号链接将被拒绝。要允许其他目录中的符号链接目标，请参阅[⟦T423⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)。
 
 #### 子代理
 
@@ -848,7 +856,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 所有指令源都是**组合**（不覆盖）：
 
 1. 包基本提示*（始终加载）*
-2. `~/.deepagents/{agent}/AGENTS.md` *（已附加）*
+2. `~/.deepagents/{agent}/AGENTS.md` *（附加）*
 3. `.deepagents/AGENTS.md` *（已附加）*
 4. `AGENTS.md` 位于项目根目录*（已附加）*
 
@@ -871,7 +879,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：
 |清除输入历史记录 | `rm ~/.deepagents/.state/history.jsonl` |
 |清除存储的 API 密钥 | `rm ~/.deepagents/.state/auth.json` |
 |清除 MCP OAuth 令牌 | `rm -rf ~/.deepagents/.state/mcp-tokens` |
-|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
+|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 中的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
 |重新运行首次运行入职 | `rm ~/.deepagents/.state/onboarding_complete` |
 |重置代理说明 | `dcode agents reset --agent {name}` |
 |删除技能 | `rm -rf ~/.deepagents/{agent}/skills/{skill-name}` |

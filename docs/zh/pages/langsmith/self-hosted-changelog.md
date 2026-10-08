@@ -43,13 +43,13 @@
   * 使用 [Organization Restricted role](/langsmith/rbac#restrict-roles) 为承包商和合作伙伴提供工作空间访问权限，而无需公开账单、设置或使用情况。
   * 组织管理员和操作员可以[deactivate and reactivate members' personal access tokens](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token)。
 
-  ### 沙盒
+  ### 沙箱
 
   * 沙箱通常在所有云中可用。
   * 沙箱不再需要显式的 JuiceFS 依赖性。
 
   ### 可观察性和评估* 在对话轨迹视图中分析轨迹，使用在线评估器对其进行评分，并将其添加到注释队列和数据集中。
-  * 使用 LangSmith 聊天、模板或编码代理构建和发布用于注释、实验、跟踪和其他 LangSmith 数据的自定义应用程序。
+  * 使用 LangSmith 聊天、模板或编码代理构建和发布 [custom apps](/langsmith/custom-apps) 用于注释、实验、跟踪和其他 LangSmith 数据。通过聊天进行构建和编辑需要 [self-hosted chat setup](/langsmith/custom-apps#configure-self-hosted-chat)，包括沙箱服务 URL 和签名密钥。
   * 使用 Jev 和 SemIf 决策模型进行在线和离线评估。
   * 使用新的、富有表现力的查询语法和过滤界面构建过滤查询。
   * 自定义图表包括内置模板、更多支持的指标和布局改进。
@@ -73,12 +73,12 @@
   * LangSmith 通过更有效地重用模型定价数据，同时保留自定义定价和计算成本，减少了跟踪摄取期间的 Redis 负载。
 
   **下载 Helm 图表：** [⟦T18⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.39/langsmith-0.16.39.tgz)
-</Update>
-
-<Update label="2026-10-02">
+</Update><Update label="2026-10-02">
   ## langsmith-0.18.0-rc.5
 
-  **LangSmith版本：** `0.18.2rc1`* 此版本打包了与 langsmith-0.18.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1)发行说明。
+  **LangSmith版本：** `0.18.2rc1`
+
+  * 此版本打包了与 langsmith-0.18.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1)发行说明。
 
   **下载 Helm 图表：** [⟦T20⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.5/langsmith-0.18.0-rc.5.tgz)
 </Update>
@@ -97,8 +97,8 @@
 <Update label="2026-10-02">
   ## langsmith-0.17.0-rc.60
 
-  **LangSmith版本：** `0.17.29rc6`* 在 AWS Bedrock 上使用 Claude Opus 5.5 或 Sonnet 5.5 的 LLM 法官评估者不会再因不受支持的强制工具选择而失败。
-  * 气隙自托管安装无法访问引擎的费率，因此引擎设置、项目设置和引擎概述现在指示支出不可用，而不是显示本地估算；尽管项目或组织限制为 0 仍会暂停引擎，但未对这些安装强制执行支出限制。
+  **LangSmith版本：** `0.17.29rc6`* 在 AWS Bedrock 上使用 Claude Opus 5.5 或 Sonnet 5.5 的 LLM 法官评估者不再因不受支持的强制工具选择而失败。
+  * 气隙自托管安装无法访问引擎的费率，因此引擎设置、项目设置和引擎概述现在指示支出不可用，而不是显示本地估算；尽管项目或组织限制为 0 仍会暂停引擎，但未对这些安装强制实施支出限制。
   * 将模型清除按钮移至模型配置组合框中。
   * 引擎接受操作员配置的 GitHub 应用程序页面 URL，而不限制其路径布局，包括企业范围的 GitHub Enterprise Cloud 应用程序。
 
@@ -169,7 +169,7 @@
 
   * 可选择在 Smith-go 中嵌入轨迹 gRPC 服务器。
   * 自托管 LangSmith 操作员可以将精确的 OpenAI 兼容端点和 Azure 范围列入白名单，以便 Playground 和评估器调用使用可刷新的 Azure 工作负载身份令牌进行身份验证。
-  * 消息视图显示 OpenAI 响应 API 调用上的用户消息，该消息以纯字符串形式发送，这就是与先前\_response\_id 链接的调用或每个新回合发送的对话的方式；此前，这些用户消息已被删除。
+  * 消息视图显示了 OpenAI 响应 API 调用上的用户消息，该调用将其作为纯字符串发送，这就是与先前\_response\_id 链接的调用或每个新回合发送的对话的方式；此前，这些用户消息已被删除。
   * 模型配置编辑器和网关主页代码示例解释了网关应用模型和连接设置，而必须在 API 请求中设置最大令牌和温度等生成参数。
   * 在自托管和 BYOC 部署中，组织管理员可以选择引擎运行的模型提供程序，查看每个提供程序的密钥是否已准备好，并从“设置”>“引擎”>“模型提供程序”添加缺少的密钥。
 
@@ -187,7 +187,7 @@
 <Update label="2026-09-30">
   ## langsmith-0.17.0-rc.55
 
-  **LangSmith 版本：** `0.17.29rc3`
+  **LangSmith版本：** `0.17.29rc3`
 
   * 此版本打包了与 langsmith-0.17.0-rc.54 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.54](#langsmith-0-17-0-rc-54)发行说明。
 
@@ -197,20 +197,20 @@
 <Update label="2026-09-30">
   ## langsmith-0.17.0-rc.54
 
-  **LangSmith 版本：** `0.17.29rc3`
+  **LangSmith版本：** `0.17.29rc3`
 
   * 编辑了 Context Hub Webhook 以加载其保存的自定义标头而不是不相关的响应标头，从而防止保存时覆盖。
   * 允许自托管 Insights 部署明确选择 Vertex AI 模型的 Google 应用程序默认凭据，而不是存储服务帐户 JSON。
   * 在没有可用的存储服务帐户凭据或 LLM 身份验证代理凭据时，启用自托管 LangSmith 聊天，以使用 Google 应用程序默认凭据对 Vertex AI 工作区模型进行身份验证。
-  * 仅在配置沙箱服务 URL 和签名密钥时才提供自定义应用程序浏览器创建和编辑，从而防止在配置不完整的部署中出现配置失败。
+  * 仅在配置沙箱服务 URL 和签名密钥时才提供自定义应用程序浏览器创建和编辑，从而防止在配置不完整的部署中出现配置失败。有关设置要求，请参阅[Configure self-hosted chat](/langsmith/custom-apps#configure-self-hosted-chat)。
 
   **下载 Helm 图表：** [⟦T45⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.54/langsmith-0.17.0-rc.54.tgz)
 </Update>
 
 <Update label="2026-09-30">
-  ## langsmith-0.18.0-rc.2
+  ## langsmith-0.18.0-rc.2**LangSmith版本：** `0.18.2rc1`
 
-  **LangSmith版本：** `0.18.2rc1`* 此版本打包了与 langsmith-0.18.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1)发行说明。
+  * 此版本打包了与 langsmith-0.18.0-rc.1 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1)发行说明。
 
   **下载 Helm 图表：** [⟦T47⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.2/langsmith-0.18.0-rc.2.tgz)
 </Update>
@@ -230,7 +230,7 @@
 
   **LangSmith版本：** `0.16.67`
 
-  * 此版本打包了与 langsmith-0.16.34 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.34](#langsmith-0-16-34)发行说明。
+  * 此版本包含与 langsmith-0.16.34 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.34](#langsmith-0-16-34)发行说明。
 
   **下载 Helm 图表：** [⟦T51⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.36/langsmith-0.16.36.tgz)
 </Update>
@@ -242,7 +242,7 @@
   * 模型配置编辑器和网关主页代码示例现在解释了网关应用模型和连接设置，而必须在 API 请求中设置最大令牌和温度等生成参数。
   * 使托管模型请求上限可配置。
   * 选择下拉菜单支持键盘选择并在关闭时返回焦点。搜索字段在更新时保留查询，文本区域尊重受控值，滑块将其标签暴露给屏幕阅读器。
-  * LLM Gateway 在Anthropic 消息和OpenAI 响应之间保留了延迟工具声明和有序工具添加，在搜索算法不同时映射托管工具搜索声明并发出警告，并拒绝聊天完成路由上不支持的搜索历史记录和延迟工具，而不是默默地更改其行为。
+  * LLM Gateway 在 Anthropic 消息和 OpenAI 响应之间保留了延迟工具声明和有序工具添加，在搜索算法不同时映射托管工具搜索声明并发出警告，并拒绝聊天完成路由上不支持的搜索历史记录和延迟工具，而不是默默地更改其行为。
   * 允许较慢的 ThinkingState 动画。
   * 在 Studio 线程面板中折叠长中断负载的一部分，使该部分保持在指针下方，而不是跳回到线程的开头。* 解决了使用限制独特违规错误。
   * 当助手、线程、cron 或连接请求失败时，部署页面显示访问和自定义身份验证指南，而不是显示空状态。
@@ -250,7 +250,7 @@
   * 在OpenAI响应和Anthropic消息之间转换时，LLM网关保留了匹配延迟工具的有序和重复激活，而不重复工具定义。冲突的定义、不明确的名称以及与最初可用工具的冲突仍然被拒绝。
   * 删除代码评估器不再等待沙箱快照清理，因此删除成功而不是超时。快照 ID 已排队，因此即使 API 关闭，清理操作仍会运行。
   * 新的 SankeyChart 设计系统组件可视化各个阶段的数量 — 从模型到结果的来源、跨环境和工作负载的支出或任何加权流程。节点大小按流量、图例行过滤阶段，悬停阶段强调其链接。* 自定义模型价格条目现在具有克隆操作，就像内置条目一样。当您在模型定价面板外部单击、按 Esc 键或关闭模型定价面板时，模型定价面板会询问是否放弃未保存的更改。
-  * 统一的 LLM 网关在翻译已完成的流式响应输出（包括模型回退）时强制执行消息停止序列。匹配截断的交付文本和后续内容，同时保留完整的上游使用；它没有取消上游发电。合成仿真最多接受四个停止序列，每个序列最多 1024 UTF-8 字节；在发送响应请求之前，过大的输入被拒绝。
+  * 统一的 LLM 网关在翻译已完成的流式响应输出（包括模型回退）时强制执行消息停止序列。匹配截断的交付文本和后续内容，同时保留完整的上游使用；它没有取消上游发电。合成仿真最多接受四个停止序列，每个序列最多 1024 个 UTF-8 字节；在发送响应请求之前，过大的输入被拒绝。
   * 短暂的存储后端错误不再导致沙箱的文件系统在重新启动之前返回 I/O 错误。后端恢复后，读取再次成功。
   * 当工作区模型配置指向 Vertex AI 上的 Gemini 时，聊天现在可以在第一次工具调用之后继续工作，并且不再拒绝工具调用打开已保存的 Gemini API 配置。
   * 注释队列标题项现在按添加顺序而不是按字母顺序显示在队列编辑器、审阅侧边栏和 CSV 导出中。现有的标题保持当前的顺序。* 对批量运行删除实施每周每租户限制。
@@ -262,7 +262,7 @@
   * 监控图表描述现在换行为多行，因此全文仍然可见。
   * 加载已保存的 Bedrock Converse 配置（其模型 ID 是应用程序推理配置文件 ARN）现在将提供程序设置保留在额外参数中，因此预设运行时无需重新输入。
   * 通过 Vertex AI 在 Gemini 3.x 模型上聊天现在完成了连续调用多个工具的回合，而不是一旦模型在调用之间讲述其工作就失败。
-  * Playground 中选择了 Claude Sonnet 5.5 以及Anthropic、Bedrock 和 Vertex AI 的模型配置。
+  * Playground 中选定的 Claude Sonnet 5.5 以及Anthropic、Bedrock 和 Vertex AI 的模型配置。
   * 在 AWS 前端预览版上安装了 main-fe Nginx 配置。* Google Vertex AI 模型配置现在将 Anthropic Claude 模型路由到 Vertex 的本机 Anthropic 消息 API，而 Gemini 和开放模型继续使用 OpenAI 兼容端点。现有的裸 Claude ID 继续有效，并且符合发布商资格的 ID 已自动标准化。
   * 在达到运行限制之前，跟踪现在最多可以包含 100,000 次运行。
   * 向摄取后端提供沙箱回调签名密钥。
@@ -293,7 +293,7 @@
 <Update label="2026-09-29">
   ## langsmith-0.17.0-rc.50
 
-  **LangSmith版本：** `0.17.28rc1`
+  **LangSmith 版本：** `0.17.28rc1`
 
   * 此版本打包了与 langsmith-0.17.0-rc.42 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42)发行说明。
 
@@ -325,7 +325,7 @@
 
   **LangSmith版本：** `0.17.28rc1`
 
-  * 此版本包含与 langsmith-0.17.0-rc.42 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42)发行说明。
+  * 此版本打包了与 langsmith-0.17.0-rc.42 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42)发行说明。
 
   **下载 Helm 图表：** [⟦T66⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.46/langsmith-0.17.0-rc.46.tgz)
 </Update>
@@ -341,9 +341,9 @@
 <Update label="2026-09-29">
   ## langsmith-0.16.35
 
-  **LangSmith版本：** `0.16.67`
+  **LangSmith 版本：** `0.16.67`
 
-  * 此版本打包了与 langsmith-0.16.34 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.34](#langsmith-0-16-34)发行说明。
+  * 此版本包含与 langsmith-0.16.34 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.34](#langsmith-0-16-34)发行说明。
 
   **下载 Helm 图表：** [⟦T70⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.35/langsmith-0.16.35.tgz)
 </Update>
@@ -363,7 +363,7 @@
 
   **LangSmith版本：** `0.17.29rc1`
 
-  *“跟踪工具”选项卡显示功能工具以及提供者服务器工具，例如OpenAI tool\_search，并且无法识别的条目不再隐藏运行中的其他工具。
+  *“跟踪工具”选项卡显示功能工具以及提供者服务器工具，例如 OpenAI tool\_search，并且无法识别的条目不再隐藏运行中的其他工具。
 
   **下载 Helm 图表：** [⟦T74⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.44/langsmith-0.17.0-rc.44.tgz)
 </Update>
@@ -403,10 +403,10 @@
   * 线程跟踪 API 接受 `trace_filter` 和 `tree_filter` 查询参数，用于过滤根运行并匹配跟踪树中任何位置的运行。
   * 按创建者过滤自定义应用程序列表，并将选择保留在页面 URL 中。* 保留红队探测声明\_no\_terminal\_answer。
   * 隐藏没有匹配键的反馈快捷键。
-  * 当配置无效时，评估器侧面板禁用“保存”并显示原因；更正配置可再次启用保存。
+  * 当配置无效时，评估器侧面板禁用“保存”并显示原因；更正配置后可以再次保存。
   * 浏览器返回在返回最初加载的页面时保留了导航防护，包括清理空的、未部署的自定义应用程序。
   * 现在，使用“包括注释者姓名和每行注释”下载实验结果时，每个反馈列中都会保留自动评估者分数以及人工注释。
-  * 评估者表格在保存工具提示中而不是横幅中解释了验证错误；在配置生效之前，“保存”保持禁用状态。
+  * 评估者表格在保存工具提示中而不是横幅中解释了验证错误；在配置生效之前，保存保持禁用状态。
   * 沙箱可以代表您调用LangSmith API，而无需沙箱内的 API 密钥；在创建时传递 `access_delegation` 授予您完全访问权限或特定的权限列表；沙箱从来不保存凭证，并且拨款的上限取决于您在每次请求时可以执行的操作。* 从系统快照的共享、只读目录创建沙箱：system/default:latest、system/custom-apps:latest 使用 Smith Apps 工具，以及 system/code-evaluators:latest 使用预安装的 NumPy，从相同的沙箱和队列选择器中选择系统或工作区快照。
   * 使用通过 API 密钥进行身份验证的组织范围模型配置的评估者不再尝试按模型进行 OAuth 令牌交换，并且以这种方式配置的 Amazon Bedrock 模型不再因不受支持而被拒绝。
   * 网关仅请求共享网关项目记录的跟踪，而不是在 API 密钥或特定于用户的项目中创建重复项；现有的特定于调用者的项目及其历史痕迹保持不变。
@@ -414,7 +414,7 @@
   * 当运行评估器使用线程或轨迹源，或者线程和轨迹评估器使用运行源时，评估器侧面板显示映射错误并阻止保存，并在评估器目标更改时更新验证。
   * 为红队高严重性提供了自己的图表颜色。
   * 跟踪项目的跟踪和运行表上的“列”菜单允许您取消选择“状态”和“名称”，并将它们与其他列一起拖动到任意顺序。
-  * LangSmith 在模型访问策略中支持 TypeSafe，并为直接网关请求提供了系统一示例。
+  * LangSmith 在模型访问策略中支持 TypeSafe，并为直接网关请求提供系统一示例。
   * TypeSafe Jev 调用的 LLM 网关跟踪包括令牌使用情况以及按 TypeSafe 公布的费率计算的成本。
   * 使用 30 分钟的分段 ABAC 延迟窗口。
   * 系统/代码评估器：最新快照包括 pandas、jsonschema、SciPy 和 scikit-learn 以及 NumPy，因此评估器可以使用 ACE 支持的 Python 包，而无需安装它们。* 通过轨迹处理传播可用工具 (2/7)。
@@ -426,7 +426,7 @@
   * 可以列出沙箱的服务 URL，显示哪些端口被共享以及如何共享，并且可以关闭一个或全部端口的共享；以前，可以创建服务 URL，但从未检查或撤回。
   * 将目标的答案保留在法官的阅读窗口内。
   * 评估器配置表单显示每个支持的输入大小的完整采样率百分比。
-  * 保存问题板的 GitHub 设置会清除项目中每个问题的修复分支和拉取请求链接，即使存储库本身没有更改，因此仅编辑基本分支或自动打开 PR 切换会默默地将问题与已打开或合并的拉取请求分离；董事会设置不再触及这些链接。* 当跟踪批次的上传时间比服务器等待的时间长时，/runs/multipart 和 /runs/batch 停止读取并返回 408 请求超时而不是 503；由服务器而不是上传导致的超时返回 504。
+  * 保存问题板的 GitHub 设置会清除项目中每个问题的修复分支和拉取请求链接，即使存储库本身没有更改，因此仅编辑基本分支或自动打开 PR 切换会默默地将问题与已打开或合并的拉取请求分离；面板设置不再触及这些链接。* 当跟踪批次的上传时间比服务器等待的时间长时，/runs/multipart 和 /runs/batch 停止读取并返回 408 请求超时而不是 503；由服务器而不是上传导致的超时返回 504。
   * 组织可以从常规设置中禁用 API 密钥验证的密钥创建；具有组织管理权限的登录用户可以更新设置，并且现有密钥继续有效。
   * 当调用带有response\_schema的interrupt()的图表时，Studio会呈现简历值的键入字段，而不是自由格式的JSON编辑器；没有模式的中断保留了 JSON 编辑器。
   * 部署表单在提交前修剪环境变量名称周围的空格，防止意外空格导致部署失败；环境变量值保持不变。
@@ -564,9 +564,9 @@
 <Update label="2026-09-18">
   ## langsmith-0.16.27
 
-  **LangSmith版本：** `0.16.59`
+  **LangSmith 版本：** `0.16.59`
 
-  * 此版本打包了与 langsmith-0.16.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.26](#langsmith-0-16-26)发行说明。
+  * 此版本包含与 langsmith-0.16.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.26](#langsmith-0-16-26)发行说明。
 
   **下载 Helm 图表：** [⟦T109⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.27/langsmith-0.16.27.tgz)
 </Update>
@@ -574,7 +574,7 @@
 <Update label="2026-09-18">
   ## langsmith-0.17.0-rc.35
 
-  **LangSmith版本：** `0.17.25rc1`* 此版本打包了与 langsmith-0.17.0-rc.33 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.33](#langsmith-0-17-0-rc-33)发行说明。
+  **LangSmith 版本：** `0.17.25rc1`* 此版本打包了与 langsmith-0.17.0-rc.33 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.33](#langsmith-0-17-0-rc-33)发行说明。
 
   **下载 Helm 图表：** [⟦T111⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.35/langsmith-0.17.0-rc.35.tgz)
 </Update>
@@ -582,7 +582,7 @@
 <Update label="2026-09-18">
   ## langsmith-0.16.26
 
-  **LangSmith版本：** `0.16.59`
+  **LangSmith 版本：** `0.16.59`
 
   * 内部改进和维护更新
 
@@ -612,7 +612,7 @@
 <Update label="2026-09-17">
   ## langsmith-0.16.24
 
-  **LangSmith 版本：** `0.16.58`* 在未配置 API 密钥时，自托管 Playground 和 LLM 评估器可以使用 Azure Kubernetes 服务工作负载身份向 Azure OpenAI 进行身份验证。
+  **LangSmith版本：** `0.16.58`* 在未配置 API 密钥时，自托管 Playground 和 LLM 评估器可以使用 Azure Kubernetes 服务工作负载身份向 Azure OpenAI 进行身份验证。
   * 自托管升级可以重新运行使用计量迁移，而不会重复触发错误或用默认费率替换现有模型定价。
 
   **下载 Helm 图表：** [⟦T119⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.24/langsmith-0.16.24.tgz)
@@ -632,7 +632,7 @@
   * 按模型提供商在 API 密钥或用户中对 LLM 网关的使用情况进行分组，以比较提供商之间的支出并筛选特定提供商。
   * 现在，在注释队列中的线程项之间切换会替换前一个线程的消息，而不是将新线程覆盖在它们之上。
   * Context Hub 的 Markdown 预览窗格现在无需编辑即可渲染文件，从而防止富文本编辑器无意中重写存储的字节；编辑发生在“编辑”选项卡中，影响存储库中的确切字节，并且当您在文件之间移动时，您的预览/编辑选择仍然存在。
-  * 将每个 OpenAI 客户端固定到部署区域。* 经过身份验证的网关请求可以选择在 X-LangSmith-Anthropic-Passthrough 中发送不透明的原始提供商令牌。 LangSmith OAuth 使用标准授权承载身份验证；只有内置 Anthropic 请求将令牌作为持有者转发，而不访问工作区提供者机密，将令牌有效性留给Anthropic。其他提供商和自定义Anthropic兼容端点使用典型的获取密钥。保存的模型/路线、目录和混合后备链保留了现有权限、策略、权利和特定于提供商的会计。
+  * 将每个 OpenAI 客户端固定到部署区域。* 经过身份验证的网关请求可以选择在 X-LangSmith-Anthropic-Passthrough 中发送不透明的原始提供商令牌。 LangSmith OAuth 使用标准授权承载身份验证；只有内置 Anthropic 请求将令牌作为承载者转发，而不访问工作区提供者机密，将令牌有效性留给 Anthropic。其他提供商和自定义Anthropic兼容端点使用典型的获取密钥。保存的模型/路线、目录和混合后备链保留了现有权限、策略、权利和特定于提供商的会计。
   * 恢复了对组合部署的 EU Vertex 推断。
   * 更正了 Jira 目的地品牌。
   * 公开共享的线程页面不再显示无法成功的共享操作。
@@ -642,8 +642,8 @@
   * 修复了环境 ID 工具提示上的名称。
   * 跟踪主动红队报道。* 模型的安全拒绝现在提供解释而不是空回复，失败的工具调用指示失败而不是完成，并且评估器搜索澄清运行每个评估器评分的内容。从聊天面板中删除了不起作用的语音按钮。
   * 当两个选定的模型都使用另一个提供商时，Insights 不再警告仅针对 OpenAI 或 Anthropic 的优化。
-  * 当跟踪项目在默认时间范围内缺少跟踪时，范围现已扩大到包括最近的跟踪（最多 30 天前）。如果设置了明确的范围，则空表旁边会出现扩展该范围的选项。
-  * 为非门控操作启用流式 HTTP MCP。
+  * 当跟踪项目在默认时间范围内缺少跟踪时，范围现已扩大到包括最多 30 天前的最新跟踪。如果设置了明确的范围，则空表旁边会出现扩展该范围的选项。
+  * 为非门控操作启用可流传输的 HTTP MCP。
   * 保留 langgraph-api 的 Trivy 操作权限。
   * 实验表中的编辑和删除现在检查项目权限以匹配 BE。
   * 当导航标志打开时，将消息重命名为轨迹。* 问题详细信息标头现在从问题的上次修改时间读取时间戳，从而防止例行更新（例如链接新证据的引擎）和刷新描述，从而使已关闭的问题看起来刚刚标记为已完成；它现在显示为“已更新\<when>”，其中包含有关谁关闭问题以及何时在下面的历史记录中显示的详细信息。
@@ -662,10 +662,10 @@
   * Insights 现在推荐了一个强大的思维模型和一个具有大上下文窗口的快速总结模型，并且没有针对混合提供者的警告。
   * LangSmith Go 和 Java SDK 现在可以保存 Insights 报告配置，使客户能够以编程方式创建 UI 可见的 Insights 报告。* 现在关闭自动化会停止其回填和实时评估，而不是在重新激活时恢复它们；禁用的自动化在关闭时继续推进其位置，这意味着重新激活大致从其暂停点恢复，避免了对关闭时提交的每个跟踪进行冗余评估。
   * 注释队列“查看所有项目”页面上的标头计数和删除确认现在反映了活动时间范围而不是整个队列，项目计数端点接受 min\_start\_time 和 max\_start\_time。
-  * 当规则、playground 实验或 UI 代码评估器的评估器分数违反工作区反馈键配置（例如，5 分对应 0-1 范围）时，LangSmith 现在会记录运行的错误反馈，并在注释中注明拒绝原因，而不是默默地删除它。
+  * 当规则、游乐场实验或 UI 代码评估器的评估器分数违反工作区反馈键配置（例如，5 分对应 0-1 范围）时，LangSmith 现在会记录运行的错误反馈，并在注释中注明拒绝原因，而不是默默地删除它。
   * 添加了空状态提示。
   * 安装了 pnpm 并在非冲突失败时使构建作业失败。
-  * 将沙箱服务 URL 握手路由到 smith-go。
+  * 将沙盒服务 URL 握手路由到 smith-go。
   * 隐藏单圈轨迹导航。
   * 将继承的螺纹过滤器限制为十圈。* 尽管保存了分数，但更改先前已完成的队列项目的反馈分数仍会引发“无法更新审阅时间”错误；吐司被拿掉了，但分数仍然像以前一样保存。
   * 详细信息窗格现在可以填充狭窄的屏幕，而不会浪费左侧边缘的空间，调整大小手柄支持使用箭头键、Home 和 End 进行键盘导航，并显示可见的焦点指示器。
@@ -724,7 +724,7 @@
 <Update label="2026-09-15">
   ## langsmith-0.17.0-rc.30
 
-  **LangSmith 版本：** `0.17.24rc1`* 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
+  **LangSmith版本：** `0.17.24rc1`* 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
 
   **下载 Helm 图表：** [⟦T129⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.30/langsmith-0.17.0-rc.30.tgz)
 </Update>
@@ -752,7 +752,7 @@
 <Update label="2026-09-14">
   ## langsmith-0.17.0-rc.27
 
-  **LangSmith版本：** `0.17.24rc1`
+  **LangSmith 版本：** `0.17.24rc1`
 
   * 此版本打包了与 langsmith-0.17.0-rc.26 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.26](#langsmith-0-17-0-rc-26)发行说明。
 
@@ -762,7 +762,7 @@
 <Update label="2026-09-14">
   ## langsmith-0.16.22
 
-  **LangSmith 版本：** `0.16.55`
+  **LangSmith版本：** `0.16.55`
 
   * 当启用端点身份验证时，LangSmith 为部署信息端点提供经过身份验证的启动请求。
 
@@ -802,7 +802,7 @@
 
   **LangSmith版本：** `0.16.52`
 
-  * 此版本打包了与 langsmith-0.16.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.18](#langsmith-0-16-18)发行说明。
+  * 此版本包含与 langsmith-0.16.18 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.18](#langsmith-0-16-18)发行说明。
 
   **下载 Helm 图表：** [⟦T145⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.19/langsmith-0.16.19.tgz)
 </Update>
@@ -830,7 +830,7 @@
 
   **LangSmith版本：** `0.16.50`
 
-  * 此版本包含与 langsmith-0.16.16 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.16](#langsmith-0-16-16)发行说明。
+  * 此版本打包了与 langsmith-0.16.16 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.16](#langsmith-0-16-16)发行说明。
 
   **下载 Helm 图表：** [⟦T151⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.17/langsmith-0.16.17.tgz)
 </Update>
@@ -858,7 +858,7 @@
   * 将计费警报路由至专用计费渠道。
   * 配置代理身份验证 OAuth 回调。
   * 忽略没有名字的代理。
-  * 欧盟路由修复通过区域OpenAI运行。
+  * 路由欧盟修复通过区域OpenAI运行。
   * 已发送的代理身份验证路由上的轮询凭证会话。
   * Led Slack 发出带有标题的警报。
   * 共享线程创建了一个任何人都可以在没有LangSmith帐户的情况下打开的链接，显示线程中的每个回合及其运行轨迹和反馈分数。该链接始终反映线程的当前内容，包括共享后添加的回合，取消共享会立即撤销它。* 在顶点路径上设置所有三个提示缓存断点。
@@ -885,7 +885,7 @@
   * 在提交查找中显示当前 SHA。
   * 注册后恢复组织邀请。
   * 当候选者未在配置的超时内返回响应标头时，LLM 网关后备链现在可以前进到下一个模型。标头到达后，活动响应流继续。
-  * 同时启动本地堆栈和工作空间。
+  * 同时启动本地堆栈和工作区。
   * 为 BYOC 数据平面引脚烘焙 Alembic 链。
   * 与本地同时运行后端启动堆栈。
   * 规范化的亚太地区负载均衡器环境。* OAuth 授权会话现在接受规范的 `owner_type` 和 `owner_id` 字段，允许人员为用户或代理授权托管凭据。旧版请求和响应形状仍然支持已弃用的 `principal_id` 和 `agent_id` 字段。
@@ -901,17 +901,17 @@
   * 使用新的`/v2/threads/stats`端点来检索跟踪项目的线程和跟踪计数、延迟、令牌、成本和反馈统计信息。
   * 队列代理现在支持使用您配置的工作区 URL、服务端点和工作区凭据保存的 Databricks 模型配置。您可以通过 Databricks Model Serving 或 AI Gateway 路由进行连接。
 
-  **下载 Helm 图表：** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
+  **Download the Helm chart:** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
 </Update>
 
 <Update label="2026-09-05">
   ## langsmith-0.16.16
 
-  **LangSmith版本：** `0.16.50`
+  **LangSmith version:** `0.16.50`
 
   * 内部改进和维护更新
 
-  **下载 Helm 图表：** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
+  **Download the Helm chart:** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
 </Update>
 
 <Update label="2026-09-03">
@@ -1068,7 +1068,7 @@
 
   **LangSmith版本：** `0.17.14rc1`
 
-  * 此版本打包了与 langsmith-0.17.0-rc.13 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。
+  * 此版本打包了与 langsmith-0.17.0-rc.13 相同的LangSmith应用程序版本。请参阅下面的[langsmith-0.17.0-rc.13](#langsmith-0-17-0-rc-13)发行说明。
 
   **下载 Helm 图表：** [⟦T191⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.14/langsmith-0.17.0-rc.14.tgz)
 </Update>
@@ -1136,7 +1136,7 @@
   * 允许代理生成器弹出窗口消失。
   *“模型回退”选项卡现在允许您创建和管理提供者模型的自动回退链，选择有序的备份模型或保存的模型配置，选择触发回退的 HTTP 错误，以及复制现成的网关请求示例。
   * 启用阴影 v1 -> v2 图表来比较数据。* GET /v1/fleet/users 现在适用于通过外部 OIDC 提供商进行身份验证的舰队部署，而不仅仅是 API 密钥调用者； OIDC 上的无头客户端可以解析同事的用户 ID 以进行代理共享。
-  * GET /v1/fleet/sandboxes//files 返回沙箱中某个路径下的文件，通过 glob 模式进行匹配，并使用 page\_size 和不透明光标进行分页；分页取代了沙盒 glob 所应用的静默结果上限，因此可以完整读取大目录，而不是中途停止。
+  * GET /v1/fleet/sandboxes//files 返回沙箱中某个路径下的文件，通过 glob 模式进行匹配，并使用 page\_size 和不透明光标进行分页；分页取代了沙箱 glob 所应用的静默结果上限，因此可以完整读取大目录，而不是中途停止。
   * GET /v1/fleet/sandboxes//files/content 返回沙箱中文件的原始字节；字节范围通过 Range 标头支持，HEAD 报告文件的大小而不传输它。
   * 从阴影中排除第一个存储桶。
   * GET /v1/fleet/sandbox-snapshots/ 返回一个沙箱快照，因此客户端可以查看快照的构建状态，而无需重新读取整个列表；路径参数接受快照 ID 或 Docker 风格的引用，其中裸名称意味着 name:latest。* 工作区角色可以授予 API 密钥创建和删除权限，而无需授予完整的工作区管理权限；密钥管理人员可以将服务密钥范围限定到允许的工作空间并分配不受限制的角色。
@@ -1158,7 +1158,7 @@
 <Update label="2026-08-21">
   ## langsmith-0.17.0-rc.11
 
-  **LangSmith版本：** `0.17.10rc1`
+  **LangSmith 版本：** `0.17.10rc1`
 
   * 此版本打包了与 langsmith-0.17.0-rc.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.17.0-rc.7](#langsmith-0-17-0-rc-7)发行说明。
 
@@ -1168,7 +1168,7 @@
 <Update label="2026-08-20">
   ## langsmith-0.16.10
 
-  * 此版本包含与 langsmith-0.16.9 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.9](#langsmith-0-16-9)发行说明。
+  * 此版本打包了与 langsmith-0.16.9 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.9](#langsmith-0-16-9)发行说明。
 
   **下载 Helm 图表：** [⟦T205⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.10/langsmith-0.16.10.tgz)
 </Update>
@@ -1206,7 +1206,7 @@
   * 除了现有的平均值、最小值和最大值之外，自定义仪表板图表现在还可以按总和、P50、P90、P95 和 P99 汇总反馈分数。* 在线评估器定义现在包括一个高级设置，用于打开或关闭评估器执行跟踪，并在禁用跟踪时继续运行反馈生成。
   * 停止重试跟踪查询超时，限制为 5 次尝试。
   * 接受以前的 Fernet 密钥，以便密钥可以轮换。
-  * 现在，删除LangGraph部署会在一小时宽限期后删除其运行资源，并在一周后永久删除其数据库和元数据，从而留下一个从意外删除中恢复的窗口。
+  * 现在，删除 LangGraph 部署会在一小时宽限期后删除其运行资源，并在一周后永久删除其数据库和元数据，从而留下一个从意外删除中恢复的窗口。
   * 无论浏览器报告的内容类型如何，现在都可以上传 .csv 或 .jsonl 数据集； Windows 浏览器将 .csv 文件标记为 Excel 类型，这此前会导致有效上传失败，并且也接受 DATASET.CSV 等大写文件名。
   * 附加到 Slack 消息的文件现在可在 /workspace/uploads 下用于沙箱支持的代理，匹配从 Fleet 上传的文件。
   * LangSmith 公开注释队列项端点，用于通过公共 API 和 SDK 生成流程添加、列出、更新、删除、计数、定位和查看运行或线程队列项。* 自托管舰队代理可以使用沙箱支持的计算机访问，而不需要云计费计划层。
@@ -1235,8 +1235,8 @@
   * 数据集或跟踪项目上的评估者列表现在显示评估者的当前名称，而不是附加时的名称；重命名后反馈键未发生变化。
   * 下一个自托管版本预览和提交定位器。* 数据集示例视图恢复了示例详细信息和选项卡导航之间的清晰间距。
   * 连接卡现在出现在 LLM Gateway 主页上的 Gateway Credits 余额上方，并且生成的代码片段在基本 URL 之前列出了 API 密钥，以匹配常见约定。
-  * 注释队列项 API 使用project\_id 作为跟踪项目，请求体也接受 session\_id 作为别名。
-  * 沙盒支持的 Fleet 代理可以创建或修改可下载的 DOCX 文件，而无需在任务期间安装创作包；内置的技能指导文档创作和结构验证。
+  * 注释队列项API使用project\_id作为跟踪项目，请求体也接受session\_id作为别名。
+  * 沙箱支持的 Fleet 代理可以创建或修改可下载的 DOCX 文件，而无需在任务期间安装创作包；内置的技能指导文档创作和结构验证。
   * 指向 /langchain/v1 的网关积分片段。
   * 成对注释队列运行再次包含禁用 ClickHouse 查询支持时创建反馈所需的跟踪项目 ID。
   * 舰队代理可以使用 slack\_send\_file 和 slack\_send\_file\_to\_user 将工作区文件发送到 Slack 通道、线程和直接消息。* Gateway Credits 购买对话框现在会显示您购买时可获得的积分余额，并在单次购买按钮上方直接注明含费用总额；大金额不再将学分读数和总数推到对话框之外。
@@ -1246,10 +1246,10 @@
   * 在计划矩阵中添加了网关策略和网关积分行。
   * 记录已完成的 langchain 提供商信用购买。
   * 沙箱中的 `langsmith` CLI 已更新至 v0.2.44，其请求现已在为 `/api` 下的 API 提供服务的自托管部署上得到解决，其中 `trace messages` 等命令和项目问题命令之前失败。* 当模型提供者拒绝 Playground 运行时，例如错误的 API 密钥或配额耗尽，Playground 现在会显示提供者自己的错误消息，而不是通用服务器错误，从而从错误本身澄清原因。
-  * 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在计划将项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
+  * 删除其 LangGraph 部署仍在删除后保留窗口内的跟踪项目现在会安排该项目与部署一起删除，并在错误消息中进行解释，而不是要求您删除已删除的部署。
   * 现在，每个人都可以使用新的代理创建体验，助手会显示“创建代理”按钮，新代理将运行自己的设置对话，而不是内联构建。
-  * 分叉评估者将副本附加到分叉对话框中指定的项目或数据集；以前，可以创建不附加任何内容的副本，让原始评估器运行您刚刚编辑的版本。
-  * LangGraph 部署的删除确认现在表明，在您确认后会运行底层数据库的清理，并且已删除部署的名称将保持保留状态，直到清理完成。* 当您在入职期间选择 Gateway Credits 时，复制到编码代理中的提示现在包含适合您的部署的正确网关 URL。
+  * 分叉评估者将副本附加到分叉对话框中指定的项目或数据集；以前，可以创建不附加任何内容的副本，让原始评估器运行您刚刚编辑过的版本。
+  * LangGraph 部署的删除确认现在表明，在您确认后会运行底层数据库的清理，并且已删除的部署的名称将保持保留状态，直到清理完成。* 当您在入职期间选择 Gateway Credits 时，复制到编码代理中的提示现在包含适合您的部署的正确网关 URL。
   * 恢复了 #30448 中删除的重复数据删除/生命周期块。
   * LLM Gateway Home 现在突出显示所选模型，并允许在聊天完成、消息和响应格式之间切换连接示例。
   * 附加到消息的 PDF 和其他文档现在呈现在全角预览框架中，并带有标题控件，可以几乎全屏打开它们，而不是折叠到缩略图大小的框。
@@ -1268,7 +1268,7 @@
   * 确认破坏性操作后，从运行详细信息操作菜单中删除了整个跟踪。
   * 在跟踪项目中，重置视图现在会将线程/跟踪/运行切换器与显示的行同步移动；以前，当表已经返回到跟踪状态时，切换器可以保持在运行状态。
   * 自托管部署现在可以捕获丢失的跟踪项目上次运行时间戳，因此项目排序反映了最近的历史活动。* 主页间距和表面着色现在与设计审查反馈相匹配，并且几个小副本修复了澄清的信用限额、提供商状态和组织级购买限额。
-  * 当项目配置自定义输出渲染器时，跟踪输出部分现在将其作为自定义选项与 Markdown、Plain、JSON 和 YAML 一起提供，而不是替换它们；自定义仍为默认设置，您的选择将被记住。
+  * 当项目配置自定义输出渲染器时，跟踪输出部分现在将其作为自定义选项与 Markdown、Plain、JSON 和 YAML 一起提供，而不是替换它们；自定义仍为默认值，您的选择将被记住。
   * 跳过新安装的回填发布列车检查。
   * 当LLM网关将OpenAI聊天完成或响应请求转换为Claude模型时，设置prompt\_cache\_options（或已弃用的prompt\_cache\_retention）的请求现在启用Anthropic提示缓存，而不是忽略该字段；在聊天完成和响应格式之间进行转换时，应用了Anthropic的默认缓存生命周期，并保留了prompt\_cache\_key、prompt\_cache\_retention和prompt\_cache\_options。* 舰队代理现在可以正确地将沙箱创建和组织配置请求路由到自托管部署上的 Go 平台后端服务，其中 Go 和 Python 服务在不同的地址上运行，从而无需反向代理解决方法。
   * 现在，从实验结果网格中更正评估者分数会立即更新单元格及其弹出窗口，而无需刷新页面。
@@ -1294,7 +1294,7 @@
   * 在引擎打开之前，引擎选项卡在跟踪项目中再次可见，因此管理员可以启用它，成员可以请求访问权限，个人组织可以升级，所有这些都可以通过选项卡本身进行。
   * 在线自托管 LangSmith 安装现在可在启用回拨使用情况报告时报告最终的沙箱正常运行时间和计费资源使用情况；离线和选择退出安装不会发送沙箱使用情况。
   * 自托管 LangSmith 现在仅当部署许可证包含沙箱访问时才启用沙箱 API 和 UI 访问。
-  * 线程细节中的瀑布过滤器现在保持深度嵌套的匹配可见并保留过滤器控件，同时新摄取的痕迹仍然出现。* 根据反馈更新了 FE 代理技能和 lint。
+  * 线程细节中的瀑布过滤器现在保持深度嵌套的匹配可见，并保留过滤器控件，同时仍然出现新摄取的痕迹。* 根据反馈更新了 FE 代理技能和 lint。
   * 使用 `dataset_id` 创建或验证示例时，该示例不是格式良好的 UUID，现在会返回 422 命名该字段，而不是 500。
   * 添加提供商 API 密钥现在从提供商选择器开始，该选择器为您填写正确的密钥名称，并提供其他任何内容的自定义选项；在 LLM 网关中，您可以添加提供商所需的机密，而无需离开连接屏幕。
   * 允许通过 FF 禁用特定仪表板。
@@ -1355,7 +1355,7 @@
 <Update label="2026-08-14">
   ## langsmith-0.16.6
 
-  * 此版本包含与 langsmith-0.16.5 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.5](#langsmith-0-16-5)发行说明。
+  * 此版本打包了与 langsmith-0.16.5 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.5](#langsmith-0-16-5)发行说明。
 
   **下载 Helm 图表：** [⟦T229⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.6/langsmith-0.16.6.tgz)
 </Update>
@@ -1385,7 +1385,7 @@
 <Update label="2026-08-11">
   ## langsmith-0.16.3
 
-  * 此版本打包了与 langsmith-0.16.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.2](#langsmith-0-16-2)发行说明。
+  * 此版本包含与 langsmith-0.16.2 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.2](#langsmith-0-16-2)发行说明。
 
   **下载 Helm 图表：** [⟦T233⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.3/langsmith-0.16.3.tgz)
 </Update>
@@ -1427,7 +1427,7 @@
 
   按照升级说明操作即可访问所有内容：[https://docs.langchain.com/langsmith/self-host-upgrades](https://docs.langchain.com/langsmith/self-host-upgrades)。
 
-  如果您想预订升级时间，请随时联系LangChain支持，电话：`support@langchain.dev`。
+  如果您想预订升级时间，请随时联系LangChain支持人员`support@langchain.dev`。
 
   ### 重大变更
 
@@ -1439,11 +1439,11 @@
   * `polly`、`fleet` 和 `insightsEngine` 等代理图像现在与核心可观测性图像相当。它们支持依赖项的 IAM 身份验证以及 FIPS 兼容性。
   * 自托管映像附带 Cosign 签名和签名的 SBOM 证明，因此您可以立即验证来源并满足供应链要求。
 
-  ### 新功能* **SmithDB** is available in public beta. LangChain 不支持也不建议您自行设置。通过 [SmithDB early access waitlist](https://www.langchain.com/smithdb-early-access-waitlist) 表达兴趣，团队将与您联系，帮助您在 SmithDB 上取得成功。
+  ### 新功能* **SmithDB** 已推出公开测试版。 LangChain 不支持也不建议您自行设置。通过 [SmithDB early access waitlist](https://www.langchain.com/smithdb-early-access-waitlist) 表达兴趣，团队将与您联系，帮助您在 SmithDB 上取得成功。
     * 专为LangSmith运行和跟踪数据构建的列式数据库，取代 ClickHouse 作为运行的查询引擎。
     * 更快地跟踪和运行大型项目的查询，以及此版本中扩展的自定义仪表板指标的后备存储。
     * 可以在禁用 ClickHouse 的情况下作为唯一的查询路径运行，或者在迁移期间与 ClickHouse 一起运行。运行、线程和统计数据由 `/v2/*` 端点提供。
-  * **自托管引擎** 在 AWS/GCP US 中可用。 For installation instructions, see [LangSmith Engine on self-hosted](/langsmith/engine-self-hosted).您可能需要联系您的客户代表才能在您的许可证上启用此功能。
+  * **自托管引擎** 在 AWS/GCP US 中可用。有关安装说明，请参阅[LangSmith Engine on self-hosted](/langsmith/engine-self-hosted)。您可能需要联系您的客户代表才能在您的许可证上启用此功能。
     * 代理工程的代理：引擎根据您的生产痕迹工作，找出重复出现的问题，诊断其根本原因，并推动修复。
     * 持续扫描启用的跟踪项目，识别故障和潜在的改进，并将它们转化为按严重程度排名的可操作问题。* 提出修复建议，在连接源代码的情况下打开 PR，创建评估器和真实示例以捕获回归，并自动监控问题是否再次出现。
     * 使用费按 [LangChain Compute Units (LCUs)](/langsmith/pricing-plans) 收费，并在组织和项目级别可选择每月支出限额。在自托管上，引擎不会发出 LangSmith 痕迹。
@@ -1452,16 +1452,16 @@
     * 隔离环境，代理可以安全地执行任意代码并与文件系统交互，而无需接触您的主要基础设施。
     * 从基于 Docker 映像、本地`Dockerfile`或捕获的运行沙箱构建的快照启动，并挂载 S3、GCS 和 Git 存储库，而无需向代理公开凭据。
     * 身份验证代理将凭据保留在运行时之外。
-  * **平台和工具*** **LangSmith MCP**：将任何支持 MCP 的客户端指向您的实例以读取跟踪、项目、数据集和提示。有关更多信息，请参阅[LangSmith Remote MCP](/langsmith/langsmith-remote-mcp)。远程 MCP OAuth 授权现在适用于使用 SSO 的自托管。
+  * **平台和工具*** **LangSmith MCP**：将任何支持 MCP 的客户端指向您的实例以读取跟踪、项目、数据集和提示。欲了解更多信息，请参阅[LangSmith Remote MCP](/langsmith/langsmith-remote-mcp)。远程 MCP OAuth 授权现在适用于使用 SSO 的自托管。
     * **LangSmith OAuth 令牌**：通过 `langsmith auth login` 基于浏览器的登录，发出短期访问令牌和刷新令牌，以及用于跨 CLI 和 SDK 共享端点、工作区和身份验证配置的配置文件。欲了解更多信息，请参阅[LangSmith CLI](/langsmith/langsmith-cli)。
-      * **Terraform 提供程序**：以代码形式管理工作区、自定义角色、组织和工作区成员、评估者、运行规则和警报规则。有关更多信息，请参阅[Manage LangSmith with Terraform](/langsmith/manage-with-terraform)。
+      * **Terraform 提供程序**：以代码形式管理工作区、自定义角色、组织和工作区成员、评估者、运行规则和警报规则。欲了解更多信息，请参阅[Manage LangSmith with Terraform](/langsmith/manage-with-terraform)。
     * **部署**：从“设置”中重命名部署，在一个代理上使用相同的表达式创建多个 cron 计划，并查看本地时区的 cron 计划。
   * **可观察性和评估**
     * **运行详细信息面板**：重新设计，直接在面板中提交反馈。
     * **线程视图**：显示实际的最后输出以及新的“最后错误”列。
     * **范围跟踪限制**：管理每个项目和每个用户的每月跟踪限制，并在“使用限制”页面上显示横幅和可见性。* **监控挂钩**：运行规则 Webhook 有效负载包括 `trace_url` 深层链接，队列工作人员发出 Prometheus 指标。
     * **OpenTelemetry**：来自 OTel 资源属性的自定义跟踪元数据以及在其父级之前到达的子级现在已正确缓冲和嵌套，而不是被删除。
-    * **可重复使用的评估器**：LLM 法官评估器可以包含扩展统计数据。
+    * **可重复使用的评估器**：LLM-as-judge评估器可以包含扩展统计数据。
     * **注释队列权限**：ABAC 支持。
     * **实验进度跟踪**：进度条显示运行和评估器执行进度。
     * **数据集分割**：显示为芯片，可从实验和比较表中进行编辑。
@@ -1528,7 +1528,7 @@
 <Update label="2026-07-31">
   ## langsmith-0.16.0-rc.24* 对于使用 6.2 之前的 Redis 版本的自托管部署，跟踪项目活动和排序保持最新。
   * 数据集示例视图恢复了示例详细信息和选项卡导航之间的清晰间距。
-  * The evaluator onboarding navigation matched the background of the surrounding pane.
+  * 评估者入门导航与周围窗格的背景相匹配。
   * 评估者支出视图仅列出了所跟踪的网关路由提供商。
   * 实验比较网格中的元数据列（包括`example.metadata.<key>`）呈现其值而不是保持为空。
   * 无论浏览器报告的内容类型如何，上传`.csv`或`.jsonl`数据集都有效。 Windows 浏览器将 `.csv` 文件标记为 Excel 类型，此前这会导致有效上传失败。也接受大写文件名，例如 `DATASET.CSV`。
@@ -1539,7 +1539,7 @@
 <Update label="2026-07-31">
   ## langsmith-0.16.0-rc.23
 
-  * Updated the `langsmith` CLI in sandboxes to v0.2.44.它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
+  * 将沙盒中的`langsmith` CLI 更新至 v0.2.44。它的请求现在在为 `/api` 下的 API 提供服务的自托管部署上解析，其中 `trace messages` 等命令和项目问题命令之前失败。
   * 当 ClickHouse 使用优化的运行表时，负反馈键过滤器正确返回匹配跟踪。**下载 Helm 图表：** [⟦T280⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.23/langsmith-0.16.0-rc.23.tgz)
 </Update>
 
@@ -1693,7 +1693,7 @@
 
   * LLM 作为法官评估者现在可以选择包含扩展统计数据并映射来自 `run.*` 字段的提示变量。* 默认沙箱 rootfs 镜像包含 Docker Compose 并自动启动 Docker 守护进程。
 
-  * 添加了 `gemini-3.6-flash` 的成本跟踪。
+  * 添加了`gemini-3.6-flash`的成本跟踪。
 
   * 网关支出上限策略现在可以配置为每周一次。
 
@@ -1733,29 +1733,29 @@
 
   * 修复了不正确的元数据方面建议，并改进了具有丰富运行元数据的项目的组统计延迟。
 
-  * 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。* Fleet `/v1/fleet/auth-agents/{agent_id}/connections` endpoints moved to `/v1/fleet/agents/{agent_id}/connections` with typed responses, request validation, and the standard Fleet error envelope.旧的 URL 返回 404。
+  * 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。* 队列 `/v1/fleet/auth-agents/{agent_id}/connections` 端点已移至 `/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 
-  * Fixed Fleet redirect after deleting the active agent.
+  * 修复了删除活动代理后舰队重定向的问题。
 
-  * Removed the Type column from the LangSmith datasets table.
+  * 从 LangSmith 数据集表中删除了类型列。
 
-  * Encrypted/redacted "reasoning" content blocks no longer appeared as empty or garbled cards in the trace messages view. Meaningful extended-thinking content continued to render normally.
+  * 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空卡或乱码卡。有意义的扩展思维内容继续正常呈现。
 
-  * Fleet agent APIs required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+  * 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。
 
-  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports. Limited to 250 experiments per export, could be increased at request.
+  * 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
 
-  * No user-facing changes—internal OpenAPI spec update only.
+  * 没有面向用户的更改 - 仅内部 OpenAPI 规范更新。
 
-  * Fleet used langchain-fireworks 1.4.2 for Fireworks model calls.
+  * Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 
-  * This enabled a redesign of the run details panel with improved readability and more robust message parsing.
+  * 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
 
-  * Fleet/Agent Builder included Gemini 3.5 Flash as a selectable built-in model.
+  * Fleet/Agent Builder 包括 Gemini 3.5 Flash 作为可选的内置型号。
 
-  * Computer use had an in-chat callout for eligible general chat users.
+  * 计算机使用对符合资格的一般聊天用户有一个聊天内标注。
 
-  * Fixed a bug where the blob storage banner incorrectly flashed on page load.* 这启用了一种直接在运行详细信息面板中留下运行反馈的新方法。
+  * 修复了 Blob 存储横幅在页面加载时错误闪烁的错误。* 这启用了一种直接在运行详细信息面板中留下运行反馈的新方法。
 
   * 添加了对 Claude Opus 4.8 的代币定价支持。
 
@@ -1773,17 +1773,17 @@
 
   * 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 
-  * 引擎支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。* Chat-input file uploads in agent builder/fleet reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+  * 引擎支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。* 当启用沙箱时，代理构建器/队列中的聊天输入文件上传在`/tmp/uploads/`到达沙箱文件系统。
 
-  * Fleet Default appeared first in the model picker for eligible plans.
+  * 舰队默认值首先出现在符合条件的计划的模型选择器中。
 
   * 修复了项目统计侧边栏跟踪计数标签和标题布局。
 
-  * Run rules webhook payloads now included a `trace_url` deep link for each run.
+  * 运行规则 Webhook 有效负载现在包含每次运行的 `trace_url` 深层链接。
 
-  * Experiment loading progress bars displayed the number of runs completed and evaluated within the experiments table.
+  * 实验加载进度条显示实验表中完成和评估的运行次数。
 
-  * Sandboxes allowed password-based SSH for non-root users while keeping root SSH login key-only.
+  * 沙箱允许非 root 用户使用基于密码的 SSH，同时仅保留 root SSH 登录密钥。
 
   * 数据平面无访问屏幕上的工作区切换器仅列出当前组织工作区。
 
@@ -1829,7 +1829,7 @@
 
   * 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），从而替换旧的仅限主机的身份验证代理部分。
 
-  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙盒导航条目和 `/sandboxes` 页面。
+  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
 
   * 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 
@@ -1863,7 +1863,7 @@
 
   * 运行计数、错误、延迟和成本的警报规则现在支持 `<`、`<=`、`>` 和 `>=` 比较运算符（之前 UI 只允许`>=`）。
 
-  * 队列 `/v1/fleet/auth-agents/{agent_id}/connections` 端点已移至 `/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误信封。旧的 URL 返回 404。
+  * 队列 `/v1/fleet/auth-agents/{agent_id}/connections` 端点已移至 `/v1/fleet/agents/{agent_id}/connections`，并具有键入响应、请求验证和标准队列错误包络。旧的 URL 返回 404。
 
   * 修复了删除活动代理后舰队重定向的问题。* 从 LangSmith 数据集表中删除了类型列。
 
@@ -2006,13 +2006,13 @@
 
   * 加密/编辑的“推理”内容块不再在跟踪消息视图中显示为空卡或乱码卡。有意义的扩展思维内容继续正常呈现。
 
-  * 对于沙盒支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。* 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
+  * 对于沙箱支持的代理，需要 `thread_scoped_sandbox` 或 `agent_scoped_sandbox` 队列代理 API。* 允许通过批量导出的新 `all_experiments` 参数导出工作区中的所有实验。每次导出仅限 250 个实验，可根据要求增加。
 
   * Fleet 使用 langchain-fireworks 1.4.2 进行 Fireworks 模型调用。
 
   * 这使得运行详细信息面板得以重新设计，具有更高的可读性和更强大的消息解析。
 
-  * Fleet/Agent Builder 包含 Gemini 3.5 Flash 作为可选内置型号。
+  * Fleet/Agent Builder 包括 Gemini 3.5 Flash 作为可选的内置型号。
 
   * 计算机使用对符合资格的一般聊天用户有一个聊天内标注。
 
@@ -2226,7 +2226,7 @@
 
   * 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），从而替换旧的仅限主机的身份验证代理部分。
 
-  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏沙箱导航条目和 `/sandboxes` 页面。
+  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
 
   * 自托管 DockerHub 镜像包含 Cosign 签名和签名的 SPDX SBOM 证明。* 修复了线程 ID 中未编码特殊字符，导致 UI 无法查询这些线程的错误。
 
@@ -2266,7 +2266,7 @@
 
   * 重新设计了运行详细信息面板，提高了可读性和更强大的消息解析。
 
-  * Fleet/Agent Builder 包含 Gemini 3.5 Flash 作为可选内置型号。
+  * Fleet/Agent Builder 包括 Gemini 3.5 Flash 作为可选的内置型号。
 
   * 计算机使用对符合资格的一般聊天用户有一个聊天内标注。
 
@@ -2342,7 +2342,7 @@
 
   * 添加 Centralize 作为 MCP 市场集成。* 支持沙箱的代理现在可以在系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），从而替换旧的仅限主机的身份验证代理部分。
 
-  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙箱导航条目和 `/sandboxes` 页面。
+  * 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏了沙盒导航条目和 `/sandboxes` 页面。
 
   * 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 
@@ -2392,7 +2392,7 @@
 
   * 组织管理员现在可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。
 
-  * 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。
+  * 托管 Deep Agents MCP 服务器设置现在支持`/v1/deepagents` API 命名空间下的 OAuth。
 
   * 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰式 API 字段的提供者）输入的额外参数现在保留了其原始密钥大小写。
 
@@ -2400,7 +2400,7 @@
 
   * 修复了 `playground` 服务的 SSRF 策略，使其尊重 `SSRF_ALLOW_K8S_INTERNAL`。
 
-  * 修复了 LLM 网关数据保护错误，当启用 PII 编辑时，该错误可能会损坏Anthropic 图像或文档。* 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
+  * 修复了 LLM 网关数据保护错误，该错误在启用 PII 修订时可能会损坏 Anthropic 图像或文档。* 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 
   * 引擎现在支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。
 
@@ -2430,7 +2430,7 @@
 </Update>
 
 <Update label="2026-06-24">
-  ## langsmith-0.16.0-rc.5* This release packages the same LangSmith application version as langsmith-0.16.0-rc.4.请参阅下面的[langsmith-0.16.0-rc.4](#langsmith-0-16-0-rc-4)发行说明。
+  ## langsmith-0.16.0-rc.5* 此版本打包了与 langsmith-0.16.0-rc.4 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.16.0-rc.4](#langsmith-0-16-0-rc-4)发行说明。
 
   **下载 Helm 图表：** [⟦T480⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.5/langsmith-0.16.0-rc.5.tgz)
 </Update>
@@ -2442,13 +2442,13 @@
 
   *“包括扩展统计信息”可供所有组织的代码评估人员使用。
 
-  * Added two dedicated permissions `bulk-exports:read` and `bulk-exports:manage` for fetching and creating/updating bulk exports.
+  * 添加了两个专用权限 `bulk-exports:read` 和 `bulk-exports:manage` 用于获取和创建/更新批量导出。
 
   * 修复了当 GitHub 应用程序已通过同一组织中的另一个工作区安装时引擎“连接 GitHub”流程。
 
   * 在 `smith-frontend` 中将 `@langchain/langgraph-sdk` 提升至 1.9.4。
 
-  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+  * 在 `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2` 后面添加了一个可选的 Smith-ACE v2 沙箱实现。
 
   * 线程表现在在 *Last Output* 列中显示实际的最后输出，并在新的 *Last Error* 列中显示线程级错误。
 
@@ -2500,7 +2500,7 @@
 
   * 修复了 `playground` 服务的 SSRF 策略，使其尊重 `SSRF_ALLOW_K8S_INTERNAL`。
 
-  * 修复了 LLM 网关数据保护错误，当启用 PII 编辑时，该错误可能会损坏Anthropic 图像或文档。* 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
+  * 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。* 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 
   * 引擎现在支持可选的每月 LCU 支出限额（由财务、计划或组织管理员设置），一旦达到该限额，就会暂停新引擎的运行。
 
@@ -2572,7 +2572,7 @@
 
   * 添加 Centralize 作为 MCP 市场集成。
 
-  * 支持沙箱的代理现在可以在其系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅主机身份验证代理部分。* 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏沙盒导航条目和 `/sandboxes` 页面。
+  * 支持沙箱的代理现在可以在其系统提示符中看到配置的代理配置文件（主机、注入的标头密钥、网络规则、OAuth 提供程序），替换旧的仅主机身份验证代理部分。* 在 `SANDBOX_FEATURE_ENABLED` 关闭的区域隐藏沙箱导航条目和 `/sandboxes` 页面。
 
   * 自托管 DockerHub 映像现在包含 Cosign 签名和签名的 SPDX SBOM 证明。
 
@@ -2634,7 +2634,7 @@
 
   * 组织管理员现在可以通过服务密钥 API 更新现有 API 密钥的角色，而无需轮换密钥。
 
-  * 托管 Deep Agents MCP 服务器设置现在支持`/v1/deepagents` API 命名空间下的 OAuth。* 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰命名法 API 字段的提供者）输入的额外参数现在保留其原始密钥大小写。
+  * 托管 Deep Agents MCP 服务器设置现在支持 `/v1/deepagents` API 命名空间下的 OAuth。* 当模型配置保存并在 Playground 中重新加载时，为 Bedrock Nova 2（以及任何其他需要驼峰命名法 API 字段的提供者）输入的额外参数现在保留其原始密钥大小写。
 
   * 自托管 OIDC 用户现在可以从 `name` / `given_name`+`family_name` id\_token 声明中解析出显示名称。
 
@@ -2656,7 +2656,7 @@
 
   * 运行规则 Webhook 有效负载现在包含每次运行的 `trace_url` 深层链接。
 
-  * 实验加载进度条现在显示实验表中完成和评估的运行次数。
+  * 实验加载进度条现在显示实验表中已完成和评估的运行次数。
 
   * 沙箱现在允许非 root 用户使用基于密码的 SSH，同时仅保留 root SSH 登录密钥。
 
@@ -2668,7 +2668,7 @@
 <Update label="2026-06-11">
   ## langsmith-0.16.0-rc.2
 
-  * 有关 0.16.0 候选版本中更改的完整列表，请参阅下面的 [langsmith-0.16.0-rc.1](#langsmith-0-16-0-rc-1) 发行说明。
+  * 有关 0.16.0 候选版本的完整更改列表，请参阅下面的 [langsmith-0.16.0-rc.1](#langsmith-0-16-0-rc-1) 发行说明。
 
   **下载 Helm 图表：** [⟦T533⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.2/langsmith-0.16.0-rc.2.tgz)
 </Update>
@@ -2734,7 +2734,7 @@
 
   * 上下文存储库现在支持元数据更新以及从 Hub 溢出菜单中删除。
 
-  * 舰队`/v1/fleet/agents/{agent_id}/connections`（列表/创建/删除）的键入响应和标准错误信封。* 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
+  * 舰队 `/v1/fleet/agents/{agent_id}/connections` 的键入响应和标准错误信封（列表/创建/删除）。* 沙箱快照现在可以导出沙箱内构建的 Docker 映像。
 
   * 修复了 ACE 子进程处理，以便早期子进程退出返回请求失败，而不是导致服务崩溃。
 
@@ -2784,7 +2784,7 @@
 
   * 修复了 `playground` 服务的 SSRF 策略，使其尊重 `SSRF_ALLOW_K8S_INTERNAL`。
 
-  * 修复了 LLM 网关数据保护错误，该错误在启用 PII 编辑时可能会损坏Anthropic 图像或文档。
+  * 修复了 LLM 网关数据保护错误，当启用 PII 修订时，该错误可能会损坏Anthropic 图像或文档。
 
   * 隐藏沙箱文件资源管理器控件，同时允许显式沙箱摘要下载。
 
@@ -2820,7 +2820,7 @@
 <Update label="2026-06-08">
   ## langsmith-0.15.8
 
-  * 此版本包含与 langsmith-0.15.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.7](#langsmith-0-15-7)发行说明。
+  * 此版本打包了与 langsmith-0.15.7 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.15.7](#langsmith-0-15-7)发行说明。
 
   **下载 Helm 图表：** [⟦T567⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.8/langsmith-0.15.8.tgz)
 </Update>
@@ -2888,7 +2888,7 @@
 
   按照 [upgrade instructions](/langsmith/self-host-upgrades) 即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
 
-  ### 重大变更* 弃用了 `agent-bootstrap` 脚本。 LangSmith 代理现在是独立服务，使用 Helm 图表进行部署，而不是通过 LangSmith 部署控制平面进行部署。如果您之前通过此脚本使用 [Fleet](/langsmith/fleet)，则可能需要迁移。请参阅 [Fleet rename and migration guide](https://kb.langchain.com/articles/9482666900-upgrading-self-hosted-langsmith-to-v0-15-fleet-rename-and-migration-guide) 或联系支持人员以逐步完成迁移。
+  ### 重大变更* 弃用了 `agent-bootstrap` 脚本。 LangSmith 代理现在是独立服务，使用 Helm 图表部署，而不是通过 LangSmith 部署控制平面。如果您之前通过此脚本使用[Fleet](/langsmith/fleet)，则可能需要迁移。请参阅 [Fleet rename and migration guide](https://kb.langchain.com/articles/9482666900-upgrading-self-hosted-langsmith-to-v0-15-fleet-rename-and-migration-guide) 或联系支持人员以逐步完成迁移。
   * 将 Agent Builder 重命名为 [Fleet](/langsmith/fleet)。如果您使用工作负载身份，则可能需要更新任何服务帐户。
   * 对于启用 [RBAC](/langsmith/rbac) 的组织，`POST /workspaces/current/members` 现在需要 `role_id`。没有它的请求返回`400`，而不是默认为`WORKSPACE_ADMIN`。
   * 弃用了 `USAGE_EXPORT_ADMIN_EMAILS` 环境变量。请使用 `INSTANCE_ADMIN_EMAILS` 代替。
@@ -2905,7 +2905,7 @@
 
   ### 管理员变更
 
-  * **扩大了 ABAC 覆盖范围**—[ABAC](/langsmith/abac) 现在适用于 `POST /runs` 和 `POST /runs/batch` 上的 `runs:create`，以及其余 `/sessions/{session_id}/` 端点。
+  * **扩大了 ABAC 覆盖范围**—[ABAC](/langsmith/abac) 现在适用于 `POST /runs` 和 `POST /runs/batch` 上的 `runs:create`，以及其余的 `/sessions/{session_id}/` 端点。
   * **SCIM 电子邮件大小写不匹配修复** - 发送不同电子邮件大小写的身份提供商不再因电子邮件更改尝试而被拒绝。
 
   **下载 Helm 图表：** [⟦T603⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.0/langsmith-0.15.0.tgz)
@@ -2936,7 +2936,7 @@
 <Update label="2026-05-20">
   ## langsmith-0.8.31
 
-  * 此版本包含与 langsmith-0.8.30 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.8.30](#langsmith-0-8-30)发行说明。
+  * 此版本打包了与 langsmith-0.8.30 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.8.30](#langsmith-0-8-30)发行说明。
 
   **下载 Helm 图表：** [⟦T607⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.8.31/langsmith-0.8.31.tgz)
 </Update>
@@ -3147,7 +3147,7 @@
 </Update>
 
 <Update label="2026-04-20">
-  ## langsmith-0.14.0LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下打开），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic 通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），并且针对 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL 推出了新的代理工具和触发器。在基础设施方面，v0.14 增加了对 blob 存储的 **GCS Workload Identity** 支持、**Valkey** 作为直接的 Redis 替代品，以及用于更安全部署的预升级迁移挂钩。
+  ## langsmith-0.14.0LangSmith 自托管 v0.14 将 **Chat**（用于跟踪和运行的产品内聊天）引入自托管，采用 **ABAC 和审核日志** GA（默认情况下启用），并默认启用 **LLM Auth 代理**，并提供 URL 白名单和更丰富的 JWT 声明。管理员可以获得在 Agent Builder、Chat、Insights、Playground 和 Evaluators 之间共享的**统一模型配置**，以及细粒度的**提示所有者**，用于锁定谁可以升级或删除单个提示。评估人员获得**多模式支持**，工作区现在可以在跟踪项目上设置**成本警报**。 Playground 模型支持扩展（Anthropic，通过 Gemini Enterprise Agent Platform、自定义 Azure 模型、Bedrock 推理配置文件、Gemini 3.1 Pro、GPT-5.3 / 5.4、Baseten + GLM-5），以及适用于 Google Sheets & Docs、Outlook、Teams 和 Salesforce SOQL 的新代理工具和触发器。在基础设施方面，v0.14 增加了对 blob 存储的 **GCS Workload Identity** 支持、**Valkey** 作为直接的 Redis 替代品，以及用于更安全部署的预升级迁移挂钩。
 
   按照 [upgrade instructions](/langsmith/self-host-upgrades) 即可访问所有内容。要预订 LangChain 支持升级的时间，请通过 [Support Portal](https://support.langchain.com) 联系团队。
 
@@ -3217,7 +3217,7 @@
 <Update label="2026-04-07">
   ## langsmith-0.13.39
 
-  * 用户现在可以在没有`projects:create`的情况下运行实验，从而将实验执行与项目治理控制脱钩。
+  * 用户现在可以在没有`projects:create`的情况下运行实验，从而将实验执行与项目治理控制分离。
   * 在代理聊天线程之间切换时添加骨架加载状态，而不是空白聊天输入。
   * 改进了 Fleet Arcade 集成页面，以显示正确的操作和更清晰的后端状态。
   * Arcade 网关安装现在会在将无效的 MCP 服务器名称添加到工作区之前自动对其进行清理。
@@ -3299,7 +3299,7 @@
 <Update label="2026-03-27">
   ## langsmith-0.13.35
 
-  * 此版本包含与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
+  * 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
 
   **下载 Helm 图表：** [⟦T670⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.35/langsmith-0.13.35.tgz)
 </Update>
@@ -3307,7 +3307,7 @@
 <Update label="2026-03-27">
   ## langsmith-0.13.34
 
-  * 此版本包含与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
+  * 此版本打包了与 langsmith-0.13.32 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.32](#langsmith-0-13-32)发行说明。
 
   **下载 Helm 图表：** [⟦T671⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.34/langsmith-0.13.34.tgz)
 </Update>
@@ -3397,7 +3397,7 @@
   * 为沙盒声明添加了静态 TTL 过期，以改进管理。
   * 在 Agent Builder 中为个人代理启用 Slack 通道。* 调整了浅色模式下运行状态图标的前端对比度，以获得更好的可视性。
   * 为法学硕士法官评估实施 JWT 生成，以增强评估安全性。
-  * 始终在代理工作区卡上显示创建者姓名，以提高透明度。
+  * 始终在代理工作区卡片上显示创建者姓名，以提高透明度。
   * 重新排序收件箱选项卡以改进导航。
   * 支持自托管环境中的 Google IAP 会话刷新。
   * 替换了各个部分中的 MUI 复选框，以提高 UI 一致性。
@@ -3427,7 +3427,7 @@
 
 <Update label="2026-03-13">
   ## langsmith-0.13.26* 在舰队对话期间生成的子代理现在会在聊天中内嵌显示实时状态卡，并通过详细侧边栏显示子代理的实时时间线、工具调用和结果。
-  * 预构建的 LLM 评估器现在默认使用严格的结构化输出模式。在 OpenAI 和非 OpenAI 模型提供商之间切换时，严格模式会自动切换。
+  * 预构建的 LLM 评估器现在默认使用严格的结构化输出模式。在 OpenAI 和非 OpenAI 模型提供者之间切换时，严格模式会自动切换。
   * 修复了当重试评估成功但总作业时间超过队列超时时在线评估器分数丢失的错误。
   * 现在，从注释队列中删除运行会完全删除它，而不是错误地将其标记为已完成。
   * 在实验 CSV 导出中包含每个注释者的反馈。
@@ -3452,7 +3452,7 @@
 </Update>
 
 <Update label="2026-03-10">
-  ## langsmith-0.13.24* 在 Fleet 中添加了带有工具栏和斜杠命令的丰富 Markdown 编辑器。
+  ## langsmith-0.13.24* 在 Fleet 中添加了带有工具栏和斜线命令的丰富 Markdown 编辑器。
   * 添加了技能创建流程，包括舰队中的页面输入和导航。
   * 注释队列 CSV 导出现在包括每个注释者的反馈分数和审阅者注释列。
   * 修复了数据集元数据过滤器不匹配跨页面的数字字段的问题。
@@ -3479,7 +3479,7 @@
   * 修复了 smith-frontend 中的安全漏洞。
   * 修复了 smith-polly 中的安全漏洞。
   * 修复了代码注入漏洞。
-  * Restricted `--allow-run` to only the deno binary in smith-ace.
+  * 限制 `--allow-run` 仅适用于 smith-ace 中的 deno 二进制文件。
   * 通过在 RichTextEditor 中转义 URL 修复了 XSS 漏洞。
   * 修复了自托管环境中的 Playground 功能。
 
@@ -3489,7 +3489,7 @@
 <Update label="2026-03-06">
   ## langsmith-0.13.21
 
-  * This release packages the same LangSmith application version as langsmith-0.13.20.请参阅下面的[langsmith-0.13.20](#langsmith-0-13-20)发行说明。
+  * 此版本打包了与 langsmith-0.13.20 相同的 LangSmith 应用程序版本。请参阅下面的[langsmith-0.13.20](#langsmith-0-13-20)发行说明。
 
   **下载 Helm 图表：** [⟦T688⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.21/langsmith-0.13.21.tgz)
 </Update>
@@ -3507,7 +3507,7 @@
   * 增强了 UI，包含项目和运行写入权限支持。
   * 添加了对新型号的支持：GPT-5.4 和 GPT-5.4 pro。
   * 修复大附件图片预览问题，以获得更好的 UI 体验。
-  * 将 GPT-5.4 设为默认的OpenAI Playground 模型，简化模型选择。
+  * 将 GPT-5.4 设为默认的OpenAI游乐场模型，简化模型选择。
   * 增加了`RunTags`组件中显示的最大标签数，以获得更好的可见性。* 在实验表中添加模型和提示列，增强数据洞察力。
   * 解决了限制设置更改时代理生成器运行拒绝的问题。
   * 修复了 /sessions go 端点中的浮动错误，以改进数据处理。
@@ -3547,7 +3547,7 @@
   * 改进了数据集中的元数据处理并修复了溢出问题。* 在 Agent Builder 中引入了对 Microsoft Teams 工具的支持。
   * 更好地处理 OAuth 提供程序更新。
   * 在平台后端添加了新的 /orgs/current/info 端点，以实现更强大的组织信息检索。
-  * 引入了会话 API 的兼容性测试，并增加了对 PostgreSQL 和 Redis 连接的安全检查。
+  * 引入了会话 API 的兼容性测试，并增加了 PostgreSQL 和 Redis 连接的安全检查。
   * 新增动态绑定Slack代理的功能，增强集成体验。
 
   **下载 Helm 图表：** [⟦T694⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.18/langsmith-0.13.18.tgz)
@@ -3591,25 +3591,25 @@
 </Update>
 
 <Update label="2026-02-26">
-  ## langsmith-0.13.15* 在前端 UI 中的功能标志下为按钮添加了重新命名的原色。
+  ## langsmith-0.13.15* Added rebranded primary colors to button under feature flag in the frontend UI.
   * 将数据集自动完成替换为标签输入，以改善用户体验。
-  * 根据数据在前端自动隐藏和定位模型列。
-  * 修复了 Smith 前端的重新验证冲突。
-  * 改进了工作区模型配置，以防止工具提示文本溢出。
-  * 在功能标志下的“分组依据”弹出窗口中显示“模型”选项。
-  * 支持在 Smith-Polly 中加载 ChatAnthropicVertex 模型配置。
-  * 在 Filter Component Select V2 中添加了针对空搜索结果的“无匹配过滤器”消息。
-  * 通过全局滚动支持自动导航到见解。
-  * 解决了游乐场和评估器提供者选择器未过滤掉禁用提供者的问题。
+  * Auto-hide and position Models column in the frontend based on data.
+  * Fixed revalidation conflict in the Smith frontend.
+  * Improved workspace model configurations to prevent text overflow with tooltips.
+  * Surfaced Models option in Group By popover under a feature flag.
+  * Supported loading ChatAnthropicVertex model configs in Smith-Polly.
+  * Added "No matching filters" message for empty search results in Filter Component Select V2.
+  * Enabled navigating automatically to insights with global scroll support.
+  * Resolved issues with playground and evaluators provider selector not filtering out disabled providers.
   * 改进了消息模式的用户体验和样式。
   * 为内联过滤器实现了原始查询模式。
   * 允许`K8sEnvVarSource`中的`secret_key_ref`变为`None`以实现后端改进。
   * 修复了代理构建器 UI，以将问题文本包装在狭窄的视口上并关闭“添加 API 密钥以开始”对话框。
-  * 更新了用户体验，使评估器按钮高度与工具按钮图案相匹配。* 将选定的模型保留在本地存储中，以获得一致的 UI 体验。
-  * 自动生成线程标题以改进线程管理。
-  * 通过使用精细的 RBAC 权限来控制秘密访问，从而增强了后端。
-  * 在代理生成器中实施了 Outlook 电子邮件工具。
-  * 改进了 Agent Builder UI 收件箱功能中的键盘快捷键。
+  * 更新了用户体验，使评估器按钮高度与工具按钮图案相匹配。* Persisted selected model in local storage for a consistent UI experience.
+  * Auto-generated thread titles for improved thread management.
+  * Enhanced backend by gating secrets access with granular RBAC permissions.
+  * Implemented Outlook Email Tools in the Agent Builder.
+  * Improved keyboard shortcuts in the inbox feature of the Agent Builder UI.
 
   **下载 Helm 图表：** [⟦T700⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.15/langsmith-0.13.15.tgz)
 </Update>
@@ -3617,23 +3617,23 @@
 <Update label="2026-02-24">
   ## langsmith-0.13.14
 
-  * 修复了代理生成中断和处理问题，提高了用户体验的稳定性。
-  * 修复了拖动到最后一列时长反馈标题文本溢出的问题。
-  * 在工具页面上添加了内置工具和提供程序的 OAuth 连接。
+  * Fixed agent generation interruptions and handling, improving stability in the user experience.
+  * Fixed long feedback header text overflow when dragged to the last column.
+  * Added OAuth connections for built-in tools and providers on the tool page.
   * 修复了运行详细信息页面上发生的崩溃。
-  * 修复了入门对话框不获取不必要的工具的问题。
-  * 更新了代理构建器前端以显示实时运行计数。
+  * Fixed onboarding dialog not fetching tools unnecessarily.
+  * Updated agent builder frontend to show real-time run count.
   * 在前端添加了私有注册表 UI。
-  * 增强了对 Playground 和 Insights 中 SerializedConstructor 模型配置的支持。
-  * 在游乐场和后端模型列表中添加了 Gemini 3.1 Pro 模型。
-  * 修复了游乐场中工具注册表崩溃的问题。* 添加了对 Gmail 身份验证改进的支持，包括刷新令牌功能。
-  * 添加了新的 API 端点，用于使用新服务运行 Playground 实验。
-  * 使用 Filterbar 改进了版本 2 UX 中跟踪过滤器的 UI。
-  * 增强语法突出显示以匹配 Figma 标准化设计。
-  * 支持带有 cron 逻辑的 Gmail OAuth v2，以提高可靠性。
-  * 在实验视图中添加了新模型列，并更新了过滤选项。
-  * 支持查询影子日志改进的多个路径。
-  * 添加了用于在 Playground 中管理和编辑模型 API 键名称的 UI。
+  * Enhanced support for SerializedConstructor model configs in playground and insights.
+  * Added Gemini 3.1 Pro model to playground and backend model lists.
+  * 修复了游乐场中工具注册表崩溃的问题。* Added support for Gmail authentication improvements, including refresh token capability.
+  * Added new API endpoints for running playground experiments using a new service.
+  * Improved UI for trace filters with version 2 UX using Filterbar.
+  * Enhanced syntax highlighting to match Figma design for standardization.
+  * Supported Gmail OAuth v2 with cron logic for higher reliability.
+  * Added new models column in the experiment view with updated filtering options.
+  * Supported multiple paths for query shadowing log improvements.
+  * Added UIs for managing and editing model API key names in the playground.
 
   **下载 Helm 图表：** [⟦T701⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.14/langsmith-0.13.14.tgz)
 </Update>
@@ -3656,22 +3656,22 @@
 </Update>
 
 <Update label="2026-02-12">
-  ## langsmith-0.13.12* 改进了 InlineFilters UX 中的按钮尺寸和滤波器芯片对齐。
+  ## langsmith-0.13.12* Improved button sizes and filter chip alignment in the InlineFilters UX.
   * 添加提交标签搜索并显示到提示中心。
-  * 修复了查看具有反馈分数对象的实验的问题。
+  * Fixed issue with viewing experiments having objects for feedback scores.
   * 增强了对部署\_image 任务的跟踪。
-  * 为新的综合过滤器下拉列表添加了搜索栏。
+  * Added a search bar for the new consolidated filter dropdown.
   * 添加了环境变量，用于全局禁用个人访问令牌创建。
   * 增加了成本图表功能。
   * 改进了主页样式并修复了相关设计问题。
-  * 修复了通用 API (GPA) 中的重新渲染问题。
-  * 改进了系统，可在自托管离线使用报告中计算待处理、重试和失败事务。
-  * 增强了代理构建器，将当前日期本地化为用户的时区。
-  * 在游乐场中添加了基岩推理配置文件下拉列表。
-  * 改进了代理聊天中服务器问题的错误检测和消息传递。
-  * 修复了样式问题，包括邀请模式中的电子邮件计数和代理编辑器中的加载状态显示。
-  * 实现了带有功能标志的工具页面的初始设计。
-  * 在前端过滤器 UI 中添加了仅图标过滤器弹出模式。* 添加了用于自托管代理生成器运行限制的信标端点。
+  * Fixed issues with rerendering in General Purpose API (GPA).
+  * Improved system to count PENDING, RETRY, and FAILED transactions in self-hosted offline usage reporting.
+  * Enhanced the agent builder to localize the current date to the user's timezone.
+  * Added Bedrock inference profile dropdown to the playground.
+  * Improved error detection and messaging for server issues in agent-chat.
+  * Fixed styling issues including email count in invite modal and load state display in the agent editor.
+  * Implemented initial design for a tools page with feature flags.
+  * Added icon-only filter popover mode to the frontend filter UI.* Added beacon endpoint for Self Hosted Agent Builder Runs Limiting.
   * 启用新的“粒度使用”选项卡，用于按工作区、项目、用户和 API 密钥报告计费使用情况（使用 `DEFAULT_ORG_FEATURE_ENABLE_GRANULAR_USAGE_REPORTING=true` 和 `GRANULAR_USAGE_TABLE_ENABLED=true` 环境变量在 `commonEnv` 中启用）
 
   **下载 Helm 图表：** [⟦T706⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.12/langsmith-0.13.12.tgz)
@@ -3680,19 +3680,19 @@
 <Update label="2026-02-12">
   ## langsmith-0.13.11
 
-  * 通过使用持久的简单模型配置改进了 Agent Builder。
+  * Improved Agent Builder by using persisted simple model config.
   * 修复了 Playground 的 UI，具有更好的消息块和工具按钮一致性。
-  * 为新的综合过滤器下拉列表添加了搜索栏。
-  * 修复了没有“工作空间：管理”权限的用户的代理构建器模型选择器。
-  * 为通用代理添加了文件上传功能。
+  * Added a search bar for the new consolidated filter dropdown.
+  * Fixed agent builder model selector for users without 'workspaces:manage' permission.
+  * Added file upload feature for General Purpose Agent.
   * 添加了创建通用代理的按钮。
-  * 通过在页面重新加载时保留 URL 中的基线设置来增强 Playground。
-  * 改进了 Playground 实验表 UI 和对齐方式。
-  * 修复了批量删除数据集以正确更新表的问题。
-  * 添加了新的 API：工作区范围的工具注册表 API。
+  * Enhanced the Playground by preserving baseline setting in URL on page reload.
+  * Improved Playground experiment table UI and alignment.
+  * Fixed bulk deletion of datasets to update the table correctly.
+  * Added new API: workspace-scoped tool registry API.
   * 改进了对多场 runField 的支持。
-  * 通过后端更改增强了洞察调度程序。
-  * 增加了在 Polly 中导航页面和一组初始基本评估的功能。* 为 Agent Builder 添加了跟踪增强功能，包括工具调用跟踪。
+  * Enhanced insights scheduler with backend changes.
+  * Added ability to navigate pages in Polly and an initial set of base evaluations.* 为 Agent Builder 添加了跟踪增强功能，包括工具调用跟踪。
   * 集成更改以暂时支持自定义模型配置。
 
   **下载 Helm 图表：** [⟦T707⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.11/langsmith-0.13.11.tgz)
@@ -3785,7 +3785,7 @@
   * 修复了单击列标题时所有列部分的切换功能。
   * 修复了编辑 SSO 设置失败的问题
   * 通过使用 BarSeries 而不是 AnimatedBarSeries 来实现精细使用选项卡，从而提高了前端性能。
-  * 在新的注释队列中添加了 Cmd + Enter 热键，以增强用户交互。
+  * 在新注释队列中添加了 Cmd + Enter 热键，以增强用户交互。
   * 在 Playground UI 中添加了一个选项，以通过默认为 `use_responses_api=true` 来缓解加载错误。
   * 添加了对自定义 Azure 模型的支持。
   * 更新了 Playground UI 以改善用户体验。
@@ -3824,7 +3824,7 @@
   * 在 Agent Builder 中的 MyAgents Navlink 中添加了操作菜单。
   * 改进了前端性能，包括解决加载身份验证状态时的缓慢问题。* 增强的代理生成器，具有 API 密钥所需标签/按钮和折叠操作集群功能。
   * 解决了游乐场工具模态溢出问题。
-  * 通过修复重新混合运行路由器中的前端漏洞并清除注销时的 URL 以防止工作区误导，提高了安全性。
+  * 通过修复 remix 运行路由器中的前端漏洞并清除注销时的 URL 以防止工作区误导，提高了安全性。
   * 更新了 API 以使用发票进行每月燃尽跟踪，并添加了对 V2 API 的支持。
   * 改进了前端以优雅地处理格式错误的 LLM 输出。
   * 通过允许 DateTimeRangePicker 组件使用粗体“上次”值，改进了日期/时间选择 UI。

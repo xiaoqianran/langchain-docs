@@ -1679,7 +1679,7 @@
       ],
       "llm-gateway-how-it-works": [
         {
-          "title": "How the gateway works",
+          "title": "How the LLM Gateway works",
           "rel": "langsmith/llm-gateway-how-it-works.md"
         }
       ],
@@ -1705,6 +1705,12 @@
         {
           "title": "Rate limit policies",
           "rel": "langsmith/llm-gateway-rate-limit-policies.md"
+        }
+      ],
+      "llm-gateway-self-hosted": [
+        {
+          "title": "Enable the LLM Gateway",
+          "rel": "langsmith/llm-gateway-self-hosted.md"
         }
       ],
       "llm-gateway-spend-policies": [
@@ -2379,6 +2385,12 @@
           "rel": "langsmith/self-host-fips.md"
         }
       ],
+      "self-host-gke-vertex-ai-workload-identity": [
+        {
+          "title": "Authenticate Vertex AI with GKE workload identity",
+          "rel": "langsmith/self-host-gke-vertex-ai-workload-identity.md"
+        }
+      ],
       "self-host-ingress": [
         {
           "title": "Create an Ingress for installations (Kubernetes)",
@@ -2401,6 +2413,24 @@
         {
           "title": "Use environment variables for model providers",
           "rel": "langsmith/self-host-playground-environment-settings.md"
+        }
+      ],
+      "self-host-sandbox-architecture": [
+        {
+          "title": "Self-hosted Sandbox architecture",
+          "rel": "langsmith/self-host-sandbox-architecture.md"
+        }
+      ],
+      "self-host-sandbox-operations": [
+        {
+          "title": "Operate self-hosted Sandboxes",
+          "rel": "langsmith/self-host-sandbox-operations.md"
+        }
+      ],
+      "self-host-sandbox-scaling": [
+        {
+          "title": "Scale self-hosted Sandboxes",
+          "rel": "langsmith/self-host-sandbox-scaling.md"
         }
       ],
       "self-host-scale": [
@@ -3837,6 +3867,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-quickstart.md"
         }
       ],
+      "managed-deep-agents-runtime": [
+        {
+          "title": "Managed Deep Agents runtime",
+          "rel": "langsmith/javascript/managed-deep-agents-runtime.md"
+        }
+      ],
       "managed-deep-agents-sandboxes": [
         {
           "title": "Add a sandbox to Managed Deep Agents",
@@ -4015,6 +4051,12 @@
         {
           "title": "Managed Deep Agents quickstart",
           "rel": "langsmith/python/managed-deep-agents-quickstart.md"
+        }
+      ],
+      "managed-deep-agents-runtime": [
+        {
+          "title": "Managed Deep Agents runtime",
+          "rel": "langsmith/python/managed-deep-agents-runtime.md"
         }
       ],
       "managed-deep-agents-sandboxes": [

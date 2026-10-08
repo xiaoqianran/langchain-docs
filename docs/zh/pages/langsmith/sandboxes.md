@@ -26,7 +26,7 @@
   在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
 </Warning>
 
-对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
+对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。基础设施模型、扩展和升级请参见[Self-hosted Sandbox architecture](/langsmith/self-host-sandbox-architecture)。
 
 ## 网络访问默认情况下，限制出站适用于非企业组织以及提出请求的组织。获得批准豁免的组织可以使用不受限制的出口。受限沙箱使用通用包注册表、源存储库和模型 API 的托管允许列表。 LangSmith 会阻止白名单之外的目的地，即使您将它们添加到沙箱的代理配置中也是如此。
 
@@ -81,7 +81,7 @@ export LANGSMITH_API_KEY="<your-api-key>"
 </CodeGroup>
 
 <Tip>
-  更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令以及打开交互式 shell，而无需编写任何代码。
+  更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令和打开交互式 shell，而无需编写任何代码。
 </Tip>
 
 ### 4. 与代理一起使用沙箱
@@ -124,7 +124,7 @@ export LANGSMITH_API_KEY="<your-api-key>"
   <Card title="Self-hosted setup" icon="server" href="/langsmith/deploy-self-hosted-full-platform#enable-sandboxes">
     使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。
   </Card><Card title="Harbor" icon="flask" href="/langsmith/harbor-integrations#sandboxes">
-    在 LangSmith 沙箱上运行 Harbor 评估和部署。
+    在 LangSmith 沙盒上运行 Harbor 评估和部署。
   </Card>
 </CardGroup>
 

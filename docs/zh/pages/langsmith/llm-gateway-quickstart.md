@@ -4,19 +4,24 @@
 
 # LLM 网关快速入门
 
-使用一个 LangSmith API 密钥跨提供商调用模型，然后查看跟踪并设置支出限制。
+使用一个 LangSmith API 密钥跨提供商调用模型，然后查看跟踪并设置支出限额。
 
 <Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
+  LLM Gateway 位于[beta](/langsmith/release-stages)。
 </Note>
 
-LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-account-api-key)跨配置的提供者调用模型。发送请求，查看其跟踪，然后设置支出限额。
+LLM 网关通过一个端点使用一个 [LangSmith API key](/langsmith/create-account-api-key) 跨配置的提供者调用模型。发送请求，查看其跟踪，然后设置支出限额。
+
+<Note>
+  本快速入门在美国区域使用LangSmith云：网关位于`gateway.smith.langchain.com`，LangSmith UI位于`smith.langchain.com`。在 Deep Agents 示例中设置 `LANGSMITH_GATEWAY="true"` 也会解析为 US 网关。
+
+  * **其他云区域和 BYOC**：将每个示例中的网关主机名替换为您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 或 [BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane) 基本 URL。对于 Deep Agents，将 `LANGSMITH_GATEWAY` 设置为该网关的根 URL，而不是 `true`。
+  * **自托管**：遵循 [Enable the LLM Gateway on self-hosted](/langsmith/llm-gateway-self-hosted)，其中包括其自己的第一次调用。
+</Note>
 
 <Info>
   管理员必须为您的工作区[enable the gateway, add a provider secret, and grant access](/langsmith/llm-gateway-admin-setup) 一次。之后，您只需将工作区范围的 LangSmith API 密钥附加到具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 的角色。
-</Info>
-
-<Steps>
+</Info><Steps>
   <Step title="Send a request" icon="send">
     网关调用是指向网关基本 URL 的普通模型请求，并使用您的 LangSmith API 密钥进行身份验证。使用聊天完成从您已有的应用程序调用网关，或使用Deep Agents构建通过它路由的代理。
 
@@ -81,7 +86,9 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
           agent = create_deep_agent(model="anthropic:claude-opus-5")
           result = agent.invoke({"messages": [{"role": "user", "content": "Explain what an LLM gateway does in one sentence."}]})
           print(result["messages"][-1].content)
-          ``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          ```
+
+          ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
           // npm install deepagents
           // export LANGSMITH_API_KEY="lsv2_..."
           // export LANGSMITH_GATEWAY="true"
@@ -102,22 +109,20 @@ LLM 网关通过一个端点使用一个[LangSmith API key](/langsmith/create-ac
 
   <Step title="View the trace" icon="activity">
     打开 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) 并转到工作区中名为 `gateway` 的跟踪项目。您的请求及其令牌计数、成本和延迟会显示在那里。
-  </Step>
-
-  <Step title="Set a spend limit" icon="shield">
+  </Step><Step title="Set a spend limit" icon="shield">
     转到 LangSmith 中的 **LLM Gateway** 并创建支出政策，例如 API 密钥每日上限为 10 美元。一旦达到上限，网关就会返回一个`402`，其中包含一条消息，其中指定了阻止请求的策略：
 
     ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"error": "Request blocked by gateway policies: R&D Spend Cap"}
+    {"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
     ```
 
-    如需完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
+    有关完整指南，请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
   </Step>
 </Steps>
 
-这些示例使用 US 网关。对于欧盟、亚太地区和 AWS 主机名，请参阅 [Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。对于 BYOC，请参阅 [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane)。
+## 后续步骤
 
-## 后续步骤* [Overview](/langsmith/llm-gateway)：网关提供什么、如何管理凭证以及何时使用标准 API。
+* [Overview](/langsmith/llm-gateway)：网关提供什么、如何管理凭证以及何时使用标准 API。
 * [How the gateway works](/langsmith/llm-gateway-how-it-works)：每个请求会发生什么、凭证如何解析以及网关在哪里可用。
 * [API formats](/langsmith/llm-gateway-api-formats)：通过标准端点使用聊天完成、消息或响应。
 * [Set up coding agents](/langsmith/llm-gateway-coding-agents)：通过网关路由 Claude Code、Codex、Gemini CLI 或 Deep Agents Code。

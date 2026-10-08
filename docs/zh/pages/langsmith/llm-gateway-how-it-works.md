@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: How the gateway works | https://docs.langchain.com/langsmith/llm-gateway-how-it-works -->
+<!-- langchain-docs: How the LLM Gateway works | https://docs.langchain.com/langsmith/llm-gateway-how-it-works -->
 
-# 网关如何工作
+# LLM 网关如何工作
 
 了解 LLM 网关对每个请求执行的操作、如何解析上游凭据以及网关在何处可用。
 
@@ -14,8 +14,8 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 ## 网关提供什么
 
-* **一键，多个提供商：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供商密钥。
-* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供者的模型一起使用。
+* **一键，多个提供程序：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供程序密钥。
+* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
 * **内置可观察性：** 每个网关调用都出现在网关跟踪项目中，可见性由[Traces and access control](/langsmith/llm-gateway-access)控制。
 * **中央治理：** 应用 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
 
@@ -34,14 +34,20 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 ## 选择凭证的管理方式网关为每个调用解析上游凭证。工作区可以使用自己的提供商帐户、网关积分或两者：
 
-|选项|上游凭证|设置和计费|
+|选项 |上游凭证|设置和计费|
 | - | - | - |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
 
 ## 检查可用性
 
-该网关在每个 LangSmith 区域的 LangSmith 云上运行，并在 [BYOC](/langsmith/byoc) 上运行，它在您的数据平面内运行，以便模型请求及其跟踪保留在您的 VPC 中。两者都使用相同的 API 格式、模型 ID、策略和跟踪；仅主机名和路径前缀不同。
+网关运行于：
+
+* 每个LangSmith区域都有LangSmith云
+* [BYOC](/langsmith/byoc)，它在您的数据平面内运行，以便模型请求及其跟踪保留在您的 VPC 中
+*[Self-hosted](/langsmith/self-hosted)LangSmith
+
+这三者都使用相同的 API 格式、模型 ID、策略和跟踪；仅主机名和路径前缀不同。
 
 ### 使用区域网关
 
@@ -56,7 +62,7 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 ### 使用 BYOC 数据平面
 
-在 BYOC 上，将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：| API格式|基本网址 |提示端点|
+在 BYOC 上，将网关主机名替换为您的 [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) 并使用 `/gateway` 作为路径前缀：| API格式 |基本网址 |提示端点 |
 | - | - | - |
 | OpenAI 聊天完成 | `https://<data_plane_host>/gateway/v1` | `POST /chat/completions` |
 | Anthropic 留言 | `https://<data_plane_host>/gateway` | `POST /v1/messages` |
@@ -68,18 +74,26 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
   默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 </Warning>
 
-<Note>
-  **自托管可用性：** LLM Gateway 不包含在 LangSmith v0.16.0 自托管稳定版本中。它在未来的稳定版本中可用。要表达兴趣，请提交[LLM Gateway self-hosted access request](https://www.langchain.com/langsmith-llm-gateway-self-hosted-access-request)。您还可以在 v17 RC 版本上尝试 LLM Gateway 或在稳定版本发布之前使用 BYOC。
-</Note>
+### 使用自托管安装
 
-## 另请参阅
+在自托管 LangSmith 上，首先是管理员 [enables the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。然后将网关主机名替换为您的 LangSmith 主机名，并在路径中添加 `/gateway` 前缀：
 
-* [Quickstart](/langsmith/llm-gateway-quickstart)：发出您的第一个请求，查看其跟踪并设置支出限额。
+| API格式 |基本网址 |提示端点 |
+| - | - | - |
+| OpenAI 聊天完成 | `https://<your-hostname>/gateway/v1` | `POST /chat/completions` |
+| Anthropic 留言 | `https://<your-hostname>/gateway` | `POST /v1/messages` |
+| OpenAI 回应 | `https://<your-hostname>/gateway/v1` | `POST /responses` |
+
+使用范围仅限于您安装中的工作区的 API 密钥进行身份验证，并作为 ⟦​​T21⟧ 令牌或 `X-Api-Key` 标头传递。
+
+## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：发出您的第一个请求，查看其跟踪并设置支出限额。
 * [Admin setup](/langsmith/llm-gateway-admin-setup)：启用网关、添加提供商凭据并授予开发人员访问权限。
 * [API formats](/langsmith/llm-gateway-api-formats)：通过标准端点使用聊天完成、消息或响应。
 * [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

@@ -35,7 +35,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：* 
 
 将 `ANTHROPIC_API_KEY` 设置为您的 LangSmith API 密钥。 Claude Code 从您的 shell 环境或通过 `--settings` 传递的设置文件中的 `env` 块读取这些变量。
 
-如果您的 LangSmith 部署位于区域或自托管实例上，请将以下示例中的网关主机名替换为您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 主机名。
+如果您的 LangSmith 部署位于区域实例上，请将以下示例中的网关主机名替换为您的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) 主机名。在 [self-hosted installation](/langsmith/llm-gateway-how-it-works#use-a-self-hosted-installation) 上，将 `https://gateway.smith.langchain.com` 替换为 `https://<your-hostname>/gateway`。
 
 #### 仅使用 Anthropic 型号
 
@@ -64,7 +64,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：* 
 
 #### 跨提供商路由模型层
 
-将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到以提供商为前缀的网关模型 ID。
+将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到提供商前缀的网关模型 ID。
 
 <Tabs>
   <Tab title="Settings file (recommended)">
@@ -92,7 +92,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：* 
   </Tab>
 </Tabs>
 
-型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参见[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
+型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参阅[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
 
 ### 使用 Claude 订阅 OAuth<Note>
   Claude 订阅 OAuth 需要有效的 Claude Code Plus 或 Max 订阅。如果您使用工作区 Anthropic API 密钥，请改用 [workspace provider secret](#use-a-workspace-provider-secret) 方法。
@@ -139,7 +139,7 @@ Claude Code 使用并刷新其保存的登录中的 OAuth 凭据，包括 `anthr
 
 ## Codex CLI
 
-Codex 使用响应 API。将以下内容添加到`~/.codex/config.toml`，以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
+Codex 使用响应 API。将以下内容添加到 `~/.codex/config.toml` 以通过标准端点使用 Gateway Credits 调用托管的 Kimi K3 模型：
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 model = "moonshotai/kimi-k3"

@@ -6,7 +6,7 @@
 
 安装Deep Agents代码，运行第一个任务，并使用交互或非交互模式
 
-Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents SDK](/oss/python/deepagents/quickstart).本指南涵盖安装、您的第一个任务、日常交互使用、管道自动化以及 LangSmith 跟踪。有关功能概述，请参阅[Deep Agents Code overview](/oss/deepagents/code/overview)。有关`config.toml`和提供商设置，请参阅[Configuration](/oss/deepagents/code/configuration)。
+Deep Agents编码（`dcode`）是在[Deep Agents SDK](/oss/python/deepagents/quickstart)基础上构建的终端编码代理。本指南涵盖安装、您的第一个任务、日常交互使用、管道自动化以及LangSmith跟踪。有关功能概述，请参阅[Deep Agents Code overview](/oss/deepagents/code/overview)。有关`config.toml`和提供商设置，请参阅[Configuration](/oss/deepagents/code/configuration)。
 
 ## 安装并运行你的第一个任务
 
@@ -23,7 +23,7 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
     使用 `/auth` 命令与提供商连接。有关完整列表和凭证详细信息，请参阅[Providers](/oss/deepagents/code/providers)。
 
     <Note>
-      网络搜索使用[Tavily](https://tavily.com)。添加带有 `/auth` 的密钥。参见[Enable web search](/oss/deepagents/code/credentials#enable-web-search-with-tavily)。
+      网络搜索使用[Tavily](https://tavily.com)。使用 `/auth` 添加密钥。参见[Enable web search](/oss/deepagents/code/credentials#enable-web-search-with-tavily)。
     </Note>
   </Step>
 
@@ -36,7 +36,7 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
   </Step>
 
   <Step title="Enable tracing (optional)" icon="chart-dots">
-    To log agent operations, tool calls, and decisions in LangSmith, run `/auth` and add your LangSmith API key.跟踪将在下次启动时启用。有关项目命名、高级选项以及 CI 或无头设置，请参阅 [Trace with LangSmith](#trace-with-langsmith)。
+    要在 LangSmith 中记录代理操作、工具调用和决策，请运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪将在下次启动时启用。有关项目命名、高级选项以及 CI 或无头设置，请参阅 [Trace with LangSmith](#trace-with-langsmith)。
   </Step>
 </Steps>
 
@@ -60,32 +60,32 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
     * `/goal <objective>`：根据可衡量的目标起草验收标准。参见[Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)。
     * `/rubric`：设置明确的评分接受标准。参见[Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)。
     * `/remember [context]`：回顾对话并更新记忆和技能。可以选择传递附加上下文。
-    * `/skill:<name> [args]`：直接通过名称调用技能。该技能的 `SKILL.md` 指令将与您提供的任何参数一起注入到提示中。* `/skill-creator [task]`: Guide for creating effective agent skills.
-    * `/offload` (alias `/compact`) - Free up context window space by offloading messages to storage with a summary placeholder. The agent can retrieve the full history from the offloaded file if needed.
-    * `/context`: Open a color-coded context-window usage report with model capacity, usage categories, and remaining space.
-    * `/context-doctor`: Audit the context injected into the session and its estimated token cost. See [Audit injected context](/oss/deepagents/code/cli-reference#audit-injected-context).
-    * `/tools`: List the built-in and MCP tools available to the current agent. See [List available tools](/oss/deepagents/code/cli-reference#list-available-tools).
-    * `/extensions`: List loaded [Python extensions](/oss/deepagents/code/extensions), their registrations, and their source paths. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
-    * `/cost`：显示线程的估计成本。 See [Track thread cost](/oss/deepagents/code/cli-reference#track-thread-cost).
-    * `/btw`: Ask a side question about the conversation without interrupting the main task. See [Ask a side question](/oss/deepagents/code/cli-reference#ask-a-side-question).
-    * `/tokens`: Display current context window token usage breakdown.
+    * `/skill:<name> [args]`：直接通过名称调用技能。该技能的 `SKILL.md` 指令将与您提供的任何参数一起注入到提示中。* `/skill-creator [task]`：创建有效代理技能的指南。
+    * `/offload`（别名`/compact`） - 通过使用摘要占位符将消息卸载到存储来释放上下文窗口空间。如果需要，代理可以从卸载的文件中检索完整的历史记录。
+    * `/context`：打开颜色编码的上下文窗口使用报告，其中包含模型容量、使用类别和剩余空间。
+    * `/context-doctor`：审核注入到会话中的上下文及其估计的令牌成本。参见[Audit injected context](/oss/deepagents/code/cli-reference#audit-injected-context)。
+    * `/tools`：列出当前代理可用的内置和MCP工具。参见[List available tools](/oss/deepagents/code/cli-reference#list-available-tools)。
+    * `/extensions`：列出加载的[Python extensions](/oss/deepagents/code/extensions)、它们的注册以及它们的源路径。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。
+    * `/cost`：显示线程的估计成本。参见[Track thread cost](/oss/deepagents/code/cli-reference#track-thread-cost)。
+    * `/btw`：在不中断主要任务的情况下提出有关对话的附带问题。参见[Ask a side question](/oss/deepagents/code/cli-reference#ask-a-side-question)。
+    * `/tokens`：显示当前上下文窗口令牌使用情况明细。
     * `/clear`：开始一个新的线程。
-    * `/force-clear`: Recover a stuck session with a fresh thread.
-    * `/copy`: Copy the latest assistant message to the clipboard.
-    * `/prompts`: Search, preview, copy, and reuse previously submitted prompts.
-    * `/threads`: Browse and resume previous conversation threads.* `/mcp [login <server> | reconnect]`：显示活动的 MCP 服务器和工具。 `login <server>` 运行服务器的 OAuth 流程； `reconnect` 加载延迟登录。
+    * `/force-clear`：使用新线程恢复卡住的会话。
+    * `/copy`：将最新的助手消息复制到剪贴板。
+    * `/prompts`：搜索、预览、复制和重用以前提交的提示。
+    * `/threads`：浏览并恢复之前的对话线程。* `/mcp [login <server> | reconnect]`：显示活动的 MCP 服务器和工具。 `login <server>` 运行服务器的 OAuth 流程； `reconnect` 加载延迟登录。
     * `/plugins`：管理[plugins and marketplaces](/oss/deepagents/code/plugins)。
     * `/notifications`：配置启动警告首选项。
-    * `/reload`：重新读取`.env`文件，刷新配置，重新发现技能，无需重启。这还会重新加载插件技能和 MCP 配置。对话状态被保留。有关覆盖行为，请参阅[⟦T54⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
+    * `/reload`：重新读取`.env`文件，刷新配置，重新发现技能，无需重启。这还会重新加载插件技能和 MCP 配置。对话状态被保留。有关覆盖行为，请参阅[⟦T53⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
     * `/theme`：打开交互式主题选择器以切换颜色主题。内置主题以及任何 [user-defined themes](/oss/deepagents/code/configuration#themes) 都可用。
     * `/scrollbar`：显示或隐藏聊天滚动条。
-    * `/line-numbers`：在新差异中显示或隐藏文件相关行号。 See [Diff line numbers](/oss/deepagents/code/config-file#diff-line-numbers).
+    * `/line-numbers`：在新差异中显示或隐藏文件相关行号。参见[Diff line numbers](/oss/deepagents/code/config-file#diff-line-numbers)。
     * `/update`：检查并安装Deep Agents 内联代码更新。检测您的安装方法（uv、Homebrew、pip）并运行适当的升级命令。
     * `/auto-update`：打开或关闭自动更新。
     * `/install`：安装可选集成。
     * `/trace`：在LangSmith中打开当前线程。
-    * `/editor`：在外部编辑器中打开当前提示符 (`$VISUAL` / `$EDITOR`)。 See [External editor](#external-editor).
-    * `/restart`：重新启动代理服务器。
+    * `/editor`：在外部编辑器中打开当前提示符 (`$VISUAL` / `$EDITOR`)。参见[External editor](#external-editor)。
+    * `/restart`：重启代理服务器。
     * `/timestamps`：切换消息时间戳页脚。
     * `/changelog`：在浏览器中打开Deep Agents代码更改日志。* `/docs`：在浏览器中打开文档。
     * `/feedback`：发送反馈或报告问题。
@@ -107,7 +107,7 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
   <Accordion title="Keyboard shortcuts" icon="keyboard">
     **一般**
 
-    |快捷方式|行动|
+    |快捷方式 |行动|
     | - | - |
     | `Enter` |提交提示 |
     | `Shift+Enter`、`Ctrl+J`、`Alt+Enter` 或 `Ctrl+Enter` |插入换行符 |
@@ -124,7 +124,7 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
 
     **提示中的文本编辑**
 
-    聊天输入使用标准的 readline 样式绑定：|快捷方式|行动|
+    聊天输入使用标准的 readline 样式绑定：|快捷方式 |行动|
     | - | - |
     | `Ctrl+A` 或 `Home` |将光标移至行首 |
     | `Ctrl+E` 或 `End` |将光标移至行尾 |
@@ -135,13 +135,13 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
 
     **搜索提示历史记录**
 
-    Prompt history search lets you find and reuse previously submitted prompts without leaving the chat input. Press `Ctrl+R` to open an inline search of prompts stored on your machine.
+    提示历史记录搜索可让您查找并重复使用以前提交的提示，而无需离开聊天输入。按 `Ctrl+R` 打开计算机上存储的提示的内联搜索。
 
     **参考之前的帖子**
 
-    Type `@@` in the chat input to search recent threads by their initial prompt, thread ID, agent, branch, or working directory. Select a result to insert an `@@(thread:<thread-id>)` reference. Deep Agents Code can inspect the referenced conversation when its context is relevant to your request.
+    在聊天输入中键入`@@`，可按初始提示、线程 ID、代理、分支或工作目录搜索最近的线程。选择一个结果以插入 `@@(thread:<thread-id>)` 参考。 Deep Agents 当上下文与您的请求相关时，代码可以检查引用的对话。
 
-    在`@@`后添加文本以过滤结果。 While the suggestions are open, press `Ctrl+R` to browse all threads with the same search. In the full thread picker, press `Ctrl+C` to copy the selected thread ID.
+    在`@@`后添加文本以过滤结果。当建议打开时，按`Ctrl+R`浏览具有相同搜索的所有线程。在完整线程选择器中，按`Ctrl+C`复制所选线程ID。
 
     <Note>
       **macOS `Cmd+Left` / `Cmd+Right` / `Cmd+Delete`**终端模拟器会在 `Cmd` 修改的密钥到达正在运行的应用程序之前拦截它们，因此 Deep Agents 代码永远不会直接接收它们。相反，终端将它们转换为上面的 readline 快捷方式。
@@ -162,11 +162,11 @@ Deep Agents Code (`dcode`) is a terminal coding agent built on the [Deep Agents 
 
 运行 `/context` 打开当前模型上下文窗口使用情况的颜色编码报告。该报告显示模型的上下文限制、已使用的令牌、剩余容量以及对话和系统提示以及这些值可用时的工具之间的细分。提供商报告的总数仍然与当地对话的估计不同。当提供商总数不可用时，报告会将对话计数标记为估计值，并将总使用量标记为不可用。当您想要在对话记录中使用文本摘要时，请使用`/tokens`。
 
-当使用量增长快于预期时，运行 `/context-doctor` 将标记归因于每个注入的组件：基本系统提示、内存文件、技能索引、内置工具模式和 MCP 工具模式。要确认代理当前可以调用哪些工具，请运行`/tools`。对于线程的运行成本估算，运行`/cost`；状态栏中出现相同的数字。参见[Diagnose and audit a session](/oss/deepagents/code/cli-reference#diagnose-and-audit-a-session)。
+当使用量增长快于预期时，运行 `/context-doctor` 将令牌归因于每个注入的组件：基本系统提示、内存文件、技能索引、内置工具模式和 MCP 工具模式。要确认代理当前可以调用哪些工具，请运行`/tools`。对于线程的运行成本估算，运行`/cost`；状态栏中出现相同的数字。参见[Diagnose and audit a session](/oss/deepagents/code/cli-reference#diagnose-and-audit-a-session)。
 
 ### 外部编辑器
 
-按 `Ctrl+G` 或键入 `/editor` 在外部编辑器中编写提示。 Deep Agents 代码先检查`$VISUAL`，然后检查`$EDITOR`，然后回退到 `vi` (macOS/Linux) 或 `notepad` (Windows)。 GUI 编辑器（VS Code、Cursor、Zed 等）会自动接收 `--wait` 标志，因此 Deep Agents 代码会阻塞，直到您关闭文件。
+按 `Ctrl+G` 或键入 `/editor` 在外部编辑器中编写提示。 Deep Agents 代码先检查 `$VISUAL`，然后检查 `$EDITOR`，然后回退到 `vi` (macOS/Linux) 或 `notepad` (Windows)。 GUI 编辑器（VS Code、Cursor、Zed 等）会自动接收 `--wait` 标志，因此 Deep Agents 代码会阻塞，直到您关闭文件。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set in your shell profile (~/.zshrc, ~/.bashrc, etc.)
@@ -207,7 +207,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
     dcode -n "fix the failing tests" --max-turns 10
     ```
 
-    `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124（匹配 GNU `timeout`）退出，因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。有关基于时间的限制而不是（或除此之外）回合数限制，请参阅[Cap wall-clock time with ⟦T153⟧](#non-interactive-mode-and-piping)。
+    `N` 必须是正整数，并覆盖内部安全默认值，否则会限制失控循环。当超出预算时，以代码 124（匹配 GNU `timeout`）退出，因此 CI 可以区分预算命中和一般失败。需要 `-n` 或管道标准输入；否则退出并返回代码 2。有关基于时间的限制而不是（或除此之外）回合计数限制，请参阅[Cap wall-clock time with ⟦T152⟧](#non-interactive-mode-and-piping)。
   </Accordion>
 
   <Accordion title="Cap wall-clock time" icon="clock">
@@ -255,7 +255,7 @@ git diff | dcode --skill code-review -n 'summarize changes'
   `-S all`（或`--shell-allow-list all`）允许代理执行任意 shell 命令，无需人工确认。
 </Warning>
 
-## 使用 LangSmith 进行追踪启用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart) 跟踪以查看 LangSmith 项目中的代理操作、工具调用和决策。
+## 使用 LangSmith 进行追踪启用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-code-quickstart)跟踪以查看LangSmith项目中的代理操作、工具调用和决策。
 
 运行 `/auth` 并添加您的 LangSmith API 密钥。跟踪在下次启动时启用，并在会话之间持续存在。有关凭证管理器的详细信息，请参阅[Provider credentials](/oss/deepagents/code/credentials#use-%2Fauth-recommended)。
 
@@ -271,14 +271,16 @@ DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Cod
 
 要覆盖特定工作目录的项目，请将 `DEEPAGENTS_CODE_LANGSMITH_PROJECT` 添加到该目录中的 `.env`。完整装载订单请参见[environment variables](/oss/deepagents/code/configuration#environment-variables)。
 
-对于 CI、无头运行或临时覆盖，请改为设置 shell 环境变量。 Shell 导出始终优先于 `.env` 值：
+<Accordion title="Disable agent tracing">
+  启动 `dcode --no-tracing` 以禁用一个会话的 LangSmith 代理跟踪。对于将来的启动，请在 shell 中设置 `DEEPAGENTS_CODE_LANGSMITH_TRACING=false` 或 `~/.deepagents/.env`。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_TRACING=false
-```
+  该标志覆盖环境设置。 `DEEPAGENTS_CODE_LANGSMITH_TRACING` 中的显式 `false` 会覆盖其他跟踪启用标志，包括 `LANGSMITH_TRACING=true`。对于同一变量，Shell 导出优先于 `.env` 值。禁用代理跟踪不会禁用本地对话历史记录或模型提供程序请求。它与在 shell 命令中运行的应用程序发出的跟踪编辑和跟踪是分开的。
+</Accordion>
 
 <Accordion title="Separate agent traces from app traces">
-  Deep Agents 代码可以产生两种LangSmith 痕迹：* `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
+  Deep Agents 代码可以产生两种LangSmith 痕迹：
+
+  * `Agent traces` 是Deep Agents 代码自己的模型调用、工具调用、编排和中间件。
   * `Shell-command traces` 是Deep Agents 代码在 shell 中为您运行的代码发出的跟踪，例如测试、脚本或本地 LangGraph 应用程序。
 
   要将Deep Agents代码自己的跟踪发送到专用项目，请设置`DEEPAGENTS_CODE_LANGSMITH_PROJECT`：
@@ -300,9 +302,9 @@ export LANGSMITH_TRACING=false
   uv run pytest tests/test_escalation_flow.py
   ```
 
-  如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码本身的推理和工具使用痕迹转到`deepagents-code`。
+  如果该测试在启用 LangSmith 跟踪的情况下运行您的应用程序，则这些应用程序跟踪将由 shell 进程创建并转到 `customer-support-agent`。 Deep Agents 代码自身的推理和工具使用痕迹转到`deepagents-code`。
 
-  您还可以使用 [⟦T178⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
+  您还可以使用 [⟦T183⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)（例如 `DEEPAGENTS_CODE_LANGSMITH_API_KEY`）将 LangSmith 凭证范围限定为 Deep Agents 代码。
 </Accordion>
 
 <Accordion title="Dual-write traces to a second project">
@@ -310,10 +312,10 @@ export LANGSMITH_TRACING=false
 
   ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS=team-shared
-  ```
+  ```当设置和跟踪处于活动状态时，每个代理运行都会写入主项目（默认为`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和您在此处命名的项目。保持变量未设置，以像往常一样写入单个项目。
+</Accordion>
 
-  当设置和跟踪处于活动状态时，每个代理运行都会写入主项目（默认为`DEEPAGENTS_CODE_LANGSMITH_PROJECT`，或`deepagents-code`）和您在此处命名的项目。保持变量未设置，以像往常一样写入单个项目。
-</Accordion>配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
+配置后，Deep Agents代码会显示一个状态行，其中包含指向LangSmith项目的链接。在支持的终端中，单击链接直接打开。您还可以使用 `/trace` 打印 URL 并在浏览器中打开它。
 
 ```sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ✓ LangSmith tracing: 'my-project'

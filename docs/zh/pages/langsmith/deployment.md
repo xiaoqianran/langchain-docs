@@ -71,19 +71,19 @@ LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)�
   <Card title="Update prompts and contexts without redeploying" icon="edit" href="/langsmith/prompt-context-hub">
     管理已部署的代理在运行时提取的提示和版本化上下文，以便您无需完全部署即可更改行为。
   </Card><Card title="Interact with your deployment using RemoteGraph" icon="link" href="/langsmith/use-remote-graph">
-    Call your deployed graph from client code as if it were a local compiled graph.
+    从客户端代码调用您部署的图，就好像它是本地编译的图一样。
   </Card>
 </CardGroup>
 
 <CardGroup>
-  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
-    Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
+  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine-overview">
+    一旦代理投入生产，使用LangSmith引擎来检测其跟踪中反复出现的故障，诊断根本原因并解决它们。
   </Card>
 </CardGroup>
 
 ## 全栈网络应用程序
 
-Ship a LangChain.js agent and chat UI together as a single web app. The Vite example uses LangSmith Deployment as the agent backend behind a separate UI. Other examples embed the agent inside the web framework's route handlers and ship to the host platform.
+将 LangChain.js 代理和聊天 UI 作为单个 Web 应用程序一起发布。 Vite 示例使用 LangSmith Deployment 作为单独 UI 后面的代理后端。其他示例将代理嵌入到 Web 框架的路由处理程序中并发送到主机平台。
 
 <Card title="Full-stack web apps" href="/langsmith/deploy-frameworks-and-platforms" icon="code">
   发布 LangChain.js 聊天应用程序：将代理嵌入 Next.js、SvelteKit、Nuxt、Cloudflare Workers 或 Deno Deploy（不需要代理服务器），或将 LangSmith 部署与 Vite + React UI 配对。

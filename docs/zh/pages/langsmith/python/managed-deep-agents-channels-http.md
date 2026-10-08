@@ -11,7 +11,7 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 您提供两个回调：一个对请求进行身份验证，另一个将其转换为消息，命名调用者及其所属的对话。托管Deep Agents 拥有可信切换、代理运行和回复。对于提供商管理的替代方案，请参阅[Slack](/langsmith/python/managed-deep-agents-channels-slack)。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 位于 **公共 [beta](/langsmith/release-stages)** 中，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
 </Note>
 
 <Note>
@@ -33,7 +33,7 @@ my-agent/
   agent.py
   channels/
     orders.py
-```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
 
 ## 添加 HTTP 通道
 
@@ -77,7 +77,7 @@ my-agent/
         received = context.request.headers.get("x-orders-signature", "")
         return hmac.compare_digest(f"sha256={digest}", received)
     ```<Warning>
-      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得 `verify` 成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
+      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得`verify`成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
     </Warning>
 
     使用 [deployment secret](/langsmith/python/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
@@ -86,7 +86,7 @@ my-agent/
   </Step>
 
   <Step title="Parse the request into a message">
-    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且可能是异步的。返回两个形状之一：
+    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
 
     * `{"type": "message", "message": {...}}` 开始跑步。
     * `{"type": "ignore"}` 跳过该事件。
@@ -182,7 +182,7 @@ my-agent/
     )
     ```
 
-    托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
+    托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
   </Step>
 </Steps>
 
@@ -214,19 +214,11 @@ POST https://<deployment-url>/channels/<name>/events
 
 ## 读取代理中的事件
 
-每次运行都携带[run context](/langsmith/python/managed-deep-agents-middleware#use-runtime-context)中的通道数据。解析器示例明确包含提供者事件。这些字段出现在通道上下文中：
+工具和中间件从[⟦T99⟧](/langsmith/python/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "channel": {
-    "provider": "orders",
-    "target": "A-1024",
-    "raw_event": { "type": "order.comment", "order": { "id": "A-1024" } }
-  }
-}
-```
+从 `parse` 返回 `raw_event` 以在 `runtime.channel.raw_event` 公开 JSON 提供程序数据。如果省略，`runtime.channel.raw_event` 为`None`。
 
-从 `parse` 返回 `raw_event` 以在 `runtime.channel.raw_event` 和 `runtime.context.channel["raw_event"]` 公开 JSON 提供程序数据。如果省略，则上下文没有 `raw_event` 键，并且 `runtime.channel.raw_event` 是 `None`。
+回复`target`保持私密。代码无法从`runtime.channel`读取它。
 
 托管 Deep Agents 根据解析的消息构建 `runtime.channel.event`。它不会再次解码主体或自动保留提供者事件。
 
@@ -238,18 +230,18 @@ HTTP 通道不需要提供商授权，因此部署是标准命令。 Managed Dee
 uv run mda deploy
 ```
 
-将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后将 `https://<deployment-url>/channels/<name>/events` 注册到外部服务作为其 webhook 目标。
+将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后向外部服务注册 `https://<deployment-url>/channels/<name>/events` 作为其 webhook 目标。
 
-## 另请参阅* [Channels overview](/langsmith/python/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
+## 另请参阅
+
+* [Channels overview](/langsmith/python/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Slack](/langsmith/python/managed-deep-agents-channels-slack)：改用提供商管理的 Slack 通道。
 * [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：配置和部署托管深度代理。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
