@@ -71,6 +71,10 @@ const agent = createDeepAgent({
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba2a0ba2-a907-42fe-aa94-f637359bd130/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 On the frontend, connect with [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) the same way as with `createAgent`. Pass a [type parameter](/oss/javascript/langchain/frontend/overview) for type-safe stream state. Deep agent patterns use `stream.subagents`, selector helpers such as `useMessages(stream, subagent)`, and custom state values like `stream.values.todos` to render subagent-specific UIs.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

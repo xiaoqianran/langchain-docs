@@ -28,7 +28,7 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 The rest of this page covers the two choices around those steps: who owns the credential, and how the service authenticates.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 ## Choose a credential owner

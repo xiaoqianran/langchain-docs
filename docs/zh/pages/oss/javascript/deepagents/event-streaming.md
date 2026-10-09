@@ -84,7 +84,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1d3f1455-4a9c-4607-aa1d-115948f2e1fa/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/772cbde0-b8d3-44ec-9ac8-3641bc61a567/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -111,9 +111,11 @@ for await (const subagent of stream.subagents) {
 await stream.output;
 ```
 
-## 流工具调用
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871e73d9-e98c-4ac5-bfec-2e6ab7a6bd6b/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-Deep Agents 在代理树的每个级别公开工具调用。将顶级 `stream.tool_calls` 用于协调器工具，将每个 `subagent.tool_calls` 用于委派工作。
+## 流工具调用Deep Agents 在代理树的每个级别公开工具调用。将顶级 `stream.tool_calls` 用于协调器工具，将每个 `subagent.tool_calls` 用于委派工作。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
@@ -137,7 +139,9 @@ for await (const subagent of stream.subagents) {
     }
   }
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fdda16a-c42c-4931-81f5-36e4a4ecfc5c/r">
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fdda16a-c42c-4931-81f5-36e4a4ecfc5c/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -202,7 +206,7 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/467e4c96-80a0-42ba-9f5f-d869b74e5899/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ad72588-6334-4d84-ad85-f66e6c13f0f3/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -230,7 +234,7 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4113a4d2-b6d8-4f2a-ad1d-2ab9e29859e6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da37e344-18bb-4a36-be3e-1a1740f281c6/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -238,13 +242,13 @@ for await (const event of stream) {
 
 `stream.subgraphs`展示了图的执行结构。 `stream.subagents` 显示产品级别的Deep Agents 任务委派。将 `stream.subagents` 用于面向用户的 UI，因为它隐藏内部图节点并直接公开子代理概念。
 
-## 相关
-
-* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming) 涵盖一般代理消息和工具调用流概念。
+＃＃ 有关的* [LangChain Event Streaming](/oss/javascript/langchain/event-streaming) 涵盖一般代理消息和工具调用流概念。
 * [Subagent frontend streaming](/oss/javascript/deepagents/frontend/subagent-streaming) 显示将协调器消息与子代理卡分开的 UI 模式。
 * [LangGraph Event Streaming](/oss/javascript/langgraph/event-streaming)涵盖了底层的图流模型。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

@@ -2,17 +2,17 @@
 
 <!-- langchain-docs: Custom instrumentation | https://docs.langchain.com/langsmith/annotate-code -->
 
-# 自定义仪器
+# Custom instrumentation
 
 直接检测您的代码以控制跟踪哪些函数以及它们在 LangSmith 中的显示方式。
 
-直接将 [instrumentation](/langsmith/observability-concepts#manual-instrumentation) 添加到代码中，可以让您精确控制应用程序跟踪哪些函数、记录哪些输入和输出，以及如何构建 [trace](/langsmith/observability-concepts#traces) 层次结构。三种核心仪器方法是：
+Adding [instrumentation](/langsmith/observability-concepts#manual-instrumentation) directly to your code gives you precise control over which functions your application traces, what inputs and outputs are logged, and how your [trace](/langsmith/observability-concepts#traces) hierarchy is structured.三种核心仪器方法是：
 
 * [⟦T15⟧ decorator](#use-%40traceable-%2F-traceable)：推荐用于大多数情况
-* [⟦T16⟧ context manager](#use-the-trace-context-manager-python-only)：仅限Python
+* [⟦T16⟧ context manager](#use-the-trace-context-manager-python-only): Python only
 * [⟦T17⟧ API](#use-the-runtree-api)：显式、低级控制
 
-此页面还涵盖：
+This page also covers:
 
 * [Specifying a custom run ID](#specify-a-custom-run-id)，对于在运行后立即附加反馈或与外部系统关联非常有用。
 * [Ensuring all traces are submitted](#ensure-all-traces-are-submitted-before-exiting) 在进程退出之前。
@@ -23,17 +23,17 @@
   如果您使用的是具有内置 LangSmith 集成的 LLM 提供商或代理框架，请改为参阅 [integrations overview](/langsmith/integrations)
 </Callout>
 
-## 先决条件
+## Prerequisites
 
 在跟踪之前，请设置以下环境变量：
 
 * `LANGSMITH_TRACING=true`：启用跟踪。设置此选项可在不更改代码的情况下打开和关闭跟踪。<Note>
-    `LANGSMITH_TRACING` 控制 `@traceable` 装饰器和 `trace` 上下文管理器。要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布时将数据发送到LangSmith。
+    `LANGSMITH_TRACING` controls the `@traceable` decorator and the `trace` context manager.要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布时将数据发送到LangSmith。
   </Note>
 
 * `LANGSMITH_API_KEY`：您的[LangSmith API key](/langsmith/create-account-api-key)。
 
-* 默认情况下，LangSmith 将跟踪记录到名为 `default` 的项目。要登录到不同的项目，请设置`LANGSMITH_PROJECT`。更多详情请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。要将跟踪发送到特定代理和环境，请使用[agent addressing](/langsmith/log-traces-to-agent)。
+* By default, LangSmith logs traces to a project named `default`.要登录到不同的项目，请设置`LANGSMITH_PROJECT`。更多详情请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。 To send traces to a specific agent and environment instead, use [agent addressing](/langsmith/log-traces-to-agent).
 
 ## 使用 `@traceable` / `traceable`
 
@@ -196,7 +196,7 @@
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e686a13-436f-41ec-9e21-7f38d8babcb8/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5680e7b5-1d37-428c-b02b-753429ac7f83/r">
     为此示例打开公共 LangSmith 运行。
   </Card>
 
@@ -751,8 +751,8 @@ LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程�
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback)：预先指定运行 ID 的常见用例
 * [Access the current run (span) within a traced function](/langsmith/access-current-span)：从跟踪内部读取或修改活动运行
 * [Log traces to a specific project](/langsmith/log-traces-to-project)：将跟踪路由到指定项目而不是`default`
-* [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代品
-* [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)摘自LangSmith课程介绍
+* [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代方案
+* [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)摘自LangSmith课程简介
 
 ***<div>
   <Callout icon="terminal-2">

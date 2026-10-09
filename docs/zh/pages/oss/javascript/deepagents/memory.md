@@ -64,6 +64,7 @@ const agent = createDeepAgent({
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
   import { InMemoryStore } from "@langchain/langgraph";
+  import { uuid7 } from "langsmith";
 
   const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
 
@@ -110,13 +111,13 @@ const agent = createDeepAgent({
   });
 
   // Thread 1: the agent learns a new preference and saves it to memory
-  const config1 = { configurable: { thread_id: crypto.randomUUID() } };
+  const config1 = { configurable: { thread_id: uuid7() } };
   await agent.invoke({
     messages: [{ role: "user", content: "I prefer detailed explanations. Remember that." }],
   }, config1);
 
   // Thread 2: the agent reads memory and applies the preference
-  const config2 = { configurable: { thread_id: crypto.randomUUID() } };
+  const config2 = { configurable: { thread_id: uuid7() } };
   await agent.invoke({
     messages: [{ role: "user", content: "Explain how transformers work." }],
   }, config2);
@@ -153,6 +154,7 @@ const agent = createDeepAgent({
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
   import { InMemoryStore } from "@langchain/langgraph";
+  import { uuid7 } from "langsmith";
 
   const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
 
@@ -211,7 +213,7 @@ const agent = createDeepAgent({
   // automatically see only their own preferences.
   await agent.invoke(
     { messages: [{ role: "user", content: "How do I read a CSV file?" }] },
-    { configurable: { thread_id: crypto.randomUUID() } },
+    { configurable: { thread_id: uuid7() } },
   );
   ```
 </Accordion>
@@ -392,7 +394,7 @@ export { agent };
 
 #### 计划任务
 
-[cron job](/langsmith/cron-jobs) 按固定计划运行整合代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
+[cron job](/langsmith/cron-jobs) 按固定计划运行合并代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -438,9 +440,9 @@ const cronJob = await client.crons.create(
 
 ### 只读内存与可写内存
 
-默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可|使用案例|它是如何运作的 |
+默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例 |它是如何运作的 |
 | - | - | - |
-| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/javascript/deepagents/skills) |代理通过`edit_file`工具更新文件 |
+| **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/javascript/deepagents/skills) |代理通过`edit_file`工具更新文件|
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/javascript/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/javascript/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
 
 **安全注意事项：** 如果一个用户可以写入另一用户读取的内存，则恶意用户可以将指令注入共享状态。为了缓解这种情况：

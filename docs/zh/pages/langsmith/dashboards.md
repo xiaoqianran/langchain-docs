@@ -10,8 +10,8 @@ LangSmith提供两种仪表板类型：
 
 * **预构建仪表板**：为每个跟踪项目或[agent environment](/langsmith/agent-environments)自动生成。
 * **自定义仪表板**：您可以根据需要配置的图表集合。根据您的[platform setup](/langsmith/platform-setup)，有两种体验可供选择：
-  * [**Custom dashboards**](#custom-dashboards)：适用于LangSmith Cloud US。
-  * [**Custom dashboards (legacy)**](#custom-dashboards-legacy)：适用于 LangSmith 自托管和 LangSmith 云欧盟/亚太地区。
+  * [**Custom dashboards**](#custom-dashboards)：适用于LangSmith Cloud US，以及LangSmith 自托管安装[query SmithDB](/langsmith/self-host-smithdb-features)。
+  * [**Custom dashboards (legacy)**](#custom-dashboards-legacy)：适用于LangSmith Cloud EU/APAC，以及LangSmith 查询 ClickHouse 的自托管安装。
 
 ## 预建仪表板
 
@@ -22,20 +22,20 @@ LangSmith提供两种仪表板类型：
 预构建的仪表板分为以下部分：
 
 |部分|它显示了什么 |
-| :-| :-|
+| :- | :- |
 |痕迹|跟踪计数、延迟和错误率。 [trace](/langsmith/observability-concepts#traces) 是与单个操作相关的[runs](/langsmith/observability-concepts#runs) 的集合。例如，如果用户请求触发代理，则该代理调用的所有运行都将成为同一跟踪的一部分。 |
 |法学硕士来电| LLM 调用次数和延迟。包括运行类型为“llm”的所有运行。 |
 |成本和代币 |总和每条轨迹的令牌计数和成本，按令牌类型细分。成本使用[LangSmith's cost tracking](/langsmith/log-llm-trace#provide-token-and-cost-information)来衡量。 |
-|工具|按工具名称细分的工具运行的运行计数、错误率和延迟统计信息。包括运行类型为“工具”的运行。仅限于前 5 个最常出现的工具。 ||运行类型 | Run counts, error rates, and latency stats for runs that are immediate children of the root run.这有助于理解代理的高级执行路径。限制为前 5 个最常出现的运行名称。 |
+|工具|按工具名称细分的工具运行的运行计数、错误率和延迟统计信息。包括运行类型为“工具”的运行。仅限于前 5 个最常出现的工具。 ||运行类型 |根运行的直接子运行的运行计数、错误率和延迟统计信息。这有助于理解代理的高级执行路径。限制为前 5 个最常出现的运行名称。 |
 |反馈分数 |前 5 种最常出现的反馈类型的汇总统计数据。图表显示数字反馈的平均分数和分类反馈的类别计数。 |
 
 ### 分组依据
 
 您可以使用 group by [run tag or metadata](/langsmith/add-metadata-tags) 将数据拆分为对您的应用程序重要的属性。全局组设置显示在仪表板的右上角。请注意，**工具**和**运行类型**图表已经应用了分组依据，因此全局分组依据不会生效。全局分组依据将应用于所有其他图表。
 
-<Note>向运行添加元数据时，我们建议在跟踪以及特定运行（例如 LLM 调用）上使用相同的元数据。 Metadata and tags are not propagated from parent to child runs, or vice versa.如果您想查看按元数据键分组的跟踪图表和 LLM 调用图表，则跟踪（根运行）和 LLM 运行都需要 [metadata attached](/langsmith/add-metadata-tags).</Note>
+<Note>向运行添加元数据时，我们建议在跟踪以及特定运行（例如 LLM 调用）上使用相同的元数据。元数据和标签不会从父运行传播到子运行，反之亦然。如果您想查看按元数据键分组的跟踪图表和 LLM 调用图表，则跟踪（根运行）和 LLM 运行都需要 [metadata attached](/langsmith/add-metadata-tags).</Note>
 
-## 自定义仪表板<Note>适用于LangSmith[Cloud](/langsmith/cloud)美国。</Note>
+## 自定义仪表板<Note>适用于 LangSmith [Cloud](/langsmith/cloud) US，以及 LangSmith [Self-hosted](/langsmith/self-hosted) 安装，[query SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb).</Note>
 
 创建定制的图表集合来跟踪对您的应用程序最重要的指标。
 
@@ -67,7 +67,7 @@ LangSmith提供两种仪表板类型：
 
 #### 选择数据源打开 **+ 选择项目或数据集** 以查找源。在基于代理的工作区中，该按钮显示为 **+ 选择环境或数据集**。使用弹出窗口顶部的选项卡在两种源类型之间切换：**跟踪**（基于代理的工作区中的**环境**）和**数据集**。
 
-* **跟踪项目或环境**：为每个图表添加一个或多个。 LangSmith 池将每个选定的项目或环境运行到一个集合中，而不是单独显示每个项目或环境。要按项目或环境细分结果，请使用 [Group by](#filter-and-group)。
+* **跟踪项目或环境**：为每个图表添加一个或多个。 LangSmith 池将每个选定的项目或环境运行到一个集合中，而不是单独显示每个项目或环境。要按项目或环境细分结果，请使用[Group by](#filter-and-group)。
 * **数据集**：为每个图表选择一个数据集。
   * 以静默方式选择第二个数据集来替换前一个数据集。
   * 图表取自跟踪项目或环境，或取自数据集，但不能同时取自两者。在选择项目或环境时选取数据集（反之亦然）会清除现有选择。
@@ -75,7 +75,7 @@ LangSmith提供两种仪表板类型：
 #### 选择一个指标
 
 从下拉列表中选择一个指标。选项根据您测量的内容进行分组：|公制|描述 |聚合 |
-| :-| :-| :-|
+| :- | :- | :- |
 |计数 |运行次数。 | — |
 |延迟 |超过 `latency_seconds` 的聚合。 |平均值、百分位数（p50 或 p99）|
 |第一个代币的时间 | `first_token_seconds` 上的聚合。 |百分位数（p50 或 p99）、平均值 |
@@ -132,9 +132,9 @@ LangSmith提供两种仪表板类型：
 * **仪表板时间范围**：在仪表板顶部设置一次。每个图表都使用此范围，除非它覆盖其自己的存储桶大小。
 * **克隆仪表板**：使用仪表板标题中的复制图标。克隆 [prebuilt dashboard](#prebuilt-dashboards) 将其图表转换为完全可编辑的自定义图表。
 
-## 自定义仪表板（旧版）
+## 自定义仪表板（旧版）<Note>适用于 LangSmith [Cloud](/langsmith/cloud) EU/APAC 客户，以及查询 ClickHouse 的 LangSmith [Self-hosted](/langsmith/self-hosted) 安装。</Note>
 
-<Note>适用于LangSmith [Self-hosted](/langsmith/self-hosted) 和 LangSmith [Cloud](/langsmith/cloud) 欧盟/亚太地区客户。</Note>创建定制的图表集合来跟踪对您的应用程序最重要的指标。
+创建定制的图表集合来跟踪对您的应用程序最重要的指标。
 
 ### 创建一个新的仪表板
 

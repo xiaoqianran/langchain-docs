@@ -111,7 +111,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import requests
-    import uuid
+    from langsmith import uuid7
     from pathlib import Path
     from langsmith import Client
 
@@ -144,7 +144,7 @@ This guide covers how to create examples with attachments, build multimodal prom
     }
 
     # Define an example with attachments
-    example_id = uuid.uuid4()
+    example_id = uuid7()
     example = {
       "id": example_id,
       "inputs": inputs,
@@ -182,7 +182,7 @@ This guide covers how to create examples with attachments, build multimodal prom
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "langsmith";
-    import { v4 as uuid4 } from "uuid";
+    import { uuid7 } from "langsmith";
 
     // Publicly available test files
     const pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
@@ -207,7 +207,7 @@ This guide covers how to create examples with attachments, build multimodal prom
     const langsmithClient = new Client();
 
     // Create a unique dataset name
-    const datasetName = "attachment-test-dataset:" + uuid4().substring(0, 8);
+    const datasetName = "attachment-test-dataset:" + uuid7().substring(0, 8);
 
     // Create the dataset
     const dataset = await langsmithClient.createDataset(datasetName, {
@@ -215,7 +215,7 @@ This guide covers how to create examples with attachments, build multimodal prom
     });
 
     // Define the example with attachments
-    const exampleId = uuid4();
+    const exampleId = uuid7();
     const example = {
       id: exampleId,
       inputs: {

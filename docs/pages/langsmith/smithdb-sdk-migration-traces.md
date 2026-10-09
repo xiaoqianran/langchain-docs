@@ -604,6 +604,10 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
             if (count >= 5) break
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e97fb036-8386-475c-a992-f63ee6ae660e/r">
+          Open a public LangSmith run for this example.
+        </Card>
       </Tab>
     </Tabs>
   </Tab>
@@ -1354,6 +1358,10 @@ Fetch all the runs that belong to one trace, given its trace ID.
             println("${run.name()} ${run.runType()} ${run.status()}")
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3722fdb8-c690-4a42-95b0-6480092e6a33/r">
+          Open a public LangSmith run for this example.
+        </Card>
       </Tab>
 
       <Tab title="After">
@@ -1582,6 +1590,10 @@ Narrow a trace's runs down to a specific run type, for example just the LLM call
           llmRuns.push(run);
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/33ef3cbf-dbb6-4148-9f4b-9d2e9e4b614d/r">
+          Open a public LangSmith run for this example.
+        </Card>
       </Tab>
 
       <Tab title="After">

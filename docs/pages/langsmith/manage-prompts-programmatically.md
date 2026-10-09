@@ -890,6 +890,10 @@ These conversion methods rely on logic from within LangChain integration package
           .build()
   );
   ```
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851bb441-3c1e-4ec9-88d1-ed0a102d7ba8/r">
+    Open a public LangSmith run for this example.
+  </Card>
 </CodeGroup>
 
 ## List, delete, and like prompts

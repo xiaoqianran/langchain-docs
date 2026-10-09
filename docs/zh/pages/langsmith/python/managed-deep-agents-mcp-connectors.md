@@ -11,7 +11,7 @@
 大多数远程 MCP 服务器需要身份验证。 [connection](/langsmith/python/managed-deep-agents-connections) 提供它，并将连接声明为用户拥有，使每个调用者授权自己的帐户。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 在`tools/mcp.py`中声明MCP服务器：
@@ -48,9 +48,9 @@ my-agent/
     )
     ```
 
-    该模块必须导出模块级别`mcp`。一个项目有一个 MCP 声明，因此声明其中的每个服务器。托管 Deep Agents 支持可流式 HTTP (`"http"`) 和旧版 SSE (`"sse"`) 传输。不支持 Stdio MCP 服务器。通过 HTTP 公开 stdio 服务器或将其操作实现为 [authored tool](/langsmith/python/managed-deep-agents-tools)。
+    该模块必须导出模块级别`mcp`。一个项目有一个 MCP 声明，因此声明其中的每个服务器。
 
-    有关连接选项，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
+    托管 Deep Agents 支持可流式 HTTP (`"http"`) 和旧版 SSE (`"sse"`) 传输。不支持 Stdio MCP 服务器。通过 HTTP 公开 stdio 服务器或将其操作实现为 [authored tool](/langsmith/python/managed-deep-agents-tools)。有关连接选项，请参阅[Manage connections](/langsmith/python/managed-deep-agents-connections)。
   </Step>
 
   <Step title="Select tools (Optional)">
@@ -94,7 +94,7 @@ my-agent/
 | `automatic_sse_fallback` / `automaticSSEFallback` |对于 HTTP，允许客户端回退到 SSE。 |
 | `reconnect` |对于 SSE，配置重新连接行为。 |
 
-MCP 定义还接受以下选项：|选项 |默认 |描述 |
+MCP 定义还接受以下选项：|选项 |默认|描述 |
 | - | - | - |
 | `prefix_tool_name_with_server_name` / `prefixToolNameWithServerName` | `true` |每个工具都带有前缀 `{server}__`。 |
 | `throw_on_load_error` / `throwOnLoadError` | `true` |加载失败而不是从部分工具集开始。 |
@@ -105,11 +105,11 @@ MCP 定义还接受以下选项：|选项 |默认 |描述 |
 
 ## 何时使用 MCP 连接器
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 服务器** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
 | **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)** |部署API |将代理作为工具公开给 MCP 客户端 |
-| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码|导入并传入代理定义 |
+| **[Authored tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |
 | **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|接收启动代理运行并传递响应的外部消息 |
 
 有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。

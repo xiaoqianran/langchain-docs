@@ -11,7 +11,7 @@ mda 命令、项目文件和部署行为的参考。
 它包含在 `managed-deepagents` npm 包中。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/javascript/managed-deep-agents-identity)、[Memory](/langsmith/javascript/managed-deep-agents-memory)、[Evals](/langsmith/javascript/managed-deep-agents-evals)、[Custom tools](/langsmith/javascript/managed-deep-agents-tools)、[Connections](/langsmith/javascript/managed-deep-agents-connections)、[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)、[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)、[Channels](/langsmith/javascript/managed-deep-agents-channels)、[Schedules](/langsmith/javascript/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
@@ -64,7 +64,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用|
+## 命令概述|命令|使用|
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -193,7 +193,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
   ```
 </CodeGroup>
 
-|命令或标志|使用|
+|命令或标志 |使用|
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -236,13 +236,13 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
 
-## 管理连接连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
+## 管理连接连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可以解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令 |使用|
+|命令|使用|
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |

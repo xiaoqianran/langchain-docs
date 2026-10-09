@@ -392,6 +392,10 @@ For full control, use the `DeepAgentsServer` class directly:
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c5305a5-2072-4194-b0aa-007ecdd21808/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 #### Server options
 
 | Option | Type | Default | Description |
@@ -511,6 +515,10 @@ const server = new DeepAgentsServer({
 await server.start();
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4966624-3c7b-4809-a2e4-f9c5edc39843/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Custom backend
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -526,6 +534,10 @@ const server = new DeepAgentsServer({
   },
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/456029e3-e7c4-42e5-a265-826acd7d14c0/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### Skills and memory
 

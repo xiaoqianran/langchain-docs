@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-08T15:56:06.242Z",
+  "fetchedAt": "2026-10-09T15:38:32.654Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1683,
+  "ok": 1687,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 483
+      "count": 487
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -655,7 +655,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "add-human-in-the-loop",
-      "bytes": 16131
+      "bytes": 16117
     },
     {
       "rel": "langsmith/add-metadata-tags.md",
@@ -683,6 +683,15 @@
       "trackName": "LangSmith",
       "group": "administration-overview",
       "bytes": 34530
+    },
+    {
+      "rel": "langsmith/aes-encryption.md",
+      "title": "Configure AES encryption at rest",
+      "url": "https://docs.langchain.com/langsmith/aes-encryption",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "aes-encryption",
+      "bytes": 4019
     },
     {
       "rel": "langsmith/agent-auth.md",
@@ -1537,7 +1546,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "bind-evaluator-to-dataset",
-      "bytes": 5288
+      "bytes": 5279
     },
     {
       "rel": "langsmith/bind-evaluator-to-dataset-link.md",
@@ -1942,7 +1951,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cost-tracking",
-      "bytes": 47746
+      "bytes": 47957
     },
     {
       "rel": "langsmith/create-a-prompt.md",
@@ -2026,6 +2035,15 @@
       "bytes": 1194
     },
     {
+      "rel": "langsmith/custom-encryption.md",
+      "title": "Configure custom encryption at rest",
+      "url": "https://docs.langchain.com/langsmith/custom-encryption",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "custom-encryption",
+      "bytes": 17398
+    },
+    {
       "rel": "langsmith/custom-endpoint.md",
       "title": "Connect to a custom model",
       "url": "https://docs.langchain.com/langsmith/custom-endpoint",
@@ -2095,7 +2113,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "dashboards",
-      "bytes": 14002
+      "bytes": 14352
     },
     {
       "rel": "langsmith/data-export.md",
@@ -2185,7 +2203,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "decision-model-evaluator",
-      "bytes": 6091
+      "bytes": 5780
     },
     {
       "rel": "langsmith/define-target-function.md",
@@ -2405,12 +2423,12 @@
     },
     {
       "rel": "langsmith/encryption.md",
-      "title": "Add encryption at rest",
+      "title": "Encryption at rest",
       "url": "https://docs.langchain.com/langsmith/encryption",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "encryption",
-      "bytes": 16206
+      "bytes": 1603
     },
     {
       "rel": "langsmith/endpoint-deprecation.md",
@@ -2599,7 +2617,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluate-with-attachments",
-      "bytes": 25035
+      "bytes": 25045
     },
     {
       "rel": "langsmith/evaluate-with-opentelemetry.md",
@@ -2653,7 +2671,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-concepts",
-      "bytes": 19789
+      "bytes": 19780
     },
     {
       "rel": "langsmith/evaluation-quickstart.md",
@@ -2671,7 +2689,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-types",
-      "bytes": 10587
+      "bytes": 10578
     },
     {
       "rel": "langsmith/evaluator-spend.md",
@@ -2716,7 +2734,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "export-backend",
-      "bytes": 5028
+      "bytes": 5305
     },
     {
       "rel": "langsmith/export-traces.md",
@@ -3022,7 +3040,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "generative-ui-react",
-      "bytes": 18016
+      "bytes": 18022
     },
     {
       "rel": "langsmith/govern-overview.md",
@@ -3148,7 +3166,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 12556
+      "bytes": 12520
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md",
@@ -3157,7 +3175,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-agent-owned-interrupts",
-      "bytes": 14119
+      "bytes": 14083
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-changelog.md",
@@ -3175,7 +3193,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels",
-      "bytes": 4236
+      "bytes": 4200
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels-http.md",
@@ -3184,7 +3202,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels-http",
-      "bytes": 15055
+      "bytes": 15019
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-channels-slack.md",
@@ -3193,7 +3211,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 12995
+      "bytes": 12959
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-cli.md",
@@ -3202,7 +3220,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-cli",
-      "bytes": 22506
+      "bytes": 22470
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-connections.md",
@@ -3211,7 +3229,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-connections",
-      "bytes": 43286
+      "bytes": 43250
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-context-hub.md",
@@ -3220,7 +3238,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-context-hub",
-      "bytes": 6874
+      "bytes": 6838
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-deploy.md",
@@ -3229,7 +3247,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-deploy",
-      "bytes": 7688
+      "bytes": 8981
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-evals.md",
@@ -3238,7 +3256,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-evals",
-      "bytes": 8041
+      "bytes": 8005
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-identity.md",
@@ -3247,7 +3265,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-identity",
-      "bytes": 9401
+      "bytes": 9365
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-instructions.md",
@@ -3256,7 +3274,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-instructions",
-      "bytes": 2559
+      "bytes": 2523
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-local-development.md",
@@ -3265,7 +3283,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-local-development",
-      "bytes": 3205
+      "bytes": 3169
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-mcp-connectors.md",
@@ -3274,7 +3292,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-mcp-connectors",
-      "bytes": 6472
+      "bytes": 6436
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-mcp-endpoint.md",
@@ -3283,7 +3301,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-mcp-endpoint",
-      "bytes": 7755
+      "bytes": 7719
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-memory.md",
@@ -3292,7 +3310,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-memory",
-      "bytes": 13370
+      "bytes": 13334
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-middleware.md",
@@ -3301,7 +3319,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-middleware",
-      "bytes": 5046
+      "bytes": 5010
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-migrate.md",
@@ -3310,7 +3328,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-migrate",
-      "bytes": 17894
+      "bytes": 17858
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-overview.md",
@@ -3328,7 +3346,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 5273
+      "bytes": 5237
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-quickstart.md",
@@ -3337,7 +3355,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 13642
+      "bytes": 13606
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-runtime.md",
@@ -3346,7 +3364,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-runtime",
-      "bytes": 9638
+      "bytes": 9602
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-sandboxes.md",
@@ -3355,7 +3373,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-sandboxes",
-      "bytes": 13704
+      "bytes": 13668
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-schedules.md",
@@ -3364,7 +3382,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-schedules",
-      "bytes": 13638
+      "bytes": 13602
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-search.md",
@@ -3382,7 +3400,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-skills",
-      "bytes": 4029
+      "bytes": 3993
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tools.md",
@@ -3391,7 +3409,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tools",
-      "bytes": 7347
+      "bytes": 7311
     },
     {
       "rel": "langsmith/javascript/managed-deep-agents-tutorial.md",
@@ -3400,7 +3418,7 @@
       "track": "langsmith-js",
       "trackName": "LangSmith · JS",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 9029
+      "bytes": 8993
     },
     {
       "rel": "langsmith/jit-invite-sso.md",
@@ -3508,7 +3526,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-as-judge",
-      "bytes": 5559
+      "bytes": 5550
     },
     {
       "rel": "langsmith/llm-as-judge-sdk.md",
@@ -3517,7 +3535,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-as-judge-sdk",
-      "bytes": 8869
+      "bytes": 8860
     },
     {
       "rel": "langsmith/llm-auth-proxy-self-hosted.md",
@@ -3553,7 +3571,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-admin-setup",
-      "bytes": 5722
+      "bytes": 5460
     },
     {
       "rel": "langsmith/llm-gateway-api-formats.md",
@@ -3580,7 +3598,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-credits",
-      "bytes": 6216
+      "bytes": 6112
     },
     {
       "rel": "langsmith/llm-gateway-data-policy.md",
@@ -3598,7 +3616,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-gateway-decision-models",
-      "bytes": 9594
+      "bytes": 6762
     },
     {
       "rel": "langsmith/llm-gateway-direct-model-access.md",
@@ -3841,7 +3859,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "manage-prompts-programmatically",
-      "bytes": 35963
+      "bytes": 36159
     },
     {
       "rel": "langsmith/manage-trace.md",
@@ -4057,7 +4075,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-decision-models",
-      "bytes": 6710
+      "bytes": 6258
     },
     {
       "rel": "langsmith/online-evaluations-llm-as-judge.md",
@@ -4066,7 +4084,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-llm-as-judge",
-      "bytes": 8901
+      "bytes": 8892
     },
     {
       "rel": "langsmith/online-evaluations-multi-turn.md",
@@ -4075,7 +4093,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-multi-turn",
-      "bytes": 13696
+      "bytes": 13797
     },
     {
       "rel": "langsmith/openapi-security.md",
@@ -4102,7 +4120,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "optimize-classifier",
-      "bytes": 9295
+      "bytes": 9282
     },
     {
       "rel": "langsmith/organization-workspace-operations.md",
@@ -4192,7 +4210,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "prompt-commit",
-      "bytes": 19394
+      "bytes": 19380
     },
     {
       "rel": "langsmith/prompt-context-hub.md",
@@ -4255,7 +4273,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-agent-definition",
-      "bytes": 12599
+      "bytes": 12563
     },
     {
       "rel": "langsmith/python/managed-deep-agents-agent-owned-interrupts.md",
@@ -4264,7 +4282,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-agent-owned-interrupts",
-      "bytes": 14090
+      "bytes": 14064
     },
     {
       "rel": "langsmith/python/managed-deep-agents-changelog.md",
@@ -4282,7 +4300,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels",
-      "bytes": 4215
+      "bytes": 4179
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels-http.md",
@@ -4291,7 +4309,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels-http",
-      "bytes": 14203
+      "bytes": 14182
     },
     {
       "rel": "langsmith/python/managed-deep-agents-channels-slack.md",
@@ -4300,7 +4318,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-channels-slack",
-      "bytes": 12090
+      "bytes": 12054
     },
     {
       "rel": "langsmith/python/managed-deep-agents-cli.md",
@@ -4309,7 +4327,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-cli",
-      "bytes": 19235
+      "bytes": 19199
     },
     {
       "rel": "langsmith/python/managed-deep-agents-connections.md",
@@ -4318,7 +4336,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-connections",
-      "bytes": 37371
+      "bytes": 37335
     },
     {
       "rel": "langsmith/python/managed-deep-agents-context-hub.md",
@@ -4327,7 +4345,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-context-hub",
-      "bytes": 6814
+      "bytes": 6778
     },
     {
       "rel": "langsmith/python/managed-deep-agents-deploy.md",
@@ -4336,7 +4354,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-deploy",
-      "bytes": 7965
+      "bytes": 9258
     },
     {
       "rel": "langsmith/python/managed-deep-agents-evals.md",
@@ -4345,7 +4363,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-evals",
-      "bytes": 7747
+      "bytes": 7711
     },
     {
       "rel": "langsmith/python/managed-deep-agents-identity.md",
@@ -4354,7 +4372,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-identity",
-      "bytes": 9346
+      "bytes": 9310
     },
     {
       "rel": "langsmith/python/managed-deep-agents-instructions.md",
@@ -4363,7 +4381,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-instructions",
-      "bytes": 2535
+      "bytes": 2499
     },
     {
       "rel": "langsmith/python/managed-deep-agents-local-development.md",
@@ -4372,7 +4390,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-local-development",
-      "bytes": 3007
+      "bytes": 2971
     },
     {
       "rel": "langsmith/python/managed-deep-agents-mcp-connectors.md",
@@ -4381,7 +4399,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-mcp-connectors",
-      "bytes": 6400
+      "bytes": 6364
     },
     {
       "rel": "langsmith/python/managed-deep-agents-mcp-endpoint.md",
@@ -4390,7 +4408,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-mcp-endpoint",
-      "bytes": 7779
+      "bytes": 7743
     },
     {
       "rel": "langsmith/python/managed-deep-agents-memory.md",
@@ -4399,7 +4417,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-memory",
-      "bytes": 13629
+      "bytes": 13593
     },
     {
       "rel": "langsmith/python/managed-deep-agents-middleware.md",
@@ -4408,7 +4426,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-middleware",
-      "bytes": 5548
+      "bytes": 5512
     },
     {
       "rel": "langsmith/python/managed-deep-agents-migrate.md",
@@ -4417,7 +4435,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-migrate",
-      "bytes": 18454
+      "bytes": 18418
     },
     {
       "rel": "langsmith/python/managed-deep-agents-overview.md",
@@ -4435,7 +4453,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-project-structure",
-      "bytes": 5218
+      "bytes": 5182
     },
     {
       "rel": "langsmith/python/managed-deep-agents-quickstart.md",
@@ -4444,7 +4462,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-quickstart",
-      "bytes": 11925
+      "bytes": 11889
     },
     {
       "rel": "langsmith/python/managed-deep-agents-runtime.md",
@@ -4453,7 +4471,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-runtime",
-      "bytes": 9931
+      "bytes": 9895
     },
     {
       "rel": "langsmith/python/managed-deep-agents-sandboxes.md",
@@ -4462,7 +4480,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-sandboxes",
-      "bytes": 13488
+      "bytes": 13452
     },
     {
       "rel": "langsmith/python/managed-deep-agents-schedules.md",
@@ -4471,7 +4489,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-schedules",
-      "bytes": 13327
+      "bytes": 13291
     },
     {
       "rel": "langsmith/python/managed-deep-agents-search.md",
@@ -4489,7 +4507,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-skills",
-      "bytes": 4001
+      "bytes": 3965
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tools.md",
@@ -4498,7 +4516,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tools",
-      "bytes": 7129
+      "bytes": 7093
     },
     {
       "rel": "langsmith/python/managed-deep-agents-tutorial.md",
@@ -4507,7 +4525,7 @@
       "track": "langsmith-py",
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-tutorial",
-      "bytes": 8098
+      "bytes": 8062
     },
     {
       "rel": "langsmith/query-threads.md",
@@ -4651,7 +4669,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "run-backtests-new-agent",
-      "bytes": 12630
+      "bytes": 12635
     },
     {
       "rel": "langsmith/run-data-format.md",
@@ -4669,7 +4687,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "run-evals-api-only",
-      "bytes": 14940
+      "bytes": 14944
     },
     {
       "rel": "langsmith/run-evaluation-from-playground.md",
@@ -4912,7 +4930,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-egress",
-      "bytes": 18993
+      "bytes": 19040
     },
     {
       "rel": "langsmith/self-host-environment-variables.md",
@@ -4987,6 +5005,15 @@
       "bytes": 18801
     },
     {
+      "rel": "langsmith/self-host-observability-dashboards.md",
+      "title": "Monitor self-hosted LangSmith with Datadog or Grafana",
+      "url": "https://docs.langchain.com/langsmith/self-host-observability-dashboards",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-observability-dashboards",
+      "bytes": 15160
+    },
+    {
       "rel": "langsmith/self-host-organization-charts.md",
       "title": "View trace counts across your organization",
       "url": "https://docs.langchain.com/langsmith/self-host-organization-charts",
@@ -5056,7 +5083,16 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb",
-      "bytes": 5079
+      "bytes": 5464
+    },
+    {
+      "rel": "langsmith/self-host-smithdb-features.md",
+      "title": "SmithDB feature availability",
+      "url": "https://docs.langchain.com/langsmith/self-host-smithdb-features",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-smithdb-features",
+      "bytes": 5420
     },
     {
       "rel": "langsmith/self-host-smithdb-infrastructure.md",
@@ -5083,7 +5119,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-metrics",
-      "bytes": 8518
+      "bytes": 8658
     },
     {
       "rel": "langsmith/self-host-smithdb-migrate.md",
@@ -5344,7 +5380,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-agent-server-metrics",
-      "bytes": 9524
+      "bytes": 10224
     },
     {
       "rel": "langsmith/self-hosted-changelog.md",
@@ -5389,7 +5425,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "server-a2a",
-      "bytes": 28100
+      "bytes": 28108
     },
     {
       "rel": "langsmith/server-api-ref.md",
@@ -10618,7 +10654,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "smithdb-sdk-migration-traces",
-      "bytes": 66202
+      "bytes": 66844
     },
     {
       "rel": "langsmith/smithtune.md",
@@ -10933,7 +10969,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-langchain",
-      "bytes": 32388
+      "bytes": 32467
     },
     {
       "rel": "langsmith/trace-with-langgraph.md",
@@ -11023,7 +11059,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-opentelemetry",
-      "bytes": 39224
+      "bytes": 39235
     },
     {
       "rel": "langsmith/trace-with-pi.md",
@@ -11167,7 +11203,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "typesafe-compatible-model",
-      "bytes": 3652
+      "bytes": 3609
     },
     {
       "rel": "langsmith/upload-existing-experiments.md",
@@ -11599,7 +11635,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 16595
+      "bytes": 17165
     },
     {
       "rel": "oss/javascript/deepagents/ag-ui.md",
@@ -11626,7 +11662,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 55096
+      "bytes": 55286
     },
     {
       "rel": "oss/javascript/deepagents/changelog-js.md",
@@ -11671,7 +11707,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 127036
+      "bytes": 128212
     },
     {
       "rel": "oss/javascript/deepagents/deep-research.md",
@@ -11689,7 +11725,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 59978
+      "bytes": 60370
     },
     {
       "rel": "oss/javascript/deepagents/event-streaming.md",
@@ -11698,7 +11734,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 9614
+      "bytes": 9804
     },
     {
       "rel": "oss/javascript/deepagents/fault-tolerance.md",
@@ -11716,7 +11752,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 6031
+      "bytes": 6221
     },
     {
       "rel": "oss/javascript/deepagents/frontend/sandbox.md",
@@ -11752,7 +11788,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 45950
+      "bytes": 46125
     },
     {
       "rel": "oss/javascript/deepagents/human-in-the-loop.md",
@@ -11761,7 +11797,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 17961
+      "bytes": 18151
     },
     {
       "rel": "oss/javascript/deepagents/interpreters.md",
@@ -11770,7 +11806,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 17723
+      "bytes": 17913
     },
     {
       "rel": "oss/javascript/deepagents/mcp.md",
@@ -11788,7 +11824,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 23992
+      "bytes": 24030
     },
     {
       "rel": "oss/javascript/deepagents/models.md",
@@ -11797,7 +11833,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 15454
+      "bytes": 15846
     },
     {
       "rel": "oss/javascript/deepagents/multimodal.md",
@@ -11860,7 +11896,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 94456
+      "bytes": 94848
     },
     {
       "rel": "oss/javascript/deepagents/retrieval.md",
@@ -11878,7 +11914,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 31698
+      "bytes": 31888
     },
     {
       "rel": "oss/javascript/deepagents/skills.md",
@@ -11887,7 +11923,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 82345
+      "bytes": 83319
     },
     {
       "rel": "oss/javascript/deepagents/streaming.md",
@@ -11905,7 +11941,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 110947
+      "bytes": 112096
     },
     {
       "rel": "oss/javascript/deepagents/tools.md",
@@ -11914,7 +11950,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 19273
+      "bytes": 19653
     },
     {
       "rel": "oss/javascript/integrations/backends/index.md",
@@ -12094,7 +12130,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 25857
+      "bytes": 26095
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -12211,7 +12247,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 11872
+      "bytes": 12144
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -12247,7 +12283,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 70490
+      "bytes": 71030
     },
     {
       "rel": "oss/javascript/langchain/changelog-js.md",
@@ -12526,7 +12562,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 65100
+      "bytes": 65504
     },
     {
       "rel": "oss/javascript/langchain/mcp/auth.md",
@@ -12544,7 +12580,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 9601
+      "bytes": 10171
     },
     {
       "rel": "oss/javascript/langchain/mcp/index.md",
@@ -12553,7 +12589,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 7331
+      "bytes": 7907
     },
     {
       "rel": "oss/javascript/langchain/mcp/tools.md",
@@ -12562,7 +12598,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 18324
+      "bytes": 19464
     },
     {
       "rel": "oss/javascript/langchain/messages.md",
@@ -12571,7 +12607,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 35897
+      "bytes": 36087
     },
     {
       "rel": "oss/javascript/langchain/middleware/built-in.md",
@@ -12634,7 +12670,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 37137
+      "bytes": 37162
     },
     {
       "rel": "oss/javascript/langchain/multi-agent/index.md",
@@ -12679,7 +12715,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 44960
+      "bytes": 45008
     },
     {
       "rel": "oss/javascript/langchain/multi-agent/subagents.md",
@@ -12760,7 +12796,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 62874
+      "bytes": 63082
     },
     {
       "rel": "oss/javascript/langchain/streaming.md",
@@ -12769,7 +12805,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 25190
+      "bytes": 25365
     },
     {
       "rel": "oss/javascript/langchain/structured-output.md",
@@ -12832,7 +12868,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 36789
+      "bytes": 37762
     },
     {
       "rel": "oss/javascript/langchain/ui.md",
@@ -12850,7 +12886,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 19011
+      "bytes": 19034
     },
     {
       "rel": "oss/javascript/langgraph/add-memory.md",
@@ -12859,7 +12895,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 39970
+      "bytes": 40060
     },
     {
       "rel": "oss/javascript/langgraph/agentic-rag.md",
@@ -12994,7 +13030,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 60101
+      "bytes": 60345
     },
     {
       "rel": "oss/javascript/langgraph/install.md",
@@ -13075,7 +13111,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langgraph",
-      "bytes": 12782
+      "bytes": 12842
     },
     {
       "rel": "oss/javascript/langgraph/streaming.md",
@@ -13543,7 +13579,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 9540
+      "bytes": 9730
     },
     {
       "rel": "oss/python/deepagents/ag-ui.md",
@@ -13561,7 +13597,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 14097
+      "bytes": 14667
     },
     {
       "rel": "oss/python/deepagents/backends.md",
@@ -13615,7 +13651,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 152412
+      "bytes": 153552
     },
     {
       "rel": "oss/python/deepagents/data-analysis.md",
@@ -13633,7 +13669,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 20961
+      "bytes": 21175
     },
     {
       "rel": "oss/python/deepagents/dynamic-subagents.md",
@@ -13777,7 +13813,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 28236
+      "bytes": 28426
     },
     {
       "rel": "oss/python/deepagents/permissions.md",
@@ -13813,7 +13849,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 57612
+      "bytes": 57854
     },
     {
       "rel": "oss/python/deepagents/retrieval.md",
@@ -13840,7 +13876,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 60404
+      "bytes": 60998
     },
     {
       "rel": "oss/python/deepagents/skills.md",
@@ -13849,7 +13885,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 94804
+      "bytes": 95184
     },
     {
       "rel": "oss/python/deepagents/streaming.md",
@@ -13867,7 +13903,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 105723
+      "bytes": 105913
     },
     {
       "rel": "oss/python/deepagents/tools.md",
@@ -13876,7 +13912,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 17022
+      "bytes": 17592
     },
     {
       "rel": "oss/python/integrations/backends/index.md",
@@ -13912,7 +13948,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 22628
+      "bytes": 22848
     },
     {
       "rel": "oss/python/integrations/embeddings/index.md",
@@ -13948,7 +13984,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 88685
+      "bytes": 90563
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14038,7 +14074,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 1791
+      "bytes": 2006
     },
     {
       "rel": "oss/python/integrations/providers/overview.md",
@@ -14083,7 +14119,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 67065
+      "bytes": 68194
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14092,7 +14128,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 59194
+      "bytes": 59578
     },
     {
       "rel": "oss/python/langchain/academy.md",
@@ -14398,7 +14434,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 36538
+      "bytes": 37750
     },
     {
       "rel": "oss/python/langchain/mcp/auth.md",
@@ -14416,7 +14452,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 14073
+      "bytes": 14643
     },
     {
       "rel": "oss/python/langchain/mcp/index.md",
@@ -14425,7 +14461,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 6855
+      "bytes": 7045
     },
     {
       "rel": "oss/python/langchain/mcp/tools.md",
@@ -14434,7 +14470,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 17142
+      "bytes": 17522
     },
     {
       "rel": "oss/python/langchain/messages.md",
@@ -14443,7 +14479,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 35486
+      "bytes": 35676
     },
     {
       "rel": "oss/python/langchain/middleware/built-in.md",
@@ -14704,7 +14740,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 51776
+      "bytes": 52726
     },
     {
       "rel": "oss/python/langchain/ui.md",
@@ -14731,7 +14767,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 73920
+      "bytes": 73808
     },
     {
       "rel": "oss/python/langgraph/agentic-rag.md",
@@ -14920,7 +14956,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 4896
+      "bytes": 4922
     },
     {
       "rel": "oss/python/langgraph/pregel.md",
@@ -14956,7 +14992,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 17313
+      "bytes": 17293
     },
     {
       "rel": "oss/python/langgraph/streaming.md",
@@ -15010,7 +15046,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 32596
+      "bytes": 32540
     },
     {
       "rel": "oss/python/langgraph/use-graph-api.md",
@@ -15064,7 +15100,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "migrate",
-      "bytes": 18276
+      "bytes": 18466
     },
     {
       "rel": "oss/python/migrate/langchain-v1.md",

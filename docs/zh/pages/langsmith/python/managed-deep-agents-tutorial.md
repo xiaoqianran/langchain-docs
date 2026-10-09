@@ -6,27 +6,27 @@
 
 使用 Tavilly 工具替换提供商搜索，然后从快速入门向研究助理添加持久内存和每日日程安排。
 
-本教程从[quickstart](/langsmith/python/managed-deep-agents-quickstart)继续。使用您在此处创建的 `research-assistant` 项目，以及您的模型、说明和工作 `mda dev` 设置。
+This tutorial continues from the [quickstart](/langsmith/python/managed-deep-agents-quickstart). Use the `research-assistant` project you created there, with your model, instructions, and a working `mda dev` setup.
 
-`mda init` 还可以搭建`identity` 和 `sandbox/` 等文件。保持原样；本教程不会改变它们。
+`mda init` may also scaffold files such as `identity` and `sandbox/`.保持原样；本教程不会改变它们。
 
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 ## 扩展代理
 
 <Steps>
   <Step title="Add a custom search tool">
-    内置提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
+    内置的提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
 
     <Note>
-      如果您按照[Quickstart](/langsmith/python/managed-deep-agents-quickstart)中的步骤使用Tavily，请跳至下一步。
+      If you followed the steps to use Tavily in the [Quickstart](/langsmith/python/managed-deep-agents-quickstart), skip to the next step.
     </Note>
 
-    将 [Tavily API key](https://app.tavily.com) 添加到 `.env`：
+    Add a [Tavily API key](https://app.tavily.com) to `.env`:
 
     ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     TAVILY_API_KEY=<TAVILY_API_KEY>
@@ -38,7 +38,7 @@
     uv add tavily-python
     ```
 
-    创建自定义 `internet_search` 工具：
+    Create a custom `internet_search` tool:
 
     ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import os
@@ -137,7 +137,7 @@
 
     部署上线后，`mda deploy` 将此计划协调为 LangSmith cron 作业。在下一步中部署后，您应该会看到：
 
-    * `mda deploy` 在没有进度错误的情况下完成（不要通过`--no-wait`，否则进度不协调）。
+    * `mda deploy` 无进度错误地完成（不要通过`--no-wait`，否则进度不协调）。
     * 部署中此文件的托管 cron。计划名称与模块主干匹配：`daily_digest` (Python) 或 `daily-digest` (TypeScript)。
     * 此 cron 没有立即运行摘要。第一场火灾要等到工作日美国/洛杉矶 8:00 才会发生。
 
@@ -151,7 +151,7 @@
     uv run mda deploy
     ```
 
-    成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+    成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
     打开该 URL 并确认：* 部署已准备就绪。
     * `daily_digest` 或 `daily-digest` cron 存在。

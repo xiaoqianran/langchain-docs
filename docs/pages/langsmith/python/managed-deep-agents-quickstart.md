@@ -9,7 +9,7 @@ Create and deploy your first Managed Deep Agent: scaffold a project, configure t
 After this quickstart, the [tutorial](/langsmith/python/managed-deep-agents-tutorial) adds durable memory and a daily schedule on the same project.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 ## Prerequisites

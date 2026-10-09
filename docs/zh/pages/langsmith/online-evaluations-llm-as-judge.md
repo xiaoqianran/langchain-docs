@@ -73,7 +73,7 @@
 
 ## 使用决策模型作为判断
 
-您可以使用决策模型（例如 SemIf 或 Jev）作为法官来代替 LLM。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
+您可以使用决策模型（例如 Jev）作为法官来代替法学硕士。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
 
 ## 将多模式内容映射到评估器如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：
 

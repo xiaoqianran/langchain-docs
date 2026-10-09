@@ -11,7 +11,7 @@
 这与 `interrupt_on` 创建的平台拥有的中断不同。这些在工具调用之前暂停，Slack 或 Studio 会为您呈现批准卡。通过代理拥有的中断，您拥有块、表单状态以及答案到达后发生的情况。平台只返回答案。对于平台拥有的中断，请参阅[Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note><Note>
   代理拥有的中断需要已部署代理上的 `managed-deepagents>=0.8.0` 和 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack)。表单仅在 Slack 中呈现。 LangSmith Studio 显示原始中断值。
 </Note>
@@ -35,8 +35,7 @@
 
 ```python tools/approval.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
-import uuid
-
+from langsmith import uuid7
 import httpx
 from langchain.tools import tool
 from langgraph.types import interrupt
@@ -58,7 +57,7 @@ async def request_approval(amount: str, runtime: ManagedDeepAgentRuntime) -> str
     if channel is None or channel.provider != "slack":
         return "Approval forms are available only in Slack."
 
-    correlation_id = str(uuid.uuid4())
+    correlation_id = str(uuid7())
     # The tool runs again when the interrupt resumes. Post only on the first pass.
     if channel.event["type"] != "user_prompt_response":
         await post_approval_form(channel.raw_event, amount, correlation_id)
@@ -134,7 +133,7 @@ Slack 不知道按钮属于哪个中断，因此 SDK 读取停放在线程上的
 |一个或多个 |呈现并完全匹配 |恢复匹配的中断。 |
 |几个|缺席 |没有任何运行。 SDK 记录歧义并确认该事件。 |
 |一个或多个 |存在但不匹配任何一个，或匹配多个 |没有任何运行。开始转弯会放弃停放的检查站。 |
-|无 |任何 |开始新的运行，没有新消息。仅可在 `runtime.channel.event` 上获取响应。 |
+|无 |任何|开始新的运行，没有新消息。仅可在 `runtime.channel.event` 上获取响应。 |
 
 每当代理可能在线程上驻留多个中断时，就携带相关 ID。如果没有一个，则线程只能在恰好有一个中断待处理时得到应答。
 

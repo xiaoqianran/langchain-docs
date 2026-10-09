@@ -9,7 +9,7 @@
 代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/python/langchain/runtime) 中的工作方式相同，并且您的类型检查器会看到您自己的上下文类型。
 
 <Note>
-  托管 Deep Agents 位于 **公共 [beta](/langsmith/release-stages)** 中，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 了解运行时类型
@@ -20,7 +20,7 @@
 | - | - | - |
 |代理工厂| `ManagedServerRuntime[Context]` | `ServerRuntime` 从 `langgraph_sdk.runtime` |
 |工具| `ManagedToolRuntime[Context, State]` | `ToolRuntime` 从 `langchain.tools` |
-|中间件钩子| `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
+|中间件钩子 | `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
 
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先获取上下文，然后获取状态。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
@@ -57,7 +57,7 @@ await client.runs.create(
 
 代理工厂收到`ManagedServerRuntime`：本地[⟦T32⟧](/langsmith/graph-rebuild)加上`channel`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-代理服务器还调用工厂来读取模式和状态。 `access_context` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
+代理服务器还调用工厂来读取架构和状态。 `access_context` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
 
 `channel` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`None`，因为工厂选择了沙箱。原生 `user`、`store` 和 `ensure_user()` 仍然可用。
 

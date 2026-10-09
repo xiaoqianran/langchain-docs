@@ -239,6 +239,10 @@ agent = create_deep_agent(
 )
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c793ecf2-d06d-4687-8952-9d98fd107b4b/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For more information on defining custom tools, using MCP servers, and the full list of built-in harness tools, see [Tools](/oss/python/deepagents/tools).
 
 ### Virtual filesystem access

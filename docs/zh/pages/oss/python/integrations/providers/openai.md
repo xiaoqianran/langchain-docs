@@ -15,6 +15,10 @@
     OpenAI 聊天模型。
   </Card>
 
+  <Card title="Decisions API" href="/oss/python/integrations/decision_models/openai" icon="arrows-split">
+    用于路由、分类和代理中间件的键入答案和校准概率。
+  </Card>
+
   <Card title="AzureChatOpenAI" href="/oss/python/integrations/chat/azure_chat_openai" icon="brand-windows">
     具有企业功能的 Azure OpenAI 聊天模型。
   </Card>

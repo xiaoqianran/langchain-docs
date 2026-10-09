@@ -421,6 +421,10 @@ Create `agent.py` in your project directory:
             middleware=[TodoListMiddleware()],
         )
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4a74e627-23f2-4b23-b930-1199b640cc71/r">
+          Open a public LangSmith run for this example.
+        </Card>
       </Tab>
     </Tabs>
   </Step>

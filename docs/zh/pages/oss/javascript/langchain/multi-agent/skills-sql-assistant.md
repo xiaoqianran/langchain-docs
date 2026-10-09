@@ -594,8 +594,9 @@ const agent = createAgent({
 使用需要特定技能知识的问题来测试代理：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { uuid7 } from "langsmith";
 // Configuration for this conversation thread
-const threadId = crypto.randomUUID();
+const threadId = uuid7();
 const config = { configurable: { thread_id: threadId } };
 
 // Ask for a SQL query
@@ -845,6 +846,7 @@ This query:
   import { MemorySaver, Command } from "@langchain/langgraph";
   import { ChatOpenAI } from "@langchain/openai";
   import { z } from "zod";
+  import { uuid7 } from "langsmith";
 
   // A skill that can be progressively disclosed to the agent
   const SkillSchema = z.object({
@@ -1059,7 +1061,7 @@ This query:
   });
 
   // Configuration for this conversation thread
-  const threadId = crypto.randomUUID();
+  const threadId = uuid7();
   const config = { configurable: { thread_id: threadId } };
 
   // Ask for a SQL query
@@ -1087,7 +1089,7 @@ This query:
 
   * 具有完整数据库模式的技能定义
   * `load_skill`按需加载工具
-  * `SkillMiddleware`将技能描述注入系统提示中
+  * `SkillMiddleware` 在系统提示中注入技能描述
   * 使用中间件和检查点创建代理
   * 示例用法展示了代理如何加载技能和编写 SQL 查询
 

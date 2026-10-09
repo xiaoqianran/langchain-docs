@@ -11,7 +11,7 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 </Tip>
 
 <Note>
-  The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator). These evaluators use a decision model, such as SemIf or Jev, as the judge. To create one, use the UI.
+  The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator). These evaluators use a decision model, such as Jev, as the judge. To create one, use the UI.
 </Note>
 
 ## Create your own LLM-as-a-judge evaluator

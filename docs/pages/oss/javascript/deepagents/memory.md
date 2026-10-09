@@ -66,6 +66,7 @@ const agent = createDeepAgent({
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
   import { InMemoryStore } from "@langchain/langgraph";
+  import { uuid7 } from "langsmith";
 
   const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
 
@@ -112,13 +113,13 @@ const agent = createDeepAgent({
   });
 
   // Thread 1: the agent learns a new preference and saves it to memory
-  const config1 = { configurable: { thread_id: crypto.randomUUID() } };
+  const config1 = { configurable: { thread_id: uuid7() } };
   await agent.invoke({
     messages: [{ role: "user", content: "I prefer detailed explanations. Remember that." }],
   }, config1);
 
   // Thread 2: the agent reads memory and applies the preference
-  const config2 = { configurable: { thread_id: crypto.randomUUID() } };
+  const config2 = { configurable: { thread_id: uuid7() } };
   await agent.invoke({
     messages: [{ role: "user", content: "Explain how transformers work." }],
   }, config2);
@@ -157,6 +158,7 @@ const agent = createDeepAgent({
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
   import { InMemoryStore } from "@langchain/langgraph";
+  import { uuid7 } from "langsmith";
 
   const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
 
@@ -215,7 +217,7 @@ const agent = createDeepAgent({
   // automatically see only their own preferences.
   await agent.invoke(
     { messages: [{ role: "user", content: "How do I read a CSV file?" }] },
-    { configurable: { thread_id: crypto.randomUUID() } },
+    { configurable: { thread_id: uuid7() } },
   );
   ```
 </Accordion>

@@ -87,6 +87,10 @@ async def fleet_agent(config):
         return create_agent("claude-sonnet-5", tools)
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/36cdd94e-7f37-4681-afe1-dbc15b85c239/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 Each backend is addressed independently, so a fleet can mix transports: one server over stdio, another over HTTP. An `MCPConfig` fleet shares a single negotiated [protocol era](#protocol-eras) across every backend, though: add a legacy-only server and the whole fleet drops to the legacy era.
 
 ### Independent connections with `ClientGroup`
@@ -115,6 +119,10 @@ async def agent_from_group(legacy_url: str, modern_url: str):
         tools = await adapter.list_tools()
         return create_agent("claude-sonnet-5", tools)
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e7804f49-ac87-4afb-8c19-691900f65c7d/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Scale a deployment
 
@@ -185,6 +193,10 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
     async with MCPAdapter(group) as adapter:
         return await adapter.list_tools()
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3c3bb95-25d4-4a2e-bf3a-41e87f3b788d/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Because every client borrows from `_POOL`, the deployment opens one set of HTTP connections for the whole fleet rather than one per server.
 

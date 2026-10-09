@@ -11,7 +11,7 @@
 Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针对每个任务运行托管代理并记录结果。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 先决条件
@@ -31,14 +31,14 @@ Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针�
 npx skills add langchain-ai/langchain-skills --skill eval-engineering --yes
 ```
 
-您可以使用任何编码剂。<Tip>
+您可以使用任何编码剂。
+
+<Tip>
   要使用 [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`)，请安装：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   curl -LsSf https://langch.in/dcode | bash
-  ```
-
-  请参阅 [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) 了解提供程序设置和交互使用。
+  ```请参阅 [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) 了解提供程序设置和交互使用。
 </Tip>
 
 ## 使用编码代理开发评估
@@ -61,7 +61,7 @@ npx skills add langchain-ai/langchain-skills --skill eval-engineering --yes
       ```
     </CodeGroup>
 
-    交互式切换列出了检测到的编码代理，包括Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
+    交互式切换列出了检测到的编码代理，包括 Deep Agents Code、Claude Code、Codex 和 Cursor。选择代理会在项目目录中启动该代理并运行 eval-engineering 提示符。您还可以复制其他代理的提示，或退出并稍后返回。
 
     初始化创建：
 
@@ -125,7 +125,7 @@ npx skills add langchain-ai/langchain-skills --skill eval-engineering --yes
       --config evals/harbor-job.json --yes \
       --plugin mda_harbor.job_plugin:MDAJobPlugin \
       --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
-    ```将 `my-agent` 替换为项目目录名称。生成的命令将填写名称并在 Windows 上使用 PowerShell 语法。
+    ```将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。
 
     编辑代理后重新运行命令会拾取项目更改。
   </Step>

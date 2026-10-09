@@ -9,7 +9,7 @@
 托管 Deep Agents 在 [LangSmith Context Hub](/langsmith/use-the-context-hub) 中存储部署拥有的指令和技能以及可选的持久内存。这种拆分使您可以在不重建应用程序代码的情况下更改代理行为，同时项目仍然是持久指导和技能更新的真实来源。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## Context Hub 中包含哪些内容
@@ -18,15 +18,15 @@
 | - | - | - | - |
 |系统提示| [⟦T3⟧](/langsmith/javascript/managed-deep-agents-instructions) |是的 |没有 |
 |技能 | [⟦T4⟧](/langsmith/javascript/managed-deep-agents-skills) |是的 |没有 |
-|持久记忆|可选的[⟦T5⟧](/langsmith/javascript/managed-deep-agents-memory)声明|启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
+|持久记忆|可选的[⟦T5⟧](/langsmith/javascript/managed-deep-agents-memory)声明 |启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
 
 工具、中间件、MCP 连接器、通道、计划、沙箱和代理定义随已编译的部署一起提供。它们未同步到 Context Hub。
 
 有关托管运行时字段的所有权，请参阅[Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)。
 
-## 事实来源该项目和 Context Hub 都持有 `instructions.md` 和 `skills/` 的副本。哪个副本获胜取决于您在何处进行持久更改以及如何解决部署冲突。
+## 事实来源
 
-* **项目文件**：将项目中的`instructions.md`和`skills/`视为持久更改的事实来源。每个 `mda deploy` 将这些文件同步到代理的 Context Hub 存储库中。
+该项目和 Context Hub 都持有 `instructions.md` 和 `skills/` 的副本。哪个副本获胜取决于您在何处进行持久更改以及如何解决部署冲突。* **项目文件**：将项目中的`instructions.md`和`skills/`视为持久更改的事实来源。每个 `mda deploy` 将这些文件同步到代理的 Context Hub 存储库中。
 * **Context Hub 编辑**：当您需要快速更改且无需重新部署代码即可应用时，可以在 Context Hub 中编辑文件。这些 Hub 编辑将保持有效，直到稍后的部署覆盖它们，或者直到您在出现冲突提示时选择保留 Hub 副本。
 * **持久内存**：`/memories/agent/`下的内存为代理所有。部署启用树，但不会覆盖已存储在其中的内容。
 

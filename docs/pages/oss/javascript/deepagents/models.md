@@ -66,6 +66,10 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   const agent = createDeepAgent({ model });
   ```
 
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c4aae0a6-9a08-44a5-acbe-e1dcaea34f44/r">
+    Open a public LangSmith run for this example.
+  </Card>
+
   ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
@@ -76,6 +80,10 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   });
   const agent = createDeepAgent({ model });
   ```
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1b3ed9c3-23f0-41d3-b162-d8f32ded339b/r">
+    Open a public LangSmith run for this example.
+  </Card>
 </CodeGroup>
 
 <Note>

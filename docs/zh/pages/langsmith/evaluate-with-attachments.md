@@ -11,7 +11,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 虽然您可以通过 Base64 编码将多模态数据包含在示例中，但这种方法效率低下 - 编码数据比原始二进制文件占用更多空间，导致LangSmith 的传输速度变慢。使用附件有两个主要好处：
 
 * 由于更高效的二进制文件传输，上传和下载速度更快。
-* 增强了LangSmith UI 中不同文件类型的可视化效果。
+* 增强了LangSmith UI 中不同文件类型的可视化。
 
 本指南介绍了如何创建带有附件的示例、构建使用这些附件的多模式提示和评估器以及使用多模式内容运行评估。选择 [**UI**](#ui) 或 [**SDK**](#sdk) 选项卡即可开始。
 
@@ -71,7 +71,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     您还可以创建不使用附件但评估模型文本输出的纯文本评估器：
 
     * OCR → 文本校正：使用视觉模型从文档中提取文本，然后评估提取输出的准确性。
-    * 语音转文本 → 转录质量：使用语音模型将音频转录为文本，然后根据您的参考评估转录结果。<Tip>
+    * 语音转文本 → 转录质量：使用语音模型将音频转录为文本，然后根据参考评估转录结果。<Tip>
       如果您的跟踪在其输入或输出中包含 base64 编码的多模式内容（例如，如果您遵循 [log multimodal traces](/langsmith/log-multimodal-traces) 指南），则不需要附件来评估它们。在评估器提示中使用标准变量映射（例如 `{{input}}` 或 `{{output}}`），base64 内容将正确传递到 LLM 评估器进行可视化和评估。
     </Tip>
 
@@ -105,7 +105,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import requests
-    import uuid
+    from langsmith import uuid7
     from pathlib import Path
     from langsmith import Client
 
@@ -138,7 +138,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     }
 
     # Define an example with attachments
-    example_id = uuid.uuid4()
+    example_id = uuid7()
     example = {
       "id": example_id,
       "inputs": inputs,
@@ -170,11 +170,11 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     * `Uint8Array`：用于直接处理二进制数据。
     * `ArrayBuffer`：表示定长二进制数据，可以根据需要转换为`Uint8Array`。
 
-    请注意，您不能直接在 TypeScript SDK 中传入文件路径，因为并非所有运行时环境都支持访问本地文件。
+    请注意，您无法直接在 TypeScript SDK 中传入文件路径，因为并非所有运行时环境都支持访问本地文件。
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "langsmith";
-    import { v4 as uuid4 } from "uuid";
+    import { uuid7 } from "langsmith";
 
     // Publicly available test files
     const pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
@@ -199,7 +199,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     const langsmithClient = new Client();
 
     // Create a unique dataset name
-    const datasetName = "attachment-test-dataset:" + uuid4().substring(0, 8);
+    const datasetName = "attachment-test-dataset:" + uuid7().substring(0, 8);
 
     // Create the dataset
     const dataset = await langsmithClient.createDataset(datasetName, {
@@ -207,7 +207,7 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     });
 
     // Define the example with attachments
-    const exampleId = uuid4();
+    const exampleId = uuid7();
     const example = {
       id: exampleId,
       inputs: {
@@ -518,9 +518,9 @@ LangSmith 允许您创建带有文件附件（例如图像、音频文件或文�
     * 重命名现有附件
     * 删除现有附件请注意：
 
-    * Any existing attachments that are not explicitly renamed or retained **will be deleted**.
-    * An error will be raised if you pass in a non-existent attachment name to `retain` or `rename`.
-    * New attachments take precedence over existing attachments in case the same attachment name appears in the `attachments` and `attachment_operations` fields.
+    * 任何未明确重命名或保留的现有附件**将被删除**。
+    * 如果您向`retain`或`rename`传递不存在的附件名称，将会引发错误。
+    * 如果 `attachments` 和 `attachment_operations` 字段中出现相同的附件名称，则新附件优先于现有附件。
 
     <CodeGroup>
       ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

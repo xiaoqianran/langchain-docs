@@ -215,13 +215,17 @@
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/98892671-3052-4477-947a-de42469f7da5/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 <Card title="Example coding agent" icon="brand-github" href="https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py">
   `deepagents-acp` 包包含一个带有文件系统和 shell 的示例编码代理，您可以开箱即用。
 </Card>
 
-## 客户
+## 客户深度代理可以在任何可以运行 ACP 代理服务器的地方工作。一些著名的 ACP 客户包括：
 
-深度代理可以在任何可以运行 ACP 代理服务器的地方工作。一些著名的 ACP 客户包括：* [Zed](https://zed.dev/docs/ai/external-agents)
+* [Zed](https://zed.dev/docs/ai/external-agents)
 * [JetBrains IDEs](https://www.jetbrains.com/help/ai-assistant/acp.html)
 * Visual Studio Code（通过[vscode-acp](https://github.com/formulahendry/vscode-acp)）
 * Neovim（通过 ACP 兼容插件）

@@ -4,7 +4,7 @@
 
 # 在新版本的代理上运行回测
 
-部署应用程序只是持续改进过程的开始。部署到生产环境后，您需要通过增强提示、语言模型、工具和体系结构来完善系统。回溯测试涉及使用历史数据评估应用程序的新版本，并将新输出与原始输出进行比较。与使用预生产数据集的评估相比，回溯测试可以更清晰地表明应用程序的新版本是否比当前部署有所改进。
+部署应用程序只是持续改进过程的开始。部署到生产环境后，您需要通过增强提示、语言模型、工具和架构来完善您的系统。回溯测试涉及使用历史数据评估应用程序的新版本，并将新输出与原始输出进行比较。与使用预生产数据集的评估相比，回溯测试可以更清晰地表明应用程序的新版本是否比当前部署有所改进。
 
 以下是回测的基本步骤：
 
@@ -128,7 +128,7 @@ agent.batch(
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
-from uuid import uuid4
+from langsmith import uuid7
 from langsmith import Client
 from langsmith.beta import convert_runs_to_test
 
@@ -157,7 +157,7 @@ prod_runs = list(
 # Name of the dataset we want to create
 dataset_name = f'{project_name}-backtesting {start_time.strftime("%Y-%m-%d")}-{end_time.strftime("%Y-%m-%d")}'
 # Name of the experiment we want to create from the historical runs
-baseline_experiment_name = f"prod-baseline-gpt-3.5-turbo-{str(uuid4())[:4]}"
+baseline_experiment_name = f"prod-baseline-gpt-3.5-turbo-{str(uuid7())[:4]}"
 
 # This converts the runs to a dataset + experiment
 convert_runs_to_test(

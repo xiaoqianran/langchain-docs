@@ -287,7 +287,7 @@ print(result.content)
 
 | OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
-| `langsmith.trace.name` |运行名称|覆盖运行的跨度名称 |
+| `langsmith.trace.name` |运行名称 |覆盖运行的跨度名称 |
 | `langsmith.span.kind` | [Run type](/langsmith/run-data-format#run-types) |值：`llm`、`chain`、`tool`、`retriever`、`embedding`、`prompt`、`parser` |
 | `langsmith.trace.id` |跟踪 ID |跨度所属的跟踪（根运行）；设置为附加到现有跟踪 |
 | `langsmith.span.id` |运行 ID |该跨度的运行 ID（UUID）；覆盖从 OTLP 跨度 ID 派生的 ID |
@@ -301,7 +301,7 @@ print(result.content)
 ### GenAI 标准属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | - | - | - |
 | `gen_ai.system` | `metadata.ls_provider` | GenAI 系统（例如“openai”、“anthropic”）|
-| `gen_ai.operation.name` |运行类型|将“聊天”/“完成”映射到“llm”，将“嵌入”映射到“嵌入”|
+| `gen_ai.operation.name` |运行类型 |将“聊天”/“完成”映射到“llm”，将“嵌入”映射到“嵌入”|
 | `gen_ai.prompt` | `inputs` |发送到模型的输入提示 |
 | `gen_ai.completion` | `outputs` |模型生成的输出 |
 | `gen_ai.prompt.{n}.role` | `inputs.messages[n].role` |第 n 个输入消息的作用 |
@@ -314,7 +314,7 @@ print(result.content)
 | `gen_ai.completion.{n}.message.content` | `outputs.messages[n].content` |内容的替代格式 |
 | `gen_ai.input.messages` | `inputs.messages` |输入消息数组 |
 | `gen_ai.output.messages` | `outputs.messages` |输出消息数组 |
-| `gen_ai.tool.name` | `invocation_params.tool_name` |工具名称，还将运行类型设置为“工具”|
+| `gen_ai.tool.name` | `invocation_params.tool_name` |工具名称，还将运行类型设置为“工具” |
 
 ### GenAI请求参数| OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
@@ -322,7 +322,7 @@ print(result.content)
 | `gen_ai.response.model` | `invocation_params.model` |响应中返回的型号名称 |
 | `gen_ai.request.temperature` | `invocation_params.temperature` |温度设定|
 | `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p 采样设置 |
-| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置 |
+| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置|
 | `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置|
 | `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` |存在惩罚设置 |
 | `gen_ai.request.seed` | `invocation_params.seed` |用于生成的随机种子 |
@@ -345,9 +345,9 @@ print(result.content)
 | - | - | - |
 | `traceloop.entity.input` | `inputs` |来自 TraceLoop 的完整输入值 |
 | `traceloop.entity.output` | `outputs` | TraceLoop 的完整输出值 |
-| `traceloop.entity.name` |运行名称|来自 TraceLoop 的实体名称 |
-| `traceloop.span.kind` |运行类型|映射到 LangSmith 运行类型 |
-| `traceloop.llm.request.type` |运行类型| “embedding”映射到“embedding”，其他映射到“llm”|
+| `traceloop.entity.name` |运行名称 |来自 TraceLoop 的实体名称 |
+| `traceloop.span.kind` |运行类型 |映射到 LangSmith 运行类型 |
+| `traceloop.llm.request.type` |运行类型 | “embedding”映射到“embedding”，其他映射到“llm”|
 | `traceloop.association.properties.{key}` | `metadata.{key}` |带有traceloop前缀的自定义元数据|
 
 ### OpenInference 属性
@@ -356,10 +356,10 @@ print(result.content)
 | - | - | - |
 | `input.value` | `inputs` |完整输入值，可以是字符串或 JSON |
 | `output.value` | `outputs` |完整输出值，可以是字符串或 JSON |
-| `openinference.span.kind` |运行类型|将各种类型映射到 LangSmith 运行类型 |
+| `openinference.span.kind` |运行类型 |将各种类型映射到 LangSmith 运行类型 |
 | `llm.system` | `metadata.ls_provider` | LLM系统提供商|
 | `llm.model_name` | `metadata.ls_model_name` |模型名称来自 OpenInference |
-| `tool.name` |运行名称|跨度类型为“TOOL”时的工具名称 |
+| `tool.name` |运行名称 |跨度类型为“TOOL”时的工具名称 |
 | `metadata` | `metadata.*` |要合并的元数据的 JSON 字符串 |
 
 ### 法学硕士属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
@@ -379,7 +379,7 @@ print(result.content)
 
 | OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | - | - | - |
-| `llm.prompt_template.variables` |运行类型|将运行类型设置为“提示”，与 input.value 一起使用 |
+| `llm.prompt_template.variables` |运行类型 |将运行类型设置为“提示”，与 input.value | 一起使用
 
 ### 检索器属性
 
@@ -489,7 +489,7 @@ if __name__ == "__main__":
 本机 OTLP `parentSpanId` 无法引用现有的 LangSmith 运行：OTLP 跨度 ID 为 8 字节，而 LangSmith 运行 ID 是完整的 UUID。要将 OpenTelemetry 范围附加到在其他位置创建的运行（例如，LangChain-SDK 运行），请使用父级的完整 UUID 设置 `langsmith.*` 属性。它们会覆盖从本机 OTLP 范围派生的 ID，因此该范围嵌套在同一跟踪中的现有运行下。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import uuid
+from langsmith import uuid7
 from datetime import datetime, timezone
 
 from langsmith import get_current_run_tree, traceable
@@ -500,7 +500,7 @@ tracer = trace.get_tracer("my-harness")
 
 def emit_otel_child(parent):
     """Emit an OTel span that nests under an existing LangSmith run."""
-    child_id = uuid.uuid4()
+    child_id = uuid7()
     start = datetime.now(timezone.utc)
     # dotted_order = parent's dotted_order, a dot, then this span's timestamp + id
     dotted = f"{parent.dotted_order}.{start.strftime('%Y%m%dT%H%M%S%fZ')}{child_id}"

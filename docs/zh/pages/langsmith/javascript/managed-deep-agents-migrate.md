@@ -9,7 +9,7 @@
 托管 Deep Agents 运行与您已经构建的相同的 [Deep Agents](/oss/javascript/deepagents/overview) 工具，因此移动现有代理是一项重新打包工作，而不是重写。您的工具、中间件和子代理将按原样保留。代理条目发生变化，系统提示、技能和内存移至项目文件中。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 决定是否移动
@@ -130,7 +130,7 @@
       model: "openai:gpt-5.5",
       tools: [internetSearch],
     });
-    ```该条目必须导出一个名为 `agent` 的变量，并且定义调用本身必须存在于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
+    ```该条目必须导出名为 `agent` 的变量，并且定义调用本身必须位于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
 
     `src/` 布局就可以了。将包保留在原处并从根条目导入它们。
   </Step>

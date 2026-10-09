@@ -4,7 +4,7 @@
 
 # 使用服务器 API 进行人机交互
 
-要审查、编辑和批准代理或工作流程中的工具调用，请使用 LangGraph 的 [human-in-the-loop](/oss/python/langgraph/interrupts) 功能。
+要在代理或工作流程中查看、编辑和批准工具调用，请使用 LangGraph 的 [human-in-the-loop](/oss/python/langgraph/interrupts) 功能。
 
 ## 动态中断
 
@@ -141,7 +141,6 @@
 
   ```python {highlight={7,13}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import TypedDict
-  import uuid
 
   from langgraph.checkpoint.memory import InMemorySaver
   from langgraph.constants import START
@@ -170,7 +169,7 @@
   graph = graph_builder.compile()
   ```1. `interrupt(...)` 在 `human_node` 暂停执行，向人类展示给定的有效负载。
   2. 任何 JSON 可序列化值都可以传递给 [⟦T25⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 函数。这里是一个包含要修改的文本的字典。
-  3. 一旦恢复，`interrupt(...)`的返回值就是人类提供的输入，用于更新状态。
+  3. 恢复后，`interrupt(...)`的返回值是人类提供的输入，用于更新状态。
 
   一旦您拥有正在运行的代理服务器，您就可以使用以下命令与其进行交互
   [LangGraph SDK](/langsmith/langgraph-python-sdk)
@@ -261,7 +260,7 @@
 
       1. 该图以某种初始状态被调用。
       2. 当图表命中中断时，它会返回一个带有有效负载和元数据的中断对象。
-      3. 该图通过`{ resume: ... }`命令对象恢复，注入人类输入并继续执行。
+      3. 该图通过 `{ resume: ... }` 命令对象恢复，注入人类输入并继续执行。
     </Tab>
 
     <Tab title="cURL">

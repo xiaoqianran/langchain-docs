@@ -298,7 +298,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/25f2c799-ee4e-49a4-a482-89a17b9f66ba/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2cd41e2d-4f69-4620-ba18-670336d3915d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -410,7 +410,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ### 范围界定
 
-记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间|使用案例 |示例|
+记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例 |示例|
 | - | - | - | - |
 | **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
 | **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
@@ -527,26 +527,26 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ## 执行环境
 
-在本地，代理可以在磁盘上读写文件并直接运行 shell 命令。在生产中，您需要考虑隔离和持久性。正确的设置取决于您的代理是否需要执行代码：* **Filesystem backends** are enough if your agent only reads and writes files. Choose a backend that matches your persistence needs: thread-scoped scratch space, cross-thread storage, or a mix of both.
-* **Sandboxes** add an isolated container with an `execute` tool for running shell commands. Use a sandbox if your agent needs to run code, install packages, or do anything beyond file I/O.
+在本地，代理可以在磁盘上读写文件并直接运行 shell 命令。在生产中，您需要考虑隔离和持久性。正确的设置取决于您的代理是否需要执行代码：* **如果您的代理仅读取和写入文件，文件系统后端就足够了。选择符合您的持久性需求的后端：线程范围的暂存空间、跨线程存储或两者的组合。
+* **沙箱** 添加一个隔离容器，其中包含用于运行 shell 命令的 `execute` 工具。如果您的代理需要运行代码、安装软件包或执行文件 I/O 之外的任何操作，请使用沙箱。
 
 ### 文件系统
 
 根据需要保留的内容选择后端：
 
-* [StateBackend](https://reference.langchain.com/python/deepagents/backends/state/StateBackend) (default): thread-scoped scratch space. Files persist across turns within a thread via your checkpointer but are not shared across threads. Checkpointed at every step, so avoid writing large files.
+* [StateBackend](https://reference.langchain.com/python/deepagents/backends/state/StateBackend)（默认）：线程范围的暂存空间。文件通过检查指针在线程内持续存在，但不会跨线程共享。每一步都有检查点，因此避免写入大文件。
 
-* [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend): cross-thread storage that survives across conversations.使用 [namespace factory](/oss/python/deepagents/backends#namespace-factories) 瞄准镜。
+* [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend)：跨会话的跨线程存储。使用 [namespace factory](/oss/python/deepagents/backends#namespace-factories) 瞄准镜。
 
-* [CompositeBackend](https://reference.langchain.com/python/deepagents/backends/composite/CompositeBackend)：将两者混合。 Thread-scoped scratch space by default with cross-thread routes for specific paths like `/memories/`.
+* [CompositeBackend](https://reference.langchain.com/python/deepagents/backends/composite/CompositeBackend)：将两者混合。默认情况下，线程范围的暂存空间具有针对特定路径（如`/memories/`）的跨线程路由。
 
-* [⟦T68⟧](/oss/python/deepagents/backends#contexthubbackend): durable files in a LangSmith Hub repo (`owner/name` or `name`). Use this when you want LangSmith-native persistence without provisioning a separate LangGraph store.
+* [⟦T68⟧](/oss/python/deepagents/backends#contexthubbackend)：LangSmith Hub 存储库中的持久文件（`owner/name` 或 `name`）。当您需要 LangSmith 原生持久性而不需要配置单独的 LangGraph 存储时，请使用此选项。
 
-For the full list of backends and how to build custom ones, see [backends](/oss/python/deepagents/backends).
+有关后端的完整列表以及如何构建自定义后端，请参阅[backends](/oss/python/deepagents/backends)。
 
 <Warning>
-  `FilesystemBackend` and `LocalShellBackend` access the host directly.不要在已部署的代理中使用它们。
-</Warning>### 沙盒
+  `FilesystemBackend`和`LocalShellBackend`直接访问主机。不要在已部署的代理中使用它们。
+</Warning>### 沙箱
 
 如果您的代理需要运行代码（而不仅仅是读写文件），请使用[sandbox](/oss/python/deepagents/sandboxes)。沙箱提供文件系统和用于运行 shell 命令的`execute`工具，所有这些都在一个隔离的容器内。这种隔离还可以保护您的主机：如果代理的代码耗尽内存或崩溃，则只有沙箱受到影响。您的服务器继续运行。
 
@@ -554,7 +554,7 @@ For the full list of backends and how to build custom ones, see [backends](/oss/
 
 关键的决定是沙箱的寿命有多长。每次对话都是新的，还是对话共享一个持久的环境？
 
-|范围 |沙箱 ID 存储于 |生命周期 |示例用例 |
+|范围 |沙箱 ID 存储于 |生命周期|示例用例 |
 | - | - | - | - |
 | **线程范围** | [Thread](/langsmith/use-threads) 元数据 |每次对话都是新鲜的，在 TTL 上进行了清理 |每个对话都以干净的方式开始的数据分析机器人 |
 | **助理范围** | [Assistant](/langsmith/assistants)配置|在所有对话中共享 |跨对话维护克隆存储库的编码助手 |<Note>
@@ -711,7 +711,7 @@ For the full list of backends and how to build custom ones, see [backends](/oss/
 * **代理完成后检索结果**：下载生成的工件（报告、绘图、导出）并同步更新的记忆以供将来的对话使用
 
 有关特定于提供商的文件传输示例，请参阅[working with files](/oss/python/deepagents/sandboxes#working-with-files)。有关提供程序设置、安全性和生命周期模式，请参阅完整的 [sandboxes guide](/oss/python/deepagents/sandboxes)。<Accordion title="Example: syncing skills and memories with custom middleware">
-  [Skill](/oss/python/deepagents/skills) 代理需要执行的脚本必须在代理运行之前上传到沙箱中。您可能还想同步[memories](/oss/python/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/python/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
+  [Skill](/oss/python/deepagents/skills) 代理需要执行的脚本必须在代理运行之前上传到沙箱中。您可能还想同步 [memories](/oss/python/deepagents/memory)，以便代理可以在容器内读取和更新它们。使用 [custom middleware](/oss/python/langchain/middleware/custom) 与 `before_agent` 和 `after_agent` 钩子跨沙箱边界移动文件：
 
   ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
@@ -825,7 +825,7 @@ For the full list of backends and how to build custom ones, see [backends](/oss/
 }
 ```
 
-`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用秘密的模板之前，先在那里配置秘密。**工作空间秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
+`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。**工作空间秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
 
 <Warning>
   避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内的任何可访问文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。

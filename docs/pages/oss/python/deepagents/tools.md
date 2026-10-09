@@ -79,6 +79,10 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e2332fe-f150-4b1c-8980-0df71370e64e/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## Custom tools
 
 Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
@@ -296,6 +300,10 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/72db4044-0d95-4eaa-becf-5d5705110acb/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For full details on defining and using LangChain tools (tool dicts, `StructuredTool`, return types, error handling, and more), see [Tools](/oss/python/langchain/tools).
 
 ## MCP tools
@@ -494,6 +502,10 @@ Install LangChain with the `mcp` extra to connect to MCP servers:
           )
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52f4ba76-56b4-4d12-91fe-8a1c51c0b0fd/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/python/langchain/mcp).
 

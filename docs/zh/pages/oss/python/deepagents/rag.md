@@ -2,9 +2,9 @@
 
 <!-- langchain-docs: Retrieval Augmented Generation (RAG) with Deep Agents | https://docs.langchain.com/oss/python/deepagents/rag -->
 
-# 带有 Deep Agents 的检索增强生成 (RAG)
+# 使用 Deep Agents 检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -14,7 +14,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引
 
 本指南介绍了几种 RAG 模式，并介绍了一个端到端示例：一个文档问答代理，它对 [docs.langchain.com](https://docs.langchain.com) 的子集进行索引，在查询时检索相关块，将它们卸载到文件系统，并将分析委托给子代理，以便协调器上下文保持干净。
 
-## RAG patternsDeep Agents 允许您以多种方式协调检索、分析和综合：
+## RAG 图案Deep Agents 允许您以多种方式协调检索、分析和综合：
 
 * **技能引导检索**：用户提出问题。代理加载相关技能，描述如何搜索语料库（使用哪个索引、查询公式、引文格式）。代理按照该指导调用您的检索工具，然后综合答案。
 * **Rubric-checked grounding**：用户提出问题。特工检索证据并起草答复。配置有`RubricMiddleware`的评分器子代理评估响应是否基于检索到的源材料。代理会进行修改，直到标题通过或达到迭代上限。
@@ -192,7 +192,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc30c5b2-c787-41ea-800c-a0f835bdcce5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/691c063c-0d9d-4235-9a34-a74e3655a7f5/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -374,7 +374,7 @@ Total characters: 589579
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
 即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。
 
-为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
@@ -878,8 +878,7 @@ Indexed 782 chunks.
     该工具使用 `backend.upload_files()` 将检索到的块写入代理后端。将相同的后端实例传递给`create_deep_agent`，以便内置文件系统工具（例如`read_file`和`grep`）可以读取保存的路径。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import uuid
-
+    from langchain_core.utils.uuid import uuid7
     from deepagents.backends import StateBackend
     from langchain.tools import tool
 
@@ -897,7 +896,7 @@ Indexed 782 chunks.
             File paths where retrieved chunks were saved under /retrieved/.
         """
         retrieved_docs = vector_store.similarity_search(query, k=4)
-        batch_id = uuid.uuid4().hex[:8]
+        batch_id = uuid7().hex[:8]
         uploads: list[tuple[str, bytes]] = []
         saved_paths: list[str] = []
 
@@ -1274,8 +1273,7 @@ if __name__ == "__main__":
 另存为 `agent.py` 并使用 `python agent.py` 运行：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import uuid
-
+from langchain_core.utils.uuid import uuid7
 import requests
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
@@ -1351,7 +1349,7 @@ def search_documentation(query: str) -> str:
         File paths where retrieved chunks were saved under /retrieved/.
     """
     retrieved_docs = vector_store.similarity_search(query, k=4)
-    batch_id = uuid.uuid4().hex[:8]
+    batch_id = uuid7().hex[:8]
     uploads: list[tuple[str, bytes]] = []
     saved_paths: list[str] = []
 
@@ -1455,6 +1453,10 @@ if __name__ == "__main__":
         if msg.text:
             print(msg.text)
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acdc9abe-384b-4988-a0a8-aaa78b7d8ffb/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 后续步骤
 

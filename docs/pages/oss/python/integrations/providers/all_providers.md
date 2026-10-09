@@ -303,6 +303,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     High-performance analytics and data processing.
   </Card>
 
+  <Card title="BowmarkToolkit" href="https://bowmark.ai/docs/langchain" icon="link">
+    Two tools for live websites: one reads Bowmark's typed function library for a task or site, the other runs a short script against it and returns structured data.
+  </Card>
+
   <Card title="Box" href="/oss/python/integrations/providers/box" icon="link">
     Cloud content management and collaboration.
   </Card>
@@ -599,6 +603,14 @@ Browse the complete collection of integrations available for Python. LangChain P
     Pre-flight spend authorization for LangChain agents.
   </Card>
 
+  <Card title="Fizzl" href="https://fizzl.eu/agents/python/" icon="link">
+    Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
+  </Card>
+
+  <Card title="FlatmarkLoader" href="https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md" icon="link">
+    Document to Markdown API and MCP server for PDF, Word, PowerPoint, Excel and HTML. OCR queue for large files. Hosted in Germany.
+  </Card>
+
   <Card title="FlexAI" href="https://docs.flex.ai/inference-api/agents/langchain" icon="link">
     FlexAI serves open-weight models behind an OpenAI-compatible API.
   </Card>
@@ -791,6 +803,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
   </Card>
 
+  <Card title="Infinispan" href="https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md" icon="link">
+    Vector store backed by Infinispan, an in-memory distributed key/value data store, providing similarity search over embeddings with metadata filtering.
+  </Card>
+
   <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
     Vector, BM25, and hybrid retrieval over one engine on object storage.
   </Card>
@@ -956,7 +972,7 @@ Browse the complete collection of integrations available for Python. LangChain P
   </Card>
 
   <Card title="Machine Library" href="https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary" icon="link">
-    Retriever for Machine Library full-text search over scholarly papers, books, patents, standards and Wikipedia, returning passages with canonical source URIs.
+    A retriever and agent tools for citable search across scholarly papers, books, patents, standards and Wikipedia (plus Reddit, Telegram and Discord).
   </Card>
 
   <Card title="MadeOnSol" href="https://madeonsol.com/api-docs" icon="link">
@@ -1013,6 +1029,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MinerU" href="https://mineru.net" icon="link">
     Open-source document parsing for PDFs and office files into Markdown.
+  </Card>
+
+  <Card title="MinnsDB" href="https://github.com/Minns-ai/langgraph-minnsdb#readme" icon="link">
+    Agent memory tools and a LangGraph store for MinnsDB, a temporal graph database that records when each fact was true.
   </Card>
 
   <Card title="Mixpeek" href="https://docs.mixpeek.com/agent-integrations/langchain" icon="link">
@@ -1519,6 +1539,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Structured search tools for web, news, maps, images, shopping, video, and travel.
   </Card>
 
+  <Card title="SerpKite" href="https://serpkite.com/integrations/langchain" icon="link">
+    Google search tools returning Markdown or structured results, with a retriever and webpage document loader.
+  </Card>
+
   <Card title="SERPdive" href="https://serpdive.com/docs" icon="link">
     AI search API that returns extracted, answer-ready web content.
   </Card>
@@ -1665,6 +1689,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="TalorData" href="https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain" icon="link">
     Unified SERP API across 33 search engines with geo-targeting.
+  </Card>
+
+  <Card title="TanodToolkit" href="https://github.com/tanod-labs/integrations/tree/main/langchain" icon="link">
+    Pay-per-call tools for agents (x402, USDC on Base) for smart-contract scans, address risk and sanctions checks, on-chain reads, web, DNS and data utilities, with a small free daily tier.
   </Card>
 
   <Card title="Tavily" href="/oss/python/integrations/providers/tavily" icon="link">

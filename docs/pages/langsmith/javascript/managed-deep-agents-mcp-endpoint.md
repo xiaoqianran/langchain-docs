@@ -9,7 +9,7 @@ Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent
 This page covers how to find the Managed Deep Agents URL and authenticate. For protocol behavior and generic Agent Server client setup, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 The endpoint is the outbound direction. An [MCP connector](/langsmith/javascript/managed-deep-agents-mcp-connectors) points the other way: it adds tools from a remote MCP server to your agent. A deployment can use both.

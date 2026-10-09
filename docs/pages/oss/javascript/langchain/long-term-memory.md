@@ -114,6 +114,10 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       });
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6be2083-3efd-4571-86bc-af3ac3d29ca3/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -241,6 +245,10 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       });
       ```
     </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d88f3dfa-62b7-4860-a17d-96372551753e/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 </Tabs>
 
@@ -790,7 +798,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e103a798-8829-42a4-9a1a-9e0f8fc04c62/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/762275c3-4815-418e-a314-5ad241f959b0/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -1113,7 +1121,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e0440c39-4561-4c13-90b3-5b2ff18037ef/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/244238a0-dc8a-4023-b85b-b8145b79cfab/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -1524,7 +1532,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b97eea49-0f7a-439c-b94d-2e5224c2fab4/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cfc3587-f9a0-4926-8e0f-0659ed631e5a/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -1840,7 +1848,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/564f79cc-a377-4016-a8d3-9f5752eab516/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e0e4b08-7234-49bc-adcc-8d5cf48455ad/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>

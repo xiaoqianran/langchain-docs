@@ -94,6 +94,10 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5749bda2-c929-4fca-bbf7-237e7c9a7d2d/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 | Parameter | What it does |
 | - | - |
 | `model` | Which model to use |
@@ -1076,6 +1080,10 @@ Pass `system_prompt=` to give the agent your own instructions:
   });
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/106b59e4-4dc2-4539-b035-4f4a27cac53b/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 <Note>
   Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) with structured [content blocks](/oss/javascript/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/javascript/deepagents/subagents) dictionary specs remain strings).
@@ -2150,6 +2158,10 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       ```
     </CodeGroup>
 
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
+      Open a public LangSmith run for this example.
+    </Card>
+
     <Tip>
       Wrap `FilesystemBackend` in a `CompositeBackend` to prevent internal agent data (offloaded tool results, conversation history) from being written to disk alongside your project files. See the [recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk).
     </Tip>
@@ -2644,6 +2656,10 @@ const agent = createDeepAgent({
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 You can configure interrupt for agents and subagents on tool call as well as from within tool calls.
 For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
 
@@ -2743,6 +2759,10 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="FilesystemBackend">
@@ -2784,6 +2804,10 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 </Tabs>
 
@@ -3144,7 +3168,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c07e925-9d8f-4792-b73c-9dbee94890cd/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f5b6b3-cd51-45e2-8cef-d654bc08a205/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -3544,7 +3568,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ff0f387f-c0c3-4456-8081-d6fc23504942/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b67cebb9-9aee-43ca-b77b-8fce2bbd6807/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -3778,7 +3802,7 @@ console.log(result.structuredResponse);
 // }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4587886-ebb6-4fbc-8b57-d41b27180770/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a33f9ad7-9ab0-4ab5-a27a-67d1d06851de/r">
   Open a public LangSmith run for this example.
 </Card>
 

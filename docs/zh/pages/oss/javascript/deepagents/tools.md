@@ -81,6 +81,10 @@ Deep Agents可以调用您定义的任何工具、任何[LangChain tool](https:/
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/60b06506-b368-4faa-bb2f-6a838968ee8d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 自定义工具
 
 将任何可调用函数（例如普通函数、LangChain `@tool` 修饰函数或工具字典）直接传递给 `tools=`。
@@ -600,6 +604,10 @@ npm install @langchain/mcp-adapters
   });
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8d5c96b3-9582-4dc8-b89b-8f667e64836d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 有关详细的配置选项（包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话），请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
 

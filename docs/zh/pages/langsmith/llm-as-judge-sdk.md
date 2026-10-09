@@ -13,7 +13,7 @@
 </Tip>
 
 <Note>
-  SDK不支持[decision model evaluators](/langsmith/decision-model-evaluator)。这些评估者使用决策模型（例如 SemIf 或 Jev）作为判断者。要创建一个，请使用 UI。
+  SDK不支持[decision model evaluators](/langsmith/decision-model-evaluator)。这些评估者使用决策模型，例如 Jev，作为判断者。要创建一个，请使用 UI。
 </Note>
 
 ## 创建您自己的法学硕士法官评估员

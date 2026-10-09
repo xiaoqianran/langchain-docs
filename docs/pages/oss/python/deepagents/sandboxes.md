@@ -101,7 +101,7 @@ These examples assume you have already created a sandbox/devbox using the provid
         client.delete_sandbox(ls_sandbox.name)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9f84b0dd-2df7-4f4d-9ba1-4094e58d429e/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c6756d1-2bb1-4ba5-a54a-9891abd057db/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -146,6 +146,10 @@ These examples assume you have already created a sandbox/devbox using the provid
     finally:
         sandbox.stop()
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bdbb9f73-7bff-4e32-891b-fc05ed487f01/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="E2B">
@@ -758,6 +762,10 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/658fb215-7b1c-4914-96d2-834acdd6110f/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For manual create, execute, and teardown outside a graph factory, see [Basic usage](#basic-usage) and [sandbox integrations](/oss/python/integrations/sandboxes) for provider-specific APIs.
 
 ## Integration patterns
@@ -1025,7 +1033,7 @@ Trade-offs:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7f985ac-d3be-4ce3-b23e-ec1b441ee466/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a9453638-8ae8-496c-9dbe-1f9f56391cd6/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1539,6 +1547,10 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
         else:
             print(f"Failed to download {result.path}: {result.error}")
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7cff6290-eb4f-4fc8-8982-39b78675cbfc/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="AgentCore">

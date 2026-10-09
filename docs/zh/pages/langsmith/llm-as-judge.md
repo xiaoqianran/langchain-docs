@@ -45,7 +45,7 @@
 
 从提供的选项中选择所需的型号。
 
-要使用决策模型，例如 SemIf 或 Jev，作为判断，请参见[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
+要使用决策模型（例如 Jev）作为判断者，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
 
 ### 映射变量
 
@@ -65,7 +65,7 @@
 
 ### 反馈配置
 
-反馈配置是您的法学硕士评审评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：1. **为反馈键命名**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
+反馈配置是您的法学硕士评审评估员将使用的评分标准。将此视为评估员评分的标准。分数将作为 [feedback](/langsmith/observability-concepts#feedback) 添加到运行或示例中。为评估者定义反馈：1. **命名反馈键**：这是查看评估结果时将出现的名称。实验中的名称应该是唯一的。
 
 2. **添加描述**：描述反馈代表什么。
 

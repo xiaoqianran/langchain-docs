@@ -64,6 +64,7 @@ import * as z from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
 
 const getUserName = tool(
   (_, config) => {
@@ -87,7 +88,7 @@ const agent = createAgent({
   contextSchema,
 });
 
-const threadId = crypto.randomUUID();
+const threadId = uuid7();
 const threadConfig = {
   configurable: { thread_id: threadId },
   context: { user_name: "John Smith" },
@@ -109,6 +110,10 @@ result = await agent.invoke(
 );
 console.log(result.messages.at(-1)?.content);
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab55241e-3982-457e-9357-a41564c847a3/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### Long-term memory (Store)
 
@@ -314,6 +319,10 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce2632f4-09ef-4d71-96fb-d8e61662f9ae/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 Behavior:
 
 * The return value is converted to a `ToolMessage`.
@@ -343,6 +352,10 @@ const getWeatherData = tool(
   },
 );
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e798b200-7e02-420a-9b50-1808b2d25b7c/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Behavior:
 
@@ -416,6 +429,10 @@ const setLanguage = tool(
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/57a6ece9-3cd4-436c-a15e-da77946c0e2f/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 Behavior:
 
 * The command updates state using `update`.
@@ -459,7 +476,7 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8f9bb682-fa0b-4264-8495-246703f0624b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/40a81784-60df-4455-861e-ddf7f4a51b2e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -656,6 +673,10 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71c1f8da-7a0d-49eb-a57c-a83dc0eb188c/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### State injection
 

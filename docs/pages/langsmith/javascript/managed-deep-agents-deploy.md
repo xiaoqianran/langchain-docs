@@ -7,7 +7,7 @@ Test and deploy a Managed Deep Agent with the mda CLI.
 Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli).
@@ -18,7 +18,7 @@ Before you deploy, make sure you have:
 
 * A workspace with Managed Deep Agents public beta access.
 
-* A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, either in `.env` or your shell environment.
+* A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, in `.env` or your shell environment. On an interactive terminal, `mda deploy` prompts for a key or signs you in through the browser instead.
 
 * The `mda` CLI installed from `managed-deepagents`.
 
@@ -26,7 +26,32 @@ Before you deploy, make sure you have:
 
 * Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
 
-The CLI targets US LangSmith Cloud by default.
+## Select a SaaS region
+
+`LANGSMITH_ENDPOINT` selects the LangSmith region the CLI deploys to. The CLI targets GCP US by default.
+
+Set `LANGSMITH_ENDPOINT` in your project's `.env` or your shell environment before your first deploy:
+
+| Region | Endpoint | Deployment support |
+| - | - | - |
+| GCP US (`smith.langchain.com`) | `https://api.smith.langchain.com` | Supported |
+| GCP EU (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` | Supported |
+| GCP APAC (`apac.smith.langchain.com`) | `https://apac.api.smith.langchain.com` | Supported |
+| AWS US (`aws.smith.langchain.com`) | `https://aws.api.smith.langchain.com` | Not yet supported |
+
+For example, to deploy to GCP EU:
+
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
+```
+
+Credentials must belong to the target region. Set `LANGSMITH_ENDPOINT` before the first deploy, because it also selects the region that browser sign-in authenticates against. A non-interactive run cannot fall back to browser sign-in, so in CI set `LANGSMITH_API_KEY` for the target region.
+
+For more information on regions, see the [Regions FAQ](/langsmith/regions-faq).
+
+<Note>
+  LangSmith managed tools are available in GCP US only.
+</Note>
 
 ## Deploy to LangSmith
 

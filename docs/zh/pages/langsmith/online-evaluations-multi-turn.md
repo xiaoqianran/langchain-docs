@@ -20,10 +20,10 @@
 
 多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
 2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
-3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息拼接在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的结果。
+3. **消息组装**：LangSmith从线程中的每个跟踪收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
 4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
 
-此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条迹线评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
+此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条轨迹评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
 
 ## 先决条件
 
@@ -64,7 +64,7 @@
 
 7. **配置您的 LLM 法官提示。**
 
-   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
+   定义您要评估的内容。该提示将用于评估线程。您还可以通过 `all_messages` 变量配置将组装对话的哪些部分传递给评估器，以控制它接收的内容：* 所有消息：以 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的 JSON 消息对象列表的形式发送完整对话，每条消息呈现为缩进的 JSON 并用空行分隔。
    * 人类和人工智能对：仅发送用户和助理消息，格式为`<user>...</user>`和`<assistant>...</assistant>`，不包括系统消息、工具调用和其他角色。
    * 第一个人类和最后一个人工智能：仅发送第一条用户消息和最后一个助理回复。
 
@@ -83,11 +83,13 @@
 ## 评估轨迹`trajectory` 是线程求值器可以使用的变量之一，与 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai` 一起使用。它解析为对话的[trajectory](/langsmith/observability-concepts#trajectories)：从开始到结束的扁平、有序的消息列表，包括工具调用及其结果。用它来对代理所采取的路径进行评分，例如它是否选择了正确的工具，遵循其计划，并没有浪费步骤到达目的地。
 
 <Note>
-  `trajectory` 变量仅适用于 GCP 美国区域 ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) 的 [LangSmith Cloud](/langsmith/cloud)。它不适用于 GCP EU、GCP APAC 或 AWS 美国区域，或[self-hosted](/langsmith/self-hosted) 和 [BYOC](/langsmith/byoc) 部署。 LangSmith v0.16.0 稳定版本中不包含自托管支持。未来版本中将提供对自托管和 BYOC 部署的支持。
+  在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量仅在 GCP 美国区域 ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) 中可用。它不适用于 GCP EU、GCP APAC 或 AWS 美国区域，也不适用于 [BYOC](/langsmith/byoc) 部署。
+
+  在 [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 之后，[Self-hosted](/langsmith/self-hosted) 安装支持 LangSmith v0.17 或更高版本上的 `trajectory` 变量。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
 </Note>
 
 变量因法官收到的内容而异：* **`all_messages`、`human_ai_pairs` 和 `first_human_last_ai`** 解析为根据线程中每个根运行的输入和输出组装的对话。子运行中发生的工作（例如中间模型调用、工具调用和工具结果）不包括在内，除非根运行自己的输入或输出包含它。 human\_ai\_pairs 和first\_ human\_last\_ai 进一步缩小到仅用户和助理消息。
-* **`trajectory`** 解析为从每个跟踪内的模型和工具调用构建的轨迹。其他视图忽略的工具调用和工具结果将被保留。
+* **`trajectory`** 解析为根据每个轨迹内的模型和工具调用构建的轨迹。其他视图忽略的工具调用和工具结果将被保留。
 
 对于每个变量解析为的消息形状，请参阅[Thread message variables](/langsmith/prompt-template-format#thread-message-variables)。
 
@@ -138,11 +140,11 @@
 
 **检查评估者的状态**
 
-您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的 **Logs** 按钮来查看其运行历史记录，从而检查评估器上次运行的时间。
+You can check when your evaluator was last run by heading to the **Evaluators** tab within a tracing project or agent environment and clicking the **Logs** button for the evaluator you created to view its run history.
 
 **检查发送给评估者的数据**
 
-检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Evaluator 跟踪** 选项卡。在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的邮件未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
+检查发送到评估器的数据，方法是前往跟踪项目或代理环境中的 **Evaluators** 选项卡，单击您创建的评估器，然后单击 **Evaluator 跟踪** 选项卡。在此选项卡中，您可以看到传递到 LLM-as-a-judge 评估器的输入。如果您的消息未正确传递，您将在输入中看到空白值。如果您的消息未采用 [the expected formats](/langsmith/online-evaluations-multi-turn#prerequisites) 之一的格式，则可能会发生这种情况。
 
 ***
 

@@ -63,7 +63,7 @@ UI 将代币使用和成本分为三类：
 要根据代币使用情况自动计算成本，您需要提供**代币计数**、**模型和提供商**以及**模型价格**。
 
 <Note>
-  如果您使用 [LangChain](/oss/python/langchain/overview) 调用 LLM，将 `@traceable` 与 OpenAI 或 Anthropic（或 OpenAI 兼容模型）一起使用，或者使用 [OpenAI](/langsmith/trace-openai) 或 [Anthropic](/langsmith/trace-anthropic) 的 LangSmith 包装器，请跳过此部分。
+  如果您使用 [LangChain](/oss/python/langchain/overview) 调用 LLM，将 `@traceable` 与 OpenAI 或 Anthropic（或 OpenAI 兼容模型）一起使用，或者使用 [OpenAI](/langsmith/trace-openai) 或 [Anthropic](/langsmith/trace-anthropic) 包装器，请跳过此部分。
 </Note>1. 发送令牌计数。许多模型都将令牌计数作为响应的一部分。您必须使用以下方法之一提取此信息并将其包含在运行中：
 
    * 在运行的元数据上设置 `usage_metadata` 字段。这种方法的优点是您不需要更改跟踪函数的运行时输出：
@@ -297,6 +297,10 @@ UI 将代币使用和成本分为三类：
            }
        }
        ```
+
+       <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77fb737d-e763-4f42-bc77-cbc27a4e9120/r">
+         为此示例打开公共 LangSmith 运行。
+       </Card>
      </CodeGroup>
 
      Java 和 Kotlin 示例使用专用执行器。关闭执行器并等待终止可确保后台跟踪提交在进程退出之前完成。
@@ -540,11 +544,11 @@ UI 将代币使用和成本分为三类：
    无论哪种情况，使用元数据都应包含以下 LangSmith 识别字段的子集：
 
    <Accordion title="Usage Metadata Schema and Cost Calculation">
-     `usage_metadata` 字典中的以下字段可以被 LangSmith 识别。您可以直接查看完整的[Python types](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/python/langsmith/schemas.py#L1196-L1227)或[TypeScript interfaces](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/js/src/schemas.ts#L637-L689)。
+     `usage_metadata` 字典中的以下字段可以被LangSmith 识别。您可以直接查看完整的[Python types](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/python/langsmith/schemas.py#L1196-L1227)或[TypeScript interfaces](https://github.com/langchain-ai/langsmith-sdk/blob/e705fbd362be69dd70229f94bc09651ef8056a61/js/src/schemas.ts#L637-L689)。<ParamField type="number">
+       模型输入中使用的标记数量。所有输入标记类型的总和。
+     </ParamField>
 
      <ParamField type="number">
-       模型输入中使用的标记数量。所有输入标记类型的总和。
-     </ParamField><ParamField type="number">
        模型响应中使用的令牌数量。所有输出令牌类型的总和。
      </ParamField>
 
@@ -574,11 +578,11 @@ UI 将代币使用和成本分为三类：
 
      <ParamField type="number">
        代币的成本。可选的，可以推断。  输入成本+输出成本之和。
+     </ParamField><ParamField type="object">
+       输入成本的详细信息。键是令牌类型的字符串，值是成本金额。
      </ParamField>
 
      <ParamField type="object">
-       输入成本的详细信息。键是令牌类型的字符串，值是成本金额。
-     </ParamField><ParamField type="object">
        输出成本的详细信息。键是令牌类型的字符串，值是成本金额。
      </ParamField>
 

@@ -281,7 +281,7 @@ Pass a `thread_id` via `config` so the conversation is checkpointed and follow-u
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a52e36fe-3aeb-4273-9ff3-f8a42d0d218b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cd9423e-4fda-4987-bfc0-a5c4246a19eb/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -573,7 +573,7 @@ for message in stream.messages:
         print(token, end="", flush=True)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/603f06aa-a85d-4b00-a85a-dd4f75755aee/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cce5483a-c5fd-4e08-94dc-12b510c6ccf1/r">
   Open a public LangSmith run for this example.
 </Card>
 

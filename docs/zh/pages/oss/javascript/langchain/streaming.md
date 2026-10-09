@@ -50,6 +50,7 @@ LangChain 流媒体可以实现什么：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -73,7 +74,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -102,6 +103,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -125,7 +127,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -154,6 +156,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -177,7 +180,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -206,6 +209,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -229,7 +233,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -258,6 +262,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -281,7 +286,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -310,6 +315,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -333,7 +339,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -362,6 +368,7 @@ LangChain 流媒体可以实现什么：
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -385,7 +392,7 @@ LangChain 流媒体可以实现什么：
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -412,7 +419,7 @@ LangChain 流媒体可以实现什么：
   // Tool result: [object ToolMessage]
   // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
   ```
-</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/20bac62c-c7af-4ee2-9dd3-129e24ce6834/r">
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc490030-828a-4756-899a-063c3c3d3600/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -456,7 +463,7 @@ for await (const [token, metadata] of await agent.stream(
 ```
 
 <Note>
-  **将代理包装为父节点 `StateGraph`？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 返回一个 `ReactAgent` 包装器；添加为节点时传递`agent.graph`。使用 `subgraphs: true` 以便消息块包含子图命名空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
+  **将代理包装为父节点 `StateGraph`？** [⟦T39⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 返回一个 `ReactAgent` 包装器；添加为节点时传递`agent.graph`。使用`subgraphs: true`，因此消息块包含子图名称空间。参见[Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs)。
 </Note>
 
 ## 自定义更新
@@ -602,7 +609,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a8cf65f3-e85e-448c-844e-67019558ddbc/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d59e6358-4c08-48b8-a906-8a054bddb7ac/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

@@ -318,7 +318,7 @@ const stream = await graph.streamEvents(
   { topic: "AI", answer: "", notes: "" },
   { version: "v3" },
 );
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c687f067-9c14-4e17-9ebe-0333c2344f1c/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7dace240-589b-4be3-89ed-8e29b5818188/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -477,7 +477,7 @@ for await (const [msg, metadata] of await graph.stream(
 |活动 |当 |有效负载|
 | - | - | - |
 | `on_tool_start` |工具调用开始 | `name`、`input`、`toolCallId` |
-| `on_tool_event` |工具产生中间数据 | `name`、`data`、`toolCallId` |
+| `on_tool_event` |工具产生中间数据| `name`、`data`、`toolCallId` |
 | `on_tool_end` |工具返回其最终结果 | `name`、`output`、`toolCallId` |
 | `on_tool_error` |工具抛出错误 | `name`、`error`、`toolCallId` |#### 定义传输进度的工具
 
@@ -561,12 +561,12 @@ for await (const [mode, chunk] of await graph.stream(
 
 |领域 |描述 |
 | - | - |
-| `name` |工具名称 |
+| `name` |工具名称|
 | `state` |当前生命周期状态：`"starting"`、`"running"`、`"completed"` 或 `"error"` |
 | `toolCallId` | LLM 的工具调用 ID |
 | `input` |该工具的输入参数 |
 | `data` | `on_tool_event`最新产生的数据 |
-| `result` |最终结果，定于`on_tool_end` |
+| `result` |最终结果，定于`on_tool_end`|
 | `error` |错误，设置在`on_tool_error` |
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

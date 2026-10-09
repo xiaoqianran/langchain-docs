@@ -429,6 +429,12 @@
           "rel": "langsmith/administration-overview.md"
         }
       ],
+      "aes-encryption": [
+        {
+          "title": "Configure AES encryption at rest",
+          "rel": "langsmith/aes-encryption.md"
+        }
+      ],
       "agent-auth": [
         {
           "title": "Set up Agent Auth",
@@ -939,6 +945,12 @@
           "rel": "langsmith/custom-docker.md"
         }
       ],
+      "custom-encryption": [
+        {
+          "title": "Configure custom encryption at rest",
+          "rel": "langsmith/custom-encryption.md"
+        }
+      ],
       "custom-endpoint": [
         {
           "title": "Connect to a custom model",
@@ -1193,7 +1205,7 @@
       ],
       "encryption": [
         {
-          "title": "Add encryption at rest",
+          "title": "Encryption at rest",
           "rel": "langsmith/encryption.md"
         }
       ],
@@ -2403,6 +2415,12 @@
           "rel": "langsmith/self-host-mirroring-images.md"
         }
       ],
+      "self-host-observability-dashboards": [
+        {
+          "title": "Monitor self-hosted LangSmith with Datadog or Grafana",
+          "rel": "langsmith/self-host-observability-dashboards.md"
+        }
+      ],
       "self-host-organization-charts": [
         {
           "title": "View trace counts across your organization",
@@ -2449,6 +2467,12 @@
         {
           "title": "Enable SmithDB on self-hosted LangSmith",
           "rel": "langsmith/self-host-smithdb.md"
+        }
+      ],
+      "self-host-smithdb-features": [
+        {
+          "title": "SmithDB feature availability",
+          "rel": "langsmith/self-host-smithdb-features.md"
         }
       ],
       "self-host-smithdb-infrastructure": [

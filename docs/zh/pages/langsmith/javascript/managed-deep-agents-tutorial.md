@@ -13,14 +13,14 @@
 本指南用编写的 [Tavily](https://tavily.com) 搜索工具替换了快速入门的内置提供商搜索，启用持久内存，添加每日计划，然后进行部署。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 扩展代理
 
 <Steps>
   <Step title="Add a custom search tool">
-    内置提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
+    内置的提供商搜索对于首次运行很方便。编写的工具为您提供更多控制：选择搜索 API、调整参数并将工具代码保留在您的项目中。
 
     <Note>
       如果您按照[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)中的步骤使用Tavily，请跳至下一步。
@@ -171,7 +171,7 @@
       ```
     </CodeGroup>
 
-    成功后，CLI 将打印部署仪表板 URL。部署将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
+    成功后，CLI 将打印部署仪表板 URL。部署会将指令同步到 Context Hub、上传已编译的项目并协调每日计划。
 
     打开该 URL 并确认：* 部署已准备就绪。
     * `daily_digest` 或 `daily-digest` cron 存在。

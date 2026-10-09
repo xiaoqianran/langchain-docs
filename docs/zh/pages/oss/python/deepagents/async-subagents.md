@@ -28,7 +28,7 @@ graph TB
 ## 何时使用异步子代理|尺寸|同步子代理 |异步子代理 |
 | - | - | - |
 | **执行模型** |主管阻塞直到子代理完成 |立即返回作业ID；主管继续|
-| **并发** |并行但阻塞 |并行和非阻塞|
+| **并发** |并行但阻塞|并行和非阻塞|
 | **任务中期更新** |不可能|通过`update_async_task`发送后续指令 |
 | **取消** |不可能|通过`cancel_async_task`取消正在运行的任务 |
 | **有状态** |无状态——调用之间没有持久状态|有状态——跨交互在自己的线程上维护状态
@@ -60,12 +60,16 @@ agent = create_deep_agent(
     model="google_genai:gemini-3.6-flash",
     subagents=async_subagents,
 )
-```|领域 |类型 |描述 |
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0727618d-02b5-4e99-b7c7-79d6f37f234d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>|领域 |类型 |描述 |
 | - | - | - |
 | `name` | `str` |必需的。唯一标识符。主管在启动任务时使用它。 |
 | `description` | `str` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。 |
 | `graph_id` | `str` |必需的。代理协议服务器上的图形 ID（或助理 ID）。对于基于 LangGraph 的部署，这必须与在 `langgraph.json` 中注册的图表匹配。 |
-| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程内）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
+| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程中）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
 | `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。 |
 
 对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图以进行共同部署设置：
@@ -155,7 +159,7 @@ AsyncSubAgent(
 
 ### 单一部署
 
-单一部署意味着所有代理都使用 ASGI 传输共同部署在同一服务器上。对于基于LangGraph的部署，将所有图表注册在一个`langgraph.json`中。这是推荐的起点——管理一台服务器，代理之间的网络延迟为零。
+单一部署意味着所有代理都使用 ASGI 传输共同部署在同一服务器上。对于基于 LangGraph 的部署，将所有图表注册在一个 `langgraph.json` 中。这是推荐的起点——管理一台服务器，代理之间的网络延迟为零。
 
 ### 拆分部署
 
@@ -185,9 +189,13 @@ async_subagents = [
 ]
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dddcb1d1-92ac-468b-aa34-5d9070661aa1/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 最佳实践
 
-### 调整工人池规模以适应当地发展当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
+### 调整工人池规模以适应本地发展当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev --n-jobs-per-worker 10
@@ -242,7 +250,11 @@ agent = create_deep_agent(
     Never call check_async_task immediately after launch.""",
     subagents=async_subagents,
 )
-```### 主管报告过时状态
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/181f8fc2-b3aa-4c4b-b23d-d4204db98849/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+### 主管报告过时状态
 
 **问题**：主管引用对话历史记录中较早的任务状态，而不是进行新的 `check` 呼叫。
 
@@ -260,7 +272,7 @@ agent = create_deep_agent(
 
 **解决方案**：工作池可能已耗尽。使用 `--n-jobs-per-worker` 增加池大小。参见[Size the worker pool](#size-the-worker-pool-for-local-development)。
 
-## 参考实现[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码器子代理。
+## 参考实现[async-deep-agents](https://github.com/langchain-ai/async-deep-agents) 存储库包含部署到 LangSmith 部署的 Python 和 TypeScript 工作示例。它演示了一个主管以及作为后台任务运行的研究员和编码员子代理。
 
 ***
 

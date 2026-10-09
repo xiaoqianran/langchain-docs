@@ -15,7 +15,7 @@
 代理服务器将指标分为两组：
 
 * **部署 UI 指标**：默认情况下，出现在 LangSmith 部署 UI 中，并在代理服务器 Prometheus 抓取端点（`GET /metrics`、`format=prometheus`）上公开。
-* **内部指标**：LangChain 操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会显示。|后端 |公制集|启用 |
+* **内部指标**：LangChain操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会显示。|后端 |公制集 |启用 |
 | - | - | - |
 | **普罗米修斯**（刮`GET /metrics`）|默认情况下的部署 UI 指标。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 也可以在同一端点上公开内部指标。 |安装 OTel Prometheus 导出器后可用 |
 | **Datadog**（OTLP 推送）|仅内部指标 |设置`LSD_DD_API_KEY`（或`CUSTOM_LSD_DD_API_KEY`）。指标推送到`https://{LSD_DD_ENDPOINT}/v1/metrics`（默认端点：`otlp.us5.datadoghq.com`）。 |
@@ -81,7 +81,17 @@ Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/met
 
 这些指标有`lsd_web_metric=false`。默认情况下，当设置 `LSD_DD_API_KEY` 时，它们会导出到 Datadog。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 将它们包含在 Prometheus `/metrics` 抓取中。记录等于或低于`METRIC_MAX_EMITTING_TIER`的内部指标；更高层的指标被省略。
 
-### 运行生命周期|名称 |类型 |等级 |描述 |
+### 重新加密
+
+|名称 |类型 |等级 |描述 |
+| - | - | - | - |
+| `lg_api_reencrypt_writeback_succeeded_counter` |专柜|信息|延迟重新加密替换成功的写回。 |
+| `lg_api_reencrypt_writeback_cas_skipped_counter` |专柜|信息|替换写回被跳过，因为并发更新更改了存储的值。 |
+| `lg_api_reencrypt_writeback_failed_counter` |专柜|信息|替换失败的写回。读取仍返回解密数据。 |
+
+所有三个指标都包含 `reencryption_table` 和 `reencryption_column` 属性。操作指南请参见[Monitor lazy re-encryption](/langsmith/custom-encryption#monitor-lazy-re-encryption)。### 运行生命周期
+
+|名称 |类型 |等级 |描述 |
 | - | - | - | - |
 | `lg_api_run_attempt_started_counter` |专柜|关键 |运行执行尝试已开始。 |
 | `lg_api_run_success_counter` |专柜|关键 |运行成功完成。 |

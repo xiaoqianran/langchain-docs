@@ -9,7 +9,7 @@ Connect a managed deep agent to remote [Model Context Protocol (MCP)](/oss/javas
 Most remote MCP servers require authentication. A [connection](/langsmith/javascript/managed-deep-agents-connections) supplies it, and declaring the connection as user-owned makes each caller authorize their own account.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Declare MCP servers in `tools/mcp.ts`:

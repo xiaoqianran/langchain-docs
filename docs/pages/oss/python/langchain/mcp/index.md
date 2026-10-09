@@ -44,6 +44,10 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dbd2bd37-78e9-48ac-8d8a-ae052e8462ca/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Accordion title="LangChain docs MCP server">
   The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
 

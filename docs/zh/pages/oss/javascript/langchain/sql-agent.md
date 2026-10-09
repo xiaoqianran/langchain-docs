@@ -1378,6 +1378,10 @@
         });
         ```
       </CodeGroup>
+
+      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6e260649-34ee-4075-b034-23c9404b868c/r">
+        为此示例打开公共 LangSmith 运行。
+      </Card>
     </Accordion>
   </Step>
 

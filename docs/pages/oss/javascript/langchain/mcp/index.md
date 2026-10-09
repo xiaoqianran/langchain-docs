@@ -69,6 +69,10 @@ async function main() {
 await main();
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00d2cbd2-4f4b-4f31-8346-041c7412c083/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Accordion title="LangChain docs MCP server">
   The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
 
@@ -99,6 +103,10 @@ await main();
     }
   }
   ```
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/38191417-0728-47c9-bede-d0544de2af17/r">
+    Open a public LangSmith run for this example.
+  </Card>
 
   <Note>
     The docs MCP server is public and does not require an API key. For IDE and coding-agent setup (Claude Code, Cursor, and others), see [Use docs programmatically](/use-these-docs).
@@ -151,6 +159,10 @@ try {
   await adapter.close();
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c2129d38-77f6-42d0-ab37-d414fc067ee6/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Each server definition can use one of these transports:
 

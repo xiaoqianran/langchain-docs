@@ -213,6 +213,10 @@ even after that subagent's execution is complete. Those files will continue to b
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 **How it works:**
 
 * Reads/writes real files under a configurable `root_dir`.

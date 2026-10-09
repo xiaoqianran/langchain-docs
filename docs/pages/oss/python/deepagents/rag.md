@@ -195,7 +195,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc30c5b2-c787-41ea-800c-a0f835bdcce5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/691c063c-0d9d-4235-9a34-a74e3655a7f5/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -895,8 +895,7 @@ Add this code to `agent.py`:
     The tool writes retrieved chunks to the agent backend with `backend.upload_files()`. Pass the same backend instance to `create_deep_agent` so built-in filesystem tools such as `read_file` and `grep` can read the saved paths.
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import uuid
-
+    from langchain_core.utils.uuid import uuid7
     from deepagents.backends import StateBackend
     from langchain.tools import tool
 
@@ -914,7 +913,7 @@ Add this code to `agent.py`:
             File paths where retrieved chunks were saved under /retrieved/.
         """
         retrieved_docs = vector_store.similarity_search(query, k=4)
-        batch_id = uuid.uuid4().hex[:8]
+        batch_id = uuid7().hex[:8]
         uploads: list[tuple[str, bytes]] = []
         saved_paths: list[str] = []
 
@@ -1295,8 +1294,7 @@ The following is the complete script for the agent using one set of example mode
 Save as `agent.py` and run with `python agent.py`:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import uuid
-
+from langchain_core.utils.uuid import uuid7
 import requests
 from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
@@ -1372,7 +1370,7 @@ def search_documentation(query: str) -> str:
         File paths where retrieved chunks were saved under /retrieved/.
     """
     retrieved_docs = vector_store.similarity_search(query, k=4)
-    batch_id = uuid.uuid4().hex[:8]
+    batch_id = uuid7().hex[:8]
     uploads: list[tuple[str, bytes]] = []
     saved_paths: list[str] = []
 
@@ -1476,6 +1474,10 @@ if __name__ == "__main__":
         if msg.text:
             print(msg.text)
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acdc9abe-384b-4988-a0a8-aaa78b7d8ffb/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Next steps
 

@@ -212,6 +212,10 @@ async def agent_with_interception(target):
         return create_agent("claude-sonnet-5", tools, middleware=[log_mcp_calls])
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d21d1f57-af89-4714-8d4f-a065f5d99f28/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## Error handling
 
 The `handle_tool_errors` flag is gone. Behavior is now fixed: an MCP tool that reports `isError=True` reaches the model as a [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) with `status="error"` carrying the server's message, while transport failures raise. See [Tools](/oss/python/langchain/mcp/tools#errors).

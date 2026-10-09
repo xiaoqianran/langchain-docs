@@ -7,7 +7,7 @@ Run and test a Managed Deep Agent locally with mda dev and LangSmith Studio.
 `mda dev` compiles a Managed Deep Agents project and runs it on a local Agent Server. It opens [LangSmith Studio](/langsmith/studio) so you can interact with the agent and inspect its behavior before deploying.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 ## Start local Studio

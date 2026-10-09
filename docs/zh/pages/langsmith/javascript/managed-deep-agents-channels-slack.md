@@ -11,7 +11,7 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 托管 Deep Agents 创建并配置将 Slack 连接到已部署代理的资源。向代理项目添加通道声明，然后部署。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目结构
@@ -139,9 +139,9 @@ export const channel = channels.slack({
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-识别已被选择但从未出现，因此反应完全缺失。一个
+recognize 被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回到默认表情符号，并且运行会继续。
+其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
 
 ### 选择具有决策模型的表情符号
 
@@ -273,9 +273,9 @@ then call `attach_file` with that path so the file arrives in Slack.
 
 * [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Decision models](/langsmith/llm-gateway-decision-models)：配置反应表情评分模型。
-* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup)：启用网关并添加提供者秘密反应需要。
+* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup)：启用网关并添加提供商秘密反应需要。
 * [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)：从工具发布 Slack 表单并在提交时恢复运行。
-* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理文件传输读写的文件系统。
+* [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)：给代理提供文件传输读写的文件系统。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。
 * [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看托管 Deep Agents 命令和标志。
 

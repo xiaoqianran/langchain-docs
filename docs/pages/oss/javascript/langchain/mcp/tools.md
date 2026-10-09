@@ -36,6 +36,10 @@ async function main(server: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f60de8e-697e-40e1-87de-d2419e426b61/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 Keep the adapter open while the agent can call its tools, including when resuming an interrupted run. Call `await adapter.close()` when you finish using the agent.
 
 For general guidance on defining, binding, and using LangChain tools, see [Tools](/oss/javascript/langchain/tools). For several MCP servers and their namespaced tool catalogs, see [Connections](/oss/javascript/langchain/mcp/connections#multiple-servers).
@@ -126,6 +130,10 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77a2988b-909c-475d-a811-86cbb843f5c1/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 The `artifact` is an array of MCP result entries. Structured content appears in the entry with `type: "mcp_structured_content"`, and its `data` field holds the tool result's `structuredContent`.
 
 ### Errors
@@ -165,6 +173,10 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f47c3c87-87f8-4b3e-9b51-6116e9bdd313/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 If you invoke an adapted tool directly with plain arguments, a server result with `isError: true` throws a `ToolException` instead, with the MCP result in `error.result`.
 
 ## Tool metadata
@@ -199,6 +211,10 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
   return annotations?.destructiveHint ?? false;
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aca946a6-8b00-425e-9ebd-c9166dfe5958/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Human-in-the-loop
 
@@ -254,6 +270,10 @@ async function gateDestructiveTools(serverUrl: string) {
   return { agent, adapter };
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c0bfda7-ce16-43ee-a5ad-0c827409668a/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 <Warning>
   `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm_delete_file`). An unprefixed key never matches, so the tool runs without approval.
@@ -339,6 +359,10 @@ async function bookWithElicitation(serverUrl: string) {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc8ee095-52ca-403e-800f-e75479cdff90/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 `createMCPElicitationResume` addresses the answer to the interrupt that requested it. The response uses the server's request key. Build every resume value with `createMCPElicitationResume` rather than a bare `{ responses }` object, which does not say which interrupt it answers.
 

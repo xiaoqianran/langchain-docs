@@ -9,7 +9,7 @@
 技能将特定于任务的过程和支持文件打包到可重用的目录中。 MDA 会自动发现它们。仅当任务与 frontmatter 中的描述匹配时，代理才会加载技能的完整内容。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 将每个技能放在项目根目录下的`skills/`下：
@@ -83,10 +83,10 @@ my-agent/
 
 ## 何时使用技能
 
-|概念|角色 |加载时间 |
+|概念 |角色 |加载时间 |
 | - | - | - |
 | **[Instructions](/langsmith/python/managed-deep-agents-instructions)** |永远在线的系统提示 |每次跑步 |
-| **技能** |特定任务的程序 |当代理选择他们时|
+| **技能** |特定任务的程序 |当代理选择他们时 |
 | **[Memory](/langsmith/python/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
 有关更多信息，请参阅[Project structure](/langsmith/python/managed-deep-agents-project-structure)。

@@ -11,7 +11,7 @@ mda 命令、项目文件和部署行为的参考。
 它包含在 `managed-deepagents` Python 包中。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 要了解最快的端到端路径，请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/python/managed-deep-agents-identity)、[Memory](/langsmith/python/managed-deep-agents-memory)、[Evals](/langsmith/python/managed-deep-agents-evals)、[Custom tools](/langsmith/python/managed-deep-agents-tools)、[Connections](/langsmith/python/managed-deep-agents-connections)、[Custom middleware](/langsmith/python/managed-deep-agents-middleware)、[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)、[Channels](/langsmith/python/managed-deep-agents-channels)、[Schedules](/langsmith/python/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/python/managed-deep-agents-deploy)。
@@ -48,7 +48,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 将非保留的 `.env` 条目（例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证）作为托管部署机密转发。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令 |使用|
+## 命令概述|命令|使用|
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -127,7 +127,7 @@ uv run mda build
 uv run mda evals init -i
 ```
 
-|命令或标志|使用|
+|命令或标志 |使用|
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -168,7 +168,7 @@ uv run mda dev
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令 |使用|
+|命令|使用|
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |

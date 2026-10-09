@@ -720,7 +720,7 @@ const agent = createAgent({
 
 有关其他内存管理技术，请参阅[short-term memory guide](/oss/javascript/langchain/short-term-memory)。
 
-## 9. 增加灵活性：返回某些工作流程需要允许用户返回到之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
+## 9. 增加灵活性：返回某些工作流程需要允许用户返回之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
 
 <Tip>
   如果您的工作流程需要在大多数步骤之间进行任意转换，请考虑您是否需要结构化工作流程。当步骤遵循清晰的顺序进展并偶尔向后过渡以进行修正时，此模式效果最佳。
@@ -805,6 +805,7 @@ const result = await agent.invoke(
   import { tool, ToolMessage, type ToolRuntime, HumanMessage } from "langchain";
   import { Command, MemorySaver, StateSchema } from "@langchain/langgraph";
   import { ChatOpenAI } from "@langchain/openai";
+  import { uuid7 } from "langsmith";
 
   // Define the possible workflow steps
   const SupportStepSchema = z.enum([
@@ -1012,7 +1013,7 @@ const result = await agent.invoke(
   });
 
   // Configuration for this conversation thread
-  const threadId = crypto.randomUUID();
+  const threadId = uuid7();
   const config = { configurable: { thread_id: threadId } };
 
   // Turn 1: Initial message - starts with warranty_collector step

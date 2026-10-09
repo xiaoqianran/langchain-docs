@@ -12,8 +12,6 @@
 
 **Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
 
-有关 SemIf 的可用性和用法，请参阅[Decision models](/langsmith/llm-gateway-decision-models#semif)。
-
 网关根据其模型 ID 路由每个请求。诸如 `moonshotai/kimi-k3` 之类的托管模型 slug 使用 Gateway Credits。以配置的自带密钥提供程序（例如 `anthropic/claude-opus-5`）开头的模型 ID 会改用该提供程序的密钥。
 
 <Card title="Base URL" icon="link">
@@ -53,7 +51,7 @@ curl https://gateway.smith.langchain.com/v1/models \
 
 ## 拨打电话
 
-将 OpenAI 兼容客户端指向 `https://gateway.smith.langchain.com/v1`，使用您的 LangSmith API 密钥进行身份验证，并将 `model` 设置为托管模型 ID。
+将与 OpenAI 兼容的客户端指向 `https://gateway.smith.langchain.com/v1`，使用您的 LangSmith API 密钥进行身份验证，并将 `model` 设置为托管模型 ID。
 
 <CodeGroup>
   ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

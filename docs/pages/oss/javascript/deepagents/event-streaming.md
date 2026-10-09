@@ -84,7 +84,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1d3f1455-4a9c-4607-aa1d-115948f2e1fa/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/772cbde0-b8d3-44ec-9ac8-3641bc61a567/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -110,6 +110,10 @@ for await (const subagent of stream.subagents) {
 
 await stream.output;
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871e73d9-e98c-4ac5-bfec-2e6ab7a6bd6b/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Stream tool calls
 
@@ -204,7 +208,7 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/467e4c96-80a0-42ba-9f5f-d869b74e5899/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ad72588-6334-4d84-ad85-f66e6c13f0f3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -232,7 +236,7 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4113a4d2-b6d8-4f2a-ad1d-2ab9e29859e6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da37e344-18bb-4a36-be3e-1a1740f281c6/r">
   Open a public LangSmith run for this example.
 </Card>
 

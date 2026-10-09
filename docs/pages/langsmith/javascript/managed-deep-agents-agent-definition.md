@@ -7,7 +7,7 @@ Configure the model and core capabilities of a managed deep agent.
 The agent definition selects the model and core capabilities of a managed deep agent.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 The agent entry lives at the project root:

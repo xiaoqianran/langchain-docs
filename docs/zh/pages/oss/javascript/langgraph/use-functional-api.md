@@ -294,7 +294,7 @@ for await (const chunk of stream.values) {
 // 10
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8737a21a-1a44-47ce-b3bd-880a15fc7375/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0104f36d-4746-4819-9bfd-09bc642b913d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

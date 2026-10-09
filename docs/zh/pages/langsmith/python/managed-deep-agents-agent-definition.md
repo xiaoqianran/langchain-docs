@@ -9,7 +9,7 @@
 代理定义选择托管深度代理的模型和核心功能。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 代理条目位于项目根目录：
@@ -54,7 +54,7 @@ my-agent/
 
 通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。要为每次运行选择系统提示符、技能、MCP 服务器或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
-`define_deep_agent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 对其进行编译。下面的参数是 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 表面，不包含运行时拥有的参数。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+`define_deep_agent` 不编译代理。它返回一个定义，托管运行时在部署时使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 对其进行编译。下面的参数是[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent)表面，不包含运行时拥有的参数。参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ＃＃ 参数|参数|它有什么作用 |
 | - | - |
@@ -114,9 +114,9 @@ await client.runs.create(
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略 |已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略 |已选择 |已清除 |
 | - | - | - | - |
-| `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
+| `instructions` | Uses `instructions.md`. |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
 | `mcp` |使用 `mcp` 声明。 |仅使用选定的 MCP 定义。 | `[]` 不公开 MCP 工具。 |
 | `sandbox` |使用 `sandbox` 声明。 |使用提供的沙箱。 | `None` 禁用沙箱。 |
@@ -153,13 +153,13 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
     )
 ```
 
-每次运行时不会选择内存。在项目的内存文件中声明它，并使用 `allow` 策略控制每次运行的访问。参见[Control access to a layer](/langsmith/python/managed-deep-agents-memory#control-access-to-a-layer)。
+每次运行时不会选择内存。在项目的内存文件中声明它，并使用 `allow` 策略控制每次运行的访问。 See [Control access to a layer](/langsmith/python/managed-deep-agents-memory#control-access-to-a-layer).
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：* **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：* **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
-* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图 ID 和默认部署名称。
+* **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图形 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
 
 要更改运行中模型调用之间的行为，请使用 [custom middleware](/langsmith/python/managed-deep-agents-middleware)。

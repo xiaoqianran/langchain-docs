@@ -127,6 +127,7 @@
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -138,7 +139,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -152,6 +153,7 @@
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -163,7 +165,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -177,6 +179,7 @@
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -188,7 +191,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -202,6 +205,7 @@
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -213,7 +217,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -227,6 +231,7 @@
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -238,7 +243,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -252,6 +257,7 @@
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -263,7 +269,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -277,6 +283,7 @@
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -288,7 +295,7 @@
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -302,7 +309,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/92d99101-7d19-46ac-8050-24d1cad6039b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -361,7 +368,7 @@ LangSmith 的 [role-based access control](/langsmith/rbac) 控制团队中的哪
 
 当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。
 
-**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并显示 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
+**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并呈现 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "@langchain/auth";
@@ -414,9 +421,9 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 ### 范围界定
 
-记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例|示例|
+记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例 |示例|
 | - | - | - | - |
-| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答”|
+| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
 | **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|
 
@@ -868,7 +875,7 @@ function App() {
 }
 ```
 
-对于产生许多子代理的深度代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
+对于产生许多子代理的深层代理工作流程，请在提交时设置较高的 `recursionLimit` 以避免切断长时间运行的执行：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream.submit(

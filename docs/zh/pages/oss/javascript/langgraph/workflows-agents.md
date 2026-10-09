@@ -14,7 +14,7 @@
 LangGraph 在构建代理和工作流时提供了多项优势，包括 [persistence](/oss/javascript/langgraph/persistence)、[streaming](/oss/javascript/langgraph/streaming)、调试支持以及 [deployment](/oss/javascript/langgraph/deploy)。
 
 <Tip>
-  使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-workflows-agents) 跟踪并比较这些工作流程模式。按照[tracing quickstart](/langsmith/trace-with-langgraph)查看数据如何流经每个步骤。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+  使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langgraph-workflows-agents) 跟踪并比较这些工作流程模式。按照[tracing quickstart](/langsmith/trace-with-langgraph)查看数据如何流经每个步骤。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 设置
@@ -686,7 +686,7 @@ Orchestrator-worker 工作流程提供了更大的灵活性，并且通常在无
   ```
 </CodeGroup>
 
-### 在LangGraph创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作人员输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
+### 在LangGraph创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, ReducedValue, GraphNode, Send } from "@langchain/langgraph";
@@ -1239,7 +1239,7 @@ const result = await graph.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8f11f433-50ac-4b4c-9502-14c299000473/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bb52f523-7662-4984-9b46-d3b0132b962a/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

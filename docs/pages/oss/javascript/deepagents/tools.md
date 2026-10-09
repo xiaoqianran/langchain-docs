@@ -79,6 +79,10 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/60b06506-b368-4faa-bb2f-6a838968ee8d/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## Custom tools
 
 Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
@@ -600,6 +604,10 @@ npm install @langchain/mcp-adapters
   });
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8d5c96b3-9582-4dc8-b89b-8f667e64836d/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/javascript/langchain/mcp).
 

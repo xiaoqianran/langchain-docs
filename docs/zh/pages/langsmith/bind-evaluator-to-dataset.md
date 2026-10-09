@@ -27,7 +27,7 @@ LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
 
 ## 决策模型评估器
 
-决策模型评估器使用决策模型（例如 SemIf 或 Jev）作为判断者。在数据集上，您可以将参考输出映射到评估器的状态，并提出将其与运行输出进行比较的问题。有关说明，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
+决策模型评估者使用决策模型（例如 Jev）作为判断者。在数据集上，您可以将参考输出映射到评估器的状态，并提出将其与运行输出进行比较的问题。有关说明，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
 
 ## 自定义代码评估器
 

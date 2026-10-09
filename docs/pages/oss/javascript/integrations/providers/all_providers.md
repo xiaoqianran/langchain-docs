@@ -467,6 +467,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search results from the Perplexity Search API.
   </Card>
 
+  <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
+    People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
+  </Card>
+
   <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
     Phone approvals for LangGraph.js agents. An approval node built on pusharyInterrupt() asks your user on their phone, and the graph routes to the protected node only on Approve; with no answer it returns null, so the action does not run. createAskHumanTool() adds an optional ask\_human tool.
   </Card>

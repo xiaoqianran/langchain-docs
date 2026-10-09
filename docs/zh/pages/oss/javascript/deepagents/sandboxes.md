@@ -41,7 +41,7 @@ graph LR
 ## 为什么要使用沙箱？
 
 沙箱用于安全性。
-它们允许代理执行任意代码、访问文件并使用网络，而不会损害您的凭据、本地文件或主机系统。
+它们允许代理执行任意代码、访问文件和使用网络，而不会损害您的凭据、本地文件或主机系统。
 当代理自主运行时，这种隔离至关重要。沙箱特别适用于：
 
 * 编码代理：自主运行的代理可以使用 shell、git、克隆存储库（许多提供商提供本机 git API，例如[Daytona's git operations](https://www.daytona.io/docs/en/git-operations/)），并运行 Docker-in-Docker 来构建和测试管道
@@ -88,7 +88,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/736ab6fc-a61c-4ee8-bfbc-dde6bd19382c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ec47344-9aad-47cb-aa43-3d98ad5da94d/r">
   为此示例打开公共 LangSmith 运行。
 </Card><Tip>
   [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
@@ -106,7 +106,7 @@ try {
 
 沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
-有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅走向生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
+有关完整生命周期表、异步 [graph factory](/langsmith/graph-rebuild) 注释、TTL 行为、LangGraph 部署接线和客户端示例，请参阅进入生产中的 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
 
 ### 线程范围（默认）
 
@@ -608,7 +608,7 @@ graph TB
 这个设计的意思是：
 
 * **添加新的提供程序非常简单。** 实现 `execute()` — 基类处理其他所有事情。
-* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T52⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果不是，该工具将被过滤掉，代理永远不会看到它。
+* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T52⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果没有，该工具将被过滤掉，代理永远不会看到它。
 
 当代理调用 `execute` 工具时，它会提供 `command` 字符串，并返回组合的 stdout/stderr、退出代码以及输出太大时的截断通知。
 
@@ -701,6 +701,10 @@ for (const result of results) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/01ee861b-8f70-459d-bd79-116bc21c99c3/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 <Note>
   在沙箱内，代理使用自己的文件系统工具（`read_file`、`write_file`）：而不是`uploadFiles`或`downloadFiles`。这些方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
 </Note>
@@ -711,9 +715,9 @@ for (const result of results) {
 
 <Warning>
   **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
-</Warning>
+</Warning>### 安全处理秘密
 
-### 安全处理秘密如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
+如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
 
 1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但从未看到凭据。这是推荐的方法。
 

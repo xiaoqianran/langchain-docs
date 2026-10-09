@@ -62,6 +62,7 @@ import * as z from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
 
 const getUserName = tool(
   (_, config) => {
@@ -85,7 +86,7 @@ const agent = createAgent({
   contextSchema,
 });
 
-const threadId = crypto.randomUUID();
+const threadId = uuid7();
 const threadConfig = {
   configurable: { thread_id: threadId },
   context: { user_name: "John Smith" },
@@ -107,6 +108,10 @@ result = await agent.invoke(
 );
 console.log(result.messages.at(-1)?.content);
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab55241e-3982-457e-9357-a41564c847a3/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ### 长期记忆（存储）
 
@@ -275,9 +280,9 @@ const getAssistantScopedData = tool(
     schema: z.object({}),
   }
 );
-```
+```当该工具未在 LangGraph 服务器上运行时，`serverInfo` 为 `null`。
 
-当该工具未在 LangGraph 服务器上运行时，`serverInfo` 为 `null`。<Note>
+<Note>
   需要`deepagents>=1.9.0`（或`@langchain/langgraph>=1.2.8`）。
 </Note>
 
@@ -285,7 +290,7 @@ const getAssistantScopedData = tool(
 
 在LangChain中，工具由代理使用（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。
 
-对于LangGraph工作流程，工具执行由[⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode)处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
+对于 LangGraph 工作流程，工具执行由 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
 
 ### 工具返回值
 
@@ -310,6 +315,10 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce2632f4-09ef-4d71-96fb-d8e61662f9ae/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 行为：
 
 * 返回值转换为`ToolMessage`。
@@ -318,9 +327,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 
 当结果是自然可读的文本时使用此选项。
 
-#### 返回一个对象
-
-当您的工具生成模型应检查的结构化数据时，返回一个对象（例如，`dict`）。
+#### 返回一个对象当您的工具生成模型应检查的结构化数据时，返回一个对象（例如，`dict`）。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -340,7 +347,13 @@ const getWeatherData = tool(
 );
 ```
 
-行为：* 对象被序列化并作为工具输出发回。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e798b200-7e02-420a-9b50-1808b2d25b7c/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+行为：
+
+* 对象被序列化并作为工具输出发回。
 * 模型可以读取特定字段并对其进行推理。
 * 与字符串返回一样，这不会直接更新图状态。
 
@@ -375,9 +388,7 @@ const captureScreenshot = tool(
 
 有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/javascript/langchain/messages#multimodal)。
 
-#### 返回命令
-
-当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T60⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
+#### 返回命令当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T60⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
 当`Command`以当前图为目标时，请在更新中包含工具调用ID与当前工具调用匹配的`ToolMessage`。
 消息历史记录中的每个工具调用都必须有对应的`ToolMessage`。
 
@@ -408,7 +419,13 @@ const setLanguage = tool(
     schema: z.object({ language: z.string() }),
   },
 );
-```行为：
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/57a6ece9-3cd4-436c-a15e-da77946c0e2f/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+行为：
 
 * 该命令使用`update`更新状态。
 * 更新后的状态可用于同一运行中的后续步骤。
@@ -451,25 +468,23 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8f9bb682-fa0b-4264-8495-246703f0624b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/40a81784-60df-4455-861e-ddf7f4a51b2e/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
-行为：
-
-* 该工具正常执行，其输出封装在 `ToolMessage` 中。
+行为：* 该工具正常执行，其输出包装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
 * **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
-在以下情况下使用此功能：* 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
+在以下情况下使用此功能：
+
+* 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
 * 当不需要额外的推理时，您希望避免额外的模型调用。
 * 您需要确定性的、未经修改的输出：模型无法重新表述、总结或对工具结果采取行动。
 
 <Warning>
   由于模型不处理工具的输出，`return_direct=True` 不适合其结果需要进一步推理、汇总或与其他工具调用链接的工具。
-</Warning>
-
-<Warning>
+</Warning><Warning>
   **混合并行调用：** 如果模型调用 `return_direct=True` 工具以及没有 `return_direct=True` 的工具，则代理在该步骤后 **不会** 退出。它会将批次中的每个`ToolMessage`路由回模型，因此模型可以推理所有结果。仅当步骤中的每个工具调用都有 `return_direct=True` 时，`return_direct` 才会短路循环。
 </Warning>
 
@@ -647,13 +662,17 @@ const result = await agent.invoke({
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71c1f8da-7a0d-49eb-a57c-a83dc0eb188c/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 状态注入
 
-工具通过[⟦T77⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
+工具通过[⟦T77⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。
 
-## 动态工具选择
+有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
 
-使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
+## 动态工具选择使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
 根据工具是否提前已知，有两种方法：
 
@@ -801,9 +820,9 @@ const result = await agent.invoke({
         });
         ```
       </Tab>
-    </Tabs>这种方法在以下情况下效果最佳：
+    </Tabs>
 
-    * 所有可能的工具在编译/启动时都是已知的
+    这种方法在以下情况下效果最佳：* 所有可能的工具在编译/启动时都是已知的
     * 您想要根据权限、功能标志或对话状态进行过滤
     * 工具是静态的，但其可用性是动态的
 
@@ -917,7 +936,7 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 请参阅 [tools and toolkits](/oss/javascript/integrations/tools) 集成页面，获取按类别组织的可用工具的完整列表。
 
-## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一种开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为 LangChain 工具，准备好像任何其他工具一样传递给代理。
+## 来自 MCP 服务器的工具[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一种开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
 
 LangChain代理通过[⟦T95⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-mcp-adapters)库调用MCP服务器上定义的工具，该库发现服务器的工具并将其改编为LangChain工具。
 

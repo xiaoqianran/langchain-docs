@@ -139,7 +139,6 @@ To review, edit, and approve tool calls in an agent or workflow, use LangGraph's
 
   ```python {highlight={7,13}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import TypedDict
-  import uuid
 
   from langgraph.checkpoint.memory import InMemorySaver
   from langgraph.constants import START

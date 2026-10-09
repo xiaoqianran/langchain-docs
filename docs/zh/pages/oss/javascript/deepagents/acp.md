@@ -161,7 +161,7 @@ npx deepagents-acp [options]
 | `--name <name>` | `-n` |代理名称（默认：`"deepagents"`）|
 | `--description <desc>` | `-d` |代理说明 |
 | `--model <model>` | `-m` | LLM模型（默认：`"claude-sonnet-4-5-20250929"`）|
-| `--workspace <path>` | `-w` |工作区根目录（默认：cwd） |
+| `--workspace <path>` | `-w` |工作区根目录（默认：cwd）|
 | `--skills <paths>` | `-s` |以逗号分隔的技能路径 |
 | `--memory <paths>` | |逗号分隔的 AGENTS.md 路径 |
 | `--debug` | |启用调试日志记录到 stderr |
@@ -390,12 +390,16 @@ await startServer({
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c5305a5-2072-4194-b0aa-007ecdd21808/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 #### 服务器选项|选项 |类型 |默认|描述 |
 | - | - | - | - |
 | `agents` | `DeepAgentConfig \| DeepAgentConfig[]` |必填|代理配置 |
 | `serverName` | `string` | `"deepagents-acp"` | ACP | 的服务器名称
-| `serverVersion` | `string` | `"0.0.1"` |服务器版|
-| `workspaceRoot` | `string` | `process.cwd()` |工作区根目录|
+| `serverVersion` | `string` | `"0.0.1"` |服务器版 |
+| `workspaceRoot` | `string` | `process.cwd()` |工作区根目录 |
 | `debug` | `boolean` | `false` |启用调试日志记录 |
 
 #### 代理配置
@@ -505,6 +509,10 @@ const server = new DeepAgentsServer({
 await server.start();
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4966624-3c7b-4809-a2e4-f9c5edc39843/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 自定义后端
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -520,6 +528,10 @@ const server = new DeepAgentsServer({
   },
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/456029e3-e7c4-42e5-a265-826acd7d14c0/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ### 技能和记忆
 

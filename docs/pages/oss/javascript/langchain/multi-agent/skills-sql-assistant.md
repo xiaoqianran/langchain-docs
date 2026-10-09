@@ -604,8 +604,9 @@ The agent now has access to skill descriptions in its system prompt and can call
 Test the agent with a question that requires skill-specific knowledge:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { uuid7 } from "langsmith";
 // Configuration for this conversation thread
-const threadId = crypto.randomUUID();
+const threadId = uuid7();
 const config = { configurable: { thread_id: threadId } };
 
 // Ask for a SQL query
@@ -859,6 +860,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
   import { MemorySaver, Command } from "@langchain/langgraph";
   import { ChatOpenAI } from "@langchain/openai";
   import { z } from "zod";
+  import { uuid7 } from "langsmith";
 
   // A skill that can be progressively disclosed to the agent
   const SkillSchema = z.object({
@@ -1073,7 +1075,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
   });
 
   // Configuration for this conversation thread
-  const threadId = crypto.randomUUID();
+  const threadId = uuid7();
   const config = { configurable: { thread_id: threadId } };
 
   // Ask for a SQL query

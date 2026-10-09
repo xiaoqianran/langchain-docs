@@ -9,7 +9,7 @@
 代理定义选择托管深度代理的模型和核心功能。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 代理条目位于项目根目录：
@@ -112,7 +112,7 @@ await client.runs.create(threadId, "open-swe", {
 
 工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：
 
-|领域|省略 |已选择 |已清除 |
+|领域 |省略 |已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -157,7 +157,7 @@ export function agent(
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：
 
 * **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。

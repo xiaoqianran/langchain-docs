@@ -381,7 +381,7 @@ export LANGSMITH_API_KEY="lsv2_..."
 </CodeGroup>
 
 <Note>
-  对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，非OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
+  对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，则非 OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
 </Note>
 
 ## 与LangSmith网关配合使用
@@ -433,7 +433,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置|默认 |描述 |
+|设置|默认|描述 |
 | - | - | - |
 | `max_size` | 100 | 100缓存的最大提示数|
 | `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |
@@ -724,7 +724,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 ## 使用不带 LangChain 的提示
 
-如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，则可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
+如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，您可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
 
 这些转换方法依赖于LangChain集成包中的逻辑，除了您选择的官方 SDK 之外，您还需要安装适当的包作为依赖项。以下是一些示例：
 
@@ -880,11 +880,13 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
           .build()
   );
   ```
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851bb441-3c1e-4ec9-88d1-ed0a102d7ba8/r">
+    为此示例打开公共 LangSmith 运行。
+  </Card>
 </CodeGroup>
 
-## 列出、删除和点赞提示
-
-您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。有关这些方法的详细文档，请参阅[LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk)。
+## 列出、删除和点赞提示您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。有关这些方法的详细文档，请参阅[LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk)。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -926,7 +928,9 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
   // Unlike a prompt
   client.unlikePrompt("efriis/my-first-prompt");
-  ``````java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.client.LangsmithClient;
   import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
   import com.langchain.smith.models.repos.RepoDeleteParams;

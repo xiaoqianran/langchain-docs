@@ -553,6 +553,10 @@ To add custom fields, define a state schema on your middleware using `stateSchem
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e33888d-0583-4e7b-993f-5a033d502eb9/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For full details, examples, and middleware-level state schemas, see [Short-term memory](/oss/javascript/langchain/short-term-memory#customizing-agent-memory) and [Custom middleware](/oss/javascript/langchain/middleware/custom#state-updates).
 
 ## Invocation
@@ -565,6 +569,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -575,7 +580,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -594,6 +599,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -604,7 +610,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -623,6 +629,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -633,7 +640,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -652,6 +659,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -662,7 +670,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -681,6 +689,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -691,7 +700,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -710,6 +719,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -720,7 +730,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -739,6 +749,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -749,7 +760,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -768,7 +779,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e5926b4-3156-477c-83e5-969404aeb92e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8262831f-ae54-4ad3-a6d5-8b07f581b14a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -780,6 +791,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -803,13 +815,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -833,13 +846,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -863,13 +877,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -893,13 +908,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -923,13 +939,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -953,13 +970,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -983,14 +1001,14 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8b453131-3d7f-4218-a407-f724b96fb4e7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/afee5acc-3718-422c-9f72-85e9b5a07112/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1029,7 +1047,7 @@ for await (const snapshot of stream.values) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/311f121f-4400-4709-a202-2f11e972669d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da6d46ae-4947-4d53-a83e-57403981b680/r">
   Open a public LangSmith run for this example.
 </Card>
 

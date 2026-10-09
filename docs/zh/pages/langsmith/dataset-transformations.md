@@ -20,7 +20,7 @@ LangSmith 允许您将转换附加到数据集架构中的字段，这些转换�
 
 转换的主要用例是简化将生产跟踪收集到数据集中的格式，该格式可以跨模型提供者标准化，以便在下游评估/少量镜头提示等中使用。
 
-为了简化最终用户的转换设置，LangSmith 提供了一个预定义的架构，该架构将执行以下操作：* 从收集的运行中提取消息并将其转换为 openai 标准格式，这使得它们兼容所有LangChain ChatModels 和大多数模型提供商的 SDK，用于下游评估和实验
+为了简化最终用户的转换设置，LangSmith 提供了一个预定义的架构，该架构将执行以下操作：* 从收集的运行中提取消息并将其转换为 OpenAI 标准格式，这使得它们兼容所有 LangChain ChatModels 和大多数模型提供商的 SDK，用于下游评估和实验
 * 提取法学硕士使用的任何工具并将其添加到示例的输入中，以用于下游评估的可重复性
 
 <Check>
@@ -29,11 +29,11 @@ LangSmith 允许您将转换附加到数据集架构中的字段，这些转换�
 
 ### 兼容性
 
-LLM 运行收集模式旨在从 LangChain [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) 运行或从 [LangSmith OpenAI wrapper](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 跟踪的运行收集数据。
+LLM 运行收集模式旨在从 LangChain [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) 运行或从 [LangSmith OpenAI wrapper](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 跟踪运行收集数据。
 
 如果您正在跟踪的 LLM 运行不兼容，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员，我们可以提供支持。
 
-如果您想将转换应用于其他类型的运行（例如，用消息历史记录表示LangGraph状态），请直接定义您的架构并手动添加相关转换。
+如果您想将转换应用于其他类型的运行（例如，用消息历史记录表示LangGraph状态），请直接定义您的模式并手动添加相关转换。
 
 ### 启用将跟踪项目或注释队列中的运行添加到数据集时，如果它具有 LLM 运行类型，我们将默认应用聊天模型架构。
 

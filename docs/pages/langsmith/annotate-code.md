@@ -198,7 +198,7 @@ Each function is individually traced, and because they're called from within `ru
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e686a13-436f-41ec-9e21-7f38d8babcb8/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5680e7b5-1d37-428c-b02b-753429ac7f83/r">
     Open a public LangSmith run for this example.
   </Card>
 

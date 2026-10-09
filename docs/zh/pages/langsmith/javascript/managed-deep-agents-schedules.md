@@ -9,7 +9,7 @@
 托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目结构
@@ -59,7 +59,7 @@ export const schedule = defineSchedule({
 });
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 
@@ -153,7 +153,7 @@ Slack 机器人必须有权访问目的地。
 
 `schedules/` 中的声明在部署时已修复。 `schedules` API 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。从工具或[middleware](/langsmith/javascript/managed-deep-agents-middleware)调用它。每个计划都属于当前用户或代理。代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
 
-当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，该计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划会继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `newThread` 决定时间表使用两者中的哪一个。
 
@@ -217,7 +217,7 @@ export const followUpLater = tool(
 );
 ```
 
-一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
+一次性计划默认为当前线程，因此它的运行将继续创建它的对话并在同一 Slack 线程中进行回复。
 
 ### 创建选项
 
@@ -230,7 +230,7 @@ export const followUpLater = tool(
 </ParamField>
 
 <ParamField type="Date | string">
-  `Date`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟、最多 365 天的未来。
+  `Date`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。必须是至少一分钟、最多 365 天的未来。
 </ParamField>
 
 <ParamField type="string">

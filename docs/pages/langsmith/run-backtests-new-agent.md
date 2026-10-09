@@ -128,7 +128,7 @@ You can select the runs to backtest on using the `filter` argument of `list_runs
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import datetime, timedelta, timezone
-from uuid import uuid4
+from langsmith import uuid7
 from langsmith import Client
 from langsmith.beta import convert_runs_to_test
 
@@ -159,7 +159,7 @@ prod_runs = list(
 # Name of the dataset we want to create
 dataset_name = f'{project_name}-backtesting {start_time.strftime("%Y-%m-%d")}-{end_time.strftime("%Y-%m-%d")}'
 # Name of the experiment we want to create from the historical runs
-baseline_experiment_name = f"prod-baseline-gpt-3.5-turbo-{str(uuid4())[:4]}"
+baseline_experiment_name = f"prod-baseline-gpt-3.5-turbo-{str(uuid7())[:4]}"
 
 # This converts the runs to a dataset + experiment
 convert_runs_to_test(

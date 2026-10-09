@@ -141,6 +141,7 @@ The below document loaders allow you to load data from common data formats.
   | [`Azure blob storage loader`](/oss/python/integrations/document_loaders/azure_blob_storage) | <span><a href="https://pypi.org/project/langchain-azure-storage/">  <img alt="Downloads per month" /></a></span> |
   | [`PDFParser`](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
   | [`SingleStoreLoader`](https://github.com/singlestore-labs/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
+  | [`FlatmarkLoader`](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | <span><a href="https://pypi.org/project/langchain-flatmark/">  <img alt="Downloads per month" /></a></span> |
   | [`CapslaneLoader`](https://capslane.com/integrations/langchain) | <span><a href="https://pypi.org/project/capslane/">  <img alt="Downloads per month" /></a></span> |
   | [`SecureLangChainLoader`](https://github.com/arsbr/Veritensor) | <span><a href="https://pypi.org/project/veritensor/">  <img alt="Downloads per month" /></a></span> |
   | [`SpidraLoader`](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span> |

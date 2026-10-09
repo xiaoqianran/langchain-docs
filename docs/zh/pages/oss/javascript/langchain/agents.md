@@ -6,19 +6,19 @@
 
 构建一个LangChain代理：一个循环调用工具的模型，直到任务完成，由提示、工具和中间件组成。
 
-An agent is a model calling tools in a loop until a given task is complete.
+代理是一个循环调用工具的模型，直到给定的任务完成。
 
 <img alt="Core agent loop diagram" />
 
 线束是围绕该循环的一切：提示、工具以及塑造模型行为的任何中间件。
 
 <Note>
-  **Agent = Model + Harness**
+  **特工=模特+线束**
 
   线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 </Note>
 
-[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) is a highly configurable harness. At its simplest, you can create one with:
+[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的线束。最简单的是，您可以使用以下命令创建一个：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -385,11 +385,11 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
 
 ### 代理状态
 
-每个代理都通过一个 `AgentState` 对象来管理其执行上下文，该对象保存当前对话历史记录以及您的工具和中间件所需的任何自定义字段。
+Every agent manages its execution context through an `AgentState` object that holds the current conversation history and any custom fields your tools and middleware need.
 
 内置字段是：|领域 |类型 |描述 |
 | - | - | - |
-| `messages` | `BaseMessage[]` |当前线程的完整对话历史记录。仅附加：添加新消息，从不替换。 |
+| `messages` | `BaseMessage[]` |当前线程的完整对话历史记录。仅追加：添加新消息，永不替换。 |
 
 `AgentState` 也是传递给每个节点样式中间件挂钩的类型（`beforeModel`、`afterModel` 等）。钩子接收当前状态并可以返回更新对象以合并回其中。
 
@@ -551,18 +551,21 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e33888d-0583-4e7b-993f-5a033d502eb9/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 有关完整的详细信息、示例和中间件级状态模式，请参阅[Short-term memory](/oss/javascript/langchain/short-term-memory#customizing-agent-memory)和[Custom middleware](/oss/javascript/langchain/middleware/custom#state-updates)。
 
 ## 调用
 
 <Tip>
-  跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
-</Tip>
-
-您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+  跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
+</Tip>You can invoke an agent with a message.在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。 All agents include a [sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue) in their state;要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -573,7 +576,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -592,6 +595,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -602,7 +606,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -621,6 +625,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -631,7 +636,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -650,6 +655,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -660,7 +666,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -676,7 +682,10 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     { messages: [{ role: "user", content: "What about tomorrow?" }] },
     config,
   );
-  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -687,7 +696,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -706,6 +715,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -716,7 +726,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -735,6 +745,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
@@ -745,7 +756,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   let result = await agent.invoke(
     {
@@ -764,8 +775,8 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e5926b4-3156-477c-83e5-969404aeb92e/r">
-  为此示例打开公共 LangSmith 运行。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8262831f-ae54-4ad3-a6d5-8b07f581b14a/r">
+  Open a public LangSmith run for this example.
 </Card>
 
 <Note>
@@ -776,6 +787,7 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -799,13 +811,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -829,13 +842,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -859,13 +873,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -889,13 +904,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -919,13 +935,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -949,13 +966,14 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import * as z from "zod";
   import { AIMessage } from "@langchain/core/messages";
   import { createAgent } from "langchain";
@@ -979,18 +997,16 @@ Shape how the agent approaches tasks.系统提示参数接受字符串或`System
       ],
     },
     {
-      configurable: { thread_id: crypto.randomUUID() },
+      configurable: { thread_id: uuid7() },
       context: { user_id: "user-123" },
     },
   );
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8b453131-3d7f-4218-a407-f724b96fb4e7/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
-
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/afee5acc-3718-422c-9f72-85e9b5a07112/r">
+  Open a public LangSmith run for this example.
+</Card>`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
 
 ## 流媒体
 
@@ -1023,7 +1039,9 @@ for await (const snapshot of stream.values) {
     console.log(`Calling tools: ${toolCallNames.join(", ")}`);
   }
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/311f121f-4400-4709-a202-2f11e972669d/r">
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da6d46ae-4947-4d53-a83e-57403981b680/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1044,9 +1062,7 @@ for await (const snapshot of stream.values) {
 <CardGroup>
   <Card title="Execution environment" icon="bolt" href="#execution-environment">
     工具、文件系统、沙箱和代码执行
-  </Card>
-
-  <Card title="Context management" icon="database" href="#context-management">
+  </Card><Card title="Context management" icon="database" href="#context-management">
     总结、记忆、技巧、提示缓存
   </Card>
 
@@ -1065,11 +1081,13 @@ for await (const snapshot of stream.values) {
   <Card title="Steering" icon="user" href="#steering">
     在采取高影响力行动之前进行人机交互批准
   </Card>
-</CardGroup><Tip>
-  `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
+</CardGroup>
+
+<Tip>
+  `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。 See [Deep Agents](/oss/javascript/deepagents/harness) for the full prebuilt harness.
 </Tip>
 
-### 执行环境
+### Execution environment
 
 当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
 
@@ -1152,7 +1170,7 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-参见[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
+See [⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware), [Sandboxes](/oss/javascript/deepagents/sandboxes), [Interpreters](/oss/javascript/deepagents/interpreters).
 
 <Note>
   此示例从 `deepagents` 包导入。安装它：
@@ -1172,9 +1190,7 @@ for await (const snapshot of stream.values) {
   </CodeGroup>
 </Note>
 
-### 上下文管理
-
-每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。摘要在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
+### 上下文管理每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。摘要在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1267,7 +1283,9 @@ for await (const snapshot of stream.values) {
       createSkillsMiddleware({ backend, sources: ["./skills/"] }),
     ],
   });
-  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
   import {
     StateBackend,
@@ -1657,7 +1675,7 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-参见[Subagents](/oss/javascript/langchain/multi-agent/subagents)。
+See [Subagents](/oss/javascript/langchain/multi-agent/subagents).
 
 <Note>
   此示例从 `deepagents` 包导入。安装它：
@@ -1677,9 +1695,7 @@ for await (const snapshot of stream.values) {
   </CodeGroup>
 </Note>
 
-### 命名您的代理人
-
-可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
+### Name your agent可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1739,7 +1755,9 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-### 容错生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
+### 容错
+
+生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2047,9 +2065,7 @@ for await (const snapshot of stream.values) {
 
 参见[⟦T152⟧](https://reference.langchain.com/javascript/langchain/index/piiMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-### 转向
-
-完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
+### 转向完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2172,7 +2188,9 @@ for await (const snapshot of stream.values) {
   ```
 </CodeGroup>
 
-参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。### 中间件资源
+参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
+
+### 中间件资源
 
 <CardGroup>
   <Card title="Middleware overview" icon="route" href="/oss/javascript/langchain/middleware/overview">

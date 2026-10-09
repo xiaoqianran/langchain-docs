@@ -71,6 +71,10 @@ async function main() {
 await main();
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00d2cbd2-4f4b-4f31-8346-041c7412c083/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 <Accordion title="LangChain docs MCP server">
   [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。
 
@@ -102,9 +106,13 @@ await main();
   }
   ```
 
-  <Note>
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/38191417-0728-47c9-bede-d0544de2af17/r">
+    为此示例打开公共 LangSmith 运行。
+  </Card><Note>
     文档 MCP 服务器是公共的，不需要 API 密钥。有关 IDE 和编码代理设置（Claude Code、Cursor 等），请参阅 [Use docs programmatically](/use-these-docs)。
-  </Note>服务器公开这些工具：
+  </Note>
+
+  服务器公开这些工具：
 
   |工具|描述 |
   | - | - |
@@ -152,13 +160,17 @@ try {
 }
 ```
 
-每个服务器定义都可以使用以下传输之一：
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c2129d38-77f6-42d0-ab37-d414fc067ee6/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-* **stdio**：提供`command`和`args`。适配器作为子进程启动命令并通过标准输入和输出进行通信。
+每个服务器定义都可以使用以下传输之一：* **stdio**：提供`command`和`args`。适配器作为子进程启动命令并通过标准输入和输出进行通信。
 * **流式 HTTP**：提供 `url`。这是基于 URL 的服务器的默认传输，因此 `transport: "http"` 是可选的。
 * **SSE**：提供`url`并设置`transport: "sse"`。仅将此传输用于公开 SSE 端点的旧服务器。
 
-传输选择和协议协商是分开的。可选的`mode`设置控制客户端接受哪个MCP协议时代。参见[Protocol eras](/oss/javascript/langchain/mcp/connections#protocol-eras)。<Note>
+传输选择和协议协商是分开的。可选的`mode`设置控制客户端接受哪个MCP协议时代。参见[Protocol eras](/oss/javascript/langchain/mcp/connections#protocol-eras)。
+
+<Note>
   对于新的远程服务器，请省略 `transport` 和 `mode`。该适配器使用可自动协议协商的 Streamable HTTP。仅当连接到具有已知旧要求的服务器时才指定这些设置。
 </Note>
 

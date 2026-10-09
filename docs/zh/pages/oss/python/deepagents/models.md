@@ -109,7 +109,7 @@ register_provider_profile(
 有关完整字段列表、合并语义和插件打包，请参阅[Profiles](/oss/python/deepagents/profiles)。
 
 <Tip>
-  要塑造模型构建后*代理*的行为方式，请使用[harness profile](/oss/python/deepagents/profiles#harness-profiles)。
+  要确定模型构建后*代理*的行为方式，请使用[harness profile](/oss/python/deepagents/profiles#harness-profiles)。
 </Tip>
 
 ### OpenAI 和响应 API
@@ -186,7 +186,7 @@ result = agent.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7dd40477-eaed-45b0-beb8-59be80e1758d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d7ab3fb7-b497-4399-aa90-40d4a26ac121/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

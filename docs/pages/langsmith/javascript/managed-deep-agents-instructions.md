@@ -7,7 +7,7 @@ Define the system prompt for a managed deep agent in instructions.md.
 Instructions define always-on agent behavior. They form the core of the agent's system prompt.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Put the instructions for your agent into `instructions.md` at the project root:

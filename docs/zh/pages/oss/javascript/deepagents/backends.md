@@ -208,6 +208,10 @@ const agent2 = createDeepAgent({
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 **它是如何工作的：**
 
 * 在可配置的`root_dir`下读取/写入真实文件。
@@ -245,7 +249,7 @@ const agent2 = createDeepAgent({
 
 <Warning>
   该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-  请务必谨慎使用，并且仅在适当的环境中使用。
+  请极其谨慎地使用，并且仅在适当的环境中使用。
 
   **适当的用例：**
 
@@ -489,7 +493,7 @@ const agent2 = createDeepAgent({
 
 #### 命名空间工厂
 
-命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
+命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
@@ -501,7 +505,7 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 
 * `rt.context` - 通过 LangGraph 的 [context schema](/oss/javascript/langgraph/graph-api#runtime-context) 传递的用户提供的上下文（例如，`user_id`）
 
-* `rt.serverInfo`—在 LangGraph 服务器上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
+* `rt.serverInfo`—在 LangGraph 服务器上运行时特定于服务器的元数据（助理 ID、图形 ID、经过身份验证的用户）
 
 * `rt.executionInfo`—执行身份信息（线程ID、运行ID、检查点ID）
 
@@ -772,7 +776,7 @@ const agent = createDeepAgent({
 * `ls`、`glob`、`grep`聚合结果并显示原始路径前缀。
 
 笔记：* 较长的前缀获胜（例如，路由 `"/memories/projects/"` 可以覆盖 `"/memories/"`）。
-* 对于 StoreBackend 路由，确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
+* 对于 StoreBackend 路由，请确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
 * Deep Agents 将内部数据（卸载工具结果、对话历史记录）写入默认后端。使用 `StateBackend` 作为默认值可以保持这些工件短暂并避免将它们写入磁盘或持久存储。有关完整示例，请参阅[FilesystemBackend tip](#filesystembackend-local-disk)。
 
 ## 卸载二进制内容
@@ -1020,7 +1024,7 @@ type FileData =
 |已弃用 |更换|
 | - | - |
 | `BackendFactory`型 |直接传递后端实例 |
-| `BackendRuntime`接口 |后端在内部解析上下文 |
+| `BackendRuntime`接口|后端在内部解析上下文 |
 | `StateBackend(runtime, options?)` 构造函数重载 | `new StateBackend(options?)` |
 | `StoreBackend(stateAndStore, options?)` 构造函数重载 | `new StoreBackend(options?)` |
 | `WriteResult` 和 `EditResult` 上的`filesUpdate` 字段 |状态写入现在由后端在内部处理 |

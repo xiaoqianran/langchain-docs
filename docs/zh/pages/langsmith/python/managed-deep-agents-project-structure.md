@@ -9,7 +9,7 @@
 托管 Deep Agents 项目是一个普通的 Python 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目布局
@@ -54,9 +54,9 @@ my-agent/
 
 * **托管上下文**：[⟦T5⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T6⟧](/langsmith/python/managed-deep-agents-skills)下的每个目录都包含特定于任务的指令，例如`SKILL.md`和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/python/managed-deep-agents-memory) 也由 Context Hub 支持。
 
-* **应用程序代码**：[⟦T10⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T11⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。
+* **应用程序代码**：[⟦T10⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T11⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
 
-  |路径|启用|
+* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。|路径|启用|
   | - | - |
   | `identity.py` | [Caller authentication](/langsmith/python/managed-deep-agents-identity) |
   | `memory.py` | [Durable memory](/langsmith/python/managed-deep-agents-memory) |
@@ -69,14 +69,16 @@ my-agent/
 
 * **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系，这也设置了[deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version)。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
-* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
+* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
 
 ## 后续步骤
 
 <CardGroup>
   <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
     使用 `mda` CLI 创建并部署您的第一个托管深度代理。
-  </Card><Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
+  </Card>
+
+  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
     为快速入门研究助手添加持久记忆和每日日程安排。
   </Card>
 </CardGroup>

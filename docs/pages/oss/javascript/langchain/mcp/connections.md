@@ -46,6 +46,10 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54f2fa78-9b4c-445a-94a2-27f4cdaa4e67/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 `close()` aborts in-flight adapter work, closes its connections, and clears its caches. You can call `listTools()` again to open fresh connections, but use the newly returned tools. Previously returned tools retain their closed clients.
 
 ## Multiple servers
@@ -77,6 +81,10 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637a53d2-a23e-4691-b70c-7bf3d8de9755/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 `listToolsets()` groups tools by server name. `listTools()` returns one array; pass a server name or an array of names to select which tools it returns. Selection filters the result, but discovery still contacts every configured server. A failure on an unselected server can fail the call.
 
 The adapter prefixes tool names with their server name by default, such as `calendar_search` and `files_search`. Set `prefixToolNameWithServerName: false` to keep raw names. `listTools()` throws if its selected tools contain duplicate names.
@@ -106,6 +114,10 @@ export async function makeGraph() {
   });
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d5c9bc74-bbab-4f0f-97bd-e9982ee4b050/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Keep the adapter open across runs. Close it during application shutdown, after active runs finish. For runs with different user credentials, see [Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication).
 

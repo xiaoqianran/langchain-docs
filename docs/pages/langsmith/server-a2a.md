@@ -350,9 +350,7 @@ This example demonstrates how two agents can communicate by sending JSON-RPC mes
 import asyncio
 import aiohttp
 import os
-import uuid
-
-
+from langsmith import uuid7
 def extract_text(result: dict) -> str:
     """Best-effort extraction of response text from an A2A result."""
     if "error" in result:
@@ -378,7 +376,7 @@ async def send_message(session, port, assistant_id, text, context_id=None):
     message = {
         "role": "user",
         "parts": [{"kind": "text", "text": text}],
-        "messageId": str(uuid.uuid4()),
+        "messageId": str(uuid7()),
     }
 
     # A2A multi-turn continuity: reuse contextId across turns and agents.
@@ -388,7 +386,7 @@ async def send_message(session, port, assistant_id, text, context_id=None):
 
     payload = {
         "jsonrpc": "2.0",
-        "id": str(uuid.uuid4()),
+        "id": str(uuid7()),
         "method": "message/send",
         "params": {"message": message},
     }
@@ -473,9 +471,7 @@ The following code snippet demonstrates the key concepts. For a complete runnabl
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 import aiohttp
-import uuid
-
-
+from langsmith import uuid7
 async def send_message(session, url, text, context_id=None):
     """Send an A2A message and return (response_text, context_id)."""
 
@@ -486,7 +482,7 @@ async def send_message(session, url, text, context_id=None):
     message = {
         "role": "user",
         "parts": [{"kind": "text", "text": text}],
-        "messageId": str(uuid.uuid4()),
+        "messageId": str(uuid7()),
     }
     if context_id:
         message["contextId"] = context_id
@@ -496,7 +492,7 @@ async def send_message(session, url, text, context_id=None):
     # LangGraph thread_id, so no separate tracing field is needed.
     payload = {
         "jsonrpc": "2.0",
-        "id": str(uuid.uuid4()),
+        "id": str(uuid7()),
         "method": "message/send",
         "params": {"message": message},
     }

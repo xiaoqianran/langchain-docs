@@ -7,7 +7,7 @@ Understand how Managed Deep Agents stores instructions, skills, and durable memo
 Managed Deep Agents stores deploy-owned instructions and skills, and optional durable memory, in [LangSmith Context Hub](/langsmith/use-the-context-hub). That split lets you change agent behavior without rebuilding application code, while the project remains the source of truth for lasting instruction and skill updates.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 ## What lives in Context Hub

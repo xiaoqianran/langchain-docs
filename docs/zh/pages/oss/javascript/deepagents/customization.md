@@ -94,7 +94,11 @@
     skills: ["./skills/"],
   });
   ```
-</CodeGroup>|参数|它有什么作用 |
+</CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5749bda2-c929-4fca-bbf7-237e7c9a7d2d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>|参数|它有什么作用 |
 | - | - |
 | `model` |使用哪种型号 |
 | `systemPrompt` |代理定制说明 |
@@ -117,7 +121,7 @@
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 型号传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
+## 型号传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅 [supported models](/oss/javascript/deepagents/models#supported-models) 了解所有提供商，并参阅 [suggested models](/oss/javascript/deepagents/models#suggested-models) 了解经过测试的建议。
 
 <Tip>
   使用`provider:model`格式（例如`openai:gpt-5.5`）可以在模型之间快速切换。
@@ -1073,9 +1077,13 @@ npm install @langchain/mcp-adapters
   ```
 </CodeGroup>
 
-<Note>
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/106b59e4-4dc2-4539-b035-4f4a27cac53b/r">
+  为此示例打开公共 LangSmith 运行。
+</Card><Note>
   除了字符串之外，主代理还接受具有结构化[content blocks](/oss/javascript/langchain/messages#standard-content-blocks)的[⟦T169⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)； Deep Agents 保留这些块（[subagent](/oss/javascript/deepagents/subagents) 字典规范保留字符串）。
-</Note><AccordionGroup>
+</Note>
+
+<AccordionGroup>
   <Accordion title="Subagent prompts">
     声明式 [subagents](/oss/javascript/deepagents/subagents) 根据自己的模型解析配置文件覆盖，然后将解析的配置文件的 `base_system_prompt` / `system_prompt_suffix` 应用到子代理编写的 `system_prompt`。仅附带 `system_prompt_suffix`（内置 Anthropic / OpenAI 配置文件的常见情况）的配置文件会附加到编写的提示中。设置 `base_system_prompt` 的配置文件会直接替换它。
   </Accordion>
@@ -1111,11 +1119,11 @@ npm install @langchain/mcp-adapters
 
 ## 中间件
 
-Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。
+Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。将中间件传递给 `createDeepAgent` 的 `middleware` 参数。自定义中间件附加在[Deep Agents stack](#deep-agents-stack)中的[⟦T181⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
 
-将中间件传递给 `createDeepAgent` 的 `middleware` 参数。自定义中间件附加在[Deep Agents stack](#deep-agents-stack)中的[⟦T181⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
+### Deep Agents 堆栈
 
-### Deep Agents 堆栈`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 贡献它们时才出现的槽。
+`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 贡献它们时才出现的槽。
 
 #### 裸栈
 
@@ -1134,7 +1142,7 @@ Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overv
 
 1. [⟦T188⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您通过`skills`时。 **在**文件系统中间件之前注入，因此技能元数据在文件工具运行之前可用。
 
-2. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。3. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
+2. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。3. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 4. [⟦T194⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。
 
@@ -1158,7 +1166,7 @@ Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overv
 
 ### 同步子代理堆栈
 
-内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与主要代理在广泛的形状上匹配（文件系统、摘要、补丁、配置文件附加、Anthropic和基岩缓存、可选权限），但有两点不同：* **技能在这些内部代理上** [⟦T208⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) 运行（在主代理上，当设置 `skills` 时，技能在**文件系统中间件之前运行）。
+内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它在广义上与主要代理匹配（文件系统、摘要、补丁、配置文件附加、Anthropic和基岩缓存、可选权限），但有两点不同：* **技能在这些内部代理上** [⟦T208⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) 运行（在主代理上，当设置 `skills` 时，技能在**文件系统中间件之前运行）。
 * 子代理图中**没有** [⟦T210⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开了`task` 工具）。
 
 当声明性子代理设置 `interruptOn` 时，该值将转发到子代理的 `createAgent`，从而为已配置的工具调用连接人机交互处理。
@@ -2130,7 +2138,11 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
-    </CodeGroup><Tip>
+    </CodeGroup>
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card><Tip>
       将 `FilesystemBackend` 包装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
     </Tip>
   </Tab>
@@ -2140,7 +2152,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
     <Warning>
       该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-      请务必谨慎使用，并且仅在适当的环境中使用。
+      请极其谨慎地使用，并且仅在适当的环境中使用。
       有关更多信息，请参阅[⟦T226⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
     </Warning>
 
@@ -2620,7 +2632,11 @@ const agent = createDeepAgent({
   },
   checkpointer, // Required!
 });
-```您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
 欲了解更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能
@@ -2719,6 +2735,10 @@ const agent = createDeepAgent({
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="FilesystemBackend">
@@ -2760,14 +2780,16 @@ const agent = createDeepAgent({
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
 ## 内存
 
-使用 [⟦T233⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。
-
-<Tip>
+使用 [⟦T233⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。<Tip>
   要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 </Tip>
 
@@ -2872,7 +2894,9 @@ const agent = createDeepAgent({
         },
         { configurable: { thread_id: "12345" } },
       );
-      ``````ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```
+
+      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent, type FileData } from "deepagents";
       import { MemorySaver } from "@langchain/langgraph";
 
@@ -3118,7 +3142,7 @@ const agent = createDeepAgent({
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c07e925-9d8f-4792-b73c-9dbee94890cd/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f5b6b3-cd51-45e2-8cef-d654bc08a205/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -3518,7 +3542,7 @@ const agent = createDeepAgent({
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ff0f387f-c0c3-4456-8081-d6fc23504942/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b67cebb9-9aee-43ca-b77b-8fce2bbd6807/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -3670,10 +3694,10 @@ const agent = createDeepAgent({
 
 ## 结构化输出
 
-Deep Agents 支持[structured output](/oss/javascript/langchain/structured-output)。
+Deep Agents支持[structured output](/oss/javascript/langchain/structured-output)。
 
 您可以通过将其作为`responseFormat`参数传递给`createDeepAgent()`调用来设置所需的结构化输出模式。
-当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
+当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structedResponse”键中返回。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -3752,22 +3776,22 @@ console.log(result.structuredResponse);
 // }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4587886-ebb6-4fbc-8b57-d41b27180770/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a33f9ad7-9ab0-4ab5-a27a-67d1d06851de/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
 有关更多信息和示例，请参阅[response format](/oss/javascript/langchain/structured-output#response-format)。
 
-## 高级
-
-`createDeepAgent` 在`createAgent` 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
+＃＃ 先进的`createDeepAgent` 在`createAgent` 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -112,6 +112,10 @@ const agent = createDeepAgent({
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## Decision types
 
 The `allowed_decisions` list controls what actions a human can take when reviewing a tool call:

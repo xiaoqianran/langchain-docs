@@ -226,6 +226,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Parallel Task API`](/oss/python/integrations/tools/parallel_task) | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span> |
   | [`StripeAgentToolkit`](/oss/python/integrations/tools/stripe) | <span><a href="https://pypi.org/project/stripe-agent-toolkit/">  <img alt="Downloads per month" /></a></span> |
   | [`MadeOnSol`](https://madeonsol.com/api-docs) | <span><a href="https://pypi.org/project/madeonsol-x402/">  <img alt="Downloads per month" /></a></span> |
+  | [`BowmarkToolkit`](https://bowmark.ai/docs/langchain) | <span><a href="https://pypi.org/project/langchain-bowmark/">  <img alt="Downloads per month" /></a></span> |
   | [`AntiBrowToolkit`](https://antibrow.com/docs/langchain) | <span><a href="https://pypi.org/project/antibrow/">  <img alt="Downloads per month" /></a></span> |
   | [`Cdp agentkit toolkit`](/oss/python/integrations/tools/cdp_agentkit) | <span><a href="https://pypi.org/project/coinbase-agentkit-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`Compass defi toolkit`](https://pypi.org/project/langchain-compass/) | <span><a href="https://pypi.org/project/langchain-compass/">  <img alt="Downloads per month" /></a></span> |
@@ -249,6 +250,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`You.com search`](https://you.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-youdotcom/">  <img alt="Downloads per month" /></a></span> |
   | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts) | <span><a href="https://pypi.org/project/ads4gpts-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | <span><a href="https://pypi.org/project/langchain-atomicmail/">  <img alt="Downloads per month" /></a></span> |
+  | [`Fizzl`](https://fizzl.eu/agents/python/) | <span><a href="https://pypi.org/project/fizzl/">  <img alt="Downloads per month" /></a></span> |
   | [`GandrText2SpeechTool`](https://gandr.ai/docs) | <span><a href="https://pypi.org/project/gandr-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | <span><a href="https://pypi.org/project/langchain-latam-synth/">  <img alt="Downloads per month" /></a></span> |
   | [`GraphTool`](https://dev.writer.com/home/introduction) | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
@@ -279,6 +281,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`FileNetP8Toolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
   | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
   | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
+  | [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-serpkite/">  <img alt="Downloads per month" /></a></span> |
   | [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | <span><a href="https://pypi.org/project/langchain-anyapi/">  <img alt="Downloads per month" /></a></span> |
   | [`Synmerco`](https://synmerco.com/docs) | <span><a href="https://pypi.org/project/synmerco-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`RelayShield`](https://api.relayshield.net/developers) | <span><a href="https://pypi.org/project/langchain-relayshield/">  <img alt="Downloads per month" /></a></span> |
@@ -325,6 +328,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Valyucontext`](https://docs.valyu.ai/home) | <span><a href="https://pypi.org/project/langchain-valyu/">  <img alt="Downloads per month" /></a></span> |
   | [`Ausca`](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | <span><a href="https://pypi.org/project/langchain-ausca/">  <img alt="Downloads per month" /></a></span> |
   | [`ICTFaxToolkit`](https://www.ictinnovations.com/) | <span><a href="https://pypi.org/project/langchain-ictfax/">  <img alt="Downloads per month" /></a></span> |
+  | [`TanodToolkit`](https://github.com/tanod-labs/integrations/tree/main/langchain) | <span><a href="https://pypi.org/project/langchain-tanod/">  <img alt="Downloads per month" /></a></span> |
   | [`ICTContactToolkit`](https://www.ictcontact.com) | <span><a href="https://pypi.org/project/langchain-ictcontact/">  <img alt="Downloads per month" /></a></span> |
   | [`ICTExamToolkit`](https://www.ictlms.net) | <span><a href="https://pypi.org/project/langchain-ictexam/">  <img alt="Downloads per month" /></a></span> |
   | [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | <span><a href="https://pypi.org/project/langchain-anchorbrowser/">  <img alt="Downloads per month" /></a></span> |
@@ -336,6 +340,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | <span><a href="https://pypi.org/project/langchain-lumify/">  <img alt="Downloads per month" /></a></span> |
   | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://pypi.org/project/langchain-talordata/">  <img alt="Downloads per month" /></a></span> |
   | [`Dappier`](https://docs.dappier.com/) | <span><a href="https://pypi.org/project/langchain-dappier/">  <img alt="Downloads per month" /></a></span> |
+  | [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | <span><a href="https://pypi.org/project/langgraph-minnsdb/">  <img alt="Downloads per month" /></a></span> |
   | [`Opedd`](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span> |
   | [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-asyntai/">  <img alt="Downloads per month" /></a></span> |
   | [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-feedmyagent/">  <img alt="Downloads per month" /></a></span> |
@@ -367,6 +372,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Xpoz`](https://www.xpoz.ai/docs) | <span><a href="https://pypi.org/project/langchain-xpoz/">  <img alt="Downloads per month" /></a></span> |
   | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span> |
   | [`Valthera`](https://github.com/valthera/langchain-valthera) | <span><a href="https://pypi.org/project/langchain-valthera/">  <img alt="Downloads per month" /></a></span> |
+  | [`MachineLibraryToolkit`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | <span><a href="https://pypi.org/project/langchain-machinelibrary/">  <img alt="Downloads per month" /></a></span> |
   | [`ProxyHatFetchTool`](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span> |
   | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | <span><a href="https://pypi.org/project/langchain-alex/">  <img alt="Downloads per month" /></a></span> |
   | [`AxioraToolkit`](https://axiora.dev/docs) | <span><a href="https://pypi.org/project/langchain-axiora/">  <img alt="Downloads per month" /></a></span> |

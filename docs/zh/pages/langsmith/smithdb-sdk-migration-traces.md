@@ -22,7 +22,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.list_runs(is_root=True)`（通用）| `client.traces.query()` |
 
@@ -34,13 +34,13 @@
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.listRuns({ isRoot: true })`（通用）| `client.traces.query()` |
 
     有关完整参数和字段列表，请参阅[reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query)。
   </Tab><Tab title="Java">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.runs().query()`（通用，`isRoot(true)`）| `client.traces().query()` |
 
@@ -48,7 +48,7 @@
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.Runs.Query()`（通用，`IsRoot: true`）| `client.Traces.Query()` |
 
@@ -56,7 +56,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
   </Tab>
@@ -591,6 +591,10 @@
             if (count >= 5) break
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e97fb036-8386-475c-a992-f63ee6ae660e/r">
+          为此示例打开公共 LangSmith 运行。
+        </Card>
       </Tab>
     </Tabs>
   </Tab>
@@ -801,9 +805,7 @@
         ```
       </Tab>
     </Tabs>
-  </Tab>
-
-  <Tab title="TypeScript">
+  </Tab><Tab title="TypeScript">
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -823,7 +825,9 @@
           console.log(run.trace_id);
         }
         ```
-      </Tab><Tab title="After">
+      </Tab>
+
+      <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { Client } from "langsmith";
 
@@ -1115,7 +1119,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.list_runs(trace_id=...)`（通用）| `client.traces.list_runs()` |
 
@@ -1127,7 +1131,7 @@
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.listRuns({ traceId })`（通用）| `client.traces.listRuns()` |
 
@@ -1135,13 +1139,13 @@
   </Tab>
 
   <Tab title="Java">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.runs().query()`（通用，`.trace(traceId)`）| `client.traces().listRuns()` |
 
     完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html)。
   </Tab><Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.Runs.Query()`（通用，`Trace: traceID`）| `client.Traces.ListRuns()` |
 
@@ -1149,7 +1153,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `POST /api/v1/runs/query`（`trace`字段）| `GET /api/v2/traces/{trace_id}/runs` |
   </Tab>
@@ -1331,6 +1335,10 @@
             println("${run.name()} ${run.runType()} ${run.status()}")
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3722fdb8-c690-4a42-95b0-6480092e6a33/r">
+          为此示例打开公共 LangSmith 运行。
+        </Card>
       </Tab>
 
       <Tab title="After">
@@ -1470,9 +1478,7 @@
           -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid}')" \
           | jq '.runs // []'
         ```
-      </Tab>
-
-      <Tab title="After">
+      </Tab><Tab title="After">
         ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
@@ -1488,7 +1494,9 @@
       </Tab>
     </Tabs>
   </Tab>
-</Tabs>#### 仅获取跟踪中的 LLM 调用
+</Tabs>
+
+#### 仅获取跟踪中的 LLM 调用
 
 将跟踪的运行范围缩小到特定的运行类型，例如仅 LLM 调用。
 
@@ -1557,6 +1565,10 @@
           llmRuns.push(run);
         }
         ```
+
+        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/33ef3cbf-dbb6-4148-9f4b-9d2e9e4b614d/r">
+          为此示例打开公共 LangSmith 运行。
+        </Card>
       </Tab>
 
       <Tab title="After">

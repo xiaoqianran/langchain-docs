@@ -9,7 +9,7 @@
 `mda dev` 编译托管 Deep Agents 项目并在本地代理服务器上运行它。它会打开 [LangSmith Studio](/langsmith/studio)，以便您可以在部署之前与代理交互并检查其行为。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 启动本地工作室
@@ -33,12 +33,12 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 `mda dev`：
 
 1. 验证项目并将其编译为`.mda/build`。
-2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
+2. 将项目 `.env` 复制到本地构建中，并在需要时添加仅限本地的身份配置。
 3. 创建本地 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 模型以获取指令、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
-5. 在 Studio 中打开代理。本地开发不会创建或更新托管部署。
+5. 在 Studio 中打开代理。
 
-## 配置本地服务器
+本地开发不会创建或更新托管部署。## 配置本地服务器
 
 |旗帜|使用|
 | - | - |

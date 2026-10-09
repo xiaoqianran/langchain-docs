@@ -9,7 +9,7 @@ An agent-owned interrupt is a pause that your own code creates. A tool posts a S
 This differs from the platform-owned interrupts that `interrupt_on` creates. Those pause before a tool call, and Slack or Studio renders the approval card for you. With an agent-owned interrupt, you own the blocks, the form state, and what happens after the answer arrives. The platform only carries the answer back. For platform-owned interrupts, see [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 <Note>
@@ -37,8 +37,7 @@ The built-in Slack channel's `runtime.channel.post` sends text only, so post Blo
 
 ```python tools/approval.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
-import uuid
-
+from langsmith import uuid7
 import httpx
 from langchain.tools import tool
 from langgraph.types import interrupt
@@ -60,7 +59,7 @@ async def request_approval(amount: str, runtime: ManagedDeepAgentRuntime) -> str
     if channel is None or channel.provider != "slack":
         return "Approval forms are available only in Slack."
 
-    correlation_id = str(uuid.uuid4())
+    correlation_id = str(uuid7())
     # The tool runs again when the interrupt resumes. Post only on the first pass.
     if channel.event["type"] != "user_prompt_response":
         await post_approval_form(channel.raw_event, amount, correlation_id)

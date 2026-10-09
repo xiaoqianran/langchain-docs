@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Connections | https://docs.langchain.com/oss/javascript/langchain/mcp/connections -->
 
-# 连接数
+# Connections
 
 LangChain 中的连接生命周期、多服务器、部署扩展、协议时代和 MCP 缓存。
 
@@ -10,7 +10,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 选择适配器保持打开状态的时间：
 
-|情况|图案|前往|
+|情况|图案|前往 |
 | - | - | - |
 |脚本或代理调用 |创建适配器，运行代理，然后在 `finally` | 中关闭[Connection lifecycle](#connection-lifecycle) |
 |长寿工人|重复使用一个适配器并在关机期间将其关闭 | [Scale a deployment](#scale-a-deployment) |
@@ -46,7 +46,11 @@ async function runAgent(serverUrl: string) {
     await adapter.close();
   }
 }
-````close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54f2fa78-9b4c-445a-94a2-27f4cdaa4e67/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
 
 ## 多个服务器
 
@@ -77,6 +81,10 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637a53d2-a23e-4691-b70c-7bf3d8de9755/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 `listToolsets()` 按服务器名称对工具进行分组。 `listTools()` 返回一个数组；传递服务器名称或名称数组来选择它返回的工具。选择会过滤结果，但发现仍然会联系每个已配置的服务器。未选择的服务器出现故障可能会使呼叫失败。
 
 默认情况下，适配器会为其工具名称添加服务器名称前缀，例如 `calendar_search` 和 `files_search`。设置 `prefixToolNameWithServerName: false` 以保留原始名称。如果所选工具包含重复名称，则`listTools()`抛出异常。OpenAI 和 Anthropic 工具名称 (`^[a-zA-Z0-9_-]+$`) 中仅接受字母、数字、`_` 和 `-`，OpenAI 最多 64 个字符，Anthropic 最多 128 个字符。适配器不会重命名违反这些限制的前缀名称，因此请保持服务器名称简短且不含点和空格。
@@ -104,6 +112,10 @@ export async function makeGraph() {
   });
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d5c9bc74-bbab-4f0f-97bd-e9982ee4b050/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 在运行过程中保持适配器打开。在活动运行完成后，在应用程序关闭期间关闭它。对于使用不同用户凭据的运行，请参阅[Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication)。
 

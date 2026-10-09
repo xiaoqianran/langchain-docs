@@ -9,7 +9,7 @@ Custom tools are application code the agent can call for fetching real-time data
 To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:

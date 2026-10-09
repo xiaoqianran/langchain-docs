@@ -11,7 +11,7 @@
 在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 先决条件
@@ -37,9 +37,9 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
   ## 第 1 步：阅读指南
 
-  获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。## 第二步：安装技能
+  获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
 
-  如果 `managed-deep-agents` 技能尚不可用，请安装它：
+  ## 第二步：安装技能如果 `managed-deep-agents` 技能尚不可用，请安装它：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
@@ -62,16 +62,16 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
   * 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
 </Prompt>
 
-## 创建并部署代理<Steps>
+## 创建并部署代理
+
+<Steps>
   <Step title="Set up the project">
     创建一个项目并打开其目录：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     uvx --from managed-deepagents mda init research-assistant
     cd research-assistant
-    ```
-
-    您现在已经为您的代理准备好了所有的脚手架。
+    ```您现在已经为您的代理准备好了所有的脚手架。
   </Step>
 
   <Step title="Add your keys">

@@ -8,7 +8,7 @@
 
 深度代理可以创建子代理来委派工作。您可以在 `subagents` 参数中指定自定义子代理。子代理对于[context quarantine](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html#context-quarantine)（保持主代理的上下文干净）和提供专门的指令很有用。
 
-本页涵盖**同步**子代理，其中主管程序会阻塞，直到子代理完成。对于长时间运行的任务、并行工作流或需要中途转向和取消的情况，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。
+本页介绍**同步**子代理，其中主管程序会阻塞，直到子代理完成。对于长时间运行的任务、并行工作流或需要中途转向和取消的情况，请参阅[Async subagents](/oss/javascript/deepagents/async-subagents)。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
@@ -46,7 +46,7 @@ graph TB
 
 ### 默认子代理
 
-Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供具有该名称的同步子代理。
+Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已经提供了具有该名称的同步子代理。
 
 `general-purpose` 子代理默认具有文件系统工具，并且可以使用其他工具/中间件进行自定义。
 
@@ -61,7 +61,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供�
 1. 在活动的[harness profile](/oss/javascript/deepagents/profiles#harness-profiles)上设置`general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)`。
 2. 在 `create_deep_agent` 上不通过 `subagents=` 传递同步子代理。
 
-当至少有一个同步子代理存在时，Deep Agents 仅附加[⟦T100⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（和`task` 工具）。无论是默认代理还是调用者提供的代理，代理都可以在没有委派的情况下运行。
+当至少存在一个同步子代理时，Deep Agents 仅附加 [⟦T100⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（和 `task` 工具）。无论是默认代理还是调用者提供的代理，代理都可以在没有委派的情况下运行。
 
 异步子代理不受影响——它们通过自己的中间件和工具流动，如[Async subagents](/oss/javascript/deepagents/async-subagents)中所述。<Tip>
   不要在这里获取`excluded_middleware`——`SubAgentMiddleware`是必需的脚手架，并且列出它会引发`ValueError`。 `general_purpose_subagent.enabled = False` 旋钮是支持的路径。
@@ -81,7 +81,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供�
 | `description` | `string` |必需的。描述该子代理的作用。具体并以行动为导向。主代理使用它来决定何时进行委托。 |
 | `systemPrompt` | `string` | `mode: "isolated"` 必需（默认）。子代理的说明。自定义隔离子代理必须定义自己的。包括工具使用指南和输出格式要求。<br />不继承自主代理。对于 `mode: "fork"`，请忽略此字段，除非您需要仅分叉附录。参见[Forked subagents](#forked-subagents)。 |
 | `mode` | `"isolated"` \| `"fork"` |选修的。上下文模式。默认为`"isolated"`，子代理只能看到委派的任务。设置为 `"fork"` 来继承父级的对话和系统提示。参见[Forked subagents](#forked-subagents)。 |
-| `tools` | `StructuredTool[]` |选修的。子代理可以使用的工具。保持最小化并仅包含需要的内容。<br />默认从主代理继承。指定后，将完全覆盖继承的工具。 || `model` | `LanguageModelLike \| string` |选修的。覆盖主要代理的模型。省略使用主代理的模型。<br />默认继承主代理。您可以传递模型标识符字符串，如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`await initChatModel("gpt-5.5")` 或 `new ChatOpenAI({ model: "gpt-5.5" })`）。 |
+| `tools` | `StructuredTool[]` |选修的。子代理可以使用的工具。保持最小化并仅包含需要的内容。<br />默认从主代理继承。指定后，将完全覆盖继承的工具。 || `model` | `LanguageModelLike \| string` |选修的。覆盖主要代理的模型。省略使用主代理的模型。<br />默认继承主代理。您可以传递模型标识符字符串，例如 `'openai:gpt-5.5'`（使用 `'provider:model'` 格式）或 LangChain 聊天模型对象（`await initChatModel("gpt-5.5")` 或 `new ChatOpenAI({ model: "gpt-5.5" })`）。 |
 | `middleware` | `AgentMiddleware[]` |选修的。用于自定义行为、日志记录或速率限制的附加中间件。<br />不继承自主代理。附加到[synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack)。 |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` |选修的。为特定工具配置[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。选项：`True`、`False`。或 `InterruptOnConfig` 与 `allowed_decisions`。需要检查点。<br />默认继承自主代理。子代理值覆盖默认值。 |
 | `skills` | `string[]` |选修的。 [Skills](/oss/javascript/deepagents/skills) 源路径。指定后，子代理将从这些目录加载技能（例如，`["/skills/research/", "/skills/web-search/"]`）。这允许子代理具有与主代理不同的技能集。<br />不继承自主代理。只有通用子代理才能继承主代理的技能。当子代理拥有技能时，它会运行自己独立的[⟦T143⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)实例。技能状态是完全隔离的 - 子代理加载的技能对父代理不可见，反之亦然。 || `responseFormat` | `ResponseFormat` |选修的。 [Structured output](/oss/javascript/langchain/structured-output) 子代理的架构。设置后，父代理会收到 JSON 格式的子代理结果，而不是自由格式的文本。接受 Zod 架构、JSON 架构对象、`toolStrategy(...)` 或 `providerStrategy(...)`。参见[Structured output](#structured-output)。 |
@@ -96,7 +96,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供�
 | `name` | `str` |必需的。子代理的唯一标识符。子代理名称成为 `AIMessage` 和流媒体的元数据，这有助于区分代理。 |
 | `description` | `str` |必需的。该子代理的作用。 |
 | `runnable` | `Runnable` |必需的。已编译的LangGraph图（必须首先调用`.compile()`）。 |
-| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译的图形都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
+| `mode` | `"isolated"` \| `"fork"` |选修的。默认为`"isolated"`。设置为 `"fork"` 以继承父级的消息历史记录。无论哪种方式，编译后的图表都会保持其自己的系统提示。参见[Forked subagents](#forked-subagents)。 |
 
 ## 使用子代理
 
@@ -497,7 +497,7 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供�
 ## 使用 CompiledSubAgent对于更复杂的用例，您可以为自定义子代理提供[⟦T164⟧](https://reference.langchain.com/javascript/deepagents/middleware/CompiledSubAgent)。
 您可以使用 LangChain 的 [⟦T165⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 创建自定义子代理，或者使用 [graph API](/oss/javascript/langgraph/graph-api) 创建自定义 LangGraph 图表。
 
-如果您要创建自定义 LangGraph 图表，请确保该图表具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#2-define-state)：
+如果您要创建自定义 LangGraph 图，请确保该图具有 [state key called ⟦T166⟧](/oss/javascript/langgraph/quickstart#2-define-state)：
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -802,6 +802,10 @@ Deep Agents 自动添加同步 `general-purpose` 子代理，除非您已提供�
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2adc5144-9f83-42dd-814b-0a57d62ea58f/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 分叉子代理
 
 默认情况下，子代理以`mode: "isolated"`运行：它只能看到您提供的任务描述，并且不记得导致委派的对话。 **分叉子代理** (`mode: "fork"`) 继承了父代理的完整对话历史记录和准确的系统提示。
@@ -914,16 +918,16 @@ const result = await agent.invoke({
 
 沿着这些维度比较隔离模式和分叉模式：|尺寸|隔离（默认）|分叉|
 | - | - | - |
-| **背景** |仅您传入的任务描述 |家长完整通话记录及系统提示 |
-| **系统提示及技巧** |您将它们设置在子代理 |技能不可设置；系统提示符附加到父级提示符（破坏缓存，因此通常未设置）|
-| **呼叫其他子代理** |可以使用`task`工具 |不能使用`task`；必须自己完成工作|
-| **最适合** |无需事先背景的重点工作 |家长已经开始继续调查 |
+| **背景** | Only the task description you pass in |家长完整通话记录及系统提示 |
+| **System prompt and skills** | You set them on the subagent |技能不可设置；系统提示符附加到父级提示符（破坏缓存，因此通常未设置）|
+| **Calling other subagents** | Can use the `task` tool |不能使用`task`； must finish the work itself |
+| **最适合** | Focused work that needs little prior context |家长已经开始继续调查 |
 
 ## 动态子代理
 
-默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次性发出多个子代理以并行运行它们）。连接[interpreter](/oss/javascript/deepagents/interpreters)后，代理可以从代码**分派子代理——使用循环、分支和并行批处理在多个项目上展开计算并以编程方式合成结果。这称为[dynamic subagents](/oss/javascript/deepagents/dynamic-subagents)。
+默认情况下，主代理通过`task`工具调用委托给子代理（它可以一次发出多个子代理以并行运行它们）。 With an [interpreter](/oss/javascript/deepagents/interpreters) attached, the agent can instead dispatch subagents **from code**—using loops, branches, and parallel batches to fan work out across many items and synthesize the results programmatically. This is called [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents).
 
-当工作跨越多个独立单元（查看目录中的每个文件、对一批工单进行分类）、需要多个视角或从递归分析中受益时，可以使用动态子代理。<Warning>
+Reach for dynamic subagents when work spans many independent units (reviewing every file in a directory, triaging a batch of tickets), needs multiple perspectives, or benefits from recursive analysis.<Warning>
   动态子代理使用解释器运行时，它位于 [**beta**](/oss/javascript/versioning) 中。 API 和生命周期行为可能会在版本之间发生变化。
 </Warning>
 
@@ -1053,7 +1057,7 @@ const result = await agent.invoke({
 </CodeGroup>
 
 <Note>
-  只要代理具有子代理和解释器中间件，动态子代理调度就会默认启用。通过`createCodeInterpreterMiddleware({ subagents: false })`要求通过正常的`task`刀具路径进行调度。
+  只要代理具有子代理和解释器中间件，动态子代理调度就会默认启用。通过`createCodeInterpreterMiddleware({ subagents: false })`要求通过正常的`task`刀具路径调度。
 </Note>
 
 ### 触发动态编排
@@ -1086,7 +1090,7 @@ curl -LsSf https://langch.in/dcode | bash
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode
-```要触发动态子代理，请要求“工作流程”。该代理不会编写工作本身或通过其本机`task`工具管理扇出，而是编写一个编排脚本，调用内置的`task()`全局并在代码解释器中运行它。例如：“运行工作流来检查 src/ 中的每个文件以进行 SQL 注入。”
+```To trigger dynamic subagents, ask for a "workflow".该代理不会编写工作本身或通过其本机`task`工具管理扇出，而是编写一个编排脚本，调用内置的`task()`全局并在代码解释器中运行它。 For example: "Run a workflow to review every file in src/ for SQL injection."
 
 当子代理生成时，`dcode` 在动态子代理面板中显示它们，并按调度分组为阶段。
 
@@ -1098,13 +1102,13 @@ dcode
 
 ## 流媒体
 
-Deep Agents 支持来自协调器和每个委托子代理的流式更新。
+Deep Agents support streaming updates from both the coordinator and every delegated subagent.
 
 使用 [⟦T199⟧](/oss/javascript/deepagents/event-streaming) 获取类型化投影（子代理、消息、工具调用和值的单独迭代器），以便您可以独立使用每一个。
 
 ### 流式传输子代理进度
 
-最简单的模式是迭代 `stream.subagents` 来跟踪每个委派任务的启动、运行和完成。每个子代理句柄都公开 `.name`、`.messages`、`.tool_calls` 和 `.output`。
+The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1533,9 +1537,13 @@ Deep Agents 支持来自协调器和每个委托子代理的流式更新。
     return { coordinatorMessages, subagentHandles };
   }
   ```
-</CodeGroup>
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4c9b1369-0827-48ce-b391-e3979d888664/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-### LangSmith 追踪当您的深度代理运行时，子代理或协调器执行的所有运行都将在 `lc_agent_name` 键下的元数据中包含代理名称，例如 `{'lc_agent_name': 'research-agent'}`。这使您可以通过 LangSmith 中的子代理来识别和过滤运行。
+### LangSmith 追踪
+
+当您的深度代理运行时，子代理或协调器执行的所有运行都将在 `lc_agent_name` 键下的元数据中包含代理名称，例如 `{'lc_agent_name': 'research-agent'}`。这使您可以通过 LangSmith 中的子代理来识别和过滤运行。
 
 <img alt="LangSmith Example trace showing the metadata" />
 
@@ -1898,7 +1906,7 @@ runs = client.list_runs(
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6df55bfb-81cc-4272-a5b3-415569581188/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5cd6c6e-4261-46ed-be8e-cce8304d368e/r">
   为此示例打开公共 LangSmith 运行。
 </Card>如果没有 `response_format`，父代理将按原样接收子代理的最后一条消息文本。有了它，父级始终会获得与架构匹配的有效 JSON，这在父级需要以编程方式处理结果或将其传递给下游工具时非常有用。
 
@@ -2165,6 +2173,10 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 最佳实践
 
@@ -2611,9 +2623,13 @@ const dataAnalyst = {
     subagents: subagents,
   });
   ```
-</CodeGroup>
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4ad1d9ce-50ae-4ca0-981c-14bd6e7ecd97/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-**工作流程：**1. 主代理人制定高层计划
+**工作流程：**
+
+1. 主代理人制定高层计划
 2. 将数据收集委托给数据收集者
 3. 将结果传递给数据分析器
 4. 向报告撰写者发送见解
@@ -2961,7 +2977,7 @@ const verifyClaim = tool(
 );
 ```
 
-### 识别哪个子代理调用了工具当父代理和多个子代理之间共享同一工具时，您可以使用 `lc_agent_name` 元数据（与 [streaming](#streaming) 中使用的相同值）来确定哪个代理发起了呼叫：
+### 识别哪个子代理调用了工具When the same tool is shared between the parent and multiple subagents, you can use the `lc_agent_name` metadata (the same value used in [streaming](#streaming)) to determine which agent initiated the call:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -2984,7 +3000,7 @@ const sharedLookup = tool(
 );
 ```
 
-您可以组合这两种模式 - 在分支工具行为时从 `runtime.context` 读取特定于代理的设置，并从 `runtime.config` 元数据读取 `lc_agent_name`。
+You can combine both patterns—read agent-specific settings from `runtime.context` and read `lc_agent_name` from `runtime.config` metadata when branching tool behavior.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -3042,7 +3058,7 @@ const flexibleSearch = tool(
    };
    ```
 
-2. **指示主代理进行委托：**
+2. **Instruct main agent to delegate:**
 
    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { createDeepAgent } from "deepagents";
@@ -3062,6 +3078,10 @@ const flexibleSearch = tool(
    });
    ```
 
+   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aed3033-1e71-4ff2-a35f-8c6dea38dd2b/r">
+     为此示例打开公共 LangSmith 运行。
+   </Card>
+
 ### 上下文仍然变得臃肿
 
 **问题**：尽管使用了子代理，上下文仍被填满。
@@ -3078,7 +3098,7 @@ const flexibleSearch = tool(
    Your response should be under 500 words.`;
    ```
 
-2. **使用文件系统处理大数据：**
+2. **Use filesystem for large data:**
 
    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    const filesystemPrompt = `When you gather large amounts of data:
@@ -3112,14 +3132,16 @@ const subagents = [
 ];
 ```
 
-***
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/69d484e7-bfb9-408f-b644-d5bf79d126ad/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>

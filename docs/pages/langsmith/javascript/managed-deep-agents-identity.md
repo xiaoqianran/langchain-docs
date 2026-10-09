@@ -7,7 +7,7 @@ Authenticate callers to a Managed Deep Agents deployment with a LangSmith API ke
 Identity controls who can invoke your managed deep agent, such as apps and SDK clients that start runs or send messages.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Put the identity declaration at the project root:

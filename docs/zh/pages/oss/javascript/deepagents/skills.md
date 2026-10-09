@@ -111,7 +111,7 @@
     });
     ```此示例使用 `FilesystemBackend` 从磁盘加载技能。有关其他存储选项，包括从远程源加载技能，请参阅[Backends and remote skill loading](#backends-and-remote-skill-loading)。
 
-    每个源路径可以指向包含技能目录的目录，或者直接指向带有 `SKILL.md` 的技能目录。
+    每个源路径可以指向包含技能目录的目录，或者直接指向带有`SKILL.md`的技能目录。
 
     <ParamField type="list[str]">
       技能来源路径列表。
@@ -374,6 +374,10 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="FilesystemBackend">
@@ -415,6 +419,10 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
@@ -449,9 +457,9 @@ function createAgentForUser(userRole: string) {
     skills: SKILLS_BY_ROLE[userRole] ?? [],
   });
 }
-```
+```此模式保留每个技能的一个维护副本，并且仅改变传递给每个代理的路径。在部署中，图工厂是解析用户信息并使用正确的技能路径构建代理的自然场所。
 
-此模式保留每个技能的一个维护副本，并且仅改变传递给每个代理的路径。在部署中，图工厂是解析用户信息并使用正确的技能路径构建代理的自然场所。<Note>
+<Note>
   SDK仅加载您在`skills`中传递的源。它不会自动扫描`~/.deepagents/...`或`~/.agents/...`等目录。
 
   对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
@@ -500,18 +508,22 @@ const agent = await createDeepAgent({
 });
 ```
 
-这可以保持代理配置稳定，同时后端强制代理可以访问哪个库。范围不需要特定于用户。它可以是您的应用程序使用的任何边界，包括角色、租户、工作区、组织、环境或请求类型。要填充共享库，请从应用程序代码或管理工作流程中为商店播种：
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3ced22a-c125-4ac0-90a1-7da0898dd262/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>This keeps the agent configuration stable while the backend enforces which library the agent can access.范围不需要特定于用户。 It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
 
-* 按组织 ID 命名空间，以获取工作区范围的技能。当代理应该使用库但不修改它时，将其与 [read-only skills](#read-only-skills) 配对。
-* 当每个用户需要独立的库时，按用户ID命名空间，如上例。
+To populate a shared library, seed the store from your application code or an admin workflow:
 
-使用 `/company-policies/SKILL.md` 等键以及包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
+* 按组织 ID 命名空间，以获取工作区范围的技能。 Pair this with [read-only skills](#read-only-skills) when agents should use the library but not modify it.
+* Namespace by user ID when each user needs an independent library, as in the example above.
 
-您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
+Seed the store with keys like `/company-policies/SKILL.md` and values that include `content` and `encoding` fields. The `/skills/` route prefix is stripped before records are read from the store.
+
+You can also combine shared and personal libraries: route `/skills/approved/` to an organization-scoped `StoreBackend`, route `/skills/editable/` to a user-scoped backend, and pass both paths in `skills`.参见[Writable skills](#writable-skills)。
 
 ### 组合多个源
 
-当代理应该看到多个图书馆时，通过多个技能路径。例如，您可以结合批准的组织技能、特定于团队的工作流程和特定于请求的说明：
+Pass multiple skill paths when the agent should see more than one library. For example, you can combine approved organization skills, team-specific workflows, and request-specific instructions:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -520,11 +532,11 @@ const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
   skills: ["/skills/org/", "/skills/team/", "/skills/request/"],
 });
-```
+```每个路径可以指向相同的后端、不同的后端路由或由运行时上下文限定范围的后端。有关处理技能访问、共享和工作区级别可见性的托管解决方案，请参阅[Fleet skills](/langsmith/fleet/skills)。
 
-每个路径可以指向相同的后端、不同的后端路由或由运行时上下文限定范围的后端。有关处理技能访问、共享和工作区级别可见性的托管解决方案，请参阅[Fleet skills](/langsmith/fleet/skills)。
+## 重装技能
 
-## 重装技能每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。
+每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。
 
 重置存储的元数据以在下一次模型调用时再次加载每个源。
 
@@ -550,9 +562,9 @@ const result = await agent.invoke(
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await agent.updateState(config, { skillsMetadata: null });
-```
+```使用`null`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。
 
-使用`null`，而不是空列表。空列表意味着源已加载且没有技能，因此代理在线程的其余部分看不到任何技能。<Note>
+<Note>
   发现一组不同技能的重新加载会更改系统提示并使该线程的提示缓存无效。发现相同技能的重新加载会产生相同的提示，并且无需任何费用。
 </Note>
 
@@ -598,11 +610,15 @@ const agent = await createDeepAgent({
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 有关子代理配置和技能继承的更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。
 
-## 技能权限技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/javascript/deepagents/permissions)，当写入需要批准时使用[⟦T128⟧](/oss/javascript/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
+## 技能权限
+
+技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/javascript/deepagents/permissions)，当写入需要批准时使用[⟦T128⟧](/oss/javascript/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
 
 ### 只读技能
 
@@ -822,9 +838,9 @@ const agent = await createDeepAgent({
 
 将此用于企业知识库、批准的工具说明或集中管理的技能包，其中代理应使用内容但不应重写事实来源。
 
-### 写作技巧
+### 写作技巧默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：
 
-默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：1. 将可写路径路由到可以保留代理编辑的后端。
+1. 将可写路径路由到可以保留代理编辑的后端。
 2. 通过`skills`中的这些路径。
 3. 为任何应保持只读的路径添加 `deny` 规则。如果路径重叠 ([rule ordering](/oss/javascript/deepagents/permissions#rule-ordering))，则将更具体的规则放在更广泛的拒绝规则之前。
 
@@ -863,6 +879,10 @@ const agent = await createDeepAgent({
   store,
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/27cdf1d8-3b6f-4a8e-9bbb-c8c2a63ebf99/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 代理使用 `write_file` 和 `edit_file` 在可写路径下创建或更新 `SKILL.md` 和支持文件。要捕获技能格式之外的一般学习内容，请将单独的路径（例如 `/memories/`）路由到另一个可写后端。有关路线和商店设置，请参阅[Backends](/oss/javascript/deepagents/backends)。
 
@@ -1900,7 +1920,7 @@ Search arXiv for papers matching the user's query.
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a81cf81d-7f30-4bb8-99a0-1e90554fc8c4/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/35c73ef7-efb6-47f0-bf7a-b81975d5a6f4/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1940,7 +1960,7 @@ Search arXiv for papers matching the user's query.
 
 2. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T159⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T160⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。
 
-3. **检查文件大小。** Deep Agents 在发现过程中跳过 `SKILL.md` 文件超过 10 MB。4. **分层查看来源。** 当多个来源中出现相同的技能名称时，[last source wins](#usage)。较晚的路径中的旧技能或空技能可能会覆盖您期望的技能。
+3. **检查文件大小。** Deep Agents 在发现过程中跳过超过 10 MB 的 `SKILL.md` 文件。4. **分层查看来源。** 当多个来源中出现相同的技能名称时，[last source wins](#usage)。较晚的路径中的旧技能或空技能可能会覆盖您期望的技能。
 
 ### 技能变更未生效
 
@@ -1964,7 +1984,7 @@ Search arXiv for papers matching the user's query.
 
 **问题**：代理读取脚本但无法运行它。**解决方案**：代理可以从任何后端读取脚本，但运行它们需要[sandbox backend](/oss/javascript/deepagents/sandboxes)。参见[Execute code with skills](#execute-code-with-skills)。
 
-### 子代理无法访问技能
+### Subagent cannot access a skill
 
 **问题**：自定义子代理看不到主代理使用的技能。
 
@@ -1972,21 +1992,21 @@ Search arXiv for papers matching the user's query.
 
 ## 参考
 
-### 技能、记忆力和工具
+### Skills, memory, and tools
 
 技能、[memory](/oss/javascript/deepagents/memory)（`AGENTS.md` 文件）和工具都为代理提供上下文或功能。下表总结了何时达到每个目标：| |技能 |内存|工具|
 | - | - | - | - |
-| **目的** |通过渐进式披露发现的按需功能 |启动时加载持久上下文 |代理可以调用​​的编程操作 |
-| **加载** |仅当代理确定相关性时才读取 |在代理启动时加载 |每个回合都可用 |
-| **格式** | `SKILL.md` 在命名目录中 | `AGENTS.md` 文件 |与代理绑定的功能 |
-| **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
+| **目的** |通过渐进式披露发现的按需功能 | Persistent context loaded at startup | Programmatic actions the agent can call |
+| **加载** | Read only when the agent determines relevance |在代理启动时加载 |每个回合都可用 |
+| **格式** | `SKILL.md` in named directories | `AGENTS.md` 文件 | Functions bound to the agent |
+| **分层** | User, then project (last wins) |用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆力是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 
-[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填 |描述 |
+[Agent Skills specification](https://agentskills.io/specification) 定义了以下 frontmatter 字段：|领域 |必填|描述 |
 | - | - | - |
 | `name` |是的 |带连字符的小写字母数字，1-64 个字符。必须与父目录名称匹配。 |
 | `description` |是的 |该技能的作用是什么以及何时使用它。最多 1,024 个字符。 |

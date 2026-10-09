@@ -9,7 +9,7 @@
 沙箱为托管深度代理提供了一个隔离的文件系统和 shell，用于处理文件、运行代码和执行命令。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
@@ -43,12 +43,12 @@ export const sandbox = defineSandbox({
   idleTtlSeconds: 600,
   defaultTimeout: 600,
 });
-```|选项|默认 |描述 |
+```
+
+|选项 |默认|描述 |
 | - | - | - |
 | `idleTtlSeconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
-| `defaultTimeout` | `600` |每个命令允许的秒数。 |
-
-## 配置沙箱代理
+| `defaultTimeout` | `600` |每个命令允许的秒数。 |## 配置沙箱代理
 
 沙箱代理将标头注入匹配的出站请求并控制沙箱可以到达的目的地。代理在沙箱外部运行，因此沙箱代码可以调用经过身份验证的 API，而无需处理凭据。
 
@@ -123,7 +123,7 @@ mkdir -p /workspace
 
 ## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项|使用|
+|选项 |使用|
 | - | - |
 | `snapshotName` | LangSmith 快照名称。允许使用标签。 |
 | `snapshotId` | LangSmith 快照 ID。 |
@@ -155,7 +155,7 @@ export const sandbox = defineSandbox({
 });
 ```
 
-将`GHCR_TOKEN`放入项目`.env`或流程环境中。烘焙后，托管 Deep Agents 不会将该值转发到正在运行的代理服务器。
+将`GHCR_TOKEN`放入项目`.env`或流程环境中。烘焙后，托管Deep Agents 不会将该值转发到正在运行的代理服务器。
 
 ## 代理如何使用沙箱
 

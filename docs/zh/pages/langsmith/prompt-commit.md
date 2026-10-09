@@ -32,7 +32,7 @@ LangSmith 提供了一个协作界面来创建、测试和迭代提示。
    * 单击**生成令牌**并**立即复制它**，因为它不会再次显示。
    * 安全地存储令牌并将其作为环境变量提供给您的服务器。
 
-## 了解 LangSmith “提示提交”和 webhooks
+## 了解 LangSmith “提示提交”和 webhook
 
 在 LangSmith 中，当您保存对提示的更改时，您实际上是在创建新版本或“提示提交”。这些提交可以触发 webhook。
 
@@ -146,7 +146,7 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
   }
   ```
 </Accordion><Note>
-  重要的是要了解用于提示提交的 LangSmith webhook 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
+  重要的是要了解用于提示提交的 LangSmith webhooks 通常在 **工作空间级别** 触发。这意味着，如果您的 LangSmith 工作区中的*任何*提示被修改并保存了“提示提交”，则 webhook 将触发并发送提示的更新清单。有效负载可通过提示 ID 来识别。您的接收服务器在设计时应考虑到这一点。
 </Note>
 
 ## 实现用于 webhook 接收的 FastAPI 服务器
@@ -169,7 +169,6 @@ Webhook 将发送包含新的 **提示清单** 的 JSON 负载。
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import base64
   import json
-  import uuid
   from typing import Any, Dict
   import httpx
   from fastapi import FastAPI, HTTPException, Body

@@ -1298,6 +1298,10 @@ To let agents use a curated skill library without modifying it, route the skill 
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cd1dc73a-2a92-4daf-bd25-4e239ff72ae3/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 Use this for enterprise knowledge bases, approved tool instructions, or centrally managed skill packs where the agent should use the content but should not rewrite the source of truth.
 
 ### Writable skills
@@ -2071,6 +2075,10 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
       asyncio.run(main())
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aa169fb-c98f-48f6-8441-520bf8144a01/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 For a complete example that seeds both skills and memories before execution and syncs both back afterward, see [syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware).
 

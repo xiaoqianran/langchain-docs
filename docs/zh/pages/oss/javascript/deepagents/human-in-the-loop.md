@@ -114,6 +114,10 @@ const agent = createDeepAgent({
 });
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 决策类型
 
 `allowed_decisions` 列表控制人们在查看工具调用时可以采取的操作：|决策类型|描述 |示例用例 |
@@ -145,7 +149,7 @@ const interruptOn = {
 
 ## 处理中断
 
-当中断被触发时，代理暂停执行并返回控制权。检查结果中是否有中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
+当中断被触发时，代理暂停执行并返回控制权。检查结果中是否存在中断并进行相应处理。如果用户拒绝某个操作，请包含一个明确的 `message`，告诉代理该工具未执行以及下一步要做什么。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -377,7 +381,7 @@ const agent = createDeepAgent({
 
 当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。
 
-流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传送。如果您还想流式传输子代理令牌和进度事件，请启用 `subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
+流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用`subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
 
 子代理工具可以直接调用`interrupt()`暂停执行并等待批准：
 

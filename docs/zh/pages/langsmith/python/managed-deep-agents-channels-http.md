@@ -11,7 +11,7 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 您提供两个回调：一个对请求进行身份验证，另一个将其转换为消息，命名调用者及其所属的对话。托管Deep Agents 拥有可信切换、代理运行和回复。对于提供商管理的替代方案，请参阅[Slack](/langsmith/python/managed-deep-agents-channels-slack)。
 
 <Note>
-  托管 Deep Agents 位于 **公共 [beta](/langsmith/release-stages)** 中，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 <Note>
@@ -33,9 +33,9 @@ my-agent/
   agent.py
   channels/
     orders.py
-```文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。
+```
 
-## 添加 HTTP 通道
+文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。## 添加 HTTP 通道
 
 <Steps>
   <Step title="Declare the channel">
@@ -106,8 +106,7 @@ my-agent/
 
     ```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import json
-    import uuid
-
+    from langsmith import uuid7
     from managed_deepagents import HttpChannelParseResult, HttpChannelRequest
 
     ORDERS_NAMESPACE = uuid.UUID("6f0c9a3e-8f1a-4f5e-9c2b-7d4e1a2b3c4d")
@@ -182,7 +181,7 @@ my-agent/
     )
     ```
 
-    托管 Deep Agents 在运行完成后发布回复，与提供商已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
+    托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。添加可选的异步 `on_error(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
   </Step>
 </Steps>
 

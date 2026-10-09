@@ -41,7 +41,8 @@ const namespaceForMemory = [userId, "memories"];
 使用`store.put`方法将内存保存到store中的命名空间中。指定上面定义的命名空间，以及内存的键值对：键只是内存的唯一标识符（`memory_id`），值（字典）是内存本身。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const memoryId = crypto.randomUUID();
+import { v7 as uuid7 } from "uuid";
+const memoryId = uuid7();
 const memory = { food_preference: "I like pizza" };
 await memoryStore.put(namespaceForMemory, memoryId, memory);
 ```
@@ -143,7 +144,7 @@ const memories = await store.search(namespaceForMemory, {
 // Store with specific fields to embed
 await store.put(
   namespaceForMemory,
-  crypto.randomUUID(),
+  uuid7(),
   {
     food_preference: "I love Italian cuisine",
     context: "Discussing dinner plans",
@@ -151,10 +152,11 @@ await store.put(
   { index: ["food_preference"] } // Only embed "food_preferences" field
 );
 
+import { v7 as uuid7 } from "uuid";
 // Store without embedding (still retrievable, but not searchable)
 await store.put(
   namespaceForMemory,
-  crypto.randomUUID(),
+  uuid7(),
   { system_info: "Last updated: 2024-01-01" },
   { index: false }
 );
@@ -196,6 +198,7 @@ for await (const update of await graph.stream(
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue, Runtime } from "@langchain/langgraph";
+import { v7 as uuid7 } from "uuid";
 
 const MessagesState = new StateSchema({
   messages: MessagesValue,
@@ -213,7 +216,7 @@ const updateMemory: GraphNode<typeof MessagesState> = async (state, runtime) => 
   const memory = "Some memory content";
 
   // Create a new memory ID
-  const memoryId = crypto.randomUUID();
+  const memoryId = uuid7();
 
   // We create a new memory
   await runtime.store?.put(namespace, memoryId, { memory });

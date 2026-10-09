@@ -10,7 +10,7 @@ SmithDB 组件在每个 pod 的 HTTP 端口上的 `/metrics` 处公开 Prometheu
 
 名称与`/metrics` 上显示的名称相同。如果您的收集器添加了命名空间或前缀，请进行相应调整。
 
-对于基于这些指标构建的 Datadog 和 Grafana 仪表板以及每个人期望的抓取注释，请参阅 LangSmith Helm 图表存储库中的 [SmithDB observability examples](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples/smithdb-observability)。
+有关选项卡式 Datadog 和 Grafana 仪表板及其收集要求，请参阅 [Monitor self-hosted LangSmith with Datadog or Grafana](/langsmith/self-host-observability-dashboards)。对于没有本机选项卡的 Grafana 安装，[standalone SmithDB dashboard](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/langsmith-observability/components/smithdb/grafana.json) 使用经典格式。
 
 <Note>
   本页涵盖 SmithDB 发出的指标。 OOM 终止、容器重新启动、CPU 和内存超出限制以及缓存磁盘使用等 Kubernetes 信号值得警惕，但来自您的基础设施监控，而不是来自 SmithDB。

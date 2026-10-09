@@ -9,7 +9,7 @@ An HTTP channel turns a managed deep agent into an HTTP endpoint that any extern
 You supply two callbacks: one that authenticates the request, and one that converts it into a message, naming the caller and the conversation it belongs to. Managed Deep Agents owns the trusted handoff, the agent run, and the reply. For the provider-managed alternative, see [Slack](/langsmith/python/managed-deep-agents-channels-slack).
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 <Note>
@@ -110,8 +110,7 @@ The file name becomes the channel name and the endpoint path. A project can decl
 
     ```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import json
-    import uuid
-
+    from langsmith import uuid7
     from managed_deepagents import HttpChannelParseResult, HttpChannelRequest
 
     ORDERS_NAMESPACE = uuid.UUID("6f0c9a3e-8f1a-4f5e-9c2b-7d4e1a2b3c4d")

@@ -11,7 +11,7 @@
 要从远程 MCP 服务器加载工具，请参阅[Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
@@ -104,13 +104,13 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为�
 
 工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 ## 部署
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念|亲切 |它如何到达代理|
+## 何时使用工具|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|

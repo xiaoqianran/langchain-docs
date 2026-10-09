@@ -81,6 +81,10 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b0c37c50-18d9-43d8-91fb-b933c920ebd7/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Structured content
 
 When a tool returns structured content, the adapter attaches it to the [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) as an artifact rather than folding it into the model-visible text. Run the agent, then read the `artifact` from the [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) instances in the result:
@@ -108,6 +112,10 @@ async def run_agent_structured(server) -> dict:
 
     return result
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52189bcc-6bd4-4d88-b8da-e5cf72a4849c/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 The artifact is an `MCPToolArtifact`, whose `structured_content` field holds the tool result's `structuredContent`. A tool that returns no structured content leaves `artifact` as `None`.
 

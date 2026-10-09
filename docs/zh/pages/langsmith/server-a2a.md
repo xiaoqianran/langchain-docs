@@ -31,7 +31,7 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
   （`working`，`agent`）。为每个客户选择一个家庭并坚持下去。
 
   信封因方法而异，而不是因系列而异：`SendMessage`将任务包装在`result.task`中，而
-  `GetTask` 和所有 v0.3 方法直接在 `result` 返回它。 `ListTasks` 返回`result.tasks`。
+  `GetTask` 和所有 v0.3 方法都直接在 `result` 返回它。 `ListTasks` 返回`result.tasks`。
 </Warning>
 
 ## 支持的方法| v1.0 名称 | v0.3 名称 |支持 |
@@ -340,9 +340,7 @@ graph = (
 import asyncio
 import aiohttp
 import os
-import uuid
-
-
+from langsmith import uuid7
 def extract_text(result: dict) -> str:
     """Best-effort extraction of response text from an A2A result."""
     if "error" in result:
@@ -368,7 +366,7 @@ async def send_message(session, port, assistant_id, text, context_id=None):
     message = {
         "role": "user",
         "parts": [{"kind": "text", "text": text}],
-        "messageId": str(uuid.uuid4()),
+        "messageId": str(uuid7()),
     }
 
     # A2A multi-turn continuity: reuse contextId across turns and agents.
@@ -378,7 +376,7 @@ async def send_message(session, port, assistant_id, text, context_id=None):
 
     payload = {
         "jsonrpc": "2.0",
-        "id": str(uuid.uuid4()),
+        "id": str(uuid7()),
         "method": "message/send",
         "params": {"message": message},
     }
@@ -459,9 +457,7 @@ if __name__ == "__main__":
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 import aiohttp
-import uuid
-
-
+from langsmith import uuid7
 async def send_message(session, url, text, context_id=None):
     """Send an A2A message and return (response_text, context_id)."""
 
@@ -472,7 +468,7 @@ async def send_message(session, url, text, context_id=None):
     message = {
         "role": "user",
         "parts": [{"kind": "text", "text": text}],
-        "messageId": str(uuid.uuid4()),
+        "messageId": str(uuid7()),
     }
     if context_id:
         message["contextId"] = context_id
@@ -482,7 +478,7 @@ async def send_message(session, url, text, context_id=None):
     # LangGraph thread_id, so no separate tracing field is needed.
     payload = {
         "jsonrpc": "2.0",
-        "id": str(uuid.uuid4()),
+        "id": str(uuid7()),
         "method": "message/send",
         "params": {"message": message},
     }
@@ -640,10 +636,10 @@ RFC 2119 级别，适用于任何 A2A 端点，包括您的端点。
 ### 代理服务器当前失败的原因
 
 Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签入列表进行门控
-已知的故障。如果出现新的故障，并且列出的要求开始通过，那么 CI 就会失败，
+已知的故障。如果出现新的故障，并且列出的要求开始通过，则 CI 会失败，
 因此该列表不会偏离服务器实际执行的操作。
 
-在构建功能之前请阅读以下内容：|差距|你观察到什么 |
+在构建功能之前请阅读以下内容：|差距|你观察到什么|
 | - | - |
 |响应线形状仍为v0.3 |任务、消息和部件带有 `kind` 和 `mimeType`，而不是 v1.0 成员存在歧视 |
 |流媒体事件表现平平 | SSE 发出带有 `final` 的 v0.3 对象，而不是 `statusUpdate` / `artifactUpdate` 包装器 |

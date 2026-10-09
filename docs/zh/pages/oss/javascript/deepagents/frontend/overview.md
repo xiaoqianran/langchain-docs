@@ -4,13 +4,13 @@
 
 # 概述
 
-为 Deep Agents 构建显示实时子代理流、任务进度和沙箱的 UI
+构建显示实时子代理流、任务进度和Deep Agents沙箱的 UI
 
 构建实时可视化深层代理工作流程的前端。这些图案
 展示如何呈现子代理进度、任务规划、流内容以及
-使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙箱体验。
+使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙盒体验。
 
-当 UI 使委托可见时，深度代理最为有用。而不是
+当 UI 使委派可见时，深度代理最为有用。而不是
 显示单个不透明的助手气泡，LangChain SDK 公开了
 协调器、子代理发现、自定义状态和沙箱支持的工件，以便
 用户可以检查长时间运行的任务是如何分解和完成的。
@@ -71,7 +71,11 @@ const agent = createDeepAgent({
     },
   ],
 });
-```在前端，以与`createAgent`相同的方式连接[⟦T4⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)。传递 [type parameter](/oss/javascript/langchain/frontend/overview) 以获得类型安全的流状态。深度代理模式使用 `stream.subagents`、选择器帮助器（例如 `useMessages(stream, subagent)`）以及自定义状态值（例如 `stream.values.todos`）来呈现特定于子代理的 UI。
+```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba2a0ba2-a907-42fe-aa94-f637359bd130/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>在前端，以与`createAgent`相同的方式连接[⟦T4⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)。传递 [type parameter](/oss/javascript/langchain/frontend/overview) 以获得类型安全的流状态。深度代理模式使用 `stream.subagents`、选择器帮助器（例如 `useMessages(stream, subagent)`）以及自定义状态值（例如 `stream.values.todos`）来呈现特定于子代理的 UI。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { useStream } from "@langchain/react";
@@ -98,8 +102,8 @@ function App() {
 | `stream.messages` |协调员对话和最终综合。 |
 | `stream.subagents` |实时发现专业工作人员，包括状态和任务元数据。 |
 | `stream.values` |共享状态，例如待办事项、计划、报告部分、沙箱元数据或代理编写的任何自定义密钥。 |
-|工具调用状态 |将文件系统、搜索、浏览器或域工具呈现为带有进度和结果的卡片。 |
-|中断|暂停委派的工作以供用户批准或丢失输入，而不会丢失运行状态。 |
+|工具调用状态|将文件系统、搜索、浏览器或域工具呈现为带有进度和结果的卡片。 |
+|中断 |暂停委派的工作以供用户批准或丢失输入，而不会丢失运行状态。 |
 
 这使您可以构建感觉更接近 IDE、任务板或
 工作流程监视器而不是简单的聊天记录。
@@ -108,7 +112,7 @@ function App() {
 
 <CardGroup>
   <Card title="Subagent streaming" icon="arrows-split" href="/oss/javascript/deepagents/frontend/subagent-streaming">
-    显示带有流媒体内容、进度跟踪和可折叠卡片的专业子代理。
+    显示具有流媒体内容、进度跟踪和可折叠卡片的专家子代理。
   </Card><Card title="Todo list" icon="list-check" href="/oss/javascript/deepagents/frontend/todo-list">
     当客服人员选择任务计划时，通过实时待办事项列表跟踪进度。
   </Card>

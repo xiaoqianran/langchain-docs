@@ -144,6 +144,10 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7594f2f3-5572-420e-be08-7272d2c9cdd2/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## How interpreters work
 
 The middleware adds an `eval` tool to the agent. When useful, the agent writes JavaScript and calls `eval`; you do not call the interpreter directly. The tool runs code in a QuickJS context whose variables can persist between `eval` calls, depending on the persistence `mode`. It captures `console.log`, `console.warn`, and `console.error`, and returns the result of the last expression.

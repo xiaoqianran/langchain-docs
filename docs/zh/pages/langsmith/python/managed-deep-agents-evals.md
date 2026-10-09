@@ -11,7 +11,7 @@
 Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针对每个任务运行托管代理并记录结果。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 先决条件
@@ -31,14 +31,14 @@ Managed Deep Agents 初始化 Harbor 工作区。 Harbor 在隔离环境中针�
 uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engineering --yes
 ```
 
-您可以使用任何编码剂。<Tip>
+您可以使用任何编码剂。
+
+<Tip>
   要使用 [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`)，请安装它：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   curl -LsSf https://langch.in/dcode | bash
-  ```
-
-  请参阅 [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) 了解提供程序设置和交互使用。
+  ```请参阅 [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) 了解提供程序设置和交互使用。
 </Tip>
 
 ## 使用编码代理开发评估
@@ -71,14 +71,14 @@ uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engi
   <Step title="Start the coding-agent session">
     切换要求选定的编码代理安装`eval-engineering`技能并将其用于项目。如果您已添加该技能，请继续该会话。
 
-    要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：<Prompt description="Develop Harbor evals with the eval-engineering skill" icon="flask">
+    要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：
+
+    <Prompt description="Develop Harbor evals with the eval-engineering skill" icon="flask">
       使用评估工程技能为此托管开发 Harbor 评估
       深度代理。首先检查项目和现有评估。起草任务
       规范并等待我的审核，然后再直接实施批准的任务
       下。
-    </Prompt>
-
-    与编码代理一起审查任务规范、任务说明、环境、验证者和可重用的项目知识。在您批准设计后，编码代理将编写可运行的任务。
+    </Prompt>与编码代理一起审查任务规范、任务说明、环境、验证者和可重用的项目知识。在您批准设计后，编码代理将编写可运行的任务。
   </Step>
 
   <Step title="Review the Harbor task">
@@ -115,7 +115,9 @@ uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engi
       --config evals/harbor-job.json --yes \
       --plugin mda_harbor.job_plugin:MDAJobPlugin \
       --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
-    ```将 `my-agent` 替换为项目目录名称。生成的命令将填写名称并在 Windows 上使用 PowerShell 语法。
+    ```
+
+    将 `my-agent` 替换为项目目录名称。生成的命令填写名称并在 Windows 上使用 PowerShell 语法。
 
     编辑代理后重新运行命令会拾取项目更改。
   </Step>
@@ -126,9 +128,7 @@ uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engi
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
       harbor view .mda/evals/jobs
-    ```
-
-    与您的编码代理一起审查失败的试验。当评估未测量预期行为时更新任务或验证程序。当评估暴露产品故障时更新托管代理，然后再次运行相同的 Harbor 命令。
+    ```与您的编码代理一起审查失败的试验。当评估未测量预期行为时更新任务或验证程序。当评估暴露产品故障时更新托管代理，然后再次运行相同的 Harbor 命令。
   </Step>
 </Steps>
 

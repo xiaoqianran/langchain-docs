@@ -9,7 +9,7 @@
 沙箱为托管深度代理提供了一个隔离的文件系统和 shell，用于处理文件、运行代码和执行命令。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
@@ -43,12 +43,12 @@ sandbox = define_sandbox(
     idle_ttl_seconds=600,
     default_timeout=600,
 )
-```|选项 |默认 |描述 |
+```
+
+|选项 |默认|描述 |
 | - | - | - |
 | `idle_ttl_seconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
-| `default_timeout` | `600` |每个命令允许的秒数。 |
-
-## 配置沙箱代理
+| `default_timeout` | `600` |每个命令允许的秒数。 |## 配置沙箱代理
 
 沙箱代理将标头注入匹配的出站请求并控制沙箱可以到达的目的地。代理在沙箱外部运行，因此沙箱代码可以调用经过身份验证的 API，而无需处理凭据。
 
@@ -274,7 +274,7 @@ if uploaded[0].error:
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
   </Callout>
 
   <Callout icon="edit">

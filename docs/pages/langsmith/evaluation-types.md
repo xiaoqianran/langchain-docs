@@ -94,7 +94,7 @@ Configure LLM-as-a-judge evaluators for:
 
 ### Decision model evaluators
 
-Use a decision model, such as SemIf or Jev, to answer typed questions about outputs. Each question returns a probability, a selected option, or a score, and becomes its own feedback key, so you do not write a prompt or an output schema.
+Use a decision model, such as Jev, to answer typed questions about outputs. Each question returns a probability, a selected option, or a score, and becomes its own feedback key, so you do not write a prompt or an output schema.
 
 Configure decision model evaluators for:
 

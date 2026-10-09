@@ -51,7 +51,7 @@ console.log(
     messages: [{ role: "user", content: "What's the weather in Tokyo?" }],
   }),
 );
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7837efa6-ba5d-44f4-a88c-7cabaa4d18cb/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b715dead-e44d-4049-b945-0c34888747fe/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -177,7 +177,7 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/javascript
 
 当代理需要轻量级可编程层用于循环、批处理、确定性数据转换或编程工具调用时，请使用解释器。解释器不提供 shell 访问、软件包安装或文件系统和网络访问。
 
-有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/javascript/deepagents/sandboxes)。对于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/javascript/deepagents/sandboxes)。关于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 ### 流媒体
 
@@ -185,7 +185,7 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/javascript
 
 ## 上下文管理上下文管理组件控制代理知道什么、它可以在令牌限制内运行多长时间以及它在会话中保留什么。它有四层：
 
-* **[Skills](#skills)**：从技能文件中逐步加载按需领域知识
+* **[Skills](#skills)**：从技能文件逐步加载按需领域知识
 * **[Memory](#memory)**：启动时从 `AGENTS.md` 文件加载的持久指令和首选项
 * **[Summarization and context offloading](#summarization-and-context-offloading)**：自动压缩对话历史记录和大型工具结果
 * **[Prompt caching](#prompt-caching)**：静态提示部分符合缓存条件，可加快推理速度并降低支持模型的成本

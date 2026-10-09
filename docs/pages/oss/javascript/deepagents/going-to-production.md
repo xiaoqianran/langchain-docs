@@ -133,6 +133,7 @@ The two are independent and almost always passed together:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -144,7 +145,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -158,6 +159,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -169,7 +171,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -183,6 +185,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -194,7 +197,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -208,6 +211,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -219,7 +223,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -233,6 +237,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -244,7 +249,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -258,6 +263,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -269,7 +275,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -283,6 +289,7 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
   import { z } from "zod";
 
@@ -294,7 +301,7 @@ The two are independent and almost always passed together:
   });
 
   // Start a conversation
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
   await agent.invoke(
     { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
     { ...config, context: { userId: "user-123" } },
@@ -308,7 +315,7 @@ The two are independent and almost always passed together:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/92d99101-7d19-46ac-8050-24d1cad6039b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
   Open a public LangSmith run for this example.
 </Card>
 

@@ -7,7 +7,7 @@ Configure an isolated filesystem and shell for a managed deep agent.
 A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Put the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:

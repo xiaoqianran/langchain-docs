@@ -765,7 +765,7 @@ const dynamicModelMiddleware = createMiddleware({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dc39d44b-bef7-49cf-bef8-45e5f4881bf8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/97b0c168-3017-4ad9-8278-49e135c43f3d/r">
   Open a public LangSmith run for this example.
 </Card>
 

@@ -9,7 +9,7 @@
 身份控制谁可以调用您的托管深度代理，例如开始运行或发送消息的应用程序和 SDK 客户端。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 将身份声明放在项目根目录下：

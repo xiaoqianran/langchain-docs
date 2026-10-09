@@ -28,7 +28,7 @@
   </Card>
 
   <Card title="Dynamic subagents" icon="arrows-split" href="#dynamic-subagents">
-    从代码中调度子代理，以针对大量输入进行扇出、验证和递归工作流程。
+    从代码中分派子代理，以针对大量输入进行扇出、验证和递归工作流程。
   </Card>
 
   <Card title="Stateful work" icon="database" href="#how-interpreters-work">
@@ -44,9 +44,9 @@
 
 使用 [sandboxes](/oss/javascript/deepagents/sandboxes) 针对环境编写代码：shell 命令、包安装、测试、文件系统编辑和操作系统级执行。
 
-|需要|使用 |
+|需要|使用|
 | - | - |
-|一两个简单的外部通话 |正常工具调用|
+|一两个简单的外部通话 |正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents) 口译员 |
@@ -141,6 +141,10 @@
   });
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7594f2f3-5572-420e-be08-7272d2c9cdd2/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 口译员如何工作中间件向代理添加了一个`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 

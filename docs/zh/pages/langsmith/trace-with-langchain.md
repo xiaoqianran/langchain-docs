@@ -290,12 +290,12 @@ export LANGSMITH_PROJECT=my-project
   `run_name` 参数仅更改您调用的可运行对象的名称（例如，链、函数）。它不会重命名当您调用 LLM 对象（如 [⟦T51⟧](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) (`gpt-5.4-mini`)）时自动创建的嵌套运行。在示例中，封闭的运行将在 LangSmith 中显示为 `MyCustomChain`，而嵌套的 LLM 运行仍显示模型的默认名称。
 
   要给 LLM 运行一个更有意义的名称，您可以：* 将模型包装在另一个可运行的文件中，并为该步骤分配一个 `run_name`。
-  * 使用跟踪装饰器或帮助器（例如，Python 中的 `@traceable`，或 JS/TS 中的 `langsmith` 中的 `traceable`）围绕模型调用创建自定义运行。
+  * Use a tracing decorator or helper (e.g., `@traceable` in Python, or `traceable` from `langsmith` in JS/TS) to create a custom run around the model call.
 </Note>
 
 ## 覆盖跟踪中的模型名称
 
-跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。但是，出于组织目的或区分不同的模型配置，您可能希望在跟踪中显示不同的、更具描述性的名称。您可以通过在构建或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
+跟踪 LangChain 模型调用时，LangSmith 自动捕获 API 调用中使用的模型标识符。 However, you may want to display a different, more descriptive name in traces for organizational purposes or to distinguish between different model configurations.您可以通过在构建或配置 LangChain 模型时传递 `ls_model_name` [metadata parameter](/langsmith/ls-metadata-parameters#ls_model_name) 来实现此目的。
 
 这在以下情况下特别有用：
 
@@ -361,12 +361,12 @@ export LANGSMITH_PROJECT=my-project
 </CodeGroup>当您在模型的元数据中传递 `ls_model_name` 时，该名称将出现在涉及该模型实例的所有跟踪的 LangSmith UI 中。这适用于任何 LangChain 聊天模型或 LLM，并且由使用该模型的所有运行继承，包括当它是链的一部分时。
 
 <Note>
-  `ls_model_name` 元数据参数也用于[cost tracking](/langsmith/cost-tracking)。与`ls_provider`参数结合使用时，LangSmith可以自动计算自定义或自托管模型的成本。有关所有可用元数据参数的更多信息，请参阅[metadata parameters reference](/langsmith/ls-metadata-parameters)。
+  `ls_model_name` 元数据参数也用于[cost tracking](/langsmith/cost-tracking)。 When combined with the `ls_provider` parameter, LangSmith can automatically calculate costs for custom or self-hosted models. For more information about all available metadata parameters, see the [metadata parameters reference](/langsmith/ls-metadata-parameters).
 </Note>
 
 ## 自定义运行ID
 
-您可以在调用或流式传输 LangChain 代码时通过在 [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig) 中提供给定运行的 ID 进行自定义。该ID用于唯一标识LangSmith中的运行，可用于查询特定运行。 ID 对于跨不同系统链接运行或实现自定义跟踪逻辑非常有用。这可以通过在构造时在 [⟦T63⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_id` 或在调用参数中传递 `run_id` 来完成。
+You can customize the ID of a given run when invoking or streaming your LangChain code by providing it in the [Config](https://reference.langchain.com/python/langchain_core/runnables/?h=runnablecon#langchain_core.runnables.RunnableConfig).该ID用于唯一标识LangSmith中的运行，可用于查询特定运行。 ID 对于跨不同系统链接运行或实现自定义跟踪逻辑非常有用。这可以通过在构造时在 [⟦T63⟧](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) 对象中设置 `run_id` 或在调用参数中传递 `run_id` 来完成。
 
 <Note>
   LLM 对象当前不直接支持此功能。
@@ -374,16 +374,18 @@ export LANGSMITH_PROJECT=my-project
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
+  from langchain_core.utils.uuid import uuid7
 
-  my_uuid = uuid.uuid4()
+  my_uuid = uuid7()
 
   # You can configure the run ID at invocation time:
   chain.invoke({"input": "What is the meaning of life?"}, {"run_id": my_uuid})
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const myUuid = crypto.randomUUID();
+  import { uuid7 } from "langsmith";
+
+  const myUuid = uuid7();
 
   // You can configure the run ID at invocation time, like below
   await chain.invoke({ input: "What is the meaning of life?" }, { runId: myUuid });
@@ -398,11 +400,10 @@ export LANGSMITH_PROJECT=my-project
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
-
   from langchain_openai import ChatOpenAI
   from langchain_core.prompts import ChatPromptTemplate
   from langchain_core.output_parsers import StrOutputParser
+  from langchain_core.utils.uuid import uuid7
 
   prompt = ChatPromptTemplate.from_messages([
       ("system", "You are a helpful assistant. Please respond to the user's request only based on the given context."),
@@ -415,7 +416,7 @@ export LANGSMITH_PROJECT=my-project
 
   question = "Can you summarize this morning's meetings?"
   context = "During this morning's meeting, we solved all world conflict."
-  my_uuid = uuid.uuid4()
+  my_uuid = uuid7()
   result = chain.invoke({"question": question, "context": context}, {"run_id": my_uuid})
   print(my_uuid)
   ```

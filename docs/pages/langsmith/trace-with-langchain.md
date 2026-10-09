@@ -382,16 +382,18 @@ You can customize the ID of a given run when invoking or streaming your LangChai
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
+  from langchain_core.utils.uuid import uuid7
 
-  my_uuid = uuid.uuid4()
+  my_uuid = uuid7()
 
   # You can configure the run ID at invocation time:
   chain.invoke({"input": "What is the meaning of life?"}, {"run_id": my_uuid})
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const myUuid = crypto.randomUUID();
+  import { uuid7 } from "langsmith";
+
+  const myUuid = uuid7();
 
   // You can configure the run ID at invocation time, like below
   await chain.invoke({ input: "What is the meaning of life?" }, { runId: myUuid });
@@ -408,11 +410,10 @@ In JS/TS, you can use a `RunCollectorCallbackHandler` instance to access the run
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
-
   from langchain_openai import ChatOpenAI
   from langchain_core.prompts import ChatPromptTemplate
   from langchain_core.output_parsers import StrOutputParser
+  from langchain_core.utils.uuid import uuid7
 
   prompt = ChatPromptTemplate.from_messages([
       ("system", "You are a helpful assistant. Please respond to the user's request only based on the given context."),
@@ -425,7 +426,7 @@ In JS/TS, you can use a `RunCollectorCallbackHandler` instance to access the run
 
   question = "Can you summarize this morning's meetings?"
   context = "During this morning's meeting, we solved all world conflict."
-  my_uuid = uuid.uuid4()
+  my_uuid = uuid7()
   result = chain.invoke({"question": question, "context": context}, {"run_id": my_uuid})
   print(my_uuid)
   ```

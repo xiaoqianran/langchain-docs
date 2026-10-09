@@ -9,7 +9,7 @@
 托管 Deep Agents 运行与您已经构建的相同的 [Deep Agents](/oss/python/deepagents/overview) 工具，因此移动现有代理是一项重新打包工作，而不是重写。您的工具、中间件和子代理将按原样保留。代理条目发生变化，系统提示、技能和内存移至项目文件中。
 
 <Note>
-  托管 Deep Agents 位于 **公共 [beta](/langsmith/release-stages)** 中，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 决定是否移动

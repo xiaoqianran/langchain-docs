@@ -9,7 +9,7 @@
 中间件添加了围绕模型调用、工具调用和代理生命周期的行为。与[custom tools](/langsmith/python/managed-deep-agents-tools)一样，MDA 不会自动发现中间件。导入它并将其传递给代理定义。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
@@ -73,7 +73,7 @@ my-agent/
         return result
     ```
 
-    将中间件导入项目根代理条目并将其传递到`middleware`列表中：
+    将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
 
     ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from managed_deepagents import define_deep_agent
@@ -105,7 +105,7 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`middleware/`下的模块。中间件未同步到 Context Hub；它附带代理代码。
 
-## 何时使用中间件|概念|亲切 |它如何到达代理|
+## 何时使用中间件|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **中间件** |申请代码 |导入并传入代理定义 |
 | **[Custom tools](/langsmith/python/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |

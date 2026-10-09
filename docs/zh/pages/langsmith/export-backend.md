@@ -40,9 +40,13 @@
 
 您可以使用 [Prometheus](https://prometheus.io/docs/prometheus/latest/getting_started/#configure-prometheus-to-monitor-the-sample-targets) 或 [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver) 收集器来抓取端点，并将指标导出到您选择的后端。
 
+### 沙盒主机
+
+对于选项卡式 SmithDB 和 Sandbox 仪表板，请参阅 [Monitor self-hosted LangSmith with Datadog or Grafana](/langsmith/self-host-observability-dashboards)。该指南涵盖组件收集设置、部署过滤器、平台覆盖范围和兼容性。
+
 ### 前端 Nginx
 
-前端服务在以下端点公开其 Nginx 指标：`langsmith-frontend.langsmith.svc.cluster.local:80/nginx_status`。你可以自己刮，或者拿出一个[Prometheus Nginx exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-nginx-exporter)。
+前端服务在以下端点公开其 Nginx 指标：`langsmith-frontend.langsmith.svc.cluster.local:80/nginx_status`。你可以自己刮它们，或者拿出一个[Prometheus Nginx exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-nginx-exporter)。
 
 <Warning>
   **以下部分仅适用于集群内数据库。如果您使用外部数据库，则需要配置公开和获取指标。**
@@ -52,13 +56,13 @@
 
 如果您使用集群内 Postgres/Redis 实例，则可以使用 Prometheus 导出器公开实例中的指标。您可以部署 [Postgres exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-postgres-exporter) 和/或 [Redis exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-redis-exporter)。
 
-### 点击屋
-
-集群内的 Clickhouse 配置为无需导出器即可公开指标。您可以使用收集器来抓取`http://<langsmith_release_name>-clickhouse.<namespace>.svc.cluster.local:9363/metrics`的指标
+### 点击屋集群内的 Clickhouse 配置为无需导出器即可公开指标。您可以使用收集器在 `http://<langsmith_release_name>-clickhouse.<namespace>.svc.cluster.local:9363/metrics` 抓取指标
 
 ## 痕迹
 
-有关参考设置，请参阅[OTel collector example](/langsmith/langsmith-collector#traces)。LangSmith后端、平台后端、Playground和LangSmith队列部署已被检测以发出[Otel](https://opentelemetry.io/docs/concepts/signals/traces/)跟踪。默认情况下，跟踪处于关闭状态，并且可以通过 `langsmith_config.yaml`（或等效）文件中的以下内容为所有 LangSmith 服务启用：
+有关参考设置，请参阅[OTel collector example](/langsmith/langsmith-collector#traces)。
+
+LangSmith后端、平台后端、Playground和LangSmith队列部署已被检测以发出[Otel](https://opentelemetry.io/docs/concepts/signals/traces/)跟踪。默认情况下，跟踪处于关闭状态，并且可以通过 `langsmith_config.yaml` （或等效）文件中的以下内容为所有 LangSmith 服务启用：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:

@@ -12,7 +12,7 @@
 
 * **将凭据保留在项目之外**：`mda deploy` 在每次部署时收集 `.env` 值作为部署机密。连接值仍保留在工作区中。
 * **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。环境变量为每个人保留一个值。
-* **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
+* **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重复使用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
 
 将凭证存储在 LangSmith 中以便在托管 Deep Agents 中使用需要一个命令：
 
@@ -27,12 +27,14 @@ const apiKey = await connections.get("organization-tavily", { type: "agent" });
 本页的其余部分介绍了围绕这些步骤的两个选择：谁拥有凭证以及服务如何进行身份验证。
 
 <Note>
-  托管 Deep Agents 在 **公共 [beta](/langsmith/release-stages)** 中可用，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 选择凭证所有者
 
-每个 `connections.get(...)` 调用名称都拥有它解析的凭证：|业主|决定|使用时 |
+每个 `connections.get(...)` 调用名称都拥有它解析的凭证：
+
+|业主|决定 |使用时 |
 | - | - | - |
 | `agent` |属于部署的一份凭证。每个呼叫者都使用它。 |每个呼叫者都需要相同的功能：使用 Tavily（共享知识库）进行网络搜索，或发布到一个团队频道。 |
 | `user` |呼叫者自己的凭据。每个人都授权自己的帐户。 |代理充当提出问题的人：搜索只有他们可以看到的 Notion 页面、以他们的名义提交问题或以他们的身份发送电子邮件。 |
@@ -40,19 +42,17 @@ const apiKey = await connections.get("organization-tavily", { type: "agent" });
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const tavilyKey = await connections.get("organization-tavily", { type: "agent" });
 const notionToken = await connections.get("engineering-notion", { type: "user" });
-```
-
-`connections.get(...)` 将凭证值解析为字符串。
+````connections.get(...)` 将凭证值解析为字符串。
 
 连接是一个容器，它属于工作区而不是所有者。其中的凭证有所有者。没有 `--owner` 标志：您使用的 [create mode](#choose-a-create-mode) 设置所有者。
 
-`connections.get(...)` 选择所有者。它不会创造一个。要求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T59⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T61⟧](/langsmith/javascript/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要解决第二个部署中的相同 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
+`connections.get(...)` 选择所有者。它不会创造一个。要求没有自己凭证的所有者无法运行 `agent`，并为 `user` 提出 [⟦T59⟧ interrupt](#handle-the-authorization-interrupt)。存储在不同所有者的同一 slug 下的凭证不满足查找。
+
+代理拥有的凭据属于项目的部署，因此在至少成功一次[⟦T61⟧](/langsmith/javascript/managed-deep-agents-deploy)后创建它们。部署仅读取其拥有的凭证。要解决第二个部署中的相同 slug，请从该项目根目录再次运行 `mda connections create <slug>`：在现有 slug 上，该命令会附加新的代理拥有的凭据，而不是失败。
 
 ### 识别来电者
 
-用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：
-
-|表面|来电者身份|
+用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份 |
 | - | - |
 | [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
@@ -60,15 +60,15 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
 
 默认身份声明验证LangSmith API 密钥。该密钥对调用客户端（而不是个人）进行身份验证，因此提供该密钥的每个调用者都会解析为相同的身份。要为每个登录者提供自己的凭据，请声明 [Supabase identity](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-supabase)。
 
-代码永远不会将用户 ID 传递给 `connections.get(...)`。运行时解析调用者并返回该人的凭据。<Note>
+代码永远不会将用户 ID 传递给 `connections.get(...)`。运行时解析调用者并返回该人的凭据。
+
+<Note>
   Slack 和 Studio 为调用者完成授权往返。对自定义渠道的一流支持正在开发中。要立即针对呼叫者身份构建自定义前端，请参阅 [Handle the authorization interrupt](#handle-the-authorization-interrupt) 并联系 [LangChain team](https://forum.langchain.com/c/help/langsmith/)。
 </Note>
 
 ## 选择创建模式
 
-所有权决定代理使用凭证执行的操作。创建模式决定凭证如何到达工作区，并取决于外部服务如何进行身份验证：
-
-|模式|使用时 |使用 | 创建凭证所有者 |
+所有权决定代理使用凭证执行的操作。创建模式决定凭证如何到达工作区，并取决于外部服务如何进行身份验证：|模式|使用时 |使用 | 创建凭证所有者 |
 | - | - | - | - |
 | **不透明的秘密** |该服务使用固定的 API 密钥或其他静态秘密。 | `--secret-from-env`、`--secret-from-file`、stdin 或交互式提示 |代理|
 | **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有[⟦T69⟧](#authorize-an-agent-owned-oauth-account)或[client credentials](#create-a-client-credentials-connection)的座席|
@@ -112,7 +112,9 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
   # MCP OAuth: let the MCP server register a client for you
   bunx mda connections create engineering-notion --mcp https://mcp.notion.com/mcp
   ```
-</CodeGroup>不要在一个命令中混合使用模式。例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
+</CodeGroup>
+
+不要在一个命令中混合使用模式。例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
 
 ### 命名连接
 
@@ -123,9 +125,7 @@ mda connections create frontend-github --oauth github
 #                      ^ your slug      ^ catalog provider
 ```
 
-Slug 在工作空间中是唯一的。使用小写字母、数字和单个连字符，并选择一个可标识连接指向哪个帐户的名称，例如 `organization-tavily` 或 `engineering-notion`。
-
-## 创建一个不透明的秘密
+Slug 在工作空间中是唯一的。使用小写字母、数字和单个连字符，并选择一个可标识连接指向哪个帐户的名称，例如 `organization-tavily` 或 `engineering-notion`。## 创建一个不透明的秘密
 
 为代理存储固定的秘密。从环境变量、文件、标准输入或提示中读取值。此模式适合自定义工具的 API 密钥，例如 Tavily 搜索密钥。使用 CLI 创建的不透明机密由代理拥有。
 
@@ -147,15 +147,15 @@ Slug 在工作空间中是唯一的。使用小写字母、数字和单个连字
 
 这会将 `TAVILY_API_KEY` 的值存储为代理拥有的秘密。运行时代码使用 `connections.get(...)` 来解析它。
 
-其他提供价值的方式：* **`--secret-from-file PATH`**：从仅包含秘密的文件中读取一个值。
+其他提供价值的方式：
+
+* **`--secret-from-file PATH`**：从仅包含秘密的文件中读取一个值。
 * **stdin**：管道或重定向值，例如 `printf '%s' "$ACME_API_KEY" | mda connections create acme-api`。
 * **交互式提示**：在 TTY 上省略值标志。 CLI 隐藏输入，因此秘密不会出现在屏幕上或 shell 历史记录中。
 
 使用 CLI 创建的不透明机密始终归代理所有。对于每个调用者的凭据，请使用 [OAuth connection](#create-a-general-oauth-connection)。
 
-颁发属于代理的密钥，而不是重复使用个人密钥。可以对专用密钥进行范围界定、轮换和撤销，而不会影响共享它的其他任何内容。
-
-### 在自定义工具中使用不透明的秘密
+颁发属于代理的密钥，而不是重复使用个人密钥。可以对专用密钥进行范围界定、轮换和撤销，而不会影响共享它的其他任何内容。### 在自定义工具中使用不透明的秘密
 
 以下工具解析代理的 `organization-tavily` 连接，然后将其发送到 Tavily API：
 
@@ -191,7 +191,9 @@ export const searchWeb = tool(
 
 注册自带应用程序 (BYOT) OAuth 客户端，以便调用者可以授予代理对提供商 API 的访问权限。将此模式用于您拥有 OAuth 应用程序注册的 REST 或 GraphQL API。对于自动发现并注册客户端的 MCP 服务器，请改用 [MCP OAuth](#create-an-mcp-oauth-connection)。
 
-### 使用 OAuth 目录每个 OAuth 提供程序都需要相同的五个设置：授权 URL、令牌 URL、令牌端点身份验证方法、授权参数和默认范围。目录条目提供所有五个，因此 `--oauth <service>` 加上您自己的客户端 ID 和密码就是整个配置。
+### 使用 OAuth 目录
+
+每个 OAuth 提供程序都需要相同的五个设置：授权 URL、令牌 URL、令牌端点身份验证方法、授权参数和默认范围。目录条目提供所有五个，因此 `--oauth <service>` 加上您自己的客户端 ID 和密码就是整个配置。
 
 目录并不是您可以使用的提供商的大门。对于它不涵盖的服务，[pass the endpoints yourself](#register-a-provider-with-custom-endpoints)。
 
@@ -408,7 +410,7 @@ const accessToken = await connections.get("support-linear", { type: "agent" });
 `--authorize` 仅适用于 OAuth 连接。将其与 `--oauth`、自定义端点或 `--mcp` 结合使用。从项目目录运行它，因为授权属于该项目的部署。当每个呼叫者都应充当一个共享帐户而不是他们自己时，请使用代理拥有的 OAuth 帐户。向问答代理授予读取权限的公司 Notion 帐户就是一个例子。
 
 <Tip>
-  授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员为每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
+  授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
 
   * 代理获得您对该提供商的完全访问权限。
   * 提供商的审核日志显示您的姓名以及代理所做的事情。

@@ -50,6 +50,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -73,7 +74,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -102,6 +103,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -125,7 +127,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -154,6 +156,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -177,7 +180,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -206,6 +209,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -229,7 +233,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -258,6 +262,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -281,7 +286,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -310,6 +315,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -333,7 +339,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -362,6 +368,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
@@ -385,7 +392,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
     checkpointer: new MemorySaver(),
   });
 
-  const config = { configurable: { thread_id: crypto.randomUUID() } };
+  const config = { configurable: { thread_id: uuid7() } };
 
   const stream = await agent.streamEvents(
     { messages: [{ role: "user", content: "what is the weather in sf" }] },
@@ -414,7 +421,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/20bac62c-c7af-4ee2-9dd3-129e24ce6834/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc490030-828a-4756-899a-063c3c3d3600/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -606,7 +613,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a8cf65f3-e85e-448c-844e-67019558ddbc/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d59e6358-4c08-48b8-a906-8a054bddb7ac/r">
   Open a public LangSmith run for this example.
 </Card>
 

@@ -813,6 +813,7 @@ Here's everything together in a runnable script:
   import { tool, ToolMessage, type ToolRuntime, HumanMessage } from "langchain";
   import { Command, MemorySaver, StateSchema } from "@langchain/langgraph";
   import { ChatOpenAI } from "@langchain/openai";
+  import { uuid7 } from "langsmith";
 
   // Define the possible workflow steps
   const SupportStepSchema = z.enum([
@@ -1020,7 +1021,7 @@ Here's everything together in a runnable script:
   });
 
   // Configuration for this conversation thread
-  const threadId = crypto.randomUUID();
+  const threadId = uuid7();
   const config = { configurable: { thread_id: threadId } };
 
   // Turn 1: Initial message - starts with warranty_collector step

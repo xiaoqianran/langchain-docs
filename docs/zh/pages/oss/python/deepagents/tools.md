@@ -81,10 +81,14 @@ Deep Agents可以调用您定义的任何工具、任何[LangChain tool](https:/
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e2332fe-f150-4b1c-8980-0df71370e64e/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 自定义工具
 
 将任何可调用函数（例如普通函数、LangChain `@tool` 修饰函数或工具字典）直接传递给 `tools=`。
-Deep Agents infers the tool schema from the function signature and docstring, so you don't need to define a separate schema in most cases.
+Deep Agents 从函数签名和文档字符串推断工具架构，因此在大多数情况下您不需要定义单独的架构。
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -298,7 +302,11 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   ```
 </CodeGroup>
 
-有关定义和使用 LangChain 工具（工具字典、`StructuredTool`、返回类型、错误处理等）的完整详细信息，请参阅 [Tools](/oss/python/langchain/tools)。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/72db4044-0d95-4eaa-becf-5d5705110acb/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+有关定义和使用 LangChain 工具（工具字典、`StructuredTool`、返回类型、错误处理等）的完整详细信息，请参阅[Tools](/oss/python/langchain/tools)。
 
 ## MCP 工具
 
@@ -494,6 +502,10 @@ Deep Agents infers the tool schema from the function signature and docstring, so
           )
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52f4ba76-56b4-4d12-91fe-8a1c51c0b0fd/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 有关详细的配置选项（包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话），请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
 

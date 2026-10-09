@@ -32,14 +32,14 @@
 | - | - |
 | `beforeAgent` |代理启动之前（每次调用一次）|
 | `beforeModel` |每次模型调用之前 |
-| `afterModel` |每次模型响应后|
+| `afterModel` |每次模型响应后 |
 | `afterAgent` |代理完成后（每次调用一次）|
 
 **环绕式钩子**围绕每个调用运行，让您可以控制执行：
 
 |钩|当它运行时 |
 | - | - |
-| `wrapModelCall` |各地型号调用|
+| `wrapModelCall` |各地型号调用 |
 | `wrapToolCall` |围绕每个工具调用 |
 
 **示例：**
@@ -751,7 +751,7 @@ const dynamicModelMiddleware = createMiddleware({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dc39d44b-bef7-49cf-bef8-45e5f4881bf8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/97b0c168-3017-4ad9-8278-49e135c43f3d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -946,7 +946,7 @@ new SystemMessage({
 
 ***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

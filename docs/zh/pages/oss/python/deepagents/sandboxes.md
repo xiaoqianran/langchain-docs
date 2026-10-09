@@ -99,7 +99,7 @@ graph LR
         client.delete_sandbox(ls_sandbox.name)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9f84b0dd-2df7-4f4d-9ba1-4094e58d429e/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c6756d1-2bb1-4ba5-a54a-9891abd057db/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -144,6 +144,10 @@ graph LR
     finally:
         sandbox.stop()
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bdbb9f73-7bff-4e32-891b-fc05ed487f01/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="E2B">
@@ -325,11 +329,11 @@ graph LR
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 可用的提供商
+## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
 
-有关提供商特定的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
+## 生命周期和范围
 
-## 生命周期和范围大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
+大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
 
 沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
@@ -555,9 +559,9 @@ graph LR
   ```
 </CodeGroup>
 
-### 助理范围
+### 助理范围同一助手上的每个线程都重复使用一个沙箱。文件、已安装的包和克隆的存储库在对话中保留。
 
-同一助手上的每个线程都重复使用一个沙箱。文件、已安装的包和克隆的存储库在对话中保留。<Warning>
+<Warning>
   随着时间的推移，助理范围的沙箱会积累沙箱内的状态。使用沙箱提供程序配置 TTL、使用快照定期重置或实施清理逻辑，以便磁盘和内存不会无限制地增长。
 </Warning>
 
@@ -752,6 +756,10 @@ graph LR
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/658fb215-7b1c-4914-96d2-834acdd6110f/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 对于图工厂外部的手动创建、执行和拆卸，请参阅 [Basic usage](#basic-usage) 和 [sandbox integrations](/oss/python/integrations/sandboxes) 了解特定于提供者的 API。
 
 ## 集成模式
@@ -767,9 +775,7 @@ graph LR
 * ✅ 密切反映当地发展。
 * ✅ 代理与环境之间的紧密耦合。
 
-权衡：
-
-* 🔴 API 密钥必须位于沙箱内（安全风险）。
+权衡：* 🔴 API 密钥必须位于沙箱内（安全风险）。
 * 🔴 更新需要重建镜像。
 * 🔴 需要通信基础设施（WebSocket 或 HTTP 层）。
 
@@ -778,7 +784,9 @@ graph LR
 ```dockerfile theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 FROM python:3.11
 RUN pip install deepagents-code
-```然后在沙箱内运行代理。
+```
+
+然后在沙箱内运行代理。
 要在沙箱内使用代理，您必须添加额外的基础设施来处理应用程序与沙箱内的代理之间的通信。
 
 ### 沙箱作为工具模式
@@ -1017,7 +1025,7 @@ RUN pip install deepagents-code
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7f985ac-d3be-4ce3-b23e-ec1b441ee466/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a9453638-8ae8-496c-9dbe-1f9f56391cd6/r">
   为此示例打开公共 LangSmith 运行。
 </Card>本文档中的示例使用沙箱作为工具模式。
 当您的提供商的 SDK 处理通信层并且您希望生产能够反映本地开发时，请选择沙箱模式中的代理。
@@ -1523,9 +1531,11 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
         else:
             print(f"Failed to download {result.path}: {result.error}")
     ```
-  </Tab>
 
-  <Tab title="AgentCore">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7cff6290-eb4f-4fc8-8982-39b78675cbfc/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
+  </Tab><Tab title="AgentCore">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langchain-agentcore-codeinterpreter
@@ -1555,7 +1565,9 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 
     interpreter.stop()
     ```
-  </Tab><Tab title="Daytona">
+  </Tab>
+
+  <Tab title="Daytona">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langchain-daytona
@@ -1722,7 +1734,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙盒网络访问
+* 在不需要时阻止沙箱网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 

@@ -394,6 +394,10 @@ Deep Agents supports different backends depending on how you want to store and m
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="FilesystemBackend">
@@ -435,6 +439,10 @@ Deep Agents supports different backends depending on how you want to store and m
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 </Tabs>
 
@@ -521,6 +529,10 @@ const agent = await createDeepAgent({
   }),
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3ced22a-c125-4ac0-90a1-7da0898dd262/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 This keeps the agent configuration stable while the backend enforces which library the agent can access. The scope does not need to be user-specific. It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
 
@@ -627,6 +639,10 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 For more information on subagent configuration and skills inheritance, see [Subagents](/oss/javascript/deepagents/subagents).
 
@@ -895,6 +911,10 @@ const agent = await createDeepAgent({
   store,
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/27cdf1d8-3b6f-4a8e-9bbb-c8c2a63ebf99/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 The agent uses `write_file` and `edit_file` to create or update `SKILL.md` and supporting files under writable paths. To capture general learnings outside the skills format, route a separate path such as `/memories/` to another writable backend. See [Backends](/oss/javascript/deepagents/backends) for routing and store setup.
 
@@ -1936,7 +1956,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a81cf81d-7f30-4bb8-99a0-1e90554fc8c4/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/35c73ef7-efb6-47f0-bf7a-b81975d5a6f4/r">
   Open a public LangSmith run for this example.
 </Card>
 

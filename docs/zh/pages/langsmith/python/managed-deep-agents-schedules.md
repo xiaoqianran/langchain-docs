@@ -9,7 +9,7 @@
 托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目结构
@@ -59,7 +59,7 @@ schedule = define_schedule(
 )
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 
@@ -178,7 +178,7 @@ async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
     return f"Created schedule {item['id']}."
 ```
 
-当要求 Slack 每个工作日发送站立提醒时，客服人员会拨打 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
+当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
 
 ### 创建一次性计划对于运行一次的工作，传递 `at` 代替 `cron`。 `follow_up_later` 为代理提供了一种设置单个后续操作的方法，例如在部署完成后检查部署。
 
@@ -200,7 +200,7 @@ async def follow_up_later(prompt: str, hours: int) -> str:
     return f"Scheduled a one-time follow-up: {item['id']}."
 ```
 
-一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
+一次性计划默认为当前线程，因此它的运行将继续创建它的对话并在同一 Slack 线程中进行回复。
 
 ### 创建选项
 
@@ -213,7 +213,7 @@ async def follow_up_later(prompt: str, hours: int) -> str:
 </ParamField>
 
 <ParamField type="datetime | str">
-  带有时区的 `datetime`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟、最多 365 天的未来。
+  带有时区的 `datetime`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。必须是至少一分钟、最多 365 天的未来。
 </ParamField>
 
 <ParamField type="string">
@@ -227,7 +227,7 @@ async def follow_up_later(prompt: str, hours: int) -> str:
 <ParamField type="object | object[]">
   每次运行的结构化LangGraph输入。
 </ParamField><ParamField type="bool">
-  `True` 在新线程上开始每次运行。 `False` 继续当前线程。默认为 `True` 与 `cron` 以及 `False` 与 `at`。
+  `True` starts each run on a new thread. `False` continues the current thread. Defaults to `True` with `cron` and `False` with `at`.
 </ParamField>
 
 <ParamField type="boolean">
@@ -235,12 +235,12 @@ async def follow_up_later(prompt: str, hours: int) -> str:
 </ParamField>
 
 <ParamField type="object">
-  JSON 元数据供您自己使用。以 `mda_` 开头的键被保留。
+  JSON 元数据供您自己使用。 Keys that start with `mda_` are reserved.
 </ParamField>
 
 ### 管理日程
 
-`list`、`get`、`update` 和 `delete` 涵盖时间表生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
+`list`, `get`, `update`, and `delete` cover the rest of a schedule's life.当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。 Pause a schedule with `update` instead of deleting it when the person wants it back later.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 owner = {"type": "user"}
@@ -251,13 +251,13 @@ await schedules.update(item["id"], {"paused": True}, owner=owner)
 await schedules.delete(item["id"], owner=owner)
 ```
 
-`update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` 隐藏过期的一次性时间表，除非您通过 `include_expired=True`。对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改该计划。
+`update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` hides expired one-time schedules unless you pass `include_expired=True`.对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改该计划。
 
 ## 日程安排疑难解答
 
-* `must export a named schedule declaration`：在`schedules/`中的每个文件中定义一个顶级`schedule`。
+* `must export a named schedule declaration`: Define a top-level `schedule` in each file in `schedules/`.
 
-* `must define exactly one of prompt or input`：添加 `prompt` 或 `input`，但不能同时添加两者。
+* `must define exactly one of prompt or input`: Add either `prompt` or `input`, but not both.
 
 * `cron must be a standard 5-field expression`：使用五个 cron 字段，而不是基于秒的 cron 语法。* `schedule is not static`：用文字或顶级文字常量替换计算值。
 

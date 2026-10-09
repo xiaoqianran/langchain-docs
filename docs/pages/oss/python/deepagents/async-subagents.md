@@ -62,6 +62,10 @@ agent = create_deep_agent(
 )
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0727618d-02b5-4e99-b7c7-79d6f37f234d/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 | Field | Type | Description |
 | - | - | - |
 | `name` | `str` | Required. Unique identifier. The supervisor uses this when launching tasks. |
@@ -195,6 +199,10 @@ async_subagents = [
 ]
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dddcb1d1-92ac-468b-aa34-5d9070661aa1/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ## Best practices
 
 ### Size the worker pool for local development
@@ -255,6 +263,10 @@ agent = create_deep_agent(
     subagents=async_subagents,
 )
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/181f8fc2-b3aa-4c4b-b23d-d4204db98849/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### Supervisor reports stale status
 

@@ -65,6 +65,10 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
   const agent = createDeepAgent({ model });
   ```
 
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c4aae0a6-9a08-44a5-acbe-e1dcaea34f44/r">
+    为此示例打开公共 LangSmith 运行。
+  </Card>
+
   ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
@@ -75,10 +79,14 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
   });
   const agent = createDeepAgent({ model });
   ```
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1b3ed9c3-23f0-41d3-b162-d8f32ded339b/r">
+    为此示例打开公共 LangSmith 运行。
+  </Card>
 </CodeGroup>
 
 <Note>
-  可用参数因提供商而异。请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面了解特定于提供商的配置选项。
+  可用参数因提供商而异。有关特定于提供商的配置选项，请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面。
 </Note>
 
 ### 提供商简介

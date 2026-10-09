@@ -279,7 +279,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eaa48cfd-c3f0-4951-a496-f448a8dd7a04/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef60e8dc-0d58-46bb-af52-e2864152be81/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

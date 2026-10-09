@@ -4,7 +4,7 @@
 
 # 使用 Deep Agents 检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -195,7 +195,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55e6f247-1ae3-4542-bd54-75734ebeb6a0/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/16b9c27f-3b1f-4eb2-99b1-a59eb58167c1/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -275,7 +275,7 @@ API 密钥用于：* 代理[chat model integration](/oss/javascript/integrations
   </Step>
 </Steps>
 
-## 索引 LangChain 文档在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了该块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
+## 索引 LangChain 文档在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
 
 索引通常分四个步骤进行：
 
@@ -755,13 +755,14 @@ Indexed 722 chunks.
     import { StateBackend } from "deepagents";
     import { tool } from "langchain";
     import * as z from "zod";
+    import { uuid7 } from "langsmith";
 
     const backend = new StateBackend();
 
     const searchDocumentation = tool(
       async ({ query }) => {
         const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-        const batchId = crypto.randomUUID().slice(0, 8);
+        const batchId = uuid7().slice(0, 8);
         const uploads: Array<[string, Uint8Array]> = [];
         const savedPaths: string[] = [];
         const encoder = new TextEncoder();
@@ -1118,6 +1119,7 @@ if (import.meta.main) {
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1191,7 +1193,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1302,6 +1304,7 @@ if (import.meta.main) {
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1375,7 +1378,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1486,6 +1489,7 @@ if (import.meta.main) {
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1559,7 +1563,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1670,6 +1674,7 @@ if (import.meta.main) {
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1743,7 +1748,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1854,6 +1859,7 @@ if (import.meta.main) {
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1927,7 +1933,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2038,6 +2044,7 @@ if (import.meta.main) {
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -2111,7 +2118,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2222,6 +2229,7 @@ if (import.meta.main) {
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -2295,7 +2303,7 @@ if (import.meta.main) {
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2406,6 +2414,10 @@ if (import.meta.main) {
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9bcce461-cc36-4d39-a790-b5e02ac3da26/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ## 后续步骤
 
 您使用 [⟦T135⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 实现了一种 RAG 模式。将其与其他 Deep Agents 功能相结合，或尝试与 [RAG patterns](#rag-patterns) 不同的模式：
@@ -2420,7 +2432,7 @@ if (import.meta.main) {
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

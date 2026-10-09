@@ -24,8 +24,7 @@ import requests
 from datetime import datetime
 from langsmith import Client
 from openai import OpenAI
-from uuid import uuid4
-
+from langsmith import uuid7
 client = Client()
 oa_client = OpenAI()
 
@@ -189,7 +188,7 @@ for model_name in model_names:
             "start_time": datetime.utcnow().isoformat(),
             "reference_dataset_id": str(dataset_id),
             "description": "An optional description for the experiment",
-            "name": f"Toxicity detection - API Example - {model_name} - {str(uuid4())[0:8]}",  # A name for the experiment
+            "name": f"Toxicity detection - API Example - {model_name} - {str(uuid7())[0:8]}",  # A name for the experiment
             "extra": {
                 "metadata": {"foo": "bar"},  # Optional metadata
             },
@@ -271,7 +270,7 @@ for run in runs:
 
 ## 进行配对实验
 
-接下来，我们将演示如何进行配对实验。在成对实验中，您将两个示例相互比较。
+接下来，我们将演示如何进行配对实验。在成对实验中，您可以相互比较两个示例。
 
 欲了解更多信息，请查看[How to run a pairwise evaluation](/langsmith/evaluate-pairwise)。
 
@@ -282,7 +281,7 @@ resp = requests.post(
     "https://api.smith.langchain.com/api/v1/datasets/comparative",
     json={
         "experiment_ids": experiment_ids,
-        "name": "Toxicity detection - API Example - Comparative - " + str(uuid4())[0:8],
+        "name": "Toxicity detection - API Example - Comparative - " + str(uuid7())[0:8],
         "description": "An optional description for the comparative experiment",
         "extra": {
             "metadata": {"foo": "bar"},  # Optional metadata
@@ -329,7 +328,7 @@ for example_id, runs in example_id_to_runs_map.items():
     print(f"Example ID: {example_id}")
     # Preferentially rank the outputs, in this case we will always prefer the first output
     # In reality, you can use an LLM to rank the outputs
-    feedback_group_id = uuid4()
+    feedback_group_id = uuid7()
 
     # Post a feedback score for each run, with the first run being the preferred one
     # API Reference: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback

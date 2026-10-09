@@ -8,10 +8,10 @@
 
 创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T24⟧ CLI](/langsmith/javascript/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
 
-在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
+在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了持久内存和每日计划。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 先决条件
@@ -37,9 +37,9 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
   ## 第 1 步：阅读指南
 
-  获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。## 第二步：安装技能
+  获取并遵循 [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) 作为 CLI 命令、项目布局和部署步骤的真实来源。首选与该项目匹配的 Python 或 TypeScript 路径。
 
-  如果 `managed-deep-agents` 技能尚不可用，请安装它：
+  ## 第二步：安装技能如果 `managed-deep-agents` 技能尚不可用，请安装它：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
@@ -62,7 +62,9 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
   * 当秘密、计划层限制或仅限 UI 的步骤不清楚时，询问而不是猜测。
 </Prompt>
 
-## 创建并部署代理<Steps>
+## 创建并部署代理
+
+<Steps>
   <Step title="Set up the project">
     创建一个项目并打开其目录：
 
@@ -70,9 +72,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npx managed-deepagents init research-assistant
       cd research-assistant
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ``````bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm dlx managed-deepagents init research-assistant
       cd research-assistant
       ```
@@ -124,10 +124,10 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
     You are a careful research assistant. Use internet search to find sources,
     keep notes, and return concise answers with citations.
-    ```部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
-  </Step>
+    ```
 
-  <Step title="Configure your model and search">
+    部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
+  </Step><Step title="Configure your model and search">
     现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
     打开`agent.ts`：

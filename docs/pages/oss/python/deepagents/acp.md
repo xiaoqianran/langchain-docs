@@ -213,6 +213,10 @@ This starts an ACP server in stdio mode (it reads requests from stdin and writes
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/98892671-3052-4477-947a-de42469f7da5/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Card title="Example coding agent" icon="brand-github" href="https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py">
   The `deepagents-acp` package includes an example coding agent with filesystem and shell that you can run out of the box.
 </Card>

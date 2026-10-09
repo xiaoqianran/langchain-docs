@@ -1007,6 +1007,10 @@ const serialized = message.toJSON();
 const restored = await load<HumanMessage>(JSON.stringify(serialized));
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5be0f5b8-9c08-4287-bcf9-adacc4b19e95/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Warning>
   **`load()` deserializes data by instantiating classes and invoking constructors. Never call `load()` on untrusted or user-supplied input.** Only deserialize data that originates from a source you control, such as your own database.
 </Warning>

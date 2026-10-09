@@ -6,7 +6,7 @@
 
 聊天界面主导了我们与人工智能的交互方式，但多模式人工智能的最新突破正在开辟令人兴奋的新可能性。现在，高质量的生成模型和富有表现力的文本转语音 (TTS) 系统使得构建感觉不像工具而更像对话伙伴的代理成为可能。
 
-语音代理就是这样的一个例子。您可以使用口语与其交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
+语音代理就是这样的一个例子。您可以使用口语与其进行交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
 
 ### 什么是语音代理？
 
@@ -247,6 +247,7 @@ import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
+import { uuid7 } from "langsmith";
 
 // Define agent tools
 const addToOrder = tool(
@@ -291,7 +292,7 @@ async function* agentStream(
   eventStream: AsyncIterable<VoiceAgentEvent>
 ): AsyncGenerator<VoiceAgentEvent> {
   // Generate unique thread ID for conversation memory
-  const threadId = crypto.randomUUID();
+  const threadId = uuid7();
 
   for await (const event of eventStream) {
     // Pass through all upstream events

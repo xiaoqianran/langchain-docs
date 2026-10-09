@@ -7,7 +7,7 @@ Add built-in or custom middleware to a managed deep agent.
 Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/python/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:

@@ -9,7 +9,7 @@
 中间件添加了围绕模型调用、工具调用和代理生命周期的行为。与[custom tools](/langsmith/javascript/managed-deep-agents-tools)一样，MDA 不会自动发现中间件。导入它并将其传递给代理定义。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
@@ -97,7 +97,7 @@ Managed Deep Agents 添加的调用方、通道和沙箱字段，请参阅[Runti
 
 ## 何时使用中间件
 
-|概念|亲切 |它如何到达代理|
+|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **中间件** |申请代码 |导入并传入代理定义 |
 | **[Custom tools](/langsmith/javascript/managed-deep-agents-tools)** |申请代码 |导入并传入代理定义 |

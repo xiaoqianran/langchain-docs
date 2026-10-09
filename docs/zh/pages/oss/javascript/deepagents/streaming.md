@@ -282,7 +282,7 @@ Deep Agents 使用LangGraph 的子图流来处理子代理执行中的表面事�
     console.log(chunk);
   }
   ```
-</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c168526d-4120-4f09-8714-4a45a6446598/r">
+</CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8df86c24-16e9-47e4-bdb7-9aa07df974d1/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -320,7 +320,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29fabe2e-590d-45a1-bb2e-6d7491103625/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f2c37793-36ac-464b-96ce-5f7d5307d074/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -775,7 +775,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eae65ae1-ab35-412c-8769-465a7ee1ac0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b193af81-1c11-41a9-a814-7f8250a66f9a/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1364,7 +1364,7 @@ process.stdout.write("\n");
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8b328f38-ab1e-42f3-be42-4364118ec3f1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/30aef957-d016-4885-adb7-7a0d7952f97f/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1559,7 +1559,7 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c7546e0-f99a-4655-bf0c-550f94ebdff3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/08302070-e307-46d9-8312-f7bef65bff07/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1588,7 +1588,7 @@ for await (const [mode, data] of await agent.stream(
 
 ## 流块形状对于 `subgraphs=True`，块形状取决于您是否传递一种或多种流模式：
 
-| `stream_mode` |块状 |
+| `stream_mode` |块状|
 | - | - |
 |单模式（例如`"updates"`）| `(namespace, data)` |
 |多种模式（例如`["messages", "updates"]`）| `(namespace, mode, data)` |

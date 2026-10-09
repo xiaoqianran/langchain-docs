@@ -11,7 +11,7 @@
 本页面介绍如何查找托管 Deep Agents URL 并进行身份验证。有关协议行为和通用代理服务器客户端设置，请参阅[MCP endpoint in Agent Server](/langsmith/server-mcp)。
 
 <Note>
-  托管 Deep Agents 处于 **公共 [beta](/langsmith/release-stages)** 状态，并且仅在美国地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 终点为出方向。 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) 指出了另一种方式：它将远程 MCP 服务器中的工具添加到您的代理中。部署可以同时使用两者。
@@ -26,9 +26,9 @@
 
 `mda deploy` 打印 LangSmith 部署仪表板 URL，而不是 API URL。打开该仪表板，从部署详细信息视图中复制 **API URL**，然后附加 `/mcp`。
 
-由[⟦T9⟧](/langsmith/python/managed-deep-agents-local-development)启动的本地服务器服务于相同的端点。将 `/mcp` 附加到 CLI 打印的本地服务器 URL。## 验证请求
+由[⟦T9⟧](/langsmith/python/managed-deep-agents-local-development)启动的本地服务器服务于相同的端点。将 `/mcp` 附加到 CLI 打印的本地服务器 URL。
 
-MCP 端点使用部署的 [identity](/langsmith/python/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
+## 验证请求MCP 端点使用部署的 [identity](/langsmith/python/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
 |身份模式 |标题 |
 | - | - |
@@ -128,11 +128,11 @@ async with MCPAdapter(
 
 为了在通话中保留知识，[opt in to durable memory](/langsmith/python/managed-deep-agents-memory)。持久内存是可选的，并由部署的每个调用者共享。当 MCP 客户端不应相互影响时，请勿启用它。
 
-## 何时使用 MCP 端点|概念|亲切 |它如何到达代理|
+## 何时使用 MCP 端点|概念 |亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 端点** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|将远程 MCP 服务器托管的工具添加到代理 |
-| **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|从启动代理运行并传送响应的外部消息服务接收消息 |
+| **[Channels](/langsmith/python/managed-deep-agents-channels)** |托管配置|从启动代理运行并传送响应的外部消息传递服务接收消息 |
 
 ## 后续步骤
 

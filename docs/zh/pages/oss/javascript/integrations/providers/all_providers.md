@@ -32,7 +32,7 @@
 
 ## LangGraph 集成
 
-将 LangGraph 代理连接到前端和可观察平台。
+将LangGraph代理连接到前端和可观察平台。
 
 <Columns>
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
@@ -348,7 +348,7 @@
   </Card>
 
   <Card title="LangSmith" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith">
-    从LangSmith加载运行和数据集。
+    Load runs and datasets from LangSmith.
   </Card>
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
@@ -400,15 +400,15 @@
   <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
     在 Azure 动态会话中安全执行代码。
   </Card><Card title="Continuity tools" href="https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools" icon="link">
-    LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。
+    LangChain tools with application-defined permissions, stable operation identities and status-only recovery for cooperating services.
   </Card>
 
   <Card title="Corsair" href="https://docs.corsair.dev/mcp-adapters/langchain" icon="link">
-    将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为工具向 LangChain 代理公开。 OAuth 在服务器端运行，凭据保留在开发人员自己的数据库中。
+    Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and others) to LangChain agents as tools. OAuth 在服务器端运行，凭据保留在开发人员自己的数据库中。
   </Card>
 
   <Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
-    使用 OpenAI 的 DALL-E 模型生成图像。
+    Generate images using OpenAI's DALL-E models.
   </Card>
 
   <Card title="Decodo" href="/oss/javascript/integrations/tools/decodo">
@@ -453,6 +453,10 @@
     来自 Perplexity Search API 的 Web 搜索结果。
   </Card>
 
+  <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
+    People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
+  </Card>
+
   <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
     LangGraph.js 代理的电话批准。基于 PusharyInterrupt() 构建的批准节点会在手机上询问您的用户，并且图表仅在批准时路由到受保护的节点；如果没有答案，它将返回 null，因此该操作不会运行。 createAskHumanTool() 添加了一个可选的ask\_ human 工具。
   </Card>
@@ -462,7 +466,7 @@
   </Card>
 
   <Card title="SIGNA" href="https://github.com/codexvritra/signa/tree/main/sdk/langchain" icon="link">
-    将钱包签名的消息传递工具添加到LangChain代理。
+    Add wallet-signed messaging tools to LangChain agents.
   </Card>
 
   <Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
@@ -475,9 +479,7 @@
 
   <Card title="Tavily Crawl" href="/oss/javascript/integrations/tools/tavily_crawl">
     Tavily 的网络爬行功能。
-  </Card>
-
-  <Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
+  </Card><Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
     从网页中提取结构化数据。
   </Card>
 
@@ -487,7 +489,9 @@
 
   <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
     针对检索应用程序的人工智能优化搜索。
-  </Card><Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+  </Card>
+
+  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
     与 Tavily 一起对给定主题进行综合研究。
   </Card>
 
@@ -533,14 +537,14 @@
 
   <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
     通过 SAP HANA Cloud Vector Engine 的自查询检索器。
-  </Card>
-
-  <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
+  </Card><Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
     时间感知文档检索和排名。
   </Card>
 </Columns>
 
-## 商店<Columns>
+## 商店
+
+<Columns>
   <Card title="AlBuddyMemoryStore" href="https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md" icon="link">
     用于本地 SQLite 文件上的长期内存的 LangGraph `BaseStore`，无 API 密钥。每个 put 都会记录哪个代理写了它；再次输入密钥会废弃旧值而不是覆盖它，删除会关闭一个事实而不是删除它，因此保留了所相信的历史。
   </Card>
@@ -583,14 +587,14 @@
 
   <Card title="Respan" href="https://www.respan.ai/docs" icon="link">
     Trace LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
-  </Card>
-
-  <Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
+  </Card><Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
     在提示到达您的模型之前验证提示是否立即注入。
   </Card>
 </Columns>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

@@ -301,6 +301,10 @@ To compute cost automatically from token usage, you need to provide **token coun
            }
        }
        ```
+
+       <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77fb737d-e763-4f42-bc77-cbc27a4e9120/r">
+         Open a public LangSmith run for this example.
+       </Card>
      </CodeGroup>
 
      The Java and Kotlin examples use a dedicated executor. Shutting down the executor and awaiting termination ensures background trace submissions complete before the process exits.

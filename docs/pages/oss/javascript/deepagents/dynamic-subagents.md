@@ -547,6 +547,10 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     ```
   </CodeGroup>
 
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/521542f0-6b09-467c-ba36-838f76424c44/r">
+    Open a public LangSmith run for this example.
+  </Card>
+
   **What the agent writes**
 
   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -901,6 +905,10 @@ graph LR
     });
     ```
   </CodeGroup>
+
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2668c0c8-ccfc-4325-bcac-dfb767b8bb59/r">
+    Open a public LangSmith run for this example.
+  </Card>
 
   **What the agent writes**
 

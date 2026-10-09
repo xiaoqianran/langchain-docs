@@ -742,6 +742,10 @@ In addition to [built-in tools](/oss/python/deepagents/overview#execution-enviro
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/72db4044-0d95-4eaa-becf-5d5705110acb/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### MCP tools
 
 <Tip>
@@ -931,6 +935,10 @@ pip install "langchain[mcp]"
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52f4ba76-56b4-4d12-91fe-8a1c51c0b0fd/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/python/langchain/mcp).
 
 ## System prompt
@@ -1036,6 +1044,10 @@ Pass `system_prompt=` to give the agent your own instructions:
   )
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4e2e0256-4d32-42a2-b152-a6f6c6e2a6da/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 <Note>
   Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
@@ -1741,6 +1753,10 @@ Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool th
   ```
 </CodeGroup>
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fca69438-166f-4d35-9530-31b165fe4e9b/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 For setup, programmatic tool calling, subagent orchestration, and limits, see [Interpreters](/oss/python/deepagents/interpreters).
 
 ## Subagents
@@ -1786,6 +1802,10 @@ agent = create_deep_agent(
     subagents=subagents,
 )
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/298e9d96-115e-45b0-8b07-e9f1f0f6f899/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 For more information, see [Subagents](/oss/python/deepagents/subagents).
 
@@ -4111,6 +4131,10 @@ register_harness_profile(
 )
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e0c76e79-471f-44a6-9b68-d717733cf641/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 See [Profiles](/oss/python/deepagents/profiles) for registration keys, merge semantics, and plugin packaging. A narrower companion API, [provider profiles](/oss/python/deepagents/profiles#provider-profiles), packages model-construction arguments (API keys, timeouts, retry settings) for a provider.
 
 ## Structured output
@@ -4179,7 +4203,7 @@ print(result["structured_response"])
 # location='San Francisco, California' temperature=18.3 condition='Sunny' humidity=48 wind_speed=7.6 forecast='Pleasant sunny conditions expected to continue with temperatures around 64°F (18°C) during the day, dropping to around 52°F (11°C) at night. Clear skies with minimal precipitation expected.'
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b8e8bfe6-1853-4907-a3d4-a178338f8924/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a28f9784-f16d-4bb0-8103-98eae39d2743/r">
   Open a public LangSmith run for this example.
 </Card>
 

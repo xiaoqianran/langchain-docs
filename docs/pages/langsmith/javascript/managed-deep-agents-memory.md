@@ -9,7 +9,7 @@ Normally, a managed deep agent's conversational memory is scoped to a thread or 
 Durable memory is backed by the [Context Hub](/langsmith/use-the-context-hub) and comes in two independent layers. Enable either layer or both.
 
 <Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 </Note>
 
 <Note>
