@@ -28,21 +28,21 @@ LangGraph 将代理工作流程建模为图形：使用 StateGraph 定义状态�
 
 [⟦T60⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) 类是要使用的主要图形类。这是由用户定义的 `State` 对象参数化的。
 
-### 编译你的图表To build your graph, you first define the [state](#state), you then add [nodes](#nodes) and [edges](#edges), and then you compile it. What exactly is compiling your graph and why is it needed?
+### 编译你的图表要构建图表，首先定义 [state](#state)，然后添加 [nodes](#nodes) 和 [edges](#edges)，然后编译它。到底是什么在编译你的图表以及为什么需要它？
 
-编译是一个非常简单的步骤。 It provides a few basic checks on the structure of your graph (no orphaned nodes, etc). It is also where you can specify runtime args like [checkpointers](/oss/python/langgraph/persistence) and breakpoints. You compile your graph by just calling the `.compile` method:
+编译是一个非常简单的步骤。它提供了对图形结构的一些基本检查（没有孤立节点等）。您还可以在其中指定运行时参数，例如 [checkpointers](/oss/python/langgraph/persistence) 和断点。您只需调用 `.compile` 方法即可编译图表：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph = graph_builder.compile(...)
 ```
 
 <Warning>
-  You **MUST** compile your graph before you can use it.
+  您**必须**先编译您的图表，然后才能使用它。
 </Warning>
 
 ## 状态
 
-The first thing you do when you define a graph is define the `State` of the graph. The `State` consists of the [schema of the graph](#schema) as well as [⟦T65⟧ functions](#reducers) which specify how to apply updates to the state. `State`的模式将是图中所有`Nodes`和`Edges`的输入模式，并且可以是`TypedDict`或`Pydantic`模型。 All `Nodes` will emit updates to the `State` which are then applied using the specified `reducer` function.
+定义图时要做的第一件事是定义图的`State`。 `State` 由 [schema of the graph](#schema) 和 [⟦T65⟧ functions](#reducers) 组成，它们指定如何将更新应用于状态。 `State`的模式将是图中所有`Nodes`和`Edges`的输入模式，并且可以是`TypedDict`或`Pydantic`模型。所有 `Nodes` 都会向 `State` 发出更新，然后使用指定的 `reducer` 函数应用这些更新。
 
 ### 架构指定图模式的主要记录方法是使用[⟦T74⟧](https://docs.python.org/3/library/typing.html#typing.TypedDict)。如果您想提供您所在州的默认值，请使用[⟦T75⟧](https://docs.python.org/3/library/dataclasses.html)。如果您想要递归数据验证，我们还支持使用 Pydantic [⟦T76⟧](/oss/python/langgraph/use-graph-api#use-pydantic-models-for-graph-state) 作为图形状态（但请注意，Pydantic 的性能低于 `TypedDict` 或 `dataclass`）。
 
@@ -116,7 +116,7 @@ graph.invoke({"user_input": "My"})
 # {'graph_output': 'My name is Lance'}
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/db7e0ca9-0d20-4958-9b72-48bcc6564c0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a72a6e66-883f-4551-b4e2-3ca3129be6a2/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -153,7 +153,7 @@ graph.invoke({"user_input": "My"})
   # {'foo': 'My name', 'user_input': 'My', 'graph_output': 'My name is Lance', 'bar': 'My name is'}
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/41466c41-ad4c-4ca8-965a-bfae7b03ab67/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00c6ab6e-18ce-48ee-893e-4c97cec6ee6c/r">
     为此示例打开公共 LangSmith 运行。
   </Card>
 
@@ -171,7 +171,7 @@ graph.invoke({"user_input": "My"})
   ```如果您只需要节点实际每一步产生的通道（而不是完整的累积状态），请改用`stream_mode="updates"`。
 </Warning>
 
-### 减速器
+### 减速机
 
 减速器是理解节点更新如何应用于`State`的关键。 `State`中的每个按键都有自己独立的减速器功能。如果没有显式指定减速器函数，则假定对该键的所有更新都应覆盖它。有几种不同类型的减速器，从默认类型的减速器开始：
 
@@ -254,7 +254,7 @@ class State(TypedDict):
 
 #### 重置reducer字段
 
-减速器常见的混淆来源：使用合并减速器时，返回空值不会**不**清除字段。因为reducer将右边的参数合并到左边的参数中，所以合并了一个空的更新，并且保留了之前累积的值。
+减速器常见的混淆来源：使用合并减速器时，返回空值并不会清除字段。因为reducer将右边的参数合并到左边的参数中，所以合并了一个空的更新，并且保留了之前累积的值。
 
 此模式对于必须在重试尝试之间清除的错误缓冲区或重试计数器很重要：
 
@@ -295,7 +295,7 @@ def clear_errors(state: State):
 
 ### 未跟踪的值
 
-`UntrackedValue` 用于在图执行期间应该存在但不应该**设置检查点**的状态字段。当图表从检查点恢复时，未跟踪的值将重置为其初始状态（或不可用）。
+`UntrackedValue` 用于在图执行期间应该存在但不应该被设置检查点的状态字段。当图表从检查点恢复时，未跟踪的值将重置为其初始状态（或不可用）。
 
 这对于：
 
@@ -445,7 +445,7 @@ type MyUpdate = typeof MyStateSchema.Update;
 
 要了解有关消息对象的更多信息，请参阅[Messages conceptual guide](/oss/python/langchain/messages)。
 
-#### 在图表中使用消息在许多情况下，将先前的对话历史记录存储为图形状态中的消息列表会很有帮助。为此，我们可以向存储`Message`对象列表的图状态添加一个键（通道），并使用reducer函数对其进行注释（请参阅下面示例中的`messages`键）。减速器函数对于告诉图如何在每次状态更新时（例如，当节点发送更新时）更新状态中的 `Message` 对象列表至关重要。如果您不指定减速器，则每次状态更新都会用最近提供的值覆盖消息列表。如果您想简单地将消息附加到现有列表，您可以使用 `operator.add` 作为减速器。但是，您可能还想手动更新图形状态中的消息（例如人机循环）。如果您要使用`operator.add`，您发送到图表的手动状态更新将被附加到现有的消息列表中，而不是更新现有的消息。为了避免这种情况，您需要一个可以跟踪消息 ID 并覆盖现有消息（如果更新）的缩减程序。为此，您可以使用预构建的 [⟦T159⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) 函数。对于全新的消息，它只会附加到现有列表，但它也会正确处理现有消息的更新。
+#### 在图表中使用消息在许多情况下，将先前的对话历史记录存储为图形状态中的消息列表会很有帮助。为此，我们可以向存储`Message`对象列表的图状态添加一个键（通道），并使用reducer函数对其进行注释（请参阅下面示例中的`messages`键）。减速器函数对于告诉图如何在每次状态更新时（例如，当节点发送更新时）更新状态中的 `Message` 对象列表至关重要。如果您不指定减速器，则每次状态更新都会用最近提供的值覆盖消息列表。如果您想简单地将消息附加到现有列表，您可以使用 `operator.add` 作为减速器。但是，您可能还想手动更新图形状态中的消息（例如人机交互）。如果您要使用`operator.add`，您发送到图表的手动状态更新将被附加到现有的消息列表中，而不是更新现有的消息。为了避免这种情况，您需要一个可以跟踪消息 ID 并覆盖现有消息（如果更新）的缩减程序。为此，您可以使用预构建的 [⟦T159⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) 函数。对于全新的消息，它只会附加到现有列表，但它也会正确处理现有消息的更新。
 
 #### 序列化
 
@@ -585,7 +585,7 @@ builder.add_node(my_node)
     graph.invoke({"url": "https://www.example.com"}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ecb04879-c086-47c3-9244-405be60f0c26/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b9aac911-dc73-43de-b535-e52dfd6d7125/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -634,7 +634,7 @@ builder.add_node(my_node)
     graph.invoke({"urls": ["https://www.example.com"]}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc6bd7b8-a3c0-45bb-80e1-a8428c1fcd4d/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aff19bbc-eb5c-464c-838c-67f1257290e9/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -650,7 +650,7 @@ from langgraph.graph import START
 graph.add_edge(START, "node_a")
 ```
 
-### `END` 节点`END`节点是一个特殊的节点，代表终端节点。当您想要指示哪些边完成后没有任何操作时，将引用该节点。
+### `END` 节点`END`节点是一个特殊的节点，代表终端节点。当您想要指示哪些边完成后没有任何操作时，将引用此节点。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END
@@ -799,7 +799,7 @@ graph.add_conditional_edges("node_a", continue_to_jokes)
 
 ## `Command`
 
-[⟦T228⟧](https://reference.langchain.com/python/langgraph/types/Command)是一种用于控制图形执行的通用原语。它接受四个参数：* `update`：应用状态更新（类似于从节点返回更新）。
+[⟦T228⟧](https://reference.langchain.com/python/langgraph/types/Command)是一种用于控制图形执行的多功能原语。它接受四个参数：* `update`：应用状态更新（类似于从节点返回更新）。
 * `goto`：导航到特定节点（类似于[conditional edges](#conditional-edges)）。
 * `graph`：从[subgraphs](/oss/python/langgraph/use-subgraphs)导航时定位父图。
 * `resume`：提供一个值以在[interrupt](/oss/python/langgraph/interrupts)之后恢复执行。
@@ -924,7 +924,7 @@ resumed = graph.stream_events(Command(resume="yes"), config, version="v3")
 final = resumed.output
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55c552d5-6214-4be2-8271-571acd47e3e3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d043193b-5547-48ea-9796-f1bf5e3d32fb/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1113,7 +1113,7 @@ except GraphRecursionError as e:
 
 |方法|检测|处理|控制流程|
 | - | - | - | - |
-|主动（使用`RemainingSteps`）|达到限制之前|通过条件路由的内部图 |图形继续完成节点 |
+|主动（使用`RemainingSteps`）|达到限制之前 |通过条件路由的内部图 |图形继续完成节点 |
 |反应式（捕捉`GraphRecursionError`）|超出限制后 | try/catch 中的外部图 |图形执行终止 |
 
 **主动优势：**

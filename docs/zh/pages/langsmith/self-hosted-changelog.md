@@ -8,7 +8,7 @@
   **订阅**：我们的变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/self-hosted-changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 </Callout>
 
-[Self-hosted LangSmith](/langsmith/self-hosted) 是企业计划的附加项目，专为我们最大、最注重安全的客户而设计。欲了解更多详情，请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想获得许可证密钥以在您的环境中试用LangSmith。
+[Self-hosted LangSmith](/langsmith/self-hosted) 是企业计划的附加项目，专为我们最大、最注重安全的客户而设计。欲了解更多详情，请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要在您的环境中试用 LangSmith 的许可证密钥。
 
 <Update label="2026-10-02">
   ## langsmith-0.17.0
@@ -901,17 +901,17 @@
   * 使用新的`/v2/threads/stats`端点来检索跟踪项目的线程和跟踪计数、延迟、令牌、成本和反馈统计信息。
   * 队列代理现在支持使用您配置的工作区 URL、服务端点和工作区凭据保存的 Databricks 模型配置。您可以通过 Databricks Model Serving 或 AI Gateway 路由进行连接。
 
-  **Download the Helm chart:** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
+  **下载 Helm 图表：** [⟦T165⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.23/langsmith-0.17.0-rc.23.tgz)
 </Update>
 
 <Update label="2026-09-05">
   ## langsmith-0.16.16
 
-  **LangSmith version:** `0.16.50`
+  **LangSmith版本：** `0.16.50`
 
   * 内部改进和维护更新
 
-  **Download the Helm chart:** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
+  **下载 Helm 图表：** [⟦T167⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.16/langsmith-0.16.16.tgz)
 </Update>
 
 <Update label="2026-09-03">
@@ -1448,7 +1448,7 @@
     * 持续扫描启用的跟踪项目，识别故障和潜在的改进，并将它们转化为按严重程度排名的可操作问题。* 提出修复建议，在连接源代码的情况下打开 PR，创建评估器和真实示例以捕获回归，并自动监控问题是否再次出现。
     * 使用费按 [LangChain Compute Units (LCUs)](/langsmith/pricing-plans) 收费，并在组织和项目级别可选择每月支出限额。在自托管上，引擎不会发出 LangSmith 痕迹。
     * 将跟踪内容发送到 LangSmith Intelligence，这是 LangChain 管理的零数据保留服务。需要出口至 GCP 上的 `beacon.langchain.com` 或 AWS 上的 `beacon.aws.langchain.com`。气隙安装无法运行引擎。
-  * **自托管沙箱**可在 AWS 和 GCP 中使用。有关安装说明，请参阅[Enable sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)和[LangSmith Sandboxes](/langsmith/sandboxes)。您可能需要联系您的客户代表才能在您的许可证上启用此功能。
+  * **自托管沙箱**可在 AWS 和 GCP 中使用。有关安装说明，请参阅[Enable sandboxes](/langsmith/enable-self-hosted-sandboxes)和[LangSmith Sandboxes](/langsmith/sandboxes)。您可能需要联系您的客户代表才能在您的许可证上启用此功能。
     * 隔离环境，代理可以安全地执行任意代码并与文件系统交互，而无需接触您的主要基础设施。
     * 从基于 Docker 映像、本地`Dockerfile`或捕获的运行沙箱构建的快照启动，并挂载 S3、GCS 和 Git 存储库，而无需向代理公开凭据。
     * 身份验证代理将凭据保留在运行时之外。
@@ -3591,25 +3591,25 @@
 </Update>
 
 <Update label="2026-02-26">
-  ## langsmith-0.13.15* Added rebranded primary colors to button under feature flag in the frontend UI.
+  ## langsmith-0.13.15* 在前端 UI 中的功能标志下为按钮添加了重新命名的原色。
   * 将数据集自动完成替换为标签输入，以改善用户体验。
-  * Auto-hide and position Models column in the frontend based on data.
-  * Fixed revalidation conflict in the Smith frontend.
-  * Improved workspace model configurations to prevent text overflow with tooltips.
-  * Surfaced Models option in Group By popover under a feature flag.
-  * Supported loading ChatAnthropicVertex model configs in Smith-Polly.
-  * Added "No matching filters" message for empty search results in Filter Component Select V2.
-  * Enabled navigating automatically to insights with global scroll support.
-  * Resolved issues with playground and evaluators provider selector not filtering out disabled providers.
+  * 根据数据在前端自动隐藏和定位模型列。
+  * 修复了 Smith 前端的重新验证冲突。
+  * 改进了工作区模型配置，以防止工具提示文本溢出。
+  * 在功能标志下的“分组依据”弹出窗口中显示“模型”选项。
+  * 支持在 Smith-Polly 中加载 ChatAnthropicVertex 模型配置。
+  * 在 Filter Component Select V2 中添加了针对空搜索结果的“无匹配过滤器”消息。
+  * 通过全局滚动支持自动导航到见解。
+  * 解决了游乐场和评估器提供者选择器未过滤掉禁用提供者的问题。
   * 改进了消息模式的用户体验和样式。
   * 为内联过滤器实现了原始查询模式。
   * 允许`K8sEnvVarSource`中的`secret_key_ref`变为`None`以实现后端改进。
   * 修复了代理构建器 UI，以将问题文本包装在狭窄的视口上并关闭“添加 API 密钥以开始”对话框。
-  * 更新了用户体验，使评估器按钮高度与工具按钮图案相匹配。* Persisted selected model in local storage for a consistent UI experience.
-  * Auto-generated thread titles for improved thread management.
-  * Enhanced backend by gating secrets access with granular RBAC permissions.
-  * Implemented Outlook Email Tools in the Agent Builder.
-  * Improved keyboard shortcuts in the inbox feature of the Agent Builder UI.
+  * 更新了用户体验，使评估器按钮高度与工具按钮图案相匹配。* 将选定的模型保留在本地存储中，以获得一致的 UI 体验。
+  * 自动生成线程标题以改进线程管理。
+  * 通过使用精细的 RBAC 权限来控制秘密访问，从而增强了后端。
+  * 在代理生成器中实施了 Outlook 电子邮件工具。
+  * 改进了 Agent Builder UI 收件箱功能中的键盘快捷键。
 
   **下载 Helm 图表：** [⟦T700⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.15/langsmith-0.13.15.tgz)
 </Update>
@@ -3617,23 +3617,23 @@
 <Update label="2026-02-24">
   ## langsmith-0.13.14
 
-  * Fixed agent generation interruptions and handling, improving stability in the user experience.
-  * Fixed long feedback header text overflow when dragged to the last column.
-  * Added OAuth connections for built-in tools and providers on the tool page.
+  * 修复了代理生成中断和处理问题，提高了用户体验的稳定性。
+  * 修复了拖动到最后一列时长反馈标题文本溢出的问题。
+  * 在工具页面上添加了内置工具和提供程序的 OAuth 连接。
   * 修复了运行详细信息页面上发生的崩溃。
-  * Fixed onboarding dialog not fetching tools unnecessarily.
-  * Updated agent builder frontend to show real-time run count.
+  * 修复了入门对话框不获取不必要的工具的问题。
+  * 更新了代理构建器前端以显示实时运行计数。
   * 在前端添加了私有注册表 UI。
-  * Enhanced support for SerializedConstructor model configs in playground and insights.
-  * Added Gemini 3.1 Pro model to playground and backend model lists.
-  * 修复了游乐场中工具注册表崩溃的问题。* Added support for Gmail authentication improvements, including refresh token capability.
-  * Added new API endpoints for running playground experiments using a new service.
-  * Improved UI for trace filters with version 2 UX using Filterbar.
-  * Enhanced syntax highlighting to match Figma design for standardization.
-  * Supported Gmail OAuth v2 with cron logic for higher reliability.
-  * Added new models column in the experiment view with updated filtering options.
-  * Supported multiple paths for query shadowing log improvements.
-  * Added UIs for managing and editing model API key names in the playground.
+  * 增强了对 Playground 和 Insights 中 SerializedConstructor 模型配置的支持。
+  * 在游乐场和后端模型列表中添加了 Gemini 3.1 Pro 模型。
+  * 修复了游乐场中工具注册表崩溃的问题。* 添加了对 Gmail 身份验证改进的支持，包括刷新令牌功能。
+  * 添加了新的 API 端点，用于使用新服务运行 Playground 实验。
+  * 使用 Filterbar 改进了版本 2 UX 中跟踪过滤器的 UI。
+  * 增强语法突出显示以匹配 Figma 标准化设计。
+  * 支持带有 cron 逻辑的 Gmail OAuth v2，以提高可靠性。
+  * 在实验视图中添加了新模型列，并更新了过滤选项。
+  * 支持查询影子日志改进的多个路径。
+  * 添加了用于在 Playground 中管理和编辑模型 API 键名称的 UI。
 
   **下载 Helm 图表：** [⟦T701⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.14/langsmith-0.13.14.tgz)
 </Update>
@@ -3656,22 +3656,22 @@
 </Update>
 
 <Update label="2026-02-12">
-  ## langsmith-0.13.12* Improved button sizes and filter chip alignment in the InlineFilters UX.
+  ## langsmith-0.13.12* 改进了 InlineFilters UX 中的按钮尺寸和滤波器芯片对齐。
   * 添加提交标签搜索并显示到提示中心。
-  * Fixed issue with viewing experiments having objects for feedback scores.
+  * 修复了查看具有反馈分数对象的实验的问题。
   * 增强了对部署\_image 任务的跟踪。
-  * Added a search bar for the new consolidated filter dropdown.
+  * 为新的综合过滤器下拉列表添加了搜索栏。
   * 添加了环境变量，用于全局禁用个人访问令牌创建。
   * 增加了成本图表功能。
   * 改进了主页样式并修复了相关设计问题。
-  * Fixed issues with rerendering in General Purpose API (GPA).
-  * Improved system to count PENDING, RETRY, and FAILED transactions in self-hosted offline usage reporting.
-  * Enhanced the agent builder to localize the current date to the user's timezone.
-  * Added Bedrock inference profile dropdown to the playground.
-  * Improved error detection and messaging for server issues in agent-chat.
-  * Fixed styling issues including email count in invite modal and load state display in the agent editor.
-  * Implemented initial design for a tools page with feature flags.
-  * Added icon-only filter popover mode to the frontend filter UI.* Added beacon endpoint for Self Hosted Agent Builder Runs Limiting.
+  * 修复了通用 API (GPA) 中的重新渲染问题。
+  * 改进了系统，可在自托管离线使用报告中计算待处理、重试和失败事务。
+  * 增强了代理构建器，将当前日期本地化为用户的时区。
+  * 在游乐场中添加了基岩推理配置文件下拉列表。
+  * 改进了代理聊天中服务器问题的错误检测和消息传递。
+  * 修复了样式问题，包括邀请模式中的电子邮件计数和代理编辑器中的加载状态显示。
+  * 实现了带有功能标志的工具页面的初始设计。
+  * 在前端过滤器 UI 中添加了仅图标过滤器弹出模式。* 添加了用于自托管代理生成器运行限制的信标端点。
   * 启用新的“粒度使用”选项卡，用于按工作区、项目、用户和 API 密钥报告计费使用情况（使用 `DEFAULT_ORG_FEATURE_ENABLE_GRANULAR_USAGE_REPORTING=true` 和 `GRANULAR_USAGE_TABLE_ENABLED=true` 环境变量在 `commonEnv` 中启用）
 
   **下载 Helm 图表：** [⟦T706⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.12/langsmith-0.13.12.tgz)
@@ -3680,19 +3680,19 @@
 <Update label="2026-02-12">
   ## langsmith-0.13.11
 
-  * Improved Agent Builder by using persisted simple model config.
+  * 通过使用持久的简单模型配置改进了 Agent Builder。
   * 修复了 Playground 的 UI，具有更好的消息块和工具按钮一致性。
-  * Added a search bar for the new consolidated filter dropdown.
-  * Fixed agent builder model selector for users without 'workspaces:manage' permission.
-  * Added file upload feature for General Purpose Agent.
+  * 为新的综合过滤器下拉列表添加了搜索栏。
+  * 修复了没有“工作空间：管理”权限的用户的代理构建器模型选择器。
+  * 为通用代理添加了文件上传功能。
   * 添加了创建通用代理的按钮。
-  * Enhanced the Playground by preserving baseline setting in URL on page reload.
-  * Improved Playground experiment table UI and alignment.
-  * Fixed bulk deletion of datasets to update the table correctly.
-  * Added new API: workspace-scoped tool registry API.
+  * 通过在页面重新加载时保留 URL 中的基线设置来增强 Playground。
+  * 改进了 Playground 实验表 UI 和对齐方式。
+  * 修复了批量删除数据集以正确更新表的问题。
+  * 添加了新的 API：工作区范围的工具注册表 API。
   * 改进了对多场 runField 的支持。
-  * Enhanced insights scheduler with backend changes.
-  * Added ability to navigate pages in Polly and an initial set of base evaluations.* 为 Agent Builder 添加了跟踪增强功能，包括工具调用跟踪。
+  * 通过后端更改增强了洞察调度程序。
+  * 增加了在 Polly 中导航页面和一组初始基本评估的功能。* 为 Agent Builder 添加了跟踪增强功能，包括工具调用跟踪。
   * 集成更改以暂时支持自定义模型配置。
 
   **下载 Helm 图表：** [⟦T707⟧](https://github.com/langchain-ai/helm/releases/download/langsmith-0.13.11/langsmith-0.13.11.tgz)

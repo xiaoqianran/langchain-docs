@@ -142,7 +142,7 @@ helm repo update
 ```
 
 使用上游 URL 和 JWT 验证设置创建 `values.yaml`。 JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
-* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml` 中。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
+* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml`。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
 
 如果两者都设置了，则`jwksUri`优先。
 
@@ -372,7 +372,7 @@ authProxy:
 | `responseTrailerMode` | `SEND`、`SKIP` |是否转发响应预告片。 |
 
 * 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
-* 使用`STREAMED`进行流式LLM响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
+* 使用 `STREAMED` 进行流式 LLM 响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
 * 使用`NONE`完全跳过一个阶段。
 
 <Warning>
@@ -769,7 +769,7 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 
 <Accordion title="Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?">
   是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T174⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
-  要启用到 [Chat and Insights](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
+  要启用到 [Chat and Insights](/langsmith/self-host-insights-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
 </Accordion>
 
 <Accordion title="Does the auth proxy work without a public ingress?">

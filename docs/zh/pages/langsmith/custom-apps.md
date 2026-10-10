@@ -19,7 +19,7 @@
 ## 配置自托管聊天
 
 <Warning>
-  在自托管部署中，使用聊天功能构建和编辑应用程序需要 [sandbox service URLs](/langsmith/deploy-self-hosted-full-platform#optional-enable-service-urls)。仅启用沙箱是不够的。
+  在自托管部署中，使用聊天功能构建和编辑应用程序需要 [sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls)。仅启用沙箱是不够的。
 </Warning><Note>
   从 Helm Chart 版本 0.17.3（适用于 v0.17）和 0.18.0-rc.13（适用于 v0.18 预览）开始，可以使用聊天功能构建和编辑应用程序。
 </Note>
@@ -104,27 +104,27 @@
 
 #### 入门模板
 
-将其中之一传递给`langsmith apps init --template`：| Template | What it scaffolds |
+将其中之一传递给`langsmith apps init --template`：|模板|它的脚手架是什么？
 | - | - |
 | `annotation-queue` |队列审查 UI：运行和线程项目、特定于类型的查看器和反馈规则。 |
 | `annotation-queue-grid` |与可编辑电子表格相同的审核工作流程。 |
 | `experiment-comparison` |评估实验与基线的并排比较。 |
 | `coding-agent-dashboard` |编码代理运行的图表：随时间变化的使用情况、成本、错误和活动。 |
 
-## Edit an app
+## 编辑应用程序
 
 通过聊天在浏览器中编辑应用程序，或提取其源代码并在本地进行编辑。
 
-### Edit with chat
+### 通过聊天编辑
 
 从 **自定义应用程序** 打开应用程序并选择 **编辑**。已发布的应用程序被编辑工作区取代：左侧聊天，右侧相同的**预览**和**代码**选项卡。
 
 在聊天中请求更改，或直接在 **Code** 中编辑文件并使用 `Cmd+S`（在 Windows 和 Linux 上为`Ctrl+S`）保存。无论哪种方式，预览都会重建，并且标题中的徽章会更新其已更改文件的计数。
 
-Two actions end the session:
+两个操作结束会话：
 
 * **部署**：构建应用程序并将其发布为工作区的新版本。
-* **Cancel**: Leaves without deploying.未部署的更改保留在编辑沙箱中。编辑在沙箱中运行，在一段时间不活动后会停止。重新打开应用程序会唤醒沙箱，并保持未部署的更改完好无损。如果沙箱已被删除，请选择 **从保存的源重新创建** 以从上次部署的源重建会话。未部署的更改将会丢失。
+* **取消**：离开而不部署。未部署的更改保留在编辑沙箱中。编辑在沙箱中运行，在一段时间不活动后会停止。重新打开应用程序会唤醒沙箱，并保持未部署的更改完好无损。如果沙箱已被删除，请选择 **从保存的源重新创建** 以从上次部署的源重建会话。未部署的更改将会丢失。
 
 要重命名应用程序、复制其 ID 或更改共享对象，请从应用程序列表的行菜单中选择“**编辑**”。
 

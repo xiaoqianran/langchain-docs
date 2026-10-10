@@ -6,7 +6,7 @@ Understand how self-hosted LangSmith Sandboxes use microVMs, Kubernetes hosts, a
 
 [LangSmith Sandboxes](/langsmith/sandboxes) run code in isolated microVMs on a dedicated pool of Kubernetes nodes. This guide explains where the components run, how requests reach a sandbox, and which state survives a host restart.
 
-For supported platforms, prerequisites, and installation instructions, see [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes). The architecture below describes the `sandbox-host` runtime. Storage mounting and configuration options can differ across Helm releases.
+For supported platforms, prerequisites, and installation instructions, see [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). The architecture below describes the `sandbox-host` runtime. Storage mounting and configuration options can differ across Helm releases.
 
 <CardGroup>
   <Card title="Scaling and capacity" icon="arrows-maximize" href="/langsmith/self-host-sandbox-scaling">
@@ -146,7 +146,7 @@ Restoring memory requires a complete, compatible memory image. It is not live mi
 
 ## See also
 
-* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)
+* [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)
 * [Scale self-hosted Sandboxes](/langsmith/self-host-sandbox-scaling)
 * [Operate self-hosted Sandboxes](/langsmith/self-host-sandbox-operations)
 * [Sandbox permissions](/langsmith/sandbox-permissions)

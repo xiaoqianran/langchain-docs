@@ -103,7 +103,7 @@ async with MCPAdapter(config) as adapter:
 
 ### 客户端方法
 
-| `MultiServerMCPClient`方法| `langchain.mcp` |
+| `MultiServerMCPClient`方法 | `langchain.mcp` |
 | - | - |
 | `get_tools(server_name=...)` | `MCPAdapter(...).list_tools()`。通过将适配器指向该服务器来将范围限制到一台服务器。 |
 | `get_prompt(server_name, prompt_name, arguments=...)` | **不支持。** 请参阅[Prompts and resources](#prompts-and-resources)。 |
@@ -172,7 +172,7 @@ async with MCPAdapter(client) as adapter:
 
 ## 工具拦截器
 
-`langchain-mcp-adapters`拦截器类型（`tool_interceptors`、`ToolCallInterceptor`、`MCPToolCallRequest`、`MCPToolCallResult`）消失了。拦截工具使用 LangChain [⟦T139⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/wrap_tool_call) 中间件调用代理端，该中间件包装了 `create_agent` 运行的每个工具，而不仅仅是 MCP 工具。 MCP 出处可在`metadata["mcp"]`下的工具元数据中找到，因此拦截器仍然可以在其上分支：
+`langchain-mcp-adapters`拦截器类型（`tool_interceptors`、`ToolCallInterceptor`、`MCPToolCallRequest`、`MCPToolCallResult`）消失了。拦截工具使用LangChain[⟦T139⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/wrap_tool_call)中间件调用代理端，该中间件包装`create_agent`运行的每个工具，而不仅仅是MCP工具。 MCP 出处可在`metadata["mcp"]`下的工具元数据中找到，因此拦截器仍然可以在其上分支：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from collections.abc import Callable
@@ -202,9 +202,13 @@ async def agent_with_interception(target):
     async with MCPAdapter(target) as adapter:
         tools = await adapter.list_tools()
         return create_agent("claude-sonnet-5", tools, middleware=[log_mcp_calls])
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d21d1f57-af89-4714-8d4f-a065f5d99f28/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-## 错误处理`handle_tool_errors` 标志消失了。行为现已修复：报告 `isError=True` 作为 [⟦T144⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 到达模型，其中 `status="error"` 携带服务器消息，同时会引发传输故障。参见[Tools](/oss/python/langchain/mcp/tools#errors)。
+## 错误处理
+
+`handle_tool_errors` 标志消失了。行为现已修复：报告 `isError=True` 作为 [⟦T144⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 到达模型，其中 `status="error"` 携带服务器消息，同时会引发传输故障。参见[Tools](/oss/python/langchain/mcp/tools#errors)。
 
 ## 身份验证
 

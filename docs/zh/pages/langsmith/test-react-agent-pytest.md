@@ -64,11 +64,15 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 * 使用E2B的代码解释器工具
 * 使用Polygon的股票信息工具
 
-<CodeGroup>
-  <Warning>
-    `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
-  </Warning>
+<Warning>
+  `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
+</Warning>
 
+<Warning>
+  `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或损坏。谨慎使用。
+</Warning>
+
+<CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain_community.tools import TavilySearchResults
   from e2b_code_interpreter import Sandbox
@@ -111,10 +115,6 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
     """Pull data for the ticker."""
     return polygon_aggregate.invoke(query)
   ```
-
-  <Warning>
-    `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或损坏。谨慎使用。
-  </Warning>
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
@@ -713,11 +713,15 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
 ### 代理
 
 <Accordion title="Agent code">
-  <CodeGroup>
-    <Warning>
-      `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
-    </Warning>
+  <Warning>
+    `langchain-community` 包不再维护。从 `langchain_community` 导入的示例可能已过时或已损坏。谨慎使用。
+  </Warning>
 
+  <Warning>
+    `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或已损坏。谨慎使用。
+  </Warning>
+
+  <CodeGroup>
     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from e2b_code_interpreter import Sandbox
     from langchain_community.tools import PolygonAggregates, TavilySearchResults
@@ -758,10 +762,6 @@ export POLYGON_API_KEY=<YOUR_POLYGON_API_KEY>
         system_prompt="You are a financial expert. Respond to the users query accurately",
     )
     ```
-
-    <Warning>
-      `@langchain/community` 包不再维护。从 `@langchain/community` 导入的示例可能已过时或已损坏。谨慎使用。
-    </Warning>
 
     ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { ChatOpenAI } from "@langchain/openai";

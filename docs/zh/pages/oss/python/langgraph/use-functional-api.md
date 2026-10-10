@@ -62,7 +62,6 @@ my_workflow.invoke({"value": 1, "another_value": 2})
   被持久化在检查点中。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
   from langchain.chat_models import init_chat_model
   from langgraph.func import entrypoint, task
   from langgraph.checkpoint.memory import InMemorySaver
@@ -112,7 +111,6 @@ def graph(numbers: list[int]) -> list[str]:
   此示例演示如何使用 `@task` 并行运行多个 LLM 调用。每次调用都会生成关于不同主题的段落，并将结果合并到单个文本输出中。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
   from langchain.chat_models import init_chat_model
   from langgraph.func import entrypoint, task
   from langgraph.checkpoint.memory import InMemorySaver
@@ -172,7 +170,6 @@ def some_workflow(some_input: dict) -> int:
 
 <Accordion title="Extended example: calling a simple graph from the functional API">
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
   from typing import TypedDict
   from langgraph.func import entrypoint
   from langgraph.checkpoint.memory import InMemorySaver
@@ -223,7 +220,6 @@ def my_workflow(inputs: dict) -> int:
 
 <Accordion title="Extended example: calling another entrypoint">
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import uuid
   from langgraph.func import entrypoint
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -263,7 +259,7 @@ for mode, chunk in stream.interleave("values"):
 # values: 10
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1b3e500b-749a-4587-9906-5a92c0471ffe/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/64d863ef-f16b-469d-9c63-b0d2d5e24554/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

@@ -467,6 +467,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search results from the Perplexity Search API.
   </Card>
 
+  <Card title="Pexafy" href="https://docs.pexafy.com/langchain" icon="link">
+    Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
+  </Card>
+
   <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
     People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
   </Card>

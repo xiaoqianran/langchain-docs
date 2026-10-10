@@ -8,7 +8,7 @@
 
 自托管沙箱可在两层中扩展：LangSmith调整主机部署，节点自动缩放器提供Kubernetes节点。将两个层一起规划，以便新主机在现有池容量耗尽之前准备就绪。
 
-本指南基于 [Sandbox architecture](/langsmith/self-host-sandbox-architecture) 构建。有关特定于云的基础架构设置，请参阅[Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
+本指南基于 [Sandbox architecture](/langsmith/self-host-sandbox-architecture) 构建。有关特定于云的基础架构设置，请参阅[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。
 
 ## 了解两个缩放层
 

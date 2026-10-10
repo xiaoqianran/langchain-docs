@@ -12,7 +12,7 @@
 * <Icon icon="folder" /> [**Content**](#message-content) - 表示消息的实际内容（如文本、图像、音频、文档等）
 * <Icon icon="tag" /> [**Metadata**](#message-metadata) - 可选字段，例如响应信息、消息 ID 和令牌使用情况
 
-LangChain 提供了适用于所有模型提供程序的标准消息类型，确保无论调用哪个模型，行为都保持一致。
+LangChain 提供了适用于所有模型提供者的标准消息类型，确保无论调用哪个模型，行为都保持一致。
 
 ## 基本用法
 
@@ -379,7 +379,7 @@ LangChain 聊天模型接受 `content` 属性中的消息内容。
 2. 提供者原生格式的内容块列表
 3. [LangChain's standard content blocks](#standard-content-blocks)列表
 
-请参阅下面使用 [multimodal](#multimodal) 输入的示例：
+请参阅下面的使用 [multimodal](#multimodal) 输入的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
@@ -407,7 +407,7 @@ human_message = HumanMessage(content_blocks=[
 
 ### 标准内容块
 
-LangChain 提供跨提供商工作的消息内容的标准表示形式。消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T55⟧](/oss/python/integrations/chat/anthropic)或[⟦T56⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T59⟧](#content-block-reference)表示：
+LangChain 为跨提供商的消息内容提供标准表示。消息对象实现一个 `content_blocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T55⟧](/oss/python/integrations/chat/anthropic)或[⟦T56⟧](/oss/python/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T59⟧](#content-block-reference)表示：
 
 <Tabs>
   <Tab title="Anthropic">
@@ -980,6 +980,10 @@ serialized = dumpd(message)
 # Deserialize back to a message object
 restored = load(serialized)
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2a8b01aa-e859-42a3-b658-d991cf6746dd/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 <Warning>
   **`load()`实例化Python对象，并且可以在反序列化过程中触发副作用。切勿对来自不受信任或未经身份验证的来源的数据调用 `load()`。**

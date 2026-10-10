@@ -8,7 +8,7 @@
 
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何为语言模型提供工具和上下文。 LangChain代理通过[⟦T5⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)调用MCP服务器上定义的工具，它会发现服务器的工具并将其改编为LangChain工具，您可以直接传递给[⟦T6⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)。
 
-[⟦T7⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 构建于 [FastMCP](https://gofastmcp.com) 之上，处理传输推断、协议协商、连接管理和身份验证。本节介绍 LangChain 特定层，并链接到 FastMCP 客户端文档以了解下面的连接详细信息。
+[⟦T7⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 构建于 [FastMCP](https://gofastmcp.com) 之上，后者处理传输推断、协议协商、连接管理和身份验证。本节介绍 LangChain 特定层，并链接到 FastMCP 客户端文档以了解下面的连接详细信息。
 
 <Note>
   `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。从它导入每个进程都会产生一次`LangChainBetaWarning`。 API 可能会更改。
@@ -46,8 +46,12 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-<Accordion title="LangChain docs MCP server">
-  [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。将代理连接到它以搜索和阅读文档，而无需编写自定义工具：
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dbd2bd37-78e9-48ac-8d8a-ae052e8462ca/r">
+  为此示例打开公共 LangSmith 运行。
+</Card><Accordion title="LangChain docs MCP server">
+  [LangChain docs MCP server](/use-these-docs) 是位于 `https://docs.langchain.com/mcp` 的公共 HTTP 端点。
+
+  将代理连接到它以搜索和阅读文档，而无需编写自定义工具：
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent

@@ -9,7 +9,7 @@ LangSmith 机队每周更新
 每周更新[LangSmith Fleet](/langsmith/fleet)。
 
 <Callout icon="rss">
-  **订阅**：此变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/fleet-changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
+  **订阅**：此变更日志包括一个 [RSS feed](https://docs.langchain.com/langsmith/fleet/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 </Callout>
 
 <Update label="September 28-October 5, 2026">
@@ -46,7 +46,7 @@ LangSmith 机队每周更新
   ## 舰队* 当您省略delete\_after\_stop\_seconds 时，新的托管队列沙箱将继承平台保留策略。显式零值和正值保持不变。
   * 因批准或问题而停止的线程现在会在等待时收到标题，因此计划的运行不再位于收件箱中，直到有人打开它们为止。仅当标题实际上正在发送时，收件箱才会显示标题加载指示器。
   * 在保存代理之前，打开刚刚添加到舰队中代理的工作区技能不再显示空模式。现在将打开技能详细信息及其完整文件树，“添加到代理”按钮等待技能文件加载，并且可以重试失败的加载。
-  * 代理所有者可以从“配置”面板的“高级”设置中再次触发针对代理的工作区 Webhook。由于“配置”面板取代了独立代理编辑器，并且每次运行都会打包代理的已保存文件而不是未保存的编辑，因此行丢失。
+  * 代理所有者可以从配置面板的高级设置中再次触发针对代理的工作区 Webhook。由于“配置”面板取代了独立代理编辑器，并且每次运行都会打包代理的已保存文件而不是未保存的编辑，因此行丢失。
   * 当您开始新对话或重试中断的沙箱创建时，舰队会正确配置沙箱。* 舰队后台运行时使用其保存的名称重新连接到代理的现有沙箱。较旧的以 UUID 命名的沙箱继续工作，并且文件在聊天和沙箱重新启动后仍然存在。
   * Fleet 现在在配置沙箱时会创建一个空的 /workspace，因此文件 API 和文件浏览器会立即列出它，而不是在代理首次运行之前返回 404。
   * 当您放弃待处理的中断时，Fleet 会保留 Amazon Bedrock 推理元数据，从而防止下一回合出现不受支持的内容块错误。
@@ -80,8 +80,8 @@ LangSmith 机队每周更新
   * 托管深度代理通道设置现在接受 LangSmith API 密钥和不记名令牌，同时在配置之前强制执行工作区机密和部署权限。
   * 部署现在可以让通用代理直接在聊天中构建新代理，写入其名称、描述、工具、触发器和说明，而不是显示将设置交给新代理的“创建代理”按钮。在队列 API 服务器、队列队列和平台后端上设置 FLEET\_INLINE\_AGENT\_GENERATION 以将其打开。默认关闭。
   * POST /v1/fleet/sandboxes 从快照创建沙箱并将其返回以供使用，因此外部 OIDC 上的无头客户端可以配置沙箱，而无需访问平台沙箱 API。选择带有 snapshot\_id 或 name:tag 引用的启动映像，或者在工作区默认值中忽略两者。* DELETE /v1/fleet/sandboxes/ 删除一个沙箱，因此外部 OIDC 上的无头客户端可以清理沙箱，而无需访问平台沙箱 API。它是幂等的；删除已经消失的沙箱仍然返回 204；并且沙箱在后台被拆除，因此随后进行的读取显示它处于删除状态而不是不存在。
-  * GET /v1/fleet/sandboxes//files/content 返回沙箱中文件的原始字节。通过 Range 标头支持字节范围，HEAD 报告文件的大小而不传输它。
-  * POST /v1/fleet/sandboxes//files 将文件从 multipart/form-data 主体写入沙箱，与现有列表和读取端点一起完成 Fleet 文件 API。路径查询参数自行命名目的地，因此上传不再依赖于直接到达沙箱的数据平面 URL。文件是流式传输而不是缓冲，大于 100 MB 的文件会被拒绝并返回 413。* GET /v1/fleet/sandboxes//files 返回沙箱中某个路径下的文件，由 glob 模式匹配，并使用 page\_size 和不透明光标进行分页。分页取代了沙箱 glob 所应用的静默结果上限，因此可以完整读取大目录，而不是中途停止。
+  * GET /v1/fleet/sandboxes//files/content 返回沙箱中文件的原始字节。字节范围通过 Range 标头支持，HEAD 报告文件的大小而不传输它。
+  * POST /v1/fleet/sandboxes//files 将文件从 multipart/form-data 主体写入沙箱，与现有列表和读取端点一起完成 Fleet 文件 API。路径查询参数自行命名目的地，因此上传不再依赖于直接到达沙箱的数据平面 URL。文件采用流式传输而非缓冲方式，大于 100 MB 的文件将被拒绝并返回 413。* GET /v1/fleet/sandboxes//files 返回沙箱中某个路径下的文件，由 glob 模式匹配，并使用 page\_size 和不透明光标进行分页。分页取代了沙箱 glob 所应用的静默结果上限，因此可以完整读取大目录，而不是中途停止。
   * DELETE /v1/fleet/sandbox-snapshots/ 删除沙箱快照，该快照与快照创建配对，以便在构建失败后重试删除然后重新创建。它是幂等的，当任何沙箱仍从快照启动时（包括停止的沙箱），它会返回 409。
   * GET /v1/fleet/sandbox-snapshots/ 返回一个沙箱快照，因此客户端可以查看快照的构建状态，而无需重新读取整个列表。路径参数接受快照 ID 或 Docker 风格的引用，其中裸名称表示 name:latest。
   * 车队使用图表现在显示支出、工具和模型数据，而不是显示为空白。

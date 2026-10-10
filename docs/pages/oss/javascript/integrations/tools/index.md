@@ -91,6 +91,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | <span>N/A</span> |
   | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | <span>N/A</span> |
+  | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | <span>N/A</span> |
   | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | <span>N/A</span> |
   | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | <span>N/A</span> |
   | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | <span>N/A</span> |

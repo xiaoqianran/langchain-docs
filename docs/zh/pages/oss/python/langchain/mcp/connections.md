@@ -28,7 +28,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 **连接寿命**|情况|图案|前往 |
 | - | - | - |
-|脚本、笔记本或大多数代理|探索`async with`内部，然后退出 | [Connection lifecycle](#connection-lifecycle) |
+|脚本、笔记本或大多数代理|探索`async with`内部，然后退出| [Connection lifecycle](#connection-lifecycle) |
 |在一次运行中跨多个工具调用保持一个会话 |在座席呼叫期间保持适配器打开 | [One session per invocation](#one-session-per-invocation) |
 |部署中的许多并发运行 |每次运行发现；重复使用 [shared pool](#shared-connection-pool) 和 [cache](#caching) | [Scale a deployment](#scale-a-deployment) |
 
@@ -83,6 +83,10 @@ async def fleet_agent(config):
         return create_agent("claude-sonnet-5", tools)
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/36cdd94e-7f37-4681-afe1-dbc15b85c239/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 每个后端都是独立寻址的，因此队列可以混合传输：一台服务器通过 stdio，另一台服务器通过 HTTP。不过，`MCPConfig` 队列在每个后端共享单个协商的 [protocol era](#protocol-eras)：添加仅旧版服务器，整个队列就会下降到旧版时代。
 
 ### 与`ClientGroup`的独立连接
@@ -111,6 +115,10 @@ async def agent_from_group(legacy_url: str, modern_url: str):
         tools = await adapter.list_tools()
         return create_agent("claude-sonnet-5", tools)
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e7804f49-ac87-4afb-8c19-691900f65c7d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 ## 扩展部署为多次运行提供服务的部署应该发现每次运行，但在下面重用其连接，而不是在每次请求时重新连接。在 [⟦T23⟧](/oss/python/langgraph/local-server) 图工厂内构建代理，以便每次运行都会获取当前的工具目录，并让 [shared connection pool](#shared-connection-pool) 和 [response cache](#caching) 吸收成本：
 
@@ -180,9 +188,13 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
         return await adapter.list_tools()
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3c3bb95-25d4-4a2e-bf3a-41e87f3b788d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 由于每个客户端都借用 `_POOL`，因此部署会为整个队列打开一组 HTTP 连接，而不是为每个服务器打开一组 HTTP 连接。
 
-## 缓存FastMCP 可以缓存`list_tools` 的结果，因此重复发现可以避免网络往返。缓存是可选的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
+## 缓存FastMCP 可以缓存 `list_tools` 的结果，因此重复发现可以避免网络往返。缓存是可选的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
 
 `list_tools()` 接受 `cache_mode` 选择发现如何读取配置的缓存：
 

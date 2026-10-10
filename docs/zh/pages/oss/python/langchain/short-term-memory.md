@@ -14,7 +14,7 @@
 
 对话历史是短期记忆最常见的形式。长时间的对话对当今的法学硕士提出了挑战；完整的历史记录可能不适合法学硕士的上下文窗口，从而导致上下文丢失或错误。
 
-即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/python/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，导致消息列表随着时间的推移而变长。由于上下文窗口有限，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
+即使您的模型支持完整的上下文长度，大多数法学硕士在长上下文中仍然表现不佳。他们会被陈旧或偏离主题的内容“分散注意力”，同时还要承受响应时间较慢和成本较高的问题。聊天模型使用[messages](/oss/python/langchain/messages)接受上下文，其中包括指令（系统消息）和输入（人类消息）。在聊天应用程序中，消息在人工输入和模型响应之间交替，从而导致消息列表随着时间的推移而变长。由于上下文窗口有限，许多应用程序可以从使用删除或“忘记”过时信息的技术中受益。
 
 <Tip>
   需要记住**跨**对话的信息？使用[long-term memory](/oss/python/langchain/long-term-memory)跨不同线程和会话存储和调用用户特定或应用程序级数据。
@@ -258,7 +258,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/958890cd-88c9-4f06-a277-de708a44ee55/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29a89413-165f-4e8f-9fa6-e0a0ef296df1/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

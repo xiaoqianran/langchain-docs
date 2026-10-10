@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-09T15:38:32.654Z",
+  "fetchedAt": "2026-10-10T14:53:22.077Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1687,
+  "ok": 1692,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 487
+      "count": 491
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -39,7 +39,7 @@
     },
     "langsmith-api": {
       "name": "LangSmith API",
-      "count": 556
+      "count": 557
     },
     "oss-deepagents": {
       "name": "OSS · DeepAgents",
@@ -664,7 +664,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "add-metadata-tags",
-      "bytes": 5602
+      "bytes": 6545
     },
     {
       "rel": "langsmith/admin.md",
@@ -1429,7 +1429,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "application-structure",
-      "bytes": 13493
+      "bytes": 13799
     },
     {
       "rel": "langsmith/assertions.md",
@@ -1708,7 +1708,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "changelog",
-      "bytes": 227369
+      "bytes": 185523
     },
     {
       "rel": "langsmith/chat.md",
@@ -1762,7 +1762,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "cli",
-      "bytes": 58843
+      "bytes": 61399
     },
     {
       "rel": "langsmith/cloud.md",
@@ -2005,7 +2005,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "custom-apps",
-      "bytes": 10507
+      "bytes": 10503
     },
     {
       "rel": "langsmith/custom-auth.md",
@@ -2288,12 +2288,12 @@
     },
     {
       "rel": "langsmith/deploy-self-hosted-full-platform.md",
-      "title": "Enable additional LangSmith features",
+      "title": "Enable LangSmith Deployment",
       "url": "https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-self-hosted-full-platform",
-      "bytes": 65417
+      "bytes": 16224
     },
     {
       "rel": "langsmith/deploy-standalone-server.md",
@@ -2422,6 +2422,24 @@
       "bytes": 2801
     },
     {
+      "rel": "langsmith/enable-self-hosted-fleet.md",
+      "title": "Enable Fleet on self-hosted LangSmith",
+      "url": "https://docs.langchain.com/langsmith/enable-self-hosted-fleet",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "enable-self-hosted-fleet",
+      "bytes": 28523
+    },
+    {
+      "rel": "langsmith/enable-self-hosted-sandboxes.md",
+      "title": "Enable Sandboxes on self-hosted LangSmith",
+      "url": "https://docs.langchain.com/langsmith/enable-self-hosted-sandboxes",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "enable-self-hosted-sandboxes",
+      "bytes": 17041
+    },
+    {
       "rel": "langsmith/encryption.md",
       "title": "Encryption at rest",
       "url": "https://docs.langchain.com/langsmith/encryption",
@@ -2446,7 +2464,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine",
-      "bytes": 56077
+      "bytes": 56423
     },
     {
       "rel": "langsmith/engine-github.md",
@@ -2491,7 +2509,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "engine-self-hosted",
-      "bytes": 39063
+      "bytes": 38936
     },
     {
       "rel": "langsmith/engine-self-hosted-link.md",
@@ -2869,7 +2887,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "comparison",
-      "bytes": 12756
+      "bytes": 12678
     },
     {
       "rel": "langsmith/fleet/computer-use.md",
@@ -2896,7 +2914,7 @@
       "track": "fleet",
       "trackName": "Fleet",
       "group": "index",
-      "bytes": 4372
+      "bytes": 4333
     },
     {
       "rel": "langsmith/fleet/manage-agent-settings.md",
@@ -3436,7 +3454,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "kubernetes",
-      "bytes": 18205
+      "bytes": 17427
     },
     {
       "rel": "langsmith/langchain-runnable.md",
@@ -3544,7 +3562,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-auth-proxy-self-hosted",
-      "bytes": 38704
+      "bytes": 38664
     },
     {
       "rel": "langsmith/llm-gateway.md",
@@ -4804,7 +4822,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "sandboxes",
-      "bytes": 6185
+      "bytes": 6143
     },
     {
       "rel": "langsmith/scalability-and-resilience.md",
@@ -4877,6 +4895,15 @@
       "trackName": "LangSmith",
       "group": "script-running-pg-support-queries",
       "bytes": 5389
+    },
+    {
+      "rel": "langsmith/self-host-additional-features.md",
+      "title": "Configure additional self-hosted features",
+      "url": "https://docs.langchain.com/langsmith/self-host-additional-features",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-additional-features",
+      "bytes": 2250
     },
     {
       "rel": "langsmith/self-host-basic-auth.md",
@@ -4966,7 +4993,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-external-redis",
-      "bytes": 25460
+      "bytes": 25439
     },
     {
       "rel": "langsmith/self-host-fips.md",
@@ -4996,13 +5023,22 @@
       "bytes": 8483
     },
     {
+      "rel": "langsmith/self-host-insights-chat.md",
+      "title": "Configure Insights and Chat on self-hosted LangSmith",
+      "url": "https://docs.langchain.com/langsmith/self-host-insights-chat",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-insights-chat",
+      "bytes": 4682
+    },
+    {
       "rel": "langsmith/self-host-mirroring-images.md",
       "title": "Mirror images for your LangSmith installation",
       "url": "https://docs.langchain.com/langsmith/self-host-mirroring-images",
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-mirroring-images",
-      "bytes": 18801
+      "bytes": 18780
     },
     {
       "rel": "langsmith/self-host-observability-dashboards.md",
@@ -5038,7 +5074,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-sandbox-architecture",
-      "bytes": 11374
+      "bytes": 11332
     },
     {
       "rel": "langsmith/self-host-sandbox-operations.md",
@@ -5047,7 +5083,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-sandbox-operations",
-      "bytes": 16357
+      "bytes": 16315
     },
     {
       "rel": "langsmith/self-host-sandbox-scaling.md",
@@ -5056,7 +5092,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-sandbox-scaling",
-      "bytes": 8126
+      "bytes": 8105
     },
     {
       "rel": "langsmith/self-host-scale.md",
@@ -5101,7 +5137,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-infrastructure",
-      "bytes": 44467
+      "bytes": 44683
     },
     {
       "rel": "langsmith/self-host-smithdb-install.md",
@@ -5371,7 +5407,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted",
-      "bytes": 7200
+      "bytes": 8987
     },
     {
       "rel": "langsmith/self-hosted-agent-server-metrics.md",
@@ -5389,7 +5425,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-hosted-changelog",
-      "bytes": 290854
+      "bytes": 290826
     },
     {
       "rel": "langsmith/self-hosted-mission-control.md",
@@ -6505,7 +6541,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "data_planes",
-      "bytes": 387
+      "bytes": 400
     },
     {
       "rel": "langsmith/smith-api/data_planes/get-a-data-plane.md",
@@ -6514,7 +6550,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "data_planes",
-      "bytes": 232
+      "bytes": 230
     },
     {
       "rel": "langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization.md",
@@ -9604,6 +9640,15 @@
       "bytes": 249
     },
     {
+      "rel": "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta.md",
+      "title": "Resolve an address to its tracing project (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sessions",
+      "bytes": 770
+    },
+    {
       "rel": "langsmith/smith-api/settings/get-settings.md",
       "title": "Get settings",
       "url": "https://docs.langchain.com/langsmith/smith-api/settings/get-settings",
@@ -10744,7 +10789,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "test-react-agent-pytest",
-      "bytes": 46179
+      "bytes": 46155
     },
     {
       "rel": "langsmith/threads.md",
@@ -12130,7 +12175,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 26095
+      "bytes": 26352
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -12247,7 +12292,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 12144
+      "bytes": 12222
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -13984,7 +14029,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 90563
+      "bytes": 91546
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14119,7 +14164,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 68194
+      "bytes": 68631
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",

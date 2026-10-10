@@ -41,7 +41,7 @@ LangSmith uses Redis to back our queuing/caching operations. By default, LangSmi
 </Note>
 
 <Tip>
-  If you enable [LangSmith Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes), we recommend setting the Redis `maxmemory-policy` to `noeviction` for the Redis metadata store used by sandbox storage. This avoids evicting filesystem metadata under memory pressure.
+  If you enable [LangSmith Sandboxes](/langsmith/enable-self-hosted-sandboxes), we recommend setting the Redis `maxmemory-policy` to `noeviction` for the Redis metadata store used by sandbox storage. This avoids evicting filesystem metadata under memory pressure.
   With `noeviction`, Redis writes can fail when the instance reaches max memory, so keep enough memory headroom for sandbox metadata growth.
 </Tip>
 

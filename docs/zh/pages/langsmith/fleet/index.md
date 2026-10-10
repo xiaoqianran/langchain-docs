@@ -15,7 +15,7 @@ LangSmith Fleet 是一个用于创建和管理 AI 代理的无代码平台。它
 使用舰队可以：
 
 * 自动执行日常任务，例如起草电子邮件、总结更新和组织信息。
-* 连接您最喜爱的应用程序，将上下文带入代理的工作中。
+* 连接您最喜欢的应用程序，将上下文带入代理的工作中。
 * 在聊天或工作场所（例如 Slack）中使用以获取流程帮助。
 * 通过对重要行动的简单批准来保持控制。
 
@@ -77,7 +77,7 @@ Fleet 使用以下 AI 方法：
 * [Call agents from your app](/langsmith/fleet/code)
 
 <Note>
-  **Fleet 的自托管功能可在 [beta](/langsmith/release-stages) 中使用。** 有关更多信息，请参阅 [Enable Fleet](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat)。
+  **Fleet 的自托管功能可在 [beta](/langsmith/release-stages) 中使用。** 有关更多信息，请参阅 [Enable Fleet](/langsmith/enable-self-hosted-fleet)。
 </Note>
 
 ***

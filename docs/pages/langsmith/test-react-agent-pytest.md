@@ -64,11 +64,15 @@ First we are going to define the tools we are going to use in our agent. There a
 * A code interpreter tool using E2B
 * A stock information tool using Polygon
 
-<CodeGroup>
-  <Warning>
-    The `langchain-community` package is no longer maintained. Examples that import from `langchain_community` may be outdated or broken. Use with caution.
-  </Warning>
+<Warning>
+  The `langchain-community` package is no longer maintained. Examples that import from `langchain_community` may be outdated or broken. Use with caution.
+</Warning>
 
+<Warning>
+  The `@langchain/community` package is no longer maintained. Examples that import from `@langchain/community` may be outdated or broken. Use with caution.
+</Warning>
+
+<CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain_community.tools import TavilySearchResults
   from e2b_code_interpreter import Sandbox
@@ -111,10 +115,6 @@ First we are going to define the tools we are going to use in our agent. There a
     """Pull data for the ticker."""
     return polygon_aggregate.invoke(query)
   ```
-
-  <Warning>
-    The `@langchain/community` package is no longer maintained. Examples that import from `@langchain/community` may be outdated or broken. Use with caution.
-  </Warning>
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
@@ -717,11 +717,15 @@ Remember to also add the config files for Vitest and Jest to your project.
 ### Agent
 
 <Accordion title="Agent code">
-  <CodeGroup>
-    <Warning>
-      The `langchain-community` package is no longer maintained. Examples that import from `langchain_community` may be outdated or broken. Use with caution.
-    </Warning>
+  <Warning>
+    The `langchain-community` package is no longer maintained. Examples that import from `langchain_community` may be outdated or broken. Use with caution.
+  </Warning>
 
+  <Warning>
+    The `@langchain/community` package is no longer maintained. Examples that import from `@langchain/community` may be outdated or broken. Use with caution.
+  </Warning>
+
+  <CodeGroup>
     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from e2b_code_interpreter import Sandbox
     from langchain_community.tools import PolygonAggregates, TavilySearchResults
@@ -762,10 +766,6 @@ Remember to also add the config files for Vitest and Jest to your project.
         system_prompt="You are a financial expert. Respond to the users query accurately",
     )
     ```
-
-    <Warning>
-      The `@langchain/community` package is no longer maintained. Examples that import from `@langchain/community` may be outdated or broken. Use with caution.
-    </Warning>
 
     ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { ChatOpenAI } from "@langchain/openai";

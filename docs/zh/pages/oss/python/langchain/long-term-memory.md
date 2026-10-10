@@ -4,7 +4,7 @@
 
 # 长期记忆
 
-为LangChain代理添加长期记忆，以存储和调用跨对话和会话的数据
+为LangChain代理添加长期记忆，以跨对话和会话存储和调用数据
 
 长期记忆让您的座席能够存储和回忆不同对话和会话中的信息。
 与仅限于单个线程的[short-term memory](/oss/python/langchain/short-term-memory)不同，长期记忆跨线程持续存在，并且可以随时调用。
@@ -31,6 +31,10 @@
         store=store,
     )
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2521e9f7-35c6-4a40-9b50-bedf6b66f302/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -63,14 +67,18 @@
             store=store,
         )
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2faa3ae-94bf-4a5e-a373-abf574b7223c/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
 <Note>
   对于其他存储后端，包括 Redis 和 MongoDB，请参阅 [store integrations](/oss/python/integrations/long-term-memory) 列表。有关 MongoDB 演练，请参阅 [long-term memory with MongoDB](/oss/python/integrations/memory/mongodb-long-term-memory)。
-</Note>
+</Note>然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。
 
-然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。<Tip>
+<Tip>
   要更深入地了解记忆类型（语义、情景、程序）和写入记忆的策略，请参阅 [Memory conceptual guide](/oss/python/concepts/memory#long-term-memory)。
 </Tip>
 
@@ -78,7 +86,7 @@
 
 LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgraph/stores) 中。
 
-每个内存都组织在自定义的 `namespace` （类似于文件夹）和独特的 `key` （类似于文件名）下。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
+每个内存都按照自定义的 `namespace`（类似于文件夹）和独特的 `key`（类似于文件名）进行组织。命名空间通常包含用户或组织 ID 或其他标签，以便更轻松地组织信息。
 
 这种结构可以实现存储器的分层组织。然后通过内容过滤器支持跨命名空间搜索。
 
@@ -119,6 +127,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
         namespace, filter={"my-key": "my-value"}, query="language preferences"
     )
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/19bcf66b-a673-4d5c-b936-f9110546d42c/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -160,6 +172,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
             namespace, filter={"my-key": "my-value"}, query="language preferences"
         )
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/072edfca-d661-4858-a2ff-663daff0c41e/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
@@ -563,7 +579,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bce035a2-e2ac-4bd3-9ab3-53d88b16cc43/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a1a10780-0608-450e-9d0e-86dac1a9747e/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -607,7 +623,9 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
             {"messages": [{"role": "user", "content": "look up user information"}]},
             context=Context(user_id="user_123"),
         )
-    ```
+    ```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4184a4-46db-413d-a847-571c44ac1627/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 
@@ -995,10 +1013,12 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/477f5212-de64-4076-87d7-c4653d5c3c15/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2799b9a-c5ad-465a-8980-ea8aa39f59dc/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
-  </Tab><Tab title="PostgreSQL">
+  </Tab>
+
+  <Tab title="PostgreSQL">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from dataclasses import dataclass
 
@@ -1042,6 +1062,10 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/python/langgra
             context=Context(user_id="user_123"),
         )
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c75411b-ff91-449b-bfce-c9c0fdacb530/r">
+      为此示例打开公共 LangSmith 运行。
+    </Card>
   </Tab>
 </Tabs>
 

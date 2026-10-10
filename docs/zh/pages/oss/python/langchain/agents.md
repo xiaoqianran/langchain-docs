@@ -708,7 +708,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b220516f-9133-4c86-bc5a-073ef63e3f7f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5ddee370-d49e-4c80-ae12-691aa17c1aa8/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -909,7 +909,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fb33392a-cf5d-4673-a9b2-c58a5abeffd0/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a94648f-0a0b-46f3-a80c-bd1670e35930/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -937,12 +937,12 @@ for snapshot in stream.values:
             print(f"Agent: {latest_message.content}")
     elif latest_message.tool_calls:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/502a2e8a-a9aa-412a-b2e0-ef2ab0290175/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7331dcc8-fbc7-4d2e-91fa-f32b4a6f410d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
 <Tip>
-  有关流模式、事件类型和 UI 模式，请参阅[Streaming](/oss/python/langchain/streaming)。
+  有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/python/langchain/streaming)。
 </Tip>
 
 ## 配置线束
@@ -977,7 +977,7 @@ for snapshot in stream.values:
   </Card>
 
   <Card title="Steering" icon="user" href="#steering">
-    在采取高影响力行动之前进行人机交互批准
+    高影响力行动之前的人机交互批准
   </Card>
 </CardGroup><Tip>
   `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅 [Deep Agents](/oss/python/deepagents/harness) 了解完整的预制线束。

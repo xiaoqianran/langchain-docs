@@ -6,14 +6,14 @@
 
 定义工具，让LangChain代理获取实时数据、执行代码、查询外部数据库并采取行动。
 
-工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在现实世界中采取行动。
+工具扩展了[agents](/oss/python/langchain/agents)的功能——让它们获取实时数据、执行代码、查询外部数据库以及在世界中采取行动。
 
 在底层，工具是可调用的函数，具有明确定义的输入和输出，并传递给[chat model](/oss/python/langchain/models)。该模型根据对话上下文决定何时调用工具以及提供哪些输入参数。
 
 <Tip>
   有关模型如何处理工具调用的详细信息，请参阅[Tool calling](/oss/python/langchain/models#tool-calling)。使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools) 跟踪工具调用和调试错误。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。
 
-  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
+  我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
 ## 创建工具
@@ -41,7 +41,7 @@ def search_database(query: str, limit: int = 10) -> str:
 </Note>
 
 <Warning>
-  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。一些模型提供者对包含空格或特殊字符的名称有问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
+  优选使用 `snake_case` 作为工具名称（例如，`web_search` 而不是 `Web Search`）。某些模型提供者对包含空格或特殊字符的名称存在问题或拒绝包含错误的名称。坚持使用字母数字字符、下划线和连字符有助于提高提供商之间的兼容性。
 </Warning>
 
 ### 自定义工具属性
@@ -72,7 +72,7 @@ def calc(expression: str) -> str:
 
 ### 高级模式定义
 
-使用 Pydantic 模型或 JSON 模式定义复杂的输入：
+使用 Pydantic 模型或 JSON 模式定义复杂输入：
 
 <CodeGroup>
   ```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -138,7 +138,7 @@ def calc(expression: str) -> str:
 
 当工具可以访问运行时信息（例如对话历史记录、用户数据和持久内存）时，它们是最强大的。本节介绍如何从您的工具中访问和更新此信息。
 
-工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例 |
+工具可以通过[⟦T49⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)参数访问运行时信息，该参数提供：|组件|描述 |使用案例|
 | - | - | - |
 | **状态** |短期记忆 - 当前对话中存在的可变数据（消息、计数器、自定义字段）|访问对话历史记录、跟踪工具调用计数 |
 | **背景** |调用时传递的不可变配置（用户 ID、会话信息）|根据用户身份个性化响应 |
@@ -267,7 +267,7 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c1516e64-17dc-42c3-a4ef-8aa02c439527/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2d025b4-a79c-4aa5-9efa-953e09a5566c/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -357,6 +357,10 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9862768e-4c5c-46df-b774-e0eda067aea7/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 长期记忆（存储）
 
 [⟦T66⟧](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 提供可在对话中保存的持久存储。与状态（短期记忆）不同，保存到存储中的数据在未来的会话中仍然可用。
@@ -411,9 +415,9 @@ agent.invoke({
 # - Name: Foo
 # - Age: 25
 # - Email: foo@langchain.dev
-```
+```### 流作者
 
-### 流作者在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
+在执行期间从工具流式传输实时更新。这对于在长时间运行的操作期间向用户提供进度反馈非常有用。
 
 使用 `runtime.stream_writer` 发出自定义更新：
 
@@ -536,7 +540,7 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f72020-12be-4cfc-8cc4-e9d8bdfae60b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/53f46dad-2132-4c21-aa44-58110a7041c8/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -564,9 +568,13 @@ def get_weather_data(city: str) -> dict:
         "temperature_c": 22,
         "conditions": "sunny",
     }
-```
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a9566cd-8702-4147-bfe0-f22949d91761/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
-行为：* 对象被序列化并作为工具输出发回。
+行为：
+
+* 对象被序列化并作为工具输出发回。
 * 模型可以读取特定字段并对其进行推理。
 * 与字符串返回一样，这不会直接更新图状态。
 
@@ -627,6 +635,10 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7d36f0e9-8036-4ad0-a0f9-68a94e45628f/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 行为：
 
 * 该命令使用`update`更新状态。
@@ -664,7 +676,7 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/12de6f5b-a35b-46a9-a66e-36ed1e373d84/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b1764d7e-9786-4040-a1dd-720102c9b0b0/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -712,7 +724,11 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
-要写入父图，请设置 `graph=Command.PARENT`。在这种情况下，`ToolMessage`要求被取消，因为执行完全离开当前图。
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a4000b2b-d692-4e4f-ad34-2317ff0bd93d/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+要写入父图，请设置 `graph=Command.PARENT`。在这种情况下，`ToolMessage`要求被解除，因为执行完全离开当前图。
 
 ### 错误处理
 
@@ -779,9 +795,7 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
       tools=[],
       middleware=[handle_tool_errors],
   )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from collections.abc import Callable
 
   from langchain.agents import create_agent
@@ -935,7 +949,13 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
       middleware=[handle_tool_errors],
   )
   ```
-</CodeGroup>### 状态注入
+</CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab5801b7-dc0e-40c5-ac56-a55ac8c65af6/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
+### 状态注入
 
 工具通过[⟦T134⟧](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。
 
@@ -998,9 +1018,7 @@ def get_message_count(runtime: ToolRuntime) -> str:
             middleware=[state_based_tools]
         )
         ```
-      </Tab>
-
-      <Tab title="Store">
+      </Tab><Tab title="Store">
         根据用户偏好或商店中的功能标志过滤工具：
 
         ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1042,7 +1060,9 @@ def get_message_count(runtime: ToolRuntime) -> str:
             store=InMemoryStore()
         )
         ```
-      </Tab><Tab title="Runtime Context">
+      </Tab>
+
+      <Tab title="Runtime Context">
         根据运行时上下文中的用户权限过滤工具：
 
         ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1196,7 +1216,7 @@ LangChain 提供了大量预构建工具和工具包，用于执行 Web 搜索�
 
 ## 来自 MCP 服务器的工具
 
-[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为 LangChain 工具，准备好像任何其他工具一样传递给代理。
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io) 是一个开放协议，它标准化了应用程序如何向语言模型公开工具。您无需手动编写工具，而是连接到 MCP 服务器并将其广告的工具改编为LangChain 工具，准备好像任何其他工具一样传递给代理。
 
 [⟦T155⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 发现服务器的工具并将其转换为LangChain 工具。打开适配器，调用`list_tools()`，并将结果交给[⟦T157⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)：
 

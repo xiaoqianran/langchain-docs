@@ -79,7 +79,7 @@
 在沙盒池中保持一致的 CPU 模型。将 CPU 供应商或型号、主机内核或沙箱运行时的更改视为需要恢复测试的转换。较新的 CPU 或内核不会自动使目标兼容。一个方向的兼容性并不能建立反向兼容性。
 
 ### 转换示例，不是支持矩阵<Note>
-  这些是基于文档的示例，而不是经过测试的 LangSmith 兼容性矩阵或支持平台的扩展。每个风险较低的候选人仍然需要验证您的确切部署。保持公开的 CPU 模型和功能、主机内核和沙箱运行时一致。确认目的地符合[Sandbox platform and KVM requirements](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。
+  这些是基于文档的示例，而不是经过测试的 LangSmith 兼容性矩阵或支持平台的扩展。每个风险较低的候选人仍然需要验证您的确切部署。保持公开的 CPU 模型和功能、主机内核和沙箱运行时一致。确认目的地符合[Sandbox platform and KVM requirements](/langsmith/enable-self-hosted-sandboxes)。
 </Note>
 
 这些示例涉及主机节点更改，而不是对已保存的 microVM 来宾配置的更改。
@@ -157,7 +157,7 @@ JuiceFS 元数据存储和对象存储形成一个持久文件系统。将它们
 
 * [Sandbox architecture and lifecycle](/langsmith/self-host-sandbox-architecture)
 * [Scale self-hosted Sandboxes](/langsmith/self-host-sandbox-scaling)
-* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)
+* [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)
 * [Upgrade self-hosted LangSmith](/langsmith/self-host-upgrades)
 * [Plan platform disaster recovery](/langsmith/self-host-disaster-recovery)
 

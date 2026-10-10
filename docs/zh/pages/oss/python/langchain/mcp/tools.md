@@ -81,6 +81,10 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b0c37c50-18d9-43d8-91fb-b933c920ebd7/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 结构化内容
 
 当工具返回结构化内容时，适配器将其作为工件附加到 [⟦T19⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T21⟧](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) 实例中读取 `artifact`：
@@ -108,6 +112,10 @@ async def run_agent_structured(server) -> dict:
 
     return result
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52189bcc-6bd4-4d88-b8da-e5cf72a4849c/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 该工件是一个 `MCPToolArtifact`，其 `structured_content` 字段保存工具结果的 `structuredContent`。不返回结构化内容的工具会将 `artifact` 保留为 `None`。
 
@@ -146,9 +154,9 @@ async def divide_by_zero(server) -> dict:
     return result
 ```
 
-服务器报告的错误作为失败的工具消息到达模型，但会引发传输或会话失败。
+服务器报告的错误作为失败的工具消息到达模型，但会引发传输或会话失败。## 工具元数据
 
-## 工具元数据每个改编工具都可以在 LangChain 工具元数据上的 `mcp` 命名空间下携带其 MCP 出处：
+每个改编工具都可以在 LangChain 工具元数据上的 `mcp` 命名空间下携带其 MCP 出处：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tool.metadata
@@ -251,7 +259,7 @@ resumed = await agent.ainvoke(
 
 ## 工具执行期间的服务器请求
 
-大多数工具在通话过程中无需向客户询问任何信息即可完成。当服务器需要输入时，[⟦T41⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)将[elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation)表面为LangGraph[⟦T42⟧](https://reference.langchain.com/python/langgraph/types/interrupt)。
+大多数工具在通话过程中无需向客户询问任何信息即可完成。当服务器需要输入时，[⟦T41⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)将[elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation)显示为LangGraph[⟦T42⟧](https://reference.langchain.com/python/langgraph/types/interrupt)。
 
 ### 引出
 

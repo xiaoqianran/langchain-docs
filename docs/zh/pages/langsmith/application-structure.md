@@ -14,13 +14,13 @@
 
 1. [configuration file](#configuration-file-concepts) (`langgraph.json`)，指定应用程序使用的依赖项、图表和环境变量。
 2. 实现应用程序逻辑的[graphs](#graphs)。
-3. 指定运行应用程序所需的[dependencies](#dependencies)的文件。
+3. 指定运行应用程序所需的[dependencies](#dependencies) 的文件。
 4. 应用程序运行所需的[Environment variables](#environment-variables)。
 
 <Tip>
   **与框架无关**
 
-  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用 LangSmith 进行 [deployment](/langsmith/deployment)、缩放和 [observability](/langsmith/observability)。详情请参阅[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
+  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用 LangSmith 进行 [deployment](/langsmith/deployment)、缩放和 [observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 </Tip>
 
 ## 文件结构以下是 Python 和 JavaScript 应用程序的目录结构示例：
@@ -138,8 +138,10 @@
 您通常需要指定以下信息才能正确设置依赖项：
 
 1. 目录中指定依赖项的文件（例如，`requirements.txt`、`pyproject.toml` 或 `package.json`）。
-2. [configuration file](#configuration-file-concepts) 中的`dependencies` 键指定运行应用程序所需的依赖项。
-3. 任何其他二进制文件或系统库都可以使用 [LangGraph configuration file](#configuration-file-concepts) 中的 `dockerfile_lines` 键指定。
+2. 要么：
+   * [configuration file](#configuration-file-concepts) 中的 `dependencies` 键指向这些包定义（例如，`"dependencies": ["."]`），或者
+   * 对于使用 [uv](https://docs.astral.sh/uv/) 管理的 Python 项目，`source` 键带有 `"kind": "uv"`，因此构建从 `pyproject.toml` 和 `uv.lock` 安装，而不是从 `dependencies` 重新解析。参见[LangGraph CLI](/langsmith/cli#install-from-a-uv-lockfile)。
+3. 任何其他二进制文件或系统库都可以使用[LangGraph configuration file](#configuration-file-concepts)中的`dockerfile_lines`键指定。
 
 ## 图表
 
@@ -149,9 +151,7 @@
 
 ### 在一个部署中定义多个图
 
-单个`langgraph.json`可以定义多个图，因此一个部署可以为多个代理提供服务。为每个代理添加一个条目到`graphs`：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+单个`langgraph.json`可以定义多个图，因此一个部署可以为多个代理提供服务。为每个代理添加一个条目到`graphs`：```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
     "dependencies": ["."],
     "graphs": {
@@ -160,13 +160,15 @@
     },
     "env": "./.env"
 }
-```每个键都是一个图 ID。文件中的所有图表共享部署的 `dependencies`、`env` 和图像。 [Agent Server](/langsmith/agent-server)为每个图表创建一个默认助手，因此客户端通过将其图表ID作为`assistant_id`传递其图表ID来选择图表。欲了解更多信息，请参阅[How assistants work with deployments](/langsmith/assistants#how-assistants-work-with-deployments)。
+```
+
+每个键都是一个图 ID。文件中的所有图表共享部署的 `dependencies`、`env` 和图像。 [Agent Server](/langsmith/agent-server)为每个图表创建一个默认助手，因此客户端通过将其图表ID作为`assistant_id`传递其图表ID来选择图表。有关更多信息，请参阅[How assistants work with deployments](/langsmith/assistants#how-assistants-work-with-deployments)。
 
 在一个部署上运行多个代理也可以降低成本。参见[Run multiple agents on one deployment](/langsmith/cloud-platform-features#run-multiple-agents-on-one-deployment)。
 
 ### 使用任何带有 LangSmith 部署的框架
 
-虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础设施。
+虽然LangSmith部署要求将应用程序构建为LangGraph图，但该图中的各个节点可以包含任意代码。这意味着您可以在节点中使用任何框架或库，同时仍然受益于 LangSmith 的部署基础架构。
 
 图结构充当部署接口，但您的核心应用程序逻辑可以使用最适合您需求的工具和框架。
 
@@ -174,7 +176,7 @@
 
 <Tabs>
   <Tab title="Python">
-    1. **LangGraph图结构**：使用[⟦T32⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)与[⟦T33⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node)和[⟦T34⟧](https://reference.langchain.com/python/langgraph/pregel/_draw/add_edge)定义一个图。
+    1. **LangGraph图结构**：使用[⟦T38⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)与[⟦T39⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node)和[⟦T40⟧](https://reference.langchain.com/python/langgraph/pregel/_draw/add_edge)定义一个图。
     2. **具有任意逻辑的节点函数**：您的节点函数可以调用任何框架或库。
     3. **编译图**：[Compile](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/compile) 用于创建可部署应用程序的图。以下示例展示了如何将现有应用程序逻辑包装在最小的 LangGraph 结构中：
 
@@ -209,9 +211,9 @@
   </Tab>
 
   <Tab title="JavaScript">
-    1. **LangGraph图结构**：使用[⟦T35⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html)与[⟦T36⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode)和[⟦T37⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge)定义一个图。
+    1. **LangGraph图结构**：使用[⟦T41⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html)与[⟦T42⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode)和[⟦T43⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge)定义一个图。
     2. **具有任意逻辑的节点函数**：您的节点函数可以调用任何框架或库。
-    3. **编译后的图**：[Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile)用于创建可部署应用程序的图。
+    3. **编译图**：[Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile) 用于创建可部署应用程序的图。
 
     以下示例展示了如何将现有应用程序逻辑包装在最小的 LangGraph 结构中：
 
@@ -249,7 +251,7 @@
 
 在此示例中，节点函数（对于 Python 为`my_app_node`，对于 JavaScript 为`myAppNode`）可以包含对任何框架或库的调用。 LangGraph结构仅提供部署接口和编排层。
 
-有关端到端示例，请参阅[Google ADK](/langsmith/deploy-google-adk)和[Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks)的部署指南。 LangSmith 通过 [⟦T40⟧](https://pypi.org/project/deployments-wrap-sdk/) 添加了对 Google ADK 的支持，[⟦T40⟧](https://pypi.org/project/deployments-wrap-sdk/) 是一个可扩展包，用于包装代理 SDK 以在 LangSmith 部署上运行。
+有关端到端示例，请参阅[Google ADK](/langsmith/deploy-google-adk)和[Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks)的部署指南。 LangSmith 通过 [⟦T46⟧](https://pypi.org/project/deployments-wrap-sdk/) 添加了对 Google ADK 的支持，[⟦T46⟧](https://pypi.org/project/deployments-wrap-sdk/) 是一个可扩展包，用于包装代理 SDK 以在 LangSmith 部署上运行。
 
 ## 环境变量
 

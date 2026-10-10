@@ -216,14 +216,20 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 
 <Tabs>
   <Tab title="LangSmith 0.17">
-    在每个使用磁盘的组件上，设置一个名为 `cache` 的 `emptyDir` 以及匹配的 `ephemeral-storage` 请求和限制。该图表根据该限制得出查询磁盘缓存限制。```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    在每个使用磁盘的组件上，设置一个名为 `cache` 的 `emptyDir` 以及匹配的 `ephemeral-storage` 请求和限制。该图表从该限制得出查询磁盘缓存限制。```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     smithdb:
       resourceTier: small
       query:
         deployment:
           resources:
-            requests: { cpu: "4", memory: "8Gi", ephemeral-storage: "200Gi" }
-            limits: { cpu: "4", memory: "8Gi", ephemeral-storage: "200Gi" }
+            requests:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "200Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "200Gi"
           volumes:
             - name: cache
               emptyDir:
@@ -231,8 +237,14 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
       ingestion:
         deployment:
           resources:
-            requests: { cpu: "4", memory: "8Gi", ephemeral-storage: "100Gi" }
-            limits: { cpu: "4", memory: "8Gi", ephemeral-storage: "100Gi" }
+            requests:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "100Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "100Gi"
           volumes:
             - name: cache
               emptyDir:
@@ -240,8 +252,14 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
       compactionWorker:
         deployment:
           resources:
-            requests: { cpu: "8", memory: "16Gi", ephemeral-storage: "100Gi" }
-            limits: { cpu: "8", memory: "16Gi", ephemeral-storage: "100Gi" }
+            requests:
+              cpu: "8"
+              memory: "16Gi"
+              ephemeral-storage: "100Gi"
+            limits:
+              cpu: "8"
+              memory: "16Gi"
+              ephemeral-storage: "100Gi"
           volumes:
             - name: cache
               emptyDir:
@@ -707,7 +725,7 @@ kubectl exec -n NAMESPACE POD_NAME -- df -h /data
     使用满足 [metastore requirements](#postgresql-metastore) 的 AlloyDB 或 Cloud SQL for PostgreSQL。<Accordion title="Connect through the AlloyDB Auth Proxy">
       SmithDB 可以通过在每个 SmithDB pod 中作为 sidecar 运行的 [AlloyDB Auth Proxy](https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview) 访问 AlloyDB。 SmithDB 通过环回连接到代理；代理向 Google Cloud 进行身份验证并加密上游连接。代理不会创建网络连接，因此 GKE 仍然需要通过私有 IP、Private Service Connect 或公共 IP 到 AlloyDB 的路由。
 
-      将 `roles/alloydb.client` 和 `roles/serviceusage.serviceUsageConsumer` 授予与 SmithDB ServiceAccount 绑定的 Google 服务帐户。将 Metastore Secret 的主机密钥指向 `127.0.0.1` 并设置 `useSsl: false`。 SmithDB 无法验证 AlloyDB 直接提供的证书，加密从代理开始。
+      将`roles/alloydb.client`和`roles/serviceusage.serviceUsageConsumer`授予与SmithDB ServiceAccount绑定的Google服务帐户。将 Metastore Secret 的主机密钥指向 `127.0.0.1` 并设置 `useSsl: false`。 SmithDB 无法验证 AlloyDB 直接提供的证书，加密从代理开始。
 
       `smithdb.commonInitContainers` 适用于每个 SmithDB 部署和作业。设置`restartPolicy: Always`，以便 Kubernetes 将代理作为 sidecar 运行并让迁移作业完成。
 

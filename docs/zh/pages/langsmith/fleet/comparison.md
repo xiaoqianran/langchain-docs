@@ -27,7 +27,7 @@
   | **主要用例** |团队构建专用代理以在整个组织中共享，无需创建代码并导出代码以进行自定义部署；使用通用聊天代理来完成任何任务的个人 |个人桌面知识工作|企业人工智能与 AWS 数据集成 | Google Workspace 的无代码代理 | Microsoft 365 的低代码代理 |
   | **模型支持** |与模型无关：任何具有 OpenAI 兼容或 Anthropic 兼容 API 的法学硕士 |仅克劳德| ❓ |双子座3 |精选OpenAI + Anthropic 型号；通过 Azure AI Foundry 自带 |
   | **界面** | Web 应用程序、Slack 应用程序、Teams 应用程序、API |桌面、移动、Slack、M365 连接器 | Web、桌面、浏览器扩展、Slack、Teams | Web 应用程序、Gmail 和聊天侧边栏 | Teams、M365 应用程序、网络、移动、Windows、Copilot Studio |
-  | **部署** |云 (LangSmith) 或自托管 |默认本地； Anthropic云端远程 |云 (AWS) |云（谷歌）|云（微软）|| **自托管** | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat)、[contact our sales team](https://www.langchain.com/contact-sales) 了解生产准备详细信息 | ❌ | ❌ | ❌ | ❌ |
+  | **部署** |云 (LangSmith) 或自托管 |默认本地； Anthropic云端远程 |云 (AWS) |云（谷歌）|云（微软）|| **自托管** | ✅ [beta](/langsmith/enable-self-hosted-fleet)、[contact our sales team](https://www.langchain.com/contact-sales) 了解生产准备详细信息 | ❌ | ❌ | ❌ | ❌ |
   | **代码导出** | ✅ [Export to Deep Agents](/langsmith/fleet/code) | ❌ | ❌ | ❌ | ❌ |
   | **可观察性** | LangSmith 大规模追踪和评估 | OpenTelemetry 到 SIEM | CloudTrail + 运行日志 |活动选项卡+审核日志|应用程序洞察 + 权限 |
   | **平台许可证** |专有|专有|专有|专有|专有|
@@ -36,17 +36,17 @@
 
 ### 目标用户
 
-**舰队**涵盖组织范围和个人用例。团队可以构建专门构建的代理以在整个组织中共享（例如，为整个运营组织提供服务的供应商接收代理，或为每个客户经理在周一早上节省三十分钟的每周报告代理），并且任何用户都可以通过 Fleet 的通用默认聊天使用任何工具获得任何任务的帮助。其他平台专注于个人生产力、特定于生态系统的自动化或两者兼而有之，但没有一个平台将无代码代理构建与组织范围的共享和代码导出结合起来。**Fleet** 还允许您设置工具级审批要求，以便代理在执行敏感步骤之前与您进行核对，并使用 [centralized inbox](https://smith.langchain.com/agents/inbox) 来审核、编辑和批准操作。在此比较中，没有其他平台提供涵盖所有代理的单一集中审批收件箱。
+**舰队**涵盖组织范围和个人用例。团队可以构建专门构建的代理以在整个组织中共享（例如，为整个运营组织提供服务的供应商接收代理，或为每个客户经理在周一早上节省三十分钟的每周报告代理），并且任何用户都可以通过 Fleet 的通用默认聊天使用任何工具获得任何任务的帮助。其他平台专注于个人生产力、特定于生态系统的自动化或两者，但没有一个平台将无代码代理构建与组织范围的共享和代码导出结合起来。**Fleet** 还允许您设置工具级审批要求，以便代理在执行敏感步骤之前与您进行核对，并使用 [centralized inbox](https://smith.langchain.com/agents/inbox) 来审核、编辑和批准操作。在此比较中，没有其他平台提供涵盖所有代理的单一集中审批收件箱。
 
 <div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
-  |通用聊天代理| ✅ [Fleet chat](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-comparison) | ✅ | ✅ | ❌ | ✅ |
+  |通用聊天代理 | ✅ [Fleet chat](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-comparison) | ✅ | ✅ | ❌ | ✅ |
   |无代码代理构建器 | ✅ | ❌ | ✅ | ✅ | ✅ |
   | Slack 原生集成 | ✅ [Native Slack app](/langsmith/fleet/slack-app) | ✅ | ✅ | ⚠️ | ⚠️（通过 Azure 机器人服务）|
   |微软团队集成 | ✅ [Teams app](/langsmith/fleet/teams-app) | ✅ | ✅ | ❌ | ✅ |
   |预定运行 | ✅ [Schedules](/langsmith/fleet/schedules) | ✅ | ✅ | ✅ | ✅ |
-  |分代理| ✅ [Sub-agents](/langsmith/fleet/essentials#sub-agents) | ✅ | ✅ | ❌ | ✅ |
+  |分代理 | ✅ [Sub-agents](/langsmith/fleet/essentials#sub-agents) | ✅ | ✅ | ❌ | ✅ |
   |技能系统| ✅ [Skills](/langsmith/fleet/skills) | ✅ | ❌ | ❌ | — |
   |人机交互 | ✅ [Central approvals inbox](/langsmith/fleet/essentials#human-in-the-loop) | ✅ | ✅ | ⚠️ | ⚠️ |
   | MCP 客户端 | ✅ [Remote MCP servers](/langsmith/fleet/remote-mcp-servers) | ✅ | ✅ | ❌ | ✅ |
@@ -58,7 +58,7 @@
 **车队** 管理工作空间级别的支出。对于企业计费选项，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 <div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
   |基于角色的访问控制| ✅ [RBAC with per-tool permissions](/langsmith/rbac) | ✅ | ✅ | ✅ | ✅ |
   |基于属性的访问控制| ✅ [Per MCP server and integration](/langsmith/fleet/access-and-oversight#attribute-based-access-control) | ❌ | ❌ | ❌ | — |
@@ -76,7 +76,7 @@
 ### 记忆、自我更新和学习
 
 **舰队**代理可以使用专用记忆系统在对话中保留上下文，并且可以在从交互中学习时更新自己的指令、添加工具或删除工具。在此处比较的平台中，只有 Fleet 记录代理在运行时的自我修改。<div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
   |长期记忆 | ✅ [Persistent memory files across sessions](/langsmith/fleet/essentials#memory) | ✅ | ✅ | ❌ | — |
   |线程范围上下文 | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -89,7 +89,7 @@
 **Fleet** 最明显的优势是它与 LangSmith 的本地连接。每个代理运行都在LangSmith中进行跟踪，从而可以轻松调试性能并大规模运行评估。其他平台提供基本的日志记录和审计跟踪，但没有一个平台能与 Fleet 通过专用可观察性平台进行 LLM 感知跟踪、评估和调试的深度相媲美。
 
 <div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
   |原生追踪 | ✅ [LangSmith traces for every run](/langsmith/observability) | ✅ | ⚠️ | ⚠️ | ⚠️ |
   |评价| ✅ [LangSmith evaluations](/langsmith/evaluation-concepts) | ❌ | ❌ | ❌ | ⚠️ |
@@ -100,10 +100,10 @@
 **Fleet** 是本次比较中唯一具有自托管部署选项的平台。对于有合规性要求的团队，自托管和 BYOC（自带云）配置可让您完全在自己的基础设施内运行 Fleet。所有其他平台都是纯云托管服务。
 
 <div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
   |云托管| ✅ | ⚠️ | ✅ | ✅ | ✅ |
-  |自托管 | ✅ [beta](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat)、[contact our sales team](https://www.langchain.com/contact-sales) 了解生产准备详情 | ❌ | ❌ | ❌ | ❌ |
+  |自托管 | ✅ [beta](/langsmith/enable-self-hosted-fleet)、[contact our sales team](https://www.langchain.com/contact-sales) 了解生产准备详情 | ❌ | ❌ | ❌ | ❌ |
   |定制型号| ⚠️ [Enterprise only](/langsmith/fleet/essentials#custom-models) | ❌ | ❌ | ⚠️ | ⚠️ |
   |从您的应用程序呼叫代理 | ✅ [API access](/langsmith/fleet/code) | ✅ | ⚠️ | ❌ | ✅ |
   |导出到代码 | ✅ [Export to Deep Agents](/langsmith/fleet/code) | ❌ | ❌ | ❌ | ❌ |
@@ -112,7 +112,7 @@
 ### 集成和工具A ✅ 表示集成可用；支持的操作和深度因平台而异。请参阅 [Fleet tool integrations](/langsmith/fleet/tools) 了解 Fleet 内置集成的完整列表以及每个集成的功能。
 
 <div>
-  |特色| **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
+  |特色 | **舰队** | **克劳德·科沃克** | **亚马逊快速** | **Google Workspace Studio** | **微软副驾驶** |
   | - | - | - | - | - | - |
   | Google Workspace（Gmail、云端硬盘、表格、文档）| ✅ | ✅ | ⚠️ | ✅ | ⚠️ |
   | Microsoft 365（Outlook、团队、SharePoint、Excel）| ✅ | ✅ | ✅ | ❌ | ✅ |

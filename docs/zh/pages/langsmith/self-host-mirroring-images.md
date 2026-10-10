@@ -89,13 +89,13 @@ images:
 
 ## 沙箱的附加图像
 
-如果启用 [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，也会镜像沙箱运行时映像。沙箱运行时镜像已发布为`linux/amd64`。
+如果启用 [Sandboxes](/langsmith/enable-self-hosted-sandboxes)，也会镜像沙箱运行时映像。沙箱运行时镜像已发布为`linux/amd64`。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
 ```
 
-然后，在 `values.yaml` 中配置沙箱运行时映像：
+然后，在 `values.yaml` 中配置沙箱运行时镜像：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
@@ -107,7 +107,7 @@ images:
 
 `sandbox-host` 镜像包含用于生成默认沙箱快照的压缩 ext4 文件系统。请参见[Inspect the default snapshot filesystem](/langsmith/sandbox-snapshots#inspect-the-default-snapshot-filesystem-in-self-hosted-deployments)独立提取和扫描。
 
-如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙盒运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
+如果您的镜像注册表需要身份验证，请配置`images.imagePullSecrets`。沙箱运行时使用与其他 LangSmith 图像相同的图像拉取机密。`--include-sandboxes` 标志镜像 LangSmith 拥有的沙箱运行时映像。如果您的集群根本无法拉取公共镜像，还可以镜像沙箱存储驱动程序使用的 JuiceFS 镜像：
 
 * `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
 * `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`

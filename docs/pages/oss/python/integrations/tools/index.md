@@ -248,6 +248,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`ToolGuardLayer`](https://github.com/sriram7737/pramagent) | <span><a href="https://pypi.org/project/pramagent/">  <img alt="Downloads per month" /></a></span> |
   | [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | <span><a href="https://pypi.org/project/langchain-uniswap-v2/">  <img alt="Downloads per month" /></a></span> |
   | [`You.com search`](https://you.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-youdotcom/">  <img alt="Downloads per month" /></a></span> |
+  | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | <span><a href="https://pypi.org/project/langchain-pexafy/">  <img alt="Downloads per month" /></a></span> |
   | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts) | <span><a href="https://pypi.org/project/ads4gpts-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | <span><a href="https://pypi.org/project/langchain-atomicmail/">  <img alt="Downloads per month" /></a></span> |
   | [`Fizzl`](https://fizzl.eu/agents/python/) | <span><a href="https://pypi.org/project/fizzl/">  <img alt="Downloads per month" /></a></span> |
@@ -462,9 +463,11 @@ The following table shows tools that generate video, image, or audio assets:
   | [`TempGuru`](https://tempguru.co/ai-agents) | <span><a href="https://pypi.org/project/tempguru/">  <img alt="Downloads per month" /></a></span> |
   | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/">  <img alt="Downloads per month" /></a></span> |
   | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/">  <img alt="Downloads per month" /></a></span> |
+  | [`GAIP`](https://pypi.org/project/langchain-gaip/) | <span><a href="https://pypi.org/project/langchain-gaip/">  <img alt="Downloads per month" /></a></span> |
   | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
+  | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
   | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |

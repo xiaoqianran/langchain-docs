@@ -8,7 +8,7 @@ LangSmith 支持发送任意元数据和标签以及跟踪。
 
 标签是可用于对跟踪进行分类或标记的字符串。元数据是键值对的字典，可用于存储有关跟踪的附加信息。
 
-两者对于将附加信息与跟踪关联起来都很有用，例如执行跟踪的环境、启动跟踪的用户或内部关联 ID。有关标签和元数据的更多信息，请参阅[Concepts](/langsmith/observability-concepts#tags)页面。有关如何按元数据和标签查询跟踪和运行的信息，请参阅 [Filter traces](/langsmith/filter-traces) 页面。
+两者对于将附加信息与跟踪关联起来都很有用，例如执行跟踪的环境、启动跟踪的用户或内部关联 ID。有关标签和元数据的更多信息，请参阅[Concepts](/langsmith/observability-concepts#tags)页面。有关如何通过元数据和标签查询跟踪和运行的信息，请参阅[Filter traces](/langsmith/filter-traces)页面。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -127,6 +127,25 @@ LangSmith 支持发送任意元数据和标签以及跟踪。
 <Tip>
   **LangSmith 部署**：要在代理服务器部署中每次调用动态添加元数据，我们建议在 [factory function](/langsmith/graph-rebuild) 中使用 `tracing_context`。示例请参见[Customize tracing in deployed agents](/langsmith/conditional-tracing#customize-tracing-in-deployed-agents)。
 </Tip>
+
+## 在踪迹上记录代码版本
+
+LangSmith SDK 可以将生成跟踪的提交记录为每次运行的元数据中的 `revision_id` 键。
+
+SDK 从 `LANGSMITH_REVISION_ID` 环境变量中读取`revision_id`。当它被取消设置时，它会读取 `LANGCHAIN_REVISION_ID`，即旧名称。在运行元数据中显式设置的`revision_id`优先于两者。在构建或部署应用程序时设置环境变量。例如，在 Dockerfile 中：
+
+```dockerfile theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+ARG GIT_SHA
+ENV LANGSMITH_REVISION_ID=$GIT_SHA
+```
+
+然后在构建镜像时传递commit：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+docker build --build-arg GIT_SHA=$(git rev-parse HEAD) .
+```
+
+要查找给定提交的跟踪，请过滤 `revision_id` 元数据键。参见[Filter traces](/langsmith/filter-traces)。
 
 ***
 

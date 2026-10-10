@@ -348,7 +348,7 @@
   </Card>
 
   <Card title="LangSmith" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith">
-    Load runs and datasets from LangSmith.
+    从LangSmith加载运行和数据集。
   </Card>
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
@@ -370,7 +370,7 @@
 
 <Columns>
   <Card title="OpenAI Metadata Tagger" href="/oss/javascript/integrations/document_transformers/openai_metadata_tagger" icon="brand-openai">
-    使用 OpenAI 为文档生成元数据标签。
+    使用OpenAI为文档生成元数据标签。
   </Card>
 </Columns>
 
@@ -400,15 +400,15 @@
   <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
     在 Azure 动态会话中安全执行代码。
   </Card><Card title="Continuity tools" href="https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools" icon="link">
-    LangChain tools with application-defined permissions, stable operation identities and status-only recovery for cooperating services.
+    LangChain 具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复的工具。
   </Card>
 
   <Card title="Corsair" href="https://docs.corsair.dev/mcp-adapters/langchain" icon="link">
-    Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and others) to LangChain agents as tools. OAuth 在服务器端运行，凭据保留在开发人员自己的数据库中。
+    将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为工具向 LangChain 代理公开。 OAuth 在服务器端运行，凭据保留在开发人员自己的数据库中。
   </Card>
 
   <Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
-    Generate images using OpenAI's DALL-E models.
+    使用 OpenAI 的 DALL-E 模型生成图像。
   </Card>
 
   <Card title="Decodo" href="/oss/javascript/integrations/tools/decodo">
@@ -453,8 +453,12 @@
     来自 Perplexity Search API 的 Web 搜索结果。
   </Card>
 
+  <Card title="Pexafy" href="https://docs.pexafy.com/langchain" icon="link">
+    Pexafy 是一个语义搜索 API，对来自 Unsplash、Pexels、Pixabay 和另外六个库的免费库存照片进行语义搜索，返回每张照片及其许可和信用额度。
+  </Card>
+
   <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
-    People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
+    跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
   </Card>
 
   <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
@@ -466,20 +470,20 @@
   </Card>
 
   <Card title="SIGNA" href="https://github.com/codexvritra/signa/tree/main/sdk/langchain" icon="link">
-    Add wallet-signed messaging tools to LangChain agents.
+    将钱包签名的消息传递工具添加到LangChain代理。
   </Card>
 
   <Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
     Sato Hub 每日重建的链上代理构建块索引上的四个无密钥工具：搜索列表，对存储库、程序包、MCP 端点或代币运行预检查找，获取带有规定费用的交换地点建议，并将目标转变为列出项目的构建计划。
-  </Card>
-
-  <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
+  </Card><Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
     跨 33 个搜索引擎的统一 SERP API，具有地理定位功能。
   </Card>
 
   <Card title="Tavily Crawl" href="/oss/javascript/integrations/tools/tavily_crawl">
     Tavily 的网络爬行功能。
-  </Card><Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
+  </Card>
+
+  <Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
     从网页中提取结构化数据。
   </Card>
 
@@ -533,11 +537,11 @@
 
   <Card title="Perplexity Search" href="/oss/javascript/integrations/retrievers/perplexity_search">
     从 Perplexity Search API 返回文档的检索器。
+  </Card><Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
+    通过 SAP HANA Cloud Vector Engine 的自查询检索器。
   </Card>
 
-  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
-    通过 SAP HANA Cloud Vector Engine 的自查询检索器。
-  </Card><Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
+  <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
     时间感知文档检索和排名。
   </Card>
 </Columns>
@@ -583,11 +587,11 @@
 <Columns>
   <Card title="OpenInference" href="https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing" icon="link">
     使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作的 OpenTelemetry 工具。
+  </Card><Card title="Respan" href="https://www.respan.ai/docs" icon="link">
+    Trace LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
   </Card>
 
-  <Card title="Respan" href="https://www.respan.ai/docs" icon="link">
-    Trace LangChain.js、LangGraph.js 和 Langflow 风格的回调在 Respan 中运行。
-  </Card><Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
+  <Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
     在提示到达您的模型之前验证提示是否立即注入。
   </Card>
 </Columns>

@@ -79,7 +79,7 @@ Fleet uses the following approach to AI:
 * [Call agents from your app](/langsmith/fleet/code)
 
 <Note>
-  **Self-hosting for Fleet is available in [beta](/langsmith/release-stages).** For more information, see [Enable Fleet](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat).
+  **Self-hosting for Fleet is available in [beta](/langsmith/release-stages).** For more information, see [Enable Fleet](/langsmith/enable-self-hosted-fleet).
 </Note>
 
 ***

@@ -19,7 +19,7 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
   * [Google Cloud Memorystore](https://cloud.google.com/memorystore) (GCP)
   * [Azure Cache for Redis](https://azure.microsoft.com/en-us/services/cache/) (天蓝色)
 
-  For cloud-specific IAM/Workload Identity authentication, refer to the [IAM authentication section](#iam-authentication).
+  对于特定于云的 IAM/工作负载身份验证，请参阅[IAM authentication section](#iam-authentication)。
 </Tip>
 
 ## 要求* 您的 LangSmith 实例将具有网络访问权限的预配置 Redis 或 [Valkey](https://valkey.io/) 实例。我们建议使用托管服务，例如：
@@ -39,7 +39,7 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
 <Note>
   Redis 6.2 是底层，因为 Agent Server (`langgraph-api`) 0.8.0 中引入了 Redis 支持的运行队列。队列排队使用 `ZADD ... LT` 标志运行，该标志是在 Redis 6.2 中添加的。在 Redis 5.0 到 6.1 上，运行 enqueue 失败，并显示通用 `ERR syntax error`，该通用 `ERR syntax error` 并不指示版本不匹配。 Valkey 8 包含该标志。
 </Note><Tip>
-  如果您启用[LangSmith Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)，我们建议将沙箱存储使用的Redis元数据存储的Redis `maxmemory-policy`设置为`noeviction`。这可以避免在内存压力下驱逐文件系统元数据。
+  如果您启用[LangSmith Sandboxes](/langsmith/enable-self-hosted-sandboxes)，我们建议将沙箱存储使用的Redis元数据存储的Redis `maxmemory-policy`设置为`noeviction`。这可以避免在内存压力下驱逐文件系统元数据。
   使用`noeviction`，当实例达到最大内存时，Redis 写入可能会失败，因此请为沙箱元数据增长保留足够的内存空间。
 </Tip>
 
@@ -47,7 +47,7 @@ LangSmith 使用 Redis 来支持我们的排队/缓存操作。默认情况下�
 
 ### 连接字符串
 
-您需要为 Redis 实例组装连接字符串。该连接字符串应包含以下信息：
+您将需要为您的 Redis 实例组装连接字符串。该连接字符串应包含以下信息：
 
 * 主持人
 * 数据库

@@ -6,7 +6,7 @@
   **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/langsmith/self-hosted-changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 </Callout>
 
-[Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+[Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
 <Update label="2026-10-02">
   ## langsmith-0.17.0
@@ -1574,7 +1574,7 @@
     * Proposes fixes, opens PRs if source code is connected, creates evaluators and ground truth examples to catch regressions, and monitors issues automatically for recurrence.
     * Usage is charged in [LangChain Compute Units (LCUs)](/langsmith/pricing-plans) with an optional monthly spend limit at the organization and project level. On self-hosted, Engine emits no LangSmith traces.
     * Sends trace content to LangSmith Intelligence, a LangChain-managed zero-data-retention service. Requires egress to `beacon.langchain.com` on GCP or `beacon.aws.langchain.com` on AWS. Air-gapped installs cannot run Engine.
-  * **Self-hosted Sandboxes** are available in AWS and GCP. For installation instructions, see [Enable sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes) and [LangSmith Sandboxes](/langsmith/sandboxes). You may need to contact your account representative to enable this feature on your license.
+  * **Self-hosted Sandboxes** are available in AWS and GCP. For installation instructions, see [Enable sandboxes](/langsmith/enable-self-hosted-sandboxes) and [LangSmith Sandboxes](/langsmith/sandboxes). You may need to contact your account representative to enable this feature on your license.
     * Isolated environments where agents can safely execute arbitrary code and interact with a filesystem without touching your main infrastructure.
     * Boot from snapshots built off a Docker image, a local `Dockerfile`, or a captured running sandbox, and mount S3, GCS, and Git repositories without exposing credentials to the agent.
     * Auth proxy to keep credentials out of the runtime.

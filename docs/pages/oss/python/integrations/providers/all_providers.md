@@ -607,6 +607,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
   </Card>
 
+  <Card title="FlashDataToolkit" href="https://github.com/flashdata-dev/langchain-flashdata#readme" icon="link">
+    Google Search and YouTube search, video metadata, and transcript tools backed by the FlashData API.
+  </Card>
+
   <Card title="FlatmarkLoader" href="https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md" icon="link">
     Document to Markdown API and MCP server for PDF, Word, PowerPoint, Excel and HTML. OCR queue for large files. Hosted in Germany.
   </Card>
@@ -629,6 +633,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="FoxNose" href="https://langchain-foxnose.readthedocs.io/" icon="link">
     Retriever, document loader and agent tool for FoxNose collections, with text, vector, hybrid and vector-boosted search over the Flux delivery API.
+  </Card>
+
+  <Card title="GAIP" href="https://pypi.org/project/langchain-gaip/" icon="link">
+    GAIP's free tools for LangChain: check whether an AI agent, MCP server or API works or has changed, explain a failed call and its fix, follow a server for dated changes, and check that cited pages contain the quoted text. No API key.
   </Card>
 
   <Card title="Galaxia" href="https://smabbler.gitbook.io/smabbler/api-rag/smabblers-api-rag" icon="link">
@@ -803,7 +811,7 @@ Browse the complete collection of integrations available for Python. LangChain P
     Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
   </Card>
 
-  <Card title="Infinispan" href="https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md" icon="link">
+  <Card title="Infinispan" href="https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md" icon="https://mintcdn.com/langchain-5e9cc07a/aUJDjk8REE84V-hU/images/providers/infinispan-icon.svg?fit=max&auto=format&n=aUJDjk8REE84V-hU&q=85&s=e880689f562fbc91412837c958a2a32e">
     Vector store backed by Infinispan, an in-memory distributed key/value data store, providing similarity search over embeddings with metadata filtering.
   </Card>
 
@@ -1281,6 +1289,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Perplexity" href="/oss/python/integrations/providers/perplexity" icon="link">
     AI-powered search and reasoning engine.
+  </Card>
+
+  <Card title="Pexafy" href="https://docs.pexafy.com/langchain" icon="link">
+    Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
   </Card>
 
   <Card title="PIIGhost" href="https://athroniaeth.github.io/piighost/getting-started/langchain/" icon="link">

@@ -1115,7 +1115,7 @@
       ],
       "deploy-self-hosted-full-platform": [
         {
-          "title": "Enable additional LangSmith features",
+          "title": "Enable LangSmith Deployment",
           "rel": "langsmith/deploy-self-hosted-full-platform.md"
         }
       ],
@@ -1201,6 +1201,18 @@
         {
           "title": "Double texting",
           "rel": "langsmith/double-texting.md"
+        }
+      ],
+      "enable-self-hosted-fleet": [
+        {
+          "title": "Enable Fleet on self-hosted LangSmith",
+          "rel": "langsmith/enable-self-hosted-fleet.md"
+        }
+      ],
+      "enable-self-hosted-sandboxes": [
+        {
+          "title": "Enable Sandboxes on self-hosted LangSmith",
+          "rel": "langsmith/enable-self-hosted-sandboxes.md"
         }
       ],
       "encryption": [
@@ -2331,6 +2343,12 @@
           "rel": "langsmith/script-running-pg-support-queries.md"
         }
       ],
+      "self-host-additional-features": [
+        {
+          "title": "Configure additional self-hosted features",
+          "rel": "langsmith/self-host-additional-features.md"
+        }
+      ],
       "self-host-basic-auth": [
         {
           "title": "Basic authentication with email and password",
@@ -2407,6 +2425,12 @@
         {
           "title": "Create an Ingress for installations (Kubernetes)",
           "rel": "langsmith/self-host-ingress.md"
+        }
+      ],
+      "self-host-insights-chat": [
+        {
+          "title": "Configure Insights and Chat on self-hosted LangSmith",
+          "rel": "langsmith/self-host-insights-chat.md"
         }
       ],
       "self-host-mirroring-images": [
@@ -6029,6 +6053,10 @@
         {
           "title": "List agent versions for a project",
           "rel": "langsmith/smith-api/sessions/list-agent-versions-for-a-project.md"
+        },
+        {
+          "title": "Resolve an address to its tracing project (Beta)",
+          "rel": "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta.md"
         }
       ],
       "settings": [

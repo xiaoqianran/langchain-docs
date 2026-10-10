@@ -8,7 +8,7 @@
 
 [LangSmith Sandboxes](/langsmith/sandboxes) 在专用 Kubernetes 节点池上的隔离 microVM 中运行代码。本指南解释了组件在哪里运行、请求如何到达沙箱以及主机重新启动后哪种状态仍然存在。
 
-有关支持的平台、先决条件和安装说明，请参阅[Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)。下面的架构描述了`sandbox-host`运行时。不同 Helm 版本的存储安装和配置选项可能有所不同。
+有关支持的平台、先决条件和安装说明，请参阅[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。下面的架构描述了`sandbox-host`运行时。不同 Helm 版本的存储安装和配置选项可能有所不同。
 
 <CardGroup>
   <Card title="Scaling and capacity" icon="arrows-maximize" href="/langsmith/self-host-sandbox-scaling">
@@ -138,7 +138,7 @@ flowchart TB
 
 ## 另请参阅
 
-* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)
+* [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)
 * [Scale self-hosted Sandboxes](/langsmith/self-host-sandbox-scaling)
 * [Operate self-hosted Sandboxes](/langsmith/self-host-sandbox-operations)
 * [Sandbox permissions](/langsmith/sandbox-permissions)

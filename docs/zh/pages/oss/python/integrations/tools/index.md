@@ -108,7 +108,7 @@
 
 |工具/工具包 |允许的操作 |
 | - | - |
-| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox) |任何SQL操作|
+| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox) |任何SQL操作 |
 | [Drasi Toolkit](https://github.com/drasi-project/langchain-drasi) |实时数据库变更检测|
 | [Sail SQL Toolkit](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) |针对 Sail (Spark Connect) 的 SQL 查询、架构列表和查询检查 |
 | [Stardog](https://github.com/stardog-union/stardog-langchain) | SPARQL SELECT 和模式自省 |
@@ -167,273 +167,282 @@
 
 ## 所有工具和工具包<div>
   |整合 |下载 |
-  | :- | :- |
-  | [⟦T0⟧](/oss/python/integrations/tools/google_imagen) | <span><a href="https://pypi.org/project/langchain-google-vertexai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T1⟧](/oss/python/integrations/tools/bedrock_agentcore_browser) | <span><a href="https://pypi.org/project/langchain-aws/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T2⟧](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | <span><a href="https://pypi.org/project/langchain-aws/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T3⟧](/oss/python/integrations/tools/google_gmail) | <span><a href="https://pypi.org/project/langchain-google-community/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T4⟧](/oss/python/integrations/tools/google_calendar) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T5⟧](/oss/python/integrations/tools/google_cloud_texttospeech) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T6⟧](/oss/python/integrations/tools/google_search) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
+  | :-| :-|
+  | [⟦T0⟧](/oss/python/integrations/tools/google_imagen) | <span><a href="https://pypi.org/project/langchain-google-vertexai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T1⟧](/oss/python/integrations/tools/bedrock_agentcore_browser) | <span><a href="https://pypi.org/project/langchain-aws/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T2⟧](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | <span><a href="https://pypi.org/project/langchain-aws/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T3⟧](/oss/python/integrations/tools/google_gmail) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T4⟧](/oss/python/integrations/tools/google_calendar) | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T5⟧](/oss/python/integrations/tools/google_cloud_texttospeech)​​ | <span><a href="https://pypi.org/project/langchain-google-community/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T6⟧](/oss/python/integrations/tools/google_search) | <span><a href="https://pypi.org/project/langchain-google-community/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T7⟧](/oss/python/integrations/tools/databricks) | <span><a href="https://pypi.org/project/databricks-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T8⟧](/oss/python/integrations/tools/azure_logic_apps) | <span><a href="https://pypi.org/project/langchain-azure-ai/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T8⟧](/oss/python/integrations/tools/azure_logic_apps) | <span><a href="https://pypi.org/project/langchain-azure-ai/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T9⟧](/oss/python/integrations/tools/azure_ai) | <span><a href="https://pypi.org/project/langchain-azure-ai/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T10⟧](/oss/python/integrations/tools/azure_ai_services) | <span><a href="https://pypi.org/project/langchain-azure-ai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T11⟧](/oss/python/integrations/tools/tavily_crawl) | <span><a href="https://pypi.org/project/langchain-tavily/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T12⟧](/oss/python/integrations/tools/tavily_extract) | <span><a href="https://pypi.org/project/langchain-tavily/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T13⟧](/oss/python/integrations/tools/tavily_map) | <span><a href="https://pypi.org/project/langchain-tavily/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T14⟧](/oss/python/integrations/tools/tavily_search)​​ | <span><a href="https://pypi.org/project/langchain-tavily/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T15⟧](/oss/python/integrations/tools/ibm_watsonx_sql) | <span><a href="https://pypi.org/project/langchain-ibm/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T16⟧](/oss/python/integrations/tools/ibm_watsonx) | <span><a href="https://pypi.org/project/langchain-ibm/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T17⟧](/oss/python/integrations/tools/perplexity_search) | <span><a href="https://pypi.org/project/langchain-perplexity/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T18⟧](/oss/python/integrations/tools/composio) | <span><a href="https://pypi.org/project/composio-langchain/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T10⟧](/oss/python/integrations/tools/azure_ai_services) | <span><a href="https://pypi.org/project/langchain-azure-ai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T11⟧](/oss/python/integrations/tools/tavily_crawl) | <span><a href="https://pypi.org/project/langchain-tavily/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T12⟧](/oss/python/integrations/tools/tavily_extract) | <span><a href="https://pypi.org/project/langchain-tavily/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T13⟧](/oss/python/integrations/tools/tavily_map) | <span><a href="https://pypi.org/project/langchain-tavily/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T14⟧](/oss/python/integrations/tools/tavily_search) | <span><a href="https://pypi.org/project/langchain-tavily/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T15⟧](/oss/python/integrations/tools/ibm_watsonx_sql) | <span><a href="https://pypi.org/project/langchain-ibm/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T16⟧](/oss/python/integrations/tools/ibm_watsonx) | <span><a href="https://pypi.org/project/langchain-ibm/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T17⟧](/oss/python/integrations/tools/perplexity_search) | <span><a href="https://pypi.org/project/langchain-perplexity/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T18⟧](/oss/python/integrations/tools/composio) | <span><a href="https://pypi.org/project/composio-langchain/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T19⟧](/oss/python/integrations/tools/oracleai) | <span><a href="https://pypi.org/project/langchain-oracledb/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T20⟧](/oss/python/integrations/tools/exa_search) | <span><a href="https://pypi.org/project/langchain-exa/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T21⟧](/oss/python/integrations/tools/azure_dynamic_sessions) | <span><a href="https://pypi.org/project/langchain-azure-dynamic-sessions/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T22⟧](/oss/python/integrations/tools/upstage_groundedness_check) | <span><a href="https://pypi.org/project/langchain-upstage/"><img alt="Downloads per month" /></a></span>|| [⟦T23⟧](https://docs.scalekit.com/agentkit/quickstart/) | <span><a href="https://pypi.org/project/scalekit-sdk-python/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T24⟧](https://docs.apify.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-apify/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T25⟧](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | <span><a href="https://pypi.org/project/m3-memory/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T26⟧](https://docs.getsemantica.ai/integrations/langchain) | <span><a href="https://pypi.org/project/semantica/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T27⟧](https://docs.getsemantica.ai/integrations/langchain) | <span><a href="https://pypi.org/project/semantica/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T28⟧](https://docs.brightdata.com/scraping-automation/serp-api/introduction) | <span><a href="https://pypi.org/project/langchain-brightdata/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T29⟧](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | <span><a href="https://pypi.org/project/langchain-brightdata/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T20⟧](/oss/python/integrations/tools/exa_search) | <span><a href="https://pypi.org/project/langchain-exa/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T21⟧](/oss/python/integrations/tools/azure_dynamic_sessions) | <span><a href="https://pypi.org/project/langchain-azure-dynamic-sessions/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T22⟧](/oss/python/integrations/tools/upstage_groundedness_check) | <span><a href="https://pypi.org/project/langchain-upstage/"><img alt="Downloads per month" /></a></span> || [⟦T23⟧](https://docs.scalekit.com/agentkit/quickstart/) | <span><a href="https://pypi.org/project/scalekit-sdk-python/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T24⟧](https://docs.apify.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-apify/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T25⟧](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | <span><a href="https://pypi.org/project/m3-memory/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T26⟧](https://docs.getsemantica.ai/integrations/langchain) | <span><a href="https://pypi.org/project/semantica/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T27⟧](https://docs.getsemantica.ai/integrations/langchain) | <span><a href="https://pypi.org/project/semantica/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T28⟧](https://docs.brightdata.com/scraping-automation/serp-api/introduction) | <span><a href="https://pypi.org/project/langchain-brightdata/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T29⟧](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | <span><a href="https://pypi.org/project/langchain-brightdata/"><img alt="Downloads per month" /></a></span>|
   | [⟦T30⟧](https://docs.brightdata.com/datasets/scrapers/overview) | <span><a href="https://pypi.org/project/langchain-brightdata/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T31⟧](https://github.com/memgraph/langchain-memgraph) | <span><a href="https://pypi.org/project/langchain-memgraph/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T31⟧](https://github.com/memgraph/langchain-memgraph) | <span><a href="https://pypi.org/project/langchain-memgraph/"><img alt="Downloads per month" /></a></span> |
   | [⟦T32⟧](/oss/python/integrations/tools/mcp_toolbox) | <span><a href="https://pypi.org/project/toolbox-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T33⟧](https://adeu.ai) | <span><a href="https://pypi.org/project/langchain-adeu/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T34⟧](https://e2a.dev) | <span><a href="https://pypi.org/project/e2a/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T33⟧](https://adeu.ai) | <span><a href="https://pypi.org/project/langchain-adeu/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T34⟧](https://e2a.dev) | <span><a href="https://pypi.org/project/e2a/"><img alt="Downloads per month" /></a></span> |
   | [⟦T35⟧](/oss/python/integrations/tools/parallel_extract) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T36⟧](/oss/python/integrations/tools/parallel_findall) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T37⟧](/oss/python/integrations/tools/parallel_monitor) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T38⟧](/oss/python/integrations/tools/parallel_search) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T39⟧](/oss/python/integrations/tools/parallel_task) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T40⟧](/oss/python/integrations/tools/stripe) | <span><a href="https://pypi.org/project/stripe-agent-toolkit/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T36⟧](/oss/python/integrations/tools/parallel_findall) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T37⟧](/oss/python/integrations/tools/parallel_monitor) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T38⟧](/oss/python/integrations/tools/parallel_search) | <span><a href="https://pypi.org/project/langchain-parallel/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T39⟧](/oss/python/integrations/tools/parallel_task) | <span><a href="https://pypi.org/project/langchain-parallel/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T40⟧](/oss/python/integrations/tools/stripe) | <span><a href="https://pypi.org/project/stripe-agent-toolkit/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T41⟧](https://madeonsol.com/api-docs) | <span><a href="https://pypi.org/project/madeonsol-x402/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T42⟧](https://antibrow.com/docs/langchain) | <span><a href="https://pypi.org/project/antibrow/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T43⟧](/oss/python/integrations/tools/cdp_agentkit) | <span><a href="https://pypi.org/project/coinbase-agentkit-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T44⟧](https://pypi.org/project/langchain-compass/) | <span><a href="https://pypi.org/project/langchain-compass/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T45⟧](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T46⟧](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | <span><a href="https://pypi.org/project/langchain-scrapegraph/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T47⟧](https://blopus.ai/docs/) | <span><a href="https://pypi.org/project/langchain-blopus/"> <img alt="Downloads per month" /></a></span> || [⟦T48⟧](https://blopus.ai/docs/) | <span><a href="https://pypi.org/project/langchain-blopus/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T49⟧](/oss/python/integrations/tools/google_drive) | <span><a href="https://pypi.org/project/langchain-googledrive/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T50⟧](https://github.com/LinkupPlatform/langchain-linkup) | <span><a href="https://pypi.org/project/langchain-linkup/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T51⟧](https://scavio.dev/docs/langchain) | <span><a href="https://pypi.org/project/langchain-scavio/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T52⟧](https://github.com/Shikenso-Analytics/langchain-taiga) | <span><a href="https://pypi.org/project/langchain-taiga/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T53⟧](https://docs.1claw.xyz/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-1claw/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T54⟧](https://github.com/Conrad-sudo/langchain-erc20) | <span><a href="https://pypi.org/project/langchain-erc20/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T55⟧](https://gatecoreai.com/docs/) | <span><a href="https://pypi.org/project/gatecore-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T56⟧](https://www.lians.ai) | <span><a href="https://pypi.org/project/lians-sdk/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T57⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | <span><a href="https://pypi.org/project/langchain-nimble/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T58⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | <span><a href="https://pypi.org/project/langchain-nimble/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T59⟧](https://skim402.com/docs) | <span><a href="https://pypi.org/project/langchain-skim/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T60⟧](https://github.com/sriram7737/pramagent) | <span><a href="https://pypi.org/project/pramagent/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T61⟧](https://github.com/Conrad-sudo/langchain-uniswap-v2) | <span><a href="https://pypi.org/project/langchain-uniswap-v2/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T62⟧](https://you.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-youdotcom/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T63⟧](https://github.com/ADS4GPTs/ads4gpts) | <span><a href="https://pypi.org/project/ads4gpts-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T64⟧](https://docs.atomicmail.ai/langchain) | <span><a href="https://pypi.org/project/langchain-atomicmail/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T65⟧](https://gandr.ai/docs) | <span><a href="https://pypi.org/project/gandr-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T66⟧](https://github.com/jmendozapuche/langchain-latam-synth) | <span><a href="https://pypi.org/project/langchain-latam-synth/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T67⟧](https://dev.writer.com/home/introduction) | <span><a href="https://pypi.org/project/langchain-writer/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T68⟧](https://lex-mex.xyz) | <span><a href="https://pypi.org/project/langchain-lexmex/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T69⟧](https://mnki.com/docs/integrations#frameworks) | <span><a href="https://pypi.org/project/langchain-mnki/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T70⟧](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | <span><a href="https://pypi.org/project/serpapi-search-tools/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T71⟧](https://github.com/tokportal/langchain-tokportal) | <span><a href="https://pypi.org/project/langchain-tokportal/"> <img alt="Downloads per month" /></a></span> || [⟦T72⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T73⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T74⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T75⟧](https://agentram.dev/langchain-agent-memory-tutorial.html) | <span><a href="https://pypi.org/project/langgraph-agentram/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T76⟧](https://github.com/colesmcintosh/langchain-salesforce) | <span><a href="https://pypi.org/project/langchain-salesforce/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T77⟧](https://github.com/robocorp/robocorp) | <span><a href="https://pypi.org/project/langchain-robocorp/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T78⟧](https://github.com/gazoy/langchain-foliant#readme) | <span><a href="https://pypi.org/project/langchain-foliant/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T79⟧](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | <span><a href="https://pypi.org/project/hindsight-langgraph/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T80⟧](https://docs.webz.io/docs/webz/news-search-api-mcp) | <span><a href="https://pypi.org/project/langchain-webz/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T81⟧](https://github.com/Conrad-sudo/langchain-erc8004) | <span><a href="https://pypi.org/project/langchain-erc8004/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T82⟧](https://langchain-prolog.readthedocs.io/en/stable/) | <span><a href="https://pypi.org/project/langchain-prolog/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T83⟧](https://aidress.ai) | <span><a href="https://pypi.org/project/langchain-aidress/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T84⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T85⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T86⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T87⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T88⟧](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T89⟧](https://omfang.io/manifest-docs) | <span><a href="https://pypi.org/project/manifest-api/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T90⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T91⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T92⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T93⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span>|| [⟦T94⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T95⟧](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | <span><a href="https://pypi.org/project/langchain-anyapi/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T96⟧](https://synmerco.com/docs) | <span><a href="https://pypi.org/project/synmerco-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T97⟧](https://api.relayshield.net/developers) | <span><a href="https://pypi.org/project/langchain-relayshield/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T98⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T99⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T100⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T101⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T102⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T103⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T104⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T105⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T106⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T107⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T108⟧](https://docs.livetennisapi.com) | <span><a href="https://pypi.org/project/langchain-livetennis/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T109⟧](https://docs.ampersend.ai) | <span><a href="https://pypi.org/project/langchain-ampersend/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T110⟧](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | <span><a href="https://pypi.org/project/langchain-tendem/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T111⟧](https://docs.hydrafetch.com) | <span><a href="https://pypi.org/project/langchain-hydrafetch/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T112⟧](https://useagentgate.com/docs) | <span><a href="https://pypi.org/project/langchain-agentgate/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T113⟧](https://lyrenth.com/docs/integrations) | <span><a href="https://pypi.org/project/langchain-lyrenth/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T114⟧](https://docs.magichour.ai) | <span><a href="https://pypi.org/project/langchain-magic-hour/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T115⟧](https://www.football-charts.com/developers) | <span><a href="https://pypi.org/project/langchain-footballcharts/"><img alt="Downloads per month" /></a></span>|| [⟦T116⟧](https://docs.context.dev) | <span><a href="https://pypi.org/project/langchain-context/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T117⟧](https://simplepages.ai/mcp) | <span><a href="https://pypi.org/project/langchain-simplepages/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T118⟧](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T119⟧](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T120⟧](https://optionsahoy.com/for-agents) | <span><a href="https://pypi.org/project/optionsahoy-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T121⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T122⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T123⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T124⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T125⟧](https://reserp.ai/docs) | <span><a href="https://pypi.org/project/langchain-reserp/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T126⟧](/oss/python/integrations/tools/discord) | <span><a href="https://pypi.org/project/langchain-discord/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T127⟧](https://github.com/oxylabs/langchain-oxylabs) | <span><a href="https://pypi.org/project/langchain-oxylabs/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T128⟧](https://mixpeek.com/docs/agent-integrations/langchain) | <span><a href="https://pypi.org/project/langchain-mixpeek/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T129⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T130⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T131⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T132⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T133⟧](https://quanticdata.io/docs/) | <span><a href="https://pypi.org/project/langchain-quanticdata/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T134⟧](https://urlpipe.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-urlpipe/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T135⟧](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T136⟧](https://github.com/EXboys/langchain-skilllite) | <span><a href="https://pypi.org/project/langchain-skilllite/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T137⟧](https://ictpbx.com) | <span><a href="https://pypi.org/project/langchain-ictpbx/"><img alt="Downloads per month" /></a></span>|| [⟦T138⟧](https://docs.valyu.ai/home) | <span><a href="https://pypi.org/project/langchain-valyu/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T139⟧](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | <span><a href="https://pypi.org/project/langchain-ausca/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T140⟧](https://www.ictinnovations.com/) | <span><a href="https://pypi.org/project/langchain-ictfax/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T141⟧](https://www.ictcontact.com) | <span><a href="https://pypi.org/project/langchain-ictcontact/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T142⟧](https://www.ictlms.net) | <span><a href="https://pypi.org/project/langchain-ictexam/"><img alt="Downloads per month" /></a>⟦T1384​​⟧|
-  | [⟦T143⟧](https://docs.anchorbrowser.io/introduction) | <span><a href="https://pypi.org/project/langchain-anchorbrowser/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T144⟧](https://docs.zerogpu.ai) | <span><a href="https://pypi.org/project/langchain-zerogpu/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T145⟧](https://clearsigned.com/integrations#langchain) | <span><a href="https://pypi.org/project/langchain-clearsigned/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T146⟧](https://www.maximem.ai/) | <span><a href="https://pypi.org/project/maximem-synap-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T147⟧](/oss/python/integrations/tools/tableau) | <span><a href="https://pypi.org/project/langchain-tableau/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T148⟧](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T149⟧](https://lumify.ai/docs/ai) | <span><a href="https://pypi.org/project/langchain-lumify/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T150⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://pypi.org/project/langchain-talordata/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T151⟧](https://docs.dappier.com/) | <span><a href="https://pypi.org/project/langchain-dappier/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T152⟧](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T153⟧](https://asyntai.com/documentation/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-asyntai/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T154⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-feedmyagent/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T155⟧](https://docs.memoryrouter.ai/langchain) | <span><a href="https://pypi.org/project/langchain-memoryrouter/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T156⟧](https://serpdive.com/docs) | <span><a href="https://pypi.org/project/langchain-serpdive/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T157⟧](https://docs.mrscraper.com) | <span><a href="https://pypi.org/project/langchain-mrscraper/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T158⟧](https://github.com/Perseus-Computing-LLC/langchain-perseus-vault) | <span><a href="https://pypi.org/project/langchain-perseus-vault/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T159⟧](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-sail/"><img alt="Downloads per month" /></a></span>|| [⟦T160⟧](https://github.com/TheSuperColony/langchain-supercolony) | <span><a href="https://pypi.org/project/langchain-supercolony/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T161⟧](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-catchall/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T162⟧](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | <span><a href="https://pypi.org/project/nodeproxy-tools/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T163⟧](https://crustapi.com/docs) | <span><a href="https://pypi.org/project/langchain-crustapi/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T164⟧](https://github.com/Scottcjn/langchain-rustchain) | <span><a href="https://pypi.org/project/langchain-rustchain-tools/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T165⟧](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | <span><a href="https://pypi.org/project/langchain-polaris/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T166⟧](https://anakin.io/docs/documentation) | <span><a href="https://pypi.org/project/langchain-anakin/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T167⟧](https://github.com/dnsdoctor/langchain-dnsdoctor) | <span><a href="https://pypi.org/project/langchain-dnsdoctor/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T168⟧](https://strale.dev/docs) | <span><a href="https://pypi.org/project/langchain-strale/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T169⟧](https://docs.scraperapi.com/) | <span><a href="https://pypi.org/project/langchain-scraperapi/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T170⟧](https://github.com/MehdiZare/langchain-fmp-data) | <span><a href="https://pypi.org/project/langchain-fmp-data/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T171⟧](https://github.com/mavdol/langchain-capsule) | <span><a href="https://pypi.org/project/langchain-capsule/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T172⟧](https://docs.keenable.ai) | <span><a href="https://pypi.org/project/langchain-keenable/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T173⟧](/oss/python/integrations/tools/privy) | <span><a href="https://pypi.org/project/langchain-privy/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T174⟧](https://querit.com/docs) | <span><a href="https://pypi.org/project/langchain-querit/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T175⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | <span><a href="https://pypi.org/project/pushary-langgraph/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T176⟧](https://github.com/daytonaio/daytona) | <span><a href="https://pypi.org/project/langchain-daytona-data-analysis/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T177⟧](https://pinchwork.dev) | <span><a href="https://pypi.org/project/pinchwork/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T178⟧](https://github.com/fidacy/fidacy-open) | <span><a href="https://pypi.org/project/langchain-fidacy/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T179⟧](https://github.com/e7217/langchain-naver-community) | <span><a href="https://pypi.org/project/langchain-naver-community/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T180⟧](https://www.xpoz.ai/docs) | <span><a href="https://pypi.org/project/langchain-xpoz/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T181⟧](https://github.com/authzed/langchain-spicedb) | <span><a href="https://pypi.org/project/langchain-spicedb/"> <img alt="Downloads per month" /></a></span> || [⟦T182⟧](https://github.com/valthera/langchain-valthera) | <span><a href="https://pypi.org/project/langchain-valthera/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T183⟧](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T184⟧](https://pypi.org/project/langchain-alex/) | <span><a href="https://pypi.org/project/langchain-alex/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T185⟧](https://axiora.dev/docs) | <span><a href="https://pypi.org/project/langchain-axiora/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T186⟧](https://github.com/vectara/langchain-vectara) | <span><a href="https://pypi.org/project/langchain-vectara/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T187⟧](https://www.agentrails.io/docs) | <span><a href="https://pypi.org/project/langchain-x402/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T188⟧](https://cloro.dev/docs/) | <span><a href="https://pypi.org/project/langchain-cloro/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T189⟧](https://serpex.dev/docs) | <span><a href="https://pypi.org/project/langchain-serpex-python/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T190⟧](https://docs.opengradient.ai/) | <span><a href="https://pypi.org/project/langchain-opengradient/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T191⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T192⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T193⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T194⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T195⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T196⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T197⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T198⟧](https://docs.agentql.com/home) | <span><a href="https://pypi.org/project/langchain-agentql/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T199⟧](https://www.agentfetch.dev) | <span><a href="https://pypi.org/project/langchain-agentfetch/"><img alt="Downloads per month" /></a></span> |
-  | [⟦T200⟧](https://github.com/Amitgb14/langchain_jenkins) | <span><a href="https://pypi.org/project/langchain-jenkins/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T201⟧](https://textual.tonic.ai) | <span><a href="https://pypi.org/project/langchain-textual/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T202⟧](https://docs.yutori.com) | <span><a href="https://pypi.org/project/langchain-yutori/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T203⟧](https://hlido.eu/docs/) | <span><a href="https://pypi.org/project/hlido-trust/"> <img alt="Downloads per month" /></a></span> || [⟦T204⟧](https://github.com/permitio/langchain-permit) | <span><a href="https://pypi.org/project/langchain-permit/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T205⟧](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | <span><a href="https://pypi.org/project/langchain-algenta/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T206⟧](https://instanode.dev/docs) | <span><a href="https://pypi.org/project/langchain-instanode/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T207⟧](https://github.com/stardog-union/stardog-langchain) | <span><a href="https://pypi.org/project/langchain-stardog/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T208⟧](https://preclick.ai/) | <span><a href="https://pypi.org/project/langchain-urlcheck/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T209⟧](https://signatrust.net/docs/api) | <span><a href="https://pypi.org/project/langchain-signatrust/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T210⟧](https://w2a-protocol.org/) | <span><a href="https://pypi.org/project/langchain-w2a/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T211⟧](https://platform.iflow.cn/) | <span><a href="https://pypi.org/project/iflow-search-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T212⟧](https://github.com/plivo-dev/langchain-plivo-tools) | <span><a href="https://pypi.org/project/langchain-plivo-tools/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T213⟧](https://selfheal.dev/docs) | <span><a href="https://pypi.org/project/graceful-fail/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T214⟧](https://paysafe-agent.com) | <span><a href="https://pypi.org/project/langchain-paysafe/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T215⟧](https://github.com/meetdewey/langchain-dewey) | <span><a href="https://pypi.org/project/langchain-dewey/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T216⟧](https://modexia.software/docs) | <span><a href="https://pypi.org/project/langchain-modexia/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T217⟧](https://docs.octen.ai) | <span><a href="https://pypi.org/project/langchain-octen/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T218⟧](https://flowspeech.io/docs) | <span><a href="https://pypi.org/project/langchain-flowspeech/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T219⟧](https://docs.sidclaw.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-sidclaw/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T220⟧](https://docs.ipay.sh) | <span><a href="https://pypi.org/project/langchain-pr402/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T221⟧](https://hashlock.markets/docs) | <span><a href="https://pypi.org/project/langchain-hashlock/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T222⟧](https://www.clawmessenger.com/blog/langchain-imessage-integration) | <span><a href="https://pypi.org/project/langchain-claw-messenger/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T223⟧](https://kerq.dev/docs) | <span><a href="https://pypi.org/project/langchain-kerq/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T224⟧](https://cosmergon.com) | <span><a href="https://pypi.org/project/langchain-cosmergon/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T225⟧](https://crawleo.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-crawleo/"><img alt="Downloads per month" /></a></span>|| [⟦T226⟧](https://crawleo.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-crawleo/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T227⟧](https://docs.dexpaprika.com) | <span><a href="https://pypi.org/project/langchain-dexpaprika/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T228⟧](https://ilovevideoeditor.com/docs/api-guide) | <span><a href="https://pypi.org/project/langchain-ilovevideoeditor/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T229⟧](https://docs.agentmail.to/welcome) | <span><a href="https://pypi.org/project/langchain-agentmail/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T230⟧](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://pypi.org/project/langchain-aproxpay/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T231⟧](https://www.search1api.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/search1api-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T232⟧](https://bidda.com/developers) | <span><a href="https://pypi.org/project/langchain-bidda/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T233⟧](https://docs.bodo.ai/) | <span><a href="https://pypi.org/project/langchain-bodo/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T234⟧](https://goodsender.com/docs) | <span><a href="https://pypi.org/project/langchain-goodsender/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T235⟧](/oss/python/integrations/tools/unstructured_transform) | <span><a href="https://pypi.org/project/langchain-unstructured-transform/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T236⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | <span><a href="https://pypi.org/project/langchain-igpt/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T237⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | <span><a href="https://pypi.org/project/langchain-igpt/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T238⟧](https://docs.agentline.cloud/introduction) | <span><a href="https://pypi.org/project/langchain-agentline/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T239⟧](https://toolstem.com) | <span><a href="https://pypi.org/project/langchain-toolstem/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T240⟧](https://ceki.me) | <span><a href="https://pypi.org/project/langchain-ceki/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T241⟧](https://verifly.email/docs) | <span><a href="https://pypi.org/project/langchain-verifly/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T242⟧](https://github.com/synapsoft-DA/langchain-synapsoft) | <span><a href="https://pypi.org/project/langchain-synapsoft/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T243⟧](https://github.com/flipcoin-fun/flipcoin-langchain) | <span><a href="https://pypi.org/project/langchain-flipcoin/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T244⟧](https://proxyclaw.ai/docs) | <span><a href="https://pypi.org/project/langchain-proxyclaw/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T245⟧](https://www.searchapi.io/docs/google) | <span><a href="https://pypi.org/project/langchain-searchapi/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T246⟧](https://sibfly.com) | <span><a href="https://pypi.org/project/langchain-sibfly/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T247⟧](https://synoppy.com/docs) | <span><a href="https://pypi.org/project/langchain-synoppy/"><img alt="Downloads per month" /></a></span>|| [⟦T248⟧](https://agenticemail.dev/docs) | <span><a href="https://pypi.org/project/langchain-agenticemail/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T249⟧](https://github.com/nozomio-labs/nia-langchain) | <span><a href="https://pypi.org/project/langchain-nia/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T250⟧](https://docs.agentphone.ai/welcome) | <span><a href="https://pypi.org/project/langchain-agentphone/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T251⟧](https://github.com/drasi-project/langchain-drasi) | <span><a href="https://pypi.org/project/langchain-drasi/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T252⟧](https://ai-identity.co/docs) | <span><a href="https://pypi.org/project/langchain-ai-identity/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T253⟧](https://docs.blindfold.dev) | <span><a href="https://pypi.org/project/langchain-blindfold/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T254⟧](https://docs.goodmem.ai) | <span><a href="https://pypi.org/project/langchain-goodmem/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T255⟧](https://github.com/Thordata/langchain-thordata) | <span><a href="https://pypi.org/project/langchain-thordata/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T256⟧](https://github.com/tilotech/tilores-langchain) | <span><a href="https://pypi.org/project/tilores-langchain/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T257⟧](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | <span><a href="https://pypi.org/project/langchain-arcmira/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T258⟧](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T259⟧](https://unirateapi.com) | <span><a href="https://pypi.org/project/langchain-unirate/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T260⟧](https://docs.camb.ai/introduction) | <span><a href="https://pypi.org/project/langchain-camb/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T261⟧](https://docs.delegare.dev/introduction) | <span><a href="https://pypi.org/project/langchain-delegare/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T262⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T263⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T264⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T265⟧](https://muapi.ai/docs/introduction) | <span><a href="https://pypi.org/project/muapi-langchain/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T266⟧](https://dynamicfeed.ai/integrations) | <span><a href="https://pypi.org/project/dynamicfeed-tools/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T267⟧](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | <span><a href="https://pypi.org/project/scoutwyze-compute/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T268⟧](https://snap-render.com) | <span><a href="https://pypi.org/project/langchain-snaprender/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T269⟧](https://tempguru.co/ai-agents) | <span><a href="https://pypi.org/project/tempguru/"> <img alt="Downloads per month" /></a></span> || [⟦T270⟧](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T271⟧](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T272⟧](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T273⟧](https://agentlair.dev/docs) | <span>不适用</span> |
-  | [⟦T274⟧](https://browserless.io) | <span>不适用</span> |
-  | [⟦T275⟧](https://huangtingflux.com/integrations/langchain) | <span>不适用</span> ​​|
-  | [⟦T276⟧](https://github.com/hanshs474/langchain-kavel#readme) | <span>不适用</span> |
-  | [⟦T277⟧](/oss/python/integrations/tools/stagehand) | <span>不适用</span> |
+  | [⟦T42⟧](https://bowmark.ai/docs/langchain) | <span><a href="https://pypi.org/project/langchain-bowmark/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T43⟧](https://antibrow.com/docs/langchain) | <span><a href="https://pypi.org/project/antibrow/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T44⟧](/oss/python/integrations/tools/cdp_agentkit) | <span><a href="https://pypi.org/project/coinbase-agentkit-langchain/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T45⟧](https://pypi.org/project/langchain-compass/) | <span><a href="https://pypi.org/project/langchain-compass/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T46⟧](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T47⟧](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | <span><a href="https://pypi.org/project/langchain-scrapegraph/"><img alt="Downloads per month" /></a></span>|| [⟦T48⟧](https://blopus.ai/docs/) | <span><a href="https://pypi.org/project/langchain-blopus/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T49⟧](https://blopus.ai/docs/) | <span><a href="https://pypi.org/project/langchain-blopus/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T50⟧](/oss/python/integrations/tools/google_drive) | <span><a href="https://pypi.org/project/langchain-googledrive/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T51⟧](https://github.com/LinkupPlatform/langchain-linkup) | <span><a href="https://pypi.org/project/langchain-linkup/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T52⟧](https://scavio.dev/docs/langchain) | <span><a href="https://pypi.org/project/langchain-scavio/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T53⟧](https://github.com/Shikenso-Analytics/langchain-taiga) | <span><a href="https://pypi.org/project/langchain-taiga/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T54⟧](https://docs.1claw.xyz/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-1claw/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T55⟧](https://github.com/Conrad-sudo/langchain-erc20) | <span><a href="https://pypi.org/project/langchain-erc20/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T56⟧](https://gatecoreai.com/docs/) | <span><a href="https://pypi.org/project/gatecore-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T57⟧](https://www.lians.ai) | <span><a href="https://pypi.org/project/lians-sdk/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T58⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | <span><a href="https://pypi.org/project/langchain-nimble/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T59⟧](https://docs.nimbleway.com/integrations/connectors/langchain) | <span><a href="https://pypi.org/project/langchain-nimble/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T60⟧](https://skim402.com/docs) | <span><a href="https://pypi.org/project/langchain-skim/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T61⟧](https://github.com/sriram7737/pramagent) | <span><a href="https://pypi.org/project/pramagent/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T62⟧](https://github.com/Conrad-sudo/langchain-uniswap-v2) | <span><a href="https://pypi.org/project/langchain-uniswap-v2/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T63⟧](https://you.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-youdotcom/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T64⟧](https://docs.pexafy.com/langchain) | <span><a href="https://pypi.org/project/langchain-pexafy/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T65⟧](https://github.com/ADS4GPTs/ads4gpts) | <span><a href="https://pypi.org/project/ads4gpts-langchain/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T66⟧](https://docs.atomicmail.ai/langchain) | <span><a href="https://pypi.org/project/langchain-atomicmail/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T67⟧](https://fizzl.eu/agents/python/) | <span><a href="https://pypi.org/project/fizzl/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T68⟧](https://gandr.ai/docs) | <span><a href="https://pypi.org/project/gandr-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T69⟧](https://github.com/jmendozapuche/langchain-latam-synth) | <span><a href="https://pypi.org/project/langchain-latam-synth/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T70⟧](https://dev.writer.com/home/introduction) | <span><a href="https://pypi.org/project/langchain-writer/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T71⟧](https://lex-mex.xyz) | <span><a href="https://pypi.org/project/langchain-lexmex/"><img alt="Downloads per month" /></a></span>|| [⟦T72⟧](https://mnki.com/docs/integrations#frameworks) | <span><a href="https://pypi.org/project/langchain-mnki/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T73⟧](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | <span><a href="https://pypi.org/project/serpapi-search-tools/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T74⟧](https://github.com/tokportal/langchain-tokportal) | <span><a href="https://pypi.org/project/langchain-tokportal/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T75⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T76⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T77⟧](https://github.com/WaveSpeedAI/langchain-wavespeed) | <span><a href="https://pypi.org/project/langchain-wavespeed/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T78⟧](https://agentram.dev/langchain-agent-memory-tutorial.html) | <span><a href="https://pypi.org/project/langgraph-agentram/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T79⟧](https://github.com/colesmcintosh/langchain-salesforce) | <span><a href="https://pypi.org/project/langchain-salesforce/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T80⟧](https://github.com/robocorp/robocorp) | <span><a href="https://pypi.org/project/langchain-robocorp/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T81⟧](https://github.com/gazoy/langchain-foliant#readme) | <span><a href="https://pypi.org/project/langchain-foliant/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T82⟧](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | <span><a href="https://pypi.org/project/hindsight-langgraph/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T83⟧](https://docs.webz.io/docs/webz/news-search-api-mcp) | <span><a href="https://pypi.org/project/langchain-webz/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T84⟧](https://github.com/Conrad-sudo/langchain-erc8004) | <span><a href="https://pypi.org/project/langchain-erc8004/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T85⟧](https://langchain-prolog.readthedocs.io/en/stable/) | <span><a href="https://pypi.org/project/langchain-prolog/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T86⟧](https://aidress.ai) | <span><a href="https://pypi.org/project/langchain-aidress/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T87⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T88⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T89⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T90⟧](https://github.com/CHANGCHINFU/langchain-truthbear) | <span><a href="https://pypi.org/project/langchain-truthbear/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T91⟧](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T92⟧](https://omfang.io/manifest-docs) | <span><a href="https://pypi.org/project/manifest-api/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T93⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span>|| [⟦T94⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T95⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T96⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | <span><a href="https://pypi.org/project/langchain-opendma/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T97⟧](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | <span><a href="https://pypi.org/project/langchain-opendma/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T98⟧](https://serpkite.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-serpkite/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T99⟧](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | <span><a href="https://pypi.org/project/langchain-anyapi/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T100⟧](https://synmerco.com/docs) | <span><a href="https://pypi.org/project/synmerco-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T101⟧](https://api.relayshield.net/developers) | <span><a href="https://pypi.org/project/langchain-relayshield/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T102⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T103⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T104⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T105⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T106⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T107⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T108⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T109⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T110⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T111⟧](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T112⟧](https://docs.livetennisapi.com) | <span><a href="https://pypi.org/project/langchain-livetennis/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T113⟧](https://docs.ampersend.ai) | <span><a href="https://pypi.org/project/langchain-ampersend/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T114⟧](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | <span><a href="https://pypi.org/project/langchain-tendem/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T115⟧](https://docs.hydrafetch.com) | <span><a href="https://pypi.org/project/langchain-hydrafetch/"><img alt="Downloads per month" /></a></span> || [⟦T116⟧](https://useagentgate.com/docs) | <span><a href="https://pypi.org/project/langchain-agentgate/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T117⟧](https://lyrenth.com/docs/integrations) | <span><a href="https://pypi.org/project/langchain-lyrenth/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T118⟧](https://docs.magichour.ai) | <span><a href="https://pypi.org/project/langchain-magic-hour/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T119⟧](https://www.football-charts.com/developers) | <span><a href="https://pypi.org/project/langchain-footballcharts/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T120⟧](https://docs.context.dev) | <span><a href="https://pypi.org/project/langchain-context/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T121⟧](https://simplepages.ai/mcp) | <span><a href="https://pypi.org/project/langchain-simplepages/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T122⟧](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T123⟧](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T124⟧](https://optionsahoy.com/for-agents) | <span><a href="https://pypi.org/project/optionsahoy-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T125⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T126⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T127⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T128⟧](https://alphai.io/developers) | <span><a href="https://pypi.org/project/langchain-alphai/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T129⟧](https://reserp.ai/docs) | <span><a href="https://pypi.org/project/langchain-reserp/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T130⟧](/oss/python/integrations/tools/discord) | <span><a href="https://pypi.org/project/langchain-discord/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T131⟧](https://github.com/oxylabs/langchain-oxylabs) | <span><a href="https://pypi.org/project/langchain-oxylabs/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T132⟧](https://mixpeek.com/docs/agent-integrations/langchain) | <span><a href="https://pypi.org/project/langchain-mixpeek/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T133⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T134⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T135⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T136⟧](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T137⟧](https://quanticdata.io/docs/) | <span><a href="https://pypi.org/project/langchain-quanticdata/"> <img alt="Downloads per month" /></a></span> || [⟦T138⟧](https://urlpipe.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-urlpipe/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T139⟧](https://docs.firecrawl.dev) | <span>⟦T1384​​⟧<img alt="Downloads per month" /></a></span>|
+  | [⟦T140⟧](https://github.com/EXboys/langchain-skilllite) | <span><a href="https://pypi.org/project/langchain-skilllite/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T141⟧](https://ictpbx.com) | <span><a href="https://pypi.org/project/langchain-ictpbx/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T142⟧](https://docs.valyu.ai/home) | <span><a href="https://pypi.org/project/langchain-valyu/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T143⟧](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | <span><a href="https://pypi.org/project/langchain-ausca/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T144⟧](https://www.ictinnovations.com/) | <span><a href="https://pypi.org/project/langchain-ictfax/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T145⟧](https://github.com/tanod-labs/integrations/tree/main/langchain) | <span><a href="https://pypi.org/project/langchain-tanod/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T146⟧](https://www.ictcontact.com) | <span><a href="https://pypi.org/project/langchain-ictcontact/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T147⟧](https://www.ictlms.net) | <span><a href="https://pypi.org/project/langchain-ictexam/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T148⟧](https://docs.anchorbrowser.io/introduction) | <span><a href="https://pypi.org/project/langchain-anchorbrowser/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T149⟧](https://docs.zerogpu.ai) | <span><a href="https://pypi.org/project/langchain-zerogpu/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T150⟧](https://clearsigned.com/integrations#langchain) | <span><a href="https://pypi.org/project/langchain-clearsigned/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T151⟧](https://www.maximem.ai/) | <span><a href="https://pypi.org/project/maximem-synap-langchain/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T152⟧](/oss/python/integrations/tools/tableau) | <span><a href="https://pypi.org/project/langchain-tableau/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T153⟧](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T154⟧](https://lumify.ai/docs/ai) | <span><a href="https://pypi.org/project/langchain-lumify/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T155⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://pypi.org/project/langchain-talordata/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T156⟧](https://docs.dappier.com/) | <span><a href="https://pypi.org/project/langchain-dappier/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T157⟧](https://github.com/Minns-ai/langgraph-minnsdb#readme) | <span><a href="https://pypi.org/project/langgraph-minnsdb/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T158⟧](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T159⟧](https://asyntai.com/documentation/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-asyntai/"><img alt="Downloads per month" /></a></span>|| [⟦T160⟧](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-feedmyagent/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T161⟧](https://docs.memoryrouter.ai/langchain) | <span><a href="https://pypi.org/project/langchain-memoryrouter/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T162⟧](https://serpdive.com/docs) | <span><a href="https://pypi.org/project/langchain-serpdive/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T163⟧](https://docs.mrscraper.com) | <span><a href="https://pypi.org/project/langchain-mrscraper/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T164⟧](https://github.com/Perseus-Computing-LLC/langchain-perseus-vault) | <span><a href="https://pypi.org/project/langchain-perseus-vault/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T165⟧](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-sail/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T166⟧](https://github.com/TheSuperColony/langchain-supercolony) | <span><a href="https://pypi.org/project/langchain-supercolony/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T167⟧](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-catchall/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T168⟧](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | <span><a href="https://pypi.org/project/nodeproxy-tools/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T169⟧](https://crustapi.com/docs) | <span><a href="https://pypi.org/project/langchain-crustapi/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T170⟧](https://github.com/Scottcjn/langchain-rustchain) | <span><a href="https://pypi.org/project/langchain-rustchain-tools/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T171⟧](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | <span><a href="https://pypi.org/project/langchain-polaris/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T172⟧](https://anakin.io/docs/documentation) | <span><a href="https://pypi.org/project/langchain-anakin/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T173⟧](https://github.com/dnsdoctor/langchain-dnsdoctor) | <span><a href="https://pypi.org/project/langchain-dnsdoctor/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T174⟧](https://strale.dev/docs) | <span><a href="https://pypi.org/project/langchain-strale/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T175⟧](https://docs.scraperapi.com/) | <span><a href="https://pypi.org/project/langchain-scraperapi/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T176⟧](https://github.com/MehdiZare/langchain-fmp-data) | <span><a href="https://pypi.org/project/langchain-fmp-data/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T177⟧](https://github.com/mavdol/langchain-capsule) | <span><a href="https://pypi.org/project/langchain-capsule/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T178⟧](https://docs.keenable.ai) | <span><a href="https://pypi.org/project/langchain-keenable/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T179⟧](/oss/python/integrations/tools/privy) | <span><a href="https://pypi.org/project/langchain-privy/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T180⟧](https://querit.com/docs) | <span><a href="https://pypi.org/project/langchain-querit/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T181⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | <span><a href="https://pypi.org/project/pushary-langgraph/"> <img alt="Downloads per month" /></a></span> || [⟦T182⟧](https://github.com/daytonaio/daytona) | <span><a href="https://pypi.org/project/langchain-daytona-data-analysis/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T183⟧](https://pinchwork.dev) | <span><a href="https://pypi.org/project/pinchwork/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T184⟧](https://github.com/fidacy/fidacy-open) | <span><a href="https://pypi.org/project/langchain-fidacy/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T185⟧](https://github.com/e7217/langchain-naver-community) | <span><a href="https://pypi.org/project/langchain-naver-community/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T186⟧](https://www.xpoz.ai/docs) | <span><a href="https://pypi.org/project/langchain-xpoz/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T187⟧](https://github.com/authzed/langchain-spicedb) | <span><a href="https://pypi.org/project/langchain-spicedb/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T188⟧](https://github.com/valthera/langchain-valthera) | <span><a href="https://pypi.org/project/langchain-valthera/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T189⟧](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | <span><a href="https://pypi.org/project/langchain-machinelibrary/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T190⟧](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T191⟧](https://pypi.org/project/langchain-alex/) | <span><a href="https://pypi.org/project/langchain-alex/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T192⟧](https://axiora.dev/docs) | <span><a href="https://pypi.org/project/langchain-axiora/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T193⟧](https://github.com/vectara/langchain-vectara) | <span><a href="https://pypi.org/project/langchain-vectara/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T194⟧](https://www.agentrails.io/docs) | <span><a href="https://pypi.org/project/langchain-x402/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T195⟧](https://cloro.dev/docs/) | <span><a href="https://pypi.org/project/langchain-cloro/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T196⟧](https://serpex.dev/docs) | <span><a href="https://pypi.org/project/langchain-serpex-python/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T197⟧](https://docs.opengradient.ai/) | <span><a href="https://pypi.org/project/langchain-opengradient/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T198⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T199⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T200⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T201⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T202⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T203⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|| [⟦T204⟧](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T205⟧](https://docs.agentql.com/home) | <span><a href="https://pypi.org/project/langchain-agentql/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T206⟧](https://www.agentfetch.dev) | <span><a href="https://pypi.org/project/langchain-agentfetch/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T207⟧](https://github.com/Amitgb14/langchain_jenkins) | <span><a href="https://pypi.org/project/langchain-jenkins/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T208⟧](https://textual.tonic.ai) | <span><a href="https://pypi.org/project/langchain-textual/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T209⟧](https://docs.yutori.com) | <span><a href="https://pypi.org/project/langchain-yutori/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T210⟧](https://hlido.eu/docs/) | <span><a href="https://pypi.org/project/hlido-trust/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T211⟧](https://github.com/permitio/langchain-permit) | <span><a href="https://pypi.org/project/langchain-permit/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T212⟧](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | <span><a href="https://pypi.org/project/langchain-algenta/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T213⟧](https://instanode.dev/docs) | <span><a href="https://pypi.org/project/langchain-instanode/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T214⟧](https://github.com/stardog-union/stardog-langchain) | <span><a href="https://pypi.org/project/langchain-stardog/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T215⟧](https://preclick.ai/) | <span><a href="https://pypi.org/project/langchain-urlcheck/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T216⟧](https://signatrust.net/docs/api) | <span><a href="https://pypi.org/project/langchain-signatrust/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T217⟧](https://w2a-protocol.org/) | <span><a href="https://pypi.org/project/langchain-w2a/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T218⟧](https://platform.iflow.cn/) | <span><a href="https://pypi.org/project/iflow-search-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T219⟧](https://github.com/plivo-dev/langchain-plivo-tools) | <span><a href="https://pypi.org/project/langchain-plivo-tools/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T220⟧](https://selfheal.dev/docs) | <span><a href="https://pypi.org/project/graceful-fail/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T221⟧](https://paysafe-agent.com) | <span><a href="https://pypi.org/project/langchain-paysafe/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T222⟧](https://github.com/meetdewey/langchain-dewey) | <span><a href="https://pypi.org/project/langchain-dewey/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T223⟧](https://modexia.software/docs) | <span><a href="https://pypi.org/project/langchain-modexia/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T224⟧](https://docs.octen.ai) | <span><a href="https://pypi.org/project/langchain-octen/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T225⟧](https://flowspeech.io/docs) | <span><a href="https://pypi.org/project/langchain-flowspeech/"><img alt="Downloads per month" /></a></span>|| [⟦T226⟧](https://docs.sidclaw.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-sidclaw/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T227⟧](https://docs.ipay.sh) | <span><a href="https://pypi.org/project/langchain-pr402/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T228⟧](https://hashlock.markets/docs) | <span><a href="https://pypi.org/project/langchain-hashlock/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T229⟧](https://www.clawmessenger.com/blog/langchain-imessage-integration) | <span><a href="https://pypi.org/project/langchain-claw-messenger/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T230⟧](https://kerq.dev/docs) | <span><a href="https://pypi.org/project/langchain-kerq/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T231⟧](https://cosmergon.com) | <span><a href="https://pypi.org/project/langchain-cosmergon/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T232⟧](https://crawleo.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-crawleo/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T233⟧](https://crawleo.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-crawleo/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T234⟧](https://docs.dexpaprika.com) | <span><a href="https://pypi.org/project/langchain-dexpaprika/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T235⟧](https://ilovevideoeditor.com/docs/api-guide) | <span><a href="https://pypi.org/project/langchain-ilovevideoeditor/"><img alt="Downloads per month" /></a></span> |
+  | [⟦T236⟧](https://docs.agentmail.to/welcome) | <span><a href="https://pypi.org/project/langchain-agentmail/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T237⟧](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://pypi.org/project/langchain-aproxpay/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T238⟧](https://www.search1api.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/search1api-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T239⟧](https://bidda.com/developers) | <span><a href="https://pypi.org/project/langchain-bidda/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T240⟧](https://docs.bodo.ai/) | <span><a href="https://pypi.org/project/langchain-bodo/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T241⟧](https://goodsender.com/docs) | <span><a href="https://pypi.org/project/langchain-goodsender/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T242⟧](/oss/python/integrations/tools/unstructured_transform) | <span><a href="https://pypi.org/project/langchain-unstructured-transform/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T243⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | <span><a href="https://pypi.org/project/langchain-igpt/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T244⟧](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | <span><a href="https://pypi.org/project/langchain-igpt/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T245⟧](https://docs.agentline.cloud/introduction) | <span><a href="https://pypi.org/project/langchain-agentline/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T246⟧](https://toolstem.com) | <span><a href="https://pypi.org/project/langchain-toolstem/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T247⟧](https://ceki.me) | <span><a href="https://pypi.org/project/langchain-ceki/"><img alt="Downloads per month" /></a></span>|| [⟦T248⟧](https://verifly.email/docs) | <span><a href="https://pypi.org/project/langchain-verifly/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T249⟧](https://github.com/synapsoft-DA/langchain-synapsoft) | <span><a href="https://pypi.org/project/langchain-synapsoft/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T250⟧](https://github.com/flipcoin-fun/flipcoin-langchain) | <span><a href="https://pypi.org/project/langchain-flipcoin/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T251⟧](https://proxyclaw.ai/docs) | <span><a href="https://pypi.org/project/langchain-proxyclaw/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T252⟧](https://www.searchapi.io/docs/google) | <span><a href="https://pypi.org/project/langchain-searchapi/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T253⟧](https://sibfly.com) | <span><a href="https://pypi.org/project/langchain-sibfly/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T254⟧](https://synoppy.com/docs) | <span><a href="https://pypi.org/project/langchain-synoppy/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T255⟧](https://agenticemail.dev/docs) | <span><a href="https://pypi.org/project/langchain-agenticemail/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T256⟧](https://github.com/nozomio-labs/nia-langchain) | <span><a href="https://pypi.org/project/langchain-nia/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T257⟧](https://docs.agentphone.ai/welcome) | <span><a href="https://pypi.org/project/langchain-agentphone/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T258⟧](https://github.com/drasi-project/langchain-drasi) | <span><a href="https://pypi.org/project/langchain-drasi/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T259⟧](https://ai-identity.co/docs) | <span><a href="https://pypi.org/project/langchain-ai-identity/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T260⟧](https://docs.blindfold.dev) | <span><a href="https://pypi.org/project/langchain-blindfold/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T261⟧](https://docs.goodmem.ai) | <span><a href="https://pypi.org/project/langchain-goodmem/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T262⟧](https://github.com/Thordata/langchain-thordata) | <span><a href="https://pypi.org/project/langchain-thordata/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T263⟧](https://github.com/tilotech/tilores-langchain) | <span><a href="https://pypi.org/project/tilores-langchain/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T264⟧](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | <span><a href="https://pypi.org/project/langchain-arcmira/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T265⟧](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T266⟧](https://unirateapi.com) | <span><a href="https://pypi.org/project/langchain-unirate/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T267⟧](https://docs.camb.ai/introduction) | <span><a href="https://pypi.org/project/langchain-camb/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T268⟧](https://docs.delegare.dev/introduction) | <span><a href="https://pypi.org/project/langchain-delegare/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T269⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"> <img alt="Downloads per month" /></a></span> || [⟦T270⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T271⟧](https://github.com/scrapeless-ai/langchain-scrapeless) | <span><a href="https://pypi.org/project/langchain-scrapeless/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T272⟧](https://muapi.ai/docs/introduction) | <span><a href="https://pypi.org/project/muapi-langchain/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T273⟧](https://dynamicfeed.ai/integrations) | <span><a href="https://pypi.org/project/dynamicfeed-tools/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T274⟧](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | <span><a href="https://pypi.org/project/scoutwyze-compute/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T275⟧](https://snap-render.com) | <span><a href="https://pypi.org/project/langchain-snaprender/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T276⟧](https://tempguru.co/ai-agents) | <span><a href="https://pypi.org/project/tempguru/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T277⟧](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T278⟧](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T279⟧](https://pypi.org/project/langchain-gaip/) | <span><a href="https://pypi.org/project/langchain-gaip/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T280⟧](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T281⟧](https://agentlair.dev/docs) | <span>不适用</span> |
+  | [⟦T282⟧](https://browserless.io) | <span>不适用</span> |
+  | [⟦T283⟧](https://github.com/flashdata-dev/langchain-flashdata#readme) | <span>不适用</span> |
+  | [⟦T284⟧](https://huangtingflux.com/integrations/langchain) | <span>不适用</span> |
+  | [⟦T285⟧](https://github.com/hanshs474/langchain-kavel#readme) | <span>不适用</span> |
+  | [⟦T286⟧](/oss/python/integrations/tools/stagehand) | <span>不适用</span> |
 </div>
 
 <Info>
