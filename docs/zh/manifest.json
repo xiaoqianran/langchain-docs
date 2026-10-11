@@ -617,8 +617,8 @@
       "translatedAt": "2026-09-29T15:14:35.760Z"
     },
     "langsmith/agent-server-changelog.md": {
-      "hash": "b19cee6d5f6dc96b47b1632f087c681164338c52",
-      "translatedAt": "2026-09-29T15:14:09.477Z"
+      "hash": "9cdc2fbfe142bc22c00d01f009bf7d4b5037e20d",
+      "translatedAt": "2026-10-11T15:11:47.473Z"
     },
     "langsmith/chat.md": {
       "hash": "9786045f7fbca27d5f0267a68863f9ae485a0880",
@@ -897,8 +897,8 @@
       "translatedAt": "2026-08-22T09:17:16.884Z"
     },
     "langsmith/engine-self-hosted.md": {
-      "hash": "13763d94c7102f2fee4c2c60c753387135f3c17a",
-      "translatedAt": "2026-10-10T14:54:35.163Z"
+      "hash": "6c3e253601af74da43d78f0835c8d8af4d3f0533",
+      "translatedAt": "2026-10-11T15:10:51.189Z"
     },
     "langsmith/deploy-self-hosted-full-platform.md": {
       "hash": "a905f69ae33bf300c8fb8bebedc840985b14fb5c",
@@ -1757,8 +1757,8 @@
       "translatedAt": "2026-10-01T15:49:21.547Z"
     },
     "langsmith/sandbox-auth-proxy.md": {
-      "hash": "9d11aea7ce3553e3a66a9fb161a297a032e902a6",
-      "translatedAt": "2026-10-07T15:54:37.858Z"
+      "hash": "e3392203c26650d39f0d1fe358d849a6db00661b",
+      "translatedAt": "2026-10-11T15:10:50.028Z"
     },
     "langsmith/sandbox-snapshots.md": {
       "hash": "f910f482cd41fc125703f44329e7d38e7ecd86ed",
@@ -2001,8 +2001,8 @@
       "translatedAt": "2026-10-10T14:56:13.583Z"
     },
     "langsmith/setup-app-requirements-txt.md": {
-      "hash": "f5aee1affa5466edc1be6ef791c907a42ab5b401",
-      "translatedAt": "2026-10-01T15:52:05.912Z"
+      "hash": "2dc60d9104c18e7ce8a31582dd87f374f683f4cf",
+      "translatedAt": "2026-10-11T15:10:51.752Z"
     },
     "langsmith/set-up-resource-tags.md": {
       "hash": "9ae8d41d84334f49077030279032cbe9185d3a10",
@@ -2013,8 +2013,8 @@
       "translatedAt": "2026-10-01T15:52:07.506Z"
     },
     "langsmith/setup-pyproject.md": {
-      "hash": "9aec23eb68744c6a1a2e6ba5d34308e268058931",
-      "translatedAt": "2026-10-01T15:52:09.000Z"
+      "hash": "ee54e6289514ecc43d34d5071a040a28937c87d8",
+      "translatedAt": "2026-10-11T15:10:52.288Z"
     },
     "langsmith/skills.md": {
       "hash": "d05758188228e0ab956abcf4d4a3b2167d732ce7",
@@ -6907,10 +6907,10 @@
       "translatedAt": "2026-10-10T14:56:15.777Z"
     }
   },
-  "updatedAt": "2026-10-10T14:58:47.226Z",
+  "updatedAt": "2026-10-11T15:11:47.473Z",
   "stats": {
-    "translated": 53,
-    "skipped": 1640,
+    "translated": 5,
+    "skipped": 1688,
     "failed": 0,
     "total": 1693
   }
