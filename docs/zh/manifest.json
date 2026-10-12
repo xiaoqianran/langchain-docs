@@ -6907,10 +6907,10 @@
       "translatedAt": "2026-10-10T14:56:15.777Z"
     }
   },
-  "updatedAt": "2026-10-11T15:11:47.473Z",
+  "updatedAt": "2026-10-12T18:19:33.612Z",
   "stats": {
-    "translated": 5,
-    "skipped": 1688,
+    "translated": 0,
+    "skipped": 1693,
     "failed": 0,
     "total": 1693
   }
