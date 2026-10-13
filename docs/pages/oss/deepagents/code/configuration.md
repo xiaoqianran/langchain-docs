@@ -757,7 +757,7 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHOW_REASONING" type="string">
-  Show provider-visible reasoning in the interactive transcript and on stderr in non-interactive mode. Overrides `[ui].show_reasoning`; `--show-reasoning` takes precedence for a single launch. See [Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning).
+  Show provider-visible reasoning in the interactive transcript and on stderr in non-interactive mode. Defaults to on in interactive sessions and off in non-interactive mode. Set to `1` to show it or `0` to hide it in both modes. Overrides `[ui].show_reasoning`; `--show-reasoning` takes precedence for a single launch. See [Show provider-visible reasoning](/oss/deepagents/code/config-file#show-provider-visible-reasoning).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHOW_USAGE_STATS" type="string">

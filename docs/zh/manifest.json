@@ -4401,8 +4401,8 @@
       "translatedAt": "2026-10-02T15:10:56.906Z"
     },
     "langsmith/trace-with-opentelemetry.md": {
-      "hash": "d08c4e34d9110bb53d8fd2c9c2d4a2f831e942c5",
-      "translatedAt": "2026-10-09T15:42:01.296Z"
+      "hash": "0e767047f977cfbe7f11caea83b1f1f2a7f91280",
+      "translatedAt": "2026-10-13T16:33:44.783Z"
     },
     "langsmith/troubleshooting-variable-caching.md": {
       "hash": "889ec416d414e1fab09ce6cd0d8b618798ab4885",
@@ -4489,8 +4489,8 @@
       "translatedAt": "2026-10-02T15:11:57.292Z"
     },
     "oss/deepagents/code/config-file.md": {
-      "hash": "396078e748252fb18dcf8fb113d32c744e44dbd8",
-      "translatedAt": "2026-10-08T15:58:53.425Z"
+      "hash": "7ab8f55c7ce9baa47ae952a49d4fab66d360b2c0",
+      "translatedAt": "2026-10-13T16:34:01.030Z"
     },
     "oss/deepagents/code/credentials.md": {
       "hash": "bbcc29891c2c1cc5b535529b18849f2d8beb6bbe",
@@ -4501,12 +4501,12 @@
       "translatedAt": "2026-10-02T15:12:34.878Z"
     },
     "oss/deepagents/code/configuration.md": {
-      "hash": "b7e868e1fa3e6b50d00b6fb1dfa7dfee4540b870",
-      "translatedAt": "2026-10-08T15:59:08.963Z"
+      "hash": "e51bbcb20c53ec2257e4aeba6531c24c278ef951",
+      "translatedAt": "2026-10-13T16:34:03.019Z"
     },
     "oss/deepagents/code/cli-reference.md": {
-      "hash": "4fb8674794feba71d26a6e927ffdeabc1857e8da",
-      "translatedAt": "2026-10-08T15:58:35.627Z"
+      "hash": "65ce8e7b31f4a4bbe6579a777f79b4cff980aff0",
+      "translatedAt": "2026-10-13T16:33:48.664Z"
     },
     "oss/deepagents/code/memory-and-skills.md": {
       "hash": "1e56aac6d8f251b1f32bbfc96ae6c7f74940d141",
@@ -6891,8 +6891,8 @@
       "translatedAt": "2026-10-10T14:53:58.518Z"
     },
     "langsmith/enable-self-hosted-sandboxes.md": {
-      "hash": "1250cbf7c41ceb2be8349e6a261828c4b35160cf",
-      "translatedAt": "2026-10-10T14:54:07.340Z"
+      "hash": "70e6229c635aa0d1677dfc170212232a35191fe1",
+      "translatedAt": "2026-10-13T16:33:44.032Z"
     },
     "langsmith/self-host-additional-features.md": {
       "hash": "b21b6a7baf3f1f523c2b9521a0c3e0530bab03f5",
@@ -6907,10 +6907,10 @@
       "translatedAt": "2026-10-10T14:56:15.777Z"
     }
   },
-  "updatedAt": "2026-10-12T18:19:33.612Z",
+  "updatedAt": "2026-10-13T16:34:03.019Z",
   "stats": {
-    "translated": 0,
-    "skipped": 1693,
+    "translated": 5,
+    "skipped": 1688,
     "failed": 0,
     "total": 1693
   }

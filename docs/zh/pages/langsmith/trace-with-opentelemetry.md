@@ -214,7 +214,7 @@ OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 O
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OTEL_EXPORTER_OTLP_ENDPOINT: Override the endpoint URL
-OTEL_EXPORTER_OTLP_HEADERS: Add custom headers (LangSmith API keys and Project are added automatically)
+OTEL_EXPORTER_OTLP_HEADERS: Headers for your endpoint, like its API key (if unset, your LangSmith API key and project are sent)
 OTEL_SERVICE_NAME: Set a custom service name (defaults to "langsmith")
 OTEL_RESOURCE_ATTRIBUTES: Attach custom metadata fields at the process level (see below)
 ```
@@ -287,7 +287,7 @@ print(result.content)
 
 | OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
-| `langsmith.trace.name` |运行名称 |覆盖运行的跨度名称 |
+| `langsmith.trace.name` |运行名称|覆盖运行的跨度名称 |
 | `langsmith.span.kind` | [Run type](/langsmith/run-data-format#run-types) |值：`llm`、`chain`、`tool`、`retriever`、`embedding`、`prompt`、`parser` |
 | `langsmith.trace.id` |跟踪 ID |跨度所属的跟踪（根运行）；设置为附加到现有跟踪 |
 | `langsmith.span.id` |运行 ID |该跨度的运行 ID（UUID）；覆盖从 OTLP 跨度 ID 派生的 ID |
@@ -322,8 +322,8 @@ print(result.content)
 | `gen_ai.response.model` | `invocation_params.model` |响应中返回的型号名称 |
 | `gen_ai.request.temperature` | `invocation_params.temperature` |温度设定|
 | `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p 采样设置 |
-| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置|
-| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置|
+| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置 |
+| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置 |
 | `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` |存在惩罚设置 |
 | `gen_ai.request.seed` | `invocation_params.seed` |用于生成的随机种子 |
 | `gen_ai.request.stop_sequences` | `invocation_params.stop` |停止生成的序列 |
@@ -345,9 +345,9 @@ print(result.content)
 | - | - | - |
 | `traceloop.entity.input` | `inputs` |来自 TraceLoop 的完整输入值 |
 | `traceloop.entity.output` | `outputs` | TraceLoop 的完整输出值 |
-| `traceloop.entity.name` |运行名称 |来自 TraceLoop 的实体名称 |
+| `traceloop.entity.name` |运行名称|来自 TraceLoop 的实体名称 |
 | `traceloop.span.kind` |运行类型 |映射到 LangSmith 运行类型 |
-| `traceloop.llm.request.type` |运行类型 | “embedding”映射到“embedding”，其他映射到“llm”|
+| `traceloop.llm.request.type` |运行类型 | “embedding”映射到“embedding”，其他映射到“llm” |
 | `traceloop.association.properties.{key}` | `metadata.{key}` |带有traceloop前缀的自定义元数据|
 
 ### OpenInference 属性
@@ -359,7 +359,7 @@ print(result.content)
 | `openinference.span.kind` |运行类型 |将各种类型映射到 LangSmith 运行类型 |
 | `llm.system` | `metadata.ls_provider` | LLM系统提供商|
 | `llm.model_name` | `metadata.ls_model_name` |模型名称来自 OpenInference |
-| `tool.name` |运行名称 |跨度类型为“TOOL”时的工具名称 |
+| `tool.name` |运行名称|跨度类型为“TOOL”时的工具名称 |
 | `metadata` | `metadata.*` |要合并的元数据的 JSON 字符串 |
 
 ### 法学硕士属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
@@ -410,7 +410,7 @@ print(result.content)
 | `gen_ai.system.message` | `inputs.messages[]` |对话中的系统消息 |
 | `gen_ai.user.message` | `inputs.messages[]` |对话中的用户消息 |
 | `gen_ai.assistant.message` | `outputs.messages[]` |对话中的助理消息 |
-| `gen_ai.tool.message` | `outputs.messages[]` |工具回复消息|
+| `gen_ai.tool.message` | `outputs.messages[]` |工具回复消息 |
 | `gen_ai.choice` | `outputs` |模型选择/响应以及完成原因 |
 | `exception` | `status`、`error` |将状态设置为“错误”并提取异常消息/堆栈跟踪 |
 
