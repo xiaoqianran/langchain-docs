@@ -92,7 +92,7 @@ You can then pass this evaluator to the `evaluate` method as follows:
       return outputs["class"] == reference_outputs["label"]
 
   results = ls_client.evaluate(
-      bad_classified,
+      bad_classifier,
       data=dataset,
       evaluators=[correct],
       summary_evaluators=[pass_50],

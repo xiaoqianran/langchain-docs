@@ -47,7 +47,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   openssl rand -base64 32
-  ```* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm Chart 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。为每个功能生成单独的密钥：
+  ```* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm 图表版本 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。为每个功能生成单独的密钥：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -94,7 +94,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 
 ### 网络访问* **许可证验证**：除非您在离线（气隙）模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 进行许可证验证和使用情况报告。详情请参阅[Egress](/langsmith/self-host-egress)。
 * **模型提供商访问**：见解和聊天需要 [provider credentials and model configurations](/langsmith/model-configurations)。如果您的集群无法访问 Internet，请在安装之前确认它可以访问哪些模型提供程序端点。
-* **容器镜像和图表**：如果您的集群无法访问公共注册表，请[mirror the LangSmith images](/langsmith/self-host-mirroring-images) 访问您自己的注册表并从本地图表安装。
+* **容器映像和图表**：如果您的集群无法访问公共注册表，请[mirror the LangSmith images](/langsmith/self-host-mirroring-images) 访问您自己的注册表并从本地图表安装。
 
 ### 数据存储
 
@@ -171,7 +171,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    helm repo add langchain https://langchain-ai.github.io/helm
    ```
 
-3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用的版本。
+3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用版本。
 
    * LangChain建议使用最新版本。
    * 您还可以运行`helm search repo langchain/langsmith --versions`来查看可用的版本。输出看起来像这样：
@@ -188,6 +188,10 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
    * 将 `<namespace>` 替换为您想要部署 LangSmith 的命名空间。
    * 将 `<version>` 替换为上一步中您要安装的 LangSmith 版本。大多数用户应该安装可用的最新版本。<Note>
+     最新的稳定图表在 v17 线上（`0.17.x`）。为 v16 行写入的值可能无法在 v17 上呈现。如果您要升级现有的 v16 安装而不是安装新安装，请先按照 [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17) 操作。
+   </Note>
+
+   <Note>
      在运行此命令之前，使用 `-n <namespace>` 指定的命名空间必须已经存在。如果不存在，请先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
    </Note>
 
@@ -255,17 +259,17 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
    <img alt="Langsmith ui" />
 
-## 后续步骤
-
-完成本指南后，您的 LangSmith 实例应该正在运行，但可能尚未完全配置。
+## 后续步骤完成本指南后，您的 LangSmith 实例应该正在运行，但可能尚未完全配置。
 
 1. 使用您在`langsmith_config.yaml`中设置的管理员电子邮件地址和密码登录。
 
-2. 配置 Insights 和 Chat 的模型访问权限。参见[Configure model access](/langsmith/self-host-insights-chat#configure-model-access)。3. 将您的代理指向实例并开始跟踪。参见[Interact with your self-hosted instance](/langsmith/self-host-usage)。
+2. 配置 Insights 和 Chat 的模型访问权限。参见[Configure model access](/langsmith/self-host-insights-chat#configure-model-access)。
 
-4. 与基础设施管理员合作：
+3. 将您的代理指向实例并开始跟踪。参见[Interact with your self-hosted instance](/langsmith/self-host-usage)。
 
-   * 为您的 LangSmith 实例设置 DNS，以便更轻松地访问。
+4. 与您的基础设施管理员合作：
+
+   * 为您的 LangSmith 实例设置 DNS 以方便访问。
    * 配置 SSL 以确保提交到LangSmith 的跟踪数据在传输过程中加密。
    * 使用 [Single Sign-On](/langsmith/self-host-sso) 配置 LangSmith 以保护您的 LangSmith 实例。
    * 设置[blob storage](/langsmith/self-host-blob-storage)来存储大文件。

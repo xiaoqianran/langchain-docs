@@ -143,7 +143,7 @@ Python 和 JS/TS
     };
 
     const output = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
+      model: "gpt-5.5",
       messages: [
         {
           role: "system",
@@ -228,7 +228,7 @@ Python 和 JS/TS
 
 <img alt="Pairwise Comparison View" />
 
-您可以通过单击表标题中的“向上/向下”按钮来过滤第一个实验更好的运行，反之亦然：
+您可以通过单击表标题中的“拇指向上”/“拇指向下”按钮来筛选第一个实验更好的运行，反之亦然：
 
 <img alt="Pairwise Filtering" />
 

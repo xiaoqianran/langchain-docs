@@ -176,7 +176,7 @@ Python 和 JS/TS
   Reasoning: ${outputs.reasoning}`;
 
       const response = await openai.chat.completions.create({
-          model: "gpt-4",
+          model: "gpt-5.5",
           messages: [
               { role: "system", content: instructions },
               { role: "user", content: msg }

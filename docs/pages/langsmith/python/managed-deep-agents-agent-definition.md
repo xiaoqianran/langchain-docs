@@ -48,6 +48,25 @@ To define the agent, use `define_deep_agent`:
       model="google_genai:gemini-3.6-flash",
   )
   ```
+
+  ```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Install the required dependency: uv add langchain-azure-ai
+  import os
+
+  from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
+  from managed_deepagents import define_deep_agent
+
+  model = AzureAIOpenAIApiChatModel(
+      endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
+      credential=os.environ["AZURE_OPENAI_API_KEY"],
+      model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+  )
+
+  agent = define_deep_agent(
+      name="research-assistant",
+      model=model,
+  )
+  ```
 </CodeGroup>
 
 Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).

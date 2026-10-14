@@ -4,7 +4,7 @@
 
 # 如何定义摘要评估器
 
-某些指标只能在整个实验级别定义，而不是在实验的各个运行中定义。例如，您可能想要计算数据集中所有示例的评估目标的总体通过率或 f1 分数。这些被称为总结评估者。
+有些指标只能在整个实验级别定义，而不是在实验的各个运行中定义。例如，您可能想要计算数据集中所有示例的评估目标的总体通过率或 f1 分数。这些被称为总结评估者。
 
 ## 基本示例
 
@@ -94,7 +94,7 @@
       return outputs["class"] == reference_outputs["label"]
 
   results = ls_client.evaluate(
-      bad_classified,
+      bad_classifier,
       data=dataset,
       evaluators=[correct],
       summary_evaluators=[pass_50],
@@ -134,7 +134,7 @@
   ```
 </CodeGroup>
 
-在 LangSmith UI 中，您将使用相应的键显示摘要评估器的分数。
+在LangSmith UI 中，您将使用相应的键显示摘要评估器的分数。
 
 <img alt="summary_eval.png" />
 

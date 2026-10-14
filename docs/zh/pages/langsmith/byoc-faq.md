@@ -23,7 +23,7 @@
 </Accordion>
 
 <Accordion title="Can I deploy multiple data planes in the same VPC?">
-  不可以。目前不支持在同一 VPC 中部署多个数据平面。为每个数据平面使用单独的 VPC。
+  是的。在同一个VPC中部署多个数据平面需要[Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc)。每个数据平面必须使用不同的子网。不要在数据平面之间共享子网。
 </Accordion>
 
 <Accordion title="Can I move an existing data plane into my own VPC?">
@@ -33,7 +33,7 @@
 </Accordion>
 
 <Accordion title="Can I run my own workloads in the LangSmith VPC or cluster?">
-  是的，只要它们不干扰 LangSmith 的功能即可。
+  是的，只要它们不干扰LangSmith的功能即可。
 
   在 AWS 账户中，请记住，授予跨账户角色的某些权限无法按标签限定范围，这就是 LangChain 建议使用专用账户的原因。
 
@@ -43,7 +43,7 @@
   * 部署到 LangSmith 使用的命名空间之外的命名空间中。
   * 请勿编辑资源LangChain条款。
 
-  LangChain 不对因工作负载干扰而导致的停机或问题负责。
+  LangChain 不对由干扰工作负载引起的停机或问题负责。
 </Accordion>
 
 <Accordion title="What value do I set to the external ID for my role?">
@@ -55,7 +55,7 @@
 <Accordion title="What happens if provisioning fails?">
   数据平面转换到`Provisioning Failed`。失败通常是由于缺少跨账户角色的权限造成的，或者是由于服务控制策略 (SCP) 阻止了LangChain 需要执行的操作造成的。
 
-  完全按照发布的方式应用[⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
+  完全按照发布的方式应用 [⟦T6⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role)，无需任何编辑或更改。修改的模块是缺少权限的常见原因。
 
   联系LangChain团队。更正权限后，配置会自动协调。
 </Accordion>
@@ -155,14 +155,14 @@
 </Accordion>
 
 <Accordion title="Can I use my own private registry?">
-  不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册中心的支持已列入路线图。
+  不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册表的支持已列入路线图。
 </Accordion>
 
 <Accordion title="How does the control plane reach my Kubernetes API server?">
-  通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。
+  通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。参见[Connectivity](/langsmith/byoc-architecture#connectivity)。
+</Accordion>
 
-  EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。参见[Connectivity](/langsmith/byoc-architecture#connectivity)。
-</Accordion><Accordion title="Where does the control plane run if my data plane is outside the US?">
+<Accordion title="Where does the control plane run if my data plane is outside the US?">
   无论您将数据平面放置在何处，控制平面都以 `us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该地区，而控制平面元数据将保留在美国。参见[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。
 </Accordion>
 
@@ -176,13 +176,13 @@
   是的。一个组织可以拥有多个数据平面，每个数据平面都位于自己的 AWS 账户和区域中。
 
   默认限制是每个组织五个数据平面。要部署更多内容，请联系 LangChain 团队。
-</Accordion>
-
-<Accordion title="Can one organization hold both Cloud and BYOC workspaces?">
+</Accordion><Accordion title="Can one organization hold both Cloud and BYOC workspaces?">
   是的。 LangSmith 云上的工作区路由到 LangChain 管理的后端而不是数据平面，因此两者可以在同一组织中共存。这也意味着您可以从 AWS 云试用迁移到 BYOC，同时重复使用相同的组织、用户、角色和 SSO 配置。
 </Accordion>
 
-## 操作<Accordion title="Who is responsible for what in a BYOC deployment?">
+## 操作
+
+<Accordion title="Who is responsible for what in a BYOC deployment?">
   LangChain 运行控制平面并通过委派的最小权限访问管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
 
   有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。
@@ -195,10 +195,10 @@
 </Accordion>
 
 <Accordion title="What about Kubernetes upgrades?">
-  LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。
+  LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
+</Accordion>
 
-  控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
-</Accordion><Accordion title="Do upgrades cause downtime?">
+<Accordion title="Do upgrades cause downtime?">
   不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了一次不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务容量低于其所需的容量。
 
   可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。
@@ -209,13 +209,13 @@
 </Accordion>
 
 <Accordion title="Can I set up my own observability for LangSmith BYOC?">
-  是的。您可以在EKS集群中安装收集器、代理等可观察性工具，只要不干扰LangSmith的运行即可。
-
-  LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
+  是的。您可以在EKS集群中安装收集器、代理等可观察性工具，只要不干扰LangSmith的运行即可。LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
 </Accordion>
 
 <Accordion title="How are high availability and disaster recovery handled?">
-  默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。所有有状态组件均已备份。数据平面不跨越区域，因此整个区域丢失的恢复依赖于这些备份。参见[High availability](/langsmith/byoc-operations#high-availability)。
+  默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。所有有状态组件均已备份。
+
+  数据平面不跨越区域，因此整个区域丢失的恢复依赖于这些备份。参见[High availability](/langsmith/byoc-operations#high-availability)。
 </Accordion>
 
 <Accordion title="How are backups handled?">
@@ -232,16 +232,16 @@
   LangChain 仍然监控数据平面的正常运行时间和错误恢复、扩展它并应用升级和安全补丁。参见[Operations](/langsmith/byoc-operations)。
 </Accordion>
 
-## 成本
-
-<Accordion title="What do I pay for with BYOC?">
+## 成本<Accordion title="What do I pay for with BYOC?">
   两份单独的账单：
 
   * **基础设施**：数据平面在您自己的 AWS 账户中运行，因此您拥有基础设施并通过云提供商账单支付费用。
   * **LangSmith**：由 LangChain 根据您的合同和使用情况开具发票。
 
   LangChain 提供与 AWS Marketplace 的集成。
-</Accordion>## 特性和迁移
+</Accordion>
+
+## 特性和迁移
 
 <Accordion title="Which LangSmith features work on BYOC?">
   请参阅 [Available features](/langsmith/byoc#available-features) 了解当前支持的功能列表。

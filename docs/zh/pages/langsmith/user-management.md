@@ -32,9 +32,9 @@
 
 如果这些不适合您的访问模型，`Organization Admins`可以创建自定义角色来满足您的需求。
 
-要创建角色，请导航至 [Organization settings page](https://smith.langchain.com/settings) 的 **成员和角色** 部分中的 **角色** 选项卡。请注意，您创建的新角色将可在组织内的所有工作区中使用。单击“**创建角色**”按钮创建新角色。将打开 **创建角色** 表单。
+要创建角色，请转至 **设置** > **角色**。请注意，您创建的新角色将可在组织内的所有工作区中使用。
 
-<img alt="Create Role" />
+单击“**创建角色**”按钮创建新角色。将打开 **创建角色** 表单。<img alt="Create Role" />
 
 为您想要控制访问的不同LangSmith资源分配权限。
 
@@ -62,7 +62,7 @@ LangSmith 的 SSO 配置是使用 SAML（安全断言标记语言）2.0 标准�
 
 ### 即时 (JIT) 供应
 
-LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登录的人员以成员身份自动加入组织和选定的工作区。有关管理 JIT 配置和用户邀请的详细信息，请参阅[Manage user access in SSO organizations](/langsmith/jit-invite-sso)。
+LangSmith 在使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登录的人员以成员身份自动加入组织和选定的工作区。有关管理 JIT 配置和用户邀请的详细信息，请参阅[Manage user access in SSO organizations](/langsmith/jit-invite-sso)。
 
 <Note>
   JIT 配置仅针对新用户运行，即尚未通过 [different login method](/langsmith/authentication-methods#cloud) 使用相同电子邮件地址访问组织的用户。
@@ -77,7 +77,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 ### 仅强制执行 SAML SSO
 
 <Note>
-  仅强制执行 SAML SSO 的组织不支持用户邀请。初始工作区成员身份和角色由[JIT provisioning](/langsmith/jit-invite-sso#jit-provisioning)确定，之后的更改可以在 UI 中管理。
+  仅强制执行 SAML SSO 的组织不支持用户邀请。初始工作区成员资格和角色由[JIT provisioning](/langsmith/jit-invite-sso#jit-provisioning)确定，之后的更改可以在 UI 中管理。
   为了提高自动化用户管理的灵活性，LangSmith 支持 SCIM。
 </Note>为确保用户仅在使用 SAML SSO 登录而无其他方法时才能访问组织，请选中 **允许邀请** 复选框。一旦发生这种情况，通过非 SSO 登录方法访问组织的用户需要使用 SAML SSO 重新登录。通过取消选中该复选框，可以将此设置切换回允许所有登录方法。
 
@@ -97,7 +97,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 * 您的身份提供商 (IdP) 必须支持 SAML 2.0 标准。
 * 仅[⟦T16⟧](/langsmith/organization-workspace-operations#sso-and-authentication)可以配置SAML SSO。
 
-有关使用 SCIM 和 SAML 进行用户配置和取消配置的说明，请参阅[SCIM setup](#set-up-scim-for-your-organization)。
+有关使用 SCIM 和 SAML 进行用户配置和取消配置的说明，请参阅 [SCIM setup](#set-up-scim-for-your-organization)。
 
 ### 初始配置
 
@@ -173,7 +173,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
    5. 所需声明：`sub` 和 `email`。
 
-2. 在 LangSmith 中：转到 **设置** -> **成员和角色** -> **SSO 配置**。填写所需信息并提交以激活 SSO 登录：
+2. 在 LangSmith 中：转到 **设置** > **SSO 配置**。填写所需信息并提交以激活 SSO 登录：
 
    1. 填写`SAML metadata URL`或`SAML metadata XML`。
    2. 选择`Default workspace role` 和`Default workspaces`。通过 SSO 登录的新用户将被添加到具有所选角色的指定工作区。
@@ -185,7 +185,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
 <Note>
   SAML 属性映射是一项[cloud-only](/langsmith/cloud) 功能。 [Self-hosted](/langsmith/self-hosted) 部署直接使用 IdP 配置 SAML/OIDC 属性 — 请参阅 [Set up SSO with OAuth2.0 and OIDC](/langsmith/self-host-sso)。
-</Note>LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）传递到用户的 JWT 上。您的 IdP 发出的任何其他非标准 SAML 属性（例如，[SSO Groups Sync](#sso-groups-sync-alternative) 的 `groups`）必须在 SAML 属性映射表中显式列出，然后 LangSmith 才能读取它。
+</Note>LangSmith 云自动将一小组标准 SAML 属性（例如 `email` 和 `sub`）传递到用户的 JWT 上。您的 IdP 发出的任何其他非标准 SAML 属性（例如，`groups` 代表 [SSO Groups Sync](#sso-groups-sync-alternative)）必须在 SAML 属性映射表中显式列出，然后 LangSmith 才能读取它。
 
 **属性流(1:1)：**
 
@@ -197,7 +197,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
 #### 配置
 
-在 **设置** > **成员和角色** > **SSO 配置** 中，滚动到 **SAML 属性映射** 部分，并为每个要转发的非标准属性添加一行：|专栏 |描述 |
+在 **设置** > **SSO 配置**中，滚动到 **SAML 属性映射** 部分，并为每个要转发的非标准属性添加一行：|专栏 |描述 |
 | - | - |
 | **属性名称** |由您的 IdP 发出的 SAML 属性名称。必须与下游的 JWT 声明名称 LangSmith 匹配（对于 SSO 组同步，这与 **组声明字段** 值匹配）。 |
 | **数组** |如果属性是多值的（字符串列表），请选中此项。不选中标量（单值）属性。示例：检查 `groups`；不选中 `full_name`。 |
@@ -210,7 +210,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
 <div />
 
-**第 1 步：创建新的 Entra ID 应用程序集成**
+**步骤 1：创建新的 Entra ID 应用程序集成**
 
 1. 使用特权角色（例如`Global Administrator`）登录[Azure portal](https://portal.azure.com/#home)。在左侧导航窗格中，选择`Entra ID`服务。
 
@@ -295,7 +295,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
    1.`sub`：`user.objectid`。
    2. `emailaddress`：`user.userprincipalname` 或`user.mail`（如果使用后者，请确保所有用户都在`Contact Information` 下填写了`Email` 字段）。
-   3.（可选）对于SCIM，有关`Unique User Identifier (Name ID)`的具体说明请参阅[setup documentation](/langsmith/user-management)。
+   3. （可选）对于 SCIM，有关`Unique User Identifier (Name ID)` 的具体说明请参阅[setup documentation](/langsmith/user-management)。
 
 6. 在基于 SAML 的登录页面上的 **SAML 证书** 下，复制 **应用程序联合元数据 URL**。
 
@@ -325,7 +325,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
 1. 确保您已登录具有适当权限的管理员帐户。
 
-2. 在管理控制台中，转到 **菜单** -> **应用程序** -> **网络和移动应用程序**。
+2. 在管理控制台中，转至 **菜单** -> **应用程序** -> **网络和移动应用程序**。
 
 3. 单击“**添加应用程序**”，然后单击“**添加自定义 SAML 应用程序**”。
 
@@ -416,7 +416,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
       2. 如果服务状态设置为`Inherited`，并且您想要保留更新的设置，即使父设置发生更改，请单击`Override`。
       3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或者单击 `Save` 保留新设置，即使父级设置发生更改也是如此。
 
-   3. 要为组织部门内或跨组织部门的一组用户启用服务，请选择一个访问组。详情请参见[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
+   3. 要为跨组织部门或组织部门内的一组用户启用服务，请选择访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
 
 4. 确保您的用户用于登录 LangSmith 的电子邮件地址与他们用于登录您的 Google 域的电子邮件地址匹配。
 
@@ -525,7 +525,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
   SCIM 可与自定义应用程序集成配合使用，但建议使用 [Okta Integration Network app](#via-okta-integration-network)。有关 SCIM 设置，请参阅[Configure SCIM with a custom SAML app](#scim-custom-saml-app)。
 </Note>
 
-1. 以管理员身份登录 Okta，然后转至 **Okta 管理控制台**。
+1. 以管理员身份登录 Okta，然后转到 **Okta 管理控制台**。
 
 2. 在 **应用程序** > **应用程序** 下，单击 **创建应用程序集成**。
 
@@ -595,7 +595,7 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 
    5. 将其余字段留空或设置为默认值。
 
-   6. 单击**下一步**。
+   6. 单击“**下一步**”。
 
 6. 单击“**完成**”。
 
@@ -611,11 +611,11 @@ LangSmith 使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO 登�
 2. 在“**分配**”选项卡下，单击“**分配**”，然后单击“**分配给人员**”或“**分配给组**”。
 3. 进行所需的选择，然后**分配**和**完成**。
 
-**步骤 4：验证 SSO 设置**让具有访问权限的用户通过 `SSO Configuration` 页面中的唯一登录 URL 登录，或者让用户从其 Okta 仪表板中选择应用程序。
+**步骤 4：验证 SSO 设置**让具有访问权限的用户通过 `SSO configuration` 页面中的唯一登录 URL 登录，或者让用户从其 Okta 仪表板中选择应用程序。
 
 #### SP 发起的 SSO
 
-配置服务提供商发起的 SSO 后，用户可以使用唯一的登录 URL 登录。您可以在 LangSmith UI 的 **组织成员和角色** 然后 **SSO 配置** 下找到它。
+配置服务提供商发起的 SSO 后，用户可以使用唯一的登录 URL 登录。您可以在 LangSmith UI 的 **设置** > **SSO 配置** 中找到它。
 
 要在登录后将用户发送到特定页面，请将 URL 编码的 `redirect_to` 路径添加到登录 URL：
 
@@ -626,7 +626,7 @@ https://smith.langchain.com/sso/login/<slug>?redirect_to=%2Fo%2F<organization-id
 该值必须解码为同一主机上的路径，以 `/` 开头。在上面的示例中，它解码为`/o/<organization-id>/projects/p/<project-id>/r/<run-id>`，因此用户登陆该运行。指向另一个主机的值会被拒绝，用户会转至 LangSmith 主页。
 
 对路径进行编码。包含其自己的查询字符串或片段的未编码路径在第一个 `&` 或 `#` 处被截断，这会将用户发送到不完整的目的地。<Note>
-  大多数链接不需要此参数。直接打开 LangSmith URL，然后使用工作电子邮件通过 **SSO** 登录，用户已返回该页面。当链接必须自行启动 SAML 登录时，请使用`redirect_to`，例如由脚本生成的链接或为通过单个身份提供商登录的团队发布的链接。
+  大多数链接不需要此参数。直接打开 LangSmith URL，然后使用工作电子邮件通过 **SSO** 登录，用户已返回到该页面。当链接必须自行启动 SAML 登录时，请使用`redirect_to`，例如由脚本生成的链接或为通过单个身份提供商登录的团队发布的链接。
 </Note>
 
 ## 为您的组织设置 SCIM
@@ -694,7 +694,7 @@ https://smith.langchain.com/sso/login/<slug>?redirect_to=%2Fo%2F<organization-id
   SCIM **不**支持重命名组。组名称是持久的，因为它们必须与 LangSmith 中的角色名称和/或工作区名称匹配。
 </Warning>
 
-组成员身份映射到具有特定命名约定的LangSmith工作区成员身份和工作区角色。默认情况下，组件之间的分隔符是冒号 (`:`)，但您可以为您的组织使用 [configure a custom separator](#configure-custom-separator)。<Note>
+组成员资格通过特定的命名约定映射到 LangSmith 工作区成员资格和工作区角色。默认情况下，组件之间的分隔符是冒号 (`:`)，但您可以为您的组织使用 [configure a custom separator](#configure-custom-separator)。<Note>
   您可以省略组名称的 **组织角色名称** 部分中的空格。这有助于不允许组名称中存在空格的身份提供商。例如，LangSmith 接受 `OrganizationAdmins` 和 `OrganizationUser` 作为 `Organization Admins` 和 `Organization User` 的等效项。这种灵活性仅适用于组织角色名称令牌。工作空间名称和工作空间角色名称将空格视为文字字符，因此省略空格的变体与其空格对应的变体不匹配。
 </Note>
 
@@ -732,7 +732,7 @@ https://smith.langchain.com/sso/login/<slug>?redirect_to=%2Fo%2F<organization-id
 
 #### 配置自定义分隔符
 
-要更改您组织的 SCIM 组名称分隔符，请使用 `PATCH /api/v1/orgs/current/info` [endpoint](/langsmith/smith-api/orgs/update-current-organization-info)。对于区域 SaaS 部署，请将请求发送到区域主机上的同一路径（`eu.api.smith.langchain.com`、`apac.api.smith.langchain.com` 或 `aws.api.smith.langchain.com`）：
+要更改您组织的 SCIM 组名称分隔符，请使用 `PATCH /api/v1/orgs/current/info` [endpoint](/langsmith/smith-api/orgs/update-current-organization-info)。对于区域 SaaS 部署，将请求发送到区域主机上的同一路径（`eu.api.smith.langchain.com`、`apac.api.smith.langchain.com` 或 `aws.api.smith.langchain.com`）：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/info \
@@ -768,7 +768,7 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/info \
 
 #### 组属性
 
-| **LangSmith 应用程序属性** | **身份提供商属性** | **匹配优先级** |
+| **LangSmith 应用属性** | **身份提供商属性** | **匹配优先级** |
 | - | - | - |
 | `displayName` | `displayName`<sup>1</sup> | 1 |
 | `externalId` | `objectId` | |
@@ -899,7 +899,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 
 2. 单击“**测试连接**”以验证配置。
 
-3. 单击**保存**。
+3. 单击“**保存**”。
 
 **步骤 3：配置属性映射**
 
@@ -1051,7 +1051,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 
 <Note>
   SSO 组同步适用于配置了 SAML SSO（云）或 OIDC（自托管）的 [Enterprise plan](/langsmith/pricing-plans) 上的组织。 [Contact our sales team](https://www.langchain.com/contact-sales) 了解更多。
-</Note>对于无法或不愿配置 SCIM 组推送的组织来说，SSO 组同步是[SCIM](#set-up-scim-for-your-organization) 的更简单替代方案。 LangSmith 不是在单独的同步间隔将组从 IdP 推送到 LangSmith，而是在登录时直接从 SSO 令牌中的可配置声明读取组成员身份，并使用与 SCIM 相同的 [naming convention](#group-naming-convention) 应用组织级别和工作区级别角色分配。
+</Note>对于无法或不愿配置 SCIM 组推送的组织来说，SSO 组同步是[SCIM](#set-up-scim-for-your-organization) 的更简单替代方案。 LangSmith 不是在单独的同步间隔将组从 IdP 推送到 LangSmith，而是在登录时直接从 SSO 令牌中的可配置声明读取组成员资格，并使用与 SCIM 相同的 [naming convention](#group-naming-convention) 应用组织级别和工作区级别角色分配。
 
 #### 何时使用 SSO 组同步与 SCIM
 
@@ -1061,20 +1061,20 @@ SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配�
 | - | - | - |
 | **同步触发** |每次 SSO 登录时 |来自 IdP 的主动推送（大约 1 小时节奏）|
 | **IdP 管理员参与** |最少，只需在 SSO 令牌中包含组 |必需，配置 SCIM 配置应用程序 |
-| **取消配置** |延迟到下次登录 |通过 IdP 推送实现近乎实时 |
+| **取消配置** |延迟到下次登录|通过 IdP 推送实现近乎实时 |
 | **命名约定** |重复使用[SCIM convention](#group-naming-convention) | [SCIM convention](#group-naming-convention) |
-| **自定义分隔符** |重用组织级别 [⟦T237⟧](#configure-custom-separator) | [⟦T238⟧](#configure-custom-separator) |当 IdP 管理员参与最少且反应性（登录时）同步可接受时，选择 **SSO 组同步**。当需要主动配置/取消配置以及近乎实时的组成员资格更新时，选择 **SCIM**。
+| **自定义分隔符** |重用组织级别 [⟦T237⟧](#configure-custom-separator) | [⟦T238⟧](#configure-custom-separator) |当 IdP 管理员参与最少且反应性（登录时）同步可接受时，选择 **SSO 组同步**。当需要主动配置/取消配置以及近乎实时的组成员身份更新时，选择 **SCIM**。
 
 #### 配置
 
 1. 在您的 IdP 中：将用户的组成员身份添加到 SSO 令牌声明（默认声明名称：`groups`）。组名称必须遵循[SCIM naming convention](#group-naming-convention)。
-2. 在 LangSmith 中：转至 **设置** > **成员和角色** > **SSO 配置** > **SSO 组同步** 并配置以下内容：
+2. 在 LangSmith 中：转至 **设置** > **SSO 配置**，滚动到 **SSO 组同步**部分，然后配置以下内容：
 
    |设置|描述 |
    | - | - |
    | **启用 SSO 组同步** |根据 SSO 令牌中的组成员身份自动分配工作区角色。 |
-   | **群组声明字段**（默认`groups`）|包含组成员资格的 SSO 令牌中的声明名称。 |
-   | **同步工作区/角色分配** |在每次 SSO 登录时根据组名称更新工作区成员身份和角色。 |
+   | **群组声明字段**（默认`groups`）|包含组成员身份的 SSO 令牌中的声明名称。 |
+   | **同步工作区/角色分配** |在每次 SSO 登录时根据组名称更新工作区成员资格和角色。 |
    | **需要匹配的组才能登录** |如果 SSO 令牌不包含与命名约定匹配的组，则阻止登录。 |
 
 您还可以通过 API 将 `PATCH` 发送到 SSO 设置端点来配置这些设置：
@@ -1118,7 +1118,7 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
     3. 在 **Sign On** 上，编辑 SAML 设置并添加属性语句：
        * **姓名**： `groups`
        * **名称格式**：`Unspecified`（或`Basic`）
-       * **过滤器**：`Matches regex` 与 `.*` 一起发送所有组，或使用更具限制性的正则表达式（例如 `^LS:.*`）来限制以 LangSmith 为前缀的组。
+       * **过滤**：`Matches regex` 和 `.*` 发送所有组，或使用更具限制性的正则表达式（例如 `^LS:.*`）来限制以 LangSmith 为前缀的组。
   </Tab>
 
   <Tab title="Entra ID (Azure)">
@@ -1148,13 +1148,13 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
 | `Marketing` 中的工作区查看器 | `LS:Organization User:Marketing:Viewer` |
 | `Production` 中的自定义角色`Annotators` | `LS:Organization User:Production:Annotators` |
 
-＃＃＃＃ 行为* **命名约定**：组名称遵循与 SCIM 相同的格式（例如，`LS:Organization Admins` 表示组织管理员，`LS:Organization User:Production:Editor` 表示工作区范围）。完整格式请参见[Group naming convention](#group-naming-convention)。分隔符通过 [⟦T267⟧](#configure-custom-separator) 按组织进行配置，并与 SCIM 共享。
+＃＃＃＃ 行为* **Naming convention**: Group names follow the same format as SCIM (e.g., `LS:Organization Admins` for org admins, `LS:Organization User:Production:Editor` for workspace-scoped).完整格式请参见[Group naming convention](#group-naming-convention)。 The separator is configured per-org via [⟦T267⟧](#configure-custom-separator) and is shared with SCIM.
 * **格式错误的组名称**：不符合约定的组名称将被静默跳过（记录），并且不会阻止有效组的登录。
-* **登录门**：当启用**需要匹配组才能登录**且 SSO 令牌包含零个匹配组时，登录将被阻止。
-* **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。它对自己的分配具有完全的权威性，并在每次登录时根据令牌的组成员身份替换它们。
+* **Login gate**: When **Require matching group to sign in** is enabled and the SSO token contains zero matching groups, login is blocked.
+* **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。 It is fully authoritative for its own assignments and replaces them on each login based on the token's group membership.
 * **组织管理员传播**：如果用户从其组收到组织管理员角色，他们将被授予所有工作区中的工作区管理员权限（与 SCIM 行为相同）。
 
-#### 注意事项* **取消配置滞后**：与 SCIM（主动推送）不同，SSO 组同步仅在登录时更新。从 IdP 组中删除的用户将保留其现有工作区访问权限，直到下次 LangSmith 登录。 **需要匹配组才能登录** 门通过在下次登录时完全阻止用户来缓解这种情况。
+#### 注意事项* **取消配置滞后**：与 SCIM（主动推送）不同，SSO 组同步仅在登录时更新。从 IdP 中的组中删除的用户将保留其现有工作区访问权限，直到下次 LangSmith 登录。 **需要匹配组才能登录** 门通过在下次登录时完全阻止用户来缓解这种情况。
 * **无追溯同步**：更改角色映射或启用该功能不会更新现有用户，直到他们再次登录。
 * **需要命名约定**：客户必须按照 SCIM 约定命名其 IdP 组。如果您的 IdP 组遵循不同的命名策略，则具有基于 `description` 的映射（请参阅 [Group attributes](#group-attributes)）的 SCIM 可能更适合。
 

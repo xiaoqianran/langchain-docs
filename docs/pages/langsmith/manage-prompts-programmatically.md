@@ -248,7 +248,7 @@ Push the structured prompt as a RunnableSequence with a model to store the full 
       schema=ResponseSchema.model_json_schema(),
   )
 
-  model = ChatOpenAI(model="gpt-4o-mini")
+  model = ChatOpenAI(model="gpt-5.4-mini")
   chain = prompt | model
 
   client = Client()

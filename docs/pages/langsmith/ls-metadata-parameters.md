@@ -284,7 +284,7 @@ Identifies the specific model. Combined with `ls_provider`, matches against pric
 
 **Common values:**
 
-* OpenAI: `"gpt-5.5"`, `"gpt-5.4-mini"`, `"gpt-3.5-turbo"`
+* OpenAI: `"gpt-5.5"`, `"gpt-5.4-mini"`
 * Anthropic: `"claude-sonnet-4-6"`, `"claude-opus-4-8"`
 * Custom: Any model identifier
 
@@ -298,7 +298,7 @@ When you want automatic [cost tracking](/langsmith/cost-tracking) and model iden
     run_type="llm",
     metadata={
         "ls_provider": "anthropic",
-        "ls_model_name": "claude-3-5-sonnet-20241022"
+        "ls_model_name": "claude-sonnet-4-6"
     }
 )
 def my_claude_call(messages: list):

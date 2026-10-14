@@ -32,7 +32,7 @@
 * **按主机名寻址目标。** 与非 HTTP 端口上的文字 IP 地址的直接原始 TCP 连接会被丢弃，即使该 IP 位于 `allow_list` 上也是如此。到文字 IP 的 HTTPS 也被删除，因为代理在 TLS 握手中需要主机名。只有端口 80 上的明文 HTTP 才适用于文字 IP。
 * **只有 TCP 离开沙箱。** UDP（包括 QUIC）和 ICMP 被丢弃。
 
-### 默认出口姿势如果没有 `access_control`，**每个主机名都可以在每个 TCP 端口上访问**，除非您的组织位于 [restricted egress](#organization-level-restricted-egress)。唯一的例外是解析为私有、环回或云元数据地址的主机，代理拒绝拨打这些地址。对于使用 `access_delegation` 创建的沙箱，您的 LangSmith API 主机不受私有地址检查，因此主机名解析为私有地址的自托管安装（例如内部负载均衡器）仍然可以服务委托请求。没有其他私有目的地被打开，并且环回和云元数据地址保持被阻止。添加 `access_control` 来限制这一点。
+### 默认出口姿势如果没有 `access_control`，**每个主机名都可以在每个 TCP 端口上访问**，除非您的组织位于 [restricted egress](#organization-level-restricted-egress)。唯一的例外是解析为私有、环回或云元数据地址的主机，代理拒绝拨打这些地址。对于使用 `access_delegation` 创建的沙箱，您的 LangSmith API 主机不受私有地址检查，因此主机名解析为私有地址的自托管安装（例如内部负载均衡器）仍然可以服务委托请求。没有其他私有目的地被打开，并且环回和云元数据地址保持被阻止。在自托管安装中，与私有目标匹配的 `allow_list` 条目也会打开它；参见[Reach private services directly](/langsmith/self-host-sandbox-egress-proxy#reach-private-services-directly)。添加 `access_control` 来限制这一点。
 
 要允许任何主机使用 HTTP 和 HTTPS，同时阻止所有其他端口，请使用端口限定的允许列表。 `*` 匹配每个主机名：
 
@@ -46,9 +46,11 @@
 
 添加 `host:PORT` 条目以打开特定的原始 TCP 目标，例如 `db.example.com:5432`。
 
-### 允许和拒绝列表
+在自托管安装中，此列表还允许沙箱到达端口 80 和 443 上的专用目标。当沙箱不得到达您的内部网络时，请列出特定的公共主机。
 
-将 `access_control` 对象添加到 `proxy_config`，并使用 **** `allow_list` **或** `deny_list`（不能同时设置，如果两者都设置，则请求将被拒绝）：|模式|行为 |
+### 允许和拒绝列表将 `access_control` 对象添加到 `proxy_config`，并使用 **** `allow_list` **或** `deny_list`（不能同时设置，如果两者都设置，则请求将被拒绝）：
+
+|模式|行为 |
 | - | - |
 | `allow_list` | **默认拒绝。** 在任何协议上都只能访问列出的目的地。列出沙箱所需的每个主机，包括您的 `rules` 和 `callbacks` 目标的 HTTP(S) 主机。 |
 | `deny_list` | **默认允许。** 除列出的协议外，每个目的地均可通过任何协议到达。 |
@@ -56,7 +58,7 @@
 这两个列表都适用于 HTTP、HTTPS 和原始 TCP。这两种模式都不区分协议；使用端口后缀将条目限制为一个端口。
 
 <Warning>
-  `deny_list` 仅阻止您列出的主机。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com`，并使每个其他主机在每个端口上均可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
+  `deny_list` 仅阻止您列出的主机。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com`，并让每个其他主机在每个端口上都可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
 </Warning>
 
 ### 模式语法
@@ -64,7 +66,7 @@
 每个`allow_list`/`deny_list`条目使用以下形式：|图案|意义|
 | - | - |
 | `host` |裸主机 → **每个端口**。 |
-| `host:PORT` |恰好在 `PORT` 上主持。 `db.example.com:5432`仅覆盖5432；为任何其他端口添加另一个条目。 |
+| `host:PORT` |正好在 `PORT` 上主持。 `db.example.com:5432`仅覆盖5432；为任何其他端口添加另一个条目。 |
 | `*.example.com` | Glob（RFC 1034 样式）。 **不**包括顶点 (`example.com`)。可以携带一个端口。 |
 | `~regex` |正则表达式与主机名、每个端口相匹配。不解析端口后缀。 |
 | `1.2.3.4` / `[::1]` |字面上的IP。可携带端口：`1.2.3.4:443`、`[::1]:22`。 |
@@ -74,11 +76,11 @@
 
 创建或更新沙箱时，无法解析的条目（`example.com:abc`、`example.com:99999` 或带有端口的 CIDR）将被拒绝。
 
-### 组织级限制出站受限制的出站限制了与LangSmith管理的主机和端口白名单的沙箱连接。默认情况下，它适用于非企业组织以及有请求的组织。获得批准豁免的组织可以使用不受限制的出口。
+### 组织级限制出站受限制的出站限制了与LangSmith管理的主机和端口白名单的沙箱连接。默认情况下，它适用于非企业组织以及有要求的组织。获得批准豁免的组织可以使用不受限制的出口。
 
 允许列表支持常见的开发任务，包括安装包、访问源存储库和调用模型 API。它包括 PyPI、npm、GitHub、OpenAI、Anthropic 和 LangSmith，主要通过端口 443 上的 HTTPS。选定的包存储库还允许端口 80 上的 HTTP。
 
-当您的组织启用限制出站时，LangSmith 会阻止此允许列表之外的目的地。组织策略替换调用者提供的 `access_control` 设置并禁用 `no_proxy` 绕过。将目标添加到沙箱的 `allow_list` 或为其配置凭据不会授予超出组织策略的访问权限。
+当为您的组织启用限制出站时，LangSmith 会阻止此允许列表之外的目的地。组织策略替换调用者提供的 `access_control` 设置并禁用 `no_proxy` 绕过。将目标添加到沙箱的 `allow_list` 或为其配置凭据不会授予超出组织策略的访问权限。
 
 组织策略更改不会自动更新现有沙箱。启动或唤醒现有沙箱会重用其存储的网络配置。
 
@@ -94,7 +96,7 @@
 
 如果您的组织限制出站，请在连接到托管允许列表之外的数据库之前[request unrestricted access](#request-unrestricted-access)。
 
-要让沙箱代码通过 `psql`、`dbt` 或任何驱动程序到达外部 PostgreSQL 数据库，请将主机的端口列入白名单。由于 `allow_list` 默认拒绝，因此还要列出沙箱所需的任何 HTTP(S) 主机。将它们固定到`:443`，除非您还需要其他端口：
+要让沙箱代码通过 `psql`、`dbt` 或任何驱动程序到达外部 PostgreSQL 数据库，请将主机的端口列入白名单。由于 `allow_list` 默认拒绝，因此还要列出沙箱所需的任何 HTTP(S) 主机。将它们固定到 `:443` 除非您还需要其他端口：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -155,14 +157,14 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 创建沙箱时添加`proxy_config`，或通过修补其`proxy_config`来更新现有沙箱。 `proxy_config` 具有：
 
-|领域|描述 |
+|领域 |描述 |
 | - | - |
 | `rules` |标头注入和提供者身份验证规则。启用的标头规则按列表顺序匹配首场比赛获胜； `aws` 和 `gcp` 规则与其提供商的主机相匹配，无论位置如何 |
 | `callbacks` |动态凭证查找；参见[Callback credential example](#callback-credential-example)|
-| `access_control` | `allow_list`或`deny_list`；参见[Allow and deny lists](#allow-and-deny-lists) |
+| `access_control` | `allow_list`或`deny_list`；参见[Allow and deny lists](#allow-and-deny-lists)|
 | `description` |可选，最多 1024 个字符。此配置让沙箱能够达到什么目的，以交给代理|
 
-每条规则指定：|领域|描述 |
+每条规则指定：|领域 |描述 |
 | - | - |
 | `name` |必需的。规则的标识符 |
 | `type` |省略标头注入； `aws` 或 `gcp` 用于提供商身份验证 |
@@ -192,7 +194,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 2. **启用的代理规则**：当两个启用的规则声明相同名称时，`rules`中较晚的规则获胜。
 3. **沙箱自己的`env_vars`**：显式的每个沙箱值会覆盖规则中的值。
 
-由已启用的 AWS 或 GCP 身份验证规则（`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_EC2_METADATA_DISABLED`、`AWS_CA_BUNDLE`、`CLOUDSDK_AUTH_ACCESS_TOKEN`、`CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`）管理的变量不符合此顺序：声明其中之一被拒绝的规则或沙箱 `env_vars` 条目同时启用匹配的身份验证规则。
+由启用的 AWS 或 GCP 身份验证规则（`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_EC2_METADATA_DISABLED`、`AWS_CA_BUNDLE`、`CLOUDSDK_AUTH_ACCESS_TOKEN`、`CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`）管理的变量不符合此顺序：声明其中之一被拒绝的规则或沙箱 `env_vars` 条目同时启用匹配的身份验证规则。
 
 每个沙箱还具有指向系统信任存储的通用 CA 捆绑包环境变量，其中包括代理的 CA，因此固定其自己的捆绑包的工具仍然会验证代理注入的主机。自己设置其中任何一个来覆盖。
 
@@ -209,7 +211,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 ## 验证 AWS 请求
 
-当沙箱代码需要使用 AWS 开发工具包或 CLI 调用 AWS 服务时，请使用 AWS 身份验证规则。代理将真实的 AWS 凭证保留在沙箱之外，然后使用 AWS SigV4 将出站 HTTPS 请求签署到 `*.amazonaws.com` 终端节点。当代理代码需要检查 S3 对象、调用 Bedrock 或使用另一个 AWS 终端节点而不暴露沙箱文件、环境变量、shell 历史记录或日志中的长期 AWS 访问密钥时，这非常有用。沙箱接收占位符 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 值（加上 `AWS_EC2_METADATA_DISABLED=true` 和 `AWS_CA_BUNDLE`），因此 SDK 凭证检测可以正常工作，而代理会用真实的 SigV4 签名替换请求携带的任何内容。仅对`service.region.amazonaws.com`主机、S3虚拟托管和路径式主机以及一些全局端点（例如`iam`、`sts`和`s3`）进行签名；发送到匹配的 AWS 主机的纯文本 HTTP 会被拒绝，并显示 `403`。
+当沙盒代码需要使用 AWS 开发工具包或 CLI 调用 AWS 服务时，请使用 AWS 身份验证规则。代理将真实的 AWS 凭证保留在沙箱之外，然后使用 AWS SigV4 将出站 HTTPS 请求签署到 `*.amazonaws.com` 终端节点。当代理代码需要检查 S3 对象、调用 Bedrock 或使用另一个 AWS 终端节点而不暴露沙箱文件、环境变量、shell 历史记录或日志中的长期 AWS 访问密钥时，这非常有用。沙箱接收占位符 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 值（加上 `AWS_EC2_METADATA_DISABLED=true` 和 `AWS_CA_BUNDLE`），因此 SDK 凭证检测可以正常工作，而代理会用真实的 SigV4 签名替换请求携带的任何内容。仅对`service.region.amazonaws.com`主机、S3虚拟托管和路径式主机以及一些全局端点（例如`iam`、`sts`和`s3`）进行签名；发送到匹配的 AWS 主机的纯文本 HTTP 会被拒绝，并显示 `403`。
 
 <Warning>
   不要将真实的 AWS 访问密钥设置为沙箱环境变量。将它们配置为 `workspace_secret` 或 `opaque` 代理值。明文 AWS 凭证值被拒绝。
@@ -306,13 +308,13 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 ### 使用 IAM 角色进行身份验证
 
-AWS 代理角色允许 LangSmith 承担客户 IAM 角色，并使用可更新的临时凭证签署支持的 AWS HTTPS 请求。不管有没有[S3 mounts](/langsmith/sandbox-mounts#authenticate-with-an-iam-role)，它都可以工作，不会将真实的凭据暴露给沙箱代码。此选项需要对 AWS 代理角色身份验证的部署支持。 ECR 注册表角色身份验证是一项单独的功能。在 **创建沙箱 > 网络** 中，启用 AWS 身份验证并选择 **AWS IAM 角色**。该表单显示客户角色必须信任的确切 LangSmith 主体和工作区外部 ID。按照链接的设置说明配置信任和权限策略，然后在 **AWS 角色 ARN** 中输入客户角色。
+AWS 代理角色允许 LangSmith 承担客户 IAM 角色，并使用可更新的临时凭证签署支持的 AWS HTTPS 请求。无论有或没有[S3 mounts](/langsmith/sandbox-mounts#authenticate-with-an-iam-role)，它都可以工作，而不会将真实的凭据暴露给沙箱代码。此选项需要对 AWS 代理角色身份验证的部署支持。 ECR 注册表角色身份验证是一项单独的功能。在 **创建沙箱 > 网络** 中，启用 AWS 身份验证并选择 **AWS IAM 角色**。该表单显示客户角色必须信任的确切 LangSmith 主体和工作区外部 ID。按照链接的设置说明配置信任和权限策略，然后在 **AWS 角色 ARN** 中输入客户角色。
 
 <Note>
   下面的 SDK 示例需要支持 Python 中的 `aws_auth(role_arn=...)` 或 TypeScript 中的 `awsAuth({ roleArn })` 的版本。仅后端支持不会将这些帮助程序添加到较旧的 SDK 版本中。
 </Note>
 
-要配置没有挂载的角色，请将其传递到代理配置中：
+要配置不带挂载的角色，请将其传递到代理配置中：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -375,14 +377,14 @@ LangSmith 按需更新临时凭证并在停止/启动后重新获取它们。如
 
 ## 验证 GCP 请求
 
-当沙箱代码需要使用 Google SDK 或 CLI 调用 Google API 时，请使用 GCP 身份验证规则。代理将服务帐户 JSON 保留在沙箱之外，然后对 `googleapis.com` 及其子域的出站 HTTPS 请求进行身份验证。当代理代码需要检查 GCS 对象或调用另一个 Google API 而不在沙箱文件、环境变量、shell 历史记录或日志中公开服务帐户 JSON 时，这非常有用。沙箱接收占位符 `CLOUDSDK_AUTH_ACCESS_TOKEN` （加上 `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`），因此 `gcloud` 运行，而代理则使用从配置的服务帐户创建的令牌替换请求携带的任何授权。通过应用程序默认凭据发现凭据的 Google 客户端库不会读取这些变量，因此无法找到凭据；仅支持 `gcloud` 和直接 HTTPS 调用。
+当沙箱代码需要使用 Google SDK 或 CLI 调用 Google API 时，请使用 GCP 身份验证规则。代理将服务帐户 JSON 保留在沙箱之外，然后对 `googleapis.com` 及其子域的出站 HTTPS 请求进行身份验证。当代理代码需要检查 GCS 对象或调用另一个 Google API 而不在沙箱文件、环境变量、shell 历史记录或日志中公开服务帐户 JSON 时，这非常有用。沙箱接收占位符 `CLOUDSDK_AUTH_ACCESS_TOKEN` （加上 `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`），因此 `gcloud` 运行，而代理会用从配置的服务帐户创建的令牌替换请求携带的任何授权。通过应用程序默认凭据发现凭据的 Google 客户端库不会读取这些变量，因此无法找到凭据；仅支持 `gcloud` 和直接 HTTPS 调用。
 
 <Warning>
   不要将真实服务帐户 JSON 设置为沙箱环境变量。将其配置为 `workspace_secret` 或 `opaque` 代理值。明文 GCP 凭证值被拒绝。
 </Warning>
 
 GCP 身份验证规则与标头注入规则不同：* 将`type`设置为`gcp`。
-* 将凭据放在`gcp.service_account_json` 下。
+* 将凭据放在`gcp.service_account_json`下。
 * 将 `gcp.scopes` 设置为 OAuth 范围的非空列表。
 * 代理自动匹配 `googleapis.com` 及其子域，并使用配置的服务帐户对这些请求进行身份验证。 `google.com`下的主机不匹配。发送至匹配主机的纯文本 HTTP 会被拒绝，并显示 `403`。
 * 每个沙箱最多配置一个 GCP 身份验证规则。该限制计算每个 GCP 规则，包括已禁用的规则。
@@ -498,7 +500,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 对 `api.openai.com` 的请求现在由代理进行身份验证；沙箱中没有存储真正的密钥。拒绝在没有 API 密钥的情况下启动的 SDK 仍然需要一个占位符 - 使用规则的 `env_vars` 设置一个占位符，如 [GitHub example](#github-example) 中所示。
 
-## 多个API示例添加多个规则以同时对多个服务进行身份验证：
+## Multiple API example添加多个规则以同时对多个服务进行身份验证：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -688,13 +690,13 @@ gh repo clone langchain-ai/langchain
 
 应用代理配置时，静态 `workspace_secret` 规则会从您的工作区中提取凭据，而 `opaque` 规则可让您的应用程序修补短期凭据，例如 [GitHub token example](#github-example)。对于必须由您自己的服务在代理时解析的凭据，请使用 **回调**。代理 POST 到您提供的 URL，您的端点返回要注入的标头，代理缓存结果。
 
-回调与`proxy_config`下的规则一起配置：|领域|描述 |
+回调与`proxy_config`下的规则一起配置：|领域 |描述 |
 | - | - |
 | `match_hosts` |要拦截的主机（与规则相同的语法；支持像`*.github.com`这样的通配符）。 |
 | `url` |您的回调端点。必须是解析为公共地址的 `http://` 或 `https://` URL；私有、环回、Kubernetes 内部和云元数据目标被拒绝。 |
 | `request_headers` |附加到代理 → 回调请求的标头，例如端点用于验证请求的 HMAC 或共享密钥。仅允许使用 `plaintext` 和 `opaque` 类型（不允许使用 `workspace_secret`）。 |
 | `ttl_seconds` |必需的。在重新调用回调之前，已解析的标头会被缓存多长时间。必须介于 60 和 3600 之间。
-| `full_request` |当`true`时，对匹配主机的每个请求都会调用回调（不缓存任何内容），并且正文包含`request`快照：`method`，`url`，`scheme`，`host`，`path`， `query`、`headers`，以及最多 1 MiB 的正文作为 `body_base64`（`body_truncated` 标记剪切）。 |
+| `full_request` |当`true`时，对匹配主机的每个请求都会调用回调（不缓存任何内容），并且主体包含`request`快照：`method`，`url`，`scheme`，`host`，`path`， `query`、`headers`，以及最多 1 MiB 的正文作为 `body_base64`（`body_truncated` 标记剪切）。 |
 
 **静态规则获胜。** 如果启用的标头注入规则与主机和路径均匹配，则将跳过该请求的回调。在规则范围内，首场获胜；如果多个匹配，这同样适用于回调之间。
 
@@ -718,7 +720,7 @@ X-LangSmith-Signature-JWT: <signature>
 }
 ```
 
-`identity` 告诉您的端点哪个沙箱正在请求，因此一个回调 URL 可以为多个沙箱提供服务，并为每个沙箱或每个用户生成凭据。 `ls_user_id` 是创建用户，当使用工作区或服务密钥创建沙箱时将被省略。忽略您不认识的字段和标题；代理可能会添加更多。
+`identity` 告诉您的端点哪个沙箱正在请求，因此一个回调 URL 可以为多个沙箱提供服务，并为每个沙箱或每个用户生成凭据。 `ls_user_id` 是创建用户，当使用工作区或服务密钥创建沙箱时，该用户被省略。忽略您不认识的字段和标题；代理可能会添加更多。
 
 您的端点必须使用 JSON 正文响应 `2xx`：
 
@@ -731,7 +733,7 @@ X-LangSmith-Signature-JWT: <signature>
 }
 ```
 
-代理将响应中的每个标头注入沙箱的出站请求中，并缓存`ttl_seconds`的响应。任何非 2xx 响应、传输错误或格式错误的 JSON 都会失败关闭：沙箱的请求被拒绝，并显示 `502 callback resolution failed`（未注入标头，未缓存响应）。不遵循重定向并视为失败。
+代理将响应中的每个标头注入沙箱的出站请求中，并缓存`ttl_seconds`的响应。任何非 2xx 响应、传输错误或格式错误的 JSON 都无法关闭：沙箱的请求被拒绝，并显示 `502 callback resolution failed`（未注入标头，未缓存响应）。不遵循重定向并视为失败。
 
 ### 验证回调请求
 

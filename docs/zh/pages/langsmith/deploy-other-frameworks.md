@@ -164,7 +164,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
 
         assistant = AssistantAgent(
             name="assistant",
-            model_client=OpenAIChatCompletionClient(model="gpt-4o"),
+            model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
         )
         ```
       </Tab>
@@ -473,7 +473,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
 
     assistant = AssistantAgent(
         name="assistant",
-        model_client=OpenAIChatCompletionClient(model="gpt-4o"),
+        model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
     )
 
     @task

@@ -12,7 +12,7 @@ In order to log images, use `wrap_openai`/ `wrapOpenAI` in Python or TypeScript 
   from langsmith.wrappers import wrap_openai
   client = wrap_openai(OpenAI())
   response = client.chat.completions.create(
-      model="gpt-4-turbo",
+      model="gpt-5.5",
       messages=[
         {
           "role": "user",
@@ -37,7 +37,7 @@ In order to log images, use `wrap_openai`/ `wrapOpenAI` in Python or TypeScript 
   // Wrap the OpenAI client to automatically log traces
   const wrappedClient = wrapOpenAI(new OpenAI());
   const response = await wrappedClient.chat.completions.create({
-    model: "gpt-4-turbo",
+    model: "gpt-5.5",
     messages: [
       {
         role: "user",

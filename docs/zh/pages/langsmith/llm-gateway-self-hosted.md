@@ -10,7 +10,7 @@
   LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
-LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LLM 提供商的模型调用。网关在细粒度范围内应用策略，以实现可靠性、支出限制以及 PII 和机密的编辑。您还可以通过网关路由 LangSmith 部署的模型调用。
+LLM 网关（`agent-gateway` 服务）代理从代理和编码代理到上游 LLM 提供商的模型调用。网关在精细范围内应用策略，以确保可靠性、支出限制以及 PII 和机密的编辑。您还可以通过网关路由 LangSmith 部署的模型调用。
 
 本指南使用 Helm 图表在自托管 Kubernetes 安装上启用它。对于 SaaS 等效项，请参阅 [LLM Gateway](/langsmith/llm-gateway)。
 
@@ -108,7 +108,7 @@ agentGateway:
 
 ## 拨打你的第一个电话
 
-这镜像了 [SaaS quickstart](/langsmith/llm-gateway-quickstart)，并将基本 URL 调整为自托管。在继续之前完成上述步骤（部署网关、启动 Ingress）。
+这镜像了 [SaaS quickstart](/langsmith/llm-gateway-quickstart)，并将基本 URL 调整为自托管。在继续之前，请完成上述步骤（部署网关、启动 Ingress）。
 
 <Info>
   组织管理员必须将提供程序 API 密钥添加到您想要访问的模型的工作区或组织模型提供程序机密，然后向用户授予具有 `gateway:invoke` 和 `workspaces:read` [permissions](/langsmith/organization-workspace-operations) 和 [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users) 的角色。参见[Admin setup](/langsmith/llm-gateway-admin-setup)。
@@ -136,7 +136,7 @@ agentGateway:
       curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
           -H "Authorization: Bearer $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"model":"openai/gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+          -d '{"model":"openai/gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
       ```
 
       ```python Python (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -149,7 +149,7 @@ agentGateway:
           api_key=os.environ["LANGSMITH_API_KEY"],
       )
       response = client.chat.completions.create(
-          model="openai/gpt-4o-mini",
+          model="openai/gpt-5.4-mini",
           messages=[{"role": "user", "content": "ping"}],
       )
       print(response.choices[0].message.content)
@@ -163,7 +163,7 @@ agentGateway:
         apiKey: process.env.LANGSMITH_API_KEY,
       });
       const response = await client.chat.completions.create({
-        model: "openai/gpt-4o-mini",
+        model: "openai/gpt-5.4-mini",
         messages: [{ role: "user", content: "ping" }],
       });
       console.log(response.choices[0].message.content);
@@ -176,7 +176,7 @@ agentGateway:
       from langchain.chat_models import init_chat_model
 
       model = init_chat_model(
-          model="openai/gpt-4o-mini",
+          model="openai/gpt-5.4-mini",
           model_provider="openai",
           base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
           api_key=os.environ["LANGSMITH_API_KEY"],

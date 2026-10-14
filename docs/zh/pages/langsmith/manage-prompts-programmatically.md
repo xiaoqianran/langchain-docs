@@ -248,7 +248,7 @@ export LANGSMITH_API_KEY="lsv2_..."
       schema=ResponseSchema.model_json_schema(),
   )
 
-  model = ChatOpenAI(model="gpt-4o-mini")
+  model = ChatOpenAI(model="gpt-5.4-mini")
   chain = prompt | model
 
   client = Client()
@@ -433,7 +433,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置|默认|描述 |
+|设置|默认 |描述 |
 | - | - | - |
 | `max_size` | 100 | 100缓存的最大提示数|
 | `ttl_seconds` | 300（5 分钟）|缓存提示被视为过时之前的时间 |

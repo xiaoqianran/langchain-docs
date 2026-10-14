@@ -231,6 +231,16 @@ Enable Sandboxes by setting Helm values directly, as shown in this section. On A
 
 Add the following values to your `langsmith_config.yaml`, along with the sandbox secret values described in the [Prerequisites](#prerequisites). Replace placeholders with your deployment-specific values.
 
+<Note>
+  These values target chart 0.17. On chart 0.16, sandboxes mount JuiceFS through a bundled JuiceFS CSI driver, so the values differ:
+
+  * Set the workload identity annotation on `sandboxes.juicefs.csi.node.serviceAccount.annotations` instead of `sandboxes.sandboxHost.serviceAccount.annotations`.
+  * Set an existing config Secret with `sandboxes.juicefs.csi.existingSecretName` instead of `sandboxes.juicefs.existingSecretName`.
+  * Omit `juicefsFormatJob`. Chart 0.16 does not support Azure Blob Storage for sandboxes.
+
+  When you upgrade from chart 0.16 to 0.17, drain the JuiceFS volumes first, then remove the `sandboxes.juicefs.csi` block from your values. For the steps, see [Upgrade an installation](/langsmith/self-host-upgrades).
+</Note>
+
 <Tabs>
   <Tab title="AWS">
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -280,6 +290,8 @@ Add the following values to your `langsmith_config.yaml`, along with the sandbox
           annotations:
             iam.gke.io/gcp-service-account: "<gsa_name>@<project_id>.iam.gserviceaccount.com"
     ```
+
+    On GKE, `sandbox-host` runs on the host network, and GKE does not give Workload Identity to host-network pods, so the annotation serves only the `juicefs-format` Job. Also grant the sandbox node pool's service account `roles/storage.objectAdmin` on the bucket, with an IAM condition limited to the JuiceFS prefix: objects under `sandbox-juicefs/` and list calls with that prefix. Without that grant, the JuiceFS mount gets 403 from Cloud Storage.
   </Tab>
 
   <Tab title="Azure">
@@ -442,6 +454,19 @@ This requires wildcard DNS and TLS for `*.sandbox-services.example.com`. When `i
 Service URLs also require an Ed25519 private JWKS with a nonempty `kid` on its first key. Set `config.signingJwks`, or add `langsmith_signing_jwks` to your [existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret). This is separate from `sandboxes.callbackSigningJwk`. For key generation instructions, see [Configure a signing JWKS](/langsmith/langsmith-remote-mcp#enabling-remote-mcp).
 
 Service URLs are required to [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat), even though they are optional for other sandbox workflows.
+
+## Optional: route egress through a forward proxy
+
+Set `sandboxes.authProxy.httpProxy` when Sandboxes must reach the internet through a corporate HTTP or HTTPS forward proxy.
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sandboxes:
+  authProxy:
+    httpProxy:
+      url: http://proxy.corp.internal:3128
+```
+
+For requirements, the bypass list, proxy authentication, CA trust for an HTTPS proxy, and security considerations, see [Route Sandbox egress through a forward proxy](/langsmith/self-host-sandbox-egress-proxy).
 
 ## Verify the installation
 

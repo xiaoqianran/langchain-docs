@@ -67,7 +67,7 @@
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
@@ -79,7 +79,7 @@
       -H "Authorization: Bearer $LANGSMITH_API_KEY" \
       -H "Content-Type: application/json" \
       -H "X-Gateway-Customer-Id: acme" \
-      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+      -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
   ```
 
   ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -93,7 +93,7 @@
   )
   customer_id = "acme"
   response = client.chat.completions.create(
-      model="gpt-4o-mini",
+      model="gpt-5.4-mini",
       messages=[{"role": "user", "content": "ping"}],
       extra_headers={"X-Gateway-Customer-Id": customer_id},
   )

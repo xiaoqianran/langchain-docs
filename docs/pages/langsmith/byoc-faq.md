@@ -21,7 +21,7 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 </Accordion>
 
 <Accordion title="Can I deploy multiple data planes in the same VPC?">
-  No. Deploying multiple data planes in the same VPC is not supported today. Use a separate VPC for each data plane.
+  Yes. Deploying multiple data planes in the same VPC requires [Bring your own VPC (BYOVPC)](/langsmith/byoc-byovpc). Each data plane must use different subnets. Do not share subnets between data planes.
 </Accordion>
 
 <Accordion title="Can I move an existing data plane into my own VPC?">

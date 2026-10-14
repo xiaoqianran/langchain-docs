@@ -6,7 +6,7 @@
 
 使用通过环境变量配置或在运行时配置的副本将每个跟踪同时发送到多个项目或工作区。
 
-副本允许您同时将每个跟踪发送到多个项目或工作区。其中 [dynamic routing](/langsmith/log-traces-to-project#set-the-destination-project-dynamically) 将每条跟踪发送到一个目标，副本会将跟踪并行复制到所有配置的目标。
+副本允许您将每个跟踪同时发送到多个项目或工作区。其中 [dynamic routing](/langsmith/log-traces-to-project#set-the-destination-project-dynamically) 将每条跟踪发送到一个目标，副本会将跟踪并行复制到所有配置的目标。
 
 使用副本可以：
 
@@ -320,7 +320,7 @@
   @traceable()
   def joke():
       response = openai_client.chat.completions.create(
-          model="gpt-4o-mini",
+          model="gpt-5.4-mini",
           messages=[{"role": "user", "content": "Tell me a short joke."}],
       )
       return response.choices[0].message.content
@@ -369,7 +369,7 @@
 
   async function jokeImpl() {
     const response = await openaiClient.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-5.4-mini",
       messages: [{ role: "user", content: "Tell me a short joke." }],
     });
     return response.choices[0].message.content;
@@ -397,7 +397,7 @@
   });
   await jokeDynamic();
   ```
-</CodeGroup>每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目的地。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
+</CodeGroup>每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目标。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
 
 ***
 

@@ -225,7 +225,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [inputs]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -240,7 +240,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
       user = create_llm_simulated_user(
           system="You are a nice customer who wants a refund for their car.",
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=[
               inputs,
           ],
@@ -297,7 +297,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
           }
           history[threadId].push(inputs);
           const res = await client.chat.completions.create({
-            model: "gpt-5.4-nano",
+            model: "gpt-5.4-mini",
             messages: [
               {
                 role: "system",
@@ -315,7 +315,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
         const user = createLLMSimulatedUser({
           system:
             "You are a nice customer who wants a refund for their car.",
-          model: "openai:gpt-5.4-nano",
+          model: "openai:gpt-5.4-mini",
           fixedResponses: inputs.messages,
         });
 
@@ -394,7 +394,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [next_message]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -409,7 +409,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
       user = create_llm_simulated_user(
           system="You are a nice customer who wants a refund for their car.",
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=inputs["messages"],
       )
       res = run_multiturn_simulation(
@@ -471,7 +471,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
       }
       history[threadId].push(nextMessage);
       const res = await client.chat.completions.create({
-        model: "gpt-5.4-nano",
+        model: "gpt-5.4-mini",
         messages: [
           {
             role: "system",
@@ -489,7 +489,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
     const user = createLLMSimulatedUser({
       system:
         "You are a nice customer who wants a refund for their car.",
-      model: "openai:gpt-5.4-nano",
+      model: "openai:gpt-5.4-mini",
       fixedResponses: inputs.messages,
     });
 
@@ -555,7 +555,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [next_message]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -570,7 +570,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
       user = create_llm_simulated_user(
           system=inputs["simulated_user_prompt"],
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=inputs["messages"],
       )
       res = run_multiturn_simulation(
@@ -650,7 +650,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
       }
       history[threadId].push(nextMessage);
       const res = await client.chat.completions.create({
-        model: "gpt-5.4-nano",
+        model: "gpt-5.4-mini",
         messages: [
           {
             role: "system",
@@ -667,7 +667,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
     const user = createLLMSimulatedUser({
       system: inputs.simulated_user_prompt,
-      model: "openai:gpt-5.4-nano",
+      model: "openai:gpt-5.4-mini",
       fixedResponses: inputs.messages,
     });
 
@@ -688,7 +688,7 @@ export OPENAI_API_KEY="<Your OpenAI API key>"
 
 ## 后续步骤
 
-您刚刚了解了一些模拟多轮交互并在 LangSmith 评估中运行它们的技术。
+您刚刚看到了一些模拟多轮交互并在 LangSmith 评估中运行它们的技术。
 
 以下是您接下来可能想要探索的一些主题：
 

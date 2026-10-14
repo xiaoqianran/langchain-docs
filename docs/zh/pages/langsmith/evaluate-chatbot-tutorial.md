@@ -168,7 +168,7 @@ experiment_results = client.evaluate(
     ls_target, # Your AI system
     data=dataset_name, # The data to predict and grade over
     evaluators=[concision, correctness], # The evaluators to score the results
-    experiment_prefix="openai-4o-mini", # A prefix for your experiment names to easily identify them
+    experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
 )
 ```这将输出一个 URL。如果我们点击它，我们应该会看到评估结果！
 
@@ -178,21 +178,21 @@ experiment_results = client.evaluate(
 
 <img alt="Testing tutorial one run" />
 
-现在让我们尝试使用不同的模型！来试试`gpt-4-turbo`
+现在让我们尝试使用不同的模型！来试试`gpt-5.5`
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def ls_target_v2(inputs: str) -> dict:
-    return {"response": my_app(inputs["question"], model="gpt-4-turbo")}
+    return {"response": my_app(inputs["question"], model="gpt-5.5")}
 
 experiment_results = client.evaluate(
     ls_target_v2,
     data=dataset_name,
     evaluators=[concision, correctness],
-    experiment_prefix="openai-4-turbo",
+    experiment_prefix="openai-5.5",
 )
 ```
 
-现在让我们使用 GPT-4，同时更新提示，要求答案简短一点。
+现在让我们使用 GPT-5.5，同时更新提示，要求答案简短一点。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
@@ -200,7 +200,7 @@ instructions_v3 = "Respond to the users question in a short, concise manner (one
 def ls_target_v3(inputs: str) -> dict:
     response = my_app(
         inputs["question"],
-        model="gpt-4-turbo",
+        model="gpt-5.5",
         instructions=instructions_v3
     )
     return {"response": response}
@@ -209,11 +209,11 @@ experiment_results = client.evaluate(
     ls_target_v3,
     data=dataset_name,
     evaluators=[concision, correctness],
-    experiment_prefix="strict-openai-4-turbo",
+    experiment_prefix="strict-openai-5.5",
 )
 ```
 
-如果我们返回数据集页面上的 `Experiments` 选项卡，我们应该看到所有三个运行现在都显示了！
+如果我们返回数据集页面上的`Experiments`选项卡，我们应该看到所有三个运行现在都显示了！
 
 <img alt="Testing tutorial three runs" />
 
@@ -223,7 +223,7 @@ experiment_results = client.evaluate(
 
 <img alt="Testing tutorial compare metrics" />
 
-我们可以看出，GPT-4 在了解谁是公司方面比 GPT-3.5 更好，而且严格的提示对长度有很大帮助。但如果我们想更详细地探索怎么办？为此，我们可以选择要比较的所有运行（在本例中为全部三个）并在比较视图中打开它们。我们立即并排看到所有三个测试。一些单元格采用颜色编码 - 这显示了*某个指标*与*某个基线*相比的回归。我们会自动选择基准和指标的默认值，但您可以自行更改这些值。您还可以使用 `Display` 控件选择要查看的列和指标。您还可以通过单击顶部的图标自动过滤以仅查看有改进/回归的运行。
+我们可以看出，较大的模型更适合了解谁是公司，并且严格的提示对长度有很大帮助。但如果我们想更详细地探索怎么办？为此，我们可以选择要比较的所有运行（在本例中为全部三个）并在比较视图中打开它们。我们立即并排看到所有三个测试。一些单元格采用颜色编码 - 这显示了*某个指标*与*某个基线*相比的回归。我们会自动选择基准和指标的默认值，但您可以自行更改这些值。您还可以使用 `Display` 控件选择要查看的列和指标。您还可以通过单击顶部的图标自动过滤以仅查看有改进/回归的运行。
 
 <img alt="Testing tutorial compare runs" />
 
@@ -252,7 +252,7 @@ def test_length_score() -> None:
 
 ## 随着时间的推移跟踪结果
 
-现在我们已经以自动化方式运行这些实验，我们希望随着时间的推移跟踪这些结果。我们可以从数据集页面中的整体`Experiments`选项卡中执行此操作。默认情况下，我们显示随时间变化的评估指标（以红色突出显示）。我们还自动跟踪 git 指标，以便轻松地将其与代码分支关联起来（以黄色突出显示）。
+现在我们已经以自动化方式运行这些实验，我们希望随着时间的推移跟踪这些结果。我们可以从数据集页面的整体`Experiments`选项卡中执行此操作。默认情况下，我们显示随时间变化的评估指标（以红色突出显示）。我们还自动跟踪 git 指标，以便轻松地将其与代码分支关联起来（以黄色突出显示）。
 
 <img alt="Testing tutorial over time" />
 
@@ -351,17 +351,17 @@ def test_length_score() -> None:
       ls_target, # Your AI system
       data=dataset_name, # The data to predict and grade over
       evaluators=[concision, correctness], # The evaluators to score the results
-      experiment_prefix="openai-4o-mini", # A prefix for your experiment names to easily identify them
+      experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
   )
 
   def ls_target_v2(inputs: str) -> dict:
-      return {"response": my_app(inputs["question"], model="gpt-4-turbo")}
+      return {"response": my_app(inputs["question"], model="gpt-5.5")}
 
   experiment_results_v2 = client.evaluate(
       ls_target_v2,
       data=dataset_name,
       evaluators=[concision, correctness],
-      experiment_prefix="openai-4-turbo",
+      experiment_prefix="openai-5.5",
   )
 
   instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
@@ -369,7 +369,7 @@ def test_length_score() -> None:
   def ls_target_v3(inputs: str) -> dict:
       response = my_app(
           inputs["question"],
-          model="gpt-4-turbo",
+          model="gpt-5.5",
           instructions=instructions_v3
       )
       return {"response": response}
@@ -378,7 +378,7 @@ def test_length_score() -> None:
       ls_target_v3,
       data=dataset_name,
       evaluators=[concision, correctness],
-      experiment_prefix="strict-openai-4-turbo",
+      experiment_prefix="strict-openai-5.5",
   )
   ```
 </Accordion>

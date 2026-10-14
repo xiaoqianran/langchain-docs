@@ -140,7 +140,7 @@ This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the b
       curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
           -H "Authorization: Bearer $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"model":"openai/gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+          -d '{"model":"openai/gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
       ```
 
       ```python Python (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -153,7 +153,7 @@ This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the b
           api_key=os.environ["LANGSMITH_API_KEY"],
       )
       response = client.chat.completions.create(
-          model="openai/gpt-4o-mini",
+          model="openai/gpt-5.4-mini",
           messages=[{"role": "user", "content": "ping"}],
       )
       print(response.choices[0].message.content)
@@ -167,7 +167,7 @@ This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the b
         apiKey: process.env.LANGSMITH_API_KEY,
       });
       const response = await client.chat.completions.create({
-        model: "openai/gpt-4o-mini",
+        model: "openai/gpt-5.4-mini",
         messages: [{ role: "user", content: "ping" }],
       });
       console.log(response.choices[0].message.content);
@@ -180,7 +180,7 @@ This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the b
       from langchain.chat_models import init_chat_model
 
       model = init_chat_model(
-          model="openai/gpt-4o-mini",
+          model="openai/gpt-5.4-mini",
           model_provider="openai",
           base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
           api_key=os.environ["LANGSMITH_API_KEY"],

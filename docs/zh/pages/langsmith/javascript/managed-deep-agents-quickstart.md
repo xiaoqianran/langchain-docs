@@ -6,9 +6,9 @@
 
 使用 mda CLI 创建并部署您的第一个托管深度代理。
 
-创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T24⟧ CLI](/langsmith/javascript/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
+创建并部署您的第一个托管深度代理：构建项目，配置模型和指令，添加搜索，在[LangSmith Studio](/langsmith/studio)中进行测试，然后使用[⟦T25⟧ CLI](/langsmith/javascript/managed-deep-agents-cli)进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/javascript/deepagents/overview) 和托管运行时。
 
-在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了持久内存和每日计划。
+在本快速入门之后，[tutorial](/langsmith/javascript/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
 <Note>
   托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
@@ -24,7 +24,7 @@
 
 ## 添加`managed-deep-agents`技能
 
-[⟦T26⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
+[⟦T27⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
@@ -93,9 +93,12 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
     OPENAI_API_KEY=<OPENAI_API_KEY>
     # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
     # GOOGLE_API_KEY=<GOOGLE_API_KEY>
+    # AZURE_AI_OPENAI_ENDPOINT=https://<resource>.services.ai.azure.com/openai/v1
+    # AZURE_OPENAI_API_KEY=<AZURE_OPENAI_API_KEY>
+    # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
     ```
 
-    本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
+    本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/javascript/integrations/chat/)。
 
     <Warning>
       不要将 `.env` 文件提交到版本控制中。它包含秘密。
@@ -128,7 +131,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
     部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
   </Step><Step title="Configure your model and search">
-    现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
+    现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
     打开`agent.ts`：
 
@@ -163,6 +166,26 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
         name: "research-assistant",
         model: "anthropic:claude-sonnet-4-6",
         tools: [{ type: "web_search_20250305", name: "web_search" }],
+      });
+      ```
+
+      ```ts Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      // To use ChatOpenAI, run: npm install @langchain/openai
+      import { defineDeepAgent } from "managed-deepagents";
+      import { ChatOpenAI } from "@langchain/openai";
+
+      const model = new ChatOpenAI({
+        model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
+        apiKey: process.env.AZURE_OPENAI_API_KEY,
+        configuration: {
+          baseURL: process.env.AZURE_AI_OPENAI_ENDPOINT,
+        },
+      });
+
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model,
+        tools: [{ type: "web_search" }],
       });
       ```
     </CodeGroup>
@@ -267,7 +290,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
     What were the main announcements from the latest LangChain release?
     ```您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
 
-    欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+    有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
   </Step>
 
   <Step title="Deploy the agent">

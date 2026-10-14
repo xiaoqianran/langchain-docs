@@ -11,7 +11,7 @@
 挂载通过 Python 中的 `mount_config` 或 TypeScript 中的 `mountConfig` 进行配置。 SDK 将安装规范发送到 LangSmith 并为提供者凭证编写所需的 [auth proxy](/langsmith/sandbox-auth-proxy) 规则。
 
 <Note>
-  沙盒安装需要 `langsmith[sandbox]>=0.8.16`（对于 Python）或 `langsmith>=0.7.10`（对于 TypeScript）。 Context Hub 安装需要 `langsmith[sandbox]>=0.11.0`（对于 Python）或 `langsmith>=0.8.11`（对于 TypeScript）。
+  沙盒安装需要 `langsmith>=0.8.16`（对于 Python）或 `langsmith>=0.7.10`（对于 TypeScript）。 Context Hub 安装需要 `langsmith>=0.11.0`（对于 Python）或 `langsmith>=0.8.11`（对于 TypeScript）。
 </Note>
 
 <Warning>
@@ -121,7 +121,7 @@ S3 安装需要 AWS 身份验证。当您的部署和 SDK 支持角色身份验�
   ```
 </CodeGroup>
 
-### 使用 IAM 角色进行身份验证IAM 角色身份验证让 [AWS auth proxy](/langsmith/sandbox-auth-proxy#authenticate-with-an-iam-role) 承担您的 AWS 账户中的角色。 S3 挂载使用与沙箱中其他受支持的 AWS 请求相同的身份验证。 LangSmith 获取并更新临时 AWS 凭证，因此您无需在工作区机密中存储或轮换访问密钥。
+### 使用 IAM 角色进行身份验证IAM 角色身份验证让 [AWS auth proxy](/langsmith/sandbox-auth-proxy#authenticate-with-an-iam-role) 承担您的 AWS 账户中的角色。 S3 挂载使用与沙箱中其他受支持的 AWS 请求相同的身份验证。 LangSmith 获取并更新临时 AWS 凭证，因此您无需在工作区密钥中存储或轮换访问密钥。
 
 <Note>
   此选项需要您的 LangSmith 部署才能启用 AWS 代理角色身份验证。为 ECR 注册表启用 IAM 角色不会为身份验证代理启用它们。如果 AWS 身份验证选项中缺少 **AWS IAM 角色**，请使用静态访问密钥或联系您的 LangSmith 管理员。基于角色的 SDK 示例需要在 Python 中使用 `aws_auth(role_arn=...)` 和 `mount_config(proxy_config=...)` 或在 TypeScript 中使用 `awsAuth({ roleArn })` 和 `mountConfig({ proxyConfig })` 的版本。本页顶部列出的安装版本不支持这些较新的选项。
@@ -137,7 +137,7 @@ S3 安装需要 AWS 身份验证。当您的部署和 SDK 支持角色身份验�
    * **主体**：此 LangSmith 部署用于承担客户角色的确切 AWS 角色 ARN。使用显示的主体，而不是从其他环境或 ECR 注册表复制的 ARN。
    * **外部 ID**：您当前的 LangSmith 工作区 UUID。 LangSmith 在承担角色时提供该值；您不选择单独的外部 ID。4. 展开 **AWS 角色设置**，选择 **复制信任策略**，然后将该策略应用到 AWS IAM 中的客户角色。它仅允许 `sts:AssumeRole` 用于具有匹配 `sts:ExternalId` 的显示主体。
 5. 为沙箱所需的 AWS 服务和资源附加最低权限策略。对于配置的 S3 挂载，**复制 S3 权限**提供启动策略。在附加之前先检查一下； LangSmith 不会自动应用它。
-6. 在 **AWS 角色 ARN** 中输入客户角色的 ARN。这是您在帐户中配置的角色，而不是设置说明中显示的 LangSmith 主体。
+6. 在 **AWS 角色 ARN** 中输入客户角色的 ARN。这是您在账户中配置的角色，而不是设置说明中显示的 LangSmith 主体。
 7. 选择 **创建沙箱**，然后验证沙箱代码是否可以读取装载路径，并且对于可写装载，可以写入该路径。
 
 生成的信任策略具有这种结构。将占位符替换为表单中显示的主体和外部 ID，或从表单中复制已完成的策略：
@@ -176,7 +176,7 @@ S3 安装需要 AWS 身份验证。当您的部署和 SDK 支持角色身份验�
   只读挂载会拒绝文件系统写入，但不会阻止角色允许的直接 S3 API 写入。使用角色的 IAM 策略强制实施只读 AWS 访问。
 </Warning>
 
-使用商业 AWS 角色和支持的 AWS HTTPS 终端节点。 S3权限示例不包括KMS权限；查看存储桶的加密设置所需的权限。
+使用商业 AWS 角色和支持的 AWS HTTPS 终端节点。 S3 权限示例不包括 KMS 权限。对于使用 KMS 密钥加密的存储桶，请参阅[Encrypt uploads with a KMS key](#encrypt-uploads-with-a-kms-key)。
 
 #### 在 SDK 中使用共享角色
 
@@ -320,9 +320,47 @@ S3 安装需要 AWS 身份验证。当您的部署和 SDK 支持角色身份验�
 
 如果续订暂时不可用，则装载只能使用缓存的凭据，直到它们过期。授权拒绝或过期凭证会导致经过身份验证的 S3 请求失败；安装不会回退到静态密钥。
 
-##挂载GCS存储桶
+### 使用 KMS 密钥加密上传
 
-GCS 安装需要 GCP 身份验证。 OAuth 范围由后端提供，源自挂载本身：只读挂载获取`devstorage.read_only`，可写挂载获取`devstorage.read_write`。
+在 S3 挂载上设置 `encryption`，以使用客户管理的 AWS KMS 密钥 (SSE-KMS) 加密沙箱通过挂载上传的每个对象。当存储桶策略要求上传来命名特定密钥或选择密钥而不是依赖存储桶的默认加密时，请使用它。
+
+<Note>
+  安装加密需要 `langsmith>=0.14.8`（对于 Python）或 `langsmith>=0.10.12`（对于 TypeScript）。自托管部署需要 LangSmith v0.17.35 或更高版本。
+</Note>
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  s3_mount(
+      id="customer_data",
+      mount_path="/mnt/mounts/customer-data",
+      bucket="example-bucket",
+      region="us-east-1",
+      encryption={
+          "kms_key": "arn:aws:kms:us-east-1:123456789012:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+      },
+  )
+  ```
+
+  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  s3Mount({
+    id: "customer_data",
+    mountPath: "/mnt/mounts/customer-data",
+    bucket: "example-bucket",
+    region: "us-east-1",
+    encryption: {
+      kms_key:
+        "arn:aws:kms:us-east-1:123456789012:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+    },
+  });
+  ```
+</CodeGroup>* **密钥格式**：`kms_key` 必须是挂载区域和 AWS 分区中的 KMS 密钥 ARN。 LangSmith 拒绝密钥别名和裸密钥 ID。
+* **安装类型**：仅 S3 安装接受`encryption`。 LangSmith 在 GCS、Git 和 Context Hub 安装上拒绝它。
+* **静态密钥和共享角色**：在密钥上授予 IAM 身份 `kms:GenerateDataKey` 用于上传，并授予 `kms:Decrypt` 用于读取和分段上传。密钥策略还必须允许该身份。
+* **挂载范围的角色**：会话策略允许 S3（且仅 S3）使用配置的密钥：`kms:Decrypt` 对于每个挂载，以及 `kms:GenerateDataKey` 仅当可写挂载使用该密钥时。沙箱中所有角色支持的挂载必须命名相同的密钥。客户角色和密钥策略仍必须授予这两种权限。
+
+当装载的 AWS 身份可以使用存储桶的默认密钥时，默认加密为 SSE-KMS 的存储桶无需 `encryption` 即可工作。然后上传使用该默认密钥。挂载范围的角色身份验证拒绝对没有`encryption`的挂载进行 KMS 访问，因此这些挂载无法读取或写入使用 KMS 密钥加密的对象。
+
+##挂载GCS存储桶GCS 安装需要 GCP 身份验证。 OAuth 范围由后端提供，源自挂载本身：只读挂载获取`devstorage.read_only`，可写挂载获取`devstorage.read_write`。
 
 由于单个 `mount_config` 解析为一个作用域，因此其所有 GCS 挂载必须一致：在一个配置中混合只读和可写 GCS 挂载将被拒绝。始终使用可写挂载，或创建单独的沙箱。
 
@@ -460,13 +498,13 @@ GCS 安装需要 GCP 身份验证。 OAuth 范围由后端提供，源自挂载�
     await sandbox.delete();
   }
   ```
-</CodeGroup>当远程需要代理管理的身份验证时，私有 Git 存储库可以使用低级 `proxy_config` / `proxyConfig` 规则。目前还没有高级私有 Git 身份验证帮助程序。
+</CodeGroup>
+
+当远程需要代理管理的身份验证时，私有 Git 存储库可以使用低级 `proxy_config` / `proxyConfig` 规则。目前还没有高级私有 Git 身份验证帮助程序。
 
 ## 安装 Context Hub 存储库
 
-Context Hub 装载将代理或技能存储库的最新提交镜像到沙箱文件系统中。使用它为沙箱代码提供与生产代理相同的指令、技能和工具，而无需将它们打包到沙箱映像中或在启动时复制它们。
-
-将存储库标识为`owner/repo`。使用 `-` 作为当前工作区中存储库的所有者，例如 `-/my-agent`。调用者的 API 密钥必须具有存储库的读取权限。 LangSmith 拒绝为另一个工作区私有的存储库创建沙箱，并且不区分丢失的存储库和无法访问的存储库。 Context Hub 安装不需要 AWS 或 GCP 身份验证。
+Context Hub 装载将代理或技能存储库的最新提交镜像到沙箱文件系统中。使用它为沙箱代码提供与生产代理相同的指令、技能和工具，而无需将它们打包到沙箱映像中或在启动时复制它们。将存储库标识为 `owner/repo`。使用 `-` 作为当前工作区中存储库的所有者，例如 `-/my-agent`。调用者的 API 密钥必须具有存储库的读取权限。 LangSmith 拒绝为另一个工作区私有的存储库创建沙箱，并且不区分丢失的存储库和无法访问的存储库。 Context Hub 安装不需要 AWS 或 GCP 身份验证。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -522,9 +560,9 @@ Context Hub 装载将代理或技能存储库的最新提交镜像到沙箱文�
 
 挂载包含存储库最新提交的扁平化文件树。从另一个代理或技能存储库链接的文件出现在父存储库引用它的路径中，因此安装的代理也携带其组成的技能。有关编写存储库的更多信息，请参阅[Manage contexts with the SDK](/langsmith/manage-contexts-sdk)。
 
-### 阅读存储库的变化Context Hub 安装是只读的，并且同步是单向的。在沙箱内的挂载路径下写入的文件永远不会被推回存储库，并且下次刷新会覆盖它们。将沙箱输出写入挂载外部的路径，并在其属于存储库时使用 Context Hub SDK 推送它。
+### 阅读存储库的变化
 
-LangSmith 在沙盒的生命周期内保持安装同步。新提交会在大约 30 秒内到达正在运行的沙箱。将这种节奏视为尽力而为，而不是新鲜度保证。刷新会立即替换整个树，因此读者会看到之前的提交或新的提交，而不会看到混合。
+Context Hub 安装是只读的，并且同步是单向的。在沙箱内的挂载路径下写入的文件永远不会被推回存储库，并且下次刷新会覆盖它们。将沙箱输出写入挂载外部的路径，并在其属于存储库时使用 Context Hub SDK 推送它。LangSmith 在沙盒的生命周期内保持安装同步。新提交会在大约 30 秒内到达正在运行的沙箱。将这种节奏视为尽力而为，而不是新鲜度保证。刷新会立即替换整个树，因此读者会看到之前的提交或新的提交，而不会看到混合。
 
 挂载始终跟踪最新的提交。要读取固定版本，请使用 Context Hub SDK 拉取所需的提交或环境标签，而不是安装存储库。
 
@@ -552,11 +590,11 @@ LangSmith 在沙盒的生命周期内保持安装同步。新提交会在大约 
 
 对必须从头到尾读取一次提交的运行使用单次拉取，例如将其结果与代理的特定版本进行比较的评估。
 
-### 处理启动和失败一旦沙箱准备好，挂载目录就存在，但在其下读取会阻塞，直到第一个提交树到达。在启动时立即读取挂载的代码会等待初始同步，而不是看到一个空目录。
+### 处理启动和失败
 
-LangSmith 重试失败的刷新并继续提供其发布的最后一次提交，因此暂时性错误不会清空正在工作的挂载。沙箱代码有两个条件：
+一旦沙箱准备好，挂载目录就存在，但在其下读取会阻塞，直到第一个提交树到达。在启动时立即读取挂载的代码会等待初始同步，而不是看到一个空目录。
 
-* **拒绝的请求**：读取失败并显示`EIO`。在沙盒启动后撤销调用者对存储库的访问权限会拒绝以后的拉取，因为 LangSmith 会在每次拉取时重新检查访问权限。
+LangSmith 重试失败的刷新并继续提供其发布的最后一次提交，因此暂时性错误不会清空正在工作的挂载。沙箱代码有两个条件：* **拒绝的请求**：读取失败并显示`EIO`。在沙盒启动后撤销调用者对存储库的访问权限会拒绝以后的拉取，因为 LangSmith 会在每次拉取时重新检查访问权限。
 * **超出同步限制的存储库**：挂载不服务于树。一次同步提交最多可容纳 2,500 个文件和 25 MiB 的文件内容（计算存储库链接的所有内容）。
 
 ## 组合坐骑
@@ -649,17 +687,17 @@ LangSmith 重试失败的刷新并继续提供其发布的最后一次提交，�
   ```
 </CodeGroup>
 
-## 缓存桶挂载S3 和 GCS 安装支持可选的缓存设置。缓存设置调整本地
+## 缓存桶挂载
+
+S3 和 GCS 安装支持可选的缓存设置。缓存设置调整本地
 Bucket挂载使用的VFS缓存；水桶仍然是真相的来源。使用
 缓存设置来控制本地磁盘使用和写回时间，而不是作为
-单独的持久层。缓存设置不适用于 Git 挂载。
-
-|领域 |描述 |
+单独的持久层。缓存设置不适用于 Git 挂载。|领域 |描述 |
 | - | - |
 | `max_size_bytes` |本地安装缓存的可选最大大小（以字节为单位）。设置正值以添加显式上限；省略它以保留运行时默认值。 |
 | `writeback_seconds` |在将缓存的写入写回存储桶之前，可选延迟（以秒为单位）。默认为`0`。值越低，写入操作越快对存储桶可见；较高的值可以减少重写相同文件的工作负载的写入流量。 |
 
-对于只读数据集挂载，仅在需要时配置 `max_size_bytes`
+对于只读数据集挂载，仅在需要时配置`max_size_bytes`
 特定的本地缓存上限。对于可写安装，当
 另一个进程需要在沙箱之后立即从 S3 或 GCS 读取对象
 他们写道。
@@ -719,13 +757,14 @@ Bucket挂载使用的VFS缓存；水桶仍然是真相的来源。使用
 </CodeGroup>
 
 ## 限制* 创建沙箱时会附加安装座。创建一个新的沙箱来更改坐骑。
+* 中国 (`cn-*`) 和 AWS GovCloud (`us-gov-*`) 区域的 S3 挂载必须将 `endpoint_url` / `endpointUrl` 设置为该区域的 S3 终端节点。默认端点`https://s3.amazonaws.com`仅服务于商业区域。
+* 安装范围的角色身份验证必须符合 AWS 的 2,048 个字符会话策略限制。许多挂载、长存储桶名称或前缀或 KMS 密钥可能会超出它，然后 LangSmith 会拒绝沙箱。
 * 在每个沙箱的一个身份验证表面中配置每个云提供商的凭据。如果 mount auth 提供 AWS 或 GCP 凭证，请勿同时为同一提供商添加身份验证代理规则。
 * Git refs 可以省略或设置为分支或标签。不支持提交引用。
 * Git 挂载不支持 `read_only` / `readOnly` 或缓存设置。
 * Context Hub 安装始终是只读的，并且不支持缓存设置。
 * Context Hub 坐骑接受特工和技能库。 LangSmith 拒绝其他存储库类型和没有提交的存储库。
-* Context Hub 装载路径不能是文件系统根目录，也不能位于系统目录（例如 `/etc`、`/usr` 或 `/var`）下。
-* 恢复沙箱会在其配置的路径上重新连接每个 Context Hub 安装。在挂载内保存打开文件或工作目录的已恢复进程必须重新打开它。
+* Context Hub 装载路径不能是文件系统根目录，也不能位于系统目录（例如 `/etc`、`/usr` 或 `/var`）下。* 恢复沙箱会在其配置的路径上重新连接每个 Context Hub 安装。在挂载内保存打开文件或工作目录的已恢复进程必须重新打开它。
 
 ***
 

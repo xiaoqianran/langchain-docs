@@ -15,7 +15,7 @@
 当您第一次登录时，系统会自动为您创建一个个人组织。如果您想与其他人协作，您可以创建一个单独的组织并邀请您的团队成员加入。您的个人组织和共享组织之间存在一些重要区别：|特色 |个人|共享|
 | - | - | - |
 |最大工作空间 | 1 |可变，取决于计划（参见[pricing page](https://www.langchain.com/pricing-langsmith)）|
-|合作|无法邀请用户 |可以邀请用户 |
+|合作|无法邀请用户 |可以邀请用户|
 |计费：付费计划|仅限开发者计划 |所有其他可用计划 |
 
 ### 工作区
@@ -28,7 +28,7 @@
 
 ### 代理和应用程序
 
-代理和应用程序是工作区中资源的逻辑分组，位于工作区本身的下一级。分组通过仅显示与当前上下文中的代理或应用程序关联的资源来保持 UI 的组织。
+代理和应用程序是工作区中资源的逻辑分组，位于工作区本身的下一层。分组通过仅显示与当前上下文中的代理或应用程序关联的资源来保持 UI 的组织。
 
 该分组的名称以及选择它的控件取决于您的工作区使用的信息体系结构。左上角的控件会告诉您您所在的位置：* **基于代理的工作空间**，位于 [beta](/langsmith/release-stages) 中，将其称为 [agent](/langsmith/agents)，代理的踪迹进一步分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。从顶部栏中的代理选择器中选择一个，或选择“**所有代理**”以查看工作区中的每个资源。欲了解更多信息，请参阅[Navigate agents](/langsmith/navigate-agents)。
 * **基于项目的工作空间** 将其称为应用程序，它可以将团队中的任何项目分组，而不仅仅是代理。从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-administration-overview) 侧边栏顶部的 **应用程序** 下拉列表中选择一个，或选择 **所有应用程序** 以查看工作区中的每个资源。
@@ -59,7 +59,7 @@
 | RBAC：分配工作区角色 |工作空间 |
 |数据保留、使用限制 |工作区\* |
 |计划和账单、积分、发票 |组织|
-|用户管理：邀请用户加入组织|组织\*\* |
+|用户管理：邀请用户加入组织 |组织\*\* |
 |添加工作区 |组织|
 |分配组织角色 |组织|
 | RBAC：创建/编辑/删除自定义角色 |组织|
@@ -80,7 +80,7 @@ LangSmith 资源标签与[AWS](https://docs.aws.amazon.com/tag-editor/latest/use
 
 用户是有权访问LangSmith的人。用户可以是一个或多个组织以及这些组织内工作空间的成员。
 
-组织成员在**设置**页面的**成员和角色**下进行管理。
+组织成员在**设置**页面上进行管理：在组织设置中选择**成员**。
 
 工作区成员在**设置**下的**工作区**页面上进行管理。
 
@@ -123,7 +123,7 @@ PAT 前缀为 `lsv2_pt_`
 
 组织角色与[Enterprise feature workspace RBAC](#workspace-roles-rbac)不同，并且在多个[workspaces](#workspaces)的上下文中使用。您的组织角色决定了您的工作区成员特征和您的[organization-level permissions](/langsmith/organization-workspace-operations)。
 
-选择的组织角色还会影响工作区成员身份，如下所述：* [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
+选择的组织角色还会影响工作区成员资格，如下所述：* [Organization Admin](/langsmith/rbac#organization-admin) 授予管理所有组织配置、用户、计费和工作区的完全访问权限。
   * 组织管理员拥有对组织中所有工作区的`Admin` 访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 可以读取组织信息，但不能在组织级别执行任何写操作。组织用户可以创建[Personal Access Tokens](#personal-access-tokens-pats)。
   * 可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用 RBAC），这些角色指定工作区级别的权限。
@@ -170,7 +170,7 @@ PAT 前缀为 `lsv2_pt_`
 
 [Organization admins](/langsmith/rbac#organization-admin)还可以创建/编辑对不同资源具有特定权限的自定义角色。
 
-您可以在 **组织设置** > **成员和角色** 下管理角色，然后选择 **角色** 选项卡。
+您可以在 **设置** > **角色** 中管理角色。
 
 * 有关角色和权限的完整文档，请参阅 [Role-based access control](/langsmith/rbac) 指南。
 * 有关分配和创建角色的更多详细信息，请参阅[User Management](/langsmith/user-management)指南。
@@ -198,7 +198,7 @@ PAT 前缀为 `lsv2_pt_`
 
 ### 数据保留
 
-本节介绍数据保留的工作原理以及它在 LangSmith 中的定价方式。
+本节介绍数据保留的工作原理及其在 LangSmith 中的定价方式。
 
 #### 为什么保留很重要* **隐私**：许多数据隐私法规（例如欧洲的 GDPR 或加利福尼亚州的 CCPA）要求组织在个人数据不再用于收集目的时将其删除。设置保留期限有助于遵守此类法规。
 * **成本**：LangSmith 对于数据保留率较低的跟踪收费较低。如需了解更多信息，请了解如何[enforce spend limits](/langsmith/billing#enforce-spend-limits)。
@@ -230,7 +230,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。
 
-当您将某些功能与`base`层跟踪一起使用时，其数据保留可能会自动升级到`extended`层。这会增加跟踪的保留期限和成本。
+当您将某些功能与 `base` 层跟踪一起使用时，其数据保留可能会自动升级到 `extended` 层。这会增加跟踪的保留期限和成本。
 
 按操作保留行为：* **通过 API 或 SDK 进行反馈**：通过显式传递 `extend_trace_retention=true`（在 TypeScript 中为`extendTraceRetention: true`）的 API 或 SDK 调用，将反馈添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
@@ -321,7 +321,7 @@ LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为�
 
 #### 计划级每小时跟踪数据摄取限制此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
 
-通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制计为 5.0MB 存储。
+通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制，该存储将计为 5.0MB。
 
 这是由我们的应用程序引发的，并因计划级别而异，我们的 Startup/Plus 和 Enterprise 计划级别的组织的每小时限制高于专为个人使用而设计的免费和开发人员计划级别。
 
@@ -404,7 +404,7 @@ LangSmith 允许您设置两个不同的每月限额，反映了上述数据保�
 
 在 [agent-based workspace](/langsmith/agents) 中，项目范围的限制限制一个代理的一个 [environment](/langsmith/agent-environments)，而不是整个代理。没有代理范围，因此限制代理的总跟踪数意味着为每个环境添加一个限制。
 
-更新这些限制需要与工作区使用限制 (`Update usage limits`) 相同的权限。与工作区限制一样，每个项目和每个用户的限制按照 UTC 的每个日历月进行评估，并在每个新月开始时重置。一旦项目或用户达到其限制，其新跟踪将被丢弃，并且不会再次被摄取，直到限制重置。强制执行是近似的，因此在限制生效之前，可能会在阈值以上处理少量跟踪。这些限制适用于 [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
+更新这些限制需要与工作区使用限制 (`Update usage limits`) 相同的权限。与工作区限制一样，每个项目和每个用户的限制按照 UTC 的每个日历月进行评估，并在每个新月开始时重置。一旦项目或用户达到其限制，其新跟踪就会被丢弃，并且不会再次被摄取，直到限制重置。强制执行是近似的，因此在限制生效之前，可能会在阈值以上处理少量跟踪。这些限制适用于 [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted)。
 
 <Note>
   每个项目和每个用户的限制是您的工作区范围和计划限制的**附加**。痕迹必须在每个适用的摄入限值内。

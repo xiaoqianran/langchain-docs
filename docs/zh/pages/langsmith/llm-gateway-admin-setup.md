@@ -14,7 +14,7 @@
 
 ## 先决条件
 
-您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+您需要LangSmith中的[⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
 
 在完成这些步骤之前，请在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。
 
@@ -34,6 +34,7 @@
 | `FIREWORKS_API_KEY` |烟花|
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
+| `SCALEDOWN_API_KEY` |缩小|
 | `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |
 
 仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
@@ -65,8 +66,8 @@
 
 转至 **LLM Gateway** 创建治理策略。您可以配置：
 
-* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参考[Spend policies](/langsmith/llm-gateway-spend-policies)。
-* **数据策略：** 在 PII 和机密到达模型之前对其进行检测和编辑，并控制是否跟踪请求和响应正文。参见[Data policy](/langsmith/llm-gateway-data-policy)。
+* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
+* **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 

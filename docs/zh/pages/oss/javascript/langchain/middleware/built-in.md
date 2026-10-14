@@ -6,7 +6,11 @@
 
 适用于常见代理用例的预构建中间件
 
-LangChain 和 [Deep Agents](/oss/javascript/deepagents/overview) 为常见用例提供预构建的中间件。每个中间件均可投入生产并可根据您的特定需求进行配置。
+LangChain 为常见用例提供预构建的中间件。每个中间件均可投入生产并可根据您的特定需求进行配置。
+
+<Note>
+  使用 [Deep Agents](/oss/javascript/deepagents/overview) (`create_deep_agent` / `createDeepAgent`)？中间件是通过 [customization](/oss/javascript/deepagents/customization#middleware) API 添加的。
+</Note>
 
 ## 与提供商无关的中间件
 
@@ -23,8 +27,8 @@ LangChain 和 [Deep Agents](/oss/javascript/deepagents/overview) 为常见用例
 | [Tool call limit](#tool-call-limit) |通过限制调用计数来控制工具执行。 |
 | [PII detection](#pii-detection) |检测和处理个人身份信息 (PII)。 |
 | [To-do list](#to-do-list) |为代理配备任务规划和跟踪功能。 |
-| [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 |
-| [Provider tool search](#provider-tool-search) |将工具推迟到提供商的服务器端工具搜索后面，按需显示它们。 || [Filesystem](#filesystem-middleware) |为代理提供用于存储上下文和长期记忆的文件系统。 |
+| [LLM tool selector](#llm-tool-selector) |在调用主模型之前，使用LLM选择相关工具。 || [Provider tool search](#provider-tool-search) |将工具推迟到提供商的服务器端工具搜索后面，按需显示它们。 |
+| [Filesystem](#filesystem-middleware) |为代理提供用于存储上下文和长期记忆的文件系统。 |
 | [Subagent middleware](#subagent) |添加生成子代理的能力。 |
 | [Context editing](#context-editing) |通过修剪或清除工具的使用来管理对话上下文。 |
 | [LLM tool emulator](#llm-tool-emulator) |使用 LLM 模拟工具执行以进行测试。 |
@@ -39,7 +43,7 @@ LangChain 和 [Deep Agents](/oss/javascript/deepagents/overview) 为常见用例
 * 提高依赖网络的工具的可靠性。
 * 构建能够优雅地处理临时错误的弹性代理。
 
-**API参考：** [⟦T31⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
+**API参考：** [⟦T33⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, toolRetryMiddleware } from "langchain";
@@ -73,7 +77,7 @@ const agent = createAgent({
 
     * `'continue'`（默认）- 返回包含错误详细信息的 `ToolMessage`，允许 LLM 处理故障并可能恢复
     * `'error'` - 重新引发异常，停止代理执行
-    * 自定义函数 - 接受异常并返回 `ToolMessage` 内容的字符串的函数，允许自定义错误格式
+    * 自定义函数 - 接受异常并返回`ToolMessage`内容字符串的函数，允许自定义错误格式
 
     **弃用值：** `'raise'`（使用 `'error'` 代替）和 `'return_message'`（使用 `'continue'` 代替）。这些已弃用的值仍然有效，但会显示警告。
   </ParamField>
@@ -243,9 +247,9 @@ const lookupRecord = tool(
 
 * 处理模型 API 调用中的瞬时故障。
 * 提高网络相关模型请求的可靠性。
-* 构建弹性代理来优雅地处理临时模型错误。
+* 构建有弹性的代理，可以优雅地处理临时模型错误。
 
-**API参考：** [⟦T65⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
+**API参考：** [⟦T67⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, modelRetryMiddleware } from "langchain";
@@ -275,7 +279,7 @@ const agent = createAgent({
   <ParamField type="'error' | 'continue' | ((error: Error) => 字符串)">
     所有重试都用尽时的行为。选项：* `'continue'`（默认）- 返回包含错误详细信息的 `AIMessage`，允许代理优雅地处理故障
     * `'error'` - 重新引发异常，停止代理执行
-    * 自定义函数 - 接受异常并返回`AIMessage`内容字符串的函数，允许自定义错误格式
+    * 自定义函数 - 接受异常并返回 `AIMessage` 内容的字符串的函数，允许自定义错误格式
   </ParamField>
 
   <ParamField type="number">
@@ -481,7 +485,7 @@ const agent = createAgent({
 
   <ParamField type="object">
     总结后要保留多少上下文。准确指定以下之一：* `fraction`（数字）：要保留的模型上下文大小的分数 (0-1)
-    * `tokens`（数字）：要保留的绝对令牌计数
+    * `tokens`（数字）：要保留的绝对令牌数
     * `messages`（数字）：要保留的最近消息数
   </ParamField>
 
@@ -521,7 +525,7 @@ const agent = createAgent({
   **保留条件** 控制要保留的上下文量（准确指定一个）：
 
   * `fraction` - 要保留的模型上下文大小的分数
-  * `tokens` - 要保留的绝对令牌计数
+  * `tokens` - 要保留的绝对令牌数量
   * `messages` - 要保留的最近消息数
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -720,7 +724,7 @@ const agent = createAgent({
 
   退出行为：
 
-  * `'continue'`（默认）- 阻止超出的呼叫并显示错误消息，代理继续
+  * `'continue'`（默认）- 使用错误消息阻止超出的呼叫，代理继续
   * `'error'` - 立即引发异常
   * `'end'` - 使用 ToolMessage + AI 消息停止（仅限单工具场景）
 
@@ -901,7 +905,7 @@ function detector(content: string): PIIMatch[] {
 为代理配备任务规划和跟踪功能，以执行复杂的多步骤任务。待办事项列表对于以下用途很有用：
 
 * 复杂的多步骤任务需要跨多个工具进行协调。
-* 长期运行的操作，其中进度可见性很重要。
+* 长期运行的操作，其中进度可见性非常重要。
 
 <Note>
   该中间件自动为代理提供`write_todos`工具和系统提示来指导有效的任务规划。
@@ -976,7 +980,7 @@ const agent = createAgent({
   需要具有服务器端工具搜索支持的模型：Anthropic（Claude Sonnet 4+/Opus 4+/Haiku 4.5+）或OpenAI（gpt-5.5+）。其他提供者会抛出错误。
 </Note>
 
-**API参考：** [⟦T132⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
+**API参考：** [⟦T134⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1013,7 +1017,7 @@ const agent = createAgent({
 </Accordion>
 
 <Accordion title="Full example">
-  中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择延迟
+  中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择推迟
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1186,7 +1190,7 @@ const agent = createAgent({
 });
 ```
 
-除了任何用户定义的子代理之外，主代理还可以随时访问 `general-purpose` 子代理。该子代理具有与主代理相同的指令以及它有权访问的所有工具。 `general-purpose` 子代理的主要目的是上下文隔离——主代理可以将复杂的任务委托给该子代理，并获得简洁的答案，而不会因中间工具调用而造成臃肿。
+除了任何用户定义的子代理之外，主代理还可以随时访问`general-purpose`子代理。该子代理具有与主代理相同的指令以及它有权访问的所有工具。 `general-purpose` 子代理的主要目的是上下文隔离——主代理可以将复杂的任务委托给该子代理，并获得简洁的答案，而不会因中间工具调用而造成臃肿。
 
 ### 上下文编辑
 
@@ -1215,10 +1219,10 @@ const agent = createAgent({
 
 <Accordion title="Configuration options">
   <ParamField type="ContextEdit[]">
-    要应用的一系列[⟦T152⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit)策略
+    要应用的一系列[⟦T154⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit)策略
   </ParamField>
 
-  **[⟦T153⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit)选项：**
+  **[⟦T155⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit)选项：**
 
   <ParamField type="number">
     触发编辑的令牌计数。当对话超过此令牌计数时，旧工具输出将被清除。
@@ -1298,7 +1302,7 @@ const agent = createAgent({
 
 <Accordion title="Configuration options">
   <ParamField type="(string | ClientTool | ServerTool)[]">
-    要模拟的工具名称（字符串）或工具实例的列表。如果`undefined`（默认），将模拟所有工具。如果为空数组`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
+    要模拟的工具名称（字符串）或工具实例的列表。如果`undefined`（默认），将模拟所有工具。如果空数组`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
   </ParamField><ParamField type="string | BaseChatModel">
     用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。
   </ParamField>

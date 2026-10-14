@@ -63,11 +63,11 @@ These examples assume you have already created a sandbox/devbox using the provid
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 

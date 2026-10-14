@@ -66,7 +66,7 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
    @traceable(name="LiteLLM Chat Completion")
    def run(messages):
        response = completion(
-           model="gpt-4o",
+           model="gpt-5.5",
            messages=messages,
        )
        # Return the assistant message so the LangSmith UI shows role + content
@@ -134,7 +134,7 @@ LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异�
 
    async def main():
        response = await acompletion(
-           model="gpt-4o",
+           model="gpt-5.5",
            messages=[
                {"role": "user", "content": "Explain observability in LLM systems."}
            ],
@@ -150,11 +150,11 @@ LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异�
        asyncio.run(main())
    ```
 
-   该回调将 LiteLLM 的模型请求和响应数据直接发送到LangSmith，包括提供者元数据和令牌使用情况。由于 LiteLLM 控制有效负载，因此与 `@traceable` 示例相比，**输入**和**输出**列可能包含其他元数据。
+   该回调将 LiteLLM 的模型请求和响应数据直接发送到LangSmith，包括提供者元数据和令牌使用情况。由于 LiteLLM 控制有效负载，因此与 `@traceable` 示例相比，**输入**和 **输出**列可能包含其他元数据。
 
 ## 使用 LiteLLM 代理
 
-LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
+LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。
 
 1. 要让代理日志请求直接发送到LangSmith，请在`config.yaml`中配置回调：
 
@@ -200,7 +200,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
      )
 
      response = client.chat.completions.create(
-         model="gpt-4o",
+         model="gpt-5.5",
          messages=[
              {"role": "user", "content": "What is LiteLLM?"}
          ],
@@ -218,7 +218,7 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI兼容的 API。
      });
 
      const response = await client.chat.completions.create({
-     model: "gpt-4o",
+     model: "gpt-5.5",
      messages: [
          { role: "user", content: "Explain LiteLLM tracing." }
      ],

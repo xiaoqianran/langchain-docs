@@ -39,10 +39,10 @@
 <CodeGroup>
   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   # uv
-  uv add "langsmith[sandbox]"
+  uv add langsmith
 
   # pip
-  pip install "langsmith[sandbox]"
+  pip install langsmith
   ```
 
   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

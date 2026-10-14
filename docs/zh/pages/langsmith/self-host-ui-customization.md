@@ -33,7 +33,7 @@ config:
     darkModeLogoUrl: "https://example.com/logo-white-text.svg"
 ```
 
-每个名称均指徽标出现的方案。当您仅设置一个值时，LangSmith 在两个方案中都使用它。需要 Helm 图表版本 0.17.0-rc.38 或更高版本。
+每个名称均指徽标出现的方案。当您仅设置一个值时，LangSmith 在两个方案中都使用它。需要 Helm 图表版本 0.17.0 或更高版本。
 
 ### 从文件中提供徽标
 

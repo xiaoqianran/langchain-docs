@@ -174,7 +174,7 @@ experiment_results = client.evaluate(
     ls_target, # Your AI system
     data=dataset_name, # The data to predict and grade over
     evaluators=[concision, correctness], # The evaluators to score the results
-    experiment_prefix="openai-4o-mini", # A prefix for your experiment names to easily identify them
+    experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
 )
 ```
 
@@ -186,21 +186,21 @@ If we go back to the dataset page and select the `Experiments` tab, we can now s
 
 <img alt="Testing tutorial one run" />
 
-Let's now try it out with a different model! Let's try `gpt-4-turbo`
+Let's now try it out with a different model! Let's try `gpt-5.5`
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def ls_target_v2(inputs: str) -> dict:
-    return {"response": my_app(inputs["question"], model="gpt-4-turbo")}
+    return {"response": my_app(inputs["question"], model="gpt-5.5")}
 
 experiment_results = client.evaluate(
     ls_target_v2,
     data=dataset_name,
     evaluators=[concision, correctness],
-    experiment_prefix="openai-4-turbo",
+    experiment_prefix="openai-5.5",
 )
 ```
 
-And now let's use GPT-4 but also update the prompt to be a bit more strict in requiring the answer to be short.
+And now let's use GPT-5.5 but also update the prompt to be a bit more strict in requiring the answer to be short.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
@@ -208,7 +208,7 @@ instructions_v3 = "Respond to the users question in a short, concise manner (one
 def ls_target_v3(inputs: str) -> dict:
     response = my_app(
         inputs["question"],
-        model="gpt-4-turbo",
+        model="gpt-5.5",
         instructions=instructions_v3
     )
     return {"response": response}
@@ -217,7 +217,7 @@ experiment_results = client.evaluate(
     ls_target_v3,
     data=dataset_name,
     evaluators=[concision, correctness],
-    experiment_prefix="strict-openai-4-turbo",
+    experiment_prefix="strict-openai-5.5",
 )
 ```
 
@@ -231,7 +231,7 @@ Awesome, we've evaluated three different runs. But how can we compare results? T
 
 <img alt="Testing tutorial compare metrics" />
 
-We can tell that GPT-4 is better than GPT-3.5 at knowing who companies are, and that the strict prompt helped a lot with the length. But what if we want to explore in more detail?
+We can tell that the larger model is better at knowing who companies are, and that the strict prompt helped a lot with the length. But what if we want to explore in more detail?
 
 In order to do that, we can select all the runs we want to compare (in this case all three) and open them up in a comparison view. We immediately see all three tests side by side. Some of the cells are color coded - this is showing a regression of *a certain metric* compared to *a certain baseline*. We automatically choose defaults for the baseline and metric, but you can change those yourself. You can also choose which columns and which metrics you see by using the `Display` control. You can also automatically filter to only see the runs that have improvements/regressions by clicking on the icons at the top.
 
@@ -365,17 +365,17 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
       ls_target, # Your AI system
       data=dataset_name, # The data to predict and grade over
       evaluators=[concision, correctness], # The evaluators to score the results
-      experiment_prefix="openai-4o-mini", # A prefix for your experiment names to easily identify them
+      experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
   )
 
   def ls_target_v2(inputs: str) -> dict:
-      return {"response": my_app(inputs["question"], model="gpt-4-turbo")}
+      return {"response": my_app(inputs["question"], model="gpt-5.5")}
 
   experiment_results_v2 = client.evaluate(
       ls_target_v2,
       data=dataset_name,
       evaluators=[concision, correctness],
-      experiment_prefix="openai-4-turbo",
+      experiment_prefix="openai-5.5",
   )
 
   instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
@@ -383,7 +383,7 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
   def ls_target_v3(inputs: str) -> dict:
       response = my_app(
           inputs["question"],
-          model="gpt-4-turbo",
+          model="gpt-5.5",
           instructions=instructions_v3
       )
       return {"response": response}
@@ -392,7 +392,7 @@ Additionally, there are other ways to evaluate data besides in this "offline" ma
       ls_target_v3,
       data=dataset_name,
       evaluators=[concision, correctness],
-      experiment_prefix="strict-openai-4-turbo",
+      experiment_prefix="strict-openai-5.5",
   )
   ```
 </Accordion>

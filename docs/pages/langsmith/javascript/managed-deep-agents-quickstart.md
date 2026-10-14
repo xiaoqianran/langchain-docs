@@ -95,9 +95,12 @@ Or paste this prompt into your coding agent:
     OPENAI_API_KEY=<OPENAI_API_KEY>
     # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
     # GOOGLE_API_KEY=<GOOGLE_API_KEY>
+    # AZURE_AI_OPENAI_ENDPOINT=https://<resource>.services.ai.azure.com/openai/v1
+    # AZURE_OPENAI_API_KEY=<AZURE_OPENAI_API_KEY>
+    # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
     ```
 
-    This quickstart uses OpenAI by default. If you choose Google or Anthropic in the next step, set that provider's API key instead. `mda deploy` adds the provider key to the deployment. You can also use any [other chat provider](/oss/javascript/integrations/chat/).
+    This quickstart uses OpenAI by default. For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` adds the provider key to the deployment. You can also use any [other chat provider](/oss/javascript/integrations/chat/).
 
     <Warning>
       Do not commit the `.env` file into version control. It contains secrets.
@@ -132,7 +135,7 @@ Or paste this prompt into your coding agent:
   </Step>
 
   <Step title="Configure your model and search">
-    Now set the model and a built-in web search tool. Google, OpenAI, and Anthropic offer server-side search with no extra package or API key. Pass the provider tool dict that matches your model:
+    Now set the model and a built-in web search tool. Google, OpenAI, Anthropic, and Microsoft Foundry offer server-side search without a separate search package or search API key. Pass the provider tool dict that matches your model:
 
     Open `agent.ts`:
 
@@ -167,6 +170,26 @@ Or paste this prompt into your coding agent:
         name: "research-assistant",
         model: "anthropic:claude-sonnet-4-6",
         tools: [{ type: "web_search_20250305", name: "web_search" }],
+      });
+      ```
+
+      ```ts Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      // To use ChatOpenAI, run: npm install @langchain/openai
+      import { defineDeepAgent } from "managed-deepagents";
+      import { ChatOpenAI } from "@langchain/openai";
+
+      const model = new ChatOpenAI({
+        model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
+        apiKey: process.env.AZURE_OPENAI_API_KEY,
+        configuration: {
+          baseURL: process.env.AZURE_AI_OPENAI_ENDPOINT,
+        },
+      });
+
+      export const agent = defineDeepAgent({
+        name: "research-assistant",
+        model,
+        tools: [{ type: "web_search" }],
       });
       ```
     </CodeGroup>

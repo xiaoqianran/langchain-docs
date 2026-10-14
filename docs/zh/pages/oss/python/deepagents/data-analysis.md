@@ -47,7 +47,7 @@ pip install deepagents
 * A [LangSmith sandbox](/langsmith/sandboxes) 用于代码执行
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install "langsmith[sandbox]" slack-sdk
+pip install langsmith slack-sdk
 ```<Note>
   这些服务是可选的，但强烈建议将沙盒环境用于任何生产用途。您也可以使用本地 shell 后端（具有重要的[security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)）或直接从后端下载工件。
 </Note>
@@ -83,11 +83,11 @@ Deep Agents 使用[backends](/oss/python/deepagents/backends) 在沙盒环境中
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 
@@ -729,7 +729,7 @@ The analysis reveals that Widget A is the top performer, while Widget C shows ro
 ## 后续步骤
 
 现在您已经构建了数据分析代理，请探索以下资源来扩展其功能：* [Backends](/oss/python/deepagents/backends)：了解Deep Agents后端系统
-* [Sandboxes](/oss/python/deepagents/sandboxes)：审查沙盒代码执行的后端，包括安全注意事项和高级配置
+* [Sandboxes](/oss/python/deepagents/sandboxes)：检查沙盒代码执行的后端，包括安全注意事项和高级配置
 * [Customization](/oss/python/deepagents/customization)：了解如何使用不同的模型、工具、提示和可选的 [task planning](/oss/python/deepagents/overview#task-planning) 自定义您的代理
 * [Code](/oss/deepagents/code/overview)：尝试使用Deep Agents编码作为终端编码代理，协助本地进行数据分析和其他代理任务
 * [Skills](/oss/python/deepagents/skills)：为您的代理配备可重复使用的常见工作流程技能

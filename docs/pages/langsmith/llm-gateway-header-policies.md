@@ -85,7 +85,7 @@ Attach the header to each request your backend makes on behalf of an end custome
       -H "Authorization: Bearer $LANGSMITH_API_KEY" \
       -H "Content-Type: application/json" \
       -H "X-Gateway-Customer-Id: acme" \
-      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+      -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
   ```
 
   ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -99,7 +99,7 @@ Attach the header to each request your backend makes on behalf of an end custome
   )
   customer_id = "acme"
   response = client.chat.completions.create(
-      model="gpt-4o-mini",
+      model="gpt-5.4-mini",
       messages=[{"role": "user", "content": "ping"}],
       extra_headers={"X-Gateway-Customer-Id": customer_id},
   )

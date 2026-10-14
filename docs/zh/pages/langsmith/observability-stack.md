@@ -48,11 +48,11 @@ langsmith-observability-kube-state-metrics-b58bb8db4-bm4g5        1/1     Runnin
   **这不是生产可观察性堆栈。使用它可以快速了解部署的日志、指标和跟踪。这仅用于每天处理几十 GB 的数据。**
 </Warning>
 
-本节将向您展示如何使用 [Helm Chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-observability) 部署 LangSmith 的端到端可观测性堆栈。
+本节将向您展示如何使用 [Helm Chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-observability) 部署LangSmith的端到端可观测性堆栈。
 
 该图表是围绕 Grafana 的开源 LGTM Stack 构建的。它包括：
 
-* [Loki](https://grafana.com/docs/loki/latest/) 用于原木。
+* [Loki](https://grafana.com/docs/loki/latest/) 用于日志。
 * [Mimir](https://grafana.com/docs/mimir/latest/) 用于指标+警报。
 * [Tempo](https://grafana.com/docs/tempo/latest/) 用于痕迹。
 * [Grafana](https://grafana.com/docs/grafana/latest/) 用于监控UI。
@@ -71,7 +71,7 @@ langsmith-observability-kube-state-metrics-b58bb8db4-bm4g5        1/1     Runnin
 
 ### 2. 证书管理器
 
-Helm Chart 使用 OpenTelemetry Operator 来配置收集器。操作员要求您在 Kubernetes 集群中安装[cert-manager](https://cert-manager.io/docs/installation/)。
+Helm Chart 使用 OpenTelemetry Operator 来配置收集器。 Operator 要求您在 Kubernetes 集群中安装[cert-manager](https://cert-manager.io/docs/installation/)。
 
 如果您没有安装，可以运行以下命令：
 
@@ -133,9 +133,9 @@ observability:
   2. 要获取 `${GATEWAY_COLLECTOR_SERVICE_NAME}` 名称，请运行 `kubectl get services -n ${LANGSMITH_OBS_NAMESPACE}` 并选择具有端口 4317/4318 和 ClusterIP 集的名称。应该是类似`langsmith-observability-collector-gateway-collector`的东西
 </Info>
 
-现在运行`helm upgrade langsmith langchain/langsmith --values langsmith_config.yaml -n <langsmith-namespace> --wait --debug`
+现在运行 `helm upgrade langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <langsmith-namespace> --wait --debug`，将 `<version>` 替换为您已经运行的图表版本。如果没有 `--version`，Helm 会升级到最新的图表，这可以将安装移动到新的主要版本。
 
-升级后，如果运行`kubectl get pods -n <langsmith-namespace>`，您应该会看到以下内容（注意边车收集器的 2/2）：
+升级后，如果您运行`kubectl get pods -n <langsmith-namespace>`，您应该会看到以下内容（注意边车收集器的 2/2）：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith-ace-backend-7dc85f7dff-xjbkj         2/2     Running     0               7m53slangsmith-backend-566b66979c-rgcfh             2/2     Running     1               7m53slangsmith-clickhouse-0                         2/2     Running     0               7m49slangsmith-frontend-7cf8549885-vpkns            2/2     Running     0               7m53slangsmith-platform-backend-5d46db7d9d-f6gh7    2/2     Running     0               7m52slangsmith-platform-backend-5d46db7d9d-lrr4d    2/2     Running     1               7m41slangsmith-platform-backend-5d46db7d9d-pcp27    2/2     Running     0               7m28slangsmith-playground-65d4c9699c-h656r          2/2     Running     0               7m52slangsmith-postgres-0                           2/2     Running     0               7m51slangsmith-queue-bdcd45bd6-htssd                2/2     Running     0               7m52slangsmith-queue-bdcd45bd6-pwdx4                2/2     Running     0               6m31slangsmith-queue-bdcd45bd6-xqrb8                2/2     Running     0               5m11slangsmith-redis-0                              2/2     Running     0               7m51s

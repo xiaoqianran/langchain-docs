@@ -202,7 +202,7 @@ export LANGSMITH_PROJECT=my-custom-project
 
           // Create a simple span
           Span span = OtelSpanCreator.createLlmSpan(
-                  tracer, "simple.llm.call", "openai", "gpt-4", projectName, null);
+                  tracer, "simple.llm.call", "openai", "gpt-5.5", projectName, null);
 
           try {
               OtelSpanCreator.setInput(span, "Hello, world!");

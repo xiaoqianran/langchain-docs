@@ -1113,7 +1113,7 @@ Deep Agents 支持任何 [middleware](/oss/python/langchain/middleware/overview)
 
 5. [⟦T239⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)：仅当您配置异步子代理时。
 
-6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例将替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
+6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与上述内置条目之一匹配的实例会就地替换该实例，而不是复制它；其他任何东西都会降落在这里。参见[Override a default middleware instance](#override-a-default-middleware-instance)。7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
 
 8. [⟦T242⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)：仅当您通过`skills`时。在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。传递一个名为 `SkillsMiddleware` 的中间件会就地替换它。
 
@@ -1466,7 +1466,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 </Warning>
 
 ### 覆盖默认中间件实例<Note>
-  通过匹配 `.name` 来覆盖默认中间件需要 `deepagents>=0.7`。
+  通过匹配 `.name` 覆盖默认中间件需要 `deepagents>=0.7`。
 </Note>
 
 传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T267⟧](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)，以替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
@@ -2390,11 +2390,11 @@ agent = create_deep_agent(
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 
@@ -4098,7 +4098,7 @@ register_harness_profile(
 
 <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e0c76e79-471f-44a6-9b68-d717733cf641/r">
   为此示例打开公共 LangSmith 运行。
-</Card>请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。一个更窄的配套 API，[provider profiles](/oss/python/deepagents/profiles#provider-profiles)，为提供者打包模型构造参数（API 密钥、超时、重试设置）。
+</Card>请参阅 [Profiles](/oss/python/deepagents/profiles) 了解注册密钥、合并语义和插件打包。一个更窄的配套 API [provider profiles](/oss/python/deepagents/profiles#provider-profiles)，为提供者打包模型构造参数（API 密钥、超时、重试设置）。
 
 ## 结构化输出
 

@@ -437,7 +437,7 @@ const tracedClient = wrapOpenAI(new OpenAI());
 const generateSql = traceable(
   async (userQuery: string) => {
     const result = await tracedClient.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-5.4-mini",
       messages: [
         {
           role: "system",
@@ -527,7 +527,7 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-但请记住，如果您这样做，如果您的测试由于断言失败或其他错误而无法完成，您的输出将不会出现。
+但请记住，如果您这样做，如果您的测试由于失败的断言或其他错误而无法完成，您的输出将不会出现。
 
 ## 跟踪中间调用LangSmith 将自动跟踪测试用例执行过程中发生的任何可跟踪的中间调用。
 

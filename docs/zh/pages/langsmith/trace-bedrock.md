@@ -66,7 +66,7 @@ export AWS_DEFAULT_REGION=<your_bedrock_region> # e.g., us-east-1 or us-west-2
 
   # Decorate the model invocation function to auto-capture a trace with tags/metadata
   @traceable(tags=["aws-bedrock", "langsmith", "integration-test"],
-             metadata={"env": "dev", "model_provider": "bedrock", "model_id": "claude-3-haiku"})
+             metadata={"env": "dev", "model_provider": "bedrock", "model_id": "claude-haiku-4-5"})
   def generate_text(prompt: str) -> str:
       # Prepare a single-turn conversation input for the Converse API
       messages = [
@@ -114,7 +114,7 @@ export AWS_DEFAULT_REGION=<your_bedrock_region> # e.g., us-east-1 or us-west-2
     },
     {
       tags: ["aws-bedrock", "langsmith", "integration-test"],
-      metadata: { env: "dev", model_provider: "bedrock", model_id: "claude-3-haiku" }
+      metadata: { env: "dev", model_provider: "bedrock", model_id: "claude-haiku-4-5" }
     }
   );
 

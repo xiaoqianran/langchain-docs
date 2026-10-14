@@ -230,7 +230,7 @@ import pytest
 @pytest.fixture(scope="session")
 def langsmith_experiment_metadata():
     return {
-        "model": "gpt-4o",
+        "model": "gpt-5.5",
         "prompt_version": "v2.3",
         "environment": os.environ.get("ENV", "local"),
     }
@@ -243,7 +243,7 @@ def langsmith_experiment_metadata():
 将 `LANGSMITH_EXPERIMENT_METADATA` 设置为 JSON 字符串。这在您不想修改代码的 CI/CD 管道中非常有用：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-4o","env":"staging"}' pytest tests/
+LANGSMITH_EXPERIMENT_METADATA='{"model":"gpt-5.5","env":"staging"}' pytest tests/
 ```如果同时设置了固定装置和环境变量，则固定装置优先。系统管理的元数据密钥（例如 `revision_id` 和 git info）始终优先于用户提供的密钥。
 
 <Note>
@@ -344,7 +344,7 @@ pytest --langsmith-output tests
 
 **注意：** 该标志曾经是 `langsmith<=0.3.3` 中的 `--output=langsmith`，但已更新以避免与其他 pytest 插件发生冲突。
 
-每个测试套件都会有一个漂亮的表格，当结果上传到LangSmith时，该表格会实时更新：
+每个测试套件都会有一个漂亮的表，当结果上传到LangSmith时，该表会实时更新：
 
 <img alt="Rich pytest outputs" />
 

@@ -126,7 +126,7 @@ platformBackend:
 
    * **全部允许**（默认）：允许 JWT 转发到任何上游 URL。相当于没有限制。
    * **全部阻止：** 阻止 JWT 转发到所有 URL。
-   * **自定义：** 指定允许的 URL 模式的明确列表。不接受空字符串和裸线 `*`。当 LLM 身份验证代理开关关闭时，该控件将被禁用。
+   * **自定义：** 指定允许的 URL 模式的明确列表。不接受空字符串和裸露的`*`。当 LLM 身份验证代理开关关闭时，该控件将被禁用。
 
    <img alt="LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected." />
 
@@ -142,7 +142,7 @@ helm repo update
 ```
 
 使用上游 URL 和 JWT 验证设置创建 `values.yaml`。 JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
-* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml`。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
+* **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml` 中。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
 
 如果两者都设置了，则`jwksUri`优先。
 
@@ -372,7 +372,7 @@ authProxy:
 | `responseTrailerMode` | `SEND`、`SKIP` |是否转发响应预告片。 |
 
 * 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
-* 使用 `STREAMED` 进行流式 LLM 响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
+* 使用`STREAMED`进行流式LLM响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
 * 使用`NONE`完全跳过一个阶段。
 
 <Warning>
@@ -382,7 +382,7 @@ authProxy:
 ### 请求流程启用 `ext_proc` 进行标头注入和正文重写的示例：
 
 ```
-curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-4",...}'
+curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
   -> Envoy(:10000)
   -> built-in Envoy JWT filter (validate sig, iss, aud)
   -> `ext_proc` filter -> transformer:50051 (gRPC)

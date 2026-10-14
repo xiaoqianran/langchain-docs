@@ -147,7 +147,7 @@ The following example uses [a prompt](https://smith.langchain.com/hub/langchain-
     };
 
     const output = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
+      model: "gpt-5.5",
       messages: [
         {
           role: "system",

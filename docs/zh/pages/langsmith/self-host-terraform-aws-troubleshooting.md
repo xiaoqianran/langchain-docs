@@ -9,7 +9,7 @@
 本页面记录了使用 [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws) 配置的 LangSmith 部署的常见问题、修复和诊断命令。
 
 <Tip>
-  升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `aws eks update-kubeconfig --region <region> --name <cluster-name>`。
+  升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前，从 `modules/aws/` 或 `aws eks update-kubeconfig --region <region> --name <cluster-name>` 运行 `source infra/scripts/set-kubeconfig.sh`。
 </Tip>
 
 有关本页中使用的 `kubectl`、`helm` 和 `aws` 调用的复制粘贴参考，请跳至 [Diagnostic commands](#diagnostic-commands)。
@@ -49,7 +49,7 @@ aws eks describe-nodegroup \
   --region <region> \
   --query "nodegroup.health"
 
-terraform apply -var-file=terraform.tfvars
+make apply
 ```
 
 ### kubectl 失败：“您必须登录到服务器”
@@ -65,18 +65,29 @@ aws eks update-kubeconfig --region <region> --name <cluster-name>
 kubectl cluster-info
 
 aws sts get-caller-identity
-```如果集群是使用不同的 IAM 角色创建的，请通过 `aws-auth` ConfigMap 授予访问权限：
+```如果集群是使用不同的 IAM 主体创建的，请通过 EKS 访问条目授予访问权限，这就是模块管理集群访问的方式。让集群创建者或其他集群管理员运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl edit configmap aws-auth -n kube-system
-# Add your IAM user or role under mapUsers / mapRoles
+aws eks create-access-entry \
+  --cluster-name <cluster-name> \
+  --principal-arn <iam-role-or-user-arn> \
+  --region <region>
+
+aws eks associate-access-policy \
+  --cluster-name <cluster-name> \
+  --principal-arn <iam-role-or-user-arn> \
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+  --access-scope type=cluster \
+  --region <region>
 ```
 
 ### 安装 Helm 后未创建 ALB
 
+此条目适用于经典 ALB 入口模式（`enable_envoy_gateway = false`，没有其他网关）。在默认的 Envoy 网关模式下，预计会有一个空的 `kubectl get ingress`：Terraform 管理的 ALB 通过 `TargetGroupBinding` 转发到 Envoy。请检查 `make status` 和 `kubectl get gateway,httproute -n langsmith`。
+
 **症状：** 几分钟后`kubectl get ingress -n langsmith` 显示无地址。
 
-**原因：** AWS 负载均衡器控制器未运行或缺少 IRSA 权限、未正确引用 Terraform 预置的 ALB，或设置了 `alb_scheme = "internal"`（内部 ALB 没有公共地址；请参阅 [ALB has no public address](#alb-has-no-public-address-internal-scheme)）。
+**原因：** AWS 负载均衡器控制器未运行或缺少 IRSA 权限，或设置了`alb_scheme = "internal"`（内部 ALB 没有公共地址；请参阅[ALB has no public address](#alb-has-no-public-address-internal-scheme)）。
 
 **修复**
 
@@ -85,7 +96,8 @@ kubectl get pods -n kube-system | grep aws-load-balancer
 kubectl logs -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller --tail=50
 kubectl get sa -n kube-system aws-load-balancer-controller -o yaml | grep eks.amazonaws.com
 
-terraform output alb_dns_name
+kubectl get ingress -n langsmith \
+  -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}'
 aws elbv2 describe-load-balancers --query "LoadBalancers[?DNSName=='<alb-dns-name>'].State"
 ```
 
@@ -93,7 +105,7 @@ aws elbv2 describe-load-balancers --query "LoadBalancers[?DNSName=='<alb-dns-nam
 
 **症状：** 后端日志显示 RDS 端点的 `connection refused` 或 `timeout`。
 
-**原因：** RDS 安全组不允许来自 EKS 节点或集群安全组的入站 TCP 5432。
+**原因：** RDS 安全组不允许来自 VPC CIDR 的入站 TCP 5432。模块的安全组允许VPC CIDR。设置 `postgres_existing_security_group_id` 后，Terraform 不会管理规则，因此您的安全组必须允许它。
 
 **修复**
 
@@ -112,33 +124,35 @@ aws ec2 describe-security-group-rules \
 `postgres`模块自动设置安全组。如果规则缺失，请重新应用：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-terraform apply -var-file=terraform.tfvars -target=module.postgres
-```
+make apply ARGS="-target=module.postgres"
+```### pod 拒绝 S3 访问（未配置 IRSA）
 
-### pod 拒绝 S3 访问（未配置 IRSA）
+**症状：** 读取或写入 S3 时，后端日志显示`AccessDenied`。
 
-**症状：** 读写 S3 时后端日志显示`AccessDenied`。
-
-**原因：** LangSmith 服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关端点未正确路由。
+**原因：** 组件服务帐户中缺少 IRSA 注释，或者 S3 VPC 网关终端节点未正确路由。
 
 **修复**
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl get sa langsmith -n langsmith -o yaml | grep eks.amazonaws.com
+kubectl get sa -n langsmith -o yaml | grep eks.amazonaws.com
 
 aws ec2 describe-vpc-endpoints \
   --filters "Name=service-name,Values=com.amazonaws.<region>.s3" \
   --query "VpcEndpoints[].State"
 
-kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith -- \
+# Run the test pod as an annotated service account; other service accounts have no AWS credentials
+kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith \
+  --overrides='{"spec":{"serviceAccountName":"<annotated-service-account>"}}' -- \
   s3 ls s3://<bucket-name>
 ```
 
-如果缺少 IRSA 注释，请验证 `terraform.tfvars` 中的 `create_langsmith_irsa_role = true` 以及 Helm 值中的服务帐户名称是否与 `langsmith` 匹配。
+`make init-values` 注释每个组件的服务帐户（后端、平台后端、队列、摄取队列、游乐场和 LangSmith 部署服务）。如果注释丢失，请验证`terraform.tfvars`中的`create_langsmith_irsa_role = true`，然后运行`make init-values && make deploy`。
 
-### ElastiCache Redis 连接超时**症状：** Pod 无法连接到 Redis。日志显示`dial tcp: i/o timeout`。
+### ElastiCache Redis 连接超时
 
-**原因：** ElastiCache 安全组不允许来自 EKS 节点安全组的入站 TCP 6379。
+**症状：** Pod 无法连接到 Redis。日志显示`dial tcp: i/o timeout`。
+
+**原因：** ElastiCache 安全组不允许来自 VPC CIDR 的入站 TCP 6379。模块的安全组允许VPC CIDR；设置 `redis_existing_security_group_id` 后，您的安全组必须允许它。
 
 **修复**
 
@@ -148,8 +162,31 @@ aws elasticache describe-cache-clusters \
   --query "CacheClusters[0].SecurityGroups"
 
 kubectl run redis-test --rm -it --image=redis:7 -n langsmith -- \
-  redis-cli -h <elasticache-endpoint> -a <auth-token> ping
+  redis-cli --tls -h <elasticache-endpoint> -a <auth-token> ping
 ```
+
+ElastiCache 已启用传输加密，因此`redis-cli` 需要`--tls`。
+
+### 图像在没有互联网出口的 VPC 中拉出超时
+
+**症状：** Pod 停留在 `ImagePullBackOff` 或 `ErrImagePull`。从 `<account-id>.dkr.ecr.<region>.amazonaws.com` 拉出时，`kubectl describe pod` 显示 `dial tcp <ip>:443: i/o timeout`。**原因：** 该模块仅在 VPC 中创建 S3 网关终端节点，没有 ECR 接口终端节点。该模块创建的VPC通过NAT网关发送出口。没有 NAT 网关的自带 VPC (`create_vpc = false`) 不会为节点提供通往 ECR API 和注册表的路由。
+
+**修复：** 在启用了私有 DNS 的私有子网中创建 `ecr.api` 和 `ecr.dkr` 接口终端节点，位于允许来自 VPC CIDR 的 TCP 443 的安全组后面。通过现有网关端点从 S3 下载图像层。
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws ec2 create-security-group --group-name <name>-ecr-endpoints \
+  --description "ECR interface endpoints" --vpc-id <vpc-id> --region <region>
+aws ec2 authorize-security-group-ingress --group-id <endpoint-sg-id> \
+  --protocol tcp --port 443 --cidr <vpc-cidr> --region <region>
+aws ec2 create-vpc-endpoint --vpc-id <vpc-id> --vpc-endpoint-type Interface \
+  --service-name com.amazonaws.<region>.ecr.api --subnet-ids <private-subnet-ids> \
+  --security-group-ids <endpoint-sg-id> --private-dns-enabled --region <region>
+aws ec2 create-vpc-endpoint --vpc-id <vpc-id> --vpc-endpoint-type Interface \
+  --service-name com.amazonaws.<region>.ecr.dkr --subnet-ids <private-subnet-ids> \
+  --security-group-ids <endpoint-sg-id> --private-dns-enabled --region <region>
+```
+
+在 ECR 外部托管的映像仍然需要出口或私有 ECR 存储库中的副本。
 
 ### EKS 节点不自动缩放
 
@@ -192,22 +229,28 @@ dig +short <your-langsmith-domain>
 ```
 Error: deleting RDS DB Instance: InvalidParameterCombination:
 Cannot delete, DeletionProtection is enabled.
-```
-
-**修复：** 在`terraform.tfvars`中禁用删除保护，应用，然后销毁：
+```**修复：** 在`terraform.tfvars`中禁用删除保护，应用，然后销毁：
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-postgres_deletion_protection = false
+postgres_deletion_protection          = false
+smithdb_metastore_deletion_protection = false   # only if SmithDB is enabled
 ```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-terraform apply -var-file=terraform.tfvars
-terraform destroy
+source infra/scripts/setup-env.sh
+make apply
+make destroy
+make purge-secrets
+make clean
 ```
+
+如果您尚未卸载LangSmith，请先运行`make uninstall`，然后再运行`make destroy`。有关完整序列，请参阅[Teardown](/langsmith/self-host-terraform-aws-quick-reference#teardown)。
+
+RDS 拍摄名为 `<identifier>-final` 的最终快照，除非 `postgres_skip_final_snapshot = true`。启用 SmithDB 后，元存储 RDS 还会获取 `-final` 快照，除非 `smithdb_metastore_skip_final_snapshot = true`。当该快照存在时，重复销毁失败并显示`DBSnapshotAlreadyExists`；删除旧快照或设置`postgres_skip_final_snapshot = true`。
 
 ### ESO 无法同步：langsmith-config 密钥丢失
 
-**症状：** Pod 卡在 `CreateContainerConfigError` 中。 `kubectl get secret langsmith-config -n langsmith` 返回 `NotFound`。
+**症状：** Pod 卡在 `CreateContainerConfigError` 中。 `kubectl get secret langsmith-config -n langsmith` 返回`NotFound`。
 
 **原因：** ESO 同步要么全有要么全无。如果 `ExternalSecret` 引用的任何单个 SSM 参数丢失，ESO 将拒绝创建 Kubernetes Secret。所有 pod 都会失败，包括那些与缺失参数无关的 pod。
 
@@ -218,16 +261,19 @@ kubectl get externalsecret langsmith-config -n langsmith
 kubectl describe externalsecret langsmith-config -n langsmith
 
 ./infra/scripts/manage-ssm.sh validate
+./infra/scripts/manage-ssm.sh list
 
 source ./infra/scripts/setup-env.sh
-./helm/scripts/apply-eso.sh
-````describe` 输出显示哪个 `remoteRef.key` 失败。将其与 SSM 前缀 `/langsmith/{name_prefix}-{environment}/` 进行匹配。
+make apply-eso
+```
+
+`validate` 不检查 `langsmith-admin-email`，而 `ExternalSecret` 总是需要它，并且将 `sandbox-callback-signing-jwk` 视为可选，尽管在 `enable_sandboxes = true` 时它是必需的。确认 `list` 输出中的两个密钥。
+
+`describe` 输出显示哪个 `remoteRef.key` 失败。将其与 SSM 前缀 `/langsmith/{name_prefix}-{environment}/` 进行匹配。
 
 ### SSM 参数前缀不匹配
 
-**症状：** `manage-ssm.sh validate` 通过，但 ESO 仍然无法同步。或者 `setup-env.sh` 使用与 ESO 预期不同的前缀写入参数。
-
-**原因：** SSM前缀源自`terraform.tfvars`中的`name_prefix`和`environment`。如果这些在初始设置后发生更改，旧参数将保留在旧前缀下，而 ESO 将在新前缀下查找。
+**症状：** `manage-ssm.sh validate` 通过，但 ESO 仍然无法同步。或者 `setup-env.sh` 使用与 ESO 预期不同的前缀写入参数。**原因：** SSM前缀源自`terraform.tfvars`中的`name_prefix`和`environment`。如果这些在初始设置后发生更改，旧参数将保留在旧前缀下，而 ESO 将在新前缀下查找。
 
 **修复**
 
@@ -236,7 +282,21 @@ kubectl get externalsecret langsmith-config -n langsmith -o yaml | grep 'key:'
 
 ./infra/scripts/manage-ssm.sh list
 
-./infra/scripts/migrate-ssm.sh
+# Preview the copy, then re-run without --dry-run (add --delete-old to remove the old parameters)
+./infra/scripts/migrate-ssm.sh --old-prefix /langsmith/<old-name-prefix>-<old-environment> --dry-run
+```
+
+在 `v0.17.0` 和 `v0.16.*` 模块版本中，`migrate-ssm.sh` 中的 Live Copy 失败：其 `put-parameter` 调用会传递 `--output none`，而 AWS CLI 会拒绝该`--output none`，因此每个参数都会报告 `FAILED`。在 bash 4.1 或更高版本上，脚本也可以在第一个参数后退出。使用 `--dry-run` 列出密钥，然后使用 AWS CLI 复制每个密钥：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OLD=/langsmith/<old-name-prefix>-<old-environment>
+NEW=/langsmith/<name_prefix>-<environment>
+for key in <key-1> <key-2>; do
+  aws ssm put-parameter --region <region> --type SecureString --overwrite \
+    --name "$NEW/$key" \
+    --value "$(aws ssm get-parameter --region <region> --name "$OLD/$key" \
+      --with-decryption --query Parameter.Value --output text)" >/dev/null
+done
 ```
 
 <Warning>
@@ -249,22 +309,24 @@ kubectl get externalsecret langsmith-config -n langsmith -o yaml | grep 'key:'
 
 ```
 Error: Invalid value for variable "postgres_password"
-RDS master password must not contain '/', '@', '"', single quotes, or spaces.
+RDS master password must be 8-128 characters and must not contain '/', '@', '"', single quotes, or spaces.
 ```
 
-**原因：** 密码包含 RDS 主密码中不允许的字符。
+**原因：** 密码短于 8 个字符或长于 128 个字符，或包含 RDS 主密码中不允许的字符。
 
-**修复：** 重新生成无限制字符。 `setup-env.sh` 自动生成合规密码；手动更新：
+**修复：** 生成不带限制字符的密码。 `setup-env.sh` 自动生成合规密码。要替换无效值，请首先取消设置导出的变量，因为 `setup-env.sh` 保留已设置的 `TF_VAR_postgres_password`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-./infra/scripts/manage-ssm.sh set postgres-password "$(openssl rand -base64 24 | tr -d '/+= ')"
+./infra/scripts/manage-ssm.sh set postgres-password "$(openssl rand -hex 32)"
+unset TF_VAR_postgres_password
 source ./infra/scripts/setup-env.sh
-terraform apply -var-file=terraform.tfvars
-```
+make apply
+kubectl rollout restart deployment -n langsmith
+```运行完整的 `make apply`，而不是 `-target=module.postgres`：目标会跳过 `langsmith-postgres` Secret，因此 RDS 和 LangSmith 将保存不同的密码。在没有正在运行的 pod 的新部署上跳过重新启动。
 
 ### 私有 EKS 集群无法访问（需要堡垒）
 
-**症状：** `kubectl`和`terraform apply`在`enable_public_eks_cluster = false`时超时。
+**现象：** 当`enable_public_eks_cluster = false`时，`kubectl`和`terraform apply`超时。
 
 **原因：** EKS API 端点是私有的。命令必须在 VPC 内通过堡垒主机或 VPN 连接运行。
 
@@ -281,9 +343,11 @@ kubectl get nodes
 
 如果没有配置堡垒，请设置`create_bastion = true`并重新申请，或暂时设置`enable_public_eks_cluster = true`。
 
-### ALB没有公共地址（内部方案）**症状：** `kubectl get ingress -n langsmith` 显示地址，但仅在 VPC 内解析。
+### ALB没有公共地址（内部方案）
 
-**原因：** `alb_scheme = "internal"` 设置于 `terraform.tfvars`。内部 ALB 只能从 VPC 内部访问（VPN、对等互连或 PrivateLink）。
+**症状：** `make status` 或 `make tf ARGS="output alb_dns_name"` 中的 ALB 主机名以 `internal-` 开头，并且仅在 VPC 内解析。
+
+**原因：** `alb_scheme = "internal"` 设置为 `terraform.tfvars`。内部 ALB 只能从 VPC 内部访问（VPN、对等互连或 PrivateLink）。
 
 **修复：** 专用于私有部署。要使 ALB 可供公众访问：
 
@@ -292,21 +356,24 @@ alb_scheme = "internet-facing"
 ```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-terraform apply -var-file=terraform.tfvars
-# Then redeploy Helm to pick up the new ALB
+make apply
+make init-values
+make deploy
 ```
+
+有了`create_vpc = false`，面向互联网的ALB还需要`public_subnets`。
 
 ### ALB 主机名在入口重新创建后更改
 
-**症状：** LangSmith URL 停止工作。代理部署陷入`DEPLOYING`。 DNS 记录或书签指向不再解析的旧 ALB 主机名。
+此条目适用于经典 ALB 入口模式，其中 ALB 控制器拥有 ALB。在该模式下，`alb_dns_name`指的是未使用的 Terraform 管理的 ALB。**症状：** LangSmith URL 停止工作。代理部署陷入`DEPLOYING`。 DNS 记录或书签指向不再解析的旧 ALB 主机名。
 
 **原因：** 删除 Kubernetes 入口（通过 `helm uninstall`、`kubectl delete ingress` 或命名空间删除）会取消配置 ALB。重新创建入口时，会发出具有不同主机名的新 ALB。 Helm 值中的 `config.deployment.url` 仍然指向旧主机名，因此操作员的运行状况检查失败并且部署陷入困境。
 
-如果 ALB 控制器创建一个新的 ALB 而不是重用 Terraform 预配置的 ALB，也会发生这种情况。需要使用 `group.name` 注释和 `load-balancer-arn` 来防止这种情况发生。
+**预防**
 
-**预防*** 确保`group.name`和`load-balancer-arn`注释均已设置。当存在预先配置的 ALB 时，`init-values.sh` 会自动执行此操作。
+* 保留`init-values.sh`在入口处设置的`group.name`注释。
 * 除非您计划更新所有与主机名相关的配置，否则不要删除入口。
-* 避免使用 `helm rollback` 而不使用 `--server-side=false`。入口 SSA 冲突可能会触发删除/重新创建周期。
+* 在 Helm 4 上，避免使用 `helm rollback`，而不使用 `--server-side=false`。入口 SSA 冲突可能会触发删除/重新创建周期。
 
 **修复**
 
@@ -315,13 +382,65 @@ terraform apply -var-file=terraform.tfvars
 kubectl get ingress langsmith-ingress -n langsmith \
   -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
-# 2. Check what Terraform expects
-terraform output alb_dns_name
+# 2. Redeploy: deploy detects the live hostname, updates the values file, and re-upgrades
+make deploy
+```
 
-# 3. If they differ, re-run init-values.sh and redeploy
+当`langsmith_domain`设置时，`make deploy`不会重写主机名；将 DNS 记录更新为新的 ALB。
+
+### Chart v16 沙箱值被拒绝
+
+**症状：** `make deploy` 退出并显示 `ERROR: langsmith-values-overrides.yaml carries sandboxes.juicefs.csi, the chart 0.16 sandbox schema.`
+
+**原因：** 值文件是由 `v0.16.*` 模块版本生成的。 Chart v17 没有 JuiceFS CSI 驱动程序并忽略 `sandboxes.juicefs.csi` 块。
+
+**修复：** 重新生成图表 v17 架构中的值，然后重新部署：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init-values
 make deploy
 ```
+
+### 部署在图表 v16 JuiceFS 卷上停止**症状：** `make deploy` 退出时，先执行 `ERROR: namespace langsmith still mounts sandbox volumes through the chart 0.16 JuiceFS CSI driver.`，然后执行 `kubectl delete` 命令。
+
+**原因：** Chart v17 删除了 JuiceFS CSI 驱动程序。在仍然安装图表 v16 沙箱卷的情况下进行升级会使旧的 `sandbox-host` Pod 陷入`Terminating`，因此 `deploy.sh` 在升级之前停止。
+
+**修复：** 在驱动程序仍在运行时运行打印的 `kubectl delete` 命令。等到只剩下 `juicefs-csi-*` Pod，然后重新部署：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get pods -n langsmith | grep juicefs
+make deploy
+```
+
+正在运行的沙箱在排水期间停止。他们的数据保留在 S3 和 Redis 中，chart v17 挂载相同的 JuiceFS 卷。
+
+### Chart v15 值文件被拒绝
+
+**症状：** `make deploy` 退出，并显示 `ERROR: these values files use the chart 0.15 schema, which chart 0.16 rejects:`，后跟文件列表。
+
+**原因：** Chart v16 删除了 `config.insights`、`config.polly` 和 `backend.agentBootstrap`。 `make init-values` 仅在附加值文件丢失时才创建这些文件，因此图表 v15 上生成的文件在升级后仍然存在。
+
+**修复：** 从`helm/values/`删除列出的文件，然后重新生成并重新部署：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+make init-values
+make deploy
+```
+
+### setup-env.sh 在没有 AWS 凭证的情况下运行
+
+**现象：** 获取`setup-env.sh`后，`make secrets`各参数显示为`✗ MISSING`，`aws sts get-caller-identity`失败。
+
+**原因：** 没有有效的 AWS 凭证。该脚本仍然导出 `TF_VAR_*` 并仅打印警告。**修复：** 登录，然后在同一 shell 中重新获取脚本。它将导出的值回填到 SSM，而不会再次提示。首先运行 `make preflight` 来捕获它。
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws sso login --profile <profile>
+export AWS_PROFILE=<profile>
+aws sts get-caller-identity
+source infra/scripts/setup-env.sh
+```
+
+如果没有 SSM 访问权限，该脚本还会在 `infra/` 中写入明文后备文件：`.pg_password`、`.api_key_salt`、`.jwt_secret`、`.license_key` 和 `.admin_password`。一旦`make secrets`显示SSM中的每个参数，就删除它们。
 
 ### Terraform 未应用节点组缩放更改
 
@@ -368,9 +487,14 @@ kubectl logs -n langsmith deploy/langsmith-backend --tail=100 -f
 ### ALB 和入口
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Default Envoy Gateway mode
+kubectl get gateway,httproute -n langsmith
+kubectl get targetgroupbinding -A
+
+# Classic ALB Ingress mode
 kubectl get ingress -n langsmith
 kubectl describe ingress -n langsmith
-aws elbv2 describe-load-balancers --query "LoadBalancers[?contains(LoadBalancerName, 'langsmith')]"
+aws elbv2 describe-load-balancers --query "LoadBalancers[?contains(LoadBalancerName, '<name_prefix>-<environment>')]"
 ```
 
 ### TLS 和证书
@@ -404,8 +528,8 @@ helm get values langsmith -n langsmith
 ### IRSA 和 IAM
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl get sa langsmith -n langsmith -o yaml | grep eks.amazonaws.com
-terraform output langsmith_irsa_role_arn
+kubectl get sa -n langsmith -o yaml | grep eks.amazonaws.com
+make tf ARGS="output langsmith_irsa_role_arn"
 aws iam get-role --role-name <irsa-role-name>
 ```
 
@@ -424,7 +548,7 @@ kubectl get pods -n keda
 echo "=== Context ===" && kubectl config current-context
 echo "=== Nodes ===" && kubectl get nodes
 echo "=== Pods ===" && kubectl get pods -n langsmith
-echo "=== Ingress ===" && kubectl get ingress -n langsmith
+echo "=== Routes ===" && kubectl get gateway,httproute,ingress -n langsmith
 echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E "STATUS|LAST DEPLOYED"
 ```
 

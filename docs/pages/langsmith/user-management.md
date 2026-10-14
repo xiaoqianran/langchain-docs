@@ -32,7 +32,7 @@ By default, LangSmith comes with a set of system roles:
 
 If these do not fit your access model, `Organization Admins` can create custom roles to suit your needs.
 
-To create a role, navigate to the **Roles** tab in the **Members and roles** section of the [Organization settings page](https://smith.langchain.com/settings). Note that new roles that you create will be usable across all workspaces within your organization.
+To create a role, go to **Settings** > **Roles**. Note that new roles that you create will be usable across all workspaces within your organization.
 
 Click on the **Create Role** button to create a new role. A **Create role** form will open.
 
@@ -185,7 +185,7 @@ For instructions on using SCIM along with SAML for user provisioning and deprovi
 
    5. Required claims: `sub` and `email`.
 
-2. In LangSmith: Go to **Settings** -> **Members and roles** -> **SSO Configuration**. Fill in the required information and submit to activate SSO login:
+2. In LangSmith: Go to **Settings** > **SSO configuration**. Fill in the required information and submit to activate SSO login:
 
    1. Fill in either the `SAML metadata URL` or `SAML metadata XML`.
    2. Select the `Default workspace role` and `Default workspaces`. New users logging in via SSO will be added to the specified workspaces with the selected role.
@@ -211,7 +211,7 @@ The attribute name is preserved end-to-end: the IdP attribute name, the SAML Att
 
 #### Configuration
 
-In **Settings** > **Members and roles** > **SSO Configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
+In **Settings** > **SSO configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
 
 | Column | Description |
 | - | - |
@@ -319,7 +319,7 @@ For additional information, see Microsoft's [documentation](https://learn.micros
 
 6. On the SAML-based Sign-on page, under **SAML Certificates**, copy the **App Federation Metadata URL**.
 
-**Step 3: Set up LangSmith SSO Configuration**
+**Step 3: Set up LangSmith SSO configuration**
 
 Follow the instructions under [initial configuration](#initial-configuration) in the `Fill in required information` step, using the metadata URL from the previous step.
 
@@ -337,7 +337,7 @@ Follow the instructions under [initial configuration](#initial-configuration) in
       2. Search for the user you want to assign to the enterprise application, and then click **Select**.
       3. Verify that the user is selected, and click **Assign**.
 
-2. Have the user sign in via the unique login URL from the **SSO Configuration** page, or go to **Manage** > **Single sign-on** and select **Test single sign-on with (application name)**.
+2. Have the user sign in via the unique login URL from the **SSO configuration** page, or go to **Manage** > **Single sign-on** and select **Test single sign-on with (application name)**.
 
 ### Google
 
@@ -422,7 +422,7 @@ For additional information, see Google's [documentation](https://support.google.
 7. Use `Add mapping` to ensure required claims are present:
    1. `Basic Information > Primary email` -> `email`
 
-**Step 2: Set up LangSmith SSO Configuration**
+**Step 2: Set up LangSmith SSO configuration**
 
 Follow the instructions under [initial configuration](#initial-configuration) in the `Fill in required information` step, using the `IDP metadata` from the previous step as the metadata XML.
 
@@ -448,7 +448,7 @@ Follow the instructions under [initial configuration](#initial-configuration) in
 
 **Step 4: Verify the SSO setup**
 
-Have a user with access sign in via the unique login URL from the **SSO Configuration** page, or go to the SAML application page in Google and click **TEST SAML LOGIN**.
+Have a user with access sign in via the unique login URL from the **SSO configuration** page, or go to the SAML application page in Google and click **TEST SAML LOGIN**.
 
 ### Okta
 
@@ -633,7 +633,7 @@ For additional information, see Okta's [documentation](https://help.okta.com/en-
 
 7. Copy the **Metadata URL** from the **Sign On** page to use in the next step.
 
-**Step 2: Set up LangSmith SSO Configuration**
+**Step 2: Set up LangSmith SSO configuration**
 
 Follow the instructions under [initial configuration](#initial-configuration) in the **Fill in required information** step, using the metadata URL from the previous step.
 
@@ -645,11 +645,11 @@ Follow the instructions under [initial configuration](#initial-configuration) in
 
 **Step 4: Verify the SSO setup**
 
-Have a user with access sign in via the unique login URL from the `SSO Configuration` page, or have a user select the application from their Okta dashboard.
+Have a user with access sign in via the unique login URL from the `SSO configuration` page, or have a user select the application from their Okta dashboard.
 
 #### SP-initiated SSO
 
-Once service-provider–initiated SSO is configured, users can sign in using a unique login URL. You can find this in the LangSmith UI under **Organization members and roles** then **SSO configuration**.
+Once service-provider-initiated SSO is configured, users can sign in using a unique login URL. You can find this in the LangSmith UI in **Settings** > **SSO configuration**.
 
 To send a user to a specific page after sign-in, add a URL-encoded `redirect_to` path to the login URL:
 
@@ -1138,7 +1138,7 @@ Choose **SSO Groups Sync** when IdP admin involvement is minimal and reactive (l
 #### Configuration
 
 1. In your IdP: add the user's group memberships to the SSO token claim (default claim name: `groups`). Group names must follow the [SCIM naming convention](#group-naming-convention).
-2. In LangSmith: go to **Settings** > **Members and roles** > **SSO Configuration** > **SSO Groups Sync** and configure the following:
+2. In LangSmith: go to **Settings** > **SSO configuration**, scroll to the **SSO Groups Sync** section, and configure the following:
 
    | Setting | Description |
    | - | - |

@@ -14,7 +14,7 @@ LangSmith 支持记录和渲染图像作为跟踪的一部分。目前，多模�
   from langsmith.wrappers import wrap_openai
   client = wrap_openai(OpenAI())
   response = client.chat.completions.create(
-      model="gpt-4-turbo",
+      model="gpt-5.5",
       messages=[
         {
           "role": "user",
@@ -39,7 +39,7 @@ LangSmith 支持记录和渲染图像作为跟踪的一部分。目前，多模�
   // Wrap the OpenAI client to automatically log traces
   const wrappedClient = wrapOpenAI(new OpenAI());
   const response = await wrappedClient.chat.completions.create({
-    model: "gpt-4-turbo",
+    model: "gpt-5.5",
     messages: [
       {
         role: "user",

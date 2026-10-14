@@ -2463,6 +2463,12 @@
           "rel": "langsmith/self-host-sandbox-architecture.md"
         }
       ],
+      "self-host-sandbox-egress-proxy": [
+        {
+          "title": "Route self-hosted Sandbox egress through a forward proxy",
+          "rel": "langsmith/self-host-sandbox-egress-proxy.md"
+        }
+      ],
       "self-host-sandbox-operations": [
         {
           "title": "Operate self-hosted Sandboxes",
@@ -3229,6 +3235,12 @@
         {
           "title": "Set up LangChain Tuned Evaluators",
           "rel": "langsmith/tuned-evaluators.md"
+        }
+      ],
+      "tunnels": [
+        {
+          "title": "Tunnels",
+          "rel": "langsmith/tunnels.md"
         }
       ],
       "typesafe-compatible-model": [

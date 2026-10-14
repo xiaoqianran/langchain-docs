@@ -13,7 +13,7 @@ Deep Agents 是开始构建由 LLM 支持的代理和应用程序的最简单方
 Deep Agents具有以下功能：
 
 * **在环境中采取行动**：通过工具采取行动，读写文件，执行代码
-* **连接到您的数据**：在适当的时刻加载记忆、技能和领域知识
+* **连接到您的数据**：在正确的时刻加载记忆、技能和领域知识
 * **管理不断增长的环境**：总结历史并在长期运行中卸载大量结果
 * **并行化任务**：委托给在隔离上下文窗口中运行的通用或专用子代理
 * **留在循环中**：在关键决策点暂停以供人工批准
@@ -103,11 +103,11 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 
 ### 工具和 MCP
 
-使用 `tools=` 参数传递自定义函数、LangChain 工具或来自任何 [MCP server](/oss/javascript/deepagents/tools#mcp-tools) 的工具。 Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)，让您通过标准接口连接到数据库、API、文件系统等。有关定义自定义工具、使用 MCP 服务器以及内置线束工具的完整列表的更多信息，请参阅[Tools](/oss/javascript/deepagents/tools)。
+使用 `tools=` 参数传递自定义函数、LangChain 工具或任何 [MCP server](/oss/javascript/deepagents/tools#mcp-tools) 中的工具。 Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)，让您通过标准接口连接到数据库、API、文件系统等。有关定义自定义工具、使用 MCP 服务器以及内置线束工具的完整列表的更多信息，请参阅[Tools](/oss/javascript/deepagents/tools)。
 
 ### 虚拟文件系统访问
 
-该工具提供了一个可配置的虚拟文件系统，可以由不同的[pluggable backends](/oss/javascript/deepagents/backends)支持：内存状态、本地磁盘、LangGraph存储、复合路由或具有[permission rules](/oss/javascript/deepagents/permissions)用于读写访问的自定义后端。
+该工具提供了一个可配置的虚拟文件系统，可以由不同的 [pluggable backends](/oss/javascript/deepagents/backends) 支持：内存状态、本地磁盘、LangGraph 存储、复合路由或具有 [permission rules](/oss/javascript/deepagents/permissions) 用于读写访问的自定义后端。
 
 后端支持以下文件系统操作：
 
@@ -118,7 +118,7 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 | `write_file` |创建新文件 |
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|
+| `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|
 | `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|<Accordion title="Supported multimodal file extensions">
   |类型 |扩展 |
   | - | - |
@@ -177,7 +177,7 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/javascript
 
 当代理需要轻量级可编程层用于循环、批处理、确定性数据转换或编程工具调用时，请使用解释器。解释器不提供 shell 访问、软件包安装或文件系统和网络访问。
 
-有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/javascript/deepagents/sandboxes)。关于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/javascript/deepagents/sandboxes)。对于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 ### 流媒体
 
@@ -196,9 +196,9 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/javascript
 
 每个技能都遵循 [Agent Skills standard](https://agentskills.io/) 并位于带有 `SKILL.md` 文件的目录中。技能还可以包括脚本、模板、参考文档和其他支持资源。
 
-Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
+Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
 
-有关更多信息，请参阅[Skills](/oss/javascript/deepagents/skills)。
+欲了解更多信息，请参阅[Skills](/oss/javascript/deepagents/skills)。
 
 ＃＃＃ 记忆记忆为您的深层代理提供跨对话的持久上下文，例如编码风格、偏好、约定和项目指南。
 
@@ -325,23 +325,20 @@ Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKIL
 ### 子代理
 
 该工具包括一个内置的`task`工具，可让主代理为隔离、长时间运行、多步骤或并行任务创建临时子代理。
+有两种子代理类型可用：同步子代理（默认）阻止主管，直到它们返回单个报告，并且 [async subagents](/oss/javascript/deepagents/async-subagents) 并行运行并通过启动、检查、更新和取消工具支持飞行中控制。
 
 子代理执行提供：
 
-* **新鲜上下文**：每次调用都会创建一个具有自己上下文的新代理实例。
+* **隔离或继承的上下文**：默认情况下，每次调用都会创建一个具有自己的上下文（`mode: "isolated"`）的新代理实例。使用 `mode: "fork"` 继承父级的完整对话历史记录。参见[Forked subagents](/oss/javascript/deepagents/subagents#forked-subagents)。
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
-* **可配置策略**：使用[default ⟦T83⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
-* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
-* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。
+* **可配置策略**：使用[default ⟦T85⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
+* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
+* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
-<Accordion title="Running without subagents (no ⟦T84⟧ tool)" icon="ban">
-  要在不使用 `task` 工具的情况下运行代理，请参阅 [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。不要尝试通过 `excluded_middleware` 删除 [⟦T86⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)——这是故意拒绝的。相反，通过 [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) 禁用自动添加的子代理，并且不通过 `subagents=` 传递同步子代理。异步子代理不受影响。有关完整订购信息，请参阅[full stack](/oss/javascript/deepagents/customization#full-stack)。
-</Accordion>
+## 转向
 
-有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。
-
-## 转向控制组件使人们能够在运行时控制代理行为，并为代理工作设置文件系统权限。
+控制组件使人们能够在运行时控制代理行为，并为代理工作设置文件系统权限。
 
 ### 人机交互
 
@@ -351,7 +348,7 @@ Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用
 
 这为您提供了一个运行时安全和控制层，用于破坏性操作、昂贵的 API 调用和交互式调试。
 
-欲了解更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
+有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 开始吧
 

@@ -8,7 +8,7 @@
 
 * [Set up an organization](#set-up-an-organization)：创建和管理团队协作的组织，包括用户管理和角色分配。
 * [Set up a workspace](#set-up-a-workspace)：设置和配置工作区以组织您的 LangSmith 资源、管理工作区成员以及配置团队协作设置。
-* [Set up agents and applications](#set-up-agents-and-applications)：对工作区中的资源进行分组以进一步组织它们，并利用 ABAC 许可。
+* [Set up agents and applications](#set-up-agents-and-applications)：对工作空间内的资源进行分组以进一步组织它们，并利用 ABAC 许可。
 
 <Check>
   在阅读此设置页面之前，您可能会发现参考[overview on LangSmith resource hierarchy](/langsmith/administration-overview)很有帮助。
@@ -34,9 +34,9 @@
 
 ### 管理用户
 
-在 [Settings page](https://smith.langchain.com/settings) 上的 **成员和角色** 选项卡中管理共享组织中的成员资格。在这里您可以：
+在 [organization settings](https://smith.langchain.com/settings) 的 **成员** 页面上管理共享组织中的成员资格。在这里您可以：
 
-* 邀请新用户加入您的组织，选择工作区成员身份和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
+* 邀请新用户加入您的组织，选择工作区成员资格和（如果启用 [RBAC](/langsmith/rbac)）工作区角色。
 * 编辑用户的组织角色。
 * 从您的组织中删除用户。
 

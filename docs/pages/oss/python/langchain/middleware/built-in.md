@@ -4,7 +4,11 @@
 
 Prebuilt middleware for common agent use cases
 
-LangChain and [Deep Agents](/oss/python/deepagents/overview) provide prebuilt middleware for common use cases. Each middleware is production-ready and configurable for your specific needs.
+LangChain provides prebuilt middleware for common use cases. Each middleware is production-ready and configurable for your specific needs.
+
+<Note>
+  Using [Deep Agents](/oss/python/deepagents/overview) (`create_deep_agent` / `createDeepAgent`)? Middleware is added through the [customization](/oss/python/deepagents/customization#middleware) API instead.
+</Note>
 
 ## Provider-agnostic middleware
 

@@ -50,6 +50,25 @@ To define the agent, use `defineDeepAgent`:
     model: "google:gemini-3.6-flash",
   });
   ```
+
+  ```ts Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // To use ChatOpenAI, run: npm install @langchain/openai
+  import { defineDeepAgent } from "managed-deepagents";
+  import { ChatOpenAI } from "@langchain/openai";
+
+  const model = new ChatOpenAI({
+    model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
+    apiKey: process.env.AZURE_OPENAI_API_KEY,
+    configuration: {
+      baseURL: process.env.AZURE_AI_OPENAI_ENDPOINT,
+    },
+  });
+
+  export const agent = defineDeepAgent({
+    name: "research-assistant",
+    model,
+  });
+  ```
 </CodeGroup>
 
 Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).

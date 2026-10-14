@@ -6,7 +6,7 @@
 
 使用 mda CLI 创建并部署您的第一个托管深度代理。
 
-创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T16⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
+创建并部署您的第一个托管深度代理：构建项目、配置模型和指令、添加搜索、在 [LangSmith Studio](/langsmith/studio) 中测试，并使用 [⟦T17⟧ CLI](/langsmith/python/managed-deep-agents-cli) 进行部署。托管 Deep Agents 提供 [Deep Agents harness](/oss/python/deepagents/overview) 和托管运行时。
 
 在本快速入门之后，[tutorial](/langsmith/python/managed-deep-agents-tutorial) 在同一项目上添加了耐用内存和每日计划。
 
@@ -24,7 +24,7 @@
 
 ## 添加`managed-deep-agents`技能
 
-[⟦T19⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
+[⟦T20⟧ skill](https://github.com/langchain-ai/langchain-skills/blob/main/config/skills/managed-deep-agents/SKILL.md) 引导编码代理使用 `mda` CLI 构建、测试和部署托管深度代理。要将其添加到当前项目，请运行：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
@@ -53,7 +53,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
   ## 步骤 4：搭建、配置、测试和部署
 
-  按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
+  按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
 
   ## 规则
 
@@ -81,9 +81,12 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
     OPENAI_API_KEY=<OPENAI_API_KEY>
     # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
     # GOOGLE_API_KEY=<GOOGLE_API_KEY>
+    # AZURE_AI_OPENAI_ENDPOINT=https://<resource>.services.ai.azure.com/openai/v1
+    # AZURE_OPENAI_API_KEY=<AZURE_OPENAI_API_KEY>
+    # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
     ```
 
-    本快速入门默认使用 OpenAI。如果您在下一步中选择 Google 或 Anthropic，请改为设置该提供商的 API 密钥。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
+    本快速入门默认使用 OpenAI。对于 Google、Anthropic 或 Microsoft Foundry，请改为设置匹配值。 `mda deploy` 将提供程序密钥添加到部署中。您也可以使用任何 [other chat provider](/oss/python/integrations/chat/)。
 
     <Warning>
       不要将 `.env` 文件提交到版本控制中。它包含秘密。
@@ -116,7 +119,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
     部署时，托管 Deep Agents 会将这些指令同步到 [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub)，您可以在其中更新它们，而无需重新部署代理。
   </Step><Step title="Configure your model and search">
-    现在设置模型和内置网络搜索工具。 Google、OpenAI 和 Anthropic 提供服务器端搜索，无需额外的软件包或 API 密钥。传递与您的模型匹配的提供程序工具字典：
+    现在设置模型和内置网络搜索工具。 Google、OpenAI、Anthropic 和 Microsoft Foundry 提供服务器端搜索，无需单独的搜索包或搜索 API 密钥。传递与您的模型匹配的提供程序工具字典：
 
     打开`agent.py`：
 
@@ -151,6 +154,26 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
           name="research-assistant",
           model="anthropic:claude-sonnet-4-6",
           tools=[{"type": "web_search_20260209", "name": "web_search"}],
+      )
+      ```
+
+      ```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # Install the required dependency: uv add langchain-azure-ai
+      import os
+
+      from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
+      from managed_deepagents import define_deep_agent
+
+      model = AzureAIOpenAIApiChatModel(
+          endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
+          credential=os.environ["AZURE_OPENAI_API_KEY"],
+          model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+      )
+
+      agent = define_deep_agent(
+          name="research-assistant",
+          model=model,
+          tools=[{"type": "web_search"}],
       )
       ```
     </CodeGroup>
@@ -232,10 +255,10 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
     What were the main announcements from the latest LangChain release?
     ```
 
-    您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+    您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。
+  </Step>
 
-    欲了解更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。
-  </Step><Step title="Deploy the agent">
+  <Step title="Deploy the agent">
     通过运行以下命令来部署项目：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -244,7 +267,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
     托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
-    打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
+    打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查代理的执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
   </Step>
 </Steps>
 

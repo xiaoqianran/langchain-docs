@@ -39,7 +39,7 @@ graph LR
 ```
 
 ## 为什么要使用沙箱？沙箱用于安全性。
-它们允许代理执行任意代码、访问文件和使用网络，而不会损害您的凭据、本地文件或主机系统。
+它们允许代理执行任意代码、访问文件并使用网络，而不会损害您的凭据、本地文件或主机系统。
 当代理自主运行时，这种隔离至关重要。
 
 沙箱特别适用于：
@@ -55,17 +55,17 @@ graph LR
   **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 </Note>
 
-## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅[Available providers](#available-providers)。
+## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅 [Available providers](#available-providers)。
 
 <Tabs>
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 
@@ -329,7 +329,7 @@ graph LR
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
+## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
 
 ## 生命周期和范围
 
@@ -1734,7 +1734,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙箱网络访问
+* 在不需要时阻止沙盒网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 

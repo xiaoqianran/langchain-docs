@@ -13,10 +13,10 @@
 <CodeGroup>
   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   # uv
-  uv add "langsmith[sandbox]"
+  uv add langsmith
 
   # pip
-  pip install "langsmith[sandbox]"
+  pip install langsmith
   ```
 
   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -26,7 +26,7 @@
   ```
 </CodeGroup>
 
-Python 的 `[sandbox]` 额外安装了 `websockets`，可实现实时流式传输和 `timeout=0`。如果没有它，`run()`会自动回退到 HTTP。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
+Python SDK 包括支持实时流的`websockets` 和`timeout=0`。对于 TypeScript，安装用于 WebSocket 流的可选 `ws` 包：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install ws
@@ -77,7 +77,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 ## 运行命令
 
-每个 `run()` 调用都会返回一个 `ExecutionResult` 以及 `stdout`、`stderr`、`exit_code` 和 `success`。
+每个 `run()` 调用都会返回一个 `ExecutionResult`，其中包含 `stdout`、`stderr`、`exit_code` 和 `success`。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -145,9 +145,9 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
   ```
 </CodeGroup>
 
-### 使用 CommandHandle 进行流式传输设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。
+### 使用 CommandHandle 进行流式传输
 
-<CodeGroup>
+设置 `wait=False` 以获得 `CommandHandle` 以完全控制输出流。<CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   with client.sandbox() as sb:
       handle = sb.run("make build", timeout=600, wait=False)
@@ -333,9 +333,9 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 忽略永不过期的链接的过期时间。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。有关选项和安全注意事项，请参阅[Sandbox download links](/langsmith/sandbox-download-links)。
 
-## 安装 Context Hub 存储库安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。
+## 安装 Context Hub 存储库
 
-<Warning>
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。<Warning>
   Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 </Warning>
 
@@ -399,7 +399,9 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 有关同步行为、同步限制以及将存储桶和 Git 存储库与存储库一起安装的信息，请参阅 [Sandbox mounts](/langsmith/sandbox-mounts#mount-a-context-hub-repo)。
 
-## 调整沙箱大小在创建时传递 `vcpus`、`mem_bytes` 和 `fs_capacity_bytes`（在 TypeScript 中为 `vCpus`、`memBytes`、`fsCapacityBytes`）以调整沙箱的大小。省略它们，沙箱将获得以下默认值。
+## 调整沙箱大小
+
+在创建时传递 `vcpus`、`mem_bytes` 和 `fs_capacity_bytes`（在 TypeScript 中为 `vCpus`、`memBytes`、`fsCapacityBytes`）以调整沙箱的大小。省略它们，沙箱将获得以下默认值。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -419,9 +421,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
     fsCapacityBytes: 34_359_738_368, // 32 GiB
   });
   ```
-</CodeGroup>
-
-|资源 |默认 |范围 |
+</CodeGroup>|资源 |默认 |范围 |
 | - | - | - |
 |中央处理器 | 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
@@ -433,10 +433,10 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
   可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
 </Note>
 
-## 沙盒寿命和保留沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。
+## 沙盒寿命和保留
 
-|领域 |它控制什么 |当它发生时 |
+沙箱由固定于**空闲的两阶段保留模型控制
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
 | - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -499,9 +499,9 @@ running ──(idle for idle_ttl_seconds)──▶ stopped ──(delete_after_s
   ```
 </CodeGroup>
 
-## 命令生命周期和 TTL沙箱守护进程使用两种超时机制来管理命令会话生命周期：
+## 命令生命周期和 TTL
 
-* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清除。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
+沙箱守护进程使用两种超时机制来管理命令会话生命周期：* **会话 TTL（已完成的命令）**：命令完成后，其会话会在内存中保留一段 TTL 时间（默认值：5 分钟）。在此窗口期间，您可以重新连接以检索输出。 TTL 过期后，会话将被清理。将 `ttl_seconds` 设置为 `-1` 以无限期地保留会话。
 * **空闲超时（运行命令）**：在空闲超时（默认值：1 小时）后，没有连接客户端的运行命令将被终止。每次客户端连接时，空闲计时器都会重置。将 `idle_timeout` 设置为 `-1` 则无空闲超时。
 
 ### 组合生命周期选项

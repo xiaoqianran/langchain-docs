@@ -96,7 +96,7 @@ async def main():
     # Create the agent
     agent = Agent(
         name="weather_agent",
-        model="gemini-2.5-flash",
+        model="gemini-3.7-flash",
         description="Provides weather information.",
         instruction="Use the get_weather tool to answer weather questions.",
         tools=[get_weather],
@@ -185,13 +185,13 @@ async def main():
     # Create sub-agents
     translator = Agent(
         name="translator",
-        model="gemini-2.5-flash",
+        model="gemini-3.7-flash",
         description="Translates text to English.",
     )
 
     summarizer = Agent(
         name="summarizer",
-        model="gemini-2.5-flash",
+        model="gemini-3.7-flash",
         description="Summarizes text concisely.",
     )
 

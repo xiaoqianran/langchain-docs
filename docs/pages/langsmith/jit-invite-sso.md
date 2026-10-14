@@ -30,7 +30,7 @@ You can update these settings in the LangSmith UI or with the LangSmith API:
 
     1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
     2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
-    3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **Organization** > **SSO Configuration**.
+    3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
   </Tab>
 
   <Tab title="API" icon="code">
@@ -192,7 +192,7 @@ When [JIT provisioning](#jit-provisioning) is enabled, configure default setting
 
 2. Default workspaces. Select one or more workspaces that users are automatically added to. Users receive the same role in all selected workspaces. To configure:
 
-   1. Go to **Settings** > **Organization** > **SSO Configuration**.
+   1. Go to **Settings** > **SSO configuration**.
    2. Set **Default workspace role**.
    3. Select **Default workspaces**.
    4. Save your configuration.

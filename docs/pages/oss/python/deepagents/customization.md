@@ -2419,11 +2419,11 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 

@@ -54,7 +54,7 @@ for the answer is logically valid and consistent with the question and the answe
 
     # Call the LLM to judge the output
     response = oai_client.beta.chat.completions.parse(
-        model="gpt-4o",
+        model="gpt-5.5",
         messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
         response_format=Response
     )
@@ -116,7 +116,7 @@ When your dataset examples include reference outputs (expected answers), you can
       )
 
       response = oai_client.beta.chat.completions.parse(
-          model="gpt-4o",
+          model="gpt-5.5",
           messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
           response_format=Response,
       )
@@ -176,7 +176,7 @@ When your dataset examples include reference outputs (expected answers), you can
     const msg = `Question: ${inputs.question}\nExpected answer: ${referenceOutputs?.answer}\nActual answer: ${outputs.answer}`;
 
     const response = await oaiClient.beta.chat.completions.parse({
-      model: "gpt-4o",
+      model: "gpt-5.5",
       messages: [
         { role: "system", content: instructions },
         { role: "user", content: msg },

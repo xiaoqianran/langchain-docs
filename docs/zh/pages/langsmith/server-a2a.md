@@ -296,7 +296,7 @@ async def call_model(state: State, runtime: Runtime[Context]) -> Dict[str, Any]:
     try:
         # Make OpenAI API call
         response = await client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-5.4-mini",
             messages=openai_messages,
             max_tokens=100,
             temperature=0.7
@@ -331,7 +331,7 @@ graph = (
 
 一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deployment)在本地运行，您就可以使用A2A协议促进它们之间的通信。
 
-此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
+此示例演示两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env python3
@@ -636,7 +636,7 @@ RFC 2119 级别，适用于任何 A2A 端点，包括您的端点。
 ### 代理服务器当前失败的原因
 
 Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签入列表进行门控
-已知的故障。如果出现新的故障，并且列出的要求开始通过，则 CI 会失败，
+已知的故障。如果出现新的故障，并且列出的要求开始通过，那么 CI 就会失败，
 因此该列表不会偏离服务器实际执行的操作。
 
 在构建功能之前请阅读以下内容：|差距|你观察到什么|
@@ -669,7 +669,7 @@ Agent Server 在每个 CI 构建上运行 TCK 作为必需的检查，根据签�
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

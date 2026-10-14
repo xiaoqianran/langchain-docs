@@ -63,7 +63,7 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
       # Make a traced Gemini call
       response = client.models.generate_content(
-          model="gemini-2.5-flash",
+          model="gemini-3.7-flash",
           contents="Explain quantum computing in simple terms.",
       )
 
@@ -94,7 +94,7 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
   // Make a traced call - tracing happens automatically
   const response = await client.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.7-flash",
     contents: "Explain quantum computing in simple terms.",
   });
 

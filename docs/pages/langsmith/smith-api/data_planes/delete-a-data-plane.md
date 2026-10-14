@@ -3,4 +3,4 @@
 # Delete a data plane
 
 /langsmith/langsmith-platform-openapi.json delete /orgs/current/data-planes/{id}
-Verifies that the stored customer AWS role has delete permissions, removes linked workspaces, and starts asynchronous deprovisioning for an active or provisioning_failed data plane owned by the caller's organization. Requires BYOC to be enabled for the org and organization:infrastructure:manage.
+Verifies that the stored customer AWS role has delete permissions, or that the stored Azure subscription is reachable. Then removes linked workspaces and starts asynchronous deprovisioning for an active or provisioning_failed data plane owned by the caller's organization. Azure data planes can also be deleted while provisioning. Requires BYOC to be enabled for the org and organization:infrastructure:manage.

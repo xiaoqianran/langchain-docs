@@ -202,7 +202,7 @@ You can also set the project name at program runtime in various ways, depending 
 
           // Create a simple span
           Span span = OtelSpanCreator.createLlmSpan(
-                  tracer, "simple.llm.call", "openai", "gpt-4", projectName, null);
+                  tracer, "simple.llm.call", "openai", "gpt-5.5", projectName, null);
 
           try {
               OtelSpanCreator.setInput(span, "Hello, world!");

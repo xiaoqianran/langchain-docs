@@ -78,10 +78,8 @@ Define your [configuration](/oss/python/langgraph/use-graph-api#add-runtime-conf
           Literal[
               "anthropic/claude-sonnet-4-6",
               "anthropic/claude-haiku-4-5-20251001",
-              "openai/o1",
+              "openai/gpt-5.5",
               "openai/gpt-5.4-mini",
-              "openai/o1-mini",
-              "openai/o3-mini",
           ],
           {"__template_metadata__": {"kind": "llm"}},
       ] = Field(

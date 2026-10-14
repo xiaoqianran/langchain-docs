@@ -61,7 +61,7 @@ agent = wrap(
     Runner(
         agent=Agent(
             name="echo_agent",
-            model="gemini-2.5-flash",
+            model="gemini-3.7-flash",
             instruction="Echo the user message.",
             before_model_callback=echo_callback,
         ),
@@ -76,7 +76,7 @@ agent = wrap(
 1. **将`LangsmithSessionService()`**传递为跑步者的`session_service`。如果您忘记了，`wrap()` 会引发 `TypeError`。代理服务器需要此挂钩通过其检查指针加载和保存 ADK 会话状态。
 2. **将包装的`agent`**导出为模块级变量。代理服务器在提供图形服务时导入此符号。
 
-对于真正的代理，删除`before_model_callback`并直接配置模型。例如，通过设置 `model="gemini-2.5-flash"` 和 `GOOGLE_API_KEY` 来使用 Gemini，或者通过 ADK 的 LiteLLM 适配器使用 Claude/OpenAI（`google.adk.models.lite_llm.LiteLlm`，可通过 `google-adk[extensions]` 获得）。
+对于真正的代理，删除`before_model_callback`并直接配置模型。例如，通过设置 `model="gemini-3.7-flash"` 和 `GOOGLE_API_KEY` 来使用 Gemini，或者通过 ADK 的 LiteLLM 适配器使用 Claude/OpenAI（`google.adk.models.lite_llm.LiteLlm`，可通过 `google-adk[extensions]` 获得）。
 
 ## 功能和限制
 
@@ -94,7 +94,7 @@ agent = wrap(
 ### 不支持* **多模式输入**：包装器仅将 `messages[-1].content` 作为单个文本部分转发。入站图像、文件、音频或内联二进制块不会传递到 ADK 运行程序。
 * **每轮多条新消息**：只有`messages`中的最后一项被视为新用户消息。对话历史记录是从 ADK 会话状态重建的，而不是从 LangGraph 消息列表重建的。
 * **双向/直播**：包装器硬编码`RunConfig(streaming_mode=StreamingMode.SSE)`。 ADK的`Runner.run_live()`以及用于音频或语音代理的双向流模式不会被调用，因此无法通过`wrap()`部署实时音频和语音代理。
-* **非文本输出部分**：仅从 ADK 事件收集 `part.text` 值。代理生成的内联图像、音频或文件不会显示在图表的 `messages` 输出中。
+* **非文本输出部分**：仅从 ADK 事件收集 `part.text` 值。代理生成的内联图像、音频或文件不会显示在图表的 `messages` 输出上。
 * **中间事件作为消息**：响应作为包含串联文本的 `AIMessage` 发出。工具调用、工具结果和中间子代理轮次不会在图表的 `messages` 字段中作为单独的项目公开。请改为在 [LangSmith traces](/langsmith/observability) 中检查它们。* **替代 ADK 会话服务**：`runner.session_service` 必须是 `LangsmithSessionService`。 ADK 的 `InMemorySessionService`、`DatabaseSessionService` 和 `VertexAiSessionService` 会被 `TypeError` 拒绝，因为会话状态保存在 LangGraph 检查点中。
 * **本机LangGraph中断**：包装器不公开LangGraph的`interrupt`或`Command(resume=...)`机制。基于 `LongRunningFunctionTool` 构建的人机交互流程遵循 ADK 自己的模式：该工具返回诸如 `pending_approval` 之类的状态，代理回复，后续轮流解决待处理的呼叫。
 

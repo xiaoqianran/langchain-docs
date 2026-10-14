@@ -6,14 +6,14 @@
 
 构建可以规划、使用子代理并利用文件系统来执行复杂任务的代理
 
-Deep Agents 是开始构建由 LLM 提供支持的代理和应用程序的最简单方法 - 具有用于上下文管理、子代理生成和长期内存的文件系统内置功能。
+Deep Agents 是开始构建由 LLM 支持的代理和应用程序的最简单方法 - 具有用于上下文管理、子代理生成和长期内存的文件系统内置功能。
 [task planning](#task-planning) 和 [skills](#skills) 等可选功能可在您的用例需要时扩展线束。
 您可以将深度代理用于任何任务，包括复杂的多步骤任务。
 
 Deep Agents具有以下功能：
 
 * **在环境中采取行动**：通过工具采取行动，读写文件，执行代码
-* **连接到您的数据**：在适当的时刻加载记忆、技能和领域知识
+* **连接到您的数据**：在正确的时刻加载记忆、技能和领域知识
 * **管理不断增长的环境**：总结历史并在长期运行中卸载大量结果
 * **并行化任务**：委托给在隔离上下文窗口中运行的通用或专用子代理
 * **留在循环中**：在关键决策点暂停以供人工批准
@@ -218,7 +218,7 @@ Deep Agents 是["agent harness"](/oss/python/concepts/products#agent-harnesses-l
 执行环境是代理执行操作的地方。它有四层：
 
 * **[Tools](#tools-and-mcp)**：代理可以调用的自定义函数、API 和数据库
-* **[Virtual filesystem](#virtual-filesystem-access)**：由可插拔后端支持的文件工具
+* **[Virtual filesystem](#virtual-filesystem-access)**：由可插入后端支持的文件工具
 * **[Filesystem permissions](#filesystem-permissions)**：代理可以读取或写入的路径的声明性访问控制
 * **[Code execution](#code-execution)**：沙盒 shell 执行和进程内 JavaScript 解释器
 
@@ -255,7 +255,7 @@ agent = create_deep_agent(
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `delete` |递归删除文件或目录及其内容 |
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/python/deepagents/sandboxes)）|
+| `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/python/deepagents/sandboxes)）|
 
 <Note>`delete`工具需要`deepagents>=0.7`。不支持删除的后端会自动从模型中隐藏该工具。</Note>
 
@@ -292,7 +292,7 @@ agent = create_deep_agent(
     `FilesystemMiddleware` 上的 `tools` 允许列表需要 `deepagents>=0.7`。
   </Note>
 
-  要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都会从模型的工具列表中删除。
+  要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都将从模型的工具列表中删除。
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
@@ -313,7 +313,7 @@ agent = create_deep_agent(
 虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
 您还可以在为 Deep Agents 构建自定义工具和中间件时使用文件系统。
 
-有关更多信息，请参阅[backends](/oss/python/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+欲了解更多信息，请参阅[backends](/oss/python/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ### 文件系统权限该工具支持声明性权限规则，控制代理可以读取或写入哪些文件和目录。权限适用于上面列出的内置文件系统工具，并按照声明顺序和首匹配胜语义进行评估。
 
@@ -334,17 +334,17 @@ agent = create_deep_agent(
 ### 代码执行
 
 Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离环境中公开用于 shell 命令的 `execute` 工具。
-* [Interpreters](/oss/python/deepagents/interpreters) 添加一个 `eval` 工具，该工具可在限定范围的 QuickJS 运行时中运行 JavaScript。
+* [Interpreters](/oss/python/deepagents/interpreters) 添加一个 `eval` 工具，在作用域 QuickJS 运行时中运行 JavaScript。
 
 当代理需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时，请使用沙箱后端。沙箱后端实现`SandboxBackendProtocolV2`；当检测到时，该工具会将 `execute` 工具添加到代理的可用工具中。
 
 当代理需要轻量级可编程层用于循环、批处理、确定性数据转换或编程工具调用时，请使用解释器。解释器不提供 shell 访问、软件包安装或文件系统和网络访问。
 
-有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/python/deepagents/sandboxes)。关于QuickJS运行时和编程工具调用，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
+有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/python/deepagents/sandboxes)。对于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
 
 ### 流媒体
 
-[Event streaming](/oss/python/deepagents/event-streaming) 将代理运行公开为消息、工具调用、值和输出的类型化投影。 Deep Agents 添加 `stream.subagents`，以便每个委派任务获得自己的句柄，并具有独立的消息、工具调用和嵌套子代理流。
+[Event streaming](/oss/python/deepagents/event-streaming) 将代理运行公开为消息、工具调用、值和输出的类型化投影。 Deep Agents 添加 `stream.subagents`，以便每个委派任务都有自己的句柄，具有独立的消息、工具调用和嵌套子代理流。
 
 ## 上下文管理上下文管理组件控制代理知道什么、它可以在令牌限制内运行多长时间以及它在会话中保留什么。它有四层：
 
@@ -359,9 +359,9 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/python/dee
 
 每个技能都遵循 [Agent Skills standard](https://agentskills.io/) 并位于带有 `SKILL.md` 文件的目录中。技能还可以包括脚本、模板、参考文档和其他支持资源。
 
-Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
+Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
 
-欲了解更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
+有关更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
 
 ＃＃＃ 记忆记忆为您的深层代理提供跨对话的持久上下文，例如编码风格、偏好、约定和项目指南。
 
@@ -488,19 +488,16 @@ Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKIL
 ### 子代理
 
 该工具包括一个内置的`task`工具，可让主代理为隔离、长时间运行、多步骤或并行任务创建临时子代理。
+有两种子代理类型可用：同步子代理（默认）阻止主管，直到它们返回单个报告，并且 [async subagents](/oss/python/deepagents/async-subagents) 并行运行并通过启动、检查、更新和取消工具支持飞行中控制。
 
-子代理执行提供：
-
-* **新鲜上下文**：每次调用都会创建一个具有自己上下文的新代理实例。
+子代理执行提供：* **隔离或继承的上下文**：默认情况下，每次调用都会创建一个具有自己的上下文（`mode: "isolated"`）的新代理实例。使用 `mode: "fork"` 继承父级的完整对话历史记录。参见[Forked subagents](/oss/python/deepagents/subagents#forked-subagents)。
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
-* **可配置策略**：使用[default ⟦T110⟧ subagent](/oss/python/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/python/deepagents/subagents#custom-subagents)。
-* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
-* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。<Accordion title="Running without subagents (no ⟦T111⟧ tool)" icon="ban">
-  要在不使用 `task` 工具的情况下运行代理，请参阅 [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。不要尝试通过 `excluded_middleware` 删除 [⟦T113⟧](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware)——这是故意拒绝的。相反，通过 [harness profile](/oss/python/deepagents/profiles#harness-profiles) 禁用自动添加的子代理，并且不通过 `subagents=` 传递任何同步子代理。异步子代理不受影响。有关完整订购信息，请参阅[full stack](/oss/python/deepagents/customization#full-stack)。
-</Accordion>
+* **可配置策略**：使用[default ⟦T112⟧ subagent](/oss/python/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/python/deepagents/subagents#custom-subagents)。
+* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
+* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。
 
-有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。
+有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
 
 ## 转向
 
@@ -508,9 +505,7 @@ Deep Agents 以渐进式披露方式加载技能：代理在启动时读取`SKIL
 
 ### 人机交互
 
-Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用以供批准。使用 `create_deep_agent` 中的 `interrupt_on` 参数启用此行为。
-
-`interrupt_on` 接受工具名称到中断配置的映射。例如，`interrupt_on={"edit_file": True}` 在每次编辑之前暂停，让您在执行之前批准调用、添加指导或修改工具输入。
+Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用以供批准。使用 `create_deep_agent` 中的 `interrupt_on` 参数启用此行为。`interrupt_on` 接受工具名称到中断配置的映射。例如，`interrupt_on={"edit_file": True}` 在每次编辑之前暂停，让您在执行之前批准调用、添加指导或修改工具输入。
 
 这为您提供了一个运行时安全和控制层，用于破坏性操作、昂贵的 API 调用和交互式调试。
 
@@ -529,7 +524,9 @@ Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用
 
   <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
     使用Deep Agents代码
-  </Card><Card title="ACP" icon="plug-connected" href="/oss/python/deepagents/acp">
+  </Card>
+
+  <Card title="ACP" icon="plug-connected" href="/oss/python/deepagents/acp">
     通过 ACP 在代码编辑器中使用深度代理
   </Card>
 

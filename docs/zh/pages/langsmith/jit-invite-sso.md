@@ -30,7 +30,7 @@ LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) au
 
     1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
     2. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
-    3. **设置** > **组织** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
+    3. **设置** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
   </Tab>
 
   <Tab title="API" icon="code">
@@ -184,7 +184,7 @@ User billy@company.com signs in via SSO:
    * **[Editor](/langsmith/rbac#workspace-editor)**：可以修改资源
    * **[Admin](/langsmith/rbac#workspace-admin)**：完全工作区控制2. 默认工作区。选择自动添加用户的一个或多个工作区。用户在所有选定的工作区中获得相同的角色。配置：
 
-   1. 转至 **设置** > **组织** > **SSO 配置**。
+   1. 转至 **设置** > **SSO 配置**。
    2. 设置**默认工作区角色**。
    3. 选择**默认工作区**。
    4. 保存您的配置。

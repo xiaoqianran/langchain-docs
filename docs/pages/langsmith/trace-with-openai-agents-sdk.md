@@ -139,7 +139,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
     const agent = new Agent({
       name: "WeatherAgent",
       instructions: "You are a helpful assistant. Use the get_weather tool when asked about weather.",
-      model: "gpt-5-nano",
+      model: "gpt-5.4-mini",
       tools: [getWeather],
     });
 
@@ -175,7 +175,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
     const agent = new Agent({
       name: "SupportAgent",
       instructions: "You are a concise support agent.",
-      model: "gpt-5-nano",
+      model: "gpt-5.4-mini",
     });
 
     const result = await run(agent, "Help me reset my password.");
@@ -216,7 +216,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
     const agent = new Agent({
       name: "OrdersAgent",
       instructions: "Use the order_status tool to answer order questions.",
-      model: "gpt-5-nano",
+      model: "gpt-5.4-mini",
       tools: [orderStatus],
     });
 
@@ -241,7 +241,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
       const agent = new Agent({
         name: "SupportAgent",
         instructions: "You are a concise support agent.",
-        model: "gpt-5-nano",
+        model: "gpt-5.4-mini",
       });
 
       const result = await run(agent, "Help me reset my password.");

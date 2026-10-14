@@ -11,10 +11,10 @@ The [LangSmith SDK](/langsmith/reference) provides a programmatic interface to c
 <CodeGroup>
   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   # uv
-  uv add "langsmith[sandbox]"
+  uv add langsmith
 
   # pip
-  pip install "langsmith[sandbox]"
+  pip install langsmith
   ```
 
   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -24,7 +24,7 @@ The [LangSmith SDK](/langsmith/reference) provides a programmatic interface to c
   ```
 </CodeGroup>
 
-The `[sandbox]` extra for Python installs `websockets`, which enables real-time streaming and `timeout=0`. Without it, `run()` falls back to HTTP automatically. For TypeScript, install the optional `ws` package for WebSocket streaming:
+The Python SDK includes `websockets`, which enables real-time streaming and `timeout=0`. For TypeScript, install the optional `ws` package for WebSocket streaming:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install ws

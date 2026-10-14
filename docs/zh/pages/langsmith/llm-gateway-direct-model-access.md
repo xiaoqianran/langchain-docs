@@ -63,7 +63,7 @@ export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
       api_key=os.environ["LANGSMITH_API_KEY"],
   )
   response = client.chat.completions.create(
-      model="gpt-4o-mini",
+      model="gpt-5.4-mini",
       messages=[{"role": "user", "content": "ping"}],
   )
   print(response.choices[0].message.content)

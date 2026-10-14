@@ -67,7 +67,7 @@ def generate_tweet(inputs: dict) -> dict:
         {"role": "user", "content": inputs["blog_intro"]},
     ]
     result = oai_client.responses.create(
-        input=messages, model="gpt-5-nano"
+        input=messages, model="gpt-5.4-mini"
     )
     return {"tweet": result.output_text}
 
@@ -81,7 +81,7 @@ def summary(inputs: dict, outputs: dict) -> bool:
 
     msg = f"Question: {inputs['blog_intro']}\nAnswer: {outputs['tweet']}"
     response = oai_client.responses.parse(
-        model="gpt-5-nano",
+        model="gpt-5.4-mini",
         input=[{"role": "system", "content": instructions,}, {"role": "user", "content": msg}],
         text_format=Response
     )
@@ -98,7 +98,7 @@ def formatting(inputs: dict, outputs: dict) -> bool:
 
     msg = f"{outputs['tweet']}"
     response = oai_client.responses.parse(
-        model="gpt-5-nano",
+        model="gpt-5.4-mini",
         input=[{"role": "system", "content": instructions,}, {"role": "user", "content": msg}],
         text_format=Response
     )
@@ -115,7 +115,7 @@ def tone(inputs: dict, outputs: dict) -> bool:
 
     msg = f"{outputs['tweet']}"
     response = oai_client.responses.parse(
-        model="gpt-5-nano",
+        model="gpt-5.4-mini",
         input=[{"role": "system", "content": instructions,}, {"role": "user", "content": msg}],
         text_format=Response
     )
@@ -127,7 +127,7 @@ results = client.evaluate(
     generate_tweet,
     data=dataset.name,
     evaluators=[summary, tone, formatting],
-    experiment_prefix="gpt-5-nano",
+    experiment_prefix="gpt-5.4-mini",
 )
 
 # Get the experiment name to be used in client.get_experiment_results() in the next section

@@ -7,7 +7,7 @@
 以 Parquet 格式将 LangSmith 跟踪数据导出到 S3 兼容存储桶。
 
 <Info>
-  **计划限制适用**
+  **适用计划限制**
 
   对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 </Info>
@@ -55,7 +55,7 @@ curl --request POST \
 
 保存响应中的`id`；创建导出作业时您将需要它。
 
-请参阅 [Manage bulk export destinations](/langsmith/data-export-destinations) 了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
+请参阅[Manage bulk export destinations](/langsmith/data-export-destinations)了解权限设置、特定于提供商的配置（AWS S3、GCS、MinIO）和凭证选项。
 
 ## 2. 创建导出作业
 
@@ -87,7 +87,7 @@ curl --request POST \
 <Note>
   **LangSmith 云限制：每个工作区每小时 250 个批量导出创建**
 
-  在[LangSmith cloud](/langsmith/cloud)上，每个工作区每小时最多可以创建250个批量导出。该预算包括一次性导出和由 [scheduled bulk exports](#schedule-recurring-exports) 生成的导出，因此具有许多活动计划的工作区会自动消耗部分每小时预算。
+  在[LangSmith cloud](/langsmith/cloud)上，每个工作区每小时最多可以创建250个批量导出。该预算包括一次性导出和由[scheduled bulk exports](#schedule-recurring-exports)生成的导出，因此具有许多活动计划的工作区会自动消耗部分每小时预算。
 
   如果您的工作区达到限制，新的创建请求将被拒绝并返回 429，直到较早的创建时间超过滚动 60 分钟窗口为止。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
@@ -96,11 +96,7 @@ curl --request POST \
 
 ### 导出所有实验
 
-<Note>
-  [Self-hosted](/langsmith/self-hosted)：目前仅适用于`v0.16.1rc1` [preview release](/langsmith/release-versions#preview)。在生产环境中运行之前，请等待 `v0.16.1` 稳定版本。
-</Note>要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您针对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。
-
-`all_experiments` 和 `session_id` 互斥 — 设置为 1。
+要导出工作区中的每个实验而不是使用 `session_id` 定位单个项目，请设置 `all_experiments: true`。每当您针对数据集运行评估时，LangSmith都会创建一个实验，任何具有`reference_dataset_id`集的跟踪项目都符合条件。`all_experiments` 和 `session_id` 互斥 — 设置为 1。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
@@ -136,7 +132,9 @@ LangSmith 在运行时解析实验会话集，因此导出会拾取您在提交�
 
 <Note>
   需要 LangSmith Helm 版本 `0.10.42` 或更高版本（应用程序版本 `0.10.109` 或更高版本）
-</Note>计划导出收集定期运行并导出到配置的目标。要创建计划导出，请包含 `interval_hours` 并省略 `end_time`：
+</Note>
+
+计划导出定期运行收集并导出到配置的目标。要创建计划导出，请包含 `interval_hours` 并省略 `end_time`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request POST \
@@ -151,9 +149,7 @@ curl --request POST \
     "interval_hours": 1,
     "format_version": "v2_beta"
   }'
-```
-
-* `interval_hours` 必须介于 1 和 168（1 周）之间（含 1 和 168）。
+```* `interval_hours` 必须介于 1 和 168（1 周）之间（含 1 和 168）。
 * 对于定期出口，必须省略`end_time`；一次性出口仍然需要它。
 * 每个生成的导出都涵盖 `start_time` 到 `start_time + interval_hours`，然后在每次后续运行中前进 `interval_hours`。由于`end_time`是独占的，连续导出不会重叠。
 * 生成的导出以 `end_time + 10 minutes` 运行，以考虑最近使用 `end_time` 提交的运行。
@@ -163,9 +159,9 @@ curl --request POST \
 <Note>
   **LangSmith 云限制：每个工作区 200 个计划批量导出**
 
-  在 [LangSmith cloud](/langsmith/cloud) 上，每个工作区一次最多可以有 200 个活动**计划**（重复）批量导出。即，使用 `interval_hours` 值配置的导出。该限制限制了**计划**的数量，而不是它们运行的​​次数：已生成数千次历史导出运行的计划仍算作一次。一次性（非经常性）批量出口不受此限制。
+  在 [LangSmith cloud](/langsmith/cloud) 上，每个工作区一次最多可以有 200 个活动**计划**（重复）批量导出。即，使用 `interval_hours` 值配置的导出。该限制限制了**计划**的数量，而不是它们运行的​​次数：已生成数千次历史导出运行的计划仍算作一次。
 
-  如果您的工作区达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+  一次性（非经常性）批量出口不受此限制。如果您的工作空间达到限制，新计划的导出请求将被拒绝，并显示 `429`，直到您 [cancel](/langsmith/data-export-monitor#stop-an-export) 现有计划。要提高限制，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
   [Self-hosted LangSmith](/langsmith/self-hosted) 默认情况下不强制执行此限制。
 </Note>
@@ -218,7 +214,7 @@ curl --request POST \
 允许的值：`zstandard`、`gzip`、`snappy`、`none`。加载到 BigQuery 时使用 `snappy`，请参阅 [Export trace data to BigQuery](/langsmith/big-query-bulk-export)。
 
 <Note>
-  从 LangSmith 0.16.0 开始，当省略 `compression` 时，[Self-hosted LangSmith](/langsmith/self-hosted) 也默认为 `zstandard`。这是对之前版本的重大更改，之前版本默认为 `gzip`。要覆盖默认值，请设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量。
+  从 Helm Chart 0.17.0 开始，当省略 `compression` 时，[Self-hosted LangSmith](/langsmith/self-hosted) 也默认为 `zstandard`。在图表 0.16 及更早版本中，自托管默认为 `gzip`。要覆盖默认值，请设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量。
 </Note>
 
 ### 可导出字段
@@ -302,7 +298,7 @@ curl --request GET \
   --header 'X-Tenant-Id: YOUR_WORKSPACE_ID'
 ```
 
-响应中的 `status` 字段将为 `CREATED`、`RUNNING`、`COMPLETED`、`FAILED`、`CANCELLED` 或 `TIMEDOUT` 之一。导出可能需要一些时间，具体取决于数据量。一旦状态为 `COMPLETED`，Parquet 文件就在您的存储桶中可用。
+响应中的 `status` 字段将为 `CREATED`、`RUNNING`、`COMPLETED`、`FAILED`、`CANCELLED` 或 `TIMEDOUT` 之一。导出可能需要一些时间，具体取决于数据量。一旦状态为`COMPLETED`，Parquet 文件就在您的存储桶中可用。
 
 请参阅 [Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor) 了解如何列出运行、停止导出和诊断故障。
 

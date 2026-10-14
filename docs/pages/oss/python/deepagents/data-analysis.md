@@ -45,7 +45,7 @@ For this tutorial, we'll use:
 * A [LangSmith sandbox](/langsmith/sandboxes) for code execution
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pip install "langsmith[sandbox]" slack-sdk
+pip install langsmith slack-sdk
 ```
 
 <Note>
@@ -83,11 +83,11 @@ The examples below use a [LangSmith sandbox](/langsmith/sandboxes). For other pr
   <Tab title="LangSmith">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[sandbox]"
+      pip install langsmith
       ```
 
       ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[sandbox]"
+      uv add langsmith
       ```
     </CodeGroup>
 

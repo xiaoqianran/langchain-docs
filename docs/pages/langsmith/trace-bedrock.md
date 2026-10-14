@@ -66,7 +66,7 @@ The following example demonstrates how to use the Bedrock Converse API with Lang
 
   # Decorate the model invocation function to auto-capture a trace with tags/metadata
   @traceable(tags=["aws-bedrock", "langsmith", "integration-test"],
-             metadata={"env": "dev", "model_provider": "bedrock", "model_id": "claude-3-haiku"})
+             metadata={"env": "dev", "model_provider": "bedrock", "model_id": "claude-haiku-4-5"})
   def generate_text(prompt: str) -> str:
       # Prepare a single-turn conversation input for the Converse API
       messages = [
@@ -114,7 +114,7 @@ The following example demonstrates how to use the Bedrock Converse API with Lang
     },
     {
       tags: ["aws-bedrock", "langsmith", "integration-test"],
-      metadata: { env: "dev", model_provider: "bedrock", model_id: "claude-3-haiku" }
+      metadata: { env: "dev", model_provider: "bedrock", model_id: "claude-haiku-4-5" }
     }
   );
 

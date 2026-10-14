@@ -61,7 +61,7 @@ To trace Gemini API calls, use LangSmith's [`wrap_gemini`](https://reference.lan
 
       # Make a traced Gemini call
       response = client.models.generate_content(
-          model="gemini-2.5-flash",
+          model="gemini-3.7-flash",
           contents="Explain quantum computing in simple terms.",
       )
 
@@ -92,7 +92,7 @@ To trace Gemini API calls, use LangSmith's [`wrap_gemini`](https://reference.lan
 
   // Make a traced call - tracing happens automatically
   const response = await client.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.7-flash",
     contents: "Explain quantum computing in simple terms.",
   });
 
