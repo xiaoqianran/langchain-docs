@@ -46,7 +46,7 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54f2fa78-9b4c-445a-94a2-27f4cdaa4e67/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -81,7 +81,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637a53d2-a23e-4691-b70c-7bf3d8de9755/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -115,7 +115,7 @@ export async function makeGraph() {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d5c9bc74-bbab-4f0f-97bd-e9982ee4b050/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -170,6 +170,10 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Each server's `mode` controls its negotiation independently:
 

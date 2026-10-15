@@ -260,7 +260,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29a89413-165f-4e8f-9fa6-e0a0ef296df1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/37316651-0cd8-4bf4-a331-24c30f1c315b/r">
   Open a public LangSmith run for this example.
 </Card>
 

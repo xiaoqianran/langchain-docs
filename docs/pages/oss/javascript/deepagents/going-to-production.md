@@ -133,8 +133,8 @@ The two are independent and almost always passed together:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -159,8 +159,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -185,8 +185,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -211,8 +211,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -237,8 +237,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -263,8 +263,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -289,8 +289,8 @@ The two are independent and almost always passed together:
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -315,7 +315,7 @@ The two are independent and almost always passed together:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r">
   Open a public LangSmith run for this example.
 </Card>
 

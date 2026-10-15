@@ -191,7 +191,7 @@ result = agent.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d7ab3fb7-b497-4399-aa90-40d4a26ac121/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/36cdb378-76ec-4705-8fcd-5cdba106b659/r">
   Open a public LangSmith run for this example.
 </Card>
 

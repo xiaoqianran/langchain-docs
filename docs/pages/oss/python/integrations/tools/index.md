@@ -154,7 +154,7 @@ The following platforms provide access to multiple tools and services through a 
 | Tool/Toolkit | Number of Integrations | Pricing | Key Features |
 | - | - | - | - |
 | [Composio](/oss/python/integrations/tools/composio) | 500+ | Free tier available | OAuth handling, event-driven workflows, multi-user support |
-| [Scalekit](https://docs.scalekit.com/agentkit/quickstart/) | 400+ | Free tier available | Delegated OAuth, token vault, multi-user support, LangSmith tracing |
+| [Scalekit](https://docs.scalekit.com/agentkit/quickstart/) | 500+ | Free tier available | Delegated OAuth, token vault, multi-user support, LangSmith tracing |
 
 ## Security
 
@@ -323,6 +323,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`WebSEOAuditTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | <span><a href="https://pypi.org/project/langchain-webmetadata-extractor/">  <img alt="Downloads per month" /></a></span> |
   | [`QuanticData`](https://quanticdata.io/docs/) | <span><a href="https://pypi.org/project/langchain-quanticdata/">  <img alt="Downloads per month" /></a></span> |
   | [`UrlpipeToolkit`](https://urlpipe.dev/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-urlpipe/">  <img alt="Downloads per month" /></a></span> |
+  | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | <span><a href="https://pypi.org/project/langchain-getyoutubetranscript/">  <img alt="Downloads per month" /></a></span> |
   | [`Firecrawl`](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/">  <img alt="Downloads per month" /></a></span> |
   | [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | <span><a href="https://pypi.org/project/langchain-skilllite/">  <img alt="Downloads per month" /></a></span> |
   | [`ICTPBXToolkit`](https://ictpbx.com) | <span><a href="https://pypi.org/project/langchain-ictpbx/">  <img alt="Downloads per month" /></a></span> |

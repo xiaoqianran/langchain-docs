@@ -94,10 +94,6 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5749bda2-c929-4fca-bbf7-237e7c9a7d2d/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 | Parameter | What it does |
 | - | - |
 | `model` | Which model to use |
@@ -1081,10 +1077,6 @@ Pass `system_prompt=` to give the agent your own instructions:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/106b59e4-4dc2-4539-b035-4f4a27cac53b/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 <Note>
   Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) with structured [content blocks](/oss/javascript/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/javascript/deepagents/subagents) dictionary specs remain strings).
 </Note>
@@ -1127,7 +1119,7 @@ Pass `system_prompt=` to give the agent your own instructions:
 
 Deep Agents support any [middleware](/oss/javascript/langchain/middleware/overview), including the built-in middleware listed below, prebuilt middleware from LangChain, provider-specific middleware, and custom middleware you write yourself.
 
-Pass middleware to the `middleware` argument of `createDeepAgent`. Custom middleware is appended after [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) in the [Deep Agents stack](#deep-agents-stack).
+Pass middleware to the `middleware` argument of `createDeepAgent`. Each instance is merged into the [Deep Agents stack](#deep-agents-stack) by its `.name`. An instance whose name matches a built-in entry replaces that entry in place. Anything else is inserted after [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware).
 
 ### Deep Agents stack
 
@@ -1148,40 +1140,37 @@ With only a `model` (no other optional arguments), the main agent typically incl
 
 From first to last:
 
-1. [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware): Only when you pass `skills`. Injected **before** filesystem middleware so skill metadata is available before file tools run.
+1. [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware): Handles file system operations such as reading, writing, and navigating directories. When you pass `permissions`, filesystem permissions enforcement is included here so it can evaluate every tool the agent might call.
 
-2. [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware): Handles file system operations such as reading, writing, and navigating directories. When you pass `permissions`, filesystem permissions enforcement is included here so it can evaluate every tool the agent might call.
+2. [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware): Only when at least one synchronous subagent is available. Spawns and coordinates subagents for delegating tasks. Included in the [bare stack](#bare-stack) because the general-purpose subagent is auto-added by default; omit it by disabling that subagent and passing no synchronous `subagents`. See [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
 
-3. [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware): Only when at least one synchronous subagent is available. Spawns and coordinates subagents for delegating tasks. Included in the [bare stack](#bare-stack) because the general-purpose subagent is auto-added by default; omit it by disabling that subagent and passing no synchronous `subagents`. See [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
+3. [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware): Condenses message history to stay within context limits when conversations grow long (via [createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)).
 
-4. [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware): Condenses message history to stay within context limits when conversations grow long (via [createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)).
+4. [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware): Repairs dangling tool calls in message history when a run resumes after an interruption or receives malformed tool-call arguments. Runs **before** Anthropic prompt caching and the tail stack below.
 
-5. [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware): Repairs dangling tool calls in message history when a run resumes after an interruption or receives malformed tool-call arguments. Runs **before** Anthropic prompt caching and the tail stack below.
+5. [`AsyncSubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent): Only when you configure async subagents.
 
-6. [`AsyncSubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent): Only when you configure async subagents.
+6. **Your middleware argument**: Optional middleware you pass as the `middleware` argument is merged after Patch but before the rest of the stack. An instance whose `.name` matches a built-in entry replaces that entry in place instead of duplicating it. Anything else lands here.
 
-7. **Your middleware argument**: Optional middleware you pass as the `middleware` argument is appended here (after Patch, before the tail stack).
+7. **Harness profile extras**: Provider-specific middleware from the resolved model profile, if any.
 
-8. **Harness profile extras**: Provider-specific middleware from the resolved model profile, if any.
+8. [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware): Only when you pass `skills`, or pass a `createSkillsMiddleware` instance in `middleware`. Either way, it runs after your middleware and directly before prompt caching, so it sees the summarized conversation and the model that is actually called.
 
-9. **Excluded-tool filtering**: When the harness profile lists excluded tools, middleware removes those tools from the agent.
+9. **Prompt caching** ([`AnthropicPromptCachingMiddleware`](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) and [`BedrockPromptCachingMiddleware`](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)): Added automatically for Anthropic models and Amazon Bedrock Converse models, respectively. Both run **after** Patch and after your middleware so the cached prefix matches what is actually sent to the model.
 
-10. **Prompt caching** ([`AnthropicPromptCachingMiddleware`](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) and [`BedrockPromptCachingMiddleware`](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)): Added automatically for Anthropic models and Amazon Bedrock Converse models, respectively. Both run **after** Patch and after your middleware so the cached prefix matches what is actually sent to the model.
-
-11. [`MemoryMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware): Only when you pass `memory`.
+10. [`MemoryMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware): Only when you pass `memory`.
 
     <Note>
       `MemoryMiddleware` is placed **after** profile extras and the prompt caching middleware so updates to injected memory are less likely to invalidate the cache prefix. The same ordering concern is called out in the `createDeepAgent` implementation comments.
     </Note>
 
-12. `HumanInTheLoopMiddleware`: Only when you pass `interruptOn`. Pauses for human approval or input at configured tool calls.
+11. `HumanInTheLoopMiddleware`: Only when you pass `interruptOn`. Pauses for human approval or input at configured tool calls.
+
+12. **Excluded-tool filtering**: When the harness profile lists excluded tools, middleware removes those tools from the agent.
 
 ### Synchronous subagent stack
 
-The built-in **general-purpose** subagent and each declarative synchronous `SubAgent` graph use a stack that `createDeepAgent` builds in code. It matches the main agent in broad shape (filesystem, summarization, Patch, profile extras, Anthropic and Bedrock caching, optional permissions) but differs in two ways:
-
-* **Skills run after** [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) on these inner agents (on the main agent, skills run **before** filesystem middleware when `skills` is set).
-* There is **no** [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) inside a subagent graph (only the parent agent exposes the `task` tool).
+The built-in **general-purpose** subagent and each declarative synchronous `SubAgent` graph use a stack that `createDeepAgent` builds in code. It matches the main agent in broad shape (filesystem, summarization, Patch, profile extras, skills, Anthropic and Bedrock caching, optional permissions), except that there is **no** [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) inside a subagent graph (only the parent agent exposes the `task` tool).
 
 When a declarative subagent sets `interruptOn`, that value is forwarded to `createAgent` for the subagent, which wires up human-in-the-loop handling for the configured tool calls.
 
@@ -2158,10 +2147,6 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
-      Open a public LangSmith run for this example.
-    </Card>
-
     <Tip>
       Wrap `FilesystemBackend` in a `CompositeBackend` to prevent internal agent data (offloaded tool results, conversation history) from being written to disk alongside your project files. See the [recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk).
     </Tip>
@@ -2656,10 +2641,6 @@ const agent = createDeepAgent({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 You can configure interrupt for agents and subagents on tool call as well as from within tool calls.
 For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
 
@@ -2717,6 +2698,10 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="StoreBackend">
@@ -2760,7 +2745,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -2805,7 +2790,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -3168,7 +3153,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f5b6b3-cd51-45e2-8cef-d654bc08a205/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1f901559-574a-4785-aef7-820229ce4480/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -3568,7 +3553,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b67cebb9-9aee-43ca-b77b-8fce2bbd6807/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ed26e792-56b7-45d3-995b-232979cef08f/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -3802,7 +3787,7 @@ console.log(result.structuredResponse);
 // }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a33f9ad7-9ab0-4ab5-a27a-67d1d06851de/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0a26dee6-4493-45b0-a48f-d2e05edaa29e/r">
   Open a public LangSmith run for this example.
 </Card>
 

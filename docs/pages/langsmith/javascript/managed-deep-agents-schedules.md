@@ -155,13 +155,15 @@ When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that 
   Runtime schedules require `managed-deepagents` 0.9.0 or later.
 </Note>
 
-Declarations in `schedules/` are fixed when you deploy. The `schedules` API creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. Call it from a tool or from [middleware](/langsmith/javascript/managed-deep-agents-middleware). Each schedule belongs to the current user or to the agent.
+Declarations in `schedules/` are fixed when you deploy. `runtime.schedules` creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. It is available on the runtime that tools and [middleware](/langsmith/javascript/managed-deep-agents-middleware) receive, and it acts for the caller of the current run. Each schedule belongs to the current user or to the agent.
 
 The agent reaches this API only through tools that you write. Expose the calls the agent needs, and leave out the ones it should not reach.
 
 When a tool creates a schedule during a [channel](/langsmith/javascript/managed-deep-agents-channels) run, such as a Slack conversation, the schedule inherits that channel. Each run posts its final answer back to it. A new thread posts a new Slack message, and the current thread replies in the existing Slack thread.
 
 `newThread` decides which of the two a schedule uses.
+
+Managed Deep Agents sets `runtime.schedules` on every tool and middleware runtime. Its TypeScript type is optional only because annotated tools must still match LangChain's native runtime type, so the examples use `runtime.schedules!`.
 
 ### Create a recurring schedule
 
@@ -170,11 +172,11 @@ When a tool creates a schedule during a [channel](/langsmith/javascript/managed-
 ```ts tools/schedules.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
-import { schedules } from "managed-deepagents";
+import type { ManagedDeepAgentRuntime } from "managed-deepagents";
 
 export const remindMe = tool(
-  async ({ prompt, cron, timezone }) => {
-    const item = await schedules.create({
+  async ({ prompt, cron, timezone }, runtime: ManagedDeepAgentRuntime) => {
+    const item = await runtime.schedules!.create({
       owner: { type: "user" },
       cron,
       timezone,
@@ -203,11 +205,11 @@ Pass `at` in place of `cron` for work that runs once. `follow_up_later` gives th
 ```ts tools/follow-up.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
-import { schedules } from "managed-deepagents";
+import type { ManagedDeepAgentRuntime } from "managed-deepagents";
 
 export const followUpLater = tool(
-  async ({ prompt, hours }) => {
-    const item = await schedules.create({
+  async ({ prompt, hours }, runtime: ManagedDeepAgentRuntime) => {
+    const item = await runtime.schedules!.create({
       owner: { type: "user" },
       at: new Date(Date.now() + hours * 60 * 60_000),
       prompt,
@@ -267,15 +269,15 @@ A one-time schedule defaults to the current thread, so its run continues the con
 
 ### Manage schedules
 
-`list`, `get`, `update`, and `delete` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
+`list`, `get`, `update`, and `delete` on `runtime.schedules` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const owner = { type: "user" } as const;
 
-const page = await schedules.list({ owner, limit: 20 });
-const item = await schedules.get(page.items[0].id, { owner });
-await schedules.update(item.id, { paused: true }, { owner });
-await schedules.delete(item.id, { owner });
+const page = await runtime.schedules!.list({ owner, limit: 20 });
+const item = await runtime.schedules!.get(page.items[0].id, { owner });
+await runtime.schedules!.update(item.id, { paused: true }, { owner });
+await runtime.schedules!.delete(item.id, { owner });
 ```
 
 `update` accepts `cron`, `at`, `timezone`, `prompt`, `input`, `paused`, and `metadata`. The channel and the thread choice are fixed at creation. `list` hides expired one-time schedules unless you pass `includeExpired: true`. For the agent owner, `list` and `get` also return the schedules in `schedules/`, which you change in code.

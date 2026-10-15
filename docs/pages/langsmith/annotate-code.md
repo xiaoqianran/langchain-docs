@@ -198,10 +198,6 @@ Each function is individually traced, and because they're called from within `ru
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5680e7b5-1d37-428c-b02b-753429ac7f83/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType
   import com.langchain.smith.tracing.TraceConfig
@@ -265,10 +261,6 @@ Each function is individually traced, and because they're called from within `ru
 
   println(runPipeline("colorful socks"))
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/397a7c30-a236-43bb-b104-89f8d9e3145c/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code), you'll find a `run_pipeline` trace with `format_prompt`, `invoke_llm`, and `parse_output` as nested child runs.

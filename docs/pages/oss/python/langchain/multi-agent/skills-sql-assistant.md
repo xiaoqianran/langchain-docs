@@ -1098,7 +1098,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
 
   # Initialize your chat model (replace with your model)
   # Example: from langchain_anthropic import ChatAnthropic
-  # model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+  # model = ChatAnthropic(model="claude-sonnet-4-6")
   from langchain_openai import ChatOpenAI
   model = ChatOpenAI(model="gpt-5.5")
 

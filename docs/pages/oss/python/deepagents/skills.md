@@ -1031,7 +1031,7 @@ Pinned skills follow these rules:
 
 * The message stays in the conversation as written. Editing `SKILL.md` later does not change it, and pinning the skill again appends the current text. Earlier messages never change, so the prompt cache stays valid.
 * The middleware skips a name that matches no loaded skill, and a skill whose `SKILL.md` it cannot read. It logs each skip at debug level.
-  -When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
+* When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
 
 ### Pin skills named in a message
 
@@ -1297,10 +1297,6 @@ To let agents use a curated skill library without modifying it, route the skill 
   )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cd1dc73a-2a92-4daf-bd25-4e239ff72ae3/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 Use this for enterprise knowledge bases, approved tool instructions, or centrally managed skill packs where the agent should use the content but should not rewrite the source of truth.
 
@@ -2076,7 +2072,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aa169fb-c98f-48f6-8441-520bf8144a01/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r">
   Open a public LangSmith run for this example.
 </Card>
 

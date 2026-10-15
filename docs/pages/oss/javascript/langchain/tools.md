@@ -61,10 +61,10 @@ Tools can access an agent's runtime context through the `config` parameter. Conf
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
+import { uuid7 } from "langsmith";
 import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, tool } from "langchain";
-import { uuid7 } from "langsmith";
 
 const getUserName = tool(
   (_, config) => {
@@ -111,7 +111,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab55241e-3982-457e-9357-a41564c847a3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -319,7 +319,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce2632f4-09ef-4d71-96fb-d8e61662f9ae/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -353,7 +353,7 @@ const getWeatherData = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e798b200-7e02-420a-9b50-1808b2d25b7c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -429,7 +429,7 @@ const setLanguage = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/57a6ece9-3cd4-436c-a15e-da77946c0e2f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -476,7 +476,7 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/40a81784-60df-4455-861e-ddf7f4a51b2e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -673,10 +673,6 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71c1f8da-7a0d-49eb-a57c-a83dc0eb188c/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### State injection
 

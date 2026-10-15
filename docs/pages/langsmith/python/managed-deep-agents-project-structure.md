@@ -71,6 +71,32 @@ The only required file is `agent.py` at the project root containing the [agent d
 
 * **Evals**: Managed Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
 
+## Share code from outside the project
+
+The build copies only the project directory. To use a package from a sibling directory, declare it as a local dependency:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add ../shared
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from shared import helper
+```
+
+Put the shared code in its own package. Its `pyproject.toml` needs `[project]` and `[build-system]`:
+
+```toml ../shared/pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[project]
+name = "shared"
+version = "0.1.0"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+MDA copies the package into the build. `mda dev` reloads when you edit it, and `mda deploy` ships it.
+
 ## Next steps
 
 <CardGroup>

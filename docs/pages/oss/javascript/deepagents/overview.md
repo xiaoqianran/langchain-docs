@@ -51,7 +51,7 @@ console.log(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b715dead-e44d-4049-b945-0c34888747fe/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r">
   Open a public LangSmith run for this example.
 </Card>
 

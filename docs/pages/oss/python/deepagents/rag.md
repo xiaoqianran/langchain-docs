@@ -195,7 +195,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/691c063c-0d9d-4235-9a34-a74e3655a7f5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9e5d5ccc-eb86-4a0d-896b-6104d648e7ce/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1475,7 +1475,7 @@ if __name__ == "__main__":
             print(msg.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acdc9abe-384b-4988-a0a8-aaa78b7d8ffb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6028e45a-23d0-4073-968c-19d161910ef8/r">
   Open a public LangSmith run for this example.
 </Card>
 

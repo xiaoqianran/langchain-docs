@@ -21,6 +21,7 @@ The [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop
 
 The available decision types for each tool depend on the policy you configure in `interrupt_on`.
 When multiple tool calls are paused at the same time, each action requires a separate decision.
+
 Decisions must be provided in the same order as the actions appear in the interrupt request.
 
 Use `reject` when the human is denying the requested action.
@@ -201,7 +202,7 @@ await agent.invoke(
 ### Decision types
 
 <Tabs>
-  <Tab title="✅ approve">
+  <Tab title="approve">
     Use `approve` to approve the tool call as-is and execute it without changes.
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -223,7 +224,7 @@ await agent.invoke(
     ```
   </Tab>
 
-  <Tab title="✏️ edit">
+  <Tab title="edit">
     Use `edit` to modify the tool call before execution.
     Provide the edited action with the new tool name and arguments.
 
@@ -258,7 +259,7 @@ await agent.invoke(
     </Tip>
   </Tab>
 
-  <Tab title="❌ reject">
+  <Tab title="reject">
     Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
 
     ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

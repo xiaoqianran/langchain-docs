@@ -968,6 +968,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -985,6 +986,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client, NotFoundError } from "langsmith";
 
         const client = new Client();

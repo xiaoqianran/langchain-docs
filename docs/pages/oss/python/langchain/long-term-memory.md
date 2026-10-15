@@ -29,10 +29,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
         store=store,
     )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2521e9f7-35c6-4a40-9b50-bedf6b66f302/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -65,10 +61,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
             store=store,
         )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2faa3ae-94bf-4a5e-a373-abf574b7223c/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 </Tabs>
 
@@ -127,10 +119,6 @@ This structure enables hierarchical organization of memories. Cross-namespace se
         namespace, filter={"my-key": "my-value"}, query="language preferences"
     )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/19bcf66b-a673-4d5c-b936-f9110546d42c/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -172,10 +160,6 @@ This structure enables hierarchical organization of memories. Cross-namespace se
             namespace, filter={"my-key": "my-value"}, query="language preferences"
         )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/072edfca-d661-4858-a2ff-663daff0c41e/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 </Tabs>
 
@@ -579,7 +563,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a1a10780-0608-450e-9d0e-86dac1a9747e/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/50107c17-6209-4486-be7e-65fc84f20e75/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -625,7 +609,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
         )
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4184a4-46db-413d-a847-571c44ac1627/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/98f96556-7dae-426d-bf15-03d9827c1aa2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -1015,7 +999,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2799b9a-c5ad-465a-8980-ea8aa39f59dc/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8161bb6c-4876-44f7-9570-b187ae14da8a/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -1065,7 +1049,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
         )
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c75411b-ff91-449b-bfce-c9c0fdacb530/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e500c680-f6c1-439e-a85c-9d39ff04d841/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>

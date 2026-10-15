@@ -187,6 +187,7 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -204,6 +205,7 @@ Add runs to an annotation queue. The SmithDB-backed path takes each run's full l
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();

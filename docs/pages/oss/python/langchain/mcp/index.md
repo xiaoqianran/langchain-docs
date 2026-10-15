@@ -44,7 +44,7 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dbd2bd37-78e9-48ac-8d8a-ae052e8462ca/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7247701e-2f85-49e6-8434-c43cf1ddbad8/r">
   Open a public LangSmith run for this example.
 </Card>
 

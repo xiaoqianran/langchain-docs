@@ -712,7 +712,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5ddee370-d49e-4c80-ae12-691aa17c1aa8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/455ace73-fce4-413b-b47e-613b605ae01d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -913,7 +913,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a94648f-0a0b-46f3-a80c-bd1670e35930/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ccaff61-e004-4356-81f3-4c061ef7a93a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -943,7 +943,7 @@ for snapshot in stream.values:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7331dcc8-fbc7-4d2e-91fa-f32b4a6f410d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eb78aa8e-9575-4c73-8e79-bad82b30ef1d/r">
   Open a public LangSmith run for this example.
 </Card>
 

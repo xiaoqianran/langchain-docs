@@ -325,12 +325,18 @@ order status. Always filter by the provided status.`,
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a1e5187c-7d69-497f-97a0-7d5dbb63c766/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Tip>
   To override a built-in or user-supplied tool's description for a specific provider or model, use a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)'s `tool_description_overrides` keyed by tool name.
 
   Unused built-in tools still send their full schemas on every turn. Use `excluded_tools` to remove tools the agent should never call (for example `write_file` or `execute` on a read-only agent). That shrinks baseline prompt size for the whole run. It is configuration, not the automatic offloading or summarization in [Context compression](#context-compression).
 
   See [Harness profiles](/oss/javascript/deepagents/profiles#harness-profiles) and [Running without the default filesystem tools](/oss/javascript/deepagents/overview#virtual-filesystem-access).
+
+  If a tool is related to a skill, you can keep the tool's schema out of the prompt until a skill needs it. For more information, see [Add tools to skills](/oss/javascript/deepagents/skills#add-tools-to-skills).
 </Tip>
 
 See [Overview](/oss/javascript/deepagents/overview#execution-environment) for built-in capabilities and [Customization](/oss/javascript/deepagents/customization#tools) for passing tools directly.
@@ -715,7 +721,7 @@ Subagents solve the **context bloat problem**. When the main agent uses tools wi
    };
    ```
 
-   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f16f08a-46ef-4b67-9dab-5d2478341843/r">
+   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/15892b34-9951-4142-a766-5d792dc0489d/r">
      Open a public LangSmith run for this example.
    </Card>
 
@@ -881,7 +887,7 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5b8bfe15-a23f-4b74-b406-3e4e6f0ab709/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54c201ac-6630-4220-a36e-94cee1aa7957/r">
   Open a public LangSmith run for this example.
 </Card>
 

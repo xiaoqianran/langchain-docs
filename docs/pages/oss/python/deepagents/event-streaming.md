@@ -30,7 +30,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54d79ba7-1564-4f59-b249-4c5717bfdea3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -76,7 +76,7 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5da4a9f-e7cb-4264-8aee-7589558a9cad/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -97,7 +97,7 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/359c380b-c1e8-471e-be20-5dee479834b8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -126,7 +126,7 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c3a01f68-bece-422d-add0-703090a068a5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -152,7 +152,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4688ab50-e9ee-4b4e-94c8-2e77825554cf/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -192,7 +192,7 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a851bb1-f8f7-46a4-9222-d1d54388bf22/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -219,7 +219,7 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0230fcfc-7ae2-4d19-a0fe-5cd8d347f7f2/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r">
   Open a public LangSmith run for this example.
 </Card>
 

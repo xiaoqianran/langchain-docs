@@ -36,7 +36,7 @@ async function main(server: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f60de8e-697e-40e1-87de-d2419e426b61/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -92,6 +92,10 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Structured content
 
 When a tool returns structured content, the adapter attaches it to the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) as an artifact rather than folding it into the model-visible text. Run the agent, then read the `artifact` from the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) instances in the result:
@@ -130,7 +134,7 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77a2988b-909c-475d-a811-86cbb843f5c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -173,7 +177,7 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f47c3c87-87f8-4b3e-9b51-6116e9bdd313/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -211,10 +215,6 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
   return annotations?.destructiveHint ?? false;
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aca946a6-8b00-425e-9ebd-c9166dfe5958/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Human-in-the-loop
 
@@ -270,10 +270,6 @@ async function gateDestructiveTools(serverUrl: string) {
   return { agent, adapter };
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c0bfda7-ce16-43ee-a5ad-0c827409668a/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Warning>
   `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm_delete_file`). An unprefixed key never matches, so the tool runs without approval.
@@ -360,7 +356,7 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc8ee095-52ca-403e-800f-e75479cdff90/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r">
   Open a public LangSmith run for this example.
 </Card>
 

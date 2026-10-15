@@ -735,10 +735,6 @@ Use the `systemMessage` field in `ModelRequest` to read and modify the system pr
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4eaefcd5-90ad-4349-bb51-2cfc660e8af3/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 Use [`SystemMessage.concat`](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) to preserve cache control metadata or structured content blocks created by other middleware.
 
 ### Dynamic model selection
@@ -764,10 +760,6 @@ const dynamicModelMiddleware = createMiddleware({
   },
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/97b0c168-3017-4ad9-8278-49e135c43f3d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### Dynamically selecting tools
 

@@ -174,7 +174,7 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6303999e-5e08-4c66-b14c-ba5648f32f88/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -238,10 +238,6 @@ agent = create_deep_agent(
     tools=[search, fetch_page, run_query],
 )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c793ecf2-d06d-4687-8952-9d98fd107b4b/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For more information on defining custom tools, using MCP servers, and the full list of built-in harness tools, see [Tools](/oss/python/deepagents/tools).
 

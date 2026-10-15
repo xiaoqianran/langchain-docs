@@ -397,7 +397,7 @@ agent = create_agent(
     middleware=[
         ModelFallbackMiddleware(
             "gpt-5.4-mini",
-            "claude-3-5-sonnet-20241022",
+            "claude-sonnet-4-6",
         ),
     ],
 )
@@ -626,6 +626,8 @@ Pause agent execution for human approval, editing, or rejection of tool calls be
 * Long-running conversations where human feedback guides the agent.
 
 **API reference:** [`HumanInTheLoopMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware)
+
+The middleware pauses once per model turn by default. Set `interrupt_mode="per_call"` to pause once per tool call, with each interrupt answered by its ID. See [Set the interrupt mode](/oss/python/langchain/human-in-the-loop#set-the-interrupt-mode).
 
 <Warning>
   Human-in-the-loop middleware requires a [checkpointer](/oss/python/langgraph/checkpointers#checkpoints) to maintain state across interruptions.

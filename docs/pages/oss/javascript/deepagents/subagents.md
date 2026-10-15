@@ -810,10 +810,6 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2adc5144-9f83-42dd-814b-0a57d62ea58f/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Forked subagents
 
 By default, a subagent runs with `mode: "isolated"`: it sees only the task description you give it and has no memory of the conversation that led up to the delegation. A **forked subagent** (`mode: "fork"`) inherits the parent's full conversation history and exact system prompt instead.
@@ -893,6 +889,10 @@ const result = await agent.invoke({
   ],
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/efa7623d-0431-4516-8187-0cd7e2d3a753/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### How it works
 
@@ -1557,10 +1557,6 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4c9b1369-0827-48ce-b391-e3979d888664/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ### LangSmith tracing
 
 As your deep agent runs, all runs executed by a subagent or the coordinator will have the agent name in their metadata under the `lc_agent_name` key—for example, `{'lc_agent_name': 'research-agent'}`. This lets you identify and filter runs by subagent in LangSmith.
@@ -1928,7 +1924,7 @@ Pass `responseFormat` on the subagent config. When the subagent finishes, its st
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5cd6c6e-4261-46ed-be8e-cce8304d368e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f34744b4-0794-4f4f-9e31-f7c9e3f0b2e5/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -2201,10 +2197,6 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Best practices
 
@@ -2653,10 +2645,6 @@ Create specialized subagents for different domains:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4ad1d9ce-50ae-4ca0-981c-14bd6e7ecd97/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 **Workflow:**
 
 1. Main agent creates high-level plan
@@ -3007,6 +2995,10 @@ const verifyClaim = tool(
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e104a86-0921-4274-aa71-25ac90bd78b7/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Identifying which subagent called a tool
 
 When the same tool is shared between the parent and multiple subagents, you can use the `lc_agent_name` metadata (the same value used in [streaming](#streaming)) to determine which agent initiated the call:
@@ -3031,6 +3023,10 @@ const sharedLookup = tool(
   },
 );
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/50309ec3-2016-43c4-bee1-0f707e501fdf/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 You can combine both patterns—read agent-specific settings from `runtime.context` and read `lc_agent_name` from `runtime.config` metadata when branching tool behavior.
 
@@ -3062,6 +3058,10 @@ const flexibleSearch = tool(
   },
 );
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/47447223-d4cd-4265-b0f9-c6a330258b99/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Troubleshooting
 
@@ -3109,10 +3109,6 @@ const flexibleSearch = tool(
      ],
    });
    ```
-
-   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aed3033-1e71-4ff2-a35f-8c6dea38dd2b/r">
-     Open a public LangSmith run for this example.
-   </Card>
 
 ### Context still getting bloated
 
@@ -3163,10 +3159,6 @@ const subagents = [
   },
 ];
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/69d484e7-bfb9-408f-b644-d5bf79d126ad/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ***
 

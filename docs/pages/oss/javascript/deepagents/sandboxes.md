@@ -88,7 +88,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ec47344-9aad-47cb-aa43-3d98ad5da94d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -570,7 +570,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8542aece-b18a-4f24-8ff1-3bc1a0737104/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -714,10 +714,6 @@ for (const result of results) {
   }
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/01ee861b-8f70-459d-bd79-116bc21c99c3/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Note>
   Inside the sandbox, the agent uses its own filesystem tools (`read_file`, `write_file`): not `uploadFiles` or `downloadFiles`. Those methods are for your application code to move files across the boundary between your host and the sandbox.

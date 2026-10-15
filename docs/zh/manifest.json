@@ -6913,13 +6913,33 @@
     "langsmith/tunnels.md": {
       "hash": "bbdc7e0158ef4aaafece55148edb848eb6cba12d",
       "translatedAt": "2026-10-14T14:12:14.709Z"
+    },
+    "langsmith/llm-gateway-model-configurations.md": {
+      "hash": "bb36f771fa5510983de13cda81e4626aa25e7a36",
+      "translatedAt": "2026-10-15T13:46:50.059Z",
+      "failed": true
+    },
+    "langsmith/smith-api/workspaces/delete-current-workspace-secret.md": {
+      "hash": "334a98db06343d5d120380e52eec04b24069e2cc",
+      "translatedAt": "2026-10-15T13:47:25.477Z",
+      "failed": true
+    },
+    "langsmith/smith-api/workspaces/put-current-workspace-secret.md": {
+      "hash": "48f40bf479f712351f5fb2161103b2a8f81ab80e",
+      "translatedAt": "2026-10-15T13:47:30.294Z",
+      "failed": true
+    },
+    "oss/python/concepts/human-in-the-loop.md": {
+      "hash": "4063781dac65cbe0c3974ca45233f2531c6516e6",
+      "translatedAt": "2026-10-15T13:49:10.145Z",
+      "failed": true
     }
   },
-  "updatedAt": "2026-10-14T14:14:47.729Z",
+  "updatedAt": "2026-10-15T13:50:26.195Z",
   "stats": {
-    "translated": 92,
-    "skipped": 1602,
-    "failed": 1,
-    "total": 1695
+    "translated": 0,
+    "skipped": 1523,
+    "failed": 127,
+    "total": 1650
   }
 }

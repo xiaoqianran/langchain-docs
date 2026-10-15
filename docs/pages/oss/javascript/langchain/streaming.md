@@ -50,8 +50,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -103,8 +103,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -156,8 +156,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -209,8 +209,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -262,8 +262,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -315,8 +315,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -368,8 +368,8 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createAgent, tool } from "langchain";
+  import { uuid7 } from "langsmith";
   import { MemorySaver } from "@langchain/langgraph";
   import z from "zod";
 
@@ -421,7 +421,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc490030-828a-4756-899a-063c3c3d3600/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -613,7 +613,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d59e6358-4c08-48b8-a906-8a054bddb7ac/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r">
   Open a public LangSmith run for this example.
 </Card>
 

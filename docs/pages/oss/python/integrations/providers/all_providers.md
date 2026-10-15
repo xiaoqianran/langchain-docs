@@ -655,6 +655,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Knowledge extraction and NLP platform.
   </Card>
 
+  <Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
+    GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
+  </Card>
+
   <Card title="GoodMem" href="https://docs.goodmem.ai" icon="link">
     Long-term memory layer for AI agents with semantic storage and retrieval.
   </Card>

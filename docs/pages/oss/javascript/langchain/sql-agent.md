@@ -1385,7 +1385,7 @@ The following tutorial covers the following concepts:
         ```
       </CodeGroup>
 
-      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6e260649-34ee-4075-b034-23c9404b868c/r">
+      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3925fa04-8885-4afd-aa45-5ba021acc93b/r">
         Open a public LangSmith run for this example.
       </Card>
     </Accordion>

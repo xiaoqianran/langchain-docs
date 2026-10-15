@@ -273,7 +273,7 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2d025b4-a79c-4aa5-9efa-953e09a5566c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d77e4082-5e11-4004-b5ac-351caf69c151/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -365,7 +365,7 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9862768e-4c5c-46df-b774-e0eda067aea7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1a8a880e-fdc6-4e8c-9035-f41dfab4884b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -552,7 +552,7 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/53f46dad-2132-4c21-aa44-58110a7041c8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3d0c3e6d-cb98-44a6-9335-f44180a9d7bd/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -582,7 +582,7 @@ def get_weather_data(city: str) -> dict:
     }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a9566cd-8702-4147-bfe0-f22949d91761/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef7c7454-03e6-481c-b5d3-be3862290879/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -651,10 +651,6 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7d36f0e9-8036-4ad0-a0f9-68a94e45628f/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 Behavior:
 
 * The command updates state using `update`.
@@ -692,7 +688,7 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b1764d7e-9786-4040-a1dd-720102c9b0b0/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/73ccdc9c-8579-4a93-906c-1338c04bf047/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -743,10 +739,6 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
         }
     )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a4000b2b-d692-4e4f-ad34-2317ff0bd93d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 To write to a parent graph instead, set `graph=Command.PARENT`. In that case the `ToolMessage` requirement is lifted because execution leaves the current graph entirely.
 
@@ -972,10 +964,6 @@ Handle tool errors using LangChain agent [middleware](/oss/python/langchain/midd
   )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab5801b7-dc0e-40c5-ac56-a55ac8c65af6/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### State injection
 

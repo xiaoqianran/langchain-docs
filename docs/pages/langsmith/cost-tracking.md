@@ -301,10 +301,6 @@ To compute cost automatically from token usage, you need to provide **token coun
            }
        }
        ```
-
-       <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77fb737d-e763-4f42-bc77-cbc27a4e9120/r">
-         Open a public LangSmith run for this example.
-       </Card>
      </CodeGroup>
 
      The Java and Kotlin examples use a dedicated executor. Shutting down the executor and awaiting termination ensures background trace submissions complete before the process exits.
@@ -876,10 +872,6 @@ Gemini 2.5 Pro Preview and Gemini 2.5 Pro use a stepwise cost function, which La
       }
   }
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fcb46808-1b10-4847-a3c9-164c47413524/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 ### Other runs: Send costs

@@ -3,7 +3,10 @@
 # Delete feedback config endpoint
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback-configs
-Soft delete a feedback config by marking it as deleted.
+Soft delete one feedback config by id, or every config of a feedback key.
 
 The config can be recreated later with the same key (simple reuse pattern).
-Existing feedback records with this key will remain unchanged.
+Existing feedback records with this key will remain unchanged. Deleting an
+enforced config turns off its enforcement instead of removing it, and needs
+the feedback-configs:manage-enforced permission.
+Deleting an unenforced config that an annotation queue uses is refused.

@@ -146,10 +146,6 @@ agent = create_deep_agent(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/298e9d96-115e-45b0-8b07-e9f1f0f6f899/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Using CompiledSubAgent
 
 For more complex use cases, you can provide your custom subagents with [`CompiledSubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent).
@@ -501,7 +497,7 @@ result = agent.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8690f61a-2e91-442f-b772-589ad1e807c7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6824e214-8e46-4cc4-8332-884c37bae27a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1122,7 +1118,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ee862817-3467-417b-808a-73b1dac48d00/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f25e02c6-7a78-4d2c-b2d7-3d33c3599818/r">
   Open a public LangSmith run for this example.
 </Card>
 

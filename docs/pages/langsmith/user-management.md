@@ -185,7 +185,7 @@ For instructions on using SCIM along with SAML for user provisioning and deprovi
 
    5. Required claims: `sub` and `email`.
 
-2. In LangSmith: Go to **Settings** > **SSO configuration**. Fill in the required information and submit to activate SSO login:
+2. In LangSmith: Go to **Settings** > **SSO Configuration**. Fill in the required information and submit to activate SSO login:
 
    1. Fill in either the `SAML metadata URL` or `SAML metadata XML`.
    2. Select the `Default workspace role` and `Default workspaces`. New users logging in via SSO will be added to the specified workspaces with the selected role.
@@ -211,7 +211,7 @@ The attribute name is preserved end-to-end: the IdP attribute name, the SAML Att
 
 #### Configuration
 
-In **Settings** > **SSO configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
+In **Settings** > **SSO Configuration**, scroll to the **SAML Attribute Mapping** section and add one row per non-standard attribute you want to forward:
 
 | Column | Description |
 | - | - |
@@ -1138,7 +1138,7 @@ Choose **SSO Groups Sync** when IdP admin involvement is minimal and reactive (l
 #### Configuration
 
 1. In your IdP: add the user's group memberships to the SSO token claim (default claim name: `groups`). Group names must follow the [SCIM naming convention](#group-naming-convention).
-2. In LangSmith: go to **Settings** > **SSO configuration**, scroll to the **SSO Groups Sync** section, and configure the following:
+2. In LangSmith: go to **Settings** > **SSO Configuration** > **SSO Groups Sync** and configure the following:
 
    | Setting | Description |
    | - | - |

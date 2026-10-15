@@ -136,8 +136,8 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 Before submitting changes, ensure your code passes formatting and linting checks:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Check broken links
-make broken-links
+# Check broken links and anchors
+make broken-links-with-anchors
 
 # Format code automatically
 make format

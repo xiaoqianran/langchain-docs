@@ -282,7 +282,7 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8df86c24-16e9-47e4-bdb7-9aa07df974d1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba3b5afc-8b2f-4e17-af79-b43c46a2a0a3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -320,7 +320,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f2c37793-36ac-464b-96ce-5f7d5307d074/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/80ab06ee-385f-4713-864c-c15ab35d76b3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -708,7 +708,7 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6892dbbe-d797-44da-974f-d78cd433299e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ad634a9-907e-49bb-9415-c20c70260b02/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -775,7 +775,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b193af81-1c11-41a9-a814-7f8250a66f9a/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/78ee935c-72fb-4c0d-9b7d-c73825f5ba7a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -838,7 +838,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b691dfbe-3eea-472b-92a3-7200ce7fd48d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/319a8e85-061a-40d1-a368-28f222a3e08c/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1366,7 +1366,7 @@ Use `config.writer` inside your subagent tools to emit custom progress events:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/30aef957-d016-4885-adb7-7a0d7952f97f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8eac6b1d-4f60-437c-b35f-e7f40443033b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1437,7 +1437,7 @@ for await (const [namespace, mode, data] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/abec3125-178c-474a-b0c4-9e4cb553eb63/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0f8a930f-c5ba-43e2-9fbb-39bf5066a749/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -1561,7 +1561,7 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/08302070-e307-46d9-8312-f7bef65bff07/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/990d5bae-eb8d-4170-b578-6131293d657b/r">
   Open a public LangSmith run for this example.
 </Card>
 

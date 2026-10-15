@@ -231,10 +231,6 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2529a15-5c87-4c29-9c34-9aa9a899bcf1/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType
   import com.langchain.smith.tracing.TraceConfig
@@ -287,10 +283,6 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
 
   println(assistant("How long are LangSmith traces stored?"))
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/95567c68-5e7b-44f2-9355-7705ac00de5a/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 ## 3. Run the app

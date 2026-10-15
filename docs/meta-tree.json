@@ -459,12 +459,6 @@
           "rel": "langsmith/agent-server-changelog.md"
         }
       ],
-      "agent-server-changelog-link": [
-        {
-          "title": "Agent Server changelog",
-          "rel": "langsmith/agent-server-changelog-link.md"
-        }
-      ],
       "agent-server-distributed-tracing": [
         {
           "title": "Distributed tracing with Agent Server",
@@ -621,12 +615,6 @@
           "rel": "langsmith/bind-evaluator-to-dataset.md"
         }
       ],
-      "bind-evaluator-to-dataset-link": [
-        {
-          "title": "Automatically run evaluators on experiments",
-          "rel": "langsmith/bind-evaluator-to-dataset-link.md"
-        }
-      ],
       "build-an-agent": [
         {
           "title": "Build an agent in the UI",
@@ -733,24 +721,6 @@
         {
           "title": "LangSmith Chat",
           "rel": "langsmith/chat.md"
-        }
-      ],
-      "chat-evaluation": [
-        {
-          "title": "LangSmith Chat",
-          "rel": "langsmith/chat-evaluation.md"
-        }
-      ],
-      "chat-observability": [
-        {
-          "title": "LangSmith Chat",
-          "rel": "langsmith/chat-observability.md"
-        }
-      ],
-      "chat-prompt-engineering": [
-        {
-          "title": "LangSmith Chat",
-          "rel": "langsmith/chat-prompt-engineering.md"
         }
       ],
       "cicd-pipeline-example": [
@@ -1263,12 +1233,6 @@
           "rel": "langsmith/engine-self-hosted.md"
         }
       ],
-      "engine-self-hosted-link": [
-        {
-          "title": "Enable Engine",
-          "rel": "langsmith/engine-self-hosted-link.md"
-        }
-      ],
       "enqueue-concurrent": [
         {
           "title": "Enqueue concurrent",
@@ -1569,18 +1533,6 @@
           "rel": "langsmith/langchain-runnable.md"
         }
       ],
-      "langgraph-js-ts-sdk": [
-        {
-          "title": "LangGraph JS/TS SDK",
-          "rel": "langsmith/langgraph-js-ts-sdk.md"
-        }
-      ],
-      "langgraph-python-sdk": [
-        {
-          "title": "LangGraph Python SDK",
-          "rel": "langsmith/langgraph-python-sdk.md"
-        }
-      ],
       "langsmith-cli": [
         {
           "title": "LangSmith CLI",
@@ -1711,6 +1663,12 @@
         {
           "title": "Model access policies",
           "rel": "langsmith/llm-gateway-model-access-policies.md"
+        }
+      ],
+      "llm-gateway-model-configurations": [
+        {
+          "title": "Custom model configurations",
+          "rel": "langsmith/llm-gateway-model-configurations.md"
         }
       ],
       "llm-gateway-monitoring": [
@@ -2037,12 +1995,6 @@
           "rel": "langsmith/platform-setup.md"
         }
       ],
-      "playground-link": [
-        {
-          "title": "Run an evaluation with the UI",
-          "rel": "langsmith/playground-link.md"
-        }
-      ],
       "playground-model-providers": [
         {
           "title": "Model providers",
@@ -2059,12 +2011,6 @@
         {
           "title": "Preview builds",
           "rel": "langsmith/preview-builds.md"
-        }
-      ],
-      "pricing-plans": [
-        {
-          "title": "Pricing plans",
-          "rel": "langsmith/pricing-plans.md"
         }
       ],
       "profile-configuration": [
@@ -2167,12 +2113,6 @@
         {
           "title": "Release policy",
           "rel": "langsmith/release-versions.md"
-        }
-      ],
-      "remote-graph": [
-        {
-          "title": "RemoteGraph",
-          "rel": "langsmith/remote-graph.md"
         }
       ],
       "repetition": [
@@ -2805,36 +2745,6 @@
           "rel": "langsmith/smith-api-ref.md"
         }
       ],
-      "smith-deployments-sdk": [
-        {
-          "title": "LangSmith Deployment SDK",
-          "rel": "langsmith/smith-deployments-sdk.md"
-        }
-      ],
-      "smith-go-sdk": [
-        {
-          "title": "LangSmith Go SDK",
-          "rel": "langsmith/smith-go-sdk.md"
-        }
-      ],
-      "smith-java-sdk": [
-        {
-          "title": "LangSmith Java SDK",
-          "rel": "langsmith/smith-java-sdk.md"
-        }
-      ],
-      "smith-js-ts-sdk": [
-        {
-          "title": "LangSmith JS/TS SDK",
-          "rel": "langsmith/smith-js-ts-sdk.md"
-        }
-      ],
-      "smith-python-sdk": [
-        {
-          "title": "LangSmith Python SDK",
-          "rel": "langsmith/smith-python-sdk.md"
-        }
-      ],
       "smithdb-sdk-migration": [
         {
           "title": "Migrate to SmithDB-backed SDK methods",
@@ -2889,12 +2799,6 @@
           "rel": "langsmith/stateless-runs.md"
         }
       ],
-      "status": [
-        {
-          "title": "LangSmith status",
-          "rel": "langsmith/status.md"
-        }
-      ],
       "store-auth": [
         {
           "title": "Isolate store data per user",
@@ -2911,12 +2815,6 @@
         {
           "title": "LangSmith Studio",
           "rel": "langsmith/studio.md"
-        }
-      ],
-      "studio-deploy": [
-        {
-          "title": "Studio",
-          "rel": "langsmith/studio-deploy.md"
         }
       ],
       "summary": [
@@ -3735,12 +3633,6 @@
           "rel": "langsmith/fleet/schedules.md"
         }
       ],
-      "self-hosted-link": [
-        {
-          "title": "Self-hosted",
-          "rel": "langsmith/fleet/self-hosted-link.md"
-        }
-      ],
       "skills": [
         {
           "title": "Skills",
@@ -3789,12 +3681,6 @@
     "id": "langsmith-js",
     "name": "LangSmith · JS",
     "groups": {
-      "managed-deep-agents": [
-        {
-          "title": "Managed Deep Agents",
-          "rel": "langsmith/javascript/managed-deep-agents.md"
-        }
-      ],
       "managed-deep-agents-agent-definition": [
         {
           "title": "Define a Managed Deep Agent",
@@ -3805,12 +3691,6 @@
         {
           "title": "Prompt Slack users with agent-owned interrupts",
           "rel": "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md"
-        }
-      ],
-      "managed-deep-agents-changelog": [
-        {
-          "title": "Changelog",
-          "rel": "langsmith/javascript/managed-deep-agents-changelog.md"
         }
       ],
       "managed-deep-agents-channels": [
@@ -3975,12 +3855,6 @@
     "id": "langsmith-py",
     "name": "LangSmith · Python",
     "groups": {
-      "managed-deep-agents": [
-        {
-          "title": "Managed Deep Agents",
-          "rel": "langsmith/python/managed-deep-agents.md"
-        }
-      ],
       "managed-deep-agents-agent-definition": [
         {
           "title": "Define a Managed Deep Agent",
@@ -3991,12 +3865,6 @@
         {
           "title": "Prompt Slack users with agent-owned interrupts",
           "rel": "langsmith/python/managed-deep-agents-agent-owned-interrupts.md"
-        }
-      ],
-      "managed-deep-agents-changelog": [
-        {
-          "title": "Changelog",
-          "rel": "langsmith/python/managed-deep-agents-changelog.md"
         }
       ],
       "managed-deep-agents-channels": [
@@ -6391,6 +6259,10 @@
           "rel": "langsmith/smith-api/workspaces/delete-current-workspace-pending-member.md"
         },
         {
+          "title": "Delete current workspace secret",
+          "rel": "langsmith/smith-api/workspaces/delete-current-workspace-secret.md"
+        },
+        {
           "title": "Delete pending workspace invite",
           "rel": "langsmith/smith-api/workspaces/delete-pending-workspace-invite.md"
         },
@@ -6499,6 +6371,10 @@
           "rel": "langsmith/smith-api/workspaces/patch-workspace.md"
         },
         {
+          "title": "Put current workspace secret",
+          "rel": "langsmith/smith-api/workspaces/put-current-workspace-secret.md"
+        },
+        {
           "title": "Update tag key",
           "rel": "langsmith/smith-api/workspaces/update-tag-key.md"
         },
@@ -6521,10 +6397,6 @@
         {
           "title": "Approval modes",
           "rel": "oss/deepagents/code/approval-modes.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/deepagents/code/changelog.md"
         },
         {
           "title": "Command reference",
@@ -6653,10 +6525,6 @@
       ],
       "deepagents": [
         {
-          "title": "A2A server",
-          "rel": "oss/javascript/deepagents/a2a.md"
-        },
-        {
           "title": "Agent Client Protocol (ACP)",
           "rel": "oss/javascript/deepagents/acp.md"
         },
@@ -6671,10 +6539,6 @@
         {
           "title": "Backends",
           "rel": "oss/javascript/deepagents/backends.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/deepagents/changelog-js.md"
         },
         {
           "title": "Comparison with Claude Agent SDK",
@@ -6737,10 +6601,6 @@
           "rel": "oss/javascript/deepagents/interpreters.md"
         },
         {
-          "title": "Model Context Protocol",
-          "rel": "oss/javascript/deepagents/mcp.md"
-        },
-        {
           "title": "Memory",
           "rel": "oss/javascript/deepagents/memory.md"
         },
@@ -6751,10 +6611,6 @@
         {
           "title": "Multimodal inputs and outputs",
           "rel": "oss/javascript/deepagents/multimodal.md"
-        },
-        {
-          "title": "OpenWiki",
-          "rel": "oss/javascript/deepagents/openwiki.md"
         },
         {
           "title": "Deep Agents overview",
@@ -6945,16 +6801,8 @@
       ],
       "langchain": [
         {
-          "title": "LangChain Academy",
-          "rel": "oss/javascript/langchain/academy.md"
-        },
-        {
           "title": "Agents",
           "rel": "oss/javascript/langchain/agents.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/javascript/langchain/changelog-js.md"
         },
         {
           "title": "Component architecture",
@@ -7243,10 +7091,6 @@
           "rel": "oss/javascript/langgraph/case-studies.md"
         },
         {
-          "title": "Changelog",
-          "rel": "oss/javascript/langgraph/changelog-js.md"
-        },
-        {
           "title": "Checkpointers",
           "rel": "oss/javascript/langgraph/checkpointers.md"
         },
@@ -7385,22 +7229,6 @@
       ],
       "reference": [
         {
-          "title": "Deep Agents",
-          "rel": "oss/javascript/reference/deepagents-javascript.md"
-        },
-        {
-          "title": "Integrations",
-          "rel": "oss/javascript/reference/integrations-javascript.md"
-        },
-        {
-          "title": "LangChain SDK",
-          "rel": "oss/javascript/reference/langchain-javascript.md"
-        },
-        {
-          "title": "LangGraph SDK",
-          "rel": "oss/javascript/reference/langgraph-javascript.md"
-        },
-        {
           "title": "Reference",
           "rel": "oss/javascript/reference/overview.md"
         }
@@ -7431,12 +7259,6 @@
           "rel": "oss/javascript/security-policy.md"
         }
       ],
-      "studio": [
-        {
-          "title": "Studio",
-          "rel": "oss/javascript/studio.md"
-        }
-      ],
       "versioning": [
         {
           "title": "Versioning",
@@ -7453,12 +7275,6 @@
         {
           "title": "Automate updates",
           "rel": "oss/openwiki/automate-updates.md"
-        }
-      ],
-      "changelog": [
-        {
-          "title": "Changelog",
-          "rel": "oss/openwiki/changelog.md"
         }
       ],
       "cli-reference": [
@@ -7533,6 +7349,10 @@
           "rel": "oss/python/concepts/context.md"
         },
         {
+          "title": "Human-in-the-loop overview",
+          "rel": "oss/python/concepts/human-in-the-loop.md"
+        },
+        {
           "title": "Memory overview",
           "rel": "oss/python/concepts/memory.md"
         },
@@ -7581,10 +7401,6 @@
       ],
       "deepagents": [
         {
-          "title": "A2A server",
-          "rel": "oss/python/deepagents/a2a.md"
-        },
-        {
           "title": "Agent Client Protocol (ACP)",
           "rel": "oss/python/deepagents/acp.md"
         },
@@ -7599,10 +7415,6 @@
         {
           "title": "Backends",
           "rel": "oss/python/deepagents/backends.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/python/deepagents/changelog-py.md"
         },
         {
           "title": "Comparison with Claude Agent SDK",
@@ -7669,10 +7481,6 @@
           "rel": "oss/python/deepagents/interpreters.md"
         },
         {
-          "title": "Model Context Protocol",
-          "rel": "oss/python/deepagents/mcp.md"
-        },
-        {
           "title": "Memory",
           "rel": "oss/python/deepagents/memory.md"
         },
@@ -7683,10 +7491,6 @@
         {
           "title": "Multimodal inputs and outputs",
           "rel": "oss/python/deepagents/multimodal.md"
-        },
-        {
-          "title": "OpenWiki",
-          "rel": "oss/python/deepagents/openwiki.md"
         },
         {
           "title": "Deep Agents overview",
@@ -7837,16 +7641,8 @@
       ],
       "langchain": [
         {
-          "title": "LangChain Academy",
-          "rel": "oss/python/langchain/academy.md"
-        },
-        {
           "title": "Agents",
           "rel": "oss/python/langchain/agents.md"
-        },
-        {
-          "title": "Changelog",
-          "rel": "oss/python/langchain/changelog-py.md"
         },
         {
           "title": "Component architecture",
@@ -8139,10 +7935,6 @@
           "rel": "oss/python/langgraph/case-studies.md"
         },
         {
-          "title": "Changelog",
-          "rel": "oss/python/langgraph/changelog-py.md"
-        },
-        {
           "title": "Checkpointers",
           "rel": "oss/python/langgraph/checkpointers.md"
         },
@@ -8289,22 +8081,6 @@
       ],
       "reference": [
         {
-          "title": "Deep Agents",
-          "rel": "oss/python/reference/deepagents-python.md"
-        },
-        {
-          "title": "Integrations",
-          "rel": "oss/python/reference/integrations-python.md"
-        },
-        {
-          "title": "LangChain SDK",
-          "rel": "oss/python/reference/langchain-python.md"
-        },
-        {
-          "title": "LangGraph SDK",
-          "rel": "oss/python/reference/langgraph-python.md"
-        },
-        {
           "title": "Reference",
           "rel": "oss/python/reference/overview.md"
         }
@@ -8333,12 +8109,6 @@
         {
           "title": "Security policy",
           "rel": "oss/python/security-policy.md"
-        }
-      ],
-      "studio": [
-        {
-          "title": "Studio",
-          "rel": "oss/python/studio.md"
         }
       ],
       "versioning": [

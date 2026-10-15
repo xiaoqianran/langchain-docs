@@ -431,6 +431,10 @@ Connect LangGraph agents to front ends and observability platforms.
     AI-powered search engine for better results.
   </Card>
 
+  <Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
+    GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
+  </Card>
+
   <Card title="JigsawStack" href="/oss/javascript/integrations/tools/jigsawstack">
     AI infrastructure tools from JigsawStack.
   </Card>

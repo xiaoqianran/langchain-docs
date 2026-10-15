@@ -132,7 +132,7 @@ Follow the same steps for each framework. Choose your stack in the tabs inside e
         from claude_agent_sdk import ClaudeAgentOptions
 
         options = ClaudeAgentOptions(
-            model="claude-sonnet-4-6",
+            model="claude-sonnet-5-5",
             system_prompt="You are a helpful assistant.",
         )
         ```
@@ -365,7 +365,7 @@ The following examples combine agent definition, Functional API wrapping, tracin
     configure_claude_agent_sdk()
 
     options = ClaudeAgentOptions(
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5-5",
         system_prompt="You are a helpful assistant.",
     )
 

@@ -155,7 +155,7 @@ When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that 
   Runtime schedules require `managed-deepagents` 0.9.0 or later.
 </Note>
 
-Declarations in `schedules/` are fixed when you deploy. The `schedules` API creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. Call it from a tool or from [middleware](/langsmith/python/managed-deep-agents-middleware). Each schedule belongs to the current user or to the agent.
+Declarations in `schedules/` are fixed when you deploy. `runtime.schedules` creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. It is available on the runtime that tools and [middleware](/langsmith/python/managed-deep-agents-middleware) receive, and it acts for the caller of the current run. Each schedule belongs to the current user or to the agent.
 
 The agent reaches this API only through tools that you write. Expose the calls the agent needs, and leave out the ones it should not reach.
 
@@ -169,13 +169,15 @@ When a tool creates a schedule during a [channel](/langsmith/python/managed-deep
 
 ```python tools/schedules.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
-from managed_deepagents import schedules
+from managed_deepagents import ManagedDeepAgentRuntime
 
 
 @tool
-async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
+async def remind_me(
+    prompt: str, cron: str, runtime: ManagedDeepAgentRuntime, timezone: str = "UTC"
+) -> str:
     """Run a prompt for the current user on a cron schedule."""
-    item = await schedules.create(
+    item = await runtime.schedules.create(
         owner={"type": "user"},
         cron=cron,
         timezone=timezone,
@@ -194,13 +196,13 @@ Pass `at` in place of `cron` for work that runs once. `follow_up_later` gives th
 from datetime import datetime, timedelta, timezone
 
 from langchain.tools import tool
-from managed_deepagents import schedules
+from managed_deepagents import ManagedDeepAgentRuntime
 
 
 @tool
-async def follow_up_later(prompt: str, hours: int) -> str:
+async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRuntime) -> str:
     """Run a prompt once, a number of hours from now."""
-    item = await schedules.create(
+    item = await runtime.schedules.create(
         owner={"type": "user"},
         at=datetime.now(timezone.utc) + timedelta(hours=hours),
         prompt=prompt,
@@ -250,15 +252,15 @@ A one-time schedule defaults to the current thread, so its run continues the con
 
 ### Manage schedules
 
-`list`, `get`, `update`, and `delete` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
+`list`, `get`, `update`, and `delete` on `runtime.schedules` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 owner = {"type": "user"}
 
-page = await schedules.list(owner=owner, limit=20)
-item = await schedules.get(page["items"][0]["id"], owner=owner)
-await schedules.update(item["id"], {"paused": True}, owner=owner)
-await schedules.delete(item["id"], owner=owner)
+page = await runtime.schedules.list(owner=owner, limit=20)
+item = await runtime.schedules.get(page["items"][0]["id"], owner=owner)
+await runtime.schedules.update(item["id"], {"paused": True}, owner=owner)
+await runtime.schedules.delete(item["id"], owner=owner)
 ```
 
 `update` accepts `cron`, `at`, `timezone`, `prompt`, `input`, `paused`, and `metadata`. The channel and the thread choice are fixed at creation. `list` hides expired one-time schedules unless you pass `include_expired=True`. For the agent owner, `list` and `get` also return the schedules in `schedules/`, which you change in code.
